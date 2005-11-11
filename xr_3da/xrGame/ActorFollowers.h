@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 class CUIFollowerPanel;
 class CInventoryOwner;
 
@@ -19,4 +19,4 @@ public:
 	void	SendCommand				(int cmd);
 };
 
-
+*/

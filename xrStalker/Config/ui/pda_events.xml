@@ -83,7 +83,7 @@
 							<image x="170" y="0" width="90" height="90" stretch="1"/>
 							
 							<text_cont x="5" y="90" width="386" height="10">
-								<text font="letterica18" r="255" g="255" b="255"></text>
+								<text font="letterica18" r="255" g="255" b="255"/>
 							</text_cont>
 							
 						</objective_item>
@@ -114,7 +114,7 @@
 							</actor_btn>								
 							
 															
-							<highlight_spot_btn x="275" y="1" width="21" height="15" check_mode="1" hint="highlight_spot_btn_hint">
+							<highlight_spot_btn x="275" y="1" width="21" height="15" check_mode="1" hint="pda_show_pointer_btn_hint">
 								<window_name>highlight_spot_btn</window_name>
 								<texture>ui_icons_newPDA_mark</texture>
 							</highlight_spot_btn>								

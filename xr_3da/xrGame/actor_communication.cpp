@@ -181,7 +181,6 @@ bool CActor::OnReceiveInfo(INFO_ID info_id) const
 
 void CActor::OnDisableInfo(INFO_ID info_id) const
 {
-//	Level().RemoveMapLocationByInfo(info_index);
 	CInventoryOwner::OnDisableInfo(info_id);
 
 	if(!HUD().GetUI())
@@ -191,23 +190,8 @@ void CActor::OnDisableInfo(INFO_ID info_id) const
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
-/* 
-	//обновить отмеки на карте, если мы прямо в карте и находимся
-	if(pGameSP->PdaMenu.UIMapWnd.IsShown())
-	{
-		pGameSP->PdaMenu.UIMapWnd.InitGlobalMapObjectives	();
-		pGameSP->PdaMenu.UIMapWnd.InitLocalMapObjectives	();
-	}
-*/
-
 	if(pGameSP->TalkMenu->IsShown())
-	{
 		pGameSP->TalkMenu->NeedUpdateQuestions();
-	}
-//	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
-//	{
-//		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
-//	}
 }
 
 
@@ -233,7 +217,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 	GetPDA()->GetLastMessageFromLog(who, last_pda_message);
 
 	//обновить информацию о контакте
-	UpdateContact(pPda->GetOriginalOwnerID());
+//.	UpdateContact(pPda->GetOriginalOwnerID());
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_id);
 }
 
@@ -244,14 +228,7 @@ void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 	if(!pGameSP) return;
 
 	if(pGameSP->TalkMenu->IsShown())
-	{
 		pGameSP->TalkMenu->NeedUpdateQuestions();
-	}
-//	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
-//	{
-//		pGameSP->PdaMenu.UIPdaCommunication.NeedUpdateQuestions();
-//	}
-
 
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
 }
@@ -329,11 +306,11 @@ void CActor::StartTalk (CInventoryOwner* talk_partner)
 {
 	CGameObject* GO = smart_cast<CGameObject*>(talk_partner); VERIFY(GO);
 	//обновить информацию о контакте
-	UpdateContact(GO->ID());
+//.	UpdateContact(GO->ID());
 
 	CInventoryOwner::StartTalk(talk_partner);
 }
-
+/*
 void CActor::UpdateContact		(u16 contact_id)
 {
 	if(ID() == contact_id) return;
@@ -352,6 +329,7 @@ void CActor::UpdateContact		(u16 contact_id)
 		(*it).time = Level().GetGameTime();
 	}
 }
+*/
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
 	if(Game().Type() != GAME_SINGLE) return;

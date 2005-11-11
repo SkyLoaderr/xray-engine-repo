@@ -147,11 +147,11 @@ protected:
 	CActorStatisticMgr*				m_statistic_manager;
 public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
-	virtual	void UpdateContact		(u16 contact_id);
+//.	virtual	void UpdateContact		(u16 contact_id);
 	virtual	void RunTalkDialog		(CInventoryOwner* talk_partner);
 	CGameTaskManager&				GameTaskManager() const {return *m_game_task_manager;}
 	CActorStatisticMgr&				StatisticMgr()	{return *m_statistic_manager;}
-	CKnownContactsRegistryWrapper	*contacts_registry;
+//.	CKnownContactsRegistryWrapper	*contacts_registry;
 	CEncyclopediaRegistryWrapper	*encyclopedia_registry;
 //	CGameTaskRegistryWrapper		*game_task_registry;
 	CGameNewsRegistryWrapper		*game_news_registry;
@@ -386,22 +386,21 @@ public:
 	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
 	CInventoryOwner*		PersonWeLookingAt			() {return m_pPersonWeLookingAt;}
 	LPCSTR					GetDefaultActionForObject	() {return *m_sDefaultObjAction;}
-	void					AddFollower					(u16 id);
-	void					RemoveFollower				(u16 id);
-	void					SendCmdToFollowers			(int cmd);
+//.	void					AddFollower					(u16 id);
+//.	void					RemoveFollower				(u16 id);
+//.	void					SendCmdToFollowers			(int cmd);
 protected:
-	void					DestroyFollowerInternal();//hack
-	CActorFollowerMngr&		Followers	();
-	CActorFollowerMngr*		m_followers;
+//.	void					DestroyFollowerInternal();//hack
+//.	CActorFollowerMngr&		Followers	();
+//.	CActorFollowerMngr*		m_followers;
 	CUsableScriptObject*	m_pUsableObject;
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;
-	// Vehicle or lorry we're looking at
 	CHolderCustom*			m_pVehicleWeLookingAt;
 	CGameObject*			m_pObjectWeLookingAt;
+
 	// Tip for action for object we're looking at
 	shared_str				m_sDefaultObjAction;
-	
 	shared_str				m_sCharacterUseAction;
 	shared_str				m_sDeadCharacterUseAction;
 	shared_str				m_sCarCharacterUseAction;

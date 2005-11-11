@@ -85,7 +85,7 @@
 	
 			<edit_description x="10" y="35" width="275" height="130">
 				<texture>ui_icons_PDA_dialog_frame</texture>
-				<text x="0" y="0" font="letterica18"></text>
+				<text x="0" y="0" font="letterica18"/>
 			</edit_description>
 			
 		<ok_btn x="45" y="170" width="60" height="20" check_mode="0">

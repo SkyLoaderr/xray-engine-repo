@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "ActorFollowers.h"
 #include "ui/xrxmlparser.h"
 #include "ui/UIFollowerPanel.h"
@@ -88,4 +89,4 @@ void CActor::DestroyFollowerInternal()
 void CActor::SendCmdToFollowers(int cmd)
 {
 	Followers().SendCommand(cmd);
-}
+}*/

@@ -8,7 +8,7 @@
 	<!-- PDA OFF BUTTON -->
 	<off_button x="729" y="0" width="41" height="22" hint="pda_btn_off_hint">
 		<texture>ui\ui_pda_button</texture>
-		<text x="0" y="0" font="letterica18" r="255" g="255" b="255"></text>
+		<text x="0" y="0" font="letterica18" r="255" g="255" b="255"/>
 	</off_button>
 	
 	<!-- Main buttons background -->

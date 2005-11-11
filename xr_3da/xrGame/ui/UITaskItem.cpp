@@ -461,7 +461,8 @@ void CUIUserTaskEditWnd::OnOk			()
 {
 	m_userTask->GameTask()->m_Title			= m_editCaption->GetText();
 	m_userTask->Objective()->description	= m_editDescription->GetText();
-	m_userTask->m_EventsWnd->Reload();
+	m_userTask->Objective()->HasMapLocation	()->SetHint(m_editDescription->GetText());
+	m_userTask->m_EventsWnd->Reload			();
 
 	GetHolder()->StartStopMenu				(this, false);
 	m_userTask = NULL;

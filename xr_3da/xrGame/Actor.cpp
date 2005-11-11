@@ -118,7 +118,7 @@ CActor::CActor() : CEntityAlive()
 	dbgmp_light->set_color	(.5f,1.f,.5f);
 	//.
 
-	contacts_registry		= xr_new<CKnownContactsRegistryWrapper	>();
+//.	contacts_registry		= xr_new<CKnownContactsRegistryWrapper	>();
 	encyclopedia_registry	= xr_new<CEncyclopediaRegistryWrapper	>();
 //.	game_task_registry		= xr_new<CGameTaskRegistryWrapper		>();
 	game_news_registry		= xr_new<CGameNewsRegistryWrapper		>();
@@ -219,7 +219,7 @@ CActor::~CActor()
 
 	dbgmp_light.destroy		();	//.
 
-	xr_delete				(contacts_registry);
+//.	xr_delete				(contacts_registry);
 	xr_delete				(encyclopedia_registry);
 //	xr_delete				(game_task_registry);
 	xr_delete				(game_news_registry);
@@ -1111,16 +1111,16 @@ void CActor::shedule_Update	(u32 DT)
 			else
 			{
 				if (m_pPersonWeLookingAt && pEntityAlive->g_Alive())
-					m_sDefaultObjAction = m_sCharacterUseAction;//string_table("character_use");
+					m_sDefaultObjAction = m_sCharacterUseAction;
 
 				else if (pEntityAlive && !pEntityAlive->g_Alive())
-					m_sDefaultObjAction = m_sDeadCharacterUseAction;//string_table("dead_character_use");
+					m_sDefaultObjAction = m_sDeadCharacterUseAction;
 
 				else if (m_pVehicleWeLookingAt)
-					m_sDefaultObjAction = m_sCarCharacterUseAction;//string_table("car_character_use");
+					m_sDefaultObjAction = m_sCarCharacterUseAction;
 
 				else if (inventory().m_pTarget)
-					m_sDefaultObjAction = m_sInventoryItemUseAction;//string_table("inventory_item_use");
+					m_sDefaultObjAction = m_sInventoryItemUseAction;
 				else 
 					m_sDefaultObjAction = NULL;
 			}
@@ -1134,18 +1134,13 @@ void CActor::shedule_Update	(u32 DT)
 		m_pUsableObject			= NULL;
 	}
 
-/*
-	//обновление инвентаря и торговли
-	UpdateInventoryOwner(DT);
-*/
 	//для режима сна
-	UpdateSleep();
+	UpdateSleep									();
 
 	//для свойст артефактов, находящихся на поясе
-	UpdateArtefactsOnBelt();
-	m_pPhysics_support->in_shedule_Update(DT);
-	///////////////////////////////////////////////
-	Check_for_AutoPickUp();
+	UpdateArtefactsOnBelt						();
+	m_pPhysics_support->in_shedule_Update		(DT);
+	Check_for_AutoPickUp						();
 /*
 	if (GameID() == GAME_SINGLE)
 	{
@@ -1177,17 +1172,11 @@ BOOL CActor::renderable_ShadowGenerate	()
 
 void CActor::g_PerformDrop	( )
 {
-//	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
 
 	PIItem pItem = inventory().ActiveItem();
 	if (0==pItem) return;
 	pItem->Drop();
-
-	/*NET_Packet				P;
-	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
-	P.w_u16					(u16(O->ID()));
-	u_EventSend				(P);*/
 }
 
 
@@ -1195,10 +1184,6 @@ extern	BOOL	g_ShowAnimationInfo		;
 // HUD
 void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 {
-	//CWeapon* W			= Weapons->ActiveWeapon();
-	//if (W)				W->renderable_Render		();
-	//CWeapon *W = smart_cast<CWeapon*>(inventory().ActiveItem()); if(W) W->renderable_Render();
-
 	if(inventory().ActiveItem()  ) {
 		inventory().ActiveItem()->renderable_Render();
 	}

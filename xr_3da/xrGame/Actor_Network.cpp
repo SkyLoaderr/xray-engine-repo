@@ -642,7 +642,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 {
 	m_snd_noise			= 0.0f;
 	m_sndShockEffector	= NULL;
-	m_followers			= NULL;
+/*	m_followers			= NULL;*/
 	if (m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Deactivate();
@@ -665,7 +665,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_current_head.invalidate	();
 	//-------------------------------------
 	// инициализация реестров, используемых актером
-	contacts_registry->registry().init(ID());
+//.	contacts_registry->registry().init(ID());
 	encyclopedia_registry->registry().init(ID());
 //.	game_task_registry->registry().init(ID());
 	game_news_registry->registry().init(ID());
@@ -863,7 +863,7 @@ void CActor::net_Destroy	()
 	if(m_sndShockEffector)
 		xr_delete(m_sndShockEffector);
 
-	DestroyFollowerInternal();
+/*	DestroyFollowerInternal();*/
 	if(g_actor == this) g_actor= NULL;
 }
 
