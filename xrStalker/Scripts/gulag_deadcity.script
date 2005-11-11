@@ -250,12 +250,10 @@ function load_ltx_killers(gname, type)
                "combat_ignore_cond  = always\n"
 
     -- jail guard
-	res = res.."[logic@" .. gname .. "_base_guard]\n" ..
-               "cfg = scripts\\cit\\cit_jail_guard2.ltx\n"
+	res = res.."#include \"scripts\\cit\\cit_jail_guard1.ltx\"\n"
 
     -- base guard
-	res = res.."[logic@" .. gname .. "_jail_guard]\n" ..
-               "cfg = scripts\\cit\\cit_jail_guard1.ltx\n"
+	res = res.."#include \"scripts\\cit\\cit_jail_guard2.ltx\"\n"
 
     -- base patrols
     for i = 1, 2 do

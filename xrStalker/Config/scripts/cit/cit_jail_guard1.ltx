@@ -1,12 +1,12 @@
-[logic]
-active              = walker@guard1
+[logic@cit_killers_jail_guard]
+active              = walker@jail_guard1
 combat_ignore       = combat_ignore
 ;on_hit              = hit
 
-[hit]
-on_info             = {=hit_by_actor} remark@kill_actor2
+;[hit]
+;on_info             = {=hit_by_actor} remark@kill_actor2
 
-[danger@sleep]
+[danger@jail_guard_sleep]
 ignore_danger_sound  = 2
 ignore_danger_corpse = 2
 ignore_danger_grenade = 2
@@ -14,11 +14,24 @@ ignore_danger_grenade = 2
 ;-----------------------------------------------------------------------------------------------------------
 ;--- патрулируем возле решетки
 ;-----------------------------------------------------------------------------------------------------------
-[walker@guard1]
-path_walk           = cit_jail_guard1_walk
-path_look           = cit_jail_guard1_look
+[walker@jail_guard1]
+path_walk           = jail_guard_walk
+path_look           = jail_guard_look
 on_info             = {+cit_jail_guard2_talk_to_guard1} remark@look_at_guard2_1
-combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+on_info2            = {+cit_jail_door_opened} walker@jail_guard_close_door1
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- закрываем решетку, если она вдруг "случайно" открылась
+;-----------------------------------------------------------------------------------------------------------
+[walker@jail_guard_close_door1]
+path_walk           = jail_guard_button_press_walk
+path_look           = jail_guard_button_press_look
+def_state_moving1   = walk
+def_state_moving2   = walk
+def_state_moving3   = walk
+on_signal           = pressed | walker@jail_guard1 %-cit_jail_door_opened%
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- слушаем, что нам говорит второй охранник
@@ -26,28 +39,28 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(
 [remark@look_at_guard2_1]
 anim                = wait
 target              = 1202 ; guard2
-on_info             = {+cit_jail_kill_actor} remark@kill_actor, {+cit_jail_doctor_out_start} walker@open_door
-combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+on_info             = {+cit_jail_kill_actor} remark@jail_guard_kill_actor, {+cit_jail_doctor_out_start} walker@jail_guard_open_door
+combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- если актер не послушался и не отошел к стене, убиваем его
 ;-----------------------------------------------------------------------------------------------------------
-[remark@kill_actor]
+[remark@jail_guard_kill_actor]
 anim                = wait
-on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@open_door
+on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- открываем решетку, чтоб выпустить доктора
 ;-----------------------------------------------------------------------------------------------------------
-[walker@open_door]
-path_walk           = cit_jail_guard1_button_press_walk
-path_look           = cit_jail_guard1_button_press_look
+[walker@jail_guard_open_door]
+path_walk           = jail_guard_button_press_walk
+path_look           = jail_guard_button_press_look
 def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
 on_signal           = pressed | remark@look_at_actor %+cit_jail_door_opened%
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
+combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- смотрим за актером, шоб не сбежал
@@ -55,47 +68,60 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting
 [remark@look_at_actor]
 anim                = wait
 target              = actor
-on_info             = {+cit_jail_guard1_close_door} walker@close_door
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
+on_info             = {+cit_jail_guard1_close_door} walker@jail_guard_close_door2
+combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
-;--- закрываем решетку, чтоб выпустить доктора
+;--- закрываем решетку
 ;-----------------------------------------------------------------------------------------------------------
-[walker@close_door]
-path_walk           = cit_jail_guard1_button_press_walk
-path_look           = cit_jail_guard1_button_press_look
+[walker@jail_guard_close_door2]
+path_walk           = jail_guard_button_press_walk
+path_look           = jail_guard_button_press_look
 def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
-on_signal           = pressed | walker@guard2 %-cit_jail_door_opened%
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates}, {=check_fighting(1200)}
+on_signal           = pressed | walker@jail_guard2 %-cit_jail_door_opened%
+combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- патрулируем возле решетки
 ;-----------------------------------------------------------------------------------------------------------
-[walker@guard2]
-path_walk           = cit_jail_guard1_walk
-path_look           = cit_jail_guard1_look
-on_timer            = 10000 | remark@sleep
+[walker@jail_guard2]
+path_walk           = jail_guard_walk
+path_look           = jail_guard_look
+on_timer            = 10000 | remark@jail_guard_sleep
+on_info             = {+cit_jail_door_opened} walker@jail_guard_close_door3
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- закрываем решетку, если она вдруг "случайно" открылась
+;-----------------------------------------------------------------------------------------------------------
+[walker@jail_guard_close_door3]
+path_walk           = jail_guard_button_press_walk
+path_look           = jail_guard_button_press_look
+def_state_moving1   = walk
+def_state_moving2   = walk
+def_state_moving3   = walk
+on_signal           = pressed | walker@jail_guard2 %-cit_jail_door_opened%
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- детский час
 ;-----------------------------------------------------------------------------------------------------------
-[remark@sleep]
+[remark@jail_guard_sleep]
 no_move             = true
 no_rotate           = true
 anim                = sleep_sit
-danger              = danger@sleep
-on_info             = {=hit_by_actor} remark@kill_actor2
-combat_ignore_cond  = always ;{=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+danger              = danger@jail_guard_sleep
+on_info             = {=hit_by_actor} remark@jail_guard_kill_actor2
+combat_ignore_cond  = always ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- убиваем актера
 ;-----------------------------------------------------------------------------------------------------------
-[remark@kill_actor2]
+[remark@jail_guard_kill_actor2]
 anim                = threat
 target              = nil
-;on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@open_door
+;on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=check_fighting(1200)}
 

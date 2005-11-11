@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <game_information_portions>
     <info_portion id="cit_jail_door_opened"></info_portion>
+    <info_portion id="cit_actor_is_free"></info_portion>
     <info_portion id="cit_actor_near_grates"></info_portion>
 
     <info_portion id="cit_jail_start_waking"></info_portion>
@@ -13,6 +14,7 @@
     <info_portion id="cit_jail_doctor_out_start"></info_portion>
     <info_portion id="cit_jail_doctor_out_end"></info_portion>
     <info_portion id="cit_jail_guard1_close_door"></info_portion>
+    <info_portion id="cit_jail_doctor_leave"></info_portion>
 
     <!-- Охота на сталкера около входа на уровень -->
     <info_portion id="cit_hunt_start"></info_portion>
