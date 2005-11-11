@@ -1,5 +1,11 @@
 function proceed()
     local actor = db.actor
+
+	if actor:dont_has_info("pri_monolith_decoder_got") and
+		actor:object("decoder") ~= nil 
+	then
+		actor:give_info_portion("pri_monolith_decoder_got")
+	end       	
 end
 
 function process_info_portion(info_id)
