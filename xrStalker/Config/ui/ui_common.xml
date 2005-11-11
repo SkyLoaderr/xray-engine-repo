@@ -363,14 +363,15 @@
     <texture id="ui_icons_newPDA_ZoomMin_h" x="672" y="894" width="18" height="14" />
     <texture id="ui_icons_newPDA_ZoomMin_d" x="672" y="926" width="18" height="14" />
     <texture id="ui_icons_newPDA_ZoomMin_t" x="670" y="957" width="21" height="15" />
-
     <texture id="ui_icons_newPDA_editUserSpot_d" x="670" y="826" width="20" height="20" />
     <texture id="ui_icons_newPDA_editUserSpot_e" x="670" y="826" width="20" height="20" />
     <texture id="ui_icons_newPDA_editUserSpot_h" x="670" y="794" width="20" height="20" />
     <texture id="ui_icons_newPDA_editUserSpot_t" x="670" y="826" width="20" height="20" />
-
     <texture id="ui_icons_newPDA_removeUserSpot_d" x="670" y="762" width="20" height="20" />
     <texture id="ui_icons_newPDA_removeUserSpot_e" x="670" y="762" width="20" height="20" />
     <texture id="ui_icons_newPDA_removeUserSpot_h" x="670" y="730" width="20" height="20" />
     <texture id="ui_icons_newPDA_removeUserSpot_t" x="670" y="762" width="20" height="20" />
+    <texture id="ui_icons_PDA_string_tooltips_b" x="939" y="288" width="32" height="30" />
+    <texture id="ui_icons_PDA_string_tooltips_back" x="971" y="318" width="32" height="30" />
+    <texture id="ui_icons_PDA_string_tooltips_e" x="939" y="318" width="32" height="30" />
 </ui_texture>
