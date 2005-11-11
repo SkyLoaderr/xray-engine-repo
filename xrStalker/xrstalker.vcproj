@@ -570,6 +570,9 @@
 					RelativePath=".\Config\misc\gulag_radar.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\gulag_radar_u.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\gulag_sarcofag.ltx">
 				</File>
 				<File
@@ -2988,6 +2991,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_radar.script">
+						</File>
+						<File
+							RelativePath=".\scripts\gulag_radar_u.script">
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_sarcofag.script">
