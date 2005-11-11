@@ -84,34 +84,13 @@ void CAgentManager::shedule_Update		(u32 time_delta)
 	ISheduled::shedule_Update	(time_delta);
 
 	if (!member().members().empty()) {
-		START_PROFILE("Agent_Manager/memory")
 		memory().update			();
-		STOP_PROFILE
-
-		START_PROFILE("Agent_Manager/corpse")
 		corpse().update			();
-		STOP_PROFILE
-
-		START_PROFILE("Agent_Manager/enemy")
 		enemy().update			();
-		STOP_PROFILE
-
-		START_PROFILE("Agent_Manager/explosive")
 		explosive().update		();
-		STOP_PROFILE
-
-		START_PROFILE("Agent_Manager/location")
 		location().update		();
-		STOP_PROFILE
-
-		START_PROFILE("Agent_Manager/member")
 		member().update			();
-		STOP_PROFILE
-
-		START_PROFILE("Agent_Manager/brain")
 		brain().update			();
-		STOP_PROFILE
-
 		return;
 	}
 

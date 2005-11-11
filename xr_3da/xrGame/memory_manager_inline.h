@@ -11,24 +11,10 @@
 template <typename _predicate>
 IC	void CMemoryManager::fill_enemies	(const _predicate &predicate) const
 {
-	fill_enemies					(visual().objects(),predicate);
-	fill_enemies					(sound().objects(),	predicate);
-	fill_enemies					(hit().objects(),	predicate);
-}
-
-template <typename T, typename _predicate>
-IC	void CMemoryManager::fill_enemies	(const xr_vector<T> &objects, const _predicate &predicate) const
-{
-	xr_vector<T>::const_iterator	I = objects.begin();
-	xr_vector<T>::const_iterator	E = objects.end();
-	for ( ; I != E; ++I) {
-		if (!(*I).m_enabled)
-			continue;
-
-		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
-		if (entity_alive && enemy().useful(entity_alive))
-			predicate				(entity_alive,*I);
-	}
+	xr_vector<const CEntityAlive *>::const_iterator	I = enemy().objects().begin();
+	xr_vector<const CEntityAlive *>::const_iterator	E = enemy().objects().end();
+	for ( ; I != E; ++I)
+		predicate					(*I);
 }
 
 IC	CVisualMemoryManager	&CMemoryManager::visual		() const

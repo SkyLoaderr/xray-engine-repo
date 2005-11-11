@@ -10,6 +10,10 @@
 #include "agent_memory_manager.h"
 #include "agent_manager.h"
 #include "agent_member_manager.h"
+#include "ai_object_location.h"
+#include "level_graph.h"
+#include "entity_alive.h"
+#include "memory_space_impl.h"
 
 void CAgentMemoryManager::update		()
 {
@@ -61,5 +65,32 @@ void CAgentMemoryManager::update_memory_masks		(const squad_mask_type &mask)
 		squad_mask_type		m = (*I).m_visible.get();
 		update_memory_mask	(mask,m);
 		(*I).m_visible.assign(m);
+	}
+}
+
+void CAgentMemoryManager::object_information		(const CObject *object, u32 &level_time, Fvector &position)
+{
+	{
+		VISIBLES::const_iterator	I = std::find(visibles().begin(),visibles().end(),object_id(object));
+		if (visibles().end() != I) {
+			level_time		= (*I).m_last_level_time;
+			position		= (*I).m_object_params.m_position;
+		}
+	}
+
+	{
+		SOUNDS::const_iterator		I = std::find(sounds().begin(),sounds().end(),object_id(object));
+		if ((sounds().end() != I) && (level_time < (*I).m_last_level_time)) {
+			level_time		= (*I).m_last_level_time;
+			position		= (*I).m_object_params.m_position;
+		}
+	}
+	
+	{
+		HITS::const_iterator		I = std::find(hits().begin(),hits().end(),object_id(object));
+		if ((hits().end() != I) && (level_time < (*I).m_last_level_time)) {
+			level_time		= (*I).m_last_level_time;
+			position		= (*I).m_object_params.m_position;
+		}
 	}
 }

@@ -13,15 +13,15 @@ protected:
 	const CAI_Stalker	*m_object;
 
 public:
-	IC				CMemberPredicate	(const CAI_Stalker *object) :
-	  m_object	(object)
-	  {
-	  }
+	IC				CMemberPredicate	(const CAI_Stalker *object)
+	{
+		m_object		= object;
+	}
 
-	  IC		bool	operator()			(const CMemberOrder *order) const
-	  {
-		  return			(&order->object() == m_object);
-	  }
+	IC		bool	operator()			(const CMemberOrder *order) const
+	{
+		return			(&order->object() == m_object);
+	}
 };
 
 IC	CAgentMemberManager::CAgentMemberManager	(CAgentManager *object)

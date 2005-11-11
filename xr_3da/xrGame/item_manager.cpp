@@ -65,7 +65,7 @@ float CItemManager::evaluate		(const CGameObject *object) const
 
 void CItemManager::update			()
 {
-	START_PROFILE("Memory Manager/items/update")
+	START_PROFILE("Memory Manager/items::update")
 	inherited::update		();
 	STOP_PROFILE
 }

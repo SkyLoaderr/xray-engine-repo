@@ -33,22 +33,15 @@ struct CEnemyFiller {
 		m_mask						= mask;
 	}
 
-	template <typename T>
-	IC	void	operator()			(const CEntityAlive *enemy, const T &object) const
+	IC	void	operator()			(const CEntityAlive *enemy) const
 	{
 		ENEMIES::iterator			I = std::find(m_enemies->begin(),m_enemies->end(),enemy);
 		if (I == m_enemies->end()) {
 			m_enemies->push_back	(CMemberEnemy(enemy,m_mask));
-			m_enemies->back().m_enemy_position	= object.m_object_params.m_position;
-			m_enemies->back().m_level_time			= object.m_last_level_time;
+			return;
 		}
-		else {
-			(*I).m_mask.set			(m_mask,TRUE);
-			if (object.m_last_level_time > (*I).m_level_time) {
-				(*I).m_level_time		= object.m_last_level_time;
-				(*I).m_enemy_position	= object.m_object_params.m_position;
-			}
-		}
+
+		(*I).m_mask.set				(m_mask,TRUE);
 	}
 };
 
@@ -93,11 +86,22 @@ void CAgentEnemyManager::exchange_enemies	(CMemberOrder &member0, CMemberOrder &
 void CAgentEnemyManager::fill_enemies		()
 {
 	m_enemies.clear					();
-	CAgentMemberManager::iterator	I = object().member().combat_members().begin();
-	CAgentMemberManager::iterator	E = object().member().combat_members().end();
-	for ( ; I != E; ++I) {
-		(*I)->probability			(1.f);
-		(*I)->object().memory().fill_enemies	(CEnemyFiller(&m_enemies,object().member().mask(&(*I)->object())));
+
+	{
+		CAgentMemberManager::iterator	I = object().member().combat_members().begin();
+		CAgentMemberManager::iterator	E = object().member().combat_members().end();
+		for ( ; I != E; ++I) {
+			(*I)->probability			(1.f);
+			(*I)->object().memory().fill_enemies	(CEnemyFiller(&m_enemies,object().member().mask(&(*I)->object())));
+		}
+	}
+
+	{
+		CAgentMemoryManager				&memory = object().memory();
+		ENEMIES::iterator				I = enemies().begin();
+		ENEMIES::iterator				E = enemies().end();
+		for ( ; I != E; ++I)
+			memory.object_information	((*I).m_object,(*I).m_level_time,(*I).m_enemy_position);
 	}
 }
 
@@ -125,8 +129,8 @@ void CAgentEnemyManager::assign_enemies		()
 		squad_mask_type	J, K, N = 0;
 		float							best = flt_max;
 		
-		ENEMIES::iterator		I = m_enemies.begin();
-		ENEMIES::iterator		E = m_enemies.end();
+		ENEMIES::iterator				I = m_enemies.begin();
+		ENEMIES::iterator				E = m_enemies.end();
 		for ( ; I != E; ++I) {
 			J							= (*I).m_mask.get();
 			N							= 0;
@@ -136,6 +140,7 @@ void CAgentEnemyManager::assign_enemies		()
 				CAgentMemberManager::iterator	i = object().member().member(K);
 				if (!fsimilar((*i)->probability(),1.f))
 					continue;
+
 				float					value = evaluate(&(*i)->object(),(*I).m_object);
 				if (value > best) {
 					best				= value;
@@ -155,11 +160,8 @@ void CAgentEnemyManager::assign_enemies		()
 
 		// recovering sort order
 		for (u32 i=0, n = m_enemies.size() - 1; i<n; ++i)
-			if (m_enemies[i + 1] < m_enemies[i]) {
-				CMemberEnemy				temp = m_enemies[i];
-				m_enemies[i]		= m_enemies[i + 1];
-				m_enemies[i + 1]	= temp;
-			}
+			if (m_enemies[i + 1] < m_enemies[i])
+				std::swap				(m_enemies[i],m_enemies[i + 1]);
 			else
 				break;
 	}
