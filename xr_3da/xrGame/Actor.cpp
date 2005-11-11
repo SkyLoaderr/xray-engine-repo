@@ -1087,10 +1087,11 @@ void CActor::shedule_Update	(u32 DT)
 	//что актер видит перед собой
 	collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	
-	m_pObjectWeLookingAt = smart_cast<CGameObject*>(RQ.O);
 
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
+		m_pObjectWeLookingAt			= smart_cast<CGameObject*>(RQ.O);
+		
 		CGameObject						*game_object = smart_cast<CGameObject*>(RQ.O);
 		m_pUsableObject					= smart_cast<CUsableScriptObject*>(game_object);
 		inventory().m_pTarget			= smart_cast<PIItem>(game_object);
@@ -1100,13 +1101,9 @@ void CActor::shedule_Update	(u32 DT)
 		
 		if (GameID() == GAME_SINGLE )
 		{
-//			CStringTable string_table;
-			// Анализируем какой объект мы видим, и назначаем соответсвующее
-			// действие по умолчанию, которое будет определять всплывающую 
-			// подсказку
 			if (m_pUsableObject && m_pUsableObject->tip_text())
 			{
-				m_sDefaultObjAction = m_pUsableObject->tip_text();
+				m_sDefaultObjAction = CStringTable().translate( m_pUsableObject->tip_text() );
 			}
 			else
 			{
@@ -1132,6 +1129,8 @@ void CActor::shedule_Update	(u32 DT)
 		m_pPersonWeLookingAt	= NULL;
 		m_sDefaultObjAction		= NULL;
 		m_pUsableObject			= NULL;
+		m_pObjectWeLookingAt	= NULL;
+		m_pVehicleWeLookingAt	= NULL;
 	}
 
 	//для режима сна

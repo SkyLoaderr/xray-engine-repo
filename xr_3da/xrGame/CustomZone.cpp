@@ -569,7 +569,7 @@ void CCustomZone::feel_touch_new	(CObject* O)
 {
 	
 #ifdef DEBUG
-	if(bDebug) HUD().outMessage(0xffffffff,*O->cName(),"entering a zone.");
+	if(bDebug) Msg("%s %s",*O->cName(),"entering a zone.");
 #endif
 	if(smart_cast<CActor*>(O) && O == Level().CurrentEntity())
 					m_pLocalActor	= smart_cast<CActor*>(O);
@@ -610,7 +610,7 @@ void CCustomZone::feel_touch_new	(CObject* O)
 void CCustomZone::feel_touch_delete(CObject* O) 
 {
 #ifdef DEBUG
-	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"leaving a zone.");
+	if(bDebug) Msg("%s %s",*O->cName(),"leaving a zone.");
 #endif
 
 	if(smart_cast<CActor*>(O)) m_pLocalActor = NULL;
@@ -1048,19 +1048,19 @@ void	CCustomZone::OnEvent (NET_Packet& P, u16 type)
 				switch (S)
 				{
 				case eZoneStateIdle:
-					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Idle",s2));
+					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Idle",s2));
 					break;																
 				case eZoneStateAwaking:													
-					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Awaking",s2));
+					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Awaking",s2));
 					break;																
 				case eZoneStateBlowout:													
-					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Blowout",s2));
+					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Blowout",s2));
 					break;																
 				case eZoneStateAccumulate:												
-					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Accumulate",s2));
+					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Accumulate",s2));
 					break;
 				case eZoneStateDisabled:												
-					if(bDebug) HUD().outMessage(0xffffffff,*cName(),strconcat(s1,"zone switch to State Disabled",s2));
+					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Disabled",s2));
 					break;
 				};
 #endif

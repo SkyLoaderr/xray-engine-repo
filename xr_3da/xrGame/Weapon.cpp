@@ -908,7 +908,7 @@ BOOL CWeapon::CheckForMisfire	()
 		SwitchState(eMisfire);
 		
 		if(smart_cast<CActor*>(this->H_Parent()))
-			HUD().outMessage(0xffffffff,this->cName(), "gun jammed");
+			HUD().GetUI()->AddInfoMessage("gun_jammed");
 		
 		return TRUE;
 	}

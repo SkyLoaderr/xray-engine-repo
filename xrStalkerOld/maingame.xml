@@ -19,7 +19,7 @@
 	</static>
 	<!-- weapon icon -->
 	<static x="5" y="12" width="100" height="50">
-		<text font="normal" r="239" g="154" b="29" a="230"></text>
+		<text font="normal" r="239" g="154" b="29" a="230"/>
 	</static>	
 	<!-- pda online icon -->
 	<static x="15" y="187" width="107" height="20" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
@@ -27,18 +27,13 @@
 		<text x="88" y="2" font="normal" r="239" g="154" b="29" a="230"></text>
 	</static>
 	<!-- tips static -->
-	<quick_info x="1" y="700" width="1022" height="50">
-		<!-- id numbers must be same with EActorAction enumeration members, -->
-		<!-- which located in actor_defs.h file -->
-		<tip id="1">Pickup item (default E)</tip>
-		<tip id="2">Talk with the person (default E)</tip>
-		<tip id="3">Open door (default E)</tip>
-		<tip id="4">Search corpse (default E)</tip>
+	<quick_info x="1" y="700" width="1022" height="50"  light_anim="ui_btn_hint"  la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
+		<text align="c" font="letterica18"/>
 	</quick_info>
 	<!-- PDA Message List-->
-	<pda_msg_list_sp x="15" y="465" width="525" height="220" item_height="70"></pda_msg_list_sp>
-	<pda_msg_list_sp2 x="100" y="650" width="824" height="100" item_height="70"></pda_msg_list_sp2>
-	<pda_msg_list_mp x="15" y="325" width="525" height="420" item_height="15" fade="3000"></pda_msg_list_mp>
+	<pda_msg_list_sp x="15" y="465" width="525" height="220" item_height="70"/>
+	<pda_msg_list_sp2 x="100" y="650" width="824" height="100" item_height="70"/>
+	<pda_msg_list_mp x="15" y="325" width="525" height="420" item_height="15" fade="3000"/>
 	<!--list x="15" y="325" width="525" height="420" item_height = "70"></list -->
 	<!-- PDA Message List-->
 	<info_list x="512" y="615" width="525" height="120" item_height="20" fade="2000">
@@ -105,7 +100,7 @@
 		<texture>ui\ui_mn_weapons</texture>
 		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
 		<phrase x="20" y="65" font="graffiti32" r="238" g="155" b="23" a="255">
-			<animation anim="fade" period="3" cyclic="0"></animation>
+			<animation anim="fade" period="3" cyclic="0"/>
 		</phrase>
 	</money_mt_static>
 	<money_wnd x="860" y="10" width="200" height="200">
@@ -126,13 +121,13 @@
 	
 	<!-- TEAM 1 SCORE -->
 	<t1_score x="948" y="80" width="32" height="32" >		
-		<text font="graffiti32" r="0" g="255" b="0" a="255" align="r"></text>
+		<text font="graffiti32" r="0" g="255" b="0" a="255" align="r"/>
 	</t1_score>
 	<t1_static x="980" y="80" width="32" height="32" stretch = "1">		
 	</t1_static>
 	<!-- TEAM 2 SIGN -->
 	<t2_score x="948" y="110" width="32" height="32">
-		<text font="graffiti32" r="0" g="255" b="255" a="255" align="r"></text>
+		<text font="graffiti32" r="0" g="255" b="255" a="255" align="r"/>
 	</t2_score>
 	<t2_static x="980" y="112" width="32" height="32" stretch = "1">		
 	</t2_static>
@@ -154,14 +149,14 @@
 		<texture>ui\ui_mn_health</texture>
 	</car_health_static>
 	
-	<car_panel x="860" y="545" width="150" height="200" align="rb"></car_panel>
+	<car_panel x="860" y="545" width="150" height="200" align="rb"/>
 	
 	<!-- MOTION_ICON -->
-	<motion_icon x="0" y="685" width="100" height="100" align="rb"></motion_icon>
+	<motion_icon x="0" y="685" width="100" height="100" align="rb"/>
 	<!-- artefact panel -->
-	<artefact_panel x="70" y="710" width="790" height="50" scale="0.75"></artefact_panel>
+	<artefact_panel x="70" y="710" width="790" height="50" scale="0.75"/>
 	<!-- pickup item icon-->
-	<pick_up_item x="437" y="400" width="150" height="100"></pick_up_item>
+	<pick_up_item x="437" y="400" width="150" height="100"/>
 	
 	<luminosity_bar x="5" y="760" length="100" broad="8" horz="1" min="0" max="200" pos="0">
 		<texture tile="0" width="100" height="8" length="100" r="255" g="50" b="50">ui\ui_mg_progress_efficiency_full</texture>

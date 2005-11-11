@@ -42,7 +42,7 @@ void CRadioactiveZone::Affect(SZoneObjectInfo* O)
 #ifdef DEBUG		
 		char pow[255]; 
 		sprintf(pow, "zone hit. %.1f", Power(GO->Position().distance_to(pos)));
-		if(bDebug) HUD().outMessage(0xffffffff, *GO->cName(), pow);
+		if(bDebug) Msg("%s %s", *GO->cName(), pow);
 #endif
 
 		Fvector dir; 

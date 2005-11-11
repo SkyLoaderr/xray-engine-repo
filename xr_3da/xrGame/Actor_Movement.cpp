@@ -12,7 +12,6 @@
 #include "level.h"
 #include "HUDManager.h"
 #include "UI.h"
-#include "ui/UIMainIngameWnd.h"
 #include "string_table.h"
 #include "actorcondition.h"
 #include "game_cl_base.h"
@@ -591,7 +590,7 @@ bool	CActor::CanMove				()
 
 		if(mstate_wishful&mcAnyMove && Device.fTimeGlobal - m_fSignTime > SHOW_CANT_WALK_TIME)
 		{
-			HUD().GetUI()->UIMainIngameWnd->AddInfoMessage(*CStringTable().translate(CANT_WALK));
+			HUD().GetUI()->AddInfoMessage(*CStringTable().translate(CANT_WALK));
 			m_fSignTime = Device.fTimeGlobal;
 		}
 		return false;

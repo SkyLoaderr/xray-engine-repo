@@ -67,9 +67,7 @@ protected:
 	CUIStatic			UIStaticDiskIO;
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
-	// Статик контрол для отображения подсказок действий при наведении прицела на объект
-	// Кнопка потому, что в статике еще нет функции выравнивания текста
-	CUIButton			UIStaticQuickHelp;
+	CUIStatic			UIStaticQuickHelp;
 	CUIStatic			UITextWound;
 	CUIProgressBar		UIHealthBar;
 	CUIProgressBar		UIArmorBar;
@@ -190,8 +188,6 @@ protected:
 	float				m_iWeaponIconWidth;
 	float				m_iWeaponIconHeight;
 
-	// Добавлено для поддержки fadein/fadeout реалтаймовых подсказок
-	float				fuzzyShowInfo;
 	// Отображение подсказок при наведении прицела на объект
 	void				RenderQuickInfos();
 	// Просчитать анимационные параметры фейда для айтемов листа

@@ -19,7 +19,6 @@
 #include "../actorcondition.h"
 #include "../actor_defs.h"
 #include "../actor.h"
-#include "UIMainIngameWnd.h"
 #include "../Artifact.h"
 #include "../xr_level_controller.h"
 #include "UISleepWnd.h"
@@ -342,7 +341,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 */
 		if(sleep_msg)
-			HUD().GetUI()->UIMainIngameWnd->AddInfoMessage(sleep_msg);
+			HUD().GetUI()->AddInfoMessage(sleep_msg);
 
 		Game().StartStopMenu(this,true);
 	}

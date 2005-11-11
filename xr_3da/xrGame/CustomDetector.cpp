@@ -191,7 +191,6 @@ void CCustomDetector::feel_touch_new(CObject* O)
 	CCustomZone *pZone = smart_cast<CCustomZone*>(O);
 	if(pZone && pZone->IsEnabled()) 
 	{
-		if(bDebug) HUD().outMessage(0xffffffff,cName(),"started to feel a zone.");
 		m_ZoneInfoMap[pZone].snd_time = 0;
 		
 		AddRemoveMapSpot(pZone,true);
@@ -203,7 +202,6 @@ void CCustomDetector::feel_touch_delete(CObject* O)
 	CCustomZone *pZone = smart_cast<CCustomZone*>(O);
 	if(pZone)
 	{
-		if(bDebug) HUD().outMessage(0xffffffff,cName(),"stoped to feel a zone.");
 		m_ZoneInfoMap.erase(pZone);
 		AddRemoveMapSpot(pZone,false);
 	}

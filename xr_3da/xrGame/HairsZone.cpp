@@ -27,9 +27,11 @@ void CHairsZone::Affect(SZoneObjectInfo* O)
 	XFORM().transform_tiny(P,CFORM()->getSphere().P);
 
 #ifdef DEBUG
-	char l_pow[255]; 
-	sprintf(l_pow, "zone hit. %.1f", Power(pGameObject->Position().distance_to(P)));
-	if(bDebug) HUD().outMessage(0xffffffff,pGameObject->cName(), l_pow);
+	if(bDebug){
+		char l_pow[255]; 
+		sprintf(l_pow, "zone hit. %.1f", Power(pGameObject->Position().distance_to(P)));
+		Msg("%s %s",*pGameObject->cName(), l_pow);
+	}
 #endif
 
 	Fvector hit_dir; 

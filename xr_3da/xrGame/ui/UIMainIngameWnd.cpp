@@ -105,8 +105,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 
 	g_bShowHudInfo				= true;
 	m_bShowHudCrosshair			= false;
-	// Quick infos
-	fuzzyShowInfo				= 0.f;
+
 	UIZoneMap					= xr_new<CUIZoneMap>();
 	m_pPickUpItem				= NULL;
 	m_artefactPanel				= xr_new<CUIArtefactPanel>();
@@ -209,8 +208,6 @@ void CUIMainIngameWnd::Init()
 	// Подсказки, которые возникают при наведении прицела на объект
 	AttachChild(&UIStaticQuickHelp);
 	xml_init.InitStatic(uiXml, "quick_info", 0, &UIStaticQuickHelp);
-	UIStaticQuickHelp.SetTextColor(0xffffffff);
-	UIStaticQuickHelp.SetTextAlignment(CGameFont::alCenter);
 
 	uiXml.SetLocalRoot(uiXml.GetRoot());
 
@@ -1226,35 +1223,20 @@ void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 
 void CUIMainIngameWnd::RenderQuickInfos()
 {
-	static string256	text;
-	static const u32	C = 0xffffffff;
-
 	if (!m_pActor)
 		return;
 
-	CGameObject *pObject = m_pActor->ObjectWeLookingAt();
+	static CGameObject *pObject			= NULL;
+	LPCSTR actor_action					= m_pActor->GetDefaultActionForObject();
+	UIStaticQuickHelp.Show				(NULL!=actor_action);
 
-	UIStaticQuickHelp.SetTextColor(0x00000000);
-	
-	LPCSTR actor_action = m_pActor->GetDefaultActionForObject();
-	if (pObject && actor_action)
+	if (pObject!=m_pActor->ObjectWeLookingAt())
 	{
-		if (fuzzyShowInfo>0.5f)
-		{
-			UIStaticQuickHelp.SetTextColor(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-			strcpy								(text, m_pActor->GetDefaultActionForObject());
-			UIStaticQuickHelp.SetTextST			(text);
-		}
-		fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
+		UIStaticQuickHelp.SetText				(actor_action);
+		UIStaticQuickHelp.ResetAnimation		();
+		pObject	= m_pActor->ObjectWeLookingAt	();
 	}
-	else
-	{
-		fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
-	}
-	clamp(fuzzyShowInfo,0.f,1.f);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA &news)
 {

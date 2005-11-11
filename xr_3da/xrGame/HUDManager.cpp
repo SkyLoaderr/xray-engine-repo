@@ -237,32 +237,6 @@ void  CHUDManager::RenderUI()
 void CHUDManager::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 }
-//--------------------------------------------------------------------
-void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
-{
-	char		buffer	[256];
-
-	va_list		p;
-	va_start	(p,msg);
-	vsprintf	(buffer,msg,p);
-	R_ASSERT	(xr_strlen(buffer)<256);
-	va_end		(p);
-
-	GetUI()->AddMessage	(from,buffer,C);
-	Msg			("- %s: %s",from,buffer);
-}
-void __cdecl CHUDManager::outMessage(u32 C, const shared_str& from, LPCSTR msg, ...)
-{
-	string256	buffer;
-
-	va_list		p;
-	va_start	(p,msg);
-	_vsnprintf	(buffer,sizeof(buffer)-1,msg,p); buffer[sizeof(buffer)-1] = 0;
-	va_end		(p);
-
-	GetUI()->AddMessage	(*from,buffer,C);
-	Msg			("- %s: %s",from,buffer);
-}
 
 collide::rq_result&	CHUDManager::GetCurrentRayQuery	() 
 {

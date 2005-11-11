@@ -14,9 +14,6 @@
 #include "ui/UIMessagesWindow.h"
 #include "ui/UIPdaWnd.h"
 
-#define MSGS_OFFS 510
-
-//--------------------------------------------------------------------
 CUI::CUI(CHUDManager* p)
 {
 	UIMainIngameWnd	= xr_new<CUIMainIngameWnd>	();
@@ -26,8 +23,6 @@ CUI::CUI(CHUDManager* p)
 	m_Parent		= p;
 	pUIGame			= 0;
 
-	msgs_offs		= (float)(UI()->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom));
-
 	m_bShowIndicators = true;
 
 }
@@ -35,11 +30,9 @@ CUI::CUI(CHUDManager* p)
 
 CUI::~CUI()
 {
-	xr_delete(m_pMessagesWnd);
-	for (UIMsgIt it=messages.begin(); messages.end() != it; ++it)
-		xr_delete(*it);
-	xr_delete(pUIGame);
-	xr_delete(UIMainIngameWnd);
+	xr_delete		(m_pMessagesWnd);
+	xr_delete		(pUIGame);
+	xr_delete		(UIMainIngameWnd);
 }
 
 //--------------------------------------------------------------------
@@ -80,27 +73,6 @@ void CUI::UIOnFrame()
 	if (pUIGame) pUIGame->OnFrame	();
 
 	m_pMessagesWnd->Update();
-
-#ifdef DEBUG
-	if (!messages.empty()){
-		m_Parent->Font().pFontSmall->OutSet(0,msgs_offs);
-		for (int i=messages.size()-1; i>=0; --i){
-			SUIMessage* M = messages[i];
-			M->life_time-=Device.dwTimeDelta;
-			if (M->life_time<0){
-				xr_delete(messages[i]);
-				messages.erase(i);
-				--i;
-				continue;
-			}
-			u32 color = messages[i]->color;
-			if (M->life_time<=(HIDE_TIME*1000))
-				color = ScaleAlpha(color, float(M->life_time)/float(HIDE_TIME*1000));
-			m_Parent->Font().pFontSmall->SetColor(color);
-			m_Parent->Font().pFontSmall->OutPrev("%s: %s",messages[i]->sender,messages[i]->msg);
-		}
-	}
-#endif
 }
 //--------------------------------------------------------------------
 
@@ -206,13 +178,9 @@ bool CUI::IR_OnMouseMove(int dx,int dy)
 	return false;
 }
 
-void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
+void CUI::AddInfoMessage			(LPCSTR message)
 {
-	if (messages.size()==MAX_UIMESSAGES){
-		xr_delete(messages.front());
-		messages.erase(u32(0));
-	}
-	messages.push_back(xr_new<SUIMessage> (S,M,C,life_time));
+	UIMainIngameWnd->AddInfoMessage	(message);
 }
 
 void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
@@ -247,4 +215,5 @@ CDeviceResetNotifier::~CDeviceResetNotifier	()
 {
 	Device.seqDeviceReset.Remove(this);
 }
+
 

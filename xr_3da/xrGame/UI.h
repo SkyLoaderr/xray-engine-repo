@@ -29,27 +29,8 @@ public:
 	virtual void		OnDeviceReset							()	{};
 
 };
-struct SUIMessage
-{
-	LPSTR	sender;
-	LPSTR	msg;
-	u32		color;
-	int		life_time;
-	SUIMessage(LPCSTR S, LPCSTR M, u32 clr, float lt)
-	{
-		sender		= xr_strdup(	S);
-		msg			= xr_strdup	(M);
-		life_time	= iFloor	(lt*1000);
-		color		= clr;
-	}
-	~SUIMessage()
-	{
-		xr_free(sender);
-		xr_free(msg);
-	}
-};
 
-DEFINE_SVECTOR(SUIMessage*,MAX_UIMESSAGES,UIMsgSVec,UIMsgIt);
+
 
 class CUI			: public CDialogHolder //ISheduled
 {
@@ -61,10 +42,6 @@ class CUI			: public CDialogHolder //ISheduled
 
 	CUIGameCustom*			pUIGame;
 
-	// messages
-	float					msgs_offs;
-	float					menu_offs;
-	UIMsgSVec				messages;
 
 	bool					m_bCrosshair;			//был ли показан прицел-курсор HUD перед вызовом меню
 
@@ -88,17 +65,12 @@ public:
 	bool					IR_OnMouseWheel			(int direction);
 
 	CUIGameCustom*			UIGame					()					{return pUIGame;}
-	// --- depends on game type
-	// frag		(g_fraglimit)
-	// time		(g_timelimit)
-	// frag-list.....
-	
 
 
 	void					ShowIndicators			()					{m_bShowIndicators = true;}
 	void					HideIndicators			()					{m_bShowIndicators = false;}
 
-	void					AddMessage				(LPCSTR S, LPCSTR M, u32 C=0xffffffff, float life_time=LIFE_TIME);
+	void					AddInfoMessage			(LPCSTR message);
 
 	virtual void			StartStopMenu			(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 };

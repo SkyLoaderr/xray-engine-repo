@@ -84,9 +84,6 @@ public:
 	//текущий предмет на который смотрит HUD
 	collide::rq_result&		GetCurrentRayQuery	();
 
-	void __cdecl 			outMessage			(u32 C, LPCSTR from, LPCSTR msg, ...);
-	void __cdecl 			outMessage			(u32 C, const shared_str& from, LPCSTR msg, ...);
-
 
 	//устанвка внешнего вида прицела в зависимости от текущей дисперсии
 	void					SetCrosshairDisp	(float disp);
