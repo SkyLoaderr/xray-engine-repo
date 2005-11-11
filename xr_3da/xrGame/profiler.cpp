@@ -171,7 +171,7 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 
 		game_font->OutNext		(
 //			"%s.. %8.3f %8.3f %8.3f %8.3f %8.3f %8d %12.3f",
-			"%s%c%c %8.3f %8.3f %8.3f %8.3f %8d %12.3f",
+			"%s%c%c %8.3f %8.3f %8.3f %6.1f %8d %12.3f",
 			*(*I).second.m_name,
 			white_character,
 			white_character,
