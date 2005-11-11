@@ -1067,7 +1067,7 @@ function load_ltx_snork1(gname, type)
 					"path_home = home" .. i .. "\n" ..
 					"npc_friendly = true\n"..
 					"path_look = look" .. i .. "\n" ..
-					";on_info =  {-rad_start_snork1_jumping}mob_camp@" .. gname  .. i .. "\n"
+					"on_timer =  120000| mob_camp@" .. gname  .. i .. " %-rad_start_snork1_jumping%\n"
 	end
 
 	for i = 3, 4 do
@@ -1090,7 +1090,7 @@ function load_ltx_snork1(gname, type)
 					"path_home = home" .. i .. "\n" ..
 					"npc_friendly = true\n"..
 					"path_look = look" .. i .. "\n" ..
-					";on_info =  {-rad_start_snork1_jumping2 }mob_camp@" .. gname  .. i .. "\n"
+					"on_timer =  120000| mob_camp@" .. gname  .. i .. " %-rad_start_snork1_jumping2%\n"
 	end
 
 	for i = 5, 11 do
