@@ -64,10 +64,10 @@
 	</menu_main_mm>
 	
 	<menu_sound random="0" >
-		<whell_sound>car\apc_run</whell_sound>
-		<whell_click>car\test_car_stop</whell_click>
+		<!--whell_sound>car\apc_run</whell_sound-->
+		<!--whell_click>car\test_car_stop</whell_click-->
 		
-		<menu_music>music\09_dead_cities_pt</menu_music>
+		<!--menu_music>music\09_dead_cities_pt</menu_music-->
 		<!--menu_music>music\guitar_2</menu_music>
 		<menu_music>music\guitar_1</menu_music>
 		<menu_music>music\guitar_3</menu_music-->
