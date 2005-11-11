@@ -194,6 +194,10 @@
 #define CLSID_GRENADE_RGD5			MK_CLSID('G','_','R','G','D','5',' ',' ')
 #define CLSID_OBJECT_G_FAKE			MK_CLSID('G','_','F','A','K','E',' ',' ')
 
+//---------------------------------------------------------------------------------
+#define CLSID_OBJECT_PLAYERS_BAG	MK_CLSID('M','P','_','P','L','B','A','G')
+//---------------------------------------------------------------------------------
+
 // Equipment
 #define CLSID_EQUIPMENT_SIMPLE		MK_CLSID('E','Q','U','_','S','M','P','L')
 #define CLSID_EQUIPMENT_SCIENTIFIC	MK_CLSID('E','Q','U','_','S','C','I','E')

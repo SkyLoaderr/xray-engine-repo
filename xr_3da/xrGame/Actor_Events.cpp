@@ -78,8 +78,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 					}
 				}
 				
-				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
-				if (pWeapon) SelectBestWeapon();
+//				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
+				SelectBestWeapon();
 #ifdef DEBUG
 //				Msg("OnEvent - %s[%d] - TAKE - %s[%d] - PASSED", *cName(), ID(), *(O->cName()), O->ID());
 #endif

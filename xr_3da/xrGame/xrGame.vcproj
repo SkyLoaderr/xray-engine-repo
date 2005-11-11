@@ -7666,6 +7666,16 @@
 								RelativePath=".\ExplosiveScript.cpp">
 							</File>
 						</Filter>
+						<Filter
+							Name="MPPlayersBag"
+							Filter="">
+							<File
+								RelativePath=".\MPPlayersBag.cpp">
+							</File>
+							<File
+								RelativePath=".\MPPlayersBag.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="searchlight"

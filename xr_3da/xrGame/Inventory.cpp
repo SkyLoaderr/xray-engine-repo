@@ -14,6 +14,7 @@
 #include "level.h"
 #include "ai_space.h"
 #include "entitycondition.h"
+#include "game_base_space.h"
 
 using namespace InventoryUtilities;
 
@@ -636,6 +637,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	case kWPN_5:
 	case kWPN_6:
        {
+		   if (cmd == kWPN_6 && GameID() != GAME_SINGLE) return false;
 			if(flags&CMD_START)
 			{
                 if((int)m_iActiveSlot == cmd - kWPN_1 &&

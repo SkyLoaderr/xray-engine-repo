@@ -980,9 +980,8 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 	};
 	
 	Player_AddMoney(ps, ps->LastBuyAcount);
-	//-----------------------------------------------------
-	if (m_bPDAHunt) SpawnWeapon4Actor(pA->ID, "device_pda", 0);
 };
+
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
 	
@@ -1601,8 +1600,50 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 		};
 
 		//---------------------------------------------------------------
+		if (e_what->m_tClassID == CLSID_OBJECT_PLAYERS_BAG)
+		{
+			if (e_what->ID_Parent == 0xffff)
+			{
+				//-------------------------------
+				//move all items from rukzak to player
+				if (!e_what->children.empty())
+				{
+					NET_Packet	EventPack, PacketReject, PacketTake;
+					EventPack.w_begin	(M_EVENT_PACK);
+
+					while (!e_what->children.empty())
+					{
+						CSE_Abstract		*e_child_item = get_entity_from_eid(e_what->children.back());
+						m_server->Perform_transfer(PacketReject, PacketTake, e_child_item, e_what, e_who);
+
+						EventPack.w_u8(u8(PacketReject.B.count));
+						EventPack.w(&PacketReject.B.data, PacketReject.B.count);
+						EventPack.w_u8(u8(PacketTake.B.count));
+						EventPack.w(&PacketTake.B.data, PacketTake.B.count);
+					}
+					if (EventPack.B.count > 2)	u_EventSend(EventPack);
+				}
+				//-------------------------------
+				NET_Packet		P;
+				u_EventGen		(P,GE_DESTROY,e_what->ID);
+				m_server->OnMessage(P, m_server->GetServerClient()->ID);
+				//-------------------------------
+				game_PlayerState* pKiller = get_eid(eid_who);
+				if (pKiller)
+				{
+					if (m_bPDAHunt)
+					{
+						Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "pda_taken",0), SKT_PDA);
+					};
+				};
+				//-------------------------------
+				return FALSE;
+			}
+		};
+		//---------------------------------------------------------------
 		if (IsBuyableItem(*e_what->s_name)) return TRUE;
 		//---------------------------------------------------------------
+		/*
 		if (e_what->m_tClassID == CLSID_DEVICE_PDA) 
 		{
 			if (e_what->ID_Parent == 0xffff)
@@ -1625,6 +1666,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			};
 			return TRUE;
 		};
+		*/
 	};
 	// We don't know what the hell is it, so disallow ownership just for safety 
 	return FALSE;
@@ -1632,6 +1674,121 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 
 BOOL	game_sv_Deathmatch::OnDetach		(u16 eid_who, u16 eid_what)
 {	
+	CSE_Abstract*		e_parent	= get_entity_from_eid	(eid_who);
+	CSE_Abstract*		e_entity	= get_entity_from_eid	(eid_what);
+	if (!e_parent || !e_entity)
+		return			(TRUE);
+
+	if (e_entity->m_tClassID == CLSID_OBJECT_PLAYERS_BAG && e_parent->m_tClassID == CLSID_OBJECT_ACTOR)
+	{
+		NET_Packet	EventPack, PacketReject, PacketTake;
+		EventPack.w_begin	(M_EVENT_PACK);
+		
+		//move all items from player to rukzak
+		for (u32 i=0; i<e_parent->children.size();)
+		{
+			u16 ItemID = e_parent->children[i];
+			CSE_Abstract* e_item = get_entity_from_eid(ItemID);
+			R_ASSERT(e_item->ID_Parent == e_parent->ID);
+
+			switch (e_item->m_tClassID)
+			{
+			case CLSID_OBJECT_A_FN2000			:
+			case CLSID_OBJECT_A_AK74			:
+			case CLSID_OBJECT_A_LR300			:
+			case CLSID_OBJECT_A_HPSA			:
+			case CLSID_OBJECT_A_PM				:
+			case CLSID_OBJECT_A_FORT			:
+				//---------------------------------------
+			case CLSID_OBJECT_A_VOG25			:
+			case CLSID_OBJECT_A_OG7B			:
+			case CLSID_OBJECT_A_M209			:
+				//---------------------------------------
+				// Weapons Add-ons
+			case CLSID_OBJECT_W_SCOPE			:
+			case CLSID_OBJECT_W_SILENCER		:
+			case CLSID_OBJECT_W_GLAUNCHER		:
+				// Detectors
+			case CLSID_DETECTOR_SIMPLE		:
+				// PDA
+			case CLSID_DEVICE_PDA			:
+
+			case CLSID_DEVICE_TORCH			:
+			case CLSID_IITEM_MEDKIT			:
+			case CLSID_IITEM_ANTIRAD		:
+				// Grenades
+			case CLSID_GRENADE_F1			:
+			case CLSID_OBJECT_G_RPG7		:
+			case CLSID_GRENADE_RGD5			:
+				// Weapons
+			case CLSID_OBJECT_W_M134			:
+			case CLSID_OBJECT_W_FN2000		:
+			case CLSID_OBJECT_W_AK74			:
+			case CLSID_OBJECT_W_LR300		:
+			case CLSID_OBJECT_W_HPSA			:
+			case CLSID_OBJECT_W_PM			:
+			case CLSID_OBJECT_W_FORT			:
+			case CLSID_OBJECT_W_BINOCULAR	:
+			case CLSID_OBJECT_W_SHOTGUN		:
+			case CLSID_OBJECT_W_SVD			:
+			case CLSID_OBJECT_W_SVU			:
+			case CLSID_OBJECT_W_RPG7			:
+			case CLSID_OBJECT_W_VAL			:
+			case CLSID_OBJECT_W_VINTOREZ		:
+			case CLSID_OBJECT_W_WALTHER		:
+			case CLSID_OBJECT_W_USP45		:
+			case CLSID_OBJECT_W_GROZA		:
+			case CLSID_OBJECT_W_BM16			:
+			case CLSID_OBJECT_W_RG6			:
+				{
+				}break;
+			default:
+				{
+					i++;
+					continue;
+				}break;
+			};
+			m_server->Perform_transfer(PacketReject, PacketTake, e_item, e_parent, e_entity);
+			EventPack.w_u8(u8(PacketReject.B.count));
+			EventPack.w(&PacketReject.B.data, PacketReject.B.count);
+			EventPack.w_u8(u8(PacketTake.B.count));
+			EventPack.w(&PacketTake.B.data, PacketTake.B.count);
+
+			/*
+			NET_Packet	P;
+			u32			time		= Device.dwTimeGlobal;
+			//remove item from actor
+			xr_vector<u16>& C	= e_parent->children;
+			xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),ItemID);
+			VERIFY3				(C.end()!=c,e_entity->name_replace(),e_parent->name_replace());
+			C.erase				(c);
+			//---------------------------------------------
+			P.w_begin				(M_EVENT);
+			P.w_u32					(time);
+			P.w_u16					(GE_OWNERSHIP_REJECT);
+			P.w_u16					(e_parent->ID);
+			P.w_u16					(ItemID);
+			//---------------------------------------------
+			EventPack.w_u8(u8(P.B.count));
+			EventPack.w(&P.B.data, P.B.count);
+			//---------------------------------------------
+			//move item to rukzak
+			e_item->ID_Parent = e_entity->ID;
+			e_entity->children.push_back(ItemID);
+			//---------------------------------------------
+			P.w_begin				(M_EVENT);
+			P.w_u32					(time);
+			P.w_u16					(GE_OWNERSHIP_TAKE);
+			P.w_u16					(e_entity->ID);
+			P.w_u16					(ItemID);
+			//---------------------------------------------
+			EventPack.w_u8(u8(P.B.count));
+			EventPack.w(&P.B.data, P.B.count);
+			//---------------------------------------------
+			*/			
+		}
+		if (EventPack.B.count > 2)	u_EventSend(EventPack);
+	};
 	return TRUE;
 }
 
@@ -1712,6 +1869,10 @@ void	game_sv_Deathmatch::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 
 	if (damageblocklimit > 0)
 		ps->setFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+	//------------------------------------------------------	
+//	if (m_bPDAHunt) SpawnWeapon4Actor(pA->ID, "device_pda", 0);
+	//-----------------------------------------------------
+	SpawnWeapon4Actor(pA->ID, "mp_players_rukzak", 0);
 }
 
 void	game_sv_Deathmatch::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
@@ -2004,3 +2165,10 @@ void		game_sv_Deathmatch::check_for_WarmUp()
 		Console->Execute("g_restart_fast");
 	};
 };
+
+void		game_sv_Deathmatch::on_death	(CSE_Abstract *e_dest, CSE_Abstract *e_src)
+{
+	CSE_ALifeCreatureActor	*pVictim= smart_cast<CSE_ALifeCreatureActor*>(e_dest);
+	if (!pVictim)
+		return;
+}

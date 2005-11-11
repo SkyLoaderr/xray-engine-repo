@@ -617,6 +617,8 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 
 				if (pCurBuyMenu && !pCurBuyMenu->IsShown())
 					SetBuyMenuItems		();
+
+				LoadDefItemsForRank(pCurBuyMenu);
 				StartStopMenu(pCurBuyMenu,true);
 			}
 		};

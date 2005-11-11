@@ -150,7 +150,6 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 
 
 			xrClientData *l_pC	= ID_to_client(sender);
-//			VERIFY				(game && l_pC && l_pC->owner);
 			VERIFY				(game && l_pC);
 			if ((game->Type() != GAME_SINGLE) && l_pC && l_pC->owner)
 			{
@@ -174,24 +173,8 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 
 			game->on_death		(e_dest,e_src);
 
-//			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил
-//			xrClientData*		c_from		= ID_to_client	(sender);	// клиент, откуда пришла мессага
-//			R_ASSERT2			(c_dest == c_from, "Security error (SSU :)");// assure client ownership of event
 
-			//
-/*			
-			if (e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
-				
-				NET_Packet P_;
-				P_.B.count = 0;
-				P_.w_clientID(c_src->ID);
-				P_.w_clientID(c_dest->ID);
-				P_.r_pos = 0;
-				ClientID clientID;clientID.set(0);
-				game->AddDelayedEvent(P_,GAME_EVENT_PLAYER_KILLED, 0, clientID);
-			}
-*/
 			if (c_src->owner->ID == id_src) {
 				// Main unit
 				P.w_begin			(M_EVENT);
@@ -223,6 +206,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 	case GEG_PLAYER_ITEM2BELT:
 	case GEG_PLAYER_ITEM2RUCK:
 		{
+			/*
 			u16 id = P.r_u16();
 			CSE_Abstract*		E	= game->get_entity_from_eid	(id);
 			if (E)
@@ -235,6 +219,8 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 				};
 			};
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+			*/
+			SendBroadcast		(sender,P,MODE);
 		}break;
 //	case GEG_PLAYER_BUYMENU_OPEN:
 //	case GEG_PLAYER_BUYMENU_CLOSE:

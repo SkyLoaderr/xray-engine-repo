@@ -118,6 +118,10 @@
 
 #	include "explosiverocket.h"
 
+//-------------------------------
+#	include "MPPlayersBag.h"
+//-------------------------------
+
 #	include "customzone.h"
 #	include "mosquitobald.h"
 #	include "mincer.h"
@@ -311,6 +315,10 @@ void CObjectFactory::register_classes	()
 	// Rockets
 	ADD(CExplosiveRocket		,CSE_Temporary					,CLSID_OBJECT_G_RPG7			,"wpn_grenade_rpg7");
 	ADD(CExplosiveRocket		,CSE_Temporary					,CLSID_OBJECT_G_FAKE			,"wpn_grenade_fake");
+
+	//-----------------------------------------------------------------------------------------------------------------
+	ADD(CMPPlayersBag			,CSE_ALifeItem					,CLSID_OBJECT_PLAYERS_BAG		,"mp_players_bag");
+	//-----------------------------------------------------------------------------------------------------------------
 
 	// Zones
 	ADD(CCustomZone				,CSE_ALifeCustomZone			,CLSID_ZONE						,"zone");

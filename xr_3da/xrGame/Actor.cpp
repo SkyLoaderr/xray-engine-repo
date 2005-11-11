@@ -694,7 +694,22 @@ void CActor::Die	(CObject* who)
 		if ((I - B) == (int)inventory().GetActiveSlot()) 
 		{
 			if((*I).m_pIItem)
-				(*I).m_pIItem->Drop();
+			{
+				if (OnServer())
+				{
+					if (GameID() == GAME_SINGLE)
+						(*I).m_pIItem->Drop();
+					else
+					{
+						NET_Packet P;
+						(*I).m_pIItem->object().u_EventGen(P, GE_OWNERSHIP_REJECT, 
+							(*I).m_pIItem->object().H_Parent()->ID());
+						P.w_u16(u16((*I).m_pIItem->object().ID()));
+						(*I).m_pIItem->object().u_EventSend(P);
+					}
+
+				}				
+			};
 		}
 		else
 		{
@@ -712,7 +727,7 @@ void CActor::Die	(CObject* who)
 
 	if (OnServer() && GameID() != GAME_SINGLE)
 	{
-		bool MedKitDropped = false;
+//		bool MedKitDropped = false;
 		//if we are on server and actor has PDA - destroy PDA
 		TIItemContainer &l_rlist = inventory().m_ruck;
 		for(TIItemContainer::iterator l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
@@ -727,6 +742,12 @@ void CActor::Die	(CObject* who)
 				};
 			};
 
+			if ((*l_it)->object().CLS_ID == CLSID_OBJECT_PLAYERS_BAG)
+			{
+				(*l_it)->Drop();
+				continue;
+			};
+/*
 			if ((*l_it)->object().CLS_ID == CLSID_IITEM_MEDKIT && !MedKitDropped)
 			{
 				MedKitDropped = true;
@@ -745,6 +766,7 @@ void CActor::Die	(CObject* who)
 
 			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
 			(*l_it)->object().DestroyObject();
+*/
 		};
 	};
 	//-------------------------------------

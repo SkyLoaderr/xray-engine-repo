@@ -186,6 +186,7 @@ public:
 	virtual		void				check_InvinciblePlayers	();	
 	virtual		void				check_ForceRespawn		();
 	virtual		BOOL				IsDamageBlockIndEnabled	() {return m_bDamageBlockIndicators; };
+	virtual		void				on_death				(CSE_Abstract *e_dest, CSE_Abstract *e_src);
 	
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

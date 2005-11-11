@@ -262,9 +262,9 @@ void	game_cl_Deathmatch::OnBuyMenu_DefaultItems	()
 
 void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWeaponWnd* pBuyMenu)
 {
-	if (!pCurBuyMenu) return;
+	if (!pBuyMenu) return;
 	//---------------------------------------------------
-	LoadPlayerDefItems(getTeamSection(local_player->team), pCurBuyMenu);
+	LoadPlayerDefItems(getTeamSection(local_player->team), pBuyMenu);
 	//---------------------------------------------------
 	string16 RankStr;
 	string256 ItemStr;
