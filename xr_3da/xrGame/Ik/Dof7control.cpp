@@ -115,18 +115,18 @@ static int solve_R_angle(const float g[3],
     if (n == 2)
     {
 	// Two positive solutions. choose first
-	if (temp[0] > 0 && temp[1] > 0)
+	if (temp[0] < 0 && temp[1] < 0)
 	{
 	    r_angle = temp[0];
 	    // printf("Two solutions: %lf %lf\n", temp[0], temp[1]);
 	    n = 1;
 	}
-	else if (temp[0] > 0)
+	else if (temp[0] < 0)
 	{
 	    n = 1;
 	    r_angle = temp[0];
 	}
-	else if (temp[1] > 0)
+	else if (temp[1] < 0)
 	{
 	    n = 1;
 	    r_angle = temp[1];
@@ -347,14 +347,14 @@ int SRS::SetGoal(const Matrix  GG, float &rangle)
 
     if (!solve_R_angle(ee, s, p_r1, T, r_angle))
 	return 0; 
-    
+    r_angle=-r_angle;
     rangle = r_angle;
 
     // Find RY, and store the positions of the R jt and 
     // the ee in the R1 frame as p_r1 and ee_r1
     // Also save matrix product S*RY*T 
 
-    rotation_principal_axis_to_matrix('y', r_angle, RY);
+    rotation_principal_axis_to_matrix('y',-r_angle, RY);
 
     hmatmult(SRT, S, RY);
     hmatmult(SRT, SRT, T);

@@ -8,7 +8,7 @@ public:
 					CIKLimbsController			()									;
 			void	Create						(CKinematics* K,	CGameObject*O)	;
 			void	Destroy						()									;
-			void	Calculate					(CKinematics* K)					;
+			void	Calculate					(CKinematics* K,const Fmatrix &obj)					;
 private:
 
 protected:

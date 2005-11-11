@@ -202,8 +202,15 @@ public:
     {
 	cpmatrix(SS, S);
     }
+	void SetTMatrix(const Matrix  TT)
+	{
+	cpmatrix(T,TT);
+	}
 
-
+	void SetSMatrix(const Matrix  SS)
+	{
+		cpmatrix(S,SS);
+	}
 
     // Sets the goal for an aiming problem
     // goal is the point we want to point to 
