@@ -93,7 +93,6 @@ public:
 #endif
 		return		_result		;
 	}
-	ICF float	GetFrame_sec	()const	{	return result; }
 };
 
 #endif // FTimerH
