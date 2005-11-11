@@ -9,7 +9,7 @@ CMMSound::CMMSound(){
 
 CMMSound::~CMMSound(){
 	m_music.destroy();
-	m_whel.destroy();
+	m_whell.destroy();
 	m_music_2.destroy();
 }
 
@@ -25,20 +25,34 @@ void CMMSound::Init(CUIXml& xml_doc, LPCSTR path){
 		m_play_list.push_back(xml_doc.Read("menu_music", i, ""));		
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
 
-	
-	m_whel.create	(TRUE, xml_doc.Read(strconcat(_path, path,":whel_sound"), 0, "")	);
+    if (check_file(xml_doc.Read(strconcat(_path, path,":whell_sound"), 0, "")))
+        m_whell.create(TRUE, xml_doc.Read(_path, 0, "") );
+	if (check_file(xml_doc.Read(strconcat(_path, path,":whell_click"), 0, "")))
+        m_whell_click.create(TRUE, xml_doc.Read(_path, 0, "") );
+}
+
+bool CMMSound::check_file(LPCSTR fname){
+	static string256 _path;
+	return FS.exist("$game_sounds$", strconcat(_path, fname, ".ogg")) ? true : false;		
 }
 
 void CMMSound::whell_Play(){
-		m_whel.play(NULL, sm_Looped | sm_2D);
+	if (m_whell._handle() && !m_whell._feedback())
+		m_whell.play(NULL, sm_Looped | sm_2D);
 }
 
 void CMMSound::whell_Stop(){
-		m_whel.stop();
+	if (m_whell._feedback())
+		m_whell.stop();
+}
+
+void CMMSound::whell_Click(){
+   	if (m_whell_click._handle())
+		m_whell_click.play(NULL, sm_2D);
 }
 
 void CMMSound::whell_UpdateMoving(float frequency){
-	m_whel.set_frequency(frequency);
+	m_whell.set_frequency(frequency);
 }
 
 void CMMSound::music_Play(){
@@ -86,4 +100,11 @@ void CMMSound::music_Update(){
 
 void CMMSound::music_Stop(){
     m_music.stop();
+}
+
+void CMMSound::all_Stop(){
+	m_music.stop();
+	m_music_2.stop();
+	m_whell.stop();
+	m_whell_click.stop();
 }
