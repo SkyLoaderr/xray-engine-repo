@@ -307,6 +307,9 @@
 						RelativePath=".\Config\gameplay\dialogs_darkvalley.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\dialogs_deadcity.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\dialogs_escape.xml">
 					</File>
 					<File
@@ -859,6 +862,9 @@
 					<Filter
 						Name="l08_deadcity"
 						Filter="">
+						<File
+							RelativePath=".\Config\text\rus\stable_dialogs_deadcity.xml">
+						</File>
 					</Filter>
 					<Filter
 						Name="l09_radar"
