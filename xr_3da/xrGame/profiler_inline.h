@@ -8,6 +8,11 @@
 
 #pragma once
 
+IC	CProfiler::CProfiler				()
+{
+	m_actual					= true;
+}
+
 IC	CProfilePortion::CProfilePortion	(LPCSTR timer_id)
 {
 	m_timer_id							= timer_id;
@@ -42,4 +47,5 @@ IC	CProfileStats::CProfileStats		()
 	m_max_time		= 0.f;
 	m_total_time	= 0.f;
 	m_count			= 0;
+	m_call_count	= 0;
 }

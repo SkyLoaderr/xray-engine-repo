@@ -17,6 +17,10 @@ class CGamePersistent:
 	u32					ambient_effect_next_time;
 	u32					ambient_effect_stop_time;
 
+#ifdef DEBUG
+	u32					m_last_stats_frame;
+#endif
+
 	void				WeathersUpdate			();
 
 	u32					m_eGameType;

@@ -36,6 +36,7 @@ struct CProfileStats {
 	float			m_max_time;
 	float			m_total_time;
 	u32				m_count;
+	u32				m_call_count;
 
 	IC				CProfileStats		();
 };
@@ -57,14 +58,16 @@ protected:
 	TIMERS				m_timers;
 	bool				m_actual;
 	xrCriticalSection	m_section;
+	u32					m_call_count;
 
 protected:
-			void		setup_timer			(LPCSTR timer_id, const u64 &timer_time);
+			void		setup_timer			(LPCSTR timer_id, const u64 &timer_time, const u32 &call_count);
 	IC		void		convert_string		(LPCSTR str, shared_str &out, u32 max_string_size);
 
 public:
-						CProfiler			();
+	IC					CProfiler			();
 			void		show_stats			(CGameFont *game_font, bool show);
+			void		clear				();
 	IC		void		add_profile_portion	(const CProfileResultPortion &profile_portion);
 };
 

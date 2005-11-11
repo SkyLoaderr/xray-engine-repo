@@ -32,11 +32,6 @@ IC	u32 compute_string_length(LPCSTR str)
 	return						(count*xr_strlen(indent) + xr_strlen(j));
 }
 
-CProfiler::CProfiler		()
-{
-	m_actual					= true;
-}
-
 IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_size)
 {
 	string256					m_temp;
@@ -57,7 +52,7 @@ IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_si
 	out							= m_temp;
 }
 
-void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time)
+void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time, const u32 &call_count)
 {
 	string256					m_temp;
 	float						_time = float(timer_time)*1000.f/CPU::qpc_freq;
@@ -74,11 +69,13 @@ void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time)
 			k					= j + 1;
 		}
 		i						= m_timers.insert(std::make_pair(shared_str(timer_id),CProfileStats())).first;
+
 		CProfileStats			&current = (*i).second;
 		current.m_min_time		= _time;
 		current.m_max_time		= _time;
 		current.m_total_time	= _time;
 		current.m_count			= 1;
+		current.m_call_count	= call_count;
 		m_actual				= false;
 	}
 	else {
@@ -87,6 +84,7 @@ void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time)
 		current.m_max_time		= _max(current.m_max_time,_time);
 		current.m_total_time	+= _time;
 		++current.m_count;
+		current.m_call_count	+= call_count;
 	}
 
 	if (_time > (*i).second.m_time)
@@ -97,34 +95,46 @@ void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time)
 	(*i).second.m_update_time	= Device.dwTimeGlobal;
 }
 
+void CProfiler::clear		()
+{
+	m_section.Enter				();
+	m_portions.clear			();
+	m_timers.clear				();
+	m_section.Leave				();
+
+	m_call_count				= 0;
+}
+
 void CProfiler::show_stats	(CGameFont *game_font, bool show)
 {
 	if (!show) {
-		m_section.Enter			();
-		m_portions.clear		();
-		m_timers.clear			();
-		m_section.Leave			();
+		clear					();
 		return;
 	}
+
+	++m_call_count;
 		
 	m_section.Enter				();
 
 	if (!m_portions.empty()) {
 		std::sort				(m_portions.begin(),m_portions.end(),CProfilePortionPredicate());
 		u64						timer_time = 0;
+		u32						call_count = 0;
 
 		PORTIONS::const_iterator	I = m_portions.begin(), J = I;
 		PORTIONS::const_iterator	E = m_portions.end();
 		for ( ; I != E; ++I) {
 			if (xr_strcmp((*I).m_timer_id,(*J).m_timer_id)) {
-				setup_timer		((*J).m_timer_id,timer_time);
+				setup_timer		((*J).m_timer_id,timer_time,call_count);
 				timer_time		= 0;
+				call_count		= 0;
 				J				= I;
 			}
 
+			++call_count;
 			timer_time			+= (*I).m_time;
 		}
-		setup_timer				((*J).m_timer_id,timer_time);
+		setup_timer				((*J).m_timer_id,timer_time,call_count);
 
 		m_portions.clear		();
 
@@ -160,13 +170,17 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 			game_font->SetColor	(color_xrgb(255,0,0));
 
 		game_font->OutNext		(
-			"%s.. %8.3f %8.3f %8.3f %8.3f %8d %12.3f",
+//			"%s.. %8.3f %8.3f %8.3f %8.3f %8.3f %8d %12.3f",
+			"%s%c%c %8.3f %8.3f %8.3f %8.3f %8d %12.3f",
 			*(*I).second.m_name,
+			white_character,
+			white_character,
 			(*I).second.m_time,
 			average,
 			(*I).second.m_max_time,
-			(*I).second.m_min_time,
-			(*I).second.m_count,
+			float((*I).second.m_call_count)/m_call_count,//float((*I).second.m_count),
+//			(*I).second.m_min_time,
+			(*I).second.m_call_count,
 			(*I).second.m_total_time
 		);
 	}

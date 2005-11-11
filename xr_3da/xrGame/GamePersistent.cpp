@@ -39,6 +39,10 @@ CGamePersistent::CGamePersistent(void)
 	ambient_effect_next_time	= 0;
 	ambient_effect_stop_time	= 0;
 	ambient_particles			= 0;
+
+#ifdef DEBUG
+	m_last_stats_frame			= u32(-1);
+#endif
 	// 
 	dSetAllocHandler			(ode_alloc		);
 	dSetReallocHandler			(ode_realloc	);
@@ -242,6 +246,11 @@ void CGamePersistent::OnFrame	()
 			uTime2Change		= 0xffffffff;	// Block changer until Event received
 		}
 	}
+
+#ifdef DEBUG
+	if ((m_last_stats_frame + 1) < Device.dwFrame)
+		profiler().clear		();
+#endif
 }
 
 void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)
@@ -258,6 +267,7 @@ void CGamePersistent::Statistics	(CGameFont* F)
 {
 #ifdef DEBUG
 #	ifndef _EDITOR
+		m_last_stats_frame		= Device.dwFrame;
 		profiler().show_stats	(F,!!psAI_Flags.test(aiStats));
 #	endif
 #endif
