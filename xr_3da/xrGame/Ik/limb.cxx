@@ -596,23 +596,25 @@ int inspect_range(const AngleIntList &f,
 		  int   &new_index,
 		  float &distance)
 {
-    AngleIntListIterator a;
-    AngleInt *ap;
+    AngleIntListIterator	a;
+    AngleInt				*ap;
 
-    for (a.Start(f);ap = a.Next(); )
-    {
-	
-	if (ap->IsEmpty())
-	    continue;
+    for ( a.Start(f), ap = a.Next(); ap; ap = a.Next()) {
+		
+		if (ap->IsEmpty())
+			continue;
 
-	else if (ap->InRange(swivel_angle))
-	    return 1;
+		if (ap->InRange(swivel_angle))
+			return			(1);
 
-	else if (update_closest_boundary(*ap, swivel_angle, distance, new_angle))
-	    new_index = index;
+		if (!update_closest_boundary(*ap, swivel_angle, distance, new_angle))
+			continue;
+
+		new_index			= index;
+
     }
 
-  //return 0;
+  return					(0);
 }
 
 		  
