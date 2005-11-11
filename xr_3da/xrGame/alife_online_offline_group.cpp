@@ -122,26 +122,26 @@ CSE_ALifeOnlineOfflineGroup::MEMBER *CSE_ALifeOnlineOfflineGroup::member(ALife::
 bool CSE_ALifeOnlineOfflineGroup::synchronize_location	()
 {
 	if (m_members.empty())
-		return						(true);
+		return					(true);
 
-	o_Position						= (*m_members.begin()).second->o_Position;
+	MEMBERS::iterator			I = m_members.begin();
+	MEMBERS::iterator			E = m_members.end();
+	for ( ; I != E; ++I)
+		(*I).second->synchronize_location	();
 
-	if (!ai().level_graph().valid_vertex_position(o_Position) || ai().level_graph().inside(ai().level_graph().vertex(m_tNodeID),o_Position))
-		return						(true);
+	MEMBER						&member = *(*m_members.begin()).second;
+	o_Position					= member.o_Position;
+	m_tNodeID					= member.m_tNodeID;
 
-	m_tNodeID						= ai().level_graph().vertex(m_tNodeID,o_Position);
-
-	GameGraph::_GRAPH_ID			tGraphID = ai().cross_table().vertex(m_tNodeID).game_vertex_id();
-	if (tGraphID != m_tGraphID) {
+	if (m_tGraphID != member.m_tGraphID) {
 		if (!m_bOnline)
-			alife().graph().change	(this,m_tGraphID,tGraphID);
+			alife().graph().change	(this,m_tGraphID,member.m_tGraphID);
 		else
-			m_tGraphID				= tGraphID;
+			m_tGraphID			= member.m_tGraphID;
 	}
 
-	m_fDistance						= ai().cross_table().vertex(m_tNodeID).distance();
-
-	return							(true);
+	m_fDistance					= member.m_fDistance;
+	return						(true);
 }
 
 void CSE_ALifeOnlineOfflineGroup::try_switch_online		()

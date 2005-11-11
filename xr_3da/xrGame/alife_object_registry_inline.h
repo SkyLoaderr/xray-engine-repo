@@ -31,6 +31,7 @@ IC	void CALifeObjectRegistry::remove	(const ALife::_OBJECT_ID &id, bool no_asser
 
 IC	CSE_ALifeDynamicObject *CALifeObjectRegistry::object	(const ALife::_OBJECT_ID &id, bool no_assert) const
 {
+	START_PROFILE("ALife/objects::object")
 	OBJECT_REGISTRY::const_iterator	I = objects().find(id);
 
 	if (objects().end() == I) {
@@ -43,6 +44,7 @@ IC	CSE_ALifeDynamicObject *CALifeObjectRegistry::object	(const ALife::_OBJECT_ID
 	}
 
 	return						((*I).second);
+	STOP_PROFILE
 }
 
 IC	const CALifeObjectRegistry::OBJECT_REGISTRY &CALifeObjectRegistry::objects	() const

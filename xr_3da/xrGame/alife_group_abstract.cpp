@@ -81,30 +81,29 @@ void CSE_ALifeGroupAbstract::switch_offline	()
 bool CSE_ALifeGroupAbstract::synchronize_location	()
 {
 	if (m_tpMembers.empty())
-		return							(true);
+		return					(true);
 
-	CSE_ALifeDynamicObject				*object = smart_cast<CSE_ALifeDynamicObject*>(base());
-	VERIFY								(object);
+	CSE_ALifeDynamicObject		*object = smart_cast<CSE_ALifeDynamicObject*>(base());
+	VERIFY						(object);
 	
-	object->o_Position					= ai().alife().objects().object(m_tpMembers[0])->o_Position;
-	if (!ai().level_graph().valid_vertex_position(object->o_Position) || ai().level_graph().inside(ai().level_graph().vertex(object->m_tNodeID),object->o_Position))
-		return							(true);
+	ALife::OBJECT_VECTOR::iterator	I = m_tpMembers.begin();
+	ALife::OBJECT_VECTOR::iterator	E = m_tpMembers.end();
+	for ( ; I != E; ++I)
+		ai().alife().objects().object(*I)->synchronize_location	();
 
-	// checking if position is inside the current vertex
-	object->m_tNodeID					= ai().level_graph().vertex(object->m_tNodeID,object->o_Position);
-	// validating graph point and changing it if needed
-	GameGraph::_GRAPH_ID				tGraphID = ai().cross_table().vertex(object->m_tNodeID).game_vertex_id();
-	if (tGraphID != object->m_tGraphID) {
+	CSE_ALifeDynamicObject		&member = *ai().alife().objects().object(*I);
+	object->o_Position			= member.o_Position;
+	object->m_tNodeID			= member.m_tNodeID;
+
+	if (object->m_tGraphID != member.m_tGraphID) {
 		if (!object->m_bOnline)
-			object->alife().graph().change	(object,object->m_tGraphID,tGraphID);
+			object->alife().graph().change	(object,object->m_tGraphID,member.m_tGraphID);
 		else
-			object->m_tGraphID			= tGraphID;
+			object->m_tGraphID	= member.m_tGraphID;
 	}
 
-	// validating distance to graph point via graph cross-table
-	object->m_fDistance					= ai().cross_table().vertex(object->m_tNodeID).distance();
-
-	return								(true);
+	object->m_fDistance			= member.m_fDistance;
+	return						(true);
 }
 
 void CSE_ALifeGroupAbstract::try_switch_online		()

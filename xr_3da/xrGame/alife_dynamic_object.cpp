@@ -78,10 +78,8 @@ bool CSE_ALifeDynamicObject::synchronize_location	()
 	if (!ai().level_graph().valid_vertex_position(o_Position) || ai().level_graph().inside(ai().level_graph().vertex(m_tNodeID),o_Position))
 		return					(true);
 
-	// checking if position is inside the current vertex
 	m_tNodeID					= ai().level_graph().vertex(m_tNodeID,o_Position);
 
-	// validating graph point and changing it if needed
 	GameGraph::_GRAPH_ID		tGraphID = ai().cross_table().vertex(m_tNodeID).game_vertex_id();
 	if (tGraphID != m_tGraphID) {
 		if (!m_bOnline)
@@ -92,7 +90,6 @@ bool CSE_ALifeDynamicObject::synchronize_location	()
 		}
 	}
 
-	// validating distance to graph point via graph cross-table
 	m_fDistance					= ai().cross_table().vertex(m_tNodeID).distance();
 
 	return						(true);

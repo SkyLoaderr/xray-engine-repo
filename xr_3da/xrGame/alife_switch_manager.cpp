@@ -44,6 +44,7 @@ CALifeSwitchManager::~CALifeSwitchManager	()
 
 void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update_registries)
 {
+	START_PROFILE("ALife/switch/add_online")
 	VERIFY							((ai().game_graph().vertex(object->m_tGraphID)->level_id() == graph().level().level_id()));
 
 	object->m_bOnline				= true;
@@ -64,10 +65,12 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 #endif
 
 	object->add_online				(update_registries);
+	STOP_PROFILE
 }
 
 void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool update_registries)
 {
+	START_PROFILE("ALife/switch/remove_online")
 	object->m_bOnline			= false;
 	
 	m_saved_chidren				= object->children;
@@ -89,28 +92,34 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 #endif
 
 	object->add_offline			(m_saved_chidren,update_registries);
+	STOP_PROFILE
 }
 
 void CALifeSwitchManager::switch_online(CSE_ALifeDynamicObject *object)
 {
+	START_PROFILE("ALife/switch/switch_online")
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife))
 		Msg						("[LSS] Going online [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),object->name_replace(), object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
 #endif
 	object->switch_online		();
+	STOP_PROFILE
 }
 
 void CALifeSwitchManager::switch_offline(CSE_ALifeDynamicObject *object)
 {
+	START_PROFILE("ALife/switch/switch_offline")
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife))
 		Msg							("[LSS] Going offline [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),object->name_replace(), object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
 #endif
 	object->switch_offline			();
+	STOP_PROFILE
 }
 
 bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 {
+	START_PROFILE("ALife/switch/synchronize_location")
 #ifdef DEBUG
 	VERIFY3					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id(),*I->s_name,I->name_replace());
 	xr_vector<u16>			test = I->children;
@@ -134,10 +143,12 @@ bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 		return				(true);
 
 	return					((*I).synchronize_location());
+	STOP_PROFILE
 }
 
 void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 {
+	START_PROFILE("ALife/switch/try_switch_online")
 	// so, the object is offline
 	// checking if the object is not attached
 	if (0xffff != I->ID_Parent) {
@@ -158,10 +169,12 @@ void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 	}
 
 	I->try_switch_online		();
+	STOP_PROFILE
 }
 
 void CALifeSwitchManager::try_switch_offline(CSE_ALifeDynamicObject	*I)
 {
+	START_PROFILE("ALife/switch/try_switch_offline")
 	// checking if the object is not attached
 	if (0xffff != I->ID_Parent) {
 #ifdef DEBUG
@@ -182,6 +195,7 @@ void CALifeSwitchManager::try_switch_offline(CSE_ALifeDynamicObject	*I)
 	}
 
 	I->try_switch_offline	();
+	STOP_PROFILE
 }
 
 void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)

@@ -11,6 +11,7 @@
 #include "safe_map_iterator.h"
 #include "xrServer_Objects_ALife.h"
 #include "ai_debug.h"
+#include "profiler.h"
 
 class CALifeScheduleRegistry : public CSafeMapIterator<ALife::_OBJECT_ID,CSE_ALifeSchedulable> {
 private:
@@ -26,7 +27,9 @@ private:
 
 		IC	void	operator()	(_iterator &i, u64 cycle_count) const
 		{
+			START_PROFILE("ALife/scheduled/update")
 			(*i).second->update			();
+			STOP_PROFILE
 		}
 	};
 
