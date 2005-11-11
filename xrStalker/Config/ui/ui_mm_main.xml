@@ -66,10 +66,10 @@
 	<menu_sound random="0" >
 		<whel_sound>car\apc_run</whel_sound>
 		
-		<!--menu_music>music\09_dead_cities_pt</menu_music-->		
-		<menu_music>music\guitar_2</menu_music>
+		<menu_music>music\09_dead_cities_pt</menu_music>
+		<!--menu_music>music\guitar_2</menu_music>
 		<menu_music>music\guitar_1</menu_music>
-		<menu_music>music\guitar_3</menu_music>
+		<menu_music>music\guitar_3</menu_music-->
 		
 	</menu_sound>
 </window>

@@ -17,6 +17,7 @@ public:
 
 protected:
 	ref_sound		m_music;
+	ref_sound		m_music_2;
 	ref_sound		m_whel;
 	bool			m_bRandom;
 	xr_vector<xr_string>	m_play_list;
