@@ -115,6 +115,7 @@ CMainUI::CMainUI	()
 	ReadTextureInfo				();
 	CUIXmlInit::InitColorDefs	();
 	g_btnHint					= xr_new<CUIButtonHint>();
+	m_bPostprocess				= false;
 }
 
 CMainUI::~CMainUI	()
@@ -301,28 +302,40 @@ void CMainUI::OnRenderPPUI_main	()
 	if(m_Flags.is(flGameSaveScreenshot)){
 		return;
 	};
+
+	m_bPostprocess = true;
+
+	m_2DFrustum2.CreateFromRect	(Frect().set(	0.0f,
+												0.0f,
+												ClientToScreenScaledX(float(Device.dwWidth),0),
+												ClientToScreenScaledY(float(Device.dwHeight),0)));
+
 	DoRenderDialogs();
 
 	m_pFontManager->Render();
-//	if(	GetUICursor()->IsVisible())
-//		GetUICursor()->Render();
+	m_bPostprocess = false;
 }
 
 void CMainUI::OnRenderPPUI_PP	()
 {
 	if(!IsActive()) return;
+	m_bPostprocess = true;
 	
 	xr_vector<CUIWindow*>::iterator it = m_pp_draw_wnds.begin();
 	for(; it!=m_pp_draw_wnds.end();++it){
-//		if( (*it)->IsShown() )
 			(*it)->Draw();
 	}
+	m_bPostprocess = false;
 }
 
 //pureFrame
 void	CMainUI::OnFrame		(void)
 {
-	m_2DFrustum.CreateFromRect	(Frect().set(0.0f,0.0f,float(Device.dwWidth),float(Device.dwHeight)));
+	m_2DFrustum.CreateFromRect	(Frect().set(	0.0f,
+												0.0f,
+												ClientToScreenScaledX(float(Device.dwWidth),0),
+												ClientToScreenScaledY(float(Device.dwHeight),0)));
+
 	if(!IsActive() && m_startDialog){
 		xr_delete					(m_startDialog);
 	}
@@ -407,6 +420,7 @@ Frect CMainUI::ScreenRect()
 
 void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
 {
+//	return;
 	Frect r_top			= ScreenRect();
 	Frect result		= r_tgt;
 	if (!m_Scissors.empty()&&!overlapped){
@@ -434,6 +448,7 @@ void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
 
 void CMainUI::PopScissor()
 {
+//	return;
 	VERIFY(!m_Scissors.empty());
 	m_Scissors.pop		();
 	

@@ -57,8 +57,10 @@ class CMainUI :
 	Flags8			m_Flags;
 	xr_stack<Frect> m_Scissors;
 	C2DFrustum		m_2DFrustum;
+	C2DFrustum		m_2DFrustum2;
 	string_path		m_screenshot_name;
 	u32				m_screenshotFrame;
+	bool			m_bPostprocess;
 			void	ReadTextureInfo();
 
 	xr_vector<CUIWindow*>		m_pp_draw_wnds;
@@ -97,16 +99,16 @@ public:
 	void			OutText							(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...);
 
 	void			OnDeviceCreate					();
-
-	IC float		GetScaleX						()							{return float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
-	IC float		GetScaleY						()							{return float(Device.dwHeight)/float(UI_BASE_HEIGHT); }
+													
+	IC float		GetScaleX						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH):float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
+	IC float		GetScaleY						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT):float(Device.dwHeight)/float(UI_BASE_HEIGHT);   }
 
 	void			ClientToScreenScaled			(Fvector2& dest, float left, float top, u32 align);
 	float			ClientToScreenScaledX			(float left, u32 align);
 	float			ClientToScreenScaledY			(float top, u32 align);
 
 	Frect			ScreenRect						();
-	const C2DFrustum& ScreenFrustum					(){return m_2DFrustum;}
+	const C2DFrustum& ScreenFrustum					(){return (m_bPostprocess)?m_2DFrustum2:m_2DFrustum;}
 	void			PushScissor						(const Frect& r, bool overlapped=false);
 	void			PopScissor						();
 	void			Screenshot						(IRender_interface::ScreenshotMode mode=IRender_interface::SM_NORMAL, LPCSTR name = 0);
