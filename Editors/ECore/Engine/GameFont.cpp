@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "GameFont.h"
+#include "Render.h"
 extern ENGINE_API BOOL g_bRendering; 
 
 //////////////////////////////////////////////////////////////////////
@@ -84,8 +85,8 @@ CGameFont::~CGameFont()
 	pGeom.destroy		();
 }
 
-#define DI2PX(x) float(iFloor((x+1)*float(Device.dwWidth)*0.5f))
-#define DI2PY(y) float(iFloor((y+1)*float(Device.dwHeight)*0.5f))
+#define DI2PX(x) float(iFloor((x+1)*float(::Render->getTarget()->get_width())*0.5f))
+#define DI2PY(y) float(iFloor((y+1)*float(::Render->getTarget()->get_height())*0.5f))
 
 void CGameFont::OutSet			(float x, float y)
 {
@@ -143,7 +144,8 @@ void CGameFont::OnRender()
 			if (len) {
 				float	X	= float(iFloor(PS.x));
 				float	Y	= float(iFloor(PS.y));
-				float	S	= PS.size;		//ConvertSize	(PS.size);
+				float	S	= PS.size*(::Render->getTarget()->get_width()/1024.0f);		//ConvertSize	(PS.size);
+
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
 
