@@ -30,6 +30,7 @@ path_look           = jail_guard_button_press_look
 def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
+on_info             = {-cit_jail_door_opened} walker@jail_guard1
 on_signal           = pressed | walker@jail_guard1 %-cit_jail_door_opened%
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
@@ -38,7 +39,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 ;-----------------------------------------------------------------------------------------------------------
 [remark@look_at_guard2_1]
 anim                = wait
-target              = 1202 ; guard2
+;target              = 1202 ; guard2
 on_info             = {+cit_jail_kill_actor} remark@jail_guard_kill_actor, {+cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened -cit_actor_is_free}, {=check_fighting(1200)}
 
@@ -59,6 +60,7 @@ path_look           = jail_guard_button_press_look
 def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
+on_info             = {+cit_jail_door_opened} remark@look_at_actor
 on_signal           = pressed | remark@look_at_actor %+cit_jail_door_opened%
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
@@ -80,6 +82,7 @@ path_look           = jail_guard_button_press_look
 def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
+on_info             = {-cit_jail_door_opened} walker@jail_guard2
 on_signal           = pressed | walker@jail_guard2 %-cit_jail_door_opened%
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
@@ -102,6 +105,7 @@ path_look           = jail_guard_button_press_look
 def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
+on_info             = {-cit_jail_door_opened} walker@jail_guard2
 on_signal           = pressed | walker@jail_guard2 %-cit_jail_door_opened%
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
