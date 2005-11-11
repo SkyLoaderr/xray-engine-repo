@@ -81,7 +81,7 @@ void CMemoryManager::reload			(LPCSTR section)
 
 void CMemoryManager::update			(float time_delta)
 {
-	START_PROFILE("Memory Manager/update")
+	START_PROFILE("Memory Manager")
 
 	visual().update		(time_delta);
 	sound().update		();

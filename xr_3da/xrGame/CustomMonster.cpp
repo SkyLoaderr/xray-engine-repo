@@ -349,9 +349,9 @@ void CCustomMonster::update_sound_player()
 
 void CCustomMonster::UpdateCL	()
 { 
-	START_PROFILE("entities/CustomMonster/client_update")
+	START_PROFILE("CustomMonster/client_update")
 	
-	START_PROFILE("entities/CustomMonster/client_update/inherited")
+	START_PROFILE("CustomMonster/client_update/inherited")
 	inherited::UpdateCL			();
 	STOP_PROFILE
 
@@ -369,12 +369,12 @@ void CCustomMonster::UpdateCL	()
 	if (g_mt_config.test(mtSoundPlayer))
 		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CCustomMonster::update_sound_player));
 	else {
-		START_PROFILE("entities/CustomMonster/client_update/sound_player")
+		START_PROFILE("CustomMonster/client_update/sound_player")
 		update_sound_player	();
 		STOP_PROFILE
 	}
 
-	START_PROFILE("entities/CustomMonster/client_update/network extrapolation")
+	START_PROFILE("CustomMonster/client_update/network extrapolation")
 	if	(NET.empty())	return;
 
 	m_dwCurrentTime		= Device.dwTimeGlobal;
@@ -449,11 +449,11 @@ void CCustomMonster::UpdateCL	()
 
 void CCustomMonster::UpdatePositionAnimation()
 {
-	START_PROFILE("entities/CustomMonster/client_update/movement")
+	START_PROFILE("CustomMonster/client_update/movement")
 	movement().move_along_path	(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
 	STOP_PROFILE
 	
-	START_PROFILE("entities/CustomMonster/client_update/animation")
+	START_PROFILE("CustomMonster/client_update/animation")
 	if (!bfScriptAnimation())
 		SelectAnimation		(XFORM().k,movement().detail().direction(),movement().speed());
 	STOP_PROFILE

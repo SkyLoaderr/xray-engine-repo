@@ -21,6 +21,7 @@
 #include "location_manager.h"
 #include "level_path_builder.h"
 #include "detail_path_builder.h"
+#include "profiler.h"
 
 using namespace MovementManager;
 
@@ -158,6 +159,7 @@ const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() 
 
 void CMovementManager::update_path				()
 {
+	START_PROFILE("Build Path::update")
 	if	(
 			!enabled() || 
 			wait_for_distributed_computation() || 
@@ -242,6 +244,8 @@ void CMovementManager::update_path				()
 		verify_detail_path		();
 
 	m_build_at_once				= false;
+
+	STOP_PROFILE
 }
 
 bool CMovementManager::actual_all				() const

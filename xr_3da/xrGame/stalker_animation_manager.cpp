@@ -103,7 +103,7 @@ void CStalkerAnimationManager::play_delayed_callbacks		()
 
 void CStalkerAnimationManager::update						()
 {
-	START_PROFILE("entities/stalker/client_update/animations")
+	START_PROFILE("stalker/client_update/animations")
 	try {
 		play_delayed_callbacks	();
 
