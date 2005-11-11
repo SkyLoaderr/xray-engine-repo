@@ -78,11 +78,7 @@ void CUIGameDM::SetClGame (game_cl_GameState* g)
 
 void	CUIGameDM::Init				()
 {
-	CUIXml xml_doc;
-	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, "stats.xml");
-	R_ASSERT2(xml_result, "xml file not found");
-
-	CUIStats* pFragList		= xr_new<CUIStats>();
+	CUIDMFragList* pFragList		= xr_new<CUIDMFragList>		();
 	CUIDMPlayerList* pPlayerList	= xr_new<CUIDMPlayerList>	();
 	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>();
 	pFragList->SetAutoDelete(true);
@@ -93,12 +89,15 @@ void	CUIGameDM::Init				()
 	float ScreenW = UI_BASE_WIDTH;
 	float ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
-	pFragList->Init(xml_doc,0);
+	Frect FrameRect = pFragList->GetFrameRect ();
 
-	Frect FrameRect = pFragList->GetWndRect();
+
 	float FrameW	= FrameRect.right - FrameRect.left;
 	float FrameH	= FrameRect.bottom - FrameRect.top;
-	pFragList->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
+
+	pFragList->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
+
+
 	m_pFragLists->AttachChild(pFragList);
 	//-----------------------------------------------------------
 	FrameRect = pPlayerList->GetFrameRect ();
