@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="bandit_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Traditional bandit's outfit - leathern jacket with stitched in kevlar particles. Slightly increases bullet-proof and splinter-proof protection. Doesn't protect from \nanomalous influence.</text>
     </string>
     <string id="bandit_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Bandit's outfit.</text>
     </string>
     <string id="dolg_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Manufactured by one of the defense Kiev Research Institute on the order of "Duty" faction. The simpleness and reliability of basic PS3-9 model in combination \nwith new materials represents good protection from bullet and splinter hits, as well as against week anomalies. Over the lack of respiration protection system \nthe radiation defense level is low</text>
     </string>
     <string id="dolg_outfit_name">
-        <text>This string was added automatically</text>
+        <text>PS3-9d suit</text>
     </string>
     <string id="dolg_scientific_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Manufactured by one of the defense Kiev Research Institute on the order of "Duty" faction. It's composed of: suit PS3-9d, respitation system with closed \ncycle, embedded system of suppressing anomaly fields effect. Provides a good defense from bullet and splinter hits. The level of protection from anomalous \nactivity is average. Level of radiation defense is high.</text>
     </string>
     <string id="dolg_scientific_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Suit PS3-9Md</text>
     </string>
     <string id="ecolog_outfit_description">
         <text>This string was added automatically</text>

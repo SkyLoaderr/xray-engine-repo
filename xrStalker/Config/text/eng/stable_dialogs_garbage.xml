@@ -67,7 +67,7 @@
         <text>Can you tell anything about the Garbage?</text>
     </string>
     <string id="gar_dram_novice_level_1">
-        <text>Well, there is nothing special in here. Garbage like any other garbage. The northern road to the "Bar" is guarded by the "Duty"'s militants. You'd better stay away from dealing with them, Duty has got many obscure guys in it. To the right - passages to the Dark Valley, but there is a really fierce radiation there. Little bit closer - "Grimpen Mire", swamps full of anomalies. It's said that it can be useful in finding artifacts, but it definitely can help in finding troubles. The only thing is settled - at least there is no hound of the baskervilles on the bogs.</text>
+        <text>Well, there is nothing special in here. Garbage like any other garbage. The northern road to the "Bar" is guarded by the "Duty"'s militants. You'd better stay away \nfrom dealing with them, Duty has got many obscure guys in it. To the right - passages to the Dark Valley, but there is a really fierce radiation there. Little bit closer - \n"Grimpen Mire", swamps full of anomalies. It's said that it can be useful in finding artifacts, but it definitely can help in finding troubles. The only thing is settled - at \nleast there is no hound of the baskervilles on the bogs.</text>
     </string>
     <string id="gar_dram_novice_level_2">
         <text>Maybe you know anything else?</text>
@@ -76,7 +76,7 @@
         <text>Interesting information, thanks, I'll consider it.</text>
     </string>
     <string id="gar_dram_novice_level_3">
-        <text>Well, one more point. There is a cache to the right, where the bogs lie. When you see the metal edifice, which streches above one of the puddles. Anyway, right under it you'll find the cache. I'd hidden it in my time, but you saved my life and I think, you require it more than I do. So use it on your own.</text>
+        <text>Well, one more point. There is a cache to the right, where the bogs lie. When you see the metal edifice, which streches above one of the puddles. Anyway, right \nunder it you'll find the cache. I'd hidden it in my time, but you saved my life and I think, you require it more than I do. So use it on your own.</text>
     </string>
     <string id="gar_dram_novice_level_4">
         <text>Thanks, mate. I won't forget it.</text>
@@ -91,7 +91,7 @@
         <text>Until you are taken ill with sclerosis. I know, I know. Well, so long.</text>
     </string>
     <string id="gar_dramm_novice_start_2">
-        <text>It's not as easy as it may seem to be. My friends are waiting now for the bandits' raid nearby, so as to stop them. If the bandits manage to obtain control over this garbage, nobody will have the access to the center of the Zone. I'm struggling for the stalkers' future. Talk to our commander, he has settled close by the graveyard with his soldiers. I'm gonna visit him, join me.</text>
+        <text>It's not as easy as it may seem to be. My friends are waiting now for the bandits' raid nearby, so as to stop them. If the bandits manage to obtain control over this \ngarbage, nobody will have the access to the center of the Zone. I'm struggling for the stalkers' future. Talk to our commander, he has settled close by the \ngraveyard with his soldiers. I'm gonna visit him, join me.</text>
     </string>
     <string id="gar_dramm_novice_start_21">
         <text>Hem... Get him, Superman in the diapers. Save yourself first of all.</text>
@@ -109,7 +109,7 @@
         <text>Hello to you too. You need help as far as I understand?</text>
     </string>
     <string id="gar_hellcar_dialog_quest_111">
-        <text>Desperately need it. Bandit gang is trying to gain control over the Garbage. Half an hour ago there was a brawl here. We did in three of the bastards. The rest of the gangsters retreated, but are likely to return with reinforcements any minute. We are few, so any extra barrel would come in handy. If you help us eliminate their reinforcements, I will repay as due. \n</text>
+        <text>Desperately need it. Bandit gang is trying to gain control over the Garbage. Half an hour ago there was a brawl here. We did in three of the bastards. The rest of \nthe gangsters retreated, but are likely to return with reinforcements any minute. We are few, so any extra barrel would come in handy. If you help us eliminate their \nreinforcements, I will repay as due. \n</text>
     </string>
     <string id="gar_hellcar_dialog_quest_1111">
         <text>Okay, I'm gonna stretch my legs before the long walk...</text>
@@ -172,7 +172,7 @@
         <text>Why aren't you joining the Duty with these humanistic gospels?</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_1311111">
-        <text>The Duty is struggling against the Zone, while I'm struggling for humans. Besides, they're closely connected with our government and army. I'm not burning with the desire to wake up in the detention cell in one shiny morning.</text>
+        <text>The Duty is struggling against the Zone, while I'm struggling for humans. Besides, they're closely connected with our government and army. I'm not burning with the \ndesire to wake up in the detention cell in one shiny morning.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_13111111">
         <text>Well good luck to you, crusader.</text>
@@ -181,13 +181,13 @@
         <text>What kind of place is that?</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_141">
-        <text>Garbage. Place, where we'll find the righteous place for us. Do you see the piles of trash? You'd better not wander there, there are radioactive wastes, Geiger's counter trills away like a nightingale. Here is the only convinient passage into the center of the Zone. And recently bandits started to take advantage over this territory. Farther, whereto the experienced stalkers roam, is the Duty's territory, they are afraid to poke in there. While bozing here, shagging out the novices - common cause. Though if anyone don't care a damn about this, we'll have to take up arms once again.</text>
+        <text>Garbage. Place, where we'll find the righteous place for us. Do you see the piles of trash? You'd better not wander there, there are radioactive wastes, Geiger's \ncounter trills away like a nightingale. Here is the only convinient passage into the center of the Zone. And recently bandits started to take advantage over this \nterritory. Farther, whereto the experienced stalkers roam, is the Duty's territory, they are afraid to poke in there. While bozing here, shagging out the novices - \ncommon cause. Though if anyone don't care a damn about this, we'll have to take up arms once again.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_1411">
         <text>Yeah, I see you need it the most.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_14111">
-        <text>No, this is called the life stand point. You'll have to remain humanlike everywhere, and especially here, trying not to be brute with the only goal of the craving of bean.</text>
+        <text>No, this is called the life stand point. You'll have to remain humanlike everywhere, and especially here, trying not to be brute with the only goal of the craving of \nbean.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_141111">
         <text>Oh come on, I didn't want to offend you.</text>
@@ -196,7 +196,7 @@
         <text>Good, old man, and what else can you tell me about the Garbage?</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_1411121">
-        <text>There is a large abandoned hangar in the center, and it's pretty quiet there. At the worst you may spend the night there. If you go to the West, in the direction of Agroprom you'll find the bandits camp, whence those freaks were comming, but I believe that it's not the end.</text>
+        <text>There is a large abandoned hangar in the center, and it's pretty quiet there. At the worst you may spend the night there. If you go to the West, in the direction of \nAgroprom you'll find the bandits camp, whence those freaks were comming, but I believe that it's not the end.</text>
     </string>
     <string id="gar_hellcar_dialog_thanks_14111211">
         <text>Oh, thanks, this information is right enough to start working.</text>
@@ -229,7 +229,7 @@
         <text>And what happened?</text>
     </string>
     <string id="gar_newbie_in_tonnel_1111">
-        <text>My friend and I located a nice place with artefacts here. We went on a couple of times in this tunnel to bring back a decent loot. But lately bandits have encamped here, we dropped into the tunnel to find hiding there. After the Blowout though many anomalies showed up and my friend got entrapped in anomaly there, inside the tunnel. And now I cannot make it out, there are bandits there, while sitting here is a certain death. Stalker, help out, I'll be grateful for ages.</text>
+        <text>My friend and I located a nice place with artefacts here. We went on a couple of times in this tunnel to bring back a decent loot. But lately bandits have \nencamped here, we dropped into the tunnel to find hiding there. After the Blowout though many anomalies showed up and my friend got entrapped in anomaly \nthere, inside the tunnel. And now I cannot make it out, there are bandits there, while sitting here is a certain death. Stalker, help out, I'll be grateful for ages.</text>
     </string>
     <string id="gar_newbie_in_tonnel_11111">
         <text>Well, fancy I agree to help. What this help will be about?</text>
@@ -250,7 +250,7 @@
         <text>Oh how I wish I could make it to a safe place shortly.</text>
     </string>
     <string id="gar_newbie_in_tonnel_33">
-        <text>I'll make it on my own from this point on. I can't imagine what to thank you with really. Here grab the money, unfortunately that's all I have with me. But life costs more. Should you need something from me - feel free to ask.</text>
+        <text>I'll make it on my own from this point on. I can't imagine what to thank you with really. Here grab the money, unfortunately that's all I have with me. But life costs \nmore. Should you need something from me - feel free to ask.</text>
     </string>
     <string id="gar_newbie_in_tonnel_333">
         <text>You didn't disappoint me. Be good. Never cough and stay away from the night Zone at full moon, when the forces of evil enjoy complete domination.</text>
@@ -274,7 +274,7 @@
         <text>I've been talking to Fox recently. He says that you've got information on the Gunslinger's grouping.</text>
     </string>
     <string id="gar_seriy_help_111">
-        <text>Well supposedly, but considering yor almost gratuitous help I'll tell you. I'll be awaited by one of the guys, former Digger, called Mole. He has digged out the Gunslinger's cahce and took out to the light the documents, which enlighten many things. But inasmuch as he got bandits chasing him on his back, he didn't take the documents with him - only remembered the place. But as I'm hunted now, I'll preferably go into shadow now. Take these coordinates of the meeting and tell him that you're from me. This flash-drive has also got some materials in it.</text>
+        <text>Well supposedly, but considering yor almost gratuitous help I'll tell you. I'll be awaited by one of the guys, former Digger, called Mole. He has digged out the \nGunslinger's cahce and took out to the light the documents, which enlighten many things. But inasmuch as he got bandits chasing him on his back, he didn't take \nthe documents with him - only remembered the place. But as I'm hunted now, I'll preferably go into shadow now. Take these coordinates of the meeting and tell \nhim that you're from me. This flash-drive has also got some materials in it.</text>
     </string>
     <string id="gar_seriy_help_1111">
         <text>Thanks. Your grey bacon has been saved not in vain. Good luck, stalker.</text>
@@ -301,7 +301,7 @@
         <text>Listen, buddy, what's interesting to be found on this dump here?</text>
     </string>
     <string id="gar_seryi_about_garbage_1">
-        <text>Ass-kicking troubles galore here. But if you are so full of pioneer's zeal, listen here. To the east there is a small forest, there's nothing interesting there, however packs of dogs frequent there. Be careful. If you follow these rails, they will lead you to a tunnel. Many anomalies are there, maybe there's something interesting left there, I don't know, I didn't explore it thoroughly. I think you know about the army post of Duty in the north. That's basically it of what I know about this level. \n</text>
+        <text>Ass-kicking troubles galore here. But if you are so full of pioneer's zeal, listen here. To the east there is a small forest, there's nothing interesting there, however \npacks of dogs frequent there. Be careful. If you follow these rails, they will lead you to a tunnel. Many anomalies are there, maybe there's something interesting left \nthere, I don't know, I didn't explore it thoroughly. I think you know about the army post of Duty in the north. That's basically it of what I know about this level. \n</text>
     </string>
     <string id="gar_seryi_about_garbage_11">
         <text>Thanks, this has been helpful, will take into account.</text>
@@ -310,7 +310,7 @@
         <text>Can you tell me anything about this place?</text>
     </string>
     <string id="gar_stalker_about_level_1">
-        <text>Well listen then. We're now located at the huge stinky garbage dump. Since 1986 it has been the place to store the radioactive trash, cranes, worn out machinery. In general the trash is all way around you, besides there is quite a number of anomalies among the debris. Artifacts appear, although not superior enough. That's why it is the place mainly dedicated for the novices. And hence the novices bring bandits with them. So you'd better not stay here for long. There are lots of radioactive hotbeds to the East, going here without the protection suits can be fatal. If you proceed to the South, you'll exit to the border of the Zone. If North - you'll find the abandoned Rostok factory, and stalkers' bar in it. Dark Valley to the East - dark, gloomy and foggy place. Agroprom research institute to the West. I'll mark the spots on the map for, to make you path more safely.</text>
+        <text>Well listen then. We're now located at the huge stinky garbage dump. Since 1986 it has been the place to store the radioactive trash, cranes, worn out machinery. \nIn general the trash is all way around you, besides there is quite a number of anomalies among the debris. Artifacts appear, although not superior enough. That's \nwhy it is the place mainly dedicated for the novices. And hence the novices bring bandits with them. So you'd better not stay here for long. There are lots of \nradioactive hotbeds to the East, going here without the protection suits can be fatal. If you proceed to the South, you'll exit to the border of the Zone. If North - \nyou'll find the abandoned Rostok factory, and stalkers' bar in it. Dark Valley to the East - dark, gloomy and foggy place. Agroprom research institute to the West. I'll \nmark the spots on the map for, to make you path more safely.</text>
     </string>
     <string id="gar_wounded_bandit_0">
         <text>Don't kill me, stalker, I beg you. I'm feeling awful as I am.</text>
@@ -319,7 +319,7 @@
         <text>Well it depends on what you can be useful with. For example, what is this pilgrimage from Egypt, pshaw, I meant Agroprom, for?</text>
     </string>
     <string id="gar_wounded_bandit_11">
-        <text>We got the base firstly at Agroprom... then we heard the stir that "epaulets" are going to visit it. Someone went to the Dark Valley, but many has stayed here. Well, to think narrowly, they'll make a ransack and go away. But more was coming. They haven't merely come, but arrived at APCs. At that they've made a really thoroughgoing cleaning, perhaps desired to supply their retirement. Lots of you guys has been slaughtered. They were just shooting off everyone they see. There was a group of neutrals - even they were exterminated. They've organized a base there and it produced an impression that the institute had as an important meaning as it was worth eliminating the whole city.</text>
+        <text>We got the base firstly at Agroprom... then we heard the stir that "epaulets" are going to visit it. Someone went to the Dark Valley, but many has stayed here. Well, \nto think narrowly, they'll make a ransack and go away. But more was coming. They haven't merely come, but arrived at APCs. At that they've made a really \nthoroughgoing cleaning, perhaps desired to supply their retirement. Lots of you guys has been slaughtered. They were just shooting off everyone they see. There \nwas a group of neutrals - even they were exterminated. They've organized a base there and it produced an impression that the institute had as an important \nmeaning as it was worth eliminating the whole city.</text>
     </string>
     <string id="gar_wounded_bandit_111">
         <text>Hmm, interesting news. Okay, just relax here for a while. Brute death to the brute.</text>

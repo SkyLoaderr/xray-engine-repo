@@ -91,7 +91,7 @@
         <text>Fox, tell me where you have been in the Zone. What did you see?</text>
     </string>
     <string id="escape_fox_flame_dialog_21">
-        <text>Such a story may take a few days to tell, and my time costs a lot. Can only give you a piece of advice. "Dump" – located 3 kilometers to the North from where \nI \nstand, where all the radioactive trash had been taken to from stations in 86th. Heavy radiation, host of anomalies, and ultimately – abundance of artifacts, \nadmittedly not valuable. Beware of the bandits and try not to swear at “Duty” patrols. Scientific research institute “Agroprom” is to the west from the “Dump”. \nRegion is quite poor regarding the artifacts, so I don’t go there often. “Dark Valley” to the east. Sort of weird place. Like it’s rather quiet in there, but bandits \nand stuff can now and then be met. Yet I sense that not everything is so simple there as it seems. Further beyond the Dump is “Rostok” factory territory – \nstalkership heart. Besides many experienced guys you can come across with.</text>
+        <text>Such a story may take a few days to tell, and my time costs a lot. Can only give you a piece of advice. "Dump" – located 3 kilometers to the North from where \nI stand, where all the radioactive trash had been taken to from stations in 86th. Heavy radiation, host of anomalies, and ultimately – abundance of artifacts, \nadmittedly not valuable. Beware of the bandits and try not to swear at “Duty” patrols. Scientific research institute “Agroprom” is to the west from the “Dump”. \nRegion is quite poor regarding the artifacts, so I don’t go there often. “Dark Valley” to the east. Sort of weird place. Like it’s rather quiet in there, but bandits \nand stuff can now and then be met. Yet I sense that not everything is so simple there as it seems. Further beyond the Dump is “Rostok” factory territory – \nstalkership heart. Besides many experienced guys you can come across with.</text>
     </string>
     <string id="escape_fox_flame_dialog_3">
         <text>The Dealer said you may know something about the Gunslinger.</text>
@@ -475,19 +475,19 @@
         <text>Yeah, I've got something.</text>
     </string>
     <string id="escape_trader_jobs_22221">
-        <text>Hem. Yeah, that's it. There is an order on "Twist" artifact. For it is being rather inexpensive, but it for some reason is required by our money-bags. By the \nway, the payment exceeds the market price at least twice. And he can be found... give  me the map, I'll mark the place, where it can usually be found.</text>
+        <text>Hem. Yeah, that's it. There is an order on "Twist" artifact. For it is being rather inexpensive, but it for some reason is required by our money-bags. By the \nway, the payment exceeds the market price at least twice. And he can be found... give me the map, I'll mark the place, where it can usually be found.</text>
     </string>
     <string id="escape_trader_jobs_222211">
         <text>Okay, if I find it - I'll bring it to you.</text>
     </string>
     <string id="escape_trader_jobs_22222">
-        <text>Hem. Yeah, that's it. There is an order on "Stone Blood" artifact. For it is being rather inexpensive, but it for some reason is required by our money-bags. By the \nway, the payment exceeds the market price at least twice. And he can be found... give  me the map, I'll mark the place, where it can usually be found.</text>
+        <text>Hem. Yeah, that's it. There is an order on "Stone Blood" artifact. For it is being rather inexpensive, but it for some reason is required by our money-bags. By the \nway, the payment exceeds the market price at least twice. And he can be found... give me the map, I'll mark the place, where it can usually be found.</text>
     </string>
     <string id="escape_trader_jobs_222221">
         <text>Okay, if I find - I'll certainly will bring to you.</text>
     </string>
     <string id="escape_trader_jobs_22223">
-        <text>Hem. Yeah, that's it. There is an order on "Jellyfish" artifact. For it is being rather inexpensive, but it for some reason is required by our money-bags. By the \nway, the payment exceeds the market price at least twice. And he can be found... give  me the map, I'll mark the place, where it can usually be found.</text>
+        <text>Hem. Yeah, that's it. There is an order on "Jellyfish" artifact. For it is being rather inexpensive, but it for some reason is required by our money-bags. By the \nway, the payment exceeds the market price at least twice. And he can be found... give me the map, I'll mark the place, where it can usually be found.</text>
     </string>
     <string id="escape_trader_jobs_222231">
         <text>Okay, if I find it - I'll certainly bgring it to you.</text>
@@ -514,7 +514,7 @@
         <text>Good... Now listen... You're a serious minded guy... I can see that... And I, that is to say we, need such people - we, together with the other traders, are \ncarrying out an investigation. The aim - is to discover the path to North to the center of the Zone. But closer to the center there is the place which prevents \npassing... I don't give a hell how your Gunslinger made it through... You see, there is a place where your brains get boiled out. Omnious place... Hm.. Well, \ncloser to the point... Those guys who have been smited down by the copter, watched for the militaries nearby for me. And to all appearances, the militaries \nfrom the former Agroprom have found something. Something very momentous. I'm sure that it's somehow pertained to the center of the Zone. So, everything \nthat was found by militaries is kept on the second floor of the Institute. And we do need it. Got it, where I am driving at?</text>
     </string>
     <string id="escape_trader_jobs_611111">
-        <text>Well, I understood that..  But I'm merely interesting what if they've discovered a plant weighting 10 tons there? What then?</text>
+        <text>Well, I understood that.. But I'm merely interesting what if they've discovered a plant weighting 10 tons there? What then?</text>
     </string>
     <string id="escape_trader_jobs_6111111">
         <text>No... The matter concerns the small white sack-bag. Speaking in short we pay a lot. That's because it won't be easy to steal it from the stare of SBU. They are \ntough fighters. Act very deliberately. Maybe you could sneak there at night. Will you do this?</text>
@@ -556,7 +556,7 @@
         <text>Well, well. Yeah, take a look, brought "Jellyfish". Good job, Branded One, take the earned money.</text>
     </string>
     <string id="escape_trader_need_artefacts_1311">
-        <text>Õîðîøî, ïðèÿòíî ñ òîáîé èìåòü äåëî.</text>
+        <text>Okay, it's nice to deal with you.</text>
     </string>
     <string id="escape_trader_start_dialog_171">
         <text>So, brought it?</text>
@@ -598,7 +598,7 @@
         <text>Listen, Branded One, I've told you everything, now get to your job.</text>
     </string>
     <string id="escape_trader_talk_info_0">
-        <text>I need answers on several questions.</text>
+        <text>I need answers to several questions.</text>
     </string>
     <string id="escape_trader_talk_info_1">
         <text>Shoot, but I know few. You see, I’m stuck here for the eternity, while the real life is outside in the Zone.</text>
@@ -746,5 +746,11 @@
     </string>
     <string id="tutorial_wounded_thanks_2">
         <text>Well, lets go. Cos they are dashing aside from me as from the damned one. Aiming guns at my face.</text>
+    </string>
+    <string id="tutorial_wounded_thanks_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tutorial_wounded_thanks_4">
+        <text>This string was added automatically</text>
     </string>
 </string_table>

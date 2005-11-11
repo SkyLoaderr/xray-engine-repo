@@ -17,7 +17,7 @@
         <text>Branded one be careful - it's said that the village has got another anomaly - it's moving very fast, moreover it's hard to notice it, damn.</text>
     </string>
     <string id="mil_info_to_all">
-        <text>Attention to everyone interested - the passage to Radar is guarded by the Monolithian troop, I think that you know that they're shooting off everyone who passes by. Good luck.</text>
+        <text>Attention to everyone interested - the passage to Radar is guarded by the Monolithian troop, I think that you know that they're shooting off everyone who passes \nby. Good luck.</text>
     </string>
     <string id="mil_mission_complete">
         <text>Our task is fulfilled. Thanks for your help.</text>

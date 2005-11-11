@@ -32,7 +32,7 @@
         <text>Be wary! You're near the anomalies. Use bolts in order to define their borders.</text>
     </string>
     <string id="tips_esc_trader_about_pda">
-        <text>Press Contact  ($$ACTION_CONTACTS$$). In Contact and on the minimap on the facial visor you see people in the radius of 250 meters with PDA turned on. \nThere you can see their attitude to you. Be careful if enemies appear there. However bandits and hehe mutants don't turn PDAs on, so stay cautious in the \nZone.</text>
+        <text>Press Contact ($$ACTION_CONTACTS$$). In Contact and on the minimap on the facial visor you see people in the radius of 250 meters with PDA turned on. \nThere you can see their attitude to you. Be careful if enemies appear there. However bandits and hehe mutants don't turn PDAs on, so stay cautious in the \nZone.</text>
     </string>
     <string id="tips_esc_trader_activate_map">
         <text>In order to activate the map, press '$$ACTION_MAP$$'.</text>

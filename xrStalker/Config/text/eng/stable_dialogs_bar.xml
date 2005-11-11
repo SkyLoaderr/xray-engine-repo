@@ -67,7 +67,7 @@
         <text>Even stalkers can be tramps too. I can't recognize this world.</text>
     </string>
     <string id="bar_arena_manager_game_2">
-        <text>There's a pseudodog. A large specie, but quite beaten up. On the other hand, a very fierce one, same as my mother-in-law. I'm blessed to have never seen her.</text>
+        <text>There's a pseudodog. A large specie, but quite beaten up. On the other hand, a very fierce one, same as my mother-in-law. I'm blessed to have never seen \nher.</text>
     </string>
     <string id="bar_arena_manager_game_200">
         <text>Deal. One more thing. Put the stake on time you kill the monster within. If you do it - you win, otherwise - you lose. The less the time chosen, the bigger is the \nmoney won.</text>
@@ -502,7 +502,7 @@
         <text>What do you know about the stalker named Fang?</text>
     </string>
     <string id="bar_bar_barmen_talk_info_61">
-        <text>There've been such a guy, he was burring much. He was out of his mind, used to talked to himself, but fine on the other hand. Got lost in the center, together \nwith Gunslinger, however it's said that Gunslinger has returned. </text>
+        <text>There've been such a guy, he was burring much. He was out of his mind, used to talked to himself, but fine on the other hand. Got lost in the center, together \nwith Gunslinger, however it's said that Gunslinger has returned.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_7">
         <text>Tell me about the mobile scientific laboratories.</text>
@@ -535,94 +535,94 @@
         <text>Even when the Zone appeared, a lot of people appeared under its dome, cut from the outer world. The majority died right away, but occasional lucky beggars \nremained, not only those who survived, but who tried to attemp something as well. One of the survivals trapped near the station, inside it he noticed a \nstrange fluorescence, he had no choice, the way back was barred, and so he came closer. He saw the picture of the pierced roof of sarcophagus, with the \nluminiscence breaking through it. He climbed the wall and the inner site revealed in front of him, amongst the heaps of metal flinders and adust concrete \nplates a huge black splinter rose high. This was the Monolith, stalker at last awaken from a strange delusion and realized, that he is right inside the \nSarcophagus. He was seized by a deep fear, with the monotonous call of Monolith breaking through his mind. Monolith called for him, while stalker had his \nhair standing on end, his head was pierced by strange, unbelievable pictures about the Monolith...</text>
     </string>
     <string id="bar_bar_barmen_talk_info_811111111">
-        <text>Круто...</text>
+        <text>Cool...</text>
     </string>
     <string id="bar_bar_barmen_talk_info_811111112">
         <text>I don't know, what in this story is true and what is false. The point is that he made a wish and it has been fulfilled, and the Zone increased in 5 kilometers. It \nseems that for each wish granted the Zone consumes a portion of our planet Earth. But this doesn't stops such brave guys as you are. They continue to be \nbreaking in, wearing sacred wishes inside their hearts.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_812">
-        <text>Меня сейчас больше интересует другая информация.</text>
+        <text>I'm more interested in the other information.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_8121">
-        <text>Ну, как знаешь. Что конкретно тебя интересует?</text>
+        <text>Well, you're the boss. What exactly are you interested in?</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_finish_0">
-        <text>Пристрелил я снайпера, держи его PDA.</text>
+        <text>I've croaked the sniper, take his PDA.</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_finish_1">
-        <text>Oh, what a heck. Thanks friend, you've saved my ass. I'm in debt before you. Hear take it, this is the advanced detector. Take it, take. Life is long, you'll see, I \nwon't stay in debt. </text>
+        <text>Oh, what a heck. Thanks friend, you've saved my ass. I'm in debt before you. Hear take it, this is the advanced detector. Take it, take. Life is long, you'll see, I \nwon't stay in debt.</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_finish_11">
-        <text>Смотри не спейся раньше, чем понадобится твоя помощь.</text>
+        <text>Don't you get drunk before we use your help.</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_start_0">
-        <text>Ты скажи, что сделать надо?</text>
+        <text>Just say what is required from me to do?</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_start_1">
         <text>Do? Well... eliminate that jerk! The sniper appeared here, sneaking here and there at nights, shooting people. But he can be captured only at night. He is a \ncrafty guy, for he is feeling when he is followed, he steals away. He appears near the water towe, I'll copy the coordinates to your PDA. Help me, the way \nfrom the "Duty" is only in coffin, "Freedom" will take care of it.</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_start_11">
-        <text>Я попробую.</text>
+        <text>I'll try.</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_start_111">
         <text>Thanks. Bring me that document, from that scumbag, and I'll give you the detector right away... you... well, no problem. I swear it! Yeah, don't forget that he \nappears after the midnight and vamooses with the dawn, damn romantic...</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_start_12">
-        <text>Нет, не буду пока браться.</text>
+        <text>No, I'm not taking this up.</text>
     </string>
     <string id="bar_bar_drunk_dolg_quest_start_121">
-        <text>Эх, блин. Чтож мне делать-то, а? Никто мне не хочет помочь.</text>
+        <text>Well, damn it. What must I do, huh? No one wants to help me.</text>
     </string>
     <string id="bar_bar_drunk_dolg_start_11">
         <text>Hick... gee, this stuff sucks. I'm drunk, again, fie. They want me to get out of Duty, if I fail this task. And I'm not in the condition to... whatever... oh...</text>
     </string>
     <string id="bar_bar_drunk_dolg_start_111">
-        <text>Понимаю</text>
+        <text>I see</text>
     </string>
     <string id="bar_bar_drunk_dolg_start_21">
-        <text>Ну чего там? Какие новости? По глазам вижу, не шлепнул еще гаденыша. Эх, жизнь... Слышь, ты это, выпей хоть со мной.</text>
+        <text>Well, what's with it? Any news? I see it in your eyes that you haven't yet knocked off that scum. Oh, life... Well, could you in that case take a shot with me.</text>
     </string>
     <string id="bar_bar_drunk_dolg_start_31">
-        <text>Ик ...помог, да. Ну, давай за "Долг" чтоли? Иии... Эх!</text>
+        <text>Hick... helped, yes. Well, lets do it for "Duty", perhaps? Weeell... oh!</text>
     </string>
     <string id="bar_bar_hunter_quest_finish_0">
-        <text>Нашел, держи свое ружье.</text>
+        <text>I found it, here is your rifle.</text>
     </string>
     <string id="bar_bar_hunter_quest_finish_1">
-        <text>What? You found  rifle? Wow!!! Friend, pal, bro... I don't have what to say. Thanks. Thanks, damn it! Thanks. Thanks, damn it! Well this help is a real help.Yeah! \nHere take this simple reward, this is all I've got. Sorry, that it's not as big as your help was. And I won't forget, god damn it, about your help. Hopefully I will be \nable to help you as you helped me in due time. Thanks. Listen to what I'll tell you. Near the place, where you 've found my rifle, you might find one more thing, \nan old nailed up house. What's inside it is unknown, but it is seen through the window, that there are a lot of anomalies. Maybe there are artifacts, but it's \nunknown how to get there.</text>
+        <text>What? You found rifle? Wow!!! Friend, pal, bro... I don't have what to say. Thanks. Thanks, damn it! Thanks. Thanks, damn it! Well this help is a real help.Yeah! \nHere take this simple reward, this is all I've got. Sorry, that it's not as big as your help was. And I won't forget, god damn it, about your help. Hopefully I will be \nable to help you as you helped me in due time. Thanks. Listen to what I'll tell you. Near the place, where you 've found my rifle, you might find one more thing, \nan old nailed up house. What's inside it is unknown, but it is seen through the window, that there are a lot of anomalies. Maybe there are artifacts, but it's \nunknown how to get there.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_0">
-        <text>Это не так просто, надеюсь, ты это понимаешь?</text>
+        <text>This is not that simple, I hope you understand it?</text>
     </string>
     <string id="bar_bar_hunter_quest_start_1">
         <text>All return everything, just get the rifle back, I beg you. I've lost it near the dwelling of bloodsuckers, I'll copy you the coordinates to PDA. And be careful, those \ncreatures are very fierce.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_11">
-        <text>Хорошо, посмотрю, что я смогу сделать.</text>
+        <text>Okay, I'll see what I can do.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_111">
-        <text>Я тебя не обману.</text>
+        <text>I won't trick you.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_1111">
-        <text>Это в твоих же интересах.</text>
+        <text>This is within your interests.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_12">
-        <text>Нет. У меня сейчас есть поважнее дела.</text>
+        <text>No. I have more important tasks to complete.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_121">
-        <text>Дело твое, но я надеюсь, что ты передумаешь.</text>
+        <text>You problems, but I hope that you will change your mind.</text>
     </string>
     <string id="bar_bar_hunter_quest_start_1212">
-        <text>Посмотрим.</text>
+        <text>We'll see.</text>
     </string>
     <string id="bar_bar_hunter_start_11">
         <text>Darn it, I've lost my family rifle on the wild territory. I though I might have shot a few bloodsuckers, but I've barely escaped. Damn! Listen, bro, if you bring that \nrifle back to me, I'll reward you. I've earned a bit, I'll give you everything, just get that rifle returned. It's of my family, it descended from father to son. And \nwhat of it - I've lost it. I've got used to it, like to my most intimate friend, and there it goes - such a crap.</text>
     </string>
     <string id="bar_bar_hunter_start_21">
-        <text>Привет. Есть новости? Нашел???</text>
+        <text>Hi. Got any news? Found it?</text>
     </string>
     <string id="bar_bar_hunter_start_31">
-        <text>Спасибо тебе брат. Я не забуду, как ты мне помог.</text>
+        <text>Thanks to you bro. I won't forget about your help.</text>
     </string>
     <string id="bar_bar_lisiy_talk_0">
         <text>You are the Bold one! Bartender told me about it.</text>
@@ -652,13 +652,13 @@
         <text>Thanks for the story, Bold. I will try to get the Spotted one talking.</text>
     </string>
     <string id="bar_bar_osvedomitel_reward_0">
-        <text>Волкодав сказал, что ты мне кое-что передашь.</text>
+        <text>Wolfhound said that you had to give me something.</text>
     </string>
     <string id="bar_bar_osvedomitel_reward_1">
         <text>Yes. Take this launcher for helping with Kruglov. Here is another 1000 cash. On top of that I can share the next portion of information with you.</text>
     </string>
     <string id="bar_bar_osvedomitel_reward_2">
-        <text>Спасибо.</text>
+        <text>Thanks.</text>
     </string>
     <string id="bar_bar_osvedomitel_reward_3">
         <text>And now listen to what I say. You've helped Freedom and made a correct choice. Now you've closely connected with it, and Duty has made a note of you. \nI'd advise you to visit the abandoned base and join the ranks of Freedom. They need good fighters. Soon there will be a number of skirmishes between Duty \nand Freedom and the one who chooses the proper side, will be a winner.</text>
@@ -667,85 +667,85 @@
         <text>I'm an informer, I'm trading information in the Zone. I'm selling important information, buy design drawings, documents and notes from laboratory. My \ninformation is valuable and will well serve the one who possess it.</text>
     </string>
     <string id="bar_bar_osvedomitel_start_21">
-        <text>Hello, Branded One. You've helped Freedom and made a correct choice. Now you've closely connected with it, and Duty has made a note of you. \nI'd advise you to visit the abandoned base and join the ranks of Freedom. They need good fighters. </text>
+        <text>Hello, Branded One. You've helped Freedom and made a correct choice. Now you've closely connected with it, and Duty has made a note of you. \nI'd advise you to visit the abandoned base and join the ranks of Freedom. They need good fighters.</text>
     </string>
     <string id="bar_bar_osvedomitel_start_211">
-        <text>Я подумаю над этим.</text>
+        <text>I'll think it over.</text>
     </string>
     <string id="bar_bar_osvedomitel_start_2111">
-        <text>Итак, Меченый. Что тебя привело ко мне? Хочешь купить информацию? Или может быть продать?</text>
+        <text>So, Branded One. What have brought you here? Wanna buy some information? Or sell maybe?</text>
     </string>
     <string id="bar_bar_osvedomitel_talk_0">
-        <text>Так ты получается, связан со Свободой?</text>
+        <text>So you are kind of connected with Freedom?</text>
     </string>
     <string id="bar_bar_osvedomitel_talk_1">
-        <text>Сейчас я не готов ответить на этот вопрос. Что я могу сказать, так это то, что я не состою ни в одной из группировок.</text>
+        <text>Now I'm not really ready to answer this question. What I can say is that I'm not the member of any.</text>
     </string>
     <string id="bar_bar_osvedomitel_talk_about_freedom_0">
-        <text>Я мало знаю о группировке "Свобода". Не мог бы ты меня немного просветить?</text>
+        <text>I know little about "Freedom" faction. Could you enlighten me somehow?</text>
     </string>
     <string id="bar_bar_osvedomitel_talk_about_freedom_1">
-        <text>Sure, Branded One! Not a question at all. "Freedom" is one of the eldest factions in the Zone, and the only one, which withstands the governmental forces \nand research groups in a straightforward manner. Their foundants have perished during the skirmish with governmental forces, during the large-scale \nlanding operation in the Zone.  The possibility of military-governmental control was abolished. And pehaps, this haven't given chance to dash down to a new \nworld war, using new technologies. According to scrappy information, Zone is the secret military polygon, which experienced the tests of was technologies. \nAnd the result is at least impressive. Freedom is the only faction, which is resistant to returning the polygon to the governmental forces. What happens if the \npolygon is returned, it must be protected at all costs.</text>
+        <text>Sure, Branded One! Not a question at all. "Freedom" is one of the eldest factions in the Zone, and the only one, which withstands the governmental forces \nand research groups in a straightforward manner. Their foundants have perished during the skirmish with governmental forces, during the large-scale \nlanding operation in the Zone. The possibility of military-governmental control was abolished. And pehaps, this haven't given chance to dash down to a new \nworld war, using new technologies. According to scrappy information, Zone is the secret military polygon, which experienced the tests of was technologies. \nAnd the result is at least impressive. Freedom is the only faction, which is resistant to returning the polygon to the governmental forces. What happens if the \npolygon is returned, it must be protected at all costs.</text>
     </string>
     <string id="bar_bar_osvedomitel_talk_about_freedom_2">
-        <text>Если "Свобода" хочет удержать военный полигон в своих руках, то чего добивается "Долг"?</text>
+        <text>If "Freedom" wants to hold the military range in their hands, than what does "Duty" want?</text>
     </string>
     <string id="bar_bar_osvedomitel_talk_about_freedom_3">
         <text>Duty is the division of governmental forces, which are controlled from outside. Their goals are cleanup of the territory and elimination of Freedom's faction, \nwhich they actually do. As soon as the last remaining obstacle is removed, a numerous landing force will be dropped into the Zone, which will take control of \nit.</text>
     </string>
     <string id="bar_bar_osvedomitel_talk_about_freedom_4">
-        <text>Мда. Такая сторона происходящего в Зоне внушает трепет.</text>
+        <text>Well. This side of what is happening in the Zone makes me tremble.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_0">
-        <text>Я хочу купить информацию.</text>
+        <text>I want to buy some information.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_21">
-        <text>В данный момент я готов продать информацию о группировке Стрелка. За совершенно символическую цену в 1500 рублей.</text>
+        <text>To this moment I can only sell you information on Gunslinger's grouping. For a really nominal price of 1500 cash.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_211">
-        <text>Хорошо, покупаю. Держи 1500.</text>
+        <text>Okay, I buy it. Take 1500.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_2111">
         <text>It is situated near the Agroprom RI, cache and the underground. Most likely, there is an information on faction's plans and the lists of faction members. The \ncoordinates of faction and cache are included.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_212">
-        <text>Нет, я передумал.</text>
+        <text>No, I've changed my mind.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_2121">
-        <text>Дело твое. Как решишься приходи, я всегда в баре.</text>
+        <text>You're da boss. When you make up your mind, I'm always in the bar.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_31">
-        <text>В данный момент я готов продать информацию о группе, которая добралась до центра Зоны. За совершенно символическую цену в 3000 рублей.</text>
+        <text>Currently, I can only sell information about the grouping, which reached the center of the Zone. For fairly nominal price of 3000 cash.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_311">
-        <text>Хорошо, покупаю. Держи 3000.</text>
+        <text>Okay, I buy it. Take 3000.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_3111">
         <text>Gunslinger, Ghost and Hunchback have gone to the center of the Zone. Hunchback has got into a scrape near the APP and broke away the troop, he \ndecided to break through to the Sarcophagus. Gunslinger and Ghost went further. What have they unvealed is unknown, we know only that Gunslinger is \nmissing and Ghost has returned alive. The last known information about the Ghost is that he went to Yantar to the mobile scientists camp. The coordinates of \ncamp are included.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_312">
-        <text>Нет, я передумал.</text>
+        <text>No, I've changed my mind.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_3121">
-        <text>Дело твое. Как решишься приходи, я всегда в баре.</text>
+        <text>You decide. When you do, come, I can be found always in the bar.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_41">
-        <text>В данный момент я готов продать информацию о загадке озера Янтарь. За совершенно символическую цену в 4500 рублей.</text>
+        <text>At present I'm ready to sell information about Yantar's mystery. For fairly nominal price of 4500 cash.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_411">
-        <text>Хорошо, покупаю. Держи 4500.</text>
+        <text>Okay, I'll take it. Here is you 4500 cash.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_4111">
-        <text>This string was added automatically</text>
+        <text>The mystery of Yantar is similar to the mystery of "brain scorcher", their effects are alike in many aspects. Unknown raidation zombifies everyone who gets \nunder its range of effect. Eventually zombied stalkers move around the center of some kind of "oscillator", attacking everyone, who hasn't yet been "radiated". \nThere is an information that the lower levels have a secter dark laboratory that contains the solution of "Yantar" secret. Here are the coordinates of Yantar \nlake "oscillators" and of "brain scrocher". Additionally, I'll copy the coordinated of the dark laboratory.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_412">
-        <text>Нет, я передумал.</text>
+        <text>No, I've changed my mind.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_4121">
-        <text>Дело твое. Как решишься приходи, я всегда в баре.</text>
+        <text>You decide. When you do, visit me in the bar.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_999">
-        <text>В данный момент новой пока информации нет.</text>
+        <text>At present moment I don't have any fresh information.</text>
     </string>
     <string id="bar_bar_psih_give_medkit_0">
         <text>Are you unwell? Would a medikit help?</text>
@@ -808,7 +808,7 @@
         <text>Spotted one. I want to get back there. I want to find Humpback. I'm scared to think what could happen to him. Help me out.</text>
     </string>
     <string id="bar_bar_psih_talk_lisiy_11113">
-        <text>It's weird to see how brave you got now. But listen here. The scorcher sleeps now and then. At those times you can pass along it. This memory stick contains more details.</text>
+        <text>It's weird to see how brave you got now. But listen here. The scorcher sleeps now and then. At those times you can pass along it. This memory stick contains \nmore details.</text>
     </string>
     <string id="bar_bar_psih_talk_lisiy_11114">
         <text>Thank you.</text>
@@ -820,214 +820,214 @@
         <text>Go to hell, Bold. You knew pretty well what this is all about!</text>
     </string>
     <string id="bar_bar_psih_talk_pain_0">
-        <text>Ты в порядке?</text>
+        <text>Are you okay?</text>
     </string>
     <string id="bar_bar_psih_talk_pain_1">
-        <text>Больно! Больно! Уйдите. Я нормальный! Я справлюсь, я смогу.</text>
+        <text>It hurts! Hurts! Go away. I'm normal! I'll do my best, I can.</text>
     </string>
     <string id="bar_bar_psih_talk_pain_2">
-        <text>Это, это! Бред. Бред кругом! Уйдите!</text>
+        <text>This, this! This is bullshit. Bullshit everywhere! Get lost!</text>
     </string>
     <string id="bar_bar_psih_talk_pain_3">
-        <text>Не понимаю. Ничего не понимаю! Отпустите!</text>
+        <text>I don't understand. I can't understand anything! Let me go!</text>
     </string>
     <string id="bar_bar_visitors_10_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_10_start_711">
-        <text>Можешь рассказать что-нибудь полезное для новичка?</text>
+        <text>Can you tell me anything useful for the novice?</text>
     </string>
     <string id="bar_bar_visitors_10_start_7111">
-        <text>Для новичка говоришь? Ну слушай. На севере, совсем недалеко от "выжигателя мозгов", на старой военной базе находится группировка "Свобода". Отъявленные нигилисты, анархисты и преступники. Борцы за свободу, едрить их налево. Партизаны хреновы. Все чем они занимаются это диверсии против научных групп, обстрел армейских частей и постоянная грызня с Долгом, недавно перешедшая в маленькую войну на выживание. Я могу дать тебе только один совет - никогда с ними не связывайся, туда только совсем оторваных принимают. Если за твою голову нет награды, не примут... Ха-ха-ха... можешь себе такое представить?</text>
+        <text>For the novice you say? Well, listen then. On the North, close at hand to the "brain scorcher", at the old military base one might find "Freedom" faction \nquarters. Notorious nihilists, anarchists and criminals. Champions of freedom, damn them all. Partisan scums.</text>
     </string>
     <string id="bar_bar_visitors_10_start_71111">
-        <text>Спасибо за совет</text>
+        <text>Thanks for advise.</text>
     </string>
     <string id="bar_bar_visitors_11_start_71">
-        <text>Долг… хорошо звучит. Бывшие вояки, уважаю. Считают своим… хех… долгом защитить мир от нашествия мутантов. Наши охотники за вампирами. Только их не интересует мелочь, типа нашей "Дикой территории" им подавай гнезда да крупные скопления… горячие парни… Принимают к себе только ветеранов, оно и правильно, потому что они там в Долге не штаны протирают… а чисткой занимаются.</text>
+        <text>Duty... sounds good. Ex-militaries, respect. I think it's my.. hem.. duty to protect the world from mutants invasion. Our vampire hunters. While they are not keen \non small fries, like our "Wild territory" is, they like nests and gatherings of mutants... hot guys... They accept only veterans, which is correct, as they don't \nwaste their time there in Duty... they do the clean up.</text>
     </string>
     <string id="bar_bar_visitors_11_start_711">
-        <text>Этих самых штанов? Ладно, шучу... Они действительно достойны уважения.</text>
+        <text>Clean up their wastes, aren't they? Okay, I'm joking... they are really worth admiring.</text>
     </string>
     <string id="bar_bar_visitors_12_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_12_start_711">
         <text>Could you please tell me anything useful for the novice?</text>
     </string>
     <string id="bar_bar_visitors_12_start_7111">
-        <text>Дааа, вот была группировка… хех… по всей Зоне про нее легенды ходили… Говорили о них и хорошее и плохое, только мало кто правду знал. А правда-то в том, что с Зоной они справиться хотели, раскапывали причины ее появления. За что и охотились на них военные сталкеры, только не знали, где искать. Правительственные организации что-то знали, чего обычным сталкерам знать не следует… так-то. В один прекрасный момент они нашли какую-то очень важную информацию и часть группировки, вместе со Стрелком, рванула к центру Зоны. Половина группы полегла при подходах, но они-таки добрались. Что с ними произошло потом, никто не знает. Сгинули они похоже. А оставшихся в группировке тем временем отловили да вырезали... и никто не выжил. Вот такая вот история.</text>
+        <text>Well, there was such a faction once... heh... legends spread through the entire Zone... It was said in both good and bad way, but only few knew the truth. \nWhile the truth is that they wanted do deal with the Zone, digging for the actual reasons of its appearance. That is why they were hunted by military stalkers, \nwho basically had no idea where to search for them. Governmental organizations knew something, which mustn't be revealed to the common stalkers... that's \nas right. At one fine moment they found some very important information and the part of the grouping, together with the Gunslinger rushed to the center of the \nZone. Half of the grouping was obliterated on the approaches, but they've made it after all. What happened then is unknown. It seems that they've all died. \nAnd the ones who survived were hunt down, captured and slaughtered... no one survived. That's the whole story.</text>
     </string>
     <string id="bar_bar_visitors_12_start_71111">
-        <text>Да, очевидно, кое-кто очень заинтересован в том, чтобы Зона оставалась непознаной.</text>
+        <text>Yes, apparently, someone is very interested in the Zone to stay ignored.</text>
     </string>
     <string id="bar_bar_visitors_13_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_13_start_711">
         <text>Could you tell me anything useful as for the novice?</text>
     </string>
     <string id="bar_bar_visitors_13_start_7111">
-        <text>Группировка Наемников это что-то вроде Свободы, только хуже. У Свободы хоть идея есть, а эти шакалы на любые мерзости согласны, только плати… Перестрелять их всех и дело с концом, пока что-то опасное из Зоны в цивильный мир не притащили. Они в мертвом городе сидят. И в каждой высотке по снайперу, так-то. Чтоб чужие не ходили.</text>
+        <text>Mercenaries grouping is something similar to Freedom faction, but worse. Freedom at least has got an idea, a concept, while those jackals agree to any \nmeanness, just to get paid.... Shoot them all and there will be an end to it, until they bring anything too hazardous to the civilized world from the Zone. They are \npositioned in the Dead City. Each high-rise building has its own sniper in it, that's true. So, no one ever pokes his nose there.</text>
     </string>
     <string id="bar_bar_visitors_13_start_71111">
-        <text>Похоже, надо быть поосторожнее в мертвом городе.</text>
+        <text>It seems that one has to be twice careful in this Dead City.</text>
     </string>
     <string id="bar_bar_visitors_14_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you need?</text>
     </string>
     <string id="bar_bar_visitors_14_start_711">
         <text>Can you tell me anything useful for the novice?</text>
     </string>
     <string id="bar_bar_visitors_14_start_7111">
-        <text>Если еще не был на Арене, то советую попробовать. Денег можно заработать, себя показать. Не каждый осмеливается выйти против очередного монстра, а зря. Эх... Я вот накоплю на новую броню, обязательно пойду.</text>
+        <text>If you haven't yet been to the Arena, I advise you make a try. You can earn some money and show yourself. No everyone dares to face another monster, \nwhile they could. Well.. I'm gonna collect some moeny to buy the new armor, and will come to you then.</text>
     </string>
     <string id="bar_bar_visitors_14_start_71111">
-        <text>Может оно того и стоит, только шкурой своей лишний раз не хочется рисковать.</text>
+        <text>Maybe it's worth it, but I don't really want to risk my bacon once more.</text>
     </string>
     <string id="bar_bar_visitors_1_start_11">
-        <text>…давно было пора замочить Борова. Знал бы, кто это сделал, купил бы ему выпить.</text>
+        <text>... that Boar should have been erased long ago. If I knew who did this, I would have bought him a drink.</text>
     </string>
     <string id="bar_bar_visitors_1_start_111">
-        <text>Точно, давно пора.</text>
+        <text>Right, long ago.</text>
     </string>
     <string id="bar_bar_visitors_1_start_21">
-        <text>…кто-то сильно досадил Свободе. Слышал я, что на "Дикой территории" уничтожили отряд боевиков Свободы. Интересно, кто же это мог быть?</text>
+        <text>... someone really vexed Freedom. I've heard that Freedom combatants detachment has been eliminated at the Wild territory. Interesting, who could it be?</text>
     </string>
     <string id="bar_bar_visitors_1_start_211">
-        <text>Ага, если б знать...</text>
+        <text>Yeah, I wish I knew..</text>
     </string>
     <string id="bar_bar_visitors_1_start_31">
-        <text>…наконец-то у кого-то хватило сил уничтожить гнездо кровососов на Дикой территории… И куда только Долг смотрит?</text>
+        <text>... at last someone has got enough power to deastroy the nest of bloodsuckers at the Wild territory... Where is the Duty looking at?</text>
     </string>
     <string id="bar_bar_visitors_1_start_311">
-        <text>Долг смотрит на Свободу, куда ж еще.</text>
+        <text>Duty is looking at the Freedom, where else.</text>
     </string>
     <string id="bar_bar_visitors_1_start_41">
-        <text>…слышал я, кто-то таки прибил лидера Свободы. Теперь у них начнутся тяжелые времена, Долг, наконец, прижмет их окончательно.</text>
+        <text>... I've heard that someone has knocked off Freedom's leader. Now they will suffer bad times; Duty will drivethem into the corner at last.</text>
     </string>
     <string id="bar_bar_visitors_1_start_411">
-        <text>Будем надеяться.</text>
+        <text>Lets hope.</text>
     </string>
     <string id="bar_bar_visitors_1_start_51">
-        <text>Так это ты уничтожил ветеранов??? Ну даешь, дружище. В том районе, где они крутились, за последнее время пропало около шести сталкеров… и все давно подозревали этих съехавших с катушек ветеранов… Хорошо что их наконец прижучили.</text>
+        <text>So that is you who destroyed veterans??? That's my boy. In the region, where they've settled, nearly six stalkers gone recently and everyone suspected \nthose mad veterans... It's good that we've finally cornered them.</text>
     </string>
     <string id="bar_bar_visitors_1_start_511">
-        <text>Похоже многие хотели, чтобы ветераны "ушли".</text>
+        <text>It seems that many wanted those veterans to begone.</text>
     </string>
     <string id="bar_bar_visitors_1_start_61">
-        <text>Ты отключил излучение на Янтаре? Ну ты просто везучий псих, черт возьми, рад что хоть кто-то смог наконец справиться с ней. Эх… сколько наших там полегло, ты даже не можешь себе представить… но теперь ученые раскопают, что это было такое… теперь может и с "выжигателем мозгов" справимся…</text>
+        <text>Have you turned off the emanation at Yantar? You're just some lucky nut, damn you, I'm glad that someone was able to cope with it at last. Heh... so many of \nour guys perished there, you can even imagine... but now scientists dig there, now perhaps it will be possible to deal with the brain scorcher...</text>
     </string>
     <string id="bar_bar_visitors_1_start_611">
-        <text>Хотелось бы верить, что "выжигатель" тоже возможно "отключить".</text>
+        <text>I'd like to believe that the scorcher can as well be turned off.</text>
     </string>
     <string id="bar_bar_visitors_1_start_71">
-        <text>Чего тебе? Не видишь я пытаюсь расслабиться.</text>
+        <text>What do you want? Can't you see, I'm trying to relax.</text>
     </string>
     <string id="bar_bar_visitors_1_start_711">
-        <text>Что новенького?</text>
+        <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_1_start_7111">
-        <text>Слышал я, что вернулся Стрелок. Вместе со всем необходимым для прорыва к "исполнителю"… Только вот прячется он, потому что многие за ним охотятся. Кто-то явно, кто-то тайно. По слухам даже Долг и Свобода включились в охоту… и у каждого своя цель.</text>
+        <text>I've heard that Gunslinger has returned. Along with everything necessary to break through to the scorcher... But the snag is that he is hiding, because many \npeople are hunting him. Some openly, some - secretly. Rumors say that even Duty and Freedom has joined to the hunt... and each of them has its own goal.</text>
     </string>
     <string id="bar_bar_visitors_1_start_71111">
-        <text>Похоже Стрелок не зря прячется.</text>
+        <text>Gunslinger seems to be hiding.</text>
     </string>
     <string id="bar_bar_visitors_2_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_2_start_711">
-        <text>Что новенького?</text>
+        <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_2_start_7111">
-        <text>Был такой горбатый мужик и картавил к тому же, за горб его и прозвали Горбун. Не в себе был, сам с собой да с животными разговаривал... а в остальном вроде нормальный. Пропал в центре, вместе со Стрелком, хоть и болтают, что Стрелок вернулся.</text>
+        <text>There was a hunchbacked man burring a bit, for his hunch he was called Hunchback. He was insane, talked to himself and to the animals... and on the other \nhand he was pretty normal. Lost in the center, together with Gunslinger, but the latter is said to have returned.</text>
     </string>
     <string id="bar_bar_visitors_2_start_71111">
-        <text>Интересно где он сейчас.</text>
+        <text>Interesting where is he now.</text>
     </string>
     <string id="bar_bar_visitors_3_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_3_start_711">
-        <text>Что новенького?</text>
+        <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_3_start_7111">
-        <text>На "дикой территории" развелись кровососы, гады. Уже ночами выползать начали. А они, как известно, становятся сильнее, когда крови напьются. Но говорят, что-то важное на этом заводе находится, что-то просто жизненно необходимое. Недавно вот сунулись из Долга туда, да так все и сгинули, только крики их мы целый день по округе слышали.</text>
+        <text>Wild territory bred a lot of bloodsuckers, damn them. They have started to hunt even at nights. And them, as is well known become stronger, having sucked \nenough blood. But the factory is said to contain something really important inside it, something really vital. Recently Duty poke their noses there, but only \nscreamsover the whole neighbourhood left from them.</text>
     </string>
     <string id="bar_bar_visitors_3_start_71111">
-        <text>Спасибо за информацию.</text>
+        <text>Thanks for information.</text>
     </string>
     <string id="bar_bar_visitors_4_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_4_start_711">
         <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_4_start_7111">
-        <text>Если обойти озеро Янтарь, то лагерь научный найдешь, они там изучают что-то… Их вертолет привез, он же им регулярно провизию поставляет, так что они там хорошо окопались… С ними потолковать можно, они артефакты покупают, даже могут попросить что-то выполнить.</text>
+        <text>If you walk around Yantar lake, you will find the scientific camp, they are studying something there... They were brought here by a copter, which contrantly \nsupplies them with provision... They could be talked with, they buy artifacts and can even ask you to do some job for them.</text>
     </string>
     <string id="bar_bar_visitors_4_start_71111">
-        <text>Спасибо за информацию.</text>
+        <text>Thanks for information.</text>
     </string>
     <string id="bar_bar_visitors_5_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_5_start_711">
         <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_5_start_7111">
-        <text>Никто не может пробиться через кладбища техники из-за "Выжигателя мозгов". Было несколько свидетелей, которые видели, как какой-то сталкер перешел через невидимую грань и внезапно упал, а через несколько минут с трудом встал и не оборачиваясь ушел внутрь кладбищ, больше его не видели…</text>
+        <text>No one can break through the graveyards of machinery because of the brain scorcher. There were several witnesses, which have seen a stalker passing \nby the invisible verge and suddenly fallen, in a couple of minutes he rose and went inside the graveyard without turning back, never to be seen again...</text>
     </string>
     <string id="bar_bar_visitors_5_start_71111">
-        <text>Интересно.</text>
+        <text>Interesting.</text>
     </string>
     <string id="bar_bar_visitors_6_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_6_start_711">
         <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_6_start_7111">
-        <text>Время от времени возвращаются пропавшие сталкеры. Жуткое я тебе скажу зрелище, мычат что-то и за отсутствующее оружие тянутся. Как-то притащился один такой к заставе Долга, куча народу тогда собралась, посмотреть. Вроде узнали даже. Страшный, глаза красные, весь в кровопотеках, сказать ничего не может, только мычит и кругами ходит. Долг его к себе забрал, только издох он через пару дней. Что-то происходит в Зоне с людьми. Только вот что?</text>
+        <text>Time to time missing stalkers return. It's a sinister performance I must admit, they mumble something to themselves, trying to reach their missing weapons. \nOnce one of such kind roamed to Duty's outpost, gathering a crowd of gapers. He was likely even to be recognized. He was ugly, with eyes gone wild and \nred, body in bruises, unable to say anything, just mumbling and walking around. Duty gave him refuge, but that poor fellow kicked the bucket in a couple of \ndays. Something strange happens to people in the Zone. But what is that?</text>
     </string>
     <string id="bar_bar_visitors_6_start_71111">
-        <text>Хотелось бы я знать.</text>
+        <text>I wish I knew that.</text>
     </string>
     <string id="bar_bar_visitors_7_start_71">
-        <text>Чего тебе?</text>
+        <text>What's your business here?</text>
     </string>
     <string id="bar_bar_visitors_7_start_711">
         <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_7_start_7111">
-        <text>Зомбаки-пустышки бродят кругами вокруг озера Янтарь, увидят если, начинают и за тобой охотиться, тут уж ноги делать надо, потому как много их, сталкеров бывших. Сгинули они на этом озере, а теперь пустышки только бродят.</text>
+        <text>Zombies-dummies rove around Yantar lake, if they notice you - run away fast as you can, cos there are masses of those ex-stalkers. They perished on that \nlake, only the dummies remained.</text>
     </string>
     <string id="bar_bar_visitors_7_start_71111">
-        <text>Да уж, не хотелось бы пополнить их ряды.</text>
+        <text>Yeah, well, I'm not eager to fill up their ranks.</text>
     </string>
     <string id="bar_bar_visitors_8_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you want?</text>
     </string>
     <string id="bar_bar_visitors_8_start_711">
         <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_8_start_7111">
-        <text>Торговцы говорят, что в центре Зоны "клондайк артефактов"… типа тот, кто туда проберется сказочно разбогатеет… хех. У меня на этот счет другое мнение, торговцам оно и понятно - о своей выгоде думают, да только ходят кое-какие слухи. Будто бы там кое-что получше, чем россыпь артефактов, что-то, что не принадлежит нашему миру, вроде как инопланетное или вообще из какого-то другого измерения. Исполнитель желаний называется, во как! Я даже легенду слышал о сталкере, который добрался до него. Только, говорят Зона растет, после каждого исполненного желания и те, кто туда добрались, похоже не загадывают, чтобы Зона исчезла. Видать, когда добираешься до исполнителя уже плевать на остальных, только своя шкура волнует.</text>
+        <text>Traders say, that there is a "Klondike of artifacts" in the center of the Zone... like, the one who discovers it will be fabulously grow rich... heh. I have the other \nopinion on this point, traders can't comprehend it - they think only about their profits, but there are some gossips. Like there is something better, than the \ndeposit of artifacts, something that doesn't belong to our world, something alien or even from another dimension. It is called wish master, it is! I've even heard \na legend of a stalker to have reached it. But it's said that Zone is growing up after each fulfilled wish, apparently no one wishes the Zone to disappear. It \nseems like when you reach the Wish master, the only thing that troubles you - is your own butt.</text>
     </string>
     <string id="bar_bar_visitors_8_start_71111">
-        <text>Печально.</text>
+        <text>How sad.</text>
     </string>
     <string id="bar_bar_visitors_9_start_71">
-        <text>Чего тебе?</text>
+        <text>What do you need?</text>
     </string>
     <string id="bar_bar_visitors_9_start_711">
         <text>What's new?</text>
     </string>
     <string id="bar_bar_visitors_9_start_7111">
-        <text>Верящие в Монолит - психи. Они кричат о нем, но никто не знает, что находится в центре Зоны. Невидимый кристалл упавший с небес… Ха-ха. Я думаю, это рванула одна из секретных лабораторий. Кто-то даже говорил, что когда-то работал там. Но, конечно, бомбить Зону нельзя, мало того, что радиацию разнесет по всему миру, так еще реакция Зоны может разворотить пол-Европы… Последнее время что-то совсем у них крыша съехала… я слышал, что простых сталкеров убивать начали, за просто так. Как тебе такое? Совсем крышей съехали, фанатики чертовы.</text>
+        <text>The ones who believe in Monolith are insane. They scream the hell about it, but no one really knows what is in the center of the Zone. Invisible crystall, which \nfelt from the skies.... Hehe. I think, one of the secret laboratories blew up. Someone has said that was working there once. But, of course, Zone can't be \nbombed so simply, not only that radiation will be spread all over the world, but the reaction can put an end to the half of Europe... Recently they were driven \nround the bend.. I've heard that they even started to kill common stalkers, for no reason. How do you like that? Gone mad, damn zealots.</text>
     </string>
     <string id="bar_bar_visitors_9_start_71111">
-        <text>Мне кажется это стоит внимания.</text>
+        <text>It seems to be worth paying attention to.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_0">
         <text>I want to enter the Duty? What must I do?</text>
@@ -1051,25 +1051,25 @@
         <text>Because the bandits of Freedom has no place in this Zone, they have to be eliminated. If you are interested, than ask Barkeep, he'll explain you everything, I'm \ntoo busy for that.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_31">
-        <text>Плати взнос 1000 рублей и получишь пропуск. С ним иди к администратору Долга, он тебе назначит проверки.</text>
+        <text>Pay 1000 cash and you will be given pass. Visit Duty's administrator with it, he will assign examination for you.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_311">
-        <text>Хорошо, вот деньги.</text>
+        <text>Good, here is the money.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_3111">
-        <text>Вот и отлично, держи пропуск, и дуй с ним к администратору Петренко, я тебя отметил на карте.</text>
+        <text>That's good, take this pass and go to administrator Petrenko, I've marked him on your map.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_312">
-        <text>Нет, я передумал.</text>
+        <text>No, I've changed my mind.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_3121">
-        <text>Ну дело твое, бывай.</text>
+        <text>Well, you choose, see you.</text>
     </string>
     <string id="bar_dolg_base_guard_rules_0">
         <text>Barkeep told me, that I can check in here and learn about the rules.</text>
     </string>
     <string id="bar_dolg_base_guard_rules_1">
-        <text>Novice, you say. Well well, perfect. New people are good. Well, listen, the rules are simple. The first rule - it's forbidden to shoot on our territory. Two \nviolations and our patrol opens fire. Even if you run away, you won't be able to return here, guard will take care of you. If you behave yourself well, you \nwon't have any troubles.</text>
+        <text>Wannabe, you say. Well well, perfect. New people are good. Well, listen, the rules are simple. The first rule - it's forbidden to shoot on our territory. Two \nviolations and our patrol opens fire. Even if you run away, you won't be able to return here, guard will take care of you. If you behave yourself well, you \nwon't have any troubles.</text>
     </string>
     <string id="bar_dolg_base_guard_rules_2">
         <text>And what's the second rule?</text>
@@ -1084,13 +1084,13 @@
         <text>That's enough. If you like to try to enter Duty grouping, well, you're welcome to ask. We need good fighters. But I want to warn you, before you are affiliated, \nyou'll have to pass a number of dangerous tasks. We don't need weak pansies, therefore everyone has to pass the check-up.</text>
     </string>
     <string id="bar_dolg_base_guard_start_11">
-        <text>Стой! На территорию базы Долга дороги нет! Чужакам там делать нечего.</text>
+        <text>Stop! There is no way to Duty's base territory! Strangers must stay away.</text>
     </string>
     <string id="bar_dolg_base_guard_start_21">
-        <text>Чего стоишь? Проходи быстрее.</text>
+        <text>Why are you standing there? Pass faster.</text>
     </string>
     <string id="bar_dolg_base_guard_start_31">
-        <text>Проходи, брат. И помни, миссия Долга - очищение!</text>
+        <text>Pass bro. And remember, Duty's mission is cleansing.</text>
     </string>
     <string id="bar_dolg_base_guard_talk_0">
         <text>Why don't you let strangers in?</text>
@@ -1105,79 +1105,79 @@
         <text>Because the bandits from Freedom don't have place in the Zone and must be eliminated. If you are interested, than ask barkeep, he will explain you \neverything, and I am too busy for that.</text>
     </string>
     <string id="bar_dolg_guard_bunker_acces_0">
-        <text>Почему вы не пускаете меня в бункер?</text>
+        <text>Why don't you let me in bunker?</text>
     </string>
     <string id="bar_dolg_guard_bunker_acces_1">
-        <text>Пропуск, если хочешь чтобы мы тебя пропустили, получи специальный пропуск. Сходи к Петренко, он тебе все объяснит.</text>
+        <text>Pass, if you like us to let you in, you should receive a special pass. Go to Petrenko, he will explain you everything.</text>
     </string>
     <string id="bar_dolg_guard_bunker_start_11">
-        <text>Стой! Дальше вход только членам группировки. Без специального разрешения в бункер не пустим! Если хочешь его получить, сходи к полковнику Петренко, он в администрации через двор.</text>
+        <text>Stop! Only the members of the faction can proceed. We won't let you go in bunker without specific pass! If you want to get it, visit colonel Petrenko, he is in \nthe administration across the yard.</text>
     </string>
     <string id="bar_dolg_guard_bunker_start_21">
-        <text>Чего стоишь? Проходи быстрее.</text>
+        <text>Why are standing there? Get in.</text>
     </string>
     <string id="bar_dolg_guard_bunker_start_31">
-        <text>Проходи, брат. И помни, миссия Долга - очищение!</text>
+        <text>Pass, brother. But remember, Duty's primary mission is cleansing!</text>
     </string>
     <string id="bar_dolg_ivancov_join_0">
-        <text>Хочу вступить в группировку Долг.</text>
+        <text>I want to join Duty's faction.</text>
     </string>
     <string id="bar_dolg_ivancov_join_1">
-        <text>Иди к Петренко, он тебе все объяснит.</text>
+        <text>Go to Petrenko, he will explain you everything.</text>
     </string>
     <string id="bar_dolg_ivancov_join_11">
-        <text>А где он?</text>
+        <text>And where is he?</text>
     </string>
     <string id="bar_dolg_ivancov_join_111">
-        <text>В администрации, через дворик отсюда.</text>
+        <text>In the administration, across the yard.</text>
     </string>
     <string id="bar_dolg_ivancov_start_11">
-        <text>Чего тебе?</text>
+        <text>What do you need?</text>
     </string>
     <string id="bar_dolg_ivancov_start_21">
-        <text>Слушаю.</text>
+        <text>Yeah..</text>
     </string>
     <string id="bar_dolg_ivancov_start_31">
-        <text>Здравствуй, брат.</text>
+        <text>Hello, bro.</text>
     </string>
     <string id="bar_dolg_ivancov_test_finish_0">
-        <text>Я выполнил Ваше задание, вот архивная папка.</text>
+        <text>I've coped with your task, here is an archive folder.</text>
     </string>
     <string id="bar_dolg_ivancov_test_finish_1">
-        <text>Превосходно, будем считать, что ты прошел проверку. Держи допуск в бункер. Теперь иди к генералу Воронину, только он может принять тебя в группировку.</text>
+        <text>Perfect, lets suppose, that you've passed the examination. Take this pass to the bunker. Now go to general Voronin, only he will be able to accept you into the \nfaction.</text>
     </string>
     <string id="bar_dolg_ivancov_test_finish_2">
-        <text>Спасибо.</text>
+        <text>Thanks.</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_0">
-        <text>Меня к Вам направил полковник Петренко. Вот разрешение.</text>
+        <text>I've been sent to you by colonel Petrenko. Here is the permission.</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_1">
-        <text>Давай разрешение! …ага …хмм …гм. Итак, говоришь, у Долга появился еще один оптимист доброволец, ага?</text>
+        <text>Give it to me! .... yeah... hem... huh. So you're saying that Duty has got one more optimist volunteer, right?</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_11">
-        <text>Что-то вроде того.</text>
+        <text>Something like that.</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_111">
-        <text>Посмотрим, посмотрим. Но, прежде чем делать выводы, пройди маленькую проверку. Тебе надо достать архивную папку из заброшенного здания напротив. Задание проще простого, просто войди внутрь, возьми папку и принеси ее мне. Что может быть проще, правильно? Когда папка будет у меня, тогда и решим, годишься ты для Долга или нет.</text>
+        <text>We'll see, we'll see. But prior to making any conclusions, you have to complete a little test. You have to find the archive file from the abandoned building \nacross the road. The task is as easy as a pie, just walk inside, take the file and bring it to me. What can ever be simplier, right? When you have the file, we'll \ndecode, whether you right enough to join Duty or not.</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_1111">
-        <text>Хорошо, я быстро обернусь.</text>
+        <text>Okay, I'll be back soon.</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_1112">
-        <text>Что-то эта обманчивая легкость меня сильно настораживает. Пожалуй, не сегодня.</text>
+        <text>This deceptive easiness puts me on the guard. Probably, but not today.</text>
     </string>
     <string id="bar_dolg_leader_job_0">
-        <text>Что еще я могу сделать для Долга?</text>
+        <text>What can I do for Duty?</text>
     </string>
     <string id="bar_dolg_leader_job_1">
-        <text>Хороший вопрос, Меченый, и на него есть хороший ответ - уничтожай анархистов группировки Свобода и за каждый PDA анархиста ты будешь получать вознаграждения, кроме того, сможешь получишь новое звание. Все PDA неси к Петренко, он выдает вознаграждение.</text>
+        <text>Good question, Branded One, which eventually has a good answer - eliminate anarchists of Freedom faction and for each anarchist's PDA you will receive \nrewards, besides you can obtain a new rank. Give all PDAs to Pentrenko, he pays out the fee.</text>
     </string>
     <string id="bar_dolg_leader_join_0">
-        <text>Я хочу вступить в группировку Долг.</text>
+        <text>I want to join Duty faction.</text>
     </string>
     <string id="bar_dolg_leader_join_1">
-        <text>Похвальное желание. Полковник Петренко и капитан Иванцов мне уже доложили о тебе. Прежде, чем принять тебя, я хочу попросить выполнить одно дело. Лично для меня, понимаешь?</text>
+        <text>Laudable wish. Colonel Petrenko and captain Ivantsov have reported on you. Before I accept you, I want you to fulfil one task. Personally for me, you get it?</text>
     </string>
     <string id="bar_dolg_leader_join_11">
         <text>Думаю, что понимаю. Что я должен сделать?</text>
@@ -1468,19 +1468,19 @@
         <text>Unfortunately, I've got to go. Good luck.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_101">
-        <text>This string was added automatically</text>
+        <text>Branded One, stop them! They will perish us all!!!</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_1011">
-        <text>This string was added automatically</text>
+        <text>Sit here silently, we'll deal with them.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_10111">
-        <text>This string was added automatically</text>
+        <text>Good.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_1012">
-        <text>This string was added automatically</text>
+        <text>There is no danger in it, we can proceed.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_10121">
-        <text>This string was added automatically</text>
+        <text>Let's move faster.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_11">
         <text>Stalker, help! We were returning from Yantar, when we were hit by those bozos from "Freedom". It's said that they require this information, but I know that they'll shoot us down. Lead me to the Yantar and I'll share with you everything I know about the "brains burner", and bartender is definitely to pay you well for this kind of info.</text>
@@ -1489,7 +1489,7 @@
         <text>Okay then, follow me.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_1111">
-        <text>As you say, stalker. But you go forward, I'll follow you. I'm a bad fighter, thus scout your way yourself. </text>
+        <text>As you say, stalker. But you go forward, I'll follow you. I'm a bad fighter, thus scout your way yourself.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_112">
         <text>No. Extricate yourself on your own.</text>
@@ -1504,13 +1504,13 @@
         <text>Ooh. Are we really in safety? At last. Thanks for your help. I'm in the eternal debt before you, and now take this flash-drive. It contains the results of this expedition. I'm dead sure that the barkeep gives a worthy loot for it.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_311">
-        <text>This string was added automatically</text>
+        <text>Yes, we're at the place.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_3111">
-        <text>This string was added automatically</text>
+        <text>Branded One, if you visit our mobile laboratory at Yantar, we'll present you a scientific suit.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_31111">
-        <text>This string was added automatically</text>
+        <text>We'll see.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_41">
         <text>Greetings, stalker. On behalf of the entire world's science I express my respect to you.</text>
@@ -1552,7 +1552,7 @@
         <text>Thanks for advice.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_91">
-        <text>This string was added automatically</text>
+        <text>Faster, Branded One. It's not that time to chat.</text>
     </string>
     <string id="bar_ecolog_dialog_0">
         <text>Stalker, professor wants to talk to thee. Get to him, be so kind.</text>

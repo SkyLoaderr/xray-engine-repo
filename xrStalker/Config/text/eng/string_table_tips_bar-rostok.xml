@@ -32,10 +32,10 @@
         <text>The battle has begun!</text>
     </string>
     <string id="bar_arena_fight_bloodsucker">
-        <text>Attention everyone! The new round begins soon on the Arena! Blood-thirsty and always hungry Bloodsucker in the left corner! And, is it a man in the right corner? Oh, yes it is! Everyone calls him Branded one!</text>
+        <text>Attention everyone! The new round begins soon on the Arena! Blood-thirsty and always hungry Bloodsucker in the left corner! And, is it a man in the right corner? \nOh, yes it is! Everyone calls him Branded one!</text>
     </string>
     <string id="bar_arena_fight_burer">
-        <text>Attention everyone! The new round begins soon on the Arena! He is familiar with kung-fu, he can bend the spoons, he's Burer! And a hero, whos pursue will never end! Everyone calls him Branded one!</text>
+        <text>Attention everyone! The new round begins soon on the Arena! He is familiar with kung-fu, he can bend the spoons, he's Burer! And a hero, whos pursue will never \nend! Everyone calls him Branded one!</text>
     </string>
     <string id="bar_arena_fight_dead">
         <text>And so! The opponent has defeated the candidate. That was worth seeing!</text>
@@ -44,13 +44,13 @@
         <text>And so! The contender managed to knock down the enemy, but failed to fit in the time given and therefore lost!</text>
     </string>
     <string id="bar_arena_fight_pseudodog">
-        <text>Attention everyone! The new round begins soon on the Arena! A warm and fuzzy, but extremely spiteful Pseudo-dog in the left corner! And the came-from-nowhere and going-to-nowhere man in the right corner. Everyone calls him Branded one!</text>
+        <text>Attention everyone! The new round begins soon on the Arena! A warm and fuzzy, but extremely spiteful Pseudo-dog in the left corner! And the came-from-nowhere \nand going-to-nowhere man in the right corner. Everyone calls him Branded one!</text>
     </string>
     <string id="bar_arena_fight_savage">
-        <text>Attention everyone! The new round begins soon on the Arena! You know him, and you love him. While he hates you. The Beast in the left corner! And in the right corner, still alive, Branded one!</text>
+        <text>Attention everyone! The new round begins soon on the Arena! You know him, and you love him. While he hates you. The Beast in the left corner! And in the right \ncorner, still alive, Branded one!</text>
     </string>
     <string id="bar_arena_fight_snork">
-        <text>Attention everyone! The new round begins soon on the Arena! An expert of matrial arts and proper nurition Snork in the left corner! And a man without the past. Everyone calls him Branded one!</text>
+        <text>Attention everyone! The new round begins soon on the Arena! An expert of matrial arts and proper nurition Snork in the left corner! And a man without the past. \nEveryone calls him Branded one!</text>
     </string>
     <string id="bar_arena_fight_timeout">
         <text>Time is up! The contender has lost, but is still struggling for his life!</text>
@@ -110,7 +110,7 @@
         <text>Professor, make use of your wits. Dish out the data and be free to go.</text>
     </string>
     <string id="bar_freedom_spam_4">
-        <text>Kruglov, haven't you dug it yet?! We've knocked down your bloody copter and we demand the information that you're transporting. Once you hand it over to us, you can turn loose around with your guys. This is your last chance to get out of here, gimme the damn flash-drive and get lost.</text>
+        <text>Kruglov, haven't you dug it yet?! We've knocked down your bloody copter and we demand the information that you're transporting. Once you hand it over to \nus, you can turn loose around with your guys. This is your last chance to get out of here, gimme the damn flash-drive and get lost.</text>
     </string>
     <string id="bar_psih_come">
         <text>Urgently rush here! Near the Radar my guys have caught a crazy stalker, now trying to interrogate him.</text>
@@ -137,8 +137,8 @@
         <text>Attention! A murderer has been found! Everyone within the Duty perimeter is ordered to eliminate the murderer!</text>
     </string>
     <string id="rostok_kruglov_spam_1">
-        <text>This string was added automatically</text>
+        <text>Stalker, help! We were attacked by the mercenaries, good few of us died. Help us, we won't stay in debt.</text>
     </string>
     <string id="rostok_kruglov_spam_2">
-        <text>This string was added automatically</text>
+        <text>Help us to break through the ambush near the factory, I've copied coordinates to you. Be careful, Wolfhound with the thugs is near the copter.</text>
     </string>

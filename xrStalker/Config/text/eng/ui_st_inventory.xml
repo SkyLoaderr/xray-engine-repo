@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+    <string id="cant_sleep_near_enemies">
+        <text>can't sleep near the enemies</text>
+    </string>
+    <string id="cant_sleep_not_on_solid_ground">
+        <text>can't sleep not on the solid ground</text>
+    </string>
     <string id="ui_inv_bag">
         <text>Bag</text>
     </string>
@@ -19,7 +25,7 @@
         <text>Exit</text>
     </string>
     <string id="ui_inv_granades">
-        <text>Granades</text>
+        <text>Grenades</text>
     </string>
     <string id="ui_inv_heavy_weapons">
         <text>Heavy Weapons</text>
@@ -28,25 +34,25 @@
         <text>Items List</text>
     </string>
     <string id="ui_inv_outfit_burn_protection">
-        <text>burn protection</text>
+        <text>Burn</text>
     </string>
     <string id="ui_inv_outfit_chemical_burn_protection">
-        <text>chemical protection</text>
+        <text>Chemical burn</text>
     </string>
     <string id="ui_inv_outfit_explosion_protection">
-        <text>explosion protection</text>
+        <text>Explosion</text>
     </string>
     <string id="ui_inv_outfit_fire_wound_protection">
-        <text>fire wound protection</text>
+        <text>Bullet-proof</text>
     </string>
     <string id="ui_inv_outfit_params">
-        <text>Outfit's characteristics</text>
+        <text>Parameters</text>
     </string>
     <string id="ui_inv_outfit_shock_protection">
-        <text>shock protection</text>
+        <text>Electroshock</text>
     </string>
     <string id="ui_inv_outfit_strike_protection">
-        <text>strike protection</text>
+        <text>Strike</text>
     </string>
     <string id="ui_inv_outfits">
         <text>Outfits</text>
@@ -64,7 +70,7 @@
         <text>Rest</text>
     </string>
     <string id="ui_inv_rifles">
-        <text>Assault rifles and machine guns</text>
+        <text>Machine-guns</text>
     </string>
     <string id="ui_inv_shop">
         <text>Shop</text>
@@ -84,11 +90,4 @@
     <string id="ui_inv_weight">
         <text>Weight</text>
     </string>
-    <string id="cant_sleep_near_enemies">
-		<text>cant sleep near enemies</text>
-    </string>
-    <string id="cant_sleep_not_on_solid_ground">
-		<text>cant sleep not on solid ground</text>
-    </string>
-    
 </string_table>

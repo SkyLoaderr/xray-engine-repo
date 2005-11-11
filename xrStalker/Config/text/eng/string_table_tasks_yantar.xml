@@ -1,12 +1,12 @@
     <string id="yan_find_scientist">
-        <text>Найти ученого!</text>
+        <text>Find the scientist!</text>
     </string>
     <string id="yan_kill_brain">
-        <text>Найти и убить Мозг!</text>
+        <text>Find and eliminate the Brain!</text>
     </string>
     <string id="yan_kill_brain_task">
-        <text>убить Мозг!</text>
+        <text>Eliminate the Brain!</text>
     </string>
     <string id="yan_psi_zone_find">
-        <text>Довести ученого до зоны излучения</text>
+        <text>Accompany the scientist to the radiation zone.</text>
     </string>

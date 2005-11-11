@@ -2,7 +2,7 @@
         <text>Give hunter the family rifle back</text>
     </string>
     <string id="bar_bring_pda_lucky">
-        <text>Bring that PDA to batender as a proof</text>
+        <text>Bring that PDA to Barman as a proof</text>
     </string>
     <string id="bar_crazy_veterans_quest">
         <text>Neutralize insane veterans</text>
@@ -86,13 +86,13 @@
         <text>Kill professor Kruglov.</text>
     </string>
     <string id="bar_kill_professor_info">
-        <text>Help the Freedom combatants in their hunt on professor Kruglov.</text>
+        <text>Help the Freedom combatants in their hunt for professor Kruglov.</text>
     </string>
     <string id="bar_kill_professor_kill">
         <text>Kill Professor Kruglov</text>
     </string>
     <string id="bar_kill_professor_reward">
-        <text>Obtain award from the informer in the bar</text>
+        <text>Obtain reward from the informer in the bar</text>
     </string>
     <string id="bar_kill_veterans">
         <text>Destroy the camp of mad veterans</text>
@@ -101,13 +101,13 @@
         <text>Save the research of Professor Kruglov.</text>
     </string>
     <string id="bar_resque_scientific_information">
-        <text>By all means possible save the research results from the hands of the Freedom.</text>
+        <text>...</text>
     </string>
     <string id="bar_resque_scientific_information_bring">
         <text>Deliver the flash memory card to bartender.</text>
     </string>
     <string id="bar_resque_scientific_information_get">
-        <text>Obtain a flash memory card with the research results from the professor..</text>
+        <text>Obtain a flash memory card with the research results from the professor.</text>
     </string>
     <string id="bring_secret_documents">
         <text>Deliver the documents to bartender</text>
@@ -116,10 +116,10 @@
         <text>Bring to bartender</text>
     </string>
     <string id="deactivate_radar_now">
-        <text>Deactivate the radar</text>
+        <text>Deactivate the equipment</text>
     </string>
     <string id="descr_deactivate_radar">
-        <text>Disable brain burnout.</text>
+        <text>Disable brain scorcher.</text>
     </string>
     <string id="find_and_deactivate_radar">
         <text>Locate and deactivate the radar</text>

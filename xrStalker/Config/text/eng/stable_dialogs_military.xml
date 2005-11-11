@@ -280,7 +280,7 @@
         <text>Wow, what a knockout! Take your prize :)</text>
     </string>
     <string id="mil_dolg_dialog_1001">
-        <text>Well we want to punish that big boss from "Freedom" for murdering our guy. What a bedlam.\nIf you want to earn something, eliminate sniper on the tower, cos we've got sniper rifle broken. Right in time, damn it.</text>
+        <text>Well we want to punish that big boss from "Freedom" for murdering our guy. What a mess.\nIf you want to earn something, eliminate sniper on the tower, cos we've got sniper rifle broken. Right in time, damn it.</text>
     </string>
     <string id="mil_dolg_dialog_1002">
         <text>OK. I'll do that.</text>
@@ -733,37 +733,37 @@
         <text>Why are you sitting here?</text>
     </string>
     <string id="mil_hunter_dialog_205">
-        <text>This string was added automatically</text>
+        <text>We are here to search for the artifacts, but two of our team perished. It seems that some beast broke through from the Radar.</text>
     </string>
     <string id="mil_hunter_dialog_3">
         <text>And what is happening here?</text>
     </string>
     <string id="mil_hunter_dialog_301">
-        <text>This string was added automatically</text>
+        <text>How are you getting on?</text>
     </string>
     <string id="mil_hunter_dialog_302">
-        <text>This string was added automatically</text>
+        <text>Fine. I've beaten the beast.</text>
     </string>
     <string id="mil_hunter_dialog_303">
-        <text>This string was added automatically</text>
+        <text>Well, and how does it look like?</text>
     </string>
     <string id="mil_hunter_dialog_304">
-        <text>This string was added automatically</text>
+        <text>Like a stange guy in some ragged robe, go and see. It iaffects the brain, damn it. By the way, you guys are resting near the water-tower, and apparently \nthey've shot themselves.</text>
     </string>
     <string id="mil_hunter_dialog_305">
-        <text>This string was added automatically</text>
+        <text>Eh, that's bad... Thanks, bro.</text>
     </string>
     <string id="mil_hunter_dialog_306">
-        <text>This string was added automatically</text>
+        <text>Welcome...</text>
     </string>
     <string id="mil_hunter_dialog_4">
         <text>A hell knows. Some beast appeared here, or even several of them. That's how we got here.\n</text>
     </string>
     <string id="mil_hunter_dialog_401">
-        <text>This string was added automatically</text>
+        <text>What are you wandering here like a ghost?</text>
     </string>
     <string id="mil_hunter_dialog_402">
-        <text>This string was added automatically</text>
+        <text>Oh, nothing, just looking around.</text>
     </string>
     <string id="mil_hunter_dialog_5">
         <text>So you don't even know yourself?</text>
@@ -778,7 +778,7 @@
         <text>As you like...</text>
     </string>
     <string id="mil_leader_start_dialog_10001">
-        <text>Прими благодарность за помощь ребятам на "Барьере", так и быть, можешь отдыхать на территории базы, когда захочешь и можешь рассчитывать на помощь. Ну, а от меня лично - денежное вознаграждение.</text>
+        <text>Take a gratitude for you assistance to guys from "Barrier", ok you can rest on the base territory, and you may ask for our help? when you want. From me \npersonally you get a money reward.</text>
     </string>
     <string id="mil_leader_start_dialog_1001">
         <text>Hi, stalker. What do you need?</text>
@@ -787,7 +787,7 @@
         <text>I'm here on business.</text>
     </string>
     <string id="mil_leader_start_dialog_11001">
-        <text>Какого ... ты сбежал с блокпоста ? Шагай с базы, чтобы я тебя не видел...</text>
+        <text>What the... you left the blockpost? Get lost the base so I couldn't see you again.</text>
     </string>
     <string id="mil_leader_start_dialog_1101">
         <text>And what kind of business do you have?</text>
@@ -802,7 +802,7 @@
         <text>The group of Duty has dispatched your patrol on the road to "Rostok". And to all appearances are going to visit us. And I don't actually like the order within the Duty and I've decided to notify you. They've camped at the farm, between the base and the road to "Rostok". Eight persons, heavily armed.</text>
     </string>
     <string id="mil_leader_start_dialog_12001">
-        <text>Итак, с задачей стукача ты не справился, с блокпоста сбежал... Вали с базы, чтобы я тебя не видел...</text>
+        <text>So, you haven't coped with Squealer task, you've abandoned the armypost... Get lost from the base, go away!</text>
     </string>
     <string id="mil_leader_start_dialog_1210">
         <text>Damn. Those get-goats are not going to leave it. Okay, then we'll have to punish them. Well, stalker, help us and we'll be grateful to you. Go to Max, he's like a corporal in here, he gathers the team and you'll dig those goats out.</text>
@@ -880,7 +880,7 @@
         <text>Well, then continue roaming - we don't need the help of such sissies.</text>
     </string>
     <string id="mil_leader_start_dialog_7008">
-        <text>Уже пошел...</text>
+        <text>I'm already gone...</text>
     </string>
     <string id="mil_leader_start_dialog_8001">
         <text>You've failed the task and now we won't be able to see those documents. We don't need such loosers.</text>
@@ -895,7 +895,7 @@
         <text>No, so far.</text>
     </string>
     <string id="mil_leader_start_dialog_9001">
-        <text>Я же тебе сказал - иди на блокпост.</text>
+        <text>I told you go to the blockpost.</text>
     </string>
     <string id="mil_max_dialog_1001">
         <text>Lucash told me that you would suit well. Have you seen the fellas at the farm?</text>
@@ -1093,19 +1093,19 @@
         <text>Sure. It's Kep and his "paladins" who's here for only for him comprehensible noble aims.And we? We are just ordinary guys, who want to live the way we do. Kep is not aware of our position but he's a clever man and understands that six extra guns won't do any bad. That's how the things are.</text>
     </string>
     <string id="mil_patrol_dead_dialog_0">
-        <text>Куда идем и с какой целью ?</text>
+        <text>Where are you going and what is youк purpose?</text>
     </string>
     <string id="mil_patrol_dead_dialog_1">
-        <text>А с какой целью можно еще шляться по Зоне ?</text>
+        <text>What can be the purpose in walking around the Zone?</text>
     </string>
     <string id="mil_patrol_dead_dialog_2">
-        <text>Ты, брат, не хами... Отвечай.</text>
+        <text>Hey man, don't be rude, answer.</text>
     </string>
     <string id="mil_patrol_dead_dialog_3">
-        <text>За артефактами, конечно.</text>
+        <text>Searchin artifacts, of course.</text>
     </string>
     <string id="mil_patrol_dead_dialog_4">
-        <text>Ничего лучше ты придумать не мог ? Ладно, иди, но не вздумай буйствовать - здесь база группировки "Свобода" и веди себя хорошо.</text>
+        <text>Couldn't have think something better out? OK, go, and don't brawl, it'a a base of "Freedom" fraction, so play nice.</text>
     </string>
     <string id="mil_patrol_dialog1_0">
         <text>You are on Freedom's base, lad, so behave accordingly.</text>
@@ -1162,49 +1162,49 @@
         <text>Eee....i'd better be going.</text>
     </string>
     <string id="mil_screw_dialog_1000">
-        <text>This string was added automatically</text>
+        <text>Well, dude, is everything fixed?</text>
     </string>
     <string id="mil_screw_dialog_1001">
-        <text>This string was added automatically</text>
+        <text>Why fixed?</text>
     </string>
     <string id="mil_screw_dialog_1002">
-        <text>This string was added automatically</text>
+        <text>Oh, I'm sick and tired of it. If something spoiles anywhere, they immediately ask me to fix it.</text>
     </string>
     <string id="mil_screw_dialog_1003">
-        <text>This string was added automatically</text>
+        <text>And who are you?</text>
     </string>
     <string id="mil_screw_dialog_1004">
-        <text>This string was added automatically</text>
+        <text>I'm you dear old... mechanician. Home-maker, darn. Fixing and repairing guns, and everything that is gathered here. Well, I've decided to bring all the stuff into \nan order.</text>
     </string>
     <string id="mil_screw_dialog_1005">
-        <text>This string was added automatically</text>
+        <text>How are you doing?</text>
     </string>
     <string id="mil_screw_dialog_1006">
-        <text>This string was added automatically</text>
+        <text>I've managed to patch up one machine. While the others are just a mere trash. Do you have vodka? I could give you a scope as reward...</text>
     </string>
     <string id="mil_screw_dialog_1100">
-        <text>This string was added automatically</text>
+        <text>Alack, I don't have...</text>
     </string>
     <string id="mil_screw_dialog_1101">
-        <text>This string was added automatically</text>
+        <text>Pity. But if you find one - come again...</text>
     </string>
     <string id="mil_screw_dialog_1102">
-        <text>This string was added automatically</text>
+        <text>Bye.</text>
     </string>
     <string id="mil_screw_dialog_1200">
-        <text>This string was added automatically</text>
+        <text>Not a bad deal. Take it.</text>
     </string>
     <string id="mil_screw_dialog_1201">
-        <text>This string was added automatically</text>
+        <text>Well, thanks. I'll rest with it later...</text>
     </string>
     <string id="mil_screw_dialog_1202">
-        <text>This string was added automatically</text>
+        <text>Good luck.</text>
     </string>
     <string id="mil_screw_dialog_2">
-        <text>This string was added automatically</text>
+        <text>Don't disturb me, I'm thinking...</text>
     </string>
     <string id="mil_screw_dialog_2000">
-        <text>This string was added automatically</text>
+        <text>Okay.</text>
     </string>
     <string id="mil_trader_dialog_1001">
         <text>What do you need?</text>
@@ -1228,115 +1228,115 @@
         <text>Well, what have you got?</text>
     </string>
     <string id="mil_trader_dialog_3001">
-        <text>Ну, что надо ?</text>
+        <text>So what do you want?</text>
     </string>
     <string id="mil_trader_dialog_3002">
-        <text>Да вот, хочу у тебя про артефакты спростить. Где можно разжиться ?</text>
+        <text>I want to ask about where can I get some artifacts?</text>
     </string>
     <string id="mil_trader_dialog_3003">
-        <text>Там же, где и всегда - в аномалиях. Какой ты глупый... Но, есть еще варианты...</text>
+        <text>At the same place as usual - in anomalies. What a fool you are! But... there's some variants.</text>
     </string>
     <string id="mil_trader_dialog_3004">
-        <text>Огласи весь список.</text>
+        <text>Announce the whole list.</text>
     </string>
     <string id="mil_trader_dialog_3005">
-        <text>Ну, первый пункт ясен - в аномалиях. Второй - я могу дать тебе "Кристалл", если ты окажешь одну услугу...</text>
+        <text>First way is clear - in anomalies. Second - I can give you "Crystal flower", if you do me a favour...</text>
     </string>
     <string id="mil_trader_dialog_3006">
-        <text>Какую ?</text>
+        <text>What a favour?</text>
     </string>
     <string id="mil_trader_dialog_3007">
-        <text>Тройка наших ребят отправилась в деревню - там какая-то тварь завелась. Поможешь им ее заломать - так и быть, отдам тебе "Кристалл".</text>
+        <text>My people can not get any artifact from the village, they have fear. They say some beast is there. When you clear up the situation you get a "Crystal flower"</text>
     </string>
     <string id="mil_trader_dialog_3008">
-        <text>А тебе то это зачем ?</text>
+        <text>Is it so bad?</text>
     </string>
     <string id="mil_trader_dialog_3009">
-        <text>Блин, ну какой ты непонятливый. Там в аномалиях попадаются артефакты, но народ боится туда идти из-за мутанта, который там объявился и, соответственно, мне нечем торговать. А если мутанта завалят, то народ будет вылавливать там хабар и нести мне. Усек ?</text>
+        <text>It is worse. They reported a couple of guys went to the village and didn't return. And another tree are sitting near the village. Fucking bold men.</text>
     </string>
     <string id="mil_trader_dialog_3010">
-        <text>Понятно. Ладно, прогуляюсь пожалуй...</text>
+        <text>I see, I guess I go there...</text>
     </string>
     <string id="mil_trader_dialog_3011">
-        <text>Другое дело. Ты, если что найдешь - тащи, я возьму по хорошей цене.</text>
+        <text>That's a horse of a different colour. When you find something - I buy it at a good price.</text>
     </string>
     <string id="mil_trader_dialog_3020">
-        <text>Да ну его к монахам...</text>
+        <text>Let he goes to hell...</text>
     </string>
     <string id="mil_trader_dialog_3021">
-        <text>Как знаешь...</text>
+        <text>As you wish...</text>
     </string>
     <string id="mil_trader_dialog_3100">
-        <text>Видел я там твоих ребят.</text>
+        <text>I saw you guys there.</text>
     </string>
     <string id="mil_trader_dialog_3101">
-        <text>И что ?</text>
+        <text>Yeah, and?</text>
     </string>
     <string id="mil_trader_dialog_3110">
-        <text>Сидят, осматриваются...</text>
+        <text>They are sitting looking around...</text>
     </string>
     <string id="mil_trader_dialog_3111">
-        <text>Ну, если ты им поможешь в охоте, то я дам тебе артефакт под названием "Кристалл". Ну как ?</text>
+        <text>Well, if you help them in hunt, I'll give you an artifact "Crystall flower". What can you say?</text>
     </string>
     <string id="mil_trader_dialog_3200">
-        <text>Мы поговорили и пошли по деревне - мутанта какого-то ловить...</text>
+        <text>We talked and went along the village to catch some kind of mutant...</text>
     </string>
     <string id="mil_trader_dialog_3201">
-        <text>И что ? Не тяни кота за хвост !</text>
+        <text>So, what? Don't beat about the bush!</text>
     </string>
     <string id="mil_trader_dialog_3300">
-        <text>Завалили мы тварь какую-то, но ребята погибли. Как подошли к водокачке, они за головы похватались, да и у меня туман кровавый перед глазами... Тварь эта на мозги действует. Завалил я ее, но ребятам это уже не помогло.</text>
+        <text>We butchered some beast but guys are dead. As we approached water-tower they grasped their hands and I got a bloody mirage before my eyes... This \nbeast effects one's brain. I shot it, but it didn't help guys.</text>
     </string>
     <string id="mil_trader_dialog_3301">
-        <text>Хреново дело... Угрюмый - умелый сталкер. Жаль. Ладно, возьми артефакт за то, что ребятам помог...</text>
+        <text>Awfull... Gloomy was a skillful stalker. It's a pity. OK, take this artifact for you helped guys.</text>
     </string>
     <string id="mil_trader_dialog_3310">
-        <text>Ну, ребята пошли охотиться, а я сюда вернулся...</text>
+        <text>The guys went hunting, I came back here...</text>
     </string>
     <string id="mil_trader_dialog_3311">
-        <text>Понятно.</text>
+        <text>I see.</text>
     </string>
     <string id="mil_trader_dialog_3400">
-        <text>У тебя можно снаряжением разжиться ?</text>
+        <text>Can I get an equipment by you.</text>
     </string>
     <string id="mil_trader_dialog_3401">
-        <text>Ну, за определенную плату можно все...</text>
+        <text>Well, for some money you can everything...</text>
     </string>
     <string id="mil_trader_dialog_4001">
-        <text>Как прошла охота ?</text>
+        <text>How was the hunt?</text>
     </string>
     <string id="mil_trader_dialog_4002">
-        <text>Хреново. Тварь ваша на мозги действует. Ребята полегли...</text>
+        <text>Bad. This creature effects one's brain. The guys are dead...</text>
     </string>
     <string id="mil_trader_dialog_4003">
-        <text>Как ?</text>
+        <text>How?</text>
     </string>
     <string id="mil_trader_dialog_4004">
-        <text>Сначала все было более-менее прилично, а когда добрались до водокачки с ними что-то случилось - оружие побросали и схватились за головы. У меня самого перед глазами туман кровавый появился, но тут тварь появилась. На человека похоже, в рванье каком-то. Еле завалил. А как тварь сдохла, то и ребята умерли. Может она им что-то с мозгами сделала... Я сам себя хреново чувствую...</text>
+        <text>Fist it was everything ok, as we reached the water-tower it something happened to them. They threw weapons and grasped their heads. I got a a bloody \nmirage before my eyes as this beast appeared. Human alike in some shabby clothes. I hardly killed it. As this beast croaked the guyes died too. Maybe it \neffects on their brains... I feel bad until now...\n</text>
     </string>
     <string id="mil_trader_dialog_4005">
-        <text>Хреново дело... Угрюмый - умелый сталкер. Жаль. Ладно, вот плата за твою работу.</text>
+        <text>Damn it... Gloomy was skillful stalker. It's a pity. OK, here is you reward.</text>
     </string>
     <string id="mil_trader_dialog_5001">
-        <text>Я же тебе сказал - найди Угрюмого в деревне.</text>
+        <text>I told you find Gloomy in the village.</text>
     </string>
     <string id="mil_trader_dialog_5002">
-        <text>Да ну его на хрен...</text>
+        <text>Fuck him...</text>
     </string>
     <string id="mil_trader_dialog_5003">
-        <text>Ну, тогда и награды не будет.</text>
+        <text>You won't get a reward then.</text>
     </string>
     <string id="mil_trader_dialog_5004">
-        <text>Да и не надо.</text>
+        <text>I don't need i.</text>
     </string>
     <string id="mil_trader_dialog_5010">
-        <text>Все, иду.</text>
+        <text>OK, I'm going</text>
     </string>
     <string id="mil_trader_dialog_6001">
-        <text>Итак, задачку ты завалил... И артефакта я тебе не дам.</text>
+        <text>So you failed the mission... You won't get an artifact.</text>
     </string>
     <string id="mil_trader_dialog_6002">
-        <text>Не очень-то и хотелось.</text>
+        <text>I didn't really want to.</text>
     </string>
     <string id="mil_zoneguard_common1_0">
         <text>Have you got a cook here ?</text>

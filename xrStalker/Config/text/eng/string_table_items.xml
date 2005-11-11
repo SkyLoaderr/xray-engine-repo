@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="agr_nii_security_plan_flash">
-        <text>A flash memory card of soldier from Agroprom RI</text>
+        <text>Flash memory drive of soldier from Agroprom RI</text>
     </string>
     <string id="item test1">
         <text>This is a ITEM test string</text>

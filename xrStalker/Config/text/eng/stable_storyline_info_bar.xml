@@ -1,45 +1,45 @@
     <string id="bar_ecolog_research_corrupted">
-        <text>Я, профессор Круглов, во имя науки и человечества, стираю отчеты наших исследований. Опасные знания не должны попасть в руки неблагонадежных элементов, которые воспользуются ими в своих преступных целях. Тот, кто прочтет эту запись, пусть знает, что наша группа была сбита над «дикой территорией» анархистами Свободы, под предводительством известного головореза Волкодава. И знайте, что, скорее всего, нас уже нет в живых.</text>
+        <text>I, professor Kruglov, in the name of science and humanity delete the reports of our researches. Unsafe knowledge mustn't get to the hands of malevolent \nelements, who will use them in their criminal aims. Those who read this note should know, that our group has been hit over the "wild territory" by Freedom \nanarchists, under command of famous cutthroat Wolfhound. And to the moment you are reading this note, we are most likely to be dead.</text>
     </string>
     <string id="bar_ecolog_research_normal">
-        <text>... как оказалось, излучение прежде всего воздействует на высшие области мышления. Опыты показали, что только человек и животные с высокоорганизованным мышлением, такие как собаки, лошади, чувствительны к этому излучению. Из них лишь человек полностью подвержен эффекту погружения в транс, на подопытных животных эффект оставался в пределах сильного страха. Исходя из этих предпосылок, можно сделать вывод о специализации воздействия исключительно на человеческий мозг. Продолжительные эксперименты на «добровольцах» показали, что эффект транса может быть снят при медикаментозном лечении. Также, нами были разработаны экспериментальные устройства, которые защищают человеческий мозг от дозированного воздействия излучения. По нашим расчетам источник излучения находится в центре озера Янтарь, вероятнее всего природа источника искусственная и вполне возможно отключить его. Также, есть опасность, что неблагонадежные элементы могут получить доступ к источнику излучения и попытаться взять его под свой контроль.</text>
+        <text>... as it turned out to be, the radiation above all influences the higher spheres of thinking. The experienced showed that only human and animals with highly \norganized reasoning, such as dogs, horses, sensible to this emanation. Out of the elements abovementioned, only human is most subjected to deep into the \ntrance, the laboratory animals only suffered the great effect withing the bounds of fear. Basing upon these suppositions, we can make a conclusion about the \nspecialization of influencing exclusively human brain. The continual experiments on the "volunteers" proved that the trance effect can be palliated with \nmedicinally treatment. Also we've developed the experimental devices that protect the human brain from dosed emanation influence. According to our \ncalculations the source of radiation is situated in the center of Yantar lake, most probably the nature of the source is artificial and it's highly possible to \ndeactivate them. Also, there is a danger, that unreliable elements can gain access to the source of emanation and take it under it's control.</text>
     </string>
     <string id="bar_radar_shedule">
-        <text>Радар отключается в 8:30, включается в 9:00</text>
+        <text>Radar is turned off at 8:30 and turned on again at 9:00</text>
     </string>
     <string id="descr_bar_crazy_veterans_quest">
         <text>Barkeep: "We have one serious thing to do. There is a group of stalkers-veterans on the "wild territory" and recently the cases of single stalkers deaths \nbecame more frequent in their "region". Duty's people came to me and asked to deal with these veterans. Duty has irrefutable edivence of veterans' \nconnection to singles assassinations. The point is that Duty has an old treaty with them, which is impossible for them to be violated, while these guys are \nbecoming really impudent. To be short, Duty wants them to be taken out silently. The task is complex, but it is well paid. Duty is caring highly of their name. \nThus, they want to do everything silently. You're enough to eliminate their boss named "Lucky" and bring his PDA as a proof.</text>
     </string>
     <string id="descr_bar_darklab_documents">
-        <text>Barkeep: "Stalkers have been interested in passage to the North, to the center, for a couple of years. But inasmuch as the passage is closed, and those who \npicked their way towards there haven't yet returned.  </text>
+        <text>Barkeep: "Stalkers have been interested in passage to the North, to the center, for a couple of years. But inasmuch as the passage is closed, and those who \npicked their way towards there haven't yet returned. There is an information about some kind of "brain scorcher", which blocks up the way to the North, but \nwhat kind of thing is that remains unknown. According to the documents, which you have fetched from Agroprom, something is becoming clear. It seems that \nthe "brain scorcher" has got an artificial nature. We need more data to tell more correctly. Lab X18  is mentioned in documents, which is said to be working on \nthis project. The descriptions meet the abandoned underground premises at Dark Valley, known as the "dark laboratory". It's necessary to search this \nlaboratory thoroughly. When Zone blew out, nobody had time to evacuate anything. For sure, a lot of stuff remained there. If you bring the document files \nabout the "antennas" or about the "oscillator", I'll pay you good. Besides, I'll share with you information on the oscillator. That's it. The task is dangerous, no \nquestions. What is happening there is unknown, moreover the Dark Valley has always been the unsafe place. So try to be really careful there."</text>
     </string>
     <string id="descr_bar_dolg_community_quest">
-        <text>This string was added automatically</text>
+        <text>In order to join "Duty" you have to receive the approval of one of the most competent fighters of the faction. And prove the "Duty's" leader that you are worthy \nof being one of them.</text>
     </string>
     <string id="descr_bar_dolg_svoboda_ambush_quest">
-        <text>This string was added automatically</text>
+        <text>Barman: "You task is to eliminate Tyran, leader of Mercenaries grouping. The Mercenaries detachment has broken through to the wild territory and settled at \nthe building site. Be careful, the part of the combatants camped at the approaches to the site. When you bring me Tyran's PDA, you'll receive the reward."</text>
     </string>
     <string id="descr_bar_dolg_svoboda_leader_kill_quest">
-        <text>This string was added automatically</text>
+        <text>General Voronin: "The war with Freedom comes to an end, Branded One. You have made a good contribution to the common cause, and now I wish to dot \nthe i's in this war. I want you to eliminate the leader of Freedom."</text>
     </string>
     <string id="descr_bar_dolg_test_quest">
-        <text>This string was added automatically</text>
+        <text>Captain Ivantsov: "...prior to making any conclusions, you must take a brief check-up. You have to find the archival file from the abandoned building accross \nthe way. The task is of the simple ones, just enter the building, grab the file and fetch it to me. What can ever be easier, right? When I have the file, than we'll \ndecide whether you suit Duty or not."</text>
     </string>
     <string id="descr_bar_hunter_rifle">
-        <text>This string was added automatically</text>
+        <text>Hunter: "Damn it, it seems that I've lost the family rifle at the wild territory. I was intending to shoot some bloodsuckers, but ultimately has barely saved my ass. \nDamn it! Listen, fella, if you bring me my rifle, I'll reward you. I've earned a bit, and I will give you everything, just bring my rifle back to me. It belongs to my \nfamily, it was passed down from father to son during many generations. And what of it - I've lost it. It's a part of me, it's... my precious. I'll give you everything, \nbut pray bring it to me.</text>
     </string>
     <string id="descr_bar_kill_professor">
-        <text>This string was added automatically</text>
+        <text>Wolfhound: "We've got a little hunt here. We've pressed the scientists, there behind the copter. By fellas are firing at them from time to time, in order not to let \nthem escape. So you join us, we'll be finishing them. If you help us, I'll give you the scientific suit, taken from the brought down helicopter. You target - \nprofessor Kruglov, kill him, otherwise he escapes during the battle, I know his kind. If you kill him - suit is yours, if not - your problems."</text>
     </string>
     <string id="descr_bar_radar_deactivate">
-        <text>This string was added automatically</text>
+        <text>Barkeep: "So, Branded One. You have the "Cap", so to cover yourself from the "brain scorcher", there is the time - from 08:30 till 09:00 and in the evening \n22:30 till 23:00. Totally you'll have half an hour reserve, during this time you'll have to break into the bunker and turn off the scorcher. What will go next is \nunknown, but I feel it is worth it. Generally speaking, it has to be turned off. You have all the necessary information. Good luck, Branded One. And one more \nthing... be careful."</text>
     </string>
     <string id="descr_bar_resque_information">
-        <text>This string was added automatically</text>
+        <text>Kruglov: "Stalker, help! We were attacked by mercenaries, good few of our guys died. Help us, we won't stay in debt"\n\n"... be careful there, there are 15 men or else, we don't know exactly"</text>
     </string>
     <string id="descr_bar_x16_documents">
-        <text>This string was added automatically</text>
+        <text>Barkeep: "Well, that's clear. I don't want to upset you, but it's just a part of what we need. But here is the link to the other part. Go to the scientists, get the \ndocuments from x16."</text>
     </string>
     <string id="rostok_tunel_gordon_diary">
-        <text>12.01.2012 \n Черт бы побрал это начальство. Не дадут покоя старику. Сперва "Черная Месса", затем непонятный город в России. Теперь вот опять: поезжай ка ты, старина Гордон, в бескрайние степи Украины. Держи свою фомку и удачного времяпровождения. \n \n 20.03.2012 \n Пробрался в Зону. Неужели здесь нет медведей? И с кем мне тогда предстоит сражаться? В целом осваиваюсь с трудом. В Америке меня все узнают и гамбургерами за бесплатно кормят. А здесь за мясную консерву пришлось отдать ломик. \n \n 26.04.2012 \n Начался выброс. Бармен сказал, чтобы я поскорее спрятал свою американскую задницу и не высовывался. Выгнал из заброшенного туннеля нескольких крыс. Надеюсь переждать в нем непогоду.</text>
+        <text>12.01.2012 \n Damn that management. They can't give rest to the old man. "Black mess" firstly, then the odd city in Russia. Now again: go, dear Gordon, to the boudless \nsteppes of Ukraine. Here is your crow-bar and wish you good pastime.\n \n 20.03.2012 \n Made it in the Zone. I can hardly believe that there are no bears here? And whom else will I have to fight with here? Well, I'm getting used very hard. In \nAmerica all recognize me by a single glance and treat me with burgers for free. And here I had to sell my crow-bar for the canned meat.\n \n 26.04.2012 \n The blow-out began. Barman told me to hide my american butt as soon as possible and not to show up. I've driven out several rats from the abandoned \ntunnel. I hope I could wait this damn foul weather through.</text>
     </string>

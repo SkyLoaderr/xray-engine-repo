@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+    <string id="level_changer_invitation">
+        <text>Go to next level?</text>
+    </string>
+    <string id="pda_btn_accomplished">
+        <text>Accomplished</text>
+    </string>
+    <string id="pda_btn_active">
+        <text>Active</text>
+    </string>
     <string id="pda_btn_contacts">
         <text>Contacts</text>
-    </string>
-    <string id="pda_btn_encyclopedia">
-        <text>Encyclopedia</text>
-    </string>
-    <string id="pda_btn_quests">
-        <text>Quests</text>
-    </string>
-    <string id="pda_btn_map">
-        <text>Map</text>
-    </string>
-    <string id="pda_btn_ranking">
-        <text>Rankings</text>
-    </string>
-    <string id="pda_btn_statistics">
-        <text>Statistics</text>
     </string>
     <string id="pda_btn_diary">
         <text>Diary</text>
     </string>
-
-    <string id="pda_btn_news">
-        <text>News</text>
+    <string id="pda_btn_encyclopedia">
+        <text>Encyclopaedia</text>
+    </string>
+    <string id="pda_btn_failed">
+        <text>Failed</text>
     </string>
     <string id="pda_btn_info">
         <text>Info</text>
@@ -31,20 +27,25 @@
     <string id="pda_btn_journal">
         <text>Journal</text>
     </string>
-    <string id="pda_btn_active">
-        <text>Active</text>
+    <string id="pda_btn_map">
+        <text>Map</text>
     </string>
-    <string id="pda_btn_accomplished">
-        <text>Accomplished</text>
-    </string>
-    <string id="pda_btn_failed">
-        <text>Failed</text>
+    <string id="pda_btn_news">
+        <text>News</text>
     </string>
     <string id="pda_btn_own">
-        <text>Own</text>
+        <text>Personal</text>
     </string>
-    
-	<string id="level_changer_invitation">
-		<text>Change level ?</text>
-	</string>
+    <string id="pda_btn_quests">
+        <text>Quests</text>
+    </string>
+    <string id="pda_btn_ranking">
+        <text>Ranking</text>
+    </string>
+    <string id="pda_btn_reputation">
+        <text>Reputation</text>
+    </string>
+    <string id="pda_btn_statistics">
+        <text>Statistics</text>
+    </string>
 </string_table>

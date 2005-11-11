@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="pri_followers_start_dlg_11">
-        <text>Пошли с нами?</text>
+        <text>Hi, Branded One. We are going to break through to the station. It's said that there are lots of nice stuff there. We can do good money. We have a map and I \nknow the safe way, are you going with us?</text>
     </string>
     <string id="pri_followers_start_dlg_111">
-        <text>Ок. Идем.</text>
+        <text>OK, what do I have to do?</text>
     </string>
     <string id="pri_followers_start_dlg_1111">
-        <text>This string was added automatically</text>
+        <text>Well, here it is. I'm leading the group. Don't run forward, or we won't be able to cover you. Watch your back and what's more important cover our rocketeer \nSasha. He is our last hope in case of big troubles. Communication only over the radio. Plus, we have hacked the wave of militaries - it will be \npossible to hear them out. And one more thing. If you go from our group too far - you will have to proceed on your own. Is that clear?</text>
     </string>
     <string id="pri_followers_start_dlg_11111">
-        <text>This string was added automatically</text>
+        <text>Clear. Lets move.</text>
     </string>
     <string id="pri_followers_start_dlg_112">
-        <text>Сорри. Без меня.</text>
+        <text>No guys, I'll cope alone somehow.</text>
     </string>
     <string id="pri_followers_start_dlg_21">
-        <text>Выдвигаемся вдоль по улице. В случае чего - прикроешь.</text>
+        <text>Move along the street. If something happens - cover us.</text>
     </string>
     <string id="pri_followers_start_dlg_211">
         <text>Ок.</text>

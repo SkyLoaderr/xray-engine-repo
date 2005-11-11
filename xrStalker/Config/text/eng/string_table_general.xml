@@ -7,19 +7,19 @@
         <text>AK-74 info</text>
     </string>
     <string id="Btn_Cancel">
-        <text>This string was added automatically</text>
+        <text>Cancel</text>
     </string>
     <string id="Btn_No">
-        <text>This string was added automatically</text>
+        <text>No</text>
     </string>
     <string id="Btn_OK">
-        <text>This string was added automatically</text>
+        <text>Apply</text>
     </string>
     <string id="Btn_Yes">
-        <text>This string was added automatically</text>
+        <text>Yes</text>
     </string>
     <string id="Machineguns">
-        <text>Machineguns</text>
+        <text>Machine-guns</text>
     </string>
     <string id="Weapons">
         <text>Weapons</text>
@@ -34,13 +34,13 @@
         <text>%s kill %s</text>
     </string>
     <string id="alife_news_retreat">
-        <text>%s retreat from battlefield</text>
+        <text>%s retreated from battlefield</text>
     </string>
     <string id="escape_blockpost_case">
-        <text>Case from blockpost</text>
+        <text>Case from armypost</text>
     </string>
     <string id="health">
-        <text>This string was added automatically</text>
+        <text>Health</text>
     </string>
     <string id="test2">
         <text>This is a another GENERAL test string</text>
