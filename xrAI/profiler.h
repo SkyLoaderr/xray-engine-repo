@@ -29,9 +29,13 @@ struct CProfilePortion : public CProfileResultPortion {
 };
 
 struct CProfileStats {
-	float			m_time;
-	shared_str		m_name;
 	u32				m_update_time;
+	shared_str		m_name;
+	float			m_time;
+	float			m_min_time;
+	float			m_max_time;
+	float			m_total_time;
+	u32				m_count;
 
 	IC				CProfileStats		();
 };
@@ -55,7 +59,7 @@ protected:
 	xrCriticalSection	m_section;
 
 protected:
-			void		setup_timer			(LPCSTR timer_id, u64 timer_time);
+			void		setup_timer			(LPCSTR timer_id, const u64 &timer_time);
 	IC		void		convert_string		(LPCSTR str, shared_str &out, u32 max_string_size);
 
 public:

@@ -34,7 +34,6 @@ IC	u32 compute_string_length(LPCSTR str)
 
 CProfiler::CProfiler		()
 {
-//	m_portions.reserve			(1000);
 	m_actual					= true;
 }
 
@@ -58,9 +57,9 @@ IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_si
 	out							= m_temp;
 }
 
-void CProfiler::setup_timer	(LPCSTR timer_id, u64 timer_time)
+void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time)
 {
-	string256	m_temp;
+	string256					m_temp;
 	float						_time = float(timer_time)*1000.f/CPU::qpc_freq;
 	TIMERS::iterator			i = m_timers.find(timer_id);
 	if (i == m_timers.end()) {
@@ -75,8 +74,21 @@ void CProfiler::setup_timer	(LPCSTR timer_id, u64 timer_time)
 			k					= j + 1;
 		}
 		i						= m_timers.insert(std::make_pair(shared_str(timer_id),CProfileStats())).first;
+		CProfileStats			&current = (*i).second;
+		current.m_min_time		= _time;
+		current.m_max_time		= _time;
+		current.m_total_time	= _time;
+		current.m_count			= 1;
 		m_actual				= false;
 	}
+	else {
+		CProfileStats			&current = (*i).second;
+		current.m_min_time		= _min(current.m_min_time,_time);
+		current.m_max_time		= _max(current.m_max_time,_time);
+		current.m_total_time	+= _time;
+		++current.m_count;
+	}
+
 	if (_time > (*i).second.m_time)
 		(*i).second.m_time		= _time;
 	else
@@ -90,6 +102,7 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 	if (!show) {
 		m_section.Enter			();
 		m_portions.clear		();
+		m_timers.clear			();
 		m_section.Leave			();
 		return;
 	}
@@ -108,6 +121,7 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 				timer_time		= 0;
 				J				= I;
 			}
+
 			timer_time			+= (*I).m_time;
 		}
 		setup_timer				((*J).m_timer_id,timer_time);
@@ -122,6 +136,7 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 			TIMERS::iterator	E = m_timers.end();
 			for ( ; I != E; ++I)
 				max_string_size	= _max(max_string_size,compute_string_length(*(*I).first));
+
 			I					= m_timers.begin();
 			for ( ; I != E; ++I)
 				convert_string	(*(*I).first,(*I).second.m_name,max_string_size);
@@ -137,6 +152,24 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 	for ( ; I != E; ++I) {
 		if ((*I).second.m_update_time != Device.dwTimeGlobal)
 			(*I).second.m_time	*= .99f;
-		game_font->OutNext		("%s.. %.3f",*(*I).second.m_name,(*I).second.m_time);
+
+		float					average = (*I).second.m_count ? (*I).second.m_total_time/float((*I).second.m_count) : 0.f;
+		if (average >= (*I).second.m_time)
+			game_font->SetColor	(color_xrgb(255,255,255));
+		else
+			game_font->SetColor	(color_xrgb(255,0,0));
+
+		game_font->OutNext		(
+			"%s.. %8.3f %8.3f %8.3f %8.3f %8d %12.3f",
+			*(*I).second.m_name,
+			(*I).second.m_time,
+			average,
+			(*I).second.m_max_time,
+			(*I).second.m_min_time,
+			(*I).second.m_count,
+			(*I).second.m_total_time
+		);
 	}
+
+	game_font->SetColor			(D3DCOLOR_XRGB(255,255,255));
 }
