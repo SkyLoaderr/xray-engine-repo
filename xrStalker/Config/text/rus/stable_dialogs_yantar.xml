@@ -9,23 +9,122 @@
     <string id="yantar_general_ucheniy_talk_end_11">
         <text>OOOOOOOK!</text>
     </string>
-    <string id="yantar_general_ucheniy_talk_start_0">
-        <text>Че тебе надо???</text>
+    <string id="yantar_general_ucheniy_talk_start_11">
+        <text>Да, да?! Что вас интересует?</text>
     </string>
-    <string id="yantar_general_ucheniy_talk_start_1">
-        <text>Мозг!</text>
+    <string id="yantar_general_ucheniy_talk_start_111">
+        <text>Я ищу лабораторию X16. Бармен сказал что вы можете знать ее местонахождение.</text>
     </string>
-    <string id="yantar_general_ucheniy_talk_start_2">
-        <text>Ученый!</text>
+    <string id="yantar_general_ucheniy_talk_start_1111">
+        <text>Лаборатория X16? Хмм... Так, так. Дайте подумать... Если я вас правильно понял, то лабораторией X16 называют бункер в центре излучения. Мы как раз занимаемся изучением данного эээ... излучения. Так вот что я хочу сказать, мы уже давно изучаем последствия работы этой самой лаборатории X16 и я вам могу точно сказать что вы врядле сможете проникнуть туда без специальной защиты. Мы разработали специальный прототип, который может защитить от излучения, но он нуждается в замерах излучения на близкой дистанции. Если ты поможешь нам сделать замеры, я дам тебе настроенный прототип, с помощью которого ты сможешь пробиться в лабораторию. Согласен?</text>
     </string>
-    <string id="yantar_general_ucheniy_talk_start_3">
+    <string id="yantar_general_ucheniy_talk_start_11111">
+        <text>Согласен.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_111111">
+        <text>Ну вот и отлично, поговори с Кругловым и отправляйтесь. У него все необходимое есть.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_1111111">
+        <text>Хорошо</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_1111112">
+        <text>Хорошо</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_111112">
+        <text>Ну вот и отлично, поговори с Семеновым и отправляйтесь. У него все необходимое есть.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_11112">
+        <text>Нет, пока не согласен.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_111121">
+        <text>Очень жаль. Мы пока тоже не можем договориться и отправить экспедицию на замеры.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_12">
+        <text>Спасибо тебе Меченый, что помог Круглову спастись. Прими этот скафандр в награду за твою помощь. И я подозреваю что ты не просто за наградой пришел, я прав?</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_121">
+        <text>Я ищу лабораторию X16. Бармен сказал что вы можете знать ее местонахождение.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_1211">
+        <text>Лаборатория X16? Хмм... Так, так. Дайте подумать... Если я вас правильно понял, то лабораторией X16 называют бункер в центре излучения. Мы как раз занимаемся изучением данного эээ... излучения. Так вот что я хочу сказать, мы уже давно изучаем последствия работы этой самой лаборатории X16 и я вам могу точно сказать что вы врядле сможете проникнуть туда без специальной защиты. Мы разработали специальный прототип, который может защитить от излучения, но он нуждается в замерах излучения на близкой дистанции. Если ты поможешь нам сделать замеры, я дам тебе настроенный прототип, с помощью которого ты сможешь пробиться в лабораторию. Согласен?</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_12111">
+        <text>Согласен.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_121111">
+        <text>Ну вот и отлично, поговори с Кругловым и отправляйтесь. У него все необходимое есть.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_1211111">
+        <text>Хорошо</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_12112">
+        <text>Нет, пока не согласен.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_121122">
+        <text>Очень жаль. Мы пока тоже не можем договориться и отправить экспедицию на замеры.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_12113">
+        <text>Согласен</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_121131">
+        <text>Ну вот и отлично, поговори с Семеновым и отправляйтесь. У него все необходимое есть.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_1211311">
+        <text>Хорошо</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_30">
         <text>more quests???</text>
     </string>
-    <string id="yantar_general_ucheniy_talk_start_4">
-        <text>text in default</text>
+    <string id="yantar_general_ucheniy_talk_start_31">
+        <text>Вы отлично справились. Если замеры верны, то прототип обеспечит вам максимальную защиту от излучения "мозга". Возьми прототип и будь с ним поаккуратнее.</text>
     </string>
-    <string id="yantar_help_scientist_0">
-        <text>Help me!!!!</text>
+    <string id="yantar_general_ucheniy_talk_start_311">
+        <text>Хорошо, а где находится вход в лабораторию X16?</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_3111">
+        <text>Вход в лабораторию скрыт в подвале одного из зданий, где именно знал только Васильев, но он погиб на болотах, вместе с координатами входа. Я тебе скинул все необходимые координаты.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_41">
+        <text>Где Круглов???</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_411">
+        <text>Круглов погиб во время Выброса.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_4111">
+        <text>ЧТО??? Он погиб??? О боже!!! Как это могло произойти??? Черт, опять все идет наперекосяк. Теперь придется вызывать дополнительных сотрудников…</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_41111">
+        <text>Я хочу пробиться в лабораторию X16, вы дадите мне прототип?</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_411111">
+        <text>Да, да. Вот прототип, но будь осторожнее, он не сможет обеспечить тебе максимальную защиту от излучения, поэтому тебе придется поторапливаться по пути к лаборатории.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_4111111">
+        <text>А где находится вход в лабораторию X16?</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_41111111">
+        <text>Вход в лабораторию скрыт в подвале одного из зданий, где именно знал только Васильев, но он погиб на болотах, вместе с координатами входа. Я тебе скинул все необходимые координаты.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_51">
+        <text>Где Семенов???</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_511">
+        <text>Семенов погиб во время Выброса.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_5111">
+        <text>ЧТО??? Он погиб??? О боже!!! Как это могло произойти??? Черт, опять все идет наперекосяк. Теперь придется вызывать дополнительных сотрудников…</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_51111">
+        <text>Я хочу пробиться в лабораторию X16, вы дадите мне прототип?</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_511111">
+        <text>Да, да. Вот прототип, но будь осторожнее, он не сможет обеспечить тебе максимальную защиту от излучения, поэтому тебе придется поторапливаться по пути к лаборатории.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_5111111">
+        <text>А где находится вход в лабораторию X16?</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_511111111">
+        <text>Вход в лабораторию скрыт в подвале одного из зданий, где именно знал только Васильев, но он погиб на болотах, вместе с координатами входа. Я тебе скинул все необходимые координаты.</text>
     </string>
     <string id="yantar_help_scientist_1">
         <text>go_1</text>
