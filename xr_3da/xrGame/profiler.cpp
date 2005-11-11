@@ -165,9 +165,9 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 
 		float					average = (*I).second.m_count ? (*I).second.m_total_time/float((*I).second.m_count) : 0.f;
 		if (average >= (*I).second.m_time)
-			game_font->SetColor	(color_xrgb(255,255,255));
+			game_font->SetColor	(color_xrgb(127,127,127));
 		else
-			game_font->SetColor	(color_xrgb(255,0,0));
+			game_font->SetColor	(color_xrgb(255,255,255));
 
 		game_font->OutNext		(
 //			"%s.. %8.3f %8.3f %8.3f %8.3f %8.3f %8d %12.3f",
@@ -185,5 +185,5 @@ void CProfiler::show_stats	(CGameFont *game_font, bool show)
 		);
 	}
 
-	game_font->SetColor			(D3DCOLOR_XRGB(255,255,255));
+	game_font->SetColor			(color_xrgb(255,255,255));
 }
