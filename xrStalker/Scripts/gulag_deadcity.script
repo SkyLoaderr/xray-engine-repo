@@ -247,7 +247,7 @@ function load_ltx_killers(gname, type)
                "[walker@" .. gname .. "_leader]\n" ..
                "path_walk  = leader_walk\n" ..
                "path_look  = leader_look\n" ..
-               "combat_ignore_cond  = always\n"
+               "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
 
     -- jail guard
 	res = res.."#include \"scripts\\cit\\cit_jail_guard1.ltx\"\n"
@@ -264,7 +264,7 @@ function load_ltx_killers(gname, type)
                    "[walker@" .. gname .. "_base_patrol" .. i .. "]\n" ..
                    "path_walk  = base_patrol" .. i .. "_walk\n" ..
                    "path_look  = base_patrol" .. i .. "_look\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- walkers between kamps
@@ -288,13 +288,13 @@ function load_ltx_killers(gname, type)
                        "def_state_moving2   = patrol\n" ..
                        "def_state_moving3   = patrol\n" ..
                        "on_signal           = arrived | kamp@" .. gname .. "_free" .. i .. "_in_kamp" .. j .. "\n" ..
-                       "combat_ignore_cond  = always\n" ..
+                       "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                        "[kamp@" .. gname .. "_free" .. i .. "_in_kamp" .. j .. "]\n" ..
                        "center_point        = kamp" .. j .. "\n" ..
                        "def_state_moving    = patrol\n" ..
                        "on_timer            = " .. d[j] .. "000 | walker@" .. gname .. "_free" .. i .. "_to_kamp" .. v .. "\n" ..
-                       "combat_ignore_cond  = always\n"
+                       "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
         end
     end
 
@@ -310,12 +310,12 @@ function load_ltx_killers(gname, type)
                    --"path_look  = kamp" .. v .. "\n" ..
                    "formation  = line\n" ..
                    "on_signal  = arrived | kamp@" .. gname .. "_kamp" .. v .. "_patrol\n" ..
-                   "combat_ignore_cond  = always\n" ..
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[kamp@" .. gname .. "_kamp" .. v .. "_patrol]\n" ..
                    "center_point        = kamp" .. v .. "\n" ..
                    "on_timer            = " .. delays[i] .. "000 | patrol@" .. gname .. "_kamp" .. i .. "_patrol\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- free stalkers
@@ -327,7 +327,7 @@ function load_ltx_killers(gname, type)
                    "[walker@" .. gname .. "_free_stalker" .. i .. "]\n" ..
                    "path_walk           = free_stalker" .. i .. "_walk\n" ..
                    "path_look           = free_stalker" .. i .. "_look\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- kamps
@@ -338,7 +338,7 @@ function load_ltx_killers(gname, type)
 
                    "[kamp@" .. gname .. "_kamp" .. i .. "]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
     
     -- gate guards
@@ -350,7 +350,7 @@ function load_ltx_killers(gname, type)
                    "[walker@" .. gname .. "_gate2_guard" .. i .. "]\n" ..
                    "path_walk  = gate2_guard" .. i .. "_walk\n" ..
                    "path_look  = gate2_guard" .. i .. "_look\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- road patrols
@@ -365,7 +365,7 @@ function load_ltx_killers(gname, type)
                    "def_state_moving1   = patrol\n" ..
                    "def_state_moving2   = patrol\n" ..
                    "def_state_moving3   = patrol\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     return res
@@ -535,7 +535,7 @@ function load_ltx_bandits(gname, type)
                "[walker@" .. gname .. "_leader]\n" ..
                "path_walk           = leader_walk\n" ..
                "path_look           = leader_look\n" ..
-               "combat_ignore_cond  = always\n"
+               "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
 
     -- leader guards
     for i = 1, 2 do
@@ -546,7 +546,7 @@ function load_ltx_bandits(gname, type)
                    "[walker@" .. gname .. "_leader_guard" .. i .. "]\n" ..
                    "path_walk           = leader_guard" .. i .. "_walk\n" ..
                    "path_look           = leader_guard" .. i .. "_look\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- walkers between kamps
@@ -569,13 +569,13 @@ function load_ltx_bandits(gname, type)
                        "def_state_moving2   = patrol\n" ..
                        "def_state_moving3   = patrol\n" ..
                        "on_signal           = arrived | kamp@" .. gname .. "_free" .. i .. "_in_kamp" .. j .. "\n" ..
-                       "combat_ignore_cond  = always\n" ..
+                       "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                        "[kamp@" .. gname .. "_free" .. i .. "_in_kamp" .. j .. "]\n" ..
                        "center_point        = kamp" .. j .. "\n" ..
                        "def_state_moving    = patrol\n" ..
                        "on_timer            = " .. d[j] .. "000 | walker@" .. gname .. "_free" .. i .. "_to_kamp" .. v .. "\n" ..
-                       "combat_ignore_cond  = always\n"
+                       "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
         end
     end
 
@@ -591,12 +591,12 @@ function load_ltx_bandits(gname, type)
                    --"path_look  = kamp" .. v .. "\n" ..
                    "formation  = line\n" ..
                    "on_signal  = arrived | kamp@" .. gname .. "_kamp" .. v .. "_patrol\n" ..
-                   "combat_ignore_cond  = always\n" ..
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[kamp@" .. gname .. "_kamp" .. v .. "_patrol]\n" ..
                    "center_point        = kamp" .. v .. "\n" ..
                    "on_timer            = " .. delays[i] .. "000 | patrol@" .. gname .. "_kamp" .. i .. "_patrol\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- kamps
@@ -607,7 +607,7 @@ function load_ltx_bandits(gname, type)
 
                    "[kamp@" .. gname .. "_kamp" .. i .. "]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
     
     -- base guards
@@ -619,7 +619,7 @@ function load_ltx_bandits(gname, type)
                    "[walker@" .. gname .. "_base_guard" .. i .. "]\n" ..
                    "path_walk           = base_guard" .. i .. "_walk\n" ..
                    --"path_look           = base_guard" .. i .. "_look\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- patrol in center
@@ -631,7 +631,7 @@ function load_ltx_bandits(gname, type)
                "path_walk  = center_patrol_walk\n" ..
                --"path_look  = center_patrol_look\n" ..
                "formation  = line\n" ..
-               "combat_ignore_cond  = always\n"
+               "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
 
     -- gate guards
     for i, v in pairs({3, 2}) do
@@ -643,7 +643,7 @@ function load_ltx_bandits(gname, type)
                        "[walker@" .. gname .. "_gate" .. i .. "_guard" .. j .. "]\n" ..
                        "path_walk  = gate" .. i .. "_guard" .. j .. "_walk\n" ..
                        "path_look  = gate" .. i .. "_guard" .. j .. "_look\n" ..
-                       "combat_ignore_cond  = always\n"
+                       "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
         end
     end
 
@@ -659,7 +659,7 @@ function load_ltx_bandits(gname, type)
                    "def_state_moving1   = walk\n" ..
                    "def_state_moving2   = walk\n" ..
                    "def_state_moving3   = walk\n" ..
-                   "combat_ignore_cond  = always\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     return res
