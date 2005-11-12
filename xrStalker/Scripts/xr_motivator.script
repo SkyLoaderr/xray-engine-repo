@@ -21,7 +21,7 @@ function motivator_binder:extrapolate_callback(cur_pt)
 		--printf("___ACTIVE_SECTION___")
 		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "extrapolate_callback")
 	end
-	
+
 	--printf("_bp: motivator_binder: extrapolate_callback: cur_pt = %d", cur_pt)
 	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
 		--printf("_bp: motivator_binder: extrapolate_callback: true")
@@ -35,26 +35,22 @@ function motivator_binder:reinit()
     object_binder.reinit(self)
     --memusage.collect_info(self.object, "reinit_start")
     --printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
-    
+
     -- КОЛЛБЕКИ ЗДЕСЬ СТАВИТЬ НЕЛЬЗЯ! Здесь еще неизвестна активная схема.
     -- Ставьте коллбеки в методе update в отмеченном комментарием месте.
-        
+
     local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy.ltx")
 
     --' Bind other scripts
     printf("Base evaluator ID %d", stalker_ids.property_script)
     printf("Base action ID %d", stalker_ids.action_script)
-    
-    -- Zmey: Это лучше делать не тут, а в reset_generic_schemes_on_scheme_switch!
-    -- Она вызывается даже если не прописана активная секция в logic. Закомментировал.
-    --self.object:disable_talk()
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Общие скрипты
 ----------------------------------------------------------------------------------------------------------------------
     db.storage[self.object:id()] = {  followers = {} }
     self.st = db.storage[self.object:id()]
-    
+
     --self.torch = xr_light.torch_light(self.object)
 
     --' Положения тела
@@ -63,14 +59,16 @@ function motivator_binder:reinit()
 
     --' Создание менеджера контроля положений тела
     --memusage.collect_info(self.object, "before_statemgr")
-	self.st.state_mgr = state_mgr.bind_manager(self.object)	
+	self.st.state_mgr = state_mgr.bind_manager(self.object)
 	--memusage.collect_info(self.object, "after_statemgr")
-	
+
     --' Загрузка историй для лагеря.
-	xr_kamp.loadStories(self.object, char_ini)	
+	xr_kamp.loadStories(self.object, char_ini)
 	-- Загрузка информации на продажу.`
 	dialog_manager.load_trade_info(self.object)
 	--memusage.collect_info(self.object, "reinit_end")
+
+	--xr_reach_task.add_to_binder(self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
@@ -81,11 +79,27 @@ function motivator_binder:net_spawn(sobject)
 	end
 
 	--local sim = alife()
-	--if sim ~= nil then 
+	--if sim ~= nil then
 		--xr_spawner.spawn(sobject)
 	--end
 
 	db.add_obj(self.object)
+
+	-- spawn_callback для smart_terrain
+	local sim = alife()
+	if sim then
+		local strn_id = sobject:smart_terrain_id()
+--		printf( "strn_id=%s", tostring( strn_id ) )
+
+		if strn_id ~= 65535 then
+			local strn = sim:object( strn_id )
+--			if strn == nil then
+--				printf( "strn=nil" )
+--			end
+
+			strn.gulag:spawn_callback( self.object:id(), self.object )
+		end
+	end
 
     --' загрузка озвучки
     --memusage.collect_info(self.object, "before_soundmgr")
@@ -133,7 +147,7 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 	if self.st.hit then
 		xr_logic.issue_event(self.object, self.st.hit, "hit_callback", obj, amount, local_direction, who, bone_index)
 	end
-	if amount > 0 then 
+	if amount > 0 then
 		--printf("HIT_CALLBACK: [%s] amount[%s]", obj:name(), amount)
 		sr_territory.issue_event(self.object, "hit_callback", obj, amount, local_direction, who, bone_index)
 	end
@@ -180,7 +194,7 @@ function motivator_binder:stalker_death_impulse(victim, who)
 	h.type = hit.wound
 	victim:hit(h)
 	--]]
-	
+
 	local actor_pos = who:position()
 	local npc_pos = victim:position()
 
@@ -197,29 +211,29 @@ end
 
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
-	
+
 	if not self.initialized and db.actor then
 		--memusage.collect_info(self.object, "before_logic")
 		self.initialized = true
 		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
 		--memusage.collect_info(self.object, "after_logic_before_callback")
-		
+
 		-- Все CALLBACK-и ставить здесь:
 		self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
 		self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
 		self.object:set_callback(callback.death, motivator_binder.death_callback, self)
 		self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
 		--memusage.collect_info(self.object, "after__callback")
-		
+
 		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 	end
 
     if device ():time_global () - self.last_update > 1000 then
        sr_light.check_light_zone (self.object)
        self.last_update = device ():time_global ()
-    end   
+    end
 	--self.torch:update()
-    
+
 	--' Апдейт менеджера состояний тела
 	if self.st.state_mgr then
 		if self.object:alive() then
@@ -259,7 +273,7 @@ function motivator_binder:update(delta)
 	--' Проверка потери жизни
 	--[[
 	if lasttime == nil or
-	   game.get_game_time():diffSec(lasttime) > 1 
+	   game.get_game_time():diffSec(lasttime) > 1
 	then
 		printf("%f * %f", self.object.health, self.object.health - lasthealth)
 		lasthealth = self.object.health
@@ -276,13 +290,27 @@ function motivator_binder:update(delta)
 			self.object:team(),
 			self.object:squad(),
 			self.object:group(),
-			be:name(), 
-			be:team(), 
-			be:squad(), 
+			be:name(),
+			be:team(),
+			be:squad(),
 			be:group()
 		)
 	end
 	]]
+
+	if not self.debug_smrt then
+		for k, v in pairs( db.smart_terrain_by_id ) do
+			self.debug_smrt = true
+
+			local o = alife():object( self.object:id() )
+
+			if v:enabled(o) then
+				v:register(o)
+			end
+
+			break
+		end
+	end
 end
 
 function motivator_binder:reload(section)
@@ -371,7 +399,6 @@ end
 function addCommonPrecondition(action)
 	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 1,false))
 	action:add_precondition (world_property(xr_evaluators_id.sidor_wounded_base + 0,  false))
-	action:add_precondition (world_property(xr_evaluators_id.chugai_heli_hunter_base, false))		
+	action:add_precondition (world_property(xr_evaluators_id.chugai_heli_hunter_base, false))
 	action:add_precondition (world_property(xr_evaluators_id.abuse_base, false))
 end
-
