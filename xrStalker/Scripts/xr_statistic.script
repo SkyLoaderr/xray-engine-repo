@@ -1,0 +1,126 @@
+
+local killCountProps = {
+	neutral_novice = 10, neutral_stalker = 20, neutral_veteran = 30, neutral_master = 40,
+	monolith_novice = 10, monolith_stalker = 20, monolith_veteran = 30, monolith_master = 40,
+	killer_novice = 10, killer_stalker = 20, killer_veteran = 30, killer_master = 40,
+	ecolog_novice = 10, ecolog_stalker = 20, ecolog_veteran = 30, ecolog_master = 40,
+	dolg_novice = 10, dolg_stalker = 20, dolg_veteran = 30, dolg_master = 40,
+	freedom_novice = 10, freedom_stalker = 20, freedom_veteran = 30, freedom_master = 40,
+	bandit_novice = 10, bandit_stalker = 20, bandit_veteran = 30, bandit_master = 40,
+	zombied_novice = 10, zombied_stalker = 20, zombied_veteran = 30, zombied_master = 40,
+	
+	rat = 3,	
+	tushkano = 5,
+	flesh_weak = 10, flesh_normal = 20, flesh_strong = 30,
+	boar_weak = 10, boar_normal = 20, boar_strong = 30,
+	dog_weak = 10, dog_normal = 20, dog_strong = 30,
+	pseudodog_weak = 10, pseudodog_normal = 20, pseudodog_strong = 30,
+	zombie_weak = 10, zombie_normal = 20, zombie_strong = 30,
+	snork_weak = 10, snork_normal = 20, snork_strong = 30,
+	poltergeist = 40,
+	gigant = 50,
+	controller = 50,
+	burer = 45,
+	bloodsucker_weak = 10, bloodsucker_normal = 20, bloodsucker_strong = 30	
+}
+
+
+function addKillCount(npc)
+	local props, sect = getNpcType(npc)
+	if killCountProps[sect] == nil then
+		abort("Statistic ERROR: required section [%s] not present", sect)
+	end
+	actor_stats.add_points(props, sect, 1, killCountProps[sect])
+end
+
+
+function getNpcType(npc)
+	if IsStalker(npc) then
+		local community = "neutral"
+		if npc:character_community() == "monolith" then
+			community = "monolith"
+		elseif npc:character_community() == "military" then
+			community = "military"
+		elseif npc:character_community() == "killer" then
+			community = "killer"
+		elseif npc:character_community() == "ecolog" then
+			community = "ecolog"
+		elseif npc:character_community() == "dolg" then
+			community = "dolg"
+		elseif npc:character_community() == "freedom" then
+			community = "freedom"
+		elseif npc:character_community() == "bandit" then
+			community = "bandit"
+		elseif npc:character_community() == "zombied" then
+			community = "zombied"
+		end
+		local rank = "novice"
+		if npc:character_rank() >= 90 then
+			rank = "master"
+		elseif npc:character_rank() >= 60 then
+			rank = "veteran"
+		elseif npc:character_rank() >= 30 then
+			rank = "stalker"
+		end
+		return "stalkerkills", community.."_"..rank
+	else
+		local sect = npc:section()
+		if sect == "m_rat_e" then
+			sect = "rat"
+		elseif sect == "m_tushkano_e" then
+			sect = "tushkano"
+		elseif sect == "flesh_weak" or sect == "m_flesh_e" then
+			sect = "flesh_weak"
+		elseif sect == "flesh_normal" then
+			sect = "flesh_normal"
+		elseif sect == "flesh_strong" then
+			sect = "flesh_strong"
+		elseif sect == "boar_weak" or sect == "m_boar_e" then
+			sect = "boar_weak"
+		elseif sect == "boar_normal" then
+			sect = "boar_normal"
+		elseif sect == "boar_strong" then
+			sect = "boar_strong"
+		elseif sect == "dog_weak" or sect == "m_dog_e" then
+			sect = "dog_weak"
+		elseif sect == "dog_normal" then
+			sect = "dog_normal"
+		elseif sect == "dog_strong" then
+			sect = "dog_strong"
+		elseif sect == "pseudodog_weak" or sect == "m_pseudodog_e" then
+			sect = "pseudodog_weak"
+		elseif sect == "pseudodog_normal" then
+			sect = "pseudodog_normal"
+		elseif sect == "pseudodog_strong" or sect == "pseudodog_arena" or sect == "psy_dog" or sect == "psy_dog_phantom" or sect == "psy_dog_radar" then
+			sect = "pseudodog_strong"
+		elseif sect == "zombie_weak" or sect == "m_zombie_e" then
+			sect = "zombie_weak"
+		elseif sect == "zombie_normal" then
+			sect = "zombie_normal"
+		elseif sect == "zombie_strong" or sect == "zombie_immortal" then
+			sect = "zombie_strong"
+		elseif sect == "snork_weak" or sect == "m_snork_e" then
+			sect = "snork_weak"
+		elseif sect == "snork_normal" or sect == "snork_indoor" or sect == "snork_outdoor" or sect == "snork_jumper" then
+			sect = "snork_normal"
+		elseif sect == "snork_strong" or sect == "snork_arena" then
+			sect = "snork_strong"
+		elseif sect == "m_poltergeist_e" then
+			sect = "poltergeist"
+		elseif sect == "m_gigant_e" then
+			sect = "gigant"
+		elseif sect == "m_controller_e" then
+			sect = "controller" 
+		elseif sect == "m_burer_e" or sect == "burer_arena" or sect == "burer_indoor" or sect == "burer_outdoor" then
+			sect = "burer"
+		elseif sect == "bloodsucker_weak" or sect == "m_bloodsucker_e" then
+			sect = "bloodsucker_weak"
+		elseif sect == "bloodsucker_normal" then
+			sect = "bloodsucker_normal"
+		elseif sect == "bloodsucker_strong" or sect == "bloodsucker_mil" then
+			sect = "bloodsucker_strong"
+		end				
+		
+		return "monsterkills", sect
+	end	
+end

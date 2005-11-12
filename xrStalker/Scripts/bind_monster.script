@@ -38,6 +38,7 @@ function generic_object_binder:reinit()
 
 	self.object:set_callback(callback.patrol_path_in_point, self.waypoint_callback, self)
 	self.object:set_callback(callback.hit,					self.hit_callback,		self)
+	self.object:set_callback(callback.death,				self.death_callback,	self)
 end
 
 function generic_object_binder:update(delta)
@@ -77,6 +78,18 @@ function generic_object_binder:waypoint_callback(obj, action_type, index)
 	end
 end
 
+function generic_object_binder:death_callback(victim, who)
+	if who:id() == db.actor:id() then
+		xr_statistic.addKillCount(self.object)
+	end
+	if self.st.mob_death then
+		xr_logic.issue_event(self.object, self.st.mob_death, "death_callback", victim, who)
+	end
+	if self.st.active_section then
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "death_callback", victim, who)
+	end
+end
+
 function generic_object_binder:hit_callback(obj, amount, local_direction, who, bone_index)
 	printf("HIT_CALLBACK: [%s] amount[%s]", obj:name(), amount)
 end
@@ -92,8 +105,9 @@ function generic_object_binder:net_spawn(data)
 end
 
 function generic_object_binder:net_destroy()
+	self.object:set_callback(callback.death,				nil)
 	self.object:set_callback(callback.patrol_path_in_point, nil)
-	self.object:set_callback(callback.hit, nil)
+	self.object:set_callback(callback.hit,					nil)
 
 	local st = db.storage[self.object:id()]
 	if st.active_scheme then

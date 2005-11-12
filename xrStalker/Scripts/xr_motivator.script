@@ -154,6 +154,10 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 end
 
 function motivator_binder:death_callback(victim, who)
+	if who:id() == db.actor:id() then
+		xr_statistic.addKillCount(self.object)
+	end
+	
 	if self.st.death then
 		xr_logic.issue_event(self.object, self.st.death, "death_callback", victim, who)
 	end
