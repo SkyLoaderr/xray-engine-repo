@@ -298,7 +298,7 @@ function motivator_binder:update(delta)
 	end
 	]]
 
-	if not self.debug_smrt then
+--[[	if not self.debug_smrt then
 		for k, v in pairs( db.smart_terrain_by_id ) do
 			self.debug_smrt = true
 
@@ -310,7 +310,7 @@ function motivator_binder:update(delta)
 
 			break
 		end
-	end
+	end]]
 end
 
 function motivator_binder:reload(section)
