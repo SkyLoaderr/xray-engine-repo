@@ -463,22 +463,25 @@ end
 
 -- st - storage активной схемы
 function issue_event(npc, st, event_fn, ...)
-	if not st.actions then				
-		return			
-	end			
+	if not st.actions then
+		return
+	end
+
 	local activation_count = 0
 	local action_ptr, is_active = 0, 0
+
 	for action_ptr, is_active in pairs(st.actions) do
 		if is_active and action_ptr[event_fn] then
 			action_ptr[event_fn](action_ptr, ...)
 			activation_count = activation_count + 1
-		end			
-	end			
-	if activation_count == 0 and 
-		event_fn == "activate_scheme" 
-	then				
+		end
+	end
+
+	if activation_count == 0 and
+		event_fn == "activate_scheme"
+	then
 		abort("xr_logic: issue_event: activate_scheme handler not found, active_scheme is '%s'", db.storage[npc:id()].active_scheme)
-	end		
+	end
 end
 
 function pick_section_from_condlist(actor, npc, condlist)
@@ -979,7 +982,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	local function add_conditions(func, cond)
 		local i = 1
 		local c = func(ini, section, cond, npc)
-	
+
 		while c ~= nil do
 			n = add_condition(l, n, c, npc)
 
