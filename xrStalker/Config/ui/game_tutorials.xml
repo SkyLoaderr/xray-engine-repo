@@ -8,7 +8,7 @@
 			</auto_static>
 		</global_wnd>
 	
-		<item_> <!--1 open pda -->
+		<item> <!--1 open pda -->
 			<length_sec>1</length_sec>
 			<pause_state/>
 			<guard_key>torch</guard_key>
@@ -17,9 +17,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
 			<main_wnd/>
-		</item_>
+		</item>
 
-		<item_><!--2 open tasks -->
+		<item><!--2 open tasks -->
 			<length_sec>5</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key>forward</guard_key>
@@ -40,8 +40,8 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
-		<item_><!-- 3task pointers -->
+		</item>
+		<item><!-- 3task pointers -->
 			<length_sec>6</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key>back</guard_key>
@@ -62,7 +62,7 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
+		</item>
 		<item><!--4 map -->
 			<length_sec>7</length_sec>
 			<pause_state/>
@@ -101,7 +101,7 @@
 			</main_wnd>
 		</item>
 
-		<item_><!--5 contacts -->
+		<item><!--5 contacts -->
 			<length_sec>3</length_sec>
 			<pause_state/>
 			<guard_key/>
@@ -116,9 +116,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
+		</item>
 
-		<item_><!--6 diary -->
+		<item><!--6 diary -->
 			<length_sec>3</length_sec>
 			<pause_state/>
 			<guard_key/>
@@ -133,9 +133,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
+		</item>
 
-		<item_><!--7 ranking -->
+		<item><!--7 ranking -->
 			<length_sec>3</length_sec>
 			<pause_state/>
 			<guard_key/>
@@ -150,9 +150,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
+		</item>
 
-		<item_><!--8 statistics -->
+		<item><!--8 statistics -->
 			<length_sec>3</length_sec>
 			<pause_state/>
 			<guard_key/>
@@ -167,9 +167,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
+		</item>
 
-		<item_><!--9 encyclopedia -->
+		<item><!--9 encyclopedia -->
 			<length_sec>3</length_sec>
 			<pause_state/>
 			<guard_key/>
@@ -184,9 +184,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
+		</item>
 
-		<item_><!--10 empty -->
+		<item><!--10 empty -->
 			<length_sec>3</length_sec>
 			<pause_state/>
 			<guard_key/>
@@ -201,7 +201,7 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item_>
+		</item>
 
 	</part_1_pda>
 
