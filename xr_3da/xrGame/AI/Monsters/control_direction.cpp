@@ -8,6 +8,8 @@
 #include "../../ai_space.h"
 #include "../../ai_object_location.h"
 
+#include "../../detail_path_manager_space.h"
+
 void CControlDirection::reinit()
 {	
 	inherited::reinit			();
@@ -92,6 +94,24 @@ void CControlDirection::update_frame()
 
 void CControlDirection::pitch_correction()
 {
+	// extended feature to pitch by path (wall climbing)
+	// distance between two travel point must be more than 1.f
+	if (m_object->control().path_builder().is_moving_on_path() && 
+		(m_object->movement().detail().path().size() > m_object->movement().detail().curr_travel_point_index() + 1)) {
+		
+		const DetailPathManager::STravelPathPoint	cur_point	= m_object->movement().detail().path()[m_object->movement().detail().curr_travel_point_index()];
+		const DetailPathManager::STravelPathPoint	next_point	= m_object->movement().detail().path()[m_object->movement().detail().curr_travel_point_index()+1];
+		
+		if (cur_point.position.distance_to_sqr(next_point.position) > 1) {
+			// получаем искомый вектор направления
+			Fvector						target_dir;
+			target_dir.sub				(next_point.position,cur_point.position);
+			m_data.pitch.target_angle	= -target_dir.getP();
+			return;
+		}
+	}
+	
+	
 	CLevelGraph::SContour	contour;
 	ai().level_graph().contour(contour, m_object->ai_location().level_vertex_id());
 
