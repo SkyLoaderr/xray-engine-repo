@@ -18,6 +18,8 @@
     
     <info_portion id="cit_doctor_talk"></info_portion>
 
+    <info_portion id="cit_button_broken"></info_portion>
+
     <!-- Охота на сталкера около входа на уровень -->
     <info_portion id="cit_hunt_start"></info_portion>
 
