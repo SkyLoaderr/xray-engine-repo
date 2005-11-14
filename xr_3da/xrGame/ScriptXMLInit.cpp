@@ -14,6 +14,7 @@
 #include "ui\UIMapList.h"
 #include "ui\UIKeyBinding.h"
 #include "ui\UIEditBox.h"
+#include "ui\UIAnimatedStatic.h"
 #include "ui\UITrackBar.h"
 #include "ui\UICDkey.h"
 #include "ui\UIMapInfo.h"
@@ -99,6 +100,14 @@ CUIEditBox* CScriptXmlInit::InitEditBox(LPCSTR path, CUIWindow* parent){
 CUIStatic* CScriptXmlInit::InitStatic(LPCSTR path, CUIWindow* parent){
 	CUIStatic* pWnd = xr_new<CUIStatic>();
 	CUIXmlInit::InitStatic(m_xml, path, 0, pWnd);
+	pWnd->SetAutoDelete(true);
+	parent->AttachChild(pWnd);
+	return pWnd;
+}
+
+CUIStatic* CScriptXmlInit::InitAnimStatic(LPCSTR path, CUIWindow* parent){
+	CUIAnimatedStatic* pWnd = xr_new<CUIAnimatedStatic>();
+	CUIXmlInit::InitAnimatedStatic(m_xml, path, 0, pWnd);
 	pWnd->SetAutoDelete(true);
 	parent->AttachChild(pWnd);
 	return pWnd;
@@ -275,6 +284,7 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def("InitLabel",		&CScriptXmlInit::InitLabel)
 		.def("InitEditBox",		&CScriptXmlInit::InitEditBox)		
 		.def("InitStatic",		&CScriptXmlInit::InitStatic)
+		.def("InitAnimStatic",	&CScriptXmlInit::InitAnimStatic)		
 		.def("InitCheck",		&CScriptXmlInit::InitCheck)
 		.def("InitSpinNum",		&CScriptXmlInit::InitSpinNum)
 		.def("InitSpinText",	&CScriptXmlInit::InitSpinText)

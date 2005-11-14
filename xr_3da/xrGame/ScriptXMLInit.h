@@ -47,6 +47,7 @@ public:
 	CUILabel*			InitLabel(LPCSTR path, CUIWindow* parent);
 	CUIEditBox*			InitEditBox(LPCSTR path, CUIWindow* parent);
 	CUIStatic*			InitStatic(LPCSTR path, CUIWindow* parent);
+	CUIStatic*			InitAnimStatic(LPCSTR path, CUIWindow* parent);
 	CUICheckButton*		InitCheck(LPCSTR path, CUIWindow* parent);
 	CUISpinNum*			InitSpinNum(LPCSTR path, CUIWindow* parent);
 	CUISpinText*		InitSpinText(LPCSTR path, CUIWindow* parent);

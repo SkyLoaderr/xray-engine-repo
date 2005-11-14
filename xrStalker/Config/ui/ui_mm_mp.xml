@@ -15,7 +15,7 @@
 		<text font="letterica18" r="235" g="219" b="185"></text>
 	</edit_player_name>
 	<cap_cd_key x="561" y="143" width="70" height="24">
-		<text font="letterica16" r="129" g="123" b="113">CD-Key</text>
+		<text font="letterica16" r="129" g="123" b="113">mm_mp_cd_key</text>
 	</cap_cd_key>
 	<edit_cd_key x="617" y="143" width="236" height="24">		
 		<text font="letterica18" r="235" g="219" b="185"></text>
