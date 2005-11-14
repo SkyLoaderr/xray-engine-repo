@@ -4,6 +4,8 @@
 #include "UIStatic.h"
 #include "UIXmlInit.h"
 #include "../object_broker.h"
+#include "../../xr_input.h"
+
 CUIGameTutorial::CUIGameTutorial()
 {
 	m_bActive = false;
@@ -39,6 +41,7 @@ void CUIGameTutorial::Start(LPCSTR tutor_name)
 
 	TutorialItem* pCurrItem		= m_items.front();
 	pCurrItem->Start			(this);
+	m_pStoredInputReceiver		= pInput->CurrentIR();
 	IR_Capture					();
 	m_bActive					= true;
 }
@@ -51,6 +54,7 @@ void CUIGameTutorial::Stop()
 	delete_data					(m_UIWindow);
 	IR_Release					();
 	m_bActive					= false;
+	m_pStoredInputReceiver		= NULL;
 }
 
 void CUIGameTutorial::OnFrame()
@@ -94,19 +98,75 @@ void CUIGameTutorial::Next		()
 	}
 }
 
-void CUIGameTutorial::IR_OnMousePress		(int btn){}
-void CUIGameTutorial::IR_OnMouseRelease		(int btn){}
-void CUIGameTutorial::IR_OnMouseHold		(int btn){}
-void CUIGameTutorial::IR_OnMouseMove		(int x, int y){}
-void CUIGameTutorial::IR_OnMouseStop		(int x, int y){}
-void CUIGameTutorial::IR_OnKeyboardRelease	(int dik){}
-void CUIGameTutorial::IR_OnKeyboardHold		(int dik){}
-void CUIGameTutorial::IR_OnMouseWheel		(int direction){}
-
-void CUIGameTutorial::IR_OnKeyboardPress	(int dik)
+bool CUIGameTutorial::GrabInput()
 {
 	if(m_items.size())
-	m_items.front()->IR_OnKeyboardPress		(dik);
+		return m_items.front()->GrabInput();
+	else
+	return false;
+
+}
+
+void CUIGameTutorial::IR_OnMousePress		(int btn)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnMousePress(btn);
+}
+
+void CUIGameTutorial::IR_OnMouseRelease		(int btn)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnMouseRelease(btn);
+}
+
+void CUIGameTutorial::IR_OnMouseHold		(int btn)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnMouseHold(btn);
+}
+
+void CUIGameTutorial::IR_OnMouseMove		(int x, int y)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnMouseMove(x, y);
+}
+
+void CUIGameTutorial::IR_OnMouseStop		(int x, int y)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnMouseStop(x, y);
+}
+
+void CUIGameTutorial::IR_OnKeyboardRelease	(int dik)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnKeyboardRelease(dik);
+}
+
+void CUIGameTutorial::IR_OnKeyboardHold		(int dik)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnKeyboardHold(dik);
+}
+
+void CUIGameTutorial::IR_OnMouseWheel		(int direction)
+{
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnMouseWheel(direction);
+}
+
+#include "../xr_level_controller.h"
+void CUIGameTutorial::IR_OnKeyboardPress	(int dik)
+{
+	if(key_binding[dik]==kQUIT){
+		Stop		();
+		return;
+	}
+	if(m_items.size())
+	m_items.front()->OnKeyboardPress		(dik);
+	
+	if(!GrabInput())
+		m_pStoredInputReceiver->IR_OnKeyboardPress(dik);
 }
 
 
@@ -116,7 +176,6 @@ TutorialItem::~TutorialItem()
 	m_sound.stop		();
 }
 
-#include "../xr_level_controller.h"
 void TutorialItem::Load(CUIXml* xml, int idx)
 {
 	XML_NODE* _stored_root = xml->GetLocalRoot();
@@ -124,8 +183,8 @@ void TutorialItem::Load(CUIXml* xml, int idx)
 	
 	m_snd_name				= xml->Read				("sound",0,""			);
 	m_time_length			= xml->ReadFlt			("length_sec",0,0		);
-	m_desired_cursor_pos.x	= xml->ReadAttribFlt	("cursor_pos",0,"x",0	);
-	m_desired_cursor_pos.y	= xml->ReadAttribFlt	("cursor_pos",0,"y",0	);
+	m_desired_cursor_pos.x	= xml->ReadAttribFlt	("cursor_pos",0,"x",1024);
+	m_desired_cursor_pos.y	= xml->ReadAttribFlt	("cursor_pos",0,"y",768	);
 	strcpy					(m_pda_section, xml->Read("pda_section",0,"")	);
 
 	LPCSTR str				= xml->Read				("pause_state",0,"ignore");
@@ -135,6 +194,10 @@ void TutorialItem::Load(CUIXml* xml, int idx)
 
 	str						= xml->Read				("guard_key",0,NULL		);
 	m_continue_dik_guard	= -1;
+	if (str && !_stricmp(str,"any")){
+		m_continue_dik_guard = 9999;
+		str = NULL;
+	}
 	if(str){
 		for(int i=0; keybind[i].name; ++i) {
 			if(0==_stricmp(keybind[i].name,str)){
@@ -145,6 +208,8 @@ void TutorialItem::Load(CUIXml* xml, int idx)
 	}
 
 	m_flags.set										(etiCanBeStopped,(m_continue_dik_guard==-1));
+
+	m_flags.set										(etiGrabInput, 1==xml->ReadInt("grab_input",0,1));
 
 	int cnt = xml->GetNodesNum						("main_wnd",0,"auto_static");
 	m_ui_highlighting.resize						(cnt);
@@ -287,14 +352,14 @@ bool TutorialItem::Stop			(CUIGameTutorial* t)
 	return true;
 }
 
-void TutorialItem::IR_OnKeyboardPress	(int dik)
+void TutorialItem::OnKeyboardPress	(int dik)
 {
 	if	(!m_flags.test(etiCanBeStopped) )
 	{
 		VERIFY		(m_continue_dik_guard!=-1);
 		if(m_continue_dik_guard==-1)m_flags.set(etiCanBeStopped, TRUE); //not binded action :(
 
-		if(key_binding[dik] == m_continue_dik_guard)
+		if(m_continue_dik_guard==9999 || key_binding[dik] == m_continue_dik_guard)
 			m_flags.set(etiCanBeStopped, TRUE); //match key
 
 	}

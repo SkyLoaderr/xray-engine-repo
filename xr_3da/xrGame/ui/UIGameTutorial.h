@@ -7,9 +7,11 @@ class CUIXml;
 class CUIGameTutorial :public pureFrame, public pureRender,	public IInputReceiver
 {
 protected:
+	IInputReceiver*				m_pStoredInputReceiver;
 	CUIWindow*					m_UIWindow;
 	xr_deque<TutorialItem*>		m_items;
 	bool						m_bActive;
+	bool						GrabInput				();
 public:
 							CUIGameTutorial();
 	void					Start		(LPCSTR tutor_name);
@@ -49,6 +51,7 @@ class TutorialItem
 			etiNeedPauseOff			= (1<<1),
 			etiStoredPauseState		= (1<<5),
 			etiCanBeStopped			= (1<<6),
+			etiGrabInput			= (1<<7),
 		};
 public:
 								~TutorialItem();
@@ -63,9 +66,10 @@ public:
 	int							m_continue_dik_guard;
 
 public:
-	void						Load			(CUIXml* xml,int idx);
-	void						Update			();
-	void						Start			(CUIGameTutorial*);
-	bool						Stop			(CUIGameTutorial*);
-	void						IR_OnKeyboardPress	(int dik);
+	void						Load				(CUIXml* xml,int idx);
+	void						Update				();
+	void						Start				(CUIGameTutorial*);
+	bool						Stop				(CUIGameTutorial*);
+	void						OnKeyboardPress		(int dik);
+	bool						GrabInput			()					{return !!m_flags.test(etiGrabInput);}
 };

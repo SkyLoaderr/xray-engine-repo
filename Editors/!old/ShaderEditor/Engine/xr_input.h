@@ -84,6 +84,8 @@ public:
 	virtual void				OnFrame						(void);
 	virtual void				OnAppActivate				(void);
 	virtual void				OnAppDeactivate				(void);
+
+	IInputReceiver*				CurrentIR					();
 };
 
 extern ENGINE_API CInput *		pInput;

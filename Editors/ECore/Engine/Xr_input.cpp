@@ -286,3 +286,11 @@ void CInput::OnFrame			(void)
 	if (pMouse)		MouseUpdate		();
 	Device.Statistic.Input.End		();
 }
+
+IInputReceiver*	 CInput::CurrentIR()
+{
+	if(cbStack.size())
+		return cbStack.back();
+	else
+		return NULL;
+}
