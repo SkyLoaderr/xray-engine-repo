@@ -558,6 +558,9 @@
 					RelativePath=".\Config\misc\gulag_garbage.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\gulag_general.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\gulag_kishka.ltx">
 				</File>
 				<File
@@ -2985,6 +2988,9 @@
 						</File>
 						<File
 							RelativePath=".\scripts\gulag_garbage.script">
+						</File>
+						<File
+							RelativePath=".\scripts\gulag_general.script">
 						</File>
 						<File
 							RelativePath=".\scripts\gulag_kishka.script">
