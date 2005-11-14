@@ -1818,6 +1818,9 @@
 						RelativePath=".\Config\scripts\cit\cit_doctor.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\cit\cit_heli.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\cit\cit_hunt_killer1.ltx">
 					</File>
 					<File
