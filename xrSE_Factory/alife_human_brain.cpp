@@ -192,8 +192,10 @@ void CALifeHumanBrain::select_task			()
 		}
 	}
 
-	if (object().m_smart_terrain_id != 0xffff)
-		m_last_search_time			= 0;
+	if (object().m_smart_terrain_id != 0xffff) {
+		smart_terrain().register_npc	(&object());
+		m_last_search_time				= 0;
+	}
 }
 
 void CALifeHumanBrain::update				()
