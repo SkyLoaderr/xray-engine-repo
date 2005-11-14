@@ -1635,6 +1635,9 @@ end
 function yan_sleep_not_relocate (actor, npc)
 		db.actor:actor_sleep(0, 180)
 end
+function yantar_kruglov_talk(actor,npc)
+	xr_sound.set_sound_play(npc, "yantar_kruglov_to_professor_2")
+end
 -----------------------------radar
 function rad_sos_spam(actor, npc)
 	news_manager.send_tip(actor, "tips_rad_sos_suicide", nil, "stalker", nil, 1004)
