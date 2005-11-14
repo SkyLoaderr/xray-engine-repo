@@ -405,6 +405,9 @@ theme = {
 	kruglov_stop_enemy_1                        = {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	kruglov_stop_enemy_2                        = {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	
+	--yantar sounds
+	yantar_professor_idle						= {min_snd = 1, max_snd = 5, rnd = 80, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	
 		
     -- Military sounds
     mil_max_thanx                  = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
