@@ -45,6 +45,8 @@ void CBaseMonster::Load(LPCSTR section)
 
 	m_anomaly_detector->load		(section);
 	CoverMan->load					();
+
+	m_rank							= (pSettings->line_exist(section,"rank")) ? int(pSettings->r_u8(section,"rank")) : 0;
 }
 
 void CBaseMonster::reload	(LPCSTR section)

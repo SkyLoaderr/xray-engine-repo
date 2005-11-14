@@ -21,15 +21,11 @@ CStateZombieAttackRunAbstract::~CStateZombieAttackRun()
 TEMPLATE_SPECIALIZATION
 void CStateZombieAttackRunAbstract::initialize()
 {
-	inherited::initialize();
-	m_time_path_rebuild	= 0;
+	inherited::initialize			();
+	m_time_action_change			= 0;
+	action							= ACT_WALK_FWD;
 
-	if (object->HitMemory.is_hit() && (object->conditions().GetHealth() < 0.5f)) {
-		action = ACT_RUN;
-	} else {
-		action = ACT_WALK_FWD;
-	}
-	object->path().prepare_builder();
+	object->path().prepare_builder	();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -62,13 +58,14 @@ void CStateZombieAttackRunAbstract::execute()
 		object->path().set_dest_direction	(command.direction);
 	}
 	
-	// установка параметров функциональных блоков
+	choose_action								();
 	object->anim().m_tAction					= action;	
+
 	if (action == ACT_RUN) 
 		object->path().set_try_min_time	(true);
 	
 	object->sound().play						(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
-	object->anim().accel_activate			(eAT_Aggressive);
+	object->anim().accel_activate				(eAT_Aggressive);
 	object->anim().accel_set_braking			(false);
 }
 
@@ -93,4 +90,23 @@ bool CStateZombieAttackRunAbstract::check_start_conditions()
 
 	return false;
 }
+
+#define CHANGE_ACTION_FROM_RUN	10000
+
+TEMPLATE_SPECIALIZATION
+void CStateZombieAttackRunAbstract::choose_action()
+{
+	if ((action == ACT_RUN) && (m_time_action_change + CHANGE_ACTION_FROM_RUN > time())) return;
+
+	// установка параметров функциональных блоков
+	if (object->HitMemory.is_hit() && (object->conditions().GetHealth() < 0.5f)) 
+		action = ACT_RUN;
+	else 
+		action = ACT_WALK_FWD;
+
+	m_time_action_change = time();
+}
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateZombieAttackRunAbstract
 

@@ -11,6 +11,8 @@
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 {
+	if (!g_Alive()) return SDebugInfo();
+
 	if (m_show_debug_info == 0) {
 		DBG().text(this).clear();
 		return SDebugInfo();
@@ -122,6 +124,8 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 
 void CBaseMonster::debug_fsm()
 {
+	if (!g_Alive()) return;
+
 	if (!psAI_Flags.test(aiMonsterDebug)) {
 		DBG().object_info(this,this).clear ();
 		return;

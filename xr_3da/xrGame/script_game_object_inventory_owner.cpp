@@ -32,6 +32,7 @@
 #include "ui/UITradeWnd.h"
 #include "inventory.h"
 #include "infoportion.h"
+#include "AI/Monsters/BaseMonster/base_monster.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -460,8 +461,13 @@ int CScriptGameObject::CharacterRank			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if (!pInventoryOwner) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterRank available only for InventoryOwner");
-		return 0;
+		// rank support for monster
+		CBaseMonster *monster = smart_cast<CBaseMonster*>(&object());
+		if (!monster) {
+			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterRank available only for InventoryOwner and BaseMonster");
+			return 0;
+		} 	
+		return monster->Rank();
 	}
 	return pInventoryOwner->Rank();
 }

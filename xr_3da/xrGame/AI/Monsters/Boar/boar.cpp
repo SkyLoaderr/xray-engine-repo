@@ -14,6 +14,7 @@ CAI_Boar::CAI_Boar()
 
 	CControlled::init_external(this);
 	com_man().add_ability(ControlCom::eControlRotationJump);
+	com_man().add_ability(ControlCom::eControlRunAttack);
 }
 
 CAI_Boar::~CAI_Boar()
@@ -66,7 +67,7 @@ void CAI_Boar::Load(LPCSTR section)
 	anim().AddAnim(eAnimDie,				"stand_idle_",			-1, &velocity_none,		PS_STAND);
 	anim().AddAnim(eAnimJumpLeft,		"stand_jump_left_",		-1, &velocity_turn,		PS_STAND);
 	anim().AddAnim(eAnimJumpRight,		"stand_jump_right_",	-1, &velocity_turn,		PS_STAND);
-	anim().AddAnim(eAnimAttackRun,		"stand_run_attack_",	-1, &velocity_run,		PS_STAND);
+//	anim().AddAnim(eAnimAttackRun,		"stand_run_attack_",	-1, &velocity_run,		PS_STAND);
 
 	// define transitions																											
 	anim().AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);										
@@ -161,9 +162,9 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 	//	return;
 	//}
 
-	if ((spec_params & ASP_ATTACK_RUN) == ASP_ATTACK_RUN) {
-		anim().SetCurAnim(eAnimAttackRun);
-	}
+	//if ((spec_params & ASP_ATTACK_RUN) == ASP_ATTACK_RUN) {
+	//	anim().SetCurAnim(eAnimAttackRun);
+	//}
 }
 
 void CAI_Boar::UpdateCL()

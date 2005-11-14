@@ -83,7 +83,7 @@ void CZombie::reinit()
 	time_dead_start			= 0;
 	last_hit_frame			= 0;
 	time_resurrect			= 0;
-	last_health_fake_death	= 1.f;
+	fake_death_left			= fake_death_count;
 
 	active_triple_idx		= u8(-1);
 }
@@ -146,19 +146,16 @@ void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_obje
 	
 	if ((hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
 		if (!com_man().ta_is_active() && (time_resurrect + TIME_RESURRECT_RESTORE < Device.dwTimeGlobal) && (conditions().GetHealth() < health_death_threshold)) {
-			if (conditions().GetHealth() < last_health_fake_death) {
+			if (conditions().GetHealth() < (health_death_threshold - float(fake_death_count - fake_death_left) * health_death_threshold / fake_death_count)) {
+				active_triple_idx			= u8(Random.randI(FAKE_DEATH_TYPES_COUNT));
+				com_man().ta_activate		(anim_triple_death[active_triple_idx]);
+				move().stop					();
+				time_dead_start				= Device.dwTimeGlobal;
 				
-				if ((last_health_fake_death - conditions().GetHealth()) > (health_death_threshold / fake_death_count)) {
-					
-					active_triple_idx			= u8(Random.randI(FAKE_DEATH_TYPES_COUNT));
-					com_man().ta_activate		(anim_triple_death[active_triple_idx]);
-					move().stop					();
-					time_dead_start				= Device.dwTimeGlobal;
-
-					last_health_fake_death		= conditions().GetHealth();
-				}
+				if (fake_death_left == 0)	fake_death_left = 1;
+				fake_death_left--;
 			}
-		}
+		} 
 	}
 
 	last_hit_frame = Device.dwFrame;
@@ -179,6 +176,7 @@ void CZombie::shedule_Update(u32 dt)
 		}
 	}
 }
+
 
 bool CZombie::fake_death_fall_down()
 {

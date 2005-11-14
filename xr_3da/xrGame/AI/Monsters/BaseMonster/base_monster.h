@@ -156,6 +156,9 @@ public:
 
 	bool					m_skip_transfer_enemy;			
 	IC		void			skip_transfer_enemy				(bool value){m_skip_transfer_enemy = value;}
+	
+	IC		int				Rank							(){return m_rank;}
+
 	//----------------------------------------------------------------------------------
 
 	virtual void			SetTurnAnimation				(bool turn_left);
@@ -312,6 +315,8 @@ IC	void					wake_up				(){m_bSleep = false;}
 	u32						m_time_last_attack_success;
 
 IC	void					set_ignore_collision_hit (bool value) {ignore_collision_hit = value;}
+	
+	int						m_rank;
 
 private:
 	bool					m_first_update_initialized;

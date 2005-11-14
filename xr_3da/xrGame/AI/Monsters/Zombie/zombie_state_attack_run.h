@@ -6,8 +6,7 @@ template<typename _Object>
 class CStateZombieAttackRun : public CState<_Object> {
 	typedef CState<_Object> inherited;
 
-	TTime				m_time_path_rebuild;
-
+	TTime				m_time_action_change;
 	EAction				action;
 
 public:
@@ -19,6 +18,8 @@ public:
 
 	virtual bool 		check_completion		();
 	virtual bool 		check_start_conditions	();
+private:
+			void		choose_action			();
 
 };
 
