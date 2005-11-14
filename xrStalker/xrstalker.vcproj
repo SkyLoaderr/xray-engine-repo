@@ -1257,6 +1257,9 @@
 					RelativePath=".\Config\ui\follower_panel.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\game_tutorials.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\hint_item.xml">
 				</File>
 				<File

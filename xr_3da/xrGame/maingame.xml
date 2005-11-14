@@ -10,7 +10,7 @@
 	</static>
 	<!-- WEAPON -->
 	<static x="860" y="685" width="160" height="64">
-		<text complex_mode="0" align="l" x="70" y="0" font="letterica16" r="255" g="255" b="255" a="130"></text>
+		<text complex_mode="0" align="l" x="70" y="0" font="letterica16" r="255" g="255" b="255" a="130"/>
 		<texture x="0" y="0" width="160" hwight="64">ui\ui_mn_weapons</texture>
 	</static>
 	<!-- ammo name -->
@@ -24,7 +24,7 @@
 	<!-- pda online icon -->
 	<static x="15" y="187" width="107" height="20" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
 		<texture x="14" y="0" width="107" height="20">ui\ui_mg_back_pager</texture>
-		<text x="88" y="2" font="normal" r="239" g="154" b="29" a="230"></text>
+		<text x="88" y="2" font="normal" r="239" g="154" b="29" a="230"/>
 	</static>
 	<!-- tips static -->
 	<quick_info x="1" y="700" width="1022" height="50"  light_anim="ui_btn_hint"  la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
@@ -98,7 +98,7 @@
 	<money_mt_static x="860" y="10" width="200" height="200">
 		<text x="85" y="4" font="letterica16" r="255" g="255" b="255" a="130">money</text>
 		<texture>ui\ui_mn_weapons</texture>
-		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
+		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"/>
 		<phrase x="20" y="65" font="graffiti32" r="238" g="155" b="23" a="255">
 			<animation anim="fade" period="3" cyclic="0"/>
 		</phrase>
@@ -123,14 +123,12 @@
 	<t1_score x="948" y="80" width="32" height="32" >		
 		<text font="graffiti32" r="0" g="255" b="0" a="255" align="r"/>
 	</t1_score>
-	<t1_static x="980" y="80" width="32" height="32" stretch = "1">		
-	</t1_static>
+	<t1_static x="980" y="80" width="32" height="32" stretch = "1"/>		
 	<!-- TEAM 2 SIGN -->
 	<t2_score x="948" y="110" width="32" height="32">
 		<text font="graffiti32" r="0" g="255" b="255" a="255" align="r"/>
 	</t2_score>
-	<t2_static x="980" y="112" width="32" height="32" stretch = "1">		
-	</t2_static>
+	<t2_static x="980" y="112" width="32" height="32" stretch = "1"/>		
 	<!-- Rank Icon -->
 	<rank_icon x="826" y="26" width="32" height="32" stretch = "1">
 		<texture width="32" height="32"tile="0">ui\ui_mp_icon_rank</texture>

@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<window>
+
+	<trader_first_tutorial>
+		<global_wnd x="0" y="0" width="1024" height="768">
+			<auto_static x=900 y="700" width="150" height="50">
+				<text font="graffiti22" r="255" g="0" b="0" a="255">Tutorial mode</text>
+			</auto_static>
+		</global_wnd>
+	
+		<item> <!--1 open pda -->
+			<length_sec>1</length_sec>
+			<pause_state/>
+			<guard_key>torch</guard_key>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_quests</pda_section>
+			<main_wnd/>
+		</item>
+
+		<item><!--2 open tasks -->
+			<length_sec>5</length_sec>
+			<pause_state>on</pause_state>
+			<guard_key>forward</guard_key>
+			<cursor_pos/>
+			<sound/>
+			<pda_section>pda_quests</pda_section>
+
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="175" y="577" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+				<auto_static start_time="3" length_sec="2" x="425" y="147" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w2</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+		<item><!-- 3task pointers -->
+			<length_sec>6</length_sec>
+			<pause_state>off</pause_state>
+			<guard_key>back</guard_key>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_quests</pda_section>
+
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="380" y="180" width="20" height="20" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_setSelect_t</texture>
+				</auto_static>
+				<auto_static start_time="3" length_sec="3" x="416" y="108" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w2</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+		<item><!--4 map -->
+			<length_sec>7</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_map</pda_section>
+
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="237" y="577" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+				<auto_static start_time="3" length_sec="1" x="268" y="100" width="20" height="20" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w2</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+				<auto_static start_time="4" length_sec="1" x="291" y="100" width="20" height="20" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w3</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+				<auto_static start_time="5" length_sec="1" x="175" y="100" width="20" height="20" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w4</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+				<auto_static start_time="6" length_sec="1" x="200" y="100" width="20" height="20" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w5</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+
+		<item><!--5 contacts -->
+			<length_sec>3</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_contacts</pda_section>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="380" y="577" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+
+		<item><!--6 diary -->
+			<length_sec>3</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_diary</pda_section>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="300" y="577" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+
+		<item><!--7 ranking -->
+			<length_sec>3</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_ranking</pda_section>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="453" y="577" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+
+		<item><!--8 statistics -->
+			<length_sec>3</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_statistics</pda_section>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="536" y="577" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+
+		<item><!--9 encyclopedia -->
+			<length_sec>3</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_encyclopedia</pda_section>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="640" y="577" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+
+		<item><!--10 empty -->
+			<length_sec>3</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section>pda_closed</pda_section>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="3" x="100" y="100" width="150" height="150" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+
+	</trader_first_tutorial>
+
+</window>
