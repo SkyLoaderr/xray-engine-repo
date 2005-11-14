@@ -103,7 +103,7 @@ function getNpcType(npc)
 			sect = "snork_weak"
 		elseif sect == "snork_normal" or sect == "snork_indoor" or sect == "snork_outdoor" or sect == "snork_jumper" then
 			sect = "snork_normal"
-		elseif sect == "snork_strong" or sect == "snork_arena" then
+		elseif sect == "snork_strong" or sect == "snork_arena" or sect == "aes_snork" then
 			sect = "snork_strong"
 		elseif sect == "m_poltergeist_e" then
 			sect = "poltergeist"
