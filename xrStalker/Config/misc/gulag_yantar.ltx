@@ -39,10 +39,36 @@ path_walk = walker_walk
 
 
 [logic@scientist_out_rest]
-active = walker@scientist_1
+active = walker@scientist_start
 on_death = death@scientist
 combat_ignore = combat_ignore
 meet = meet@scientist
+
+[walker@scientist_start]
+path_walk = ucheniy_talk_walk
+path_look = ucheniy_talk_look
+combat_ignore_cond = always
+on_info = {+yantar_kruglov_phrase_1} remark@yan_scientist_talk_1
+
+[remark@yan_scientist_talk_1]
+snd = yantar_kruglov_to_professor_1
+no_move = true
+no_rotate = true 
+on_signal = sound_end | walker@kruglov_talk %+yantar_professor_phrase_2%
+combat_ignore_cond = always
+
+[walker@kruglov_talk]
+path_walk = bunker_walk
+path_look = bunker_look
+combat_ignore_cond = always
+on_info = {+yantar_kruglov_phrase_2} %=yantar_kruglov_talk +yantar_scientists_talk_end%
+;on_info2 = {+yan_scientist_point_to_1} walker@door_2
+on_info2 = {=rostok_dist_to_actor_le(2) +yan_find_scientist_start} remark@kruglov_see_actor
+
+[remark@kruglov_see_actor]
+snd = yantar_kruglov_to_actor
+anim = hello
+on_info = {+yan_scientist_point_to_1} walker@door_2
 
 [walker@scientist_1]
 path_walk = bunker_walk
@@ -162,8 +188,8 @@ help_start_dialog = yantar_wounded_scientist
 
 
 [meet@scientist]
-meet_state 		= 2| hello@talk_hello
-meet_state_wpn 	        = 2| hello@talk_hello
+meet_state 		= 2| hello
+meet_state_wpn 	        = 2| hello
 victim 			= 5 | actor
 victim_wpn 		= 5 | actor
 use                     = true
