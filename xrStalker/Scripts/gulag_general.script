@@ -14,3 +14,11 @@ end
 function checkMonster(npc_community, gulag_type)
 	return false
 end
+
+
+--------------------------------------------------------------------------
+-- Dynamic ltx
+--------------------------------------------------------------------------
+function load_ltx(gname, type)
+	return nil
+end

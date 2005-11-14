@@ -218,11 +218,7 @@ function loadLtx(name, type)
 		local l
 
 		for k, v in pairs(level_gulags) do
-			if v.load_ltx ~= nil then
-				l = v.load_ltx(name, type)
-			else
-				l = nil
-			end
+			l = v.load_ltx(name, type)
 			if l ~= nil then
 				dltx = create_ini_file(l)
 				--printf("gulag <ltx>:\n%s", l)
