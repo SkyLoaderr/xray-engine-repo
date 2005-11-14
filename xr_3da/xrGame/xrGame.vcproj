@@ -11115,6 +11115,16 @@
 					RelativePath=".\UICursor.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Tutorial"
+				Filter="">
+				<File
+					RelativePath=".\ui\UIGameTutorial.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIGameTutorial.h">
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

@@ -1557,8 +1557,19 @@ ID3DXFont*     g_pTestFont2 = NULL;
 ID3DXSprite*        g_pTextSprite = NULL;   // Sprite for batching draw text calls
 ID3DXSprite*        g_pTextSprite2 = NULL;   // Sprite for batching draw text calls
 */
+#include "UIGameTutorial.h"
+CUIGameTutorial* g_tut = NULL;
 void test_key	(int dik)
 {
+	if(!g_tut && dik==DIK_K){
+		g_tut = xr_new<CUIGameTutorial>();
+		g_tut->Start("trader_first_tutorial");
+	}
+	if(g_tut && dik==DIK_J){
+		g_tut->Stop	();
+		xr_delete	(g_tut);
+	}
+
 /*
 	if(dik==DIK_K){
 		if(g_pTestFont){
