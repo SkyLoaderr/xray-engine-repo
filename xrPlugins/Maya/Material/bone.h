@@ -22,6 +22,7 @@ enum EJointType
 	jtJoint,
     jtWheel,
     jtNone,
+    jtSlider,
     jtForceU32 = u32(-1)
 };
 
