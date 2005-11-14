@@ -30,6 +30,7 @@ struct SDrawStaticStruct{
 	}
 };
 
+class CUIXml;
 
 typedef xr_vector<SDrawStaticStruct>	st_vec;
 
@@ -44,7 +45,7 @@ protected:
 	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
 	CUICaption*			GameCaptions			() {return m_pgameCaptions;}
 	CUICaption*			m_pgameCaptions;
-	
+	CUIXml*				m_msgs_xml;
 	st_vec										m_custom_statics;
 public:
 

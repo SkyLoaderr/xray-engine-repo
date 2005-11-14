@@ -20,7 +20,9 @@ CUIGameCustom::CUIGameCustom()
 	shedule.t_min			= 5;
 	shedule.t_max			= 20;
 	shedule_register		();
-	m_pgameCaptions		= xr_new<CUICaption>();
+	m_pgameCaptions			= xr_new<CUICaption>();
+	m_msgs_xml				= xr_new<CUIXml>();
+	m_msgs_xml->Init		(CONFIG_PATH, UI_PATH, "ui_custom_msgs.xml");
 }
 
 CUIGameCustom::~CUIGameCustom()
@@ -28,6 +30,7 @@ CUIGameCustom::~CUIGameCustom()
 	delete_data				(m_pgameCaptions);
 	shedule_unregister		();
 	delete_data				(m_custom_statics);
+	delete_data				(m_msgs_xml);
 }
 
 
@@ -125,9 +128,9 @@ SDrawStaticStruct* CUIGameCustom::AddCustomStatic			(LPCSTR id, bool bSingleInst
 			return &(*it);
 	}
 	
-	CUIXml uiXml;
-	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "ui_custom_msgs.xml");
-	R_ASSERT3						(xml_result, "xml file not found", "ui_custom_msgs.xml");
+//	CUIXml uiXml;
+//	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "ui_custom_msgs.xml");
+//	R_ASSERT3						(xml_result, "xml file not found", "ui_custom_msgs.xml");
 
 	CUIXmlInit xml_init;
 	m_custom_statics.push_back		(SDrawStaticStruct());
@@ -135,7 +138,7 @@ SDrawStaticStruct* CUIGameCustom::AddCustomStatic			(LPCSTR id, bool bSingleInst
 
 	sss.m_static					= xr_new<CUIStatic>();
 	sss.m_name						= id;
-	xml_init.InitStatic				(uiXml, id, 0, sss.m_static);
+	xml_init.InitStatic				(*m_msgs_xml, id, 0, sss.m_static);
 
 	return &sss;
 }
