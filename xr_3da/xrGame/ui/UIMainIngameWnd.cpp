@@ -730,35 +730,9 @@ void CUIMainIngameWnd::Update()
 	CUIWindow::Update();
 }
 
-#include "../actor_statistic_mgr.h"
-
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
-	if(strstr(Core.Params,"andy"))
-		test_key(dik);
-
-	if(dik==DIK_K&&strstr(Core.Params,"andy")){
-		Actor()->StatisticMgr().AddPoints	(2, "monster_1", 1, 20);
-		Actor()->StatisticMgr().AddPoints	(2, "monster_2", 15, 15);
-
-		Actor()->StatisticMgr().AddPoints	(3, "quest", 1, 5);
-
-		Actor()->StatisticMgr().AddPoints	(1, "stalker_11", 1, 150);
-		Actor()->StatisticMgr().AddPoints	(1, "stalker_11", 1, 100);
-		Actor()->StatisticMgr().AddPoints	(1, "stalker_22", 2, 150);
-		Actor()->StatisticMgr().AddPoints	(1, "stalker_33", 100, 150);
-		
-/*
-		if(!w){
-			w = xr_new<CTestDragDropWnd>	();
-			Game().StartStopMenu			(w,true);
-		}else{
-			Game().StartStopMenu			(w,true);
-			xr_delete						(w);
-		}
-*/
-	}
-
+	test_key(dik);
 
 
 	// поддержка режима adjust hud mode
@@ -1557,10 +1531,14 @@ ID3DXFont*     g_pTestFont2 = NULL;
 ID3DXSprite*        g_pTextSprite = NULL;   // Sprite for batching draw text calls
 ID3DXSprite*        g_pTextSprite2 = NULL;   // Sprite for batching draw text calls
 */
+/*
 #include "UIGameTutorial.h"
+#include "../actor_statistic_mgr.h"
 CUIGameTutorial* g_tut = NULL;
+*/
 void test_key	(int dik)
 {
+/*
 	if(!g_tut && dik==DIK_K){
 		g_tut = xr_new<CUIGameTutorial>();
 		g_tut->Start("trader_first_tutorial");
@@ -1569,6 +1547,19 @@ void test_key	(int dik)
 		g_tut->Stop	();
 		xr_delete	(g_tut);
 	}
+*/
+/*
+	if(dik==DIK_K&&strstr(Core.Params,"andy")){
+		if(!w){
+			w = xr_new<CTestDragDropWnd>	();
+			Game().StartStopMenu			(w,true);
+		}else{
+			Game().StartStopMenu			(w,true);
+			xr_delete						(w);
+		}
+	}
+*/
+
 
 /*
 	if(dik==DIK_K){

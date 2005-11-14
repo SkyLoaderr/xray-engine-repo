@@ -16,8 +16,19 @@
 #include "ui/UIInventoryUtilities.h"
 #include "xr_time.h"
 #include "net_utils.h"
+#include "UI/UIGameTutorial.h"
 
 using namespace luabind;
+
+
+CUIGameTutorial* g_tutorial = NULL;
+void start_tutorial(LPCSTR name)
+{
+	if(g_tutorial) return;
+		
+	g_tutorial			= xr_new<CUIGameTutorial>();
+	g_tutorial->Start	(name);
+}
 
 void game_sv_GameState::script_register(lua_State *L)
 {
@@ -83,7 +94,10 @@ void game_sv_GameState::script_register(lua_State *L)
 
 	.def("GenerateGameMessage",	&game_sv_GameState::GenerateGameMessage)
 	.def("getRP",				&game_sv_GameState::getRP)
-	.def("getRPcount",			&game_sv_GameState::getRPcount)
+	.def("getRPcount",			&game_sv_GameState::getRPcount),
+
+	def("start_tutorial",					&start_tutorial)
+
 	];
 	
 	module(L)

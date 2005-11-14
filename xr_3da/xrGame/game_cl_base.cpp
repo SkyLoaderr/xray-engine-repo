@@ -7,6 +7,7 @@
 #include "script_space.h"
 #include "xr_Level_controller.h"
 #include "ui/UIMainIngameWnd.h"
+#include "UI/UIGameTutorial.h"
 
 game_cl_GameState::game_cl_GameState()
 {
@@ -253,9 +254,15 @@ float game_cl_GameState::shedule_Scale		()
 	return 1.0f;
 }
 
+extern CUIGameTutorial * g_tutorial;
+
 void game_cl_GameState::shedule_Update		(u32 dt)
 {
 	ISheduled::shedule_Update	(dt);
+
+	if(g_tutorial && !g_tutorial->IsActive())
+		xr_delete(g_tutorial);
+
 	if(!m_game_ui_custom){
 		if( HUD().GetUI() )
 			m_game_ui_custom = HUD().GetUI()->UIGame();

@@ -4,6 +4,10 @@
 #include "UIStatic.h"
 #include "UIXmlInit.h"
 #include "../object_broker.h"
+CUIGameTutorial::CUIGameTutorial()
+{
+	m_bActive = false;
+}
 
 void CUIGameTutorial::Start(LPCSTR tutor_name)
 {
@@ -36,6 +40,7 @@ void CUIGameTutorial::Start(LPCSTR tutor_name)
 	TutorialItem* pCurrItem		= m_items.front();
 	pCurrItem->Start			(this);
 	IR_Capture					();
+	m_bActive					= true;
 }
 
 void CUIGameTutorial::Stop()
@@ -45,6 +50,7 @@ void CUIGameTutorial::Stop()
 	delete_data					(m_items);
 	delete_data					(m_UIWindow);
 	IR_Release					();
+	m_bActive					= false;
 }
 
 void CUIGameTutorial::OnFrame()

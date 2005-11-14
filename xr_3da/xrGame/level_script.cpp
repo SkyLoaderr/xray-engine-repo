@@ -481,7 +481,6 @@ void CLevel::script_register(lua_State *L)
 		def("physics_world",					&physics_world),
 		def("get_snd_volume",					&get_snd_volume),
 		def("set_snd_volume",					&set_snd_volume),
-
 		def("add_cam_effector",					&add_cam_effector)
 	],
 	

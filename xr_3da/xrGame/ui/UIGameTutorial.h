@@ -9,7 +9,9 @@ class CUIGameTutorial :public pureFrame, public pureRender,	public IInputReceive
 protected:
 	CUIWindow*					m_UIWindow;
 	xr_deque<TutorialItem*>		m_items;
+	bool						m_bActive;
 public:
+							CUIGameTutorial();
 	void					Start		(LPCSTR tutor_name);
 	void					Stop		();
 	void					Next		();
@@ -17,6 +19,7 @@ public:
 	virtual void			OnFrame		();
 	virtual void			OnRender	();
 	CUIWindow*				MainWnd		()				{return m_UIWindow;}
+	bool					IsActive	()				{return m_bActive;}
 
 
 	//IInputReceiver
