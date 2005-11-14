@@ -1,80 +1,27 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="cit_doctor_gunslinger_dialog">
-        <dont_has_info>cit_doctor_talk</dont_has_info>
-        <phrase_list>
-            <phrase id="2">
-                <text>cit_doctor_gunslinger_dialog_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="4">
-                <text>cit_doctor_gunslinger_dialog_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="11111">
-                <text>cit_doctor_gunslinger_dialog_11111</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="1111">
-                <text>cit_doctor_gunslinger_dialog_1111</text>
-                <next>11111</next>
-            </phrase>
-            <phrase id="111">
-                <text>cit_doctor_gunslinger_dialog_111</text>
-                <next>1111</next>
-            </phrase>
-            <phrase id="11">
-                <text>cit_doctor_gunslinger_dialog_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="7">
-                <text>cit_doctor_gunslinger_dialog_7</text>
-            </phrase>
-            <phrase id="6">
-                <text>cit_doctor_gunslinger_dialog_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="5">
-                <text>cit_doctor_gunslinger_dialog_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="1">
-                <text>cit_doctor_gunslinger_dialog_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="0">
-                <text>cit_doctor_gunslinger_dialog_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="3">
-                <text>cit_doctor_gunslinger_dialog_3</text>
-                <give_info>cit_doctor_talk</give_info>
-                <next>4</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="cit_doctor_hello_dialog">
         <phrase_list>
-            <phrase id="11">
-                <text>cit_doctor_hello_dialog_11</text>
-            </phrase>
             <phrase id="21">
                 <text>cit_doctor_hello_dialog_21</text>
             </phrase>
-            <phrase id="2">
+            <phrase id="0">
                 <text></text>
-                <has_info>cit_doctor_talk</has_info>
-                <next>21</next>
+                <next>1</next>
+                <next>2</next>
             </phrase>
             <phrase id="1">
                 <text></text>
                 <dont_has_info>cit_doctor_talk</dont_has_info>
                 <next>11</next>
             </phrase>
-            <phrase id="0">
+            <phrase id="11">
+                <text>cit_doctor_hello_dialog_11</text>
+            </phrase>
+            <phrase id="2">
                 <text></text>
-                <next>1</next>
-                <next>2</next>
+                <has_info>cit_doctor_talk</has_info>
+                <next>21</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -107,6 +54,59 @@
             <phrase id="0">
                 <text>cit_doctor_escape_dialog_0</text>
                 <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="cit_doctor_gunslinger_dialog">
+        <dont_has_info>cit_doctor_talk</dont_has_info>
+        <phrase_list>
+            <phrase id="7">
+                <text>cit_doctor_gunslinger_dialog_7</text>
+            </phrase>
+            <phrase id="6">
+                <text>cit_doctor_gunslinger_dialog_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="5">
+                <text>cit_doctor_gunslinger_dialog_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="0">
+                <text>cit_doctor_gunslinger_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>cit_doctor_gunslinger_dialog_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>cit_doctor_gunslinger_dialog_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>cit_doctor_gunslinger_dialog_111</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>cit_doctor_gunslinger_dialog_1111</text>
+                <next>11111</next>
+            </phrase>
+            <phrase id="11111">
+                <text>cit_doctor_gunslinger_dialog_11111</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>cit_doctor_gunslinger_dialog_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>cit_doctor_gunslinger_dialog_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>cit_doctor_gunslinger_dialog_4</text>
+                <give_info>cit_doctor_talk</give_info>
+                <next>5</next>
             </phrase>
         </phrase_list>
     </dialog>
