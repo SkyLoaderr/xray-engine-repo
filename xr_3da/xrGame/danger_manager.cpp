@@ -137,7 +137,6 @@ void CDangerManager::remove_links	(const CObject *object)
 			continue;
 
 		(*I).clear_dependent_object();
-		break;
 	}
 }
 
