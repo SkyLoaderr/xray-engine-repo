@@ -16,7 +16,10 @@ CALifeScheduleRegistry::~CALifeScheduleRegistry	()
 void CALifeScheduleRegistry::add		(CSE_ALifeDynamicObject *object)
 {
 	CSE_ALifeSchedulable		*schedulable = smart_cast<CSE_ALifeSchedulable*>(object);
-	if (!schedulable || !schedulable->need_update(object))
+	if (!schedulable)
+		return;
+
+	if (!schedulable->need_update(object))
 		return;
 
 	inherited::add				(object->ID,schedulable);

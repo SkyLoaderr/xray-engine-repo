@@ -341,6 +341,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual void					update						();
 	virtual float					detect_probability			();
 	virtual void					smart_touch					(CSE_ALifeMonsterAbstract *monster);
+	virtual bool					used_ai_locations			() const {return true;};
 #ifdef XRGAME_EXPORTS
 	virtual bool					bfActive					();
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon			(ALife::EHitType		&tHitType,			float		&fHitPower);
