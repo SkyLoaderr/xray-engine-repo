@@ -189,4 +189,10 @@
     <string id="ui_mm_voice_volume">
         <text>Voice volume</text>
     </string>
+    <string id="ui_mm_difficulty">
+        <text>Difficulty</text>
+    </string>
+    <string id="ui_mm_crosshair_distance">
+        <text>Crosshair distance</text>
+    </string>
 </string_table>

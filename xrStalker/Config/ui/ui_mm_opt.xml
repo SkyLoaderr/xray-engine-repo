@@ -152,7 +152,7 @@
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_crosshair</text>
 		</cap_crosshair>
 		<cap_difficulty x="20" y="300" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">Difficulty</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_difficulty</text>
 		</cap_difficulty>
 		<track_crosshair x="194" y="20" width="261" height="21">			
 		</track_crosshair>
@@ -167,7 +167,7 @@
 		</check_tips>
 		<check_dist x="20" y="80" width="143" height="21">
 			<options_item entry="hud_crosshair_dist" group="mm_opt_gameplay"/>
-			<text font="letterica16" r="115" g="114" b="112">Crosshair distance</text>
+			<text font="letterica16" r="115" g="114" b="112">ui_mm_crosshair_distance</text>
 		</check_dist>
 		<pic_crosshair x="-7" y="117" width="470" height="179">
 			<texture>ui_options_tv</texture>
@@ -264,34 +264,34 @@
 		</cap_particlesamount>
 		
 		<list_antialiasing x="20" y="20" width="143" height="21">
-			<text>Antialiasing</text>
+			<text>ui_mm_antialiasing</text>
 		</list_antialiasing>
 		<track_texturequality x="20" y="45" width="143" height="21">
-			<text>Texture Quality</text>
+			<text>ui_mm_texture_quality</text>
 		</track_texturequality>
 		<track_lightingquality x="20" y="70" width="143" height="21">
-			<text>Lighting Quality</text>
+			<text>ui_mm_light_quality</text>
 		</track_lightingquality>
 		<track_shadowsquality x="20" y="95" width="143" height="21">
-			<text>Shadows Quality</text>
+			<text>ui_mm_shadows_quality</text>
 		</track_shadowsquality>
 		<track_texturefilter x="20" y="120" width="143" height="21">
-			<text>Texture Filter</text>
+			<text>ui_mm_texture_filter</text>
 		</track_texturefilter>
 		<track_anisotropicfilter x="20" y="145" width="143" height="21">
-			<text>Anisotropic Filter</text>
+			<text>ui_mm_anisotropic_filter</text>
 		</track_anisotropicfilter>
 		<track_depthofview x="20" y="170" width="143" height="21">
-			<text>View Distance</text>
+			<text>ui_mm_view_distance</text>
 		</track_depthofview>
 		<track_grassdensity x="20" y="195" width="143" height="21">
-			<text>Grass Density</text>
+			<text>ui_mm_grass_density</text>
 		</track_grassdensity>
 		<track_grassradius x="20" y="220" width="143" height="21">
-			<text>Grass Radius</text>
+			<text>ui_mm_grass_radius</text>
 		</track_grassradius>
 		<track_dinlight x="20" y="245" width="180" height="21">
-			<text>Dinamic Light Source(DX8)</text>
+			<text>ui_mm_dinamic_light_source</text>
 		</track_dinlight>
 	</video_adv>
 	
