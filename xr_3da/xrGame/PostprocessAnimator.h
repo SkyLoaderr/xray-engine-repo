@@ -25,28 +25,6 @@ typedef enum _pp_params
     pp_force_dword          =   0x7fffffff
 } pp_params;
 
-/*
-class color
-{
-public:
-    float                   r, g, b;
-    IC  void                set (float fr, float fg, float fb) { r = fr; g = fg; b = fb; }
-};
-
-typedef struct _effector_params
-{
-    color                   m_BaseColor;
-    color                   m_AddColor;
-    color                   m_GrayColor;
-    float                   m_DualityH;
-    float                   m_DualityV;
-    float                   m_Blur;
-    float                   m_Gray;
-    float                   m_NoiseI;
-    float                   m_NoiseG;
-    float                   m_NoiseF;
-} effector_params;
-*/
 
 class CPostProcessParam
 {
