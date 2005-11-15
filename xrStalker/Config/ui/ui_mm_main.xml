@@ -34,7 +34,7 @@
 		</shniaga>		
 	</shniaga_wnd>
 	
-	<menu_main btn_height="30" font="graffiti19" a="255" r="0" g="0" b="0">
+	<menu_main btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_new_game"	caption="ui_mm_newgame" />
 		<btn name="btn_load"		caption="ui_mm_load_game" />
 		<btn name="btn_save"		caption="ui_mm_save_game" />
@@ -52,7 +52,7 @@
 		<btn name="btn_new_back"	caption="ui_mm_back" />
 	</menu_new_game>
 	
-	<menu_main_single btn_height="30" font="graffiti19" a="255" r="0" g="0" b="0">
+	<menu_main_single btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_load"		caption="ui_mm_load_game" />
 		<btn name="btn_save"		caption="ui_mm_save_game" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
@@ -60,7 +60,7 @@
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
 	</menu_main_single>
 	
-	<menu_main_mm btn_height="30" font="graffiti19" a="255" r="0" g="0" b="0">
+	<menu_main_mm btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_options"		caption="ui_mm_options_n" />
 		<btn name="btn_quit_to_mm"	caption="ui_mm_disconnect" />
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
