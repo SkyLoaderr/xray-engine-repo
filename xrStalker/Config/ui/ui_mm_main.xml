@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window>
+	<back_video x="0" y="0" width="1024" height="512" stretch="1">		
+	</back_video>
 	<background x="0" y="0" width="1024" height="768">
 		<texture>ui_menu_backgraund</texture>
 	</background>
@@ -35,13 +37,14 @@
 	<menu_main btn_height="30" font="graffiti19" a="255" r="0" g="0" b="0">
 		<btn name="btn_new_game"	caption="ui_mm_newgame" />
 		<btn name="btn_load"		caption="ui_mm_load_game" />
+		<btn name="btn_save"		caption="ui_mm_save_game" />
 		<btn name="btn_multiplayer"	caption="ui_mm_multiplayer_n" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
 		<!--btn name="btn_bonus"		caption="Bonus" /-->
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
 	</menu_main>
 	
-	<menu_new_game btn_height="30" font="graffiti19" a="255" r="0" g="0" b="0">
+	<menu_new_game btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_novice"		caption="ui_mm_novice" />
 		<btn name="btn_stalker"		caption="ui_mm_stalker" />
 		<btn name="btn_veteran"		caption="ui_mm_veteran" />
@@ -67,7 +70,7 @@
 		<!--whell_sound>car\apc_run</whell_sound>
 		<whell_click>car\test_car_stop</whell_click-->
 		
-		<!--menu_music>music\09_dead_cities_pt</menu_music-->
+		<menu_music>music\09_dead_cities_pt</menu_music>
 		<!--menu_music>music\guitar_2</menu_music>
 		<menu_music>music\guitar_1</menu_music>
 		<menu_music>music\guitar_3</menu_music-->
