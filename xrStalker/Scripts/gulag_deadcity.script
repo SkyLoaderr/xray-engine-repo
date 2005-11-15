@@ -112,7 +112,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 15, state = {0},
 		squad = squad, group = groups[5],
-		in_rest = "", out_rest = "",
+		in_rest = "cit_jail_restr", out_rest = "",
 		predicate = k_predicate_e
 	}
 	table.insert(sj, t)
@@ -122,7 +122,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 13, state = {0},
 		squad = squad, group = groups[5],
-		in_rest = "", out_rest = "",
+		in_rest = "cit_jail_restr", out_rest = "",
 		predicate = k_predicate_v
 	}
 	table.insert(sj, t)
@@ -132,7 +132,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 12, state = {0},
 		squad = squad, group = groups[6],
-		in_rest = "", out_rest = "",
+		in_rest = "cit_jail_restr", out_rest = "",
 		predicate = k_predicate_v
 	}
 	table.insert(sj, t)
@@ -143,7 +143,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 11, state = {0},
 		    squad = squad, group = groups[6],
-		    in_rest = "", out_rest = "",
+		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = k_predicate_v
 	    }
 	    table.insert(sj, t)
@@ -155,7 +155,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 9, state = {0},
 		    squad = squad, group = groups[6],
-		    in_rest = "", out_rest = "",
+		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = k_predicate_e
 	    }
 	    table.insert(sj, t)
@@ -170,7 +170,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		        idle = 0,
 		        prior = prior[i], state = {0},
 		        squad = squad, group = groups[kamps[i]],
-		        in_rest = "", out_rest = "",
+		        in_rest = "cit_jail_restr", out_rest = "",
 		        predicate = k_predicate_g
 	        }
 	        table.insert(sj, t)
@@ -183,7 +183,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 14, state = {0},
 		    squad = squad, group = groups[5],
-		    in_rest = "", out_rest = "",
+		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = k_predicate_e
 	    }
 	    table.insert(sj, t)
@@ -197,7 +197,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		        idle = 0,
 		        prior = prior[i], state = {0},
 		        squad = squad, group = groups[i],
-		        in_rest = "", out_rest = "",
+		        in_rest = "cit_jail_restr", out_rest = "",
 		        predicate = k_predicate_v
 	        }
 	        table.insert(sj, t)
@@ -211,7 +211,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 8, state = {0},
 		    squad = squad, group = groups[7 + i],
-		    in_rest = "", out_rest = "",
+		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = pred[i]
 	    }
 	    table.insert(sj, t)
@@ -223,7 +223,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 10, state = {0},
 		    squad = squad, group = groups[7],
-		    in_rest = "", out_rest = "",
+		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = k_predicate_v
 	    }
 	    table.insert(sj, t)
@@ -338,6 +338,7 @@ function load_ltx_killers(gname, type)
 
                    "[kamp@" .. gname .. "_kamp" .. i .. "]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
+                   "def_state_moving    = run\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
     
@@ -607,6 +608,7 @@ function load_ltx_bandits(gname, type)
 
                    "[kamp@" .. gname .. "_kamp" .. i .. "]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
+                   "def_state_moving    = run\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
     
@@ -659,7 +661,7 @@ function load_ltx_bandits(gname, type)
                    "def_state_moving1   = walk\n" ..
                    "def_state_moving2   = walk\n" ..
                    "def_state_moving3   = walk\n" ..
-                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
+                   "combat_ignore_cond  = always\n"
     end
 
     return res
