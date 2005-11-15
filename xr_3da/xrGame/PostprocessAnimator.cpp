@@ -32,13 +32,14 @@ void CPostProcessColor::save (IWriter &pWriter)
 
 //main PostProcessAnimator class
 
-CPostprocessAnimator::CPostprocessAnimator(int id)
+CPostprocessAnimator::CPostprocessAnimator(int id, bool cyclic)
 :CEffectorPP((EEffectorPPType)id, 100000, true)
 {
     Create				();
 	m_factor			= 1.0f;
 	m_bStop				= false;
 	m_stop_speed		= 1.0f;
+	m_bCyclic			= cyclic;
 }
 
 CPostprocessAnimator::~CPostprocessAnimator           ()
@@ -110,6 +111,7 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
            Debug.fatal("ERROR: Can't support files with many animations set. Incorrect file.");
         }
 
+   if(!m_bCyclic) fLifeTime = GetLength	();
 }
 
 void        CPostprocessAnimator::Stop       (float sp)
@@ -138,7 +140,9 @@ void        CPostprocessAnimator::Update                          (float dt)
 
 BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 {
-	fLifeTime				= 100000;
+	if(m_bCyclic)
+		fLifeTime				= 100000;
+
 	Update					(Device.fTimeDelta);
 	
 	if(m_bStop)

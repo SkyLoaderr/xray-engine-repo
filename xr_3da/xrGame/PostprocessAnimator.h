@@ -131,9 +131,10 @@ protected:
 	float											m_factor;
 	bool											m_bStop;
 	float											m_stop_speed;
+	bool											m_bCyclic;
 		void		Update							(float dt);
 public:
-                    CPostprocessAnimator            (int id);
+                    CPostprocessAnimator            (int id, bool cyclic);
         virtual    ~CPostprocessAnimator            ();
         void        Clear                           ();
         void        Load                            (LPCSTR name);

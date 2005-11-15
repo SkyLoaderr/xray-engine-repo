@@ -408,9 +408,9 @@ int get_actor_points(LPCSTR sect)
 
 #include "postprocessanimator.h"
 
-void add_pp_effector(LPCSTR fn, int id)
+void add_pp_effector(LPCSTR fn, int id, bool cyclic)
 {
-	CPostprocessAnimator* pp		= xr_new<CPostprocessAnimator>(id);
+	CPostprocessAnimator* pp		= xr_new<CPostprocessAnimator>(id, cyclic);
 	pp->Load						(fn);
 	Level().Cameras.AddEffector		(pp);
 }
