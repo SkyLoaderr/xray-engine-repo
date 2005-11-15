@@ -112,6 +112,7 @@ public:
 
 
 			void			SetPPMode			();
+			void			ResetPPMode			();
 	IC		bool			GetPPMode			()		{return m_bPP;};
 	//дл€ перевода окна и потомков в исходное состо€ние
 	virtual void			Reset				();

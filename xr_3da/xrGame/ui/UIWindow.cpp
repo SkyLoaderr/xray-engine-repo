@@ -31,6 +31,14 @@ void CUIWindow::SetPPMode()
 	Show					(false);
 };
 
+void CUIWindow::ResetPPMode()
+{
+	if(	GetPPMode() ){
+		UI()->UnregisterPPDraw	(this);
+		m_bPP					= false;
+	}
+}
+
 CUIWindow::CUIWindow()
 {
 	m_pFont					= NULL;

@@ -112,7 +112,8 @@ void CUIWindow::script_register(lua_State *L)
 
 		.def("WindowName",				&CUIWindow::WindowName_script)
 		.def("SetWindowName",			&CUIWindow::SetWindowName)
-		.def("SetPPMode",				&CUIWindow::SetPPMode),
+		.def("SetPPMode",				&CUIWindow::SetPPMode)
+		.def("ResetPPMode",				&CUIWindow::ResetPPMode),
 
 //		.def("",						&CUIWindow::)
 		
