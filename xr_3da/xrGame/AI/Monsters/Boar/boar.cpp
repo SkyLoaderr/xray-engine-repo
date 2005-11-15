@@ -100,7 +100,7 @@ void CAI_Boar::Load(LPCSTR section)
 void CAI_Boar::reinit()
 {
 	inherited::reinit();
-	com_man().add_rotation_jump_data("stand_jump_left_0",0,"stand_jump_right_0",0, PI - 0.1f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
+	com_man().add_rotation_jump_data("stand_jump_left_0",0,"stand_jump_right_0",0, PI - PI_DIV_6, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
 }
 
 
