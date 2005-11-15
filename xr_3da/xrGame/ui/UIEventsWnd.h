@@ -8,7 +8,7 @@ class CUIFrameLineWnd;
 class CUIAnimatedStatic;
 class CUIMapWnd;
 class CUIListWnd;
-class CUIButton;
+class CUI3tButton;
 class CUITabControl;
 class CGameTask;
 class CUITaskDescrWnd;
@@ -27,6 +27,7 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	};
 	Flags16						m_flags;
 	ETaskFilters				m_currFilter;
+	CUI3tButton*				m_primary_or_all_filter_btn;
 	CUIFrameWindow*				m_UILeftFrame;
 	CUIWindow*					m_UIRightWnd;
 	CUIFrameLineWnd*			m_UILeftHeader;

@@ -75,6 +75,7 @@ public:
 	OBJECTIVE_VECTOR		m_Objectives;
 	ALife::_TIME_ID			m_ReceiveTime;
 	ALife::_TIME_ID			m_FinishTime;
+	bool					m_is_task_general;
 
 	enum		{eForceNewTaskActivation =(1<<0),};
 	static		Flags32		m_game_task_flags;

@@ -239,10 +239,11 @@ void CGameTaskManager::RemoveUserTask					(CMapLocation* ml)
 
 void SGameTaskKey::save(IWriter &stream)
 {
-	save_data(task_id,					stream);
-	save_data(game_task->m_ReceiveTime,	stream);
-	save_data(game_task->m_FinishTime,	stream);
-	save_data(game_task->m_Title,		stream);
+	save_data(task_id,						stream);
+	save_data(game_task->m_ReceiveTime,		stream);
+	save_data(game_task->m_FinishTime,		stream);
+	save_data(game_task->m_Title,			stream);
+	save_data(game_task->m_is_task_general, stream);
 
 	for(u32 i=0; i<game_task->m_Objectives.size(); ++i){
 		save_data(game_task->m_Objectives[i].description,	stream);
@@ -261,6 +262,7 @@ void SGameTaskKey::load(IReader &stream)
 	load_data(game_task->m_ReceiveTime,		stream);
 	load_data(game_task->m_FinishTime,		stream);
 	load_data(game_task->m_Title,			stream);
+	load_data(game_task->m_is_task_general, stream);
 
 	for(u32 i=0; i<game_task->m_Objectives.size(); ++i){
 		load_data(game_task->m_Objectives[i].description,	stream);

@@ -8,6 +8,7 @@
 #include "UIScrollView.h"
 #include "UITabControl.h"
 #include "UITaskDescrWnd.h"
+#include "UI3tButton.h"
 #include "../MainUI.h"
 #include "../HUDManager.h"
 #include <boost/function.hpp>
@@ -79,7 +80,15 @@ void CUIEventsWnd::Init				()
 	xml_init.InitTabControl			(uiXml, "main_wnd:left_frame:left_frame_header:filter_tab", 0, m_TaskFilter);
 	m_TaskFilter->SetWindowName		("filter_tab");
 	Register						(m_TaskFilter);
-   AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
+    AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
+
+    m_primary_or_all_filter_btn		= xr_new<CUI3tButton>(); m_primary_or_all_filter_btn->SetAutoDelete(true);
+	m_UILeftFrame->AttachChild		(m_primary_or_all_filter_btn);
+	xml_init.Init3tButton			(uiXml, "main_wnd:left_frame:primary_or_all", 0, m_primary_or_all_filter_btn);
+
+	Register						(m_primary_or_all_filter_btn);
+	m_primary_or_all_filter_btn->	SetWindowName("btn_primary_or_all");
+    AddCallback						("btn_primary_or_all",BUTTON_CLICKED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
 
    m_currFilter						= eActiveTask;
    SetDescriptionMode				(true);
@@ -123,7 +132,6 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	if(bClearOnly)		return;
 
 	if(!Actor()) return;
-
 	GameTasks& tasks = Actor()->GameTaskManager().GameTasks();
 	GameTasks::reverse_iterator it =  tasks.rbegin();
 	CGameTask* task = NULL;
@@ -182,12 +190,18 @@ void CUIEventsWnd::Show					(bool status)
 
 bool CUIEventsWnd::Filter(CGameTask* t)
 {
-	ETaskState task_state = t->m_Objectives[0].TaskState();
-	
-	return (m_currFilter==eActiveTask			&& task_state==eTaskStateInProgress )||
-			(m_currFilter==eAccomplishedTask	&& task_state==eTaskStateCompleted )||
-			(m_currFilter==eFailedTask			&& task_state==eTaskStateFail )||
-			(m_currFilter==eOwnTask				&& task_state==eTaskUserDefined );
+	ETaskState task_state		= t->m_Objectives[0].TaskState();
+	bool bprimary_only			= m_primary_or_all_filter_btn->GetCheck();
+
+	return (m_currFilter==eOwnTask && task_state==eTaskUserDefined )				||
+			( 
+			  (!bprimary_only || (bprimary_only && t->m_is_task_general))	&&
+				(
+					(m_currFilter==eAccomplishedTask	&& task_state==eTaskStateCompleted )||
+					(m_currFilter==eFailedTask			&& task_state==eTaskStateFail )||
+					(m_currFilter==eActiveTask			&& task_state==eTaskStateInProgress )
+				)
+			);
 }
 
 

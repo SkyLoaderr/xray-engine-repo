@@ -84,7 +84,7 @@ void CGameTask::Load(const TASK_ID& id)
 	g_gameTaskXml.SetLocalRoot		(task_node);
 	m_Title							= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "title", 0, NULL);
 	int tag_num						= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"objective");
-
+	m_is_task_general				= ( NULL==g_gameTaskXml.NavigateToNode("secondary",0) );
 	m_Objectives.clear		();
 	for(int i=0; i<tag_num; i++)
 	{
