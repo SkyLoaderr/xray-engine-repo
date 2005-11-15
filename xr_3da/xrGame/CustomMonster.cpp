@@ -541,7 +541,7 @@ void CCustomMonster::eye_pp_s2				( )
 
 void CCustomMonster::Exec_Visibility	( )
 {
-	if (0==Sector())				return;
+	//if (0==Sector())				return;
 	if (!g_Alive())					return;
 
 	Device.Statistic.AI_Vis.Begin	();
