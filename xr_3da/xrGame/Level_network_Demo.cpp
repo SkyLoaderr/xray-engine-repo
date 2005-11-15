@@ -217,7 +217,11 @@ void						CLevel::Demo_Update				()
 		if (!m_bDemoPlayByFrame)
 		{
 			if (P->m_dwDataType != DATA_PACKET) continue;
-			if (P->m_dwTimeReceive <= CurTime) IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+			if (P->m_dwTimeReceive <= CurTime) 
+			{
+				Msg("tReceive [%d] - CurTime [%d]",P->m_dwTimeReceive, CurTime);
+				IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+			}
 			else 
 			{			
 				break;

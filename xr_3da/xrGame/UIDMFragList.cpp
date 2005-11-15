@@ -61,7 +61,10 @@ bool	CUIDMFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 
 	game_PlayerState* PS = (game_PlayerState*)(items[ItemID]);//(game_cl_GameState::Player*)*mI;
 
-	if (PS->testFlag(GAME_PLAYER_FLAG_LOCAL) ) SelectItem(ItemID);
+	if (/*PS->testFlag(GAME_PLAYER_FLAG_LOCAL) || */(Level().CurrentViewEntity() && Level().CurrentViewEntity()->ID() == PS->GameID))
+	{
+		SelectItem(ItemID);
+	};
 
 	char Text[1024];
 	pItem->FieldsVector[0]->SetText(PS->name);

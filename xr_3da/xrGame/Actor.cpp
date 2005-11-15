@@ -687,86 +687,88 @@ void CActor::Die	(CObject* who)
 {
 	inherited::Die(who);
 	//-------------------------------------
-	xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
-	xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
-	for ( ; I != E; ++I)
-	{
-		if ((I - B) == (int)inventory().GetActiveSlot()) 
+	if (OnServer())
+	{	
+		xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
+		xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
+		for ( ; I != E; ++I)
 		{
-			if((*I).m_pIItem)
+			if ((I - B) == (int)inventory().GetActiveSlot()) 
 			{
-				if (OnServer())
+				if((*I).m_pIItem)
 				{
-					if (GameID() == GAME_SINGLE)
-						(*I).m_pIItem->Drop();
-					else
+					if (OnServer())
 					{
-						NET_Packet P;
-						(*I).m_pIItem->object().u_EventGen(P, GE_OWNERSHIP_REJECT, 
-							(*I).m_pIItem->object().H_Parent()->ID());
-						P.w_u16(u16((*I).m_pIItem->object().ID()));
-						(*I).m_pIItem->object().u_EventSend(P);
+						if (GameID() == GAME_SINGLE)
+							(*I).m_pIItem->Drop();
+						else
+						{
+							NET_Packet P;
+							(*I).m_pIItem->object().u_EventGen(P, GE_OWNERSHIP_REJECT, 
+								(*I).m_pIItem->object().H_Parent()->ID());
+							P.w_u16(u16((*I).m_pIItem->object().ID()));
+							(*I).m_pIItem->object().u_EventSend(P);
+						}
 					}
-
-				}				
-			};
-		}
-		else
-		{
-			CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> ((*I).m_pIItem);
-			if (pOutfit) continue;
-
-			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
-		};
-	};
-
-
-	///!!! чистка пояса
-	TIItemContainer &l_blist = inventory().m_belt;
-	while (!l_blist.empty())	inventory().Ruck(l_blist.front());
-
-	if (OnServer() && GameID() != GAME_SINGLE)
-	{
-//		bool MedKitDropped = false;
-		//if we are on server and actor has PDA - destroy PDA
-		TIItemContainer &l_rlist = inventory().m_ruck;
-		for(TIItemContainer::iterator l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
-		{
-			if (GameID() == GAME_ARTEFACTHUNT)
+				};
+			}
+			else
 			{
-				CArtefact* pArtefact = smart_cast<CArtefact*> (*l_it);
-				if (pArtefact)
+				CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> ((*I).m_pIItem);
+				if (pOutfit) continue;
+
+				if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
+			};
+		};
+
+
+		///!!! чистка пояса
+		TIItemContainer &l_blist = inventory().m_belt;
+		while (!l_blist.empty())	inventory().Ruck(l_blist.front());
+
+		if (OnServer() && GameID() != GAME_SINGLE)
+		{
+			//		bool MedKitDropped = false;
+			//if we are on server and actor has PDA - destroy PDA
+			TIItemContainer &l_rlist = inventory().m_ruck;
+			for(TIItemContainer::iterator l_it = l_rlist.begin(); l_rlist.end() != l_it; ++l_it)
+			{
+				if (GameID() == GAME_ARTEFACTHUNT)
+				{
+					CArtefact* pArtefact = smart_cast<CArtefact*> (*l_it);
+					if (pArtefact)
+					{
+						(*l_it)->Drop();
+						continue;
+					};
+				};
+
+				if ((*l_it)->object().CLS_ID == CLSID_OBJECT_PLAYERS_BAG)
 				{
 					(*l_it)->Drop();
 					continue;
 				};
-			};
-
-			if ((*l_it)->object().CLS_ID == CLSID_OBJECT_PLAYERS_BAG)
-			{
-				(*l_it)->Drop();
-				continue;
-			};
-/*
-			if ((*l_it)->object().CLS_ID == CLSID_IITEM_MEDKIT && !MedKitDropped)
-			{
+				/*
+				if ((*l_it)->object().CLS_ID == CLSID_IITEM_MEDKIT && !MedKitDropped)
+				{
 				MedKitDropped = true;
 				(*l_it)->Drop();
 				continue;
-			};
+				};
 
-			if ((*l_it)->object().CLS_ID == CLSID_DEVICE_PDA)
-			{
+				if ((*l_it)->object().CLS_ID == CLSID_DEVICE_PDA)
+				{
 				(*l_it)->Drop();
 				continue;
+				};
+
+				CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> (*l_it);
+				if (pOutfit) continue;
+
+				//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
+				(*l_it)->object().DestroyObject();
+				*/
 			};
-
-			CCustomOutfit *pOutfit = smart_cast<CCustomOutfit *> (*l_it);
-			if (pOutfit) continue;
-
-			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
-			(*l_it)->object().DestroyObject();
-*/
 		};
 	};
 	//-------------------------------------

@@ -152,7 +152,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 #ifdef DEBUG
 				 /**/
 	case DIK_F4: {
-		if (GameID() != GAME_SINGLE) return;
+//		if (GameID() != GAME_SINGLE) return;
 		bool bOk = false;
 		u32 i=0, j, n=Objects.o_count();
 		if (pCurrentEntity)
