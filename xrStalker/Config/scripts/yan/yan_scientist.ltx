@@ -40,13 +40,13 @@ path_look = yan_ucheniy_look_talk
 meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {-yan_actor_talk_ucheniy} walker@yan_1
-on_info2 = {+yantar_professor_talk_about_brain} remark@professor_about_brain
+on_info2 = {-yantar_professor_talk_about_brain_end +yantar_professor_talk_about_brain} remark@professor_about_brain
 meet = meet@yan_general_scientist
 
 [remark@professor_about_brain]
 snd = yantar_professor_talk_1
 anim = wait
-on_signal = sound_end | walker@yan_1
+on_signal = sound_end | walker@yan_1 %+yantar_professor_talk_about_brain_end%
 meet = meet@yan_general_scientist_1
 
 [meet@yan_general_scientist]
