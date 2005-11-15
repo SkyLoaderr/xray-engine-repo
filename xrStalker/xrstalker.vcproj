@@ -2979,6 +2979,9 @@
 							RelativePath=".\Scripts\gulag_agroprom.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\gulag_agroprom_underground.script">
+						</File>
+						<File
 							RelativePath=".\scripts\gulag_bar.script">
 						</File>
 						<File
