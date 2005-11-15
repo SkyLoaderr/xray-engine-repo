@@ -406,6 +406,23 @@ int get_actor_points(LPCSTR sect)
 	return Actor()->StatisticMgr().GetSectionPoints(_ParseItem(sect, actor_stats_token));
 }
 
+#include "postprocessanimator.h"
+
+void add_pp_effector(LPCSTR fn, int id)
+{
+	CPostprocessAnimator* pp		= xr_new<CPostprocessAnimator>(id);
+	pp->Load						(fn);
+	Level().Cameras.AddEffector		(pp);
+}
+
+void remove_pp_effector(int id)
+{
+	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Level().Cameras.GetEffector((EEffectorPPType)id));
+
+	if(pp) pp->Stop(1.0f);
+
+}
+
 void CLevel::script_register(lua_State *L)
 {
 	class_<CEnvDescriptor>("CEnvDescriptor")
@@ -481,7 +498,9 @@ void CLevel::script_register(lua_State *L)
 		def("physics_world",					&physics_world),
 		def("get_snd_volume",					&get_snd_volume),
 		def("set_snd_volume",					&set_snd_volume),
-		def("add_cam_effector",					&add_cam_effector)
+		def("add_cam_effector",					&add_cam_effector),
+		def("add_pp_effector",					&add_pp_effector),
+		def("remove_pp_effector",				&remove_pp_effector)
 	],
 	
 	module(L,"actor_stats")

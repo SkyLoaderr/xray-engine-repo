@@ -5832,6 +5832,12 @@
 						<File
 							RelativePath=".\night_vision_effector.h">
 						</File>
+						<File
+							RelativePath=".\PostprocessAnimator.cpp">
+						</File>
+						<File
+							RelativePath=".\PostprocessAnimator.h">
+						</File>
 						<Filter
 							Name="Zones"
 							Filter="">

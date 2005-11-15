@@ -1536,16 +1536,19 @@ ID3DXSprite*        g_pTextSprite2 = NULL;   // Sprite for batching draw text ca
 #include "../actor_statistic_mgr.h"
 CUIGameTutorial* g_tut = NULL;
 */
+//#include "../postprocessanimator.h"
+//CPostprocessAnimator* pp = NULL;
 void test_key	(int dik)
 {
 /*
-	if(!g_tut && dik==DIK_K){
-		g_tut = xr_new<CUIGameTutorial>();
-		g_tut->Start("trader_first_tutorial");
+	if(dik==DIK_K){
+		pp = xr_new<CPostprocessAnimator>();
+		pp->Load							("proba.ppe",999);
+		Level().Cameras.AddEffector	(pp);
 	}
-	if(g_tut && dik==DIK_J){
-		g_tut->Stop	();
-		xr_delete	(g_tut);
+	if(dik==DIK_J){
+		pp->Stop(0.05f);
+//		Level().Cameras.RemoveEffector(cefppUser);
 	}
 */
 /*

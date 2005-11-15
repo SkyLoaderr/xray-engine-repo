@@ -34,7 +34,8 @@ enum EEffectorType		{
 
 enum EEffectorPPType	{
 	cefppDemo,
-	cefppHit
+	cefppHit,
+	cefppUser
 };
 
 // refs
