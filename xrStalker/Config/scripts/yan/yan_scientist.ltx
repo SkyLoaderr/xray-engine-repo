@@ -1,0 +1,57 @@
+[logic]
+active = walker@yan_start
+actor_dialogs = actor_dialogs
+combat_ignore = combat_ignore
+
+[walker@yan_start]
+path_walk = yan_ucheniy_walk_talk
+path_look = yan_ucheniy_look_talk
+combat_ignore_cond = always
+on_info = {+yantar_scientists_talk} remark@yan_professor_talk_1
+
+[remark@yan_professor_talk_1]
+snd = yantar_professor_to_kruglov_1
+no_move = true
+target = 900
+on_signal = sound_end | %+yantar_kruglov_phrase_1%
+on_info = {+yantar_professor_phrase_2} remark@yan_professor_talk_2
+combat_ignore_cond = always
+
+[remark@yan_professor_talk_2]
+snd = yantar_professor_to_kruglov_2
+target = 900
+no_move = true
+on_signal = sound_end | walker@yan_1 %+yantar_kruglov_phrase_2%
+;on_info = {+yantar_scientists_talk_end} walker@yan_1
+combat_ignore_cond = always
+
+
+
+[walker@yan_1]
+path_walk = yan_ucheniy_walk
+path_look = yan_ucheniy_look
+meet_talk_enabled = true
+combat_ignore_cond = always
+on_info = {+yan_actor_talk_ucheniy} walker@yan_2
+
+[walker@yan_2]
+path_walk = yan_ucheniy_walk_talk
+path_look = yan_ucheniy_look_talk
+meet_talk_enabled = true
+combat_ignore_cond = always
+on_info = {-yan_actor_talk_ucheniy} walker@1
+meet = meet
+
+[meet@yan_general_scientist]
+meet_state 		= hello
+meet_state_wpn 	        = hello
+victim 			= nil
+victim_wpn 		= nil
+use                     = true
+use_wpn                 = false
+
+[actor_dialogs]
+id = yantar_general_ucheniy_talk_start,yantar_general_ucheniy_talk_end
+
+[combat_ignore]
+combat_ignore_cond = always
