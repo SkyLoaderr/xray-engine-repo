@@ -1,0 +1,34 @@
+[logic]
+active = heli_move@wait
+
+[heli_move@wait]
+path_move           = cit_assault_heli_wait_move
+engine_sound        = false
+on_info             = {+cit_jail_start_waking} heli_move@ready
+
+[heli_move@ready]
+path_move           = cit_assault_heli_ready_move
+path_look           = cit_assault_heli_ready_look
+engine_sound        = true
+combat_enemy        = nil
+combat_use_rocket   = false
+combat_use_mgun     = true
+;invulnerable       = true
+on_info             = {+cit_jail_scene_start} heli_move@start
+
+[heli_move@start]
+path_move           = cit_assault_heli_start_move
+path_look           = cit_assault_heli_start_look
+engine_sound        = true
+combat_enemy        = nil
+combat_use_rocket   = false
+combat_use_mgun     = true
+;invulnerable       = true
+;immortal            = true
+;on_info             = {+cit_button_broken} heli_move@leave
+on_signal           = arrived | heli_move@leave %+cit_button_broken%
+
+[heli_move@leave]
+path_move     = cit_assault_heli_leave_move
+combat_ignore = true
+immortal      = true
