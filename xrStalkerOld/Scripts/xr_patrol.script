@@ -391,6 +391,11 @@ end
 function action_patrol:death_callback()
 	patrols[self.st.path_name]:remove_npc (self.object)
 end
+----------------------
+function action_patrol:deactivate ()
+    patrols[self.st.path_name]:remove_npc (self.object)    
+end
+----------------------
 
 
 ----------------------------------------------------------------------------------------------------------------------
