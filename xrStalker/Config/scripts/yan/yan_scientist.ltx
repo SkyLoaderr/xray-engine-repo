@@ -44,14 +44,14 @@ on_info2 = {-yantar_professor_talk_about_brain_end +yantar_professor_talk_about_
 meet = meet@yan_general_scientist
 
 [remark@professor_about_brain]
-snd = yantar_professor_talk_1
+snd = yantar_professor_radiation_quest_1
 anim = wait
 on_signal = sound_end | walker@yan_1 %+yantar_professor_talk_about_brain_end%
 meet = meet@yan_general_scientist_1
 
 [meet@yan_general_scientist]
-meet_state 		= hello@professor_talk_1
-meet_state_wpn 	= hello@professor_talk_1
+meet_state 		= hello@yantar_professor_talk_1
+meet_state_wpn 	= hello@yantar_professor_talk_1
 victim 			= nil
 victim_wpn 		= nil
 use             = true
