@@ -67,7 +67,7 @@ void CSE_ALifeGroupAbstract::script_register(lua_State *L)
 void CSE_ALifeDynamicObject::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_dynamic_alife1(
 			CSE_ALifeDynamicObject,
 			"cse_alife_dynamic_object",
 			CSE_ALifeObject
@@ -78,7 +78,7 @@ void CSE_ALifeDynamicObject::script_register(lua_State *L)
 void CSE_ALifeDynamicObjectVisual::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeDynamicObjectVisual,
 			"cse_alife_dynamic_object_visual",
 			CSE_ALifeDynamicObject,
@@ -90,7 +90,7 @@ void CSE_ALifeDynamicObjectVisual::script_register(lua_State *L)
 void CSE_ALifePHSkeletonObject::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifePHSkeletonObject,
 			"cse_alife_ph_skeleton_object",
 			CSE_ALifeDynamicObjectVisual,
@@ -102,7 +102,7 @@ void CSE_ALifePHSkeletonObject::script_register(lua_State *L)
 void CSE_ALifeSpaceRestrictor::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeSpaceRestrictor,
 			"cse_alife_space_restrictor",
 			CSE_ALifeDynamicObject,
@@ -114,7 +114,7 @@ void CSE_ALifeSpaceRestrictor::script_register(lua_State *L)
 void CSE_ALifeLevelChanger::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_dynamic_alife1(
 			CSE_ALifeLevelChanger,
 			"cse_alife_level_changer",
 			CSE_ALifeSpaceRestrictor

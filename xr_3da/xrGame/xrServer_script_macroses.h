@@ -51,8 +51,20 @@ class CALifeSmartTerrainTask;
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(interactive,		bool)
 
 #ifdef XRGAME_EXPORTS
-#	define INHERIT_ZONE \
+#	define INHERIT_DYNAMIC_ALIFE \
 	INHERIT_ALIFE\
+	DEFINE_LUA_WRAPPER_METHOD_V0		(on_spawn)\
+	DEFINE_LUA_WRAPPER_METHOD_V0		(on_before_register)\
+	DEFINE_LUA_WRAPPER_METHOD_V0		(on_register)\
+	DEFINE_LUA_WRAPPER_METHOD_V0		(on_unregister)
+#else
+#	define INHERIT_DYNAMIC_ALIFE \
+	INHERIT_ALIFE
+#endif
+
+#ifdef XRGAME_EXPORTS
+#	define INHERIT_ZONE \
+	INHERIT_DYNAMIC_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_V0		(update)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(smart_touch,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_CONST_METHOD_1	(enabled,bool,CSE_ALifeMonsterAbstract*)\
@@ -63,14 +75,14 @@ class CALifeSmartTerrainTask;
 	DEFINE_LUA_WRAPPER_METHOD_0			(detect_probability,float)
 #else
 #	define INHERIT_ZONE \
-	INHERIT_ALIFE\
+	INHERIT_DYNAMIC_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_V0		(update)\
 	DEFINE_LUA_WRAPPER_METHOD_V1		(smart_touch,CSE_ALifeMonsterAbstract*)\
 	DEFINE_LUA_WRAPPER_METHOD_0			(detect_probability,float)
 #endif
 
 #define INHERIT_CREATURE \
-	INHERIT_ALIFE\
+	INHERIT_DYNAMIC_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_0			(g_team,	u8)\
 	DEFINE_LUA_WRAPPER_METHOD_0			(g_squad,	u8)\
 	DEFINE_LUA_WRAPPER_METHOD_0			(g_group,	u8)
@@ -80,7 +92,7 @@ class CALifeSmartTerrainTask;
 	DEFINE_LUA_WRAPPER_METHOD_V0		(update)
 
 #define INHERIT_ITEM \
-	INHERIT_ALIFE\
+	INHERIT_DYNAMIC_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_0			(bfUseful,	bool)
 
 template <typename T>
@@ -106,6 +118,14 @@ struct CWrapperAbstractALife : public T, public luabind::wrap_base {
 	typedef CWrapperAbstractALife<T>	self_type;
 	CWrapperAbstractALife				(LPCSTR section) : inherited(section){}
 	INHERIT_ALIFE;
+};
+
+template <typename T>
+struct CWrapperAbstractDynamicALife : public T, public luabind::wrap_base {
+	typedef T								inherited;
+	typedef CWrapperAbstractDynamicALife<T>	self_type;
+	CWrapperAbstractDynamicALife		(LPCSTR section) : inherited(section){}
+	INHERIT_DYNAMIC_ALIFE;
 };
 
 template <typename T>
@@ -173,6 +193,16 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,used_ai_locations	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,can_save			) \
 
+#ifdef XRGAME_EXPORTS
+#	define luabind_virtual_dynamic_alife(a,b) \
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,on_spawn			) \
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,on_before_register	) \
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,on_register			) \
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,on_unregister		)
+#else
+#	define luabind_virtual_dynamic_alife(a,b)
+#endif
+
 #define luabind_virtual_creature(a,b) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_team	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_squad	) \
@@ -212,12 +242,16 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	luabind_virtual_Abstract(a,b) \
 	luabind_virtual_alife(a,b)
 
-#define luabind_virtual_Creature(a,b) \
+#define luabind_virtual_DynamicAlife(a,b) \
 	luabind_virtual_Alife(a,b) \
+	luabind_virtual_dynamic_alife(a,b)
+
+#define luabind_virtual_Creature(a,b) \
+	luabind_virtual_DynamicAlife(a,b) \
 	luabind_virtual_creature(a,b)
 
 #define luabind_virtual_Zone(a,b) \
-	luabind_virtual_Alife(a,b) \
+	luabind_virtual_DynamicAlife(a,b) \
 	luabind_virtual_zone(a,b)
 
 #define luabind_virtual_Monster(a,b) \
@@ -225,7 +259,7 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	luabind_virtual_monster(a,b)
 
 #define luabind_virtual_Item(a,b) \
-	luabind_virtual_Alife(a,b) \
+	luabind_virtual_DynamicAlife(a,b) \
 	luabind_virtual_item(a,b)
 
 //////////////////////////////////////////////////////////////////////////
@@ -242,6 +276,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #define luabind_class_alife0(a,b) \
 	DEFINE_LUABIND_CLASS_WRAPPER_0(a,CWrapperAbstractALife<a>,b) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
+
+#define luabind_class_dynamic_alife0(a,b) \
+	DEFINE_LUABIND_CLASS_WRAPPER_0(a,CWrapperAbstractDynamicALife<a>,b) \
+	luabind_virtual_DynamicAlife(a,CWrapperAbstractDynamicALife<a>)
 
 #define luabind_class_zone0(a,b) \
 	DEFINE_LUABIND_CLASS_WRAPPER_0(a,CWrapperAbstractZone<a>,b) \
@@ -274,6 +312,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	DEFINE_LUABIND_CLASS_WRAPPER_1(a,CWrapperAbstractALife<a>,b,c) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
 
+#define luabind_class_dynamic_alife1(a,b,c) \
+	DEFINE_LUABIND_CLASS_WRAPPER_1(a,CWrapperAbstractDynamicALife<a>,b,c) \
+	luabind_virtual_DynamicAlife(a,CWrapperAbstractDynamicALife<a>)
+
 #define luabind_class_zone1(a,b,c) \
 	DEFINE_LUABIND_CLASS_WRAPPER_1(a,CWrapperAbstractZone<a>,b,c) \
 	luabind_virtual_Zone(a,CWrapperAbstractZone<a>)
@@ -304,6 +346,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #define luabind_class_alife2(a,b,c,d) \
 	DEFINE_LUABIND_CLASS_WRAPPER_2(a,CWrapperAbstractALife<a>,b,c,d) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
+
+#define luabind_class_dynamic_alife2(a,b,c,d) \
+	DEFINE_LUABIND_CLASS_WRAPPER_2(a,CWrapperAbstractDynamicALife<a>,b,c,d) \
+	luabind_virtual_DynamicAlife(a,CWrapperAbstractDynamicALife<a>)
 
 #define luabind_class_zone2(a,b,c,d) \
 	DEFINE_LUABIND_CLASS_WRAPPER_2(a,CWrapperAbstractZone<a>,b,c,d) \
@@ -336,6 +382,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	DEFINE_LUABIND_CLASS_WRAPPER_3(a,CWrapperAbstractALife<a>,b,c,d,e) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
 
+#define luabind_class_dynamic_alife3(a,b,c,d,e) \
+	DEFINE_LUABIND_CLASS_WRAPPER_3(a,CWrapperAbstractDynamicALife<a>,b,c,d,e) \
+	luabind_virtual_DynamicAlife(a,CWrapperAbstractDynamicALife<a>)
+
 #define luabind_class_zone3(a,b,c,d,e) \
 	DEFINE_LUABIND_CLASS_WRAPPER_3(a,CWrapperAbstractZone<a>,b,c,d,e) \
 	luabind_virtual_Zone(a,CWrapperAbstractZone<a>)
@@ -366,6 +416,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #define luabind_class_alife4(a,b,c,d,e,f) \
 	DEFINE_LUABIND_CLASS_WRAPPER_4(a,CWrapperAbstractALife<a>,b,c,d,e,f) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
+
+#define luabind_class_dynamic_alife4(a,b,c,d,e,f) \
+	DEFINE_LUABIND_CLASS_WRAPPER_4(a,CWrapperAbstractDynamicALife<a>,b,c,d,e,f) \
+	luabind_virtual_DynamicAlife(a,CWrapperAbstractDynamicALife<a>)
 
 #define luabind_class_zone4(a,b,c,d,e,f) \
 	DEFINE_LUABIND_CLASS_WRAPPER_4(a,CWrapperAbstractZone<a>,b,c,d,e,f) \

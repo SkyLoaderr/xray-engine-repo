@@ -16,7 +16,7 @@ using namespace luabind;
 void CSE_ALifeObjectProjector::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_dynamic_alife1(
 			CSE_ALifeObjectProjector,
 			"cse_alife_object_projector",
 			CSE_ALifeDynamicObjectVisual
@@ -27,7 +27,7 @@ void CSE_ALifeObjectProjector::script_register(lua_State *L)
 void CSE_ALifeHelicopter::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife3(
+		luabind_class_dynamic_alife3(
 			CSE_ALifeHelicopter,
 			"cse_alife_helicopter",
 			CSE_ALifeDynamicObjectVisual,
@@ -40,7 +40,7 @@ void CSE_ALifeHelicopter::script_register(lua_State *L)
 void CSE_ALifeCar::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeCar,
 			"cse_alife_car",
 			CSE_ALifeDynamicObjectVisual,
@@ -52,7 +52,7 @@ void CSE_ALifeCar::script_register(lua_State *L)
 void CSE_ALifeObjectBreakable::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_dynamic_alife1(
 			CSE_ALifeObjectBreakable,
 			"cse_alife_object_breakable",
 			CSE_ALifeDynamicObjectVisual
@@ -75,7 +75,7 @@ void CSE_ALifeObjectClimable::script_register(lua_State *L)
 void CSE_ALifeMountedWeapon::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_dynamic_alife1(
 			CSE_ALifeMountedWeapon,
 			"cse_alife_mounted_weapon",
 			CSE_ALifeDynamicObjectVisual
@@ -86,7 +86,7 @@ void CSE_ALifeMountedWeapon::script_register(lua_State *L)
 void CSE_ALifeTeamBaseZone::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_dynamic_alife1(
 			CSE_ALifeTeamBaseZone,
 			"cse_alife_team_base_zone",
 			CSE_ALifeSpaceRestrictor

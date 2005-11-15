@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: xrServer_Objects_ALife_Monsters_script2.cpp
+//	Module 		: xrServer_Objects_ALife_Monsters_script3.cpp
 //	Created 	: 19.09.2002
 //  Modified 	: 04.06.2003
 //	Author		: Dmitriy Iassenev
@@ -12,19 +12,6 @@
 #include "xrServer_script_macroses.h"
 
 using namespace luabind;
-
-
-void CSE_ALifeMonsterAbstract::script_register(lua_State *L)
-{
-	module(L)[
-		luabind_class_monster2(
-			CSE_ALifeMonsterAbstract,
-			"cse_alife_monster_abstract",
-			CSE_ALifeCreatureAbstract,
-			CSE_ALifeSchedulable
-		)
-	];
-}
 
 void CSE_ALifeCreatureActor::script_register(lua_State *L)
 {
@@ -42,7 +29,7 @@ void CSE_ALifeCreatureActor::script_register(lua_State *L)
 void CSE_ALifeTorridZone::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeTorridZone,
 			"cse_torrid_zone",
 			CSE_ALifeCustomZone,
@@ -54,7 +41,7 @@ void CSE_ALifeTorridZone::script_register(lua_State *L)
 void CSE_ALifeZoneVisual::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeZoneVisual,
 			"cse_zone_visual",
 			CSE_ALifeAnomalousZone,
@@ -93,7 +80,7 @@ void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 void CSE_ALifeOnlineOfflineGroup::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeOnlineOfflineGroup,
 			"cse_alife_online_offline_group",
 			CSE_ALifeDynamicObject,

@@ -31,7 +31,7 @@ void CSE_ALifeTraderAbstract::script_register(lua_State *L)
 void CSE_ALifeTrader::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeTrader,
 			"cse_alife_trader",
 			CSE_ALifeDynamicObjectVisual,
@@ -43,7 +43,7 @@ void CSE_ALifeTrader::script_register(lua_State *L)
 void CSE_ALifeCustomZone::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeCustomZone,
 			"cse_custom_zone",
 			CSE_ALifeDynamicObject,
@@ -55,7 +55,7 @@ void CSE_ALifeCustomZone::script_register(lua_State *L)
 void CSE_ALifeAnomalousZone::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_dynamic_alife2(
 			CSE_ALifeAnomalousZone,
 			"cse_anomalous_zone",
 			CSE_ALifeCustomZone,

@@ -8842,6 +8842,9 @@
 						<File
 							RelativePath=".\xrserver_objects_alife_monsters_script3.cpp">
 						</File>
+						<File
+							RelativePath=".\xrServer_Objects_ALife_Monsters_script4.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="script_value_container"
@@ -11120,6 +11123,11 @@
 				Filter="">
 				<File
 					RelativePath=".\ui\UIGameTutorial.cpp">
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\ui\UIGameTutorial.h">
