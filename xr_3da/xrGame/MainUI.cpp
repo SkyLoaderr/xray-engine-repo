@@ -173,6 +173,7 @@ void CMainUI::Activate	(bool bActivate)
 		if(g_pGameLevel){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
+			g_pGameLevel->Cameras.ResetPP();
 //			psDeviceFlags.set(rsDrawStatic,FALSE);
 //			psDeviceFlags.set(rsDrawDynamic,FALSE);
 

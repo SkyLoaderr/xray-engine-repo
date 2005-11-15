@@ -255,6 +255,21 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	T->set_color_add		(pp_affected.color_add);
 }
 
+void CCameraManager::ResetPP()
+{
+	IRender_Target*		T	= ::Render->getTarget();
+	T->set_duality_h		(pp_identity.duality.h);
+	T->set_duality_v		(pp_identity.duality.v);
+	T->set_blur				(pp_identity.blur);
+	T->set_gray				(pp_identity.gray);
+	T->set_noise			(pp_identity.noise.intensity);
+	T->set_noise_scale		(pp_identity.noise.grain);
+	T->set_noise_fps		(pp_identity.noise.fps);
+	T->set_color_base		(pp_identity.color_base);
+	T->set_color_gray		(pp_identity.color_gray);
+	T->set_color_add		(pp_identity.color_add);
+}
+
 void CCameraManager::Dump()
 {
 	Fmatrix mInvCamera;

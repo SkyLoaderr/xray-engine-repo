@@ -155,7 +155,7 @@ public:
 
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest, u32 flags=0);
 	void					Update				(const CCameraBase* C);
-
+	void					ResetPP				();
 	CCameraManager();
 	~CCameraManager();
 };
