@@ -2047,6 +2047,13 @@
 						RelativePath=".\config\scripts\ds\heli.ltx">
 					</File>
 				</Filter>
+				<Filter
+					Name="Yantar"
+					Filter="">
+					<File
+						RelativePath=".\config\scripts\yan\yan_scientist.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Zones"
