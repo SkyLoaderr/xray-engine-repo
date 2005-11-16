@@ -1,14 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
-	<!-- REMOVE ME-->
-<!--	
-	<article_header_static x="22" y="48" width="430" height="22">
-		<text font="letterica25" r="225" g="225" b="250">SS</text>
-	</article_header_static>
-
-
--->
  	<main_wnd x="76" y="62" width="761" height="475"/>
     <left_frame_window x="0" y="0" width="448" height="475" a="80">
 		<texture>ui_pda_frame_sub</texture>        
