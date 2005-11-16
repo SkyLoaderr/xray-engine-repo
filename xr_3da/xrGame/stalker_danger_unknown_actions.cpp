@@ -154,16 +154,20 @@ void CStalkerActionDangerUnknownSearch::execute							()
 {
 	inherited::execute		();
 
-	VERIFY					(object().agent_manager().member().member(&object()).cover());
+	if (object().agent_manager().member().member(&object()).cover()) {
+		object().agent_manager().location().add		(
+			xr_new<CDangerCoverLocation>(
+				object().agent_manager().member().member(&object()).cover(),
+				Device.dwTimeGlobal,
+				DANGER_INTERVAL,
+				DANGER_DISTANCE
+			)
+		);
+		return;
+	}
 
-	object().agent_manager().location().add		(
-		xr_new<CDangerCoverLocation>(
-			object().agent_manager().member().member(&object()).cover(),
-			Device.dwTimeGlobal,
-			DANGER_INTERVAL,
-			DANGER_DISTANCE
-		)
-	);
+	set_property			(eWorldPropertyCoverReached,false);
+	set_property			(eWorldPropertyLookedAround,false);
 }
 
 void CStalkerActionDangerUnknownSearch::finalize							()
