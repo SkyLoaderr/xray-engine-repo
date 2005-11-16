@@ -1513,6 +1513,21 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	
+	if type == "esc_ambush" then
+		t = { section = "logic@esc_ambush1",
+			idle = 4,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = "esc_ambush_out_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_ambush2",
+			idle = 4,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = "esc_ambush_out_restrictor"
+		}
+		table.insert(sj, t)
+	end
 end
 
 function load_states(gname, type)
@@ -1703,6 +1718,12 @@ function load_states(gname, type)
 		end
 	end
 	
+	if type == "esc_ambush" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
 end
 
 --------------------------------------------------------------------------
@@ -1742,7 +1763,9 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community == "bandit"
 	end
 
-	
+	if gulag_type == "esc_ambush" then
+		return npc_community == "bandit"
+	end
 	return false
 end
 
