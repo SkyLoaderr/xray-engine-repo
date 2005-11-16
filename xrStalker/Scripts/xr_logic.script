@@ -1324,6 +1324,7 @@ function get_customdata_or_ini_file(npc, filename)
 			return ini_file([[scripts\dummy.ltx]])
 		end
 	elseif string.find( filename, "*" ) == 1 then
+		-- динамический ltx
 		local p = string.find( filename, "*", 2 )
 		return gulag_tasks.loadLtx( string.sub(filename, 2, p-1), string.sub(filename, p+1) )
 	else
