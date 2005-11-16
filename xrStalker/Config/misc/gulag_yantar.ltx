@@ -136,21 +136,33 @@ path_walk = help_walk_3
 path_look = help_look_3
 ;combat_ignore_cond = always
 meet = meet@scientist
-on_info = {+yan_scientist_start_research} walker@scientist_research
+on_info = {+yan_scientist_start_research} remark@scientist_research
 def_state_moving = assault
 radius = 0
 no_retreat = true
 ;danger = danger_condition@yan_scientist
 
+[remark@scientist_research]
+snd = yantar_kruglov_radiation_quest_2
+anim = wait
+on_signal = sound_end | walker@scientist_research
+combat_ignore_cond = always
+
 [walker@scientist_research]
 path_walk = walk_research
 combat_ignore_cond = always
 meet = meet@scientist
-on_signal = start_psy_attack | walker@scientist_wounded_1 %+yan_spawn_ghost%
+on_signal = start_psy_attack | remark@scientist_wounded_1 %+yan_spawn_ghost%
+
+[remark@scientist_wounded_1]
+snd = yantar_kruglov_radiation_quest_6
+anim = hide
+on_signal = sound_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
+combat_ignore_cond = always
 
 [walker@scientist_wounded_1]
 path_walk = wounded_walk
-wounded = wounded@yan_scientist
+;wounded = wounded@yan_scientist
 on_timer = 12000 | walker@scientist_wounded 
 combat_ignore_cond = always
 
