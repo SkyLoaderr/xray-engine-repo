@@ -183,6 +183,12 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	xml_init.Init3tButton(uiXml, "clear_button", 0, &UIBtnClear);
 	UIBtnClear.EnableTextHighlighting(false);
 
+	AttachChild(&UIBtn_BulletPistol);
+	xml_init.Init3tButton(uiXml, "btn_bullets_pistol", 0, &UIBtn_BulletPistol);
+
+	AttachChild(&UIBtn_BulletRiffle);
+	xml_init.Init3tButton(uiXml, "btn_bullets_riffle", 0, &UIBtn_BulletRiffle);
+
 	UIBagWnd.UpdateBuyPossibility();
 
 	//Списки Drag&Drop
@@ -548,6 +554,10 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			OnBtnClearClicked();
 		else if (&UIBtnAutobuy == pWnd)
 			OnBtnAutobuyClicked();
+		else if (&UIBtn_BulletPistol == pWnd)
+			OnBtnBulletBuy(PISTOL_SLOT);
+		else if (&UIBtn_BulletRiffle == pWnd)
+			OnBtnBulletBuy(RIFLE_SLOT);
 		break;
 
 	case DRAG_DROP_ITEM_DRAG:
@@ -698,6 +708,25 @@ void CUIBuyWeaponWnd::OnBtnClearClicked(){
 //	GetTop()->SendMessage(UIBagWnd.GetItemByKey(DIK_1, GROUP_2), DRAG_DROP_ITEM_DB_CLICK);
 	game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 	if (dm) dm->OnBuyMenu_DefaultItems();
+}
+
+void CUIBuyWeaponWnd::OnBtnBulletBuy(int slot){
+	if (UITopList[slot].GetDragDropItemsList().empty())
+		return;
+
+	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[slot].GetDragDropItemsList().begin());
+
+	R_ASSERT(pSettings->section_exist(item->GetSectionName()));
+
+	xr_string itemsList; 
+	string256 single_item;
+
+	itemsList = pSettings->r_string(item->GetSectionName(), "ammo_class");
+	_GetItem(itemsList.c_str(), 0, single_item);
+
+	item = UIBagWnd.GetItemBySectoin(single_item);
+	if (item)
+        SendMessage(item, DRAG_DROP_ITEM_DB_CLICK, NULL);
 }
 
 bool CUIBuyWeaponWnd::ClearTooExpensiveItems(){
