@@ -134,11 +134,18 @@ void CParticleGroup::SItem::Clear()
     for (VisualVecIt it=visuals.begin(); it!=visuals.end(); it++)
 	    ::Render->model_Delete(*it);
 }
-void CParticleGroup::SItem::StartRelatedChild(LPCSTR eff_name, PAPI::Particle& m)
+void CParticleGroup::SItem::StartRelatedChild(CParticleEffect* emitter, LPCSTR eff_name, PAPI::Particle& m)
 {
     CParticleEffect*C		= static_cast<CParticleEffect*>(RImplementation.model_CreatePE(eff_name));
-    Fmatrix M; 				M.translate(m.pos);
+    Fmatrix M; 				M.identity();
     Fvector vel; 			vel.sub(m.pos,m.posB); vel.div(fDT_STEP);
+    if (emitter->m_RT_Flags.is(CParticleEffect::flRT_XFORM)){
+        M.set				(emitter->m_XFORM);
+        M.transform_dir		(vel);
+    };
+    Fvector 				p;
+    M.transform_tiny		(p,m.pos);
+    M.c.set					(p);
     C->Play					();
     C->UpdateParent			(M,vel,FALSE);
     _children_related.push_back(C);
@@ -152,15 +159,22 @@ void CParticleGroup::SItem::StopRelatedChild(u32 idx)
     _children_related[idx]		= _children_related.back();
     _children_related.pop_back	();
 }
-void CParticleGroup::SItem::StartFreeChild(LPCSTR nm, PAPI::Particle& m)
+void CParticleGroup::SItem::StartFreeChild(CParticleEffect* emitter, LPCSTR nm, PAPI::Particle& m)
 {
     CParticleEffect*C			= static_cast<CParticleEffect*>(RImplementation.model_CreatePE(nm));
     if(!C->IsLooped()){
-        _children_free.push_back(C);
-        Fmatrix M; 				M.translate(m.pos);
+        Fmatrix M; 				M.identity();
         Fvector vel; 			vel.sub(m.pos,m.posB); vel.div(fDT_STEP);
+        if (emitter->m_RT_Flags.is(CParticleEffect::flRT_XFORM)){
+        	M.set				(emitter->m_XFORM);
+            M.transform_dir		(vel);
+        };
+        Fvector 				p;
+        M.transform_tiny		(p,m.pos);
+        M.c.set					(p);
         C->Play					();
         C->UpdateParent			(M,vel,FALSE);
+        _children_free.push_back(C);
     }else{
 #ifdef _EDITOR        
         Msg			("!Can't use looped effect '%s' as 'On Birth' child for group.",nm);
@@ -212,9 +226,9 @@ void OnGroupParticleBirth(void* owner, u32 param, PAPI::Particle& m, u32 idx)
     const CPGDef* PGD			= PG->GetDefinition();					VERIFY(PGD);
     const CPGDef::SEffect& eff	= PGD->m_Effects[param];
     if (eff.m_Flags.is(CPGDef::SEffect::flOnBirthChild))
-    	PG->items[param].StartFreeChild			(*eff.m_OnBirthChildName,m);
+    	PG->items[param].StartFreeChild			(PE,*eff.m_OnBirthChildName,m);
     if (eff.m_Flags.is(CPGDef::SEffect::flOnPlayChild))
-    	PG->items[param].StartRelatedChild		(*eff.m_OnPlayChildName,m);
+    	PG->items[param].StartRelatedChild		(PE,*eff.m_OnPlayChildName,m);
 }
 void OnGroupParticleDead(void* owner, u32 param, PAPI::Particle& m, u32 idx)
 {
@@ -227,7 +241,7 @@ void OnGroupParticleDead(void* owner, u32 param, PAPI::Particle& m, u32 idx)
     if (eff.m_Flags.is(CPGDef::SEffect::flOnPlayChild))
     	PG->items[param].StopRelatedChild		(idx);
     if (eff.m_Flags.is(CPGDef::SEffect::flOnDeadChild))
-    	PG->items[param].StartFreeChild			(*eff.m_OnDeadChildName,m);
+    	PG->items[param].StartFreeChild			(PE,*eff.m_OnDeadChildName,m);
 }
 //------------------------------------------------------------------------------
 struct zero_vis_pred : public std::unary_function<IRender_Visual*, bool>

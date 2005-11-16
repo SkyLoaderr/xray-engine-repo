@@ -52,8 +52,8 @@ namespace PS
 		BOOL				Equal			(const CPGDef* pe);
 #endif
 	public:
-		CPGDef		  	();
-		~CPGDef		  	();
+							CPGDef		  	();
+							~CPGDef		  	();
 		void				SetName		  	(LPCSTR name);
 
 		void 				Save		  	(IWriter& F);
@@ -88,9 +88,9 @@ namespace PS
             void			OnDeviceCreate	();
             void			OnDeviceDestroy	();
 
-            void			StartRelatedChild	(LPCSTR eff_name, PAPI::Particle& m);
+            void			StartRelatedChild	(CParticleEffect* emitter, LPCSTR eff_name, PAPI::Particle& m);
             void			StopRelatedChild	(u32 idx);
-            void			StartFreeChild		(LPCSTR eff_name, PAPI::Particle& m);
+            void			StartFreeChild		(CParticleEffect* emitter, LPCSTR eff_name, PAPI::Particle& m);
 
             void 			UpdateParent	(const Fmatrix& m, const Fvector& velocity, BOOL bXFORM);
             void			OnFrame			(u32 u_dt, const CPGDef::SEffect& def, Fbox& box, bool& bPlaying);

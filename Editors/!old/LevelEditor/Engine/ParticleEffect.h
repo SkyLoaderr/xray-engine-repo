@@ -21,7 +21,7 @@ namespace PS
 		s32					m_MemDT;
 
 		Fvector				m_InitialPosition;
-
+	public:
         Fmatrix				m_XFORM;
     protected:
     	DestroyCallback		m_DestroyCallback;
