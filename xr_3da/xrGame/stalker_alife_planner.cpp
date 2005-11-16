@@ -79,12 +79,14 @@ void CStalkerALifePlanner::add_actions		()
 
 	action					= xr_new<CStalkerActionReachTaskLocation>		(m_object,"reach_task_location");
 	add_condition			(action,eWorldPropertyALife,					true);
+	add_condition			(action,eWorldPropertySmartTerrainTask,			false);
 	add_condition			(action,eWorldPropertyReachedTaskLocation,		false);
 	add_effect				(action,eWorldPropertyReachedTaskLocation,		true);
 	add_operator			(eWorldOperatorReachTaskLocation,				action);
 
 	action					= xr_new<CStalkerActionAccomplishTask>			(m_object,"accomplish_task");
 	add_condition			(action,eWorldPropertyALife,					true);
+	add_condition			(action,eWorldPropertySmartTerrainTask,			false);
 	add_condition			(action,eWorldPropertyReachedTaskLocation,		true);
 	add_condition			(action,eWorldPropertyTaskCompleted,			false);
 	add_effect				(action,eWorldPropertyTaskCompleted,			true);
@@ -92,6 +94,7 @@ void CStalkerALifePlanner::add_actions		()
 
 	action					= xr_new<CStalkerActionReachCustomerLocation>	(m_object,"go_to_customer : task completed");
 	add_condition			(action,eWorldPropertyALife,					true);
+	add_condition			(action,eWorldPropertySmartTerrainTask,			false);
 	add_condition			(action,eWorldPropertyReachedTaskLocation,		true);
 	add_condition			(action,eWorldPropertyTaskCompleted,			true);
 	add_condition			(action,eWorldPropertyReachedCustomerLocation,	false);
@@ -100,6 +103,7 @@ void CStalkerALifePlanner::add_actions		()
 	
 	action					= xr_new<CStalkerActionCommunicateWithCustomer>	(m_object,"statisfy_customer");
 	add_condition			(action,eWorldPropertyALife,					true);
+	add_condition			(action,eWorldPropertySmartTerrainTask,			false);
 	add_condition			(action,eWorldPropertyReachedCustomerLocation,	true);
 	add_condition			(action,eWorldPropertyCustomerSatisfied,		false);
 	add_effect				(action,eWorldPropertyCustomerSatisfied,		true);
