@@ -172,7 +172,19 @@ combat_ignore_cond = always
 path_walk = wounded_walk
 wounded = wounded@yan_scientist
 combat_ignore_cond = always
-on_info = {+yan_scientist_return_to_bunker} camper@scientist_return_to_bunker
+on_info = {+yan_scientist_return_to_bunker} remark@scientist_return_to_bunker
+
+[remark@scientist_return_to_bunker]
+snd = yantar_kruglov_radiation_quest_8
+anim = wait
+on_signal = sound_end | remark@scientist_return_to_bunker_1
+combat_ignore_cond = always
+
+[remark@scientist_return_to_bunker_1]
+snd = yantar_kruglov_radiation_quest_9
+anim = wait
+on_signal = sound_end | camper@scientist_return_to_bunker
+combat_ignore_cond = always
 
 [camper@scientist_return_to_bunker]
 path_walk = return_walk
