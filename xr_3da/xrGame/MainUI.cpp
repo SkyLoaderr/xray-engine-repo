@@ -157,6 +157,7 @@ void CMainUI::Activate	(bool bActivate)
 			m_Flags.set				(flActive|flNeedChangeCapture,FALSE);
 			return;
 		}
+		xr_delete(m_startDialog);
 		m_startDialog = smart_cast<CUIDialogWnd*>(dlg);
 		VERIFY(m_startDialog);
 

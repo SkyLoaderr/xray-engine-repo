@@ -31,6 +31,8 @@ function mp_join:InitControls(x, y, xml, handler)
 	xml:InitLabel("tab_client:cap_server_list", self)
 	xml:InitLabel("tab_client:cap_filters",self)
 	
+	xml:InitStatic("tab_client:rust_00",self)
+	xml:InitStatic("tab_client:rust_01",self)
 	
 	local radio = xml:InitTab("tab_client:radio_tab_network_connection", self)
 	radio:SetNewActiveTab(1)

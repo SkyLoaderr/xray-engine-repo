@@ -8,6 +8,7 @@
 #include "../hudmanager.h"
 #include "../game_base_space.h"
 #include "../level.h"
+#include "../object_broker.h"
 #include <math.h>
 
 
@@ -42,11 +43,10 @@ CUIMMShniaga::~CUIMMShniaga(){
 	xr_delete(m_gratings[0]);
 	xr_delete(m_gratings[1]);
 	xr_delete(m_view);
+	xr_delete(m_sound);
 
-	for (u32 i = 0; i<m_buttons.size(); i++)
-		xr_delete(m_buttons[i]);
-	for (u32 i = 0; i<m_buttons_new.size(); i++)
-		xr_delete(m_buttons_new[i]);
+	delete_data(m_buttons);
+	delete_data(m_buttons_new);
 }
 
 void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
@@ -72,8 +72,8 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 		CreateList(m_buttons, xml_doc, "menu_main_mm");
     ShowMain();
 
-//	m_sound->Init(xml_doc, "menu_sound");
-//	m_sound->music_Play();
+	m_sound->Init(xml_doc, "menu_sound");
+	m_sound->music_Play();
 }
 
 void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path){
@@ -103,9 +103,11 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 			st->SetFont(pF);
 		st->SetTextColor(color);
 		st->SetTextAlignment(CGameFont::alCenter);
-		st->SetTextY(-3);
+		st->SetVTextAlignment(valCenter);
 		st->SetWindowName(xml_doc.ReadAttrib("btn", i, "name"));
 		st->SetMessageTarget(this);
+//		st->InitTexture("ui\\ui_debug_red_n_black");
+//		st->SetStretchTexture(true);
 		lst.push_back(st);
 	}
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
@@ -240,9 +242,10 @@ void CUIMMShniaga::ProcessEvent(EVENT ev){
                 // calculate moving params
 				m_start_time = Device.TimerAsyncMM();
 				m_origin = m_shniaga->GetWndPos().y;
-				float border = GetHeight() - m_shniaga->GetHeight();
-				float y = m_selected->GetWndPos().y;
-				m_destination = (y - m_shniaga->GetHeight()/2 + 3 < border) ? y - m_shniaga->GetHeight()/2 + 3: border;
+//				float border = GetHeight() - m_shniaga->GetHeight();
+//				float y = m_selected->GetWndPos().y;
+//				m_destination = (y < border) ? y : border;
+				m_destination = m_selected->GetWndPos().y - m_magnifier->GetWndPos().y;
 				m_run_time = u32((log(1 + abs(m_origin - m_destination))/log(GetHeight()))*1000);
 				if (m_run_time < 100)
 					m_run_time = 100;

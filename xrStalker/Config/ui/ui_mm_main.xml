@@ -9,8 +9,8 @@
 		<texture>ui\ui_mm_fire</texture>
 	</fire_movie>
 
-	<shniaga_wnd x="599" y="429" width="392" height="280">
-		<buttons_region	x="119" y="0" width="150" height="280" always_show_scroll="false">
+	<shniaga_wnd x="599" y="419" width="392" height="280">
+		<buttons_region	x="110" y="0" width="164" height="280" always_show_scroll="false">
 		</buttons_region>
 		
 		<shniaga x="0" y="0" width="392" height="73">
