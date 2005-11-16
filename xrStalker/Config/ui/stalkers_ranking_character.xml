@@ -3,10 +3,12 @@
 <window>
 
 	<!-- REMOVE ME -->
+<!--	
 	<name_static x="30" y="182" width="240" height="16">
 		<text x="0" y="0" font="letterica16" r="128" g="128" b="128"></text>
 	</name_static>
 
+-->
 
 	<!-- ICON -->
 	<icon_static x="0" y="0" width="110" height="110"></icon_static>
