@@ -10,7 +10,7 @@
       Intermediate\UI_ParticleMain.obj Intermediate\UI_ParticleTools.obj 
       Intermediate\UI_ParticleToolsProps.obj Intermediate\PSLibraryEditor.obj 
       Intermediate\ParticleGroupEditor.obj Intermediate\ParticleEffectEditor.obj 
-      Intermediate\StatGraph.obj Intermediate\pDomain.obj Intermediate\noise.obj 
+      Intermediate\StatGraph.obj Intermediate\noise.obj 
       Intermediate\ObjectAnimator.obj Intermediate\ParticleEffectActionsImpl.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
@@ -77,7 +77,6 @@
       <FILE FILENAME="ParticleEffectEditor.cpp" FORMNAME="" UNITNAME="ParticleEffectEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="StatGraph.cpp" FORMNAME="" UNITNAME="StatGraph" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="pDomain.cpp" FORMNAME="" UNITNAME="pDomain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="noise.cpp" FORMNAME="" UNITNAME="noise" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ObjectAnimator.cpp" FORMNAME="" UNITNAME="ObjectAnimator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleEffectActionsImpl.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsImpl" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
