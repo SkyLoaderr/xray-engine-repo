@@ -77,6 +77,7 @@ end
 -----------------------
 function PatrolManager:remove_npc (npc)
     if npc == nil then return end
+    --printf ("[XR_PATROL]REMOVE NPC %s", npc:name ())
     self.npc_list[npc:id ()] = nil
     if npc:id () == self.commander_id then
        self.commander_id = -1
@@ -294,7 +295,7 @@ end
 ----------------------
 function action_commander:finalize ()
     if self.object:alive () == true then
-       printf ("ACTION_COMMANDER:FINALIZE CALLED")
+       --printf ("ACTION_COMMANDER:FINALIZE CALLED")
 	   patrols[self.st.path_walk]:set_command (self.object, "guard", self.st.formation)
 	   self.move_mgr:finalize()
 	end   
@@ -307,6 +308,10 @@ end
 ----------------------
 function action_commander:death_callback()
 	patrols[self.st.path_name]:remove_npc (self.object)
+end
+----------------------
+function action_commander:net_destroy ()
+    self:deactivate ()
 end
 ----------------------
 function action_commander:callback (mode, number, index)
@@ -394,6 +399,10 @@ end
 ----------------------
 function action_patrol:deactivate ()
     patrols[self.st.path_name]:remove_npc (self.object)    
+end
+----------------------
+function action_patrol:net_destroy ()
+    self:deactivate ()
 end
 ----------------------
 
