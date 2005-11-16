@@ -137,22 +137,27 @@ void __fastcall TfrmObjectList::InitListBox()
 
 void TfrmObjectList::UpdateState()
 {
-    tvItems->IsUpdating = true;
+    tvItems->IsUpdating 	= true;
 
 	tvItems->OnItemSelectedChange = 0;
 
+    TElTreeItem* sel_node 	= 0;
+    
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext()){
         if (node&&(node->Level>0)){
         	CCustomObject* O = (CCustomObject*)node->Data;
             node->ParentStyle = false;
             node->StrikeOut = !O->Visible();
-            if (rgSO->ItemIndex==1) 	 node->Hidden = !O->Visible();
-            else if (rgSO->ItemIndex==2) node->Hidden = O->Visible();
-            if (O->Visible())			 node->Selected=O->Selected();
+            if (rgSO->ItemIndex==1) 	 node->Hidden 	= !O->Visible();
+            else if (rgSO->ItemIndex==2) node->Hidden 	= O->Visible();
+            if (O->Visible())			 node->Selected	= O->Selected();
+            if (O->Selected())			 sel_node		= node;
         }
     }
 
     tvItems->IsUpdating = false;
+
+    if (sel_node) tvItems->EnsureVisible(sel_node);
 }                                                
 
 void TfrmObjectList::UpdateSelection()

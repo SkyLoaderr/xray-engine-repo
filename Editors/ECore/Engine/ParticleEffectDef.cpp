@@ -33,7 +33,7 @@ CPEDef::CPEDef()
 
 CPEDef::~CPEDef()
 {
-#ifdef _PARTICLE_EDITOR
+#ifdef _EDITOR
 	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++) xr_delete(*it);
 #endif
 }

@@ -75,7 +75,6 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ebGenerateMapClick
     end
     object ebSmoothNodes: TExtBtn
@@ -95,7 +94,6 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ebSmoothNodesClick
     end
     object ExtBtn6: TExtBtn
@@ -115,7 +113,6 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ExtBtn6Click
     end
     object ebGenerateSelected: TExtBtn
@@ -135,7 +132,6 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ebGenerateSelectedClick
     end
     object ebResetSelected: TExtBtn
@@ -155,7 +151,6 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
-      FlatAlwaysEdge = True
       OnClick = ebResetSelectedClick
     end
   end

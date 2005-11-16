@@ -35,7 +35,7 @@ namespace PS
             BOOL			Equal				(const SEffect&);
 #endif
 		};
-		DEFINE_VECTOR(SEffect,EffectVec,EffectIt);
+		DEFINE_VECTOR(SEffect*,EffectVec,EffectIt);
 		EffectVec			m_Effects;
 #ifdef _EDITOR
         shared_str			m_OwnerName;

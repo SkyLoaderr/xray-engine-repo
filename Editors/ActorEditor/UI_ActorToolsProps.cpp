@@ -287,6 +287,7 @@ xr_token joint_types[]={
 	{ "Cloth",					jtCloth		},
 	{ "Joint",					jtJoint	 	},
 	{ "Wheel [Steer-X/Roll-Z]", jtWheel		},
+	{ "Slider",					jtSlider 	},
 //	{ "Wheel [Steer-X/Roll-Z]", jtWheelXZ	},
 //	{ "Wheel [Steer-X/Roll-Y]", jtWheelXY	},
 //	{ "Wheel [Steer-Y/Roll-X]", jtWheelYX	},
@@ -489,11 +490,27 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
 	        int idx = (data.type-jtWheel)/2;
 	        PHelper().CreateFloat  	(items,PrepareKey(pref,"Bone\\Joint\\Friction"),	 			&data.friction, 	0.f, 1000000000.f);
 	        PHelper().CreateFloat  	(items,PrepareKey(pref,"Bone\\Joint\\Spring Factor"),			&data.spring_factor, 0.f, 1000.f);
-	        PHelper().CreateFloat  	(items,PrepareKey(pref,"Bone\\Joint\\Damping Factor"),	 	&data.damping_factor, 0.f, 1000.f);
+	        PHelper().CreateFloat  	(items,PrepareKey(pref,"Bone\\Joint\\Damping Factor"),	 		&data.damping_factor, 0.f, 1000.f);
             V=PHelper().CreateAngle	(items,PrepareKey(pref,"Bone\\Joint\\Steer\\Limits Min"),		&data.limits[idx].limit.x, -PI_DIV_2, 0.f);
 			V->OnChangeEvent.bind	(this,&CActorTools::OnBoneLimitsChange);
             V=PHelper().CreateAngle	(items,PrepareKey(pref,"Bone\\Joint\\Steer\\Limits Max"),		&data.limits[idx].limit.y, 0, PI_DIV_2);
             V->OnChangeEvent.bind	(this,&CActorTools::OnBoneLimitsChange);
+        }break;
+        case jtSlider:
+        {
+	        PHelper().CreateFloat	(items, PrepareKey(pref,"Bone\\Joint\\Friction"),	 			&data.friction, 	0.f, 1000000000.f);
+	        PHelper().CreateFloat 	(items, PrepareKey(pref,"Bone\\Joint\\Spring Factor"),			&data.spring_factor, 	0.f, 1000.f);
+	        PHelper().CreateFloat	(items, PrepareKey(pref,"Bone\\Joint\\Damping Factor"),			&data.damping_factor, 	0.f, 1000.f);
+            for (int k=0; k<3; k++){
+		        V=PHelper().CreateAngle	(items,PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Min"),			&data.limits[k].limit.x, 		-M_PI, 0.f);
+                V->OnChangeEvent.bind	(this,&CActorTools::OnBoneLimitsChange);
+		        V=PHelper().CreateAngle	(items,PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Max"),			&data.limits[k].limit.y, 		0.f, M_PI);
+                V->OnChangeEvent.bind	(this,&CActorTools::OnBoneLimitsChange);
+		        V=PHelper().CreateFloat	(items,PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Spring Factor"),	&data.limits[k].spring_factor, 	0.f, 1000.f);
+                V->OnChangeEvent.bind	(this,&CActorTools::OnBoneLimitsChange);
+		        V=PHelper().CreateFloat	(items,PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Damping Factor"),	&data.limits[k].damping_factor, 0.f, 1000.f);
+                V->OnChangeEvent.bind	(this,&CActorTools::OnBoneLimitsChange);
+            }
         }break;
         }
     }

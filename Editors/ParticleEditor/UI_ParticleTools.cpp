@@ -170,7 +170,7 @@ void CParticleTools::Render()
          	int cnt 		= m_EditPG->items.size();
             for (int k=0; k<cnt; k++){
                 PS::CParticleEffect* E		= (PS::CParticleEffect*)m_EditPG->items[k]._effect;
-				if (E&&E->GetDefinition()&&m_LibPGD->m_Effects[k].m_Flags.is(PS::CPGDef::SEffect::flEnabled))	
+				if (E&&E->GetDefinition()&&m_LibPGD->m_Effects[k]->m_Flags.is(PS::CPGDef::SEffect::flEnabled))	
                 	E->GetDefinition()->Render(m_Transform);
             }
         }

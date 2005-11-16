@@ -11,7 +11,8 @@
       Intermediate\UI_ParticleToolsProps.obj Intermediate\PSLibraryEditor.obj 
       Intermediate\ParticleGroupEditor.obj Intermediate\ParticleEffectEditor.obj 
       Intermediate\StatGraph.obj Intermediate\noise.obj 
-      Intermediate\ObjectAnimator.obj Intermediate\ParticleEffectActionsImpl.obj"/>
+      Intermediate\ObjectAnimator.obj Intermediate\ParticleEffectActionsImpl.obj 
+      Intermediate\pDomain.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -80,6 +81,7 @@
       <FILE FILENAME="noise.cpp" FORMNAME="" UNITNAME="noise" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ObjectAnimator.cpp" FORMNAME="" UNITNAME="ObjectAnimator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleEffectActionsImpl.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsImpl" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="pDomain.cpp" FORMNAME="" UNITNAME="pDomain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

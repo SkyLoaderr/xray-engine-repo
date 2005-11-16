@@ -64,7 +64,7 @@ void __fastcall TfraAIMap::ebSmoothNodesClick(TObject *Sender)
 void __fastcall TfraAIMap::ExtBtn6Click(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to clear AI Map?")==mrYes){
-		tools->Clear();
+		tools->Clear();   
 		Scene->UndoSave();
     }
 }
