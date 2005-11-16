@@ -9,7 +9,7 @@
     <!-- INFO BACKGROUND HEADER -->
     <left_frame_line x="8" y="17" width="434" height="21">
         <title x="10" y="1" width="435" height="18">
-            <text font="letterica16" r="255" g="255" b="255"></text>
+            <text font="letterica16" r="255" g="255" b="255"/>
         </title>
 		<texture>ui_string_03</texture>        
     </left_frame_line>
@@ -39,26 +39,18 @@
 
 
     <!-- ENCYCLOPEDIA INDEX LIST -->
-    <idx_list x="35" y="60" width="258" height="395" item_height="20">
-        <font font="letterica16" r="255" g="255" b="255"></font>
+    <idx_list x="35" y="60" width="258" height="400" item_height="20">
+        <font font="letterica16" r="255" g="255" b="255"/>
     </idx_list>
 
     <!--  ANIMATED STATIC -->
-    <a_static x="250" y="-3" width="32" height="32"
-            frames          = "16"
-            duration        = "1000"
-            columns         = "8"
-            frame_width     = "32"
-            frame_height    = "32"
-            cyclic          = "1"
-            autoplay        = "1"
-    >
+    <a_static x="250" y="-3" width="32" height="32" frames="16" duration="1000" columns="8" frame_width="32" frame_height="32" cyclic="1" autoplay="1">
         <texture>ui\ui_pda_anims_04</texture>
     </a_static>
 
     <!-- ENCYCLOPEDIA INFO LIST -->
     <info_list x="20" y="87" width="423" height="374" item_height="15" right_ident="5">
-        <font font="letterica18" r="255" g="255" b="255"></font>
+        <font font="letterica18" r="255" g="255" b="255"/>
     </info_list>
 
     <!-- ENCYCLOPEDIA ITEM IMAGE INFO -->
