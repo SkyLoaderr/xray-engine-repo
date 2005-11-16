@@ -83,7 +83,7 @@
 	<left_auto_static x="14" y="78" width="405" height="2" stretch="1">
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</left_auto_static>
-	
+<!--	
 	<actor_details_wnd>
 		<master_part x="0" y="0" width="250" height="55" id="reputation">
 			<caption_static x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
@@ -213,7 +213,7 @@
 			<r>zombied</r>
 		</relation_communities_list>
 	</actor_details_wnd>
-
+-->
 
 	<actor_stats_wnd>
 		<master_part x="0" y="0" width="250" height="55" id="reputation">
