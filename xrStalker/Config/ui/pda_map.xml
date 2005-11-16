@@ -8,9 +8,9 @@
 			</text_hint>
 
 
-			<map_header_frame_line x="8" y="17" width="745" height="21">
+			<map_header_frame_line x="8" y="17" width="747" height="21">
 				<title x="10" y="1" width="435" height="18">
-					<text font="letterica16" r="255" g="255" b="255"></text>
+					<text font="letterica16" r="255" g="255" b="255"/>
 				</title>
 				<texture>ui_string_03</texture>
 
@@ -46,7 +46,7 @@
 
 			<main_map_frame x="0" y="0" width="761" height="475" a="90">
 				<texture>ui_pda_frame_sub</texture>				
-				<level_frame x="6" y="44" width="730" height="408"/>
+				<level_frame x="6" y="44" width="729" height="406"/>
 			</main_map_frame>
 		</main_wnd>
 	</map_wnd>

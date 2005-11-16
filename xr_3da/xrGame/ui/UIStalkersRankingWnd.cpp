@@ -79,35 +79,65 @@ void CUIStalkersRankingWnd::FillList()
 	UIList->Clear							();
 
 	uiXml.SetLocalRoot						(uiXml.NavigateToNode("stalkers_list",0));
-	string32								buff;
 
-	for(int i=0; i<30; ++i){
-		CUIStalkerRankingInfoItem* itm		= xr_new<CUIStalkerRankingInfoItem>(this);
-		if(i==10)
-			itm->Init							(&uiXml, "item_ellipsis", 0);
-		else{
-			itm->Init							(&uiXml, "item_human", 0);
-
-			sprintf								(buff,"%d.",i);
-			itm->m_text1->SetText				(buff);		
-
-
-			sprintf								(buff,"human %d",i);
-			itm->m_text2->SetText				(buff);		
-
-			sprintf								(buff,"%d",i*100);
-			itm->m_text3->SetText				(buff);		
-		}
-		UIList->AddWindow					(itm, true);
+	for(int i=1; i<21; ++i){
+		if(i==20)
+			AddActorItem					(&uiXml, i, true);
+		else
+			AddStalkerItem					(&uiXml, i, NULL);
 	}
 
 	UIList->SetSelected						(UIList->GetItem(0) );
+}
+
+void CUIStalkersRankingWnd::ShowHumanInfo(u16 id)
+{
+	UICharacterInfo->InitCharacter(id);
+}
+
+void CUIStalkersRankingWnd::AddStalkerItem(CUIXml* xml, int num, CSE_ALifeTraderAbstract* t)
+{
+	string64								buff;
+	CUIStalkerRankingInfoItem* itm		= xr_new<CUIStalkerRankingInfoItem>(this);
+	itm->Init							(xml, "item_human", 0);
+
+	sprintf								(buff,"%d.",num);
+	itm->m_text1->SetText				(buff);		
+
+	sprintf								(buff,"human %d",num);
+	itm->m_text2->SetText				(buff);		
+
+	sprintf								(buff,"%d",num*100);
+	itm->m_text3->SetText				(buff);		
+
+	UIList->AddWindow					(itm, true);
 
 }
 
-void CUIStalkersRankingWnd::ShowHumanInfo		(u16 id)
+void CUIStalkersRankingWnd::AddActorItem(CUIXml* xml, int num, bool bAddEllipsis)
 {
-	UICharacterInfo->InitCharacter(id);
+	string64								buff;
+	CUIStalkerRankingInfoItem*				itm;
+	if(bAddEllipsis){
+		itm									= xr_new<CUIStalkerRankingInfoItem>(this);
+		itm->Init							(xml, "item_ellipsis", 0);
+		UIList->AddWindow					(itm, true);
+	}
+
+	itm										= xr_new<CUIStalkerRankingInfoItem>(this);
+	itm->Init								(xml, "item_actor", 0);
+
+	sprintf									(buff,"%d.",num);
+	itm->m_text1->SetText					(buff);		
+
+
+	sprintf									(buff,"Actor");
+	itm->m_text2->SetText					(buff);		
+
+	sprintf									(buff,"%d",num*100);
+	itm->m_text3->SetText					(buff);		
+
+	UIList->AddWindow						(itm, true);
 }
 
 

@@ -65,7 +65,7 @@
 				<texture>ui\ui_pda_horizontal_line</texture>
 			</auto_static>
 
-			<right_frame_header x="8" y="17" width="430" height="21">
+			<right_frame_header x="8" y="17" width="434" height="21">
 				<texture>ui_string_03</texture>
 				
 			</right_frame_header>

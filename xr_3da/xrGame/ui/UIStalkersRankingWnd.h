@@ -8,6 +8,7 @@ class CUIStatic;
 class CUICharacterInfo;
 class CUIScrollView;
 class CUIXml;
+class CSE_ALifeTraderAbstract;
 
 class CUIStalkersRankingWnd: public CUIWindow
 {
@@ -29,7 +30,8 @@ protected:
 	CUICharacterInfo*		UICharacterInfo;
 	void					FillList			();
 	CUIScrollView*			UIList;
-
+	void					AddStalkerItem		(CUIXml* xml, int num, CSE_ALifeTraderAbstract* t);
+	void					AddActorItem		(CUIXml* xml, int num, bool bAddEllipsis);
 public:
 	CUIScrollView&			GetTopList			()			{return *UIList;}
 	void					ShowHumanInfo		(u16 id);

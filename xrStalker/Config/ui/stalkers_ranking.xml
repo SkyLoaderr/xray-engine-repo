@@ -1,19 +1,11 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-	<!-- REMOVE ME-->
-	<article_header_static x="22" y="48" width="430" height="22">
-		<text font="letterica25" r="225" g="225" b="250">Stalkers ranking TOP 20</text>
-	</article_header_static>
-	<mask_frame_window x="0" y="0" width="1" height="1">
-		<texture>ui_pda_frame2</texture>		
-	</mask_frame_window>
-	<!-- END--REMOVE ME-->
 
 	<main_wnd x="76" y="62" width="761" height="475"/>
 
 	<character_info x="26" y="58" width="236" height="120"/>
 
-	<list x="20" y="73" width="423" height="388" always_show_scroll="1" can_select="1"/>
+	<list x="20" y="73" width="423" height="395" always_show_scroll="0" can_select="1"/>
 
 	<chicon_frame_window x="463" y="0" width="298" height="475" a="80">
 		<texture>ui_pda_frame_sub</texture>		
@@ -48,14 +40,14 @@
 		<auto_static x="14" y="70" width="405" height="2" stretch="1">
 			<texture>ui\ui_pda_horizontal_line</texture>
 		</auto_static>
-		<auto_static x="14" y="50" width="30" height="20" >
+		<auto_static align="r" x="14" y="50" width="30" height="20" >
 			<text font="letterica18" r="180" g="180" b="180">##</text>
 		</auto_static>
-		<auto_static x="100" y="50" width="100" height="20" >
+		<auto_static align="r" x="100" y="50" width="100" height="20" >
 			<text font="letterica18" r="180" g="180" b="180">Name</text>
 		</auto_static>
-		<auto_static x="350" y="50" width="100" height="20" >
-			<text font="letterica18" r="180" g="180" b="180">Rank</text>
+		<auto_static x="300" y="50" width="100" height="20" >
+			<text align="r" font="letterica18" r="180" g="180" b="180">Rank</text>
 		</auto_static>
     </left_auto>
 
@@ -83,41 +75,41 @@
 
 
 	<stalkers_list>
-		<item_human x="0" y="0" width="400" height="20">
-			<text_1 x="0" y="0" width="30" height="20">
-				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160"/>
+		<item_human width="400" height="19">
+			<text_1 x="0" y="0" width="30" height="19">
+				<text align="l" font="letterica18" r="180" g="180" b="180" a="160"/>
 			</text_1>
 			
-			<text_2 x="50" y="0" width="250" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160"/>
+			<text_2 x="50" y="0" width="280" height="19" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
+				<text align="l" font="letterica18" r="180" g="180" b="180" a="160"/>
 			</text_2>
 			
-			<text_3 x="230" y="0" width="150" height="20">
-				<text align="r" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160"/>
+			<text_3 x="230" y="0" width="150" height="19">
+				<text align="r" font="letterica18" r="180" g="180" b="180" a="160"/>
 			</text_3>
 		</item_human>
 
-		<item_actor x="0" y="0" width="400" height="20">
-			<text_1 x="0" y="0" width="30" height="20">
-				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160"/>
+		<item_actor width="400" height="19">
+			<text_1 x="0" y="0" width="30" height="19">
+				<text align="l" font="letterica18" r="180" g="180" b="180" a="160"/>
 			</text_1>
 			
-			<text_2 x="50" y="0" width="250" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160">You</text>
+			<text_2 x="50" y="0" width="280" height="19" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
+				<text align="l" font="letterica18" r="180" g="180" b="180" a="160">You</text>
 			</text_2>
 			
-			<text_3 x="230" y="0" width="150" height="20">
-				<text align="r" x="0" y="0" font="letterica18" r="255" g="180" b="180" a="160"/>
+			<text_3 x="230" y="0" width="150" height="19">
+				<text align="r" font="letterica18" r="255" g="180" b="180" a="160"/>
 			</text_3>
 		</item_actor>
 		
-		<item_ellipsis x="0" y="0" width="400" height="20">
-			<text_1 x="5" y="-10" width="30" height="20">
+		<item_ellipsis width="400" height="10">
+			<text_1 x="0" y="-15" width="30" height="10">
 				<text align="l" x="0" y="0" font="letterica25" r="180" g="180" b="180" a="160">...</text>
 			</text_1>
 			
-			<text_2 x="0" y="0" width="0" height="0"/>
-			<text_3 x="0" y="0" width="0" height="0"/>
+			<text_2/>
+			<text_3/>
 		</item_ellipsis>
 	</stalkers_list>
 </window>
