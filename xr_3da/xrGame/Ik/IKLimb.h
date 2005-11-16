@@ -6,7 +6,9 @@
 class	CKinematics	;
 class	CDB::TRI	;
 
-
+#ifdef DEBUG
+struct SCalculateData;
+#endif
 class CIKLimb
 {
 public:
@@ -20,6 +22,9 @@ public:
 		void		Calculate			(CKinematics* K,const Fmatrix &obj)							;
 
 private:
+#ifdef DEBUG
+		SCalculateData *dbg_calculate_data;
+#endif
 		Limb		m_limb																		;
 		CDB::TRI	*m_tri																		;
 		float		m_tri_hight																	;

@@ -224,7 +224,104 @@ void CPHJoint::CreateHinge2()
 	dJointSetHinge2Param(m_joint, dParamStopERP,axes[0].erp);
 	dJointSetHinge2Param(m_joint, dParamStopCFM,axes[0].cfm);
 }
+void CPHJoint::CreateSlider()
+{
+	Fvector pos;
+	Fmatrix first_matrix,second_matrix;
+	Fvector axis;
+	CPHElement* first=(pFirst_element);
+	CPHElement* second=(pSecond_element);
+	VERIFY(first);
+	first->GetGlobalTransformDynamic(&first_matrix);
+	dBodyID body1=first->get_body();
+	VERIFY(second);
+	second->GetGlobalTransformDynamic(&second_matrix);
+	dBodyID body2=second->get_body();
+	
 
+	pos.set(0,0,0);
+	switch(vs_anchor){
+		case vs_first :first_matrix.transform_tiny(pos,anchor); break;
+		case vs_second:second_matrix.transform_tiny(pos,anchor); break;
+		case vs_global:pShell->mXFORM.transform_tiny(pos,anchor);break;	
+		default:NODEFAULT;	
+	}
+	//////////////////////////////////////
+
+
+	m_joint=dJointCreateSlider(0,0);
+	dJointAttach(m_joint,body1,body2);
+	dJointSetSliderAxis(m_joint,pos.x,pos.y,pos.z);
+
+
+
+	m_joint1=dJointCreateAMotor(0,0);
+	dJointSetAMotorMode (m_joint1, dAMotorEuler);
+	dJointSetAMotorNumAxes (m_joint1, 3);
+
+	dJointAttach(m_joint1,body1,body2);
+
+	/////////////////////////////////////////////
+
+	Fmatrix first_matrix_inv;
+	first_matrix_inv.set(first_matrix);
+	first_matrix_inv.invert();
+	Fmatrix rotate;
+	rotate.mul(first_matrix_inv,second_matrix);
+	/////////////////////////////////////////////
+
+	float lo;
+	float hi;
+	//////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	axis.set(0,0,0);
+	//axis 0
+	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
+	dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
+	dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
+	dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
+
+	if(!(axes[0].force<0.f)){
+		dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);
+		dJointSetAMotorParam(m_joint1,dParamVel ,axes[0].velocity);
+	}
+
+	//axis 1
+	CalcAxis(1,axis,lo,hi,first_matrix,second_matrix,rotate);
+	dJointSetAMotorParam(m_joint1,dParamLoStop2 ,lo);
+	dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);
+	if(!(axes[1].force<0.f)){
+		dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
+		dJointSetAMotorParam(m_joint1,dParamVel2 ,axes[1].velocity);
+	}
+
+	//axis 2
+	CalcAxis(2,axis,lo,hi,first_matrix,second_matrix,rotate);
+	dJointSetAMotorAxis (m_joint1, 2, 2, axis.x, axis.y, axis.z);
+	dJointSetAMotorParam(m_joint1,dParamLoStop3 ,lo);
+	dJointSetAMotorParam(m_joint1,dParamHiStop3 ,hi);	
+	if(!(axes[2].force<0.f)){
+		dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);
+		dJointSetAMotorParam(m_joint1,dParamVel3 ,axes[2].velocity);
+	}
+
+	dJointSetAMotorParam(m_joint1,dParamStopERP ,axes[0].erp);
+	dJointSetAMotorParam(m_joint1,dParamStopCFM ,axes[0].cfm);
+
+	dJointSetAMotorParam(m_joint1,dParamStopERP2 ,axes[1].erp);
+	dJointSetAMotorParam(m_joint1,dParamStopCFM2 ,axes[1].cfm);
+
+	dJointSetAMotorParam(m_joint1,dParamStopERP3 ,axes[2].erp);
+	dJointSetAMotorParam(m_joint1,dParamStopCFM3 ,axes[2].cfm);
+	/////////////////////////////////////////////////////////////////////
+	///dJointSetAMotorParam(m_joint1,dParamFudgeFactor ,0.1f);
+	//dJointSetAMotorParam(m_joint1,dParamFudgeFactor2 ,0.1f);
+	//dJointSetAMotorParam(m_joint1,dParamFudgeFactor3 ,0.1f);
+	/////////////////////////////////////////////////////////////////////////////
+	dJointSetAMotorParam(m_joint1,dParamCFM ,m_cfm);
+	dJointSetAMotorParam(m_joint1,dParamCFM2 ,m_cfm);
+	dJointSetAMotorParam(m_joint1,dParamCFM3 ,m_cfm);
+}
 
 #ifdef  ODE_SLOW_SOLVER
 #define FIX_BY_ONE_HINGE

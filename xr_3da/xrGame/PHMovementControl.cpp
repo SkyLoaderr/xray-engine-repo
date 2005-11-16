@@ -271,7 +271,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	m_character->SetMaximumVelocity(speed);
 	m_character->SetAcceleration(dir);
 	//////////////////////////////////////////////////////
-	m_character->GetSavedVelocity(vVelocity);
+	m_character->GetSmothedVelocity(vVelocity);
 	fActualVelocity=vVelocity.magnitude();
 
 	gcontact_Was=m_character->ContactWas();

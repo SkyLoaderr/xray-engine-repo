@@ -168,6 +168,7 @@ public:
 		hinge			,					// standart hinge 1 - axis
 		hinge2			,					// for car wheels 2-axes 
 		full_control	,					// 3 - axes control (eiler - angles)
+		slider			
 	};
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				enumType				eType																										;          //type of the joint

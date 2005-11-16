@@ -34,8 +34,16 @@ PHABS_DBG_V	dbg_draw_abstruct0;
 PHABS_DBG_V	dbg_draw_abstruct1;
 
 PHABS_DBG_V	dbg_draw_cashed;
-bool		b_cash_draw=false;
+PHABS_DBG_V	dbg_draw_simple;
+
+enum		EDBGPHDrawMode
+{
+	dmSecondaryThread,
+	dmCashed,
+	dmSimple
+} dbg_ph_draw_mode=dmSecondaryThread;
 u32			cash_draw_remove_time=u32(-1);
+
 
 struct SPHDBGDrawTri :public SPHDBGDrawAbsract
 {
@@ -100,6 +108,15 @@ struct SPHDBGDrawLine : public SPHDBGDrawAbsract
 void DBG_DrawLine (const Fvector& p0,const Fvector& p1,u32 c)
 {
 	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawLine>(p0,p1,c));
+}
+void DBG_DrawMatrix(const Fmatrix m,float size)
+{
+	Fvector to;to.add(m.c,Fvector().mul(m.i,size));
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawLine>(m.c,to,D3DCOLOR_XRGB(255,0,0)));
+	to.add(m.c,Fvector().mul(m.j,size));
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawLine>(m.c,to,D3DCOLOR_XRGB(0,255,0)));
+	to.add(m.c,Fvector().mul(m.k,size));
+	DBG_DrawPHAbstruct(xr_new<SPHDBGDrawLine>(m.c,to,D3DCOLOR_XRGB(0,0,255)));
 }
 struct SPHDBGDrawAABB :public SPHDBGDrawAbsract
 {
@@ -183,27 +200,34 @@ void _cdecl DBG_OutText(LPCSTR s,...)
 
 void DBG_OpenCashedDraw()
 {
-	b_cash_draw=true;
+	dbg_ph_draw_mode=dmCashed;
 }
 void DBG_ClosedCashedDraw(u32 remove_time)
 {
-	b_cash_draw				=false			;
+	dbg_ph_draw_mode			=dmSecondaryThread			;
 	cash_draw_remove_time	=remove_time+Device.dwTimeGlobal;
 }
 void DBG_DrawPHAbstruct(SPHDBGDrawAbsract* a)
 {
+	if(dbg_ph_draw_mode!=dmCashed)
+	{
+		if(ph_world->Processing()) dbg_ph_draw_mode=dmSecondaryThread;
+		else					   dbg_ph_draw_mode=dmSimple;
+	}
+	switch (dbg_ph_draw_mode)
+	{
+		case dmSecondaryThread:
+			if(draw_frame)
+			{
+				dbg_draw_abstruct0.push_back(a);
+			}else
+			{
+				dbg_draw_abstruct1.push_back(a);
+			};										break;	
+		case dmCashed:	dbg_draw_cashed.push_back(a);break;
+		case dmSimple:	dbg_draw_simple.push_back(a);break;
+	}
 
-	if(b_cash_draw)
-	{
-		dbg_draw_cashed.push_back(a);
-	}
-	else if(draw_frame)
-	{
-		dbg_draw_abstruct0.push_back(a);
-	}else
-	{
-		dbg_draw_abstruct1.push_back(a);
-	}
 }
 
 void DBG_PHAbstruactStartFrame(bool dr_frame)
@@ -248,7 +272,7 @@ void DBG_PHAbstructRender()
 	{
 		(*i)->render();
 	}
-	if(!b_cash_draw)
+	if(dbg_ph_draw_mode!=dmCashed)
 	{
 		PHABS_DBG_I i,e;
 		i=dbg_draw_cashed.begin();e=dbg_draw_cashed.end();
@@ -261,6 +285,16 @@ void DBG_PHAbstructRender()
 			clear_vector(dbg_draw_cashed);
 		}
 	}
+	{
+		PHABS_DBG_I i,e;
+		i=dbg_draw_simple.begin();e=dbg_draw_simple.end();
+		for(;e!=i;++i)
+		{
+			(*i)->render();
+		}
+		clear_vector(dbg_draw_simple);
+	}
+
 }
 
 void DBG_PHAbstructClear()
@@ -268,6 +302,7 @@ void DBG_PHAbstructClear()
 	DBG_PHAbstruactStartFrame(true);
 	DBG_PHAbstruactStartFrame(false);
 	clear_vector(dbg_draw_cashed);
+	clear_vector(dbg_draw_simple);
 }
 
 void DBG_DrawPHObject(CPHObject* obj)

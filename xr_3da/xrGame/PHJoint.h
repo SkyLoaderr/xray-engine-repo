@@ -44,6 +44,7 @@ class CPHJoint: public CPhysicsJoint{
 				void 					CreateHinge					()																																																						;
 				void 					CreateHinge2				()																																																						;
 				void 					CreateFullControl			()																																																						;
+				void					CreateSlider				()																																																						;
 				void 					LimitAxisNum				(int &axis_num)																																																			;
 				void 					SetForceActive				(const int axis_num)																																																	;
 				void 					SetVelocityActive			(const int axis_num)																																																	;

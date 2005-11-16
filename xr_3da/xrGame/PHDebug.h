@@ -59,7 +59,9 @@ enum
 	phDbgDrawZDisable			=		1<<22,
 	phDbgAlwaysUseAiPhMove		=		1<<23,
 	phDbgNeverUseAiPhMove		=		1<<24,
-	phDbgDispObjCollisionDammage=		1<<25
+	phDbgDispObjCollisionDammage=		1<<25,
+	phDbgIKAnimGoalOnly			=		1<<26,
+	phDbgDrawIKGoal				=		1<<27
 };
 struct SPHObjDBGDraw
 {
@@ -94,6 +96,7 @@ void DBG_DrawLine(const Fvector& p0,const Fvector& p1,u32 c);
 void DBG_DrawAABB(const Fvector& center,const Fvector& AABB,u32 c);
 void DBG_DrawOBB(const Fmatrix& m,const Fvector h,u32 c);
 void DBG_DrawPoint(const Fvector& p,float size,u32 c);
+void DBG_DrawMatrix(const Fmatrix m,float size);
 void _cdecl DBG_OutText(LPCSTR s,...);
 void DBG_DrawFrameStart();
 void PH_DBG_Render();

@@ -299,7 +299,7 @@ u32 CPHWorld::CalcNumSteps (u32 dTime)
 void CPHWorld::FrameStep(dReal step)
 {
 	if(IsFreezed())		return;
-
+	
 	VERIFY		(_valid(step))	;
 	step	*=	phTimefactor	;
 	// compute contact joints and forces
@@ -317,7 +317,9 @@ void CPHWorld::FrameStep(dReal step)
 	{
 		static float dbg_iterations=0.f;
 		dbg_iterations=dbg_iterations*0.9f+step/fixed_step*0.1f;
+		b_processing=true;
 		DBG_OutText("phys steps per frame %2.1f",dbg_iterations);
+		b_processing=false;
 	}
 #endif
 	if(!(frame_time<fixed_step))

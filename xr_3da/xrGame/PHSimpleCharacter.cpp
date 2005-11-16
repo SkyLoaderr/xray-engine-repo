@@ -353,7 +353,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		if(!ph_world->IsFreezed())b_lose_control=false;
 		return;
 	}
-	if(is_contact&&!is_control&&!b_lose_ground)
+	//if(is_contact&&!is_control&&!b_lose_ground)
 		Disabling();
 
 	if( !dBodyIsEnabled(m_body)) {
@@ -1027,15 +1027,18 @@ void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* call
 }
 void CPHSimpleCharacter::Disable()
 {
-	dGeomGetUserData(m_wheel)->pushing_neg			=false;
-	dGeomGetUserData(m_wheel)->pushing_b_neg		=false;
-	dGeomGetUserData(m_geom_shell)->pushing_neg		=false;
-	dGeomGetUserData(m_geom_shell)->pushing_b_neg	=false;
-	dGeomGetUserData(m_hat)->pushing_neg			=false;
-	dGeomGetUserData(m_hat)->pushing_b_neg			=false;
-	dGeomGetUserData(m_cap)->pushing_neg			=false;
-	dGeomGetUserData(m_cap)->pushing_b_neg			=false;
-	CPHCharacter::Disable();
+	if(is_contact&&!is_control&&!b_lose_ground)
+	{
+		dGeomGetUserData(m_wheel)->pushing_neg			=false;
+		dGeomGetUserData(m_wheel)->pushing_b_neg		=false;
+		dGeomGetUserData(m_geom_shell)->pushing_neg		=false;
+		dGeomGetUserData(m_geom_shell)->pushing_b_neg	=false;
+		dGeomGetUserData(m_hat)->pushing_neg			=false;
+		dGeomGetUserData(m_hat)->pushing_b_neg			=false;
+		dGeomGetUserData(m_cap)->pushing_neg			=false;
+		dGeomGetUserData(m_cap)->pushing_b_neg			=false;
+		CPHCharacter::Disable();
+	}
 }
 void CPHSimpleCharacter::Enable()
 {
