@@ -153,12 +153,13 @@ path_walk = walk_research
 path_look = look_research
 combat_ignore_cond = always
 meet = meet@scientist
-on_signal = start_psy_attack | remark@scientist_wounded_1 %+yan_spawn_ghost%
+on_signal = start_psy_attack | remark@scientist_wounded_1 
 
 [remark@scientist_wounded_1]
 snd = yantar_kruglov_radiation_quest_6
 anim = hide
 on_signal = sound_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
+on_timer = 7000 | %+yan_spawn_ghost%
 combat_ignore_cond = always
 
 [walker@scientist_wounded_1]
