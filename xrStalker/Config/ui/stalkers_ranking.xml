@@ -113,7 +113,7 @@
 		</item_ellipsis>
 		<no_items width="400" height="40">
 			<text_1 x="30" y="0" width="300" height="40">
-				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160">there are no humans in list</text>
+				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160">...empty...</text>
 			</text_1>
 			
 			<text_2/>
