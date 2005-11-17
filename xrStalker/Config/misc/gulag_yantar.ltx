@@ -191,7 +191,7 @@ combat_ignore_cond = always
 [camper@scientist_return_to_bunker]
 path_walk = return_walk
 path_look = help_look_3
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor}
 on_signal = door_1_open | walker@scientist_return_door_1 %+yan_scientist_door_1_open%
 def_state_moving = assault
 radius = 0
