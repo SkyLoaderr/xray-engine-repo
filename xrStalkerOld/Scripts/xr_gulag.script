@@ -5,7 +5,7 @@
 
 fraction = {}
 
-local i, v
+local i, v, k = 0,0,0
 level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
                 gulag_military, gulag_radar, gulag_radar_u, gulag_yantar, gulag_pripyat, gulag_kishka, gulag_sarcofag,
                 gulag_deadcity}
@@ -13,14 +13,22 @@ level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gula
 local gulag_tasks_file_name = "misc\\gulag_tasks.ltx"
 local gulag_tasks_ltx       = ini_file(gulag_tasks_file_name)
 
-class "fract"
 
+idle_nil = nil
+idle_once = -1
+idle_none = -2
+
+class "fract"
 function fract:__init(smrttrn_id, name, type, squad, groups)
 	self.smrttrn_id = smrttrn_id
 	self.name   = name
 	self.type   = type
 	self.squad  = squad
 	self.groups = groups or {}
+
+	-- взять spawn_ini
+	self.object = level.object_by_id(smrttrn_id)
+	self.spawn_ini = self.object:spawn_ini()
 
 	self.state = 0
 	self.stateBegin = game.get_game_time()
@@ -33,9 +41,12 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 
 	self.ObjectJob = {}
 
-	self:init_ltx(name, type)
+	self.state_switch_0 = xr_logic.parse_condlist(self.object, "gulag1", "switch_0", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_0", self.object, false, ""))
+	self.state_switch_1 = xr_logic.parse_condlist(self.object, "gulag1", "switch_1", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_1", self.object, false, ""))
 
-	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
+	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups, self)
+	self:init_ltx(name, type)
+	
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	self.calculateStates = gulag_tasks.loadStates(name, type)
 end
@@ -139,6 +150,13 @@ function fract:changeState(state)
 	if self.state ~= state then
 		self.state = state
 		self.stateBegin = game.get_game_time()
+		
+		-- Возобновляем все работы, доступные для наполнения только один раз.
+		for k,v in pairs(self.Job) do
+			if v.fill_idle == idle_none then
+				v.fill_idle = idle_once
+			end
+		end
 	end
 end
 
@@ -153,21 +171,30 @@ end
 -- работа доступна, когда время idle истекло (или не задано)
 -- и занята работа, от которой зависит данная работа
 function fract:availJob(job)
-	if job.begin == nil or game.time() - job.begin > job.idle then
-		local jd = job.dependent
-
-		if jd then
-	   		for i, v in pairs(self.Job) do
-	   			if v.section == jd then
-	   				return v.object ~= nil
-	   			end
-	   		end
-		end
-
-		return true
-	else
+	if job.begin ~= nil and game.time() - job.begin < job.idle then
 		return false
 	end
+
+	if job.fill_idle ~= nil then
+		if job.fill_idle == idle_none then
+			return false
+		elseif job.fill_idle == idle_once then
+			return true
+		elseif job.fill_idle < game.time() - job.begin then
+			return false
+		end
+	end
+
+	local jd = job.dependent
+	if jd then
+	   	for i, v in pairs(self.Job) do
+	   		if v.section == jd then
+	   			return v.object ~= nil
+	   		end
+	   	end
+	end
+
+	return true
 end
 -- Текущая работа доступна, если не истекло ее время и занята зависимая
 function fract:availCurrent(job)
@@ -337,6 +364,11 @@ function fract:setJob(npc, job, jobN)
 
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
+	
+	-- Установка fill_idle
+	if job.fill_idle == idle_once then
+		job.fill_idle = idle_none
+	end
 end
 
 function fract:set_restrictions(npc, r_out, r_in)

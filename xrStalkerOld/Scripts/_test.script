@@ -3,11 +3,12 @@ function main()
 --	db.actor:give_info_portion(info) 
 
 --	level.add_pp_effector("proba.ppe", 999, false)
-	level.remove_pp_effector(999)
+--	level.remove_pp_effector(999)
 
 --	game.start_tutorial("part_1_pda")
 --	game.start_tutorial("part_2_binocular")
-	
+
+	db.actor:disable_info_portion("terrain_test")	
 end
 
 function _main()
@@ -16,11 +17,11 @@ function _main()
 --	"quests"
 --	"artefacts"
 
-actor_stats.add_points("stalkerkills","dolg",2,22)
-actor_stats.add_points("stalkerkills","svoboda",1,45)
-actor_stats.add_points("stalkerkills","urod",1,5)
-actor_stats.add_points("artefacts","af_1",1,800)
-actor_stats.add_points("quests","help wounded",1,2000)
+--actor_stats.add_points("stalkerkills","dolg",2,22)
+--actor_stats.add_points("stalkerkills","svoboda",1,45)
+--actor_stats.add_points("stalkerkills","urod",1,5)
+--actor_stats.add_points("artefacts","af_1",1,800)
+--actor_stats.add_points("quests","help wounded",1,2000)
 
 --	level.add_cam_effector("camera_effects\\prison_1.anm")	
 
@@ -32,7 +33,8 @@ actor_stats.add_points("quests","help wounded",1,2000)
 --   h.type = hit.fire_wound
 --   db.actor:hit(h)
 	
-	local info = "esc_kill_gunslinger" 
-	db.actor:give_info_portion(info) 
+--	local info = "esc_kill_gunslinger" 
+--	db.actor:give_info_portion(info) 
+
    
 end

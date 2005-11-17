@@ -11,6 +11,11 @@
 <!--    <dialog>actor_help_wounded</dialog>   -->
   </info_portion>
 
+
+  <info_portion id="terrain_test">
+  </info_portion>
+
+
   <!-- special info portion that sends to actor when it
     use in-game UI (PDA, Inventory, etc)-->
     

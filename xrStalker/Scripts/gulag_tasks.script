@@ -4,7 +4,7 @@ local level_gulags = xr_gulag.level_gulags
 -- кэш для динамических ltx
 local dynamic_ltx = {}
 
-function loadJob(sj, gname, type, squad, groups)
+function loadJob(sj, gname, type, squad, groups, st)
 	if type == "test" then
 		t = { section = "logic@walker1",
 			idle = 0,
@@ -137,7 +137,7 @@ function loadJob(sj, gname, type, squad, groups)
 	end
 
     for k, v in pairs(level_gulags) do
-        v.load_job(sj, gname, type, squad, groups)
+        v.load_job(sj, gname, type, squad, groups, st)
     end
 end
 
