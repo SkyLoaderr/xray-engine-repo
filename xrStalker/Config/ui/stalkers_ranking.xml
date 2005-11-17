@@ -91,11 +91,11 @@
 
 		<item_actor width="400" height="19">
 			<text_1 x="0" y="0" width="30" height="19">
-				<text align="l" font="letterica18" r="180" g="180" b="180" a="160"/>
+				<text align="l" font="letterica18" r="220" g="220" b="220" a="200"/>
 			</text_1>
 			
 			<text_2 x="50" y="0" width="280" height="19" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" font="letterica18" r="180" g="180" b="180" a="160">You</text>
+				<text align="l" font="letterica18" r="200" g="180" b="180" a="160">You</text>
 			</text_2>
 			
 			<text_3 x="230" y="0" width="150" height="19">
@@ -111,5 +111,13 @@
 			<text_2/>
 			<text_3/>
 		</item_ellipsis>
+		<no_items width="400" height="40">
+			<text_1 x="30" y="0" width="300" height="40">
+				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="160">there are no humans in list</text>
+			</text_1>
+			
+			<text_2/>
+			<text_3/>
+		</no_items>
 	</stalkers_list>
 </window>
