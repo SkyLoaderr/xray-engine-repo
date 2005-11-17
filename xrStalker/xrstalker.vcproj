@@ -265,6 +265,9 @@
 					RelativePath=".\Config\gameplay\storyline_info_darkvalley.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\storyline_info_deadcity.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\storyline_info_escape.xml">
 				</File>
 				<File
