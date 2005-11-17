@@ -26,7 +26,7 @@
     <!-- Квесты -->
     <!-- Документы, компрометирующие наемников -->
 	<info_portion id="cit_documents_need">
-		<task>cit_documents_need</task>
+		<task>cit_documents</task>
 		<article>cit_compromat_documents</article>
 	</info_portion>
 	<info_portion id="cit_documents_find"></info_portion>
