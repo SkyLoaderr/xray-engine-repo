@@ -711,47 +711,6 @@ inv_grid_x			= 7
 inv_grid_y			= 18
 cost				= 0
 
-[cit_killers_documents]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\quest_items\killers_documents"
-;$prefetch 			= 32
-class				= D_AFMERG
-cform				= skeleton
-visual				= equipments\item_document_01.ogf
-radius				= 1
-script_binding		= stalker.object_init
-
-inv_name			= Killers Documents
-inv_name_short		= Killers Documents
-inv_weight			= 0.1
-
-inv_grid_width		= 1
-inv_grid_height		= 1
-inv_grid_x			= 7
-inv_grid_y			= 18
-cost				= 0
-
-[cit_deadcity_maps]:identity_immunities
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\quest_items\deadcity_maps"
-;$prefetch 			= 32
-class				= D_AFMERG
-cform				= skeleton
-visual				= equipments\item_document_01.ogf
-radius				= 1
-script_binding		= stalker.object_init
-
-inv_name			= Dead city maps
-inv_name_short		= Dead city maps
-inv_weight			= 0.1
-
-inv_grid_width		= 1
-inv_grid_height		= 1
-inv_grid_x			= 7
-inv_grid_y			= 18
-cost				= 0
 
 [lab_x16_documents]:identity_immunities
 GroupControlSection	= spawn_group
@@ -1310,3 +1269,95 @@ silencer_light_range		= 0.01
 silencer_light_var_color	= 0.05
 silencer_light_var_range	= 0.5
 silencer_light_time 		= 0.2
+
+
+
+;--------------------------------------
+;----------- Dead City ----------------
+;--------------------------------------
+[cit_killers_documents]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\killers_documents"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_document_01.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Killers Documents
+inv_name_short		= Killers Documents
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 7
+inv_grid_y			= 18
+cost				= 0
+
+
+[cit_deadcity_maps]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\deadcity_maps"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_document_01.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Dead city maps
+inv_name_short		= Dead city maps
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 7
+inv_grid_y			= 18
+cost				= 0
+
+
+[cit_vp_pda]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\pda_vasiliy_petrovicha"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_minipda.ogf
+radius				= 1
+;script_binding		= stalker.object_init
+
+inv_name			= Vasiliy Petrovich PDA
+inv_name_short		= VP PDA
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 5
+inv_grid_y			= 14
+cost				= 0
+
+
+[cit_leader_killer_pda]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\pda_leader_killer"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_minipda.ogf
+radius				= 1
+;script_binding		= stalker.object_init
+
+inv_name			= Leader killers PDA
+inv_name_short		= Leader killers PDA
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 5
+inv_grid_y			= 14
+cost				= 0
