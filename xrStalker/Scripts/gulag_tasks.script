@@ -207,7 +207,7 @@ end
 -- загрузка динамических ltx
 -- их имена: "*имя_смарттерейна*тип_гулага"
 function loadLtx(name, type)
---	printf( "loadLtx: name=%s type=%s", name, type )
+	printf( "loadLtx: name=%s type=%s", name, type )
 
 	local h    = "*"..name.."*"..type
 	local dltx = dynamic_ltx[h]
