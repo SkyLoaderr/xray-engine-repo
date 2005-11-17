@@ -69,11 +69,13 @@ on_info2 = {=rostok_dist_to_actor_le(2) +yan_find_scientist_start} remark@kruglo
 snd = yantar_kruglov_to_actor
 anim = hello
 on_info = {+yan_kruglov_after_actor} remark@go_after_actor
+combat_ignore_cond = always
 
 [remark@go_after_actor]
 snd = yantar_kruglov_radiation_quest_1
 anim = wait
 on_info = {+yan_scientist_point_to_1} walker@door_2
+combat_ignore_cond = always
 
 [walker@scientist_1]
 path_walk = bunker_walk
