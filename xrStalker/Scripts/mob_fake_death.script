@@ -36,9 +36,7 @@ function mob_fake_death:update(delta)
 end
 
 function mob_fake_death:deactivate()
-	if self.object:alive() then
 		self.object:fake_death_stand_up()
-	end
 end
 
 ----------------------------------------------------------------------------------------------------
