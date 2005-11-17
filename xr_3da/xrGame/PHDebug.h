@@ -61,7 +61,8 @@ enum
 	phDbgNeverUseAiPhMove		=		1<<24,
 	phDbgDispObjCollisionDammage=		1<<25,
 	phDbgIKAnimGoalOnly			=		1<<26,
-	phDbgDrawIKGoal				=		1<<27
+	phDbgDrawIKGoal				=		1<<27,
+	phDbgIKLimits				=		1<<28
 };
 struct SPHObjDBGDraw
 {
