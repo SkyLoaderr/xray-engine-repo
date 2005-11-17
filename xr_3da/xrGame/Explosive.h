@@ -59,6 +59,8 @@ public:
 	virtual	void				GetExplosionBox			(Fvector &size);
 	virtual void				ActivateExplosionBox	(const Fvector &size,Fvector &in_out_pos);
 			void				SetExplosionSize		(const Fvector &new_size);
+protected:
+			bool				IsSoundPlaying			(){return !!sndExplode._feedback();}
 private:
 			void				PositionUpdate			();
 static		void				GetRaySourcePos			(CExplosive	*exp_obj,const Fvector &expl_centre,Fvector	&p);

@@ -1952,3 +1952,8 @@ void CCar::AscCall(EAsyncCalls c)
 {
 	async_calls.set(u16(c),TRUE);
 }
+
+bool CCar::CanRemoveObject()
+{
+	return !CExplosive::IsSoundPlaying();
+}

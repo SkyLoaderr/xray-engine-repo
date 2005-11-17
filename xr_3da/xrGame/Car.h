@@ -70,7 +70,8 @@ static	const u16				cAsCallsnum						=3;
 	void					ASCUpdate			()				;
 	void					ASCUpdate			(EAsyncCalls c)	;
 	void					AscCall				(EAsyncCalls c)	;
-
+////////////////////////////////////////////////////////////////////////////////////////
+	virtual bool						CanRemoveObject				();
 ////////////////////////////////////////////////////////////////////////
 	static	BONE_P_MAP					bone_map;					//interface for PhysicsShell
 	static	void 						ActorObstacleCallback		(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
