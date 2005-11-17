@@ -6,6 +6,8 @@
 #include "hudmanager.h"
 #include "level.h"
 #include "PhysicsShellHolder.h"
+#include "entity_alive.h"
+#include "PHMovementControl.h"
 
 
 bool CHairsZone::BlowoutState()
@@ -14,6 +16,46 @@ bool CHairsZone::BlowoutState()
 	if(!result) UpdateBlowout();
 
 	return result;
+}
+
+void CHairsZone::CheckForAwaking()
+{
+	for(OBJECT_INFO_VEC_IT it = m_ObjectInfoMap.begin(); 
+		m_ObjectInfoMap.end() != it; ++it) 
+	{
+		CObject* pObject = (*it).object;
+		if (!pObject) continue;
+
+		CEntityAlive* pEnt = smart_cast<CEntityAlive*>(pObject);
+		if(pEnt){
+			float sp = pEnt->movement_control()->GetVelocityActual();
+			if(sp>m_min_speed_to_react){
+				SwitchZoneState				(eZoneStateAwaking);
+				return;
+			}
+		}
+/*
+		u32 cnt = pObject->ps_Size();
+		if(cnt>2){
+			CObject::SavedPosition p0 = pObject->ps_Element(cnt-1);
+			CObject::SavedPosition p1 = pObject->ps_Element(cnt-2);
+
+			float dist	= p0.vPosition.distance_to(p1.vPosition);
+			float tm	= (p0.dwTime-p1.dwTime)/1000.0f;
+			float sp	= dist/tm;
+			if(sp>m_min_speed_to_react){
+				SwitchZoneState				(eZoneStateAwaking);
+				return;
+			}
+		}
+*/
+	}
+}
+
+void CHairsZone::Load(LPCSTR section) 
+{
+	inherited::Load				(section);
+	m_min_speed_to_react		= pSettings->r_float(section,			"min_speed_to_react");
 }
 
 void CHairsZone::Affect(SZoneObjectInfo* O) 

@@ -153,7 +153,7 @@ protected:
 
 	virtual		void		SwitchZoneState				(EZoneState new_state);
 	virtual		void		OnStateSwitch				(EZoneState new_state);
-
+	virtual		void		CheckForAwaking				();
 	//обработка зоны в различных состояниях
 	virtual		bool		IdleState					();
 	virtual		bool		AwakingState				();

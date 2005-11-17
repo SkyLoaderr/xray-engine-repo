@@ -7,9 +7,11 @@ class CHairsZone :
 typedef				CVisualZone		inherited;		
 public:
 	virtual			void		Affect				(SZoneObjectInfo* O)		;
+	virtual			void		Load				(LPCSTR section);
 
 protected:
-	virtual			bool		BlowoutState		()					;
-
+					float		m_min_speed_to_react;
+	virtual			bool		BlowoutState		();
+	virtual			void		CheckForAwaking		();
 
 };

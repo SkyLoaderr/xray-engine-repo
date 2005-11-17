@@ -543,9 +543,9 @@ void CCustomZone::shedule_Update(u32 dt)
 				m_bZoneActive = true;
 		}
 
-		//в зону попал объект, разбудить ее
-		if(m_bZoneActive && eZoneStateIdle ==  m_eZoneState)
-			SwitchZoneState(eZoneStateAwaking);
+		if(eZoneStateIdle ==  m_eZoneState)
+			CheckForAwaking();
+
 		inherited::shedule_Update(dt);
 
 		//////////////////////////////////////////////////////////////////////////
@@ -563,6 +563,13 @@ void CCustomZone::shedule_Update(u32 dt)
 		if(Local() && Device.dwTimeGlobal > m_ttl)
 			DestroyObject ();
 	}
+}
+
+void CCustomZone::CheckForAwaking()
+{
+	//в зону попал объект, разбудить ее
+	if(m_bZoneActive && eZoneStateIdle ==  m_eZoneState)
+		SwitchZoneState(eZoneStateAwaking);
 }
 
 void CCustomZone::feel_touch_new	(CObject* O) 
