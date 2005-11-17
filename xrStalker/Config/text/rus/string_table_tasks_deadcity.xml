@@ -1,0 +1,51 @@
+	<string id="cit_killers_documents">
+        <text>Идентификация наемников.</text>
+    </string>
+    <string id="cit_compromat_documents_0">
+        <text>Найти секретные документы наемников.</text>
+    </string>
+    <string id="cit_compromat_documents_1">
+        <text>Выкрасть документы наемников.</text>
+    </string>
+    <string id="cit_compromat_documents_2">
+        <text>Принести их торговцу.</text>
+    </string>
+    <string id="cit_killers_base_location">
+        <text>Дислокация наемников.</text>
+    </string>
+    <string id="cit_killers_base_location_0">
+        <text>Найти базу наемников.</text>
+    </string>
+    <string id="cit_killers_base_location_1">
+        <text>Найти карту с распложением на ней базы наемников.</text>
+    </string>
+    <string id="cit_killers_base_location_2">
+        <text>Принести ее Воронину.</text>
+    </string>
+    <string id="cit_killers_leader">
+        <text>Лидер наемников.</text>
+    </string>
+    <string id="cit_leader_hunt_0">
+        <text>Найти и уничтожить лидера наемников.</text>
+    </string>
+    <string id="cit_leader_hunt_1">
+        <text>Убить лидера наемников.</text>
+    </string>
+    <string id="cit_leader_hunt_2">
+        <text>Отчитаться перед Лукашом.</text>
+    </string>
+    <string id="cit_find_vp">
+        <text>Найти дядю.</text>
+    </string>
+    <string id="cit_search_vp_0">
+        <text>Найти сталкера Василия Петровича</text>
+    </string>
+    <string id="cit_search_vp_1">
+        <text>Узнать побольше о Василии Петровиче.</text>
+    </string>
+    <string id="cit_search_vp_2">
+        <text>Найти Василия Петровича.</text>
+    </string>
+    <string id="cit_search_vp_3">
+        <text>Рассказать племяннику о дяде.</text>
+    </string>
