@@ -41,8 +41,8 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 
 	self.ObjectJob = {}
 
-	self.state_switch_0 = xr_logic.parse_condlist(self.object, "gulag1", "switch_0", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_0", self.object, false, ""))
-	self.state_switch_1 = xr_logic.parse_condlist(self.object, "gulag1", "switch_1", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_1", self.object, false, ""))
+	self.state_switch_0 = xr_logic.parse_condlist(self.object, "gulag1", "switch_0", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_0", self.object, false, "", ""))
+	self.state_switch_1 = xr_logic.parse_condlist(self.object, "gulag1", "switch_1", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_1", self.object, false, "", ""))
 
 	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups, self)
 	self:init_ltx(name, type)
