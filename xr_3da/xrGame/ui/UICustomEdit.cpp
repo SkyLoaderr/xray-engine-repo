@@ -83,15 +83,15 @@ void CUICustomEdit::OnFocusLost(){
 
 void CUICustomEdit::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if(pWnd == GetParent())
-	{
+//	if(pWnd == GetParent())
+//	{
 		//кто-то другой захватил клавиатуру
 		if(msg == WINDOW_KEYBOARD_CAPTURE_LOST)
 		{
 			m_bInputFocus = false;
 			m_iKeyPressAndHold = 0;
 		}
-	}
+//	}
 }
 
 bool CUICustomEdit::OnMouse(float x, float y, EUIMessages mouse_action)
