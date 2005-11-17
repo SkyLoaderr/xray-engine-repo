@@ -100,7 +100,7 @@ combat_ignore_cond = always
 [camper@scientist_2]
 path_walk = help_walk
 path_look = help_look
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {=fighting_actor}
 on_signal = doors_close | %-yan_scientist_door_1_open%
 meet = meet@scientist
 on_info = {+yan_scientist_point_to_2} camper@scientist_3
@@ -112,7 +112,7 @@ no_retreat = true
 [camper@scientist_3]
 path_walk = help_walk_1
 path_look = help_look_1
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {=fighting_actor}
 meet = meet@scientist
 on_info = {+yan_scientist_point_to_3} camper@scientist_4
 def_state_moving = assault
@@ -123,7 +123,7 @@ no_retreat = true
 [camper@scientist_4]
 path_walk = help_walk_2
 path_look = help_look_2
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {=fighting_actor}
 meet = meet@scientist
 on_info = {+yan_scientist_point_to_4} camper@scientist_5
 def_state_moving = assault
@@ -134,7 +134,7 @@ no_retreat = true
 [camper@scientist_5]
 path_walk = help_walk_3
 path_look = help_look_3
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {=fighting_actor}
 meet = meet@scientist
 on_info = {+yan_scientist_start_research} remark@scientist_research
 def_state_moving = assault
