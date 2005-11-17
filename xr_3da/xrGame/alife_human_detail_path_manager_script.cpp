@@ -18,7 +18,7 @@ void CALifeHumanDetailPathManager::script_register	(lua_State *L)
 	module(L)
 	[
 		class_<CALifeHumanDetailPathManager>("CALifeHumanDetailPathManager")
-			.def("target",		(void (CALifeHumanDetailPathManager::*)(const GameGraph::_GRAPH_ID &, const u32 &))(&CALifeHumanDetailPathManager::target))
+			.def("target",		(void (CALifeHumanDetailPathManager::*)(const GameGraph::_GRAPH_ID &, const u32 &, const Fvector &))(&CALifeHumanDetailPathManager::target))
 			.def("target",		(void (CALifeHumanDetailPathManager::*)(const GameGraph::_GRAPH_ID &))(&CALifeHumanDetailPathManager::target))
 			.def("target",		(void (CALifeHumanDetailPathManager::*)(const CALifeSmartTerrainTask *))(&CALifeHumanDetailPathManager::target))
 			.def("speed	",		(void (CALifeHumanDetailPathManager::*)(const float &))(&CALifeHumanDetailPathManager::speed))

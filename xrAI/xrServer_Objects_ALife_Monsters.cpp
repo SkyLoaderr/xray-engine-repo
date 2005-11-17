@@ -646,7 +646,6 @@ CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeSpaceRest
 	m_attn						= 1.f;
 	m_period					= 1000;
 	m_tAnomalyType				= ALife::eAnomalousZoneTypeGravi;
-	m_maxPower					= 0.f;
 	if (pSettings->line_exist(caSection,"hit_type"))
 		m_tHitType				= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	else

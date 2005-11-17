@@ -29,5 +29,6 @@ void CALifeHumanPatrolPathManager::script_register	(lua_State *L)
 			.def("use_randomness",			(bool (CALifeHumanPatrolPathManager::*)() const)(&CALifeHumanPatrolPathManager::use_randomness))
 			.def("target_game_vertex_id",	&CALifeHumanPatrolPathManager::target_game_vertex_id)
 			.def("target_level_vertex_id",	&CALifeHumanPatrolPathManager::target_level_vertex_id)
+			.def("target_position",			&CALifeHumanPatrolPathManager::target_level_vertex_id)
 	];
 }

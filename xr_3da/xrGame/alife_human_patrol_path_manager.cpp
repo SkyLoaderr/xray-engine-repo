@@ -58,6 +58,15 @@ const u32 &CALifeHumanPatrolPathManager::target_level_vertex_id	() const
 	);
 }
 
+const Fvector &CALifeHumanPatrolPathManager::target_position	() const
+{
+	return								(
+		path().vertex(
+			m_current_vertex_index
+		)->data().position()
+	);
+}
+
 void CALifeHumanPatrolPathManager::select_nearest			()
 {
 	m_current_vertex_index				= u32(-1);

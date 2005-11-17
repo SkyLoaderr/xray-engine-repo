@@ -24,6 +24,7 @@ private:
 	struct parameters {
 		GameGraph::_GRAPH_ID		m_game_vertex_id;
 		u32							m_level_vertex_id;
+		Fvector						m_position;
 	};
 
 private:
@@ -54,7 +55,7 @@ public:
 	IC		object_type	&object						() const;
 
 public:
-			void		target						(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id);
+			void		target						(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id, const Fvector &position);
 			void		target						(const GameGraph::_GRAPH_ID &game_vertex_id);
 			void		target						(const CALifeSmartTerrainTask &task);
 			void		target						(const CALifeSmartTerrainTask *task);

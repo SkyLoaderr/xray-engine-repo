@@ -50,7 +50,8 @@ void CALifeHumanMovementManager::update					()
 
 			detail().target	(
 				patrol().target_game_vertex_id(),
-				patrol().target_level_vertex_id()
+				patrol().target_level_vertex_id(),
+				patrol().target_position()
 			);
 
 			detail().update	();

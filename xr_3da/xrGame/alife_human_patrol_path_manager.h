@@ -69,6 +69,7 @@ public:
 	IC		void					use_randomness				(const bool &use_randomness);
 			const _GRAPH_ID			&target_game_vertex_id		() const;
 			const u32				&target_level_vertex_id		() const;
+			const Fvector			&target_position			() const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

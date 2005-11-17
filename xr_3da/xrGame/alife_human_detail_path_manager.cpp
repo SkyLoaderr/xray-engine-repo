@@ -27,29 +27,32 @@ CALifeHumanDetailPathManager::CALifeHumanDetailPathManager	(object_type *object)
 	m_last_update_time				= 0;
 	m_destination.m_game_vertex_id	= this->object().m_tGraphID;
 	m_destination.m_level_vertex_id	= this->object().m_tNodeID;
+	m_destination.m_position		= this->object().o_Position;
 	m_walked_distance				= 0.f;
 	speed							(this->object().m_fGoingSpeed);
 }
 
-void CALifeHumanDetailPathManager::target					(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id)
+void CALifeHumanDetailPathManager::target					(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id, const Fvector &position)
 {
 	VERIFY							(ai().game_graph().valid_vertex_id(game_vertex_id));
 	VERIFY							((ai().game_graph().vertex(m_destination.m_game_vertex_id)->level_id() != ai().alife().graph().level().level_id()) || ai().level_graph().valid_vertex_id(level_vertex_id));
 	VERIFY							((ai().game_graph().vertex(m_destination.m_game_vertex_id)->level_id() != ai().alife().graph().level().level_id()) || (ai().cross_table().vertex(level_vertex_id).game_vertex_id() == game_vertex_id));
+	VERIFY							((ai().game_graph().vertex(m_destination.m_game_vertex_id)->level_id() != ai().alife().graph().level().level_id()) || ai().level_graph().inside(level_vertex_id,position));
 
 	m_destination.m_game_vertex_id	= game_vertex_id;
 	m_destination.m_level_vertex_id	= level_vertex_id;
+	m_destination.m_position		= position;
 }
 
 void CALifeHumanDetailPathManager::target					(const GameGraph::_GRAPH_ID &game_vertex_id)
 {
 	VERIFY							(ai().game_graph().valid_vertex_id(game_vertex_id));
-	target							(game_vertex_id,ai().game_graph().vertex(game_vertex_id)->level_vertex_id());
+	target							(game_vertex_id,ai().game_graph().vertex(game_vertex_id)->level_vertex_id(),ai().game_graph().vertex(game_vertex_id)->level_point());
 }
 
 void CALifeHumanDetailPathManager::target					(const CALifeSmartTerrainTask &task)
 {
-	target							(task.game_vertex_id(),task.level_vertex_id());
+	target							(task.game_vertex_id(),task.level_vertex_id(),task.position());
 }
 
 void CALifeHumanDetailPathManager::target					(const CALifeSmartTerrainTask *task)
@@ -150,6 +153,7 @@ void CALifeHumanDetailPathManager::follow_path				(const ALife::_TIME_ID &time_d
 		VERIFY						(object().m_tGraphID == m_destination.m_game_vertex_id);
 		m_walked_distance			= 0.f;
 		object().m_tNodeID			= m_destination.m_level_vertex_id;
+		object().o_Position			= m_destination.m_position;
 #ifdef DEBUG
 		object().m_fDistanceFromPoint	= 0.f;
 		object().m_fDistanceToPoint		= 0.f;
