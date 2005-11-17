@@ -20,7 +20,7 @@
 #include "UINewsItemWnd.h"
 #include "UIScrollView.h"
 
-const char * const	NEWS_XML			= "news.xml";
+#define				NEWS_XML			"news.xml"
 
 #define NEWS_TO_SHOW 50
 

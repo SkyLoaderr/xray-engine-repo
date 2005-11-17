@@ -33,8 +33,8 @@
 #include "UIMainIngameWnd.h"
 #include "UITabButton.h"
 
-const char * const PDA_XML					= "pda.xml";
-u32			g_pda_info_state				= 0;
+#define		PDA_XML					"pda.xml"
+u32			g_pda_info_state		= 0;
 
 
 CUIPdaWnd::CUIPdaWnd()

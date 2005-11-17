@@ -40,9 +40,9 @@ using namespace InventoryUtilities;
 
 #define MAX_ITEMS	70
 
-const char * const INVENTORY_ITEM_XML		= "inventory_item.xml";
-const char * const INVENTORY_XML			= "inventory_new.xml";
-const char * const INVENTORY_CHARACTER_XML	= "inventory_character.xml";
+#define				INVENTORY_ITEM_XML		"inventory_item.xml"
+#define				INVENTORY_XML			"inventory_new.xml"
+#define				INVENTORY_CHARACTER_XML	"inventory_character.xml"
 
 
 

@@ -22,7 +22,7 @@
 #include "../actor.h"
 #include "../object_broker.h"
 
-const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia.xml";
+#define				ENCYCLOPEDIA_DIALOG_XML		"encyclopedia.xml"
 
 CUIEncyclopediaWnd::CUIEncyclopediaWnd()
 {

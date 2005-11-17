@@ -11,7 +11,7 @@
 #include "UIXmlInit.h"
 #include "../Gametask.h"
 
-const char * const		JOB_ITEM_XML		= "job_item.xml";
+#define				JOB_ITEM_XML		"job_item.xml"
 
 //////////////////////////////////////////////////////////////////////////
 

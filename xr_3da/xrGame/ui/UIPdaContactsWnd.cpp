@@ -16,7 +16,7 @@
 
 #define PDA_CONTACT_HEIGHT 70
 
-const char * const PDA_CONTACTS_XML					= "pda_contacts_new.xml";
+#define		PDA_CONTACTS_XML			"pda_contacts_new.xml"
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()
 {

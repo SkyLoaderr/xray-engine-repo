@@ -15,11 +15,17 @@
 #include "../actor.h"
 #include "../xrServer_Objects_ALife_Monsters.h"
 
-const char * const		STALKERS_RANKING_XML			= "stalkers_ranking.xml";
-const char * const		STALKERS_RANKING_CHARACTER_XML	= "stalkers_ranking_character.xml";
+#define		STALKERS_RANKING_XML			"stalkers_ranking.xml"
+#define		STALKERS_RANKING_CHARACTER_XML	"stalkers_ranking_character.xml"
 
-typedef xr_vector<CSE_ALifeTraderAbstract*>	TOP_LIST;
-TOP_LIST									g_all_statistic_humans;
+struct SStatData{
+	u16							id;
+	CSE_ALifeTraderAbstract*	trader;
+	bool operator == (const SStatData& d1){return (id==d1.id) ;}
+};
+
+typedef xr_vector<SStatData>	TOP_LIST;
+TOP_LIST						g_all_statistic_humans;
 
 void CUIStalkersRankingWnd::Init()
 {
@@ -77,9 +83,9 @@ void CUIStalkersRankingWnd::Show(bool status)
 		FillList								();
 }
 
-bool GreaterRankPred(CSE_ALifeTraderAbstract* h1, CSE_ALifeTraderAbstract* h2)
+bool GreaterRankPred(const SStatData& h1, const SStatData& h2)
 {
-	return (h1->m_rank > h2->m_rank);
+	return (h1.trader->m_rank > h2.trader->m_rank);
 }
 
 extern CSE_ALifeTraderAbstract* get_from_id (u16 id);
@@ -97,14 +103,18 @@ void CUIStalkersRankingWnd::FillList()
 
 	if(g_all_statistic_humans.size()){
 		CSE_ALifeTraderAbstract* pActorAbstract = get_from_id(Actor()->ID());
-		TOP_LIST::iterator it = std::find(g_all_statistic_humans.begin(),g_all_statistic_humans.end(),pActorAbstract);
+		SStatData	d;
+		d.id		= Actor()->ID();
+		d.trader	= pActorAbstract;
+
+		TOP_LIST::iterator it = std::find(g_all_statistic_humans.begin(),g_all_statistic_humans.end(),d);
 		VERIFY(it!=g_all_statistic_humans.end());
 		int actor_place		= (int)std::distance(g_all_statistic_humans.begin(), it);
 
 		int sz = _min(g_all_statistic_humans.size(),20);
 //		int sz = g_all_statistic_humans.size();
 		for(int i=0; i<sz; ++i){
-			CSE_ALifeTraderAbstract* pT			= g_all_statistic_humans[i];
+			CSE_ALifeTraderAbstract* pT			= (g_all_statistic_humans[i]).trader;
 			if(pT==pActorAbstract || (i==19&&actor_place>19)  )
 				AddActorItem					(&uiXml, actor_place+1, pT);
 			else
@@ -172,10 +182,18 @@ void CUIStalkersRankingWnd::AddActorItem(CUIXml* xml, int num, CSE_ALifeTraderAb
 
 void add_human_to_top_list(u16 id)
 {
-	CSE_ALifeTraderAbstract* t				= get_from_id(id);
-	TOP_LIST::iterator it					= std::find(g_all_statistic_humans.begin(),g_all_statistic_humans.end(),t);
-	if(it==g_all_statistic_humans.end())
-		g_all_statistic_humans.push_back	(t);
+	CSE_ALifeTraderAbstract* t	= get_from_id(id);
+	SStatData	d;
+	d.id		= id;
+	d.trader	= t;
+
+	TOP_LIST::iterator it					= std::find(g_all_statistic_humans.begin(),g_all_statistic_humans.end(),d);
+
+	if(it!=g_all_statistic_humans.end())
+		g_all_statistic_humans.erase	(it);
+
+	g_all_statistic_humans.push_back	(d);
+
 
 	t->m_rank	=	::Random.randI(20000);
 }
@@ -183,7 +201,10 @@ void add_human_to_top_list(u16 id)
 void remove_human_from_top_list(u16 id)
 {
 	CSE_ALifeTraderAbstract* t				= get_from_id(id);
-	TOP_LIST::iterator it					= std::find(g_all_statistic_humans.begin(),g_all_statistic_humans.end(),t);
+	SStatData	d;
+	d.id		= id;
+	d.trader	= t;
+	TOP_LIST::iterator it					= std::find(g_all_statistic_humans.begin(),g_all_statistic_humans.end(),d);
 	if(it!=g_all_statistic_humans.end())
 		g_all_statistic_humans.erase		(it);
 }

@@ -20,7 +20,7 @@
 #include "UICharacterInfo.h"
 #include "UIIconedListItem.h"
 
-const char * const	PDA_CONTACT_CHAR		= "pda_character.xml";
+#define			PDA_CONTACT_CHAR		"pda_character.xml"
 
 CUIPdaListItem::CUIPdaListItem()
 {

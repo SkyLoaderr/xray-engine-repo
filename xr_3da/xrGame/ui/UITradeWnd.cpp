@@ -30,9 +30,9 @@ using namespace InventoryUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const TRADE_XML			= "trade.xml";
-const char * const TRADE_CHARACTER_XML	= "trade_character.xml";
-const char * const TRADE_ITEM_XML		= "trade_item.xml";
+#define				TRADE_XML			"trade.xml"
+#define				TRADE_CHARACTER_XML	"trade_character.xml"
+#define				TRADE_ITEM_XML		"trade_item.xml"
 
 
 struct CUITradeInternal{

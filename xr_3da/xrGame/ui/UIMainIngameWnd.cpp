@@ -90,9 +90,9 @@ const u32	g_clWhite					= 0xffffffff;
 //  Textual constants
 //-----------------------------------------------------------------------------/
 
-const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
-const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
-const char * const MAININGAME_XML				= "maingame.xml";
+#define				PDA_INGAME_SINGLEPLAYER_CFG	"ingame_msglog_sp.xml"
+#define				PDA_INGAME_MULTIPLAYER_CFG	"ingame_msglog_mp.xml"
+#define				MAININGAME_XML				"maingame.xml"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction//////////////////////////////////////////////////////////////////////

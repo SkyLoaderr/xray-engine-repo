@@ -91,16 +91,24 @@
 
 		<item_actor width="400" height="19">
 			<text_1 x="0" y="0" width="30" height="19">
-				<text align="l" font="letterica18" r="220" g="220" b="220" a="200"/>
+				<text align="l" font="letterica18" r="255" g="0" b="0"/>
 			</text_1>
 			
 			<text_2 x="50" y="0" width="280" height="19" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" font="letterica18" r="200" g="180" b="180" a="160">You</text>
+				<text align="l" font="letterica18" r="200" g="180" b="180" a="160"/>
 			</text_2>
 			
 			<text_3 x="230" y="0" width="150" height="19">
 				<text align="r" font="letterica18" r="255" g="180" b="180" a="160"/>
 			</text_3>
+			<auto>
+				<auto_static x="0" y="0" width="400" height="2" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+				<auto_static x="0" y="19" width="400" height="2" stretch="1">
+					<texture>ui\ui_pda_horizontal_line</texture>
+				</auto_static>
+			</auto>
 		</item_actor>
 		
 		<item_ellipsis width="400" height="10">

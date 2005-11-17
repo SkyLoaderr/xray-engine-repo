@@ -17,8 +17,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const TALK_XML					= "talk.xml";
-const char * const TRADE_CHARACTER_XML		= "trade_character.xml";
+#define				TALK_XML				"talk.xml"
+#define				TRADE_CHARACTER_XML		"trade_character.xml"
 
 //////////////////////////////////////////////////////////////////////////
 

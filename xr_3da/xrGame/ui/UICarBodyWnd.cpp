@@ -33,8 +33,8 @@
 
 using namespace InventoryUtilities;
 
-const char * const CAR_BODY_XML		= "carbody_new.xml";
-const char * const CARBODY_ITEM_XML	= "carbody_item.xml";
+#define				CAR_BODY_XML		"carbody_new.xml"
+#define				CARBODY_ITEM_XML	"carbody_item.xml"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
