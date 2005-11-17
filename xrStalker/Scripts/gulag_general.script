@@ -250,5 +250,8 @@ end
 -- Dynamic ltx
 --------------------------------------------------------------------------
 function load_ltx(gname, type)
-	return ltx
+	if type == "general_lager" then
+		return ltx
+	end
+	return nil
 end
