@@ -1307,6 +1307,11 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	else if (DIK_A == dik)
 		UIBtnAutobuy.OnClick();
 
+	else if (DIK_MINUS == dik)
+		OnBtnBulletBuy(PISTOL_SLOT);
+	else if (DIK_EQUALS == dik)
+		OnBtnBulletBuy(RIFLE_SLOT);
+
 	return true;
 }
 
