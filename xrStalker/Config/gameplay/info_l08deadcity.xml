@@ -23,4 +23,38 @@
     <!-- Охота на сталкера около входа на уровень -->
     <info_portion id="cit_hunt_start"></info_portion>
 
+    <!-- Квесты -->
+    <!-- Документы, компрометирующие наемников -->
+	<info_portion id="cit_documents_need">
+		<task>cit_documents_need</task>
+		<article>cit_compromat_documents</article>
+	</info_portion>
+	<info_portion id="cit_documents_find"></info_portion>
+	<info_portion id="cit_documents_give"></info_portion>
+	
+	<!-- Карта базы наемников -->
+	<info_portion id="cit_map_need">
+		<task>cit_killers_base</task>
+		<article>cit_base_location</article>
+	</info_portion>
+	<info_portion id="cit_map_find"></info_portion>
+	<info_portion id="cit_map_give"></info_portion>
+	
+	<!-- Убить лидера наемников -->
+	<info_portion id="cit_leader_need_kill">
+		<task>cit_leader_kill</task>
+		<article>cit_leader_killer</article>
+	</info_portion>
+	<info_portion id="cit_leader_killed"></info_portion>
+	<info_portion id="cit_leader_reward"></info_portion>
+
+	<!-- Узнать, что случилось с Василием Петровичем -->
+	<info_portion id="cit_vp_search">
+		<task>cit_vp_stalker</task>
+		<article>cit_vp</article>
+	</info_portion>
+	<info_portion id="cit_vp_find"></info_portion>
+	<info_portion id="cit_vp_say"></info_portion>
+	
+	
 </game_information_portions>
