@@ -22,18 +22,16 @@ public:
 		void		Calculate			(CKinematics* K,const Fmatrix &obj)							;
 
 private:
-#ifdef DEBUG
-		SCalculateData *dbg_calculate_data;
-#endif
+
 		Limb		m_limb																		;
-		CDB::TRI	*m_tri																		;
-		float		m_tri_hight																	;
 		Fvector		m_toe_position																;
 		u16			m_bones				[4]														;	
+		u32			m_prev_frame																;
+		bool		m_prev_state_anim															;
 		void		Invalidate			()														;
-		void		GoalMatrix			(Matrix		&M,CKinematics *K,const Fmatrix &obj)		;
-		void		Collide				(CKinematics* K,const Fmatrix &obj)						;
-		void		CalculateBones		(CKinematics* K,const float x[])						;
+		void		GoalMatrix			(Matrix	&M,SCalculateData* cd)							;
+		void		Collide				(SCalculateData* cd)									;
+		void		CalculateBones		(SCalculateData* cd)									;
 static	void 		BonesCallback0		(CBoneInstance* B)										;
 static	void 		BonesCallback1		(CBoneInstance* B)										;
 static	void 		BonesCallback2		(CBoneInstance* B)										;

@@ -32,9 +32,18 @@ struct SCalculateData
 	float	const	*m_angles	;
 	CKinematics		*m_K		;
 	CIKLimb			*m_limb		;
-#ifdef DEBUG
-	Fmatrix	const	*obj		;
-#endif
+	Fmatrix	const	*m_obj		;
+	CDB::TRI		*m_tri		;
+	float			m_tri_hight	;
+	SCalculateData(CIKLimb* l,CKinematics* K,const Fmatrix &o)
+	{
+		m_angles=NULL;
+		m_K=K;
+		m_limb=l;
+		m_obj=&o;
+		m_tri=NULL;
+		m_tri_hight=-dInfinity;
+	}
 };
 CIKLimb::CIKLimb()
 {
@@ -43,8 +52,8 @@ CIKLimb::CIKLimb()
 }
 void CIKLimb::Invalidate()
 {
-	m_tri					=NULL												;
-	m_tri_hight				=-dInfinity											;
+	m_prev_frame			=u32(-1)											;
+	m_prev_state_anim		=false												;
 	m_toe_position			.set(0,0,0)											;
 	m_bones[0]				=BI_NONE											;	
 	m_bones[1]				=BI_NONE											;	
@@ -92,33 +101,13 @@ void IV2XV(const IVektor &IV,Fvector	&XV)
 }
 void CIKLimb::Calculate(CKinematics* K,const Fmatrix &obj)
 {
-#ifdef DEBUG
-	dbg_calculate_data->obj=&obj;
-#endif
-	Collide(K,obj);
-	if(m_tri)
+	SCalculateData cd(this,K,obj);
+	Collide(&cd);
+	if(cd.m_tri)
 	{
 		Matrix		m	;
-		GoalMatrix	(m,K,obj)	;
+		GoalMatrix	(m,&cd)	;
 		
-
-		//Fmatrix bind_knee;bind_knee.mul_43(K->LL_GetTransform(K->LL_GetData(m_bones[1]).GetParentID()),K->LL_GetData(m_bones[1]).bind_transform);
-		//hip.invert();
-
-		//Fmatrix T;
-		//Fmatrix ibind_knee;
-		//ibind_knee.invert(bind_knee);
-		//T.mul_43(ibind_knee,K->LL_GetTransform(m_bones[1]));
-		//Fvector a;T.getXYZ(a);
-		//Fvector sp;sp.set(T.c);
-		//T.setXYZ(a.x,0,a.z);
-		//T.c.set(sp);
-		//bind_knee.mulB_43(T);
-		//T.mul_43(Fmatrix().invert(K->LL_GetTransform(K->LL_GetData(m_bones[1]).GetParentID())),bind_knee);
-		//
-		//Matrix IT;
-		//XM2IM(T,IT);
-		//m_limb.SetTMatrix(IT);
 #ifdef DEBUG 
 		if(m_limb.SetGoal(m,ph_dbg_draw_mask.test(phDbgIKLimits)))
 #else
@@ -135,16 +124,17 @@ void CIKLimb::Calculate(CKinematics* K,const Fmatrix &obj)
 			hip.transform_tiny(pos);
 			xm2im.transform_tiny(pos);
 			if(m_limb.SolveByPos(cast_fp(pos),x))
-										CalculateBones(K,x);
+			{
+						cd.m_angles=x;
+						CalculateBones(&cd);
+			}
 		}
 	}
 }
 
 void CIKLimb::Create(CKinematics* K,u16 bones[4],const Fvector& toe_pos,Etype tp)
 {
-#ifdef DEBUG
-	dbg_calculate_data=xr_new<SCalculateData>();
-#endif
+
 	m_bones[0]=bones[0];m_bones[1]=bones[1];m_bones[2]=bones[2];m_bones[3]=bones[3];
 	m_toe_position.set(toe_pos);
 //////////////////////////////////////////////////////////////////////
@@ -184,16 +174,16 @@ void CIKLimb::Create(CKinematics* K,u16 bones[4],const Fvector& toe_pos,Etype tp
 
 void CIKLimb::Destroy()
 {
-#ifdef DEBUG
-	xr_delete(dbg_calculate_data);
-#endif
+
 }
-void CIKLimb::Collide(CKinematics* K,const Fmatrix &obj)
+void CIKLimb::Collide(SCalculateData* cd)
 {
-	m_tri=NULL;
+
 	Fvector pos;
+	CKinematics* K=cd->m_K;
 	K->LL_GetTransform(m_bones[2]).transform_tiny(pos,m_toe_position);//!!
-	obj.transform_tiny(pos);
+
+	cd->m_obj->transform_tiny(pos);
 	pos.y+=peak_dist;
 
 	collide::rq_result	R;
@@ -203,37 +193,36 @@ void CIKLimb::Collide(CKinematics* K,const Fmatrix &obj)
 		if(!R.O)
 		{
 			//Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-			m_tri	= Level().ObjectSpace.GetStaticTris() + R.element;
+			cd->m_tri	= Level().ObjectSpace.GetStaticTris() + R.element;
 			//normal.mknormal	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-			m_tri_hight=peak_dist-R.range;
+			cd->m_tri_hight=peak_dist-R.range;
 			return;
 		}
 	}
 
-#ifdef DEBUG
-	m_tri_hight=-dInfinity;
-#endif
 
 }
-void CIKLimb::GoalMatrix(Matrix &M,CKinematics *K,const Fmatrix &obj)
+void CIKLimb::GoalMatrix(Matrix &M,SCalculateData* cd)
 {
-		VERIFY(m_tri&&m_tri_hight!=-dInfinity);
-
+		VERIFY(cd->m_tri&&cd->m_tri_hight!=-dInfinity);
+		const Fmatrix &obj=*cd->m_obj;
+		CDB::TRI	*tri=cd->m_tri;
+		CKinematics *K=cd->m_K;
 		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
 		Fvector normal;
-		normal.mknormal	(pVerts[m_tri->verts[0]],pVerts[m_tri->verts[1]],pVerts[m_tri->verts[2]]);
+		normal.mknormal	(pVerts[tri->verts[0]],pVerts[tri->verts[1]],pVerts[tri->verts[2]]);
 		VERIFY(!fis_zero(normal.magnitude()));
 
 		Fmatrix iobj;iobj.invert(obj);iobj.transform_dir(normal);
 
 		Fmatrix xm;xm.set(K->LL_GetTransform(m_bones[2]));
 
-		Fvector dbg;
-		dbg.set(Fvector().mul(normal,normal.y*m_tri_hight
-			-normal.dotproduct(xm.i)*m_toe_position.x
-			-normal.dotproduct(xm.j)*m_toe_position.y
-			-normal.dotproduct(xm.k)*m_toe_position.z-m_toe_position.x
-			));
+		//Fvector dbg;
+		//dbg.set(Fvector().mul(normal,normal.y*tri_hight
+		//	-normal.dotproduct(xm.i)*m_toe_position.x
+		//	-normal.dotproduct(xm.j)*m_toe_position.y
+		//	-normal.dotproduct(xm.k)*m_toe_position.z-m_toe_position.x
+		//	));
 		
 		normal.invert();
 		Fvector ax;ax.crossproduct(normal,xm.i);
@@ -245,7 +234,7 @@ void CIKLimb::GoalMatrix(Matrix &M,CKinematics *K,const Fmatrix &obj)
 			xm.mulA_43(Fmatrix().rotation(ax,asinf(-s)));
 		}
 
-		Fvector otri;iobj.transform_tiny(otri,pVerts[m_tri->verts[0]]);
+		Fvector otri;iobj.transform_tiny(otri,pVerts[tri->verts[0]]);
 		float tp=normal.dotproduct(otri);
 		Fvector add;
 		add.set(Fvector().mul(normal,-m_toe_position.x+tp-xm.c.dotproduct(normal)));
@@ -279,63 +268,19 @@ void CIKLimb::GoalMatrix(Matrix &M,CKinematics *K,const Fmatrix &obj)
 		G.mul_43(H,xm);
 		XM2IM(G,M);
 }
-void CIKLimb::CalculateBones(CKinematics* K,const float x[])
+void CIKLimb::CalculateBones(SCalculateData* cd)
 {
-#ifdef DEBUG
-		SCalculateData &cd=*dbg_calculate_data;
-#else
-		SCalculateData cd	;
-#endif
-		
-		cd.m_angles		=	x		;
-		cd.m_K			=	K		;
-		cd.m_limb		=	this	;
-		K->LL_GetBoneInstance(m_bones[0]).set_callback(bctPhysics,BonesCallback0,&cd);
-		K->LL_GetBoneInstance(m_bones[1]).set_callback(bctPhysics,BonesCallback1,&cd);
-		K->LL_GetBoneInstance(m_bones[2]).set_callback(bctPhysics,BonesCallback2,&cd);
+		VERIFY(cd->m_angles);
+		CKinematics *K=cd->m_K;
+		K->LL_GetBoneInstance(m_bones[0]).set_callback(bctPhysics,BonesCallback0,cd);
+		K->LL_GetBoneInstance(m_bones[1]).set_callback(bctPhysics,BonesCallback1,cd);
+		K->LL_GetBoneInstance(m_bones[2]).set_callback(bctPhysics,BonesCallback2,cd);
 		K->LL_GetBoneInstance(m_bones[0]).Callback_overwrite=TRUE;
 		K->LL_GetBoneInstance(m_bones[1]).Callback_overwrite=TRUE;
 		K->LL_GetBoneInstance(m_bones[2]).Callback_overwrite=TRUE;
+		CBoneData &BD=K->LL_GetData(m_bones[0]);
+		BD.Calculate(K,&K->LL_GetTransform(BD.GetParentID()));
 
-		
-		CBoneData& BD=K->LL_GetData(m_bones[0]);
-		Fmatrix t;t.set(K->LL_GetTransform(BD.GetParentID()));
-		//t.mulB_43(BD.bind_transform);
-		BD.Calculate(K,&t);
-		//Fvector tmp_pos;
-		//{
-		//	Fmatrix &bm=K->LL_GetTransform(m_bones[0]);
-		//	tmp_pos.set(bm.c);
-
-
-		//	bm.setXYZ(-x[2],-x[1],-x[0]);
-		//	bm.c.set(tmp_pos);
-		//	CBoneData& BD=K->LL_GetData(m_bones[0]);
-		//	Fmatrix parent;parent.set(K->LL_GetTransform(BD.GetParentID()));
-		//	parent.invert();
-		//	BD.Calculate(K,);
-
-		//}
-		//{
-		//	Fmatrix &bm=K->LL_GetTransform(m_bones[1]);
-		//	Fvector ra;bm.getXYZ(ra);
-		//	ra.y=-x[3];
-		//	tmp_pos.set(bm.c);
-		//	bm.setXYZ(ra.x,ra.y,ra.z);
-		//	bm.c.set(tmp_pos);
-		//	CBoneData& BD=K->LL_GetData(m_bones[1]);
-		//	BD.Calculate(K,&K->LL_GetTransform(BD.GetParentID()));
-
-		//}
-		//{
-		//	Fmatrix &bm=K->LL_GetTransform(m_bones[2]);
-		//	tmp_pos.set(bm.c);
-		//	bm.setXYZ(-x[6],-x[5],-x[4]);
-		//	bm.c.set(tmp_pos);
-		//	CBoneData& BD=K->LL_GetData(m_bones[2]);
-		//	BD.Calculate(K,&K->LL_GetTransform(BD.GetParentID()));
-
-		//}
 		K->LL_GetBoneInstance(m_bones[0]).set_callback(bctPhysics,NULL,NULL);
 		K->LL_GetBoneInstance(m_bones[1]).set_callback(bctPhysics,NULL,NULL);
 		K->LL_GetBoneInstance(m_bones[2]).set_callback(bctPhysics,NULL,NULL);
@@ -370,7 +315,7 @@ void 	CIKLimb::BonesCallback0				(CBoneInstance* B)
 	if(ph_dbg_draw_mask.test(phDbgDrawIKGoal))
 	{
 		Fmatrix DBGG;
-		DBGG.mul_43(*D->obj,B->mTransform);
+		DBGG.mul_43(*D->m_obj,B->mTransform);
 		DBG_DrawMatrix(DBGG,0.3f);
 	}
 #endif
@@ -379,7 +324,7 @@ void 	CIKLimb::BonesCallback0				(CBoneInstance* B)
 	if(ph_dbg_draw_mask.test(phDbgDrawIKGoal))
 	{
 		Fmatrix DBGG;
-		DBGG.mul_43(*D->obj,B->mTransform);
+		DBGG.mul_43(*D->m_obj,B->mTransform);
 		DBG_DrawMatrix(DBGG,0.3f);
 	}
 #endif
@@ -448,11 +393,11 @@ void 	CIKLimb::BonesCallback2				(CBoneInstance* B)
 		if(ph_dbg_draw_mask.test(phDbgDrawIKGoal))
 		{
 			Fmatrix DBGG;
-			DBGG.mul_43(*D->obj,B->mTransform);
+			DBGG.mul_43(*D->m_obj,B->mTransform);
 			DBG_DrawMatrix(DBGG,0.3f);
 			
 			
-			DBGG.mul_43(*D->obj,start);
+			DBGG.mul_43(*D->m_obj,start);
 			DBG_DrawMatrix(DBGG,0.3f);
 
 		}
