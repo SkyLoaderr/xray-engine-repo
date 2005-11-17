@@ -440,7 +440,7 @@ int Limb::SetGoalPos(const float g[3], const Matrix  E, int limits)
 int Limb::SetGoal(const Matrix  G, int limits)
 {
     int success = set_goal(G);
-    check_limits = (short)limits;
+    check_limits = (short)(!!limits);
 
     solve = SolvePosAndOrientation;
     if (limits && success)

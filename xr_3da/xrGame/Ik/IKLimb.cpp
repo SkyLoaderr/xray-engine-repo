@@ -119,7 +119,11 @@ void CIKLimb::Calculate(CKinematics* K,const Fmatrix &obj)
 		//Matrix IT;
 		//XM2IM(T,IT);
 		//m_limb.SetTMatrix(IT);
-		if(m_limb.SetGoal(m,FALSE))
+#ifdef DEBUG 
+		if(m_limb.SetGoal(m,ph_dbg_draw_mask.test(phDbgIKLimits)))
+#else
+		if(m_limb.SetGoal(m,TRUE))
+#endif
 		{
 			Fmatrix hip;
 			CBoneData& BD=K->LL_GetData(m_bones[0]);
@@ -156,16 +160,16 @@ void CIKLimb::Create(CKinematics* K,u16 bones[4],const Fvector& toe_pos,Etype tp
 	limits=K->LL_GetData(bones[0]).IK_data.limits;
 	lmin[0]=-limits[0].limit.y;lmax[0]=-limits[0].limit.x;
 	lmin[1]=-limits[1].limit.y;lmax[1]=-limits[1].limit.x;
-	lmin[2]=-limits[2].limit.y;lmax[2]=-limits[2].limit.x;
-
+	//lmin[2]=-limits[2].limit.y;lmax[2]=-limits[2].limit.x;
+	lmin[2]=-1.f;lmax[2]=1.f;
 	limits=K->LL_GetData(bones[1]).IK_data.limits;
 	lmin[3]= -limits[1].limit.y;lmax[3]=-limits[1].limit.x;
 
 	limits=K->LL_GetData(bones[2]).IK_data.limits;
 	lmin[4]=-limits[0].limit.y;lmax[4]=-limits[0].limit.x;
 	lmin[5]=-limits[1].limit.y;lmax[5]=-limits[1].limit.x;
-	lmin[6]=-limits[2].limit.y;lmax[6]=-limits[2].limit.x;
-	
+	//lmin[6]=-limits[2].limit.y;lmax[6]=-limits[2].limit.x;
+	lmin[6]=-1.f;lmax[6]=1.f;
 	switch(tp) {
 	case tpRight:
 		m_limb.init(T,S,ZXY,ZXY,gproj_vector,gpos_vector,lmin,lmax);
@@ -194,7 +198,7 @@ void CIKLimb::Collide(CKinematics* K,const Fmatrix &obj)
 
 	collide::rq_result	R;
 	CGameObject *O=(CGameObject*)K->Update_Callback_Param;
-	if(g_pGameLevel->ObjectSpace.RayPick( pos, Fvector().set(0,-1,0), peak_dist, collide::rqtBoth, R, O))
+	if(g_pGameLevel->ObjectSpace.RayPick( pos, Fvector().set(0,-1,0), peak_dist+0.5f, collide::rqtBoth, R, O))
 	{
 		if(!R.O)
 		{
