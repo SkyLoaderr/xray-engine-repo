@@ -723,6 +723,7 @@ void CUIBuyWeaponWnd::OnBtnBulletBuy(int slot){
 
 	itemsList = pSettings->r_string(item->GetSectionName(), "ammo_class");
 	_GetItem(itemsList.c_str(), 0, single_item);
+	Msg("Ammo - %s", single_item);
 
 	item = UIBagWnd.GetItemBySectoin(single_item);
 	if (item)
@@ -1307,9 +1308,9 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	else if (DIK_A == dik)
 		UIBtnAutobuy.OnClick();
 
-	else if (DIK_MINUS == dik)
+	else if (DIK_Q == dik)
 		OnBtnBulletBuy(PISTOL_SLOT);
-	else if (DIK_EQUALS == dik)
+	else if (DIK_W == dik)
 		OnBtnBulletBuy(RIFLE_SLOT);
 
 	return true;

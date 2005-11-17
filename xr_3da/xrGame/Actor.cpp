@@ -1401,8 +1401,8 @@ void CActor::OnItemTake			(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemTake(inventory_item);
 	if (OnClient()) return;
 
-	if (GameID()==GAME_ARTEFACTHUNT)
-			SpawnAmmoForWeapon(inventory_item);
+///	if (GameID()==GAME_ARTEFACTHUNT)
+//			SpawnAmmoForWeapon(inventory_item);
 }
 
 void CActor::OnItemDrop			(CInventoryItem *inventory_item)
