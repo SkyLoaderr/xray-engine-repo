@@ -46,6 +46,7 @@
 		<article>cit_leader_killer</article>
 	</info_portion>
 	<info_portion id="cit_leader_killed"></info_portion>
+	<info_portion id="cit_leader_has_flash"></info_portion>
 	<info_portion id="cit_leader_reward"></info_portion>
 
 	<!-- Узнать, что случилось с Василием Петровичем -->
