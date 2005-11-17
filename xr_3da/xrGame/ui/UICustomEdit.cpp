@@ -76,9 +76,9 @@ void CUICustomEdit::SetPasswordMode(bool mode){
 
 void CUICustomEdit::OnFocusLost(){
 	CUIWindow::OnFocusLost();
-	GetParent()->SetKeyboardCapture(this, false);
-	m_bInputFocus = false;
-	m_iKeyPressAndHold = 0;
+//	GetParent()->SetKeyboardCapture(this, false);
+//	m_bInputFocus = false;
+//	m_iKeyPressAndHold = 0;
 }
 
 void CUICustomEdit::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
@@ -223,6 +223,8 @@ bool CUICustomEdit::KeyPressed(int dik)
 
 	if (m_bNumbersOnly)
 	{
+		if (strstr(m_lines.GetText(), "."))
+			return true;
 		if (('.' == out_me) && m_bFloatNumbers){
 			AddChar(out_me);
 			bChanged = true;
@@ -262,6 +264,9 @@ void CUICustomEdit::AddChar(char c)
 	if (!m_lines.GetTextComplexMode() && (text_length>GetWidth() - 1))
             return;
 	m_lines.AddCharAtCursor(c);
+	m_lines.ParseText();
+	if (m_lines.GetVisibleHeight() > GetHeight())
+		m_lines.DelLeftChar();
 }
 
 void CUICustomEdit::AddLetter(char c)
