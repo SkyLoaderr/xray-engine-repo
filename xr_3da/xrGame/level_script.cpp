@@ -405,6 +405,9 @@ int get_actor_points(LPCSTR sect)
 {
 	return Actor()->StatisticMgr().GetSectionPoints(_ParseItem(sect, actor_stats_token));
 }
+extern void add_human_to_top_list		(u16 id);
+extern void remove_human_from_top_list	(u16 id);
+
 
 #include "postprocessanimator.h"
 
@@ -506,7 +509,9 @@ void CLevel::script_register(lua_State *L)
 	module(L,"actor_stats")
 	[
 		def("add_points",					&add_actor_points),
-		def("get_points",					&get_actor_points)
+		def("get_points",					&get_actor_points),
+		def("add_to_ranking",				&add_human_to_top_list),
+		def("remove_from_ranking",			&remove_human_from_top_list)
 	];
 
 }

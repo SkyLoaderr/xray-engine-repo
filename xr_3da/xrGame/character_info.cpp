@@ -196,17 +196,6 @@ int	 CCharacterInfo::TradeIconY() const
 	R_ASSERT(m_SpecificCharacterId.size());
 	return m_SpecificCharacter.TradeIconY();
 }
-/*
-int	 CCharacterInfo::MapIconX()	 const
-{
-	R_ASSERT(m_SpecificCharacterId.size());
-	return m_SpecificCharacter.MapIconX();
-}
-int	 CCharacterInfo::MapIconY()	 const
-{
-	R_ASSERT(m_SpecificCharacterId.size());
-	return m_SpecificCharacter.MapIconY();
-}*/
 
 PHRASE_DIALOG_ID	CCharacterInfo::StartDialog	()	const
 {

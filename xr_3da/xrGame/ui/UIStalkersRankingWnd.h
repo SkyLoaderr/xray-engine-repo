@@ -13,7 +13,6 @@ class CSE_ALifeTraderAbstract;
 class CUIStalkersRankingWnd: public CUIWindow
 {
 	typedef CUIWindow inherited;
-
 public:
 			void			Init				();
 	virtual void			Show				(bool status);
@@ -24,18 +23,16 @@ protected:
 	CUIFrameLineWnd*		UIInfoHeader;
 	CUIFrameLineWnd*		UICharIconHeader;
 	CUIAnimatedStatic*		UIAnimatedIcon;
-
 	// информация о персонаже
 	CUIWindow*				UICharacterWindow;
 	CUICharacterInfo*		UICharacterInfo;
 	void					FillList			();
 	CUIScrollView*			UIList;
 	void					AddStalkerItem		(CUIXml* xml, int num, CSE_ALifeTraderAbstract* t);
-	void					AddActorItem		(CUIXml* xml, int num, bool bAddEllipsis);
+	void					AddActorItem		(CUIXml* xml, int num, CSE_ALifeTraderAbstract* t);
 public:
 	CUIScrollView&			GetTopList			()			{return *UIList;}
 	void					ShowHumanInfo		(u16 id);
-
 };
 
 class CUIStalkerRankingInfoItem :public CUIWindow, public CUISelectable
