@@ -238,6 +238,7 @@ public:
 			void				ForEachInventoryItems(const luabind::functor<void> &functor);
 			void				TransferItem		(CScriptGameObject* pItem, CScriptGameObject* pForWho);
 			void				TransferMoney		(int money, CScriptGameObject* pForWho);
+			void				GiveMoney			(int money);
 			u32					Money				();
 			
 			void				SetRelation			(ALife::ERelationType relation, CScriptGameObject* pWhoToSet);

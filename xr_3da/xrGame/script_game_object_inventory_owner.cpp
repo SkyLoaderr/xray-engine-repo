@@ -330,6 +330,14 @@ void CScriptGameObject::TransferMoney(int money, CScriptGameObject* pForWho)
 	pOurOwner->m_dwMoney	-= money;
 	pOtherOwner->m_dwMoney	+= money;
 }
+
+void CScriptGameObject::GiveMoney(int money)
+{
+	CInventoryOwner* pOurOwner		= smart_cast<CInventoryOwner*>(&object()); VERIFY(pOurOwner);
+
+
+	pOurOwner->m_dwMoney	+= money;
+}
 //////////////////////////////////////////////////////////////////////////
 
 int	CScriptGameObject::GetGoodwill(CScriptGameObject* pToWho)
