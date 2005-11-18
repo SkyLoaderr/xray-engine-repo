@@ -86,12 +86,16 @@ end
 --------------------
 function se_stalker:on_register()
 	cse_alife_human_stalker.on_register( self )
---	actor_stats.add_to_ranking(self.id)
+	if(actor_stats.add_to_ranking~=nil)then
+		actor_stats.add_to_ranking(self.id)
+	end
 end
 --------------------
 function se_stalker:on_unregister()
 	cse_alife_human_stalker.on_unregister( self )
---	actor_stats.remove_from_ranking(self.id)
+	if(actor_stats.remove_from_ranking~=nil)then
+		actor_stats.remove_from_ranking(self.id)
+	end
 end
 --------------------
 function se_stalker:read_smart_terrain_conditions()
