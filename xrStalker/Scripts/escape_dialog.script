@@ -310,7 +310,6 @@ function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
 	dialogs.relocate_item(second_speaker, case, "out")
 	dialogs.relocate_money(second_speaker, 1000, "in")
---	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
 end
 
 
