@@ -160,6 +160,7 @@ BOOL CTheoraStream::ParseHeaders		()
 
 BOOL CTheoraStream::Decode(u32 tm_play)
 {
+	VERIFY				(tm_play<tm_total);
 	ogg_int64_t			t_frame;
 	t_frame				= iFloor(tm_play*fpms);
 	ogg_int64_t	k_frame	= t_frame-t_frame%key_rate;

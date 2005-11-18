@@ -130,11 +130,9 @@ BOOL CTheoraSurface::Update(u32 dt)
 
 
 	if (playing){
-//		tm_play			+= dt;
 		tm_play			= Device.TimerAsyncMM()-tm_start;
-		if (tm_play>tm_total){ 
+		if (tm_play>=tm_total){ 
 			if (looped){	
-//				tm_play %= tm_total;
 				tm_start = tm_start+tm_total;
 				Reset	();
 			}else{	
