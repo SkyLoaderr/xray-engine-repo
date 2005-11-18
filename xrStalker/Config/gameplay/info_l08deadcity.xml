@@ -22,6 +22,9 @@
 
     <!-- Охота на сталкера около входа на уровень -->
     <info_portion id="cit_hunt_start"></info_portion>
+    
+    <!-- Места на уровне -->
+    <info_portion id="cit_places"></info_portion>
 
     <!-- Квесты -->
     <!-- Документы, компрометирующие наемников -->
