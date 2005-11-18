@@ -4,7 +4,7 @@ active = heli_move@wait
 [heli_move@wait]
 path_move           = cit_assault_heli_wait_move
 engine_sound        = false
-on_info             = {+cit_jail_start_waking} heli_move@ready
+on_info             = {+cit_jail_guard1_close_door} heli_move@ready ;cit_jail_start_waking
 
 [heli_move@ready]
 path_move           = cit_assault_heli_ready_move
@@ -14,7 +14,7 @@ combat_enemy        = nil
 combat_use_rocket   = false
 combat_use_mgun     = true
 ;invulnerable       = true
-on_info             = {+cit_jail_scene_start} heli_move@start
+on_info             = {+cit_jail_doctor_leave} heli_move@start ;cit_jail_scene_start
 
 [heli_move@start]
 path_move           = cit_assault_heli_start_move
