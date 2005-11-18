@@ -12,7 +12,6 @@ IC	CSpaceRestrictor::CSpaceRestrictor		()
 {
 }
 
-#ifdef PRECOMPUTED_INSIDE
 IC	bool CSpaceRestrictor::actual			() const
 {
 	return							(m_actuality);
@@ -22,5 +21,3 @@ IC	void CSpaceRestrictor::actual			(bool value) const
 {
 	m_actuality						= value;
 }
-
-#endif
