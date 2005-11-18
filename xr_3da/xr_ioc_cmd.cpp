@@ -359,6 +359,51 @@ public:
 		Device.Gamma.Update		();
 	}
 };
+
+//-----------------------------------------------------------------------
+#ifdef	DEBUG
+extern  INT	g_bDR_LM_UsePointsBBox;
+extern	Fvector	g_DR_LM_Min, g_DR_LM_Max;
+
+class CCC_DR_ClearPoint : public IConsole_Command
+{
+public:
+	CCC_DR_ClearPoint(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		g_DR_LM_Min.x = 1000000.0f;
+		g_DR_LM_Min.z = 1000000.0f;
+
+		g_DR_LM_Max.x = -1000000.0f;
+		g_DR_LM_Max.z = -1000000.0f;
+
+		Msg("Local BBox (%f, %f) - (%f, %f)", g_DR_LM_Min.x, g_DR_LM_Min.z, g_DR_LM_Max.x, g_DR_LM_Max.z);
+	}
+};
+
+class CCC_DR_TakePoint : public IConsole_Command
+{
+public:
+	CCC_DR_TakePoint(LPCSTR N) : IConsole_Command(N)	{ bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		Fvector CamPos =  Device.vCameraPosition;
+
+		if (g_DR_LM_Min.x > CamPos.x)	g_DR_LM_Min.x = CamPos.x;
+		if (g_DR_LM_Min.z > CamPos.z)	g_DR_LM_Min.z = CamPos.z;
+
+		if (g_DR_LM_Max.x < CamPos.x)	g_DR_LM_Max.x = CamPos.x;
+		if (g_DR_LM_Max.z < CamPos.z)	g_DR_LM_Max.z = CamPos.z;
+
+		Msg("Local BBox (%f, %f) - (%f, %f)", g_DR_LM_Min.x, g_DR_LM_Min.z, g_DR_LM_Max.x, g_DR_LM_Max.z);
+	}
+};
+
+class CCC_DR_UsePoints : public CCC_Integer
+{
+public:
+	CCC_DR_UsePoints(LPCSTR N, int* V, int _min=0, int _max=999) : CCC_Integer(N, V, _min, _max)	{};
+	virtual void	Save	(IWriter *F)	{};
+};
+#endif
 //-----------------------------------------------------------------------
 ENGINE_API float	psHUD_FOV=0.5f;
 
@@ -477,6 +522,13 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"net_dbg_dump_export_obj",	&g_Dump_Export_Obj, 0, 1);
 	CMD4(CCC_Integer,	"net_dbg_dump_import_obj",	&g_Dump_Import_Obj, 0, 1);
 #endif
+
+#ifdef DEBUG	
+	CMD1(CCC_DR_TakePoint,		"demo_record_take_point");
+	CMD1(CCC_DR_ClearPoint,		"demo_record_clear_points");
+	CMD4(CCC_DR_UsePoints,		"demo_record_use_points",	&g_bDR_LM_UsePointsBBox, 0, 1);
+#endif
+
 
 };
  

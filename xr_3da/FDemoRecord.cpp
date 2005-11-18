@@ -97,6 +97,11 @@ void CDemoRecord::MakeScreenshotFace()
 	m_Stage++;
 }
 
+#ifdef DEBUG
+INT	g_bDR_LM_UsePointsBBox = 0;
+Fvector	g_DR_LM_Min, g_DR_LM_Max;
+
+#endif
 void CDemoRecord::MakeLevelMapProcess()
 {
 	switch (m_Stage){
@@ -113,6 +118,16 @@ void CDemoRecord::MakeLevelMapProcess()
 
 		Fbox bb								= g_pGameLevel->ObjectSpace.GetBoundingVolume();
 
+#ifdef DEBUG
+		if (g_bDR_LM_UsePointsBBox)
+		{
+			bb.max.x = g_DR_LM_Max.x;
+			bb.max.z = g_DR_LM_Max.z;
+
+			bb.min.x = g_DR_LM_Min.x;
+			bb.min.z = g_DR_LM_Min.z;
+		}
+#endif
 		// build camera matrix
 		bb.getcenter						(Device.vCameraPosition);
 
@@ -122,7 +137,6 @@ void CDemoRecord::MakeLevelMapProcess()
 		Device.mView.build_camera_dir		(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop);
 
 		bb.xform							(Device.mView);
-
 		// build project matrix
 		Device.mProject.build_projection_ortho(bb.max.x-bb.min.x,bb.max.y-bb.min.y,bb.min.z,bb.max.z);
 
@@ -131,6 +145,16 @@ void CDemoRecord::MakeLevelMapProcess()
 		m_bOverlapped				= FALSE;
 		string_path tmp;
 		Fbox bb						= g_pGameLevel->ObjectSpace.GetBoundingVolume();
+#ifdef DEBUG
+		if (g_bDR_LM_UsePointsBBox)
+		{
+			bb.max.x = g_DR_LM_Max.x;
+			bb.max.z = g_DR_LM_Max.z;
+
+			bb.min.x = g_DR_LM_Min.x;
+			bb.min.z = g_DR_LM_Min.z;
+		}
+#endif
 		sprintf(tmp,"%s_[%3.3f, %3.3f]-[%3.3f, %3.3f]",*g_pGameLevel->name(),bb.min.x,bb.min.z,bb.max.x,bb.max.z);
 		Render->Screenshot			(IRender_interface::SM_FOR_LEVELMAP,tmp);
 		psHUD_Flags.assign			(s_hud_flag);
