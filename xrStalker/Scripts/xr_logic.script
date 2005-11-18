@@ -604,7 +604,7 @@ function switch_to_section(npc, st, section)
 end
 
 function see_actor(npc)
-	return npc:alive() and npc:see(actor)
+	return npc:alive() and npc:see(db.actor)
 end
 
 function cond_name(cond, etalon)
