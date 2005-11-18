@@ -22,6 +22,7 @@
 #include "stalker_animation_data_storage.h"
 #include "stalker_animation_data.h"
 #include "profiler.h"
+#include "stalker_animation_manager_impl.h"
 
 void CStalkerAnimationManager::reinit				()
 {
@@ -81,11 +82,6 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 	script().set_dbg_info		(*object().cName(),"Script");
 #endif
 };
-
-CStalkerAnimationManager::EBodyState CStalkerAnimationManager::body_state() const
-{
-	return						(((eBodyStateStand == object().movement().body_state()) && object().conditions().IsLimping()) ? eBodyStateStandDamaged : object().movement().body_state());
-}
 
 void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 {
@@ -176,9 +172,4 @@ void CStalkerAnimationManager::update						()
 		throw;
 	}
 	STOP_PROFILE
-}
-
-bool CStalkerAnimationManager::standing					() const
-{
-	return						((object().movement().speed(object().m_PhysicMovementControl) < EPS_L) || (eMovementTypeStand == object().movement().movement_type()));
 }

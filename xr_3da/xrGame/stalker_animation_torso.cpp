@@ -18,199 +18,242 @@
 #include "stalker_movement_manager.h"
 #include "entitycondition.h"
 #include "stalker_animation_data.h"
-
-bool CStalkerAnimationManager::strapped				() const
-{
-	VERIFY					(m_weapon);
-	return					(object().CObjectHandler::weapon_strapped(m_weapon));
-}
+#include "stalker_animation_manager_impl.h"
 
 void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 {
-	CAI_Stalker				*object = (CAI_Stalker*)blend->CallbackParam;
-	VERIFY					(object);
-	if (object->animation().setup_storage()) {
-		object->animation().setup_storage()->set_property(object->animation().property_id(),object->animation().property_value());
+	VERIFY							(blend->CallbackParam);
+	CAI_Stalker						*stalker = (CAI_Stalker*)blend->CallbackParam;
+	CStalkerAnimationManager		&animation = stalker->animation();
+
+	CPropertyStorage				*setup_storage = animation.setup_storage();
+	if (setup_storage) {
+		setup_storage->set_property	(animation.property_id(),animation.property_value());
 		return;
 	}
-	object->animation().torso().make_inactual();
-}
 
-void CStalkerAnimationManager::fill_object_info		()
-{
-	VERIFY					(object().inventory().ActiveItem());
-	m_weapon				= smart_cast<CWeapon*>	(object().inventory().ActiveItem());
-	m_missile				= smart_cast<CMissile*>	(object().inventory().ActiveItem());
+	animation.torso().make_inactual	();
 }
 
 MotionID CStalkerAnimationManager::no_object_animation(const EBodyState &body_state) const
 {
-	if (eMentalStateFree == object().movement().mental_state()) {
-		R_ASSERT3			(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
+	const CAI_Stalker				&stalker = object();
+	const CStalkerMovementManager	&movement = stalker.movement();
+	const xr_vector<CAniVector>		&animation = m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A;
+
+	if (eMentalStateFree == movement.mental_state()) {
+		VERIFY3						(
+			eBodyStateStand == movement.body_state(),
+			"Cannot run FREE animations, when body state is not stand!",
+			*stalker.cName()
+		);
+
 		if (standing())
-			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[9].A[1]);
-		else
-			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[object().conditions().IsLimping() ? 0 : 1]);
+			return					(animation[9].A[1]);
+
+		if (stalker.conditions().IsLimping())
+            return					(animation[9].A[0]);
+
+		return						(animation[7 + movement.movement_type()].A[1]);
 	}
-	else
-		if (standing())
-			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[6].A[0]);
-		else
-			return			(m_data_storage->m_part_animations.A[body_state].m_torso.A[0].A[6].A[1]);
+		
+	if (standing())
+		return						(animation[6].A[0]);
+
+	if (eMovementTypeWalk == movement.movement_type())
+		return						(animation[6].A[2]);
+
+	VERIFY							(eMovementTypeRun == movement.movement_type());
+	return							(animation[6].A[3]);
 }
 
 MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBodyState &body_state) const
 {
-	switch (object().CObjectHandler::planner().current_action_state_id()) {
-		case ObjectHandlerSpace::eWorldOperatorAim1 :
-		case ObjectHandlerSpace::eWorldOperatorAim2 :
-		case ObjectHandlerSpace::eWorldOperatorAimingReady1 :
-		case ObjectHandlerSpace::eWorldOperatorAimingReady2 :
-		case ObjectHandlerSpace::eWorldOperatorFire1 :
-		case ObjectHandlerSpace::eWorldOperatorFire2 :
-		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
-		case ObjectHandlerSpace::eWorldOperatorQueueWait2 : {
-			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
-				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[1];
-			else
-				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
-		}
-#if 0
-		case ObjectHandlerSpace::eWorldOperatorStrapping :
-			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[11].A[0];
-		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
-			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[12].A[0];
-		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle :
-			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[11].A[1];
-		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
-			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[12].A[1];
-#else
-		case ObjectHandlerSpace::eWorldOperatorStrapping :
-			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[0];
-		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
-			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[0];
-		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle :
-			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[1];
-		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
-			return m_data_storage->m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[1];
-#endif
-		default : {
-			if (eMentalStateFree == object().movement().mental_state()) {
-				R_ASSERT3	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
-				if (standing())
-					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];
-				else
-					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : (7 + object().movement().movement_type())].A[1];
-			}
-			else {
-				if (fis_zero(object().movement().speed(object().m_PhysicMovementControl))) {
-					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
-				}
-				if (standing()) {
-					return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 9 : 6].A[0];
-				}
-				switch (object().movement().movement_type()) {
-					case eMovementTypeWalk :
-						if (object().movement().body_state() == eBodyStateStand)
-							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[7].A[0];
-						else
-							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
-					case eMovementTypeRun :
-						if (object().movement().body_state() == eBodyStateStand)
-							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[object().conditions().IsLimping() ? 7 : 8].A[0];
-						else
-							return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0];
-					default : NODEFAULT;
-				}
-			}
-		}
-	}
-	return					(MotionID());
-}
+	// animation shortcuts
+	typedef CStalkerAnimationState	STATE;
+	const xr_vector<STATE>			&part_animations = m_data_storage->m_part_animations.A;
+	const xr_vector<CAniVector>		&animation = part_animations[body_state].m_torso.A[slot].A;
+	const xr_vector<CAniVector>		&animation_stand = part_animations[eBodyStateStand].m_torso.A[slot].A;
+	
+	// stalker shortcuts
+	const CAI_Stalker				&stalker = object();
+	const CStalkerMovementManager	&movement = stalker.movement();
+	u32								id = stalker.CObjectHandler::planner().current_action_state_id();
 
-u32 CStalkerAnimationManager::object_slot	() const
-{
-	return			(m_weapon ? m_weapon->animation_slot() : (m_missile ? m_missile->animation_slot() : 0));
+	switch (id) {
+		case ObjectHandlerSpace::eWorldOperatorFire1:
+		case ObjectHandlerSpace::eWorldOperatorFire2:
+		case ObjectHandlerSpace::eWorldOperatorAim1:
+		case ObjectHandlerSpace::eWorldOperatorAim2:
+		case ObjectHandlerSpace::eWorldOperatorAimingReady1:
+		case ObjectHandlerSpace::eWorldOperatorAimingReady2:
+		case ObjectHandlerSpace::eWorldOperatorQueueWait1:
+		case ObjectHandlerSpace::eWorldOperatorQueueWait2:	{
+			if (eBodyStateStandDamaged == body_state) {
+				if	((movement.body_state() == eBodyStateStand) && !standing())
+					return			(animation[9].A[1]);
+
+				return				(animation[9].A[0]);
+			}
+
+			if (standing())
+				return				(animation[6].A[0]);
+
+			if (eMovementTypeWalk == movement.movement_type())
+				return				(animation[6].A[2]);
+
+			VERIFY					(eMovementTypeRun == movement.movement_type());
+			return					(animation[6].A[3]);
+		}
+
+		// we do use only STAND body state here, since we do not have enough animations and will
+		case ObjectHandlerSpace::eWorldOperatorStrapping		:
+			return					(animation_stand[11].A[0]);
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping		:
+			return					(animation_stand[12].A[0]);
+		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle	:
+			return					(animation_stand[11].A[1]);
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle	:
+			return					(animation_stand[12].A[1]);
+	}
+
+	if (eMentalStateFree == movement.mental_state()) {
+		VERIFY3								(
+			eBodyStateStand == movement.body_state(),
+			"Cannot run FREE animation when body state is not stand!",
+			*object().cName()
+		);
+
+		if (standing() || stalker.conditions().IsLimping())
+			return					(animation[9].A[1]);
+
+		return						(animation[7 + movement.movement_type()].A[1]);
+	}
+
+	if (standing())  {
+		if (stalker.conditions().IsLimping())
+			return					(animation[9].A[0]);
+
+		return						(animation[6].A[0]);
+	}
+
+	if (eMovementTypeWalk == movement.movement_type()) {
+//		if (eBodyStateStand == movement.body_state())
+//			return					(animation[7].A[0]);
+//
+//		return						(animation[6].A[0]);
+		return						(animation[6].A[2]);
+	}
+
+	VERIFY							(eMovementTypeRun == movement.movement_type());
+
+	if (eBodyStateStand == movement.body_state()) {
+//		if (stalker.conditions().IsLimping())
+//			return					(animation[7].A[0]);
+//
+//		return						(animation[8].A[0]);
+		return						(animation[6].A[3]);
+	}
+
+	return							(animation[6].A[3]);
 }
 
 MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState &body_state) const
 {
+	const xr_vector<CAniVector>		&animation = m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A;
+
 	switch (m_weapon->STATE) {
 		case CWeapon::eReload : {
 			switch (m_weapon->GetReloadState()){
-				case CWeapon::eSubstateReloadBegin:			return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
-				case CWeapon::eSubstateReloadInProcess:		return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[1];
-				case CWeapon::eSubstateReloadEnd:			return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[2];
-				default:									NODEFAULT;
+				case CWeapon::eSubstateReloadBegin:
+					return			(animation[4].A[0]);
+				case CWeapon::eSubstateReloadInProcess:
+					return			(animation[4].A[1]);
+				case CWeapon::eSubstateReloadEnd:
+					return			(animation[4].A[2]);
+
+				default:			NODEFAULT;
 			}
 #ifdef DEBUG
-			return  m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[4].A[0];
+			return					(animation[4].A[0]);
 #endif
 		}
 		case CWeapon::eShowing :
-			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[0].A[0];
+			return					(animation[0].A[0]);
 		case CWeapon::eHiding :
-			return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0];
+			return					(animation[3].A[0]);
 		case CWeapon::eFire:
-			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
-				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
-			else
-				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
-		case CWeapon::eFire2 :
-			if ((object().movement().body_state() == eBodyStateStand) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
-				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1];
-			else
-				return m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0];
+		case CWeapon::eFire2 : {
+			CAI_Stalker				&stalker = object();
+			CStalkerMovementManager	&movement = stalker.movement();
+			if (standing()) {
+				if ((eBodyStateStand == movement.body_state()))
+					return			(animation[1].A[1]);
+			
+				return				(animation[1].A[0]);
+			}
+
+			if (eMovementTypeWalk == movement.movement_type())
+				return				(animation[1].A[2]);
+
+			VERIFY					(eMovementTypeRun == movement.movement_type());
+			return					(animation[1].A[3]);
+		}
 	}
 
-	return			(unknown_object_animation(slot,body_state));
+	return							(unknown_object_animation(slot,body_state));
 }
 
 MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState &body_state) const
 {
-	VERIFY			(m_missile);
+	VERIFY							(m_missile);
+
 	if (body_state == eBodyStateCrouch)
-		slot		= 0;
+		slot						= 0;
+
+	const xr_vector<CAniVector>		&animation = m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A;
 
 	switch (m_missile->State()) {
 		case MS_SHOWING	 :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[0].A[0]);
+			return					(animation[0].A[0]);
 		case MS_HIDING	 :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[3].A[0]);
+			return					(animation[3].A[0]);
 		case MS_THREATEN :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[0]);
+			return					(animation[1].A[0]);
 		case MS_READY	 :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[1]);
+			return					(animation[1].A[1]);
 		case MS_THROW	 :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
+			return					(animation[1].A[2]);
 		case MS_END		 :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
+			return					(animation[1].A[2]);
 		case MS_PLAYING	 :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[1].A[2]);
+			return					(animation[1].A[2]);
 		case MS_IDLE	 :
 		case MS_HIDDEN	 :
 		case MS_EMPTY	 :
 		default			 :
-			return  (m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A[6].A[0]);
+			return					(animation[6].A[0]);
 	}
 }
 
 MotionID CStalkerAnimationManager::assign_torso_animation	()
 {
-	EBodyState		_body_state	= body_state();
+	EBodyState						body_state	= this->body_state();
+
 	if (!object().inventory().ActiveItem())
-		return		(no_object_animation(_body_state));
+		return						(no_object_animation(body_state));
 
-	fill_object_info();
+	fill_object_info				();
 
-	if (m_weapon)
+	if (m_weapon) {
 		if (!strapped())
-			return	(weapon_animation(object_slot(),_body_state));
-		else
-			return	(no_object_animation(_body_state));
+			return					(weapon_animation(object_slot(),body_state));
+
+		return						(no_object_animation(body_state));
+	}
 
 	if (m_missile)
-		return		(missile_animation(object_slot(),_body_state));
+		return						(missile_animation(object_slot(),body_state));
 
-	return			(unknown_object_animation(object_slot(),_body_state));
+	return							(unknown_object_animation(object_slot(),body_state));
 }

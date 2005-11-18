@@ -68,15 +68,17 @@ private:
 #endif
 
 protected:
-			void					fill_object_info		();
-			EBodyState				body_state				() const;
-			u32						object_slot				() const;
+	IC		bool					strapped				() const;
+	IC		bool					standing				() const;
+	IC		void					fill_object_info		();
+	IC		u32						object_slot				() const;
+	IC		EBodyState				body_state				() const;
+
+protected:
 			MotionID				no_object_animation		(const EBodyState &body_state) const;
 			MotionID				unknown_object_animation(u32 slot, const EBodyState &body_state) const;
 			MotionID				weapon_animation		(u32 slot, const EBodyState &body_state) const;
 			MotionID				missile_animation		(u32 slot, const EBodyState &body_state) const;
-			bool					strapped				() const;
-			bool					standing				() const;
 
 protected:
 			void					assign_bone_callbacks	();

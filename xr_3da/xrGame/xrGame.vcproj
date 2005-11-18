@@ -4053,6 +4053,9 @@
 								RelativePath=".\stalker_animation_manager.h">
 							</File>
 							<File
+								RelativePath=".\stalker_animation_manager_impl.h">
+							</File>
+							<File
 								RelativePath=".\stalker_animation_manager_inline.h">
 							</File>
 							<File
@@ -11129,11 +11132,6 @@
 				Filter="">
 				<File
 					RelativePath=".\ui\UIGameTutorial.cpp">
-					<FileConfiguration
-						Name="Mixed|Win32">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\ui\UIGameTutorial.h">

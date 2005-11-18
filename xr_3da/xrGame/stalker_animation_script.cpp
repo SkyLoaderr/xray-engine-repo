@@ -16,28 +16,30 @@
 
 void CStalkerAnimationManager::script_play_callback(CBlend *blend)
 {
-	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
-	VERIFY						(object);
-	CStalkerAnimationManager	&animation_manager = object->animation();
+	CAI_Stalker						*object = (CAI_Stalker*)blend->CallbackParam;
+	VERIFY							(object);
+	CStalkerAnimationManager		&animation_manager = object->animation();
+	const SCRIPT_ANIMATIONS			&animations = animation_manager.script_animations();
+	const CStalkerAnimationPair		&script = animation_manager.script();
 
 #if 0
 	Msg							(
 		"%6d Script callback [%s]",
 		Device.dwTimeGlobal,
-		animation_manager.script_animations().empty()
+		animations.empty()
 		?
 		"unknown"
 		:
-		animation_manager.m_skeleton_animated->LL_MotionDefName_dbg(animation_manager.script_animations().front().animation())
+		animation_manager.m_skeleton_animated->LL_MotionDefName_dbg(animations.front().animation())
 	);
 #endif
 
 	if	(
-			animation_manager.script().animation() && 
-			!animation_manager.script_animations().empty() && 
+			script.animation() && 
+			!animations.empty() && 
 			(
 				animation_manager.script().animation() == 
-				animation_manager.script_animations().front().animation()
+				animations.front().animation()
 			)
 		)
 		animation_manager.pop_script_animation();
@@ -52,11 +54,12 @@ void CStalkerAnimationManager::add_script_animation	(LPCSTR animation, bool hand
 		ai().script_engine().script_log(eLuaMessageTypeError,"There is no animation %s (object %s)!",animation,*object().cName());
 		return;
 	}
+
 	m_script_animations.push_back	(CStalkerAnimationScript(hand_usage,motion));
 }
 
 MotionID CStalkerAnimationManager::assign_script_animation	()
 {
-	VERIFY				(!script_animations().empty());
-	return				(script_animations().front().animation());
+	VERIFY							(!script_animations().empty());
+	return							(script_animations().front().animation());
 }
