@@ -205,13 +205,28 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	R_ASSERT(pDDItemMP);
 	if (!pDDItemMP) return;
 
-	float left	= pDDItemMP->GetUIStaticItem().GetPosX();
-	float bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
+	if (strstr(pDDItemMP->GetSectionName(), "ammo"))
+	{
+		float left	= pDDItemMP->GetUIStaticItem().GetPosX();
+		float bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
 
-	pDDItemMP->GetFont()->SetColor(pDDItemMP->GetColor());
-	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), left, 
-		bottom - pDDItemMP->GetFont()->CurrentHeight(),
-		"%d", (pDDItemMP->GetPosInSubSection() + 1)%10);
+		pDDItemMP->GetFont()->SetColor(0xff00ff00);
+		UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), left, 
+			bottom - pDDItemMP->GetFont()->CurrentHeight(),
+			"%d", pSettings->r_s32(pDDItemMP->GetSectionName(), "box_size"));
+
+	}
+	else
+	{
+
+		float left	= pDDItemMP->GetUIStaticItem().GetPosX();
+		float bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
+
+		pDDItemMP->GetFont()->SetColor(pDDItemMP->GetColor());
+		UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), left, 
+			bottom - pDDItemMP->GetFont()->CurrentHeight(),
+			"%d", (pDDItemMP->GetPosInSubSection() + 1)%10);
+	}
 
 	pDDItemMP->GetFont()->OnRender();
 }
