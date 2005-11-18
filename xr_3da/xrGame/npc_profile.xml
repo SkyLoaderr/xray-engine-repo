@@ -68,6 +68,10 @@
 		<class>esc_soldier_specnaz</class>
 	</character>
 	
+	<character id="esc_plemiannik">
+		<class>esc_plemiannik</class>
+	</character>
+	
 <!-- Garbage -->
 	<character id="gar_seriy">
 		<class>gar_seriy</class>
