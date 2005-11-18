@@ -8,32 +8,6 @@ local smart_terrains	= {}
 -- TEST 1
 -----------------------------------------------------------------------------------------
 object_list["test1"] = {
-"yantar_stalker_zombied_0000",
-"yantar_stalker_zombied_0001",
-"yantar_stalker_zombied_0002",
-"yantar_stalker_zombied_0005",
-"yantar_stalker_zombied_0007",
-"yantar_stalker_zombied_0008",
-"yantar_stalker_zombied_0015",
-"yantar_stalker_zombied_0043",
-"yantar_stalker_zombied_0046",
-"yantar_dead_scientist_01",
-"yantar_dead_scientist_02",
-"yantar_gulag_zombies_03",
-"yantar_gulag_zombies_01",
-"yantar_gulag_zombies_05",
-"yantar_stalker_zombied_0025",
-"yantar_exozombied",
-"yantar_stalker_zombied_0016",
-"yantar_stalker_zombied_0021",
-"yantar_stalker_zombied_0022",
-"yantar_stalker_zombied_0032",
-"yantar_stalker_zombied_0044",
-"yantar_stalker_zombied_0049",
-"yantar_stalker_fresh_zombied",
-"yantar_stalker_fresh_zombied_0001",
-"yantar_m_gigant_e",
-"yan_scientist_help",
 "yan_home_snork_01",
 "yan_home_snork_0001",
 "factory_zombie_strong",
@@ -145,6 +119,7 @@ object_list["test1"] = {
 
 -- define smart terrains
 smart_terrains["test1"] = {
+"yan_tonnel_snorks"
 }
 
 -----------------------------------------------------------------------------------------
@@ -152,9 +127,37 @@ smart_terrains["test1"] = {
 -----------------------------------------------------------------------------------------
 -- Controller Test
 object_list["test2"] = {
+"yantar_stalker_zombied_0000",
+"yantar_stalker_zombied_0001",
+"yantar_stalker_zombied_0002",
+"yantar_stalker_zombied_0005",
+"yantar_stalker_zombied_0007",
+"yantar_stalker_zombied_0008",
+"yantar_stalker_zombied_0015",
+"yantar_stalker_zombied_0043",
+"yantar_stalker_zombied_0046",
+"yantar_dead_scientist_01",
+"yantar_dead_scientist_02",
+"yantar_gulag_zombies_03",
+"yantar_gulag_zombies_01",
+"yantar_gulag_zombies_05",
+"yantar_stalker_zombied_0025",
+"yantar_exozombied",
+"yantar_stalker_zombied_0016",
+"yantar_stalker_zombied_0021",
+"yantar_stalker_zombied_0022",
+"yantar_stalker_zombied_0032",
+"yantar_stalker_zombied_0044",
+"yantar_stalker_zombied_0049",
+"yantar_stalker_fresh_zombied",
+"yantar_stalker_fresh_zombied_0001",
+"yantar_m_gigant_e",
+"yan_scientist_help"
 }
 
 smart_terrains["test2"] = {
+"yantar_zombies",
+"yan_scientist"
 }
 
 ------------------------------------------------------------------------------
