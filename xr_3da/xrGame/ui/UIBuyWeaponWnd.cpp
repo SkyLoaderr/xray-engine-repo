@@ -723,7 +723,7 @@ void CUIBuyWeaponWnd::OnBtnBulletBuy(int slot){
 
 	itemsList = pSettings->r_string(item->GetSectionName(), "ammo_class");
 	_GetItem(itemsList.c_str(), 0, single_item);
-	Msg("Ammo - %s", single_item);
+//	Msg("Ammo - %s", single_item);
 
 	item = UIBagWnd.GetItemBySectoin(single_item);
 	if (item)
