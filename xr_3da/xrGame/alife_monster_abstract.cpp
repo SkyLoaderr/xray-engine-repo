@@ -101,7 +101,8 @@ void CSE_ALifeMonsterAbstract::update		()
 				m_fCurSpeed			= m_fGoingSpeed;
 		}
 		if (start_game_vertex_id != m_tGraphID) {
-			alife().check_for_interaction(this);
+#pragma todo("Do not forget to uncomment here!!!")
+//			alife().check_for_interaction(this);
 			start_game_vertex_id	= m_tGraphID;
 		}
 	}
