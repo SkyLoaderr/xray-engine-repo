@@ -1022,6 +1022,9 @@
 							RelativePath=".\Config\text\eng\stable_dialogs_darkvalley.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\stable_dialogs_deadcity.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\stable_dialogs_escape.xml">
 						</File>
 						<File
