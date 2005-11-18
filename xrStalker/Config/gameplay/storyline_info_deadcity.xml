@@ -10,3 +10,6 @@
     <article id="cit_vp" name="cit_vp_stalker" article_type="task" group="cit_vp_stalker">
         <text>cit_vp_text</text>
     </article>
+    <article id="cit_vp_killers" name="cit_vp_killers_base" group="Diary">
+        <text>cit_vp_killers_text</text>
+    </article>
