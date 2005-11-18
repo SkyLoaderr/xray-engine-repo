@@ -40,6 +40,7 @@ protected:
 	/////////////////////////// callback
 	ObjectContactCallbackFun*	m_object_contact_callback;
 	////////////////////////// geometry
+	Fvector m_last_move;
 	dGeomID m_geom_shell;
 	dGeomID m_wheel;
 	dGeomID m_hat;
@@ -159,6 +160,7 @@ public:
 	virtual		void		SetMaterial							(u16 material)		;
 	virtual		void		SetPosition							(Fvector pos)		;
 	virtual		void		GetVelocity							(Fvector& vvel)		;
+	virtual		void		GetSmothedVelocity					(Fvector& vvel)		;
 	virtual		void		SetVelocity							(Fvector vel)		;
 	virtual		void		SetAirControlFactor					(float factor)		{m_air_control_factor=factor;}
 	virtual		void		SetElevator							(CClimableObject* climable){m_elevator_state.SetElevator(climable);};

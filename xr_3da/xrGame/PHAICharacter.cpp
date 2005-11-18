@@ -24,6 +24,8 @@ void CPHAICharacter::Create(dVector3 sizes)
 bool CPHAICharacter::TryPosition(Fvector pos){
 	if(!b_exist) return false;
 	if(b_was_on_object||b_on_object||m_forced_physics_control||JumpState()) return false;
+	dVectorSub(cast_fp(m_last_move),cast_fp(pos),dBodyGetPosition(m_body));
+	m_last_move.mul(1.f/Device.fTimeDelta);
 	SetPosition(pos);
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdatePositions();

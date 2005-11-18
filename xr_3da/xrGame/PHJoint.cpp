@@ -251,7 +251,7 @@ void CPHJoint::CreateSlider()
 
 	m_joint=dJointCreateSlider(0,0);
 	dJointAttach(m_joint,body1,body2);
-	dJointSetSliderAxis(m_joint,pos.x,pos.y,pos.z);
+	
 
 
 
@@ -277,50 +277,42 @@ void CPHJoint::CreateSlider()
 	axis.set(0,0,0);
 	//axis 0
 	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
-	dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
-	dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
-	dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
+
+
+	dJointSetSliderAxis(m_joint, axis.x, axis.y, axis.z);
+	
+	dJointSetSliderParam(m_joint,dParamLoStop ,lo);
+	dJointSetSliderParam(m_joint,dParamHiStop ,hi);
 
 	if(!(axes[0].force<0.f)){
-		dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);
-		dJointSetAMotorParam(m_joint1,dParamVel ,axes[0].velocity);
+		dJointSetSliderParam(m_joint,dParamFMax ,axes[0].force);
+		dJointSetSliderParam(m_joint,dParamVel ,axes[0].velocity);
 	}
 
 	//axis 1
+
 	CalcAxis(1,axis,lo,hi,first_matrix,second_matrix,rotate);
-	dJointSetAMotorParam(m_joint1,dParamLoStop2 ,lo);
+	dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
+	dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);
 	if(!(axes[1].force<0.f)){
-		dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
-		dJointSetAMotorParam(m_joint1,dParamVel2 ,axes[1].velocity);
+		dJointSetAMotorParam(m_joint1,dParamFMax ,axes[1].force);
+		dJointSetAMotorParam(m_joint1,dParamVel ,axes[1].velocity);
 	}
 
-	//axis 2
-	CalcAxis(2,axis,lo,hi,first_matrix,second_matrix,rotate);
-	dJointSetAMotorAxis (m_joint1, 2, 2, axis.x, axis.y, axis.z);
-	dJointSetAMotorParam(m_joint1,dParamLoStop3 ,lo);
-	dJointSetAMotorParam(m_joint1,dParamHiStop3 ,hi);	
-	if(!(axes[2].force<0.f)){
-		dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);
-		dJointSetAMotorParam(m_joint1,dParamVel3 ,axes[2].velocity);
-	}
+
 
 	dJointSetAMotorParam(m_joint1,dParamStopERP ,axes[0].erp);
 	dJointSetAMotorParam(m_joint1,dParamStopCFM ,axes[0].cfm);
 
-	dJointSetAMotorParam(m_joint1,dParamStopERP2 ,axes[1].erp);
-	dJointSetAMotorParam(m_joint1,dParamStopCFM2 ,axes[1].cfm);
 
-	dJointSetAMotorParam(m_joint1,dParamStopERP3 ,axes[2].erp);
-	dJointSetAMotorParam(m_joint1,dParamStopCFM3 ,axes[2].cfm);
 	/////////////////////////////////////////////////////////////////////
 	///dJointSetAMotorParam(m_joint1,dParamFudgeFactor ,0.1f);
 	//dJointSetAMotorParam(m_joint1,dParamFudgeFactor2 ,0.1f);
 	//dJointSetAMotorParam(m_joint1,dParamFudgeFactor3 ,0.1f);
 	/////////////////////////////////////////////////////////////////////////////
 	dJointSetAMotorParam(m_joint1,dParamCFM ,m_cfm);
-	dJointSetAMotorParam(m_joint1,dParamCFM2 ,m_cfm);
-	dJointSetAMotorParam(m_joint1,dParamCFM3 ,m_cfm);
+
 }
 
 #ifdef  ODE_SLOW_SOLVER
@@ -628,6 +620,7 @@ void CPHJoint::Create()
 	case hinge:					CreateHinge();			break;
 	case hinge2:				CreateHinge2();			break;
 	case full_control:			CreateFullControl();	break;
+	case slider:				CreateSlider();			break;
 	}
 	if(m_destroy_info)
 	{

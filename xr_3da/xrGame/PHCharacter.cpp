@@ -178,20 +178,7 @@ void  CarHitCallback(bool& /**do_colide/**/,dContact& /**c/**/)
 
 	*/
 }
-void CPHCharacter::GetSmothedVelocity(Fvector& vvel)
-{
-	if(!b_exist) {vvel.set(0,0,0);return;}
-	
-	if(IsEnabled()&&m_count<m_frames)
-	{
-		vvel.set(m_mean_velocity.sum);
-		vvel.mul(1.f/(m_frames-m_count)/fixed_step);
-	}
-	else
-	{
-		GetSavedVelocity(vvel);
-	}
-}
+
 void CPHCharacter::GetSavedVelocity(Fvector& vvel)
 {
 	

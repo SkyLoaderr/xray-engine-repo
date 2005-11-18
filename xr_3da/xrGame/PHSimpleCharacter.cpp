@@ -217,7 +217,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	m_elevator_state.SetCharacter(static_cast<CPHCharacter*>(this));
 	CPHObject::activate();
 	spatial_register();
-	
+	m_last_move.set(0,0,0)	;
 }
 void CPHSimpleCharacter::SwitchOFFInitContact()
 {
@@ -353,7 +353,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		if(!ph_world->IsFreezed())b_lose_control=false;
 		return;
 	}
-	//if(is_contact&&!is_control&&!b_lose_ground)
+	if(is_contact&&!is_control&&!b_lose_ground)
 		Disabling();
 
 	if( !dBodyIsEnabled(m_body)) {
@@ -1010,7 +1010,8 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
 		
-
+	dVectorSub(cast_fp(m_last_move),dBodyGetPosition(m_body),m_safe_velocity);
+	m_last_move.mul(1.f/fixed_step);
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 	dVectorSet(m_safe_velocity,linear_velocity);
 
@@ -1027,7 +1028,7 @@ void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* call
 }
 void CPHSimpleCharacter::Disable()
 {
-	if(is_contact&&!is_control&&!b_lose_ground)
+	//if(is_contact&&!is_control&&!b_lose_ground)
 	{
 		dGeomGetUserData(m_wheel)->pushing_neg			=false;
 		dGeomGetUserData(m_wheel)->pushing_b_neg		=false;
@@ -1428,4 +1429,20 @@ u16 CPHSimpleCharacter::SCollisionDamageInfo::DamageInitiatorID() const
 	IDamageSource* ds=m_object->cast_IDamageSource();
 	if(ds) return ds->Initiator();
 	return u16(-1);
+}
+
+void CPHSimpleCharacter::GetSmothedVelocity(Fvector& vvel)
+{
+	if(!b_exist) {vvel.set(0,0,0);return;}
+	vvel.set(m_last_move);
+	
+	//if(IsEnabled()&&m_count<m_frames)
+	//{
+	//	vvel.set(m_mean_velocity.sum);
+	//	vvel.mul(1.f/(m_frames-m_count)/fixed_step);
+	//}
+	//else
+	//{
+	//	GetSavedVelocity(vvel);
+	//}
 }

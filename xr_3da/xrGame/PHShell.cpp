@@ -719,6 +719,20 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			{
 				switch(joint_data.type) 
 				{
+				case jtSlider: 
+					{
+						J= P_create_Joint(CPhysicsJoint::slider,root_e,E);
+						J->SetAnchorVsSecondElement	(0,0,0);
+						J->SetJointSDfactors(joint_data.spring_factor,joint_data.damping_factor);
+						J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,0);
+						J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,0);
+						if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
+						{
+							J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,1);
+							J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,1);
+						}
+						break;
+					}
 				case jtCloth: 
 					{
 						J= P_create_Joint(CPhysicsJoint::ball,root_e,E);

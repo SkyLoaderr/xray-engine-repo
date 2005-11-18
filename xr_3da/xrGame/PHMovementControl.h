@@ -148,7 +148,7 @@ public:
 	void				UnFreeze					()								;
 	void				SetVelocity					(float x, float y, float z)	{SetVelocity(Fvector().set(x,y,z));}
 	void				SetVelocity					(const Fvector& v)	{vVelocity.set(v);SetCharacterVelocity(v);}
-	void				SetCharacterVelocity		(const Fvector& v)	{if(m_character)m_character->SetVelocity(vVelocity);}										
+	void				SetCharacterVelocity		(const Fvector& v)	{if(m_character)m_character->SetVelocity(v);}										
 	void				SetPhysicsRefObject			(CPhysicsShellHolder* ref_object){m_character->SetPhysicsRefObject(ref_object);};
 	
 	void				CalcMaximumVelocity			(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
