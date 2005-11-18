@@ -144,7 +144,7 @@ void CGameFont::OnRender()
 			if (len) {
 				float	X	= float(iFloor(PS.x));
 				float	Y	= float(iFloor(PS.y));
-				float	S	= PS.size*(::Render->getTarget()->get_width()/1024.0f);		//ConvertSize	(PS.size);
+				float	S	= PS.size*(::Render->getTarget()->get_width()/Device.dwWidth);		//ConvertSize	(PS.size);
 
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
