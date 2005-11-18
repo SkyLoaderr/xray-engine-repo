@@ -750,7 +750,7 @@ function load_ltx_antenna_camper(gname, type)
 					"path_look = " .. i .. "_look\n" ..
 					"def_state_moving1 = sprint\n" ..
 					"def_state_moving2 = sprint\n" ..
-					"combat_ignore_cond = {=fighting_actor -rad_start_ambush_in_antenna_tunnel}\n" ..
+					"combat_ignore_cond = always\n" ..
 					"on_info = {+rad_start_ambush_in_antenna_tunnel} walker@2" .. gname .. i .. " \n" ..
 					"danger=danger_condition@" .. gname .. "1\n" ..
 
