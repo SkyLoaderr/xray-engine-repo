@@ -1,0 +1,14 @@
+function have_vp_info(actor, npc)
+  	return actor:object("cit_vp_pda") ~= nil
+end
+
+function not_vp_info(actor, npc)
+	return not this.have_vp_info(actor, npc)
+end
+
+function give_vp_pda(actor, npc)
+	local vp_pda = actor:object("cit_vp_pda")
+	dialogs.relocate_item(second_speaker, vp_pda, "out")
+	dialogs.relocate_money(second_speaker, 1500, "in")
+end
+
