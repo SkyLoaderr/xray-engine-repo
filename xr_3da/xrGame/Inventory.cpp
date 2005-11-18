@@ -588,6 +588,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			{
 			}break;
 		case kWPN_RELOAD:
+		case kWPN_NEXT:
 			{
 				//создать и отправить пакет
 				SendActionEvent(cmd, flags);

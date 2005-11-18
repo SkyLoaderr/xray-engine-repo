@@ -80,9 +80,9 @@ void CActorMemory::shedule_Update			(u32 dt)
 
 	if (!object().g_Alive())
 		return;
-
-	if (!object().Local())
-		return;
+	
+//	if (!object().Local())
+//		return;
 
 	switch (m_state) {
 		case 0 : {
@@ -100,7 +100,7 @@ void CActorMemory::shedule_Update			(u32 dt)
 
 	visual().update							(float(dt)/1000.f);
 
-#if 0
+#if 1
 	CVisualMemoryManager::VISIBLES::const_iterator	I = visual().objects().begin();
 	CVisualMemoryManager::VISIBLES::const_iterator	E = visual().objects().end();
 	for ( ; I != E; ++I)

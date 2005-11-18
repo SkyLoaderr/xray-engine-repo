@@ -781,7 +781,8 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID) 
 {
 	if(!m_ammoTypes.size()) return;
-	if (GameID() == GAME_ARTEFACTHUNT && m_bAmmoWasSpawned) return;
+	if (OnClient()) return;
+///	if (GameID() == GAME_ARTEFACTHUNT && m_bAmmoWasSpawned) return;
 	m_bAmmoWasSpawned = true;
 	
 	int l_type = 0; 
@@ -820,10 +821,10 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 		if(boxCurr == 0xffffffff) 
 		{
 			boxCurr = l_pA->m_boxSize;
-			if (GameID() == GAME_ARTEFACTHUNT)
-			{
-				boxCurr = l_pA->m_boxSize*3;
-			}
+//			if (GameID() == GAME_ARTEFACTHUNT)
+//			{
+//				boxCurr = l_pA->m_boxSize*3;
+//			}
 		};
 
 		while(boxCurr) 

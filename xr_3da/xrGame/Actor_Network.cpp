@@ -49,8 +49,10 @@ BOOL		net_cl_inputguaranteed		= FALSE;
 CActor*		g_actor						= NULL;
 
 CActor*			Actor()	
-{
+{	
 	VERIFY(g_actor); 
+	if (GameID() != GAME_SINGLE) 
+		VERIFY(g_actor == Level().CurrentControlEntity());
 	return g_actor; 
 };
 
@@ -798,8 +800,11 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_s16LastHittedElement = -1;
 	m_bWasHitted = false;
 
-	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) )
+	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) && TRUE == E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
+	{
 		g_actor = this;
+		Msg("set g_actor");
+	}
 
 	if (IsGameTypeSingle()){
 		Level().MapManager().AddMapLocation("actor_location",ID());

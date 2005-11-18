@@ -113,6 +113,7 @@ public:
 	virtual		void				OnRender				()	{};
 	virtual		bool				IsServerControlHits		()	{return m_bServerControlHits;};
 	virtual		bool				IsEnemy					(game_PlayerState* ps)	{return false;};
+	virtual		bool				IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2)	{return false;};
 	virtual		bool				PlayerCanSprint			(CActor* pActor) {return true;};
 
 	virtual		void				OnSpawn					(CObject* pObj)	{};

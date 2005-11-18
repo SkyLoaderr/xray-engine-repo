@@ -124,6 +124,7 @@ public:
 
 	virtual		void				OnRender				();
 	virtual		bool				IsEnemy					(game_PlayerState* ps);
+	virtual		bool				IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2);
 
 	virtual		void				OnSpawn					(CObject* pObj);
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	

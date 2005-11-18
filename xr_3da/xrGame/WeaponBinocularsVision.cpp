@@ -9,6 +9,10 @@
 #include "actor_memory.h"
 #include "relation_registry.h"
 
+#include "game_base_space.h"
+#include "Level.h"
+#include "game_cl_base.h"
+
 #define RECT_SIZE	16
 
 extern u32 C_ON_ENEMY;
@@ -108,15 +112,29 @@ void SBinocVisibleObj::Update()
 			CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(m_object);
 
 			if(our_inv_owner && others_inv_owner){
-
-				switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
+				if (GameID() == GAME_SINGLE)
 				{
-				case ALife::eRelationTypeEnemy:
-					clr = C_ON_ENEMY; break;
-				case ALife::eRelationTypeNeutral:
-					clr = C_ON_NEUTRAL; break;
-				case ALife::eRelationTypeFriend:
-					clr = C_ON_FRIEND; break;
+					switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
+					{
+					case ALife::eRelationTypeEnemy:
+						clr = C_ON_ENEMY; break;
+					case ALife::eRelationTypeNeutral:
+						clr = C_ON_NEUTRAL; break;
+					case ALife::eRelationTypeFriend:
+						clr = C_ON_FRIEND; break;
+					}
+				}
+				else
+				{
+					CEntityAlive* our_ealive		= smart_cast<CEntityAlive*>(Actor());
+					CEntityAlive* others_ealive		= smart_cast<CEntityAlive*>(m_object);
+					if (our_ealive && others_ealive)
+					{
+						if (Game().IsEnemy(our_ealive, others_ealive))
+							clr = C_ON_ENEMY;
+						else
+							clr = C_ON_FRIEND;
+					}
 				}
 			}
 

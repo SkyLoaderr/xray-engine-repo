@@ -426,6 +426,11 @@ bool		game_cl_TeamDeathmatch::IsEnemy					(game_PlayerState* ps)
 	return local_player->team != ps->team;
 };
 
+bool		game_cl_TeamDeathmatch::IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2)
+{
+	return (ea1->g_Team() != ea2->g_Team());
+};
+
 #define PLAYER_NAME_COLOR 0xff40ff40
 
 void	game_cl_TeamDeathmatch::OnRender				()

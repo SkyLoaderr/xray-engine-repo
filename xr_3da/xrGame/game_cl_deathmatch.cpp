@@ -741,6 +741,11 @@ bool		game_cl_Deathmatch::IsEnemy					(game_PlayerState* ps)
 	return true;
 }
 
+bool		game_cl_Deathmatch::IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2)
+{
+	return true;
+};
+
 void		game_cl_Deathmatch::OnRender				()
 {
 	if (m_bDamageBlockIndicators && local_player)

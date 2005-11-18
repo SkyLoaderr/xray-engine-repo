@@ -205,7 +205,7 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	R_ASSERT(pDDItemMP);
 	if (!pDDItemMP) return;
 
-	if (strstr(pDDItemMP->GetSectionName(), "ammo"))
+	if (strstr(pDDItemMP->GetSectionName(), "ammo") && pSettings->r_s32(pDDItemMP->GetSectionName(), "box_size")>1)
 	{
 		float left	= pDDItemMP->GetUIStaticItem().GetPosX();
 		float bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
