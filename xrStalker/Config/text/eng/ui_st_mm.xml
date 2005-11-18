@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+	<string id="ui_mm_newgame">
+        <text>New Game</text>
+    </string>
+    <string id="ui_mm_quit2windows">
+        <text>Quit to Windows</text>
+    </string>
+    <string id="ui_mm_quit_game">
+        <text>Quit the Game</text>
+    </string>
+    <string id="ui_mm_disconnect">
+        <text>Disconnect</text>
+    </string>    
+    <string id="ui_mm_novice">
+        <text>Novice</text>
+    </string>
+    <string id="ui_mm_stalker">
+        <text>Stalker</text>
+    </string>
+    <string id="ui_mm_veteran">
+        <text>Veteran</text>
+    </string>
+    <string id="ui_mm_master">
+        <text>Master</text>
+    </string>
     <string id="ui_mm_action">
         <text>action</text>
     </string>
@@ -93,6 +117,9 @@
     <string id="ui_mm_multiplayer">
         <text>MULTIPLAYER</text>
     </string>
+    <string id="ui_mm_multiplayer_n">
+        <text>Multiplayer</text>
+    </string>    
     <string id="ui_mm_music_volume">
         <text>Music Volume</text>
     </string>
@@ -101,6 +128,9 @@
     </string>
     <string id="ui_mm_options">
         <text>OPTIONS</text>
+    </string>
+    <string id="ui_mm_options_n">
+        <text>Options</text>
     </string>
     <string id="ui_mm_particles">
         <text>Particles</text>
