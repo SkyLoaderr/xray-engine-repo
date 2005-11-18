@@ -138,6 +138,11 @@ function hit_obj(actor, npc, p)
 	local h = hit()
 	local obj = level_object_by_sid(p[1])
 
+	if not obj then
+		abort("HIT_OBJ [%s]. Target object does not exist", npc:name())
+		return
+	end
+
 	h:bone(p[2])
 	h.power = p[3]
 	h.impulse = p[4]
