@@ -210,7 +210,23 @@ active = walker@scientist_return_out_rest
 
 [walker@scientist_return_out_rest]
 path_walk = door_2_walk
-on_signal = doors_close | %-yan_scientist_door_2_open +yan_find_scientist_done%
+on_signal = doors_close | walker@go_to_scientist %-yan_scientist_door_2_open +yan_find_scientist_done%
+combat_ignore_cond = always
+
+[walker@go_to_scientist]
+path_walk = ucheniy_talk_walk
+path_look = ucheniy_talk_look
+combat_ignore_cond = always
+on_signal = arrived | remark@talk_about_research
+
+[remark@talk_about_research]
+snd = yantar_kruglov_radiation_quest_10
+anim = wait
+on_signal = sound_end | walker@go_away %+yantar_scientist_talk_helmet%
+
+[walker@go_away]
+path_walk = bunker_walk
+path_look = bunker_look
 combat_ignore_cond = always
 
 [wounded@yan_scientist]
