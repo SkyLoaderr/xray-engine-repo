@@ -2433,6 +2433,9 @@
 				<File
 					RelativePath=".\scripts\x18.script">
 				</File>
+				<File
+					RelativePath=".\scripts\yantar_test.script">
+				</File>
 			</Filter>
 			<Filter
 				Name="Documentation"
