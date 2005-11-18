@@ -40,7 +40,7 @@ end
 
 ; Лидер наемников.
 
-function leader_die(actor, npc)
+function leader_killer_die(actor, npc)
   	return actor:object("cit_leader_killer_pda") ~= nil
 end
 
