@@ -233,10 +233,10 @@
 
 <!---------------------------- LEADER ---------------------->
 	<specific_character id="cit_killer_leader" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>Душман</name>
 		<icon x="18" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>Лидер группировки наемников. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_leader</class>
 		<community>killer</community>
