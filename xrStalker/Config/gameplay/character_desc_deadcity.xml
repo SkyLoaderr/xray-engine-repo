@@ -529,6 +529,7 @@
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
+			cit_vp_pda \n
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
