@@ -10,13 +10,13 @@
         <text>OOOOOOOK!</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_0">
-        <text>Че тебе надо???</text>
+        <text>What do you want?</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_1">
-        <text>Мозг!</text>
+        <text>Brain!</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_2">
-        <text>Ученый!</text>
+        <text>Scientist!</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_3">
         <text>more quests???</text>
@@ -31,7 +31,7 @@
         <text>go_1</text>
     </string>
     <string id="yantar_help_scientist_2">
-        <text>сначала поговори с главным!</text>
+        <text>Talk to a major first!</text>
     </string>
     <string id="yantar_help_scientist_3">
         <text>go_2</text>
