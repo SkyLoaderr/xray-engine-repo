@@ -603,6 +603,10 @@ function switch_to_section(npc, st, section)
 	return true
 end
 
+function see_actor(npc)
+	return npc:alive() and npc:see(actor)
+end
+
 function cond_name(cond, etalon)
 	return string.find( cond, "^"..etalon.."%d*$" ) ~= nil
 end
@@ -624,8 +628,8 @@ function try_switch_to_another_section(npc, st, actor)
 	for n, c in pairs(l) do
 		--printf("_bp: %d: %s", time_global(), c.name)
 		if cond_name(c.name, "on_actor_dist_le") then
-			printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
-			if npc:see(actor) and distance_between(actor, npc) <= c.v1 then
+			printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(see_actor(npc)))
+			if see_actor(npc) and distance_between(actor, npc) <= c.v1 then
 				--printf("_bp: conditions met")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
@@ -634,9 +638,9 @@ function try_switch_to_another_section(npc, st, actor)
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif cond_name(c.name, "on_actor_dist_ge") then
-			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
+			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(see_actor(npc)))
 			-- ТУТ УМЫШЛЕННО >, А НЕ >=, потому что оно составляет пару с on_actor_dist_le, где <=
-			if npc:see(actor) and distance_between(actor, npc) > c.v1 then
+			if see_actor(npc) and distance_between(actor, npc) > c.v1 then
 				--printf("_bp: conditions met")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
