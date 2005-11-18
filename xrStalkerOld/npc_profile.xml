@@ -203,6 +203,7 @@
 		<class>cit_doctor</class>
 		<specific_character>cit_doctor</specific_character>
 	</character>
+	<!-- Vasya -->	
 	<character id="cit_vp">
 		<class>cit_vp</class>
 	</character>
@@ -219,6 +220,10 @@
 	</character>
 	<character id="cit_killer_exo">
 		<class>cit_killer_exo</class>
+	</character>
+	<character id="cit_killer_leader">
+		<class>cit_killer_leader</class>
+		<specific_character>cit_killer_leader</specific_character>
 	</character>
 
 	<!-- Bandits -->	

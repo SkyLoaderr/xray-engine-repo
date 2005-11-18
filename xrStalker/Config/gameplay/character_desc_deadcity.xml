@@ -231,6 +231,42 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
+<!---------------------------- LEADER ---------------------->
+	<specific_character id="cit_killer_leader" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="18" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+
+		<class>cit_killer_leader</class>
+		<community>killer</community>
+		
+		<rank>90</rank>
+		<reputation>-50</reputation>
+	
+		<snd_config>characters_voice\human_02\</snd_config>
+		
+		<panic_threshold>0</panic_threshold>
+
+		<visual>actors\killer\stalker_ki_head_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 4 \n
+			wpn_sig550 = 1,scope \n
+			ammo_5.56x45_ss190 = 3 \n
+			ammo_5.56x45_ap = 3 \n
+			device_torch \n
+			cit_leader_killer_pda \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 <!-------------------------- BANDITS ----------------------->
 <!--------------------------- DRUNK ------------------------>
     <specific_character id="cit_bandit_drunk" team_default = "1">
@@ -506,7 +542,6 @@
 	</specific_character>
 
 <!----------------------- Василий Петрович ---------------------->
-
 	<specific_character id="cit_vp" team_default = "1">
 		<name>Василий Петрович</name>
 		<icon x="24" y="4"></icon>
