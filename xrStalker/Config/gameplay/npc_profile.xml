@@ -203,6 +203,9 @@
 		<class>cit_doctor</class>
 		<specific_character>cit_doctor</specific_character>
 	</character>
+	<character id="cit_vp">
+		<class>cit_vp</class>
+	</character>
 
 	<!-- Killers -->	
 	<character id="cit_killer_general">
