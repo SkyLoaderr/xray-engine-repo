@@ -292,6 +292,8 @@ void CBloodsuckerAlien::deactivate()
 
 void CBloodsuckerAlien::update_camera()
 {
+	if (!m_active) return;
+
 	// smooth eye vectors
 	smooth_eye_matrix	();
 	
