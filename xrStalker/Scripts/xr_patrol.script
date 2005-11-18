@@ -203,7 +203,7 @@ function PatrolManager:update ()
 end
 -----------------------
 function PatrolManager:is_commander_in_meet ()
-    if self.commander_id == -1 then return false
+    if self.commander_id == -1 then return false end
     local npc = self.npc_list[self.commander_id].soldier
     if npc ~= nil and npc:alive () == true then
        return xr_meet.is_meet (npc)
