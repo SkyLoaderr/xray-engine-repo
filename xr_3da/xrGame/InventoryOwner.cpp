@@ -154,6 +154,7 @@ void	CInventoryOwner::save	(NET_Packet &output_packet)
 
 	CharacterInfo().save(output_packet);
 	save_data	(m_game_name, output_packet);
+	save_data	(m_dwMoney,	output_packet);
 }
 void	CInventoryOwner::load	(IReader &input_packet)
 {
@@ -165,6 +166,7 @@ void	CInventoryOwner::load	(IReader &input_packet)
 
 	CharacterInfo().load(input_packet);
 	load_data		(m_game_name, input_packet);
+	load_data		(m_dwMoney,	input_packet);
 }
 
 

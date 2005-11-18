@@ -667,10 +667,11 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_current_head.invalidate	();
 	//-------------------------------------
 	// инициализация реестров, используемых актером
-//.	contacts_registry->registry().init(ID());
 	encyclopedia_registry->registry().init(ID());
-//.	game_task_registry->registry().init(ID());
 	game_news_registry->registry().init(ID());
+
+	CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(e);
+	m_dwMoney				= pTA->m_dwMoney;
 
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;
@@ -721,9 +722,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	Engine.Sheduler.Register	(this,TRUE);
 
 	hit_slowmo				= 0.f;
-
-	CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(e);
-	m_dwMoney				= pTA->m_dwMoney;
 
 	OnChangeVisual();
 	//----------------------------------
