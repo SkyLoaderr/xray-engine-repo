@@ -98,20 +98,6 @@ function action_car:reset_scheme(loading)
 	action(self.object, object("left_light",  self.headlights), cond(cond.time_end, time_infinite))
 	xr_logic.mob_capture(self.object, true)
 	action(self.object, object("right_light", self.headlights), cond(cond.time_end, time_infinite))
---[[
-	xr_logic.mob_capture(self.object, true)
-	if self.st.headlights == "on" then
-	    action(self.object,
-		    object("right_light", object.activate),
-		    object("left_light", object.activate),
-		    cond(cond.time_end, time_infinite))
-	else
-	    action(self.object,
-		    object("right_light", object.deactivate),
-		    object("left_light", object.deactivate),
-		    cond(cond.time_end, time_infinite))
-	end
-]]
 
 	self.fc_upd_num = 0 -- fastcall updates num
 	self.fc_upd_avg = 10 -- average time of the fastcall updates (in millisecond)
@@ -298,13 +284,13 @@ function action_car:reset_scheme(loading)
 	        self.state_cannon = state_cannon_follow
 	        --self.target_fire_pt = db.actor:position()
 		    --self:rot_to_firepoint(self.target_fire_pt)
-		    --self:set_shooting(self.state_shooting)
 	    else
 	        printf("car <state>: firetarget = none")
 	        self.state_firetarget = state_none
 	        self.state_cannon = state_none
 	        self.state_shooting = state_none
 	    end
+		self:set_shooting(self.state_shooting)
 	end
 	
 	--if self.st.path_walk then
@@ -739,8 +725,8 @@ function action_car:rot_to_firepoint(pt)
 end
 
 function action_car:set_shooting(shooting)
-    self.car:Action(CCar.eWpnFire, self.state_shooting)
-    printf("car <fire>: action_car:set_shooting(%d)", self.state_shooting)
+    self.car:Action(CCar.eWpnFire, shooting)
+    printf("car <fire>: action_car:set_shooting(%d)", shooting)
 end
 
 function action_car:fire_arrival_callback(cur_index)
@@ -768,10 +754,11 @@ function action_car:fire_arrival_callback(cur_index)
 	    else
             printf("car <fire>: 1.cannon stopped.")
 	        self.state_cannon = state_cannon_stop
-	        self.state_shooting = state_none
-            --self:rot_to_firepoint(nil)
-            self:set_shooting(self.state_shooting)
-            self:set_signal("fire_end")
+	        if self.state_shooting ~= state_none then
+                self.state_shooting = state_none
+                self:set_shooting(self.state_shooting)
+                self:set_signal("fire_end")
+            end
 	    end
 	    return
     end
@@ -845,10 +832,11 @@ function action_car:fire_arrival_callback(cur_index)
 	    else
             printf("car <fire>: 2.cannon stopped.")
 	        self.state_cannon = state_cannon_stop
-	        self.state_shooting =state_none
-            --self:rot_to_firepoint(nil)
-            self:set_shooting(self.state_shooting)
-            self:set_signal("fire_end")
+	        if self.state_shooting ~= state_none then
+                self.state_shooting = state_none
+                self:set_shooting(self.state_shooting)
+                self:set_signal("fire_end")
+            end
 	    end
 	end
 end
@@ -1094,27 +1082,30 @@ function action_car:fast_update()
 		        self:rot_to_firepoint(self.target_fire_pt)
 
 	            if self.car:CanHit() then
-	                printf("car <fire>: fighting enemy.")
 	                if self.state_shooting == state_none then
+	                    printf("car <fire>: shooting enemy (first).")
 		                self.state_shooting = state_shooting_on
 		                self:set_shooting(self.state_shooting)
-
-		                self:set_signal("fire_start")
+		                --self:set_signal("fire_start")
 		            end
+	                printf("car <fire>: shooting enemy.")
 		        else
-	                printf("car <fire>: searching enemy.")
-
-		            self.state_shooting = state_none
-		            self:set_shooting(self.state_shooting)
-
-		            self:set_signal("fire_end")
+		            if self.state_shooting ~= state_none then
+	                    printf("car <fire>: targeting enemy (first).")
+		                self.state_shooting = state_none
+		                self:set_shooting(self.state_shooting)
+		                --self:set_signal("fire_end")
+		            end
+	                printf("car <fire>: targeting enemy.")
 		        end
 		    else
+		        if self.state_shooting ~= state_none then
+	                printf("car <fire>: enemy isn't visible (first).")
+		            self.state_shooting = state_none
+		            self:set_shooting(self.state_shooting)
+		            --self:set_signal("fire_end")
+		        end
 	            printf("car <fire>: enemy isn't visible.")
-		        self.state_shooting = state_none
-		        --self:rot_to_firepoint(nil)
-		        self:set_shooting(self.state_shooting)
-		        self:set_signal("fire_end")
 		    end
 	    end
 	end
