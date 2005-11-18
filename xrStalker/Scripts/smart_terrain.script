@@ -355,7 +355,8 @@ function se_smart_terrain:calculate()
 	sim = alife()
 
 	for id, v in pairs(self.npcs) do
-		o = cast_alife_object_to_creature( sim:object( id ) )
+		--o = cast_alife_object_to_creature( sim:object( id ) )
+		o = sim:object( id )
 
 		if not o:alive() then
 			free_npc( self, id )
