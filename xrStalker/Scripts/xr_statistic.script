@@ -19,7 +19,7 @@ local killCountProps = {
 	zombie_weak = 10, zombie_normal = 20, zombie_strong = 30,
 	snork_weak = 10, snork_normal = 20, snork_strong = 30,
 	poltergeist_weak = 40,
-	gigant_weak = 50,
+	pseudo_gigant_weak = 50,
 	controller_weak = 50,
 	burer_weak = 45,
 	bloodsucker_weak = 10, bloodsucker_normal = 20, bloodsucker_strong = 30	
