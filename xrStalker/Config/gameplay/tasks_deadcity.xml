@@ -46,6 +46,7 @@
 			<text>cit_leader_hunt_0</text>
 			<icon x="150" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>cit_leader_reward</infoportion_complete>
+			<infoportion_fail>mil_lukash_dead</infoportion_fail>
 		</objective>
 		<objective>
 			<text>cit_leader_hunt_1</text>
