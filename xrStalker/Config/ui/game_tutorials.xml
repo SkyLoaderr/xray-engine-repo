@@ -17,7 +17,7 @@
 			</auto_static>
 		</global_wnd>
 	
-		<item> <!--Это	твой личный ПДА- полезная хреновина,
+		<_item> <!--Это	твой личный ПДА- полезная хреновина,
 					которая будет помогать тебе не сдохнуть в Зоне. Ну а если и сдохнешь, то хоть
 					другие знать будут как и где. Хе-хе. Шучу. Давай напомню кратко, как
 					пользоваться…-->
@@ -29,9 +29,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
 			<main_wnd/>
-		</item>
+		</_item>
 
-		<item><!--Твои Задания расположены в первом разделе ПДА.-->
+		<_item><!--Твои Задания расположены в первом разделе ПДА.-->
 			<length_sec>4</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -47,9 +47,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 		
-		<item><!--Для большинства заданий есть кнопки переключения на дополнительную информацию к заданию…-->
+		<_item><!--Для большинства заданий есть кнопки переключения на дополнительную информацию к заданию…-->
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -65,8 +65,8 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
-		<item><!--Запомни – каждое новое задание автоматически переключает целеуказание на мини-карте на себя-->
+		</_item>
+		<_item><!--Запомни – каждое новое задание автоматически переключает целеуказание на мини-карте на себя-->
 			<length_sec>8</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -75,11 +75,11 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
 			<main_wnd/>
-		</item>
-		<item><!--и... если оно тебя в данный момент не интересует – то переключайся на предыдущее вручную. 
+		</_item>
+		<_item><!--и... если оно тебя в данный момент не интересует – то переключайся на предыдущее вручную. 
 				Для  собственных заданий и пометок на карте существует отдельный раздел…Во-оот-->
 			<length_sec>13</length_sec>
-			<pause_state/>
+			<pause_state>on</pause_state>
 			<guard_key/>
 			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_4_1</sound>
 			<cursor_pos/>
@@ -99,9 +99,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
-		<item><!--Дальше: Второй раздел ПДА – это Карта.-->
+		<_item><!--Дальше: Второй раздел ПДА – это Карта.-->
 			<length_sec>4</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -116,9 +116,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
-		<item><!--…кнопки над картой позволят тебе увеличивать или уменьшать карту…кхе-->
+		<_item><!--…кнопки над картой позволят тебе увеличивать или уменьшать карту…кхе-->
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -138,9 +138,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
-		<item><!--…э-эээ… плюс отцентрировать карту по твоему месторасположению…что еще?-->
+		<_item><!--…э-эээ… плюс отцентрировать карту по твоему месторасположению…что еще?-->
 			<length_sec>8</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -155,9 +155,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
-		<item><!--…Еще сможешь добавлять или убирать собственные пометки на карте... -->
+		<_item><!--…Еще сможешь добавлять или убирать собственные пометки на карте... -->
 			<length_sec>5</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -177,9 +177,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
-		<item><!--вобщем разберешься…там не сложно…В ПДА есть раздел Контакты -->
+		<_item><!--вобщем разберешься…там не сложно…В ПДА есть раздел Контакты -->
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -188,9 +188,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
 			<main_wnd/>
-		</item>
+		</_item>
 
-		<item><!--В контактах список сталкеров, которые находятся в радиусе 50 метров. 
+		<_item><!--В контактах список сталкеров, которые находятся в радиусе 50 метров. 
 					Плюс их короткое описание, ранг, группировка и вероятное отношение к тебе. 
 					Запомни, пока ты - нейтрал, и только от тебя зависит, как к тебе будут относится потом. 
 					Если поможешь кому, то обрати внимание, как изменится его отношение к тебе...  -->
@@ -207,10 +207,15 @@
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
+				<auto_static start_time="4" length_sec="19" x="245" y="184" width="50" height="50" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w2</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
-		<item><!--…Будь осторожен, если рядом враги, на визоре они отмечаются красным, 
+		<_item><!--…Будь осторожен, если рядом враги, на визоре они отмечаются красным, 
 					друзья отмечены зеленым, нейтралы - желтым. А..ну и ПДА мертвых сталкеров подсвечиваются серым. 
 					В мародерстве помогает. гы-ыы…Что еще?...ах да есть Дневник…-->
 			<length_sec>20</length_sec>
@@ -227,9 +232,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 		
-		<item><!--.. ну тут и говорить нечего – там записывается вся информация, которая тебе нужна, 
+		<_item><!--.. ну тут и говорить нечего – там записывается вся информация, которая тебе нужна, 
 					плюс новости…даже то, что я тебе сейчас втолковываю, ты там найдешь…Потом…В разделе ПДА 
 					под названием Рейтинг…кх-хх-->
 			<length_sec>19</length_sec>
@@ -246,9 +251,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
-		<item><!--...увидишь лучшую двадцатку сталкеров, которых я знаю – я переодически обновляю эту 
+		<_item><!--...увидишь лучшую двадцатку сталкеров, которых я знаю – я переодически обновляю эту 
 					информацию для поддержания соревновательного духа..гы-ыыы..Глядишь и ты когда-нить вырвешся в лидеры..
 					Кто знает?..Твои собственные успехи заносятся в раздел Статистика…-->
 			<length_sec>21</length_sec>
@@ -265,9 +270,9 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 		
-		<item><!--ну там все просто..э-эээ...Далее....Энциклопедия..К-хе-->
+		<_item><!--ну там все просто..э-эээ...Далее....Энциклопедия..К-хе-->
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -282,16 +287,11 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</_item>
 
 		<item><!--В нее заносится информация о Зоне и советы по выживанию, которые ты найдешь или получишь 
-					от сталкеров.... В принципе все..
-					А-аа..еще….В твоей моделе ПДА, есть сканер радиочастот широкого спектра, со встроенным 
-					дешифратором. Радиус метров 400, так что сможешь даже сообщения вояк ловить. 
-					Моя рация тянет в радиусе 30 километров и я тебя всегда найду. 
-					Будешь получать от меня задания и последние новости. А на первых порах помогу советом. 
-					Все ясно или повторить для тех кто в танке? Гы-гы.-->
-			<length_sec>42</length_sec>
+					от сталкеров.... В принципе все.. -->
+			<length_sec>11</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
 			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_15</sound>
@@ -305,6 +305,20 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
+		</item>
+		<item><!--	А-аа..еще….В твоей моделе ПДА, есть сканер радиочастот широкого спектра, со встроенным 
+					дешифратором. Радиус метров 400, так что сможешь даже сообщения вояк ловить. 
+					Моя рация тянет в радиусе 30 километров и я тебя всегда найду. 
+					Будешь получать от меня задания и последние новости. А на первых порах помогу советом. 
+					Все ясно или повторить для тех кто в танке? Гы-гы.-->
+			<length_sec>30</length_sec>
+			<pause_state>off</pause_state>
+			<guard_key/>
+			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_15_1</sound>
+			<cursor_pos/>
+			<grab_input>0</grab_input>
+			<pda_section>pda_closed</pda_section>
+			<main_wnd/>
 		</item>
 
 	</part_1_pda>
