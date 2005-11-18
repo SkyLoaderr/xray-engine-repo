@@ -6,9 +6,9 @@
 class	CKinematics	;
 class	CDB::TRI	;
 
-#ifdef DEBUG
+
 struct SCalculateData;
-#endif
+
 class CIKLimb
 {
 public:
@@ -32,6 +32,7 @@ private:
 		void		GoalMatrix			(Matrix	&M,SCalculateData* cd)							;
 		void		Collide				(SCalculateData* cd)									;
 		void		CalculateBones		(SCalculateData* cd)									;
+
 static	void 		BonesCallback0		(CBoneInstance* B)										;
 static	void 		BonesCallback1		(CBoneInstance* B)										;
 static	void 		BonesCallback2		(CBoneInstance* B)										;

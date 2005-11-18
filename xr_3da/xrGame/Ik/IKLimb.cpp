@@ -102,6 +102,7 @@ void IV2XV(const IVektor &IV,Fvector	&XV)
 void CIKLimb::Calculate(CKinematics* K,const Fmatrix &obj)
 {
 	SCalculateData cd(this,K,obj);
+	m_prev_state_anim=true;
 	Collide(&cd);
 	if(cd.m_tri)
 	{
@@ -127,6 +128,7 @@ void CIKLimb::Calculate(CKinematics* K,const Fmatrix &obj)
 			{
 						cd.m_angles=x;
 						CalculateBones(&cd);
+						m_prev_state_anim=false;
 			}
 		}
 	}
