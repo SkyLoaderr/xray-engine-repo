@@ -28,11 +28,16 @@ function actor_binder:net_spawn(data)
 	
 	self.weather_manager:reset()
 	game_stats.initialize ()
+
+	actor_stats.add_to_ranking(self.object:id())
+
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_destroy()
-    game_stats.shutdown ()
+	actor_stats.remove_from_ranking(self.object:id())
+
+	game_stats.shutdown ()
 	db.del_actor(self.object)
 
     sr_light.clean_up ()
@@ -48,6 +53,7 @@ function actor_binder:net_destroy()
 		sr_psy_antenna.psy_antenna:destroy()
 		sr_psy_antenna.psy_antenna = false
 	end
+
 
 	object_binder.net_destroy(self)
 end

@@ -1,11 +1,15 @@
 function main()
---	local info = "esc_kill_gunslinger" 
---	db.actor:give_info_portion(info) 
+
+--  db.actor:set_character_rank(10)
+--	actor_stats.add_to_ranking(0)
+
+	local info = "esc_kill_gunslinger" 
+	db.actor:give_info_portion(info) 
 
 --	level.add_pp_effector("proba.ppe", 999, false)
 --	level.remove_pp_effector(999)
 
---	game.start_tutorial("part_1_pda")
+	game.start_tutorial("part_1_pda")
 --	game.start_tutorial("part_2_binocular")
 
 	db.actor:disable_info_portion("terrain_test")	

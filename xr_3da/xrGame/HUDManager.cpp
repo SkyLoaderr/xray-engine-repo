@@ -156,9 +156,6 @@ void CHUDManager::Load()
 //--------------------------------------------------------------------
 void CHUDManager::OnFrame()
 {
-//	if(	Font().m_curW != Device.dwWidth ||	Font().m_curH != Device.dwHeight )
-//		Font().InitializeFonts();
-
 	if (pUI) pUI->UIOnFrame();
 	m_pHUDCursor->CursorOnFrame();
 }

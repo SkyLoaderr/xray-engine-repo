@@ -103,9 +103,9 @@ public:
 	IC float		GetScaleX						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH):float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
 	IC float		GetScaleY						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT):float(Device.dwHeight)/float(UI_BASE_HEIGHT);   }
 
-	void			ClientToScreenScaled			(Fvector2& dest, float left, float top, u32 align);
-	float			ClientToScreenScaledX			(float left, u32 align);
-	float			ClientToScreenScaledY			(float top, u32 align);
+	void			ClientToScreenScaled			(Fvector2& dest, float left, float top);
+	float			ClientToScreenScaledX			(float left);
+	float			ClientToScreenScaledY			(float top);
 
 	Frect			ScreenRect						();
 	const C2DFrustum& ScreenFrustum					(){return (m_bPostprocess)?m_2DFrustum2:m_2DFrustum;}

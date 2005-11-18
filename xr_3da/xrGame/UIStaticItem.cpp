@@ -72,7 +72,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Fvector2		bp;
-	UI()->ClientToScreenScaled	(bp,float(iPos.x),float(iPos.y),uAlign);
+	UI()->ClientToScreenScaled	(bp,float(iPos.x),float(iPos.y));
 
 	// actual rendering
 	u32							vOffset;
@@ -114,7 +114,7 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Fvector2 bp;
-	UI()->ClientToScreenScaled	(bp, iPos.x, iPos.y, uAlign);
+	UI()->ClientToScreenScaled	(bp, iPos.x, iPos.y);
 	// actual rendering
 	u32		vOffset;
 	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(32,hGeom_fan.stride(),vOffset);

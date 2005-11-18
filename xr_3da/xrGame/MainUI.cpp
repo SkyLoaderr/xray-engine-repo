@@ -175,9 +175,6 @@ void CMainUI::Activate	(bool bActivate)
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
 			g_pGameLevel->Cameras.ResetPP();
-//			psDeviceFlags.set(rsDrawStatic,FALSE);
-//			psDeviceFlags.set(rsDrawDynamic,FALSE);
-
 		};
 		Device.seqRender.Add		(this);
 	}else{
@@ -199,8 +196,6 @@ void CMainUI::Activate	(bool bActivate)
 		CleanInternals				();
 		if(g_pGameLevel){
 			Device.seqFrame.Add		(g_pGameLevel);
-//			psDeviceFlags.set		(rsDrawStatic,TRUE);
-//			psDeviceFlags.set		(rsDrawDynamic,TRUE);
 			Device.seqRender.Add	(g_pGameLevel);
 		};
 		if(m_Flags.is(flRestoreConsole))
@@ -293,7 +288,6 @@ bool CMainUI::OnRenderPPUI_query()
 
 void CMainUI::OnRender	()
 {
-//		Render->Calculate			();
 		Render->Render				();
 }
 
@@ -309,8 +303,11 @@ void CMainUI::OnRenderPPUI_main	()
 
 	m_2DFrustum2.CreateFromRect	(Frect().set(	0.0f,
 												0.0f,
-												ClientToScreenScaledX(float(Device.dwWidth),0),
-												ClientToScreenScaledY(float(Device.dwHeight),0)));
+//												float(Device.dwWidth),
+//												float(Device.dwHeight)
+												ClientToScreenScaledX(UI_BASE_WIDTH),
+												ClientToScreenScaledY(UI_BASE_HEIGHT)
+												));
 
 	DoRenderDialogs();
 
@@ -335,8 +332,9 @@ void	CMainUI::OnFrame		(void)
 {
 	m_2DFrustum.CreateFromRect	(Frect().set(	0.0f,
 												0.0f,
-												ClientToScreenScaledX(float(Device.dwWidth),0),
-												ClientToScreenScaledY(float(Device.dwHeight),0)));
+												ClientToScreenScaledX(UI_BASE_WIDTH),
+												ClientToScreenScaledY(UI_BASE_HEIGHT)
+												));
 
 	if(!IsActive() && m_startDialog){
 		xr_delete					(m_startDialog);
@@ -357,9 +355,6 @@ void	CMainUI::OnFrame		(void)
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
-//			psDeviceFlags.set		(rsDrawStatic,FALSE);
-//			psDeviceFlags.set		(rsDrawDynamic,FALSE);
-
 		};
 
 		if(m_Flags.is(flRestoreConsole))
@@ -372,17 +367,17 @@ void CMainUI::OnDeviceCreate()
 {
 }
 
-void CMainUI::ClientToScreenScaled(Fvector2& dest, float left, float top, u32 align)
+void CMainUI::ClientToScreenScaled(Fvector2& dest, float left, float top)
 {
-	dest.set(ClientToScreenScaledX(left,align),	ClientToScreenScaledY(top,align));
+	dest.set(ClientToScreenScaledX(left),	ClientToScreenScaledY(top));
 }
 
-float CMainUI::ClientToScreenScaledX(float left, u32 align)
+float CMainUI::ClientToScreenScaledX(float left)
 {
 	return left * GetScaleX();
 }
 
-float CMainUI::ClientToScreenScaledY(float top, u32 align)
+float CMainUI::ClientToScreenScaledY(float top)
 {
 	return top * GetScaleY();
 }
@@ -416,7 +411,6 @@ void CMainUI::OutText(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, .
 Frect CMainUI::ScreenRect()
 {
 	static Frect R={0.0f, 0.0f, UI_BASE_WIDTH, UI_BASE_HEIGHT};
-	//return Frect().set(0.0f, 0.0f, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	return R;
 }
 
@@ -434,10 +428,10 @@ void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
 	VERIFY(result.x1>=0&&result.y1>=0&&result.x2<=UI_BASE_WIDTH&&result.y2<=UI_BASE_HEIGHT);
 	m_Scissors.push		(result);
 
-	result.lt.x 		= ClientToScreenScaledX(float(result.lt.x),0);
-	result.lt.y 		= ClientToScreenScaledY(float(result.lt.y),0);
-	result.rb.x 		= ClientToScreenScaledX(float(result.rb.x),0);
-	result.rb.y 		= ClientToScreenScaledY(float(result.rb.y),0);
+	result.lt.x 		= ClientToScreenScaledX(float(result.lt.x));
+	result.lt.y 		= ClientToScreenScaledY(float(result.lt.y));
+	result.rb.x 		= ClientToScreenScaledX(float(result.rb.x));
+	result.rb.y 		= ClientToScreenScaledY(float(result.rb.y));
 
 	Irect r;
 	r.x1 = iFloor(result.x1);
@@ -459,10 +453,10 @@ void CMainUI::PopScissor()
 	else{
 		const Frect& top= m_Scissors.top();
 		Irect tgt;
-		tgt.lt.x 		= iFloor(ClientToScreenScaledX(top.lt.x,0));
-		tgt.lt.y 		= iFloor(ClientToScreenScaledY(top.lt.y,0));
-		tgt.rb.x 		= iFloor(ClientToScreenScaledX(top.rb.x,0));
-		tgt.rb.y 		= iFloor(ClientToScreenScaledY(top.rb.y,0));
+		tgt.lt.x 		= iFloor(ClientToScreenScaledX(top.lt.x));
+		tgt.lt.y 		= iFloor(ClientToScreenScaledY(top.lt.y));
+		tgt.rb.x 		= iFloor(ClientToScreenScaledX(top.rb.x));
+		tgt.rb.y 		= iFloor(ClientToScreenScaledY(top.rb.y));
 
 		RCache.set_Scissor(&tgt);
 	}
@@ -478,9 +472,6 @@ void CMainUI::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR na
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Add		(g_pGameLevel);
 			Device.seqRender.Add	(g_pGameLevel);
-//			psDeviceFlags.set		(rsDrawStatic,TRUE);
-//			psDeviceFlags.set		(rsDrawDynamic,TRUE);
-
 		};
 		m_screenshotFrame			= Device.dwFrame+1;
 		m_Flags.set					(flRestoreConsole,		Console->bVisible);

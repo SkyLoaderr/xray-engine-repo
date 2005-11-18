@@ -1056,24 +1056,7 @@ bool CUIXmlInit::InitMultiText(CUIXml& xml_doc, LPCSTR path, int index, CUIStati
 float CUIXmlInit::ApplyAlignX(float coord, u32 align)
 {
 	return coord;
-/*
-	// Применить выравнивание, только при увеличенном разрешения
-	if (UI_BASE_WIDTH >= Device.dwWidth) return coord;
 
-	int retVal = coord;
-	
-	if (align & alRight)
-	{
-		retVal = UI_BASE_WIDTH - coord;
-		retVal = Device.dwWidth - retVal;
-	}
-	else if (align & alCenter)
-	{
-		retVal += (Device.dwWidth - UI_BASE_WIDTH) / 2;
-	}
-
-	return retVal;
-*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1081,24 +1064,7 @@ float CUIXmlInit::ApplyAlignX(float coord, u32 align)
 float CUIXmlInit::ApplyAlignY(float coord, u32 align)
 {
 	return coord;
-/*
-	// Применить выравнивание, только при увеличенном разрешения
-	if (UI_BASE_HEIGHT >= Device.dwHeight) return coord;
 
-	int retVal = coord;
-
-	if (align & alBottom)
-	{
-		retVal = UI_BASE_HEIGHT - coord;
-		retVal = Device.dwHeight - retVal;
-	}
-	else if (align & alCenter)
-	{
-		retVal += (Device.dwHeight - UI_BASE_HEIGHT) / 2;
-	}
-
-	return retVal;
-*/
 }
 
 //////////////////////////////////////////////////////////////////////////
