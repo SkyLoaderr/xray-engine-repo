@@ -956,7 +956,7 @@
 		<name>Витька</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Просто сталкер.</bio>
+		<bio>Приехал в Зону по вызову дяди, известного сталкера. Но с дядей не встретился. Сейчас сидит на кордоне и вытается узнать где дядя и что с ним произошло.</bio>
 
 		<class>esc_plemiannik</class>
 		<community>stranger</community>
