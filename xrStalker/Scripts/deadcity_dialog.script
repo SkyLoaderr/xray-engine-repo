@@ -1,3 +1,5 @@
+; Витек ищет дядю
+
 function have_vp_info(actor, npc)
   	return actor:object("cit_vp_pda") ~= nil
 end
@@ -8,7 +10,43 @@ end
 
 function give_vp_pda(actor, npc)
 	local vp_pda = actor:object("cit_vp_pda")
-	dialogs.relocate_item(second_speaker, vp_pda, "out")
-	dialogs.relocate_money(second_speaker, 1500, "in")
+	dialogs.relocate_item(npc, vp_pda, "out")
+	dialogs.relocate_money(npc, 1500, "in")
 end
 
+; Документы наемников.
+
+function have_killers_documents(actor, npc)
+  	return actor:object("cit_killers_documents") ~= nil
+end
+
+function give_killer_doc(actor, npc)
+	local killer_doc = actor:object("cit_killers_documents")
+	dialogs.relocate_item(npc, killer_doc, "out")
+	dialogs.relocate_money(npc, 2000, "in")
+end
+
+; Карта Deadcity
+
+function have_deadcity_map(actor, npc)
+  	return actor:object("cit_deadcity_maps") ~= nil
+end
+
+function give_killers_maps(actor, npc)
+	local maps = actor:object("cit_deadcity_maps")
+	dialogs.relocate_item(npc, maps, "out")
+	dialogs.relocate_money(npc, 2000, "in")
+end
+
+; Лидер наемников.
+
+function leader_die(actor, npc)
+  	return actor:object("cit_leader_killer_pda") ~= nil
+end
+
+
+function give_killers_maps(actor, npc)
+	local kill_pda = actor:object("cit_leader_killer_pda")
+	dialogs.relocate_item(npc, kill_pda, "out")
+	dialogs.relocate_money(npc, 3000, "in")
+end
