@@ -7,6 +7,8 @@
 float	hclip(float v, float dim)		{ return 2.f*v/dim - 1.f; }
 void	CRenderTarget::phase_combine	()
 {
+	bool	_menu_pp	= g_pGamePersistent?g_pGamePersistent->OnRenderPPUI_query():false;
+
 	u32			Offset					= 0;
 	Fvector2	p0,p1;
 
@@ -47,6 +49,7 @@ void	CRenderTarget::phase_combine	()
 	}
 
 	// Draw full-screen quad textured with our scene image
+	if (!_menu_pp)
 	{
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
@@ -75,8 +78,8 @@ void	CRenderTarget::phase_combine	()
 		RCache.Vertex.Unlock		(4,g_combine_VP->vb_stride);
 
 		// Setup textures
-		IDirect3DBaseTexture9*	e0	= envdesc.sky_r_textures_env[0].second->surface_get();
-		IDirect3DBaseTexture9*	e1	= envdesc.sky_r_textures_env[1].second->surface_get();
+		IDirect3DBaseTexture9*	e0	= _menu_pp?0:envdesc.sky_r_textures_env[0].second->surface_get();
+		IDirect3DBaseTexture9*	e1	= _menu_pp?0:envdesc.sky_r_textures_env[1].second->surface_get();
 		t_envmap_0->surface_set		(e0);	_RELEASE(e0);
 		t_envmap_1->surface_set		(e1);	_RELEASE(e1);
 	
@@ -108,6 +111,7 @@ void	CRenderTarget::phase_combine	()
 		RCache.set_ColorWriteEnable		();
 		g_pGamePersistent->Environment.RenderClouds	();
 		RImplementation.render_forward	();
+		if (g_pGamePersistent)	g_pGamePersistent->OnRenderPPUI_main()	;	// PP-UI
 	}
 
 	// Perform blooming filter and distortion if needed
@@ -117,7 +121,7 @@ void	CRenderTarget::phase_combine	()
 	// Distortion filter
 	BOOL	bDistort	= RImplementation.o.distortion_enabled;				// This can be modified
 	{
-		if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
+		if		((0==RImplementation.mapDistort.size()) && !_menu_pp)		bDistort= FALSE;
 		if (bDistort)		{
 			u_setrt						(rt_Generic_1,0,0,HW.pBaseZB);		// Now RT is a distortion mask
 			RCache.set_CullMode			(CULL_CCW);
@@ -125,11 +129,13 @@ void	CRenderTarget::phase_combine	()
 			RCache.set_ColorWriteEnable	();
 			CHK_DX(HW.pDevice->Clear	( 0L, NULL, D3DCLEAR_TARGET, color_rgba(127,127,0,127), 1.0f, 0L));
 			RImplementation.r_dsgraph_render_distort	();
+			if (g_pGamePersistent)	g_pGamePersistent->OnRenderPPUI_PP()	;	// PP-UI
 		}
 	}
 
 	// PP enabled ?
-	BOOL	PP_Complex		= u_need_PP	()	;
+	BOOL	PP_Complex		= u_need_PP	();
+	if (_menu_pp)			PP_Complex	= FALSE;
 
 	// Combine everything + perform AA
 	if		(PP_Complex)	u_setrt		( rt_Color,0,0,HW.pBaseZB );			// LDR RT

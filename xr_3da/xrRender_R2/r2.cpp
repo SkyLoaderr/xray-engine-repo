@@ -118,6 +118,8 @@ void					CRender::create					()
 	c_lmaterial					= "L_material";
 	c_sbase						= "s_base";
 
+	Target						= xr_new<CRenderTarget>		();	// Main target
+
 	Models						= xr_new<CModelPool>		();
 	PSLibrary.OnCreate			();
 	HWOCC.occq_create			(occq_size);
@@ -135,6 +137,7 @@ void					CRender::destroy				()
 	_RELEASE					(q_sync_point);
 	HWOCC.occq_destroy			();
 	xr_delete					(Models);
+	xr_delete					(Target);
 	PSLibrary.OnDestroy			();
 	Device.seqFrame.Remove		(this);
 }

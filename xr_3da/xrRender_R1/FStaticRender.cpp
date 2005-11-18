@@ -85,12 +85,11 @@ void					CRender::destroy				()
 	HWOCC.occq_destroy			();
 	PSLibrary.OnDestroy			();
 	
-	//*** Components
-	xr_delete					(Target);
-
-
 	xr_delete					(L_Dynamic);
 	xr_delete					(Models);
+	
+	//*** Components
+	xr_delete					(Target);
 	Device.seqFrame.Remove		(this);
 }
 
@@ -472,7 +471,7 @@ void	CRender::Render		()
 	phase										= PHASE_NORMAL	;
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
-	if(Details)Details->Render								();				// grass / details
+	if(Details)Details->Render					();				// grass / details
 	r_dsgraph_render_lods						(true,false);	// lods - FB
 	g_pGamePersistent->Environment.RenderSky	();				// sky / sun
 	g_pGamePersistent->Environment.RenderClouds	();				// clouds
@@ -485,18 +484,18 @@ void	CRender::Render		()
 	o.vis_intersect								= FALSE			;
 	phase										= PHASE_NORMAL	;
 	r_pmask										(true,true);	// enable priority "0" and "1"
-	if(L_Shadows)L_Shadows->render							();				// ... and shadows
+	if(L_Shadows)L_Shadows->render				();				// ... and shadows
 	r_dsgraph_render_lods						(false,true);	// lods - FB
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	PortalTraverser.fade_render					();				// faded-portals
 	r_dsgraph_render_sorted						();				// strict-sorted geoms
-	if(L_Glows)L_Glows->Render								();				// glows
+	if(L_Glows)L_Glows->Render					();				// glows
 	g_pGamePersistent->Environment.RenderFlares	();				// lens-flares
 	g_pGamePersistent->Environment.RenderLast	();				// rain/thunder-bolts
 
 	// Postprocess, if necessary
-	Target->End						();
-	if(L_Projector)L_Projector->finalize			();
+	Target->End									();
+	if (L_Projector) L_Projector->finalize		();
 
 	// HUD
 	Device.Statistic.RenderDUMP.End	();

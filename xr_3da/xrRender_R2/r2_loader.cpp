@@ -19,7 +19,6 @@ void CRender::level_Load(IReader* fs)
 
 	// Shaders
 	pApp->LoadTitle					("Loading shaders...");
-	Target							= xr_new<CRenderTarget>		();	// Main target
 	{
 		chunk = fs->open_chunk		(fsL_SHADERS);
 		R_ASSERT2					(chunk,"Level doesn't builded correctly.");
@@ -147,7 +146,6 @@ void CRender::level_Unload()
 
 	//*** Shaders
 	Shaders.clear_and_free		();
-	xr_delete					(Target);
 	b_loaded					= FALSE;
 }
 

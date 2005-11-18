@@ -118,18 +118,29 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 				break;	// exit loop on frustums
 			}
 		}
-		if (phase==PHASE_NORMAL)	g_pGameLevel->pHUD->Render_Last();		// HUD
+		if (g_pGameLevel && (phase==PHASE_NORMAL))	g_pGameLevel->pHUD->Render_Last();		// HUD
 	}
 	else
 	{
 		set_Object											(0);
-		if (phase==PHASE_NORMAL)	g_pGameLevel->pHUD->Render_Last();		// HUD
+		if (g_pGameLevel && (phase==PHASE_NORMAL))	g_pGameLevel->pHUD->Render_Last();		// HUD
 	}
+}
+
+void CRender::render_menu	()
+{
+	Target->phase_combine	()	;
 }
 
 void CRender::Render		()
 {
 	VERIFY					(0==mapDistort.size());
+
+	bool	_menu_pp		= g_pGamePersistent?g_pGamePersistent->OnRenderPPUI_query():false;
+	if (_menu_pp)			{
+		render_menu			()	;
+		return					;
+	};
 	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
 
 	// Configure
@@ -188,7 +199,7 @@ void CRender::Render		()
 		r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
 		r_dsgraph_render_lods					(true,true);
-		Details->Render							();
+		if(Details)	Details->Render				();
 		Target->phase_scene_end					();
 	}
 
@@ -236,8 +247,10 @@ void CRender::Render		()
 	LP_pending.sort							();
 
 	// Wall marks
-	Target->phase_wallmarks					();
-	Wallmarks->Render						();				// wallmarks has priority as normal geometry
+	if(Wallmarks)		{
+		Target->phase_wallmarks					();
+		Wallmarks->Render						();				// wallmarks has priority as normal geometry
+	}
 
 	// Update incremental shadowmap-visibility solver
 	{
