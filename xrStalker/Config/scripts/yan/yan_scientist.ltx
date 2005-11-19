@@ -51,7 +51,7 @@ on_signal = sound_end | walker@go_to_room
 [walker@go_to_room]
 path_walk = yan_general_scientist_room_walk
 path_look = yan_ucheniy_look_talk
-on_timer = 4000 | walker@go_to_actor
+on_timer = 15000 | walker@go_to_actor
 combat_ignore_cond = always
 
 [walker@go_to_actor]
@@ -59,7 +59,19 @@ path_walk = yan_ucheniy_walk_talk
 path_look = yan_ucheniy_look_talk
 meet_talk_enabled = true
 combat_ignore_cond = always
+on_info = {-yan_kill_brain_task_start +yantar_scientist_talk_good_quest} remark@scientist_talk_good_quest
 
+[remark@scientist_talk_good_quest]
+snd = yantar_professor_brain_quest_good_1
+anim = wait
+combat_ignore_cond = always
+on_info = {+yantar_scientist_talk_good_quest_1} remark@professor_talk_about_vasilyev
+
+[remark@professor_talk_about_vasilyev]
+snd = yantar_professor_brain_quest_good_3
+anim = wait
+combat_ignore_cond = always
+on_signal = sound_end | walker@yan_2
 
 [walker@yan_2]
 path_walk = yan_ucheniy_walk_talk
@@ -68,7 +80,20 @@ meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {-yan_actor_talk_ucheniy} walker@yan_1
 on_info2 = {-yantar_professor_talk_about_brain_end +yantar_professor_talk_about_brain} remark@professor_about_brain
+on_info3 = {+yantar_scientist_talk_semenov_die -yan_kill_brain_task_start} remark@talk_semenov_die
 meet = meet@yan_general_scientist
+
+[remark@talk_semenov_die]
+snd = yantar_professor_brain_quest_bad_1
+anim = wait
+combat_ignore_cond = always
+on_info = {+yantar_scientist_talk_semenov_die_1} remark@talk_semenov_die_1
+
+[remark@talk_semenov_die_1]
+snd = yantar_professor_brain_quest_bad_2
+anim = wait
+combat_ignore_cond = always
+on_info = {+yantar_scientist_talk_good_quest_1} remark@professor_talk_about_vasilyev
 
 [remark@professor_about_brain]
 snd = yantar_professor_radiation_quest_1
