@@ -26,14 +26,17 @@ public:
 
 	// methods
 	virtual CUIListWnd*	GetListWnd();
-	virtual bool		SetListLength(int length);
+	virtual void		SetListLength(int length);
 	virtual void		SetVertScroll(bool bVScroll = true);
-	virtual void		Init(float x, float y, float width);
-	virtual void		Init(float x, float y, float width, float height);
 	virtual void		AddItem(LPCSTR str, bool bSelected);
 	virtual void		AddItem(LPCSTR str);
+	virtual void		Init(float x, float y, float width);
+
+	virtual void		Init(float x, float y, float width, float height);	
 	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = 0);
 	virtual void		Draw();
+	virtual void		OnFocusLost();
+	virtual void		OnFocusReceive();
 protected:
 	virtual void		SetState(UIState state);	
 	virtual bool		OnMouse(float x, float y, EUIMessages mouse_action);
@@ -48,9 +51,9 @@ protected:
 	E_COMBO_STATE   m_eState;
 
 	CUI_IB_FrameLineWnd	m_frameLine;
-	CUIEditBox			m_editBox;
+	CUILabel			m_text;
 	CUI3tButton			m_btn;
-	CUI_IB_FrameWindow	m_frameWnd;
+	CUIFrameWindow		m_frameWnd;
 public:
 	CUIListWnd    m_list;
 
