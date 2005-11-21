@@ -719,7 +719,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				//если оружие чем-то занято, то ничего не делать
 				if(IsPending()) return false;
 
-				if (!OnClient())
+//				if (!OnClient())
 				{				
 					if(flags&CMD_START) {
 						FireStart();
