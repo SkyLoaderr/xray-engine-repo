@@ -126,8 +126,23 @@
     <string id="yantar_general_ucheniy_talk_start_61">
         <text>Да, да?! Что вас интересует?</text>
     </string>
-    <string id="yantar_help_scientist_1">
-        <text>go_1</text>
+    <string id="yantar_help_scientist_11">
+        <text>Да, Меченый?</text>
+    </string>
+    <string id="yantar_help_scientist_111">
+        <text>Профессор попросил меня провести тебя, к месту замеров.</text>
+    </string>
+    <string id="yantar_help_scientist_1111">
+        <text>Хорошо, отправляемся немедленно. Одному там делать нечего, а с тобой я думаю мы справимся, главное не подпускай к нам кадавров. Ты готов?</text>
+    </string>
+    <string id="yantar_help_scientist_11111">
+        <text>Я готов.</text>
+    </string>
+    <string id="yantar_help_scientist_111111">
+        <text>Снаружи слишком опасно, иди первым. Разведай территорию снаружи, кадавры опять расшевелились.</text>
+    </string>
+    <string id="yantar_help_scientist_1111111">
+        <text>Хорошо.</text>
     </string>
     <string id="yantar_help_scientist_2">
         <text>Ого, Меченый! Ты наконец-то добрался к нам. Поговори с профессором, он тебя отблагодарит за мое спасение.</text>
