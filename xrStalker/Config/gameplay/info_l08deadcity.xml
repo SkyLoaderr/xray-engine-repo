@@ -48,7 +48,7 @@
 	
 	<!-- Убить лидера наемников -->
 	<info_portion id="cit_leader_need_kill">
-		<task>cit_leader_kill</task>
+		<task>cit_leader_need_kill</task>
 		<article>cit_leader_killer</article>
 	</info_portion>
 	<info_portion id="cit_leader_killed"></info_portion>
