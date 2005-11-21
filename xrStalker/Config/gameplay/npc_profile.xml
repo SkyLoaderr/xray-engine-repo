@@ -401,7 +401,10 @@
 		<class>yan_ecolog_help</class>
 		<specific_character>yan_ecolog_help</specific_character>
 	</character>
-
+	<character id="yan_ecolog_vasilyev">
+		<class>yan_ecolog_vasilyev</class>
+		<specific_character>yan_ecolog_vasilyev</specific_character>
+	</character>
 	
 	<!-- Military -->
 	<character id="mil_Svoboda_specnaz">
