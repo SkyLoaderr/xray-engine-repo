@@ -29,8 +29,7 @@
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml"			
 		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 <!---------------------------SVOBODA ENGINEER----------------------->
@@ -209,8 +208,8 @@
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_items.xml"			
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
+
+#include "gameplay\character_dialogs.xml"				
 	</specific_character>
 	
 <!---------------------------SVOBODA LEADER---------------------->
@@ -332,8 +331,7 @@
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml"			
 		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"			
 	</specific_character>
 <!---------------------------SVOBODA COOK----------------------->
 	<specific_character id="mil_Svoboda_cook" team_default = "1">
@@ -464,8 +462,7 @@
 			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_items.xml"			
 		</supplies>		
-			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"			
 	</specific_character>
 <!---------------------------DOLG SPECNAZ SILENCE---------------------->
 	<specific_character id="mil_Dolg_specnaz_silence" team_default = "1">
@@ -490,8 +487,7 @@
 			wpn_abakan \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>		
-			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"			
 	</specific_character>	
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
 	<specific_character id="mil_Dolg_specnaz_cherep" team_default = "1">
@@ -550,8 +546,7 @@
 			wpn_abakan \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-		</supplies>
-					
+		</supplies>					
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 <!---------------------------KILLER SPECNAZ---------------------->
@@ -579,8 +574,7 @@
 			wpn_lr300 \n
 			ammo_5.56x45_ss190 = 1 \n
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"					
 	</specific_character>
 	
 	
@@ -611,9 +605,7 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-						
-		<start_dialog>hello_dialog</start_dialog>
-
+#include "gameplay\character_dialogs.xml"						
 	</specific_character>
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="mil_Stalker_veteran" team_default = "1">
@@ -640,9 +632,8 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
 
+#include "gameplay\character_dialogs.xml"			
 	</specific_character>
 	
 <!---------------------------SOME PROFILES----------------------->
