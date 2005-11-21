@@ -114,6 +114,9 @@
 				RelativePath=".\Config\game_maps_single.ltx">
 			</File>
 			<File
+				RelativePath=".\Config\game_spawn_story_ids.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\game_story_ids.ltx">
 			</File>
 			<File
