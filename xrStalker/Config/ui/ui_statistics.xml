@@ -10,7 +10,7 @@
     <texture id="ui_string_statTwo_back" x="813" y="325" width="32" height="15" />
     <texture id="ui_string_statTwo_e" x="813" y="325" width="32" height="15" />
     <texture id="ui_statOne_t" x="0" y="350" width="446" height="95" />
-    <texture id="ui_statOne_back" x="447" y="350" width="440" height="169" />
     <texture id="ui_statOne_b" x="0" y="445" width="447" height="58" />
     <texture id="ui_statOne_tabdiv" x="0" y="503" width="411" height="25" />
+    <texture id="ui_statOne_back" x="447" y="350" width="440" height="160" />
 </ui_texture>
