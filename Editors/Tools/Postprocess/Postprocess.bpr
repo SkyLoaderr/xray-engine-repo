@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="Postprocess.exe"/>
+    <OBJFILES value="Postprocess.obj main.obj interp.obj PostprocessAnimator.obj Envelope.obj 
+      float_param.obj color_constructor.obj color_param.obj 
+      float_constructor.obj Color.obj single_param.obj"/>
+    <RESFILES value="Postprocess.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) main.dfm float_param.dfm color_constructor.dfm color_param.dfm 
+      float_constructor.dfm Color.dfm single_param.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib rxctl6.lib"/>
+    <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
+      vcldbx.bpi ibxpress.bpi cds.bpi dsnap.bpi bdecds.bpi qrpt.bpi teeui.bpi 
+      teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
+      dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi rxctl6.bpi rxdb6.bpi rxbde6.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;ICF;__forceinline"/>
+    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <MAINSOURCE value="Postprocess.cpp"/>
+    <INCLUDEPATH value="..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr;Y:\postprocess"/>
+    <LIBPATH value="Y:\postprocess;..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-pck -w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I..\RX\Units -I.. -IPostprocess -I$(BCB)\include -I$(BCB)\include\vcl 
+      -IY:\postprocess\core_hdr -IY:\postprocess -src_suffix cpp -D_DEBUG 
+      -D_EDITOR -D_PP_EDITOR_ -DENGINE_API -DIC -DICF -D__forceinline -boa"/>
+    <CFLAG1 value="-Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -X- -r- -ps 
+      -a4 -6 -b- -k -y -v -vi- -c -tW -tWM"/>
+    <PFLAGS value="-$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn -v"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="Postprocess.res" FORMNAME="" UNITNAME="Postprocess.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Postprocess.cpp" FORMNAME="" UNITNAME="Postprocess" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="main.cpp" FORMNAME="MainForm" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="interp.cpp" FORMNAME="" UNITNAME="interp.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PostprocessAnimator.cpp" FORMNAME="" UNITNAME="PostprocessAnimator.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Envelope.cpp" FORMNAME="" UNITNAME="Envelope.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="float_param.cpp" FORMNAME="Form9" UNITNAME="float_param" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="color_constructor.cpp" FORMNAME="Form6" UNITNAME="color_constructor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="color_param.cpp" FORMNAME="Form7" UNITNAME="color_param" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="float_constructor.cpp" FORMNAME="Form8" UNITNAME="float_constructor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Color.cpp" FORMNAME="ColorForm" UNITNAME="Color" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="single_param.cpp" FORMNAME="SingleParam" UNITNAME="single_param" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1058
+CodePage=1251
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=4
+Item0=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr;Y:\postprocess
+Item1=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr
+Item2=Y:\postprocess\core_hdr;..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl
+Item3=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=2
+Item0=Y:\postprocess;..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=20
+Item0=_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;ICF;__forceinline
+Item1=_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;XRCORE_API;ICF;__forceinline
+Item2=_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;XRCORE_API;ICF
+Item3=_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;XRCORE_API;ICF;__BORLANDC__
+Item4=_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;XRCORE_API
+Item5=_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC
+Item6=_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API
+Item7=_DEBUG;_EDITOR;_PP_EDITOR_
+Item8=_DEBUG;_EDITOR
+Item9=_DEBUG;_EDITOR;_CPPUNWIND
+Item10=_DEBUG;_CPPUNWIND;_EDITOR
+Item11=_DEBUG
+Item12=_DEBUG;_CPPUNWIND
+Item13=_DEBUG,_CPPUNWIND
+Item14=_DEBUG,_EDITOR
+Item15=DEBUG,_EDITOR
+Item16=_DEBUG,_EDITOR,FORCE_NO_EXCEPTIONS
+Item17=_DEBUG,_EDITOR,_CPPUNWIND,FORCE_NO_EXCEPTIONS
+Item18=_DEBUG,_EDITOR,_CPPUNWIND
+Item19=_DEBUG,__BORLANDC__
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+  </IDEOPTIONS>
+</PROJECT>
