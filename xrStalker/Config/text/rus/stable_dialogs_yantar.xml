@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="yantar_general_ucheniy_talk_end_0">
-        <text>kjhfg</text>
+        <text>Я отключил излучение!</text>
     </string>
     <string id="yantar_general_ucheniy_talk_end_1">
-        <text>???????</text>
+        <text>Отличная работа, Меченый. В благодарность мы максимально снизим наши цены для тебя.</text>
     </string>
     <string id="yantar_general_ucheniy_talk_end_11">
-        <text>OOOOOOOK!</text>
+        <text>Спасибо.</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_11">
         <text>Да, да?! Что вас интересует?</text>
@@ -72,9 +72,6 @@
     <string id="yantar_general_ucheniy_talk_start_1211311">
         <text>Хорошо</text>
     </string>
-    <string id="yantar_general_ucheniy_talk_start_30">
-        <text>more quests???</text>
-    </string>
     <string id="yantar_general_ucheniy_talk_start_31">
         <text>Вы отлично справились. Если замеры верны, то прототип обеспечит вам максимальную защиту от излучения "мозга". Возьми прототип и будь с ним поаккуратнее.</text>
     </string>
@@ -126,11 +123,14 @@
     <string id="yantar_general_ucheniy_talk_start_511111111">
         <text>Вход в лабораторию скрыт в подвале одного из зданий, где именно знал только Васильев, но он погиб на болотах, вместе с координатами входа. Я тебе скинул все необходимые координаты.</text>
     </string>
+    <string id="yantar_general_ucheniy_talk_start_61">
+        <text>Да, да?! Что вас интересует?</text>
+    </string>
     <string id="yantar_help_scientist_1">
         <text>go_1</text>
     </string>
     <string id="yantar_help_scientist_2">
-        <text>сначала поговори с главным!</text>
+        <text>Ого, Меченый! Ты наконец-то добрался к нам. Поговори с профессором, он тебя отблагодарит за мое спасение.</text>
     </string>
     <string id="yantar_help_scientist_3">
         <text>go_2</text>
@@ -145,9 +145,9 @@
         <text>opa!</text>
     </string>
     <string id="yantar_wounded_scientist_0">
-        <text>AAAAAAAAA!!!!!</text>
+        <text>...ммм ...ммм [стонет от боли]</text>
     </string>
     <string id="yantar_wounded_scientist_1">
-        <text>Go!!!!!!!</text>
+        <text>Вставай, все уже закончилось.</text>
     </string>
 </string_table>
