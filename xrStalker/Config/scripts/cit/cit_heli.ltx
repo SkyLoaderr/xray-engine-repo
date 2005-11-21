@@ -23,12 +23,14 @@ engine_sound        = true
 combat_enemy        = nil
 combat_use_rocket   = false
 combat_use_mgun     = true
-;invulnerable       = true
+;invulnerable        = true
 ;immortal            = true
 ;on_info             = {+cit_button_broken} heli_move@leave
-on_signal           = arrived | heli_move@leave %+cit_button_broken%
+on_signal           = start | %+cit_heli_start%
+on_signal2          = arrived | heli_move@leave %+cit_button_broken%
 
 [heli_move@leave]
-path_move     = cit_assault_heli_leave_move
-combat_ignore = true
-immortal      = true
+path_move       = cit_assault_heli_leave_move
+immortal        = true
+on_signal       = arrived | %+cit_heli_end%
+combat_ignore   = true
