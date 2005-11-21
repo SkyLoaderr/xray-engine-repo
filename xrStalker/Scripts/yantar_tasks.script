@@ -1,0 +1,3 @@
+function actor_has_vasilyev_pda ()
+		return db.actor:object ("yantar_vasilyev_pda") ~= nil
+end
