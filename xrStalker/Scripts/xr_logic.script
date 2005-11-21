@@ -1351,8 +1351,8 @@ function initialize_obj(obj, st, loaded, actor, stype)
 			xr_logic.activate_by_section(obj, ini, st.loaded_active_section, true)
 		end
 
-		if st.active_scheme then
-			issue_event(obj, db.storage[obj:id()][st.active_scheme], "load")
-		end
+--		if st.active_scheme then
+--			issue_event(obj, db.storage[obj:id()][st.active_scheme], "load")
+--		end
 	end
 end
