@@ -32,14 +32,14 @@ private:
 	friend inherited;
 
 public:
-	CHARACTER_RANK			();
-	~CHARACTER_RANK			();
+	CHARACTER_RANK			():m_current_value(NO_RANK){};
+	~CHARACTER_RANK			(){};
 
 	void						set				(CHARACTER_RANK_VALUE);
 
 	shared_str					id				() const;
-	int							index			() const;
-	CHARACTER_RANK_VALUE		value			() const;
+	int							index			() const	{return m_current_index;};
+	CHARACTER_RANK_VALUE		value			() const	{return m_current_value;};
 
 	static int					ValueToIndex    (CHARACTER_RANK_VALUE);
 

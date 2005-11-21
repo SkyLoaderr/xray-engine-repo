@@ -154,36 +154,15 @@ LPCSTR CCharacterInfo::Bio() const
 	return 	m_SpecificCharacter.Bio();
 }
 
-const CHARACTER_RANK& CCharacterInfo::Rank() const
-{
-	return	m_CurrentRank;
-}
-
-const CHARACTER_COMMUNITY& CCharacterInfo::Community() const
-{
-	return	m_CurrentCommunity;
-}
-
-const CHARACTER_REPUTATION& CCharacterInfo::Reputation() const
-{
-	return m_CurrentReputation;
-}
-
 void CCharacterInfo::SetRank (CHARACTER_RANK_VALUE rank)
 {
 	m_CurrentRank.set(rank);
 }
+
 void CCharacterInfo::SetReputation (CHARACTER_REPUTATION_VALUE reputation)
 {
 	m_CurrentReputation.set(reputation);
 }
-
-void CCharacterInfo::SetCommunity	(const CHARACTER_COMMUNITY& community)
-{
-	m_CurrentCommunity = community;
-}
-
-
 
 
 int	 CCharacterInfo::TradeIconX() const

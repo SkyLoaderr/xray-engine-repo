@@ -38,18 +38,10 @@ void  CHARACTER_COMMUNITY::set	(CHARACTER_COMMUNITY_ID id)
 	m_current_index	 = IdToIndex(id);
 
 }
-void  CHARACTER_COMMUNITY::set	(CHARACTER_COMMUNITY_INDEX index)
-{
-	m_current_index = index;
-}
 
 CHARACTER_COMMUNITY_ID		 CHARACTER_COMMUNITY::id			() const
 {
 	return IndexToId(m_current_index);
-}
-CHARACTER_COMMUNITY_INDEX	 CHARACTER_COMMUNITY::index			() const
-{
-	return m_current_index;
 }
 
 u8							 CHARACTER_COMMUNITY::team			() const

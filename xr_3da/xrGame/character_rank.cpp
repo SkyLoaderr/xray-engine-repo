@@ -23,15 +23,6 @@ RANK_DATA::RANK_DATA (int idx, shared_str idn, LPCSTR threshold_str)
 CHARACTER_RANK::GOODWILL_TABLE		CHARACTER_RANK::m_relation_table;
 CHARACTER_RANK::RANK_KILL_TABLE		CHARACTER_RANK::m_rank_kill_table;
 
-//////////////////////////////////////////////////////////////////////////
-CHARACTER_RANK::CHARACTER_RANK	()
-{
-	m_current_value = NO_RANK;
-}
-CHARACTER_RANK::~CHARACTER_RANK	()
-{
-}
-
 
 int   CHARACTER_RANK::ValueToIndex    (CHARACTER_RANK_VALUE val)
 {
@@ -54,15 +45,6 @@ shared_str					CHARACTER_RANK::id			() const
 	return IndexToId(m_current_index);
 }
 
-int							CHARACTER_RANK::index			() const
-{
-	return m_current_index;
-}
-
-CHARACTER_RANK_VALUE		CHARACTER_RANK::value			() const
-{
-	return m_current_value;
-}
 
 
 void CHARACTER_RANK::InitIdToIndex	()

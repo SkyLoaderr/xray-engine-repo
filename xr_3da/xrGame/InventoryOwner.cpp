@@ -195,14 +195,7 @@ void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 //достать PDA из специального слота инвентаря
 CPda* CInventoryOwner::GetPDA() const
 {
-//	CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(this);
-	
-//	if(!pEntityAlive || !pEntityAlive->g_Alive()) return NULL; 
-
-	/*R_ASSERT2(inventory().m_slots[PDA_SLOT].m_pIItem, 
-			"PDA for character does not init yet");*/
-	
-	return static_cast<CPda*>(inventory().m_slots[PDA_SLOT].m_pIItem);
+	return (CPda*)(m_inventory->m_slots[PDA_SLOT].m_pIItem);
 }
 
 bool CInventoryOwner::IsActivePDA() const
@@ -434,7 +427,7 @@ void CInventoryOwner::ChangeReputation	(CHARACTER_REPUTATION_VALUE delta)
 }
 
 
-
+/*
 CHARACTER_COMMUNITY_INDEX  CInventoryOwner::Community	() const
 {
 	return CharacterInfo().Community().index();
@@ -449,11 +442,7 @@ CHARACTER_REPUTATION_VALUE	CInventoryOwner::Reputation	() const
 {
 	return CharacterInfo().Reputation().value();
 }
-
-const CSpecificCharacter&	CInventoryOwner::SpecificCharacter	() const
-{
-	return CharacterInfo().m_SpecificCharacter;
-}
+*/
 
 void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 {

@@ -45,16 +45,6 @@ void RELATION_DATA::save (IWriter& stream)
 
 //////////////////////////////////////////////////////////////////////////
 
-
-CHARACTER_GOODWILL SRelation::Goodwill() const
-{
-	return m_iGoodwill;
-}
-void SRelation::SetGoodwill(CHARACTER_GOODWILL new_goodwill)
-{
-	m_iGoodwill = new_goodwill;
-}
-
 RELATION_REGISTRY::RELATION_MAP_SPOTS::RELATION_MAP_SPOTS()
 {
 	spot_names[ALife::eRelationTypeFriend]		= "friend_location";
@@ -154,22 +144,6 @@ void RELATION_REGISTRY::SetGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL goodw
 	//командной добится нужно отношения
 	clamp(goodwill, -1000, 1000);
 	relation_data.personal[to].SetGoodwill(goodwill);
-
-////
-#if 0 
-tyta
-	if(g_pGameLevel){
-
-	ALife::ERelationType relation = ALife::eRelationTypeDummy;
-	relation =  GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
-
-
-	Level().MapManager().AddMapLocation(RELATION_REGISTRY().GetSpotName(relation), GO->ID() );
-
-		if(Level().MapManager()->HasMapLocation(,from);
-	}
-#endif
-////
 }
 
 

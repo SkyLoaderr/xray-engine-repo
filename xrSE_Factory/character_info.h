@@ -109,15 +109,15 @@ public:
 	LPCSTR						Bio()				const;
 
 
-	const CHARACTER_COMMUNITY&	Community()			const;
-	const CHARACTER_RANK&		Rank()				const;
-	const CHARACTER_REPUTATION&	Reputation()		const;
+	const CHARACTER_COMMUNITY&	Community()			const	{return m_CurrentCommunity;};
+	const CHARACTER_RANK&		Rank()				const	{ return m_CurrentRank;};
+	const CHARACTER_REPUTATION&	Reputation()		const	{ return m_CurrentReputation;};
 
 	//доступут только у InventoryOwner
 protected:
 	void	SetRank			(CHARACTER_RANK_VALUE			rank);
 	void	SetReputation	(CHARACTER_REPUTATION_VALUE		reputation);
-	void	SetCommunity	(const CHARACTER_COMMUNITY&		community);
+	void	SetCommunity	(const CHARACTER_COMMUNITY&		community)		{m_CurrentCommunity = community;};
 
 public:
 	int		TradeIconX	()	const;

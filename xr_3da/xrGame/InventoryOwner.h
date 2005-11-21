@@ -8,7 +8,7 @@
 #include "pda_space.h"
 #include "attachment_owner.h"
 #include "script_space_forward.h"
-#include "character_info_defs.h"
+#include "character_info.h"
 #include "inventory_space.h"
 
 class CSE_Abstract;
@@ -144,8 +144,8 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	//игровые характеристики персонажа
 public:
-	virtual CCharacterInfo&				CharacterInfo		() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}
-	virtual const CSpecificCharacter&	SpecificCharacter	() const;
+	CCharacterInfo&						CharacterInfo		() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}
+	IC const CSpecificCharacter&		SpecificCharacter	() const {return CharacterInfo().m_SpecificCharacter;};
 
 	//установка группировки на клиентском и серверном объкте
 	virtual void			SetCommunity	(CHARACTER_COMMUNITY_INDEX);
@@ -156,9 +156,9 @@ public:
 
 	//для работы с relation system
 	u16								object_id	() const;
-	CHARACTER_COMMUNITY_INDEX		Community	() const;
-	CHARACTER_RANK_VALUE			Rank		() const;
-	CHARACTER_REPUTATION_VALUE		Reputation	() const;
+	CHARACTER_COMMUNITY_INDEX		Community	() const {return CharacterInfo().Community().index();};
+	CHARACTER_RANK_VALUE			Rank		() const {return CharacterInfo().Rank().value();};
+	CHARACTER_REPUTATION_VALUE		Reputation	() const {return CharacterInfo().Reputation().value();};
 
 protected:
 	CCharacterInfo*			m_pCharacterInfo;

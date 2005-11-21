@@ -22,14 +22,6 @@ REPUTATION_DATA::REPUTATION_DATA (int idx, shared_str idn, LPCSTR threshold_str)
 CHARACTER_REPUTATION::GOODWILL_TABLE CHARACTER_REPUTATION::m_relation_table;
 
 //////////////////////////////////////////////////////////////////////////
-CHARACTER_REPUTATION::CHARACTER_REPUTATION	()
-{
-	m_current_value = NO_REPUTATION;
-}
-CHARACTER_REPUTATION::~CHARACTER_REPUTATION	()
-{
-}
-
 
 int   CHARACTER_REPUTATION::ValueToIndex    (CHARACTER_REPUTATION_VALUE val)
 {
