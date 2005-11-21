@@ -23,11 +23,12 @@ struct RANK_DATA
 
 class CHARACTER_RANK;
 
-class CHARACTER_RANK: 
-	public CIni_IdToIndex<1, RANK_DATA, shared_str, int, CHARACTER_RANK>
+typedef CIni_IdToIndex<1, RANK_DATA, shared_str, int, CHARACTER_RANK> CHARACTER_RANK_base;
+
+class CHARACTER_RANK: public CHARACTER_RANK_base
 {
 private:
-	typedef CIni_IdToIndex<1, RANK_DATA, shared_str, int, CHARACTER_RANK> inherited;
+	typedef CHARACTER_RANK_base inherited;
 	friend inherited;
 
 public:

@@ -537,10 +537,6 @@ bool CInventory::Activate(u32 slot, bool force)
 	return false;
 }
 
-PIItem CInventory::ActiveItem()const
-{
-	return m_iActiveSlot < m_slots.size() ? m_slots[m_iActiveSlot].m_pIItem : NULL;
-}
 
 PIItem CInventory::ItemFromSlot(u32 slot) const
 {

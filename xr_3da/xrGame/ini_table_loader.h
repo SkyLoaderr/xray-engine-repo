@@ -93,7 +93,7 @@ CSIni_Table::~CIni_Table	()
 TEMPLATE_SPECIALIZATION
 typename CSIni_Table::ITEM_TABLE& CSIni_Table::table	()
 {
-	T_INI_LOADER::InitIdToIndex ();
+//	T_INI_LOADER::InitIdToIndex ();
 
 	if(m_pTable)
 		return *m_pTable;

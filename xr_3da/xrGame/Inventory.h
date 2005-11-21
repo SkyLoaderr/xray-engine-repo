@@ -72,7 +72,8 @@ public:
 	// Активировать объект в указанном слоте	
 	bool Activate(u32 slot, bool force=false);
 	// Возвращает указатель на объект в активном слоте
-	PIItem ActiveItem() const;
+	PIItem ActiveItem				()const					{return m_iActiveSlot==NO_ACTIVE_SLOT ? NULL :m_slots[m_iActiveSlot].m_pIItem;}
+
 	// Возвращает указатель на объект в слоте указаным номером
 	PIItem ItemFromSlot(u32 slot) const;
 

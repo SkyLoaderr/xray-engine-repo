@@ -35,6 +35,19 @@ extern void dump_list_wnd							();
 extern void dump_list_lines							();
 extern void dump_list_sublines						();
 
+void init_game_globals()
+{
+	CInfoPortion::InitInternal						();
+	CEncyclopediaArticle::InitInternal				();
+	CPhraseDialog::InitInternal						();
+	CCharacterInfo::InitInternal					();
+	CSpecificCharacter::InitInternal				();
+	CHARACTER_COMMUNITY::InitInternal				();
+	CHARACTER_RANK::InitInternal					();
+	CHARACTER_REPUTATION::InitInternal				();
+	MONSTER_COMMUNITY::InitInternal					();
+}
+
 void clean_game_globals()
 {
 	// xml parser options
@@ -60,10 +73,6 @@ void clean_game_globals()
 
 	CPhraseDialog::DeleteSharedData					();
 	CPhraseDialog::DeleteIdToIndexData				();
-
-//	CGameTask::DeleteSharedData						();
-//	CGameTask::DeleteIdToIndexData					();
-
 
 	CCharacterInfo::DeleteSharedData				();
 	CCharacterInfo::DeleteIdToIndexData				();

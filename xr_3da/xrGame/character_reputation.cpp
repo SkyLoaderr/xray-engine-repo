@@ -33,12 +33,14 @@ CHARACTER_REPUTATION::~CHARACTER_REPUTATION	()
 
 int   CHARACTER_REPUTATION::ValueToIndex    (CHARACTER_REPUTATION_VALUE val)
 {
-	for(int i=0; i<(int)ItemDataVector().size(); i++)
+	T_VECTOR::iterator it = m_pItemDataVector->begin();
+	T_VECTOR::iterator it_e = m_pItemDataVector->end();
+	for(;it!=it_e;++it)
 	{
-		if(val < ItemDataVector()[i].threshold)
-			return i;
+		if(val < (*it).threshold)
+			return (int)std::distance(m_pItemDataVector->begin(), it);
 	}
-	return int(ItemDataVector().size()-1);
+	return inherited::GetMaxIndex();
 }
 
 void  CHARACTER_REPUTATION::set	(CHARACTER_REPUTATION_VALUE new_val)
@@ -51,16 +53,6 @@ shared_str					CHARACTER_REPUTATION::id			() const
 {
 	return IndexToId(m_current_index);
 }
-int							CHARACTER_REPUTATION::index			() const
-{
-	return m_current_index;
-}
-
-CHARACTER_REPUTATION_VALUE		CHARACTER_REPUTATION::value			() const
-{
-	return m_current_value;
-}
-
 
 void CHARACTER_REPUTATION::InitIdToIndex	()
 {

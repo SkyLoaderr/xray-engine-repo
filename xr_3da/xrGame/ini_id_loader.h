@@ -29,7 +29,6 @@ public:
 protected:
 	typedef xr_vector<ITEM_DATA>	T_VECTOR;
 	static	T_VECTOR*				m_pItemDataVector;
-	static	T_VECTOR&				ItemDataVector  ();
 	
 	template <u32 NUM>
 	static void						LoadItemData	(u32, LPCSTR)
@@ -74,27 +73,28 @@ protected:
 	static LPCSTR line_name;
 
 public:
-	CIni_IdToIndex							();
-	virtual	~CIni_IdToIndex					();
+											CIni_IdToIndex				();
+	virtual									~CIni_IdToIndex				();
 
-	static const ITEM_DATA*					GetById		(const T_ID& str_id, bool no_assert = false);
-	static const ITEM_DATA*					GetByIndex	(T_INDEX index, bool no_assert = false);
+	static	void							InitInternal				();
+	static const ITEM_DATA*					GetById						(const T_ID& str_id, bool no_assert = false);
+	static const ITEM_DATA*					GetByIndex					(T_INDEX index, bool no_assert = false);
 
-	static const T_INDEX		IdToIndex	(const T_ID& str_id, T_INDEX default_index = T_INDEX(-1), bool no_assert = false)
+	static const T_INDEX					IdToIndex					(const T_ID& str_id, T_INDEX default_index = T_INDEX(-1), bool no_assert = false)
 	{
 		const ITEM_DATA* item = GetById(str_id, no_assert);
 		return item?item->index:default_index;
 	}
-	static const T_ID			IndexToId	(T_INDEX index, T_ID default_id = NULL, bool no_assert = false)
+	static const T_ID						IndexToId					(T_INDEX index, T_ID default_id = NULL, bool no_assert = false)
 	{
 		const ITEM_DATA* item = GetByIndex(index, no_assert);
 		return item?item->id:default_id;
 	}
 
-	static const T_INDEX		GetMaxIndex	()					 {return ItemDataVector().size()-1;}
+	static const T_INDEX					GetMaxIndex					()					 {return m_pItemDataVector->size()-1;}
 
 	//удаление статичекого массива
-	static void					DeleteIdToIndexData		();
+	static void								DeleteIdToIndexData			();
 };
 
 
@@ -122,14 +122,14 @@ CSINI_IdToIndex::~CSINI_IdToIndex()
 TEMPLATE_SPECIALIZATION
 const typename ITEM_DATA* CSINI_IdToIndex::GetById (const T_ID& str_id, bool no_assert)
 {
-	for(T_VECTOR::iterator it = ItemDataVector().begin();
-		ItemDataVector().end() != it; it++)
+	for(T_VECTOR::iterator it = m_pItemDataVector->begin();
+		m_pItemDataVector->end() != it; it++)
 	{
 		if(!xr_strcmp((*it).id, str_id))
 			break;
 	}
 
-	if(ItemDataVector().end() == it)
+	if(m_pItemDataVector->end() == it)
 	{
 		R_ASSERT3(no_assert, "item not found, id", *str_id);
 		return NULL;
@@ -141,13 +141,13 @@ const typename ITEM_DATA* CSINI_IdToIndex::GetById (const T_ID& str_id, bool no_
 TEMPLATE_SPECIALIZATION
 const typename ITEM_DATA* CSINI_IdToIndex::GetByIndex(T_INDEX index, bool no_assert)
 {
-	if((size_t)index>=ItemDataVector().size())
+	if((size_t)index>=m_pItemDataVector->size())
 	{
 		if(!no_assert)
 			Debug.fatal("item by index not found in section %s, line %s", section_name, line_name);
 		return NULL;
 	}
-	return &ItemDataVector()[index];
+	return &(m_pItemDataVector->at(index));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -157,10 +157,10 @@ void CSINI_IdToIndex::DeleteIdToIndexData	()
 }
 
 TEMPLATE_SPECIALIZATION
-typename CSINI_IdToIndex::T_VECTOR&	CSINI_IdToIndex::ItemDataVector ()
+typename void	CSINI_IdToIndex::InitInternal ()
 {
+	VERIFY(!m_pItemDataVector);
 	T_INIT::InitIdToIndex();
-	if(!m_pItemDataVector)
 	{
 		m_pItemDataVector = xr_new<T_VECTOR>();
 
@@ -172,8 +172,6 @@ typename CSINI_IdToIndex::T_VECTOR&	CSINI_IdToIndex::ItemDataVector ()
 		LoadItemData<ITEM_REC_NUM>(count, cfgRecord);
 
 	}
-
-	return *m_pItemDataVector;
 }
 	
 

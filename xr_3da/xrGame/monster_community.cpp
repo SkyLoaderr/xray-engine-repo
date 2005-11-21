@@ -52,7 +52,7 @@ MONSTER_COMMUNITY_INDEX	 MONSTER_COMMUNITY::index			() const
 
 u8							 MONSTER_COMMUNITY::team			() const
 {
-	return ItemDataVector()[m_current_index].team;
+	return (*m_pItemDataVector)[m_current_index].team;
 }
 
 

@@ -54,7 +54,7 @@ CHARACTER_COMMUNITY_INDEX	 CHARACTER_COMMUNITY::index			() const
 
 u8							 CHARACTER_COMMUNITY::team			() const
 {
-	return ItemDataVector()[m_current_index].team;
+	return (*m_pItemDataVector)[m_current_index].team;
 }
 
 

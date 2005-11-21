@@ -15,9 +15,9 @@
 //////////////////////////////////////////////////////////////////////////
 RANK_DATA::RANK_DATA (int idx, shared_str idn, LPCSTR threshold_str)
 {
-	index = idx;
-	id = idn;
-	threshold = (CHARACTER_RANK_VALUE)atoi(threshold_str);
+	index		= idx;
+	id			= idn;
+	threshold	= (CHARACTER_RANK_VALUE)atoi(threshold_str);
 }
 //////////////////////////////////////////////////////////////////////////
 CHARACTER_RANK::GOODWILL_TABLE		CHARACTER_RANK::m_relation_table;
@@ -35,12 +35,12 @@ CHARACTER_RANK::~CHARACTER_RANK	()
 
 int   CHARACTER_RANK::ValueToIndex    (CHARACTER_RANK_VALUE val)
 {
-	for(int i=0; i<(int)ItemDataVector().size(); i++)
+	for(int i=0; i<(int)m_pItemDataVector->size(); i++)
 	{
-		if(val < ItemDataVector()[i].threshold)
+		if(val < (*m_pItemDataVector)[i].threshold)
 			return i;
 	}
-	return int(ItemDataVector().size()-1);
+	return GetMaxIndex();
 }
 
 void  CHARACTER_RANK::set	(CHARACTER_RANK_VALUE new_val)
@@ -53,6 +53,7 @@ shared_str					CHARACTER_RANK::id			() const
 {
 	return IndexToId(m_current_index);
 }
+
 int							CHARACTER_RANK::index			() const
 {
 	return m_current_index;

@@ -100,15 +100,19 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 	}
 }
 
+extern void clean_game_globals	();
+extern void init_game_globals	();
+
 void CGamePersistent::OnAppStart()
 {
 	// load game materials
 	GMLib.Load					();
+	init_game_globals			();
 	__super::OnAppStart			();
 	m_pMainUI					= xr_new<CMainUI>();
 }
 
-extern void clean_game_globals	();
+
 void CGamePersistent::OnAppEnd	()
 {
 	if(m_pMainUI->IsActive())

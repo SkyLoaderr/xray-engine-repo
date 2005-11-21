@@ -39,7 +39,6 @@ public:
 private:
 	typedef xr_vector<ITEM_DATA>	T_VECTOR;
 	static	T_VECTOR*		m_pItemDataVector;
-	static	T_VECTOR&		ItemDataVector ();
 
 protected:
 	//имена xml файлов (разделенных запятой) из которых 
@@ -50,6 +49,8 @@ protected:
 public:
 	CXML_IdToIndex							();
 	virtual	~CXML_IdToIndex					();
+
+	static	void				InitInternal ();
 	
 	static const ITEM_DATA*		GetById		(const T_ID& str_id, bool no_assert = false);
 	static const ITEM_DATA*		GetByIndex	(T_INDEX index, bool no_assert = false);
@@ -65,7 +66,7 @@ public:
 		return item?item->id:default_id;
 	}
 
-	static const T_INDEX		GetMaxIndex	()					 {return ItemDataVector().size()-1;}
+	static const T_INDEX		GetMaxIndex	()					 {return m_pItemDataVector->size()-1;}
 
 	//удаление статичекого массива
 	static void					DeleteIdToIndexData		();
@@ -98,27 +99,24 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 {
 	T_INIT::InitXmlIdToIndex();
 		
-	for(T_VECTOR::iterator it = ItemDataVector().begin();
-		ItemDataVector().end() != it; it++)
+	for(T_VECTOR::iterator it = m_pItemDataVector->begin();
+		m_pItemDataVector->end() != it; it++)
 	{
 		if( (*it).id == str_id)
-//		if(!xr_strcmp((*it).id, str_id))
 			break;
 	}
 
-	if(ItemDataVector().end() == it)
+#ifdef DEBUG
+	if(m_pItemDataVector->end() == it)
 	{
-//.#ifdef DEBUG
-//.		g_pStringContainer->verify();
-//.#endif
 		int i=0;
-		for(T_VECTOR::iterator it = ItemDataVector().begin();
-			ItemDataVector().end() != it; it++,i++)
+		for(T_VECTOR::iterator it = m_pItemDataVector->begin();	m_pItemDataVector->end() != it; it++,i++)
 			Msg("[%d]=[%s]",i,*(*it).id );
 
 		R_ASSERT3(no_assert, "item not found, id", *str_id);
 		return NULL;
 	}
+#endif
 		
 
 	return &(*it);
@@ -127,27 +125,25 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 TEMPLATE_SPECIALIZATION
 const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetByIndex(T_INDEX index, bool no_assert)
 {
-	T_INIT::InitXmlIdToIndex();
-
-	if((size_t)index>=ItemDataVector().size())
+	if((size_t)index>=m_pItemDataVector->size())
 	{
 		R_ASSERT3(no_assert, "item by index not found in files", file_str);
 		return NULL;
 	}
-	return &ItemDataVector()[index];
+	return &(*m_pItemDataVector)[index];
 }
 
 TEMPLATE_SPECIALIZATION
 void CSXML_IdToIndex::DeleteIdToIndexData	()
 {
-	T_INIT::InitXmlIdToIndex();
-	xr_delete(m_pItemDataVector);
+	VERIFY		(m_pItemDataVector);
+	xr_delete	(m_pItemDataVector);
 }
 TEMPLATE_SPECIALIZATION
-typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
+typename void	CSXML_IdToIndex::InitInternal ()
 {
+	VERIFY(!m_pItemDataVector);
 	T_INIT::InitXmlIdToIndex();
-	if(!m_pItemDataVector)
 	{
 		m_pItemDataVector = xr_new<T_VECTOR>();
 
@@ -200,17 +196,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 				index++; 
 			}
 		}
-/*
-		Msg("---------loading Item data Vector--------------" );
-		int i=0;
-		for(T_VECTOR::iterator it = m_pItemDataVector->begin();
-			m_pItemDataVector->end() != it; it++,i++)
-			Msg("[%d]=[%s]",i,*(*it).id );
-		Msg("-----------------------------------------------" );
-*/
 	}
-
-	return *m_pItemDataVector;
 }
 
 #undef TEMPLATE_SPECIALIZATION
