@@ -73,7 +73,7 @@ void CControllerAnimation::on_event(ControlCom::EEventType type, ControlCom::IEv
 				if (event_data->motion == m_torso[eTorsoPsyAttack])
 					m_controller->psy_fire();
 				else
-					check_hit(event_data->motion);	break;
+					check_hit(event_data->motion,event_data->time_perc);	break;
 			}
 		}
 	}

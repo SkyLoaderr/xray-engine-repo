@@ -24,6 +24,8 @@
 #include "../../../UIGameCustom.h"
 #include "../../../UI/UIStatic.h"
 #include "../../../ai_object_location.h"
+#include "../../../profiler.h"
+
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr user_data, const Fvector &Position, float power)
 {
@@ -92,6 +94,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 		u_EventSend	(l_P);
 		
 		if (smart_cast<CActor *>(pEntityNC)) {
+			START_PROFILE("BaseMonster/Animation/HitEntity");
 			SDrawStaticStruct* s = HUD().GetUI()->UIGame()->AddCustomStatic("monster_claws", false);
 			s->m_endTime = Device.fTimeGlobal+3.0f;// 3sec
 			
@@ -103,6 +106,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 			float d = -h1 + hd.getH();
 			s->wnd()->SetHeading	(d);
 			s->wnd()->SetHeadingPivot(Fvector2().set(256,512));
+			STOP_PROFILE;
 
 			//HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
 			SetAttackEffector									();

@@ -208,7 +208,7 @@ void CPsyDogPhantom::Think()
 	EnemyMan.transfer_enemy(m_parent);
 	
 	SVelocityParam &velocity_run = move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
-	if (control().path_builder().speed(movement_control()) < 2*velocity_run.velocity.linear/3) return;
+	if (control().movement().real_velocity() < 2*velocity_run.velocity.linear/3) return;
 	if (!EnemyMan.get_enemy()) return;
 	if (!control().direction().is_face_target(EnemyMan.get_enemy(), PI_DIV_6)) return;
 

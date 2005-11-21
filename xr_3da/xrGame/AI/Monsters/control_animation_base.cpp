@@ -93,7 +93,7 @@ void CControlAnimationBase::on_event(ControlCom::EEventType type, ControlCom::IE
 	case ControlCom::eventAnimationSignal:	
 		{
 			SAnimationSignalEventData *event_data = (SAnimationSignalEventData *)data;
-			if (event_data->event_id == CControlAnimation::eAnimationHit) check_hit(event_data->motion);	break;
+			if (event_data->event_id == CControlAnimation::eAnimationHit) check_hit(event_data->motion,event_data->time_perc);	break;
 		}
 	}
 }
@@ -201,19 +201,26 @@ void CControlAnimationBase::CheckReplacedAnim()
 SAAParam &CControlAnimationBase::AA_GetParams(LPCSTR anim_name)
 {
 	// искать текущую анимацию в AA_MAP
-	AA_MAP_IT it = aa_map.find(smart_cast<CSkeletonAnimated*>(m_object->Visual())->LL_MotionID(anim_name));
-	VERIFY(it != aa_map.end());
-
-	return it->second;
+	MotionID motion = smart_cast<CSkeletonAnimated*>(m_object->Visual())->LL_MotionID(anim_name);
+	for (AA_MAP_IT it = aa_map.begin(); it != aa_map.end(); it++) {
+		if (it->first.motion == motion) return it->second;
+	}
+	
+	VERIFY3(FALSE, "Error! No animation in AA_MAP! Animation = ", anim_name);
+	return aa_map.begin()->second;
 }
 
-SAAParam &CControlAnimationBase::AA_GetParams(MotionID motion)
+SAAParam &CControlAnimationBase::AA_GetParams(MotionID motion, float time_perc)
 {
 	// искать текущую анимацию в AA_MAP
-	AA_MAP_IT it = aa_map.find(motion);
-	VERIFY(it != aa_map.end());
+	SAAParamHolder holder;
+	holder.motion		= motion;
+	holder.time_perc	= time_perc;
 
-	return it->second;
+	AA_MAP_IT	it = aa_map.find(holder);
+	VERIFY		(it != aa_map.end());
+
+	return		it->second;
 }
 
 
@@ -452,12 +459,12 @@ void CControlAnimationBase::set_animation_speed()
 	ctrl_data->speed			= m_cur_anim.speed.target;
 }
 
-void CControlAnimationBase::check_hit(MotionID motion)
+void CControlAnimationBase::check_hit(MotionID motion, float time_perc)
 {
 	if (!m_object->EnemyMan.get_enemy()) return;
 	const CEntityAlive *enemy = m_object->EnemyMan.get_enemy();
 
-	SAAParam &params		= AA_GetParams(motion);
+	SAAParam &params		= AA_GetParams(motion,time_perc);
 	
 	m_object->sound().play	(MonsterSpace::eMonsterSoundAttackHit);
 
@@ -487,6 +494,32 @@ void CControlAnimationBase::check_hit(MotionID motion)
 	if (should_hit) m_object->HitEntity(enemy, params.hit_power, params.impulse, params.impulse_dir);
 }
 
+void parse_anim_params(LPCSTR val, SAAParam &anim) 
+{
+	string16			cur_elem;
+
+	_GetItem	(val,0,cur_elem);		anim.time			= float(atof(cur_elem));
+	_GetItem	(val,1,cur_elem);		anim.hit_power		= float(atof(cur_elem));
+	_GetItem	(val,2,cur_elem);		anim.impulse		= float(atof(cur_elem));
+	_GetItem	(val,3,cur_elem);		anim.impulse_dir.x	= float(atof(cur_elem));
+	_GetItem	(val,4,cur_elem);		anim.impulse_dir.y	= float(atof(cur_elem));
+	_GetItem	(val,5,cur_elem);		anim.impulse_dir.z	= float(atof(cur_elem));
+	_GetItem	(val,6,cur_elem);		anim.foh.from_yaw	= float(atof(cur_elem));
+	_GetItem	(val,7,cur_elem);		anim.foh.to_yaw		= float(atof(cur_elem));
+	_GetItem	(val,8,cur_elem);		anim.foh.from_pitch	= float(atof(cur_elem));
+	_GetItem	(val,9,cur_elem);		anim.foh.to_pitch	= float(atof(cur_elem));
+	_GetItem	(val,10,cur_elem);		anim.dist			= float(atof(cur_elem));
+
+	anim.impulse_dir.normalize();
+
+	float clamp_val = PI_DIV_2 - EPS_L;
+	clamp(anim.foh.from_yaw,	-clamp_val, clamp_val);
+	clamp(anim.foh.to_yaw,		-clamp_val, clamp_val);
+	clamp(anim.foh.from_pitch,	-clamp_val, clamp_val);
+	clamp(anim.foh.to_pitch,	-clamp_val, clamp_val);
+
+}
+
 void CControlAnimationBase::AA_reload(LPCSTR section)
 {
 	if (!pSettings->section_exist(section)) return;
@@ -495,35 +528,34 @@ void CControlAnimationBase::AA_reload(LPCSTR section)
 	
 	SAAParam			anim;
 	LPCSTR				anim_name,val;
-	string16			cur_elem;
 
 	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
 
 	for (u32 i=0; pSettings->r_line(section,i,&anim_name,&val); ++i) {
-		_GetItem	(val,0,cur_elem);		anim.time			= float(atof(cur_elem));
-		_GetItem	(val,1,cur_elem);		anim.hit_power		= float(atof(cur_elem));
-		_GetItem	(val,2,cur_elem);		anim.impulse		= float(atof(cur_elem));
-		_GetItem	(val,3,cur_elem);		anim.impulse_dir.x	= float(atof(cur_elem));
-		_GetItem	(val,4,cur_elem);		anim.impulse_dir.y	= float(atof(cur_elem));
-		_GetItem	(val,5,cur_elem);		anim.impulse_dir.z	= float(atof(cur_elem));
-		_GetItem	(val,6,cur_elem);		anim.foh.from_yaw	= float(atof(cur_elem));
-		_GetItem	(val,7,cur_elem);		anim.foh.to_yaw		= float(atof(cur_elem));
-		_GetItem	(val,8,cur_elem);		anim.foh.from_pitch	= float(atof(cur_elem));
-		_GetItem	(val,9,cur_elem);		anim.foh.to_pitch	= float(atof(cur_elem));
-		_GetItem	(val,10,cur_elem);		anim.dist			= float(atof(cur_elem));
+		
+		SAAParamHolder				holder;
 
-		anim.impulse_dir.normalize();
+		holder.motion				= skel_animated->LL_MotionID(anim_name);
+		if (!holder.motion.valid())	continue;
 
-		float clamp_val = PI_DIV_2 - EPS_L;
-		clamp(anim.foh.from_yaw,	-clamp_val, clamp_val);
-		clamp(anim.foh.to_yaw,		-clamp_val, clamp_val);
-		clamp(anim.foh.from_pitch,	-clamp_val, clamp_val);
-		clamp(anim.foh.to_pitch,	-clamp_val, clamp_val);
+		// check if it is compound (if there is one item, mean it as a section)
+		if (_GetItemCount(val) == 1) {
+			LPCSTR compound_section = val;
+			LPCSTR unused_line_name;
 
-		MotionID motion = skel_animated->LL_MotionID(anim_name);
-		if (motion.valid()) {
-			aa_map.insert(mk_pair(motion, anim));
-			m_man->animation().add_anim_event(motion, anim.time, CControlAnimation::eAnimationHit);
+			for (u32 k=0; pSettings->r_line(compound_section,k,&unused_line_name,&val); ++k) {
+				parse_anim_params	(val, anim);
+				
+				holder.time_perc	= anim.time;
+				aa_map.insert(mk_pair(holder, anim));
+				m_man->animation().add_anim_event(holder.motion, anim.time, CControlAnimation::eAnimationHit);
+			}
+		} else {
+			parse_anim_params(val, anim);
+			
+			holder.time_perc	= anim.time;
+			aa_map.insert(mk_pair(holder, anim));
+			m_man->animation().add_anim_event(holder.motion, anim.time, CControlAnimation::eAnimationHit);
 		}
 	}
 }

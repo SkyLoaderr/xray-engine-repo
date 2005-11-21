@@ -10,6 +10,7 @@ protected:
 	typedef CState<_Object>*	state_ptr;
 
 	u32		m_time_next_run_away;
+	u32		m_time_start_check_behinder;
 
 public:
 						CStateMonsterAttack		(_Object *obj);
@@ -27,6 +28,7 @@ private:
 			bool		check_run_attack_state	();
 			bool		check_camp_state		();
 			bool		check_home_point		();
+			bool		check_behinder			();
 };
 
 #include "monster_state_attack_inline.h"

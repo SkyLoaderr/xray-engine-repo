@@ -140,7 +140,7 @@ void CControlAnimationBase::SelectVelocities()
 		EMotionAnim new_anim;
 		float		a_speed;
 
-		if (accel_chain_get(m_man->path_builder().speed(m_object->m_PhysicMovementControl), cur_anim_info().motion, new_anim, a_speed)) {
+		if (accel_chain_get(m_man->movement().real_velocity(), cur_anim_info().motion, new_anim, a_speed)) {
 			cur_anim_info().motion			= new_anim;
 			cur_anim_info().speed.target	= a_speed;
 		} else 

@@ -33,7 +33,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 
 	m_alien_control.init_external							(this);
 
-	//com_man().add_ability(ControlCom::eControlRunAttack);
+	com_man().add_ability(ControlCom::eControlRunAttack);
 	com_man().add_ability(ControlCom::eControlRotationJump);
 
 }
@@ -50,6 +50,9 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
+	anim().AddReplacedAnim(&m_bRunTurnLeft,		eAnimRun,		eAnimRunTurnLeft);
+	anim().AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
+
 
 	anim().accel_load			(section);
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
@@ -151,7 +154,7 @@ void CAI_Bloodsucker::reinit()
 	m_last_invisible_run_play	= 0;
 
 	//com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI - 0.01f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
-	com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
+	com_man().add_rotation_jump_data("run_turn_l_0","run_turn_l_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -378,7 +381,7 @@ void CAI_Bloodsucker::play_hidden_run_particles()
 {
 	Fvector pos;
 	pos.set	(Position());
-	pos.y	+= 0.05f;
+	pos.y	+= 0.01f;
 
 	PlayParticles(invisible_run_particles_name, pos, Direction());
 }

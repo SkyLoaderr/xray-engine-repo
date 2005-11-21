@@ -2,6 +2,7 @@
 #include "control_animation.h"
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
+#include "../../profiler.h"
 
 //#ifdef _DEBUG
 //#include "control_animation_base.h"
@@ -32,15 +33,23 @@ void CControlAnimation::reset_data()
 void CControlAnimation::update_frame() 
 {
 	// move to schedule update
+	START_PROFILE("BaseMonster/Animation/Update Tracks");
 	m_skeleton_animated->UpdateTracks	();	
+	STOP_PROFILE;
 	
+	START_PROFILE("BaseMonster/Animation/Check callbacks");
 	check_callbacks						();
+	STOP_PROFILE;
 	
+	START_PROFILE("BaseMonster/Animation/Play");
 	play								();	
+	STOP_PROFILE;
 
+	START_PROFILE("BaseMonster/Animation/Check Events");
 	check_events						(m_data.global);
 	check_events						(m_data.torso);
 	check_events						(m_data.legs);
+	STOP_PROFILE;
 }
 
 static void  global_animation_end_callback(CBlend* B)

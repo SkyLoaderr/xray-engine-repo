@@ -20,7 +20,6 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 
 	virtual bool	ability_can_drag		() {return true;}
-	virtual bool	check_start_conditions	(ControlCom::EControlType);
 	
 
 private:

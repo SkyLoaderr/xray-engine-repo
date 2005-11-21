@@ -4,6 +4,11 @@
 #include "../../detail_path_manager.h"
 #include "monster_velocity_space.h"
 
+#ifdef DEBUG
+#include "../../level.h"
+#include "../../level_debug.h"
+#endif
+
 void CControlAnimationBase::accel_init()
 {
 	m_accel.active = false;
@@ -84,6 +89,11 @@ bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_
 		// calc anim_speed
 		new_anim	= *best_anim;
 		a_speed		= GetAnimSpeed(new_anim) * cur_speed / best_param->velocity.linear;
+		
+		string128 st;
+		sprintf						(st,"Ph Speed = [%f] Animation Speed = [%f] New Ph Speed = [%f]", cur_speed,a_speed,m_man->movement().real_velocity());
+		DBG().text(this).clear		();
+		DBG().text(this).add_item	(st, 500, 200, COLOR_GREEN);
 		return true;
 	}
 	return false;

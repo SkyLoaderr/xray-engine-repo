@@ -58,6 +58,7 @@ void CStateMonsterAttackAbstract::initialize()
 	object->MeleeChecker.init_attack	();
 	
 	m_time_next_run_away				= 0;
+	m_time_start_check_behinder			= 0;
 }
 
 #define FIND_ENEMY_DELAY	6000
@@ -92,14 +93,30 @@ void CStateMonsterAttackAbstract::execute()
 	if (!selected) {
 		// определить тип атаки
 		bool b_melee = false; 
-		if ((prev_substate == eStateAttack_Melee) && !object->MeleeChecker.should_stop_melee(object->EnemyMan.get_enemy())) b_melee = true;
-		else if (object->MeleeChecker.can_start_melee(object->EnemyMan.get_enemy())) b_melee = true;
+
+		if (prev_substate == eStateAttack_Melee) {
+			if (!get_state_current()->check_completion()) {
+				b_melee = true;
+			}
+		} else if (get_state(eStateAttack_Melee)->check_start_conditions()) {
+			b_melee = true;
+		}
 
 		// установить целевое состояние
-		if (b_melee)	select_state(eStateAttack_Melee);
-		else			select_state(eStateAttack_Run);
+		if (b_melee) {  
+			// check if enemy is behind me for a long time
+			// [TODO] make specific state and replace run_away state (to avoid ratation jumps)
+			//if (check_behinder()) 
+			//	select_state(eStateAttack_RunAway);
+			//else 
+				select_state(eStateAttack_Melee);
+		}
+		else select_state(eStateAttack_Run);
 	}
 
+	// clear behinder var if not melee state selected
+	if (current_substate != eStateAttack_Melee) m_time_start_check_behinder = 0;
+	
 	get_state_current()->execute();
 	
 	prev_substate = current_substate;
@@ -211,6 +228,29 @@ void CStateMonsterAttackAbstract::setup_substates()
 		return;
 	}
 }
+
+#define TIME_CHECK_BEHINDER 2500
+
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterAttackAbstract::check_behinder()
+{
+	// check if object is not behind
+	if (object->control().direction().is_face_target(object->EnemyMan.get_enemy(), 2 * PI_DIV_3)) {
+		m_time_start_check_behinder = 0;
+		return false;
+	}
+	
+	// check if we just start to count
+	if (m_time_start_check_behinder == 0) {
+		m_time_start_check_behinder = time();
+		return false;
+	}
+	
+	// check if time is not out
+	if (m_time_start_check_behinder + TIME_CHECK_BEHINDER > time())	return false;
+	return true;
+}
+
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterAttackAbstract

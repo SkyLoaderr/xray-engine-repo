@@ -162,7 +162,6 @@ public:
 	//----------------------------------------------------------------------------------
 
 	virtual void			SetTurnAnimation				(bool turn_left);
-	virtual void			AA_CheckHit						();
 	
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
@@ -341,7 +340,7 @@ public:
 	
 	CControlManagerCustom	&com_man() {return m_com_manager;}
 
-	virtual bool			check_start_conditions	(ControlCom::EControlType){return true;}
+	virtual bool			check_start_conditions	(ControlCom::EControlType);
 	virtual void			on_activate_control		(ControlCom::EControlType){}
 
 protected:

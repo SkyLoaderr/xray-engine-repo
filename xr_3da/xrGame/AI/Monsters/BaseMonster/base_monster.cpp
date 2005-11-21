@@ -102,10 +102,6 @@ void CBaseMonster::UpdateCL()
 	inherited::UpdateCL();
 	
 	if (g_Alive()) {
-		
-		// Проверка состояния анимации (атака)
-		AA_CheckHit							();
-
 		CStepManager::update				();
 	}
 
@@ -415,7 +411,6 @@ void CBaseMonster::PlayParticles(const shared_str& name, const Fvector &position
 	Fvector::generate_orthonormal_basis_normalized(matrix.k,matrix.j,matrix.i);
 	matrix.translate_over	(position);
 	
-	//ps->UpdateParent		(matrix, zero_vel); 
 	ps->SetXFORM			(matrix); 
 	ps->Play				();
 }
@@ -451,4 +446,13 @@ void CBaseMonster::load_effector(LPCSTR section, LPCSTR line, SAttackEffector &e
 	effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
 	effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
 	effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
+}
+
+bool CBaseMonster::check_start_conditions(ControlCom::EControlType type)
+{
+	if (type == ControlCom::eControlRotationJump) {
+		EMonsterState state = StateMan->get_state_type();
+		if (!is_state(state, eStateAttack)) return false;
+	}
+	return true;
 }

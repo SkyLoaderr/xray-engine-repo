@@ -328,7 +328,19 @@ struct SAAParam {
 	float		dist;
 };
 
-DEFINE_MAP(MotionID,	SAAParam, AA_MAP, AA_MAP_IT);
+struct SAAParamHolder {
+	MotionID	motion;
+	float		time_perc;
+	bool operator == (const SAAParamHolder &holder) {
+		return ((motion == holder.motion) && (fsimilar(time_perc, holder.time_perc)));
+	}
+	bool operator < (const SAAParamHolder &holder) const {
+		return (time_perc < holder.time_perc);
+	}
+
+};
+
+DEFINE_MAP(SAAParamHolder, SAAParam, AA_MAP, AA_MAP_IT);
 
 struct SCurrentAnimationInfo {
 	shared_str		name;

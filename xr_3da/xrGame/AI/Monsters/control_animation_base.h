@@ -48,12 +48,11 @@ protected:
 
 		// ---------------------------------------------------------------------------------------
 
-		EMotionAnim					spec_anim; 
+		EMotionAnim				spec_anim; 
 
 		ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 		MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
 		TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
-		ATTACK_ANIM				aa_all;				// список атак
 
 		t_fx_index				default_fx_indexes;
 		FX_MAP_STRING			fx_map_string;
@@ -115,7 +114,7 @@ public:
 	// работа с анимациями атак
 	void		AA_reload				(LPCSTR section);
 	SAAParam	&AA_GetParams			(LPCSTR anim_name);
-	SAAParam	&AA_GetParams			(MotionID motion);
+	SAAParam	&AA_GetParams			(MotionID motion, float time_perc);
 
 	// FX's
 	void		FX_Play					(EHitSide side, float amount);
@@ -206,6 +205,6 @@ public:
 	void					select_animation	();
 	void					set_animation_speed	();
 
-	void					check_hit			(MotionID motion);
+	void					check_hit			(MotionID motion, float time_perc);
 };
 

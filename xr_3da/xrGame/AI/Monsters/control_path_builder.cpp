@@ -54,7 +54,7 @@ void CControlPathBuilder::reinit()
 
 void CControlPathBuilder::update_schedule() 
 {
-	START_PROFILE("Base Monster/Path Builder/Update Path Internal");
+	START_PROFILE("Base Monster/Path Builder/Schedule Update");
 	
 	// the one and only reason is because of the restriction-change, so wait until
 	// position and node will be in valid state

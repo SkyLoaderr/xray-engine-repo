@@ -218,9 +218,15 @@ LPCSTR CScriptGameObject::WhoHitSectionName()
 bool CScriptGameObject::CheckObjectVisibility(const CScriptGameObject *tpLuaGameObject)
 {
 	CScriptEntity		*l_tpCustomMonster = smart_cast<CScriptEntity*>(&object());
-	if (l_tpCustomMonster)
+	if (l_tpCustomMonster) {
+		CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(&object());
+		if (entity_alive && !entity_alive->g_Alive()) {
+			ai().script_engine().script_log	 (ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot check visibility of dead object!");
+			return false;
+		}
+		
 		return			(l_tpCustomMonster->CheckObjectVisibility(&tpLuaGameObject->object()));
-	else {
+	} else {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member CheckObjectVisibility!");
 		return			(false);
 	}

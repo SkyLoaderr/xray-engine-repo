@@ -28,22 +28,13 @@ void CStateMonsterAttackMeleeAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackMeleeAbstract::check_start_conditions()
 {
-	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
-	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
-	
-	if (dist < m_fDistMax)	return true;
-	return false;
+	return (object->MeleeChecker.can_start_melee(object->EnemyMan.get_enemy()));
 }
 
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackMeleeAbstract::check_completion()
 {
-	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
-	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
-
-
-	if (dist > m_fDistMax)	return true;
-	return false;
+	return (object->MeleeChecker.should_stop_melee(object->EnemyMan.get_enemy()));
 }
 
 
