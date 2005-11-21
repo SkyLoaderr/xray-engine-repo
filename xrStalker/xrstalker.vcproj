@@ -1473,6 +1473,9 @@
 						RelativePath=".\Config\ui\ui_old_textures.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_statistics.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_team_logo.xml">
 					</File>
 					<File

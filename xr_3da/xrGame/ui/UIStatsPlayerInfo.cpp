@@ -5,13 +5,13 @@
 #include "../game_cl_base.h"
 
 
-CUIStatsPlayerInfo::CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info)
+CUIStatsPlayerInfo::CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info, CGameFont* pF, u32 text_col)
 {
 	m_field_info = info;
 
 	xr_vector<PI_FIELD_INFO>&	field_info = *info;
 	for (u32 i = 0; i<field_info.size(); i++)
-		AddField(field_info[i].width);
+		AddField(field_info[i].width, pF, text_col);
 
 	R_ASSERT(!field_info.empty());
 }
@@ -37,7 +37,7 @@ void CUIStatsPlayerInfo::Update(){
 	m_pPlayerInfo = NULL;
 }
 
-void CUIStatsPlayerInfo::AddField(float len){
+void CUIStatsPlayerInfo::AddField(float len, CGameFont* pF, u32 text_col){
 	CUIStatic* wnd = xr_new<CUIStatic>();
 
 	if (m_fields.empty())
@@ -47,7 +47,9 @@ void CUIStatsPlayerInfo::AddField(float len){
 		wnd->Init(m_fields.back()->GetWndRect().right,0,len,this->GetHeight());
 		wnd->SetTextAlignment(CGameFont::alCenter);
 	}
-//	wnd->SetVTextAlignment(valCenter);
+	if (pF)
+		wnd->SetFont(pF);
+	wnd->SetTextColor(text_col);
 	m_fields.push_back(wnd);
 	AttachChild(wnd);
 }

@@ -10876,6 +10876,12 @@
 					Name="Stats"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIFrags.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIFrags.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIStats.cpp">
 					</File>
 					<File

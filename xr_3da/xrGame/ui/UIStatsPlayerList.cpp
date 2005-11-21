@@ -13,6 +13,9 @@ CUIStatsPlayerList::CUIStatsPlayerList(){
 
 	m_header.wnd = NULL;
 	m_header.height = 0;
+
+	m_pTextFont	= NULL;
+	m_text_col	= 0xff000000;
 }
 
 CUIStatsPlayerList::~CUIStatsPlayerList(){
@@ -69,7 +72,7 @@ void CUIStatsPlayerList::Update(){
 	{		
 		for (int i = 0; i<n; i++)
 		{
-            CUIStatsPlayerInfo* pi = xr_new<CUIStatsPlayerInfo>(&m_field_info);
+            CUIStatsPlayerInfo* pi = xr_new<CUIStatsPlayerInfo>(&m_field_info, m_pTextFont, m_text_col);
 #pragma todo("SATAN->SATAN: init height")
 			pi->Init(0,0,this->GetDesiredChildWidth(),15);
 			CUIScrollView::AddWindow(pi, true);	
@@ -146,7 +149,7 @@ CUIWindow* CUIStatsPlayerList::GetHeader(CGameFont* pF, const u32 col){
 			st->SetFont(pF);
 		st->SetTextColor(col);
 		st->SetTextComplexMode(false);
-		st->SetText("-- Spectators --");
+		st->SetText(" Spectators");
 		pWnd->AttachChild(st);
 	}
 
@@ -171,4 +174,9 @@ void CUIStatsPlayerList::ShowHeader(bool bShow){
 		m_header.wnd->Show(bShow);
 		m_header.wnd->SetHeight(bShow? m_header.height : 0);
 	}
+}
+
+void CUIStatsPlayerList::SetTextParams(CGameFont* pF, u32 col){
+	m_pTextFont = pF;
+	m_text_col = col;
 }

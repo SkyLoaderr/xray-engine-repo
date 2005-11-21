@@ -1,13 +1,25 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
-	<stats_wnd x="0" y="0" width="400" height="480">
+	<frag_wnd_dm x="0" y="0" width="440" height="642">
+		<back_t x="0" y="0" width="440" height="95">
+			<texture>ui_statOne_t</texture>
+		</back_t>
+		<back_c x="8	" y="95" width="440" height="163" count="3">
+			<texture>ui_statOne_back</texture>
+		</back_c>		
+		<back_b x="1" y="584" width="440" height="58">
+			<texture>ui_statOne_b</texture>
+		</back_b>
+	</frag_wnd_dm>
+				
+	<stats_wnd x="15" y="70" width="400" height="480">
 		<back_ground x="0" y="0" width="400" height="480">
-			<texture>ui_frame</texture>
+			<!--texture>ui_frame</texture-->
 		</back_ground>
 	
 	
-		<team_header x="0" y="0" width="400" height="32">
+		<team_header x="0" y="0" width="400" height="42">
 			<logo x="0" y="0" width="32" height="32"/>
 			<header x="32" y="0" width="368" height="32">
 				<texture></texture>
@@ -17,10 +29,11 @@
 		
 		<player_list_header x="0" y="0" width="400" height="16"> <!-- dimensions not using yet-->
 			<texture></texture>
-			<text font="normal" a="255" r="233" g="80" b="40" />
+			<text font="letterica16" a="255" r="188" g="188" b="180" />
 		</player_list_header>
 		
-		<player_list x="0" y="0" width="400" height="0" spectator="0"> <!-- dinamic height -->			
+		<player_list x="0" y="0" width="400" height="0" spectator="0"> <!-- dinamic height -->
+			<text_format font="letterica16" a="255" r="215" g="187" b="139" />
 			<field name="name"		width="120" />
 			<field name="frags"		width="35" />
 			<field name="deaths"	width="45" />
@@ -30,7 +43,7 @@
 		</player_list>
 	
 		<spectator_list_header x="0" y="0" width="400" height="16"> <!-- dimensions not using yet-->
-			<text font="normal" a="255" r="233" g="80" b="40" />
+			<text font="letterica16" a="255" r="238" g="155" b="23" />
 		</spectator_list_header>
 		
 		<spectator_list x="0" y="0" width="400" height="0" spectator="1">

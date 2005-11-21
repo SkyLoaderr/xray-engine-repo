@@ -15,6 +15,7 @@ public:
 			void SetTeam(int team);
 			void AddField(const char* name, float width);
 	CUIWindow*	 GetHeader(CGameFont* pF, u32 col);
+			void SetTextParams(CGameFont* pF, u32 col);
 	virtual void AddWindow(CUIWindow* pWnd, bool auto_delete = true);
 	virtual void Update();
 
@@ -37,4 +38,6 @@ protected:
 	} S_HEADER_DATA;
 
     S_HEADER_DATA	m_header;
+	CGameFont*	m_pTextFont;
+	u32			m_text_col;
 };
