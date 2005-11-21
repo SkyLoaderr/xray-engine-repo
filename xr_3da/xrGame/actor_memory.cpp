@@ -100,7 +100,7 @@ void CActorMemory::shedule_Update			(u32 dt)
 
 	visual().update							(float(dt)/1000.f);
 
-#if 1
+#if 0
 	CVisualMemoryManager::VISIBLES::const_iterator	I = visual().objects().begin();
 	CVisualMemoryManager::VISIBLES::const_iterator	E = visual().objects().end();
 	for ( ; I != E; ++I)
