@@ -132,7 +132,8 @@ protected:
 	bool											m_bStop;
 	float											m_stop_speed;
 	bool											m_bCyclic;
-		void		Update							(float dt);
+	float											m_start_time;
+		void		Update							(float tm);
 public:
                     CPostprocessAnimator            (int id, bool cyclic);
         virtual    ~CPostprocessAnimator            ();
