@@ -114,7 +114,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     -- leader
 	t = { section = "logic@" .. gname .. "_leader",
 		idle = 0,
-		prior = 15, state = {0},
+		prior = 16, state = {0},
 		squad = squad, group = groups[5],
 		in_rest = "cit_jail_restr", out_rest = "",
 		predicate = k_predicate_l
@@ -125,7 +125,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     for i = 1, 2 do
 	    t = { section = "logic@" .. gname .. "_leader_guard" .. i,
 		    idle = 0,
-		    prior = 11, state = {0},
+		    prior = 15, state = {0},
 		    squad = squad, group = groups[5],
 		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = k_predicate_e
@@ -257,25 +257,25 @@ function load_ltx_killers(gname, type)
 
     -- leader
 	res = res.."[logic@" .. gname .. "_leader]\n" ..
-               "active      = patrol@" .. gname .. "_leader\n" ..
+               "active          = patrol@" .. gname .. "_leader\n" ..
                "combat_ignore   = combat_ignore\n" ..
 
                "[patrol@" .. gname .. "_leader]\n" ..
-               "path_walk   = leader_walk\n" ..
-               "path_look   = leader_look\n" ..
-               "commander   = true\n" ..
+               "path_walk           = leader_walk\n" ..
+               "path_look           = leader_look\n" ..
+               "commander           = true\n" ..
                "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
 
-    -- base patrols
+    -- leader guards
     for i = 1, 2 do
 	    res = res.."[logic@" .. gname .. "_leader_guard" .. i .. "]\n" ..
-                   "active      = patrol@" .. gname .. "_base_patrol" .. i .. "\n" ..
+                   "active          = patrol@" .. gname .. "_base_patrol" .. i .. "\n" ..
                    "combat_ignore   = combat_ignore\n" ..
 
                    "[patrol@" .. gname .. "_base_patrol" .. i .. "]\n" ..
-                   "path_walk   = leader_walk\n" ..
-                   "path_look   = leader_look\n" ..
-                   "formation   = line\n" ..
+                   "path_walk           = leader_walk\n" ..
+                   "path_look           = leader_look\n" ..
+                   "formation           = line\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -288,12 +288,13 @@ function load_ltx_killers(gname, type)
     -- base patrols
     for i = 1, 2 do
 	    res = res.."[logic@" .. gname .. "_base_patrol" .. i .. "]\n" ..
-                   "active      = walker@" .. gname .. "_base_patrol" .. i .. "\n" ..
+                   "active          = walker@" .. gname .. "_base_patrol" .. i .. "\n" ..
                    "combat_ignore   = combat_ignore\n" ..
 
                    "[walker@" .. gname .. "_base_patrol" .. i .. "]\n" ..
-                   "path_walk  = base_patrol" .. i .. "_walk\n" ..
-                   "path_look  = base_patrol" .. i .. "_look\n" ..
+                   "path_walk           = base_patrol" .. i .. "_walk\n" ..
+                   "path_look           = base_patrol" .. i .. "_look\n" ..
+                   "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -332,14 +333,14 @@ function load_ltx_killers(gname, type)
     delays = {40, 30, 60}
     for i, v in pairs({1, 2, 4}) do
 	    res = res.."[logic@" .. gname .. "_kamp" .. i .. "_patrol]\n" ..
-                   "active      = patrol@" .. gname .. "_kamp" .. i .. "_patrol\n" ..
+                   "active          = patrol@" .. gname .. "_kamp" .. i .. "_patrol\n" ..
                    "combat_ignore   = combat_ignore\n" ..
 
                    "[patrol@" .. gname .. "_kamp" .. i .. "_patrol]\n" ..
-                   "path_walk  = kamp" .. v .. "_patrol_walk\n" ..
-                   --"path_look  = kamp" .. v .. "\n" ..
-                   "formation  = line\n" ..
-                   "on_signal  = arrived | kamp@" .. gname .. "_kamp" .. v .. "_patrol\n" ..
+                   "path_walk           = kamp" .. v .. "_patrol_walk\n" ..
+                   --"path_look           = kamp" .. v .. "\n" ..
+                   "formation           = line\n" ..
+                   "on_signal           = arrived | kamp@" .. gname .. "_kamp" .. v .. "_patrol\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[kamp@" .. gname .. "_kamp" .. v .. "_patrol]\n" ..
@@ -359,12 +360,15 @@ function load_ltx_killers(gname, type)
                    "[kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5]\n" ..
                    "center_point        = kamp5\n" ..
                    "on_timer            = " .. d[1] .. "000 | walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
+                   "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[walker@" .. gname .. "_free_stalker" .. i .. "]\n" ..
                    "path_walk           = free_stalker" .. i .. "_walk\n" ..
                    "path_look           = free_stalker" .. i .. "_look\n" ..
                    "on_timer            = " .. d[2] .. "000 | kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5\n" ..
+                   "on_info             = {+cit_jail_guard1_close_door -cit_button_broken} kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5\n" ..
+                   "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -383,19 +387,19 @@ function load_ltx_killers(gname, type)
     -- gate guards
     for i = 1, 2 do
 	    res = res.."[logic@" .. gname .. "_gate2_guard" .. i .. "]\n" ..
-                   "active      = walker@" .. gname .. "_gate2_guard" .. i .. "\n" ..
+                   "active          = walker@" .. gname .. "_gate2_guard" .. i .. "\n" ..
                    "combat_ignore   = combat_ignore\n" ..
 
                    "[walker@" .. gname .. "_gate2_guard" .. i .. "]\n" ..
-                   "path_walk  = gate2_guard" .. i .. "_walk\n" ..
-                   "path_look  = gate2_guard" .. i .. "_look\n" ..
+                   "path_walk           = gate2_guard" .. i .. "_walk\n" ..
+                   "path_look           = gate2_guard" .. i .. "_look\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- road patrols
     for i = 1, 3 do
 	    res = res.."[logic@" .. gname .. "_road_patrol" .. i .. "]\n" ..
-                   "active              = walker@" .. gname .. "_road_patrol" .. i .. "\n" ..
+                   "active          = walker@" .. gname .. "_road_patrol" .. i .. "\n" ..
                    "combat_ignore   = combat_ignore\n" ..
 
                    "[walker@" .. gname .. "_road_patrol" .. i .. "]\n" ..
@@ -404,6 +408,7 @@ function load_ltx_killers(gname, type)
                    "def_state_moving1   = patrol\n" ..
                    "def_state_moving2   = patrol\n" ..
                    "def_state_moving3   = patrol\n" ..
+                   "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
