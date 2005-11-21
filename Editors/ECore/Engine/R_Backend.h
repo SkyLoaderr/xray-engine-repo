@@ -25,12 +25,12 @@ struct	R_statistics_element	{
 	ICF		void	add			(u32 _verts)	{ verts+=_verts; dips++; }
 };
 struct	R_statistics			{
-	R_statistics_element	s_static			;
-	R_statistics_element	s_flora				;
+	R_statistics_element		s_static		;
+	R_statistics_element		s_flora			;
 	R_statistics_element		s_flora_lods	;
-	R_statistics_element	s_details			;
-	R_statistics_element	s_ui				;
-	R_statistics_element	s_dynamic			;
+	R_statistics_element		s_details		;
+	R_statistics_element		s_ui			;
+	R_statistics_element		s_dynamic		;
 	R_statistics_element		s_dynamic_sw	;
 	R_statistics_element		s_dynamic_inst	;
 	R_statistics_element		s_dynamic_1B	;
