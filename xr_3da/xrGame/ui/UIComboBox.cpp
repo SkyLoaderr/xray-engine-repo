@@ -110,12 +110,14 @@ void CUIComboBox::Update(){
 }
 
 void CUIComboBox::OnFocusLost(){
+	CUIWindow::OnFocusLost();
 	if (m_bIsEnabled)
         SetState(S_Enabled);
 
 }
 
 void CUIComboBox::OnFocusReceive(){
+	CUIWindow::OnFocusReceive();
     if (m_bIsEnabled)
         SetState(S_Highlighted);
 }
@@ -123,7 +125,7 @@ void CUIComboBox::OnFocusReceive(){
 bool CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
     if(CUIWindow::OnMouse(x, y, mouse_action)) return true;
 
-	m_bCursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
+	bool CursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
 
 //	SetState(m_bCursorOverWindow ? S_Highlighted : S_Enabled);
 	
@@ -133,16 +135,16 @@ bool CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
 	switch (m_eState){
 		case LIST_EXPANDED:			
 
-			if ((!m_bCursorOverWindow) && mouse_action == WINDOW_LBUTTON_DOWN)
+			if ((!CursorOverWindow) && mouse_action == WINDOW_LBUTTON_DOWN)
 			{
                 ShowList(false);
-                GetParent()->SetCapture(this, false);
+//                GetParent()->SetCapture(this, false);
 				return true;
 			}
-			else{
-				GetParent()->SetCapture(this, true);
-				return true;
-			}
+//			else{
+//				GetParent()->SetCapture(this, true);
+//				return true;
+//			}
 			break;
 		case LIST_FONDED:
 			break;
@@ -215,7 +217,7 @@ void CUIComboBox::OnListItemSelect(){
         m_text.SetText(item->GetText());    
 
 	ShowList(false);
-	SetCapture(&m_list, false);
+//	SetCapture(&m_list, false);
 }
 
 
