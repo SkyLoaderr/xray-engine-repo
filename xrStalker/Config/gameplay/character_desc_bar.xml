@@ -862,7 +862,6 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>
 
