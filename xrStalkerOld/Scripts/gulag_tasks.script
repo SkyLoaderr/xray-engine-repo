@@ -88,53 +88,6 @@ function loadJob(sj, gname, type, squad, groups, st)
 		    table.insert(sj, t)
 		end
 	end
---'--------------------------------------------------------------------------	
---' ”ниверсальные гулаги дл€ smart terrain
---'--------------------------------------------------------------------------
-	--' несколько кемперов
-	if type == "campers" then
-		for i = 1, 3 do
-			t = { section = "logic@campers_camper"..i,
-				idle = 0,
-				prior = 0, state = {0},
-				squad = squad, group = groups[i],
-				in_rest = "", out_rest = ""
-			}
-			table.insert(sj, t)
-		end
-	end
-	--' несколько walkers
-	if type == "walkers" then
-		for i = 1, 3 do
-			t = { section = "logic@walkers_walker"..i,
-				idle = 0,
-				prior = 0, state = {0},
-				squad = squad, group = groups[i],
-				in_rest = "", out_rest = ""
-			}
-			table.insert(sj, t)
-		end
-	end
-	--' один walker
-	if type == "search" then
-		t = { section = "logic@search_walker",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[i],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-	end
-	--' отдых
-	if type == "rest" then
-		t = { section = "logic@rest_rest",
-			idle = 0,
-			prior = 0, state = {0},
-			squad = squad, group = groups[i],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-	end
 
     for k, v in pairs(level_gulags) do
         v.load_job(sj, gname, type, squad, groups, st)
