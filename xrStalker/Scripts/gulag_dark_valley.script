@@ -17,6 +17,7 @@ local state_alarm = 1
 local state_alarm_actor_inside = 2
 local state_fight = 1
 
+local t = {}
 local gulags = {}
 
 --------------------------------------------------------------------------

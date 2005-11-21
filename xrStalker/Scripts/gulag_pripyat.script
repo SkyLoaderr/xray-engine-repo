@@ -34,6 +34,7 @@ function is_zombied_in_combat()
     return false
 end
 
+local t = {}
 local gulags = {}
 
 --------------------------------------------------------------------------
