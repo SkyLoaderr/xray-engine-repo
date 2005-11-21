@@ -15,6 +15,13 @@
 #include "xrSE_Factory_import_export.h"
 #include "script_properties_list_helper.h"
 
+#include "character_info.h"
+#include "specific_character.h"
+//#include "character_community.h"
+//#include "monster_community.h"
+//#include "character_rank.h"
+//#include "character_reputation.h"
+
 extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
 extern CScriptPropertiesListHelper	*g_property_list_helper;
@@ -42,9 +49,27 @@ BOOL APIENTRY DllMain		(HANDLE module_handle, DWORD call_reason, LPVOID reserved
 			string_path					SYSTEM_LTX;
 			FS.update_path				(SYSTEM_LTX,"$game_config$","system.ltx");
 			pSettings					= xr_new<CInifile>(SYSTEM_LTX);
+
+			CCharacterInfo::InitInternal					();
+			CSpecificCharacter::InitInternal				();
+//			CHARACTER_COMMUNITY::InitInternal				();
+//			CHARACTER_RANK::InitInternal					();
+//			CHARACTER_REPUTATION::InitInternal				();
+//			MONSTER_COMMUNITY::InitInternal					();
+
 			break;
 		}
 		case DLL_PROCESS_DETACH: {
+			CCharacterInfo::DeleteSharedData				();
+			CCharacterInfo::DeleteIdToIndexData				();
+			CSpecificCharacter::DeleteSharedData			();
+			CSpecificCharacter::DeleteIdToIndexData			();
+//			CHARACTER_COMMUNITY::DeleteIdToIndexData		();
+//			CHARACTER_RANK::DeleteIdToIndexData				();
+//			CHARACTER_REPUTATION::DeleteIdToIndexData		();
+//			MONSTER_COMMUNITY::DeleteIdToIndexData			();
+
+
 			xr_delete					(g_object_factory);
 			xr_delete					(pSettings);
 			xr_delete					(g_property_list_helper);
