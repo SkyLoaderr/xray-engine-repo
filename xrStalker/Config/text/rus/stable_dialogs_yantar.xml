@@ -144,23 +144,14 @@
     <string id="yantar_help_scientist_1111111">
         <text>Хорошо.</text>
     </string>
-    <string id="yantar_help_scientist_2">
+    <string id="yantar_help_scientist_21">
         <text>Ого, Меченый! Ты наконец-то добрался к нам. Поговори с профессором, он тебя отблагодарит за мое спасение.</text>
     </string>
-    <string id="yantar_help_scientist_3">
-        <text>go_2</text>
-    </string>
-    <string id="yantar_help_scientist_4">
-        <text>go_3</text>
-    </string>
-    <string id="yantar_help_scientist_5">
-        <text>go_4</text>
-    </string>
-    <string id="yantar_help_scientist_6">
-        <text>opa!</text>
+    <string id="yantar_help_scientist_71">
+        <text>Привет, Меченый. Как поживаешь?</text>
     </string>
     <string id="yantar_wounded_scientist_0">
-        <text>...ммм ...ммм [стонет от боли]</text>
+        <text>...ммм ...ммм</text>
     </string>
     <string id="yantar_wounded_scientist_1">
         <text>Вставай, все уже закончилось.</text>
