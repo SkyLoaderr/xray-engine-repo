@@ -91,11 +91,6 @@ void __fastcall TForm1::FormDestroy (TObject *Sender)
        m_pConfig->Save ();
        delete m_pConfig;
        }
-    //if (Application->MessageBoxA ("Save databases ?", "Warning", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
-//       {
-//       m_SourceLangDB->Save ();
-//       m_DestLangDB->Save ();
-//       }
     delete m_SourceLangDB;
     delete m_DestLangDB;
     delete m_SourceLangI;

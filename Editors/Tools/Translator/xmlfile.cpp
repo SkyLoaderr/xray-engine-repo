@@ -100,8 +100,8 @@ void        CXMLFile::LoadFile              ()
         if (str) delete str;
         }
 
-    if (m_Name != "")
-       SetFileAttributes (m_Name.c_str (), GetFileAttributes (m_Name.c_str ()) | FILE_ATTRIBUTE_READONLY);
+    //if (m_Name != "")
+//       SetFileAttributes (m_Name.c_str (), GetFileAttributes (m_Name.c_str ()) | FILE_ATTRIBUTE_READONLY);
 }
 //-------------------------------------------------------------------------------------
 TXMLString* CXMLFile::get_string          (string id)
@@ -417,7 +417,11 @@ bool        CXMLFile::locked              ()
 {
     if (m_Lock != INVALID_HANDLE_VALUE) return true;
     HANDLE h = CreateFile (m_Name.c_str (), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-    if (h == INVALID_HANDLE_VALUE) return true;
+    if (h == INVALID_HANDLE_VALUE)
+       {
+       DWORD err = GetLastError ();
+       return true;
+       }
     CloseHandle (h);
     return false;
 }
