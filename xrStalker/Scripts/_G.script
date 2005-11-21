@@ -88,6 +88,7 @@ function round (value)
     return min
 end
 
+if (effector ~= nil) then
 class "pp_effector" (effector)
 
 function pp_effector:__init(effector_type,start_time,dest_power,life_time) super(effector_type,start_time)
@@ -230,6 +231,7 @@ end
 --
 -- end of postprocess for rainbow
 --
+end
 
 function debug_get_level_object(obj_name)
     local res = level.debug_object(obj_name)
