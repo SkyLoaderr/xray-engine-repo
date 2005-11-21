@@ -17,6 +17,7 @@
 #include "xr_level_controller.h"
 #include "Artifact.h"
 #include "map_location.h"
+#include "Inventory.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -614,6 +615,28 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 					if (!Level().MapManager().HasMapLocation(ARTEFACT_ENEMY, artefactID))
 					{
 						Level().MapManager().RemoveMapLocationByObjectID(artefactID);
+					};
+
+					bool OutfitWorkDown = false;
+
+					CActor* pActor = smart_cast<CActor*>(Level().Objects.net_Find(artefactBearerID));
+					if (pActor)
+					{
+						CCustomOutfit* pOutfit			= (CCustomOutfit*)pActor->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
+						if (pOutfit && pOutfit->CLS_ID == CLSID_EQUIPMENT_SCIENTIFIC)
+						{
+							if (!pActor->AnyAction())
+							{
+								if (Level().MapManager().HasMapLocation(ARTEFACT_ENEMY, artefactID))
+								{
+									Level().MapManager().RemoveMapLocationByObjectID(artefactID);									
+								}
+								OutfitWorkDown = true;
+							}
+						}
+					}
+					if (!OutfitWorkDown && !Level().MapManager().HasMapLocation(ARTEFACT_ENEMY, artefactID))
+					{
 						(Level().MapManager().AddMapLocation(ARTEFACT_ENEMY, artefactID))->EnablePointer();
 					}
 				}

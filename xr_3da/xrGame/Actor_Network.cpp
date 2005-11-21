@@ -801,7 +801,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) && TRUE == E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
 	{
 		g_actor = this;
-		Msg("set g_actor");
+//		Msg("set g_actor");
 	}
 
 	if (IsGameTypeSingle()){

@@ -441,6 +441,8 @@ public:
 	bool					CanRun					();
 	void					StopAnyMove				();
 
+	bool					AnyAction				()	{return (mstate_real & mcAnyAction) != 0;};
+
 	bool					is_jump					();		
 protected:
 	u32						mstate_wishful;
