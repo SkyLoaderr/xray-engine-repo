@@ -47,7 +47,7 @@ combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened -cit_actor_is_free}
 ;--- если актер не послушался и не отошел к стене, убиваем его
 ;-----------------------------------------------------------------------------------------------------------
 [remark@jail_guard_kill_actor]
-anim                = wait
+anim                = wait_na
 on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=check_fighting(1200)}
 
@@ -92,9 +92,10 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free
 [walker@jail_guard2]
 path_walk           = jail_guard_walk
 path_look           = jail_guard_look
-on_timer            = 10000 | remark@jail_guard_sleep
-on_info             = {+cit_jail_door_opened} walker@jail_guard_close_door3
-combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened}, {=check_fighting(1200)}
+;on_timer            = 10000 | remark@jail_guard_sleep
+on_info             = {+cit_jail_door_opened -cit_button_broken} walker@jail_guard_close_door3
+heli_hunter         = {+cit_heli_start -cit_heli_end} true, false
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- закрываем решетку, если она вдруг "случайно" открылась
@@ -107,7 +108,10 @@ def_state_moving2   = walk
 def_state_moving3   = walk
 on_info             = {-cit_jail_door_opened} walker@jail_guard2
 on_signal           = pressed | walker@jail_guard2 %-cit_jail_door_opened%
+heli_hunter         = {+cit_heli_start -cit_heli_end} true, false
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+
+
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- детский час
