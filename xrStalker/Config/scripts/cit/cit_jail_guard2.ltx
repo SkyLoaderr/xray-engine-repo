@@ -21,7 +21,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 [remark@base_guard_wait_to_go]
 anim                = patrol
 target              = nil
-on_timer            = 120000 | walker@base_guard_to_jail
+on_timer            = 30000 | walker@base_guard_to_jail
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -135,6 +135,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 [walker@base_guard2]
 path_walk           = base_guard_walk
 path_look           = base_guard_look
+heli_hunter         = {+cit_heli_start -cit_heli_end} true, false
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
