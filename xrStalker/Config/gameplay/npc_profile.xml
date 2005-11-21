@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding="UTF-8"?>
+﻿<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<!-- НОВЫЕ ПРОФИЛЯ -->
@@ -397,9 +397,13 @@
 		<specific_character>yan_general_ecolog</specific_character>
 	</character>
 	<!-------------rescue_ecolog----------->
-	<character id="yan_ecolog_help">
-		<class>yan_ecolog_help</class>
-		<specific_character>yan_ecolog_help</specific_character>
+	<character id="yan_Kruglov">
+		<class>yan_Kruglov</class>
+		<specific_character>yan_Kruglov</specific_character>
+	</character>
+	<character id="yan_Semenov">
+		<class>yan_Semenov</class>
+		<specific_character>yan_Semenov</specific_character>
 	</character>
 	<character id="yan_ecolog_vasilyev">
 		<class>yan_ecolog_vasilyev</class>
