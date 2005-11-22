@@ -238,12 +238,10 @@ function gulag:removeObject( obj_id )
 	if obj ~= true and obj:alive() then
 		self:free_obj_and_reinit( obj_id )
 
-		db.storage[obj_id].gulag = nil
+--		db.storage[obj_id].gulag = nil
 	else
 		self:free_obj( obj_id )
 	end
-
-	self:set_restrictions( obj, "", "" )
 
 	self.Object[obj_id]      = nil
 	self.restrictors[obj_id] = nil
