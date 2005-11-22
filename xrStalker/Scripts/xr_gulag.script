@@ -21,9 +21,9 @@ local gulag_tasks_ltx        = ini_file( gulag_tasks_file_name )
 
 local job_position_threshold = 5  -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
 
-local idle_nil  = nil
-local idle_once = -1
-local idle_none = -2
+idle_nil  = nil
+idle_once = -1
+idle_none = -2
 
 local path_fields = { "path_walk", "path_main", "center_point" }
 
