@@ -348,7 +348,6 @@ function gulag:availJob(job)
 				return false
 			end
 		end
-	end
 
 		local jd = job.dependent
 
@@ -830,6 +829,8 @@ function get_npc_gulag(obj)
 end
 
 function getGulagPopulation(name)
+	abort("setGulagEnemy: victim == nil")
+
 	if xr_gulag.fraction[name] ~= nil then
 		return xr_gulag.fraction[name]:get_population()
 	end
