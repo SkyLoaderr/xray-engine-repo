@@ -512,6 +512,7 @@ private:
 
 public:
 	IC		CALifeOnlineOfflineGroupBrain	&brain	() const;
+	virtual CALifeMonsterBrain		*create_brain			();
 
 public:
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType &tHitType, float &fHitPower);

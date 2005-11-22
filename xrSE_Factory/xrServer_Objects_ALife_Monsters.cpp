@@ -1929,6 +1929,12 @@ CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
 }
 
+CALifeMonsterBrain *CSE_ALifeHumanAbstract::create_brain	()
+{
+	m_brain						= xr_new<CALifeHumanBrain>(this);
+	return						(m_brain);
+}
+
 CSE_Abstract *CSE_ALifeHumanAbstract::init			()
 {
 	inherited1::init			();
