@@ -40,10 +40,6 @@ active = walker3
 path_walk = pw3
 path_look = pl3
 
-
-[logic@nil]
-active = nil
-
 ;-------------------------------------------------------------------------------------------------
 ;-- test1
 ;-------------------------------------------------------------------------------------------------
@@ -54,11 +50,11 @@ active = sleeper1@test1
 path_main = sleep_1
 
 
-[logic@test1_sleeper2]
-active = sleeper2@test1
+[logic@test1_walker1]
+active = walker1@test1
 
-[sleeper2@test1]
-path_main = sleep_2
+[walker1@test1]
+path_walk = walk_1
 
 
 ;-------------------------------------------------------------------------------------------------
