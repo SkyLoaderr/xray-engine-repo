@@ -46,7 +46,7 @@ function snd_source:reset_scheme(loading)
     if loading == false then
 	   self.destructed = false
 	else
-	   self..destructed = xr_logic.pstor_retrieve (self.object, "destr")
+	   self.destructed = xr_logic.pstor_retrieve (self.object, "destr")
 	end   
     printf("PH_SOUND reset_scheme")
 end
