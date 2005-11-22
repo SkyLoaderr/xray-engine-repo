@@ -765,19 +765,15 @@ function load_ltx_agr_road_patrol1(gname, type)
 
 					"[walker1@" .. gname .. i .. "]\n" ..
 					"team=aaa\n" ..
-					"path_walk = walk_" .. i .. "_1\n" ..
-					"path_look = look_" .. i .. "_1\n" ..
-					"def_state_moving1 = sprint\n" ..
-					"def_state_moving2 = sprint\n" ..
+					"path_walk = walk_1_" .. i .. "\n" ..
+					"path_look = look_1_" .. i .. "\n" ..
 					"danger=danger_condition@" .. gname .. "\n" ..
 					"on_signal=end_1_"..i.."|walker2@" .. gname .. i .. "\n" ..
 
 					"[walker2@" .. gname .. i .. "]\n" ..
 					"team=bbb\n" ..
-					"path_walk = walk_" .. i .. "_2\n" ..
-					"path_look = look_" .. i .. "_2\n" ..
-					"def_state_moving1 = sprint\n" ..
-					"def_state_moving2 = sprint\n" ..
+					"path_walk = walk_2_" .. i .. "\n" ..
+					"path_look = look_2_" .. i .. "\n" ..
 					"danger=danger_condition@" .. gname .. "\n" ..
 					"on_signal=end_2_"..i.."|walker1@" .. gname .. i .. "\n" 
 
@@ -790,8 +786,6 @@ function load_ltx_agr_road_patrol1(gname, type)
 					"[walker@" .. gname ..  i .. "]\n" ..
 					"path_walk = zastava2_stand" .. i .. "\n" ..
 					"path_look = zastava2_way_look_hide\n" ..
-					"def_state_moving1 = sprint\n" ..
-					"def_state_moving2 = sprint\n" ..
 					"danger=danger_condition@" .. gname .. "\n" 
 	end
 	for i = 5, 5 do
@@ -802,8 +796,6 @@ function load_ltx_agr_road_patrol1(gname, type)
 					"[walker@" .. gname ..  i .. "]\n" ..
 					"path_walk = zastava2_stand" .. i .. "\n" ..
 					"path_look = zastava2_way_look\n" ..
-					"def_state_moving1 = sprint\n" ..
-					"def_state_moving2 = sprint\n" ..
 					"danger=danger_condition@" .. gname .. "\n" 
 	end
 
@@ -825,21 +817,17 @@ function load_ltx_agr_road_patrol2(gname, type)
 
 					"[walker1@" .. gname .. i .. "]\n" ..
 					"team=aa\n" ..
-					"path_walk = walk" .. i .. "_1\n" ..
-					"path_look = look" .. i .. "_1\n" ..
-					"def_state_moving1 = sprint\n" ..
-					"def_state_moving2 = sprint\n" ..
+					"path_walk = walk1_" .. i .. "\n" ..
+					"path_look = look1_" .. i .. "\n" ..
 					"danger=danger_condition@" .. gname .. "\n" ..
-					"on_signal=end_1_"..i.."|walker2@" .. gname .. i .. "\n" ..
+					"on_signal=end1_"..i.."|walker2@" .. gname .. i .. "\n" ..
 
 					"[walker2@" .. gname .. i .. "]\n" ..
 					"team=bb\n" ..
-					"path_walk = walk" .. i .. "_2\n" ..
-					"path_look = look" .. i .. "_2\n" ..
-					"def_state_moving1 = sprint\n" ..
-					"def_state_moving2 = sprint\n" ..
+					"path_walk = walk2_" .. i .. "\n" ..
+					"path_look = look2_" .. i .. "\n" ..
 					"danger=danger_condition@" .. gname .. "\n" ..
-					"on_signal=end_2_"..i.."|walker1@" .. gname .. i .. "\n" 
+					"on_signal=end2_"..i.."|walker1@" .. gname .. i .. "\n" 
 	end
 
 	res = res ..	"[danger_condition@" .. gname .. "]\n" ..
