@@ -10,37 +10,44 @@
 
 IC	const CALifeSpawnHeader &CALifeSpawnRegistry::header	() const
 {
-	return					(m_header);
+	return							(m_header);
 }
 
 IC	void CALifeSpawnRegistry::assign_artefact_position		(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object) const
 {
-	object->m_tGraphID		= anomaly->m_tGraphID;
-	VERIFY3					(anomaly->m_wArtefactSpawnCount,"Anomaly is outside of the AI-map but is used for artefact generation : ",anomaly->name_replace());
-	u32						index = anomaly->m_dwStartIndex + anomaly->randI(anomaly->m_wArtefactSpawnCount);
-	object->o_Position		= m_artefact_spawn_positions[index].level_point();
-	object->m_tNodeID		= m_artefact_spawn_positions[index].level_vertex_id();
-	object->m_fDistance		= m_artefact_spawn_positions[index].distance();
+	object->m_tGraphID				= anomaly->m_tGraphID;
+	VERIFY3							(anomaly->m_wArtefactSpawnCount,"Anomaly is outside of the AI-map but is used for artefact generation : ",anomaly->name_replace());
+	u32								index = anomaly->m_dwStartIndex + anomaly->randI(anomaly->m_wArtefactSpawnCount);
+	object->o_Position				= m_artefact_spawn_positions[index].level_point();
+	object->m_tNodeID				= m_artefact_spawn_positions[index].level_vertex_id();
+	object->m_fDistance				= m_artefact_spawn_positions[index].distance();
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg					("[LSS] Zone %s[%f][%f][%f] %d: generated artefact position %s[%f][%f][%f]",anomaly->name_replace(),VPUSH(anomaly->o_Position),anomaly->m_dwStartIndex,object->name_replace(),VPUSH(object->o_Position));
+		Msg							("[LSS] Zone %s[%f][%f][%f] %d: generated artefact position %s[%f][%f][%f]",anomaly->name_replace(),VPUSH(anomaly->o_Position),anomaly->m_dwStartIndex,object->name_replace(),VPUSH(object->o_Position));
 	}
 #endif
 }
 
 IC	const CALifeSpawnRegistry::SPAWN_GRAPH &CALifeSpawnRegistry::spawns	() const
 {
-	return					(m_spawns);
+	return							(m_spawns);
 }
 
 IC	const CALifeSpawnRegistry::REGISTRY &CALifeSpawnRegistry::artefact_anomaly_map	() const
 {
-	return					(m_artefact_anomaly_map);
+	return							(m_artefact_anomaly_map);
 }
 
-IC	void CALifeSpawnRegistry::process_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns)
+IC	void CALifeSpawnRegistry::process_spawns		(SPAWN_IDS &spawns)
 {
-	std::sort								(spawns.begin(),spawns.end());
-	xr_vector<ALife::_SPAWN_ID>::iterator	I = unique(spawns.begin(),spawns.end());
-	spawns.erase							(I,spawns.end());
+	std::sort						(spawns.begin(),spawns.end());
+	SPAWN_IDS::iterator				I = unique(spawns.begin(),spawns.end());
+	spawns.erase					(I,spawns.end());
+}
+
+IC	const ALife::_SPAWN_ID &CALifeSpawnRegistry::spawn_id	(const ALife::_SPAWN_STORY_ID &spawn_story_id) const
+{
+	SPAWN_STORY_IDS::const_iterator	I = m_spawn_story_ids.find(spawn_story_id);
+	VERIFY2							(I != m_spawn_story_ids.end(),"Spawn story id cannot be found");
+	return							((*I).second);
 }

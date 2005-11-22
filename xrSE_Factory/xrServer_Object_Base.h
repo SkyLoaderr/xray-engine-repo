@@ -46,7 +46,7 @@ add_to_type_list(CPureServerObject)
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_Abstract,ISE_Abstract,CPureServerObject,CScriptValueContainer)
 public:
 	enum ESpawnFlags {
-		flSpawnActive			= u32(1 << 0),
+		flSpawnEnabled			= u32(1 << 0),
 		flSpawnOnSurgeOnly		= u32(1 << 1),
 		flSpawnSingleItemOnly	= u32(1 << 2),
 		flSpawnIfDestroyedOnly	= u32(1 << 3),
@@ -90,14 +90,18 @@ public:
 	ALife::_SPAWN_ID				m_tSpawnID;
 
 	// ALife spawn params
-	float							m_spawn_probability;
+	// obsolete, just because we hope to uncomment all this stuff
 	Flags32							m_spawn_flags;
-	shared_str						m_spawn_control;
-	u32								m_max_spawn_count;
-	u32								m_spawn_count;
-	u64								m_last_spawn_time;
-	u64								m_min_spawn_interval;
-	u64								m_max_spawn_interval;
+//	float							m_spawn_probability;
+//	shared_str						m_spawn_control;
+//	u32								m_max_spawn_count;
+//	u64								m_min_spawn_interval;
+//	u64								m_max_spawn_interval;
+
+	// only for save_update
+//	u32								m_spawn_count;
+//	u64								m_last_spawn_time;
+//	u64								m_next_spawn_time;
 
 	//client object custom data serialization
 	xr_vector<u8>					client_data;
@@ -109,6 +113,8 @@ public:
 	virtual							~CSE_Abstract	();
 	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender ){};
 	virtual void					FillProps		(LPCSTR pref, PropItemVec &items);
+//	virtual void					save_update		(NET_Packet &tNetPacket);
+//	virtual void					load_update		(NET_Packet &tNetPacket);
 	//
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket);

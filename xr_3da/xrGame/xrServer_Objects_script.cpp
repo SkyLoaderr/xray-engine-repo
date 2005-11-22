@@ -161,6 +161,18 @@ void CSE_Spectator::script_register(lua_State *L)
 	];
 }
 
+void CSE_Temporary::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_abstract1(
+			CSE_Temporary,
+			"cse_temporary",
+			CSE_Abstract
+		)
+	];
+}
+
+/**
 void CSE_Target::script_register(lua_State *L)
 {
 	module(L)[
@@ -215,15 +227,4 @@ void CSE_Target_CS::script_register(lua_State *L)
 		)
 	];
 }
-
-void CSE_Temporary::script_register(lua_State *L)
-{
-	module(L)[
-		luabind_class_abstract1(
-			CSE_Temporary,
-			"cse_temporary",
-			CSE_Abstract
-		)
-	];
-}
-
+/**/

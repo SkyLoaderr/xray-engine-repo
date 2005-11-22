@@ -31,6 +31,7 @@ public:
 	virtual BOOL	feel_touch_contact	(CObject* O);
 			bool	active_contact		(u16 id) const;
 	virtual bool	IsVisibleForZones() { return false;		}
+	virtual	bool	need_update			() {return true;};
 #ifdef DEBUG
 	virtual	void	OnRender			();
 #endif

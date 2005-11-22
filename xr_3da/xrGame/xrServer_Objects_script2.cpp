@@ -5,18 +5,6 @@
 
 using namespace luabind;
 
-
-void CSE_SpawnGroup::script_register(lua_State *L)
-{
-	module(L)[
-		luabind_class_abstract1(
-			CSE_SpawnGroup,
-			"cse_event",
-			CSE_Abstract
-		)
-	];
-}
-
 void CSE_PHSkeleton::script_register(lua_State *L)
 {
 	module(L)[
@@ -38,6 +26,18 @@ void CSE_AbstractVisual::script_register(lua_State *L)
 	];
 }
 
+/**
+void CSE_SpawnGroup::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_abstract1(
+			CSE_SpawnGroup,
+			"cse_event",
+			CSE_Abstract
+		)
+	];
+}
+
 void CSE_Event::script_register(lua_State *L)
 {
 	module(L)[
@@ -49,3 +49,4 @@ void CSE_Event::script_register(lua_State *L)
 		)
 	];
 }
+/**/

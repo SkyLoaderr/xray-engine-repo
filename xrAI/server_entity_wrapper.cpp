@@ -85,22 +85,22 @@ void CServerEntityWrapper::load				(IReader &stream)
 
 void CServerEntityWrapper::save_update		(IWriter &stream)
 {
-	NET_Packet				net_packet;
-	net_packet.w_begin		(M_UPDATE);
-	m_object->UPDATE_Write	(net_packet);
-	stream.w_u16			(u16(net_packet.B.count));
-	stream.w				(net_packet.B.data,net_packet.B.count);
+//	NET_Packet				net_packet;
+//	net_packet.w_begin		(M_UPDATE);
+//	m_object->save_update	(net_packet);
+//	stream.w_u16			(u16(net_packet.B.count));
+//	stream.w				(net_packet.B.data,net_packet.B.count);
 }
 
 void CServerEntityWrapper::load_update		(IReader &stream)
 {
-	NET_Packet				net_packet;
-	u16						ID;
-
-	net_packet.B.count		= stream.r_u16();
-	stream.r				(net_packet.B.data,net_packet.B.count);
-
-	net_packet.r_begin		(ID);
-	R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
-	m_object->UPDATE_Read	(net_packet);
+//	NET_Packet				net_packet;
+//	u16						ID;
+//
+//	net_packet.B.count		= stream.r_u16();
+//	stream.r				(net_packet.B.data,net_packet.B.count);
+//
+//	net_packet.r_begin		(ID);
+//	R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
+//	m_object->load_update	(net_packet);
 }

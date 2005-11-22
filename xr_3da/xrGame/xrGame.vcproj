@@ -7859,6 +7859,13 @@
 								RelativePath=".\NoGravityZone.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="SmartZone"
+							Filter="">
+							<File
+								RelativePath=".\smart_zone.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="map"

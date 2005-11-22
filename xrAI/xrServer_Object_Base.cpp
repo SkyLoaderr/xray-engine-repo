@@ -87,19 +87,20 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	m_script_version			= 0;
 	m_tClassID					= TEXT2CLSID(pSettings->r_string(caSection,"class"));
 
-	m_spawn_probability			= 1.f;
+//	m_spawn_probability			= 1.f;
 	m_spawn_flags.zero			();
-	m_spawn_flags.set			(flSpawnActive			,TRUE);
+	m_spawn_flags.set			(flSpawnEnabled			,TRUE);
 	m_spawn_flags.set			(flSpawnOnSurgeOnly		,TRUE);
 	m_spawn_flags.set			(flSpawnSingleItemOnly	,TRUE);
 	m_spawn_flags.set			(flSpawnIfDestroyedOnly	,TRUE);
 	m_spawn_flags.set			(flSpawnInfiniteCount	,TRUE);
-	m_max_spawn_count			= 1;
-	m_spawn_control				= "";
-	m_spawn_count				= 0;
-	m_last_spawn_time			= 0;
-	m_min_spawn_interval		= 0;
-	m_max_spawn_interval		= 0;
+//	m_max_spawn_count			= 1;
+//	m_spawn_control				= "";
+//	m_spawn_count				= 0;
+//	m_last_spawn_time			= 0;
+//	m_next_spawn_time			= 0;
+//	m_min_spawn_interval		= 0;
+//	m_max_spawn_interval		= 0;
 	m_ini_file					= 0;
 
 #ifndef AI_COMPILER
@@ -179,14 +180,12 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 		tNetPacket.w			(&*client_data.begin(),client_data_size);
 
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
-	tNetPacket.w_float			(m_spawn_probability);
-	tNetPacket.w_u32			(m_spawn_flags.get());
-	tNetPacket.w_stringZ		(m_spawn_control);
-	tNetPacket.w_u32			(m_max_spawn_count);
-	tNetPacket.w_u32			(m_spawn_count);
-	tNetPacket.w_u64			(m_last_spawn_time);
-	tNetPacket.w_u64			(m_min_spawn_interval);
-	tNetPacket.w_u64			(m_max_spawn_interval);
+//	tNetPacket.w_float			(m_spawn_probability);
+//	tNetPacket.w_u32			(m_spawn_flags.get());
+//	tNetPacket.w_stringZ		(m_spawn_control);
+//	tNetPacket.w_u32			(m_max_spawn_count);
+//	tNetPacket.w_u64			(m_min_spawn_interval);
+//	tNetPacket.w_u64			(m_max_spawn_interval);
 
 #ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
@@ -260,20 +259,24 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	if (m_wVersion > 79)
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 
-	if (m_wVersion > 82)
-		tNetPacket.r_float		(m_spawn_probability);
+	if (m_wVersion < 112) {
+		if (m_wVersion > 82)
+			tNetPacket.r_float		();//m_spawn_probability);
 
-	if (m_wVersion > 83) {
-		m_spawn_flags.assign	(tNetPacket.r_u32());
-		tNetPacket.r_stringZ	(m_spawn_control);
-		tNetPacket.r_u32		(m_max_spawn_count);
-		tNetPacket.r_u32		(m_spawn_count);
-		tNetPacket.r_u64		(m_last_spawn_time);
-	}
+		if (m_wVersion > 83) {
+			tNetPacket.r_u32		();//m_spawn_flags.assign(tNetPacket.r_u32());
+			shared_str				temp;
+			tNetPacket.r_stringZ	(temp);//tNetPacket.r_stringZ(m_spawn_control);
+			tNetPacket.r_u32		();//m_max_spawn_count);
+			// this stuff we do not need even in case of uncomment
+			tNetPacket.r_u32		();//m_spawn_count);
+			tNetPacket.r_u64		();//m_last_spawn_time);
+		}
 
-	if (m_wVersion > 84) {
-		tNetPacket.r_u64		(m_min_spawn_interval);
-		tNetPacket.r_u64		(m_max_spawn_interval);
+		if (m_wVersion > 84) {
+			tNetPacket.r_u64		();//m_min_spawn_interval);
+			tNetPacket.r_u64		();//m_max_spawn_interval);
+		}
 	}
 
 	u16							size;
@@ -352,18 +355,14 @@ void CSE_Abstract::FillProps				(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateToken8		(items,	PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
     PHelper().CreateU16			(items,	PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
 
-	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn probability"),			&m_spawn_probability,	0.f,			1.f);
-	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn is active"),			&m_spawn_flags,			flSpawnActive);
-	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn on surge only"),		&m_spawn_flags,			flSpawnOnSurgeOnly);
-	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn if destroyed only"),	&m_spawn_flags,			flSpawnIfDestroyedOnly);
-	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn infinite count"),		&m_spawn_flags,			flSpawnInfiniteCount);
-	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Auto destroy on spawn"),		&m_spawn_flags,			flSpawnDestroyOnSpawn);
-
-	LPCSTR						gcs = pSettings->r_string(s_name,"GroupControlSection");
-	PHelper().CreateChoose		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Group control"),				&m_spawn_control,		smSpawnItem,	0,	(void*)gcs,	16);
-
-//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Min spawn interval"),	&m_min_spawn_interval);
-//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Max spawn interval"),	&m_max_spawn_interval);
+//	LPCSTR						gcs = pSettings->r_string(s_name,"GroupControlSection");
+//	PHelper().CreateChoose		(items,PrepareKey(pref,*s_name,"Spawn\\group control"),				&m_spawn_control,		smSpawnItem,	0,	(void*)gcs,	16);
+//	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn\\enabled"),					&m_spawn_flags,			flSpawnEnabled);
+//	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Spawn\\probability"),				&m_spawn_probability,	0.f,			1.f);
+//	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn\\spawn on surge only"),		&m_spawn_flags,			flSpawnOnSurgeOnly);
+//	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn\\spawn if destroyed only"),	&m_spawn_flags,			flSpawnIfDestroyedOnly);
+//	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn\\spawn infinite count"),		&m_spawn_flags,			flSpawnInfiniteCount);
+//	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn\\auto destroy on spawn"),		&m_spawn_flags,			flSpawnDestroyOnSpawn);
 }
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec &items)
@@ -379,3 +378,19 @@ bool CSE_Abstract::validate					()
 {
 	return						(true);
 }
+
+/**
+void CSE_Abstract::save_update				(NET_Packet &tNetPacket)
+{
+	tNetPacket.w				(&m_spawn_count,sizeof(m_spawn_count));
+	tNetPacket.w				(&m_last_spawn_time,sizeof(m_last_spawn_time));
+	tNetPacket.w				(&m_next_spawn_time,sizeof(m_next_spawn_time));
+}
+
+void CSE_Abstract::load_update				(NET_Packet &tNetPacket)
+{
+	tNetPacket.r				(&m_spawn_count,sizeof(m_spawn_count));
+	tNetPacket.r				(&m_last_spawn_time,sizeof(m_last_spawn_time));
+	tNetPacket.r				(&m_next_spawn_time,sizeof(m_next_spawn_time));
+}
+/**/

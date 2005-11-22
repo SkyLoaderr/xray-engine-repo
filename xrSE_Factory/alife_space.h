@@ -30,6 +30,7 @@
 // inventory rukzak size
 #define MAX_ITEM_VOLUME				100
 #define INVALID_STORY_ID			ALife::_STORY_ID(-1)
+#define INVALID_SPAWN_STORY_ID		ALife::_SPAWN_STORY_ID(-1)
 
 class CSE_ALifeDynamicObject;
 class CSE_ALifeMonsterAbstract;
@@ -57,7 +58,8 @@ namespace ALife {
 	typedef u16	_TERRAIN_ID;								// Terrain ID
 	typedef u32	_ORGANIZATION_ID;							// Organization ID
 	typedef u32	_NEWS_ID;									// News ID
-	typedef u32 _STORY_ID;								// Subject ID
+	typedef u32 _STORY_ID;									// Story ID
+	typedef u32 _SPAWN_STORY_ID;							// Spawn Story ID
 
 	struct SOrganizationOrder {
 		CALifeOrganization		*m_tpALifeOrganization;

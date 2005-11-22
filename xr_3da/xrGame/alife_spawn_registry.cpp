@@ -23,7 +23,7 @@ CALifeSpawnRegistry::~CALifeSpawnRegistry	()
 {
 }
 
-void CALifeSpawnRegistry::save	(IWriter &memory_stream)
+void CALifeSpawnRegistry::save				(IWriter &memory_stream)
 {
 	Msg							("* Saving spawns...");
 	memory_stream.open_chunk	(SPAWN_CHUNK_DATA);
@@ -40,7 +40,7 @@ void CALifeSpawnRegistry::save	(IWriter &memory_stream)
 	memory_stream.close_chunk	();
 }
 
-void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
+void CALifeSpawnRegistry::load				(IReader &file_stream, LPCSTR game_name)
 {
 	R_ASSERT					(FS.exist(game_name));
 
@@ -67,7 +67,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	chunk0->close				();
 }
 
-void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
+void CALifeSpawnRegistry::load				(LPCSTR spawn_name)
 {
 	Msg							("* Loading spawn registry...");
 	m_spawn_name				= spawn_name;
@@ -78,7 +78,7 @@ void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
 	FS.r_close					(stream);
 }
 
-void CALifeSpawnRegistry::load	(IReader &file_stream, xrGUID *save_guid)
+void CALifeSpawnRegistry::load				(IReader &file_stream, xrGUID *save_guid)
 {
 	IReader						*chunk;
 	chunk						= file_stream.open_chunk(0);
@@ -100,6 +100,8 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, xrGUID *save_guid)
 	ai().patrol_path_storage	(*chunk);
 	chunk->close				();
 
+	build_story_spawns			();
+
 	build_spawn_anomalies		();
 	
 	build_root_spawns			();
@@ -107,28 +109,24 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, xrGUID *save_guid)
 	Msg							("* %d spawn points are successfully loaded",m_spawns.vertex_count());
 }
 
-void CALifeSpawnRegistry::save_updates			(IWriter &stream)
+void CALifeSpawnRegistry::save_updates		(IWriter &stream)
 {
 	SPAWN_GRAPH::vertex_iterator			I = m_spawns.vertices().begin();
 	SPAWN_GRAPH::vertex_iterator			E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
-		if ((*I).second->edges().empty())
-			continue;
-
 		stream.open_chunk					((*I).second->vertex_id());
 		(*I).second->data()->save_update	(stream);
 		stream.close_chunk					();
 	}
 }
 
-void CALifeSpawnRegistry::load_updates			(IReader &stream)
+void CALifeSpawnRegistry::load_updates		(IReader &stream)
 {
 	u32								vertex_id;
 	for (IReader *chunk = stream.open_chunk_iterator(vertex_id); chunk; chunk = stream.open_chunk_iterator(vertex_id,chunk)) {
 		VERIFY						(u32(ALife::_SPAWN_ID(-1)) > vertex_id);
 		const SPAWN_GRAPH::CVertex	*vertex = m_spawns.vertex(ALife::_SPAWN_ID(vertex_id));
 		VERIFY						(vertex);
-		VERIFY						(!vertex->edges().empty());
 		vertex->data()->load_update	(*chunk);
 	}
 }
@@ -159,7 +157,7 @@ void CALifeSpawnRegistry::build_spawn_anomalies	()
 	}
 }
 
-void CALifeSpawnRegistry::build_root_spawns		()
+void CALifeSpawnRegistry::build_root_spawns	()
 {
 	m_temp0.clear		();
 	m_temp1.clear		();
@@ -197,6 +195,20 @@ void CALifeSpawnRegistry::build_root_spawns		()
 	m_spawn_roots.erase						(I,m_spawn_roots.end());
 }
 
-void CALifeSpawnRegistry::update			()
+//void CALifeSpawnRegistry::update			()
+//{
+//}
+
+void CALifeSpawnRegistry::build_story_spawns()
 {
+	SPAWN_GRAPH::const_vertex_iterator	I = m_spawns.vertices().begin();
+	SPAWN_GRAPH::const_vertex_iterator	E = m_spawns.vertices().end();
+	for ( ; I != E; ++I) {
+		CSE_ALifeObject					*object = smart_cast<CSE_ALifeObject*>(&(*I).second->data()->object());
+		VERIFY							(object);
+		if (object->m_spawn_story_id == INVALID_SPAWN_STORY_ID)
+			continue;
+
+		m_spawn_story_ids.insert		(std::make_pair(object->m_spawn_story_id,(*I).first));
+	}
 }

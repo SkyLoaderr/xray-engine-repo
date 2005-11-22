@@ -52,6 +52,7 @@ struct SFillPropData{
     RTokenVec 	locations[4];
     RStringVec	level_ids;
 	RTokenVec 	story_names;
+	RTokenVec 	spawn_story_names;
 	RStringVec	character_profiles;
 
     u32			counter;
@@ -82,10 +83,12 @@ struct SFillPropData{
             for (k = 0; Ini->r_line(caSection,k,&N,&V); ++k)
                 locations[i].push_back	(xr_rtoken(V,atoi(N)));
         }
-        // level names/ids
+        
+		// level names/ids
         VERIFY					(level_ids.empty());
         for (k = 0; Ini->r_line("levels",k,&N,&V); ++k)
             level_ids.push_back	(Ini->r_string_wb(N,"caption"));
+
         // story names
         VERIFY					(story_names.empty());
         LPCSTR section 			= "story_ids";
@@ -96,6 +99,15 @@ struct SFillPropData{
 		std::sort				(story_names.begin(),story_names.end(),story_name_predicate());
 		story_names.insert		(story_names.begin(),xr_rtoken("NO STORY ID",ALife::_STORY_ID(-1)));
 
+        // spawn story names
+        VERIFY					(spawn_story_names.empty());
+        LPCSTR section 			= "spawn_story_ids";
+        R_ASSERT				(Ini->section_exist(section));
+        for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
+            spawn_story_names.push_back	(xr_rtoken(V,atoi(N)));
+
+		std::sort				(spawn_story_names.begin(),spawn_story_names.end(),story_name_predicate());
+		spawn_story_names.insert(spawn_story_names.begin(),xr_rtoken("NO SPAWN STORY ID",ALife::_SPAWN_STORY_ID(-1)));
 
 #ifndef AI_COMPILER
 		//character profiles indexes
@@ -117,6 +129,7 @@ struct SFillPropData{
             locations[i].clear	();
         level_ids.clear			();
         story_names.clear		();
+        spawn_story_names.clear	();
 		character_profiles.clear();
     }        
     void 		dec				()
@@ -217,6 +230,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_tNodeID					= u32(-1);
 	m_flags.one					();
 	m_story_id					= INVALID_STORY_ID;
+	m_spawn_story_id			= INVALID_SPAWN_STORY_ID;
 #ifdef XRGAME_EXPORTS
 	m_alife_simulator			= 0;
 #endif
@@ -271,6 +285,7 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_flags.get());
 	tNetPacket.w_stringZ		(m_ini_string);
 	tNetPacket.w				(&m_story_id,sizeof(m_story_id));
+	tNetPacket.w				(&m_spawn_story_id,sizeof(m_spawn_story_id));
 }
 
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
@@ -278,13 +293,16 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion >= 1) {
 		if (m_wVersion > 24) {
 			if (m_wVersion < 83) {
-				tNetPacket.r_float	(m_spawn_probability);
+				tNetPacket.r_float	();//m_spawn_probability);
 			}
 		}
 		else {
+			tNetPacket.r_u8		();
+			/**
 			u8					l_ucTemp;
 			tNetPacket.r_u8		(l_ucTemp);
 			m_spawn_probability	= (float)l_ucTemp;
+			/**/
 		}
 		if (m_wVersion < 83) {
 			tNetPacket.r_u32	();
@@ -308,8 +326,10 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if ((m_wVersion > 22) && (m_wVersion <= 79))
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 	
-	if ((m_wVersion > 23) && (m_wVersion < 84))
-		tNetPacket.r_stringZ	(m_spawn_control);
+	if ((m_wVersion > 23) && (m_wVersion < 84)) {
+		shared_str				temp;
+		tNetPacket.r_stringZ	(temp);//m_spawn_control);
+	}
 
 	if (m_wVersion > 49) {
 		tNetPacket.r_u32		(m_flags.flags);
@@ -323,6 +343,9 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 
 	if (m_wVersion > 61)
 		tNetPacket.r			(&m_story_id,sizeof(m_story_id));
+
+	if (m_wVersion > 111)
+		tNetPacket.r			(&m_spawn_story_id,sizeof(m_spawn_story_id));
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)
@@ -345,6 +368,7 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Used AI locations"),	&m_flags,			flUsedAI_Locations);
 #ifdef XRSE_FACTORY_EXPORTS
 	PHelper().CreateRToken32	(items,	PrepareKey(pref,*s_name,"ALife\\Story ID"),				&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
+	PHelper().CreateRToken32	(items,	PrepareKey(pref,*s_name,"ALife\\Spawn Story ID"),		&m_spawn_story_id,	&*fp_data.spawn_story_names.begin(), fp_data.spawn_story_names.size());
 #endif
 }
 

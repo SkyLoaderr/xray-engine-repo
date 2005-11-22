@@ -61,7 +61,9 @@ BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 	if (!result)
 		return						(FALSE);
 
-	shedule_unregister				();
+	if (!need_update())
+		shedule_unregister			();
+
 	setEnabled						(FALSE);
 	setVisible						(FALSE);
 
@@ -71,6 +73,12 @@ BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 	Level().space_restriction_manager().register_restrictor(this,RestrictionSpace::ERestrictorTypes(se_shape->m_space_restrictor_type));
 
 	return							(TRUE);
+}
+
+void CSpaceRestrictor::net_Destroy	()
+{
+	if (need_update())
+		shedule_unregister			();
 }
 
 bool CSpaceRestrictor::inside	(const Fsphere &sphere) const

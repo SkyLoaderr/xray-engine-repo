@@ -98,6 +98,7 @@ public:
 	u32								m_tNodeID;
 	flags32							m_flags;
 	ALife::_STORY_ID				m_story_id;
+	ALife::_SPAWN_STORY_ID			m_spawn_story_id;
 
 #ifdef XRGAME_EXPORTS
 	CALifeSimulator					*m_alife_simulator;

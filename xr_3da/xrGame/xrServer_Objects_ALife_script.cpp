@@ -52,6 +52,7 @@ void CSE_ALifeObject::script_register(lua_State *L)
 		.def			("visible_for_map",		(void (CSE_ALifeObject::*)(bool))(CSE_ALifeObject::visible_for_map))
 		.def_readonly	("m_level_vertex_id",	&CSE_ALifeObject::m_tNodeID)
 		.def_readonly	("m_game_vertex_id",	&CSE_ALifeObject::m_tGraphID)
+		.def_readonly	("m_story_id",			&CSE_ALifeObject::m_story_id)
 	];
 }
 

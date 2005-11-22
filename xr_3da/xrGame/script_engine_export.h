@@ -130,4 +130,5 @@
 #	include "alife_human_detail_path_manager.h"
 #	include "alife_smart_terrain_task.h"
 #	include "game_graph.h"
+#	include "smart_zone.h"
 #endif

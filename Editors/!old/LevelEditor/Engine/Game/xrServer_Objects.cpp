@@ -69,6 +69,78 @@ void CSE_Shape::assign_shapes	(CShapeData::shape_def* _shapes, u32 _cnt)
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_Spectator
+////////////////////////////////////////////////////////////////////////////
+CSE_Spectator::CSE_Spectator				(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+}
+
+CSE_Spectator::~CSE_Spectator				()
+{
+}
+
+u8	 CSE_Spectator::g_team					()
+{
+	return 0;
+}
+
+void CSE_Spectator::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
+{
+}
+
+void CSE_Spectator::STATE_Write				(NET_Packet	&tNetPacket)
+{
+}
+
+void CSE_Spectator::UPDATE_Read				(NET_Packet	&tNetPacket)
+{
+}
+
+void CSE_Spectator::UPDATE_Write			(NET_Packet	&tNetPacket)
+{
+}
+
+void CSE_Spectator::FillProps				(LPCSTR pref, PropItemVec& items)
+{
+  	inherited::FillProps			(pref,items);
+}
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_Temporary
+////////////////////////////////////////////////////////////////////////////
+CSE_Temporary::CSE_Temporary				(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	m_tNodeID					= u32(-1);
+}
+
+CSE_Temporary::~CSE_Temporary				()
+{
+}
+
+void CSE_Temporary::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
+{
+	tNetPacket.r_u32			(m_tNodeID);
+};
+
+void CSE_Temporary::STATE_Write				(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_u32			(m_tNodeID);
+};
+
+void CSE_Temporary::UPDATE_Read				(NET_Packet	&tNetPacket)
+{
+};
+
+void CSE_Temporary::UPDATE_Write			(NET_Packet	&tNetPacket)
+{
+};
+
+void CSE_Temporary::FillProps				(LPCSTR pref, PropItemVec& values)
+{
+};
+
+/**
+////////////////////////////////////////////////////////////////////////////
 // CSE_Event
 ////////////////////////////////////////////////////////////////////////////
 CSE_Event::CSE_Event						(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)
@@ -139,43 +211,6 @@ void CSE_Event::STATE_Write					(NET_Packet	&tNetPacket)
 
 void CSE_Event::FillProps	(LPCSTR pref, PropItemVec& values)
 {
-}
-
-////////////////////////////////////////////////////////////////////////////
-// CSE_Spectator
-////////////////////////////////////////////////////////////////////////////
-CSE_Spectator::CSE_Spectator				(LPCSTR caSection) : CSE_Abstract(caSection)
-{
-}
-
-CSE_Spectator::~CSE_Spectator				()
-{
-}
-
-u8	 CSE_Spectator::g_team					()
-{
-	return 0;
-}
-
-void CSE_Spectator::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
-{
-}
-
-void CSE_Spectator::STATE_Write				(NET_Packet	&tNetPacket)
-{
-}
-
-void CSE_Spectator::UPDATE_Read				(NET_Packet	&tNetPacket)
-{
-}
-
-void CSE_Spectator::UPDATE_Write			(NET_Packet	&tNetPacket)
-{
-}
-
-void CSE_Spectator::FillProps				(LPCSTR pref, PropItemVec& items)
-{
-  	inherited::FillProps			(pref,items);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -357,40 +392,6 @@ void CSE_Target_CS::FillProps				(LPCSTR pref, PropItemVec& items)
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_Temporary
-////////////////////////////////////////////////////////////////////////////
-CSE_Temporary::CSE_Temporary				(LPCSTR caSection) : CSE_Abstract(caSection)
-{
-	m_tNodeID					= u32(-1);
-}
-
-CSE_Temporary::~CSE_Temporary				()
-{
-}
-
-void CSE_Temporary::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
-{
-	tNetPacket.r_u32			(m_tNodeID);
-};
-
-void CSE_Temporary::STATE_Write				(NET_Packet	&tNetPacket)
-{
-	tNetPacket.w_u32			(m_tNodeID);
-};
-
-void CSE_Temporary::UPDATE_Read				(NET_Packet	&tNetPacket)
-{
-};
-
-void CSE_Temporary::UPDATE_Write			(NET_Packet	&tNetPacket)
-{
-};
-
-void CSE_Temporary::FillProps				(LPCSTR pref, PropItemVec& values)
-{
-};
-
-////////////////////////////////////////////////////////////////////////////
 // CSE_SpawnGroup
 ////////////////////////////////////////////////////////////////////////////
 
@@ -438,8 +439,9 @@ void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps		(pref,values);
-	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn single item only"),	&m_spawn_flags,	flSpawnSingleItemOnly);
+	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"Spawn\\spawn single item only"),	&m_spawn_flags,	flSpawnSingleItemOnly);
 }
+/**/
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_PHSkeleton

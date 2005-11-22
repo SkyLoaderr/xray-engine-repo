@@ -197,10 +197,10 @@ void CALifeUpdateManager::update(bool switch_objects, bool spawn_update, bool sc
 				graph().level().update	(CSwitchPredicate(this));
 			STOP_PROFILE
 
-			START_PROFILE("ALife/spawn");
-			if (spawn_update)
-				spawns().update			();
-			STOP_PROFILE
+//			START_PROFILE("ALife/spawn");
+//			if (spawn_update)
+//				spawns().update			();
+//			STOP_PROFILE
 
 			START_PROFILE("ALife/scheduled");
 			if (scheduled_update)

@@ -32,31 +32,33 @@ private:
 	typedef xr_vector<CPlanes>	BOXES;
 
 private:
-	mutable SPHERES	m_spheres;
-	mutable BOXES	m_boxes;
-	mutable Fsphere	m_selfbounds;
-	mutable bool	m_actuality;
+	mutable SPHERES				m_spheres;
+	mutable BOXES				m_boxes;
+	mutable Fsphere				m_selfbounds;
+	mutable bool				m_actuality;
 
 private:
-	IC		void	actual				(bool value) const;
-			void	prepare				() const;
-			bool	prepared_inside		(const Fsphere &sphere) const;
+	IC		void				actual				(bool value) const;
+			void				prepare				() const;
+			bool				prepared_inside		(const Fsphere &sphere) const;
 
 public:
-	IC				CSpaceRestrictor	();
-	virtual			~CSpaceRestrictor	();
-	virtual	BOOL	net_Spawn			(CSE_Abstract* data);
-			bool	inside				(const Fsphere &sphere) const;
-	virtual void	Center				(Fvector &C) const;
-	virtual float	Radius				() const;
-	virtual BOOL	UsedAI_Locations	();
-	virtual void	spatial_move		();
-	IC		bool	actual				() const;
-	virtual	CSpaceRestrictor	*cast_restrictor	()	{return this;}
+	IC							CSpaceRestrictor	();
+	virtual						~CSpaceRestrictor	();
+	virtual	BOOL				net_Spawn			(CSE_Abstract* data);
+	virtual	void				net_Destroy			();
+			bool				inside				(const Fsphere &sphere) const;
+	virtual void				Center				(Fvector &C) const;
+	virtual float				Radius				() const;
+	virtual BOOL				UsedAI_Locations	();
+	virtual void				spatial_move		();
+	IC		bool				actual				() const;
+	virtual	CSpaceRestrictor	*cast_restrictor	() {return this;}
+	virtual	bool				need_update			() {return false;};
 
 public:
 #ifdef DEBUG
-	virtual void	OnRender			();
+	virtual void				OnRender			();
 #endif
 };
 
