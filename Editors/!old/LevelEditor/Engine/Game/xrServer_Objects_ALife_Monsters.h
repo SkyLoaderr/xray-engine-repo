@@ -451,6 +451,7 @@ public:
 	virtual bool					natural_weapon			() const {return false;}
 	virtual bool					natural_detector		() const {return false;}
 	IC		CALifeHumanBrain		&brain					() {VERIFY(m_brain); return(*m_brain);}
+	virtual CALifeMonsterBrain		*create_brain			();
 
 #ifdef XRGAME_EXPORTS
 	virtual	void					update					();
@@ -512,7 +513,6 @@ private:
 
 public:
 	IC		CALifeOnlineOfflineGroupBrain	&brain	() const;
-	virtual CALifeMonsterBrain		*create_brain			();
 
 public:
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType &tHitType, float &fHitPower);
