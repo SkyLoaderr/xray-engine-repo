@@ -267,6 +267,19 @@ function clearAbuse(npc)
 	xr_abuse.clear_abuse(npc)
 end
 
+
+---Выключение динамической лампочки (hanging_lamp)
+function turn_off(actor, npc, p)
+	local obj = level_object_by_sid(p[1])
+
+	if not obj then
+		abort("TURN_OFF [%s]. Target object does not exist", npc:name())
+		return
+	end
+	obj:get_hanging_lamp():turn_off()
+end
+
+
 ------------------------------------------------------------------------------------------------
 
 -- Кто-то из участников сценки вступил в бой - теперь нужно пообижать всех на всех
