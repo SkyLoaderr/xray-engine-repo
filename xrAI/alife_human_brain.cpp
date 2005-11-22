@@ -13,9 +13,9 @@
 
 #ifdef XRGAME_EXPORTS
 #	include "alife_human_object_handler.h"
-#	include "alife_human_movement_manager.h"
-#	include "alife_human_detail_path_manager.h"
-#	include "alife_human_patrol_path_manager.h"
+#	include "alife_monster_movement_manager.h"
+#	include "alife_monster_detail_path_manager.h"
+#	include "alife_monster_patrol_path_manager.h"
 #	include "ai_space.h"
 #	include "ef_storage.h"
 #	include "ef_primary.h"
@@ -36,24 +36,15 @@
 #define MAX_ITEM_MEDIKIT_COUNT		3
 #define MAX_AMMO_ATTACH_COUNT		10
 
-CALifeHumanBrain::CALifeHumanBrain			(object_type *object)
+CALifeHumanBrain::CALifeHumanBrain			(object_type *object) : inherited(object)
 {
 	VERIFY							(object);
 	m_object						= object;
-	m_last_search_time				= 0;
-	m_smart_terrain					= 0;
 
 #ifdef XRGAME_EXPORTS
 	m_object_handler				= xr_new<CALifeHumanObjectHandler>(object);
-	m_movement_manager				= xr_new<CALifeHumanMovementManager>(object);
 #endif
 	
-#ifdef XRGAME_EXPORTS
-	u32								hours,minutes,seconds;
-	sscanf							(pSettings->r_string(this->object().name(),"smart_terrain_choose_interval"),"%d:%d:%d",&hours,&minutes,&seconds);
-	m_time_interval					= (u32)generate_time(1,1,1,hours,minutes,seconds);
-#endif
-
 	m_dwTotalMoney					= 0;
 	m_tpKnownCustomers.clear		();
 	m_cpEquipmentPreferences.resize	(5);
@@ -70,17 +61,12 @@ CALifeHumanBrain::CALifeHumanBrain			(object_type *object)
 
 	for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; ++i)
 		m_cpMainWeaponPreferences[i]= u8(::Random.randI(3));
-
-//	m_fSearchSpeed					= pSettings->r_float(object->name(), "search_speed");
-//	m_fGoingSuccessProbability		= pSettings->r_float(object->name(), "going_item_detect_probability");
-//	m_fSearchSuccessProbability		= pSettings->r_float(object->name(), "search_item_detect_probability");
 }
 
 CALifeHumanBrain::~CALifeHumanBrain			()
 {
 #ifdef XRGAME_EXPORTS
 	xr_delete						(m_object_handler);
-	xr_delete						(m_movement_manager);
 #endif
 }
 
@@ -119,113 +105,3 @@ void CALifeHumanBrain::on_state_read		(NET_Packet &packet)
 	load_data						(m_cpEquipmentPreferences,packet);
 	load_data						(m_cpMainWeaponPreferences,packet);
 }
-
-#ifdef XRGAME_EXPORTS
-
-bool CALifeHumanBrain::perform_attack		()
-{
-	return							(false);
-}
-
-ALife::EMeetActionType CALifeHumanBrain::action_type	(CSE_ALifeSchedulable *tpALifeSchedulable, const int &iGroupIndex, const bool &bMutualDetection)
-{
-	return							(ALife::eMeetActionTypeIgnore);
-}
-
-void CALifeHumanBrain::on_surge				()
-{
-}
-
-void CALifeHumanBrain::on_register			()
-{
-}
-
-void CALifeHumanBrain::on_unregister		()
-{
-}
-
-void CALifeHumanBrain::on_location_change	()
-{
-}
-
-IC	CSE_ALifeSmartZone &CALifeHumanBrain::smart_terrain	()
-{
-	VERIFY							(object().m_smart_terrain_id != 0xffff);
-	if (m_smart_terrain && (object().m_smart_terrain_id == m_smart_terrain->ID))
-		return						(*m_smart_terrain);
-
-	m_smart_terrain					= ai().alife().smart_terrains().object(object().m_smart_terrain_id);
-	VERIFY							(m_smart_terrain);
-	return							(*m_smart_terrain);
-}
-
-void CALifeHumanBrain::process_task			()
-{
-	CALifeSmartTerrainTask			*task = smart_terrain().task(&object());
-	THROW3							(task,"smart terrain returned nil task, while npc is registered in it",smart_terrain().name_replace());
-	movement().path_type			(MovementManager::ePathTypeGamePath);
-	movement().detail().target		(*task);
-}
-
-void CALifeHumanBrain::select_task			()
-{
-	if (object().m_smart_terrain_id != 0xffff)
-		return;
-
-	ALife::_TIME_ID					current_time = ai().alife().time_manager().game_time();
-
-	if (m_last_search_time + m_time_interval > current_time)
-		return;
-
-	m_last_search_time				= current_time;
-
-	float							best_value = -1.f;
-	CALifeSmartTerrainRegistry::OBJECTS::const_iterator	I = ai().alife().smart_terrains().objects().begin();
-	CALifeSmartTerrainRegistry::OBJECTS::const_iterator	E = ai().alife().smart_terrains().objects().end();
-	for ( ; I != E; ++I) {
-		if (!(*I).second->enabled(&object()))
-			continue;
-
-		float						value = (*I).second->suitable(&object());
-		if (value > best_value) {
-			best_value				= value;
-			object().m_smart_terrain_id	= (*I).second->ID;
-		}
-	}
-
-	if (object().m_smart_terrain_id != 0xffff) {
-		smart_terrain().register_npc	(&object());
-		m_last_search_time				= 0;
-	}
-}
-
-void CALifeHumanBrain::update				()
-{
-#if 0//def DEBUG
-	if (!Level().MapManager().HasMapLocation("debug_stalker",object().ID)) {
-		CMapLocation				*map_location = 
-			Level().MapManager().AddMapLocation(
-				"debug_stalker",
-				object().ID
-			);
-
-		map_location->SetHint		(object().name_replace());
-	}
-#endif
-
-	select_task						();
-	
-	if (object().m_smart_terrain_id != 0xffff)
-		process_task				();
-	else
-		default_behaviour			();
-
-	movement().update				();
-}
-
-void CALifeHumanBrain::default_behaviour	()
-{
-	movement().path_type			(MovementManager::ePathTypeNoPath);
-}
-
-#endif

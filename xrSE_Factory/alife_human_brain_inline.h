@@ -19,9 +19,3 @@ IC	CALifeHumanBrain::object_handler_type &CALifeHumanBrain::objects	() const
 	VERIFY		(m_object_handler);
 	return		(*m_object_handler);
 }
-
-IC	CALifeHumanBrain::movement_manager_type &CALifeHumanBrain::movement	() const
-{
-	VERIFY		(m_movement_manager);
-	return		(*m_movement_manager);
-}

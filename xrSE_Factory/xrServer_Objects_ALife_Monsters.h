@@ -14,6 +14,7 @@
 #include "character_info_defs.h"
 #include "associative_vector.h"
 
+class CALifeMonsterBrain;
 class CALifeHumanBrain;
 class CALifeOnlineOfflineGroupBrain;
 
@@ -265,6 +266,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	shared_str							m_out_space_restrictors;
 	shared_str							m_in_space_restrictors;
 	svector<float,ALife::eHitTypeMax>	m_fpImmunityFactors;
+
+	ALife::_OBJECT_ID					m_smart_terrain_id;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	virtual							~CSE_ALifeMonsterAbstract();
@@ -276,9 +279,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
 	virtual CSE_ALifeMonsterAbstract*cast_monster_abstract	() {return this;};
 
+	IC		CALifeMonsterBrain		&brain					() {VERIFY(m_brain); return(*m_brain);}
+	virtual CALifeMonsterBrain		*create_brain			();
 	virtual u32						ef_creature_type		() const;
 	virtual u32						ef_weapon_type			() const;
 	virtual u32						ef_detector_type		() const;
+
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
@@ -292,6 +298,11 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual void					on_surge				();
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
+
+private:
+	CALifeMonsterBrain				*m_brain;
+
+public:
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterAbstract)
 #define script_type_list save_type_list(CSE_ALifeMonsterAbstract)
@@ -427,8 +438,6 @@ add_to_type_list(CSE_ALifeMonsterBase)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 public:
 	ALife::_OBJECT_ID				m_group_id;
-	ALife::_OBJECT_ID				m_smart_terrain_id;
-
 
 public:
 									CSE_ALifeHumanAbstract	(LPCSTR caSection);

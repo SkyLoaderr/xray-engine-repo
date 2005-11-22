@@ -16,6 +16,7 @@
 #include "alife_object_registry.h"
 #include "ef_storage.h"
 #include "ef_pattern.h"
+#include "alife_monster_brain.h"
 
 void CSE_ALifeMonsterAbstract::on_surge		()
 {
@@ -26,6 +27,11 @@ void CSE_ALifeMonsterAbstract::on_surge		()
 
 void CSE_ALifeMonsterAbstract::update		()
 {
+	if (!bfActive())
+		return;
+
+	brain().update					();
+/**
 	GameGraph::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool				bContinue = true;
 	while (bContinue && bfActive()) {
@@ -107,6 +113,7 @@ void CSE_ALifeMonsterAbstract::update		()
 		}
 	}
 	m_tTimeID					= ai().alife().time_manager().game_time();
+/**/
 }
 
 CSE_ALifeItemWeapon	*CSE_ALifeMonsterAbstract::tpfGetBestWeapon(ALife::EHitType &tHitType, float &fHitPower)

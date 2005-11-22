@@ -1216,10 +1216,19 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	setup_location_types		(m_tpaTerrain,pSettings,pSettings->r_string(caSection,"terrain"));
 
 	m_tpBestDetector			= this;
+
+	m_brain						= 0;
+	m_smart_terrain_id			= 0xffff;
 }
 
 CSE_ALifeMonsterAbstract::~CSE_ALifeMonsterAbstract()
 {
+	xr_delete					(m_brain);
+}
+
+CALifeMonsterBrain *CSE_ALifeMonsterAbstract::create_brain	()
+{
+	return						(xr_new<CALifeMonsterBrain>(this));
 }
 
 CSE_Abstract *CSE_ALifeMonsterAbstract::init			()
@@ -1229,6 +1238,8 @@ CSE_Abstract *CSE_ALifeMonsterAbstract::init			()
 	
 	if (spawn_ini().section_exist("alife") && spawn_ini().line_exist("alife","terrain"))
 		setup_location_types	(m_tpaTerrain,&spawn_ini(),spawn_ini().r_string("alife","terrain"));
+
+	m_brain						= create_brain();
 
 	return						(base());
 }
@@ -1263,6 +1274,7 @@ void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	inherited1::STATE_Write		(tNetPacket);
 	tNetPacket.w_stringZ		(m_out_space_restrictors);
 	tNetPacket.w_stringZ		(m_in_space_restrictors);
+	tNetPacket.w				(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
 }
 
 void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -1273,6 +1285,9 @@ void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		if (m_wVersion > 73)
 			tNetPacket.r_stringZ(m_in_space_restrictors);
 	}
+
+	if (m_wVersion > 111)
+		tNetPacket.r			(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
 }
 
 void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
@@ -1300,7 +1315,10 @@ void CSE_ALifeMonsterAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 void CSE_ALifeMonsterAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProps		(pref,items);
+	
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\No move in offline"),	&m_flags,			flOfflineNoMove);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"Use smart terrain tasks"),	&m_flags,			flUseSmartTerrains);
+
 	if (pSettings->line_exist(s_name,"SpaceRestrictionSection")) {
 		LPCSTR					gcs = pSettings->r_string(s_name,"SpaceRestrictionSection");
 		PHelper().CreateChoose	(items, PrepareKey(pref,*s_name,"out space restrictions"),&m_out_space_restrictors, smSpawnItem, 0, (void*)gcs, 16);
@@ -1904,22 +1922,17 @@ void CSE_ALifeMonsterBase::FillProps	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection)
 {
-	m_brain						= 0;
 	m_group_id					= 0xffff;
-	m_smart_terrain_id			= 0xffff;
 }
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
-	xr_delete					(m_brain);
 }
 
 CSE_Abstract *CSE_ALifeHumanAbstract::init			()
 {
 	inherited1::init			();
 	inherited2::init			();
-
-	m_brain						= xr_new<CALifeHumanBrain>(this);
 
 	return						(base());
 }
@@ -1939,7 +1952,6 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
 	brain().on_state_write		(tNetPacket);
-	tNetPacket.w				(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
 }
 
 void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
@@ -1947,7 +1959,7 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
 	brain().on_state_read		(tNetPacket);
-	if (m_wVersion >= 110)
+	if ((m_wVersion >= 110) && (m_wVersion < 112))
 		tNetPacket.r			(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
 }
 
@@ -1955,18 +1967,13 @@ void CSE_ALifeHumanAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Write	(tNetPacket);
 	inherited2::UPDATE_Write	(tNetPacket);
-//	tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
-//	tNetPacket.w_u32			(m_dwCurTaskLocation);
-//	tNetPacket.w_u32			(m_dwCurTaskID);
 };
 
 void CSE_ALifeHumanAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
-//	tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
-//	tNetPacket.r_u32			(m_dwCurTaskLocation);
-//	tNetPacket.r_u32			(m_dwCurTaskID);
+	
 	if (m_wVersion < 110) {
 		tNetPacket.r_u32		();
 		tNetPacket.r_u32		();
@@ -1979,7 +1986,6 @@ void CSE_ALifeHumanAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
   	inherited1::FillProps		(pref,items);
   	inherited2::FillProps		(pref,items);
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"Group behaviour"),			&m_flags,			flGroupBehaviour);
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"Use smart terrain tasks"),	&m_flags,			flUseSmartTerrains);
 }
 
 #ifdef XRGAME_EXPORTS

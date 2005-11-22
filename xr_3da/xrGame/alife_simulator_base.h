@@ -107,7 +107,6 @@ public:
 	}
 
 protected:
-			void								create						(CSE_ALifeDynamicObject	*&object, CSE_ALifeDynamicObject *spawn_object,	const ALife::_SPAWN_ID &spawn_id);
 			void								unload						();
 	virtual	void								reload						(LPCSTR section);
 	IC		void								setup_command_line			(shared_str *command_line);
@@ -119,6 +118,7 @@ public:
 			void								register_object				(CSE_ALifeDynamicObject	*object, bool add_object = false);
 			void								unregister_object			(CSE_ALifeDynamicObject *object, bool alife_query = true);
 			void								release						(CSE_Abstract			*object, bool alife_query = true);
+			void								create						(CSE_ALifeDynamicObject	*&object, CSE_ALifeDynamicObject *spawn_object,	const ALife::_SPAWN_ID &spawn_id);
 			void								create						(CSE_ALifeObject		*object);
 			CSE_Abstract						*create						(CSE_ALifeGroupAbstract	*object, CSE_ALifeDynamicObject	*j);
 			CSE_Abstract						*spawn_item					(LPCSTR section,		const Fvector &position, u32 level_vertex_id, GameGraph::_GRAPH_ID game_vertex_id, u16 parent_id);

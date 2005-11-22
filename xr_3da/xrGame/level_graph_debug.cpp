@@ -20,8 +20,8 @@
 #include "alife_graph_registry.h"
 #include "alife_object_registry.h"
 #include "alife_human_brain.h"
-#include "alife_human_movement_manager.h"
-#include "alife_human_detail_path_manager.h"
+#include "alife_monster_movement_manager.h"
+#include "alife_monster_detail_path_manager.h"
 
 u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distance);
 

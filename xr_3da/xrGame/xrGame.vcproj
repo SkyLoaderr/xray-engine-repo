@@ -1644,54 +1644,6 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="movement_manager"
-								Filter="">
-								<File
-									RelativePath=".\alife_human_movement_manager.cpp">
-								</File>
-								<File
-									RelativePath=".\alife_human_movement_manager.h">
-								</File>
-								<File
-									RelativePath=".\alife_human_movement_manager_inline.h">
-								</File>
-								<File
-									RelativePath=".\alife_human_movement_manager_script.cpp">
-								</File>
-								<Filter
-									Name="detail_path_manager"
-									Filter="">
-									<File
-										RelativePath=".\alife_human_detail_path_manager.cpp">
-									</File>
-									<File
-										RelativePath=".\alife_human_detail_path_manager.h">
-									</File>
-									<File
-										RelativePath=".\alife_human_detail_path_manager_inline.h">
-									</File>
-									<File
-										RelativePath=".\alife_human_detail_path_manager_script.cpp">
-									</File>
-								</Filter>
-								<Filter
-									Name="patrol_path_manager"
-									Filter="">
-									<File
-										RelativePath=".\alife_human_patrol_path_manager.cpp">
-									</File>
-									<File
-										RelativePath=".\alife_human_patrol_path_manager.h">
-									</File>
-									<File
-										RelativePath=".\alife_human_patrol_path_manager_inline.h">
-									</File>
-									<File
-										RelativePath=".\alife_human_patrol_path_manager_script.cpp">
-									</File>
-								</Filter>
-							</Filter>
-							<Filter
 								Name="object_handler"
 								Filter="">
 								<File
@@ -1721,6 +1673,70 @@
 							<File
 								RelativePath=".\alife_monster_abstract.cpp">
 							</File>
+							<Filter
+								Name="brain"
+								Filter="">
+								<File
+									RelativePath=".\alife_monster_brain.cpp">
+								</File>
+								<File
+									RelativePath=".\alife_monster_brain.h">
+								</File>
+								<File
+									RelativePath=".\alife_monster_brain_inline.h">
+								</File>
+								<File
+									RelativePath=".\alife_monster_brain_script.cpp">
+								</File>
+							</Filter>
+							<Filter
+								Name="movement_manager"
+								Filter="">
+								<File
+									RelativePath=".\alife_monster_movement_manager.cpp">
+								</File>
+								<File
+									RelativePath=".\alife_monster_movement_manager.h">
+								</File>
+								<File
+									RelativePath=".\alife_monster_movement_manager_inline.h">
+								</File>
+								<File
+									RelativePath=".\alife_monster_movement_manager_script.cpp">
+								</File>
+								<Filter
+									Name="detail_path_manager"
+									Filter="">
+									<File
+										RelativePath=".\alife_monster_detail_path_manager.cpp">
+									</File>
+									<File
+										RelativePath=".\alife_monster_detail_path_manager.h">
+									</File>
+									<File
+										RelativePath=".\alife_monster_detail_path_manager_inline.h">
+									</File>
+									<File
+										RelativePath=".\alife_monster_detail_path_manager_script.cpp">
+									</File>
+								</Filter>
+								<Filter
+									Name="patrol_path_manager"
+									Filter="">
+									<File
+										RelativePath=".\alife_monster_patrol_path_manager.cpp">
+									</File>
+									<File
+										RelativePath=".\alife_monster_patrol_path_manager.h">
+									</File>
+									<File
+										RelativePath=".\alife_monster_patrol_path_manager_inline.h">
+									</File>
+									<File
+										RelativePath=".\alife_monster_patrol_path_manager_script.cpp">
+									</File>
+								</Filter>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="object"

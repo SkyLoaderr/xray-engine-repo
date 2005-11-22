@@ -16,6 +16,7 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "restriction_space.h"
 #include "alife_graph_registry.h"
+#include "alife_spawn_registry.h"
 
 using namespace luabind;
 
@@ -136,6 +137,20 @@ u32 get_level_id(CALifeSimulator *self)
 	return						(self->graph().level().level_id());
 }
 
+CSE_ALifeDynamicObject *CALifeSimulator__create	(CALifeSimulator *self, ALife::_SPAWN_ID spawn_id)
+{
+	const CALifeSpawnRegistry::SPAWN_GRAPH::CVertex	*vertex = ai().alife().spawns().spawns().vertex(spawn_id);
+	THROW2								(vertex,"Invalid spawn id!");
+
+	CSE_ALifeDynamicObject				*spawn = smart_cast<CSE_ALifeDynamicObject*>(&vertex->data()->object());
+	THROW								(spawn);
+
+	CSE_ALifeDynamicObject				*object;
+	self->create						(object,spawn,spawn_id);
+
+	return								(object);
+}
+
 void CALifeSimulator::script_register(lua_State *L)
 {
 	module(L)
@@ -157,9 +172,11 @@ void CALifeSimulator::script_register(lua_State *L)
 			.def("add_out_restriction",		&add_out_restriction)
 			.def("remove_in_restriction",	&remove_in_restriction)
 			.def("remove_out_restriction",	&remove_out_restriction)
-			.def("remove_all_restrictions",	&CALifeSimulator::remove_all_restrictions),
+			.def("remove_all_restrictions",	&CALifeSimulator::remove_all_restrictions)
+			.def("create",					&CALifeSimulator__create)
+			.def("create",					&CALifeSimulator::spawn_item)
 
-		def("alife",						&alife)
+		,def("alife",						&alife)
 	];
 
 	VERIFY						(story_ids.empty());

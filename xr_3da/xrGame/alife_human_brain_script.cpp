@@ -8,21 +8,14 @@
 
 #include "stdafx.h"
 #include "alife_human_brain.h"
-#include "alife_human_movement_manager.h"
 #include "script_space.h"
 
 using namespace luabind;
-
-CALifeHumanMovementManager *get_movement(const CALifeHumanBrain *brain)
-{
-	return	(&brain->movement());
-}
 
 void CALifeHumanBrain::script_register	(lua_State *L)
 {
 	module(L)
 	[
-		class_<CALifeHumanBrain>("CALifeHumanBrain")
-			.def("movement",	&get_movement)
+		class_<CALifeHumanBrain,CALifeMonsterBrain>("CALifeHumanBrain")
 	];
 }
