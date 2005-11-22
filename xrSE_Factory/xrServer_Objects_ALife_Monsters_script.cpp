@@ -24,6 +24,7 @@ void CSE_ALifeTraderAbstract::script_register(lua_State *L)
 //			.def(		constructor<LPCSTR>())
 #ifdef XRGAME_EXPORTS
 			.def("community",		CommunityName)
+			.def("profile_name",	character_profile)
 #endif // XRGAME_EXPORTS
 	];
 }
