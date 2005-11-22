@@ -727,7 +727,7 @@ void CUIBuyWeaponWnd::OnBtnBulletBuy(int slot){
 
 	item = UIBagWnd.GetItemBySectoin(single_item);
 	if (item)
-        SendMessage(item, DRAG_DROP_ITEM_DB_CLICK, NULL);
+        GetTop()->SendMessage(item, DRAG_DROP_ITEM_DB_CLICK, NULL);
 }
 
 bool CUIBuyWeaponWnd::ClearTooExpensiveItems(){
