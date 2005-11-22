@@ -1476,8 +1476,8 @@ void CActor::MoveArtefactBelt(const CArtefact* artefact, bool on_belt)
 		xr_vector<const CArtefact*>::iterator it = std::remove(m_ArtefactsOnBelt.begin(), m_ArtefactsOnBelt.end(), artefact);
 		VERIFY(it != m_ArtefactsOnBelt.end());
 		m_ArtefactsOnBelt.erase(it);
-	}
-	if (Level().CurrentViewEntity() == this)
+	}	
+	if (Level().CurrentViewEntity() == this || Level().CurrentViewEntity()->CLS_ID != CLSID_OBJECT_ACTOR)
 		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);
 }
 #define ARTEFACTS_UPDATE_TIME 100
