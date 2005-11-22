@@ -12,6 +12,7 @@ local bandits_kamp_count = 6
 --------------------------------------------------------------------------
 -- General
 --------------------------------------------------------------------------
+local t = {}
 local gulags = {}
 
 -- Job -------------------------------------------------------------------
@@ -107,7 +108,6 @@ end
 
 -- Jobs ------------------------------------------------------------------
 function load_job_killers(sj, gname, type, squad, groups)
-    local t = 0
     local i, v, j = 0, 0, 0
     local prior, pred, gr = 0, 0, 0
 
@@ -146,7 +146,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     -- base guard
 	t = { section = "logic@" .. gname .. "_base_guard",
 		idle = 0,
-		prior = 12, state = {0},
+		prior = 12, state = {0}, -- 12
 		squad = squad, group = groups[6],
 		in_rest = "cit_jail_restr", out_rest = "",
 		predicate = k_predicate_v
@@ -182,7 +182,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     local kamps = {1, 2, 4}
     for i, v in pairs({2, 1, 2}) do
         for j = 1, v do
-	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_patrol",
+	        t = { section = "logic@" .. gname .. "_kamp" .. kamps[i] .. "_patrol",
 		        idle = 0,
 		        prior = prior[i], state = {0},
 		        squad = squad, group = groups[kamps[i]],
@@ -207,6 +207,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 
     -- kamps
     prior = {2, 4, 1, 6}
+    pred = {k_predicate_v, k_predicate_v, k_predicate_g, k_predicate_v}
     for i, v in pairs({2, 2, 3, 2}) do
         for j = 1, v do
 	        t = { section = "logic@" .. gname .. "_kamp" .. i,
@@ -214,7 +215,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		        prior = prior[i], state = {0},
 		        squad = squad, group = groups[i],
 		        in_rest = "cit_jail_restr", out_rest = "",
-		        predicate = k_predicate_v
+		        predicate = pred[i]
 	        }
 	        table.insert(sj, t)
         end
@@ -332,11 +333,11 @@ function load_ltx_killers(gname, type)
     -- patrols in kamp
     delays = {40, 30, 60}
     for i, v in pairs({1, 2, 4}) do
-	    res = res.."[logic@" .. gname .. "_kamp" .. i .. "_patrol]\n" ..
-                   "active          = patrol@" .. gname .. "_kamp" .. i .. "_patrol\n" ..
+	    res = res.."[logic@" .. gname .. "_kamp" .. v .. "_patrol]\n" ..
+                   "active          = patrol@" .. gname .. "_kamp" .. v .. "_patrol\n" ..
                    "combat_ignore   = combat_ignore\n" ..
 
-                   "[patrol@" .. gname .. "_kamp" .. i .. "_patrol]\n" ..
+                   "[patrol@" .. gname .. "_kamp" .. v .. "_patrol]\n" ..
                    "path_walk           = kamp" .. v .. "_patrol_walk\n" ..
                    --"path_look           = kamp" .. v .. "\n" ..
                    "formation           = line\n" ..
@@ -345,7 +346,7 @@ function load_ltx_killers(gname, type)
 
                    "[kamp@" .. gname .. "_kamp" .. v .. "_patrol]\n" ..
                    "center_point        = kamp" .. v .. "\n" ..
-                   "on_timer            = " .. delays[i] .. "000 | patrol@" .. gname .. "_kamp" .. i .. "_patrol\n" ..
+                   "on_timer            = " .. delays[i] .. "000 | patrol@" .. gname .. "_kamp" .. v .. "_patrol\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -438,7 +439,6 @@ end
 
 -- Jobs ------------------------------------------------------------------
 function load_job_bandits(sj, gname, type, squad, groups)
-    local t = 0
     local i, v, j = 0, 0, 0
     local prior, pred, gr = 0, 0, 0
 
