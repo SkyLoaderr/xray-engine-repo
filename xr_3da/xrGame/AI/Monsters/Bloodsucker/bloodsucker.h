@@ -54,10 +54,10 @@ public:
 	virtual void			net_Destroy				();
 
 	virtual	void			Load					(LPCSTR section);
-	virtual	void			PitchCorrection			() {}
 
 	virtual	void			CheckSpecParams			(u32 spec_params);
-	virtual bool			ability_invisibility	() {return true;}
+	virtual bool			ability_invisibility		() {return true;}
+	virtual bool			ability_pitch_correction	() {return false;}
 
 
 	virtual	void			post_fsm_update			();

@@ -183,6 +183,7 @@ public:
 	virtual bool			ability_run_attack				() {return false;}
 	virtual bool			ability_rotation_jump			() {return false;}
 	virtual bool			ability_jump_over_physics		() {return false;}
+	virtual bool			ability_pitch_correction		() {return true;}
 	// ---------------------------------------------------------------------------------
 	
 	virtual void			event_on_step					() {}

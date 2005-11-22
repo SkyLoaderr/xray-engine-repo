@@ -73,9 +73,6 @@ public:
 	virtual void	net_Relcase			(CObject *O);
 
 	virtual	void	CheckSpecParams		(u32 spec_params);
-
-	virtual	void	PitchCorrection		() {}
-
 	virtual void	InitThink			();
 
 	virtual void	create_base_controls();	
@@ -83,6 +80,8 @@ public:
 	virtual const MonsterSpace::SBoneRotation &head_orientation	() const;
 
 	virtual void	TranslateActionToPathParams	();
+
+	virtual bool	ability_pitch_correction () {return false;}
 
 	//-------------------------------------------------------------------
 

@@ -94,6 +94,8 @@ void CControlDirection::update_frame()
 
 void CControlDirection::pitch_correction()
 {
+	if (!m_object->ability_pitch_correction()) return;
+
 	// extended feature to pitch by path (wall climbing)
 	// distance between two travel point must be more than 1.f
 	if (m_object->control().path_builder().is_moving_on_path() && 

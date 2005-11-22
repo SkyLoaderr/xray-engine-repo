@@ -2,6 +2,7 @@
 #include "control_movement.h"
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
+#include "../../PHMovementControl.h"
 
 #define PREVIOUS	0
 #define CURRENT		1
@@ -30,7 +31,7 @@ void CControlMovement::update_frame()
 	m_man->path_builder().set_desirable_speed	(m_velocity_current);
 
 	// update position stack
-	if (m_pos_stack[CURRENT].position.similar(m_object->Position(), 0.005f)) {
+	if (m_pos_stack[CURRENT].position.similar(m_object->Position())) {
 		m_pos_stack[CURRENT].time		= Device.dwTimeGlobal;
 	} else {
 		m_pos_stack[PREVIOUS].position	= m_pos_stack[CURRENT].position;
@@ -43,5 +44,11 @@ void CControlMovement::update_frame()
 
 float CControlMovement::real_velocity()
 {
+	CPHMovementControl		*movement_control = m_object->movement_control();
+	VERIFY					(movement_control);
+
+	if (movement_control->IsCharacterEnabled())
+		return				(movement_control->GetVelocityActual());
+
 	return	(m_pos_stack[CURRENT].position.distance_to(m_pos_stack[PREVIOUS].position)/ (float(m_pos_stack[CURRENT].time - m_pos_stack[PREVIOUS].time)/1000.f));
 }

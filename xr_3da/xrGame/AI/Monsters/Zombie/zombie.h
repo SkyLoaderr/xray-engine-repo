@@ -26,7 +26,7 @@ public:
 	
 	virtual void	Hit					(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type);
 
-	virtual	void	PitchCorrection		() {}
+	virtual bool	ability_pitch_correction () {return false;}
 
 	virtual void	shedule_Update		(u32 dt);
 	
