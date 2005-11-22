@@ -259,7 +259,10 @@ function se_smart_terrain:initialize()
 		sect = "gulag1"
 
 		if not ini:section_exist( sect ) then
-			abort( "[smart_terrain %s] no configuration!", self:name() )
+--			abort( "[smart_terrain %s] no configuration!", self:name() )
+			printf( "[smart_terrain %s] no configuration!", self:name() )
+			self.disabled = true
+			return
 		end
 	end
 
@@ -341,6 +344,7 @@ end
 Если у объекта появился хоть один эксклюзивный smart terrain, то он будет согласен идти только в него.
 Если не появилось ни одного эксклюзивного, то он согласен идти в любой.
 ]]
+-- TODO а если в начале эксклюзивный, а потом в любой?
 function se_smart_terrain:obj_accepts_smart_terrain( obj )
 	if obj:get_smart_terrain_conditions() then
 		local any_exclusive = false
