@@ -83,6 +83,13 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	st.on_press  = xr_logic.cfg_get_condlist(ini, section, "on_press", npc)
 
+	st.tooltip  = utils.cfg_get_string(ini, section, "tooltip", npc, false, "")
+	if st.tooltip then
+		npc:set_tip_text(st.tooltip)
+	else
+		npc:set_tip_text("")
+	end
+
 	st.anim = utils.cfg_get_string(ini, section, "anim", npc, true, "")
 	st.blending = utils.cfg_get_bool (ini, section, "anim_blend", npc, false, true)
     if st.blending == nil then 	
