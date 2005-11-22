@@ -286,15 +286,90 @@ $spawn				= "monsters\dogs\dog_01_weak"
 visual				= monsters\dog\dog
 panic_threshold		= 0.5
 rank				= 0
+immunities_sect		= dog_immunities_weak
+attack_params		= dog_attack_params_weak
+
+[dog_immunities_weak]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.70
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.70
+
+[dog_attack_params_weak]
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist|
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0 =	  	0.35,		10,	    30,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+;Both Legs strike with bite
+stand_attack_1 =	  	0.45,		10,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_2 =	  	0.45,		10,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_3 =	  	0.45,		10,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+
+
 
 [dog_normal]:m_dog_e
 $spawn				= "monsters\dogs\dog_02_normal"
 visual				= monsters\dog\dog_red
 panic_threshold		= 0.2
 rank				= 50
+immunities_sect		= dog_immunities_normal
+attack_params		= dog_attack_params_normal
+
+[dog_immunities_normal]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.50
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.50
+
+[dog_attack_params_normal]
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist|
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0 =	  	0.35,		15,	    30,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+;Both Legs strike with bite
+stand_attack_1 =	  	0.45,		15,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_2 =	  	0.45,		15,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_3 =	  	0.45,		15,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+
 
 [dog_strong]:m_dog_e
 $spawn				= "monsters\dogs\dog_03_strong"
 visual				= monsters\dog\dog_white
 panic_threshold		= 0.05
 rank				= 100
+immunities_sect		= dog_immunities_strong
+attack_params		= dog_attack_params_strong
+
+[dog_immunities_strong]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.30
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.30
+
+[dog_attack_params_strong]
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist|
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0 =	  	0.35,		20,	    30,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+;Both Legs strike with bite
+stand_attack_1 =	  	0.45,		20,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_2 =	  	0.45,		20,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_3 =	  	0.45,		20,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
