@@ -150,10 +150,13 @@
     <string id="yantar_help_scientist_71">
         <text>Привет, Меченый. Как поживаешь?</text>
     </string>
-    <string id="yantar_wounded_scientist_0">
+    <string id="yantar_wounded_scientist_11">
         <text>...ммм ...ммм</text>
     </string>
-    <string id="yantar_wounded_scientist_1">
+    <string id="yantar_wounded_scientist_111">
         <text>Вставай, все уже закончилось.</text>
+    </string>
+    <string id="yantar_wounded_scientist_21">
+        <text>Привет, Меченый. Как поживаешь?</text>
     </string>
 </string_table>
