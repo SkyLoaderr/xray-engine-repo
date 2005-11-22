@@ -90,24 +90,28 @@ struct SFillPropData{
             level_ids.push_back	(Ini->r_string_wb(N,"caption"));
 
         // story names
-        VERIFY					(story_names.empty());
-        LPCSTR section 			= "story_ids";
-        R_ASSERT				(Ini->section_exist(section));
-        for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
-            story_names.push_back	(xr_rtoken(V,atoi(N)));
+		{
+			VERIFY					(story_names.empty());
+			LPCSTR section 			= "story_ids";
+			R_ASSERT				(Ini->section_exist(section));
+			for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
+				story_names.push_back	(xr_rtoken(V,atoi(N)));
 
-		std::sort				(story_names.begin(),story_names.end(),story_name_predicate());
-		story_names.insert		(story_names.begin(),xr_rtoken("NO STORY ID",ALife::_STORY_ID(-1)));
+			std::sort				(story_names.begin(),story_names.end(),story_name_predicate());
+			story_names.insert		(story_names.begin(),xr_rtoken("NO STORY ID",ALife::_STORY_ID(-1)));
+		}
 
         // spawn story names
-        VERIFY					(spawn_story_names.empty());
-        LPCSTR section 			= "spawn_story_ids";
-        R_ASSERT				(Ini->section_exist(section));
-        for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
-            spawn_story_names.push_back	(xr_rtoken(V,atoi(N)));
+		{
+			VERIFY					(spawn_story_names.empty());
+			LPCSTR section 			= "spawn_story_ids";
+			R_ASSERT				(Ini->section_exist(section));
+			for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
+				spawn_story_names.push_back	(xr_rtoken(V,atoi(N)));
 
-		std::sort				(spawn_story_names.begin(),spawn_story_names.end(),story_name_predicate());
-		spawn_story_names.insert(spawn_story_names.begin(),xr_rtoken("NO SPAWN STORY ID",ALife::_SPAWN_STORY_ID(-1)));
+			std::sort				(spawn_story_names.begin(),spawn_story_names.end(),story_name_predicate());
+			spawn_story_names.insert(spawn_story_names.begin(),xr_rtoken("NO SPAWN STORY ID",ALife::_SPAWN_STORY_ID(-1)));
+		}
 
 #ifndef AI_COMPILER
 		//character profiles indexes
