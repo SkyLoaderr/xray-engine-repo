@@ -321,6 +321,7 @@ C++ class story_ids {
     const esc_tutorial_secret_place = 25;
     const esc_vagon_newbie1 = 12;
     const esc_vagon_newbie2 = 13;
+    const esc_vp_finder = 30;
     const esc_wounded_flash = 16;
     const esc_wounded_follower_1 = 23;
     const esc_wounded_follower_2 = 24;
@@ -1453,7 +1454,7 @@ C++ class CALifeHumanBrain {
 
 C++ class CALifeHumanDetailPathManager {
     function completed() const;
-    function target(const number&, const number&);
+    function target(const number&, const number&, const vector&);
     function target(const number&);
     function target(const CALifeSmartTerrainTask*);
     function failed() const;
@@ -1474,6 +1475,7 @@ C++ class CALifeHumanMovementManager {
 C++ class CALifeHumanPatrolPathManager {
     function path(string);
     function target_game_vertex_id() const;
+    function target_position() const;
     function target_level_vertex_id() const;
     function completed() const;
     function route_type(const enum PatrolPathManager::EPatrolRouteType&);
@@ -4330,21 +4332,22 @@ C++ class game_object {
     function set_alien_control(boolean);
     function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
     function make_object_visible_somewhen(game_object*);
+    function jump(const vector&, number);
     function set_patrol_extrapolate_callback();
     function set_patrol_extrapolate_callback(const function<boolean>&);
     function set_patrol_extrapolate_callback(const function<boolean>&, object);
     function set_const_force(const vector&, number, number);
-    function jump(const vector&, number);
-    function who_hit_section_name();
     function info_clear();
+    function who_hit_section_name();
+    function active_zone_contact(number);
     function change_team(number, number, number);
-    function inside(const vector&, number) const;
-    function inside(const vector&) const;
+    function change_goodwill(number, game_object*);
     function inventory_for_each(const function<void>&);
     function direction() const;
     function kill(game_object*);
     function cost() const;
-    function change_goodwill(number, game_object*);
+    function inside(const vector&, number) const;
+    function inside(const vector&) const;
     function body_state() const;
     function skip_transfer_enemy(boolean);
     function see(const game_object*);
@@ -4357,7 +4360,7 @@ C++ class game_object {
     function info_add(string);
     function set_community_goodwill(number, game_object*);
     function team() const;
-    function active_zone_contact(number);
+    function set_nonscript_usable(boolean);
     function set_condition(number);
     function set_sight(enum SightManager::ESightType, const vector*, number);
     function set_sight(enum SightManager::ESightType, boolean, boolean);
@@ -4365,16 +4368,16 @@ C++ class game_object {
     function set_sight(enum SightManager::ESightType, const vector*);
     function set_sight(game_object*, boolean);
     function set_sight(game_object*, boolean, string);
-    function set_nonscript_usable(boolean);
     function set_tip_text_default();
+    function set_tip_text(string);
     function remove_restrictions(string, string);
     function action_count() const;
     function money();
-    function set_tip_text(string);
     function remove_sound(number);
     function get_holder_class();
-    function weapon_unstrapped() const;
     function get_physics_shell() const;
+    function weapon_unstrapped() const;
+    function safe_cover(const vector&, number, number);
     function name() const;
     function set_range(number);
     function add_sound(string, number, enum ESoundTypes, number, number, number);
@@ -4386,28 +4389,28 @@ C++ class game_object {
     function get_current_direction();
     function action() const;
     function restore_weapon();
-    function safe_cover(const vector&, number, number);
     function get_car();
     function get_helicopter();
     function accuracy() const;
-    function enable_vision(boolean);
     function get_anomaly_power();
+    function enable_vision(boolean);
+    function disable_anomaly();
     function alive() const;
     function set_mental_state(enum MonsterSpace::EMentalState);
     function squad() const;
     function reset_action_queue();
     function target_body_state() const;
-    function disable_anomaly();
-    function head_orientation() const;
     function enable_anomaly();
-    function script(boolean, string);
+    function head_orientation() const;
     function hit(hit*);
+    function script(boolean, string);
+    function get_ammo_in_magazine();
     function set_path_evaluator();
     function set_path_evaluator(vertex_evaluator*);
-    function get_ammo_in_magazine();
     function explode(number);
-    function set_actor_position(vector);
     function get_sound_info();
+    function set_actor_position(vector);
+    function change_character_reputation(number);
     function remove_all_restrictions();
     function not_yet_visible_objects() const;
     function add_restrictions(string, string);
@@ -7116,6 +7119,7 @@ namespace  {
         function set_game_difficulty(enum ESingleGameDifficulty);
         function map_add_object_spot(number, string, string);
         function rain_factor();
+        function remove_pp_effector(number);
         function add_call(const function<boolean>&, const function<void>&);
         function add_call(object, const function<boolean>&, const function<void>&);
         function add_call(object, string, string);
@@ -7125,6 +7129,7 @@ namespace  {
         function environment();
         function iterate_sounds(string, number, function<void>);
         function iterate_sounds(string, number, object, function<void>);
+        function add_pp_effector(string, number, boolean);
         function object_by_id(number);
         function add_cam_effector(string);
         function get_weather();
@@ -7167,6 +7172,8 @@ namespace  {
     };
  
     namespace actor_stats {
+        function remove_from_ranking(number);
+        function add_to_ranking(number);
         function get_points(string);
         function add_points(string, string, number, number);
     };
