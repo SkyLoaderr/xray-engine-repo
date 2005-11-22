@@ -1,57 +1,112 @@
--- Автор:     Диденко Руслан (Stohe), Чугай Александр (Chugai)
+-- Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
 --function printf()
 --end
 
-fraction = {}
+-- в работах поле object хранит id объекта
 
-local i, v, k = 0,0,0
+-- TODO никаких работ типа nil+out_restrictor
+-- TODO если функция вызывается не из гулага, то проверять online/offline alive/dead чуваков
+-- TODO серверный объект хранить в self.Object
+-- TODO distance_to перевести на distance_to_sqr
+-- TODO fill_idle
+-- TODO у патруля перевыбор работы не будет в офлайне. надо чтоб был
+
 level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
                 gulag_military, gulag_radar, gulag_radar_u, gulag_yantar, gulag_pripyat, gulag_kishka, gulag_sarcofag,
                 gulag_deadcity}
 
-local gulag_tasks_file_name = "misc\\gulag_tasks.ltx"
-local gulag_tasks_ltx       = ini_file(gulag_tasks_file_name)
+local gulag_tasks_file_name  = "misc\\gulag_tasks.ltx"
+local gulag_tasks_ltx        = ini_file( gulag_tasks_file_name )
 
+local job_position_threshold = 5  -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
 
-idle_nil = nil
-idle_once = -1
-idle_none = -2
+local idle_nil  = nil
+local idle_once = -1
+local idle_none = -2
 
-class "fract"
-function fract:__init(smrttrn_id, name, type, squad, groups)
-	self.smrttrn_id = smrttrn_id
-	self.name   = name
-	self.type   = type
-	self.squad  = squad
-	self.groups = groups or {}
+local path_fields = { "path_walk", "path_main", "center_point" }
 
-	-- взять spawn_ini
-	self.object = level.object_by_id(smrttrn_id)
-	self.spawn_ini = self.object:spawn_ini()
+-----------------------------------------------------------------------
+class "gulag"
 
-	self.state = 0
-	self.stateBegin = game.get_game_time()
+-- конструктор
+function gulag:__init(smrttrn, type, squad, groups, npc_info, capacity)
+	self.smrttrn  = smrttrn
+	self.name     = smrttrn:name()
+	self.type     = type
+	self.squad    = squad
+	self.groups   = groups or {}
+	self.npc_info = npc_info
+	self.capacity = capacity
 
-	self.casualities = 0  	
-
-	self.Object = {}
-	self.Job = {}
-	self.restrictors = {}
-
-	self.ObjectJob = {}
-
-	self.state_switch_0 = xr_logic.parse_condlist(self.object, "gulag1", "switch_0", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_0", self.object, false, "", ""))
-	self.state_switch_1 = xr_logic.parse_condlist(self.object, "gulag1", "switch_1", utils.cfg_get_string(self.spawn_ini, "gulag1", "switch_1", self.object, false, "", ""))
-
-	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups, self)
-	self:init_ltx(name, type)
-	
-	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
-	self.calculateStates = gulag_tasks.loadStates(name, type)
+	self.Object            = {} -- объекты по id. Значения: nil-нету такого, true-есть в офлайне, game_object-есть в онлайн
+	self.Object_begin_job  = {} -- по id. true/nil достиг ли объект места своей работы
+	self.ObjectJob         = {} -- по id. номер работы для каждого персонажа
+	self.JobBeginTime      = {} -- для каждой работы время начала
 end
 
-function fract:init_ltx(name, type)
+-- подготовка к работе
+function gulag:initialize()
+	self.state      = 0
+	self.stateBegin = nil
+
+	self.casualities = 0
+
+	self.Job               = {} -- работы
+	self.ObjectJobPathName = {} -- по id. имя патрульного пути места работы персонажа
+	self.restrictors       = {} -- по id. назначенные гулагом рестрикторы для каждого персонажа
+
+	gulag_tasks.loadJob( self.Job, self.name, self.type, self.squad, self.groups, self )
+	self:init_ltx( self.name, self.type )
+	self:prepare_jobs()
+
+	self.calculateStates = gulag_tasks.loadStates( self.name, self.type )
+
+	local ini = self.smrttrn:spawn_ini()
+	local sect = "smart_terrain"
+	if not ini:section_exist( sect ) then
+		sect = "gulag1"
+
+		self.state_switch_0 = xr_logic.parse_condlist( self.smrttrn, "gulag1", "switch_0", utils.cfg_get_string(ini, sect, "switch_0", self.smrttrn, false, "", "") )
+		self.state_switch_1 = xr_logic.parse_condlist( self.smrttrn, "gulag1", "switch_1", utils.cfg_get_string(ini, sect, "switch_1", self.smrttrn, false, "", "") )
+	end
+
+	self.JobBeginTime = nil
+end
+
+-- подготовить работы.
+-- подготовить данные о местоположении каждой работы; о объекте, который на ней занят.
+function gulag:prepare_jobs()
+	table.sort( self.Job, function(a,b) return a.prior > b.prior end )
+
+	local ptrl, path_name
+
+	for i, job in ipairs( self.Job ) do
+		job.num            = i
+
+		path_name          = self:get_job_path_name( job )
+		ptrl               = patrol( path_name )
+
+		job.path_name      = path_name
+		job.game_vertex_id = ptrl:game_vertex_id ( 0 )
+		job.position       = ptrl:point( 0 )
+
+		job.begin          = self.JobBeginTime[i]
+	end
+
+	local job
+
+	for obj_id, jobN in pairs( self.ObjectJob ) do
+		job        = self.Job[jobN]
+		job.object = obj_id
+		self.ObjectJobPathName[obj_id] = job.path_name
+	end
+end
+
+-- подгрузка ltx с секциями логики для работ.
+-- может подгрузить либо динамический ltx, либо статический (gulag_tasks.ltx)
+function gulag:init_ltx(name, type)
 	local ltx, ltx_name = gulag_tasks.loadLtx(name, type)
 
 	if ltx then
@@ -63,147 +118,263 @@ function fract:init_ltx(name, type)
 	end
 end
 
-function fract:addObject(npc)
-	self.Object[npc:id()] = npc
-	self.ObjectJob[npc:id()] = nil
+-- получить имя пути места работы
+function gulag:get_job_path_name( job )
+	local section = job.section
+
+	if not self.ltx:line_exist( section, "active" ) then
+		abort( "gulag: ltx=%s  no 'active' in section %s", self.ltx_name, section )
+	end
+
+	local active_section = self.ltx:r_string( section, "active" )
+	local path_field
+
+	for i, v in ipairs( path_fields ) do
+		if self.ltx:line_exist( active_section, v ) then
+			path_field = v
+			break
+		end
+	end
+
+	if not path_field then
+		abort( "gulag: ltx=%s, there is no path in section %s", self.ltx_name, active_section )
+	end
+
+	return self.name .. "_" .. self.ltx:r_string( active_section, path_field )
 end
 
-function fract:loadObject( obj_id, jobN )
-	-- пометить, что объект ожидается
+-- сохранения общего состояния гулага
+function gulag:save_common( packet )
+	packet:w_u8( self.casualities )
+	packet:w_u8( self.state )
+	utils.w_CTime( packet, self.stateBegin or smart_terrain.CTime_0 )
+
+--	print_table( self.Job )
+
+	packet:w_u8( table.getn( self.Job ) )
+
+	for i, job in ipairs( self.Job ) do
+		packet:w_u32( job.begin or 0 )
+--		printf( "job i=%d", i )
+	end
+end
+
+-- восстановление общего состояния гулага
+function gulag:load_common( packet )
+	self.casualities = packet:r_u8()
+	self.state       = packet:r_u8()
+	self.stateBegin  = utils.r_CTime( packet )
+
+	local n = packet:r_u8()
+
+	for i = 1, n do
+		table.insert( self.JobBeginTime, packet:r_u32() )
+--		printf( "job i=%d", i )
+	end
+end
+
+-- сохранение информации об объекте
+function gulag:save_obj( packet, obj_id )
+	packet:w_bool ( self.Object_begin_job[obj_id] )
+	packet:w_u8   ( self.ObjectJob[obj_id] or 0 )
+end
+
+-- восстановление информации об объекте
+function gulag:load_obj( packet, obj_id )
+	self.Object[obj_id]           = true
+	self.Object_begin_job[obj_id] = packet:r_bool()
+
+	local jobN = packet:r_u8()
+	if jobN ~= 0 then
+		self.ObjectJob[obj_id] = jobN
+	end
+end
+
+-- добавить объект под гулаг.
+-- при добавления объекта он помечается как офлайновый
+function gulag:addObject( obj_id )
+	self.Object_begin_job[obj_id] = false
+
+	self:object_setup_offline( obj_id )
+end
+
+-- настроить персонажа на работу в офлайне.
+-- если он в это время в онлайне, то вызвать object_setup_online
+function gulag:object_setup_offline( obj_id )
+	printf( "[smart_terrain %s] gulag: object_setup_offline: obj=%s", self.name, self.npc_info[obj_id].name )
+
 	self.Object[obj_id] = true
 
-	-- запомнить работу, которую он должен занять
-	self.ObjectJob[obj_id] = jobN
-
-	-- подписаться на объект
-	level.client_spawn_manager():add( obj_id, self.smrttrn_id, fract.spawn_callback, self )
-end
-
-function fract:spawn_callback( id, obj )
-	if obj then
-		self.Object[id] = obj
-
-		-- восстановить на работе, если она у него была
-		if self.ObjectJob[id] then
-			local job = self.Job[self.ObjectJob[id]]
-
-			job.object = obj
-
-			self.restrictors[id] = { r_in = job.in_rest, r_out = job.out_rest }
-		end
+	if self.npc_info[obj_id].se_obj.online then
+		self:object_setup_online( obj_id, level.object_by_id( obj_id ), true )
 	end
 end
 
-function fract:removeObject( npc_id, npc )
-	if npc:alive() then
-		self:freeNpc_and_reinit( npc_id )
+-- настроить персонажа на работу в онлайне.
+-- вызывается у персонажей из net_spawn().
+-- если он уже пришёл на работу, настроить ему логику и рестрикторы.
+-- obj=game_object
+function gulag:object_setup_online( obj_id, obj, need_setup_logic )
+	printf( "[smart_terrain %s] gulag: object_setup_online: obj=%s need_setup_logic=%s", self.name, obj:name(), tostring( need_setup_logic) )
+
+	--db.storage[obj_id].gulag = self
+
+	self.Object[obj_id] = obj
+
+	if need_setup_logic and self.ObjectJob[obj_id] then
+		local job = self.Job[self.ObjectJob[obj_id]]
+
+		self:set_restrictions( obj, job.out_rest, job.in_rest )
+		self:setup_logic( obj, job.section )
+	end
+end
+
+-- удалить объект из гулага.
+-- вызывается только из se_smart_terrain:unregister_npc() !
+-- если объект жив и он в онлайне, то переинициализировать логику.
+function gulag:removeObject( obj_id )
+	local obj = self.Object[obj_id]
+
+	if obj ~= true and obj:alive() then
+		self:free_obj_and_reinit( obj_id )
+
+		db.storage[obj_id].gulag = nil
 	else
-		self:freeNpc( npc_id )
+		self:free_obj( obj_id )
 	end
 
-	self:set_restrictions( npc, "", "" )
-	self.Object[npc_id]      = nil
-	self.restrictors[npc_id] = nil
+	self:set_restrictions( obj, "", "" )
+
+	self.Object[obj_id]      = nil
+	self.restrictors[obj_id] = nil
 end
 
-function fract:all_spawned()
-	for k,v in pairs(self.Object) do
-		-- если есть ещё хоть один не породившийся
-		if v == true then
-			return false
+--[[ Обновление гулага
+убирает мёртвых.
+следит, кто прыгнул в офлайн и не сообщил об этом (случается при переходе с уровня на уровень
+когда биндер смарттеррейна убивается до персонажа).
+следит, дошёл ли персонаж до места работы.
+измененяет потери в лагере.
+]]
+function gulag:update()
+	if not self.stateBegin then
+		self.stateBegin = game.get_game_time()
+	end
+
+	local online
+
+	for obj_id, obj in pairs( self.Object ) do
+		online = self.npc_info[obj_id].se_obj.online
+
+		if obj ~= true and not online then
+			self:object_setup_offline( obj_id )
+			obj = true
 		end
-	end
 
-	return true
-end
+		if self:can_obj_begin_job( obj_id, obj ) then
+			self:beginJob( obj_id )
+		end
 
-function fract:calculate() 
-	if not self:all_spawned() then
-		return
-	end
-
-	--' Изменение потерь в лагере
-	for k,v in pairs(self.Object) do
-		if not v:alive() then
+		-- TODO. remove while iterating :\
+		-- TODO проверка смерти в офлайн
+		if obj ~= true and not obj:alive() then
 			self:changeCasualities(1)
---			self.Object[k]    = nil
-			self:removeObject( k, v )
+			self.smrttrn:unregister_npc( self.npc_info[obj_id].se_obj )
 		end
 	end
 
-	--' Обнуление работ с несуществующими персонажами
---	for k,v in pairs(self.Job) do
---		if v.object ~= nil and self.Object[v.object:id()] == nil then
---			v.object = nil				
---		end
---	end
-
-	if self.calculateStates ~= nil then 
+	if self.calculateStates ~= nil then
 		self:changeState(self.calculateStates(self))
-	end		
+	end
 
 	self:updateJob()
 	self:print()
 end
 
-function fract:changeState(state)
+-- можно ли объекту начать работать?
+-- для этого проверить, не на работе ли уже.
+-- если нет, то проверить, достиг ли объект места работы.
+function gulag:can_obj_begin_job( obj_id, obj )
+	local jobN = self.ObjectJob[obj_id]
+
+	if jobN and not self.Object_begin_job[obj_id] then
+		if obj == true then
+			return self.npc_info[obj_id].se_obj.m_game_vertex_id == self.Job[jobN].game_vertex_id
+		else
+			return obj:game_vertex_id() == self.Job[jobN].game_vertex_id and
+			       obj:position():distance_to( self.Job[jobN].position ) < job_position_threshold
+		end
+	else
+		return false
+	end
+end
+
+-- сменить состояние гулага.
+-- TODO посчитать доступные работы на смене состояния.
+-- Возобновляем все работы, доступные для наполнения только один раз.
+function gulag:changeState(state)
 	if self.state ~= state then
-		self.state = state
+		self.state      = state
 		self.stateBegin = game.get_game_time()
-		
-		-- Возобновляем все работы, доступные для наполнения только один раз.
-		for k,v in pairs(self.Job) do
-			if v.fill_idle == idle_none then
-				v.fill_idle = idle_once
+
+		for i, job in ipairs( self.Job ) do
+			if job.fill_idle == idle_none then
+				job.fill_idle = idle_once
 			end
 		end
 	end
 end
 
-function fract:availState(st, state)
-	for k,v in pairs(st) do
-		if v == state then return true end
+-- существует ли указанное состояние в табличке?
+function gulag:availState(st, state)
+	for k,v in ipairs( st ) do
+		if v == state then
+			return true
+		end
 	end
+
 	return false
 end
 
 -- доступна ли работа?
 -- работа доступна, когда время idle истекло (или не задано)
--- и занята работа, от которой зависит данная работа
-function fract:availJob(job)
-	if job.begin ~= nil and game.time() - job.begin < job.idle then
-		return false
-	end
-
-	if job.fill_idle ~= nil then
-		if job.fill_idle == idle_none then
-			return false
-		elseif job.fill_idle == idle_once then
-			return true
-		elseif job.fill_idle < game.time() - job.begin then
-			return false
+-- и занята работа, от которой зависит данная работа.
+function gulag:availJob(job)
+	if job.begin == nil or game.time() - job.begin > job.idle then
+		if job.fill_idle ~= nil then
+			if job.fill_idle == idle_none then
+				return false
+			elseif job.fill_idle ~= idle_once and job.fill_idle < game.time() - job.begin then
+				return false
+			end
 		end
 	end
 
-	local jd = job.dependent
-	if jd then
-	   	for i, v in pairs(self.Job) do
-	   		if v.section == jd then
-	   			return v.object ~= nil
-	   		end
-	   	end
-	end
-
-	return true
-end
--- Текущая работа доступна, если не истекло ее время и занята зависимая
-function fract:availCurrent(job)
-	if job.timeout == nil or
-	   job.begin == nil or game.time() - job.begin < job.timeout then
 		local jd = job.dependent
 
 		if jd then
-	   		for i, v in pairs(self.Job) do
+			for i, v in ipairs( self.Job ) do
+				if v.section == jd then
+					return v.object ~= nil
+				end
+			end
+		end
+
+		return true
+	else
+		return false
+	end
+end
+
+-- Текущая работа доступна, если не истекло ее время и занята работа, от которой она зависит
+function gulag:availCurrent(job)
+	if job.timeout == nil or
+	   job.begin == nil or game.time() - job.begin < job.timeout
+	then
+		local jd = job.dependent
+
+		if jd then
+	   		for i, v in ipairs( self.Job ) do
 	   			if v.section == jd then
 	   				return v.object ~= nil
 	   			end
@@ -216,174 +387,297 @@ function fract:availCurrent(job)
 	end
 end
 
-function fract:updateJob()
-	-- если актёра нету, то никакие работы не могут быть назначены
-	if not db.actor then
-		return
-	end
+-- составить список работ существующих в данном состоянии гулага.
+-- освобождение npc с работ, не существующих в данном состоянии или ставших недоступными (например, вышел timeout).
+-- также освобождение недошедших до своих работ.
+function gulag:prepare_available_jobs()
+	local Job_avail = {}
 
-	-- освобождение npc с работ, не существующих в данном состоянии
---	for k,v in pairs(self.Job) do
---		if not self:availState(v.state, self.state) then
---			v.object = nil
---		end
---	end
-	local jobN
-	for k,v in pairs(self.Object) do
-		jobN = self.ObjectJob[k]
-		if jobN then
-			if not self:availState(self.Job[jobN].state, self.state) or
-			   not self:availCurrent(self.Job[jobN])
-			then
-				self:freeNpc( k )
+	for i, job in ipairs( self.Job ) do
+		if self:availState(job.state, self.state) then
+			table.insert( Job_avail, job )
+
+			if not self:availCurrent(job) or not self.Object_begin_job[job.object] then
+				self:free_obj_and_reinit( job.object )
 			end
+		else
+			self:free_obj_and_reinit( job.object )
 		end
 	end
 
-	-- переназначение работ
-	jobN = 1
+	return Job_avail
+end
 
-	for k,v in pairs(self.Job) do
---		printf( "   %s", v.section )
+-- составить список персонажей, доступных для распределения по свободным работам
+function gulag:get_available_objs()
+	local obj_avail = {}
 
-		-- проверка на доступность работы при текущем стейте
-		if self:availState(v.state, self.state) then
-			-- если работа свободна и доступна
-			if v.object == nil and self:availJob(v) then
-				-- назначить на работу свободного человека
-				local f = false
-				for kk,vv in pairs(self.Object) do
-					if ((v.predicate == nil or v.predicate(vv) == true) and self:getJob(vv) == nil) then
-						self:setJob(vv, v, jobN)
-						f = true
-						break
-						--return
-					end
-				end
-				-- если свободных нету, снять кого-то с наименее важной работы и поставить на эту работу
-				if not f then
-					for i = table.getn(self.Job), k, -1 do
-						if self.Job[i].object ~= nil and self.Job[i].prior < v.prior then 
-							if v.predicate == nil or v.predicate(self.Job[i].object) == true then
-								self:setJob(self.Job[i].object, v, jobN)
-								break
-								--return
-							end
-						end
-					end
-				end
---			else
---				if v.object then
---					printf( "      job is busy" )
---				else
---					printf( "      job is unavailable" )
---				end
-			end
-       	end
+	for obj_id, obj in pairs( self.Object ) do
+		if self:getJob( obj_id ) == nil then
+			obj_avail[obj_id] = true
+		end
+	end
 
-       	jobN = jobN + 1
+	return obj_avail
+end
+
+-- посчитать условное расстояние от персонажа до места указанной работы.
+-- если на одном уровне, то считать по локальным позициям, иначе по глобальным позициям вершин гейм-графа.
+-- используется для определения ближайшего к месту работы персонажа.
+function gulag:distance_to_job_location( obj_id, job )
+	local obj_gv, obj_pos = self:get_obj_game_vertex_and_position( obj_id )
+	local job_gv          = game_graph():vertex( job.game_vertex_id )
+
+	if obj_gv:level_id() == job_gv:level_id() then
+		return obj_pos:distance_to( job.position )
+	else
+		return obj_gv:game_point():distance_to( job_gv:game_point() )
 	end
 end
 
-function fract:print()
-	printf("***  %s -- State: %d -- Capacity: %d -- Population: %d", self.name, self.state, self:get_capacity(), self:get_population())
+-- получить точку графа, на которой находится персонаж и его локальные координаты на уровне
+-- в зависимости от того, в офлайне или в онлайне персонаж, берётся по разному
+function gulag:get_obj_game_vertex_and_position( obj_id )
+	local obj = self.Object[obj_id]
+
+	if obj == true then
+		obj = self.npc_info[obj_id].se_obj
+
+		return game_graph():vertex( obj.m_game_vertex_id ), obj.position
+	else
+		return game_graph():vertex( obj:game_vertex_id() ), obj:position()
+	end
+end
+
+-- найти ближайшего подходящего персонажа из списка
+function gulag:find_nearest_suitable_obj( objs, job )
+	local predicate = job.predicate
+	local min_dist  = 1000000
+	local dist
+	local obj_nearest
+
+	for obj_id, v in pairs( objs ) do
+		dist = self:distance_to_job_location( obj_id, job )
+--		printf( "[smart_terrain %s] dist object=%s to job=%s is %f", self.name, self.npc_info[obj_id].name, job.section, dist )
+
+		if dist < min_dist then
+			min_dist    = dist
+			obj_nearest = obj_id
+		end
+	end
+
+	return obj_nearest
+end
+
+-- найти занятых персонажей, которые могут занять заданную работу.
+-- поиск ведётся начиная с самых низкоприоритетных работ
+function gulag:find_obj_on_jobLow_for_jobHigh( Job_avail, job_high )
+	local n = table.getn( Job_avail )
+	local i = n
+
+	local job_low
+	local job_high_num = job_high.num
+	local predicate    = job_high.predicate
+	local priority     = nil
+	local obj_suitable = nil
+
+	while i > job_high_num and (not priority or priority == Job_avail[i].prior) do
+		job_low = Job_avail[i]
+
+		if job_low.object ~= nil and ( not predicate or predicate(self.npc_info[job_low.object]) ) then
+			if not obj_suitable then
+				priority     = job_low.prior
+				obj_suitable = {}
+			end
+
+			obj_suitable[job_low.object] = true
+		end
+
+		i = i - 1
+	end
+
+	if obj_suitable then
+		return self:find_nearest_suitable_obj( obj_suitable, job_high )
+	else
+		return nil
+	end
+end
+
+-- распределение работ.
+-- при распределении недошедшие персонажи приравниваются к свободным
+function gulag:updateJob()
+	local Job_avail = self:prepare_available_jobs()
+	printf( "Job_avail:" )
+	print_table( Job_avail, "   " )
+
+	local obj_avail = self:get_available_objs()
+	printf( "obj_avail:" )
+	print_table( obj_avail, "   " )
+
+	local obj_id
+
+	for i, job in ipairs( Job_avail ) do
+		if job.object == nil then
+			obj_id = self:find_nearest_suitable_obj( obj_avail, job )
+			if not obj_id then
+				printf( "no suitable obj for job=%d %s", i, job.section )
+			end
+
+			if not obj_id then
+				obj_id = self:find_obj_on_jobLow_for_jobHigh( Job_avail, job )
+
+				if obj_id then
+					self:free_obj_and_reinit( obj_id )
+				end
+			end
+
+			if obj_id then
+				self:setJob( obj_id, job )
+				obj_avail[obj_id] = nil
+			end
+		end
+	end
+end
+
+-- вывод текущего состояния гулага (работы, объекты, состояние, население)
+function gulag:print()
+	local npc_info
+
+	printf("***  %s -- State: %d -- Capacity: %d -- Population: %d", self.name, self.state, self.capacity, self:get_population())
 	printf("Resources:")
-	for k,v in pairs(self.Object) do
-		printf("id: %d name: %s", k, v:name())
+	for k,v in pairs( self.Object ) do
+		printf("id: %d name: %s", k, self.npc_info[k].name)
 	end
 	printf("Jobs:")
-	for k,v in pairs(self.Job) do
+	for k,v in ipairs( self.Job ) do
 		printf("section: %s, prior %d", v.section, v.prior)
 		if v.object ~= nil then
-			printf("    ObjID: %d", v.object:id())
-			printf("    Actor: %s, [%s][%s][%s]", self.Object[v.object:id()]:name(), self.Object[v.object:id()]:team(), self.Object[v.object:id()]:squad(), self.Object[v.object:id()]:group())
-			printf("    current section: %s", db.storage[v.object:id()].active_section or "<<<nil>>>")
+			npc_info = self.npc_info[v.object]
+
+			printf("    ObjID: %d", v.object)
+			printf("    Actor: %s, [%s][%s][%s]", npc_info.name, npc_info.team, npc_info.squad, npc_info.group)
+
+			if self.Object[v.object] == true then
+				printf("    current section: <<<offline>>>")
+			else
+				printf("    current section: %s", db.storage[v.object].active_section or "<<<nil>>>")
+			end
 		end
 	end
 end
 
-function fract:get_capacity()
-	i = {}
-	for k,v in pairs(self.Job) do
-		for kk,vv in pairs(v.state) do
-			if i[vv] == nil then i[vv] = 0 end
-			i[vv] = i[vv] + 1
-		end
-	end
-	t = 0
-	for k,v in pairs(i) do
-		if t == 0 then 
-			t = v 
-		else
-			if v < t then t = v end
-		end
-	end
-	return t
-end
+-- получить количество объектов под гулагом
+function gulag:get_population()
+	local i = 0
 
-function fract:get_population()
-	i = 0
-	for k,v in pairs(self.Object) do
-		-- если npc родился, то посчитать его только живым
-		-- если ещё не родился, посчитать в любом случае
+	for k,v in pairs( self.Object ) do
+		-- если npc онлайне, то посчитать его только живым
+		-- если в офлайне, посчитать в любом случае
 		if v == true or v:alive() then
 			i = i + 1
 		end
 	end
+
 	return i
 end
 
-function fract:get_stype( obj )
-	if IsStalker( obj ) then
+-- получить тип объекта (сталкер/монстр)
+function gulag:get_stype( obj_id )
+	if IsStalker( nil, self.npc_info[obj_id].class_id ) then
 		return modules.stype_stalker
-	elseif IsMonster( obj ) then
+	elseif IsMonster( nil, self.npc_info[obj_id].class_id ) then
 		return modules.stype_mobile
 	else
-		abort( "[smart terrain %s] object %s: gulag supports stalkers and monsters only!", self.name, obj:name() )
+		abort( "[smart_terrain %s] object %s: gulag supports stalkers and monsters only!", self.name, self.npc_info[obj_id].name )
 	end
 end
 
-function fract:setJob(npc, job, jobN)
-	self:freeNpc(npc:id())
+-- настроить логику для объекта, который в онлайне.
+-- obj=game_object
+function gulag:setup_logic( obj, section )
+	xr_logic.configure_schemes( obj, self.ltx, self.ltx_name, self:get_stype(obj:id()), section, self.name )
+	local sect = xr_logic.determine_section_to_activate( obj, self.ltx, section, db.actor )
 
-	job.object = npc
-	job.begin  = game.time()
+	if utils.get_scheme_by_section( section ) == "nil" then
+		abort( "[smart_terrain %s] section=%s, don't use section 'nil'!", self:name(), sect )
+	end
 
-	self.ObjectJob[npc:id()] = jobN
+	xr_logic.activate_by_section( obj, self.ltx, sect, false )
+end
 
-	--' Спейс рестрикторы
-	self:set_restrictions(job.object, job.out_rest, job.in_rest)
+-- установить squad и group в соответствии с работой
+function gulag:setup_squad_and_group( obj_id, job )
+	local npc_info = self.npc_info[obj_id]
 
-	--xr_logic.configure_schemes(npc, gulag_tasks_ltx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
-	--local sect = xr_logic.determine_section_to_activate(npc, gulag_tasks_ltx, job.section, db.actor)
-	--xr_logic.activate_by_section(npc, gulag_tasks_ltx, sect, false)
+	-- онлайн?
+	if self.Object[obj_id] ~= true then
+		local obj = self.Object[obj_id]
 
-	xr_logic.configure_schemes(npc, self.ltx, self.ltx_name, self:get_stype(npc), job.section, self.name)
-	local sect = xr_logic.determine_section_to_activate(npc, self.ltx, job.section, db.actor)
-	xr_logic.activate_by_section(npc, self.ltx, sect, false)
+		obj:change_team( npc_info.team, job.squad or npc_info.o_squad, job.group or npc_info.o_group )
 
-	--' Смена тим, сквад, груп
-	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
-	
-	-- Установка fill_idle
-	if job.fill_idle == idle_once then
-		job.fill_idle = idle_none
+		npc_info.squad = obj:squad()
+		npc_info.group = obj:group()
+	else
+		local obj = npc_info.se_obj
+
+		obj.squad = job.squad or npc_info.o_squad
+		obj.group = job.group or npc_info.o_group
+
+		npc_info.squad = obj.squad
+		npc_info.group = obj.group
 	end
 end
 
-function fract:set_restrictions(npc, r_out, r_in)
-	printf( "RESTR NPC        : %s", npc:name() )
-	printf( "RESTR HAVE (IN)  : %s", npc:in_restrictions() )
-	printf( "RESTR HAVE (OUT) : %s", npc:out_restrictions() )
+-- установить npc работу, к ней рестрикторы, настроить логику, поменять squad, group
+function gulag:setJob(obj_id, job)
+	printf( "[smart_terrain %s] gulag: setJob: obj=%s job=%d %s", self.name, self.npc_info[obj_id].name, job.num, job.section )
+
+--	self:free_obj(obj_id)
+
+	job.object = obj_id
+
+	self.Object_begin_job[obj_id] = false
+	self.ObjectJob                  [obj_id] = job.num
+	self.ObjectJobPathName          [obj_id] = job.path_name
+
+	self:setup_squad_and_group( obj_id, job )
+end
+
+-- заступить на работу.
+-- вызывается когда персонаж достиг места работы.
+-- установка времени начала работы.
+-- если в онлайне, то настройка логики и рестрикторов.
+function gulag:beginJob( obj_id )
+	local job = self.Job[self.ObjectJob[obj_id]]
+	printf( "[smart_terrain %s] gulag: beginJob: obj=%s job=%d %s", self.name, self.npc_info[obj_id].name, job.num, job.section )
+
+	self.Object_begin_job[obj_id] = true
+
+	job.begin = game.time()
+
+	if self.Object[obj_id] ~= true then
+		local obj = self.Object[obj_id]
+
+		self:set_restrictions( obj, job.out_rest, job.in_rest )
+		self:setup_logic( obj, job.section )
+	end
+end
+
+-- установить объекту рестрикторы в онлайне.
+-- obj - game_object
+function gulag:set_restrictions(obj, r_out, r_in)
+	printf( "RESTR NPC        : %s", obj:name() )
+	printf( "RESTR HAVE (IN)  : %s", obj:in_restrictions() )
+	printf( "RESTR HAVE (OUT) : %s", obj:out_restrictions() )
 	printf( "RESTR NEED (IN)  : %s", r_in )
 	printf( "RESTR NEED (OUT) : %s", r_out )
 
-	-- узнать, какие рестрикторы уже были назначены гулагом
-	local restr = self.restrictors[npc:id()]
+	-- узнать, какие рестрикторы уже были назначены этим гулагом
+	local restr = self.restrictors[obj:id()]
 
 	if not restr then
-		self.restrictors[npc:id()] = {}
-		restr = self.restrictors[npc:id()]
+		self.restrictors[obj:id()] = {}
+		restr = self.restrictors[obj:id()]
 	end
 
 	local r_in_old  = restr.r_in  or ""
@@ -406,7 +700,7 @@ function fract:set_restrictions(npc, r_out, r_in)
 		printf( "RESTR REMOVE(IN) : %s", change_r_in )
 		printf( "RESTR REMOVE(OUT): %s", change_r_out )
 
-		npc:remove_restrictions( change_r_out, change_r_in )
+		obj:remove_restrictions( change_r_out, change_r_in )
 	end
 
 	-- поставить новые
@@ -426,102 +720,113 @@ function fract:set_restrictions(npc, r_out, r_in)
 		printf( "RESTR ADD(IN)    : %s", change_r_in )
 		printf( "RESTR ADD(OUT)   : %s", change_r_out )
 
-		npc:add_restrictions( change_r_out, change_r_in )
+		obj:add_restrictions( change_r_out, change_r_in )
 	end
 
-	printf( "RESTR AFTER (IN) : %s", npc:in_restrictions()  )
-	printf( "RESTR AFTER (OUT): %s", npc:out_restrictions() )
+	printf( "RESTR AFTER (IN) : %s", obj:in_restrictions()  )
+	printf( "RESTR AFTER (OUT): %s", obj:out_restrictions() )
 end
 
-function fract:getJob(npc)
-	local jobN = self.ObjectJob[npc:id()]
+-- получить работу, которую занимает объект
+function gulag:getJob(obj_id)
+	local jobN = self.ObjectJob[obj_id]
 	return jobN and self.Job[jobN]
 end
 
-function fract:freeNpc(npc_id)
-	local jobN = self.ObjectJob[npc_id]
+-- возвращает имя пути места работы персонажа
+function gulag:get_obj_job_path_name( obj_id )
+	return self.ObjectJobPathName[obj_id]
+end
+
+-- освободить объект от работы
+function gulag:free_obj(obj_id)
+	local jobN = self.ObjectJob[obj_id]
 	if jobN then
-		self.ObjectJob[npc_id] = nil
+		self.ObjectJob[obj_id] = nil
 		self.Job[jobN].object  = nil
+
+		self.ObjectJobPathName[obj_id] = nil
+
+		if self.Object[obj_id] ~= true and
+		   self.Object_begin_job[obj_id] == true
+		then
+			self:set_restrictions( self.Object[obj_id], "", "" )
+		end
 	end
 end
 
-function fract:freeNpc_and_reinit(npc_id)
-	self:freeNpc(npc_id)
+-- освободить объект от работы и переинициализировать логику.
+-- если сталкер в онлайне и начал работу, то сбросить его схему поведения
+-- как будто он только что загрузился
+function gulag:free_obj_and_reinit(obj_id)
+	self:free_obj(obj_id)
 
-	-- если сталкер в онлайне, то сбросить его схему поведения
-	local t = self.Object[npc_id]
-	if t ~= nil and t ~= true then
-		-- как будто он только что загрузился
-		xr_logic.initialize_obj( t, nil, false, db.actor, self:get_stype( t ) )
+	local t = self.Object[obj_id]
+	if t ~= nil and t ~= true and self.Object_begin_job[obj_id] then
+		xr_logic.initialize_obj( t, nil, false, db.actor, self:get_stype( obj_id ) )
 	end
 end
 
-function fract:npcExists(npc)
-	return self.Object[npc:id()] ~= nil
-end
-
-function fract:idNPCOnJob(job_name)
-	for k,v in pairs(self.Job) do
+-- получить id объекта, выполняющего работу
+function gulag:idNPCOnJob(job_name)
+	for k,v in ipairs( self.Job ) do
 		if v.section == job_name then
 			if v.object ~= nil then
-				return v.object:id()
+				return v.object
 			end
 		end
 	end
 	return nil
 end
 
-function fract:getCasualities()
+-- получить потери
+function gulag:getCasualities()
 	return self.casualities
 end
 
-function fract:changeCasualities(delta)
+-- изменить потери
+function gulag:changeCasualities(delta)
 	self.casualities = self.casualities + delta
 end
 
-function fract:set_relation (relation, object)
-	for k,v in pairs(self.Object) do
+-- TODO, TODO, TODO
+function gulag:set_relation (relation, object)
+	for k,v in pairs( self.Object ) do
 		v:set_relation (relation, object)
 	end
 end
 
-function fract:set_goodwill (goodwill, object)
-	for k,v in pairs(self.Object) do
+function gulag:set_goodwill (goodwill, object)
+	for k,v in pairs( self.Object ) do
 		v:set_community_goodwill (goodwill, object)
 	end
 end
 
-function fract:get_member ()
-	for k,v in pairs(self.Object) do
+function gulag:get_member ()
+	for k,v in pairs( self.Object ) do
 	    if v:alive () == true then
 	       return v
 	    end
-	end        
-    return nil	
+	end
+    return nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- Function
+-- Functions TODO и выше тоже
 ----------------------------------------------------------------------------------------------------------------------
-function createGulag(smrttrn_id, name, type, squad, groups)
-	if xr_gulag.fraction[name] == nil then
-		xr_gulag.fraction[name] = xr_gulag.fract(smrttrn_id, name, type, squad, groups)
+-- TODO переименовать isUnderFraction в get_npc_gulag
+-- obj=game_object
+function get_npc_gulag(obj)
+	if obj.smart_terrain_id then  -- TODO
+		local sim = alife()
+		if sim then
+			return sim:object( obj.smart_terrain_id ).gulag
+		else
+			return nil
+		end
+	else
+		return nil
 	end
-	return xr_gulag.fraction[name]
-end
-
-function destroyGulag(name)
-	xr_gulag.fraction[name] = nil
-end
-
-function isUnderFraction(npc)
-	for k,v in pairs(fraction) do
-		if v:npcExists(npc) == true then
-			return k
-		end		
-	end
-	return nil
 end
 
 function getGulagPopulation(name)
@@ -536,18 +841,18 @@ function setGulagEnemy(name, victim)
 		abort("setGulagEnemy: victim == nil")
 	end
 	if xr_gulag.fraction[name] ~= nil then
-		for k,v in pairs(xr_gulag.fraction[name].Object) do
+--		local h = hit()
+--		h.power = 0
+--		h.bone = "bip01_spine"
+--		h.draftsman = victim
+--		h.impulse = 0
+--		h.type = hit.wound
+--		for k,v in xr_gulag.fraction[name].Object do
+--			h.direction = v:direction()
+--			v:hit(h)
+--		end
+		for k,v in xr_gulag.fraction[name].Object do
 			v:set_relation(game_object.enemy, victim)
-		end
-	end
-end
-function setGulagNeutral(name, victim)
-	if not victim then
-		abort("setGulagNeutral: victim == nil")
-	end
-	if xr_gulag.fraction[name] ~= nil then
-		for k,v in pairs(xr_gulag.fraction[name].Object) do
-			v:set_relation(game_object.neutral, victim)
 		end
 	end
 end
@@ -569,15 +874,18 @@ function setGulagGoodwill(gulag_name, goodwill, object)
     xr_gulag.fraction[gulag_name]:set_goodwill (goodwill, object)
 end
 
-function resetJob(name, npc)
-	local gulag = fraction[name]
+-- освободить персонажа от работы.
+-- obj=game_object
+function resetJob( obj )
+	printf( "gulag.resetJob: obj=%s", obj:name() )
 
-	if gulag ~= nil then
-		gulag:freeNpc_and_reinit(npc:id())
+	local sim = alife()
+	if sim then
+		local strn_id = sim:object( obj:id() ):smart_terrain_id()
 
---		if gulag:all_spawned() then
---			gulag:updateJob()
---		end
+		if strn_id ~= 65535 then
+			sim:object( strn_id ).gulag:free_obj_and_reinit( obj:id() )
+		end
 	end
 end
 
@@ -595,9 +903,11 @@ function getCasualities(fraction)
 	end
 end
 
+-----------------------------------------------------------------------------------------------------------------
+
 function checkStalker(npc_community, gulag_type)
     --printf ("CHECKSTALKER, COMMUNITY = %s, TYPE = %s", npc_community, gulag_type)
-	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" or gulag_type == "test2" then
+	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" then
 		return true
 	end
 
@@ -609,7 +919,7 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
-    for i, v in pairs(level_gulags) do
+    for i, v in pairs( level_gulags ) do
 	    if v.checkStalker(npc_community, gulag_type) then
 		    return true
 	    end
@@ -623,7 +933,7 @@ function checkMonster(npc_community, gulag_type)
 		return true
 	end
 
-    for i, v in pairs(level_gulags) do
+    for i, v in pairs( level_gulags ) do
 	    if v.checkMonster(npc_community, gulag_type) then
 		    return true
 	    end
