@@ -1,10 +1,11 @@
 [logic]
-active = sr_territory@outside
+active = ph_button@active
 
-[sr_territory@outside]
-on_actor_inside = sr_territory@inside
+[ph_button@active]
+anim = lab_switcher_idle
+tooltip = tips_labx16switcher_press
+on_press = ph_button@deactivated %+terrain_test =turn_off(904)%
 
-[sr_territory@inside]
-on_actor_outside = sr_territory@outside
-territory_hit = {-bar_dolg_territory_1_hit} %+bar_dolg_territory_1_hit =bar_territory_logic%, {-bar_dolg_territory_2_hit} %+bar_dolg_territory_2_hit =bar_territory_logic%, {-bar_dolg_territory_3_hit} %+bar_dolg_territory_3_hit =bar_territory_logic%
-territory_death = {-bar_dolg_territory_kill} %+bar_dolg_territory_kill =bar_territory_logic%
+[ph_button@deactivated]
+anim = lab_switcher_off
+

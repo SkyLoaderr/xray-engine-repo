@@ -2071,6 +2071,9 @@
 					Name="Yantar"
 					Filter="">
 					<File
+						RelativePath=".\Config\scripts\yan_labx16_switcher.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\yan\yan_scientist.ltx">
 					</File>
 				</Filter>
