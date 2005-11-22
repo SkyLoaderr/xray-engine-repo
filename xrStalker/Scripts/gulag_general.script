@@ -1,5 +1,5 @@
-local t = {}
-local ltx = ""
+local t
+local ltx
 
 function load_job(sj, gname, type, squad, groups, st)
 	ltx = ""
@@ -292,12 +292,12 @@ function load_states(gname, type)
 	if type == "general_lager" then
 		return function(gulag)
 			if gulag.state == 0 then		
-				if xr_logic.pick_section_from_condlist(db.actor, gulag.object, gulag.state_switch_1) ~= nil then
+				if xr_logic.pick_section_from_condlist(db.actor, gulag.smrttrn, gulag.state_switch_1) ~= nil then
 					return 1
 				end		
 				return 0
 			elseif gulag.state == 1 then
-				if xr_logic.pick_section_from_condlist(db.actor, gulag.object, gulag.state_switch_0) ~= nil then
+				if xr_logic.pick_section_from_condlist(db.actor, gulag.smrttrn, gulag.state_switch_0) ~= nil then
 					return 0
 				end		
 				return 1	
@@ -321,7 +321,6 @@ function load_states(gname, type)
 		end
 	end
 end
-
 
 function checkStalker(npc_community, type)
 	if type == "general_lager" then
