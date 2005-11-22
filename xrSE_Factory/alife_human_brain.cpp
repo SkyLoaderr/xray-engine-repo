@@ -162,7 +162,7 @@ IC	CSE_ALifeSmartZone &CALifeHumanBrain::smart_terrain	()
 void CALifeHumanBrain::process_task			()
 {
 	CALifeSmartTerrainTask			*task = smart_terrain().task(&object());
-	VERIFY							(task);
+	THROW3							(task,"smart terrain returned nil task, while npc is registered in it",smart_terrain().name_replace());
 	movement().path_type			(MovementManager::ePathTypeGamePath);
 	movement().detail().target		(*task);
 }
