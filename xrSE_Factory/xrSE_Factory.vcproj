@@ -850,6 +850,19 @@
 							RelativePath=".\alife_human_brain_inline.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="monster_brain"
+						Filter="">
+						<File
+							RelativePath=".\alife_monster_brain.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_monster_brain.h">
+						</File>
+						<File
+							RelativePath=".\alife_monster_brain_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="GameStuff"
