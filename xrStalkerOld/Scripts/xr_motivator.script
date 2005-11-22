@@ -1,7 +1,12 @@
-----------------------------------------------------------------------------------------------------------------------
---  автор: Диденко Руслан (Stohe)
---  TODO:
-----------------------------------------------------------------------------------------------------------------------
+--[[------------------------------------------------------------------------------------------------------------------
+автор: Диденко Руслан (Stohe)
+
+порядок вызова методов биндера:
+reload
+reinit
+load
+net_spawn
+--------------------------------------------------------------------------------------------------------------------]]
 memtsg = {} --' временная таблица
 lasthealth = 0
 lastime = nil
@@ -10,7 +15,6 @@ lastime = nil
 class "motivator_binder" (object_binder)
 
 function motivator_binder:__init (obj) super(obj)
-	self.initialized = false
 	self.loaded = false
 	self.last_update = 0
 	----memusage.collect_info(self.object, "__init")
@@ -67,8 +71,6 @@ function motivator_binder:reinit()
 	-- Загрузка информации на продажу.`
 	dialog_manager.load_trade_info(self.object)
 	--memusage.collect_info(self.object, "reinit_end")
-
-	--xr_reach_task.add_to_binder(self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
@@ -85,27 +87,51 @@ function motivator_binder:net_spawn(sobject)
 
 	db.add_obj(self.object)
 
-	-- spawn_callback для smart_terrain
-	local sim = alife()
-	if sim then
-		local strn_id = sobject:smart_terrain_id()
---		printf( "strn_id=%s", tostring( strn_id ) )
+	-- Все CALLBACK-и ставить здесь:
+	self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
+	self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
+	self.object:set_callback(callback.death, motivator_binder.death_callback, self)
+	self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
+	--memusage.collect_info(self.object, "after__callback")
 
-		if strn_id ~= 65535 then
-			local strn = sim:object( strn_id )
---			if strn == nil then
---				printf( "strn=nil" )
---			end
+	--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 
-			strn.gulag:spawn_callback( self.object:id(), self.object )
-		end
-	end
+	self:setup_gulag_and_logic_on_spawn( sobject )
 
     --' загрузка озвучки
     --memusage.collect_info(self.object, "before_soundmgr")
     xr_sound.load_sound(self.object)
     --memusage.collect_info(self.object, "after_soundmgr_netspawn_end")
 	return true
+end
+
+function motivator_binder:setup_gulag_and_logic_on_spawn( sobject )
+	local sim = alife()
+	if sim then
+		local strn_id = sobject:smart_terrain_id()
+--		printf( "strn_id=%s", tostring( strn_id ) )
+
+		if strn_id ~= 65535 then
+			local strn             = sim:object( strn_id )
+			local need_setup_logic = strn.gulag.Object_begin_job[self.object:id()] and not self.loaded
+
+			strn.gulag:object_setup_online( self.object:id(), self.object, need_setup_logic )
+
+			if self.loaded then
+				--memusage.collect_info(self.object, "before_logic")
+				xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
+				--memusage.collect_info(self.object, "after_logic_before_callback")
+			end
+		else
+			--memusage.collect_info(self.object, "before_logic")
+			xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
+			--memusage.collect_info(self.object, "after_logic_before_callback")
+		end
+	else
+		--memusage.collect_info(self.object, "before_logic")
+		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
+		--memusage.collect_info(self.object, "after_logic_before_callback")
+	end
 end
 
 function motivator_binder:net_destroy()
@@ -215,22 +241,6 @@ end
 
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
-
-	if not self.initialized and db.actor then
-		--memusage.collect_info(self.object, "before_logic")
-		self.initialized = true
-		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
-		--memusage.collect_info(self.object, "after_logic_before_callback")
-
-		-- Все CALLBACK-и ставить здесь:
-		self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
-		self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
-		self.object:set_callback(callback.death, motivator_binder.death_callback, self)
-		self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
-		--memusage.collect_info(self.object, "after__callback")
-
-		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
-	end
 
     if device ():time_global () - self.last_update > 1000 then
        sr_light.check_light_zone (self.object)
@@ -396,7 +406,9 @@ function motivator_binder:hear_callback(self, who, sound_type, sound_position, s
 end
 
 function AddToMotivator(npc)
-    npc:bind_object(this.motivator_binder(npc))
+	if alife() then
+		npc:bind_object(this.motivator_binder(npc))
+	end
 end
 
 -- Эвалюаторы, которые имеют высший приоритет, и, соответственно, перебивают остальные скрипты собой
