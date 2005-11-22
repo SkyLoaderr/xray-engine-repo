@@ -13,7 +13,7 @@
 	<info_portion id="yantar_vasilyev_info">
 		<article>yan_vasilyev_info</article>
 	</info_portion>
-		
+	<info_portion id="yantar_hello_scientist"></info_portion>	
 	<info_portion id="yan_find_vasilyev_done"></info_portion>
 	<info_portion id="yan_scientist_start_research"></info_portion>
 	<info_portion id="yan_scientist_return_to_bunker"></info_portion>
