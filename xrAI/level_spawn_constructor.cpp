@@ -561,7 +561,7 @@ void CLevelSpawnConstructor::update_artefact_spawn_positions	()
 //		R_ASSERT3						(level_graph().valid_vertex_id(alife_object->m_tNodeID),"Invalid node for object ",alife_object->name_replace());
 		R_ASSERT2						(alife_object,"Non-ALife object!");
 		VERIFY							(game_graph().vertex(alife_object->m_tGraphID)->level_id() == m_level.id());
-		alife_object->m_spawn_control	= "";
+//		alife_object->m_spawn_control	= "";
 		CSE_ALifeAnomalousZone			*zone = smart_cast<CSE_ALifeAnomalousZone*>(abstract);
 		if (zone) {
 			zone->m_dwStartIndex		= level_point_count;
