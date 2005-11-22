@@ -4,8 +4,8 @@ active = ph_button@active
 [ph_button@active]
 anim = lab_switcher_idle
 tooltip = tips_labx16switcher_press
-on_press = ph_button@deactivated %+terrain_test =turn_off(904)%
+on_press = ph_button@deactivate %+terrain_test%
 
-[ph_button@deactivated]
+[ph_button@deactivate]
 anim = lab_switcher_off
-
+on_timer = 500 | nil %=turn_off(904)%
