@@ -302,18 +302,92 @@ $spawn				= "monsters\pseudodogs\pseudodog_01_weak"
 visual				= monsters\pseudodog\pseudodog
 panic_threshold		= 0.5
 rank				= 0
+immunities_sect		= pseudodog_immunities_weak
+attack_params		= pseudodog_attack_params_weak
+
+[pseudodog_immunities_weak]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.60
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.60
+
+[pseudodog_attack_params_weak]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0	=	  	0.35,		15,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+;Jump attack
+run_jamp_1		=		0.55,		30,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
+
+
 
 [pseudodog_normal]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_02_normal"
 visual				= monsters\pseudodog\pseudodog
 panic_threshold		= 0.2
 rank				= 50
+immunities_sect		= pseudodog_immunities_normal
+attack_params		= pseudodog_attack_params_normal
+
+[pseudodog_immunities_normal]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.40
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.40
+
+[pseudodog_attack_params_normal]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0	=	  	0.35,		25,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+;Jump attack
+run_jamp_1		=		0.55,		40,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
+
+
 
 [pseudodog_strong]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_03_strong"
 visual				= monsters\pseudodog\pseudodog_grey
 panic_threshold		= 0.05	
 rank				= 100
+immunities_sect		= pseudodog_immunities_strong
+attack_params		= pseudodog_attack_params_strong
+
+[pseudodog_immunities_strong]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.20
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.20
+
+[pseudodog_attack_params_strong]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0	=	  	0.35,		35,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+;Jump attack
+run_jamp_1		=		0.55,		50,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
+
+
+
+
 
 
 [pseudodog_arena]:pseudodog_strong
@@ -322,8 +396,6 @@ visual				= monsters\pseudodog\pseudodog_grey
 panic_threshold		= 0.05
 species				= arena_monstr
 
-explosion_immunity 	= 0.2
-fire_wound_immunity = 0.04	;0.15
 
 ;---------------------------------------------------------------------------------
 ;-- PSY DOG
