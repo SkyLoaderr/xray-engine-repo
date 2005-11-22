@@ -4,7 +4,7 @@ local level_gulags = xr_gulag.level_gulags
 -- кэш для динамических ltx
 local dynamic_ltx = {}
 
-function loadJob(sj, gname, type, squad, groups, st)
+function loadJob(sj, gname, type, squad, groups, gulag)
 	if type == "test" then
 		t = { section = "logic@walker1",
 			idle = 0,
@@ -20,12 +20,6 @@ function loadJob(sj, gname, type, squad, groups, st)
 		table.insert(sj, t)
 		t = { section = "logic@walker3",
 			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@nil",
-			idle = 0,
 			prior = 0, state = {1},
 			in_rest = "", out_rest = "test_sr"
 		}
@@ -39,9 +33,9 @@ function loadJob(sj, gname, type, squad, groups, st)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@test1_sleeper2",
+		t = { section = "logic@test1_walker1",
 			idle = 0,
-			prior = 0, state = {1},
+			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -90,7 +84,7 @@ function loadJob(sj, gname, type, squad, groups, st)
 	end
 
     for k, v in pairs(level_gulags) do
-        v.load_job(sj, gname, type, squad, groups, st)
+        v.load_job(sj, gname, type, squad, groups, gulag)
     end
 end
 
@@ -108,7 +102,7 @@ function loadStates(gname, type)
 			end
 		end
 	end
-	
+
 	if type == "test_restr_changer" then
 		return function(gulag)
 		    local state, tg

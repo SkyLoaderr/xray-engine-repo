@@ -1,8 +1,3 @@
---[[
-Изменения script_version:
-	2 - сохранение поля under_smart_terrain
-]]
-
 local smart_section = "smart_terrains"
 
 class "se_stalker"	(cse_alife_human_stalker)
@@ -27,18 +22,10 @@ function se_stalker:get_ini()
 end
 --------------------
 function se_stalker:can_switch_offline ()
-	if self.under_smart_terrain then
-		return false
-	else
-		return cse_alife_human_stalker.can_switch_offline (self)
-	end
+	return cse_alife_human_stalker.can_switch_offline (self)
 end
 --------------------
 function se_stalker:can_switch_online ()
-	if self.under_smart_terrain then
-		return true
-	end
-
 	self:get_ini()
 
 	if self.ini == nil or self.spawner_present == false	then
@@ -68,22 +55,6 @@ function se_stalker:can_switch_online ()
 	--return xr_spawner.check_spawn (self)
 end
 --------------------
-function se_stalker:STATE_Write (packet)
---	log ("se_stalker::STATE_Write called!")
-	cse_alife_human_stalker.STATE_Write (self, packet)
-
-	packet:w_bool (self.under_smart_terrain == true)
-end
---------------------
-function se_stalker:STATE_Read (packet, size)
---	log ("se_stalker::STATE_Read called!")
-	cse_alife_human_stalker.STATE_Read (self, packet, size)
-
-	if self.script_version >= 2 then
-		self.under_smart_terrain = packet:r_bool()
-	end
-end
---------------------
 function se_stalker:on_register()
 	cse_alife_human_stalker.on_register( self )
 	if(actor_stats.add_to_ranking~=nil)then
@@ -103,7 +74,7 @@ function se_stalker:read_smart_terrain_conditions()
 		local conds = {}
 		local accepts = false
 		local result, field, str
-		local n = ini:line_count( smart_section )
+		local n = self.ini:line_count( smart_section )
 
 		if n > 0 then
 			for i = 0, n-1 do
