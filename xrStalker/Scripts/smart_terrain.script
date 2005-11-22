@@ -251,12 +251,12 @@ function se_smart_terrain:initialize()
 		sect = "gulag1"
 
 		if not ini:section_exist( sect ) then
-			abort( "[smart_terrain %s] no configuration!" )
+			abort( "[smart_terrain %s] no configuration!", self:name() )
 		end
 	end
 
 	if not ini:line_exist( sect, "type" ) then
-		abort( "[smart_terrain %s] type is not specified" )
+		abort( "[smart_terrain %s] type is not specified", self:name() )
 	end
 
 	local gp = {}
