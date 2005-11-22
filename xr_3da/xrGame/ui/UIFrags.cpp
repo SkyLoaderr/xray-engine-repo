@@ -22,6 +22,11 @@ CUIFrags::~CUIFrags(){
 }
 
 void CUIFrags::Init(CUIXml& xml_doc, LPCSTR path){
+	m_pStats->Init(xml_doc, "stats_wnd", 0);
+	InitBackground(xml_doc, path);	
+}
+
+void CUIFrags::InitBackground(CUIXml& xml_doc, LPCSTR path){
 	string256 _path;
 	CUIXmlInit::InitWindow(xml_doc, path, 0, this);
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path, path, ":back_c"), 0, m_pBackC);
@@ -30,5 +35,4 @@ void CUIFrags::Init(CUIXml& xml_doc, LPCSTR path){
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path, path, ":back_t"), 0, m_pBackT);
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path, path, ":back_b"), 0, m_pBackB);
 
-	m_pStats->Init(xml_doc, "stats_wnd");
 }

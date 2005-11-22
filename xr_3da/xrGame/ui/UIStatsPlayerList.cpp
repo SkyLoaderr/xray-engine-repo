@@ -6,19 +6,23 @@
 #include "../level.h"
 #include "UIStatic.h"
 
+IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);
+
 CUIStatsPlayerList::CUIStatsPlayerList(){
-	m_cmp_func		= NULL;
+	m_cmp_func		= DM_Compare_Players;
 	m_CurTeam		= 0;
 	m_bSpectator	= false;
 
 	m_header.wnd = NULL;
-	m_header.height = 0;
+	m_header.height = 25;
 
 	m_pTextFont	= NULL;
 	m_text_col	= 0xff000000;
+//	m_header_height = 25;
 }
 
 CUIStatsPlayerList::~CUIStatsPlayerList(){
+//	xr_delete(m_header.wnd);
 
 }
 
@@ -46,14 +50,17 @@ void CUIStatsPlayerList::Update(){
 		}
 	};
 
-	if(items.empty())
+	if (m_bSpectator)
 	{
-		Clear();
-		ShowHeader(false);
-		return;
+		if(items.empty())
+		{
+			Clear();
+			ShowHeader(false);
+			return;
+		}
+		else
+			ShowHeader(true);
 	}
-	else
-		ShowHeader(true);
 
 	if (m_cmp_func)
         std::sort(items.begin(), items.end(), m_cmp_func);
@@ -61,7 +68,7 @@ void CUIStatsPlayerList::Update(){
 	int n = (int)items.size();
 	n -= m_pad->GetChildWndList().size();
 
-	if (n<0)
+	if (n<0)	
 	{
 		n = abs(n);
 		for (int i = 0; i<n; i++)
@@ -75,8 +82,8 @@ void CUIStatsPlayerList::Update(){
             CUIStatsPlayerInfo* pi = xr_new<CUIStatsPlayerInfo>(&m_field_info, m_pTextFont, m_text_col);
 #pragma todo("SATAN->SATAN: init height")
 			pi->Init(0,0,this->GetDesiredChildWidth(),15);
-			CUIScrollView::AddWindow(pi, true);	
-
+			CUIScrollView::AddWindow(pi, true);
+			m_flags.set			(eNeedRecalc,TRUE);
 		}
 	}
 
@@ -112,13 +119,17 @@ void CUIStatsPlayerList::AddWindow(CUIWindow* pWnd, bool auto_delete){
 	R_ASSERT2(false, "fucking shit!");
 }
 
-CUIWindow* CUIStatsPlayerList::GetHeader(CGameFont* pF, const u32 col){
+void CUIStatsPlayerList::SetHeaderHeight(float h){
+	m_header.height = h;
+}
+
+CUIStatic* CUIStatsPlayerList::GetHeader(CGameFont* pF, const u32 col, LPCSTR texture){
 	if (m_header.wnd)
 		return m_header.wnd;
 
-	CUIWindow* pWnd = xr_new<CUIWindow>();
+	m_header.wnd = xr_new<CUIStatic>();
 	//#pragma todo("Satan->Satan: remove stub for height")
-	pWnd->Init(0,0,this->GetDesiredChildWidth(),25);
+	m_header.wnd->Init(0,0,this->GetDesiredChildWidth(),m_header.height);
 
 	float indent = 10;
 	CStringTable strtbl;
@@ -137,26 +148,31 @@ CUIWindow* CUIStatsPlayerList::GetHeader(CGameFont* pF, const u32 col){
 				st->SetFont(pF);
 			st->SetTextColor(col);
 			st->SetTextComplexMode(false);
-			pWnd->AttachChild(st);
+			m_header.wnd->AttachChild(st);
 		}
 	}
 	else
 	{
 		CUIStatic* st = xr_new<CUIStatic>();
-		st->Init(10,10,this->GetDesiredChildWidth(),15);
+		st->Init(10,0,this->GetDesiredChildWidth(),m_header.height);
 		st->SetAutoDelete(true);
 		if (pF)
-			st->SetFont(pF);
+			m_header.wnd->SetFont(pF);
 		st->SetTextColor(col);
+		st->SetVTextAlignment(valCenter);
 		st->SetTextComplexMode(false);
-		st->SetText(" Spectators");
-		pWnd->AttachChild(st);
+		st->SetText("SPECTATORS");
+		m_header.wnd->InitTexture(texture);
+		m_header.wnd->AttachChild(st);
 	}
 
-	m_header.wnd = pWnd;
-	m_header.height = pWnd->GetHeight();
+//	m_header.wnd = pWnd;
+//	m_header.height = pWnd->GetHeight();
 
-    return pWnd;
+//	if (texture && xr_strlen(texture))
+//        m_header.wnd->InitTexture(texture);
+
+    return m_header.wnd;
 }
 
 void CUIStatsPlayerList::RecalcSize(){

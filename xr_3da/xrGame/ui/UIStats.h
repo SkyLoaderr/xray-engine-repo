@@ -13,7 +13,7 @@ public:
 	CUIStats();
 	virtual ~CUIStats();
 
-			void Init(CUIXml& xml_doc, LPCSTR path,int team = 0);
+			void Init(CUIXml& xml_doc, LPCSTR path,int team);
 	virtual void Draw();
 
 protected:

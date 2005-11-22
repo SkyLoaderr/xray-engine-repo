@@ -3,7 +3,9 @@
 #include "UIStatsPlayerInfo.h"
 #include "UIStatic.h"
 #include "../game_cl_base.h"
-
+#include "UIStatsIcon.h"
+#include "../game_cl_artefacthunt.h"
+#include "../level.h"
 
 CUIStatsPlayerInfo::CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info, CGameFont* pF, u32 text_col)
 {
@@ -11,7 +13,16 @@ CUIStatsPlayerInfo::CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info, CGameFont
 
 	xr_vector<PI_FIELD_INFO>&	field_info = *info;
 	for (u32 i = 0; i<field_info.size(); i++)
-		AddField(field_info[i].width, pF, text_col);
+	{
+		bool pic;
+		if (0 == xr_strcmp(field_info[i].name, "rank"))
+			pic = true;
+		else if (0 == xr_strcmp(field_info[i].name, "artefact"))
+			pic = true;
+		else pic = false;
+
+		AddField(field_info[i].width, pF, text_col, pic);
+	}
 
 	R_ASSERT(!field_info.empty());
 }
@@ -37,8 +48,8 @@ void CUIStatsPlayerInfo::Update(){
 	m_pPlayerInfo = NULL;
 }
 
-void CUIStatsPlayerInfo::AddField(float len, CGameFont* pF, u32 text_col){
-	CUIStatic* wnd = xr_new<CUIStatic>();
+void CUIStatsPlayerInfo::AddField(float len, CGameFont* pF, u32 text_col, bool icon){
+	CUIStatic* wnd = icon ? xr_new<CUIStatsIcon>() : xr_new<CUIStatic>();
 
 	if (m_fields.empty())
 		wnd->Init(10,0,len,this->GetHeight());		
@@ -68,7 +79,21 @@ const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
 	else if (0 == xr_strcmp(id,"artefacts"))
 		sprintf(ans,"%d",(int)m_pPlayerInfo->af_count);
 	else if (0 == xr_strcmp(id,"rank"))
-		sprintf(ans,"%d",(int)m_pPlayerInfo->rank);
+		sprintf(ans,"rank_%d",(int)m_pPlayerInfo->rank);
+	else if (0 == xr_strcmp(id, "artefact"))
+	{		
+		if (m_pPlayerInfo->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+			strcpy(ans,"death");
+		else
+		{
+			game_cl_ArtefactHunt* pGameAHunt = smart_cast<game_cl_ArtefactHunt*>(&(Game()));
+			if (m_pPlayerInfo->GameID == pGameAHunt->artefactBearerID)
+				strcpy(ans,"artefact");
+			else
+				strcpy(ans,"");			
+		}
+		
+	}
 	else
 		R_ASSERT2(false, "invalid info ID");
 

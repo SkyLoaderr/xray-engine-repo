@@ -13,6 +13,7 @@ public:
 	void Init(CUIXml& xml_doc, LPCSTR path);
 
 protected:
+	void InitBackground(CUIXml& xml_doc, LPCSTR path);
 	CUIStatic*	m_pBackT;
 	CUIStatic*	m_pBackC;
 	CUIStatic*	m_pBackB;

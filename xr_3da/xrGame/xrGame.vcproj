@@ -10899,12 +10899,6 @@
 					Name="Stats"
 					Filter="">
 					<File
-						RelativePath=".\ui\UIFrags.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIFrags.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIStats.cpp">
 					</File>
 					<File
@@ -10922,12 +10916,42 @@
 					<File
 						RelativePath=".\ui\UIStatsPlayerList.h">
 					</File>
-					<File
-						RelativePath=".\ui\UIStatsWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatsWnd.h">
-					</File>
+					<Filter
+						Name="icons"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIStatsIcon.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatsIcon.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="frag_wnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIFrags.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIFrags.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIFrags2.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIFrags2.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="old"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIStatsWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatsWnd.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Spawn"

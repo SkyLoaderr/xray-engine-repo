@@ -14,8 +14,9 @@ public:
 			void SetSpectator(bool f);
 			void SetTeam(int team);
 			void AddField(const char* name, float width);
-	CUIWindow*	 GetHeader(CGameFont* pF, u32 col);
+	CUIStatic*	 GetHeader(CGameFont* pF, u32 col, LPCSTR texture);
 			void SetTextParams(CGameFont* pF, u32 col);
+			void SetHeaderHeight(float h);
 	virtual void AddWindow(CUIWindow* pWnd, bool auto_delete = true);
 	virtual void Update();
 
@@ -33,11 +34,12 @@ protected:
 	xr_vector<PI_FIELD_INFO>	m_field_info;
 
 	typedef struct{
-		CUIWindow*	wnd;
+		CUIStatic*	wnd;
 		float		height;
 	} S_HEADER_DATA;
 
     S_HEADER_DATA	m_header;
 	CGameFont*	m_pTextFont;
 	u32			m_text_col;
+//	float		m_header_height;
 };

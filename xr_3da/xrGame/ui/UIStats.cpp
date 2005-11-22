@@ -58,26 +58,35 @@ void CUIStats::Init(CUIXml& xml_doc, LPCSTR path,  int team){
     CGameFont* pF;
 
 	CUIStatsPlayerList* pPList = xr_new<CUIStatsPlayerList>();
+	pPList->SetTeam(team);
 	CUIXmlInit::InitStatsPlayerList(xml_doc, strconcat(_path, path, ":player_list"),0,pPList);
 	pPList->SetMessageTarget(this);
 	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":player_list:text_format"), 0, col, pF);
 	pPList->SetTextParams(pF, col);
+	float h = xml_doc.ReadAttribFlt(strconcat(_path, path, ":player_list_header"), 0, "height", 25);
+	pPList->SetHeaderHeight(h);
 
 	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":player_list_header:text"), 0, col, pF);
-	pWnd = pPList->GetHeader(pF,col);
+	pWnd = pPList->GetHeader(pF,col, NULL);
 
 	AddWindow(pWnd, true);
 	AddWindow(pPList, true);
 
 	// spectators
 	pPList = xr_new<CUIStatsPlayerList>();
+	pPList->SetTeam(team);
 	CUIXmlInit::InitStatsPlayerList(xml_doc, strconcat(_path, path, ":spectator_list"),0,pPList);
 	pPList->SetMessageTarget(this);
+	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":spectator_list:text_format"), 0, col, pF);
+	pPList->SetTextParams(pF, col);
+	h = xml_doc.ReadAttribFlt(strconcat(_path, path, ":spectator_list_header"), 0, "height", 25);
+	pPList->SetHeaderHeight(h);
 
 	col = 0;
     pF = NULL;
 	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":spectator_list_header:text"), 0, col, pF);
-	pWnd = pPList->GetHeader(pF,col);
+	LPCSTR tex_name = xml_doc.Read(strconcat(_path, path, ":spectator_list_header:texture"), 0, NULL);
+	pWnd = pPList->GetHeader(pF,col, tex_name);
 
 	AddWindow(pWnd, true);
 	AddWindow(pPList, true);
