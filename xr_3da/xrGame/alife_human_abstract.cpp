@@ -22,6 +22,9 @@ void CSE_ALifeHumanAbstract::on_surge								()
 
 void CSE_ALifeHumanAbstract::update									()
 {
+	if (!bfActive())
+		return;
+
 	brain().update							();
 }
 
