@@ -92,6 +92,11 @@ as_step							= 0.5
 Run_Attack_Min_Dist				= 2.5
 Run_Attack_Max_Dist				= 3.0
 
+attack_params					= m_bloodsucker_attack_params
+
+attack_effector					= m_bloodsucker_attack_effector
+vampire_effector				= m_bloodsucker_vampire_effector
+
 ;-------------------------------------------------------------------------
 ; Invisible Ability
 ;-------------------------------------------------------------------------
@@ -167,7 +172,19 @@ idle_sound_delay			= 95000
 eat_sound_delay				= 3000
 attack_sound_delay			= 1000;6000
 
-SoundThreshold		 		 = 0.06					       ; range [0..1]
+SoundThreshold		 		= 0.06					       ; range [0..1]
+max_hear_dist				= 80 
+
+;-------------------------------------------------------------------------
+; Vision
+;-------------------------------------------------------------------------
+eye_fov							= 120	
+eye_range						= 80	
+transparency_threshold			= 0.25
+
+; number of visible objects monster can handle
+DynamicObjectsCount				= 32		
+
 
 ;-------------------------------------------------------------------------
 ; Morale
@@ -189,36 +206,21 @@ Max_Satiety						= 1.0	;0.9			; üðú¸. ýþ¨üð ¸vªþ¸ªø (ñþû¹°õ - þ¢õý¹ ¸vªvù)
 distance_to_corpse				= 0.8					; ôø¸ª. ôþ ª¨ºÿð, ÿ¨ø úþªþ¨þù þý ÿõ¨õ¿þôøª ò ¸þ¸ªþ ýøõ õôv
 
 ; spin spin sugar
-bone_spin				= bip01_spine1
+bone_spin						= bip01_spine1
 
-;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_approach		=      20.0,            1.0,           1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+;									fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_approach				=      20.0,            1.0,           1000.0,             0.0,               0.0,              1000.0,				10000.0,      
 
 
-;Field of view, look and hear distance
-eye_fov						 = 120	
-eye_range					 = 80	
-max_hear_dist				 = 80 
+terrain							= bloodsucker_terrain
+material						= creatures\medium
 
-transparency_threshold			= 0.25
-
-terrain						= bloodsucker_terrain
-
-material					= creatures\medium
-DynamicObjectsCount			= 32
-
-attack_effector				= m_bloodsucker_attack_effector
-attack_params				= m_bloodsucker_attack_params
-vampire_effector			= m_bloodsucker_vampire_effector
-
-step_params					= m_bloodsucker_step_params
-postprocess_new				= postprocess_new
-damage						= m_Bloodsucker_damage
-
-LegsCount					= 2
+step_params						= m_bloodsucker_step_params
+damage							= m_Bloodsucker_damage
+LegsCount						= 2
 
 ;species of monster
-species						= bloodsucker
+species							= bloodsucker
 
 ;=================================================================================
 ; Bloodsucker Damage
