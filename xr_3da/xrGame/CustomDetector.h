@@ -1,8 +1,9 @@
 #pragma once
 #include "inventory_item_object.h"
 #include "../feel_touch.h"
-#include "customzone.h"
+#include "hudsound.h"
 
+class CCustomZone;
 //описание типа зоны
 struct ZONE_TYPE
 {
@@ -10,7 +11,9 @@ struct ZONE_TYPE
 	float		min_freq;
 	float		max_freq;
 	//звук реакции детектора на конкретную зону
-	ref_sound	detect_snd;
+//	ref_sound	detect_snd;
+	HUD_SOUND	detect_snds;
+
 	shared_str	zone_map_location;
 };
 
@@ -69,7 +72,6 @@ protected:
 	bool m_bWorking;
 
 	float m_fRadius;
-	float m_fBuzzerRadius;
 
 	//если хоз€ин текущий актер
 	CActor*				m_pCurrentActor;
@@ -83,9 +85,6 @@ protected:
 	DEFINE_MAP(CCustomZone*, ZONE_INFO, ZONE_INFO_MAP, ZONE_INFO_MAP_IT);
 	ZONE_INFO_MAP m_ZoneInfoMap;
 	
-	//звуки
-	ref_sound m_noise, m_buzzer;
-
 	shared_str						m_nightvision_particle;
 
 #ifdef DEBUG

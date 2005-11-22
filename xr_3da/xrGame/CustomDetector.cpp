@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "customdetector.h"
+#include "customzone.h"
 #include "hudmanager.h"
 #include "artifact.h"
 #include "inventory.h"
@@ -7,6 +8,7 @@
 #include "map_manager.h"
 #include "night_vision_effector.h"
 #include "actor.h"
+#include "ai_sounds.h"
 
 ZONE_INFO::ZONE_INFO	()
 {
@@ -27,12 +29,10 @@ CCustomDetector::CCustomDetector(void)
 
 CCustomDetector::~CCustomDetector(void) 
 {
-	m_noise.destroy	();
-	m_buzzer.destroy();
-
 	ZONE_TYPE_MAP_IT it;
 	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it)
-		it->second.detect_snd.destroy();
+		HUD_SOUND::DestroySound(it->second.detect_snds);
+//		it->second.detect_snd.destroy();
 
 	m_ZoneInfoMap.clear();
 }
@@ -55,10 +55,6 @@ void CCustomDetector::Load(LPCSTR section)
 	inherited::Load(section);
 
 	m_fRadius				= pSettings->r_float(section,"radius");
-	m_fBuzzerRadius			= pSettings->r_float(section,"buzzer_radius");
-
-	m_noise.create			(TRUE,pSettings->r_string(section,"noise"));
-	m_buzzer.create			(TRUE,pSettings->r_string(section,"buzzer"));
 	
 	if( pSettings->line_exist(section,"night_vision_particle") )
 		m_nightvision_particle	= pSettings->r_string(section,"night_vision_particle");
@@ -82,8 +78,11 @@ void CCustomDetector::Load(LPCSTR section)
 			sprintf					(temp, "zone_max_freq_%d", i);
 			zone_type.max_freq		= pSettings->r_float(section,temp);
 			R_ASSERT				(zone_type.min_freq<zone_type.max_freq);
-			sprintf					(temp, "zone_sound_%d", i);
-			zone_type.detect_snd.create(TRUE,pSettings->r_string(section,temp));
+			sprintf					(temp, "zone_sound_%d_", i);
+
+//			zone_type.detect_snd.create(TRUE,pSettings->r_string(section,temp));
+
+			HUD_SOUND::LoadSound(section, temp	,zone_type.detect_snds		, TRUE, SOUND_TYPE_ITEM);
 
 			sprintf					(temp, "zone_map_location_%d", i);
 			
@@ -125,12 +124,9 @@ void CCustomDetector::StopAllSounds()
 	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it) 
 	{
 		ZONE_TYPE& zone_type = (*it).second;
-		zone_type.detect_snd.stop();
+		HUD_SOUND::StopSound(zone_type.detect_snds);
+//		zone_type.detect_snd.stop();
 	}
-
-	//выключить
-	m_buzzer.stop				();
-	m_noise.stop				();
 }
 
 void CCustomDetector::UpdateCL() 
@@ -177,7 +173,9 @@ void CCustomDetector::UpdateCL()
 		if((float)zone_info.snd_time > current_snd_time)
 		{
 			zone_info.snd_time	= 0;
-			zone_type.detect_snd.play_at_pos(this,Fvector().set(0,0,0),sm_2D);
+//			zone_type.detect_snd.play_at_pos(this,Fvector().set(0,0,0),sm_2D);
+			HUD_SOUND::PlaySound	(zone_type.detect_snds, Fvector().set(0,0,0), this, true, false);
+
 		} 
 		else 
 			zone_info.snd_time += Device.dwTimeDelta;
@@ -240,7 +238,7 @@ void CCustomDetector::OnRender()
 	RCache.OnFrameEnd();
 	if (!(dbg_net_Draw_Flags.is_any((1<<6)))) return;
 	Fmatrix l_ball;
-	l_ball.scale(m_fBuzzerRadius, m_fBuzzerRadius, m_fBuzzerRadius);
+	l_ball.scale(1.5f, 1.5f, 1.5f);
 	Fvector l_p;
 	l_p.set(0, 1.f, 0);
 	XFORM().transform(l_p, l_p);
