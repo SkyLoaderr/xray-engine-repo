@@ -4,6 +4,9 @@
 -- Разработчик: Jim
 ----------------------------------------------------------------------------------------------------
 
+local def_min_radius = 20
+local def_max_radius = 40
+
 class "mob_home"
 
 ----------------------------------------------------------------------------------------------------
@@ -18,7 +21,43 @@ end
 -- RESET SCHEME
 ----------------------------------------------------------------------------------------------------
 function mob_home:reset_scheme()
-	self.object:set_home(self.st.home, self.st.home_min_radius, self.st.home_max_radius)
+--[[
+Добавлено: Haron
+Описание: Теперь можно задавать радиусы home_min_radius и home_max_radius во флагах
+          пути path_home. Для этого введены флаги minr, maxr. Они должны быть
+          прописаны в первой точке пути. У радиусов заданых в секции приоритет
+          больший чем для тех что заданы во флагах, т.е. если задано и там и там, то
+          берутся значения из секции (сделано для обратной совместимости).
+--]]
+    local minr, maxr = def_min_radius, def_max_radius
+    local path_info = utils.path_parse_waypoints(self.st.home)
+    local r = 0
+
+    if self.st.home_min_radius then
+        minr = self.st.home_min_radius
+    else
+        r = path_info.path_walk_info[0]["minr"]
+        if r then
+            r = tonumber(r)
+            if r then
+                minr = r
+            end
+        end
+    end
+    
+    if self.st.home_max_radius then
+        minr = self.st.home_max_radius
+    else
+        r = path_info.path_walk_info[0]["maxr"]
+        if r then
+            r = tonumber(r)
+            if r then
+                maxr = r
+            end
+        end
+    end
+    
+	self.object:set_home(self.st.home, minr, maxr)
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -55,9 +94,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	storage.logic				= xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
-	storage.home				= utils.cfg_get_string(ini, section, "path_home",			npc, false, gulag_name)
-	storage.home_min_radius		= utils.cfg_get_number(ini, section, "home_min_radius",		npc, false, 20)
-	storage.home_max_radius		= utils.cfg_get_number(ini, section, "home_max_radius",		npc, false, 40)
+	storage.home				= utils.cfg_get_string(ini, section, "path_home",			npc, true, gulag_name)
+	storage.home_min_radius		= utils.cfg_get_number(ini, section, "home_min_radius",		npc, false) --, 20)
+	storage.home_max_radius		= utils.cfg_get_number(ini, section, "home_max_radius",		npc, false) --, 40)
 	
 	-- check min and max radius
 	if	storage.home_min_radius > storage.home_max_radius then
