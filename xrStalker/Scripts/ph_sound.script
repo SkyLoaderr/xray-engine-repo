@@ -11,7 +11,7 @@ function snd_source:__init (obj, storage)
 	self.old_sound = 0
 end
 
-function snd_source:reset_scheme()
+function snd_source:reset_scheme(loading)
 	self.sound_list = {}
 	self.current_sound = 1
 	self.last_update = 0
@@ -40,11 +40,19 @@ function snd_source:reset_scheme()
 	
 	--self.object:set_callback(callback.hit, self.hit_callback, self)
 	self.first_sound = true
-	self.destructed = false
     self.st.pause_time = 0	
     self.st.sound_set = false
     self.old_sound = 0
+    if loading == false then
+	   self.destructed = false
+	else
+	   self..destructed = xr_logic.pstor_retrieve (self.object, "destr")
+	end   
     printf("PH_SOUND reset_scheme")
+end
+
+function snd_source:save ()
+	xr_logic.pstor_store (self.object, "destr",  self.destructed)
 end
 
 function snd_source:hit_callback(obj, amount, local_direction, who, bone_index)
