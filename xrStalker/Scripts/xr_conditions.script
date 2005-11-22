@@ -293,6 +293,11 @@ function counter_greater(actor, npc, p)
 	end
 end
 
+-- определяет нечётность интервала игрового времени. интервал нужно передать в p[1]
+function odd_time_interval(actor, npc, p)
+	return odd( game.time() / p[1] )
+end
+
 -------------------------------------------------------------------------------------------------------
 -- Функции поддержки kamp
 function _kamp_talk(actor, npc)

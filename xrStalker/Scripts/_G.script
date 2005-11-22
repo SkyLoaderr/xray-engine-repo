@@ -1139,4 +1139,9 @@ function set_sleep_relocate(point, look, timeout)
 	db.actor:actor_sleep(0, timeout)	
 end
 
+-- проверяет целую часть числа на нечётность
+function odd( x )
+	return math.floor( x * 0.5 ) * 2 == math.floor( x )
+end
+
 --profiler.setup_hook	()
