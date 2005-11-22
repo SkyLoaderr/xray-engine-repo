@@ -1,30 +1,16 @@
 --[[------------------------------------------------------------------------------------------------------------------
 Smart Terrain (места, где npc могут оседать на некоторое время и заниматься чем-то)
-Чугай Саша
+Чугай Александр
 !без симуляции не работает!
 
-Сделать:
-
-Изменения script_version:
-	1  - jobN для каждого npc и begin для каждой работы; параметры гулага state, stateBegin, casualities
-
-
-объединить gulag и smart terrain
-флажок набрано/не набрано (готов/не готов)
-	взводится при срабатывании quest_ready. От него зависит выдача заданий на набор сталкеров
-перечень нужных npc
-место работы
-	отсылка универсальными схемами при назначении нового места работы
-	по прибытии установить скриптовую схему
-	поставить для всех работ
-	если не задано, то место работы=зона smart_terrain
-задания для симулятора
-	проверка подходящести кандидата
-	приоритеты и вытеснения для sid, profile, community
-	уникальные сталкеры должны подпадать ТОЛЬКО под конкретные smrttrrn
+TODO
+	binder группы перехода онл/офл
+	вести всю группу аля патруль
+	приём группы
+	организация групп
 --------------------------------------------------------------------------------------------------------------------]]
 
-local h2ms = 60 * 60 * 1000
+--local h2ms = 60 * 60 * 1000
 
 local check_period
 
@@ -35,42 +21,15 @@ if not editor() then
 	CTime_0 = game.CTime()
 end
 
-local n, ini, sect, g, gi, ggi, o, oT, o_id, sim, t
-
 local monster_classes
+
+local disagreed, agreed, agreed_exclusive = 0, 1, 2
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
-function printf(fmt,...) 
-	log(string.format(fmt,...))	
-end
-
--- парсит строку вида "ааа, ббб, ввв..." в таблицу { "ааа", "ббб", "ввв", ... }
--- Чугай
-function parse_names( s )
-	local t = {}
-
-	for name in string.gfind( s, "([%w_\\]+)%p*" ) do
-		table.insert( t, name )
-	end
-
-	return t
-end
-
--- парсит строку вида "n1, n2, n3..." в таблицу { n1, n2, n3, ... } где n1, n2, n3... - дробные числа
--- Чугай
-function parse_nums( s )
-	local t = {}
-
-	for entry in string.gfind( s, "([%d%.]+)%,*" ) do
-		table.insert( t, tonumber( entry ) )
-	end
-
-	return t
-end
-
 -------------- помощники для чтения ini (custom data) -------------------
+-- TODO убрать их
 function r_str( spawn_ini, section, line, default )
 	if spawn_ini:line_exist( section, line ) then
 		return spawn_ini:r_string( section, line )
@@ -87,23 +46,22 @@ function r_num( spawn_ini, section, line, default )
 	end
 end
 
--- r_nums
--- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
-function r_nums(spawn_ini, section, line, ...)
-	local arg = {...}		
-	if spawn_ini:line_exist(section, line) then
-		local t = parse_nums(spawn_ini:r_string(section, line))
-		local n = table.getn(t)
-		if n == 0 then 
-			return unpack(arg) 
-		end			
-		while table.getn(t) < table.getn(arg) do 
-			table.insert(t,t[n]) 
-		end			
-		return unpack(t)
+function r_2nums( spawn_ini, section, line, def1, def2 )
+	if spawn_ini:line_exist( section, line ) then
+		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
+		local t = parse_nums( spawn_ini:r_string( section, line ) )
+		local n = table.getn( t )
+
+		if n == 0 then
+			return def1, def2
+		elseif n == 1 then
+			return t[1], def2
+		else
+			return t[1], t[2]
+		end
 	else
-		return unpack(arg)		
-	end	
+		return def1, def2
+	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -111,25 +69,6 @@ end
 -- Унаследован от скриптовой зоны.
 ----------------------------------------------------------------------------------------------------------------------
 class "se_smart_terrain" ( cse_alife_smart_zone )
-
-function se_smart_terrain:update()
---	log( "se_smart_terrain::update called!" )
-	cse_alife_smart_zone.update( self )
-	update( self )
-end
-
-function se_smart_terrain:detect_probability()
---	log( "se_smart_terrain::detect_probability called!" )
-	-- если есть активный гулаг, то вероятность будет зависеть от него, иначе вероятность 100%
-	return ( self.gulag and self.gparams.probability ) or 1
---	return 1.0
-end
-
-function se_smart_terrain:smart_touch( monster )
-	log( "se_smart_terrain::smart_touch called!" )
-	cse_alife_smart_zone.smart_touch( self, monster )
-	on_touch( self, monster )
-end
 
 function se_smart_terrain:__init( section ) super( section )
 --	log( "se_smart_terrain::se_smart_terrain called!" )
@@ -139,10 +78,21 @@ function se_smart_terrain:__finalize()
 --	log( "se_smart_terrain::~se_smart_terrain called!" )
 end
 
+function se_smart_terrain:detect_probability()
+--	log( "se_smart_terrain::detect_probability called!" )
+	return 0
+end
+
+function se_smart_terrain:smart_touch( monster )
+--	log( "se_smart_terrain::smart_touch called!" )
+	cse_alife_smart_zone.smart_touch( self, monster )
+--	on_touch( self, monster )
+end
+
 function se_smart_terrain:print()
 	printf( "NPCs:" )
-	if self.npcs then
-		for id, v in pairs(self.npcs) do
+	if self.npc_info then
+		for id, v in pairs( self.npc_info ) do
 			printf( "    %d", id )
 		end
 	end
@@ -155,66 +105,35 @@ function se_smart_terrain:STATE_Write( packet )
 
 --	self:print()
 
-	packet:w_u8  ( self.gulagN or 0 )
-
 	utils.w_CTime( packet, self.duration_end )
 	utils.w_CTime( packet, self.idle_end )
 
-	-- список npc
-	n = 0
-	if self.npcs then
-		for id, v in pairs(self.npcs) do
+	if self.gulag then
+		packet:w_bool( true )
+
+		self.gulag:save_common( packet )
+
+		local n = 0
+
+		for id, v in pairs( self.npc_info ) do
 			n = n + 1
 		end
 
 		packet:w_u8( n )
 
-		for id, v in pairs(self.npcs) do
+		for id, v in pairs( self.npc_info ) do
 			packet:w_u16  ( id )
-			packet:w_u8   ( v.group )
-			packet:w_u8   ( v.squad )
-			packet:w_bool ( v.move_offline )
-			packet:w_bool ( v.switch_offline )
-			utils.w_CTime( packet, v.stay_end )
+			packet:w_u8   ( v.o_group )
+			packet:w_u8   ( v.o_squad )
+			packet:w_bool ( v.exclusive )
+			utils.w_CTime ( packet, v.stay_end )
 
-			if self.gulag then
-				packet:w_u8( v.jobN or 0 )
-			end
+			self.gulag:save_obj( packet, id )
 		end
 	else
-		packet:w_u8( n )
-	end
-
-	if self.gulag then
-		-- параметры гулага
-		packet:w_u8(  self.casualities or 0 )
-		packet:w_u8(  self.state       or 0 )
-		--packet:w_u32( self.stateBegin  or 0 )
-		utils.w_CTime( packet, self.stateBegin or CTime_0 )
-
-		-- список работ в гулаге
-		if self.Job then
-			packet:w_u8( table.getn( self.Job ) )
-
-			print_table( self.Job )
-
-			for i, v in pairs(self.Job) do
-				packet:w_u32( v )
---				printf( "job i=%d", i )
-			end
-		else
-			packet:w_u8( 0 )
-		end
+		packet:w_bool( false )
 	end
 end
-
---function to_str(what)
---	if what == nil then
---		return "<nil>"
---	else
---		return tostring(what)
---	end
---end
 
 -- восстановление
 function se_smart_terrain:STATE_Read( packet, size )
@@ -224,80 +143,94 @@ function se_smart_terrain:STATE_Read( packet, size )
 --	printf( "before read" )
 --	self:print()
 
-	read_ini( self ) -- прочитать custom_data
+	self:initialize()
 
 	-- под LevelEditor не пытаться читать из пакета ничего
 	if editor() then
 		return
 	end
 
-	self.gulagN = packet:r_u8()
-	if self.gulagN == 0 then
-		self.gulagN = nil
-	end
-
 --	printf( "name=%s, script_version=%d", self:name(), self.script_version )
---	printf( "gulagN=%s", to_str( self.gulagN ) )
 
 	self.duration_end = utils.r_CTime( packet )
 	self.idle_end     = utils.r_CTime( packet )
 
-	-- список npc
-	n = packet:r_u8()
+	-- если есть гулаг
+	if packet:r_bool() then
+		self.check_time = CTime_0
+		self.gulag = xr_gulag.gulag( self, self.gparams.type, self.gparams.squad, self.gparams.groups, self.npc_info, self.gparams.capacity )
 
---	printf( "npcs=%s", to_str( n ) )
+		self.gulag:load_common( packet )
 
-	for i = 1, n do
-		o_id = packet:r_u16()
-		self.npcs[o_id] = {}
-		o = self.npcs[o_id]
+		local n = packet:r_u8()
+		local o_id, o
 
-		o.group          = packet:r_u8()
-		o.squad          = packet:r_u8()
-		o.move_offline   = packet:r_bool()
-		o.switch_offline = packet:r_bool()
-		o.stay_end       = utils.r_CTime( packet )
+--		printf( "npc_info=%s", to_str( n ) )
 
-		if self.script_version >= 1 then
-			if self.gulagN then
-				o.jobN = packet:r_u8()
-				if o.jobN == 0 then
-					o.jobN = nil
-				end
-			end
+		for i = 1, n do
+			o_id = packet:r_u16()
+			self.npc_info[o_id] = {}
+			o = self.npc_info[o_id]
+
+			o.o_group   = packet:r_u8()
+			o.o_squad   = packet:r_u8()
+			o.exclusive = packet:r_bool()
+			o.stay_end  = utils.r_CTime( packet )
+
+			self.gulag:load_obj( packet, o_id )
 		end
-	end
-
-	if self.script_version >= 1 then
-		if self.gulagN then
-			-- параметры гулага
-			self.casualities = packet:r_u8()
-			self.state       = packet:r_u8()
-			--self.stateBegin  = packet:r_u32()
-			self.stateBegin  = utils.r_CTime( packet )
-
-			-- список работ в гулаге
-			self.Job = {}
-
-			n = packet:r_u8()
---			printf( "jobs=%d", n )
-			for i = 1, n do
-				table.insert( self.Job, packet:r_u32() )
---				printf( "job i=%d", i )
-			end
-		end
-	end
-
-	if self.gulagN then
-		self.gparams = self.gulags[self.gulagN]
-		self.gulag   = self:setGulag()
 	else
-		self.gparams = nil
-		self.gulag   = nil
+		self.gulag = nil
 	end
 
 --	printf( "after read" )
 --	self:print()
+end
+
+-- получить серверные объекты персонажей
+function se_smart_terrain:get_se_objs()
+	local sim = alife()
+	local obj
+
+	for id, v in pairs( self.npc_info ) do
+		obj = sim:object( id )
+
+		if not obj then
+			abort( "[smart_terrain %s] can't get server object id=%d", self:name(), id )
+		end
+
+		self:fill_npc_info( obj )
+	end
+end
+
+-- заполнить информацию о персонаже
+-- TODO story_id
+function se_smart_terrain:fill_npc_info( obj )
+	local npc_info     = self.npc_info[obj.id]
+
+	npc_info.se_obj    = obj
+
+	npc_info.class_id  = obj:clsid()
+	npc_info.name      = obj:name()
+--	npc_info.story_id  = obj:
+	npc_info.community = self:get_obj_community( obj )
+
+	npc_info.group     = obj:g_group()
+	npc_info.squad     = obj:g_squad()
+	npc_info.team      = obj:g_team()
+end
+
+-- возвращает:
+-- а) если сталкер: группировку сталкера и true
+-- б) если монстр:  вид монстра и false
+function se_smart_terrain:get_obj_community( obj )
+	local cls = obj:clsid()
+
+	if cls == clsid.script_stalker then
+		return obj:community(), true
+	else
+		return monster_classes[cls], false
+	end
 end
 
 function se_smart_terrain:FillProps( pref, items )
@@ -307,409 +240,261 @@ function se_smart_terrain:FillProps( pref, items )
 --	local prefix = pref .. "\\" .. self.section_name .. "\\smart terrain\\"
 end
 
--- установка имитации гулага
-function se_smart_terrain:setGulag()
-	-- сам этот класс и будет якобы гулагом
-	self.Object     = self.npcs
-	self.check_time = CTime_0
-	return self
-end
+-- инициализация.
+-- чтение custom data.
+-- TODO вызывать из on_register
+function se_smart_terrain:initialize()
+	local ini  = self:spawn_ini()
+	local sect = "smart_terrain"
 
--- создание гулага
-function se_smart_terrain:createGulag()
-	-- если выбранный тип гулага может образоваться в offline
-	if self.gparams.offline then
-		return self:setGulag()
-	else
-		return nil
-	end
-end
+	if not ini:section_exist( sect ) then
+		sect = "gulag1"
 
-function se_smart_terrain:destroyGulag()
-end
-
-function se_smart_terrain:free_npc( obj_id )
-	return true
-end
-
-function se_smart_terrain:obj_id( obj )
-	return obj.id
-end
-
-function se_smart_terrain:get_population()
-	n = 0
-	for k, v in pairs(self.npcs) do
-		n = n + 1
+		if not ini:section_exist( sect ) then
+			abort( "[smart_terrain %s] no configuration!" )
+		end
 	end
 
-	return n
-end
+	if not ini:line_exist( sect, "type" ) then
+		abort( "[smart_terrain %s] type is not specified" )
+	end
 
-function se_smart_terrain:addObject()
-end
+	local gp = {}
 
--- просчёт гулага-имитации в офлайне: удаление мёртвых
-function se_smart_terrain:calculate()
---	self:print()
+	self.npc_info  = {}          -- group и squad для каждого npc
+	self.gparams   = gp          -- настройки гулага
+	self.gulag     = nil         -- экземпляр текущего гулага
 
-	sim = alife()
+	gp.type        = ini:r_string( sect, "type" )
+	gp.capacity    = r_num ( ini, sect, "capacity",   100 )
+	gp.squad       = r_num ( ini, sect, "squad" )
 
-	for id, v in pairs(self.npcs) do
-		--o = cast_alife_object_to_creature( sim:object( id ) )
-		o = sim:object( id )
+	gp.idle_min,     gp.idle_max      = r_2nums( ini, sect, "idle",       0,     0 )
+	gp.duration_min, gp.duration_max  = r_2nums( ini, sect, "duration",   10000, 10001 )
+	gp.stay_min,     gp.stay_max      = r_2nums( ini, sect, "stay",       10000, 10001 )
 
-		if not o or not o:alive() then
-			free_npc( self, id )
+--	printf( "gp.stay_min=%d, gp.stay_max=%d", gp.stay_min * h2ms, gp.stay_max * h2ms )
+
+	gp.cond        = r_str( ini, sect, "cond" )
+	if gp.cond then
+		gp.cond = xr_logic.parse_condlist( nil, sect, "cond", gp.cond )
+	end
+
+	gp.groups      = r_str( ini, sect, "groups" )
+	if gp.groups then
+		gp.groups = parse_nums( gp.groups )
+	end
+
+	self.accepted_communities = nil
+
+	local t = r_str( ini, sect, "communities" )
+	if t then
+		t = parse_names( t )
+
+		self.accepted_communities = {}
+
+		for i, v in ipairs( t ) do
+			self.accepted_communities[v] = true
 		end
 	end
 end
 
-----------------------------------------------------------------------------------------------------------------------
--- Класс "cl_smart_terrain". Обеспечивает поддержку smart terrain в ОНЛАЙНЕ.
--- Подключается zone_binder-ом
-----------------------------------------------------------------------------------------------------------------------
-class "cl_smart_terrain"
-
-function cl_smart_terrain:__init( se_obj )
-	-- взять свойства из серверного объекта
-	self.id                 = se_obj.id
-	self.npcs               = se_obj.npcs
-	self.gulags             = se_obj.gulags
-	self.gulagN             = se_obj.gulagN
-	self.gparams            = se_obj.gulags[se_obj.gulagN]
-	self._name              = se_obj:name()
-	self.idle_end           = se_obj.idle_end
-	self.duration_end       = se_obj.duration_end
-
---	printf( utils.to_str( self.gulagN ) )
---	printf( if_then_else( self.gulags, "GULAGS", "GULAGS=NIL" ) )
---	printf( if_then_else( self.gparams, "GPARAMS", "GPARAMS=NIL" ) )
-
-	-- если в офлайне был гулаг-затычка
-	if se_obj.gulag then
-		-- то создать настоящий такого же типа
-		self.gulag = self:createGulag()
-
-		self.gulag.state       = se_obj.state       or self.gulag.state
-		self.gulag.stateBegin  = se_obj.stateBegin  or self.gulag.stateBegin
-		self.gulag.casualities = se_obj.casualities or self.gulag.casualities
-
-		-- восстановить npc с должностями
-		for id, v in pairs(self.npcs) do
-			self.gulag:loadObject( id, v.jobN )
-		end
-
-		-- восстановить параметры должностей, которые требуют сохранения
-		if se_obj.Job then
-			for i, v in pairs(se_obj.Job) do
-				if v > 0 then
-					self.gulag.Job[i].begin = v
-				end
-			end
-		end
-	end
-end
-
-function cl_smart_terrain:destroy()
---	printf( "smart terrain client destroy" )
-	self:destroyGulag()
-end
-
--- сохранение клиентского объекта: обновляем серверный
-function cl_smart_terrain:save()
---	printf( "smart terrain client save" )
-	sim = alife()
-	o   = sim:object( self.id )
-
-	o.npcs         = self.npcs
-	o.idle_end     = self.idle_end
-	o.duration_end = self.duration_end
-	o.gulagN       = self.gulagN
-
-	if self.gulag then
-		o.gparams     = o.gulags[self.gulagN]
-		o.gulag       = o:setGulag()
-		o.state       = self.gulag.state
-		o.stateBegin  = self.gulag.stateBegin
-		o.casualities = self.gulag.casualities
-
-		o.Job         = {}
-
-		for id, u in pairs(self.npcs) do
-			u.jobN = nil
-		end
-
-		-- запомнить сохраняемые параметры работ
-		for i, v in pairs(self.gulag.Job) do
-			table.insert( o.Job, v.begin or 0 )
-
-			-- для npc, занятого на этой работе, запомнить номер работы
-			if v.object then
-				o_id = v.object:id()
-
-				for id, u in pairs(self.npcs) do
-					if id == o_id then
-						u.jobN = i
-						break
-					end
-				end
-			end
-		end
-	else
-		o.gparams = nil
+--[[ подходит ли объект гулагу?
+1) если объект не согласен сюда идти, то smart terrain его не возьмёт
+2) если объект согласен идти куда угодно, то проверить подходит ли он гулагу и есть ли ещё места
+3) если объект согласен идти только в этот смарт, то принимаем даже если нету места (он вытеснит кого-то)
+]]
+function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
+	if obj_agreement == disagreed then
+		return false
 	end
 
---	o:print()
---	printf( "//smart terrain client save" )
-end
+	if ( obj_agreement == agreed_exclusive ) or
+	   ( not self.gulag or self.gulag:get_population() < self.gparams.capacity )
+	then
+		local community, is_stalker = self:get_obj_community( obj )
 
-function cl_smart_terrain:name()
-	return self._name
-end
-
--- callback на вход в зону smart_terrain
-function cl_smart_terrain:on_enter( obj )
-	-- если есть активный гулаг, то вероятность будет зависеть от него, иначе вероятность 100%
-	-- И если не входит уже в какой-то гулаг
---	printf( "[smart_terrain %s] trying to 'on_touch' obj=%s", self:name(), obj:name() )
-
-	if ( not self.gulag or ( math.random( 100 ) <= self.gparams.probability ) ) then
-		if not xr_gulag.isUnderFraction( obj ) then
---			printf( "[smart_terrain %s] on_touch obj=%s", self:name(), obj:name() )
-			on_touch( self, obj )
---		else
---			printf( "[smart_terrain %s] npc '%s' is already in smart_terrain '%s'", self:name(), obj:name(), tostring( xr_gulag.isUnderFraction( obj ) ) )
+		if self.accepted_communities and not self.accepted_communities[community] then
+			return false
 		end
-	end
-end
 
--- обновление
-function cl_smart_terrain:update()
-	update( self )
-end
-
-function cl_smart_terrain:createGulag()
-	self.check_time = CTime_0
-	return xr_gulag.createGulag( self.id, self:name(), self.gparams.type, self.gparams.squad, self.gparams.groups )
-end
-
-function cl_smart_terrain:destroyGulag()
-	xr_gulag.destroyGulag( self:name() )
-end
-
-function cl_smart_terrain:free_npc( obj_id )
-	o = self.gulag.Object[obj_id]
-	n = type( o )
-	-- если объект уже порождён в онлайн, то вернуть его изначальные параметры.
-	if n == "userdata" then
-		self.gulag:removeObject( obj_id, o )
-
---		n = self.npcs[obj_id]
---		o:change_team( o:team(), n.squad, n.group )
-		return true
-	-- если объекта в гулаге уже нету, значит он мёртв и его можно удалять
-	elseif n == "nil" then
-		return true
-	-- если гулаг всё ещё ожидает порождения объекта в онлайн, то мы не можем его освободить
+		return xr_gulag.checkNpc( community, is_stalker, self.gparams.type )
 	else
 		return false
 	end
 end
 
-function cl_smart_terrain:obj_id( obj )
-	return obj:id()
+--[[ подходит ли гулаг объекту?
+у объекта в custom data прописаны условия для некоторых smart_terrains:
+	<smart_terrain_name1> = <condlist1>
+	<smart_terrain_name2> = <condlist2>
+	...
+Если для какого-то smart_terrain условие выполнилось, он называется эксклюзивным.
+Если у объекта появился хоть один эксклюзивный smart terrain, то он будет согласен идти только в него.
+Если не появилось ни одного эксклюзивного, то он согласен идти в любой.
+]]
+function se_smart_terrain:obj_accepts_smart_terrain( obj )
+	if obj:get_smart_terrain_conditions() then
+		local any_exclusive = false
+		local s
+
+		for name, condlist in pairs( obj:get_smart_terrain_conditions() ) do
+			s = xr_logic.pick_section_from_condlist( db.actor, obj, condlist )
+
+			if s ~= nil then
+			 	if name == self:name() then
+					return agreed_exclusive
+				else
+					any_exclusive = true
+				end
+			end
+		end
+
+		if any_exclusive then
+			return disagreed
+		end
+	end
+
+	return agreed
 end
 
-----------------------------------------------------------------------------------------------------------------------
--- Единая для офлайна и онлайна логика smart_terrain.
-----------------------------------------------------------------------------------------------------------------------
--- чтение custom data. ТОЛЬКО ДЛЯ СЕРВЕРНОГО ОБЪЕКТА!
-function read_ini( self )
-	self.npcs            = {}          -- group и squad для каждого npc
-	self.gulags          = {}          -- настройки гулагов, возможных в этом smart_terrain
-	self.gulag           = nil         -- экземпляр текущего гулага
+-- может ли объект быть добавлен в smart terrain?
+-- вызывается симулятором при поиске задания для объекта/группы.
+-- если объект - группа, то вернёт true только если все объекты в группе вернут true
+function se_smart_terrain:enabled( obj )
+	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 
-	-- прочитать настройки всех возможных гулагов
-	g  = self.gulags
-	gi = 1
+	-- DEBUG
+	if self.disabled then
+		return false
+	end
+	--------
 
-	repeat
-		ini = self:spawn_ini()
-		sect = "gulag"..gi
-
-		if not ini:section_exist( sect ) then
-			break
-		end
-
-		table.insert( g, {} )
-		ggi = g[gi]
-
-		if ini:line_exist( sect, "type" ) then
-			ggi.type                            = ini:r_string( sect, "type" )
-			ggi.idle_min, ggi.idle_max          = r_nums( ini, sect, "idle",       0,     0 )
-			ggi.duration_min, ggi.duration_max  = r_nums( ini, sect, "duration",   10000, 10001 )
-			ggi.capacity                        = r_num ( ini, sect, "capacity",   100 )
-			ggi.probability                     = r_num ( ini, sect, "p",          100 )
-			ggi.squad                           = r_num ( ini, sect, "squad" )
-			ggi.groups                          = r_str ( ini, sect, "groups" )
-			ggi.cond                            = r_str ( ini, sect, "cond" )
-
-			if ini:line_exist( sect, "offline" ) then
-				ggi.offline                     = ini:r_string( sect, "offline" )
-			else
-				ggi.offline                     = true
-			end
-
-			if ggi.type == "heli_hunt" then
-				ggi.stay_min, ggi.stay_max      = r_nums( ini, sect, "stay",       0.00415 * 10, 0.0083 * 10 )
-			else
-				ggi.stay_min, ggi.stay_max      = r_nums( ini, sect, "stay",       10000, 10001 )
-			end
-		else
-			table.remove( g, gi )
-			break
-		end
-
-		if ggi.cond then
-			ggi.cond = xr_logic.parse_condlist( nil, sect, "cond", ggi.cond )
-		end
-
-		if ggi.groups then
-			ggi.groups = parse_nums( ggi.groups )
-		end
-
-		gi = gi + 1
-	until false
-
-	if gi <= 1 then
-		printf( "[smart_terrain %s] no gulags in custom_data", self:name() )
-	else
-		self.ini_ok = true
+	if self:is_gulag_available() then
+--		if obj:clsid() == clsid.GROUP then -- TODO
+			-- TODO проитерировать группу
+--		else
+			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
+--		end
 	end
 end
 
--- добавить npc в гулаг
-function add_npc( self, obj )
-	-- если в гулаге есть свободные места и он подходит гулагу, то добавить
-	n = self.gulag:get_population()
-	if n < self.gparams.capacity then
---	    printf("[smart_terrain %s] there is a space for the new npc %d < %d", self:name(), n, self.gparams.capacity)
-		sim  = alife()
-		o_id = self:obj_id( obj )
-		o    = sim:object( o_id )
+-- возвращает меру подходящести персонажа смарттерейну.
+-- вызывается для всех смарттерейнов, которые вернули true из enabled
+-- для того, чтобы выбрать тот единственный, в который персонаж всё-таки пойдёт.
+-- TODO расстояние
+function se_smart_terrain:suitable( obj )
+	return 1
+end
 
-		if obj:clsid() == clsid.script_stalker then
-			oT = cast_alife_object_to_trader_abstract( o ):community()	
-		else
-			oT = monster_classes[obj:clsid()]
-		end
+-- добавить npc в smart terrain.
+-- если места нету, то вытолкнуть из этого smart terrain объект, который попал в него не эксклюзивно
+function se_smart_terrain:register_npc( obj )
+	printf( "[smart_terrain %s] register called obj=%s gulag_type=%s", self:name(), obj:name(), self.gparams.type )
 
-		printf( "community=%s", oT )
+--	o = cast_alife_object_to_creature( o )
 
-		if xr_gulag.checkNpc( oT, obj:clsid() == clsid.script_stalker, self.gparams.type ) then
-			o = cast_alife_object_to_creature( o )
-
-			self.npcs[o_id] = {
-				group          = o:g_group(),
-				squad          = o:g_squad(),
-				move_offline   = o:move_offline(),
-				switch_offline = o:can_switch_offline(),
-				stay_end       = game.CTime()
-			}
-
-			--printf( "squad=%s group=%s", utils.to_str ( self.npcs[o_id].squad ), utils.to_str ( self.npcs[o_id].group ) )
-
-			t = self.npcs[o_id].stay_end
-			t:setHMSms( 0, 0, 0, math.random( self.gparams.stay_min * h2ms, self.gparams.stay_max * h2ms ) )
-			t:add( game.get_game_time() )
-
-			o:move_offline( false )
---			sim:set_switch_online(  o_id, true )
---			sim:set_switch_offline( o_id, false )
-			o.under_smart_terrain = true
-
-			self.gulag:addObject( obj )
-
-			printf( "[smart_terrain %s] adding %s to gulag type=%s", self:name(), o:name(), self.gparams.type )
-		else
-			printf( "[smart_terrain %s] gulag type=%s doesn't accept community '%s'", self:name(), self.gparams.type, oT )
-		end
---	else
---		printf( "[smart_terrain %s] refused! too many npcs! population=%d capacity=%d", self:name(), n, self.gparams.capacity )
+	if self.gulag and self.gulag:get_population() == self.gparams.capacity then
+		self:kick_someone_non_exclusive()
 	end
+
+	self.npc_info[obj.id] = {
+		-- старые squad и group
+		o_group        = obj:g_group(),
+		o_squad        = obj:g_squad(),
+
+		exclusive      = self:obj_accepts_smart_terrain( obj ) == agreed_exclusive,
+
+--		move_offline   = o:move_offline(),
+--		switch_offline = o:can_switch_offline(),
+		stay_end       = game.CTime()
+	}
+
+	self:fill_npc_info( obj )
+
+	--printf( "squad=%s group=%s", utils.to_str ( self.npc_info[o_id].o_squad ), utils.to_str ( self.npc_info[o_id].o_group ) )
+
+	t = self.npc_info[obj.id].stay_end
+--	t:setHMSms( 0, 0, 0, math.random( self.gparams.stay_min * h2ms, self.gparams.stay_max * h2ms ) )
+	t:setHMSms( math.random( self.gparams.stay_min, self.gparams.stay_max ), 0, 0, 0 )
+	t:add( game.get_game_time() )
+
+--	o:move_offline( false )
+--	sim:set_switch_online(  o_id, true )
+--	sim:set_switch_offline( o_id, false )
+--	obj.under_smart_terrain = true
+
+	if not self.gulag then
+		self:create_gulag()
+	end
+
+	self.gulag:addObject( obj.id )
+	self.gulag:update()
+
+	printf( "[smart_terrain %s] added %s to gulag type=%s", self:name(), obj:name(), self.gparams.type )
 end
 
 -- отпустить npc
-function free_npc( self, obj_id )
-	if self:free_npc( obj_id ) then
-		sim = alife()
-		o = sim:object( obj_id )
+function se_smart_terrain:unregister_npc( obj )
+	local n = self.npc_info[obj.id]
 
-		n = self.npcs[obj_id]
-		o:move_offline( n.move_offline )
---		sim:set_switch_offline( obj_id, n.switch_offline )
-		o.squad = n.squad
-		o.group = n.group
-		o.under_smart_terrain = false
+	self.gulag:removeObject( obj.id )
 
-		self.npcs[obj_id] = nil
+--	o:move_offline( n.move_offline )
+--	sim:set_switch_offline( obj_id, n.switch_offline )
+	obj.squad = n.o_squad
+	obj.group = n.o_group
+--	obj.under_smart_terrain = false
 
-		printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), o:name(), self.gparams.type )
+	self.npc_info[obj.id] = nil
 
-		return true
-	else
-		return false
+	obj:clear_smart_terrain()
+
+	printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), obj:name(), self.gparams.type )
+end
+
+-- выгнать из-под смарттеррейна первого попавшегося неэксклюзивного персонажа
+function se_smart_terrain:kick_someone_non_exclusive()
+	for obj_id, npc_info in pairs( self.npc_info ) do
+		if not npc_info.exclusive then
+			self:unregister_npc( npc_info.se_obj )
+			return
+		end
 	end
+
+	abort( "[smart_terrain %s] can't add npc, all are exclusive", self:name() )
+end
+
+-- выдать объекту задание.
+function se_smart_terrain:task( obj )
+	printf( "[smart_terrain %s] task: obj=%s job_path=%s", self:name(), obj:name(), self.gulag:get_obj_job_path_name( obj.id ) )
+	return CALifeSmartTerrainTask( self.gulag:get_obj_job_path_name( obj.id ) )
 end
 
 -- может ли данный гулаг создаться в данный момент?
-function is_gulag_available( gulag_params )
-	if db.actor and gulag_params.cond then
-		return xr_logic.pick_section_from_condlist( db.actor, nil, gulag_params.cond ) ~= nil
+function se_smart_terrain:is_gulag_available()
+	if db.actor and self.gparams.cond then
+		return xr_logic.pick_section_from_condlist( db.actor, self, self.gparams.cond ) ~= nil
+	else
+		return true
 	end
-
-	return true
 end
 
 -- создание нового гулага по конфигурации для данного smart_terrain
-function create_gulag( self )
-	-- выбор гулагов, которые могут быть созданы
-	local avail = {}
-	for i, v in pairs(self.gulags) do
-		if is_gulag_available( v ) then
-			table.insert( avail, i )
-		end
-	end
+function se_smart_terrain:create_gulag()
+	self.duration_end = game.CTime()
+--	self.duration_end:setHMSms( 0, 0, 0, math.random( self.gparams.duration_min * h2ms, self.gparams.duration_max * h2ms ) )
+	self.duration_end:setHMSms( math.random( self.gparams.duration_min, self.gparams.duration_max ), 0, 0, 0 )
+	self.duration_end:add( game.get_game_time() )
 
-	if table.getn( avail ) > 0 then
-		-- создание
-		self.gulagN  = avail[math.random( 1, table.getn( avail ) )]
-		self.gparams = self.gulags[self.gulagN]  -- ссылка на настройки текущего гулага
+	self.check_time = CTime_0
 
-		self.duration_end = game.CTime()
-		self.duration_end:setHMSms( 0, 0, 0, math.random( self.gparams.duration_min * h2ms, self.gparams.duration_max * h2ms ) )
-		self.duration_end:add( game.get_game_time() )
-
-		self.gulag = self:createGulag()
-
-		if self.gulag then
-			printf( "[smart_terrain %s] creating gulag of type %s", self:name(), self.gparams.type )
-
-			return true
-		else
-			self.gulag    = nil
-			self.gulagN   = nil
-			self.gparams  = nil
-
-			return false
-		end
-	else
-		return false
-	end
+	self.gulag = xr_gulag.gulag( self, self.gparams.type, self.gparams.squad, self.gparams.groups, self.npc_info, self.gparams.capacity )
+	self.gulag:initialize()
 end
 
 -- всех освободить, убить гулаг
-function remove_gulag( self, disable )
+function se_smart_terrain:remove_gulag( disable )
 	-- DEBUG
 	self.disabled = disable
 	--------
@@ -718,40 +503,29 @@ function remove_gulag( self, disable )
 		return
 	end
 
-	o = true
-	-- освободить всех, кто ещё жив в гулаге
-	for id, v in pairs(self.gulag.Object) do
-		o = free_npc( self, id ) and o
+	-- освободить всех персонажей
+	for id, npc_info in pairs( self.npc_info ) do
+		self:unregister_npc( npc_info.se_obj )
 	end
 
-	-- если все успешно освобождены, то можно уничтожать гулаг
-	if o then
-		if self.gparams.idle_max > 0 then
-			self.idle_end = game.CTime()
-			self.idle_end:setHMSms( 0, 0, 0, math.random( self.gparams.idle_min * h2ms, self.gparams.idle_max * h2ms ) )
-			self.idle_end:add( game.get_game_time() )
-		else
-			self.idle_end = nil
-		end
-
-		self:destroyGulag()
-
-		printf( "[smart_terrain %s] removing gulag type=%s", self:name(), self.gparams.type )
-
-		self.gulag    = nil
-		self.gulagN   = nil
-		self.gparams  = nil
+	if self.gparams.idle_max > 0 then
+		self.idle_end = game.CTime()
+--		self.idle_end:setHMSms( 0, 0, 0, math.random( self.gparams.idle_min * h2ms, self.gparams.idle_max * h2ms ) )
+		self.idle_end:setHMSms( math.random( self.gparams.idle_min, self.gparams.idle_max ), 0, 0, 0 )
+		self.idle_end:add( game.get_game_time() )
+	else
+		self.idle_end = nil
 	end
+
+--	self:destroyGulag()
+
+	printf( "[smart_terrain %s] removing gulag type=%s", self:name(), self.gparams.type )
+
+	self.gulag = nil
 end
 
--- обработка входа существа в smart terrain
-function on_touch( self, obj )
-	-- DEBUG 
-	if self.disabled then
-		return
-	end
-	--------
-
+-- заполняет таблицу monster_classes
+function se_smart_terrain:fill_monster_classes()
 	if not monster_classes then
 		monster_classes = {
 			[clsid.bloodsucker_s ] = "bloodsucker",
@@ -769,82 +543,61 @@ function on_touch( self, obj )
 			[clsid.snork_s       ] = "snork",
 			[clsid.tushkano_s    ] = "tushkano",
 			[clsid.zombie_s      ] = "zombie"
-		}		
-	end
-
-	local cls = obj:clsid()
-	if cls == clsid.script_stalker or monster_classes[cls] then
-		ini = obj:spawn_ini()
-
-		if ( ini and not ini:section_exist( "no_smart" ) ) or not ini then
-			if self.gulag then
---				printf( "[smart_terrain %s] gulag type=%s is created, trying to add npc", self:name(), self.gparams.type )
-				add_npc( self, obj )
-			else
-				if not self.idle_end or self.idle_end < game.get_game_time() then
---					printf( "[smart_terrain %s] trying to create gulag", self:name() )
-					if create_gulag( self ) then
---						printf( "[smart_terrain %s] trying to add npc name=%s", self:name(), obj:name() )
-						add_npc( self, obj )
---					else
---						printf( "[smart_terrain %s] can't create gulag", self:name() )
-					end
---				else
---					printf( "[smart_terrain %s] idle period", self:name() )
-				end
-			end
---		else
---			printf( "[smart_terrain %s] npc has 'no_smart' section", self:name() )
-		end
---	else
---		printf( "[smart_terrain %s] only stalkers and monsters are supported", self:name() )
+		}
 	end
 end
 
--- обновление
-function update( self )
+-- инициализация объекта.
+-- вызывается симулятором.
+function se_smart_terrain:on_register()
+	printf( "[smart_terrain %s] on_register called", self:name() )
+	cse_alife_smart_zone.on_register( self )
+
+	self:fill_monster_classes()
+
+	self:get_se_objs()
+
 	if self.gulag then
---		if self.duration_end < game.time() then
---			self:remove_gulag()
---		else
-		if is_gulag_available( self.gparams ) then
-			if self.check_time < game.get_game_time() then
-				self.check_time = game.get_game_time() + check_period
-
-				-- проверять, не собрался ли кто-то к этому времени уже уходить
-				sn = 0
-				for id, v in pairs(self.gulag.Object) do
-					if self.npcs[id].stay_end < game.get_game_time() then
-						-- попытка освободить npc. если неудачно, то он всё ещё числится
-						if not free_npc( self, id ) then
-							sn = sn + 1
-						end
-					else
-						sn = sn + 1
-					end
-				end
-
-				-- если мужиков в гулаге больше не осталось или условия существования гулага не выполняются, то убрать гулаг
-				if sn == 0 or not is_gulag_available( self.gparams ) then
-					remove_gulag( self )
-				else
-					self.gulag:calculate()
-				end
-			end
-		else
-			remove_gulag( self )
-		end
---		end
+		self.gulag:initialize()
 	end
 end
 
----------------------------------------------------------------------------------------------------------
+-- Обновление. Вызывается прямо только когда smart_terrain в офлайне. В онлайне вызывается через binder.
+function se_smart_terrain:update()
+--	log( "se_smart_terrain::update called!" )
+	cse_alife_smart_zone.update( self )
 
--- Перевести npc из одного smart terrain в другой.
--- Работает только если smart_terrain
-function transfer_npc( npc, dest_id )
-	local src_name = xr_gulag.isUnderFraction( npc )
-	if src_name then
-		
+	if not self.gulag then
+		return
 	end
+
+--	if self.duration_end < game.time() then
+--		self:remove_gulag()
+--	else
+	if self:is_gulag_available() then
+		if self.check_time < game.get_game_time() then
+			self.check_time = game.get_game_time() + check_period
+
+			-- проверять, не собрался ли кто-то к этому времени уже уходить
+			local sn = 0
+
+			for id, npc_info in pairs( self.npc_info ) do
+				if npc_info.stay_end < game.get_game_time() then
+					self:unregister_npc( npc_info.se_obj )
+				else
+					sn = sn + 1
+				end
+			end
+
+			-- если мужиков в гулаге больше не осталось или условия существования гулага не выполняются, то убрать гулаг
+			if sn == 0 or not self:is_gulag_available() then
+				self:remove_gulag()
+			else
+				self.gulag:update()
+			end
+		end
+	else
+		self:remove_gulag()
+	end
+--	end
 end
