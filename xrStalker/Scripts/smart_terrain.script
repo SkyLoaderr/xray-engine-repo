@@ -212,12 +212,20 @@ function se_smart_terrain:fill_npc_info( obj )
 
 	npc_info.class_id  = obj:clsid()
 	npc_info.name      = obj:name()
---	npc_info.story_id  = obj:
+--	npc_info.story_id  = obj:story_id()
 	npc_info.community = self:get_obj_community( obj )
+--	npc_info.community = obj:profile_name()
 
 	npc_info.group     = obj:g_group()
 	npc_info.squad     = obj:g_squad()
 	npc_info.team      = obj:g_team()
+
+	local t            = obj:get_smart_terrain_conditions()
+	if t then
+		t = t[self:name()]
+	end
+
+	npc_info.cond      = t
 end
 
 -- возвращает:
@@ -562,7 +570,7 @@ function se_smart_terrain:on_register()
 	end
 end
 
--- Обновление. Вызывается прямо только когда smart_terrain в офлайне. В онлайне вызывается через binder.
+-- Обновление. В онлайне вызывается через binder.
 function se_smart_terrain:update()
 --	log( "se_smart_terrain::update called!" )
 	cse_alife_smart_zone.update( self )
@@ -582,7 +590,9 @@ function se_smart_terrain:update()
 			local sn = 0
 
 			for id, npc_info in pairs( self.npc_info ) do
-				if npc_info.stay_end < game.get_game_time() then
+				if npc_info.stay_end < game.get_game_time() or
+				   ( npc_info.cond and xr_logic.pick_section_from_condlist( db.actor, npc_info.se_obj, npc_info.cond ) == nil )
+				then
 					self:unregister_npc( npc_info.se_obj )
 				else
 					sn = sn + 1
