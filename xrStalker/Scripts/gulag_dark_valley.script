@@ -1,8 +1,3 @@
------------------------------------------------------------------------
--- —ÓÒÚÓˇÌËˇ ·‡Á˚ ·‡Ì‰ËÚÓ‚
---    0 - ÌÓÏ‡Î¸ÌÓÂ ÒÓÒÚÓˇÌËÂ
---    2 - ÚÂ‚Ó„‡
------------------------------------------------------------------------
 
 --------------------------------------------------------------------------
 -- Member counts
@@ -17,12 +12,12 @@ local state_alarm = 1
 local state_alarm_actor_inside = 2
 local state_fight = 1
 
-local t = {}
-local gulags = {}
-
 --------------------------------------------------------------------------
 -- General
 --------------------------------------------------------------------------
+local t = {}
+local gulags = {}
+
 -- Job -------------------------------------------------------------------
 function load_job(sj, gname, type, squad, groups)
     local g = gulags[type]
@@ -93,16 +88,16 @@ end
 -- Bandits
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function lb_predicate1(obj) 
-	return obj:profile_name() == "val_bandit_borov"
+function lb_predicate1(data) 
+	return data.profile_name == "val_bandit_borov"
 end
 
-function lb_predicate2(obj) 
-	return obj:profile_name() == "val_bandit_veteran"
+function lb_predicate2(data) 
+	return data.profile_name == "val_bandit_veteran"
 end
 
-function lb_predicate3(obj) 
-	return obj:profile_name() == "val_bandit_general"
+function lb_predicate3(data) 
+	return data.profile_name == "val_bandit_general"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -248,107 +243,6 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	        table.insert(sj, t)
 	    end
 	end
-
---[[
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 5 - œ¿“–”À‹Õ€≈ Õ¿ “≈––»“Œ–»»
-	-----------------------------------------------------------------------
-	restr = {gname .. "_main_side_restrictor", gname .. "_restrictor", gname .. "_restrictor", gname .. "_restrictor"}
-	for i = 1, 4 do
-	    t = { section = "logic@" .. gname .. "_patrol_normal" .. i,
-		    idle = 0,
-		    prior = 5, state = {state_normal},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr[i],
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-
-	    t = { section = "logic@" .. gname .. "_patrol_alarm" .. i,
-		    idle = 0,
-		    prior = 5, state = {state_alarm},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr[i],
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-
-	    t = { section = "logic@" .. gname .. "_patrol_alarm" .. i,
-		    idle = 0,
-		    prior = 5, state = {state_alarm_actor_inside},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr[i],
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-	end
-
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 4 - —Õ¿…œ≈–€ Õ¿ ¬€ÿ ¿’
-	-----------------------------------------------------------------------
-	restr = gname .. "_restrictor"
-	for i = 1, 2 do
-	    t = { section = "logic@" .. gname .. "_sniper_normal" .. i,
-		    idle = 0,
-		    prior = 4, state = {state_normal},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr,
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-
-	    t = { section = "logic@" .. gname .. "_sniper_alarm" .. i,
-		    idle = 0,
-		    prior = 4, state = {state_alarm},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr,
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-
-	    t = { section = "logic@" .. gname .. "_sniper_alarm" .. i,
-		    idle = 0,
-		    prior = 4, state = {state_alarm_actor_inside},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr,
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-	end
-
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 3 - —œﬂŸ»≈ ¡¿Õƒ»“€
-	-----------------------------------------------------------------------
-	restr = gname .. "_restrictor"
-	for i = 1, 4 do
-	    t = { section = "logic@" .. gname .. "_sleeper_normal" .. i,
-		    idle = 0,
-		    prior = 3, state = {state_normal},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr,
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-
-	    t = { section = "logic@" .. gname .. "_sleeper_alarm" .. i,
-		    idle = 0,
-		    prior = 3, state = {state_alarm},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr,
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-
-	    t = { section = "logic@" .. gname .. "_sleeper_alarm" .. i,
-		    idle = 0,
-		    prior = 3, state = {state_alarm_actor_inside},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = restr,
-		    predicate = lb_predicate3
-	    }
-	    table.insert(sj, t)
-	end
-]]
 end
 
 -- States ----------------------------------------------------------------
@@ -383,8 +277,8 @@ end
 -- Monolith base
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function mb_predicate(obj)
-    return obj:profile_name() == "val_monolith_regular"
+function mb_predicate(data)
+    return data.profile_name == "val_monolith_regular"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -461,8 +355,8 @@ end
 -- War soldiers
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function ws_predicate(obj)
-    local pname = obj:profile_name()
+function ws_predicate(data)
+    local pname = data.profile_name
 	return pname == "val_soldier_regular" or pname == "val_soldier_specnaz"
 end
 
@@ -571,38 +465,22 @@ end
 -- Monster on spring
 --------------------------------------------------------------------------
 -- Jobs ------------------------------------------------------------------
-function load_job_mob_spring(sj, gname, type, squad, groups)
+function load_job_mob_on_spring(sj, gname, type, squad, groups)
     local i = 0
     for i = 1, mob_spring_count do
-        --- state 0
-	    t = { section = "logic@nil",
-		    idle = 0,
-		    prior = 1, state = {0}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_small_restr"
+	    t = { section = "logic@mob_spring",
+	        idle = 0,
+            prior = 1, state = {0},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = ""
 	    }
 	    table.insert(sj, t)
-        --- state 1
-	    t = { section = "logic@nil",
-		    idle = 0,
-		    prior = 1, state = {1}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_big_restr"
-	    }
-        table.insert(sj, t)
-   end
+	end
 end
 
 -- States ----------------------------------------------------------------
-function check_state_mob_spring(gulag)
-	local t = db.zone_by_name[gulag.name .. "_big_restr"] -- ËÏˇ ·ÓÎ¸¯Ó„Ó ÂÒÚ.
-	if t and db.actor then
-		if t:inside(db.actor:position()) then
-			return 1
-		else
-			return 0
-		end
-	else
-		return gulag.state
-	end
+function check_state_mob_on_spring(gulag)
+    return 0
 end
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -611,6 +489,9 @@ gulags.val_lager_bandits    = {load_job_lager_bandits,  check_state_lager_bandit
 gulags.val_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {"monolith"},   load_ltx_monolith_base}
 gulags.val_war_soldiers     = {load_job_war_soldiers,   check_state_war_soldiers,   {"military"},   load_ltx_war_soldiers}
 
+gulags.mob_on_spring        = {load_job_mob_on_spring,  check_state_mob_on_spring}
+
+--[[
 gulags.val_dogs_nest1       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
 gulags.val_dogs_nest2       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
 gulags.val_dogs_nest3       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
@@ -628,3 +509,4 @@ gulags.val_boars_nest2      = {load_job_mob_spring,     check_state_mob_spring, 
 gulags.val_boars_nest3      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
 gulags.val_boars_nest4      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
 gulags.val_boars_nest5      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
+--]]
