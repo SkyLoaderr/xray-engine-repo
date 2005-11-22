@@ -27,6 +27,7 @@
 
 typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
 extern STORY_PAIRS								story_ids;
+extern STORY_PAIRS								spawn_story_ids;
 
 extern void show_smart_cast_stats					();
 extern void clear_smart_cast_stats					();
@@ -61,6 +62,7 @@ void clean_game_globals()
 	xr_delete										(g_monster_squad);
 
 	story_ids.clear									();
+	spawn_story_ids.clear							();
 
 	InventoryUtilities::DestroyShaders				();
 
