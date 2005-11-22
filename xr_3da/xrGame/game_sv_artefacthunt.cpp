@@ -1110,9 +1110,10 @@ BOOL	g_bShildedBases = TRUE;
 void	game_sv_ArtefactHunt::check_Player_for_Invincibility	(game_PlayerState* ps)
 {
 	if (!ps) return;
-	inherited::check_Player_for_Invincibility(ps);
 	if (g_bShildedBases && ps->testFlag(GAME_PLAYER_FLAG_ONBASE))
 		ps->setFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+	else
+		inherited::check_Player_for_Invincibility(ps);
 };
 
 void	game_sv_ArtefactHunt::Check_ForClearRun		(game_PlayerState* ps)
