@@ -77,6 +77,8 @@ BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 
 void CSpaceRestrictor::net_Destroy	()
 {
+	inherited::net_Destroy			();
+	
 	if (need_update())
 		shedule_unregister			();
 }
