@@ -198,7 +198,7 @@ bool CController::is_community_friend_overrides(const CEntityAlive *entity_alive
 	const CInventoryOwner	*IO = smart_cast<const CInventoryOwner*>(entity_alive);
 	if (!IO) return false;
 	
-	xr_vector<shared_str>::const_iterator it = find(m_friend_community_overrides.begin(),m_friend_community_overrides.end(),IO->Community().id());
+	xr_vector<shared_str>::const_iterator it = find(m_friend_community_overrides.begin(),m_friend_community_overrides.end(),IO->CharacterInfo().Community().id());
 	return (it != m_friend_community_overrides.end());
 }
 
