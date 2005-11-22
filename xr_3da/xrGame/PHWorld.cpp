@@ -55,6 +55,7 @@ CPHWorld::CPHWorld()
 {
 	disable_count=0;
 	m_frame_time=0.f;
+	m_previous_frame_time=0.f;
 	m_steps_num=0;
 	m_frame_sum=0.f;
 	m_delay=0; 
@@ -324,9 +325,11 @@ void CPHWorld::FrameStep(dReal step)
 #endif
 	if(!(frame_time<fixed_step))
 	{
-		it_number	=	iFloor	(frame_time/fixed_step);
-		frame_time	-=	it_number*fixed_step;
-		m_frame_time=	frame_time;
+		it_number				=	iFloor	(frame_time/fixed_step);
+		frame_time				-=	it_number*fixed_step;
+		m_previous_frame_time	=	m_frame_time;
+		m_frame_time			=	frame_time;
+		b_frame_mark			=	!b_frame_mark;
 	}
 	else
 	{

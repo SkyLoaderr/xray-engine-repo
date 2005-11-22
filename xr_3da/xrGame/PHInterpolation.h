@@ -22,6 +22,7 @@ void	SetRotation			(const Fquaternion& q, u16 num);
 void	SetPosition			(const Fvector& p, u16 num);
 private:
 	dBodyID m_body;
+	bool	b_frame_mark;
 	CCycleConstStorage<Fvector,PH_INTERPOLATION_POINTS>				qPositions;
 	CCycleConstStorage<Fquaternion,PH_INTERPOLATION_POINTS>			qRotations;
 };

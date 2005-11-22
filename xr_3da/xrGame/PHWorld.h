@@ -46,6 +46,8 @@ public:
 public:
 	u64							m_steps_num													;
 	double						m_frame_sum													;
+	dReal						m_previous_frame_time										;
+	bool						b_frame_mark												;
 	dReal						m_frame_time												;
 	float						m_update_time												;
 	u16							disable_count												;
@@ -67,7 +69,7 @@ IC	float						Gravity							()							{return m_gravity;}
 	dGeomID						GetMeshGeom						()							{return Mesh.GetGeom();}
 IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 	void						Destroy							()							;
-
+IC	float						FrameTime						(bool frame_mark){return b_frame_mark==frame_mark ? m_frame_time :m_previous_frame_time;}
 	void						FrameStep						(dReal step=0.025f)			;
 	void						Step							()							;
 	void						CutVelocity						(float l_limit, float a_limit);
