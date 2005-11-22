@@ -117,15 +117,15 @@ void CLevelSpawnConstructor::add_graph_point					(CSE_Abstract			*abstract)
 	m_graph_points.push_back(graph_point);
 }
 
-void CLevelSpawnConstructor::add_spawn_group					(CSE_Abstract			*abstract)
-{
-	CSE_SpawnGroup			*spawn_group = smart_cast<CSE_SpawnGroup*>(abstract);
-	R_ASSERT				(spawn_group);
-	m_spawn_groups.insert	(std::make_pair(spawn_group->name_replace(),spawn_group));
-	if (xr_strlen(spawn_group->m_spawn_control))
-		add_group_object	(spawn_group,spawn_group->m_spawn_control);
-	add_free_object			(abstract);
-}
+//void CLevelSpawnConstructor::add_spawn_group					(CSE_Abstract			*abstract)
+//{
+//	CSE_SpawnGroup			*spawn_group = smart_cast<CSE_SpawnGroup*>(abstract);
+//	R_ASSERT				(spawn_group);
+//	m_spawn_groups.insert	(std::make_pair(spawn_group->name_replace(),spawn_group));
+//	if (xr_strlen(spawn_group->m_spawn_control))
+//		add_group_object	(spawn_group,spawn_group->m_spawn_control);
+//	add_free_object			(abstract);
+//}
 
 void CLevelSpawnConstructor::add_story_object					(CSE_ALifeDynamicObject *dynamic_object)
 {
@@ -145,25 +145,25 @@ void CLevelSpawnConstructor::add_free_object					(CSE_Abstract			*abstract)
 	m_game_spawn_constructor->add_object		(abstract);
 }
 
-void CLevelSpawnConstructor::add_group_object					(CSE_Abstract			*abstract, shared_str group_section, bool)
-{
-	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.find(group_section);
-	if (I == m_spawn_objects.end()) {
-		xr_vector<CSE_Abstract*>	*temp = xr_new<GROUP_OBJECTS>();
-		temp->clear					();
-		temp->push_back				(abstract);
-		m_spawn_objects.insert		(std::make_pair(group_section,temp));
-	}
-	else
-		(*I).second->push_back		(abstract);
-}
+//void CLevelSpawnConstructor::add_group_object					(CSE_Abstract			*abstract, shared_str group_section, bool)
+//{
+//	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.find(group_section);
+//	if (I == m_spawn_objects.end()) {
+//		xr_vector<CSE_Abstract*>	*temp = xr_new<GROUP_OBJECTS>();
+//		temp->clear					();
+//		temp->push_back				(abstract);
+//		m_spawn_objects.insert		(std::make_pair(group_section,temp));
+//	}
+//	else
+//		(*I).second->push_back		(abstract);
+//}
 
-void CLevelSpawnConstructor::add_group_object					(CSE_Abstract			*abstract, shared_str group_section)
-{
-	string256					temp;
-	for (u32 i=0, n=_GetItemCount(*group_section); i<n; ++i)
-		add_group_object		(abstract,_GetItem(*group_section,i,temp),true);
-}
+//void CLevelSpawnConstructor::add_group_object					(CSE_Abstract			*abstract, shared_str group_section)
+//{
+//	string256					temp;
+//	for (u32 i=0, n=_GetItemCount(*group_section); i<n; ++i)
+//		add_group_object		(abstract,_GetItem(*group_section,i,temp),true);
+//}
 
 void CLevelSpawnConstructor::load_objects						()
 {
@@ -181,10 +181,10 @@ void CLevelSpawnConstructor::load_objects						()
 			continue;
 		}
 
-		if (abstract->m_tClassID == CLSID_AI_SPAWN_GROUP) {
-			add_spawn_group		(abstract);
-			continue;
-		}
+//		if (abstract->m_tClassID == CLSID_AI_SPAWN_GROUP) {
+//			add_spawn_group		(abstract);
+//			continue;
+//		}
 
 		if ((abstract->s_gameid != GAME_SINGLE) && (abstract->s_gameid != GAME_ANY)) {
 			F_entity_Destroy	(abstract);
@@ -212,8 +212,8 @@ void CLevelSpawnConstructor::load_objects						()
 		if (abstract->m_tClassID == CLSID_LEVEL_CHANGER)
 			add_level_changer	(abstract);
 
-		if (xr_strlen(alife_object->m_spawn_control))
-			add_group_object	(alife_object,alife_object->m_spawn_control);
+//		if (xr_strlen(alife_object->m_spawn_control))
+//			add_group_object	(alife_object,alife_object->m_spawn_control);
 
 		add_free_object			(alife_object);
 	}
@@ -235,39 +235,39 @@ IC	void CLevelSpawnConstructor::normalize_probability			(CSE_ALifeAnomalousZone 
 		zone->m_faWeights[ii]	/= accumulator;
 }
 
-IC	void CLevelSpawnConstructor::free_group_objects					()
-{
-	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.begin();
-	SPAWN_GRPOUP_OBJECTS::iterator	E = m_spawn_objects.end();
-	for ( ; I != E; I++)
-		xr_delete					((*I).second);
-}
+//IC	void CLevelSpawnConstructor::free_group_objects					()
+//{
+//	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.begin();
+//	SPAWN_GRPOUP_OBJECTS::iterator	E = m_spawn_objects.end();
+//	for ( ; I != E; I++)
+//		xr_delete					((*I).second);
+//}
 
-void CLevelSpawnConstructor::fill_spawn_groups					()
-{
-	SPAWN_GRPOUP_OBJECTS::iterator				I = m_spawn_objects.begin();
-	SPAWN_GRPOUP_OBJECTS::iterator				E = m_spawn_objects.end();
-	
-	for ( ; I != E; I++) {
-		R_ASSERT								(xr_strlen(*(*I).first));
-		R_ASSERT								((*I).second);
-		SPAWN_GROUPS::iterator					J = m_spawn_groups.find((*I).first);
-		if (J == m_spawn_groups.end())
-			clMsg								("! ERROR (spawn group not found!) : %s",*(*I).first);
-		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found!",(*(*I).second)[0]->name_replace());
-		
-		GROUP_OBJECTS::iterator					i = (*I).second->begin();
-		GROUP_OBJECTS::iterator					e = (*I).second->end();
-		for ( ; i != e; i++) {
-			m_game_spawn_constructor->add_edge	((*J).second->m_tSpawnID,(*i)->m_tSpawnID,(*i)->m_spawn_probability);
-			CSE_ALifeAnomalousZone				*zone = smart_cast<CSE_ALifeAnomalousZone*>(*i);
-			if (zone)
-				normalize_probability			(zone);
-		}
-	}
-	
-	free_group_objects							();
-}
+//void CLevelSpawnConstructor::fill_spawn_groups					()
+//{
+//	SPAWN_GRPOUP_OBJECTS::iterator				I = m_spawn_objects.begin();
+//	SPAWN_GRPOUP_OBJECTS::iterator				E = m_spawn_objects.end();
+//	
+//	for ( ; I != E; I++) {
+//		R_ASSERT								(xr_strlen(*(*I).first));
+//		R_ASSERT								((*I).second);
+//		SPAWN_GROUPS::iterator					J = m_spawn_groups.find((*I).first);
+//		if (J == m_spawn_groups.end())
+//			clMsg								("! ERROR (spawn group not found!) : %s",*(*I).first);
+//		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found!",(*(*I).second)[0]->name_replace());
+//		
+//		GROUP_OBJECTS::iterator					i = (*I).second->begin();
+//		GROUP_OBJECTS::iterator					e = (*I).second->end();
+//		for ( ; i != e; i++) {
+//			m_game_spawn_constructor->add_edge	((*J).second->m_tSpawnID,(*i)->m_tSpawnID,(*i)->m_spawn_probability);
+//			CSE_ALifeAnomalousZone				*zone = smart_cast<CSE_ALifeAnomalousZone*>(*i);
+//			if (zone)
+//				normalize_probability			(zone);
+//		}
+//	}
+//	
+//	free_group_objects							();
+//}
 
 void CLevelSpawnConstructor::correct_objects					()
 {
@@ -578,7 +578,7 @@ void CLevelSpawnConstructor::update_artefact_spawn_positions	()
 void CLevelSpawnConstructor::Execute							()
 {
 	load_objects						();
-	fill_spawn_groups					();
+//	fill_spawn_groups					();
 
 	init								();
 	
