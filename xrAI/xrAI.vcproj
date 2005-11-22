@@ -1268,29 +1268,18 @@
 				<Filter
 					Name="ALife"
 					Filter="">
-					<File
-						RelativePath=".\alife_artefact_order.cpp">
-					</File>
-					<File
-						RelativePath=".\alife_artefact_order.h">
-					</File>
-					<File
-						RelativePath=".\alife_event_personal.cpp">
-					</File>
-					<File
-						RelativePath=".\alife_event_personal.h">
-					</File>
-					<File
-						RelativePath=".\alife_event_personal_inline.h">
-					</File>
-					<File
-						RelativePath=".\alife_space.cpp">
-					</File>
-					<File
-						RelativePath=".\alife_space.h">
-					</File>
 					<Filter
-						Name="human_brain"
+						Name="alife_artefact_order"
+						Filter="">
+						<File
+							RelativePath=".\alife_artefact_order.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_artefact_order.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="alife_human_brain"
 						Filter="">
 						<File
 							RelativePath=".\alife_human_brain.cpp">
@@ -1300,6 +1289,29 @@
 						</File>
 						<File
 							RelativePath=".\alife_human_brain_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="alife_monster_brain"
+						Filter="">
+						<File
+							RelativePath=".\alife_monster_brain.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_monster_brain.h">
+						</File>
+						<File
+							RelativePath=".\alife_monster_brain_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="alife_space"
+						Filter="">
+						<File
+							RelativePath=".\alife_space.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_space.h">
 						</File>
 					</Filter>
 				</Filter>

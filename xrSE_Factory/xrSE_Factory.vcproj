@@ -825,19 +825,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="event_personal"
-						Filter="">
-						<File
-							RelativePath=".\alife_event_personal.cpp">
-						</File>
-						<File
-							RelativePath=".\alife_event_personal.h">
-						</File>
-						<File
-							RelativePath=".\alife_event_personal_inline.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="human_brain"
 						Filter="">
 						<File
