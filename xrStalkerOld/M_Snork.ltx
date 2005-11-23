@@ -279,45 +279,114 @@ bip01_pelvis 		= 1, -1, 0.01
 bip01_spine 		= 1, -1, 0.01
 bip01_spine1 		= 1, -1, 0.01
 bip01_neck 			= 1, -1, 0.1
-bip01_head 			= 6.0, -1, 0.30
+bip01_head 			= 2.0, -1, 0.30
 
 [snork_weak]:m_snork_e
 $spawn				= "monsters\snorks\snork_01_weak"
 visual				= monsters\snork\snork
 panic_threshold		= 0.5
 rank				= 0
+immunities_sect		= snork_immunities_weak
+attack_params		= snork_attack_params_weak
+
+[snork_immunities_weak]
+burn_immunity			= 1.0								;коэффициенты иммунитета 
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.4
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 0.2
+
+[snork_attack_params_weak]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0 =	  	0.30,		20,			30,        0.0, 0.5, 0.5,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Bite2
+stand_attack_1 =	  	0.30,		20,			30,        0.0, 0.5, 0.5,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Right Leg Attack
+stand_attack_2 =	  	0.30,		20,			50,        0.0, 1.0, 2.0,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Jump attack
+stand_attack_2_1 =	  	0.30,		50,			70,        0.0, 1.0, 2.0,		-1.6, 1.6, -1.6, 1.6,								3.2
+
+
 
 [snork_normal]:m_snork_e
 $spawn				= "monsters\snorks\snork_02_normal"
 visual				= monsters\snork\snork
 panic_threshold		= 0.2
 rank				= 50
+immunities_sect		= snork_immunities_normal
+attack_params		= snork_attack_params_normal
+
+[snork_immunities_normal]
+burn_immunity			= 1.0								;коэффициенты иммунитета 
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.2
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 0.1
+
+[snork_attack_params_normal]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0 =	  	0.30,		40,			30,        0.0, 0.5, 0.5,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Bite2
+stand_attack_1 =	  	0.30,		40,			30,        0.0, 0.5, 0.5,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Right Leg Attack
+stand_attack_2 =	  	0.30,		40,			50,        0.0, 1.0, 2.0,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Jump attack
+stand_attack_2_1 =	  	0.30,		70,			70,        0.0, 1.0, 2.0,		-1.6, 1.6, -1.6, 1.6,								3.2
+
+
 
 [snork_strong]:m_snork_e
 $spawn				= "monsters\snorks\snork_03_strong"
 visual				= monsters\snork\snork
 panic_threshold		= 0.05
 rank				= 100
+immunities_sect		= snork_immunities_strong
+attack_params		= snork_attack_params_strong
+
+[snork_immunities_strong]
+burn_immunity			= 1.0								;коэффициенты иммунитета 
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.1
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 0.02
+
+[snork_attack_params_strong]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0 =	  	0.30,		60,			30,        0.0, 0.5, 0.5,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Bite2
+stand_attack_1 =	  	0.30,		60,			30,        0.0, 0.5, 0.5,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Right Leg Attack
+stand_attack_2 =	  	0.30,		60,			50,        0.0, 1.0, 2.0,		-1.6, 1.6, -1.6, 1.6,								3.2
+;Jump attack
+stand_attack_2_1 =	  	0.30,		100,		70,        0.0, 1.0, 2.0,		-1.6, 1.6, -1.6, 1.6,								3.2
 
 
 ;=======================================================================================
-[aes_snork_immunities]
-burn_immunity			= 0.8								;коэффициенты иммунитета 
-strike_immunity			= 0.8
-shock_immunity			= 0.8
-wound_immunity			= 0.8	;0.75	;1.0		
-radiation_immunity		= 0.8	;0.5
-telepatic_immunity		= 1.0
-chemical_burn_immunity	= 0.8
-explosion_immunity		= 0.02
-fire_wound_immunity		= 0.02
-
-[aes_snork]:m_snork_e
+[aes_snork]:snork_strong
 $spawn				= "monsters\snorks\aes_snork"
 visual				= monsters\snork\snork
 panic_threshold		= 0.0
-
-immunities_sect		= aes_snork_immunities
 
 ;=======================================================================================
 
@@ -328,10 +397,6 @@ $spawn				= "monsters\arena\snork_arena"
 visual				= monsters\snork\snork
 panic_threshold		= 0.05
 species				= arena_monstr
-
-;Immunities 
-explosion_immunity		= 0.2
-fire_wound_immunity		= 0.05
 
 
 
