@@ -82,11 +82,13 @@ path_walk = bunker_walk
 combat_ignore_cond = always
 meet = meet@scientist
 on_info = {+yan_scientist_point_to_1} walker@door_2
+danger = danger_condition@yan_scientist
 
 [walker@door_2]
 path_walk = walk_door_2
 on_signal = door_2 |  %+yan_scientist_door_2_open +yan_scientist_gulag_state_2%
 combat_ignore_cond = always
+danger = danger_condition@yan_scientist
 
 [logic@scientist_not_in_rest]
 active = walker@door_1
@@ -98,6 +100,7 @@ meet = meet@scientist
 path_walk = walk_door_1
 on_signal = door_1 | camper@scientist_2 %+yan_scientist_door_1_open -yan_scientist_door_2_open%
 combat_ignore_cond = always
+danger = danger_condition@yan_scientist
 
 [camper@scientist_2]
 path_walk = help_walk
@@ -178,12 +181,14 @@ def_state_moving = assault
 radius = 0
 no_retreat = true
 on_info = {=rostok_dist_to_actor_le(6)} remark@scientist_research 
+danger = danger_condition@yan_scientist
 
 [remark@scientist_research]
 snd = yantar_kruglov_radiation_quest_2
 anim = wait
 on_signal = sound_end | walker@scientist_research
 combat_ignore_cond = always
+danger = danger_condition@yan_scientist
 
 [walker@scientist_research]
 path_walk = walk_research
@@ -199,18 +204,21 @@ anim = hide
 on_signal = sound_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
 on_timer = 7000 | %+yan_spawn_ghost%
 combat_ignore_cond = always
+danger = danger_condition@yan_scientist
 
 [walker@scientist_wounded_1]
 path_walk = wounded_walk
 ;wounded = wounded@yan_scientist
 on_timer = 12000 | walker@scientist_wounded 
 combat_ignore_cond = always
+danger = danger_condition@yan_scientist
 
 [walker@scientist_wounded]
 path_walk = wounded_walk
 wounded = wounded@yan_scientist
 combat_ignore_cond = always
 on_info = {+yan_scientist_return_to_bunker} remark@scientist_return_to_bunker
+danger = danger_condition@yan_scientist
 
 [remark@scientist_return_to_bunker]
 snd = yantar_kruglov_radiation_quest_8
@@ -240,6 +248,7 @@ danger = danger_condition@yan_scientist
 path_walk = door_1_walk
 combat_ignore_cond = always
 on_signal = door_2_open | %-yan_scientist_door_1_open +yan_scientist_door_2_open -yan_scientist_gulag_state_2 +yan_scientist_gulag_state_3%
+danger = danger_condition@yan_scientist
 
 [logic@scientist_return_out_rest]
 active = walker@scientist_return_out_rest
@@ -248,12 +257,14 @@ active = walker@scientist_return_out_rest
 path_walk = door_2_walk
 on_signal = doors_close | walker@go_to_scientist %-yan_scientist_door_2_open +yan_find_scientist_done%
 combat_ignore_cond = always
+danger = danger_condition@yan_scientist
 
 [walker@go_to_scientist]
 path_walk = ucheniy_talk_walk
 path_look = ucheniy_talk_look
 combat_ignore_cond = always
 on_signal = arrived | remark@talk_about_research
+danger = danger_condition@yan_scientist
 
 [remark@talk_about_research]
 snd = yantar_kruglov_radiation_quest_10
