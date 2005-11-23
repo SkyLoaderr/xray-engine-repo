@@ -2,16 +2,15 @@
     <title>
         val_come_to_trader
     </title>
-    <objective>
-        <text>
-            val_come_to_trader_0
-        </text>
+    <objective key="0">
         <icon height="50" width="50" x="100" y="0">
             ui\ui_icons_task
         </icon>
-        <infoportion_complete>esc_trader_return</infoportion_complete>
+        <infoportion_complete>
+            esc_trader_return
+        </infoportion_complete>
     </objective>
-    <objective>
+    <objective key="1">
         <text>
             val_come_to_trader_main
         </text>
@@ -30,15 +29,18 @@
     <title>
         val_sos_help
     </title>
-    <objective>
-        <text>
-            val_sos_help_0
-        </text>
+    <objective key="0">
         <icon height="50" width="50" x="100" y="100">
             ui\ui_icons_task
         </icon>
+        <infoportion_complete>
+            val_sos_got_medkit
+        </infoportion_complete>
+        <infoportion_fail>
+            val_sos_dead
+        </infoportion_fail>
     </objective>
-    <objective>
+    <objective key="1">
         <text>
             val_sos_help_main
         </text>
@@ -57,15 +59,18 @@
     <title>
         val_prisoner_help
     </title>
-    <objective>
-        <text>
-            val_prisoner_help_0
-        </text>
+    <objective key="0">
         <icon height="50" width="50" x="100" y="100">
             ui\ui_icons_task
         </icon>
+        <infoportion_complete>
+            val_prisoner_free
+        </infoportion_complete>
+        <infoportion_fail>
+            val_prisoner_dead
+        </infoportion_fail>
     </objective>
-    <objective>
+    <objective key="1">
         <text>
             val_prisoner_help_main
         </text>
