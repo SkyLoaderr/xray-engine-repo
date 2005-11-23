@@ -1698,8 +1698,9 @@ function load_states(gname, type)
 --	end
 	
 	if type == "esc_boars_dogs" then
-	return function(gulag)
-		return 2
+	    return function(gulag)
+		    return 2
+		end
 	end 
 	
 	
