@@ -1668,11 +1668,6 @@ soundgroup = bar_svoboda_ambush1
 [logic@bar_roaming_dogs]
 active = nil
 
-;*****************************************************************
-;FLESHES
-;*****************************************************************
-[logic@rostok_flesh_angar]
-active = nil
 
 ;*****************************************************************
 ;DOGS ON EXIT
@@ -1684,8 +1679,12 @@ active = nil
 ; ARENA MONSTR
 ;*****************************************************************
 [logic@bar_arena_monstr_pseudodog_none]
-active = nil
+active = mob_walker@bar_arena_monstr
 on_death = mob_death@bar_arena_monstr_pseudodog
+
+[mob_walker@bar_arena_monstr]
+path_walk = walk_2
+path_look = look
 
 [logic@bar_arena_monstr_pseudodog]
 active = mob_walker@bar_arena_monstr_pseudodog
@@ -1695,14 +1694,14 @@ on_death = mob_death@bar_arena_monstr_pseudodog
 braindead = true
 path_walk = walk
 path_look = look
-on_signal = arrived | nil %+bar_arena_monstr_ready =bar_arena_hit%
+on_signal = arrived |  %+bar_arena_monstr_ready =bar_arena_hit%
 
 [mob_death@bar_arena_monstr_pseudodog]
 on_info = %+bar_arena_pseudodog_defeated +bar_arena_monstr_dead%
 
 
 [logic@bar_arena_monstr_snork_none]
-active = nil
+active = mob_walker@bar_arena_monstr
 on_death = mob_death@bar_arena_monstr_snork
 
 [logic@bar_arena_monstr_snork]
@@ -1713,14 +1712,14 @@ on_death = mob_death@bar_arena_monstr_snork
 braindead = true
 path_walk = walk
 path_look = look
-on_signal = arrived | nil %+bar_arena_monstr_ready =bar_arena_hit%
+on_signal = arrived |  %+bar_arena_monstr_ready =bar_arena_hit%
 
 [mob_death@bar_arena_monstr_snork]
 on_info = %+bar_arena_snork_defeated +bar_arena_monstr_dead%
 
 
 [logic@bar_arena_monstr_bloodsucker_none]
-active = nil
+active = mob_walker@bar_arena_monstr
 on_death = mob_death@bar_arena_monstr_bloodsucker
 
 [logic@bar_arena_monstr_bloodsucker]
@@ -1731,14 +1730,14 @@ on_death = mob_death@bar_arena_monstr_bloodsucker
 braindead = true
 path_walk = walk
 path_look = look
-on_signal = arrived | nil %+bar_arena_monstr_ready =bar_arena_hit%
+on_signal = arrived |  %+bar_arena_monstr_ready =bar_arena_hit%
 
 [mob_death@bar_arena_monstr_bloodsucker]
 on_info = %+bar_arena_bloodsucker_defeated +bar_arena_monstr_dead%
 
 
 [logic@bar_arena_monstr_burer_none]
-active = nil
+active = mob_walker@bar_arena_monstr
 on_death = mob_death@bar_arena_monstr_burer
 
 [logic@bar_arena_monstr_burer]
@@ -1749,14 +1748,14 @@ on_death = mob_death@bar_arena_monstr_burer
 braindead = true
 path_walk = walk
 path_look = look
-on_signal = arrived | nil %+bar_arena_monstr_ready =bar_arena_hit%
+on_signal = arrived |  %+bar_arena_monstr_ready =bar_arena_hit%
 
 [mob_death@bar_arena_monstr_burer]
 on_info = %+bar_arena_burer_defeated +bar_arena_monstr_dead%
 
 
 [logic@bar_arena_monstr_savage_none]
-active = nil
+active = mob_walker@bar_arena_monstr
 on_death = death@bar_arena_monstr_savage
 
 [logic@bar_arena_monstr_savage]
@@ -1766,7 +1765,7 @@ on_death = death@bar_arena_monstr_savage
 [camper@bar_arena_monstr_savage]
 path_walk = walk
 path_look = look
-on_signal = arrived | nil %+bar_arena_monstr_ready =bar_arena_hit%
+on_signal = arrived |  %+bar_arena_monstr_ready =bar_arena_hit%
 danger = danger@bar_arena_monstr_savage
 
 [danger@bar_arena_monstr_savage]
