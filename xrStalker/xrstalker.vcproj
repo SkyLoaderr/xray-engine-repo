@@ -549,54 +549,6 @@
 					RelativePath=".\Config\misc\effectors.ltx">
 				</File>
 				<File
-					RelativePath=".\Config\misc\gulag_agroprom.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_bar.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_dark_valley.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_deadcity.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_escape.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_garbage.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_general.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_kishka.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_labx18.ltx">
-				</File>
-				<File
-					RelativePath=".\config\misc\gulag_military.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_pripyat.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_radar.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_radar_u.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_sarcofag.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_tasks.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\misc\gulag_yantar.ltx">
-				</File>
-				<File
 					RelativePath=".\Config\misc\items.ltx">
 				</File>
 				<File
@@ -617,6 +569,64 @@
 				<File
 					RelativePath=".\Config\misc\trigger.ltx">
 				</File>
+				<Filter
+					Name="gulags"
+					Filter="">
+					<File
+						RelativePath=".\config\misc\general_lager.ltx">
+					</File>
+					<File
+						RelativePath=".\config\misc\general_lair.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_agroprom.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_bar.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_dark_valley.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_deadcity.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_escape.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_garbage.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_general.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_kishka.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_labx18.ltx">
+					</File>
+					<File
+						RelativePath=".\config\misc\gulag_military.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_pripyat.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_radar.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_radar_u.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_sarcofag.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_tasks.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\gulag_yantar.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="mp"
