@@ -30,8 +30,6 @@
 		<objective>
 			<text>yan_psi_zone_find</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="yan_psi_zone_find">green_location</map_location_type>
-			<object_story_id>yan_scan_psi_radiation</object_story_id>
 			<infoportion_complete>yan_psi_zone_find_done</infoportion_complete>
 		</objective>
 </game_task>
