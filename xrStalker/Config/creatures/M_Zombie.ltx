@@ -273,42 +273,119 @@ bip01_head 			= 1.0, -1, 0.01
 $spawn				= "monsters\zombies\zombie_01_weak"
 visual				= monsters\zombi\zombi_2
 panic_threshold		= 0.5
+rank = 0
+
+FakeDeathCount					= 2		; max count of fake death
+StartFakeDeathHealthThreshold	= 0.4
+
+immunities_sect		= zombie_immunities_weak
+attack_params		= zombie_attack_params_weak
+
+[zombie_immunities_weak]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.20
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.20
+
+[zombie_attack_params_weak]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;right hand strike
+stand_attack_0 =	  	0.30,		15,		    100,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike
+stand_attack_1 =	  	0.35,		15,		    100,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike2
+stand_attack_2 =	  	0.30,		15,		    120,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike3
+stand_attack_3 =	  	0.30,		15,		    180,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+
+
 
 [zombie_normal]:m_zombie_e
 $spawn				= "monsters\zombies\zombie_02_normal"
 visual				= monsters\zombi\zombi_1
 panic_threshold		= 0.2
+rank = 50
+
+FakeDeathCount					= 4		; max count of fake death
+StartFakeDeathHealthThreshold	= 0.6
+
+immunities_sect		= zombie_immunities_normal
+attack_params		= zombie_attack_params_normal
+
+[zombie_immunities_normal]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.10
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.10
+
+[zombie_attack_params_normal]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;right hand strike
+stand_attack_0 =	  	0.30,		35,		    100,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike
+stand_attack_1 =	  	0.35,		35,		    100,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike2
+stand_attack_2 =	  	0.30,		35,		    120,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike3
+stand_attack_3 =	  	0.30,		35,		    180,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+
+
 
 [zombie_strong]:m_zombie_e
 $spawn				= "monsters\zombie\zombie_03_strong"
 visual				= monsters\zombi\zombi_trup
 panic_threshold		= 0.05	
+rank = 100
 
-;=========================================================================
-; Immunities
-;=========================================================================
-[sect_zombie_immortal_immunities]
-burn_immunity			= 0.3						;коэффициенты иммунитета 
-strike_immunity			= 0.3
-shock_immunity			= 0.3
-wound_immunity			= 0.3;1
-radiation_immunity		= 0.0	;0.5
+FakeDeathCount					= 6		; max count of fake death
+StartFakeDeathHealthThreshold	= 0.8
+
+immunities_sect		= zombie_immunities_strong
+attack_params		= zombie_attack_params_strong
+
+[zombie_immunities_strong]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.05
+radiation_immunity		= 0.0
 telepatic_immunity		= 1.0
-chemical_burn_immunity	= 0.01
-explosion_immunity		= 0.3
-fire_wound_immunity		= 0.3;0.5
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.05
 
-[zombie_immortal]:m_zombie_e
+[zombie_attack_params_strong]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;right hand strike
+stand_attack_0 =	  	0.30,		50,		    100,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike
+stand_attack_1 =	  	0.35,		50,		    100,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike2
+stand_attack_2 =	  	0.30,		50,		    120,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+;left hand strike3
+stand_attack_3 =	  	0.30,		50,		    180,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,							  3.5
+
+
+[zombie_immortal]:zombie_strong
 $spawn				= "monsters\zombie\zombie_immortal"
 visual				= monsters\zombi\zombi_trup
 panic_threshold		= 0.05	
-
-FakeDeathCount					= 10		; max count of fake death
-StartFakeDeathHealthThreshold	= 0.8
-
-health_hit_part 		= 0.25		;0.8			;процент хита, уходящий на отнимание здоровья
-immunities_sect			= sect_zombie_immortal_immunities
-
 
 
 
