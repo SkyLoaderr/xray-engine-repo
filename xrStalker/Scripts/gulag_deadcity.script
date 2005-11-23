@@ -86,24 +86,24 @@ end
 -- Killers
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function k_predicate_l(obj)
-	return obj:profile_name() == "cit_killer_leader"
+function k_predicate_l(data)
+	return data.profile_name == "cit_killer_leader"
 end
 
-function k_predicate_e(obj)
-	return obj:profile_name() == "cit_killer_exo"
+function k_predicate_e(data)
+	return data.profile_name == "cit_killer_exo"
 end
 
-function k_predicate_v(obj)
-	return obj:profile_name() == "cit_killer_veteran"
+function k_predicate_v(data)
+	return data.profile_name == "cit_killer_veteran"
 end
 
-function k_predicate_g(obj)
-	return obj:profile_name() == "cit_killer_general"
+function k_predicate_g(data)
+	return data.profile_name == "cit_killer_general"
 end
 
-function k_predicate_n(obj)
-	return obj:profile_name() == "cit_killer_nauchniy"
+function k_predicate_n(data)
+	return data.profile_name == "cit_killer_nauchniy"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -169,7 +169,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     for i = 1, 2 do
 	    t = { section = "logic@" .. gname .. "_free" .. i .. "_in_kamp",
 		    idle = 0,
-		    prior = 9, state = {0},
+		    prior = 100 + i, state = {0}, -- 9
 		    squad = squad, group = groups[6],
 		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = k_predicate_e
@@ -421,20 +421,20 @@ end
 -- Followers
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function b_predicate_vb(obj)
-	return obj:profile_name() == "cit_bandit_veteran_best"
+function b_predicate_vb(data)
+	return data.profile_name == "cit_bandit_veteran_best"
 end
 
-function b_predicate_v(obj)
-	return obj:profile_name() == "cit_bandit_veteran"
+function b_predicate_v(data)
+	return data.profile_name == "cit_bandit_veteran"
 end
 
-function b_predicate_g(obj)
-	return obj:profile_name() == "cit_bandit_general"
+function b_predicate_g(data)
+	return data.profile_name == "cit_bandit_general"
 end
 
-function b_predicate_d(obj)
-	return obj:profile_name() == "cit_bandit_drunk"
+function b_predicate_d(data)
+	return data.profile_name == "cit_bandit_drunk"
 end
 
 -- Jobs ------------------------------------------------------------------
