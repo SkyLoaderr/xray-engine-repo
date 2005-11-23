@@ -19,6 +19,7 @@
         <snd_config>characters_voice\human_02\</snd_config>
         <supplies>
             [spawn] \n
+            cit_doctors_key \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
