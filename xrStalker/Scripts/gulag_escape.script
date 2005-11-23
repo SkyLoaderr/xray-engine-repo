@@ -779,64 +779,64 @@ function load_job(sj, gname, type, squad, groups)
 	
 	
 	if type == "esc_dogs_to_fox" then
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
+		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_fox_nest"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
@@ -899,432 +899,190 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox", 
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_tusnyak"
-		}
-		table.insert(sj, t)
+		
 	end
 	
 	if type == "esc_dogs_swarm" then
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm1", 
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_dogs_sr1"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm3", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_sr3"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
+		t = { section = "logic@esc_dogs_swarm2", 
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_dogs_sr2"
-		}
-		table.insert(sj, t)
-		
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {3},
-			in_rest = "", out_rest = "esc_dogs_sr0_big"
-		}
-		table.insert(sj, t)
-		
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {4},
-			in_rest = "", out_rest = "esc_dogs_sr1_big"
-		}
-		table.insert(sj, t)
-		
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_swarm", 
-			idle = 0,
-			prior = 5, state = {5},
-			in_rest = "", out_rest = "esc_dogs_sr2_big"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 	end
@@ -1528,6 +1286,274 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	
+	if type == "esc_corps" then
+		t = { section = "logic@esc_coprs1",
+			idle = 4,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_corpse2",
+			idle = 4,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_assault" then
+		t = { section = "logic@esc_assault1",
+			idle = 4,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault2",
+			idle = 4,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault3",
+			idle = 4,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info) 
+        					return obj_info.name == "esc_novice_attacker1"			           
+						end
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_zombie_1" then
+		t = { section = "logic@esc_zombie_1_fd", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "esc_selo2_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_1_fd", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "esc_selo2_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_1_fd", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "esc_selo2_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_1_fd", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "esc_selo2_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_1_fd", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "esc_selo2_sr"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_1_fd", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "esc_selo2_sr"
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_zombie_2" then
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_zombie_2_home", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_flesh_1" then
+		t = { section = "logic@esc_flesh_1_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_1_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_1_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_1_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_1_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_flesh_2" then
+		t = { section = "logic@esc_flesh_2_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_2_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_2_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_2_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_flesh_2_camp", 
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
 end
 
 function load_states(gname, type)
@@ -1616,14 +1642,11 @@ function load_states(gname, type)
 	
 	if type == "esc_dogs_to_fox" then        
 		return function(gulag)
-			local t = db.zone_by_name["esc_dogs_fox_tusnyak"]
 			local actor = db.actor
 			if not actor then
 				return gulag.state
 			end
-			if t:inside(db.actor:position()) then
-				return 1
-			elseif actor:has_info("escape_fox_heal") and actor:dont_has_info("esc_dogs_return") then
+			if actor:has_info("escape_fox_heal") and actor:dont_has_info("esc_dogs_return") then
 				return 2
 			else
 				return 0
@@ -1642,37 +1665,42 @@ function load_states(gname, type)
 		end
 	end
 
+--	if type == "esc_boars_dogs" then
+--		return function(gulag)
+--			local actor = db.actor
+--			if not actor then
+--				return gulag.state
+--			end
+--
+--			if gulag.state == 0 then
+--				if actor:has_info("esc_boar_dogs_restrictor") then
+--					return 1 -- бег в рестриктор
+--				else
+--					return 0
+--				end
+--			elseif gulag.state == 1 then
+--				local z = db.zone_by_name["esc_boar_dogs_restrictor"]
+--				if not z then
+--					return 1
+--				end
+--
+--				for id, obj in pairs(gulag.Object) do
+--					if not utils.npc_in_zone(obj, z) then
+--						return 1
+--					end
+--				end
+--
+--				return 2 -- роспуск рестриктора
+--			else
+--				return 2
+--			end
+--		end
+--	end
+	
 	if type == "esc_boars_dogs" then
-		return function(gulag)
-			local actor = db.actor
-			if not actor then
-				return gulag.state
-			end
-
-			if gulag.state == 0 then
-				if actor:has_info("esc_boar_dogs_restrictor") then
-					return 1 -- бег в рестриктор
-				else
-					return 0
-				end
-			elseif gulag.state == 1 then
-				local z = db.zone_by_name["esc_boar_dogs_restrictor"]
-				if not z then
-					return 1
-				end
-
-				for id, obj in pairs(gulag.Object) do
-					if not utils.npc_in_zone(obj, z) then
-						return 1
-					end
-				end
-
-				return 2 -- роспуск рестриктора
-			else
-				return 2
-			end
-		end
-	end
+	return function(gulag)
+		return 2
+	end 
 	
 	
 	if type == "esc_killers" then
@@ -1695,30 +1723,52 @@ function load_states(gname, type)
 	
 	if type == "esc_dogs_swarm" then
 		return function(gulag)
-			local n
-
 			if (level.get_time_hours() > 0 and level.get_time_hours() <= 1) or (level.get_time_hours() > 4 and level.get_time_hours() <= 5) or (level.get_time_hours() > 8 and level.get_time_hours() <= 9) or (level.get_time_hours() > 12 and level.get_time_hours() <= 13) or (level.get_time_hours() > 16 and level.get_time_hours() <= 17) or (level.get_time_hours() > 20 and level.get_time_hours() <= 21) then
-				n = 0 -- 1sr
+				return = 0 -- 1sr
 			elseif (level.get_time_hours() > 2 and level.get_time_hours() <= 3) or (level.get_time_hours() > 6 and level.get_time_hours() <= 7) or (level.get_time_hours() > 10 and level.get_time_hours() <= 11) or (level.get_time_hours() > 14 and level.get_time_hours() <= 15) or (level.get_time_hours() > 18 and level.get_time_hours() <= 19) or (level.get_time_hours() > 22 and level.get_time_hours() <= 23) then
-				n = 1 -- 3 sr
+				return = 1 -- 3 sr
 			else
-				n = 2 -- 2 sr
-			end
-
-			local t1 = db.zone_by_name["esc_dogs_sr"..n.."_big"]
-			if t1 and db.actor then
-				if t1:inside(db.actor:position()) then
-					return n + 3
-				else
-					return n
-				end
-			else
-				return gulag.state
+				return = 2 -- 2 sr
 			end
 		end
 	end
 	
 	if type == "esc_ambush" then
+		return function(gulag)
+			return 0
+		end
+	end
+	if type == "esc_corps" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_zombie_1" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_zombie_2" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_flesh_1" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_flesh_2" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_assault" then
 		return function(gulag)
 			return 0
 		end
@@ -1766,6 +1816,15 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "esc_ambush" then
 		return npc_community == "bandit"
 	end
+	
+	if gulag_type == "esc_corps" then
+		return npc_community == "stranger"
+	end 
+	
+	if gulag_type == "esc_assault" then
+		return npc_community == "stranger"
+	end 
+	
 	return false
 end
 
@@ -1782,6 +1841,22 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_type == "esc_boars_dogs" then
 		return npc_community == "dog" or
 			npc_community == "boar"
+	end
+	
+	if gulag_type == "esc_zombie_1" then
+		return npc_community == "zombie"
+	end
+	
+	if gulag_type == "esc_zombie_2" then
+		return npc_community == "zombie"
+	end
+	
+	if gulag_type == "esc_flesh_1" then
+		return npc_community == "flesh"
+	end
+	
+	if gulag_type == "esc_flesh_2" then
+		return npc_community == "flesh"
 	end
 	
 	return false

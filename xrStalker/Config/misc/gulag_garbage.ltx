@@ -312,7 +312,10 @@ combat_ignore_cond = {-gar_counter_fire}
 on_signal = start | %+gar_counter_fire%
 
 [logic@gar_bandit_agr_restrictor_raid]
-active = nil
+active = walker@gar_bandit_agr_restrictor_raid
+
+[walker@gar_bandit_agr_restrictor_raid]
+path_walk = search
 
 ;-------------------------------------------------------------------------------------------------
 ;-- GARBAGE STALKERS (Hellcar group)
@@ -795,7 +798,7 @@ on_death = death@bandits_seryi
 path_walk = camper11_walk
 path_look = camper11_look
 combat_ignore_cond = {-gar_seryi_open_fire}
-on_info = {+gar_begin_assault -gar_seryi_ceitnot} nil %+gar_seryi_ceitnot +gar_seryi_open_fire%
+on_info = {+gar_begin_assault -gar_seryi_ceitnot} %+gar_seryi_ceitnot +gar_seryi_open_fire%
 
 ;remark@gar_seryi_bandits_1
 
@@ -875,27 +878,18 @@ active = remark@gar_seryi_bandits_walker1
 
 [remark@gar_seryi_bandits_walker1]
 snd = gar_bandits_seryi
-sound_end = nil
+sound_end = walker@gar_seryi_bandits_walker1
+path_walk = search
+
+[walker@gar_seryi_bandits_walker1]
+path_walk = search
 
 
 [logic@gar_seryi_bandits_walker2]
-active = nil
+active = walker@gar_seryi_bandits_walker2
 
-
-[logic@gar_seryi_bandits_walker3]
-active = nil
-
-
-[logic@gar_seryi_bandits_walker4]
-active = nil
-
-
-[logic@gar_seryi_bandits_walker5]
-active = nil
-
-
-[logic@gar_seryi_bandits_walker6]
-active = nil
+[walker@gar_seryi_bandits_walker2]
+path_walk = search
 
 
 [logic@gar_seryi_bandits_kamp1]
@@ -1008,6 +1002,587 @@ path_walk = walk7
 path_look = look7
 
 
+;**********************
+; Bandit stroyka
+;**********************
+
+[logic@gar_bandit_stroyka_1]
+active = walker@gar_bandit_stroyka_1
+
+[walker@gar_bandit_stroyka_1]
+path_walk = 1_walk
+path_look = 1_look
+
+[logic@gar_bandit_stroyka_2]
+active = walker@gar_bandit_stroyka_2
+
+[walker@gar_bandit_stroyka_2]
+path_walk = 2_walk
+path_look = 2_look
+
+
+[logic@gar_bandit_stroyka_3]
+active = walker@gar_bandit_stroyka_3
+wounded = wounded@bandit_wounded
+meet = meet_deafult
+
+[walker@gar_bandit_stroyka_3]
+path_walk = 3_walk
+path_look = 3_look
+
+[wounded@bandit_wounded]
+hp_state = 30|help_me@help|10|wounded_heavy@help_heavy
+hp_state_see = 30|wounded@help_see|10|wounded_heavy@help_heavy
+psy_state = 50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20| {=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy
+hp_victim = 30|actor|10|nil
+hp_cover = 30|true|10|false
+hp_fight = 30|true|10|false
+syndata = wounded@help
+help_start_dialog = gar_wounded_bandit
+
+
+[logic@gar_bandit_stroyka_4]
+active = walker@gar_bandit_stroyka_4
+
+[walker@gar_bandit_stroyka_4]
+path_walk = 4_walk
+path_look = 4_look
+
+[logic@gar_bandit_stroyka_5]
+active = walker@gar_bandit_stroyka_5
+
+[walker@gar_bandit_stroyka_5]
+path_walk = 5_walk
+path_look = 5_look
+
+
+;*************************************
+; ƒрам момент, бл€дь!
+;*************************************
+
+[logic@gar_dram_bandit_1]
+active = walker1@gar_dram_bandit_1
+on_death = death@gar_dram_bandit_1
+on_combat = combat@gar_dram_bandit_1
+on_hit = hit@gar_dram_bandit_1
+
+[death@gar_dram_bandit_1]
+on_info = %+gar_dm_bandit1_dead =gar_dm_bandits_fight%
+
+[combat@gar_dram_bandit_1]
+on_info = %=disable_combat_handler =gar_dm_bandits_fight%
+
+[hit@gar_dram_bandit_1]
+on_info = %=gar_dm_bandits_fight%
+
+[walker1@gar_dram_bandit_1]
+path_walk = bandit1_walk
+path_look = bandit1_look
+on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1@gar_dram_bandit_1 %+gar_dm_bandit_warned_plr%
+on_info2 = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%, {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2@gar_dram_bandit_1 %+gar_dm_bandit2_warned_plr%
+on_info3 = {+gar_dm_bandit1_demand} remark@demand_gar_dram_bandit_1 %-gar_dm_bandit1_demand%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_1
+
+[remark@demand_gar_dram_bandit_1]
+no_move = true
+no_rotate = true
+snd = gar_dm_bandit_demand
+anim = claim
+on_signal = sound_end | walker1@gar_dram_bandit_1 %+gar_dm_newbie_no_money%
+on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1@gar_dram_bandit_1 %+gar_dm_bandit_warned_plr%
+on_info2 = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%, {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2@gar_dram_bandit_1 %+gar_dm_bandit2_warned_plr%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_1
+
+[remark1@gar_dram_bandit_1]
+no_move = true
+snd = gar_dm_bandit_backoff1
+anim = backoff
+on_signal = sound_end | %+gar_dm_bandit2_warn_plr%
+on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_1
+
+[remark2@gar_dram_bandit_1]
+no_move = true
+snd = gar_dm_bandit_backoff2
+anim = backoff2
+on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_1
+
+[danger_condition@gar_dram_bandit_1]
+ignore_distance = 5
+
+
+
+[logic@gar_dram_bandit_2]
+active = walker1@gar_dram_bandit_2
+on_death = death@gar_dram_bandit_2
+on_combat = combat@gar_dram_bandit_2
+on_hit = hit@gar_dram_bandit_2
+
+[death@gar_dram_bandit_2]
+on_info = %+gar_dm_bandit2_dead =gar_dm_bandits_fight%
+
+[combat@gar_dram_bandit_2]
+on_info = %=disable_combat_handler =gar_dm_bandits_fight%
+
+[hit@gar_dram_bandit_2]
+on_info = %=gar_dm_bandits_fight%
+
+[walker1@gar_dram_bandit_2]
+path_walk = bandit2_walk
+path_look = bandit2_look
+on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1@gar_dram_bandit_2 %+gar_dm_bandit_warned_plr%
+on_info2 = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%, {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2@gar_dram_bandit_2 %+gar_dm_bandit2_warned_plr%
+on_info3 = {+gar_dm_bandit2_demand} remark@demand_gar_dram_bandit_2 %-gar_dm_bandit2_demand%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_2
+
+[remark@demand_gar_dram_bandit_2]
+no_move = true
+no_rotate = true
+snd = gar_dm_bandit_demand
+anim = claim
+on_signal = sound_end | walker1@gar_dram_bandit_2 %+gar_dm_newbie_no_money%
+on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1@gar_dram_bandit_2 %+gar_dm_bandit_warned_plr%
+on_info2 = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%, {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2@gar_dram_bandit_2 %+gar_dm_bandit2_warned_plr%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_2
+
+[remark1@gar_dram_bandit_2]
+no_move = true
+snd = gar_dm_bandit_backoff1
+anim = backoff
+on_signal = sound_end | %+gar_dm_bandit2_warn_plr%
+on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_2
+
+[remark2@gar_dram_bandit_2]
+no_move = true
+snd = gar_dm_bandit_backoff2
+anim = backoff2
+on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_2
+
+[danger_condition@gar_dram_bandit_2]
+ignore_distance = 5
+
+
+
+[logic@gar_dram_bandit_3]
+active = walker1@gar_dram_bandit_3
+on_death = death@gar_dram_bandit_3
+on_combat = combat@gar_dram_bandit_3
+on_hit = hit@gar_dram_bandit_3
+
+[death@gar_dram_bandit_3]
+on_info = %+gar_dm_bandit3_dead =gar_dm_bandits_fight%
+
+[combat@gar_dram_bandit_3]
+on_info = %=disable_combat_handler =gar_dm_bandits_fight%
+
+[hit@gar_dram_bandit_3]
+on_info = %=gar_dm_bandits_fight%
+
+[walker1@gar_dram_bandit_3]
+path_walk = bandit3_walk
+path_look = bandit3_look
+on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1@gar_dram_bandit_3 %+gar_dm_bandit_warned_plr%
+on_info2 = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%, {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2@gar_dram_bandit_3 %+gar_dm_bandit2_warned_plr%
+on_info3 = {+gar_dm_bandit3_demand} remark@demand_gar_dram_bandit_3 %-gar_dm_bandit3_demand%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_3
+
+[remark@demand_gar_dram_bandit_3]
+no_move = true
+no_rotate = true
+snd = gar_dm_bandit_demand
+anim = claim
+on_signal = sound_end | walker1@gar_dram_bandit_3 %+gar_dm_newbie_no_money%
+on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1@gar_dram_bandit_3 %+gar_dm_bandit_warned_plr%
+on_info2 = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%, {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2@gar_dram_bandit_3 %+gar_dm_bandit2_warned_plr%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_3
+
+[remark1@gar_dram_bandit_3]
+no_move = true
+snd = gar_dm_bandit_backoff1
+anim = backoff
+on_signal = sound_end| %+gar_dm_bandit2_warn_plr%
+on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_3
+
+[remark2@gar_dram_bandit_3]
+no_move = true
+snd = gar_dm_bandit_backoff2
+anim = backoff2
+on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
+reactions = ignore
+danger = danger_condition@gar_dram_bandit_3
+
+[danger_condition@gar_dram_bandit_3]
+ignore_distance = 5
+
+
+
+[logic@gar_dram_novice]
+active = walker10@gar_dram_novice 
+on_death = death@gar_dram_novice
+on_combat = combat@gar_dram_novice
+on_hit = hit@gar_dram_novice
+actor_dialogs = actor_dialogs@gar_dram_novice
+
+[actor_dialogs@gar_dram_novice]
+id = gar_dram_novice_level
+
+[death@gar_dram_novice]
+on_info = %+gar_dm_novice_dead =gar_dm_bandits_fight%
+
+[combat@gar_dram_novice]
+on_info = remark@after_fight_gar_dram_novice %=disable_combat_handler =gar_dm_bandits_fight%
+
+[hit@gar_dram_novice]
+on_info = {!hit_by_actor} remark@after_fight_gar_dram_novice %=gar_dm_bandits_fight%
+
+
+[walker10@gar_dram_novice]
+on_info = %=gar_dm_bandit_demand% walker1@gar_dram_novice
+
+[walker1@gar_dram_novice]
+path_walk = novice_walk
+path_look = novice_look
+on_actor_dist_le_nvis = 12 | remark1@gar_dram_novice
+on_info = {+gar_dm_newbie_no_money} remark@no_money_gar_dram_novice %-gar_dm_newbie_no_money%
+;on_timer = 10000 | {+gar_dm_newbie_no_money} remark@no_money_gar_dram_novice %-gar_dm_newbie_no_money%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
+on_info3 = {+gar_dm_end} %=gar_dm_bandits_fight%
+reactions = ignore
+danger = danger_condition@gar_dram_novice
+
+[remark@no_money_gar_dram_novice]
+no_move = true
+no_rotate = true
+snd = gar_dm_newbie_no_money
+anim = refuse
+on_signal = action_end | walker1@gar_dram_novice %=gar_dm_bandit_demand%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
+on_info3 = {+gar_dm_end} %=gar_dm_bandits_fight%
+on_actor_dist_le_nvis = 12 | remark1@gar_dram_novice
+reactions = ignore
+danger = danger_condition@gar_dram_novice
+
+[remark1@gar_dram_novice]
+anim = hello
+snd = gar_dm_newbie_help_me
+no_rotate = true
+on_signal = sound_end | remark2@gar_dram_novice %+gar_dm_novice_asked_for_help%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
+on_info3 = {+gar_dm_end} %=gar_dm_bandits_fight%
+reactions = ignore
+danger = danger_condition@gar_dram_novice
+
+[remark2@_gar_dram_novice]
+no_move = true
+anim = wait
+on_actor_dist_le_nvis = 7 | remark3@gar_dram_novice %=gar_dm_bandits_fight%
+on_actor_dist_ge = 15 | %=gar_dm_bandits_fight%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
+on_info3 = {+gar_dm_end} %=gar_dm_bandits_fight%
+on_timer = 15000 | %=gar_dm_bandits_fight%
+reactions = ignore
+danger = danger_condition@gar_dram_novice
+
+[remark3@gar_dram_novice]
+no_move = true
+anim = wait
+snd = help
+arrival_timeout = 1500
+on_signal = move_end | remark@after_fight_gar_dram_novice %=gar_dm_bandits_fight%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
+reactions = ignore
+danger = danger_condition@gar_dram_novice
+
+[remark@after_fight]
+anim = hello
+snd = gar_dm_newbie_thank_you
+on_signal = action_end | walker2@gar_dram_novice %=actor_friend%
+danger = danger_condition@gar_dram_novice
+meet = meet@gar_dram_novice
+
+[walker2@gar_dram_novice]
+path_walk = gar_dm_novice_walk
+meet = meet@gar_dram_novice
+on_signal = new_gulag| %+gar_dm_novice_change_st%
+
+[meet@gar_dram_novice]
+meet_state = 3|wait@wait
+meet_state_wpn = 3|wait@wait
+victim = 3|actor
+victim_wpn = 3|actor
+use = true
+use_wpn = true
+
+[danger_condition@gar_dram_novice]
+ignore_distance = 1
+
+;*************************
+; Seryi angar
+;*************************
+
+[logic@gar_angar_seryi]
+active = walker@gar_angar_seryi
+combat_ignore = combat_ignore
+on_hit = hit@gar_angar_seryi
+on_death = death@gar_angar_seryi
+
+[walker@gar_angar_seryi]
+path_walk = seryi_walk
+path_look = seryi_look
+radius = 5
+combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
+on_actor_dist_le = 10| remark@gar_angar_seryi
+meet = meet@gar_angar_seryi
+danger = danger_condition@gar_angar_seryi
+
+[remark@gar_angar_seryi]
+snd = gar_seryi_see_actor
+on_signal = sound_end| walker2@gar_angar_seryi
+on_info = {=gar_bandits_seryi_die} remark@sound_gar_angar_seryi
+combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
+meet = meet@gar_angar_seryi
+anim = hide
+danger = danger_condition@gar_angar_seryi
+
+[walker2@gar_angar_seryi]
+path_walk = seryi_walk
+path_look = seryi_look
+radius = 5
+combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
+meet = meet@gar_angar_seryi
+danger = danger_condition@gar_angar_seryi
+on_info = {=gar_bandits_seryi_die} remark@sound_gar_angar_seryi
+
+[remark@sound_gar_angar_seryi]
+on_timer = 1000| walker@seryi_gar_angar_seryi %=gar_hellcar_victory%
+anim = wait
+
+
+[hit@gar_angar_seryi]
+on_info = %+gar_seryi_counter_fire%
+
+[death@gar_angar_seryi]
+on_info = %+garbage_meetstalker_die +gar_seryi_counter_fire%
+
+[walker@seryi_gar_angar_seryi]
+path_walk = seryi_walk_end
+path_look = seryi_look_end
+meet = meet@1_gar_angar_seryi
+danger = danger_condition@gar_angar_seryi
+on_info = {+agr_krot_band_start} kamp@gar_angar_seryi
+
+[kamp@gar_angar_seryi]
+center_point = gar_seryi_kamp
+on_game_timer = 150000 | %+gar_seryi_change_st%
+danger = danger_condition@gar_angar_seryi
+meet = meet@1_gar_angar_seryi
+
+[meet@gar_angar_seryi]
+meet_state 	= 2| idle %+gar_seryi_silence%
+meet_state_wpn 	= 2| idle %+gar_seryi_silence%
+victim 		= 1| nil
+victim_wpn 	= 1| nil
+use		= true
+use_wpn		= true
+
+[danger_condition@gar_angar_seryi]
+ignore_distance = 15
+
+[meet@1_gar_angar_seryi]
+meet_state 	= 15| hello@hail
+meet_state_wpn 	= 15| hello@hail
+victim 		= 10| actor
+victim_wpn 	= 10| actor
+use		= true
+use_wpn		= true
+
+
+
+[logic@gar_angar_wounded]
+active = walker@gar_angar_wounded
+meet = default_meet
+combat_ignore = combat_ignore
+
+[walker@gar_angar_wounded]
+path_walk = seryi_drug4_walk
+path_look = seryi_drug4_look
+combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
+on_info = {=gar_bandits_seryi_die} kamp@gar_angar_wounded
+
+[kamp@gar_angar_wounded]
+center_point = gar_seryi_kamp
+on_game_timer = 150000 | %+gar_seryi_change_st%
+
+
+[logic@gar_angar_drug1]
+active = walker@gar_angar_drug1
+combat_ignore = combat_ignore
+on_hit = hit@gar_angar_drug1
+on_death = death@gar_angar_drug1
+
+[walker@gar_angar_drug1]
+path_walk = seryi_drug_walk
+path_look = seryi_drug_look
+combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
+meet_talk_enabled = true
+on_info = {=gar_bandits_seryi_die} kamp@gar_angar_drug1
+danger = danger_condition@gar_angar_drug1
+
+[hit@gar_angar_drug1]
+on_info = %+gar_seryi_counter_fire%
+
+[death@gar_angar_drug1]
+on_info = %+gar_seryi_counter_fire +gar_seryi_drug_die%
+
+[kamp@gar_angar_drug1]
+center_point = gar_seryi_kamp
+on_game_timer = 150000 | %+gar_seryi_change_st%
+danger = danger_condition@gar_angar_drug1
+
+[danger_condition@gar_angar_drug1]
+ignore_distance = 10
+
+
+[logic@gar_angar_drug2]
+active = walker@gar_angar_drug2
+combat_ignore = combat_ignore
+on_hit = hit@gar_angar_drug2
+on_death = death@gar_angar_drug2
+meet = meet@friend
+
+[walker@gar_angar_drug2]
+path_walk = seryi_drug2_walk
+path_look = seryi_drug2_look
+combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
+meet_talk_enabled = true
+on_info = {=gar_bandits_seryi_die} kamp@gar_angar_drug2
+danger = danger_condition@gar_angar_drug2
+
+[hit@gar_angar_drug2]
+on_info = %+gar_seryi_counter_fire%
+
+[death@gar_angar_drug2]
+on_info = %+gar_seryi_counter_fire +gar_seryi_drug2_die%
+
+[kamp@gar_angar_drug2]
+center_point = gar_seryi_kamp
+on_game_timer = 150000 | %+gar_seryi_change_st%
+danger = danger_condition@gar_angar_drug2
+
+[danger_condition@gar_angar_drug2]
+ignore_distance = 15
+
+
+;****************************
+;Garbage Ambush
+;****************************
+[logic@gar_ambush_1]
+active = walker@gar_ambush_1
+
+[walker@gar_ambush_1]
+path_walk = walk1
+path_look = look1
+
+
+[logic@gar_ambush_2]
+active = walker@gar_ambush_2
+
+[walker@gar_ambush_2]
+path_walk = walk2
+path_look = look2
+
+
+[logic@gar_ambush_3]
+active = walker@gar_ambush_3
+
+[walker@gar_ambush_3]
+path_walk = walk3
+path_look = look3
+
+
+;************************
+;ѕсевдо раненый
+;************************
+
+[logic@gar_psevdowounded_1]
+active = active = walker@normal_gar_psevdowounded_1
+on_death = death@gar_psevdowounded_1
+on_hit = hit@gar_psevdowounded_1
+
+[walker@normal_gar_psevdowounded_1]
+path_walk = gar_way_spy
+path_look = gar_look_spy
+on_actor_dist_le_nvis = 100| walker@wounded_gar_psevdowounded_1 %+gar_wounded_help%
+danger = danger_condition
+
+[walker@wounded_gar_psevdowounded_1]
+on_actor_dist_le_nvis = 10| walker@fight_gar_psevdowounded_1 %+gar_wounded_fight =actor_enemy%
+wounded = wounded@gar_psevdowounded_1
+path_walk = gar_way_spy
+path_look = gar_look_spy
+danger = danger_condition@gar_psevdowounded_1
+on_info = {+gar_wounded_fight} walker@fight_gar_psevdowounded_1 %=actor_enemy%
+
+[wounded@gar_psevdowounded_1]
+hp_state = 130|help_me@help|90|wounded_heavy@help_heavy
+hp_state_see = 130|wounded@help_see|90|wounded_heavy@help_heavy
+psy_state = 50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20| {=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy
+hp_victim = 130|actor|90|nil
+hp_cover = 130|false|90|false
+hp_fight = 130|true|90|true
+syndata = wounded@help
+
+[walker@fight_gar_psevdowounded_1]
+path_walk = gar_way_spy
+path_look = gar_look_spy
+danger = danger_condition
+
+[danger_condition@gar_psevdowounded_1]
+ignore_distance = 25
+
+[death@gar_psevdowounded_1]
+on_info = %+gar_wounded_fight%
+
+[hit@gar_psevdowounded_1]
+on_info = %+gar_wounded_fight%
+
+
+
+[logic@gar_psevdowounded_2]
+active = camper@gar_psevdowounded_2
+combat_ignore = combat_ignore
+on_hit = hit
+
+[camper@gar_psevdowounded_2]
+path_walk = gar_way_spy2
+path_look = gar_look_spy2
+combat_ignore_cond = {-gar_wounded_fight}
+radius = 1
+;sniper = true
+danger = danger_condition@gar_psevdowounded_2
+;on_actor_dist_le = 15| %+gar_wounded_fight%
+show_spot = {-gar_wounded_fight} false
+
+[hit@gar_psevdowounded_2]
+on_info = %+gar_wounded_fight%
+
+[danger_condition@gar_psevdowounded_2]
+ignore_distance = 1
 
 
 
@@ -1015,14 +1590,33 @@ path_look = look7
 ;Boars2 (Dolg Quest)
 ;*****************************************************************
 [logic@gar_boars2_nest]
-active = nil
+active = mob_home@gar_boars2_nest
+
+[mob_home@gar_boars2_nest]
+path_home = home
+home_min_radius = 20
+home_max_radius = 40
 
 ;*****************************************************************
 ;Boars (Dolg Rush)
 ;*****************************************************************
 [logic@gar_boars_nest]
-active = nil
+active = mob_home@gar_boars_nest
+
+[mob_home@gar_boars_nest]
+path_home = home
+home_min_radius = 25
+home_max_radius = 50
+
+
+[logic@gar_boars_nest_rush]
+active = mob_home@gar_boars_nest
 on_death = mob_death@gar_boars_rush
+
+[mob_home@gar_boars_nest2]
+path_home = home_rush
+home_min_radius = 35
+home_max_radius = 50
 
 [mob_death@gar_boars_rush]
 on_info = {=killed_by_actor} %=inc_counter(gar_boars_counter)%
@@ -1031,16 +1625,32 @@ on_info = {=killed_by_actor} %=inc_counter(gar_boars_counter)%
 ;Fleshes (Dolg Quest)
 ;*****************************************************************
 [logic@gar_nest_flesh]
-active = nil
+active = mob_home@gar_nest_flesh
+
+[mob_home@gar_nest_flesh]
+path_home = home
+home_min_radius = 15
+home_max_radius = 30
+
 
 ;*****************************************************************
 ;Dogs 
 ;*****************************************************************
 [logic@gar_dogs_nest]
-active = nil
+active = mob_home@gar_dogs_nest
+
+[mob_home@gar_dogs_nest]
+path_home = home
+home_min_radius = 20
+home_max_radius = 40
 
 ;*****************************************************************
 ;Dogs 2
 ;*****************************************************************
 [logic@gar_dogs_nest2]
-active = nil
+active = mob_home@gar_dogs_nest2
+
+[mob_home@gar_dogs_nest2]
+path_home = home
+home_min_radius = 20
+home_max_radius = 40
