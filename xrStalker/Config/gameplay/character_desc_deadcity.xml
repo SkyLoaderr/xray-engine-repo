@@ -26,7 +26,7 @@
 					
 		<start_dialog>cit_doctor_hello_dialog</start_dialog>
 		<actor_dialog>cit_doctor_escape_dialog</actor_dialog>
-		<actor_dialog>cit_doctor_gunslinger_dialog</actor_dialog>
+		<actor_dialog>cit_doctor_main_dialog</actor_dialog>
     </specific_character>
 
 <!----------------------------- KILLERS ------------------------->
