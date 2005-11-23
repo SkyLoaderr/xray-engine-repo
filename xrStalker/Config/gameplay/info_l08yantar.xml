@@ -7,9 +7,7 @@
 	<info_portion id="yan_find_scientist_start">
 		<task>yan_find_scientist</task>
 	</info_portion>
-	<info_portion id="yan_find_vasilyev_start">
-		<task>yan_find_vasilyev</task>
-	</info_portion>
+	<info_portion id="yan_find_vasilyev_start"></info_portion>
 	<info_portion id="yantar_vasilyev_info">
 		<article>yan_vasilyev_info</article>
 	</info_portion>
