@@ -845,7 +845,7 @@ gulags.pri_ambush7      = {load_job_ambush7,    check_state_ambush7,    {"monoli
 gulags.pri_zombied      = {load_job_zombied,    check_state_zombied,    {"zombied", "military", "controller"},  load_ltx_zombied}
 gulags.pri_monolith     = {load_job_monolith,   check_state_monolith,   {"monolith"},                           load_ltx_monolith}
 gulags.pri_stadium      = {load_job_stadium,    check_state_stadium,    {"pseudo_gigant"},                      load_ltx_stadium}
-gulags.pri_mob_spring   = {load_job_mob_spring, check_state_mob_spring, {}}
+--gulags.pri_mob_spring   = {load_job_mob_spring, check_state_mob_spring, {}}
 gulags.pri_st_monster   = {load_job_st_monster, check_state_mob_spring, {"snork", "tushkano"}}
 --printf("gulag <pri>: table -")
 --print_table(gulags)
