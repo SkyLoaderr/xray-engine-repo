@@ -451,13 +451,13 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<DetailPathManage
 	if(m_path_distance==dInfinity && i==m_path_size-1)	
 	{
 
-		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].position);
-		m_path_distance=vtemp.magnitude();
-		vPathDir.set(dir);
-		vPathPoint.set(path[i].position);
-		index=i;
-		near_line=false;
+		R_ASSERT2															(after_line,"Must be after line");
+		vtemp										.sub					(new_position,path[i].position)		;
+		m_path_distance								=vtemp.magnitude		()									;
+		vPathDir									.set					(dir)								;
+		vPathPoint									.set					(path[i].position)					;
+		index										=i															;
+		near_line									=false														;
 	}
 	
 
@@ -497,11 +497,11 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<DetailPathMana
 			{
 				if(temp<m_path_distance)
 				{
-					m_path_distance=temp;
-					index=i;
-					vPathPoint.set(second);
-					vPathDir.set(dir);
-					near_line=false;
+					m_path_distance		=temp		;
+					index				=i			;
+					vPathPoint			.set(second);
+					vPathDir			.set(dir)	;
+					near_line			=false		;
 				}
 			}
 
@@ -601,7 +601,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<DetailPathManager::STravelP
 
 void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravelPathPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
-	Fvector to_path_point,tangent;
+	Fvector to_path_point;
 	Fvector corrected_path_dir;CorrectPathDir(vPathDir,path,index,corrected_path_dir);
 	to_path_point.sub(vPathPoint,vPosition);	//_new position
 	float mag=to_path_point.magnitude();
@@ -622,48 +622,22 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 
 	if(m_path_size-1==index)//on_path_edge
 	{
-	dir.set(to_path_point);
-	return;
+		dir.set(to_path_point);
+		return;
 	}
 
-	tangent.crossproduct(to_path_point,corrected_path_dir);//for basis
-	Fmatrix basis,inv_basis;
-	basis.i.set(tangent);
-	Fvector::generate_orthonormal_basis(basis.i,basis.j,basis.k);
-	basis.c.set(0,0,0);
-	inv_basis.set(basis);
-	inv_basis.transpose();
-	Fvector dir_in_b,tpathp_in_b,tangent_in_b;
-	inv_basis.transform_dir(dir_in_b,corrected_path_dir);
-	inv_basis.transform_dir(tpathp_in_b,to_path_point);
-
-
-	//build mean dir
-	if(0 != index) {
-		dir.sub(path[index].position,path[index-1].position);
-		dir.normalize_safe();
-		dir.add(corrected_path_dir);
-		dir.normalize_safe();
-	}
-	else {
-		dir.set(corrected_path_dir);
-	}
-
-	//build perpendicular in j - k plane
-	tangent_in_b.x=0.;
-	tangent_in_b.y=-tpathp_in_b.z;
-	tangent_in_b.z=tpathp_in_b.y;
-	basis.transform_dir(tangent,tangent_in_b);
-	mag=tangent.magnitude();
-	if(mag<EPS)
+	if(mag<EPS||dXZMag(to_path_point))
 	{
-			return;//mean dir
+		dir.set(corrected_path_dir);
+		return;//mean dir
 	}
-	tangent.mul(1.f/mag);
-
 	
+	Fvector tangent;
+	tangent.crossproduct(Fvector().set(0,1,0),to_path_point);
+	VERIFY(!fis_zero(tangent.magnitude()));
+	tangent.normalize();
 	if(tangent.dotproduct(dir)<0.f)tangent.invert();
-	
+
 	to_path_point.mul(distance*precesition);
 	dir.add(tangent,to_path_point);
 	dir.normalize_safe();
