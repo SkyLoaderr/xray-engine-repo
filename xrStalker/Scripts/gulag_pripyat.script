@@ -385,6 +385,7 @@ function load_job_zombied(sj, gname, type, squad, groups)
     local i, j, v
 
     local states_str = {"wait", "scene", "fight", "guard"}
+    local logic_str = {"wait", "scene", "fg", "fg"}
     local states = {state_zombied_wait, state_zombied_scene, state_zombied_fight, state_zombied_guard}
 
     local restr
@@ -406,7 +407,7 @@ function load_job_zombied(sj, gname, type, squad, groups)
 
     for i = 1, 7 do
         for j, v in pairs(states_str) do
-	        t = { section = "logic@" .. gname .. "_soldier" .. i .. "_" .. v, 
+	        t = { section = "logic@" .. gname .. "_soldier" .. i .. "_" .. logic_str[j], 
 		        idle = 0,
 		        prior = 1, state = {states[j]},
 		        squad = squad, group = groups[1],
@@ -436,6 +437,8 @@ function check_state_zombied(gulag)
             end
             return state_zombied_guard
         end
+    else
+        return state_zombied_wait
     end
     return state
 end
@@ -468,6 +471,7 @@ function load_ltx_zombied(gname, type)
           "time_change_point       = 5000\n" ..
 
           "[mob_remark@" .. gname .. "_controllers_fight]\n" ..
+          "path_home               = controllers_home\n" ..
           "anim                    = stand_idle_0, stand_idle_1, stand_idle_2, stand_idle_3\n" ..
           "on_actor_dist_le_nvis   = 25 | %=pri_zombied_in_combat_inc%\n" ..
           "on_actor_dist_ge_nvis   = 40 | %=pri_zombied_in_combat_dec%\n" ..
@@ -495,30 +499,16 @@ function load_ltx_zombied(gname, type)
                     "mob_death  = " .. gname .. "_death\n"
     end
 
-    res = res .. "[combat_zombied]\n" ..
-                 "combat_type           = zombied\n" ..
+    res = res.."[combat_zombied]\n" ..
+               "combat_type           = zombied\n" ..
 
-                 "[danger@zombied]\n" ..
-                 "ignore_danger_corpse  = 1\n" ..
-                 "ignore_danger_hit     = 1\n" ..
-
-                 "[remark@" .. gname .. "_soldier_wait]\n" ..
-                 ";no_move               = true\n" ..
-                 "anim                  = hide\n" ..
-                 "combat_ignore_cond    = {=check_fighting(813:814)}\n" ..
-                 "show_spot             = false\n" ..
-                 "danger                = danger@zombied\n" ..
-
-                 "[remark@" .. gname .. "_soldiers]\n" ..
-                 "anim                  = threat\n" ..
-                 "on_actor_dist_le_nvis = 25 | %=pri_zombied_in_combat_inc%\n" ..
-                 "on_actor_dist_ge_nvis = 40 | %=pri_zombied_in_combat_dec%\n" ..
-                 "show_spot             = false\n" ..
-                 "danger                = danger@zombied\n"
+               "[danger@zombied]\n" ..
+               "ignore_danger_corpse  = 1\n" ..
+               "ignore_danger_hit     = 1\n"
 
     for i = 1, 7 do
-        res = res.."[logic@" .. gname .. "_soldier" .. i .. "_wait]\n" ..
-                   "active              = remark@" .. gname .. "_soldier_wait\n" ..
+        res = res.."[logic@" .. gname .. "_soldier_wait]\n" ..
+                   "active              = walker@" .. gname .. "_soldier" .. i .. "\n" ..
                    "on_combat           = combat_zombied\n" ..
                    "combat_ignore       = combat_ignore\n" ..
 
@@ -533,15 +523,25 @@ function load_ltx_zombied(gname, type)
                    "combat_ignore_cond  = {=check_fighting(813:814)}\n" ..
                    "danger              = danger@zombied\n" ..
 
-                   "[logic@" .. gname .. "_soldier" .. i .. "_fight]\n" ..
-                   "active              = remark@" .. gname .. "_soldiers\n" ..
+                   "[logic@" .. gname .. "_soldier" .. i .. "_fg]\n" ..
+                   "active              = walker@" .. gname .. "_soldier" .. i .. "\n" ..
                    "on_death            = " .. gname .. "_death\n" ..
                    "on_combat           = combat_zombied\n" ..
 
-                   "[logic@" .. gname .. "_soldier" .. i .. "_guard]\n" ..
-                   "active              = remark@" .. gname .. "_soldiers\n" ..
-                   "on_death            = " .. gname .. "_death\n" ..
-                   "on_combat           = combat_zombied\n"
+                   "[walker@" .. gname .. "_soldier" .. i .. "]\n" ..
+                   "path_walk             = free" .. i .. "_walk\n" ..
+                   "on_actor_dist_le_nvis = 25 | {+pri_zombied_scene_start} %=pri_zombied_in_combat_inc%\n" ..
+                   "on_actor_dist_ge_nvis = 40 | {+pri_zombied_scene_start} %=pri_zombied_in_combat_dec%\n" ..
+                   "danger                = danger@zombied\n"
+--[[
+                   "[remark@" .. gname .. "_soldier" .. i .. "]\n" ..
+                   "path_walk             = free_walk" .. i .. "\n" ..
+                   "anim                  = threat\n" ..
+                   "on_actor_dist_le_nvis = 25 | {+pri_zombied_scene_start} %=pri_zombied_in_combat_inc%\n" ..
+                   "on_actor_dist_ge_nvis = 40 | {+pri_zombied_scene_start} %=pri_zombied_in_combat_dec%\n" ..
+                   "show_spot             = false\n" ..
+                   "danger                = danger@zombied\n"
+--]]
     end
 
     return res
@@ -710,29 +710,18 @@ end
 --------------------------------------------------------------------------
 -- Jobs ------------------------------------------------------------------
 function load_job_stadium(sj, gname, type, squad, groups)
-    local i = 0
+    local i, j, v = 0, 0, 0
+    local restr = {"_small_restr", "_kill_restr", "_restr"}
+    local logic = {"wait", "heli", "free"}
     for i = 1, 10 do
-        --- state 0
-	    t = { section = "logic@" .. gname .. "_gigant", -- .. i .. "_wait", 
-		    idle = 0,
-		    prior = 1, state = {0}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_small_restr"
-	    }
-	    table.insert(sj, t)
-        --- state 1
-	    t = { section = "logic@" .. gname .. "_gigant", -- .. i, 
-		    idle = 0,
-		    prior = 1, state = {1}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_kill_restr"
-	    }
-        table.insert(sj, t)
-        --- state 2
-	    t = { section = "logic@" .. gname .. "_gigant", -- .. i, 
-		    idle = 0,
-		    prior = 1, state = {2}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_restr"
-	    }
-        table.insert(sj, t)
+        for j, v in pairs(restr) do
+	        t = { section = "logic@" .. gname .. "_gigant_" .. logic[j],
+		        idle = 0,
+		        prior = 1, state = {j - 1}, squad = squad, group = groups[1],
+		        in_rest = "", out_rest = gname .. v
+	        }
+	        table.insert(sj, t)
+	    end
    end
 end
 
@@ -753,7 +742,19 @@ end
 
 -- Dynamic ltx -----------------------------------------------------------
 function load_ltx_stadium(gname, type)
-    return "[logic@pri_stadium_gigant]\nactive = nil\n"
+    local i, j, v = 0, 0, 0
+    local res = ""
+    local logic = {"wait", "heli", "free"}
+
+    for j, v in pairs(logic) do
+	    res = res.."[logic@" .. gname .. "_gigant_" .. v .. "]\n" ..
+                   "active     = mob_camp@" .. gname .. "_gigant_" .. v .. "\n" ..
+
+                   "[mob_camp@" .. gname .. "_gigant_" .. v .. "]\n" ..
+                   "path_home               = home" .. i .. "\n" ..
+                   "time_change_point       = 5000\n"
+	end
+   return res
 end
 
 --------------------------------------------------------------------------
@@ -779,7 +780,7 @@ function load_job_st_monster(sj, gname, type, squad, groups)
 		    predicate = st_predicate1
 	    }
         table.insert(sj, t)
-   end
+    end
     for i = 1, st_tushkanos_count do
         --- state 0
 	    t = { section = "logic@nil",
@@ -797,7 +798,7 @@ function load_job_st_monster(sj, gname, type, squad, groups)
 		    predicate = st_predicate2
 	    }
         table.insert(sj, t)
-   end
+    end
 end
 
 --------------------------------------------------------------------------
@@ -846,6 +847,7 @@ gulags.pri_zombied      = {load_job_zombied,    check_state_zombied,    {"zombie
 gulags.pri_monolith     = {load_job_monolith,   check_state_monolith,   {"monolith"},                           load_ltx_monolith}
 gulags.pri_stadium      = {load_job_stadium,    check_state_stadium,    {"pseudo_gigant"},                      load_ltx_stadium}
 --gulags.pri_mob_spring   = {load_job_mob_spring, check_state_mob_spring, {}}
-gulags.pri_st_monster   = {load_job_st_monster, check_state_mob_spring, {"snork", "tushkano"}}
+--gulags.pri_st_monster   = {load_job_st_monster, check_state_mob_spring, {"snork", "tushkano"}}
+
 --printf("gulag <pri>: table -")
 --print_table(gulags)

@@ -466,8 +466,17 @@ end
 --------------------------------------------------------------------------
 -- Jobs ------------------------------------------------------------------
 function load_job_mob_on_spring(sj, gname, type, squad, groups)
-    local i = 0
-    for i = 1, mob_spring_count do
+    local wn, c, i = gname .. "_centre", mob_spring_count, 0
+
+	local p = patrol(wn)
+	if p then
+	    local wd = utils.parse_waypoint_data(wn, p:flags(0), p:name(0))
+	    if wd.count ~= nil then
+		    c = wd.count
+	    end
+	end
+
+    for i = 1, c do
 	    t = { section = "logic@mob_spring",
 	        idle = 0,
             prior = 1, state = {0},
