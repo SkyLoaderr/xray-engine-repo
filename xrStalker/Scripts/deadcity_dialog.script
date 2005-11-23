@@ -1,7 +1,7 @@
 -- transfer key from doctor
 function take_key(actor, npc)
 	local key = npc:object("cit_doctors_key")
-	dialogs.relocate_money(actor, key, "in")
+	dialogs.relocate_item(actor, key, "in")
 end
 
 -- Витек ищет дядю
