@@ -56,6 +56,7 @@ CPHWorld::CPHWorld()
 	disable_count=0;
 	m_frame_time=0.f;
 	m_previous_frame_time=0.f;
+	b_frame_mark=false;
 	m_steps_num=0;
 	m_frame_sum=0.f;
 	m_delay=0; 
