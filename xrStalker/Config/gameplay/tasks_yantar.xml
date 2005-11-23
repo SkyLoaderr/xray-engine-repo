@@ -3,6 +3,8 @@
 		<objective>
 			<text>yan_kill_brain_task</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="yan_zombie_zone">volkodav_location</map_location_type>
+			<object_story_id>yan_zombie_zone_mapspot</object_story_id>
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
 		</objective>
 </game_task>
