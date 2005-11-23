@@ -9,6 +9,7 @@
         <icon height="50" width="50" x="100" y="0">
             ui\ui_icons_task
         </icon>
+        <infoportion_complete>esc_trader_return</infoportion_complete>
     </objective>
     <objective>
         <text>
