@@ -277,7 +277,7 @@ function se_smart_terrain:initialize()
 	self.gulag     = nil         -- экземпляр текущего гулага
 
 	gp.type        = ini:r_string( sect, "type" )
-	gp.capacity    = r_num ( ini, sect, "capacity",   100 )
+	gp.capacity    = r_num ( ini, sect, "capacity", 100 )
 	gp.squad       = r_num ( ini, sect, "squad" )
 
 	gp.idle_min,     gp.idle_max      = r_2nums( ini, sect, "idle",       0,     0 )
@@ -321,7 +321,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	end
 
 	if ( obj_agreement == agreed_exclusive ) or
-	   ( not self.gulag or self.gulag:get_population() < self.gparams.capacity )
+	   ( not self.gulag or self.gulag:get_population() < self.gulag.capacity )
 	then
 		local community, is_stalker = self:get_obj_community( obj )
 

@@ -77,10 +77,12 @@ end
 
 -- подготовить работы.
 -- подготовить данные о местоположении каждой работы; о объекте, который на ней занят.
+-- подсчитать ёмкость = min(кол-во работ в 0 состоянии, поле capacity в custom data)
 function gulag:prepare_jobs()
 	table.sort( self.Job, function(a,b) return a.prior > b.prior end )
 
 	local ptrl, path_name
+	local capacity = 0
 
 	for i, job in ipairs( self.Job ) do
 		job.num            = i
@@ -93,7 +95,16 @@ function gulag:prepare_jobs()
 		job.position       = ptrl:point( 0 )
 
 		job.begin          = self.JobBeginTime[i]
+
+		for i, v in ipairs( job.state ) do
+			if v == 0 then
+				capacity = capacity + 1
+				break
+			end
+		end
 	end
+
+	self.capacity = math.min( capacity, self.capacity )
 
 	local job
 
