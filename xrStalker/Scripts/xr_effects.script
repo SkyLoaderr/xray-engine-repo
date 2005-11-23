@@ -1659,10 +1659,7 @@ end
 function yantar_kruglov_talk(actor,npc)
 	xr_sound.set_sound_play(npc, "rostok_kruglov_help_6")
 end
-function yan_labx16_mapspot (actor, npc)
-    level_tasks.remove_location (906, "volkodav_location")
-	level_tasks.add_location (907, "green_location")
-end
+
 
 -----------------------------radar
 function rad_sos_spam(actor, npc)
