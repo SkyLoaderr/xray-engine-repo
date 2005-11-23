@@ -233,13 +233,13 @@ species							= bloodsucker
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 1.00,	-1,	0.10
+default				= 0.10,	-1,	0.10
 
-bip01_pelvis 		= 1.0, -1, 0.1
-bip01_spine 		= 1.0, -1, 0.1
-bip01_spine1 		= 1.0, -1, 0.1
-bip01_neck 			= 1, -1, 0.2
-bip01_head 			= 8, -1, 0.4
+bip01_pelvis 		= 0.10, -1, 0.1
+bip01_spine 		= 0.10, -1, 0.1
+bip01_spine1 		= 0.10, -1, 0.1
+bip01_neck 			= 1.0, -1, 0.2
+bip01_head 			= 1.0, -1, 0.4
 
 ;=================================================================================
 ; Bloodsucker Terrain
@@ -351,18 +351,118 @@ $spawn				= "monsters\bloodsuckers\bloodsucker_01_weak"
 visual				= monsters\krovosos\krovosos
 panic_threshold		= 0.5
 rank				= 0
+immunities_sect		= bloodsucker_immunities_weak
+attack_params		= bloodsucker_attack_params_weak
+
+[bloodsucker_immunities_weak]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.50
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.50
+
+[bloodsucker_attack_params_weak]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Left hand Strike
+stand_attack_0 =	  	0.30,		30,		    150,        3.5, 2.0, 0.5,		 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Both hands Strike
+stand_attack_1 =	  	0.30,		30,		    160,        0.0, 2.0, 4.0,		 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Right hand Strike
+stand_attack_2 =	  	0.30,		30,		    150,        -4.0, 2.5, 0.50,	 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Right hand Strike
+vampire_2		=	  	0.60,		50,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+;Right hand Strike
+stand_attack_run_0 =	bloodsucker_weak_run_attack_sect
+
+[bloodsucker_weak_run_attack_sect]
+value1			= 0.20,		50,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+value2			= 0.60,		50,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+
 
 [bloodsucker_normal]:m_bloodsucker_e
 $spawn				= "monsters\bloodsuckers\bloodsucker_02_normal"
 visual				= monsters\krovosos\krovosos
 panic_threshold		= 0.2
 rank				= 50
+immunities_sect		= bloodsucker_immunities_normal
+attack_params		= bloodsucker_attack_params_normal
+
+[bloodsucker_immunities_normal]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.30
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.30
+
+[bloodsucker_attack_params_normal]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Left hand Strike
+stand_attack_0 =	  	0.30,		50,		    150,        3.5, 2.0, 0.5,		 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Both hands Strike
+stand_attack_1 =	  	0.30,		50,		    160,        0.0, 2.0, 4.0,		 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Right hand Strike
+stand_attack_2 =	  	0.30,		50,		    150,        -4.0, 2.5, 0.50,	 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Right hand Strike
+vampire_2		=	  	0.60,		80,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+;Right hand Strike
+stand_attack_run_0 =	bloodsucker_normal_run_attack_sect
+
+[bloodsucker_normal_run_attack_sect]
+value1			= 0.20,		80,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+value2			= 0.60,		80,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+
+
 
 [bloodsucker_strong]:m_bloodsucker_e
 $spawn				= "monsters\bloodsuckers\bloodsucker_03_strong"
 visual				= monsters\krovosos\krovosos_strong
 panic_threshold		= 0.05
 rank				= 100
+immunities_sect		= bloodsucker_immunities_strong
+attack_params		= bloodsucker_attack_params_strong
+
+[bloodsucker_immunities_strong]
+burn_immunity			= 1.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 0.10
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.55
+fire_wound_immunity		= 0.10
+
+[bloodsucker_attack_params_strong]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Left hand Strike
+stand_attack_0 =	  	0.30,		80,		    150,        3.5, 2.0, 0.5,		 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Both hands Strike
+stand_attack_1 =	  	0.30,		80,		    160,        0.0, 2.0, 4.0,		 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Right hand Strike
+stand_attack_2 =	  	0.30,		80,		    150,        -4.0, 2.5, 0.50,	 -0.6, 0.6, -0.6, 0.6,				  2.2
+;Right hand Strike
+vampire_2		=	  	0.60,		120,	    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+;Right hand Strike
+stand_attack_run_0 =	bloodsucker_strong_run_attack_sect
+
+[bloodsucker_strong_run_attack_sect]
+value1			= 0.20,		100,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+value2			= 0.60,		100,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
+
 
 ;*********************************************************************************
 ; CUSTOM PROFILES
@@ -387,17 +487,7 @@ fire_wound_immunity  		= 0.02
 ;   - must be inherited from base profile
 ;   - use custom immunities section to set custom immunity params
 ;-------------------------------------------------------------------------------------------
-[bloodsucker_mil]:m_bloodsucker_e
+[bloodsucker_mil]:bloodsucker_strong
 $spawn				= "monsters\military\bloodsucker_mil"
 visual				= monsters\krovosos\krovosos
 panic_threshold		= 0.05
-
-burn_immunity 				= 0.1						
-strike_immunity 			= 0.1						
-shock_immunity 				= 0.001
-wound_immunity 				= 0.1			
-radiation_immunity 			= 0.0	
-telepatic_immunity 			= 0.1
-chemical_burn_immunity		= 0.1
-explosion_immunity 			= 0.1
-fire_wound_immunity  		= 0.1
