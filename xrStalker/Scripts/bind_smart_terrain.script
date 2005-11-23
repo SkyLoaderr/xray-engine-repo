@@ -86,5 +86,9 @@ end
 function smart_terrain_binder:on_enter( zone, obj )
 	printf( "[smart terrain %s] on_enter obj=%s, clsid=%s", zone:name(), obj:name(), obj:clsid() )
 
---	self.cl_smart_terrain:on_enter( obj )
+--	local se_obj = alife():object( obj:id() )
+
+--	if self.se_smart_terrain:enabled( se_obj ) then
+--		self.se_smart_terrain:register( se_obj )
+--	end
 end
