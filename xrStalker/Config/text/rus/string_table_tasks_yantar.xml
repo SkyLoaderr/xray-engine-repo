@@ -17,3 +17,6 @@
 <string id="yan_zombie_zone">
 	<text>Предположительное местонахождение лаборатории.</text>
 </string>
+<string id="yan_return_to_bunker">
+	<text>Довести ученого до бункера.</text>
+</string>
