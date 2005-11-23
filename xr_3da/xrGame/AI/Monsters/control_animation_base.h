@@ -59,7 +59,7 @@ protected:
 		FX_MAP_U16				fx_map_u16;
 		bool					map_converted;
 
-		AA_MAP					aa_map;
+		AA_VECTOR				m_attack_anims;
 
 
 protected:

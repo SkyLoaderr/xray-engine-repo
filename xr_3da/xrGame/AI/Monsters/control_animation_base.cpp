@@ -200,27 +200,26 @@ void CControlAnimationBase::CheckReplacedAnim()
 
 SAAParam &CControlAnimationBase::AA_GetParams(LPCSTR anim_name)
 {
-	// искать текущую анимацию в AA_MAP
+	// искать текущую анимацию в AA_VECTOR
 	MotionID motion = smart_cast<CSkeletonAnimated*>(m_object->Visual())->LL_MotionID(anim_name);
-	for (AA_MAP_IT it = aa_map.begin(); it != aa_map.end(); it++) {
-		if (it->first.motion == motion) return it->second;
+
+	for (AA_VECTOR_IT it = m_attack_anims.begin(); it != m_attack_anims.end(); it++) {
+		if (it->motion == motion) return (*it);
 	}
 	
-	VERIFY3(FALSE, "Error! No animation in AA_MAP! Animation = ", anim_name);
-	return aa_map.begin()->second;
+	VERIFY3(FALSE, "Error! No animation in AA_VECTOR! Animation = ", anim_name);
+	return (*(m_attack_anims.begin()));
 }
 
 SAAParam &CControlAnimationBase::AA_GetParams(MotionID motion, float time_perc)
 {
-	// искать текущую анимацию в AA_MAP
-	SAAParamHolder holder;
-	holder.motion		= motion;
-	holder.time_perc	= time_perc;
+	// искать текущую анимацию в AA_VECTOR
+	for (AA_VECTOR_IT it = m_attack_anims.begin(); it != m_attack_anims.end(); it++) {
+		if ((it->motion == motion) && (it->time == time_perc)) return (*it);
+	}
 
-	AA_MAP_IT	it = aa_map.find(holder);
-	VERIFY		(it != aa_map.end());
-
-	return		it->second;
+	VERIFY2(FALSE, "Error! No animation in AA_VECTOR! Animation = [UNKNOWN]");
+	return (*(m_attack_anims.begin()));
 }
 
 
@@ -524,7 +523,7 @@ void CControlAnimationBase::AA_reload(LPCSTR section)
 {
 	if (!pSettings->section_exist(section)) return;
 
-	aa_map.clear		();
+	m_attack_anims.clear();
 	
 	SAAParam			anim;
 	LPCSTR				anim_name,val;
@@ -533,10 +532,9 @@ void CControlAnimationBase::AA_reload(LPCSTR section)
 
 	for (u32 i=0; pSettings->r_line(section,i,&anim_name,&val); ++i) {
 		
-		SAAParamHolder				holder;
 
-		holder.motion				= skel_animated->LL_MotionID(anim_name);
-		if (!holder.motion.valid())	continue;
+		anim.motion				= skel_animated->LL_MotionID(anim_name);
+		if (!anim.motion.valid())	continue;
 
 		// check if it is compound (if there is one item, mean it as a section)
 		if (_GetItemCount(val) == 1) {
@@ -546,16 +544,14 @@ void CControlAnimationBase::AA_reload(LPCSTR section)
 			for (u32 k=0; pSettings->r_line(compound_section,k,&unused_line_name,&val); ++k) {
 				parse_anim_params	(val, anim);
 				
-				holder.time_perc	= anim.time;
-				aa_map.insert(mk_pair(holder, anim));
-				m_man->animation().add_anim_event(holder.motion, anim.time, CControlAnimation::eAnimationHit);
+				m_attack_anims.push_back(anim);
+				m_man->animation().add_anim_event(anim.motion, anim.time, CControlAnimation::eAnimationHit);
 			}
 		} else {
 			parse_anim_params(val, anim);
 			
-			holder.time_perc	= anim.time;
-			aa_map.insert(mk_pair(holder, anim));
-			m_man->animation().add_anim_event(holder.motion, anim.time, CControlAnimation::eAnimationHit);
+			m_attack_anims.push_back(anim);
+			m_man->animation().add_anim_event(anim.motion, anim.time, CControlAnimation::eAnimationHit);
 		}
 	}
 }

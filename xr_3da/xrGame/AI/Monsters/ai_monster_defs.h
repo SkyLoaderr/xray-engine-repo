@@ -312,6 +312,7 @@ typedef struct {
 
 
 struct SAAParam {
+	MotionID	motion;
 	float		time;
 	float		hit_power;		// damage
 	float		impulse;
@@ -328,19 +329,7 @@ struct SAAParam {
 	float		dist;
 };
 
-struct SAAParamHolder {
-	MotionID	motion;
-	float		time_perc;
-	bool operator == (const SAAParamHolder &holder) {
-		return ((motion == holder.motion) && (fsimilar(time_perc, holder.time_perc)));
-	}
-	bool operator < (const SAAParamHolder &holder) const {
-		return (time_perc < holder.time_perc);
-	}
-
-};
-
-DEFINE_MAP(SAAParamHolder, SAAParam, AA_MAP, AA_MAP_IT);
+DEFINE_VECTOR(SAAParam, AA_VECTOR, AA_VECTOR_IT);
 
 struct SCurrentAnimationInfo {
 	shared_str		name;

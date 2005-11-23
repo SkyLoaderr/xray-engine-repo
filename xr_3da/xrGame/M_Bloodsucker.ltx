@@ -7,16 +7,8 @@ SpaceRestrictionSection		 = space_restrictor,zone_mosquito_bald,zone_witches_gal
 $spawn               		 = "monsters\bloodsucker"		; option for Level Editor
 $npc			     		 = on							; option for Level Editor
 ;$prefetch 					 = 16
-Scheduled		    		 = on							; option for ALife Simulator
-Human		     			 = off							; option for ALife Simulator
-Health			   			 = 400							; option for ALife Simulator
-MinSpeed		    		 = 2.0	;1.0					; option for ALife Simulator
-MaxSpeed		    		 = 4.5	;1.5					; option for ALife Simulator
-going_speed          		 = 2.0	;1.0                   	; option for ALife Simulator
-search_speed         		 = .5                      		; option for ALife Simulator
 visual						 = monsters\krovosos\krovosos
 MaxHealthValue		 		 = 200							; range [0..200]
-DynamicObjectsCount	 		 = 32
 
 
 ef_creature_type			 = 13							; option for evaluation functions
@@ -32,6 +24,19 @@ script_binding				= bind_monster.bind
 bone_head					 = bip01_head					; bone name
 bone_fire					 = bip01_head
 weapon_usage				 = 0							; boolean
+
+;------------------------------------------------------------------------
+; Offline Alife
+;------------------------------------------------------------------------
+Scheduled		    		 = on							; option for ALife Simulator
+Human		     			 = off							; option for ALife Simulator
+Health			   			 = 400							; option for ALife Simulator
+MinSpeed		    		 = 2.0	;1.0					; option for ALife Simulator
+MaxSpeed		    		 = 4.5	;1.5					; option for ALife Simulator
+going_speed          		 = 2.0	;1.0                   	; option for ALife Simulator
+search_speed         		 = .5                      		; option for ALife Simulator
+
+smart_terrain_choose_interval	= 00:15:00
 
 ;---------------------------------------------------------------------
 ; Physics
@@ -181,6 +186,8 @@ max_hear_dist				= 80
 eye_fov							= 120	
 eye_range						= 80	
 transparency_threshold			= 0.25
+
+DynamicObjectsCount	 			= 32
 
 ;-------------------------------------------------------------------------
 ; Morale
