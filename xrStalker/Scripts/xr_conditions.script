@@ -298,6 +298,12 @@ function odd_time_interval(actor, npc, p)
 	return odd( game.time() / p[1] )
 end
 
+-- текущий враг на расстоянии больше или равном заданному расстоянию
+-- для combat_ignore
+function fighting_dist_ge(actor, npc, p)
+	return db.storage[npc:id()].enemy:position():distance_to( npc:position() ) > p[1]
+end
+
 -------------------------------------------------------------------------------------------------------
 -- Функции поддержки kamp
 function _kamp_talk(actor, npc)
