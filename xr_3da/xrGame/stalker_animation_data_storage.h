@@ -13,7 +13,7 @@ class CSkeletonAnimated;
 
 class CStalkerAnimationDataStorage {
 public:
-	typedef std::pair<CSkeletonAnimated*,CStalkerAnimationData*>			OBJECT;
+	typedef std::pair<CSkeletonAnimated*,CStalkerAnimationData*>		OBJECT;
 	typedef xr_vector<OBJECT>											OBJECTS;
 
 private:

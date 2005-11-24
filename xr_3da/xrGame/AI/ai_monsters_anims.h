@@ -9,6 +9,7 @@
 #pragma once
 
 #include "../../SkeletonAnimated.h"
+#include "../ai_debug.h"
 
 DEFINE_VECTOR	(MotionID,ANIM_VECTOR, ANIM_IT);
 
@@ -25,13 +26,17 @@ public:
 
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
-		A.clear		();
-		string256	S;
+		A.clear			();
+		string256		S;
 		for (int j=0; caBaseNames[j]; ++j);
-		A.resize	(j);
+		A.resize		(j);
 		for (int i=0; i<j; ++i) {
-			strconcat(S,caBaseName,caBaseNames[i]);
-			A[i] = tpKinematics->ID_Cycle_Safe(S);
+			strconcat	(S,caBaseName,caBaseNames[i]);
+			A[i]		= tpKinematics->ID_Cycle_Safe(S);
+#ifdef DEBUG
+			if (A[i] && psAI_Flags.test(aiAnimation))
+				Msg		("* Loaded animation %s",S);
+#endif
 		}
 	}
 };

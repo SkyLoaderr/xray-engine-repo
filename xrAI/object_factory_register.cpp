@@ -205,7 +205,6 @@ void CObjectFactory::register_classes	()
 	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat>	>			(CLSID_AI_RAT_GROUP				,"rat_group");
 	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBase> >			(CLSID_AI_FLESH_GROUP			,"flesh_group");
 //	add<CSE_SpawnGroup>											(CLSID_AI_SPAWN_GROUP			,"spawn_group");
-//	add<CSE_Event>												(CLSID_EVENT					,"event");
 	add<CSE_ALifeGraphPoint>									(CLSID_AI_GRAPH					,"graph_point");
 	add<CSE_ALifeOnlineOfflineGroup>							(CLSID_ONLINE_OFFLINE_GROUP		,"online_offline_group");
 	

@@ -20,6 +20,8 @@
 #include "../../agent_manager.h"
 #include "../../agent_member_manager.h"
 #include "../../agent_explosive_manager.h"
+#include "../../agent_location_manager.h"
+#include "../../danger_object_location.h"
 #include "../../member_order.h"
 #include "../../level.h"
 #include "../../sound_player.h"
@@ -30,10 +32,16 @@
 const u32 TOLLS_INTERVAL	= 2000;
 const u32 GRENADE_INTERVAL	= 0*1000;
 const float FRIENDLY_GRENADE_ALARM_DIST	= 5.f;
+const u32 DANGER_INFINITE_INTERVAL		= 60000000;
+const float DANGER_EXPLOSIVE_DISTANCE	= 10.f;
 
 bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *object) const
 {
 	const CExplosive	*explosive = smart_cast<const CExplosive*>(object);
+
+	if (explosive && smart_cast<const CInventoryItem*>(object))
+		agent_manager().location().add	(xr_new<CDangerObjectLocation>(object,Device.dwTimeGlobal,DANGER_INFINITE_INTERVAL,DANGER_EXPLOSIVE_DISTANCE));
+
 	if (explosive && (explosive->CurrentParentID() != 0xffff)) {
 		agent_manager().explosive().register_explosive(explosive,object);
 		CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(Level().Objects.net_Find(explosive->CurrentParentID()));

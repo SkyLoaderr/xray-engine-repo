@@ -82,7 +82,7 @@ void CUIComboBox::Init(float x, float y, float width, float height){
 void CUIComboBox::AddItem(LPCSTR str, bool bSelected){
 	R_ASSERT2(m_bInited, "Can't add item to ComboBox before Initialization");
         	
-	CUIListItem *item = new CUIListItem;
+	CUIListItem *item = xr_new<CUIListItem>();
 	item->SetText(str);
 	item->SetAutoDelete(true);
 	m_list.AddItem(item);
@@ -93,7 +93,7 @@ void CUIComboBox::AddItem(LPCSTR str, bool bSelected){
 void CUIComboBox::AddItem(LPCSTR str){
     R_ASSERT2(m_bInited, "Can't add item to ComboBox before Initialization");
 
-	CUIListItem *item = new CUIListItem;
+	CUIListItem *item = xr_new<CUIListItem>();
 	item->SetAutoDelete(true);
 	item->SetText(str);
 	m_list.AddItem(item);	
