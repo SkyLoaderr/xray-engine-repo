@@ -2,20 +2,20 @@ local t = {}
 
 function load_job(sj, gname, type, squad, groups)
 
-if type == "ds_anton_test_2" then
-		t = { section = "logic@ds_anton_test_2_camper1",
+if type == "ds_kem4" then
+		t = { section = "logic@ds_kem4_camper1",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
        table.insert(sj, t)	
-       t = { section = "logic@ds_anton_test_2_camper2",
+       t = { section = "logic@ds_kem4_camper2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
-	   t = { section = "logic@ds_anton_test_2_camper3",
+	   t = { section = "logic@ds_kem4_camper3",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
@@ -23,26 +23,26 @@ if type == "ds_anton_test_2" then
 		table.insert(sj, t)	
   end
 
-if type == "ds_anton_test" then
-		t = { section = "logic@ds_anton_test_camper1",
+if type == "ds_kem3" then
+		t = { section = "logic@ds_kem3_camper1",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
        table.insert(sj, t)	
-       t = { section = "logic@ds_anton_test_camper2",
+       t = { section = "logic@ds_kem3_camper2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
-	   t = { section = "logic@ds_anton_test_camper3",
+	   t = { section = "logic@ds_kem3_camper3",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
-		t = { section = "logic@ds_anton_test_camper4",
+		t = { section = "logic@ds_kem3_camper4",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
