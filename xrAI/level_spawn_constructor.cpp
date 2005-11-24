@@ -429,8 +429,8 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 			continue;
 
 //		if (!level_graph().valid_vertex_position(zone->o_Position)) {
-//			zone->m_wArtefactSpawnCount	= 0;
-//			zone->m_dwStartIndex		= m_level_points.size();
+//			zone->m_artefact_spawn_count	= 0;
+//			zone->m_artefact_position_offset		= m_level_points.size();
 //			continue;
 //		}
 
@@ -451,7 +451,7 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 				u32,
 				u32
 			>(
-				zone->m_fRadius,
+				zone->m_offline_interactive_radius,
 				u32(-1),
 				u32(-1)
 			)
@@ -464,16 +464,16 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 				remove_too_far_predicate(
 					&level_graph(),
 					zone->o_Position,
-					zone->m_fRadius
+					zone->m_offline_interactive_radius
 				)
 			),
 			l_tpaStack.end()
 		);
 
-		if (zone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
-			zone->m_wArtefactSpawnCount	= (u16)l_tpaStack.size();
+		if (zone->m_artefact_spawn_count >= l_tpaStack.size()) {
+			zone->m_artefact_spawn_count	= (u16)l_tpaStack.size();
 #ifndef IGNORE_ZERO_SPAWN_POSITIONS
-			if (!zone->m_wArtefactSpawnCount) {
+			if (!zone->m_artefact_spawn_count) {
 				Msg						("! CANNOT GENERATE ARTEFACT SPAWN POSITIONS FOR ZONE [%s] ON LEVEL [%s]",zone->name_replace(),*level().name());
 				Msg						("! ZONE [%s] ON LEVEL [%s] IS REMOVED BY AI COMPILER",zone->name_replace(),*level().name());
 				R_ASSERT3				(zone->m_story_id == INVALID_STORY_ID,"Cannot remove story object",zone->name_replace());
@@ -487,12 +487,12 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 		else
 			random_shuffle				(l_tpaStack.begin(),l_tpaStack.end());
 
-		zone->m_dwStartIndex			= m_level_points.size();
-		m_level_points.resize			(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
+		zone->m_artefact_position_offset= m_level_points.size();
+		m_level_points.resize			(zone->m_artefact_position_offset + zone->m_artefact_spawn_count);
 
 //		Msg								("%s  %f [%f][%f][%f] : artefact spawn positions",zone->name_replace(),zone->m_fRadius,VPUSH(zone->o_Position));
 
-		LEVEL_POINT_STORAGE::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
+		LEVEL_POINT_STORAGE::iterator	I = m_level_points.begin() + zone->m_artefact_position_offset;
 		LEVEL_POINT_STORAGE::iterator	E = m_level_points.end();
 		xr_vector<u32>::iterator		i = l_tpaStack.begin();
 		for ( ; I != E; ++I, ++i) {
@@ -564,10 +564,10 @@ void CLevelSpawnConstructor::update_artefact_spawn_positions	()
 //		alife_object->m_spawn_control	= "";
 		CSE_ALifeAnomalousZone			*zone = smart_cast<CSE_ALifeAnomalousZone*>(abstract);
 		if (zone) {
-			zone->m_dwStartIndex		= level_point_count;
-			level_point_count			+= zone->m_wArtefactSpawnCount;
+			zone->m_artefact_position_offset		= level_point_count;
+			level_point_count			+= zone->m_artefact_spawn_count;
 //			Msg							("%s  %f [%f][%f][%f] : artefact spawn positions",zone->name_replace(),zone->m_fRadius,VPUSH(zone->o_Position));
-//			for (u32 i=zone->m_dwStartIndex; i<level_point_count; ++i)
+//			for (u32 i=zone->m_artefact_position_offset; i<level_point_count; ++i)
 //				Msg						("    [%f][%f][%f] : %f",VPUSH(m_level_points[i].tPoint),zone->o_Position.distance_to(m_level_points[i].tPoint));
 		}
 	}
