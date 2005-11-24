@@ -91,7 +91,7 @@ function gulag:prepare_jobs()
 		ptrl               = patrol( path_name )
 
 		job.path_name      = path_name
-		printf( "[smart_terrain %s] gulag: job=%s path_name=%s", self.name, job.section, path_name )
+		printf( "[smart_terrain %s] gulag.prepare_jobs: job=%s path_name=%s", self.name, job.section, path_name )
 		job.game_vertex_id = ptrl:game_vertex_id ( 0 )
 		job.position       = ptrl:point( 0 )
 
