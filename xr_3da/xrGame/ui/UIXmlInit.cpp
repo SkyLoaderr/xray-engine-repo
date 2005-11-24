@@ -31,6 +31,7 @@
 #include "uiartefactpanel.h"
 #include "UIScrollView.h"
 #include "UIStatsPlayerList.h"
+#include "../game_base_space.h"
 
 #include "UITextureMaster.h"
 
@@ -1224,6 +1225,10 @@ bool CUIXmlInit::InitStatsPlayerList(CUIXml& xml_doc, const char* path, int inde
 		//PI_FIELD_INFO fi;
 		LPCSTR name = xml_doc.ReadAttrib("field",i,"name");
 		float width = xml_doc.ReadAttribFlt("field",i,"width");
+
+		if (0 == xr_strcmp(name, "artefacts") && GameID() != GAME_ARTEFACTHUNT)
+			continue;
+
 		pWnd->AddField(name,width);
 	}
 	

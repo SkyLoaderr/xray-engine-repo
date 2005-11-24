@@ -14,14 +14,25 @@
 #include "ui/UIPdaWnd.h"
 #include "ui/UIInventoryWnd.h"
 #include "ui/UIMapDesc.h"
+#include "ui/UIMessageBoxEx.h"
 #include "dinput.h"
 #include "gamepersistent.h"
 
 #include "game_cl_deathmatch_snd_messages.h"
 #include "game_base_menu_events.h"
 
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 
 #define	TEAM0_MENU		"deathmatch_team0"
+
+void OnBuySpawn(CUIWindow* pWnd, void* p){
+#pragma todo("SATAN -> CRAZY_MAZ: put you code here")
+	// write call back code here
+
+}
+
+
 
 game_cl_Deathmatch::game_cl_Deathmatch()
 {
@@ -43,6 +54,8 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 	m_bSkinSelected	= FALSE;	
 
 	m_game_ui		= NULL;
+
+	pMessageBox		= NULL;
 	
 	m_iCurrentPlayersMoney = 0;
 //	pChatWnd		= NULL;
@@ -74,6 +87,7 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 	xr_delete(pBuyMenuTeam0);
 	xr_delete(pSkinMenuTeam0);
 	xr_delete(pInventoryMenu);
+	xr_delete(pMessageBox);
 	//---------------------------------------	
 	xr_delete(pPdaMenu);
 	//---------------------------------------
@@ -101,12 +115,18 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	pSkinMenuTeam0	= InitSkinMenu(0);
 	pCurSkinMenu	= pSkinMenuTeam0;
 
+	pMessageBox		= xr_new<CUIMessageBoxEx>();
+	pMessageBox->Init("message_box_buy_spawn");
+	pMessageBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
+
 	pInventoryMenu	= xr_new<CUIInventoryWnd>();
 	//-----------------------------------------------------------	
 	pPdaMenu = xr_new<CUIPdaWnd>();
 	//-----------------------------------------------------------
 	pMapDesc = xr_new<CUIMapDesc>();
 	//-----------------------------------------------------------
+
+		
 	return m_game_ui;
 }
 
@@ -594,6 +614,8 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 
 	if (kINVENTORY == key )
 	{
+//		StartStopMenu(pMessageBox, true);
+
 		if (pInventoryMenu->IsShown())
 			StartStopMenu(pInventoryMenu,true);
 		else

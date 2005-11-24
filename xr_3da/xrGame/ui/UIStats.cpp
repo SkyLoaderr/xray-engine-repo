@@ -31,7 +31,7 @@ void CUIStats::Init(CUIXml& xml_doc, LPCSTR path,  int team){
 	switch (GameID()){
 		case GAME_ARTEFACTHUNT:
 		case GAME_TEAMDEATHMATCH:
-			pWnd = xr_new<CUIWindow>();
+			pWnd = xr_new<CUIWindow>();	AttachChild(pWnd);
 			CUIXmlInit::InitWindow(xml_doc, strconcat(_path, path, ":team_header"), 0, pWnd);
 			pWnd->SetAutoDelete(true);
 			pSt = xr_new<CUIStatic>();
@@ -48,6 +48,8 @@ void CUIStats::Init(CUIXml& xml_doc, LPCSTR path,  int team){
 			CUIXmlInit::InitStatic(xml_doc, strconcat(_path, path, ":team_header:header"),0,pSt);
 			pSt->SetAutoDelete(true);
 			pWnd->AttachChild(pSt);
+
+			
 	//	case GAME_DEATHMATCH:
 	//	default:
 	}

@@ -142,7 +142,15 @@ CUIStatic* CUIStatsPlayerList::GetHeader(CGameFont* pF, const u32 col, LPCSTR te
 			//#pragma todo("Satan->Satan: remove stub for height")
 			st->Init(indent,10,m_field_info[i].width, 15);
 			indent += m_field_info[i].width;
-			st->SetText(*strtbl.translate(m_field_info[i].name));
+
+			if (0 == xr_strcmp(m_field_info[i].name, "rank"))
+				st->SetText("");
+			else if (0 == xr_strcmp(m_field_info[i].name, "death_atf"))
+				st->SetText("");
+			else
+                st->SetText(*strtbl.translate(m_field_info[i].name));
+
+
 			st->SetAutoDelete(true);
 			if (pF)
 				st->SetFont(pF);

@@ -50,8 +50,8 @@
 			<field name="deaths"	width="50" />
 			<field name="ping"		width="35" />															
 			<field name="artefacts"	width="65" />
-			<field name="rank"		width="30" />
-			<field name="artefact"	width="15" />
+			<field name="rank"		width="15" />
+			<field name="death_atf"	width="15" />
 		</player_list>
 	
 		<spectator_list_header x="0" y="0" width="411" height="25"> <!-- dimensions not using yet-->

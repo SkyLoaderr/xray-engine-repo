@@ -9,6 +9,7 @@
 #include "team_base_zone.h"
 #include "level.h"
 #include "game_cl_ArtefactHunt.h"
+#include "ui/UIFrags2.h"
 
 #define MSGS_OFFS 510
 
@@ -35,31 +36,38 @@ void CUIGameAHunt::SetClGame (game_cl_GameState* g)
 
 void CUIGameAHunt::Init	()
 {
+	CUIXml xml_doc;
+	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, "stats.xml");
+	R_ASSERT2(xml_result, "xml file not found");
+
+	CUIFrags2* pFragList		= xr_new<CUIFrags2>();			pFragList->SetAutoDelete(true);
 	//-----------------------------------------------------------
-	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();pFragListT1->SetAutoDelete(true);
-	CUIAHuntFragList* pFragListT2	= xr_new<CUIAHuntFragList>	();pFragListT2->SetAutoDelete(true);
+//	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();pFragListT1->SetAutoDelete(true);
+//	CUIAHuntFragList* pFragListT2	= xr_new<CUIAHuntFragList>	();pFragListT2->SetAutoDelete(true);
 	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>(); pStatisticWnd->SetAutoDelete(true);
 
-	pFragListT1->Init(1);
-	pFragListT2->Init(2);
+	pFragList->Init(xml_doc,"frag_wnd_tdm");
+//	pFragListT1->Init(1);
+//	pFragListT2->Init(2);
 
 	float ScreenW = UI_BASE_WIDTH;
 	float ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
-	Frect FrameRect = pFragListT1->GetFrameRect ();
-	float FrameW	= FrameRect.width();
-	float FrameH	= FrameRect.height();
+	Frect FrameRect = pFragList->GetWndRect ();
+	float FrameW	= FrameRect.right - FrameRect.left;
+	float FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pFragListT1->SetWndRect(ScreenW/4.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
-	//-----------------------------------------------------------
-	FrameRect = pFragListT2->GetFrameRect ();
-	FrameW	= FrameRect.right - FrameRect.left;
-	FrameH	= FrameRect.bottom - FrameRect.top;
+	pFragList->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
 
-	pFragListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
+//	FrameRect = pFragListT2->GetFrameRect ();
+//	FrameW	= FrameRect.right - FrameRect.left;
+//	FrameH	= FrameRect.bottom - FrameRect.top;
+
+//	pFragListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
-	m_pFragLists->AttachChild(pFragListT1);
-	m_pFragLists->AttachChild(pFragListT2);
+	m_pFragLists->AttachChild(pFragList);
+//	m_pFragLists->AttachChild(pFragListT1);
+//	m_pFragLists->AttachChild(pFragListT2);
 	//-----------------------------------------------------------
 
 	CUIAHuntPlayerList* pPlayerListT1	= xr_new<CUIAHuntPlayerList>	();pPlayerListT1->SetAutoDelete(true);

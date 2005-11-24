@@ -11,25 +11,31 @@ CUIStatsPlayerInfo::CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info, CGameFont
 {
 	m_field_info = info;
 
-	xr_vector<PI_FIELD_INFO>&	field_info = *info;
-	for (u32 i = 0; i<field_info.size(); i++)
-	{
-		bool pic;
-		if (0 == xr_strcmp(field_info[i].name, "rank"))
-			pic = true;
-		else if (0 == xr_strcmp(field_info[i].name, "artefact"))
-			pic = true;
-		else pic = false;
+	m_pF = pF;
+	m_text_col = text_col;
 
-		AddField(field_info[i].width, pF, text_col, pic);
-	}
-
-	R_ASSERT(!field_info.empty());
+	R_ASSERT(!info->empty());
 }
 
 CUIStatsPlayerInfo::~CUIStatsPlayerInfo(){
 	for (u32 i = 0; i<m_fields.size(); i++)
 		xr_delete(m_fields[i]);
+}
+
+void CUIStatsPlayerInfo::Init(float x, float y, float width, float height){
+	CUIWindow::Init(x,y,width,height);
+	xr_vector<PI_FIELD_INFO>&	field_info = *m_field_info;
+	for (u32 i = 0; i<field_info.size(); i++)
+	{
+		bool pic;
+		if (0 == xr_strcmp(field_info[i].name, "rank"))
+			pic = true;
+		else if (0 == xr_strcmp(field_info[i].name, "death_atf"))
+            pic = true;
+		else pic = false;
+
+		AddField(field_info[i].width, m_pF, m_text_col, pic);
+	}
 }
 
 void CUIStatsPlayerInfo::SetInfo(game_PlayerState* pInfo){
@@ -80,18 +86,21 @@ const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
 		sprintf(ans,"%d",(int)m_pPlayerInfo->af_count);
 	else if (0 == xr_strcmp(id,"rank"))
 		sprintf(ans,"rank_%d",(int)m_pPlayerInfo->rank);
-	else if (0 == xr_strcmp(id, "artefact"))
+	else if (0 == xr_strcmp(id, "death_atf"))
 	{		
 		if (m_pPlayerInfo->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
 			strcpy(ans,"death");
-		else
+		else if (GameID() == GAME_ARTEFACTHUNT)
 		{
 			game_cl_ArtefactHunt* pGameAHunt = smart_cast<game_cl_ArtefactHunt*>(&(Game()));
+			R_ASSERT(pGameAHunt);
 			if (m_pPlayerInfo->GameID == pGameAHunt->artefactBearerID)
 				strcpy(ans,"artefact");
 			else
-				strcpy(ans,"");			
+				strcpy(ans,"");
 		}
+		else
+			strcpy(ans,"");
 		
 	}
 	else

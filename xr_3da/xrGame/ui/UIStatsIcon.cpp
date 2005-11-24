@@ -6,5 +6,6 @@ CUIStatsIcon::CUIStatsIcon(){
 }
 
 void CUIStatsIcon::SetText(LPCSTR str){
+	if (str[0] != 0)
 		InitTexture(str);
 }
