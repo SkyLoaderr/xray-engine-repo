@@ -626,7 +626,7 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 		return;
 	}
 
-	if(mag<EPS||dXZMag(to_path_point))
+	if(mag<EPS||fis_zero(dXZMag(to_path_point),EPS))
 	{
 		dir.set(corrected_path_dir);
 		return;//mean dir
