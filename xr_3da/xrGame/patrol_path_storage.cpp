@@ -82,6 +82,11 @@ void CPatrolPathStorage::load				(IReader &stream)
 
 		const_iterator			I = m_registry.find(pair.first);
 		VERIFY3					(I == m_registry.end(),"Duplicated patrol path found ",*pair.first);
+		
+#ifdef DEBUG
+		pair.second->name		(pair.first);
+#endif
+
 		m_registry.insert		(pair);
 	}
 

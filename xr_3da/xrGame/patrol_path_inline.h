@@ -41,3 +41,12 @@ IC	const CPatrolPath::CVertex *CPatrolPath::point	(const Fvector &position) cons
 {
 	return						(point(position,CAlwaysTrueEvaluator()));
 }
+
+#ifdef DEBUG
+IC	void CPatrolPath::name							(const shared_str &name)
+{
+	VERIFY						(!m_name.size());
+	VERIFY						(name.size());
+	m_name						= name;
+}
+#endif

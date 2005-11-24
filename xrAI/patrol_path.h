@@ -41,6 +41,7 @@ public:
 #ifdef DEBUG
 public:
 	virtual void			load			(IReader &stream);
+	IC		void			name			(const shared_str &name);
 #endif
 };
 
