@@ -461,8 +461,6 @@ end
 
 -- st - storage активной схемы
 function issue_event(npc, st, event_fn, ...)
-	printf("ISSUE EVENT: [%s] [%s]", npc:name(), event_fn)
-
 	if not st.actions then
 		return
 	end
