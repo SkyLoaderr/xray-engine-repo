@@ -215,7 +215,7 @@ function disable_generic_schemes(npc, stype)
 		mob_combat.disable_scheme(npc, "mob_combat")
 		mob_trade.disable_scheme(npc, "mob_trade")
 	elseif stype == modules.stype_item then
-		ph_on_hit.disable_scheme(npc, "hit")
+		ph_on_hit.disable_scheme(npc, "ph_on_hit")
 	elseif stype == modules.stype_heli then
 		xr_hit.disable_scheme(npc, "hit")
 	end
@@ -288,8 +288,9 @@ function enable_generic_schemes(ini, npc, stype, section)
 		end
 	elseif stype == modules.stype_item then
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
+		printf("HIT SECTION [%s]", tostring(hit_section))
 		if hit_section then
-			ph_on_hit.set_scheme(npc, ini, "hit", hit_section)
+			ph_on_hit.set_scheme(npc, ini, "ph_on_hit", hit_section)
 		end
 	elseif stype == modules.stype_heli then
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
@@ -460,6 +461,8 @@ end
 
 -- st - storage активной схемы
 function issue_event(npc, st, event_fn, ...)
+	printf("ISSUE EVENT: [%s] [%s]", npc:name(), event_fn)
+
 	if not st.actions then
 		return
 	end
@@ -595,7 +598,9 @@ function switch_to_section(npc, st, section)
 	end
 
 	-- call scheme::finalize()
-	issue_event(npc, st, "deactivate")
+	if active_section then
+		issue_event(npc, db.storage[npc:id()][db.storage[npc:id()].active_scheme], "deactivate")
+	end
 
 	db.storage[npc:id()].active_section = nil
 	db.storage[npc:id()].active_scheme = nil
