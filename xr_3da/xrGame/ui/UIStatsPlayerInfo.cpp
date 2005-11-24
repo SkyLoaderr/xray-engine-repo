@@ -14,16 +14,26 @@ CUIStatsPlayerInfo::CUIStatsPlayerInfo(xr_vector<PI_FIELD_INFO>* info, CGameFont
 	m_pF = pF;
 	m_text_col = text_col;
 
+	m_pBackground = xr_new<CUIStatic>();	AttachChild(m_pBackground);
+
 	R_ASSERT(!info->empty());
 }
 
 CUIStatsPlayerInfo::~CUIStatsPlayerInfo(){
 	for (u32 i = 0; i<m_fields.size(); i++)
 		xr_delete(m_fields[i]);
+
+	xr_delete(m_pBackground);
 }
 
 void CUIStatsPlayerInfo::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);
+	
+	m_pBackground->SetStretchTexture(true);
+	m_pBackground->Init(0,0, width, height);
+	m_pBackground->InitTexture("ui\\ui_mp_frags_selection");
+	
+
 	xr_vector<PI_FIELD_INFO>&	field_info = *m_field_info;
 	for (u32 i = 0; i<field_info.size(); i++)
 	{
@@ -40,6 +50,10 @@ void CUIStatsPlayerInfo::Init(float x, float y, float width, float height){
 
 void CUIStatsPlayerInfo::SetInfo(game_PlayerState* pInfo){
 	m_pPlayerInfo = pInfo;
+	if (Level().CurrentViewEntity() && Level().CurrentViewEntity()->ID() == pInfo->GameID)
+		m_pBackground->SetVisible(true);
+	else
+        m_pBackground->SetVisible(false);
 }
 
 void CUIStatsPlayerInfo::Update(){
@@ -58,7 +72,7 @@ void CUIStatsPlayerInfo::AddField(float len, CGameFont* pF, u32 text_col, bool i
 	CUIStatic* wnd = icon ? xr_new<CUIStatsIcon>() : xr_new<CUIStatic>();
 
 	if (m_fields.empty())
-		wnd->Init(10,0,len,this->GetHeight());		
+		wnd->Init(5,0,len,this->GetHeight());		
 	else
 	{
 		wnd->Init(m_fields.back()->GetWndRect().right,0,len,this->GetHeight());

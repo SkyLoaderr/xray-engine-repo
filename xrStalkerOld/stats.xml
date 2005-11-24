@@ -17,7 +17,7 @@
 		<back_t x="0" y="0" width="440" height="95">
 			<texture>ui_statOne_t</texture>
 		</back_t>
-		<back_c x="8	" y="95" width="440" height="163" count="3">
+		<back_c x="8" y="95" width="440" height="163" count="3">
 			<texture>ui_statOne_back</texture>
 		</back_c>		
 		<back_b x="1" y="584" width="440" height="58">
@@ -25,7 +25,7 @@
 		</back_b>
 	</frag_wnd_dm>
 				
-	<stats_wnd x="20" x2="427" y="65" width="400" height="480">
+	<stats_wnd x="25" x2="430" y="65" width="410" height="480">
 		<back_ground x="0" y="0" width="400" height="480">
 			<!--texture>ui_frame</texture-->
 		</back_ground>	
@@ -38,12 +38,12 @@
 			</header>
 		</team_header>
 		
-		<player_list_header x="0" y="0" width="411" height="35"> <!-- dimensions not using yet-->
+		<player_list_header x="0" y="0" width="410" height="35"> <!-- dimensions not using yet-->
 			<texture></texture>
 			<text font="letterica16" a="255" r="188" g="188" b="180" />
 		</player_list_header>
 		
-		<player_list x="0" y="0" width="400" height="0" spectator="0"> <!-- dinamic height -->
+		<player_list x="0" y="0" width="410" height="0" spectator="0"> <!-- dinamic height -->
 			<text_format font="letterica16" a="255" r="215" g="187" b="139" />
 			<field name="name"		width="120" />
 			<field name="frags"		width="40" />

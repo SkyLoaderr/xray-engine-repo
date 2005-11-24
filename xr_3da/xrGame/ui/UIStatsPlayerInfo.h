@@ -29,4 +29,5 @@ protected:
 	xr_vector<PI_FIELD_INFO>*	m_field_info;
 	CGameFont*	m_pF;
 	u32			m_text_col;
+	CUIStatic*	m_pBackground;
 };
