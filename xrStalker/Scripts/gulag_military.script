@@ -1189,7 +1189,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg" and info.profile_name == "mil_Svoboda_master_Ugrumiy"
+		                     return info.commutiny == "dolg" and info.profile_name == "mil_Dolg_Zoneguard"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1200,7 +1200,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.story_id == 740 and info.commutiny == "dolg"
+		                     return info.commutiny == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1211,7 +1211,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.story_id == 718 and info.commutiny == "dolg"
+		                     return info.commutiny == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1222,7 +1222,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.story_id == 738 and info.commutiny == "dolg"
+		                     return info.commutiny == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1233,7 +1233,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.story_id == 737 and info.commutiny == "dolg"
+		                     return info.commutiny == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1244,7 +1244,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.story_id == 735 and info.commutiny == "dolg"
+		                     return info.commutiny == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1255,7 +1255,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.story_id == 736 and info.commutiny == "dolg"
+		                     return info.commutiny == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
