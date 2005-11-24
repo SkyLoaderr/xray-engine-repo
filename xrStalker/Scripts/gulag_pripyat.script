@@ -507,7 +507,7 @@ function load_ltx_zombied(gname, type)
                "ignore_danger_hit     = 1\n"
 
     for i = 1, 7 do
-        res = res.."[logic@" .. gname .. "_soldier_wait]\n" ..
+        res = res.."[logic@" .. gname .. "_soldier" .. i .. "_wait]\n" ..
                    "active              = walker@" .. gname .. "_soldier" .. i .. "\n" ..
                    "on_combat           = combat_zombied\n" ..
                    "combat_ignore       = combat_ignore\n" ..
