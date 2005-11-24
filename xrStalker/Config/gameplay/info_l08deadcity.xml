@@ -6,7 +6,10 @@
 
     <info_portion id="cit_jail_start_waking"></info_portion>
     <info_portion id="cit_jail_actor_wake"></info_portion>
-    <info_portion id="cit_jail_scene_start"></info_portion>
+    <info_portion id="cit_jail_scene_start">
+		<task>cit_doctor_task</task>
+		<article>cit_doctor_task</article>
+    </info_portion>
     <info_portion id="cit_jail_guard2_talk_to_guard1"></info_portion>
     <info_portion id="cit_jail_guard2_talk_to_doctor"></info_portion>
     <info_portion id="cit_jail_guard2_near_grates"></info_portion>

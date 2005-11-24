@@ -1,7 +1,13 @@
 -- transfer key from doctor
 function take_key(actor, npc)
 	local key = npc:object("cit_doctors_key")
-	dialogs.relocate_item(actor, key, "in")
+	if key then
+	    printf("<<<<<<Key transfer start>>>>>>.")
+	    dialogs.relocate_item(npc, key, "in")
+	    printf("<<<<<<Key transfer end>>>>>>.")
+	else
+	    printf("ERROR: Dead city doctor dont has key.")
+	end
 end
 
 -- Витек ищет дядю
