@@ -442,7 +442,6 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
 {
 	inherited::Render			(priority, strictB2F);
 	Scene->SelectLightsForObject(this);
-    try{
     // render attached object
     if (m_AttachedObject) 		m_AttachedObject->Render(priority, strictB2F);
 	if (m_SpawnData.Valid())    m_SpawnData.Render(Selected(),FTransformRP,priority, strictB2F);
@@ -504,9 +503,6 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 DU.DrawSelectionBox(bb,&clr);
             }
         }
-    }
-    }catch(...){
-        ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type B] - Spawn Object '%s'",Name);
     }
 }
 

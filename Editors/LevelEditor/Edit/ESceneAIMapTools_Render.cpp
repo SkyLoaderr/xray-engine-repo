@@ -52,7 +52,6 @@ static const u32 block_size = 0x2000;
 void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
 {
 	if (m_Flags.is(flHideNodes)) return;
-    try{
     if (1==priority){
         if (false==strictB2F){
             RCache.set_xform_world(Fidentity);
@@ -129,9 +128,6 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
                 for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) 
                     if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection(0x4046B646);
 */        }
-    }
-    }catch(...){
-        ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type B] - AI MAP");
     }
 }
 //----------------------------------------------------
