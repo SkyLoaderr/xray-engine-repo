@@ -1288,13 +1288,13 @@ function load_job(sj, gname, type, squad, groups)
 	end
 	
 	if type == "esc_corps" then
-		t = { section = "logic@esc_coprs1",
+		t = { section = "logic@esc_corps1",
 			idle = 4,
 			prior = 8, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_corpse2",
+		t = { section = "logic@esc_corps2",
 			idle = 4,
 			prior = 8, state = {0},
 			in_rest = "", out_rest = ""
