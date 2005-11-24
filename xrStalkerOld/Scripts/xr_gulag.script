@@ -91,6 +91,7 @@ function gulag:prepare_jobs()
 		ptrl               = patrol( path_name )
 
 		job.path_name      = path_name
+		printf( "[smart_terrain %s] gulag: job=%s path_name=%s", self.name, job.section, path_name )
 		job.game_vertex_id = ptrl:game_vertex_id ( 0 )
 		job.position       = ptrl:point( 0 )
 
@@ -915,7 +916,7 @@ end
 
 -----------------------------------------------------------------------------------------------------------------
 
-function checkStalker(npc_community, gulag_type)
+function checkStalker(npc_community, gulag_type, npc_rank)
     --printf ("CHECKSTALKER, COMMUNITY = %s, TYPE = %s", npc_community, gulag_type)
 	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" then
 		return true
@@ -930,7 +931,7 @@ function checkStalker(npc_community, gulag_type)
 	end
 
     for i, v in pairs( level_gulags ) do
-	    if v.checkStalker(npc_community, gulag_type) then
+	    if v.checkStalker(npc_community, gulag_type, npc_rank) then
 		    return true
 	    end
     end
@@ -938,13 +939,13 @@ function checkStalker(npc_community, gulag_type)
 	return false
 end
 
-function checkMonster(npc_community, gulag_type)
+function checkMonster(npc_community, gulag_type, npc_rank)
 	if gulag_type == "test_mob" then
 		return true
 	end
 
     for i, v in pairs( level_gulags ) do
-	    if v.checkMonster(npc_community, gulag_type) then
+	    if v.checkMonster(npc_community, gulag_type, npc_rank) then
 		    return true
 	    end
     end
@@ -952,12 +953,12 @@ function checkMonster(npc_community, gulag_type)
 	return false
 end
 
-function checkNpc(npc_community, is_stalker, gulag_type)
+function checkNpc(npc_community, is_stalker, gulag_type, npc_rank)
 	printf("COMM %s !! %s", npc_community, gulag_type)
 
 	if is_stalker then
-		return checkStalker(npc_community, gulag_type)
+		return checkStalker(npc_community, gulag_type, npc_rank)
 	else
-		return checkMonster(npc_community, gulag_type)
+		return checkMonster(npc_community, gulag_type, npc_rank)
 	end
 end
