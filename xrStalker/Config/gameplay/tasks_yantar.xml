@@ -8,6 +8,11 @@
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
 		</objective>
 		<objective>
+			<text>yan_kill_brain_task</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
+		</objective>		
+		<objective>
 			<text>yan_find_vasilyev</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
