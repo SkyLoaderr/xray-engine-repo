@@ -1624,8 +1624,7 @@ function load_states(gname, type)
 	if type == "esc_fabrika_bandit" then
 		return function(gulag)
 				for k,v in pairs(gulag.Object) do
-					local enemy = v:best_enemy()
-					if enemy ~= nil then
+					if v ~= true and v:best_enemy() ~= nil then
    						gulag.alarm_start = game.get_game_time()
    						return 2 -- тревога
 					end
