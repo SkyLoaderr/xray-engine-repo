@@ -3,6 +3,168 @@
 --	автор: Тундук Владимир aka Sidorovich
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
+
+local key = nil
+local data = nil
+
+----------------------------------------------------------------------------------------------------------------------
+-- Байки 
+----------------------------------------------------------------------------------------------------------------------
+local tales = {}
+tales[1] = {theme = "story_01", min = 1, max = 2, type = "narrator",
+            next = {theme = "story_reac_cool_info", min = 1, max = 1, type = "all",
+                next = {theme = "story_reac_continue", min = 2, max = 3, type = "narrator",
+                    next = {theme = "story_reac_laughter", type = "all", next = nil}}}}
+            
+
+tales[2] = {theme = "story_02", min = 1, max = 2, type = "narrator",
+            next = {theme = "story_reac_yes", min = 1, max = 2, type = "all",
+                next = {theme = "story_reac_continue", min = 1, max = 1, type = "narrator",
+                    next = {theme = "story_reac_action_right", min = 1, max = 1, type = "all",
+                        next = {theme = "story_reac_cool_teller", min = 1, max = 1, type = "narrator",
+                            next = {theme = "story_reac_continue", min = 1, max = 1, type = "all",
+                                next = {theme = "story_reac_belief_story, story_reac_final_happy, story_reac_yes", min = 2, max = 4, type = "narrator", next = nil}}}}}}}
+
+
+tales[3] = {theme = "story_03", min = 1, max = 2, type = "narrator",
+            next = {theme = "story_reac_continue", min = 1, max = 1, type = "all",
+                next = {theme = "story_reac_final_tragic", min = 1, max = 1, type = "narrator",
+                    next = {theme = "story_reac_belief_story", min = 2, max = 3,  type = "all", next = nil}}}}
+                    
+tales[4] = {theme = "story_04", min = 1, max = 2, type = "narrator",
+            next = {theme = "story_reac_continue", min = 1, max = 1,  type = "all",
+                next = {theme = "story_reac_final_tragic", min = 1, max = 1, type = "narrator",
+                    next = {theme = "story_reac_belief_story", min = 2, max = 3,  type = "all", next = nil}}}}
+                    
+tales[5] = {theme = "story_05", min = 1, max = 2, type = "narrator", 
+            next = {theme = "story_reac_advice_sceptic, story_reac_advice_support", min = 1, max = 1, type = "all", next = nil}}
+
+tales[6] = {theme = "story_06", min = 1, max = 2, type = "narrator",
+            next = {theme = "story_reac_continue", min = 1, max = 1, type = "all",
+                next = {theme = "story_reac_cool_teller", min = 1, max = 1, type = "narrator",
+                    next = {theme = "story_reac_action_right", min = 1, max = 1, type = "all",
+                        next = {theme = "story_reac_yes", min = 1, max = 1, type = "narrator",
+                            next = {theme = "story_reac_disbelief_teller, story_reac_belief_story", min = 2, max = 3, type = "all",
+                                next = {theme = "story_reac_cool_teller", min = 1, max = 1,  type = "narrator",
+                                    next = {theme = "story_reac_wonder", min = 1, max = 1, type = "all",
+                                        next = {theme = "story_reac_disbelief_story, story_reac_belief_story, story_reac_yes", min = 2, max = 4,  type = "narrator", next = nil}}}}}}}}}
+
+
+class "TalesManager"
+function TalesManager:__init ()
+    self.npc_list = {}
+    self.npc_list_id = {}
+    self.current_tale = 0
+    self.narrator = -1
+    self.tale = nil
+    self.timeout = time_global () + math.random (5000, 10000)
+end
+
+function TalesManager:add_npc (npc)
+    if npc == nil or npc:alive () == false or self.npc_list[npc:id ()] ~= nil then
+       return
+    end
+    local id = npc:id ()
+    self.npc_list[id] = npc
+    table.insert (self.npc_list_id, id)
+end
+
+function TalesManager:remove_npc (npc)
+    if npc == nil or self.npc_list[npc:id ()] == nil then
+       return
+    end
+    local id = npc:id ()
+    self.npc_list[id] = nil
+    for a = 1, table.getn (self.npc_list_id), 1 do
+        if self.npc_list_id[a] == id then
+           table.remove (self.npc_list_id, a)
+           return 
+        end
+    end       
+end        
+
+function TalesManager:stop_tale ()
+    for key, data in pairs (self.npc_list) do
+		xr_sound:set_sound (nil, true)
+	end		
+	self.narrator = -1
+	self.tale = nil
+end
+
+function TalesManager:start_tale ()
+    if table.getn (self.npc_list_id) < 2 then 
+       return
+    end
+       
+    if self.narrator == -1 then
+       self.narrator = self.npc_list_id[math.random (1, table.getn (self.npc_list_id))]
+    end
+    local c = self.current_tale
+    while c == self.current_tale do
+          self.current_tale = math.random (1, table.getn (tales))
+    end            
+    self.tale = tales[self.current_tale]
+    if self.tale == nil then
+       abort ("Invalid tale")
+    end   
+    printf ("NARRATOR THEME = %s", self.tale.theme)
+    printf ("NARRATOR NAME = %s", self.npc_list[self.narrator]:name ())
+    xr_sound.set_sound_play (self.npc_list[self.narrator], self.tale.theme)
+end
+
+function TalesManager:update ()
+    if self.tale == nil then 
+       if time_global () > self.timeout then
+          self.narrator = -1
+          self:start_tale ()  
+       end
+       return 
+    end
+    
+    if self.tale.type == "narrator" then
+       if self.narrator == -1 then
+          abort ("Narrator not defined")
+       end
+       if self.npc_list[self.narrator]:active_sound_count () ~= 0 then
+          return
+       end
+       self:set_next_tale ()
+    else
+       for a = 1, table.getn (self.npc_list_id), 1 do
+           if self.npc_list_id[a] ~= self.narrator then
+              if self.npc_list[self.npc_list_id[a]]:active_sound_count () ~= 0 then
+                 return
+              end
+           end
+       end
+       self:set_next_tale ()             
+    end        
+                     
+end
+
+function TalesManager:set_next_tale ()
+    if self.tale ~= nil then
+       local t = self.tale.next  
+       self.tale = t
+    end
+    if self.tale == nil then
+       self.timeout = time_global () + math.random (5000, 10000) 
+       return
+    end        
+    if self.tale.type == "narrator" then
+       printf ("NARRATOR THEME = %s", self.tale.theme)
+       xr_sound.set_sound_play (self.npc_list[self.narrator], self.tale.theme)
+    else
+       printf ("REACTIONER THEME = %s", self.tale.theme)
+       for a = 1, table.getn (self.npc_list_id), 1 do
+           if self.npc_list_id[a] ~= self.narrator then
+              xr_sound.set_sound_play (self.npc_list[self.npc_list_id[a]], self.tale.theme, math.random (1, 1.5) * 1000)
+           end
+       end
+    end   
+end
+
+
 --patrol states
 local patrol_move   =   0       -- просто движение
 local patrol_hide   =   1       -- ракоход
@@ -40,8 +202,6 @@ formations["around"] = {
                      }
                      
 
-local key = nil
-local data = nil
 
 -----------------------
 class "PatrolManager"
@@ -55,6 +215,8 @@ function PatrolManager:__init (path_name)
     self.commander_lid = -1
     self.commander_dir = vector ():set (0, 0, 1)
     patrols[path_name] = self
+    self.npc_count = 0
+    --self.tm = TalesManager ()
 end
 -----------------------
 function PatrolManager:add_npc (npc, leader)
@@ -65,24 +227,33 @@ function PatrolManager:add_npc (npc, leader)
     
     -- if this npc first in command then set him as commander
     self.npc_list[npc:id ()] = {soldier = npc, dir = vector ():set (1, 0, 0), dist = 0}
-    
+      
+    self.npc_count = self.npc_count + 1
     -- если мужик первый или считается лидером, то установим, как лидера    
-    if table.getn (self.npc_list) == 1 or leader == true then
+    if self.npc_count == 1 or leader == true then
        self.commander_id = npc:id ()
     end    
     
+    --self.tm:add_npc (npc)
+    --if self.npc_count == 2 then
+       --self.tm:start_tale ()
+    --end    
     
     self:reset_positions ()
 end
 -----------------------
 function PatrolManager:remove_npc (npc)
     if npc == nil then return end
-    --printf ("[XR_PATROL]REMOVE NPC %s", npc:name ())
     self.npc_list[npc:id ()] = nil
     if npc:id () == self.commander_id then
        self.commander_id = -1
        self:reset_positions ()
     end    
+    self.npc_count = self.npc_count - 1
+    --self.tm:remove_npc (npc)
+    --if self.npc_count < 2 then
+       --self.tm:stop_tale ()
+    --end        
 end
 -----------------------
 function PatrolManager:reset_positions ()
@@ -192,14 +363,11 @@ function PatrolManager:set_command (npc, command, formation)
     end   
     self.commander_lid = npc:level_vertex_id ()
     self.commander_dir = npc:direction ()
+    self:update ()
 end
 -----------------------
 function PatrolManager:is_commander (npc_id)
     return npc_id == self.commander_id    
-end
------------------------
-function PatrolManager:update ()
-    
 end
 -----------------------
 function PatrolManager:is_commander_in_meet ()
@@ -211,10 +379,14 @@ function PatrolManager:is_commander_in_meet ()
     return false    
 end
 -----------------------
+function PatrolManager:update ()
+    --self.tm:update ()
+end
+-----------------------
 -----------------------
 
 
-
+--run_string level.add_pp_effector ("proba.ppe", 1974, false)
 
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
@@ -395,7 +567,7 @@ function action_patrol:execute ()
 	end
 	
 	if self.on_point == true and patrols[self.st.path_name]:is_commander_in_meet () == true then
-	   state_mgr.set_state ("guard")
+	   state_mgr.set_state (self.object, "guard")
 	end
 end
 ----------------------
@@ -415,6 +587,7 @@ function action_patrol:net_destroy ()
     self:deactivate ()
 end
 ----------------------
+
 
 
 ----------------------------------------------------------------------------------------------------------------------
