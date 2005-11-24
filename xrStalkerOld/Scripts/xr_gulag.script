@@ -516,12 +516,12 @@ end
 -- при распределении недошедшие персонажи приравниваются к свободным
 function gulag:updateJob()
 	local Job_avail = self:prepare_available_jobs()
-	printf( "Job_avail:" )
-	print_table( Job_avail, "   " )
+--	printf( "Job_avail:" )
+--	print_table( Job_avail, "   " )
 
 	local obj_avail = self:get_available_objs()
-	printf( "obj_avail:" )
-	print_table( obj_avail, "   " )
+--	printf( "obj_avail:" )
+--	print_table( obj_avail, "   " )
 
 	local obj_id
 
@@ -954,7 +954,7 @@ function checkMonster(npc_community, gulag_type, npc_rank)
 end
 
 function checkNpc(npc_community, is_stalker, gulag_type, npc_rank)
-	printf("COMM %s !! %s", npc_community, gulag_type)
+--	printf("COMM %s !! %s", npc_community, gulag_type)
 
 	if is_stalker then
 		return checkStalker(npc_community, gulag_type, npc_rank)

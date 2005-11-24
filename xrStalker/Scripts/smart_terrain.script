@@ -8,6 +8,7 @@ TODO
 	вести всю группу аля патруль
 	приём группы
 	организация групп
+	smart_terrain_choose_interval у крыс сделать БОЛЬШИМ
 --------------------------------------------------------------------------------------------------------------------]]
 
 --local h2ms = 60 * 60 * 1000
@@ -376,7 +377,7 @@ end
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
 function se_smart_terrain:enabled( obj )
-	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+--	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 
 	-- DEBUG
 	if self.disabled then
@@ -564,7 +565,7 @@ end
 -- инициализация объекта.
 -- вызывается симулятором.
 function se_smart_terrain:on_register()
-	printf( "[smart_terrain %s] on_register called", self:name() )
+--	printf( "[smart_terrain %s] on_register called", self:name() )
 	cse_alife_smart_zone.on_register( self )
 
 	-- DEBUG
