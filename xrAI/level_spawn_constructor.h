@@ -64,8 +64,8 @@ protected:
 //			void						add_group_object					(CSE_Abstract			*abstract, shared_str group_section);
 			void						add_level_changer					(CSE_Abstract			*abstract);
 			void						update_artefact_spawn_positions		();
-	IC		void						normalize_probability				(CSE_ALifeAnomalousZone *zone);
-	IC		void						free_group_objects					();
+//	IC		void						normalize_probability				(CSE_ALifeAnomalousZone *zone);
+//	IC		void						free_group_objects					();
 	IC		const CGameGraph			&game_graph							() const;
 	IC		const CLevelGraph			&level_graph						() const;
 	IC		const CGameLevelCrossTable	&cross_table						() const;

@@ -223,17 +223,17 @@ void CLevelSpawnConstructor::load_objects						()
 	R_ASSERT2					(!m_spawns.empty(),"There are no spawn-points!");
 }
 
-IC	void CLevelSpawnConstructor::normalize_probability			(CSE_ALifeAnomalousZone *zone)
-{
-	float						accumulator = 0.f;
-	for (int ii=0; ii<zone->m_wItemCount; ii++)
-		accumulator				+= zone->m_faWeights[ii];
-
-	accumulator					*= zone->m_fBirthProbability;
-
-	for (int ii=0; ii<zone->m_wItemCount; ii++)
-		zone->m_faWeights[ii]	/= accumulator;
-}
+//IC	void CLevelSpawnConstructor::normalize_probability			(CSE_ALifeAnomalousZone *zone)
+//{
+//	float						accumulator = 0.f;
+//	for (int ii=0; ii<zone->m_wItemCount; ii++)
+//		accumulator				+= zone->m_faWeights[ii];
+//
+//	accumulator					*= zone->m_fBirthProbability;
+//
+//	for (int ii=0; ii<zone->m_wItemCount; ii++)
+//		zone->m_faWeights[ii]	/= accumulator;
+//}
 
 //IC	void CLevelSpawnConstructor::free_group_objects					()
 //{
