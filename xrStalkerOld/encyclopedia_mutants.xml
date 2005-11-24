@@ -6,7 +6,7 @@
     <!-------------------------------- Crow ----------------------------->
 
 
-    <article id="mutant_crow_general" name="General" group="Mutants/Crow">
+    <article id="mutant_crow_general" name="Crow" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_crow_general</text>
     </article>
@@ -15,7 +15,7 @@
     <!-------------------------------- RAT ----------------------------->
 
 
-    <article id="mutant_rat_general" name="General" group="Mutants/Rat">
+    <article id="mutant_rat_general" name="Rat" group="Mutants">
         <texture x="200" y="400" width="150" height="150">ui\ui_icon_photo</texture>
         <text>enc_mutant_rat_general</text>
     </article>
@@ -23,41 +23,14 @@
     <!-------------------------------- FLESH ----------------------------->
 
 
-    <article id="mutant_flesh_evolution" name="Evolution" group="Mutants/Flesh">
+    <article id="mutant_flesh_general" name="Flesh" group="Mutants">
         <texture x="200" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_flesh_evolution</text>
+        <text>enc_mutant_flesh_general</text>
     </article>
-    <article id="mutant_flesh_eco" name="Eco" group="Mutants/Flesh">
-        <texture x="200" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_flesh_eco</text>
-    </article>
-
-    <article id="mutant_flesh_skin" name="Skin" group="Mutants/Flesh">
-        <texture x="200" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_flesh_skin</text>
-    </article>
-    <article id="mutant_flesh_move" name="Move" group="Mutants/Flesh">
-        <texture x="200" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_flesh_move</text>
-    </article>
-    <article id="mutant_flesh_eat" name="Eat" group="Mutants/Flesh">
-        <texture x="200" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_flesh_eat</text>
-    </article>
-    <article id="mutant_flesh_nerve" name="Nerve" group="Mutants/Flesh">
-        <texture x="200" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_flesh_nerve</text>
-    </article>
-
-    <article id="mutant_flesh_list1" name="List1" group="Mutants/Flesh">
-        <texture x="200" y="250" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_flesh_list1</text>
-    </article>
-
-
+   
     <!-------------------------------- BLIND DOG ----------------------------->
 
-    <article id="mutant_blind_general" name="General" group="Mutants/Blind">
+    <article id="mutant_blind_general" name="Blind" group="Mutants">
         <texture x="0" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_mutant_blind_general</text>
     </article>
@@ -65,7 +38,7 @@
 
     <!-------------------------------- Boar ----------------------------->
 
-    <article id="mutant_boar_general" name="General" group="Mutants/Boar">
+    <article id="mutant_boar_general" name="Boar" group="Mutants">
         <texture x="350" y="0" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_mutant_boar_general</text>
     </article>
@@ -73,39 +46,21 @@
 
     <!-------------------------------- PSEUDODOG ----------------------------->
 
-    <article id="mutant_pseudodog_general" name="General" group="Mutants/Pseudodog">
+    <article id="mutant_pseudodog_general" name="Pseudodog" group="Mutants">
         <texture x="750" y="0" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_mutant_pseudodog_general</text>
     </article>
-    <article id="mutant_pseudodog_area" name="Area" group="Mutants/Pseudodog">
-        <texture x="350" y="150" width="150" height="100">ui\ui_icon_photo</texture>
-        <text>enc_mutant_pseudodog_area</text>
-    </article>
-
-
+  
     <!-------------------------------- Bloodsucker ----------------------------->
 
-    <article id="mutant_bloodsucker_general" name="General" group="Mutants/Bloodsucker">
+    <article id="mutant_bloodsucker_general" name="Bloodsucker" group="Mutants">
         <texture x="550" y="00" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_mutant_bloodsucker_general</text>
     </article>
-    <article id="mutant_bloodsucker_area" name="Area" group="Mutants/Bloodsucker">
-        <texture x="550" y="00" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_bloodsucker_area</text>
-    </article>
-    <article id="mutant_bloodsucker_tentacles" name="Tentacles" group="Mutants/Bloodsucker">
-        <texture x="550" y="00" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_bloodsucker_tentacles</text>
-    </article>
-    <article id="mutant_bloodsucker_meet" name="Meet" group="Mutants/Bloodsucker">
-        <texture x="550" y="00" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>enc_mutant_bloodsucker_meet</text>
-    </article>
-
 
     <!-------------------------------- Burer ----------------------------->
 
-    <article id="mutant_burer_general" name="General" group="Mutants/Burer">
+    <article id="mutant_burer_general" name="Burer" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_burer_general</text>
     </article>
@@ -113,7 +68,7 @@
 
     <!-------------------------------- Chimera ----------------------------->
 
-    <article id="mutant_chimera_general" name="General" group="Mutants/Chimera">
+    <article id="mutant_chimera_general" name="Chimera" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_chimera_general</text>
     </article>
@@ -121,7 +76,7 @@
 
     <!-------------------------------- Pseudogiant ----------------------------->
 
-    <article id="mutant_pseudogiant_general" name="General" group="Mutants/Pseudogiant">
+    <article id="mutant_pseudogiant_general" name="Pseudogiant" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_pseudogiant_general</text>
     </article>
@@ -129,7 +84,7 @@
 
     <!-------------------------------- Poltergeist ----------------------------->
 
-    <article id="mutant_poltergeist_general" name="General" group="Mutants/Poltergeist">
+    <article id="mutant_poltergeist_general" name="Poltergeist" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_poltergeist_general</text>
     </article>
@@ -138,7 +93,7 @@
     <!-------------------------------- Controller ----------------------------->
 
 
-    <article id="mutant_controller_general" name="General" group="Mutants/Controller">
+    <article id="mutant_controller_general" name="Controller" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_controller_general</text>
     </article>
@@ -146,7 +101,7 @@
 
     <!-------------------------------- Zombie ----------------------------->
 
-    <article id="mutant_zombie_general" name="General" group="Mutants/Zombie">
+    <article id="mutant_zombie_general" name="Zombie" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_zombie_general</text>
     </article>
@@ -154,9 +109,16 @@
 
     <!-------------------------------- Fracture ----------------------------->
 
-    <article id="mutant_fracture_general" name="General" group="Mutants/Fracture">
+    <article id="mutant_fracture_general" name="Fracture" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_mutant_fracture_general</text>
+    </article>
+    
+     <!-------------------------------- Snork ----------------------------->
+
+    <article id="mutant_snork_general" name="Snork" group="Mutants">
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+        <text>enc_mutant_snork_general</text>
     </article>
 
 

@@ -9,13 +9,7 @@
 	<article>weapons1_wpn-fn2000</article>
  </info_portion>
  <info_portion id="encyclopedy_mutant_flesh">
-	<article>mutant_flesh_evolution</article>
-	<article>mutant_flesh_eco</article>
-	<article>mutant_flesh_skin</article>
-	<article>mutant_flesh_move</article>
-	<article>mutant_flesh_eat</article>
-	<article>mutant_flesh_nerve</article>
-	<article>mutant_flesh_list1</article>
+	<article>mutant_flesh_general</article>
  </info_portion>
  <info_portion id="encyclopedy_levels_escape_safeplace">
  </info_portion>
@@ -140,21 +134,11 @@
   <article>zone_locations_deadcity</article>
   <article>mutant_crow_general</article>
   <article>mutant_rat_general</article>
-  <article>mutant_flesh_evolution</article>
-  <article>mutant_flesh_eco</article>
-  <article>mutant_flesh_skin</article>
-  <article>mutant_flesh_move</article>
-  <article>mutant_flesh_eat</article>
-  <article>mutant_flesh_nerve</article>
-  <article>mutant_flesh_list1</article>
+  <article>mutant_flesh_general</article>
   <article>mutant_blind_general</article>
   <article>mutant_boar_general</article>
   <article>mutant_pseudodog_general</article>
-  <article>mutant_pseudodog_area</article>
   <article>mutant_bloodsucker_general</article>
-  <article>mutant_bloodsucker_area</article>
-  <article>mutant_bloodsucker_tentacles</article>
-  <article>mutant_bloodsucker_meet</article>
   <article>mutant_burer_general</article>
   <article>mutant_chimera_general</article>
   <article>mutant_pseudogiant_general</article>
@@ -162,6 +146,7 @@
   <article>mutant_controller_general</article>
   <article>mutant_zombie_general</article>
   <article>mutant_fracture_general</article>
+  <article>mutant_snork_general</article>
   <article>social_military_army</article>
   <article>social_military_milstalkers</article>
   <article>social_scientists_mobile-labs</article>
