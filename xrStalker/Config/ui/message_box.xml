@@ -80,7 +80,7 @@
 		<texture>ui_frame_error</texture>
 		
 		<picture x="35" y="65" width="77" height="77">
-			<texture>ui_frame_error_sign_red</texture>
+			<texture>ui_frame_error_sign_info</texture>
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
