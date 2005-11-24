@@ -64,7 +64,7 @@ void CCustomObject::OnDetach()
     string64 			new_name;
     Scene->GenObjectName(ClassID,new_name,Name);
     Name 				= new_name;
-    Scene->AppendObject(this,false);
+    Scene->AppendObject	(this,false);
     Select				(true);
 }
 

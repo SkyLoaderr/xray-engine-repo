@@ -9,15 +9,24 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-void __fastcall object_Normal_0(EScene::mapObject_Node *N){ (N->val)->Render( 0, false ); }
-void __fastcall object_Normal_1(EScene::mapObject_Node *N){ (N->val)->Render( 1, false ); }
-void __fastcall object_Normal_2(EScene::mapObject_Node *N){ (N->val)->Render( 2, false ); }
-void __fastcall object_Normal_3(EScene::mapObject_Node *N){ (N->val)->Render( 3, false ); }
+#define RENDER_OBJECT(P,B)\
+{\
+    try{\
+        (N->val)->Render(P,B);\
+    }catch(...){\
+        ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type B] - Tools: '%s' Object: '%s'",(N->val)->ParentTools->ClassName(),(N->val)->Name);\
+    }\
+}
+    
+void __fastcall object_Normal_0(EScene::mapObject_Node *N)	 {RENDER_OBJECT(0,false); }
+void __fastcall object_Normal_1(EScene::mapObject_Node *N)	 {RENDER_OBJECT(1,false); }
+void __fastcall object_Normal_2(EScene::mapObject_Node *N)	 {RENDER_OBJECT(2,false); }
+void __fastcall object_Normal_3(EScene::mapObject_Node *N)	 {RENDER_OBJECT(3,false); }
 //------------------------------------------------------------------------------
-void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){(N->val)->Render( 0, true );}
-void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){(N->val)->Render( 1, true );}
-void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){(N->val)->Render( 2, true );}
-void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){(N->val)->Render( 3, true );}
+void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){RENDER_OBJECT(0,true);}
+void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){RENDER_OBJECT(1,true);}
+void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){RENDER_OBJECT(2,true);}
+void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){RENDER_OBJECT(3,true);}
 //------------------------------------------------------------------------------
 
 #define RENDER_SCENE_TOOLS(P,B)\
@@ -27,7 +36,11 @@ void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){(N->val)->Render( 
         for (; s_it!=s_end; s_it++){\
             Device.SetShader		(B?Device.m_SelectionShader:Device.m_WireShader);\
             RCache.set_xform_world	(Fidentity);\
-            (*s_it)->OnRender(P,B);\
+            try{\
+            	(*s_it)->OnRender(P,B);\
+            }catch(...){\
+		        ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type B] - Tools: '%s'",(*s_it)->ClassName());\
+            }\
         }\
     }
 
