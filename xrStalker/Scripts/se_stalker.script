@@ -1,5 +1,3 @@
-local smart_section = "smart_terrains"
-
 class "se_stalker"	(cse_alife_human_stalker)
 --------------------
 function se_stalker:__init (section) super (section)
@@ -70,33 +68,9 @@ function se_stalker:on_unregister()
 end
 --------------------
 function se_stalker:read_smart_terrain_conditions()
-	if self.ini and self.ini:section_exist( smart_section ) then
-		local conds = {}
-		local accepts = false
-		local result, field, str
-		local n = self.ini:line_count( smart_section )
-
-		if n > 0 then
-			for i = 0, n-1 do
-				result, field, str = self.ini:r_line( smart_section, i, "", "" )
-
-				conds[field] = xr_logic.parse_condlist(self, smart_section, field, str)
-			end
-
-			return conds
-		end
-	end
-
-	return nil
+	return smart_terrain.read_smart_terrain_conditions( self )
 end
 --------------------
 function se_stalker:get_smart_terrain_conditions()
-	self:get_ini()
-
-	if not self.smart_terrain_conditions_initialized then
-		self.smart_terrain_conditions             = self:read_smart_terrain_conditions()
-		self.smart_terrain_conditions_initialized = true
-	end
-
-	return self.smart_terrain_conditions
+	return smart_terrain.get_smart_terrain_conditions( self )
 end

@@ -25,6 +25,8 @@ local monster_classes
 
 local disagreed, agreed, agreed_exclusive = 0, 1, 2
 
+local smart_section = "smart_terrains"
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
@@ -619,4 +621,41 @@ function se_smart_terrain:update()
 		self:remove_gulag()
 	end
 --	end
+end
+
+--------------------
+-- прочитать секцию [smart_terrains]
+-- вызывается объектами, которые могут ходить под smart terrain
+function read_smart_terrain_conditions( self )
+	if self.ini and self.ini:section_exist( smart_section ) then
+		local conds = {}
+		local accepts = false
+		local result, field, str
+		local n = self.ini:line_count( smart_section )
+
+		if n > 0 then
+			for i = 0, n-1 do
+				result, field, str = self.ini:r_line( smart_section, i, "", "" )
+
+				conds[field] = xr_logic.parse_condlist(self, smart_section, field, str)
+			end
+
+			return conds
+		end
+	end
+
+	return nil
+end
+
+-- получить распарсеную секцию [smart_terrains]
+-- вызывается объектами, которые могут ходить под smart terrain
+function get_smart_terrain_conditions( self )
+	self:get_ini()
+
+	if not self.smart_terrain_conditions_initialized then
+		self.smart_terrain_conditions             = self:read_smart_terrain_conditions()
+		self.smart_terrain_conditions_initialized = true
+	end
+
+	return self.smart_terrain_conditions
 end
