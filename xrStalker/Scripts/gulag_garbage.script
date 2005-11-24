@@ -764,7 +764,7 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "", 
+		t = { section = "logic@gar_dogs_nest", 
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
