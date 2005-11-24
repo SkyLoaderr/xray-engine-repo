@@ -14,11 +14,6 @@ function action_door:__init(obj, storage)
 	self.st = storage
 	self.snd_obj = nil
 end
-
-function action_door:__finalize()
-	printf	("action_door::~action_door() called")
-end
-
 function action_door:reset_scheme(loading)
 	printf("_bp: action_door:reset_scheme: self.object:name()='%s'", self.object:name())
 	self.initialized = false
@@ -88,7 +83,6 @@ end
 
 function action_door:update(delta)
 	--printf("_bp: action_door:update()", delta)
-
 	if not self.initialized then
 		abort("object '%s': door failed to initialize", self.object:name())
 	end
@@ -177,10 +171,7 @@ function action_door:close_door()
 	self.object:set_fastcall(self.fastcall,self)
 	self.object:set_fastcall(self.fastcall,self)
 	self.object:set_fastcall(self.fastcall,self)
-	--level.add_call(self, self.close_check, self.close_action)
-	--level.remove_call(self, self.close_check, self.close_action)
-	--level.add_call(self, action_door.close_check, action_door.close_action)
-	--level.remove_calls_for_object(self);
+
 	printf("_bp: action_door:close_door()")
 	self.joint:set_max_force_and_velocity(200, 3, 1)
 	self.block = true -- Закрываем и блокируем	
@@ -223,6 +214,9 @@ function action_door:use_callback(door, actor)
 	else
 		self:close_door(false)
 	end
+end
+function action_door:deactivate()
+	self.object:set_tip_text("")
 end
 
 ---------------------------------------------------------------------------------------------------------------------

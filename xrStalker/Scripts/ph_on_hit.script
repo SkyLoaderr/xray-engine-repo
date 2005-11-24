@@ -18,7 +18,6 @@ function ph_on_hit:update(delta)
 end
 
 function ph_on_hit:hit_callback(obj, amount, local_direction, who, bone_index)
-    printf ("PH_ON_HIT CALLED")
 	local who_name
 	if who then
 		who_name = who:name()
@@ -26,35 +25,39 @@ function ph_on_hit:hit_callback(obj, amount, local_direction, who, bone_index)
 		who_name = "nil"
 	end
 
-	printf("_bp: ph_on_hit:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount, who_name)
-
+	printf("_bp: ph_on_hit:hit_callback: obj='%s', amount=%d, who='%s', bone='%s'", obj:name(), amount, who_name, tostring(bone_index))
 	if db.storage[self.object:id()].active_scheme then
 		if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
 			return
 		end
 	end
 end
+function ph_on_hit:deactivate()
+	printf("PH_ON_HIT: deactivate")
+end
 
 ---------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
-	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
-
+--	printf("DEBUG PH_ON_HIT: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
  	local action = ph_on_hit(npc, storage)
 	storage.action = action
-	xr_logic.subscribe_action_for_events (npc, storage, action)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
+--	printf("DEBUG PH_ON_HIT: set_scheme: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	--npc:set_callback(callback.hit, st.action.hit_callback, st.action)
-	--npc:set_nonscript_usable(false)
-	--npc:set_callback(callback.use_object, st.action.hit_callback, st.action)
+	print_table(st.logic)
+	xr_logic.subscribe_action_for_events(npc, st, st.action)	
 end
 
 function disable_scheme(npc, scheme)
-	npc:set_callback(callback.hit, nil)
-	--npc:set_callback(callback.use_object, nil)
+--	printf("DEBUG PH_ON_HIT: disable_scheme: npc:name()='%s', scheme='%s'", npc:name(), scheme)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		xr_logic.unsubscribe_action_from_events(npc, st, st.action)
+	end	
 end
 
 
