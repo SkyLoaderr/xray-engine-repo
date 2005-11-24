@@ -25,7 +25,7 @@ idle_nil  = nil
 idle_once = -1
 idle_none = -2
 
-local path_fields = { "path_walk", "path_main", "center_point", "path_home }
+local path_fields = { "path_walk", "path_main", "center_point", "path_home" }
 
 -----------------------------------------------------------------------
 class "gulag"
