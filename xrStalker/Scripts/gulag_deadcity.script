@@ -46,17 +46,23 @@ end
 
 -- Check communities -----------------------------------------------------
 local function checkCommon(npc_community, g)
-    local not_exist = true
-    local i, v
+    local i, v, n = 0, 0, 0
 
-    for i, v in pairs(g[3]) do
-        if npc_community == v then
+    if g[3] then
+        for i, v in pairs(g[3]) do
+            if npc_community == v then
+                return true
+            end
+            n = n + 1
+        end
+        if n > 0 then
+            return false
+        else
             return true
         end
-        not_exist = false
+    else
+        return true
     end
-
-    return not_exist
 end
 
 function checkStalker(npc_community, gulag_type)
