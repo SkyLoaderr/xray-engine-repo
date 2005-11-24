@@ -1010,7 +1010,7 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
 		
-	dVectorSub(cast_fp(m_last_move),dBodyGetPosition(m_body),m_safe_velocity);
+	dVectorSub(cast_fp(m_last_move),dBodyGetPosition(m_body),m_safe_position);
 	m_last_move.mul(1.f/fixed_step);
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 	dVectorSet(m_safe_velocity,linear_velocity);
