@@ -193,7 +193,7 @@ function load_job(sj, gname, type, squad, groups)
 			t = { section = "logic@rad_zombied1"..i , 
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = ""
+				in_rest = "rad_snorks_space_restrictor", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
@@ -203,7 +203,7 @@ function load_job(sj, gname, type, squad, groups)
 			t = { section = "logic@rad_zombied2"..i , 
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[0],
-				in_rest = "", out_rest = ""
+				in_rest = "rad_snorks_space_restrictor", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
