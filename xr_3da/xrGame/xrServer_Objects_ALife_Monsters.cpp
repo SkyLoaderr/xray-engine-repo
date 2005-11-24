@@ -642,15 +642,12 @@ void CSE_ALifeTrader::FillProps				(LPCSTR _pref, PropItemVec& items)
 CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeSpaceRestrictor(caSection)
 {
 	m_owner_id					= u32(-1);
-	m_maxPower					= 100.f;
-	m_attn						= 1.f;
-	m_period					= 1000;
+	m_maxPower					= pSettings->r_float(caSection,"min_start_power");
 	m_tAnomalyType				= ALife::eAnomalousZoneTypeGravi;
 	if (pSettings->line_exist(caSection,"hit_type"))
 		m_tHitType				= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	else
 		m_tHitType				= ALife::eHitTypeMax;
-
 	m_enabled_time				= 0;
 	m_disabled_time				= 0;
 	m_start_time_shift			= 0;
@@ -664,9 +661,14 @@ CSE_ALifeCustomZone::~CSE_ALifeCustomZone	()
 void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
+	
 	tNetPacket.r_float			(m_maxPower);
-	tNetPacket.r_float			(m_attn);
-	tNetPacket.r_u32			(m_period);
+
+	if (m_wVersion < 113) {
+		tNetPacket.r_float		();
+		tNetPacket.r_u32		();
+	}
+
 	if (m_wVersion > 66) {
 		u32						l_dwDummy;
 		tNetPacket.r_u32		(l_dwDummy);
@@ -689,8 +691,6 @@ void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_float			(m_maxPower);
-	tNetPacket.w_float			(m_attn);
-	tNetPacket.w_u32			(m_period);
 	tNetPacket.w_u32			(m_tAnomalyType);
 	tNetPacket.w_u32			(m_owner_id);
 	tNetPacket.w_u32			(m_enabled_time);
@@ -725,9 +725,6 @@ void CSE_ALifeCustomZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref,items);
-	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Power"),							&m_maxPower,0.f,1000.f);
-	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Attenuation"),						&m_attn,0.f,100.f);
-	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"Period"),							&m_period,20,10000);
 	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Shift time (sec)"),	&m_start_time_shift,0,100000);
 	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Enabled time (sec)"),	&m_enabled_time,	0,100000);
 	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Disabled time (sec)"),	&m_disabled_time,	0,100000);
@@ -740,30 +737,9 @@ void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeCustomZone(caSection)
 {
-	m_fRadius					= 30.f;
-	m_fBirthProbability			= pSettings->r_float(caSection,"BirthProbability");
-
-	LPCSTR						l_caParameters = pSettings->r_string(caSection,"artefacts");
-	m_wItemCount				= (u16)_GetItemCount(l_caParameters);
-	R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
-	m_wItemCount				>>= 1;
-
-	m_faWeights					= xr_alloc<float>(m_wItemCount);
-	m_cppArtefactSections.resize(m_wItemCount);
-	string512					l_caBuffer;
-	for (u16 i=0; i<m_wItemCount; ++i) {
-		m_cppArtefactSections[i]= _GetItem(l_caParameters,i << 1,l_caBuffer);
-		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
-	}
-	m_wArtefactSpawnCount		= 32;
-	m_fStartPower				= 0.f;
-	m_min_start_power			= 50.f;
-	m_max_start_power			= 150.f;
-	m_power_artefact_factor		= 10.f;
-	m_spawn_flags.set			(flSpawnDestroyOnSpawn,TRUE);
-
-	m_ef_anomaly_type			= pSettings->r_u32(caSection,"ef_anomaly_type");
-	m_ef_weapon_type			= pSettings->r_u32(caSection,"ef_weapon_type");
+	m_offline_interactive_radius	= 30.f;
+	m_artefact_spawn_count			= 32;
+	m_spawn_flags.set				(flSpawnDestroyOnSpawn,TRUE);
 }
 
 CSE_Abstract *CSE_ALifeAnomalousZone::init			()
@@ -785,17 +761,16 @@ const CSE_Abstract *CSE_ALifeAnomalousZone::base	() const
 
 CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone		()
 {
-	xr_free						(m_faWeights);
 }
 
 u32	CSE_ALifeAnomalousZone::ef_anomaly_type			() const
 {
-	return						(m_ef_anomaly_type);
+	return						(pSettings->r_u32(name(),"ef_anomaly_type"));
 }
 
 u32	CSE_ALifeAnomalousZone::ef_weapon_type			() const
 {
-	return						(m_ef_weapon_type);
+	return						(pSettings->r_u32(name(),"ef_weapon_type"));
 }
 
 u32	CSE_ALifeAnomalousZone::ef_creature_type		() const
@@ -808,39 +783,26 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	inherited1::STATE_Read		(tNetPacket,size);
 
 	if (m_wVersion > 21) {
-		tNetPacket.r_float		(m_fRadius);
-		tNetPacket.r_float		(m_fBirthProbability);
-		u16						l_wItemCount;
-		tNetPacket.r_u16		(l_wItemCount);
-		float					*l_faWeights			= xr_alloc<float>(l_wItemCount);
+		tNetPacket.r_float		(m_offline_interactive_radius);
+		if (m_wVersion < 113) {
 
-		xr_vector<shared_str>			l_cppArtefactSections;
-		l_cppArtefactSections.resize	(m_wItemCount);
+			tNetPacket.r_float			();
 
-		for (u16 i=0; i<l_wItemCount; ++i) {
-			tNetPacket.r_stringZ	(l_cppArtefactSections[i]);
-			if (m_wVersion > 26)
-				tNetPacket.r_float	(l_faWeights[i]);
-			else {
-				u32					l_dwValue;
-				tNetPacket.r_u32	(l_dwValue);
-				l_faWeights[i]		= float(l_dwValue);
+			shared_str					temp;
+			for (u16 i=0, n=tNetPacket.r_u16(); i<n; ++i) {
+				tNetPacket.r_stringZ	(temp);
+				
+				if (m_wVersion > 26)
+					tNetPacket.r_float	();
+				else
+					tNetPacket.r_u32	();
 			}
 		}
-
-		for ( i=0; i<l_wItemCount; ++i)
-			for (u16 j=0; j<m_wItemCount; ++j)
-				if (!strstr(*l_cppArtefactSections[i],*m_cppArtefactSections[j])) {
-					m_faWeights[j] = l_faWeights[i];
-					break;
-				}
-
-		xr_free							(l_faWeights);
 	}
 	
 	if (m_wVersion > 25) {
-		tNetPacket.r_u16		(m_wArtefactSpawnCount);
-		tNetPacket.r_u32		(m_dwStartIndex);
+		tNetPacket.r_u16		(m_artefact_spawn_count);
+		tNetPacket.r_u32		(m_artefact_position_offset);
 	}
 
 	if ((m_wVersion < 67) && (m_wVersion > 27)) {
@@ -849,13 +811,13 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
 	}
 
-	if (m_wVersion > 38)
-		tNetPacket.r_float		(m_fStartPower);
+	if ((m_wVersion > 38) && (m_wVersion < 113))
+		tNetPacket.r_float		();
 
-	if (m_wVersion > 78) {
-		tNetPacket.r_float		(m_min_start_power);
-		tNetPacket.r_float		(m_max_start_power);
-		tNetPacket.r_float		(m_power_artefact_factor);
+	if ((m_wVersion > 78) && (m_wVersion < 113)) {
+		tNetPacket.r_float		();
+		tNetPacket.r_float		();
+		tNetPacket.r_float		();
 	}
 	if( (m_wVersion == 102) ){ //fuck
 		u32 dummy;
@@ -867,19 +829,9 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
-	tNetPacket.w_float			(m_fRadius);
-	tNetPacket.w_float			(m_fBirthProbability);
-	tNetPacket.w_u16			(m_wItemCount);
-	for (u16 i=0; i<m_wItemCount; ++i) {
-		tNetPacket.w_stringZ	(m_cppArtefactSections[i]);
-		tNetPacket.w_float		(m_faWeights[i]);
-	}
-	tNetPacket.w_u16			(m_wArtefactSpawnCount);
-	tNetPacket.w_u32			(m_dwStartIndex);
-	tNetPacket.w_float			(m_fStartPower);
-	tNetPacket.w_float			(m_min_start_power);
-	tNetPacket.w_float			(m_max_start_power);
-	tNetPacket.w_float			(m_power_artefact_factor);
+	tNetPacket.w_float			(m_offline_interactive_radius);
+	tNetPacket.w_u16			(m_artefact_spawn_count);
+	tNetPacket.w_u32			(m_artefact_position_offset);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
@@ -895,17 +847,9 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeAnomalousZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProps			(pref,items);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"Radius"),								&m_fRadius,0.f,100.f);
-
-	for (u16 i=0; i<m_wItemCount; ++i)
-		PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"ALife\\Artefact Weights",				*m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
-
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,		0.f,1.f);
-	PHelper().CreateU16				(items,PrepareKey(pref,*s_name,"ALife\\Artefact spawn places count"),	&m_wArtefactSpawnCount,		32,	256);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Min start power"),				&m_min_start_power,			1.f,1000.f);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Max start power"),				&m_max_start_power,			1.f,1000.f);
-	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"ALife\\Power artefact factor"),			&m_power_artefact_factor,	0.001f,1000.f);
-	PHelper().CreateFlag32			(items,PrepareKey(pref,*s_name,"ALife\\Visible for AI"),				&m_flags,					flVisibleForAI);
+	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"offline interactive radius"),			&m_offline_interactive_radius,	0.f,	100.f);
+	PHelper().CreateU16				(items,PrepareKey(pref,*s_name,"ALife\\Artefact spawn places count"),	&m_artefact_spawn_count,		32,		256);
+	PHelper().CreateFlag32			(items,PrepareKey(pref,*s_name,"ALife\\Visible for AI"),				&m_flags,						flVisibleForAI);
 }
 
 bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)

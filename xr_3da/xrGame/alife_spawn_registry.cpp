@@ -13,6 +13,11 @@
 #include "ai_space.h"
 #include "game_graph.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
 CALifeSpawnRegistry::CALifeSpawnRegistry	(LPCSTR section)
 {
 	m_spawn_name				= "";
@@ -134,25 +139,41 @@ void CALifeSpawnRegistry::load_updates		(IReader &stream)
 void CALifeSpawnRegistry::build_spawn_anomalies	()
 {
 	// building map of sets : get all the zone types which can generate given artefact
-	m_artefact_anomaly_map.clear	();
+	m_artefact_anomaly_map.clear			();
 
-	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
-	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
+	SPAWN_GRAPH::vertex_iterator			I = m_spawns.vertices().begin();
+	SPAWN_GRAPH::vertex_iterator			E = m_spawns.vertices().end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeAnomalousZone				*anomaly = smart_cast<CSE_ALifeAnomalousZone*>(&(*I).second->data()->object());
-		if (anomaly) {
-			ALife::EAnomalousZoneType		type = anomaly->m_tAnomalyType;
-			for (u16 i=0, n = anomaly->m_wItemCount; i<n; ++i) {
-				CALifeSpawnRegistry::REGISTRY::iterator		I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
-				if (m_artefact_anomaly_map.end() != I)
-					(*I).second.insert		(type);
-				else {
-					m_artefact_anomaly_map.insert(mk_pair(anomaly->m_cppArtefactSections[i],ZONE_TYPES()));
-					I = m_artefact_anomaly_map.find(anomaly->m_cppArtefactSections[i]);
-					if ((*I).second.find(type) == (*I).second.end())
-						(*I).second.insert	(type);
-				}
+		if (!anomaly)
+			continue;
+
+		ALife::EAnomalousZoneType			type = anomaly->m_tAnomalyType;
+
+		LPCSTR								artefacts = pSettings->r_string(anomaly->name(),"artefacts");
+		u32									n = _GetItemCount(artefacts);
+		VERIFY2								(!(n % 2),"Invalid parameters count in line artefacts for anomalous zone");
+		n									>>= 1;
+		
+
+		string256							temp0;
+		shared_str							*items = (shared_str*)_alloca(n*sizeof(shared_str));
+		shared_str							*I = items;
+		shared_str							*E = items + n;
+		for (u32 i = 0; I != E; ++I, ++i)
+			new								(I) shared_str(_GetItem(artefacts,2*i,temp0));
+
+		for (u32 i=0; i<n; ++i) {
+			CALifeSpawnRegistry::REGISTRY::iterator		I = m_artefact_anomaly_map.find(items[i]);
+			if (m_artefact_anomaly_map.end() != I) {
+				(*I).second.insert			(type);
+				continue;
 			}
+
+			m_artefact_anomaly_map.insert	(mk_pair(items[i],ZONE_TYPES()));
+			I								= m_artefact_anomaly_map.find(items[i]);
+			if ((*I).second.find(type) == (*I).second.end())
+				(*I).second.insert			(type);
 		}
 	}
 }

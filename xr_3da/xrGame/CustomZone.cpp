@@ -276,7 +276,7 @@ void CCustomZone::Load(LPCSTR section)
 		LPCSTR						l_caParameters = pSettings->r_string(section, "artefacts");
 		u16 m_wItemCount			= (u16)_GetItemCount(l_caParameters);
 		R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
-		m_wItemCount			>>= 1;
+		m_wItemCount				>>= 1;
 
 		m_ArtefactSpawn.clear();
 		string512 l_caBuffer;
@@ -312,11 +312,10 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
 	CSE_ALifeCustomZone			*Z = smart_cast<CSE_ALifeCustomZone*>(e);
 	VERIFY						(Z);
-//	CSE_ALifeAnomalousZone		*C = smart_cast<CSE_ALifeAnomalousZone*>(e);
 	
 	m_fMaxPower					= Z->m_maxPower;
-	m_fAttenuation				= Z->m_attn;
-	m_dwPeriod					= Z->m_period;
+	m_fAttenuation				= pSettings->r_float(cNameSect(),"attenuation");
+	m_dwPeriod					= pSettings->r_u32(cNameSect(),"period");
 	m_owner_id					= Z->m_owner_id;
 	if(m_owner_id != u32(-1))
 		m_ttl					= Device.dwTimeGlobal + 40000;// 40 sec

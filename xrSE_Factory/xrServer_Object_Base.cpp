@@ -281,7 +281,13 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 
 	u16							size;
 	tNetPacket.r_u16			(size			);	// size
-	STATE_Read					(tNetPacket,size);
+//	try {
+//		THROW3					((tNetPacket.r_pos + size - sizeof(size)) == tNetPacket.B.count,"Invalid entity found",s_name_replace);
+//		THROW3					(tNetPacket.r_pos != tNetPacket.B.count,"Invalid entity found",s_name_replace);
+		STATE_Read				(tNetPacket,size);
+//	}
+//	catch (...) {
+//	}
     
 	return						TRUE;
 }

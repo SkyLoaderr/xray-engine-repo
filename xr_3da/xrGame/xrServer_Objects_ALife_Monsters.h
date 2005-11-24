@@ -126,8 +126,6 @@ add_to_type_list(CSE_ALifeTrader)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCustomZone,CSE_ALifeSpaceRestrictor)
 	f32								m_maxPower;
-	f32								m_attn;
-	u32								m_period;
 	ALife::EAnomalousZoneType		m_tAnomalyType;
 	ALife::EHitType					m_tHitType;
 	u32								m_owner_id;
@@ -142,19 +140,9 @@ add_to_type_list(CSE_ALifeCustomZone)
 #define script_type_list save_type_list(CSE_ALifeCustomZone)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALifeSchedulable)
-	float							m_fRadius;
-	float							m_fBirthProbability;
-	u16								m_wItemCount;
-	float							*m_faWeights;
-	xr_vector<shared_str>			m_cppArtefactSections;
-	u16								m_wArtefactSpawnCount;
-	u32								m_dwStartIndex;
-	float							m_fStartPower;
-	float							m_min_start_power;
-	float							m_max_start_power;
-	float							m_power_artefact_factor;
-	u32								m_ef_anomaly_type;
-	u32								m_ef_weapon_type;
+	float							m_offline_interactive_radius;
+	u32								m_artefact_position_offset;
+	u16								m_artefact_spawn_count;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();

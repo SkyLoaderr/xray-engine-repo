@@ -137,8 +137,16 @@
 //	   - CSE_TargetAssault				is no more
 //	   - CSE_Target						is no more
 //	   - CSE_ALifeObject				appended with property m_spawn_story_id
+// 113 - CSE_ALifeAnomalousZone			removed property m_fStartPower
+//	   - CSE_ALifeAnomalousZone			removed property m_faWeights
+//	   - CSE_ALifeAnomalousZone			removed property m_cppArtefactSections
+//	   - CSE_ALifeAnomalousZone			removed property m_min_start_power
+//	   - CSE_ALifeAnomalousZone			removed property m_max_start_power
+//	   - CSE_ALifeAnomalousZone			removed property m_power_artefact_factor
+//	   - CSE_ALifeCustomZone			removed property m_attn
+//	   - CSE_ALifeCustomZone			removed property m_period
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(112)
+#define SPAWN_VERSION	u16(113)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
@@ -208,66 +216,6 @@ add_to_type_list(CSE_AbstractVisual)
 #ifndef AI_COMPILER
 extern CSE_Abstract	*F_entity_Create	(LPCSTR caSection);
 #endif
-
-/**
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Target,CSE_Abstract)
-									CSE_Target		(LPCSTR caSection);
-	virtual							~CSE_Target		();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_Target)
-#define script_type_list save_type_list(CSE_Target)
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_TargetAssault,CSE_Target)
-									CSE_TargetAssault(LPCSTR caSection);
-	virtual							~CSE_TargetAssault();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_TargetAssault)
-#define script_type_list save_type_list(CSE_TargetAssault)
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Base,CSE_Target)
-	float							radius;
-	u8								s_team;
-									CSE_Target_CS_Base(LPCSTR caSection);
-	virtual							~CSE_Target_CS_Base();
-	virtual u8						g_team			();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_Target_CS_Base)
-#define script_type_list save_type_list(CSE_Target_CS_Base)
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Cask,CSE_Target)
-	shared_str							s_Model;
-									CSE_Target_CS_Cask(LPCSTR caSection);
-	virtual							~CSE_Target_CS_Cask();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_Target_CS_Cask)
-#define script_type_list save_type_list(CSE_Target_CS_Cask)
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
-	shared_str						s_Model;
-									CSE_Target_CS	(LPCSTR caSection);
-	virtual							~CSE_Target_CS	();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_Target_CS)
-#define script_type_list save_type_list(CSE_Target_CS)
-
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
-	struct tAction
-	{
-		u8		type;
-		u16		count;
-		u64		cls;
-		LPSTR	event;
-	};
-	xr_vector<tAction>				Actions;
-
-									CSE_Event		(LPCSTR caSection);
-	virtual							~CSE_Event		();
-			void					Actions_clear	();
-	virtual ISE_Shape*  __stdcall	shape			();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_Event)
-#define script_type_list save_type_list(CSE_Event)
-/**/
 
 /**
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)

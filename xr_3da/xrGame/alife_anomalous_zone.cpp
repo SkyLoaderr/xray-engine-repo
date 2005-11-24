@@ -14,16 +14,19 @@
 #include "alife_spawn_registry.h"
 #include "alife_graph_registry.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
 void CSE_ALifeAnomalousZone::update()
 {
-//	m_maxPower					= m_fStartPower*(ai().alife().time_manager().next_surge_time() - m_tTimeID)/(ai().alife().time_manager().next_surge_time() - ai().alife().time_manager().last_surge_time());
 }
 
 CSE_ALifeItemWeapon	*CSE_ALifeAnomalousZone::tpfGetBestWeapon(ALife::EHitType &tHitType, float &fHitPower)
 {
 	m_tpCurrentBestWeapon		= 0;
 	m_tTimeID					= ai().alife().time_manager().game_time();
-//	m_maxPower					= m_fStartPower*(ai().alife().time_manager().next_surge_time() - m_tTimeID)/(ai().alife().time_manager().next_surge_time() - ai().alife().time_manager().last_surge_time());
 	fHitPower					= m_maxPower;
 	tHitType					= m_tHitType;
 	return						(m_tpCurrentBestWeapon);
@@ -52,22 +55,52 @@ void CSE_ALifeAnomalousZone::on_spawn						()
 {
 	inherited1::on_spawn	();
 
-//	m_maxPower				= m_fStartPower = randF(m_min_start_power,m_max_start_power);
-	u32						jj = iFloor(randF(m_fBirthProbability)*m_maxPower/m_power_artefact_factor);
+	float					m_min_start_power	= pSettings->r_float(name(),"min_start_power");
+	float					m_max_start_power	= pSettings->r_float(name(),"max_start_power");
+	u32						m_min_artefact_count= pSettings->r_u32	(name(),"min_artefact_count");;
+	u32						m_max_artefact_count= pSettings->r_u32	(name(),"max_artefact_count");;
+    u32						m_artefact_count;
 
-	for (u32 ii=0; ii<jj; ++ii) {
+	if (m_min_artefact_count == m_max_artefact_count)
+		m_artefact_count	= m_min_artefact_count;
+	else
+		m_artefact_count	= randI(m_min_artefact_count,m_max_artefact_count);
+
+	if (m_min_start_power == m_max_start_power)
+		m_maxPower			= m_min_start_power;
+	else
+		m_maxPower			= randF(m_min_start_power,m_max_start_power);
+
+	LPCSTR					artefacts = pSettings->r_string(name(),"artefacts");
+	u32						n = _GetItemCount(artefacts);
+	VERIFY2					(!(n % 2),"Invalid parameters count in line artefacts for anomalous zone");
+	n						>>= 1;
+	
+	typedef std::pair<shared_str,float>	ARTEFACT_PAIR;
+
+	string256				temp0, temp1;
+	ARTEFACT_PAIR			*m_weights = (ARTEFACT_PAIR*)_alloca(n*sizeof(ARTEFACT_PAIR));
+	ARTEFACT_PAIR			*I = m_weights;
+	ARTEFACT_PAIR			*E = m_weights + n;
+	for (u32 i = 0; I != E; ++I, ++i) {
+		_GetItem			(artefacts,2*i,temp0);
+		_GetItem			(artefacts,2*i + 1,temp1);
+		new					(I) ARTEFACT_PAIR(temp0,(float)atof(temp1));
+	}
+
+	for (u32 ii=0; ii<m_artefact_count; ++ii) {
 		float fProbability		= randF(1.f);
 		float fSum				= 0.f;
-		for (u16 p=0; p<m_wItemCount; ++p) {
-			fSum			+= m_faWeights[p];
+		for (u16 p=0; p<n; ++p) {
+			fSum			+= m_weights[p].second;
 			if (fSum > fProbability)
 				break;
 		}
-		if (p < m_wItemCount) {
-			CSE_Abstract	*l_tpSE_Abstract = alife().spawn_item(*m_cppArtefactSections[p],position(),m_tNodeID,m_tGraphID,0xffff);
-			R_ASSERT3		(l_tpSE_Abstract,"Can't spawn artefact ",*m_cppArtefactSections[p]);
+		if (p < n) {
+			CSE_Abstract		*l_tpSE_Abstract = alife().spawn_item(*m_weights[p].first,position(),m_tNodeID,m_tGraphID,0xffff);
+			R_ASSERT3			(l_tpSE_Abstract,"Can't spawn artefact ",*m_weights[p].first);
 			CSE_ALifeDynamicObject	*i = smart_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
-			R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
+			R_ASSERT2			(i,"Non-ALife object in the 'game.spawn'");
 
 			i->m_tSpawnID		= m_tSpawnID;
 			i->m_bALifeControl	= true;
@@ -84,7 +117,7 @@ void CSE_ALifeAnomalousZone::on_spawn						()
 			CSE_ALifeItemArtefact *l_tpALifeItemArtefact = smart_cast<CSE_ALifeItemArtefact*>(i);
 			R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
 
-			l_tpALifeItemArtefact->m_fAnomalyValue = m_maxPower*(1.f - i->o_Position.distance_to(o_Position)/m_fRadius);
+			l_tpALifeItemArtefact->m_fAnomalyValue = m_maxPower*(1.f - i->o_Position.distance_to(o_Position)/m_offline_interactive_radius);
 		}
 	}
 }
