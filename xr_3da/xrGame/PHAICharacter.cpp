@@ -89,10 +89,11 @@ void	CPHAICharacter::Jump(const Fvector& jump_velocity)
 }
 void	CPHAICharacter::	ValidateWalkOn						()
 {
-if(b_on_object)
-	ValidateWalkOnObject();
- else 
-	 b_clamb_jump=true;
+//if(b_on_object)
+//	ValidateWalkOnObject();
+// else 
+//	 b_clamb_jump=true;
+	inherited::ValidateWalkOn();
 }
 void CPHAICharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * material_1,SGameMtl * material_2 )
 {

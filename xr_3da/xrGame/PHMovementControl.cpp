@@ -594,7 +594,8 @@ void CPHMovementControl::PathDIrLine(const xr_vector<DetailPathManager::STravelP
 	return;
 	}
 	to_path_point.mul(1.f/mag);
-	to_path_point.mul(distance*precesition);
+	if(mag>FootRadius())to_path_point.mul(precesition);
+	else to_path_point.mul(mag*precesition);
 	dir.add(corrected_path_dir,to_path_point);
 	dir.normalize_safe();
 }
@@ -638,7 +639,8 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	tangent.normalize();
 	if(tangent.dotproduct(dir)<0.f)tangent.invert();
 
-	to_path_point.mul(distance*precesition);
+	if(mag>FootRadius())to_path_point.mul(precesition);
+	else to_path_point.mul(mag*precesition);
 	dir.add(tangent,to_path_point);
 	dir.normalize_safe();
 }
