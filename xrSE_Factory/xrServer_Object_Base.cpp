@@ -195,7 +195,8 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	u32	position				= tNetPacket.w_tell();
 	tNetPacket.w_u16			(0);
 	STATE_Write					(tNetPacket);
-	u16 size					= u16(tNetPacket.w_tell()-position);
+	u16 size					= u16(tNetPacket.w_tell() - position);
+	R_ASSERT					(size > sizeof(size),"object isn't successfully saved, get your backup :(",name_replace());
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
 }
 
@@ -284,6 +285,9 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 //	try {
 //		THROW3					((tNetPacket.r_pos + size - sizeof(size)) == tNetPacket.B.count,"Invalid entity found",s_name_replace);
 //		THROW3					(tNetPacket.r_pos != tNetPacket.B.count,"Invalid entity found",s_name_replace);
+	R_ASSERT2					(size > 2,"INVALID OBJECT STATE!");
+
+	if (size != 2)
 		STATE_Read				(tNetPacket,size);
 //	}
 //	catch (...) {
