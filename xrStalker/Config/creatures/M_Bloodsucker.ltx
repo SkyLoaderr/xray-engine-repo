@@ -162,12 +162,7 @@ sound_attack				= monsters\bloodsucker\attack_
 sound_attack_hit			= monsters\bloodsucker\attack_hit_
 sound_take_damage			= monsters\bloodsucker\hit_
 sound_die					= monsters\bloodsucker\die_
-sound_bkgnd					= monsters\biting\def_
-sound_threaten				= monsters\biting\def_
-sound_landing				= monsters\biting\def_
-sound_steal					= monsters\biting\def_
 sound_panic					= monsters\bloodsucker\hit_
-sound_growling				= monsters\biting\def_
 sound_die_in_anomaly		= monsters\bloodsucker\die_
 
 killer_clsids				= Z_MINCER,Z_GALANT
@@ -179,6 +174,13 @@ attack_sound_delay			= 1000;6000
 
 SoundThreshold		 		= 0.06					       ; range [0..1]
 max_hear_dist				= 80 
+
+
+Sound_Invisibility_Change_State		= monsters\bloodsucker\invisible
+
+Sound_Vampire_Grasp					= monsters\bloodsucker\vampire_grasp
+Sound_Vampire_Sucking				= monsters\bloodsucker\vampire_sucking
+Sound_Vampire_Hit					= monsters\bloodsucker\vampire_hit
 
 ;-------------------------------------------------------------------------
 ; Vision
@@ -284,7 +286,7 @@ value2			= 0.60,		30,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,	
 ;--------------------------------------------------------------------------
 ;	anim			Cycles	| time1 | power1 | time2 | power2 | 
 ;--------------------------------------------------------------------------
-stand_run_0			=	5,    0.15,    1.0,	   0.70,     1.0,
+stand_run_0			=	1,    0.15,    1.0,	   0.70,     1.0,
 stand_run_dmg_0		=	4,	  0.15,    1.0,	   0.40,     1.0,   
 stand_walk_fwd_0	=	4,	  0.05,    1.0,    0.50,     1.0 
 stand_walk_dmg_0	=   4,	  0.05,    1.0,	   0.60,     1.0,   
