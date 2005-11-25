@@ -184,9 +184,10 @@ u32	CLevelGraph::vertex_id				(const Fvector &position) const
 
 	u32					best_vertex_id = u32(I - B);
 	float				y = vertex_plane_y(best_vertex_id,position.x,position.z);
-	for (; I != E; ++I) {
+	for (++I; I != E; ++I) {
 		if ((*I).position().xz() != _vertex_position.xz())
 			break;
+
 		u32				new_vertex_id = u32(I - B);
 		float			_y = vertex_plane_y(new_vertex_id,position.x,position.z);
 		if (y <= position.y) {
