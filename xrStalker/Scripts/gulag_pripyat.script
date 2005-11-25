@@ -748,11 +748,11 @@ end
 
 -- Dynamic ltx -----------------------------------------------------------
 function load_ltx_stadium(gname, type)
-    local i, j, v = 0, 0, 0
+    local i, v = 0, 0
     local res = ""
     local logic = {"wait", "heli", "free"}
 
-    for j, v in pairs(logic) do
+    for i, v in pairs(logic) do
 	    res = res.."[logic@" .. gname .. "_gigant_" .. v .. "]\n" ..
                    "active     = mob_camp@" .. gname .. "_gigant_" .. v .. "\n" ..
 
