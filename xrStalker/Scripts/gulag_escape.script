@@ -1293,7 +1293,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 8, state = {0},
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
-        					return obj_info.name == "esc_vagon_wounded"			           
+        					return obj_info.name == "esc_vagon_newbie1"			           
 						end
 		}
 		table.insert(sj, t)
@@ -1311,7 +1311,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 10, state = {0},
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
-        					return obj_info.name == "esc_vagon_newbie1"			           
+        					return obj_info.name == "esc_vagon_wounded"			           
 						end
 		}
 		table.insert(sj, t)
