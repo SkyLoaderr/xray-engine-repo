@@ -419,8 +419,7 @@ function load_states( gname, type )
 				alarm = true
 			else
 				for k, v in pairs(gulag.Object) do
-					be = v:best_enemy()
-					if be and be:id() == actor:id() then
+					if v ~= true and v:best_enemy() ~= nil and v:best_enemy():id() == actor:id() then
 						alarm = true
 						break
 					end
