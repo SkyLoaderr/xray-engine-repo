@@ -25,6 +25,16 @@ void CSE_ALifeMonsterAbstract::on_surge		()
 	m_dynamic_in_restrictions.clear	();
 }
 
+void CSE_ALifeMonsterAbstract::add_online							(const bool &update_registries)
+{
+	brain().on_switch_offline				();
+}
+
+void CSE_ALifeMonsterAbstract::add_offline							(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries)
+{
+	brain().on_switch_online				();
+}
+
 void CSE_ALifeMonsterAbstract::update		()
 {
 	if (!bfActive())

@@ -183,3 +183,12 @@ void CALifeMonsterDetailPathManager::follow_path				(const ALife::_TIME_ID &time
 		object().brain().on_location_change	();
 	}
 }
+
+void CALifeMonsterDetailPathManager::on_switch_online	()
+{
+}
+
+void CALifeMonsterDetailPathManager::on_switch_offline	()
+{
+	m_path.clear					();
+}

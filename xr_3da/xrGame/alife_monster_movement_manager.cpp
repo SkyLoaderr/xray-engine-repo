@@ -64,3 +64,13 @@ void CALifeMonsterMovementManager::update					()
 		default : NODEFAULT;
 	};
 }
+
+void CALifeMonsterMovementManager::on_switch_online		()
+{
+	detail().on_switch_online	();
+}
+
+void CALifeMonsterMovementManager::on_switch_offline	()
+{
+	detail().on_switch_offline	();
+}

@@ -18,24 +18,24 @@ class CALifeSmartTerrainTask;
 class CALifeMonsterDetailPathManager {
 public:
 	typedef CSE_ALifeMonsterAbstract	object_type;
-	typedef xr_vector<u32>			PATH;
+	typedef xr_vector<u32>				PATH;
 
 private:
 	struct parameters {
-		GameGraph::_GRAPH_ID		m_game_vertex_id;
-		u32							m_level_vertex_id;
-		Fvector						m_position;
+		GameGraph::_GRAPH_ID			m_game_vertex_id;
+		u32								m_level_vertex_id;
+		Fvector							m_position;
 	};
 
 private:
-	object_type			*m_object;
-	ALife::_TIME_ID		m_last_update_time;
-	parameters			m_destination;
-	float				m_walked_distance;
-	float				m_speed;
+	object_type							*m_object;
+	ALife::_TIME_ID						m_last_update_time;
+	parameters							m_destination;
+	float								m_walked_distance;
+	float								m_speed;
 
 private:
-	PATH				m_path;						
+	PATH								m_path;						
 	// this is INVERTED path, i.e. 
 	// start vertex is the last one
 	// destination vertex is the first one.
@@ -46,30 +46,32 @@ private:
 	// efficiently implemented in std::vector
 
 private:
-			void		actualize					();
-			void		follow_path					(const ALife::_TIME_ID &time_delta);
-			void		update						(const ALife::_TIME_ID &time_delta);
+			void		actualize						();
+			void		follow_path						(const ALife::_TIME_ID &time_delta);
+			void		update							(const ALife::_TIME_ID &time_delta);
 
 public:
-						CALifeMonsterDetailPathManager(object_type *object);
-	IC		object_type	&object						() const;
+						CALifeMonsterDetailPathManager	(object_type *object);
+	IC		object_type	&object							() const;
 
 public:
-			void		target						(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id, const Fvector &position);
-			void		target						(const GameGraph::_GRAPH_ID &game_vertex_id);
-			void		target						(const CALifeSmartTerrainTask &task);
-			void		target						(const CALifeSmartTerrainTask *task);
+			void		target							(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id, const Fvector &position);
+			void		target							(const GameGraph::_GRAPH_ID &game_vertex_id);
+			void		target							(const CALifeSmartTerrainTask &task);
+			void		target							(const CALifeSmartTerrainTask *task);
 
 public:
-			void		update						();
-	IC		void		speed						(const float &speed);
+			void		update							();
+			void		on_switch_online				();
+			void		on_switch_offline				();
+	IC		void		speed							(const float &speed);
 
 public:
-	IC		const float	&speed						() const;
-			bool		completed					() const;
-			bool		actual						() const;
-			bool		failed						() const;
-	IC		const PATH	&path						() const;
+	IC		const float	&speed							() const;
+			bool		completed						() const;
+			bool		actual							() const;
+			bool		failed							() const;
+	IC		const PATH	&path							() const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

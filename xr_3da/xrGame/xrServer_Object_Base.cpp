@@ -12,6 +12,11 @@
 #include "game_base_space.h"
 #include "script_value_container_impl.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
 #ifndef AI_COMPILER
 #	include "object_factory.h"
 #endif
@@ -102,6 +107,28 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 //	m_min_spawn_interval		= 0;
 //	m_max_spawn_interval		= 0;
 	m_ini_file					= 0;
+
+#ifndef XRGAME_EXPORTS
+	if (pSettings->line_exist(caSection,"custom_data")) {
+		string_path				file_name;
+		FS.update_path			(file_name,"$game_config$",pSettings->r_string(caSection,"custom_data"));
+		if (!FS.exist(file_name)) {
+			Msg					("! cannot open config file %s",file_name);
+		}
+		else {
+			IReader				*reader = FS.r_open(file_name);
+			VERIFY				(reader);
+			{
+				int				size = reader->length()*sizeof(char);
+				LPSTR			temp = (LPSTR)_alloca(size + 1);
+				Memory.mem_copy	(temp,reader->pointer(),size);
+				temp[size]		= 0;
+				m_ini_string	= temp;
+			}
+			FS.r_close			(reader);
+		}
+	}
+#endif
 
 #ifndef AI_COMPILER
 	m_script_clsid				= object_factory().script_clsid(m_tClassID);

@@ -119,8 +119,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 		m_dwMoney 				= pSettings->r_u32(caSection, "money");
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 
-//	m_iCharacterProfile			= DEFAULT_PROFILE;
-	m_sCharacterProfile			= "default";
+	m_sCharacterProfile			= READ_IF_EXISTS(pSettings,r_string,caSection,"character_profile","default");
 	m_SpecificCharacter			= NULL;
 
 #ifdef XRGAME_EXPORTS
@@ -243,6 +242,27 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 
 }
 
+void CSE_ALifeTraderAbstract::OnChangeProfile(PropValue* sender)
+{
+	m_SpecificCharacter = NULL;
+#ifndef AI_COMPILER
+	specific_character();
+#endif
+	base()->set_editor_flag		(ISE_Abstract::flVisualChange);
+}
+
+void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
+{
+	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
+#ifdef XRSE_FACTORY_EXPORTS
+	RListValue *value		= PHelper().CreateRList	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
+		&m_sCharacterProfile, 
+		&*fp_data.character_profiles.begin(), fp_data.character_profiles.size());
+	
+	value->OnChangeEvent.bind	(this,&CSE_ALifeTraderAbstract::OnChangeProfile);
+#endif
+}
 
 #ifndef AI_COMPILER
 

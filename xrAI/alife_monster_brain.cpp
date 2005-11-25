@@ -176,4 +176,14 @@ void CALifeMonsterBrain::default_behaviour	()
 	movement().path_type			(MovementManager::ePathTypeNoPath);
 }
 
+void CALifeMonsterBrain::on_switch_online	()
+{
+	movement().on_switch_online		();
+}
+
+void CALifeMonsterBrain::on_switch_offline	()
+{
+	movement().on_switch_offline	();
+}
+
 #endif

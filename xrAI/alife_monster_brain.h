@@ -51,6 +51,8 @@ public:
 			void						on_register			();
 			void						on_unregister		();
 			void						on_location_change	();
+			void						on_switch_online	();
+			void						on_switch_offline	();
 
 public:
 			void						update				();

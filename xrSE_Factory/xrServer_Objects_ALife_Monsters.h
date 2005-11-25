@@ -284,6 +284,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual	void					vfDetachAll				(bool					bFictitious = false) {};
 			void					vfCheckForPopulationChanges();
 	virtual void					on_surge				();
+	virtual	void					add_online				(const bool &update_registries);
+	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 

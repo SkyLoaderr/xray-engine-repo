@@ -41,6 +41,8 @@ public:
 
 public:
 			void				update						();
+			void				on_switch_online			();
+			void				on_switch_offline			();
 	IC		void				path_type					(const EPathType &path_type);
 
 public:
