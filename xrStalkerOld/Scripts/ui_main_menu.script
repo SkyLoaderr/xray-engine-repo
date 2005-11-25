@@ -67,11 +67,17 @@ function main_menu:InitCallBacks()
 	-- quit																												
 	self:AddCallback("btn_quit",		ui_events.BUTTON_CLICKED,				self.OnButton_quit_clicked,			self)
 	self:AddCallback("btn_quit_to_mm",	ui_events.BUTTON_CLICKED,				self.OnButton_disconnect_clicked,	self)
+	self:AddCallback("btn_ret",			ui_events.BUTTON_CLICKED,				self.OnButton_return_game,			self)
 	-- message box																										
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_OK_CLICKED,		self.OnMsgOk,						self)
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_CANCEL_CLICKED,	self.OnMsgCancel,					self)
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_YES_CLICKED,		self.OnMsgYes,						self)
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_NO_CLICKED,		self.OnMsgNo,						self)
+end
+
+function main_menu:OnButton_return_game()
+	local console = get_console()
+	console:execute("main_menu off")
 end
 
 function main_menu:OnButton_new_novice_game()
