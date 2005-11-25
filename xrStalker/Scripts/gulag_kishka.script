@@ -417,13 +417,13 @@ end
 
 function load_states(gname, type)
 
-if type == "ds_anton_test" then
+if type == "ds_kem3" then
 		return function(gulag)
 			return 0
 		end
 	end
 	
-	if type == "ds_anton_test_2" then
+	if type == "ds_kem4" then
 		return function(gulag)
 			return 0
 		end
@@ -516,10 +516,10 @@ end
 
 function checkStalker(npc_community, gulag_type)
 
-	if gulag_type == "ds_anton_test" then
+	if gulag_type == "ds_kem3" then
 	   return npc_community == "military"
 	end
-	if gulag_type == "ds_anton_test_2" then
+	if gulag_type == "ds_kem4" then
 	   return npc_community == "military"
 	end
 	
