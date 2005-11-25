@@ -174,6 +174,11 @@ ALife::_SPAWN_ID CALifeSimulator__spawn_id		(CALifeSimulator *self, ALife::_SPAW
 	return								(((const CALifeSimulator *)self)->spawns().spawn_id(spawn_story_id));
 }
 
+LPCSTR get_level_name							(const CALifeSimulator *self, int level_id)
+{
+	return								(*ai().game_graph().header().level(level_id).name());
+}
+
 void CALifeSimulator::script_register			(lua_State *L)
 {
 	module(L)
@@ -181,6 +186,7 @@ void CALifeSimulator::script_register			(lua_State *L)
 		class_<CALifeSimulator>("alife_simulator")
 			.def("valid_object_id",			&valid_object_id)
 			.def("level_id",				&get_level_id)
+			.def("level_name",				&get_level_name)
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,LPCSTR))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID, bool))(alife_object))
