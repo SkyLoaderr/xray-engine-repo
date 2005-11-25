@@ -33,6 +33,13 @@ class CAI_Bloodsucker : public CBaseMonster,
 	u32						m_last_invisible_run_play;
 
 public:
+	ref_sound				m_sound_vampire_grasp;
+	ref_sound				m_sound_vampire_sucking;
+	ref_sound				m_sound_vampire_hit;
+	ref_sound				m_sound_invisibility_change_state;
+
+
+public:
 
 	SAnimationTripleData	anim_triple_vampire;
 

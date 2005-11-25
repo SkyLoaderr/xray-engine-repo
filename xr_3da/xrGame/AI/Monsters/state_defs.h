@@ -141,11 +141,16 @@ enum EMonsterState {
 
 	// -------------------------------------------------------------
 
-	eStateCustom					= eGlobalState << 15,
+	eStateCustom						= eGlobalState << 15,
 
-	eStateBurerScanning				= eStateCustom | 1, 
-	eStateCustomMoveToRestrictor	= eStateCustom | 2,
+	eStateBurerScanning					= eStateCustom | 1, 
+	eStateCustomMoveToRestrictor		= eStateCustom | 2,
 	
+	eStateSmartTerrainTask				= eStateCustom | 3,
+	eStateSmartTerrainTaskGamePathWalk	= eStateCustom | 4,
+	eStateSmartTerrainTaskLevelPathWalk	= eStateCustom | 5,
+	eStateSmartTerrainTaskWaitCapture	= eStateCustom | 6,
+
 	// -------------------------------------------------------------
 	// custom attack states
 

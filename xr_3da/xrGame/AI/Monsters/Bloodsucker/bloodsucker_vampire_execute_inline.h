@@ -121,14 +121,23 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_prepare()
 {
 	object->com_man().ta_activate		(object->anim_triple_vampire);
 	time_vampire_started				= Device.dwTimeGlobal;
+	
+	object->m_sound_vampire_grasp.play_at_pos(object,get_head_position(object));
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
 {
+	if (!object->m_sound_vampire_sucking._feedback() && !object->m_sound_vampire_grasp._feedback()) {
+		object->m_sound_vampire_sucking.play_at_pos(object,get_head_position(object));
+	}
+
 	// проверить на грави удар
 	if (time_vampire_started + VAMPIRE_TIME_HOLD < Device.dwTimeGlobal) {
 		m_action = eActionFire;
+		if (object->m_sound_vampire_sucking._feedback()) {
+			object->m_sound_vampire_sucking.stop();
+		}
 	}
 }
 
@@ -136,6 +145,8 @@ TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 {
 	object->com_man().ta_pointbreak				();
+	object->m_sound_vampire_hit.play_at_pos(object,get_head_position(object));
+	object->sound().play(MonsterSpace::eMonsterSoundAttackHit);
 }
 
 //////////////////////////////////////////////////////////////////////////

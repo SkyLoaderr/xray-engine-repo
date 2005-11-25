@@ -25,6 +25,7 @@ struct SControlPathBuilderData : public ControlCom::IComData {
 	bool		reset_actuality;
 	
 	MovementManager::EPathType path_type;
+	u32			game_graph_target_vertex;
 };
 
 

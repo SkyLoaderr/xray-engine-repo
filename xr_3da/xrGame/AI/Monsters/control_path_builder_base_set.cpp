@@ -25,6 +25,8 @@ void CControlPathBuilderBase::prepare_builder()
 
 	m_time_global_failed_started	= 0;
 	m_time_path_updated_external	= 0;
+
+	m_game_graph_target_vertex	= u32(-1);
 }
 
 //////////////////////////////////////////////////////////////////////////

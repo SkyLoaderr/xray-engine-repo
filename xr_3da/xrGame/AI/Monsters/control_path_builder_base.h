@@ -21,6 +21,7 @@ class CControlPathBuilderBase : public CControl_ComBase {
 	u32							m_velocity_mask;
 	u32							m_desirable_mask;
 	bool						m_reset_actuality;
+	u32							m_game_graph_target_vertex;
 
 	// -----------------------------------------------------------
     // build path members
@@ -124,7 +125,7 @@ public:
 
 
 		void		prepare_builder			();
-		void		detour_graph_points		();
+		void		detour_graph_points		(u32 game_graph_vertex_id = u32(-1));
 	IC	void		set_generic_parameters	();
 
 		Fvector		get_target_found		() {return m_target_found.position;}

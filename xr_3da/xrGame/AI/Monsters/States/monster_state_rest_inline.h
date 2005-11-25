@@ -11,6 +11,7 @@
 #include "../ai_monster_squad_manager.h"
 #include "../anomaly_detector.h"
 #include "monster_state_home_point_rest.h"
+#include "monster_state_smart_terrain_task.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -31,6 +32,7 @@ CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj) : inherited(obj)
 	add_state(eStateSquad_RestFollow,	xr_new<CStateMonsterSquadRestFollow<_Object> >(obj));
 	add_state(eStateCustomMoveToRestrictor, xr_new<CStateMonsterMoveToRestrictor<_Object> > (obj));
 	add_state(eStateRest_MoveToHomePoint, xr_new<CStateMonsterRestMoveToHomePoint<_Object> > (obj));
+	add_state(eStateSmartTerrainTask, xr_new<CStateMonsterSmartTerrainTask<_Object> > (obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -66,63 +68,76 @@ void CStateMonsterRestAbstract::critical_finalize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestAbstract::execute()
 {
-	bool move_to_restrictor = false;
+	// check alife control
+	bool captured_by_smart_terrain = false;
 	
-	if (prev_substate == eStateCustomMoveToRestrictor) {
-		if (!get_state(eStateCustomMoveToRestrictor)->check_completion()) 
-			move_to_restrictor = true;
-	} else if (get_state(eStateCustomMoveToRestrictor)->check_start_conditions()) 
-			move_to_restrictor = true;
-	
-	if (move_to_restrictor) select_state(eStateCustomMoveToRestrictor);
+	if (prev_substate == eStateSmartTerrainTask) {
+		if (!get_state(eStateSmartTerrainTask)->check_completion()) 
+			captured_by_smart_terrain = true;
+	} else if (get_state(eStateSmartTerrainTask)->check_start_conditions()) 
+		captured_by_smart_terrain = true;
+
+	if (captured_by_smart_terrain) select_state(eStateSmartTerrainTask);
 	else {
-		// check home point
-		bool move_to_home_point = false;
-		
-		if (prev_substate == eStateRest_MoveToHomePoint) {
-			if (!get_state(eStateRest_MoveToHomePoint)->check_completion()) 
-				move_to_home_point = true;
-		} else if (get_state(eStateRest_MoveToHomePoint)->check_start_conditions()) 
-			move_to_home_point = true;
-		
-		if (move_to_home_point) select_state(eStateRest_MoveToHomePoint);
+		// check restrictions
+		bool move_to_restrictor = false;
+
+		if (prev_substate == eStateCustomMoveToRestrictor) {
+			if (!get_state(eStateCustomMoveToRestrictor)->check_completion()) 
+				move_to_restrictor = true;
+		} else if (get_state(eStateCustomMoveToRestrictor)->check_start_conditions()) 
+			move_to_restrictor = true;
+
+		if (move_to_restrictor) select_state(eStateCustomMoveToRestrictor);
 		else {
-			// check squad behaviour
-			bool use_squad = false;
+			// check home point
+			bool move_to_home_point = false;
 
-			if (monster_squad().get_squad(object)->GetCommand(object).type == SC_REST) {
-				select_state	(eStateSquad_Rest);
-				use_squad		= true;
-			} else if (monster_squad().get_squad(object)->GetCommand(object).type == SC_FOLLOW) {
-				select_state	(eStateSquad_RestFollow);
-				use_squad		= true;
-			} 
+			if (prev_substate == eStateRest_MoveToHomePoint) {
+				if (!get_state(eStateRest_MoveToHomePoint)->check_completion()) 
+					move_to_home_point = true;
+			} else if (get_state(eStateRest_MoveToHomePoint)->check_start_conditions()) 
+				move_to_home_point = true;
 
-			if (!use_squad) {
-				bool bNormalSatiety =	(object->conditions().GetSatiety() > object->db().m_fMinSatiety) && 
-					(object->conditions().GetSatiety() < object->db().m_fMaxSatiety); 
+			if (move_to_home_point) select_state(eStateRest_MoveToHomePoint);
+			else {
+				// check squad behaviour
+				bool use_squad = false;
 
-				bool state_fun = false;
+				if (monster_squad().get_squad(object)->GetCommand(object).type == SC_REST) {
+					select_state	(eStateSquad_Rest);
+					use_squad		= true;
+				} else if (monster_squad().get_squad(object)->GetCommand(object).type == SC_FOLLOW) {
+					select_state	(eStateSquad_RestFollow);
+					use_squad		= true;
+				} 
 
-				if (prev_substate == eStateRest_Fun) {
-					if (!get_state(eStateRest_Fun)->check_completion()) 
-						state_fun = true;
-				} else {
-					if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
-						state_fun = true;
-				}
+				if (!use_squad) {
+					bool bNormalSatiety =	(object->conditions().GetSatiety() > object->db().m_fMinSatiety) && 
+						(object->conditions().GetSatiety() < object->db().m_fMaxSatiety); 
 
-				if (state_fun) {
-					select_state	(eStateRest_Fun);
-				} else {
-					if (bNormalSatiety) {
-						select_state	(eStateRest_Idle);
+					bool state_fun = false;
+
+					if (prev_substate == eStateRest_Fun) {
+						if (!get_state(eStateRest_Fun)->check_completion()) 
+							state_fun = true;
 					} else {
-						select_state	(eStateRest_WalkGraphPoint);
+						if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
+							state_fun = true;
 					}
-				}
 
-				if ((prev_substate == eStateRest_Fun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
+					if (state_fun) {
+						select_state	(eStateRest_Fun);
+					} else {
+						if (bNormalSatiety) {
+							select_state	(eStateRest_Idle);
+						} else {
+							select_state	(eStateRest_WalkGraphPoint);
+						}
+					}
+
+					if ((prev_substate == eStateRest_Fun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
+				}
 			}
 		}
 	}

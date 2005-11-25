@@ -50,6 +50,7 @@ void CControlPathBuilder::reinit()
 	m_data.desirable_mask			= u32(-1);
 
 	m_data.path_type				= MovementManager::ePathTypeLevelPath;
+	m_data.game_graph_target_vertex	= u32(-1);
 }
 
 void CControlPathBuilder::update_schedule() 
@@ -90,9 +91,15 @@ void CControlPathBuilder::update_schedule()
 		detail().set_desirable_mask			(m_data.desirable_mask);
 
 		set_path_type						(m_data.path_type);
-		if (m_data.path_type == MovementManager::ePathTypeGamePath)			
-			game_selector().set_selection_type	(eSelectionTypeRandomBranching);
-		else if (m_data.path_type != MovementManager::ePathTypePatrolPath) {
+		if (m_data.path_type == MovementManager::ePathTypeGamePath) {
+			// check if we have alife task
+			if (m_data.game_graph_target_vertex != u32(-1)) {
+				set_game_dest_vertex					(m_data.game_graph_target_vertex);
+				game_selector().set_selection_type		(eSelectionTypeMask);
+			} else 
+				// else just wandering through the game graph
+				game_selector().set_selection_type	(eSelectionTypeRandomBranching);
+		} else if (m_data.path_type != MovementManager::ePathTypePatrolPath) {
 			// set target
 			detail().set_dest_position			(m_data.target_position);
 			

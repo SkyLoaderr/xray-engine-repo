@@ -219,6 +219,10 @@ void CBaseMonster::debug_fsm()
 		case eStateBurerAttack_Melee:					sprintf(st,"Attack :: Melee");				break;
 		case eStateBurerScanning:						sprintf(st,"Attack :: Scanning");			break;
 		case eStateCustomMoveToRestrictor:				sprintf(st,"Moving To Restrictor :: Position not accessible");	break;
+		case eStateSmartTerrainTask:					sprintf(st,"ALIFE");	break;
+		case eStateSmartTerrainTaskGamePathWalk:		sprintf(st,"ALIFE :: Game Path Walk");	break;
+		case eStateSmartTerrainTaskLevelPathWalk:		sprintf(st,"ALIFE :: Level Path Walk");	break;
+		case eStateSmartTerrainTaskWaitCapture:			sprintf(st,"ALIFE :: Wait till smart terrain will capture me");	break;
 		case eStateUnknown:								sprintf(st,"Unknown State :: ");			break;
 		default:										sprintf(st,"Undefined State ::");			break;
 	}

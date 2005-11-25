@@ -49,6 +49,7 @@ void CControlPathBuilderBase::reset()
 	m_last_time_dir_set				= 0;
 	m_last_time_target_set			= 0;
 	m_reset_actuality				= false;
+	m_game_graph_target_vertex		= u32(-1);
 
 	prepare_builder					();
 
@@ -88,9 +89,11 @@ void CControlPathBuilderBase::on_stop_control(ControlCom::EControlType type)
 	}
 }
 
-void CControlPathBuilderBase::detour_graph_points()
+void CControlPathBuilderBase::detour_graph_points(u32 game_graph_vertex_id)
 {
-	set_game_path_type	();
+	
+	m_game_graph_target_vertex	= game_graph_vertex_id;
+	set_game_path_type			();
 }
 
 void CControlPathBuilderBase::set_dest_direction(const Fvector &dir)

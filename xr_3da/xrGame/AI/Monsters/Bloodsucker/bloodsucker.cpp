@@ -135,6 +135,14 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	#ifdef DEBUG	
 		anim().accel_chain_test		();
 	#endif
+
+
+	// load special sounds
+	m_sound_vampire_grasp.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Grasp"),	SOUND_TYPE_MONSTER_ATTACKING);
+	m_sound_vampire_sucking.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Sucking"),	SOUND_TYPE_MONSTER_ATTACKING);
+	m_sound_vampire_hit.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Hit"),	SOUND_TYPE_MONSTER_ATTACKING);
+
+	m_sound_invisibility_change_state.create(TRUE, pSettings->r_string(section,"Sound_Invisibility_Change_State"),	SOUND_TYPE_MONSTER_ATTACKING);
 }
 
 

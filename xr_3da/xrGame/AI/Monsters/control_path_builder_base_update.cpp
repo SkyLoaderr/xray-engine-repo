@@ -60,17 +60,18 @@ void CControlPathBuilderBase::set_path_builder_params()
 	SControlPathBuilderData	*ctrl_data = (SControlPathBuilderData *)m_man->data(this, ControlCom::eControlPath);
 	if (!ctrl_data) return;
 
-	ctrl_data->use_dest_orientation	= m_use_dest_orient;
-	ctrl_data->dest_orientation		= m_dest_dir;
-	ctrl_data->target_node			= m_target_found.node;
-	ctrl_data->target_position		= m_target_found.position;
-	ctrl_data->try_min_time			= m_try_min_time;
-	ctrl_data->enable				= m_enable;
-	ctrl_data->path_type			= m_path_type;
-	ctrl_data->extrapolate			= m_extrapolate;
-	ctrl_data->velocity_mask		= m_velocity_mask;
-	ctrl_data->desirable_mask		= m_desirable_mask;
-	ctrl_data->reset_actuality		= m_reset_actuality;
+	ctrl_data->use_dest_orientation		= m_use_dest_orient;
+	ctrl_data->dest_orientation			= m_dest_dir;
+	ctrl_data->target_node				= m_target_found.node;
+	ctrl_data->target_position			= m_target_found.position;
+	ctrl_data->try_min_time				= m_try_min_time;
+	ctrl_data->enable					= m_enable;
+	ctrl_data->path_type				= m_path_type;
+	ctrl_data->extrapolate				= m_extrapolate;
+	ctrl_data->velocity_mask			= m_velocity_mask;
+	ctrl_data->desirable_mask			= m_desirable_mask;
+	ctrl_data->reset_actuality			= m_reset_actuality;
+	ctrl_data->game_graph_target_vertex = m_game_graph_target_vertex;
 }
 
 

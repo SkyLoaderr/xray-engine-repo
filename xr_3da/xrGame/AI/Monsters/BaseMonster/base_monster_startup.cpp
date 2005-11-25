@@ -49,25 +49,29 @@ void CBaseMonster::Load(LPCSTR section)
 	m_rank							= (pSettings->line_exist(section,"rank")) ? int(pSettings->r_u8(section,"rank")) : 0;
 }
 
+// if sound is absent just do not load that one
+#define LOAD_SOUND(sound_name,_count,_type,_prior,_mask,_int_type)		\
+	if (pSettings->line_exist(section,sound_name))						\
+		sound().add(pSettings->r_string(section,sound_name), _count,_type,_prior,_mask,_int_type,"bip01_head");
+
 void CBaseMonster::reload	(LPCSTR section)
 {
 	CCustomMonster::reload		(section);
 	CStepManager::reload		(section);
 	movement().reload	(section);
 
-	sound().add(pSettings->r_string(section,"sound_idle"),				16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_eat"),					16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_attack"),				16,		SOUND_TYPE_MONSTER_ATTACKING,	5,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack,		"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_attack_hit"),			16,		SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(-1),			MonsterSpace::eMonsterSoundAttackHit,	"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_take_damage"),			16,		SOUND_TYPE_MONSTER_INJURING,	1,	u32(-1),			MonsterSpace::eMonsterSoundTakeDamage,	"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_die"),					16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDie,			"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_die_in_anomaly"),		16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDieInAnomaly,"bip01_head");	
-	sound().add(pSettings->r_string(section,"sound_threaten"),			16,		SOUND_TYPE_MONSTER_ATTACKING,	3,	u32(1 << 31) | 0,	MonsterSpace::eMonsterSoundThreaten,	"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_landing"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundLanding,		"bip01_head");
-	sound().add(pSettings->r_string(section,"sound_steal"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
-	sound().add(pSettings->r_string(section,"sound_panic"),				16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
-	sound().add(pSettings->r_string(section,"sound_growling"),			16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
-
+	// load base sounds
+	LOAD_SOUND("sound_idle",			16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle);
+	LOAD_SOUND("sound_eat",				16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat);
+	LOAD_SOUND("sound_attack",			16,		SOUND_TYPE_MONSTER_ATTACKING,	5,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack);
+	LOAD_SOUND("sound_attack_hit",		16,		SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(-1),			MonsterSpace::eMonsterSoundAttackHit);
+	LOAD_SOUND("sound_take_damage",		16,		SOUND_TYPE_MONSTER_INJURING,	1,	u32(-1),			MonsterSpace::eMonsterSoundTakeDamage);
+	LOAD_SOUND("sound_die",				16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDie);
+	LOAD_SOUND("sound_die_in_anomaly",	16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDieInAnomaly);	
+	LOAD_SOUND("sound_threaten",		16,		SOUND_TYPE_MONSTER_ATTACKING,	3,	u32(1 << 31) | 0,	MonsterSpace::eMonsterSoundThreaten);
+	LOAD_SOUND("sound_steal",			16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal);	
+	LOAD_SOUND("sound_panic",			16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic);	
+	
 	control().reload					(section);
 
 	// load monster type
