@@ -41,5 +41,6 @@ protected:
     S_HEADER_DATA	m_header;
 	CGameFont*	m_pTextFont;
 	u32			m_text_col;
+	u32			m_prev_upd_time;
 //	float		m_header_height;
 };

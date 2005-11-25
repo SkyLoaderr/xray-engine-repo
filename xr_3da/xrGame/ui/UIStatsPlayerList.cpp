@@ -18,6 +18,7 @@ CUIStatsPlayerList::CUIStatsPlayerList(){
 
 	m_pTextFont	= NULL;
 	m_text_col	= 0xff000000;
+	m_prev_upd_time = 0; items.reserve(32);
 //	m_header_height = 25;
 }
 
@@ -34,6 +35,9 @@ void CUIStatsPlayerList::AddField(const char* name, float width){
 }
 
 void CUIStatsPlayerList::Update(){
+	if (m_prev_upd_time > Device.TimerAsyncMM() - 100)
+		return;
+	m_prev_upd_time = Device.TimerAsyncMM();
 	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
 	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 

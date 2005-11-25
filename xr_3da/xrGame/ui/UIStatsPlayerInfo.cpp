@@ -72,7 +72,7 @@ void CUIStatsPlayerInfo::AddField(float len, CGameFont* pF, u32 text_col, bool i
 	CUIStatic* wnd = icon ? xr_new<CUIStatsIcon>() : xr_new<CUIStatic>();
 
 	if (m_fields.empty())
-		wnd->Init(5,0,len,this->GetHeight());		
+		wnd->Init(5,0,len,this->GetHeight());
 	else
 	{
 		wnd->Init(m_fields.back()->GetWndRect().right,0,len,this->GetHeight());
@@ -81,6 +81,7 @@ void CUIStatsPlayerInfo::AddField(float len, CGameFont* pF, u32 text_col, bool i
 	if (pF)
 		wnd->SetFont(pF);
 	wnd->SetTextColor(text_col);
+	wnd->SetTextComplexMode(false);
 	m_fields.push_back(wnd);
 	AttachChild(wnd);
 }
