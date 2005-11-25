@@ -30,6 +30,9 @@ void __fastcall TSingleParam::Button1Click(TObject *Sender)
     if (m_Constructor->ShowModal() == mrCancel) return;
 
     m_Animator->ResetParam (m_Param);
+    
+    if (m_Constructor->m_Entries.size () == 1) return;
+
     CPostProcessParam* cparam = m_Animator->GetParam (m_Param);
     if (!cparam) throw "Error get parameter from animator";
     float v;// = m_Constructor->InitValue->Value;

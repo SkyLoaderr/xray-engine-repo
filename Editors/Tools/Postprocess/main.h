@@ -14,6 +14,7 @@
 #include <float_constructor.h>
 #include <color_constructor.h>
 #include <Dialogs.hpp>
+#include <ImgList.hpp>
 #define XRCORE_API __declspec(dllimport)
 
 #include <xrCore.h>
@@ -36,6 +37,7 @@ __published:	// IDE-managed Components
     TTabControl *TabControl;
     TSaveDialog *SaveDialog;
     TOpenDialog *OpenDialog;
+    TImageList *ImageList;
     void __fastcall FormResize(TObject *Sender);
     void __fastcall NewEffectButtonClick(TObject *Sender);
     void __fastcall FormDestroy(TObject *Sender);

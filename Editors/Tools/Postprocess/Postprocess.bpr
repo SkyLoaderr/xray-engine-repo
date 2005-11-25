@@ -28,7 +28,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;ICF;__forceinline"/>
-    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <SYSDEFINES value="NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="Postprocess.cpp"/>
     <INCLUDEPATH value="..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr;Y:\postprocess"/>
     <LIBPATH value="Y:\postprocess;..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
@@ -48,9 +48,9 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0w32.obj $(PACKAGES) sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
