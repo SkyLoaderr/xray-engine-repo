@@ -1727,6 +1727,7 @@ function load_states(gname, type)
 			elseif actor:has_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") <= 0 then
 				return 2 -- kamp				
 			end
+			return gulag.state
 		end
 	end
 	
