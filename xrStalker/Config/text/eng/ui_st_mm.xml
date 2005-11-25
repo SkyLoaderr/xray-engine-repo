@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+	<string id="ui_mm_return_game">
+		<text>Return to Game</text>
+	</string>
 	<string id="ui_mm_newgame">
         <text>New Game</text>
     </string>
