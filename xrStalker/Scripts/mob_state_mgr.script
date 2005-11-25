@@ -1,14 +1,18 @@
 function get_state(ini, section, obj)
-	local def_state
 	
-	local obj_clsid = get_clsid(obj)
-	if obj_clsid == clsid.bloodsucker_s then
-		def_state = "vis"
-	else
-		def_state = ""
+	
+--	local obj_clsid = get_clsid(obj)
+--	if obj_clsid == clsid.bloodsucker_s then
+--		def_state = "vis"
+--	else
+--		def_state = ""
+--	end
+	local state  = utils.cfg_get_string(ini, section, "state", obj, false, "", "")
+	if (state == "") then
+		return nil
 	end
 	
-	return utils.cfg_get_string(ini, section, "state", obj, false, "", def_state)
+	return state
 end
 
 function set_state(obj, actor, state)
