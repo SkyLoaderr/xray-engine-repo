@@ -218,6 +218,13 @@
 				<File
 					RelativePath=".\Config\creatures\stalkers.ltx">
 				</File>
+				<Filter
+					Name="custom_data"
+					Filter="">
+					<File
+						RelativePath=".\Config\stalker_custom_data.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="gameplay"
