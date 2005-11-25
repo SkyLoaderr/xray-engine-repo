@@ -40,7 +40,7 @@ function evaluator_leader:evaluate ()
     end         
 
     -- В противном случае будем требовать лидера из гулага
-    local gulag = xr_gulag.isUnderFraction (self.object)
+    local gulag = xr_gulag.get_npc_gulag (self.object)
     if gulag == nil then return false end
     
     local t = xr_gulag.fraction[gulag]:getJob (self.object)
@@ -327,7 +327,7 @@ end
 --------
 function action_follow:free ()
     -- если мы под гулагом, то запросим другую работу, иначе прямая дорога в logic
-    local gulag = xr_gulag.isUnderFraction (self.object)
+    local gulag = xr_gulag.get_npc_gulag (self.object)
 
     if gulag ~= nil then
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
