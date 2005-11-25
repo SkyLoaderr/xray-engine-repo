@@ -981,9 +981,9 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 	string256 buff;
 	bool success = false;
 
-	strconcat(buff, path, ":shared_texture");
-	shared_str sh_tex_xml = xml_doc.Read(buff, index, NULL);
-	CUITextureMaster::ParseShTexInfo(*sh_tex_xml);
+//	strconcat(buff, path, ":shared_texture");
+//	shared_str sh_tex_xml = xml_doc.Read(buff, index, NULL);
+//	CUITextureMaster::ParseShTexInfo(*sh_tex_xml);
 
 	strconcat(buff, path, ":texture");
 	shared_str texture = xml_doc.Read(buff, index, NULL);

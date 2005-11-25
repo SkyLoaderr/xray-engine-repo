@@ -201,9 +201,9 @@ void CScriptXmlInit::ParseShTexInfo(LPCSTR xml_file){
 	CUITextureMaster::ParseShTexInfo(xml_file);
 }
 
-void CScriptXmlInit::FreeShTexInfo(){
-	CUITextureMaster::FreeShTexInfo();
-}
+//void CScriptXmlInit::FreeShTexInfo(){
+//	CUITextureMaster::FreeShTexInfo();
+//}
 
 //void CScriptXmlInit::InitServerList(LPCSTR path, CServerList* pWnd){
 //	pWnd->InitFromXml(m_xml, path);
@@ -277,7 +277,6 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def(					constructor<>())
 		.def("ParseFile",		&CScriptXmlInit::ParseFile)
 		.def("ParseShTexInfo",	&CScriptXmlInit::ParseShTexInfo)
-		.def("FreeShTexInfo",	&CScriptXmlInit::FreeShTexInfo)
 		.def("InitWindow",		&CScriptXmlInit::InitWindow)
 		.def("InitFrame",		&CScriptXmlInit::InitFrame)
 		.def("InitFrameLine",	&CScriptXmlInit::InitFrameLine)

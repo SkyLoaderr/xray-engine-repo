@@ -14,7 +14,6 @@ class IUISimpleTextureControl;
 class CUITextureMaster{
 public:
 	static void ParseShTexInfo			(LPCSTR xml_file);
-	static void FreeShTexInfo			();
 
 	static void InitTexture(const char* texture_name,		IUISimpleTextureControl* tc);
 	static void InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc);
@@ -27,15 +26,22 @@ public:
 protected:
 	IC	static bool IsSh					(const char* texture_name);
 
+	typedef struct {
+		shared_str	file;
+		Frect		rect;
+	} TEX_INFO;
 
-	typedef xr_string region_name;
-	typedef xr_string shader_name;
-	typedef xr_map<region_name, Frect>				regions;
-	typedef xr_map<region_name, Frect>::iterator	regions_it;
-	typedef xr_map<shader_name, regions>			shared_textures;
-	typedef xr_map<shader_name, regions>::iterator	shared_textures_it;
 
-	static	shared_textures		m_shTex;
+//	typedef xr_string region_name;
+//	typedef xr_string shader_name;
+//	typedef xr_map<region_name, Frect>				regions;
+//	typedef xr_map<region_name, Frect>::iterator	regions_it;
+//	typedef xr_map<shader_name, regions>			shared_textures;
+//	typedef xr_map<shader_name, regions>::iterator	shared_textures_it;
+
+	static xr_map<shared_str, TEX_INFO>					m_textures;
+
+//	static	shared_textures		m_shTex;
 #ifdef DEBUG
 	static u32		m_time;
 #endif 

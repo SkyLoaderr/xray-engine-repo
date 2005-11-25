@@ -37,7 +37,6 @@ public:
 
 	void ParseFile		(LPCSTR xml_file);
 	void ParseShTexInfo	(LPCSTR xml_file);
-	void FreeShTexInfo	();
 	void InitWindow		(LPCSTR path, int index, CUIWindow* pWnd);
 	//void InitList		(LPCSTR path, int index, CUIListWnd* pWnd);
 
