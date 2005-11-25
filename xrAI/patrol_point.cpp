@@ -118,11 +118,17 @@ void CPatrolPoint::save										(IWriter &stream)
 #ifdef XRGAME_EXPORTS
 const u32 &CPatrolPoint::level_vertex_id					() const
 {
-	return				(level_vertex_id(&ai().level_graph(),&ai().cross_table(),&ai().game_graph()));
+	if (ai().game_graph().vertex(m_game_vertex_id)->level_id() == ai().level_graph().level_id())
+		return			(level_vertex_id(&ai().level_graph(),&ai().cross_table(),&ai().game_graph()));
+
+	return				(m_level_vertex_id);
 }
 
 const GameGraph::_GRAPH_ID &CPatrolPoint::game_vertex_id	() const
 {
-	return				(game_vertex_id(&ai().level_graph(),&ai().cross_table(),&ai().game_graph()));
+	if (ai().game_graph().vertex(m_game_vertex_id)->level_id() == ai().level_graph().level_id())
+		return			(game_vertex_id(&ai().level_graph(),&ai().cross_table(),&ai().game_graph()));
+
+	return				(m_game_vertex_id);
 }
 #endif

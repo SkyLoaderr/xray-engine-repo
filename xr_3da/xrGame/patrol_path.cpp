@@ -10,6 +10,8 @@
 #include "patrol_path.h"
 #include "levelgamedef.h"
 
+LPCSTR TEST_PATROL_PATH_NAME		= "val_dogs_nest4_centre";
+
 CPatrolPath::CPatrolPath			(shared_str name)
 {
 #ifdef DEBUG
@@ -19,6 +21,10 @@ CPatrolPath::CPatrolPath			(shared_str name)
 
 CPatrolPath	&CPatrolPath::load_raw	(const CLevelGraph *level_graph, const CGameLevelCrossTable *cross, const CGameGraph *game_graph, IReader &stream)
 {
+	if (!xr_strcmp(*m_name,TEST_PATROL_PATH_NAME)) {
+		__asm int 3;
+	}
+
 	R_ASSERT		(stream.find_chunk(WAYOBJECT_CHUNK_POINTS));
 	u32				vertex_count = stream.r_u16();
 	for (u32 i=0; i<vertex_count; ++i)
