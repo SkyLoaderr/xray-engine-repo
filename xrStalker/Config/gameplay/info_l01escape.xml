@@ -47,6 +47,7 @@
 	<info_portion id="tutorial_wounded_volk_greet"></info_portion>
 	<info_portion id="esc_wolf_say"></info_portion>
 	<info_portion id="esc_serious_talk"></info_portion>
+	<info_portion id="esc_wounded_arrive"></info_portion>
 
 	<!-- Fox -->
 	<info_portion id="escape_stalker_help"></info_portion>
