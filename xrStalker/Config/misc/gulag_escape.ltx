@@ -1113,6 +1113,81 @@ on_info = %+esc_first_novice_dead%
 on_info = %+esc_second_novice_dead%
 
 
+
+[logic@esc_corps_wounded]
+active = walker@normal_esc_corps_wounded
+on_death = death@esc_corps_wounded
+
+[walker@normal_esc_corps_wounded]
+path_walk = esc_wounded_walk
+path_look = esc_wounded_look
+on_info = {+esc_first_novice_dead +esc_second_novice_dead} walker@wounded_esc_corps_wounded
+danger = danger_condition@tolik
+
+[walker@wounded_esc_corps_wounded]
+path_walk = esc_wounded_walk
+path_look = esc_wounded_look
+wounded = wounded@esc_corps_wounded
+on_info = {+tutorial_wounded_help} remark@thanks_esc_corps_wounded
+danger = danger_condition@tolik
+meet = meet@esc_corps_wounded
+
+[remark@thanks_esc_corps_wounded]
+anim = guard
+snd = esc_tolik_thanks
+on_signal = sound_end| walker@to_lager_esc_corps_wounded
+danger = danger_condition@tolik
+meet = meet@esc_corps_wounded
+
+[walker@to_lager_esc_corps_wounded]
+path_walk = esc_vagon_wounded_to_lager
+path_look = esc_wounded_to_lager_look
+on_signal2 = thanks| remark@esc_corps_wounded
+on_signal = lager_pass| %+esc_path_to_lager%
+
+[remark@esc_corps_wounded]
+snd = esc_tolik_to_wolf
+anim = guard
+on_signal = sound_end| remark@to_gulag_esc_corps_wounded
+no_rotate = true
+
+[remark@to_gulag_esc_corps_wounded]
+on_actor_dist_ge_nvis = 12| walker@to_gulag_esc_corps_wounded %=esc_wolf_thanks%
+on_actor_dist_le_nvis = 12| walker@to_gulag_esc_corps_wounded %+esc_wolf_say%
+anim = guard
+no_rotate = true
+
+[walker@to_gulag_esc_corps_wounded]
+path_walk = esc_to_gulag
+on_signal = wounded_arrive| %+esc_wounded_arrive%
+
+[wounded@esc_corps_wounded]
+hp_state = 35|help_me@help|10|wounded_heavy@help_heavy
+hp_state_see = 35|wounded@esc_tolik_help|10|wounded_heavy@help_heavy
+psy_state = 50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20| {=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy
+hp_victim = 35|actor|10|nil
+hp_cover = 35|false|10|false
+hp_fight = 35|false|10|false
+syndata = wounded@help
+help_dialog = tutorial_wounded_give_medkit
+
+[meet@esc_corps_wounded]
+meet_state	= 2|hello@wait|1|wait@wait
+meet_state_wpn	= 2|hello@wait|1|wait@wait
+victim		= 1|actor
+victim_wpn	= 1|actor
+use		= true
+use_wpn		= true
+syndata		= hello@hail|backoff@threat_weap
+
+
+[danger_condition@tolik]
+ignore_danger_corpse = 5
+
+
+[death]
+on_info = {=killed_by_actor} %+tutorial_wounded_die%, %+tutorial_wounded_death%
+
 ;------------------------------
 ;------- Dogs to fox ----------
 ;------------------------------
