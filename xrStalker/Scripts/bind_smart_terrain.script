@@ -36,8 +36,6 @@ function smart_terrain_binder:net_spawn( server_object )
 		return false
 	end
 
-	self.object:set_callback( callback.zone_enter, self.on_enter, self )
-
 	-- получить ссылку на настоящий серверный объект
 	self.se_smart_terrain = alife():object( server_object.id )
 
@@ -48,8 +46,6 @@ function smart_terrain_binder:net_spawn( server_object )
 end
 
 function smart_terrain_binder:net_destroy()
-	self.object:set_callback( callback.zone_enter, nil )
-
 	db.del_zone( self.object )
 	db.del_smart_terrain( self.se_smart_terrain )
 
@@ -80,15 +76,4 @@ function smart_terrain_binder:update( delta )
 	object_binder.update( self, delta )
 
 	self.se_smart_terrain:update()
-end
-
--- callback на вход в зону
-function smart_terrain_binder:on_enter( zone, obj )
-	printf( "[smart terrain %s] on_enter obj=%s, clsid=%s", zone:name(), obj:name(), obj:clsid() )
-
---	local se_obj = alife():object( obj:id() )
-
---	if self.se_smart_terrain:enabled( se_obj ) then
---		self.se_smart_terrain:register( se_obj )
---	end
 end

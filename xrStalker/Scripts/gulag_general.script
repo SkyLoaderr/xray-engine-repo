@@ -1,6 +1,30 @@
 local t
 local ltx
 
+--[[ кешированные предустановок рангов и группировок
+формат:
+	presets = {
+		gulag_type1 = {
+			preset_name1 = {
+				community1 = {rank_min1,rank_max1},
+				community2 = {rank_min2,rank_max2},
+				...
+			},
+			preset_name2 = false,
+		},
+		gulag_type2 = {...},
+		...
+	}
+false означает, что пытались прочитать, но не нашли такой предустановки
+]]
+local presets = {
+	general_lager = {},
+	general_lair  = {}
+}
+
+-- ранги. формат: {novice={0,30}, experienced={30,60}, ...}
+local ranks
+
 function load_job(sj, gname, type, squad, groups, st)
 	ltx = ""
 	-- ”Ќ»¬≈–—јЋ№Ќџ… Ћј√≈–№ —“јЋ ≈–ќ¬
@@ -322,22 +346,91 @@ function load_states(gname, type)
 	end
 end
 
-function checkStalker(npc_community, type)
-	if type == "general_lager" then
-		return true
-	end
-	if type == "general_lair" then
+-- вычитывает сталкерские и монстр€чие ранги из game_relations.ltx
+function read_ranks()
+	ranks = {}
+
+	local ltx = system_ini()
+
+	
+end
+
+-- возвращает таблицу с предустановкой или false
+function read_preset( ltx_name, preset_name )
+	local ltx = ini_file( ltx_name )
+
+	if ltx and ltx:section_exist( preset_name ) then
+		if not ranks then
+			read_ranks()
+		end
+
+		local preset = {}
+		local result, field, str
+		local t
+		local n = ltx:line_count( preset_name )
+		local rank_min, rank_max, rank_interval
+
+		for i = 0, n-1 do
+			result, field, str = ltx:r_line( preset_name, i, "", "" )
+
+			t = parse_names( xr_logic.parse_condlist( nil, preset_name, field, str ) )
+
+			rank_min, rank_max = 100, 0
+
+			for i, rank_name in ipairs( t ) do
+				rank_interval = ranks[rank_name]
+
+				if rank_min < rank_interval[1] then
+					rank_min = rank_interval[1]
+				end
+
+				if rank_max > rank_interval[2] then
+					rank_max = rank_interval[2]
+				end
+			end
+
+			preset[field] = { rank_min, rank_max }
+		end
+
+		return preset
+	else
 		return false
+	end
+end
+
+-- подходит ли персонаж?
+-- провер€ет по предустановкам
+function check_preset( type, preset_name, npc_community, npc_rank )
+	local presets = presets[type]
+
+	if presets[preset_name] == nil then
+		presets[preset_name] = read_preset( "misc\\"..type..".ltx", preset_name )
+	end
+
+	if presets[preset_name] == false then
+		return true
+	else
+		local t = presets[preset_name][npc_community]
+		if t and ( npc_rank >= t[1] and npc_rank <= t[2] ) then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+function checkStalker(npc_community, type, npc_rank, preset_name)
+	if type == "general_lager" then
+		return check_preset( type, preset_name, npc_community, npc_rank )
+--		return true
 	end
 	return false
 end
 
-function checkMonster(npc_community, type)
-	if type == "general_lager" then
-		return false
-	end
+function checkMonster(npc_community, type, npc_rank, preset_name)
 	if type == "general_lair" then
-		return true
+		return check_preset( type, preset_name, npc_community, npc_rank)
+--		return true
 	end
 	return false
 end

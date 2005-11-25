@@ -12,7 +12,7 @@
 -- TODO fill_idle
 -- TODO у патруля перевыбор работы не будет в офлайне. надо чтоб был
 
-level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
+level_gulags = {gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
                 gulag_military, gulag_radar, gulag_radar_u, gulag_yantar, gulag_pripyat, gulag_kishka, gulag_sarcofag,
                 gulag_deadcity}
 
@@ -812,8 +812,47 @@ function gulag:set_goodwill (goodwill, object)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
+
+function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
+	local sim = alife()
+	if sim then
+		local strn_id
+
+		if sobject.smart_terrain_id then
+			strn_id = sobject:smart_terrain_id()
+		else
+			strn_id = 65535
+		end
+
+--		printf( "strn_id=%s", tostring( strn_id ) )
+
+		if strn_id ~= 65535 then
+			local strn             = sim:object( strn_id )
+			local need_setup_logic = strn.gulag.Object_begin_job[obj:id()] and not loaded
+
+			strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic )
+
+			if loaded then
+				--memusage.collect_info(obj, "before_logic")
+				xr_logic.initialize_obj(obj, st, loaded, db.actor, stype)
+				--memusage.collect_info(obj, "after_logic_before_callback")
+			end
+		else
+			--memusage.collect_info(obj, "before_logic")
+			xr_logic.initialize_obj(obj, st, loaded, db.actor, stype)
+			--memusage.collect_info(obj, "after_logic_before_callback")
+		end
+	else
+		--memusage.collect_info(obj, "before_logic")
+		xr_logic.initialize_obj(obj, st, loaded, db.actor, stype)
+		--memusage.collect_info(obj, "after_logic_before_callback")
+	end
+end
+
+----------------------------------------------------------------------------------------------------------------------
 -- Functions TODO и выше тоже
 ----------------------------------------------------------------------------------------------------------------------
+
 -- работает только для смартов, которые в онлайне
 function get_gulag_by_name( name )
 	local go_strn = db.zone_by_name[name]
@@ -932,11 +971,15 @@ function checkStalker(npc_community, gulag_type, npc_rank)
 		return npc_community ~= "military"
 	end
 
-    for i, v in pairs( level_gulags ) do
-	    if v.checkStalker(npc_community, gulag_type, npc_rank) then
-		    return true
-	    end
-    end
+	if gulag_general.checkStalker(npc_community, gulag_type, npc_rank, preset_name) then
+		return true
+	end
+
+	for i, v in pairs( level_gulags ) do
+		if v.checkStalker(npc_community, gulag_type) then
+			return true
+		end
+	end
 
 	return false
 end
@@ -946,21 +989,25 @@ function checkMonster(npc_community, gulag_type, npc_rank)
 		return true
 	end
 
+	if gulag_general.checkMonster(npc_community, gulag_type, npc_rank, preset_name) then
+		return true
+	end
+
     for i, v in pairs( level_gulags ) do
-	    if v.checkMonster(npc_community, gulag_type, npc_rank) then
+		if v.checkMonster(npc_community, gulag_type) then
 		    return true
-	    end
-    end
+		end
+	end
 
 	return false
 end
 
-function checkNpc(npc_community, is_stalker, gulag_type, npc_rank)
+function checkNpc(npc_community, is_stalker, gulag_type, npc_rank, preset_name)
 --	printf("COMM %s !! %s", npc_community, gulag_type)
 
 	if is_stalker then
-		return checkStalker(npc_community, gulag_type, npc_rank)
+		return checkStalker(npc_community, gulag_type, npc_rank, preset_name)
 	else
-		return checkMonster(npc_community, gulag_type, npc_rank)
+		return checkMonster(npc_community, gulag_type, npc_rank, preset_name)
 	end
 end

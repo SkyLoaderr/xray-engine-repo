@@ -94,12 +94,14 @@ function generic_object_binder:hit_callback(obj, amount, local_direction, who, b
 	printf("HIT_CALLBACK: [%s] amount[%s]", obj:name(), amount)
 end
 
-function generic_object_binder:net_spawn(data)
-	if not object_binder.net_spawn(self, data) then
+function generic_object_binder:net_spawn(sobject)
+	if not object_binder.net_spawn(self, sobject) then
 		return false
 	end
 
 	db.add_obj(self.object)
+
+	xr_gulag.setup_gulag_and_logic_on_spawn( self.object, self.st, sobject, modules.stype_mobile, self.loaded )
 
 	return true
 end
@@ -145,4 +147,3 @@ function generic_object_binder:load(reader)
 
 	xr_logic.load_obj(self.object, reader)
 end
-

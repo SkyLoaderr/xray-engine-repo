@@ -77,19 +77,9 @@ function se_smart_terrain:__init( section ) super( section )
 --	log( "se_smart_terrain::se_smart_terrain called!" )
 end
 
-function se_smart_terrain:__finalize()
---	log( "se_smart_terrain::~se_smart_terrain called!" )
-end
-
 function se_smart_terrain:detect_probability()
 --	log( "se_smart_terrain::detect_probability called!" )
 	return 0
-end
-
-function se_smart_terrain:smart_touch( monster )
---	log( "se_smart_terrain::smart_touch called!" )
-	cse_alife_smart_zone.smart_touch( self, monster )
---	on_touch( self, monster )
 end
 
 function se_smart_terrain:print()
@@ -207,28 +197,29 @@ function se_smart_terrain:get_se_objs()
 end
 
 -- заполнить информацию о персонаже
--- TODO story_id
+-- у монстров нету метода profile_name()
 function se_smart_terrain:fill_npc_info( obj )
-	local npc_info     = self.npc_info[obj.id]
+	local npc_info        = self.npc_info[obj.id]
 
-	npc_info.se_obj    = obj
+	npc_info.se_obj       = obj
 
-	npc_info.class_id  = obj:clsid()
-	npc_info.name      = obj:name()
---	npc_info.story_id  = obj:story_id()
-	npc_info.community = self:get_obj_community( obj )
---	npc_info.community = obj:profile_name()
+	npc_info.class_id     = obj:clsid()
+	npc_info.name         = obj:name()
+	npc_info.story_id     = obj.m_story_id
+	npc_info.community    = self:get_obj_community( obj )
+	npc_info.profile_name = obj.profile_name and obj:profile_name()
+	npc_info.rank         = 100 --obj:rank()
 
-	npc_info.group     = obj:g_group()
-	npc_info.squad     = obj:g_squad()
-	npc_info.team      = obj:g_team()
+	npc_info.group        = obj:g_group()
+	npc_info.squad        = obj:g_squad()
+	npc_info.team         = obj:g_team()
 
-	local t            = obj:get_smart_terrain_conditions()
+	local t               = obj:get_smart_terrain_conditions()
 	if t then
 		t = t[self:name()]
 	end
 
-	npc_info.cond      = t
+	npc_info.cond         = t
 end
 
 -- возвращает:
@@ -242,13 +233,6 @@ function se_smart_terrain:get_obj_community( obj )
 	else
 		return monster_classes[cls], false
 	end
-end
-
-function se_smart_terrain:FillProps( pref, items )
---	log( "se_smart_terrain::FillProps called!" )
-	cse_alife_smart_zone.FillProps( self, pref, items )
-
---	local prefix = pref .. "\\" .. self.section_name .. "\\smart terrain\\"
 end
 
 -- инициализация.
@@ -280,6 +264,7 @@ function se_smart_terrain:initialize()
 	self.gulag     = nil         -- экземпляр текущего гулага
 
 	gp.type        = ini:r_string( sect, "type" )
+	gp.preset_name = r_str ( ini, sect, "preset" )
 	gp.capacity    = r_num ( ini, sect, "capacity", 100 )
 	gp.squad       = r_num ( ini, sect, "squad" )
 
@@ -332,7 +317,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 			return false
 		end
 
-		return xr_gulag.checkNpc( community, is_stalker, self.gparams.type )
+		return xr_gulag.checkNpc( community, is_stalker, self.gparams.type, 100 /*obj:rank()*/, self.gparams.preset_name )
 	else
 		return false
 	end
@@ -377,7 +362,7 @@ end
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
 function se_smart_terrain:enabled( obj )
---	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 
 	-- DEBUG
 	if self.disabled then
@@ -562,11 +547,24 @@ function se_smart_terrain:fill_monster_classes()
 	end
 end
 
+-- возвращает название уровня, на котором находится smart terrain
+function se_smart_terrain:get_level_name()
+	return "test"
+end
+
 -- инициализация объекта.
 -- вызывается симулятором.
 function se_smart_terrain:on_register()
 --	printf( "[smart_terrain %s] on_register called", self:name() )
 	cse_alife_smart_zone.on_register( self )
+
+--	local p = patrol("esc_bridge_post4_walk"):point( 0 )
+--	printf( "path=esc_bridge_post4_walk  wp00 pos=%f, %f, %f", p.x, p.y, p.z )
+
+--	if self.gparams.type == "esc_bridge" then
+--		local p = self.position
+--		printf( "esc_bridge level_vertex: id=%d pos=%f, %f, %f", self.m_level_vertex_id, p.x, p.y, p.z )
+--	end
 
 	-- DEBUG
 	if self.disabled then
@@ -576,6 +574,10 @@ function se_smart_terrain:on_register()
 	self:fill_monster_classes()
 
 	self:get_se_objs()
+
+	if not self.gparams.preset_name then
+		self.gparams.preset_name = self:get_level_name()
+	end
 
 	if self.gulag then
 		self.gulag:initialize()
