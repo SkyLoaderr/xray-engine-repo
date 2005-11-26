@@ -1,11 +1,3 @@
-class "test"
-
-
-
-
 function main()
-	local sim = alife()
-	local npc = level.object_by_id(sim:story_object(006).id)
-	local obj = db.actor:object("dynamite")
-	dialogs.relocate_item(npc, obj, "out")
+	game.start_tutorial("part_1_pda")
 end
