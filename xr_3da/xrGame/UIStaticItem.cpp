@@ -18,7 +18,7 @@ CUIStaticItem::CUIStaticItem()
 #ifdef DEBUG
 	dbg_tex_name = NULL;
 #endif
-	hGeom_list.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+//	hGeom_list.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hGeom_fan.create	(FVF::F_TL, RCache.Vertex.Buffer(), 0);
 }
 //--------------------------------------------------------------------

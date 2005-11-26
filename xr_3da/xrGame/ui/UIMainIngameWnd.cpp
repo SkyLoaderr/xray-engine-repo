@@ -1542,6 +1542,15 @@ void test_key	(int dik)
 {
 /*
 	if(dik==DIK_K){
+	CUIWindow*		wnd_arr [10];
+	for(int i=0; i<10; ++i)
+		wnd_arr[i] = xr_new<CUIWindow>();
+
+	delete_data(wnd_arr);
+	}
+*/
+/*
+	if(dik==DIK_K){
 		pp = xr_new<CPostprocessAnimator>();
 		pp->Load							("proba.ppe",999);
 		Level().Cameras.AddEffector	(pp);
