@@ -20,6 +20,7 @@ public:
 	static float GetTextureHeight(const char* texture_name);
 	static float GetTextureWidth(const char* texture_name);
 	static Frect GetTextureRect(const char* texture_name);
+	static LPCSTR GetTextureFileName(const char* texture_name);
 
 	static void WriteLog();
 

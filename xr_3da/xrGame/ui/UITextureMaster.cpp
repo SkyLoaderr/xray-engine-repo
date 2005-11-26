@@ -78,28 +78,6 @@ void CUITextureMaster::InitTexture(const char* texture_name, IUISimpleTextureCon
 #ifdef DEBUG
 	m_time += T.GetElapsed_ms();
 #endif
-//	xr_string tx = texture_name;
-//	if (IsSh(texture_name))
-//	{
-//		shared_textures_it	sht_it;
-//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
-//		{
-//			regions_it reg_it = (*sht_it).second.find(texture_name);
-//			if (reg_it != (*sht_it).second.end())
-//			{				
-//				tc->CreateShader((*sht_it).first.c_str());	// texture file name
-//				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
-//#ifdef DEBUG
-//				m_time += T.GetElapsed_ms();
-//#endif
-//				return;
-//			}
-//		}
-//	}
-//	tc->CreateShader(texture_name);
-//#ifdef DEBUG
-//	m_time += T.GetElapsed_ms();
-//#endif
 }
 
 void CUITextureMaster::InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc){
@@ -125,32 +103,6 @@ void CUITextureMaster::InitTexture(const char* texture_name, const char* shader_
 #ifdef DEBUG
 	m_time += T.GetElapsed_ms();
 #endif
-//#ifdef DEBUG
-//	CTimer T;
-//	T.Start();
-//#endif	
-//	if (IsSh(texture_name))
-//	{
-////		xr_string tx = texture_name;
-//		shared_textures_it	sht_it;
-//		for (sht_it = m_shTex.begin(); sht_it != m_shTex.end(); sht_it++)
-//		{
-//			regions_it reg_it = (*sht_it).second.find(texture_name);
-//			if (reg_it != (*sht_it).second.end())
-//			{				
-//				tc->CreateShader((*sht_it).first.c_str(), shader_name);	// texture file name
-//				tc->SetOriginalRectEx((*reg_it).second);    // region on texture
-//#ifdef DEBUG
-//				m_time += T.GetElapsed_ms();
-//#endif
-//				return;
-//			}
-//		}
-//	}
-//	tc->CreateShader(texture_name, shader_name);
-//#ifdef DEBUG
-//	m_time += T.GetElapsed_ms();
-//#endif
 }
 
 float CUITextureMaster::GetTextureHeight(const char* texture_name){
@@ -180,5 +132,15 @@ float CUITextureMaster::GetTextureWidth(const char* texture_name){
 	if (it != m_textures.end())
 		return (*it).second.rect.width();
 	R_ASSERT3(false,"CUITextureMaster::GetTextureHeight Can't find texture", texture_name);
+	return 0;
+}
+
+LPCSTR CUITextureMaster::GetTextureFileName(const char* texture_name){
+	xr_map<shared_str, TEX_INFO>::iterator	it;
+	it = m_textures.find(texture_name);
+
+	if (it != m_textures.end())
+		return *((*it).second.file);
+	R_ASSERT3(false,"CUITextureMaster::GetTextureFileName Can't find texture", texture_name);
 	return 0;
 }
