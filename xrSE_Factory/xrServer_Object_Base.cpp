@@ -11,6 +11,7 @@
 #include "xrMessages.h"
 #include "game_base_space.h"
 #include "script_value_container_impl.h"
+#include "clsid_game.h"
 
 #pragma warning(push)
 #pragma warning(disable:4995)
