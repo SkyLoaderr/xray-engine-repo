@@ -256,6 +256,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	svector<float,ALife::eHitTypeMax>	m_fpImmunityFactors;
 
 	ALife::_OBJECT_ID					m_smart_terrain_id;
+
+	int									m_rank;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	virtual							~CSE_ALifeMonsterAbstract();
@@ -272,6 +274,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual u32						ef_creature_type		() const;
 	virtual u32						ef_weapon_type			() const;
 	virtual u32						ef_detector_type		() const;
+	
+	IC		int						Rank					(){return m_rank;}
 
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};

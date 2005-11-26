@@ -67,6 +67,7 @@ void CSE_ALifeAnomalousZone::script_register(lua_State *L)
 			"cse_anomalous_zone",
 			CSE_ALifeCustomZone,
 			CSE_ALifeSchedulable
-		)
+			)
 	];
 }
+

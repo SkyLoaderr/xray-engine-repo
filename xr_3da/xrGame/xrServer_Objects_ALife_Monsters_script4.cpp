@@ -50,6 +50,7 @@ void CSE_ALifeMonsterAbstract::script_register(lua_State *L)
 		.def("smart_terrain_id",	&smart_terrain_id)
 		.def("clear_smart_terrain",	&clear_smart_terrain)
 		.def("brain",				&monster_brain)
+		.def("rank",				Rank)
 	];
 }
 

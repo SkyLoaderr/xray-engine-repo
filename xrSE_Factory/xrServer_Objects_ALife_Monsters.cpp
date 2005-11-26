@@ -1163,13 +1163,15 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fEyeRange					= pSettings->r_float(caSection,"eye_range");
 
 	m_fGoingSpeed				= pSettings->r_float(caSection, "going_speed");
-	
+
 	setup_location_types		(m_tpaTerrain,pSettings,pSettings->r_string(caSection,"terrain"));
 
 	m_tpBestDetector			= this;
 
 	m_brain						= 0;
 	m_smart_terrain_id			= 0xffff;
+
+	m_rank						= (pSettings->line_exist(caSection,"rank")) ? int(pSettings->r_u8(caSection,"rank")) : 0;
 }
 
 CSE_ALifeMonsterAbstract::~CSE_ALifeMonsterAbstract()
