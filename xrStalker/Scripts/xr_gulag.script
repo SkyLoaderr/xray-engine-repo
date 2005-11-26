@@ -467,12 +467,14 @@ function gulag:find_nearest_suitable_obj( objs, job )
 	local obj_nearest
 
 	for obj_id, v in pairs( objs ) do
-		dist = self:distance_to_job_location( obj_id, job )
---		printf( "[smart_terrain %s] dist object=%s to job=%s is %f", self.name, self.npc_info[obj_id].name, job.section, dist )
+		if not predicate or predicate( self.npc_info[obj_id] ) then
+			dist = self:distance_to_job_location( obj_id, job )
+--			printf( "[smart_terrain %s] dist object=%s to job=%s is %f", self.name, self.npc_info[obj_id].name, job.section, dist )
 
-		if dist < min_dist then
-			min_dist    = dist
-			obj_nearest = obj_id
+			if dist < min_dist then
+				min_dist    = dist
+				obj_nearest = obj_id
+			end
 		end
 	end
 
