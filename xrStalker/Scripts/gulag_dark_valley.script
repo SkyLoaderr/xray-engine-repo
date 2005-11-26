@@ -408,7 +408,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	        }
 	        table.insert(sj, t)        
 	        -- fight
-	        t = { section = "logic@" .. gname .. "_fight" .. i ,
+	        t = { section = "logic@" .. gname .. "_fight1" ,
 		        idle = 0,
 		        prior = 1, state = {state_fight},
 		        squad = squad, group = groups[1],
