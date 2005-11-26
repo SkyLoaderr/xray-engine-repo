@@ -3,7 +3,7 @@
 #define CPHMOVEMENT_CONTROL_H
 
 #include "PHCharacter.h"
-
+#include "MathUtils.h"
 namespace ALife {
 	enum EHitType;
 };
@@ -140,6 +140,10 @@ public:
 	void				GetCharacterVelocity		(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
 	float				GetVelocityMagnitude		()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual			()		{ return fActualVelocity;	}
+	float				GetXZVelocityActual			()		{ return dXZMag(vVelocity);}
+	float				GetActVelProj				(const Fvector & dir){return vVelocity.dotproduct(dir);}
+	float				GetActVelInGoingDir			(){float r= GetActVelProj(vPathDir);return r>0.f ? r : 0.f;}
+	float				GetXZActVelInGoingDir		(){float r= dXZDot(vPathDir,vVelocity);return r>0.f ? r : 0.f;}
 	void				GetSmoothedVelocity			(Fvector& v){if(m_character)m_character->GetSmothedVelocity(v);else v.set(0,0,0);}
 	float				GetContactSpeed				()		{ return fContactSpeed; }
 	void				GroundNormal				(Fvector &norm)					;

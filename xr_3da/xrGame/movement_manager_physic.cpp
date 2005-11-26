@@ -31,7 +31,7 @@ float CMovementManager::speed			(CPHMovementControl *movement_control) const
 		return				(0.f);
 
 	if (movement_control->IsCharacterEnabled())
-		return				(movement_control->GetVelocityActual());
+		return				(movement_control->GetXZActVelInGoingDir());
 
 	return					(m_speed);
 }
