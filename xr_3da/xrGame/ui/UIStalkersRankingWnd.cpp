@@ -195,7 +195,7 @@ void add_human_to_top_list(u16 id)
 	g_all_statistic_humans.push_back	(d);
 
 
-	t->m_rank	=	::Random.randI(20000);
+//	t->m_rank	=	::Random.randI(20000);
 }
 
 void remove_human_from_top_list(u16 id)
