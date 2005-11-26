@@ -11,7 +11,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_leader"
+		                     return info.profile_name == "mil_Svoboda_leader" and info.story_id == 707
 		            end
 		}
 	table.insert(sj, t)		
