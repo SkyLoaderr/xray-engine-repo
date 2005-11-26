@@ -223,7 +223,9 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_u16			(0);
 	STATE_Write					(tNetPacket);
 	u16 size					= u16(tNetPacket.w_tell() - position);
-	R_ASSERT3					(size > sizeof(size),"object isn't successfully saved, get your backup :(",name_replace());
+//#ifdef XRSE_FACTORY_EXPORTS
+	R_ASSERT3					((m_tClassID == CLSID_SPECTATOR) || (size > sizeof(size)),"object isn't successfully saved, get your backup :(",name_replace());
+//#endif
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
 }
 
