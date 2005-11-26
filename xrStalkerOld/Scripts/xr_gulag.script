@@ -265,6 +265,7 @@ end
 когда биндер смарттеррейна убивается до персонажа).
 следит, дошёл ли персонаж до места работы.
 измененяет потери в лагере.
+вызывает функцию состояния, если есть актёр.
 ]]
 function gulag:update()
 	if not self.stateBegin then
@@ -293,7 +294,7 @@ function gulag:update()
 		end
 	end
 
-	if self.calculateStates ~= nil then
+	if self.calculateStates ~= nil and db.actor then
 		self:changeState(self.calculateStates(self))
 	end
 
