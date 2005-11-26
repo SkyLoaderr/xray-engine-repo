@@ -259,9 +259,7 @@ function load_job(sj, gname, type, squad, groups, st)
 							"active = mob_home@"..way_name.."\n"..
 
 							"[mob_home@"..way_name.."]\n"..
-							"path_home = home_"..it.."\n"..
-							"home_min_radius = 10\n"..
-							"home_max_radius = 30\n"
+							"path_home = home_"..it.."\n"
 
 			ltx = ltx..job_ltx
 			it = it + 1
@@ -300,9 +298,7 @@ function load_job(sj, gname, type, squad, groups, st)
 							"active = mob_home@"..way_name.."\n"..
 
 							"[mob_home@"..way_name.."]\n"..
-							"path_home = raid_"..it.."\n"..
-							"home_min_radius = 10\n"..
-							"home_max_radius = 30\n"
+							"path_home = raid_"..it.."\n"
 
 			ltx = ltx..job_ltx
 			it = it + 1
