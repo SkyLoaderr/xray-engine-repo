@@ -575,14 +575,19 @@ function gulag:print()
 	end
 end
 
--- получить количество объектов под гулагом
+-- получить количество живых объектов под гулагом
 function gulag:get_population()
 	local i = 0
+	local obj
 
-	for k,v in pairs( self.Object ) do
-		-- если npc онлайне, то посчитать его только живым
-		-- если в офлайне, посчитать в любом случае
-		if v == true or v:alive() then
+	for obj_id, npc_info in pairs( self.npc_info ) do
+		obj = npc_info.se_obj
+
+		if obj.online then
+			obj = self.Object[obj_id]
+		end
+
+		if obj:alive() then
 			i = i + 1
 		end
 	end
