@@ -12,7 +12,7 @@
 -- TODO fill_idle
 -- TODO у патруля перевыбор работы не будет в офлайне. надо чтоб был
 
-level_gulags = {gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
+level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
                 gulag_military, gulag_radar, gulag_radar_u, gulag_yantar, gulag_pripyat, gulag_kishka, gulag_sarcofag,
                 gulag_deadcity}
 
@@ -971,12 +971,8 @@ function checkStalker(npc_community, gulag_type, npc_rank, preset_name)
 		return npc_community ~= "military"
 	end
 
-	if gulag_general.checkStalker(npc_community, gulag_type, npc_rank, preset_name) then
-		return true
-	end
-
 	for i, v in pairs( level_gulags ) do
-		if v.checkStalker(npc_community, gulag_type) then
+		if v.checkStalker(npc_community, gulag_type, npc_rank, preset_name) then
 			return true
 		end
 	end
@@ -989,12 +985,8 @@ function checkMonster(npc_community, gulag_type, npc_rank, preset_name)
 		return true
 	end
 
-	if gulag_general.checkMonster(npc_community, gulag_type, npc_rank, preset_name) then
-		return true
-	end
-
     for i, v in pairs( level_gulags ) do
-		if v.checkMonster(npc_community, gulag_type) then
+		if v.checkMonster(npc_community, gulag_type, npc_rank, preset_name) then
 		    return true
 		end
 	end

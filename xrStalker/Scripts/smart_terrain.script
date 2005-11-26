@@ -207,7 +207,7 @@ function se_smart_terrain:fill_npc_info( obj )
 	npc_info.name         = obj:name()
 	npc_info.story_id     = obj.m_story_id
 	npc_info.community    = self:get_obj_community( obj )
-	npc_info.profile_name = obj.profile_name and obj:profile_name()
+	npc_info.profile_name = nil --obj.profile_name and obj:profile_name()
 	npc_info.rank         = 100 --obj:rank()
 
 	npc_info.group        = obj:g_group()
