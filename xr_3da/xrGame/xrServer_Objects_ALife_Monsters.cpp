@@ -251,19 +251,6 @@ void CSE_ALifeTraderAbstract::OnChangeProfile(PropValue* sender)
 	base()->set_editor_flag		(ISE_Abstract::flVisualChange);
 }
 
-void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
-{
-	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
-#ifdef XRSE_FACTORY_EXPORTS
-	RListValue *value		= PHelper().CreateRList	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
-		&m_sCharacterProfile, 
-		&*fp_data.character_profiles.begin(), fp_data.character_profiles.size());
-	
-	value->OnChangeEvent.bind	(this,&CSE_ALifeTraderAbstract::OnChangeProfile);
-#endif
-}
-
 #ifndef AI_COMPILER
 
 
