@@ -30,13 +30,14 @@ function mob_home:reset_scheme()
           берутся значения из секции (сделано для обратной совместимости).
 --]]
     local minr, maxr = def_min_radius, def_max_radius
-    local path_info = utils.path_parse_waypoints(self.st.home)
+	local ptr = patrol(self.st.home)
+	local path_info = utils.parse_waypoint_data(self.st.home, ptr:flags(0), ptr:name(0))				
     local r = 0
 
     if self.st.home_min_radius then
         minr = self.st.home_min_radius
     else
-        r = path_info.path_walk_info[0]["minr"]
+        r = path_info.minr
         if r then
             r = tonumber(r)
             if r then
@@ -48,7 +49,7 @@ function mob_home:reset_scheme()
     if self.st.home_max_radius then
         minr = self.st.home_max_radius
     else
-        r = path_info.path_walk_info[0]["maxr"]
+        r = path_info.maxr
         if r then
             r = tonumber(r)
             if r then
