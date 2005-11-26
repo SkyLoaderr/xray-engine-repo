@@ -389,8 +389,9 @@ void CController::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	CPsyAuraController::schedule_update();
-
-	UpdateControlled();
+	
+	if (g_Alive())
+		UpdateControlled();
 
 	// DEBUG
 	test_covers();
