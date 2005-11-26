@@ -15,11 +15,12 @@ ammo_5.45x39_ap=2
 ;on_info = {=hitted_by(407:408)} remark@fight %+val_escort_combat%
 
 [death]
-on_info = %+val_escort_nap1_dead%
+on_info  = %+val_escort_nap1_dead%
+on_info2 = {+val_escort_captive_dead} %+val_escort_scene_end%
 
 [hit]
 on_info = {=hitted_by(407:408)} %+val_escort_combat%
-on_info = {=hit_by_actor} nil %+val_escort_nap1_dead%
+;on_info2 = {=hit_by_actor} nil %+val_escort_nap1_dead%
 
 [combat_ignore]
 
@@ -109,8 +110,8 @@ anim                = search
 snd                 = val_escort_nap1_phrase1
 target              = 424
 meet                = meet@ignore
-on_info             = {=is_dead_one(424)} remark1@phrase3
-on_signal           = sound_end | remark1@phrase3
+on_info             = {=is_dead_one(424)} remark1@phrase3 %+val_nap1_stop_talk_to_bandit%
+on_signal           = sound_end | remark1@phrase3 %+val_nap1_stop_talk_to_bandit%
 ;combat_ignore_cond  = always
 danger              = danger@small
 wounded             = wounded
@@ -399,4 +400,4 @@ wounded                 = wounded
 path_walk   = val_escort_nap1_leave_walk
 path_look   = val_escort_nap1_leave_look
 meet        = meet@talk
-on_signal   = arrived | nil
+on_signal   = arrived | nil %+val_escort_scene_end%
