@@ -2,6 +2,8 @@
 <window>
 
 	<part_1_pda>
+	<global_wnd/>
+<!--
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="750" width="150" height="50">
 				<text font="graffiti22" r="255" g="0" b="0" a="255">pda_tutorial</text>
@@ -16,7 +18,7 @@
 				<text font="graffiti22" r="255" g="0" b="0" a="255">pda_tutorial</text>
 			</auto_static>
 		</global_wnd>
-	
+-->	
 		<item> <!--Это	твой личный ПДА- полезная хреновина,
 					которая будет помогать тебе не сдохнуть в Зоне. Ну а если и сдохнешь, то хоть
 					другие знать будут как и где. Хе-хе. Шучу. Давай напомню кратко, как
