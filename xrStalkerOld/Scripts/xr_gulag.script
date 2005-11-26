@@ -957,7 +957,7 @@ end
 
 -----------------------------------------------------------------------------------------------------------------
 
-function checkStalker(npc_community, gulag_type, npc_rank)
+function checkStalker(npc_community, gulag_type, npc_rank, preset_name)
     --printf ("CHECKSTALKER, COMMUNITY = %s, TYPE = %s", npc_community, gulag_type)
 	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" then
 		return true
@@ -984,7 +984,7 @@ function checkStalker(npc_community, gulag_type, npc_rank)
 	return false
 end
 
-function checkMonster(npc_community, gulag_type, npc_rank)
+function checkMonster(npc_community, gulag_type, npc_rank, preset_name)
 	if gulag_type == "test_mob" then
 		return true
 	end
