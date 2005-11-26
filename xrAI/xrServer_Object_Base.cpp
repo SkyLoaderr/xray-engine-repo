@@ -311,8 +311,8 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	}
 
 	u16							size;
-	tNetPacket.r_u16			(size			);	// size
-	R_ASSERT3					(size > 2,"cannot read object, which is not successfully saved :(",name_replace());
+	tNetPacket.r_u16			(size);	// size
+	R_ASSERT3					((m_tClassID == CLSID_SPECTATOR) || (size > sizeof(size)),"cannot read object, which is not successfully saved :(",name_replace());
 	STATE_Read					(tNetPacket,size);
 	return						TRUE;
 }
