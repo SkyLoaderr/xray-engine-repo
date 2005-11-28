@@ -52,7 +52,6 @@ function action_door:initialize(loading)
 	end
 
 	self.object:set_nonscript_usable(false)
-	--self.object:set_callback(callback.use_object, self.use_callback, self)
 
 	if self.st.snd_init then
 		self:door_play_snd_from_set(self.st.snd_init)
@@ -97,24 +96,24 @@ end
 function action_door:fastcall()
 	if self:close_check() then
 		self:close_action()
-		printf("_bp: action_door: fastcall(): return true")
+		--printf("_bp: action_door: fastcall(): return true")
 		return true
 	end
-	printf("_bp: action_door: fastcall(): return false")
+	--printf("_bp: action_door: fastcall(): return false")
 	return false
 end
 
 function action_door:close_check()
-	printf("_bp: close_check(): %d", time_global())
+	--printf("_bp: close_check(): %d", time_global())
 	if not self.initialized then
-		printf("_bp: close_check(): not initialized")
+		--printf("_bp: close_check(): not initialized")
 		return false
 	end
 
 	if self.block then
 		return self:is_closed()
 	end
-	printf("_bp: close_check(): false")
+	--printf("_bp: close_check(): false")
 	return false
 end
 
@@ -123,7 +122,11 @@ function action_door:close_action()
 
 	printf("_bp: action_door:update(): door blocked")
 	-- Закрыли до предела, будем блокировать
-	self.joint:set_max_force_and_velocity(10000, 1, 1)
+	if self.st.no_force == true then
+		self.joint:set_max_force_and_velocity(0, 1, 1)
+	else
+		self.joint:set_max_force_and_velocity(10000, 1, 1)
+	end
 	self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
 	if not self.soundless_block and self.st.snd_close_stop then
@@ -139,10 +142,14 @@ function action_door:open_door(disable_snd)
 		end
 	end
 	
-	self.joint:set_max_force_and_velocity(200, -3, 0)
+	if self.st.no_force == true then
+		self.joint:set_max_force_and_velocity(0, -3, 0)
+	else
+		self.joint:set_max_force_and_velocity(200, -3, 0)
+	end
 	self.block = false
 
-	if self.show_tips and self.tip_close then
+	if self.show_tips and self.st.tip_close then
 		self.object:set_tip_text(self.st.tip_close)
 	end
 end
@@ -173,7 +180,11 @@ function action_door:close_door()
 	self.object:set_fastcall(self.fastcall,self)
 
 	printf("_bp: action_door:close_door()")
-	self.joint:set_max_force_and_velocity(200, 3, 1)
+	if self.st.no_force == true then
+		self.joint:set_max_force_and_velocity(0, 3, 1)
+	else
+		self.joint:set_max_force_and_velocity(200, 3, 1)
+	end
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
 
@@ -215,6 +226,22 @@ function action_door:use_callback(door, actor)
 		self:close_door(false)
 	end
 end
+function action_door:hit_callback(obj, amount, local_direction, who, bone_index)
+	local who_name
+	if who then
+		who_name = who:name()
+	else
+		who_name = "nil"
+	end
+
+	printf("DOOR: hit_callback: obj='%s', amount=%d, who='%s', bone='%s'", obj:name(), amount, who_name, bone_index)
+	print_table(self.st.hit_on_bone)
+	if self.st.hit_on_bone[bone_index] ~= nil then
+		local section = xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.hit_on_bone[bone_index].state)
+		xr_logic.switch_to_section(obj, self.st, section)
+		return
+	end
+end
 function action_door:deactivate()
 	self.object:set_tip_text("")
 end
@@ -236,6 +263,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
 	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
+	st.no_force  = utils.cfg_get_bool(ini, section, "no_force", npc, false, false)
 
 	st.show_tips = utils.cfg_get_bool(ini, section, "show_tips", npc, false, true)
 	if not st.locked then
@@ -250,5 +278,33 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.snd_close_stop  = utils.cfg_get_string(ini, section, "snd_close_stop", npc, false, "")
 	
 	st.on_use    = xr_logic.cfg_get_condlist(ini, section, "on_use", npc)
+	
+		
+	st.hit_on_bone = parse_data(npc, utils.cfg_get_string(ini, section, "hit_on_bone", npc, false, ""))
 end
 
+
+function parse_data(npc,s)
+	local t = {}
+
+    if s then
+		for name in string.gfind( s, "(%|*%d+%|[^%|]+)%p*" ) do
+--			printf("[%s]", utils.to_str(name))
+			local dat = {	dist = nil,
+							state = nil}	
+			
+			local t_pos = string.find( name, "|", 1, true )
+						
+			local dist = string.sub( name, 1, t_pos - 1 )
+			local state	= string.sub( name, t_pos + 1)
+		
+--			printf("	[%s]=[%s][%s]", utils.to_str(dist), utils.to_str(state), utils.to_str(sound))
+			dat.dist = tonumber(dist)
+			if state then
+				dat.state = xr_logic.parse_condlist(npc, dist, state, state)
+			end
+			t[tonumber(dist)] = dat
+		end
+	end
+    return t
+end

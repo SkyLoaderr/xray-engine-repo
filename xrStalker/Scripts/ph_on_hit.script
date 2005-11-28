@@ -26,6 +26,7 @@ function ph_on_hit:hit_callback(obj, amount, local_direction, who, bone_index)
 	end
 
 	printf("_bp: ph_on_hit:hit_callback: obj='%s', amount=%d, who='%s', bone='%s'", obj:name(), amount, who_name, tostring(bone_index))
+	
 	if db.storage[self.object:id()].active_scheme then
 		if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
 			return
@@ -59,5 +60,3 @@ function disable_scheme(npc, scheme)
 		xr_logic.unsubscribe_action_from_events(npc, st, st.action)
 	end	
 end
-
-
