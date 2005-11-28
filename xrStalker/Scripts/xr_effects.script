@@ -44,6 +44,10 @@ function disable_ui(actor, npc)
     level.hide_indicators()
 end
 
+function run_tutorial(actor, npc, p)
+	game.start_tutorial(p[1])
+end
+
 function enable_ui(actor, npc)
     level.show_indicators()
     level.enable_input()
@@ -258,10 +262,15 @@ function actor_punch(npc)
 	local snd_obj = sound_object([[affects\hit_fist]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 
-	level.add_cam_effector("camera_effects\\fusker.anm")	
-	
-	
+	level.add_cam_effector("camera_effects\\fusker.anm")		
 end
+
+-- Принудительное усыпание игрока на радаре.
+function force_actor_sleep(npc)
+	db.actor:actor_sleep(0, 30)
+end
+
+
 -- забывание обиды
 function clearAbuse(npc)
 	xr_abuse.clear_abuse(npc)
