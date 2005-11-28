@@ -89,7 +89,6 @@ public:
 		u32	bStrictB2F	:	1;
 		u32	bEmissive	:	1;
 		u32	bDistort	:	1;
-		u32	bElevation	:	1;
 	};
 public:
 	Sflags								flags;
