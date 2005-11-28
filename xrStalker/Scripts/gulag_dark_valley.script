@@ -356,7 +356,7 @@ end
 
 -- Dynamic ltx -----------------------------------------------------------
 function load_ltx_robbers(gname, type)
-    local i, ltx = "", 0
+    local i, ltx = 0, ""
     
     ltx = ltx.."#include \"scripts\\val_rob_leader.ltx\"\n"
 
