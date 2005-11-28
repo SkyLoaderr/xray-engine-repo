@@ -1419,7 +1419,7 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 			return true
 		end
 
-		local se_obj_story_ids = obj.profile_name and obj:profile_name()
+		local se_obj_story_ids = se_obj.profile_name and se_obj:profile_name()
 		if se_obj_story_ids == "gar_dram_novice" then
 			return true
 	    end
