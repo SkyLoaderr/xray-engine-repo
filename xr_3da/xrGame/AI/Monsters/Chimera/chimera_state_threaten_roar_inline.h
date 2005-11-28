@@ -18,7 +18,7 @@ void CStateChimeraThreatenRoarAbstract::execute()
 
 	object->set_action				(ACT_STAND_IDLE);
 	object->anim().SetSpecParams	(ASP_THREATEN);
-	object->set_state_sound			(MonsterSpace::eMonsterSoundThreaten);
+	object->set_state_sound			(MonsterSound::eMonsterSoundThreaten);
 	object->dir().face_target		(object->EnemyMan.get_enemy(), 1200);
 }
 

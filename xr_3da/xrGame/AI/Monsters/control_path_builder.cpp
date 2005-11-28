@@ -94,7 +94,7 @@ void CControlPathBuilder::update_schedule()
 		if (m_data.path_type == MovementManager::ePathTypeGamePath) {
 			// check if we have alife task
 			if (m_data.game_graph_target_vertex != u32(-1)) {
-				set_game_dest_vertex					(m_data.game_graph_target_vertex);
+				set_game_dest_vertex					(GameGraph::_GRAPH_ID(m_data.game_graph_target_vertex));
 				game_selector().set_selection_type		(eSelectionTypeMask);
 			} else 
 				// else just wandering through the game graph

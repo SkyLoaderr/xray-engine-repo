@@ -2775,6 +2775,9 @@
 							RelativePath=".\ai\Monsters\monster_enemy_manager.h">
 						</File>
 						<File
+							RelativePath=".\ai\Monsters\monster_sound_defs.h">
+						</File>
+						<File
 							RelativePath=".\ai\Monsters\monster_velocity_space.h">
 						</File>
 						<Filter

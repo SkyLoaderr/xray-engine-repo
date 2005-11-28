@@ -92,7 +92,7 @@ void CStateBurerAttackAbstract::setup_substates()
 		
 		data.point				= object->EnemyMan.get_enemy()->Position(); 
 		data.action.action		= ACT_STAND_IDLE;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.action.sound_type	= MonsterSound::eMonsterSoundAggressive;
 		data.action.sound_delay = object->db().m_dwAttackSndDelay;
 
 		state->fill_data_with	(&data, sizeof(SStateDataLookToPoint));

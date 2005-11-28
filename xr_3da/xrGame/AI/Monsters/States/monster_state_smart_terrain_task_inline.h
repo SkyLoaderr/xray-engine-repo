@@ -82,7 +82,7 @@ void CStateMonsterSmartTerrainTaskAbstract::setup_substates()
 		data.accelerated		= true;
 		data.braking			= false;
 		data.accel_type 		= eAT_Calm;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
@@ -93,7 +93,7 @@ void CStateMonsterSmartTerrainTaskAbstract::setup_substates()
 		SStateDataAction	data;
 
 		data.action			= ACT_REST;
-		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
+		data.sound_type		= MonsterSound::eMonsterSoundIdle;
 		data.sound_delay	= object->db().m_dwIdleSndDelay;
 		data.time_out		= 0;
 

@@ -21,6 +21,7 @@
 
 
 using namespace MonsterSpace;
+using namespace MonsterSound;
 
 //////////////////////////////////////////////////////////////////////////
 bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
@@ -176,22 +177,21 @@ bool CBaseMonster::bfAssignSound(CScriptEntityAction *tpEntityAction)
 	CScriptSoundAction	&l_tAction = tpEntityAction->m_tSoundAction;
 	if (l_tAction.completed()) return false;
 
-	if (l_tAction.m_monster_sound == MonsterSpace::eMonsterSoundDummy) {
+	if (l_tAction.m_monster_sound == MonsterSound::eMonsterSoundDummy) {
 		if (!inherited::bfAssignSound(tpEntityAction))
 			return			(false);
 	}
 
 	switch (l_tAction.m_monster_sound) {
-	case	eMonsterSoundIdle:			sound().play(eMonsterSoundIdle,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwIdleSndDelay		: l_tAction.m_monster_sound_delay);		break;
-	case 	eMonsterSoundEat:			sound().play(eMonsterSoundEat,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwEatSndDelay		: l_tAction.m_monster_sound_delay);		break;
-	case 	eMonsterSoundAttack:		sound().play(eMonsterSoundAttack,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwAttackSndDelay	: l_tAction.m_monster_sound_delay);		break;
-	case	eMonsterSoundAttackHit:		sound().play(eMonsterSoundAttackHit);		break;
+	case	eMonsterSoundIdle:			sound().play(eMonsterSoundIdle,			0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwIdleSndDelay		: l_tAction.m_monster_sound_delay);		break;
+	case 	eMonsterSoundEat:			sound().play(eMonsterSoundEat,			0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwEatSndDelay		: l_tAction.m_monster_sound_delay);		break;
+	case 	eMonsterSoundAggressive:	sound().play(eMonsterSoundAggressive,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwAttackSndDelay	: l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundAttackHit:		sound().play(eMonsterSoundAttackHit);	break;
 	case	eMonsterSoundTakeDamage:	sound().play(eMonsterSoundTakeDamage);	break;
 	case	eMonsterSoundDie:			sound().play(eMonsterSoundDie);			break;
-	case	eMonsterSoundThreaten:		sound().play(eMonsterSoundThreaten,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundThreaten:		sound().play(eMonsterSoundThreaten,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
 	case	eMonsterSoundSteal:			sound().play(eMonsterSoundSteal,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
 	case	eMonsterSoundPanic:			sound().play(eMonsterSoundPanic,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
-	case	eMonsterSoundGrowling:		sound().play(eMonsterSoundGrowling,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? db().m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
 	}
 
 	return				(true);

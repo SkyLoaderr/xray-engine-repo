@@ -60,7 +60,7 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 	if (current_substate == eStateSquad_RestFollow_Idle) {
 		SStateDataAction data;
 		data.action			= ACT_REST;
-		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
+		data.sound_type		= MonsterSound::eMonsterSoundIdle;
 		data.sound_delay	= object->db().m_dwIdleSndDelay;
 		data.time_out		= Random.randI(MIN_TIME_OUT, MAX_TIME_OUT);
 
@@ -85,7 +85,7 @@ void CStateMonsterSquadRestFollowAbstract::setup_substates()
 		data.braking			= false;
 		data.accel_type 		= eAT_Calm;
 		data.completion_dist	= STOP_DISTANCE;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 		data.time_to_rebuild	= u32(-1);
 

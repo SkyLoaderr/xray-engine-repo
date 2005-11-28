@@ -19,16 +19,15 @@ void CScriptSoundAction::script_register(lua_State *L)
 		class_<CScriptSoundAction>("sound")
 			.enum_("type")
 			[
-				value("idle",					int(MonsterSpace::eMonsterSoundIdle)),
-				value("eat",					int(MonsterSpace::eMonsterSoundEat)),
-				value("attack",					int(MonsterSpace::eMonsterSoundAttack)),
-				value("attack_hit",				int(MonsterSpace::eMonsterSoundAttackHit)),
-				value("take_damage",			int(MonsterSpace::eMonsterSoundTakeDamage)),
-				value("die",					int(MonsterSpace::eMonsterSoundDie)),
-				value("threaten",				int(MonsterSpace::eMonsterSoundThreaten)),
-				value("steal",					int(MonsterSpace::eMonsterSoundSteal)),
-				value("panic",					int(MonsterSpace::eMonsterSoundPanic)),
-				value("growling",				int(MonsterSpace::eMonsterSoundGrowling))
+				value("idle",					int(MonsterSound::eMonsterSoundIdle)),
+				value("eat",					int(MonsterSound::eMonsterSoundEat)),
+				value("attack",					int(MonsterSound::eMonsterSoundAggressive)),
+				value("attack_hit",				int(MonsterSound::eMonsterSoundAttackHit)),
+				value("take_damage",			int(MonsterSound::eMonsterSoundTakeDamage)),
+				value("die",					int(MonsterSound::eMonsterSoundDie)),
+				value("threaten",				int(MonsterSound::eMonsterSoundThreaten)),
+				value("steal",					int(MonsterSound::eMonsterSoundSteal)),
+				value("panic",					int(MonsterSound::eMonsterSoundPanic))
 			]
 
 			.def(								constructor<>())
@@ -46,8 +45,8 @@ void CScriptSoundAction::script_register(lua_State *L)
 			.def(								constructor<CScriptSound&,const Fvector &,const Fvector &>())
 			.def(								constructor<CScriptSound&,const Fvector &,const Fvector &,bool>())
 			// monster specific
-			.def(								constructor<MonsterSpace::EMonsterSounds>())
-			.def(								constructor<MonsterSpace::EMonsterSounds,int>())
+			.def(								constructor<MonsterSound::EType>())
+			.def(								constructor<MonsterSound::EType,int>())
 			// trader specific
 			.def(								constructor<LPCSTR,LPCSTR,MonsterSpace::EMonsterHeadAnimType>())
 

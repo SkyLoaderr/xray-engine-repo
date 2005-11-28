@@ -18,7 +18,7 @@ void CStateCatAttackRatMeleeAbstract::execute()
 	object->anim().SetSpecParams	(ASP_ATTACK_RAT);
 
 	object->dir().face_target	(object->EnemyMan.get_enemy(), 1200);
-	object->set_state_sound		(MonsterSpace::eMonsterSoundAttack);
+	object->set_state_sound		(MonsterSound::eMonsterSoundAggressive);
 }
 
 TEMPLATE_SPECIALIZATION

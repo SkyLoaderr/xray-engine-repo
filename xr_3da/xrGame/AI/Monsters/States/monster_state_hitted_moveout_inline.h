@@ -37,7 +37,7 @@ void CStateMonsterHittedMoveOutAbstract::execute()
 	
 	object->anim().accel_deactivate	();
 	object->anim().accel_set_braking (false);
-	object->set_state_sound				(MonsterSpace::eMonsterSoundIdle);
+	object->set_state_sound				(MonsterSound::eMonsterSoundIdle);
 }
 
 TEMPLATE_SPECIALIZATION

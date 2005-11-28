@@ -26,7 +26,7 @@ void CStateMonsterRestMoveToHomePointAbstract::execute()
 	object->path().set_use_covers		(false);
 	
 	object->set_action					(ACT_WALK_FWD);
-	object->set_state_sound				(MonsterSpace::eMonsterSoundIdle);
+	object->set_state_sound				(MonsterSound::eMonsterSoundIdle);
 }
 
 TEMPLATE_SPECIALIZATION

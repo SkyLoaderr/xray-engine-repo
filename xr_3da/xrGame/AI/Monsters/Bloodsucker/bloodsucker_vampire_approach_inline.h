@@ -34,7 +34,7 @@ void CStateBloodsuckerVampireApproachAbstract::execute()
 	object->path().set_rebuild_time					(object->get_attack_rebuild_time());
 	object->path().set_use_covers					(false);
 	object->path().set_distance_to_end				(0.1f);
-	object->set_state_sound								(MonsterSpace::eMonsterSoundAttack);
+	object->set_state_sound								(MonsterSound::eMonsterSoundAggressive);
 
 }
 

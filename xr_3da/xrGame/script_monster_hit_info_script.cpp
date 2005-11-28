@@ -3,6 +3,7 @@
 #include "script_space.h"
 #include "script_game_object.h"
 #include "ai_monster_space.h"
+#include "AI/Monsters/monster_sound_defs.h"
 
 using namespace luabind;
 
@@ -20,7 +21,7 @@ void CScriptMonsterHitInfo::script_register(lua_State *L)
 		class_<CMonsterSpace>("MonsterSpace")
 			.enum_("sounds")
 			[
-				value("sound_script",			MonsterSpace::eMonsterSoundScript)
+				value("sound_script",			MonsterSound::eMonsterSoundScript)
 			]
 
 			.enum_("head_anim")

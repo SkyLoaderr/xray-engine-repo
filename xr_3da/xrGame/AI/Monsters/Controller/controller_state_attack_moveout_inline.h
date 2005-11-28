@@ -40,7 +40,7 @@ void CStateControlMoveOutAbstract::execute()
 	object->anim().m_tAction				= ACT_STEAL;
 	object->anim().accel_deactivate			();
 	object->anim().accel_set_braking		(false);
-	object->set_state_sound					(MonsterSpace::eMonsterSoundAttack);
+	object->set_state_sound					(MonsterSound::eMonsterSoundAggressive);
 
 	// look into very open point where we go
 	update_look_point						();

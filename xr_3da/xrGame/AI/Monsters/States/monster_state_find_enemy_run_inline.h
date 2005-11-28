@@ -55,7 +55,7 @@ void CStateMonsterFindEnemyRunAbstract::execute()
 	object->path().set_use_covers			();
 	object->path().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 	object->path().set_try_min_time			(false);
-	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
+	object->set_state_sound						(MonsterSound::eMonsterSoundAggressive);
 }
 
 TEMPLATE_SPECIALIZATION

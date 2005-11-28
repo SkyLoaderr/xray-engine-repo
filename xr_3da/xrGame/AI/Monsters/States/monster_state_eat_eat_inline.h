@@ -50,7 +50,7 @@ void CStateMonsterEatingAbstract::execute()
 	// реализация состояния
 	if (cur_state == eStateEat) {
 		object->set_action				(ACT_EAT);
-		object->set_state_sound			(MonsterSpace::eMonsterSoundEat);
+		object->set_state_sound			(MonsterSound::eMonsterSoundEat);
 
 		// съесть часть
 		if (time_last_eat + u32(1000/object->db().m_fEatFreq) < Device.dwTimeGlobal) {
@@ -61,7 +61,7 @@ void CStateMonsterEatingAbstract::execute()
 
 	} else {
 		object->set_action							(ACT_WALK_FWD);
-		object->set_state_sound						(MonsterSpace::eMonsterSoundIdle);
+		object->set_state_sound						(MonsterSound::eMonsterSoundIdle);
 		object->path().set_target_point			(nearest_bone_pos, corpse->ai_location().level_vertex_id());
 		object->path().set_generic_parameters	();
 	}

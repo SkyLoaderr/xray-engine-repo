@@ -19,7 +19,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAttackAbstract::execute()
 {
 	object->set_action				(ACT_RUN);
-	object->set_state_sound			(MonsterSpace::eMonsterSoundAttack);
+	object->set_state_sound			(MonsterSound::eMonsterSoundAggressive);
 	object->anim().SetSpecParams	(ASP_ATTACK_RUN);
 }
 

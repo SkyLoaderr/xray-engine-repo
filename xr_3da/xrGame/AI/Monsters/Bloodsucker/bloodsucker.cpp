@@ -19,6 +19,8 @@
 #include "../control_movement_base.h"
 #include "../control_rotation_jump.h"
 
+#include "../../../sound_player.h"
+
 #ifdef DEBUG
 #include <dinput.h>
 #endif
@@ -138,11 +140,11 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 
 	// load special sounds
-	m_sound_vampire_grasp.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Grasp"),	SOUND_TYPE_MONSTER_ATTACKING);
-	m_sound_vampire_sucking.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Sucking"),	SOUND_TYPE_MONSTER_ATTACKING);
-	m_sound_vampire_hit.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Hit"),	SOUND_TYPE_MONSTER_ATTACKING);
+	//m_sound_vampire_grasp.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Grasp"),	SOUND_TYPE_MONSTER_ATTACKING);
+	//m_sound_vampire_sucking.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Sucking"),	SOUND_TYPE_MONSTER_ATTACKING);
+	//m_sound_vampire_hit.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Hit"),	SOUND_TYPE_MONSTER_ATTACKING);
 
-	m_sound_invisibility_change_state.create(TRUE, pSettings->r_string(section,"Sound_Invisibility_Change_State"),	SOUND_TYPE_MONSTER_ATTACKING);
+	//m_sound_invisibility_change_state.create(TRUE, pSettings->r_string(section,"Sound_Invisibility_Change_State"),	SOUND_TYPE_MONSTER_ATTACKING);
 }
 
 
@@ -169,6 +171,11 @@ void CAI_Bloodsucker::reload(LPCSTR section)
 {
 	inherited::reload(section);
 	CInvisibility::reload(section);
+
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Grasp"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 4, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireGrasp,	"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Sucking"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 3, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireSucking,"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Hit"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 2, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireHit,	"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Invisibility_Change_State"),	DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eNormalPriority, MonsterSound::eChannelIndependent,	EBloodsuckerSounds::eChangeVisibility, "bip01_head");
 }
 
 
@@ -332,6 +339,7 @@ void CAI_Bloodsucker::on_activate()
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
 	state_invisible = true;
 
+	sound().play	(CAI_Bloodsucker::eChangeVisibility);
 }
 
 void CAI_Bloodsucker::on_deactivate()
@@ -340,6 +348,8 @@ void CAI_Bloodsucker::on_deactivate()
 	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 	state_invisible = false;
+
+	sound().play	(CAI_Bloodsucker::eChangeVisibility);
 }
 
 void CAI_Bloodsucker::net_Destroy()

@@ -18,7 +18,7 @@ IC	CScriptSoundAction::CScriptSoundAction	()
 	m_tSoundPosition.set(0,0,0);
 	m_tSoundAngles.set	(0,0,0);
 	m_bCompleted		= true;
-	m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+	m_monster_sound		= MonsterSound::eMonsterSoundDummy;
 	m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 }
 
@@ -30,7 +30,7 @@ IC	CScriptSoundAction::CScriptSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneN
 	SetAngles			(tAngleOffset);
 	SetSound			(caSoundToPlay);
 	SetSoundType		(sound_type);
-	m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+	m_monster_sound		= MonsterSound::eMonsterSoundDummy;
 	m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 }
 
@@ -41,7 +41,7 @@ IC	CScriptSoundAction::CScriptSoundAction		(LPCSTR caSoundToPlay, const Fvector 
 	SetPosition			(tPosition);
 	SetAngles			(tAngleOffset);
 	SetSoundType		(sound_type);
-	m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+	m_monster_sound		= MonsterSound::eMonsterSoundDummy;
 	m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 }
 
@@ -53,7 +53,7 @@ IC	CScriptSoundAction::CScriptSoundAction		(CScriptSound &sound, LPCSTR caBoneNa
 	SetAngles			(tAngleOffset);
 	SetSound			(sound);
 	SetSoundType		(sound_type);
-	m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+	m_monster_sound		= MonsterSound::eMonsterSoundDummy;
 	m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 }
 
@@ -64,7 +64,7 @@ IC	CScriptSoundAction::CScriptSoundAction		(CScriptSound &sound, const Fvector &
 	SetPosition			(tPosition);
 	SetAngles			(tAngleOffset);
 	SetSoundType		(sound_type);
-	m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+	m_monster_sound		= MonsterSound::eMonsterSoundDummy;
 	m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 }
 
@@ -72,14 +72,14 @@ IC	CScriptSoundAction::CScriptSoundAction		(CScriptSound &sound, const Fvector &
 // Monster Specific
 ///////////////////////////////////////////////////////////////////////////////////
 						
-IC	CScriptSoundAction::CScriptSoundAction		(MonsterSpace::EMonsterSounds sound_type)
+IC	CScriptSoundAction::CScriptSoundAction		(MonsterSound::EType sound_type)
 {
 	m_monster_sound			= sound_type;
 	m_monster_sound_delay	= int (-1);
 	m_bCompleted			= false;
 }
 
-IC	CScriptSoundAction::CScriptSoundAction		(MonsterSpace::EMonsterSounds sound_type, int delay)
+IC	CScriptSoundAction::CScriptSoundAction		(MonsterSound::EType sound_type, int delay)
 {
 	m_monster_sound			= sound_type;
 	m_monster_sound_delay	= delay;
@@ -99,7 +99,7 @@ IC	CScriptSoundAction::CScriptSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneN
 	m_bCompleted		= false;
 	m_bLooped			= false;
 	m_tHeadAnimType		= head_anim_type;
-	m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+	m_monster_sound		= MonsterSound::eMonsterSoundDummy;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

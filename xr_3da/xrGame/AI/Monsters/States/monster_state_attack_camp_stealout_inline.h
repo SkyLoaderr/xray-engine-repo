@@ -24,7 +24,7 @@ void CStateMonsterAttackCampStealOutAbstract::execute()
 	object->set_action						(ACT_STEAL);
 	object->anim().accel_deactivate			();
 	object->anim().accel_set_braking		(false);
-	object->set_state_sound					(MonsterSpace::eMonsterSoundSteal);
+	object->set_state_sound					(MonsterSound::eMonsterSoundSteal);
 }
 
 #define STATE_EXECUTE_TIME 8000

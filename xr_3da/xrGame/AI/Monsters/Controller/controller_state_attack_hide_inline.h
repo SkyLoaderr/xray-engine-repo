@@ -34,7 +34,7 @@ void CStateControllerHideAbstract::execute()
 	object->anim().accel_activate		(eAT_Aggressive);
 	object->anim().accel_set_braking	(false);
 	
-	object->sound().play				(MonsterSpace::eMonsterSoundAttack, 0,0,object->db().m_dwAttackSndDelay);
+	object->sound().play				(MonsterSound::eMonsterSoundAggressive, 0,0,object->db().m_dwAttackSndDelay);
 	object->custom_dir().head_look_point(object->EnemyMan.get_enemy_position());
 
 	object->custom_anim().set_body_state(CControllerAnimation::eTorsoRun,CControllerAnimation::eLegsTypeRun);

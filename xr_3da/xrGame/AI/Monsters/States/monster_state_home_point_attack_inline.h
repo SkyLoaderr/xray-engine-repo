@@ -124,7 +124,7 @@ void CStateMonsterAttackMoveToHomePointAbstract::setup_substates()
 		data.accelerated		= true;
 		data.braking			= false;
 		data.accel_type 		= eAT_Aggressive;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.action.sound_type	= MonsterSound::eMonsterSoundAggressive;
 		data.action.sound_delay = object->db().m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
@@ -141,7 +141,7 @@ void CStateMonsterAttackMoveToHomePointAbstract::setup_substates()
 		data.point.mad			(object->Position(),dir,10.f);
 		data.action.action		= ACT_STAND_IDLE;
 		data.action.time_out	= 2000;		
-		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.action.sound_type	= MonsterSound::eMonsterSoundAggressive;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 		data.face_delay			= 0;
 
@@ -154,7 +154,7 @@ void CStateMonsterAttackMoveToHomePointAbstract::setup_substates()
 
 		data.action		= ACT_LOOK_AROUND;
 		data.time_out	= 0;			// do not use time out
-		data.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.sound_type	= MonsterSound::eMonsterSoundAggressive;
 		data.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));

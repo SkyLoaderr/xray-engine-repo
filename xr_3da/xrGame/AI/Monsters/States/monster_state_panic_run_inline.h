@@ -21,7 +21,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterPanicRunAbstract::execute()
 {
 	object->set_action							(ACT_RUN);
-	object->set_state_sound						(MonsterSpace::eMonsterSoundPanic);
+	object->set_state_sound						(MonsterSound::eMonsterSoundPanic);
 	object->anim().accel_activate			(eAT_Aggressive);
 	object->anim().accel_set_braking			(false);
 	object->path().set_retreat_from_point	(object->EnemyMan.get_enemy_position());

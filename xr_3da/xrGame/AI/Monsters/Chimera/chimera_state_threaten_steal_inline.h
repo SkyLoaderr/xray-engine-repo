@@ -19,7 +19,7 @@ void CStateChimeraThreatenStealAbstract::initialize()
 	data.accel_type 		= eAT_Calm;
 	
 	data.completion_dist	= 2.f;
-	data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+	data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 	data.action.sound_delay = object->db().m_dwIdleSndDelay;
 }
 

@@ -22,7 +22,7 @@ void CStateMonsterAttackMeleeAbstract::execute()
 {
 	object->set_action			(ACT_ATTACK);
 	object->dir().face_target	(object->EnemyMan.get_enemy(), 1200);
-	object->set_state_sound		(MonsterSpace::eMonsterSoundAttack);
+	object->set_state_sound		(MonsterSound::eMonsterSoundAggressive);
 }
 
 TEMPLATE_SPECIALIZATION

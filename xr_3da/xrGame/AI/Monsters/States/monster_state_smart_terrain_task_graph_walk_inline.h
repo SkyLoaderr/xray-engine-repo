@@ -48,7 +48,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterSmartTerrainTaskGraphWalkAbstract::execute()
 {
 	object->set_action					(ACT_WALK_FWD);
-	object->set_state_sound				(MonsterSpace::eMonsterSoundIdle);
+	object->set_state_sound				(MonsterSound::eMonsterSoundIdle);
 
 	object->path().detour_graph_points	(m_task->game_vertex_id());
 }

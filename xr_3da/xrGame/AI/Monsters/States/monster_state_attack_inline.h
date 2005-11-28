@@ -219,7 +219,7 @@ void CStateMonsterAttackAbstract::setup_substates()
 		data.accel_type			= eAT_Aggressive;
 		data.distance			= 20.f;
 		data.action.action		= ACT_RUN;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.action.sound_type	= MonsterSound::eMonsterSoundAggressive;
 		data.action.sound_delay = object->db().m_dwAttackSndDelay;
 		data.action.time_out	= 5000;
 

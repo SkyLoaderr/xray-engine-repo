@@ -59,8 +59,20 @@ public:
 	LPCSTR   particle_gravi_prepare;
 	LPCSTR	 particle_tele_object;
 
+	//////////////////////////////////////////////////////////////////////////
+	// Sounds
 	ref_sound	sound_gravi_wave;
 	ref_sound	sound_scan;
+
+	enum EBurerSounds {
+		eAdditionalSounds			= MonsterSound::eMonsterSoundCustom,
+
+		eMonsterSoundGraviAttack	= eAdditionalSounds | 0,
+		eMonsterSoundTeleAttack		= eAdditionalSounds | 1,
+	};	
+	//////////////////////////////////////////////////////////////////////////
+
+
 
 	u32		m_gravi_speed;
 	u32		m_gravi_step;

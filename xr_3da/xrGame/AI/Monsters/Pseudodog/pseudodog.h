@@ -15,6 +15,10 @@ public:
 
 	TTime			time_growling;			// время нахождения в состоянии пугания
 
+	enum {
+		eAdditionalSounds		= MonsterSound::eMonsterSoundCustom,
+		ePsyAttack				= eAdditionalSounds | 0,
+	};
 public:
 					CAI_PseudoDog		();
 	virtual			~CAI_PseudoDog		();	

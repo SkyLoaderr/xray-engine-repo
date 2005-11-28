@@ -247,7 +247,7 @@ void CSnork::HitEntityInJump(const CEntity *pEntity)
 void CSnork::jump(const Fvector &position, float factor)
 {
 	com_man().script_jump	(position, factor);
-	sound().play			(MonsterSpace::eMonsterSoundAttack);
+	sound().play			(MonsterSound::eMonsterSoundAggressive);
 }
 
 #ifdef _DEBUG

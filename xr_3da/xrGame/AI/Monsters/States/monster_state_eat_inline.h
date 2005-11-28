@@ -91,7 +91,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.braking		= true;
 		data.accel_type 	= eAT_Calm;
 		data.completion_dist= ((current_substate == eStateEat_CorpseApproachRun) ? 4.5f : object->db().m_fDistToCorpse);
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPoint));
@@ -103,7 +103,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.action			= ACT_STAND_IDLE;
 		data.spec_params	= ASP_CHECK_CORPSE;
 		data.time_out		= 1500;
-		data.sound_type	= MonsterSpace::eMonsterSoundEat;
+		data.sound_type	= MonsterSound::eMonsterSoundEat;
 		data.sound_delay = object->db().m_dwEatSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));
@@ -123,7 +123,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.cover_min_dist			= 20.f;
 		data.cover_max_dist			= 30.f;
 		data.cover_search_radius	= 25.f;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
@@ -136,7 +136,7 @@ void CStateMonsterEatAbstract::setup_substates()
 		data.action			= ACT_REST;
 		data.spec_params	= 0;
 		data.time_out		= 8500;
-		data.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));

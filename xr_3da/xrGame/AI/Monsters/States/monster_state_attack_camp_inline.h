@@ -133,7 +133,7 @@ void CStateMonsterAttackCampAbstract::setup_substates()
 		data.accelerated		= true;
 		data.braking			= false;
 		data.accel_type 		= eAT_Aggressive;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
@@ -150,7 +150,7 @@ void CStateMonsterAttackCampAbstract::setup_substates()
 		data.point.mad			(object->Position(),dir,10.f);
 		data.action.action		= ACT_STAND_IDLE;
 		data.action.time_out	= 10000;		// do not use time out
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 		data.face_delay			= 0;
 

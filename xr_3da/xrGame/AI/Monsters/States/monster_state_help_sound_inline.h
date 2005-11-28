@@ -56,7 +56,7 @@ void CStateMonsterHearHelpSoundAbstract::setup_substates()
 		data.accelerated		= true;
 		data.braking			= true;
 		data.accel_type 		= eAT_Aggressive;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
@@ -68,7 +68,7 @@ void CStateMonsterHearHelpSoundAbstract::setup_substates()
 		SStateDataAction	data;
 		data.action			= ACT_LOOK_AROUND;
 		data.time_out		= 3000;
-		data.sound_type		= MonsterSpace::eMonsterSoundIdle;
+		data.sound_type		= MonsterSound::eMonsterSoundIdle;
 		data.sound_delay	= object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));

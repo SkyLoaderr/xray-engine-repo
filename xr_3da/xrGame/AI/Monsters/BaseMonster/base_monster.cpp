@@ -145,9 +145,9 @@ void CBaseMonster::Die(CObject* who)
 	inherited::Die(who);
 
 	if (is_special_killer(who))
-		sound().play			(MonsterSpace::eMonsterSoundDieInAnomaly);
+		sound().play			(MonsterSound::eMonsterSoundDieInAnomaly);
 	else
-		sound().play			(MonsterSpace::eMonsterSoundDie);
+		sound().play			(MonsterSound::eMonsterSoundDie);
 
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 	
@@ -220,15 +220,15 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 
 		u32 delay = 0;
 		switch (type) {
-		case MonsterSpace::eMonsterSoundIdle : 
+		case MonsterSound::eMonsterSoundIdle : 
 		
 			delay = db().m_dwIdleSndDelay;
 			break;
-		case MonsterSpace::eMonsterSoundEat:
+		case MonsterSound::eMonsterSoundEat:
 			delay = db().m_dwEatSndDelay;
 			break;
-		case MonsterSpace::eMonsterSoundAttack:
-		case MonsterSpace::eMonsterSoundPanic:
+		case MonsterSound::eMonsterSoundAggressive:
+		case MonsterSound::eMonsterSoundPanic:
 			delay = db().m_dwAttackSndDelay;
 			break;
 		}

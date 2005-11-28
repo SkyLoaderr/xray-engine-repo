@@ -33,7 +33,7 @@ void CStateMonsterStealAbstract::execute()
 	object->anim().accel_set_braking		(false);
 	object->path().set_target_point			(object->EnemyMan.get_enemy_position(), object->EnemyMan.get_enemy_vertex());
 	object->path().set_generic_parameters	();
-	object->set_state_sound					(MonsterSpace::eMonsterSoundSteal);
+	object->set_state_sound					(MonsterSound::eMonsterSoundSteal);
 }
 
 TEMPLATE_SPECIALIZATION

@@ -259,7 +259,7 @@ void CStateBurerAttackTeleAbstract::ExecuteTeleFire()
 	object->CTelekinesis::fire(selected_object, enemy_pos, power);
 
 	object->StopTeleObjectParticle(selected_object);
-	object->sound().play(MonsterSpace::eMonsterSoundTeleAttack);
+	object->sound().play(CBurer::eMonsterSoundTeleAttack);
 	object->DeactivateShield();
 }
 

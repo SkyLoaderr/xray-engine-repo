@@ -92,7 +92,7 @@ void CStateMonsterRestIdleAbstract::setup_substates()
 		data.accelerated		= true;
 		data.braking			= true;
 		data.accel_type 		= eAT_Calm;
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
@@ -109,7 +109,7 @@ void CStateMonsterRestIdleAbstract::setup_substates()
 		data.point.mad			(object->Position(),dir,10.f);
 		data.action.action		= ACT_STAND_IDLE;
 		data.action.time_out	= 2000;		
-		data.action.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.action.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.action.sound_delay = object->db().m_dwIdleSndDelay;
 		data.face_delay			= 0;
 
@@ -122,7 +122,7 @@ void CStateMonsterRestIdleAbstract::setup_substates()
 
 		data.action		= ACT_REST;
 		data.time_out	= 0;			// do not use time out
-		data.sound_type	= MonsterSpace::eMonsterSoundIdle;
+		data.sound_type	= MonsterSound::eMonsterSoundIdle;
 		data.sound_delay = object->db().m_dwIdleSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataAction));

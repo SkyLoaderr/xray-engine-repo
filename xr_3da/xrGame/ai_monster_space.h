@@ -129,29 +129,6 @@ namespace MonsterSpace {
 		eAnimSoundDefault,
 	};
 
-
-	enum EMonsterSounds {
-		eMonsterSoundIdle		= u32(0),
-		eMonsterSoundEat,
-		eMonsterSoundAttack,
-		eMonsterSoundAttackHit,
-		eMonsterSoundTakeDamage,
-		eMonsterSoundDie,
-		eMonsterSoundThreaten,
-		eMonsterSoundBkgnd,
-		eMonsterSoundLanding,
-		eMonsterSoundSteal,
-		eMonsterSoundPanic,
-		eMonsterSoundGrowling,
-		eMonsterSoundPsyAttack,
-		eMonsterSoundGraviAttack,
-		eMonsterSoundTeleAttack,
-		eMonsterSoundDieInAnomaly,
-
-		eMonsterSoundScript,
-		eMonsterSoundDummy		= u32(-1),
-	};
-
 	enum EMonsterHeadAnimType {
 		eHeadAnimNormal			= u32(0),
 		eHeadAnimAngry,

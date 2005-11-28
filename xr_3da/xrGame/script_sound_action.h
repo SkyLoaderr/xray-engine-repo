@@ -13,6 +13,7 @@
 #include "ai_sounds.h"
 #include "ai_monster_space.h"
 #include "script_sound.h"
+#include "AI/monsters/monster_sound_defs.h"
 
 class CScriptSoundAction : public CScriptAbstractAction {
 public:
@@ -31,7 +32,7 @@ public:
 	Fvector								m_tSoundPosition;
 	Fvector								m_tSoundAngles;
 	ESoundTypes							m_sound_type;
-	MonsterSpace::EMonsterSounds		m_monster_sound;
+	MonsterSound::EType					m_monster_sound;
 	int									m_monster_sound_delay;
 	MonsterSpace::EMonsterHeadAnimType	m_tHeadAnimType;
 
@@ -44,8 +45,8 @@ public:
 	////////////////////////////////////////////////////////////////////////////////////
 	// Monster Specific
 	///////////////////////////////////////////////////////////////////////////////////
-	IC				CScriptSoundAction	(MonsterSpace::EMonsterSounds sound_type);
-	IC				CScriptSoundAction	(MonsterSpace::EMonsterSounds sound_type, int delay);
+	IC				CScriptSoundAction	(MonsterSound::EType sound_type);
+	IC				CScriptSoundAction	(MonsterSound::EType sound_type, int delay);
 	////////////////////////////////////////////////////////////////////////////////////
 	// Trader Specific
 	///////////////////////////////////////////////////////////////////////////////////

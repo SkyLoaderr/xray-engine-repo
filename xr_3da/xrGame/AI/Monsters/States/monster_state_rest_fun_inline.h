@@ -48,7 +48,7 @@ void CStateMonsterRestFunAbstract::execute()
 	object->anim().accel_activate					(eAT_Calm);
 	object->anim().accel_set_braking					(false);
 	
-	object->set_state_sound								(MonsterSpace::eMonsterSoundIdle);
+	object->set_state_sound								(MonsterSound::eMonsterSoundIdle);
 	
 	if ((dist < object->db().m_fDistToCorpse + 0.5f) && (time_last_hit + MIN_DELAY < Device.dwTimeGlobal)) {
 		CEntityAlive		*corpse = const_cast<CEntityAlive *>		(object->CorpseMan.get_corpse());

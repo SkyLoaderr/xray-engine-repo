@@ -24,7 +24,7 @@ void CStateMonsterMoveToRestrictorAbstract::execute()
 	
 	object->anim().accel_activate		(EAccelType(eAT_Aggressive));
 	object->anim().accel_set_braking	(true);
-	object->set_state_sound				(MonsterSpace::eMonsterSoundIdle);
+	object->set_state_sound				(MonsterSound::eMonsterSoundIdle);
 }
 
 TEMPLATE_SPECIALIZATION

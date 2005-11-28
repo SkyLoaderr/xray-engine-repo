@@ -27,7 +27,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterRestSleepAbstract::execute()
 {
 	object->set_action				(ACT_SLEEP);
-	object->set_state_sound			(MonsterSpace::eMonsterSoundIdle);	
+	object->set_state_sound			(MonsterSound::eMonsterSoundIdle);	
 }
 
 TEMPLATE_SPECIALIZATION
