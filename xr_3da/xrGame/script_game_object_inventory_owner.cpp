@@ -851,3 +851,19 @@ int	CScriptGameObject::animation_slot			() const
 	}
 	return			(hud_item->animation_slot());
 }
+
+CScriptGameObject *CScriptGameObject::item_in_slot	(u32 slot_id) const
+{
+	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member item_in_slot!");
+		return		(0);
+	}
+
+	if (inventory_owner->inventory().m_slots.size() >= slot_id) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : invalid slot id for class member item_in_slot : %d!",slot_id);
+		return		(0);
+	}
+
+	return			(inventory_owner->inventory().m_slots[slot_id].m_pIItem->object().lua_game_object());
+}

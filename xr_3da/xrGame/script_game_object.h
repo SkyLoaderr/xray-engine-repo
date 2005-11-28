@@ -499,6 +499,8 @@ public:
 
 			void				make_object_visible_somewhen		(CScriptGameObject *object);
 
+			CScriptGameObject	*item_in_slot						(u32 slot_id) const;
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)
