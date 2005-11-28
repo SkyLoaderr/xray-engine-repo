@@ -20,6 +20,11 @@ void SJointIKData::clamp_by_limits(Fvector& dest_xyz)
     case jtWheel:
 		clamp(dest_xyz.x,limits[0].limit.x,limits[0].limit.y);		dest_xyz.y=0;
     break;
+    case jtSlider:
+    	dest_xyz.x = 0.f;
+    	dest_xyz.y = 0.f;
+		clamp(dest_xyz.z,limits[1].limit.x,limits[1].limit.y);
+    break;
 /*
     case jtWheelXZ:
 		clamp(dest_xyz.x,limits[0].limit.x,limits[0].limit.y);		dest_xyz.y=0;
@@ -188,6 +193,20 @@ void CBone::BoneRotate(const Fvector& _axis, float angle)
             mLocal.mul			(mBind,mLocalBP);
             mLocal.getXYZi		(mot_rotate);
         }
+    }
+}
+void CBone::BoneMove(const Fvector& _amount)
+{
+    Fvector amount=_amount;
+	Fmatrix _IT;_IT.invert(_LTransform());
+    if (Tools->GetSettings(etfCSParent)) _IT.transform_dir(amount);
+	switch (IK_data.type){
+    case jtSlider:
+    	amount.x 		= 0.f;
+    	amount.y 		= 0.f;
+        mot_offset.add	(amount);
+        clamp			(mot_offset.z,rest_offset.z+IK_data.limits[0].limit.x,rest_offset.z+IK_data.limits[0].limit.y);
+    break;
     }
 }
 

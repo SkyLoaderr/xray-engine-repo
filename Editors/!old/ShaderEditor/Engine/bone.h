@@ -236,7 +236,7 @@ public:
 	void			    ShapeMove		(const Fvector& amount);
 	void			    BindRotate		(const Fvector& amount);
 	void			    BindMove		(const Fvector& amount);
-
+	void			    BoneMove		(const Fvector& amount);
 	void			    BoneRotate		(const Fvector& axis, float angle);
 
 	bool 			    Pick			(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent);

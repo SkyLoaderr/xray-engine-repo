@@ -376,7 +376,7 @@ void TUI::Redraw()
             try{
 	            Tools->Render			();
 		    }catch(...){
-		    	ELog.DlgMsg(mtError, "Critical error has occured in render routine!!! [Type B]");
+		    	ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type B]");
             }
             
             // draw selection rect
@@ -389,12 +389,12 @@ void TUI::Redraw()
 	            // end draw
     	        Device.End();
 		    }catch(...){
-		    	ELog.DlgMsg(mtError, "Critical error has occured in render routine!!! [Type C]");
+		    	ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type C]");
             }
         }
     	Device.Statistic.RenderDUMP_RT.End();
     }catch(...){
-    	ELog.DlgMsg(mtError, "Critical error has occured in render routine!!! [Type A]");
+    	ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type A]");
 //		_clear87();
 //		FPU::m24r();
 //    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");

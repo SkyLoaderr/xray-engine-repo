@@ -672,6 +672,10 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                         (*b_it)->BindMove(m_MoveAmount);
                     m_pEditObject->OnBindTransformChange();
                     RefreshSubProperties();
+                }else{
+                    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                        (*b_it)->BoneMove(m_MoveAmount);
+	            	RefreshSubProperties();
                 }
             }
         break;
