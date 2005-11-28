@@ -108,89 +108,116 @@ function checkMonster(npc_community, gulag_type)
     return false
 end
 
+local function obj_has_item(data, item_name)
+    local se_obj = data.se_obj
+    local t = true
+
+    if se_obj.online then
+        local obj = level.object_by_id(se_obj.id)
+        t = obj:object(item_name) ~= nil
+	end
+
+	return t
+end
 
 --------------------------------------------------------------------------
 -- Predicates
 --------------------------------------------------------------------------
-function f_predicate1(obj)
-	return obj:profile_name() == "pri_followers"
+function f_predicate1(data)
+	return data.profile_name == "pri_followers"
 end
 
-function f_predicate2(obj)
-    local t = obj:best_weapon()
-    if t then
-        --printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
-	    return obj:profile_name() == "pri_followers" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --and t and t:animation_slot() == "4"
-	else
-	    return false
+function f_predicate2(data)
+--[[
+    local se_obj, t = data.se_obj, true
+    if se_obj.online then
+        local obj = level.object_by_id(se_obj.id)
+        t = obj:object("wpn_rpg7") ~= nil
+        if t then
+            --printf("gulag <prip>: predicate f_predicate2. best_weapon(%s)", t:name())
+	        return data.profile_name == "pri_followers" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --and t and t:animation_slot() == "4"
+	    else
+	        return false
+	    end
 	end
+--]]
+	return data.profile_name == "pri_followers" and obj_has_item("wpn_rpg7")
 end
 
-function f_predicate3(obj)
-	return obj:clsid() == clsid.controller_s
+function f_predicate3(data)
+	return data.class_id == clsid.controller_s
 end
 
-function f_predicate4(obj)
-    if obj:clsid() == clsid.script_stalker or obj:clsid() == clsid.stalker then
-        local prof = obj:profile_name()
+function f_predicate4(data)
+    if data.class_id == clsid.script_stalker or data.class_id == clsid.stalker then
+        local prof = data.profile_name
 	    return prof == "pri_zombied" or prof == "pri_zombied_veteran"
 	end
 	return false
 end
 
-function f_predicate4_1(obj)
-    if obj:clsid() == clsid.script_stalker or obj:clsid() == clsid.stalker then
-        local prof = obj:profile_name()
+function f_predicate4_1(data)
+    if data.class_id == clsid.script_stalker or data.class_id == clsid.stalker then
+        local prof = data.profile_name
 	    return prof == "pri_soldier_suicide"
 	end
 	return false
 end
 
-function f_predicate5(obj)
-	return obj:profile_name() == "pri_monolith_regular"
+function f_predicate5(data)
+	return data.profile_name == "pri_monolith_regular"
 end
 
-function f_predicate6(obj)
-	return obj:profile_name() == "pri_monolith_specnaz"
+function f_predicate6(data)
+	return data.profile_name == "pri_monolith_specnaz"
 end
 
-function f_predicate7(obj)
-	return obj:profile_name() == "pri_monolith_exo"
+function f_predicate7(data)
+	return data.profile_name == "pri_monolith_exo"
 end
 
-function f_predicate8(obj)
+function f_predicate8(data)
+--[[
     local t = obj:best_weapon()
     if t then
-	    return obj:profile_name() == "pri_monolith_specnaz" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
+	    return data.profile_name == "pri_monolith_specnaz" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
 	else
 	    return false
 	end
+--]]
+	return data.profile_name == "pri_monolith_specnaz" and obj_has_item("wpn_rpg7")
 end
 
-function f_predicate9(obj)
+function f_predicate9(data)
+--[[
     local t = obj:best_weapon()
     if t then
-	    return obj:profile_name() == "pri_monolith_specnaz" and string.sub(t:name(), 1, 7) == "wpn_svd" --string.find(t:name(), "^wpn_svd")
+	    return data.profile_name == "pri_monolith_specnaz" and string.sub(t:name(), 1, 7) == "wpn_svd" --string.find(t:name(), "^wpn_svd")
 	else
 	    return false
 	end
+--]]
+	return data.profile_name == "pri_monolith_specnaz" and obj_has_item("wpn_svd")
 end
 
-function f_predicate10(obj)
+function f_predicate10(data)
+--[[
     local t = obj:best_weapon()
     if t then
-	    return obj:profile_name() == "pri_monolith_exo" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
+	    return data.profile_name == "pri_monolith_exo" and string.sub(t:name(), 1, 8) == "wpn_rpg7" --string.find(t:name(), "^wpn_rpg7")
 	else
 	    return false
 	end
+--]]
+	return data.profile_name == "pri_monolith_exo" and obj_has_item("wpn_rpg7")
 end
 
-function st_predicate1(obj) -- snorks
-    return obj:clsid() == clsid.snork_s
+function st_predicate1(data) -- snorks
+    return data.class_id == clsid.snork_s
 end
 
-function st_predicate2(obj) -- tushkanos
-    return obj:clsid() == clsid.tushkano_s
+function st_predicate2(data) -- tushkanos
+    return data.class_id == clsid.tushkano_s
 end
 
 --------------------------------------------------------------------------
