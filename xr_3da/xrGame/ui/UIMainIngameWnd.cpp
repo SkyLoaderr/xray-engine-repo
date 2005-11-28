@@ -1204,6 +1204,11 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	LPCSTR actor_action					= m_pActor->GetDefaultActionForObject();
 	UIStaticQuickHelp.Show				(NULL!=actor_action);
 
+	if(NULL!=actor_action){
+		if(stricmp(actor_action,UIStaticQuickHelp.GetText()))
+			UIStaticQuickHelp.SetText				(actor_action);
+	}
+
 	if (pObject!=m_pActor->ObjectWeLookingAt())
 	{
 		UIStaticQuickHelp.SetText				(actor_action);
