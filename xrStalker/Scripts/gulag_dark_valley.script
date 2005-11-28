@@ -91,6 +91,304 @@ end
 --------------------------------------------------------------------------
 
 --------------------------------------------------------------------------
+-- Escort
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+function e_predicate_n(data) -- nap1
+	return data.story_id == 406
+end
+
+function e_predicate_c(data) -- captive
+	return data.story_id == 400
+end
+
+function e_predicate_w(data) -- wounded bandit
+	return data.story_id == 424
+end
+
+function e_predicate_g(data) -- guards
+	return data.profile_name == "val_bandit_general"
+end
+
+-- Jobs ------------------------------------------------------------------
+function load_job_escort(sj, gname, type, squad, groups)
+	t = { section = "logic@" .. gname .. "_nap1",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = e_predicate_n
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@" .. gname .. "_captive",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = e_predicate_c
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@" .. gname .. "_guard1",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = e_predicate_g
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@" .. gname .. "_guard2",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = e_predicate_g
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@" .. gname .. "_wounded_bandit",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = e_predicate_w
+	}
+	table.insert(sj, t)
+end
+
+-- States ----------------------------------------------------------------
+function check_state_escort(gulag)
+	return 0
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_escort(gname, type)
+    local ltx = ""
+
+    ltx = ltx.."#include \"scripts\\val_escort_nap1.ltx\"\n"
+    ltx = ltx.."#include \"scripts\\val_escort_captive.ltx\"\n"
+    ltx = ltx.."#include \"scripts\\val_escort_guard1.ltx\"\n"
+    ltx = ltx.."#include \"scripts\\val_escort_guard2.ltx\"\n"
+    
+    ltx = ltx.."[logic@" .. gname .. "_wounded_bandit]\n" ..
+               "active          = remark@" .. gname .. "_wounded_bandit\n" ..
+
+               "[remark@" .. gname .. "_wounded_bandit]\n" ..
+               "path_move       = nap1_look\n" ..
+               "no_move         = true\n" ..
+               "no_rotate       = true\n" ..
+               "anim            = wait\n" ..
+               "wounded         = wounded@" .. gname .. "_wounded_bandit\n" ..
+
+               "[wounded@" .. gname .. "_wounded_bandit]\n" ..
+               "hp_state        = 10|wounded_heavy\n" ..
+               "hp_state_see    = 10|wounded_heavy\n" ..
+               "psy_state       = 30|psy_pain\n" ..
+               "hp_victim       = 30|actor|10|nil\n" ..
+               "hp_cover        = 30|true|10|false\n" ..
+               "hp_fight        = 30|true|10|false\n" ..
+               "syndata         = wounded@help\n"
+
+    return ltx
+end
+
+
+--------------------------------------------------------------------------
+-- Sacrifice
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+function scf_predicate_v(data) -- victim
+	return data.story_id == 401
+end
+
+function scf_predicate_g1(data) -- guard1
+	return data.story_id == 404
+end
+
+function scf_predicate_g2(data) -- guard2
+	return data.story_id == 405
+end
+
+function scf_predicate_tb(data) -- tunnel bandit
+	return data.story_id == 409
+end
+
+-- Jobs ------------------------------------------------------------------
+function load_job_sacrifice(sj, gname, type, squad, groups)
+	t = { section = "logic@" .. gname .. "_victim",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = scf_predicate_v
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@" .. gname .. "_guard1",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = scf_predicate_g1
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@" .. gname .. "_guard2",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = scf_predicate_g2
+	}
+	table.insert(sj, t)
+
+	t = { section = "logic@" .. gname .. "_tunnel_bandit",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = scf_predicate_tb
+	}
+	table.insert(sj, t)
+end
+
+-- States ----------------------------------------------------------------
+function check_state_sacrifice(gulag)
+	return 0
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_sacrifice(gname, type)
+    local ltx = ""
+    
+    ltx = ltx.."[combat@" .. gname .. "]\n" ..
+               "on_info = {=see_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
+
+               ";[hit@" .. gname .. "_guard]\n" ..
+               ";on_info = {=hit_by_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
+
+               "[danger@" .. gname .. "_guard]\n" ..
+               "ignore_danger_sound = 1\n"
+
+    ltx = ltx.."#include \"scripts\\val_sacrifice_victim.ltx\"\n" ..
+               "#include \"scripts\\val_sacrifice_guard1.ltx\"\n" ..
+               "#include \"scripts\\val_sacrifice_guard2.ltx\"\n" ..
+               "#include \"scripts\\val_tunnel_bandit.ltx\"\n"
+    return ltx
+end
+
+
+--------------------------------------------------------------------------
+-- Prisoner
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+function p_predicate(data) -- prisoner
+	return data.story_id == 402
+end
+
+-- Jobs ------------------------------------------------------------------
+function load_job_prisoner(sj, gname, type, squad, groups)
+	t = { section = "logic@" .. gname,
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		predicate = p_predicate
+	}
+	table.insert(sj, t)
+end
+
+-- States ----------------------------------------------------------------
+function check_state_prisoner(gulag)
+	return 0
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_prisoner(gname, type)
+    return "#include \"scripts\\val_prisoner_captive.ltx\"\n"
+end
+
+
+--------------------------------------------------------------------------
+-- Robbers
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+
+-- Jobs ------------------------------------------------------------------
+function load_job_robbers(sj, gname, type, squad, groups)
+    local i = 0
+
+	t = { section = "logic@" .. gname .. "_leader",
+		idle = 0,
+		prior = 3, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = ""
+	}
+	table.insert(sj, t)
+
+    for i = 1, 2 do
+	    t = { section = "logic@" .. gname .. "_guard" .. i,
+		    idle = 0,
+		    prior = 2, state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = ""
+	    }
+	    table.insert(sj, t)
+	end
+
+    for i = 1, 4 do
+	    t = { section = "logic@" .. gname .. "_kamp",
+		    idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = ""
+	    }
+	    table.insert(sj, t)
+	end
+end
+
+-- States ----------------------------------------------------------------
+function check_state_robbers(gulag)
+	return 0
+end
+
+-- Dynamic ltx -----------------------------------------------------------
+function load_ltx_robbers(gname, type)
+    local i, ltx = "", 0
+    
+    ltx = ltx.."#include \"scripts\\val_rob_leader.ltx\"\n"
+
+    ltx = ltx.."[meet@" .. gname .. "_guard]\n" ..
+               "meet_state 	   = 30| {+val_rob_buying} threat, wait@ {+val_rob_buying} val_rob_guard_jeer, weather\n" ..
+               "meet_state_wpn = 30| threat@threat_back\n" ..
+               ";victim        = 30| actor\n" ..
+               ";victim_wpn    = 30| actor\n" ..
+               ";use           = true\n" ..
+               "use_wpn	       = true\n" ..
+               "zone           = val_rob_warn_zone| threat@ {+val_rob_buying} val_rob_guard_jeer, threat_back | val_rob_kill_zone| true@talk_abuse\n"
+
+    for i = 1, 2 do
+        ltx = ltx.."[logic@" .. gname .. "_guard" .. i .. "]\n" ..
+                   "active = walker@" .. gname .. "_guard" .. i .. "\n" ..
+
+                   "[walker@" .. gname .. "_guard" .. i .. "]\n" ..
+                   "path_walk = guard" .. i .. "_walk\n" ..
+                   "path_look = guard" .. i .. "_look\n" ..
+                   "meet      = meet@" .. gname .. "_guard\n"
+    end
+    
+    ltx = ltx.."[logic@" .. gname .. "_kamp]\n" ..
+               "active = kamp@" .. gname .. "\n" ..
+
+               "[kamp@" .. gname .. "]\n" ..
+               "center_point = kamp\n"
+    return ltx
+end
+
+
+--------------------------------------------------------------------------
 -- Bandits
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
@@ -111,9 +409,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
     local restr, gr, prior, rst = 0, 0, 0, 0
 
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 9 - ¡Œ–Œ¬
-	-----------------------------------------------------------------------
+	-- ¡Œ–Œ¬
 	t = { section = "logic@" .. gname .. "_leader_normal",
 		idle = 0,
 		prior = 9, state = {state_normal},
@@ -141,9 +437,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 8 - Œ’–¿ÕÕ» » ¡Œ–Œ¬¿
-	-----------------------------------------------------------------------
+	-- Œ’–¿ÕÕ» » ¡Œ–Œ¬¿
     for i = 1, 3 do
 	    t = { section = "logic@" .. gname .. "_bodyguard_normal" .. i,
 		    idle = 0,
@@ -173,9 +467,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	    table.insert(sj, t)
     end
 
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 7 - —»ƒﬂŸ»≈ ¬  ≈Ãœ≈ 1 ¬Œ«À≈ ¡Œ–Œ¬¿ » ¬  ≈Ãœ≈ 2 Õ¿ ¬“Œ–ŒÃ ›“¿∆≈
-	-----------------------------------------------------------------------
+	-- —»ƒﬂŸ»≈ ¬  ≈Ãœ≈ 1 ¬Œ«À≈ ¡Œ–Œ¬¿ » ¬  ≈Ãœ≈ 2 Õ¿ ¬“Œ–ŒÃ ›“¿∆≈
 	restr = {gname .. "_main_building_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor"}
 	local pr = {7, 7, 2}
 	for i, v in pairs({3, 4, 2}) do
@@ -209,9 +501,7 @@ function load_job_lager_bandits(sj, gname, type, squad, groups)
 	    end
 	end
 
-	-----------------------------------------------------------------------
-	-- œ–»Œ–»“≈“ 6 - ¡¿Õƒ»“€ Õ¿ ¬Œ–Œ“¿’
-	-----------------------------------------------------------------------
+	-- ¡¿Õƒ»“€ Õ¿ ¬Œ–Œ“¿’
 	restr =  {{gname .. "_main_side_restrictor", gname .. "_restrictor"},
 	          {gname .. "_main_side_restrictor", gname .. "_restrictor", gname .. "_restrictor", gname .. "_restrictor"},
 	          {gname .. "_restrictor", gname .. "_restrictor"},
@@ -470,61 +760,12 @@ function load_ltx_war_soldiers(gname, type)
 end
 
 
---------------------------------------------------------------------------
--- Monster on spring
---------------------------------------------------------------------------
--- Jobs ------------------------------------------------------------------
-function load_job_mob_on_spring(sj, gname, type, squad, groups)
-    local wn, c, i = gname .. "_centre", mob_spring_count, 0
-
-	local p = patrol(wn)
-	if p then
-	    local wd = utils.parse_waypoint_data(wn, p:flags(0), p:name(0))
-	    if wd.count ~= nil then
-		    c = wd.count
-	    end
-	end
-
-    for i = 1, c do
-	    t = { section = "logic@mob_spring",
-	        idle = 0,
-            prior = 1, state = {0},
-            squad = squad, group = groups[1],
-            in_rest = "", out_rest = ""
-	    }
-	    table.insert(sj, t)
-	end
-end
-
--- States ----------------------------------------------------------------
-function check_state_mob_on_spring(gulag)
-    return 0
-end
-
 -------------------------------------------------------------------------------------------------------------------------
--- gulags                      -- job_func              -- check_state func         -- communities  -- dynamic ltx func
+-- gulags                      -- job_func              -- check_state func         -- communities      -- dynamic ltx func
+gulags.val_escort           = {load_job_escort,         check_state_escort,         {"bandit", "dolg"}, load_ltx_escort}
+gulags.val_sacrifice        = {load_job_sacrifice,      check_state_sacrifice,      {"bandit", "dolg"}, load_ltx_sacrifice}
+gulags.val_prisoner         = {load_job_prisoner,       check_state_prisoner,       {"dolg"},           load_ltx_prisoner}
+gulags.val_rob              = {load_job_robbers,        check_state_robbers,        {},                 load_ltx_robbers}
 gulags.val_lager_bandits    = {load_job_lager_bandits,  check_state_lager_bandits,  {"bandit"}}
-gulags.val_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {"monolith"},   load_ltx_monolith_base}
-gulags.val_war_soldiers     = {load_job_war_soldiers,   check_state_war_soldiers,   {"military"},   load_ltx_war_soldiers}
-
-gulags.mob_on_spring        = {load_job_mob_on_spring,  check_state_mob_on_spring}
-
---[[
-gulags.val_dogs_nest1       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
-gulags.val_dogs_nest2       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
-gulags.val_dogs_nest3       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
-gulags.val_dogs_nest4       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
-gulags.val_dogs_nest5       = {load_job_mob_spring,     check_state_mob_spring,     {"dog"}}
-
-gulags.val_fleshes_nest1    = {load_job_mob_spring,     check_state_mob_spring,     {"flesh"}}
-gulags.val_fleshes_nest2    = {load_job_mob_spring,     check_state_mob_spring,     {"flesh"}}
-gulags.val_fleshes_nest3    = {load_job_mob_spring,     check_state_mob_spring,     {"flesh"}}
-gulags.val_fleshes_nest4    = {load_job_mob_spring,     check_state_mob_spring,     {"flesh"}}
-gulags.val_fleshes_nest5    = {load_job_mob_spring,     check_state_mob_spring,     {"flesh"}}
-
-gulags.val_boars_nest1      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
-gulags.val_boars_nest2      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
-gulags.val_boars_nest3      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
-gulags.val_boars_nest4      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
-gulags.val_boars_nest5      = {load_job_mob_spring,     check_state_mob_spring,     {"boar"}}
---]]
+gulags.val_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {"monolith"},       load_ltx_monolith_base}
+gulags.val_war_soldiers     = {load_job_war_soldiers,   check_state_war_soldiers,   {"military"},       load_ltx_war_soldiers}

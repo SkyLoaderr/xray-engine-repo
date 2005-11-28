@@ -1,48 +1,30 @@
-[logic]
-active = camper@wait
-on_combat = combat
-on_hit = hit
+[logic@val_sacrifice_tunnel_bandit]
+active = camper@val_sacrifice_tunnel_bandit_wait
+on_combat = combat@val_sacrifice
 combat_ignore = combat_ignore
-
-[combat]
-on_info = {-val_tunnel_plr_detected =see_actor} %+val_tunnel_plr_detected%
-
-[hit]
-on_info = {-val_tunnel_plr_detected =hit_by_actor} %+val_tunnel_plr_detected%
-
-[combat_ignore]
 
 ;--------------------------------------------------------------------------
 ; ждем пока игрок не зайдет в стартовую зону
 ;--------------------------------------------------------------------------
-[camper@wait]
-path_walk = val_tunnel_bandit_walk 
-path_look = val_tunnel_bandit_look
-def_state_campering = guard
-def_state_campering_fire = guard_fire
-def_state_moving = patrol
-def_state_moving_fire = patrol_fire
-on_info = {+val_tunnel_talk_start} remark@phrase, {+val_tunnel_bandit_leave} walker@leave
-combat_ignore_cond = {!fighting_actor}, {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_victim_free} ;, {-val_tunnel_plr_detected}
+[camper@val_sacrifice_tunnel_bandit_wait]
+path_walk                   = tunnel_bandit_walk 
+path_look                   = tunnel_bandit_look
+def_state_campering         = guard
+def_state_campering_fire    = guard_fire
+def_state_moving            = patrol
+def_state_moving_fire       = patrol_fire
+on_info                     = {+val_tunnel_talk_start} remark@val_sacrifice_tunnel_bandit_phrase
+combat_ignore_cond          = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
 ; монолог: Ну в натуре Боров обнаглел! Я бля из Зоны пришел, устал, а он, курва,
 ;          меня отправляет патрулировать лагерь. Да кто рискнет сюда пробраться?
 ;          Не, короче, пойду-ка я лучше посплю, на хрена мне тут торчать?
 ;--------------------------------------------------------------------------
-[remark@phrase]
-no_move = true
-no_rotate = true
-anim = guard
-snd = speech
-on_info = {+val_tunnel_plr_detected} walker@leave, {+val_tunnel_bandit_leave} walker@leave
-on_signal = sound_end | walker@leave
-combat_ignore_cond = {!fighting_actor}, {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_victim_free} ;, {-val_tunnel_plr_detected}
-
-;--------------------------------------------------------------------------
-; уходим
-;--------------------------------------------------------------------------
-[walker@leave]
-path_walk = val_tunnel_bandit_leave_walk 
-path_look = val_tunnel_bandit_leave_look
-combat_ignore_cond = {!fighting_actor}, {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_victim_free}
+[remark@val_sacrifice_tunnel_bandit_phrase]
+no_move             = true
+no_rotate           = true
+anim                = guard
+snd                 = speech
+on_signal           = sound_end | %+val_tunnel_finish%
+combat_ignore_cond  = {=check_fighting(403:401)}

@@ -1,24 +1,12 @@
-[logic]
-active = camper@wait
-on_combat = combat
-on_death = death
-on_hit = hit
-combat_ignore = combat_ignore
+[logic@val_sacrifice_guard2]
+active          = camper@val_sacrifice_guard2_wait
+on_combat       = combat@val_sacrifice
+on_death        = death@val_sacrifice_guard2
+combat_ignore   = combat_ignore
 
-[combat]
-on_info = {=see_actor -val_sacrifice_victim_dead -val_sacrifice_plr_detected} %+val_sacrifice_plr_detected%
-
-[death]
-on_info = %+val_sacrifice_guard2_dead%
-on_info2 = {=killed_by_actor} %+val_sacrifice_plr_detected%
-
-[hit]
-on_info = {=hit_by_actor} %+val_sacrifice_plr_detected%
-
-[combat_ignore]
-
-[danger1]
-ignore_danger_sound = 1
+[death@val_sacrifice_guard2]
+on_info     = %+val_sacrifice_guard2_dead%
+;on_info2    = {=killed_by_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%
 
 ;401 = "val_sacrifice_victim"
 ;403 = "val_sacrifice_bloodsucker"
@@ -28,75 +16,35 @@ ignore_danger_sound = 1
 ;--------------------------------------------------------------------------
 ; ждем пока первый охранник произнесет свою первую фразу
 ;--------------------------------------------------------------------------
-[camper@wait]
-path_walk = val_sacrifice_guard2_walk 
-path_look = val_sacrifice_guard2_look
-def_state_campering = guard
-def_state_campering_fire = guard_fire
-def_state_moving = patrol
-def_state_moving_fire = patrol_fire
-on_info = {+val_sacrifice_guard1_phrase1_end} remark@phrase1
-on_info2 = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
+[camper@val_sacrifice_guard2_wait]
+path_walk                   = guard2_walk 
+path_look                   = guard2_look
+def_state_campering         = guard
+def_state_campering_fire    = guard_fire
+def_state_moving            = patrol
+def_state_moving_fire       = patrol_fire
+on_info                     = {+val_sacrifice_guard1_phrase1_end} remark@val_sacrifice_guard2_phrase1
+combat_ignore_cond          = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Да он уже достал, в натуре! На этой неделе уже 3 раза туда...
 ;--------------------------------------------------------------------------
-[remark@phrase1]
-no_move = true
-;no_rotate = true
-target = 404
-anim = guard
-snd = speech
-on_signal = sound_end | remark@phrase2
-on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
+[remark@val_sacrifice_guard2_phrase1]
+no_move             = true
+;no_rotate          = true
+target              = 404
+anim                = guard
+snd                 = speech
+on_signal           = sound_end | remark@val_sacrifice_guard2_phrase2
+combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Ш-ш-ш-ш.. Слышал? Что-то у меня дурное предчувствие. Короче, не хочется мне из Лагеря уходить.
 ;--------------------------------------------------------------------------
-[remark@phrase2]
-no_move = true
-no_rotate = true
-anim = guard
-snd = speech
-on_signal = sound_end | remark@kill_wait %+val_sacrifice_guard2_phrase2_end%
-on_info = {+val_sacrifice_plr_detected} walker@leave
-combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) -val_sacrifice_plr_detected}
-
-;--------------------------------------------------------------------------
-; 
-;--------------------------------------------------------------------------
-[remark@kill_wait]
-;no_move = true
-no_rotate = true
-anim = guard
-on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phrase5_end} walker@leave
-;on_info2 = {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) !see_actor} ;, {=fighting_actor -val_sacrifice_plr_detected}
-;danger = danger1
-
-;--------------------------------------------------------------------------
-; 
-;--------------------------------------------------------------------------
-[camper@kill_wait]
-;radius = 0
-path_walk = val_sacrifice_guard2_walk 
-path_look = val_sacrifice_guard2_look
-def_state_campering = guard
-def_state_campering_fire = guard_fire
-;def_state_moving = patrol
-;def_state_moving_fire = patrol_fire
-;no_retreat = true
-on_info = {+val_sacrifice_plr_detected} walker@leave, {+val_sacrifice_guard1_phrase5_end} walker@leave
-;on_info2 = {+val_sacrifice_victim_dead} walker@leave
-combat_ignore_cond = {=check_fighting(403)}, {=check_fighting(401) !see_actor}, {=fighting_actor -val_sacrifice_plr_detected}
-;danger = danger1
-
-;--------------------------------------------------------------------------
-; уходим
-;--------------------------------------------------------------------------
-[walker@leave]
-path_walk = val_sacrifice_guard2_leave_walk 
-path_look = val_sacrifice_guard2_leave_look
-combat_ignore_cond = {=check_fighting(403)}
+[remark@val_sacrifice_guard2_phrase2]
+no_move             = true
+no_rotate           = true
+anim                = guard
+snd                 = speech
+on_signal           = sound_end | %+val_sacrifice_guard2_phrase2_end%
+combat_ignore_cond  = {=check_fighting(403:401)}

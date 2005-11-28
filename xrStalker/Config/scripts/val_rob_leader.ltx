@@ -1,4 +1,4 @@
-[logic]
+[logic@val_rob_leader]
 active = walker@start
 
 ;--------------------------------------------------------------------------
@@ -34,8 +34,8 @@ use = true
 
 ;--------------------------------------------------------------------------
 [walker@start]
-path_walk = val_rob_leader_walk
-path_look = val_rob_leader_look
+path_walk = leader_walk
+path_look = leader_look
 meet = meet@def
 on_actor_dist_le = 30 | remark@call
 
@@ -45,20 +45,20 @@ snd = val_rob_leader_call
 on_signal = sound_end | walker1
 
 [walker1]
-path_walk = val_rob_leader_walk
-path_look = val_rob_leader_look
+path_walk = leader_walk
+path_look = leader_look
 ;meet_dialog = val_rob_dialog
 ;meet_enabled = true
 meet = meet@start
 on_info = {+val_rob_buying} walker2
 
 [walker2]
-path_walk = val_rob_leader_kamp_walk
-path_look = val_rob_leader_kamp_look
+path_walk = leader_kamp_walk
+path_look = leader_kamp_look
 def_state_moving = run
 meet = meet@ignore
 on_signal = arrived | kamp1
 
 [kamp1]
 meet = meet@ignore
-center_point = val_rob_camp
+center_point = kamp
