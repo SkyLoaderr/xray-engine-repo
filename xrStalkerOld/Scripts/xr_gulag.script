@@ -19,7 +19,7 @@ level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gula
 local gulag_tasks_file_name  = "misc\\gulag_tasks.ltx"
 local gulag_tasks_ltx        = ini_file( gulag_tasks_file_name )
 
-local job_position_threshold = 5  -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
+local job_position_threshold = 50 -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
 
 idle_nil  = nil
 idle_once = -1
@@ -305,6 +305,9 @@ end
 -- можно ли объекту начать работать?
 -- для этого проверить, не на работе ли уже.
 -- если нет, то проверить, достиг ли объект места работы.
+-- условия достижения персонажем места работы:
+-- а) в офлайне: персонаж пришёл на нужную точку графа
+-- б) в онлайне: персонаж продошёл на расстояние job_position_threshold
 function gulag:can_obj_begin_job( obj_id, obj )
 	local jobN = self.ObjectJob[obj_id]
 
@@ -312,8 +315,9 @@ function gulag:can_obj_begin_job( obj_id, obj )
 		if obj == true then
 			return self.npc_info[obj_id].se_obj.m_game_vertex_id == self.Job[jobN].game_vertex_id
 		else
-			return obj:game_vertex_id() == self.Job[jobN].game_vertex_id and
-			       obj:position():distance_to( self.Job[jobN].position ) < job_position_threshold
+			return obj:position():distance_to( self.Job[jobN].position ) < job_position_threshold
+--			return obj:game_vertex_id() == self.Job[jobN].game_vertex_id and
+--			       obj:position():distance_to( self.Job[jobN].position ) < job_position_threshold
 		end
 	else
 		return false
