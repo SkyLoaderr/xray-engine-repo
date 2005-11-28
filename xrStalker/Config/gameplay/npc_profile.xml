@@ -477,6 +477,11 @@
 	<character id="mil_Monolit_regular">
 		<class>mil_Monolit_regular</class>
 	</character>
+
+	<character id="mil_Monolit_master">
+		<class>mil_Monolit_master</class>
+	</character>
+
     <character id="mil_Svoboda_engineer">
 		<class>mil_Svoboda_engineer</class>
 	</character>
