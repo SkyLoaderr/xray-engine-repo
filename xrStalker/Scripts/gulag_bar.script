@@ -964,7 +964,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.pseudodog_s
+				         	return obj_info.section_name == "pseudodog_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -973,7 +973,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.pseudodog_s
+				         	return obj_info.section_name == "pseudodog_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -983,7 +983,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.snork_s
+				         	return obj_info.section_name == "snork_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -992,7 +992,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.snork_s
+				         	return obj_info.section_name == "snork_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -1002,7 +1002,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.bloodsucker_s
+				         	return obj_info.section_name == "bloodsucker_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -1011,7 +1011,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.bloodsucker_s
+				         	return obj_info.section_name == "bloodsucker_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -1021,7 +1021,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.burer_s
+				         	return obj_info.section_name == "burer_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -1030,7 +1030,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.burer_s
+				         	return obj_info.section_name == "burer_arena"
 			            end
 		}
 		table.insert(sj, t)
@@ -1040,8 +1040,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.stalker or
-				         	       obj_info.class_id == clsid.script_stalker
+				         	return obj_info.community == "arena_enemy"
 			            end
 		}
 		table.insert(sj, t)
@@ -1050,8 +1049,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
 			predicate = function(obj_info)
-				         	return obj_info.class_id == clsid.stalker or
-				         	       obj_info.class_id == clsid.script_stalker
+				         	return obj_info.community == "arena_enemy"
 			            end
 		}
 		table.insert(sj, t)
@@ -1260,10 +1258,21 @@ function checkStalker(npc_community, gulag_type)
 	return false
 end
 
-function checkMonster(npc_community, gulag_type)
+function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
 		
 	if gulag_type == "bar_arena_monstr" then
-		return true
+		if npc_community == "arena_enemy" then
+			return true
+		end
+		local se_obj_name = se_obj:section_name()
+		if se_obj_name == "pseudodog_arena" or
+		   se_obj_name == "snork_arena" or
+		   se_obj_name == "bloodsucker_arena" or
+		   se_obj_name == "burer_arena"
+		then
+			return true
+		end
+		return false
 	end
 		
 	return false

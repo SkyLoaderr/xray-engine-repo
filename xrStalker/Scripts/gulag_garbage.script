@@ -1385,10 +1385,7 @@ function load_ltx(gname, type)
 	return nil
 end
 
-function checkStalker(npc_community, gulag_type)
-
-	
-	
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 	if gulag_type == "gar_hellcar_group" then
 		return npc_community == "stalker"
 	end
@@ -1414,7 +1411,19 @@ function checkStalker(npc_community, gulag_type)
 	end
 	
 	if gulag_type == "gar_dram" then
-		return npc_community == "stalker"
+		local se_obj_story_ids = se_obj.m_story_id
+		if se_obj_story_ids == 101 or
+		   se_obj_story_ids == 102 or
+		   se_obj_story_ids == 103
+		then
+			return true
+		end
+
+		local se_obj_story_ids = obj.profile_name and obj:profile_name()
+		if se_obj_story_ids == "gar_dram_novice" then
+			return true
+	    end
+		return false
 	end
 	
 	if gulag_type == "gar_angar" then
