@@ -204,6 +204,7 @@ function se_smart_terrain:fill_npc_info( obj )
 	npc_info.se_obj       = obj
 
 	npc_info.class_id     = obj:clsid()
+	npc_info.section_name = obj:section_name()
 	npc_info.name         = obj:name()
 	npc_info.story_id     = obj.m_story_id
 	npc_info.community    = self:get_obj_community( obj )
@@ -317,7 +318,8 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 			return false
 		end
 
-		return xr_gulag.checkNpc( community, is_stalker, self.gparams.type, 100 /*obj:rank()*/, self.gparams.preset_name )
+--		printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
+		return xr_gulag.checkNpc( community, is_stalker, self.gparams.type, 100 /*obj:rank()*/, obj, self.gparams.preset_name )
 	else
 		return false
 	end

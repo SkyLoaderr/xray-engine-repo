@@ -439,17 +439,17 @@ function check_preset( npc_community, type, npc_rank, preset_name )
 	end
 end
 
-function checkStalker(npc_community, type, npc_rank, preset_name)
+function checkStalker(npc_community, type, npc_rank, se_obj, preset_name)
 	if type == "general_lager" then
-		return check_preset( npc_community, type, npc_rank, preset_name )
+		return check_preset( npc_community, type, npc_rank, se_obj, preset_name )
 --		return true
 	end
 	return false
 end
 
-function checkMonster(npc_community, type, npc_rank, preset_name)
+function checkMonster(npc_community, type, npc_rank, se_obj, preset_name)
 	if type == "general_lair" then
-		return check_preset( npc_community, type, npc_rank, preset_name )
+		return check_preset( npc_community, type, npc_rank, se_obj, preset_name )
 --		return true
 	end
 	return false
