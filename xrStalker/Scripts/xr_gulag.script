@@ -312,10 +312,12 @@ function gulag:can_obj_begin_job( obj_id, obj )
 	local jobN = self.ObjectJob[obj_id]
 
 	if jobN and not self.Object_begin_job[obj_id] then
+		local job = self.Job[jobN]
+
 		if obj == true then
-			return self.npc_info[obj_id].se_obj.m_game_vertex_id == self.Job[jobN].game_vertex_id
+			return self.npc_info[obj_id].se_obj.m_game_vertex_id == job.game_vertex_id
 		else
-			return obj:position():distance_to( self.Job[jobN].position ) < job_position_threshold
+			return obj:position():distance_to( job.position ) < ( job.position_threshold or job_position_threshold )
 --			return obj:game_vertex_id() == self.Job[jobN].game_vertex_id and
 --			       obj:position():distance_to( self.Job[jobN].position ) < job_position_threshold
 		end
