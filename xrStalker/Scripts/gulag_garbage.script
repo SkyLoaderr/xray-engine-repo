@@ -11,8 +11,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {0},
 			in_rest = "", out_rest = "gar_graveyard_car",
-			predicate = function(obj) 
-        					return obj:profile_name() == "gar_hellcar"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "gar_hellcar"			           
 						end
 		}
 		table.insert(sj, t)		
@@ -56,8 +56,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			in_rest = "", out_rest = "gar_graveyard_car",
-			predicate = function(obj) 
-        					return obj:profile_name() == "gar_hellcar"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "gar_hellcar"			           
 						end
 		}
 		table.insert(sj, t)		
@@ -83,8 +83,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {2},
 			in_rest = "", out_rest = "gar_graveyard_car",
-			predicate = function(obj) 
-        					return obj:profile_name() == "gar_hellcar"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "gar_hellcar"			           
 						end
 		}
 		table.insert(sj, t)		
@@ -156,8 +156,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {0},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-        		return obj:profile_name() == "gar_bandit_leader"			           
+			predicate = function(obj_info) 
+        		return obj_info.profile_name == "gar_bandit_leader"			           
 			end
 		}
 		table.insert(sj, t)
@@ -207,8 +207,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {2},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-        		return obj:profile_name() == "gar_bandit_leader"			           
+			predicate = function(obj_info) 
+        		return obj.profile_name == "gar_bandit_leader"			           
 			end
 		}
 		table.insert(sj, t)
@@ -228,8 +228,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 11, state = {1},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-        		return obj:profile_name() == "gar_bandit_leader"			           
+			predicate = function(obj_info) 
+        		return obj_info.profile_name == "gar_bandit_leader"			           
 			end
 		}
 		table.insert(sj, t)
@@ -359,8 +359,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {0,1},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-        					return obj:profile_name() == "gar_dolg_blokpost_commander"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "gar_dolg_blokpost_commander"			           
 						end
 		}
 		table.insert(sj, t)
@@ -1047,8 +1047,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 3, state = {0},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-        					return obj:profile_name() == "gar_bandit_novice_wounded"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "gar_bandit_novice_wounded"			           
 						end
 		}
 		table.insert(sj, t)
@@ -1099,8 +1099,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 3, state = {0},
 			in_rest = "", out_rest = "gar_bandits_restrictor",
-			predicate = function(obj) 
-        					return obj:profile_name() == "gar_dram_novice"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "gar_dram_novice"			           
 						end
 		}
 		table.insert(sj, t)
@@ -1111,8 +1111,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {0},
 			in_rest = "", out_rest = "gar_seryi_battle_restrictor",
-			predicate = function(obj) 
-        					return obj:profile_name() == "gar_seriy"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "gar_seriy"			           
 						end
 		}
 		table.insert(sj, t)

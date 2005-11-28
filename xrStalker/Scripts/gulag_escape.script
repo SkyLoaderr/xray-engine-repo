@@ -28,8 +28,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 100, state = {0,2},
 			in_rest = "", out_rest = "escape_blockpost_zone",
-			predicate = function(obj) 
-			            	return obj:profile_name() == "esc_soldier_commander"
+			predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_soldier_commander"
 			            end
 		}
 		table.insert(sj, t)
@@ -279,8 +279,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 16, state = {0,1},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-        					return obj:profile_name() == "esc_wolf"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "esc_wolf"			           
 						end
 		}
 		table.insert(sj, t)
@@ -289,8 +289,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 16, state = {0,1},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-        					return obj:profile_name() == "esc_fanat"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "esc_fanat"			           
 						end
 		}
 		table.insert(sj, t)
@@ -410,8 +410,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 20, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
-			predicate = function(obj) 
-        					return obj:profile_name() == "esc_fanat"			           
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "esc_fanat"			           
 						end
 		}
 		table.insert(sj, t)
@@ -573,8 +573,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {0},
 			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-			            	return obj:profile_name() == "esc_killer_master"
+			predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_killer_master"
 			            end
 		}
 		table.insert(sj, t)
@@ -752,8 +752,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {3},
 			in_rest = "", out_rest = "",
-				predicate = function(obj) 
-			            	return obj:profile_name() == "esc_killer_specnaz"
+				predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_killer_specnaz"
 			            end
 		}
 		table.insert(sj, t)
@@ -761,8 +761,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {3},
 			in_rest = "", out_rest = "",
-				predicate = function(obj) 
-			            	return obj:profile_name() == "esc_killer_specnaz"
+				predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_killer_specnaz"
 			            end
 		}
 		table.insert(sj, t)
@@ -770,8 +770,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {3},
 			in_rest = "", out_rest = "",
-				predicate = function(obj) 
-			            	return obj:profile_name() == "esc_killer_specnaz"
+				predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_killer_specnaz"
 			            end
 		}
 		table.insert(sj, t)
