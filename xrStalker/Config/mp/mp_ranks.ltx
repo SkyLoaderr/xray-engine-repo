@@ -3,6 +3,7 @@ texture = ui\ui_icon_rank
 
 [mp_item_groups]
 infinite_items = mp_medkit,ammo_9x18_fmj,ammo_9x18_pbp,ammo_9x18_pmm,ammo_9x19_fmj,ammo_9x19_pbp,ammo_5.45x39_fmj,ammo_5.45x39_ap,ammo_5.56x45_ss190,ammo_5.56x45_ap,ammo_7.62x54_7h1,ammo_7.62x54_ap,ammo_7.62x54_7h14,ammo_9x39_pab9,ammo_gauss,ammo_9x39_ap,ammo_9x39_sp5,ammo_11.43x23_fmj,ammo_11.43x23_hydro,ammo_12x70_buck,ammo_12x76_dart,ammo_12x76_zhekan
+mk=mp_medkit
 expl = mp_grenade_rgd5,mp_grenade_f1 
 smk = mp_grenade_gd-05
 glgr = mp_ammo_vog-25, mp_ammo_m209, mp_ammo_og-7b
@@ -19,7 +20,7 @@ rank_exp = 0, 0         ; опыт, артефакты
 rank_diff_exp_bonus = 1, 1.25, 1.5, 2, 3
 ;----------------- new items -------------------------
 available_items = mp_wpn_pm, mp_wpn_pb, mp_wpn_fort, mp_wpn_hpsa, mp_wpn_walther, mp_wpn_beretta, mp_wpn_colt1911, mp_wpn_mp5, mp_wpn_bm16,mp_wpn_sig550,mp_wpn_usp,mp_wpn_sig220, mp_wpn_desert_eagle,mp_wpn_rg-6, mp_wpn_toz34, mp_wpn_ak74u,mp_wpn_ak74, mp_wpn_l85, mp_device_torch,mp_wpn_addon_scope,mp_antirad,mp_detector_advances,mp_medkit, mp_wpn_binoc, mp_grenade_f1,mp_grenade_rgd5,mp_grenade_gd-05,mp_wpn_addon_silencer,mp_wpn_addon_scope_susat,ammo_9x18_fmj,ammo_9x18_pbp,ammo_9x18_pmm,ammo_9x19_fmj,ammo_9x19_pbp,ammo_5.45x39_fmj,ammo_5.45x39_ap,ammo_5.56x45_ss190,ammo_5.56x45_ap,ammo_7.62x54_7h1,ammo_7.62x54_ap,ammo_7.62x54_7h14,ammo_9x39_pab9,ammo_gauss,ammo_9x39_ap,ammo_9x39_sp5,ammo_11.43x23_fmj,ammo_11.43x23_hydro,ammo_12x70_buck,ammo_12x76_dart,ammo_12x76_zhekan
-amount_restriction = expl:1, smk:2, standart_ammo:5,advanced_ammo:4,best_ammo:3 
+amount_restriction = mk:2,expl:1, smk:2, standart_ammo:5,advanced_ammo:4,best_ammo:3 
 
 [rank_1]
 rank_name = Experienced
@@ -36,7 +37,7 @@ mp_wpn_hpsa_cost	= 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_pm = mp_wpn_hpsa
 def_item_repl_mp_wpn_pb = mp_wpn_fort
-amount_restriction = expl:2, smk:2,standart_ammo:5,advanced_ammo:4,best_ammo:3
+amount_restriction = mk:2,expl:2, smk:2,standart_ammo:5,advanced_ammo:4,best_ammo:3
 
 [rank_2]
 rank_name = Professional
@@ -51,7 +52,7 @@ mp_wpn_walther_cost = 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_hpsa = mp_wpn_walther
 def_item_repl_mp_wpn_fort = mp_wpn_beretta
-amount_restriction = expl:3, smk:3,glgr:3,standart_ammo:5,advanced_ammo:4,best_ammo:3
+amount_restriction = mk:3,expl:3, smk:3,glgr:3,standart_ammo:5,advanced_ammo:4,best_ammo:3
 
 [rank_3]
 rank_name = Veteran
@@ -67,7 +68,7 @@ mp_wpn_colt1911_cost = 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_beretta = mp_wpn_sig220
 def_item_repl_mp_wpn_walther = mp_wpn_usp
-amount_restriction = expl:3, smk:4,glgr:6,standart_ammo:5,advanced_ammo:4,best_ammo:3
+amount_restriction = mk:3,expl:3, smk:4,glgr:6,standart_ammo:5,advanced_ammo:4,best_ammo:3
 
 
 [rank_4]
@@ -84,6 +85,6 @@ mp_wpn_colt1911_cost = 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_beretta = mp_wpn_sig220
 def_item_repl_mp_wpn_walther = mp_wpn_usp
-amount_restriction = expl:3, smk:5,glgr:12,standart_ammo:5,advanced_ammo:4,best_ammo:3
+amount_restriction = mk:3,expl:3, smk:5,glgr:12,standart_ammo:5,advanced_ammo:4,best_ammo:3
 
 
