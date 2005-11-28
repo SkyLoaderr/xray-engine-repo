@@ -267,7 +267,7 @@ end
 
 -- ѕринудительное усыпание игрока на радаре.
 function force_actor_sleep(npc)
-	db.actor:actor_sleep(0, 30)
+	db.actor:actor_sleep(48, 0)
 end
 
 
