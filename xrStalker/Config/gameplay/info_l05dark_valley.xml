@@ -59,6 +59,11 @@
 <info_portion id="val_escort_nap1_no_thanx"></info_portion>
 <info_portion id="val_show_zones"></info_portion>
 
+<!-- Монолог возле трубы -->
+<info_portion id="val_tunnel_talk_start"></info_portion>
+<info_portion id="val_tunnel_bandit_leave"></info_portion>
+<info_portion id="val_tunnel_finish"></info_portion>
+
 <!-- Жертвоприношение -->
 <info_portion id="val_sacrifice_not_spawn"></info_portion>
 <info_portion id="val_sacrifice_spawn"></info_portion>
@@ -73,6 +78,7 @@
 <info_portion id="val_sacrifice_victim_phrase2_end"></info_portion>
 <info_portion id="val_sacrifice_guard1_phrase1_end"></info_portion>
 <info_portion id="val_sacrifice_guard1_phrase3_end"></info_portion>
+<info_portion id="val_sacrifice_guard1_phrase4_end"></info_portion>
 <info_portion id="val_sacrifice_guard1_phrase5_end"></info_portion>
 <info_portion id="val_sacrifice_guard2_phrase2_end"></info_portion>
 
@@ -111,11 +117,6 @@
 <info_portion id="val_prisoner_join"></info_portion>
 <info_portion id="val_prisoner_plr_captured"></info_portion>
 <info_portion id="val_prisoner_task_finish"></info_portion>
-
-<!-- Монолог возле трубы -->
-<info_portion id="val_tunnel_talk_start"></info_portion>
-<info_portion id="val_tunnel_bandit_leave"></info_portion>
-<info_portion id="val_tunnel_plr_detected"></info_portion>
 
 <!-- Матюгальник -->
 <info_portion id="val_matugalnik_off"></info_portion>
