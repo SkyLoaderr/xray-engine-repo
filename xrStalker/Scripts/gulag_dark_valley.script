@@ -176,7 +176,7 @@ function load_ltx_escort(gname, type)
                "active          = remark@" .. gname .. "_wounded_bandit\n" ..
 
                "[remark@" .. gname .. "_wounded_bandit]\n" ..
-               "path_move       = nap1_look\n" ..
+               "path_walk       = nap1_look\n" ..
                "no_move         = true\n" ..
                "no_rotate       = true\n" ..
                "anim            = wait\n" ..
