@@ -63,7 +63,7 @@ void CBaseMonster::reload	(LPCSTR section)
 	// load base sounds
 	LOAD_SOUND("sound_idle",			16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle);
 	LOAD_SOUND("sound_eat",				16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat);
-	LOAD_SOUND("sound_attack",			16,		SOUND_TYPE_MONSTER_ATTACKING,	5,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack);
+	LOAD_SOUND("sound_aggressive",			16,		SOUND_TYPE_MONSTER_ATTACKING,	5,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack);
 	LOAD_SOUND("sound_attack_hit",		16,		SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(-1),			MonsterSpace::eMonsterSoundAttackHit);
 	LOAD_SOUND("sound_take_damage",		16,		SOUND_TYPE_MONSTER_INJURING,	1,	u32(-1),			MonsterSpace::eMonsterSoundTakeDamage);
 	LOAD_SOUND("sound_die",				16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDie);
