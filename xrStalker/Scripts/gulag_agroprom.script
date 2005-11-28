@@ -41,7 +41,7 @@ function load_job( sj, gname, type, squad, groups )
 			idle = 0,
 			prior = 9, state = {0},
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_nii_commander"
+			            	return obj_info.name == "agr_nii_commander"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -50,7 +50,7 @@ function load_job( sj, gname, type, squad, groups )
 			idle = 0,
 			prior = 9, state = {1,2},
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_nii_commander"
+			            	return obj_info.name == "agr_nii_commander"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -59,7 +59,7 @@ function load_job( sj, gname, type, squad, groups )
 			idle = 0,
 			prior = 9, state = {3},
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_nii_commander"
+			            	return obj_info.name == "agr_nii_commander"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -227,7 +227,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier1"
+			            	return obj_info.name == "agr_factory_assault_soldier1"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -237,7 +237,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier2"
+			            	return obj_info.name == "agr_factory_assault_soldier2"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -247,7 +247,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier3"
+			            	return obj_info.name == "agr_factory_assault_soldier3"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -257,7 +257,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier4"
+			            	return obj_info.name == "agr_factory_assault_soldier4"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -267,7 +267,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier5"
+			            	return obj_info.name == "agr_factory_assault_soldier5"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -277,7 +277,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier6"
+			            	return obj_info.name == "agr_factory_assault_soldier6"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -287,7 +287,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier7"
+			            	return obj_info.name == "agr_factory_assault_soldier7"
 			            end,
 			in_rest = "", out_rest = ""
 		}
@@ -297,7 +297,7 @@ function load_job( sj, gname, type, squad, groups )
 			prior = 0, state = {0},
 			squad = squad, group = groups[1],
 			predicate = function(obj_info)
-			            	return obj_info.name() == "agr_factory_assault_soldier8"
+			            	return obj_info.name == "agr_factory_assault_soldier8"
 			            end,
 			in_rest = "", out_rest = ""
 		}
