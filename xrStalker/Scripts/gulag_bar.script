@@ -228,8 +228,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 9, state = {0,1,2}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
-			predicate = function(obj)
-			           	return obj:profile_name() == "bar_dolg_guard_commander"
+			predicate = function(obj_info)
+			           	return obj_info.profile_name == "bar_dolg_guard_commander"
 			        end
         }
 		table.insert(sj, t)		    
@@ -403,8 +403,8 @@ function load_job(sj, gname, type, squad, groups)
         idle = 0,
         prior = 9, state = {0},
         in_rest = "", out_rest = "bar_zastava_restrictor",
-		predicate = function(obj)
-			           	return obj:profile_name() == "bar_zastava_commander_1"
+		predicate = function(obj_info)
+			           	return obj_info.profile_name == "bar_zastava_commander_1"
 			        end
         }
 		table.insert(sj, t)	
@@ -479,8 +479,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 9, state = {0,1,2}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:profile_name() == "bar_crazy_veterans_lucky"
+			predicate = function(obj_info)
+				         	return obj_info.profile_name == "bar_crazy_veterans_lucky"
 			            end
 		}
 		table.insert(sj, t)
@@ -553,7 +553,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 10, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
-				         	return obj_info.profile_name() == "bar_ecolog_professor"
+				         	return obj_info.profile_name == "bar_ecolog_professor"
 			            end
 		}
 		table.insert(sj, t)
@@ -605,7 +605,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 9, state = {0,1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
-				         	return obj_info.profile_name() == "bar_svoboda_attack_commander"
+				         	return obj_info.profile_name == "bar_svoboda_attack_commander"
 			            end
 		}
 		table.insert(sj, t)
@@ -835,7 +835,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 10, state = {3}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
-				         	return obj_info.profile_name() == "bar_svoboda_attack_commander"
+				         	return obj_info.profile_name == "bar_svoboda_attack_commander"
 			            end
 		}
 		table.insert(sj, t)		
@@ -907,8 +907,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 4, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:profile_name() == "killer_sniper"
+			predicate = function(obj_info)
+				         	return obj_info.profile_name == "killer_sniper"
 			            end
 		}
 		table.insert(sj, t)
@@ -928,8 +928,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {0}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:profile_name() == "bar_killer_ambush_tiran"
+			predicate = function(obj_info)
+				         	return obj_info.profile_name == "bar_killer_ambush_tiran"
 			            end
 		}
 		table.insert(sj, t)
@@ -937,8 +937,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {0}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
-			predicate = function(obj)
-				         	return obj:profile_name() == "killer_sniper"
+			predicate = function(obj_info)
+				         	return obj_info.profile_name == "killer_sniper"
 			            end
 		}
 		table.insert(sj, t)
@@ -963,8 +963,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.pseudodog_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.pseudodog_s
 			            end
 		}
 		table.insert(sj, t)
@@ -972,8 +972,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.pseudodog_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.pseudodog_s
 			            end
 		}
 		table.insert(sj, t)
@@ -982,8 +982,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.snork_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.snork_s
 			            end
 		}
 		table.insert(sj, t)
@@ -991,8 +991,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.snork_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.snork_s
 			            end
 		}
 		table.insert(sj, t)
@@ -1001,8 +1001,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.bloodsucker_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.bloodsucker_s
 			            end
 		}
 		table.insert(sj, t)
@@ -1010,8 +1010,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.bloodsucker_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.bloodsucker_s
 			            end
 		}
 		table.insert(sj, t)
@@ -1020,8 +1020,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.burer_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.burer_s
 			            end
 		}
 		table.insert(sj, t)
@@ -1029,8 +1029,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.burer_s
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.burer_s
 			            end
 		}
 		table.insert(sj, t)
@@ -1039,9 +1039,9 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_start",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.stalker or
-				         	       get_clsid(obj) == clsid.script_stalker
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.stalker or
+				         	       obj_info.class_id == clsid.script_stalker
 			            end
 		}
 		table.insert(sj, t)
@@ -1049,9 +1049,9 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "bar_arena_sr_fight",
-			predicate = function(obj)
-				         	return get_clsid(obj) == clsid.stalker or
-				         	       get_clsid(obj) == clsid.script_stalker
+			predicate = function(obj_info)
+				         	return obj_info.class_id == clsid.stalker or
+				         	       obj_info.class_id == clsid.script_stalker
 			            end
 		}
 		table.insert(sj, t)
