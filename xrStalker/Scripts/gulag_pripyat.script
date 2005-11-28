@@ -141,7 +141,7 @@ function f_predicate2(data)
 	    end
 	end
 --]]
-	return data.profile_name == "pri_followers" and obj_has_item("wpn_rpg7")
+	return data.profile_name == "pri_followers" and obj_has_item(data, "wpn_rpg7")
 end
 
 function f_predicate3(data)
@@ -185,7 +185,7 @@ function f_predicate8(data)
 	    return false
 	end
 --]]
-	return data.profile_name == "pri_monolith_specnaz" and obj_has_item("wpn_rpg7")
+	return data.profile_name == "pri_monolith_specnaz" and obj_has_item(data, "wpn_rpg7")
 end
 
 function f_predicate9(data)
@@ -197,7 +197,7 @@ function f_predicate9(data)
 	    return false
 	end
 --]]
-	return data.profile_name == "pri_monolith_specnaz" and obj_has_item("wpn_svd")
+	return data.profile_name == "pri_monolith_specnaz" and obj_has_item(data, "wpn_svd")
 end
 
 function f_predicate10(data)
@@ -209,7 +209,7 @@ function f_predicate10(data)
 	    return false
 	end
 --]]
-	return data.profile_name == "pri_monolith_exo" and obj_has_item("wpn_rpg7")
+	return data.profile_name == "pri_monolith_exo" and obj_has_item(data, "wpn_rpg7")
 end
 
 function st_predicate1(data) -- snorks
