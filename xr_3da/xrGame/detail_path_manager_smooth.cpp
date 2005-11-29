@@ -376,8 +376,15 @@ bool CDetailPathManager::compute_trajectory(
 					tangent_points[tangent_count],
 					direction_type
 				)
-			)
+			) {
+				if (!ai().level_graph().valid_vertex_position(ai().level_graph().v3d(tangent_points[tangent_count][0].point)))
+					continue;
+
+				if (!ai().level_graph().valid_vertex_position(ai().level_graph().v3d(tangent_points[tangent_count][1].point)))
+					continue;
+
 				++tangent_count;
+			}
 
 	return			(build_trajectory(start,dest,tangent_points,tangent_count,path,time,velocity1,velocity2,velocity3));
 }
