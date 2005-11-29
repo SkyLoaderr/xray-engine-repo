@@ -398,11 +398,11 @@ function read_preset( ltx_name, preset_name )
 			for i, rank_name in ipairs( t ) do
 				rank_interval = ranks[rank_name]
 
-				if rank_min < rank_interval[1] then
+				if rank_interval[1] < rank_min then
 					rank_min = rank_interval[1]
 				end
 
-				if rank_max > rank_interval[2] then
+				if rank_interval[2] > rank_max then
 					rank_max = rank_interval[2]
 				end
 			end
@@ -431,6 +431,9 @@ function check_preset( npc_community, type, npc_rank, preset_name )
 		return true
 	else
 		local t = presets[preset_name][npc_community]
+
+--		printf( "preset_name=%s ranks=[%d,%d]", preset_name, t[1], t[2] )
+
 		if t and ( npc_rank >= t[1] and npc_rank <= t[2] ) then
 			return true
 		else

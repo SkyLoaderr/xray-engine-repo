@@ -192,14 +192,17 @@ function se_smart_terrain:get_se_objs()
 			abort( "[smart_terrain %s] can't get server object id=%d", self:name(), id )
 		end
 
-		self:fill_npc_info( obj )
+		self:fill_npc_info( obj, v )
 	end
 end
 
 -- заполнить информацию о персонаже
 -- у монстров нету метода profile_name()
-function se_smart_terrain:fill_npc_info( obj )
-	local npc_info        = self.npc_info[obj.id]
+-- TODO передавать в предикаты не npc_info, а объект
+function se_smart_terrain:fill_npc_info( obj, npc_info )
+	if not npc_info then
+		npc_info = {}
+	end
 
 	npc_info.se_obj       = obj
 
@@ -221,6 +224,8 @@ function se_smart_terrain:fill_npc_info( obj )
 	end
 
 	npc_info.cond         = t
+
+	return npc_info
 end
 
 -- возвращает:
@@ -301,8 +306,10 @@ end
 
 --[[ подходит ли объект гулагу?
 1) если объект не согласен сюда идти, то smart terrain его не возьмёт
-2) если объект согласен идти куда угодно, то проверить подходит ли он гулагу и есть ли ещё места
-3) если объект согласен идти только в этот смарт, то принимаем даже если нету места (он вытеснит кого-то)
+2) если объект согласен идти куда угодно, то проверить, есть ли ещё места, подходит ли он гулагу,
+   подходит ли он хоть на одну работу
+3) если объект согласен идти только в этот смарт, то принимаем даже если нету места (он вытеснит кого-то), проверить,
+   подходит ли он гулагу, подходит ли он хоть на одну работу
 ]]
 function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	if obj_agreement == disagreed then
@@ -319,7 +326,15 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		end
 
 --		printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
-		return xr_gulag.checkNpc( community, is_stalker, self.gparams.type, 100 /*obj:rank()*/, obj, self.gparams.preset_name )
+		if xr_gulag.checkNpc( community, is_stalker, self.gparams.type, 100 /*obj:rank()*/, obj, self.gparams.preset_name ) then
+			if self.gulag then
+				return self.gulag:is_there_any_free_suitable_job( self:fill_npc_info( obj ) )
+			else
+				return true
+			end
+		else
+			return false
+		end
 	else
 		return false
 	end
@@ -372,6 +387,10 @@ function se_smart_terrain:enabled( obj )
 	end
 	--------
 
+	if not db.actor then
+		return false
+	end
+
 	if self:is_gulag_available() then
 --		if obj:clsid() == clsid.GROUP then -- TODO
 			-- TODO проитерировать группу
@@ -412,7 +431,7 @@ function se_smart_terrain:register_npc( obj )
 		stay_end       = game.CTime()
 	}
 
-	self:fill_npc_info( obj )
+	self:fill_npc_info( obj, self.npc_info[obj.id] )
 
 	--printf( "squad=%s group=%s", utils.to_str ( self.npc_info[o_id].o_squad ), utils.to_str ( self.npc_info[o_id].o_group ) )
 
