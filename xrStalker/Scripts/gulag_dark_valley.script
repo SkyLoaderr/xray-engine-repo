@@ -48,43 +48,35 @@ function load_ltx(gname, type)
 end
 
 -- Check communities -----------------------------------------------------
-local function checkCommon(npc_community, g)
-    local i, v, n = 0, 0, 0
+local function checkCommon(npc_community, gulag_type, npc_rank, se_obj)
+    local g = gulags[gulag_type]
+    if g then
+        local i, v, n = 0, 0, 0
 
-    if g[3] then
-        for i, v in pairs(g[3]) do
-            if npc_community == v then
+        if g[3] then
+            for i, v in pairs(g[3]) do
+                if type(v) == "function" and v(npc_community, gulag_type, npc_rank, se_obj) then
+                    return true
+                elseif npc_community == v then
+                    return true
+                end
+                n = n + 1
+            end
+            if n > 0 then
+                return false
+            else
                 return true
             end
-            n = n + 1
-        end
-        if n > 0 then
-            return false
         else
             return true
         end
-    else
-        return true
     end
-end
-
-function checkStalker(npc_community, gulag_type)
-    local g = gulags[gulag_type]
-    if g then
-        return checkCommon(npc_community, g)
-    end
-
 	return false
 end
 
-function checkMonster(npc_community, gulag_type)
-    local g = gulags[gulag_type]
-    if g then
-        return checkCommon(npc_community, g)
-    end
+checkStalker = checkCommon
+checkMonster = checkCommon
 
-    return false
-end
 
 --------------------------------------------------------------------------
 -- Gulags
@@ -575,9 +567,6 @@ end
 -- Monolith base
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function mb_predicate(data)
-    return data.profile_name == "val_monolith_regular"
-end
 
 -- Jobs ------------------------------------------------------------------
 function load_job_monolith_base(sj, gname, type, squad, groups)
@@ -589,8 +578,7 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 4, state = {state_normal},
 		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		    predicate = mb_predicate
+		    in_rest = "", out_rest = gname .. "_main_building_restrictor"
 	    }
 	    table.insert(sj, t)        
     end
@@ -603,8 +591,7 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		        idle = 0,
 		        prior = pr[i], state = {state_normal},
 		        squad = squad, group = groups[1],
-		        in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		        predicate = mb_predicate
+		        in_rest = "", out_rest = gname .. "_main_building_restrictor"
 	        }
 	        table.insert(sj, t)        
         end
@@ -614,6 +601,11 @@ end
 -- States ----------------------------------------------------------------
 function check_state_monolith_base(gulag)
 	return state_normal
+end
+
+-- Check stalker ---------------------------------------------------------
+function check_stalker_monolith_base(npc_community, gulag_type, npc_rank, se_obj)
+    return se_obj:profile_name() == "val_monolith_regular"
 end
 
 -- Dynamic ltx -----------------------------------------------------------
@@ -767,5 +759,5 @@ gulags.val_sacrifice        = {load_job_sacrifice,      check_state_sacrifice,  
 gulags.val_prisoner         = {load_job_prisoner,       check_state_prisoner,       {"dolg"},           load_ltx_prisoner}
 gulags.val_rob              = {load_job_robbers,        check_state_robbers,        {},                 load_ltx_robbers}
 gulags.val_lager_bandits    = {load_job_lager_bandits,  check_state_lager_bandits,  {"bandit"}}
-gulags.val_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {"monolith"},       load_ltx_monolith_base}
-gulags.val_war_soldiers     = {load_job_war_soldiers,   check_state_war_soldiers,   {"military"},       load_ltx_war_soldiers}
+gulags.val_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {check_stalker_monolith_base},  load_ltx_monolith_base}
+gulags.val_war_soldiers     = {load_job_war_soldiers,   check_state_war_soldiers,   {"military"},                   load_ltx_war_soldiers}
