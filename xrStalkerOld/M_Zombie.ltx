@@ -59,7 +59,7 @@ fire_wound_immunity		= 0.3
 [m_zombie_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_witches_galantine,zone_burning_fuzz1,zone_mincer,zone_gravi_zone
-$spawn               = "monsters\zombie"				; option for Level Editor
+$spawn               = "monsters\zombies\zombie_base"		; option for Level Editor
 $npc			     = on						; option for Level Editor
 $prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -347,7 +347,7 @@ stand_attack_3 =	  	0.30,		35,		    180,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6
 
 
 [zombie_strong]:m_zombie_e
-$spawn				= "monsters\zombie\zombie_03_strong"
+$spawn				= "monsters\zombies\zombie_03_strong"
 visual				= monsters\zombi\zombi_trup
 panic_threshold		= 0.05	
 rank = 100
@@ -384,7 +384,7 @@ stand_attack_3 =	  	0.30,		50,		    180,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6
 
 
 [zombie_immortal]:zombie_strong
-$spawn				= "monsters\zombie\zombie_immortal"
+$spawn				= "monsters\zombies\zombie_immortal"
 visual				= monsters\zombi\zombi_trup
 panic_threshold		= 0.05	
 
