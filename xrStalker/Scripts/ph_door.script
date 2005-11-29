@@ -122,6 +122,7 @@ function action_door:close_action()
 
 	printf("_bp: action_door:update(): door blocked")
 	-- «акрыли до предела, будем блокировать
+	printf("FORCE DIT [%s]", self.st.force_dir_id)
 	if self.st.no_force == true then
 		self.joint:set_max_force_and_velocity(0, 0, self.st.force_dir_id)
 	else
