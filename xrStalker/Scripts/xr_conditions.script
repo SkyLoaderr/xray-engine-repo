@@ -598,7 +598,7 @@ end
 function pri_monolith_combat_ignore(actor, npc)
 	local enemy = db.storage[npc:id()].enemy
 
-	if enemy and enemy:alive() then
+	if enemy and enemy.clsid == clsid.snork_s and enemy:alive() then
         local g = xr_gulag.get_npc_gulag(enemy)
         return g ~= nil and (g.name == "pri_snork_nest1" or g.name == "pri_snork_nest2")
     else
