@@ -1726,6 +1726,9 @@
 					RelativePath=".\config\scripts\sincos.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\slide_box_small.ltx">
+				</File>
+				<File
 					RelativePath=".\config\scripts\teleport.ltx">
 				</File>
 				<File

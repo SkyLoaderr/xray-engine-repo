@@ -123,9 +123,9 @@ function action_door:close_action()
 	printf("_bp: action_door:update(): door blocked")
 	-- Закрыли до предела, будем блокировать
 	if self.st.no_force == true then
-		self.joint:set_max_force_and_velocity(0, 1, 1)
+		self.joint:set_max_force_and_velocity(0, 0, self.st.force_dir_id)
 	else
-		self.joint:set_max_force_and_velocity(10000, 1, 1)
+		self.joint:set_max_force_and_velocity(10000, 1, self.st.force_dir_id)
 	end
 	self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
@@ -143,9 +143,9 @@ function action_door:open_door(disable_snd)
 	end
 	
 	if self.st.no_force == true then
-		self.joint:set_max_force_and_velocity(0, -3, 0)
+		self.joint:set_max_force_and_velocity(0, 0, self.st.force_dir_id)
 	else
-		self.joint:set_max_force_and_velocity(200, -3, 0)
+		self.joint:set_max_force_and_velocity(200, -3, self.st.force_dir_id)
 	end
 	self.block = false
 
@@ -181,9 +181,9 @@ function action_door:close_door()
 
 	printf("_bp: action_door:close_door()")
 	if self.st.no_force == true then
-		self.joint:set_max_force_and_velocity(0, 3, 1)
+		self.joint:set_max_force_and_velocity(0, 0, self.st.force_dir_id)
 	else
-		self.joint:set_max_force_and_velocity(200, 3, 1)
+		self.joint:set_max_force_and_velocity(200, 3, self.st.force_dir_id)
 	end
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
@@ -272,6 +272,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	else
 		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_locked")
 	end
+	st.force_dir_id   = utils.cfg_get_number(ini, section, "force_dir_id", npc, false, 1)
 	st.snd_init        = utils.cfg_get_string(ini, section, "snd_init", npc, false, "")
 	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "")
 	st.snd_close_start = utils.cfg_get_string(ini, section, "snd_close_start", npc, false, "")
