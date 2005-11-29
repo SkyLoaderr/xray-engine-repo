@@ -995,7 +995,7 @@ function resetJob( obj )
 
 	local gulag = get_npc_gulag( obj )
 	if gulag then
-		gulag.free_obj_and_reinit( obj:id() )
+		gulag:free_obj_and_reinit( obj:id() )
 	end
 end
 
@@ -1003,14 +1003,14 @@ function changeCasualities( name_or_sid, delta )
 	local gulag = get_gulag( name_or_sid )
 
 	if gulag then
-		gulag.changeCasualities( delta )
+		gulag:changeCasualities( delta )
 	end
 end
 
 function getCasualities( name_or_sid )
 	local gulag = get_gulag( name_or_sid )
 
-	return ( gulag and gulag.getCasualities() ) or 0
+	return ( gulag and gulag:getCasualities() ) or 0
 end
 
 -----------------------------------------------------------------------------------------------------------------
