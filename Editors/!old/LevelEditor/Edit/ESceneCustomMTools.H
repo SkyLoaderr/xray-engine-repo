@@ -94,6 +94,7 @@ public:
 	virtual void		OnSynchronize			()=0;
 	virtual void		OnSceneUpdate			(){;}
     virtual void		OnObjectRemove			(CCustomObject* O)=0;
+    virtual void 		OnBeforeObjectChange	(CCustomObject* O){};
 	virtual void		OnFrame					()=0;
 
     // render

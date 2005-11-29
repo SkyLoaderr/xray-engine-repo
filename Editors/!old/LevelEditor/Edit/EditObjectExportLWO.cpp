@@ -47,7 +47,7 @@ bool CEditableObject::ExportLWO(LPCSTR fname)
 		// meshes/layers
 		for (EditMeshIt mesh_it=FirstMesh(); mesh_it!=LastMesh(); mesh_it++){
 			CEditableMesh* MESH=*mesh_it;
-			F->w_layer(u16(mesh_it-FirstMesh()),MESH->GetName());
+			F->w_layer(u16(mesh_it-FirstMesh()),MESH->Name().c_str());
 			// bounding box
 			F->open_chunk(ID_BBOX);
 				F->w_vector(MESH->m_Box.min);

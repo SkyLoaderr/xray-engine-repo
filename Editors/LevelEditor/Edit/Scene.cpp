@@ -151,6 +151,23 @@ bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
     return true;
 }
 
+void EScene::BeforeObjectChange( CCustomObject* object )
+{
+	VERIFY				(object);
+	VERIFY				(m_Valid);
+
+    ESceneCustomOTools* mt 	= GetOTools(object->ClassID);
+    if (mt&&mt->IsEditable()){
+        SceneToolsMapPairIt _I = m_SceneTools.begin();
+        SceneToolsMapPairIt _E = m_SceneTools.end();
+        for (; _I!=_E; _I++){
+            ESceneCustomMTools* mt 		= dynamic_cast<ESceneCustomMTools*>(_I->second);
+            if (mt) mt->OnBeforeObjectChange(object);
+        }
+        UI->UpdateScene	();
+    }
+}
+
 void EScene::OnFrame( float dT )
 {
 	if( !valid() ) return;

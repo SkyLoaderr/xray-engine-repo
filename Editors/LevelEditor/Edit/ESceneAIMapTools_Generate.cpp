@@ -606,7 +606,7 @@ bool ESceneAIMapTools::GenerateMap(bool bFromSelectedOnly)
                 CEditableObject*    E = S->GetReference(); VERIFY(E);
                 EditMeshVec& 		_meshes = E->Meshes();
                 for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
-                    pb->Inc(AnsiString().sprintf("%s [%s]",S->Name,(*m_it)->GetName()).c_str());
+                    pb->Inc(AnsiString().sprintf("%s [%s]",S->Name,(*m_it)->Name().c_str()).c_str());
                     const SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
                     for (SurfFaces::const_iterator sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
                         CSurface* surf		= sp_it->first;

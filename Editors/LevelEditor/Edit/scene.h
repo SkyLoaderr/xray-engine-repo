@@ -164,6 +164,7 @@ public:
 
 	virtual void 	AppendObject		(CCustomObject* object, bool bExecUndo=true);
 	virtual bool 	RemoveObject		(CCustomObject* object, bool bExecUndo=true);
+    void			BeforeObjectChange	(CCustomObject* object);
     bool 			ContainsObject		(CCustomObject* object, ObjClassID classfilter);
 
     // Snap List Part

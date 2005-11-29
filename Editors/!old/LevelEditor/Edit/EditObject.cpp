@@ -98,7 +98,7 @@ bool CEditableObject::ContainsMesh(const CEditableMesh* m)
 CEditableMesh* CEditableObject::FindMeshByName	(const char* name, CEditableMesh* Ignore)
 {
     for(EditMeshIt m=m_Meshes.begin();m!=m_Meshes.end();m++)
-        if ((Ignore!=(*m))&&(stricmp((*m)->GetName(),name)==0)) return (*m);
+        if ((Ignore!=(*m))&&(stricmp((*m)->Name().c_str(),name)==0)) return (*m);
     return 0;
 }
 
@@ -270,7 +270,7 @@ bool CEditableObject::Validate()
         }
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++)
         if (false==(*m_def)->Validate()){ 
-        	Msg("!Invalid mesh found: Object [%s], Mesh [%s].",m_LibName.c_str(),(*m_def)->GetName());
+        	Msg("!Invalid mesh found: Object [%s], Mesh [%s].",m_LibName.c_str(),(*m_def)->Name().c_str());
         	bRes=false;
         }
     return bRes;

@@ -50,7 +50,7 @@ void ESceneCustomOTools::SaveSelection(IWriter& F)
 	F.open_chunk	(CHUNK_OBJECTS);
     int count		= 0;
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++){
-    	if ((*it)->Selected()){
+    	if ((*it)->Selected() && !(*it)->IsDeleted()){
 	        F.open_chunk(count++);
     	    Scene->SaveObject(*it,F);
         	F.close_chunk();
@@ -87,9 +87,11 @@ void ESceneCustomOTools::Save(IWriter& F)
 	F.open_chunk	(CHUNK_OBJECTS);
     count			= 0;
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++){
-        F.open_chunk(count++);
-        Scene->SaveObject(*it,F);
-        F.close_chunk();
+    	if (!(*it)->IsDeleted()){
+            F.open_chunk		(count++);
+            Scene->SaveObject	(*it,F);
+            F.close_chunk		();
+        }
     }
 	F.close_chunk	();
 }

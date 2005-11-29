@@ -65,7 +65,7 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
     for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){
         CEditableMesh* MESH=*m_it;
         t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-	    PHelper().CreateCaption(items,PrepareKey(pref,AnsiString(AnsiString("Geometry\\Meshes\\")+MESH->GetName()).c_str()),t.c_str());
+	    PHelper().CreateCaption(items,PrepareKey(pref,AnsiString(AnsiString("Geometry\\Meshes\\")+MESH->Name().c_str()).c_str()),t.c_str());
     }
     PHelper().CreateSText(items,PrepareKey(pref, "Game options\\User Data"),&m_ClassScript);
 }

@@ -391,7 +391,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                 }
             }
         }
-        if (dwInvalidFaces)	Msg("!Object '%s' - '%s' has %d invalid face(s). Removed.",object->GetName(),mesh->GetName(),dwInvalidFaces);
+        if (dwInvalidFaces)	Msg("!Object '%s' - '%s' has %d invalid face(s). Removed.",object->GetName(),mesh->Name().c_str(),dwInvalidFaces);
         if (!bResult) break;
     }
     return bResult;

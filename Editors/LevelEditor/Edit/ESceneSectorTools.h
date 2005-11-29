@@ -24,6 +24,7 @@ public:
     IC int				RenderPriority			(){return 20;}
 
     virtual void 		OnObjectRemove			(CCustomObject* O);
+    virtual void 		OnBeforeObjectChange	(CCustomObject* O);
 
 	virtual void 		FillProp				(LPCSTR pref, PropItemVec& items);
 

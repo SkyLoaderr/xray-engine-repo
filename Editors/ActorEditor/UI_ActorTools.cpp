@@ -513,7 +513,7 @@ bool CActorTools::ExportCPP(LPCSTR name)
 	    	CEditableMesh* mesh = *m_it;
             const st_Face* faces= mesh->GetFaces();
             const Fvector* verts= mesh->GetVerts();
-            sprintf				(tmp,"MESH %s {",mesh->GetName());
+            sprintf				(tmp,"MESH %s {",mesh->Name().c_str());
             W->w_string			(tmp);
             sprintf				(tmp,"\tVERTEX_COUNT %d",mesh->GetVCount());
             W->w_string			(tmp);

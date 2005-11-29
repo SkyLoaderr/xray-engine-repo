@@ -44,6 +44,7 @@ public:
 	virtual void		OnSynchronize			();
 	virtual void		OnSceneUpdate			();
     virtual void		OnObjectRemove			(CCustomObject* O);
+    virtual void 		OnBeforeObjectChange	(CCustomObject* O){inherited::OnBeforeObjectChange(O);}
 	virtual void		OnFrame					();
     virtual void		OnRender				(int priority, bool strictB2F);
 

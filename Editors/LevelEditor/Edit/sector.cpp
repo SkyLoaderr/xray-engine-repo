@@ -39,7 +39,7 @@ void CSectorItem::GetTransform(Fmatrix& parent){
 	object->GetFullTransformToWorld(parent);
 }
 bool CSectorItem::IsItem(const char* O, const char* M){
-	return (0==stricmp(O,object->Name))&&(0==stricmp(M,mesh->GetName()));
+	return (0==stricmp(O,object->Name))&&(0==stricmp(M,mesh->Name().c_str()));
 }
 //------------------------------------------------------------------------------
 
@@ -433,11 +433,11 @@ void CSector::Save(IWriter& F)
     int count=0;
     for(SItemIt it=sector_items.begin(); it!=sector_items.end(); it++){
         F.open_chunk(count); count++;
-            F.open_chunk(SECTOR_CHUNK_ONE_ITEM);
-            F.w_stringZ	(it->object->Name);
-            F.w_stringZ	(it->mesh->GetName());
-	        F.close_chunk();
-        F.close_chunk();
+            F.open_chunk	(SECTOR_CHUNK_ONE_ITEM);
+            F.w_stringZ		(it->object->Name);
+            F.w_stringZ		(it->mesh->Name());
+	        F.close_chunk	();
+        F.close_chunk		();
     }
 	F.close_chunk	();
 }
