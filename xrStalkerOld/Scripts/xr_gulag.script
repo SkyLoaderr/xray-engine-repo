@@ -25,7 +25,7 @@ idle_nil  = nil
 idle_once = -1
 idle_none = -2
 
-local path_fields = { "path_walk", "path_main", "center_point", "path_home" }
+local path_fields = { "path_walk", "path_main", "path_home", "center_point" }
 
 -----------------------------------------------------------------------
 class "gulag"
@@ -155,7 +155,11 @@ function gulag:get_job_path_name( job )
 		abort( "gulag: ltx=%s, there is no path in section %s", self.ltx_name, active_section )
 	end
 
-	return self.name .. "_" .. self.ltx:r_string( active_section, path_field )
+	if path_field == "center_point" then -- TODO затык
+		return self.name .. "_" .. self.ltx:r_string( active_section, path_field ) .. "_task"
+	else
+		return self.name .. "_" .. self.ltx:r_string( active_section, path_field )
+	end
 end
 
 -- сохранения общего состояния гулага
