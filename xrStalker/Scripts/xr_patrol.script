@@ -390,7 +390,7 @@ end
 function PatrolManager:update ()
     if tm_enabled == true then
        self.tm:update ()
-    endx   
+    end
 end
 -----------------------
 -----------------------
