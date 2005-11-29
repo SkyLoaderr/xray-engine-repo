@@ -97,8 +97,6 @@ end
     5. reverse (true/false) - изменение направления удара. по умолчанию false
 --]]
 function hit_npc(actor, npc, p)
-    --printf("_bp: TEST HIT")
-    --print_table(p)
 	local h = hit()
 	local rev = p[5] and p[5] == 'true'
 	h.draftsman = npc
@@ -108,22 +106,22 @@ function hit_npc(actor, npc, p)
 		if not hitter then return end
 	    if rev then
 	        h.draftsman = hitter
-		    h.direction = utils.vector_copy_by_val(hitter:position()):sub(npc:position())
+		    h.direction = hitter:position():sub(npc:position())
 	    else
-		    h.direction = utils.vector_copy_by_val(npc:position()):sub(hitter:position())
+		    h.direction = npc:position():sub(hitter:position())
 	    end
 	else
 	    if rev then
 	        h.draftsman = nil
-		    h.direction = utils.vector_copy_by_val(npc:position()):sub(patrol(p[1]):point(0))
+		    h.direction = npc:position():sub(patrol(p[1]):point(0))
 	    else
-		    h.direction = utils.vector_copy_by_val(patrol(p[1]):point(0)):sub(npc:position())
+		    h.direction = patrol(p[1]):point(0):sub(npc:position())
 	    end
 	end
 	h:bone(p[2])
 	h.power = p[3]
 	h.impulse = p[4]
-	--printf("_bp: hit(%s, %s,%d,%d)", npc:name(), p[2], h.power, h.impulse)
+	--printf("HIT EFFECT: (%s, %s,%d,%d) health(%s)", npc:name(), p[2], h.power, h.impulse, npc.health)
 	npc:hit(h)
 end
 
