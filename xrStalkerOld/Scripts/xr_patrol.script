@@ -7,6 +7,8 @@
 local key = nil
 local data = nil
 
+local tm_enabled = false
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Байки 
 ----------------------------------------------------------------------------------------------------------------------
@@ -216,7 +218,9 @@ function PatrolManager:__init (path_name)
     self.commander_dir = vector ():set (0, 0, 1)
     patrols[path_name] = self
     self.npc_count = 0
-    --self.tm = TalesManager ()
+    if tm_enabled == true then
+       self.tm = TalesManager ()
+    end   
 end
 -----------------------
 function PatrolManager:add_npc (npc, leader)
@@ -234,10 +238,12 @@ function PatrolManager:add_npc (npc, leader)
        self.commander_id = npc:id ()
     end    
     
-    --self.tm:add_npc (npc)
-    --if self.npc_count == 2 then
-       --self.tm:start_tale ()
-    --end    
+    if tm_enabled == true then
+       self.tm:add_npc (npc)
+       if self.npc_count == 2 then
+          self.tm:start_tale ()
+       end    
+    end   
     
     self:reset_positions ()
 end
@@ -250,10 +256,12 @@ function PatrolManager:remove_npc (npc)
        self:reset_positions ()
     end    
     self.npc_count = self.npc_count - 1
-    --self.tm:remove_npc (npc)
-    --if self.npc_count < 2 then
-       --self.tm:stop_tale ()
-    --end        
+    if tm_enabled == true then
+       self.tm:remove_npc (npc)
+       if self.npc_count < 2 then
+          self.tm:stop_tale ()
+       end        
+    end   
 end
 -----------------------
 function PatrolManager:reset_positions ()
@@ -380,7 +388,9 @@ function PatrolManager:is_commander_in_meet ()
 end
 -----------------------
 function PatrolManager:update ()
-    --self.tm:update ()
+    if tm_enabled == true then
+       self.tm:update ()
+    endx   
 end
 -----------------------
 -----------------------
