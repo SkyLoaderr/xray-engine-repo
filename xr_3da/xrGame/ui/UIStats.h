@@ -12,10 +12,5 @@ public:
 
 	CUIStats();
 	virtual ~CUIStats();
-
-			void Init(CUIXml& xml_doc, LPCSTR path,int team);
-	virtual void Draw();
-
-protected:
-	CUIFrameWindow* m_pBack;
+	CUIWindow* Init(CUIXml& xml_doc, LPCSTR path,int team);
 };

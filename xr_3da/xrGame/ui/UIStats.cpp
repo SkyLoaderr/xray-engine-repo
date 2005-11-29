@@ -15,91 +15,33 @@ CUIStats::CUIStats(){
 }
 
 CUIStats::~CUIStats(){
-	xr_delete(m_pBack);
 }
 
-void CUIStats::Init(CUIXml& xml_doc, LPCSTR path,  int team){
+CUIWindow* CUIStats::Init(CUIXml& xml_doc, LPCSTR path,  int team){
 	string256 _path;
 	CUIXmlInit::InitScrollView(xml_doc, path, 0, this);
 	this->SetFixedScrollBar(false);
 	CUIWindow* pWnd = NULL;
-	CUIStatic* pSt	= NULL;
+	CUIWindow* pTinfo = NULL;
 
-    m_pBack = xr_new<CUIFrameWindow>();
-	CUIXmlInit::InitFrameWindow(xml_doc, strconcat(_path, path, ":back_ground"),0, m_pBack);
-
-	switch (GameID()){
-		case GAME_ARTEFACTHUNT:
-		case GAME_TEAMDEATHMATCH:
-			pWnd = xr_new<CUIWindow>();	AttachChild(pWnd);
-			CUIXmlInit::InitWindow(xml_doc, strconcat(_path, path, ":team_header"), 0, pWnd);
-			pWnd->SetAutoDelete(true);
-			pSt = xr_new<CUIStatic>();
-			CUIXmlInit::InitStatic(xml_doc, strconcat(_path, path, ":team_header:logo"),0,pSt);
-			pSt->SetAutoDelete(true);
-			if (1 == team)
-                pSt->InitTexture(pSettings->r_string("team_logo_small", "team1"));
-			else if (2 == team)
-				pSt->InitTexture(pSettings->r_string("team_logo_small", "team2"));
-			else
-				R_ASSERT2(false, "invalid team");
-			pWnd->AttachChild(pSt);
-			pSt = xr_new<CUIStatic>();
-			CUIXmlInit::InitStatic(xml_doc, strconcat(_path, path, ":team_header:header"),0,pSt);
-			pSt->SetAutoDelete(true);
-			pWnd->AttachChild(pSt);
-
-			
-	//	case GAME_DEATHMATCH:
-	//	default:
-	}
-
-	// players
-	
-	u32 col;
-    CGameFont* pF;
-
+    // players
 	CUIStatsPlayerList* pPList = xr_new<CUIStatsPlayerList>();
 	pPList->SetTeam(team);
-	CUIXmlInit::InitStatsPlayerList(xml_doc, strconcat(_path, path, ":player_list"),0,pPList);
+	pPList->Init(xml_doc, strconcat(_path, path, ":player_list"));
 	pPList->SetMessageTarget(this);
-	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":player_list:text_format"), 0, col, pF);
-	pPList->SetTextParams(pF, col);
-	float h = xml_doc.ReadAttribFlt(strconcat(_path, path, ":player_list_header"), 0, "height", 25);
-	pPList->SetHeaderHeight(h);
-
-	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":player_list_header:text"), 0, col, pF);
-	pWnd = pPList->GetHeader(pF,col, NULL);
-
+	pWnd = pPList->GetHeader();
+	pTinfo = pPList->GetTeamHeader();
 	AddWindow(pWnd, true);
 	AddWindow(pPList, true);
 
 	// spectators
 	pPList = xr_new<CUIStatsPlayerList>();
 	pPList->SetTeam(team);
-	CUIXmlInit::InitStatsPlayerList(xml_doc, strconcat(_path, path, ":spectator_list"),0,pPList);
+	pPList->Init(xml_doc, strconcat(_path, path, ":spectator_list"));
 	pPList->SetMessageTarget(this);
-	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":spectator_list:text_format"), 0, col, pF);
-	pPList->SetTextParams(pF, col);
-	h = xml_doc.ReadAttribFlt(strconcat(_path, path, ":spectator_list_header"), 0, "height", 25);
-	pPList->SetHeaderHeight(h);
-
-	col = 0;
-    pF = NULL;
-	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":spectator_list_header:text"), 0, col, pF);
-	LPCSTR tex_name = xml_doc.Read(strconcat(_path, path, ":spectator_list_header:texture"), 0, NULL);
-	pWnd = pPList->GetHeader(pF,col, tex_name);
-
+	pWnd = pPList->GetHeader();
 	AddWindow(pWnd, true);
 	AddWindow(pPList, true);
 
-
-
+	return pTinfo;
 }
-
-void CUIStats::Draw(){
-	Fvector2 pos = GetWndPos();
-	m_pBack->Draw(pos.x,pos.y);	
-	CUIScrollView::Draw();
-}
-

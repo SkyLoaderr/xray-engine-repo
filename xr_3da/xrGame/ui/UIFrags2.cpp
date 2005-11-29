@@ -18,19 +18,39 @@ CUIFrags2::~CUIFrags2(){
 void CUIFrags2::Init(CUIXml& xml_doc, LPCSTR path){
 	InitBackground(xml_doc, path);
 
-	m_pStats->Init(xml_doc, "stats_wnd", 1);
-	m_pStats2->Init(xml_doc, "stats_wnd", 2);
+//	CUIWindow* pWnd = NULL;
+	CUIWindow* pTeam1 = NULL;
+	CUIWindow* pTeam2 = NULL;
+	Fvector2 pos;
 
-    //
+	pTeam1 = m_pStats->Init(xml_doc, "stats_wnd", 1);
+	AttachChild(pTeam1);
+//	pos = pWnd->GetWndPos();
+//	pos.x = m_pStats->GetWndPos().x;
+//	pWnd->SetWndPos(pos);
+	pTeam2 = m_pStats2->Init(xml_doc, "stats_wnd", 2);
+	AttachChild(pTeam2);
+
+    // team 2 list
 	float x = xml_doc.ReadAttribFlt("stats_wnd", 0, "x2");
 	R_ASSERT(x);
-	Fvector2 pos = m_pStats2->GetWndPos();
-	pos.x = x;
-	pos.y += 3;
+	pos = m_pStats2->GetWndPos();
+	pos.x = x;				// 
+	pos.y += 3;	
 	m_pStats2->SetWndPos(pos);
+	// team2 statas
+	pos = pTeam2->GetWndPos();
+	pos.x += m_pStats2->GetWndPos().x;
+	pTeam2->SetWndPos(pos);
 
+    // team 1 list
 	pos = m_pStats->GetWndPos();
 	pos.y += 3;
 	m_pStats->SetWndPos(pos);
+
+	pos = pTeam1->GetWndPos();
+	pos.x += m_pStats->GetWndPos().x;
+	pTeam1->SetWndPos(pos);
+	
 
 }

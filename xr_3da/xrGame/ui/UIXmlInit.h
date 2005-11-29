@@ -75,14 +75,12 @@ public:
 	static bool InitSound				(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd);
 	static bool InitMultiTexture		(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd);
 	static bool InitMultiText			(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
-//	static bool InitTexture				(CUIXml& xml_doc, const char* path,	int index, CUIStatic *pWnd);	
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUIMultiTextureOwner* pWnd);
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUISingleTextureOwner* pWnd);
 	static bool InitArtefactPanel		(CUIXml& xml_doc, const char* path, int index, CUIArtefactPanel* pWnd);
 	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
 	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
-	static bool InitStatsPlayerList		(CUIXml& xml_doc, const char* path, int index, CUIStatsPlayerList* pWnd);
 	static Frect GetFRect				(CUIXml& xml_doc, const char* path, int index);
 
 protected:

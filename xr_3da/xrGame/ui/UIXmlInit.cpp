@@ -20,7 +20,6 @@
 #include "UIProgressBar.h"
 #include "UIListWnd.h"
 #include "UITabControl.h"
-//#include "UIFrameLineWnd.h"
 #include "UILabel.h"
 #include "UIEditBox.h"
 #include "UIEditBoxEx.h"
@@ -30,7 +29,6 @@
 #include "uixmlinit.h"
 #include "uiartefactpanel.h"
 #include "UIScrollView.h"
-#include "UIStatsPlayerList.h"
 #include "../game_base_space.h"
 
 #include "UITextureMaster.h"
@@ -1206,33 +1204,4 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 	}
 	xml_doc.SetLocalRoot(_stored_root);
 	return								true;
-}
-
-bool CUIXmlInit::InitStatsPlayerList(CUIXml& xml_doc, const char* path, int index, CUIStatsPlayerList* pWnd){
-	bool status = true;
-    status &= InitScrollView(xml_doc, path, index, pWnd);
-	pWnd->SetFixedScrollBar(false);
-
-	pWnd->SetSpectator(xml_doc.ReadAttribInt(path,index,"spectator",0)? true: false);
-
-	int tabsCount	= xml_doc.GetNodesNum(path, index, "field");	
-
-	XML_NODE* tab_node = xml_doc.NavigateToNode(path,index);
-	xml_doc.SetLocalRoot(tab_node);
-
-	for (int i = 0; i < tabsCount; ++i)
-	{
-		//PI_FIELD_INFO fi;
-		LPCSTR name = xml_doc.ReadAttrib("field",i,"name");
-		float width = xml_doc.ReadAttribFlt("field",i,"width");
-
-		if (0 == xr_strcmp(name, "artefacts") && GameID() != GAME_ARTEFACTHUNT)
-			continue;
-
-		pWnd->AddField(name,width);
-	}
-	
-	xml_doc.SetLocalRoot(xml_doc.GetRoot());
-
-	return status;
 }

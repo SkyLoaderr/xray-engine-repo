@@ -47,7 +47,7 @@ void CUIStatsIcon::InitTexInfo(){
 
 	// death
 	m_tex_info[DEATH].sh.create("hud\\default",	"ui\\ui_mp_icon_kill");
-	m_tex_info[DEATH].rect.x1 = 0;
+	m_tex_info[DEATH].rect.x1 = 32;
 	m_tex_info[DEATH].rect.y1 = 202;
 	m_tex_info[DEATH].rect.x2 = m_tex_info[DEATH].rect.x1 + 30;
 	m_tex_info[DEATH].rect.y2 = m_tex_info[DEATH].rect.y1 + 30;	
