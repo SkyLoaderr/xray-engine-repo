@@ -26,6 +26,9 @@
 	</frag_wnd_dm>
 				
 	<stats_wnd x="25" x2="430" y="65" width="410" height="480">
+		<back_ground x="0" y="0" width="400" height="480">
+			<!--texture>ui_frame</texture-->
+		</back_ground>
 		<player_list x="0" y="0" width="410" height="0" spectator="0"> <!-- dinamic height -->
 			<team_header x="10" y="43" width="411" height="20">
 				<text_format font="letterica16" a="255" r="188" g="188" b="180" />
