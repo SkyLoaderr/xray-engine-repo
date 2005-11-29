@@ -911,7 +911,7 @@ C++ class MonsterSpace {
     const head_anim_glad = 2;
     const head_anim_kind = 3;
     const head_anim_normal = 0;
-    const sound_script = 16;
+    const sound_script = 128;
     
 };
 
@@ -2635,44 +2635,45 @@ C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster
     
     cse_alife_human_abstract (string);
     
-    function on_register();
+    function can_save() const;
     function brain(cse_alife_monster_abstract*);
     function brain(cse_alife_human_abstract*);
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function smart_terrain_id(cse_alife_monster_abstract*);
+    function g_squad();
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function STATE_Write(net_packet&);
     function init();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
     function profile_name(cse_alife_trader_abstract*);
     function name(const cse_abstract*);
-    function on_before_register();
+    function clear_smart_terrain(cse_alife_monster_abstract*);
     function community() const;
     function visible_for_map() const;
     function visible_for_map(boolean);
     function alive() const;
-    function can_save() const;
     function g_group();
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function on_spawn();
+    function used_ai_locations() const;
+    function on_before_register();
+    function health() const;
     function move_offline() const;
     function move_offline(boolean);
-    function on_spawn();
-    function clear_smart_terrain(cse_alife_monster_abstract*);
-    function used_ai_locations() const;
-    function health() const;
     function reputation() const;
+    function on_register();
     function update();
-    function g_team();
     function OnEvent(net_packet&, number, number, ClientID);
-    function STATE_Write(net_packet&);
+    function smart_terrain_id(cse_alife_monster_abstract*);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function g_squad();
+    function g_team();
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function on_unregister();
     function rank() const;
+    function rank();
 };
 
 C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
@@ -2690,11 +2691,11 @@ C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
     
     cse_alife_human_stalker (string);
     
-    function can_save() const;
+    function on_register();
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_team();
+    function smart_terrain_id(cse_alife_monster_abstract*);
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
@@ -2702,32 +2703,33 @@ C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
     function section_name(const cse_abstract*);
     function profile_name(cse_alife_trader_abstract*);
     function name(const cse_abstract*);
-    function move_offline() const;
-    function move_offline(boolean);
+    function used_ai_locations() const;
     function community() const;
     function visible_for_map() const;
     function visible_for_map(boolean);
     function alive() const;
-    function used_ai_locations() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function on_unregister();
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
-    function on_before_register();
-    function g_squad();
+    function clear_smart_terrain(cse_alife_monster_abstract*);
+    function g_team();
     function interactive() const;
     function reputation() const;
-    function on_register();
+    function can_save() const;
     function brain(cse_alife_monster_abstract*);
     function brain(cse_alife_human_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
-    function smart_terrain_id(cse_alife_monster_abstract*);
+    function g_squad();
     function STATE_Read(net_packet&, number);
     function health() const;
-    function clear_smart_terrain(cse_alife_monster_abstract*);
+    function on_before_register();
     function on_spawn();
     function UPDATE_Write(net_packet&);
     function g_group();
     function rank() const;
+    function rank();
 };
 
 C++ class cse_alife_inventory_item {
@@ -3253,6 +3255,7 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
     
     cse_alife_monster_abstract (string);
     
+    function can_save() const;
     function on_before_register();
     function brain(cse_alife_monster_abstract*);
     function clear_smart_terrain(cse_alife_monster_abstract*);
@@ -3285,7 +3288,7 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
     function on_spawn();
     function UPDATE_Write(net_packet&);
     function g_group();
-    function can_save() const;
+    function rank();
 };
 
 C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
@@ -3303,31 +3306,32 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     
     cse_alife_monster_base (string);
     
-    function clear_smart_terrain(cse_alife_monster_abstract*);
     function can_save() const;
+    function clear_smart_terrain(cse_alife_monster_abstract*);
     function g_group();
-    function g_team();
-    function on_register();
     function update();
+    function on_spawn();
+    function on_register();
+    function brain(cse_alife_monster_abstract*);
     function can_switch_online() const;
     function visible_for_map() const;
     function visible_for_map(boolean);
     function smart_terrain_id(cse_alife_monster_abstract*);
     function alive() const;
-    function on_spawn();
     function used_ai_locations() const;
-    function clsid() const;
     function health() const;
-    function STATE_Write(net_packet&);
+    function clsid() const;
+    function g_team();
     function UPDATE_Read(net_packet&);
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function OnEvent(net_packet&, number, number, ClientID);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function on_before_register();
     function init();
-    function g_squad();
     function interactive() const;
+    function g_squad();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
-    function on_before_register();
+    function STATE_Write(net_packet&);
     function STATE_Read(net_packet&, number);
     function name(const cse_abstract*);
     function move_offline() const;
@@ -3335,7 +3339,7 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function on_unregister();
-    function brain(cse_alife_monster_abstract*);
+    function rank();
 };
 
 C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory_item {
@@ -3353,31 +3357,32 @@ C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory
     
     cse_alife_monster_rat (string);
     
-    function clear_smart_terrain(cse_alife_monster_abstract*);
     function can_save() const;
+    function clear_smart_terrain(cse_alife_monster_abstract*);
     function g_group();
-    function g_team();
-    function on_register();
     function update();
+    function on_spawn();
+    function on_register();
+    function brain(cse_alife_monster_abstract*);
     function can_switch_online() const;
     function visible_for_map() const;
     function visible_for_map(boolean);
     function smart_terrain_id(cse_alife_monster_abstract*);
     function alive() const;
-    function on_spawn();
     function used_ai_locations() const;
-    function clsid() const;
     function health() const;
-    function STATE_Write(net_packet&);
+    function clsid() const;
+    function g_team();
     function UPDATE_Read(net_packet&);
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function OnEvent(net_packet&, number, number, ClientID);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function on_before_register();
     function init();
-    function g_squad();
     function interactive() const;
+    function g_squad();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
-    function on_before_register();
+    function STATE_Write(net_packet&);
     function STATE_Read(net_packet&, number);
     function name(const cse_abstract*);
     function move_offline() const;
@@ -3385,7 +3390,7 @@ C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function on_unregister();
-    function brain(cse_alife_monster_abstract*);
+    function rank();
 };
 
 C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
@@ -3403,31 +3408,32 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     
     cse_alife_monster_zombie (string);
     
-    function clear_smart_terrain(cse_alife_monster_abstract*);
     function can_save() const;
+    function clear_smart_terrain(cse_alife_monster_abstract*);
     function g_group();
-    function g_team();
-    function on_register();
     function update();
+    function on_spawn();
+    function on_register();
+    function brain(cse_alife_monster_abstract*);
     function can_switch_online() const;
     function visible_for_map() const;
     function visible_for_map(boolean);
     function smart_terrain_id(cse_alife_monster_abstract*);
     function alive() const;
-    function on_spawn();
     function used_ai_locations() const;
-    function clsid() const;
     function health() const;
-    function STATE_Write(net_packet&);
+    function clsid() const;
+    function g_team();
     function UPDATE_Read(net_packet&);
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function OnEvent(net_packet&, number, number, ClientID);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function on_before_register();
     function init();
-    function g_squad();
     function interactive() const;
+    function g_squad();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
-    function on_before_register();
+    function STATE_Write(net_packet&);
     function STATE_Read(net_packet&, number);
     function name(const cse_abstract*);
     function move_offline() const;
@@ -3435,7 +3441,7 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function on_unregister();
-    function brain(cse_alife_monster_abstract*);
+    function rank();
 };
 
 C++ class cse_alife_mounted_weapon : cse_alife_dynamic_object_visual {
@@ -4264,21 +4270,22 @@ C++ class game_object {
     function make_object_visible_somewhen(game_object*);
     function jump(const vector&, number);
     function info_clear();
+    function set_tip_text_default();
     function set_patrol_extrapolate_callback();
     function set_patrol_extrapolate_callback(const function<boolean>&);
     function set_patrol_extrapolate_callback(const function<boolean>&, object);
     function set_const_force(const vector&, number, number);
-    function set_nonscript_usable(boolean);
-    function who_hit_section_name();
     function set_goodwill(number, game_object*);
-    function change_team(number, number, number);
+    function who_hit_section_name();
     function inside(const vector&, number) const;
     function inside(const vector&) const;
+    function change_team(number, number, number);
+    function active_zone_contact(number);
     function inventory_for_each(const function<void>&);
     function direction() const;
     function kill(game_object*);
     function cost() const;
-    function active_zone_contact(number);
+    function set_nonscript_usable(boolean);
     function body_state() const;
     function skip_transfer_enemy(boolean);
     function see(const game_object*);
@@ -4291,7 +4298,7 @@ C++ class game_object {
     function info_add(string);
     function set_community_goodwill(number, game_object*);
     function team() const;
-    function set_tip_text_default();
+    function set_tip_text(string);
     function set_condition(number);
     function set_sight(enum SightManager::ESightType, const vector*, number);
     function set_sight(enum SightManager::ESightType, boolean, boolean);
@@ -4299,16 +4306,16 @@ C++ class game_object {
     function set_sight(enum SightManager::ESightType, const vector*);
     function set_sight(game_object*, boolean);
     function set_sight(game_object*, boolean, string);
-    function set_tip_text(string);
     function remove_sound(number);
+    function get_holder_class();
     function remove_restrictions(string, string);
     function action_count() const;
     function money();
-    function get_holder_class();
     function get_physics_shell() const;
     function safe_cover(const vector&, number, number);
-    function weapon_unstrapped() const;
     function get_car();
+    function weapon_unstrapped() const;
+    function get_helicopter();
     function name() const;
     function set_range(number);
     function add_sound(string, number, enum ESoundTypes, number, number, number);
@@ -4320,36 +4327,36 @@ C++ class game_object {
     function get_current_direction();
     function action() const;
     function restore_weapon();
-    function get_helicopter();
     function accuracy() const;
     function get_anomaly_power();
     function disable_anomaly();
-    function enable_vision(boolean);
     function enable_anomaly();
+    function enable_vision(boolean);
+    function hit(hit*);
     function alive() const;
     function set_mental_state(enum MonsterSpace::EMentalState);
     function squad() const;
     function reset_action_queue();
     function target_body_state() const;
-    function hit(hit*);
-    function head_orientation() const;
     function get_ammo_in_magazine();
-    function script(boolean, string);
+    function head_orientation() const;
     function explode(number);
+    function script(boolean, string);
+    function get_sound_info();
     function set_path_evaluator();
     function set_path_evaluator(vertex_evaluator*);
-    function get_sound_info();
     function change_character_reputation(number);
-    function set_actor_position(vector);
     function not_yet_visible_objects() const;
-    function remove_all_restrictions();
+    function set_actor_position(vector);
     function character_reputation();
-    function add_restrictions(string, string);
+    function remove_all_restrictions();
     function set_character_rank(number);
-    function get_monster_hit_info();
+    function add_restrictions(string, string);
     function character_rank();
+    function get_monster_hit_info();
     function group() const;
     function base_out_restrictions();
+    function item_in_slot(number) const;
     function memory_hit_objects() const;
     function can_script_capture() const;
     function set_sound_mask(number);
@@ -4725,16 +4732,15 @@ C++ class sound_object {
 };
 
 C++ class sound {
-    const attack = 2;
-    const attack_hit = 3;
-    const die = 5;
-    const eat = 1;
-    const growling = 11;
-    const idle = 0;
-    const panic = 10;
-    const steal = 9;
-    const take_damage = 4;
-    const threaten = 6;
+    const attack = 3;
+    const attack_hit = 4;
+    const die = 7;
+    const eat = 2;
+    const idle = 1;
+    const panic = 11;
+    const steal = 10;
+    const take_damage = 5;
+    const threaten = 9;
     
     sound ();
     sound (string, string);
@@ -4750,8 +4756,8 @@ C++ class sound {
     sound (sound_object&, const vector&);
     sound (sound_object&, const vector&, const vector&);
     sound (sound_object&, const vector&, const vector&, boolean);
-    sound (enum MonsterSpace::EMonsterSounds);
-    sound (enum MonsterSpace::EMonsterSounds, number);
+    sound (enum MonsterSound::EType);
+    sound (enum MonsterSound::EType, number);
     sound (string, string, enum MonsterSpace::EMonsterHeadAnimType);
     
     function set_sound(string);
@@ -7001,49 +7007,49 @@ List of the namespaces exported to LUA
 
  
 namespace  {
-    function app_ready();
-    function cast_alife_object_to_creature(cse_alife_object*);
     function bit_and(number, number);
     function alife();
     function GetFontGraffiti32Russian();
-    function bit_or(number, number);
     function device();
-    function log(string);
-    function system_ini();
-    function GetFontGraffiti50Russian();
-    function GetFontHeaderRussian();
-    function game_graph();
-    function cast_planner_to_action(action_planner*);
-    function GetFontGraffiti19Russian();
-    function GetFontLetterica25();
-    function create_ini_file(string);
-    function bit_not(number);
-    function GetFontLetterica16Russian();
-    function GetFontMedium();
-    function ef_storage();
-    function get_hud();
-    function dik_to_bind(number);
-    function GetFontSmall();
-    function flush();
-    function user_name();
     function cast_alife_object_to_trader_abstract(cse_alife_object*);
+    function GetFontHeaderRussian();
+    function prefetch(string);
+    function game_graph();
+    function dik_to_bind(number);
+    function GetFontGraffiti19Russian();
+    function create_ini_file(string);
+    function get_hud();
+    function GetFontSmall();
     function error_log(string);
-    function GetFontGraffiti22Russian();
     function GetFontLetterica18Russian();
-    function GetFontBigDigit();
-    function time_global();
-    function verify_if_thread_is_running();
+    function getFS();
+    function bit_xor(number, number);
+    function GetFontHeaderEurope();
+    function get_console();
+    function GetFontGraffiti50Russian();
+    function app_ready();
+    function bit_or(number, number);
     function GetFontArialN21Russian();
     function GetFontDI();
-    function GetARGB(number, number, number, number);
-    function script_server_object_version();
-    function getFS();
-    function editor();
-    function GetFontHeaderEurope();
-    function prefetch(string);
+    function GetFontLetterica16Russian();
+    function log(string);
+    function system_ini();
+    function GetFontLetterica25();
+    function GetFontMedium();
+    function cast_alife_object_to_creature(cse_alife_object*);
+    function flush();
+    function GetFontGraffiti22Russian();
+    function ef_storage();
+    function GetFontBigDigit();
     function cast_action_to_planner(action_base*);
-    function bit_xor(number, number);
-    function get_console();
+    function verify_if_thread_is_running();
+    function script_server_object_version();
+    function cast_planner_to_action(action_planner*);
+    function bit_not(number);
+    function user_name();
+    function time_global();
+    function GetARGB(number, number, number, number);
+    function editor();
  
     namespace game {
         function time();
