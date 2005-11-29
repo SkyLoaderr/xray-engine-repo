@@ -156,7 +156,13 @@ function gulag:get_job_path_name( job )
 	end
 
 	if path_field == "center_point" then -- TODO затык
-		return self.name .. "_" .. self.ltx:r_string( active_section, path_field ) .. "_task"
+		local path_name = self.name .. "_" .. self.ltx:r_string( active_section, path_field )
+
+		if level.patrol_path_exists( path_name .. "_task" ) then
+			return path_name .. "_task"
+		else
+			return path_name
+		end
 	else
 		return self.name .. "_" .. self.ltx:r_string( active_section, path_field )
 	end
@@ -617,11 +623,9 @@ function gulag:get_population()
 	local i = 0
 	local obj
 
-	for obj_id, npc_info in pairs( self.npc_info ) do
-		obj = npc_info.se_obj
-
-		if obj.online then
-			obj = self.Object[obj_id]
+	for obj_id, obj in pairs( self.Object ) do
+		if obj == true then
+			obj = self.npc_info[obj_id]
 		end
 
 		if obj:alive() then
@@ -895,11 +899,27 @@ end
 -- Functions TODO и выше тоже
 ----------------------------------------------------------------------------------------------------------------------
 
+-- получить гулаг по имени смарта
 -- работает только для смартов, которые в онлайне
 function get_gulag_by_name( name )
 	local go_strn = db.zone_by_name[name]
 
 	return go_strn and alife():object( go_strn:id() ).gulag
+end
+
+-- получить гулаг по story id смарта
+-- работает всегда
+function get_gulag_by_sid( sid )
+	return alife():story_object( sid ).gulag
+end
+
+-- получить гулаг по имени или story id смарта
+function get_gulag( name_or_sid )
+	if type( name_or_sid ) == "number" then
+		return get_gulag_by_sid( name_or_sid )
+	else
+		return get_gulag_by_name( name_or_sid )
+	end
 end
 
 -- TODO переименовать isUnderFraction в get_npc_gulag
@@ -918,14 +938,14 @@ function get_npc_gulag( obj )
 end
 
 -- получить кол-во населения смарта по имени
-function getGulagPopulation( name )
-	local gulag = get_gulag_by_name( name )
+function getGulagPopulation( name_or_sid )
+	local gulag = get_gulag( name_or_sid )
 
 	return ( gulag and gulag:get_population() ) or 0
 end
 
 -- сделать указанного персонажа врагом всех персонажей смарта, которые в онлайне
-function setGulagEnemy(name, victim)
+function setGulagEnemy(name_or_sid, victim)
 	if not victim then
 		abort("setGulagEnemy: victim == nil")
 	end
@@ -940,7 +960,7 @@ function setGulagEnemy(name, victim)
 --			h.direction = v:direction()
 --			v:hit(h)
 --		end
-	local gulag = get_gulag_by_name( name )
+	local gulag = get_gulag( name_or_sid )
 
 	for obj_id, obj in gulag.Object do
 		if obj ~= true then
@@ -950,8 +970,8 @@ function setGulagEnemy(name, victim)
 end
 
 -- получить номер состояния смарта по имени
-function getGulagState(name)
-	local gulag = get_gulag_by_name( name )
+function getGulagState( name_or_sid )
+	local gulag = get_gulag( name_or_sid )
 
 	return ( gulag and gulag.state ) or 0
 end
