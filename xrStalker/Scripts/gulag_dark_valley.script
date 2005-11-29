@@ -48,14 +48,14 @@ function load_ltx(gname, type)
 end
 
 -- Check communities -----------------------------------------------------
-local function checkCommon(npc_community, gulag_type, npc_rank, se_obj)
+local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
     local g = gulags[gulag_type]
     if g then
         local i, v, n = 0, 0, 0
 
         if g[3] then
             for i, v in pairs(g[3]) do
-                if type(v) == "function" and v(npc_community, gulag_type, npc_rank, se_obj) then
+                if type(v) == "function" and v(npc_community, gulag_type, npc_rank, se_obj, stalker) then
                     return true
                 elseif npc_community == v then
                     return true
@@ -74,8 +74,13 @@ local function checkCommon(npc_community, gulag_type, npc_rank, se_obj)
 	return false
 end
 
-checkStalker = checkCommon
-checkMonster = checkCommon
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
+	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, true)
+end
+
+function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
+	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, false)
+end
 
 
 --------------------------------------------------------------------------
@@ -604,8 +609,8 @@ function check_state_monolith_base(gulag)
 end
 
 -- Check stalker ---------------------------------------------------------
-function check_stalker_monolith_base(npc_community, gulag_type, npc_rank, se_obj)
-    return se_obj:profile_name() == "val_monolith_regular"
+function check_stalker_monolith_base(npc_community, gulag_type, npc_rank, se_obj, stalker)
+    return stalker and se_obj:profile_name() == "val_monolith_regular"
 end
 
 -- Dynamic ltx -----------------------------------------------------------
