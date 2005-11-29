@@ -212,7 +212,7 @@ function se_smart_terrain:fill_npc_info( obj, npc_info )
 	npc_info.story_id     = obj.m_story_id
 	npc_info.community    = self:get_obj_community( obj )
 	npc_info.profile_name = obj.profile_name and obj:profile_name()
-	npc_info.rank         = 100 --obj:rank()
+	npc_info.rank         = obj:rank()
 
 	npc_info.group        = obj:g_group()
 	npc_info.squad        = obj:g_squad()
@@ -326,7 +326,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		end
 
 --		printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
-		if xr_gulag.checkNpc( community, is_stalker, self.gparams.type, 100 /*obj:rank()*/, obj, self.gparams.preset_name ) then
+		if xr_gulag.checkNpc( community, is_stalker, self.gparams.type, obj:rank(), obj, self.gparams.preset_name ) then
 			if self.gulag then
 				return self.gulag:is_there_any_free_suitable_job( self:fill_npc_info( obj ) )
 			else
