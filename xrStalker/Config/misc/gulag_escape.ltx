@@ -254,20 +254,20 @@ on_death = death@wolf
 path_walk = wolf_walk
 path_look = wolf_look
 meet = meet@wolf
-on_info = {+esc_return =is_alive(006)} %=kill%
-on_info2 = {+esc_wolf_say} remark@esc_lager_volk_wait2
+;on_info = {+esc_return =is_alive(006)} %=kill%
+on_info = {+esc_wolf_say} remark@esc_lager_volk_wait2
 
 [remark@esc_lager_volk_wait2]
 anim = wait
 snd = esc_wolf_say_thanks
 on_signal = sound_end| walker@esc_lager_volk_walker3
-on_info = {+esc_return =is_alive(006)} %=kill%
+;on_info = {+esc_return =is_alive(006)} %=kill%
 
 [walker@esc_lager_volk_walker3]
 path_walk = wolf_walk
 path_look = wolf_look
 meet = meet@wolf
-on_info = {+esc_return =is_alive(006)} %=kill%
+;on_info = {+esc_return =is_alive(006)} %=kill%
 
 [meet@wolf]
 meet_state		= 15|wait@wait
