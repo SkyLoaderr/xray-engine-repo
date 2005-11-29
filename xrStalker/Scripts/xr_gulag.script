@@ -920,13 +920,12 @@ function getGulagPopulation( name )
 	return ( gulag and gulag:get_population() ) or 0
 end
 
+-- сделать указанного персонажа врагом всех персонажей смарта, которые в онлайне
 function setGulagEnemy(name, victim)
-	abort("gulag setGulagEnemy: gulag_name=%s", name)
-
 	if not victim then
 		abort("setGulagEnemy: victim == nil")
 	end
-	if xr_gulag.fraction[name] ~= nil then
+
 --		local h = hit()
 --		h.power = 0
 --		h.bone = "bip01_spine"
@@ -937,8 +936,11 @@ function setGulagEnemy(name, victim)
 --			h.direction = v:direction()
 --			v:hit(h)
 --		end
-		for k,v in xr_gulag.fraction[name].Object do
-			v:set_relation(game_object.enemy, victim)
+	local gulag = get_gulag_by_name( name )
+
+	for obj_id, obj in gulag.Object do
+		if obj ~= true then
+			obj:set_relation( game_object.enemy, victim )
 		end
 	end
 end
