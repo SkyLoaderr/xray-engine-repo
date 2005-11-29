@@ -231,7 +231,7 @@ function check_fighting(actor, npc, p)
 	return false
 end
 
--- true, если гулага с таким именем не существует или в нём нет никого
+-- true, если гулага с таким именем (или story id) не существует или в нём нет никого
 function gulag_empty(actor, npc, p)
 	return ( not p[1] ) or ( xr_gulag.getGulagPopulation( p[1] ) == 0 )
 end
