@@ -104,13 +104,19 @@ function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
 	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, false)
 end
 
-local function obj_has_item(data, item_name)
+local function obj_has_item(data, item_name, def_val)
     local se_obj = data.se_obj
     local t = true
 
+    if def_val then
+        t = def_val
+    end
+
     if se_obj.online then
         local obj = level.object_by_id(se_obj.id)
-        t = obj:object(item_name) ~= nil
+        if obj then
+            t = obj:object(item_name) ~= nil
+        end
 	end
 
 	return t
