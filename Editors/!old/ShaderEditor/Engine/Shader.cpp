@@ -62,7 +62,6 @@ ShaderElement::ShaderElement()
 	flags.bStrictB2F	= FALSE;
 	flags.bEmissive		= FALSE;
 	flags.bDistort		= FALSE;
-	flags.bElevation	= FALSE;
 }
 
 BOOL ShaderElement::equal	(ShaderElement& S)
@@ -71,7 +70,6 @@ BOOL ShaderElement::equal	(ShaderElement& S)
 	if (flags.bStrictB2F	!= S.flags.bStrictB2F)	return FALSE;
 	if (flags.bEmissive		!= S.flags.bEmissive)	return FALSE;
 	if (flags.bDistort		!= S.flags.bDistort)	return FALSE;
-	if (flags.bElevation	!= S.flags.bElevation)	return FALSE;
 	if (passes.size() != S.passes.size())			return FALSE;
 	for (u32 p=0; p<passes.size(); p++)
 		if (passes[p] != S.passes[p])				return FALSE;
