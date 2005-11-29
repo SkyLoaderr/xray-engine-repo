@@ -45,16 +45,14 @@ function gulag:__init(smrttrn, type, squad, groups, npc_info, capacity)
 	self.ObjectJob         = {} -- по id. номер работы для каждого персонажа
 	self.JobBeginTime      = {} -- для каждой работы время начала
 
-	self.stateBegin_loaded = nil
+	self.state      = 0
+	self.stateBegin = nil
+
+	self.casualities = 0
 end
 
 -- подготовка к работе
 function gulag:initialize()
-	self.state      = 0
-	self.stateBegin = self.stateBegin_loaded
-
-	self.casualities = 0
-
 	self.Job               = {} -- работы
 	self.ObjectJobPathName = {} -- по id. имя патрульного пути места работы персонажа
 	self.restrictors       = {} -- по id. назначенные гулагом рестрикторы для каждого персонажа
@@ -155,7 +153,7 @@ function gulag:get_job_path_name( job )
 		abort( "gulag: ltx=%s, there is no path in section %s", self.ltx_name, active_section )
 	end
 
-	if path_field == "center_point" then -- TODO затык
+	if path_field == "center_point" then -- TODO убрать затык
 		local path_name = self.name .. "_" .. self.ltx:r_string( active_section, path_field )
 
 		if level.patrol_path_exists( path_name .. "_task" ) then
@@ -186,9 +184,9 @@ end
 
 -- восстановление общего состояния гулага
 function gulag:load_common( packet )
-	self.casualities       = packet:r_u8()
-	self.state             = packet:r_u8()
-	self.stateBegin_loaded = utils.r_CTime( packet )
+	self.casualities = packet:r_u8()
+	self.state       = packet:r_u8()
+	self.stateBegin  = utils.r_CTime( packet )
 
 	local n = packet:r_u8()
 
