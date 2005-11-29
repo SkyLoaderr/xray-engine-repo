@@ -729,7 +729,6 @@ function load_ltx_monolith(gname, type)
                    
                    "[kamp@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
-                   "path_walk           = kamp" .. i .. "_task\n" ..
                    "danger               = danger@monolith\n" ..
                    "soundgroup          = " .. gname .."_kamp" .. i .. "\n" ..
                    "def_state_moving    = run\n" ..
