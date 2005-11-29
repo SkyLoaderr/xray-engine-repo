@@ -118,6 +118,13 @@ const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
 			strcpy(ans,"");
 		
 	}
+	else if (0 == xr_strcmp(id, "status"))
+	{
+		if (m_pPlayerInfo->testFlag(GAME_PLAYER_FLAG_READY))
+			strcpy(ans,"READY");
+		else
+			strcpy(ans,"");
+	}
 	else
 		R_ASSERT2(false, "invalid info ID");
 

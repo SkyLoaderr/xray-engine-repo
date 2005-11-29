@@ -163,7 +163,7 @@ void CUIStatsPlayerList::Update(){
 	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 
 	items.clear			();
-	u32 pl_count = Game().players.size();
+	u32 pl_count = 0;
 	int pl_frags = 0;
 	u32	pl_artefacts = 0;
 	for (;I!=E;++I)		
@@ -181,6 +181,7 @@ void CUIStatsPlayerList::Update(){
             pl_artefacts += p->af_count;
 		}
 	};
+	pl_count = items.size();
 
     if (GameID() == GAME_ARTEFACTHUNT && !m_bSpectator)
 	{
