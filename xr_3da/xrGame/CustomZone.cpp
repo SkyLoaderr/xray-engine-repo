@@ -292,7 +292,7 @@ void CCustomZone::Load(LPCSTR section)
 			total_probability += artefact_spawn.probability;
 		}
 
-		R_ASSERT2(!fis_zero(total_probability), "The probability of artefact spawn is zero!");
+		R_ASSERT3(!fis_zero(total_probability), "The probability of artefact spawn is zero!",*cName());
 		//нормализировать вероятности
 		for(i=0; i<m_ArtefactSpawn.size(); ++i)
 		{
