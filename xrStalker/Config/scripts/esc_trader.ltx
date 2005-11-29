@@ -85,8 +85,7 @@ dialog_cond = always
 anim = idle_0_def_0
 on_signal = action_end | {=talking} mob_remark@idle_0_def_0, {~50} mob_remark@idle_0_spec_scratch_0, mob_remark@idle_0_def_0
 on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolog_1 %+esc_trader_monolog_1_played%,   {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_remark@tut_choice %+esc_trader_tutorial_choice_played%
-on_info2 = {+esc_trader_tutorial_chosen +esc_trader_newbie} %=run_tutorial(part_1_pda) +esc_trader_experienced%
-on_info3 = {+esc_trader_tutorial_chosen -esc_trader_newbie_course_done} mob_remark@map_quest_1_experienced %+esc_trader_newbie_course_done%
+on_info2 = {+esc_trader_tutorial_chosen +esc_trader_newbie -esc_trader_newbie_course_done} %=run_tutorial(part_1_pda) +esc_trader_newbie_course_done%
 on_actor_dist_le_nvis = 4 | {+tutorial_end -esc_trader_hello_played} mob_remark@hello_what_have_you_got %+esc_trader_hello_played%
 on_actor_dist_ge_nvis = 4 | {-esc_trader_bye_played +esc_trader_hello_played} mob_remark@bye %+esc_trader_bye_played%
 on_actor_dist_ge_nvis2 = 10 | %-esc_trader_hello_played -esc_trader_bye_played%
@@ -159,15 +158,3 @@ anim = idle_0_talk_2
 anim_head = head_anim_normal
 snd = trader_exchanged
 on_signal = action_end | mob_remark@idle_0_def_0
-
-; ------------------------------------------------------------------------------------------------------
-; ЗАДАНИЕ
-; ------------------------------------------------------------------------------------------------------
-
-[mob_remark@map_quest_1_experienced]
-dialog_cond = always
-anim = idle_0_talk_2
-anim_head = head_anim_normal
-snd = trader_map_quest_1
-on_signal = action_end | mob_remark@idle_0_def_0
-on_info = {+esc_trader_can_leave} mob_remark@idle_0_def_0 ; обрывать фразу FIXME
