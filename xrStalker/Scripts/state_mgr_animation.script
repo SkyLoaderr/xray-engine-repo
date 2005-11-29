@@ -404,6 +404,12 @@ function animation:update()
 		end
 		local wpn_slot = self:weapon_slot()
 		-- Проверка на уровень рекурсивности.
+		-- Если текущая анимация не позволяет рекурсию, ставить текущий уровень нулевым.
+		if state_mgr_animation_list.animations[self.states.current_state].subanim == nil then
+			self.states.anim_level = 0
+			self.mgr.subanim = 0
+		end
+
 		-- если нужный уровень рекурсии достигнут - играть рандомные и зацикленные айдлы из него.
 		-- если нет - отыграть весь набор входных анимаций до него.
 		if self.states.anim_level < self.mgr.subanim then
