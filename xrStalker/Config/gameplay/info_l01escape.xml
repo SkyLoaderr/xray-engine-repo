@@ -148,7 +148,6 @@
 	
 	<!-- infoportions for raid -->
 	<info_portion id="esc_raid1_start"></info_portion>
-	<info_portion id="esc_raid2_start"></info_portion>
 
 	<!-- infoportions for blockpost -->
 	<info_portion id="esc_blockpost_alarm">
