@@ -32,9 +32,9 @@ namespace MonsterSound {
 	};
 
 	enum EVirtualChannels {
-		eChannelIndependent	= u32(0),	// can be played in any time with any conditions
-		eBaseChannel		= u32(1) << 31,
-		eCaptureAllChannels = u32(-1),	// play only this one
+		eBaseChannel		= u32(1) << 7,
+		eChannelIndependent	= u32(1) << 15,	// can be played in any time with any conditions (need shift operator for every id)
+		eCaptureAllChannels = u32(-1),		// play only this one
 	};
 };
 
