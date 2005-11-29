@@ -8,7 +8,7 @@ snd_open_start = trader_door_open_start
 snd_close_start = trader_door_close_start
 snd_close_stop = trader_door_close_stop
 hit_on_bone = 2|ph_door@close
-force_dir_id = 0
+force_dir_id = 1
 
 [ph_door@close]
 locked = false
@@ -18,7 +18,7 @@ snd_close_start = trader_door_close_start
 snd_close_stop = trader_door_close_stop
 on_use = ph_door@open
 hit_on_bone = 1|ph_door@free|2|ph_door@free
-force_dir_id = 0
+force_dir_id = 1
 
 [ph_door@open]
 locked = false
@@ -28,11 +28,11 @@ snd_close_start = trader_door_close_start
 snd_close_stop = trader_door_close_stop
 on_use = ph_door@close
 hit_on_bone = 1|ph_door@free|2|ph_door@free
-force_dir_id = 0
+force_dir_id = 1
 
 [ph_door@free]
 locked = false
 closed = true
-force_dir_id = 0
+force_dir_id = 1
 no_force = true
 on_use = ph_door@open
