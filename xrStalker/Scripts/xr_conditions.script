@@ -592,15 +592,15 @@ function pri_followers_can_hear(actor, npc)
     return actor:has_info("pri_followers_mission_accept") and
            actor:dont_has_info("pri_followers_actor_enemy") and
            actor:dont_has_info("pri_followers_actor_leave") and
-           xr_gulag.getGulagPopulation("pri_followers") ~= 0
+           xr_gulag.getGulagPopulation(823) ~= 0 --"pri_followers"
 end
 
 function pri_monolith_combat_ignore(actor, npc)
 	local enemy = db.storage[npc:id()].enemy
 
 	if enemy and enemy:alive() then
-        local g = xr_gulag.isUnderFraction(enemy)
-        return g and (g == "pri_snork_nest1" or g == "pri_snork_nest2")
+        local g = xr_gulag.get_npc_gulag(enemy)
+        return g ~= nil and (g.name == "pri_snork_nest1" or g.name == "pri_snork_nest2")
     else
         return false
     end
