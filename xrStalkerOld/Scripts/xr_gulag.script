@@ -999,22 +999,18 @@ function resetJob( obj )
 	end
 end
 
-function changeCasualities(fraction, delta)
-	abort("gulag changeCasualities: gulag_name=%s", fraction)
+function changeCasualities( name_or_sid, delta )
+	local gulag = get_gulag( name_or_sid )
 
-	if xr_gulag.fraction[fraction] ~= nil then
-		xr_gulag.fraction[fraction]:changeCasualities(delta)
+	if gulag then
+		gulag.changeCasualities( delta )
 	end
 end
 
-function getCasualities(fraction)
-	abort("gulag getCasualities: gulag_name=%s", fraction)
+function getCasualities( name_or_sid )
+	local gulag = get_gulag( name_or_sid )
 
-	if xr_gulag.fraction[fraction] ~= nil then
-		return xr_gulag.fraction[fraction]:getCasualities()
-	else
-		return 0
-	end
+	return ( gulag and gulag.getCasualities() ) or 0
 end
 
 -----------------------------------------------------------------------------------------------------------------
