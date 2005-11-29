@@ -198,14 +198,14 @@ void CBone::BoneRotate(const Fvector& _axis, float angle)
 void CBone::BoneMove(const Fvector& _amount)
 {
     Fvector amount=_amount;
-	Fmatrix _IT;_IT.invert(_LTransform());
-    if (Tools->GetSettings(etfCSParent)) _IT.transform_dir(amount);
 	switch (IK_data.type){
     case jtSlider:
     	amount.x 		= 0.f;
     	amount.y 		= 0.f;
+        rest_i_transform.transform	(mot_offset);
         mot_offset.add	(amount);
         clamp			(mot_offset.z,rest_offset.z+IK_data.limits[0].limit.x,rest_offset.z+IK_data.limits[0].limit.y);
+        rest_transform.transform	(mot_offset);
     break;
     }
 }
