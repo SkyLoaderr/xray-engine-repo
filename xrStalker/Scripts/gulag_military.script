@@ -1190,7 +1190,6 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     printf ("DOLG COMMUNITY = %s, profile = %s", info.commutiny, info.profile_name)
 		                     return info.commutiny == "dolg" and info.profile_name == "mil_Dolg_Zoneguard"
 		            end
 		}
