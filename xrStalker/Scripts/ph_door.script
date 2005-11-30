@@ -6,6 +6,9 @@
 -- Доработка: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
+function printf()
+end
+
 class "action_door"
 
 function action_door:__init(obj, storage)
