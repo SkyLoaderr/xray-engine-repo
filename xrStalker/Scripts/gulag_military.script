@@ -58,7 +58,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 732
+		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 730
 		            end
 		}
 	table.insert(sj, t)		
@@ -70,7 +70,19 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 730
+		                     return info.profile_name == "mil_Svoboda_sniper"
+		            end
+		}
+	table.insert(sj, t)		
+
+    -- Снайпер №5
+    t = {section = "logic@mil_freedom_sniper5",
+		idle = 0,
+		prior = 11, state = {0, 1, 2, 3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 732
 		            end
 		}
 	table.insert(sj, t)		
