@@ -952,7 +952,7 @@ function setGulagEnemy(name_or_sid, victim)
 
 	local gulag = get_gulag( name_or_sid )
 
-	for obj_id, obj in gulag.Object do
+	for obj_id, obj in pairs(gulag.Object) do
 		if obj ~= true then
 			obj:set_relation( game_object.enemy, victim )
 		end
