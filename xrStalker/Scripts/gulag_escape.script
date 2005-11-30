@@ -841,61 +841,61 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
-			prior = 5, state = {2},
+			prior = 5, state = {1},
 			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
@@ -1661,7 +1661,7 @@ function load_states(gname, type)
 				return gulag.state
 			end
 			if actor:has_info("escape_fox_heal") and actor:dont_has_info("esc_dogs_return") then
-				return 2
+				return 1
 			else
 				return 0
 			end
