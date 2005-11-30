@@ -189,12 +189,14 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 
 shared_str EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 {
-    xr_string pref 				= initial?xr_string(FS.get_path(initial)->m_Add)+"\\":xr_string("");
+    xr_string pref 				= initial?xr_string(FS.get_path(initial)->m_Add):xr_string("");
     xr_string					m_AccessFN = xr_string("access\\")+pref+fname+xr_string(".desc");
     FS.update_path				(m_AccessFN,"$server_data_root$",m_AccessFN.c_str());
     CInifile*	ini				= CInifile::Create(m_AccessFN.c_str(),false);
 	static string256 			comp;
-	strcpy						(comp,ini->line_exist("locked","name")?ini->r_string("locked","name"):"unknown");
+    LPCSTR l_name				= ini->r_string("locked","name");
+    if (ini->line_exist("locked","name"))
+		strcpy					(comp,l_name&&l_name[0]?l_name:"unknown");
 	CInifile::Destroy			(ini);
 
 	return comp;
