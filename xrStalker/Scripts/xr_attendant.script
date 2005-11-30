@@ -154,7 +154,7 @@ function action_follow:execute ()
     if self.st.stub_for_corpse == false then
        if leader == nil or leader:alive () == false then
           self.st.signals["leader_dead"] = true
-          self:free ()
+          --self:free ()
           return 
        end 
     end   
@@ -211,7 +211,7 @@ function action_follow:execute ()
           if self.st.stub_for_corpse == true then
              if leader == nil or leader:alive () == false then
                 self.st.signals["leader_dead"] = true
-                self:free ()
+                --self:free ()
                 return 
              end 
           end   
@@ -331,7 +331,7 @@ function action_follow:free ()
 
     if gulag ~= nil then
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
-       xr_gulag.resetJob (gulag, self.object)
+       xr_gulag.resetJob (self.object)
     else
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC", self.object:name ()) 
