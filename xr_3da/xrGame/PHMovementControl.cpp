@@ -244,7 +244,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	}
 	
 	dir.y=0.f;
-	VERIFY(!(fis_zero(dir.magnitude())&&!fis_zero(speed)));
+	//VERIFY(!(fis_zero(dir.magnitude())&&!fis_zero(speed)));
 	dir.normalize_safe();
 	/////////////////////////////////////////////////////////////////
 	if(bExernalImpulse)
