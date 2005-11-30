@@ -984,6 +984,7 @@ function resetJob( obj )
 	local gulag = get_npc_gulag( obj )
 	if gulag then
 		gulag:free_obj_and_reinit( obj:id() )
+		gulag:update()
 	end
 end
 
