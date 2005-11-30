@@ -1620,7 +1620,7 @@ explosion_immunity		= 1.0
 fire_wound_immunity		= 0.7
 
 
-[explosive_dinamit]:identity_immunities
+[explosive_dinamit]
 
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1675,7 +1675,9 @@ explode_duration		 = 5		;подолжительность взрыва (с)
 
 ;звуки
 snd_explode = weapons\f1_explode
+immunities_sect			= dinamit_immunities_sect
 
+[dinamit_immunities_sect]
 ;коэффициенты для попаданий различными типами хитов
 burn_immunity			= 0.0
 strike_immunity			= 0.0
@@ -1686,7 +1688,6 @@ telepatic_immunity		= 0.0
 chemical_burn_immunity	= 1.0
 explosion_immunity		= 0.0
 fire_wound_immunity		= 0.0
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	WEAPON ADDON
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
