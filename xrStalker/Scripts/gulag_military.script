@@ -1212,7 +1212,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.community == "dolg" and info.story_id == 710
+		                     return info.community == "dolg" and info.story_id == 711
 		            end
 		}
 	table.insert(sj, t)	
