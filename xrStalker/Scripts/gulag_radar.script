@@ -1463,7 +1463,7 @@ function load_ltx_rad_mil_entrance(gname, type)
 end
 --------------------------------------------------------------------------
 
-function checkStalker(npc_community, gulag_type)
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 	if	gulag_type == "rad_antena"					or 
 		gulag_type == "rad_entrance"				or
 		gulag_type == "rad_antenna_monolith"		or
@@ -1484,7 +1484,7 @@ function checkStalker(npc_community, gulag_type)
 	end	
 
 	if gulag_type == "freedom_vs_duty" then
-		return npc_community == "freedom" or npc_community == "dolg"
+		return se_obj:profile_name() == "rad_Svoboda_master" or se_obj:profile_name() == "rad_Dolg_master"
 	end
 
 	if gulag_type == "rad_antenna_specnaz"	or
