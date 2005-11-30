@@ -59,7 +59,7 @@ function run_cam_effector(actor, npc, p)
 end
 
 function run_postprocess(actor, npc, p)
-    set_postprocess("scripts\\" .. p[1] .. ".ltx")
+    level.add_pp_effector(p[1] .. ".ppe", 2020, false)
 end
 
 -----------------------------------------------------------------------------
