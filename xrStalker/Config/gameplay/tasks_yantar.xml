@@ -14,10 +14,12 @@
 			<object_story_id>yan_vasilyev</object_story_id>
 			<function_complete>yantar_tasks.actor_has_vasilyev_pda</function_complete>
 			<infoportion_set_complete>yantar_vasilyev_info</infoportion_set_complete>
-			<function_call_complete>yantar_tasks.yan_labx16_mapspot</function_call_complete>	
 		</objective>
 		<objective>
 			<text>yan_find_labX16</text>
+			<map_location_type hint="yan_find_labX16">green_location</map_location_type>
+			<map_location_hidden>1</map_location_hidden>
+			<object_story_id>yan_mapspot_from_vasilyev</object_story_id>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>labx16_find</infoportion_complete>
 		</objective>
