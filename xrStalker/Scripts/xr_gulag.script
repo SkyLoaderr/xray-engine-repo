@@ -950,16 +950,6 @@ function setGulagEnemy(name_or_sid, victim)
 		abort("setGulagEnemy: victim == nil")
 	end
 
---		local h = hit()
---		h.power = 0
---		h.bone = "bip01_spine"
---		h.draftsman = victim
---		h.impulse = 0
---		h.type = hit.wound
---		for k,v in xr_gulag.fraction[name].Object do
---			h.direction = v:direction()
---			v:hit(h)
---		end
 	local gulag = get_gulag( name_or_sid )
 
 	for obj_id, obj in gulag.Object do
