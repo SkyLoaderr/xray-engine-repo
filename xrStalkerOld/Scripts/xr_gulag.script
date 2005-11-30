@@ -706,6 +706,8 @@ function gulag:beginJob( obj_id )
 
 	job.begin = game.time()
 
+	self.npc_info[obj_id].se_obj.job_online = job.online
+
 	if self.Object[obj_id] ~= true then
 		local obj = self.Object[obj_id]
 
@@ -790,13 +792,15 @@ function gulag:get_obj_job_path_name( obj_id )
 end
 
 -- освободить объект от работы
-function gulag:free_obj(obj_id)
+function gulag:free_obj( obj_id )
 	local jobN = self.ObjectJob[obj_id]
 	if jobN then
 		self.ObjectJob[obj_id] = nil
 		self.Job[jobN].object  = nil
 
 		self.ObjectJobPathName[obj_id] = nil
+
+		self.npc_info[obj_id].se_obj.job_online = nil
 
 		if self.Object[obj_id] ~= true and
 		   self.Object_begin_job[obj_id] == true
@@ -809,7 +813,7 @@ end
 -- освободить объект от работы и переинициализировать логику.
 -- если сталкер в онлайне и начал работу, то сбросить его схему поведения
 -- как будто он только что загрузился
-function gulag:free_obj_and_reinit(obj_id)
+function gulag:free_obj_and_reinit( obj_id )
 	self:free_obj(obj_id)
 
 	local t = self.Object[obj_id]
