@@ -96,6 +96,12 @@ bool CStateZombieAttackRunAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 void CStateZombieAttackRunAbstract::choose_action()
 {
+	// check if its a strong monster
+	if (object->Rank() > 50) {
+		action = object->HitMemory.is_hit() ?  ACT_RUN : ACT_WALK_FWD;
+		return;
+	}
+	
 	if ((action == ACT_RUN) && (m_time_action_change + CHANGE_ACTION_FROM_RUN > time())) return;
 
 	// установка параметров функциональных блоков
