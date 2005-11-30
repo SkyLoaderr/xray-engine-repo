@@ -19,7 +19,6 @@
 		<objective>
 			<text>yan_find_labX16</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
 			<infoportion_complete>labx16_find</infoportion_complete>
 		</objective>
 		<objective>
