@@ -212,7 +212,6 @@ danger = danger_condition@1
 
 [walker@scientist_wounded_1]
 path_walk = wounded_walk
-;wounded = wounded@yan_scientist
 on_timer = 12000 | walker@scientist_wounded 
 combat_ignore_cond = always
 danger = danger_condition@1
@@ -223,20 +222,19 @@ wounded = wounded@yan_scientist
 combat_ignore_cond = always
 on_info = {+yan_scientist_return_to_bunker} remark@scientist_return_to_bunker
 danger = danger_condition@1
+meet = meet@scientist_1
 
 [remark@scientist_return_to_bunker]
 snd = yantar_kruglov_radiation_quest_8
 anim = wait
-snd_anim_sync = true
-on_signal = action_end | remark@scientist_return_to_bunker_1
+on_signal = sound_end | remark@scientist_return_to_bunker_1
 combat_ignore_cond = always
 danger = danger_condition@1
 
 [remark@scientist_return_to_bunker_1]
 snd = yantar_kruglov_radiation_quest_9
 anim = wait
-snd_anim_sync = true
-on_signal = action_end | camper@scientist_return_to_bunker
+on_signal = sound_end | camper@scientist_return_to_bunker
 combat_ignore_cond = always
 danger = danger_condition@1
 
