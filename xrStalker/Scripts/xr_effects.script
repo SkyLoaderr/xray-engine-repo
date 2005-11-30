@@ -59,7 +59,25 @@ function run_cam_effector(actor, npc, p)
 end
 
 function run_postprocess(actor, npc, p)
-    level.add_pp_effector(p[1] .. ".ppe", 2020, false)
+    if p[1] then
+        local loop, num = false, (2000 + math.random(100))
+        
+        if p[2] and type(p[2]) == "number" and p[2] > 0 then
+            num = p[2]
+        end
+
+        if p[3] and p[3] == "true" then
+            loop = true
+        end
+        
+        level.add_pp_effector(p[1] .. ".ppe", num, loop)
+    end
+end
+
+function stop_postprocess(actor, npc, p)
+    if p[1] and type(p[1]) == "number" and p[1] > 0 then
+        level.remove_pp_effector(p[1])
+    end
 end
 
 -----------------------------------------------------------------------------
