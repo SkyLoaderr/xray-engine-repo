@@ -1198,7 +1198,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
     local t
     t = {section = "logic@mil_dolg_skull",
 		idle = 0,
-		prior = 10, state = {0},
+		prior = 13, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -1220,7 +1220,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 
     t = {section = "logic@mil_dolg_soldier2",
 		idle = 0,
-		prior = 10, state = {0},
+		prior = 12, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
