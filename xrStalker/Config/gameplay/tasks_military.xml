@@ -203,12 +203,6 @@
 			<function_fail>mil_tasks.fblockpost_job_failed</function_fail>
 		</objective>
 		<objective>
-			<text>mil_fblockpost_phase1</text>
-			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>mil_fblockpost_rush_wave3</infoportion_complete>
-			<infoportion_fail>mil_fblockpost_quest_fail</infoportion_fail>
-		</objective>
-		<objective>
 			<text>mil_fblockpost_phase2</text>
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>

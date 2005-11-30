@@ -116,10 +116,6 @@
 	<text>Поговорить с командиром блокпоста "Барьер"</text>
 </string>
 
-<string id="mil_fblockpost_phase1">
-	<text>Помочь отбить две волны мутантов</text>
-</string>
-
 <string id="mil_fblockpost_phase2">
 	<text>Помочь в уничтожении прорывающегося отряда Монолита</text>
 </string>
