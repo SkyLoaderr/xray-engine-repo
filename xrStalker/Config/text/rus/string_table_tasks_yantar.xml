@@ -1,22 +1,27 @@
 <string id="yan_kill_brain">
-	<text>Найти и убить Мозг!</text>
+	<text>Отключить источник излучения в лаборатории X16</text>
 </string>
-<string id="yan_find_scientist">
-	<text>Довести ученого до зоны излучения</text>
+<string id="yan_find_vasilyev">
+	<text>Найти записи Васильева с точными координатами входа в лабораторию X16</text>
+</string>
+<string id="yan_find_labX16">
+	<text>Проникнуть в лабораторию X16</text>
 </string>
 <string id="yan_kill_brain_task">
-	<text>убить Мозг!</text>
-</string>
-<string id="yan_psi_zone_find">
-	<text>Довести ученого до зоны излучения</text>
+	<text>Отключить источник излучения</text>
 </string>
 
-<string id="yan_find_vasilyev">
-	<text>Найти труп Васильева.</text>
+<string id="yan_find_scientist">
+	<text>Сопровождать ученого до места замеров излучения</text>
 </string>
+
+<string id="yan_psi_zone_find">
+	<text>Сопровождать ученого до места замеров излучения</text>
+</string>
+
 <string id="yan_zombie_zone">
-	<text>Предположительное местонахождение лаборатории.</text>
+	<text>Предположительное местонахождение лаборатории X16</text>
 </string>
 <string id="yan_return_to_bunker">
-	<text>Довести ученого до бункера.</text>
+	<text>Помочь ученому вернуться в мобильную лабораторию</text>
 </string>

@@ -8,11 +8,6 @@
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
 		</objective>
 		<objective>
-			<text>yan_kill_brain_task</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
-		</objective>		
-		<objective>
 			<text>yan_find_vasilyev</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
@@ -21,7 +16,19 @@
 			<infoportion_set_complete>yantar_vasilyev_info</infoportion_set_complete>
 			<function_call_complete>yantar_tasks.yan_labx16_mapspot</function_call_complete>	
 		</objective>
+		<objective>
+			<text>yan_find_labX16</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
+			<infoportion_complete>labx16_find</infoportion_complete>
+		</objective>
+		<objective>
+			<text>yan_kill_brain_task</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
+		</objective>		
 </game_task>
+
 <game_task id="yan_find_scientist">
 		<title>yan_find_scientist</title>
 		<objective>
