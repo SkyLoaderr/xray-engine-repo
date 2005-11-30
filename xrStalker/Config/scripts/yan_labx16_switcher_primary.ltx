@@ -4,8 +4,7 @@ active = ph_button@active
 [ph_button@active]
 anim = lab_primary_switcher_idle
 tooltip = tips_labx16switcher_press
-on_press = ph_button@deactivate %+yan_labx16_switcher_1_off%
+on_press = {+yan_labx16_switcher_1_off +yan_labx16_switcher_2_off +yan_labx16_switcher_3_off} ph_button@deactivate %+yan_labx16_switcher_primary_off%
 
 [ph_button@deactivate]
 anim = lab_primary_switcher_off
-on_timer = 500 | nil %=turn_off(908)%
