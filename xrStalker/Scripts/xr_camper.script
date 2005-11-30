@@ -537,6 +537,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.scantime_free = utils.cfg_get_number(ini, section, "scantime_free", npc, false, 60000)
 	st.attack_sound = utils.cfg_get_string(ini, section, "attack_sound", npc, false, "", "fight_attack")
 	
+	if st.attack_sound == "false" then
+		st.attack_sound = nil
+	end
+	
 	-- Время забывания врага
 	st.idle = utils.cfg_get_number(ini, section, "enemy_idle", npc, false, 60000)
 	st.post_enemy_wait = 5000 -- время, которое мы ждем врага, смотря в его последнюю позицию.	
