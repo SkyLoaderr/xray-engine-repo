@@ -1190,7 +1190,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg" and info.profile_name == "mil_Dolg_Zoneguard"
+		                     return info.community == "dolg" and info.profile_name == "mil_Dolg_Zoneguard"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1201,7 +1201,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg"
+		                     return info.community == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1212,7 +1212,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg"
+		                     return info.community == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1223,7 +1223,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg"
+		                     return info.community == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1234,7 +1234,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg"
+		                     return info.community == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1245,7 +1245,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg"
+		                     return info.community == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1256,7 +1256,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg"
+		                     return info.community == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
@@ -1267,7 +1267,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.commutiny == "dolg"
+		                     return info.community == "dolg"
 		            end
 		}
 	table.insert(sj, t)	
