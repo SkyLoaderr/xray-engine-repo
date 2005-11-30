@@ -293,6 +293,17 @@ function turn_off(actor, npc, p)
 	obj:get_hanging_lamp():turn_off()
 end
 
+---Включение динамической лампочки (hanging_lamp)
+function turn_on(actor, npc, p)
+	local obj = level_object_by_sid(p[1])
+
+	if not obj then
+		abort("TURN_ON [%s]. Target object does not exist", npc:name())
+		return
+	end
+	obj:get_hanging_lamp():turn_on()
+end
+
 
 ------------------------------------------------------------------------------------------------
 
