@@ -1332,7 +1332,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault3",
 			idle = 4,
-			prior = 8, state = {0},
+			prior = 10, state = {0},
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_novice_attacker1"			           
