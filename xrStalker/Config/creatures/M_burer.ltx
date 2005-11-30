@@ -53,7 +53,7 @@ fire_wound_immunity		= 0.5
 [m_burer_e]
 GroupControlSection		= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_radioactive
-;$spawn					= "monsters\burer"			; option for Level Editor
+;$spawn					= "monsters\old\burer"			; option for Level Editor
 $npc					= on						; option for Level Editor
 $prefetch 				 = 16
 Scheduled				= on						; option for ALife Simulator
@@ -341,3 +341,9 @@ Tele_Time_To_Hold		 = 200
 [burer_outdoor]:m_burer_e
 $spawn			= "monsters\burers\burer_outdoor"
 monster_type	= outdoor
+
+[m_burer_normal]:m_burer_e
+$spawn		= "monsters\burers\burer_normal"
+
+
+

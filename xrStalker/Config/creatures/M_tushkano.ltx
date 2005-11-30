@@ -31,7 +31,7 @@ fire_wound_immunity		= 1
 [m_tushkano_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
-$spawn               = "monsters\tushkano"				; option for Level Editor
+$spawn               = "monsters\old\tushkano"				; option for Level Editor
 $npc			     = on						; option for Level Editor
 $prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -244,3 +244,7 @@ bip01_head 			= 2, -1, 0.20
 	255,009,255,255 ;на всех уровнях, по подземельям
 	255,014,255,255 ;на всех уровнях, по железнодорожным насыпям
 	255,015,255,255 ;на всех уровнях, по искусственным заграждениям
+	
+	
+[m_tushkano_normal]:m_tushkano_e
+$spawn				= "monsters\tushkanos\tushkano_normal"

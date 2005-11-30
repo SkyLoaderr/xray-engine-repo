@@ -56,7 +56,7 @@ fire_wound_immunity = 0.5
 [m_poltergeist_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_radioactive
-;$spawn               = "monsters\poltergeist"		; option for Level Editor
+$spawn               = "monsters\old\poltergeist"		; option for Level Editor
 $npc			     = on						; option for Level Editor
 ;$prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -295,3 +295,8 @@ bip01_spine 		= 0.01, -1, 0.1
 bip01_spine1 		= 0.3, -1, 0.1
 bip01_neck 			= 0.4, -1, 0.1
 bip01_head 			= 0.5, -1, 0.3
+
+
+[m_poltergeist_normal]:m_poltergeist_e
+$spawn               = "monsters\poltergeists\poltergeist_normal"
+
