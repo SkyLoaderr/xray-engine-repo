@@ -2109,6 +2109,15 @@
 						RelativePath=".\Config\scripts\yan_labx16_switcher1.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\yan_labx16_switcher2.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\yan_labx16_switcher3.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\yan_labx16_switcher_primary.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\yan\yan_scientist.ltx">
 					</File>
 				</Filter>

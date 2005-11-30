@@ -79,5 +79,11 @@
 	<!-- Yantar Tunnel start -->
 	<info_portion id="yantar_tunnel_start"></info_portion>
 	<info_portion id="yantar_tunnel_finish"></info_portion>
+
+	<!-- Lab X16 switchers -->
+	<info_portion id="yan_labx16_switcher_1_off"></info_portion>
+	<info_portion id="yan_labx16_switcher_2_off"></info_portion>
+	<info_portion id="yan_labx16_switcher_3_off"></info_portion>
+	<info_portion id="yan_labx16_switcher_primary_off"></info_portion>
     
 </game_information_portions>
