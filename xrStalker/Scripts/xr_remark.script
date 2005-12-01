@@ -4,6 +4,8 @@
 -- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
+function printf() end
+
 local state_none = 0
 local state_initial = 1
 local state_going_to_plr = 2
@@ -67,9 +69,11 @@ function action_remark_activity:reset_scheme()
 	
     self.target_id = nil
     local t = self.st.target
+    printf("remark <reset_scheme>: target str '%s'", t)
     if t and t ~= "nil" then
 	    if t == "actor" then
 		    self.target_actor = true
+		    printf("remark <reset_scheme>: target 'actor'")
 	    else
 	        local sid = tonumber(t)
 	        if sid then
@@ -90,6 +94,7 @@ function action_remark_activity:reset_scheme()
 		            abort("remark <error>: Wrong target objrct for [%s] in section [%s].", self.object:name(), self.st.active_section)
 		        end
             end
+            printf("remark <reset_scheme>: target id '%d'", self.target_id)
 	    end
     end
 
@@ -104,7 +109,7 @@ end
 
 function action_remark_activity:get_target()
     if self.target_actor then
-        return actor
+        return db.actor
     end
 
     if self.target_id then
