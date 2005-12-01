@@ -14,7 +14,9 @@ class CAI_Bloodsucker : public CBaseMonster,
 
 	typedef		CBaseMonster	inherited;
 	
-
+	//--------------------------------------------------------------------
+	// Bones
+	//--------------------------------------------------------------------
 	static	void			BoneCallback			(CBoneInstance *B);
 			void			vfAssignBones			();
 			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
@@ -25,6 +27,10 @@ class CAI_Bloodsucker : public CBaseMonster,
 	CBoneInstance			*bone_spine;
 	CBoneInstance			*bone_head;
 
+	//--------------------------------------------------------------------
+	// Invisibility
+	//--------------------------------------------------------------------
+
 	SMotionVel				invisible_vel;
 	LPCSTR					invisible_particle_name;
 
@@ -32,7 +38,14 @@ class CAI_Bloodsucker : public CBaseMonster,
 	u32						m_run_particles_freq;
 	u32						m_last_invisible_run_play;
 
+	//--------------------------------------------------------------------
+
 public:
+	
+	//--------------------------------------------------------------------
+	// Sounds
+	//--------------------------------------------------------------------
+	
 	enum EBloodsuckerSounds {
 		eAdditionalSounds		= MonsterSound::eMonsterSoundCustom,
 
@@ -43,7 +56,7 @@ public:
 		eChangeVisibility		= eAdditionalSounds | 3,
 	};
 
-
+	//--------------------------------------------------------------------
 public:
 
 	SAnimationTripleData	anim_triple_vampire;

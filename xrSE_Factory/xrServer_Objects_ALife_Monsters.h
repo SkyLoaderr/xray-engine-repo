@@ -256,6 +256,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	svector<float,ALife::eHitTypeMax>	m_fpImmunityFactors;
 
 	ALife::_OBJECT_ID					m_smart_terrain_id;
+	
+	//---------------------------------------------------------
+	// bool if monster under smart terrain and currently executes task
+	// if monster on the way then (m_smart_terrain_id != 0xffff) && (!m_task_reached)
+	bool								m_task_reached;		
+	//---------------------------------------------------------
 
 	int									m_rank;
 	

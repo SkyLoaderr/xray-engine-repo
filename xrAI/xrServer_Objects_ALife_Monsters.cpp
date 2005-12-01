@@ -1170,6 +1170,7 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 
 	m_brain						= 0;
 	m_smart_terrain_id			= 0xffff;
+	m_task_reached				= false;
 
 	m_rank						= (pSettings->line_exist(caSection,"rank")) ? int(pSettings->r_u8(caSection,"rank")) : 0;
 }
@@ -1228,6 +1229,7 @@ void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_stringZ		(m_out_space_restrictors);
 	tNetPacket.w_stringZ		(m_in_space_restrictors);
 	tNetPacket.w				(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
+	tNetPacket.w				(&m_task_reached,sizeof(m_task_reached));
 }
 
 void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -1241,6 +1243,10 @@ void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 
 	if (m_wVersion > 111)
 		tNetPacket.r			(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
+
+	if (m_wVersion > 114)
+		tNetPacket.r			(&m_task_reached,sizeof(m_task_reached));
+
 }
 
 void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)

@@ -145,8 +145,9 @@
 //	   - CSE_ALifeAnomalousZone			removed property m_power_artefact_factor
 //	   - CSE_ALifeCustomZone			removed property m_attn
 //	   - CSE_ALifeCustomZone			removed property m_period
+// 114 - CSE_ALifeMonsterAbstract		m_task_reached, internal member, added
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(113)
+#define SPAWN_VERSION	u16(114)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
