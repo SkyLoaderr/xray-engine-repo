@@ -34,7 +34,7 @@ function action_remark_activity:__init (npc_name, action_name, storage) super(ni
 end
 
 function action_remark_activity:initialize()
-	printf("remark <initialize>: action_remark_activity [%s]", self.object:name())
+	printf("remark <initialize>: [%s] enter", self.object:name())
 
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
@@ -43,6 +43,7 @@ function action_remark_activity:initialize()
 	self.object:set_desired_direction()
 
 	self:reset_scheme()
+	printf("remark <initialize>: exit")
 end
 
 function action_remark_activity:activate_scheme()
@@ -50,9 +51,9 @@ function action_remark_activity:activate_scheme()
 end
 
 function action_remark_activity:reset_scheme()
-	self.was_reset = true
+	printf("remark <reset_scheme>: [%s] enter", self.object:name())
 
-	printf("remark <reset_scheme>: action_remark_activity [%s]", self.object:name())
+	self.was_reset = true
 
 	--self.object:clear_animations()
 	
@@ -97,6 +98,8 @@ function action_remark_activity:reset_scheme()
     self.move_end_signalled = false
     self.action_end_signalled = false
     self.anim_end_signalled = false
+
+	printf("remark <reset_scheme>: exit")
 end	
 
 function action_remark_activity:get_target()
@@ -121,7 +124,7 @@ function action_remark_activity:signal_arrival()
 end
 
 function action_remark_activity:activate_sound()
-	printf("remark <sound>: [%s]:activate_sound", self.object:name())
+	printf("remark <activate_sound>: [%s] enter", self.object:name())
 
 	if self.snd_scheduled or not self.st.snd then
 		return
@@ -132,7 +135,7 @@ function action_remark_activity:activate_sound()
 
 	xr_sound.set_sound_play(self.object, self.st.snd)
 
-	printf("remark <sound>: [%s], sound [%s] activated", self.object:name(), self.st.snd)
+	printf("remark <activate_sound>: exit, sound [%s] activated", self.object:name(), self.st.snd)
 end
 
 function action_remark_activity:if_actor_far_go_to_actor()
@@ -175,6 +178,7 @@ function action_remark_activity:signal_action_end()
 end
 
 function action_remark_activity:time_callback()
+	printf("remark <time_callback>: [%s] enter", self.object:name())
 	self:activate_sound()
 	if not self.anim_end_signalled then
 		self.anim_end_signalled = true
@@ -184,15 +188,18 @@ function action_remark_activity:time_callback()
 			self:signal_action_end()
 		end
 	end
+	printf("remark <time_callback>: exit")
 end
 
 function action_remark_activity:turn_end_callback()
+	printf("remark <turn_end_callback>: [%s] enter", self.object:name())
 	if self.st.snd then
 		printf("remark <turn_end_callback>: calling activate_sound from state_initial")
 		if not self.st.snd_anim_sync then
 			self:activate_sound()
 		end
 	end
+	printf("remark <turn_end_callback>: exit", self.object:name())
 end
 
 function action_remark_activity:stand_still()
@@ -239,6 +246,8 @@ function action_remark_activity:go_to_target()
 end
 	
 function action_remark_activity:step()
+	printf("remark <step>: [%s] enter", self.object:name())
+
 	-- Scheme finalization conditions:
 	if not self.sound_end_signalled and self.snd_started and self.object:active_sound_count() == 0 then
 		self.sound_end_signalled = true
@@ -273,10 +282,8 @@ function action_remark_activity:step()
 --			self:go_to_target()
 --			self.state = state_going_to_plr
 --		end
-		return
-	end
 
---	if self.state == state_going_to_plr then
+--	elseif self.state == state_going_to_plr then
 		-- ѕробовать включать звук, когда мы близко, или долго не можем добратьс€ до игрока:
 --		if self.st.snd and
 --		   (distance_between(self.object, self.target) <= self.st.snd_dist or
@@ -296,10 +303,8 @@ function action_remark_activity:step()
 --		else
 --			self:update_destination()
 --		end
---		return
---	end
 
-	if self.state == state_standing then
+	elseif self.state == state_standing then
 		if self.st.snd then
 			printf("remark <step>: [%s], calling activate_sound from state_standing", self.object:name())
 			if not self.st.snd_anim_sync then
@@ -307,18 +312,19 @@ function action_remark_activity:step()
 			end
 		end
 		self:if_actor_far_go_to_actor()
-		return
 	end	
+
+	printf("remark <step>: exit")
 end
 	
 function action_remark_activity:execute()
+	printf("remark <execute>: [%s] enter", self.object:name())
+
 	action_base.execute(self)
 
 	if not self.was_reset then
 		self:reset_scheme()
 	end
-
-	--printf("remark <execute>: [%s]: execute", self.object:name())
 
 	local old_state
 	repeat
@@ -334,11 +340,14 @@ function action_remark_activity:execute()
 			self.snd_started = true
 		end
 	end
+
+	printf("remark <execute>: exit")
 end
 
 function action_remark_activity:finalize()
+	printf("remark <finalize>: [%s]", self.object:name())
+
 	xr_sound.set_sound(self.object, nil)
-	
 	action_base.finalize(self)
 end
 
