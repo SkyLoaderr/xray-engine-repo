@@ -87,6 +87,11 @@ void CItemManager::on_restrictions_change	()
 	if (!m_selected)
 		return;
 
+	if (!m_object->movement().restrictions().accessible(m_selected->ai_location().level_vertex_id())) {
+		m_selected				= 0;
+		return;
+	}
+
 	if (m_object->movement().restrictions().accessible(m_selected->Position()))
 		return;
 
