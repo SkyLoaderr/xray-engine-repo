@@ -1244,7 +1244,7 @@ void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 111)
 		tNetPacket.r			(&m_smart_terrain_id,sizeof(m_smart_terrain_id));
 
-	if (m_wVersion > 114)
+	if (m_wVersion > 113)
 		tNetPacket.r			(&m_task_reached,sizeof(m_task_reached));
 
 }
