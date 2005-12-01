@@ -332,7 +332,6 @@ void CStalkerActionSmartTerrain::initialize				()
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
-	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state				(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeWalk);
@@ -364,6 +363,7 @@ void CStalkerActionSmartTerrain::execute				()
 	CALifeSmartTerrainTask						*task = stalker->brain().smart_terrain().task(stalker);
 	VERIFY										(task);
 	if (object().ai_location().game_vertex_id() != task->game_vertex_id()) {
+		object().movement().set_path_type		(MovementManager::ePathTypeGamePath);
 		object().movement().set_game_dest_vertex(task->game_vertex_id());
 		return;
 	}
