@@ -1009,7 +1009,7 @@ bool	CInventoryItem::CanTrade() const
 	if(m_pInventory)
 		res = inventory_owner().AllowItemToTrade(this,m_eItemPlace);
 
-	return (res && m_flags.test(FCanTrade) && !m_flags.test(FIsQuestItem));
+	return (res && m_flags.test(FCanTrade) && !IsQuestItem());
 }
 
 float CInventoryItem::GetKillMsgXPos		() const 
