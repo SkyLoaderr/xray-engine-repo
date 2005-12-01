@@ -372,7 +372,7 @@ function gulag:availJob(job)
 			end
 		end
 
-		local jd = job.dependent
+		local jd = nil --job.dependent
 
 		if jd then
 			for i, v in ipairs( self.Job ) do
