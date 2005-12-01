@@ -5,11 +5,9 @@
 
 -- в работах поле object хранит id объекта
 
--- TODO никаких работ типа nil+out_restrictor
 -- TODO если функция вызывается не из гулага, то проверять online/offline alive/dead чуваков
 -- TODO серверный объект хранить в self.Object
 -- TODO distance_to перевести на distance_to_sqr
--- TODO fill_idle
 -- TODO у патруля перевыбор работы не будет в офлайне. надо чтоб был
 
 level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_agroprom_underground, gulag_dark_valley, gulag_labx18, gulag_bar,
@@ -416,13 +414,15 @@ end
 -- обнулить fill_idle для всех работ.
 -- TODO сохранение fill_idle
 function gulag:prepare_jobs_for_new_state()
-	local Job_avail = {}
+	local Job_avail_in_state = {}
 
 	for i, job in ipairs( self.Job ) do
 		if self:availState(job.state, self.state) then
-			table.insert( Job_avail, job )
+			table.insert( Job_avail_in_state, job )
 		else
-			self:free_obj_and_reinit( job.object )
+			if job.object then
+				self:free_obj_and_reinit( job.object )
+			end
 		end
 
 		if job.fill_idle == idle_none then
@@ -430,14 +430,14 @@ function gulag:prepare_jobs_for_new_state()
 		end
 	end
 
-	self.Job_avail = Job_avail
+	self.Job_avail_in_state = Job_avail_in_state
 end
 
 -- есть ли в текущем состоянии для объекта хоть одна подходящая работа?
 function gulag:is_there_any_free_suitable_job( npc_info )
 	printf( "is_there_any_suitable_job" )
 
-	for i, job in ipairs( self.Job_avail ) do
+	for i, job in ipairs( self.Job_avail_in_state ) do
 		if not job.object and ( not job.predicate or job.predicate( npc_info ) ) then
 			return true
 		end
@@ -449,11 +449,19 @@ end
 -- освобождение npc с работ, ставших недоступными (например, вышел timeout).
 -- также освобождение недошедших до своих работ.
 function gulag:prepare_available_jobs()
-	for i, job in ipairs( self.Job_avail ) do
-		if not self:availCurrent(job) or not self.Object_begin_job[job.object] then
-			self:free_obj_and_reinit( job.object )
+	local Job_avail = {}
+
+	for i, job in ipairs( self.Job_avail_in_state ) do
+		if self:availCurrent( job ) and self:availJob( job ) then
+			if not self.Object_begin_job[job.object] then
+				self:free_obj_and_reinit( job.object )
+			end
+
+			table.insert( Job_avail, job )
 		end
 	end
+
+	return Job_avail
 end
 
 -- составить список персонажей, доступных для распределения по свободным работам
@@ -521,8 +529,8 @@ end
 
 -- найти занятых персонажей, которые могут занять заданную работу.
 -- поиск ведётся начиная с самых низкоприоритетных работ
-function gulag:find_obj_on_jobLow_for_jobHigh( job_high )
-	local n = table.getn( self.Job_avail )
+function gulag:find_obj_on_jobLow_for_jobHigh( Job_avail, job_high )
+	local n = table.getn( Job_avail )
 	local i = n
 
 	local job_low
@@ -531,8 +539,8 @@ function gulag:find_obj_on_jobLow_for_jobHigh( job_high )
 	local priority     = nil
 	local obj_suitable = nil
 
-	while i > job_high_num and (not priority or priority == self.Job_avail[i].prior) do
-		job_low = self.Job_avail[i]
+	while i > job_high_num and (not priority or priority == Job_avail[i].prior) do
+		job_low = Job_avail[i]
 
 		if job_low.object ~= nil and ( not predicate or predicate(self.npc_info[job_low.object]) ) then
 			if not obj_suitable then
@@ -556,9 +564,9 @@ end
 -- распределение работ.
 -- при распределении недошедшие персонажи приравниваются к свободным
 function gulag:updateJob()
-	self:prepare_available_jobs()
+	local Job_avail = self:prepare_available_jobs()
 --	printf( "Job_avail:" )
---	print_table( self.Job_avail, "   " )
+--	print_table( Job_avail, "   " )
 
 	local obj_avail = self:get_available_objs()
 --	printf( "obj_avail:" )
@@ -566,15 +574,15 @@ function gulag:updateJob()
 
 	local obj_id
 
-	for i, job in ipairs( self.Job_avail ) do
+	for i, job in ipairs( Job_avail ) do
 		if job.object == nil then
 			obj_id = self:find_nearest_suitable_obj( obj_avail, job )
 			if not obj_id then
-				printf( "no suitable obj for job=%d %s", i, job.section )
+				printf( "no suitable obj for job=%d %s", job.num, job.section )
 			end
 
 			if not obj_id then
-				obj_id = self:find_obj_on_jobLow_for_jobHigh( job )
+				obj_id = self:find_obj_on_jobLow_for_jobHigh( Job_avail, job )
 
 				if obj_id then
 					self:free_obj_and_reinit( obj_id )
@@ -616,7 +624,7 @@ function gulag:print()
 	end
 end
 
--- получить количество живых объектов под гулагом
+-- получить количество живых объектов под смартом
 function gulag:get_population()
 	local i = 0
 	local obj
