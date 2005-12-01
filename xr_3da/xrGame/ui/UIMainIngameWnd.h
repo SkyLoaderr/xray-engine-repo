@@ -162,7 +162,7 @@ public:
 	void				SetFlashIconState_				(EFlashingIcons type, bool enable);
 
 	//
-	void				AnimateContacts					();
+	void				AnimateContacts					(bool b_snd);
 	HUD_SOUND			m_contactSnd;
 
 	// Обработчик события получения новости

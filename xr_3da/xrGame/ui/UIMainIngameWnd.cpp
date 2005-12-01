@@ -1429,11 +1429,12 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AnimateContacts()
+void CUIMainIngameWnd::AnimateContacts(bool b_snd)
 {
 	UIPdaOnline.ResetAnimation	();
 
-	HUD_SOUND::PlaySound	(m_contactSnd, Fvector().set(0,0,0), 0, true );
+	if(b_snd)
+		HUD_SOUND::PlaySound	(m_contactSnd, Fvector().set(0,0,0), 0, true );
 
 }
 
