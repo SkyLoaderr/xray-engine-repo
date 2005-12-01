@@ -254,13 +254,17 @@ end
 -----------------------
 function PatrolManager:remove_npc (npc)
     if npc == nil then return end
+    if self.npc_list[npc:id()] == nil then
+		return
+	end
     printf ("[XR_PATROL] NPC %s removed from patrol manager %s", npc:name (), self.path_name) 
     self.npc_list[npc:id ()] = nil
+    self.npc_count = self.npc_count - 1
+    
     if npc:id () == self.commander_id then
        self.commander_id = -1
        self:reset_positions ()
     end    
-    self.npc_count = self.npc_count - 1
     if tm_enabled == true then
        self.tm:remove_npc (npc)
        if self.npc_count < 2 then
@@ -453,34 +457,25 @@ function action_commander:initialize()
 end
 ----------------------
 function action_commander:activate_scheme()
-	self.was_reset = false
+	self.st.signals = {}
 end
 ----------------------
 function action_commander:reset_scheme()
-
-	if self.was_reset == false then
-		self.st.signals = {}
-		if self.st.path_walk_info == nil then
-			self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
-		end
-		if self.st.path_look_info == nil then
-			self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
-		end
-		self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info,
-			self.st.team, self.st.suggested_state, { obj = self, func = self.callback })
-	else
-		self.move_mgr:continue()
+	printf("[XR_PATROL] reset COMMANDER scheme for %s called", self.object:name())
+	if self.st.path_walk_info == nil then
+		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	end
+	if self.st.path_look_info == nil then
+		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+	end
+	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info,
+		self.st.team, self.st.suggested_state, { obj = self, func = self.callback })
     patrols[self.st.path_walk]:set_command (self.object, self.cur_state, self.st.formation)
 	
-	self.was_reset = true
 end
 ----------------------
 function action_commander:execute()
 	action_base.execute(self)
-	if not self.was_reset then
-		self:reset_scheme()
-	end
 	self.move_mgr:update()
 	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
        return
@@ -498,8 +493,8 @@ function action_commander:finalize ()
 end
 ----------------------
 function action_commander:deactivate ()
-    patrols[self.st.path_name]:remove_npc (self.object)
-    printf ("XR_PATROL ACTION_COMMANDER:DEACTIVATE CALLED FOR NPC %s", self.object:name ())
+	patrols[self.st.path_name]:remove_npc (self.object)
+	printf ("XR_PATROL ACTION_COMMANDER:DEACTIVATE CALLED FOR NPC %s", self.object:name ())
 end
 ----------------------
 function action_commander:death_callback()
@@ -535,6 +530,7 @@ function action_patrol:__init (npc_name, action_name, storage) super (nil, actio
 	self.dir = vector ():set (0, 0, 1)
 	self.cur_state = "patrol"
 	self.on_point = false
+	self.was_reset = false
 end
 ----------------------
 function action_patrol:initialize()
@@ -546,7 +542,11 @@ function action_patrol:initialize()
     self.on_point = false
 end
 ----------------------
-function action_patrol:execute ()
+function action_patrol:activate_scheme()
+	self.st.signals = {}
+end
+----------------------
+function action_patrol:execute()
 	action_base.execute (self)
 
 	if db.actor and xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then

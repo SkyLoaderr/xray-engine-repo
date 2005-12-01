@@ -475,11 +475,11 @@ function issue_event(npc, st, event_fn, ...)
 		end
 	end
 
-	if activation_count == 0 and
-		event_fn == "activate_scheme"
-	then
-		abort("xr_logic: issue_event: activate_scheme handler not found, active_scheme is '%s'", db.storage[npc:id()].active_scheme)
-	end
+--	if activation_count == 0 and
+--		event_fn == "activate_scheme"
+--	then
+--		abort("xr_logic: issue_event: activate_scheme handler not found, active_scheme is '%s'", db.storage[npc:id()].active_scheme)
+--	end
 end
 
 function pick_section_from_condlist(actor, npc, condlist)
