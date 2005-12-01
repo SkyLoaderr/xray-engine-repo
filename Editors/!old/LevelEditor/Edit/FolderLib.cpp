@@ -648,11 +648,20 @@ AnsiString CFolderHelper::GenerateName(LPCSTR _pref, int dgt_cnt, TFindObjectByN
     string256 	prefix	= {"name"};
     string32	mask;
     sprintf		(mask,"%%s%s%%0%dd",allow_?"_":"",dgt_cnt);
-    if (pref.size()){
+
+    int pref_dgt_cnt	= dgt_cnt+(allow_?1:0);
+    int pref_size		= pref.size();
+    if (pref_size>pref_dgt_cnt){
     	strcpy			(prefix, pref.c_str());
-        int i			= strlen(prefix)-1;
-        for (; i>=0; i--) if (isdigit(prefix[i])||(prefix[i]=='_')) prefix[i]=0; else break;
+        bool del_suff	= false;   
+        if (allow_&&(prefix[pref_size-pref_dgt_cnt]=='_')){
+        	del_suff	= true;
+        	for (int i=pref_size-pref_dgt_cnt+1; i<pref_size; i++)
+            	if (!isdigit(prefix[i])){ del_suff=false; break; }
+        }
+        if (del_suff)	prefix[pref_size-pref_dgt_cnt] = 0;
     }
+
     bool 	res;
     do{	
     	result.sprintf	(mask, prefix, counter++); //"%s%04d"
