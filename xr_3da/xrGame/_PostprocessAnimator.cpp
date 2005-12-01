@@ -33,15 +33,14 @@ void CPostProcessColor::save (IWriter &pWriter)
 //main PostProcessAnimator class
 
 CPostprocessAnimator::CPostprocessAnimator(int id, bool cyclic)
-#ifndef _PP_EDITOR_
 :CEffectorPP((EEffectorPPType)id, 100000, true)
-#endif
 {
     Create				();
 	m_factor			= 1.0f;
 	m_bStop				= false;
 	m_stop_speed		= 1.0f;
 	m_bCyclic			= cyclic;
+	m_start_time		= -1.0f;
 }
 
 CPostprocessAnimator::~CPostprocessAnimator           ()
@@ -134,54 +133,37 @@ float       CPostprocessAnimator::GetLength                       ()
     return v;
 }
 
-void        CPostprocessAnimator::Update                          (float dt)
+void        CPostprocessAnimator::Update                          (float tm)
 {
     for (int a = 0; a < POSTPROCESS_PARAMS_COUNT; a++)
-        m_Params[a]->update (dt);
+        m_Params[a]->update (tm);
 }
 
-#ifndef _PP_EDITOR_
 BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 {
 	if(m_bCyclic)
 		fLifeTime				= 100000;
 
-	Update					(Device.fTimeDelta);
+	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
 
+	Update					(Device.fTimeGlobal-m_start_time);
+	
 	if(m_bStop)
 		m_factor			-=	Device.fTimeDelta*m_stop_speed;
 
 	clamp					(m_factor, 0.001f, 1.0f);
 
-	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
+	m_EffectorParams.color_base		+= pp_identity.color_base;
+	m_EffectorParams.color_gray		+= pp_identity.color_gray;
+	m_EffectorParams.color_add		+= pp_identity.color_add;
 
+	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
+	
 	if(fsimilar(m_factor,0.001f,EPS_S))
 		return FALSE;
 
 	return TRUE;
 }
-#else
-BOOL CPostprocessAnimator::Process(float dt, SPPInfo &PPInfo)
-{
-	if(m_bCyclic)
-		fLifeTime				= 100000;
-
-	Update					(dt);
-
-	if(m_bStop)
-		m_factor			-=	dt*m_stop_speed;
-
-	clamp					(m_factor, 0.001f, 1.0f);
-
-    PPInfo = m_EffectorParams;
-//	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
-
-//	if(fsimilar(m_factor,0.001f,EPS_S))
-//		return FALSE;
-
-	return TRUE;
-}
-#endif /*_PP_EDITOR_*/
 
 void        CPostprocessAnimator::Create                          ()
 {
@@ -238,34 +220,34 @@ void        CPostprocessAnimator::ResetParam                      (pp_params par
     switch (param)
            {
            case pp_base_color:
-                m_Params[0] = xr_new<CPostProcessColor> (&m_EffectorParams.color_base);   //base color
+                m_Params[0] = xr_new<CPostProcessColor> (&m_EffectorParams.m_BaseColor);   //base color
                 break;
            case pp_add_color:
-                m_Params[1] = xr_new<CPostProcessColor> (&m_EffectorParams.color_add);          //add color
+                m_Params[1] = xr_new<CPostProcessColor> (&m_EffectorParams.m_AddColor);          //add color
                 break;
            case pp_gray_color:
-                m_Params[2] = xr_new<CPostProcessColor> (&m_EffectorParams.color_gray);         //gray color
+                m_Params[2] = xr_new<CPostProcessColor> (&m_EffectorParams.m_GrayColor);         //gray color
                 break;
            case pp_gray_value:
-                m_Params[3] = xr_new<CPostProcessValue> (&m_EffectorParams.gray);              //gray value
+                m_Params[3] = xr_new<CPostProcessValue> (&m_EffectorParams.m_Gray);              //gray value
                 break;
            case pp_blur:
-                m_Params[4] = xr_new<CPostProcessValue> (&m_EffectorParams.blur);              //blur value
+                m_Params[4] = xr_new<CPostProcessValue> (&m_EffectorParams.m_Blur);              //blur value
                 break;
            case pp_dual_h:
-                m_Params[5] = xr_new<CPostProcessValue>  (&m_EffectorParams.duality.h);       //duality horizontal
+                m_Params[5] = xr_new<CPostProcessValue>  (&m_EffectorParams.m_DualityH);       //duality horizontal
                 break;
            case pp_dual_v:
-                m_Params[6] = xr_new<CPostProcessValue>  (&m_EffectorParams.duality.v);       //duality vertical
+                m_Params[6] = xr_new<CPostProcessValue>  (&m_EffectorParams.m_DualityV);       //duality vertical
                 break;
            case pp_noise_i:
-                m_Params[7] = xr_new<CPostProcessValue>  (&m_EffectorParams.noise.intensity);         //noise intensity
+                m_Params[7] = xr_new<CPostProcessValue>  (&m_EffectorParams.m_NoiseI);         //noise intensity
                 break;
            case pp_noise_g:
-                m_Params[8] = xr_new<CPostProcessValue>  (&m_EffectorParams.noise.grain);         //noise granularity
+                m_Params[8] = xr_new<CPostProcessValue>  (&m_EffectorParams.m_NoiseG);         //noise granularity
                 break;
            case pp_noise_f:
-                m_Params[9] = xr_new<CPostProcessValue>  (&m_EffectorParams.noise.fps);         //noise fps
+                m_Params[9] = xr_new<CPostProcessValue>  (&m_EffectorParams.m_NoiseF);         //noise fps
                 break;
            }
     VERIFY (m_Params[param]);
@@ -341,5 +323,3 @@ void        CPostProcessValue::get_value                       (float time, floa
     b = (*i)->bias;
 }
 #endif /*_PP_EDITOR_*/
-
-

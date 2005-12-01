@@ -1,15 +1,7 @@
-#ifndef __ppanimator_included__
-#define __ppanimator_included__
 #pragma once
 
-#ifndef _PP_EDITOR_
-    #include "../envelope.h"
-    #include "../EffectorPP.h"
-#else
-    #include "envelope.h"
-    #include "EffectorPP.h"
-    #include "CameraManager.h"
-#endif /*_PP_EDITOR_*/
+#include "../envelope.h"
+#include "../EffectorPP.h"
 
 #define POSTPROCESS_PARAMS_COUNT    10
 #define POSTPROCESS_FILE_VERSION    0x0001
@@ -130,11 +122,7 @@ public:
 };
 
 
-#ifndef _PP_EDITOR_
 class CPostprocessAnimator :public CEffectorPP
-#else
-class CPostprocessAnimator
-#endif
 {
 protected:
     CPostProcessParam                               *m_Params[POSTPROCESS_PARAMS_COUNT];
@@ -144,10 +132,8 @@ protected:
 	bool											m_bStop;
 	float											m_stop_speed;
 	bool											m_bCyclic;
-#ifndef _PP_EDITOR
-    float                                           fLifeTime;
-#endif
-		void		Update							(float dt);
+	float											m_start_time;
+		void		Update							(float tm);
 public:
                     CPostprocessAnimator            (int id, bool cyclic);
         virtual    ~CPostprocessAnimator            ();
@@ -156,11 +142,7 @@ public:
     IC  LPCSTR      Name                            (){return *m_Name;}
         void        Stop                            (float speed);
         float       GetLength                       ();
-#ifndef _PP_EDITOR_
 virtual	BOOL		Process							(SPPInfo &PPInfo);
-#else
-virtual	BOOL		Process							(float dt, SPPInfo &PPInfo);
-#endif /*_PP_EDITOR_*/
         void        Create                          ();
 #ifdef _PP_EDITOR_
         CPostProcessParam*  GetParam                (pp_params param);
@@ -168,5 +150,3 @@ virtual	BOOL		Process							(float dt, SPPInfo &PPInfo);
         void        Save                            (LPCSTR name);
 #endif /*_PP_EDITOR_*/
 };
-
-#endif /*__ppanimator_included__*/
