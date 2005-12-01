@@ -11,6 +11,8 @@
 #include "script_export_macroses.h"
 #include "xrEProps.h"
 #include "net_utils.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 //#define USE_WRITER_READER
 class CSE_Abstract;

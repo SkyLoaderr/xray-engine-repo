@@ -50,6 +50,10 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name);						\
 			}																			\
+			catch(luabind::cast_failed exception) {											\
+				ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
+				return ((ret_type)(0));													\
+			}																			\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -64,6 +68,10 @@
 		{																				\
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1);						\
+			}																			\
+			catch(luabind::cast_failed exception) {											\
+				ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
+				return ((ret_type)(0));													\
 			}																			\
 			catch(...) {																\
 				return ((ret_type)(0));													\
@@ -150,6 +158,10 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name);						\
 			}																			\
+			catch(luabind::cast_failed exception) {											\
+				ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
+				return ((ret_type)(0));													\
+			}																			\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -164,6 +176,10 @@
 		{																				\
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1);						\
+			}																			\
+			catch(luabind::cast_failed exception) {											\
+				ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
+				return ((ret_type)(0));													\
 			}																			\
 			catch(...) {																\
 				return ((ret_type)(0));													\
@@ -180,6 +196,10 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1,p2);					\
 			}																			\
+			catch(luabind::cast_failed exception) {											\
+				ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
+				return ((ret_type)(0));													\
+			}																			\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -195,6 +215,10 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1,p2,p3);				\
 			}																			\
+			catch(luabind::cast_failed exception) {											\
+				ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
+				return ((ret_type)(0));													\
+			}																			\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -209,6 +233,10 @@
 		{																				\
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1,p2,p3,p4);			\
+			}																			\
+			catch(luabind::cast_failed exception) {											\
+				ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
+				return ((ret_type)(0));													\
 			}																			\
 			catch(...) {																\
 				return ((ret_type)(0));													\
