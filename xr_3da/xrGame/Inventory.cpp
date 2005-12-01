@@ -15,6 +15,7 @@
 #include "ai_space.h"
 #include "entitycondition.h"
 #include "game_base_space.h"
+#include "clsid_game.h"
 
 using namespace InventoryUtilities;
 
@@ -220,148 +221,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 	return true;
 
 
-/*
-	if(pIItem && (std::find(m_all.begin(),m_all.end(),pIItem) != m_all.end())) 
-	{
-		if (pIItem->GetSlot() == m_iActiveSlot && pIItem->GetSlot() != 0xffffffff &&
-			m_slots[pIItem->GetSlot()].m_pIItem == pIItem)
-		{
-			m_iNextActiveSlot = m_iActiveSlot = NO_ACTIVE_SLOT;
-		}
-
-		if (InRuck(pIItem) || Ruck(pIItem))
-		{
-			m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
-			m_all.erase(std::find(m_all.begin(), m_all.end(), pIItem));
-			pIItem->m_pInventory = NULL;
-
-			if (call_drop && smart_cast<CInventoryItem*>(pObj))
-				m_pOwner->OnItemDrop	(smart_cast<CInventoryItem*>(pObj));
-
-			CalcTotalWeight();
-			m_dwModifyFrame = Device.dwFrame;
-
-			m_drop_last_frame = true;
-
-			return true;
-		};
-	}
-	return false;
-*/
 }
-/*
-void CInventory::Replace(PIItem pIItem)
-{
-	//выкинуть предмет из старого места
-	if(InSlot(pIItem))
-	{
-		if(eItemPlaceSlot != pIItem->m_eItemPlace)
-			m_slots[pIItem->GetSlot()].m_pIItem = NULL;
-		else
-			return;
-	}
-	else 
-	{
-		TIItemContainer::iterator it = std::find(m_belt.begin(), m_belt.end(), pIItem);
-		if(m_belt.end() != it)
-		{
-			if(eItemPlaceBelt != pIItem->m_eItemPlace)
-				m_belt.erase(it);
-			else
-				return;
-		}
-		else
-		{
-			TIItemContainer::iterator it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
-			VERIFY(it != m_ruck.end());
-			if(eItemPlaceRuck != pIItem->m_eItemPlace)
-				m_ruck.erase(it);
-			else
-				return;
-		}
-
-	}
-
-	bool result = false;
-	switch(pIItem->m_eItemPlace)
-	{
-	case eItemPlaceBelt:
-		result = Belt(pIItem); VERIFY(result);
-		break;
-	case eItemPlaceRuck:
-		result = Ruck(pIItem); VERIFY(result);
-		break;
-	case eItemPlaceSlot:
-		result = Slot(pIItem, true); VERIFY(result);
-		break;
-	default:
-		if(CanPutInSlot(pIItem))
-		{
-			result = Slot(pIItem, true); VERIFY(result);
-		} 
-		else if (CanPutInBelt(pIItem))
-		{
-			result = Belt(pIItem); VERIFY(result);
-		}
-		else
-		{
-			result = Ruck(pIItem); VERIFY(result);
-		}
-	}
-}
-
-void CInventory::ReplaceAll()
-{
-	TIItemContainer::iterator it;
-	
-	m_ruck.insert(m_ruck.begin(), m_belt.begin(), m_belt.end());
-	m_belt.clear();
-	
-	for(u32 i=0; i<m_slots.size(); i++)
-	{
-		if(m_slots[i].m_pIItem)
-		{
-			m_ruck.push_back(m_slots[i].m_pIItem);
-			m_slots[i].m_pIItem = NULL;
-		}
-	}
-
-	for(it = m_all.begin(); m_all.end() != it; ++it)
-	{
-		PIItem pIItem = *it;
-
-		bool result = false;
-		switch(pIItem->m_eItemPlace)
-		{
-		case eItemPlaceBelt:
-			result = Belt(pIItem); R_ASSERT(result);
-			break;
-		case eItemPlaceRuck:
-			result = Ruck(pIItem); R_ASSERT(result);
-			break;
-		case eItemPlaceSlot:
-			result = Slot(pIItem, true); R_ASSERT(result);
-			break;
-		default:
-			if(CanPutInSlot(pIItem))
-			{
-				result = Slot(pIItem, true); R_ASSERT(result);
-			} 
-			else if (CanPutInBelt(pIItem))
-			{
-				result = Belt(pIItem); R_ASSERT(result);
-			}
-			else
-			{
-				result = Ruck(pIItem); R_ASSERT(result);
-			}
-		}
-	}
-
-	m_dwModifyFrame = Device.dwFrame;
-}
-*/
-
 
 bool CInventory::DropAll()
 {
@@ -953,6 +813,9 @@ bool CInventory::CanPutInBelt(PIItem pIItem)
 	if(!m_bBeltUseful) return false;
 	if(!pIItem || !pIItem->Belt()) return false;
 	if(m_belt.size() == BeltWidth()) return false;
+
+	if(pIItem->object().CLS_ID==CLSID_DETECTOR_SIMPLE && Get(CLSID_DETECTOR_SIMPLE,false)) return false;
+	if(pIItem->object().CLS_ID==CLSID_DEVICE_TORCH && Get(CLSID_DEVICE_TORCH,false))		return false;
 
 	return FreeRoom_inBelt(m_belt, pIItem, BeltWidth(), 1);
 }

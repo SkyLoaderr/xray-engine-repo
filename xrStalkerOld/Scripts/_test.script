@@ -10,7 +10,7 @@ function main()
 --	level.remove_pp_effector(999)
 
 --	game.start_tutorial("part_1_pda")
-	game.start_tutorial("part_2_binocular")
+--	game.start_tutorial("part_2_binocular")
 
 --	db.actor:disable_info_portion("terrain_test")	
 end
