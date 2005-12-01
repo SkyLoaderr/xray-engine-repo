@@ -228,7 +228,6 @@ void CSceneObject::GetFullTransformToLocal( Fmatrix& m )
 
 CEditableObject* CSceneObject::UpdateReference()
 {
-    Scene->BeforeObjectChange(this);
 	Lib.RemoveEditObject(m_pReference);
 	m_pReference		= (m_ReferenceName.size())?Lib.CreateEditObject(*m_ReferenceName):0;
     UpdateTransform		();
@@ -256,6 +255,7 @@ void CSceneObject::OnFrame()
 
 void CSceneObject::ReferenceChange(PropValue* sender)
 {
+    Scene->BeforeObjectChange(this);
 	UpdateReference	();
 }
 
