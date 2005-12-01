@@ -50,6 +50,7 @@ path_look = ucheniy_talk_look
 combat_ignore_cond = always
 on_info = {+yantar_kruglov_phrase_1} remark@yan_scientist_talk_1
 danger = danger_condition@1
+meet = meet@scientist_1
 
 [remark@yan_scientist_talk_1]
 snd = yantar_kruglov_to_professor_1
@@ -58,6 +59,7 @@ no_rotate = true
 on_signal = sound_end | walker@kruglov_talk %+yantar_professor_phrase_2%
 combat_ignore_cond = always
 danger = danger_condition@1
+meet = meet@scientist_1
 
 [walker@kruglov_talk]
 path_walk = bunker_walk
@@ -65,14 +67,7 @@ path_look = bunker_look
 combat_ignore_cond = always
 danger = danger_condition@1
 on_info = {+yan_scientist_point_to_1} walker@door_2
-
-
-[walker@scientist_1]
-path_walk = bunker_walk
-combat_ignore_cond = always
 meet = meet@scientist
-on_info = {+yan_scientist_point_to_1} walker@door_2
-danger = danger_condition@1
 
 [walker@door_2]
 path_walk = walk_door_2
@@ -169,7 +164,7 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_info = {=rostok_dist_to_actor_le(6)} remark@scientist_research 
+on_info = {=rostok_dist_to_actor_le(6)} remark@scientist_research %+yan_scientist_researching%
 danger = danger_condition@1
 
 [remark@scientist_research]
