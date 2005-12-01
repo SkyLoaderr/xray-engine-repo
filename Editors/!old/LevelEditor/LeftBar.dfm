@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 484
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -46,7 +46,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 13
+        Height = 14
         Align = alTop
         Alignment = taCenter
         Caption = 'Scene'
@@ -323,7 +323,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 154
       Width = 218
-      Height = 97
+      Height = 65
       Align = alTop
       Color = 10528425
       TabOrder = 1
@@ -331,7 +331,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 13
+        Height = 14
         Align = alTop
         Alignment = taCenter
         Caption = 'Tools'
@@ -365,7 +365,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn7: TExtBtn
         Left = 2
         Top = 16
-        Width = 215
+        Width = 107
         Height = 15
         Align = alNone
         BevelShow = False
@@ -396,7 +396,7 @@ object fraLeftBar: TfraLeftBar
       object ExtBtn8: TExtBtn
         Left = 2
         Top = 31
-        Width = 215
+        Width = 107
         Height = 15
         Align = alNone
         BevelShow = False
@@ -424,9 +424,9 @@ object fraLeftBar: TfraLeftBar
         OnMouseDown = ExtBtn8MouseDown
       end
       object ExtBtn9: TExtBtn
-        Left = 2
-        Top = 61
-        Width = 215
+        Left = 110
+        Top = 31
+        Width = 107
         Height = 15
         Align = alNone
         BevelShow = False
@@ -454,9 +454,9 @@ object fraLeftBar: TfraLeftBar
         OnMouseDown = ExtBtn9MouseDown
       end
       object ExtBtn10: TExtBtn
-        Left = 2
-        Top = 46
-        Width = 215
+        Left = 110
+        Top = 16
+        Width = 107
         Height = 15
         Align = alNone
         BevelShow = False
@@ -486,8 +486,8 @@ object fraLeftBar: TfraLeftBar
       end
       object ebProperties: TExtBtn
         Left = 2
-        Top = 78
-        Width = 215
+        Top = 47
+        Width = 107
         Height = 15
         Align = alNone
         BevelShow = False
@@ -504,10 +504,30 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = ebPropertiesClick
       end
+      object ebMultiRename: TExtBtn
+        Left = 110
+        Top = 47
+        Width = 107
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        Caption = 'Multi Rename'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Margin = 13
+        ParentFont = False
+        OnClick = ebMultiRenameClick
+      end
     end
     object paTarget: TPanel
       Left = 1
-      Top = 251
+      Top = 219
       Width = 218
       Height = 139
       Align = alTop
@@ -1094,7 +1114,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 13
+        Height = 14
         Align = alTop
         Alignment = taCenter
         Caption = 'Edit Mode'
@@ -1512,7 +1532,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 390
+      Top = 358
       Width = 218
       Height = 124
       Align = alTop
@@ -1530,7 +1550,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 13
+        Height = 14
         Align = alTop
         Alignment = taCenter
         Caption = 'Snap List'
@@ -1703,7 +1723,7 @@ object fraLeftBar: TfraLeftBar
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ItemHeight = 13
+        ItemHeight = 14
         ParentFont = False
         Sorted = True
         TabOrder = 0
@@ -1725,7 +1745,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'LeftBar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 20
+    Version = 21
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -1863,7 +1883,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 189
-    Top = 185
+    Top = 169
     object N19: TMenuItem
       Caption = '-'
     end
@@ -1910,7 +1930,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 189
-    Top = 201
+    Top = 185
     object N18: TMenuItem
       Caption = '-'
     end
@@ -1940,8 +1960,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 189
-    Top = 217
+    Left = 213
+    Top = 169
     object N17: TMenuItem
       Caption = '-'
     end
@@ -1978,8 +1998,8 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 189
-    Top = 233
+    Left = 213
+    Top = 185
     object N16: TMenuItem
       Caption = '-'
     end

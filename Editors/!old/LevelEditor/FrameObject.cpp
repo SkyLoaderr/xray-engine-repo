@@ -77,7 +77,7 @@ void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
     LPU32Vec 	sellist;
     if (Scene->GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1)){
     	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
-	        LPCSTR N = ((CSceneObject*)*it)->GetRefName();
+	        LPCSTR N = ((CSceneObject*)*it)->RefName();
             ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
             ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
             for(;_F!=_E;_F++){

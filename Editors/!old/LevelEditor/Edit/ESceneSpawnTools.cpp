@@ -112,3 +112,23 @@ CCustomObject* ESceneSpawnTools::CreateObject(LPVOID data, LPCSTR name)
 }
 //----------------------------------------------------
 
+int ESceneSpawnTools::MultiRenameObjects()
+{
+	int cnt			= 0;
+    for (ObjectIt o_it=m_Objects.begin(); o_it!=m_Objects.end(); o_it++){
+    	CCustomObject* obj	= *o_it;
+    	if (obj->Selected()){
+        	string256			pref;
+            strconcat			(pref,Scene->LevelPrefix().c_str(),"_",obj->RefName());
+            string256 			buf;
+        	Scene->GenObjectName(obj->ClassID,buf,pref);
+            if (obj->Name!=buf){
+	            obj->Name		= buf;
+                cnt++; 
+            }
+        }
+    }
+    return cnt;
+}
+
+

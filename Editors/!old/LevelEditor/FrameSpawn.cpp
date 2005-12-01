@@ -120,7 +120,7 @@ void TfraSpawn::MultiSelByRefObject ( bool clear_prev )
     LPU32Vec 	sellist;
     if (Scene->GetQueryObjects(objlist,OBJCLASS_SPAWNPOINT,1,1,-1)){
     	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
-	        LPCSTR N = ((CSpawnPoint*)*it)->GetRefName();
+	        LPCSTR N = ((CSpawnPoint*)*it)->RefName();
             ObjectIt _F = Scene->FirstObj(OBJCLASS_SPAWNPOINT);
             ObjectIt _E = Scene->LastObj(OBJCLASS_SPAWNPOINT);
             for(;_F!=_E;_F++){

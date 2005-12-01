@@ -85,6 +85,8 @@ public:
     virtual CCustomObject* FindObjectByName		(LPCSTR name, CCustomObject* pass=0);
 
     virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name)=0;
+
+    virtual int			MultiRenameObjects		();
 };
 #endif // ESceneCustomOToolsH
 

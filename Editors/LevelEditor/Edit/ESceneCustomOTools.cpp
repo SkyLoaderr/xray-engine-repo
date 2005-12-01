@@ -298,3 +298,21 @@ void ESceneCustomOTools::GetBBox(Fbox& BB, bool bSelOnly)
     }
 }
 
+int ESceneCustomOTools::MultiRenameObjects()
+{
+	int cnt			= 0;
+    for (ObjectIt o_it=m_Objects.begin(); o_it!=m_Objects.end(); o_it++){
+    	CCustomObject* obj	= *o_it;
+    	if (obj->Selected()){
+            string256 			buf;
+        	Scene->GenObjectName(obj->ClassID,buf,obj->RefName());
+            if (obj->Name!=buf){
+	            obj->Name		= buf;
+                cnt++; 
+            }
+        }
+    }
+    return cnt;
+}
+
+

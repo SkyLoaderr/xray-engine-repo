@@ -129,6 +129,22 @@ CCommandVar CLevelTools::CommandReadonlyTarget(CCommandVar p1, CCommandVar p2)
     }
     return res;
 }
+CCommandVar CLevelTools::CommandMultiRenameObjects(CCommandVar p1, CCommandVar p2)
+{
+    if( !Scene->locked() ){
+        if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to rename selected objects?")){
+			int cnt			= Scene->MultiRenameObjects();
+            if (cnt){	
+			    ExecCommand	(COMMAND_UPDATE_PROPERTIES);
+            	Scene->UndoSave();
+            }
+	        ELog.DlgMsg		( mtInformation, "%d - objects are renamed.", cnt );
+        }
+    }else{
+        ELog.DlgMsg			( mtError, "Scene sharing violation" );
+    }
+    return 					FALSE;
+}
 CCommandVar CommandLoadLevelPart(CCommandVar p1, CCommandVar p2)
 {
     xr_string temp_fn	= LTools->m_LastFileName.c_str();
@@ -788,6 +804,7 @@ void CLevelMain::RegisterCommands()
     REGISTER_SUB_CMD_END;    
 	REGISTER_CMD_C	    (COMMAND_ENABLE_TARGET,           	LTools,CLevelTools::CommandEnableTarget);
 	REGISTER_CMD_C	    (COMMAND_READONLY_TARGET,          	LTools,CLevelTools::CommandReadonlyTarget);
+	REGISTER_CMD_C	    (COMMAND_MULTI_RENAME_OBJECTS,     	LTools,CLevelTools::CommandMultiRenameObjects);
 
 	REGISTER_CMD_CE	    (COMMAND_SHOW_OBJECTLIST,           "Scene\\Show Object List",		LTools,CLevelTools::CommandShowObjectList, false);
 	// common

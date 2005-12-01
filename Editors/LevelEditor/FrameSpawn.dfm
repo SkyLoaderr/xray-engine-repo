@@ -4,8 +4,8 @@ object fraSpawn: TfraSpawn
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
-  ClientHeight = 273
-  ClientWidth = 217
+  ClientHeight = 294
+  ClientWidth = 234
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -18,12 +18,12 @@ object fraSpawn: TfraSpawn
   OnHide = FormHide
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object paCurrent: TPanel
     Left = 0
-    Top = 98
-    Width = 217
-    Height = 175
+    Top = 106
+    Width = 234
+    Height = 188
     Align = alClient
     Constraints.MinHeight = 175
     ParentColor = True
@@ -31,8 +31,8 @@ object fraSpawn: TfraSpawn
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 215
-      Height = 13
+      Width = 232
+      Height = 14
       Align = alTop
       Alignment = taCenter
       Caption = 'Current Spawn'
@@ -42,17 +42,17 @@ object fraSpawn: TfraSpawn
     end
     object Bevel1: TBevel
       Left = 1
-      Top = 14
-      Width = 215
+      Top = 15
+      Width = 232
       Height = 1
       Align = alTop
       Shape = bsSpacer
     end
     object paItems: TPanel
       Left = 1
-      Top = 15
-      Width = 215
-      Height = 159
+      Top = 16
+      Width = 232
+      Height = 171
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -61,17 +61,17 @@ object fraSpawn: TfraSpawn
   end
   object paCommands: TPanel
     Left = 0
-    Top = 47
-    Width = 217
-    Height = 51
+    Top = 51
+    Width = 234
+    Height = 55
     Align = alTop
     ParentColor = True
     TabOrder = 1
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 215
-      Height = 13
+      Width = 232
+      Height = 14
       Align = alTop
       Alignment = taCenter
       Caption = 'Commands'
@@ -80,14 +80,14 @@ object fraSpawn: TfraSpawn
       OnClick = ExpandClick
     end
     object ExtBtn1: TExtBtn
-      Left = 205
+      Left = 221
       Top = 2
-      Width = 11
-      Height = 11
+      Width = 12
+      Height = 12
       Align = alNone
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       Glyph.Data = {
@@ -104,9 +104,9 @@ object fraSpawn: TfraSpawn
     end
     object ebAttachObject: TExtBtn
       Left = 2
-      Top = 17
-      Width = 215
-      Height = 15
+      Top = 18
+      Width = 232
+      Height = 16
       Align = alNone
       AllowAllUp = True
       BevelShow = False
@@ -116,7 +116,7 @@ object fraSpawn: TfraSpawn
       Caption = 'Attach Object...'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -124,9 +124,9 @@ object fraSpawn: TfraSpawn
     end
     object evDetachObject: TExtBtn
       Left = 2
-      Top = 32
-      Width = 215
-      Height = 15
+      Top = 34
+      Width = 232
+      Height = 17
       Align = alNone
       BevelShow = False
       HotTrack = True
@@ -134,7 +134,7 @@ object fraSpawn: TfraSpawn
       Caption = 'Detach Object'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -144,48 +144,48 @@ object fraSpawn: TfraSpawn
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 217
-    Height = 47
+    Width = 234
+    Height = 51
     Align = alTop
     Color = 10528425
     TabOrder = 2
     object Label5: TLabel
       Left = 5
-      Top = 16
-      Width = 84
-      Height = 13
+      Top = 17
+      Width = 87
+      Height = 14
       Caption = 'Select by Current:'
       WordWrap = True
     end
     object ebSelectByRefs: TExtBtn
-      Left = 97
-      Top = 15
-      Width = 27
-      Height = 14
+      Left = 104
+      Top = 16
+      Width = 30
+      Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       Caption = '+'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
       OnClick = ebSelectByRefsClick
     end
     object ebDeselectByRefs: TExtBtn
-      Left = 126
-      Top = 15
-      Width = 27
-      Height = 14
+      Left = 136
+      Top = 16
+      Width = 29
+      Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       Caption = '-'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -194,8 +194,8 @@ object fraSpawn: TfraSpawn
     object APHeadLabel3: TLabel
       Left = 1
       Top = 1
-      Width = 215
-      Height = 13
+      Width = 232
+      Height = 14
       Align = alTop
       Alignment = taCenter
       Caption = 'Reference Select'
@@ -204,14 +204,14 @@ object fraSpawn: TfraSpawn
       OnClick = ExpandClick
     end
     object ExtBtn3: TExtBtn
-      Left = 205
+      Left = 221
       Top = 2
-      Width = 11
-      Height = 11
+      Width = 12
+      Height = 12
       Align = alNone
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       Glyph.Data = {
@@ -227,53 +227,53 @@ object fraSpawn: TfraSpawn
       OnClick = PaneMinClick
     end
     object ebMultiSelectByRefMove: TExtBtn
-      Left = 97
-      Top = 29
-      Width = 27
-      Height = 14
+      Left = 104
+      Top = 31
+      Width = 30
+      Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       Caption = '=%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
       OnClick = ebMultiSelectByRefMoveClick
     end
     object Bevel2: TBevel
-      Left = 154
-      Top = 28
-      Width = 45
-      Height = 16
+      Left = 166
+      Top = 30
+      Width = 48
+      Height = 17
     end
     object Label2: TLabel
-      Left = 201
-      Top = 30
-      Width = 8
-      Height = 13
+      Left = 216
+      Top = 32
+      Width = 11
+      Height = 15
       Caption = '%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object ebMultiSelectByRefAppend: TExtBtn
-      Left = 126
-      Top = 29
-      Width = 27
-      Height = 14
+      Left = 136
+      Top = 31
+      Width = 29
+      Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       Caption = '+%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -281,17 +281,17 @@ object fraSpawn: TfraSpawn
     end
     object Label3: TLabel
       Left = 5
-      Top = 31
-      Width = 92
-      Height = 13
+      Top = 33
+      Width = 93
+      Height = 14
       Caption = 'Select by Selected:'
       WordWrap = True
     end
     object seSelPercent: TMultiObjSpinEdit
-      Left = 155
-      Top = 30
-      Width = 43
-      Height = 13
+      Left = 167
+      Top = 32
+      Width = 46
+      Height = 14
       LWSensitivity = 1
       ButtonKind = bkLightWave
       MaxValue = 100

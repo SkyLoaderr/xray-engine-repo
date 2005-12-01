@@ -51,7 +51,7 @@ public:
 	CEditableObject*SetReference			(LPCSTR ref_name);
 	CEditableObject*UpdateReference			();
 	IC EditMeshVec* Meshes					() {return m_pReference?&m_pReference->Meshes():0;}
-    IC LPCSTR		GetRefName				() {return m_pReference?m_pReference->GetName():0;}
+    virtual LPCSTR	RefName					() {return m_pReference?m_pReference->GetName():0;}
     virtual bool	CanAttach				() {return true;}
 
     // statistics methods

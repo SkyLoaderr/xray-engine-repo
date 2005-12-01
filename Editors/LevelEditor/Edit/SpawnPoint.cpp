@@ -346,7 +346,7 @@ bool CSpawnPoint::RefCompare	(LPCSTR ref)
 	return ref&&ref[0]&&m_SpawnData.Valid()?(strcmp(ref,m_SpawnData.m_Data->name())==0):false; 
 }
 
-LPCSTR CSpawnPoint::GetRefName	() 			
+LPCSTR CSpawnPoint::RefName	() 			
 {
 	return m_SpawnData.Valid()?m_SpawnData.m_Data->name():0;
 }

@@ -111,7 +111,7 @@ public:
     virtual bool	CanAttach		() {return true;}
     
 	bool 			RefCompare		(LPCSTR ref);
-    LPCSTR			GetRefName		();
+    virtual LPCSTR	RefName			();
 
     bool			CreateSpawnData	(LPCSTR entity_ref);
 	virtual void    Render      	( int priority, bool strictB2F );

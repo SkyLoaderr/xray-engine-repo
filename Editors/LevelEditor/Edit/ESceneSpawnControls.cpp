@@ -49,7 +49,7 @@ bool __fastcall TUI_ControlSpawnAdd::Start(TShiftState Shift)
         	ELog.DlgMsg(mtError,"Attach impossible.");
         }
     }else{
-	    DefaultAddObject(Shift,AppendCallback);
+	    DefaultAddObject(Shift,AppendCallback);             
     }
     return false;
 }

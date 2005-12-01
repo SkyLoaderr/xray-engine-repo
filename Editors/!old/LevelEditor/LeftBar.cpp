@@ -636,6 +636,12 @@ void __fastcall TfraLeftBar::ebPropertiesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebMultiRenameClick(TObject *Sender)
+{
+	ExecCommand(COMMAND_MULTI_RENAME_OBJECTS);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ImportCompilerErrorsClick(TObject *Sender)
 {
 	ExecCommand(COMMAND_IMPORT_COMPILER_ERROR);
@@ -717,6 +723,7 @@ void __fastcall TfraLeftBar::ClearDebugDraw1Click(TObject *Sender)
 	ExecCommand(COMMAND_CLEAR_DEBUG_DRAW);
 }
 //---------------------------------------------------------------------------
+
 
 
 

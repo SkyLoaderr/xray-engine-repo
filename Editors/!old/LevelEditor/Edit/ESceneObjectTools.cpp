@@ -52,7 +52,7 @@ bool ESceneObjectTools::Validate(bool full_test)
             if (A->RefCompare(B->GetReference())){
             	if (A->PPosition.similar(B->PPosition,EPS_L)){
                 	bRes = false;
-                    ELog.Msg(mtError,"Duplicate object position '%s'-'%s' with reference '%s'.",A->Name,B->Name,A->GetRefName());
+                    ELog.Msg(mtError,"Duplicate object position '%s'-'%s' with reference '%s'.",A->Name,B->Name,A->RefName());
                 }
             }
         }

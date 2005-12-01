@@ -168,6 +168,25 @@ void EScene::BeforeObjectChange( CCustomObject* object )
     }
 }
 
+int EScene::MultiRenameObjects()
+{
+	int cnt						= 0;
+    
+    if (LTools->GetTarget()==OBJCLASS_DUMMY){
+        SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+        SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+        for (; t_it!=t_end; t_it++){
+            ESceneCustomOTools* ot	= dynamic_cast<ESceneCustomOTools*>(t_it->second);
+            if (ot&&(t_it->first!=OBJCLASS_DUMMY))
+                cnt					+= ot->MultiRenameObjects	();
+        }
+    }else{
+        ESceneCustomOTools* ot		= GetOTools(LTools->GetTarget());
+        if (ot) cnt					+= ot->MultiRenameObjects	();
+    }
+    return cnt;
+}
+
 void EScene::OnFrame( float dT )
 {
 	if( !valid() ) return;

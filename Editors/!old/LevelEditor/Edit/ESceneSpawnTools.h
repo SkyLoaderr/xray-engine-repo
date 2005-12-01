@@ -47,6 +47,8 @@ public:
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
 
+	virtual int 		MultiRenameObjects		();
+    
     virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
 };
 //---------------------------------------------------------------------------

@@ -142,21 +142,30 @@ void TfrmObjectList::UpdateState()
 	tvItems->OnItemSelectedChange = 0;
 
     TElTreeItem* sel_node 	= 0;
+    bool need_sort			= false;
     
     for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext()){
         if (node&&(node->Level>0)){
         	CCustomObject* O = (CCustomObject*)node->Data;
             node->ParentStyle = false;
             node->StrikeOut = !O->Visible();
-            if (rgSO->ItemIndex==1) 	 node->Hidden 	= !O->Visible();
-            else if (rgSO->ItemIndex==2) node->Hidden 	= O->Visible();
-            if (O->Visible())			 node->Selected	= O->Selected();
-            if (O->Selected())			 sel_node		= node;
+            if (rgSO->ItemIndex==1) 	node->Hidden 	= !O->Visible();
+            else if (rgSO->ItemIndex==2)node->Hidden 	= O->Visible();
+            if (O->Visible())			node->Selected	= O->Selected();
+            if (O->Selected())			sel_node		= node;
+            if (!node->Hidden){
+            	if (AnsiString(node->Text)!=O->Name){
+	            	node->Text 			= O->Name;
+                    need_sort			= true;
+                }
+            }
         }
     }
 
     tvItems->IsUpdating = false;
 
+    if (need_sort) tvItems->Sort		(true);
+    
     if (sel_node) tvItems->EnsureVisible(sel_node);
 }                                                
 

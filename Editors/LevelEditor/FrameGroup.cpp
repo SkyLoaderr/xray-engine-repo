@@ -125,7 +125,7 @@ void __fastcall TfraGroup::MultiSelByRefObject ( bool clear_prev )
     LPU32Vec 	sellist;
     if (Scene->GetQueryObjects(objlist,OBJCLASS_GROUP,1,1,-1)){
     	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
-	        LPCSTR N = ((CGroupObject*)*it)->GetRefName();
+	        LPCSTR N = ((CGroupObject*)*it)->RefName();
             ObjectIt _F = Scene->FirstObj(OBJCLASS_GROUP);
             ObjectIt _E = Scene->LastObj(OBJCLASS_GROUP);
             for(;_F!=_E;_F++){

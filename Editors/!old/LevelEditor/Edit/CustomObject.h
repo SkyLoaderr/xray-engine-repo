@@ -193,6 +193,8 @@ public:
 	virtual void 	OnSynchronize	();
     virtual void    OnShowHint      (AStringVec& dest);
 
+    virtual LPCSTR	RefName			(){return 0;}
+
     IC const Fmatrix& _ITransform			(){return FITransform;}
     IC const Fmatrix& _Transform			(){return FTransform;}
     IC const Fvector& _Position				(){return FPosition;}
