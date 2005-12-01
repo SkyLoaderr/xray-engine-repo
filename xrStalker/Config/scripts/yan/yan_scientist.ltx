@@ -12,14 +12,14 @@ on_info = {+yantar_scientists_talk} remark@yan_professor_talk_1
 [remark@yan_professor_talk_1]
 snd = yantar_professor_to_kruglov_1
 anim = wait
-;target = 900
+no_rotate = true
 on_signal = sound_end | %+yantar_kruglov_phrase_1%
 on_info = {+yantar_professor_phrase_2} remark@yan_professor_talk_2
 combat_ignore_cond = always
 
 [remark@yan_professor_talk_2]
 snd = yantar_professor_to_kruglov_2
-;target = 900
+no_rotate = true
 anim = wait
 on_signal = sound_end | walker@yan_1 %+yantar_kruglov_phrase_2%
 ;on_info = {+yantar_scientists_talk_end} walker@yan_1
