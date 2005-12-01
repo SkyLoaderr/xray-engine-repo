@@ -64,13 +64,39 @@ function action_remark_activity:reset_scheme()
 	self.snd_start_time = nil
 	self.snd_started = false
 	
-	self.target = nil
+    self.target_id = nil
+    local t = self.st.target
+    if t and t ~= "nil" then
+	    if t == "actor" then
+		    self.target_actor = true
+	    else
+	        local sid = tonumber(t)
+	        if sid then
+		        self.target_id = id_by_sid(sid)
+		        if not self.target_id then
+		            printf("remark <error>: Wrong story id [%s] for [%s] in section [%s].", t, self.object:name(), self.st.active_section)
+		        end
+            else
+                local gulag = xr_gulag.get_npc_gulag(self.object)
+                local params = parse_names(t)
+                if params[2] then
+                    gulag = xr_gulag.get_gulag_by_name(params[2])
+                end
+                if gulag then
+                    self.target_id = gulag.idNPCOnJob(t)
+                end
+		        if not self.target_id then
+		            printf("remark <error>: Wrong target objrct for [%s] in section [%s].", self.object:name(), self.st.active_section)
+		        end
+            end
+	    end
+    end
 
-	self.st.signals = {}
-	self.sound_end_signalled = false
-	self.move_end_signalled = false
-	self.action_end_signalled = false
-	self.anim_end_signalled = false
+    self.st.signals = {}
+    self.sound_end_signalled = false
+    self.move_end_signalled = false
+    self.action_end_signalled = false
+    self.anim_end_signalled = false
 end	
 
 function action_remark_activity:signal_arrival()
@@ -206,12 +232,16 @@ function action_remark_activity:step()
 		return
 	end
 
-	if self.st.target == "actor" then
-		self.target = actor
-	else
-		self.target = level_object_by_sid(self.st.target_sid)
-	end
-	if not self.target or not self.target:alive() then
+    local target = 0
+    if self.target_actor then
+        target = actor
+    elseif self.target_id then
+        target = level.object_by_id(self.target_id)
+    else
+        target = nil
+    end
+
+	if not target or not target:alive() then
 		return
 	end
 
@@ -364,9 +394,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
 	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
-	if st.target ~= db.actor then
-		st.target_sid = tonumber(st.target)
-	end
 	st.no_danger = utils.cfg_get_bool         (ini, section,   "no_danger",       npc, false)
 
 	if not st.no_move and st.anim then
@@ -374,4 +401,3 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 			npc:name(), section)
 	end
 end
-
