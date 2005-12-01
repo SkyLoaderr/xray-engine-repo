@@ -184,7 +184,7 @@
 	</specific_character>
 <!---------------------------SVOBODA BODYGUARD---------------------->
 	<specific_character id="mil_Svoboda_bodyguard" team_default = "1">
-		<name>"Капец"</name>
+		<name>GENERATE_NAME</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
@@ -212,6 +212,7 @@
 #include "gameplay\character_dialogs.xml"				
 	</specific_character>
 	
+
 <!---------------------------SVOBODA LEADER---------------------->
 	<specific_character id="mil_Svoboda_leader" team_default = "1">
 		<name>"Лукаш"</name>
