@@ -17,6 +17,7 @@
 #include "restriction_space.h"
 #include "alife_graph_registry.h"
 #include "alife_spawn_registry.h"
+#include "alife_registry_container_composition.h"
 
 using namespace luabind;
 
@@ -179,6 +180,56 @@ LPCSTR get_level_name							(const CALifeSimulator *self, int level_id)
 	return								(*ai().game_graph().header().level(level_id).name());
 }
 
+CSE_ALifeCreatureActor *get_actor				(const CALifeSimulator *self)
+{
+	THROW								(self);
+	return								(self->graph().actor());
+}
+
+KNOWN_INFO_VECTOR *registry						(const CALifeSimulator *self, const ALife::_OBJECT_ID &id)
+{
+	THROW								(self);
+	return								(self->registry()((CInfoPortionRegistry*)0).object(id, true));
+}
+
+class CFindByIDPred
+{
+public:
+	CFindByIDPred(INFO_ID element_to_find) {element = element_to_find;}
+	bool operator () (const INFO_DATA& data) const {return data.info_id == element;}
+private:
+	INFO_ID element;
+};
+
+bool has_info									(const CALifeSimulator *self, const ALife::_OBJECT_ID &id, LPCSTR info_id)
+{
+	const KNOWN_INFO_VECTOR				*known_info = registry(self,id);
+	if (!known_info)
+		return							(false);
+
+	if (std::find_if(known_info->begin(), known_info->end(), CFindByIDPred(info_id)) == known_info->end())
+		return							(false);
+
+	return								(true);
+}
+
+bool dont_has_info								(const CALifeSimulator *self, const ALife::_OBJECT_ID &id, LPCSTR info_id)
+{
+	THROW								(self);
+	// absurdly, but only because of scriptwriters needs
+	return								(!has_info(self,id,info_id));
+}
+
+//void disable_info_portion						(const CALifeSimulator *self, const ALife::_OBJECT_ID &id)
+//{
+//	THROW								(self);
+//}
+
+//void give_info_portion							(const CALifeSimulator *self, const ALife::_OBJECT_ID &id)
+//{
+//	THROW								(self);
+//}
+
 void CALifeSimulator::script_register			(lua_State *L)
 {
 	module(L)
@@ -206,6 +257,11 @@ void CALifeSimulator::script_register			(lua_State *L)
 			.def("create",					&CALifeSimulator::spawn_item)
 			.def("create",					&CALifeSimulator__spawn_item)
 			.def("spawn_id",				&CALifeSimulator__spawn_id)
+			.def("actor",					&get_actor)
+			.def("has_info",				&has_info)
+			.def("dont_has_info",			&dont_has_info)
+//			.def("disable_info_portion",	&disable_info_portion)
+//			.def("give_info_portion",		&give_info_portion)
 
 		,def("alife",						&alife)
 	];
