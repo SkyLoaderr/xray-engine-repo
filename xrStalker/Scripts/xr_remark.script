@@ -74,7 +74,7 @@ function action_remark_activity:reset_scheme()
 	        if sid then
 		        self.target_id = id_by_sid(sid)
 		        if not self.target_id then
-		            printf("remark <error>: Wrong story id [%s] for [%s] in section [%s].", t, self.object:name(), self.st.active_section)
+		            abort("remark <error>: Wrong story id [%s] for [%s] in section [%s].", t, self.object:name(), self.st.active_section)
 		        end
             else
                 local gulag = xr_gulag.get_npc_gulag(self.object)
@@ -86,7 +86,7 @@ function action_remark_activity:reset_scheme()
                     self.target_id = gulag.idNPCOnJob(t)
                 end
 		        if not self.target_id then
-		            printf("remark <error>: Wrong target objrct for [%s] in section [%s].", self.object:name(), self.st.active_section)
+		            abort("remark <error>: Wrong target objrct for [%s] in section [%s].", self.object:name(), self.st.active_section)
 		        end
             end
 	    end
@@ -98,6 +98,18 @@ function action_remark_activity:reset_scheme()
     self.action_end_signalled = false
     self.anim_end_signalled = false
 end	
+
+function action_remark_activity:get_target()
+    if self.target_actor then
+        return actor
+    end
+
+    if self.target_id then
+        return level.object_by_id(self.target_id)
+    end
+
+    return nil
+end
 
 function action_remark_activity:signal_arrival()
 	if not self.move_end_signalled then
@@ -122,7 +134,8 @@ end
 
 function action_remark_activity:if_actor_far_go_to_actor()
 	if not self.st.no_move then
-		if distance_between(self.object, self.target) >= 4 then
+	    local target = self:get_target()
+		if target and distance_between(self.object, target) >= 4 then
 			self:go_to_target()
 			self.state = state_going_to_plr
 		end
@@ -130,9 +143,10 @@ function action_remark_activity:if_actor_far_go_to_actor()
 end
 
 function action_remark_activity:get_sug_body_state()
-	if self.st.no_danger or 
-	   not IsStalker(self.target) or				
-	   self.object:relation(self.target) == game_object.friend  
+    local target = self:get_target()
+	if self.st.no_danger or not target or 
+	   not IsStalker(target) or				
+	   self.object:relation(target) == game_object.friend  
 	then
 		return body_state_free --"guard"
 	else
@@ -184,7 +198,7 @@ function action_remark_activity:stand_still()
 	if self.st.no_rotate then
 		look_tbl = nil
 	else
-		look_tbl = { look_object = self.target }
+		look_tbl = { look_object = self:get_target() }
 	end
 	local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
 	
@@ -202,8 +216,12 @@ function action_remark_activity:stand_still()
 end
 
 function action_remark_activity:update_destination()
-	self.object:set_path_type(game_object.level_path)
-	self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
+    local target = self:get_target()
+
+    if target then
+	    self.object:set_path_type(game_object.level_path)
+	    self.object:set_dest_level_vertex_id(target:level_vertex_id())
+	end
 end
 
 function action_remark_activity:go_to_target()
@@ -214,7 +232,7 @@ function action_remark_activity:go_to_target()
 		if_then_else(sug_body_state == body_state_free, "run", "assault"),
 		nil,
 		nil,
-		{ look_object = self.target })
+		{ look_object = self:get_target()})
 end
 	
 function action_remark_activity:step()
@@ -232,14 +250,7 @@ function action_remark_activity:step()
 		return
 	end
 
-    local target = 0
-    if self.target_actor then
-        target = actor
-    elseif self.target_id then
-        target = level.object_by_id(self.target_id)
-    else
-        target = nil
-    end
+    local target = self:get_target()
 
 	if not target or not target:alive() then
 		return
