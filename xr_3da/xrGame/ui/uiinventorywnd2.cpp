@@ -161,7 +161,8 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	if(pArtefact&&pArtefact->CanBeActivated())
 		UIPropertiesBox.AddItem("Activate artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);
 
-	UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
+	if(!m_pCurrentItem->IsQuestItem())
+		UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
 
 	UIPropertiesBox.AutoUpdateSize();
 	UIPropertiesBox.BringAllToTop();

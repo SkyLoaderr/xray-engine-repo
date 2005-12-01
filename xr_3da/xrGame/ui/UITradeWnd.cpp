@@ -726,25 +726,6 @@ void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITradeWnd::DropCurrentItem()
-{
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor) return;
-
-	m_pCurrentItem->Drop();
-	m_pCurrentDragDropItem->Highlight(false);
-
-	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
-		DetachChild(m_pCurrentDragDropItem);
-
-	//-----------------------------------------------------------------------
-	CUIInventoryWnd::SendEvent_ItemDrop(m_pCurrentItem);
-	//-----------------------------------------------------------------------
-	SetCurrentItem(NULL);
-	m_pCurrentDragDropItem = NULL;
-}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::SwitchToTalk()
 {
