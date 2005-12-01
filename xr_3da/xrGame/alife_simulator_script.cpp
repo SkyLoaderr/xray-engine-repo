@@ -17,7 +17,7 @@
 #include "restriction_space.h"
 #include "alife_graph_registry.h"
 #include "alife_spawn_registry.h"
-#include "alife_registry_container_composition.h"
+#include "alife_registry_container.h"
 
 using namespace luabind;
 
@@ -189,7 +189,7 @@ CSE_ALifeCreatureActor *get_actor				(const CALifeSimulator *self)
 KNOWN_INFO_VECTOR *registry						(const CALifeSimulator *self, const ALife::_OBJECT_ID &id)
 {
 	THROW								(self);
-	return								(self->registry()((CInfoPortionRegistry*)0).object(id, true));
+	return								(self->registry(info_portions).object(id, true));
 }
 
 class CFindByIDPred
