@@ -226,6 +226,7 @@ end
 function PatrolManager:add_npc (npc, leader)
     --validate npc
     if npc == nil or npc:alive () == false or self.npc_list[npc:id ()] ~= nil then 
+       printf ("[XR_PATROL] NO PASSED VALIDATE TEST FOR NPC") 
        return 
     end
     
@@ -237,6 +238,8 @@ function PatrolManager:add_npc (npc, leader)
     if self.npc_count == 1 or leader == true then
        self.commander_id = npc:id ()
     end    
+    
+    printf ("[XR_PATROL] NPC %s added to patrol manager %s", npc:name (), self.path_name) 
     
     if tm_enabled == true then
        self.tm:add_npc (npc)
