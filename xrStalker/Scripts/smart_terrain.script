@@ -397,6 +397,8 @@ function se_smart_terrain:enabled( obj )
 --		else
 			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
 --		end
+	else
+		return false
 	end
 end
 
