@@ -272,9 +272,10 @@ end
 
 -- постпроцесс и влияние удара в морду
 function actor_punch(npc)
-	if db.actor:position():distance_to_sqr(npc:position()) > 2.25 then
-		return
-	end
+	printf("PUNCH CALLED")
+--	if db.actor:position():distance_to_sqr(npc:position()) > 2.25 then
+--		return
+--	end
 
 	local active_item = db.actor:active_item()
 	if active_item then
@@ -296,6 +297,7 @@ end
 
 -- забывание обиды
 function clearAbuse(npc)
+	printf("CLEAR_ABUSE")
 	xr_abuse.clear_abuse(npc)
 end
 

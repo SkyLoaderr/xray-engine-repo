@@ -594,10 +594,10 @@ function animation:set_anim_callback(value)
 	local table_size = table.getn(self.clb_settings)
 	local anim_count = self.npc:animation_count()
 	--printf("for debug [%s] [%s]", table_size, anim_count)
-	for key = table_size+1, anim_count - table_size do
+	
+	for key = table_size+1, anim_count do
 		table.insert(self.clb_settings, "nil")
 	end
-	
 	self.clb_settings[table.getn(self.clb_settings)] = {
 		a = value.a,
 		d = value.d,
