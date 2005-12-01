@@ -223,6 +223,7 @@ C++ class story_ids {
     const Mil_Master_Max = 702;
     const Mil_Miser = 734;
     const Mil_RG6 = 706;
+    const Mil_Silence = 711;
     const Mil_Sniper = 704;
     const Mil_Sniper1 = 730;
     const Mil_Sniper2 = 731;
@@ -352,6 +353,7 @@ C++ class story_ids {
     const pri_controller3 = 812;
     const pri_corner_monolith1 = 809;
     const pri_decoder_room_door = 822;
+    const pri_followers_gulag = 823;
     const pri_gigant1 = 815;
     const pri_gigant2 = 816;
     const pri_gigant3 = 817;
@@ -392,6 +394,10 @@ C++ class story_ids {
     const rostok_banda_volkodava = 597;
     const rostok_exit_to_bar = 591;
     const rostok_naemnik = 595;
+    const rostok_offline_walker_1 = 601;
+    const rostok_offline_walker_2 = 602;
+    const rostok_offline_walker_3 = 603;
+    const rostok_offline_walker_4 = 604;
     const rostok_tainyi_hod = 596;
     const sar2_destroyable_monolith = 1305;
     const sar_command_center = 1304;
@@ -437,7 +443,15 @@ C++ class story_ids {
     const warlab = 1400;
     const yan_ecolog_help = 900;
     const yan_general_ecolog = 902;
-    const yan_labx16switcher_lamp = 904;
+    const yan_labx16switcher_lamp1 = 908;
+    const yan_labx16switcher_lamp2 = 909;
+    const yan_labx16switcher_lamp3 = 910;
+    const yan_labx16switcher_primary_1_green = 911;
+    const yan_labx16switcher_primary_1_red = 912;
+    const yan_labx16switcher_primary_2_green = 913;
+    const yan_labx16switcher_primary_2_red = 914;
+    const yan_labx16switcher_primary_3_green = 915;
+    const yan_labx16switcher_primary_3_red = 916;
     const yan_mapspot_from_vasilyev = 907;
     const yan_scan_psi_radiation = 901;
     const yan_semenov_help = 905;
@@ -7038,8 +7052,8 @@ namespace  {
     function GetFontMedium();
     function cast_alife_object_to_creature(cse_alife_object*);
     function flush();
-    function GetFontGraffiti22Russian();
     function ef_storage();
+    function GetFontGraffiti22Russian();
     function GetFontBigDigit();
     function cast_action_to_planner(action_base*);
     function verify_if_thread_is_running();
