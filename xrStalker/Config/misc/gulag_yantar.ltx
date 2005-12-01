@@ -63,24 +63,9 @@ danger = danger_condition@1
 path_walk = bunker_walk
 path_look = bunker_look
 combat_ignore_cond = always
-on_info = {+yantar_kruglov_phrase_2} %+yantar_scientists_talk_end%
-on_info2 = {=rostok_dist_to_actor_le(2) +yan_find_scientist_start} remark@kruglov_see_actor
-;on_info2 = {+yantar_hello_scientist} remark@kruglov_see_actor
 danger = danger_condition@1
-
-[remark@kruglov_see_actor]
-snd = yantar_kruglov_to_actor
-anim = hello
-on_info = {+yan_kruglov_after_actor} remark@go_after_actor
-combat_ignore_cond = always
-danger = danger_condition@1
-
-[remark@go_after_actor]
-snd = yantar_kruglov_radiation_quest_1
-anim = wait
 on_info = {+yan_scientist_point_to_1} walker@door_2
-combat_ignore_cond = always
-danger = danger_condition@1
+
 
 [walker@scientist_1]
 path_walk = bunker_walk
