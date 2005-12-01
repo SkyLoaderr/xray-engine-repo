@@ -230,13 +230,14 @@ void CBulletManager::StaticObjectHit	(CBulletManager::_event& E)
 //	ObjectHit	(&E.bullet,					E.point, E.R, E.tgt_material, hit_normal);
 }
 
-
+static bool g_clear = false;
 void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 {
 	//только для динамических объектов
 	VERIFY(E.R.O);
-
-	bool NeedShootmark = true;
+	if (g_clear) E.Repeated = false;
+	if (GameID() == GAME_SINGLE) E.Repeated = false;
+	bool NeedShootmark = !E.Repeated;
 	
 	if (E.R.O->CLS_ID == CLSID_OBJECT_ACTOR)
 	{
@@ -281,8 +282,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 	}
 
 	//отправить хит пораженному объекту
-//	if(!OnServer())
-	if (E.bullet.flags.allow_sendhit)
+	if (E.bullet.flags.allow_sendhit && !E.Repeated)
 	{
 		//-------------------------------------------------
 		NET_Packet		P;

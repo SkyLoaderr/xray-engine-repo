@@ -48,6 +48,8 @@ struct SBullet
 	u32				m_dwID				;
 	ref_sound		m_whine_snd			;
 	ref_sound		m_mtl_snd			;
+	//---------------------------------
+	u16				targetID			;
 	bool			operator	==		(u32 ID){return	ID == m_dwID;}
 public:
 					SBullet				();
@@ -84,6 +86,7 @@ class CBulletManager
 	struct	_event			{
 		EventType			Type;
 		BOOL				dynamic		;
+		BOOL				Repeated	;	// последовательное повторное попадание в динамический объект
 		_hit				result		;
 		SBullet				bullet		;
 		Fvector				normal		;

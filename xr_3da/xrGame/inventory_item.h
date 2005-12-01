@@ -11,6 +11,7 @@
 #include "inventory_space.h"
 #include "phnetstate.h"
 #include "hit_immunity.h"
+#include "GameObject.h"
 
 enum EHandDependence{
 	hdNone	= 0,
@@ -99,11 +100,7 @@ public:
 
 	virtual void				UpdateCL			();
 
-	virtual	void				Hit					(	float P, Fvector &dir,	
-														CObject* who, s16 element,
-														Fvector position_in_object_space, 
-														float impulse, 
-														ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void				Hit					(SHit* pHDS);
 
 			void				Drop				();		// Если объект в инвенторе, то он будет выброшен
 			BOOL				GetDrop				() const	{ return m_flags.test(Fdrop);}

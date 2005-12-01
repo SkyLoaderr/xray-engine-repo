@@ -50,9 +50,7 @@ public:
 	virtual bool IsHidden()	 const {return inherited::IsHidden();}
 	virtual bool IsHiding()	 const {return inherited::IsHiding();}
 
-	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,
-					 Fvector position_in_object_space, float impulse, 
-					 ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void Hit	(SHit* pHDS);
 
 	virtual bool			NeedToDestroyObject	() const; 
 	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;

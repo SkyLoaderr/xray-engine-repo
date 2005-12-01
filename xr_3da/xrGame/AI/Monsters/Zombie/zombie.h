@@ -24,7 +24,7 @@ public:
 	virtual void	reinit				();
 	virtual	void	reload				(LPCSTR section);
 	
-	virtual void	Hit					(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type);
+	virtual	void	Hit					(SHit* pHDS);
 
 	virtual bool	ability_pitch_correction () {return false;}
 

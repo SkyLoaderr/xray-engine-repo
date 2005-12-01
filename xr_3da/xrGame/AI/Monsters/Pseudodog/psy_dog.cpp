@@ -238,10 +238,11 @@ void CPsyDogPhantom::Think()
 	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_appear_effector.ppi, m_appear_effector.time, m_appear_effector.time_attack, m_appear_effector.time_release));
 }
 
-void CPsyDogPhantom::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+//void CPsyDogPhantom::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+void	CPsyDogPhantom::Hit					(SHit* pHDS)
 {
 	if (is_wait_to_destroy_object()) return;
-	if ((who == EnemyMan.get_enemy())  && (who != 0)) destroy_me();
+	if ((pHDS->who == EnemyMan.get_enemy())  && (pHDS->who != 0)) destroy_me();
 }
 
 void CPsyDogPhantom::net_Destroy()

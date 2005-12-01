@@ -44,8 +44,7 @@ public:
 	virtual BOOL	renderable_ShadowGenerate	( ) { return FALSE;	}
 	virtual BOOL	renderable_ShadowReceive	( ) { return TRUE;	}
 	
-	virtual	void	Hit					(float P,Fvector &dir, CObject* who,s16 element,
-										Fvector p_in_object_space, float impulse, ALife::EHitType /**hit_type/**/);
+	virtual	void	Hit					(SHit* pHDS);
 
 	virtual void	net_Export			(NET_Packet& P);
 	virtual void	net_Import			(NET_Packet& P);

@@ -29,9 +29,7 @@ public:
 	virtual CExplosive*			cast_explosive		()					{return this;}
 	virtual void				GetExplosionBox		(Fvector &size)		{BoundingBox().getsize(size);}
 	virtual void OnEvent		(NET_Packet& P, u16 type);
-	virtual	void Hit			(float P, Fvector &dir,	CObject* who, s16 element,
-										  Fvector position_in_object_space, float impulse, 
-										  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void				Hit					(SHit* pHDS);
 	
 	virtual void UpdateCL();
 	virtual void renderable_Render(); 

@@ -472,7 +472,8 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 #endif
 }
 
-void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+//void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void	CCar::Hit							(SHit* pHDS)
 {
 /*	if(m_car_weapon){
 		Fvector pos;
@@ -481,26 +482,29 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	}*/
 
 	//if(||) P=0.f;
-	if(Initiator()==u16(-1)&&hit_type==ALife::eHitTypeStrike)
+	SHit	HDS = *pHDS;
+	if(Initiator()==u16(-1)&&HDS.hit_type==ALife::eHitTypeStrike)
 	{
-		P=0.f;
+		HDS.P=0.f;
 	}
 
-	if(GetfHealth()>0.f&&who->ID()!=ID())
+	if(GetfHealth()>0.f&&HDS.who->ID()!=ID())
 	{
-		CExplosive::SetInitiator(who->ID());
+		CExplosive::SetInitiator(HDS.who->ID());
 	}
-	WheelHit(P,element,hit_type);
-	DoorHit(P,element,hit_type);
+	WheelHit(HDS.P,HDS.element,HDS.hit_type);
+	DoorHit(HDS.P,HDS.element,HDS.hit_type);
 	float hitScale=1.f,woundScale=1.f;
-	if(hit_type!=ALife::eHitTypeStrike) CDamageManager::HitScale(element, hitScale, woundScale);
-	P *= m_HitTypeK[hit_type]*hitScale;
+	if(HDS.hit_type!=ALife::eHitTypeStrike) CDamageManager::HitScale(HDS.element, hitScale, woundScale);
+	HDS.P *= m_HitTypeK[HDS.hit_type]*hitScale;
 	
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	if(GetfHealth()<=0.f&&who->ID()!=ID())
+//	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+	inherited::Hit(&HDS);
+	if(GetfHealth()<=0.f&&HDS.who->ID()!=ID())
 	{
-		CExplosive::SetInitiator(who->ID());
-		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
+		CExplosive::SetInitiator(HDS.who->ID());
+//		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
+		CPHDestroyable::SetFatalHit(HDS);
 	}
 	HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())

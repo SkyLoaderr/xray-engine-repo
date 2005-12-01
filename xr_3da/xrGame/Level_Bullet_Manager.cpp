@@ -66,6 +66,8 @@ void SBullet::Init(const Fvector& position,
 	flags.allow_ricochet				= !!cartridge.m_flags.test(CCartridge::cfRicochet);
 	flags.explosive						= !!cartridge.m_flags.test(CCartridge::cfExplosive);
 	flags.skipped_frame					= 0;
+
+	targetID			= 0;
 }
 
 //////////////////////////////////////////////////////////
@@ -427,6 +429,7 @@ void CBulletManager::RegisterEvent			(EventType Type, BOOL _dynamic, SBullet* bu
 	_event&	E		= m_Events.back()	;
 	E.Type			= Type				;
 	E.bullet		= *bullet			;
+	
 	switch(Type)
 	{
 	case EVENT_HIT:
@@ -436,6 +439,11 @@ void CBulletManager::RegisterEvent			(EventType Type, BOOL _dynamic, SBullet* bu
 			E.point			= end_point			;
 			E.R				= R					;
 			E.tgt_material	= tgt_material		;
+			if (_dynamic)	
+			{
+				E.Repeated = (R.O->ID() == E.bullet.targetID);
+				bullet->targetID = R.O->ID();
+			};
 		}break;
 	case EVENT_REMOVE:
 		{

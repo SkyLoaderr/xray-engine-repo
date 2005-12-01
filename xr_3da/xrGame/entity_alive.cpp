@@ -259,39 +259,42 @@ void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, F
 	//	m_PhysicMovementControl->vExternalImpulse.mad	(vWorldDir,Q);
 }
 
-void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
+//void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type, float AP)
+void	CEntityAlive::Hit							(SHit* pHDS)
 {
+	SHit HDS = *pHDS;
 	//-------------------------------------------------------------------
-	if (hit_type == ALife::eHitTypeWound_2)
-		hit_type = ALife::eHitTypeWound;
+	if (HDS.hit_type == ALife::eHitTypeWound_2)
+		HDS.hit_type = ALife::eHitTypeWound;
 	//-------------------------------------------------------------------
-	CDamageManager::HitScale(element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
+	CDamageManager::HitScale(HDS.element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
 
 	//изменить состояние, перед тем как родительский класс обработает хит
-	CWound* pWound = conditions().ConditionHit(who, P, hit_type, element);
+	CWound* pWound = conditions().ConditionHit(HDS.who, HDS.P, HDS.hit_type, HDS.element);
 
 	if(pWound){
-		if(ALife::eHitTypeBurn == hit_type)
+		if(ALife::eHitTypeBurn == HDS.hit_type)
 			StartFireParticles(pWound);
-		else if(ALife::eHitTypeWound == hit_type || ALife::eHitTypeFireWound == hit_type)
+		else if(ALife::eHitTypeWound == HDS.hit_type || ALife::eHitTypeFireWound == HDS.hit_type)
 			StartBloodDrops(pWound);
 	}
 
-	if (hit_type != ALife::eHitTypeTelepatic){
+	if (HDS.hit_type != ALife::eHitTypeTelepatic){
 		//добавить кровь на стены
-		BloodyWallmarks (P, dir, element, position_in_object_space);
+		BloodyWallmarks (HDS.P, HDS.dir, HDS.element, HDS.p_in_bone_space);
 	}
 
 	//-------------------------------------------
 	conditions().SetConditionDeltaTime(0);
 	//-------------------------------------------
-	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
+//	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
+	inherited::Hit(&HDS);
 
 	if (g_Alive()) {
-		CEntityAlive* EA = smart_cast<CEntityAlive*>(who);
+		CEntityAlive* EA = smart_cast<CEntityAlive*>(HDS.who);
 		if(EA && EA->g_Alive() && EA->ID() != ID())
 		{
-			RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), P);
+			RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), HDS.P);
 			RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
 		}
 	}

@@ -100,15 +100,17 @@ void CBottleItem::BreakToPieces()
 	}
 }
 
-void CBottleItem::Hit (float P, Fvector &dir,	
-					   CObject* who, s16 element,
-					   Fvector position_in_object_space, 
-					   float impulse, 
-					   ALife::EHitType hit_type)
+//void CBottleItem::Hit (float P, Fvector &dir,	
+//					   CObject* who, s16 element,
+//					   Fvector position_in_object_space, 
+//					   float impulse, 
+//					   ALife::EHitType hit_type)
+void	CBottleItem::Hit					(SHit* pHDS)
 {
-	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+//	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+	inherited::Hit(pHDS);
 	
-	if(P>BREAK_POWER)
+	if(pHDS->P>BREAK_POWER)
 	{
 		//Generate Expode event
 		if (Local()) 

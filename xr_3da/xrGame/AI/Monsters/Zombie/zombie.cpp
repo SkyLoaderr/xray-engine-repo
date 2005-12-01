@@ -138,13 +138,15 @@ BOOL CZombie::net_Spawn (CSE_Abstract* DC)
 #define TIME_FAKE_DEATH			5000
 #define TIME_RESURRECT_RESTORE	2000
 
-void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+//void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+void	CZombie::Hit								(SHit* pHDS)
 {
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+//	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+	inherited::Hit(pHDS);
 
 	if (!g_Alive()) return;
 	
-	if ((hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
+	if ((pHDS->hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
 		if (!com_man().ta_is_active() && (time_resurrect + TIME_RESURRECT_RESTORE < Device.dwTimeGlobal) && (conditions().GetHealth() < health_death_threshold)) {
 			if (conditions().GetHealth() < (health_death_threshold - float(fake_death_count - fake_death_left) * health_death_threshold / fake_death_count)) {
 				active_triple_idx			= u8(Random.randI(FAKE_DEATH_TYPES_COUNT));

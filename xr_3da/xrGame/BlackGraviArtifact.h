@@ -23,11 +23,7 @@ public:
 
 	virtual void Load				(LPCSTR section);
 
-	virtual	void Hit				(float P, Fvector &dir,	
-									CObject* who, s16 element,
-									Fvector position_in_object_space, 
-									float impulse, 
-									ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void Hit				(SHit* pHDS);
 
 	virtual void feel_touch_new		(CObject* O);
 	virtual void feel_touch_delete	(CObject* O);

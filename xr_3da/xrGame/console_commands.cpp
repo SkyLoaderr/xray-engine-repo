@@ -2117,8 +2117,8 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Net_CL_Resync,			"net_cl_resync" );
 	CMD1(CCC_Net_CL_ClearStats,		"net_cl_clearstats" );
 	CMD1(CCC_Net_SV_ClearStats,		"net_sv_clearstats" );
-	CMD4(CCC_Integer,				"net_cl_inputguaranteed",	&net_cl_inputguaranteed,	0, 1)	;
-	CMD4(CCC_Net_CL_InputUpdateRate,"net_cl_inputupdaterate",	&net_cl_inputupdaterate,	1, 100)	;
+//	CMD4(CCC_Integer,				"net_cl_inputguaranteed",	&net_cl_inputguaranteed,	0, 1)	;
+//	CMD4(CCC_Net_CL_InputUpdateRate,"net_cl_inputupdaterate",	&net_cl_inputupdaterate,	1, 100)	;
 
 
 	CMD3(CCC_Mask,		"g_unlimitedammo",			&psActorFlags,	AF_UNLIMITEDAMMO);
@@ -2134,7 +2134,7 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"net_sv_update_rate",	&psNET_ServerUpdate,1,		100				);
 	CMD4(CCC_Integer,	"net_sv_pending_lim",	&psNET_ServerPending,0,		10				);
 //	CMD4(CCC_Integer,	"net_port",				&psNET_Port,		5400,	5500			);
-	CMD3(CCC_String,	"net_name",				psNET_Name,			32						);
+//	CMD3(CCC_String,	"net_name",				psNET_Name,			32						);
 	CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		NETFLAG_DBG_DUMPSIZE	);
 	CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
 
@@ -2144,7 +2144,7 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Float,		"recon_min_speed",		&g_fMinReconSpeed,	0.01f, 180.0f);
 	CMD4(CCC_Float,		"recon_max_speed",		&g_fMaxReconSpeed,	0.01f, 180.0f);
 
-	CMD4(CCC_Integer,	"g_checktime",			&g_bCheckTime,		0,	1);
+///	CMD4(CCC_Integer,	"g_checktime",			&g_bCheckTime,		0,	1);
 	CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
 
 	CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);

@@ -77,21 +77,22 @@ void CBreakableObject::renderable_Render()
 	inherited::renderable_Render	();
 }
 
-void CBreakableObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
-					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+//void CBreakableObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
+//					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void	CBreakableObject::Hit					(SHit* pHDS)
 {
-	CheckHitBreak(P,hit_type);
+	CheckHitBreak(pHDS->P,pHDS->hit_type);
 	if(m_pPhysicsShell)
 	{
-		if(hit_type==ALife::eHitTypeExplosion)
+		if(pHDS->hit_type==ALife::eHitTypeExplosion)
 		{
-			ApplyExplosion(dir,impulse);
+			ApplyExplosion(pHDS->dir,pHDS->impulse);
 		}
 		else
 		{
 			//. hack: slipch ???
-			if ((impulse>EPS)&&(0xffff!=element))
-				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+			if ((pHDS->impulse>EPS)&&(0xffff!=pHDS->element))
+				m_pPhysicsShell->applyImpulseTrace(pHDS->p_in_bone_space,pHDS->dir,pHDS->impulse,pHDS->element);
 		}
 	}
 }

@@ -142,16 +142,17 @@ void  CInventoryItem::ChangeCondition(float fDeltaCondition)
 	clamp(m_fCondition, 0.f, 1.f);
 }
 
-void CInventoryItem::Hit(float P, Fvector &dir,	
-						 CObject* who, s16 element,
-						 Fvector position_in_object_space, 
-						 float impulse, 
-						 ALife::EHitType hit_type)
+//void CInventoryItem::Hit(float P, Fvector &dir,	
+//						 CObject* who, s16 element,
+//						 Fvector position_in_object_space, 
+//						 float impulse, 
+//						 ALife::EHitType hit_type)
+void	CInventoryItem::Hit					(SHit* pHDS)
 {
 	if( !m_flags.test(FUsingCondition) ) return;
 
-	float hit_power = P/100.f;
-	hit_power *= m_HitTypeK[hit_type];
+	float hit_power = pHDS->P/100.f;
+	hit_power *= m_HitTypeK[pHDS->hit_type];
 
 	ChangeCondition(-hit_power);
 }

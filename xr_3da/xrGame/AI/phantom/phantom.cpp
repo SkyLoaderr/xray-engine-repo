@@ -203,7 +203,9 @@ void CPhantom::OnFlyState()
 		Center				(vP);
 		if (vP.distance_to_sqr(vE)<_sqr(Radius()+m_enemy->Radius())){
 			SwitchToState	(stContact);
-			Hit				(1000.f,Fvector().set(0,0,1),this,-1,Fvector().set(0,0,0),100.f,ALife::eHitTypeFireWound);
+//			Hit				(1000.f,Fvector().set(0,0,1),this,-1,Fvector().set(0,0,0),100.f,ALife::eHitTypeFireWound);
+			SHit HDS(1000.f,Fvector().set(0,0,1),this,-1,Fvector().set(0,0,0),100.f,ALife::eHitTypeFireWound);
+			Hit(&HDS);
 		}
 	}
 }
@@ -245,12 +247,14 @@ void CPhantom::UpdateCL()
 	if (m_TgtState!=m_CurState)	SwitchToState_internal(m_TgtState);
 }
 //---------------------------------------------------------------------
-void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+//void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void	CPhantom::Hit							(SHit* pHDS)
 {
 	if (m_TgtState==stFly)	SwitchToState(stShoot);
 	if (g_Alive()){
 		SetfHealth		(-1.f);
-		inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
+//		inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
+		inherited::Hit	(pHDS);
 	}
 }
 //---------------------------------------------------------------------

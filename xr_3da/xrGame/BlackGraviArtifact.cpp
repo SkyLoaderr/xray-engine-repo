@@ -115,20 +115,23 @@ void CBlackGraviArtefact::UpdateCLChild()
 	}else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
 
-void CBlackGraviArtefact::Hit(float P, Fvector &dir,
-						CObject* who, s16 element,
-						Fvector position_in_object_space,
-						float impulse,
-						ALife::EHitType hit_type)
+//void CBlackGraviArtefact::Hit(float P, Fvector &dir,
+//						CObject* who, s16 element,
+//						Fvector position_in_object_space,
+//						float impulse,
+//						ALife::EHitType hit_type)
+void	CBlackGraviArtefact::Hit					(SHit* pHDS)
 {
-	if(impulse>m_fImpulseThreshold)
+	SHit HDS = *pHDS;
+	if(HDS.impulse>m_fImpulseThreshold)
 	{
 		m_bStrike = true;
 		//чтоб выстрел не повлиял на траекторию полета артефакта
-		impulse = 0;
+		HDS.impulse = 0;
 	}
 	
-	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+//	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+	inherited::Hit(&HDS);
 }
 
 void CBlackGraviArtefact::feel_touch_new(CObject* O) 

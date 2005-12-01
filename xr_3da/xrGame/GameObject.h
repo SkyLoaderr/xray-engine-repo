@@ -11,6 +11,7 @@
 #include "alife_space.h"
 #include "UsableScriptObject.h"
 #include "script_binder.h"
+#include "Hit.h"
 
 class CPhysicsShell;
 class CSE_Abstract;
@@ -114,9 +115,7 @@ public:
 	virtual void			shedule_Update		(u32 dt);	
 	virtual void			renderable_Render	();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
-	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
-													s16 element,Fvector p_in_object_space, 
-													float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound){};
+	virtual	void			Hit					(SHit* pHDS) {};
 	virtual void			SetHitInfo				(CObject* who, CObject* weapon, s16 element, Fvector Pos, Fvector Dir)	{};
 
 

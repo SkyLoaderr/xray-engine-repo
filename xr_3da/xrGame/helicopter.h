@@ -282,7 +282,7 @@ public:
 	virtual void					shedule_Update		(u32		time_delta);
 			void					MoveStep			();
 
-	virtual	void					Hit					(float P, Fvector &dir, CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void					Hit					(SHit* pHDS);
 	virtual void					PHHit				(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
 	//CEntity
 	virtual void					HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}

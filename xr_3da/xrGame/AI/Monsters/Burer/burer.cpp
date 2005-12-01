@@ -297,14 +297,15 @@ void CBurer::StopTeleObjectParticle(CGameObject *pO)
 	PP->StopParticles(particle_tele_object);
 }
 
-void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+//void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+void	CBurer::Hit								(SHit* pHDS)
 {
-	if (m_shield_active && (hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
+	if (m_shield_active && (pHDS->hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
 
 		// вычислить позицию и направленность партикла
 		Fmatrix pos; 
 		//CParticlesPlayer::MakeXFORM(this,element,Fvector().set(0.f,0.f,1.f),p_in_object_space,pos);
-		CParticlesPlayer::MakeXFORM(this,element,dir,p_in_object_space,pos);
+		CParticlesPlayer::MakeXFORM(this,pHDS->element,pHDS->dir,pHDS->p_in_bone_space,pos);
 
 		// установить particles
 		CParticlesObject* ps = CParticlesObject::Create(particle_fire_shield,TRUE);
@@ -313,7 +314,8 @@ void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_objec
 		GamePersistent().ps_needtoplay.push_back(ps);
 
 	} else if (!m_shield_active)
-		inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+//				inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+				inherited::Hit(pHDS);
 
 	last_hit_frame = Device.dwFrame;
 }

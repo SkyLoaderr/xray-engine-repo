@@ -57,9 +57,7 @@ public:
 	virtual void			PHSetPushOut		(u32 time = 5000);
 	virtual f32				GetMass				();
 	virtual	void			PHHit				(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type=ALife::eHitTypeWound);
-	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
-		s16 element,Fvector p_in_object_space, 
-		float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void			Hit					(SHit* pHDS);
 ///////////////////////////////////////////////////////////////////////
 	virtual u16				PHGetSyncItemsNumber();
 	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);

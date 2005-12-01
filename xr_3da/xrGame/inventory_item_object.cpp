@@ -45,12 +45,14 @@ LPCSTR CInventoryItemObject::NameComplex	()
 	return						(CInventoryItem::NameComplex());
 }
 
-void CInventoryItemObject::Hit(float P, Fvector &dir,	
-						 CObject* who, s16 element,
-						 Fvector position_in_object_space, 
-						 float impulse, 
-						 ALife::EHitType hit_type)
+//void CInventoryItemObject::Hit(float P, Fvector &dir,	
+//						 CObject* who, s16 element,
+//						 Fvector position_in_object_space, 
+//						 float impulse, 
+//						 ALife::EHitType hit_type)
+void				CInventoryItemObject::Hit					(SHit* pHDS)
 {
+	/*
 	CPhysicItem::Hit			(
 		P,
 		dir,
@@ -70,6 +72,9 @@ void CInventoryItemObject::Hit(float P, Fvector &dir,
 		impulse,
 		hit_type
 	);
+	*/
+	CPhysicItem::Hit(pHDS);
+	CInventoryItem::Hit(pHDS);
 }
 
 void CInventoryItemObject::OnH_B_Independent()

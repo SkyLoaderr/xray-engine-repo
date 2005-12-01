@@ -17,7 +17,7 @@ public:
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder											()																																			;
 	virtual BOOL						net_Spawn													(CSE_Abstract* DC)																																	;
 	virtual	void						net_Destroy													()																																			;
-	virtual void						Hit															(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound)	;
+	virtual	void						Hit															(SHit* pHDS);
 	virtual	void						InitServerObject			(CSE_Abstract*				D)																																				;
 	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver	()								{return static_cast<CPHCollisionDamageReceiver*>(this);}
 	virtual DLL_Pure					*_construct					()								;

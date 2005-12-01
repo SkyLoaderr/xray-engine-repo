@@ -41,14 +41,16 @@ void CGrenade::Load(LPCSTR section)
 	//////////////////////////////////////
 }
 
-void CGrenade::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse,ALife::EHitType hit_type)
+//void CGrenade::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse,ALife::EHitType hit_type)
+void CGrenade::Hit					(SHit* pHDS)
 {
-	if( ALife::eHitTypeExplosion==hit_type && m_grenade_detonation_threshold_hit<P&&CExplosive::Initiator()==u16(-1)) 
+	if( ALife::eHitTypeExplosion==pHDS->hit_type && m_grenade_detonation_threshold_hit<pHDS->P&&CExplosive::Initiator()==u16(-1)) 
 	{
-		CExplosive::SetCurrentParentID(who->ID());
+		CExplosive::SetCurrentParentID(pHDS->who->ID());
 		Destroy();
 	}
-	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
+//	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
+	inherited::Hit(pHDS);
 }
 
 BOOL CGrenade::net_Spawn(CSE_Abstract* DC) 

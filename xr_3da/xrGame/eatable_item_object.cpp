@@ -30,12 +30,14 @@ void CEatableItemObject::Load				(LPCSTR section)
 	CEatableItem::Load			(section);
 }
 
-void CEatableItemObject::Hit(float P, Fvector &dir,	
-						 CObject* who, s16 element,
-						 Fvector position_in_object_space, 
-						 float impulse, 
-						 ALife::EHitType hit_type)
+//void CEatableItemObject::Hit(float P, Fvector &dir,	
+//						 CObject* who, s16 element,
+//						 Fvector position_in_object_space, 
+//						 float impulse, 
+//						 ALife::EHitType hit_type)
+void	CEatableItemObject::Hit					(SHit* pHDS)
 {
+	/*
 	CPhysicItem::Hit			(
 		P,
 		dir,
@@ -55,6 +57,9 @@ void CEatableItemObject::Hit(float P, Fvector &dir,
 		impulse,
 		hit_type
 	);
+	*/
+	CPhysicItem::Hit(pHDS);
+	CEatableItem::Hit(pHDS);
 }
 
 void CEatableItemObject::OnH_A_Independent	()

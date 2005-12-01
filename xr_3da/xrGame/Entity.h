@@ -98,7 +98,7 @@ public:
 	int						g_Group				()const	{ return id_Group;	}
 
 	// Health calculations
-	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void			Hit					(SHit* pHDS);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 

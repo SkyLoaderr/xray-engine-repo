@@ -51,7 +51,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u32			(cl);
 			CObject			*who = Level().Objects.net_Find	(id);
 			if (who) {
-				if (this!=who)	if(bDebug) Msg("%s %s %s",*cName(),"Killed by '%s'...",*(who->cName()));
+				if (this!=who)	if(bDebug) Msg("%s %s %s %s",*cName(),"Killed by ",*(who->cName()), "...");
 				else			if(bDebug) Msg("%s %s",*cName(),"Crashed...");
 			};
 			Die				(who);
@@ -83,7 +83,8 @@ float CEntity::CalcCondition(float hit)
 
 
 
-void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type) 
+//void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type) 
+void	CEntity::Hit		(SHit* pHDS)
 {
 
 	if (bDebug)				Log("Process HIT: ", *cName());
@@ -91,29 +92,30 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	// *** process hit calculations
 	// Calc impulse
 	Fvector					vLocalDir;
-	float					m = dir.magnitude();
+	float					m = pHDS->dir.magnitude();
 	VERIFY					(m>EPS);
 	
 	// convert impulse into local coordinate system
 	Fmatrix					mInvXForm;
 	mInvXForm.invert		(XFORM());
-	mInvXForm.transform_dir	(vLocalDir,dir);
+	mInvXForm.transform_dir	(vLocalDir,pHDS->dir);
 	vLocalDir.invert		();
 
 	// hit impulse
-	if(impulse) HitImpulse				(impulse,dir,vLocalDir); // @@@: WT
+	if(pHDS->impulse) HitImpulse				(pHDS->impulse,pHDS->dir,vLocalDir); // @@@: WT
 	
 	// Calc amount (correct only on local player)
-	float lost_health = CalcCondition(perc);
+	float lost_health = CalcCondition(pHDS->P);
 
 	// Signal hit
-	if(-1!=element)	HitSignal(lost_health,vLocalDir,who,element);
+	if(-1!=pHDS->element)	HitSignal(lost_health,vLocalDir,pHDS->who,pHDS->element);
 
 	// If Local() - perform some logic
 	if (Local() && !g_Alive() && !AlreadyDie())
-		KillEntity	(who);
+		KillEntity	(pHDS->who);
 	//must be last!!! @slipch
-	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse, hit_type);
+//	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse, hit_type);
+	inherited::Hit(pHDS);
 }
 
 void CEntity::Load		(LPCSTR section)

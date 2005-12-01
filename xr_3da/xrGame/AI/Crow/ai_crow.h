@@ -123,7 +123,7 @@ public:
 
 	virtual void	HitSignal					(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element);
 	virtual void	HitImpulse					(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);
-	virtual void	Hit							(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
+	virtual	void	Hit							(SHit* pHDS);
 	virtual void	Die							(CObject* who);
 	virtual	float	ffGetFov					() const {return 150.f;	}
 	virtual	float	ffGetRange					() const {return 30.f;	}

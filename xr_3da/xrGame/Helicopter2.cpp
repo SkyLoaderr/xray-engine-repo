@@ -216,43 +216,45 @@ float CHelicopter::GetRealAltitude()
 	return cR.range;
 }
 
-void CHelicopter::Hit(	float P, 
-						Fvector &dir, 
-						CObject* who, 
-						s16 element, 
-						Fvector position_in_bone_space, 
-						float impulse,  
-						ALife::EHitType hit_type)
+//void CHelicopter::Hit(	float P, 
+//						Fvector &dir, 
+//						CObject* who, 
+//						s16 element, 
+//						Fvector position_in_bone_space, 
+//						float impulse,  
+//						ALife::EHitType hit_type)
+void	CHelicopter::Hit							(SHit* pHDS)
 {
+	//inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
+	inherited::Hit(pHDS);
 
+	if(GetfHealth()<=0.f)//.
+	{
+//		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,position_in_bone_space,impulse,hit_type));
+		CPHDestroyable::SetFatalHit(*pHDS);
+	}
+	if(GetfHealth()<0.5f)
+		return;
+	if(state() == CHelicopter::eDead ) return;
 
-inherited::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type);
-if(GetfHealth()<=0.f)//.
-{
-	CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,position_in_bone_space,impulse,hit_type));
-}
-if(GetfHealth()<0.5f)
-					return;
-if(state() == CHelicopter::eDead ) return;
+	if(pHDS->who==this)
+		return;
 
-if(who==this)
-	return;
-
-/*	if(smart_cast<CCustomZone*>(who)){
-		Log("customZone");
+	/*	if(smart_cast<CCustomZone*>(who)){
+	Log("customZone");
 	}*/
 
-	bonesIt It = m_hitBones.find(element);
-	if(It != m_hitBones.end() && hit_type==ALife::eHitTypeFireWound) {
+	bonesIt It = m_hitBones.find(pHDS->element);
+	if(It != m_hitBones.end() && pHDS->hit_type==ALife::eHitTypeFireWound) {
 		float curHealth = GetfHealth();
-		curHealth -= P*It->second*10.0f;
+		curHealth -= pHDS->P*It->second*10.0f;
 		SetfHealth(curHealth);
 #ifdef DEBUG
 		if (bDebug)	Log("----Helicopter::PilotHit(). health=",curHealth);
 #endif
 	}else {
-		float hit_power		= P/100.f;
-		hit_power			*= m_HitTypeK[hit_type];
+		float hit_power		= pHDS->P/100.f;
+		hit_power			*= m_HitTypeK[pHDS->hit_type];
 
 		SetfHealth(GetfHealth()-hit_power);
 #ifdef DEBUG
@@ -260,13 +262,13 @@ if(who==this)
 		if (bDebug)	Log("----Helicopter::Hit(). health=",h);
 #endif
 	};
-	if (who&&
-			( who->CLS_ID==CLSID_OBJECT_ACTOR	||
-			  smart_cast<CAI_Stalker*>(who)		||
-			  smart_cast<CCustomZone*>(who) )
+	if (pHDS->who&&
+		( pHDS->who->CLS_ID==CLSID_OBJECT_ACTOR	||
+		smart_cast<CAI_Stalker*>(pHDS->who)		||
+		smart_cast<CCustomZone*>(pHDS->who) )
 		){
-		callback(GameObject::eHelicopterOnHit)(P,impulse,hit_type,who->ID());
-	}
+			callback(GameObject::eHelicopterOnHit)(pHDS->P,pHDS->impulse,pHDS->hit_type,pHDS->who->ID());
+		}
 
 }
 

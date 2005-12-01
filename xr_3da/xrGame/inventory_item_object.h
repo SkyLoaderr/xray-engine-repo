@@ -35,11 +35,7 @@ public:
 	virtual LPCSTR	Name					();
 	virtual LPCSTR	NameShort				();
 	virtual LPCSTR	NameComplex				();
-	virtual	void	Hit						(	float P, Fvector &dir,	
-												CObject* who, s16 element,
-												Fvector position_in_object_space, 
-												float impulse, 
-												ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void	Hit						(SHit* pHDS);
 
 	virtual void	OnH_B_Independent		();
 	virtual void	OnH_A_Independent		();

@@ -207,26 +207,29 @@ void CBastArtefact::UpdateCLChild()
 }
 
 
-void CBastArtefact::Hit(float P, Fvector &dir,	
-						CObject* who, s16 element,
-						Fvector position_in_object_space, 
-						float impulse, 
-						ALife::EHitType hit_type)
+//void CBastArtefact::Hit(float P, Fvector &dir,	
+//						CObject* who, s16 element,
+//						Fvector position_in_object_space, 
+//						float impulse, 
+//						ALife::EHitType hit_type)
+void	CBastArtefact::Hit					(SHit* pHDS)
 {
-	if(impulse>m_fImpulseThreshold && !m_AliveList.empty())
+	SHit	HDS = *pHDS;
+	if(HDS.impulse>m_fImpulseThreshold && !m_AliveList.empty())
 	{
 		m_bStrike = true;
 		m_AttakingEntity = m_pHitedEntity = NULL;
 		
-		m_fEnergy += m_fStrikeImpulse*impulse;
+		m_fEnergy += m_fStrikeImpulse*HDS.impulse;
 
 		if(m_fEnergy>m_fEnergyMax) m_fEnergy = m_fEnergyMax;
 
 		//чтоб выстрел не повлиял на траекторию полета артефакта
-		impulse = 0;
+		HDS.impulse = 0;
 	}
 	
-	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+//	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+	inherited::Hit(&HDS);
 }
 
 

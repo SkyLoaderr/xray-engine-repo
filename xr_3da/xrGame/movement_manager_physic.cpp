@@ -45,7 +45,10 @@ void CMovementManager::apply_collision_hit(CPHMovementControl *movement_control)
 		VERIFY(di);
 		Fvector dir;
 		di->HitDir(dir);
-		object().Hit	(movement_control->gcontact_HealthLost,dir,di->DamageInitiator(),movement_control->ContactBone(),di->HitPos(), 0.f,ALife::eHitTypeStrike);
+
+//		object().Hit	(movement_control->gcontact_HealthLost,dir,di->DamageInitiator(),movement_control->ContactBone(),di->HitPos(), 0.f,ALife::eHitTypeStrike);
+		SHit	HDS = SHit(movement_control->gcontact_HealthLost,dir,di->DamageInitiator(),movement_control->ContactBone(),di->HitPos(), 0.f,ALife::eHitTypeStrike);
+		object().Hit(&HDS);
 	}
 }
 

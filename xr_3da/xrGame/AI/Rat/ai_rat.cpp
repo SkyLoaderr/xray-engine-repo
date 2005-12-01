@@ -425,16 +425,20 @@ void CAI_Rat::UpdatePositionAnimation()
 }
 
 
-void CAI_Rat::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type /*= ALife::eHitTypeWound*/){
-	inherited::Hit				(P,dir,who,element,p_in_object_space,impulse, hit_type);
+//void CAI_Rat::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type /*= ALife::eHitTypeWound*/)
+void		CAI_Rat::Hit									(SHit* pHDS)
+{
+//	inherited::Hit				(P,dir,who,element,p_in_object_space,impulse, hit_type);
+	inherited::Hit				(pHDS);
 	if (!m_pPhysicsShell) {
-		m_saved_impulse			= impulse;
-		m_saved_hit_dir.set		(dir);
-		m_saved_hit_type		= hit_type;
-		m_saved_hit_position.set(p_in_object_space);
+		m_saved_impulse			= pHDS->impulse;
+		m_saved_hit_dir.set		(pHDS->dir);
+		m_saved_hit_type		= pHDS->hit_type;
+		m_saved_hit_position.set(pHDS->p_in_bone_space);
 	}
 	else {
-		CEatableItem::Hit		(P,dir,who,element,p_in_object_space,impulse, hit_type);
+//		CEatableItem::Hit		(P,dir,who,element,p_in_object_space,impulse, hit_type);
+		CEatableItem::Hit		(pHDS);
 	}
 }
 

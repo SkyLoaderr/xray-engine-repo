@@ -80,13 +80,15 @@ CWeapon::~CWeapon		()
 {
 }
 
-void CWeapon::Hit(float P, Fvector &dir,	
-		    CObject* who, s16 element,
-		    Fvector position_in_object_space, 
-		    float impulse, 
-		    ALife::EHitType hit_type)
+//void CWeapon::Hit(float P, Fvector &dir,	
+//		    CObject* who, s16 element,
+//		    Fvector position_in_object_space, 
+//		    float impulse, 
+//		    ALife::EHitType hit_type)
+void CWeapon::Hit					(SHit* pHDS)
 {
-	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
+//	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
+	inherited::Hit(pHDS);
 }
 
 

@@ -58,11 +58,7 @@ public:
 	virtual void			OnH_A_Independent	();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);// {inherited::OnEvent(P,type);}
 
-	virtual	void			Hit					(float P, Fvector &dir,	
-												CObject* who, s16 element,
-												Fvector position_in_object_space, 
-												float impulse, 
-												ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void			Hit					(SHit* pHDS);
 
 	virtual void			reinit				();
 	virtual void			reload				(LPCSTR section);

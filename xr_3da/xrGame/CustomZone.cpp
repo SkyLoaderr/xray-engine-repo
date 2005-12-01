@@ -904,15 +904,16 @@ void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 }
 
 
-void  CCustomZone::Hit(float P, Fvector &dir,
-					  CObject* who, s16 element,
-					  Fvector position_in_object_space,
-					  float impulse,
-					  ALife::EHitType hit_type)
+//void  CCustomZone::Hit(float P, Fvector &dir,
+//					  CObject* who, s16 element,
+//					  Fvector position_in_object_space,
+//					  float impulse,
+//					  ALife::EHitType hit_type)
+void	CCustomZone::Hit					(SHit* pHDS)
 {
 	Fmatrix M;
 	M.identity();
-	M.translate_over	(position_in_object_space);
+	M.translate_over	(pHDS->p_in_bone_space);
 	M.mulA_43			(XFORM());
 	PlayBulletParticles	(M.c);	
 }

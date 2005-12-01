@@ -267,16 +267,16 @@ void CHangingLamp::TurnOff	()
 		
 }
 
-void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
-					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+//void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
+//					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void	CHangingLamp::Hit					(SHit* pHDS)
 {
-	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
 	BOOL	bWasAlive		= Alive		();
 
-	if(m_pPhysicsShell) m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
+	if(m_pPhysicsShell) m_pPhysicsShell->applyHit(pHDS->p_in_bone_space,pHDS->dir,pHDS->impulse,pHDS->element,pHDS->hit_type);
 
-	if (element==light_bone)fHealth =	0.f;
-	else					fHealth -=	P*0.1f;
+	if (pHDS->element==light_bone)fHealth =	0.f;
+	else					fHealth -=	pHDS->P*0.1f;
 
 	if (bWasAlive && (!Alive()))		TurnOff	();
 }

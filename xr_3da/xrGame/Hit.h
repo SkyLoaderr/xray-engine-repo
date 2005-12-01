@@ -13,7 +13,7 @@ IC			s16			bone					()																														const	{VERIFY(is_valide());r
 IC	const Fvector		&bone_space_position	()																														const	{VERIFY(is_valide());return p_in_bone_space;}
 IC			float		phys_impulse			()																														const	{VERIFY(is_valide());return impulse;}
 IC	ALife::EHitType		type					()																														const	{VERIFY(is_valide());return hit_type;}								
-private:
+//private:
 	float				P																																						;
 	Fvector				dir																																						;
 	CObject				*who																																					;

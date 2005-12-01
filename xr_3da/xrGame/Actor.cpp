@@ -435,8 +435,10 @@ void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,hit_type,!g_Alive());
 }
 
-void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
+//void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type, float AP)
+void	CActor::Hit							(SHit* pHDS)
 {
+	SHit HDS = *pHDS;	
 
 	bool bPlaySound = true;
 	if (!g_Alive()) bPlaySound = false;
@@ -448,12 +450,12 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		{
 			bPlaySound = false;
 			if (Device.dwFrame != last_hit_frame &&
-				element != -1)
+				HDS.element != -1)
 			{		
 				// вычислить позицию и направленность партикла
 				Fmatrix pos; 
 
-				CParticlesPlayer::MakeXFORM(this,element,dir,position_in_bone_space,pos);
+				CParticlesPlayer::MakeXFORM(this,HDS.element,HDS.dir,HDS.p_in_bone_space,pos);
 
 				// установить particles
 				CParticlesObject* ps = NULL;
@@ -472,10 +474,10 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		last_hit_frame = Device.dwFrame;
 	};
 
-	if( !sndHit[hit_type].empty() && (ALife::eHitTypeTelepatic != hit_type)){
-		ref_sound& S = sndHit[hit_type][Random.randI(sndHit[hit_type].size())];
+	if( !sndHit[HDS.hit_type].empty() && (ALife::eHitTypeTelepatic != HDS.hit_type)){
+		ref_sound& S = sndHit[HDS.hit_type][Random.randI(sndHit[HDS.hit_type].size())];
 
-		if(ALife::eHitTypeExplosion == hit_type)
+		if(ALife::eHitTypeExplosion == HDS.hit_type)
 		{
 			if (this == Level().CurrentControlEntity())
 			{
@@ -483,7 +485,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 				if(!m_sndShockEffector)
 					m_sndShockEffector = xr_new<SndShockEffector>();
 
-				m_sndShockEffector->Start( S._handle()->length_ms(), iLost );
+				m_sndShockEffector->Start( S._handle()->length_ms(), HDS.P );
 			}
 			else
 				bPlaySound = false;
@@ -498,9 +500,9 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 	
 	//slow actor, only when he gets hit
-	if(hit_type == ALife::eHitTypeWound || hit_type == ALife::eHitTypeStrike)
+	if(HDS.hit_type == ALife::eHitTypeWound || HDS.hit_type == ALife::eHitTypeStrike)
 	{
-		hit_slowmo				= iLost/100.f;
+		hit_slowmo				= HDS.P/100.f;
 		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
 	}
 	else
@@ -513,40 +515,47 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	};
 
 	if ((mstate_real&mcSprint) && Level().CurrentControlEntity() == this && 
-		hit_type != ALife::eHitTypeTelepatic &&
-		hit_type != ALife::eHitTypeRadiation 
+		HDS.hit_type != ALife::eHitTypeTelepatic &&
+		HDS.hit_type != ALife::eHitTypeRadiation 
 		)
 	{
 //		mstate_real	&=~mcSprint;
 		mstate_wishful	&=~mcSprint;
 	};
 	//---------------------------------------------------------------
-	HitMark			(iLost, dir, who, element, position_in_bone_space, impulse, hit_type);
+	HitMark			(HDS.P, HDS.dir, HDS.who, HDS.element, HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
 	//---------------------------------------------------------------
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
 		{
-			float hit_power	= HitArtefactsOnBelt(iLost, hit_type);
+			float hit_power	= HitArtefactsOnBelt(HDS.P, HDS.hit_type);
 
 			if (GodMode())//psActorFlags.test(AF_GODMODE))
 			{
-				inherited::Hit(0.f,dir,who,element,position_in_bone_space,impulse, hit_type);
+				HDS.P = 0.0f;
+//				inherited::Hit(0.f,dir,who,element,position_in_bone_space,impulse, hit_type);
+				inherited::Hit(&HDS);
 				return;
 			}
-			else inherited::Hit		(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
+			else 
+			{
+				//inherited::Hit		(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
+				HDS.P = hit_power;
+				inherited::Hit(&HDS);
+			};
 		}
 		break;
 	default:
 		{
 			m_bWasBackStabbed = false;
-			if (hit_type == ALife::eHitTypeWound_2 && Check_for_BackStab_Bone(element))
+			if (HDS.hit_type == ALife::eHitTypeWound_2 && Check_for_BackStab_Bone(HDS.element))
 			{
 				// convert impulse into local coordinate system
 				Fmatrix					mInvXForm;
 				mInvXForm.invert		(XFORM());
 				Fvector					vLocalDir;
-				mInvXForm.transform_dir	(vLocalDir,dir);
+				mInvXForm.transform_dir	(vLocalDir,HDS.dir);
 				vLocalDir.invert		();
 
 				Fvector a	= {0,0,1};
@@ -562,9 +571,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 			float hit_power = 0;
 
 			if (m_bWasBackStabbed) hit_power = 100000;
-			else hit_power	= HitArtefactsOnBelt(iLost, hit_type);
+			else hit_power	= HitArtefactsOnBelt(HDS.P, HDS.hit_type);
 
-			inherited::Hit	(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
+			HDS.P = hit_power;
+			inherited::Hit (&HDS);
+			//inherited::Hit	(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type, 0.0f);
 		}		
 		break;
 	}
@@ -816,8 +827,10 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			if (!fis_zero(m_PhysicMovementControl->gcontact_HealthLost))	{
 				const ICollisionDamageInfo* di=m_PhysicMovementControl->CollisionDamageInfo();
 				Fvector hdir;di->HitDir(hdir);
-				SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
-				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
+//				SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
+//				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
+				SHit HDS = SHit(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);
+				Hit(&HDS);
 				if(!g_Alive())
 					m_PhysicMovementControl->GetDeathPosition(Position());
 			}

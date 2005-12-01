@@ -294,7 +294,7 @@ public:
 	virtual BOOL				feel_vision_isRelevant	(CObject*);
 	virtual void				shedule_Update			(u32 dt);
 	virtual void				UpdateCL				();
-	virtual void				Hit						(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void				Hit						(SHit* pHDS);
 	
 	virtual void				UpdatePositionAnimation	();
 

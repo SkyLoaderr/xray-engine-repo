@@ -171,7 +171,8 @@ public:
 	virtual BOOL				feel_visible_isRelevant	(CObject		*O);
 	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
 	virtual void				renderable_Render		();
-	virtual	void				Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void				Hit						(SHit* pHDS);
+
 	virtual void				OnEvent					( NET_Packet& P, u16 type		);
 	virtual void				net_Destroy				();
 	virtual BOOL				UsedAI_Locations		();

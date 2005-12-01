@@ -41,10 +41,8 @@ public:
 
 	virtual void OnEvent (NET_Packet& P, u16 type) ;
 
-	virtual	void Hit	(float P, Fvector &dir,	CObject* who, s16 element,
-						Fvector position_in_object_space, float impulse, 
-						ALife::EHitType hit_type = ALife::eHitTypeWound)
-						{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
+	virtual	void Hit	(SHit* pHDS)
+						{ inherited::Hit(pHDS); };
 
 public:
 	virtual BOOL			UsedAI_Locations	()				{return inherited::UsedAI_Locations();}

@@ -29,17 +29,19 @@ void CExplosiveItem::net_Destroy()
 	CExplosive::net_Destroy();
 }
 
-void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
-						Fvector position_in_object_space, float impulse, 
-						ALife::EHitType hit_type)
+//void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
+//						Fvector position_in_object_space, float impulse, 
+//						ALife::EHitType hit_type)
+void	CExplosiveItem::Hit					(SHit* pHDS)
 {
-	inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);
+//	inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);
+	inherited::Hit(pHDS);
 
 	
 	if(GetCondition()<=0.f&&CExplosive::Initiator()==u16(-1))
 	{
 		//запомнить того, кто взорвал вещь
-		SetInitiator( who->ID());
+		SetInitiator( pHDS->who->ID());
 
 		Fvector normal;
 		FindNormal(normal);

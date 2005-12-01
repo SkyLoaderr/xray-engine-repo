@@ -11,6 +11,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "entity_alive.h"
+#include "..\SkeletonCustom.h"
 
 #define MAX_HEALTH 1.0f
 #define MIN_HEALTH -0.01f
@@ -393,6 +394,7 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 	m_pWho = who;
 	m_iWhoID = (NULL != who) ? who->ID() : 0;
 
+	float hit_power_org = hit_power;
 	//нормализуем силу удара
 	hit_power = hit_power/100.f;
 	hit_power = HitOutfitEffect(hit_power, hit_type, element);
@@ -445,6 +447,7 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 		break;
 	}
 
+	if (bDebug) Msg("%s hitted in %s with %f[%f]", m_object->Name(), smart_cast<CKinematics*>(m_object->Visual())->LL_BoneName_dbg(element), m_fHealthLost*100.0f, hit_power_org);
 	//раны добавляются только живому
 	if(bAddWound && GetHealth()>0)
 		return AddWound(hit_power*m_fWoundBoneScale, hit_type, element);

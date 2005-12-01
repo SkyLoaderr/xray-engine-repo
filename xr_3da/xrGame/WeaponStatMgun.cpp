@@ -159,12 +159,14 @@ void CWeaponStatMgun::UpdateCL()
 
 }
 
-void CWeaponStatMgun::Hit(	float P, Fvector &dir,	CObject* who, 
-							s16 element,Fvector p_in_object_space, 
-							float impulse, ALife::EHitType hit_type)
+//void CWeaponStatMgun::Hit(	float P, Fvector &dir,	CObject* who, 
+//							s16 element,Fvector p_in_object_space, 
+//							float impulse, ALife::EHitType hit_type)
+void	CWeaponStatMgun::Hit(SHit* pHDS)
 {
 	if(NULL==Owner())
-		inheritedPH::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+//		inheritedPH::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+		inheritedPH::Hit(pHDS);
 }
 
 void CWeaponStatMgun::UpdateBarrelDir()

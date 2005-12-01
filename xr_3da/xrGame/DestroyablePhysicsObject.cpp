@@ -67,24 +67,28 @@ BOOL CDestroyablePhysicsObject::net_Spawn(CSE_Abstract* DC)
 	return res;
 }
 
-void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type)
+//void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type)
+void	CDestroyablePhysicsObject::Hit					(SHit* pHDS)
 {
+	SHit	HDS = *pHDS;
 	callback(GameObject::eHit)(
 		lua_game_object(), 
-		P,
-		dir,
-		smart_cast<const CGameObject*>(who)->lua_game_object(),
-		element
+		HDS.P,
+		HDS.dir,
+		smart_cast<const CGameObject*>(HDS.who)->lua_game_object(),
+		HDS.element
 		);
-	P=CHitImmunity::AffectHit(P,hit_type);
+	HDS.P=CHitImmunity::AffectHit(HDS.P,HDS.hit_type);
 	float hit_scale=1.f,wound_scale=1.f;
-	CDamageManager::HitScale(element,hit_scale,wound_scale);
-	P*=hit_scale;
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	m_fHealth-=P;
+	CDamageManager::HitScale(HDS.element,hit_scale,wound_scale);
+	HDS.P*=hit_scale;
+//	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+	inherited::Hit(&HDS);
+	m_fHealth-=HDS.P;
 	if(m_fHealth<=0.f)
 	{
-		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
+//		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
+		CPHDestroyable::SetFatalHit(HDS);
 		if(CPHDestroyable::CanDestroy())Destroy();
 	}
 }

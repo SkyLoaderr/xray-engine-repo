@@ -850,9 +850,10 @@ void CCustomMonster::renderable_Render()
 	inherited::renderable_Render		();
 }
 
-void CCustomMonster::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
+//void CCustomMonster::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
+void			CCustomMonster::Hit					(SHit* pHDS)
 {
-	inherited::Hit			(P,dir,who,element,position_in_object_space,impulse, hit_type);
+	inherited::Hit			(pHDS);
 }
 
 void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
