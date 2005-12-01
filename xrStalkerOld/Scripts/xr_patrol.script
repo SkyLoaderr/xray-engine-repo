@@ -253,6 +253,7 @@ end
 -----------------------
 function PatrolManager:remove_npc (npc)
     if npc == nil then return end
+    printf ("[XR_PATROL] NPC %s removed from patrol manager %s", npc:name (), self.path_name) 
     self.npc_list[npc:id ()] = nil
     if npc:id () == self.commander_id then
        self.commander_id = -1
