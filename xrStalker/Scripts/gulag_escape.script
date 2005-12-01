@@ -842,61 +842,61 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_dogs_fox_attack"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		
