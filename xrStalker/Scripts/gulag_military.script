@@ -18,7 +18,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Повар
     t = {section = "logic@mil_freedom_cook",
 		idle = 0,
-		prior = 11, state = {0, 1, 2, 3},
+		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -30,7 +30,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №1
     t = {section = "logic@mil_freedom_sniper1",
 		idle = 0,
-		prior = 11, state = {0, 1, 2, 3},
+		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -42,7 +42,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №2
     t = {section = "logic@mil_freedom_sniper2",
 		idle = 0,
-		prior = 11, state = {0, 1, 2, 3},
+		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -54,7 +54,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №3
     t = {section = "logic@mil_freedom_sniper3",
 		idle = 0,
-		prior = 11, state = {0, 1, 2, 3},
+		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -66,7 +66,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №4
     t = {section = "logic@mil_freedom_sniper4",
 		idle = 0,
-		prior = 11, state = {0, 1, 2, 3},
+		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -78,7 +78,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №5
     t = {section = "logic@mil_freedom_sniper5",
 		idle = 0,
-		prior = 11, state = {0, 1, 2, 3},
+		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -346,7 +346,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Лукаш
     t = {section = "logic@mil_freedom_lukash_combat1",
 		idle = 0,
-		prior = 11, state = {1, 2},
+		prior = 11, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -357,7 +357,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Скряга
     t = {section = "logic@mil_freedom_trader_combat1",
 		idle = 0,
-		prior = 11, state = {1, 2},
+		prior = 11, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -368,7 +368,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Охранник Лукаша
     t = {section = "logic@mil_freedom_guard_combat1",
 		idle = 0,
-		prior = 11, state = {1, 2},
+		prior = 11, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -379,7 +379,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Охранник Лукаша
     t = {section = "logic@mil_freedom_bodyguard1_combat1",
 		idle = 0,
-		prior = 11, state = {1, 2},
+		prior = 11, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -390,7 +390,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Охранник Лукаша
     t = {section = "logic@mil_freedom_bodyguard2_combat1",
 		idle = 0,
-		prior = 11, state = {1, 2},
+		prior = 11, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -399,10 +399,11 @@ function load_job_base (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
 
+--[[
     -- Max
     t = {section = "logic@mil_freedom_max_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -413,7 +414,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- мужик у костра 1
     t = {section = "logic@mil_freedom_stalker1_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -422,7 +423,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- мужик у костра 2
     t = {section = "logic@mil_freedom_stalker2_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -430,7 +431,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Павлик Морозов
     t = {section = "logic@mil_freedom_stalker2_combat1",
 		idle = 0,
-		prior = 2, state = {1},
+		prior = 2, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -441,7 +442,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- одиночный патрульный на базе
     t = {section = "logic@mil_freedom_stalker4_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -453,7 +454,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- патрульный на базе
     t = {section = "logic@mil_freedom_stalker5",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
         dependent = "logic@mil_freedom_stalker4",
@@ -466,7 +467,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- фолловер на базе
     t = {section = "logic@mil_freedom_stalker6_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -474,7 +475,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- фолловер на базе
     t = {section = "logic@mil_freedom_stalker7_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
         dependent = "logic@mil_freedom_stalker5",
@@ -483,7 +484,7 @@ function load_job_base (sj, gname, type, squad, groups)
     --охранник у входа 
     t = {section = "logic@mil_freedom_stalker8_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -494,7 +495,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик на входе
     t = {section = "logic@mil_freedom_stalker9_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -502,7 +503,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик на входе
     t = {section = "logic@mil_freedom_stalker10_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -510,7 +511,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик 1
     t = {section = "logic@mil_freedom_stalker11_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -518,7 +519,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик 2
     t = {section = "logic@mil_freedom_stalker12_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -527,7 +528,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик 3
     t = {section = "logic@mil_freedom_stalker13_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -536,7 +537,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик 4
     t = {section = "logic@mil_freedom_stalker14_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -545,7 +546,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик 1
     t = {section = "logic@mil_freedom_stalker15_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
@@ -554,12 +555,12 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик 1
     t = {section = "logic@mil_freedom_stalker16_combat1",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
-	
+]]--	
 	-------------------------------- combat state 2-----------------------------
 	
 	for a = 1, 23, 1 do
