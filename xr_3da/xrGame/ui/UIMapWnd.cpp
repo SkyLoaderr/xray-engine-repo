@@ -465,6 +465,7 @@ void CUIMapWnd::OnScrollH()
 
 void CUIMapWnd::Update()
 {
+	if(m_GlobalMap)m_GlobalMap->SetClipRect(ActiveMapRect());
 	inherited::Update			();
 	m_ActionPlanner->update		();
 }
