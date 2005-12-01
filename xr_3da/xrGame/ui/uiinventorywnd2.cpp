@@ -352,7 +352,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if (&UIDropButton == pWnd && BUTTON_CLICKED == msg)
 	{
-		if (m_pCurrentDragDropItem && m_pCurrentItem) DropItem();
+		if (m_pCurrentDragDropItem && m_pCurrentItem && !m_pCurrentItem->IsQuestItem()) DropItem();
 	}
 	else if (DRAG_DROP_REFRESH_ACTIVE_ITEM == msg)
 	{
