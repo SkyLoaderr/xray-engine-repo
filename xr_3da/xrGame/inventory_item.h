@@ -106,7 +106,7 @@ public:
 			void				Drop				();		// Если объект в инвенторе, то он будет выброшен
 			BOOL				GetDrop				() const	{ return m_flags.test(Fdrop);}
 			void				SetDrop				(BOOL val)	{ m_flags.set(Fdrop, val);}
-			BOOL				IsQuestItem			()			{return m_flags.test(FIsQuestItem);}			
+			BOOL				IsQuestItem			()	const		{return m_flags.test(FIsQuestItem);}			
 			u32					Cost				() const	{ return m_cost; }
 			float				Weight				() const	{ return m_weight;}		
 
