@@ -94,7 +94,7 @@ public:
 			int					clsid				() const;
 			void				play_cycle			(LPCSTR anim, bool mix_in);
 			void				play_cycle			(LPCSTR anim);
-	_DECLARE_FUNCTION11	(Center		,	void, Fvector);
+			Fvector				Center				();
 	_DECLARE_FUNCTION10	(Position	,	Fvector		);
 	_DECLARE_FUNCTION10	(Direction	,	Fvector		);
 	_DECLARE_FUNCTION10	(Mass		,	float		);

@@ -39,7 +39,13 @@ class CScriptBinderObject;
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-BIND_FUNCTION01	(&object(),	CScriptGameObject::Center,				CGameObject,	Center,				Fvector,						Fvector());
+Fvector	CScriptGameObject::Center()
+{
+	Fvector c;
+	m_game_object->Center(c);
+	return	c;
+}
+
 BIND_FUNCTION10	(&object(),	CScriptGameObject::Position,			CGameObject,	Position,			Fvector,						Fvector());
 BIND_FUNCTION10	(&object(),	CScriptGameObject::Direction,			CGameObject,	Direction,			Fvector,						Fvector());
 BIND_FUNCTION10	(&object(),	CScriptGameObject::Mass,		CPhysicsShellHolder,	GetMass,			float,							float(-1));
