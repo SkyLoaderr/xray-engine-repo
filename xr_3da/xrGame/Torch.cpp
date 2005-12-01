@@ -107,7 +107,7 @@ void CTorch::SwitchNightVision(bool vision_on)
 				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
 				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
 			}
-			HUD().GetUI()->UIGame()->AddCustomStatic("torch_night_vision", true);
+//			HUD().GetUI()->UIGame()->AddCustomStatic("torch_night_vision", true);
 		}
 	}
 	else
@@ -121,7 +121,7 @@ void CTorch::SwitchNightVision(bool vision_on)
 				HUD_SOUND::PlaySound(m_NightVisionOffSnd, pA->Position(), pA, true);
 				HUD_SOUND::StopSound(m_NightVisionIdleSnd);
 			}
-			HUD().GetUI()->UIGame()->RemoveCustomStatic("torch_night_vision");
+//			HUD().GetUI()->UIGame()->RemoveCustomStatic("torch_night_vision");
 		}
 	}
 }

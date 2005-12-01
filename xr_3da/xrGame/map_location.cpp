@@ -528,8 +528,12 @@ bool CRelationMapLocation::IsVisible	()
 	if(m_last_relation==ALife::eRelationTypeEnemy || m_last_relation==ALife::eRelationTypeWorstEnemy){
 
 		CObject* _object_ = Level().Objects.net_Find(m_pInvOwnerEntityID);
-		if(_object_)
+		if(_object_){
+			CEntityAlive* ea = smart_cast<CEntityAlive*>(_object_);
+			if(ea&&!ea->g_Alive()) return true;
+
 			res =  Actor()->memory().visual().visible_now(smart_cast<const CGameObject*>(_object_));
+		}
 		else
 			res = false;
 	}
