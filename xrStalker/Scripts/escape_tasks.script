@@ -67,6 +67,7 @@ function proceed()
 		actor:object("fox_flash") ~= nil
 	then
 		actor:give_info_portion("escape_stalker_done")
+		actor:give_info_portion("garbage_meetstalker_start")
 	end
 
 	if actor:has_info("escape_blockpost_case") and
