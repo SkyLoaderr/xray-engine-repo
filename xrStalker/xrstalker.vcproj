@@ -2491,31 +2491,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Documentation"
-				Filter="">
-				<File
-					RelativePath=".\scripts\!Doc\!for_scripters.doc">
-				</File>
-				<File
-					RelativePath=".\Scripts\!Doc\building blocks.doc">
-				</File>
-				<File
-					RelativePath=".\scripts\!Doc\movement_scheme.doc">
-				</File>
-				<File
-					RelativePath=".\scripts\!Doc\Stalker Script Manual.doc">
-				</File>
-				<File
-					RelativePath=".\scripts\!Doc\Stalker_script_Function.doc">
-				</File>
-				<File
-					RelativePath=".\scripts\!Doc\zmey_scripts.doc">
-				</File>
-				<File
-					RelativePath=".\scripts\!Doc\Настройка скриптов Джона.doc">
-				</File>
-			</Filter>
-			<Filter
 				Name="Unknown"
 				Filter="">
 				<File
