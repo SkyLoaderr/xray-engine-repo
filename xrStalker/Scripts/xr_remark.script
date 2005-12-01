@@ -49,63 +49,19 @@ function action_remark_activity:initialize()
 end
 
 function action_remark_activity:activate_scheme()
-        self.was_reset = false
-end
-
-function action_remark_activity:reset_scheme()
-	printf("remark <reset_scheme>: [%s] enter", self.object:name())
-
-	self.was_reset = true
-
-	--self.object:clear_animations()
-	
-	self.state = state_initial
-
-	self.reset_time = time_global()
-	
-	self.snd_scheduled = false
-	self.snd_start_time = nil
-	self.snd_started = false
-	
-    self.target_id = nil
-    local t = self.st.target
-    printf("remark <reset_scheme>: target str '%s'", t)
-    if t and t ~= "nil" then
-	    if t == "actor" then
-		    self.target_actor = true
-		    printf("remark <reset_scheme>: target 'actor'")
-	    else
-	        local sid = tonumber(t)
-	        if sid then
-		        self.target_id = id_by_sid(sid)
-		        if not self.target_id then
-		            abort("remark <error>: Wrong story id [%s] for [%s] in section [%s].", t, self.object:name(), self.st.active_section)
-		        end
-            else
-                local gulag = xr_gulag.get_npc_gulag(self.object)
-                local params = parse_names(t)
-                if params[2] then
-                    gulag = xr_gulag.get_gulag_by_name(params[2])
-                end
-                if gulag then
-                    self.target_id = gulag.idNPCOnJob(t)
-                end
-		        if not self.target_id then
-		            abort("remark <error>: Wrong target objrct for [%s] in section [%s].", self.object:name(), self.st.active_section)
-		        end
-            end
-            printf("remark <reset_scheme>: target id '%d'", self.target_id)
-	    end
-    end
-
     self.st.signals = {}
     self.sound_end_signalled = false
     self.move_end_signalled = false
     self.action_end_signalled = false
     self.anim_end_signalled = false
 
-	printf("remark <reset_scheme>: exit")
-end	
+	self.state = state_initial
+	self.reset_time = time_global()
+	self.snd_scheduled = false
+	self.snd_start_time = nil
+	self.snd_started = false
+	
+end
 
 function action_remark_activity:get_target()
     if self.target_actor then
@@ -251,8 +207,6 @@ function action_remark_activity:go_to_target()
 end
 	
 function action_remark_activity:step()
-	printf("remark <step>: [%s] enter", self.object:name())
-
 	-- Scheme finalization conditions:
 	if not self.sound_end_signalled and self.snd_started and self.object:active_sound_count() == 0 then
 		self.sound_end_signalled = true
@@ -275,39 +229,8 @@ function action_remark_activity:step()
 
 	-- Начальное состояние
 	if self.state == state_initial then
---		if self.st.no_move then
 			self:stand_still()
 			self.state = state_standing
---		else
-			-- Побежали к игроку
---			self.object:set_path_type(game_object.level_path)
---			self.object:set_desired_direction(self.target:direction())
-			--printf("xr_remark <target>: %s:%s", utils.to_str(self.target), utils.to_str(self.target:level_vertex_id()))
---			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
---			self:go_to_target()
---			self.state = state_going_to_plr
---		end
-
---	elseif self.state == state_going_to_plr then
-		-- Пробовать включать звук, когда мы близко, или долго не можем добраться до игрока:
---		if self.st.snd and
---		   (distance_between(self.object, self.target) <= self.st.snd_dist or
---		    time_global() - self.reset_time >= self.st.snd_timeout) then
---			printf("_bp: action_remark_activity:step(): calling activate_sound from state_going_to_plr")
---			if not self.st.snd_anim_sync then
---				self:activate_sound()
---			end
---		end
-
---		if distance_between(self.object, self.target) < 3 or
---		   self.st.arrival_timeout <= time_global() - self.reset_time then
---			self:stand_still()
---			self.st.no_move = true -- Не получается пробежать к актеру - больше и не пытаться
---			self:signal_arrival()
---			self.state = state_standing
---		else
---			self:update_destination()
---		end
 
 	elseif self.state == state_standing then
 		if self.st.snd then
@@ -319,18 +242,11 @@ function action_remark_activity:step()
 		self:if_actor_far_go_to_actor()
 	end	
 
-	printf("remark <step>: exit")
 end
 	
 function action_remark_activity:execute()
-	printf("remark <execute>: [%s] enter", self.object:name())
 
 	action_base.execute(self)
-
-	if not self.was_reset then
-		self:reset_scheme()
-	end
-
 	local old_state
 	repeat
 		old_state = self.state
@@ -345,8 +261,6 @@ function action_remark_activity:execute()
 			self.snd_started = true
 		end
 	end
-
-	printf("remark <execute>: exit")
 end
 
 function action_remark_activity:finalize()
@@ -421,11 +335,38 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 	
 	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
-	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
 	st.no_danger = utils.cfg_get_bool         (ini, section,   "no_danger",       npc, false)
 
+	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
+    if target and target ~= "nil" then
+	    if target == "actor" then
+		    st.target_actor = true
+	    else
+	        local sid = tonumber(target)
+	        if sid then
+		        st.target_id = id_by_sid(sid)
+		        if not st.target_id then
+		            abort("remark <error>: Wrong story id [%s] for [%s] in section [%s].", target, npc:name(), section)
+		        end
+            else
+                local gulag = xr_gulag.get_npc_gulag(npc)
+                local params = parse_names(target)
+                if params[2] then
+                    gulag = xr_gulag.get_gulag_by_name(params[2])
+                end
+                if gulag then
+                    st.target_id = gulag.idNPCOnJob(target)
+                end
+		        if not st.target_id then
+		            abort("remark <error>: Wrong target objrct for [%s] in section [%s].", npc:name(), section)
+		        end
+            end
+	    end
+    end   
+    	
 	if not st.no_move and st.anim then
 		abort("remark <abort>: object '%s', section '%s': anim field specified, when no_move is false",
 			npc:name(), section)
 	end
 end
+
