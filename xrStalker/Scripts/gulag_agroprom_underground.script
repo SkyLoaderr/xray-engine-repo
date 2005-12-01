@@ -35,23 +35,13 @@ end
 function load_states( gname, type )
 	if type == "agr_u_soldiers" then
 		return function(gulag)
-			local actor = db.actor
-			if not actor then
-				return gulag.state
-			else	
-				return 0
-			end
+			return 0
 		end
 	end
 
 	if type == "agr_u_bandits" then
 		return function(gulag)
-			local actor = db.actor
-			if not actor then
-				return gulag.state
-			else	
-				return 0
-			end
+			return 0
 		end
 	end
 	return nil
@@ -206,12 +196,12 @@ function load_ltx_agr_u_bandits(gname, type)
 end
 
 function checkStalker( npc_community, gulag_type )
-		if gulag_type == "agr_u_soldiers"  then
-			return npc_community == "military"
-		end
-		if gulag_type == "agr_u_bandits"  then
-			return npc_community == "bandit"
-		end
+	if gulag_type == "agr_u_soldiers"  then
+		return npc_community == "military"
+	end
+	if gulag_type == "agr_u_bandits"  then
+		return npc_community == "bandit"
+	end
 	return false
 end
 

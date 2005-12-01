@@ -12,7 +12,7 @@
 -- TODO fill_idle
 -- TODO у патруля перевыбор работы не будет в офлайне. надо чтоб был
 
-level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_dark_valley, gulag_labx18, gulag_bar,
+level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_agroprom_underground, gulag_dark_valley, gulag_labx18, gulag_bar,
                 gulag_military, gulag_radar, gulag_radar_u, gulag_yantar, gulag_pripyat, gulag_kishka, gulag_sarcofag,
                 gulag_deadcity}
 
