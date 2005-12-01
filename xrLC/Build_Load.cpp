@@ -277,16 +277,17 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			} else {
 				char			th_name[256]; 
 				FS.update_path	(th_name,"$textures$",strconcat(th_name,N,".thm"));
+				clMsg			("processing: %s",th_name);
 				IReader* THM	= FS.r_open(th_name);
 				R_ASSERT2		(THM,th_name);
 
 				// version
 				u32 version = 0;
-				R_ASSERT(THM->r_chunk(THM_CHUNK_VERSION,&version));
+				R_ASSERT2(THM->r_chunk(THM_CHUNK_VERSION,&version),th_name);
 				// if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
 
 				// analyze thumbnail information
-				R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
+				R_ASSERT2(THM->find_chunk(THM_CHUNK_TEXTUREPARAM),th_name);
 				THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
 				BT.THM.flags.assign		(THM->r_u32());
 				BT.THM.border_color		= THM->r_u32();
