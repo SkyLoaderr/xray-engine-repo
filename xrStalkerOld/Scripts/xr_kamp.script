@@ -260,9 +260,9 @@ function CKampManager:selectPosition(npc_id)
 		self.npc[npc_id].position = free[rr]
 	end
 	--printf("KAMP [%s] npc table", npc_id)
-	print_table(self.npc)
+	--print_table(self.npc)
 	--printf("KAMP [%s] position table", npc_id)
-	print_table(self.position)
+	--print_table(self.position)
 end
 function CKampManager:getDestVertex(npc_id, radius)
 	--printf("get dest Vertex called [%s]", npc_id)
