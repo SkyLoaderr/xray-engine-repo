@@ -13,7 +13,7 @@ end
 function register(object_factory)
 	cs_register	(
 		object_factory,
-		"ce_script_zone",
+		"ce_smart_zone",
 		"smart_terrain.se_smart_terrain",
 		"SMRTTRRN",
 		"smart_terrain"
