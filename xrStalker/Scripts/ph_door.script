@@ -128,7 +128,7 @@ function action_door:close_action()
 	if self.st.no_force == true then
 		self.joint:set_max_force_and_velocity(0, 0, 1)
 	else
-		self.joint:set_max_force_and_velocity(10000, -1, 1)
+		self.joint:set_max_force_and_velocity(10000, 1, 1)
 	end
 	self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
@@ -148,7 +148,7 @@ function action_door:open_door(disable_snd)
 	if self.st.no_force == true then
 		self.joint:set_max_force_and_velocity(0, 0, 1)
 	else
-		self.joint:set_max_force_and_velocity(200, 3, 1)
+		self.joint:set_max_force_and_velocity(200, -3, 1)
 	end
 	self.block = false
 
@@ -186,7 +186,7 @@ function action_door:close_door()
 	if self.st.no_force == true then
 		self.joint:set_max_force_and_velocity(0, 0, 1)
 	else
-		self.joint:set_max_force_and_velocity(200, -3, 1)
+		self.joint:set_max_force_and_velocity(200, 3, 1)
 	end
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
