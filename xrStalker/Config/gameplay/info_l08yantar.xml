@@ -48,6 +48,7 @@
 	<info_portion id="yan_actor_must_sleep"></info_portion>
 	<info_portion id="labx16_find"></info_portion>
 	<info_portion id="yan_kill_brain_done"></info_portion>
+	<info_portion id="yan_kruglov_hello"></info_portion>
 	<info_portion id="yan_find_scientist_done"></info_portion>
 	<info_portion id="yan_scientist_researching"></info_portion>
 	<info_portion id="yan_scientist_point_to_1"></info_portion>
