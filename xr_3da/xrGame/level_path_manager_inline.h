@@ -33,7 +33,7 @@ IC	void CLevelManagerTemplate::reinit(const CLevelGraph *graph)
 TEMPLATE_SPECIALIZATION
 IC	bool CLevelManagerTemplate::actual() const
 {
-	return		(inherited::actual(m_object->object().ai_location().level_vertex_id(),dest_vertex_id()));
+	return						(inherited::actual(m_object->object().ai_location().level_vertex_id(),dest_vertex_id()));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -47,7 +47,7 @@ IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id
 		return;
 	}
 
-	VERIFY						(ai().level_graph().valid_vertex_id(start_vertex_id) && ai().level_graph().valid_vertex_id(dest_vertex_id));
+	THROW						(ai().level_graph().valid_vertex_id(start_vertex_id) && ai().level_graph().valid_vertex_id(dest_vertex_id));
 	
 	inherited::build_path		(start_vertex_id,dest_vertex_id);
 

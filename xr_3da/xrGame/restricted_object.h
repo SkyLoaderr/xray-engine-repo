@@ -26,10 +26,10 @@ private:
 	typedef CGameObject inherited;
 
 private:
-	CCustomMonster		*m_object;
-	mutable bool		m_applied;
-	mutable bool		m_removed;
-	bool				m_actual;
+	CCustomMonster			*m_object;
+	mutable bool			m_applied;
+	mutable bool			m_removed;
+	bool					m_actual;
 
 protected:
 	template <typename P, bool value>
