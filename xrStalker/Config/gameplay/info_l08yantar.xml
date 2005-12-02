@@ -50,9 +50,7 @@
 	<info_portion id="yan_kill_brain_done"></info_portion>
 	<info_portion id="yan_find_scientist_done"></info_portion>
 	<info_portion id="yan_scientist_researching"></info_portion>
-	<info_portion id="yan_scientist_point_to_2"></info_portion>
-	<info_portion id="yan_scientist_point_to_3"></info_portion>
-	<info_portion id="yan_scientist_point_to_4"></info_portion>
+	<info_portion id="yan_scientist_point_to_1"></info_portion>
 	<info_portion id="yan_psi_zone_find_done"></info_portion>
 	<!-- Yantar zombied respawn -->
 	<info_portion id="yan_zombied_respawn_01"></info_portion>
