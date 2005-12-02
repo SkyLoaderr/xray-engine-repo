@@ -211,7 +211,10 @@ void CBaseMonster::debug_fsm()
 		case eStateSquad_Rest_WalkAroundLeader:			sprintf(st,"Squad :: Rest : WalkAroundLeader");		break;
 		case eStateSquad_RestFollow_Idle:				sprintf(st,"Squad :: Follow Leader : Idle");		break;
 		case eStateSquad_RestFollow_WalkToPoint:		sprintf(st,"Squad :: Follow Leader : WalkToPoint");	break;
-		case eStateCustom_Vampire:						sprintf(st,"Attack :: Vampire");			break;
+		case eStateCustom_Vampire:						sprintf(st,"Attack :: Vampire");					break;
+		case eStateVampire_ApproachEnemy:				sprintf(st,"Vampire :: Approach to enemy");			break;
+		case eStateVampire_Execute:						sprintf(st,"Vampire :: Hit");						break;
+		case eStateVampire_RunAway:						sprintf(st,"Vampire :: Run Away");					break;
 		case eStateBurerAttack_Tele:					sprintf(st,"Attack :: Telekinesis");			break;
 		case eStateBurerAttack_Gravi:					sprintf(st,"Attack :: Gravi Wave");				break;
 		case eStateBurerAttack_RunAround:				sprintf(st,"Attack :: Run Around");			break;

@@ -25,13 +25,14 @@ class CVampireCameraEffector : public CCameraEffector {
 	typedef CCameraEffector inherited;	
 
 	float	m_time_total;
-	float	m_cam_dist;
-	float	m_threshold_dist;
 	Fvector	dangle_target;
 	Fvector dangle_current;
 
+	float	m_dist;
+	Fvector m_direction;
+
 public:
-					CVampireCameraEffector	(float time, float dist, float threshold_dist);
+					CVampireCameraEffector	(float time, const Fvector &src, const Fvector &tgt);
 	virtual	BOOL	Process					(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 

@@ -29,15 +29,13 @@
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
-	StateMan			= xr_new<CStateManagerBloodsucker>	(this);
+	StateMan						= xr_new<CStateManagerBloodsucker>	(this);
+	m_alien_control.init_external	(this);
+	
+	com_man().add_ability			(ControlCom::eControlRunAttack);
+	com_man().add_ability			(ControlCom::eControlRotationJump);
 
-	invisible_vel.set	(0.1f, 0.1f);
-
-	m_alien_control.init_external							(this);
-
-	com_man().add_ability(ControlCom::eControlRunAttack);
-	com_man().add_ability(ControlCom::eControlRotationJump);
-
+	invisible_vel.set				(0.1f, 0.1f);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
@@ -49,9 +47,9 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
-	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
-	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
-	anim().AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimRun,		eAnimRunDamaged);
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimWalkFwd,	eAnimWalkDamaged);
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimStandIdle,	eAnimStandDamaged);
 	anim().AddReplacedAnim(&m_bRunTurnLeft,		eAnimRun,		eAnimRunTurnLeft);
 	anim().AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
 
@@ -60,15 +58,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
-	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
-	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
-
-	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
-	invisible_run_particles_name	= pSettings->r_string(section,"Particles_Invisible_Tracks");
-	m_run_particles_freq			= pSettings->r_u32(section,"Particles_Invisible_Tracks_Freq");
-
-	LoadVampirePPEffector			(pSettings->r_string(section,"vampire_effector"));
-	
 	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
 	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
 	SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
@@ -137,14 +126,18 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	#ifdef DEBUG	
 		anim().accel_chain_test		();
 	#endif
+	
+	// load other misc stuff
+	invisible_vel.set				(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
+	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
+	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
+	invisible_run_particles_name	= pSettings->r_string(section,"Particles_Invisible_Tracks");
+	m_run_particles_freq			= pSettings->r_u32(section,"Particles_Invisible_Tracks_Freq");
 
-	// load special sounds
-	//m_sound_vampire_grasp.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Grasp"),	SOUND_TYPE_MONSTER_ATTACKING);
-	//m_sound_vampire_sucking.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Sucking"),	SOUND_TYPE_MONSTER_ATTACKING);
-	//m_sound_vampire_hit.create(TRUE, pSettings->r_string(section,"Sound_Vampire_Hit"),	SOUND_TYPE_MONSTER_ATTACKING);
-
-	//m_sound_invisibility_change_state.create(TRUE, pSettings->r_string(section,"Sound_Invisibility_Change_State"),	SOUND_TYPE_MONSTER_ATTACKING);
+	LoadVampirePPEffector			(pSettings->r_string(section,"vampire_effector"));
+	
+	m_vampire_min_delay				= pSettings->r_u32(section,"Vampire_Delay");
 }
 
 
@@ -261,13 +254,11 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	//Bones.SetMotion(bone_head,	AXIS_Y, pitch, bone_turn_speed, 100);	
 }
 
-void CAI_Bloodsucker::ActivateVampireEffector(float max_dist)
+void CAI_Bloodsucker::ActivateVampireEffector()
 {
-	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
-	if (pA) {
-		pA->EffectorManager().AddEffector(xr_new<CVampireCameraEffector>(6.0f, 5.f, max_dist));
-		Level().Cameras.AddEffector(xr_new<CVampirePPEffector>(pp_vampire_effector, 6.0f));
-	}
+	//_abs(dist - 1.0f)
+	Actor()->EffectorManager().AddEffector(xr_new<CVampireCameraEffector>(6.0f, get_head_position(this), get_head_position(Actor())));
+	Level().Cameras.AddEffector(xr_new<CVampirePPEffector>(pp_vampire_effector, 6.0f));
 }
 
 

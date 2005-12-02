@@ -12,14 +12,13 @@
 #define CStateBloodsuckerVampireAbstract CStateBloodsuckerVampire<_Object>
 
 #define RUN_AWAY_DISTANCE			50.f
-#define TIME_VAMPIRE_STATE_DELAY	50000
 
 TEMPLATE_SPECIALIZATION
 CStateBloodsuckerVampireAbstract::CStateBloodsuckerVampire(_Object *obj) : inherited(obj)
 {
-	add_state	(eStateApproachEnemy,	xr_new<CStateBloodsuckerVampireApproach<_Object> >	(obj));
-	add_state	(eStateExecute,			xr_new<CStateBloodsuckerVampireExecute<_Object> >	(obj));
-	add_state	(eStateRunAway,			xr_new<CStateMonsterHideFromPoint<_Object> >		(obj));
+	add_state	(eStateVampire_ApproachEnemy,	xr_new<CStateBloodsuckerVampireApproach<_Object> >	(obj));
+	add_state	(eStateVampire_Execute,			xr_new<CStateBloodsuckerVampireExecute<_Object> >	(obj));
+	add_state	(eStateVampire_RunAway,			xr_new<CStateMonsterHideFromPoint<_Object> >		(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -46,30 +45,30 @@ void CStateBloodsuckerVampireAbstract::execute()
 {
 	bool state_selected = false;
 
-	if (prev_substate == eStateRunAway) {
-		select_state	(eStateRunAway);
+	if (prev_substate == eStateVampire_RunAway) {
+		select_state	(eStateVampire_RunAway);
 		state_selected	= true;
 	}
 
 	if (!state_selected) {
-		if (prev_substate != eStateExecute) {
-			if (get_state(eStateExecute)->check_start_conditions()) state_selected = true;
+		if (prev_substate != eStateVampire_Execute) {
+			if (get_state(eStateVampire_Execute)->check_start_conditions()) state_selected = true;
 		} else {
 			if (!get_state_current()->check_completion())			state_selected = true;
 		}
 
-		if (state_selected) select_state(eStateExecute);
+		if (state_selected) select_state(eStateVampire_Execute);
 	}
 
 	if (!state_selected) {
-		if (prev_substate == eStateExecute) {
-			select_state	(eStateRunAway);
+		if (prev_substate == eStateVampire_Execute) {
+			select_state	(eStateVampire_RunAway);
 			state_selected	= true;
 		}
 	}
 
 	if (!state_selected) {
-		select_state(eStateApproachEnemy);
+		select_state(eStateVampire_ApproachEnemy);
 	}
 
 	get_state_current()->execute();
@@ -108,7 +107,7 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 	VERIFY(actor);
 	if (actor->input_external_handler_installed()) return false;
 
-	if (m_time_last_vampire + TIME_VAMPIRE_STATE_DELAY > Device.dwTimeGlobal) return false;
+	if (m_time_last_vampire + m_object->m_vampire_min_delay > Device.dwTimeGlobal) return false;
 
 	return true;
 }
@@ -117,14 +116,14 @@ TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_completion()
 {
 	// если убежал
-	if ((current_substate == eStateRunAway) && 
+	if ((current_substate == eStateVampire_RunAway) && 
 		get_state_current()->check_completion())	return true;
 
 	// если враг изменился
 	if (enemy != object->EnemyMan.get_enemy())		return true;
 	
 	// если актера уже контролит другой кровосос
-	if ((current_substate != eStateExecute) && 
+	if ((current_substate != eStateVampire_Execute) && 
 		object->CControlledActor::is_controlling())	return true;
 
 	return false;
@@ -136,7 +135,7 @@ void CStateBloodsuckerVampireAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
 
-	if (current_substate == eStateRunAway) {
+	if (current_substate == eStateVampire_RunAway) {
 
 		SStateHideFromPoint		data;
 		data.point				= object->EnemyMan.get_enemy_position();

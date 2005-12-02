@@ -76,14 +76,19 @@ BOOL CVampirePPEffector::Process(SPPInfo& pp)
 #define DELTA_ANGLE_Z	DELTA_ANGLE_X
 #define ANGLE_SPEED		0.2f	
 
-CVampireCameraEffector::CVampireCameraEffector(float time, float dist, float threshold_dist) :
+CVampireCameraEffector::CVampireCameraEffector(float time, const Fvector &src, const Fvector &tgt) :
 	inherited(ECameraEffectorType(1), time)
 {
-	fLifeTime			= time;
-	m_time_total		= time;
+	fLifeTime				= time;
+	m_time_total			= time;
 
-	m_cam_dist			= dist;
-	m_threshold_dist	= threshold_dist;
+	m_dist					= src.distance_to(tgt);
+	//m_dist					+= 10.5f;
+	//if (m_dist < 0)			m_dist = 0.f;
+	
+	m_direction.sub			(src,tgt);
+	m_direction.normalize	();
+
 
 	dangle_target.set	(Random.randFs(DELTA_ANGLE_X),Random.randFs(DELTA_ANGLE_Y),Random.randFs(DELTA_ANGLE_Z));
 	dangle_current.set	(0.f, 0.f, 0.f);
@@ -107,11 +112,11 @@ BOOL CVampireCameraEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& 
 	
 	//////////////////////////////////////////////////////////////////////////
 	// using formula: y = k - 2*k*abs(x-1/2)   k - max distance
-	float	cur_dist = m_cam_dist * (1 - 2*_abs((1-time_left_perc) - 0.5f));
-	if (cur_dist > m_threshold_dist) cur_dist = m_threshold_dist;
-	
-	Mdef.c.mad(Mdef.k, cur_dist);
+	//float	cur_dist = m_dist * (1 - 2*_abs((1-time_left_perc) - 0.5f));
+	float time_passed	= 1-time_left_perc;
+	float cur_dist		= m_dist * (sqrt(0.5f*0.5f - (time_passed - 0.5f)*(time_passed - 0.5f)) );
 
+	Mdef.c.mad(m_direction, cur_dist);
 	
 	// check the time to return
 	if (time_left_perc < 0.2f) {

@@ -156,11 +156,15 @@ enum EMonsterState {
 
 	eStateCustom_Vampire			= eStateCustom | eStateAttack | 1,
 	
-	eStateBurerAttack_Tele			= eStateCustom | eStateAttack | 2,
-	eStateBurerAttack_Gravi			= eStateCustom | eStateAttack | 3,
-	eStateBurerAttack_RunAround		= eStateCustom | eStateAttack | 4,
-	eStateBurerAttack_FaceEnemy		= eStateCustom | eStateAttack | 5,
-	eStateBurerAttack_Melee			= eStateCustom | eStateAttack | 6,
+	eStateVampire_ApproachEnemy		= eStateCustom | eStateAttack | 2,
+	eStateVampire_Execute			= eStateCustom | eStateAttack | 3,
+	eStateVampire_RunAway			= eStateCustom | eStateAttack | 4,
+	
+	eStateBurerAttack_Tele			= eStateCustom | eStateAttack | 5,
+	eStateBurerAttack_Gravi			= eStateCustom | eStateAttack | 6,
+	eStateBurerAttack_RunAround		= eStateCustom | eStateAttack | 7,
+	eStateBurerAttack_FaceEnemy		= eStateCustom | eStateAttack | 8,
+	eStateBurerAttack_Melee			= eStateCustom | eStateAttack | 9,
 	
 	// -------------------------------------------------------------
 

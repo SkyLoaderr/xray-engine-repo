@@ -14,55 +14,6 @@ class CAI_Bloodsucker : public CBaseMonster,
 
 	typedef		CBaseMonster	inherited;
 	
-	//--------------------------------------------------------------------
-	// Bones
-	//--------------------------------------------------------------------
-	static	void			BoneCallback			(CBoneInstance *B);
-			void			vfAssignBones			();
-			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
-
-
-	bonesManipulation		Bones;
-
-	CBoneInstance			*bone_spine;
-	CBoneInstance			*bone_head;
-
-	//--------------------------------------------------------------------
-	// Invisibility
-	//--------------------------------------------------------------------
-
-	SMotionVel				invisible_vel;
-	LPCSTR					invisible_particle_name;
-
-	LPCSTR					invisible_run_particles_name;
-	u32						m_run_particles_freq;
-	u32						m_last_invisible_run_play;
-
-	//--------------------------------------------------------------------
-
-public:
-	
-	//--------------------------------------------------------------------
-	// Sounds
-	//--------------------------------------------------------------------
-	
-	enum EBloodsuckerSounds {
-		eAdditionalSounds		= MonsterSound::eMonsterSoundCustom,
-
-		eVampireGrasp			= eAdditionalSounds | 0,
-		eVampireSucking			= eAdditionalSounds | 1,
-		eVampireHit				= eAdditionalSounds | 2,
-
-		eChangeVisibility		= eAdditionalSounds | 3,
-	};
-
-	//--------------------------------------------------------------------
-public:
-
-	SAnimationTripleData	anim_triple_vampire;
-
-	CBloodsuckerAlien		m_alien_control;
-	
 public:
 							CAI_Bloodsucker	();
 	virtual					~CAI_Bloodsucker();	
@@ -81,38 +32,90 @@ public:
 	virtual	void			Load					(LPCSTR section);
 
 	virtual	void			CheckSpecParams			(u32 spec_params);
-	virtual bool			ability_invisibility		() {return true;}
-	virtual bool			ability_pitch_correction	() {return false;}
-
-
+	virtual bool			ability_invisibility	() {return true;}
+	virtual bool			ability_pitch_correction() {return false;}
 	virtual	void			post_fsm_update			();
-
-			
-	// PP Effector		
 	
-			void			LoadVampirePPEffector	(LPCSTR section);	
-			void			ActivateVampireEffector	(float max_dist);
-			
-			SPPInfo			pp_vampire_effector;
-
-
-	virtual	void			on_activate				();
-	virtual	void			on_deactivate			();
-	virtual	void			on_change_visibility	(bool b_visibility);
 	virtual bool			use_center_to_aim		() const {return true;}
-
-	virtual void			UpdateCamera			();
-
 	virtual bool			check_start_conditions	(ControlCom::EControlType);
+
+			
+	//--------------------------------------------------------------------
+	// Bones
+	//--------------------------------------------------------------------
+private:
+	static	void			BoneCallback			(CBoneInstance *B);
+			void			vfAssignBones			();
+			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
+
+
+	bonesManipulation		Bones;
+
+	CBoneInstance			*bone_spine;
+	CBoneInstance			*bone_head;
+
+	//--------------------------------------------------------------------
+	// Invisibility
+	//--------------------------------------------------------------------
+private:
+	SMotionVel				invisible_vel;
+	LPCSTR					invisible_particle_name;
+
+	LPCSTR					invisible_run_particles_name;
+	u32						m_run_particles_freq;
+	u32						m_last_invisible_run_play;
+
+	virtual	void			on_activate					();
+	virtual	void			on_deactivate				();
+	virtual	void			on_change_visibility		(bool b_visibility);
 
 			void			play_hidden_run_particles	();
 
+	//--------------------------------------------------------------------
+	// Vampire
+	//--------------------------------------------------------------------
+public:
+
+	u32						m_vampire_min_delay;
+	SAnimationTripleData	anim_triple_vampire;
+
+	SPPInfo					pp_vampire_effector;
+
+
+			void			LoadVampirePPEffector	(LPCSTR section);	
+			void			ActivateVampireEffector	();
+
+	//--------------------------------------------------------------------
+	// Alien
+	//--------------------------------------------------------------------
+public:
+	CBloodsuckerAlien		m_alien_control;
+
+	virtual void			UpdateCamera			();
 			void			set_alien_control		(bool val);
+
+
+	//--------------------------------------------------------------------
+	// Sounds
+	//--------------------------------------------------------------------
+public:
+
+	enum EBloodsuckerSounds {
+		eAdditionalSounds		= MonsterSound::eMonsterSoundCustom,
+
+		eVampireGrasp			= eAdditionalSounds | 0,
+		eVampireSucking			= eAdditionalSounds | 1,
+		eVampireHit				= eAdditionalSounds | 2,
+
+		eChangeVisibility		= eAdditionalSounds | 3,
+	};
+
+	//--------------------------------------------------------------------
+
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();
 			void			debug_on_key			(int key);
 #endif
-
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -7,6 +7,8 @@
 #include "../../level_graph.h"
 #include "../../cover_point.h"
 #include "monster_cover_manager.h"
+#include "../../ai_object_location.h"
+#include "../../restricted_object.h"
 
 void CMonsterHome::load(LPCSTR line)
 {
@@ -44,7 +46,14 @@ u32	CMonsterHome::get_place()
 	m_object->control().path_builder().get_node_in_radius(vertex->data().level_vertex_id(), m_radius_min, m_radius_min + (m_radius_max - m_radius_min)/2, 5, result);
 	
 	// if node was not found - return vertex selected
-	if (result == u32(-1)) return vertex->data().level_vertex_id();
+	if (result == u32(-1)) {
+		
+		// TODO: find more acceptable decision, than return its level_vertex_id, if !accessible
+		if (m_object->control().path_builder().accessible(vertex->data().level_vertex_id()))		
+			return vertex->data().level_vertex_id();
+		else
+			return m_object->ai_location().level_vertex_id();
+	}
 
 	return result;
 }
@@ -88,3 +97,4 @@ void CMonsterHome::remove_home()
 {
 	m_path = 0;
 }
+

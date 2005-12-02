@@ -60,6 +60,7 @@ public:
 
 			bool	get_node_in_radius		(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
 			void	fix_position			(const Fvector &pos, u32 node, Fvector &res_pos);
+			
 
 private:	
 			void	init_selector			(CAbstractVertexEvaluator *S, Fvector target_pos);
