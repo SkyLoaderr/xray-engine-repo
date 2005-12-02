@@ -325,6 +325,9 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)	
       end
       
+       
+      
+      
        if type == "bun_snp2" then
 		t = { section = "logic@bun_snp2_sniper1",
 			idle = 0,
@@ -333,6 +336,21 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@bun_snp2_sniper2",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+      end
+      
+       if type == "bun_krovosos_nest" then
+		t = { section = "logic@bun_krovosos_nest_krovosos1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@bun_krovosos_nest_krovosos2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
@@ -358,6 +376,12 @@ function load_states(gname, type)
 	end
 	
 	if type == "bun_kordon3" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "bun_post1" then
 		return function(gulag)
 			return 0
 		end
@@ -424,6 +448,12 @@ function load_states(gname, type)
 		end
 	end
 	
+	
+    if type == "bun_krovosos_nest" then
+		return function(gulag)
+			return 0
+		end
+	end
 
 end
 
@@ -448,6 +478,11 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "bun_kordon3" then
 	   return npc_community == "monolith"
 	end
+	
+	if gulag_type == "bun_post1" then
+	   return npc_community == "monolith"
+	end
+	
 	
 	if gulag_type == "bun_snp1" then
 	   return npc_community == "monolith"
@@ -493,5 +528,9 @@ function checkStalker(npc_community, gulag_type)
 end
 
 function checkMonster( npc_community, gulag_type )
+
+   if gulag_type == "bun_krovosos_nest" then
+	   return npc_community == "bloodsucker"
+	end 
 	return false
 end
