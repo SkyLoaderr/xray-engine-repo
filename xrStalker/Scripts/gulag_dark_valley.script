@@ -691,7 +691,7 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 		        prior = pr[i], state = {state_normal},
 		        squad = squad, group = groups[1],
 		        in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		        predicate = mb_predicate
+		        predicate = ws_predicate
 	        }
 	        table.insert(sj, t)        
 	        -- fight
