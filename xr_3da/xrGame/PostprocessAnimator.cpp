@@ -42,6 +42,7 @@ CPostprocessAnimator::CPostprocessAnimator(int id, bool cyclic)
 	m_bStop				= false;
 	m_stop_speed		= 1.0f;
 	m_bCyclic			= cyclic;
+	m_start_time		= -1.0f;
 }
 
 CPostprocessAnimator::~CPostprocessAnimator           ()
@@ -134,10 +135,10 @@ float       CPostprocessAnimator::GetLength                       ()
     return v;
 }
 
-void        CPostprocessAnimator::Update                          (float dt)
+void        CPostprocessAnimator::Update                          (float tm)
 {
     for (int a = 0; a < POSTPROCESS_PARAMS_COUNT; a++)
-        m_Params[a]->update (dt);
+        m_Params[a]->update (tm);
 }
 
 #ifndef _PP_EDITOR_
@@ -146,12 +147,18 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 	if(m_bCyclic)
 		fLifeTime				= 100000;
 
-	Update					(Device.fTimeDelta);
+	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
+	Update					(Device.fTimeGlobal-m_start_time);
 
 	if(m_bStop)
 		m_factor			-=	Device.fTimeDelta*m_stop_speed;
 
 	clamp					(m_factor, 0.001f, 1.0f);
+
+	m_EffectorParams.color_base		+= pp_identity.color_base;
+	m_EffectorParams.color_gray		+= pp_identity.color_gray;
+	m_EffectorParams.color_add		+= pp_identity.color_add;
+	m_EffectorParams.noise.fps		*= 100.0f;
 
 	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
 

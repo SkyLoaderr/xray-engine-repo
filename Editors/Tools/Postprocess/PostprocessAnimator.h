@@ -144,10 +144,10 @@ protected:
 	bool											m_bStop;
 	float											m_stop_speed;
 	bool											m_bCyclic;
-#ifndef _PP_EDITOR
-    float                                           fLifeTime;
-#endif
-		void		Update							(float dt);
+	float											m_start_time;
+	float                                           fLifeTime;
+
+	void		Update								(float tm);
 public:
                     CPostprocessAnimator            (int id, bool cyclic);
         virtual    ~CPostprocessAnimator            ();
