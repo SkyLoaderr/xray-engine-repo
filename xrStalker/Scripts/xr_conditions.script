@@ -328,6 +328,17 @@ function has_enemy(actor, npc)
 	return npc:best_enemy() ~= nil
 end
 
+function see_enemy(actor, npc)
+	
+    local enemy = npc:best_enemy()
+    
+    if enemy ~= nil then 
+        return npc:see(enemy) 
+    end
+    return false
+end
+
+
 -- DELME: для тестов: {=test_condition_actor_near}
 function test_condition_actor_near(actor, npc)
 	if distance_between(actor, npc) <= 3 then
