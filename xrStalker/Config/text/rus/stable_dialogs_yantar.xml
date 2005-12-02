@@ -159,6 +159,9 @@
     <string id="yantar_help_scientist_31">
         <text>Нет времени болтать...</text>
     </string>
+    <string id="yantar_help_scientist_41">
+        <text>Привет, Меченый. Как поживаешь?</text>
+    </string>
     <string id="yantar_help_scientist_71">
         <text>Привет, Меченый. Как поживаешь?</text>
     </string>
@@ -179,5 +182,8 @@
     </string>
     <string id="yantar_wounded_scientist_211">
         <text>Я сделал замеры, пора возвращаться!</text>
+    </string>
+    <string id="yantar_wounded_scientist_31">
+        <text>Привет, Меченый. Как поживаешь?</text>
     </string>
 </string_table>
