@@ -1436,12 +1436,12 @@ on_info = {+bar_actor_helps_kruglov} walker@bar_ecolog_professor_companion
 
 [walker@bar_ecolog_professor_companion]
 path_walk = escape_1_walk
-on_signal = freedom_chase | walker@bar_rescue_research_hide_1a %=bar_freedom_spam_5 +bar_rescue_research_chasing_start%
+on_signal = freedom_chase | camper@bar_rescue_research_hide_1a %=bar_freedom_spam_5 +bar_rescue_research_chasing_start%
 combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_hit = hit@ecolog_professor
 ;on_info = {+bar_rescue_research_chasing_start} camper@bar_rescue_research_hide_1a %=bar_freedom_spam_5%
 
-[walker@bar_rescue_research_hide_1a]
+[camper@bar_rescue_research_hide_1a]
 path_walk = escape_1a_walk
 path_look = escape_hide_1_look
 on_signal = arrived_1 | camper@bar_rescue_research_hide_1 %=rostok_kruglov_attract_1 -bar_kruglov_follow_talk%
