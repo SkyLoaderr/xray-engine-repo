@@ -218,8 +218,8 @@ void ESceneWallmarkTools::OnRender(int priority, bool strictB2F)
                                 w_start					= w_verts;
                             }
                             // real fill buffer
-                            FVF::LIT* S		= &*W->verts.begin();
-                        	for (int k=0; k<3; k++,S++){
+                            FVF::LIT* S		= W->verts.begin()+t_idx*3;
+                        	for (int k=0; k<3; k++,S++,w_verts++){
                                 w_verts->p.set	(S->p);
                                 w_verts->color	= C;
                                 w_verts->t.set	(S->t);
@@ -352,7 +352,7 @@ bool ESceneWallmarkTools::Load(IReader& F)
         for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
             wallmark*& W	= *w_it;
             if (W->verts.size()>MAX_WALLMARK_VERTEX_COUNT){
-                ELog.DlgMsg	(mtError,"ERROR: Invalid wallmark (Contain more than %d vertices). Removed.", MAX_WALLMARK_VERTEX_COUNT);
+                ELog.Msg	(mtError,"ERROR: Invalid wallmark (Contain more than %d vertices). Removed.", MAX_WALLMARK_VERTEX_COUNT);
                 wm_destroy	(W);
                 W			= 0;
             }
