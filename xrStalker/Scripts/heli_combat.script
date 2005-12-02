@@ -52,7 +52,7 @@ function heli_combat:__init( object, heliObject )
 	self.default_safe_altitude = utils.cfg_get_number( ltx, "helicopter", "safe_altitude",        self.object, true ) + self.level_max_y
 	self.m_max_mgun_dist       = utils.cfg_get_number( ltx, "helicopter", "max_mgun_attack_dist", self.object, true )
 
-	self.search_velocity       = 10
+	self.search_velocity       = 5
 
 	self.retreat_already       = false
 
