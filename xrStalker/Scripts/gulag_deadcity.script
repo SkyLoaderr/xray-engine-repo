@@ -152,7 +152,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "path_walk           = leader_walk\n" ..
                    "path_look           = leader_look\n" ..
                    "formation           = line\n" ..
-                   "soundgroup          = cit_killers_leader_sg\n" ..
+                   "soundgroup          = " .. gname .. "_leader_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -238,7 +238,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                        "center_point        = kamp" .. j .. "\n" ..
                        "def_state_moving    = patrol\n" ..
                        "on_timer            = " .. d[j] .. "000 | walker@" .. gname .. "_free" .. i .. "_to_kamp" .. v .. "\n" ..
-                       "soundgroup          = cit_killers_kamp" .. j .. "_sg\n" ..
+                       "soundgroup          = " .. gname .. "_kamp" .. j .. "_sg\n" ..
                        "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
         end
     end
@@ -274,7 +274,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "[kamp@" .. gname .. "_kamp" .. k .. "_patrol]\n" ..
                    "center_point        = kamp" .. k .. "\n" ..
                    "on_timer            = " .. delays[i] .. "000 | patrol@" .. gname .. "_kamp" .. k .. "_patrol\n" ..
-                   "soundgroup          = cit_killers_kamp" .. k .. "_sg\n" ..
+                   "soundgroup          = " .. gname .. "_kamp" .. k .. "_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -299,7 +299,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "center_point        = kamp5\n" ..
                    "on_timer            = " .. d[1] .. "000 | walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
                    "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
-                   "soundgroup          = cit_killers_kamp5_sg\n" ..
+                   "soundgroup          = " .. gname .. "_kamp5_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[walker@" .. gname .. "_free_stalker" .. i .. "]\n" ..
@@ -333,7 +333,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "[kamp@" .. gname .. "_kamp" .. i .. "]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
                    "def_state_moving    = run\n" ..
-                   "soundgroup          = cit_killers_kamp" .. i .. "_sg\n" ..
+                   "soundgroup          = " .. gname .. "_kamp" .. i .. "_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -457,7 +457,6 @@ function load_job_bandits(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_leader_guard" .. i .. "]\n" ..
                    "path_walk           = leader_guard" .. i .. "_walk\n" ..
                    "path_look           = leader_guard" .. i .. "_look\n" ..
-                   "soundgroup          = cit_bandits_guards_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -496,7 +495,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                        "center_point        = kamp" .. j .. "\n" ..
                        "def_state_moving    = patrol\n" ..
                        "on_timer            = " .. d[j] .. "000 | walker@" .. gname .. "_free" .. i .. "_to_kamp" .. v .. "\n" ..
-                       "soundgroup          = cit_bandits_kamp" .. j .. "_sg\n" ..
+                       "soundgroup          = " .. gname .. "_kamp" .. j .. "_sg\n" ..
                        "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
         end
     end
@@ -532,7 +531,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                    "[kamp@" .. gname .. "_kamp" .. k .. "_patrol]\n" ..
                    "center_point        = kamp" .. k .. "\n" ..
                    "on_timer            = " .. delays[i] .. "000 | patrol@" .. gname .. "_kamp" .. k .. "_patrol\n" ..
-                   "soundgroup          = cit_bandits_kamp" .. k .. "_sg\n" ..
+                   "soundgroup          = " .. gname .. "_kamp" .. k .. "_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -557,7 +556,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                    "[kamp@" .. gname .. "_kamp" .. i .. "]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
                    "def_state_moving    = run\n" ..
-                   "soundgroup          = cit_bandits_kamp" .. i .. "_sg\n" ..
+                   "soundgroup          = " .. gname .. "_kamp" .. i .. "_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -603,7 +602,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                "path_walk  = center_patrol_walk\n" ..
                --"path_look  = center_patrol_look\n" ..
                "formation  = line\n" ..
-               "soundgroup          = cit_bandits_center_patrol_sg\n" ..
+               "soundgroup          = " .. gname .. "_center_patrol_sg\n" ..
                "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
 
     -- gate guards
