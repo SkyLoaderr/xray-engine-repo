@@ -39,20 +39,26 @@ inline dReal FragmentonSphereTest(const dReal* center, const dReal radius,
 			-pt1[1]-direction[1]*from1_dist+center[1],
 			-pt1[2]-direction[2]*from1_dist+center[2]
 	};
-	norm[0]=line_to_center[0];
-	norm[1]=line_to_center[1];
-	norm[2]=line_to_center[2];
 
-	dNormalize3(norm);
+	float mag=dSqrt(dDOT(line_to_center,line_to_center));
+	//dNormalize3(norm);
+	
 
-
-	dReal depth=radius-dDOT(line_to_center,norm);
+	dReal depth=radius-mag;
 	if(depth<0.f) return -1.f;
-
+	if(mag>0.f)
+	{
+		norm[0]=line_to_center[0]/mag;
+		norm[1]=line_to_center[1]/mag;
+		norm[2]=line_to_center[2]/mag;
+	}
+	else
+	{
+		norm[0]=0;
+		norm[1]=1;
+		norm[2]=0;
+	}
 	return depth;
-
-
-
 }
 
 
