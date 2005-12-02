@@ -21,6 +21,14 @@ function register(object_factory)
 
 	cs_register	(
 		object_factory,
+		"ce_smart_zone",
+		"se_respawn.se_respawn",
+		"RE_SPAWN",
+		"respawn"
+	)
+
+	cs_register	(
+		object_factory,
 		"ce_switcher.ce_switcher",
 		"se_switcher.cse_switcher",
 		"O_SWITCH",

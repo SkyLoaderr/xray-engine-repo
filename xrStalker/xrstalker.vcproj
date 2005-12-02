@@ -3414,6 +3414,13 @@
 						RelativePath=".\Scripts\se_artefact.script">
 					</File>
 				</Filter>
+				<Filter
+					Name="respawn"
+					Filter="">
+					<File
+						RelativePath=".\scripts\se_respawn.script">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="common"
