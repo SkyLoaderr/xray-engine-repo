@@ -321,7 +321,7 @@ void CEntityCondition::UpdateCondition()
 
 
 
-float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_type, s16 element)
+float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_type, s16 element, float AP)
 {
     CInventoryOwner* pInvOwner		= smart_cast<CInventoryOwner*>(m_object);
 	if(!pInvOwner)					return hit_power;
@@ -332,7 +332,7 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 	float new_hit_power				= hit_power;
 
 	if (hit_type == ALife::eHitTypeFireWound)// && GameID() != GAME_SINGLE)
-		new_hit_power				= pOutfit->HitThruArmour(hit_power, element);
+		new_hit_power				= pOutfit->HitThruArmour(hit_power, element, AP);
 	else
 		new_hit_power				*= pOutfit->GetHitTypeProtection(hit_type,element);
 	
@@ -388,69 +388,71 @@ CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u1
 	return pWound;
 }
 
-CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element)
+//CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element)
+CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 {
 	//кто нанес последний хит
-	m_pWho = who;
-	m_iWhoID = (NULL != who) ? who->ID() : 0;
+	m_pWho = pHDS->who;
+	m_iWhoID = (NULL != pHDS->who) ? pHDS->who->ID() : 0;
 
-	float hit_power_org = hit_power;
+	float hit_power_org = pHDS->P;
+	float hit_power = hit_power_org;
 	//нормализуем силу удара
 	hit_power = hit_power/100.f;
-	hit_power = HitOutfitEffect(hit_power, hit_type, element);
+	hit_power = HitOutfitEffect(hit_power, pHDS->hit_type, pHDS->element, pHDS->ap);
 
 	bool bAddWound = true;
-	switch(hit_type)
+	switch(pHDS->hit_type)
 	{
 	case ALife::eHitTypeTelepatic:
 		// -------------------------------------------------
 		// temp (till there is no death from psy hits)
-		hit_power *= m_HitTypeK[hit_type];
+		hit_power *= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart*m_fHitBoneScale;
 		m_fDeltaHealth -= m_fHealthLost;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		// -------------------------------------------------
 
-		hit_power *= m_HitTypeK[hit_type];
+		hit_power *= m_HitTypeK[pHDS->hit_type];
 		ChangePsyHealth(-hit_power);
 		bAddWound =false;
 		break;
 	case ALife::eHitTypeBurn:
 	case ALife::eHitTypeChemicalBurn:
-		hit_power *= m_HitTypeK[hit_type];
+		hit_power *= m_HitTypeK[pHDS->hit_type];
 		break;
 	case ALife::eHitTypeShock:
-		hit_power		*= m_HitTypeK[hit_type];
+		hit_power		*= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost	=  hit_power*m_fHealthHitPart;
 		m_fDeltaHealth	-= m_fHealthLost;
 		m_fDeltaPower	-= hit_power*m_fPowerHitPart;
 		bAddWound		=  false;
 		break;
 	case ALife::eHitTypeRadiation:
-		/*hit_power *= m_HitTypeK[hit_type];*/
+		/*hit_power *= m_HitTypeK[pHDS->hit_type];*/
 		m_fDeltaRadiation += hit_power;
 		return NULL;
 		break;
 	case ALife::eHitTypeExplosion:
 	case ALife::eHitTypeStrike:
-		hit_power *= m_HitTypeK[hit_type];
+		hit_power *= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart;
 		m_fDeltaHealth -= m_fHealthLost;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		break;
 	case ALife::eHitTypeFireWound:
 	case ALife::eHitTypeWound:
-		hit_power *= m_HitTypeK[hit_type];
+		hit_power *= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart*m_fHitBoneScale;
 		m_fDeltaHealth -= m_fHealthLost;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		break;
 	}
 
-	if (bDebug) Msg("%s hitted in %s with %f[%f]", m_object->Name(), smart_cast<CKinematics*>(m_object->Visual())->LL_BoneName_dbg(element), m_fHealthLost*100.0f, hit_power_org);
+	if (bDebug) Msg("%s hitted in %s with %f[%f]", m_object->Name(), smart_cast<CKinematics*>(m_object->Visual())->LL_BoneName_dbg(pHDS->element), m_fHealthLost*100.0f, hit_power_org);
 	//раны добавляются только живому
 	if(bAddWound && GetHealth()>0)
-		return AddWound(hit_power*m_fWoundBoneScale, hit_type, element);
+		return AddWound(hit_power*m_fWoundBoneScale, pHDS->hit_type, pHDS->element);
 	else
 		return NULL;
 }

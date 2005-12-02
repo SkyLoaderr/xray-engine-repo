@@ -38,7 +38,7 @@ public:
 	float							GetHitTypeProtection(ALife::EHitType hit_type, s16 element);
 	float							GetDefHitTypeProtection(ALife::EHitType hit_type);
 
-	float							HitThruArmour		(float hit_power, s16 element);
+	float							HitThruArmour		(float hit_power, s16 element, float AP);
 	//коэффициент на который домножается потеря силы
 	//если на персонаже надет костюм
 	float							GetPowerLoss		();

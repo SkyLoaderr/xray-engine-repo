@@ -4,7 +4,7 @@ $spawn              	= ""
 burn_protection = 0.99			;коэффициенты защиты костюма персонажем 
 strike_protection = 0.99	
 shock_protection = 0.99
-wound_protection = 0.8		
+wound_protection = 0.5		
 radiation_protection = 0.99
 telepatic_protection = 0.99
 chemical_burn_protection = 0.99
@@ -56,7 +56,7 @@ radiation_immunity			= 0.00
 telepatic_immunity			= 0.00
 chemical_burn_immunity		= 0.00
 explosion_immunity			= 0.00
-fire_wound_immunity			= 0.30
+fire_wound_immunity			= 0.0;0.30
 
 [mp_military_stalker_outfit]:military_stalker_outfit
 $spawn              	= ""
@@ -64,14 +64,28 @@ $spawn              	= ""
 burn_protection = 0.6			;коэффициенты защиты костюма персонажем 
 strike_protection = 0.6
 shock_protection = 0.8
-wound_protection = 0.8		
+wound_protection = 0.6		
 radiation_protection = 0.5
 telepatic_protection = 0.6
 chemical_burn_protection = 0.6
 explosion_protection = 0.6
 fire_wound_protection  = 0.5
 
+immunities_sect			= mp_military_stalker_outfit_immunities
+
 bones_koeff_protection = mp_military_outfit_bones
+
+[mp_military_stalker_outfit_immunities]:sect_military_stalker_outfit_immunities
+burn_immunity				= 1.00				;коэффициенты иммунитета самого костюма
+strike_immunity				= 1.00
+shock_immunity				= 1.00
+wound_immunity				= 0.50
+radiation_immunity			= 0.00
+telepatic_immunity			= 0.00
+chemical_burn_immunity		= 1.00
+explosion_immunity			= 0.50
+fire_wound_immunity			= 0.0;0.10
+
 
 [mp_military_outfit_bones]
 hit_fraction		= 0.15
@@ -119,10 +133,22 @@ chemical_burn_protection = 0.5
 explosion_protection = 0.8
 fire_wound_protection  = 0.55
 
+immunities_sect			= mp_exo_outfit_immunities
 bones_koeff_protection = mp_exo_outfit_bones
 
 ;запрещение режима Sprint для Актера
 sprint_allowed			= false
+
+[mp_exo_outfit_immunities]:sect_exo_outfit_immunities
+burn_immunity				= 0.50				;коэффициенты иммунитета самого костюма
+strike_immunity				= 1.00
+shock_immunity				= 1.00
+wound_immunity				= 0.10
+radiation_immunity			= 0.00
+telepatic_immunity			= 0.00
+chemical_burn_immunity		= 1.00
+explosion_immunity			= 0.50
+fire_wound_immunity			= 0.0;0.05
 
 [mp_exo_outfit_bones]
 hit_fraction		= 0.1

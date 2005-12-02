@@ -128,9 +128,9 @@ float CCustomOutfit::GetHitTypeProtection(ALife::EHitType hit_type, s16 element)
 	return 1.0f - fBase*bone;
 }
 
-float	CCustomOutfit::HitThruArmour(float hit_power, s16 element)
+float	CCustomOutfit::HitThruArmour(float hit_power, s16 element, float AP)
 {
-	float BoneArmour = m_boneProtection->getBoneArmour(element)*GetCondition();	
+	float BoneArmour = m_boneProtection->getBoneArmour(element)*GetCondition()*(1-AP);	
 	float NewHitPower = hit_power - BoneArmour/100.0f;
 	if (NewHitPower < hit_power*m_boneProtection->m_fHitFrac) return hit_power*m_boneProtection->m_fHitFrac;
 	return NewHitPower;

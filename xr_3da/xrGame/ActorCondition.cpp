@@ -155,10 +155,11 @@ void CActorCondition::UpdateCondition()
 	inherited::UpdateCondition();
 }
 
-CWound* CActorCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
+//CWound* CActorCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
+CWound* CActorCondition::ConditionHit(SHit* pHDS)
 {
 	if (GodMode())/*(psActorFlags.test(AF_GODMODE))*/ return NULL;
-	return inherited::ConditionHit(who, hit_power, hit_type, element);
+	return inherited::ConditionHit(pHDS);
 }
 
 //weight - "удельный" вес от 0..1

@@ -309,6 +309,10 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		P.w_vec3		(position_in_bone_space);
 		P.w_float		(impulse);
 		P.w_u16			(u16(E.bullet.hit_type));
+		if (E.bullet.hit_type == ALife::eHitTypeFireWound)
+		{
+			P.w_float	(E.bullet.ap);
+		}
 		//-------------------------------------------------
 		if (AddStatistic)
 		{

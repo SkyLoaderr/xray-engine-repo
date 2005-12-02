@@ -57,6 +57,7 @@ void SBullet::Init(const Fvector& position,
 	hit_type			= e_hit_type;
 
 	pierce				= cartridge.m_kPierce;
+	ap					= cartridge.m_kAP;
 	wallmark_size		= cartridge.fWallmarkSize;
 
 	bullet_material_idx = cartridge.bullet_material_idx;

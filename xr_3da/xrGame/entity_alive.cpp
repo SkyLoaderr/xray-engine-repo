@@ -270,7 +270,7 @@ void	CEntityAlive::Hit							(SHit* pHDS)
 	CDamageManager::HitScale(HDS.element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
 
 	//изменить состояние, перед тем как родительский класс обработает хит
-	CWound* pWound = conditions().ConditionHit(HDS.who, HDS.P, HDS.hit_type, HDS.element);
+	CWound* pWound = conditions().ConditionHit(&HDS);
 
 	if(pWound){
 		if(ALife::eHitTypeBurn == HDS.hit_type)

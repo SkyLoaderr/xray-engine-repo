@@ -666,6 +666,9 @@
 					Name="weapons_mp"
 					Filter="">
 					<File
+						RelativePath=".\Config\mp\weapons_mp\ammo_mp.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\mp\weapons_mp\items_mp.ltx">
 					</File>
 					<File

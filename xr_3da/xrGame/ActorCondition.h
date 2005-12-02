@@ -29,7 +29,8 @@ public:
 	virtual void		LoadCondition				(LPCSTR section);
 	virtual void		reinit						();
 
-	virtual CWound*		ConditionHit				(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+//	virtual CWound*		ConditionHit				(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+	virtual CWound*		ConditionHit				(SHit* pHDS);
 	virtual void		UpdateCondition				();
 
 	virtual void 		ChangeAlcohol			(float value);

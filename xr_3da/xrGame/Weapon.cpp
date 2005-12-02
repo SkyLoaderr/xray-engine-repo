@@ -1410,3 +1410,9 @@ bool CWeapon::unlimited_ammo()
 			m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited); 
 };
 
+LPCSTR	CWeapon::GetCurrentAmmo_ShortName	()
+{
+	if (m_magazine.empty()) return ("");
+	CCartridge &l_cartridge = m_magazine.top();
+	return *(l_cartridge.m_InvShortName);
+}

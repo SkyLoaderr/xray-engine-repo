@@ -11,6 +11,7 @@ class NET_Packet;
 class CEntityAlive;
 
 #include "hit_immunity.h"
+#include "Hit.h"
 //#include "../bone.h"
 
 class CEntityCondition: public CHitImmunity
@@ -60,7 +61,8 @@ public:
 	void 					ChangeEntityMorale		(float value);
 
 	//hit_power задается от 0 до 100 (сложилось исторически)
-	virtual CWound*			ConditionHit			(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element = u16(-1));
+///	virtual CWound*			ConditionHit			(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element = u16(-1));
+	virtual CWound*			ConditionHit			(SHit* pHDS);
 	//обновления состояния с течением времени
 	virtual void			UpdateCondition			();
 	void					UpdateWounds			();
@@ -87,7 +89,7 @@ protected:
 
 	//изменение силы хита в зависимости от надетого костюма
 	//(только для InventoryOwner)
-	float					HitOutfitEffect			(float hit_power, ALife::EHitType hit_type, s16 element);
+	float					HitOutfitEffect			(float hit_power, ALife::EHitType hit_type, s16 element, float AP);
 	//изменение потери сил в зависимости от надетого костюма
 	float					HitPowerEffect			(float power_loss);
 	

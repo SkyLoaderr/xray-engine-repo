@@ -37,6 +37,9 @@ struct SBullet
 	//коэфициенты и параметры патрона
 	float			hit_power			;			// power*cartridge
 	float			hit_impulse			;			// impulse*cartridge
+	//-------------------------------------------------------------------
+	float			ap;
+	//-------------------------------------------------------------------
 	float			max_speed			;			// maxspeed*cartridge
 	float			max_dist			;			// maxdist*cartridge
 	float			pierce				;

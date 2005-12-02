@@ -549,6 +549,8 @@ void CUIMainIngameWnd::Update()
 		// then no need to update info
 		static u32			prevAmmoID		= static_cast<u32>(-1);
 		static u32			prevState		= static_cast<u32>(-1);
+		static int			prevFireMode	= static_cast<int>(-1);
+
 		if(	((item && m_pItem != item) || 
 						 (pWeapon && (prevState != pWeapon->State() || prevAmmoID != pWeapon->m_ammoType) )))
 		{
@@ -568,7 +570,8 @@ void CUIMainIngameWnd::Update()
 		if(pWeapon)
 		{
 
-			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType)
+			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType || 
+				(pWeaponMagazined && pWeaponMagazined->HasFireModes() && prevFireMode != pWeaponMagazined->GetCurrentFireMode()))
 			{
 				m_pWeapon					= pWeapon;//		Msg("- New m_pWeapon - %s[%d][0x%8x]", *pWeapon->cNameSect(), pWeapon->ID(), pWeapon);
 				prevState					= pWeapon->State();
@@ -601,6 +604,17 @@ void CUIMainIngameWnd::Update()
 					float h = INV_GRID_HEIGHT*0.9f;//1 cell
 					UIWeaponIcon.SetWidth(w);
 					UIWeaponIcon.SetHeight(h);
+
+					string256 sItemName;
+					strcpy(sItemName, pSettings->r_string(sect_name, "inv_name_short"));
+
+					if (pWeaponMagazined && pWeaponMagazined->HasFireModes())
+					{
+						prevFireMode = pWeaponMagazined->GetCurrentFireMode();
+						strcat(sItemName, pWeaponMagazined->GetCurrentFireModeStr());
+					};
+
+					UIWeaponBack.SetText	(sItemName);
 				}
 				else
 				{
@@ -608,14 +622,6 @@ void CUIMainIngameWnd::Update()
 					UIWeaponSignAmmo.Show		(false);
 				}
 			}
-
-			string256 sItemName;
-			strcpy(sItemName, m_pItem->NameShort());			
-
-			if (pWeaponMagazined && pWeaponMagazined->HasFireModes())
-				strcat(sItemName, pWeaponMagazined->GetCurrentFireModeStr());
-
-			UIWeaponBack.SetText	(sItemName);
 
 			int	AE					= m_pWeapon->GetAmmoElapsed();
 			int	AC					= m_pWeapon->GetAmmoCurrent();

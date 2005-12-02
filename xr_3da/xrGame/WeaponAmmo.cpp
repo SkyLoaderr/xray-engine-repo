@@ -9,12 +9,14 @@
 #include "ai_space.h"
 #include "gamemtllib.h"
 #include "level.h"
+#include "string_table.h"
 
 CCartridge::CCartridge() 
 {
 	m_flags.assign			(cfTracer | cfRicochet);
 	m_ammoSect = NULL;
 	m_kDist = m_kDisp = m_kHit = m_kImpulse = m_kPierce = 1.f;
+	m_kAP = 0.0f;
 	m_buckShot = 1;
 	m_impair = 1.f;
 
@@ -29,6 +31,7 @@ void CCartridge::Load(LPCSTR section)
 	m_kHit					= pSettings->r_float(section, "k_hit");
 	m_kImpulse				= pSettings->r_float(section, "k_impulse");
 	m_kPierce				= pSettings->r_float(section, "k_pierce");
+	m_kAP					= READ_IF_EXISTS(pSettings, r_float, section, "k_ap", 0.0f);
 	m_flags.set				(cfTracer, pSettings->r_bool(section, "tracer"));
 	m_buckShot				= pSettings->r_s32(section, "buck_shot");
 	m_impair				= pSettings->r_float(section, "impair");
@@ -44,6 +47,8 @@ void CCartridge::Load(LPCSTR section)
 	bullet_material_idx		=  GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	VERIFY	(u16(-1)!=bullet_material_idx);
 	VERIFY	(fWallmarkSize>0);
+
+	m_InvShortName			= CStringTable().translate( pSettings->r_string(section, "inv_name_short"));
 }
 
 CWeaponAmmo::CWeaponAmmo(void) 
@@ -65,6 +70,7 @@ void CWeaponAmmo::Load(LPCSTR section)
 	m_kHit					= pSettings->r_float(section, "k_hit");
 	m_kImpulse				= pSettings->r_float(section, "k_impulse");
 	m_kPierce				= pSettings->r_float(section, "k_pierce");
+	m_kAP					= READ_IF_EXISTS(pSettings, r_float, section, "k_ap", 0.0f);
 	m_tracer				= !!pSettings->r_bool(section, "tracer");
 	m_buckShot				= pSettings->r_s32(section, "buck_shot");
 	m_impair				= pSettings->r_float(section, "impair");
@@ -150,11 +156,13 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_kHit = m_kHit;
 	cartridge.m_kImpulse = m_kImpulse;
 	cartridge.m_kPierce = m_kPierce;
+	cartridge.m_kAP = m_kAP;
 	cartridge.m_flags.set(CCartridge::cfTracer ,m_tracer);
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
 	cartridge.fWallmarkSize = fWallmarkSize;
 	cartridge.bullet_material_idx = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
+	cartridge.m_InvShortName = NameShort();
 	--m_boxCurr;
 	return true;
 }

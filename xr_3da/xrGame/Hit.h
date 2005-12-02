@@ -2,7 +2,7 @@
 
 struct SHit
 {
-	SHit										(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type)				;
+	SHit										(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type, float ap = 0.0f);
 	SHit										()																																;
 	bool				is_valide				()																														const	;	
 	void				invalidate				()																																;
@@ -21,4 +21,5 @@ IC	ALife::EHitType		type					()																														const	{VERIFY(is_va
 	Fvector				p_in_bone_space																																			;
 	float				impulse																																					;
 	ALife::EHitType		hit_type																																				;
+	float				ap;
 };
