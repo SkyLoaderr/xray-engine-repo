@@ -83,11 +83,11 @@ void CSE_ALifeHumanAbstract::on_unregister							()
 void CSE_ALifeHumanAbstract::add_online								(const bool &update_registries)
 {
 	CSE_ALifeTraderAbstract::add_online		(update_registries);
-	CSE_ALifeMonsterAbstract::add_online	(update_registries);
+	brain().on_switch_online				();
 }
 
 void CSE_ALifeHumanAbstract::add_offline							(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries)
 {
 	CSE_ALifeTraderAbstract::add_offline	(saved_children,update_registries);
-	CSE_ALifeMonsterAbstract::add_offline	(saved_children,update_registries);
+	brain().on_switch_offline				();
 }

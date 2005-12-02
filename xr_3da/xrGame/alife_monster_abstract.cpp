@@ -18,7 +18,7 @@
 #include "ef_pattern.h"
 #include "alife_monster_brain.h"
 
-void CSE_ALifeMonsterAbstract::on_surge		()
+void CSE_ALifeMonsterAbstract::on_surge								()
 {
 	inherited1::on_surge			();
 	m_dynamic_out_restrictions.clear();
@@ -27,15 +27,17 @@ void CSE_ALifeMonsterAbstract::on_surge		()
 
 void CSE_ALifeMonsterAbstract::add_online							(const bool &update_registries)
 {
-	brain().on_switch_offline				();
+	inherited1::add_online			(update_registries);
+	brain().on_switch_online		();
 }
 
 void CSE_ALifeMonsterAbstract::add_offline							(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries)
 {
-	brain().on_switch_online				();
+	inherited1::add_offline			(saved_children,update_registries);
+	brain().on_switch_offline		();
 }
 
-void CSE_ALifeMonsterAbstract::update		()
+void CSE_ALifeMonsterAbstract::update								()
 {
 	if (!bfActive())
 		return;
