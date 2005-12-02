@@ -350,7 +350,7 @@ void CPHElement::Activate(bool disable){
 void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 	VERIFY(_valid(start_from));
 	Fmatrix globe;
-	globe.mul(start_from,mXFORM);
+	globe.mul_43(start_from,mXFORM);
 
 	Fvector lvel,avel;
 	lvel.set(0.f,0.f,0.f);
