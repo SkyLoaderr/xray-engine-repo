@@ -32,7 +32,6 @@ public:
 		ref_shader		shader;
 		WMVec			items;
 						wm_slot	(shared_str sh, shared_str tx)		{sh_name=sh;tx_name=tx;shader.create(*sh_name,*tx_name);items.reserve(256);}
-    	virtual	void	render	(wallmark*	W, FVF::LIT* &V);
 	};
 	DEFINE_VECTOR		(wm_slot*,WMSVec,WMSVecIt);
 	WMSVec				marks;

@@ -26,6 +26,7 @@
 //----------------------------------------------------
 
 #define MAX_WALLMARK_COUNT			500
+#define MAX_WALLMARK_VERTEX_COUNT	512
 #define COMPILER_SHADER				"def_shaders\\def_vertex_ghost_no_shadow"
 
 ESceneWallmarkTools::ESceneWallmarkTools():ESceneCustomMTools(OBJCLASS_WM)
@@ -171,13 +172,13 @@ void ESceneWallmarkTools::RefiningSlots()
 }
 
 extern ECORE_API float r_ssaDISCARD;
-const int	MAX_TRIS		= 512;
+const int	MAX_R_VERTEX	= 4096;
 
 void ESceneWallmarkTools::OnRender(int priority, bool strictB2F)
 {
 	if (!m_Flags.is(flDrawWallmark))return;
     if (marks.empty())				return;
-    
+
     for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
         wm_slot* slot		= *slot_it;	
         VERIFY(slot->shader);
@@ -191,29 +192,39 @@ void ESceneWallmarkTools::OnRender(int priority, bool strictB2F)
             float	ssaCLIP		   	= r_ssaDISCARD/4;
 
             u32			w_offset   	= 0;
-            FVF::LIT*	w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
-            FVF::LIT*	w_start = w_verts;
+            FVF::LIT*	w_verts 	= (FVF::LIT*) RCache.Vertex.Lock(MAX_R_VERTEX,hGeom->vb_stride,w_offset);
+            FVF::LIT*	w_start 	= w_verts;
 
             for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
-                wallmark* W		= *w_it;
+                wallmark* W			= *w_it;
+                VERIFY3				(W->verts.size()<=MAX_R_VERTEX,"ERROR: Invalid wallmark.",*slot->tx_name);
                 if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)){
-                    float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
-                    float ssa	= W->bounds.R * W->bounds.R / dst;
+                    float dst		= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
+                    float ssa		= W->bounds.R * W->bounds.R / dst;
                     if (ssa>=ssaCLIP){
-                        u32 w_count		= u32(w_verts-w_start);
-                        if ((w_count+W->verts.size())>=(MAX_TRIS*3)){
-                            if (w_count){
+                        // fill wallmark
+                        u32	C		= color_rgba(255,255,255,255);
+                        int t_cnt	= W->verts.size()/3;
+                        for (int t_idx=0; t_idx<t_cnt; t_idx++){
+	                        u32 w_count	= u32(w_verts-w_start);
+                            if (w_count+3>MAX_R_VERTEX){
                                 // Flush stream
-                                RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+                                RCache.Vertex.Unlock   	(w_count,hGeom->vb_stride);
                                 RCache.set_Shader		(slot->shader);
                                 RCache.set_Geometry		(hGeom);
                                 RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
                                 // Restart (re-lock/re-calc)
-                                w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
-                                w_start		= w_verts;
+                                w_verts					= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_R_VERTEX,hGeom->vb_stride,w_offset);
+                                w_start					= w_verts;
+                            }
+                            // real fill buffer
+                            FVF::LIT* S		= &*W->verts.begin();
+                        	for (int k=0; k<3; k++,S++){
+                                w_verts->p.set	(S->p);
+                                w_verts->color	= C;
+                                w_verts->t.set	(S->t);
                             }
                         }
-                        slot->render(W,w_verts);
                     }
                 }
             }
@@ -240,6 +251,11 @@ void ESceneWallmarkTools::OnRender(int priority, bool strictB2F)
         }
     }
 }
+
+struct zero_item_pred : public std::unary_function<ESceneWallmarkTools::wallmark*, bool>
+{
+	bool operator()(const ESceneWallmarkTools::wallmark*& x){ return x==0; }
+};
 
 bool ESceneWallmarkTools::Load(IReader& F)
 {
@@ -330,6 +346,21 @@ bool ESceneWallmarkTools::Load(IReader& F)
         }
     }
 
+    // validate wallmarks
+    for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+        wm_slot* slot		= *slot_it;	
+        for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+            wallmark*& W	= *w_it;
+            if (W->verts.size()>MAX_WALLMARK_VERTEX_COUNT){
+                ELog.DlgMsg	(mtError,"ERROR: Invalid wallmark (Contain more than %d vertices). Removed.", MAX_WALLMARK_VERTEX_COUNT);
+                wm_destroy	(W);
+                W			= 0;
+            }
+        }
+        WMVecIt new_end		= std::remove_if(slot->items.begin(),slot->items.end(),zero_item_pred());
+	    slot->items.erase	(new_end,slot->items.end());
+    }
+    
     return true;
 }
 
@@ -447,19 +478,6 @@ ESceneWallmarkTools::wallmark*	ESceneWallmarkTools::wm_allocate		()
 void		ESceneWallmarkTools::wm_destroy		(wallmark*	W	)
 {
 	pool.push_back		(W);
-}
-// render
-void		ESceneWallmarkTools::wm_slot::render	(wallmark*	W, FVF::LIT* &V)
-{
-	u32			C		= color_rgba(255,255,255,255);
-	FVF::LIT*	S		= &*W->verts.begin	();
-	FVF::LIT*	E		= &*W->verts.end	();
-	for (; S!=E; S++, V++)
-	{
-		V->p.set		(S->p);
-		V->color		= C;
-		V->t.set		(S->t);
-	}
 }
 
 struct SWMSlotFindPredicate {
@@ -637,8 +655,11 @@ BOOL ESceneWallmarkTools::AddWallmark_internal(const Fvector& start, const Fvect
     RecurseTri			(0,mView,*W);
 
 	// calc sphere
-	if (W->verts.size()<3) { wm_destroy(W); return FALSE; }
-	else {
+	if ((W->verts.size()<3) || (W->verts.size()>MAX_WALLMARK_VERTEX_COUNT)) { 
+    	ELog.DlgMsg		(mtError,"Invalid wallmark vertex count. [Min: %d. Max: %d].",3,MAX_WALLMARK_VERTEX_COUNT);
+    	wm_destroy		(W); 
+        return 			FALSE; 
+    }else{
 		W->bbox.invalidate();
 		FVF::LIT* I=&*W->verts.begin	();
 		FVF::LIT* E=&*W->verts.end		();
