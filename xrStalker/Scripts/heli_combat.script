@@ -30,6 +30,10 @@ local visibility_delay           = 3000
 
 local dummy_vector = vector()
 
+function distance_2d( a, b )
+	return math.sqrt( (b.x-a.x)^2 + (b.z-a.z)^2 )
+end
+
 ----------------------------------------------------------------------------------------------------
 class "heli_combat"
 
@@ -351,7 +355,8 @@ function heli_combat:search_initialize()
 end
 
 function heli_combat:search_choose_attack_dist( retreat )
-	local dist = self.object:position():distance_to( self.enemy:position() )
+--	local dist = self.object:position():distance_to( self.enemy:position() )
+--	local dist = distance_2d( self.object:position(), self.enemy:position() )
 
 	if retreat then
 		return 100
@@ -407,12 +412,14 @@ function heli_combat:search_update_flight( see_enemy )
 		self.change_pos_time = time_global() + 2000
 
 		if not self.can_forget_enemy and
-		   self.object:position():distance_to( self.enemy_last_seen_pos ) <= self.search_attack_dist
+--		   self.object:position():distance_to( self.enemy_last_seen_pos ) <= self.search_attack_dist
+		   distance_2d( self.object:position(), self.enemy_last_seen_pos ) <= self.search_attack_dist
 		then
 			self.can_forget_enemy = true
 		end
 
-		if self.center_pos:distance_to_sqr( self.enemy_last_seen_pos ) > 100 then
+--		if self.center_pos:distance_to_sqr( self.enemy_last_seen_pos ) > 100 then
+		if distance_2d( self.center_pos, self.enemy_last_seen_pos ) > 10 then
 			printf( "heli_combat: enemy has changed it's position" )
 
 			self:search_setup_flight( self.flight_direction )
@@ -452,7 +459,8 @@ function heli_combat:flyby_initialize()
 end
 
 function heli_combat:flyby_set_initial_state()
-	if self.object:position():distance_to( self.enemy_last_seen_pos ) < self.flyby_attack_dist then
+--	if self.object:position():distance_to( self.enemy_last_seen_pos ) < self.flyby_attack_dist then
+	if distance_2d( self.object:position(), self.enemy_last_seen_pos ) < self.flyby_attack_dist then
 --		self.heliObject:LookAtPoint( dummy_vector, false )
 
 		self.state = flyby_state_to_attack_dist
