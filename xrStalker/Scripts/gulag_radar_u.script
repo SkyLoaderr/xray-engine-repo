@@ -350,12 +350,7 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
-		t = { section = "logic@bun_krovosos_nest_krovosos2",
-			idle = 0,
-			prior = 1, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
+		
       end
       
 
