@@ -23,7 +23,7 @@ const float hinge2_damping=1000.f;
 
 IC dBodyID body_for_joint(CPhysicsElement* e)
 {
-	return e->isFixed() ? 0 : e->get_body();
+	 return e->get_body();//return e->isFixed() ? 0 :
 }
 
 CPHJoint::~CPHJoint(){
