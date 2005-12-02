@@ -10,6 +10,17 @@ use             = true
 use_wpn         = true
 
 ;--------------------------------------------------------------------------
+; 
+;--------------------------------------------------------------------------
+[meet@ignore]
+meet_state      = 1|wait
+meet_state_wpn  = 1|wait
+victim          = 1|nil
+victim_wpn      = 1|nil
+use             = true
+use_wpn         = true
+
+;--------------------------------------------------------------------------
 ; диалог лидера
 ;--------------------------------------------------------------------------
 [meet@leader]
@@ -88,6 +99,7 @@ path_look           = wave1_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_leader_wave1 %+pri_helicopters_start%
 on_info             = {+pri_wave1_start} walker@pri_followers_leader_wave1 %+pri_helicopters_start%
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
@@ -97,6 +109,7 @@ path_walk           = wave1_leader_walk1
 path_look           = wave1_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_info             = {+pri_followers_heli_look} remark@pri_followers_leader_wave1
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 
@@ -104,6 +117,7 @@ on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 no_move             = true
 target              = 801
 anim                = guard
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_leader_wave1_cont
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 
@@ -112,6 +126,7 @@ path_walk           = wave1_leader_walk1
 path_look           = wave1_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 
@@ -127,6 +142,7 @@ path_look           = wave2_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_leader_wave2 %+pri_wave2_start_phrase%
 on_info             = {+pri_wave2_start} walker@pri_followers_leader_wave2 %+pri_wave2_start_phrase%
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
@@ -136,6 +152,7 @@ path_walk           = wave2_leader_walk2
 path_look           = wave2_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 
@@ -152,6 +169,7 @@ path_look           = wave3_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_leader_wave3 %+pri_wave3_start%
 on_info             = {+pri_wave3_start} walker@pri_followers_leader_wave3
 danger              = danger@ignore
@@ -163,6 +181,7 @@ path_walk           = wave3_leader_walk2
 path_look           = wave3_leader_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
+meet                = meet@ignore
 ;on_timer            = 2000 | remark@pri_followers_leader_wave3_fight ;walker@pri_followers_leader_wave3_fight
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -171,6 +190,7 @@ on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 [walker@pri_followers_leader_wave3_fight]
 path_walk           = wave3_leader_walk2
 path_look           = wave3_leader_look3
+meet                = meet@ignore
 ;on_timer            = 5000 | walker@pri_followers_leader_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -181,6 +201,7 @@ on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 ;no_rotate           = true
 target              = 807
 anim                = threat_fire
+meet                = meet@ignore
 ;on_timer            = 5000 | walker@pri_followers_leader_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -199,6 +220,7 @@ path_look           = wave4_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_leader_wave4 %+pri_wave4_start_phrase%
 on_info             = {+pri_wave4_start} walker@pri_followers_leader_wave4 %+pri_wave4_start_phrase%
 combat_ignore_cond  = {=check_fighting(820:821)}
@@ -209,6 +231,7 @@ path_walk           = wave4_leader_walk2
 path_look           = wave4_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 
@@ -224,6 +247,7 @@ path_look           = wave5_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_leader_wave5
 on_info             = {+pri_wave5_start} walker@pri_followers_leader_wave5
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
@@ -233,6 +257,7 @@ path_walk           = wave5_leader_walk2
 path_look           = wave5_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 
@@ -248,6 +273,7 @@ path_look           = wave6_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_leader_wave6
 on_info             = {+pri_wave6_start} walker@pri_followers_leader_wave6
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
@@ -257,6 +283,7 @@ path_walk           = wave6_leader_walk2
 path_look           = wave6_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave6_start} %+pri_wave6_start%
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
 
@@ -274,6 +301,7 @@ path_look           = wave7_leader_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 ;on_signal           = syn | {=pri_followers_can_hear} remark@pri_followers_leader_wave7_phrase, walker@pri_followers_leader_wave7
 ;on_info             = {+pri_wave7_start =pri_followers_can_hear} remark@pri_followers_leader_wave7_phrase, {+pri_wave7_start} walker@pri_followers_leader_wave7
 on_signal           = syn | %+pri_wave7_leader_phrase_start%
@@ -285,6 +313,7 @@ path_walk           = wave7_leader_walk2
 path_look           = wave7_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
 combat_ignore_cond  = {-pri_wave7_start}
 on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
@@ -351,6 +380,7 @@ path_look           = wave1_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_bomber_wave1 %+pri_helicopters_start%
 on_info             = {+pri_wave1_start} walker@pri_followers_bomber_wave1 %+pri_helicopters_start -pri_bomber_dead%, %-pri_bomber_dead%
 danger              = danger@ignore
@@ -361,12 +391,14 @@ path_walk           = wave1_bomber_walk1
 path_look           = wave1_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_info             = {+pri_followers_heli_look} remark@pri_followers_bomber_wave1
 combat_ignore_cond  = {!check_fighting(808) !fighting_actor} ;always
 
 [remark@pri_followers_bomber_wave1]
 no_move             = true
 anim                = threat
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_bomber_wave1_cont
 combat_ignore_cond  = {!check_fighting(808) !fighting_actor} ;always
 
@@ -375,6 +407,7 @@ path_walk           = wave1_bomber_walk1
 path_look           = wave1_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
 combat_ignore_cond  = {!check_fighting(808) !fighting_actor} ;always
 
@@ -391,6 +424,7 @@ path_look           = wave2_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_bomber_wave2
 on_info             = {+pri_wave2_start} walker@pri_followers_bomber_wave2 %-pri_bomber_dead%, %-pri_bomber_dead%
 combat_ignore_cond  = {!check_fighting(804:805) !fighting_actor} ;always
@@ -400,6 +434,7 @@ path_walk           = wave2_bomber_walk2
 path_look           = wave2_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%
 combat_ignore_cond  = {!check_fighting(804:805) !fighting_actor} ;always
 
@@ -416,6 +451,7 @@ path_look           = wave3_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_bomber_wave3_hide %+pri_wave3_start%
 on_info             = {+pri_wave3_start} walker@pri_followers_bomber_wave3_hide %-pri_bomber_dead%, %-pri_bomber_dead%
 danger              = danger@ignore
@@ -426,6 +462,7 @@ path_walk           = wave3_bomber_walk2
 path_look           = wave3_bomber_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
+meet                = meet@ignore
 on_info             = {+pri_wave3_btr_arrived} walker@pri_followers_bomber_wave3_fire_place
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -434,6 +471,7 @@ combat_ignore_cond  = {!fighting_actor}
 path_walk           = wave3_bomber_walk3
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | remark@pri_followers_bomber_wave3_fire %+pri_wave3_bomber_on_position% ;walker@pri_followers_bomber_wave3_fire
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -441,6 +479,7 @@ combat_ignore_cond  = {!fighting_actor}
 [walker@pri_followers_bomber_wave3_fire]
 path_walk           = wave3_bomber_walk3
 path_look           = wave3_bomber_look3
+meet                = meet@ignore
 on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:600:2000)%
 on_signal           = arrived | %+pri_wave3_bomber_on_position%
 wounded             = wounded@ignore
@@ -451,6 +490,7 @@ combat_ignore_cond  = {!fighting_actor}
 no_move             = true
 anim                = hide_fire
 target              = 807
+meet                = meet@ignore
 on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:600:2000)%
 wounded             = wounded@ignore
 danger              = danger@ignore
@@ -460,6 +500,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;no_move             = true
 ;no_rotate           = true
 anim                = assault
+meet                = meet@ignore
 wounded             = wounded@ignore
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -469,6 +510,7 @@ path_walk           = wave3_bomber_walk4
 path_look           = wave3_bomber_look4
 def_state_moving1   = sprint
 def_state_moving2   = sprint
+meet                = meet@ignore
 wounded             = wounded@ignore
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -485,6 +527,7 @@ path_walk           = wave4_bomber_walk1
 path_look           = wave4_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 team                = followers
 on_signal           = syn | walker@pri_followers_bomber_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_bomber_wave4 %-pri_bomber_dead%, %-pri_bomber_dead%
@@ -495,6 +538,7 @@ path_walk           = wave4_bomber_walk2
 path_look           = wave4_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%
 ;combat_ignore_cond  = {!check_fighting(804:805)} ;always
 
@@ -510,6 +554,7 @@ path_walk           = wave5_bomber_walk1
 path_look           = wave5_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 team                = followers
 on_signal           = syn | walker@pri_followers_bomber_wave5
 on_info             = {+pri_wave5_start} walker@pri_followers_bomber_wave5 %-pri_bomber_dead%, %-pri_bomber_dead%
@@ -520,6 +565,7 @@ path_walk           = wave5_bomber_walk2
 path_look           = wave5_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%
 ;combat_ignore_cond  = {!check_fighting(804:805)} ;always
 
@@ -536,6 +582,7 @@ path_look           = wave6_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_bomber_wave6
 on_info             = {+pri_wave6_start} walker@pri_followers_bomber_wave6 %-pri_bomber_dead%, %-pri_bomber_dead%
 
@@ -544,6 +591,7 @@ path_walk           = wave6_bomber_walk2
 path_look           = wave6_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave6_start} %+pri_wave6_start%
 
 ;--- BOMBER: WAVE7 ------------------------------------------------------------------------------
@@ -560,6 +608,7 @@ path_look           = wave7_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 ;on_signal           = syn | walker@pri_followers_bomber_wave7
 ;on_info             = {+pri_wave7_start} walker@pri_followers_bomber_wave7
 on_info             = {+pri_wave7_leader_phrase_end} walker@pri_followers_bomber_wave7 %-pri_bomber_dead%, %-pri_bomber_dead%
@@ -569,6 +618,7 @@ path_walk           = wave7_bomber_walk2
 path_look           = wave7_bomber_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
 combat_ignore_cond  = {-pri_wave7_start}
 
@@ -583,6 +633,7 @@ path_walk           = wave8_bomber_walk1
 path_look           = wave8_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP1: KAMP ----------------------------------------------------------------------------------
@@ -627,6 +678,7 @@ path_look           = wave1_stalker1_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap1_wave1
 on_info             = {+pri_wave1_start} walker@pri_followers_nap1_wave1
 danger              = danger@ignore
@@ -636,11 +688,13 @@ path_walk           = wave1_stalker1_walk1
 path_look           = wave1_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_info             = {+pri_followers_heli_look} remark@pri_followers_nap1_wave1
 
 [remark@pri_followers_nap1_wave1]
 no_move             = true
 anim                = threat
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_nap1_wave1_cont
 
 [walker@pri_followers_nap1_wave1_cont]
@@ -648,6 +702,7 @@ path_walk           = wave1_stalker1_walk1
 path_look           = wave1_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
 
 ;--- NAP1: WAVE2 --------------------------------------------------------------------------------
@@ -662,6 +717,7 @@ path_look           = wave2_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap1_wave2
 on_info             = {+pri_wave2_start} walker@pri_followers_nap1_wave2
 
@@ -685,6 +741,7 @@ path_look           = wave3_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap1_wave3 %+pri_wave3_start%
 on_info             = {+pri_wave3_start} walker@pri_followers_nap1_wave3
 danger              = danger@ignore
@@ -695,6 +752,7 @@ path_walk           = wave3_stalker1_walk2
 path_look           = wave3_stalker1_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
+meet                = meet@ignore
 on_timer            = 2000 | remark@pri_followers_nap1_wave3_fight ;walker@pri_followers_nap1_wave3_fight
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -702,6 +760,7 @@ combat_ignore_cond  = {!fighting_actor}
 [walker@pri_followers_nap1_wave3_fight]
 path_walk           = wave3_stalker1_walk2
 path_look           = wave3_stalker1_look3
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_nap1_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -711,6 +770,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;no_rotate           = true
 target              = 807
 anim                = threat_fire
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_nap1_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -728,6 +788,7 @@ path_look           = wave4_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap1_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_nap1_wave4
 combat_ignore_cond  = {=check_fighting(820:821)}
@@ -737,6 +798,7 @@ path_walk           = wave4_stalker1_walk2
 path_look           = wave4_stalker1_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%
 
 ;--- NAP1: WAVE5 --------------------------------------------------------------------------------
@@ -751,6 +813,7 @@ path_look           = wave5_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap1_wave5
 on_info             = {+pri_wave5_start} walker@pri_followers_nap1_wave5
 
@@ -759,6 +822,7 @@ path_walk           = wave5_stalker1_walk2
 path_look           = wave5_stalker1_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%
 
 ;--- NAP1: WAVE6 ------------------------------------------------------------------------------
@@ -773,6 +837,7 @@ path_look           = wave6_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap1_wave6
 on_info             = {+pri_wave6_start} walker@pri_followers_nap1_wave6
 
@@ -781,6 +846,7 @@ path_walk           = wave6_stalker1_walk2
 path_look           = wave6_stalker1_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave6_start} %+pri_wave6_start%
 
 ;--- NAP1: WAVE7 ------------------------------------------------------------------------------
@@ -797,6 +863,7 @@ path_look           = wave7_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 ;on_signal           = syn | walker@pri_followers_nap1_wave7
 ;on_info             = {+pri_wave7_start} walker@pri_followers_nap1_wave7
 on_info             = {+pri_wave7_leader_phrase_end} walker@pri_followers_nap1_wave7
@@ -806,6 +873,7 @@ path_walk           = wave7_stalker1_walk2
 path_look           = wave7_stalker1_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
 combat_ignore_cond  = {-pri_wave7_start}
 
@@ -820,6 +888,7 @@ path_walk           = wave8_stalker1_walk1
 path_look           = wave8_stalker1_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP2: KAMP ----------------------------------------------------------------------------------
@@ -864,6 +933,7 @@ path_look           = wave1_stalker2_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap2_wave1
 on_info             = {+pri_wave1_start} walker@pri_followers_nap2_wave1
 danger              = danger@ignore
@@ -873,11 +943,13 @@ path_walk           = wave1_stalker2_walk1
 path_look           = wave1_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_info             = {+pri_followers_heli_look} remark@pri_followers_nap2_wave1
 
 [remark@pri_followers_nap2_wave1]
 no_move             = true
 anim                = threat
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_nap2_wave1_cont
 
 [walker@pri_followers_nap2_wave1_cont]
@@ -885,6 +957,7 @@ path_walk           = wave1_stalker2_walk1
 path_look           = wave1_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
 
 ;--- NAP2: WAVE2 --------------------------------------------------------------------------------
@@ -899,6 +972,7 @@ path_look           = wave2_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap2_wave2
 on_info             = {+pri_wave2_start} walker@pri_followers_nap2_wave2
 
@@ -907,6 +981,7 @@ path_walk           = wave2_stalker2_walk2
 path_look           = wave2_stalker2_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%
 
 ;--- NAP2: WAVE3 --------------------------------------------------------------------------------
@@ -922,6 +997,7 @@ path_look           = wave3_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap2_wave3 %+pri_wave3_start%
 on_info             = {+pri_wave3_start} walker@pri_followers_nap2_wave3
 danger              = danger@ignore
@@ -932,6 +1008,7 @@ path_walk           = wave3_stalker2_walk2
 path_look           = wave3_stalker2_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
+meet                = meet@ignore
 on_timer            = 2000 | remark@pri_followers_nap2_wave3_fight ;walker@pri_followers_nap2_wave3_fight
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -939,6 +1016,7 @@ combat_ignore_cond  = {!fighting_actor}
 [walker@pri_followers_nap2_wave3_fight]
 path_walk           = wave3_stalker2_walk2
 path_look           = wave3_stalker2_look3
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_nap2_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -948,6 +1026,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;no_rotate           = true
 target              = 807
 anim                = threat_fire
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_nap2_wave3
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
@@ -965,6 +1044,7 @@ path_look           = wave4_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap2_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_nap2_wave4
 combat_ignore_cond  = {=check_fighting(820:821)}
@@ -974,6 +1054,7 @@ path_walk           = wave4_stalker2_walk2
 path_look           = wave4_stalker2_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%
 
 ;--- NAP2: WAVE5 --------------------------------------------------------------------------------
@@ -988,6 +1069,7 @@ path_look           = wave5_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap2_wave5
 on_info             = {+pri_wave5_start} walker@pri_followers_nap2_wave5
 
@@ -996,6 +1078,7 @@ path_walk           = wave5_stalker2_walk2
 path_look           = wave5_stalker2_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%
 
 ;--- NAP2: WAVE6 ------------------------------------------------------------------------------
@@ -1010,6 +1093,7 @@ path_look           = wave6_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap2_wave6
 on_info             = {+pri_wave6_start} walker@pri_followers_nap2_wave6
 
@@ -1018,6 +1102,7 @@ path_walk           = wave6_stalker2_walk2
 path_look           = wave6_stalker2_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave6_start} %+pri_wave6_start%
 
 ;--- NAP2: WAVE7 ------------------------------------------------------------------------------
@@ -1034,6 +1119,7 @@ path_look           = wave7_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 ;on_signal           = syn | walker@pri_followers_nap2_wave7
 ;on_info             = {+pri_wave7_start} walker@pri_followers_nap2_wave7
 on_info             = {+pri_wave7_leader_phrase_end} walker@pri_followers_nap2_wave7
@@ -1043,6 +1129,7 @@ path_walk           = wave7_stalker2_walk2
 path_look           = wave7_stalker2_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
 combat_ignore_cond  = {-pri_wave7_start}
 
@@ -1057,6 +1144,7 @@ path_walk           = wave8_stalker2_walk1
 path_look           = wave8_stalker2_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 
 ;-------------------------------------------------------------------------------------------------
 ;--- NAP3: KAMP ----------------------------------------------------------------------------------
@@ -1101,6 +1189,7 @@ path_look           = wave1_stalker3_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap3_wave1
 on_info             = {+pri_wave1_start} walker@pri_followers_nap3_wave1
 danger              = danger@ignore
@@ -1110,11 +1199,13 @@ path_walk           = wave1_stalker3_walk1
 path_look           = wave1_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_info             = {+pri_followers_heli_look} remark@pri_followers_nap3_wave1
 
 [remark@pri_followers_nap3_wave1]
 no_move             = true
 anim                = threat
+meet                = meet@ignore
 on_timer            = 5000 | walker@pri_followers_nap3_wave1_cont
 
 [walker@pri_followers_nap3_wave1_cont]
@@ -1122,6 +1213,7 @@ path_walk           = wave1_stalker3_walk1
 path_look           = wave1_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
 
 ;--- NAP3: WAVE2 --------------------------------------------------------------------------------
@@ -1136,6 +1228,7 @@ path_look           = wave2_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap3_wave2
 on_info             = {+pri_wave2_start} walker@pri_followers_nap3_wave2
 
@@ -1144,6 +1237,7 @@ path_walk           = wave2_stalker3_walk2
 path_look           = wave2_stalker3_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%
 
 ;--- NAP3: WAVE3 --------------------------------------------------------------------------------
@@ -1159,6 +1253,7 @@ path_look           = wave3_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap3_wave3 %+pri_wave3_start%
 on_info             = {+pri_wave3_start} walker@pri_followers_nap3_wave3
 danger              = danger@ignore
@@ -1169,6 +1264,7 @@ path_walk           = wave3_stalker3_walk2
 path_look           = wave3_stalker3_look2
 def_state_moving1   = sprint
 def_state_moving2   = sprint
+meet                = meet@ignore
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
@@ -1185,6 +1281,7 @@ path_look           = wave4_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap3_wave4
 on_info             = {+pri_wave4_start} walker@pri_followers_nap3_wave4
 combat_ignore_cond  = {=check_fighting(820:821)}
@@ -1194,6 +1291,7 @@ path_walk           = wave4_stalker3_walk2
 path_look           = wave4_stalker3_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%
 
 ;--- NAP3: WAVE5 --------------------------------------------------------------------------------
@@ -1216,6 +1314,7 @@ path_walk           = wave5_stalker3_walk2
 path_look           = wave5_stalker3_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%
 
 ;--- NAP3: WAVE6 ------------------------------------------------------------------------------
@@ -1230,6 +1329,7 @@ path_look           = wave6_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 on_signal           = syn | walker@pri_followers_nap3_wave6
 on_info             = {+pri_wave6_start} walker@pri_followers_nap3_wave6
 
@@ -1238,6 +1338,7 @@ path_walk           = wave6_stalker3_walk2
 path_look           = wave6_stalker3_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave6_start} %+pri_wave6_start%
 
 ;--- NAP3: WAVE7 ------------------------------------------------------------------------------
@@ -1254,6 +1355,7 @@ path_look           = wave7_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
+meet                = meet@ignore
 ;on_signal           = syn | walker@pri_followers_nap3_wave7
 ;on_info             = {+pri_wave7_start} walker@pri_followers_nap3_wave7
 on_info             = {+pri_wave7_leader_phrase_end} walker@pri_followers_nap3_wave7
@@ -1263,6 +1365,7 @@ path_walk           = wave7_stalker3_walk2
 path_look           = wave7_stalker3_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
 combat_ignore_cond  = {-pri_wave7_start}
 
@@ -1277,6 +1380,7 @@ path_walk           = wave8_stalker3_walk1
 path_look           = wave8_stalker3_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
+meet                = meet@ignore
 
 
 ;-------------------------------------------------------------------------------------------------
