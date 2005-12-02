@@ -568,6 +568,9 @@
 					RelativePath=".\Config\misc\quest_items.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\respawn.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\script_sound.ltx">
 				</File>
 				<File
@@ -2688,6 +2691,9 @@
 					</File>
 					<File
 						RelativePath=".\Scripts\bind_physic_object.script">
+					</File>
+					<File
+						RelativePath=".\scripts\bind_respawn.script">
 					</File>
 					<File
 						RelativePath=".\Scripts\bind_restrictor.script">
