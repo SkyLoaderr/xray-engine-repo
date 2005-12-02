@@ -1,7 +1,7 @@
 #ifndef D_TRI_SPHERE_H
 #define D_TRI_SPHERE_H
 #include "TriPrimitiveCollideClassDef.h"
-
+#include "../MathUtils.h"
 IC float	dSphereProj(dxGeom* sphere,const dReal* /**normal/**/)
 {
 	dIASSERT (dGeomGetClass(sphere)== dSphereClass);
@@ -28,7 +28,7 @@ inline dReal FragmentonSphereTest(const dReal* center, const dReal radius,
 								  const dReal* pt1, const dReal* pt2,dReal* norm)
 {
 	dVector3 direction={pt2[0]-pt1[0],pt2[1]-pt1[1],pt2[2]-pt1[2]};
-	dNormalize3(direction);
+	cast_fv(direction).normalize();
 	dReal center_prg=dDOT(center,direction);
 	dReal pt1_prg=dDOT(pt1,direction);
 	dReal pt2_prg=dDOT(pt2,direction);
@@ -63,13 +63,19 @@ inline dReal PointSphereTest(const dReal* center, const dReal radius,
 	norm[0]=center[0]-pt[0];
 	norm[1]=center[1]-pt[1];
 	norm[2]=center[2]-pt[2];
-	dVector3 to_center={norm[0],norm[1],norm[2]};
-	dNormalize3(norm);
-	dReal depth=radius-dDOT(to_center,norm);
-
-	if(depth>0.f)	return depth;
-	else			return -1.f;
-
+	dReal mag=dSqrt(dDOT(norm,norm));
+	dReal depth=radius-dSqrt(dDOT(norm,norm));
+	if(depth<0.f)	return -1.f;
+	if(mag>0.f)
+	{
+		norm[0]/=mag;norm[1]/=mag;norm[2]/=mag;
+	}
+	else 
+	{
+		norm[0]=0;norm[1]=1;norm[2]=0;
+	}
+	return depth;
+	
 }
 
 TRI_PRIMITIVE_COLIDE_CLASS_DECLARE(Sphere)
