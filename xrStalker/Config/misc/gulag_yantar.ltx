@@ -104,7 +104,7 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_info = {=rostok_dist_to_actor_le(6)} camper@scientist_3 %=yantar_kruglov_talk%
+on_info = {!has_enemy =rostok_dist_to_actor_le(6)} camper@scientist_3 %=yantar_kruglov_talk%
 
 [camper@scientist_3]
 path_walk = help_walk_1
@@ -124,7 +124,7 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_info = {=rostok_dist_to_actor_le(6)} camper@scientist_4 %=yantar_kruglov_talk%
+on_info = {!has_enemy =rostok_dist_to_actor_le(6)} camper@scientist_4 %=yantar_kruglov_talk%
 
 [camper@scientist_4]
 path_walk = help_walk_2
@@ -144,7 +144,7 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_info = {=rostok_dist_to_actor_le(6)} camper@scientist_5 %=yantar_kruglov_talk%
+on_info = {!has_enemy =rostok_dist_to_actor_le(6)} camper@scientist_5 %=yantar_kruglov_talk%
 
 [camper@scientist_5]
 path_walk = help_walk_3
@@ -164,7 +164,7 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_info = {=rostok_dist_to_actor_le(6)} remark@scientist_research %+yan_scientist_researching%
+on_info = {!has_enemy =rostok_dist_to_actor_le(6)} remark@scientist_research %+yan_scientist_researching%
 danger = danger_condition@1
 
 [remark@scientist_research]
