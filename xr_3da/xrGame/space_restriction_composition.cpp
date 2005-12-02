@@ -167,6 +167,7 @@ void CSpaceRestrictionComposition::test_correctness()
 		RESTRICTIONS::iterator		I = m_restrictions.begin();
 		RESTRICTIONS::iterator		E = m_restrictions.end();
 		for ( ; I != E; ++I) {
+			VERIFY3							(!(*I)->object().m_test_storage.empty(),"Restrictor has no border",*(*I)->object().name());
 			nodes.clear						();
 			ai().level_graph().set_mask		(border());
 			ai().graph_engine().search		(ai().level_graph(), (*I)->object().m_test_storage.back(), (*I)->object().m_test_storage.back(), &nodes, GraphEngineSpace::CFlooder());
