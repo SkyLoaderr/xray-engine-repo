@@ -156,6 +156,9 @@
     <string id="yantar_help_scientist_21">
         <text>Ого, Меченый! Ты наконец-то добрался к нам. Поговори с профессором, он тебя отблагодарит за мое спасение.</text>
     </string>
+    <string id="yantar_help_scientist_31">
+        <text>Нет времени болтать...</text>
+    </string>
     <string id="yantar_help_scientist_71">
         <text>Привет, Меченый. Как поживаешь?</text>
     </string>
