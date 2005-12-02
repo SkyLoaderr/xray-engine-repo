@@ -329,7 +329,6 @@ function has_enemy(actor, npc)
 end
 
 function see_enemy(actor, npc)
-	
     local enemy = npc:best_enemy()
     
     if enemy ~= nil then 
