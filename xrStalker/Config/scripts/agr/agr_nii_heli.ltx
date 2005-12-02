@@ -21,7 +21,7 @@ on_info = %=heli_set_enemy_actor%
 path_move=agr_heli_hunt_boars
 path_look=agr_boar_nest_way
 combat_use_rocket = false
-on_info = {=agr_boars_nest_dead} heli_move@idle2 %-agr_start_boar_hunt%
+on_info = {=gulag_empty(agr_boar_nest)} heli_move@idle2 %-agr_start_boar_hunt%
 
 [heli_move@idle2]
 engine_sound = true
