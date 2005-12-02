@@ -23,9 +23,14 @@ const float hinge2_damping=1000.f;
 
 IC dBodyID body_for_joint(CPhysicsElement* e)
 {
-	 return e->get_body();//return e->isFixed() ? 0 :
+	 return e->isFixed() ? 0 : e->get_body();//return e->get_body();//
 }
-
+IC void SwapLimits(float &lo,float &hi)
+{
+	float t=-lo;
+	lo=-hi;
+	hi=t;
+}
 CPHJoint::~CPHJoint(){
 	xr_delete(m_destroy_info);
 	if(bActive) Deactivate();
@@ -46,32 +51,10 @@ void CPHJoint::CreateBall()
 	Fmatrix first_matrix,second_matrix;
 	CPHElement* first=(pFirst_element);
 	CPHElement* second=(pSecond_element);
-
-
-
-	dBodyID body1=0;
-	dBodyID body2=0;
-
-	if(first)
-	{
-		first->GetGlobalTransformDynamic(&first_matrix);
-		body1=first->get_body();
-	}
-	else
-	{
-		first_matrix.identity();
-	}
-
-	if(second)
-	{
-		second->GetGlobalTransformDynamic(&second_matrix);
-		body2=second->get_body();
-	}
-	else
-	{
-		second_matrix.identity();
-
-	}
+	
+	VERIFY(first&&second);
+	first->GetGlobalTransformDynamic(&first_matrix);
+	second->GetGlobalTransformDynamic(&second_matrix);
 pos.set(0,0,0);
 	switch(vs_anchor){
 case vs_first :first_matrix.transform_tiny(pos,anchor); break;
@@ -80,17 +63,7 @@ case vs_global:pShell->mXFORM.transform_tiny(pos,anchor);break;
 default:NODEFAULT;	
 	}
 
-	if(!(body1&&body2)) 
-	{
 
-		m_joint=dJointCreateBall(0,0);
-		dJointAttach(m_joint,body1,body2);
-
-
-		dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
-
-		return;
-	}
 	
 	dJointAttach(m_joint,body_for_joint(first),body_for_joint(second));
 	dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
@@ -108,12 +81,13 @@ void CPHJoint::CreateHinge()
 	Fmatrix first_matrix,second_matrix;
 	Fvector axis;
 	
-
+	
 	CPHElement* first=(pFirst_element);
 	CPHElement* second=(pSecond_element);
+	VERIFY(first&&second);
 	first->GetGlobalTransformDynamic(&first_matrix);
 	second->GetGlobalTransformDynamic(&second_matrix);
-
+	
 pos.set(0,0,0);
 switch(vs_anchor)
 {
@@ -133,8 +107,8 @@ default:NODEFAULT;
 
 	float hi,lo;
 	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
-
-	dJointAttach(m_joint,body_for_joint(first),body_for_joint(second));
+	dBodyID b1=body_for_joint(first);if(!b1)SwapLimits(lo,hi);
+	dJointAttach(m_joint,b1,body_for_joint(second));
 
 	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
 	dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
@@ -162,6 +136,7 @@ void CPHJoint::CreateHinge2()
 	Fvector axis;
 	CPHElement* first=(pFirst_element);
 	CPHElement* second=(pSecond_element);
+	VERIFY(first&&second);
 	first->GetGlobalTransformDynamic(&first_matrix);
 	second->GetGlobalTransformDynamic(&second_matrix);
 	pos.set(0,0,0);
@@ -174,8 +149,8 @@ void CPHJoint::CreateHinge2()
 	}
 	//////////////////////////////////////
 
-	
-	dJointAttach(m_joint,body_for_joint(first),body_for_joint(second));
+	dBodyID b1=body_for_joint(first);
+	dJointAttach(m_joint,b1,body_for_joint(second));
 	dJointSetHinge2Anchor(m_joint,pos.x,pos.y,pos.z);
 
 	/////////////////////////////////////////////
@@ -196,10 +171,10 @@ void CPHJoint::CreateHinge2()
 	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
 	dJointSetHinge2Axis1 (m_joint, axis.x, axis.y, axis.z);
 
-
+	if(!b1)SwapLimits(lo,hi);
 	dJointSetHinge2Param(m_joint,dParamLoStop ,lo);
 	dJointSetHinge2Param(m_joint,dParamHiStop ,hi);
-
+	
 	if(!(axes[0].force<0.f)){
 		dJointSetHinge2Param(m_joint,dParamFMax,axes[0].force);
 		dJointSetHinge2Param(m_joint,dParamVel ,axes[0].velocity);
@@ -231,12 +206,13 @@ void CPHJoint::CreateSlider()
 	Fvector axis;
 	CPHElement* first=(pFirst_element);
 	CPHElement* second=(pSecond_element);
+
 	VERIFY(first);
 	first->GetGlobalTransformDynamic(&first_matrix);
-	dBodyID body1=first->get_body();
+	dBodyID body1=body_for_joint(first);
 	VERIFY(second);
 	second->GetGlobalTransformDynamic(&second_matrix);
-	dBodyID body2=second->get_body();
+	dBodyID body2=body_for_joint(second);
 	
 
 	pos.set(0,0,0);
@@ -277,7 +253,7 @@ void CPHJoint::CreateSlider()
 	axis.set(0,0,0);
 	//axis 0
 	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
-
+	if(!body1)SwapLimits(lo,hi);
 
  	dJointSetSliderAxis(m_joint, axis.x, axis.y, axis.z);
 	
@@ -294,6 +270,7 @@ void CPHJoint::CreateSlider()
 	//axis 1
 
 	CalcAxis(1,axis,lo,hi,first_matrix,second_matrix,rotate);
+	if(!body1)SwapLimits(lo,hi);
 	dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
 	dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
@@ -329,28 +306,9 @@ void CPHJoint::CreateFullControl()
 	Fvector axis;
 	CPHElement* first=(pFirst_element);
 	CPHElement* second=(pSecond_element);
-	dBodyID body1=0;
-	dBodyID body2=0;
-	if(first)
-	{
-		first->GetGlobalTransformDynamic(&first_matrix);
-		body1=first->get_body();
-	}
-	else
-	{
-		first_matrix.identity();
-	}
-
-	if(second)
-	{
-		second->GetGlobalTransformDynamic(&second_matrix);
-		body2=second->get_body();
-	}
-	else
-	{
-		second_matrix.identity();
-
-	}
+	dBodyID body1=body_for_joint(first);
+	dBodyID body2=body_for_joint(second);
+	
 
 
 
@@ -363,46 +321,7 @@ default:NODEFAULT;
 	}
 	//////////////////////////////////////
 
-	if(!(body1&&body2)) 
-	{
-		m_joint=dJointCreateHinge(0,0);
 
-		dJointAttach(m_joint,body1,body2);
-
-#ifndef FIX_BY_ONE_HINGE
-		dJointSetHingeAnchor(m_joint,pos.x-1.f,pos.y,pos.z);
-#else
-		dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
-#endif
-
-		dJointSetHingeAxis(m_joint,0.f,0.f,1.f);
-		dJointSetHingeParam(m_joint,dParamLoStop ,0.00f);
-		dJointSetHingeParam(m_joint,dParamHiStop ,0.00f);
-
-		dJointSetHingeParam(m_joint,dParamCFM,world_cfm);
-		dJointSetHingeParam(m_joint,dParamStopERP,world_erp);
-		dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm);
-
-
-#ifndef FIX_BY_ONE_HINGE
-
-		m_joint1=dJointCreateHinge(0,0);
-
-		dJointAttach(m_joint1,body1,body2);
-
-		dJointSetHingeAnchor(m_joint1,pos.x+1.f,pos.y,pos.z);
-		dJointSetHingeAxis(m_joint1,0.f,0.f,1.f);
-
-		dJointSetHingeParam(m_joint1,dParamLoStop ,0.00f);
-		dJointSetHingeParam(m_joint1,dParamHiStop ,0.00f);
-
-		dJointSetHingeParam(m_joint1,dParamCFM,world_cfm);
-		dJointSetHingeParam(m_joint1,dParamStopERP,world_erp);
-		dJointSetHingeParam(m_joint1,dParamStopCFM,world_cfm);
-#endif
-
-		return;
-	}
 
 	m_joint=dJointCreateBall(0,0);
 	dJointAttach(m_joint,body1,body2);
@@ -432,6 +351,7 @@ default:NODEFAULT;
 	axis.set(0,0,0);
 	//axis 0
 	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
+	if(!body1)SwapLimits(lo,hi);
 	dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
 	dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
@@ -443,6 +363,7 @@ default:NODEFAULT;
 
 	//axis 1
 	CalcAxis(1,axis,lo,hi,first_matrix,second_matrix,rotate);
+	if(!body1)SwapLimits(lo,hi);
 	dJointSetAMotorParam(m_joint1,dParamLoStop2 ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);
 	if(!(axes[1].force<0.f)){
@@ -452,6 +373,7 @@ default:NODEFAULT;
 
 	//axis 2
 	CalcAxis(2,axis,lo,hi,first_matrix,second_matrix,rotate);
+	if(!body1)SwapLimits(lo,hi);
 	dJointSetAMotorAxis (m_joint1, 2, 2, axis.x, axis.y, axis.z);
 	dJointSetAMotorParam(m_joint1,dParamLoStop3 ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop3 ,hi);	
