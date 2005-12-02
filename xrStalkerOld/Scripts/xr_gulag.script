@@ -393,7 +393,7 @@ function gulag:availCurrent(job)
 	if job.timeout == nil or
 	   job.begin == nil or game.time() - job.begin < job.timeout
 	then
-		local jd = job.dependent
+		local jd = nil
 
 		if jd then
 	   		for i, v in ipairs( self.Job ) do
