@@ -57,8 +57,7 @@ BOOL CNightVisionEffectorPP::Process(SPPInfo& pp)
 	}
 	clamp(factor,0.01f,1.0f);
 
-	SPPInfo	def;
-	pp.lerp	(def, state, factor);
+	pp.lerp	(pp_identity, state, factor);
 
 	return TRUE;
 }

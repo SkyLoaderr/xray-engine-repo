@@ -344,7 +344,7 @@ void CHelicopter::MoveStep()
 			dir.normalize_safe();
 			m_movement.currP.mad	(dir, vp);
 			m_movement.curLinearSpeed += m_movement.curLinearAcc*STEP;
-			clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
+//			clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
 
 		}else{
 			m_movement.curLinearAcc		= 0.0f;

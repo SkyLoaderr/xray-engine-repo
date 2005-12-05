@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+/*
 #include "CameraEffector.h"
 
 #include "script_engine.h"
@@ -20,11 +21,6 @@ void play_object_animator(CObjectAnimator* self, bool bLooped)
 void object_animator_xform(CObjectAnimator* self, Fmatrix* dst)
 {
 	*dst = self->XFORM();
-/*	Msg("i %f %f %f",VPUSH(dst->i));
-	Msg("j %f %f %f",VPUSH(dst->j));
-	Msg("k %f %f %f",VPUSH(dst->k));
-	Msg("c %f %f %f",VPUSH(dst->c));
-*/
 }
 
 void CCameraEffector::script_register(lua_State *L)
@@ -41,3 +37,4 @@ void CCameraEffector::script_register(lua_State *L)
 		
 	];
 };
+*/

@@ -478,6 +478,7 @@ Fvector CHelicopter::GetCurrVelocityVec()
 #ifdef DEBUG
 void CHelicopter::OnRender()
 {
+/*
 	if(!bDebug) return;
 	
 	if(!m_movement.currPatrolPath) return;
@@ -488,7 +489,7 @@ void CHelicopter::OnRender()
 		Fvector p = (*b).second->data().position();
 		RCache.dbg_DrawAABB  (p,0.1f,0.1f,0.1f,D3DCOLOR_XRGB(0,255,0));
 	}
-
+*/
 /*
 	Fvector pos			= Level().CurrentEntity()->Position();
 	static float	radius		= 50.0f;//meters
