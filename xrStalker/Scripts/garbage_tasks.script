@@ -14,7 +14,7 @@ function task_hellcar_complete()
 	local actor = db.actor
 	if actor:has_info("gar_hellcar_help") and
 	   actor:has_info("gar_bandits_killed") and
-	   (actor:has_info("gar_hellcar_death_2") or
+	   (actor:has_info("gar_hellcar_death") or
 	   actor:has_info("gar_hellcar_dialog_end"))
 	then
 		return true
