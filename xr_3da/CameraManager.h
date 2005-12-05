@@ -89,7 +89,7 @@ struct SPPInfo {
 		color_gray.set	(.333f, .333f,	.333f);
 		color_add.set	(0.f,	0.f,	0.f);
 	}
-	IC SPPInfo&	lerp(SPPInfo& def, SPPInfo& to, float factor)
+	IC SPPInfo&	lerp(const SPPInfo& def, const SPPInfo& to, float factor)
 	{
 		SPPInfo& pp = *this;
 
