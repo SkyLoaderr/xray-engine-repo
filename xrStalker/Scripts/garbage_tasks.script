@@ -23,6 +23,15 @@ function task_hellcar_complete()
 	end
 end
 
+function task_hellcar_fail()
+	if xr_gulag.getGulagPopulation("gar_hellcar_group") < 1 then
+		return true
+	else
+		return false
+	end
+end
+
+
 function process_info_portion(info_id)
 	-- garbage
 
