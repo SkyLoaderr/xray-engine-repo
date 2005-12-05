@@ -35,7 +35,7 @@ public:
 
     bool 			IsOpened		(){return m_Flags.is(flStateOpened);}
     bool			SetReference	(LPCSTR nm);
-	virtual LPCSTR  RefName			(){return m_ReferenceName.c_str();}
+	virtual LPCSTR  RefName			(){return m_ReferenceName.size()?m_ReferenceName.c_str():"group";}
 	bool    		RefCompare		(LPCSTR nm){return m_ReferenceName.equal(nm);}
     
 	void			UpdatePivot		(LPCSTR nm, bool center);
