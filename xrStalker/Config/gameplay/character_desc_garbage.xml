@@ -367,7 +367,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 		
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
 		<supplies>
@@ -403,7 +403,7 @@
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		
@@ -440,7 +440,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 
@@ -477,7 +477,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<supplies>
@@ -513,7 +513,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_01\</snd_config>
 		
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		
