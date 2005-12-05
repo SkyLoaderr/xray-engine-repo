@@ -216,6 +216,9 @@
 					RelativePath=".\Config\creatures\monsters.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\creatures\spawn_sections.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\creatures\stalkers.ltx">
 				</File>
 				<Filter

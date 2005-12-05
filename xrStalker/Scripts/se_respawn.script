@@ -3,39 +3,162 @@ Respawner. Схема обновления популяции всего всего всего в симуляции.
 by Stohe (Диденко Руслан)
 --------------------------------------------------------------------------------------------------------------------]]
 
+local section_name = "respawn"
+local i,k,v = 0,0,0
+----------------------------------------------------------------------------------------------------------------------
+-- Разные полезные функции
+----------------------------------------------------------------------------------------------------------------------
+function r_bool( spawn_ini, section, line, default )
+	if spawn_ini:line_exist( section, line ) then
+		return spawn_ini:r_bool( section, line )
+	else
+		return default
+	end
+end
 
+function r_str( spawn_ini, section, line, default )
+	if spawn_ini:line_exist( section, line ) then
+		return spawn_ini:r_string( section, line )
+	else
+		return default
+	end
+end
+
+function r_num( spawn_ini, section, line, default )
+	if spawn_ini:line_exist( section, line ) then
+		return spawn_ini:r_float( section, line )
+	else
+		return default
+	end
+end
+
+function r_2nums( spawn_ini, section, line, def1, def2 )
+	if spawn_ini:line_exist( section, line ) then
+		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
+		local t = parse_nums( spawn_ini:r_string( section, line ) )
+		local n = table.getn( t )
+
+		if n == 0 then
+			return def1, def2
+		elseif n == 1 then
+			return t[1], def2
+		else
+			return t[1], t[2]
+		end
+	else
+		return def1, def2
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
+-- Серверный объект спавнера
+----------------------------------------------------------------------------------------------------------------------
 class "se_respawn" ( cse_alife_smart_zone )
 function se_respawn:__init( section ) super( section )
 end
-
 -- сохранение
 function se_respawn:STATE_Write( packet )
 	cse_alife_smart_zone.STATE_Write( self, packet )
 end
-
 -- восстановление
 function se_respawn:STATE_Read( packet, size )
 	cse_alife_smart_zone.STATE_Read( self, packet, size )
 end
-
--- инициализация.
--- чтение custom data.
--- TODO вызывать из on_register
-function se_respawn:initialize()
-	local ini  = self:spawn_ini()
-	local sect = "smart_terrain"
-
-end
-
-
 -- инициализация объекта.
 -- вызывается симулятором.
 function se_respawn:on_register()
 	cse_alife_smart_zone.on_register( self )
-end
+	printf("RESPAWN: [%s] se_respawn on_register", tostring(self:name()))
 
--- Обновление. В онлайне вызывается через binder.
+	-- Вычитываем настройки спауна
+	local ini = self:spawn_ini()
+	if not ini:section_exist(section_name) then
+		return	
+	end
+	
+	self.respawn_section = r_str(ini, section_name, "respawn_section")
+	if self.name == nil then
+		abort("RESPAWN: [%s] field 'name' doesn't exist.", self:name())
+	end
+
+	self.min_count = r_num(ini, section_name, "min_count", 0)
+	self.max_count = r_num(ini, section_name, "max_count", -1)
+	if self.min_count > self.max_count and
+	   self.max_count ~= -1 
+	then
+		abort("RESPAWN: [%s] min_count > max_count", self:name())
+	end
+	
+	self.max_spawn = r_num(ini, section_name, "max_spawn", 1)
+	self.idle_spawn_min, self.idle_spawn_max = r_2nums(ini, section_name, "idle_spawn")
+	if self.idle_spawn_min == nil then
+		abort("RESPAWN: [%s] field 'idle_spawn' doesn't exist.", self:name())
+	end
+	if self.idle_spawn_max == nil then
+		self.idle_spawn_max = self.idle_spawn_min
+	end
+	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", r_str(ini, section_name, "conditions", 100))
+	self.respawn_online = r_bool(ini, section_name, "respawn_online", false)
+	
+	-- производим первичную инициализацию
+	self.respawn_time = game.CTime()
+	self.spawn_count = 0
+end
+-- Создаем объект
+function se_respawn:create(prob)
+	if math.random(100) <= tonumber(prob) then
+		
+--		alife():create(self.respawn_section,	
+--						self.position,
+--						self.m_level_vertex_id,	
+--						self.m_game_vertex_id)
+		self.spawn_count = self.spawn_count + 1
+	end
+end
+-- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
+-- мы доспавниваем до минимального количества, либо спавним с заданной вероятностью
+function se_respawn:spawn()
+	printf("RESPAWN: [%s] spawn execute", tostring(self:name()))
+	-- экстренный спаун минимального количества объектов
+	if self.spawn_count < self.min_count then
+		while self.spawn_count < self.min_count do
+			self:create(100)
+		end
+		return
+	end
+	
+	-- делаем несколько попыток заспаунить объект.
+	for i=1,self.max_spawn do		
+		if self.spawn_count >= self.max_count then
+			return
+		end		
+		self:create(xr_logic.pick_section_from_condlist(db.actor, self, self.conditions))
+	end		
+end
+-- Обновление респавнера. В зависимости от настроек обновляется либо только в офлайне, либо и там и там.
+function se_respawn:execute()
+	--printf("RESPAWN: [%s] se_respawn execute", tostring(self:name()))
+	
+	if self.respawn_time < game.get_game_time() then
+		local idle_time = game.CTime()
+		idle_time:setHMSms( 0, 0, 0, math.random(self.idle_spawn_min, self.idle_spawn_max)*1000)
+		self.respawn_time = game.get_game_time() + idle_time
+		-- Производим попытку заспаунить объекты		
+		self:spawn()
+		
+		printf("spawn_count = %s", self.spawn_count)
+	end
+end
+-- Обновление в офлайне
 function se_respawn:update()
 	cse_alife_smart_zone.update( self )
-
+	--printf("RESPAWN: [%s] se_respawn update_offline", tostring(self:name()))
+	self:execute()
+end
+-- Обновление в онлайне
+function se_respawn:update_online()
+	cse_alife_smart_zone.update( self )
+	--printf("RESPAWN: [%s] se_respawn update_online", tostring(self:name()))
+	if self.respawn_online == true then
+		self:execute()
+	end
 end
