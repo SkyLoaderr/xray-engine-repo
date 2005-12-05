@@ -67,7 +67,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute()
 	}
 
 	object->set_action			(ACT_STAND_IDLE);
-	object->dir().face_target	(object->EnemyMan.get_enemy(), 1200);
+	object->dir().face_target	(object->EnemyMan.get_enemy());
 }
 
 TEMPLATE_SPECIALIZATION
@@ -126,6 +126,12 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_prepare()
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_continue()
 {
+	if (object->Position().distance_to(Actor()->Position()) > 2.f) {
+		object->com_man().ta_deactivate();
+		m_action = eActionCompleted;
+		return;
+	}
+	
 	object->sound().play(CAI_Bloodsucker::eVampireSucking);
 
 	// проверить на грави удар

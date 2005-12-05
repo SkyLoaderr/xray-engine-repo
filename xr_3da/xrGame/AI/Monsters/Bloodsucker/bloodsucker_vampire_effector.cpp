@@ -83,12 +83,12 @@ CVampireCameraEffector::CVampireCameraEffector(float time, const Fvector &src, c
 	m_time_total			= time;
 
 	m_dist					= src.distance_to(tgt);
-	//m_dist					+= 10.5f;
-	//if (m_dist < 0)			m_dist = 0.f;
+	if (m_dist > 2.f)	
+		m_direction.sub			(src,tgt);
+	else 
+		m_direction.sub			(tgt,src);
 	
-	m_direction.sub			(src,tgt);
 	m_direction.normalize	();
-
 
 	dangle_target.set	(Random.randFs(DELTA_ANGLE_X),Random.randFs(DELTA_ANGLE_Y),Random.randFs(DELTA_ANGLE_Z));
 	dangle_current.set	(0.f, 0.f, 0.f);

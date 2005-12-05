@@ -379,6 +379,8 @@ void CAI_Bloodsucker::UpdateCamera()
 
 bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
 {
+	if (!inherited::check_start_conditions(type))	return false;
+
 	if (type == ControlCom::eControlRunAttack)
 		return (!state_invisible);
 

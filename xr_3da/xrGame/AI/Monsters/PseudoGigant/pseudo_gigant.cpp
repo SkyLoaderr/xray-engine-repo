@@ -177,16 +177,13 @@ void CPseudoGigant::event_on_step()
 
 bool CPseudoGigant::check_start_conditions(ControlCom::EControlType type)
 {
-	if (type == ControlCom::eControlRunAttack)
+	if (!inherited::check_start_conditions(type))	return false;
+
+	if (type == ControlCom::eControlRunAttack)		
 		return true;
 
 	if (type == ControlCom::eControlThreaten) {
 		if (m_time_last_threaten + pmt_threaten_delay > time()) return false;
-	}
-
-	if (type == ControlCom::eControlRotationJump) {
-		EMonsterState state = StateMan->get_state_type();
-		if (!is_state(state, eStateAttack)) return false;
 	}
 
 	return true;
