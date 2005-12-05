@@ -190,10 +190,10 @@ function play_sound(npc, themes, timeout)
 		end
 		-- необходимо ли нам играть into или rnd звуки
 		if snd.into_max ~= nil and
-			snd.into_max > 0 and
-			(db.sound[npc_id].last_snd[snd.into_id] == nil or
-			db.sound[npc_id].last_snd[snd.into_id] < snd.into_max-1)
+			snd.into_max > 0
 		then
+			if db.sound[npc_id].last_snd[snd.into_id] == snd.into_max - 1 then db.sound[npc_id].last_snd[snd.into_id] = nil end
+			
 			-- играем входные
 			if db.sound[npc_id].last_snd[snd.into_id] == nil then db.sound[npc_id].last_snd[snd.into_id] = -1 end
 			
