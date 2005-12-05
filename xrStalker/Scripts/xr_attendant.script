@@ -187,7 +187,16 @@ function action_follow:execute ()
        if vdist > 1 then 
           self.object:set_dest_level_vertex_id (vid)
           self.object:set_desired_position (vpos)
-          self.object:set_desired_direction (level.object_by_id(self.st.leader_id):direction ())
+          local dir
+          if self.st.stub_for_corpse == true then 
+             local pos = leader:position ()
+             local cen = leader:center ()
+             dir = cen:sub (pos)
+             dir:normalize ()
+          else
+             dir = leader:direction ()
+          end   
+          self.object:set_desired_direction (dir)
           self.object:set_detail_path_type (move.line)
           self.object:set_path_type (game_object.level_path)
           if vdist > 20 then
@@ -234,7 +243,7 @@ function action_follow:finalize ()
        --table.remove (db.storage[self.st.leader_id].followers, self.index)
        self.index = nil
     end   
-    xr_sound.set_sound(self.object, nil)
+    --xr_sound.set_sound(self.object, nil)
 end
 --------
 function action_follow:calculate_position ()
@@ -348,7 +357,7 @@ function action_follow:reset_scheme ()
     self.st.signals["leader_dead"] = false
     self.st.signals["leader_section_changed"] = false
     self.st.signals["leader_dead"] = false
-    xr_sound.set_sound(self.object, self.st.sound_theme)
+    --xr_sound.set_sound(self.object, self.st.sound_theme)
 end
 --------
 function action_follow:activate_scheme ()
