@@ -124,11 +124,11 @@ function action_remark_activity:execute()
 				self.st.signals["sound_end"] = true
 				self.sound_end_signalled = true
 			end
-			if self.action_end_signalled == false then
-				self.st.signals["action_end"] = true
-				self.action_end_signalled = true
-			end
 		end
+		if self.action_end_signalled == false then
+			self.st.signals["action_end"] = true
+			self.action_end_signalled = true
+		end		
 	end
 	
 end
