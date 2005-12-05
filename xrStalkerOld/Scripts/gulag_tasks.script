@@ -65,7 +65,8 @@ function loadJob(sj, gname, type, squad, groups, gulag)
 	end
 
 	if type == "test_mob" then
-		t = { section = "logic@test_mob_mob_walker",
+--		t = { section = "logic@test_mob_mob_walker",
+		t = { section = "logic@test_mob_mob_home",
 			idle = 0,
 			prior = 0, state = {0},
 			in_rest = "", out_rest = ""
