@@ -242,9 +242,9 @@ void CSpaceRestrictorWrapper::verify_connectivity	()
 
 	level_graph().clear_mask		(m_border);
 
-	VERIFY							(m_border.size() + m_internal.size() <= level_graph().header().vertex_count());
+	VERIFY							(nodes.size() + m_internal.size() <= level_graph().header().vertex_count());
 	R_ASSERT3						(
-		m_border.size() + m_internal.size() != level_graph().header().vertex_count(),
+		nodes.size() + m_internal.size() == level_graph().header().vertex_count(),
 		"Restrictor separates AI map into several disconnected components",
 		object().name_replace()
 	);
