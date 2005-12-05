@@ -12,8 +12,8 @@ end
 
 ----------------------------------------------------------------------
 
-function printf(fmt,...) 
-	log(string.format(fmt,...))	
+function printf(fmt,...)
+	log(string.format(fmt,...))
 end
 
 ----------------------------------------------------------------------
@@ -255,11 +255,11 @@ end
 
 class "script_object"
 
-function script_object.__init(self,name,script,...)	
-	self.action         = action(nil,...)	
-	self.object_name    = name	
-	self.script_name    = script	
-	self.object         = nil	
+function script_object.__init(self,name,script,...)
+	self.action         = action(nil,...)
+	self.object_name    = name
+	self.script_name    = script
+	self.object         = nil
 end
 
 function script_object:update()
@@ -911,16 +911,16 @@ function is_object_monster(obj)
 		otype == clsid.controller	or
 		otype == clsid.bloodsucker	or
 		otype == clsid.burer		or
-		otype == clsid.chimera		or	
+		otype == clsid.chimera		or
 		otype == clsid.boar			or
-		otype == clsid.dog_red		or		
+		otype == clsid.dog_red		or
 		otype == clsid.dog_black	or
 		otype == clsid.poltergeist	or
 		otype == clsid.pseudo_gigant  )
 	then
 		return true
 	end
-	
+
 	return false
 end
 
@@ -1015,7 +1015,7 @@ function print_table(table, subs)
     elseif type(v) == "userdata" then
       printf(sub.."%s:userdata", tostring(k))
     elseif type(v) == "boolean" then
-	if v == true then 
+	if v == true then
 		printf(sub.."%s:true", tostring(k))
 	else
 		printf(sub.."%s:false", tostring(k))
@@ -1035,49 +1035,53 @@ function switch_online (id)
     if id == -1 then return end
     local sim = alife ()
     if sim ~= nil then
-       sim:set_switch_online  (id, true) 
+       sim:set_switch_online  (id, true)
        sim:set_switch_offline (id, false)
-    end   
+    end
 end
 -------------------------------------------------------------------------------------------
 function switch_offline (npc)
     if npc == nil or npc:alive () == false then return end
     local sim = alife ()
     if sim ~= nil then
-       sim:set_switch_online  (npc:id (), false) 
+       sim:set_switch_online  (npc:id (), false)
        sim:set_switch_offline (npc:id (), true)
-    end   
+    end
 end
 -------------------------------------------------------------------------------------------
 function get_actor_id()
 	if(level.actor() == nil) then return -1 end
 	return level.actor():id()
-end 
+end
 -------------------------------------------------------------------------------------------
 function IsMonster (object, class_id)
     local id = class_id or get_clsid (object)
     if id == clsid.boar_s or
-       id == clsid.bloodsucker_s or 
-       id == clsid.dog_s or 
+       id == clsid.bloodsucker_s or
+       id == clsid.dog_s or
        id == clsid.flesh_s or
-       id == clsid.pseudodog_s or 
-       id == clsid.burer_s or 
+       id == clsid.pseudodog_s or
+       id == clsid.psy_dog_s or
+       id == clsid.burer_s or
        id == clsid.cat_s or
-       id == clsid.chimera_s or 
-       id == clsid.controller_s or 
-       id == clsid.fracture_s or 
-       id == clsid.poltergeist_s or 
-       id == clsid.gigant_s or 
-       id == clsid.zombie_s or 
-       id == clsid.tushkano_s or 
-       id == clsid.snork_s then return true end
+       id == clsid.chimera_s or
+       id == clsid.controller_s or
+       id == clsid.fracture_s or
+       id == clsid.poltergeist_s or
+       id == clsid.gigant_s or
+       id == clsid.zombie_s or
+       id == clsid.tushkano_s or
+       id == clsid.snork_s
+    then
+	    return true
+	end
     return false
 end
 -------------------------------------------------------------------------------------------
 function IsStalker (object, class_id)
     local id = class_id or get_clsid (object)
-    if id == clsid.actor or id == clsid.soldier or id == clsid.script_stalker then 
-       return true 
+    if id == clsid.actor or id == clsid.soldier or id == clsid.script_stalker then
+       return true
     end
     return false
 end
@@ -1134,9 +1138,9 @@ function set_sleep_relocate(point, look, timeout)
 	db.storage[db.actor:id()].sleep_relocate_idle = timeout*60
 	db.storage[db.actor:id()].sleep_relocate_point = point
 	db.storage[db.actor:id()].sleep_relocate_look = look
-	
+
 	set_inactivate_input_time(timeout*60)
-	db.actor:actor_sleep(0, timeout)	
+	db.actor:actor_sleep(0, timeout)
 end
 
 -- проверяет целую часть числа на нечётность
