@@ -328,23 +328,24 @@ function load_job(sj, gname, type, squad, groups)
        
       
       
-       if type == "bun_snp2" then
-		t = { section = "logic@bun_snp2_sniper1",
+      if type == "bun_post" then
+		t = { section = "logic@bun_post_sniper1",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
-		t = { section = "logic@bun_snp2_sniper2",
-			idle = 0,
-			prior = 1, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)	
+		
       end
       
        if type == "bun_krovosos_nest" then
 		t = { section = "logic@bun_krovosos_nest_krovosos1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@bun_krovosos_nest_krovosos2",
 			idle = 0,
 			prior = 1, state = {0},
 			in_rest = "", out_rest = ""
@@ -376,7 +377,7 @@ function load_states(gname, type)
 		end
 	end
 	
-	if type == "bun_post1" then
+	if type == "bun_post" then
 		return function(gulag)
 			return 0
 		end
@@ -474,7 +475,7 @@ function checkStalker(npc_community, gulag_type)
 	   return npc_community == "monolith"
 	end
 	
-	if gulag_type == "bun_post1" then
+	if gulag_type == "bun_post" then
 	   return npc_community == "monolith"
 	end
 	
