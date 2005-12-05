@@ -229,7 +229,7 @@ states = {
 			},
 	search	= {weapon = nil,
 				movement = move.stand,
-				mental = anim.danger,
+				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "poisk"
