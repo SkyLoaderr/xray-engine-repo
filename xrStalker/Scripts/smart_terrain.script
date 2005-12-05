@@ -569,6 +569,7 @@ function se_smart_terrain:fill_monster_classes()
 			[clsid.chimera_s     ] = "chimera",
 			[clsid.controller_s  ] = "controller",
 			[clsid.pseudodog_s   ] = "pseudodog",
+			[clsid.psy_dog_s     ] = "psy_dog",
 			[clsid.dog_s         ] = "dog",
 			[clsid.flesh_s       ] = "flesh",
 			[clsid.fracture_s    ] = "fracture",
