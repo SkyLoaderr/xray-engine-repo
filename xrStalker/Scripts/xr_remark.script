@@ -125,10 +125,12 @@ function action_remark_activity:execute()
 				self.sound_end_signalled = true
 			end
 		end
-		if self.action_end_signalled == false then
-			self.st.signals["action_end"] = true
-			self.action_end_signalled = true
-		end		
+		if self.st.snd_anim_sync == true or self.object:active_sound_count() == 0 then
+			if self.action_end_signalled == false then
+				self.st.signals["action_end"] = true
+				self.action_end_signalled = true
+			end
+		end
 	end
 	
 end
