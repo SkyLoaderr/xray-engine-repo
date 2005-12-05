@@ -478,8 +478,9 @@ function gar_boars_nest2_dead(actor, npc)
 end
 
 function gar_damaged_bandits(actor, npc)
-	local g = xr_gulag.fraction["gar_bandit_agr"]
-	return (not g) or (g:get_population() <= 5)
+	return gulag_population_le(actor, npc, {"gar_bandit_agr",5})
+--	local g = xr_gulag.fraction["gar_bandit_agr"]
+--	return (not g) or (g:get_population() <= 5)
 end
 
 function gar_not_damaged_bandits(actor, npc)
