@@ -49,6 +49,7 @@ private:
 	CGameLevelCrossTable				*m_cross_table;
 	CGraphEngine						*m_graph_engine;
 	LEVEL_CHANGER_STORAGE				m_level_changers;
+	bool								m_no_separator_check;
 
 protected:
 			void						init								();
@@ -79,7 +80,7 @@ protected:
 	IC		u32							level_id							(shared_str level_name) const;
 
 public:
-	IC									CLevelSpawnConstructor				(const CGameGraph::SLevel &level, CGameSpawnConstructor *game_spawn_constructor);
+	IC									CLevelSpawnConstructor				(const CGameGraph::SLevel &level, CGameSpawnConstructor *game_spawn_constructor, bool no_separator_check);
 	virtual								~CLevelSpawnConstructor				();
 	virtual void						Execute								();
 	IC		CSE_ALifeCreatureActor		*actor								() const;

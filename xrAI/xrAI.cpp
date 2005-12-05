@@ -128,7 +128,8 @@ void Startup(LPSTR     lpCmdLine)
 						_TrimLeft		(temp1);
 						start			= temp1;
 					}
-					CGameSpawnConstructor(name,output,start);
+					char				*no_separator_check = strstr(cmd,"-no_separator_check");
+					CGameSpawnConstructor(name,output,start,!!no_separator_check);
 				}
 				else
 					if (strstr(cmd,"-t")) {
@@ -178,7 +179,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Log						("Loading DLL:",g_name);
 	hFactory				= LoadLibrary	(g_name);
 	if (0==hFactory)		R_CHK			(GetLastError());
-	R_ASSERT2				(hFactory,"Factory DLL raised exception during loading or there is no game DLL at all");
+	R_ASSERT2				(hFactory,"Factory DLL raised exception during loading or there is no factory DLL at all");
 
 	create_entity			= (Factory_Create*)		GetProcAddress(hFactory,"_create_entity@4");	R_ASSERT(create_entity);
 	destroy_entity			= (Factory_Destroy*)	GetProcAddress(hFactory,"_destroy_entity@4");	R_ASSERT(destroy_entity);

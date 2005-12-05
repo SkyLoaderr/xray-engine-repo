@@ -50,6 +50,7 @@ private:
 	LEVEL_SPAWN_STORAGE				m_level_spawns;
 	LEVEL_CHANGER_STORAGE			m_level_changers;
 	LEVEL_POINT_STORAGE				m_level_points;
+	bool							m_no_separator_check;
 
 private:
 	xr_vector<ALife::_SPAWN_ID>		m_spawn_roots;
@@ -71,14 +72,14 @@ protected:
 			void					verify_spawns			(ALife::_SPAWN_ID spawn_id);
 			void					verify_spawns			();
 			void					process_spawns			();
-			void					load_spawns				(LPCSTR name);
+			void					load_spawns				(LPCSTR name, bool no_separator_check);
 	IC		SPAWN_GRAPH				&spawn_graph			();
 	IC		ALife::_SPAWN_ID		spawn_id				();
 	IC		void					process_spawns			(xr_vector<ALife::_SPAWN_ID> &spawns);
 			void					process_actor			(LPCSTR start_level_name);
 
 public:
-									CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start);
+									CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start, bool no_separator_check);
 	virtual							~CGameSpawnConstructor	();
 			void					add_story_object		(ALife::_STORY_ID id,CSE_ALifeDynamicObject *object, LPCSTR level_name);
 			void					add_object				(CSE_Abstract *object);

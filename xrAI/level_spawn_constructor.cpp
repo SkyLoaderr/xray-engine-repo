@@ -617,6 +617,9 @@ void CLevelSpawnConstructor::update								()
 
 void CLevelSpawnConstructor::verify_space_restrictors			()
 {
+	if (m_no_separator_check)
+		return;
+
 	Msg									("Level [%s] : searching for AI map separators space restrictors",*m_level.name());
 	SPACE_RESTRICTORS::iterator			I = m_space_restrictors.begin();
 	SPACE_RESTRICTORS::iterator			E = m_space_restrictors.end();

@@ -8,11 +8,12 @@
 
 #pragma once
 
-IC	CLevelSpawnConstructor::CLevelSpawnConstructor			(const CGameGraph::SLevel &level, CGameSpawnConstructor *game_spawn_constructor) :
+IC	CLevelSpawnConstructor::CLevelSpawnConstructor			(const CGameGraph::SLevel &level, CGameSpawnConstructor *game_spawn_constructor, bool no_separator_check) :
 	CThread						(level.id())
 {
 	m_level						= level;
 	m_game_spawn_constructor	= game_spawn_constructor;
+	m_no_separator_check		= no_separator_check;
 	thDestroyOnComplete			= FALSE;
 	m_actor						= 0;
 	m_level_graph				= 0;

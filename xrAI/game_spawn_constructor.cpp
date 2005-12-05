@@ -20,21 +20,21 @@ extern LPCSTR GAME_CONFIG;
 
 #define NO_MULTITHREADING
 
-CGameSpawnConstructor::CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start)
+CGameSpawnConstructor::CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start, bool no_separator_check)
 {
-	load_spawns		(name);
-	process_spawns	();
-	process_actor	(start);
-	save_spawn		(name,output);
+	load_spawns						(name,no_separator_check);
+	process_spawns					();
+	process_actor					(start);
+	save_spawn						(name,output);
 }
 
 CGameSpawnConstructor::~CGameSpawnConstructor	()
 {
-	delete_data		(m_level_spawns);
-	delete_data		(m_spawn_graph);
-	xr_delete		(m_game_graph);
-	xr_delete		(m_game_info);
-	xr_delete		(m_patrol_path_storage);
+	delete_data						(m_level_spawns);
+	delete_data						(m_spawn_graph);
+	xr_delete						(m_game_graph);
+	xr_delete						(m_game_info);
+	xr_delete						(m_patrol_path_storage);
 }
 
 IC	shared_str CGameSpawnConstructor::actor_level_name()
@@ -54,7 +54,7 @@ IC	shared_str CGameSpawnConstructor::actor_level_name()
 
 extern void read_levels			(CInifile *ini, xr_set<CLevelInfo> &m_levels);
 
-void CGameSpawnConstructor::load_spawns	(LPCSTR name)
+void CGameSpawnConstructor::load_spawns	(LPCSTR name, bool no_separator_check)
 {
 	m_spawn_id							= 0;
 
@@ -97,7 +97,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 		level.m_name					= (*I).m_name;
 		level.m_id						= (*I).m_id;
 		Msg								("%9s %2d %s","level",level.id(),*(*I).m_name);
-		m_level_spawns.push_back		(xr_new<CLevelSpawnConstructor>(level,this));
+		m_level_spawns.push_back		(xr_new<CLevelSpawnConstructor>(level,this,no_separator_check));
 	}
 
 	string256							temp;
