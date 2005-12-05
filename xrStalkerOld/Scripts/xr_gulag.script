@@ -38,10 +38,11 @@ function gulag:__init(smrttrn, type, squad, groups, npc_info, capacity)
 	self.npc_info = npc_info
 	self.capacity = capacity
 
-	self.Object            = {} -- объекты по id. Значения: nil-нету такого, true-есть в офлайне, game_object-есть в онлайн
-	self.Object_begin_job  = {} -- по id. true/nil достиг ли объект места своей работы
-	self.ObjectJob         = {} -- по id. номер работы для каждого персонажа
-	self.JobBeginTime      = {} -- для каждой работы время начала
+	self.Object             = {} -- объекты по id. Значения: nil-нету такого, true-есть в офлайне, game_object-есть в онлайн
+	self.Object_begin_job   = {} -- по id. true/nil достиг ли объект места своей работы
+	self.ObjectJob          = {} -- по id. номер работы для каждого персонажа
+	self.JobBeginTime       = {} -- для каждой работы время начала
+	self.Job_avail_in_state = nil
 
 	self.state      = 0
 	self.stateBegin = nil
@@ -49,16 +50,24 @@ function gulag:__init(smrttrn, type, squad, groups, npc_info, capacity)
 	self.casualities = 0
 end
 
--- подготовка к работе
-function gulag:initialize()
-	self.Job               = {} -- работы
-	self.ObjectJobPathName = {} -- по id. имя патрульного пути места работы персонажа
-	self.restrictors       = {} -- по id. назначенные гулагом рестрикторы для каждого персонажа
+-- загрузка работ
+function gulag:load_jobs()
+	self.Job = {} -- работы
 
 	gulag_tasks.loadJob( self.Job, self.name, self.type, self.squad, self.groups, self )
 	self:init_ltx( self.name, self.type )
-	self:prepare_jobs()
+
+	table.sort( self.Job, function(a,b) return a.prior > b.prior end )
+
 	self:prepare_jobs_for_new_state()
+end
+
+-- подготовка гулага к работе
+function gulag:initialize()
+	self.ObjectJobPathName = {} -- по id. имя патрульного пути места работы персонажа
+	self.restrictors       = {} -- по id. назначенные гулагом рестрикторы для каждого персонажа
+
+	self:prepare_jobs()
 
 	self.calculateStates = gulag_tasks.loadStates( self.name, self.type )
 
@@ -78,8 +87,6 @@ end
 -- подготовить данные о местоположении каждой работы; о объекте, который на ней занят.
 -- подсчитать ёмкость = min(кол-во работ в 0 состоянии, поле capacity в custom data)
 function gulag:prepare_jobs()
-	table.sort( self.Job, function(a,b) return a.prior > b.prior end )
-
 	local ptrl, path_name
 	local capacity = 0
 
@@ -348,6 +355,58 @@ function gulag:changeState(state)
 	end
 end
 
+-- составить список работ существующих в данном состоянии гулага.
+-- освобождение npc с работ, не существующих в данном состоянии.
+-- обнулить fill_idle для всех работ.
+-- TODO сохранение fill_idle
+function gulag:prepare_jobs_for_new_state()
+	local Job_avail_in_state = {}
+
+	for i, job in ipairs( self.Job ) do
+		if self:availState(job.state, self.state) then
+			table.insert( Job_avail_in_state, job )
+		else
+			if job.object then
+				self:free_obj_and_reinit( job.object )
+			end
+		end
+
+		if job.fill_idle == idle_none then
+			job.fill_idle = idle_once
+		end
+	end
+
+	self.Job_avail_in_state = Job_avail_in_state
+end
+
+-- есть ли в текущем состоянии для объекта хоть одна подходящая работа?
+-- если персонаж НЕ эксклюзивный, то ищет только свободные работы,
+-- если персонаж эксклюзивный, ищет свободные работы и работы, занятые не эксклюзивными персонажами.
+function gulag:is_there_any_suitable_job( npc_info, exclusive )
+	for i, job in ipairs( self.Job_avail_in_state ) do
+		if not job.predicate or job.predicate( npc_info ) then
+			if job.object then
+				if exclusive and not self.npc_info[job.object].exclusive then
+					return true
+				end
+			else
+				return true
+			end
+		end
+	end
+
+	return false
+end
+
+-- подходит ли работа первого персонажа второму?
+-- obj_id   - id первого персонажа
+-- npc_info - информация о втором персонаже
+function gulag:obj1_job_suits_obj2( obj_id, npc_info )
+	local job = self.Job[self.ObjectJob[obj_id]]
+
+	return not job.predicate or job.predicate( npc_info )
+end
+
 -- существует ли указанное состояние в табличке?
 function gulag:availState(st, state)
 	for k,v in ipairs( st ) do
@@ -393,7 +452,7 @@ function gulag:availCurrent(job)
 	if job.timeout == nil or
 	   job.begin == nil or game.time() - job.begin < job.timeout
 	then
-		local jd = nil
+		local jd = nil --job.dependent
 
 		if jd then
 	   		for i, v in ipairs( self.Job ) do
@@ -407,43 +466,6 @@ function gulag:availCurrent(job)
 	else
 		return false
 	end
-end
-
--- составить список работ существующих в данном состоянии гулага.
--- освобождение npc с работ, не существующих в данном состоянии.
--- обнулить fill_idle для всех работ.
--- TODO сохранение fill_idle
-function gulag:prepare_jobs_for_new_state()
-	local Job_avail_in_state = {}
-
-	for i, job in ipairs( self.Job ) do
-		if self:availState(job.state, self.state) then
-			table.insert( Job_avail_in_state, job )
-		else
-			if job.object then
-				self:free_obj_and_reinit( job.object )
-			end
-		end
-
-		if job.fill_idle == idle_none then
-			job.fill_idle = idle_once
-		end
-	end
-
-	self.Job_avail_in_state = Job_avail_in_state
-end
-
--- есть ли в текущем состоянии для объекта хоть одна подходящая работа?
-function gulag:is_there_any_free_suitable_job( npc_info )
-	printf( "is_there_any_suitable_job" )
-
-	for i, job in ipairs( self.Job_avail_in_state ) do
-		if not job.object and ( not job.predicate or job.predicate( npc_info ) ) then
-			return true
-		end
-	end
-
-	return false
 end
 
 -- освобождение npc с работ, ставших недоступными (например, вышел timeout).
