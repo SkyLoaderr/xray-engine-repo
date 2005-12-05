@@ -211,18 +211,20 @@ path_walk = kamp_point_task
 soundgroup = gar_bandit_agr
 
 
+
 [logic@gar_bandit_agr_leader_raid]
-active = walker@gar_bandit_agr_leader_raid
+active = patrol@gar_bandit_agr_leader_raid
 on_hit = hit@bandits
 on_death = death@bandits
 combat_ignore = combat_ignore@bandit
 
-[walker@gar_bandit_agr_leader_raid]
+[patrol@gar_bandit_agr_leader_raid]
 path_walk = raid_walk2
 path_look = raid_look2
 combat_ignore_cond = {-gar_counter_fire}
 on_signal = start2 | %+gar_open_fire +gar_counter_fire%
-default_state_moving1 = assault
+formation = around
+commander = true
 
 
 [combat_ignore@bandit]
@@ -235,96 +237,50 @@ on_info = %+gar_counter_fire +gar_bandit_leader_dead +gar_open_fire%
 
 
 [logic@gar_bandit_agr_follower1]
-active = follower@gar_bandit_agr_follower1
+active = patrol@gar_bandit_agr_follower1
 on_hit = hit@bandits
 on_death = death@bandits
 combat_ignore = combat_ignore@bandit
 
 
-[follower@gar_bandit_agr_follower1]
-anim_walk = raid
-anim_run = assault
-combat_ignore_cond = {-gar_counter_fire}
+[patrol@gar_bandit_agr_follower1]
 path_walk = raid_walk2
-
-
-[logic@gar_bandit_agr_follower2]
-active = follower@gar_bandit_agr_follower2
-on_hit = hit@bandits
-on_death = death@bandits
-combat_ignore = combat_ignore@bandit
-
-[follower@gar_bandit_agr_follower2]
-anim_walk = raid
-anim_run = assault
+path_look = raid_look2
 combat_ignore_cond = {-gar_counter_fire}
-path_walk = raid_walk2
+on_signal = start2 | %+gar_open_fire +gar_counter_fire%
+formation = around
 
-
-[logic@gar_bandit_agr_follower3]
-active = follower@gar_bandit_agr_follower3
-combat_ignore = combat_ignore@bandit
-on_hit = hit@bandits
-on_death = death@bandits
-
-
-[follower@gar_bandit_agr_follower3]
-combat_ignore_cond = {-gar_counter_fire}
-anim_walk = raid
-anim_run = assault
-path_walk = raid_walk
-
-
-[logic@gar_bandit_agr_follower4]
-active = follower@gar_bandit_agr_follower4
-on_hit = hit@bandits
-on_death = death@bandits
-combat_ignore = combat_ignore@bandit
-
-[follower@gar_bandit_agr_follower4]
-combat_ignore_cond = {-gar_counter_fire}
-anim_walk = raid
-anim_run = assault
-path_walk = raid_walk
-
-
-[logic@gar_bandit_agr_follower5]
-active = follower@gar_bandit_agr_follower5
-on_hit = hit@bandits
-on_death = death@bandits
-combat_ignore = combat_ignore@bandit
-
-[follower@gar_bandit_agr_follower5]
-combat_ignore_cond = {-gar_counter_fire}
-anim_walk = raid
-anim_run = assault
-path_walk = raid_walk2
-
-
-[logic@gar_bandit_agr_follower6]
-active = follower@gar_bandit_agr_follower6
-on_hit = hit@bandits
-on_death = death@bandits
-combat_ignore = combat_ignore@bandit
-
-[follower@gar_bandit_agr_follower6]
-combat_ignore_cond = {-gar_counter_fire}
-anim_walk = raid
-anim_run = assault
-path_walk = raid_walk
 
 
 [logic@gar_bandit_agr_leader_raid2]
-active = walker@gar_bandit_agr_leader_raid2
+active = patrol@gar_bandit_agr_leader_raid2
 on_hit = hit@bandits
 on_death = death@bandits
 combat_ignore = combat_ignore@bandit
 
-[walker@gar_bandit_agr_leader_raid2]
+[patrol@gar_bandit_agr_leader_raid2]
 path_walk = raid_walk
 path_look = raid_look
 combat_ignore_cond = {-gar_counter_fire}
 on_signal = start | %+gar_counter_fire%
+formation = around
+commander = true
+
+
+[logic@gar_bandit_agr_follower2]
+active = patrol@gar_bandit_agr_follower1
+on_hit = hit@bandits
+on_death = death@bandits
+combat_ignore = combat_ignore@bandit
+
+
+[patrol@gar_bandit_agr_follower2]
+path_walk = raid_walk
+path_look = raid_look
+combat_ignore_cond = {-gar_counter_fire}
+on_signal = start2 | %+gar_open_fire +gar_counter_fire%
+formation = around
+
 
 [logic@gar_bandit_agr_restrictor_raid]
 active = walker@gar_bandit_agr_restrictor_raid

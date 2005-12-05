@@ -236,43 +236,37 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_bandit_agr_follower1",
 			idle = 0,
 			prior = 8, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@gar_bandit_agr_leader_raid"
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_bandit_agr_follower1",
+			idle = 0,
+			prior = 8, state = {1},
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_follower2",
 			idle = 0,
 			prior = 8, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@gar_bandit_agr_leader_raid"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@gar_bandit_agr_follower3",
+		t = { section = "logic@gar_bandit_agr_follower2",
 			idle = 0,
 			prior = 8, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@gar_bandit_agr_leader_raid2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@gar_bandit_agr_follower4",
+		t = { section = "logic@gar_bandit_agr_follower1",
 			idle = 0,
 			prior = 8, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@gar_bandit_agr_leader_raid2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@gar_bandit_agr_follower5",
+		t = { section = "logic@gar_bandit_agr_follower2",
 			idle = 0,
 			prior = 8, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@gar_bandit_agr_leader_raid"
-		}
-		table.insert(sj, t)
-		t = { section = "logic@gar_bandit_agr_follower6",
-			idle = 0,
-			prior = 8, state = {1},
-			in_rest = "", out_rest = "",
-			dependent = "logic@gar_bandit_agr_leader_raid2"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_leader_raid2",
