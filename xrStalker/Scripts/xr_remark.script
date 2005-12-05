@@ -5,8 +5,6 @@
 -- Изменения: Didenko Ruslan.
 ----------------------------------------------------------------------------------------------------
 
-function printf() end
-
 local state_initial = 0
 local state_animation = 1
 local state_sound = 2
@@ -87,6 +85,7 @@ function action_remark_activity:execute()
 		return
 	end
 
+	printf("REMARK [%s], state: %s", self.object:name(), tostring(self.state))
 	-- 1. Мы должны повернуться на объект.
 	if self.state == state_initial then
 		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
