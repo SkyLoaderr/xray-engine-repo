@@ -1540,12 +1540,12 @@ end
 -------------------------------------------------------------------------------------
 function start_small_reject (actor, npc)
     level.set_weather_fx ("surge_day")
-    set_postprocess ("scripts\\postprocess1.ltx")
+    --set_postprocess ("scripts\\postprocess1.ltx")
 end
 
 function start_full_reject (actor, npc)
     level.set_weather_fx ("surge_day")
-    set_postprocess ("scripts\\postprocess.ltx")
+    --set_postprocess ("scripts\\postprocess.ltx")
 end
 
 
