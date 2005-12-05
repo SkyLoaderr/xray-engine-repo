@@ -230,6 +230,8 @@ function load_job_followers(sj, gname, type, squad, groups)
 		        prior = pr[j], state = { states[j] },
 		        squad = squad, group = groups[1],
 		        in_rest = "", out_rest = restr[j],
+		        position_threshold = 100,
+		        online = true,
 		        predicate = pd
 	        }
 	        table.insert(sj, t)
@@ -292,13 +294,13 @@ function check_state_followers(gulag)
 		actor:has_info("pri_wave5_monolith3_dead") and
 		actor:has_info("pri_wave5_monolith4_dead")
 	then
-	    if actor:dont_has_info("pri_wave5_leader_phrase_end") then
-		    actor:give_info_portion("pri_wave5_leader_phrase_start")
-		    return state_wave5
-	    else
+	    --if actor:dont_has_info("pri_wave5_leader_phrase_end") then
+		--    actor:give_info_portion("pri_wave5_leader_phrase_start")
+		--    return state_wave5
+	    --else
 		    actor:give_info_portion("pri_wave5_end")
 		    return state_wave6
-		end
+		--end
 	end
 	if state == state_wave6 and
 		--actor:has_info("pri_wave6_monolith1_dead") and
@@ -460,8 +462,8 @@ function load_ltx_corner(gname, type)
 
                "[patrol@" .. gname .. "_monolith_go]\n" ..
                "path_walk           = monolith_walk\n" ..
-               "path_look           = monolith_look\n"
-
+               "path_look           = monolith_look\n" ..
+               "on_signal           = arrived | %+pri_corner_end%\n" 
     return res
 end
 
@@ -649,7 +651,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	    t = { section = "logic@" .. gname .. "_patrol" .. v, 
 		    idle = 0,
 		    prior = prior[i], state = {0},
-		    squad = squad, group = groups[1],
+		    squad = squad, group = groups[6],
 		    in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
 		    out_rest = "",
 		    predicate = f_predicate6
@@ -665,7 +667,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	        t = { section = "logic@" .. gname .. "_group_patrol" .. i, 
 		        idle = 0,
 		        prior = prior[i + 2 * (j - 1)], state = {0},
-		        squad = squad, group = groups[1],
+		        squad = squad, group = groups[7],
 		        in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
 		        out_rest = "",
 		        predicate = f_predicate6
@@ -680,7 +682,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	    t = { section = "logic@" .. gname .. "_stalker_" .. v, 
 		    idle = 0,
 		    prior = 14, state = {0},
-		    squad = squad, group = groups[1],
+		    squad = squad, group = groups[8],
 		    in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
 		    out_rest = "",
 		    predicate = pred[i]
@@ -704,7 +706,7 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_soldier", 
 		        idle = 0,
 		        prior = pr[j], state = {0},
-		        squad = squad, group = groups[1],
+		        squad = squad, group = groups[5],
 		        in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
 		        out_rest = "",
 		        predicate = pd[j]
@@ -712,6 +714,17 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	        table.insert(sj, t)
 	    end
 	end
+
+    -- snipers
+    for i = 1, 2 do
+	    t = { section = "logic@" .. gname .. "_sniper" .. i, 
+		    idle = 0,
+		    prior = 14, state = {0}, squad = squad, group = groups[9],
+		    in_rest = "", out_rest = "",
+		    predicate = f_predicate9
+	    }
+	    table.insert(sj, t)
+    end
 end
 
 -- States ----------------------------------------------------------------
@@ -750,8 +763,8 @@ function load_ltx_monolith(gname, type)
                    "path_walk           = patrol" .. v .. "_walk\n" ..
                    "path_look           = patrol" .. v .. "_look\n" ..
                    "formation           = line\n" ..
-                   "soundgroup          = " .. gname .."_group_patrol" .. i .. "\n" ..
                    "danger              = danger@monolith\n" ..
+                   "soundgroup          = " .. gname .."_group_patrol" .. i .. "_sg\n" ..
                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
     end
 
@@ -770,6 +783,7 @@ function load_ltx_monolith(gname, type)
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_fire\n" ..
                    "danger                      = danger@monolith\n" ..
+                   "soundgroup                  = " .. gname .."_rpg_svd_sg\n" ..
                    "combat_ignore_cond          = {=pri_monolith_combat_ignore}\n"
         if i == 2 then
             res = res.."sniper = true\n"
@@ -785,10 +799,31 @@ function load_ltx_monolith(gname, type)
                    "[kamp@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
                    "center_point        = kamp" .. i .. "\n" ..
                    "danger               = danger@monolith\n" ..
-                   "soundgroup          = " .. gname .."_kamp" .. i .. "\n" ..
                    "def_state_moving    = run\n" ..
+                   "soundgroup          = " .. gname .."_kamp" .. i .. "\n" ..
                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 	end
+
+    -- snipers
+    for i = 1, 2 do
+        res = res.."[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
+                    "active     = camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
+
+                    "[camper@" .. gname .. "_sniper" .. i .. "_wait]\n" ..
+                    "path_walk                  = balcony_sniper" .. i .. "_walk\n" ..
+                    "path_look                  = balcony_sniper" .. i .. "_look\n" ..
+                    "def_state_campering        = threat\n" ..
+                    "def_state_campering_fire   = threat_fire\n" ..
+                    "sniper                     = true\n" ..
+                    ";no_retreat                = true\n" ..
+                    "radius                     = 0\n" ..
+                    "on_info                    = {+" .. gname .. "_snipers_free} walker@" .. gname .. "_sniper" .. i .. "_free\n" ..
+
+                    "[walker@" .. gname .. "_sniper" .. i .. "_free]\n" ..
+                    "path_walk                  = balcony_sniper" .. i .. "_free_walk\n" ..
+                    "path_look                  = balcony_sniper" .. i .. "_free_look\n" ..
+                    "on_info                    = {-" .. gname .. "_snipers_free} camper@" .. gname .. "_sniper" .. i .. "_wait\n"
+    end
 
     return res
 end
@@ -836,11 +871,11 @@ function load_ltx_stadium(gname, type)
 
     for i, v in pairs(logic) do
 	    res = res.."[logic@" .. gname .. "_gigant_" .. v .. "]\n" ..
-                   "active     = mob_camp@" .. gname .. "_gigant_" .. v .. "\n" ..
+                   "active     = mob_home@" .. gname .. "_gigant_" .. v .. "\n" ..
 
-                   "[mob_camp@" .. gname .. "_gigant_" .. v .. "]\n" ..
+                   "[mob_home@" .. gname .. "_gigant_" .. v .. "]\n" ..
                    "path_home               = home" .. i .. "\n" ..
-                   "time_change_point       = 5000\n"
+                   ";time_change_point       = 5000\n"
 	end
    return res
 end
