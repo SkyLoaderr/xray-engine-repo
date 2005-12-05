@@ -126,7 +126,7 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	if (players.end()!=I)
 	{
 		game_PlayerState* IP		= I->second;
-//		Memory.mem_copy	(&IP,&PS,sizeof(PS));
+//		CopyMemory	(&IP,&PS,sizeof(PS));
 		IP->net_Import		(P);
 	}
 	else

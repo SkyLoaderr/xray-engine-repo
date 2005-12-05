@@ -225,8 +225,8 @@ void CSoundStream::AppWriteDataToBuffer(
     // if the block wraps around.
     if (DS_OK==pBuffer->Lock(dwOffset, dwSoundBytes, &lpvPtr1, &dwBytes1, &lpvPtr2, &dwBytes2, 0)){
 		// Write to pointers.
-		Memory.mem_copy	(lpvPtr1, lpbSoundData, dwBytes1);
-		if(NULL != lpvPtr2) Memory.mem_copy (lpvPtr2, lpbSoundData+dwBytes1, dwBytes2);
+		CopyMemory	(lpvPtr1, lpbSoundData, dwBytes1);
+		if(NULL != lpvPtr2) CopyMemory (lpvPtr2, lpbSoundData+dwBytes1, dwBytes2);
 		// Release the data back to DSound.
 		CHK_DX(pBuffer->Unlock(lpvPtr1, dwBytes1, lpvPtr2, dwBytes2));
 	}
@@ -273,20 +273,20 @@ void CSoundStream::LoadADPCM( )
 	R_ASSERT		(hf>=0);
 	ZeroMemory		(&riff, sizeof(riff));
     XRead			(riff);
-    Memory.mem_copy	(buf,riff.id,4); buf[4]=0;
-    Memory.mem_copy	(buf,riff.wave_id,4); buf[4]=0;
+    CopyMemory	(buf,riff.id,4); buf[4]=0;
+    CopyMemory	(buf,riff.wave_id,4); buf[4]=0;
 
     while (!hf->eof()) 
 	{
 		XRead			(hdr);
-        Memory.mem_copy	(buf,hdr.id,4); buf[4]=0;
+        CopyMemory	(buf,hdr.id,4); buf[4]=0;
         pos				= hf->tell();
         if (stricmp(buf, "fmt ")==0) {
 			dwFMT_Size		= hdr.len;
 			psrc			= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
 			pwfx			= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
 			hf->r			(psrc,		dwFMT_Size);
-			Memory.mem_copy	(pwfx,psrc,	dwFMT_Size);
+			CopyMemory	(pwfx,psrc,	dwFMT_Size);
 			pwfx->wFormatTag = WAVE_FORMAT_PCM;
         } else {
             if (stricmp(buf,"data")==0) {

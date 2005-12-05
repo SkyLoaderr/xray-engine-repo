@@ -82,7 +82,7 @@ BOOL CTheoraStream::ParseHeaders		()
 			// identify the codec: try theora 
 			if(!header_count && theora_decode_header(&t_info,&t_comment,&o_packet)>=0){
 				// it is theora 
-				Memory.mem_copy	(&o_stream_state,&test,sizeof(test));
+				CopyMemory	(&o_stream_state,&test,sizeof(test));
 				header_count	= 1;
 			}else{
 				// whatever it is, we don't care about it 

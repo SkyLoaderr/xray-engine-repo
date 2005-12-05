@@ -15,7 +15,7 @@ void	CStatTimer::FrameStart	()
 }
 void	CStatTimer::FrameEnd	()
 {
-	float _time			= float(double(accum)/double(CPU::qpc_freq)	)	;
+	float _time			= 1000.f*float(double(accum)/double(CPU::qpc_freq)	)	;
 	if (_time > result)	result	=	_time		;
 	else				result	=	0.99f*result + 0.01f*_time;
 }

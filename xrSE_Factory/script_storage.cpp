@@ -279,7 +279,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 		u32				str_len = xr_strlen(insert);
 		LPSTR			script = xr_alloc<char>(str_len + tSize);
 		strcpy			(script,insert);
-		Memory.mem_copy	(script + str_len,caBuffer,u32(tSize));
+		CopyMemory	(script + str_len,caBuffer,u32(tSize));
 //		try 
 		{
 			l_iErrorCode= luaL_loadbuffer(L,script,tSize + str_len,caScriptName);

@@ -49,7 +49,7 @@ TiXmlString::TiXmlString (const char* instring)
 
 	newlen = static_cast<unsigned int>(xr_strlen (instring) + 1);
     newstring = new char [newlen];
-    Memory.mem_copy(newstring, instring, newlen);
+    CopyMemory(newstring, instring, newlen);
     // strcpy (newstring, instring);
     allocated = newlen;
     cstring = newstring;
@@ -76,7 +76,7 @@ TiXmlString::TiXmlString (const TiXmlString& copy)
     newlen = copy . length () + 1;
     newstring = new char [newlen];
     // strcpy (newstring, copy . cstring);
-    Memory.mem_copy(newstring, copy . cstring, newlen);
+    CopyMemory(newstring, copy . cstring, newlen);
     allocated = newlen;
     cstring = newstring;
     current_length = newlen - 1;
@@ -96,7 +96,7 @@ void TiXmlString ::operator = (const char * content)
 //    newlen = static_cast<unsigned int>(xr_strlen (content) + 1);
  //   newstring = new char [newlen];
 	//!!! strcpy (newstring, content);
-  //  Memory.mem_copy(newstring, content, newlen);
+  //  CopyMemory(newstring, content, newlen);
 	newstring = xr_strdup(content);
 	newlen = static_cast<unsigned int>(xr_strlen (newstring) + 1);
     empty_it ();
@@ -119,7 +119,7 @@ void TiXmlString ::operator = (const TiXmlString & copy)
     newlen = copy . length () + 1;
     newstring = new char [newlen];
     // strcpy (newstring, copy . c_str ());
-    Memory.mem_copy(newstring, copy . c_str (), newlen);
+    CopyMemory(newstring, copy . c_str (), newlen);
     empty_it ();
     allocated = newlen;
     cstring = newstring;
@@ -159,11 +159,11 @@ void TiXmlString::append( const char* str, int len )
         // copy the previous allocated buffer into this one
         if (allocated && cstring)
             // strcpy (new_string, cstring);
-            Memory.mem_copy(new_string, cstring, length ());
+            CopyMemory(new_string, cstring, length ());
 
         // append the suffix. It does exist, otherwize we wouldn't be expanding 
         // strncat (new_string, str, len);
-        Memory.mem_copy(new_string + length (), 
+        CopyMemory(new_string + length (), 
 						str,
 						size_suffix);
 
@@ -179,7 +179,7 @@ void TiXmlString::append( const char* str, int len )
     {
         // we know we can safely append the new string
         // strncat (cstring, str, len);
-        Memory.mem_copy(cstring + length (), 
+        CopyMemory(cstring + length (), 
 						str,
 						size_suffix);
     }
@@ -207,12 +207,12 @@ void TiXmlString::append( const char * suffix )
 
         // copy the previous allocated buffer into this one
         if (allocated && cstring)
-            Memory.mem_copy(new_string, cstring, 1 + length ());
+            CopyMemory(new_string, cstring, 1 + length ());
             // strcpy (new_string, cstring);
 
         // append the suffix. It does exist, otherwize we wouldn't be expanding 
         // strcat (new_string, suffix);
-        Memory.mem_copy(new_string + length (), 
+        CopyMemory(new_string + length (), 
 						suffix,
 						xr_strlen (suffix) + 1);
 
@@ -228,7 +228,7 @@ void TiXmlString::append( const char * suffix )
     {
         // we know we can safely append the new string
         // strcat (cstring, suffix);
-		Memory.mem_copy(cstring + length (), suffix, xr_strlen (suffix) + 1);
+		CopyMemory(cstring + length (), suffix, xr_strlen (suffix) + 1);
     }
     current_length = new_size - 1;
 }

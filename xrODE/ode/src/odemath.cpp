@@ -32,19 +32,8 @@
 // scale the components by 1/l. this has been verified to work with vectors
 // containing the smallest representable numbers.
 
-void dNormalize3 (dVector3 a)
+void dNormalize3_slow (dVector3 a)
 {
-	dReal	sqr_magnitude	= a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
-	dReal	epsilon			= 1.192092896e-05F;
-	if		(sqr_magnitude > epsilon)
-	{
-		dReal	l	=	dRecipSqrt(sqr_magnitude);
-		a[0]		*=	l;
-		a[1]		*=	l;
-		a[2]		*=	l;
-		return;
-	}
-
 	dReal a0,a1,a2,aa0,aa1,aa2,l;
 	dAASSERT (a);
 	a0 = a[0];

@@ -46,7 +46,7 @@ GameEvent*		GameEventQueue::Create	(NET_Packet& P, u16 type, u32 time, ClientID 
 		unused.pop_back		();
 		ge					= ready.back	();
 	}
-	Memory.mem_copy	(&(ge->P),&P,sizeof(NET_Packet));
+	CopyMemory	(&(ge->P),&P,sizeof(NET_Packet));
 	ge->sender	= clientID;
 	ge->time	= time;
 	ge->type	= type;

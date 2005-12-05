@@ -262,7 +262,7 @@ void	test_rtc	()
 		tMc.End		();
 
 		tM.Begin	();
-		Memory.mem_copy(p_in_tst,p_in,in_size);
+		CopyMemory(p_in_tst,p_in,in_size);
 		tM.End		();
 
 		tC.Begin	();

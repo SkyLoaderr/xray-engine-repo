@@ -219,9 +219,21 @@ extern "C" {
 /*
  * normalize 3x1 and 4x1 vectors (i.e. scale them to unit length)
  */
-void dNormalize3 (dVector3 a);
-void dNormalize4 (dVector4 a);
+void dNormalize3_slow	(dVector3 a);
+void dNormalize4		(dVector4 a);
 
+__forceinline void dNormalize3 (dVector3 a)
+{
+	dReal	sqr_magnitude	= a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
+	dReal	epsilon			= 1.192092896e-05F;
+	if		(sqr_magnitude < epsilon)	dNormalize3_slow	(a)	;
+	else	{
+		dReal	l	=	dRecipSqrt(sqr_magnitude);
+		a[0]		*=	l;
+		a[1]		*=	l;
+		a[2]		*=	l;
+	}	
+}
 
 /*
  * given a unit length "normal" vector n, generate vectors p and q vectors

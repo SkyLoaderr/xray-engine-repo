@@ -54,7 +54,7 @@ NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
 		unused.pop_back		();
 		P					= ready.back	();
 	}
-	Memory.mem_copy	(P,&_other,sizeof(NET_Packet));
+	CopyMemory	(P,&_other,sizeof(NET_Packet));
 	cs.Leave		();
 	return			P;
 }
@@ -404,7 +404,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 				// Copy the Host Address
 				R_CHK		(pEnumHostsResponseMsg->pAddressSender->Duplicate(&NODE.pHostAddress ) );
-				Memory.mem_copy(&NODE.dpAppDesc,pDesc,sizeof(DPN_APPLICATION_DESC));
+				CopyMemory(&NODE.dpAppDesc,pDesc,sizeof(DPN_APPLICATION_DESC));
 
 				// Null out all the pointers we aren't copying
 				NODE.dpAppDesc.pwszSessionName					= NULL;
@@ -569,7 +569,7 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 		&desc,1,
 		dwTimeout,
 		0,&hAsync,
-		dwFlags
+		dwFlags | DPNSEND_COALESCE
 		));
 }
 

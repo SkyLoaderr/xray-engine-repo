@@ -122,7 +122,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 			{
 				int				size = reader->length()*sizeof(char);
 				LPSTR			temp = (LPSTR)_alloca(size + 1);
-				Memory.mem_copy	(temp,reader->pointer(),size);
+				CopyMemory	(temp,reader->pointer(),size);
 				temp[size]		= 0;
 				m_ini_string	= temp;
 			}

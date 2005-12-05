@@ -53,7 +53,7 @@ namespace PAPI{
 				return max_particles;
 			}
 
-			Memory.mem_copy			(new_particles, particles, p_count * sizeof(Particle));
+			CopyMemory			(new_particles, particles, p_count * sizeof(Particle));
 			xr_free					(particles);
 			particles				= new_particles;
 

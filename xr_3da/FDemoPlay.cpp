@@ -48,7 +48,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, u32 cycles, float life_time) : 
 		
 		seq.resize		(sz/sizeof(Fmatrix));
 		m_count			= seq.size();
-		Memory.mem_copy	(&*seq.begin(),fs->pointer(),sz);
+		CopyMemory	(&*seq.begin(),fs->pointer(),sz);
 		FS.r_close		(fs);
 		Log				("~ Total key-frames: ",m_count);
 	}

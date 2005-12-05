@@ -217,7 +217,7 @@ char*			xr_strdup		(const char* string)
 		, "strdup"
 #endif
 		);
-	Memory.mem_copy		(memory,string,len);
+	CopyMemory		(memory,string,len);
 	return	memory;
 }
 

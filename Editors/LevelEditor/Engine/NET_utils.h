@@ -33,14 +33,14 @@ public:
 	{
 		VERIFY		(p && count);
 		VERIFY		(B.count + count < NET_PacketSizeLimit);
-		Memory.mem_copy(&B.data[B.count],p,count);
+		CopyMemory(&B.data[B.count],p,count);
 		B.count		+= count;
 		VERIFY		(B.count<NET_PacketSizeLimit);
 	}
 	IC void w_seek	(u32 pos, const void* p, u32 count)	// random write (only inside allocated region)
 	{
 		VERIFY		(p && count && (pos+count<=B.count));
-		Memory.mem_copy(&B.data[pos],p,count);
+		CopyMemory(&B.data[pos],p,count);
 	}
 	IC u32	w_tell	()	{ return B.count; }
 
@@ -162,7 +162,7 @@ public:
 	IC void		r				( void* p, u32 count)
 	{
 		VERIFY		(p && count);
-		Memory.mem_copy(p,&B.data[r_pos],count);
+		CopyMemory(p,&B.data[r_pos],count);
 		r_pos		+= count;
 		VERIFY		(r_pos<=B.count);
 	}

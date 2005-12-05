@@ -419,7 +419,7 @@ void	IPureServer::SendTo_LL(ClientID ID/*DPNID ID*/, void* data, u32 size, u32 d
 		&desc,1,
 		dwTimeout,
 		0,&hAsync,
-		dwFlags
+		dwFlags | DPNSEND_COALESCE 
 		);
 	if (SUCCEEDED(_hr) || (DPNERR_CONNECTIONLOST==_hr))	return;
 
@@ -432,7 +432,7 @@ void	IPureServer::SendTo		(ClientID ID/*DPNID ID*/, NET_Packet& P, u32 dwFlags, 
 	NET_Packet	Compressed;
 	pCompress	(Compressed,P);
 
-	SendTo_LL(ID,Compressed.B.data,Compressed.B.count,dwFlags,dwTimeout);
+	SendTo_LL	(ID,Compressed.B.data,Compressed.B.count,dwFlags,dwTimeout);
 }
 
 void	IPureServer::SendBroadcast_LL(ClientID exclude, void* data, u32 size, u32 dwFlags)

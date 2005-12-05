@@ -80,8 +80,8 @@ struct	hdrNODES
 class NodePosition {
 	u8	data[5];
 	
-	ICF	void xz	(u32 value)	{ Memory.mem_copy	(data,&value,3);		}
-	ICF	void y	(u16 value)	{ Memory.mem_copy	(data + 3,&value,2);	}
+	ICF	void xz	(u32 value)	{ CopyMemory	(data,&value,3);		}
+	ICF	void y	(u16 value)	{ CopyMemory	(data + 3,&value,2);	}
 public:
 	ICF	u32	xz	() const	{
 		return			((*((u32*)data)) & 0x00ffffff);
@@ -112,25 +112,25 @@ private:
 		switch (link_index) {
 			case 0 : {
 				value	|= (*(u32*)data) & 0xff800000;
-				Memory.mem_copy(data, &value, sizeof(u32));
+				CopyMemory(data, &value, sizeof(u32));
 				break;
 			}
 			case 1 : {
 				value	<<= 7;
 				value	|= (*(u32*)(data + 2)) & 0xc000007f;
-				Memory.mem_copy(data + 2, &value, sizeof(u32));
+				CopyMemory(data + 2, &value, sizeof(u32));
 				break;
 			}
 			case 2 : {
 				value	<<= 6;
 				value	|= (*(u32*)(data + 5)) & 0xe000003f;
-				Memory.mem_copy(data + 5, &value, sizeof(u32));
+				CopyMemory(data + 5, &value, sizeof(u32));
 				break;
 			}
 			case 3 : {
 				value	<<= 5;
 				value	|= (*(u32*)(data + 8)) & 0xf000001f;
-				Memory.mem_copy(data + 8, &value, sizeof(u32));
+				CopyMemory(data + 8, &value, sizeof(u32));
 				break;
 			}
 		}
@@ -203,25 +203,25 @@ private:
 		switch (link_index) {
 			case 0 : {
 				value	|= (*(u32*)data) & 0xffe00000;
-				Memory.mem_copy(data, &value, sizeof(u32));
+				CopyMemory(data, &value, sizeof(u32));
 				break;
 			}
 			case 1 : {
 				value	<<= 5;
 				value	|= (*(u32*)(data + 2)) & 0xfc00001f;
-				Memory.mem_copy(data + 2, &value, sizeof(u32));
+				CopyMemory(data + 2, &value, sizeof(u32));
 				break;
 			}
 			case 2 : {
 				value	<<= 2;
 				value	|= (*(u32*)(data + 5)) & 0xff800003;
-				Memory.mem_copy(data + 5, &value, sizeof(u32));
+				CopyMemory(data + 5, &value, sizeof(u32));
 				break;
 			}
 			case 3 : {
 				value	<<= 7;
 				value	|= (*(u32*)(data + 7)) & 0xf000007f;
-				Memory.mem_copy(data + 7, &value, sizeof(u32));
+				CopyMemory(data + 7, &value, sizeof(u32));
 				break;
 			}
 		}

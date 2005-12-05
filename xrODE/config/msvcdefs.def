@@ -238,7 +238,7 @@ dMaxDifference
 dMultiply0
 dMultiply1
 dMultiply2
-dNormalize3
+dNormalize3_slow
 dNormalize4
 dPlaneSpace
 dQFromAxisAndAngle

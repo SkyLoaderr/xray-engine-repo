@@ -75,7 +75,7 @@ void CRenderTarget::accum_spot_geom_create	()
 			0));
 		BYTE*	pData				= 0;
 		R_CHK						(g_accum_spot_vb->Lock(0,0,(void**)&pData,0));
-		Memory.mem_copy				(pData,du_cone_vertices,vCount*vSize);
+		CopyMemory				(pData,du_cone_vertices,vCount*vSize);
 		g_accum_spot_vb->Unlock	();
 	}
 
@@ -86,7 +86,7 @@ void CRenderTarget::accum_spot_geom_create	()
 		BYTE*	pData		= 0;
 		R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&g_accum_spot_ib,0));
 		R_CHK				(g_accum_spot_ib->Lock(0,0,(void**)&pData,0));
-		Memory.mem_copy		(pData,du_cone_faces,iCount*2);
+		CopyMemory		(pData,du_cone_faces,iCount*2);
 		g_accum_spot_ib->Unlock	();
 	}
 }

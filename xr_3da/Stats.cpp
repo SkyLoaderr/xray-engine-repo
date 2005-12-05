@@ -6,8 +6,47 @@
 #include "IGame_Persistent.h"
 #include "render.h"
 
+#pragma optimize("",off)
+struct blin_oles {
+	blin_oles	()
+	{
+		int i=0;
+		++i;
+	}
+};
+
+blin_oles	blin_oles;
+#pragma optimize("",on)
+
 // stats
 DECLARE_RP(Stats);
+
+class	optimizer	{
+	float	average_	;
+	BOOL	enabled_	;
+public:
+	optimizer	()		{
+		average_	= 30.f;
+//		enabled_	= TRUE;
+//		disable		();
+		// because Engine is not exist
+		enabled_	= FALSE;
+	}
+
+	BOOL	enabled	()	{ return enabled_;	}
+	void	enable	()	{ if (!enabled_)	{ Engine.External.tune_resume	();	enabled_=TRUE;	}}
+	void	disable	()	{ if (enabled_)		{ Engine.External.tune_pause	();	enabled_=FALSE; }}
+	void	update	(float value)	{
+		if (value < average_*0.70f)	{
+			// 30% deviation
+			enable	();
+		} else {
+			disable	();
+		};
+		average_	= 0.999f*average_ + 0.001f*value;
+	};
+};
+static	optimizer	vtune;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -87,6 +126,7 @@ void CStats::Show()
 	// calc FPS & TPS
 	if (Device.fTimeDelta>EPS_S) {
 		float fps  = 1.f/Device.fTimeDelta;
+		if (Engine.External.tune_enabled)	vtune.update	(fps);
 		float fOne = 0.3f;
 		float fInv = 1.f-fOne;
 		fFPS = fInv*fFPS + fOne*fps;
@@ -126,6 +166,16 @@ void CStats::Show()
 		pFont->OnRender	();
 		pFont->SetSize	(sz);
 	}
+
+	if (vtune.enabled())	{
+		float sz		= pFont->GetSize();
+		pFont->SetSize	(16);
+		pFont->SetColor	(0xFFFF0000	);
+		pFont->OutSet	(Device.dwWidth/2.0f+(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
+		pFont->OutNext	("--= tune =--");
+		pFont->OnRender	();
+		pFont->SetSize	(sz);
+	};
 
 	// Show them
 	if (psDeviceFlags.test(rsStatistic))

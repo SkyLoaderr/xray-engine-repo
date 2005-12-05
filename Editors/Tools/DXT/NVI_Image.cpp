@@ -78,7 +78,7 @@ HRESULT NVI_Image::Initialize( int width, int height, NVI_PIXEL_FORMAT fmt, u8* 
 	NVI_Image::Initialize(width,height,fmt);
 
 	int bytes_per_pixel = GetBytesPerPixel();
-	Memory.mem_copy(m_pArray,data,width * height * bytes_per_pixel);
+	CopyMemory(m_pArray,data,width * height * bytes_per_pixel);
 
 	return( S_OK );
 }

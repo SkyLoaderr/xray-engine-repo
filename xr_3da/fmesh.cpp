@@ -47,7 +47,7 @@ void ConvertVertices(u32 dwTypeDest, void *pDest, u32 dwTypeSrc, void *pSource, 
 
 	// avoid redundant processing
 	if (dwTypeDest==dwTypeSrc) {
-		Memory.mem_copy	(pDest,pSource,dwSizeDest*dwCount*4);
+		CopyMemory	(pDest,pSource,dwSizeDest*dwCount*4);
 		return;
 	}
 

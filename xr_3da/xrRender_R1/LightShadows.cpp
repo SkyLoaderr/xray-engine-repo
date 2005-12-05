@@ -465,7 +465,7 @@ void CLightShadows::render	()
 			if (tess.size())		{
 				CI->tris			= xr_alloc<tess_tri>(CI->tcnt);
 				//Msg					("---alloc--- %x",u32(CI->tris));
-				Memory.mem_copy		(CI->tris,&*tess.begin(),CI->tcnt * sizeof(tess_tri));
+				CopyMemory		(CI->tris,&*tess.begin(),CI->tcnt * sizeof(tess_tri));
 			}
 		}
 

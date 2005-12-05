@@ -184,7 +184,7 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
 			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
-			Memory.mem_copy		(pData,fs().pointer(),vCount*vSize);	//.???? copy while skip T&B
+			CopyMemory		(pData,fs().pointer(),vCount*vSize);	//.???? copy while skip T&B
 			VB[i]->Unlock		();
 
 			fs().advance		(vCount*vSize);
@@ -208,7 +208,7 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&IB[i],0));
 			R_CHK				(IB[i]->Lock(0,0,(void**)&pData,0));
-			Memory.mem_copy		(pData,fs().pointer(),iCount*2);
+			CopyMemory		(pData,fs().pointer(),iCount*2);
 			IB[i]->Unlock		();
 
 			fs().advance		(iCount*2);

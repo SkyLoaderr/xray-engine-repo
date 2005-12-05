@@ -41,7 +41,7 @@ public:
 		// duplicate and zero-terminate
 		u32				size	= R->length();
 		u8*				data	= xr_alloc<u8>	(size + 1);
-		Memory.mem_copy			(data,R->pointer(),size);
+		CopyMemory			(data,R->pointer(),size);
 		data[size]				= 0;
 		FS.r_close				(R);
 
@@ -254,7 +254,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		R_ASSERT2				(R,cname);
 		u32				size	= R->length();
 		char*			data	= xr_alloc<char>(size + 1);
-		Memory.mem_copy			(data,R->pointer(),size);
+		CopyMemory			(data,R->pointer(),size);
 		data[size]				= 0;
 		FS.r_close				(R);
 
