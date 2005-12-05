@@ -2,194 +2,84 @@
 -- Remark
 ----------------------------------------------------------------------------------------------------
 -- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+-- Изменения: Didenko Ruslan.
 ----------------------------------------------------------------------------------------------------
 
 function printf() end
 
-local state_none = 0
-local state_initial = 1
-local state_going_to_plr = 2
-local state_standing = 4
+local state_initial = 0
+local state_animation = 1
+local state_sound = 2
+local state_finish = 3
 
 local body_state_free = 0
 local body_state_danger = 1
 
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_remark" (property_evaluator)
-
 function evaluator_need_remark:__init(storage, name) super(nil, name)
   	self.st = storage
 end
-
 function evaluator_need_remark:evaluate()
   	return xr_logic.is_active(self.object, self.st)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_remark_activity" (action_base)
-
 function action_remark_activity:__init (npc_name, action_name, storage) super(nil, action_name)
 	self.st = storage
-	self.was_reset = false
 end
-
 function action_remark_activity:initialize()
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
+	xr_sound.set_sound(self.object, nil)
 end
-
 function action_remark_activity:activate_scheme()
     self.st.signals = {}
     self.sound_end_signalled = false
-    self.move_end_signalled = false
     self.action_end_signalled = false
     self.anim_end_signalled = false
 
-	self.state = state_initial
-	self.reset_time = time_global()
-	self.snd_scheduled = false
-	self.snd_start_time = nil
-	self.snd_started = false
+	-- Определим нужно ли нам отыгрывать анимацию/поворачиваться на объект.
+	self.anim_scheduled = true
 	
-end
+	-- Определим нужно ли нам отыгрывать отдельно звук после поворота.
+	if self.st.snd_anim_sync == false and
+	   self.st.snd ~= nil 
+	then
+		self.snd_scheduled = true
+	else
+		self.snd_scheduled = false
+	end
 
+
+	-- Задаем стартовое состояние
+	self.state = state_initial
+end
 function action_remark_activity:get_target()
+	local look_tbl = {}
+
     if self.st.target_actor == true then
-        return db.actor
+        look_tbl.look_object = db.actor
     end
 
     if self.st.target_id then
-        return level.object_by_id(self.st.target_id)
+        look_tbl.look_object = level.object_by_id(self.st.target_id)
     end
 
-    return nil
+    return look_tbl
 end
-
-function action_remark_activity:signal_arrival()
-	if not self.move_end_signalled then
-		self.move_end_signalled = true
-		self.st.signals["move_end"] = true
-		self:signal_action_end()
-	end
-end
-
-function action_remark_activity:activate_sound()
---	printf("REMARK activate_sound called [%s]", self.object:name())
-	if self.snd_scheduled or not self.st.snd then
-		return
-	end
-
-	self.snd_start_time = time_global()
-	self.snd_scheduled = true				
-
-	xr_sound.set_sound_play(self.object, self.st.snd)
-
-end
-
-function action_remark_activity:if_actor_far_go_to_actor()
-	if not self.st.no_move then
-	    local target = self:get_target()
-		if target and distance_between(self.object, target) >= 4 then
-			self:go_to_target()
-			self.state = state_going_to_plr
-		end
-	end
-end
-
-function action_remark_activity:get_sug_body_state()
-    local target = self:get_target()
-	if self.st.no_danger or not target or 
-	   not IsStalker(target) or				
-	   self.object:relation(target) == game_object.friend  
-	then
-		return body_state_free --"guard"
-	else
-		return body_state_danger --"threat"
-	end
-end
-
-function action_remark_activity:signal_action_end()
-	if not self.action_end_signalled and
-	   (self.st.no_move or self.move_end_signalled) and
-	   (not self.st.snd or self.sound_end_signalled) and
-	   (not self.st.anim or self.anim_end_signalled) then
-		self.action_end_signalled = true
-		self.st.signals["action_end"] = true
-	end
-end
-
 function action_remark_activity:time_callback()
-	self:activate_sound()
-	if not self.anim_end_signalled then
-		self.anim_end_signalled = true
-		self.st.signals["anim_end"] = true
-		if self.st.anim then
-			self:signal_action_end()
-		end
-	end
+	self.state = state_sound
 end
-
 function action_remark_activity:turn_end_callback()
-	if self.st.snd then
-		if not self.st.snd_anim_sync then
-			self:activate_sound()
-		end
-	end
+	self.state = state_sound
 end
-
-function action_remark_activity:stand_still()
-	local sug_body_state = self:get_sug_body_state()
-	local look_tbl
-	if self.st.no_rotate then
-		look_tbl = nil
-	else
-		look_tbl = { look_object = self:get_target() }
-	end
-	local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
-	
-	if self.st.anim then
-		state_mgr.set_state(self.object, self.st.anim, cb, 0, look_tbl, { animation = true })
-	else
-		state_mgr.set_state(self.object,
-			if_then_else(sug_body_state == body_state_free, "guard", "threat"),
-			cb,
-			0,
-			look_tbl,
-			{ animation = true }
-		)
-	end
-end
-
-function action_remark_activity:update_destination()
-    local target = self:get_target()
-
-    if target then
-	    self.object:set_path_type(game_object.level_path)
-	    self.object:set_dest_level_vertex_id(target:level_vertex_id())
-	end
-end
-
-function action_remark_activity:go_to_target()
-	local sug_body_state = self:get_sug_body_state()
-
-	self:update_destination()
-	state_mgr.set_state(self.object,
-		if_then_else(sug_body_state == body_state_free, "run", "assault"),
-		nil,
-		nil,
-		{ look_object = self:get_target()})
-end
-	
-function action_remark_activity:step()
-	-- Scheme finalization conditions:
-	if not self.sound_end_signalled and self.snd_started and self.object:active_sound_count() == 0 then
-		self.sound_end_signalled = true
-		self.st.signals["sound_end"] = true
-		self:signal_action_end()
-	end
+function action_remark_activity:execute()
+	action_base.execute(self)
 
 	-- Try to switch to another scheme:
 	local actor = db.actor
@@ -197,50 +87,53 @@ function action_remark_activity:step()
 		return
 	end
 
-    local target = self:get_target()
-
-	if not target or not target:alive() then
-		return
-	end
---	printf("REMARK step [%s]", self.object:name())
-	-- Начальное состояние
+	-- 1. Мы должны повернуться на объект.
 	if self.state == state_initial then
-			self:stand_still()
-			self.state = state_standing
-
-	elseif self.state == state_standing then
-		if self.st.snd then
-			if not self.st.snd_anim_sync then
-				self:activate_sound()
+		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
+		local synsound
+		if self.st.snd_anim_sync == true then
+			synsound = self.st.snd
+		else
+			synsound = nil
+		end	   
+		state_mgr.set_state(self.object, self.st.anim, cb, 0, self:get_target(), { animation = true }, synsound)
+		self.state = state_animation
+		
+	-- Ожидание колбека от стейтменеджера
+	elseif self.state == state_animation then
+	
+	-- 2. Мы должны отыграть фразу.
+	elseif self.state == state_sound then
+		-- Должны выдать сигнал anim_end
+		if self.anim_end_signalled == false then
+			self.anim_end_signalled = true
+			self.st.signals["anim_end"] = true
+		end
+	
+		if self.snd_scheduled == true then
+			xr_sound.set_sound_play(self.object, self.st.snd)
+		end
+	
+		self.state = state_finish
+		
+	-- 3. Мы должны выдать сигнал об окончании действия
+	-- должны выдать сигнал action_end
+	-- должны выдать сигнал sound_end
+	elseif self.state == state_finish then
+		if self.object:active_sound_count() == 0 then
+			if self.sound_end_signalled == false then
+				self.st.signals["sound_end"] = true
+				self.sound_end_signalled = true
+			end
+			if self.action_end_signalled == false then
+				self.st.signals["action_end"] = true
+				self.action_end_signalled = true
 			end
 		end
-		self:if_actor_far_go_to_actor()
-	end	
-
-end
-	
-function action_remark_activity:execute()
-
-	action_base.execute(self)
-	local old_state
-	repeat
-		old_state = self.state
-		self:step()
-	until old_state == self.state
-
-	--printf("remark <execute>: [%s], num_snd = %d", self.object:name(), self.object:active_sound_count())
-	if self.snd_scheduled then -- запросили запуск звука на этом апдейте
-		if time_global() - self.snd_start_time > 1000 then
-			-- нужно, чтобы прошел как минимум 1 апдейт, но не меньше 1-й секунды, прежде чем считать, что звук
-			-- стартовал и ждать его окончания
-			self.snd_started = true
-		end
 	end
+	
 end
-
 function action_remark_activity:finalize()
-
-	xr_sound.set_sound(self.object, nil)
 	action_base.finalize(self)
 end
 
@@ -280,12 +173,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
 end
 
 -- Включение схемы
--- 
--- enabled - включена ли схема
--- path_walk - основной путь, по которому ходит охранник
--- path_look [опционально] - путь, куда смотрит охранник
--- team [опционально] - команда для синхронизации
---
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	printf("DEBUG: set_scheme: scheme='%s', section='%s'", scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
@@ -293,23 +180,13 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.no_rotate = utils.cfg_get_bool         (ini, section,   "no_rotate",       npc, false)
-	st.no_wpn = utils.cfg_get_bool            (ini, section,   "no_wpn",          npc, false)
 	st.snd_anim_sync = utils.cfg_get_bool     (ini, section,   "snd_anim_sync",       npc, false)
-	if st.no_wpn then
-		abort("remark <abort>: object '%s', xr_remark.set_scheme: no_wpn field is deprecated", npc:name())
-	end
-	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "", nil)
-	st.snd_dist = utils.cfg_get_number        (ini, section,   "snd_dist",        npc, false,     5)
-	st.snd_timeout = utils.cfg_get_number     (ini, section,   "snd_timeout",     npc, false,     4000)
-	st.arrival_timeout = utils.cfg_get_number (ini, section,   "arrival_timeout", npc, false,     5000)
-	st.anim = utils.cfg_get_string            (ini, section,   "anim",            npc, false, "")
-	if st.anim == "" or st.anim == "idle" then
-		abort("remark <abort>: object '%s', xr_remark.set_scheme: anim field cannot be [nil] or [idle]", npc:name())
-	end
 	
-	st.no_move = utils.cfg_get_bool           (ini, section,   "no_move",         npc, false,     st.anim ~= nil)
-	st.no_danger = utils.cfg_get_bool         (ini, section,   "no_danger",       npc, false)
+	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "", nil)
+	st.anim = utils.cfg_get_string            (ini, section,   "anim",            npc, false, "", "wait")
+	if st.anim == "idle" then
+		abort("remark <abort>: object '%s', xr_remark.set_scheme: anim field cannot be [idle]", npc:name())
+	end
 
 	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
     if target and target ~= "nil" then
@@ -334,15 +211,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
                     st.target_id = gulag.idNPCOnJob(target)
                 end
 		        if not st.target_id then
-		            abort("remark <error>: Wrong target objrct for [%s] in section [%s].", npc:name(), section)
+		            abort("remark <error>: Wrong target object for [%s] in section [%s].", npc:name(), section)
 		        end
             end
 	    end
     end   
     	
-	if not st.no_move and st.anim then
-		abort("remark <abort>: object '%s', section '%s': anim field specified, when no_move is false",
-			npc:name(), section)
-	end
 end
 
