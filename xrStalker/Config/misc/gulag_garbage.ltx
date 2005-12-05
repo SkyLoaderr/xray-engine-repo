@@ -700,30 +700,11 @@ soundgroup = gar_dolg_blokpost
 
 
 [logic@gar_dolg_blokpost_raid1]
-active = walker@gar_dolg_blokpost_raid1
+active = patrol@gar_dolg_blokpost_raid1
 
-[walker@gar_dolg_blokpost_raid1]
+[patrol@gar_dolg_blokpost_raid1]
 path_walk = raid_walk
-
-
-[logic@gar_dolg_blokpost_raid2]
-active = follower1@gar_dolg_blokpost_raid2
-
-[follower1@gar_dolg_blokpost_raid2]
-anim_walk = raid
-anim_run = assault
-formation_line = true
-path_walk = raid_walk
-
-
-[logic@gar_dolg_blokpost_raid3]
-active = follower2@gar_dolg_blokpost_raid3
-
-[follower2@gar_dolg_blokpost_raid3]
-anim_walk = raid
-anim_run = assault
-formation_line = true
-path_walk = raid_walk
+formation = back
 
 
 ;*****************************************************************
@@ -1316,7 +1297,7 @@ on_info3 = {+gar_dm_end} %=gar_dm_bandits_fight%
 reactions = ignore
 danger = danger_condition@gar_dram_novice
 
-[remark2@_gar_dram_novice]
+[remark2@gar_dram_novice]
 no_move = true
 anim = wait
 on_actor_dist_le_nvis = 7 | remark3@gar_dram_novice %=gar_dm_bandits_fight%
@@ -1337,7 +1318,7 @@ on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} rema
 reactions = ignore
 danger = danger_condition@gar_dram_novice
 
-[remark@after_fight]
+[remark@after_fight_gar_dram_novice]
 anim = hello
 snd = gar_dm_newbie_thank_you
 on_signal = action_end | walker2@gar_dram_novice %=actor_friend%
