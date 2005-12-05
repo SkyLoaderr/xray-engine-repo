@@ -1,7 +1,7 @@
 -- Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
-function printf()
-end
+--function printf()
+--end
 
 -- в работах поле object хранит id объекта
 
@@ -263,59 +263,64 @@ end
 function gulag:removeObject( obj_id )
 	local obj = self.Object[obj_id]
 
-	if obj ~= true and obj:alive() then
+--	if obj ~= true and obj:alive() then
 		self:free_obj_and_reinit( obj_id )
 
 --		db.storage[obj_id].gulag = nil
-	else
-		self:free_obj( obj_id )
-	end
+--	else
+--		self:free_obj( obj_id )
+--	end
 
 	self.Object[obj_id]      = nil
 	self.restrictors[obj_id] = nil
 end
 
---[[ Обновление гулага
-убирает мёртвых.
-следит, кто прыгнул в офлайн и не сообщил об этом (случается при переходе с уровня на уровень
-когда биндер смарттеррейна убивается до персонажа).
-следит, дошёл ли персонаж до места работы.
-измененяет потери в лагере.
-вызывает функцию состояния, если есть актёр.
-]]
+-- Обновление гулага.
+-- вызывает функцию состояния, если есть актёр.
 function gulag:update()
 	if not self.stateBegin then
 		self.stateBegin = game.get_game_time()
 	end
 
-	local online
-
-	for obj_id, obj in pairs( self.Object ) do
-		online = self.npc_info[obj_id].se_obj.online
-
-		if obj ~= true and not online then
-			self:object_setup_offline( obj_id )
-			obj = true
-		end
-
-		if self:can_obj_begin_job( obj_id, obj ) then
-			self:beginJob( obj_id )
-		end
-
-		-- TODO. remove while iterating :\
-		-- TODO проверка смерти в офлайн
-		if obj ~= true and not obj:alive() then
-			self:changeCasualities(1)
-			self.smrttrn:unregister_npc( self.npc_info[obj_id].se_obj )
-		end
-	end
+	self:update_objs()
 
 	if self.calculateStates ~= nil and db.actor then
 		self:changeState(self.calculateStates(self))
 	end
 
 	self:updateJob()
+
 	self:print()
+end
+
+-- убирает мёртвых.
+-- следит, кто прыгнул в офлайн и не сообщил об этом (случается при переходе с уровня на уровень
+-- когда биндер смарттеррейна убивается до персонажа).
+-- следит, дошёл ли персонаж до места работы.
+-- измененяет потери в лагере.
+function gulag:update_objs()
+	local obj, cl_obj, online
+
+	for obj_id, npc_info in pairs( self.npc_info ) do
+		cl_obj = level.object_by_id( obj_id )
+		online = cl_obj ~= nil
+
+		if self.Object[obj_id] ~= true and not online then
+			self:object_setup_offline( obj_id )
+		end
+
+		if self:can_obj_begin_job( obj_id, cl_obj or true ) then
+			self:beginJob( obj_id )
+		end
+
+		-- TODO. remove while iterating :\
+		obj = cl_obj or npc_info.se_obj
+
+		if not obj:alive() then
+			self:changeCasualities( 1 )
+			self.smrttrn:unregister_npc( npc_info.se_obj )
+		end
+	end
 end
 
 -- можно ли объекту начать работать?

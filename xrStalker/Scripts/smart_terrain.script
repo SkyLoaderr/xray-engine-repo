@@ -13,8 +13,8 @@ TODO
 
 --local h2ms = 60 * 60 * 1000
 
-function printf()
-end
+--function printf()
+--end
 
 local check_period
 
