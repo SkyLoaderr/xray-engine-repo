@@ -145,7 +145,7 @@ protected:
 	float											m_stop_speed;
 	bool											m_bCyclic;
 	float											m_start_time;
-	float                                           fLifeTime;
+	float                                           f_length;
 
 	void		Update								(float tm);
 public:

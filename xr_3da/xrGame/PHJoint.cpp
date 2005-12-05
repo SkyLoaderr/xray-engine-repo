@@ -306,7 +306,11 @@ void CPHJoint::CreateFullControl()
 	Fvector axis;
 	CPHElement* first=(pFirst_element);
 	CPHElement* second=(pSecond_element);
+	VERIFY(first);
+	first->GetGlobalTransformDynamic(&first_matrix);
 	dBodyID body1=body_for_joint(first);
+	VERIFY(second);
+	second->GetGlobalTransformDynamic(&second_matrix);
 	dBodyID body2=body_for_joint(second);
 	
 

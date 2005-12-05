@@ -114,7 +114,11 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
            Debug.fatal("ERROR: Can't support files with many animations set. Incorrect file.");
         }
 
-   if(!m_bCyclic) fLifeTime = GetLength	();
+	f_length					= GetLength	();
+#ifndef _PP_EDITOR_
+	if(!m_bCyclic) fLifeTime	= f_length;
+#endif
+
 }
 
 void        CPostprocessAnimator::Stop       (float sp)
@@ -130,7 +134,7 @@ float       CPostprocessAnimator::GetLength                       ()
     for (int a = 0; a < POSTPROCESS_PARAMS_COUNT; a++)
         {
         float t = m_Params[a]->get_length();
-        if (t > v) v = t;
+        v		= _max(t,v);
         }
     return v;
 }
@@ -148,6 +152,7 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 		fLifeTime				= 100000;
 
 	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
+	if(m_bCyclic &&((Device.fTimeGlobal-m_start_time)>f_length)) m_start_time+=f_length;
 	Update					(Device.fTimeGlobal-m_start_time);
 
 	if(m_bStop)
@@ -170,8 +175,6 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 #else
 BOOL CPostprocessAnimator::Process(float dt, SPPInfo &PPInfo)
 {
-	if(m_bCyclic)
-		fLifeTime				= 100000;
 
 	Update					(dt);
 
