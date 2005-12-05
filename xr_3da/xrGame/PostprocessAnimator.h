@@ -141,6 +141,7 @@ protected:
     shared_str										m_Name;
     SPPInfo											m_EffectorParams;
 	float											m_factor;
+	float											m_dest_factor;
 	bool											m_bStop;
 	float											m_stop_speed;
 	bool											m_bCyclic;
@@ -155,6 +156,7 @@ public:
         void        Load                            (LPCSTR name);
     IC  LPCSTR      Name                            (){return *m_Name;}
         void        Stop                            (float speed);
+		void		SetFactor						(float f)			{m_dest_factor=f;};
         float       GetLength                       ();
 #ifndef _PP_EDITOR_
 virtual	BOOL		Process							(SPPInfo &PPInfo);

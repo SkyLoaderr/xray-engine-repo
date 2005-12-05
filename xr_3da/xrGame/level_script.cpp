@@ -426,6 +426,14 @@ void remove_pp_effector(int id)
 
 }
 
+void set_pp_effector_factor(int id, float f)
+{
+	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Level().Cameras.GetEffector((EEffectorPPType)id));
+
+	if(pp) pp->SetFactor(f);
+
+}
+
 void CLevel::script_register(lua_State *L)
 {
 	class_<CEnvDescriptor>("CEnvDescriptor")
@@ -503,6 +511,7 @@ void CLevel::script_register(lua_State *L)
 		def("set_snd_volume",					&set_snd_volume),
 		def("add_cam_effector",					&add_cam_effector),
 		def("add_pp_effector",					&add_pp_effector),
+		def("set_pp_effector_factor",			&set_pp_effector_factor),
 		def("remove_pp_effector",				&remove_pp_effector)
 	],
 	

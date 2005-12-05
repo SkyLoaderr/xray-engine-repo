@@ -39,6 +39,7 @@ CPostprocessAnimator::CPostprocessAnimator(int id, bool cyclic)
 {
     Create				();
 	m_factor			= 1.0f;
+	m_dest_factor		= 1.0f;
 	m_bStop				= false;
 	m_stop_speed		= 1.0f;
 	m_bCyclic			= cyclic;
@@ -150,13 +151,17 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 {
 	if(m_bCyclic)
 		fLifeTime				= 100000;
+	
 
 	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
 	if(m_bCyclic &&((Device.fTimeGlobal-m_start_time)>f_length)) m_start_time+=f_length;
+
 	Update					(Device.fTimeGlobal-m_start_time);
 
 	if(m_bStop)
 		m_factor			-=	Device.fTimeDelta*m_stop_speed;
+	else
+		m_factor			+= 0.3f*Device.fTimeDelta*(m_dest_factor-m_factor);
 
 	clamp					(m_factor, 0.001f, 1.0f);
 
