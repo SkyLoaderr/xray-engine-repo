@@ -401,7 +401,8 @@
 			ammo_5.56x45_ap = 4 \n
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+
 		<actor_dialog>mil_freedom_commander_common2</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
@@ -432,7 +433,8 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+
 	</specific_character>
 	
 
