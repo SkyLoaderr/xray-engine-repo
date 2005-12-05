@@ -27,10 +27,12 @@ void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
 		dwTimeToPropagade	= SoundRender->Timer.GetElapsed_ms();
 	}
 	bStopping				=	FALSE;
+	bRewind					=	FALSE;
 }
 
 void CSoundRender_Emitter::i_stop()
 {
+	bRewind					=	FALSE;
 	if (target)	SoundRender->i_stop		(this);
 	if (owner_data){
 		Event_ReleaseOwner		(); 
@@ -58,7 +60,7 @@ void CSoundRender_Emitter::rewind()
 	dwTimeToPropagade			=	dwTime;
 
 	position					=	0;
-	if (target)	SoundRender->i_rewind	(this);
+	bRewind						=	TRUE;
 }
 
 void CSoundRender_Emitter::cancel()

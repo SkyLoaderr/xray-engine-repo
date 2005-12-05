@@ -51,6 +51,7 @@ public:
 	BOOL						bMoved;
 	BOOL						b2D;
 	BOOL						bStopping;
+	BOOL						bRewind;
 	u32							dwTimeStarted;			// time of "Start"
 	u32							dwTimeToStop;			// time to "Stop"
 	u32							dwTimeToPropagade;

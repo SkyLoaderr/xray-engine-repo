@@ -14,6 +14,11 @@ void CSoundRender_Emitter::update	(float dt)
 	VERIFY2(!!(owner_data) || (!(owner_data)&&(state==stStopped)),"owner");
 	VERIFY2(owner_data?(int)owner_data->feedback:1,"owner");
 
+	if (bRewind){
+		if (target)		SoundRender->i_rewind	(this);
+		bRewind			= FALSE;
+	}
+
 	switch (state)	
 	{
 	case stStopped:
