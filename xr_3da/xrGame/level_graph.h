@@ -186,7 +186,7 @@ public:
 	template<typename T>
 	IC		void	assign_y_values				(xr_vector<T> &path);
 	template<typename P>
-	IC		void	iterate_vertices			(const Fvector &min_position, const Fvector &max_position, const P &predicate);
+	IC		void	iterate_vertices			(const Fvector &min_position, const Fvector &max_position, const P &predicate) const;
 	IC		bool	check_vertex_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const;
 	IC		u32		check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const;
 			bool	check_vertex_in_direction_slow	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const;

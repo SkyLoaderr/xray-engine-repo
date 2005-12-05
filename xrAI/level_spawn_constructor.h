@@ -21,6 +21,7 @@ class CSE_ALifeObject;
 class CSE_ALifeGraphPoint;
 //class CSE_SpawnGroup;
 class CSE_ALifeAnomalousZone;
+class CSpaceRestrictorWrapper;
 class CPatrolPathStorage;
 
 class CLevelSpawnConstructor : public CThread {
@@ -29,6 +30,7 @@ public:
 	typedef SpawnConstructorSpace::LEVEL_CHANGER_STORAGE		LEVEL_CHANGER_STORAGE;
 	typedef xr_vector<CSE_ALifeObject*>							SPAWN_STORAGE;
 	typedef xr_vector<CSE_ALifeGraphPoint*>						GRAPH_POINT_STORAGE;
+	typedef xr_vector<CSpaceRestrictorWrapper*>					SPACE_RESTRICTORS;
 //	typedef xr_vector<CSE_Abstract*>							GROUP_OBJECTS;
 //	typedef xr_map<shared_str,GROUP_OBJECTS*>					SPAWN_GRPOUP_OBJECTS;
 //	typedef xr_map<shared_str,CSE_SpawnGroup*>					SPAWN_GROUPS;
@@ -38,6 +40,7 @@ private:
 	SPAWN_STORAGE						m_spawns;
 	LEVEL_POINT_STORAGE					m_level_points;
 	GRAPH_POINT_STORAGE					m_graph_points;
+	SPACE_RESTRICTORS					m_space_restrictors;
 //	SPAWN_GRPOUP_OBJECTS				m_spawn_objects;
 //	SPAWN_GROUPS						m_spawn_groups;
 	CGameSpawnConstructor				*m_game_spawn_constructor;
@@ -54,11 +57,13 @@ protected:
 			void						correct_objects						();
 			void						generate_artefact_spawn_positions	();
 			void						correct_level_changers				();
+			void						verify_space_restrictors			();
 			void						fill_level_changers					();
 			CSE_Abstract				*create_object						(IReader				*chunk);
 			void						add_graph_point						(CSE_Abstract			*abstract);
 //			void						add_spawn_group						(CSE_Abstract			*abstract);
 			void						add_story_object					(CSE_ALifeDynamicObject *dynamic_object);
+			void						add_space_restrictor				(CSE_ALifeDynamicObject *dynamic_object);
 			void						add_free_object						(CSE_Abstract			*abstract);
 //			void						add_group_object					(CSE_Abstract			*abstract, shared_str group_section, bool);
 //			void						add_group_object					(CSE_Abstract			*abstract, shared_str group_section);

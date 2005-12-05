@@ -1551,6 +1551,19 @@
 					<File
 						RelativePath=".\level_spawn_constructor_inline.h">
 					</File>
+					<Filter
+						Name="space_restrictor_wrapper"
+						Filter="">
+						<File
+							RelativePath=".\space_restrictor_wrapper.cpp">
+						</File>
+						<File
+							RelativePath=".\space_restrictor_wrapper.h">
+						</File>
+						<File
+							RelativePath=".\space_restrictor_wrapper_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="server_entity_wrapper"

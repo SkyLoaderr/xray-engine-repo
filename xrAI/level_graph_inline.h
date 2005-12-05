@@ -50,7 +50,7 @@ ICF	CLevelGraph::CVertex	*CLevelGraph::vertex(const u32 vertex_id) const
 
 ICF	u32	CLevelGraph::vertex	(const CVertex *vertex_p) const
 {
-	VERIFY				((vertex_p > m_nodes) && valid_vertex_id(u32(vertex_p - m_nodes)));
+	VERIFY				((vertex_p >= m_nodes) && valid_vertex_id(u32(vertex_p - m_nodes)));
 	return				(u32(vertex_p - m_nodes));
 }
 
@@ -643,7 +643,7 @@ IC	void CLevelGraph::clear_mask			(u32 vertex_id)
 }
 
 template<typename P>
-IC	void CLevelGraph::iterate_vertices		(const Fvector &min_position, const Fvector &max_position, const P &predicate)
+IC	void CLevelGraph::iterate_vertices		(const Fvector &min_position, const Fvector &max_position, const P &predicate) const
 {
 	CVertex						*I, *E;
 

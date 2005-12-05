@@ -18,6 +18,9 @@
 #include "game_base_space.h"
 #include "game_spawn_constructor.h"
 #include "patrol_path_storage.h"
+#include "space_restrictor_wrapper.h"
+#include "object_broker.h"
+#include "restriction_space.h"
 
 #define IGNORE_ZERO_SPAWN_POSITIONS
 
@@ -132,6 +135,18 @@ void CLevelSpawnConstructor::add_story_object					(CSE_ALifeDynamicObject *dynam
 	m_game_spawn_constructor->add_story_object	(dynamic_object->m_story_id,dynamic_object,*m_level.name());
 }
 
+void CLevelSpawnConstructor::add_space_restrictor				(CSE_ALifeDynamicObject *dynamic_object)
+{
+	CSE_ALifeSpaceRestrictor		*space_restrictor = smart_cast<CSE_ALifeSpaceRestrictor*>(dynamic_object);
+	if (!space_restrictor)
+		return;
+
+	if (space_restrictor->m_space_restrictor_type == RestrictionSpace::eRestrictorTypeNone)
+		return;
+
+	m_space_restrictors.push_back	(xr_new<CSpaceRestrictorWrapper>(space_restrictor));
+}
+
 void CLevelSpawnConstructor::add_level_changer					(CSE_Abstract			*abstract)
 {
 	CSE_ALifeLevelChanger	*level_changer = smart_cast<CSE_ALifeLevelChanger*>(abstract);
@@ -206,8 +221,10 @@ void CLevelSpawnConstructor::load_objects						()
 		m_spawns.push_back		(alife_object);
 
 		CSE_ALifeDynamicObject	*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(alife_object);
-		if (dynamic_object)
+		if (dynamic_object) {
 			add_story_object	(dynamic_object);
+			add_space_restrictor(dynamic_object);
+		}
 
 		if (abstract->m_tClassID == CLSID_LEVEL_CHANGER)
 			add_level_changer	(abstract);
@@ -585,6 +602,7 @@ void CLevelSpawnConstructor::Execute							()
 	correct_objects						();
 	generate_artefact_spawn_positions	();
 	correct_level_changers				();
+	verify_space_restrictors			();
 	
 	xr_delete							(m_level_graph);
 	xr_delete							(m_cross_table);
@@ -595,4 +613,18 @@ void CLevelSpawnConstructor::update								()
 {
 	fill_level_changers					();
 	update_artefact_spawn_positions		();
+}
+
+void CLevelSpawnConstructor::verify_space_restrictors			()
+{
+	Msg									("Level [%s] : searching for AI map separators space restrictors",*m_level.name());
+	SPACE_RESTRICTORS::iterator			I = m_space_restrictors.begin();
+	SPACE_RESTRICTORS::iterator			E = m_space_restrictors.end();
+	for ( ; I != E; ++I) {
+		VERIFY							(*I);
+		(*I)->verify					(*m_level_graph,*m_graph_engine);
+	}
+
+	delete_data							(m_space_restrictors);
+	Msg									("Level [%s] : no separators found",*m_level.name());
 }
