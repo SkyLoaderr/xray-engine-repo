@@ -188,7 +188,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		abort("remark <abort>: object '%s', xr_remark.set_scheme: anim field cannot be [idle]", npc:name())
 	end
 
-	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "actor")
+	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "")
     if target and target ~= "nil" then
 	    if target == "actor" then
 		    st.target_actor = true
