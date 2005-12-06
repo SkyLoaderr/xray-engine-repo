@@ -203,15 +203,256 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		        end
             else
                 local gulag = xr_gulag.get_npc_gulag(npc)
-                local params = parse_names(target)
+                local params = string.find(target, "([^,%s]+)") ;parse_names(target)
+                printf("remark <target>: parsed string -")
+                print_table(params)
                 if params[2] then
                     gulag = xr_gulag.get_gulag_by_name(params[2])
                 end
                 if gulag then
                     st.target_id = gulag.idNPCOnJob(params[1])
+                else
+		            abort("remark <error>: Wrong target gulag [%s%s] for [%s] in section [%s].",
+		                    params[1], if_then_else(params[2], ", " .. params[2], ""), npc:name(), section)
                 end
 		        if not st.target_id then
-		            abort("remark <error>: Wrong target object for [%s] in section [%s].", npc:name(), section)
+		            abort("remark <error>: Wrong target object for [%s] in section [%s]. Gulag [%s], job [%s].",
+		                    npc:name(), section, gulag.name, params[1])
+		        end
+            end
+	    end
+    end   
+    	
+end
+
+----------------------------------------------------------------------------------------------------
+-- Remark
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+-- Изменения: Didenko Ruslan.
+----------------------------------------------------------------------------------------------------
+
+local state_initial = 0
+local state_animation = 1
+local state_sound = 2
+local state_finish = 3
+
+local body_state_free = 0
+local body_state_danger = 1
+
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_need_remark" (property_evaluator)
+function evaluator_need_remark:__init(storage, name) super(nil, name)
+  	self.st = storage
+end
+function evaluator_need_remark:evaluate()
+  	return xr_logic.is_active(self.object, self.st)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_remark_activity" (action_base)
+function action_remark_activity:__init (npc_name, action_name, storage) super(nil, action_name)
+	self.st = storage
+end
+function action_remark_activity:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+	xr_sound.set_sound(self.object, nil)
+end
+function action_remark_activity:activate_scheme()
+    self.st.signals = {}
+    self.sound_end_signalled = false
+    self.action_end_signalled = false
+    self.anim_end_signalled = false
+
+	-- Определим нужно ли нам отыгрывать анимацию/поворачиваться на объект.
+	self.anim_scheduled = true
+	
+	-- Определим нужно ли нам отыгрывать отдельно звук после поворота.
+	if self.st.snd_anim_sync == false and
+	   self.st.snd ~= nil 
+	then
+		self.snd_scheduled = true
+	else
+		self.snd_scheduled = false
+	end
+
+
+	-- Задаем стартовое состояние
+	self.state = state_initial
+end
+function action_remark_activity:get_target()
+	local look_tbl = {}
+
+    if self.st.target_actor == true then
+        look_tbl.look_object = db.actor
+    end
+
+    if self.st.target_id then
+        look_tbl.look_object = level.object_by_id(self.st.target_id)
+    end
+
+    return look_tbl
+end
+function action_remark_activity:time_callback()
+	self.state = state_sound
+end
+function action_remark_activity:turn_end_callback()
+	self.state = state_sound
+end
+function action_remark_activity:execute()
+	action_base.execute(self)
+
+	-- Try to switch to another scheme:
+	local actor = db.actor
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		return
+	end
+
+	-- 1. Мы должны повернуться на объект.
+	if self.state == state_initial then
+		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
+		local synsound
+		if self.st.snd_anim_sync == true then
+			synsound = self.st.snd
+		else
+			synsound = nil
+		end	   
+		state_mgr.set_state(self.object, self.st.anim, cb, 0, self:get_target(), { animation = true }, synsound)
+		self.state = state_animation
+		
+	-- Ожидание колбека от стейтменеджера
+	elseif self.state == state_animation then
+	
+	-- 2. Мы должны отыграть фразу.
+	elseif self.state == state_sound then
+		-- Должны выдать сигнал anim_end
+		if self.anim_end_signalled == false then
+			self.anim_end_signalled = true
+			self.st.signals["anim_end"] = true
+		end
+	
+		if self.snd_scheduled == true then
+			xr_sound.set_sound_play(self.object, self.st.snd)
+		end
+	
+		self.state = state_finish
+		
+	-- 3. Мы должны выдать сигнал об окончании действия
+	-- должны выдать сигнал action_end
+	-- должны выдать сигнал sound_end
+	elseif self.state == state_finish then
+		if self.object:active_sound_count() == 0 then
+			if self.sound_end_signalled == false then
+				self.st.signals["sound_end"] = true
+				self.sound_end_signalled = true
+			end
+		end
+		if self.st.snd_anim_sync == true or self.object:active_sound_count() == 0 then
+			if self.action_end_signalled == false then
+				self.st.signals["action_end"] = true
+				self.action_end_signalled = true
+			end
+		end
+	end
+	
+end
+function action_remark_activity:finalize()
+	action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--remark binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+		printf("DEBUG: add_to_binder [%s]: scheme='%s', section='%s'", npc:name(), scheme, section)
+  		local operators	= {}
+	  	local properties  = {}
+		
+	   	local manager = npc:motivation_action_manager()
+
+		properties["event"]			= xr_evaluators_id.reaction
+	 	properties["need_remark"]	= xr_evaluators_id.zmey_remark_base + 1
+		
+	 	operators["action_remark"] = xr_actions_id.zmey_remark_base + 1
+
+	   	-- // evaluators
+		manager:add_evaluator(properties["need_remark"], this.evaluator_need_remark(storage, "remark_need_remark"))
+
+		local new_action = this.action_remark_activity(npc, "action_remark_activity", storage)
+		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
+		new_action:add_precondition(world_property(stalker_ids.property_danger,false))
+		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
+		new_action:add_precondition(world_property(stalker_ids.property_anomaly,false))
+		new_action:add_precondition(world_property(properties["need_remark"], true))
+		xr_motivator.addCommonPrecondition(new_action)
+	   	new_action:add_effect(world_property(properties["need_remark"], false))
+		manager:add_action(operators["action_remark"], new_action)
+
+		-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+		xr_logic.subscribe_action_for_events(npc, storage, new_action)
+
+	  	new_action = manager:action(xr_actions_id.alife)
+	  	new_action:add_precondition(world_property(properties["need_remark"], false))
+end
+
+local function parse_target(target)
+    local pos = string.find(target, ",")
+    if pos then
+        return string.sub(target, 1, pos - 1), string.sub(target, pos + 1)
+    else
+        return target, nil
+    end
+end
+
+-- Включение схемы
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	printf("DEBUG: set_scheme: scheme='%s', section='%s'", scheme, section)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	printf("DEBUG: set_scheme: storage assigned")
+
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.snd_anim_sync = utils.cfg_get_bool     (ini, section,   "snd_anim_sync",       npc, false)
+	
+	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "", nil)
+	st.anim = utils.cfg_get_string            (ini, section,   "anim",            npc, false, "", "wait")
+	if st.anim == "idle" then
+		abort("remark <abort>: object '%s', xr_remark.set_scheme: anim field cannot be [idle]", npc:name())
+	end
+
+	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "nil")
+    if target and target ~= "nil" then
+	    if target == "actor" then
+		    st.target_actor = true
+		    st.target_id = nil
+	    else
+			st.target_actor = false
+	        local sid = tonumber(target)
+	        if sid then
+		        st.target_id = id_by_sid(sid)
+		        if not st.target_id then
+		            abort("remark <error>: Wrong story id [%s] for [%s] in section [%s].", target, npc:name(), section)
+		        end
+            else
+                local gulag = xr_gulag.get_npc_gulag(npc)
+                local p1, p2 = parse_target(target)
+                --printf("remark <target>: parsed string - [%s%s]", p1, if_then_else(p2 ~= nil, ", " .. p2, ""))
+                if p2 then
+                    gulag = xr_gulag.get_gulag_by_name(p2)
+                end
+                if gulag then
+                    st.target_id = gulag:idNPCOnJob(p1)
+                else
+		            abort("remark <error>: Wrong target gulag [%s%s] for [%s] in section [%s].",
+		                    p1, if_then_else(p2, ", " .. p2, ""), npc:name(), section)
+                end
+		        if not st.target_id then
+		            abort("remark <error>: Wrong target object for [%s] in section [%s]. Gulag [%s], job [%s].",
+		                    npc:name(), section, gulag.name, p1)
 		        end
             end
 	    end
