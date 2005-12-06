@@ -473,8 +473,9 @@ end
 -- Special functions for Garbage
 ------------------------------------------------------------------------------------
 function gar_boars_nest2_dead(actor, npc)
-	local g = xr_gulag.fraction["gar_boars_nest2"]
-	return (not g) or (g:get_population() == 0)
+	return gulag_population_le(actor, npc, {"gar_boars_nest2", 0})
+--	local g = xr_gulag.fraction["gar_boars_nest2"]
+--	return (not g) or (g:get_population() == 0)
 end
 
 function gar_damaged_bandits(actor, npc)
