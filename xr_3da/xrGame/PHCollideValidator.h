@@ -12,7 +12,8 @@ class CPHCollideValidator
 	{
 		cbNCGroupObject	=	1<<0,
 		cbNCStatic		=	1<<1,
-		cbNone			=	1<<2
+		cbNCDynamic		=	1<<2,
+		cbNone			=	1<<3
 	};
 public:
 static		CGID			RegisterGroup				()														;
@@ -24,6 +25,8 @@ static		void			RegisterObjToLastGroup		(CPHObject& obj)										;
 static		void			RestoreGroupObject			(const CPHObject& obj)									;
 static		bool			IsGroupObject				(const CPHObject& obj)									;
 static		void			SetStaticNotCollide			(CPHObject& obj)										;
+
+static		void			SetDynamicNotCollide		(CPHObject& obj)										;
 static		void			Init						()														;
 
 static	IC	bool			DoCollide					(const CPHObject& obj1,const CPHObject& obj2)
@@ -31,6 +34,7 @@ static	IC	bool			DoCollide					(const CPHObject& obj1,const CPHObject& obj2)
 	switch(CollideType(obj1.collide_class_bits().flags,obj2.collide_class_bits().flags)) {
 		case cbNone:			return DoCollideNone		(obj1,obj2)			;break;
 		case cbNCGroupObject:	return DoCollideGroup		(obj1,obj2)			;break;
+		case cbNCDynamic:		return DoCollideNoDynamics	(obj1,obj2)			;break;
 		case 0:					return DoCollideNonMatched	(obj1,obj2)			;break;
 		default: NODEFAULT;
 	}
@@ -43,12 +47,19 @@ static	IC bool				DoCollideStatic				(const CPHObject& obj)
 {
 	return !obj.collide_class_bits().test(cbNCStatic);
 }
-
+static	IC bool				DoCollideDynamic			(const CPHObject& obj)
+{
+	return !obj.collide_class_bits().test(cbNCDynamic);
+}
 protected:
 private:
+	static IC	bool			DoCollideNoDynamics			(const CPHObject& obj1,const CPHObject& obj2)
+	{
+		return !obj1.collide_class_bits().test(cbNCDynamic)||!obj2.collide_class_bits().test(cbNCDynamic);;
+	}
 	static IC	bool			DoCollideNonMatched			(const CPHObject& obj1,const CPHObject& obj2)
 	{
-		return true;
+		return !obj1.collide_class_bits().test(cbNCDynamic)&&!obj2.collide_class_bits().test(cbNCDynamic);;
 	}
 	static IC	bool			DoCollideNone				(const CPHObject& obj1,const CPHObject& obj2)
 	{

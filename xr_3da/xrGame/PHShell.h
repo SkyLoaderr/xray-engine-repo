@@ -72,6 +72,7 @@ public:
 	virtual			void					RegisterToCLGroup	(CGID g)						;
 	virtual			bool					IsGroupObject		()								;
 	virtual			void					SetIgnoreStatic		()								;
+	virtual			void					SetIgnoreDynamic	()								;
 	virtual void			setMass					(float M)									;
 
 	virtual void			setMass1				(float M)									;

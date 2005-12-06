@@ -8,6 +8,8 @@
 #include "Level.h"
 #include "PHCommander.h"
 #include "PHScriptCall.h"
+#include "CustomRocket.h"
+#include "Grenade.h"
 CPhysicsShellHolder::CPhysicsShellHolder()
 {
 	init();
@@ -81,6 +83,10 @@ void CPhysicsShellHolder::activate_physic_shell()
 	m_pPhysicsShell->Activate	(l_p1, 0, l_p2);
 	smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate	();
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
+	if(!IsGameTypeSingle())
+	{
+		if(!smart_cast<CCustomRocket*>(this)&&!smart_cast<CGrenade*>(this)) PPhysicsShell()->SetIgnoreDynamic();
+	}
 //	XFORM().set					(l_p1);
 }
 

@@ -249,6 +249,7 @@ IC					CKinematics					*PKinematics								()																{return m_pKinemati
 	virtual			void						RegisterToCLGroup							(CGID g)																					= 0;
 	virtual			bool						IsGroupObject								()																							= 0;
 	virtual			void						SetIgnoreStatic								()																							= 0;
+	virtual			void						SetIgnoreDynamic								()																						= 0;
 	virtual			bool						isFractured									()																							= 0;
 	virtual			CPHShellSplitterHolder		*SplitterHolder								()																							= 0;
 	virtual			void						SplitProcess								(PHSHELL_PAIR_VECTOR &out_shels)															= 0;

@@ -52,3 +52,8 @@ void CPHCollideValidator::SetStaticNotCollide(CPHObject& obj)
 	obj.collide_class_bits().set(cbNone,FALSE);
 	obj.collide_class_bits().set(cbNCStatic,TRUE);
 }
+void CPHCollideValidator::SetDynamicNotCollide(CPHObject& obj)
+{
+	obj.collide_class_bits().set(cbNone,FALSE);
+	obj.collide_class_bits().set(cbNCDynamic,TRUE);
+}

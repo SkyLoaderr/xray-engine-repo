@@ -246,15 +246,24 @@ IC	void twoq_2w(const Fquaternion& q1,const Fquaternion& q2,float dt,Fvector& w)
 	if(sinus_2>EPS)	k*=acos(cosinus)/_sqrt(sinus_2);
 	w.mul(k);
 }
+IC float	to_mag_and_dir(const Fvector &in_v,Fvector &out_v)
+{
+	float mag=in_v.magnitude();
+	if(!fis_zero(mag))
+		out_v.mul(in_v,1.f/mag);
+	else
+		out_v.set(0.f,0.f,0.f);
+	return mag;
+}
 
 IC float	to_mag_and_dir(Fvector &in_out_v)
 {
-	float mag=in_out_v.magnitude();
-	if(!fis_zero(mag))
-		in_out_v.mul(1.f/mag);
-	else
-		in_out_v.set(0.f,0.f,0.f);
-	return mag;
+	return to_mag_and_dir(in_out_v,in_out_v);
+}
+
+IC void to_vector(Fvector &v,float mag,const Fvector dir)
+{
+	v.mul(dir,mag);
 }
 
 IC void		prg_pos_on_axis(const Fvector	&in_ax_p,const Fvector &in_ax_d,Fvector &in_out_pos)
