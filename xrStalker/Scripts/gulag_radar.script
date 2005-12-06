@@ -133,7 +133,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 6 do
 			t = { section = "logic@rad_pseudodogs_dog"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -145,7 +145,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 1 do
 			t = { section = "logic@rad_bloodsucker_suck"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -157,7 +157,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 11 do
 			t = { section = "logic@rad_snork1_"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -168,7 +168,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 10 do
 			t = { section = "logic@rad_snork2_"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -180,7 +180,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 1 do
 			t = { section = "logic@rad_gig"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -192,7 +192,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 4 do
 			t = { section = "logic@rad_zombied1"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "rad_snorks_space_restrictor", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -202,7 +202,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 7 do
 			t = { section = "logic@rad_zombied2"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "rad_snorks_space_restrictor", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -212,7 +212,7 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "freedom_vs_duty" then
 			t = { section = "logic@rad_svoboda", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) 
 									return obj_info.profile_name == "rad_Svoboda_master"
@@ -222,7 +222,7 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_dolg", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Dolg_master"
 							end
@@ -231,7 +231,7 @@ function load_job(sj, gname, type, squad, groups)
 --------------------------------------------------------------------
 			t = { section = "logic@rad_svoboda1", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Svoboda_master"
 							end
@@ -240,7 +240,7 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_dolg1", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Dolg_master"
 							end
@@ -248,7 +248,7 @@ function load_job(sj, gname, type, squad, groups)
 			table.insert(sj, t)			
 			t = { section = "logic@rad_svoboda2", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Svoboda_master"
 							end
@@ -257,14 +257,14 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_dolg2", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Dolg_master"
 							end
 			}
 			table.insert(sj, t)			t = { section = "logic@rad_svoboda3", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Svoboda_master"
 							end
@@ -273,14 +273,14 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_dolg3", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Dolg_master"
 							end
 			}
 			table.insert(sj, t)			t = { section = "logic@rad_svoboda4", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Svoboda_master"
 							end
@@ -289,7 +289,7 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_dolg4", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Dolg_master"
 							end
@@ -297,7 +297,7 @@ function load_job(sj, gname, type, squad, groups)
 			table.insert(sj, t)
 			t = { section = "logic@rad_svoboda5", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Svoboda_master"
 							end
@@ -306,7 +306,7 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_dolg5", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.profile_name == "rad_Dolg_master"
 							end
@@ -318,7 +318,7 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "rad_entrance" then
 			t = { section = "logic@rad_entrance_binocular0", 
 				idle = 0,
-				prior = 6, state = {0}, squad = squad, group = groups[0],
+				prior = 6, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.name == "rad_entrance_stalker_monolith3"
 							end
@@ -327,7 +327,7 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_entrance_binocular1", 
 				idle = 0,
-				prior = 6, state = {1}, squad = squad, group = groups[0],
+				prior = 6, state = {1}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.name == "rad_entrance_stalker_monolith3"
 							end
@@ -336,14 +336,14 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1,4 do
 			t = { section = "logic@rad_entrance_kamp", 
 				idle = 0,
-				prior = 5, state = {0,2}, squad = squad, group = groups[0],
+				prior = 5, state = {0,2}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
 			t = { section = "logic@rad_entrance_walker1", 
 				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
+				prior = 5, state = {1}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.name ~= "rad_entrance_stalker_monolith3"
 							end
@@ -352,7 +352,7 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_entrance_walker2", 
 				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
+				prior = 5, state = {1}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.name ~= "rad_entrance_stalker_monolith3"
 							end
@@ -361,7 +361,7 @@ function load_job(sj, gname, type, squad, groups)
 
 			t = { section = "logic@rad_entrance_walker3", 
 				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
+				prior = 5, state = {1}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = "",
 				predicate = function(obj_info) return obj_info.name ~= "rad_entrance_stalker_monolith3"
 							end
@@ -373,7 +373,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1,3 do
 			t = { section = "logic@rad_valley_kamp", 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -381,7 +381,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1,3 do
 			t = { section = "logic@rad_valley_walk"..i, 
 				idle = 0,
-				prior = 5, state = {1}, squad = squad, group = groups[0],
+				prior = 5, state = {1}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -392,7 +392,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 8 do
 			t = { section = "logic@rad_antenna_specnaz"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -404,7 +404,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 3 do
 			t = { section = "logic@rad_mil_entrance"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -416,7 +416,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 8 do
 			t = { section = "logic@rad_antenna_monolith"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -428,7 +428,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 3 do
 			t = { section = "logic@rad_antenna_camper"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -440,7 +440,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 5 do
 			t = { section = "logic@rad_prip_road"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -448,7 +448,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 2 do
 			t = { section = "logic@2rad_prip_road"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -459,7 +459,7 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 4 do
 			t = { section = "logic@rad_prip_teleport"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -467,14 +467,14 @@ function load_job(sj, gname, type, squad, groups)
 		for i = 1, 2 do
 			t = { section = "logic@2rad_prip_teleport"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
 
 			t = { section = "logic@3rad_prip_teleport"..i , 
 				idle = 0,
-				prior = 5, state = {0}, squad = squad, group = groups[0],
+				prior = 5, state = {0}, squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
