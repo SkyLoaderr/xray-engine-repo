@@ -1,4 +1,6 @@
-
+-------------------------------------------------------------------------------------------
+-- Загрузка работ для Свободы
+-------------------------------------------------------------------------------------------
 function load_job_base (sj, gname, type, squad, groups)
     local t
     -----------------------------------------------------------------------
@@ -26,7 +28,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		            end
 		}
 	table.insert(sj, t)		
-	
     -- Снайпер №1
     t = {section = "logic@mil_freedom_sniper1",
 		idle = 0,
@@ -399,168 +400,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
 
---[[
-    -- Max
-    t = {section = "logic@mil_freedom_max_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_master_max"
-		            end
-		}
-	table.insert(sj, t)		
-	-- мужик у костра 1
-    t = {section = "logic@mil_freedom_stalker1_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-
-    -- мужик у костра 2
-    t = {section = "logic@mil_freedom_stalker2_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-    -- Павлик Морозов
-    t = {section = "logic@mil_freedom_stalker2_combat1",
-		idle = 0,
-		prior = 2, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_stukach"
-		            end         
-		}
-	table.insert(sj, t)		
-    -- одиночный патрульный на базе
-    t = {section = "logic@mil_freedom_stalker4_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-		predicate = function (info)
-		                     return info.profile_name == "Svoboda_specnaz"
-		            end         
-		}
-	table.insert(sj, t)		
-
-    -- патрульный на базе
-    t = {section = "logic@mil_freedom_stalker5",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_stalker4",
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_specnaz"
-		            end         
-		}
-	table.insert(sj, t)		
-
-    -- фолловер на базе
-    t = {section = "logic@mil_freedom_stalker6_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- фолловер на базе
-    t = {section = "logic@mil_freedom_stalker7_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-        dependent = "logic@mil_freedom_stalker5",
-		}
-	table.insert(sj, t)		
-    --охранник у входа 
-    t = {section = "logic@mil_freedom_stalker8_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_specnaz"
-		            end         
-		}
-	table.insert(sj, t)		
-	-- просто мужик на входе
-    t = {section = "logic@mil_freedom_stalker9_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- просто мужик на входе
-    t = {section = "logic@mil_freedom_stalker10_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- просто мужик 1
-    t = {section = "logic@mil_freedom_stalker11_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- просто мужик 2
-    t = {section = "logic@mil_freedom_stalker12_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-
-	-- просто мужик 3
-    t = {section = "logic@mil_freedom_stalker13_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-
-	-- просто мужик 4
-    t = {section = "logic@mil_freedom_stalker14_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-
-	-- просто мужик 1
-    t = {section = "logic@mil_freedom_stalker15_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-
-	-- просто мужик 1
-    t = {section = "logic@mil_freedom_stalker16_combat1",
-		idle = 0,
-		prior = 10, state = {2},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-]]--	
 	-------------------------------- combat state 2-----------------------------
 	
 	for a = 1, 23, 1 do
@@ -667,31 +506,75 @@ function load_job_base (sj, gname, type, squad, groups)
 		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
-
 end
 
------------------------------------------------------------------------
--- Гулаг монстров около труб
---    0 - нормальное состояние
---    1 - изгнание игрока
------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+-- Проверка состояния гулага Свободы
+-------------------------------------------------------------------------------------------
+function check_state (gulag)
+    
+    if gulag.state == 3 then
+       if db.actor:has_info ("mil_dolg_after_explode") then
+          db.actor:disable_info_portion ("mil_freedom_attack")
+          return 2
+       end   
+       if db.actor:has_info ("mil_freedom_attack") then
+          return 3
+       end
+    end        
+    
+    if db.actor:has_info ("mil_freedom_under_attack") then
+       if this.check_enemy (gulag) == true or db.actor:dont_has_info ("mil_dolg_dead") then
+          return 2
+       else
+          db.actor:disable_info_portion ("mil_freedom_under_attack")
+          return 0
+       end
+    end            
+    
+    if db.actor:has_info ("mil_freedom_attack") then
+       return 3
+    end   
+    return 0
+end
+
+-------------------------------------------------------------------------------------------
+-- Проверка, имеется ли у гулага враг
+-------------------------------------------------------------------------------------------
+function check_enemy (gulag)
+    for k,v in pairs(gulag.Object) do
+        if v ~= true then
+           if v:best_enemy () ~= nil and v:story_id () ~= 710 and is_object_monster (v:best_enemy ()) == false then 
+              return true
+           end
+        end
+    end       
+    return false
+end
+-------------------------------------------------------------------------------------------
+-- Проверка, имеется ли у гулага враг - актер
+-------------------------------------------------------------------------------------------
+function is_actor_enemy (gulag)
+    for k,v in pairs(gulag.Object) do
+        if v ~= true then
+          local e = v:best_enemy ()
+          if e ~= nil and e:id () == db.actor:id () then
+             return true 
+          end
+        end  
+    end       
+    return false
+end
+
 
 function checkMonster (npc_community, gulag_type)
 	return false
 end
 
-function check_tubes_state (gulag)
-    return 0
-end
 
--- load mutants job
-function load_tubes_job (sj, gname, type, squad, groups)
-    
-	return
-end
-
-
--- load blockpost jobs
+-------------------------------------------------------------------------------------------
+-- Загрузка работ для блокпоста Свободы у выхода на Радар
+-------------------------------------------------------------------------------------------
 function load_job_fblockpost (sj, gname, type, squad, groups)
 
     local t
@@ -837,10 +720,9 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
 end
-
-
-
-
+--------------------------------------------------------------------------
+-- Функция проверки состояния гулага Свободы у выхода на Радар
+--------------------------------------------------------------------------
 function check_fblockpost_state (gulag)
     if db.actor:has_info ("mil_fblockpost_alarm") then
        return 2 
@@ -851,19 +733,12 @@ function check_fblockpost_state (gulag)
 end
 
 
-function check_blockpost_state (gulag)
-    if db.actor:has_info ("mil_fblockpost_alarm") then
-       return 2 
-    elseif utils.is_day () == true then
-         return 0
-    end          
-    return 1
-end
 
 
 
-
--- load neutral blockpost jobs
+-------------------------------------------------------------------------------------------
+-- Загрузка работ для блокпоста нейтралов у выхода на Радар
+-------------------------------------------------------------------------------------------
 function load_job_fneutral (sj, gname, type, squad, groups)
 
     local t
@@ -919,22 +794,6 @@ function load_job_fneutral (sj, gname, type, squad, groups)
 		            end
 		}
 	table.insert(sj, t)		
-    --патрульный 1
-    --t = {section = "logic@mil_fneutral_patrol1",
-		--idle = 0,
-		--prior = 1, state = {0, 1},
-		--squad = squad, group = groups[0],
-		--in_rest = "", out_rest = ""
-		--}
-	--table.insert(sj, t)		
-    --патрульный 2
-    --t = {section = "logic@mil_fneutral_patrol2",
-		--idle = 0,
-		--prior = 1, state = {0, 1},
-		--squad = squad, group = groups[0],
-		--in_rest = "", out_rest = ""
-		--}
-	--table.insert(sj, t)		
     --кэмпер 1
     t = {section = "logic@mil_fneutral_camper3",
 		idle = 0,
@@ -993,6 +852,19 @@ function load_job_fneutral (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
 end
+--------------------------------------------------------------------------
+-- Функция проверки состояния гулага нейтралов у выхода на Радар
+--------------------------------------------------------------------------
+function check_blockpost_state (gulag)
+    if db.actor:has_info ("mil_fblockpost_alarm") then
+       return 2 
+    elseif utils.is_day () == true then
+         return 0
+    end          
+    return 1
+end
+
+
 
 --------------------------------------------------------------------------
 -- Dynamic ltx
@@ -1000,9 +872,11 @@ end
 function load_ltx(gname, type)
 	return nil
 end
-
+--------------------------------------------------------------------------
+-- Проверка принадлежности сталкеров гулагам
+--------------------------------------------------------------------------
 function checkStalker(npc_community, gulag_type)
-    --printf ("CHECK STALKER FROM GULAG_MILITARY AT comm = %s, type = %s", npc_community, gulag_type)
+    printf ("GULAG_MILITARY:CHECK_STALKER CALLED WITH NPC_COMM = %s, gulag_type = %s", npc_community, gulag_type)
 	if gulag_type == "mil_fneutral" then
 	   return npc_community == "stalker"
 	end       
@@ -1022,11 +896,18 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "mil_dolg" then
 	   return  npc_community == "dolg" 
 	end   
+	
+	if gulag_type == "mil_monolit" then
+	   return npc_community == "monolith"
+	end
+	    
 	return false
 end
 
 
-
+--------------------------------------------------------------------------
+-- Функция загрузки работ для деревни
+--------------------------------------------------------------------------
 function load_job_village (sj, gname, type, squad, groups)
     local t
     --Угрюмый
@@ -1096,7 +977,9 @@ function load_job_village (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
 end
-
+--------------------------------------------------------------------------
+-- Функция проверки состояния гулага деревни
+--------------------------------------------------------------------------
 function check_village_state (gulag)
     if db.actor:has_info ("mil_after_hunt_talked") then return 1 end
     return 0    
@@ -1106,7 +989,9 @@ end
 
 
 
-
+--------------------------------------------------------------------------
+-- Функция загрузки работ для Долга
+--------------------------------------------------------------------------
 function load_job_dolg (sj, gname, type, squad, groups)
     local t
     t = {section = "logic@mil_dolg_skull",
@@ -1198,8 +1083,116 @@ function load_job_dolg (sj, gname, type, squad, groups)
 	table.insert(sj, t)	
 	
 end
+--------------------------------------------------------------------------
+-- Функция проверки состояния гулага Долга
+--------------------------------------------------------------------------
+function check_dolg_state (gulag)
+    return 0
+end
 
 
+--------------------------------------------------------------------------
+-- Функция загрузки работ гулага у выхода на Радар Монолита
+--------------------------------------------------------------------------
+function load_job_monolith (sj, gname, type, squad, groups)
+    local t, a
+    
+    for a = 1, 3, 1 do
+        t = {section = "logic@mil_monolith_soldier1",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monolith_soldier2",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monolith_soldier3",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monolith_soldier4",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monolith_soldier5",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monolith_soldier6",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monolith_soldier7",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monolith_soldier8",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = "",
+		    predicate = function (info)
+		                         return info.community == "monolith"
+		                end
+		    }
+	    table.insert(sj, t)	
+    end	    
+end
+-------------------------------------------------------------------------------------------
+-- Проверка состояния гулага Монолита
+-------------------------------------------------------------------------------------------
+function check_monolith_state (gulag)
+    return 0
+end
 
 
 
@@ -1210,7 +1203,6 @@ end
 -- Главная функция загрузки работ
 -------------------------------------------------------------------------------------------
 function load_job (sj, gname, type, squad, groups)
-    printf ("GET JOB FOR %s", type)
     if type == "mil_freedom" then 
        this.load_job_base (sj, gname, type, squad, groups)
        return
@@ -1231,6 +1223,10 @@ function load_job (sj, gname, type, squad, groups)
        this.load_job_dolg (sj, gname, type, squad, groups)
        return
     end   
+    if type == "mil_monolit" then
+       this.load_job_monolith (sj, gname, type, squad, groups)
+       return
+    end   
 end
 
 
@@ -1247,8 +1243,6 @@ end
 function load_states (gname, type)
     if type == "mil_freedom" then
        return this.check_state -- (gulag)
-    elseif type == "mil_tubes" then
-       return this.check_tubes_state -- (gulag)
     elseif type == "mil_fblockpost" then
        return this.check_fblockpost_state
     elseif type == "mil_fneutral" then  
@@ -1257,67 +1251,10 @@ function load_states (gname, type)
        return this.check_village_state    
     elseif type == "mil_dolg" then
        return this.check_dolg_state     
+    elseif type == "mil_monolit" then
+       return this.check_monolith_state    
     end    
     return nil    
 end
 
 
--------------------------------------------------------------------------------------------
--- Проверка состояния гулага Свободы
--------------------------------------------------------------------------------------------
-function check_state (gulag)
-    
-    if gulag.state == 3 then
-       if db.actor:has_info ("mil_dolg_after_explode") then
-          db.actor:disable_info_portion ("mil_freedom_attack")
-          return 2
-       end   
-       if db.actor:has_info ("mil_freedom_attack") then
-          return 3
-       end
-    end        
-    
-    if db.actor:has_info ("mil_freedom_under_attack") then
-       if this.check_enemy (gulag) == true or db.actor:dont_has_info ("mil_dolg_dead") then
-          return 2
-       else
-          db.actor:disable_info_portion ("mil_freedom_under_attack")
-          return 0
-       end
-    end            
-    
-    if db.actor:has_info ("mil_freedom_attack") then
-       return 3
-    end   
-    return 0
-end
-
--------------------------------------------------------------------------------------------
--- Проверка состояния гулага Долга
--------------------------------------------------------------------------------------------
-function check_dolg_state (gulag)
-    return 0
-end
-
-function check_enemy (gulag)
-    for k,v in pairs(gulag.Object) do
-        if v ~= true then
-           if v:best_enemy () ~= nil and v:story_id () ~= 710 and is_object_monster (v:best_enemy ()) == false then 
-              return true
-           end
-        end
-    end       
-    return false
-end
-
-function is_actor_enemy (gulag)
-    for k,v in pairs(gulag.Object) do
-        if v ~= true then
-          local e = v:best_enemy ()
-          if e ~= nil and e:id () == db.actor:id () then
-             return true 
-          end
-        end  
-    end       
-    return false
-end
