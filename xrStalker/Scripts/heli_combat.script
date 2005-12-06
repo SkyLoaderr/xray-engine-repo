@@ -30,6 +30,16 @@ local visibility_delay           = 3000
 
 local dummy_vector = vector()
 
+local debug_combat_type
+
+function debug_switch_combat_type()
+	if debug_combat_type == combat_type_flyby then
+		debug_combat_type = combat_type_search
+	else
+		debug_combat_type = combat_type_flyby
+	end	
+end
+
 function distance_2d( a, b )
 	return math.sqrt( (b.x-a.x)^2 + (b.z-a.z)^2 )
 end
@@ -59,6 +69,8 @@ function heli_combat:__init( object, heliObject )
 	self.enemy_forgetable      = true
 
 	self.section_changed       = false
+
+	debug_combat_type          = nil
 end
 
 function heli_combat:read_custom_data( ini, section )
@@ -271,6 +283,13 @@ function heli_combat:update_forgetting()
 end
 
 function heli_combat:update_combat_type( see_enemy )
+	-- DEBUG
+	if debug_combat_type ~= nil then
+		self:set_combat_type( debug_combat_type )
+		return
+	end
+	--------
+
 	local ct
 
 	-- без учёта инерций вертолёт переключается просто: видит=заход в лоб, не видит=облёт кругом
