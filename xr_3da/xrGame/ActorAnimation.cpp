@@ -564,11 +564,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if (!(motion1->flags & esmSyncPart))
 		return;
 
-	Msg						(
-		"[torso][%s][legs][%s]",
-		skeleton_animated->LL_MotionDefName_dbg(m_current_torso),
-		skeleton_animated->LL_MotionDefName_dbg(m_current_legs)
-	);
+	
 	CMotion *m_l=FindMotionKeys(m_current_legs_blend->motionID,skeleton_animated);
 	CMotion *m_t=FindMotionKeys(m_current_torso_blend->motionID,skeleton_animated);
 	float length_legs=m_l->GetLength();
