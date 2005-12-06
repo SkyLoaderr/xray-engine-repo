@@ -673,7 +673,7 @@ void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 void  CScriptGameObject::ActorFakeSleep			(int hours, int minutes)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	if(!pActor) return;
-	pActor->conditions().ProcessSleep(generate_time(1,1,1,hours, minutes, 0, 0), true);
+	pActor->conditions().ProcessSleep(generate_time(1,1,1,hours, minutes, 0, 0));
 }
 
 //////////////////////////////////////////////////////////////////////////
