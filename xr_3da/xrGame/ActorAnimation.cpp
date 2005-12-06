@@ -564,13 +564,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if (!(motion1->flags & esmSyncPart))
 		return;
 
-	
-	CMotion *m_l=FindMotionKeys(m_current_legs_blend->motionID,skeleton_animated);
-	CMotion *m_t=FindMotionKeys(m_current_torso_blend->motionID,skeleton_animated);
-	float length_legs=m_l->GetLength();
-	float length_tors=m_t->GetLength();
-	float diff=length_legs-length_tors;
-
 	m_current_torso_blend->timeCurrent	= m_current_legs_blend->timeCurrent;
 	//m_current_torso_blend->dwFrame		= m_current_legs_blend->dwFrame;
 }
