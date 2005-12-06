@@ -45,13 +45,13 @@
 	.def(#c, (d (a::*)(e))(&a::c), (d (*)(b*,f))(&b::c##_static))
 
 #ifdef DEBUG
-#	define CAST_FAILED \
+#	define CAST_FAILED(v_func_name,ret_type) \
 		catch(luabind::cast_failed exception) {										\
 			ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : luabind::cast_failed in function %s (%s)!",#v_func_name,#ret_type);\
 			return ((ret_type)(0));													\
 		}
 #else
-#	define CAST_FAILED
+#	define CAST_FAILED(v_func_name,ret_type)
 #endif
 
 #define DEFINE_LUA_WRAPPER_CONST_METHOD_0(v_func_name,ret_type)							\
@@ -60,7 +60,7 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name);						\
 			}																			\
-			CAST_FAILED																	\
+			CAST_FAILED(v_func_name,ret_type)											\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -76,7 +76,7 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1);						\
 			}																			\
-			CAST_FAILED																	\
+			CAST_FAILED(v_func_name,ret_type)											\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -162,7 +162,7 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name);						\
 			}																			\
-			CAST_FAILED																	\
+			CAST_FAILED(v_func_name,ret_type)											\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -178,7 +178,7 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1);						\
 			}																			\
-			CAST_FAILED																	\
+			CAST_FAILED(v_func_name,ret_type)											\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -194,7 +194,7 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1,p2);					\
 			}																			\
-			CAST_FAILED																	\
+			CAST_FAILED(v_func_name,ret_type)											\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -210,7 +210,7 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1,p2,p3);				\
 			}																			\
-			CAST_FAILED																	\
+			CAST_FAILED(v_func_name,ret_type)											\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\
@@ -226,7 +226,7 @@
 			try {																		\
 				return call_member<ret_type>(this,#v_func_name,p1,p2,p3,p4);			\
 			}																			\
-			CAST_FAILED																	\
+			CAST_FAILED(v_func_name,ret_type)											\
 			catch(...) {																\
 				return ((ret_type)(0));													\
 			}																			\

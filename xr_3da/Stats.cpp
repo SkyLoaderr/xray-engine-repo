@@ -6,18 +6,6 @@
 #include "IGame_Persistent.h"
 #include "render.h"
 
-#pragma optimize("",off)
-struct blin_oles {
-	blin_oles	()
-	{
-		int i=0;
-		++i;
-	}
-};
-
-blin_oles	blin_oles;
-#pragma optimize("",on)
-
 // stats
 DECLARE_RP(Stats);
 
@@ -34,8 +22,8 @@ public:
 	}
 
 	BOOL	enabled	()	{ return enabled_;	}
-	void	enable	()	{ if (!enabled_)	{ /*Engine.External.tune_resume	();*/	enabled_=TRUE;	}}
-	void	disable	()	{ if (enabled_)		{ Engine.External.tune_pause	();		enabled_=FALSE; }}
+	void	enable	()	{ if (!enabled_)	{ Engine.External.tune_resume	();	enabled_=TRUE;	}}
+	void	disable	()	{ if (enabled_)		{ Engine.External.tune_pause	();	enabled_=FALSE; }}
 	void	update	(float value)	{
 		if (value < average_*0.75f)	{
 			// 25% deviation
@@ -43,7 +31,7 @@ public:
 		} else {
 			disable	();
 		};
-		average_	= 0.999f*average_ + 0.001f*value;
+		average_	= 0.99f*average_ + 0.01f*value;
 	};
 };
 static	optimizer	vtune;
