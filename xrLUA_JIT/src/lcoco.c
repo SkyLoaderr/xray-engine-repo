@@ -50,10 +50,25 @@
 
 typedef LPFIBER_START_ROUTINE coco_MainFunc;
 
-#define COCO_NEW(OL, NL, cstacksize, mainfunc) \
+// start of code replacement
+//#define COCO_NEW(OL, NL, cstacksize, mainfunc) \
   if (GetCurrentFiber() == NULL) ConvertThreadToFiber(NULL); \
   if ((L2COCO(NL)->fib = CreateFiber(cstacksize, mainfunc, NL)) == NULL) \
     luaD_throw(OL, LUA_ERRMEM);
+
+#if defined(LUA_BUILD_AS_DLL)
+  static LPVOID main_fiber = NULL; // single threaded only i think
+#else
+  // so COCO_NEW works for single and MultiThreaded progs in static builds
+  _declspec(thread) static LPVOID main_fiber = NULL;
+#endif
+
+#define COCO_NEW(OL, NL, cstacksize, mainfunc) \
+  if (main_fiber == NULL) \
+    ConvertThreadToFiber(NULL), main_fiber=GetCurrentFiber(); \
+  if ((L2COCO(NL)->fib = CreateFiber(cstacksize, mainfunc, NL)) == NULL) \
+    luaD_throw(OL, LUA_ERRMEM);
+// end of code replacement
 
 #define COCO_FREE(L) \
   DeleteFiber(L2COCO(L)->fib);
