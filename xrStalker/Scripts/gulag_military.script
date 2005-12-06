@@ -677,47 +677,17 @@ end
 -----------------------------------------------------------------------
 
 function checkMonster (npc_community, gulag_type)
-	if gulag_type == "mil_tubes" then
-		return npc_community == "dog" or npc_community == "pseudodog"
-    end
 	return false
 end
 
 function check_tubes_state (gulag)
-    if db.actor:dont_has_info ("mil_actor_in_tubes_zone") then 
-       printf ("Mutants gulag in state 0") 
-       return 0
-    end    
-    printf ("Mutants gulag in state 1") 
-    return 1
+    return 0
 end
 
 -- load mutants job
 function load_tubes_job (sj, gname, type, squad, groups)
     
-	if type ~= "mil_tubes" then return end
-    	
-	local t
-	for a = 1, 10, 1 do
-        t = {section = "logic@mil_tubes_mutant",
-		     idle = 0,
-	         prior = 1, state = {0},
-		     squad = squad, group = groups[0],
-		     in_rest = "", out_rest = "mil_tubes_restrictor1"
-		     }
-	    table.insert(sj, t)		
-	end
-	    
-	for a = 1, 10, 1 do
-        t = {section = "logic@mil_tubes_mutant",
-		     idle = 0,
-	         prior = 1, state = {1},
-		     squad = squad, group = groups[0],
-		     in_rest = "", out_rest = "mil_tubes_restrictor2"
-		     }
-	    table.insert(sj, t)		
-    end	
-	
+	return
 end
 
 
