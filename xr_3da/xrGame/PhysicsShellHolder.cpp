@@ -135,12 +135,6 @@ void CPhysicsShellHolder::PHSetLinearVell(Fvector& velocity)
 }
 
 
-void CPhysicsShellHolder::PHSetPushOut(u32 time /* = 5000 */)
-{
-	if(m_pPhysicsShell)
-		m_pPhysicsShell->set_PushOut(time,PushOutCallback1);
-}
-
 
 f32 CPhysicsShellHolder::GetMass()
 {

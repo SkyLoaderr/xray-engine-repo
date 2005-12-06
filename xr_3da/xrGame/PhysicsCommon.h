@@ -50,8 +50,7 @@ typedef	void	ObjectContactCallbackFun(bool& do_colide,dContact& c,SGameMtl* mate
 typedef void	BoneCallbackFun(CBoneInstance* B);
 
 
-ObjectContactCallbackFun PushOutCallback;
-ObjectContactCallbackFun PushOutCallback1;
+
 extern ContactCallbackFun *ContactShotMark;
 extern ContactCallbackFun *CharacterContactShotMark;
 

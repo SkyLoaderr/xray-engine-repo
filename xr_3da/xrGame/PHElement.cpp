@@ -212,12 +212,7 @@ void		CPHElement::Start()
 void		CPHElement::Deactivate()
 {
 	VERIFY(bActive);
-	//if(push_untill)
-	//{
-	//	push_untill-=Device.dwTimeGlobal;
-	//	if(push_untill<=0)
-	//		unset_Pushout();
-	//}
+
 	destroy();
 
 	bActive=false;
@@ -741,8 +736,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		//return;
 	}
 
-	//if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		//if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+	
 
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback returns 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);
@@ -807,8 +801,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		return;
 	}
 
-	//if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		//if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+	
 
 	if( !m_shell->is_active() && !m_flags.test(flUpdate)/*!bUpdate*/) return;
 
@@ -990,24 +983,6 @@ void	CPHElement::applyImpulse(const Fvector& dir, float val)//aux
 }
 
 
-void CPHElement::set_PushOut(u32 time,ObjectContactCallbackFun* push_out)
-{
-	VERIFY(false);
-	//temp_for_push_out=object_contact_callback;
-
-	//set_ObjectContactCallback(push_out);
-	//if(bActive) push_untill=Device.dwTimeGlobal+time;
-	//else		push_untill=time;
-
-}
-
-void CPHElement::unset_Pushout()
-{
-	//object_contact_callback=temp_for_push_out;
-	//temp_for_push_out=NULL;
-	//set_ObjectContactCallback(object_contact_callback);
-	//push_untill=0;
-}
 
 void CPHElement::add_Shape(const SBoneShape& shape,const Fmatrix& offset)
 {

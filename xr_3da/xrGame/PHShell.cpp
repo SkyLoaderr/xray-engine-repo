@@ -491,14 +491,6 @@ void	CPHShell::set_AngularVel(const Fvector& velocity)
 	for(;i!=e;i++) (*i)->set_AngularVel(velocity);
 }
 
-void CPHShell::set_PushOut(u32 time,ObjectContactCallbackFun* push_out)
-{
-	ELEMENT_I i;
-	for(i=elements.begin();elements.end() != i;++i)
-	{
-		(*i)->set_PushOut(time,push_out);
-	}
-}
 
 void CPHShell::TransformPosition(const Fmatrix &form)
 {

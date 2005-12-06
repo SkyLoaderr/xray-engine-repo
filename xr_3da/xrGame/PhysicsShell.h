@@ -7,7 +7,7 @@
 #include "alife_space.h"
 #include "script_export_space.h"
 
-ObjectContactCallbackFun PushOutCallback;
+
 class CPhysicsJoint;
 class CPhysicsElement;
 class CPhysicsShell;
@@ -90,7 +90,7 @@ public:
 	virtual		void			TransformPosition						(const Fmatrix &form)																									= 0;
 	virtual		void			set_ApplyByGravity						(bool flag)																												= 0;
 	virtual		bool			get_ApplyByGravity						()																														= 0;
-	virtual		void			set_PushOut								(u32 time,ObjectContactCallbackFun* push_out=PushOutCallback)															= 0;
+
 	virtual		void			SetMaterial								(u16 m)																													= 0;
 	virtual		void			SetMaterial								(LPCSTR m)																												= 0;
 	virtual		void			set_DisableParams						(const SAllDDOParams& params)																							= 0;

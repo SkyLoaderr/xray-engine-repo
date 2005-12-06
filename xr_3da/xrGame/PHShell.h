@@ -107,7 +107,7 @@ public:
 	virtual		void				remove_ObjectContactCallback		(ObjectContactCallbackFun* callback);
 	virtual		void				set_CallbackData				(void * cd);
 	virtual		void				set_PhysicsRefObject			(CPhysicsShellHolder* ref_object);
-	virtual		void				set_PushOut						(u32 time,ObjectContactCallbackFun* push_out=PushOutCallback);
+	
 	//breakbable interface
 	virtual		bool				isBreakable						();
 	virtual		bool				isFractured						();
