@@ -1,0 +1,1065 @@
+;-------------------------------------------------------------------------------------------------
+;-- Хутор Долга
+;-------------------------------------------------------------------------------------------------
+;Череп
+[logic@mil_dolg_skull]
+active = walker1@mil_dolg_skull
+actor_dialogs = actor_dialogs
+on_death = death@mil_dolg_skull
+combat_ignore = c_ignore@mil_dolg_skull
+
+[c_ignore@mil_dolg_skull]
+
+[walker1@mil_dolg_skull]
+path_walk = path_walk1
+path_look = path_look1
+on_info = {+mil_sniper_dead} walker10@mil_dolg_skull
+meet = meet@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_condition@mil_dolg_skull]
+ignore_distance = 0
+ignore_types = corpse
+
+[meet@mil_dolg_skull]
+meet_dialog = mil_dolg_skull_dialog
+use = true
+use_wpn = true
+victim = 10|actor
+victim_wpn = 10|actor
+meet_state = 7|hello_wpn@talk_hello,2|ward@talk_hello
+meet_state_wpn = 7|hello_wpn@talk_hello,2|ward@talk_hello
+
+[walker10@mil_dolg_skull]
+path_walk = attack_before_walk1
+path_look = attack_before_look2
+;on_signal = collected | remark1@mil_dolg_skull
+on_info = {+mil_dolg_skull_talk} walker99@mil_dolg_skull
+meet = meet@mil_dolg_skull
+on_timer = 60000 | remark1@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[walker99@mil_dolg_skull]
+path_walk = rotate_walk1
+path_look = rotate_look1
+on_signal = remark | remark1@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[remark1@mil_dolg_skull]
+snd = mil_max_to_kolyan
+;target = 718
+no_rotate = true
+no_move = true
+on_signal = action_end | remark20@mil_dolg_skull %+mil_dolg_collected +mil_dolg_phase1%
+anim = wait
+danger = danger_condition@mil_dolg_skull
+
+[remark20@mil_dolg_skull]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker98@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[walker98@mil_dolg_skull]
+path_walk = rotate_walk1_2
+path_look = rotate_look1_2
+on_timer = 5000 | walker11@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[death@mil_dolg_skull]
+on_info = %=military_dolg_dead +mil_scull_dead%
+
+[walker11@mil_dolg_skull]
+path_walk = attack_way1
+path_look = attack_look1
+combat_ignore_cond = always
+def_state_moving1 = run
+on_signal = arrive | camper2@mil_dolg_skull
+team = dolg
+on_signal = bomb | remark2@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[remark2@mil_dolg_skull]
+no_move = true
+no_rotate = true
+anim = dynamite
+target = 723
+on_signal = action_end | walker2@mil_dolg_skull %+mil_dolg_before_explode%
+danger = danger_condition@mil_dolg_skull
+
+[walker2@mil_dolg_skull]
+path_walk = attack_way_bomb
+path_look = attack_look_bomb
+def_state_moving1 = run
+team = dolg
+on_info = {+mil_dolg_after_explode} remark12@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[remark12@mil_dolg_skull]
+snd = mil_dolg_go_attack
+no_move = true
+no_rotate = true
+anim = hide
+on_signal = action_end | camper2@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[camper2@mil_dolg_skull]
+path_walk = attack_way1_2
+path_look = attack_look2
+def_state_moving1 = run
+on_signal = sniper | %=mil_scull_news%
+no_retreat = true
+radius = 20
+on_info = {+mil_lukash_dead} walker4
+on_signal2 = dolg | %+mil_headquarter_attack%
+danger = danger_condition@mil_dolg_skull
+
+[walker4@mil_dolg_skull]
+path_walk = return1
+on_signal = return | walker12@mil_dolg_skull
+meet = meet@mil_dolg_skull
+danger = danger_condition@mil_dolg_skull
+
+[walker12@mil_dolg_skull]
+path_walk = path_walk1
+path_look = path_look1
+meet = meet
+
+
+;салага 1
+[logic@mil_dolg_soldier1]
+active = walker10@mil_dolg_soldier1
+on_death = death@mil_dolg_soldier1
+combat_ignore = c@mil_dolg_soldier1
+
+[c@mil_dolg_soldier1]
+
+[death@mil_dolg_soldier1]
+on_info = %=military_dolg_dead%
+
+[walker10@mil_dolg_soldier1]
+path_walk = walk_bin
+path_look = look_bin
+on_info = {+mil_sniper_dead} walker12@mil_dolg_soldier1
+on_info2 = {+mil_scull_dead} walker1@mil_dolg_soldier1
+on_signal = bin | remark1@mil_dolg_soldier1
+danger = danger_condition@mil_dolg_soldier1
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_condition@mil_dolg_soldier1]
+ignore_distance = 0
+ignore_types = corpse
+
+[remark1@mil_dolg_soldier1]
+no_move = true
+no_rotate = true
+snd = mil_dolg_about_sniper
+anim = binocular
+snd_anim_sync = true
+on_signal = action_end | walker11@mil_dolg_soldier1
+on_info = {+mil_sniper_dead} walker12@mil_dolg_soldier1
+danger = danger_condition@mil_dolg_soldier1
+target = 704
+
+[walker11@mil_dolg_soldier1]
+path_walk = walk_bin2
+path_look = look_bin2
+on_signal = pora | walker10@mil_dolg_soldier1
+on_info = {+mil_sniper_dead} walker12@mil_dolg_soldier1
+on_info2 = {+mil_scull_dead} walker1@mil_dolg_soldier1
+danger = danger_condition@mil_dolg_soldier1
+
+[walker12@mil_dolg_soldier1]
+path_walk = attack_before_walk2
+path_look = attack_before_look1
+on_signal = arrive | remark11@mil_dolg_soldier1
+danger = danger_condition@mil_dolg_soldier1
+
+[remark11@mil_dolg_soldier1]
+snd = mil_collect_phrase4
+no_rotate = true
+no_move = true
+anim = guard
+on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier1
+target = 708
+danger = danger_condition@mil_dolg_soldier1
+
+[remark10@mil_dolg_soldier1]
+snd = mil_kolyan
+no_rotate = true
+no_move = true
+on_signal = action_end | %+mil_dolg_phase2%
+on_info = {+mil_dolg_phase3} remark20@mil_dolg_soldier1
+anim = guard
+target = 708
+danger = danger_condition@mil_dolg_soldier1
+
+[remark20@mil_dolg_soldier1]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker1@mil_dolg_soldier1
+target = 708
+danger = danger_condition@mil_dolg_soldier1
+
+[walker1@mil_dolg_soldier1]
+path_walk = attack_way8
+path_look = attack_look1
+def_state_moving1 = run
+combat_ignore_cond = always
+team = dolg
+on_info = {+mil_dolg_after_explode} camper1@mil_dolg_soldier1
+on_info2 = {+mil_dolg_before_explode} remark30@mil_dolg_soldier1
+danger = danger_condition@mil_dolg_soldier1
+
+[remark30@mil_dolg_soldier1]
+snd = mil_dolg_getready
+no_move = true
+no_rotate = true
+anim = hide
+on_signal = action_end | walker1@mil_dolg_soldier1
+danger = danger_condition
+
+[camper1@mil_dolg_soldier1]
+path_walk = attack_way8_2
+path_look = attack_look2
+on_signal = final | walker4@mil_dolg_soldier1 %+mil_dolg_mission_complete%
+def_state_moving1 = run
+no_retreat = true
+radius = 20
+on_info = {+mil_lukash_dead} walker4@mil_dolg_soldier1
+on_signal2 = dolg | %+mil_headquarter_attack%
+danger = danger_condition@mil_dolg_soldier1
+
+[walker4@mil_dolg_soldier1]
+path_walk = return8
+on_signal = return | kamp1@mil_dolg_soldier1
+danger = danger_condition
+
+[kamp1@mil_dolg_soldier1]
+center_point = camp_center
+path_walk = camp_center_task
+
+
+
+
+;салага 2
+[logic@mil_dolg_soldier2]
+active = camper1@mil_dolg_soldier2
+combat_ignore = combat_ignore@mil_dolg_soldier2
+on_death = on_death@mil_dolg_soldier2
+
+[combat_ignore@mil_dolg_soldier2]
+
+[on_death@mil_dolg_soldier2]
+on_info = %+mil_patrol_kill_continue =military_dolg_dead%
+
+[camper1@mil_dolg_soldier2]
+path_walk = ambush_walk1
+path_look = ambush_look1
+on_info = {+mil_actor_nearest} remark1@mil_dolg_soldier2
+combat_ignore_cond = always
+def_state_moving = sneak
+radius = 1
+on_info2 = {+mil_patrol_kill_continue} camper2@mil_dolg_soldier2
+no_retreat = true
+show_spot = false
+danger = danger_condition@mil_dolg_soldier2
+
+[danger_condition@mil_dolg_soldier2]
+ignore_distance = 0
+ignore_types = corpse
+
+[remark1@mil_dolg_soldier2]
+no_move = true
+no_rotate = true
+anim = hide_s_right
+combat_ignore_cond = always
+on_signal = action_end | camper2@mil_dolg_soldier2 %+mil_patrol_kill_continue%
+on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier2
+
+[camper2@mil_dolg_soldier2]
+path_walk = ambush_walk1_2
+path_look = ambush_look1_2
+def_state_moving = sneak
+radius = 0
+on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier2
+no_retreat = true
+show_spot = false
+attack_sound = false
+danger = danger_condition
+
+
+[follower1@mil_dolg_soldier2]
+leader = 720
+stub_for_corpse = true
+distance = 0.5
+on_signal = leader_dead | remark2@mil_dolg_soldier2
+anim_sprint = run
+anim_walk = walk
+anim_run = run
+danger = danger_condition@mil_dolg_soldier2
+
+[remark2@mil_dolg_soldier2]
+no_move = true
+snd = mil_dolg_after_kill1
+snd_anim_sync = true
+anim = search
+target = 720
+on_signal = action_end | walker2@mil_dolg_soldier2
+danger = danger_condition@mil_dolg_soldier2
+
+[walker2@mil_dolg_soldier2]
+path_walk = ambush_walk1_3
+path_look = ambush_look1_3
+on_signal = return | kamp1@mil_dolg_soldier2
+on_info = {+mil_dolg_dialog_already} walker5@mil_dolg_soldier2
+on_info2 = {+mil_sniper_dead} walker10@mil_dolg_soldier2
+on_info3 = {+mil_scull_dead} walker1@mil_dolg_soldier2
+meet = meet@mil_dolg_soldier2
+danger = danger_condition@mil_dolg_soldier2
+
+[meet@mil_dolg_soldier2]
+meet_dialog = mil_dolg_soldier_dialog
+meet_state = 5|ward@talk_hello
+meet_state_wpn = 5|ward@talk_hello
+victim = 10|actor
+victim_wpn = 10|actor
+use = true
+use_wpn = true
+;synpairs = backoff@threat_weap
+
+[walker5@mil_dolg_soldier2]
+path_walk = ambush_walk1_4
+on_signal = return | kamp1@mil_dolg_soldier2
+meet_enabled = false
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier2
+on_info2 = {+mil_scull_dead} walker1@mil_dolg_soldier2
+danger = danger_condition@mil_dolg_soldier2
+meet = meet2@mil_dolg_soldier2
+combat_ignore_cond = {=check_fighting(704)} true
+
+[meet2@mil_dolg_soldier2]
+use = false
+use_wpn = false
+victim = 2|actor
+victim_wpn = 2|actor
+meet_state = 2|ward@talk_hello
+meet_state_wpn = 2|ward@talk_hello
+synpairs = ward@talk_hello
+
+[kamp1@mil_dolg_soldier2]
+center_point = camp_center2
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier2
+on_info2 = {+mil_scull_dead} walker1@mil_dolg_soldier2
+danger = danger_kamp@mil_dolg_soldier2
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_kamp@mil_dolg_soldier2]
+ignore_distance = 0
+
+[walker10@mil_dolg_soldier2]
+path_walk = attack_before_walk4
+path_look = attack_before_look1
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier2
+danger = danger_condition@mil_dolg_soldier2
+
+[remark11@mil_dolg_soldier2]
+snd = mil_collect_phrase5
+no_rotate = true
+no_move = true
+anim = wait
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier2
+target = 708
+danger = danger_condition@mil_dolg_soldier2
+
+[remark10@mil_dolg_soldier2]
+snd = mil_collect_laugh4
+no_rotate = true
+no_move = true
+on_signal = action_end | remark20@mil_dolg_soldier2
+anim = wait
+target = 708
+danger = danger_condition@mil_dolg_soldier2
+
+[remark20@mil_dolg_soldier2]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker1@mil_dolg_soldier2
+target = 708
+danger = danger_condition@mil_dolg_soldier2
+
+[walker1@mil_dolg_soldier2]
+path_walk = attack_way7
+path_look = attack_look1
+def_state_moving1 = run
+on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier2
+combat_ignore_cond = always
+team = dolg
+danger = danger_condition@mil_dolg_soldier2
+
+[camper3@mil_dolg_soldier2]
+path_walk = attack_way7_2
+path_look = attack_look2
+on_signal = final | walker4@mil_dolg_soldier2 %+mil_dolg_mission_complete%
+def_state_moving1 = run
+no_retreat = true
+radius = 0
+on_signal2 = dolg | %+mil_headquarter_attack%
+danger = danger_condition@mil_dolg_soldier2
+
+[walker4@mil_dolg_soldier2]
+path_walk = return7
+on_signal = return | kamp2@mil_dolg_soldier2
+danger = danger_condition@mil_dolg_soldier2
+
+[kamp2@mil_dolg_soldier2]
+center_point = camp_center
+path_walk = camp_center_task
+
+
+;caлага 3
+[logic@mil_dolg_soldier3]
+active = camper1@mil_dolg_soldier3
+combat_ignore = combat_ignore@mil_dolg_soldier3
+on_death = death@mil_dolg_soldier3
+
+[combat_ignore@mil_dolg_soldier3]
+
+[death@mil_dolg_soldier3]
+on_info = %=military_dolg_dead%
+
+[camper1@mil_dolg_soldier3]
+path_walk = ambush_walk4
+path_look = ambush_look4
+on_info = {+mil_patrol_kill_continue} camper2@mil_dolg_soldier3
+def_state_moving = sneak
+combat_ignore_cond = always
+radius = 1
+show_spot = false
+danger = danger_condition@mil_dolg_soldier3
+
+[danger_condition@mil_dolg_soldier3]
+ignore_distance = 0
+ignore_types = corpse
+
+[camper2@mil_dolg_soldier3]
+path_walk = ambush_walk4_2
+path_look = ambush_look4_2
+def_state_moving = sneak
+radius = 1
+on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier3
+show_spot = false
+danger = danger_condition@mil_dolg_soldier3
+attack_sound = false
+
+[follower1@mil_dolg_soldier3]
+leader = 722
+stub_for_corpse = true
+distance = 0.5
+on_signal = leader_dead | remark2@mil_dolg_soldier3
+anim_sprint = run
+danger = danger_condition@mil_dolg_soldier3
+
+[remark2@mil_dolg_soldier3]
+no_move = true
+;no_rotate = true
+snd = mil_dolg_after_kill3
+snd_anim_sync = true
+anim = search
+target = 722
+on_signal = action_end | walker2@mil_dolg_soldier3
+danger = danger_condition@mil_dolg_soldier3
+
+[walker2@mil_dolg_soldier3]
+path_walk = ambush_walk4_3
+on_signal = return | kamp1@mil_dolg_soldier3
+danger = danger_condition@mil_dolg_soldier3
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier3
+meet = meet@mil_dolg_soldier3
+combat_ignore_cond = {=check_fighting(704)} true
+
+[meet@mil_dolg_soldier3]
+use = false
+use_wpn = false
+victim = 2|actor
+victim_wpn = 2|actor
+meet_state = 2|ward@talk_hello
+meet_state_wpn = 2|ward@talk_hello
+synpairs = ward@talk_hello
+
+[kamp1@mil_dolg_soldier3]
+center_point = camp_center
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier3
+on_info2 = {+mil_scull_dead} walker3@mil_dolg_soldier3
+danger = danger_kamp@mil_dolg_soldier3
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_kamp@mil_dolg_soldier3]
+ignore_distance = 0
+
+[walker10@mil_dolg_soldier3]
+path_walk = attack_before_walk5
+path_look = attack_before_look1
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier3
+danger = danger_condition@mil_dolg_soldier3
+
+[remark11@mil_dolg_soldier3]
+snd = mil_collect_phrase4
+no_rotate = true
+no_move = true
+anim = guard
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier3
+target = 708
+danger = danger_condition@mil_dolg_soldier3
+
+[remark10@mil_dolg_soldier3]
+snd = mil_collect_laugh3
+no_rotate = true
+no_move = true
+on_signal = action_end | remark20@mil_dolg_soldier3
+anim = guard
+target = 708
+danger = danger_condition@mil_dolg_soldier3
+
+[remark20@mil_dolg_soldier3]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker3@mil_dolg_soldier3
+target = 708
+danger = danger_condition@mil_dolg_soldier3
+
+[walker3@mil_dolg_soldier3]
+path_walk = attack_way4
+path_look = attack_look1
+def_state_moving1 = run
+on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier3
+combat_ignore_cond = always
+team = dolg
+danger = danger_condition@mil_dolg_soldier3
+
+[camper3@mil_dolg_soldier3]
+path_walk = attack_way4_2
+path_look = attack_look2
+on_signal = final | walker6@mil_dolg_soldier3 %+mil_dolg_mission_complete%
+def_state_moving1 = run
+no_retreat = true
+radius = 20
+on_info = {+mil_lukash_dead} walker6@mil_dolg_soldier3
+on_signal2 = dolg | %+mil_headquarter_attack%
+danger = danger_condition@mil_dolg_soldier3
+
+[walker6@mil_dolg_soldier3]
+path_walk = return4
+on_signal = return | kamp2@mil_dolg_soldier3
+danger = danger_condition@mil_dolg_soldier3
+
+[kamp2@mil_dolg_soldier3]
+center_point = camp_center
+path_walk = camp_center_task
+
+
+;салага 4
+[logic@mil_dolg_soldier4]
+active = camper1@mil_dolg_soldier4
+combat_ignore = combat_ignore@mil_dolg_soldier4
+on_death = death@mil_dolg_soldier4
+
+[combat_ignore@mil_dolg_soldier4]
+
+[death@mil_dolg_soldier4]
+on_info = %=military_dolg_dead%
+
+[camper1@mil_dolg_soldier4]
+path_walk = ambush_walk5
+path_look = ambush_look5
+on_info = {+mil_patrol_kill_continue} camper2@mil_dolg_soldier4
+def_state_moving = sneak
+combat_ignore_cond = always
+radius = 1
+show_spot = false
+danger = danger_condition@mil_dolg_soldier4
+
+[danger_condition@mil_dolg_soldier4]
+ignore_distance = 0
+ignore_types = corpse
+
+[camper2@mil_dolg_soldier4]
+path_walk = ambush_walk5_2
+path_look = ambush_look5_2
+def_state_moving = sneak
+radius = 1
+on_info = {+mil_patrol_dead} walker2@mil_dolg_soldier4
+show_spot = false
+danger = danger_condition@mil_dolg_soldier4
+attack_sound = false
+
+[walker2@mil_dolg_soldier4]
+path_walk = ambush_walk5_3
+path_look = ambush_look5_3
+on_signal = return | kamp1@mil_dolg_soldier4
+danger = danger_condition@mil_dolg_soldier4
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier4
+meet = meet@mil_dolg_soldier4
+combat_ignore_cond = {=check_fighting(704)} true
+
+[meet@mil_dolg_soldier4]
+use = false
+use_wpn = false
+victim = 2|actor
+victim_wpn = 2|actor
+meet_state = 2|ward@talk_hello
+meet_state_wpn = 2|ward@talk_hello
+synpairs = ward@talk_hello
+
+[kamp1@mil_dolg_soldier4]
+center_point = camp_center
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier4
+on_info2 = {+mil_scull_dead} walker3@mil_dolg_soldier4
+danger = danger_kamp@mil_dolg_soldier4
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_kamp@mil_dolg_soldier4]
+ignore_distance = 0
+
+[walker10@mil_dolg_soldier4]
+path_walk = attack_before_walk6
+path_look = attack_before_look1
+on_signal = arrive | remark11@mil_dolg_soldier4
+danger = danger_condition@mil_dolg_soldier4
+
+[remark11@mil_dolg_soldier4]
+snd = mil_collect_phrase3
+no_rotate = true
+no_move = true
+anim = guard
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier4
+target = 708
+danger = danger_condition@mil_dolg_soldier4
+
+[remark10@mil_dolg_soldier4]
+snd = mil_collect_laugh2
+no_rotate = true
+no_move = true
+on_signal = action_end | remark20@mil_dolg_soldier4
+anim = guard
+target = 708
+danger = danger_condition@mil_dolg_soldier4
+
+[remark20@mil_dolg_soldier4]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker3@mil_dolg_soldier4
+target = 708
+danger = danger_condition@mil_dolg_soldier4
+
+[walker3@mil_dolg_soldier4]
+path_walk = attack_way5
+path_look = attack_look1
+def_state_moving1 = run
+on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier4
+combat_ignore_cond = always
+team = dolg
+danger = danger_condition@mil_dolg_soldier4
+
+[camper3@mil_dolg_soldier4]
+path_walk = attack_way5_2
+path_look = attack_look2
+on_signal = final | walker6@mil_dolg_soldier4 %+mil_dolg_mission_complete%
+def_state_moving1 = run
+no_retreat = true
+radius = 20
+on_info = {+mil_lukash_dead} walker6@mil_dolg_soldier4
+on_signal2 = dolg | %+mil_headquarter_attack%
+danger = danger_condition@mil_dolg_soldier4
+
+[walker6@mil_dolg_soldier4]
+path_walk = return5
+on_signal = return | kamp2@mil_dolg_soldier4
+danger = danger_condition@mil_dolg_soldier4
+
+[kamp2@mil_dolg_soldier4]
+center_point = camp_center
+path_walk = camp_center_task
+
+
+;салага 5
+[logic@mil_dolg_soldier5]
+active = camper1@mil_dolg_soldier5
+combat_ignore = combat_ignore@mil_dolg_soldier5
+on_death = death@mil_dolg_soldier5
+
+[combat_ignore@mil_dolg_soldier5]
+
+[death@mil_dolg_soldier5]
+on_info = %=military_dolg_dead%
+
+[camper1@mil_dolg_soldier5]
+path_walk = ambush_walk2
+path_look = ambush_look2
+on_info = {+mil_patrol_kill_continue} camper2@mil_dolg_soldier5
+def_state_moving = sneak
+combat_ignore_cond = always
+radius = 1
+show_spot = false
+danger = danger_condition@mil_dolg_soldier5
+
+[danger_condition@mil_dolg_soldier5]
+ignore_distance = 0
+ignore_types = corpse
+
+[camper2@mil_dolg_soldier5]
+path_walk = ambush_walk2_2
+path_look = ambush_look2_2
+def_state_moving = sneak
+radius = 1
+on_info = {+mil_patrol_dead} walker2@mil_dolg_soldier5
+show_spot = false
+danger = danger_condition@mil_dolg_soldier5
+attack_sound = false
+
+[walker2@mil_dolg_soldier5]
+path_walk = ambush_walk2_3
+path_look = ambush_look2_3
+on_signal = return | kamp1@mil_dolg_soldier5
+on_info = {+mil_scull_dead} walker1@mil_dolg_soldier5
+danger = danger_condition@mil_dolg_soldier5
+on_info2 = {+mil_sniper_dead} walker10@mil_dolg_soldier5
+meet = meet@mil_dolg_soldier5
+combat_ignore_cond = {=check_fighting(704)} true
+
+[meet@mil_dolg_soldier5]
+use = false
+use_wpn = false
+victim = 2|actor
+victim_wpn = 2|actor
+meet_state = 2|ward@talk_hello
+meet_state_wpn = 2|ward@talk_hello
+synpairs = ward@talk_hello
+
+[kamp1@mil_dolg_soldier5]
+center_point = camp_center
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier5
+on_info2 = {+mil_scull_dead} walker1@mil_dolg_soldier5
+danger = danger_kamp@mil_dolg_soldier5
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_kamp@mil_dolg_soldier5]
+ignore_distance = 0
+
+[walker10@mil_dolg_soldier5]
+path_walk = attack_before_walk7
+path_lool = attack_before_look1
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier5
+danger = danger_condition@mil_dolg_soldier5
+
+[remark11@mil_dolg_soldier5]
+snd = mil_collect_phrase6
+no_rotate = true
+no_move = true
+anim = guard
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier5
+target = 708
+danger = danger_condition@mil_dolg_soldier5
+
+[remark10@mil_dolg_soldier5]
+snd = mil_collect_laugh5
+no_rotate = true
+no_move = true
+on_signal = action_end | remark20@mil_dolg_soldier5
+anim = guard
+target = 708
+danger = danger_condition@mil_dolg_soldier5
+
+[remark20@mil_dolg_soldier5]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker1@mil_dolg_soldier5
+target = 708
+danger = danger_condition
+
+[walker1@mil_dolg_soldier5]
+path_walk = attack_way6
+path_look = attack_look1
+def_state_moving1 = run
+on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier5
+combat_ignore_cond = always
+team = dolg
+danger = danger_condition@mil_dolg_soldier5
+
+[camper3@mil_dolg_soldier5]
+path_walk = attack_way6_2
+path_look = attack_look2
+on_signal = final | walker4@mil_dolg_soldier5 %+mil_dolg_mission_complete%
+def_state_moving1 = run
+no_retreat = true
+radius = 20
+on_info = {+mil_lukash_dead} walker4@mil_dolg_soldier5
+on_signal2 = dolg | %+mil_headquarter_attack%
+danger = danger_condition@mil_dolg_soldier5
+
+[walker4@mil_dolg_soldier5]
+path_walk = return6
+on_signal = return | kamp2@mil_dolg_soldier5
+danger = danger_condition@mil_dolg_soldier5
+
+[kamp2@mil_dolg_soldier5]
+center_point = camp_center
+path_walk = camp_center_task
+
+
+;салага 6
+[logic@mil_dolg_soldier6]
+active = camper1@mil_dolg_soldier6
+combat_ignore = combat_ignore@mil_dolg_soldier6
+on_death = death@mil_dolg_soldier6
+
+[death@mil_dolg_soldier6]
+on_info = %=military_dolg_dead%
+
+[combat_ignore@mil_dolg_soldier6]
+
+[camper1@mil_dolg_soldier6]
+path_walk = ambush_walk3
+path_look = ambush_look3
+on_info = {+mil_patrol_kill_continue} camper2@mil_dolg_soldier6
+def_state_moving = sneak
+combat_ignore_cond = always
+radius = 1
+show_spot = false
+danger = danger_condition@mil_dolg_soldier6
+
+[danger_condition@mil_dolg_soldier6]
+ignore_distance = 0
+ignore_types = corpse
+
+[camper2@mil_dolg_soldier6]
+path_walk = ambush_walk3_2
+path_look = ambush_look3_2
+def_state_moving = sneak
+radius = 1
+on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier6
+show_spot = false
+danger = danger_condition
+attack_sound = false
+
+[follower1@mil_dolg_soldier6]
+leader = 721
+stub_for_corpse = true
+distance = 0.5
+on_signal = leader_dead | remark2@mil_dolg_soldier6
+anim_sprint = run
+danger = danger_condition@mil_dolg_soldier6
+
+[remark2@mil_dolg_soldier6]
+no_move = true
+;no_rotate = true
+snd = mil_dolg_after_kill2
+snd_anim_sync = true
+anim = search
+target = 721
+on_signal = action_end | walker2@mil_dolg_soldier6
+danger = danger_condition@mil_dolg_soldier6
+
+[walker2@mil_dolg_soldier6]
+path_walk = ambush_walk3_3
+on_signal = return | kamp1@mil_dolg_soldier6
+on_info = {+mil_scull_dead} walker3@mil_dolg_soldier6
+danger = danger_condition@mil_dolg_soldier6
+on_info2 = {+mil_sniper_dead} walker10@mil_dolg_soldier6
+meet = meet@mil_dolg_soldier6
+combat_ignore_cond = {=check_fighting(704)} true
+
+[meet@mil_dolg_soldier6]
+use = false
+use_wpn = false
+victim = 2|actor
+victim_wpn = 2|actor
+meet_state = 2|ward@talk_hello
+meet_state_wpn = 2|ward@talk_hello
+synpairs = ward@talk_hello
+
+[kamp1@mil_dolg_soldier6]
+center_point = camp_center
+on_info = {+mil_sniper_dead} walker10@mil_dolg_soldier6
+on_info2 = {+mil_scull_dead} walker3@mil_dolg_soldier6
+danger = danger_kamp@mil_dolg_soldier6
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_kamp@mil_dolg_soldier6]
+ignore_distance = 0
+
+[walker10@mil_dolg_soldier6]
+path_walk = attack_before_walk8
+path_look = attack_before_look1
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier6
+danger = danger_condition@mil_dolg_soldier6
+
+[remark11@mil_dolg_soldier6]
+snd = mil_collect_phrase7
+no_rotate = true
+no_move = true
+anim = guard
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier6
+target = 708
+danger = danger_condition@mil_dolg_soldier6
+
+[remark10@mil_dolg_soldier6]
+snd = mil_collect_laugh2
+no_rotate = true
+no_move = true
+on_signal = action_end | remark20@mil_dolg_soldier6
+anim = guard
+target = 708
+danger = danger_condition@mil_dolg_soldier6
+
+[remark20@mil_dolg_soldier6]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker3@mil_dolg_soldier6
+target = 708
+danger = danger_condition@mil_dolg_soldier6
+
+[walker3@mil_dolg_soldier6]
+path_walk = attack_way2
+path_look = attack_look1
+def_state_moving1 = run
+on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier6
+combat_ignore_cond = always
+team = dolg
+danger = danger_condition@mil_dolg_soldier6
+
+[camper3@mil_dolg_soldier6]
+path_walk = attack_way2_2
+path_look = attack_look2
+on_signal = final | walker6@mil_dolg_soldier6 %+mil_dolg_mission_complete%
+def_state_moving1 = run
+no_retreat = true
+radius = 0
+on_info = {+mil_lukash_dead} walker6@mil_dolg_soldier6
+on_signal2 = dolg | %+mil_headquarter_attack%
+danger = danger_condition@mil_dolg_soldier6
+
+[walker6@mil_dolg_soldier6]
+path_walk = return2
+on_signal = return | kamp2@mil_dolg_soldier6
+danger = danger_condition@mil_dolg_soldier6
+
+[kamp2@mil_dolg_soldier6]
+center_point = camp_center
+path_walk = camp_center_task
+
+;caлага 7
+[logic@mil_dolg_soldier7]
+active = kamp1@mil_dolg_soldier7
+on_death = death@mil_dolg_soldier7
+combat_ignore = c_ignore@mil_dolg_soldier7
+
+[c_ignore@mil_dolg_soldier7]
+
+[death@mil_dolg_soldier7]
+on_info = %=military_dolg_dead%
+
+[kamp1@mil_dolg_soldier7]
+center_point = camp_center
+path_walk = camp_center_task
+on_info = {+mil_sniper_dead} walker12@mil_dolg_soldier7
+on_info2 = {+mil_scull_dead} walker10@mil_dolg_soldier7
+danger = danger_kamp@mil_dolg_soldier7
+combat_ignore_cond = {=check_fighting(704)} true
+
+[danger_kamp@mil_dolg_soldier7]
+ignore_distance = 1
+
+[walker12@mil_dolg_soldier7]
+path_walk = attack_before_walk3
+path_look = attack_before_look1
+on_signal = arrive | remark11@mil_dolg_soldier7
+danger = danger_condition@mil_dolg_soldier7
+
+[danger_condition@mil_dolg_soldier7]
+ignore_distance = 0
+ignore_types = corpse
+
+[remark11@mil_dolg_soldier7]
+snd = mil_collect_phrase2
+no_rotate = true
+no_move = true
+anim = guard
+on_info = {+mil_dolg_phase2} remark10@mil_dolg_soldier7
+target = 708
+danger = danger_condition@mil_dolg_soldier7
+
+[remark10@mil_dolg_soldier7]
+snd = mil_collect_laugh1
+no_rotate = true
+no_move = true
+anim = guard
+on_signal = action_end | remark20@mil_dolg_soldier7 %+mil_dolg_phase3%
+target = 708
+danger = danger_condition@mil_dolg_soldier7
+
+[remark20@mil_dolg_soldier7]
+no_rotate = true
+no_move = true
+anim = salut
+on_signal = action_end | walker1@mil_dolg_soldier7
+target = 708
+danger = danger_condition@mil_dolg_soldier7
+
+[walker1@mil_dolg_soldier7]
+path_walk = attack_way3
+path_look = attack_look1
+def_state_moving1 = run
+on_info = {+mil_dolg_after_explode} camper1@mil_dolg_soldier7
+combat_ignore_cond = always
+team = dolg
+on_info2 = {+mil_scull_dead} walker10@mil_dolg_soldier7
+danger = danger_condition@mil_dolg_soldier7
+
+[walker10@mil_dolg_soldier7]
+path_walk = attack_way_bomb2
+path_look = attack_look_bomb2
+on_signal = bomb | remark1@mil_dolg_soldier7 %+mil_dolg_before_explode%
+;combat_ignore_cond = always
+def_state_moving1 = run
+danger = danger_condition@mil_dolg_soldier7
+
+[remark1@mil_dolg_soldier7]
+no_move = true
+no_rotate = true
+anim = dynamite
+on_signal = action_end | walker11@mil_dolg_soldier7
+danger = danger_condition@mil_dolg_soldier7
+
+[walker11@mil_dolg_soldier7]
+path_walk = attack_way_bomb
+path_look = attack_look_bomb
+on_info = {+mil_dolg_after_explode} camper1@mil_dolg_soldier7
+danger = danger_condition@mil_dolg_soldier7
+
+[camper1@mil_dolg_soldier7]
+path_walk = attack_way3_2
+path_look = attack_look2
+on_signal = final | walker4@mil_dolg_soldier7 %+mil_dolg_mission_complete%
+def_state_moving1 = run
+no_retreat = true
+radius = 20
+on_info = {+mil_lukash_dead} walker4@mil_dolg_soldier7
+on_signal2 = dolg | %+mil_headquarter_attack%
+
+[walker4@mil_dolg_soldier7]
+path_walk = return3
+on_signal = return | kamp2@mil_dolg_soldier7
+danger = danger_condition@mil_dolg_soldier7
+
+[kamp2@mil_dolg_soldier7]
+center_point = camp_center
+path_walk = camp_center_task

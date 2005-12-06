@@ -768,6 +768,30 @@
     <string id="mil_hunter_dialog_5">
         <text>То есть, вы сами не в курсе ?</text>
     </string>
+    <string id="mil_hunter_dialog_501">
+        <text>И чего тебя сюда занесло ?</text>
+    </string>
+    <string id="mil_hunter_dialog_502">
+        <text>Да так, хожу, осматриваюсь...</text>
+    </string>
+    <string id="mil_hunter_dialog_503">
+        <text>А получше места не нашел? Занесло тебя в самое отвратное место в Зоне...</text>
+    </string>
+    <string id="mil_hunter_dialog_504">
+        <text>И что здесь плохого?</text>
+    </string>
+    <string id="mil_hunter_dialog_505">
+        <text>Да хрен его знает. Завелась какая-то тварь, или несколько. Парочка наших как пошла в деревню, так и не вернулась. Ну, а нам помирать не охота.\n</text>
+    </string>
+    <string id="mil_hunter_dialog_506">
+        <text>То есть, вы сами не в курсе ?</text>
+    </string>
+    <string id="mil_hunter_dialog_507">
+        <text>То то и оно. Если тебе делать нечего и голова не в порядке, то можешь погулять по деревне. Если тварь завалишь, то и награда себя ждать особо не заставит - Скряга выдаст. Но адрес на всякий случай оставь, мы похоронку тебе отправим, если что...</text>
+    </string>
+    <string id="mil_hunter_dialog_508">
+        <text>Обойдешься. Ладно, пошел я зверей ваших ловить.</text>
+    </string>
     <string id="mil_hunter_dialog_6">
         <text>То то и оно. Ну, а раз ты со Скрягой договорился, то иди в деревню, смотри... Адрес оставь, мы похоронку тебе отправим, если что...</text>
     </string>

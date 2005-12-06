@@ -1372,138 +1372,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_hunter_after_dialog">
-        <phrase_list>
-            <phrase id="0">
-                <text>mil_hunter_after_dialog_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_hunter_dialog">
-        <phrase_list>
-            <phrase id="80">
-                <text>mil_hunter_dialog_80</text>
-            </phrase>
-            <phrase id="101">
-                <text>mil_hunter_dialog_101</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>mil_hunter_dialog_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="202">
-                <text>mil_hunter_dialog_202</text>
-                <next>203</next>
-            </phrase>
-            <phrase id="203">
-                <text>mil_hunter_dialog_203</text>
-                <next>204</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_hunter_dialog_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>mil_hunter_dialog_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <text>mil_hunter_dialog_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="204">
-                <text>mil_hunter_dialog_204</text>
-                <next>205</next>
-            </phrase>
-            <phrase id="205">
-                <text>mil_hunter_dialog_205</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_hunter_dialog_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_hunter_dialog_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="7">
-                <text>mil_hunter_dialog_7</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>mil_hunt_ready</give_info>
-            </phrase>
-            <phrase id="201">
-                <text>mil_hunter_dialog_201</text>
-                <next>202</next>
-            </phrase>
-            <phrase id="301">
-                <text>mil_hunter_dialog_301</text>
-                <next>302</next>
-            </phrase>
-            <phrase id="302">
-                <text>mil_hunter_dialog_302</text>
-                <next>303</next>
-            </phrase>
-            <phrase id="100">
-                <text />
-                <dont_has_info>mil_controller_dead</dont_has_info>
-                <dont_has_info>mil_after_hunt_talked</dont_has_info>
-                <has_info>mil_miser_task</has_info>
-                <next>101</next>
-            </phrase>
-            <phrase id="200">
-                <text />
-                <dont_has_info>mil_miser_task</dont_has_info>
-                <dont_has_info>mil_controller_dead</dont_has_info>
-                <dont_has_info>mil_after_hunt_talked</dont_has_info>
-                <next>201</next>
-            </phrase>
-            <phrase id="300">
-                <text />
-                <dont_has_info>mil_after_hunt_talked</dont_has_info>
-                <has_info>mil_controller_dead</has_info>
-                <next>301</next>
-            </phrase>
-            <phrase id="401">
-                <text>mil_hunter_dialog_401</text>
-                <next>402</next>
-            </phrase>
-            <phrase id="402">
-                <text>mil_hunter_dialog_402</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="303">
-                <text>mil_hunter_dialog_303</text>
-                <next>304</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>100</next>
-                <next>200</next>
-                <next>300</next>
-                <next>400</next>
-            </phrase>
-            <phrase id="304">
-                <text>mil_hunter_dialog_304</text>
-                <next>305</next>
-            </phrase>
-            <phrase id="306">
-                <text>mil_hunter_dialog_306</text>
-                <action>dialogs.break_dialog</action>
-                <has_info>mil_after_hunt_talked</has_info>
-            </phrase>
-            <phrase id="400">
-                <text />
-                <has_info>mil_after_hunt_talked</has_info>
-                <next>401</next>
-            </phrase>
-            <phrase id="305">
-                <text>mil_hunter_dialog_305</text>
-                <next>306</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_trader_dialog">
         <phrase_list>
             <phrase id="1006">
@@ -1777,35 +1645,6 @@
             <phrase id="0">
                 <text>mil_neutral_commander_0</text>
                 <next>1000</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="mil_bodyguard_dialog">
-        <phrase_list>
-            <phrase id="7">
-                <text>mil_bodyguard_dialog_7</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>mil_lukash_guard_talked</give_info>
-            </phrase>
-            <phrase id="1">
-                <text>mil_bodyguard_dialog_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_bodyguard_dialog_2</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>mil_bodyguard_dialog_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>mil_bodyguard_dialog_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="0">
-                <text>mil_bodyguard_dialog_0</text>
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -2221,29 +2060,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="mil_cook_drunk_question_about_rg6_3">
-        <has_info>mil_freedom_cook_drink_3</has_info>
-        <has_info>mil_freedom_rg6_task</has_info>
-        <dont_has_info>mil_freedom_cook_rg6_3</dont_has_info>
-        <dont_has_info>mil_freedom_cook_rg6_4</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>mil_cook_drunk_question_about_rg6_3_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>mil_cook_drunk_question_about_rg6_3_2</text>
-                <action>dialogs_military.actor_punch</action>
-                <give_info>mil_freedom_cook_rg6_1</give_info>
-                <give_info>mil_freedom_cook_rg6_4</give_info>
-                <give_info>mil_freedom_cook_rg6_ask</give_info>
-            </phrase>
-            <phrase id="0">
-                <text>mil_cook_drunk_question_about_rg6_3_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="mil_dolg_dialog" priority="10">
         <dont_has_info>mil_dolg_mission_complete</dont_has_info>
         <phrase_list>
@@ -2481,7 +2297,7 @@
                 <next>4001</next>
             </phrase>
             <phrase id="5000">
-                <text></text>
+                <text />
                 <has_info>mil_sniper_job_failed</has_info>
                 <next>5001</next>
             </phrase>
@@ -2502,7 +2318,7 @@
                 <next>7001</next>
             </phrase>
             <phrase id="12000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_dolg_skull_talk</dont_has_info>
                 <has_info>mil_sniper_get_job</has_info>
                 <has_info>mil_sniper_dead</has_info>
@@ -2519,7 +2335,7 @@
                 <give_info>mil_dolg_skull_talk</give_info>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1000</next>
                 <next>2000</next>
                 <next>3000</next>
@@ -2700,12 +2516,12 @@
                 <text>mil_freedom_commander_2001</text>
             </phrase>
             <phrase id="3000">
-                <text></text>
+                <text />
                 <has_info>mil_fblockpost_quest_complete</has_info>
                 <next>3001</next>
             </phrase>
             <phrase id="2000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_fblockpost_quest_complete</dont_has_info>
                 <has_info>mil_fblockpost_quest</has_info>
                 <next>2001</next>
@@ -2715,7 +2531,7 @@
                 <next>1004</next>
             </phrase>
             <phrase id="4000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_fblockpost_quest</dont_has_info>
                 <give_info>mil_freedom_commander_talk</give_info>
                 <has_info>mil_lukash_blockpost</has_info>
@@ -2727,14 +2543,14 @@
                 <next>4003</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1000</next>
                 <next>2000</next>
                 <next>3000</next>
                 <next>4000</next>
             </phrase>
             <phrase id="1000">
-                <text></text>
+                <text />
                 <dont_has_info>mil_fblockpost_quest</dont_has_info>
                 <dont_has_info>mil_lukash_blockpost</dont_has_info>
                 <next>1001</next>
@@ -2791,6 +2607,233 @@
             </phrase>
             <phrase id="1013">
                 <text>mil_freedom_commander_1013</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_cook_drunk_question_about_rg6_3">
+        <has_info>mil_freedom_cook_drink_3</has_info>
+        <has_info>mil_freedom_rg6_task</has_info>
+        <dont_has_info>mil_freedom_cook_rg6_3</dont_has_info>
+        <dont_has_info>mil_freedom_cook_rg6_4</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>mil_cook_drunk_question_about_rg6_3_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>mil_cook_drunk_question_about_rg6_3_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_cook_drunk_question_about_rg6_3_2</text>
+                <action>dialogs_military.actor_punch</action>
+                <give_info>mil_freedom_cook_rg6_1</give_info>
+                <give_info>mil_freedom_cook_rg6_4</give_info>
+                <give_info>mil_freedom_cook_rg6_ask</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_bodyguard_dialog">
+        <phrase_list>
+            <phrase id="7">
+                <text>mil_bodyguard_dialog_7</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_lukash_guard_talked</give_info>
+            </phrase>
+            <phrase id="1">
+                <text>mil_bodyguard_dialog_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_bodyguard_dialog_2</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_bodyguard_dialog_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_bodyguard_dialog_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="0">
+                <text>mil_bodyguard_dialog_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_hunter_after_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>mil_hunter_after_dialog_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="mil_hunter_dialog">
+        <phrase_list>
+            <phrase id="80">
+                <text>mil_hunter_dialog_80</text>
+            </phrase>
+            <phrase id="202">
+                <text>mil_hunter_dialog_202</text>
+                <next>203</next>
+            </phrase>
+            <phrase id="203">
+                <text>mil_hunter_dialog_203</text>
+                <next>204</next>
+            </phrase>
+            <phrase id="204">
+                <text>mil_hunter_dialog_204</text>
+                <next>205</next>
+            </phrase>
+            <phrase id="205">
+                <text>mil_hunter_dialog_205</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="201">
+                <text>mil_hunter_dialog_201</text>
+                <next>202</next>
+            </phrase>
+            <phrase id="200">
+                <text></text>
+                <dont_has_info>mil_miser_task</dont_has_info>
+                <dont_has_info>mil_controller_dead</dont_has_info>
+                <dont_has_info>mil_after_hunt_talked</dont_has_info>
+                <has_info>mil_freedom_cook_rg6_ask</has_info>
+                <next>201</next>
+            </phrase>
+            <phrase id="100">
+                <text></text>
+                <dont_has_info>mil_controller_dead</dont_has_info>
+                <dont_has_info>mil_after_hunt_talked</dont_has_info>
+                <has_info>mil_miser_task</has_info>
+                <next>101</next>
+            </phrase>
+            <phrase id="101">
+                <text>mil_hunter_dialog_101</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="501">
+                <text>mil_hunter_dialog_501</text>
+                <next>502</next>
+            </phrase>
+            <phrase id="502">
+                <text>mil_hunter_dialog_502</text>
+                <next>503</next>
+            </phrase>
+            <phrase id="503">
+                <text>mil_hunter_dialog_503</text>
+                <next>504</next>
+            </phrase>
+            <phrase id="1">
+                <text>mil_hunter_dialog_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>mil_hunter_dialog_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>mil_hunter_dialog_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="504">
+                <text>mil_hunter_dialog_504</text>
+                <next>505</next>
+            </phrase>
+            <phrase id="4">
+                <text>mil_hunter_dialog_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="505">
+                <text>mil_hunter_dialog_505</text>
+                <next>506</next>
+            </phrase>
+            <phrase id="5">
+                <text>mil_hunter_dialog_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="506">
+                <text>mil_hunter_dialog_506</text>
+                <next>507</next>
+            </phrase>
+            <phrase id="6">
+                <text>mil_hunter_dialog_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="507">
+                <text>mil_hunter_dialog_507</text>
+                <next>508</next>
+            </phrase>
+            <phrase id="7">
+                <text>mil_hunter_dialog_7</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_hunt_ready</give_info>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>100</next>
+                <next>200</next>
+                <next>300</next>
+                <next>400</next>
+                <next>500</next>
+            </phrase>
+            <phrase id="500">
+                <text></text>
+                <dont_has_info>mil_miser_task</dont_has_info>
+                <dont_has_info>mil_controller_dead</dont_has_info>
+                <dont_has_info>mil_after_hunt_talked</dont_has_info>
+                <dont_has_info>mil_freedom_cook_rg6_ask</dont_has_info>
+                <next>501</next>
+            </phrase>
+            <phrase id="508">
+                <text>mil_hunter_dialog_508</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_hunt_ready</give_info>
+            </phrase>
+            <phrase id="300">
+                <text></text>
+                <dont_has_info>mil_after_hunt_talked</dont_has_info>
+                <has_info>mil_controller_dead</has_info>
+                <next>301</next>
+            </phrase>
+            <phrase id="301">
+                <text>mil_hunter_dialog_301</text>
+                <next>302</next>
+            </phrase>
+            <phrase id="302">
+                <text>mil_hunter_dialog_302</text>
+                <next>303</next>
+            </phrase>
+            <phrase id="303">
+                <text>mil_hunter_dialog_303</text>
+                <next>304</next>
+            </phrase>
+            <phrase id="304">
+                <text>mil_hunter_dialog_304</text>
+                <next>305</next>
+            </phrase>
+            <phrase id="305">
+                <text>mil_hunter_dialog_305</text>
+                <next>306</next>
+            </phrase>
+            <phrase id="306">
+                <text>mil_hunter_dialog_306</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_after_hunt_talked</give_info>
+            </phrase>
+            <phrase id="400">
+                <text></text>
+                <has_info>mil_after_hunt_talked</has_info>
+                <next>401</next>
+            </phrase>
+            <phrase id="401">
+                <text>mil_hunter_dialog_401</text>
+                <next>402</next>
+            </phrase>
+            <phrase id="402">
+                <text>mil_hunter_dialog_402</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>

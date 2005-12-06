@@ -619,9 +619,6 @@
 						RelativePath=".\Config\misc\gulag_labx18.ltx">
 					</File>
 					<File
-						RelativePath=".\config\misc\gulag_military.ltx">
-					</File>
-					<File
 						RelativePath=".\Config\misc\gulag_pripyat.ltx">
 					</File>
 					<File
@@ -639,6 +636,34 @@
 					<File
 						RelativePath=".\Config\misc\gulag_yantar.ltx">
 					</File>
+					<Filter
+						Name="Military"
+						Filter="">
+						<File
+							RelativePath=".\config\misc\gulag_mil_dolg.ltx">
+						</File>
+						<File
+							RelativePath=".\config\misc\gulag_mil_fblockpost.ltx">
+						</File>
+						<File
+							RelativePath=".\config\misc\gulag_mil_freedom1.ltx">
+						</File>
+						<File
+							RelativePath=".\config\misc\gulag_mil_freedom2.ltx">
+						</File>
+						<File
+							RelativePath=".\config\misc\gulag_mil_freedom3.ltx">
+						</File>
+						<File
+							RelativePath=".\config\misc\gulag_mil_nblockpost.ltx">
+						</File>
+						<File
+							RelativePath=".\config\misc\gulag_mil_village.ltx">
+						</File>
+						<File
+							RelativePath=".\config\misc\gulag_military.ltx">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
