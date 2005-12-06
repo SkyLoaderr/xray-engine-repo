@@ -631,13 +631,14 @@ end
 
 -- вывод текущего состояния гулага (работы, объекты, состояние, население)
 function gulag:print()
-	local npc_info
+	local npc_info, going
 
 	printf("***  %s -- State: %d -- Capacity: %d -- Population: %d", self.name, self.state, self.capacity, self:get_population())
 	printf("Resources:")
 	for k,v in pairs( self.Object ) do
 		printf("id: %d name: %s", k, self.npc_info[k].name)
 	end
+
 	printf("Jobs:")
 	for k,v in ipairs( self.Job ) do
 		printf("section: %s, prior %d", v.section, v.prior)
@@ -647,10 +648,16 @@ function gulag:print()
 			printf("    ObjID: %d", v.object)
 			printf("    Actor: %s, [%s][%s][%s]", npc_info.name, npc_info.team, npc_info.squad, npc_info.group)
 
-			if self.Object[v.object] == true then
-				printf("    current section: <<<offline>>>")
+			if self.Object_begin_job[v.object] then
+				going = ""
 			else
-				printf("    current section: %s", db.storage[v.object].active_section or "<<<nil>>>")
+				going = "(going to job)"
+			end
+
+			if self.Object[v.object] == true then
+				printf("    current section: <<<offline>>> %s", going)
+			else
+				printf("    current section: %s %s", db.storage[v.object].active_section or "<<<nil>>>", going)
 			end
 		end
 	end
