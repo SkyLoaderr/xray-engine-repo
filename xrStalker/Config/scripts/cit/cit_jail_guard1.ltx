@@ -92,8 +92,8 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free
 [walker@jail_guard2]
 path_walk           = jail_guard_walk
 path_look           = jail_guard_look
-;on_timer            = 10000 | remark@jail_guard_sleep
-on_info             = {+cit_jail_door_opened -cit_button_broken} walker@jail_guard_close_door3
+on_timer            = 900000 | remark@jail_guard_sleep ; 15 min
+;on_info             = {+cit_jail_door_opened -cit_button_broken} walker@jail_guard_close_door3
 heli_hunter         = {+cit_heli_start -cit_heli_end} true, false
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
@@ -128,7 +128,7 @@ combat_ignore_cond  = always ;{=fighting_actor -cit_actor_is_free}, {=check_figh
 ;--- убиваем актера
 ;-----------------------------------------------------------------------------------------------------------
 [remark@jail_guard_kill_actor2]
-anim                = threat
+anim                = wait_na
 target              = nil
 ;on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=check_fighting(1200)}
