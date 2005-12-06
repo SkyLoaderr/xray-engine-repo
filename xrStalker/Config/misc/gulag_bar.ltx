@@ -1248,8 +1248,6 @@ radius = 10
 ;*******************************************************************
 ; Ученные
 ;*******************************************************************
-[hit@ecolog_crush]
-on_info = {=hit_by_actor -bar_freedom_attack_ecolog} %+bar_freedom_attack_ecolog%
 
 
 [meet@ecolog_crush]
@@ -1465,7 +1463,7 @@ danger = danger_condition@2
 
 [remark@bar_ecolog_professor_companion_1]
 snd = rostok_kruglov_help_6
-anim = hide
+anim = hide_na
 target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companion_1 %+bar_kruglov_follow_talk%
 combat_ignore_cond = always
@@ -1480,7 +1478,6 @@ path_look = escape_hide_2_look
 radius = 0
 no_retreat = true
 on_signal = bandits_alive | camper@bar_ecolog_professor_companion_1a %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\human_01\scenario\Rostok\killer_radio_enemy_3)%
-combat_ignore_cond = always
 def_state_moving = assault
 danger = danger_condition@2
 
@@ -1505,7 +1502,7 @@ danger = danger_condition@2
 
 [remark@bar_ecolog_professor_companion_2]
 snd = rostok_kruglov_help_6
-anim = hide
+anim = hide_na
 target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companion_2a %+bar_bandits_dead%
 combat_ignore_cond = always
@@ -1536,7 +1533,7 @@ danger = danger_condition@2
 
 [remark@bar_ecolog_professor_companion_2a]
 snd = rostok_kruglov_help_6
-anim = hide
+anim = hide_na
 target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companoin_2 %+bar_ambush_dead%
 combat_ignore_cond = always
