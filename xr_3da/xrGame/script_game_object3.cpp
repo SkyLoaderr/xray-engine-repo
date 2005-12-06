@@ -526,6 +526,15 @@ void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const F
 		stalker->sight().setup	(sight_type,vector3d);
 }
 
+void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look)
+{
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		stalker->sight().setup	(&object_to_look->object(),torso_look);
+}
+
 void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look)
 {
 	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
@@ -535,14 +544,33 @@ void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool tors
 		stalker->sight().setup	(&object_to_look->object(),torso_look);
 }
 
-void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look, LPCSTR bone_name)
+void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look, bool fire_object)
 {
 	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		stalker->sight().setup	(&object_to_look->object(),torso_look,bone_name);
+		stalker->sight().setup	(&object_to_look->object(),torso_look,fire_pitch);
 }
+
+void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look, bool fire_object, bool no_pitch)
+{
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		stalker->sight().setup	(&object_to_look->object(),torso_look,fire_pitch,no_pitch);
+}
+
+void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look)
+{
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+	else
+		stalker->sight().setup	(&object_to_look->object(),torso_look);
+}
+
 
 void CScriptGameObject::set_sight		(const CMemoryInfo *memory_object, bool	torso_look)
 {
