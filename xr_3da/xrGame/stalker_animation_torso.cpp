@@ -187,8 +187,8 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 			CAI_Stalker				&stalker = object();
 			CStalkerMovementManager	&movement = stalker.movement();
 			if (standing()) {
-				if ((eBodyStateStand == movement.body_state()))
-					return			(animation[1].A[1]);
+//				if ((eBodyStateStand == movement.body_state()))
+//					return			(animation[1].A[1]);
 			
 				return				(animation[1].A[0]);
 			}
