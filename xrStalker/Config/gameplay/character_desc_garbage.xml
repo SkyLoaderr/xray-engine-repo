@@ -382,7 +382,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 
 	</specific_character>
@@ -414,7 +414,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 </specific_character>
 
@@ -446,7 +446,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 </specific_character>
 
@@ -477,7 +477,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 	
@@ -509,7 +509,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 	
@@ -571,7 +571,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>
@@ -603,7 +603,7 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
 	</specific_character>
@@ -635,7 +635,7 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>

@@ -318,7 +318,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
@@ -349,7 +349,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
@@ -382,7 +382,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>	
 	</specific_character>
 
@@ -411,8 +411,8 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
-
-		<start_dialog>hello_dialog</start_dialog>
+		
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>
 	</specific_character>
 
@@ -442,7 +442,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
@@ -476,7 +476,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>
 	</specific_character>
 
@@ -507,7 +507,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
@@ -539,7 +539,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
