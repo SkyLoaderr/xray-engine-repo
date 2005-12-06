@@ -1787,7 +1787,7 @@ function load_states(gname, type)
 	end
 	if type == "esc_corps" then
 		return function(gulag)
-			if db.actor:has_info("tutorial_wounded_start")
+			if db.actor:has_info("tutorial_wounded_start") then
 				return 1
 			else
 				return 0
