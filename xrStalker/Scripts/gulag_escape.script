@@ -1292,7 +1292,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 4,
 			prior = 8, state = {0},
 			in_rest = "", out_rest = "",
-			online = true,
+			online = false,
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_vagon_newbie1"			           
 						end
@@ -1302,6 +1302,27 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 4,
 			prior = 8, state = {0},
 			in_rest = "", out_rest = "",
+			online = false,
+			predicate = function(obj_info) 
+        					return obj_info.name == "esc_vagon_newbie2"			           
+						end
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@esc_corps1",
+			idle = 4,
+			prior = 8, state = {1},
+			in_rest = "", out_rest = "",
+			online = true,
+			predicate = function(obj_info) 
+        					return obj_info.name == "esc_vagon_newbie1"			           
+						end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_corps2",
+			idle = 4,
+			prior = 8, state = {1},
+			in_rest = "", out_rest = "",
 			online = true,
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_vagon_newbie2"			           
@@ -1310,7 +1331,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_corps_wounded",
 			idle = 4,
-			prior = 10, state = {0},
+			prior = 10, state = {0,1},
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_vagon_wounded"			           
@@ -1766,7 +1787,11 @@ function load_states(gname, type)
 	end
 	if type == "esc_corps" then
 		return function(gulag)
-			return 0
+			if db.actor:has_info("tutorial_wounded_start")
+				return 1
+			else
+				return 0
+			end
 		end
 	end
 	
