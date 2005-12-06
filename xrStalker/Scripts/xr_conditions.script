@@ -728,6 +728,7 @@ function mil_actor_enemy (actor, npc)
     return npc:relation (actor) == game_object.enemy
 end    
 
+
 ------------------------------------------------------------------------------------
 -- Special functions for Deadcity
 ------------------------------------------------------------------------------------

@@ -876,7 +876,6 @@ end
 -- ѕроверка принадлежности сталкеров гулагам
 --------------------------------------------------------------------------
 function checkStalker(npc_community, gulag_type)
-    printf ("GULAG_MILITARY:CHECK_STALKER CALLED WITH NPC_COMM = %s, gulag_type = %s", npc_community, gulag_type)
 	if gulag_type == "mil_fneutral" then
 	   return npc_community == "stalker"
 	end       
