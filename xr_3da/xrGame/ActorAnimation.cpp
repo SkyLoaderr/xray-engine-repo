@@ -19,7 +19,7 @@
 #include "clsid_game.h"
 #include "ai_object_location.h"
 #include "game_cl_base.h"
-#include "motion.h"
+#include "../motion.h"
 
 static const float y_spin0_factor		= 0.0f;
 static const float y_spin1_factor		= 0.4f;
