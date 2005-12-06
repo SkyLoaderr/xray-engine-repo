@@ -81,3 +81,15 @@ void CSE_ALifeHumanAbstract::script_register(lua_State *L)
 		.def("brain",				&human_brain)
 	];
 }
+
+void CSE_ALifePsyDogPhantom::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_monster1(
+			CSE_ALifePsyDogPhantom,
+			"cse_alife_psydog_phantom",
+			CSE_ALifeMonsterBase
+			)
+	];
+}
+

@@ -1877,6 +1877,42 @@ void CSE_ALifeMonsterBase::FillProps	(LPCSTR pref, PropItemVec& values)
 }
 
 //////////////////////////////////////////////////////////////////////////
+// CSE_ALifePsyDogPhantom
+//////////////////////////////////////////////////////////////////////////
+CSE_ALifePsyDogPhantom::CSE_ALifePsyDogPhantom	(LPCSTR caSection) : CSE_ALifeMonsterBase(caSection)
+{
+}
+
+CSE_ALifePsyDogPhantom::~CSE_ALifePsyDogPhantom()
+{
+}
+
+void CSE_ALifePsyDogPhantom::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifePsyDogPhantom::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifePsyDogPhantom::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifePsyDogPhantom::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+void CSE_ALifePsyDogPhantom::FillProps	(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProps			(pref,values);
+}
+
+//////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanAbstract
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection)

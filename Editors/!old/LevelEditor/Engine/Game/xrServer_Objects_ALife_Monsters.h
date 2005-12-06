@@ -434,6 +434,17 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterBase)
 #define script_type_list save_type_list(CSE_ALifeMonsterBase)
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePsyDogPhantom,CSE_ALifeMonsterBase)
+									CSE_ALifePsyDogPhantom	(LPCSTR caSection);				// constructor for variable initialization
+	virtual							~CSE_ALifePsyDogPhantom	();
+	virtual CSE_Abstract			*cast_abstract			() {return this;}
+	virtual bool					bfActive				() {return false;}
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifePsyDogPhantom)
+#define script_type_list save_type_list(CSE_ALifePsyDogPhantom)
+
+
+
 //-------------------------------
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_ALifeMonsterAbstract)
 public:

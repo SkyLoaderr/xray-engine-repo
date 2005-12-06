@@ -3318,6 +3318,10 @@
 								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_alien.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Predator State"
+							Filter="">
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Boar"
