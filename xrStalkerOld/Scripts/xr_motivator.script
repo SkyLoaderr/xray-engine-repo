@@ -105,35 +105,6 @@ function motivator_binder:net_spawn(sobject)
 	return true
 end
 
-function motivator_binder:setup_gulag_and_logic_on_spawn( sobject )
-	local sim = alife()
-	if sim then
-		local strn_id = sobject:smart_terrain_id()
---		printf( "strn_id=%s", tostring( strn_id ) )
-
-		if strn_id ~= 65535 then
-			local strn             = sim:object( strn_id )
-			local need_setup_logic = strn.gulag.Object_begin_job[self.object:id()] and not self.loaded
-
-			strn.gulag:object_setup_online( self.object:id(), self.object, need_setup_logic )
-
-			if self.loaded then
-				--memusage.collect_info(self.object, "before_logic")
-				xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
-				--memusage.collect_info(self.object, "after_logic_before_callback")
-			end
-		else
-			--memusage.collect_info(self.object, "before_logic")
-			xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
-			--memusage.collect_info(self.object, "after_logic_before_callback")
-		end
-	else
-		--memusage.collect_info(self.object, "before_logic")
-		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_stalker)
-		--memusage.collect_info(self.object, "after_logic_before_callback")
-	end
-end
-
 function motivator_binder:net_destroy()
 	--printf("motivator_binder:net_destroy(): self.object:name()='%s'", self.object:name())
 
