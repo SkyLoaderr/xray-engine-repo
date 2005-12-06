@@ -540,6 +540,45 @@
     <string id="mil_dolg_skull_dialog_401">
         <text>Понял.</text>
     </string>
+    <string id="mil_dolg_skull_dialog_501">
+        <text>Ты зачем снайпера завалил ?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_502">
+        <text>Он мне сразу не понравился...</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_503">
+        <text>Горячий эстонский парень... Ладно, ты убрал его с нашей дороги и я, пожалуй, дам тебе вознаграждение - 1500 рупий.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_504">
+        <text>Почему так мало?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_505">
+        <text>Ну, до  этого ты и того бы не получил. А еще 1000 добавлю, если поможешь нам во время атаки на базу Свободы.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_506">
+        <text>Кого нужно убить?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_507">
+        <text>Пока мы будем разбираться с этими козлами внизу, ты должен будешь убрать оставшихся снайперов - ты эе их любишь...</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_5070">
+        <text>Да ну его, лениво...</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_5071">
+        <text>Ну, как хочешь...</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_508">
+        <text>Договорились.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_5080">
+        <text>Вот и отлично.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_601">
+        <text>Не мешай, Меченый.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_602">
+        <text>Уболтал...</text>
+    </string>
     <string id="mil_dolg_soldier_dialog_0">
         <text>Вот так тремя засранцанцами стало меньше. А ты появился как нельзя во время, и нас не спалил, и сам цел остался. Я думаю, никто об этом не узнает, а ты?</text>
     </string>
