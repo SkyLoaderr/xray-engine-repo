@@ -175,7 +175,6 @@ function update_movement_direction(npc, st)
 			npc:set_sight(look.path_dir, nil, 0)
 		end
 	else
-		st.current_object = nil	
 		npc:set_sight(look.path_dir, nil, 0)
 	end	
 end
