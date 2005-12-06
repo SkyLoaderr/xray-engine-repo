@@ -550,7 +550,7 @@ void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool tors
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		stalker->sight().setup	(&object_to_look->object(),torso_look,fire_pitch);
+		stalker->sight().setup	(&object_to_look->object(),torso_look,fire_object);
 }
 
 void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look, bool fire_object, bool no_pitch)
@@ -559,7 +559,7 @@ void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool tors
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		stalker->sight().setup	(&object_to_look->object(),torso_look,fire_pitch,no_pitch);
+		stalker->sight().setup	(&object_to_look->object(),torso_look,fire_object,no_pitch);
 }
 
 void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look)
