@@ -66,8 +66,11 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 
 	if (object && object->use_center_to_aim()) {
 		m_object->Center(tTemp);
-		tTemp.x			= m_object->Position().x;
-		tTemp.z			= m_object->Position().z;
+		const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(object);
+		if (!entity_alive || entity_alive->g_Alive()) {
+			tTemp.x		= m_object->Position().x;
+			tTemp.z		= m_object->Position().z;
+		}
 		tTemp.sub		(tPosition,Fvector(tTemp));
 		if (fis_zero(tTemp.square_magnitude()))
 			tTemp.set	(0.f,0.f,1.f);
