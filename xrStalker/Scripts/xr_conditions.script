@@ -761,13 +761,15 @@ end
 -- Special for rostok
 -------------------------------------------------------------------------------------
 function rostok_gulag_inactive(actor, npc)
-	if xr_gulag.fraction["bar_freedom_attack"] == nil then
+    local gulag = xr_gulag.get_gulag_by_name("bar_freedom_attack")
+
+    if gulag == nil then
 		return true
 	end
 	
 	local val = 0
 	
-	for k,v in pairs(xr_gulag.fraction["bar_freedom_attack"].Object) do
+	for k,v in pairs(gulag.Object) do
 		if v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(v:id()) or
 		       xr_wounded.is_psy_wounded_by_id(v:id()))
@@ -782,13 +784,15 @@ function rostok_gulag_inactive(actor, npc)
 end
 
 function rostok_gulag_2_inactive(actor, npc)
-	if xr_gulag.fraction["bar_freedom_chasers_attack"] == nil then
+	 local gulag = xr_gulag.get_gulag_by_name("bar_freedom_chasers_attack")
+
+    if gulag == nil then
 		return true
 	end
 	
 	local val = 0
 	
-	for k,v in pairs(xr_gulag.fraction["bar_freedom_chasers_attack"].Object) do
+	for k,v in pairs(gulag.Object) do
 		if v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(v:id()) or
 		       xr_wounded.is_psy_wounded_by_id(v:id()))
