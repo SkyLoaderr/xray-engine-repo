@@ -866,64 +866,6 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
 		in_rest = "", out_rest = ""
 		}
 	table.insert(sj, t)		
-	-- Пути для отхода мужиков на базу. Там они должны переключиться в гулаг базы.
-	-- мужик 1
-	t = {section = "logic@mil_fblockpost_help1",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-
-	-- мужик 2
-	t = {section = "logic@mil_fblockpost_help2",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- мужик 3
-	t = {section = "logic@mil_fblockpost_help3",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- мужик 4
-	t = {section = "logic@mil_fblockpost_help4",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- мужик 5
-	t = {section = "logic@mil_fblockpost_help5",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- мужик 6
-	t = {section = "logic@mil_fblockpost_help6",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
-	-- мужик 7
-	t = {section = "logic@mil_fblockpost_help7",
-		idle = 0,
-		prior = 10, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
-		}
-	table.insert(sj, t)		
 end
 
 
