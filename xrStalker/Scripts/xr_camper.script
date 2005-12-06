@@ -3,8 +3,8 @@
 --'	автор: Диденко Руслан (Stohe)
 --'	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-function printf()
-end
+--function printf()
+--end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -136,8 +136,24 @@ function action_patrol:reset_scheme()
 	self.a.scan_begin = nil
 end
 function action_patrol:activate_scheme()
-
     self.was_reset = false
+end
+function action_patrol:can_shoot()
+    if self.a.shoot == "always" then
+		return true
+	end
+    if self.a.shoot == "none" then
+		return false
+	end
+    if self.a.shoot == "terminal" then
+		if self.move_mgr:standing_on_terminal_waypoint() then
+			return true
+		else
+			return false
+		end
+	end
+	abort("Camper: unrecognized shoot type [%s] for [%s]", tostring(self.a.shoot), self.object:name())
+	return true
 end
 function action_patrol:execute()
 	action_base.execute (self)
@@ -194,7 +210,7 @@ function action_patrol:execute()
 	-- Три типа действия:
 	-- Есть враг
 	if self.enemy ~= nil then
-		if self.object:see(self.enemy) == true then
+		if self.object:see(self.enemy) == true and self:can_shoot() then
 			-- отстрел врага
 			--printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
 			if self.a.sniper == true then
@@ -303,7 +319,7 @@ function action_patrol:execute()
 			if self.scantime == nil then
 				self.scantime = time_global()
 			end
-			--printf("SCAN [%s] of [%s]", utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
+			--printf("SCAN [%s] : [%s] of [%s]", self.object:name(), utils.to_str(time_global() - self.scantime), utils.to_str(self.a.scantime_free))
 			-- сканируем
 			self:scan(self.a.wp_flag)
 			-- если мы стоим на финальной точке - не ресетить.
@@ -521,6 +537,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
 	st.sniper = utils.cfg_get_bool(ini, section, "sniper", npc, false)
 	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
+	st.shoot = utils.cfg_get_string(ini, section, "shoot", npc, false, gulag_name, "always")
 	if st.sniper == true and st.no_retreat == true then
 		_G.abort("ERROR: NPC [%s] Section [%s]. No_retreat not available for SNIPER.", npc:name(), section)
 	end
