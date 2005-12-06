@@ -268,7 +268,7 @@ commander = true
 
 
 [logic@gar_bandit_agr_follower2]
-active = patrol@gar_bandit_agr_follower1
+active = patrol@gar_bandit_agr_follower2
 on_hit = hit@bandits
 on_death = death@bandits
 combat_ignore = combat_ignore@bandit
@@ -320,6 +320,7 @@ snd = gar_hellcar_ambush
 on_signal = sound_end |walker11@hellcar_way %+gar_alarm%
 danger = danger_condition@hellcar_group
 anim = wait
+target = actor
 
 [meet@hellcar]
 meet_state = 30|hello@talk_hello| 10|ward@wait
@@ -378,6 +379,7 @@ meet = meet@1
 
 [remark@gar_hellcar_group_return_observer]
 anim = wait
+target = 107
 
 [meet@1]
 Meet_state 		= 3| wait@wait
@@ -449,6 +451,7 @@ on_death = death@hellcar
 [remark@hellcar_way_final]
 on_timer = 1000|walker2@hellcar_way %=gar_hellcar_victory%
 path_walk = hellcar_walk
+target = actor
 anim = wait
 
 [walker2@hellcar_way]
@@ -1049,10 +1052,11 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_1
 
 [remark@demand_gar_dram_bandit_1]
-no_move = true
-no_rotate = true
+;no_move = true
+;no_rotate = true
 snd = gar_dm_bandit_demand
 anim = claim
+target = 104
 on_signal = sound_end | walker1@gar_dram_bandit_1 %+gar_dm_newbie_no_money%
 on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1@gar_dram_bandit_1 %+gar_dm_bandit_warned_plr%
 on_info2 = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%, {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2@gar_dram_bandit_1 %+gar_dm_bandit2_warned_plr%
@@ -1060,7 +1064,8 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_1
 
 [remark1@gar_dram_bandit_1]
-no_move = true
+;no_move = true
+target = actor
 snd = gar_dm_bandit_backoff1
 anim = backoff
 on_signal = sound_end | %+gar_dm_bandit2_warn_plr%
@@ -1069,7 +1074,8 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_1
 
 [remark2@gar_dram_bandit_1]
-no_move = true
+;no_move = true
+target = actor
 snd = gar_dm_bandit_backoff2
 anim = backoff2
 on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
@@ -1106,8 +1112,9 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_2
 
 [remark@demand_gar_dram_bandit_2]
-no_move = true
-no_rotate = true
+;no_move = true
+;no_rotate = true
+target = 104
 snd = gar_dm_bandit_demand
 anim = claim
 on_signal = sound_end | walker1@gar_dram_bandit_2 %+gar_dm_newbie_no_money%
@@ -1117,16 +1124,18 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_2
 
 [remark1@gar_dram_bandit_2]
-no_move = true
+;no_move = true
 snd = gar_dm_bandit_backoff1
 anim = backoff
+target = actor
 on_signal = sound_end | %+gar_dm_bandit2_warn_plr%
 on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
 reactions = ignore
 danger = danger_condition@gar_dram_bandit_2
 
 [remark2@gar_dram_bandit_2]
-no_move = true
+;no_move = true
+target = actor
 snd = gar_dm_bandit_backoff2
 anim = backoff2
 on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
@@ -1163,8 +1172,9 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_3
 
 [remark@demand_gar_dram_bandit_3]
-no_move = true
-no_rotate = true
+;no_move = true
+;no_rotate = true
+target = 104
 snd = gar_dm_bandit_demand
 anim = claim
 on_signal = sound_end | walker1@gar_dram_bandit_3 %+gar_dm_newbie_no_money%
@@ -1174,7 +1184,8 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_3
 
 [remark1@gar_dram_bandit_3]
-no_move = true
+;no_move = true
+target = actor
 snd = gar_dm_bandit_backoff1
 anim = backoff
 on_signal = sound_end| %+gar_dm_bandit2_warn_plr%
@@ -1183,7 +1194,8 @@ reactions = ignore
 danger = danger_condition@gar_dram_bandit_3
 
 [remark2@gar_dram_bandit_3]
-no_move = true
+;no_move = true
+target = actor
 snd = gar_dm_bandit_backoff2
 anim = backoff2
 on_info = {+gar_dm_novice_dead} %+gar_dm_bandits_change_st%
@@ -1232,8 +1244,9 @@ reactions = ignore
 danger = danger_condition@gar_dram_novice
 
 [remark@no_money_gar_dram_novice]
-no_move = true
-no_rotate = true
+;no_move = true
+;no_rotate = true
+target = 102
 snd = gar_dm_newbie_no_money
 anim = refuse
 on_signal = action_end | walker1@gar_dram_novice %=gar_dm_bandit_demand%
@@ -1246,7 +1259,8 @@ danger = danger_condition@gar_dram_novice
 [remark1@gar_dram_novice]
 anim = hello
 snd = gar_dm_newbie_help_me
-no_rotate = true
+;no_rotate = true
+target = actor
 on_signal = sound_end | remark2@gar_dram_novice %+gar_dm_novice_asked_for_help%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
 on_info3 = {+gar_dm_end} %=gar_dm_bandits_fight%
@@ -1254,7 +1268,8 @@ reactions = ignore
 danger = danger_condition@gar_dram_novice
 
 [remark2@gar_dram_novice]
-no_move = true
+;no_move = true
+target = actor
 anim = wait
 on_actor_dist_le_nvis = 7 | remark3@gar_dram_novice %=gar_dm_bandits_fight%
 on_actor_dist_ge = 15 | %=gar_dm_bandits_fight%
@@ -1265,7 +1280,8 @@ reactions = ignore
 danger = danger_condition@gar_dram_novice
 
 [remark3@gar_dram_novice]
-no_move = true
+;no_move = true
+target = actor
 anim = wait
 snd = help
 arrival_timeout = 1500
@@ -1276,6 +1292,7 @@ danger = danger_condition@gar_dram_novice
 
 [remark@after_fight_gar_dram_novice]
 anim = hello
+target = actor
 snd = gar_dm_newbie_thank_you
 on_signal = action_end | walker2@gar_dram_novice %=actor_friend%
 danger = danger_condition@gar_dram_novice
@@ -1318,6 +1335,7 @@ danger = danger_condition@gar_angar_seryi
 
 [remark@gar_angar_seryi]
 snd = gar_seryi_see_actor
+target = actor
 on_signal = sound_end| walker2@gar_angar_seryi
 on_info = {=gar_bandits_seryi_die} remark@sound_gar_angar_seryi
 combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
@@ -1337,6 +1355,7 @@ on_info = {=gar_bandits_seryi_die} remark@sound_gar_angar_seryi
 [remark@sound_gar_angar_seryi]
 on_timer = 1000| walker@seryi_gar_angar_seryi %=gar_hellcar_victory%
 anim = wait
+target = actor
 
 
 [hit@gar_angar_seryi]
