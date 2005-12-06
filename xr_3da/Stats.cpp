@@ -34,11 +34,11 @@ public:
 	}
 
 	BOOL	enabled	()	{ return enabled_;	}
-	void	enable	()	{ if (!enabled_)	{ Engine.External.tune_resume	();	enabled_=TRUE;	}}
-	void	disable	()	{ if (enabled_)		{ Engine.External.tune_pause	();	enabled_=FALSE; }}
+	void	enable	()	{ if (!enabled_)	{ /*Engine.External.tune_resume	();*/	enabled_=TRUE;	}}
+	void	disable	()	{ if (enabled_)		{ Engine.External.tune_pause	();		enabled_=FALSE; }}
 	void	update	(float value)	{
-		if (value < average_*0.70f)	{
-			// 30% deviation
+		if (value < average_*0.75f)	{
+			// 25% deviation
 			enable	();
 		} else {
 			disable	();
