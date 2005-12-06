@@ -36,22 +36,13 @@ IC	CSightAction::CSightAction		(const ESightType &sight_type, const Fvector &vec
 {
 }
 
-IC	CSightAction::CSightAction		(const CGameObject *object_to_look, bool torso_look, bool fire_object) :
+IC	CSightAction::CSightAction		(const CGameObject *object_to_look, bool torso_look, bool fire_object, bool no_pitch) :
 	m_sight_type		(fire_object ? SightManager::eSightTypeFireObject : SightManager::eSightTypeObject),
 	m_torso_look		(torso_look),
 	m_path				(false),
 	m_object_to_look	(object_to_look),
-	m_memory_object		(0)
-{
-}
-
-IC	CSightAction::CSightAction		(const CGameObject *object_to_look, bool torso_look, LPCSTR bone_name, bool fire_object) :
-	m_sight_type		(fire_object ? SightManager::eSightTypeFireObject : SightManager::eSightTypeObject),
-	m_torso_look		(torso_look),
-	m_path				(false),
-	m_object_to_look	(object_to_look),
-	m_bone_name			(bone_name),
-	m_memory_object		(0)
+	m_memory_object		(0),
+	m_no_pitch			(no_pitch)
 {
 }
 

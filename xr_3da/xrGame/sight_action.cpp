@@ -137,6 +137,10 @@ void CSightAction::execute_object				()
 		object().sight().SetFirePointLookAngles	(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch,m_object_to_look);
 	else
 		object().sight().SetPointLookAngles		(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch,m_object_to_look);
+
+	if (m_no_pitch)
+		object().movement().m_head.target.pitch	= 0.f;
+
 #ifdef SIGHT_TEST
 	Msg					("%6d %s",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFireObject" : "eSightTypeObject");
 #endif
