@@ -276,19 +276,20 @@ function gulag:removeObject( obj_id )
 end
 
 -- Обновление гулага.
--- вызывает функцию состояния, если есть актёр.
 function gulag:update()
 	if not self.stateBegin then
 		self.stateBegin = game.get_game_time()
 	end
 
 	self:update_objs()
+	self:update_beginning_jobs()
 
 	if self.calculateStates ~= nil and db.actor then
 		self:changeState(self.calculateStates(self))
 	end
 
 	self:updateJob()
+	self:update_beginning_jobs()
 
 	self:print()
 end
@@ -309,16 +310,20 @@ function gulag:update_objs()
 			self:object_setup_offline( obj_id )
 		end
 
-		if self:can_obj_begin_job( obj_id, cl_obj or true ) then
-			self:beginJob( obj_id )
-		end
-
 		-- TODO. remove while iterating :\
 		obj = cl_obj or npc_info.se_obj
 
 		if not obj:alive() then
 			self:changeCasualities( 1 )
 			self.smrttrn:unregister_npc( npc_info.se_obj )
+		end
+	end
+end
+
+function gulag:update_beginning_jobs()
+	for obj_id, obj in pairs( self.Object ) do
+		if self:can_obj_begin_job( obj_id, obj ) then
+			self:beginJob( obj_id )
 		end
 	end
 end
