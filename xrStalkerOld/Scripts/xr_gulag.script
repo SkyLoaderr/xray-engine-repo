@@ -414,6 +414,11 @@ end
 function gulag:obj1_job_suits_obj2( obj_id, npc_info )
 	local job = self.Job[self.ObjectJob[obj_id]]
 
+	if not job then
+		printf( "job=nil! obj=%s obj_id=%d", self.npc_info[obj_id].name, obj_id )
+		self:print()
+	end
+
 	return not job.predicate or job.predicate( npc_info )
 end
 
