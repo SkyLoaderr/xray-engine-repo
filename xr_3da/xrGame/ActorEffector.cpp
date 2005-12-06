@@ -297,12 +297,15 @@ CActorAlcoholCamEffector::CActorAlcoholCamEffector(CActorCondition* c)
 	Start			("camera_effects\\drunk.anm");
 }
 
+#pragma warning(push)
+#pragma warning(disable:4355) // 'this' : used in base member initializer list
 CFireHitCamEffector::CFireHitCamEffector	(ECameraEffectorType type,float power)
 :inherited(type, GET_KOEFF_FUNC(this, &CFireHitCamEffector::GetPower))
 {
 	m_power			= power;
 	clamp			(m_power, 0.0f, 1.0f);
 }
+#pragma warning(pop)
 
 //////////////////////////////////////////////////////////////////////////
 

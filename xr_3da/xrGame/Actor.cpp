@@ -593,10 +593,10 @@ void CActor::HitMark	(float P,
 	if ( (hit_type==ALife::eHitTypeFireWound||hit_type==ALife::eHitTypeWound_2) && g_Alive() && Local() && /*(this!=who) && */(Level().CurrentEntity()==this) )	
 	{
 		HUD().Hit(0, P, dir);
-		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_pShootingEffector->ppi,		m_pShootingEffector->time,	m_pShootingEffector->time_attack,	m_pShootingEffector->time_release));
+		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(m_pShootingEffector));
 
 
-	if(psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
+	if(1||psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
 		CCameraEffector* ce = EffectorManager().GetEffector(eCEFireHit);
 		if(!ce)
 			{

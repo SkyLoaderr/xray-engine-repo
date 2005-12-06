@@ -27,37 +27,7 @@ BOOL CPPEffectorCustom::Process(SPPInfo& pp)
 	// update factor
 	if (!update()) return FALSE;
 
-
-	// apply
-	SPPInfo	def;
-
-	pp.duality.h		= SET_VALUE(def.duality.h,			m_state.duality.h,			m_factor);
-	pp.duality.v		= SET_VALUE(def.duality.v,			m_state.duality.v,			m_factor);
-	pp.gray				= SET_VALUE(def.gray,				m_state.gray,				m_factor);
-	pp.blur				= SET_VALUE(def.blur,				m_state.blur,				m_factor);
-	pp.noise.intensity	= SET_VALUE(def.noise.intensity,	m_state.noise.intensity,	m_factor);
-	pp.noise.grain		= SET_VALUE(def.noise.grain,		m_state.noise.grain,		m_factor);
-	pp.noise.fps		= SET_VALUE(def.noise.fps,			m_state.noise.fps,			m_factor);
-	VERIFY(!fis_zero(pp.noise.fps));
-
-
-	pp.color_base.set	( 
-		SET_VALUE(def.color_base.r,	m_state.color_base.r,	m_factor),
-		SET_VALUE(def.color_base.g,	m_state.color_base.g,	m_factor),
-		SET_VALUE(def.color_base.b,	m_state.color_base.b,	m_factor)
-		);
-
-	pp.color_gray.set	(
-		SET_VALUE(def.color_gray.r,	m_state.color_gray.r,	m_factor),
-		SET_VALUE(def.color_gray.g,	m_state.color_gray.g,	m_factor),
-		SET_VALUE(def.color_gray.b,	m_state.color_gray.b,	m_factor)
-		);
-
-	pp.color_add.set	(
-		SET_VALUE(def.color_add.r,	m_state.color_add.r,	m_factor),
-		SET_VALUE(def.color_add.g,	m_state.color_add.g,	m_factor),
-		SET_VALUE(def.color_add.b,	m_state.color_add.b,	m_factor)
-		);
+	pp.lerp				(pp_identity, m_state, m_factor);
 
 	return TRUE;
 }
