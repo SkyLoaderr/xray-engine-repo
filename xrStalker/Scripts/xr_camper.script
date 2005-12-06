@@ -537,7 +537,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
 	st.sniper = utils.cfg_get_bool(ini, section, "sniper", npc, false)
 	st.no_retreat = utils.cfg_get_bool(ini, section, "no_retreat", npc, false)
-	st.shoot = utils.cfg_get_string(ini, section, "shoot", npc, false, gulag_name, "always")
+	st.shoot = utils.cfg_get_string(ini, section, "shoot", npc, false, "", "always")
 	if st.sniper == true and st.no_retreat == true then
 		_G.abort("ERROR: NPC [%s] Section [%s]. No_retreat not available for SNIPER.", npc:name(), section)
 	end
