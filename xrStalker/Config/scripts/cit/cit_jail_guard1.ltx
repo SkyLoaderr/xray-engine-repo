@@ -39,7 +39,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 ;-----------------------------------------------------------------------------------------------------------
 [remark@look_at_guard2_1]
 anim                = wait
-;target              = logic@cit_killers_base_guard ;1202 ; guard2
+target              = logic@cit_killers_base_guard ;1202 ; guard2
 on_info             = {+cit_jail_kill_actor} remark@jail_guard_kill_actor, {+cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened -cit_actor_is_free}, {=check_fighting(1200)}
 
