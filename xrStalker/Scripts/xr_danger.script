@@ -275,52 +275,54 @@ function check_danger_distance(npc, danger)
 	local danger_settings = db.storage[npc:id()].danger
 	local bd_type = danger:type()
 	local danger_distance_sqr = danger:position():distance_to_sqr(npc:position())	
+	
+--	printf("DANGER_DIST [%s] [%s]", npc:name(), danger_distance_sqr)
 
 	if danger_settings ~= nil then
-		if danger_distance_sqr > danger_settings.ignore_distance then
+		if danger_distance_sqr >= danger_settings.ignore_distance then
 			return false
 		end
 		if bd_type == danger_object.grenade then
-			if danger_distance_sqr > danger_settings.ignore_distance_grenade then
+			if danger_distance_sqr >= danger_settings.ignore_distance_grenade then
 				return false
 			end
 		elseif bd_type == danger_object.entity_corpse then
-			if danger_distance_sqr > danger_settings.ignore_distance_corpse then
+			if danger_distance_sqr >= danger_settings.ignore_distance_corpse then
 				return false
 			end
 		elseif bd_type == danger_object.entity_attacked or
 			   bd_type == danger_object.attacked then
-			if danger_distance_sqr > danger_settings.ignore_distance_hit then
+			if danger_distance_sqr >= danger_settings.ignore_distance_hit then
 				return false
 			end
 		elseif bd_type == danger_object.enemy_sound or
 			   bd_type == danger_object.attack_sound or
 			   bd_type == danger_object.entity_death then
-			if danger_distance_sqr > danger_settings.ignore_distance_sound then
+			if danger_distance_sqr >= danger_settings.ignore_distance_sound then
 				return false
 			end
 		end		   	   
 	else
-		if danger_distance_sqr > def_ignore_distance then
+		if danger_distance_sqr >= def_ignore_distance then
 			return false
 		end
 		if bd_type == danger_object.grenade then
-			if danger_distance_sqr > def_ignore_distance_grenade then
+			if danger_distance_sqr >= def_ignore_distance_grenade then
 				return false
 			end
 		elseif bd_type == danger_object.entity_corpse then
-			if danger_distance_sqr > def_ignore_distance_corpse then
+			if danger_distance_sqr >= def_ignore_distance_corpse then
 				return false
 			end
 		elseif bd_type == danger_object.entity_attacked or
 			   bd_type == danger_object.attacked then
-			if danger_distance_sqr > def_ignore_distance_hit then
+			if danger_distance_sqr >= def_ignore_distance_hit then
 				return false
 			end
 		elseif bd_type == danger_object.enemy_sound or
 			   bd_type == danger_object.attack_sound or
 			   bd_type == danger_object.entity_death then
-			if danger_distance_sqr > def_ignore_distance_sound then
+			if danger_distance_sqr >= def_ignore_distance_sound then
 				return false
 			end
 		end	

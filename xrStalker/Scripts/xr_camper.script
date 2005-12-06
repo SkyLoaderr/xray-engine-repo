@@ -3,8 +3,8 @@
 --'	автор: Диденко Руслан (Stohe)
 --'	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
---function printf()
---end
+function printf()
+end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
@@ -363,11 +363,12 @@ function action_patrol:process_danger()
 	end
 	
 	-- Отсеиваем по расстоянию
-	if not self:on_place() then
+--	if not self:on_place() then
 		if xr_danger.check_danger_distance(self.object, best_danger) == false then
+			printf("DANGER [%s] [FALSE] danger_distance camper", self.object:name())
 			return false
 		end
-	end
+--	end
 
 	position = {look_position = best_danger:position()}
 	local emerg = nil
