@@ -11,6 +11,10 @@ function eva_state_mgr_direction:evaluate()
 		self.st.target_position = self.st.look_position
 	end
 
+	if not self.st.planner:evaluator(self.st.properties["movement_stand"]):evaluate() then
+		return true
+	end
+
 	if self.st.look_object ~= nil and
 	   level.object_by_id(self.st.look_object) ~= nil 
 	then
@@ -22,11 +26,7 @@ function eva_state_mgr_direction:evaluate()
 			return false
 		end		
 	end
-
-	if not self.st.planner:evaluator(self.st.properties["movement_stand"]):evaluate() then
-		return true
-	end
-			
+		
 	if self.st.target_position == nil then
 		-- если текущая позиция нулевая
 		if self.st.current_direction == nil then
@@ -154,18 +154,28 @@ end
 
 
 function update_movement_direction(npc, st)
-	if st and st.target_position ~= nil then
-	
+	if st then
 		if st.look_object ~= nil and
 		   level.object_by_id(st.look_object) ~= nil 
 		then
 			st.current_object = st.look_object
-			npc:set_sight(level.object_by_id(st.look_object),true)	
-		else
+			st.point_obj_dir = state_lib.states[st.target_state].animation ~= nil
+			if st.point_obj_dir == true then
+				local dir = vector():sub(level.object_by_id(st.look_object):position(), npc:position())
+				dir.y = 0
+				npc:set_sight(look.direction, dir, true)
+			else
+				npc:set_sight(level.object_by_id(st.look_object),true)	
+			end									
+		elseif st.target_position ~= nil then
 			st.current_object = nil
 			npc:set_sight(look.direction, vector():sub(st.target_position, npc:position()), true)
+		else
+			st.current_object = nil	
+			npc:set_sight(look.path_dir, nil, 0)
 		end
 	else
+		st.current_object = nil	
 		npc:set_sight(look.path_dir, nil, 0)
 	end	
 end
