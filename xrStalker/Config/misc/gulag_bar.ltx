@@ -1417,36 +1417,40 @@ path_look = professor_look
 def_state_moving = assault
 meet = meet@ecolog_kruglov
 radius = 0
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 on_info = {=rostok_dist_to_actor_le(7)} remark@kruglov_dialog_1
+danger = danger_condition@2
 
 [remark@kruglov_dialog_1]
 snd = rostok_kruglov_help_1
 anim = hello
+target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 on_info = {+bar_kruglov_follow_actor} remark@kruglov_dialog_2
+danger = danger_condition@2
 
 [remark@kruglov_dialog_2]
 snd = rostok_kruglov_help_2
-no_move = true
+target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 on_info = {+bar_actor_helps_kruglov} walker@bar_ecolog_professor_companion 
+danger = danger_condition@2
 
 [walker@bar_ecolog_professor_companion]
 path_walk = escape_1_walk
 on_signal = freedom_chase | camper@bar_rescue_research_hide_1a %=bar_freedom_spam_5 +bar_rescue_research_chasing_start%
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-on_hit = hit@ecolog_professor
-;on_info = {+bar_rescue_research_chasing_start} camper@bar_rescue_research_hide_1a %=bar_freedom_spam_5%
+combat_ignore_cond = always
+danger = danger_condition@2
 
 [camper@bar_rescue_research_hide_1a]
 path_walk = escape_1a_walk
 path_look = escape_hide_1_look
 on_signal = arrived_1 | camper@bar_rescue_research_hide_1 %=rostok_kruglov_attract_1 -bar_kruglov_follow_talk%
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 def_state_moving = assault
+danger = danger_condition@2
 
 [camper@bar_rescue_research_hide_1]
 path_walk = escape_hide_1_walk
@@ -1457,14 +1461,15 @@ no_retreat = true
 radius = 0
 on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_professor_companion_1 
 on_info2 = {=rostok_gulag_inactive} remark@bar_ecolog_professor_companion_1 %+bar_rescue_research_chasing_end% 
+danger = danger_condition@2
 
 [remark@bar_ecolog_professor_companion_1]
 snd = rostok_kruglov_help_6
 anim = hide
+target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companion_1 %+bar_kruglov_follow_talk%
-;meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
-
+combat_ignore_cond = always
+danger = danger_condition@2
 
 
 
@@ -1475,8 +1480,9 @@ path_look = escape_hide_2_look
 radius = 0
 no_retreat = true
 on_signal = bandits_alive | camper@bar_ecolog_professor_companion_1a %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\human_01\scenario\Rostok\killer_radio_enemy_3)%
-;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 def_state_moving = assault
+danger = danger_condition@2
 
 [camper@bar_ecolog_professor_companion_1a]
 path_walk = escape_2a_walk
@@ -1485,6 +1491,7 @@ radius = 0
 no_retreat = true
 on_signal = arrived_hide_2 | camper@bar_rescue_research_hide_2 %=rostok_kruglov_attract_2%
 def_state_moving = assault
+danger = danger_condition@2
 
 [camper@bar_rescue_research_hide_2]
 path_walk = escape_hide_2_walk
@@ -1494,12 +1501,15 @@ def_state_moving = assault
 radius = 0
 on_info = {+bar_bandits_dead} camper@bar_ecolog_professor_companion_2a
 on_info2 = {=rostok_gulag_2_inactive} remark@bar_ecolog_professor_companion_2 
+danger = danger_condition@2
 
 [remark@bar_ecolog_professor_companion_2]
 snd = rostok_kruglov_help_6
 anim = hide
+target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companion_2a %+bar_bandits_dead%
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
+danger = danger_condition@2
 
 
 
@@ -1511,6 +1521,7 @@ on_info = {+rostok_spawn_naemniki} camper@bar_rescue_research_ambush_hide %-bar_
 def_state_moving = assault
 radius = 0
 no_retreat = true
+danger = danger_condition@2
 
 
 [camper@bar_rescue_research_ambush_hide]
@@ -1521,13 +1532,15 @@ def_state_moving = assault
 radius = 0
 on_info = {+bar_ambush_dead} camper@bar_ecolog_professor_companoin_2
 on_info2 = {+rostok_ambush_killer_1_die +rostok_ambush_killer_2_die +rostok_ambush_killer_3_die} remark@bar_ecolog_professor_companion_2a 
+danger = danger_condition@2
 
 [remark@bar_ecolog_professor_companion_2a]
 snd = rostok_kruglov_help_6
 anim = hide
+target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companoin_2 %+bar_ambush_dead%
-;meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
+danger = danger_condition@2
 
 
 [camper@bar_ecolog_professor_companoin_2]
@@ -1535,33 +1548,36 @@ path_walk = escape_3_walk
 path_look = escape_look
 radius = 0
 no_retreat = true
-;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = fire_anomaly | %+bar_fire_anomaly_forward%
 on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3 %-bar_kruglov_follow_talk%
 def_state_moving = assault
+danger = danger_condition@2
 
 [camper@bar_rescue_research_hide_3]
 path_walk = escape_stay
 path_look = escape_look
 meet = meet@ecolog_kruglov
 radius = 0
-;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {=rostok_dist_to_actor_le(7)} remark@bar_ecolog_professor_torrid
+danger = danger_condition@2
 
 [remark@bar_ecolog_professor_torrid]
 snd = rostok_kruglov_help_6
-anim = hello
+anim = wait
+target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_torrid %+bar_go_through_anomaly%
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
+danger = danger_condition@2
 
 [camper@bar_ecolog_professor_torrid]
 path_walk = torrid_walk
 path_look = escape_4_look
 radius = 0
 no_retreat = true
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 on_signal = arrived_torrid |camper@bar_ecolog_professor_companoin_3
 def_state_moving = assault
+danger = danger_condition@2
 
 
 [camper@bar_ecolog_professor_companoin_3]
@@ -1569,39 +1585,55 @@ path_walk = escape_4_walk
 path_look = escape_4_look
 radius = 0
 no_retreat = true
-;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_done -bar_kruglov_follow_talk%
 def_state_moving = assault
+danger = danger_condition@2
 
 [camper@bar_rescue_research_hide_4]
 path_walk = end_walk
 path_look = end_look
 meet = meet@ecolog_kruglov
 radius = 0
-;combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
 on_info = {=rostok_dist_to_actor_le(7)} remark@kruglov_exit_dialog_1
+danger = danger_condition@2
 
 [remark@kruglov_exit_dialog_1]
 snd = rostok_kruglov_help_3
-anim = hello
+anim = wait
+target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 on_info = {+bar_rescue_research_reward} remark@kruglov_exit_dialog_2
+danger = danger_condition@2
 
 [remark@kruglov_exit_dialog_2]
 snd = rostok_kruglov_help_4
-anim = hello
+anim = wait
+target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = {+bar_rescue_research_start -bar_rescue_research_done}
+combat_ignore_cond = always
 on_signal = sound_end | walker@bar_ecolog_professor_exit
+danger = danger_condition@2
 
 [walker@bar_ecolog_professor_exit]
 path_walk = escape_5_walk
 meet = meet@ecolog_kruglov_1
+danger = danger_condition@2
 
 [death@ecolog_crush]
 on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_done +bar_rescue_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_fail +bar_rescue_research_corruped +bar_heli_scene_professor_die%, %+bar_rescue_research_dead +bar_rescue_research_corruped +bar_heli_scene_professor_die%
 on_info2 = {+bar_rescue_research_start} %+bar_rescue_research_fail +bar_heli_scene_professor_die%, %+bar_heli_scene_professor_die%
+
+[danger_condition@2]
+ignore_distance       = 1
+ignore_distance_grenade = 1
+ignore_distance_corpse  = 1
+ignore_distance_danger_hit     = 1
+ignore_distance_sound   = 1 
+danger_inertion_time_grenade = 1
+danger_inertion_time_corpse = 1
+danger_inertion_time_hit = 1
+danger_inertion_time_sound = 1
 
 
 
