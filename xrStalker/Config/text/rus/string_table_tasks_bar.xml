@@ -12,20 +12,6 @@
 </string>
 
 
-<string id="bar_kill_professor">
-	<text>Убить профессора Круглова.</text>
-</string>
-<string id="bar_kill_professor_info">
-	<text>Помогите боевикам Свободы в охоте на профессора Круглова.</text>
-</string>
-<string id="bar_kill_professor_kill">
-	<text>Убить профессора Круглова</text>
-</string>
-<string id="bar_kill_professor_reward">
-	<text>Получить награду у осведомителя в баре</text>
-</string>
-
-
 
 	<string id="bar_hunter_rifle">
 	<text>Ружье охотника</text>
