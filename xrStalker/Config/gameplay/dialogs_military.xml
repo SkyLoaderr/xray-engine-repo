@@ -2741,11 +2741,6 @@
                 <text>mil_dolg_skull_dialog_120</text>
                 <next>121</next>
             </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>mil_sniper_get_job</dont_has_info>
-                <next>100</next>
-            </phrase>
             <phrase id="100">
                 <text>mil_dolg_skull_dialog_100</text>
                 <give_info>mil_dolg_dialog_already</give_info>
@@ -2903,6 +2898,12 @@
             <phrase id="602">
                 <text>mil_dolg_skull_dialog_602</text>
                 <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>mil_sniper_get_job</dont_has_info>
+                <dont_has_info>mil_sniper_dead</dont_has_info>
+                <next>100</next>
             </phrase>
         </phrase_list>
     </dialog>
