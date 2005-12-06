@@ -1292,6 +1292,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 4,
 			prior = 8, state = {0},
 			in_rest = "", out_rest = "",
+			online = true,
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_vagon_newbie1"			           
 						end
@@ -1301,6 +1302,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 4,
 			prior = 8, state = {0},
 			in_rest = "", out_rest = "",
+			online = true,
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_vagon_newbie2"			           
 						end
