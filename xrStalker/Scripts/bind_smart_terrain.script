@@ -53,27 +53,13 @@ function smart_terrain_binder:net_destroy()
 end
 
 function smart_terrain_binder:net_Relcase( obj )
-	printf( "smart_terrain_binder.net_Relcase: self.object=%s obj=%s", self.object:name(), obj:name() )
+--	printf( "smart_terrain_binder.net_Relcase: self.object=%s obj=%s", self.object:name(), obj:name() )
 
 	if self.se_smart_terrain.npc_info[obj:id()] then
 		self.se_smart_terrain.gulag:object_setup_offline( obj:id() )
 	end
 end
 
---[[
-function smart_terrain_binder:net_save_relevant()
-	-- для smart terrain - да, для обычной скриптовой зоны - нет
-	return self.object:clsid() == clsid.smart_terrain
-end
-
-function smart_terrain_binder:save( packet )
-	object_binder.save( self, packet )
-end
-
-function smart_terrain_binder:load( packet )
-	object_binder.load( self, packet )
-end
-]]
 function smart_terrain_binder:update( delta )
 	object_binder.update( self, delta )
 
