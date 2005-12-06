@@ -1099,7 +1099,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
     for a = 1, 3, 1 do
         t = {section = "logic@mil_monolith_soldier1",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
@@ -1110,7 +1110,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
 	    
         t = {section = "logic@mil_monolith_soldier2",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
@@ -1121,7 +1121,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
 	    
         t = {section = "logic@mil_monolith_soldier3",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
@@ -1132,7 +1132,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
 	    
         t = {section = "logic@mil_monolith_soldier4",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
@@ -1143,7 +1143,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
 	    
         t = {section = "logic@mil_monolith_soldier5",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
@@ -1154,7 +1154,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
 	    
         t = {section = "logic@mil_monolith_soldier6",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
@@ -1165,7 +1165,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
 	    
         t = {section = "logic@mil_monolith_soldier7",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
@@ -1176,7 +1176,7 @@ function load_job_monolith (sj, gname, type, squad, groups)
 	    
         t = {section = "logic@mil_monolith_soldier8",
 	    	idle = 0,
-		    prior = 1, state = {0},
+		    prior = a, state = {0},
 		    squad = squad, group = groups[0],
 		    in_rest = "", out_rest = "",
 		    predicate = function (info)
