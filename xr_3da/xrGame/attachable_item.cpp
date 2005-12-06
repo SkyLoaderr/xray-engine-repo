@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "physicsshellholder.h"
 #include "attachable_item.h"
 #include "inventoryowner.h"
 #include "inventory.h"
@@ -15,100 +16,118 @@
 	CAttachableItem*	CAttachableItem::m_dbgItem = NULL;
 #endif
 
-CAttachableItem::~CAttachableItem	()
+IC	CInventoryItem &CAttachableItem::item			() const
+{
+	VERIFY				(m_item);
+	return				(*m_item);
+}
+
+IC	CPhysicsShellHolder &CAttachableItem::object	() const
+{
+	return				(item().object());
+}
+
+DLL_Pure *CAttachableItem::_construct	()
+{
+	VERIFY				(!m_item);
+	m_item				= smart_cast<CInventoryItem*>(this);
+	VERIFY				(m_item);
+	return				(&item().object());
+}
+
+CAttachableItem::~CAttachableItem		()
 {
 }
 
-void CAttachableItem::reinit		()
+void CAttachableItem::reload			(LPCSTR section)
 {
-	inherited::reinit	();
+	if (!pSettings->line_exist(section,"attach_angle_offset"))
+		return;
+
+	Fvector							angle_offset = pSettings->r_fvector3	(section,"attach_angle_offset");
+	Fvector							position_offset	= pSettings->r_fvector3	(section,"attach_position_offset");
+	m_offset.setHPB					(VPUSH(angle_offset));
+	m_offset.c						= position_offset;
+	m_bone_name						= pSettings->r_string	(section,"attach_bone_name");
+	enable							(m_auto_attach = !!(READ_IF_EXISTS(pSettings,r_bool,section,"auto_attach",TRUE)));
+#ifdef DEBUG
+	m_valid							= true;
+#endif
 }
 
-void CAttachableItem::Load			(LPCSTR section)
+void CAttachableItem::OnH_A_Chield		() 
 {
-	inherited::Load		(section);
+//	VERIFY							(m_valid);
+	const CInventoryOwner			*inventory_owner = smart_cast<const CInventoryOwner*>(object().H_Parent());
+	if (inventory_owner && inventory_owner->attached(&item()))
+		object().setVisible			(true);
 }
 
-void CAttachableItem::reload		(LPCSTR section)
+void CAttachableItem::renderable_Render	()
 {
-	inherited::reload	(section);
-	Fvector				angle_offset = pSettings->r_fvector3	(section,"attach_angle_offset");
-	Fvector				position_offset	= pSettings->r_fvector3	(section,"attach_position_offset");
-	m_offset.setHPB		(VPUSH(angle_offset));
-	m_offset.c			= position_offset;
-	m_bone_name			= pSettings->r_string	(section,"attach_bone_name");
-	enable				(m_auto_attach = !!(READ_IF_EXISTS(pSettings,r_bool,section,"auto_attach",TRUE)));
-}
-
-void CAttachableItem::OnH_A_Chield	() 
-{
-	inherited::OnH_A_Chield			();
-	const CInventoryOwner			*inventory_owner = smart_cast<const CInventoryOwner*>(H_Parent());
-//	VERIFY							(inventory_owner);
-	if (inventory_owner && inventory_owner->attached(this))
-		setVisible					(true);
-}
-
-void CAttachableItem::renderable_Render()
-{
-	::Render->set_Transform			(&XFORM());
-	::Render->add_Visual			(Visual());
+//	VERIFY							(m_valid);
+	::Render->set_Transform			(&object().XFORM());
+	::Render->add_Visual			(object().Visual());
 }
 void CAttachableItem::OnH_A_Independent	()
 {
-	inherited::OnH_A_Independent	();
+//	VERIFY							(m_valid);
 	enable							(m_auto_attach);
 }
 
-void CAttachableItem::enable		(bool value)
+void CAttachableItem::enable			(bool value)
 {
-	if (!H_Parent()) {
+//	VERIFY							(m_valid);
+	if (!object().H_Parent()) {
 		m_enabled			= value;
 		return;
 	}
 
-	if (value && !enabled() && H_Parent()) {
-		CGameObject			*game_object = smart_cast<CGameObject*>(H_Parent());
+	if (value && !enabled() && object().H_Parent()) {
+		CGameObject			*game_object = smart_cast<CGameObject*>(object().H_Parent());
 		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(game_object);
 //		VERIFY				(owner);
 		if (owner) {
 			m_enabled			= value;
-			owner->attach		(this);
-			setVisible			(true);
+			owner->attach		(&item());
+			object().setVisible	(true);
 		}
 	}
 	
-	if (!value && enabled() && H_Parent()) {
-		CGameObject			*game_object = smart_cast<CGameObject*>(H_Parent());
+	if (!value && enabled() && object().H_Parent()) {
+		CGameObject			*game_object = smart_cast<CGameObject*>(object().H_Parent());
 		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(game_object);
 //		VERIFY				(owner);
 		if (owner) {
 			m_enabled			= value;
-			owner->detach		(this);
-			setVisible			(false);
+			owner->detach		(&item());
+			object().setVisible	(false);
 		}
 	}
 }
 
-bool  CAttachableItem::can_be_attached		() const
+bool  CAttachableItem::can_be_attached	() const
 {
-	if (!m_pInventory)
+//	VERIFY							(m_valid);
+	if (!item().m_pInventory)
 		return				(false);
 
-	if (!m_pInventory->IsBeltUseful())
+	if (!item().m_pInventory->IsBeltUseful())
 		return				(true);
 
-	if (m_eItemPlace != eItemPlaceBelt)
+	if (item().m_eItemPlace != eItemPlaceBelt)
 		return				(false);
 	 
 	return					(true);
 }
-void CAttachableItem::afterAttach			()
+void CAttachableItem::afterAttach		()
 {
-	processing_activate		();
+	VERIFY							(m_valid);
+	object().processing_activate	();
 }
 
-void CAttachableItem::afterDetach			()
+void CAttachableItem::afterDetach		()
 {
-	processing_deactivate		();
+	VERIFY							(m_valid);
+	object().processing_deactivate	();
 }

@@ -9,16 +9,14 @@
 #pragma once
 
 #include "inventory_space.h"
-#include "phnetstate.h"
 #include "hit_immunity.h"
-#include "GameObject.h"
+#include "attachable_item.h"
 
 enum EHandDependence{
 	hdNone	= 0,
 	hd1Hand	= 1,
 	hd2Hand	= 2
 };
-
 
 class CSE_Abstract;
 class CGameObject;
@@ -32,8 +30,14 @@ class NET_Packet;
 class CEatableItem;
 
 struct net_updateData;
+struct SHit;
 
-class CInventoryItem : public CHitImmunity {
+class CInventoryItem : 
+	public CAttachableItem,
+	public CHitImmunity
+{
+private:
+	typedef CAttachableItem inherited;
 protected:
 	enum EIIFlags{				Fdrop				=(1<<0),
 								FCanTake			=(1<<1),
@@ -268,8 +272,10 @@ protected:
 
 private:
 	CPhysicsShellHolder*		m_object;
+
 public:
 	virtual CInventoryItem		*cast_inventory_item		()	{return this;}
+	virtual CAttachableItem		*cast_attachable_item		()	{return this;}
 	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return 0;}
 	virtual CEatableItem		*cast_eatable_item			()	{return 0;}
 	virtual CWeapon				*cast_weapon				()	{return 0;}
@@ -278,8 +284,6 @@ public:
 	virtual CHudItem			*cast_hud_item				()	{return 0;}
 	virtual CWeaponAmmo			*cast_weapon_ammo			()	{return 0;}
 	virtual CGameObject			*cast_game_object			()  {return 0;};
-
-
 };
 
 #include "inventory_item_inline.h"

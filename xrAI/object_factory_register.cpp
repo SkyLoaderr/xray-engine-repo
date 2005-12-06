@@ -300,7 +300,7 @@ void CObjectFactory::register_classes	()
 	
 	//Info Document
 	ADD(CInfoDocument			,CSE_ALifeItemDocument			,CLSID_IITEM_DOCUMENT			,"obj_document");
-	ADD(CAttachableItem			,CSE_ALifeItem					,CLSID_IITEM_ATTACH				,"obj_attachable");
+	ADD(CInventoryItemObject	,CSE_ALifeItem					,CLSID_IITEM_ATTACH				,"obj_attachable");
 
 	//Equipment outfit
 	ADD(CScientificOutfit		,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_SCIENTIFIC		,"equ_scientific");

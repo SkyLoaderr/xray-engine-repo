@@ -264,6 +264,7 @@ public:
 public:
 	virtual CGameObject*		cast_game_object			()  {return this;};
 	virtual CInventoryItem*		cast_inventory_item			()	{return this;}
+	virtual CAttachableItem*	cast_attachable_item		()	{return this;}
 	virtual CEatableItem*		cast_eatable_item			()	{return this;}
 	virtual CEntityAlive*		cast_entity_alive			()	{return this;}
 	virtual CEntity*			cast_entity					()	{return this;}

@@ -1,17 +1,16 @@
 #pragma once
-#include "attachable_item.h"
+
+#include "inventory_item_object.h"
 #include "night_vision_effector.h"
 #include "hudsound.h"
-
-//#include "ui/uistatic.h"
 
 class CLAItem;
 class CMonsterEffector;
 
-class CTorch : public CAttachableItem 
-{
+class CTorch : public CInventoryItemObject {
 private:
-    typedef	CAttachableItem	inherited;
+    typedef	CInventoryItemObject	inherited;
+
 protected:
 	float			fBrightness;
 	CLAItem*		lanim;

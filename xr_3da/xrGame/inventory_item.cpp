@@ -236,6 +236,7 @@ void CInventoryItem::OnH_A_Independent	()
 {
 	m_dwItemIndependencyTime	= Level().timeServer();
 	m_eItemPlace				= eItemPlaceUndefined;	
+	inherited::OnH_A_Independent();
 }
 
 void CInventoryItem::OnH_B_Chield		()
@@ -244,6 +245,7 @@ void CInventoryItem::OnH_B_Chield		()
 
 void CInventoryItem::OnH_A_Chield		()
 {
+	inherited::OnH_A_Chield		();
 }
 
 void CInventoryItem::UpdateCL()
@@ -789,10 +791,12 @@ void CInventoryItem::make_Interpolation	()
 
 void CInventoryItem::renderable_Render	()
 {
+	inherited::renderable_Render	();
 }
 
 void CInventoryItem::reload		(LPCSTR section)
 {
+	inherited::reload		(section);
 	m_holder_range_modifier	= READ_IF_EXISTS(pSettings,r_float,section,"holder_range_modifier",1.f);
 	m_holder_fov_modifier	= READ_IF_EXISTS(pSettings,r_float,section,"holder_fov_modifier",1.f);
 }
@@ -975,7 +979,7 @@ DLL_Pure *CInventoryItem::_construct	()
 {
 	m_object	= smart_cast<CPhysicsShellHolder*>(this);
 	VERIFY		(m_object);
-	return		(m_object);
+	return		(inherited::_construct());
 }
 
 void CInventoryItem::modify_holder_params	(float &range, float &fov) const

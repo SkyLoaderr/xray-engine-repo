@@ -15,10 +15,6 @@
 #	define NO_XR_GAME
 #endif
 
-#ifndef NO_XR_GAME
-	class CAttachableItem;
-#endif
-
 class CSE_Abstract;
 
 namespace ObjectFactory {

@@ -398,5 +398,6 @@ bool  CTorch::can_be_attached		() const
 }
 void CTorch::afterDetach			()
 {
-	Switch(false);
+	inherited::afterDetach	();
+	Switch					(false);
 }

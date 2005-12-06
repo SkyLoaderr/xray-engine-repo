@@ -10,6 +10,8 @@
 #include "attachment_owner.h"
 #include "attachable_item.h"
 #include "../skeletoncustom.h"
+#include "inventory_item.h"
+#include "physicsshellholder.h"
 
 struct CStringPredicate {
 	bool		operator()	(const shared_str &s1, const shared_str &s2) const
@@ -51,8 +53,8 @@ void CAttachmentOwner::net_Destroy()
 		Msg						("Object %s has attached items :",*smart_cast<CGameObject*>(this)->cName());
 		xr_vector<CAttachableItem*>::const_iterator	I = attached_objects().begin();
 		xr_vector<CAttachableItem*>::const_iterator	E = attached_objects().end();
-		for ( ; I != E; ++I)
-			Msg					("* %s",*(*I)->cName());
+//		for ( ; I != E; ++I)
+//			Msg					("* %s",*(*I)->item().object().cName());
 	}
 #endif
 	R_ASSERT					(attached_objects().empty());
@@ -79,8 +81,8 @@ void __stdcall AttachmentCallback(CKinematics *tpKinematics)
 	xr_vector<CAttachableItem*>::const_iterator	I = attachment_owner->attached_objects().begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = attachment_owner->attached_objects().end();
 	for ( ; I != E; ++I) {
-		(*I)->XFORM().mul_43	(kinematics->LL_GetBoneInstance((*I)->bone_id()).mTransform,(*I)->offset());
-		(*I)->XFORM().mulA_43	(game_object->XFORM());
+		(*I)->item().object().XFORM().mul_43	(kinematics->LL_GetBoneInstance((*I)->bone_id()).mTransform,(*I)->offset());
+		(*I)->item().object().XFORM().mulA_43	(game_object->XFORM());
 	}
 }
 
@@ -89,7 +91,7 @@ void CAttachmentOwner::attach(CInventoryItem *inventory_item)
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I) {
-		if( (*I)->ID() != inventory_item->object().ID() )
+		if( (*I)->item().object().ID() != inventory_item->object().ID() )
 			return; //already attached, fake, I'll repair It
 //		VERIFY								((*I)->ID() != inventory_item->object().ID());
 	}
@@ -114,7 +116,7 @@ void CAttachmentOwner::detach(CInventoryItem *inventory_item)
 	xr_vector<CAttachableItem*>::iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I) {
-		if ((*I)->ID() == inventory_item->object().ID()) {
+		if ((*I)->item().object().ID() == inventory_item->object().ID()) {
 			m_attached_objects.erase	(I);
 			(*I)->afterDetach();
 			if (m_attached_objects.empty()) {
@@ -199,7 +201,7 @@ CAttachableItem* CAttachmentOwner::attachedItem			(CLASS_ID clsid) const
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I)
-		if ((*I)->CLS_ID == clsid)
+		if ((*I)->item().object().CLS_ID == clsid)
 			return (*I);
 
 	return NULL;
@@ -211,7 +213,7 @@ CAttachableItem* CAttachmentOwner::attachedItem			(u16 id) const
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I)
-		if ((*I)->ID() == id)
+		if ((*I)->item().object().ID() == id)
 			return (*I);
 
 	return NULL;
@@ -222,7 +224,7 @@ CAttachableItem* CAttachmentOwner::attachedItem			(shared_str& section) const
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I)
-		if (!xr_strcmp((*I)->cNameSect(), section) && !(*I)->GetDrop())
+		if (!xr_strcmp((*I)->item().object().cNameSect(), section) && !(*I)->item().GetDrop())
 			return		(*I);
 
 	return				NULL;

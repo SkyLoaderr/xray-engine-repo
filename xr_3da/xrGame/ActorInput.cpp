@@ -110,14 +110,14 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
 	case kNIGHT_VISION: {
-		PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+		CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
 			if (I){
 				CTorch* torch = smart_cast<CTorch*>(I);
 				if (torch) torch->SwitchNightVision();
 			}
 		}break;
 	case kTORCH:{ 
-			PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+			CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
 			if (I){
 				CTorch* torch = smart_cast<CTorch*>(I);
 				if (torch) torch->Switch();
@@ -340,7 +340,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 		
 		if(b){//used succesfully
 			// switch off torch...
-			PIItem I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+			CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
 			if (I){
 				CTorch* torch = smart_cast<CTorch*>(I);
 				if (torch) torch->Switch(false);
