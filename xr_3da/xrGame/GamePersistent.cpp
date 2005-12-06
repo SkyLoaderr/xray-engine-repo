@@ -41,7 +41,8 @@ CGamePersistent::CGamePersistent(void)
 	ambient_particles			= 0;
 
 #ifdef DEBUG
-	m_last_stats_frame			= u32(-1);
+	m_frame_counter				= 0;
+	m_last_stats_frame			= u32(-2);
 #endif
 	// 
 	dSetAllocHandler			(ode_alloc		);
@@ -218,6 +219,7 @@ void CGamePersistent::WeathersUpdate()
 bool b_flag = false;
 void CGamePersistent::OnFrame	()
 {
+	++m_frame_counter;
 	if(!b_flag && !g_pGameLevel && (Device.dwFrame>100) && (Device.dwFrame<200)  ){
 			b_flag = true;
 			Console->Execute("main_menu on");
@@ -252,7 +254,7 @@ void CGamePersistent::OnFrame	()
 	}
 
 #ifdef DEBUG
-	if ((m_last_stats_frame + 1) < Device.dwFrame)
+	if ((m_last_stats_frame + 1) < m_frame_counter)
 		profiler().clear		();
 #endif
 }
@@ -271,7 +273,7 @@ void CGamePersistent::Statistics	(CGameFont* F)
 {
 #ifdef DEBUG
 #	ifndef _EDITOR
-		m_last_stats_frame		= Device.dwFrame;
+		m_last_stats_frame		= m_frame_counter;
 		profiler().show_stats	(F,!!psAI_Flags.test(aiStats));
 #	endif
 #endif
