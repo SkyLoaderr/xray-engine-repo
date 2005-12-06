@@ -670,6 +670,12 @@ void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 	pActor->conditions().GoSleep(generate_time(1,1,1,hours, minutes, 0, 0), true);
 }
 
+void  CScriptGameObject::ActorFakeSleep			(int hours, int minutes)
+{
+	CActor* pActor = smart_cast<CActor*>(&object());	if(!pActor) return;
+	pActor->conditions().ProcessSleep(generate_time(1,1,1,hours, minutes, 0, 0), true);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void construct_restriction_vector(shared_str restrictions, xr_vector<ALife::_OBJECT_ID> &result)

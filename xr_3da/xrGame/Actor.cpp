@@ -21,7 +21,7 @@
 #include "CameraFirstEye.h"
 
 
-#include "../effectorfall.h"
+#include "effectorfall.h"
 #include "EffectorBobbing.h"
 #include "clsid_game.h"
 
