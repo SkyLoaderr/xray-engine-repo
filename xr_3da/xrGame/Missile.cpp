@@ -23,7 +23,6 @@
 
 CMissile::CMissile(void) 
 {
-	m_offset.identity	();
 	///////////////////////////////////
 	m_throw_direction.set(0.0f, 1.0f, 0.0f);
 	m_throw_matrix.identity();
@@ -61,12 +60,11 @@ void CMissile::Load(LPCSTR section)
 
 	m_dwDestroyTimeMax	= pSettings->r_u32(section,"destroy_time");
 	
-	Fvector	position_offset, angle_offset;
-	position_offset		= pSettings->r_fvector3(section,"position_offset");
-	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
-	
-	m_offset.setHPB			(VPUSH(angle_offset));
-	m_offset.translate_over	(position_offset);
+//	Fvector	position_offset, angle_offset;
+//	position_offset		= pSettings->r_fvector3(section,"position_offset");
+//	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
+//	m_offset.setHPB			(VPUSH(angle_offset));
+//	m_offset.translate_over	(position_offset);
 
 	m_vThrowPoint		= pSettings->r_fvector3(section,"throw_point");
 	m_vThrowDir			= pSettings->r_fvector3(section,"throw_dir");
@@ -397,9 +395,7 @@ void CMissile::OnAnimationEnd()
 
 void CMissile::UpdatePosition(const Fmatrix& trans)
 {
-//	Position().set	(trans.c);
-//	XFORM().mul		(trans,m_offset);
-	XFORM().mul		(trans,m_offset);
+	XFORM().mul		(trans,offset());
 }
 
 void CMissile::UpdateXForm	()

@@ -75,8 +75,6 @@ protected:
 	u32 m_dwDestroyTime;
 	u32 m_dwDestroyTimeMax;
 
-	Fmatrix					m_offset;
-
 	Fvector					m_throw_direction;
 	Fmatrix					m_throw_matrix;
 

@@ -20,7 +20,6 @@
 CFoodItem::CFoodItem() 
 {
 	m_bReadyToEat = false;
-	m_offset.identity	();
 }
 
 CFoodItem::~CFoodItem() 
@@ -57,12 +56,11 @@ void CFoodItem::Load(LPCSTR section)
 		m_sAnimEat		= pSettings->r_string(*hud_sect, "anim_eat");
 	}
 
-	Fvector	position_offset, angle_offset;
-	position_offset		= pSettings->r_fvector3(section,"position_offset");
-	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
-	m_offset.setHPB			(VPUSH(angle_offset));
-	m_offset.translate_over	(position_offset);
-
+//	Fvector	position_offset, angle_offset;
+//	position_offset		= pSettings->r_fvector3(section,"position_offset");
+//	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
+//	m_offset.setHPB			(VPUSH(angle_offset));
+//	m_offset.translate_over	(position_offset);
 }
 
 void CFoodItem::net_Destroy() 
@@ -123,7 +121,7 @@ void CFoodItem::OnH_B_Chield		()
 
 void CFoodItem::renderable_Render() 
 {
-	CHudItem::renderable_Render	();
+	CHudItem::renderable_Render				();
 }
 
 void CFoodItem::Show()
@@ -224,6 +222,8 @@ void CFoodItem::OnStateSwitch	(u32 S)
 
 void CFoodItem::UpdateXForm	()
 {
+	CEatableItemObject::renderable_Render	();
+/**
 	if (Device.dwFrame!=dwXF_Frame)
 	{
 		dwXF_Frame = Device.dwFrame;
@@ -257,8 +257,9 @@ void CFoodItem::UpdateXForm	()
 		N.crossproduct	(D,R);			N.normalize_safe();
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
-		XFORM().mul		(mRes, m_offset);
+		XFORM().mul		(mRes, offset());
 	}
+/**/
 }
 
 void CFoodItem::OnEvent		(NET_Packet& P, u16 type)

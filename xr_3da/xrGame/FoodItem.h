@@ -31,10 +31,6 @@ protected:
 	shared_str	m_sAnimPrepare;
 	shared_str	m_sAnimEat;
 
-protected:
-	//смещения для render
-	Fmatrix		m_offset;
-
 public:
 						CFoodItem			();
 	virtual				~CFoodItem			();
