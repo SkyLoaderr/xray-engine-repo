@@ -106,7 +106,7 @@ bool CScriptThread::update()
 		
 		int					l_iErrorCode = lua_resume(lua(),0);
 		
-		if (l_iErrorCode) {
+		if (l_iErrorCode && (l_iErrorCode != LUA_YIELD)) {
 			ai().script_engine().print_output(lua(),*script_name(),l_iErrorCode);
 #ifdef DEBUG
 			print_stack		(lua());
@@ -114,26 +114,21 @@ bool CScriptThread::update()
 			m_active		= false;
 		}
 		else {
-#ifdef DEBUG
-			/**/
-//			if (!(lua()->ci->state & CI_YIELD))
-			if (!m_current_stack_level)
-			{
+			if (l_iErrorCode != LUA_YIELD) {
+				THROW		(!m_current_stack_level);
 				m_active	= false;
+#ifdef DEBUG
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",*m_script_name);
-			}
-			else 
 #endif
-			{
-			/**/
-
+			}
+			else {
 #ifdef DEBUG
 #	ifdef USE_DEBUGGER
 				if(!ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
 #	endif
 				{
-					VERIFY2		(m_current_stack_level,*script_name());
-					--m_current_stack_level;
+//					VERIFY2		(m_current_stack_level,*script_name());
+//					--m_current_stack_level;
 				}
 #endif
 				VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");

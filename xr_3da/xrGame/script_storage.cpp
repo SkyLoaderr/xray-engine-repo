@@ -528,6 +528,10 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 			script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT SYNTAX ERROR");
 			break;
 		}
+		case LUA_YIELD : {
+			script_log (ScriptStorage::eLuaMessageTypeInfo,"Thread is yielded");
+			break;
+		}
 		default : NODEFAULT;
 	}
 }
