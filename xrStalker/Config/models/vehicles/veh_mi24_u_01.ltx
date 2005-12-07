@@ -12,11 +12,11 @@ smoke_bone          = front_propeller
 light_bone          = front_propeller
 
 [hit_bones]                            ; per bones hit factor
-pilot1              = 0.04 ;0.05           
-pilot2              = 0.04 ;0.05
-back_propeller		= 0.04
-korpus1				= 0.02
-root_0				= 0.05
+pilot1              = 0.03
+pilot2              = 0.03
+back_propeller		= 0.02
+korpus1				= 0.01
+root_0				= 0.04
 
 
 [on_death_mode]
@@ -35,16 +35,17 @@ physics\vehicles\mi24\part\veh_mi24_part6
 physics\vehicles\mi24\part\veh_mi24_part7
 physics\vehicles\mi24\part\veh_mi24_part8
 physics\vehicles\mi24\part\veh_mi24_part9
+physics\vehicles\mi24\part\veh_mi24_part10
 
 [autoremove_parts]
-time					 = 10
+time					 = 20
 
 ;-------------------------------------------------------------------------------
 ;--- part impulse_transition ---------------------------------------------------
 
 [impulse_transition_to_parts]
-random_min               = 30.0    ; величина случайно направленного импульса пропорционально массе нового объекта
-random_hit_imp           = 1.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
+random_min               = 20.0    ; величина случайно направленного импульса пропорционально массе нового объекта
+random_hit_imp           = 10.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
 ;ref_bone                 =         ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
 imp_transition_factor    = 1.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
 lv_transition_factor     = 0.5     ; коэффициент передачи линейной скорости
@@ -52,13 +53,13 @@ av_transition_factor     = 0.5     ; коэффициент передачи угловой скорости
 
 ;-------------------------------------------------------------------------------
 [explosion]
-blast					= 100
+blast					= 200
 blast_r					= 15
 blast_impulse			= 350
 frags		        	= 15
 frags_r					= 30
-frag_hit				= 50
-frag_hit_impulse		= 350
+frag_hit				= 80
+frag_hit_impulse		= 320
 hit_type_blast			= explosion
 hit_type_frag			= fire_wound
 up_throw_factor			= 0.25
@@ -80,4 +81,4 @@ snd_explode 			= weapons\heli_explosion
 time					=  0.75
 amplitude				=  5.0
 period_number	    	=  50
-cam_file_name	= camera_effects\shell_shock.anm
+cam_file_name			= camera_effects\shell_shock.anm
