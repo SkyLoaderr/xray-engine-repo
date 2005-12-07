@@ -8,6 +8,7 @@
 #include "PHSoundPlayer.h"
 class CPhysicsShell;
 class CPHMovementControl;
+class CIKLimbsController;
 class CCharacterPhysicsSupport :
 public CPHSkeleton,
 public CPHDestroyable
@@ -36,7 +37,9 @@ private:
 	CPhysicsShell						*&m_pPhysicsShell																																	;
 	CPhysicsShell						*m_physics_skeleton																																	;
 	CPHMovementControl					&m_PhysicMovementControl																															;
-	CPHSoundPlayer						m_ph_sound_player;
+	CPHSoundPlayer						m_ph_sound_player																																	;
+	CIKLimbsController					*m_ik_controller																																	;
+
 //skeleton modell(!share?)
 	float								skel_airr_lin_factor																																;
 	float								skel_airr_ang_factor																																;
@@ -46,12 +49,6 @@ private:
 /////////////////////////////////////////////////
 	bool								b_death_anim_on																																		;
 	bool								b_skeleton_in_shell																																	;
-///////////////////////////////////////////////////////////////////////////
-/*	float								m_saved_impulse																																		;
-	Fvector								m_saved_hit_position																																;
-	Fvector								m_saved_hit_dir																																		;
-	s16									m_saved_element																																		;
-	ALife::EHitType						m_saved_hit_type			*/																														;
 ///////////////////////////////////////////////////////////////////////////
 	float								m_shot_up_factor																																	;
 	float								m_after_death_velocity_factor																														;
@@ -106,5 +103,10 @@ private:
 		void 							CreateSkeleton					(CPhysicsShell* &pShell)																							;
 		void 							CreateSkeleton					();
 		void 							ActivateShell					(CObject* who)																										;
+static void _stdcall 					IKVisualCallback				(CKinematics* K)																									;
+		void							CreateIKController				()																													;
+		void							DestroyIKController				()																													;
+		void							CalculateIK						(CKinematics* K)																									;
+		void							CollisionCorrectObjPos			(const Fvector& start_from);
 };
 #endif  //CHARACTER_PHYSICS_SUPPORT

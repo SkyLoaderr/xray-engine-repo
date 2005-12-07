@@ -12,8 +12,8 @@
 #include "Extendedgeom.h"
 #include "Physics.h"
 #include "level.h"
-
 #include "PHActivationShape.h"
+#include "IKLimbsController.h"
 const float default_hinge_friction = 5.f;
 
 void  NodynamicsCollide(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
@@ -46,6 +46,7 @@ m_physics_skeleton				= NULL;
 b_skeleton_in_shell				= false;
 m_shot_up_factor				=0.f;
 m_after_death_velocity_factor	=1.f;
+m_ik_controller					=NULL;
 switch(atype)
 {
 case etActor:
@@ -117,6 +118,10 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 	{
 		m_PhysicMovementControl.CreateCharacter();
 		m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
+		CreateIKController();
+		CollisionCorrectObjPos(m_EntityAlife.Position());
+		m_PhysicMovementControl.SetPosition	(m_EntityAlife.Position());
+		
 		//m_PhysicMovementControl.SetMaterial( )
 	}
 	else
@@ -157,6 +162,7 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 	//}
 	
 	//xr_delete				(m_pPhysicsShell);
+	DestroyIKController();
 }
 
 void	CCharacterPhysicsSupport::in_NetSave(NET_Packet& P)
@@ -333,8 +339,25 @@ Fvector velocity;
 	b_death_anim_on=false;
 	m_eState=esDead;
 }
+void CCharacterPhysicsSupport::CollisionCorrectObjPos(const Fvector& start_from)
+{
+	Fvector shift;shift.sub(start_from,m_EntityAlife.Position());
+	Fvector activation_pos;m_EntityAlife.Center(activation_pos);
+	Fvector center_shift;center_shift.sub(m_EntityAlife.Position(),activation_pos);
+	activation_pos.add(shift);
+	CPHActivationShape activation_shape;
+	Fbox box;box.set(m_EntityAlife.BoundingBox());
+	Fvector vbox;
+	box.getsize(vbox);
+	activation_shape.Create(activation_pos,vbox,&m_EntityAlife);
+	activation_shape.Activate(vbox,1,1.f,M_PI/8.f);
+	m_EntityAlife.Position().set(activation_shape.Position());
+	m_EntityAlife.Position().add(center_shift);
+	activation_shape.Destroy();
+}
 void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 {
+	DestroyIKController();
 	if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
 	if(m_eType==etActor)
 	{
@@ -355,28 +378,16 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	m_PhysicMovementControl.GetCharacterVelocity		(velocity);
 	velocity.mul(1.3f);
 	Fvector dp;
+
 	if(!m_PhysicMovementControl.CharacterExist())
 									dp.set(m_EntityAlife.Position());
-	m_PhysicMovementControl.GetDeathPosition(dp);
-	Fvector shift;shift.sub(dp,m_EntityAlife.Position());
-	Fvector activation_pos;m_EntityAlife.Center(activation_pos);
-	Fvector center_shift;center_shift.sub(m_EntityAlife.Position(),activation_pos);
-	activation_pos.add(shift);
-
-	CPHActivationShape activation_shape;
-
-	Fbox box;box.set(m_EntityAlife.BoundingBox());
-	Fvector vbox;
-	box.getsize(vbox);
-
-	activation_shape.Create(activation_pos,vbox,&m_EntityAlife);
-
+	else m_PhysicMovementControl.GetDeathPosition(dp);
 	m_PhysicMovementControl.DestroyCharacter();
 
-	activation_shape.Activate(vbox,1,1.f,M_PI/8.f);
-	m_EntityAlife.Position().set(activation_shape.Position());
-	m_EntityAlife.Position().add(center_shift);
-	activation_shape.Destroy();
+	CollisionCorrectObjPos(dp);
+
+
+
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 
 	m_pPhysicsShell=m_physics_skeleton;
@@ -404,7 +415,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	}
 	else
 	{
-		m_pPhysicsShell->set_ObjectContactCallback(NodynamicsCollide);
+		m_pPhysicsShell->SetIgnoreDynamic();
 	}
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
@@ -420,7 +431,11 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 		xr_delete(m_pPhysicsShell);
 		ActivateShell(NULL);
 	}
-	
+	if(m_ik_controller)
+	{
+		DestroyIKController();
+		CreateIKController();
+	}
 }
 
 bool CCharacterPhysicsSupport::CanRemoveObject()
@@ -444,4 +459,33 @@ void CCharacterPhysicsSupport::PHGetLinearVell(Fvector &velocity)
 	else
 		m_PhysicMovementControl.GetCharacterVelocity(velocity);
 		
+}
+ void _stdcall CCharacterPhysicsSupport:: IKVisualCallback(CKinematics* K)
+{
+	CEntityAlive* EA=smart_cast<CEntityAlive*>((CGameObject*)K->Update_Callback_Param);
+	VERIFY(EA);
+	CCharacterPhysicsSupport* chs=EA->character_physics_support();
+	VERIFY(chs);
+	chs->CalculateIK(K);
+}
+void CCharacterPhysicsSupport::CreateIKController()
+{
+
+	//VERIFY(!m_ik_controller);
+	//m_ik_controller=xr_new<CIKLimbsController>();
+	//CKinematics* K=smart_cast<CKinematics*>(m_EntityAlife.Visual());
+	//m_ik_controller->Create(K,&m_EntityAlife);
+	//m_EntityAlife.add_visual_callback(IKVisualCallback);
+}
+void CCharacterPhysicsSupport::DestroyIKController()
+{
+	//if(!m_ik_controller)return;
+	//m_EntityAlife.remove_visual_callback(IKVisualCallback);
+	//m_ik_controller->Destroy();
+	//xr_delete(m_ik_controller);
+}
+
+void CCharacterPhysicsSupport::CalculateIK(CKinematics* K)
+{
+	m_ik_controller->Calculate(K,mXFORM);
 }
