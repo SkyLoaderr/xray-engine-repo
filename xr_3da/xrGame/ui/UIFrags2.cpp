@@ -15,24 +15,20 @@ CUIFrags2::~CUIFrags2(){
 }
 
 
-void CUIFrags2::Init(CUIXml& xml_doc, LPCSTR path){
-	InitBackground(xml_doc, path);
+void CUIFrags2::Init(CUIXml& xml_doc, LPCSTR path, LPCSTR backgrnd_path){
+	InitBackground(xml_doc, backgrnd_path);
 
-//	CUIWindow* pWnd = NULL;
 	CUIWindow* pTeam1 = NULL;
 	CUIWindow* pTeam2 = NULL;
 	Fvector2 pos;
 
-	pTeam1 = m_pStats->Init(xml_doc, "stats_wnd", 1);
+	pTeam1 = m_pStats->Init(xml_doc, path, 1);
 	AttachChild(pTeam1);
-//	pos = pWnd->GetWndPos();
-//	pos.x = m_pStats->GetWndPos().x;
-//	pWnd->SetWndPos(pos);
-	pTeam2 = m_pStats2->Init(xml_doc, "stats_wnd", 2);
+	pTeam2 = m_pStats2->Init(xml_doc, path, 2);
 	AttachChild(pTeam2);
 
     // team 2 list
-	float x = xml_doc.ReadAttribFlt("stats_wnd", 0, "x2");
+	float x = xml_doc.ReadAttribFlt(path, 0, "x2");
 	R_ASSERT(x);
 	pos = m_pStats2->GetWndPos();
 	pos.x = x;				// 

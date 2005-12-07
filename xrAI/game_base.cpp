@@ -114,7 +114,7 @@ void	game_PlayerState::net_Export		(NET_Packet& P)
 	//  [7/27/2005]
 	P.w_float_q8	(	experience_D, -1.0f, 2.0f);
 	P.w_u8			(	rank		);
-///	P.w_u8			(	af_count	);
+	P.w_u8			(	af_count	);
 	//  [7/27/2005]
 	P.w_u16			(	flags	);
 	P.w_u16			(	ping	);
@@ -139,7 +139,7 @@ void	game_PlayerState::net_Import		(NET_Packet& P)
 	//  [7/27/2005]
 	P.r_float_q8	(	experience_D, -1.0f, 2.0f);
 	P.r_u8			(	rank		);
-///	P.r_u8			(	af_count	);
+	P.r_u8			(	af_count	);
 	//  [7/27/2005]
 	P.r_u16			(	flags	);
 	P.r_u16			(	ping	);

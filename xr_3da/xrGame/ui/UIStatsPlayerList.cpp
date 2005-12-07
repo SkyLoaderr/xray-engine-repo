@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "UIStatsPlayerList.h"
 #include "../game_cl_base.h"
+#include "../game_cl_artefacthunt.h"
 #include "UIStatsPlayerInfo.h"
 #include "../string_table.h"
 #include "../level.h"
@@ -14,6 +15,7 @@ CUIStatsPlayerList::CUIStatsPlayerList(){
 	m_cmp_func		= DM_Compare_Players;
 	m_CurTeam		= 0;
 	m_bSpectator	= false;
+	m_bStatus_mode  = false;
 
 	m_header = xr_new<CUIStatic>();
 	m_header_team = NULL;
@@ -37,7 +39,9 @@ void CUIStatsPlayerList::Init(CUIXml& xml_doc, LPCSTR path){
 	CUIXmlInit::InitScrollView(xml_doc, path, 0, this);
 	SetFixedScrollBar(false);
 
-	m_bSpectator = xml_doc.ReadAttribInt(path,0,"spectator",0)? true: false;
+
+    m_bStatus_mode = xml_doc.ReadAttribInt(path,0,"status_mode",0)? true: false;
+	m_bSpectator = xml_doc.ReadAttribInt(path,0,"spectator",0)? true: m_bStatus_mode;
 	SetSpectator(m_bSpectator);
 
 	// init item structure
@@ -64,7 +68,7 @@ void CUIStatsPlayerList::Init(CUIXml& xml_doc, LPCSTR path){
 	{
 	case GAME_ARTEFACTHUNT:
 	case GAME_TEAMDEATHMATCH:
-		if (!m_bSpectator)
+		if (!m_bSpectator || m_bStatus_mode)
             InitTeamHeader(xml_doc, path);
 	case GAME_DEATHMATCH:
 		InitHeader(xml_doc, path);
@@ -80,15 +84,15 @@ void CUIStatsPlayerList::InitHeader(CUIXml& xml_doc, LPCSTR path){
 	m_h.h = m_header->GetHeight();
 
 	CUIXmlInit::InitFont(xml_doc, strconcat(_path, path, ":list_header:text_format"), 0, m_h.c, m_h.f);
-	float indent = 10;
-	if (!m_bSpectator)
+	float indent = 5;
+	if (!m_bSpectator || m_bStatus_mode)
 	{
 		for (u32 i = 0; i<m_field_info.size(); i++)
 		{
 			CUIStatic* st = xr_new<CUIStatic>();
 			st->SetAutoDelete(true);
 			//#pragma todo("Satan->Satan: remove stub for height")
-			st->Init(indent,10,m_field_info[i].width, 15);
+			st->Init(indent,10,m_field_info[i].width, m_header->GetHeight());
 			indent += m_field_info[i].width;
 
 			if (0 == xr_strcmp(m_field_info[i].name, "rank"))
@@ -102,6 +106,8 @@ void CUIStatsPlayerList::InitHeader(CUIXml& xml_doc, LPCSTR path){
 				st->SetFont(m_h.f);
 			st->SetTextColor(m_h.c);
 			st->SetTextComplexMode(false);
+			if (0 != i)
+                st->SetTextAlignment(CGameFont::alCenter);
 			m_header->AttachChild(st);
 		}
 	}
@@ -171,29 +177,31 @@ void CUIStatsPlayerList::Update(){
 		game_PlayerState* p = (game_PlayerState*) I->second;
 		if (!p || p->team != m_CurTeam) 
 			continue;
-		if (m_bSpectator && p->testFlag(GAME_PLAYER_FLAG_SPECTATOR) ||
+		if (m_bStatus_mode || 
+			m_bSpectator && p->testFlag(GAME_PLAYER_FLAG_SPECTATOR) ||
 			!m_bSpectator && !p->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) 
 		{
 			items.push_back(I->second);
-
 			// add to team info
-			pl_frags+=p->kills;
-            pl_artefacts += p->af_count;
+			pl_frags+=p->kills;            
 		}
 	};
 	pl_count = items.size();
 
     if (GameID() == GAME_ARTEFACTHUNT && !m_bSpectator)
 	{
+		game_cl_ArtefactHunt* game = static_cast<game_cl_ArtefactHunt*>(&Game());
+		pl_artefacts = game->teams[m_CurTeam - 1].score;
         sprintf(teaminfo, "Players: %u,  Frags: %d,  Artefacts: %u", pl_count, pl_frags, pl_artefacts);
 		m_header_text->SetText(teaminfo);
 	}
 	else if (GameID() == GAME_TEAMDEATHMATCH && !m_bSpectator)
 	{
+		game_cl_TeamDeathmatch* game = static_cast<game_cl_TeamDeathmatch*>(&Game());
+		pl_frags = game->teams[m_CurTeam - 1].score;
 		sprintf(teaminfo, "Players: %u,  Frags: %d", pl_count, pl_frags);
 		m_header_text->SetText(teaminfo);
-	}
-	
+	}	
 
 	if (m_bSpectator)
 	{

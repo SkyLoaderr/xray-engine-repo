@@ -32,6 +32,7 @@ protected:
 	player_cmp_func		m_cmp_func;
 	int					m_CurTeam;
 	bool				m_bSpectator;
+	bool				m_bStatus_mode;
     
 	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
 	ItemVec			items;

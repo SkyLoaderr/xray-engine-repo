@@ -21,9 +21,9 @@ CUIFrags::~CUIFrags(){
 
 }
 
-void CUIFrags::Init(CUIXml& xml_doc, LPCSTR path){
-	m_pStats->Init(xml_doc, "stats_wnd", 0);
-	InitBackground(xml_doc, path);	
+void CUIFrags::Init(CUIXml& xml_doc, LPCSTR path, LPCSTR backgrnd_path){
+	m_pStats->Init(xml_doc, path, 0);
+	InitBackground(xml_doc, backgrnd_path);	
 }
 
 void CUIFrags::InitBackground(CUIXml& xml_doc, LPCSTR path){

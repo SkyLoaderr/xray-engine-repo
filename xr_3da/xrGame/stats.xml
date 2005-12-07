@@ -63,11 +63,30 @@
 			<field name="name"		width="200" />
 			<field name="ping"		width="30" />
 		</spectator_list>
-		
-		<team_info x="0" y="0" width="411" height="">
-		</team_info>
-		
 	</stats_wnd>
+	
+	<players_wnd x="25" x2="430" y="65" width="410" height="480">
+		<player_list x="0" y="0" width="410" height="0" status_mode="1"> <!-- dinamic height -->
+			<team_header x="10" y="43" width="411" height="20">
+				<text_format font="letterica16" a="255" r="188" g="188" b="180" />
+				<logo x="0" y="0" width="32" height="32"/>
+				<header x="42" y="0" width="368" height="20">
+					<texture></texture>
+					<text>Team Header</text>
+				</header>
+			</team_header>
+			
+			<list_header x="0" y="0" width="410" height="35">
+				<texture></texture>
+				<text_format font="letterica16" a="255" r="188" g="188" b="180" />
+			</list_header>
+			
+			<text_format font="letterica16" a="255" r="215" g="187" b="139" height="16"/>
+			<field name="name"		width="120" />
+			<field name="frags"		width="80" />
+			<field name="status"	width="50" />			
+		</player_list>
+	</players_wnd>
 
     <!-- BACKGROUND -->
 	<frame_window x="0" y="0" width="400" height="480">

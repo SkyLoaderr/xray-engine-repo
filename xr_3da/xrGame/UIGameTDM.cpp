@@ -35,14 +35,9 @@ void CUIGameTDM::Init ()
 
 	CUIFrags2* pFragList		= xr_new<CUIFrags2>();			pFragList->SetAutoDelete(true);
 	//-----------------------------------------------------------
-//	CUITDMFragList* pFragListT1	= xr_new<CUITDMFragList>	();pFragListT1->SetAutoDelete(true);
-//	CUITDMFragList* pFragListT2	= xr_new<CUITDMFragList>	();pFragListT2->SetAutoDelete(true);
 	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>(); pStatisticWnd->SetAutoDelete(true);
 
-	pFragList->Init(xml_doc,"frag_wnd_tdm");
-//	pFragListT1->Init(1);
-//	pFragListT2->Init(2);
-	
+	pFragList->Init(xml_doc,"stats_wnd","frag_wnd_tdm");
 
 	float ScreenW = UI_BASE_WIDTH;
 	float ScreenH = UI_BASE_HEIGHT;
@@ -52,39 +47,29 @@ void CUIGameTDM::Init ()
 	float FrameH	= FrameRect.bottom - FrameRect.top;
 
 	pFragList->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
-
-//	pFragListT1->SetWndRect(ScreenW/4.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
-//	FrameRect = pFragListT2->GetFrameRect ();
+	m_pFragLists->AttachChild(pFragList);
+	//-----------------------------------------------------------
+	CUIFrags2* pPlayerListT1	= xr_new<CUIFrags2>	();pPlayerListT1->SetAutoDelete(true);
+//	CUIFrags2* pPlayerListT2	= xr_new<CUIFrags2>	();pPlayerListT2->SetAutoDelete(true);
+
+	pPlayerListT1->Init(xml_doc, "players_wnd", "frag_wnd_tdm");
+//	pPlayerListT2->Init(xml_doc, "players_wnd", "frag_wnd_tdm");
+	//-----------------------------------------------------------
+	FrameRect = pPlayerListT1->GetWndRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
+
+	pPlayerListT1->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
+	//-----------------------------------------------------------
+//	FrameRect = pPlayerListT2->GetWndRect ();
 //	FrameW	= FrameRect.right - FrameRect.left;
 //	FrameH	= FrameRect.bottom - FrameRect.top;
 
-//	pFragListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
-	//-----------------------------------------------------------
-	m_pFragLists->AttachChild(pFragList);
-//	m_pFragLists->AttachChild(pFragListT1);
-//	m_pFragLists->AttachChild(pFragListT2);
-	//-----------------------------------------------------------
-	CUITDMPlayerList* pPlayerListT1	= xr_new<CUITDMPlayerList>	();pPlayerListT1->SetAutoDelete(true);
-	CUITDMPlayerList* pPlayerListT2	= xr_new<CUITDMPlayerList>	();pPlayerListT2->SetAutoDelete(true);
-
-	pPlayerListT1->Init(1);
-	pPlayerListT2->Init(2);
-	//-----------------------------------------------------------
-	FrameRect = pPlayerListT1->GetFrameRect ();
-	FrameW	= FrameRect.right - FrameRect.left;
-	FrameH	= FrameRect.bottom - FrameRect.top;
-
-	pPlayerListT1->SetWndRect(ScreenW/4.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
-	//-----------------------------------------------------------
-	FrameRect = pPlayerListT2->GetFrameRect ();
-	FrameW	= FrameRect.right - FrameRect.left;
-	FrameH	= FrameRect.bottom - FrameRect.top;
-
-	pPlayerListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
+//	pPlayerListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
 	m_pPlayerLists->AttachChild(pPlayerListT1);
-	m_pPlayerLists->AttachChild(pPlayerListT2);
+//	m_pPlayerLists->AttachChild(pPlayerListT2);
 	//-----------------------------------------------------------
 	FrameRect = pStatisticWnd->GetFrameRect ();
 	FrameW	= FrameRect.right - FrameRect.left;

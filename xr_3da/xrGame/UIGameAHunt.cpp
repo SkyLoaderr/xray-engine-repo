@@ -42,13 +42,9 @@ void CUIGameAHunt::Init	()
 
 	CUIFrags2* pFragList		= xr_new<CUIFrags2>();			pFragList->SetAutoDelete(true);
 	//-----------------------------------------------------------
-//	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();pFragListT1->SetAutoDelete(true);
-//	CUIAHuntFragList* pFragListT2	= xr_new<CUIAHuntFragList>	();pFragListT2->SetAutoDelete(true);
 	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>(); pStatisticWnd->SetAutoDelete(true);
 
-	pFragList->Init(xml_doc,"frag_wnd_tdm");
-//	pFragListT1->Init(1);
-//	pFragListT2->Init(2);
+	pFragList->Init(xml_doc, "stats_wnd", "frag_wnd_tdm");
 
 	float ScreenW = UI_BASE_WIDTH;
 	float ScreenH = UI_BASE_HEIGHT;
@@ -59,37 +55,21 @@ void CUIGameAHunt::Init	()
 
 	pFragList->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
 
-//	FrameRect = pFragListT2->GetFrameRect ();
-//	FrameW	= FrameRect.right - FrameRect.left;
-//	FrameH	= FrameRect.bottom - FrameRect.top;
-
-//	pFragListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 	//-----------------------------------------------------------
 	m_pFragLists->AttachChild(pFragList);
-//	m_pFragLists->AttachChild(pFragListT1);
-//	m_pFragLists->AttachChild(pFragListT2);
 	//-----------------------------------------------------------
 
-	CUIAHuntPlayerList* pPlayerListT1	= xr_new<CUIAHuntPlayerList>	();pPlayerListT1->SetAutoDelete(true);
-	CUIAHuntPlayerList* pPlayerListT2	= xr_new<CUIAHuntPlayerList>	();pPlayerListT2->SetAutoDelete(true);
+	CUIFrags2* pPlayerListT1	= xr_new<CUIFrags2>	();pPlayerListT1->SetAutoDelete(true);
 
-	pPlayerListT1->Init(1);
-	pPlayerListT2->Init(2);
+	pPlayerListT1->Init(xml_doc, "players_wnd", "frag_wnd_tdm");
 	//-----------------------------------------------------------
-	FrameRect = pPlayerListT1->GetFrameRect ();
+	FrameRect = pPlayerListT1->GetWndRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
 
-	pPlayerListT1->SetWndRect(ScreenW/4.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
-	//-----------------------------------------------------------
-	FrameRect = pPlayerListT2->GetFrameRect ();
-	FrameW	= FrameRect.right - FrameRect.left;
-	FrameH	= FrameRect.bottom - FrameRect.top;
-
-	pPlayerListT2->SetWndRect(ScreenW/4.0f*3.0f-FrameW/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
+	pPlayerListT1->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
 	//-----------------------------------------------------------
 	m_pPlayerLists->AttachChild(pPlayerListT1);
-	m_pPlayerLists->AttachChild(pPlayerListT2);
 	//-----------------------------------------------------------
 	m_reinforcement_caption			=	"ah_reinforcement";		
 	GameCaptions()->addCustomMessage(m_reinforcement_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");

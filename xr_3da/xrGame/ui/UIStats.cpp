@@ -34,14 +34,17 @@ CUIWindow* CUIStats::Init(CUIXml& xml_doc, LPCSTR path,  int team){
 	AddWindow(pWnd, true);
 	AddWindow(pPList, true);
 
-	// spectators
-	pPList = xr_new<CUIStatsPlayerList>();
-	pPList->SetTeam(team);
-	pPList->Init(xml_doc, strconcat(_path, path, ":spectator_list"));
-	pPList->SetMessageTarget(this);
-	pWnd = pPList->GetHeader();
-	AddWindow(pWnd, true);
-	AddWindow(pPList, true);
+	if (xml_doc.NavigateToNode(strconcat(_path, path, ":spectator_list"),0))
+	{
+		// spectators
+		pPList = xr_new<CUIStatsPlayerList>();
+		pPList->SetTeam(team);
+		pPList->Init(xml_doc, _path);
+		pPList->SetMessageTarget(this);
+		pWnd = pPList->GetHeader();
+		AddWindow(pWnd, true);
+		AddWindow(pPList, true);
+	}
 
 	return pTinfo;
 }

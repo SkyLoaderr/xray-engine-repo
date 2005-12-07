@@ -10,7 +10,7 @@ class CUIFrags : public CUIWindow{
 public:
 	CUIFrags();
 	~CUIFrags();
-	void Init(CUIXml& xml_doc, LPCSTR path);
+	void Init(CUIXml& xml_doc, LPCSTR path, LPCSTR backgrnd_path);
 
 protected:
 	void InitBackground(CUIXml& xml_doc, LPCSTR path);

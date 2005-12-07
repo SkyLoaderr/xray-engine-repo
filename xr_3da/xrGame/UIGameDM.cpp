@@ -83,7 +83,7 @@ void	CUIGameDM::Init				()
 	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIFrags* pFragList		= xr_new<CUIFrags>();
-	CUIDMPlayerList* pPlayerList	= xr_new<CUIDMPlayerList>	();
+	CUIFrags* pPlayerList	= xr_new<CUIFrags>();
 	CUIDMStatisticWnd* pStatisticWnd = xr_new<CUIDMStatisticWnd>();
 	pFragList->SetAutoDelete(true);
 	pPlayerList->SetAutoDelete(true);
@@ -93,7 +93,8 @@ void	CUIGameDM::Init				()
 	float ScreenW = UI_BASE_WIDTH;
 	float ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
-	pFragList->Init(xml_doc,"frag_wnd_dm");
+	pFragList->Init(xml_doc, "stats_wnd","frag_wnd_dm");
+	pPlayerList->Init(xml_doc,"players_wnd","frag_wnd_dm");
 
 	Frect FrameRect = pFragList->GetWndRect();
 	float FrameW	= FrameRect.right - FrameRect.left;
@@ -103,10 +104,10 @@ void	CUIGameDM::Init				()
 
 	m_pFragLists->AttachChild(pFragList);
 	//-----------------------------------------------------------
-	FrameRect = pPlayerList->GetFrameRect ();
+	FrameRect = pPlayerList->GetWndRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
-	pPlayerList->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
+	pPlayerList->SetWndPos((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f);
 
 	m_pPlayerLists->AttachChild(pPlayerList);
 	//-----------------------------------------------------------
