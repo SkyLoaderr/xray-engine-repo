@@ -265,6 +265,8 @@
 		<objective>
 			<text>mil_return_to_voronin</text>
 			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="mil_return_to_voronin">green_location</map_location_type>
+			<object_story_id>bar_dolg_general_voronin</object_story_id>
 			<infoportion_complete>bar_svoboda_rg6_done</infoportion_complete>
 		</objective>
 	</game_task>
