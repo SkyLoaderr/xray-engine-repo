@@ -425,7 +425,6 @@ end
 
 function is_wounded(npc)
 	if db.storage[npc:id()].wounded ~= nil then
-		printf("is wounded [%s]", tostring(db.storage[npc:id()].wounded.wound_manager.state ~= "nil"))
 		return db.storage[npc:id()].wounded.wound_manager.state ~= "nil"
 	end
 	return false
