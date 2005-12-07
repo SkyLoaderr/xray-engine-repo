@@ -2,7 +2,6 @@
 
 #include "../effectorPP.h"
 #include "../effector.h"
-#include "../cameramanager.h"
 
 struct SShootingEffector {
 	SPPInfo	ppi;
