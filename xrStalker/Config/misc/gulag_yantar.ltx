@@ -55,7 +55,7 @@ meet = meet@scientist_1
 [remark@yan_scientist_talk_1]
 snd = yantar_kruglov_to_professor_1
 anim = wait
-no_rotate = true 
+target = 902
 on_signal = sound_end | walker@kruglov_talk %+yantar_professor_phrase_2%
 combat_ignore_cond = always
 danger = danger_condition@1
@@ -185,8 +185,9 @@ danger = danger_condition@1
 [remark@scientist_wounded_1]
 snd = yantar_kruglov_radiation_quest_6
 anim = hide
+target = actor
 on_signal = sound_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
-on_timer = 7000 | %+yan_spawn_ghost%
+on_timer = 9000 | %+yan_spawn_ghost%
 combat_ignore_cond = always
 danger = danger_condition@1
 
@@ -207,6 +208,7 @@ meet = meet@scientist_1
 [remark@scientist_return_to_bunker]
 snd = yantar_kruglov_radiation_quest_8
 anim = wait
+target = actor
 on_signal = sound_end | remark@scientist_return_to_bunker_1
 combat_ignore_cond = always
 danger = danger_condition@1
@@ -214,6 +216,7 @@ danger = danger_condition@1
 [remark@scientist_return_to_bunker_1]
 snd = yantar_kruglov_radiation_quest_9
 anim = wait
+target = actor
 on_signal = sound_end | camper@scientist_return_to_bunker
 combat_ignore_cond = always
 danger = danger_condition@1
