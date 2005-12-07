@@ -295,11 +295,12 @@ void CActor::LoadShootingEffector (LPCSTR section)
 	m_pShootingEffector->time				= pSettings->r_float(section,"time");
 	m_pShootingEffector->time_attack		= pSettings->r_float(section,"time_attack");
 	m_pShootingEffector->time_release		= pSettings->r_float(section,"time_release");
-
+/*
 	m_pShootingEffector->ce_time			= pSettings->r_float(section,"ce_time");
 	m_pShootingEffector->ce_amplitude		= pSettings->r_float(section,"ce_amplitude");
 	m_pShootingEffector->ce_period_number	= pSettings->r_float(section,"ce_period_number");
 	m_pShootingEffector->ce_power			= pSettings->r_float(section,"ce_power");
+*/
 }
 
 void CActor::LoadSleepEffector	(LPCSTR section)
