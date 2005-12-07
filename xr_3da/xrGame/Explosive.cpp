@@ -381,11 +381,8 @@ void CExplosive::Explode()
 			CFireHitCamEffector* e = xr_new<CFireHitCamEffector>(eExplode, (max_dist - dist_to_actor) / max_dist );
 			e->Start	(*effector.file_name);
 			pActor->EffectorManager().AddEffector(e);
-//			pActor->EffectorManager().AddEffector(xr_new<CExplodeEffector>(effector.time, effector.amplitude, effector.period_number, (max_dist - dist_to_actor) / max_dist));
 		}
 	}
-	//////////////////////////////////
-	
 }
 
 void CExplosive::PositionUpdate()
