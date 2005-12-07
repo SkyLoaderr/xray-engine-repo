@@ -556,19 +556,19 @@ function CKampManager:checkNpcAbility(npc)
 	   npc:character_community() ~= "zombied"
 	then
 		-- есть колбасу
-		if npc:object("kolbasa_a") then
+		if npc:object("kolbasa") then
 			self.npc[npc_id].states["eat_kolbasa"] = true
 		else
 			self.npc[npc_id].states["eat_kolbasa"] = false
 		end
 		-- пить водку
-		if npc:object("vodka_a") then
+		if npc:object("vodka") then
 			self.npc[npc_id].states["eat_vodka"] = true
 		else
 			self.npc[npc_id].states["eat_vodka"] = false
 		end
 		-- есть хлеб
-		if npc:object("bread_a") then
+		if npc:object("bread") then
 			self.npc[npc_id].states["eat_bread"] = true
 		else
 			self.npc[npc_id].states["eat_bread"] = false

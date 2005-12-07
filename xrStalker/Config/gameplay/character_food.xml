@@ -1,3 +1,3 @@
-bread_a = 1, prob=0.8 \n
-kolbasa_a = 1, prob=0.8 \n
-vodka_a = 1, prob=0.8 \n
+bread = 1, prob=0.8 \n
+kolbasa = 1, prob=0.8 \n
+vodka = 1, prob=0.8 \n

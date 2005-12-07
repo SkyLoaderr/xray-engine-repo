@@ -154,12 +154,12 @@ function animation:__init(npc, mgr)
 		idle = nil,
 		anim_level = 0,
 		attach_items = {hand_radio	= {mode = "detach", done = true},
-						bread_a		= {mode = "detach", done = true},
-						vodka_a		= {mode = "detach", done = true},
-						kolbasa_a	= {mode = "detach", done = true},
+						bread		= {mode = "detach", done = true},
+						vodka		= {mode = "detach", done = true},
+						kolbasa		= {mode = "detach", done = true},
 						guitar_a	= {mode = "detach", done = true},
 						harmonica_a	= {mode = "detach", done = true},
-						binocular_a	= {mode = "detach", done = true}}
+						wpn_binoc	= {mode = "detach", done = true}}
 	}
 	
 	self.clb_settings = {}
@@ -201,7 +201,7 @@ function animation:set_state(id, reset)
 								if obj then
 									printf("extra detached [%s] for [%s]", obj:name(), self.npc:name())
 									obj:enable_attachable_item(false)
-									if obj:section() == "binocular_a" or
+									if obj:section() == "wpn_binoc" or
 									   obj:section() == "hand_radio"
 									then
 										printf("droped [%s] for [%s]", obj:name(), self.npc:name())
