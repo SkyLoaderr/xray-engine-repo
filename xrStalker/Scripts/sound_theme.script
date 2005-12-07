@@ -83,6 +83,11 @@ ph_snd_themes["arena_fight_victory_notime"]	= {[[characters_voice\human_01\scena
 ph_snd_themes["arena_fight_lose"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_out_of_time_win]]}
 ph_snd_themes["arena_fight_death"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_dead]]}
 
+ph_snd_themes["bar_start_megafon"]		= {[[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_1]],
+									   [[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_2]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_1]],
+									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_2]]}
+
 ph_snd_themes["mon_monolith_damaged"]			= {[[characters_voice\human_01\scenario\sarcofag\monolith_damaged]]}
 ph_snd_themes["mon_monolith_heavy_damaged"]		= {[[characters_voice\human_01\scenario\sarcofag\monolith_heavy_damaged]]}
 ph_snd_themes["mon_monolith_alarm"]				= {[[characters_voice\human_01\scenario\sarcofag\monolith_alarm]]}
