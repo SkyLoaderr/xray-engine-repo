@@ -11,6 +11,8 @@ on_info = {+agr_factory_heli_start} heli_move@descent
 path_move = agr_factory_heli1_move
 on_signal = path_end | heli_move@idle
 combat_ignore = true
+invulnerable = true
+immortal = true
 
 [heli_move@idle]
 path_move = agr_heli1_idle_move
@@ -29,6 +31,8 @@ path_move = agr_factory_heli1_move1
 combat_use_rocket = false
 on_actor_in_zone = agr_factory_heli_zone | %=heli_set_enemy_actor% 
 on_game_timer = 72000 | heli_move@idle3
+invulnerable = false
+immortal = false
 
 [heli_move@idle3]
 path_move = agr_heli1_idle_move
