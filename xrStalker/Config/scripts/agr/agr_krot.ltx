@@ -8,7 +8,16 @@ path_walk = agr_krot_hold_fake_walk
 path_look = agr_krot_hold_fake_look
 combat_ignore_cond = always
 meet = meet@hold
+on_info = {+agr_help_stalkers_done} walker@hold2
+
+
+[walker@hold2]
+path_walk = agr_krot_hold_fake_walk
+path_look = agr_krot_hold_fake_look
+combat_ignore_cond = always
+meet = meet@hold
 on_info = {+agr_krot_skirmish_start} walker@combat
+on_timer   = 30000 | %+agr_krot_skirmish_start%
 
 [meet@hold]
 meet_state     = 0 | hide_na@speech1

@@ -464,7 +464,11 @@ function load_states( gname, type )
 					end
 				end
 
-				if actor:has_info( "agr_krot_skirmish_start" ) and actor:has_info( "agr_help_stalkers_done" ) then
+				if actor:has_info( "agr_krot_skirmish_start" ) and
+				   actor:has_info( "agr_help_stalkers_done" ) or
+				   xr_conditions.gulag_empty(nil, nil, {"agr_factory_defence"})
+				then
+					--actor:give_info_portion( "agr_krot_skirmish_start" )	
 					return 2
 				else
 					return 1
