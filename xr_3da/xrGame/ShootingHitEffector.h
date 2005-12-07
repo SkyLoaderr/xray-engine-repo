@@ -20,14 +20,7 @@ struct SShootingEffector {
 class CShootingHitEffectorPP : public CEffectorPP {
 	typedef CEffectorPP inherited;	
 	const SShootingEffector*	se;
-/*
-	SPPInfo state;			// current state
-	float	m_total;		// total PP time
-	float	m_attack;		// attack time in percents	[0..1]
-	float	m_release;		// release time in percents	[0..1]
-*/
 public:
-//					CShootingHitEffectorPP	(const SPPInfo &ppi, float life_time, float attack_time = 0.0f, float release_time = 0.0f);
 					CShootingHitEffectorPP	(SShootingEffector* eff);
 	virtual	BOOL	Process					(SPPInfo& pp);
 };
