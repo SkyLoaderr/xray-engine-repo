@@ -108,13 +108,7 @@ function act_state_mgr_direction_turn:turn()
 	   level.object_by_id(self.st.look_object) ~= nil 
 	then
 		self.st.current_object = self.st.look_object
-		if self.st.point_obj_dir == true then
-			local dir = vector():sub(level.object_by_id(self.st.look_object):position(), self.object:position())
-			dir.y = 0
-			self.object:set_sight(look.direction, dir, true)
-		else
-			self.object:set_sight(level.object_by_id(self.st.look_object),true)	
-		end
+		look_at_object(self.object, self.st)
 	else
 		self.st.current_object = nil
 		local dir = vector():sub(self.st.target_position, self.object:position())
@@ -159,14 +153,7 @@ function update_movement_direction(npc, st)
 		   level.object_by_id(st.look_object) ~= nil 
 		then
 			st.current_object = st.look_object
-			st.point_obj_dir = state_lib.states[st.target_state].animation ~= nil
-			if st.point_obj_dir == true then
-				local dir = vector():sub(level.object_by_id(st.look_object):position(), npc:position())
-				dir.y = 0
-				npc:set_sight(look.direction, dir, true)
-			else
-				npc:set_sight(level.object_by_id(st.look_object),true)	
-			end									
+			look_at_object(npc, st)
 		elseif st.target_position ~= nil then
 			st.current_object = nil
 			npc:set_sight(look.direction, vector():sub(st.target_position, npc:position()), true)
@@ -177,4 +164,14 @@ function update_movement_direction(npc, st)
 	else
 		npc:set_sight(look.path_dir, nil, 0)
 	end	
+end
+
+function look_at_object(npc, st)
+	st.point_obj_dir = state_lib.states[st.target_state].animation ~= nil
+	if st.point_obj_dir == true then
+		npc:set_sight(level.object_by_id(st.look_object),true, false, true)
+	else
+		npc:set_sight(level.object_by_id(st.look_object),true, true)	
+	end									
+
 end
