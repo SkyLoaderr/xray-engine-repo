@@ -1427,7 +1427,7 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 	end
 	
 	if gulag_type == "gar_psevdowounded" then
-		return npc_community == "bandit"
+		return se_obj:name() == "gar_wounded_bandit" or se_obj:name() == "gar_sniper_bandit"
 	end
 	
 	return false
