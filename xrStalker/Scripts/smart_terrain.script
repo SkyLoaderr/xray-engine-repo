@@ -549,11 +549,12 @@ function se_smart_terrain:remove_gulag( disable )
 		self.idle_end = nil
 	end
 
-	printf( "[smart_terrain %s] removing gulag type=%s", self:name(), self.gparams.type )
-
 	self.gulag = xr_gulag.gulag( self, self.gparams.type, self.gparams.squad, self.gparams.groups, self.npc_info, self.gparams.capacity )
+	self.gulag:load_jobs()
 
 	self.gulag_working = false
+
+	printf( "[smart_terrain %s] removed gulag type=%s", self:name(), self.gparams.type )
 end
 
 -- заполняет таблицу monster_classes
@@ -634,10 +635,11 @@ function se_smart_terrain:update()
 			self.check_time = game.get_game_time() + check_period
 
 			-- проверять, не собрался ли кто-то к этому времени уже уходить
-			local sn = 0
+			local sn   = 0
+			local time = game.get_game_time()
 
 			for id, npc_info in pairs( self.npc_info ) do
-				if npc_info.stay_end < game.get_game_time() or
+				if npc_info.stay_end < time or
 				   ( npc_info.cond and xr_logic.pick_section_from_condlist( db.actor_proxy, npc_info.se_obj, npc_info.cond ) == nil )
 				then
 					self:unregister_npc( npc_info.se_obj )
@@ -647,7 +649,8 @@ function se_smart_terrain:update()
 			end
 
 			-- если мужиков в гулаге больше не осталось или условия существования гулага не выполняются, то убрать гулаг
-			if sn == 0 or not self:is_gulag_available() then
+--			if sn == 0 or not self:is_gulag_available() then
+			if sn == 0 then
 				self:remove_gulag()
 			else
 				self.gulag:update()
