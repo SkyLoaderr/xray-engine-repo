@@ -872,7 +872,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		   (state_lib.states[state_name].weapon ~= "fire" and
 		   state_lib.states[state_name].weapon ~= "sniper_fire")		
 		then		
-			self.npc:set_item(state_mgr_weapon.get_idle_state(state_name), self.npc:best_weapon())
+			self.npc:set_item(state_mgr_weapon.get_idle_state(state_name), state_mgr_weapon.get_weapon(self.npc, state_name))
 			--printf("[%s] stop shooting", self.npc:name())
 		end
 

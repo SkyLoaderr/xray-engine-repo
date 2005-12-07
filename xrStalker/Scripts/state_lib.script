@@ -518,6 +518,7 @@ states = {
 				animation = "psy_armed"
 			},
 	psy_armed = {weapon = "unstrapped",
+				weapon_slot = 1,
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
@@ -525,6 +526,7 @@ states = {
 				animation = "psy_armed"
 			},
 	psy_shoot = {weapon = "fire",
+				weapon_slot = 1,
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
@@ -540,6 +542,7 @@ states = {
 				animation = "psycho_pain"
 			},
 	psycho_shoot = {weapon = "fire",
+				weapon_slot = 1,
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,

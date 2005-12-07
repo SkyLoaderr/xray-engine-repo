@@ -138,7 +138,7 @@ function act_state_mgr_weapon_unstrapp:__init(name, st) super (nil, name)
 end
 function act_state_mgr_weapon_unstrapp:initialize()
 	action_base.initialize(self)
-	self.object:set_item(get_idle_state(self.st.target_state), self.object:best_weapon())
+	self.object:set_item(get_idle_state(self.st.target_state), get_weapon(self.object, self.st.target_state))
 end
 function act_state_mgr_weapon_unstrapp:execute()
 	action_base.execute(self)
@@ -154,7 +154,7 @@ end
 function act_state_mgr_weapon_strapp:initialize()
 	action_base.initialize(self)
 	if strappable_weapon(self.object:best_weapon()) then
-		self.object:set_item(object.strap, self.object:best_weapon())
+		self.object:set_item(object.strap, get_weapon(self.object, self.st.target_state))
 	else
 		self.object:set_item(object.idle, nil)
 	end
@@ -187,7 +187,7 @@ function act_state_mgr_weapon_fire:__init(name, st) super (nil, name)
 end
 function act_state_mgr_weapon_fire:initialize()
 	action_base.initialize(self)
-	self.object:set_item(get_idle_state(self.st.target_state), self.object:best_weapon())
+	self.object:set_item(get_idle_state(self.st.target_state), get_weapon(self.object, self.st.target_state))
 end
 function act_state_mgr_weapon_fire:execute()
 	action_base.execute(self)
@@ -203,7 +203,7 @@ function act_state_mgr_weapon_drop:__init(name, st) super (nil, name)
 end
 function act_state_mgr_weapon_drop:initialize()
 	action_base.initialize(self)
-	self.object:set_item(object.drop, self.object:best_weapon())
+	self.object:set_item(object.drop, get_weapon(self.object, self.st.target_state))
 end
 function act_state_mgr_weapon_drop:execute()
 	action_base.execute(self)
@@ -220,6 +220,14 @@ function get_idle_state(target_state)
 		return object.aim1
 	else
 		return object.idle
+	end
+end
+
+function get_weapon(obj, target_state)
+	if state_lib.states[target_state].weapon_slot == nil then
+		return obj:best_weapon()
+	else
+		return obj:item_in_slot(state_lib.states[target_state].weapon_slot)
 	end
 end
 
