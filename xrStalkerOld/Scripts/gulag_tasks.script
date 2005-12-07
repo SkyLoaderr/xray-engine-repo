@@ -100,14 +100,10 @@ end
 function loadStates(gname, type)
 	if type == "test" or type == "test1" or type == "test2" then
 		return function(gulag)
-			if gulag.state == 0 then
-				if db.actor:has_info( "tutorial_end" ) then
-					return 1
-				else
-					return 0
-				end
-			else
+			if db.actor:has_info( "tutorial_end" ) then
 				return 1
+			else
+				return 0
 			end
 		end
 	end

@@ -233,8 +233,9 @@ function gulag:object_setup_offline( obj_id )
 
 	self.Object[obj_id] = true
 
-	if self.npc_info[obj_id].se_obj.online then
-		self:object_setup_online( obj_id, level.object_by_id( obj_id ), true )
+	local obj = level.object_by_id( obj_id )
+	if obj ~= nil then
+		self:object_setup_online( obj_id, obj, true )
 	end
 end
 
