@@ -18,3 +18,23 @@
         Map spot info.
     </text>
 </string>
+<string id="cit_doctor_weapon_task_1_hint">
+    <text>
+        Отобранные у меня вещи и оружие.
+    </text>
+</string>
+<string id="cit_doctor_escape_task_1_hint">
+    <text>
+        Вход в канализацию
+    </text>
+</string>
+<string id="cit_doctor_escape_task_2_hint">
+    <text>
+        Спуск в канализацию
+    </text>
+</string>
+<string id="cit_doctor_escape_task_4_hint">
+    <text>
+        Выход из города
+    </text>
+</string>

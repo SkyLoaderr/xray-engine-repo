@@ -98,3 +98,38 @@
         Разыскать и обследовать тайник Стрелка.
     </text>
 </string>
+<string id="cit_doctor_weapon_task">
+    <text>
+        Найти свои вещи и оружие.
+    </text>
+</string>
+<string id="cit_doctor_weapon_task_1">
+    <text>
+        Найти свои вещи и оружие.
+    </text>
+</string>
+<string id="cit_doctor_escape_task">
+    <text>
+        Выбраться из мертвого города.
+    </text>
+</string>
+<string id="cit_doctor_escape_task_1">
+    <text>
+        Выбраться из камеры.
+    </text>
+</string>
+<string id="cit_doctor_escape_task_2">
+    <text>
+        Спуститься в канализацию.
+    </text>
+</string>
+<string id="cit_doctor_escape_task_3">
+    <text>
+        Найти машину.
+    </text>
+</string>
+<string id="cit_doctor_escape_task_4">
+    <text>
+        Добраться до выхода из города.
+    </text>
+</string>
