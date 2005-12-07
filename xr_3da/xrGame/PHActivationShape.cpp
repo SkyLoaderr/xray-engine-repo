@@ -141,13 +141,15 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		for(int i=0;num_it>i;++i){
 			max_depth=0.f;
 			ph_world->Step();
+			
 			if(max_depth	<	resolve_depth) 
 			{
 				ret=true;
 				break;
-			}	
+			}
+			ph_world->CutVelocity(max_vel,max_a_vel);
 		}
-		ph_world->CutVelocity(max_vel,max_a_vel);
+		 
 	}
 	ph_world->UnFreeze();
 #ifdef	DEBUG 
