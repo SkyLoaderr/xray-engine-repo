@@ -246,8 +246,6 @@ end
 function gulag:object_setup_online( obj_id, obj, need_setup_logic )
 	printf( "[smart_terrain %s] gulag: object_setup_online: obj=%s need_setup_logic=%s", self.name, obj:name(), tostring( need_setup_logic) )
 
-	--db.storage[obj_id].gulag = self
-
 	self.Object[obj_id] = obj
 
 	if need_setup_logic and self.ObjectJob[obj_id] then
@@ -264,13 +262,7 @@ end
 function gulag:removeObject( obj_id )
 	local obj = self.Object[obj_id]
 
---	if obj ~= true and obj:alive() then
-		self:free_obj_and_reinit( obj_id )
-
---		db.storage[obj_id].gulag = nil
---	else
---		self:free_obj( obj_id )
---	end
+	self:free_obj_and_reinit( obj_id )
 
 	self.Object[obj_id]      = nil
 	self.restrictors[obj_id] = nil
