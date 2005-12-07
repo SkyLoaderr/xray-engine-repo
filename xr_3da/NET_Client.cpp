@@ -565,12 +565,15 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 
     DPNHANDLE	hAsync=0;
 	VERIFY		(NET);
-	R_CHK(NET->Send(
+	HRESULT		hr_		= NET->Send(
 		&desc,1,
 		dwTimeout,
 		0,&hAsync,
 		dwFlags | DPNSEND_COALESCE
-		));
+		);
+	if (FAILED(hr_))	{
+		Msg	("! ERROR: Failed to send net-packet, reason: %s",::Debug.error2string(hr_));
+	}
 }
 
 BOOL	IPureClient::net_HasBandwidth	()

@@ -17,6 +17,8 @@ public:
 		u32					MemoryUsage	: 28;
 
 	}									flags;
+	fastdelegate::FastDelegate1<u32>	bind;
+
 	IDirect3DBaseTexture9*				pSurface;
 	CAviPlayerCustom*					pAVI;
 	CTheoraSurface*						pTheora;
@@ -34,10 +36,17 @@ public:
 	IC void								desc_enshure	()		{ if (!desc_valid()) desc_update(); }
 	void								desc_update		();
 public:
+	void	__stdcall					apply_load		(u32	stage);
+	void	__stdcall					apply_theora	(u32	stage);
+	void	__stdcall					apply_avi		(u32	stage);
+	void	__stdcall					apply_seq		(u32	stage);
+	void	__stdcall					apply_normal	(u32	stage);
+
 	void								Preload			();
 	void								Load			();
+	void								PostLoad		();
 	void								Unload			(void);
-	void								Apply			(u32 dwStage);
+//	void								Apply			(u32 dwStage);
 
 	void								surface_set		(IDirect3DBaseTexture9* surf);
 	IDirect3DBaseTexture9*				surface_get 	();

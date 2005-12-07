@@ -130,7 +130,7 @@ void execUserScript				( )
 }
 void slowdownthread	( void* )
 {
-//	Sleep	(30*1000);
+//	Sleep		(30*1000);
 	for (;;)	{
 		if (Device.Statistic.fFPS<30) Sleep(1);
 		if (Device.mt_bMustExit)	return;
@@ -142,7 +142,7 @@ void slowdownthread	( void* )
 }
 void CheckPrivilegySlowdown		( )
 {
-#ifdef DEBUG
+//.#ifdef DEBUG
 	if	(strstr(Core.Params,"-slowdown"))	{
 		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
@@ -150,18 +150,14 @@ void CheckPrivilegySlowdown		( )
 		thread_spawn(slowdownthread,"slowdown",0,0);
 		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
-#endif
+//.#endif
 }
 
 void Startup					( )
 {
-	Msg				("strt-A: %d",Memory.mem_usage()/1024);
 	execUserScript	();
-	Msg				("strt-B: %d",Memory.mem_usage()/1024);
 	InitInput		();
-	Msg				("strt-C: %d",Memory.mem_usage()/1024);
 	InitSound		();
-	Msg				("strt-D: %d",Memory.mem_usage()/1024);
 
 	// ...command line for auto start
 	{

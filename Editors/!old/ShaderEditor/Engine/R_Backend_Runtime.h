@@ -62,7 +62,9 @@ ICF void	CBackend::set_States		(IDirect3DStateBlock9* _state)
 	if (state!=_state)
 	{
 		PGO				(Msg("PGO:state_block"));
+#ifdef DEBUG
 		stat.states		++;
+#endif
 		state			= _state;
 		state->Apply	();
 	}
@@ -128,7 +130,9 @@ ICF void CBackend::set_Format			(IDirect3DVertexDeclaration9* _decl)
 	if (decl!=_decl)
 	{
 		PGO				(Msg("PGO:v_format:%x",_decl));
+#ifdef DEBUG
 		stat.decl		++;
+#endif
 		decl			= _decl;
 		CHK_DX			(HW.pDevice->SetVertexDeclaration(decl));
 	}
@@ -167,7 +171,9 @@ ICF void CBackend::set_Vertices			(IDirect3DVertexBuffer9* _vb, u32 _vb_stride)
 	if ((vb!=_vb) || (vb_stride!=_vb_stride))
 	{
 		PGO				(Msg("PGO:VB:%x,%d",_vb,_vb_stride));
+#ifdef DEBUG
 		stat.vb			++;
+#endif
 		vb				= _vb;
 		vb_stride		= _vb_stride;
 		CHK_DX			(HW.pDevice->SetStreamSource(0,vb,0,vb_stride));
@@ -179,13 +185,15 @@ ICF void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
 	if (ib!=_ib)
 	{
 		PGO				(Msg("PGO:IB:%x",_ib));
+#ifdef DEBUG
 		stat.ib			++;
+#endif
 		ib				= _ib;
 		CHK_DX			(HW.pDevice->SetIndices(ib));
 	}
 }
 
-IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
+ICF void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
 {
 	stat.calls			++;
 	stat.verts			+= countV;
@@ -195,7 +203,7 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 coun
 	PGO					(Msg("PGO:DIP:%dv/%df",countV,PC));
 }
 
-IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
+ICF void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 {
 	stat.calls			++;
 	stat.verts			+= 3*PC;
@@ -205,7 +213,7 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 	PGO					(Msg("PGO:DIP:%dv/%df",3*PC,PC));
 }
 
-IC void CBackend::set_Shader			(Shader* S, u32 pass)
+ICF void CBackend::set_Shader			(Shader* S, u32 pass)
 {
 	set_Element			(S->E[0],pass);
 }
@@ -252,9 +260,9 @@ IC void	CBackend::set_ColorWriteEnable	(u32 _mask )
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE3,	_mask	));	
 	}
 }
-IC void	CBackend::set_CullMode			(u32 _mode)
+ICF void	CBackend::set_CullMode		(u32 _mode)
 {
-	if (cull_mode			!= _mode)		{ cull_mode = _mode;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			_mode				)); }
+	if (cull_mode		!= _mode)		{ cull_mode = _mode;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			_mode				)); }
 }
 
 #endif

@@ -102,32 +102,40 @@ void CBackend::set_Textures			(STextureList* _T)
 	T				= _T;
 	u32 _last_ps	= 0;
 	u32 _last_vs	= 0;
-	for (u32 it=0; it<T->size(); it++)
+	STextureList::iterator	_it		= _T->begin	();
+	STextureList::iterator	_end	= _T->end	();
+	for (; _it!=_end; _it++)
 	{
-		std::pair<u32,ref_texture>&		loader	=	(*T)[it];
+		std::pair<u32,ref_texture>&		loader	=	*_it;
 		u32			load_id		= loader.first		;
 		CTexture*	load_surf	= &*loader.second	;
-		if (load_id>=256)		{
+		if (load_id<256)		{
+			// ordinary pixel surface
+			if (load_id>_last_ps)		_last_ps	=	load_id;
+			if (textures_ps[load_id]!=load_surf)	{
+				textures_ps[load_id]	= load_surf			;
+#ifdef DEBUG
+				stat.textures			++;
+#endif
+				if (load_surf)			{
+					PGO					(Msg("PGO:tex%d:%s",load_id,load_surf->cName.c_str()));
+					load_surf->bind		(load_id);
+//					load_surf->Apply	(load_id);
+				}
+			}
+		} else {
 			// d-map or vertex	
 			u32		load_id_remapped	= load_id-256;
 			if (load_id_remapped>_last_vs)	_last_vs	=	load_id_remapped;
 			if (textures_vs[load_id_remapped]!=load_surf)	{
 				textures_vs[load_id_remapped]	= load_surf			;
+#ifdef DEBUG
 				stat.textures	++;
+#endif
 				if (load_surf)	{
 					PGO					(Msg("PGO:tex%d:%s",load_id,load_surf->cName.c_str()));
-					load_surf->Apply	(load_id);
-				}
-			}
-		} else {
-			// ordinary pixel surface
-			if (load_id>_last_ps)		_last_ps	=	load_id;
-			if (textures_ps[load_id]!=load_surf)	{
-				textures_ps[load_id]	= load_surf			;
-				stat.textures			++;
-				if (load_surf)	{
-					PGO					(Msg("PGO:tex%d:%s",load_id,load_surf->cName.c_str()));
-					load_surf->Apply	(load_id);
+					load_surf->bind		(load_id);
+//					load_surf->Apply	(load_id);
 				}
 			}
 		}

@@ -100,15 +100,17 @@ public:
 		u32								polys;
 		u32								verts;
 		u32								calls;
-		u32								decl;
 		u32								vs;
 		u32								ps;
+#ifdef	DEBUG
+		u32								decl;
 		u32								vb;
 		u32								ib;
 		u32								states;			// Number of times the shader-state changes
 		u32								textures;		// Number of times the shader-tex changes
 		u32								matrices;		// Number of times the shader-xform changes
 		u32								constants;		// Number of times the shader-consts changes
+#endif
 		u32								xforms;
 		u32								target_rt;
 		u32								target_zb;

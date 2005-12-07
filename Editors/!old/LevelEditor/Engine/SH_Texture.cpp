@@ -32,6 +32,7 @@ CTexture::CTexture		()
 	flags.bUser			= false;
 	flags.seqCycles		= FALSE;
 	m_material			= 1.0f;
+	bind				= fastdelegate::FastDelegate1<u32>(this,&CTexture::apply_load);
 }
 
 CTexture::~CTexture()
@@ -55,51 +56,67 @@ IDirect3DBaseTexture9*	CTexture::surface_get	()
 	return pSurface;
 }
 
-void CTexture::Apply	(u32 dwStage)
+void CTexture::PostLoad	()
 {
-	if (!flags.bLoaded)			Load	();
+	if (pTheora)				bind		= fastdelegate::FastDelegate1<u32>(this,&CTexture::apply_theora);
+	else if (pAVI)				bind		= fastdelegate::FastDelegate1<u32>(this,&CTexture::apply_avi);
+	else if (!seqDATA.empty())	bind		= fastdelegate::FastDelegate1<u32>(this,&CTexture::apply_seq);
+	else						bind		= fastdelegate::FastDelegate1<u32>(this,&CTexture::apply_normal);
+}
 
-	if (pTheora){
-		if (pTheora->Update(Device.dwTimeDelta)){
-			R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
-			IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
-			D3DLOCKED_RECT		R;
-			R_CHK				(T2D->LockRect(0,&R,NULL,0));
-			R_ASSERT			(R.Pitch == int(pTheora->Width()*4));
-			pTheora->DecompressFrame((u32*)R.pBits);
-			R_CHK				(T2D->UnlockRect(0));
-		}
-	}else if (pAVI){
-		if (pAVI->NeedUpdate()){
-			R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
-			IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
+void CTexture::apply_load	(u32 dwStage)	{
+	if (!flags.bLoaded)		Load			()	;
+	else					PostLoad		()	;
+	bind					(dwStage)			;
+};
 
-			// AVI
-			D3DLOCKED_RECT R;
-			R_CHK	(T2D->LockRect(0,&R,NULL,0));
-			R_ASSERT(R.Pitch == int(pAVI->m_dwWidth*4));
-			//		R_ASSERT(pAVI->DecompressFrame((u32*)(R.pBits)));
-			BYTE* ptr; pAVI->GetFrame(&ptr);
-			CopyMemory(R.pBits,ptr,pAVI->m_dwWidth*pAVI->m_dwHeight*4);
-			//		R_ASSERT(pAVI->GetFrame((BYTE*)(&R.pBits)));
-
-			R_CHK	(T2D->UnlockRect(0));
-		}
-	} else if (!seqDATA.empty()) {
-		// SEQ
-		u32	frame		= Device.TimerAsyncMM()/seqMSPF; //Device.dwTimeGlobal
-		u32	frame_data	= seqDATA.size();
-		if (flags.seqCycles)		{
-			u32	frame_id	= frame%(frame_data*2);
-			if (frame_id>=frame_data)	frame_id = (frame_data-1) - (frame_id%frame_data);
-			pSurface 			= seqDATA[frame_id];
-		} else {
-			u32	frame_id	= frame%frame_data;
-			pSurface 			= seqDATA[frame_id];
-		}
+void CTexture::apply_theora	(u32 dwStage)	{
+	if (pTheora->Update(Device.dwTimeDelta)){
+		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
+		IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
+		D3DLOCKED_RECT		R;
+		R_CHK				(T2D->LockRect(0,&R,NULL,0));
+		R_ASSERT			(R.Pitch == int(pTheora->Width()*4));
+		pTheora->DecompressFrame((u32*)R.pBits);
+		R_CHK				(T2D->UnlockRect(0));
 	}
 	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
-}
+};
+void CTexture::apply_avi	(u32 dwStage)	{
+	if (pAVI->NeedUpdate()){
+		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
+		IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
+
+		// AVI
+		D3DLOCKED_RECT R;
+		R_CHK	(T2D->LockRect(0,&R,NULL,0));
+		R_ASSERT(R.Pitch == int(pAVI->m_dwWidth*4));
+		//		R_ASSERT(pAVI->DecompressFrame((u32*)(R.pBits)));
+		BYTE* ptr; pAVI->GetFrame(&ptr);
+		CopyMemory(R.pBits,ptr,pAVI->m_dwWidth*pAVI->m_dwHeight*4);
+		//		R_ASSERT(pAVI->GetFrame((BYTE*)(&R.pBits)));
+
+		R_CHK	(T2D->UnlockRect(0));
+	}
+	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
+};
+void CTexture::apply_seq	(u32 dwStage)	{
+	// SEQ
+	u32	frame		= Device.TimerAsyncMM()/seqMSPF; //Device.dwTimeGlobal
+	u32	frame_data	= seqDATA.size();
+	if (flags.seqCycles)		{
+		u32	frame_id	= frame%(frame_data*2);
+		if (frame_id>=frame_data)	frame_id = (frame_data-1) - (frame_id%frame_data);
+		pSurface 			= seqDATA[frame_id];
+	} else {
+		u32	frame_id	= frame%frame_data;
+		pSurface 			= seqDATA[frame_id];
+	}
+	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
+};
+void CTexture::apply_normal	(u32 dwStage)	{
+	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
+};
 
 void CTexture::Preload	()
 {
@@ -250,6 +267,7 @@ void CTexture::Load		()
 			flags.MemoryUsage		=	mem;
 		}
 	}
+	PostLoad	()		;
 }
 
 void CTexture::Unload	()
@@ -265,6 +283,8 @@ void CTexture::Unload	()
 
 	xr_delete		(pAVI);
 	xr_delete		(pTheora);
+
+	bind			= fastdelegate::FastDelegate1<u32>(this,&CTexture::apply_load);
 }
 
 void CTexture::desc_update	()
