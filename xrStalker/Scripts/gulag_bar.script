@@ -398,7 +398,7 @@ function load_job(sj, gname, type, squad, groups)
 
     -- Гулаг сталкеров на заставе 1
 
-    if type == "bar_dolg_zastava1" then 
+    if type == "bar_zastava" then 
         t = { section = "logic@bar_dolg_zastava1_cammander_1",
         idle = 0,
         prior = 9, state = {0},
@@ -420,7 +420,7 @@ function load_job(sj, gname, type, squad, groups)
 
     -- Гулаг сталкеров на заставе 2
 
-    if type == "bar_dolg_zastava2" then 
+    if type == "bar_zastava2" then 
         for i = 1,3 do
             t = { section = "logic@bar_dolg_zastava2_walker"..i,
                     idle = 0,
@@ -1116,13 +1116,13 @@ function load_states(gname, type)
 		end
 	end
 
-    if type == "bar_dolg_zastava1" then
+    if type == "bar_zastava" then
 		return function(gulag)
 			return 0
 		end
     end
 
-    if type == "bar_dolg_zastava2" then
+    if type == "bar_zastava2" then
 		return function(gulag)
 			return 0
 		end
@@ -1264,10 +1264,10 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "bar_dolg_bunker" then
 		return npc_community == "dolg"
 	end
-	if gulag_type == "bar_dolg_zastava1" then
+	if gulag_type == "bar_zastava" then
 		return npc_community == "dolg"
 	end
-	if gulag_type == "bar_dolg_zastava2" then
+	if gulag_type == "bar_zastava2" then
 		return npc_community == "dolg"
 	end
 	if gulag_type == "bar_evil_veterans" then
