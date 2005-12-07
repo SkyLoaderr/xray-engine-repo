@@ -361,7 +361,7 @@ void CStalkerActionSmartTerrain::execute				()
 	VERIFY										(stalker->m_smart_terrain_id != 0xffff);
 
 	CALifeSmartTerrainTask						*task = stalker->brain().smart_terrain().task(stalker);
-	THROW										(task);
+	THROW2										(task,"Smart terrain is assigned but returns no task");
 	if (object().ai_location().game_vertex_id() != task->game_vertex_id()) {
 		object().movement().set_path_type		(MovementManager::ePathTypeGamePath);
 		object().movement().set_game_dest_vertex(task->game_vertex_id());
