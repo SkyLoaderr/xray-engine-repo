@@ -9,12 +9,13 @@ struct SShootingEffector {
 	float	time;
 	float	time_attack;
 	float	time_release;
-
+/*
 	// camera effects
 	float	ce_time;
 	float	ce_amplitude;
 	float	ce_period_number;
 	float	ce_power;
+*/
 };
 
 class CShootingHitEffectorPP : public CEffectorPP {

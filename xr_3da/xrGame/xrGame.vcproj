@@ -5858,53 +5858,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Custom"
-						Filter="">
-						<File
-							RelativePath=".\pp_effector_custom.cpp">
-						</File>
-						<File
-							RelativePath=".\pp_effector_custom.h">
-						</File>
-						<Filter
-							Name="Postprocess"
-							Filter="">
-							<File
-								RelativePath=".\pp_effector_distance.cpp">
-							</File>
-							<File
-								RelativePath=".\pp_effector_distance.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="Postprocess"
-						Filter="">
-						<File
-							RelativePath=".\night_vision_effector.cpp">
-						</File>
-						<File
-							RelativePath=".\night_vision_effector.h">
-						</File>
-						<File
-							RelativePath=".\PostprocessAnimator.cpp">
-						</File>
-						<File
-							RelativePath=".\PostprocessAnimator.h">
-						</File>
-						<Filter
-							Name="Zones"
-							Filter="">
-							<File
-								RelativePath=".\zone_effector.cpp">
-							</File>
-							<File
-								RelativePath=".\zone_effector.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="Monsters"
+						Name="monsters_???"
 						Filter="">
 						<File
 							RelativePath=".\ai\Monsters\ai_monster_effector.cpp">
@@ -5936,6 +5890,40 @@
 						<File
 							RelativePath=".\ai\Monsters\ai_monster_effector.h">
 						</File>
+						<File
+							RelativePath=".\pp_effector_custom.cpp">
+						</File>
+						<File
+							RelativePath=".\pp_effector_custom.h">
+						</File>
+						<File
+							RelativePath=".\pp_effector_distance.cpp">
+						</File>
+						<File
+							RelativePath=".\pp_effector_distance.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Postprocess"
+						Filter="">
+						<File
+							RelativePath=".\night_vision_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\night_vision_effector.h">
+						</File>
+						<File
+							RelativePath=".\PostprocessAnimator.cpp">
+						</File>
+						<File
+							RelativePath=".\PostprocessAnimator.h">
+						</File>
+						<File
+							RelativePath=".\zone_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\zone_effector.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="Weapon"
@@ -5958,20 +5946,6 @@
 						<File
 							RelativePath=".\EffectorZoomInertion.h">
 						</File>
-						<Filter
-							Name="Explode"
-							Filter="">
-							<File
-								RelativePath=".\explode_effector.cpp">
-							</File>
-							<File
-								RelativePath=".\explode_effector.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="Camera"
-						Filter="">
 					</Filter>
 				</Filter>
 				<Filter
