@@ -1017,6 +1017,21 @@ function setGulagEnemy(name_or_sid, victim)
 	end
 end
 
+-- сделать указанного персонажа врагом всех персонажей смарта, которые в онлайне
+function setGulagNeutral(name_or_sid, victim)
+	if not victim then
+		abort("setGulagEnemy: victim == nil")
+	end
+
+	local gulag = get_gulag( name_or_sid )
+
+	for obj_id, obj in pairs(gulag.Object) do
+		if obj ~= true then
+			obj:set_relation( game_object.neutral, victim )
+		end
+	end
+end
+
 -- получить номер состояния смарта по имени
 function getGulagState( name_or_sid )
 	local gulag = get_gulag( name_or_sid )
