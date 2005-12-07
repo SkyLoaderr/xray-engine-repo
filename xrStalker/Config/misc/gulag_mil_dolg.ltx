@@ -20,10 +20,6 @@ meet = meet@mil_dolg_skull
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
 
-[danger_condition@mil_dolg_skull]
-ignore_distance = 0
-ignore_types = corpse
-
 [meet@mil_dolg_skull]
 meet_dialog = mil_dolg_skull_dialog
 use = true
@@ -169,7 +165,7 @@ synpairs = ward@talk_hello
 
 [kamp1@mil_dolg_soldier2]
 center_point = camp_center2
-danger = danger_kamp@mil_dolg
+danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
 
 
@@ -241,7 +237,7 @@ synpairs = ward@talk_hello
 
 [kamp1@mil_dolg_soldier3]
 center_point = camp_center
-danger = danger_kamp@mil_dolg
+danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
 
 
@@ -284,7 +280,7 @@ attack_sound = false
 path_walk = ambush_walk5_3
 path_look = ambush_look5_3
 on_signal = return | kamp1@mil_dolg_soldier4
-danger = danger_condition@mil_dolg_soldier4
+danger = danger_condition@mil_dolg
 meet = meet@mil_dolg_soldier4
 combat_ignore_cond = {=check_fighting(704)} true
 
@@ -299,7 +295,7 @@ synpairs = ward@talk_hello
 
 [kamp1@mil_dolg_soldier4]
 center_point = camp_center
-danger = danger_kamp@mil_dolg
+danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
 
 
@@ -338,7 +334,7 @@ attack_sound = false
 path_walk = ambush_walk2_3
 path_look = ambush_look2_3
 on_signal = return | kamp1@mil_dolg_soldier5
-danger = danger_condition@mil_dolg_soldier5
+danger = danger_condition@mil_dolg
 meet = meet@mil_dolg_soldier5
 combat_ignore_cond = {=check_fighting(704)} true
 
@@ -353,7 +349,7 @@ synpairs = ward@talk_hello
 
 [kamp1@mil_dolg_soldier5]
 center_point = camp_center
-danger = danger_kamp@mil_dolg_soldier5
+danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
 
 
@@ -409,7 +405,7 @@ danger = danger_condition@mil_dolg_soldier6
 [walker2@mil_dolg_soldier6]
 path_walk = ambush_walk3_3
 on_signal = return | kamp1@mil_dolg_soldier6
-danger = danger_condition@mil_dolg_soldier6
+danger = danger_condition@mil_dolg
 meet = meet@mil_dolg_soldier6
 combat_ignore_cond = {=check_fighting(704)} true
 
@@ -424,7 +420,7 @@ synpairs = ward@talk_hello
 
 [kamp1@mil_dolg_soldier6]
 center_point = camp_center
-danger = danger_kamp@mil_dolg_soldier6
+danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
 
 
@@ -479,6 +475,7 @@ no_move = true
 on_signal = action_end | %+mil_dolg_phase1% remark20@mil_dolg_skull_attack
 anim = wait
 danger = danger_condition@mil_dolg
+target = logic@mil_dolg_soldier4_attack
 
 [remark20@mil_dolg_skull_attack]
 no_rotate = true
