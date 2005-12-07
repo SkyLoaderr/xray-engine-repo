@@ -19,6 +19,7 @@ function actor_binder:net_spawn(data)
 
 	self.bCheckStart = true
 	self.weapon_hide = false -- спрятано или нет оружие при разговоре.
+	weapon_hide = false -- устанавливаем глобальный дефолтовый флаг.
 
 	if object_binder.net_spawn(self,data) == false then
 		return false
