@@ -1670,38 +1670,7 @@ function load_states(gname, type)
 		end
 	end
 
---	if type == "esc_boars_dogs" then
---		return function(gulag)
---			local actor = db.actor
---			if not actor then
---				return gulag.state
---			end
---
---			if gulag.state == 0 then
---				if actor:has_info("esc_boar_dogs_restrictor") then
---					return 1 -- бег в рестриктор
---				else
---					return 0
---				end
---			elseif gulag.state == 1 then
---				local z = db.zone_by_name["esc_boar_dogs_restrictor"]
---				if not z then
---					return 1
---				end
---
---				for id, obj in pairs(gulag.Object) do
---					if not utils.npc_in_zone(obj, z) then
---						return 1
---					end
---				end
---
---				return 2 -- роспуск рестриктора
---			else
---				return 2
---			end
---		end
---	end
-	
+
 	if type == "esc_boars_dogs" then
 	    return function(gulag)
 			if db.actor:has_info("esc_boar_dogs_restrictor") then
