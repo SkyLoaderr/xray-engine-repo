@@ -51,11 +51,11 @@
 <string id="bar_dolg_test_quest">
 	<text>Проверка для вступления в Долг</text>
 </string>
-<string id="bar_dolg_find_document">
-	<text>Возмите архивные документы в заброшенном ангаре.</text>
+<string id="bar_dolg_win_on_arena">
+	<text>Победить на Арене</text>
 </string>
-<string id="bar_dolg_document_to_ivancov">
-	<text>Отнесите документы капитану Иванцову</text>
+<string id="bar_dolg_return_to_ivancov">
+	<text>Вернуться к Иванцову с победой</text>
 </string>
 	
 	<string id="bar_dolg_rg6_quest">

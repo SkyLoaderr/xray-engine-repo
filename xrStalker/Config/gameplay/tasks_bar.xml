@@ -161,17 +161,14 @@
 			<article>descr_bar_dolg_test_quest</article>
 		</objective>
 		<objective>
-			<text>bar_dolg_find_document</text>
+			<text>bar_dolg_win_on_arena</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="bar_dolg_find_document">green_location</map_location_type>
-			<object_story_id>bar_dolg_arhive_documents</object_story_id>			
-			<function_complete>bar_rostok_tasks.has_dolg_arhive_documents</function_complete>
-			<infoportion_set_complete>bar_dolg_veteran_gain</infoportion_set_complete>
+			<infoportion_complete>bar_arena_pseudodog_defeated</infoportion_complete>
 		</objective>
 		<objective>
-			<text>bar_dolg_document_to_ivancov</text>
+			<text>bar_dolg_return_to_ivancov</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="bar_dolg_document_to_ivancov">green_location</map_location_type>
+			<map_location_type hint="bar_dolg_return_to_ivancov">green_location</map_location_type>
 			<object_story_id>bar_dolg_captain_ivancov</object_story_id>
 			<infoportion_complete>bar_dolg_veteran_done</infoportion_complete>
 		</objective>
