@@ -25,8 +25,7 @@ function is_wounded(first_speaker, second_speaker)
 	return xr_wounded.is_wounded(first_speaker, 0.2)
 end
 function is_opp_wounded(first_speaker, second_speaker, dialog_id)
-	if second_speaker:object("medkit") ~= nil or
-	   second_speaker:object("bandage") ~= nil then
+	if second_speaker:object("medkit") ~= nil then
 		return false
 	end
 
@@ -117,10 +116,7 @@ function allow_wounded_dialog(object, victim, id)
 	if db.storage[victim:id()].wounded == nil then
 		return false
 	end	
-	if (db.storage[victim:id()].wounded.help_dialog == "general_help_dialogs" and
-	   (id == "dm_help_wounded_medkit_dialog" or id == "dm_help_wounded_bandage_dialog")) or
-	   (db.storage[victim:id()].wounded.help_dialog == id)	
-	then
+	if db.storage[victim:id()].wounded.help_dialog == id then
 		printf( "*DIALOGS*: allow_wounded_dialog id=%s TRUE", id )
 		return true
 	end
