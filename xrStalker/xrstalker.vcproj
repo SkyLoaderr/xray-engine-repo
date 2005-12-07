@@ -2715,6 +2715,9 @@
 					Name="Binders"
 					Filter="">
 					<File
+						RelativePath=".\Scripts\actor_proxy.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\bind_heli.script">
 					</File>
 					<File

@@ -1,0 +1,48 @@
+----------------------------------------------------------------------------------------------------------------------
+-- Класс "actor_proxy". Обеспечивает поддержку актёра, даже если он в офлайне.
+----------------------------------------------------------------------------------------------------------------------
+class "actor_proxy"
+
+-- конструктор
+function actor_proxy:__init()
+end
+
+-- инициализация в момент регистрации серверных объектов.
+-- вызывается из se_smart_terrain:on_register()
+function actor_proxy:init()
+	self.online   = false
+	self.alife    = alife()
+	self.actor_id = self.alife:actor().id
+end
+
+function actor_proxy:has_info( name )
+	if self.online then
+--		printf( "actor_proxy: has_info online: info=%s", name )
+		return self.actor:has_info( name )
+	else
+--		printf( "actor_proxy: has_info offline: info=%s", name )
+		return self.alife:has_info( self.actor_id, name )
+	end
+end
+
+function actor_proxy:dont_has_info( name )
+	if self.online then
+--		printf( "actor_proxy: dont_has_info online: info=%s", name )
+		return self.actor:dont_has_info( name )
+	else
+--		printf( "actor_proxy: dont_has_info offline: info=%s", name )
+		return self.alife:dont_has_info( self.actor_id, name )
+	end
+end
+
+-- рождение актёра в онлайн
+function actor_proxy:net_spawn( obj )
+	self.online = true
+	self.actor  = obj
+end
+
+-- уход из онлайна
+function actor_proxy:net_destroy()
+	self.online = false
+	self.actor  = nil
+end

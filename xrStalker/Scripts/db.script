@@ -8,6 +8,7 @@ sl_by_name          = {}
 storage             = {}
 sound               = {}
 actor               = nil
+actor_proxy         = actor_proxy.actor_proxy()
 heli                = {}
 camp_storage        = {}
 story_by_id	        = {}
@@ -45,11 +46,13 @@ end
 
 function add_actor( obj )
 	actor = obj
+	actor_proxy:net_spawn( obj )
 	add_obj( obj )
 end
 
 function del_actor()
 	del_obj( actor )
+	actor_proxy:net_destroy()
 	actor = nil
 end
 
