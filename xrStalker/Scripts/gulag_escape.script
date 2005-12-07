@@ -1088,63 +1088,73 @@ function load_job(sj, gname, type, squad, groups)
 	end
 	
 	if type == "esc_boars_dogs" then
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
+		t = { section = "logic@esc_boars_dogs_old", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1152,124 +1162,74 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_boars_dogs", 
 			idle = 0,
 			prior = 5, state = {1},
-			in_rest = "", out_rest = "esc_boar_dogs_restrictor"
+			online = true,
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_boars_dogs", 
-			idle = 0,
-			prior = 5, state = {2},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
 	end
 	
 	if type == "esc_ambush" then
@@ -1744,7 +1704,11 @@ function load_states(gname, type)
 	
 	if type == "esc_boars_dogs" then
 	    return function(gulag)
-		    return 2
+			if db.actor:has_info("esc_boar_dogs_restrictor") then
+				return 1
+			else
+				return 0
+			end
 		end
 	end 
 	
