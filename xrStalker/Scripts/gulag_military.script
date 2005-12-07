@@ -993,6 +993,7 @@ end
 --------------------------------------------------------------------------
 function load_job_dolg (sj, gname, type, squad, groups)
     local t
+    -- первое состояние
     t = {section = "logic@mil_dolg_skull",
 		idle = 0,
 		prior = 13, state = {0},
@@ -1080,12 +1081,201 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		            end
 		}
 	table.insert(sj, t)	
+    -- второе состояние
+    t = {section = "logic@mil_dolg_skull_attack",
+		idle = 0,
+		prior = 13, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg" and info.story_id == 708
+		            end
+		}
+	table.insert(sj, t)	
 	
+    t = {section = "logic@mil_dolg_soldier1_attack",
+		idle = 0,
+		prior = 10, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+
+    t = {section = "logic@mil_dolg_soldier2_attack",
+		idle = 0,
+		prior = 12, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg" and info.story_id == 711
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier3_attack",
+		idle = 0,
+		prior = 10, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier4_attack",
+		idle = 0,
+		prior = 10, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier5_attack",
+		idle = 0,
+		prior = 10, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier6_attack",
+		idle = 0,
+		prior = 10, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+
+    t = {section = "logic@mil_dolg_soldier7_attack",
+		idle = 0,
+		prior = 10, state = {1},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+    -- третье состояние
+    t = {section = "logic@mil_dolg_skull_return",
+		idle = 0,
+		prior = 13, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg" and info.story_id == 708
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier1_return",
+		idle = 0,
+		prior = 10, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+
+    t = {section = "logic@mil_dolg_soldier2_return",
+		idle = 0,
+		prior = 12, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier3_return",
+		idle = 0,
+		prior = 10, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier4_return",
+		idle = 0,
+		prior = 10, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier5_return",
+		idle = 0,
+		prior = 10, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+	
+    t = {section = "logic@mil_dolg_soldier6_return",
+		idle = 0,
+		prior = 10, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
+
+    t = {section = "logic@mil_dolg_soldier7_return",
+		idle = 0,
+		prior = 10, state = {2},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.community == "dolg"
+		            end
+		}
+	table.insert(sj, t)	
 end
 --------------------------------------------------------------------------
 -- Функция проверки состояния гулага Долга
+-- Возвращаемые значения:
+--              0 - первое состояние (убийтсво патруля и сбор в сарае)
+--              1 - снайпер умер, атака на базу Свободы
+--              2 - Лукаш убит - возвращение на хутор
 --------------------------------------------------------------------------
 function check_dolg_state (gulag)
+    local actor = db.actor
+    
+    if actor:has_info ("mil_lukash_dead") == true then
+       return 2
+    end    
+    
+    if actor:has_info ("mil_dolg_skull_talk") == true then
+       return 1
+    end    
+    
     return 0
 end
 
