@@ -1,7 +1,7 @@
 [logic]
-active          = heli_move1
+active          = heli_move1@heli4
 
-[heli_move1]
+[heli_move1@heli4]
 path_move       = pri_heli4_wait2_path
 immortal        = true
 combat_ignore   = true
@@ -18,7 +18,13 @@ on_signal       = arrived | heli_move@wait_stadium
 path_move       = pri_heli4_wait_stadium_path
 engine_sound    = false
 combat_ignore   = true
-on_info         = {+pri_stadium_scene_start} heli_move@hunt_gigants
+on_info         = {+pri_stadium_scene_start} heli_move@wait_stadium2
+
+[heli_move@wait_stadium2]
+path_move       = pri_heli4_wait_stadium_path
+;engine_sound    = false
+combat_ignore   = true
+on_timer        = 3000 | heli_move@hunt_gigants
 
 [heli_move@hunt_gigants]
 path_move       = pri_heli4_hunt_path

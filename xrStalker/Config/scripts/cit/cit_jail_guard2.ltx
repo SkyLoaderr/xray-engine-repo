@@ -47,7 +47,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 ;--- говорим доктору, чтоб шел с нами
 ;-----------------------------------------------------------------------------------------------------------
 [remark@base_guard_talk_to_doctor]
-anim                = threat
+anim                = guard
 target              = 1200 ; doctor
 snd                 = cit_base_guard
 on_signal           = sound_end | remark@base_guard_talk_to_actor1 %+cit_jail_guard2_near_grates -cit_jail_guard2_talk_to_doctor%
