@@ -1,4 +1,5 @@
 function main()
+	heli_combat.debug_switch_combat_type()
 --	db.actor:give_money(393)
 
 --	db.actor:set_character_rank(10)

@@ -342,52 +342,6 @@ void SHeliMovementState::goByRoundPath(Fvector center_, float radius_, bool cloc
 	u32 pt_idx			= 0;
 	CPatrolPath* pp = xr_new<CPatrolPath>("heli_round_path");
 
-/*
-	float end_h;
-
-	need_to_del_path	= true;
-	u32 pt_idx			= 0;
-	CPatrolPath* pp = xr_new<CPatrolPath>("heli_round_path");
-	
-	Fvector c1,tmp_dir;
-	float r1 = curLinearSpeed*GetAngSpeedHeading(curLinearSpeed);
-	tmp_dir.setHP						(currPathH, currPathP);
-	tmp_dir.normalize_safe				();
-	tmp_dir.set							(-tmp_dir.z, tmp_dir.y, tmp_dir.x);
-
-	if(r1>EPS_L){
-
-		c1.mad								(currP,tmp_dir, r1);
-		tmp_dir.sub							(currP, c1);
-
-		float dist_centers	= c1.distance_to(center_);
-		float r_diff		= r1-radius_;
-		float x				= _sqrt(dist_centers*dist_centers-r_diff*r_diff);
-		float ang			= asinf(x/dist_centers);
-		angle_normalize_signed(ang);
-
-		tmp_dir.sub					(center_,c1);
-		float ang1 = tmp_dir.getH	();
-		angle_normalize_signed		(ang1);
-		end_h = ang1+ang;
-		angle_normalize_signed		(end_h);
-
-
-		Fvector dir_, new_pt;
-		dir_.setHP					(end_h,0.0f);
-		new_pt.mad					(c1,dir_,r1);
-		new_pt.y = GetSafeAltitude	();
-
-
-		string128 pt_name;
-		sprintf						(pt_name,"heli_path_pt_%d",pt_idx);
-		CPatrolPoint pt = CPatrolPoint(pp, new_pt, 0, 0, pt_name);
-		pp->add_vertex				(pt,pt_idx);
-		pt_idx++;
-	}else
-		end_h = tmp_dir.getH();
-*/
-
 	float start_h	= 0.0f;
 	float end_h		= PI_MUL_2-EPS;
 
@@ -416,12 +370,14 @@ void SHeliMovementState::goByRoundPath(Fvector center_, float radius_, bool cloc
 //find nearest point to start from...
 	u32 start_vertex_id		= 0;
 	float min_dist			= flt_max;
+	float stop_t			= curLinearSpeed/LinearAcc_bk;
+	float stop_path			= curLinearSpeed*stop_t-LinearAcc_bk*stop_t*stop_t/2.0f;
 
 	CPatrolPath::const_vertex_iterator b = currPatrolPath->vertices().begin();
 	CPatrolPath::const_vertex_iterator e = currPatrolPath->vertices().end();
 	for ( ; b != e; ++b) {
 		float d = (*b).second->data().position().distance_to(currP);
-		if ( d < min_dist  ){
+		if ( (d>stop_path) && (d<min_dist)  ){
 			min_dist		= d;
 			start_vertex_id = (*b).first;
 		}

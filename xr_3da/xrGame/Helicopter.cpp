@@ -333,8 +333,12 @@ void CHelicopter::MoveStep()
 		float vp = m_movement.curLinearSpeed*STEP+(m_movement.curLinearAcc*STEP*STEP)/2.0f;
 		m_movement.currP.mad	(dir, vp);
 		m_movement.curLinearSpeed += m_movement.curLinearAcc*STEP;
-		
-		clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
+		static bool aaa = false;
+		if(aaa)
+			Log("1-m_movement.curLinearSpeed=",m_movement.curLinearSpeed);
+		clamp(m_movement.curLinearSpeed,0.0f,1000.0f);
+		if(aaa)
+			Log("2-m_movement.curLinearSpeed=",m_movement.curLinearSpeed);
 	}else{ //go stopping
 		if( !fis_zero(m_movement.curLinearSpeed) ){
 			m_movement.curLinearAcc = -m_movement.LinearAcc_bk;
@@ -344,6 +348,7 @@ void CHelicopter::MoveStep()
 			dir.normalize_safe();
 			m_movement.currP.mad	(dir, vp);
 			m_movement.curLinearSpeed += m_movement.curLinearAcc*STEP;
+			clamp(m_movement.curLinearSpeed,0.0f,1000.0f);
 //			clamp(m_movement.curLinearSpeed,0.0f,m_movement.maxLinearSpeed);
 
 		}else{
