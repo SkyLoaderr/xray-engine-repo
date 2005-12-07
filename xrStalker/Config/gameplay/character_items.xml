@@ -1,2 +1,2 @@
-harmonica_a = 1, prob=0.0 \n
-guitar_a = 1, prob=0.0 \n
+harmonica_a = 0, prob=0.3 \n
+guitar_a = 0, prob=0.3 \n
