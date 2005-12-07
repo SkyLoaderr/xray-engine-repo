@@ -147,8 +147,9 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 				ret=true;
 				break;
 			}
-			ph_world->CutVelocity(max_vel,max_a_vel);
+			
 		}
+		ph_world->CutVelocity(max_vel,max_a_vel);
 		 
 	}
 	ph_world->UnFreeze();
