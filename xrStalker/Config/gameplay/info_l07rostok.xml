@@ -47,6 +47,7 @@
 		<disable>bar_barman_stay_hole</disable>
 	</info_portion>
 
+	<info_portion id="bar_start_megafon"></info_portion>
 
 	<!-- BAR osvedomitel trade information -->
 	<info_portion id="bar_bar_osvedomitel_info_01"></info_portion>
