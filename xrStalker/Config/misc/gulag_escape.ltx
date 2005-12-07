@@ -1160,13 +1160,11 @@ snd = esc_tolik_to_wolf
 target = 006
 anim = guard
 on_signal = sound_end| remark@to_gulag_esc_corps_wounded
-;no_rotate = true
 
 [remark@to_gulag_esc_corps_wounded]
 on_actor_dist_ge_nvis = 12| walker@to_gulag_esc_corps_wounded %=esc_wolf_thanks%
 on_actor_dist_le_nvis = 12| walker@to_gulag_esc_corps_wounded %+esc_wolf_say%
 anim = guard
-;no_rotate = true
 target = 006
 
 
@@ -1175,23 +1173,20 @@ path_walk = esc_to_gulag
 on_signal = wounded_arrive| %+esc_wounded_arrive%
 
 [wounded@esc_corps_wounded]
-hp_state = 35|help_me@help|10|wounded_heavy@help_heavy
-hp_state_see = 35|wounded@esc_tolik_help|10|wounded_heavy@help_heavy
-psy_state = 50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20| {=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy
-hp_victim = 35|actor|10|nil
-hp_cover = 35|false|10|false
-hp_fight = 35|false|10|false
-syndata = wounded@help
+hp_state = 35|wounded@help
+hp_state_see = 35|wounded@esc_tolik_help
+hp_victim = 35|nil
+hp_cover = 35|false
+hp_fight = 35|false
 help_dialog = tutorial_wounded_give_medkit
 
 [meet@esc_corps_wounded]
-meet_state	= 2|hello@wait|1|wait@wait
-meet_state_wpn	= 2|hello@wait|1|wait@wait
-victim		= 1|actor
-victim_wpn	= 1|actor
-use		= true
-use_wpn		= true
-syndata		= hello@hail|backoff@threat_weap
+meet_state		= 2|wait@wait
+meet_state_wpn	= 2|wait@wait
+victim			= 1|actor
+victim_wpn		= 1|actor
+use				= true
+use_wpn			= true
 
 
 [danger_condition@tolik]

@@ -302,14 +302,14 @@ function body_state:__init(npc)
 						wounded_heavy={nrm = {"sleep_to_sit_0","sit_0_to_idle_0","idle_to_wounded_1"},
 									   lazy = {"sleep_to_sit_0","sit_0_lazy_idle_0","idle_to_wounded_1"}} },
 
-		wounded		= {	stand		= {nrm = {"wounded_to_idle_0"}},
+		wounded		= {	stand		= {nrm = {}},
 						sit			= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0"}},
 						sit_knee	= {nrm = {"wounded_to_idle_0","idle_0_to_sit_1"}},
 						sit_ass		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_2"}},
 						wounded_heavy={nrm = {"waunded_1_in"}},
 						sleep		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0","sit_to_sleep_0"}} },
 
-		wounded_heavy	= {stand	= {nrm = {"waunded_1_out","wounded_to_idle_0"}},
+		wounded_heavy	= {stand	= {nrm = {"waunded_1_out"}},
 						sit			= {nrm = {"waunded_1_out","wounded_to_idle_0","idle_0_to_sit_0"}},
 						sit_knee	= {nrm = {"waunded_1_out","wounded_to_idle_0","idle_0_to_sit_1"}},
 						sit_ass		= {nrm = {"waunded_1_out","wounded_to_idle_0","idle_0_to_sit_2"}},

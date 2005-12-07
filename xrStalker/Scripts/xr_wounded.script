@@ -358,56 +358,74 @@ function init_wounded(npc, ini, section, st, scheme)
 	
 	st.wounded_section = utils.to_str(section)
 	
+	local def = {}	
+	local npc_community = npc:character_community()
+	if npc_community == "monolith" then
+		def.hp_state			= "10|wounded_heavy@help_heavy"
+		def.hp_state_see		= "10|wounded_heavy@help_heavy"
+		def.psy_state			= ""
+		def.hp_victim			= "10|nil"
+		def.hp_cover			= "10|false"
+		def.hp_fight			= "10|false"
+		def.syndata				= ""
+		def.help_dialog			= nil
+		def.help_start_dialog	= nil
+		
+	elseif npc_community == "zombied" then
+		def.hp_state			= "40|wounded_zombie@help_heavy"
+		def.hp_state_see		= "40|wounded_zombie@help_heavy"
+		def.psy_state			= ""
+		def.hp_victim			= "40|nil"
+		def.hp_cover			= "40|false"
+		def.hp_fight			= "40|false"
+		def.syndata				= ""
+		def.help_dialog			= nil
+		def.help_start_dialog	= nil
+
+	else
+		def.hp_state			= "10|wounded_heavy@help_heavy"
+		def.hp_state_see		= "10|wounded_heavy@help_heavy"
+		def.psy_state			= "50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20|{=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy"
+		def.hp_victim			= "10|nil"
+		def.hp_cover			= "10|false"
+		def.hp_fight			= "10|false"
+		def.syndata				= ""
+		def.help_dialog			= "dm_help_wounded_medkit_dialog"
+		def.help_start_dialog	= nil
+
+	end		
+
+
 	if tostring(section) == "nil" then
 		-- Загружаем дефолты!
-		if npc:character_community() == "monolith" then
-			st.hp_state			= xr_meet.parse_data(npc, "10|wounded_heavy@help_heavy")
-			st.hp_state_see		= xr_meet.parse_data(npc, "10|wounded_heavy@help_heavy")
-			st.psy_state		= xr_meet.parse_data(npc, "")
-			st.hp_victim		= xr_meet.parse_data(npc, "10|nil")
-			st.hp_cover			= xr_meet.parse_data(npc, "10|false")
-			st.hp_fight			= xr_meet.parse_data(npc, "10|false")
-			st.syndata			= xr_meet.parse_syn_data(npc, "")
-			st.help_dialog		= nil
-			st.help_start_dialog= nil
-		elseif npc:character_community() == "zombied" then
-			st.hp_state			= xr_meet.parse_data(npc, "40|wounded_zombie@help_heavy")
-			st.hp_state_see		= xr_meet.parse_data(npc, "40|wounded_zombie@help_heavy")
-			st.psy_state		= xr_meet.parse_data(npc, "")
-			st.hp_victim		= xr_meet.parse_data(npc, "40|nil")
-			st.hp_cover			= xr_meet.parse_data(npc, "40|false")
-			st.hp_fight			= xr_meet.parse_data(npc, "40|false")
-			st.syndata			= xr_meet.parse_syn_data(npc, "")
-			st.help_dialog		= nil
-			st.help_start_dialog= nil
-		else
-			st.hp_state			= xr_meet.parse_data(npc, "10|wounded_heavy@help_heavy")
-			st.hp_state_see		= xr_meet.parse_data(npc, "10|wounded_heavy@help_heavy")
-			st.psy_state		= xr_meet.parse_data(npc, "50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20|{=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy")
-			st.hp_victim		= xr_meet.parse_data(npc, "10|nil")
-			st.hp_cover			= xr_meet.parse_data(npc, "10|false")
-			st.hp_fight			= xr_meet.parse_data(npc, "10|false")
-			st.syndata			= xr_meet.parse_syn_data(npc, "")
-			st.help_dialog		= "general_help_dialogs"						
-			st.help_start_dialog= nil
-		end
+		st.hp_state		= xr_meet.parse_data(npc, def.hp_state)
+		st.hp_state_see	= xr_meet.parse_data(npc, def.hp_state_see)
+		st.psy_state	= xr_meet.parse_data(npc, def.psy_state)
+		st.hp_victim	= xr_meet.parse_data(npc, def.hp_victim)
+		st.hp_cover		= xr_meet.parse_data(npc, def.hp_cover)
+		st.hp_fight		= xr_meet.parse_data(npc, def.hp_fight)
+		st.syndata		= xr_meet.parse_syn_data(npc, def.syndata)
+		st.help_dialog	= def.help_dialog
+		st.help_start_dialog = nil
 	else
-		st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, ""))
-		st.hp_state_see	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state_see", npc, false, ""))
-		st.psy_state	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "psy_state", npc, false, ""))
-		st.hp_victim	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_victim", npc, false, ""))
-		st.hp_cover		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_cover", npc, false, ""))
-		st.hp_fight		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_fight", npc, false, ""))
-		st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, ""))	
-		st.help_dialog	= utils.cfg_get_string(ini, section, "help_dialog", npc, false, "", "actor_help_wounded")
+		st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, "", def.hp_state))
+		st.hp_state_see	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state_see", npc, false, "", def.hp_state_see))
+		st.psy_state	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "psy_state", npc, false, "", def.psy_state))
+		st.hp_victim	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_victim", npc, false, "", def.hp_victim))
+		st.hp_cover		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_cover", npc, false, "", def.hp_cover))
+		st.hp_fight		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_fight", npc, false, "", def.hp_fight))
+		st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, "", def.syndata))	
+		st.help_dialog	= utils.cfg_get_string(ini, section, "help_dialog", npc, false, "", def.help_dialog)
 		st.help_start_dialog = utils.cfg_get_string(ini, section, "help_start_dialog", npc, false, "", nil)
 	end
+	
 	-- флажок, что функция хотя бы раз вызывалась
 	st.wounded_set = true
 end
 
 function is_wounded(npc)
 	if db.storage[npc:id()].wounded ~= nil then
+		printf("is wounded [%s]", tostring(db.storage[npc:id()].wounded.wound_manager.state ~= "nil"))
 		return db.storage[npc:id()].wounded.wound_manager.state ~= "nil"
 	end
 	return false
