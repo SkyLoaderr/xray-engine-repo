@@ -16,8 +16,6 @@ using namespace InventoryUtilities;
 void CUIStatsIcon::InitTexInfo(){
 	if (m_tex_info[RANK_0].sh)
 		return;
-//	ref_shader sh;
-//	sh.create("hud\\default", "ui_mp_icon_rank");
 
 	// ranks
 	m_tex_info[RANK_0].sh.create("hud\\default",	CUITextureMaster::GetTextureFileName("rank_0"));
@@ -51,6 +49,17 @@ void CUIStatsIcon::InitTexInfo(){
 	m_tex_info[DEATH].rect.y1 = 202;
 	m_tex_info[DEATH].rect.x2 = m_tex_info[DEATH].rect.x1 + 30;
 	m_tex_info[DEATH].rect.y2 = m_tex_info[DEATH].rect.y1 + 30;	
+}
+
+void CUIStatsIcon::FreeTexInfo(){
+		// ranks
+	m_tex_info[RANK_0].sh.destroy();
+	m_tex_info[RANK_1].sh.destroy();
+	m_tex_info[RANK_2].sh.destroy();
+	m_tex_info[RANK_3].sh.destroy();
+	m_tex_info[RANK_4].sh.destroy();
+	m_tex_info[ARTEFACT].sh.destroy();
+	m_tex_info[DEATH].sh.destroy();	
 }
 
 void CUIStatsIcon::SetText(LPCSTR str){

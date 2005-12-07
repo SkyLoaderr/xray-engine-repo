@@ -10,6 +10,7 @@ typedef bool(*player_cmp_func)(LPVOID v1, LPVOID v2);
 class CUIStatsPlayerList : public CUIScrollView{
 public:
 	CUIStatsPlayerList();
+	~CUIStatsPlayerList();
 
 			void Init(CUIXml& xml_doc, LPCSTR path);
 			void SetCmpFunc(player_cmp_func pf);

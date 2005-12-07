@@ -3,6 +3,7 @@
 #include "UIStatic.h"
 
 class CUIStatsIcon : public CUIStatic {
+	friend class CUIStatsPlayerList;
 public:
 	CUIStatsIcon();
 	virtual void SetText(LPCSTR str);
@@ -28,5 +29,6 @@ protected:
 
 
 	static void	InitTexInfo();
+	static void FreeTexInfo();
 	static TEX_INFO		m_tex_info[MAX_DEF_TEX];
 };

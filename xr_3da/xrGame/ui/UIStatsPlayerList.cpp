@@ -3,6 +3,7 @@
 #include "../game_cl_base.h"
 #include "../game_cl_artefacthunt.h"
 #include "UIStatsPlayerInfo.h"
+#include "UIStatsIcon.h"
 #include "../string_table.h"
 #include "../level.h"
 #include "UIStatic.h"
@@ -24,6 +25,10 @@ CUIStatsPlayerList::CUIStatsPlayerList(){
 	m_h = m_i;
 	m_t = m_i;
 	m_prev_upd_time = 0; items.reserve(32);
+}
+
+CUIStatsPlayerList::~CUIStatsPlayerList(){
+	CUIStatsIcon::FreeTexInfo();
 }
 
 
