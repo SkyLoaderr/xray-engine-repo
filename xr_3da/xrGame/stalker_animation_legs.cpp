@@ -127,7 +127,7 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 			].A[
 				eMovementDirectionForward
 			].A[
-				0
+				1
 			]
 		);
 	}
