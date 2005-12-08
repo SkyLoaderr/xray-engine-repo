@@ -1088,7 +1088,9 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.community == "dolg" and info.story_id == 708
+		                     if info.community ~= "dolg" then return false end
+		                     if db.actor:has_info ("mil_scull_dead") then return true end
+		                     return info.story_id == 708
 		            end
 		}
 	table.insert(sj, t)	
@@ -1176,7 +1178,9 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
-		                     return info.community == "dolg" and info.story_id == 708
+		                     if info.community ~= "dolg" then return false end
+		                     if db.actor:has_info ("mil_scull_dead") then return true end
+		                     return info.story_id == 708
 		            end
 		}
 	table.insert(sj, t)	
