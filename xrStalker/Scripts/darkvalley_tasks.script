@@ -83,19 +83,18 @@ end
 function process_info_portion(info_id)
     if info_id == "val_sos_give_tip" then
 		level_tasks.add_location(422, "val_sos_location")
-		return true
 	elseif info_id == "val_sos_actor_near_wounded" then
 		level_tasks.remove_location(422, "val_sos_location")
-		return true
 	elseif info_id == "val_show_zones" then
 		level_tasks.add_location(427, "crlc_big", "val_zone_bandits_hint")
 		level_tasks.add_location(428, "crlc_big", "val_zone_monolith_hint")
 		level_tasks.add_location(429, "crlc_mdl", "val_zone_robbers_hint")
 		level_tasks.add_location(430, "crlc_small", "val_zone_south_gate_hint")
-		return true
+	else
+        return false
 	end
 
-	return false
+	return true
 end
 
 function has_darklab_key(task, objective)
