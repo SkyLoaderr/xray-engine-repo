@@ -494,10 +494,8 @@ function gulag:prepare_available_jobs()
 
 			table.insert( Job_avail, job )
 		else
-			if self.name == "val_fleshes_nests" then
-				printf( "job unavailable: %d %s", job.num, job.section )
-				printf( "availCurrent=%s availJob=%s", tostring(self:availCurrent(job)), tostring(self:availJob(job)) )
-			end
+			printf( "job unavailable: %d %s", job.num, job.section )
+			printf( "availCurrent=%s availJob=%s", tostring(self:availCurrent(job)), tostring(self:availJob(job)) )
 		end
 	end
 
