@@ -41,11 +41,9 @@ private:
 	CStalkerAnimationPair			m_script;
 
 private:
-	u8								m_animation_index;
-	u32								m_direction_start_time;
-	u32								m_animation_switch_interval;
-	EMovementDirection				m_movement_direction;
-	EMovementDirection				m_desirable_direction;
+	u32								m_direction_start;
+	EMovementDirection				m_current_direction;
+	EMovementDirection				m_target_direction;
 
 private:
 	CAI_Stalker						*m_object;
@@ -79,6 +77,13 @@ protected:
 			MotionID				unknown_object_animation(u32 slot, const EBodyState &body_state) const;
 			MotionID				weapon_animation		(u32 slot, const EBodyState &body_state) const;
 			MotionID				missile_animation		(u32 slot, const EBodyState &body_state) const;
+
+private:
+	IC		float					legs_switch_factor		() const;
+			void					legs_assign_direction	(float switch_factor, const EMovementDirection &direction);
+			void					legs_process_direction	(float yaw);
+			MotionID				legs_move_animation		();
+			MotionID				legs_no_move_animation	();
 
 protected:
 			void					assign_bone_callbacks	();

@@ -866,7 +866,7 @@ CScriptGameObject *CScriptGameObject::item_in_slot	(u32 slot_id) const
 		return		(0);
 	}
 
-	if (inventory_owner->inventory().m_slots.size() >= slot_id) {
+	if (inventory_owner->inventory().m_slots.size() <= slot_id) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : invalid slot id for class member item_in_slot : %d!",slot_id);
 		return		(0);
 	}

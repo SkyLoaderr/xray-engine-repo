@@ -26,10 +26,9 @@
 
 void CStalkerAnimationManager::reinit				()
 {
-	m_animation_switch_interval	= 500;
-	m_direction_start_time		= 0;
-	m_movement_direction		= eMovementDirectionForward;
-	m_desirable_direction		= eMovementDirectionForward;
+	m_direction_start			= 0;
+	m_current_direction			= eMovementDirectionForward;
+	m_target_direction			= eMovementDirectionForward;
 	
 	m_script_animations.clear	();
 
