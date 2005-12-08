@@ -32,7 +32,10 @@
 		<article>cit_doctor_escape_task_art</article>
     </info_portion>
     <info_portion id="cit_actor_in_sewer"></info_portion>
+    <info_portion id="cit_actor_in_car"></info_portion>
     <info_portion id="cit_jail_doctor_escape_task_end"></info_portion>
+
+    <info_portion id="cit_doctor_shows_deadcity_zones"></info_portion>
 
     <info_portion id="cit_button_broken"></info_portion>
 
