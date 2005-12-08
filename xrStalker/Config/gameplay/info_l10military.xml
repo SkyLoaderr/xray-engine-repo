@@ -54,6 +54,7 @@
 	<info_portion id="mil_dolg_skull_talk">
 		<task>mil_kill_lukash</task>
 	</info_portion>
+	<info_portion id="mil_dolg_gulag_free"></info_portion>
 	<info_portion id="mil_dolg_lukash_kill_fail"></info_portion>
 	<info_portion id="mil_dog_payment_already"></info_portion>
 	
