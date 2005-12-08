@@ -53,7 +53,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	table.insert(sj, t)		
 
     -- Снайпер №3
-    t = {section = "logic@mil_freedom_sniper3",
+    t = {section = "logic@mil_freedom_sniper5",
 		idle = 0,
 		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
@@ -77,7 +77,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	table.insert(sj, t)		
 
     -- Снайпер №5
-    t = {section = "logic@mil_freedom_sniper5",
+    t = {section = "logic@mil_freedom_sniper3",
 		idle = 0,
 		prior = 11, state = {0, 2, 3},
 		squad = squad, group = groups[0],
