@@ -12,11 +12,11 @@ smoke_bone          = front_propeller
 light_bone          = front_propeller
 
 [hit_bones]                            ; per bones hit factor
-pilot1              = 0.03
-pilot2              = 0.03
-back_propeller		= 0.02
-korpus1				= 0.01
-root_0				= 0.04
+pilot1              = 0.02
+pilot2              = 0.02
+back_propeller		= 0.01
+korpus1				= 0.001
+root_0				= 0.03
 
 
 [on_death_mode]
@@ -38,18 +38,18 @@ physics\vehicles\mi24\part\veh_mi24_part9
 physics\vehicles\mi24\part\veh_mi24_part10
 
 [autoremove_parts]
-time					 = 20
+time					 = 60
 
 ;-------------------------------------------------------------------------------
 ;--- part impulse_transition ---------------------------------------------------
 
 [impulse_transition_to_parts]
 random_min               = 20.0    ; величина случайно направленного импульса пропорционально массе нового объекта
-random_hit_imp           = 10.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
+random_hit_imp           = 30.0     ; величина случайно направленного импульса пропорционально разрушающему хиту
 ;ref_bone                 =         ; кость из по которой определяется скорость для частей у который связь не задана, по умолчанию рут
 imp_transition_factor    = 1.0     ; фактор с которым прикладывается хит по исходному объекту ко всем частям 
-lv_transition_factor     = 0.5     ; коэффициент передачи линейной скорости
-av_transition_factor     = 0.5     ; коэффициент передачи угловой скорости
+lv_transition_factor     = 2.0     ; коэффициент передачи линейной скорости
+av_transition_factor     = 2.0     ; коэффициент передачи угловой скорости
 
 ;-------------------------------------------------------------------------------
 [explosion]
