@@ -18,7 +18,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const	CHAT_MP_WND_XML	= "chat_mp.xml";
+//const char * const	CHAT_MP_WND_XML	= "chat_mp.xml";
 const int			fadeDelay		= 5000;
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,15 +43,9 @@ void CUIChatWnd::Init(CUIXml& uiXml)
 {
 	AttachChild(&UIPrefix);
 	CUIXmlInit::InitStatic(uiXml, "chat_prefix", 0, &UIPrefix);
-	//UIPrefix.InitSharedTexture("ui_texture.xml","debug");
-	//UIPrefix.SetStretchTexture(true);
 
 	AttachChild(&UIEditBox);
 	CUIXmlInit::InitEditBox(uiXml, "chat_edit_box", 0, &UIEditBox);
-	//UIEditBox.InitSharedTexture("ui_texture.xml","debug");
-	//UIEditBox.SetStretchTexture(true);
-
-//	m_AuthorName = Level().CurrentEntity()->cName();
 }
 
 //////////////////////////////////////////////////////////////////////////

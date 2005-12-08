@@ -22,7 +22,7 @@
 class CUIChatLog;
 class game_cl_GameState;
 
-extern const char * const	CHAT_MP_WND_XML;
+//extern const char * const	CHAT_MP_WND_XML;
 extern const int			fadeDelay;
 
 //////////////////////////////////////////////////////////////////////////

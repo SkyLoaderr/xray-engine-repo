@@ -2,13 +2,13 @@
 
 <window>
     <!-- PREFIX -->
-	<chat_prefix x="20" y="385" width="50" height="30">
-		<text font="letterica18" r="225" g="225" b="250"></text>
+	<chat_prefix x="20" y="385" width="70" height="30">
+		<text font="letterica18" r="225" g="225" b="250" vert_align="c" complex_mode="0"></text>
 	</chat_prefix>
 
 	<!-- EDIT BOX -->
-	<chat_edit_box x="70" y="385" width="620" height="30">
-		<text font="letterica18" r="225" g="225" b="250"></text>
+	<chat_edit_box x="90" y="385" width="620" height="30" >
+		<text font="letterica18" r="225" g="225" b="250" vert_align="c" complex_mode="0"></text>
 	</chat_edit_box>
 
 	<!-- CHAT LOG -->

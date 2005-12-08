@@ -1310,9 +1310,6 @@
 					RelativePath=".\Config\ui\carbody_new.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\chat_mp.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\color_defs.xml">
 				</File>
 				<File
