@@ -44,9 +44,11 @@ function process_info_portion(info_id)
 
 	--' пометки на карте
     elseif info_id == "cit_doctor_shows_deadcity_zones" then
-        level_tasks.add_location(1206, "crlc_big", "val_killers_base_zone_hint")
-        level_tasks.add_location(1207, "crlc_big", "val_bandits_base_zone_hint")
-        level_tasks.add_location(1208, "crlc_mdl", "val_gorsovet_zone_hint")
+        level_tasks.add_location(1206, "crlc_big", "cit_killers_base_zone_hint")
+        level_tasks.add_location(1207, "crlc_big", "cit_bandits_base_zone_hint")
+        level_tasks.add_location(1208, "crlc_mdl", "cit_gorsovet_zone_hint")
+    elseif info_id == "cit_vp_info" then
+        level_tasks.add_location(1209, "crlc_big", "cit_vp_position_hint")
     else
         return false
     end

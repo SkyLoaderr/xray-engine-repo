@@ -126,8 +126,28 @@ no_move             = true
 no_rotate           = true
 anim                = sleep_sit
 danger              = danger@jail_guard_sleep
+on_timer            = 300000 | walker@jail_guard3
 on_info             = {=hit_by_actor} remark@jail_guard_kill_actor2
+on_info2            = {+cit_heli_start -cit_heli_end} walker@jail_guard_attack
 combat_ignore_cond  = always ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- патрулируем возле решетки
+;-----------------------------------------------------------------------------------------------------------
+[walker@jail_guard3]
+path_walk           = jail_guard_walk
+path_look           = jail_guard_look
+on_timer            = 240000 | walker@jail_guard_go_sleep
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- патрулируем возле решетки
+;-----------------------------------------------------------------------------------------------------------
+[walker@jail_guard_attack]
+path_walk           = jail_guard_attack_walk
+path_look           = jail_guard_attack_look
+on_info             = {+cit_heli_end} walker@jail_guard3
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- убиваем актера
@@ -137,4 +157,3 @@ anim                = wait_na
 target              = nil
 ;on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=check_fighting(1200)}
-
