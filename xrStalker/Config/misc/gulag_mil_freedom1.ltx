@@ -577,43 +577,6 @@ zone = mil_freedom_kill_enter_zone|{-mil_zoneguard_talk} true
 meet_dialog = mil_zoneguard_dialog
 
 
-;[zoneguard@mil_freedom_stalker8]
-;path_walk = path_walk12
-;path_look = path_look12
-;zone_warn  = zone6
-;zone_guard = kill_enter_zone
-;snd_greet = mil_freedom_zoneguard
-;team = freedom_guards
-;no_move = true
-;meet = on_meet1@mil_freedom_stalker8
-;on_info = {+mil_zoneguard_talk} zoneguard2@mil_freedom_stalker8
-
-;[zoneguard2@mil_freedom_stalker8]
-;path_walk = path_walk12
-;path_look = path_look12
-;zone_warn  = zone6
-;snd_greet = talk_hello
-;team = freedom_guards
-;no_move = true
-;meet = on_meet2@mil_freedom_stalker8
-
-;[on_meet1@mil_freedom_stalker8]
-;meet_state = 5|ward@mil_freedom_zoneguard
-;meet_state_wpn = 10|backoff@threat_weap
-;victim = 20|nil|10|actor
-;victim_wpn = 20|nil|10|actor
-;use = true
-;use_wpn = false
-;meet_dialog = mil_zoneguard_dialog
-
-;[on_meet2@mil_freedom_stalker8]
-;meet_state = 5|ward@talk_hello
-;meet_state_wpn = 5|ward@talk_hello
-;victim = 20|nil|10|actor
-;victim_wpn = 20|nil|10|actor
-;use = true
-;use_wpn = true
-;meet_dialog = mil_zoneguard_dialog
 
 
 ;----------------------------------- Мужик на входе 1 -----------------------
