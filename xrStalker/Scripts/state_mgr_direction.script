@@ -19,7 +19,7 @@ function eva_state_mgr_direction:evaluate()
 	   level.object_by_id(self.st.look_object) ~= nil 
 	then
 		if self.st.current_object == self.st.look_object and
-		   self.st.point_obj_dir == (state_lib.states[self.st.target_state].animation ~= nil)
+		   self.st.point_obj_dir == look_object_type(self.object, self.st)
 		then
 			return true
 		else
@@ -167,11 +167,15 @@ function update_movement_direction(npc, st)
 end
 
 function look_at_object(npc, st)
-	st.point_obj_dir = state_lib.states[st.target_state].animation ~= nil
+	st.point_obj_dir = look_object_type(npc, st)
 	if st.point_obj_dir == true then
 		npc:set_sight(level.object_by_id(st.look_object),true, false, true)
 	else
 		npc:set_sight(level.object_by_id(st.look_object),true, true)	
 	end									
 
+end
+
+function look_object_type(npc, st)
+	return state_lib.states[st.target_state].animation ~= nil
 end
