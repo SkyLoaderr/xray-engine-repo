@@ -90,11 +90,24 @@ public:
 	//--------------------------------------------------------------------
 public:
 	CBloodsuckerAlien		m_alien_control;
+	u32						m_time_lunge;
 
 	virtual void			UpdateCamera			();
 			void			set_alien_control		(bool val);
 
 
+	//--------------------------------------------------------------------
+	// Predator
+	//--------------------------------------------------------------------
+public:
+	shared_str				m_visual_default;
+	LPCSTR					m_visual_predator;
+			
+			void			predator_start			();
+			void			predator_stop			();
+			void			predator_freeze			();
+			void			predator_unfreeze		();
+	
 	//--------------------------------------------------------------------
 	// Sounds
 	//--------------------------------------------------------------------
@@ -112,9 +125,9 @@ public:
 
 	//--------------------------------------------------------------------
 
+
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();
-			void			debug_on_key			(int key);
 #endif
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

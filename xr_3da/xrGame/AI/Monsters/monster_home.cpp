@@ -25,13 +25,17 @@ void CMonsterHome::load(LPCSTR line)
 
 		VERIFY3(m_radius_max > m_radius_min, "Error: Wrong home point radius specified for monster ", *m_object->cName());
 	}
+
+	m_aggressive = false;
 }
 
-void CMonsterHome::setup(LPCSTR path_name, float min_radius, float max_radius)
+void CMonsterHome::setup(LPCSTR path_name, float min_radius, float max_radius, bool aggressive)
 {
 	m_path			= ai().patrol_paths().path(path_name);
 	m_radius_min	= min_radius;
 	m_radius_max	= max_radius;
+
+	m_aggressive	= aggressive;
 }
 
 u32	CMonsterHome::get_place()
@@ -95,6 +99,7 @@ bool CMonsterHome::at_home(const Fvector &pos)
 
 void CMonsterHome::remove_home()
 {
-	m_path = 0;
+	m_path			= 0;
+	m_aggressive	= false;
 }
 

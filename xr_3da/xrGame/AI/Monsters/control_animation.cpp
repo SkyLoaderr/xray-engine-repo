@@ -20,6 +20,7 @@ void CControlAnimation::reinit()
 	m_legs_animation_end		= false;
 	m_torso_animation_end		= false;
 
+	m_freeze					= false;
 }
 
 void CControlAnimation::reset_data()
@@ -32,6 +33,8 @@ void CControlAnimation::reset_data()
 
 void CControlAnimation::update_frame() 
 {
+	if (m_freeze) return;
+	
 	// move to schedule update
 	START_PROFILE("BaseMonster/Animation/Update Tracks");
 	m_skeleton_animated->UpdateTracks	();	
@@ -202,3 +205,23 @@ void CControlAnimation::restart()
 	if (m_data.legs.blend)		restart(m_data.legs,legs_animation_end_callback);
 	if (m_data.torso.blend)		restart(m_data.torso,torso_animation_end_callback);
 }
+void CControlAnimation::freeze() 
+{
+	if (m_freeze)				return;
+	m_freeze					= true;
+
+	if (m_data.global.blend)	{m_saved_global_speed = m_data.global.blend->speed;	m_data.global.blend->speed = 0.f;}
+	if (m_data.legs.blend)		{m_saved_legs_speed	= m_data.legs.blend->speed;		m_data.legs.blend->speed = 0.f;}
+	if (m_data.torso.blend)		{m_saved_torso_speed = m_data.torso.blend->speed;	m_data.torso.blend->speed = 0.f;}
+}
+
+void CControlAnimation::unfreeze() 
+{
+	if (!m_freeze)				return;
+	m_freeze					= false;
+
+	if (m_data.global.blend)	{m_data.global.blend->speed = m_saved_global_speed;}
+	if (m_data.legs.blend)		{m_data.legs.blend->speed	= m_saved_legs_speed;}
+	if (m_data.torso.blend)		{m_data.torso.blend->speed	= m_saved_torso_speed;}
+}
+

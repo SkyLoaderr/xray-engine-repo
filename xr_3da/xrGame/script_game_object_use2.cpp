@@ -107,10 +107,10 @@ void CScriptGameObject::skip_transfer_enemy(bool val)
 	if (monster) monster->skip_transfer_enemy(val);
 }
 
-void CScriptGameObject::set_home(LPCSTR name, float r_min, float r_max)
+void CScriptGameObject::set_home(LPCSTR name, float r_min, float r_max, bool aggressive)
 {
 	CBaseMonster *monster = smart_cast<CBaseMonster *>(&object());
-	if (monster) monster->Home->setup(name,r_min,r_max);
+	if (monster) monster->Home->setup(name,r_min,r_max,aggressive);
 }
 void CScriptGameObject::remove_home()
 {

@@ -193,7 +193,7 @@ public:
 
 	// CBaseMonster
 			void				skip_transfer_enemy		(bool val);
-			void				set_home				(LPCSTR name, float r_min, float r_max);
+			void				set_home				(LPCSTR name, float r_min, float r_max, bool aggressive);
 			void				remove_home				();
 
 			template <typename T>

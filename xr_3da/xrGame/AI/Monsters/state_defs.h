@@ -166,6 +166,12 @@ enum EMonsterState {
 	eStateBurerAttack_FaceEnemy		= eStateCustom | eStateAttack | 8,
 	eStateBurerAttack_Melee			= eStateCustom | eStateAttack | 9,
 	
+	eStatePredator_MoveToCover		= eStateCustom | eStateAttack | 10,
+	eStatePredator_LookOpenPlace	= eStateCustom | eStateAttack | 11,
+	eStatePredator_Camp				= eStateCustom | eStateAttack | 12,
+
+	eStatePredator					= eStateCustom | eStateAttack | 13,
+
 	// -------------------------------------------------------------
 
 

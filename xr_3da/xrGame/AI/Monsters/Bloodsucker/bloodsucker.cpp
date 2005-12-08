@@ -136,8 +136,9 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_run_particles_freq			= pSettings->r_u32(section,"Particles_Invisible_Tracks_Freq");
 
 	LoadVampirePPEffector			(pSettings->r_string(section,"vampire_effector"));
-	
 	m_vampire_min_delay				= pSettings->r_u32(section,"Vampire_Delay");
+
+	m_visual_predator				= pSettings->r_string(section,"Predator_Visual");
 }
 
 
@@ -158,6 +159,9 @@ void CAI_Bloodsucker::reinit()
 
 	//com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI - 0.01f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
 	com_man().add_rotation_jump_data("run_turn_l_0","run_turn_l_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
+
+	// save visual	
+	m_visual_default			= cNameVisual();
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -187,8 +191,6 @@ void CAI_Bloodsucker::LoadVampirePPEffector(LPCSTR section)
 	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &pp_vampire_effector.color_gray.r, &pp_vampire_effector.color_gray.g, &pp_vampire_effector.color_gray.b);
 	sscanf(pSettings->r_string(section,"color_add"),	"%f,%f,%f", &pp_vampire_effector.color_add.r,  &pp_vampire_effector.color_add.g,  &pp_vampire_effector.color_add.b);
 }
-
-
 
 
 void  CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
@@ -387,7 +389,6 @@ bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
 	return true;
 }
 
-
 void CAI_Bloodsucker::play_hidden_run_particles()
 {
 	Fvector pos;
@@ -402,6 +403,34 @@ void CAI_Bloodsucker::set_alien_control(bool val)
 	val ? m_alien_control.activate() : m_alien_control.deactivate();
 }
 
+void CAI_Bloodsucker::predator_start()
+{
+	cNameVisual_set					(m_visual_predator);
+	control().animation().restart	();
+	
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
+	sound().play					(CAI_Bloodsucker::eChangeVisibility);
+}
+
+void CAI_Bloodsucker::predator_stop()
+{
+	cNameVisual_set					(*m_visual_default);
+	control().animation().restart	();
+	
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
+	sound().play					(CAI_Bloodsucker::eChangeVisibility);
+}
+
+void CAI_Bloodsucker::predator_freeze()
+{
+	control().animation().freeze	();
+}
+
+void CAI_Bloodsucker::predator_unfreeze()
+{
+	control().animation().unfreeze();
+}
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 {
@@ -414,41 +443,6 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
 	return CBaseMonster::SDebugInfo();
-}
-
-void CAI_Bloodsucker::debug_on_key(int key)
-{
-	switch (key){
-	//case DIK_MINUS:
-	//	m_alien_control.deactivate();
-	//	break;
-	//case DIK_EQUALS:
-	//	m_alien_control.activate();
-	//	break;
-	case DIK_MINUS:
-		{
-			cNameVisual_set	("monsters\\krovosos\\krovosos");
-			control().animation().restart();
-
-			//NET_Packet		P;
-			//u_EventGen		(P, GE_CHANGE_VISUAL,ID());
-			//P.w_stringZ		("monsters\\krovosos\\krovosos");
-			//u_EventSend		(P);
-		}
-		break;
-	case DIK_EQUALS:
-		{
-			cNameVisual_set	("monsters\\krovosos\\krovosos_xray");
-			control().animation().restart();
-
-			//NET_Packet		P;
-			//u_EventGen		(P, GE_CHANGE_VISUAL,ID());
-			//P.w_stringZ		("monsters\\krovosos\\krovosos_xray");
-			//u_EventSend		(P);
-		}
-		break;
-
-	}
 }
 #endif
 

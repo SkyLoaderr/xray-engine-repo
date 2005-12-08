@@ -15,6 +15,7 @@
 #include "../states/monster_state_hitted.h"
 
 #include "bloodsucker_vampire.h"
+#include "bloodsucker_predator.h"
 
 CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : inherited(monster)
 {
@@ -26,6 +27,7 @@ CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : i
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CAI_Bloodsucker> >				(monster));
 
 	add_state(eStateCustom_Vampire,		xr_new<CStateBloodsuckerVampire<CAI_Bloodsucker> >			(monster));	
+	add_state(eStatePredator,			xr_new<CStateBloodsuckerPredator<CAI_Bloodsucker> >			(monster));	
 }
 
 void CStateManagerBloodsucker::execute()
@@ -33,33 +35,29 @@ void CStateManagerBloodsucker::execute()
 	u32 state_id = u32(-1);
 
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	
+	if (check_state(eStatePredator)) {
+		state_id = eStatePredator;
+	} else {
+		if (enemy) {
+			if (check_state(eStateCustom_Vampire)) {
+				state_id = eStateCustom_Vampire;
+			} else {
 
-	if (enemy) {
-		
-		bool set_vampire = false;
-		if (prev_substate == eStateCustom_Vampire) {
-			if (!get_state_current()->check_completion())					set_vampire = true;
-		} else {
-			if (get_state(eStateCustom_Vampire)->check_start_conditions())	set_vampire = true;
-		}
-		
-		if (set_vampire) {
-			state_id = eStateCustom_Vampire;
-		} else {
-			
-			switch (object->EnemyMan.get_danger_type()) {
+				switch (object->EnemyMan.get_danger_type()) {
 				case eStrong:	state_id = eStatePanic; break;
 				case eWeak:		state_id = eStateAttack; break;
+				}
 			}
-		}
 
-	} else if (object->HitMemory.is_hit()) {
-		state_id = eStateHitted;
-	} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
-		state_id = eStateHearInterestingSound;
-	} else {
-		if (can_eat())	state_id = eStateEat;
-		else			state_id = eStateRest;
+		} else if (object->HitMemory.is_hit()) {
+			state_id = eStateHitted;
+		} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
+			state_id = eStateHearInterestingSound;
+		} else {
+			if (can_eat())	state_id = eStateEat;
+			else			state_id = eStateRest;
+		}
 	}
 
 	select_state(state_id); 
@@ -69,3 +67,4 @@ void CStateManagerBloodsucker::execute()
 
 	prev_substate = current_substate;
 }
+

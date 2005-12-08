@@ -49,6 +49,11 @@ class CControlAnimation : public CControl_ComPure<SControlAnimationData> {
 	DEFINE_MAP				(MotionID, ANIMATION_EVENT_VEC, ANIMATION_EVENT_MAP, ANIMATION_EVENT_MAP_IT);
 	ANIMATION_EVENT_MAP		m_anim_events;
 
+	bool					m_freeze;
+	float					m_saved_global_speed;
+	float					m_saved_legs_speed;
+	float					m_saved_torso_speed;
+
 public:
 	
 	bool					m_global_animation_end;
@@ -66,6 +71,9 @@ public:
 
 			void	restart					();
 			
+			void	freeze					();
+			void	unfreeze				();
+
 		// Services
 		IC	float	motion_time				(MotionID motion_id, IRender_Visual *visual);
 
@@ -102,5 +110,4 @@ IC float CControlAnimation::motion_time(MotionID motion_id, IRender_Visual *visu
 	
 	return				(motion.GetLength() / motion_def->Speed());
 }
-
 
