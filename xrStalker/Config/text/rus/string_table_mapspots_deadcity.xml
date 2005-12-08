@@ -38,3 +38,23 @@
         Выход из города
     </text>
 </string>
+<string id="cit_doctor_escape_task_3_hint">
+    <text>
+        Машина
+    </text>
+</string>
+<string id="val_killers_base_zone_hint">
+    <text>
+        Лагерь наемников
+    </text>
+</string>
+<string id="val_bandits_base_zone_hint">
+    <text>
+        Лагерь бандитов
+    </text>
+</string>
+<string id="val_gorsovet_zone_hint">
+    <text>
+        Здание бывшего горсовета
+    </text>
+</string>
