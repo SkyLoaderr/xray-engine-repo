@@ -1139,21 +1139,23 @@ path_look = esc_wounded_look
 wounded = wounded@esc_corps_wounded
 on_info = {+tutorial_wounded_help} remark@thanks_esc_corps_wounded
 danger = danger_condition@tolik
-meet = meet@esc_corps_wounded
+;meet = meet@esc_corps_wounded
 
 [remark@thanks_esc_corps_wounded]
-anim = wait_na
+anim = guard
 target = actor
 snd = esc_tolik_thanks
 on_signal = sound_end| walker@to_lager_esc_corps_wounded
 danger = danger_condition@tolik
-meet = meet@esc_corps_wounded
+;meet = meet@esc_corps_wounded
 
 [walker@to_lager_esc_corps_wounded]
 path_walk = esc_vagon_wounded_to_lager
 path_look = esc_wounded_to_lager_look
 on_signal2 = thanks| remark@esc_corps_wounded
 on_signal = lager_pass| %+esc_path_to_lager%
+meet = meet@esc_corps_wounded
+danger = danger_condition@tolik
 
 [remark@esc_corps_wounded]
 snd = esc_tolik_to_wolf
@@ -1181,8 +1183,8 @@ hp_fight = 35|false
 help_dialog = tutorial_wounded_give_medkit
 
 [meet@esc_corps_wounded]
-meet_state		= 2|wait@wait
-meet_state_wpn	= 2|wait@wait
+meet_state		= 2|guard@wait
+meet_state_wpn	= 2|guard@wait
 victim			= 1|actor
 victim_wpn		= 1|actor
 use				= true
