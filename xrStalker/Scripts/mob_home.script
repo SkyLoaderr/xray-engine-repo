@@ -63,7 +63,7 @@ function mob_home:reset_scheme()
 		_G.abort("Mob_Home : Home Min Radius MUST be < Max Radius. Got: min radius = %d, max radius = %d.", minr, maxr)
 	end 
 
-	self.object:set_home(self.st.home, minr, maxr)
+	self.object:set_home(self.st.home, minr, maxr, self.st.aggressive)
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -103,5 +103,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	storage.home				= utils.cfg_get_string(ini, section, "path_home",			npc, true, gulag_name)
 	storage.home_min_radius		= utils.cfg_get_number(ini, section, "home_min_radius",		npc, false) --, 20)
 	storage.home_max_radius		= utils.cfg_get_number(ini, section, "home_max_radius",		npc, false) --, 40)
+	
+	storage.aggressive			= ini:line_exist( section, "aggressive_home")
 end
 
