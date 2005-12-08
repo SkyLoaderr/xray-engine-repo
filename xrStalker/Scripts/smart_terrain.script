@@ -382,7 +382,7 @@ end
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
 function se_smart_terrain:enabled( obj )
-	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+--	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 
 	-- DEBUG
 	if self.disabled then
@@ -497,7 +497,7 @@ function se_smart_terrain:task( obj )
 		abort( "[smart_terrain %s] task: obj=%s job_path=nil", self:name(), obj:name() )
 	end
 
-	printf( "[smart_terrain %s] task: obj=%s job_path=%s", self:name(), obj:name(), path_name )
+--	printf( "[smart_terrain %s] task: obj=%s job_path=%s", self:name(), obj:name(), path_name )
 
 	return CALifeSmartTerrainTask( path_name )
 end
