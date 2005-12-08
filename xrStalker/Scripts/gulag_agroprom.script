@@ -538,7 +538,9 @@ function load_states( gname, type )
 					h.type      = hit.wound
 
 					for k, v in pairs(gulag.Object) do
-						v:hit( h )
+						if v ~= true then
+							v:hit( h )
+						end
 					end
 
 					return 1
