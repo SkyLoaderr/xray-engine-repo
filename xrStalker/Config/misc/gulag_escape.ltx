@@ -255,7 +255,6 @@ on_death = death@wolf
 path_walk = wolf_walk
 path_look = wolf_look
 meet = meet@wolf
-;on_info = {+esc_return =is_alive(006)} %=kill%
 on_info = {+esc_wolf_say} remark@esc_lager_volk_wait2
 
 [remark@esc_lager_volk_wait2]
@@ -263,13 +262,12 @@ anim = wait
 snd = esc_wolf_say_thanks
 target = actor
 on_signal = sound_end| walker@esc_lager_volk_walker3
-;on_info = {+esc_return =is_alive(006)} %=kill%
 
 [walker@esc_lager_volk_walker3]
 path_walk = wolf_walk
 path_look = wolf_look
 meet = meet@wolf
-;on_info = {+esc_return =is_alive(006)} %=kill%
+
 
 [meet@wolf]
 meet_state		= 15|wait@wait
@@ -1209,6 +1207,7 @@ active = mob_home@esc_dogs_to_fox_home
 path_home = path1
 home_min_radius = 15
 home_max_radius = 30
+;aggressive_home
 
 
 [logic@esc_dogs_to_fox]
@@ -1218,6 +1217,7 @@ active = mob_home@esc_dogs_to_fox_home2
 path_home = path2
 home_min_radius = 5
 home_max_radius = 10
+;aggressive_home
 
 ;------------------------------
 ;-------- Dogs swarm ----------
