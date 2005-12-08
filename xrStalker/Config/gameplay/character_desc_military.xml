@@ -293,7 +293,7 @@
 		<visual>actors\svoboda\stalker_sv_max</visual>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_desert_eagle \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
