@@ -28,8 +28,11 @@ struct	ENGINE_API		STextureList	: public xr_resource_flagged, public xr_vector<s
 
 						IC BOOL		equal (const STextureList& base) const
 						{
-							if (size()!=base.size())	return FALSE;
-							for (u32 cmp=0; cmp<size(); cmp++)	if ((*this)[cmp]!=base[cmp])	return FALSE;
+							if (size()!=base.size())			return FALSE;
+							for (u32 cmp=0; cmp<size(); cmp++)	{
+								if ((*this)[cmp].first	!=base[cmp].first)	return FALSE;
+								if ((*this)[cmp].second	!=base[cmp].second)	return FALSE;
+							}
 							return TRUE;
 						}
 };
