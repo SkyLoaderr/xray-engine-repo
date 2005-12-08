@@ -386,10 +386,10 @@ end
 -- если персонаж НЕ эксклюзивный, то ищет только свободные работы,
 -- если персонаж эксклюзивный, ищет свободные работы и работы, занятые не эксклюзивными персонажами.
 function gulag:is_there_any_suitable_job( npc_info, exclusive )
-	if not self.Job_avail_in_state then
-		printf( "self.Job_avail_in_state=nil obj=%s ex=%s", npc_info.name, tostring( exclusive ) )
-		self:print()
-	end
+--	if not self.Job_avail_in_state then
+--		printf( "self.Job_avail_in_state=nil obj=%s ex=%s", npc_info.name, tostring( exclusive ) )
+--		self:print()
+--	end
 
 	for i, job in ipairs( self.Job_avail_in_state ) do
 		if not job.predicate or job.predicate( npc_info ) then
@@ -493,6 +493,11 @@ function gulag:prepare_available_jobs()
 			end
 
 			table.insert( Job_avail, job )
+		else
+			if self.name == "val_fleshes_nests" then
+				printf( "job unavailable: %d %s", job.num, job.section )
+				printf( "availCurrent=%s availJob=%s", tostring(self:availCurrent(job)), tostring(self:availJob(job)) )
+			end
 		end
 	end
 
