@@ -13,16 +13,16 @@
 #include "stalker_movement_manager.h"
 #include "stalker_animation_data.h"
 
-const float right_forward_angle			= PI_DIV_3;
-const float left_forward_angle			= PI_DIV_3;
+const float right_forward_angle			= PI_DIV_4;
+const float left_forward_angle			= PI_DIV_4;
 const float standing_turn_angle			= PI_DIV_6;
 const float epsilon						= EPS_L;
 const u32	direction_switch_interval 	= 500;
 const float direction_angles[]			= {
 	0.f,		//	eMovementDirectionForward
 	PI,			//	eMovementDirectionBack
-	PI_DIV_6,	//	eMovementDirectionLeft
-	0.f			//	eMovementDirectionRight
+	-PI_DIV_2,	//	eMovementDirectionLeft
+	PI_DIV_2	//	eMovementDirectionRight
 };
 
 void CStalkerAnimationManager::legs_play_callback			(CBlend *blend)
@@ -86,7 +86,7 @@ void CStalkerAnimationManager::legs_process_direction		(float yaw)
 {
 	float						switch_factor = legs_switch_factor();
 	float						head_current = object().movement().head_orientation().current.yaw;
-	float						left = left_angle(head_current,yaw);
+	float						left = left_angle(yaw,head_current);
 	float						test_angle_forward = right_forward_angle;
 	float						test_angle_backward = left_forward_angle;
 	if (left) {
@@ -114,6 +114,24 @@ void CStalkerAnimationManager::legs_process_direction		(float yaw)
 
 MotionID CStalkerAnimationManager::legs_move_animation		()
 {
+	// should be removed, because it is not allowed to move in crouch not in danger
+	if (object().movement().body_state() != eBodyStateStand)
+		object().movement().set_mental_state	(eMentalStateDanger);
+
+	if (eMentalStateDanger != object().movement().mental_state()) {
+		return					(
+			m_data_storage->m_part_animations.A[
+				body_state()
+			].m_movement.A[
+				object().movement().movement_type()
+			].A[
+				eMovementDirectionForward
+			].A[
+				0
+			]
+		);
+	}
+
 	float						yaw,pitch;
 	object().sight().GetDirectionAngles(yaw,pitch);
 
@@ -121,7 +139,7 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 	legs_process_direction		(yaw);
 
 	float						body_current = object().movement().body_orientation().current.yaw;
-	bool						left = left_angle(body_current,yaw);
+	bool						left = left_angle(yaw,body_current);
 	float						test_angle_forward = right_forward_angle;
 	float						test_angle_backward = left_forward_angle;
 	if (left) {
