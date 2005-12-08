@@ -63,7 +63,7 @@ function mob_home:reset_scheme()
 		_G.abort("Mob_Home : Home Min Radius MUST be < Max Radius. Got: min radius = %d, max radius = %d.", minr, maxr)
 	end 
 
-	self.object:set_home(self.st.home, minr, maxr, self.st.aggressive)
+	self.object:set_home(self.st.home, minr, maxr)
 end
 
 ----------------------------------------------------------------------------------------------------
