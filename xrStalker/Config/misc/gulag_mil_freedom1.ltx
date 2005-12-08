@@ -85,8 +85,10 @@ id = mil_cook_common1,mil_cook_common2,mil_cook_common3,mil_cook_common4,mil_coo
 
 
 
+-------------------------
+;Снайпер на первой вышке (на него задание дает Череп)
+-------------------------
 
-;------------------------------------- Снайпер на вышке (кандидат в покойники №1) -----------------------------
 [logic@mil_freedom_sniper1]
 active = camper1@mil_freedom_sniper1
 on_death = on_death@mil_freedom_sniper1
@@ -106,7 +108,10 @@ radius = 20
 on_info = {=heavy_wounded} %+mil_sniper_dead%
 combat_ignore_cond = {=check_fighting(740)} true
 
-;------------------------------------- Снайпер 2 --------------------------------------
+
+-------------------------
+;Снайпер на второй вышке (средняя, в центре базы) (mil_sniper2)
+-------------------------
 [logic@mil_freedom_sniper2]
 active = camper1@mil_freedom_sniper2
 on_combat = combat@mil_freedom_sniper2
@@ -140,7 +145,9 @@ ignore_types = corpse
 
 
 
-;------------------------------------- Снайпер 3 --------------------------------------
+-------------------------
+;Снайпер на третьей вышке (справа от пролома в заборе) (mil_sniper1)
+-------------------------
 
 [logic@mil_freedom_sniper5]
 active = camper1@mil_freedom_sniper5
@@ -168,7 +175,9 @@ radius = 0
 on_info = {-mil_freedom_under_attack} camper1@mil_freedom_sniper5
 
 
-;------------------------------------- Снайпер 3 --------------------------------------
+-------------------------
+;Снайпер на пятой вышке (возле шлагбаума) (mil_sniper3)
+-------------------------
 [logic@mil_freedom_sniper3]
 active = walker1@mil_freedom_sniper3
 on_combat = combat@mil_freedom_sniper3
@@ -197,8 +206,9 @@ sniper = true
 ignore_distance = 0
 ignore_types = corpse
 
-
-;------------------------------------- Снайпер 4 --------------------------------------
+-------------------------
+;Снайпер на четвертой вышке (возле центрального здания)
+-------------------------
 [logic@mil_freedom_sniper4]
 active = camper1@mil_freedom_sniper4
 on_combat = combat@mil_freedom_sniper4

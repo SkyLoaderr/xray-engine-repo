@@ -9,7 +9,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Лукаш
     t = {section = "logic@mil_freedom_lukash",
 		idle = 0,
-		prior = 11, state = {0, 3},
+		prior = 16, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -20,7 +20,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Повар
     t = {section = "logic@mil_freedom_cook",
 		idle = 0,
-		prior = 11, state = {0, 2, 3},
+		prior = 15, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -31,7 +31,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №1
     t = {section = "logic@mil_freedom_sniper1",
 		idle = 0,
-		prior = 11, state = {0, 2, 3},
+		prior = 14, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -43,7 +43,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №2
     t = {section = "logic@mil_freedom_sniper2",
 		idle = 0,
-		prior = 11, state = {0, 2, 3},
+		prior = 13, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -55,7 +55,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №3
     t = {section = "logic@mil_freedom_sniper5",
 		idle = 0,
-		prior = 11, state = {0, 2, 3},
+		prior = 12, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -67,7 +67,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Снайпер №4
     t = {section = "logic@mil_freedom_sniper4",
 		idle = 0,
-		prior = 11, state = {0, 2, 3},
+		prior = 10, state = {0, 2, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -91,7 +91,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Скряга
     t = {section = "logic@mil_freedom_trader",
 		idle = 0,
-		prior = 11, state = {0, 3},
+		prior = 10, state = {0, 3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
