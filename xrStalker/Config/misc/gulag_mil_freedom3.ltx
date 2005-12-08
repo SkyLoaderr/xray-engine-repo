@@ -3,14 +3,7 @@
 ;-------------------------------------------------------------------------------------------------
 ;----------------------------------- Макс-----------------------
 [logic@mil_freedom_max_attack]
-;active = remark1@mil_freedom_max_attack
-;active = walker11@mil_freedom_max_attack
 active = walker2@mil_freedom_max_attack
-
-;[remark1@mil_freedom_max_attack]
-;snd = mil_max_before_collect
-;snd_anim_sync = true
-;on_signal = action_end | walker11@mil_freedom_max_attack
 
 [remark3@mil_freedom_max_attack]
 snd = mil_max_before_collect
@@ -54,6 +47,7 @@ no_move = true
 anim = wait
 on_signal = action_end | remark2@mil_freedom_max_attack
 danger = danger@mil_freedom
+target = logic@mil_freedom_stalker4_attack
 
 [remark2@mil_freedom_max_attack]
 snd = mil_max_to_kolyan
@@ -61,6 +55,7 @@ no_rotate = true
 no_move = true
 anim = wait
 on_signal = action_end | %+mil_freedom_attack_continue1% camper12@mil_freedom_max_attack
+target = logic@mil_freedom_stalker4_attack
 danger = danger@mil_freedom
 
 [camper12@mil_freedom_max_attack]
@@ -112,6 +107,7 @@ no_move = true
 anim = wait
 on_signal = action_end | walker15@mil_freedom_stalker1_attack
 danger = danger@mil_freedom
+target = 702
 
 [walker15@mil_freedom_stalker1_attack]
 path_walk = attack_way9_2
@@ -151,6 +147,7 @@ anim = wait
 on_signal = action_end | %+mil_freedom_attack_continue2%
 on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker2_attack
 danger = danger@mil_freedom
+target = 702
 
 [walker15@mil_freedom_stalker2_attack]
 path_walk = attack_way8_2
@@ -199,6 +196,7 @@ no_move = true
 anim = wait
 on_signal = action_end | %+mil_freedom_attack_continue3% walker15@mil_freedom_stalker4_attack
 danger = danger@mil_freedom
+target = 702
 
 [walker15@mil_freedom_stalker4_attack]
 path_walk = attack_way2_2
@@ -237,6 +235,7 @@ no_move = true
 anim = wait
 on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker5_attack
 danger = danger@mil_freedom
+target = 702
 
 [walker15@mil_freedom_stalker5_attack]
 path_walk = attack_way1_2
@@ -276,6 +275,7 @@ no_move = true
 anim = wait
 on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker6_attack
 danger = danger@mil_freedom
+target = 702
 
 [walker15@mil_freedom_stalker6_attack]
 path_walk = attack_way4_2
@@ -315,6 +315,7 @@ no_move = true
 anim = wait
 on_info = {+mil_freedom_attack_continue3} walker15@mil_freedom_stalker7_attack
 danger = danger@mil_freedom
+target = 702
 
 [walker15@mil_freedom_stalker7_attack]
 path_walk = attack_way6_2
