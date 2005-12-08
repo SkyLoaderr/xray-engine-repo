@@ -469,6 +469,7 @@ path_walk = attack_before_walk1
 path_look = attack_before_look2
 on_signal = arrive | remark1@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
+on_info = {+mil_dolg_phase2} walker11@mil_dolg_skull_attack
 team = dolg_attack
 
 [remark1@mil_dolg_skull_attack]
@@ -484,7 +485,7 @@ target = logic@mil_dolg_soldier4_attack
 no_rotate = true
 no_move = true
 anim = salut
-on_signal = action_end | walker11@mil_dolg_skull_attack
+on_signal = action_end | walker11@mil_dolg_skull_attack %+mil_dolg_phase2%
 danger = danger_condition@mil_dolg
 
 [walker11@mil_dolg_skull_attack]
