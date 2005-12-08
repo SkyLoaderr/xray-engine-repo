@@ -207,7 +207,7 @@ danger = danger_condition@1
 
 [remark@scientist_return_to_bunker]
 snd = yantar_kruglov_radiation_quest_8
-anim = wait
+anim = guard
 target = actor
 on_signal = sound_end | remark@scientist_return_to_bunker_1
 combat_ignore_cond = always
@@ -215,7 +215,7 @@ danger = danger_condition@1
 
 [remark@scientist_return_to_bunker_1]
 snd = yantar_kruglov_radiation_quest_9
-anim = wait
+anim = guard
 target = actor
 on_signal = sound_end | camper@scientist_return_to_bunker
 combat_ignore_cond = always
@@ -226,7 +226,7 @@ path_walk = return_walk
 path_look = help_look_3
 combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 on_signal = door_1_open | walker@scientist_return_door_1 %+yan_scientist_door_1_open%
-def_state_moving = assault
+def_state_moving = rush
 meet = meet@scientist_1
 radius = 0
 danger = danger_condition@1
