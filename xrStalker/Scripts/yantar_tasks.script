@@ -4,3 +4,6 @@ end
 function yan_labx16_mapspot (actor, npc)
     	level_tasks.add_location (907, "green_location")
 end
+function has_labx16_documents ()
+		return db.actor:object ("yan_labx16_documents") ~= nil
+end
