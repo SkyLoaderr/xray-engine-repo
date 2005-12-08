@@ -107,10 +107,10 @@ end
 function se_respawn:create(prob)
 	if math.random(100) <= tonumber(prob) then
 		
---		alife():create(self.respawn_section,	
---						self.position,
---						self.m_level_vertex_id,	
---						self.m_game_vertex_id)
+		alife():create(self.respawn_section,	
+						self.position,
+						self.m_level_vertex_id,	
+						self.m_game_vertex_id)
 		self.spawn_count = self.spawn_count + 1
 	end
 end
