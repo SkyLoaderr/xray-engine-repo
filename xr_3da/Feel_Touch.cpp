@@ -83,7 +83,10 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 void Touch::feel_touch_relcase	(CObject* O)
 {
 	xr_vector<CObject*>::iterator I = std::find (feel_touch.begin(),feel_touch.end(),O);
-	if (I!=feel_touch.end())	feel_touch.erase(I);
+	if (I!=feel_touch.end()){
+		feel_touch.erase		(I);
+		feel_touch_delete		(O);
+		}
 	xr_vector<DenyTouch>::iterator Id=feel_touch_disable.begin(),IdE=feel_touch_disable.end();
 	for(;Id!=IdE;++Id)			if((*Id).O==O )	{ feel_touch_disable.erase(Id); break; }
 }
