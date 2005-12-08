@@ -25,6 +25,7 @@ int CArtefactMerger::GetGraviArtefactNum()	{return GetArtefactNum<CGraviArtefact
 int CArtefactMerger::GetBlackDropsNum()		{return GetArtefactNum<CBlackDrops>();}
 int CArtefactMerger::GetNeedlesNum()		{return GetArtefactNum<CNeedles>();}
 
+/**
 template<typename A> void CArtefactMerger::DestroyArtefacts(int num_to_destroy)
 {
 	int artifact_count=0;
@@ -69,3 +70,4 @@ void CArtefactMerger::DestroyMercuryBall(int num_to_destroy)		{DestroyArtefacts<
 void CArtefactMerger::DestroyGraviArtefact(int num_to_destroy)	{DestroyArtefacts<CGraviArtefact>(num_to_destroy);}
 void CArtefactMerger::DestroyBlackDrops(int num_to_destroy)		{DestroyArtefacts<CBlackDrops>(num_to_destroy);}
 void CArtefactMerger::DestroyNeedles(int num_to_destroy)			{DestroyArtefacts<CNeedles>(num_to_destroy);}
+/**/

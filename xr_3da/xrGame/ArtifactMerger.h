@@ -56,11 +56,11 @@ public:
 	int GetNeedlesNum()			;
 
 	//удаление определенного числа артефактов некоторого типа из списка
-	template<typename A> void DestroyArtefacts(int num_to_destroy);
-	void DestroyMercuryBall(int num_to_destroy)		;
-	void DestroyGraviArtefact(int num_to_destroy)	;
-	void DestroyBlackDrops(int num_to_destroy)		;
-	void DestroyNeedles(int num_to_destroy)			;
+//	template<typename A> void DestroyArtefacts(int num_to_destroy);
+//	void DestroyMercuryBall(int num_to_destroy)		;
+//	void DestroyGraviArtefact(int num_to_destroy)	;
+//	void DestroyBlackDrops(int num_to_destroy)		;
+//	void DestroyNeedles(int num_to_destroy)			;
 
 
 	//добавление определенного числа новых артефактов 

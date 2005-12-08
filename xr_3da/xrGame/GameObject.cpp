@@ -662,6 +662,7 @@ bool CGameObject::NeedToDestroyObject()	const
 
 void CGameObject::DestroyObject()			
 {
+	
 	if(m_bObjectRemoved)return;
 	m_bObjectRemoved	= true;
 	if (getDestroy())	return;

@@ -22,11 +22,6 @@ void CArtefactMerger::script_register(lua_State *L)
 			.def("get_black_drops_num",		&CArtefactMerger::GetBlackDropsNum)
 			.def("get_needles_num",			&CArtefactMerger::GetNeedlesNum)
 
-			.def("destroy_mercury_ball",	&CArtefactMerger::DestroyMercuryBall)
-			.def("destroy_gravi",			&CArtefactMerger::DestroyGraviArtefact)
-			.def("destroy_black_drops",		&CArtefactMerger::DestroyBlackDrops)
-			.def("destroy_needles",			&CArtefactMerger::DestroyNeedles)
-
 			.def("spawn_mercury_ball",		&CArtefactMerger::SpawnMercuryBall)
 			.def("spawn_gravi",				&CArtefactMerger::SpawnGraviArtefact)
 			.def("spawn_black_drops",		&CArtefactMerger::SpawnBlackDrops)
