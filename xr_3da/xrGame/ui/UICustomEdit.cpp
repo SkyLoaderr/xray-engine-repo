@@ -265,8 +265,11 @@ void CUICustomEdit::AddChar(char c)
             return;
 	m_lines.AddCharAtCursor(c);
 	m_lines.ParseText();
-	if (m_lines.GetVisibleHeight() > GetHeight())
-		m_lines.DelLeftChar();
+	if (m_lines.GetTextComplexMode())
+	{
+		if (m_lines.GetVisibleHeight() > GetHeight())
+			m_lines.DelLeftChar();
+	}
 }
 
 void CUICustomEdit::AddLetter(char c)
