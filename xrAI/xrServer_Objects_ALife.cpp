@@ -677,6 +677,7 @@ CSE_ALifeSpaceRestrictor::CSE_ALifeSpaceRestrictor	(LPCSTR caSection) : CSE_ALif
 	m_space_restrictor_type		= RestrictionSpace::eDefaultRestrictorTypeNone;
 	m_flags.set					(flUsedAI_Locations,FALSE);
 	m_spawn_flags.set			(flSpawnDestroyOnSpawn,FALSE);
+	m_flags.set					(flCheckForSeparator,TRUE);
 }
 
 CSE_ALifeSpaceRestrictor::~CSE_ALifeSpaceRestrictor	()
@@ -734,7 +735,8 @@ xr_token defaul_retrictor_types[]={
 void CSE_ALifeSpaceRestrictor::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProps		(pref,items);
-	PHelper().CreateToken8		(items, PrepareKey(pref,*s_name,"restrictor type"), &m_space_restrictor_type,	defaul_retrictor_types);
+	PHelper().CreateToken8		(items, PrepareKey(pref,*s_name,"restrictor type"),		&m_space_restrictor_type,	defaul_retrictor_types);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"check for separator"),	&m_flags,					flCheckForSeparator);
 }
 
 ////////////////////////////////////////////////////////////////////////////
