@@ -111,6 +111,8 @@ public:
 	BOOL								i_allow_play			( CSoundRender_Emitter* E	);
     virtual BOOL						i_locked 				(){return bLocked;}
 
+	virtual void						object_relcase			( CObject* obj );
+
 	virtual float						get_occlusion_to		( const Fvector& hear_pt, const Fvector& snd_pt, float dispersion=0.2f );
 	float								get_occlusion			( Fvector& P, float R, Fvector* occ );
 	CSoundRender_Environment*			get_environment			( const Fvector& P );

@@ -122,7 +122,10 @@ void CObjectList::Update		()
 	{
 		// Info
 		for (xr_vector<CObject*>::iterator oit=objects_active.begin(); oit!=objects_active.end(); oit++)
-			for (int it = destroy_queue.size()-1; it>=0; it--)	(*oit)->net_Relcase	(destroy_queue[it]);
+			for (int it = destroy_queue.size()-1; it>=0; it--){	
+				(*oit)->net_Relcase		(destroy_queue[it]);
+				Sound->object_relcase	(destroy_queue[it]);
+			}
 		for (xr_vector<CObject*>::iterator oit=objects_sleeping.begin(); oit!=objects_sleeping.end(); oit++)
 			for (int it = destroy_queue.size()-1; it>=0; it--)	(*oit)->net_Relcase	(destroy_queue[it]);
 		

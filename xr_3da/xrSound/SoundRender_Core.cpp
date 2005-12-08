@@ -453,6 +453,14 @@ void CSoundRender_Core::i_eax_commit_setting()
     	i_eax_set(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_COMMITDEFERREDSETTINGS,NULL,0);
 }
 
+void CSoundRender_Core::object_relcase( CObject* obj )
+{
+	if (obj){
+		for (u32 eit=0; eit<s_emitters.size(); eit++)
+			if (obj==s_emitters[eit]->owner_data->g_object) s_emitters[eit]->owner_data->g_object=0;
+	}
+}
+
 #ifdef _EDITOR
 void						CSoundRender_Core::set_user_env		( CSound_environment* E)
 {
