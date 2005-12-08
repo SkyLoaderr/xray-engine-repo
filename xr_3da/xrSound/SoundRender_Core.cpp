@@ -457,7 +457,8 @@ void CSoundRender_Core::object_relcase( CObject* obj )
 {
 	if (obj){
 		for (u32 eit=0; eit<s_emitters.size(); eit++)
-			if (obj==s_emitters[eit]->owner_data->g_object) s_emitters[eit]->owner_data->g_object=0;
+			if (s_emitters[eit]->owner_data && (obj==s_emitters[eit]->owner_data->g_object)) 
+				s_emitters[eit]->owner_data->g_object=0;
 	}
 }
 
