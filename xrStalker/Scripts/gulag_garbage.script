@@ -852,7 +852,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_seryi_bandits_camper20",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_seryi_factory"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_seryi_bandits_camper40",

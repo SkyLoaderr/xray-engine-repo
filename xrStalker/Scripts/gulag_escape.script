@@ -782,120 +782,140 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home", 
 			idle = 0,
 			prior = 5, state = {0},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox", 
 			idle = 0,
 			prior = 5, state = {1},
+			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
