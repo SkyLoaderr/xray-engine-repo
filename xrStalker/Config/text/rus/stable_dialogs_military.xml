@@ -1338,9 +1338,6 @@
     <string id="mil_trader_dialog_3021">
         <text>Как знаешь...</text>
     </string>
-    <string id="mil_trader_dialog_3100">
-        <text>Видел я там твоих ребят.</text>
-    </string>
     <string id="mil_trader_dialog_3101">
         <text>И что ?</text>
     </string>
@@ -1373,6 +1370,12 @@
     </string>
     <string id="mil_trader_dialog_3401">
         <text>Ну, за определенную плату можно все...</text>
+    </string>
+    <string id="mil_trader_dialog_3500">
+        <text>Так я уже с ней разобрался.</text>
+    </string>
+    <string id="mil_trader_dialog_3501">
+        <text>Ну, ты даешь... Ладно - бери "Кристалл".</text>
     </string>
     <string id="mil_trader_dialog_4001">
         <text>Как прошла охота ?</text>
