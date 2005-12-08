@@ -1063,7 +1063,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_dram_bandit_1",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "gar_bandits_restrictor",
 			predicate = function(obj_info) 
         					return obj_info.story_id == 101			           
 						end
@@ -1090,7 +1090,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_dram_novice",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = "gar_bandits_restrictor",
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
         					return obj_info.profile_name == "gar_dram_novice"			           
 						end
