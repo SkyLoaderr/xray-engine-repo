@@ -29,6 +29,7 @@ function notify_on_use(victim, who)
 	
 	-- Согласны ли мы говорить при этом юзании или нет.
 	if victim:is_talk_enabled() == true then
+--[[	
 		if victim:active_sound_count() ~= 0 then
 			return
 		end
@@ -54,6 +55,7 @@ function notify_on_use(victim, who)
 			printf("use_yes_default")
 			xr_sound.set_sound_play(victim, "use_yes_default")
 		end
+]]		
 	else
 		xr_abuse.add_abuse(victim, 1)
 		if victim:active_sound_count() ~= 0 then
