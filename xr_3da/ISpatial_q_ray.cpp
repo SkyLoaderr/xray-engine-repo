@@ -242,8 +242,8 @@ public:
 				if (d<range)	{
 					if (b_nearest)					{ range=d; range2=d*d; }
 					space->q_result->push_back		(S);
+					if (b_first)						return;
 				}
-				if (b_first)						return;
 			}
 		}
 
