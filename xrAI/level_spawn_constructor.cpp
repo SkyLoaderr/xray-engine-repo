@@ -144,6 +144,9 @@ void CLevelSpawnConstructor::add_space_restrictor				(CSE_ALifeDynamicObject *dy
 	if (space_restrictor->m_space_restrictor_type == RestrictionSpace::eRestrictorTypeNone)
 		return;
 
+	if (!space_restrictor->m_flags.test(CSE_ALifeObject::flCheckForSeparator))
+		return;
+
 	m_space_restrictors.push_back	(xr_new<CSpaceRestrictorWrapper>(space_restrictor));
 }
 
