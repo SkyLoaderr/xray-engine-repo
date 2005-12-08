@@ -169,7 +169,7 @@ danger = danger_condition@1
 
 [remark@scientist_research]
 snd = yantar_kruglov_radiation_quest_2
-anim = wait
+anim = guard
 on_signal = sound_end | walker@scientist_research
 combat_ignore_cond = always
 danger = danger_condition@1
@@ -184,7 +184,7 @@ danger = danger_condition@1
 
 [remark@scientist_wounded_1]
 snd = yantar_kruglov_radiation_quest_6
-anim = hide
+anim = guard
 target = actor
 on_signal = sound_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
 on_timer = 9000 | %+yan_spawn_ghost%
@@ -203,7 +203,7 @@ wounded = wounded@yan_scientist
 combat_ignore_cond = always
 on_info = {+yan_scientist_return_to_bunker} remark@scientist_return_to_bunker
 danger = danger_condition@1
-meet = meet@scientist_1
+
 
 [remark@scientist_return_to_bunker]
 snd = yantar_kruglov_radiation_quest_8
@@ -283,8 +283,10 @@ use                     = true
 use_wpn                 = true
 
 [meet@scientist_1]
-use                     = true
-use_wpn                 = true
+meet_state 			= 0 | guard
+meet_state_wpn 		= 0 | guard
+use                 = true
+use_wpn             = true
 
 [death@scientist]
 on_info = %+yan_scientist_die%
