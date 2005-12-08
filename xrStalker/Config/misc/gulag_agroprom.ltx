@@ -674,7 +674,8 @@ combat_ignore = combat_ignore@agr_factory_defence
 path_walk = walk1
 path_look = look1
 combat_ignore_cond = always
-
+def_state_moving1 = sprint
+def_state_moving2 = sprint
 
 [logic@agr_factory_defence_walker2]
 active = walker2@agr_factory_defence
@@ -684,6 +685,8 @@ combat_ignore = combat_ignore@agr_factory_defence
 path_walk = walk2
 path_look = look2
 combat_ignore_cond = always
+def_state_moving1 = sprint
+def_state_moving2 = sprint
 
 
 [logic@agr_factory_defence_walker3]
@@ -694,6 +697,8 @@ combat_ignore = combat_ignore@agr_factory_defence
 path_walk = walk3
 path_look = look3
 combat_ignore_cond = always
+def_state_moving1 = sprint
+def_state_moving2 = sprint
 
 
 [logic@agr_factory_defence_walker4]
@@ -704,6 +709,8 @@ combat_ignore = combat_ignore@agr_factory_defence
 path_walk = walk4
 path_look = look4
 combat_ignore_cond = always
+def_state_moving1 = sprint
+def_state_moving2 = sprint
 
 
 [logic@agr_factory_defence_walker5]
@@ -714,6 +721,8 @@ combat_ignore = combat_ignore@agr_factory_defence
 path_walk = walk5
 path_look = look5
 combat_ignore_cond = always
+def_state_moving1 = sprint
+def_state_moving2 = sprint
 
 
 [logic@agr_factory_defence_walker6]
@@ -724,6 +733,8 @@ combat_ignore = combat_ignore@agr_factory_defence
 path_walk = walk6
 path_look = look6
 combat_ignore_cond = always
+def_state_moving1 = sprint
+def_state_moving2 = sprint
 
 
 ;---------------- отстреливаются от военных -----------------
@@ -733,6 +744,9 @@ active = walker1@agr_factory_defence_skirmish
 [walker1@agr_factory_defence_skirmish]
 path_walk = walk1
 path_look = look1
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 
 [logic@agr_factory_defence_skirmish_walker2]
@@ -741,7 +755,9 @@ active = walker2@agr_factory_defence_skirmish
 [walker2@agr_factory_defence_skirmish]
 path_walk = walk2
 path_look = look2
-
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_skirmish_walker3]
 active = walker3@agr_factory_defence_skirmish
@@ -749,7 +765,9 @@ active = walker3@agr_factory_defence_skirmish
 [walker3@agr_factory_defence_skirmish]
 path_walk = walk3
 path_look = look3
-
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_skirmish_walker4]
 active = walker4@agr_factory_defence_skirmish
@@ -757,7 +775,9 @@ active = walker4@agr_factory_defence_skirmish
 [walker4@agr_factory_defence_skirmish]
 path_walk = walk4
 path_look = look4
-
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_skirmish_walker5]
 active = walker5@agr_factory_defence_skirmish
@@ -773,14 +793,18 @@ active = walker6@agr_factory_defence_skirmish
 [walker6@agr_factory_defence_skirmish]
 path_walk = walk6
 path_look = look6
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 ;---------------- помогают Кроту -----------------
 
 [danger_condition@agr_factory_defence_ignore_corpses]
-ignore_types = corpse
+ignore_distance_corpse = 0
+ignore_distance_sound = 10
 
 [danger_condition@agr_factory_defence]
-;ignore_distance = 0
+ignore_distance = 1
 
 [wounded@agr_factory_defence]
 hp_state = 10|wounded_heavy@help_heavy
@@ -800,7 +824,9 @@ path_walk = krot_walk1
 meet = meet@agr_factory_defence
 danger = danger_condition@agr_factory_defence_ignore_corpses
 wounded = wounded@agr_factory_defence
-
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_krot_walker2]
 active = walker2@agr_factory_defence_krot
@@ -812,7 +838,9 @@ path_walk = krot_walk2
 meet = meet@agr_factory_defence
 danger = danger_condition@agr_factory_defence_ignore_corpses
 wounded = wounded@agr_factory_defence
-
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_krot_walker3]
 active = walker3@agr_factory_defence_krot
@@ -824,7 +852,9 @@ path_walk = krot_walk3
 meet = meet@agr_factory_defence
 danger = danger_condition@agr_factory_defence_ignore_corpses
 wounded = wounded@agr_factory_defence
-
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_krot_walker4]
 active = walker4@agr_factory_defence_krot
@@ -836,7 +866,9 @@ path_walk = krot_walk4
 meet = meet@agr_factory_defence
 danger = danger_condition@agr_factory_defence_ignore_corpses
 wounded = wounded@agr_factory_defence
-
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_krot_walker5]
 active = walker5@agr_factory_defence_krot
@@ -848,7 +880,9 @@ path_walk = krot_walk5
 meet = meet@agr_factory_defence
 danger = danger_condition@agr_factory_defence_ignore_corpses
 wounded = wounded@agr_factory_defence
-
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [logic@agr_factory_defence_krot_walker6]
 active = walker6@agr_factory_defence_krot
@@ -860,7 +894,9 @@ path_walk = krot_walk6
 meet = meet@agr_factory_defence
 danger = danger_condition@agr_factory_defence_ignore_corpses
 wounded = wounded@agr_factory_defence
-
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
 ;---------------- Бегут к колодцу и стоят там -----------------
 
 [actor_dialogs@agr_factory_defence]
@@ -876,6 +912,9 @@ path_walk = to_well_walk1
 on_signal = well | walker1@agr_factory_defence_well
 danger = danger_condition@agr_factory_defence
 wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [walker1@agr_factory_defence_well]
 path_walk = well_walk1
@@ -893,6 +932,9 @@ path_walk = to_well_walk2
 on_signal = well | walker2@agr_factory_defence_well
 danger = danger_condition@agr_factory_defence
 wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [walker2@agr_factory_defence_well]
 path_walk = well_walk2
@@ -910,6 +952,9 @@ path_walk = to_well_walk3
 on_signal = well | walker3@agr_factory_defence_well
 danger = danger_condition@agr_factory_defence
 wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [walker3@agr_factory_defence_well]
 path_walk = well_walk3
@@ -927,6 +972,9 @@ path_walk = to_well_walk4
 on_signal = well | walker4@agr_factory_defence_well
 danger = danger_condition@agr_factory_defence
 wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [walker4@agr_factory_defence_well]
 path_walk = well_walk4
@@ -944,6 +992,9 @@ path_walk = to_well_walk5
 on_signal = well | walker5@agr_factory_defence_well
 danger = danger_condition@agr_factory_defence
 wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
 [walker5@agr_factory_defence_well]
 path_walk = well_walk5
@@ -961,6 +1012,10 @@ path_walk = to_well_walk6
 on_signal = well | walker6@agr_factory_defence_well
 danger = danger_condition@agr_factory_defence
 wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
+
 
 [walker6@agr_factory_defence_well]
 path_walk = well_walk6
