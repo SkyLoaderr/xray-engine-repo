@@ -61,6 +61,7 @@ void RestoreVelocityState(V_PH_WORLD_STATE& state)
 		new_s.angular_vel.set(old_s.angular_vel);
 		new_s.linear_vel.set(old_s.linear_vel);
 		new_s.enabled=old_s.enabled;
+		sync.set_State(new_s);
 	}
 }
 
