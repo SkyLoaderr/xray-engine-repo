@@ -522,3 +522,8 @@ void CUIWindow::SetParent(CUIWindow* pNewParent)
 
 	m_pParentWnd = pNewParent;
 }
+
+void CUIWindow::ShowChildren(bool show){
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)		
+			(*it)->Show(show);
+}

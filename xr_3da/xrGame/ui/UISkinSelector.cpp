@@ -9,6 +9,8 @@
 #include "UI3tButton.h"
 #include "UIStatix.h"
 #include "../game_cl_deathmatch.h"
+#include "../xr_level_controller.h"
+#include "../HUDManager.h"
 
 CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 {	
@@ -199,7 +201,26 @@ bool CUISkinSelectorWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if (WINDOW_KEY_PRESSED != keyboard_action)
+	{
+		if (dik == DIK_TAB)
+		{
+			ShowChildren(true);
+			game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
+			game->OnKeyboardRelease(kSCORES);
+			UI()->GetUICursor()->Show();
+		}
+		
 		return false;
+	}
+
+	if (dik == DIK_TAB)
+	{
+        ShowChildren(false);
+		game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
+		game->OnKeyboardPress(kSCORES);
+		UI()->GetUICursor()->Hide();
+		return false;
+	}
 
 	if (dik >= DIK_1 && dik < DIK_4 + 2)
 	{

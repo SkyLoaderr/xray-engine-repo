@@ -10899,114 +10899,164 @@
 				Name="Multiplayer"
 				Filter="">
 				<Filter
-					Name="Stats"
+					Name="MM_MP"
 					Filter="">
-					<File
-						RelativePath=".\ui\UIStats.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIStats.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatsPlayerInfo.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatsPlayerInfo.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatsPlayerList.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatsPlayerList.h">
-					</File>
 					<Filter
-						Name="icons"
+						Name="CDkey"
 						Filter="">
 						<File
-							RelativePath=".\ui\UIStatsIcon.cpp">
+							RelativePath=".\ui\UICDkey.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIStatsIcon.h">
+							RelativePath=".\ui\UICDkey.h">
 						</File>
 					</Filter>
 					<Filter
-						Name="frag_wnd"
+						Name="MapList"
 						Filter="">
 						<File
-							RelativePath=".\ui\UIFrags.cpp">
+							RelativePath=".\ui\UIMapList.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIFrags.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIFrags2.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIFrags2.h">
+							RelativePath=".\ui\UIMapList.h">
 						</File>
 					</Filter>
 					<Filter
-						Name="old"
+						Name="ServerList"
 						Filter="">
 						<File
-							RelativePath=".\ui\UIStatsWnd.cpp">
+							RelativePath=".\ui\ServerList.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIStatsWnd.h">
+							RelativePath=".\ui\ServerList.h">
+						</File>
+						<File
+							RelativePath=".\ui\ServerList_GameSpy_func.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemAdv.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemAdv.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemServer.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItemServer.h">
 						</File>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="Spawn"
+					Name="HUD"
 					Filter="">
-					<File
-						RelativePath=".\ui\UISpawnWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UISpawnWnd.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="SkinSelector"
-					Filter="">
-					<File
-						RelativePath=".\ui\UISkinSelector.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UISkinSelector.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatix.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatix.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="Chat"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIChatLog.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIChatLog.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIChatWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIChatWnd.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="GameLog"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIGameLog.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIGameLog.h">
-					</File>
+					<Filter
+						Name="Stats"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIStats.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIStats.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatsPlayerInfo.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatsPlayerInfo.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatsPlayerList.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatsPlayerList.h">
+						</File>
+						<Filter
+							Name="icons"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIStatsIcon.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIStatsIcon.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="frag_wnd"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIFrags.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIFrags.h">
+							</File>
+							<File
+								RelativePath=".\ui\UIFrags2.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIFrags2.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="old"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIStatsWnd.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIStatsWnd.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Chat"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIChatLog.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIChatLog.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIChatWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIChatWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="GameLog"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIGameLog.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIGameLog.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="SpeechMenu"
+						Filter="">
+						<File
+							RelativePath=".\ui\UISpeechMenu.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UISpeechMenu.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="common"
+						Filter="">
+						<File
+							RelativePath=".\ui\KillMessageStruct.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIPdaKillMessage.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIPdaKillMessage.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="BuyWeaponWnd"
@@ -11070,93 +11120,55 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="common"
+					Name="1"
 					Filter="">
-					<File
-						RelativePath=".\ui\KillMessageStruct.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIPdaKillMessage.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIPdaKillMessage.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ServerList"
-					Filter="">
-					<File
-						RelativePath=".\ui\ServerList.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\ServerList.h">
-					</File>
-					<File
-						RelativePath=".\ui\ServerList_GameSpy_func.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItemAdv.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItemAdv.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItemServer.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItemServer.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="MapList"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIMapList.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIMapList.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="CDkey"
-					Filter="">
-					<File
-						RelativePath=".\ui\UICDkey.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UICDkey.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="SpeechMenu"
-					Filter="">
-					<File
-						RelativePath=".\ui\UISpeechMenu.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UISpeechMenu.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="MapDesc"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIMapDesc.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIMapDesc.h">
-					</File>
 					<Filter
-						Name="MapInfo"
+						Name="MapDesc"
 						Filter="">
 						<File
-							RelativePath=".\ui\UIMapInfo.cpp">
+							RelativePath=".\ui\UIMapDesc.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIMapInfo.h">
+							RelativePath=".\ui\UIMapDesc.h">
+						</File>
+						<Filter
+							Name="MapInfo"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIMapInfo.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIMapInfo.h">
+							</File>
+							<File
+								RelativePath=".\ui\UIMapInfo_script.cpp">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Spawn"
+						Filter="">
+						<File
+							RelativePath=".\ui\UISpawnWnd.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIMapInfo_script.cpp">
+							RelativePath=".\ui\UISpawnWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="SkinSelector"
+						Filter="">
+						<File
+							RelativePath=".\ui\UISkinSelector.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UISkinSelector.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatix.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatix.h">
 						</File>
 					</Filter>
 				</Filter>

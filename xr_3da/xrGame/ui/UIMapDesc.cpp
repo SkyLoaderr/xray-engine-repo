@@ -10,6 +10,7 @@
 #include "../level.h"
 #include "../game_cl_teamdeathmatch.h"
 #include "UIMapInfo.h"
+#include "../xr_level_controller.h"
 #include <dinput.h>
 
 #include "UIStatsPlayerList.h"
@@ -107,7 +108,26 @@ void CUIMapDesc::SendMessage(CUIWindow* pWnd,s16 msg, void* pData){
 
 bool CUIMapDesc::OnKeyboard(int dik, EUIMessages keyboard_action){
 	if (WINDOW_KEY_RELEASED == keyboard_action) 
-		return true;
+	{
+		if (dik == DIK_TAB)
+		{
+			ShowChildren(true);
+			game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
+			game->OnKeyboardRelease(kSCORES);
+			UI()->GetUICursor()->Show();
+		}
+		
+		return false;
+	}
+
+	if (dik == DIK_TAB)
+	{
+        ShowChildren(false);
+		game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
+		game->OnKeyboardPress(kSCORES);
+		UI()->GetUICursor()->Hide();
+		return false;
+	}
 
 	game_cl_mp * dm = smart_cast<game_cl_mp *>(&(Game()));
 

@@ -95,6 +95,7 @@ public:
 	//убрать/показать окно и его дочерние окна
 	virtual void			Show				(bool status)									{SetVisible(status); Enable(status); }
 	IC		bool			IsShown				()												{return this->GetVisible();}
+			void			ShowChildren		(bool show);
 	
 	//абсолютные координаты
 	Frect					GetAbsoluteRect		() ;
