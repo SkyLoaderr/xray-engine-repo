@@ -141,6 +141,8 @@ virtual		void		cv2bone_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmat
 virtual	const Fvector&  ControlAccel						()const														=0;
 virtual		float		&FrictionFactor						()															=0;
 virtual		void		CutVelocity							(float l_limit,float a_limit)								;
+virtual		u16				get_elements_number				()															{return 1;};
+virtual		CPHSynchronize	*get_element_sync				(u16 element)												{VERIFY(element==0);return static_cast<CPHSynchronize*>(this);};		
 			CPHCharacter									(void)														;
 virtual		~CPHCharacter									(void)														;
 };

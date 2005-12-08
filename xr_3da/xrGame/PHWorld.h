@@ -1,12 +1,15 @@
 #ifndef PH_WORLD_H
 #define PH_WORLD_H
 #include "Physics.h"
+
 // refs
 struct	SGameMtlPair;
 class	CPHCommander;
 class	CPHCondition;
 class	CPHAction;
-
+struct	SPHNetState;
+class	CPHSynchronize;
+typedef  xr_vector<std::pair<CPHSynchronize*,SPHNetState> > V_PH_WORLD_STATE;
 class CPHMesh {
 	dGeomID Geom;
 public:
@@ -19,6 +22,7 @@ public:
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
+
 class CPHWorld	: public pureFrame
 #ifdef DEBUG
 , public pureRender
@@ -73,6 +77,7 @@ IC	float						FrameTime						(bool frame_mark){return b_frame_mark==frame_mark ?
 	void						FrameStep						(dReal step=0.025f)			;
 	void						Step							()							;
 	void						CutVelocity						(float l_limit, float a_limit);
+	void						GetState						(V_PH_WORLD_STATE& state)		;
 	void 						Freeze							()							;
 	void 						UnFreeze						()							;
 	void						AddFreezedObject				(CPHObject* obj)			;

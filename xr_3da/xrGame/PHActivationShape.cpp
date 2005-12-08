@@ -15,6 +15,8 @@
 #include "PHDebug.h"
 #endif
 #include "PHDynamicData.h"
+#include "PHSynchronize.h"
+#include "phnetstate.h"
 static	float max_depth			=0.f;
 static	float friction_factor	=0.f;
 static	float cfm				=1.e-10f;
@@ -47,6 +49,21 @@ void  GetMaxDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGam
 	}
 	do_colide=false;
 }
+
+void RestoreVelocityState(V_PH_WORLD_STATE& state)
+{
+	V_PH_WORLD_STATE::iterator i=state.begin(),e=state.end();	
+	for(;e!=i;++i)
+	{
+		CPHSynchronize& sync=*i->first;
+		SPHNetState&	old_s	=i->second;
+		SPHNetState new_s;sync.get_State(new_s);
+		new_s.angular_vel.set(old_s.angular_vel);
+		new_s.linear_vel.set(old_s.linear_vel);
+		new_s.enabled=old_s.enabled;
+	}
+}
+
 CPHActivationShape::CPHActivationShape()
 {
 	m_geom=NULL;
@@ -131,6 +148,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	step_size.mul(fnum_steps_r);
 	size.set(from_size);
 	bool ret=false;
+	V_PH_WORLD_STATE temp_state;
 	for(int m=0;steps>m;++m)
 	{
 		//float param =fnum_steps_r*(1+m);
@@ -141,7 +159,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		for(int i=0;num_it>i;++i){
 			max_depth=0.f;
 			ph_world->Step();
-			
+			if(m==0&&i==0)ph_world->GetState(temp_state);
 			if(max_depth	<	resolve_depth) 
 			{
 				ret=true;
@@ -152,6 +170,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		ph_world->CutVelocity(max_vel,max_a_vel);
 		 
 	}
+	RestoreVelocityState(temp_state);
 	ph_world->UnFreeze();
 #ifdef	DEBUG 
 	if(ph_dbg_draw_mask.test(phDbgDrawDeathActivationBox))

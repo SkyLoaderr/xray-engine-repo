@@ -13,6 +13,8 @@
 #endif
 #include "PHCommander.h"
 #include "PHSimpleCalls.h"
+#include "PHSynchronize.h"
+#include "phnetstate.h"
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -434,4 +436,22 @@ u16 CPHWorld::ObjectsNumber()
 u16 CPHWorld::UpdateObjectsNumber()
 {
 	return m_update_objects.count();
+}
+void CPHWorld::GetState(V_PH_WORLD_STATE& state)
+{
+	state.clear();
+	PH_OBJECT_I			i_object;
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{
+		CPHObject* obj=(*i_object);
+		const u16 els=obj->get_elements_number();
+		for(u16 i=0;els>i;++i)
+		{
+			std::pair<CPHSynchronize*,SPHNetState> s;
+			s.first=obj->get_element_sync(i);
+			s.first->get_State(s.second);
+			state.push_back(s);
+		}
+		++i_object;
+	}	
 }

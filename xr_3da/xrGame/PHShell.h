@@ -134,6 +134,8 @@ public:
 	virtual		CPhysicsElement		*get_ElementByStoreOrder		(u16 num);
 	virtual		u16					get_ElementsNumber				(){return (u16)elements.size();}
 	virtual		CPHSynchronize		*get_ElementSync				(u16 element);
+	virtual		u16					get_elements_number				(){return get_ElementsNumber();}
+	virtual		CPHSynchronize		*get_element_sync				(u16 element){return get_ElementSync(element);}
 	virtual		CPhysicsElement		*NearestToPoint					(const Fvector& point);
 	virtual		CPhysicsJoint		*get_Joint						(u16 bone_id);
 	virtual		CPhysicsJoint		*get_Joint						(const shared_str & bone_name);
