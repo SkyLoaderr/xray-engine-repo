@@ -41,12 +41,13 @@ CLocatorAPI::~CLocatorAPI()
 	VERIFY				(0==m_iLockRescan);
 }
 
-void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif)
+void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 crc, u32 ptr, u32 size_real, u32 size_compressed, u32 modif)
 {
 	// Register file
 	file				desc;
 	desc.name			= xr_strlwr(xr_strdup(name));
 	desc.vfs			= vfs;
+	desc.crc			= crc;
 	desc.ptr			= ptr;
 	desc.size_real		= size_real;
 	desc.size_compressed= size_compressed;
@@ -152,6 +153,7 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 		hdr->r_stringZ	(name,sizeof(name));
 		strconcat		(full,base,name);
 		size_t vfs		= archives.size()-1;
+		u32 crc			= hdr->r_u32();
 		u32 ptr			= hdr->r_u32();
 		u32 size_real	= hdr->r_u32();
 		u32 size_compr	= hdr->r_u32();
@@ -159,7 +161,7 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 //		if(ptr)
 //			fv.push_back	(full);
 
-		Register		(full,(u32)vfs,ptr,size_real,size_compr,0);
+		Register		(full,(u32)vfs,crc,ptr,size_real,size_compr,0);
 	}
 	hdr->close			();
 }
@@ -180,11 +182,11 @@ void CLocatorAPI::ProcessOne	(const char* path, void* _F)
 		if (0==xr_strcmp(F.name,"."))	return;
 		if (0==xr_strcmp(F.name,"..")) return;
 		strcat		(N,"\\");
-		Register	(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
+		Register	(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
 		Recurse		(N);
 	} else {
 		if (strext(N) && 0==strncmp(strext(N),".xp",3))		ProcessArchive	(N);
-		else												Register		(N,0xffffffff,0,F.size,F.size,(u32)F.time_write);
+		else												Register		(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
 	}
 }
 
@@ -224,7 +226,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 
 	// insert self
     if (path&&path[0])
-		Register	(path,0xffffffff,0,0,0,0);
+		Register	(path,0xffffffff,0,0,0,0,0);
 
     return true;
 }
@@ -553,7 +555,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 							xr_delete			(_dst);
 							xr_delete			(_src);
 							set_file_age		(fname_in_cache,desc.modif);
-							Register			(fname_in_cache,0xffffffff,0,desc.size_real,desc.size_real,desc.modif);
+							Register			(fname_in_cache,0xffffffff,0,0,desc.size_real,desc.size_real,desc.modif);
 						}
 
 						// Use
@@ -687,7 +689,7 @@ void	CLocatorAPI::w_close(IWriter* &S)
         xr_delete	(S);
         struct _stat st;
         _stat		(fname,&st);
-        Register	(fname,0xffffffff,0,st.st_size,st.st_size,(u32)st.st_mtime);
+        Register	(fname,0xffffffff,0,0,st.st_size,st.st_size,(u32)st.st_mtime);
     }
 }
 

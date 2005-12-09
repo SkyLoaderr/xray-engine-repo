@@ -16,6 +16,7 @@ public:
 	{
 		LPCSTR					name;			// low-case name
 		u32						vfs;			// 0xffffffff - standart file
+		u32						crc;			// contents CRC
 		u32						ptr;			// pointer inside vfs
 		u32						size_real;		// 
 		u32						size_compressed;// if (size_real==size_compressed) - uncompressed
@@ -50,7 +51,7 @@ private:
 	xrCriticalSection			m_auth_lock		;
 	u64							m_auth_code		;
 
-	void						Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
+	void						Register		(LPCSTR name, u32 vfs, u32 crc, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
 	void						ProcessArchive	(LPCSTR path);
 	void						ProcessOne		(LPCSTR path, void* F);
 	bool						Recurse			(LPCSTR path);
