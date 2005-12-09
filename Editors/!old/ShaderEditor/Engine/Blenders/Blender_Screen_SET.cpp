@@ -123,7 +123,7 @@ void	CBlender_Screen_SET::Compile	(CBlender_Compile& C)
 			C.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,oAREF.value);
 			break;
 		case 7:	// SET (2r)
-			C.PassSET_Blend	(FALSE,	D3DBLEND_ONE,D3DBLEND_ZERO,				FALSE,0);
+			C.PassSET_Blend	(TRUE,	D3DBLEND_ONE,D3DBLEND_ZERO,				TRUE,0);
 			break;
 		case 8: // BLEND (2r)
 			C.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
