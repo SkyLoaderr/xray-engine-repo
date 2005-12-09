@@ -123,7 +123,6 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_SpecificCharacter			= NULL;
 
 #ifdef XRGAME_EXPORTS
-//	m_character_profile_init	= false;
 	m_community_index			= NO_COMMUNITY_INDEX;
 	m_rank						= NO_RANK;
 	m_reputation				= NO_REPUTATION;
@@ -139,9 +138,6 @@ CSE_Abstract *CSE_ALifeTraderAbstract::init	()
 	//sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
 	sprintf						(S,"%s\r\n[game_info]\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
 	base()->m_ini_string		= S;
-#ifdef XRGAME_EXPORTS
-//	m_character_profile_init	= false;
-#endif
 
 	return						(base());
 }
@@ -230,14 +226,12 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		}
 
 		if (m_wVersion > 104) {
-			load_data					(m_character_name, tNetPacket);
+			load_data			(m_character_name, tNetPacket);
 		}
 	}
 
-#ifndef AI_COMPILER
 #ifdef XRGAME_EXPORTS
-		specific_character();
-#endif
+	specific_character			();
 #endif
 
 }
@@ -430,24 +424,6 @@ void CSE_ALifeTraderAbstract::set_character_profile(PROFILE_ID new_profile)
 PROFILE_ID CSE_ALifeTraderAbstract::character_profile()
 {
 	return	m_sCharacterProfile;
-/*
-#ifdef XRGAME_EXPORTS
-
-	if(m_character_profile_init) return	m_iCharacterProfile;
-
-	shared_str profile_id = CCharacterInfo::IndexToId(m_iCharacterProfile, NULL, true);
-	if(!*profile_id)
-	{
-		CSE_ALifeObject* O = smart_cast<CSE_ALifeObject*>(base()); VERIFY(O);
-		Debug.fatal("wrong profile id %s, for %s at level %s", *profile_id, O->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(O->m_tGraphID)->level_id()).name());
-	}
-
-	m_character_profile_init = true;
-
-#endif
-
-	return	m_sCharacterProfile;
-*/
 }
 
 #endif
