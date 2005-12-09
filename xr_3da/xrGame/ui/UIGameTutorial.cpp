@@ -64,7 +64,7 @@ void CUIGameTutorial::OnFrame()
 		return;
 	}else{
 		TutorialItem* pCurrItem		= m_items.front();
-		if((pCurrItem->m_time_start+pCurrItem->m_time_length)<(Device.TimerAsyncMM()/1000.0f) )
+		if((pCurrItem->m_time_start+pCurrItem->m_time_length)<(Device.dwTimeContinual/1000.0f) )
 			Next				();
 	}
 	
@@ -259,7 +259,7 @@ void TutorialItem::Update()
 		SUIHighlightedAreas& s = *it;
 		CUIStatic* w = smart_cast<CUIStatic*>(find_child_window(m_UIWindow, s.m_wnd_name));
 		R_ASSERT(w);
-		float gt = Device.TimerAsyncMM()/1000.0f;
+		float gt = Device.dwTimeContinual/1000.0f;
 		if( (gt > (m_time_start+s.m_start))				&&
 			(gt < (m_time_start+s.m_start+s.m_length))   )
 		{
@@ -288,9 +288,8 @@ void TutorialItem::Start		(CUIGameTutorial* t)
 	if(m_flags.test(etiNeedPauseOff) && m_flags.test(etiStoredPauseState))
 		Device.Pause			(FALSE);
 
-
 	GetUICursor()->SetPos		(m_desired_cursor_pos.x, m_desired_cursor_pos.y);
-	m_time_start				= Device.TimerAsyncMM()/1000.0f;
+	m_time_start				= Device.dwTimeContinual/1000.0f;
 	t->MainWnd()->AttachChild	(m_UIWindow);
 	if(m_snd_name.size()){
 		::Sound->create			(m_sound, true, *m_snd_name); 

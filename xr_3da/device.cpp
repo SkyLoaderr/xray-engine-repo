@@ -252,6 +252,7 @@ void CRenderDevice::FrameMove()
 {
 	dwFrame			++;
 
+	dwTimeContinual	= TimerMM.GetElapsed_ms	();
 	if (psDeviceFlags.test(rsConstantFPS))	{
 		// 20ms = 50fps
 		fTimeDelta		=	0.020f;			
@@ -260,7 +261,6 @@ void CRenderDevice::FrameMove()
 		dwTimeGlobal	+=	20;
 	} else {
 		// Timer
-
 		float fPreviousFrameTime = Timer.GetElapsed_sec(); Timer.Start();	// previous frame
 		fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;			// smooth random system activity - worst case ~7% error
 		if (fTimeDelta>.1f) fTimeDelta=.1f;									// limit to 15fps minimum
@@ -286,14 +286,14 @@ void CRenderDevice::FrameMove()
 void ProcessLoading				(RP_FUNC *f)
 {
 	static u32 processed_idx			= 0;
-	u32 tm = Device.TimerAsyncMM		();
+	u32 tm = Device.TimerAsyncMMT		();
 
 	xr_vector<_REG_INFO>& R		= Device.seqFrame.R;
     if (R.empty())				return;
 
 	for (; processed_idx<R.size(); processed_idx++)	{
 		f(R[processed_idx].Object);
-		if	(Device.TimerAsyncMM() > tm+50) return;
+		if	(Device.TimerAsyncMMT() > tm+50) return;
 	}
 
 	g_bLoaded				= TRUE;

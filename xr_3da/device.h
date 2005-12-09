@@ -87,6 +87,7 @@ public:
 	float									fTimeGlobal;
 	u32										dwTimeDelta;
 	u32										dwTimeGlobal;
+	u32										dwTimeContinual;
 
 	// Cameras & projection
 	Fvector									vCameraPosition;
@@ -109,7 +110,7 @@ public:
 		m_bNearer			= FALSE;
 	};
 	void	Pause							(BOOL bOn);
-	IC BOOL	Pause							(){return g_pauseMngr.Paused();};
+	IC BOOL	Pause							()	{return g_pauseMngr.Paused();};
 	// Scene control
 	void PreCache							(u32 frames);
 	BOOL Begin								();
@@ -122,9 +123,9 @@ public:
 
 	// Mode control
 	void DumpFlags							();
-	IC CTimer_paused* GetTimerGlobal		()	{ return &TimerGlobal;								}
+	IC	 CTimer_paused* GetTimerGlobal		()	{ return &TimerGlobal;								}
 	u32	 TimerAsync							()	{ return TimerGlobal.GetElapsed_ms();				}
-	u32	 TimerAsyncMM						()	{ return TimerMM.GetElapsed_ms() +	Timer_MM_Delta; }
+	u32	 TimerAsync_MMT						()	{ return TimerMM.GetElapsed_ms() +	Timer_MM_Delta; }
 
 	// Creation & Destroying
 	void Create								(void);

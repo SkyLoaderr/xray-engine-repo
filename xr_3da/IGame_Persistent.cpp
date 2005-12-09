@@ -118,7 +118,6 @@ void IGame_Persistent::OnGameEnd	()
 
 void IGame_Persistent::OnFrame		()
 {
-
 	Environment.OnFrame				();
 #ifndef _EDITOR
 

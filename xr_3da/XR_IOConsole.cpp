@@ -68,7 +68,7 @@ void CConsole::Destroy	()
 
 void CConsole::OnFrame	()
 {
-	u32 mm_timer = Device.TimerAsyncMM();
+	u32 mm_timer = Device.dwTimeContinual;
 	float fDelta = (mm_timer - last_mm_timer)/1000.0f;
 	if (fDelta>.06666f) fDelta=.06666f;
 	last_mm_timer = mm_timer;

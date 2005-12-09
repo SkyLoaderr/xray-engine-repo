@@ -610,6 +610,7 @@ void CApplication::SetLoadLogo			(ref_shader NewLoadLogo)
 	ll_hLogo = NewLoadLogo;
 };
 
+// Sequential
 void CApplication::OnFrame	( )
 {
 	Engine.Event.OnFrame			();

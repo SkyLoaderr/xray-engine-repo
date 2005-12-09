@@ -17,7 +17,7 @@ IC	void			CALifeTimeManager::set_time_factor		(float time_factor)
 
 IC	ALife::_TIME_ID	CALifeTimeManager::game_time			() const
 {
-	return						(m_game_time + iFloor(m_time_factor*float(Device.TimerAsync() - m_start_time)));
+	return						(m_game_time + iFloor(m_time_factor*float(Device.dwTimeGlobal - m_start_time)));
 };
 
 IC	float			CALifeTimeManager::time_factor	() const

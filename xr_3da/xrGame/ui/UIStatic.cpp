@@ -181,7 +181,7 @@ void CUIStatic::Update()
 	if (m_lanim)
 	{
 		if(m_lainm_start_time<0.0f)		ResetAnimation	();
-		float t = Device.TimerAsyncMM()/1000.0f;
+		float t = Device.dwTimeContinual/1000.0f;
 		if(m_lanimFlags.test(LA_CYCLIC) || t-m_lainm_start_time < m_lanim->Length_sec()){
 
 			int frame;
@@ -205,7 +205,7 @@ void CUIStatic::Update()
 
 void CUIStatic::ResetAnimation()
 {
-	m_lainm_start_time = Device.TimerAsyncMM()/1000.0f;
+	m_lainm_start_time = Device.dwTimeContinual/1000.0f;
 }
 
 void CUIStatic::SetFont(CGameFont* pFont){

@@ -165,7 +165,7 @@ IC	std::ostream& operator<<(std::ostream &stream, profile_timer_script &timer)
 }
 
 #ifdef XRGAME_EXPORTS
-ICF	u32	script_time_global	()	{ return Device.TimerAsync(); }
+ICF	u32	script_time_global	()	{ return Device.dwTimeGlobal; }
 #else
 ICF	u32	script_time_global	()	{ return 0; }
 #endif

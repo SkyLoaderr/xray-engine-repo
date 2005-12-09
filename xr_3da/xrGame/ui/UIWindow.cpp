@@ -208,7 +208,7 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	// DOUBLE CLICK GENERATION
 	if( ( WINDOW_LBUTTON_DOWN == mouse_action ) && m_bDoubleClickEnabled )
 	{
-		u32 dwCurTime = Device.TimerAsyncMM();
+		u32 dwCurTime = Device.dwTimeContinual;
 		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
             mouse_action = WINDOW_LBUTTON_DB_CLICK;
 

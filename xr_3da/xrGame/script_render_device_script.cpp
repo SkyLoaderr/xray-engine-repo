@@ -21,11 +21,19 @@ void set_device_paused(CRenderDevice* d, bool b)
 {
 	Device.Pause(b);
 }
+
 extern ENGINE_API BOOL g_appLoaded;
 bool is_app_ready()
 {
 	return !!g_appLoaded;
 }
+
+u32 time_global(const CRenderDevice *self)
+{
+	THROW		(self);
+	return		(self->dwTimeGlobal);
+}
+
 void CScriptRenderDevice::script_register(lua_State *L)
 {
 	module(L)
@@ -44,7 +52,7 @@ void CScriptRenderDevice::script_register(lua_State *L)
 //			.def_readonly("full_transform",			&CRenderDevice::mFullTransform)
 			.def_readonly("fov",					&CRenderDevice::fFOV)
 			.def_readonly("aspect_ratio",			&CRenderDevice::fASPECT)
-			.def("time_global",						&CRenderDevice::TimerAsync)
+			.def("time_global",						&time_global)
 			.def_readonly("precache_frame",			&CRenderDevice::dwPrecacheFrame)
 			.def("is_paused",						&is_device_paused)
 			.def("pause",							&set_device_paused),

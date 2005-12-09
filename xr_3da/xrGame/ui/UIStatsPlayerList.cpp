@@ -167,9 +167,9 @@ void CUIStatsPlayerList::InitTeamHeader(CUIXml& xml_doc, LPCSTR path){
 
 void CUIStatsPlayerList::Update(){
 	static string512 teaminfo;
-	if (m_prev_upd_time > Device.TimerAsyncMM() - 100)
+	if (m_prev_upd_time > Device.dwTimeContinual - 100)
 		return;
-	m_prev_upd_time = Device.TimerAsyncMM();
+	m_prev_upd_time = Device.dwTimeContinual;
 	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
 	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 
