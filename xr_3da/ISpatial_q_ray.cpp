@@ -239,8 +239,9 @@ public:
 			float	d			= sR*sR - (c_sqr - v*v);
 			if (d > 0)			{
 				// sphere intersected (assume object intersects too)
-				if (d<range)	{
-					if (b_nearest)					{ range=d; range2=d*d; }
+				float	_distance		= v - _sqrt(d);
+				if (_distance<range)	{
+					if (b_nearest)					{ range=_distance; range2=_distance*_distance; }
 					space->q_result->push_back		(S);
 					if (b_first)					return;
 				}
