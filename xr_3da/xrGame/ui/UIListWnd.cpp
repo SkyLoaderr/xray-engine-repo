@@ -37,6 +37,8 @@ CUIListWnd::CUIListWnd()
 	m_bNewRenderMethod			= false;
 	m_iRightIndention			= 0;
 	m_bAlwaysShowScroll			= false;
+	m_bAlwaysShowScroll_enable	= false;
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -531,15 +533,16 @@ void CUIListWnd::UpdateScrollBar()
 {
 //	m_ScrollBar->UpdateScrollBar();
 	//спрятать скорлинг, если он не нужен
-	if (!m_bAlwaysShowScroll){
-		if ((int)m_ItemList.size()<=m_ScrollBar->GetPageSize())
-			m_ScrollBar->Show(false);
-		else
-			m_ScrollBar->Show(true);
+	if (m_bAlwaysShowScroll_enable)
+	{
+		m_ScrollBar->Show(m_bAlwaysShowScroll);
+		return;
 	}
+
+	if ((int)m_ItemList.size()<=m_ScrollBar->GetPageSize())
+		m_ScrollBar->Show(false);
 	else
 		m_ScrollBar->Show(true);
-	
 }
 
 //////////////////////////////////////////////////////////////////////////

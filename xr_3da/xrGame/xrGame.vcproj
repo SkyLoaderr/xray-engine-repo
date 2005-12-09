@@ -10327,12 +10327,6 @@
 						RelativePath=".\ui\UIInteractiveListItem.h">
 					</File>
 					<File
-						RelativePath="UIListBox.cpp">
-					</File>
-					<File
-						RelativePath="UIListBox.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIListItem.cpp">
 					</File>
 					<File

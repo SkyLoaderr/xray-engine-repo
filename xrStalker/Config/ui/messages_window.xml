@@ -12,12 +12,12 @@
 	</chat_edit_box>
 
 	<!-- CHAT LOG -->
-	<chat_log_list x="20" y="220" width="324" height="160" item_height = "16" fade="1000">
+	<chat_log_list x="20" y="220" width="324" height="160" item_height = "16" fade="1000" always_hide_scroll="1">
 		<font font="letterica16" r="255" g="255" b="255"/>
 	</chat_log_list>
 	
 	<!-- GAME LOG -->
-	<mp_log_list x="20" y="410" width="344" height="270" item_height = "30" fade="1000">
+	<mp_log_list x="20" y="410" width="344" height="270" item_height = "30" fade="1000" always_hide_scroll="1">
 		<font font="medium" r="255" g="255" b="255"/>
 	</mp_log_list>
 	

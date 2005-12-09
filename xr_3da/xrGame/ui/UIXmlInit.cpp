@@ -428,8 +428,15 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 
 	if (xml_doc.ReadAttribInt(path, index, "always_show_scroll"))
 	{
-		pWnd->SetAlwaysShowScroll();
+		pWnd->SetAlwaysShowScroll(true);
+		pWnd->EnableAlwaysShowScroll(true);
 		pWnd->EnableScrollBar(true);
+	}
+
+	if (xml_doc.ReadAttribInt(path, index, "always_hide_scroll"))
+	{
+		pWnd->SetAlwaysShowScroll(false);
+		pWnd->EnableAlwaysShowScroll(true);		
 	}
 
 

@@ -84,7 +84,8 @@ public:
 	float GetItemHeight() {return m_iItemHeight;}
     virtual void SetHeight(float height);
 
-	void SetAlwaysShowScroll(bool flag = true) {m_bAlwaysShowScroll = flag;}
+	void SetAlwaysShowScroll(bool flag = true)	{m_bAlwaysShowScroll = flag;}
+	void EnableAlwaysShowScroll(bool flag)		{m_bAlwaysShowScroll_enable = flag;}
 
 
 	int	GetItemsCount()	{return m_ItemList.size();}
@@ -182,6 +183,7 @@ protected:
 	int     m_iSelectedItemGroupID;
 
 	bool	m_bShowSelectedItem;
+	bool	m_bAlwaysShowScroll_enable;
 	bool	m_bAlwaysShowScroll;
 
 	// Если хотим принудительно выставлять фокус, то поднять этот флаг
