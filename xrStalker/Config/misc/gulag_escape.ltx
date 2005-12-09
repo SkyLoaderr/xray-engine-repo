@@ -266,7 +266,7 @@ on_signal = sound_end| walker@esc_lager_volk_walker3
 [walker@esc_lager_volk_walker3]
 path_walk = wolf_walk
 path_look = wolf_look
-meet = meet@wolf
+meet = meet@camp
 
 
 [meet@wolf]
@@ -1207,7 +1207,7 @@ active = mob_home@esc_dogs_to_fox_home
 path_home = path1
 home_min_radius = 15
 home_max_radius = 30
-;aggressive_home
+aggressive_home
 
 
 [logic@esc_dogs_to_fox]
@@ -1217,7 +1217,7 @@ active = mob_home@esc_dogs_to_fox_home2
 path_home = path2
 home_min_radius = 5
 home_max_radius = 10
-;aggressive_home
+aggressive_home
 
 ;------------------------------
 ;-------- Dogs swarm ----------
@@ -1342,6 +1342,14 @@ home_max_radius = 30
 ;------------------------
 ;--- Атака на Фабрику ---
 ;------------------------
+[logic@esc_assault_wait]
+active = kamp@esc_assault
+
+[kamp@esc_assault]
+center_point = kamp_center
+path_walk = kamp_center_task
+
+
 [logic@esc_assault1]
 active = kamp@esc_assault1
 on_hit = hit@esc_assault1
