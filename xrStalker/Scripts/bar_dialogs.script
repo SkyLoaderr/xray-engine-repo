@@ -130,10 +130,10 @@ end
 
 -- Документы из янтаря
 function have_x16_documents(first_speaker, second_speaker)
-  	return first_speaker:object("yan_labx16_documents") ~= nil
+  	return first_speaker:object("lab_x16_documents") ~= nil
 end
 function give_x16_documents(first_speaker, second_speaker)
-	local documents = first_speaker:object("yan_labx16_documents")
+	local documents = first_speaker:object("lab_x16_documents")
 	if documents then
 		dialogs.relocate_item(second_speaker, documents, "out")
 	end
