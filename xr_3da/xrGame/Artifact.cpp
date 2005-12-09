@@ -9,6 +9,8 @@
 #include "ai_object_location.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "phworld.h"
+#include "restriction_space.h"
+
 #define	FASTMODE_DISTANCE (50.f)	//distance to camera from sphere, when zone switches to fast update sequence
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -462,6 +464,8 @@ void SArtefactActivation::SpawnAnomaly()
 		AlifeZone->assign_shapes	(&_shape,1);
 		AlifeZone->m_maxPower		= zone_power;
 		AlifeZone->m_owner_id		= m_owner_id;
+		AlifeZone->m_space_restrictor_type	= RestrictionSpace::eRestrictorTypeNone;
+
 		NET_Packet					P;
 		object->Spawn_Write			(P,TRUE);
 		Level().Send				(P,net_flags(TRUE));
