@@ -1288,6 +1288,16 @@ function load_job(sj, gname, type, squad, groups)
 						end
 		}
 		table.insert(sj, t)
+		t = { section = "logic@esc_corps_wounded",
+			idle = 4,
+			prior = 10, state = {0},
+			online = false,
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info) 
+        					return obj_info.name == "esc_vagon_wounded"			           
+						end
+		}
+		table.insert(sj, t)
 		
 		t = { section = "logic@esc_corps1",
 			idle = 4,
@@ -1311,7 +1321,8 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_corps_wounded",
 			idle = 4,
-			prior = 10, state = {0,1},
+			prior = 10, state = {1},
+			online = true,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_vagon_wounded"			           
@@ -1321,21 +1332,45 @@ function load_job(sj, gname, type, squad, groups)
 	end
 	
 	if type == "esc_assault" then
-		t = { section = "logic@esc_assault1",
+		t = { section = "logic@esc_assault_wait",
 			idle = 4,
 			prior = 8, state = {0},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_wait",
+			idle = 4,
+			prior = 8, state = {0},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_wait",
+			idle = 4,
+			prior = 8, state = {0},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault1",
+			idle = 4,
+			prior = 8, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault2",
 			idle = 4,
-			prior = 8, state = {0},
+			prior = 8, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault3",
 			idle = 4,
-			prior = 10, state = {0},
+			prior = 10, state = {1},
+			online = true,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
         					return obj_info.name == "esc_novice_attacker1"			           
@@ -1774,7 +1809,11 @@ function load_states(gname, type)
 	
 	if type == "esc_assault" then
 		return function(gulag)
-			return 0
+			if db.actor:has_info("escape_dynamite_meet") then
+				return 1
+			else
+				return 0
+			end
 		end
 	end
 	
