@@ -185,7 +185,7 @@ void CLocatorAPI::ProcessOne	(const char* path, void* _F)
 		Register	(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
 		Recurse		(N);
 	} else {
-		if (strext(N) && 0==strncmp(strext(N),".xp",3))		ProcessArchive	(N);
+		if (strext(N) && 0==strncmp(strext(N),".db",3))		ProcessArchive	(N);
 		else												Register		(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
 	}
 }
@@ -213,7 +213,7 @@ bool CLocatorAPI::Recurse		(const char* path)
     	// Log		("! Wrong path: ",path);
     	return		false;
     }
-    // загоняем в вектор для того *.xp* приходили в сортированном порядке
+    // загоняем в вектор для того *.db* приходили в сортированном порядке
 	rec_files.push_back(sFile);
 	while			( _findnext( hFile, &sFile ) == 0 )
 		rec_files.push_back(sFile);
