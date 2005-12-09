@@ -491,7 +491,8 @@ void CLevel::OnFrame	()
 	Device.Statistic.TEST0.End			();
 
 	// update static sounds
-	m_level_sound_manager->Update		();
+	if (g_mt_config.test(mtLEVELSOUNDS)) Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(m_level_sound_manager,&CLevelSoundManager::Update));
+	else								m_level_sound_manager->Update	();
 
 	// deffer LUA-GC-STEP
 	if (g_mt_config.test(mtLUA_GC))		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CLevel::script_gc));
@@ -734,7 +735,7 @@ bool		CLevel::InterpolationDisabled	()
 	return g_cl_lvInterp < 0; 
 };
 
-void 		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
+void 		CLevel::PhisStepsCallback		( u32 Time0, u32 Time1 )
 {
 	if (GameID() == GAME_SINGLE)	return;
 

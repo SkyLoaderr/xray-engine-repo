@@ -13,10 +13,10 @@ void CLevel::cl_Process_Spawn(NET_Packet& P)
 {
 	// Begin analysis
 	shared_str			s_name;
-	P.r_stringZ		(s_name);
+	P.r_stringZ			(s_name);
 
 	// Create DC (xrSE)
-	CSE_Abstract*		E	= F_entity_Create	(*s_name);
+	CSE_Abstract*	E	= F_entity_Create	(*s_name);
 	R_ASSERT2(E, *s_name);
 
 	E->Spawn_Read		(P);
@@ -26,8 +26,7 @@ void CLevel::cl_Process_Spawn(NET_Packet& P)
 //	Msg ("M_SPAWN - %s[%d] - %d", *s_name, E->ID, E->ID_Parent);
 //-------------------------------------------------
 	//force object to be local for server client
-	if (OnServer())
-	{
+	if (OnServer())		{
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
 
@@ -92,7 +91,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 
 	// Optimization for single-player only	- minimize traffic between client and server
 	if	(GameID()	== GAME_SINGLE)		psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,TRUE);
-	else									psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,FALSE);
+	else								psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,FALSE);
 
 	// Client spawn
 //	T.Start		();
@@ -110,9 +109,9 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		client_spawn_manager().callback(O);
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	{
-			SetEntity		(	O	);
-			SetControlEntity(	O	);
-//			if (net_Syncronised)	net_Syncronize	();	// start sync-thread again
+			SetEntity			(O);
+			SetControlEntity	(O);
+//			if (net_Syncronised)net_Syncronize	();	// start sync-thread again
 		}
 
 		if (0xffff != E->ID_Parent)	

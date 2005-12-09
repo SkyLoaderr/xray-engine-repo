@@ -50,7 +50,7 @@ public:
 					CLevelSoundManager();
 	void			Load			();
 	void			Unload			();
-	void			Update			();
+	void __stdcall	Update			();
 };
 
 #endif
