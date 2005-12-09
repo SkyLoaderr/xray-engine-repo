@@ -1,4 +1,4 @@
-F// xrCompress.cpp : Defines the entry point for the console application.
+// xrCompress.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -222,6 +222,7 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 
 	// Write description
 	fs_desc.w_stringZ	(path				);
+	fs_desc.w_u32		(c_crc32			);
 	fs_desc.w_u32		(c_ptr				);
 	fs_desc.w_u32		(c_size_real		);
 	fs_desc.w_u32		(c_size_compressed	);
@@ -229,7 +230,7 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 	if (0==A)	
 	{
 		// Register for future aliasing
-		ALIAS			R;
+		ALIAS				R;
 		R.path				= xr_strdup	(fn);
 		R.crc				= c_crc32;
 		R.c_ptr				= c_ptr;
@@ -296,6 +297,7 @@ void CompressList(LPCSTR in_name, xr_vector<char*>* list, xr_vector<char*>* fl_l
 
 		for (u32 it=0; it<fl_list->size(); it++){
 			fs_desc.w_stringZ	((*fl_list)[it]);
+			fs_desc.w_u32		(0		);	// crc
 			fs_desc.w_u32		(0		);
 			fs_desc.w_u32		(0		);
 			fs_desc.w_u32		(0		);
