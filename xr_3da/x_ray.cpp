@@ -171,17 +171,11 @@ void Startup					( )
 
 	// Initialize APP
 	Device.Create				( );
-	Msg				("strt-E: %d",Memory.mem_usage()/1024);
 	LALib.OnCreate				( );
-	Msg				("strt-F: %d",Memory.mem_usage()/1024);
 	pApp						= xr_new<CApplication>	();
-	Msg				("strt-G: %d",Memory.mem_usage()/1024);
 	g_pGamePersistent			= (IGame_Persistent*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
-	Msg				("strt-H: %d",Memory.mem_usage()/1024);
 	g_SpatialSpace				= xr_new<ISpatial_DB>	();
-	Msg				("strt-J: %d",Memory.mem_usage()/1024);
 	g_SpatialSpacePhysic		= xr_new<ISpatial_DB>	();
-	Msg				("strt-K: %d",Memory.mem_usage()/1024);
 	
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
