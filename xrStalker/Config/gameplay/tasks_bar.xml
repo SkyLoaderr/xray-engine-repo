@@ -275,6 +275,8 @@
 		<objective>
 			<text>find_x16_location</text>
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="find_x16_location">green_location</map_location_type>
+			<object_story_id>yan_general_ecolog</object_story_id>
 			<infoportion_complete>yantar_vasilyev_info</infoportion_complete>
 		</objective>
 		<objective>
@@ -282,6 +284,7 @@
 			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="find_x16_documents">green_location</map_location_type> 
 			<object_story_id>yan_labx16_documents</object_story_id>	
+			<map_location_hidden>1</map_location_hidden>
 			<function_complete>yantar_tasks.has_labx16_documents</function_complete>				
 			<infoportion_set_complete>yan_x16_documents_gain</infoportion_set_complete>
 		</objective>
