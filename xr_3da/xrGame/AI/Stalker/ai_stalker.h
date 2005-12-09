@@ -14,6 +14,26 @@
 #include "../../step_manager.h"
 #include "../../script_export_space.h"
 
+#ifdef DEBUG
+
+template <typename _object_type>
+class CActionBase;
+
+template <typename _object_type>
+class CPropertyEvaluator;
+
+template <
+	typename _object_type,
+	bool	 _reverse_search,
+	typename _world_operator,
+	typename _condition_evaluator,
+	typename _world_operator_ptr,
+	typename _condition_evaluator_ptr
+>
+class CActionPlanner;
+
+#endif
+
 namespace MonsterSpace {
 	enum EMovementDirection;
 };
@@ -63,6 +83,18 @@ private:
 	CStalkerPlanner					*m_brain;
 	CSightManager					*m_sight_manager;
 	CStalkerMovementManager			*m_movement_manager;
+
+#ifdef DEBUG
+	typedef CActionPlanner<
+		CScriptGameObject,
+		false,
+		CActionBase<CScriptGameObject>,
+		CPropertyEvaluator<CScriptGameObject>,
+		CActionBase<CScriptGameObject>*,
+		CPropertyEvaluator<CScriptGameObject>*
+	>								script_planner;
+	const script_planner			*m_debug_planner;
+#endif
 
 	// ALife
 private:
@@ -360,6 +392,8 @@ public:
 	IC		CWeaponShotEffector			&weapon_shot_effector			() const;
 	IC		Fvector						weapon_shot_effector_direction	(const Fvector &current) const;
 	virtual void						UpdateCamera					();
+
+			void						debug_planner					(const script_planner *planner);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

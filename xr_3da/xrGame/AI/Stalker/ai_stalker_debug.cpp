@@ -398,6 +398,52 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	if (agent_manager().member().member(this).grenade_reaction().m_processing)
 		HUD().Font().pFontSmall->OutNext("%react on grenade : %s",indent,agent_manager().member().member(this).grenade_reaction().m_game_object ? *agent_manager().member().member(this).grenade_reaction().m_game_object->cName() : "unknown");
 
+
+	// objects
+	HUD().Font().pFontSmall->OutNext	(" ");
+	HUD().Font().pFontSmall->OutNext	("%sobjects",indent);
+	HUD().Font().pFontSmall->OutNext	("%s%sobjects             : %d",indent,indent,inventory().m_all.size());
+	HUD().Font().pFontSmall->OutNext	("%s%sbest weapon         : %s",indent,indent,best_weapon() ? *best_weapon()->object().cName() : "");
+	HUD().Font().pFontSmall->OutNext	("%s%sitem to kill        : %s",indent,indent,item_to_kill() ? *m_best_item_to_kill->object().cName() : "");
+	HUD().Font().pFontSmall->OutNext	("%s%sitem can kill       : %s",indent,indent,item_can_kill() ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%smemory item to kill : %s",indent,indent,remember_item_to_kill() ? *m_best_found_item_to_kill->object().cName() : "");
+	HUD().Font().pFontSmall->OutNext	("%s%smemory ammo         : %s",indent,indent,remember_ammo() ? *m_best_found_ammo->object().cName() : "");
+	HUD().Font().pFontSmall->OutNext	("%s%sinfinite ammo       : %s",indent,indent,m_infinite_ammo ? "+" : "-");
+	HUD().Font().pFontSmall->OutNext	("%s%sitem to spawn       : %s",indent,indent,item_to_spawn().size() ? *item_to_spawn() : "no item to spawn");
+	HUD().Font().pFontSmall->OutNext	("%s%sammo in box to spawn: %d",indent,indent,item_to_spawn().size() ? ammo_in_box_to_spawn() : 0);
+	
+	CWeaponMagazined					*weapon = smart_cast<CWeaponMagazined*>(best_weapon());
+	if (weapon) {
+		CObjectHandlerPlanner			&planner = CObjectHandler::planner();
+		HUD().Font().pFontSmall->OutNext("%s%squeue size          : %d",indent,indent,weapon->GetQueueSize());
+		HUD().Font().pFontSmall->OutNext("%s%squeue interval      : %d",
+			indent,
+			indent,
+			planner.action(
+				planner.uid(
+					weapon->ID(),
+					ObjectHandlerSpace::eWorldOperatorQueueWait1
+				)
+			).inertia_time()
+		);
+	}
+	
+	if (inventory().ActiveItem()) {
+		HUD().Font().pFontSmall->OutNext	("%s%sactive item",indent,indent);
+		HUD().Font().pFontSmall->OutNext	("%s%s%sobject         : %s",indent,indent,indent,inventory().ActiveItem() ? *inventory().ActiveItem()->object().cName() : "");
+		CWeapon	*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
+		if (weapon) {
+			HUD().Font().pFontSmall->OutNext("%s%s%sstrapped       : %s",indent,indent,indent,weapon_strapped(weapon) ? "+" : "-");
+			HUD().Font().pFontSmall->OutNext("%s%s%sunstrapped     : %s",indent,indent,indent,weapon_unstrapped(weapon) ? "+" : "-");
+		}
+	}
+
+	string256							temp;
+
+	const CObjectHandlerPlanner			&objects = planner();
+	strconcat							(temp,indent,indent);
+	draw_planner						(objects,temp,indent,"root");
+
 	HUD().Font().pFontSmall->OutSet		(330,up_indent);
 	
 	// brain
@@ -405,6 +451,10 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	
 	// actions
 	draw_planner						(this->brain(),indent,indent,"root");
+
+	// debug planner
+	if (m_debug_planner)
+		draw_planner					(*m_debug_planner,indent,indent,"debug_planner");
 	
 	HUD().Font().pFontSmall->OutSet		(640,up_indent);
 	// brain
@@ -555,7 +605,6 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	else
 		HUD().Font().pFontSmall->OutNext("%s%s%sorientation   : -",indent,indent,indent);
 
-	string256							temp;
 	if	(
 			movement().restrictions().out_restrictions().size() ||
 			movement().restrictions().in_restrictions().size() ||
@@ -703,48 +752,6 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		}
 		default : NODEFAULT;
 	}
-
-	// objects
-	HUD().Font().pFontSmall->OutNext	(" ");
-	HUD().Font().pFontSmall->OutNext	("%sobjects",indent);
-	HUD().Font().pFontSmall->OutNext	("%s%sobjects             : %d",indent,indent,inventory().m_all.size());
-	HUD().Font().pFontSmall->OutNext	("%s%sbest weapon         : %s",indent,indent,best_weapon() ? *best_weapon()->object().cName() : "");
-	HUD().Font().pFontSmall->OutNext	("%s%sitem to kill        : %s",indent,indent,item_to_kill() ? *m_best_item_to_kill->object().cName() : "");
-	HUD().Font().pFontSmall->OutNext	("%s%sitem can kill       : %s",indent,indent,item_can_kill() ? "+" : "-");
-	HUD().Font().pFontSmall->OutNext	("%s%smemory item to kill : %s",indent,indent,remember_item_to_kill() ? *m_best_found_item_to_kill->object().cName() : "");
-	HUD().Font().pFontSmall->OutNext	("%s%smemory ammo         : %s",indent,indent,remember_ammo() ? *m_best_found_ammo->object().cName() : "");
-	HUD().Font().pFontSmall->OutNext	("%s%sinfinite ammo       : %s",indent,indent,m_infinite_ammo ? "+" : "-");
-	HUD().Font().pFontSmall->OutNext	("%s%sitem to spawn       : %s",indent,indent,item_to_spawn().size() ? *item_to_spawn() : "no item to spawn");
-	HUD().Font().pFontSmall->OutNext	("%s%sammo in box to spawn: %d",indent,indent,item_to_spawn().size() ? ammo_in_box_to_spawn() : 0);
-	
-	CWeaponMagazined					*weapon = smart_cast<CWeaponMagazined*>(best_weapon());
-	if (weapon) {
-		CObjectHandlerPlanner			&planner = CObjectHandler::planner();
-		HUD().Font().pFontSmall->OutNext("%s%squeue size          : %d",indent,indent,weapon->GetQueueSize());
-		HUD().Font().pFontSmall->OutNext("%s%squeue interval      : %d",
-			indent,
-			indent,
-			planner.action(
-				planner.uid(
-					weapon->ID(),
-					ObjectHandlerSpace::eWorldOperatorQueueWait1
-				)
-			).inertia_time()
-		);
-	}
-	
-	if (inventory().ActiveItem()) {
-		HUD().Font().pFontSmall->OutNext	("%s%sactive item",indent,indent);
-		HUD().Font().pFontSmall->OutNext	("%s%s%sobject         : %s",indent,indent,indent,inventory().ActiveItem() ? *inventory().ActiveItem()->object().cName() : "");
-		CWeapon	*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-		if (weapon) {
-			HUD().Font().pFontSmall->OutNext("%s%s%sstrapped       : %s",indent,indent,indent,weapon_strapped(weapon) ? "+" : "-");
-			HUD().Font().pFontSmall->OutNext("%s%s%sunstrapped     : %s",indent,indent,indent,weapon_unstrapped(weapon) ? "+" : "-");
-		}
-	}
-	const CObjectHandlerPlanner	&objects = planner();
-	strconcat					(temp,indent,indent);
-	draw_planner				(objects,temp,indent,"root");
 }
 
 void CAI_Stalker::OnRender			()

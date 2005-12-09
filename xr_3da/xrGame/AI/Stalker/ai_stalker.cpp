@@ -79,6 +79,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_movement_manager				= 0;
 	m_group_behaviour				= true;
 	m_boneHitProtection				= NULL;
+	m_debug_planner					= 0;
 }
 
 CAI_Stalker::~CAI_Stalker			()
