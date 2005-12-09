@@ -519,9 +519,16 @@ float	CActor::GetLookFactor()
 
 void CActor::set_input_external_handler(CActorInputHandler *handler) 
 {
-	m_input_external_handler = handler;
+	// clear state
 	if (handler) 
-		mstate_wishful = 0;
+		mstate_wishful			= 0;
+
+	// release fire button
+	if (handler)
+		IR_OnKeyboardRelease	(kWPN_FIRE);
+
+	// set handler
+	m_input_external_handler	= handler;
 }
 
 

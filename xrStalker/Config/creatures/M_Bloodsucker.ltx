@@ -111,8 +111,8 @@ Particles_Invisible_Tracks_Freq	= 70;100
 
 Invisibility_BlinkTime								= 300
 Invisibility_BlinkMicroInterval  					= 30
-Invisibility_Energy_Restore_Velocity				= 0.1;0.05
-Invisibility_Energy_Decline_Velocity				= 0.0001; 0.02
+Invisibility_Energy_Restore_Velocity				= 0.01;0.05
+Invisibility_Energy_Decline_Velocity				= 0.01; 0.02
 Invisibility_Energy_Critical_Value					= 0.2
 Invisibility_Energy_Activate_Value					= 0.8
 Invisibility_Energy_Aggressive_Restore_Velocity		= 0.01
@@ -121,7 +121,8 @@ Invisibility_Energy_Aggressive_Restore_Velocity		= 0.01
 ; Vampire Ability
 ;-------------------------------------------------------------------------
 
-Vampire_Delay	= 10000
+Vampire_Delay			= 50000
+Vampire_Want_Speed		= 0.01
 
 ;-------------------------------------------------------------------------
 ; Predator Ability
@@ -200,7 +201,7 @@ Sound_Invisibility_Change_State		= monsters\bloodsucker\invisible
 Sound_Vampire_Grasp					= monsters\bloodsucker\vampire_grasp
 Sound_Vampire_Sucking				= monsters\bloodsucker\vampire_sucking
 Sound_Vampire_Hit					= monsters\bloodsucker\vampire_hit
-
+Sound_Vampire_StartHunt				= monsters\bloodsucker\vampire_grasp
 ;-------------------------------------------------------------------------
 ; Vision
 ;-------------------------------------------------------------------------
