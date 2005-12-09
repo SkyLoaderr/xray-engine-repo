@@ -286,14 +286,14 @@ void CRenderDevice::FrameMove()
 void ProcessLoading				(RP_FUNC *f)
 {
 	static u32 processed_idx			= 0;
-	u32 tm = Device.TimerAsyncMMT		();
+	u32 tm = Device.TimerAsync_MMT		();
 
 	xr_vector<_REG_INFO>& R		= Device.seqFrame.R;
     if (R.empty())				return;
 
 	for (; processed_idx<R.size(); processed_idx++)	{
 		f(R[processed_idx].Object);
-		if	(Device.TimerAsyncMMT() > tm+50) return;
+		if	(Device.TimerAsync_MMT() > tm+50) return;
 	}
 
 	g_bLoaded				= TRUE;
