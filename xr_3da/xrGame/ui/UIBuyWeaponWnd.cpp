@@ -460,24 +460,9 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 		this_inventory->SlotToSection(OUTFIT_SLOT);
 		pDDItemMP->Show(false);
 
-		// Teперь отображаем соответствующую иконку персонажа, в зависимости от цвета команды, 
-		// и купленного костюма
-
-		// Сначала проверим проинициализирован ли правильно костюм
-//		if (pDDItemMP->m_fAdditionalInfo.size() < 2)
-//			R_ASSERT(!"Unknown suit");
-
 		R_ASSERT(!pDDItemMP->m_additionalInfo.empty());
 
 		this_inventory->UIOutfitIcon.InitTexture(pDDItemMP->m_additionalInfo.c_str());
-//		this_inventory->m_current_skin = pDDItemMP->m_additionalInfo.c_str();
-//		this_inventory->UpdateOutfit();
-
-//		xr_vector<float>::iterator it = pDDItemMP->m_fAdditionalInfo.begin();
-/*		this_inventory->UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-			(*it), 
-			(*(it+1)),
-			float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT - 15));*/
 		this_inventory->UIOutfitIcon.Show(true);
 		this_inventory->UIOutfitIcon.SetColor(pDDItemMP->GetColor());
 
@@ -487,6 +472,7 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 			this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 			pDDItemMP->m_bAlreadyPaid = true;
 		}
+//		this_inventory->UpdateOutfit();
 		return true;
 	}	
 	return false;
@@ -934,7 +920,7 @@ void CUIBuyWeaponWnd::Show()
 
 	if (GameID() != GAME_SINGLE)
 	{
-		UpdateOutfit();
+//		UpdateOutfit();
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 //		pActor->HideCurrentWeapon(GEG_PLAYER_BUYMENU_OPEN);//, false);		
@@ -1413,13 +1399,11 @@ void CUIBuyWeaponWnd::SetSkin(u8 SkinID)
 
 	R_ASSERT(_GetItemCount(skins) > SkinID);
 
-	// Получаем имя скина, и координаты соответствующей иконки
 	string64 item;
 	_GetItem(skins, SkinID, item);
-//	Frect r = CUITextureMaster::GetTextureRect(item);
+
 	m_current_skin = item;
-//	m_iIconTextureX = r.x1;
-//	m_iIconTextureY = r.x2;
+	UpdateOutfit();
 }
 
 void CUIBuyWeaponWnd::ClearSlots()
