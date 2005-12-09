@@ -146,7 +146,7 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	DevAdapter				= D3DADAPTER_DEFAULT;
 	DevT					= Caps.bForceGPU_REF?D3DDEVTYPE_REF:D3DDEVTYPE_HAL;
 
-#ifdef DEBUG
+//. #ifdef DEBUG
 	// Look for 'NVIDIA NVPerfHUD' adapter
 	// If it is present, override default settings
 	for (UINT Adapter=0;Adapter<pD3D->GetAdapterCount();Adapter++)	{
@@ -159,7 +159,7 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 			break;
 		}
 	}
-#endif
+//. #endif
 
 #ifndef _EDITOR
 	// Select width/height
