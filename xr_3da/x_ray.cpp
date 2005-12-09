@@ -315,7 +315,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		Sleep					(100);
 	}
 	*/
-	g_sLaunchOnExit[0]			= NULL;
+	g_sLaunchOnExit[0]		= NULL;
 	// Core
 	Core._initialize		("xray",NULL);
 	
