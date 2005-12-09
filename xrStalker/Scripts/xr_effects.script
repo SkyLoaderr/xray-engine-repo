@@ -556,6 +556,21 @@ function test_hit_in_actor_dir(actor, npc)
 --]]
 end
 
+
+function mil_paul_frost_dead (actor, npc)
+    local pf = level_object_by_sid (710)
+    local luk = level_object_by_sid (707)
+    if pf == nil or luk == nil then return end
+    if actor:has_info ("mil_courier_in_khutor_zone") then
+       luk:set_community_goodwill (1000, actor); 
+       --npc:set_relation (game_object.enemy, actor) 
+    end
+end
+
+function set_freedom_actor_enemy (actor, npc)
+    local luk = level_object_by_sid (707)
+    this.actor_enemy (actor, luk)
+end
 --function military_sniper_dead (actor, npc)
 
     --local st = db.storage[npc:id ()]

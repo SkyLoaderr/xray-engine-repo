@@ -70,7 +70,6 @@ danger = danger_condition@mil_dolg
 
 
 
-
 -------------------------
 ;Солдат, который нам говорит "ТСС"
 -------------------------
@@ -86,10 +85,10 @@ on_info = %+mil_patrol_kill_continue =military_dolg_dead%
 path_walk = ambush_walk1
 path_look = ambush_look1
 on_info = {+mil_actor_nearest} remark1@mil_dolg_soldier2
+on_info2 = {+mil_patrol_kill_continue} camper2@mil_dolg_soldier2
 combat_ignore_cond = always
 def_state_moving = sneak
 radius = 1
-on_info2 = {+mil_patrol_kill_continue} camper2@mil_dolg_soldier2
 no_retreat = true
 show_spot = false
 danger = danger_condition@mil_dolg
@@ -156,6 +155,7 @@ meet_enabled = false
 danger = danger_condition@mil_dolg
 meet = meet2@mil_dolg_soldier2
 combat_ignore_cond = {=check_fighting(704)} true
+def_state_moving1 = run
 
 [meet2@mil_dolg_soldier2]
 use = false
@@ -167,7 +167,7 @@ meet_state_wpn = 2|ward@talk_hello
 synpairs = ward@talk_hello
 
 [kamp1@mil_dolg_soldier2]
-center_point = camp_center2
+center_point = camp_center
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
 
@@ -228,6 +228,7 @@ on_signal = return | kamp1@mil_dolg_soldier3
 danger = danger_condition@mil_dolg
 meet = meet@mil_dolg_soldier3
 combat_ignore_cond = {=check_fighting(704)} true
+def_state_moving1 = run
 
 [meet@mil_dolg_soldier3]
 use = false
@@ -286,6 +287,7 @@ on_signal = return | kamp1@mil_dolg_soldier4
 danger = danger_condition@mil_dolg
 meet = meet@mil_dolg_soldier4
 combat_ignore_cond = {=check_fighting(704)} true
+def_state_moving1 = run
 
 [meet@mil_dolg_soldier4]
 use = false
@@ -340,6 +342,7 @@ on_signal = return | kamp1@mil_dolg_soldier5
 danger = danger_condition@mil_dolg
 meet = meet@mil_dolg_soldier5
 combat_ignore_cond = {=check_fighting(704)} true
+def_state_moving1 = run
 
 [meet@mil_dolg_soldier5]
 use = false
@@ -411,6 +414,7 @@ on_signal = return | kamp1@mil_dolg_soldier6
 danger = danger_condition@mil_dolg
 meet = meet@mil_dolg_soldier6
 combat_ignore_cond = {=check_fighting(704)} true
+def_state_moving1 = run
 
 [meet@mil_dolg_soldier6]
 use = false
@@ -491,12 +495,13 @@ danger = danger_condition@mil_dolg
 [walker11@mil_dolg_skull_attack]
 path_walk = attack_way1
 path_look = attack_look1
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 def_state_moving1 = run
 on_signal = arrive | camper2@mil_dolg_skull_attack
 team = dolg
 on_signal = bomb | remark2@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
+combat_ignore_cond = {!fighting_actor} true
 
 [remark2@mil_dolg_skull_attack]
 no_move = true
@@ -505,6 +510,7 @@ anim = dynamite
 target = 723
 on_signal = action_end | walker2@mil_dolg_skull_attack %+mil_dolg_before_explode%
 danger = danger_condition@mil_dolg
+combat_ignore_cond = {!fighting_actor} true
 
 [walker2@mil_dolg_skull_attack]
 path_walk = attack_way_bomb
@@ -513,6 +519,7 @@ def_state_moving1 = run
 team = dolg
 on_info = {+mil_dolg_after_explode} remark12@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
+combat_ignore_cond = {!fighting_actor} true
 
 [remark12@mil_dolg_skull_attack]
 snd = mil_dolg_go_attack
@@ -521,6 +528,7 @@ no_rotate = true
 anim = hide
 on_signal = action_end | camper2@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
+combat_ignore_cond = {!fighting_actor} true
 
 [camper2@mil_dolg_skull_attack]
 path_walk = attack_way1_2
@@ -561,7 +569,7 @@ danger = danger_condition@mil_dolg
 path_walk = attack_way8
 path_look = attack_look1
 def_state_moving1 = run
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 team = dolg
 on_info = {+mil_dolg_after_explode} camper1@mil_dolg_soldier1_attack
 on_info2 = {+mil_dolg_before_explode} remark30@mil_dolg_soldier1_attack
@@ -613,7 +621,7 @@ path_walk = attack_way7
 path_look = attack_look1
 def_state_moving1 = run
 on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier2_attack
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
 
@@ -655,7 +663,7 @@ path_walk = attack_way4
 path_look = attack_look1
 def_state_moving1 = run
 on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier3_attack
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
 
@@ -699,7 +707,7 @@ path_walk = attack_way5
 path_look = attack_look1
 def_state_moving1 = run
 on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier4_attack
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
 
@@ -741,7 +749,7 @@ path_walk = attack_way6
 path_look = attack_look1
 def_state_moving1 = run
 on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier5_attack
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
 
@@ -783,7 +791,7 @@ path_walk = attack_way2
 path_look = attack_look1
 def_state_moving1 = run
 on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier6_attack
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
 
@@ -825,7 +833,7 @@ path_walk = attack_way3
 path_look = attack_look1
 def_state_moving1 = run
 on_info = {+mil_dolg_after_explode} camper1@mil_dolg_soldier7_attack
-combat_ignore_cond = always
+combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
 
@@ -842,7 +850,7 @@ on_signal = dolg | %+mil_headquarter_attack%
 
 
 ;-------------------------------------------------------------------------------------------------
-;-- Хутор Долга (второе состояние - атака Свободы)
+;-- Хутор Долга (возвращение на хутор)
 ;-------------------------------------------------------------------------------------------------
 
 -------------------------

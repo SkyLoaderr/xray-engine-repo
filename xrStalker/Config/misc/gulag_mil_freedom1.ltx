@@ -451,7 +451,7 @@ on_death = death@mil_freedom_stalker3
 on_combat = combat@mil_freedom_max
 
 [death@mil_freedom_stalker3]
-on_info = %+mil_courier_dead%
+on_info = %+mil_courier_dead =mil_paul_frost_dead%
 
 [kamp1@mil_freedom_stalker3]
 center_point = camp_center1
@@ -565,10 +565,11 @@ path_walk = path_walk12
 path_look = path_look12
 meet = meet@mil_freedom_stalker8
 danger = danger@mil_freedom
+on_info = {+mil_zoneguard_talk} walker2@mil_freedom_stalker8
 
 [meet@mil_freedom_stalker8]
-meet_state = 10|{+mil_zoneguard_talk}wait, threat@ {+mil_zoneguard_talk} mil_freedom_zoneguard, mil_freedom_zoneguard
-meet_state_wpn = 10|{+mil_zoneguard_talk} wait, threat@ {+mil_zoneguard_talk} mil_freedom_zoneguard, mil_freedom_zoneguard
+meet_state = 10|{+mil_zoneguard_talk}wait, threat@ {+mil_zoneguard_talk} mil_freedom_zoneguard, mil_freedom_zoneguard|5|guard
+meet_state_wpn = 10|{+mil_zoneguard_talk} wait, threat@ {+mil_zoneguard_talk} mil_freedom_zoneguard, mil_freedom_zoneguard|5|guard
 victim = 10|actor
 victim_wpn = 10|actor
 use	= true
@@ -576,6 +577,10 @@ use_wpn = true
 zone = mil_freedom_kill_enter_zone|{-mil_zoneguard_talk} true
 meet_dialog = mil_zoneguard_dialog
 
+[walker2@mil_freedom_stalker8]
+path_walk = path_walk12
+path_look = path_look12
+danger = danger@mil_freedom
 
 
 
