@@ -104,4 +104,3 @@ bool CControlledActor::authorized(int cmd)
 
 	return false;
 }
-

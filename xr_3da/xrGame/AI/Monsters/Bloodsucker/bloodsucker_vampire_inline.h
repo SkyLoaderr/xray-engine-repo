@@ -37,7 +37,9 @@ void CStateBloodsuckerVampireAbstract::initialize()
 	object->CInvisibility::set_manual_switch	();
 	object->CInvisibility::manual_activate		();
 
-	enemy	= object->EnemyMan.get_enemy();
+	enemy	= object->EnemyMan.get_enemy		();
+
+	object->sound().play						(CAI_Bloodsucker::eVampireStartHunt);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -97,6 +99,8 @@ void CStateBloodsuckerVampireAbstract::critical_finalize()
 TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 {
+	if (!object->WantVampire()) return false;
+	
 	// является ли враг актером
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
 	if (enemy->CLS_ID != CLSID_OBJECT_ACTOR)		return false;

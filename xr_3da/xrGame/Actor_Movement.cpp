@@ -544,10 +544,11 @@ bool	isActorAccelerated			(u32 mstate, bool ZoomMode)
 bool CActor::CanAccelerate			()
 {
 	bool can_accel = !conditions().IsLimping() &&
-		!m_PhysicMovementControl->PHCapture()
+		!m_PhysicMovementControl->PHCapture() && 
 //		&& !m_bZoomAimingMode
 //		&& !(mstate_real&mcLookout)
-		;		
+		(m_time_lock_accel < Device.dwTimeGlobal)
+	;		
 
 	return can_accel;
 }

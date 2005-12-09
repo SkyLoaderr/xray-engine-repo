@@ -252,16 +252,19 @@ CActor::~CActor()
 
 void CActor::reinit	()
 {
-	m_PhysicMovementControl->CreateCharacter();
-	m_PhysicMovementControl->SetPhysicsRefObject(this);
-	CEntityAlive::reinit	();
-	CInventoryOwner::reinit	();
-	material().reinit		();
-	m_pPhysics_support->in_Init		();
-	m_pUsableObject					=NULL;
-	memory().reinit			();
+	m_PhysicMovementControl->CreateCharacter		();
+	m_PhysicMovementControl->SetPhysicsRefObject	(this);
 	
-	set_input_external_handler	(0);
+	CEntityAlive::reinit			();
+	CInventoryOwner::reinit			();
+	
+	material().reinit				();
+	m_pPhysics_support->in_Init		();
+	m_pUsableObject					= NULL;
+	memory().reinit					();
+	
+	set_input_external_handler		(0);
+	m_time_lock_accel				= 0;
 }
 
 void CActor::reload	(LPCSTR section)

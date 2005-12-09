@@ -7,6 +7,7 @@ class	CStateBloodsuckerPredator : public CState<_Object> {
 	typedef CState<_Object>*	state_ptr;
 
 	u32							m_target_node;
+	u32							m_time_start_camp;
 
 public:
 						CStateBloodsuckerPredator		(_Object *obj);
@@ -21,6 +22,10 @@ public:
 	virtual bool		check_completion				();
 
 	virtual void		setup_substates					();
+	virtual void		check_force_state				();
+
+private:
+			void		select_camp_point				();
 };
 
 #include "bloodsucker_predator_inline.h"

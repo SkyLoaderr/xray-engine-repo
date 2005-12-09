@@ -108,8 +108,9 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 			s->wnd()->SetHeadingPivot(Fvector2().set(256,512));
 			STOP_PROFILE;
 
-			//HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
-			SetAttackEffector									();
+			SetAttackEffector			();
+
+			Actor()->lock_accel_for		(2000);
 		}
 
 		Morale.on_attack_success();

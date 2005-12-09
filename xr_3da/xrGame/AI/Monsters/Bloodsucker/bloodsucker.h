@@ -81,9 +81,16 @@ public:
 
 	SPPInfo					pp_vampire_effector;
 
-
-			void			LoadVampirePPEffector	(LPCSTR section);	
+			
 			void			ActivateVampireEffector	();
+	IC		bool			WantVampire				() {return (fsimilar(m_vampire_want_value,1.f) == TRUE);}
+	IC		void			SatisfyVampire			() {m_vampire_want_value = 0.f;}
+
+private:
+	float					m_vampire_want_value;
+	float					m_vampire_want_speed;		// load from ltx
+	
+			void			LoadVampirePPEffector	(LPCSTR section);	
 
 	//--------------------------------------------------------------------
 	// Alien
@@ -119,8 +126,9 @@ public:
 		eVampireGrasp			= eAdditionalSounds | 0,
 		eVampireSucking			= eAdditionalSounds | 1,
 		eVampireHit				= eAdditionalSounds | 2,
+		eVampireStartHunt		= eAdditionalSounds | 3,
 
-		eChangeVisibility		= eAdditionalSounds | 3,
+		eChangeVisibility		= eAdditionalSounds | 4,
 	};
 
 	//--------------------------------------------------------------------

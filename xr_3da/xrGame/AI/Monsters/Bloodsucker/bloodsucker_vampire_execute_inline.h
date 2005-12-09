@@ -145,6 +145,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 {
 	object->com_man().ta_pointbreak				();
 	object->sound().play						(CAI_Bloodsucker::eVampireHit);
+	object->SatisfyVampire						();
 }
 
 //////////////////////////////////////////////////////////////////////////

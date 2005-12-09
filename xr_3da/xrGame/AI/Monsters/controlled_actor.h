@@ -10,6 +10,10 @@ class CControlledActor : public CActorInputHandler {
 	bool	m_turned_yaw;
 	bool	m_turned_pitch;
 
+	bool	m_lock_run;
+	u32		m_lock_run_started;
+	u32		m_lock_run_period;
+
 public:
 	virtual void	reinit				();
 	virtual	float	mouse_scale_factor	(){return flt_max;}

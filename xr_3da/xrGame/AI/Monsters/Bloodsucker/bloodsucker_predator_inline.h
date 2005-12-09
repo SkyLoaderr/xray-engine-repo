@@ -41,27 +41,7 @@ void CStateBloodsuckerPredatorAbstract::initialize()
 	object->CInvisibility::set_manual_switch	();
 	object->CInvisibility::manual_deactivate	();
 
-	m_target_node = u32(-1);
-	if (object->Home->has_home()) {
-		m_target_node							= object->Home->get_place_in_cover();
-		if (m_target_node == u32(-1)) {
-			m_target_node						= object->Home->get_place();
-		}
-	} 
-	
-	if (m_target_node == u32(-1)) {
-		CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
-		if (point) {
-			m_target_node				= point->level_vertex_id	();
-		} 
-	}
-
-	if (m_target_node == u32(-1)) 
-		m_target_node = object->ai_location().level_vertex_id();
-
-
-	CMonsterSquad *squad = monster_squad().get_squad(object);
-	squad->lock_cover(m_target_node);
+	select_camp_point							();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -137,7 +117,9 @@ void CStateBloodsuckerPredatorAbstract::setup_substates()
 	state_ptr state = get_state_current();
 	
 	if (current_substate == eStatePredator_Camp) {
-		object->predator_freeze();
+		object->predator_freeze	();
+		m_time_start_camp		= time();
+
 	} else {
 		object->predator_unfreeze();
 	}
@@ -192,6 +174,51 @@ void CStateBloodsuckerPredatorAbstract::setup_substates()
 
 		return;
 	}
+}
+
+#define TIME_TO_RESELECT_CAMP	15000
+
+TEMPLATE_SPECIALIZATION
+void CStateBloodsuckerPredatorAbstract::check_force_state()
+{
+	if ((current_substate == eStatePredator_Camp) && (m_time_start_camp + TIME_TO_RESELECT_CAMP < time())) {
+		if (current_substate != u32(-1)) 
+			get_state_current()->critical_finalize();
+
+		prev_substate		= u32(-1);
+		current_substate	= u32(-1);
+
+		CMonsterSquad *squad = monster_squad().get_squad(object);
+		squad->unlock_cover	(m_target_node);
+
+		select_camp_point	();
+	}
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBloodsuckerPredatorAbstract::select_camp_point()
+{
+	m_target_node = u32(-1);
+	if (object->Home->has_home()) {
+		m_target_node							= object->Home->get_place_in_cover();
+		if (m_target_node == u32(-1)) {
+			m_target_node						= object->Home->get_place();
+		}
+	} 
+
+	if (m_target_node == u32(-1)) {
+		CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
+		if (point) {
+			m_target_node				= point->level_vertex_id	();
+		} 
+	}
+
+	if (m_target_node == u32(-1)) 
+		m_target_node = object->ai_location().level_vertex_id();
+
+
+	CMonsterSquad *squad = monster_squad().get_squad(object);
+	squad->lock_cover(m_target_node);
 }
 
 #undef TEMPLATE_SPECIALIZATION
