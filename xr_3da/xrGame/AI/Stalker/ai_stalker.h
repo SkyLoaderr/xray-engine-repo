@@ -391,7 +391,7 @@ public:
 	IC		CWeaponShotEffector			&weapon_shot_effector			() const;
 	IC		Fvector						weapon_shot_effector_direction	(const Fvector &current) const;
 	virtual void						UpdateCamera					();
-#ifdef _DEBUG
+#ifdef DEBUG
 			void						debug_planner					(const script_planner *planner);
 #endif
 	DECLARE_SCRIPT_REGISTER_FUNCTION
