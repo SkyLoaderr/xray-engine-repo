@@ -13,7 +13,7 @@ CUIStaticItem::CUIStaticItem()
 	iTileY			= 1;
 	iRemX			= 0.0f;
 	iRemY			= 0.0f;
-
+	alpha_ref		= -1;
 	hShader			= NULL;
 #ifdef DEBUG
 	dbg_tex_name = NULL;
@@ -70,6 +70,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	// установить обязательно перед вызовом CustomItem::Render() !!!
 	VERIFY(sh?sh:hShader);
 	RCache.set_Shader			(sh?sh:hShader);
+	if(alpha_ref!=-1)
+		CHK_DX(HW.pDevice->SetRenderState(D3DRS_ALPHAREF,alpha_ref));
 	// convert&set pos
 	Fvector2		bp;
 	UI()->ClientToScreenScaled	(bp,float(iPos.x),float(iPos.y));
@@ -112,6 +114,8 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	// установить обязательно перед вызовом CustomItem::Render() !!!
 	VERIFY(sh?sh:hShader);
 	RCache.set_Shader			(sh?sh:hShader);
+	if(alpha_ref!=-1)
+		CHK_DX(HW.pDevice->SetRenderState(D3DRS_ALPHAREF,alpha_ref));
 	// convert&set pos
 	Fvector2 bp;
 	UI()->ClientToScreenScaled	(bp, iPos.x, iPos.y);

@@ -17,6 +17,7 @@ class CUIStaticItem: public IUISimpleTextureControl, public CUICustomItem
 	int				iTileY;
 	float			iRemX;
 	float			iRemY;
+	int				alpha_ref;
 protected:
 	typedef CUICustomItem inherited;
 public:
@@ -30,6 +31,7 @@ public:
 
 //GetShader()		
 	//IUISimpleTextureControl
+			void	SetAlphaRef		(int val)											{alpha_ref=val;};
 	virtual void	CreateShader	(const char* tex, const char* sh = "hud\\default");
 	virtual void	SetShader		(const ref_shader& sh);
 	virtual void	SetTextureColor	(u32 color)											{SetColor(color);}
