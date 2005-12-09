@@ -300,6 +300,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      char *    lpCmdLine,
                      int       nCmdShow)
 {
+	SetThreadAffinityMask		(GetCurrentThread(),1);
+
 	// Title window
 	logoWindow = CreateDialog	(GetModuleHandle(NULL),	MAKEINTRESOURCE(IDD_STARTUP), 0, logDlgProc );
 
