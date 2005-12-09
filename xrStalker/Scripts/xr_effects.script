@@ -360,6 +360,7 @@ function gar_dm_bandits_fight(actor, npc)
 		if not ignore_actor then
 			bandit3:set_relation(game_object.enemy, actor)
 		end
+		bandit1:set_relation(game_object.enemy, novice)
 	end
 end
 
