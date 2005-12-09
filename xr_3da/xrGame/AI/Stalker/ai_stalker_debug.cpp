@@ -203,9 +203,7 @@ LPCSTR movement_type(const MonsterSpace::EMovementType &movement_type)
 			return		("run");
 		default			: NODEFAULT;
 	}
-#ifdef DEBUG
 	return				("invalid");
-#endif
 }
 
 LPCSTR danger_type(const CDangerObject::EDangerType &danger_type)
@@ -222,6 +220,11 @@ LPCSTR danger_type(const CDangerObject::EDangerType &danger_type)
 		default												: NODEFAULT;
 	};
 	return				("");
+}
+
+void CAI_Stalker::debug_planner			(const script_planner *planner)
+{
+	m_debug_planner						= planner;
 }
 
 void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)

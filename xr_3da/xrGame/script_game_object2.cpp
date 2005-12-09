@@ -446,3 +446,16 @@ CCar* CScriptGameObject::get_car	()
 	}
 	return car;
 }
+
+#ifdef DEBUG
+void CScriptGameObject::debug_planner				(const script_planner *planner)
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member debug_planner!");
+		return;
+	}
+
+	stalker->debug_planner	(planner);
+}
+#endif

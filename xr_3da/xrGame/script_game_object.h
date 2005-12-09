@@ -79,6 +79,34 @@ struct ScriptCallbackInfo;
 struct STasks;
 class CCar;
 class CDangerObject;
+class CScriptGameObject;
+
+#ifdef DEBUG
+	template <typename _object_type>
+	class CActionBase;
+
+	template <typename _object_type>
+	class CPropertyEvaluator;
+
+	template <
+		typename _object_type,
+		bool	 _reverse_search,
+		typename _world_operator,
+		typename _condition_evaluator,
+		typename _world_operator_ptr,
+		typename _condition_evaluator_ptr
+	>
+	class CActionPlanner;
+
+	typedef CActionPlanner<
+		CScriptGameObject,
+		false,
+		CActionBase<CScriptGameObject>,
+		CPropertyEvaluator<CScriptGameObject>,
+		CActionBase<CScriptGameObject>*,
+		CPropertyEvaluator<CScriptGameObject>*
+	>								script_planner;
+#endif
 
 class CScriptGameObject {
 	mutable CGameObject		*m_game_object;
@@ -504,6 +532,10 @@ public:
 			void				make_object_visible_somewhen		(CScriptGameObject *object);
 
 			CScriptGameObject	*item_in_slot						(u32 slot_id) const;
+
+#ifdef DEBUG
+			void				debug_planner						(const script_planner *planner);
+#endif
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

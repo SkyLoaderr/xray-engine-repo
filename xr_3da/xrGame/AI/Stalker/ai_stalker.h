@@ -15,23 +15,30 @@
 #include "../../script_export_space.h"
 
 #ifdef DEBUG
+	template <typename _object_type>
+	class CActionBase;
 
-template <typename _object_type>
-class CActionBase;
+	template <typename _object_type>
+	class CPropertyEvaluator;
 
-template <typename _object_type>
-class CPropertyEvaluator;
+	template <
+		typename _object_type,
+		bool	 _reverse_search,
+		typename _world_operator,
+		typename _condition_evaluator,
+		typename _world_operator_ptr,
+		typename _condition_evaluator_ptr
+	>
+	class CActionPlanner;
 
-template <
-	typename _object_type,
-	bool	 _reverse_search,
-	typename _world_operator,
-	typename _condition_evaluator,
-	typename _world_operator_ptr,
-	typename _condition_evaluator_ptr
->
-class CActionPlanner;
-
+	typedef CActionPlanner<
+		CScriptGameObject,
+		false,
+		CActionBase<CScriptGameObject>,
+		CPropertyEvaluator<CScriptGameObject>,
+		CActionBase<CScriptGameObject>*,
+		CPropertyEvaluator<CScriptGameObject>*
+	>								script_planner;
 #endif
 
 namespace MonsterSpace {
@@ -85,14 +92,6 @@ private:
 	CStalkerMovementManager			*m_movement_manager;
 
 #ifdef DEBUG
-	typedef CActionPlanner<
-		CScriptGameObject,
-		false,
-		CActionBase<CScriptGameObject>,
-		CPropertyEvaluator<CScriptGameObject>,
-		CActionBase<CScriptGameObject>*,
-		CPropertyEvaluator<CScriptGameObject>*
-	>								script_planner;
 	const script_planner			*m_debug_planner;
 #endif
 
