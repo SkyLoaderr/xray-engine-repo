@@ -64,7 +64,7 @@ function has_tiran_pda(task, objective)
 end
 
 function has_x16_documents(task, objective)
-	return db.actor:object("lab_x16_documents") ~= nil
+	return db.actor:object("yan_x16_documents") ~= nil
 end
 
 function has_professor_research(task, objective)
