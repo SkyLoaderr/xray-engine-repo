@@ -443,8 +443,8 @@ function gulag:availJob(job)
 				return false
 			end
 		end
-
-		local jd = nil --job.dependent
+--[[
+		local jd = job.dependent
 
 		if jd then
 			for i, v in ipairs( self.Job ) do
@@ -453,7 +453,7 @@ function gulag:availJob(job)
 				end
 			end
 		end
-
+]]
 		return true
 	else
 		return false
@@ -465,6 +465,7 @@ function gulag:availCurrent(job)
 	if job.timeout == nil or
 	   job.begin == nil or game.time() - job.begin < job.timeout
 	then
+--[[
 		local jd = nil --job.dependent
 
 		if jd then
@@ -474,28 +475,28 @@ function gulag:availCurrent(job)
 	   			end
 	   		end
 		end
-
+]]
 		return true
 	else
 		return false
 	end
 end
 
+-- составить список доступных для распределения работ.
 -- освобождение npc с работ, ставших недоступными (например, вышел timeout).
 -- также освобождение недошедших до своих работ.
 function gulag:prepare_available_jobs()
 	local Job_avail = {}
 
 	for i, job in ipairs( self.Job_avail_in_state ) do
-		if self:availCurrent( job ) and self:availJob( job ) then
-			if not self.Object_begin_job[job.object] then
+		if self:availJob( job ) then
+			if not self:availCurrent( job ) or not self.Object_begin_job[job.object] then
 				self:free_obj_and_reinit( job.object )
 			end
 
 			table.insert( Job_avail, job )
 		else
 			printf( "job unavailable: %d %s", job.num, job.section )
-			printf( "availCurrent=%s availJob=%s", tostring(self:availCurrent(job)), tostring(self:availJob(job)) )
 		end
 	end
 
@@ -1108,7 +1109,7 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 end
 
 function checkMonster(npc_community, gulag_type, npc_rank, se_obj, preset_name)
-	if gulag_type == "test_mob" then
+	if gulag_type == "test_mob" or gulag_type == "test_mob1" then
 		return true
 	end
 

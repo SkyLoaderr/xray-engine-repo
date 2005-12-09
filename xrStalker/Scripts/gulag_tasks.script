@@ -74,6 +74,15 @@ function loadJob(sj, gname, type, squad, groups, gulag)
 		table.insert(sj, t)
 	end
 
+	if type == "test_mob1" then
+		t = { section = "logic@test_mob1_mob_walker",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+
 	if type == "test_restr_changer" then
 	    local i
 	    for i = 1, 6 do
@@ -132,7 +141,7 @@ function loadStates(gname, type)
 		end
 	end
 
-	if type == "test_mob" then
+	if type == "test_mob" or type == "test_mob1" then
 		return function(gulag)
 			return 0
 		end
