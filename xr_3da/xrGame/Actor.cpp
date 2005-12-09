@@ -827,7 +827,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			if (!fis_zero(m_PhysicMovementControl->gcontact_HealthLost))	{
 				const ICollisionDamageInfo* di=m_PhysicMovementControl->CollisionDamageInfo();
 				Fvector hdir;di->HitDir(hdir);
-//				SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
+				SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
 //				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
 				SHit HDS = SHit(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);
 				Hit(&HDS);
