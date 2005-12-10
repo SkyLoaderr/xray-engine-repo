@@ -320,8 +320,8 @@ path_look  = guard_look1
 meet = meet@zoneguard_novice_lager1
 
 [meet@zoneguard_novice_lager1]
-meet_state 		= 30| {+tutorial_wounded_help} guard, {+tutorial_wounded_death} guard, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
-meet_state_wpn 	= 30| {+tutorial_wounded_help} guard, {+tutorial_wounded_death} guard, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
+meet_state 		= 30| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} talk_hello, esc_guard_camp
+meet_state_wpn 	= 30| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} threat_weap, esc_guard_camp
 victim 			= 30| actor
 victim_wpn 		= 30| actor
 use			= true
@@ -341,8 +341,8 @@ path_look  = guard_look2
 meet = meet@zoneguard_novice_lager2
 
 [meet@zoneguard_novice_lager2]
-meet_state 		= 30| {+tutorial_wounded_help} guard, {+tutorial_wounded_death} guard, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
-meet_state_wpn 	= 30| {+tutorial_wounded_help} guard, {+tutorial_wounded_death} guard, {+tutorial_wounded_die} backoff, threat@ {+tutorial_wounded_help} talk_hello, {+tutorial_wounded_death} talk_hello, {+tutorial_wounded_die} threat_stop, threat_back
+meet_state 		= 30| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} talk_hello, esc_guard_camp
+meet_state_wpn 	= 30| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} threat_weap, esc_guard_camp
 victim 			= 30| actor
 victim_wpn 		= 30| actor
 use			= true
@@ -1277,27 +1277,65 @@ home_max_radius = 20
 ;----------------------------
 
 [logic@esc_zombie_1_fd]
-active = mob_home@esc_zombie_1_fd
+active = mob_fake_death@esc_zombie_1_fd
+on_hit = hit@zombie
+
+[mob_fake_death@esc_zombie_1_fd]
+on_info = {+esc_zombie_rise2} mob_home@esc_zombie_1_fd
+path_home = home_point_1
 
 [mob_home@esc_zombie_1_fd]
 path_home = home_point
 home_min_radius = 20
 home_max_radius = 35
-on_actor_dist_ge_nvis = 40| mob_fake_death@esc_zombie_1_fd
 
-[mob_fake_death@esc_zombie_1_fd]
-on_actor_dist_le = 5| mob_home@esc_zombie_1_fd
-on_info = {+esc_zombie_rise2} mob_home@esc_zombie_1_fd_1
+[hit@zombie]
+on_info = %+esc_zombie_rise2%
 
-[mob_home@esc_zombie_1_fd_1]
-path_home = home_point
-home_min_radius = 20
-home_max_radius = 35
-on_actor_dist_ge_nvis = 40| mob_fake_death@esc_zombie_1_fd_1
 
-[mob_fake_death@esc_zombie_1_fd_1]
-on_actor_dist_le = 5| mob_home@esc_zombie_1_fd_1
+[logic@esc_zombie_2_fd]
+active = mob_fake_death@esc_zombie_2_fd
+on_hit = hit@zombie
 
+[mob_fake_death@esc_zombie_2_fd]
+on_info = {+esc_zombie_rise2} mob_home@esc_zombie_1_fd
+path_home = home_point_2
+
+
+[logic@esc_zombie_3_fd]
+active = mob_fake_death@esc_zombie_2_fd
+on_hit = hit@zombie
+
+[mob_fake_death@esc_zombie_3_fd]
+on_info = {+esc_zombie_rise2} mob_home@esc_zombie_1_fd
+path_home = home_point_3
+
+
+[logic@esc_zombie_4_fd]
+active = mob_fake_death@esc_zombie_4_fd
+on_hit = hit@zombie
+
+[mob_fake_death@esc_zombie_4_fd]
+on_info = {+esc_zombie_rise2} mob_home@esc_zombie_1_fd
+path_home = home_point_4
+
+
+[logic@esc_zombie_5_fd]
+active = mob_fake_death@esc_zombie_5_fd
+on_hit = hit@zombie
+
+[mob_fake_death@esc_zombie_5_fd]
+on_info = {+esc_zombie_rise2} mob_home@esc_zombie_1_fd
+path_home = home_point_5
+
+
+[logic@esc_zombie_6_fd]
+active = mob_fake_death@esc_zombie_6_fd
+on_hit = hit@zombie
+
+[mob_fake_death@esc_zombie_6_fd]
+on_info = {+esc_zombie_rise2} mob_home@esc_zombie_1_fd
+path_home = home_point_6
 
 
 ;--------------------------
