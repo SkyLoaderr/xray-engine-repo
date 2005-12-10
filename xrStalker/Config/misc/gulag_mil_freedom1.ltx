@@ -32,6 +32,7 @@ snd = mil_guard_to_max
 anim = wait_rac
 on_signal = action_end | walker1@mil_freedom_lukash %-mil_bodyguard_talk%
 danger = danger@mil_freedom
+target = actor
 
 [dialogs@mil_freedom_lukash]
 id = mil_lukash_dialog_rg6, mil_lukash_dialog_after
@@ -67,6 +68,8 @@ meet_dialog = mil_cook_dialog
 use = true
 use_wpn = true
 meet_state = 5|sit
+victim = 5|actor
+victim_wpn = 5|actor
 
 [camper1@mil_freedom_cook]
 path_walk = cook_walk2
@@ -485,7 +488,7 @@ no_move = true
 anim = wait_rac
 snd = mil_pavlik_to_ara
 on_info = {+mil_ara_end} walker4@mil_freedom_stalker3
-on_actor_dist_le = 1 | %=killactor%
+on_actor_dist_le = 7 | %=killactor%
 
 [walker4@mil_freedom_stalker3]
 path_walk = stukach_walk5

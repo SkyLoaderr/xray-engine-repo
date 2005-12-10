@@ -12,6 +12,7 @@ anim = wait_rac
 no_move = true
 no_rotate = true
 on_signal = action_end | walker11@mil_freedom_max_attack
+target = actor
 danger = danger@mil_freedom
 
 [walker2@mil_freedom_max_attack]
@@ -19,7 +20,6 @@ path_walk = max_center_walk
 path_look = max_center_look
 meet = on_meet@mil_freedom_max_attack
 on_info = {+mil_max_talk3} walker11@mil_freedom_max_attack
-;remark3@mil_freedom_max_attack
 danger = danger@mil_freedom
 
 [on_meet@mil_freedom_max_attack]
@@ -67,7 +67,6 @@ no_retreat = true
 [camper13@mil_freedom_max_attack]
 path_walk = attack_way7_3
 path_look = attack_look3
-;on_signal = final | walker14@mil_freedom_max_attack
 no_retreat = true
 on_info = {+mil_dolg_dead} remark4@mil_freedom_max_attack
 
