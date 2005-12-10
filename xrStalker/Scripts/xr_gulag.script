@@ -438,8 +438,10 @@ function gulag:availJob(job)
 	if job.begin == nil or game.time() - job.begin > job.idle then
 		if job.fill_idle ~= nil then
 			if job.fill_idle == idle_none then
+				printf( "availJob 1" )
 				return false
 			elseif job.fill_idle ~= idle_once and job.fill_idle < game.time() - job.begin then
+				printf( "availJob 2" )
 				return false
 			end
 		end
@@ -454,8 +456,10 @@ function gulag:availJob(job)
 			end
 		end
 ]]
+--		printf( "availJob 3" )
 		return true
 	else
+		printf( "availJob 4" )
 		return false
 	end
 end
