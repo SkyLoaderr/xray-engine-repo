@@ -33,44 +33,54 @@ class CUIInventoryWnd: public CUIDialogWnd
 private:
 	typedef CUIDialogWnd inherited;
 public:
-	CUIInventoryWnd();
-	virtual ~CUIInventoryWnd();
+							CUIInventoryWnd();
+	virtual					~CUIInventoryWnd();
 
-	virtual void Init();
+	virtual void			Init();
 
-	void InitInventory();
+	void					InitInventory();
 
-	virtual bool StopAnyMove					(){return false;}
+	virtual bool			StopAnyMove					(){return false;}
 
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual void			SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual bool			OnMouse(float x, float y, EUIMessages mouse_action);
 
 
-	CInventory* GetInventory() {return m_pInv;}
+	CInventory*				GetInventory() {return m_pInv;}
 
-	virtual void Update();
-	virtual void Draw();
+	virtual void			Update();
+	virtual void			Draw();
 
-	virtual void Show();
-	virtual void Hide();
+	virtual void			Show();
+	virtual void			Hide();
 
 	//для добавления новых предметов во время работы с интерфейсом (например 
 	//отсоединенных аддонов)
-	void AddItemToBag(PIItem pItem);
+	void					AddItemToBag(PIItem pItem);
 
 	// cнять костюм
-	bool UndressOutfit();
+	bool					UndressOutfit();
 
 	// Получить указатель на окно сумки. Используется при автоматическом вынимании текущей вещи
 	// из слотов, при дропе на них новых вещей
-	CUIDragDropList * GetBag() { return &UIBagList; }
+	CUIDragDropList *		GetBag() { return &UIBagList; }
 
 	// Проверить принадлежность вещи к нужному слоту и попробовать освободить для нее место
 	// переместив текущую вещь в слоте в сумку
-	bool SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum);
+	bool					SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum);
 	virtual bool			OnKeyboard			(int dik, EUIMessages keyboard_action);
 
 protected:
+	enum eInventorySndAction{	eInvSndOpen	=0,
+								eInvSndClose,
+								eInvItemToSlot,
+								eInvItemToBelt,
+								eInvItemToRuck,
+								eInvProperties,
+								eInvDropItem,
+								eInvSndMax};
+	ref_sound				sounds[eInvSndMax];
+	void PlaySnd					(eInventorySndAction a);
 	friend class CUITradeWnd;
 
 	CUIStatic			UIBagWnd;

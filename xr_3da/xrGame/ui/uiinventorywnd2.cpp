@@ -167,6 +167,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	UIPropertiesBox.AutoUpdateSize();
 	UIPropertiesBox.BringAllToTop();
 	UIPropertiesBox.Show(x-rect.left, y-rect.top);
+	PlaySnd				(eInvProperties);
 }
 
 void CUIInventoryWnd::DropItem()
@@ -195,7 +196,7 @@ void CUIInventoryWnd::DropItem()
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 
-	UpdateWeight(UIBagWnd, true);
+	UpdateWeight		(UIBagWnd, true);
 }
 
 void CUIInventoryWnd::EatItem()

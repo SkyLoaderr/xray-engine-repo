@@ -49,7 +49,7 @@ using namespace InventoryUtilities;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
+CUIInventoryWnd* g_pInvWnd = NULL;
 CUIInventoryWnd::CUIInventoryWnd()
 {
 	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
@@ -62,6 +62,7 @@ CUIInventoryWnd::CUIInventoryWnd()
 	SetCurrentItem(NULL);
 
 	SetFont(HUD().Font().pFontMedium);
+	g_pInvWnd = this;
 }
 
 void CUIInventoryWnd::Init()
@@ -204,6 +205,26 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIExitButton);
 	xml_init.InitButton(uiXml, "exit_button", 0, &UIExitButton);
 //	UIExitButton.SetText(*string_table("exit"));
+	
+//Load sounds
+
+	XML_NODE* stored_root				= uiXml.GetLocalRoot();
+	uiXml.SetLocalRoot					(uiXml.NavigateToNode("action_sounds",0));
+	::Sound->create(sounds[eInvSndOpen], true, uiXml.Read("snd_open",0,NULL));
+	::Sound->create(sounds[eInvSndClose], true, uiXml.Read("snd_close",0,NULL));
+	::Sound->create(sounds[eInvItemToSlot], true, uiXml.Read("snd_item_to_slot",0,NULL));
+	::Sound->create(sounds[eInvItemToBelt], true, uiXml.Read("snd_item_to_belt",0,NULL));
+	::Sound->create(sounds[eInvItemToRuck], true, uiXml.Read("snd_item_to_ruck",0,NULL));
+	::Sound->create(sounds[eInvProperties], true, uiXml.Read("snd_properties",0,NULL));
+	::Sound->create(sounds[eInvDropItem], true, uiXml.Read("snd_drop_item",0,NULL));
+
+	uiXml.SetLocalRoot					(stored_root);
+}
+
+void CUIInventoryWnd::PlaySnd(eInventorySndAction a)
+{
+	if (sounds[a]._handle())
+        sounds[a].play(NULL, sm_2D);
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
@@ -325,10 +346,12 @@ void CUIInventoryWnd::Show()
 	SendInfoToActor("ui_inventory");
 
 	Update();
+	PlaySnd(eInvSndOpen);
 }
 
 void CUIInventoryWnd::Hide()
 {
+	PlaySnd(eInvSndClose);
 	inherited::Hide();
 
 	SendInfoToActor("ui_inventory_hide");
@@ -597,6 +620,7 @@ void	CUIInventoryWnd::SendEvent_Item2Slot			(PIItem	pItem)
 	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM2SLOT, pItem->object().H_Parent()->ID());
 	P.w_u16		(pItem->object().ID());
 	pItem->object().u_EventSend(P);
+	g_pInvWnd->PlaySnd(eInvItemToSlot);
 };
 
 void	CUIInventoryWnd::SendEvent_Item2Belt			(PIItem	pItem)
@@ -605,7 +629,7 @@ void	CUIInventoryWnd::SendEvent_Item2Belt			(PIItem	pItem)
 	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM2BELT, pItem->object().H_Parent()->ID());
 	P.w_u16		(pItem->object().ID());
 	pItem->object().u_EventSend(P);
-
+	g_pInvWnd->PlaySnd(eInvItemToBelt);
 };
 
 void	CUIInventoryWnd::SendEvent_Item2Ruck			(PIItem	pItem)
@@ -614,6 +638,8 @@ void	CUIInventoryWnd::SendEvent_Item2Ruck			(PIItem	pItem)
 	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM2RUCK, pItem->object().H_Parent()->ID());
 	P.w_u16		(pItem->object().ID());
 	pItem->object().u_EventSend(P);
+
+	g_pInvWnd->PlaySnd(eInvItemToRuck);
 };
 
 void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
@@ -622,6 +648,8 @@ void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
 	pItem->object().u_EventGen(P, GEG_PLAYER_ITEMDROP, pItem->object().H_Parent()->ID());
 	P.w_u16		(pItem->object().ID());
 	pItem->object().u_EventSend(P);
+
+	g_pInvWnd->PlaySnd(eInvDropItem);
 };
 
 void	CUIInventoryWnd::SendEvent_Item_Eat			(PIItem	pItem)
