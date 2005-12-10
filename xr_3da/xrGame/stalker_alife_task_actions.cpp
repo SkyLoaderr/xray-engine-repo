@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai/trader/ai_trader.h"
 #include "inventory_item.h"
+#include "weapon.h"
 #include "script_game_object.h"
 #include "inventory.h"
 #include "alife_task.h"
@@ -322,6 +323,7 @@ void CStalkerActionCommunicateWithCustomer::execute		()
 CStalkerActionSmartTerrain::CStalkerActionSmartTerrain	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
+	set_inertia_time		(30000);
 }
 
 void CStalkerActionSmartTerrain::initialize				()
@@ -338,10 +340,16 @@ void CStalkerActionSmartTerrain::initialize				()
 	object().movement().set_mental_state			(eMentalStateFree);
 	object().sight().setup							(CSightAction(SightManager::eSightTypePathDirection));
 
-	if (!object().best_weapon())
-		object().CObjectHandler::set_goal	(eObjectActionIdle);
-	else
-		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
+	if (!object().best_weapon()) {
+		object().CObjectHandler::set_goal		(eObjectActionIdle);
+		return;
+	}
+
+	CWeapon										*best_weapon = smart_cast<CWeapon*>(object().best_weapon());
+	if (object().CObjectHandler::weapon_strapped(best_weapon))
+		return;
+
+	object().CObjectHandler::set_goal			(eObjectActionIdle,object().best_weapon());
 }
 
 void CStalkerActionSmartTerrain::finalize				()
@@ -353,6 +361,9 @@ void CStalkerActionSmartTerrain::finalize				()
 void CStalkerActionSmartTerrain::execute				()
 {
 	inherited::execute					();
+
+	if (completed())
+		object().CObjectHandler::set_goal		(eObjectActionStrapped,object().best_weapon());
 
 	object().sound().play						(eStalkerSoundHumming,60000,10000);
 

@@ -29,6 +29,8 @@
 CObjectHandler::CObjectHandler		()
 {
 	m_planner					= xr_new<CObjectHandlerPlanner>();
+	m_inventory_actual			= false;
+	m_last_enemy_for_best_weapon= 0;
 }
 
 CObjectHandler::~CObjectHandler		()
@@ -76,6 +78,9 @@ BOOL CObjectHandler::net_Spawn		(CSE_Abstract* DC)
 void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 {
 	inherited::OnItemTake		(inventory_item);
+
+	m_inventory_actual			= false;
+
 	planner().add_item			(inventory_item);
 
 	if (planner().object().g_Alive())
@@ -90,6 +95,8 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 {
 	inherited::OnItemDrop	(inventory_item);
+
+	m_inventory_actual		= false;
 	
 	if (m_infinite_ammo && planner().object().g_Alive() && !inventory_item->useful_for_NPC()) {
 		CWeaponAmmo				*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
@@ -112,17 +119,21 @@ void CObjectHandler::OnItemDropUpdate	()
 
 CInventoryItem *CObjectHandler::best_weapon() const
 {
-	CInventoryItem	*best_weapon = 0;
-
 	if (!planner().object().g_Alive())
-		return		(0);
+		return							(0);
+
+	if (m_inventory_actual && (m_last_enemy_for_best_weapon == planner().object().memory().enemy().selected()))
+		return							(m_last_best_weapon);
+
+	m_last_best_weapon					= 0;
+	m_last_enemy_for_best_weapon		= planner().object().memory().enemy().selected();
 
 	ai().ef_storage().alife().clear		();
 	ai().ef_storage().non_alife().clear	();
 	ai().ef_storage().non_alife().member()	= &planner().object();
 	ai().ef_storage().non_alife().enemy()	= planner().object().memory().enemy().selected() ? planner().object().memory().enemy().selected() : &planner().object();
 
-	float						best_value = 0;
+	float							best_value = 0;
 	TIItemContainer::const_iterator	I = inventory().m_all.begin();
 	TIItemContainer::const_iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I) {
@@ -142,10 +153,11 @@ CInventoryItem *CObjectHandler::best_weapon() const
 
 		if (value > best_value) {
 			best_value			= value;
-			best_weapon			= *I;
+			m_last_best_weapon	= *I;
 		}
 	}
-	return						(best_weapon);
+	
+	return						(m_last_best_weapon);
 }
 
 void CObjectHandler::update		()

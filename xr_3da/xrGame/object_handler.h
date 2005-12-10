@@ -41,6 +41,9 @@ protected:
 	bool							m_hammer_is_clutched;
 	bool							m_infinite_ammo;
 	CObjectHandlerPlanner			*m_planner;
+	mutable bool					m_inventory_actual;
+	mutable const CEntityAlive		*m_last_enemy_for_best_weapon;
+	mutable CInventoryItem			*m_last_best_weapon;
 
 protected:
 	IC		void					switch_torch		(CInventoryItem *inventory_item, bool value);
