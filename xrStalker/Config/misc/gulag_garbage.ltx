@@ -302,11 +302,11 @@ on_info = {+gar_animation_radio} walker3@hellcar_way
 meet = meet@hellcar
 danger = danger_condition@hellcar_group
 
-[walker11@hellcar_way]
-path_walk = hellcar_walk
-path_look = hellcar_look
-danger = danger_condition@hellcar_group
-meet = meet@1
+;[walker11@hellcar_way]
+;path_walk = hellcar_walk
+;path_look = hellcar_look
+;danger = danger_condition@hellcar_group
+;meet = meet@1
 
 [walker3@hellcar_way]
 path_walk = hellcar_walk
@@ -317,10 +317,12 @@ meet = meet
 
 [remark@hellcar_way]
 snd = gar_hellcar_ambush
-on_signal = sound_end |walker11@hellcar_way %+gar_alarm%
+on_signal = sound_end| %+gar_alarm%
 danger = danger_condition@hellcar_group
-anim = wait
+anim = guard
 target = actor
+meet = meet@1
+
 
 [meet@hellcar]
 meet_state = 30|hello@talk_hello| 10|ward@wait
@@ -362,7 +364,7 @@ danger = danger_condition@hellcar_group
 meet = meet@1
 
 [remark@gar_hellcar_group_return_observer]
-anim = wait
+anim = guard
 target = 107
 
 [meet@1]
@@ -501,6 +503,7 @@ path_walk = camper3_walk
 path_look = camper3_look
 ;radius = 25
 combat_ignore_cond = {-gar_open_fire}
+def_state_moving = patrol
 
 
 [logic@gar_hellcar_group_camper4]
@@ -985,7 +988,7 @@ path_look = 3_look
 hp_state = 30|help_me@help|10|wounded_heavy@help_heavy
 hp_state_see = 30|wounded@help_see|10|wounded_heavy@help_heavy
 psy_state = 50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20| {=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy
-hp_victim = 30|actor|10|nil
+hp_victim = 30|nil|10|nil
 hp_cover = 30|true|10|false
 hp_fight = 30|true|10|false
 syndata = wounded@help
@@ -1275,7 +1278,7 @@ reactions = ignore
 danger = danger_condition@gar_dram_novice
 
 [remark@after_fight_gar_dram_novice]
-anim = hello
+anim = guard
 target = actor
 snd = gar_dm_newbie_thank_you
 on_signal = action_end | walker2@gar_dram_novice %=actor_friend%
@@ -1288,8 +1291,8 @@ meet = meet@gar_dram_novice
 on_signal = new_gulag| %+gar_dm_novice_change_st%
 
 [meet@gar_dram_novice]
-meet_state = 3|wait@wait
-meet_state_wpn = 3|wait@wait
+meet_state = 3|guard@wait
+meet_state_wpn = 3|guard@wait
 victim = 3|actor
 victim_wpn = 3|actor
 use = true
@@ -1515,7 +1518,7 @@ on_info = {+gar_wounded_fight} walker@fight_gar_psevdowounded_1 %=actor_enemy%
 hp_state = 130|help_me@help|90|wounded_heavy@help_heavy
 hp_state_see = 130|wounded@help_see|90|wounded_heavy@help_heavy
 psy_state = 50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20| {=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy
-hp_victim = 130|actor|90|nil
+hp_victim = 130|nil|90|nil
 hp_cover = 130|false|90|false
 hp_fight = 130|true|90|true
 syndata = wounded@help
