@@ -18,6 +18,7 @@ function eva_state_mgr_direction:evaluate()
 	if self.st.look_object ~= nil and
 	   level.object_by_id(self.st.look_object) ~= nil 
 	then
+		self.st.target_position = level.object_by_id(self.st.look_object):position()
 		if self.st.current_object == self.st.look_object and
 		   self.st.point_obj_dir == look_object_type(self.object, self.st)
 		then
@@ -70,7 +71,8 @@ function eva_state_mgr_direction_search:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_direction_search:evaluate()
-	return self.st.target_position == nil and self.st.current_direction ~= nil
+	return self.st.target_position == nil and 
+	       self.st.current_direction ~= nil
 end
 
 --' Поворачиваемся ли мы сейчас
