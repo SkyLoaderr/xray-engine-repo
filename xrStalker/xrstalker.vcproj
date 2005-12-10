@@ -1454,6 +1454,9 @@
 					RelativePath=".\Config\ui\ui_keybinding.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_mapinfo.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_videoplayer.xml">
 				</File>
 				<File
