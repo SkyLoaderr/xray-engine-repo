@@ -398,6 +398,20 @@ void CAI_Stalker::update_sell_info					()
 	m_total_money			+= money_delta;
 	std::sort				(m_temp_items.begin(),m_temp_items.end());
 	select_items			();
+
+	TIItemContainer::iterator	I = inventory().m_all.begin();
+	TIItemContainer::iterator	E = inventory().m_all.end();
+	for ( ; I != E; ++I) {
+		if (!(*I)->useful_for_NPC())
+			m_temp_items.push_back	(CTradeItem(*I,ID(),ID()));
+
+		if (CLSID_DEVICE_PDA == (*I)->object().CLS_ID) {
+			CPda				*pda = smart_cast<CPda*>(*I);
+			VERIFY				(pda);
+			if (pda->GetOriginalOwnerID() == ID())
+				m_temp_items.push_back	(CTradeItem(*I,ID(),ID()));
+		}
+	}
 }
 
 bool CAI_Stalker::can_sell							(CInventoryItem const * item)
