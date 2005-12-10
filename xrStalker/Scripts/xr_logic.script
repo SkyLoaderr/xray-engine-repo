@@ -286,6 +286,11 @@ function enable_generic_schemes(ini, npc, stype, section)
 		if trade_section then
 			mob_trade.set_scheme(npc, ini, "mob_trade", trade_section)
 		end
+
+		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
+		if hit_section then
+			xr_hit.set_hit_checker(npc, ini, "hit", hit_section)
+		end
 	elseif stype == modules.stype_item then
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
 		printf("HIT SECTION [%s]", tostring(hit_section))
