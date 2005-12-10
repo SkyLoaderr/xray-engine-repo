@@ -75,7 +75,7 @@ function PsyAntenna:__init				()
 end
 
 function PsyAntenna:destroy				()
-	self.pp:finish 						()
+--	self.pp:finish 						()
 	level.set_snd_volume				(self.snd_volume)
 end
 
