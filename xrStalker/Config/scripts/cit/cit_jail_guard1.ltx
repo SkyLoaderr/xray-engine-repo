@@ -105,25 +105,41 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free
 [walker@jail_guard2]
 path_walk           = jail_guard_walk
 path_look           = jail_guard_look
-on_timer            = 10000 | walker@jail_guard_go_sleep
+on_timer            = 10000 | walker@jail_guard_go_sleep_say
 heli_hunter         = {+cit_heli_start -cit_heli_end} true, false
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- детский час1
 ;-----------------------------------------------------------------------------------------------------------
-[walker@jail_guard_go_sleep]
-path_walk           = jail_guard_sleep_walk
-path_look           = jail_guard_sleep_look
-on_signal           = arrived | remark@jail_guard_sleep
-combat_ignore_cond  = always ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+[walker@jail_guard_go_sleep_say]
+path_walk           = jail_guard_sleep_say_walk
+on_signal           = arrived | remark@jail_guard_sleep_say
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- детский час2
 ;-----------------------------------------------------------------------------------------------------------
+[remark@jail_guard_sleep_say]
+anim                = guard
+target              = actor
+snd                 = cit_jail_guard_sleep
+on_signal           = sound_end | walker@jail_guard_go_sleep
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- детский час3
+;-----------------------------------------------------------------------------------------------------------
+[walker@jail_guard_go_sleep]
+path_walk           = jail_guard_sleep_walk
+path_look           = jail_guard_sleep_look
+on_signal           = arrived | remark@jail_guard_sleep
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+
+;-----------------------------------------------------------------------------------------------------------
+;--- детский час4
+;-----------------------------------------------------------------------------------------------------------
 [remark@jail_guard_sleep]
-no_move             = true
-no_rotate           = true
 anim                = sleep_sit
 danger              = danger@jail_guard_sleep
 on_timer            = 300000 | walker@jail_guard3
