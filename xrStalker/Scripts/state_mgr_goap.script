@@ -221,14 +221,6 @@ function goap_graph(st, npc)
 	action:add_effect    (world_property(st.properties["weapon"],                   true))
 	st.planner:add_action(st.operators["weapon_drop"], action)
 
-	action = state_mgr_weapon.act_state_mgr_weapon_fire("state_mgr_weapon_fire", st)
-	action:add_precondition    (world_property(st.properties["locked"],                 false))
-	action:add_precondition    (world_property(st.properties["weapon_fire"],            true))
-	action:add_precondition    (world_property(st.properties["animstate_idle_now"],     true))
-	action:add_precondition    (world_property(st.properties["animation_none_now"],     true))
-	action:add_effect    (world_property(st.properties["weapon"],                   true))
-	st.planner:add_action(st.operators["weapon_fire"], action)
-
 
 
 	action = state_mgr_movement.act_state_mgr_movement_walk("state_mgr_movement_walk")

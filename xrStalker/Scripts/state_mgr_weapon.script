@@ -81,7 +81,9 @@ function eva_state_mgr_weapon_unstrapped:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon_unstrapped:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "unstrapped"
+	return state_lib.states[self.st.target_state].weapon == "unstrapped" or
+	       state_lib.states[self.st.target_state].weapon == "fire" or
+		   state_lib.states[self.st.target_state].weapon == "sniper_fire"
 end
 --' Держит ли уже он оружие в руках
 class "eva_state_mgr_weapon_unstrapped_now" (property_evaluator)
@@ -146,6 +148,7 @@ end
 function act_state_mgr_weapon_unstrapp:finalize()
 	action_base.finalize(self)
 end
+
 --' Спрятать оружие
 class "act_state_mgr_weapon_strapp" (action_base)
 function act_state_mgr_weapon_strapp:__init(name, st) super (nil, name)
@@ -165,6 +168,7 @@ end
 function act_state_mgr_weapon_strapp:finalize()
 	action_base.finalize(self)
 end
+
 --' убрать оружие
 class "act_state_mgr_weapon_none" (action_base)
 function act_state_mgr_weapon_none:__init(name, st) super (nil, name)
@@ -178,21 +182,6 @@ function act_state_mgr_weapon_none:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_none:finalize()
-	action_base.finalize(self)
-end
---' стрелять оружие
-class "act_state_mgr_weapon_fire" (action_base)
-function act_state_mgr_weapon_fire:__init(name, st) super (nil, name)
-	self.st = st
-end
-function act_state_mgr_weapon_fire:initialize()
-	action_base.initialize(self)
-	self.object:set_item(get_idle_state(self.st.target_state), get_weapon(self.object, self.st.target_state))
-end
-function act_state_mgr_weapon_fire:execute()
-	action_base.execute(self)
-end
-function act_state_mgr_weapon_fire:finalize()
 	action_base.finalize(self)
 end
 
