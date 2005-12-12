@@ -11,7 +11,7 @@
 IC	void			CALifeTimeManager::set_time_factor		(float time_factor)
 {
 	m_game_time					= game_time();
-	m_start_time				= Device.TimerAsync();
+	m_start_time				= Device.dwTimeGlobal;
 	m_time_factor				= time_factor;
 };
 
