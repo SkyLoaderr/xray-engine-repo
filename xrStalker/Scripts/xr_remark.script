@@ -68,6 +68,10 @@ function action_remark_activity:get_target()
         look_tbl.look_object = level.object_by_id(self.st.target_id)
     end
 
+    if self.st.target_position then
+        look_tbl.look_position = self.st.target_position
+    end
+
     return look_tbl
 end
 function action_remark_activity:time_callback()
