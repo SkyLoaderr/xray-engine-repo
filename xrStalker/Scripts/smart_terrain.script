@@ -3,8 +3,6 @@ Smart Terrain (места, где npc могут оседать на некоторое время и заниматься чем-
 Чугай Александр
 !без симуляции не работает!
 
-Везде в проверке условий используется alife() вместо db.actor. Там есть методы has_info(), dont_has_info().
-
 TODO
 	binder группы перехода онл/офл
 	вести всю группу аля патруль
@@ -186,7 +184,7 @@ end
 
 -- получить серверные объекты персонажей
 function se_smart_terrain:get_se_objs()
-	local sim = self.alife
+	local sim = alife()
 	local obj
 
 	for id, v in pairs( self.npc_info ) do
@@ -590,7 +588,7 @@ end
 function se_smart_terrain:get_level_name()
 --	return "chugai_test"
 
-	return self.alife:level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() )
+	return alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() )
 end
 
 -- инициализация объекта.
@@ -598,8 +596,6 @@ end
 function se_smart_terrain:on_register()
 --	printf( "[smart_terrain %s] on_register called", self:name() )
 	cse_alife_smart_zone.on_register( self )
-
-	self.alife = alife()
 
 	db.actor_proxy:init()
 
