@@ -260,8 +260,6 @@ end
 -- вызывается только из se_smart_terrain:unregister_npc() !
 -- если объект жив и он в онлайне, то переинициализировать логику.
 function gulag:removeObject( obj_id )
-	local obj = self.Object[obj_id]
-
 	self:free_obj_and_reinit( obj_id )
 
 	self.Object[obj_id]      = nil
