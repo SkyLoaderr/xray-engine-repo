@@ -143,12 +143,12 @@
     </exit_button>
 
 <action_sounds>
-	<snd_open>detectors\da-2_beep1</snd_open>
-	<snd_close>detectors\da-2_beep1</snd_close>
-	<snd_item_to_slot>detectors\da-2_beep1</snd_item_to_slot>
-	<snd_item_to_belt>detectors\da-2_beep1</snd_item_to_belt>
-	<snd_item_to_ruck>detectors\da-2_beep1</snd_item_to_ruck>
-	<snd_properties>detectors\da-2_beep1</snd_properties>
-	<snd_drop_item>detectors\da-2_beep1</snd_drop_item>
+	<snd_open>interface\inv_open</snd_open>
+	<snd_close>interface\inv_close</snd_close>
+	<snd_item_to_slot>interface\</snd_item_to_slot>
+	<snd_item_to_belt>interface\inv_belt</snd_item_to_belt>
+	<snd_item_to_ruck>interface\inv_ruck</snd_item_to_ruck>
+	<snd_properties>interface\inv_properties</snd_properties>
+	<snd_drop_item>interface\inv_drop</snd_drop_item>
 </action_sounds>
 </window>
