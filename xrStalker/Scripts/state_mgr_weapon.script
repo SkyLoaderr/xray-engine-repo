@@ -26,13 +26,22 @@ function eva_state_mgr_weapon:evaluate()
 	   (not strappable_weapon(bestweapon) and activeitem == nil))) then
 		return true
 	end		
-	if ((weapon == "unstrapped" or
-	   weapon == "fire" or
-	   weapon == "sniper_fire") and
-	   self.object:weapon_unstrapped() and	
-	   activeitem ~= nil and		
-	   bestweapon ~= nil and
-	   activeitem:id() == bestweapon:id()) then
+	if	(
+			(
+				(weapon == "unstrapped") or
+				(weapon == "fire") or
+				(weapon == "sniper_fire")
+			) and
+			(self.object:weapon_unstrapped() == true) and	
+			(activeitem ~= nil) and
+			(bestweapon ~= nil) and
+			(activeitem:id() == bestweapon:id())
+		) then
+		local		temp = "false"
+		if (self.object:weapon_unstrapped() == true) then
+			temp	= "true";
+		end
+		printf("BLIN : [%s][unstrapped] == [%s]",self.object:active_item():name(),temp)
 		return true
 	end		
 	if (weapon == "none" and
