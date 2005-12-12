@@ -161,7 +161,7 @@ function action_door:is_closed()
 	local angle = self.joint:get_axis_angle(90)
 	printf("_bp: action_door:update(): angle %f limits %f, %f",
 		angle, self.low_limits, self.hi_limits)
-	if angle >= self.hi_limits then
+	if angle <= self.low_limits then
 		printf("_bp: close_check(): true")
 		return true
 	end
