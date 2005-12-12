@@ -999,7 +999,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_pseudodog", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_start",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "pseudodog_arena"
 			            end
@@ -1008,7 +1008,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_pseudodog_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_fight",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "pseudodog_arena"
 			            end
@@ -1018,7 +1018,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_snork", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_start",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "snork_arena"
 			            end
@@ -1027,7 +1027,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_snork_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_fight",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "snork_arena"
 			            end
@@ -1037,7 +1037,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_bloodsucker", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_start",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "bloodsucker_arena"
 			            end
@@ -1046,7 +1046,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_bloodsucker_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_fight",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "bloodsucker_arena"
 			            end
@@ -1056,7 +1056,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_burer", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_start",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "burer_arena"
 			            end
@@ -1065,7 +1065,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_burer_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_fight",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.section_name == "burer_arena"
 			            end
@@ -1075,7 +1075,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_savage", 
 			idle = 0,
 			prior = 5, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_start",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.community == "arena_enemy"
 			            end
@@ -1084,7 +1084,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_monstr_savage_none", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "bar_arena_sr_fight",
+			in_rest = "", out_rest = "bar_arena_sr",
 			predicate = function(obj_info)
 				         	return obj_info.community == "arena_enemy"
 			            end
