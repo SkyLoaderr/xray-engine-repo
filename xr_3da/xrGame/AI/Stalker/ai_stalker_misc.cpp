@@ -90,26 +90,6 @@ ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEnti
 		return inherited::tfGetRelationType(tpEntityAlive);
 }
 
-void CAI_Stalker::adjust_speed_to_animation	(const EMovementDirection &movement_direction)
-{
-	if (movement().body_state() == eBodyStateStand) {
-		if (movement_direction != eMovementDirectionBack) {
-			if (movement().movement_type() == eMovementTypeWalk)
-				movement().set_desirable_speed(m_fCurSpeed = movement().walk_factor());
-			else
-				if (movement().movement_type() == eMovementTypeRun)
-					movement().set_desirable_speed(m_fCurSpeed = movement().run_factor());
-		}
-		else {
-			if (movement().movement_type() == eMovementTypeWalk)
-				movement().set_desirable_speed(m_fCurSpeed = movement().walk_back_factor());
-			else
-				if (movement().movement_type() == eMovementTypeRun)
-					movement().set_desirable_speed(m_fCurSpeed = movement().run_back_factor());
-		}
-	}
-}
-
 void CAI_Stalker::react_on_grenades		()
 {
 	CMemberOrder::CGrenadeReaction	&reaction = agent_manager().member().member(this).grenade_reaction();

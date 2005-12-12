@@ -164,7 +164,7 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 		}
 	}
 
-	object().adjust_speed_to_animation	(speed_direction);
+	object().movement().adjust_speed_to_animation	(speed_direction);
 
 	return						(
 		m_data_storage->m_part_animations.A[
@@ -181,7 +181,7 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 
 MotionID CStalkerAnimationManager::legs_no_move_animation	()
 {
-	object().adjust_speed_to_animation	(eMovementDirectionForward);
+	object().movement().adjust_speed_to_animation	(eMovementDirectionForward);
 
 	const xr_vector<MotionID>	&animation = m_data_storage->m_part_animations.A[body_state()].m_in_place->A;
 

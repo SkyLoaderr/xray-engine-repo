@@ -140,6 +140,7 @@ public:
 	IC		void	set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
 			void	set_nearest_accessible_position	();
 			void	set_nearest_accessible_position	(Fvector desired_position, u32 level_vertex_id);
+			void	adjust_speed_to_animation	(const MonsterSpace::EMovementDirection &movement_direction);
 
 public:
 	IC		float	crouch_factor			() const;

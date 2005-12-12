@@ -223,7 +223,6 @@ public:
 	virtual	void						ResetScriptData			(void					*P = 0);
 	virtual	bool						bfAssignObject			(CScriptEntityAction			*tpEntityAction);
 	virtual	bool						bfAssignAnimation		(CScriptEntityAction			*tpEntityAction);
-			void						adjust_speed_to_animation(const MonsterSpace::EMovementDirection &movement_direction);
 	
 	// physics
 	virtual u16							PHGetSyncItemsNumber	()			{return inherited ::PHGetSyncItemsNumber();}

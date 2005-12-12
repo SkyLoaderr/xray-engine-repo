@@ -26,6 +26,8 @@
 #	include "level.h"
 #endif
 
+//static float speeds[2][3][2][4];
+
 using namespace StalkerMovement;
 
 IC	void CStalkerMovementManager::setup_head_speed		()
@@ -129,7 +131,29 @@ void CStalkerMovementManager::Load					(LPCSTR section)
 void CStalkerMovementManager::reload				(LPCSTR section)
 {
 	inherited::reload			(section);
-	
+
+	/**
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionForward]	= pSettings->r_float(section,"speed_danger_crouch_walk_forward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionBackward]	= pSettings->r_float(section,"speed_danger_crouch_walk_backward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionLeft]		= pSettings->r_float(section,"speed_danger_crouch_walk_left");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_crouch_walk_right");
+
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionForward]		= pSettings->r_float(section,"speed_danger_crouch_run_forward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionBackward]	= pSettings->r_float(section,"speed_danger_crouch_run_backward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionLeft]		= pSettings->r_float(section,"speed_danger_crouch_run_left");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_crouch_run_right");
+
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionForward]		= pSettings->r_float(section,"speed_danger_stand_walk_forward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionBackward]	= pSettings->r_float(section,"speed_danger_stand_walk_backward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionLeft]		= pSettings->r_float(section,"speed_danger_stand_walk_left");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_stand_walk_right");
+
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionForward]		= pSettings->r_float(section,"speed_danger_stand_run_forward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionBackward]		= pSettings->r_float(section,"speed_danger_stand_run_backward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionLeft]			= pSettings->r_float(section,"speed_danger_stand_run_left");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_stand_run_right");
+	/**/
+
 	m_crouch_factor				= pSettings->r_float(section,"CrouchFactor");
 	m_walk_factor				= pSettings->r_float(section,"WalkFactor");
 	m_walk_back_factor			= pSettings->r_float(section,"WalkBackFactor");
@@ -575,4 +599,68 @@ void CStalkerMovementManager::on_restrictions_change	()
 	inherited::on_restrictions_change	();
 	if (use_desired_position() && !restrictions().accessible(desired_position()))
 		set_nearest_accessible_position	();
+}
+
+void CStalkerMovementManager::adjust_speed_to_animation	(const EMovementDirection &movement_direction)
+{
+	/**
+	VERIFY								(movement_type() != eMovementTypeStand);
+
+	object().m_fCurSpeed				=
+		speeds
+			[body_state()]
+			[movement_type()]
+			[movement_direction];
+
+	set_desirable_speed					(object().m_fCurSpeed);
+	/**/
+
+	switch (body_state()) {
+		case MonsterSpace::eBodyStateStand : {
+			if (movement_direction != MonsterSpace::eMovementDirectionBack) {
+				if (movement_type() == MonsterSpace::eMovementTypeWalk)
+					set_desirable_speed(object().m_fCurSpeed = walk_factor());
+				else
+					if (movement_type() == MonsterSpace::eMovementTypeRun)
+						set_desirable_speed(object().m_fCurSpeed = run_factor());
+			}
+			else {
+				if (movement_type() == MonsterSpace::eMovementTypeWalk)
+					set_desirable_speed(object().m_fCurSpeed = walk_back_factor());
+				else
+					if (movement_type() == MonsterSpace::eMovementTypeRun)
+						set_desirable_speed(object().m_fCurSpeed = run_back_factor());
+			}
+
+			break;
+		};
+		case eBodyStateCrouch : {
+			if (movement_direction != MonsterSpace::eMovementDirectionBack) {
+				if (movement_type() == MonsterSpace::eMovementTypeWalk)
+					set_desirable_speed(object().m_fCurSpeed = crouch_factor()*walk_factor());
+				else
+					if (movement_type() == MonsterSpace::eMovementTypeRun)
+						set_desirable_speed(object().m_fCurSpeed = crouch_factor()*run_factor());
+			}
+			else {
+				if (movement_type() == MonsterSpace::eMovementTypeWalk)
+					set_desirable_speed(object().m_fCurSpeed = crouch_factor()*walk_back_factor());
+				else
+					if (movement_type() == MonsterSpace::eMovementTypeRun)
+						set_desirable_speed(object().m_fCurSpeed = crouch_factor()*run_back_factor());
+			}
+
+			break;
+		};
+		case eBodyStateStandDamaged : {
+			if (movement_type() == MonsterSpace::eMovementTypeWalk)
+				set_desirable_speed(object().m_fCurSpeed = damaged_walk_factor());
+			else
+				if (movement_type() == MonsterSpace::eMovementTypeRun)
+					set_desirable_speed(object().m_fCurSpeed = damaged_run_factor());
+
+			break;
+		};
+		default						: NODEFAULT;
+	}
 }
