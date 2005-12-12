@@ -10,7 +10,7 @@ on_actor_inside = {+rostok_sniper_1_die +rostok_sniper_2_die +rostok_sniper_3_di
 
 [sr_idle@volkodav]
 on_info = %=bar_check_heli_scene%
-on_timer = 8000 | sr_idle@sniper %=play_snd(characters_voice\human_01\scenario\Rostok\volkodav_radio_enemy_1)%
+on_timer = 2000 | sr_idle@sniper %=play_snd(characters_voice\human_01\scenario\Rostok\volkodav_radio_enemy_1)%
 
 [sr_idle@sniper]
 on_info = %=bar_check_heli_scene%
@@ -26,7 +26,7 @@ on_timer = 4000 | sr_idle@heli_start %=play_snd(characters_voice\human_01\scenar
 
 [sr_idle@heli_start]
 on_info = %=bar_check_heli_scene%
-on_timer = 5000 | sr_idle@post_heli %+bar_ecolog_crush_heli_start =bar_crush_heli_start%
+on_timer = 2000 | sr_idle@post_heli %+bar_ecolog_crush_heli_start =bar_crush_heli_start%
 
 [sr_idle@post_heli]
 on_info = %=bar_check_heli_scene%
