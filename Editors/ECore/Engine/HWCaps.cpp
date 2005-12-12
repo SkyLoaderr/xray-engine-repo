@@ -6,7 +6,7 @@
 
 void CHWCaps::Update()
 {
-	D3DCAPS9 caps;
+	D3DCAPS9					caps;
 	HW.pDevice->GetDeviceCaps	(&caps);
 
 	// ***************** GEOMETRY
@@ -15,10 +15,10 @@ void CHWCaps::Update()
 	geometry.bSoftware			= (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)==0;
 	geometry.bPointSprites		= FALSE;
 	geometry.bNPatches			= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
-	geometry.bMPS				= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
 	geometry.dwRegisters		= (caps.MaxVertexShaderConst);
 	geometry.dwInstructions		= 256;
 	geometry.dwClipPlanes		= _min(caps.MaxUserClipPlanes,15);
+	geometry.bVTF				= (geometry_major>=3) && HW.support(D3DFMT_R32F,D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_VERTEXTEXTURE);
 
 	// ***************** PIXEL processing
 	raster_major				= u16 ( u32(u32(caps.PixelShaderVersion)&u32(0xf << 8ul))>>8 );

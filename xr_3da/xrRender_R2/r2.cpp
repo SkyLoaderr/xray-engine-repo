@@ -366,7 +366,12 @@ HRESULT	CRender::shader_compile			(
 		def_it						++	;
 	}
 	if (HW.Caps.raster_major >= 3)	{
-		defines[def_it].Name		=	"USE_SHADER3";
+		defines[def_it].Name		=	"USE_BRANCHING";
+		defines[def_it].Definition	=	"1";
+		def_it						++	;
+	}
+	if (HW.Caps.geometry.bVTF)	{
+		defines[def_it].Name		=	"USE_VTF";
 		defines[def_it].Definition	=	"1";
 		def_it						++	;
 	}

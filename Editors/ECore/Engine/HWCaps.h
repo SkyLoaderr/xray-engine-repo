@@ -12,7 +12,7 @@ public:
 		u32 dwInstructions	: 16;
 		u32	bSoftware		: 1;
 		u32	bPointSprites	: 1;
-		u32	bMPS			: 1;		// matrix-palette-skinning
+		u32	bVTF			: 1;		// vertex-texture-fetch
 		u32	bNPatches		: 1;
 		u32 dwClipPlanes	: 4;
 		u32 dwVertexCache	: 8;
