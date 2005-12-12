@@ -76,7 +76,14 @@ end
 function heli_combat:read_custom_data( ini, section )
 	self.combat_use_rocket = utils.cfg_get_bool  ( ini, section, "combat_use_rocket", self.object, false, true )
 	self.combat_use_mgun   = utils.cfg_get_bool  ( ini, section, "combat_use_mgun",   self.object, false, true )
-	self.combat_ignore     = utils.cfg_get_bool  ( ini, section, "combat_ignore",     self.object, false, false )
+--	self.combat_ignore     = utils.cfg_get_bool  ( ini, section, "combat_ignore",     self.object, false, false )
+
+	local combat_ignore    = utils.cfg_get_string( ini, section, "combat_ignore",     self.object, false, "", nil )
+	if combat_ignore then
+		self.combat_ignore = xr_logic.parse_condlist( self.object, section, "combat_ignore", combat_ignore )
+	else
+		self.combat_ignore = nil
+	end
 
 	local combat_enemy     = utils.cfg_get_string( ini, section, "combat_enemy",      self.object, false, "", nil )
 	self:set_enemy_from_custom_data( combat_enemy )
@@ -209,7 +216,7 @@ function heli_combat:load( packet )
 end
 
 function heli_combat:waypoint_callback()
-	if self.enemy_id and not self.combat_ignore then
+	if self.enemy_id and not self:combat_ignore_check() then
 		self.was_callback = true
 		printf( "heli_combat:waypoint_callback" )
 		return true
@@ -316,6 +323,10 @@ function heli_combat:update_combat_type( see_enemy )
 	end
 end
 
+function heli_combat:combat_ignore_check()
+	return self.combat_ignore ~= nil and xr_logic.pick_section_from_condlist( db.actor, self.object, self.combat_ignore ) ~= nil
+end
+
 -- Обновление боевой схемы. Вызывается из обновлений схем логики вертолёта.
 -- возвращает true, если бой активен (то есть нету combat_ignore и есть враг)
 function heli_combat:update()
@@ -329,7 +340,7 @@ function heli_combat:update()
 		return false
 	end
 
-	if self.combat_ignore then
+	if self:combat_ignore_check() then
 		return false
 	end
 
