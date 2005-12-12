@@ -720,7 +720,8 @@ function load_job_monolith(sj, gname, type, squad, groups)
 	    t = { section = "logic@" .. gname .. "_sniper" .. i, 
 		    idle = 0,
 		    prior = 14, state = {0}, squad = squad, group = groups[9],
-		    in_rest = "", out_rest = "",
+		    in_rest = "pri_snork_nest1_big_restr, pri_snork_nest2_big_restr",
+		    out_rest = "",
 		    predicate = f_predicate9
 	    }
 	    table.insert(sj, t)
@@ -818,11 +819,13 @@ function load_ltx_monolith(gname, type)
                     ";no_retreat                = true\n" ..
                     "radius                     = 0\n" ..
                     "on_info                    = {+" .. gname .. "_snipers_free} walker@" .. gname .. "_sniper" .. i .. "_free\n" ..
+                    "combat_ignore_cond         = {=pri_monolith_combat_ignore}\n" ..
 
                     "[walker@" .. gname .. "_sniper" .. i .. "_free]\n" ..
                     "path_walk                  = balcony_sniper" .. i .. "_free_walk\n" ..
                     "path_look                  = balcony_sniper" .. i .. "_free_look\n" ..
-                    "on_info                    = {-" .. gname .. "_snipers_free} camper@" .. gname .. "_sniper" .. i .. "_wait\n"
+                    "on_info                    = {-" .. gname .. "_snipers_free} camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
+                    "combat_ignore_cond         = {=pri_monolith_combat_ignore}\n"
     end
 
     return res
