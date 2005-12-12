@@ -463,6 +463,11 @@ end
 function se_smart_terrain:unregister_npc( obj )
 	local n = self.npc_info[obj.id]
 
+	if not n then
+		printf( "self.npc_info[obj.id] = nil !!! obj.id=%d", obj.id )
+		self.gulag:print()
+	end
+
 	self.gulag:removeObject( obj.id )
 
 --	o:move_offline( n.move_offline )
