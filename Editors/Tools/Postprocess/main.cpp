@@ -190,9 +190,10 @@ void            TMainForm::UpdateGraph         ()
     SPPInfo	m_EffectorParams;
     ZeroMemory (&m_EffectorParams, sizeof (SPPInfo));
 
-    for (float t = 0.0f; t < alltime; t += 0.01)
+    float increment = alltime / (float)Image->Width;
+
+    for (float t = 0.0f; t < alltime; t += increment)
         {
-        //m_Animator->Update (t);
         m_Animator->Process (t, m_EffectorParams);
         int x = (int)(width / alltime * t);
         switch (TabControl->TabIndex)

@@ -292,17 +292,17 @@ void        CPostProcessColor::add_value                       (float time, floa
     if (0 == index)
        {
        m_Red.InsertKey (time, value);
-       i = m_Red.FindKey (time, 0.1f);
+       i = m_Red.FindKey (time, 0.01f);
        }
     else if (1 == index)
             {
             m_Green.InsertKey (time, value);
-            i = m_Green.FindKey (time, 0.1f);
+            i = m_Green.FindKey (time, 0.01f);
             }
          else
             {
             m_Blue.InsertKey (time, value);
-            i = m_Blue.FindKey (time, 0.1f);
+            i = m_Blue.FindKey (time, 0.01f);
             }
     (*i)->tension = t;
     (*i)->continuity = c;
@@ -311,9 +311,9 @@ void        CPostProcessColor::add_value                       (float time, floa
 void        CPostProcessColor::update_value                    (float time, float value, float t, float c, float b, int index)
 {
     KeyIt i;
-    if (0 == index) i = m_Red.FindKey (time, 0.1f);
-    else if (1 == index) i = m_Green.FindKey (time, 0.1f);
-         else i = m_Blue.FindKey (time, 0.1f);
+    if (0 == index) i = m_Red.FindKey (time, 0.01f);
+    else if (1 == index) i = m_Green.FindKey (time, 0.01f);
+         else i = m_Blue.FindKey (time, 0.01f);
     (*i)->value = value;
     (*i)->tension = t;
     (*i)->continuity = c;
@@ -322,9 +322,9 @@ void        CPostProcessColor::update_value                    (float time, floa
 void        CPostProcessColor::get_value                       (float time, float &value, float &t, float &c, float &b, int index)
 {
     KeyIt i;
-    if (0 == index) i = m_Red.FindKey (time, 0.1f);
-    else if (1 == index) i = m_Green.FindKey (time, 0.1f);
-         else i = m_Blue.FindKey (time, 0.1f);
+    if (0 == index) i = m_Red.FindKey (time, 0.01f);
+    else if (1 == index) i = m_Green.FindKey (time, 0.01f);
+         else i = m_Blue.FindKey (time, 0.01f);
     value = (*i)->value;
     t = (*i)->tension;
     c = (*i)->continuity;
@@ -334,14 +334,14 @@ void        CPostProcessColor::get_value                       (float time, floa
 void        CPostProcessValue::add_value                       (float time, float value, float t, float c, float b, int index)
 {
     m_Value.InsertKey (time, value);
-    KeyIt i = m_Value.FindKey (time, 0.1f);
+    KeyIt i = m_Value.FindKey (time, 0.01f);
     (*i)->tension = t;
     (*i)->continuity = c;
     (*i)->bias = b;
 }
 void        CPostProcessValue::update_value                    (float time, float value, float t, float c, float b, int index)
 {
-    KeyIt i = m_Value.FindKey (time, 0.1f);
+    KeyIt i = m_Value.FindKey (time, 0.01f);
     (*i)->value = value;
     (*i)->tension = t;
     (*i)->continuity = c;
@@ -349,7 +349,7 @@ void        CPostProcessValue::update_value                    (float time, floa
 }
 void        CPostProcessValue::get_value                       (float time, float &value, float &t, float &c, float &b, int index)
 {
-    KeyIt i = m_Value.FindKey (time, 0.1f);
+    KeyIt i = m_Value.FindKey (time, 0.01f);
     value = (*i)->value;
     t = (*i)->tension;
     c = (*i)->continuity;
