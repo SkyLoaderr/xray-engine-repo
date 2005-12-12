@@ -393,7 +393,7 @@ void	_LogCallback				(LPCSTR string)
 
 void CStats::OnDeviceCreate			()
 {
-	g_bDisableRedText				= strstr(Core.Params,"-xcls")?TRUE:FALSE;
+	g_bDisableRedText				= strstr(Core.Params,"-xclsx")?TRUE:FALSE;
 
 	pFont	= xr_new<CGameFont>		("stat_font");
 	
