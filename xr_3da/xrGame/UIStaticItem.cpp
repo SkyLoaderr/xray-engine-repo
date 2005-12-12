@@ -104,6 +104,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	// set geom
 	RCache.set_Geometry			(hGeom_fan);
 	if (p_cnt!=0)RCache.Render	(D3DPT_TRIANGLELIST,vOffset,u32(p_cnt));
+	if(alpha_ref!=-1)
+		CHK_DX(HW.pDevice->SetRenderState(D3DRS_ALPHAREF,0));
 	UI()->PopScissor			();
 }
 //--------------------------------------------------------------------
@@ -129,5 +131,7 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	RCache.Vertex.Unlock		(u32(p_cnt),hGeom_fan.stride());
 	RCache.set_Geometry	 		(hGeom_fan);
 	if (p_cnt>2) RCache.Render	(D3DPT_TRIANGLEFAN,vOffset,u32(p_cnt-2));
+	if(alpha_ref!=-1)
+		CHK_DX(HW.pDevice->SetRenderState(D3DRS_ALPHAREF,0));
 }
 //--------------------------------------------------------------------
