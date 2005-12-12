@@ -241,7 +241,7 @@ void CActor::cam_Update(float dt, float fFOV)
 		cameras[eacFirstEye]->Update	(point,dangle);
 		cameras[eacFirstEye]->f_fov		= fFOV;
 	}
-	EffectorManager().Update			(cameras[eacFirstEye]);
+	Cameras().Update			(cameras[eacFirstEye]);
 	
 	fCurAVelocity			= vPrevCamDir.sub(cameras[eacFirstEye]->vDirection).magnitude()/Device.fTimeDelta;
 	vPrevCamDir				= cameras[eacFirstEye]->vDirection;
@@ -251,9 +251,9 @@ void CActor::cam_Update(float dt, float fFOV)
 
 	if (Level().CurrentEntity() == this)
 	{
-		Level().Cameras.Update	(C);
-		if(eacFirstEye == cam_active && !Level().Cameras.GetEffector(cefDemo)){
-			EffectorManager().ApplyDevice();
+		Level().Cameras().Update	(C);
+		if(eacFirstEye == cam_active && !Level().Cameras().GetCamEffector(cefDemo)){
+			Cameras().ApplyDevice	();
 		}
 	}
 }
@@ -272,9 +272,10 @@ void CActor::OnRender	()
 	OnRender_Network();
 }
 #endif
-
+/*
 void CActor::LoadShootingEffector (LPCSTR section)
 {
+
 	if(!m_pShootingEffector) 
 		m_pShootingEffector = xr_new<SShootingEffector>();
 
@@ -295,7 +296,8 @@ void CActor::LoadShootingEffector (LPCSTR section)
 	m_pShootingEffector->time				= pSettings->r_float(section,"time");
 	m_pShootingEffector->time_attack		= pSettings->r_float(section,"time_attack");
 	m_pShootingEffector->time_release		= pSettings->r_float(section,"time_release");
-}
+
+}*/
 
 void CActor::LoadSleepEffector	(LPCSTR section)
 {

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "postprocessanimator.h"
-
+#ifndef _PP_EDITOR_
+#include "ActorEffector.h"	
+#endif
 
 // postprocess value LOAD method implementation
 void CPostProcessValue::load (IReader &pReader)
@@ -32,18 +34,18 @@ void CPostProcessColor::save (IWriter &pWriter)
 
 //main PostProcessAnimator class
 
+CPostprocessAnimator::CPostprocessAnimator()
+{
+    Create				();
+}
+
 CPostprocessAnimator::CPostprocessAnimator(int id, bool cyclic)
 #ifndef _PP_EDITOR_
-:CEffectorPP((EEffectorPPType)id, 100000, true)
+:CEffectorPP((EEffectorPPType)id, 100000, true),
+m_bCyclic(cyclic)
 #endif
 {
     Create				();
-	m_factor			= 1.0f;
-	m_dest_factor		= 1.0f;
-	m_bStop				= false;
-	m_stop_speed		= 1.0f;
-	m_bCyclic			= cyclic;
-	m_start_time		= -1.0f;
 }
 
 CPostprocessAnimator::~CPostprocessAnimator           ()
@@ -126,7 +128,7 @@ void        CPostprocessAnimator::Stop       (float sp)
 {
 	if(m_bStop)			return;
 	m_bStop				= true;
-	m_stop_speed		= sp;
+	m_factor_speed		= sp;
 }
 
 float       CPostprocessAnimator::GetLength                       ()
@@ -159,11 +161,11 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 	Update					(Device.fTimeGlobal-m_start_time);
 
 	if(m_bStop)
-		m_factor			-=	Device.fTimeDelta*m_stop_speed;
+		m_factor			-=	Device.fTimeDelta*m_factor_speed;
 	else
-		m_factor			+= 0.3f*Device.fTimeDelta*(m_dest_factor-m_factor);
+		m_factor			+= m_factor_speed*Device.fTimeDelta*(m_dest_factor-m_factor);
 
-	clamp					(m_factor, 0.001f, 1.0f);
+	clamp					(m_factor, 0.0001f, 1.0f);
 
 	m_EffectorParams.color_base		+= pp_identity.color_base;
 	m_EffectorParams.color_gray		+= pp_identity.color_gray;
@@ -172,7 +174,7 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 
 	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
 
-	if(fsimilar(m_factor,0.001f,EPS_S))
+	if(fsimilar(m_factor,0.0001f,EPS_S))
 		return FALSE;
 
 	return TRUE;
@@ -200,6 +202,11 @@ BOOL CPostprocessAnimator::Process(float dt, SPPInfo &PPInfo)
 
 void        CPostprocessAnimator::Create                          ()
 {
+	m_factor			= 1.0f;
+	m_dest_factor		= 1.0f;
+	m_bStop				= false;
+	m_start_time		= -1.0f;
+
     m_Params[0] = xr_new<CPostProcessColor> (&m_EffectorParams.color_base);			//base color
     VERIFY (m_Params[0]);
     m_Params[1] = xr_new<CPostProcessColor> (&m_EffectorParams.color_add);          //add color
@@ -358,3 +365,37 @@ void        CPostProcessValue::get_value                       (float time, floa
 #endif /*_PP_EDITOR_*/
 
 
+#ifndef _PP_EDITOR_
+BOOL CPostprocessAnimatorLerp::Process(SPPInfo &PPInfo)
+{
+	if(!m_bStop)
+		m_factor = m_get_factor_func			();
+	return CPostprocessAnimator::Process		(PPInfo);
+}
+
+
+BOOL CPostprocessAnimatorLerpConst::Process(SPPInfo &PPInfo)
+{
+	if(!m_bStop)
+		m_factor = m_power;
+	return CPostprocessAnimator::Process		(PPInfo);
+}
+
+CPostprocessAnimatorControlled::CPostprocessAnimatorControlled(CEffectorController* c)
+:m_controller(c)
+{
+	m_controller->SetPP(this);
+	SetFactorFunc(fastdelegate::FastDelegate0<float>(m_controller, &CEffectorController::GetFactor));
+}
+
+CPostprocessAnimatorControlled::~CPostprocessAnimatorControlled()
+{
+	m_controller->SetPP(NULL);
+}
+
+BOOL CPostprocessAnimatorControlled::Valid()
+{
+	return m_controller->Valid					();
+}
+
+#endif

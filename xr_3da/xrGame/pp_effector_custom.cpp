@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "pp_effector_custom.h"
-#include "level.h"
+#include "actor.h"
+#include "../CameraManager.h"
 
 #define TRANSLATE_TYPE(val) EEffectorPPType(val ? u32(u64(typeid(this).name())) : u32(u64(this) & u32(-1)))
 
@@ -52,7 +53,7 @@ CPPEffectorController::CPPEffectorController()
 CPPEffectorController::~CPPEffectorController()
 {
 	if (m_effector) {
-		Level().Cameras.RemoveEffector(m_effector->get_type());
+		Actor()->Cameras().RemovePPEffector(m_effector->get_type());
 	}
 }
 
@@ -62,14 +63,14 @@ void CPPEffectorController::activate()
 	VERIFY							(!m_effector);
 	
 	m_effector = create_effector	();
-	Level().Cameras.AddEffector		(m_effector);
+	Actor()->Cameras().AddPPEffector		(m_effector);
 }
 
 void CPPEffectorController::deactivate()
 {
 	VERIFY				(m_effector);
 	
-	Level().Cameras.RemoveEffector(m_effector->get_type());
+	Actor()->Cameras().RemovePPEffector(m_effector->get_type());
 	m_effector			= 0;
 }
 

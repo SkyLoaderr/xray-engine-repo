@@ -1,7 +1,8 @@
 #pragma once
-
+/*
 #include "../effectorPP.h"
 #include "../effector.h"
+#include "../CameraManager.h"
 
 struct SShootingEffector {
 	SPPInfo	ppi;
@@ -17,3 +18,4 @@ public:
 					CShootingHitEffectorPP	(SShootingEffector* eff);
 	virtual	BOOL	Process					(SPPInfo& pp);
 };
+*/

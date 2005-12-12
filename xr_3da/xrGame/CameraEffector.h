@@ -1,45 +1,30 @@
-// CameraEffector.h: interface for the CCameraEffector class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #pragma once
 
-#include "../CameraDefs.h"
 #include "../cameramanager.h"
+#include "../effector.h"
+#include "../effectorPP.h"
 
-enum ECameraEffectorType
-{
-	eCEFall				= 0,
-	eCENoise			= 1,
-	eCEShot				= 2,
-	eCEZoom				= 3,
-	eCERecoil			= 4,
-	eCEBobbing			= 5,
-	eCEHit				= 6,  //hit from monster
-	eExplode			= 7,
-	eCEAlcohol			= 20,
-	eCEFireHit			= 21,
-	eCEUser				= 100,
-	eCEControllerPsyHit = eCEUser + 1,
-	eCEMax			=u32(-1)
-};
+#define eStartEffectorID		50
 
-class CCameraShotEffector;
-class CEffectorZoomInertion;
+#define effHit					(eStartEffectorID+1)
+#define effAlcohol				(eStartEffectorID+2)
+#define effFireHit				(eStartEffectorID+3)
+#define effExplodeHit			(eStartEffectorID+4)
+#define effNightvision			(eStartEffectorID+5)
+#define effPsyHealth			(eStartEffectorID+6)
 
-class CCameraEffector
-{
-protected:
-	ECameraEffectorType		eType;
-	float					fLifeTime;
-public:
-	CCameraEffector							(ECameraEffectorType type, float tm) {eType = type; fLifeTime=tm;};
-	virtual				~CCameraEffector	() {};
-	IC ECameraEffectorType	GetType			() {return eType;}
-	IC float				LifeTime		() {return fLifeTime;}
-
-	virtual CCameraShotEffector		*cast_effector_shot				()	{return 0;}
-	virtual CEffectorZoomInertion	*cast_effector_zoom_inertion	()	{return 0;}
-
-	virtual	BOOL		Process			(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)= 0;
-};
+#define	eCEFall					((ECamEffectorType)(cefNext+1))
+#define	eCENoise				((ECamEffectorType)(cefNext+2))
+#define	eCEShot					((ECamEffectorType)(cefNext+3))
+#define	eCEZoom					((ECamEffectorType)(cefNext+4))
+#define	eCERecoil				((ECamEffectorType)(cefNext+5))
+#define	eCEBobbing				((ECamEffectorType)(cefNext+6))
+#define	eCEHit					((ECamEffectorType)(cefNext+7))
+//#define	eCEExplode				((ECamEffectorType)(cefNext+8))
+//#define	eCEAlcohol			((ECamEffectorType)(cefNext+9))
+//#define	eCEFireHit				((ECamEffectorType)(cefNext+10))
+#define	eCEUser					((ECamEffectorType)(cefNext+11))
+#define	eCEControllerPsyHit		((ECamEffectorType)(cefNext+12))
+#define	eCEVampire				((ECamEffectorType)(cefNext+13))
+#define	eCEPseudoGigantStep		((ECamEffectorType)(cefNext+14))
+#define	eCEMonsterHit			((ECamEffectorType)(cefNext+15))

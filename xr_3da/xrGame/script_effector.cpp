@@ -8,7 +8,8 @@
 
 #include "stdafx.h"
 #include "script_effector.h"
-#include "level.h"
+#include "actor.h"
+#include "../cameramanager.h"
 
 CScriptEffector::~CScriptEffector	()
 {
@@ -27,10 +28,10 @@ bool CScriptEffector::process		(SPPInfo *pp)
 
 void CScriptEffector::Add			()
 {
-	Level().Cameras.AddEffector		(this);
+	Actor()->Cameras().AddPPEffector		(this);
 }
 
 void CScriptEffector::Remove		()
 {
-	Level().Cameras.RemoveEffector	(m_tEffectorType);
+	Actor()->Cameras().RemovePPEffector	(m_tEffectorType);
 }

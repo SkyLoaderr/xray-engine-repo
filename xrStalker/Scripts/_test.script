@@ -1,5 +1,20 @@
+function main_()
+	level.add_pp_effector("duality_circle.ppe", 999, true)
+--	level.set_pp_effector_factor(999, 0.1)
+--	level.remove_pp_effector(999)
+end
+
 function main()
-	heli_combat.debug_switch_combat_type()
+   local h = hit ()
+   h.power = 100
+   h.direction = vector():set(0, 0, 1)
+   h.impulse = 100
+   h.draftsman = db.actor
+   h.type = hit.fire_wound
+   db.actor:hit(h)
+
+
+--heli_combat.debug_switch_combat_type()
 --	db.actor:give_money(393)
 
 --	db.actor:set_character_rank(10)
@@ -11,7 +26,7 @@ function main()
 --	level.set_pp_effector_factor(999, 0.5)
 --	level.set_pp_effector_factor(999, 0.1)
 --	level.set_pp_effector_factor(999, 0.9)
-	level.remove_pp_effector(999)
+--	level.remove_pp_effector(999)
 
 --	game.start_tutorial("part_1_pda")
 --	game.start_tutorial("part_2_binocular")

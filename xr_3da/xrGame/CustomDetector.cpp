@@ -6,7 +6,7 @@
 #include "inventory.h"
 #include "level.h"
 #include "map_manager.h"
-#include "night_vision_effector.h"
+#include "cameraEffector.h"
 #include "actor.h"
 #include "ai_sounds.h"
 
@@ -307,7 +307,7 @@ void CCustomDetector::UpdateMapLocations() // called on turn on/off only
 
 void CCustomDetector::UpdateNightVisionMode()
 {
-	bool bNightVision = ( Level().Cameras.GetEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID))!=NULL );
+	bool bNightVision = ( Actor()->Cameras().GetPPEffector(EEffectorPPType(effNightvision))!=NULL );
 	bool bOn =	bNightVision && 
 				m_pCurrentActor &&
 				m_pCurrentActor==Level().CurrentViewEntity()&& 

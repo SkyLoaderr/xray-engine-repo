@@ -980,10 +980,10 @@ void CWeaponMagazined::OnZoomIn			()
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
 	{
-		CEffectorZoomInertion* S = smart_cast<CEffectorZoomInertion*>	(pActor->EffectorManager().GetEffector(eCEZoom));
+		CEffectorZoomInertion* S = smart_cast<CEffectorZoomInertion*>	(pActor->Cameras().GetCamEffector(eCEZoom));
 		if (!S)	
 		{
-			S = (CEffectorZoomInertion*)pActor->EffectorManager().AddEffector(xr_new<CEffectorZoomInertion> ());
+			S = (CEffectorZoomInertion*)pActor->Cameras().AddCamEffector(xr_new<CEffectorZoomInertion> ());
 			S->Init(this);
 		};
 		S->SetRndSeed(pActor->GetZoomRndSeed());
@@ -1001,7 +1001,7 @@ void CWeaponMagazined::OnZoomOut		()
 
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	if(pActor)
-		pActor->EffectorManager().RemoveEffector	(eCEZoom);
+		pActor->Cameras().RemoveCamEffector	(eCEZoom);
 
 }
 

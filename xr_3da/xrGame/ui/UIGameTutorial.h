@@ -69,7 +69,7 @@ public:
 	void						Load				(CUIXml* xml,int idx);
 	void						Update				();
 	void						Start				(CUIGameTutorial*);
-	bool						Stop				(CUIGameTutorial*);
+	bool						Stop				(CUIGameTutorial*, bool bForce=false);
 	void						OnKeyboardPress		(int dik);
 	bool						GrabInput			()					{return !!m_flags.test(etiGrabInput);}
 };

@@ -11,7 +11,7 @@
 #include "effector.h"
 
 class ENGINE_API CDemoRecord :
-	public CEffector,
+	public CEffectorCam,
 	public IInputReceiver
 {
 private:

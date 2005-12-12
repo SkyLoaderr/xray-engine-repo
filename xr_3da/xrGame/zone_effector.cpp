@@ -3,10 +3,8 @@
 #include "level.h"
 #include "clsid_game.h"
 #include "../xr_object.h"
-
-////////////////////////////////////////////////////////////////////////////////////
-// CZoneEffectPP
-////////////////////////////////////////////////////////////////////////////////////
+#include "../cameramanager.h"
+#include "actor.h"
 
 CZoneEffectPP::CZoneEffectPP(const SPPInfo &ppi, EEffectorPPType type) :
 	CEffectorPP(type, flt_max, false)
@@ -73,16 +71,18 @@ void CZoneEffector::Load(LPCSTR section)
 
 void CZoneEffector::Activate()
 {
+	m_pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!m_pActor) return;
 	p_effector = xr_new<CZoneEffectPP>(state, EEffectorPPType( u32(u64(this) & u32(-1)) ));
-	Level().Cameras.AddEffector(p_effector);
+	m_pActor->Cameras().AddPPEffector(p_effector);
 
 }
 
 void CZoneEffector::Stop()
 {
 	if (!p_effector) return;
-	
-	Level().Cameras.RemoveEffector(EEffectorPPType( u32(u64(this) & u32(-1)) ));
+	 
+	m_pActor->Cameras().RemovePPEffector(EEffectorPPType( u32(u64(this) & u32(-1)) ));
 	p_effector->Destroy();
 	p_effector = 0;
 };
@@ -96,7 +96,7 @@ void CZoneEffector::Update(float dist)
 	bool camera_on_actor = (Level().CurrentEntity() && (Level().CurrentEntity()->CLS_ID == CLSID_OBJECT_ACTOR));
 	
 	if (p_effector) {
-		if ((dist > max_r) || !camera_on_actor)	Stop();
+		if ((dist > max_r) || !camera_on_actor || (m_pActor&&!m_pActor->g_Alive()))	Stop();
 	} else {
 		if ((dist < max_r) && camera_on_actor)	Activate();
 	}

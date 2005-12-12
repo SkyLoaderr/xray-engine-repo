@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "pseudo_gigant_step_effector.h" 
 
-#define STEP_EFFECTOR_TYPE_ID	8
-
 CPseudogigantStepEffector::CPseudogigantStepEffector(float time, float amp, float periods, float power) 
-					: CCameraEffector(ECameraEffectorType(STEP_EFFECTOR_TYPE_ID), time)
+					: CEffectorCam(eCEPseudoGigantStep, time)
 {
 	total			= time;
 

@@ -20,7 +20,7 @@ CDemoRecord * xrDemoRecord = 0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffector(cefDemo,life_time,FALSE)
+CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffectorCam(cefDemo,life_time/*,FALSE*/)
 {
 	_unlink	(name);
 	file	= FS.w_open	(name);

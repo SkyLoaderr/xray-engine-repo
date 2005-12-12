@@ -225,8 +225,8 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIStarvationIcon);
 	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
 
-	AttachChild(&UIFatigueIcon);
-	xml_init.InitStatic(uiXml, "fatigue_static", 0, &UIFatigueIcon);
+	AttachChild(&UIPsyHealthIcon);
+	xml_init.InitStatic(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
 
 	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
@@ -690,8 +690,8 @@ void CUIMainIngameWnd::Update()
 		case ewiStarvation:
 			value = 1 - m_pActor->conditions().GetSatiety();
 			break;
-		case ewiFatigue:
-			value = 1 - m_pActor->conditions().GetPower();
+		case ewiPsyHealth:
+			value = 1 - m_pActor->conditions().GetPsyHealth();
 			break;
 		case ewiInvincible:
 			value = (GodMode()||(!Game().local_player)) ? 1.0f : float(Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
@@ -1276,8 +1276,8 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 	case ewiStarvation:
 		SetColor		(&UIStarvationIcon, cl);
 		if (bMagicFlag) break;
-	case ewiFatigue:
-		SetColor		(&UIFatigueIcon, cl);
+	case ewiPsyHealth:
+		SetColor		(&UIPsyHealthIcon, cl);
 		if (bMagicFlag) break;
 	case ewiInvincible:
 		SetColor		(&UIInvincibleIcon, cl);
@@ -1561,17 +1561,7 @@ void test_key	(int dik)
 	delete_data(wnd_arr);
 	}
 */
-/*
-	if(dik==DIK_K){
-		pp = xr_new<CPostprocessAnimator>();
-		pp->Load							("proba.ppe",999);
-		Level().Cameras.AddEffector	(pp);
-	}
-	if(dik==DIK_J){
-		pp->Stop(0.05f);
-//		Level().Cameras.RemoveEffector(cefppUser);
-	}
-*/
+
 /*
 	if(dik==DIK_K&&strstr(Core.Params,"andy")){
 		if(!w){

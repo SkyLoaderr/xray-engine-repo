@@ -1,227 +1,141 @@
-// ActorEffector.h:	 менеджер эффекторов актера
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 
 #include "ActorEffector.h"
-
-#include "../Environment.h"
-#include "../CameraBase.h"
-#include "../CameraManager.h"
-#include "../igame_persistent.h"
-
-
-#include "CameraEffector.h"
+#include "PostprocessAnimator.h"
+#include "../effectorPP.h"
 #include "../ObjectAnimator.h"
 #include "object_broker.h"
+#include "actor.h"
 
-
-CActorEffector::CActorEffector()
+void AddEffector		(int type, const shared_str& sect_name)
 {
-	vPosition.set	(0,0,0);
-	vDirection.set	(0,0,1);
-	vNormal.set		(0,1,0);
+	if(pSettings->line_exist(sect_name,"pp_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
+		CPostprocessAnimator* pp_anm		= xr_new<CPostprocessAnimator>();
+		pp_anm->SetType						((EEffectorPPType)type);
+		pp_anm->SetCyclic					(bCyclic);
 
-	fFov			= 90;
-	fFar			= 100;
-	fAspect			= 1.f;
-}
-
-CActorEffector::~CActorEffector()
-{
-	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
-		xr_delete(*it);
-}
-
-CCameraEffector* CActorEffector::GetEffector(ECameraEffectorType type)	
-{ 
-	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
-		if ((*it)->GetType()==type) return *it;
-	return 0;
-}
-
-CCameraEffector* CActorEffector::AddEffector(CCameraEffector* ef)
-{
-	RemoveEffector(ef->GetType());
-	m_Effectors.push_back(ef);
-	return m_Effectors.back();
-}
-
-void CActorEffector::RemoveEffector(ECameraEffectorType type)
-{
-	for (CameraEffectorIt it=m_Effectors.begin(); it!=m_Effectors.end(); it++ )
-		if ((*it)->GetType()==type)
-		{ 
-			xr_delete(*it);
-			m_Effectors.erase(it);
-			return;
-		}
-}
-
-void CActorEffector::Update(const CCameraBase* C)
-{	
-	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, C->f_aspect, g_pGamePersistent->Environment.CurrentEnv.far_plane, C->m_Flags.flags); 
-}
-
-void CActorEffector::Update(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest, u32 flags)
-{
-	// camera
-	if (flags&CCameraBase::flPositionRigid)
-		vPosition.set		(P);
-	else
-		vPosition.inertion	(P,	psCamInert);
-	if (flags&CCameraBase::flDirectionRigid){
-		vDirection.set		(D);
-		vNormal.set			(N);
-	}else{
-		vDirection.inertion	(D,	psCamInert);
-		vNormal.inertion	(N,	psCamInert);
+		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
+		pp_anm->Load						(fn);
+		Actor()->Cameras().AddPPEffector	(pp_anm);
 	}
-
-	// Normalize
-	vDirection.normalize	();
-	vNormal.normalize		();
-	vRight.crossproduct		(vNormal,vDirection);
-	vNormal.crossproduct	(vDirection,vRight);
-
-	float aspect				= Device.fHeight_2/Device.fWidth_2;
-	float src					= 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
-	float dst					= 1-src;
-	fFov						= fFov*dst		+ fFOV_Dest*src;
-	fFar						= fFar*dst		+ fFAR_Dest*src;
-	fAspect						= fAspect*dst	+ (fASPECT_Dest*aspect)*src;
-
-	// Effector
-	if (m_Effectors.size())
-	{
-		for (int i=m_Effectors.size()-1; i>=0; i--)
-		{
-			CCameraEffector* eff = m_Effectors[i];
-			if (!((eff->LifeTime()>0)&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect)))
-			{
-				m_Effectors.erase(m_Effectors.begin()+i);
-				xr_delete(eff);
-			}
-		}
-
-		// Normalize
-		vDirection.normalize	();
-		vNormal.normalize		();
-		vRight.crossproduct		(vNormal,vDirection);
-		vNormal.crossproduct	(vDirection,vRight);
+	if(pSettings->line_exist(sect_name,"cam_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
+		CAnimatorCamEffector* cam_anm		= xr_new<CAnimatorCamEffector>();
+		cam_anm->SetType					((ECamEffectorType)type);
+		cam_anm->SetCyclic					(bCyclic);
+		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
+		cam_anm->Start						(fn);
+		Actor()->Cameras().AddCamEffector	(cam_anm);
 	}
 }
 
-void CActorEffector::ApplyDevice ()
+void AddEffector		(int type, const shared_str& sect_name, CEffectorController* ec)
 {
-	// Device params
-	Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
-
-	Device.vCameraPosition.set	( vPosition		);
-	Device.vCameraDirection.set	( vDirection	);
-	Device.vCameraTop.set		( vNormal		);
-	Device.vCameraRight.set		( vRight		);
-
-	// projection
-	Device.fFOV					= fFov;
-	Device.fASPECT				= fAspect;
-	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
+	if(pSettings->line_exist(sect_name,"pp_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
+		CPostprocessAnimatorControlled* pp_anm	= xr_new<CPostprocessAnimatorControlled>(ec);
+		pp_anm->SetType						((EEffectorPPType)type);
+		pp_anm->SetCyclic					(bCyclic);
+		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
+		pp_anm->Load						(fn);
+		Actor()->Cameras().AddPPEffector	(pp_anm);
+	}
+	if(pSettings->line_exist(sect_name,"cam_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
+		CCameraEffectorControlled* cam_anm	= xr_new<CCameraEffectorControlled>(ec);
+		cam_anm->SetType					((ECamEffectorType)type);
+		cam_anm->SetCyclic					(bCyclic);
+		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
+		cam_anm->Start						(fn);
+		Actor()->Cameras().AddCamEffector	(cam_anm);
+	}
 }
-#include "../effectorPP.h"
-#include "level.h"
 
-class CShockPPEffector : public CEffectorPP {
-	typedef CEffectorPP inherited;	
-	SndShockEffector * m_shockEff;
-	float m_end_time;
-public:
-	CShockPPEffector		(float life_time, SndShockEffector * eff):CEffectorPP(cefppHit,life_time),m_shockEff(eff){
-		m_end_time = Device.fTimeGlobal + fLifeTime;
-	};
-	virtual	BOOL	Process					(SPPInfo& pp){
-		inherited::Process(pp);
-		pp = pp_identity;
-//		float dk				= (float(m_shockEff->m_snd_length-m_shockEff->m_cur_length)/float(m_shockEff->m_snd_length));
-		float tt				= Device.fTimeGlobal;
-		float dk				= (m_end_time-tt)/fLifeTime;
-
-//		pp.duality.h			= 0.1f*_sin(Device.fTimeGlobal)*dk;
-//		pp.duality.v			= 0.1f*_cos(Device.fTimeGlobal)*dk;
-
-		pp.duality.h			= (fLifeTime*0.1f/6.0f)*_sin(Device.fTimeGlobal)*dk;
-		pp.duality.v			= (fLifeTime*0.1f/6.0f)*_cos(Device.fTimeGlobal)*dk;
-		return TRUE;
+void AddEffector		(int type, const shared_str& sect_name, GET_KOEFF_FUNC k_func)
+{
+	if(pSettings->line_exist(sect_name,"pp_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
+		CPostprocessAnimatorLerp* pp_anm	= xr_new<CPostprocessAnimatorLerp>();
+		pp_anm->SetType						((EEffectorPPType)type);
+		pp_anm->SetCyclic					(bCyclic);
+		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
+		pp_anm->SetFactorFunc				(k_func);
+		pp_anm->Load						(fn);
+		Actor()->Cameras().AddPPEffector	(pp_anm);
+	}
+	if(pSettings->line_exist(sect_name,"cam_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
+		CAnimatorCamLerpEffector* cam_anm	= xr_new<CAnimatorCamLerpEffector>();
+		cam_anm->SetFactorFunc				(k_func);
+		cam_anm->SetType					((ECamEffectorType)type);
+		cam_anm->SetCyclic					(bCyclic);
+		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
+		cam_anm->Start						(fn);
+		Actor()->Cameras().AddCamEffector	(cam_anm);
 	}
 };
 
-#define SND_MIN_VOLUME_FACTOR (0.1f)
-
-SndShockEffector::SndShockEffector	()
+void AddEffector		(int type, const shared_str& sect_name, float factor)
 {
-	m_cur_length			= 0;
-	m_stored_volume			= -1.0f;
-}
-
-SndShockEffector::~SndShockEffector	()
-{
-	psSoundVFactor		= m_stored_volume;
-	Level().Cameras.RemoveEffector(cefppHit);
-}
-
-bool SndShockEffector::Active()
-{
-	return (m_cur_length<=m_snd_length);
-}
-
-void SndShockEffector::Start(int snd_length, float power)
-{
-	m_snd_length = snd_length;
-
-	if( m_stored_volume<0.0f )
-		m_stored_volume = psSoundVFactor;
-	
-
-	m_cur_length		= 0;
-	psSoundVFactor		= m_stored_volume*SND_MIN_VOLUME_FACTOR;
-	
-	static float		xxx = 6.0f/150.0f; //6sec on max power(150)
-	Level().Cameras.AddEffector(xr_new<CShockPPEffector>(power*xxx,this));
-}
-
-void SndShockEffector::Update()
-{
-	m_cur_length		+= Device.dwTimeDelta;
-	float x				= float(m_cur_length)/m_snd_length;
-	float y				= 2.f*x-1;
-	if (y>0.f){
-		psSoundVFactor	= y*(m_stored_volume-m_stored_volume*SND_MIN_VOLUME_FACTOR)+m_stored_volume*SND_MIN_VOLUME_FACTOR;
+	if(pSettings->line_exist(sect_name,"pp_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
+		CPostprocessAnimatorLerpConst* pp_anm= xr_new<CPostprocessAnimatorLerpConst>();
+		pp_anm->SetType						((EEffectorPPType)type);
+		pp_anm->SetCyclic					(bCyclic);
+		pp_anm->SetPower					(factor);
+		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
+		pp_anm->Load						(fn);
+		Actor()->Cameras().AddPPEffector	(pp_anm);
 	}
-}
+	if(pSettings->line_exist(sect_name,"cam_eff_name")){
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
+		CAnimatorCamLerpEffectorConst* cam_anm	= xr_new<CAnimatorCamLerpEffectorConst>();
+		cam_anm->SetFactor					(factor);
+		cam_anm->SetType					((ECamEffectorType)type);
+		cam_anm->SetCyclic					(bCyclic);
+		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
+		cam_anm->Start						(fn);
+		Actor()->Cameras().AddCamEffector	(cam_anm);
+	}
+};
 
-CAnimatorCamEffector::CAnimatorCamEffector	(ECameraEffectorType type)
-:inherited(type, 1000.0)
+
+void RemoveEffector		(int type)
 {
-	m_objectAnimator = xr_new<CObjectAnimator>();
+	Actor()->Cameras().RemoveCamEffector	((ECamEffectorType)type);
+	Actor()->Cameras().RemovePPEffector		((EEffectorPPType)type);
 }
 
-CAnimatorCamEffector::~CAnimatorCamEffector	()
+
+
+CAnimatorCamEffector::CAnimatorCamEffector()
 {
-	delete_data	(m_objectAnimator);
+	m_bCyclic				= true;
+	m_objectAnimator		= xr_new<CObjectAnimator>();
 }
 
-void CAnimatorCamEffector::Start	(LPCSTR fn)
+CAnimatorCamEffector::~CAnimatorCamEffector()
+{
+	delete_data				(m_objectAnimator);
+}
+
+void CAnimatorCamEffector::Start(LPCSTR fn)
 {
 	m_objectAnimator->Load		(fn);
 	m_objectAnimator->Play		(Cyclic());
 	fLifeTime					= m_objectAnimator->GetLength();
 }
 
+BOOL CAnimatorCamEffector::Valid()
+{
+	if(Cyclic())	return TRUE;
+	return			inherited::Valid();
+}
+
 BOOL CAnimatorCamEffector::Process (Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
-	if(!Unlimited()){
-		fLifeTime				-= Device.fTimeDelta;			
-		if(fLifeTime<0) return FALSE;
-	};
+	if(!inherited::Process(p,d,n,fFov,fFar,fAspect))	return FALSE;
 
 	const Fmatrix& m			= m_objectAnimator->XFORM();
 	m_objectAnimator->Update	(Device.fTimeDelta);
@@ -242,18 +156,9 @@ BOOL CAnimatorCamEffector::Process (Fvector &p, Fvector &d, Fvector &n, float& f
 	return						TRUE;
 }
 
-CAnimatorCamLerpEffector::CAnimatorCamLerpEffector(ECameraEffectorType type, GET_KOEFF_FUNC f)
-:inherited(type)
-{
-	m_func		= f;
-}
-
 BOOL CAnimatorCamLerpEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
-	if(!Unlimited()){
-		fLifeTime		-= Device.fTimeDelta;			
-		if(fLifeTime<0) return FALSE;
-	}
+	if(!inherited::Process(p,d,n,fFov,fFar,fAspect))	return FALSE;
 
 	const Fmatrix& m			= m_objectAnimator->XFORM();
 	m_objectAnimator->Update	(Device.fTimeDelta);
@@ -289,23 +194,85 @@ BOOL CAnimatorCamLerpEffector::Process(Fvector &p, Fvector &d, Fvector &n, float
 	return TRUE;
 }
 
-#include "ActorCondition.h"
 
-CActorAlcoholCamEffector::CActorAlcoholCamEffector(CActorCondition* c)
-:inherited(eCEAlcohol, GET_KOEFF_FUNC(c, &CActorCondition::GetAlcohol))
+CAnimatorCamLerpEffectorConst::CAnimatorCamLerpEffectorConst()
+:m_factor(0.0f)
 {
-	Start			("camera_effects\\drunk.anm");
+	SetFactorFunc		(GET_KOEFF_FUNC(this, &CAnimatorCamLerpEffectorConst::GetFactor));
 }
 
-#pragma warning(push)
-#pragma warning(disable:4355) // 'this' : used in base member initializer list
-CFireHitCamEffector::CFireHitCamEffector	(ECameraEffectorType type,float power)
-:inherited(type, GET_KOEFF_FUNC(this, &CFireHitCamEffector::GetPower))
+
+CCameraEffectorControlled::CCameraEffectorControlled(CEffectorController* c)
+:m_controller(c)
 {
-	m_power			= power;
-	clamp			(m_power, 0.0f, 1.0f);
+	m_controller->SetCam(this);
+	SetFactorFunc		(GET_KOEFF_FUNC(m_controller, &CEffectorController::GetFactor));
 }
-#pragma warning(pop)
+
+CCameraEffectorControlled::~CCameraEffectorControlled()
+{
+	m_controller->SetCam(NULL);
+}
+
+BOOL CCameraEffectorControlled::Valid()
+{
+	return m_controller->Valid();
+}
+
+#define SND_MIN_VOLUME_FACTOR (0.1f)
+
+SndShockEffector::SndShockEffector	()
+{
+	m_snd_length			= 0.0f;
+	m_cur_length			= 0.0f;
+	m_stored_volume			= -1.0f;
+}
+
+SndShockEffector::~SndShockEffector	()
+{
+	psSoundVFactor		= m_stored_volume;
+}
+
+BOOL SndShockEffector::Valid()
+{
+	return inherited::Valid() && (m_cur_length<=m_snd_length);
+}
+
+float SndShockEffector::GetFactor()
+{
+	float f				= (m_end_time-Device.fTimeGlobal)/m_life_time;
+	return f*m_life_time/8.0f;
+}
+
+void SndShockEffector::Start(int snd_length, float power)
+{
+	m_snd_length = snd_length;
+
+	if( m_stored_volume<0.0f )
+		m_stored_volume = psSoundVFactor;
+	
+
+	m_cur_length		= 0;
+	psSoundVFactor		= m_stored_volume*SND_MIN_VOLUME_FACTOR;
+	
+	static float		xxx = 6.0f/150.0f; //6sec on max power(150)
+
+	m_life_time			= power*xxx;
+	m_end_time			= Device.fTimeGlobal + m_life_time;
+
+	AddEffector			(effHit,"snd_shock_effector", this);
+}
+
+void SndShockEffector::Update()
+{
+	m_cur_length		+= Device.dwTimeDelta;
+	float x				= float(m_cur_length)/m_snd_length;
+	float y				= 2.f*x-1;
+	if (y>0.f){
+		psSoundVFactor	= y*(m_stored_volume-m_stored_volume*SND_MIN_VOLUME_FACTOR)+m_stored_volume*SND_MIN_VOLUME_FACTOR;
+	}
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -314,7 +281,7 @@ CFireHitCamEffector::CFireHitCamEffector	(ECameraEffectorType type,float power)
 #define DELTA_ANGLE_Z	0.5f * PI / 180
 #define ANGLE_SPEED		1.5f	
 
-CControllerPsyHitCamEffector::CControllerPsyHitCamEffector(ECameraEffectorType type, const Fvector &src_pos, const Fvector &target_pos, float time)
+CControllerPsyHitCamEffector::CControllerPsyHitCamEffector(ECamEffectorType type, const Fvector &src_pos, const Fvector &target_pos, float time)
 	:inherited(eCEControllerPsyHit, flt_max)
 {
 	m_time_total			= time;

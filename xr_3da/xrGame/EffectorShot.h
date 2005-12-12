@@ -49,7 +49,7 @@ public:
 	virtual void	ApplyDeltaAngles		(float *pitch, float *yaw);
 };
 
-class CCameraShotEffector : public CWeaponShotEffector, public CCameraEffector
+class CCameraShotEffector : public CWeaponShotEffector, public CEffectorCam
 {
 protected:
 	CActor*			m_pActor;

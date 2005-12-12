@@ -14,7 +14,6 @@
 //для вызова статических функций поражения осколками
 #include "Weapon.h"
 
-#include "explode_effector.h" 
 #include "actor.h"
 #include "actoreffector.h"
 #include "level.h"
@@ -115,10 +114,13 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 
 	m_fExplodeDurationMax	= ini->r_float(section, "explode_duration");
 
+	effector.effect_sect_name= ini->r_string("explode_effector","effect_sect_name");
+/*
 	effector.time			= ini->r_float("explode_effector","time");
 	effector.amplitude		= ini->r_float("explode_effector","amplitude");
 	effector.period_number	= ini->r_float("explode_effector","period_number");
 	effector.file_name		= ini->r_string("explode_effector","cam_file_name");
+*/
 }
 
 void CExplosive::net_Destroy	()
@@ -378,9 +380,12 @@ void CExplosive::Explode()
 		float dist_to_actor = pActor->Position().distance_to(pos);
 		float max_dist		= EFFECTOR_RADIUS;
 		if (dist_to_actor < max_dist) {
-			CFireHitCamEffector* e = xr_new<CFireHitCamEffector>(eExplode, (max_dist - dist_to_actor) / max_dist );
+			AddEffector			(effExplodeHit, effector.effect_sect_name, (max_dist - dist_to_actor) / max_dist );
+/*
+			CFireHitCamEffector* e = xr_new<CFireHitCamEffector>(eCEExplode, (max_dist - dist_to_actor) / max_dist );
 			e->Start	(*effector.file_name);
-			pActor->EffectorManager().AddEffector(e);
+			pActor->Cameras().AddCamEffector(e);
+*/
 		}
 	}
 }

@@ -165,7 +165,7 @@ void CPseudoGigant::event_on_step()
 		float dist_to_actor = pActor->Position().distance_to(Position());
 		float max_dist		= MAX_STEP_RADIUS;
 		if (dist_to_actor < max_dist) 
-			pActor->EffectorManager().AddEffector(xr_new<CPseudogigantStepEffector>(
+			Actor()->Cameras().AddCamEffector(xr_new<CPseudogigantStepEffector>(
 				step_effector.time, 
 				step_effector.amplitude, 
 				step_effector.period_number, 
@@ -225,8 +225,8 @@ void CPseudoGigant::on_threaten_execute()
 	if (!pA) return;
 	if (pA->is_jump()) return;
 
-	pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_threaten_effector.ce_time,m_threaten_effector.ce_amplitude,m_threaten_effector.ce_period_number,m_threaten_effector.ce_power));
-	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_threaten_effector.ppi, m_threaten_effector.time, m_threaten_effector.time_attack, m_threaten_effector.time_release));
+	Actor()->Cameras().AddCamEffector(xr_new<CMonsterEffectorHit>(m_threaten_effector.ce_time,m_threaten_effector.ce_amplitude,m_threaten_effector.ce_period_number,m_threaten_effector.ce_power));
+	Actor()->Cameras().AddPPEffector(xr_new<CMonsterEffector>(m_threaten_effector.ppi, m_threaten_effector.time, m_threaten_effector.time_attack, m_threaten_effector.time_release));
 
 	if (pA->cam_Active()) {
 		pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(0.3f)); 

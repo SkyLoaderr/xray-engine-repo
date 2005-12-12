@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include "../effectorPP.h"
 #include "CameraEffector.h"
 #include "../cameramanager.h"
@@ -41,4 +41,4 @@ private:
 	float	m_attack;
 	float	m_release;
 	CNightVisionEffectorPP* p_effector;
-};
+};*/

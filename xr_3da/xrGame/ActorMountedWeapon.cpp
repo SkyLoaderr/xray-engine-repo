@@ -27,7 +27,7 @@ bool CActor::use_MountedWeapon(CHolderCustom* object)
 					PickupModeOff();
 					m_holder=wpn;
 					if (pCamBobbing){
-						EffectorManager().RemoveEffector(eCEBobbing);
+						Cameras().RemoveCamEffector(eCEBobbing);
 						pCamBobbing = NULL;
 					}
 					return true;

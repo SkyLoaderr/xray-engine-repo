@@ -421,8 +421,8 @@ void CCar::UpdateCL				( )
 		if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 		{
 			cam_Update(Device.fTimeDelta, fov);
-			OwnerActor()->EffectorManager().Update(Camera());
-			OwnerActor()->EffectorManager().ApplyDevice();
+			OwnerActor()->Cameras().Update(Camera());
+			OwnerActor()->Cameras().ApplyDevice();
 		}
 
 		if(HUD().GetUI())//

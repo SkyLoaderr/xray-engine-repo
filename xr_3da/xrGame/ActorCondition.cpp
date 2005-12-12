@@ -116,6 +116,9 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 
 
 //вычисление параметров с ходом времени
+#include "UI.h"
+#include "HUDManager.h"
+
 void CActorCondition::UpdateCondition()
 {
 	if (GodMode())				return;
@@ -130,35 +133,47 @@ void CActorCondition::UpdateCondition()
 		ConditionStand(object().inventory().TotalWeight()/object().inventory().GetMaxWeight());
 	};
 	
+	float delta_time = float(m_iDeltaTime)/1000.f;
 	if( !IsSleeping() && GameID()==GAME_SINGLE ){
 		// update power_leak
-		float delta_time = float(m_iDeltaTime)/1000.f;
 		SetMaxPower		(GetMaxPower()-m_fPowerLeakSpeed*delta_time);
 	}
 
-	m_fAlcohol		+= m_fV_Alcohol*(m_iDeltaTime/1000);
+	m_fAlcohol		+= m_fV_Alcohol*delta_time;
 	clamp			(m_fAlcohol,			0.0f,		1.0f);
 
 	if (GameID() == GAME_SINGLE)
 	{	
-		CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEAlcohol);
-		if	((m_fAlcohol>0.001) ){
+		CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
+		if	((m_fAlcohol>0.0001f) ){
 			if(!ce){
-				Actor()->EffectorManager	().AddEffector				(xr_new<CActorAlcoholCamEffector>( this ));
+				AddEffector(effAlcohol, "effector_alcohol", GET_KOEFF_FUNC(this, &CActorCondition::GetAlcohol));
 			}
 		}else{
 			if(ce)
-				Actor()->EffectorManager	().RemoveEffector			(eCEAlcohol);
+				RemoveEffector(effAlcohol);
 		}
+
+		
+		CEffectorPP* ppe = Actor()->Cameras().GetPPEffector((EEffectorPPType)effPsyHealth);
+		if	((GetPsyHealth()>0.0001f) ){
+			if(!ppe){
+				AddEffector(effPsyHealth, "effector_psy_health", GET_KOEFF_FUNC(this, &CActorCondition::GetPsy));
+			}
+		}else{
+			if(ppe)
+				RemoveEffector(effPsyHealth);
+		}
+		if(fis_zero(GetPsyHealth()))
+			m_fHealth =0.0f;
 	};
 
 	inherited::UpdateCondition();
 }
 
-//CWound* CActorCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
 CWound* CActorCondition::ConditionHit(SHit* pHDS)
 {
-	if (GodMode())/*(psActorFlags.test(AF_GODMODE))*/ return NULL;
+	if (GodMode()) return NULL;
 	return inherited::ConditionHit(pHDS);
 }
 
@@ -244,20 +259,19 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 
 	VERIFY	(m_object == smart_cast<CActor*>(Level().CurrentEntity()));
 
-	Level().Cameras.RemoveEffector(EEffectorPPType(SLEEP_EFFECTOR_TYPE_ID));
+	m_object->Cameras().RemovePPEffector(EEffectorPPType(SLEEP_EFFECTOR_TYPE_ID));
 	object().m_pSleepEffectorPP = xr_new<CSleepEffectorPP>(object().m_pSleepEffector->ppi,
 													object().m_pSleepEffector->time,
 													object().m_pSleepEffector->time_attack,
 													object().m_pSleepEffector->time_release);
 
-	Level().Cameras.AddEffector(object().m_pSleepEffectorPP);
+	m_object->Cameras().AddPPEffector(object().m_pSleepEffectorPP);
 
 	m_object->callback(GameObject::eActorSleep)( m_object->lua_game_object() );
 
 
 	m_actor_sleep_wnd			= xr_new<CUIActorSleepVideoPlayer>();
 	m_actor_sleep_wnd->Init		( (*m_get_sleep_video_name_callback)() );
-//	m_actor_sleep_wnd->Init		("car\\Movie-003_Rats_OutPut-010");
 
 	return ACTOR_DEFS::easCanSleepResult;
 }

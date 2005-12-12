@@ -238,10 +238,6 @@ void CFlyer::Update(u32 DT)
 
 	// Check ground-contact
 	if (m_PhysicMovementControl->gcontact_Was) {
-//		g_pGameLevel->Cameras.AddEffector(
-//			xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_AnimAmount));
-//		Fvector D; D.set(0,0,0);
-//		Hit(m_PhysicMovementControl->gcontact_HealthLost,D);
 	}
 
 	// update motions

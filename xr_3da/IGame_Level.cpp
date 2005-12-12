@@ -8,11 +8,13 @@
 #include "render.h"
 #include "gamefont.h"
 #include "xrLevel.h"
+#include "CameraManager.h"
 
 ENGINE_API	IGame_Level*	g_pGameLevel	= NULL;
 
 IGame_Level::IGame_Level	()
 {
+	m_pCameras					= xr_new<CCameraManager>(true);
 	g_pGameLevel				= this;
 	pLevel						= NULL;
 	bReady						= false;
@@ -29,7 +31,7 @@ IGame_Level::~IGame_Level	()
 
 	// Render-level unload
 	Render->level_Unload		();
-
+	xr_delete					(m_pCameras);
 	// Unregister
 	Device.seqRender.Remove		(this);
 	Device.seqFrame.Remove		(this);

@@ -5,6 +5,9 @@
 #ifndef _PP_EDITOR_
     #include "../envelope.h"
     #include "../EffectorPP.h"
+	#include "../cameramanager.h"
+
+	class CEffectorController;
 #else
     #include "envelope.h"
     #include "EffectorPP.h"
@@ -143,7 +146,7 @@ protected:
 	float											m_factor;
 	float											m_dest_factor;
 	bool											m_bStop;
-	float											m_stop_speed;
+	float											m_factor_speed;
 	bool											m_bCyclic;
 	float											m_start_time;
 	float                                           f_length;
@@ -151,12 +154,15 @@ protected:
 	void		Update								(float tm);
 public:
                     CPostprocessAnimator            (int id, bool cyclic);
+                    CPostprocessAnimator            ();
         virtual    ~CPostprocessAnimator            ();
         void        Clear                           ();
         void        Load                            (LPCSTR name);
     IC  LPCSTR      Name                            (){return *m_Name;}
-        void        Stop                            (float speed);
-		void		SetFactor						(float f)			{m_dest_factor=f;};
+  virtual void      Stop                            (float speed);
+		void		SetDesiredFactor				(float f, float sp)			{m_dest_factor=f;m_factor_speed=sp;};
+		void		SetCurrentFactor				(float f)					{m_factor=f;m_dest_factor=f;};
+		void		SetCyclic						(bool b)					{m_bCyclic=b;}
         float       GetLength                       ();
 #ifndef _PP_EDITOR_
 virtual	BOOL		Process							(SPPInfo &PPInfo);
@@ -170,5 +176,35 @@ virtual	BOOL		Process							(float dt, SPPInfo &PPInfo);
         void        Save                            (LPCSTR name);
 #endif /*_PP_EDITOR_*/
 };
+
+#ifndef _PP_EDITOR_
+class CPostprocessAnimatorLerp :public CPostprocessAnimator
+{
+protected:
+		fastdelegate::FastDelegate0<float>	m_get_factor_func;
+public:
+	void			SetFactorFunc				(fastdelegate::FastDelegate0<float> f)	{m_get_factor_func=f;}
+virtual	BOOL		Process						(SPPInfo &PPInfo);
+};
+
+class CPostprocessAnimatorLerpConst :public CPostprocessAnimator
+{
+protected:
+		float		m_power;
+public:
+		void		SetPower						(float val)			{m_power=val;}
+virtual	BOOL		Process							(SPPInfo &PPInfo);
+};
+
+class CPostprocessAnimatorControlled :public CPostprocessAnimatorLerp
+{
+	CEffectorController*		m_controller;
+public:
+	virtual				~CPostprocessAnimatorControlled		();
+						CPostprocessAnimatorControlled		(CEffectorController* c);
+	virtual BOOL		Valid								();
+};
+
+#endif
 
 #endif /*__ppanimator_included__*/

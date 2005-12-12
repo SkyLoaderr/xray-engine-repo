@@ -106,10 +106,9 @@ bool CActor::use_Vehicle(CHolderCustom* object)
 		{
 			if( vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center))
 			{
-//				if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 				if (pCamBobbing)
 				{
-					EffectorManager().RemoveEffector(eCEBobbing);
+					Cameras().RemoveCamEffector(eCEBobbing);
 					pCamBobbing = NULL;
 				}
 

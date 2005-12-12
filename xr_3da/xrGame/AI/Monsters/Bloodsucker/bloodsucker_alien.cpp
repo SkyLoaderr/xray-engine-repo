@@ -103,15 +103,15 @@ void CAlienEffectorPP::Destroy()
 // Alien Camera Effector
 //////////////////////////////////////////////////////////////////////////
 
-class CAlienEffector : public CEffector {
-	typedef CEffector inherited;	
+class CAlienEffector : public CEffectorCam {
+	typedef CEffectorCam inherited;	
 
 	float	m_time_total;
 	Fvector	dangle_target;
 	Fvector dangle_current;
 
 public:
-					CAlienEffector	(EEffectorType type);
+					CAlienEffector	(ECamEffectorType type);
 	virtual	BOOL	Process			(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 
@@ -121,8 +121,8 @@ public:
 #define DELTA_ANGLE_Z	10 * PI / 180
 #define ANGLE_SPEED		0.2f	
 
-CAlienEffector::CAlienEffector(EEffectorType type) :
-	inherited(type, flt_max, TRUE)
+CAlienEffector::CAlienEffector(ECamEffectorType type) :
+	inherited(type, flt_max)
 {
 	dangle_target.set	(angle_normalize(Random.randFs(DELTA_ANGLE_X)),angle_normalize(Random.randFs(DELTA_ANGLE_Y)),angle_normalize(Random.randFs(DELTA_ANGLE_Z)));
 	dangle_current.set	(0.f, 0.f, 0.f);
@@ -227,10 +227,10 @@ void CBloodsuckerAlien::activate()
 		
 		// Start effector
 		m_effector_pp				= xr_new<CAlienEffectorPP>	(m_object->pp_vampire_effector, EFFECTOR_ID_GEN(EEffectorPPType));
-		Level().Cameras.AddEffector	(m_effector_pp);
+		pActor->Cameras().AddPPEffector	(m_effector_pp);
 		
-		m_effector					= xr_new<CAlienEffector>	(EFFECTOR_ID_GEN(EEffectorType));
-		Level().Cameras.AddEffector	(m_effector);
+		m_effector					= xr_new<CAlienEffector>	(EFFECTOR_ID_GEN(ECamEffectorType));
+		Actor()->Cameras().AddCamEffector	(m_effector);
 	}
 
 	Engine.Sheduler.Unregister	(source);
@@ -278,11 +278,11 @@ void CBloodsuckerAlien::deactivate()
 	m_object->CInvisibility::set_manual_switch		(false);
 
 	// Stop camera effector
-	Level().Cameras.RemoveEffector	(EFFECTOR_ID_GEN(EEffectorType));
+	Actor()->Cameras().RemoveCamEffector	(EFFECTOR_ID_GEN(ECamEffectorType));
 	m_effector						= 0;
 	
 	// Stop postprocess effector
-	Level().Cameras.RemoveEffector	(EFFECTOR_ID_GEN(EEffectorPPType));
+	Actor()->Cameras().RemovePPEffector	(EFFECTOR_ID_GEN(EEffectorPPType));
 	m_effector_pp->Destroy			();
 	m_effector_pp					= 0;
 
@@ -304,7 +304,7 @@ void CBloodsuckerAlien::update_camera()
 	def_lerp(m_current_fov, m_target_fov, FOV_SPEED, Device.fTimeDelta);
 	
 	// setup camera
-	Level().Cameras.Update(m_prev_eye_matrix.c,m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_current_fov,1.f,m_object->eye_range);
+	Actor()->Cameras().Update(m_prev_eye_matrix.c,m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_current_fov,1.f,m_object->eye_range);
 }
 
 #define	MAX_CAMERA_DIST		0.5f

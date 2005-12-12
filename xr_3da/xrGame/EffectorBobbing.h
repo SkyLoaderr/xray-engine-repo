@@ -5,7 +5,7 @@
 #include "CameraEffector.h"
 #include "../cameramanager.h"
 
-class CEffectorBobbing : public CCameraEffector  
+class CEffectorBobbing : public CEffectorCam  
 {
 	float	fTime;
 	Fvector	vAngleAmplitude;

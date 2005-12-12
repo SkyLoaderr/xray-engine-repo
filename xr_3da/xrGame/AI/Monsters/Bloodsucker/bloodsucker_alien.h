@@ -3,6 +3,7 @@
 class CAI_Bloodsucker;
 class CAlienEffector;
 class CAlienEffectorPP;
+class CCameraBase;
 
 class CBloodsuckerAlien {
 	

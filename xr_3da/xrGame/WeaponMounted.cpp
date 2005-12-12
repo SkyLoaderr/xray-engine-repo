@@ -148,8 +148,8 @@ void	CWeaponMounted::UpdateCL()
 		if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 		{
 			cam_Update(Device.fTimeDelta, DEFAULT_FOV);
-			OwnerActor()->EffectorManager().Update(Camera());
-			OwnerActor()->EffectorManager().ApplyDevice();
+			OwnerActor()->Cameras().Update(Camera());
+			OwnerActor()->Cameras().ApplyDevice();
 		}
 	}
 }
@@ -229,8 +229,8 @@ void	CWeaponMounted::cam_Update			(float dt, float fov)
 		OwnerActor()->Orientation().yaw			= -Camera()->yaw;
 		OwnerActor()->Orientation().pitch		= -Camera()->pitch;
 	}
-	Camera()->Update					(P,Da);
-	Level().Cameras.Update				(Camera());
+	Camera()->Update							(P,Da);
+	Level().Cameras().Update					(Camera());
 }
 
 bool	CWeaponMounted::Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
@@ -356,8 +356,8 @@ void CWeaponMounted::AddShotEffector				()
 {
 	if(OwnerActor())
 	{
-		CCameraShotEffector* S	= smart_cast<CCameraShotEffector*>(OwnerActor()->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CCameraShotEffector*)OwnerActor()->EffectorManager().AddEffector(xr_new<CCameraShotEffector> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f, 0.7f));
+		CCameraShotEffector* S	= smart_cast<CCameraShotEffector*>(OwnerActor()->Cameras().GetCamEffector(eCEShot)); 
+		if (!S)	S				= (CCameraShotEffector*)OwnerActor()->Cameras().AddCamEffector(xr_new<CCameraShotEffector> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f, 0.7f));
 		R_ASSERT				(S);
 		S->Shot					(0.01f);
 	}
@@ -366,5 +366,5 @@ void CWeaponMounted::AddShotEffector				()
 void  CWeaponMounted::RemoveShotEffector	()
 {
 	if(OwnerActor())
-		OwnerActor()->EffectorManager().RemoveEffector	(eCEShot);
+		OwnerActor()->Cameras().RemoveCamEffector	(eCEShot);
 }

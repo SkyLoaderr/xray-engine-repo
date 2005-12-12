@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "spectator.h"
-#include "../effectorfall.h"
+#include "effectorfall.h"
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
 #include "actor.h"
@@ -17,6 +17,7 @@
 #include "team_hierarchy_holder.h"
 #include "squad_hierarchy_holder.h"
 #include "group_hierarchy_holder.h"
+#include "../CameraManager.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -206,7 +207,7 @@ void CSpectator::cam_Update	(CActor* A)
 			cam->Update				(point,dangle);
 			}break;
 		}
-		g_pGameLevel->Cameras.Update(cam);
+		g_pGameLevel->Cameras().Update(cam);
 		// hud output
 		HUD().Font().pFontDI->OutI			(0.f,0.9f,"%s(%d%%)",*A->cName(),iFloor(A->g_Health()+0.5f));
 	}else{
@@ -222,7 +223,7 @@ void CSpectator::cam_Update	(CActor* A)
 		
 		cam->Update					(point,dangle);
 //		cam->vPosition.set(point0);
-		g_pGameLevel->Cameras.Update	(cam);
+		g_pGameLevel->Cameras().Update	(cam);
 		// hud output
 	};
 }

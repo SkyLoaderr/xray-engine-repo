@@ -135,10 +135,11 @@ protected:
 
 	// эффектор
 	struct {
-		float 					time;
+/*		float 					time;
 		float 					amplitude;	
 		float 					period_number;
-		shared_str				file_name;
+		shared_str				file_name;*/
+		shared_str				effect_sect_name;
 	} effector;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

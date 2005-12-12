@@ -5851,12 +5851,6 @@
 							RelativePath=".\EffectorFall.h">
 						</File>
 						<File
-							RelativePath=".\ShootingHitEffector.cpp">
-						</File>
-						<File
-							RelativePath=".\ShootingHitEffector.h">
-						</File>
-						<File
 							RelativePath=".\SleepEffector.cpp">
 						</File>
 						<File
@@ -5913,12 +5907,6 @@
 						Name="Postprocess"
 						Filter="">
 						<File
-							RelativePath=".\night_vision_effector.cpp">
-						</File>
-						<File
-							RelativePath=".\night_vision_effector.h">
-						</File>
-						<File
 							RelativePath=".\PostprocessAnimator.cpp">
 						</File>
 						<File
@@ -5951,6 +5939,18 @@
 						</File>
 						<File
 							RelativePath=".\EffectorZoomInertion.h">
+						</File>
+						<File
+							RelativePath=".\night_vision_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\night_vision_effector.h">
+						</File>
+						<File
+							RelativePath=".\ShootingHitEffector.cpp">
+						</File>
+						<File
+							RelativePath=".\ShootingHitEffector.h">
 						</File>
 					</Filter>
 				</Filter>

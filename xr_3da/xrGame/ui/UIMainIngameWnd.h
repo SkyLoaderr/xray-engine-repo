@@ -117,7 +117,7 @@ protected:
 	CUIStatic			UIRadiaitionIcon;
 	CUIStatic			UIWoundIcon;
 	CUIStatic			UIStarvationIcon;
-	CUIStatic			UIFatigueIcon;
+	CUIStatic			UIPsyHealthIcon;
 	CUIStatic			UIInvincibleIcon;
 	CUIStatic			UISleepIcon;
 	CUIWindow*			m_pMPChatWnd;
@@ -135,7 +135,7 @@ public:
 		ewiRadiation,
 		ewiWound,
 		ewiStarvation,
-		ewiFatigue,
+		ewiPsyHealth,
 		ewiInvincible,
 		ewiSleep,
 	};

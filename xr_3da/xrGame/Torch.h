@@ -1,7 +1,7 @@
 #pragma once
 
 #include "inventory_item_object.h"
-#include "night_vision_effector.h"
+//#include "night_vision_effector.h"
 #include "hudsound.h"
 
 class CLAItem;
@@ -49,8 +49,6 @@ public:
 
 	virtual bool	can_be_attached		() const;
  
-//////////////////////////////////////////////////////////////////////////
-//Night vision
 public:
 			void	SwitchNightVision		  ();
 			void	SwitchNightVision		  (bool light_on);
@@ -59,12 +57,10 @@ public:
 protected:
 	bool					m_bNightVisionEnabled;
 	bool					m_bNightVisionOn;
-	CNightVisionEffector	m_NightVisionEffector;
 
 	HUD_SOUND				m_NightVisionOnSnd;
 	HUD_SOUND				m_NightVisionOffSnd;
 	HUD_SOUND				m_NightVisionIdleSnd;
-//	CUIStaticItem			m_NightVisionTexture;
 
 	float					m_NightVisionRechargeTime;
 	float					m_NightVisionRechargeTimeMin;

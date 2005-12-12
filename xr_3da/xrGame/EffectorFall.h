@@ -3,7 +3,7 @@
 #include "../Effector.h"
 
 // приседание после падения
-class CEffectorFall : public CEffector
+class CEffectorFall : public CEffectorCam
 {
 	float	fPower;
 	float	fPhase;

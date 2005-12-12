@@ -29,7 +29,6 @@ public:
 	virtual void		LoadCondition				(LPCSTR section);
 	virtual void		reinit						();
 
-//	virtual CWound*		ConditionHit				(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual CWound*		ConditionHit				(SHit* pHDS);
 	virtual void		UpdateCondition				();
 
@@ -53,7 +52,8 @@ public:
 			void		ConditionWalk				(float weight, bool accel, bool sprint);
 			void		ConditionStand				(float weight);
 			
-			float	xr_stdcall	GetAlcohol					()	{return m_fAlcohol;}
+			float	xr_stdcall	GetAlcohol			()	{return m_fAlcohol;}
+			float	xr_stdcall	GetPsy				()	{return 1.0f-GetPsyHealth();}
 public:
 	IC		CActor		&object						() const
 	{

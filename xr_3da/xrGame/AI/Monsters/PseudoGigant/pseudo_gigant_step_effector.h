@@ -1,8 +1,8 @@
 #pragma once
 #include "../../../CameraEffector.h"
 
-class CPseudogigantStepEffector : public CCameraEffector {
-	typedef CCameraEffector inherited;	
+class CPseudogigantStepEffector : public CEffectorCam {
+	typedef CEffectorCam inherited;	
 
 	float total;
 	float max_amp;

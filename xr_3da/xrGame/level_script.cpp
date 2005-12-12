@@ -380,9 +380,10 @@ void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, l
 #include "actoreffector.h"
 void add_cam_effector(LPCSTR fn)
 {
-	CAnimatorCamEffector* e	= xr_new<CAnimatorCamEffector>(eCEUser);
-	e->Start (fn);
-	Actor()->EffectorManager().AddEffector(e);
+	CAnimatorCamEffector* e	= xr_new<CAnimatorCamEffector>();
+	e->SetType					(eCEUser);
+	e->Start					(fn);
+	Actor()->Cameras().AddCamEffector(e);
 }
 		
 float get_snd_volume()
@@ -415,12 +416,12 @@ void add_pp_effector(LPCSTR fn, int id, bool cyclic)
 {
 	CPostprocessAnimator* pp		= xr_new<CPostprocessAnimator>(id, cyclic);
 	pp->Load						(fn);
-	Level().Cameras.AddEffector		(pp);
+	Actor()->Cameras().AddPPEffector	(pp);
 }
 
 void remove_pp_effector(int id)
 {
-	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Level().Cameras.GetEffector((EEffectorPPType)id));
+	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Actor()->Cameras().GetPPEffector((EEffectorPPType)id));
 
 	if(pp) pp->Stop(1.0f);
 
@@ -428,9 +429,9 @@ void remove_pp_effector(int id)
 
 void set_pp_effector_factor(int id, float f)
 {
-	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Level().Cameras.GetEffector((EEffectorPPType)id));
+	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Actor()->Cameras().GetPPEffector((EEffectorPPType)id));
 
-	if(pp) pp->SetFactor(f);
+	if(pp) pp->SetDesiredFactor(f,0.3f);
 
 }
 

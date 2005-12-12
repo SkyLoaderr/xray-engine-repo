@@ -739,7 +739,7 @@ public:
 		#endif
 		Console->Hide	();
 		char fn[256]; strconcat(fn,args,".xrdemo");
-		g_pGameLevel->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
+		g_pGameLevel->Cameras().AddCamEffector(xr_new<CDemoRecord> (fn));
 	}
 };
 class CCC_DemoPlay : public IConsole_Command
@@ -762,7 +762,7 @@ public:
 				  *comma		=	0;	//. :)
 			  }
 			  strconcat			(fn,args,".xrdemo");
-			  g_pGameLevel->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.0f,loops));
+			  g_pGameLevel->Cameras().AddCamEffector(xr_new<CDemoPlay> (fn,1.0f,loops));
 		  }
 	  }
 };

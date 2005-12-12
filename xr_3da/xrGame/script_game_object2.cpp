@@ -156,6 +156,8 @@ void CScriptGameObject::Hit(CScriptHit *tpLuaHit)
 	P.w_vec3		(Fvector().set(0,0,0));
 	P.w_float		(tLuaHit.m_fImpulse);
 	P.w_u16			(u16(tLuaHit.m_tHitType));
+	if(tLuaHit.m_tHitType==int(ALife::eHitTypeFireWound))
+		P.w_float	(0.0f);
 	object().u_EventSend(P);
 }
 

@@ -1,7 +1,8 @@
 #include "stdafx.h"
+/*
 #include "night_vision_effector.h"
 
-#include "level.h"
+#include "actor.h"
 #include "../CameraManager.h"
 
 
@@ -96,11 +97,11 @@ bool CNightVisionEffector::Start	()
 {
 	VERIFY(p_effector == NULL);
 
-	if(Level().Cameras.GetEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID))) 
+	if(Actor()->Cameras().GetPPEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID))) 
 		return false;
 
 	p_effector = xr_new<CNightVisionEffectorPP>(state, m_attack, m_release);
-	Level().Cameras.AddEffector(p_effector);
+	Actor()->Cameras().AddPPEffector(p_effector);
 
 	return true;
 }
@@ -117,8 +118,9 @@ bool CNightVisionEffector::Stop	()
 
 bool CNightVisionEffector::IsActive	()
 {
-	if(Level().Cameras.GetEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID)))
+	if(Actor()->Cameras().GetPPEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID)))
 		return true;
 	else
 		return false;
 }
+*/

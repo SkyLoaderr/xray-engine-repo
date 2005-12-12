@@ -1,31 +1,23 @@
-// Effector.h: interface for the CEffector class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_EFFECTOR_H__E8300C00_1C3E_11D4_B4E3_00C02610C34E__INCLUDED_)
-#define AFX_EFFECTOR_H__E8300C00_1C3E_11D4_B4E3_00C02610C34E__INCLUDED_
 
 #pragma once
 
 #include "CameraDefs.h"
 
-class ENGINE_API		CEffector
+class ENGINE_API		CEffectorCam
 {
 protected:
-	EEffectorType		eType;
-	BOOL				bAffected;
+	ECamEffectorType	eType;
 	
 	friend class		CCameraManager;
 	float				fLifeTime;
 public:
-						CEffector	(EEffectorType type, float tm, BOOL affected) {eType = type; fLifeTime=tm; bAffected=affected;};
-	virtual				~CEffector	() {};
-	IC EEffectorType	GetType		() {return eType;}
-	IC BOOL				Affected	() {return bAffected;}
-	IC float			LifeTime	() {return fLifeTime;}
-	IC virtual BOOL		Overlapped	() {return FALSE;}
+						CEffectorCam	(ECamEffectorType type, float tm)	{eType=type; fLifeTime=tm;};
+						CEffectorCam	()									{eType=(ECamEffectorType)0; fLifeTime=0.0f;};
+	virtual				~CEffectorCam	()									{};
+			void		SetType			(ECamEffectorType type)				{eType=type;}
+	IC ECamEffectorType	GetType			()									{return eType;}
+	virtual	BOOL		Valid			()									{return fLifeTime>0.0f;}
+	IC virtual BOOL		Overlapped		()									{return FALSE;}
 
-	virtual	BOOL		Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)= 0;
+	virtual	BOOL		Process			(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect){fLifeTime-=Device.fTimeDelta; return Valid();};
 };
-
-#endif // !defined(AFX_EFFECTOR_H__E8300C00_1C3E_11D4_B4E3_00C02610C34E__INCLUDED_)

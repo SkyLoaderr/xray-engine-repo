@@ -658,6 +658,12 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	}
 	
+	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) && TRUE == E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
+		g_actor = this;
+
+	VERIFY(m_pActorEffector == NULL);
+	m_pActorEffector = xr_new<CCameraManager>(false);
+
 	// motions
 	m_bAnimTorsoPlayed			= false;
 	m_current_legs_blend		= 0;
@@ -766,8 +772,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 //	if (!GetDefaultVisualOutfit())
 	SetDefaultVisualOutfit(cNameVisual());
 
-	VERIFY(m_pActorEffector == NULL);
-	m_pActorEffector = xr_new<CActorEffector>();
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 
 	//--------------------------------------------------------------
@@ -799,11 +803,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_s16LastHittedElement = -1;
 	m_bWasHitted = false;
 
-	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) && TRUE == E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-	{
-		g_actor = this;
-//		Msg("set g_actor");
-	}
 
 	if (IsGameTypeSingle()){
 		Level().MapManager().AddMapLocation("actor_location",ID());

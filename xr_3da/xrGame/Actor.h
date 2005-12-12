@@ -45,7 +45,7 @@ struct SShootingEffector;
 struct SSleepEffector;
 class  CSleepEffectorPP;
 
-class  CActorEffector;
+//class  CActorEffector;
 
 class	CHudItem;
 class   CArtefact;
@@ -343,7 +343,7 @@ public:
 	// Cameras and effectors
 	//////////////////////////////////////////////////////////////////////////
 public:
-	CActorEffector&			EffectorManager		() 	{VERIFY(m_pActorEffector); return *m_pActorEffector;}
+	CCameraManager&			Cameras				() 	{VERIFY(m_pActorEffector); return *m_pActorEffector;}
 	IC CCameraBase*			cam_Active			()	{return cameras[cam_active];}
 	IC CCameraBase*			cam_FirstEye		()	{return cameras[eacFirstEye];}
 
@@ -363,15 +363,15 @@ protected:
 	float					fCurAVelocity;
 	CEffectorBobbing*		pCamBobbing;
 
-	void					LoadShootingEffector	(LPCSTR section);
-	SShootingEffector*		m_pShootingEffector;
+//	void					LoadShootingEffector	(LPCSTR section);
+//	SShootingEffector*		m_pShootingEffector;
 
 	void					LoadSleepEffector		(LPCSTR section);
 	SSleepEffector*			m_pSleepEffector;
 	CSleepEffectorPP*		m_pSleepEffectorPP;
 
 	//менеджер эффекторов, есть у каждого актрера
-	CActorEffector*			m_pActorEffector;
+	CCameraManager*			m_pActorEffector;
 	static float			f_Ladder_cam_limit;
 	////////////////////////////////////////////
 	// для взаимодействия с другими персонажами 

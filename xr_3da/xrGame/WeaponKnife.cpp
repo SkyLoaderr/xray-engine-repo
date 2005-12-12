@@ -227,7 +227,6 @@ void CWeaponKnife::switch2_Hiding	()
 	FireEnd					();
 	
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
-	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 
 	m_bPending				= true;
 }

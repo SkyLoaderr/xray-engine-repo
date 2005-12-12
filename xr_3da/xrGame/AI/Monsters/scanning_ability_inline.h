@@ -84,7 +84,7 @@ void CScanningAbilityAbstract::schedule_update()
 				
 				// постпроцесс
 				// TODO: make this postprocess with static check (only one for all scanners)
-				Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_effector_info, m_effector_time, m_effector_time_attack, m_effector_time_release));
+				Actor()->Cameras().AddPPEffector(xr_new<CMonsterEffector>(m_effector_info, m_effector_time, m_effector_time_attack, m_effector_time_release));
 			}
 			on_scanning();
 		}

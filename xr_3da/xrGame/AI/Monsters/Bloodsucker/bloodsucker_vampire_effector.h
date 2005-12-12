@@ -21,8 +21,8 @@ public:
 //////////////////////////////////////////////////////////////////////////
 // Vampire Camera Effector
 //////////////////////////////////////////////////////////////////////////
-class CVampireCameraEffector : public CCameraEffector {
-	typedef CCameraEffector inherited;	
+class CVampireCameraEffector : public CEffectorCam {
+	typedef CEffectorCam inherited;	
 
 	float	m_time_total;
 	Fvector	dangle_target;

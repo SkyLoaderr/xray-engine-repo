@@ -8,7 +8,7 @@
 #include "../cameramanager.h"
 #include "WeaponMagazined.h"
 
-class CEffectorZoomInertion : public CCameraEffector
+class CEffectorZoomInertion : public CEffectorCam
 {
 	//коэффициент скорости "покачивания" прицела
 	float	m_fFloatSpeed;

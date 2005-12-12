@@ -6,6 +6,8 @@
 #include "../object_broker.h"
 #include "../../xr_input.h"
 
+extern ENGINE_API BOOL bShowPauseString;
+
 CUIGameTutorial::CUIGameTutorial()
 {
 	m_bActive = false;
@@ -48,6 +50,11 @@ void CUIGameTutorial::Start(LPCSTR tutor_name)
 
 void CUIGameTutorial::Stop()
 {
+	if(m_items.size()){
+		TutorialItem* pCurrItem		= m_items.front();
+		pCurrItem->Stop			(this, true);
+	}
+
 	Device.seqFrame.Remove		(this);
 	Device.seqRender.Remove		(this);
 	delete_data					(m_items);
@@ -282,8 +289,10 @@ void TutorialItem::Start		(CUIGameTutorial* t)
 {
 	m_flags.set					(etiStoredPauseState, Device.Pause());
 	
-	if(m_flags.test(etiNeedPauseOn) && !m_flags.test(etiStoredPauseState))
+	if(m_flags.test(etiNeedPauseOn) && !m_flags.test(etiStoredPauseState)){
 		Device.Pause			(TRUE);
+		bShowPauseString		= FALSE;
+	}
 
 	if(m_flags.test(etiNeedPauseOff) && m_flags.test(etiStoredPauseState))
 		Device.Pause			(FALSE);
@@ -334,9 +343,9 @@ void TutorialItem::Start		(CUIGameTutorial* t)
 		HUD().GetUI()->StartStopMenu			(ui_game_sp->PdaMenu,true);
 }
 
-bool TutorialItem::Stop			(CUIGameTutorial* t)
+bool TutorialItem::Stop			(CUIGameTutorial* t, bool bForce)
 {
-	if(!m_flags.test(etiCanBeStopped)) 
+	if(!m_flags.test(etiCanBeStopped)&&!bForce) 
 		return false;
 
 	t->MainWnd()->DetachChild	(m_UIWindow);

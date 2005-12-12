@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "ShootingHitEffector.h"
 
 #define SHOOTING_EFFECTOR_TYPE_ID 7
@@ -31,3 +32,4 @@ BOOL CShootingHitEffectorPP::Process(SPPInfo& pp)
 
 	return TRUE;
 }
+*/

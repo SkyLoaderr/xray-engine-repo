@@ -1,11 +1,12 @@
 #pragma once
 
 #include "iinputreceiver.h"
-#include "CameraManager.h"
+//#include "CameraManager.h"
 #include "xr_object_list.h"
 #include "xr_area.h"
 
 // refs
+class ENGINE_API CCameraManager;
 class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;
 class ENGINE_API ISpatial;
@@ -28,10 +29,11 @@ protected:
 	xr_vector<ref_sound>		Sounds_Random;
 	u32							Sounds_Random_dwNextTime;
 	BOOL						Sounds_Random_Enabled;
+	CCameraManager*				m_pCameras;
 public:
 	CObjectList					Objects; 
-	CCameraManager				Cameras;
 	CObjectSpace				ObjectSpace;
+	CCameraManager&				Cameras			()				{return *m_pCameras;};
 
 	BOOL						bReady;
 

@@ -90,7 +90,7 @@ void CControllerPsyHit::play_anim()
 void CControllerPsyHit::death_glide_start()
 {
 	// Start effector
-	CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEControllerPsyHit);
+	CEffectorCam* ce = Actor()->Cameras().GetCamEffector(eCEControllerPsyHit);
 	VERIFY(!ce);
 	
 	Fvector src_pos		= Actor()->cam_Active()->vPosition;
@@ -105,7 +105,7 @@ void CControllerPsyHit::death_glide_start()
 
 	target_pos.mad		(src_pos,dir,dist-4.8f);
 	
-	Actor()->EffectorManager().AddEffector(xr_new<CControllerPsyHitCamEffector>(eCEControllerPsyHit, src_pos,target_pos, m_man->animation().motion_time(m_stage[1], m_object->Visual())));
+	Actor()->Cameras().AddCamEffector(xr_new<CControllerPsyHitCamEffector>(eCEControllerPsyHit, src_pos,target_pos, m_man->animation().motion_time(m_stage[1], m_object->Visual())));
 	smart_cast<CController *>(m_object)->draw_fire_particles();
 
 	dir.sub(src_pos,target_pos);
@@ -120,8 +120,8 @@ void CControllerPsyHit::death_glide_end()
 {
 	// Stop camera effector
 
-	CCameraEffector* ce = Actor()->EffectorManager().GetEffector(eCEControllerPsyHit);
+	CEffectorCam* ce = Actor()->Cameras().GetCamEffector(eCEControllerPsyHit);
 	VERIFY(ce);
-	Actor()->EffectorManager().RemoveEffector(eCEControllerPsyHit);
+	Actor()->Cameras().RemoveCamEffector(eCEControllerPsyHit);
 	smart_cast<CController *>(m_object)->draw_fire_particles();
 }

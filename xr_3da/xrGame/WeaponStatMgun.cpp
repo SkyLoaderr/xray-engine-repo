@@ -153,8 +153,8 @@ void CWeaponStatMgun::UpdateCL()
 	if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 	{
 		cam_Update(Device.fTimeDelta, DEFAULT_FOV);
-		OwnerActor()->EffectorManager().Update(Camera());
-		OwnerActor()->EffectorManager().ApplyDevice();
+		OwnerActor()->Cameras().Update(Camera());
+		OwnerActor()->Cameras().ApplyDevice();
 	}
 
 }
@@ -237,8 +237,8 @@ void CWeaponStatMgun::cam_Update			(float dt, float fov)
 	}
 	
 
-	Camera()->Update					(P,Da);
-	Level().Cameras.Update				(Camera());
+	Camera()->Update						(P,Da);
+	Level().Cameras().Update				(Camera());
 
 }
 
