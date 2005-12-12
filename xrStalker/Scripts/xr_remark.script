@@ -399,15 +399,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	  	new_action:add_precondition(world_property(properties["need_remark"], false))
 end
 
-local function parse_target(target)
-    local pos = string.find(target, ",")
-    if pos then
-        return string.sub(target, 1, pos - 1), string.sub(target, pos + 1)
-    else
-        return target, nil
-    end
-end
-
 -- ¬ключение схемы
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	printf("DEBUG: set_scheme: scheme='%s', section='%s'", scheme, section)
@@ -460,3 +451,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
     	
 end
 
+local function parse_target(target)
+    local pos = string.find(target, ",")
+    if pos then
+        return string.sub(target, 1, pos - 1), string.sub(target, pos + 1)
+    else
+        return target, nil
+    end
+end
