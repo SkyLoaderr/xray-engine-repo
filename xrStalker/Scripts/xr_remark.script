@@ -190,10 +190,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 
 	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "nil")
+	st.target_id = nil
+	st.target_position = nil
     if target and target ~= "nil" then
 	    if target == "actor" then
 		    st.target_actor = true
-		    st.target_id = nil
 	    else
 			st.target_actor = false
 	        local sid = tonumber(target)
@@ -204,16 +205,27 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		        end
             else
                 local gulag = xr_gulag.get_npc_gulag(npc)
-                local params = parse_target(target)
-                if params[2] then
-                    gulag = xr_gulag.get_gulag_by_name(params[2])
+                local param1, param2 = parse_target(target)
+				-- Возможные варианты:
+				-- Передана работа в гулаге чувака
+				-- Передана работа и идентификатор гулага
+				-- Передан патрульный путь и номер вейпоинта.
+				-- На выход нужно дать: либо target_id либо target_position
+				
+				-- Если вторым параметром передано число, то это однозначно патрульный путь.
+				local wp_id = tonumber(param2)
+				if wp_id then
+					st.target_position = patrol(param1):point(wp_id)
+					return
+				end
+                if param2 then
+                    gulag = xr_gulag.get_gulag_by_name(param2)
                 end
                 if gulag then
-                    st.target_id = gulag.idNPCOnJob(params[1])
+                    st.target_id = gulag.idNPCOnJob(param1)
+                    return
                 end
-		        if not st.target_id then
-		            abort("remark <error>: Wrong target object for [%s] in section [%s].", npc:name(), section)
-		        end
+				abort("remark <error>: Wrong target definition [%s], npc [%s], section [%s]", target, npc:name(), section)
             end
 	    end
     end
