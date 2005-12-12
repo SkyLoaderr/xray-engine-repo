@@ -105,7 +105,7 @@
     <!-- <dragdrop_list x="828" y="314" width="150" height="220" -->
     <dragdrop_list x="858" y="314" width="86" height="260" 
             cell_width = "57" cell_height="57"
-            rows_num="4" cols_num="4" show_grid="0"></dragdrop_list>
+            rows_num="4" cols_num="4" show_grid="0"/>
 
 
     <!-- HEALTH BAR -->
