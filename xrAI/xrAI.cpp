@@ -107,7 +107,7 @@ void Startup(LPSTR     lpCmdLine)
 		}
 		else {
 			if (strstr(cmd,"-m")) {
-				xrMergeGraphs		(prjName);
+				xrMergeGraphs		(prjName,!!strstr(cmd,"-rebuild"));
 			}
 			else
 				if (strstr(cmd,"-s")) {

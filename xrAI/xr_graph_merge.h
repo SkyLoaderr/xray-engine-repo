@@ -28,4 +28,4 @@ struct CLevelInfo {
 	}
 };
 
-void xrMergeGraphs(LPCSTR name);
+extern void xrMergeGraphs(LPCSTR name, bool rebuild);

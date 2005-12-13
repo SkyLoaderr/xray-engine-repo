@@ -52,7 +52,7 @@ IC	shared_str CGameSpawnConstructor::actor_level_name()
 	);
 }
 
-extern void read_levels			(CInifile *ini, xr_set<CLevelInfo> &m_levels);
+extern void read_levels			(CInifile *ini, xr_set<CLevelInfo> &m_levels, bool rebuild_graph);
 
 void CGameSpawnConstructor::load_spawns	(LPCSTR name, bool no_separator_check)
 {
@@ -74,7 +74,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name, bool no_separator_check)
 	m_game_graph						= xr_new<CGameGraph>(game_graph_name);
 
 	// fill level info
-	read_levels							(&game_info(),m_levels);
+	read_levels							(&game_info(),m_levels,false);
 
 	// load levels
 	GameGraph::SLevel					level;

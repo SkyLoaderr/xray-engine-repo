@@ -357,10 +357,10 @@ public:
 
 class CGraphMerger {
 public:
-	CGraphMerger(LPCSTR name);
+	CGraphMerger(LPCSTR name, bool rebuild);
 };
 
-void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
+void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels, bool rebuild_graph)
 {
 	LPCSTR				_N,V;
 	string256			caFileName, file_name;
@@ -436,6 +436,15 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 			}
 		}
 
+		if (rebuild_graph) {
+			string_path			prjName;
+			prjName				[0] = 0;
+			FS.update_path		(prjName,"$game_levels$",S);
+			strcat				(prjName,"\\");
+			xrBuildGraph		(prjName);
+			xrBuildCrossTable	(prjName);
+		}
+
 		// graph
 		strconcat		(caFileName,S,"\\",GAME_LEVEL_GRAPH);
 		FS.update_path	(file_name,"$game_levels$",caFileName);
@@ -485,7 +494,9 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 	}
 }
 
-CGraphMerger::CGraphMerger(LPCSTR name)
+extern void xrBuildGraph(LPCSTR name);
+
+CGraphMerger::CGraphMerger(LPCSTR name, bool rebuild)
 {
 	// load all the graphs
 	Phase("Processing level graphs");
@@ -506,7 +517,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	l_tpLevelPoints.clear			();
 
 	xr_set<CLevelInfo>				levels;
-	read_levels						(Ini,levels);
+	read_levels						(Ini,levels,rebuild);
 
 	xr_set<CLevelInfo>::const_iterator	I = levels.begin();
 	xr_set<CLevelInfo>::const_iterator	E = levels.end();
@@ -656,7 +667,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	xr_delete						(Ini);
 }
 
-void xrMergeGraphs(LPCSTR name)
+void xrMergeGraphs(LPCSTR name, bool rebuild)
 {
-	CGraphMerger	A(name);
+	CGraphMerger	A(name,rebuild);
 }
