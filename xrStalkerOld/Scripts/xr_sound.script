@@ -192,7 +192,13 @@ function play_sound(npc, themes, timeout)
 		if snd.into_max ~= nil and
 			snd.into_max > 0
 		then
-			if db.sound[npc_id].last_snd[snd.into_id] == snd.into_max - 1 then db.sound[npc_id].last_snd[snd.into_id] = nil end
+			if db.sound[npc_id].last_snd[snd.into_id] == snd.into_max - 1 then
+				if snd.into_cycled == true then
+					db.sound[npc_id].last_snd[snd.into_id] = nil 
+				else
+					return
+				end
+			end
 			
 			-- играем входные
 			if db.sound[npc_id].last_snd[snd.into_id] == nil then db.sound[npc_id].last_snd[snd.into_id] = -1 end

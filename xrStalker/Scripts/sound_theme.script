@@ -548,6 +548,14 @@ function load_sound(obj)
 			local s = select_sound_from_ltx(obj, name.."_seq", snd_ini)
 			if s then
 				tbl.max_ids[obj:id()].into_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, tbl.into_id)
+				tbl.max_ids[obj:id()].into_cycled = true
+			end
+		end
+		if snd_ini:section_exist(name.."_single") then
+			local s = select_sound_from_ltx(obj, name.."_single", snd_ini)
+			if s then
+				tbl.max_ids[obj:id()].into_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, tbl.into_id)
+				tbl.max_ids[obj:id()].into_cycled = false
 			end
 		end
 	end
