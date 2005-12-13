@@ -109,6 +109,20 @@ void CStalkerAnimationManager::update						()
 			m_skeleton_animated->UpdateTracks	();
 
 		if (!script_animations().empty()) {
+#ifdef DEBUG
+			if (setup_storage()) {
+				VERIFY2			("! Do not setup script animations while strapping/unstrapping");
+				Msg				("! ERROR description :");
+				Msg				("! object     %s",*object().cName());
+				Msg				("! item       %s",object().inventory().ActiveItem() ? *object().inventory().ActiveItem()->object().cName() : "no active item");
+				Msg				("! strapped   %s",object().weapon_strapped() ? "true" : "false");
+				Msg				("! unstrapped %s",object().weapon_unstrapped() ? "true" : "false");
+				Msg				("! animation  %s",m_skeleton_animated->LL_MotionDefName_dbg(script_animations().front().animation()));
+				Msg				("! animations %d",script_animations().size());
+			}
+#endif
+			VERIFY2				(!setup_storage(),"Do not setup script animations while strapping/unstrapping");
+
 			global().reset		();
 #ifndef USE_HEAD_BONE_PART_FAKE
 			head().reset		();
