@@ -5,7 +5,7 @@ active = sr_idle@idle
 on_info = {+bar_arena_start} sr_idle@start %+bar_arena_door_1_open%
 
 [sr_idle@start]
-on_info = {=bar_arena_actor_inside} sr_idle@introduce %-bar_arena_door_1_open =bar_arena_introduce +bar_arena_start_introduce%
+on_info = {=bar_arena_actor_inside} sr_idle@introduce %-bar_arena_door_1_open =bar_arena_introduce +bar_arena_start_introduce +bar_arena_monstr_ready%
 on_timer = 60000 | sr_idle@idle %-bar_arena_door_1_open +bar_arena_start_introduce +bar_arena_actor_afraid =bar_arena_actor_afraid%
 
 [sr_idle@introduce]
