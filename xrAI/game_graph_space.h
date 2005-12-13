@@ -66,7 +66,7 @@ namespace GameGraph {
 
 	typedef associative_vector<_LEVEL_ID,SLevel>		LEVEL_MAP;
 
-#pragma pack(push,4)
+#pragma pack(push,1)
 #ifdef AI_COMPILER
 	struct
 #else
@@ -91,10 +91,10 @@ namespace GameGraph {
 		u32							tLevelID:8;
 		u32							tNodeID:24;
 		u8							tVertexTypes[LOCATION_TYPE_COUNT];
-		u32							tNeighbourCount:8;
-		u32							dwEdgeOffset:24;
-		u32							tDeathPointCount:8;
-		u32							dwPointOffset:24;
+		u32							dwEdgeOffset;
+		u32							dwPointOffset;
+		u8							tNeighbourCount;
+		u8							tDeathPointCount;
 	public:
 		IC	const Fvector			&level_point		() const;
 		IC	const Fvector			&game_point			() const;
