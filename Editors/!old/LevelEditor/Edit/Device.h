@@ -63,6 +63,7 @@ public:
 	float					fTimeGlobal;
 	u32						dwTimeDelta;
 	u32						dwTimeGlobal;
+    u32						dwTimeContinual;
 
     // camera
 	CUI_Camera 				m_Camera;
@@ -155,7 +156,7 @@ public:
 	// Mode control
 	IC u32	 				TimerAsync		(void)
     { return TimerGlobal.GetElapsed_ms();}
-	IC u32	 				TimerAsyncMM	(void)
+	IC u32	 				TimerAsync_MMT	(void)
     { return TimerAsync()+Timer_MM_Delta; }
 public:
     Shader_xrLC_LIB			ShaderXRLC;

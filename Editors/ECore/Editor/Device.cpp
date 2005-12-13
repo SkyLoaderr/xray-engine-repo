@@ -358,6 +358,7 @@ void CRenderDevice::FrameMove()
     fTimeGlobal		= TimerGlobal.GetElapsed_sec(); //float(qTime)*CPU::cycles2seconds;
     dwTimeGlobal	= TimerGlobal.GetElapsed_ms	();	//u32((qTime*u64(1000))/CPU::cycles_per_second);
     dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
+    dwTimeContinual	= dwTimeGlobal;
 
     m_Camera.Update(fTimeDelta);
 

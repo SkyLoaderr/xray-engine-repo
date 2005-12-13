@@ -7,7 +7,10 @@
 #include "xr_efflensflare.h"
 #include "rain.h"
 #include "thunderbolt.h"
-#include "igame_level.h"
+
+#ifndef _EDITOR
+#	include "igame_level.h"
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // half box def
@@ -107,7 +110,10 @@ const	u32 v_clouds_fvf	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_SPECULAR;
 extern float psHUD_FOV;
 void CEnvironment::RenderSky		()
 {
+#ifndef _EDITOR
 	if (0==g_pGameLevel)		return	;
+#endif
+    
 	::Render->rmFar				();
 
 	// draw sky box
@@ -142,7 +148,9 @@ void CEnvironment::RenderSky		()
 
 void CEnvironment::RenderClouds			()
 {
+#ifndef _EDITOR
 	if (0==g_pGameLevel)		return	;
+#endif
 	// draw clouds
 	if (fis_zero(CurrentEnv.clouds_color.w,EPS_L))	return;
 
@@ -186,14 +194,18 @@ void CEnvironment::RenderClouds			()
 
 void CEnvironment::RenderFlares		()
 {
+#ifndef _EDITOR
 	if (0==g_pGameLevel)			return	;
+#endif
 	// 1
 	eff_LensFlare->Render			(FALSE,TRUE,TRUE);
 }
 
 void CEnvironment::RenderLast		()
 {
+#ifndef _EDITOR
 	if (0==g_pGameLevel)			return	;
+#endif
 	// 2
 	eff_Rain->Render				();
 	eff_Thunderbolt->Render			();
@@ -223,3 +235,4 @@ void CEnvironment::ED_Reload()
 	OnDeviceCreate			();
 }
 #endif
+
