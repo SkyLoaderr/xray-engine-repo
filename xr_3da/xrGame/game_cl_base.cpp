@@ -179,23 +179,6 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			sprintf(Text, "%s%s %sentered the game",Color_Teams[0],PlayerName,Color_Main);
 			CommonMessageOut(Text);
 		}break;
-	case GAME_EVENT_ROUND_STARTED:
-		{
-			sprintf(Text, "%sRound started !!!",Color_Main);
-			CommonMessageOut(Text);
-		}break;
-	case GAME_EVENT_ROUND_END:
-		{
-			string64 reason;
-			P.r_stringZ(reason);
-
-			sprintf(Text, "%sRound Over (%s)", Color_Main, reason);
-			CommonMessageOut(Text);
-		}break;
-
-
-
-
 	default:
 		{
 			R_ASSERT2(0,"Unknown Game Message");

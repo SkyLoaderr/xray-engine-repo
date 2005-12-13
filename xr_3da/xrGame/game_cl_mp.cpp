@@ -277,6 +277,20 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		{
 			OnGameMenuRespond(P);
 		}break;
+	case GAME_EVENT_ROUND_STARTED:
+		{
+			sprintf(Text, "%sRound started !!!",Color_Main);
+			CommonMessageOut(Text);
+			OnSwitchPhase_InProgress();
+		}break;
+	case GAME_EVENT_ROUND_END:
+		{
+			string64 reason;
+			P.r_stringZ(reason);
+
+			sprintf(Text, "%sRound Over (%s)", Color_Main, reason);
+			CommonMessageOut(Text);
+		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);
 	}
@@ -447,7 +461,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 			{
 				HUD().GetUI()->ShowIndicators();
 			};
-			OnSwitchPhase_InProgress();			
+//			OnSwitchPhase_InProgress();			
 		}break;
 	case GAME_PHASE_PENDING:
 		{
