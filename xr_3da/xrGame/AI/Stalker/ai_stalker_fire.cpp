@@ -408,7 +408,7 @@ IC BOOL ray_query_callback	(collide::rq_result& result, LPVOID params)
 void CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, float distance, collide::rq_results& rq_storage)
 {
 //	VERIFY							(getEnabled());
-	collide::ray_defs				ray_defs(position,direction,distance,0,collide::rqtBoth);
+	collide::ray_defs				ray_defs(position,direction,distance,CDB::OPT_CULL,collide::rqtBoth);
 	ray_query_param					params(this,memory().visual().transparency_threshold(),distance);
 	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params,NULL,this);
 	m_can_kill_enemy				= m_can_kill_enemy  || params.m_can_kill_enemy;

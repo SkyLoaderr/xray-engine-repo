@@ -247,8 +247,6 @@ float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,flo
 	float shoot_factor=1.f;
 	if(range>EPS_L)
 	{
-
-		
 		collide::ray_defs	RD		(source_p,dir,range,CDB::OPT_CULL,collide::rqtBoth);
 #ifdef DEBUG
 		SExpQParams			ep		(source_p,dir);
@@ -257,8 +255,6 @@ float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,flo
 #endif
 		g_pGameLevel->ObjectSpace.RayQuery(storage,RD,grenade_hit_callback,&ep,NULL,blasted_obj);
 		shoot_factor=ep.shoot_factor;
-
-	
 	}
 	else return dist_factor;
 	return shoot_factor*dist_factor;

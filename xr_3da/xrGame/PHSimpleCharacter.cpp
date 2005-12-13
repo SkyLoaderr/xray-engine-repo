@@ -1089,7 +1089,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 {
 	Fvector dir;
 	m_collision_damage_info.HitDir(dir);
-	collide::ray_defs	Q	(m_collision_damage_info.HitPos(), dir, m_radius, CDB::OPT_ONLYNEAREST,collide::rqtBoth);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	collide::ray_defs	Q	(m_collision_damage_info.HitPos(), dir, m_radius, CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,collide::rqtBoth);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	collide::rq_results	RQR	;
 	u16 contact_bone	=	0;
 	CObject* object		=	smart_cast<CObject*>(m_phys_ref_object);

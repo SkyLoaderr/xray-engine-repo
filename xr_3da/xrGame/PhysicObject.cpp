@@ -28,7 +28,7 @@ BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 	inherited::net_Spawn	(DC);
 	xr_delete(collidable.model);
 	switch(m_type) {
-		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
+		case epotBox:			
 		case epotFixedChain:
 		case epotFreeChain :
 		case epotSkeleton  :	collidable.model = xr_new<CCF_Skeleton>(this);	break;
