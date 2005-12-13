@@ -22,6 +22,9 @@ void CSE_ALifeObject::spawn_supplies		()
 
 void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 {
+	if (!ini_string)
+		return;
+
 	if (!xr_strlen(ini_string))
 		return;
 
