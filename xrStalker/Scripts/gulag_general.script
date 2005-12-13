@@ -193,6 +193,35 @@ function load_job(sj, gname, type, squad, groups, st)
 			it = it + 1
 		end
 
+		-- Проверяем наличие снайперов в лагере.
+		it = 1
+		while level.patrol_path_exists(gname.."_sniper_"..it.."_walk") do
+			-- Необходимо вычитать количество работ из названия точки пути.
+			local way_name = gname.."_sniper_"..it.."_walk"
+
+			-- добавляем должность
+			t = { section = "logic@"..way_name,
+				idle = 0,
+				prior = 7, state = {0,1}, squad = squad, group = groups[1],
+				position_threshold = 20,
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+
+			-- добавляем описание должности в лтх.
+			local job_ltx = "[logic@"..way_name.."]\n"..
+							"active = camper@"..way_name.."\n"..
+
+							"[camper@"..way_name.."]\n"..
+							"meet = meet@generic_lager_guard\n"..
+							"path_walk = guard_"..it.."_walk\n"..
+							"path_look = guard_"..it.."_look\n"..
+							"sniper = true\n"
+
+			ltx = ltx..job_ltx
+			it = it + 1
+		end
+
 		-- Проверяем возможность вырулить в рейд (наличие путей, алгоритм переключения)
 		it = 1
 		local job_count = 5
