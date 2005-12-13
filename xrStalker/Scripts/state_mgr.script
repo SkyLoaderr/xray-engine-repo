@@ -395,7 +395,7 @@ function state_manager:update()
 	--printf("Update called")
 	self.animstate:update()	
 	self.animation:update()	
-	self.planner:update()
+	self.planner:update()	
 	--self.planner:show("")
 end
 

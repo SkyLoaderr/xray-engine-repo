@@ -493,5 +493,6 @@ function goap_graph(st, npc)
 	local goal = world_state()			
 	goal:add_property(world_property(st.properties["end"],true))
 	st.planner:set_goal_world_state(goal)
-		
+
+	npc:debug_planner(st.planner)		
 end

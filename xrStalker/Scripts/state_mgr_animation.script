@@ -1,5 +1,5 @@
---function printf()
---end
+function printf()
+end
 
 local anima=0
 local tmp_table = {}
@@ -223,7 +223,7 @@ function animation:set_state(id, reset)
 					if a and a.out then
 						anima = self:anim_for_slot(wpn_slot,a.out)
 						if anima then
-							self.npc:add_animation(anima, true)
+							add_anim(self.npc, anima, true)							
 						end
 					end
 				end
@@ -237,11 +237,11 @@ function animation:set_state(id, reset)
 								printf("set_a_c out old")
 								self:set_anim_callback(v)
 							else
-								self.npc:add_animation(v, true)
+								add_anim(self.npc, v, true)
 							end
 						end
 					else
-						self.npc:add_animation(anima, true)
+						add_anim(self.npc, anima, true)
 					end
 					nn = nn +1
 				end			
@@ -258,12 +258,12 @@ function animation:set_state(id, reset)
 						printf("set_a_c in new")
 						self:set_anim_callback(v)
 					else
-						self.npc:add_animation(v, true)
+						add_anim(self.npc, v, true)
 					end
 				end
 				nn = nn +1
 			else
-				self.npc:add_animation(anima, true)
+				add_anim(self.npc, anima, true)
 				nn = nn +1
 			end
 		end
@@ -276,7 +276,7 @@ function animation:set_state(id, reset)
 		if state_mgr_animation_list.animations[id].idle ~= nil then
 			anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[id].idle)
 			if anima then
-				self.npc:add_animation(anima, true)
+				add_anim(self.npc, anima, true)
 			end
 			nn = nn + 1
 		else
@@ -296,11 +296,10 @@ function animation:set_state(id, reset)
 end
 --' апдейт
 function animation:update()
---	printf("update")
 --	printf("		time %s", time_global())				
 --	printf("		current state %s", utils.to_str(self.states.current_state))
 --	printf("		target state %s", utils.to_str(self.states.target_state))
---	printf("		anims %s", self.npc:animation_count())
+	printf("		anims %s", self.npc:animation_count())
 	self.is_called = false
 	
 	-- !!! проверка что закончился играться наш звук
@@ -339,14 +338,6 @@ function animation:update()
 	if self.mgr.emerg ~= nil and  
 	   self.mgr.emerg.animation == true then
 		
-		--если мы уже
---		if self.states.target_state ~= state_lib.states[self.mgr.target_state].animation 
---		then
---			self.npc:clear_animations()
---			self:set_state(nil)
---			self.states.current_state = nil
---		end			
---		self.mgr.emerg.animation = nil
 
 		self.npc:clear_animations()
 		self:set_state(nil)
@@ -419,7 +410,7 @@ function animation:update()
 				if a and a.into then
 					anima = self:anim_for_slot(wpn_slot,a.into)
 					if anima then
-						self.npc:add_animation(anima, true)
+						add_anim(self.npc, anima, true)
 					end
 				end
 				--' устанавливаем музыку
@@ -431,7 +422,7 @@ function animation:update()
 			-- добавляем айдл текущего уровня
 			anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.current_state].subanim[self.states.anim_level].idle)
 			if anima then
-				self.npc:add_animation(anima, true)
+				add_anim(self.npc, anima, true)
 			end		
 			self.states.current_state = "wait"			
 			return
@@ -444,7 +435,7 @@ function animation:update()
 				if a and a.out then
 					anima = self:anim_for_slot(wpn_slot,a.out)
 					if anima then
-						self.npc:add_animation(anima, true)
+						add_anim(self.npc, anima, true)
 					end
 				end
 			end
@@ -457,7 +448,7 @@ function animation:update()
 				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.current_state].subanim[self.states.anim_level].idle)
 			end
 			if anima then
-				self.npc:add_animation(anima, true)
+				add_anim(self.npc, anima, true)
 			end		
 			self.states.current_state = "wait"
 			return
@@ -526,7 +517,7 @@ function animation:play_rnd(state, must_play)
 		end		
 		self.npc:clear_animations()
 		if anima[r] ~= nil then
-			self.npc:add_animation(anima[r], true)
+			add_anim(self.npc, anima[r], true)
 			-- добавить рандомный звук
 			if self.mgr.synsound and self.npc:active_sound_count() == 0 then
 				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
@@ -536,7 +527,7 @@ function animation:play_rnd(state, must_play)
 		if state.idle ~= nil then
 			anima = self:anim_for_slot(wpn_slot,state.idle)
 			if anima then
-				self.npc:add_animation(anima, true)
+				add_anim(self.npc, anima, true)
 			end
 		else
 			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
@@ -685,4 +676,13 @@ function animation:anim_for_slot(slot, t)
 	else
 		return t[0]
 	end			
+end
+
+
+function add_anim(npc, anim, bb)
+	printf("ANIMATION [%s] added [%s]", npc:name(), anim)
+	npc:add_animation(anim, bb)
+end
+
+function clear_anim(npc)
 end
