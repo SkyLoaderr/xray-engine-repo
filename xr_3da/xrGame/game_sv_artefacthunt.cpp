@@ -881,11 +881,11 @@ void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 	P.w_u16			(m_dwArtefactID);
 	P.w_u8			((u8)g_bBearerCantSprint);
 
-	if (m_iReinforcementTime > 0)
+	if ( > 0)
 	{
 		u32		CurTime = Level().timeServer();
 		u32		dTime = m_dwNextReinforcementTime - CurTime;
-		P.w_u32			(1);
+		P.w_u32			(m_iReinforcementTime);
 		P.w_s32			(dTime);
 	}
 	else
