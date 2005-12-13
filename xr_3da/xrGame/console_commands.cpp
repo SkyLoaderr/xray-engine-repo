@@ -1714,6 +1714,13 @@ public:
 	  virtual void	Execute	(LPCSTR args)
 	  {
 		  if(!ph_world)	return;
+#ifndef DEBUG
+		  if (g_pGameLevel && Level().game && GameID() != GAME_SINGLE)
+		  {
+			  Msg("Command is not available in Multiplayer");
+			  return;
+		  }
+#endif
 		  ph_world->SetGravity(float(atof(args)));
 	  }
 	  virtual void	Status	(TStatus& S)
