@@ -235,7 +235,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
                     gulag = xr_gulag.get_gulag_by_name(param2)
                 end
                 if gulag then
-                    st.target_id = gulag.idNPCOnJob(param1)
+                    st.target_id = gulag:idNPCOnJob(param1)
                     return
                 end
 				abort("remark <error>: Wrong target definition [%s], npc [%s], section [%s]", target, npc:name(), section)
