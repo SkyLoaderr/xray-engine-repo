@@ -471,6 +471,7 @@ function se_smart_terrain:unregister_npc( obj )
 
 	if not n then
 		printf( "self.npc_info[obj.id] = nil !!! obj.id=%d", obj.id )
+		self:print()
 		self.gulag:print()
 	end
 
@@ -488,7 +489,7 @@ function se_smart_terrain:unregister_npc( obj )
 end
 
 -- выгнать из-под смарттеррейна первого попавшегося неэксклюзивного персонажа,
--- который занимает работу, подходящую новому персонажу
+-- который занимает работу, подходящую новому персонажу.
 -- TODO а если я выгоню кого-то, а его работа не подойдёт по idle ?
 function se_smart_terrain:kick_someone_non_exclusive( new_npc_info )
 	for obj_id, npc_info in pairs( self.npc_info ) do
