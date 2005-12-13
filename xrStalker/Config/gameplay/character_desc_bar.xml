@@ -49,7 +49,7 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 				
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_3_start</start_dialog>
 	</specific_character>
 	
 	<specific_character id="bar_stalker_white_novice_2" team_default = "1">
@@ -72,7 +72,7 @@
 			ammo_9x19_pbp \n
 		</supplies>
 					
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_4_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_brown_novice_1" team_default = "1">
@@ -95,7 +95,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 					
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_5_start</start_dialog>
 	</specific_character>
 	
 	<specific_character id="bar_stalker_brown_novice_2" team_default = "1">
@@ -118,7 +118,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 					
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_6_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_general_1" team_default = "1">
@@ -141,7 +141,7 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 					
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_7_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_general_2" team_default = "1">
@@ -164,7 +164,7 @@
 			ammo_9x39_pab9 \n
 		</supplies>
 					
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_8_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_dolg_1" team_default = "1">
@@ -187,7 +187,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 					
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_9_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_bandit_1" team_default = "1">
@@ -210,7 +210,7 @@
 			ammo_9x39_pab9 \n
 		</supplies>
 					
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_10_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_killer_1" team_default = "1">
@@ -233,7 +233,7 @@
 			ammo_5.56x45_ss190 \n
 		</supplies>
 		
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_bar_visitors_13_start</start_dialog>
 	</specific_character>	
 
 	<specific_character id="bar_stalker_guard" team_default = "1">
@@ -381,7 +381,7 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 		
-		<start_dialog>bar_bar_visitors_8_start</start_dialog>
+		<start_dialog>bar_bar_visitors_14_start</start_dialog>
 		<actor_dialog>bar_bar_lisiy_talk</actor_dialog>
 	</specific_character>	
 
