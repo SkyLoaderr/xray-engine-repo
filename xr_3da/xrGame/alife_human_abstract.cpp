@@ -82,7 +82,8 @@ void CSE_ALifeHumanAbstract::on_unregister							()
 
 void CSE_ALifeHumanAbstract::on_spawn								()
 {
-	specific_character();
+	inherited::on_spawn	();
+	specific_character	();
 }
 
 void CSE_ALifeHumanAbstract::add_online								(const bool &update_registries)

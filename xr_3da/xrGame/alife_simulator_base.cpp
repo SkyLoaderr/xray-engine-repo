@@ -133,7 +133,8 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	dynamic_object->m_tGraphID	= game_vertex_id;
 	dynamic_object->m_tSpawnID	= u16(-1);
 
-	dynamic_object->on_spawn	();
+	dynamic_object->spawn_supplies	();
+	dynamic_object->on_spawn		();
 
 	register_object				(dynamic_object,true);
 

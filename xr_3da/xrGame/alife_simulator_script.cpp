@@ -29,7 +29,7 @@ LPCSTR											_INVALID_SPAWN_STORY_ID	= "INVALID_SPAWN_STORY_ID";
 STORY_PAIRS										story_ids;
 SPAWN_STORY_PAIRS								spawn_story_ids;
 
-CALifeSimulator *alife			()
+CALifeSimulator *alife				()
 {
 	return			(const_cast<CALifeSimulator*>(ai().get_alife()));
 }
