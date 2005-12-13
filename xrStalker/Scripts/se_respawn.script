@@ -54,6 +54,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "se_respawn" ( cse_alife_smart_zone )
 function se_respawn:__init( section ) super( section )
+	self.spawned_obj = {}
 end
 -- сохранение
 function se_respawn:STATE_Write( packet )
@@ -101,26 +102,43 @@ function se_respawn:on_register()
 	
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
-	self.spawn_count = 0
 end
 -- Создаем объект
 function se_respawn:create(prob)
 	if math.random(100) <= tonumber(prob) then
 		
-		alife():create(self.respawn_section,	
+		local obj = alife():create(self.respawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
 						self.m_game_vertex_id)
-		self.spawn_count = self.spawn_count + 1
+		table.insert(self.spawned_obj ,obj.id)
 	end
 end
 -- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
 -- мы доспавниваем до минимального количества, либо спавним с заданной вероятностью
 function se_respawn:spawn()
 	printf("RESPAWN: [%s] spawn execute", tostring(self:name()))
+	
+	-- Пробегаемся по списку уже заспавненных объектов и удаляем из них мертвые либо уничтоженные.
+	for k,v in pairs(self.spawned_obj) do
+		local obj = level.object_by_id(v)
+		if obj == nil then
+			obj = alife():object(v)
+		end
+		
+		if obj ~= nil then
+			if obj:alive() ~= true then
+				table.remove(self.spawned_obj, k)
+			end
+		else
+			table.remove(self.spawned_obj, k)
+		end
+	end	
+
+	
 	-- экстренный спаун минимального количества объектов
-	if self.spawn_count < self.min_count then
-		while self.spawn_count < self.min_count do
+	if table.getn(self.spawned_obj) < self.min_count then
+		while table.getn(self.spawned_obj) < self.min_count do
 			self:create(100)
 		end
 		return
@@ -128,7 +146,7 @@ function se_respawn:spawn()
 	
 	-- делаем несколько попыток заспаунить объект.
 	for i=1,self.max_spawn do		
-		if self.spawn_count >= self.max_count then
+		if table.getn(self.spawned_obj) >= self.max_count then
 			return
 		end		
 		self:create(xr_logic.pick_section_from_condlist(db.actor, self, self.conditions))
@@ -145,7 +163,7 @@ function se_respawn:execute()
 		-- Производим попытку заспаунить объекты		
 		self:spawn()
 		
-		printf("spawn_count = %s", self.spawn_count)
+		printf("spawn_count = %s", table.getn(self.spawned_obj))
 	end
 end
 -- Обновление в офлайне
