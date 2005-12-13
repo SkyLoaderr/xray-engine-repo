@@ -21,7 +21,7 @@ path_move           = cit_assault_heli_start_move
 path_look           = cit_assault_heli_start_look
 on_signal           = arrived | %+cit_button_broken%
 on_info             = {+cit_actor_is_free} heli_move@leave
-combat_ignore       = true
+combat_ignore       = true ;{-cit_button_broken}
 
 [heli_move@leave]
 path_move           = cit_assault_heli_leave_move
