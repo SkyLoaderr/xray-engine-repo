@@ -40,7 +40,7 @@ public:
 	virtual void 				OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
 	virtual void				OnAfterExplosion();
 	virtual void				OnBeforeExplosion();
-	virtual void 				SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
+	virtual void 				SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id; Msg("Explosive Parent ID = %d", parent_id	);}
 	IC		u16 				CurrentParentID		() const {return m_iCurrentParentID;}
 
 	virtual	void				SetInitiator(u16 id){SetCurrentParentID(id);}

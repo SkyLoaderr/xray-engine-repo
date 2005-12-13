@@ -105,7 +105,7 @@ void	CEntity::Hit		(SHit* pHDS)
 	if(pHDS->impulse) HitImpulse				(pHDS->impulse,pHDS->dir,vLocalDir); // @@@: WT
 	
 	// Calc amount (correct only on local player)
-	float lost_health = CalcCondition(pHDS->P);
+	float lost_health = CalcCondition(pHDS->damage());
 
 	// Signal hit
 	if(-1!=pHDS->element)	HitSignal(lost_health,vLocalDir,pHDS->who,pHDS->element);

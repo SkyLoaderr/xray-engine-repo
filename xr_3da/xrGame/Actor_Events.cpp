@@ -13,6 +13,7 @@
 #include "xr_level_controller.h"
 #include "FoodItem.h"
 #include "ActorCondition.h"
+#include "Grenade.h"
 
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
@@ -79,7 +80,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}
 				
 //				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
-				SelectBestWeapon();
+				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
+				CGrenade* pGrenade = smart_cast<CGrenade*>(O);
+				if (pWeapon || pGrenade) SelectBestWeapon();
 #ifdef DEBUG
 //				Msg("OnEvent - %s[%d] - TAKE - %s[%d] - PASSED", *cName(), ID(), *(O->cName()), O->ID());
 #endif
@@ -112,7 +115,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 #ifdef DEBUG			
 //			Msg("OnEvent - %s[%d] - REJECT - %s[%d]", *cName(), ID(), *(O->cName()), O->ID());
 #endif
-			
 			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) 
 			{
 				O->H_SetParent(0);
@@ -120,7 +122,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			}
 
 			CWeapon* pWeapon = smart_cast<CWeapon*>(O);
-			if (pWeapon) SelectBestWeapon();
+			CGrenade* pGrenade = smart_cast<CGrenade*>(O);
+			if (pWeapon || pGrenade) SelectBestWeapon();
 
 			if (Level().CurrentViewEntity() == this && HUD().GetUI() && HUD().GetUI()->UIGame())
 				HUD().GetUI()->UIGame()->ReInitInventoryWnd();

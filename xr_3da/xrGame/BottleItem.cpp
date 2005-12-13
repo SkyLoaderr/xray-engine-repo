@@ -110,7 +110,7 @@ void	CBottleItem::Hit					(SHit* pHDS)
 //	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
 	inherited::Hit(pHDS);
 	
-	if(pHDS->P>BREAK_POWER)
+	if(pHDS->damage()>BREAK_POWER)
 	{
 		//Generate Expode event
 		if (Local()) 

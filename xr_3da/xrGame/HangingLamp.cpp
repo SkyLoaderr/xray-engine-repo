@@ -276,7 +276,7 @@ void	CHangingLamp::Hit					(SHit* pHDS)
 	if(m_pPhysicsShell) m_pPhysicsShell->applyHit(pHDS->p_in_bone_space,pHDS->dir,pHDS->impulse,pHDS->element,pHDS->hit_type);
 
 	if (pHDS->element==light_bone)fHealth =	0.f;
-	else					fHealth -=	pHDS->P*0.1f;
+	else					fHealth -=	pHDS->damage()*0.1f;
 
 	if (bWasAlive && (!Alive()))		TurnOff	();
 }

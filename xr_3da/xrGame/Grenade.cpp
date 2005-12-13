@@ -44,7 +44,7 @@ void CGrenade::Load(LPCSTR section)
 //void CGrenade::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse,ALife::EHitType hit_type)
 void CGrenade::Hit					(SHit* pHDS)
 {
-	if( ALife::eHitTypeExplosion==pHDS->hit_type && m_grenade_detonation_threshold_hit<pHDS->P&&CExplosive::Initiator()==u16(-1)) 
+	if( ALife::eHitTypeExplosion==pHDS->hit_type && m_grenade_detonation_threshold_hit<pHDS->damage()&&CExplosive::Initiator()==u16(-1)) 
 	{
 		CExplosive::SetCurrentParentID(pHDS->who->ID());
 		Destroy();
@@ -301,9 +301,9 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 			}
 			return true;
 		};
-	case kDROP:
-		setup_throw_params();
-		return true;
+//	case kDROP:
+//		setup_throw_params();
+//		return true;
 	}
 	return false;
 }

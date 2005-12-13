@@ -488,7 +488,7 @@ void	CActor::Hit							(SHit* pHDS)
 				if(!m_sndShockEffector)
 					m_sndShockEffector = xr_new<SndShockEffector>();
 
-				m_sndShockEffector->Start( S._handle()->length_ms(), HDS.P );
+				m_sndShockEffector->Start( S._handle()->length_ms(), HDS.damage() );
 			}
 			else
 				bPlaySound = false;
@@ -505,7 +505,7 @@ void	CActor::Hit							(SHit* pHDS)
 	//slow actor, only when he gets hit
 	if(HDS.hit_type == ALife::eHitTypeWound || HDS.hit_type == ALife::eHitTypeStrike)
 	{
-		hit_slowmo				= HDS.P/100.f;
+		hit_slowmo				= HDS.damage()/100.f;
 		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
 	}
 	else
@@ -526,17 +526,17 @@ void	CActor::Hit							(SHit* pHDS)
 		mstate_wishful	&=~mcSprint;
 	};
 	//---------------------------------------------------------------
-	HitMark			(HDS.P, HDS.dir, HDS.who, HDS.element, HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
+	HitMark			(HDS.damage(), HDS.dir, HDS.who, HDS.element, HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
 	//---------------------------------------------------------------
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
 		{
-			float hit_power	= HitArtefactsOnBelt(HDS.P, HDS.hit_type);
+			float hit_power	= HitArtefactsOnBelt(HDS.damage(), HDS.hit_type);
 
 			if (GodMode())//psActorFlags.test(AF_GODMODE))
 			{
-				HDS.P = 0.0f;
+				HDS.power = 0.0f;
 //				inherited::Hit(0.f,dir,who,element,position_in_bone_space,impulse, hit_type);
 				inherited::Hit(&HDS);
 				return;
@@ -544,7 +544,7 @@ void	CActor::Hit							(SHit* pHDS)
 			else 
 			{
 				//inherited::Hit		(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
-				HDS.P = hit_power;
+				HDS.power = hit_power;
 				inherited::Hit(&HDS);
 			};
 		}
@@ -574,9 +574,9 @@ void	CActor::Hit							(SHit* pHDS)
 			float hit_power = 0;
 
 			if (m_bWasBackStabbed) hit_power = 100000;
-			else hit_power	= HitArtefactsOnBelt(HDS.P, HDS.hit_type);
+			else hit_power	= HitArtefactsOnBelt(HDS.damage(), HDS.hit_type);
 
-			HDS.P = hit_power;
+			HDS.power = hit_power;
 			inherited::Hit (&HDS);
 			//inherited::Hit	(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type, 0.0f);
 		}		

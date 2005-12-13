@@ -29,6 +29,7 @@
 #include "MathUtils.h"
 #include "phvalidevalues.h"
 #include "PHActivationShape.h"
+#include "game_base_space.h"
 #define EFFECTOR_RADIUS 30.f
 const u16	TEST_RAYS_PER_OBJECT=5;
 const u16	BLASTED_OBJ_PROCESSED_PER_FRAME=3;
@@ -672,8 +673,12 @@ void CExplosive::ActivateExplosionBox(const Fvector &size,Fvector &in_out_pos)
 }
 void CExplosive::net_Relcase(CObject* O)
 {
-	if(O->ID()==m_iCurrentParentID)
-						m_iCurrentParentID=u16(-1);
+	if (GameID() == GAME_SINGLE)
+	{
+		if(O->ID()==m_iCurrentParentID)
+			m_iCurrentParentID=u16(-1);
+	}
+	
 	BLASTED_OBJECTS_I I=std::find(m_blasted_objects.begin(),m_blasted_objects.end(),smart_cast<CPhysicsShellHolder*>(O));
 	if(m_blasted_objects.end()!=I)
 	{

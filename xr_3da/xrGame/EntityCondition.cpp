@@ -395,7 +395,7 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 	m_pWho = pHDS->who;
 	m_iWhoID = (NULL != pHDS->who) ? pHDS->who->ID() : 0;
 
-	float hit_power_org = pHDS->P;
+	float hit_power_org = pHDS->damage();
 	float hit_power = hit_power_org;
 	//нормализуем силу удара
 	hit_power = hit_power/100.f;

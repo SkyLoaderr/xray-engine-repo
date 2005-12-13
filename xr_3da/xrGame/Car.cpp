@@ -485,18 +485,18 @@ void	CCar::Hit							(SHit* pHDS)
 	SHit	HDS = *pHDS;
 	if(Initiator()==u16(-1)&&HDS.hit_type==ALife::eHitTypeStrike)
 	{
-		HDS.P=0.f;
+		HDS.power=0.f;
 	}
 
 	if(GetfHealth()>0.f&&HDS.who->ID()!=ID())
 	{
 		CExplosive::SetInitiator(HDS.who->ID());
 	}
-	WheelHit(HDS.P,HDS.element,HDS.hit_type);
-	DoorHit(HDS.P,HDS.element,HDS.hit_type);
+	WheelHit(HDS.damage(),HDS.element,HDS.hit_type);
+	DoorHit(HDS.damage(),HDS.element,HDS.hit_type);
 	float hitScale=1.f,woundScale=1.f;
 	if(HDS.hit_type!=ALife::eHitTypeStrike) CDamageManager::HitScale(HDS.element, hitScale, woundScale);
-	HDS.P *= m_HitTypeK[HDS.hit_type]*hitScale;
+	HDS.power *= m_HitTypeK[HDS.hit_type]*hitScale;
 	
 //	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	inherited::Hit(&HDS);

@@ -1131,60 +1131,43 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	//-------------------------------------------
 };
 
+void	game_sv_Deathmatch::OnPlayerHitPlayer_Case	(game_PlayerState* ps_hitter, game_PlayerState* ps_hitted, SHit* pHitS)
+{
+	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+	{
+		pHitS->power = 0;
+		pHitS->impulse = 0;
+	}
+};
+
 void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P)
 {
 	CSE_Abstract*		e_hitter		= get_entity_from_eid	(id_hitter	);
 	CSE_Abstract*		e_hitted		= get_entity_from_eid	(id_hitted	);
 
 	if (!e_hitter || !e_hitted) return;
+	if (e_hitted->m_tClassID != CLSID_OBJECT_ACTOR) return;
 
-	CSE_ALifeCreatureActor*		a_hitter		= smart_cast <CSE_ALifeCreatureActor*> (e_hitter);
-	CSE_ALifeCreatureActor*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
+	game_PlayerState*	ps_hitter = get_eid(id_hitter);
+	game_PlayerState*	ps_hitted = get_eid(id_hitted);
 
-	if (!a_hitter || !a_hitted) return;
+	if (!ps_hitter || !ps_hitted) return;
 
-//	game_PlayerState*	ps_hitter = &a_hitter->owner->ps;
-	game_PlayerState*	ps_hitted = a_hitted->owner->ps;
+	SHit	HitS;
+	HitS.Read_Packet(P);
 
-	u32 BCount = P.B.count;
+	HitS.whoID	= ps_hitter->GameID;
+
+	OnPlayerHitPlayer_Case(ps_hitter, ps_hitted, &HitS);
+
 	//---------------------------------------
-	// read hit event
-	u32 PowRPos, ImpRPos;
-
-	u16				WeaponID;
-	Fvector			dir;
-	float			power, impulse;
-	s16				element;
-	Fvector			position_in_bone_space;
-	u16				hit_type;
-
-	u32	RPos = P.r_pos;
-	P.r_u16			(WeaponID);
-	P.r_dir			(dir);						PowRPos = P.r_pos;
-	P.r_float		(power);
-	P.r_s16			(element);
-	P.r_vec3		(position_in_bone_space);	ImpRPos = P.r_pos;
-	P.r_float		(impulse);
-	P.r_u16			(hit_type);	//hit type
-	P.r_pos = RPos;
-	
-	//---------------------------------------
-	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+	if (HitS.power > 0)
 	{
-		power = 0;
-		impulse = 0;
-	}
-	//---------------------------------------
-	P.B.count	= PowRPos;	P.w_float(power);
-	P.B.count	= ImpRPos;	P.w_float(impulse);
-	//---------------------------------------
-	if (power > 0)
-	{
-		ps_hitted->lasthitter = a_hitter->ID;
-		ps_hitted->lasthitweapon = WeaponID;
+		ps_hitted->lasthitter = ps_hitter->GameID;
+		ps_hitted->lasthitweapon = HitS.weaponID;
 	};
 	//---------------------------------------
-	P.B.count	= BCount;
+	HitS.Write_Packet(P);
 };
 
 

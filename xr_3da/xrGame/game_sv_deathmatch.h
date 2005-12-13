@@ -3,6 +3,7 @@
 #include "game_sv_mp.h"
 #include "inventory_space.h"
 #include "client_id.h"
+#include "Hit.h"
 
 class	game_sv_Deathmatch			: public game_sv_mp
 {
@@ -120,6 +121,7 @@ public:
 	virtual		void				OnDelayedRoundEnd		(LPCSTR /**reason/**/);
 
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //игрок получил Hit
+	virtual		void				OnPlayerHitPlayer_Case	(game_PlayerState* ps_hitter, game_PlayerState* ps_hitted, SHit* pHitS);	
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);

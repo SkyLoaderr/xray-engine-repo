@@ -255,48 +255,38 @@ u32		game_sv_TeamDeathmatch::RP_2_Use				(CSE_Abstract* E)
 	return 0;
 };
 
+void	game_sv_TeamDeathmatch::OnPlayerHitPlayer_Case	(game_PlayerState* ps_hitter, game_PlayerState* ps_hitted, SHit* pHitS)
+{
+	inherited::OnPlayerHitPlayer_Case(ps_hitter, ps_hitted, pHitS);
+};
 
 void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P)
 {
+	inherited::OnPlayerHitPlayer(id_hitter, id_hitted, P);
+	/*
 	CSE_Abstract*		e_hitter		= get_entity_from_eid	(id_hitter	);
 	CSE_Abstract*		e_hitted		= get_entity_from_eid	(id_hitted	);
-
+	
 	if (!e_hitter || !e_hitted) return;
 
-	CSE_ALifeCreatureActor*		a_hitter		= smart_cast <CSE_ALifeCreatureActor*> (e_hitter);
 	CSE_ALifeCreatureActor*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
+	
+	if (!a_hitted) return;
 
-	if (!a_hitter || !a_hitted) return;
+	game_PlayerState*	ps_hitter = get_eid(id_hitter);
+	game_PlayerState*	ps_hitted = get_eid(id_hitted);
 
-	game_PlayerState*	ps_hitter = a_hitter->owner->ps;
-	game_PlayerState*	ps_hitted = a_hitted->owner->ps;
+	if (!ps_hitter || !ps_hitted) return;
 
-	u32 BCount = P.B.count;
-	//---------------------------------------
-	// read hit event
-	u32 PowRPos, ImpRPos;
+	SHit	HitS;
+	HitS.Read_Packet(P);
 
-	u16				WeaponID;
-	Fvector			dir;
-	float			power, impulse;
-	s16				element;
-	Fvector			position_in_bone_space;
-	u16				hit_type;
+	HitS.whoID	= ps_hitter->GameID;
 
-	u32	RPos = P.r_pos;
-	P.r_u16			(WeaponID);
-	P.r_dir			(dir);						PowRPos = P.r_pos;
-	P.r_float		(power);
-	P.r_s16			(element);
-	P.r_vec3		(position_in_bone_space);	ImpRPos = P.r_pos;
-	P.r_float		(impulse);
-	P.r_u16			(hit_type);	//hit type
-	P.r_pos = RPos;
-	//---------------------------------------
 	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))//Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
 	{
-		power = 0;
-		impulse = 0;
+		HitS.power = 0;
+		HitS.impulse = 0;
 	}
 	//---------------------------------------
 	if (ps_hitted != ps_hitter)
@@ -309,21 +299,19 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 			//---------------------------------------
 			//friendly fire case
 
-			power *= m_fFriendlyFireModifier;
-			impulse *= m_fFriendlyFireModifier;
+			HitS.power *= m_fFriendlyFireModifier;
+			HitS.impulse *= m_fFriendlyFireModifier;
 		};
 	};
 	//---------------------------------------
-	P.B.count	= PowRPos;	P.w_float(power);
-	P.B.count	= ImpRPos;	P.w_float(impulse);
-	//---------------------------------------
-	if (power > 0)
+	if (HitS.power > 0)
 	{
-		ps_hitted->lasthitter = a_hitter->ID;
-		ps_hitted->lasthitweapon = WeaponID;
+		ps_hitted->lasthitter = ps_hitter->GameID;
+		ps_hitted->lasthitweapon = HitS.weaponID;
 	};
 	//---------------------------------------
-	P.B.count	= BCount;
+	HitS.Write_Packet(P);
+	*/
 };
 
 void	game_sv_TeamDeathmatch::LoadTeams			()

@@ -559,10 +559,10 @@ void game_sv_GameState::OnHit (u16 id_hitter, u16 id_hitted, NET_Packet& P)
 	CSE_Abstract*		e_hitted		= get_entity_from_eid	(id_hitted	);
 	if (!e_hitter || !e_hitted) return;
 
-	CSE_Abstract*		a_hitter		= smart_cast <CSE_ALifeCreatureActor*> (e_hitter);
-	CSE_Abstract*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
+//	CSE_ALifeCreatureActor*		a_hitter		= smart_cast <CSE_ALifeCreatureActor*> (e_hitter);
+	CSE_ALifeCreatureActor*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
 
-	if (a_hitted && a_hitter)
+	if (a_hitted/* && a_hitter*/)
 	{
 		OnPlayerHitPlayer(id_hitter, id_hitted, P);
 		return;
@@ -598,7 +598,12 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			u16		id_dest = tNetPacket.r_u16();
 			u16     id_src  = tNetPacket.r_u16();
 			CSE_Abstract*	e_src	= get_entity_from_eid	(id_src	);
-			if(!e_src) break;
+			if(!e_src) 
+			{
+				game_PlayerState* ps = get_eid(id_src);
+				if (!ps) break;
+				id_src = ps->GameID;
+			};
 			OnHit(id_src, id_dest, tNetPacket);
 			ClientID clientID;clientID.setBroadcast();
 			m_server->SendBroadcast		(clientID,tNetPacket,net_flags(TRUE,TRUE));

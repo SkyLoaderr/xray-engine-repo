@@ -247,7 +247,7 @@ void CMissile::UpdateCL()
 void CMissile::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
+	if(!H_Parent() && getVisible() && m_pPhysicsShell && OnServer()) 
 	{
 		if(m_dwDestroyTime <= Level().timeServer()) 
 		{
@@ -295,11 +295,14 @@ u32 CMissile::State(u32 state)
 		} break;
 	case MS_HIDDEN:
 		{
-			m_bPending = false;
-			setVisible(FALSE);
-			setEnabled(FALSE);
-		
-			MSG1("Missile hidden");
+			if (H_Parent())
+			{
+				m_bPending = false;
+				setVisible(FALSE);
+				setEnabled(FALSE);
+
+				MSG1("Missile hidden");
+			};
 		} break;
 	case MS_THREATEN:
 		{
@@ -520,8 +523,12 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16			(id);
 			MSG1("regect");
 			//Msg("id [%d]",id);
+			bool IsFakeMissile = false;
 			if (m_fake_missile && (id == m_fake_missile->ID()))
+			{
 				m_fake_missile	= NULL;
+				IsFakeMissile = true;
+			}
 			else
 			{
 				MSG1("!no fake missile!");
@@ -533,6 +540,8 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 				break;
 			}
 			missile->H_SetParent(0);
+			if (IsFakeMissile && OnClient()) 
+				missile->set_destroy_time(m_dwDestroyTimeMax);
 			break;
 		}
 		//case GE_DESTROY:

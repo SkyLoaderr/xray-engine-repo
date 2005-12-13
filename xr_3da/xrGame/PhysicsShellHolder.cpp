@@ -46,7 +46,7 @@ void	CPhysicsShellHolder::PHHit(float P,Fvector &dir, CObject *who,s16 element,F
 //						 Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 void	CPhysicsShellHolder::Hit					(SHit* pHDS)
 {
-	PHHit(pHDS->P,pHDS->dir,pHDS->who,pHDS->element,pHDS->p_in_bone_space,pHDS->impulse,pHDS->hit_type);
+	PHHit(pHDS->damage(),pHDS->dir,pHDS->who,pHDS->element,pHDS->p_in_bone_space,pHDS->impulse,pHDS->hit_type);
 }
 
 void CPhysicsShellHolder::create_physic_shell	()

@@ -81,7 +81,7 @@ void CBreakableObject::renderable_Render()
 //					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 void	CBreakableObject::Hit					(SHit* pHDS)
 {
-	CheckHitBreak(pHDS->P,pHDS->hit_type);
+	CheckHitBreak(pHDS->damage(),pHDS->hit_type);
 	if(m_pPhysicsShell)
 	{
 		if(pHDS->hit_type==ALife::eHitTypeExplosion)

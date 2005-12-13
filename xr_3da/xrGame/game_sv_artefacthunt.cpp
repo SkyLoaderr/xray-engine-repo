@@ -885,11 +885,11 @@ void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 	{
 		u32		CurTime = Level().timeServer();
 		u32		dTime = m_dwNextReinforcementTime - CurTime;
-		P.w_u8			(1);
+		P.w_u32			(1);
 		P.w_s32			(dTime);
 	}
 	else
-		P.w_u8			(0);
+		P.w_u32			(0);
 };
 
 void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
@@ -1211,6 +1211,16 @@ bool	game_sv_ArtefactHunt::Player_Check_Rank		(game_PlayerState* ps)
 	return true;
 }
 //  [7/29/2005]
+
+void	game_sv_ArtefactHunt::OnPlayerHitPlayer_Case	(game_PlayerState* ps_hitter, game_PlayerState* ps_hitted, SHit* pHitS)
+{
+	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_ONBASE) && g_bShildedBases)
+	{
+		pHitS->power = 0;
+		pHitS->impulse = 0;
+	}
+	inherited::OnPlayerHitPlayer_Case(ps_hitter, ps_hitted, pHitS);
+};
 
 void	game_sv_ArtefactHunt::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P)
 {

@@ -247,13 +247,13 @@ void	CHelicopter::Hit							(SHit* pHDS)
 	bonesIt It = m_hitBones.find(pHDS->element);
 	if(It != m_hitBones.end() && pHDS->hit_type==ALife::eHitTypeFireWound) {
 		float curHealth = GetfHealth();
-		curHealth -= pHDS->P*It->second*10.0f;
+		curHealth -= pHDS->damage()*It->second*10.0f;
 		SetfHealth(curHealth);
 #ifdef DEBUG
 		if (bDebug)	Log("----Helicopter::PilotHit(). health=",curHealth);
 #endif
 	}else {
-		float hit_power		= pHDS->P/100.f;
+		float hit_power		= pHDS->damage()/100.f;
 		hit_power			*= m_HitTypeK[pHDS->hit_type];
 
 		SetfHealth(GetfHealth()-hit_power);
@@ -267,7 +267,7 @@ void	CHelicopter::Hit							(SHit* pHDS)
 		smart_cast<CAI_Stalker*>(pHDS->who)		||
 		smart_cast<CCustomZone*>(pHDS->who) )
 		){
-			callback(GameObject::eHelicopterOnHit)(pHDS->P,pHDS->impulse,pHDS->hit_type,pHDS->who->ID());
+			callback(GameObject::eHelicopterOnHit)(pHDS->damage(),pHDS->impulse,pHDS->hit_type,pHDS->who->ID());
 		}
 
 }

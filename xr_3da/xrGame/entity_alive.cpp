@@ -281,7 +281,7 @@ void	CEntityAlive::Hit							(SHit* pHDS)
 
 	if (HDS.hit_type != ALife::eHitTypeTelepatic){
 		//добавить кровь на стены
-		BloodyWallmarks (HDS.P, HDS.dir, HDS.element, HDS.p_in_bone_space);
+		BloodyWallmarks (HDS.damage(), HDS.dir, HDS.element, HDS.p_in_bone_space);
 	}
 
 	//-------------------------------------------
@@ -294,7 +294,7 @@ void	CEntityAlive::Hit							(SHit* pHDS)
 		CEntityAlive* EA = smart_cast<CEntityAlive*>(HDS.who);
 		if(EA && EA->g_Alive() && EA->ID() != ID())
 		{
-			RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), HDS.P);
+			RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), HDS.damage());
 			RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
 		}
 	}
