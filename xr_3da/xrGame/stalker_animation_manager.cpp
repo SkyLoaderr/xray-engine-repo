@@ -109,7 +109,7 @@ void CStalkerAnimationManager::update						()
 			m_skeleton_animated->UpdateTracks	();
 
 		if (!script_animations().empty()) {
-#ifdef DEBUG
+#if 0//def DEBUG
 			if (setup_storage()) {
 				Msg				("! Do not setup script animations while strapping/unstrapping");
 				Msg				("! ERROR description :");
@@ -120,8 +120,8 @@ void CStalkerAnimationManager::update						()
 				Msg				("! animation  %s",m_skeleton_animated->LL_MotionDefName_dbg(script_animations().front().animation()));
 				Msg				("! animations %d",script_animations().size());
 			}
-#endif
 			VERIFY2				(!setup_storage(),"Do not setup script animations while strapping/unstrapping");
+#endif
 
 			global().reset		();
 #ifndef USE_HEAD_BONE_PART_FAKE
