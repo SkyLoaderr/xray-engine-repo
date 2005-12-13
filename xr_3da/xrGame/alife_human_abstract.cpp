@@ -82,7 +82,7 @@ void CSE_ALifeHumanAbstract::on_unregister							()
 
 void CSE_ALifeHumanAbstract::on_spawn								()
 {
-	inherited::on_spawn	();
+	inherited1::on_spawn	();
 	specific_character	();
 }
 
