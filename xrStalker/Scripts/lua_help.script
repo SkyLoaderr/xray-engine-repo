@@ -294,8 +294,16 @@ C++ class story_ids {
     const bar_hunter_toz = 502;
     const bar_svoboda_ambush_tiran = 514;
     const bar_water_tower = 508;
+    const cit_actor_escape_car_zone = 1205;
+    const cit_actor_escape_zone = 1203;
+    const cit_actor_weapon_zone = 1202;
+    const cit_bandits_base_zone = 1207;
     const cit_doctor = 1200;
+    const cit_gorsovet_zone = 1208;
     const cit_heli = 1201;
+    const cit_killers_base_zone = 1206;
+    const cit_level_exit_zone = 1204;
+    const cit_vp = 1209;
     const darscape_helicopter = 1500;
     const esc_anomaly_field_gravy = 19;
     const esc_anomaly_field_mincer = 18;
@@ -444,6 +452,7 @@ C++ class story_ids {
     const warlab = 1400;
     const yan_ecolog_help = 900;
     const yan_general_ecolog = 902;
+    const yan_labx16_documents = 917;
     const yan_labx16switcher_lamp1 = 908;
     const yan_labx16switcher_lamp2 = 909;
     const yan_labx16switcher_lamp3 = 910;
@@ -1545,18 +1554,14 @@ C++ class vertex_evaluator {
 };
 
 C++ class artifact_merger {
-    function spawn_mercury_ball();
+    function get_mercury_ball_num();
     function spawn_black_drops();
     function spawn_gravi();
-    function get_needles_num();
-    function destroy_gravi(number);
-    function spawn_needles();
-    function get_mercury_ball_num();
-    function destroy_needles(number);
     function get_black_drops_num();
+    function get_needles_num();
     function get_gravi_num();
-    function destroy_mercury_ball(number);
-    function destroy_black_drops(number);
+    function spawn_mercury_ball();
+    function spawn_needles();
 };
 
 C++ class CBastArtefact : CGameObject {
@@ -2171,7 +2176,7 @@ C++ class render_device {
     property time_delta;
     property width;
     
-    function time_global();
+    function time_global(const render_device*);
     function is_paused(render_device*);
     function pause(render_device*, boolean);
 };
@@ -4308,7 +4313,7 @@ C++ class game_object {
     function hide_weapon();
     function memory_time(const game_object&);
     function dont_has_info(string);
-    function set_home(string, number, number);
+    function set_home(string, number, number, boolean);
     function best_item();
     function disable_info_portion(string);
     function add_animation(string);
@@ -4323,8 +4328,8 @@ C++ class game_object {
     function who_hit_name();
     function get_enemy() const;
     function set_detail_path_type(enum DetailPathManager::EDetailPathType);
-    function set_node_evaluator();
-    function set_node_evaluator(vertex_evaluator*);
+    function extrapolate_length() const;
+    function extrapolate_length(number);
     function active_item();
     function mental_state() const;
     function play_cycle(string);
@@ -4339,15 +4344,17 @@ C++ class game_object {
     function section() const;
     function best_sound() const;
     function get_current_point_index();
-    function set_alien_control(boolean);
     function make_object_visible_somewhen(game_object*);
-    function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
+    function set_alien_control(boolean);
     function jump(const vector&, number);
+    function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
     function info_clear();
-    function fake_death_fall_down();
+    function set_node_evaluator();
+    function set_node_evaluator(vertex_evaluator*);
     function inside(const vector&, number) const;
     function inside(const vector&) const;
     function restore_default_start_dialog();
+    function debug_planner(const action_planner*);
     function set_patrol_extrapolate_callback();
     function set_patrol_extrapolate_callback(const function<boolean>&);
     function set_patrol_extrapolate_callback(const function<boolean>&, object);
@@ -4416,7 +4423,7 @@ C++ class game_object {
     function squad() const;
     function reset_action_queue();
     function target_body_state() const;
-    function get_sound_info();
+    function story_id() const;
     function head_orientation() const;
     function change_character_reputation(number);
     function script(boolean, string);
@@ -4532,18 +4539,17 @@ C++ class game_object {
     function get_manual_invisibility();
     function get_current_holder();
     function position() const;
+    function fake_death_fall_down();
     function set_desired_position();
     function set_desired_position(const vector*);
     function remove_sound(number);
     function vertex_in_direction(number, vector, number) const;
     function set_actor_direction(number);
-    function set_ammo_elapsed(number);
     function set_body_state(enum MonsterSpace::EBodyState);
-    function story_id() const;
+    function set_ammo_elapsed(number);
     function character_community();
     function action_by_index(number);
-    function extrapolate_length() const;
-    function extrapolate_length(number);
+    function get_sound_info();
     function set_invisible(boolean);
     function restore_ignore_monster_threshold();
     function game_vertex_id() const;
