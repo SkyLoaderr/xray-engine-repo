@@ -78,6 +78,8 @@ class "se_smart_terrain" ( cse_alife_smart_zone )
 
 function se_smart_terrain:__init( section ) super( section )
 --	log( "se_smart_terrain::se_smart_terrain called!" )
+
+	self.got_se_objs = false
 end
 
 function se_smart_terrain:detect_probability()
@@ -89,7 +91,7 @@ function se_smart_terrain:print()
 	printf( "NPCs:" )
 	if self.npc_info then
 		for id, v in pairs( self.npc_info ) do
-			printf( "    %d", id )
+			printf( "    %d %s", id, v.name )
 		end
 	end
 end
@@ -196,6 +198,8 @@ function se_smart_terrain:get_se_objs()
 
 		self:fill_npc_info( obj, v )
 	end
+
+	self.got_se_objs = true
 end
 
 -- заполнить информацию о персонаже
@@ -387,6 +391,10 @@ function se_smart_terrain:enabled( obj )
 		return false
 	end
 	--------
+
+	if not self.got_se_objs then
+		self:get_se_objs()
+	end
 
 	if self:is_gulag_available() then
 --		if obj:clsid() == clsid.GROUP then -- TODO
@@ -588,6 +596,8 @@ end
 function se_smart_terrain:get_level_name()
 --	return "chugai_test"
 
+	printf( "[smart_terrain %s] is on level %s", self:name(), alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() ) )
+
 	return alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() )
 end
 
@@ -606,8 +616,6 @@ function se_smart_terrain:on_register()
 
 	self:fill_monster_classes()
 
-	self:get_se_objs()
-
 	if not self.gparams.preset_name then
 		self.gparams.preset_name = self:get_level_name()
 	end
@@ -620,12 +628,17 @@ function se_smart_terrain:on_register()
 end
 
 -- ќбновление. ¬ онлайне вызываетс€ через binder.
+-- ≈сли мужиков в гулаге больше не осталось или услови€ существовани€ гулага не выполн€ютс€, то убрать гулаг.
 function se_smart_terrain:update()
 --	log( "se_smart_terrain::update called!" )
 	cse_alife_smart_zone.update( self )
 
 	if not self.gulag_working then
 		return
+	end
+
+	if not self.got_se_objs then
+		self:get_se_objs()
 	end
 
 --	if self.duration_end < game.time() then
@@ -649,7 +662,6 @@ function se_smart_terrain:update()
 				end
 			end
 
-			-- если мужиков в гулаге больше не осталось или услови€ существовани€ гулага не выполн€ютс€, то убрать гулаг
 --			if sn == 0 or not self:is_gulag_available() then
 			if sn == 0 then
 				self:remove_gulag()
