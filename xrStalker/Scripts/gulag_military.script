@@ -463,7 +463,10 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 13, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.profile_name == "mil_Svoboda_specnaz"
+		            end
 		}
 	table.insert(sj, t)		
 	-- 
@@ -471,7 +474,10 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 13, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = ""
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.profile_name == "mil_Svoboda_specnaz"
+		            end
 		}
 	table.insert(sj, t)		
 	-- 
