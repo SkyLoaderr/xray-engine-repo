@@ -16,7 +16,7 @@ public:
 	T			m_radius;
 public:
 	IC SelfRef	invalidate	()	{ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0; return *this; }
-    IC int		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T afT[2])
+    IC int		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T afT[2]) const
     {
         T fEpsilon = 1e-12f;
 
@@ -104,7 +104,7 @@ public:
         fDiscr = fB*fB - fA*fC;
         if ( fDiscr < 0.0f ){
             // line does not intersect cylinder wall
-            assert( iQuantity == 0 );
+            VERIFY( iQuantity == 0 );
             return 0;
         }else if ( fDiscr > 0.0f ){
             fRoot = _sqrt(fDiscr);
@@ -145,13 +145,27 @@ public:
 
         return iQuantity;
     }
-    IC bool		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T& dist)
+	enum ERP_Result{
+		rpNone			= 0,
+		rpOriginInside	= 1,
+		rpOriginOutside	= 2,
+		fcv_forcedword	= u32(-1)
+	};
+    IC ERP_Result	intersect	(const _vector3<T>& start, const _vector3<T>& dir, T& dist) const
     {
-    	T afT[2];
-        int cnt = intersect(start,dir,afT);
-        bool bResult=false;
-        for (int k=0; k<cnt; k++) if (afT[k]<dist){ dist = afT[k]; bResult=true; }
-        return bResult;
+    	T				afT[2];
+        int cnt;
+		if (0!=(cnt=intersect(start,dir,afT))){
+			bool		o_inside	= false;
+			bool		b_result	= false;
+			for (int k=0; k<cnt; k++){
+				if (afT[k]<0.f)		{o_inside=true;	continue;		}
+				if (afT[k]<dist)	{dist=afT[k];	b_result=true;	}
+			}
+			return		b_result?(o_inside?rpOriginInside:rpOriginOutside):rpNone;
+		}else{
+			return		rpNone;
+		}
     }
 //----------------------------------------------------------------------------
 };

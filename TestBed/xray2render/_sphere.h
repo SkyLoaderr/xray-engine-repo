@@ -17,7 +17,50 @@ public:
 		fcv_forcedword = u32(-1)
 	};
 	// Ray-sphere intersection
-	IC ERP_Result intersect(const _vector3<T>& S, const _vector3<T>& D, T& range) const	
+	IC ERP_Result intersect (const _vector3<T>& S, const _vector3<T>& D, T range, int& quantity, T afT[2]) const
+	{
+		// set up quadratic Q(t) = a*t^2 + 2*b*t + c
+		_vector3<T> kDiff;  kDiff.sub	(S,P);
+		T fA				= range*range;
+		T fB				= kDiff.dotproduct(D)		* range;
+		T fC				= kDiff.square_magnitude()	- R*R;
+		ERP_Result result	= rpNone;
+
+		T fDiscr			= fB*fB - fA*fC;
+		if ( fDiscr < (T)0.0 ){
+			quantity		= 0;
+		} else if ( fDiscr > (T)0.0 ){
+			T fRoot 		= _sqrt(fDiscr);
+			T fInvA 		= ((T)1.0)/fA;
+			afT[0]			= range*(-fB - fRoot)*fInvA;
+			afT[1]			= range*(-fB + fRoot)*fInvA;
+			if ( afT[0] >= (T)0.0 )		{	quantity	= 2;					result = rpOriginOutside;	}
+			else if ( afT[1] >= (T)0.0 ){	quantity	= 1; afT[0] = afT[1];	result = rpOriginInside;	}
+			else							quantity	= 0;
+		} else {
+			afT[0]			= range*(-fB/fA);
+			if ( afT[0] >= (T)0.0 )		{	quantity	= 1;					result = rpOriginOutside;	}
+			else							quantity	= 0;
+		}
+		return result;
+	}
+
+	IC ERP_Result intersect	(const _vector3<T>& start, const _vector3<T>& dir, T& dist) const
+	{
+		int				quantity;
+		T				afT[2];
+		ERP_Result		result	= intersect(start,dir,dist,quantity,afT);
+		if (rpNone!=result){
+			VERIFY		(quantity>0);
+			if (afT[0]<dist){
+				dist	= afT[0];
+				return	result;
+			}
+		}
+		return			rpNone;
+	}
+
+	IC ERP_Result intersect2(const _vector3<T>& S, const _vector3<T>& D, T& range) const	
     {
 		_vector3<T> Q;	Q.sub(P,S);
 	
