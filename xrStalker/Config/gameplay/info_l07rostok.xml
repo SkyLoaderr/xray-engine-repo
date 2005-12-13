@@ -68,6 +68,7 @@
 	<info_portion id="bar_dolg_base_rules_start">
 		<task>bar_dolg_base_rules</task>
 	</info_portion>
+	<info_portion id="bar_dolg_base_rules_talk"></info_portion>	
 	<info_portion id="bar_dolg_base_rules_finish"></info_portion>	
 
 
