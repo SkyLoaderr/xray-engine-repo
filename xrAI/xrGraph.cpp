@@ -40,9 +40,9 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
-CGameGraph::CHeader	tGraphHeader;
-CGameGraph::CEdge		*tpaEdges;		// graph edges
-CGameGraph::CEdge		*tpaFullEdges;	// graph edges
+CGameGraph::CHeader				tGraphHeader;
+CGameGraph::CEdge				*tpaEdges;		// graph edges
+CGameGraph::CEdge				*tpaFullEdges;	// graph edges
 xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
 xr_stack<u32>					dwaStack;		// stack
 u32								*dwaSortOrder;  // edge sort order
@@ -82,12 +82,12 @@ void vfLoadGraphPoints(LPCSTR name)
 			i++;
 		}
 		F_entity_Destroy					(E);
-		if (i % 100 == 0)
+		
+		if (i && ((i % 100) == 0))
 			Status							("Vertices read : %d",i);
 	}
-	O->close								();
+	FS.r_close								(F);
 	R_ASSERT2								(!tpaGraph.empty(),"There are no graph points!");
-	//xr_delete								(pSettings);
 	Status									("Vertices read : %d",i);
 }
 
@@ -459,8 +459,9 @@ void xrBuildGraph(LPCSTR name)
 	tpaGraph.erase		(I,tpaGraph.end());
 
 	dwGraphPoints = tpaGraph.size();
-	Phase("Removing incoherent graph points");
-	vfRemoveIncoherentGraphPoints(tpAI_Map,dwGraphPoints);
+//	we shouldn't do this, since AI-map should be verified
+//	Phase("Removing incoherent graph points");
+//	vfRemoveIncoherentGraphPoints(tpAI_Map,dwGraphPoints);
 
 	R_ASSERT2				(tpaGraph.size(), "There are no graph points!");
 
@@ -508,12 +509,14 @@ void xrBuildGraph(LPCSTR name)
 	::CGraphSaver	tGraphSaver(name,tpAI_Map);
 
 	Phase("Freeing graph being built");
-	Progress(0.0f);
-	xr_free(tpaEdges);
-	xr_free(dwaSortOrder);
-	xr_delete(tpAI_Map);
-	tpaGraph.clear();
-	Progress(1.0f);
+	
+	Progress		(0.0f);
+	xr_free			(tpaEdges);
+	xr_free			(dwaSortOrder);
+	xr_delete		(tpAI_Map);
+	tpaGraph.clear	();
+	
+	Progress		(1.0f);
 	
 	Msg("\nBuilding level %s successfully completed",name);
 }

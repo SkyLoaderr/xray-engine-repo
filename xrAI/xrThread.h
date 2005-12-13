@@ -21,6 +21,7 @@ public:
 		thMonitor			= FALSE;
 		thDestroyOnComplete	= TRUE;
 	}
+	virtual				~CThread(){}
 	void				Start	()
 	{
 		thread_spawn	(startup,"worker-thread",1024*1024,this);

@@ -136,9 +136,13 @@ void Startup(LPSTR     lpCmdLine)
 //						path_test			(prjName);
 //						test_smooth_path	(prjName);
 //						test_hierarchy		(prjName);
-						connectivity_test	(prjName);
+//						connectivity_test	(prjName);
 //						test_goap			();
 //						smart_cover			(prjName);
+						for (int i=0; i<100; ++i) {
+							xrBuildGraph		(prjName);
+//							xrBuildCrossTable	(prjName);
+						}
 					}
 					else
 						if (strstr(cmd,"-c")) {
