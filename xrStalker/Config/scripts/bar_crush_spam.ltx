@@ -42,7 +42,7 @@ on_timer = 7000 | sr_idle@freedom %=rostok_kruglov_tip_2 +bar_rescue_research_st
 
 [sr_idle@freedom]
 on_info = %=bar_check_heli_scene%
-on_timer = 12000| sr_idle@ecolog_2 %=bar_freedom_spam_1%
+on_timer = 12000|{+bar_freedom_attack_ecolog} sr_idle@checker ,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} sr_idle@ecolog_2 %=bar_freedom_spam_1%
                                                                                                                                                                                             	
 
 [sr_idle@ecolog_2]
