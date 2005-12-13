@@ -476,7 +476,6 @@ public:
 	virtual	void					vfDetachAll				(bool bFictitious = false);
 	virtual void					spawn_supplies			();
 	virtual void					on_surge				();
-	virtual void					on_spawn				();
 	virtual void					on_register				();
 	virtual void					on_unregister			();
 	virtual	void					add_online				(const bool &update_registries);

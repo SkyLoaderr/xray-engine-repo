@@ -78,6 +78,7 @@ CAI_Space::~CAI_Space				()
 
 void CAI_Space::load				(LPCSTR level_name)
 {
+//	Msg						("level %s",level_name);
 	unload					(true);
 
 #ifdef DEBUG

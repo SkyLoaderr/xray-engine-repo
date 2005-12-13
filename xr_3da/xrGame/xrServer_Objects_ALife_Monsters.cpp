@@ -1965,14 +1965,6 @@ void CSE_ALifeHumanAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"Group behaviour"),			&m_flags,			flGroupBehaviour);
 }
 
-#ifdef XRGAME_EXPORTS
-void CSE_ALifeHumanAbstract::spawn_supplies	()
-{
-	inherited1::spawn_supplies	();
-	inherited2::spawn_supplies	();
-}
-#endif
-
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanStalker
 //////////////////////////////////////////////////////////////////////////

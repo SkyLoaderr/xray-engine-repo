@@ -80,10 +80,11 @@ void CSE_ALifeHumanAbstract::on_unregister							()
 		ai().alife().groups().object(m_group_id).unregister_member	(ID);
 }
 
-void CSE_ALifeHumanAbstract::on_spawn								()
+void CSE_ALifeHumanAbstract::spawn_supplies							()
 {
-	inherited2::on_spawn	();
-	specific_character	();
+	specific_character			();
+	inherited1::spawn_supplies	();
+	inherited2::spawn_supplies	();
 }
 
 void CSE_ALifeHumanAbstract::add_online								(const bool &update_registries)

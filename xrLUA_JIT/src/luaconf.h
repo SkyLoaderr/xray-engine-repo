@@ -175,7 +175,8 @@
 ** CHANGE that only if you need to debug Lua.
 */
 #define lua_assert(c)		((void)0)
-
+//#include <assert.h>
+//#define lua_assert(x) assert(x)
 
 /*
 @@ LUA_QL describes how error messages quote program elements.
