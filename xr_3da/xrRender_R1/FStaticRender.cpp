@@ -254,8 +254,8 @@ extern float		r_ssaHZBvsTEX;
 
 ICF bool			pred_sp_sort		(ISpatial* _1, ISpatial* _2)
 {
-	float	d1		= _1->spatial.center.distance_to_sqr(Device.vCameraPosition);
-	float	d2		= _2->spatial.center.distance_to_sqr(Device.vCameraPosition);
+	float	d1		= _1->spatial.sphere.P.distance_to_sqr(Device.vCameraPosition);
+	float	d2		= _2->spatial.sphere.P.distance_to_sqr(Device.vCameraPosition);
 	return	d1<d2;
 }
 
@@ -373,7 +373,7 @@ void CRender::Calculate				()
 				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 				{
 					CFrustum&	view	= sector->r_frustums[v_it];
-					if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
+					if (!view.testSphere_dirty(spatial->spatial.sphere.P,spatial->spatial.sphere.R))	continue;
 
 					if (spatial->spatial.type & STYPE_RENDERABLE)
 					{

@@ -43,15 +43,15 @@ void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 		if (CO->getDestroy()) continue;
 
 		// Energy and signal
-		VERIFY				(_valid((*it)->spatial.center));
-		float dist			= p->position.distance_to((*it)->spatial.center);
+		VERIFY				(_valid((*it)->spatial.sphere.P));
+		float dist			= p->position.distance_to((*it)->spatial.sphere.P);
 		if (dist>p->max_ai_distance) continue;
 		VERIFY				(_valid(dist));
 		VERIFY2				(!fis_zero(p->max_ai_distance), S->handle->file_name());
 		float Power			= (1.f-dist/p->max_ai_distance)*p->volume;
 		VERIFY				(_valid(Power));
 		if (Power>EPS_S)	{
-			float occ		= Sound->get_occlusion_to((*it)->spatial.center,p->position);
+			float occ		= Sound->get_occlusion_to((*it)->spatial.sphere.P,p->position);
 			VERIFY			(_valid(occ))	;
 			Power			*= occ;
 			if (Power>EPS_S)	{
@@ -121,7 +121,7 @@ IC int	CObjectSpace::GetNearest	( xr_vector<CObject*>&	q_nearest, const Fvector 
 		CObject* O				= (*it)->dcast_CObject		();
 		if (0==O)				continue;
 		if (O==ignore_object)	continue;
-		Fsphere mS				= { O->spatial.center, O->spatial.radius	};
+		Fsphere mS				= { O->spatial.sphere.P, O->spatial.sphere.R	};
 		if (Q.intersect(mS))	q_nearest.push_back(O);
 	}
 
@@ -131,7 +131,7 @@ IC int	CObjectSpace::GetNearest	( xr_vector<CObject*>&	q_nearest, const Fvector 
 IC int   CObjectSpace::GetNearest( xr_vector<CObject*>&	q_nearest, ICollisionForm* obj, float range)
 {
 	CObject*	O		= obj->Owner	();
-	return				GetNearest( q_nearest, O->spatial.center, range + O->spatial.radius, O );
+	return				GetNearest( q_nearest, O->spatial.sphere.P, range + O->spatial.sphere.R, O );
 }
 
 //----------------------------------------------------------------------

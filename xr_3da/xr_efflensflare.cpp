@@ -285,7 +285,7 @@ void CLensFlare::OnFrame(int id)
 #else
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
 	STranspParam TP			(this,Device.vCameraPosition,vSunDir,1000.f,EPS_L);
-	collide::ray_defs RD	(TP.P,TP.D,TP.f,0,collide::rqtBoth);
+	collide::ray_defs RD	(TP.P,TP.D,TP.f,CDB::OPT_CULL,collide::rqtBoth);
 	if (m_ray_cache.result&&m_ray_cache.similar(TP.P,TP.D,TP.f)){
 		// similar with previous query == 0
 		TP.vis				= 0.f;

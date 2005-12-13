@@ -229,22 +229,12 @@ public:
 		{
 			ISpatial*		S	= *_it;
 			if (mask!=(S->spatial.type&mask))	continue;
-
-			Fvector&		sC	= S->spatial.center;
-			float			sR	= S->spatial.radius;
-
-			Fvector Q;			Q.sub				(sC,ray.pos);
-			float	c_sqr		= Q.square_magnitude();
-			float	v			= Q.dotproduct		(ray.fwd_dir);
-			float	d			= sR*sR - (c_sqr - v*v);
-			if (d > 0)			{
-				// sphere intersected (assume object intersects too)
-				float	_distance		= v - _sqrt(d);
-				if (_distance<range)	{
-					if (b_nearest)					{ range=_distance; range2=_distance*_distance; }
-					space->q_result->push_back		(S);
-					if (b_first)					return;
-				}
+			Fsphere&		sS	= S->spatial.sphere;
+			float _distance		= range;
+			if (Fsphere::rpNone!=sS.intersect(ray.pos,ray.fwd_dir,_distance)){
+				if (b_nearest)				{ range=_distance; range2=_distance*_distance; }
+				space->q_result->push_back	(S);
+				if (b_first)				return;
 			}
 		}
 

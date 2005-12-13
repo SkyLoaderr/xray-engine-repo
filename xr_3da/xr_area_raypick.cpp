@@ -128,7 +128,7 @@ BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float ra
 				}
 #ifdef DEBUG
 				if (bDebug){
-					Fsphere	S;		S.P = spatial->spatial.center; S.R = spatial->spatial.radius;
+					Fsphere	S;		S.P = spatial->spatial.sphere.P; S.R = spatial->spatial.sphere.R;
 					dbg_S.push_back	(mk_pair(S,C));
 				}
 #endif
@@ -144,10 +144,139 @@ BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float ra
 BOOL CObjectSpace::RayQuery		(collide::rq_results& dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object)
 {
 	Lock.Enter		();
-	BOOL	_res	= _RayQuery	(dest,R,CB,user_data,tb,ignore_object);
+	BOOL	_res	= _RayQuery(dest,R,CB,user_data,tb,ignore_object);
 	Lock.Leave		();
 	return	_res;
 }
+BOOL CObjectSpace::_RayQuery2	(collide::rq_results& r_dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object)
+{
+	// initialize query
+	r_dest.r_clear		();
+	r_temp.r_clear		();
+
+	rq_target	s_mask	=	rqtStatic;
+	rq_target	d_mask	=	rq_target(	((R.tgt&rqtObject)	?rqtObject:rqtNone		)|
+										((R.tgt&rqtObstacle)?rqtObstacle:rqtNone	)|
+										((R.tgt&rqtShape)	?rqtShape:rqtNone)		);
+	u32			d_flags =	STYPE_COLLIDEABLE|((R.tgt&rqtObstacle)?STYPE_OBSTACLE:0)|((R.tgt&rqtShape)?STYPE_SHAPE:0);
+
+	// Test static
+	if (R.tgt&s_mask){ 
+		xrc.ray_options	(R.flags);
+		xrc.ray_query	(&Static,R.start,R.dir,R.range);
+		if (xrc.r_count()){	
+			CDB::RESULT* _I	= xrc.r_begin();
+			CDB::RESULT* _E = xrc.r_end	();
+			for (; _I!=_E; _I++)
+				r_temp.append_result(rq_result().set(0,_I->range,_I->id));
+		}
+	}
+	// Test dynamic
+	if (R.tgt&d_mask){ 
+		// Traverse object database
+		g_SpatialSpace->q_ray	(r_spatial,0,d_flags,R.start,R.dir,R.range);
+		for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
+			CObject*	collidable		= r_spatial[o_it]->dcast_CObject();
+			if			(0==collidable)				continue;
+			if			(collidable==ignore_object)	continue;
+			ICollisionForm*	cform		= collidable->collidable.model;
+			ECollisionFormType tp		= collidable->collidable.model->Type();
+			if (((R.tgt&(rqtObject|rqtObstacle))&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
+				if (tb&&!tb(R,collidable,user_data))continue;
+				cform->_RayQuery(R,r_temp);
+			}
+		}
+	}
+	if (r_temp.r_count()){
+		r_temp.r_sort		();
+		collide::rq_result* _I = r_temp.r_begin	();
+		collide::rq_result* _E = r_temp.r_end	();
+		for (; _I!=_E; _I++){
+			r_dest.append_result(*_I);
+			if (!(CB?CB(*_I,user_data):TRUE))						return r_dest.r_count();
+			if (R.flags&(CDB::OPT_ONLYNEAREST|CDB::OPT_ONLYFIRST))	return r_dest.r_count();
+		}
+	}
+	return r_dest.r_count();
+}
+
+BOOL CObjectSpace::_RayQuery3	(collide::rq_results& r_dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object)
+{
+	// initialize query
+	r_dest.r_clear			();
+
+	ray_defs	d_rd		(R);
+	ray_defs	s_rd		(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|R.flags,R.tgt);
+	rq_target	s_mask		=	rqtStatic;
+	rq_target	d_mask		=	rq_target(	((R.tgt&rqtObject)	?rqtObject:rqtNone		)|
+											((R.tgt&rqtObstacle)?rqtObstacle:rqtNone	)|
+											((R.tgt&rqtShape)	?rqtShape:rqtNone)		);
+	u32			d_flags		=	STYPE_COLLIDEABLE|((R.tgt&rqtObstacle)?STYPE_OBSTACLE:0)|((R.tgt&rqtShape)?STYPE_SHAPE:0);
+	float		d_range		= 0.f;
+
+	do{
+		r_temp.r_clear		();
+		if (R.tgt&s_mask){
+			// static test allowed
+
+			// test static
+			xrc.ray_options		(s_rd.flags);
+			xrc.ray_query		(&Static,s_rd.start,s_rd.dir,s_rd.range);
+
+			if (xrc.r_count())	{	
+				VERIFY			(xrc.r_count()==1);
+				rq_result		s_res;
+				s_res.set		(0,xrc.r_begin()->range,xrc.r_begin()->id);
+				// update dynamic test range
+				d_rd.range		= s_res.range;
+				// set next static start & range
+				s_rd.range		-= (s_res.range+EPS_L);
+				s_rd.start.mad	(s_rd.dir,s_res.range+EPS_L);
+				s_res.range		= R.range-s_rd.range-EPS_L;
+				r_temp.append_result(s_res);
+			}else{
+				d_rd.range		= s_rd.range;
+			}
+		}
+		// test dynamic
+		if (R.tgt&d_mask)		{ 
+			// Traverse object database
+			g_SpatialSpace->q_ray	(r_spatial,0,d_flags,d_rd.start,d_rd.dir,d_rd.range);
+			for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
+				CObject*	collidable		= r_spatial[o_it]->dcast_CObject();
+				if			(0==collidable)				continue;
+				if			(collidable==ignore_object)	continue;
+				ICollisionForm*	cform		= collidable->collidable.model;
+				ECollisionFormType tp		= collidable->collidable.model->Type();
+				if (((R.tgt&(rqtObject|rqtObstacle))&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
+					if (tb&&!tb(d_rd,collidable,user_data))continue;
+					u32 r_cnt				= r_temp.r_count();
+					cform->_RayQuery		(d_rd,r_temp);
+					for (int k=r_cnt; k<r_temp.r_count(); k++){
+						rq_result& d_res	= *(r_temp.r_begin()+k);
+						d_res.range			+= d_range;
+					}
+				}
+			}
+		}
+		// set dynamic ray def
+		d_rd.start			= s_rd.start;
+		d_range				= R.range-s_rd.range;
+		if (r_temp.r_count()){
+			r_temp.r_sort		();
+			collide::rq_result* _I = r_temp.r_begin	();
+			collide::rq_result* _E = r_temp.r_end	();
+			for (; _I!=_E; _I++){
+				r_dest.append_result(*_I);
+				if (!(CB?CB(*_I,user_data):TRUE))	return r_dest.r_count();
+				if (R.flags&CDB::OPT_ONLYFIRST)		return r_dest.r_count();
+			}
+		}
+		if ((R.flags&(CDB::OPT_ONLYNEAREST|CDB::OPT_ONLYFIRST)) && r_dest.r_count()) return r_dest.r_count();
+	}while(r_temp.r_count());
+	return r_dest.r_count()	;
+}
+
 BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object)
 {
 	// initialize query
@@ -179,12 +308,14 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 					s_rd.range	-=	(s_res.range+EPS_L);
 					s_rd.start.mad	(s_rd.dir,s_res.range+EPS_L);
 					s_res.range	= R.range-s_rd.range-EPS_L;
+					VERIFY	(s_res.range>=0.f);
 				}
 			}
 			if (!s_res.valid())	sd_test.set(s_mask,FALSE);
 		}
 		if ((R.tgt&d_mask)&&sd_test.is_any(d_mask)&&(next_test&d_mask)){ 
 			r_temp.r_clear	();
+
 			// Traverse object database
 			g_SpatialSpace->q_ray	(r_spatial,0,d_flags,d_rd.start,d_rd.dir,d_rd.range);
 			// Determine visibility for dynamic part of scene
@@ -198,6 +329,7 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 					if (tb&&!tb(d_rd,collidable,user_data))continue;
 					cform->_RayQuery(d_rd,r_temp);
 				}
+				VERIFY		((0==r_temp.r_count()) || (r_temp.r_count()&&(r_temp.r_begin()->range>=0.f)));
 			}
 			if (r_temp.r_count()){
 				// set new dynamic start & range
@@ -205,6 +337,7 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 				d_rd.range	-= (d_res.range+EPS_L);
 				d_rd.start.mad(d_rd.dir,d_res.range+EPS_L);
 				d_res.range	= R.range-d_rd.range-EPS_L;
+				VERIFY	(d_res.range>=0.f);
 			}else{
 				sd_test.set(d_mask,FALSE);
 			}

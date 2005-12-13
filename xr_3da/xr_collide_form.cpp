@@ -129,32 +129,46 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-IC BOOL RAYvsOBB(const Fmatrix& IM, Fbox& B, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
+IC bool RAYvsOBB(const Fmatrix& IM, const Fvector& b_hsize, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
 {
+	Fbox E	= {-b_hsize.x, -b_hsize.y, -b_hsize.z,	b_hsize.x,	b_hsize.y,	b_hsize.z};
 	// XForm world-2-local
 	Fvector	SL,DL,PL;
 	IM.transform_tiny	(SL,S);
 	IM.transform_dir	(DL,D);
 
 	// Actual test
-	Fbox::ERP_Result rp_res = B.Pick2(SL,DL,PL);
-	if ((rp_res==Fbox::rpOriginOutside)||(!bCull&&(rp_res==Fbox::rpOriginInside)))
-	{
+	Fbox::ERP_Result rp_res = E.Pick2(SL,DL,PL);
+	if ((rp_res==Fbox::rpOriginOutside)||(!bCull&&(rp_res==Fbox::rpOriginInside))){
 		float d = PL.distance_to_sqr(SL);
 		if (d<R*R) {
-			R = _sqrt(d);
-			return TRUE;
+			R		= _sqrt(d);
+			VERIFY	(R>=0.f);
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
+}
+IC bool RAYvsSPHERE(const Fsphere& s_sphere, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
+{
+	Fsphere::ERP_Result rp_res = s_sphere.intersect(S,D,R);
+	VERIFY				(R>=0.f);
+	return				((rp_res==Fsphere::rpOriginOutside)||(!bCull&&(rp_res==Fsphere::rpOriginInside)));
+}
+IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
+{
+	// Actual test
+	Fcylinder::ERP_Result rp_res = c_cylinder.intersect(S,D,R);
+	VERIFY				(R>=0.f);
+	return				((rp_res==Fcylinder::rpOriginOutside)||(!bCull&&(rp_res==Fcylinder::rpOriginInside)));
 }
 
 CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O,cftObject)
 {
 	CKinematics* K	= PKinematics(O->Visual()); VERIFY3(K,"Can't create skeleton without Kinematics.",*O->cNameVisual());
-	base_box.set	(K->vis.box);
 	bv_box.set		(K->vis.box);
 	bv_box.getsphere(bv_sphere.P,bv_sphere.R);
+	vis_mask		= 0;
 }
 
 void CCF_Skeleton::BuildState()
@@ -162,44 +176,61 @@ void CCF_Skeleton::BuildState()
 	dwFrame				= Device.dwFrame;
 	CKinematics* K		= PKinematics(owner->Visual());
 	K->CalculateBones	();
+	const Fmatrix& L2W	= owner->XFORM();
 	
-	if (K->LL_VisibleBoneCount() != models.size())
-	{
-		//u64 F			= K->LL_GetBonesVisible()&((u64(1)<<u64(K->LL_BoneCount()))-1); 
-		models.resize	(K->LL_VisibleBoneCount());
-		base_box.set	(K->vis.box);
+	if (vis_mask!=K->LL_GetBonesVisible()){
+		vis_mask		= K->LL_GetBonesVisible();
+		elements.clear_not_free();
 		bv_box.set		(K->vis.box);
 		bv_box.getsphere(bv_sphere.P,bv_sphere.R);
-		for (u16 i=0,idx=0; i<K->LL_BoneCount(); i++){
-			if (!K->LL_GetBoneVisible(i)) continue;
-			models[idx].elem_id = K->LL_GetData(i).shape.flags.is(SBoneShape::sfNoPickable)?u16(-1):i;
-			idx			++;
+		for (u16 i=0; i<K->LL_BoneCount(); i++){
+			if (!K->LL_GetBoneVisible(i))					continue;
+			SBoneShape&	shape	= K->LL_GetData(i).shape;
+			if (SBoneShape::stNone==shape.type)				continue;
+			if (shape.flags.is(SBoneShape::sfNoPickable))	continue;
+			elements.push_back	(SElement(i,shape.type));
 		}
 	}
 
-	const Fmatrix &L2W		= owner->XFORM();
-	Fmatrix Mbox,T,TW;
-	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
-	{
-		if (!I->valid())	continue;
-		Fobb& B				= K->LL_GetBox		(I->elem_id);
-		Fmatrix& Mbone		= K->LL_GetTransform(I->elem_id);
-		B.xform_get			(Mbox		);
-		T.mul_43			(Mbone,Mbox	);		// model space
-		TW.mul_43			(L2W,T);			// world space
-		I->OBB.xform_set	(TW);
-		bool		b		= I->IM.invert_b	(TW);
-		if (!b)	{
-			Msg			("! ERROR: invalid bone xform (Slipch?). Bone disabled.");
-			Msg			("! ERROR: bone_id=[%d], world_pos[%f,%f,%f]",I->elem_id,VPUSH(TW.c));
-			Msg			("visual name %s",owner->cNameVisual());
-			Msg			("object name %s",owner->cName());
-			I->elem_id	= u16(-1);				//. hack - disable invalid bone
+	for (ElementVecIt I=elements.begin(); I!=elements.end(); I++){
+		if (!I->valid())		continue;
+		SBoneShape&	shape		= K->LL_GetData(I->elem_id).shape;
+		Fmatrix					ME,T,TW;
+		const Fmatrix& Mbone	= K->LL_GetTransform(I->elem_id);
+		switch (I->type){
+			case SBoneShape::stBox:{
+				const Fobb& B		= shape.box;
+				B.xform_get			(ME			);
+				I->b_hsize.set		(B.m_halfsize);
+				// prepare matrix World to Element
+				T.mul_43					(Mbone,ME	);		// model space
+				TW.mul_43					(L2W,T		);		// world space
+				bool b						= I->b_IM.invert_b	(TW);
+				// check matrix validity
+				if (!b)	{
+					Msg						("! ERROR: invalid bone xform (Slipch?). Bone disabled.");
+					Msg						("! ERROR: bone_id=[%d], world_pos[%f,%f,%f]",I->elem_id,VPUSH(TW.c));
+					Msg						("visual name %s",owner->cNameVisual());
+					Msg						("object name %s",owner->cName());
+					I->elem_id				= u16(-1);				//. hack - disable invalid bone
+				}
+								   }break;
+			case SBoneShape::stSphere:{
+				const Fsphere& S	= shape.sphere;
+				Mbone.transform_tiny(I->s_sphere.P,S.P);
+				L2W.transform_tiny	(I->s_sphere.P);
+				I->s_sphere.R		= S.R;
+			}break;
+			case SBoneShape::stCylinder:{
+				const Fcylinder& C	= shape.cylinder;
+				Mbone.transform_tiny(I->c_cylinder.m_center,C.m_center);
+				L2W.transform_tiny	(I->c_cylinder.m_center);
+				Mbone.transform_dir	(I->c_cylinder.m_direction,C.m_direction);
+				L2W.transform_dir	(I->c_cylinder.m_direction);
+				I->c_cylinder.m_height	= C.m_height;
+				I->c_cylinder.m_radius	= C.m_radius;
+			}break;
 		}
-		I->B.set			(
-							-B.m_halfsize.x,-B.m_halfsize.y,-B.m_halfsize.z,
-							 B.m_halfsize.x, B.m_halfsize.y, B.m_halfsize.z
-							);
 	}
 }
 
@@ -231,188 +262,42 @@ BOOL CCF_Skeleton::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
 	if (dwFrame != Device.dwFrame)		BuildState	();
-	else	{
-		CKinematics*	K		=		PKinematics	(owner->Visual());
-		if (K->LL_VisibleBoneCount() != models.size())	{
+	else{
+		CKinematics* K	= PKinematics	(owner->Visual());
+		if (K->LL_GetBonesVisible()!=vis_mask)	{
 			// Model changed between ray-picks
-			dwFrame		=  Device.dwFrame-1	;
-			BuildState	()	;
+			dwFrame		= Device.dwFrame-1	;
+			BuildState	();
 		}
 	}
 
-	BOOL			bHIT	=	FALSE;
-	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
-	{
-		if (!I->valid())						continue;
-
+	BOOL bHIT			= FALSE;
+	for (ElementVecIt I=elements.begin(); I!=elements.end(); I++){
+		if (!I->valid())continue;
+		bool res		= false;
 		float range		= Q.range;
-		if (RAYvsOBB(I->IM,I->B,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)) 
-		{
+		switch (I->type){
+		case SBoneShape::stBox:
+			res			= RAYvsOBB		(I->b_IM,I->b_hsize,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL);
+		break;
+		case SBoneShape::stSphere: 
+			res			= RAYvsSPHERE	(I->s_sphere,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL);
+
+		break;
+		case SBoneShape::stCylinder: 
+			res			= RAYvsCYLINDER	(I->c_cylinder,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL);
+		break;
+		}
+		if (res){
 			bHIT		= TRUE;
-			R.append_result(owner,range,I->elem_id,Q.flags&CDB::OPT_ONLYNEAREST);
-			if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
+			R.append_result				(owner,range,I->elem_id,Q.flags&CDB::OPT_ONLYNEAREST);
+			if (Q.flags&CDB::OPT_ONLYFIRST) break;
 		}
 	}
 	return bHIT;
 }
 
-/*
-void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
-{
-	if ((flags&clQUERY_TOPLEVEL) || ((flags&clGET_BOXES)==0))
-	{
-		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
-		// Return only top level
-		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-		Q.AddBox			(owner->XFORM(),bv_box);
-	} else { 
-		if (dwFrame!=Device.dwFrame) BuildState();
-
-		// Return actual boxes
-		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-
-#pragma todo("CCF_Skeleton::_BoxQuery - Actual test BOX vs SkeletonNODE")
-		for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
-		{
-			Q.AddBox(I->OBB);
-		}
-	}
-}
-*/
-
 //----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-CCF_Rigid::CCF_Rigid(CObject* O) : ICollisionForm(O,cftObject)
-{
-	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(O->Visual());
-	if (pH){
-		models.resize	(pH->children.size());
-		base_box.set	(pH->vis.box);
-		bv_box.set		(pH->vis.box);
-		bv_box.getsphere(bv_sphere.P,bv_sphere.R);
-	}else{ 
-		IRender_Visual* pV	= O->Visual();
-		if (pV){
-			models.resize	(1);
-			base_box.set	(pV->vis.box);
-			bv_box.set		(pV->vis.box);
-			bv_box.getsphere(bv_sphere.P,bv_sphere.R);
-		}else{
-			Debug.fatal("Unsuported visual type.");
-		}
-	}
-}
-
-void CCF_Rigid::UpdateModel(CCF_OBB& m, Fbox& box)
-{
-	const Fmatrix &L2W	= owner->XFORM();
-
-	Fobb			B;
-	Fvector			c;
-	box.get_CD		(c,B.m_halfsize);
-	Fmatrix			T,R;
-	T.translate		(c);
-	R.mul_43		(L2W,T);
-	B.xform_set		(R);
-
-	m.OBB.xform_set	(R);
-	m.IM.invert		(R);
-	m.B.set			(
-		-B.m_halfsize.x,-B.m_halfsize.y,-B.m_halfsize.z,
-		B.m_halfsize.x,B.m_halfsize.y,B.m_halfsize.z
-		);
-}
-void CCF_Rigid::BuildState()
-{
-	dwFrame			= Device.dwFrame;
-	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(owner->Visual());
-	if (pH){
-		for (u32 i=0; i<models.size(); i++)
-			UpdateModel		(models[i],pH->children[i]->vis.box);
-	}else{
-		IRender_Visual* pV	= owner->Visual();
-		UpdateModel			(models[0],pV->vis.box);
-	}
-}
-
-void CCF_Rigid::BuildTopLevel()
-{
-	dwFrameTL			= Device.dwFrame;
-	IRender_Visual* K	= owner->Visual();
-	Fbox& B				= K->vis.box;
-	bv_box.min.average	(B.min);
-	bv_box.max.average	(B.max);
-	bv_box.grow			(0.05f);
-	bv_sphere.P.average	(K->vis.sphere.P);
-	bv_sphere.R			+= K->vis.sphere.R;
-	bv_sphere.R			*= 0.5f;
-}
-
-BOOL CCF_Rigid::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
-{
-	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
-
-	// Convert ray into local model space
-	Fvector dS, dD;
-	Fmatrix temp; 
-	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
-
-	// 
-	if (!bv_sphere.intersect(dS,dD))		return FALSE;
-
-	if (dwFrame != Device.dwFrame)		BuildState	();
-	else	{
-		CKinematics*	K		=		PKinematics	(owner->Visual());
-		if (K->LL_VisibleBoneCount() != models.size())	{
-			// Model changed between ray-picks
-			dwFrame		=  Device.dwFrame-1	;
-			BuildState	()	;
-		}
-	}
-
-	BOOL bHIT	= FALSE		;
-	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++){
-		float range		= Q.range;
-		if (RAYvsOBB(I->IM,I->B,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)){
-			bHIT		= TRUE;
-			R.append_result(owner,range,int(I-models.begin()),Q.flags&CDB::OPT_ONLYNEAREST);
-			if (CDB::OPT_ONLYFIRST) return TRUE;
-		}
-	}
-	return bHIT;
-}
-
-/*
-void CCF_Rigid::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
-{
-	if ((flags&clQUERY_TOPLEVEL) || ((flags&clGET_BOXES)==0))
-	{
-		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
-		// Return only top level
-		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-		Q.AddBox			(owner->XFORM(),bv_box);
-	} else { 
-		if (dwFrame!=Device.dwFrame) BuildState();
-
-		// Return actual boxes
-		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-
-#pragma todo("CCF_Rigid::_BoxQuery - Actual test BOX vs SkeletonNODE")
-		for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
-		{
-			Q.AddBox(I->OBB);
-		}
-	}
-}
-*/
-
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-
 CCF_EventBox::CCF_EventBox( CObject* O ) : ICollisionForm(O,cftShape)
 {
 	Fvector A[8],B[8];

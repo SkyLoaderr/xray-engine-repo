@@ -76,8 +76,7 @@ void	CGlow::set_color		(float r, float g, float b)	{
 }
 void	CGlow::spatial_move		()
 {
-	spatial.center				= position;
-	spatial.radius				= radius;
+	spatial.sphere.set			(position,radius);
 	ISpatial::spatial_move		();
 }
 //////////////////////////////////////////////////////////////////////
@@ -153,7 +152,7 @@ void CGlowManager::add	(ref_glow G_)
 	float	dt		= Device.fTimeDelta;
 	float	dlim2	= MAX_GlowsDist2;
 
-	float	range = Device.vCameraPosition.distance_to_sqr	(G->spatial.center);
+	float	range = Device.vCameraPosition.distance_to_sqr	(G->spatial.sphere.P);
 	if (range < dlim2) 
 	{
 		// 2. Use result of test
@@ -217,7 +216,7 @@ void CGlowManager::render_sw		()
 		if (G.dwFrame=='test')	break;
 		G.dwFrame	=	'test';
 		Fvector		dir;
-		dir.sub		(G.spatial.center,start); float range = dir.magnitude();
+		dir.sub		(G.spatial.sphere.P,start); float range = dir.magnitude();
 		if (range>EPS_S)	{
 			dir.div		(range);
 			G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,collide::rqtBoth,&G.RayCache,o_main);

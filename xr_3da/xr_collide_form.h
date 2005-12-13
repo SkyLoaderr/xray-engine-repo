@@ -120,24 +120,33 @@ public:
 	CDB::MODEL*		GetModel		() { return &model;				}
 };
 
-struct CCF_OBB
-{
-	// Ray test
-	Fmatrix		IM;		// world 2 bone xform
-	Fbox		B;		// local(bone) space
-	Fobb		OBB;	// world space
-	u16			elem_id;
-public:
-				CCF_OBB():elem_id(u16(-1)){;}
-				CCF_OBB(u16 id):elem_id(id){;}
-	BOOL		valid(){return elem_id!=u16(-1);}
-};
-
 class ENGINE_API	CCF_Skeleton : public ICollisionForm
 {
+public:
+	struct SElement{
+		union{
+			struct{
+				Fmatrix	b_IM;		// world 2 bone xform
+				Fvector	b_hsize;
+			};
+			struct{
+				Fsphere	s_sphere;
+			};
+			struct{
+				Fcylinder c_cylinder;
+			};
+		};
+		u16				type;
+		u16				elem_id;
+	public:
+						SElement	()				:elem_id(u16(-1)),type(0)	{}
+						SElement	(u16 id, u16 t)	:elem_id(id),type(t)		{}
+		BOOL			valid		()											{return (elem_id!=(u16(-1)))&&(type!=0);}
+	};
 private:
-	Fbox				base_box;
-	xr_vector<CCF_OBB>	models;
+	u64					vis_mask;
+	DEFINE_VECTOR		(SElement,ElementVec,ElementVecIt);
+	ElementVec			elements;
 
 	u32					dwFrame;		// The model itself
 	u32					dwFrameTL;		// Top level
@@ -148,28 +157,7 @@ public:
 						CCF_Skeleton	( CObject* _owner );
 
 	virtual BOOL		_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	//virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
-	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
-};
-
-class ENGINE_API	CCF_Rigid : public ICollisionForm
-{
-private:
-	Fbox			base_box;
-	xr_vector<CCF_OBB>	models;
-
-	u32				dwFrame;		// The model itself
-	u32				dwFrameTL;		// Top level
-
-	void			BuildState		();
-	void			BuildTopLevel	();
-	void			UpdateModel		(CCF_OBB& m, Fbox& box);
-public:
-					CCF_Rigid		( CObject* _owner );
-
-	virtual BOOL		_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	//virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
-	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
+//	xr_vector<CCF_OBB>&	_GetElements	() { return elements;	}
 };
 
 class ENGINE_API	CCF_EventBox : public ICollisionForm

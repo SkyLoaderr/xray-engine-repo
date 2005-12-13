@@ -471,7 +471,7 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, CF
 			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 			{
 				CFrustum&	view	= sector->r_frustums[v_it];
-				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
+				if (!view.testSphere_dirty(spatial->spatial.sphere.P,spatial->spatial.sphere.R))	continue;
 
 				// renderable
 				IRenderable*	renderable		= spatial->dcast_Renderable	();

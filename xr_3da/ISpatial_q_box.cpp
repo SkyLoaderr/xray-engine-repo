@@ -36,8 +36,8 @@ public:
 			ISpatial*		S	= *_it;
 			if (0==(S->spatial.type&mask))	continue;
 
-			Fvector&		sC		= S->spatial.center;
-			float			sR		= S->spatial.radius;
+			Fvector&		sC		= S->spatial.sphere.P;
+			float			sR		= S->spatial.sphere.R;
 			Fbox			sB;		sB.set	(sC.x-sR, sC.y-sR, sC.z-sR, sC.x+sR, sC.y+sR, sC.z+sR);
 			if (!sB.intersect(box))	continue;
 

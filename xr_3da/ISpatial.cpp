@@ -22,8 +22,8 @@ Fvector	c_spatial_offset	[8]	=
 //////////////////////////////////////////////////////////////////////////
 ISpatial::ISpatial			(ISpatial_DB* space)
 {
-	spatial.center.set		(0,0,0);
-	spatial.radius			= 0;
+	spatial.sphere.P.set	(0,0,0);
+	spatial.sphere.R		= 0;
 	spatial.node_center.set	(0,0,0);
 	spatial.node_radius		= 0;
 	spatial.node_ptr		= NULL;
@@ -36,25 +36,25 @@ ISpatial::~ISpatial			(void)
 }
 BOOL	ISpatial::spatial_inside()
 {
-	float	dr	= -(- spatial.node_radius + spatial.radius);
-	if (spatial.center.x < spatial.node_center.x - dr)	return FALSE;
-	if (spatial.center.x > spatial.node_center.x + dr)	return FALSE;
-	if (spatial.center.y < spatial.node_center.y - dr)	return FALSE;
-	if (spatial.center.y > spatial.node_center.y + dr)	return FALSE;
-	if (spatial.center.z < spatial.node_center.z - dr)	return FALSE;
-	if (spatial.center.z > spatial.node_center.z + dr)	return FALSE;
+	float	dr	= -(- spatial.node_radius + spatial.sphere.R);
+	if (spatial.sphere.P.x < spatial.node_center.x - dr)	return FALSE;
+	if (spatial.sphere.P.x > spatial.node_center.x + dr)	return FALSE;
+	if (spatial.sphere.P.y < spatial.node_center.y - dr)	return FALSE;
+	if (spatial.sphere.P.y > spatial.node_center.y + dr)	return FALSE;
+	if (spatial.sphere.P.z < spatial.node_center.z - dr)	return FALSE;
+	if (spatial.sphere.P.z > spatial.node_center.z + dr)	return FALSE;
 	return TRUE;
 }
 
 BOOL	verify_sp	(ISpatial* sp, Fvector& node_center, float node_radius)
 {
-	float	dr	= -(- node_radius + sp->spatial.radius);
-	if (sp->spatial.center.x < node_center.x - dr)	return FALSE;
-	if (sp->spatial.center.x > node_center.x + dr)	return FALSE;
-	if (sp->spatial.center.y < node_center.y - dr)	return FALSE;
-	if (sp->spatial.center.y > node_center.y + dr)	return FALSE;
-	if (sp->spatial.center.z < node_center.z - dr)	return FALSE;
-	if (sp->spatial.center.z > node_center.z + dr)	return FALSE;
+	float	dr	= -(- node_radius + sp->spatial.sphere.R);
+	if (sp->spatial.sphere.P.x < node_center.x - dr)	return FALSE;
+	if (sp->spatial.sphere.P.x > node_center.x + dr)	return FALSE;
+	if (sp->spatial.sphere.P.y < node_center.y - dr)	return FALSE;
+	if (sp->spatial.sphere.P.y > node_center.y + dr)	return FALSE;
+	if (sp->spatial.sphere.P.z < node_center.z - dr)	return FALSE;
+	if (sp->spatial.sphere.P.z > node_center.z + dr)	return FALSE;
 	return TRUE;
 }
 
@@ -198,12 +198,12 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 	}
 
 	// we have to check if it can be putted further down
-	float	s_R			= rt_insert_object->spatial.radius;		// spatial bounds
+	float	s_R			= rt_insert_object->spatial.sphere.R;	// spatial bounds
 	float	c_R			= n_R/2;								// children bounds
 	if (s_R<c_R)
 	{
 		// object can be pushed further down - select "octant", calc node position
-		Fvector&	s_C					=	rt_insert_object->spatial.center;
+		Fvector&	s_C					=	rt_insert_object->spatial.sphere.P;
 		u32			octant				=	_octant	(n_C,s_C);
 		Fvector		c_C;				c_C.mad	(n_C,c_spatial_offset[octant],c_R);
 		VERIFY			(octant == _octant(n_C,c_C));				// check table assosiations
@@ -234,15 +234,15 @@ void			ISpatial_DB::insert		(ISpatial* S)
 	stat_insert.Begin	();
 
 #ifdef DEBUG
-	BOOL		bValid	= _valid(S->spatial.radius) && _valid(S->spatial.center);
+	BOOL		bValid	= _valid(S->spatial.sphere.R) && _valid(S->spatial.sphere.P);
 	if (!bValid)	
 	{
 		CObject*	O	= dynamic_cast<CObject*>(S);
 		if	(O)			Debug.fatal("Invalid OBJECT position or radius (%s)",O->cName());
 		else			{
 			CPS_Instance* P = dynamic_cast<CPS_Instance*>(S);
-			if (P)		Debug.fatal("Invalid PS spatial position{%3.2f,%3.2f,%3.2f} or radius{%3.2f}",VPUSH(S->spatial.center),S->spatial.radius);
-			else		Debug.fatal("Invalid OTHER spatial position{%3.2f,%3.2f,%3.2f} or radius{%3.2f}",VPUSH(S->spatial.center),S->spatial.radius);
+			if (P)		Debug.fatal("Invalid PS spatial position{%3.2f,%3.2f,%3.2f} or radius{%3.2f}",VPUSH(S->spatial.sphere.P),S->spatial.sphere.R);
+			else		Debug.fatal("Invalid OTHER spatial position{%3.2f,%3.2f,%3.2f} or radius{%3.2f}",VPUSH(S->spatial.sphere.P),S->spatial.sphere.R);
 		}
 	}
 #endif

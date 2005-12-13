@@ -65,9 +65,8 @@ class ENGINE_API				ISpatial
 public:
 	struct	_spatial
 	{
-		u32						type;			
-		Fvector					center;			// OWN:
-		float					radius;			// OWN:
+		u32						type;
+		Fsphere					sphere;
 		Fvector					node_center;	// Cached node center for TBV optimization
 		float					node_radius;	// Cached node bounds for TBV optimization
 		ISpatial_NODE*			node_ptr;		// Cached parent node for "empty-members" optimization
@@ -83,7 +82,7 @@ public:
 	virtual		void			spatial_register	()	;
 	virtual		void			spatial_unregister	()	;
 	virtual		void			spatial_move		()	;
-	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
+	virtual		Fvector			spatial_sector_point()	{ return spatial.sphere.P; }
 	ICF			void			spatial_updatesector()	{
 		if (0== (spatial.type&STYPEFLAG_INVALIDSECTOR))	return;
 		spatial_updatesector_internal				()	;

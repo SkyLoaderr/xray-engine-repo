@@ -126,20 +126,14 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 	if (0==Visual() && pSettings->line_exist( cNameSect(), "visual" ) )
 		cNameVisual_set	(pSettings->r_string( cNameSect(), "visual" ) );
 
-	if (0==collidable.model) 
-	{
+	if (0==collidable.model) 	{
 		if (pSettings->line_exist(cNameSect(),"cform")) {
 			LPCSTR cf			= pSettings->r_string	(*cNameSect(), "cform");
-
 			R_ASSERT3			(*NameVisual, "Model isn't assigned for object, but cform requisted",*cName());
-
 			if (xr_strcmp(cf,"skeleton")==0) collidable.model	= xr_new<CCF_Skeleton>	(this);
-			else {
-				if (xr_strcmp(cf,"rigid")==0)collidable.model	= xr_new<CCF_Rigid>		(this);
-				else{
-					collidable.model						= xr_new<CCF_Polygonal> (this);
-					((CCF_Polygonal*)(collidable.model))->LoadModel(pSettings, *cNameSect());
-				}
+			else{
+				collidable.model								= xr_new<CCF_Polygonal> (this);
+				((CCF_Polygonal*)(collidable.model))->LoadModel	(pSettings, *cNameSect());
 			}
 		}
 	}
@@ -204,11 +198,11 @@ void	CObject::spatial_update		(float eps_P, float eps_R)
 	} else {
 		if (spatial.node_ptr)	
 		{	// Object registered!
-			if (!fsimilar(Radius(),spatial.radius,eps_R))	spatial_move();
+			if (!fsimilar(Radius(),spatial.sphere.R,eps_R))	spatial_move();
 			else			{
 				Fvector			C;
 				Center			(C);
-				if (!C.similar(spatial.center,eps_P))	spatial_move();
+				if (!C.similar(spatial.sphere.P,eps_P))	spatial_move();
 			}
 			// else nothing to do :_)
 		}
@@ -243,8 +237,8 @@ void CObject::shedule_Update	( u32 T )
 
 void	CObject::spatial_register	()
 {
-	Center						(spatial.center);
-	spatial.radius				= Radius();
+	Center						(spatial.sphere.P);
+	spatial.sphere.R			= Radius();
 	ISpatial::spatial_register	();
 }
 
@@ -255,8 +249,8 @@ void	CObject::spatial_unregister()
 
 void	CObject::spatial_move()
 {
-	Center						(spatial.center);
-	spatial.radius				= Radius();
+	Center						(spatial.sphere.P);
+	spatial.sphere.R			= Radius();
 	ISpatial::spatial_move		();
 }
 

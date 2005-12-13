@@ -18,14 +18,10 @@ private:
 	// Debug
 	xrCriticalSection					Lock;
 	CDB::MODEL							Static;
-	Fvector								Static_Shift;
 	Fbox								m_BoundingVolume;
 	xrXRC								xrc;				// MT: dangerous
 	collide::rq_results					r_temp;				// MT: dangerous
 	xr_vector<ISpatial*>				r_spatial;			// MT: dangerous
-//	xr_vector<CObject*>					q_nearest;			// MT: dangerous
-//	clQueryCollision					q_result;			// MT: dangerous
-//	collide::rq_results					r_results;			// MT: dangerous
 public:
 
 #ifdef DEBUG
@@ -38,6 +34,8 @@ private:
 	BOOL								_RayTest			( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::ray_cache* cache, CObject* ignore_object);
 	BOOL								_RayPick			( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::rq_result& R, CObject* ignore_object );
 	BOOL								_RayQuery			( collide::rq_results& dest, const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object);
+	BOOL								_RayQuery2			( collide::rq_results& dest, const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object);
+	BOOL								_RayQuery3			( collide::rq_results& dest, const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object);
 public:
 										CObjectSpace		( );
 										~CObjectSpace		( );

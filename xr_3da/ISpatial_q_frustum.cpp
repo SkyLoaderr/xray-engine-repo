@@ -32,8 +32,8 @@ public:
 			ISpatial*		S	= *_it;
 			if (0==(S->spatial.type&mask))	continue;
 
-			Fvector&		sC		= S->spatial.center;
-			float			sR		= S->spatial.radius;
+			Fvector&		sC		= S->spatial.sphere.P;
+			float			sR		= S->spatial.sphere.R;
 			u32				tmask	= fmask;
 			if (fcvNone==F->testSphere(sC,sR,tmask))	continue;
 
