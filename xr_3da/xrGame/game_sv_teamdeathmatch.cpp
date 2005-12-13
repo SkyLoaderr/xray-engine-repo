@@ -97,7 +97,9 @@ void	game_sv_TeamDeathmatch::AutoBalanceTeams()
 
 void	game_sv_TeamDeathmatch::OnRoundStart			()
 {
-	AutoBalanceTeams();
+	if (!m_bFastRestart) AutoBalanceTeams();
+	
+	if (!m_bFastRestart) AutoSwapTeams();
 
 	inherited::OnRoundStart	();
 };
@@ -369,6 +371,7 @@ void game_sv_TeamDeathmatch::ReadOptions				(shared_str &options)
 	inherited::ReadOptions(options);
 	//-------------------------------
 	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
+	m_bAutoTeamSwap		= get_option_i(*options,"aswap") != 0;
 	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
 
 	int iFF = get_option_i(*options,"ffire",0);
@@ -384,6 +387,7 @@ void game_sv_TeamDeathmatch::ConsoleCommands_Create	()
 	string1024 Cmnd;
 	//-------------------------------------	
 	CMD_ADD(CCC_SV_Int,"sv_auto_team_balance", (int*)&m_bAutoTeamBalance,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_auto_team_swap", (int*)&m_bAutoTeamSwap,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_friendly_indicators", (int*)&m_bFriendlyIndicators, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
 	CMD_ADD(CCC_SV_Float,"sv_friendlyfire", &m_fFriendlyFireModifier, 0.0f,2.0f,g_bConsoleCommandsCreated_TDM,Cmnd);
 	//-------------------------------------
@@ -395,6 +399,25 @@ void game_sv_TeamDeathmatch::ConsoleCommands_Clear	()
 	inherited::ConsoleCommands_Clear();
 	//-----------------------------------
 	CMD_CLEAR("sv_auto_team_balance");
-	CMD_CLEAR("sv_auto_team_balance");
+	CMD_CLEAR("sv_auto_team_swap");
+	CMD_CLEAR("sv_friendly_indicators");
 	CMD_CLEAR("sv_friendlyfire");
 };
+
+void	game_sv_TeamDeathmatch::AutoSwapTeams			()
+{
+	if (!m_bAutoTeamSwap) return;
+
+	u32		cnt = get_players_count();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		// init
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		if (!l_pC || !l_pC->net_Ready || !l_pC->ps) continue;
+		game_PlayerState* ps	= l_pC->ps;
+		if (ps->Skip) continue;		
+
+		if (ps->team != 0)
+			ps->team	=	(ps->team == 1) ? 2 : 1;
+	}
+}

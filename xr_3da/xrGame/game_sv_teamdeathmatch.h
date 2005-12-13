@@ -9,6 +9,7 @@ private:
 
 protected:
 	BOOL		m_bAutoTeamBalance;
+	BOOL		m_bAutoTeamSwap;
 	BOOL		m_bFriendlyIndicators;
 	float		m_fFriendlyFireModifier;
 
@@ -46,6 +47,7 @@ public:
 
 	virtual		void				OnRoundStart			();												// старт раунда
 	virtual		void				AutoBalanceTeams		();
+	virtual		void				AutoSwapTeams			();
 
 	virtual		u8					AutoTeam				( );
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
