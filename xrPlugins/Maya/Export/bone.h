@@ -54,6 +54,7 @@ struct ECORE_API SBoneShape
 	enum EShapeFlags{
 		sfNoPickable		= (1<<0), 	// use only in RayPick
         sfRemoveAfterBreak  = (1<<1),	
+		sfNoPhysics			= (1<<2),	
 	};
 
 	u16				type;		// 2
