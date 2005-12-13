@@ -106,8 +106,7 @@ void CGlowManager::Load		(IReader* fs)
 		CGlow* G			= xr_new<CGlow>();
 		fs->r				(&G->position,	3*sizeof(float));
 		fs->r				(&G->radius,	1*sizeof(float));
-		G->spatial.center	= G->position;
-		G->spatial.radius	= G->radius;
+		G->spatial.sphere.set(G->position, G->radius);
 		G->direction.set	( 0,0,0 );
 
 		u16 S				= fs->r_u16();

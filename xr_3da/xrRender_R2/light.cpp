@@ -113,8 +113,7 @@ void	light::spatial_move			()
 	case IRender_Light::REFLECTED	:	
 	case IRender_Light::POINT		:	
 		{
-			spatial.center				= position;
-			spatial.radius				= range;
+			spatial.sphere.set		(position, range);
 		} 
 		break;
 	case IRender_Light::SPOT		:	
@@ -123,20 +122,20 @@ void	light::spatial_move			()
 			VERIFY2						(cone < deg2rad(121.f), "Too large light-cone angle. Maybe you have passed it in 'degrees'?");
 			if (cone>=PI_DIV_2)			{
 				// obtused-angled
-				spatial.center.mad			(position,direction,range);
-				spatial.radius				= range * tanf(cone/2.f);
+				spatial.sphere.P.mad	(position,direction,range);
+				spatial.sphere.R		= range * tanf(cone/2.f);
 			} else {
 				// acute-angled
-				spatial.radius				= range / (2.f * _sqr(_cos(cone/2.f)));
-				spatial.center.mad			(position,direction,spatial.radius);
+				spatial.sphere.R		= range / (2.f * _sqr(_cos(cone/2.f)));
+				spatial.sphere.P.mad	(position,direction,spatial.sphere.R);
 			}
 		}
 		break;
 	case IRender_Light::OMNIPART	:
 		{
 			// is it optimal? seems to be...
-			spatial.center.mad			(position,direction,range);
-			spatial.radius				= range;
+			spatial.sphere.P.mad		(position,direction,range);
+			spatial.sphere.R			= range;
 		}
 		break;
 	}
@@ -153,9 +152,9 @@ void	light::spatial_move			()
 vis_data&	light::get_homdata		()
 {
 	// commit vis-data
-	hom.sphere.set	(spatial.center,spatial.radius);
-	hom.box.set		(spatial.center,spatial.center);
-	hom.box.grow	(spatial.radius);
+	hom.sphere.set	(spatial.sphere.P,spatial.sphere.R);
+	hom.box.set		(spatial.sphere.P,spatial.sphere.P);
+	hom.box.grow	(spatial.sphere.R);
 	return			hom;
 };
 
