@@ -111,7 +111,7 @@ void CStalkerAnimationManager::update						()
 		if (!script_animations().empty()) {
 #ifdef DEBUG
 			if (setup_storage()) {
-				VERIFY2			("! Do not setup script animations while strapping/unstrapping");
+				Msg				("! Do not setup script animations while strapping/unstrapping");
 				Msg				("! ERROR description :");
 				Msg				("! object     %s",*object().cName());
 				Msg				("! item       %s",object().inventory().ActiveItem() ? *object().inventory().ActiveItem()->object().cName() : "no active item");
