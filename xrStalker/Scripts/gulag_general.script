@@ -212,8 +212,7 @@ function load_job(sj, gname, type, squad, groups, st)
 			local job_ltx = "[logic@"..way_name.."]\n"..
 							"active = camper@"..way_name.."\n"..
 
-							"[camper@"..way_name.."]\n"..
-							"meet = meet@generic_lager_guard\n"..
+							"[camper@"..way_name.."]\n"..							
 							"path_walk = guard_"..it.."_walk\n"..
 							"path_look = guard_"..it.."_look\n"..
 							"sniper = true\n"
