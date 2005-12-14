@@ -485,7 +485,7 @@ function se_smart_terrain:unregister_npc( obj )
 
 	obj:clear_smart_terrain()
 
-	printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), obj:name(), self.gparams.type )
+	printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), obj:name() or "<<<nil>>>", self.gparams.type )
 end
 
 -- выгнать из-под смарттеррейна первого попавшегося неэксклюзивного персонажа,
