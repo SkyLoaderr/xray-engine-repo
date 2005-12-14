@@ -104,7 +104,7 @@ public:
         fDiscr = fB*fB - fA*fC;
         if ( fDiscr < 0.0f ){
             // line does not intersect cylinder wall
-            VERIFY( iQuantity == 0 );
+            //VERIFY( iQuantity == 0 );
             return 0;
         }else if ( fDiscr > 0.0f ){
             fRoot = _sqrt(fDiscr);
