@@ -593,8 +593,8 @@ function load_ltx_zombied(gname, type)
                "combat_type           = zombied\n" ..
 
                "[danger@zombied]\n" ..
-               "ignore_danger_corpse  = 1\n" ..
-               "ignore_danger_hit     = 1\n"
+               "ignore_distance_corpse  = 1\n" ..
+               "ignore_distance_hit     = 1\n"
 
     for i = 1, 7 do
         res = res.."[logic@" .. gname .. "_soldier" .. i .. "_wait]\n" ..
@@ -739,7 +739,7 @@ function load_ltx_monolith(gname, type)
     local id
     
     res = "[danger@monolith]\n" ..
-          "ignore_danger_sound = 150\n"
+          "ignore_distance_sound = 150\n"
 
     -- alone patrol soldiers
     for i, v in pairs({1, 3, 4, 5, 6, 8}) do
