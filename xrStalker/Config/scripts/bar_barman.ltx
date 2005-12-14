@@ -1,6 +1,6 @@
 [logic]
 active = walker@room2hole
-
+combat_ignore = combat_ignore
 
 [walker@at_hole]
 path_walk = bar_barman_hole_walk
@@ -12,6 +12,9 @@ def_state_moving3 = barman_walk_free
 on_info = {+bar_barman_need_room} walker@hole2room
 on_info2 = {+yan_x16_documents_gain -bar_psih_come} %+bar_psih_come =bar_psih_come%
 meet = meet@at_hole
+danger = danger_ignore@barman
+
+
 
 [meet@at_hole]
 meet_state = 3|barman_talk_free@bar_bar_barmen_hello
@@ -30,6 +33,7 @@ def_state_moving2 = barman_walk_danger
 def_state_moving3 = barman_walk_danger
 on_signal = arrived | %+bar_barman_stay_room%
 on_info = {+bar_barman_stay_room +bar_psih_come -bar_psih_done} walker@room_psih, {+bar_barman_stay_room} walker@at_room
+danger = danger_ignore@barman
 
 [walker@at_room]
 path_walk = bar_barman_room_walk
@@ -40,6 +44,7 @@ def_state_moving2 = barman_walk_danger
 def_state_moving3 = barman_walk_danger
 meet = meet@at_room
 on_info = {+bar_barman_need_hole} walker@room2hole
+danger = danger_ignore@barman
 
 [meet@at_room]
 meet_state = 3|barman_wait_danger@bar_bar_barmen_hello_room|2|barman_wait_danger
@@ -60,11 +65,13 @@ meet = meet@room_psih
 on_info = {+bar_barman_need_hole} walker@room2hole, {+bar_psih_suicide -bar_psih_done} walker@room_psih_idle
 on_signal = arrived | %+bar_barman_need_1_phrase%
 on_info2 = {+bar_barman_need_1_phrase -bar_barman_say_1_phrase} remark@room_psih_1
+danger = danger_ignore@barman
 
 [remark@room_psih_1]
 anim = barman_wait_danger
 snd = bar_barman_psycho
 on_signal = sound_end | walker@room_psih %+bar_barman_say_1_phrase%
+danger = danger_ignore@barman
 
 [walker@room_psih_idle]
 path_walk = bar_barman_room_walk_psih
@@ -74,16 +81,19 @@ def_state_moving1 = barman_walk_danger
 def_state_moving2 = barman_walk_danger
 def_state_moving3 = barman_walk_danger
 on_timer = 10000 | remark@room_psih_2
+danger = danger_ignore@barman
 
 [remark@room_psih_2]
 anim = barman_shock
 snd = bar_barman_psycho
 on_timer = 10000 | remark@room_psih_3
+danger = danger_ignore@barman
 
 [remark@room_psih_3]
 anim = barman_wait_danger
 snd = bar_barman_psycho
 on_signal = sound_end| walker@room_psih %+bar_psih_done%
+danger = danger_ignore@barman
 
 [meet@room_psih]
 ;meet_state = 15|barman_wait_danger
@@ -102,3 +112,10 @@ def_state_moving2 = barman_walk_danger
 def_state_moving3 = barman_walk_danger
 on_signal = arrived | %+bar_barman_stay_hole%
 on_info = {+bar_barman_stay_hole} walker@at_hole
+danger = danger_ignore@barman
+
+[danger_ignore@barman]
+danger_ignore = 0
+
+[combat_ignore]
+combat_ignore_cond = always
