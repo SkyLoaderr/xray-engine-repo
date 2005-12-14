@@ -436,21 +436,22 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels, bool rebuild_graph)
 			}
 		}
 
-		if (rebuild_graph) {
-			string_path			prjName;
-			prjName				[0] = 0;
-			FS.update_path		(prjName,"$game_levels$",S);
-			strcat				(prjName,"\\");
-			xrBuildGraph		(prjName);
-			xrBuildCrossTable	(prjName);
-		}
-
 		// graph
 		strconcat		(caFileName,S,"\\",GAME_LEVEL_GRAPH);
 		FS.update_path	(file_name,"$game_levels$",caFileName);
 		if (!FS.exist(file_name)) {
-			Msg			("! There is no graph for the level %s! (level is not included into the game graph)",S);
-			continue;
+			if (rebuild_graph) {
+				string_path			prjName;
+				prjName				[0] = 0;
+				FS.update_path		(prjName,"$game_levels$",S);
+				strcat				(prjName,"\\");
+				xrBuildGraph		(prjName);
+				xrBuildCrossTable	(prjName);
+			}
+			else {
+				Msg					("! There is no graph for the level %s! (level is not included into the game graph)",S);
+				continue;
+			}
 		}
 
 		{
