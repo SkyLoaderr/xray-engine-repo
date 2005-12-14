@@ -112,14 +112,16 @@ void CUIGameSP::ReInitInventoryWnd		()
 		InventoryMenu->InitInventory(); 
 };
 
+extern ENGINE_API BOOL bShowPauseString;
 void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang)
 {
 	UIChangeLevelWnd->m_game_vertex_id		= game_vert_id;
 	UIChangeLevelWnd->m_level_vertex_id		= level_vert_id;
 	UIChangeLevelWnd->m_position			= pos;
 	UIChangeLevelWnd->m_angles				= ang;
-
-	m_game->StartStopMenu(UIChangeLevelWnd,true);
+	Device.Pause							(TRUE);
+	bShowPauseString						= FALSE;
+	m_game->StartStopMenu					(UIChangeLevelWnd,true);
 }
 
 
@@ -137,18 +139,22 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd==m_messageBox){
 		if(msg==MESSAGE_BOX_YES_CLICKED){
-			Game().StartStopMenu	(this, true);
-			NET_Packet		p;
-			p.w_begin		(M_CHANGE_LEVEL);
-			p.w				(&m_game_vertex_id,sizeof(m_game_vertex_id));
-			p.w				(&m_level_vertex_id,sizeof(m_level_vertex_id));
-			p.w_vec3		(m_position);
-			p.w_vec3		(m_angles);
+			Device.Pause							(FALSE);
 
-			Level().Send	(p,net_flags(TRUE));
+			Game().StartStopMenu					(this, true);
+			NET_Packet								p;
+			p.w_begin								(M_CHANGE_LEVEL);
+			p.w										(&m_game_vertex_id,sizeof(m_game_vertex_id));
+			p.w										(&m_level_vertex_id,sizeof(m_level_vertex_id));
+			p.w_vec3								(m_position);
+			p.w_vec3								(m_angles);
+
+			Level().Send							(p,net_flags(TRUE));
 		}else
-		if(msg==MESSAGE_BOX_NO_CLICKED)
-			Game().StartStopMenu	(this, true);
+		if(msg==MESSAGE_BOX_NO_CLICKED){
+			Device.Pause							(FALSE);
+			Game().StartStopMenu					(this, true);
+		}
 	}else
 		inherited::SendMessage(pWnd, msg, pData);
 }
