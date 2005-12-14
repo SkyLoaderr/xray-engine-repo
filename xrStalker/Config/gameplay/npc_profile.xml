@@ -465,6 +465,12 @@
 	<character id="mil_Killer_specnaz">
 		<class>mil_Killer_specnaz</class>
 	</character>
+	<character id="mil_killer_master">
+		<class>mil_killer_master</class>
+	</character>
+	<character id="mil_killer_sniper">
+		<class>mil_killer_sniper</class>
+	</character>
 	<character id="mil_Stalker_master">
 		<class>mil_Stalker_master</class>
 	</character>
