@@ -393,6 +393,7 @@ function se_smart_terrain:enabled( obj )
 	--------
 
 	if not self.got_se_objs then
+		db.actor_proxy:init()
 		self:get_se_objs()
 	end
 
@@ -608,8 +609,6 @@ function se_smart_terrain:on_register()
 --	printf( "[smart_terrain %s] on_register called", self:name() )
 	cse_alife_smart_zone.on_register( self )
 
-	db.actor_proxy:init()
-
 	-- DEBUG
 	if self.disabled then
 		return
@@ -639,6 +638,7 @@ function se_smart_terrain:update()
 	end
 
 	if not self.got_se_objs then
+		db.actor_proxy:init()
 		self:get_se_objs()
 	end
 
