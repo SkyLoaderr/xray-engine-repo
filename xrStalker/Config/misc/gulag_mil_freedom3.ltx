@@ -2,20 +2,20 @@
 ;Атака хутора Долга
 ;-------------------------------------------------------------------------------------------------
 ;----------------------------------- Макс-----------------------
+; Поведение:
+; 1. Идет к точке встречи с игроком 
+; 2. Идет к точке сбора
+; 3. Говорит фразу "Толян, возьмешь Лысого и Косого, зайдете справа"
+; 4. Говорит фразу "Колян, ты зайдешь им в зад"
+; 5. По окончании ответа Коляна ждет окончания хохота салаг, идет в сторону хутора
+; 6. В состоянии кэмпера воюет
+; 7. Возвращается на базу
+
+
 [logic@mil_freedom_max_attack]
 active = walker2@mil_freedom_max_attack
 
-[remark3@mil_freedom_max_attack]
-snd = mil_max_before_collect
-snd_anim_sync = true
-anim = wait_rac
-no_move = true
-no_rotate = true
-on_signal = action_end | walker11@mil_freedom_max_attack
-target = actor
-danger = danger@mil_freedom
-
-[walker2@mil_freedom_max_attack]
+[walker2@mil_freedom_max_attack]                    ;Поведение 1
 path_walk = max_center_walk
 path_look = max_center_look
 meet = on_meet@mil_freedom_max_attack
@@ -31,19 +31,15 @@ use = true
 use_wpn = false
 meet_dialog = mil_max_dialog
 
-
-[walker11@mil_freedom_max_attack]
+[walker11@mil_freedom_max_attack]                   ;Поведение 2
 path_walk = attack_way7_1
 path_look = attack_look_max1
 on_signal = arrive | remark1@mil_freedom_max_attack
 team = freedom
-meet_enabled = false
 danger = danger@mil_freedom
 
-[remark1@mil_freedom_max_attack]
+[remark1@mil_freedom_max_attack]                    ;Поведение 3
 snd = mil_max_to_tolyan
-no_rotate = true
-no_move = true
 anim = wait
 on_signal = action_end | remark2@mil_freedom_max_attack
 danger = danger@mil_freedom
@@ -51,20 +47,19 @@ target = logic@mil_freedom_stalker4_attack
 
 [remark2@mil_freedom_max_attack]
 snd = mil_max_to_kolyan
-no_rotate = true
-no_move = true
 anim = wait
 on_signal = action_end | %+mil_freedom_attack_continue1% camper12@mil_freedom_max_attack
 target = logic@mil_freedom_stalker4_attack
 danger = danger@mil_freedom
 
-[camper12@mil_freedom_max_attack]
+[camper12@mil_freedom_max_attack]                   ;Поведение 4
 path_walk = attack_way7_2
 path_look = attack_look2
 on_signal = arrive | %+mil_freedom_arrive% camper13@mil_freedom_max_attack
 no_retreat = true
+danger = danger@mil_freedom
 
-[camper13@mil_freedom_max_attack]
+[camper13@mil_freedom_max_attack]                   ;Поведение 5
 path_walk = attack_way7_3
 path_look = attack_look3
 no_retreat = true
@@ -77,7 +72,7 @@ no_move = true
 anim = wait
 on_signal = action_end | walker15@mil_freedom_max_attack
 
-[walker14@mil_freedom_max_attack]
+[walker14@mil_freedom_max_attack]                    ;Поведение 6
 path_walk = attack_way7_5
 path_look = attack_look5
 on_signal = search | walker15@mil_freedom_max_attack
@@ -85,10 +80,20 @@ on_signal = search | walker15@mil_freedom_max_attack
 [walker15@mil_freedom_max_attack]
 path_walk = attack_way7_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Мужик у костра 1-----------------------
+
+
+;---------------------------------------------------------------------------------
+; Просто солдат 1
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Смеется после фразы Коляна
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker1_attack]
 active = walker11@mil_freedom_stalker1_attack
 
@@ -124,10 +129,18 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker1_attack
 [walker14@mil_freedom_stalker1_attack]
 path_walk = attack_way9_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Мужик у костра 2-----------------------
+;---------------------------------------------------------------------------------
+; Колян
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Ответ на фразу Макса (из поведения 4)
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker2_attack]
 active = walker11@mil_freedom_stalker2_attack
 
@@ -164,10 +177,14 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker2_attack
 [walker14@mil_freedom_stalker2_attack]
 path_walk = attack_way8_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Мужик у костра 3-----------------------
+;---------------------------------------------------------------------------------
+; Павлик
+; Поведение:
+; 1. Прячется в бараке Првара
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker3_attack]
 active = walker1@mil_freedom_stalker3_attack
 
@@ -177,7 +194,15 @@ path_look = stukach_look2
 danger = danger@mil_freedom
 
 
-;----------------------------------- Патрульный мужик (одиночка)-----------------------
+;---------------------------------------------------------------------------------
+; Просто солдат 2
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Смеется после фразы Коляна
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker4_attack]
 active = walker11@mil_freedom_stalker4_attack
 
@@ -213,10 +238,18 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker4_attack
 [walker14@mil_freedom_stalker4_attack]
 path_walk = attack_way2_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Патрульный командир -----------------------
+;---------------------------------------------------------------------------------
+; Просто солдат 3
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Смеется после фразы Коляна
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker5_attack]
 active = walker11@mil_freedom_stalker5_attack
 
@@ -253,10 +286,18 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker5_attack
 [walker14@mil_freedom_stalker5_attack]
 path_walk = attack_way1_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Патрульный мужик 1 -----------------------
+;---------------------------------------------------------------------------------
+; Просто солдат 4
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Смеется после фразы Коляна
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker6_attack]
 active = walker11@mil_freedom_stalker6_attack
 
@@ -293,10 +334,18 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker6_attack
 [walker14@mil_freedom_stalker6_attack]
 path_walk = attack_way4_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Патрульный мужик 2 -----------------------
+;---------------------------------------------------------------------------------
+; Просто солдат 5
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Смеется после фразы Коляна
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker7_attack]
 active = walker11@mil_freedom_stalker7_attack
 
@@ -333,10 +382,18 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker7_attack
 [walker14@mil_freedom_stalker7_attack]
 path_walk = attack_way6_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Мужик на входе 1 -----------------------
+;---------------------------------------------------------------------------------
+; Просто солдат 6
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Смеется после фразы Коляна
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker8_attack]
 active = walker11@mil_freedom_stalker8_attack
 
@@ -364,10 +421,18 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker8_attack
 [walker14@mil_freedom_stalker8_attack]
 path_walk = attack_way3_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
+on_signal = return | %-mil_freedom_attack%
 team = freedom
 
-;----------------------------------- Мужик на входе 2 -----------------------
+;---------------------------------------------------------------------------------
+; Просто солдат 7
+; Поведение:
+; 1. Идет на точку сбора
+; 2. Смеется после фразы Коляна
+; 3. Идет на хутор
+; 4. Война
+; 5. Возврат на базу
+;---------------------------------------------------------------------------------
 [logic@mil_freedom_stalker9_attack]
 active = walker11@mil_freedom_stalker9_attack
 
@@ -395,6 +460,5 @@ on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker9_attack
 [walker14@mil_freedom_stalker9_attack]
 path_walk = attack_way5_4
 path_look = attack_look4
-on_signal = return | %-mil_freedom_attack% nil
-team = freedom
+on_signal = return | %-mil_freedom_attack%
 
