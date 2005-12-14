@@ -448,7 +448,8 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels, bool rebuild_graph)
 				xrBuildGraph		(prjName);
 				xrBuildCrossTable	(prjName);
 			}
-			else {
+
+			if (!FS.exist(file_name)) {
 				Msg					("! There is no graph for the level %s! (level is not included into the game graph)",S);
 				continue;
 			}
