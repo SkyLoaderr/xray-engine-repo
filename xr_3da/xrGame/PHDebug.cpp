@@ -311,7 +311,7 @@ void DBG_DrawPHObject(CPHObject* obj)
 	{
 		SPHObjDBGDraw obj_draw;
 		obj_draw.AABB.set(obj->AABB);
-		obj_draw.AABB_center.set(obj->spatial.center);
+		obj_draw.AABB_center.set(obj->spatial.sphere.P);
 		if(draw_frame)
 		{
 			dbg_draw_objects0.push_back(obj_draw);

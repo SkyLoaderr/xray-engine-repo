@@ -78,17 +78,15 @@ void CParticlesObject::UpdateSpatial()
 		if (0==spatial.type)	{
 			// First 'valid' update - register
 			spatial.type			= STYPE_RENDERABLE;
-			spatial.center			= P;
-			spatial.radius			= R;
+			spatial.sphere.set		(P,R);
 			spatial_register		();
 		} else {
 			BOOL	bMove			= FALSE;
-			if		(!P.similar(spatial.center,EPS_L*10.f))		bMove	= TRUE;
-			if		(!fsimilar(R,spatial.radius,0.15f))			bMove	= TRUE;
+			if		(!P.similar(spatial.sphere.P,EPS_L*10.f))		bMove	= TRUE;
+			if		(!fsimilar(R,spatial.sphere.R,0.15f))			bMove	= TRUE;
 			if		(bMove)			{
-				spatial.center			= P;
-				spatial.radius			= R;
-				spatial_move			();
+				spatial.sphere.set	(P, R);
+				spatial_move		();
 			}
 		}
 	}

@@ -103,7 +103,7 @@ void CPHObject::Collide()
 	}
 	if(CPHCollideValidator::DoCollideDynamic(*this))
 	{
-		g_SpatialSpacePhysic->q_box				(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.center,AABB);
+		g_SpatialSpacePhysic->q_box				(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.sphere.P,AABB);
 		qResultVec& result=ph_world->r_spatial	;
 		qResultIt i=result.begin(),e=result.end();
 		for(;i!=e;++i)	{

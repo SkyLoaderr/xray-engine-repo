@@ -18,8 +18,8 @@ void CPHSplitedShell::Collide()
 
 void CPHSplitedShell::get_spatial_params()
 {
-		spatialParsFromDGeom((dGeomID)m_space,spatial.center,AABB,spatial.radius);
-		if(spatial.radius>m_max_AABBradius) spatial.radius=m_max_AABBradius;
+		spatialParsFromDGeom((dGeomID)m_space,spatial.sphere.P,AABB,spatial.sphere.R);
+		if(spatial.sphere.R>m_max_AABBradius) spatial.sphere.R=m_max_AABBradius;
 }
 
 void CPHSplitedShell::DisableObject()

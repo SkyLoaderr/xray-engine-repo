@@ -8,7 +8,7 @@
 void CPHStaticGeomShell::get_spatial_params()
 {
 	Fvector					AABB;
-	spatialParsFromDGeom	(dSpacedGeometry(),spatial.center,AABB,spatial.radius);
+	spatialParsFromDGeom	(dSpacedGeometry(),spatial.sphere.P,AABB,spatial.sphere.R);
 }
 
 void	CPHStaticGeomShell::PhDataUpdate		(dReal step)

@@ -25,13 +25,13 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 		float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
 		plane.mul						(denom);
 		Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
-		float	p_dist					= P.classify	(L->spatial.center) - L->spatial.radius;
+		float	p_dist					= P.classify	(L->spatial.sphere.P) - L->spatial.sphere.R;
 		near_intersect					= (p_dist<=0);
 	}
 #ifdef DEBUG
 	if (1)
 	{
-		Fsphere		S;	S.set	(L->spatial.center,L->spatial.radius);
+		Fsphere		S;	S.set	(L->spatial.sphere.P,L->spatial.sphere.R);
 		dbg_spheres.push_back	(mk_pair(S,L->color));
 	}
 #endif
@@ -77,11 +77,11 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 
 		// 4. check intersection of two triangles with (spatial, enclosing) sphere
 		BOOL	bIntersect	= tri_vs_sphere_intersect	(
-			L->spatial.center,L->spatial.radius,
+			L->spatial.sphere.P,L->spatial.sphere.R,
 			s_points[0],s_points[1],s_points[2]
 			);
 		if (!bIntersect)	bIntersect	= tri_vs_sphere_intersect	(
-				L->spatial.center,L->spatial.radius,
+				L->spatial.sphere.P,L->spatial.sphere.R,
 				s_points[2],s_points[3],s_points[0]
 				);
 		if (!bIntersect)	{
