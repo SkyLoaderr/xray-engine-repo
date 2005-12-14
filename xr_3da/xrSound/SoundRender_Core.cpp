@@ -456,10 +456,13 @@ void CSoundRender_Core::i_eax_commit_setting()
 void CSoundRender_Core::object_relcase( CObject* obj )
 {
 	if (obj){
-		for (u32 eit=0; eit<s_emitters.size(); eit++)
-			if (s_emitters[eit] && s_emitters[eit]->owner_data && (obj==s_emitters[eit]->owner_data->g_object)) 
-				s_emitters[eit]->owner_data->g_object=0;
-	}
+		for (u32 eit=0; eit<s_emitters.size(); eit++){
+        	if (s_emitters[eit])
+                if (s_emitters[eit]->owner_data)
+                 	if (obj==s_emitters[eit]->owner_data->g_object) 
+	                    s_emitters[eit]->owner_data->g_object	= 0;     
+        }
+    }
 }
 
 #ifdef _EDITOR
