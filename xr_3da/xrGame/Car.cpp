@@ -393,7 +393,7 @@ void CCar::UpdateCL				( )
 	if(m_car_weapon)m_car_weapon->UpdateCL();
 	ASCUpdate			();
 	if(Owner()) return;
-	UpdateEx			(DEFAULT_FOV);
+//	UpdateEx			(DEFAULT_FOV);
 	if (GetScriptControl())
 			ProcessScripts();
 
@@ -591,7 +591,7 @@ bool CCar::attach_Actor(CGameObject* actor)
 	OnCameraChange(ectFirst);
 	PPhysicsShell()->Enable();
 	PPhysicsShell()->add_ObjectContactCallback(ActorObstacleCallback);
-	VisualUpdate();
+//	VisualUpdate();
 	processing_activate();
 	ReleaseHandBreak();
 //	HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
