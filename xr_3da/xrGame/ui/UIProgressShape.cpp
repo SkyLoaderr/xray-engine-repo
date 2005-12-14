@@ -16,7 +16,7 @@ CUIProgressShape::~CUIProgressShape(){
 
 CUIStatic* CUIProgressShape::InitTexture(LPCSTR texture){
 	m_pTexture = xr_new<CUIStatic>();
-	AttachChild(m_pTexture);
+	AttachChild(m_pTexture);	
 	m_pTexture->SetStretchTexture(true);
 
 	if (NULL == texture)

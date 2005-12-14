@@ -545,7 +545,7 @@ bool CUIXmlInit::InitProgressShape(CUIXml& xml_doc, const char* path, int index,
 	{
 		pSt = pWnd->InitBackground(NULL);
 		InitStatic(xml_doc, _path, index, pSt);
-		pSt->SetStretchTexture(true);
+		pSt->SetStretchTexture(true);		
 	}
 
 	pSt = pWnd->InitTexture(NULL);
@@ -553,6 +553,7 @@ bool CUIXmlInit::InitProgressShape(CUIXml& xml_doc, const char* path, int index,
     InitStatic(xml_doc, strconcat(_path, path, ":front"), index, pSt);
 	pSt->InitTextureEx(xml_doc.Read(strconcat(_path, path, ":front:texture"), index, NULL), "hud\\seta");
 	pSt->SetStretchTexture(true);
+	pSt->SetColor(0xff7f7f7f);
 
 
     return true;
