@@ -1010,6 +1010,7 @@ void CActor::shedule_Update	(u32 DT)
 
 	if(m_holder || !getEnabled() || !Ready())
 	{
+		m_sDefaultObjAction				= NULL;
 		inherited::shedule_Update		(DT);
 		if (OnServer())
 		{
