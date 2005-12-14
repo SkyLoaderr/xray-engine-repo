@@ -24,6 +24,7 @@ CUIStatic* CUIProgressShape::InitTexture(LPCSTR texture){
 	
 	m_pTexture->Init(0,0,GetWidth(),GetHeight());	
 	m_pTexture->InitTextureEx(texture, "hud\\seta");
+	m_pTexture->SetColor(0xff7f7f7f);
 
 	return m_pTexture;
 }
