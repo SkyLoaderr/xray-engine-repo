@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
+	<reinforcement x="492" y="10" width="40" height="40" text="1">
+		<front x="0" y="0" width="40" height="40">
+			<texture>ui\ui_mp_reinf_front</texture>
+			<text font="letterica22" r="0" g="0" b="0" align="c" vert_align="c" complex_mode="0"></text>
+		</front>
+		<back x="0" y="0" width="40" height="40">
+			<texture>ui\ui_mp_reinf_back</texture>
+		</back>
+	</reinforcement>
+	
+	<granade_indicator x="492" y="364" width="40" height="40" text="1">
+		<front x="0" y="0" width="40" height="40">
+			<texture>ui\ui_mp_reinf_front</texture>			
+		</front>
+		<back x="0" y="0" width="40" height="40">
+			<texture>ui\ui_mp_reinf_back</texture>
+		</back>
+	</granade_indicator>
     <!-- PREFIX -->
 	<chat_prefix x="20" y="385" width="70" height="30">
 		<text font="letterica18" r="225" g="225" b="250" vert_align="c" complex_mode="0"></text>

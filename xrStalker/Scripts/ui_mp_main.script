@@ -258,6 +258,10 @@ function mp_main:GatherServerData()
 	if self.check_auto_team_balance:GetCheck() then
 		cmdstr = cmdstr .. "/abalance=1" .. tmp
 	end	
+	-- auto team balance --------------------------------------------------------------
+	if self.check_auto_team_swap:GetCheck() then
+		cmdstr = cmdstr .. "/aswap=1" .. tmp
+	end		
 	-- Force respawn --------------------------------------------------------------
 	if self.tab_respawn:GetActiveIndex() == 1 then
 		tmp = self.edit_force_respawn:GetText()
