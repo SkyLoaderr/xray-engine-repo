@@ -213,8 +213,8 @@ function load_job(sj, gname, type, squad, groups, st)
 							"active = camper@"..way_name.."\n"..
 
 							"[camper@"..way_name.."]\n"..							
-							"path_walk = guard_"..it.."_walk\n"..
-							"path_look = guard_"..it.."_look\n"..
+							"path_walk = sniper_"..it.."_walk\n"..
+							"path_look = sniper_"..it.."_look\n"..
 							"sniper = true\n"
 
 			ltx = ltx..job_ltx
