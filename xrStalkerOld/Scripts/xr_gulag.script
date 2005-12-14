@@ -301,7 +301,7 @@ function gulag:update_objs()
 			self:object_setup_offline( obj_id )
 		end
 
-		-- TODO. remove while iterating :\
+		-- TODO. remove while iterating :\ (вроде бы нормально)
 		obj = cl_obj or npc_info.se_obj
 
 		if not obj:alive() then
@@ -325,7 +325,6 @@ end
 -- условия достижения персонажем места работы:
 -- а) в офлайне: персонаж пришёл на нужную точку графа
 -- б) в онлайне: персонаж продошёл на расстояние job_position_threshold
--- TODO делать эту проверку после updateJob
 function gulag:can_obj_begin_job( obj_id, obj )
 	local jobN = self.ObjectJob[obj_id]
 
@@ -345,7 +344,6 @@ function gulag:can_obj_begin_job( obj_id, obj )
 end
 
 -- сменить состояние гулага.
--- TODO посчитать доступные работы на смене состояния.
 -- Возобновляем все работы, доступные для наполнения только один раз.
 function gulag:changeState(state)
 	if self.state ~= state then
@@ -743,9 +741,9 @@ function gulag:setJob(obj_id, job)
 
 	job.object = obj_id
 
-	self.Object_begin_job[obj_id] = false
-	self.ObjectJob                  [obj_id] = job.num
-	self.ObjectJobPathName          [obj_id] = job.path_name
+	self.Object_begin_job [obj_id] = false
+	self.ObjectJob        [obj_id] = job.num
+	self.ObjectJobPathName[obj_id] = job.path_name
 
 	self:setup_squad_and_group( obj_id, job )
 end
@@ -960,7 +958,7 @@ function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- Functions TODO и выше тоже
+-- Functions
 ----------------------------------------------------------------------------------------------------------------------
 
 -- получить гулаг по имени смарта
@@ -986,7 +984,6 @@ function get_gulag( name_or_sid )
 	end
 end
 
--- TODO переименовать isUnderFraction в get_npc_gulag
 -- получить гулаг персонажа
 -- obj=game_object
 function get_npc_gulag( obj )

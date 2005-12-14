@@ -12,6 +12,17 @@ end
 function actor_proxy:init()
 	self.online   = false
 	self.alife    = alife()
+
+	if not self.alife then
+		printf( "self.alife=nil" )
+		return
+	end
+
+	if not self.alife:actor() then
+		printf( "self.alife:actor()=nil" )
+		return
+	end
+
 	self.actor_id = self.alife:actor().id
 end
 

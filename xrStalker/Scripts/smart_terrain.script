@@ -8,7 +8,6 @@ TODO
 	вести всю группу аля патруль
 	приём группы
 	организация групп
-	smart_terrain_choose_interval у крыс сделать БОЛЬШИМ
 --------------------------------------------------------------------------------------------------------------------]]
 
 --local h2ms = 60 * 60 * 1000
@@ -269,7 +268,7 @@ function se_smart_terrain:initialize()
 		abort( "[smart_terrain %s] type is not specified", self:name() )
 	end
 
-	local gp = {}
+	local gp       = {}
 
 	self.npc_info  = {}          -- group и squad для каждого npc
 	self.gparams   = gp          -- настройки гулага
@@ -355,6 +354,7 @@ end
 Если не появилось ни одного эксклюзивного, то он согласен идти в любой.
 ]]
 -- TODO а если в начале эксклюзивный, а потом в любой?
+-- вариант: any=condlist
 function se_smart_terrain:obj_accepts_smart_terrain( obj )
 	if obj:get_smart_terrain_conditions() then
 		local any_exclusive = false
