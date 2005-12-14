@@ -78,7 +78,7 @@ IC	void CSGraphVertex::remove_edge						(const _vertex_id_type &vertex_id)
 {
 	EDGES::iterator			I = std::find(m_edges.begin(),m_edges.end(),vertex_id);
 	VERIFY					(m_edges.end() != I);
-	CVertex		*vertex = (*I).vertex();
+	CVertex					*vertex = (*I).vertex();
 	vertex->on_edge_removal	(this);
 	m_edges.erase			(I);
 	--*m_edge_count;

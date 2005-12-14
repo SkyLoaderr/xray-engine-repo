@@ -20,3 +20,8 @@ IC	CGameGraphBuilder::graph_type &CGameGraphBuilder::graph	() const
 	return	(*m_graph);
 }
 
+IC	CGameLevelCrossTable &CGameGraphBuilder::cross			() const
+{
+	VERIFY	(m_cross_table);
+	return	(*m_cross_table);
+}

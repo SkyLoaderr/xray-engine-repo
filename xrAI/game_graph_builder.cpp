@@ -165,7 +165,8 @@ void CGameGraphBuilder::load_graph_points	(const float &start, const float &amou
 	Progress				(start + amount);
 }
 
-IC	bool sort_predicate(const std::pair<u32,u32> &first, const std::pair<u32,u32> &second)
+template <typename T>
+IC	bool sort_predicate(const T &first, const T &second)
 {
 	return					(first.first < second.first);
 }
@@ -177,15 +178,14 @@ void CGameGraphBuilder::remove_incoherent_points	(const float &start, const floa
 #if 1
 	graph_type				*test_graph = xr_new<graph_type>();
 	
-	typedef std::pair<u32,u32>	pair;
-	xr_vector<pair>			pairs;
+	xr_vector<PAIR>			pairs;
 	for (u32 i=0; i<graph().header().vertex_count(); ++i)
 		pairs.push_back		(std::make_pair(graph().vertex(i)->data().tNodeID,i));
 
-	std::sort				(pairs.begin(),pairs.end(),sort_predicate);
+	std::sort				(pairs.begin(),pairs.end(),sort_predicate<PAIR>);
 
-	xr_vector<pair>::iterator	I = pairs.begin(), B = I;
-	xr_vector<pair>::iterator	E = pairs.end();
+	xr_vector<PAIR>::iterator	I = pairs.begin(), B = I;
+	xr_vector<PAIR>::iterator	E = pairs.end();
 	for ( ; I != E; ++I)
 		test_graph->add_vertex(graph().vertex((*I).second)->data(),u32(I - B));
 
@@ -405,15 +405,67 @@ void CGameGraphBuilder::load_cross_table	(const float &start, const float &amoun
 	Progress				(start + amount);
 }
 
-void CGameGraphBuilder::build_neighbours	(const float &start, const float &amount)
+void CGameGraphBuilder::fill_neighbours		(const u32 &game_vertex_id)
 {
-	Progress				(start);
+	m_marks.assign						(level_graph().header().vertex_count(),false);
+	m_current_fringe.clear				();
 
-	Msg						("Building neighbours");
-	
+	u32									level_vertex_id = graph().vertex(game_vertex_id)->data().level_vertex_id();
 
+	CLevelGraph::const_iterator			I, E;
+	m_mark_stack.reserve				(8192);
+	m_mark_stack.push_back				(level_vertex_id);
 
-	Progress				(start + amount);
+	for ( ; !m_mark_stack.empty(); ) {
+		level_vertex_id					= m_mark_stack.back();
+		m_mark_stack.resize				(m_mark_stack.size() - 1);
+		CLevelGraph::CVertex			*node = level_graph().vertex(level_vertex_id);
+		level_graph().begin				(level_vertex_id,I,E);
+		m_marks[level_vertex_id]		= true;
+		for ( ; I != E; ++I) {
+			u32							next_level_vertex_id = node->link(I);
+			if (!level_graph().valid_vertex_id(next_level_vertex_id))
+				continue;
+			
+			if (m_marks[next_level_vertex_id])
+				continue;
+
+			GameGraph::_GRAPH_ID		next_game_vertex_id = cross().vertex(next_level_vertex_id).game_vertex_id();
+			if (next_game_vertex_id != (GameGraph::_GRAPH_ID)game_vertex_id) {
+				if	(
+						std::find(
+							m_current_fringe.begin(),
+							m_current_fringe.end(),
+							next_game_vertex_id
+						)
+						==
+						m_current_fringe.end()
+					)
+					m_current_fringe.push_back	(next_game_vertex_id);
+				continue;
+			}
+
+			m_mark_stack.push_back		(next_level_vertex_id);
+		}
+	}
+}
+
+void CGameGraphBuilder::generate_edges		(const u32 &game_vertex_id)
+{
+	graph_type::CVertex		*vertex = graph().vertex(game_vertex_id);
+
+	xr_vector<u32>::const_iterator	I = m_current_fringe.begin();
+	xr_vector<u32>::const_iterator	E = m_current_fringe.end();
+	for ( ; I != E; ++I) {
+		VERIFY				(!vertex->edge(*I));
+		float				distance = path_distance(game_vertex_id,*I);
+		graph().add_edge	(game_vertex_id,*I,distance);
+	}
+}
+
+float CGameGraphBuilder::path_distance		(const u32 &game_vertex_id0, const u32 &game_vertex_id1)
+{
+	return					(graph().vertex(game_vertex_id0)->data().level_point().distance_to(graph().vertex(game_vertex_id1)->data().level_point()));
 }
 
 void CGameGraphBuilder::generate_edges		(const float &start, const float &amount)
@@ -422,16 +474,14 @@ void CGameGraphBuilder::generate_edges		(const float &start, const float &amount
 
 	Msg						("Generating edges");
 	
+	graph_type::const_vertex_iterator	I = graph().vertices().begin();
+	graph_type::const_vertex_iterator	E = graph().vertices().end();
+	for ( ; I != E; ++I) {
+		fill_neighbours		((*I).second->vertex_id());
+		generate_edges		((*I).second->vertex_id());
+	}
 
-	Progress				(start + amount);
-}
-
-void CGameGraphBuilder::optimize_graph		(const float &start, const float &amount)
-{
-	Progress				(start);
-
-	Msg						("Optimizing graph");
-
+	Msg						("%d edges built",graph().edge_count());
 
 	Progress				(start + amount);
 }
@@ -446,14 +496,173 @@ void CGameGraphBuilder::connectivity_check	(const float &start, const float &amo
 	Progress				(start + amount);
 }
 
+void CGameGraphBuilder::create_tripples		(const float &start, const float &amount)
+{
+	graph_type::const_vertex_iterator	I = graph().vertices().begin();
+	graph_type::const_vertex_iterator	E = graph().vertices().end();
+	for ( ; I != E; ++I) {
+		graph_type::const_iterator	i = (*I).second->edges().begin();
+		graph_type::const_iterator	e = (*I).second->edges().end();
+		for ( ; i != e; ++i) {
+			if ((*i).vertex_id() < (*I).first)
+				continue;
+
+			const graph_type::CEdge	*edge = graph().vertex((*i).vertex_id())->edge((*I).first);
+
+			m_tripples.push_back	(
+				std::make_pair(
+					_min(
+						(*i).weight(),
+						edge ? edge->weight() : (*i).weight()
+					),
+					std::make_pair(
+						(*I).first,
+						(*i).vertex_id()
+					)
+				)
+			);
+		}
+	}
+
+	std::sort				(m_tripples.begin(),m_tripples.end(),sort_predicate<TRIPPLE>);
+	std::reverse			(m_tripples.begin(),m_tripples.end());
+}
+
+void CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
+{
+	const graph_type::CVertex	&vertex0 = *graph().vertex(tripple.second.first);
+	const graph_type::CVertex	&vertex1 = *graph().vertex(tripple.second.second);
+
+	graph_type::const_iterator	I = vertex0.edges().begin();
+	graph_type::const_iterator	E = vertex0.edges().end();
+	for ( ; I != E; ++I) {
+		if ((*I).vertex_id() == tripple.second.second)
+			continue;
+
+		const graph_type::CEdge	*edge;
+
+		edge					= vertex1.edge((*I).vertex_id());
+		if (edge) {
+			VERIFY				((*I).weight() <= tripple.first);
+			VERIFY				(edge->weight() <= tripple.first);
+			graph().remove_edge	(tripple.second.first,tripple.second.second);
+			if (vertex1.edge(tripple.second.first))
+				graph().remove_edge	(tripple.second.second,tripple.second.first);
+			continue;
+		}
+
+		edge					= graph().vertex((*I).vertex_id())->edge(tripple.second.second);
+		if (edge) {
+			VERIFY				((*I).weight() <= tripple.first);
+			VERIFY				(edge->weight() <= tripple.first);
+			graph().remove_edge	(tripple.second.first,tripple.second.second);
+			if (vertex1.edge(tripple.second.first))
+				graph().remove_edge	(tripple.second.second,tripple.second.first);
+			continue;
+		}
+	}
+}
+
+void CGameGraphBuilder::optimize_graph		(const float &start, const float &amount)
+{
+	Progress					(start);
+
+	Msg							("Optimizing graph");
+
+	Msg							("edges before optimization : %d",graph().edge_count());
+
+	create_tripples				(start + .00f, amount*.50f);
+
+	TRIPPLES::const_iterator	I = m_tripples.begin();
+	TRIPPLES::const_iterator	E = m_tripples.end();
+	for ( ; I != E; ++I)
+		process_tripple			(*I);
+
+	Msg							("edges after optimization : %d",graph().edge_count());
+
+	Progress					(start + amount);
+}
+
 void CGameGraphBuilder::save_graph			(const float &start, const float &amount)
 {
 	Progress				(start);
 
 	Msg						("Saving graph");
 
+	// header
+	CMemoryWriter			writer;
+	CGameGraph::CHeader		header;
+	header.dwVersion		= XRAI_CURRENT_VERSION;
+	header.dwLevelCount		= 1;
+	header.dwVertexCount	= graph().vertices().size();
+	header.dwEdgeCount		= graph().edge_count();
+	header.dwDeathPointCount= 0;
+	header.m_guid			= m_graph_guid;
 
-	Progress				(start + amount);
+	writer.w_u32			(header.dwVersion);
+	writer.w_u32			(header.dwLevelCount);
+	writer.w_u32			(header.dwVertexCount);
+	writer.w_u32			(header.dwEdgeCount);
+	writer.w_u32			(header.dwDeathPointCount);
+
+	// levels
+	CGameGraph::SLevel		level;
+	level.m_offset.set		(0,0,0);
+	level.m_id				= 0;
+	level.m_name			= m_level_name;
+	level.m_section			= "";
+	level.m_guid			= level_graph().header().guid();
+	header.tpLevels.insert	(std::make_pair(level.m_id,level));
+
+	{
+		GameGraph::LEVEL_MAP::iterator	I = header.tpLevels.begin();
+		GameGraph::LEVEL_MAP::iterator	E = header.tpLevels.end();
+		for ( ; I != E; I++) {
+			writer.w_stringZ	((*I).second.name());
+			writer.w_fvector3	((*I).second.offset());
+			writer.w			(&(*I).second.m_id,sizeof((*I).second.m_id));
+			writer.w_stringZ	((*I).second.section());
+			writer.w			(&(*I).second.m_guid,sizeof((*I).second.m_guid));
+		}
+	}
+
+	{
+		u32							pointer = writer.tell();
+		u32							edge_offset = pointer + graph().vertices().size()*sizeof(CGameGraph::CVertex);
+
+		graph_type::const_vertex_iterator	I = graph().vertices().begin();
+		graph_type::const_vertex_iterator	E = graph().vertices().end();
+		for ( ; I != E; ++I) {
+			CGameGraph::CVertex		&vertex = (*I).second->data();
+
+			VERIFY					((*I).second->edges().size() < 256);
+			vertex.tNeighbourCount	= (u8)(*I).second->edges().size();
+			vertex.dwEdgeOffset		= edge_offset;
+			edge_offset				+= vertex.tNeighbourCount*sizeof(CGameGraph::CEdge);
+
+			writer.w				(&vertex,sizeof(vertex));
+		}
+	}
+	
+	{
+		graph_type::const_vertex_iterator	I = graph().vertices().begin();
+		graph_type::const_vertex_iterator	E = graph().vertices().end();
+		for ( ; I != E; ++I) {
+			graph_type::const_iterator	i = (*I).second->edges().begin();
+			graph_type::const_iterator	e = (*I).second->edges().end();
+			for ( ; i != e; ++i) {
+				writer.w_u32				((*i).vertex_id());	
+				writer.w_float				((*i).weight());	
+			}
+		}
+	}
+
+	string_path					file_name;
+	strconcat					(file_name,*m_level_name,GAME_LEVEL_GRAPH);
+	writer.save_to				(file_name);
+	Msg							("%d bytes saved",int(writer.size()));
+
+	Progress					(start + amount);
 }
 
 void CGameGraphBuilder::build_graph			(const float &start, const float &amount)
@@ -462,11 +671,10 @@ void CGameGraphBuilder::build_graph			(const float &start, const float &amount)
 
 	Msg						("Building graph");
 
-	build_neighbours		(start + .00f*amount, amount*.20f);
-	generate_edges			(start + .20f*amount, amount*.20f);
-	optimize_graph			(start + .40f*amount, amount*.20f);
-	connectivity_check		(start + .60f*amount, amount*.20f);
-	save_graph				(start + .80f*amount, amount*.20f);
+	generate_edges			(start + .00f*amount, amount*.25f);
+	connectivity_check		(start + .50f*amount, amount*.25f);
+	optimize_graph			(start + .25f*amount, amount*.25f);
+	save_graph				(start + .75f*amount, amount*.25f);
 
 	Progress				(start + amount);
 }

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "xrLevel.h"
+#include "alife_space.h"
 
 class CLevelGraph;
 class CGameLevelCrossTable;
@@ -31,6 +32,9 @@ private:
 	typedef GameGraph::CVertex						vertex_type;
 	typedef CGraphAbstract<vertex_type,float,u32>	graph_type;
 	typedef xr_vector<xr_vector<u32> >				DISTANCES;
+	typedef std::pair<u32,u32>						PAIR;
+	typedef std::pair<float,PAIR>					TRIPPLE;
+	typedef xr_vector<TRIPPLE>						TRIPPLES;
 
 private:
 	shared_str				m_level_name;
@@ -45,7 +49,7 @@ private:
 	xr_vector<u32>			m_next_fringe;
 	// cross table itself
 	CGameLevelCrossTable	*m_cross_table;
-
+	TRIPPLES				m_tripples;
 
 private:
 			void		create_graph				(const float &start, const float &amount);
@@ -65,16 +69,21 @@ private:
 			void		load_cross_table			(const float &start, const float &amount);
 			
 private:
-			void		build_neighbours			(const float &start, const float &amount);
+			void		fill_neighbours				(const u32 &game_vertex_id);
+			float		path_distance				(const u32 &game_vertex_id0, const u32 &game_vertex_id1);
+			void		generate_edges				(const u32 &vertex_id);
 			void		generate_edges				(const float &start, const float &amount);
-			void		optimize_graph				(const float &start, const float &amount);
 			void		connectivity_check			(const float &start, const float &amount);
+			void		create_tripples				(const float &start, const float &amount);
+			void		process_tripple				(const TRIPPLE &tripple);
+			void		optimize_graph				(const float &start, const float &amount);
 			void		save_graph					(const float &start, const float &amount);
 			void		build_graph					(const float &start, const float &amount);
 
 private:
-	IC		CLevelGraph	&level_graph				() const;
-	IC		graph_type	&graph						() const;
+	IC		CLevelGraph				&level_graph	() const;
+	IC		graph_type				&graph			() const;
+	IC		CGameLevelCrossTable	&cross			() const;
 
 public:
 						CGameGraphBuilder			();
