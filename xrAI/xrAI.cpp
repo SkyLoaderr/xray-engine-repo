@@ -11,6 +11,7 @@
 #include "game_spawn_constructor.h"
 #include "xrCrossTable.h"
 #include "path_test.h"
+#include "game_graph_builder.h"
 #include <mmsystem.h>
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
@@ -139,10 +140,12 @@ void Startup(LPSTR     lpCmdLine)
 //						connectivity_test	(prjName);
 //						test_goap			();
 //						smart_cover			(prjName);
-						for (int i=0; i<100; ++i) {
-							xrBuildGraph		(prjName);
+						CGameGraphBuilder().build_graph	(prjName);
+//						xrBuildCrossTable	(prjName);
+//						for (int i=0; i<100; ++i) {
+//							xrBuildGraph		(prjName);
 //							xrBuildCrossTable	(prjName);
-						}
+//						}
 					}
 					else
 						if (strstr(cmd,"-c")) {

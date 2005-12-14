@@ -43,6 +43,7 @@ public:
 		friend class CLevelGameGraph;
 		friend class CCrossTableBuilder;
 		friend class CRenumbererConverter;
+		friend class CGameGraphBuilder;
 #endif
 	};
 	
@@ -56,6 +57,7 @@ public:
 		friend class CLevelGameGraph;
 		friend class CCrossTableBuilder;
 		friend class CRenumbererConverter;
+		friend class CGameGraphBuilder;
 #endif
 	};
 	#pragma pack(pop)
@@ -79,6 +81,7 @@ public:
 	friend class CLevelGameGraph;
 	friend class CCrossTableBuilder;
 	friend class CRenumbererConverter;
+	friend class CGameGraphBuilder;
 #endif
 };
 
