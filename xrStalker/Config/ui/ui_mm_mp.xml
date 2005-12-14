@@ -374,7 +374,7 @@
 		</check_auto_team_balance>
 		<check_auto_team_swap x="269" y="225" width="155" height="23">
 			<!--options_item entry="mm_net_srv_autoteamswap" group="mm_mp_server"/-->
-			<text font="letterica16" r="115" g="114" b="112">Auto Team Swap</text>
+			<text font="letterica16" r="115" g="114" b="112">mm_mp_autoteamswap</text>
 		</check_auto_team_swap>
 		<check_friendly_indicators x="269" y="250" width="155" height="23">
 			<options_item entry="mm_net_srv_friendlyindicators" group="mm_mp_server"/>

@@ -135,6 +135,9 @@
     <string id="mm_mp_autoteambalance">
         <text>Auto Team Balance</text>
     </string>
+    <string id="mm_mp_autoteamswap">
+        <text>Auto Team Swap</text>
+    </string>
     <string id="mm_mp_friendlyindicators">
         <text>Friendly Indicators</text>
     </string>
