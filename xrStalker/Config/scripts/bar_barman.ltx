@@ -62,8 +62,6 @@ on_signal = arrived | %+bar_barman_need_1_phrase%
 on_info2 = {+bar_barman_need_1_phrase -bar_barman_say_1_phrase} remark@room_psih_1
 
 [remark@room_psih_1]
-no_move = true
-no_rotate = true
 anim = barman_wait_danger
 snd = bar_barman_psycho
 on_signal = sound_end | walker@room_psih %+bar_barman_say_1_phrase%
@@ -78,15 +76,11 @@ def_state_moving3 = barman_walk_danger
 on_timer = 10000 | remark@room_psih_2
 
 [remark@room_psih_2]
-no_move = true
-no_rotate = true
 anim = barman_shock
 snd = bar_barman_psycho
 on_timer = 10000 | remark@room_psih_3
 
 [remark@room_psih_3]
-no_move = true
-no_rotate = true
 anim = barman_wait_danger
 snd = bar_barman_psycho
 on_signal = sound_end| walker@room_psih %+bar_psih_done%
