@@ -125,6 +125,10 @@ void CRender::level_Unload		()
 	}
 	Visuals.clear_and_free		();
 
+	//*** SWI
+	for (I=0; I<SWIs.size();I++)xr_free	(SWIs[I].sw);
+	SWIs.clear					();
+
 	//*** VB/IB
 	for (I=0; I<VB.size(); I++)	_RELEASE(VB[I]);
 	for (I=0; I<IB.size(); I++)	_RELEASE(IB[I]);
