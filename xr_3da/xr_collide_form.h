@@ -127,6 +127,7 @@ public:
 						SElement	()				:elem_id(u16(-1)),type(0)	{}
 						SElement	(u16 id, u16 t)	:elem_id(id),type(t)		{}
 		BOOL			valid		()											{return (elem_id!=(u16(-1)))&&(type!=0);}
+		void			center		(Fvector& center);
 	};
 private:
 	u64					vis_mask;
@@ -142,6 +143,9 @@ public:
 						CCF_Skeleton	( CObject* _owner );
 
 	virtual BOOL		_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
+	bool				_ElementCenter	(u16 elem_id, Fvector& e_center);
+	const ElementVec&	_GetElements	() {return elements;}
+
 //	xr_vector<CCF_OBB>&	_GetElements	() { return elements;	}
 };
 

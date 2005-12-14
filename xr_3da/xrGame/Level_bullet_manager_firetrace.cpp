@@ -133,16 +133,6 @@ BOOL  CBulletManager::firetrace_callback(collide::rq_result& result, LPVOID para
 	else
 		return TRUE;
 }
-/*
-class CFindByIDPred
-{
-public:
-	CFindByIDPred(int element_to_find) {element = element_to_find;}
-	bool operator () (CCF_OBB& ccf_obb) {return ccf_obb.elem_id == element;}
-private:
-	int element;
-};
-*/
 
 void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, const Fvector& vNormal, bool ShowMark)
 {
@@ -336,18 +326,15 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 	//----------- normal - start
 	if (R.O){
 		//вернуть нормаль по которой играть партиклы
-		CCF_Skeleton* skeletion = smart_cast<CCF_Skeleton*>(R.O->CFORM());
-		if(skeletion){
-/*
-//.
-			xr_vector<CCF_OBB>::iterator it = std::find_if(skeletion->_GetElements().begin(),
-				skeletion->_GetElements().end(), CFindByIDPred(R.element) );
-			VERIFY(skeletion->_GetElements().end() != it);
-			CCF_OBB& ccf_obb = *it;
-			hit_normal.sub								(end_point, ccf_obb.WCenter);
-			if(!fis_zero(hit_normal.magnitude_sqr()))	hit_normal.normalize();
-			else										hit_normal.invert	(bullet->dir);
-*/
+		CCF_Skeleton* skeleton = smart_cast<CCF_Skeleton*>(R.O->CFORM());
+		if(skeleton){
+			Fvector			e_center;
+			hit_normal.set	(0,0,0);
+			if (skeleton->_ElementCenter(R.element,e_center))
+				hit_normal.sub							(end_point, e_center);
+			float len		= hit_normal.square_magnitude();
+			if (!fis_zero(len))	hit_normal.div		(_sqrt(len));
+			else				hit_normal.invert	(bullet->dir);
 		}
 	} else {
 		//вычислить нормаль к поверхности

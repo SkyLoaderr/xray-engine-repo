@@ -26,6 +26,37 @@ ICollisionForm::~ICollisionForm( )
 }
 
 //----------------------------------------------------------------------------------
+void CCF_Skeleton::SElement::center(Fvector& center)
+{
+	switch (type){
+	case SBoneShape::stBox:
+		center.set(	-b_IM.c.dotproduct(b_IM.i),
+					-b_IM.c.dotproduct(b_IM.j),
+					-b_IM.c.dotproduct(b_IM.k));
+	break;
+	case SBoneShape::stSphere: 
+		center.set(s_sphere.P);
+	break;
+	case SBoneShape::stCylinder: 
+		center.set(c_cylinder.m_center);
+	break;
+	default:
+		NODEFAULT;
+	}
+}
+bool	pred_find_elem(const CCF_Skeleton::SElement& E, u16 elem){
+	return E.elem_id<elem;
+}
+bool CCF_Skeleton::_ElementCenter(u16 elem_id, Fvector& e_center)
+{
+	ElementVecIt it = std::lower_bound(elements.begin(),elements.end(),elem_id,pred_find_elem);
+	if (it->elem_id==elem_id){
+		it->center(e_center);
+		return true;
+	}
+	return false;
+}
+
 IC bool RAYvsOBB(const Fmatrix& IM, const Fvector& b_hsize, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
 {
 	Fbox E	= {-b_hsize.x, -b_hsize.y, -b_hsize.z,	b_hsize.x,	b_hsize.y,	b_hsize.z};
