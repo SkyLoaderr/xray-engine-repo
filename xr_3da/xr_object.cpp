@@ -130,11 +130,7 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 		if (pSettings->line_exist(cNameSect(),"cform")) {
 			LPCSTR cf			= pSettings->r_string	(*cNameSect(), "cform");
 			R_ASSERT3			(*NameVisual, "Model isn't assigned for object, but cform requisted",*cName());
-			if (xr_strcmp(cf,"skeleton")==0) collidable.model	= xr_new<CCF_Skeleton>	(this);
-			else{
-				collidable.model								= xr_new<CCF_Polygonal> (this);
-				((CCF_Polygonal*)(collidable.model))->LoadModel	(pSettings, *cNameSect());
-			}
+			collidable.model	= xr_new<CCF_Skeleton>	(this);
 		}
 	}
 	spatial_register			();

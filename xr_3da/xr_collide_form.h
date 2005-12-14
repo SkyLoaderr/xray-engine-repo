@@ -105,21 +105,6 @@ public:
 	const ECollisionFormType Type	( ) const				{ return m_type;		}
 };
 
-class ENGINE_API	CCF_Polygonal : public ICollisionForm
-{
-private:
-	CDB::MODEL		model;
-public:
-					CCF_Polygonal	( CObject* _owner );
-
-	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
-	//virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
-
-	BOOL			LoadModel		( CInifile* ini, const char *section );
-	CDB::TRI*		GetTris			() { return model.get_tris();	}
-	CDB::MODEL*		GetModel		() { return &model;				}
-};
-
 class ENGINE_API	CCF_Skeleton : public ICollisionForm
 {
 public:

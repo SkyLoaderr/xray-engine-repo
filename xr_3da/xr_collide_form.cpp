@@ -26,109 +26,6 @@ ICollisionForm::~ICollisionForm( )
 }
 
 //----------------------------------------------------------------------------------
-CCF_Polygonal::CCF_Polygonal(CObject* O) : ICollisionForm(O,cftObject)
-{
-}
-
-BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
-{
-	R_ASSERT			(ini);
-	R_ASSERT			(section);
-
-	// Locate file
-	string256			full_path;
-	LPCSTR				N = ini->r_string(section,"cform");
-	if (!FS.exist(full_path, "$level$", N)) {
-		Debug.fatal("Can't find cform file '%s'.",N);
-	}
-
-	// Actual load
-	IReader*			f	= FS.r_open(full_path);
-	hdrCFORM			H;
-	f->r				(&H,sizeof(hdrCFORM));
-	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
-
-	bv_box.set			(H.aabb);
-	bv_box.getsphere	(bv_sphere.P,bv_sphere.R);
-
-	Fvector*	verts	= (Fvector*)f->pointer();
-	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
-	model.build			( verts, H.vertcount, tris, H.facecount );
-	Msg					("* CFORM memory usage: %dK",model.memory()/1024);
-	FS.r_close			(f);
-
-	return				TRUE;
-}
-
-BOOL CCF_Polygonal::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
-{
-	// Convert ray into local model space
-	Fvector dS, dD;
-	Fmatrix temp; 
-	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
-
-	// 
-	if (!bv_sphere.intersect(dS,dD))	return FALSE;
-
-	// Query
-	BOOL bHIT = FALSE;
-	XRC.ray_options		(Q.flags);
-	XRC.ray_query		(&model,dS,dD,Q.range);
-	if (XRC.r_count()) 	{
-		for (int k=0; k<XRC.r_count(); k++){
-			bHIT		= TRUE;
-			CDB::RESULT* I	= XRC.r_begin()+k;
-			R.append_result(owner,I->range,I->id,Q.flags&CDB::OPT_ONLYNEAREST);
-			if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
-		}
-	}
-	return bHIT;
-}
-/*
-void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
-{
-	if ((flags&clQUERY_TOPLEVEL) || (((flags&clGET_TRIS)==0) && (flags&clGET_BOXES)))
-	{
-		// Return only top level
-		clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-		Q.AddBox			(owner->XFORM(),bv_box);
-	} else {
-		// XForm box
-		const Fmatrix&	T = owner->XFORM();
-		Fmatrix			w2m,b2m;
-		w2m.invert		(T);
-		b2m.mul_43		(w2m,M);
-		
-		Fvector			bc,bd;
-		Fbox			xf; 
-		xf.xform		(B,b2m);
-		xf.get_CD		(bc,bd);
-		
-		// Return actual tris
-		XRC.box_query (&model, bc, bd );
-		if (XRC.r_count())
-		{
-			clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
-			if (flags&clQUERY_ONLYFIRST) 
-			{
-				Q.AddTri(T,&model.get_tris()[XRC.r_begin()->id],model.get_verts());
-				return;
-			} else {
-				CDB::RESULT* it	=XRC.r_begin();
-				CDB::RESULT* end=XRC.r_end	();
-				for (; it!=end; it++)
-					Q.AddTri(T,&model.get_tris() [it->id], model.get_verts());
-			}
-		}
-	}
-}
-*/
-
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
 IC bool RAYvsOBB(const Fmatrix& IM, const Fvector& b_hsize, const Fvector &S, const Fvector &D, float &R, BOOL bCull)
 {
 	Fbox E	= {-b_hsize.x, -b_hsize.y, -b_hsize.z,	b_hsize.x,	b_hsize.y,	b_hsize.z};
@@ -251,15 +148,14 @@ BOOL CCF_Skeleton::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
-	// Convert ray into local model space
-	Fvector dS, dD;
-	Fmatrix temp; 
-	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
+
+	Fsphere w_bv_sphere;
+	owner->XFORM().transform_tiny		(w_bv_sphere.P,bv_sphere.P);
+	w_bv_sphere.R						= bv_sphere.R;
 
 	// 
-	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+	float tgt_dist						= Q.range;
+	if (Fsphere::rpNone==w_bv_sphere.intersect(Q.start,Q.dir,tgt_dist)) return FALSE;
 
 	if (dwFrame != Device.dwFrame)		BuildState	();
 	else{
