@@ -127,6 +127,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 			m_aFireModes.push_back(FireMode);			
 		}
 		m_iCurFireMode = ModesCount - 1;
+		m_iPrefferedFireMode = READ_IF_EXISTS(pSettings, r_s16,section,"preffered_fire_mode",-1);
 	}
 	else
 		m_bHasDifferentFireModes = false;
@@ -488,6 +489,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 		fTime			+=	fTimeToFire;
 		
 		++m_iShotNum;
+		
 		OnShot			();
 		static int i = 0;
 		if (i||m_iShotNum>m_iShootEffectorStart)
@@ -1064,4 +1066,11 @@ void	CWeaponMagazined::SetQueueSize			(int size)
 		strcpy(m_sCurFireMode, " (A)");
 	else
 		sprintf(m_sCurFireMode, " (%d)", m_iQueueSize);
+};
+
+float	CWeaponMagazined::GetWeaponDeterioration	()
+{
+	if (!m_bHasDifferentFireModes || m_iPrefferedFireMode == -1 || u32(GetCurrentFireMode()) <= u32(m_iPrefferedFireMode)) 
+		return inherited::GetWeaponDeterioration();
+	return m_iShotNum*conditionDecreasePerShot;
 };

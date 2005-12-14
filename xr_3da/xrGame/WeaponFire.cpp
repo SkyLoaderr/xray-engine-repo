@@ -46,6 +46,11 @@ void random_dir(Fvector& tgt_dir, const Fvector& src_dir, float dispersion)
 	tgt_dir.add			(src_dir,T).normalize();
 }
 
+float CWeapon::GetWeaponDeterioration	()
+{
+	return conditionDecreasePerShot;
+};
+
 void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 {
 	VERIFY		(m_magazine.size());
@@ -54,7 +59,9 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	VERIFY		(u16(-1) != l_cartridge.bullet_material_idx);
 
 	//повысить изношенность оружия с учетом влияния конкретного патрона
-	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
+	float Deterioration = GetWeaponDeterioration();
+	Msg("Deterioration = %f", Deterioration);
+	ChangeCondition(-GetWeaponDeterioration()*l_cartridge.m_impair);
 
 	
 	float fire_disp				= GetFireDispersion(true);

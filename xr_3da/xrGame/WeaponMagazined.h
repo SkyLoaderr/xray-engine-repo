@@ -146,6 +146,7 @@ protected:
 	xr_vector<int>	m_aFireModes;
 	int				m_iCurFireMode;
 	string16		m_sCurFireMode;
+	int				m_iPrefferedFireMode;
 
 	//переменная блокирует использование
 	//только разных типов патронов
@@ -176,6 +177,7 @@ protected:
 
 	virtual void	StartIdleAnim		();
 	virtual	int		ShotsFired			() { return m_iShotNum; }
+	virtual float	GetWeaponDeterioration	();
 
 };
 
