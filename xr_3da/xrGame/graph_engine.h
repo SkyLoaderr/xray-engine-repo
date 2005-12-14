@@ -37,7 +37,7 @@ public:
 				8*1024
 			>												CSolverVertexManager;
 #ifdef AI_COMPILER
-	typedef CVertexAllocatorFixed<8*1024*1024>				CVertexAllocator;
+	typedef CVertexAllocatorFixed<2*1024*1024>				CVertexAllocator;
 #else
 	typedef CVertexAllocatorFixed<64*1024>					CVertexAllocator;
 #endif
