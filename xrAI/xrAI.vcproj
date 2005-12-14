@@ -1234,6 +1234,15 @@
 					RelativePath="ai_nodes.h">
 				</File>
 				<File
+					RelativePath=".\game_graph_builder.cpp">
+				</File>
+				<File
+					RelativePath=".\game_graph_builder.h">
+				</File>
+				<File
+					RelativePath=".\game_graph_builder_inline.h">
+				</File>
+				<File
 					RelativePath="xrGraph.cpp">
 				</File>
 				<File
