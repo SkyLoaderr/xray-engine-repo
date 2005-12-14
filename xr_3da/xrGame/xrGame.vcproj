@@ -5940,18 +5940,6 @@
 						<File
 							RelativePath=".\EffectorZoomInertion.h">
 						</File>
-						<File
-							RelativePath=".\night_vision_effector.cpp">
-						</File>
-						<File
-							RelativePath=".\night_vision_effector.h">
-						</File>
-						<File
-							RelativePath=".\ShootingHitEffector.cpp">
-						</File>
-						<File
-							RelativePath=".\ShootingHitEffector.h">
-						</File>
 					</Filter>
 				</Filter>
 				<Filter
