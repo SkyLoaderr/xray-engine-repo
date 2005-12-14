@@ -78,8 +78,8 @@ class SndShockEffector:public CEffectorController
 {
 	typedef CEffectorController inherited;
 public:
-	int							m_snd_length;	//ms
-	int							m_cur_length;	//ms
+	float						m_snd_length;	//ms
+	float						m_cur_length;	//ms
 	float						m_stored_volume;
 	float						m_end_time;
 	float						m_life_time;
@@ -90,6 +90,7 @@ public:
 	void						Update				();
 
 	virtual		BOOL			Valid				();
+				BOOL			InWork				();
 	virtual	float xr_stdcall	GetFactor			();
 };
 

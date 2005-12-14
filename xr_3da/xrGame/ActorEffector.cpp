@@ -235,7 +235,12 @@ SndShockEffector::~SndShockEffector	()
 
 BOOL SndShockEffector::Valid()
 {
-	return inherited::Valid() && (m_cur_length<=m_snd_length);
+	return (m_cur_length<=m_snd_length);
+}
+
+BOOL SndShockEffector::InWork()
+{
+	return inherited::Valid();
 }
 
 float SndShockEffector::GetFactor()

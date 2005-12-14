@@ -985,7 +985,7 @@ void CActor::UpdateCL	()
 		{
 			m_sndShockEffector->Update();
 
-			if(!m_sndShockEffector->Valid())
+			if(!m_sndShockEffector->InWork())
 				xr_delete(m_sndShockEffector);
 		}
 		else

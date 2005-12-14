@@ -340,7 +340,8 @@ void CController::UpdateCL()
 	if(m_sndShockEffector)
 	{
 		m_sndShockEffector->Update();
-		if(!m_sndShockEffector->Valid()) xr_delete(m_sndShockEffector);
+		if(!m_sndShockEffector->Valid()) 
+			xr_delete(m_sndShockEffector);
 	}
 
 
