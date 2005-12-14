@@ -71,8 +71,8 @@ void CUIGameAHunt::Init	()
 	//-----------------------------------------------------------
 	m_pPlayerLists->AttachChild(pPlayerListT1);
 	//-----------------------------------------------------------
-	m_reinforcement_caption			=	"ah_reinforcement";		
-	GameCaptions()->addCustomMessage(m_reinforcement_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");
+//	m_reinforcement_caption			=	"ah_reinforcement";		
+//	GameCaptions()->addCustomMessage(m_reinforcement_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");
 
 	m_score_caption					=	"ah_score";		
 	GameCaptions()->addCustomMessage(m_score_caption, DI2PX(0.0f), DI2PY(-0.85f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, SCORE_MSG_COLOR, "");
@@ -98,10 +98,10 @@ CUIGameAHunt::~CUIGameAHunt()
 {
 }
 
-void CUIGameAHunt::SetReinforcementCaption(LPCSTR str)
-{
-	GameCaptions()->setCaption(m_reinforcement_caption, str, REINFORCEMENT_MSG_COLOR, true);
-}
+//void CUIGameAHunt::SetReinforcementCaption(LPCSTR str)
+//{
+//	GameCaptions()->setCaption(m_reinforcement_caption, str, REINFORCEMENT_MSG_COLOR, true);
+//}
 
 void CUIGameAHunt::SetScoreCaption(LPCSTR str)
 {

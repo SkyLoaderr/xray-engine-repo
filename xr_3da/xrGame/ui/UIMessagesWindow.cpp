@@ -19,11 +19,15 @@
 #include "UIColorAnimatorWrapper.h"
 #include "../InfoPortion.h"
 #include "../string_table.h"
+#include "../game_cl_artefacthunt.h"
+#include "UIProgressShape.h"
 
 CUIMessagesWindow::CUIMessagesWindow(){
 	m_pChatLog = NULL;
 	m_pChatWnd = NULL;
 	m_pGameLog = NULL;
+	m_pReinforcementInidcator = NULL;
+	m_pGranadeInidcator = NULL;
 	Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 }
 
@@ -66,6 +70,26 @@ void CUIMessagesWindow::Init(float x, float y, float width, float height){
 		
 		m_pChatWnd->Init(xml);
 	}	
+
+	if (GAME_ARTEFACTHUNT == GameID())
+	{			
+        m_pReinforcementInidcator = xr_new<CUIProgressShape>();
+		m_pReinforcementInidcator->SetAutoDelete(true);
+		m_pReinforcementInidcator->SetVisible(false);
+		AttachChild(m_pReinforcementInidcator);
+
+		CUIXmlInit::InitProgressShape(xml, "reinforcement", 0, m_pReinforcementInidcator);			
+
+		game_cl_ArtefactHunt* game = smart_cast<game_cl_ArtefactHunt*>(&Game());
+		game->m_reinforcement_progress = m_pReinforcementInidcator;
+	}
+
+	m_pGranadeInidcator = xr_new<CUIProgressShape>();
+	m_pGranadeInidcator->SetAutoDelete(true);
+	m_pGranadeInidcator->SetVisible(false);
+	AttachChild(m_pGranadeInidcator);
+
+	CUIXmlInit::InitProgressShape(xml, "granade_indicator", 0, m_pGranadeInidcator);
 }
 
 bool CUIMessagesWindow::SetDelayForPdaMessage(int iValue, int iDelay){

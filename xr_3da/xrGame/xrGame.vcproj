@@ -8661,6 +8661,22 @@
 							<File
 								RelativePath="game_sv_single.h">
 							</File>
+							<Filter
+								Name="ServerConnect"
+								Filter="">
+								<File
+									RelativePath="xrServer_CL_connect.cpp">
+								</File>
+								<File
+									RelativePath="xrServer_CL_disconnect.cpp">
+								</File>
+								<File
+									RelativePath="xrServer_Connect.cpp">
+								</File>
+								<File
+									RelativePath="xrServer_Disconnect.cpp">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="team_deathmatch"
@@ -8754,22 +8770,6 @@
 					Filter="">
 					<File
 						RelativePath=".\id_generator.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="ServerConnect"
-					Filter="">
-					<File
-						RelativePath="xrServer_CL_connect.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_CL_disconnect.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Connect.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Disconnect.cpp">
 					</File>
 				</Filter>
 				<Filter
@@ -10548,6 +10548,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIProgressBar_script.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIProgressShape.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIProgressShape.h">
 					</File>
 				</Filter>
 				<Filter

@@ -14,6 +14,7 @@
 #include "ui/UISkinSelector.h"
 #include "ui/UIPdaWnd.h"
 #include "ui/UIMapDesc.h"
+#include "ui/UIProgressShape.h"
 #include "xr_level_controller.h"
 #include "Artifact.h"
 #include "map_location.h"
@@ -343,7 +344,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	inherited::shedule_Update		(dt);
 	
 	//out game information
-	m_game_ui->SetReinforcementCaption("");
+//	m_game_ui->SetReinforcementCaption("");
 	m_game_ui->SetBuyMsgCaption		("");
 	m_game_ui->SetScoreCaption		("");
 	m_game_ui->SetTodoCaption		("");
@@ -387,6 +388,8 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				game_TeamState team1 = teams[1];
 
 				string256 S;
+
+				m_reinforcement_progress->SetVisible(iReinforcementTime != 0);
 				
 				if (dReinforcementTime != 0 && Level().CurrentViewEntity() && m_cl_dwWarmUp_Time == 0)
 				{
@@ -395,11 +398,12 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 					if (s32(CurTime) > dReinforcementTime) dTime = 0;
 					else dTime = iCeil(float(dReinforcementTime - CurTime) / 1000);
 					
-					string64 tmp;
-					_itoa(dTime, tmp, 10);
-					strconcat(S, "Next reinforcement will arrive at . . .", tmp);
+//					string64 tmp;
+//					_itoa(dTime, tmp, 10);
+//					strconcat(S, "Next reinforcement will arrive at . . .", tmp);
 					
-					m_game_ui->SetReinforcementCaption(S);
+//					m_game_ui->SetReinforcementCaption(S);
+					m_reinforcement_progress->SetPos(dTime, iReinforcementTime/1000);
 /*
 					CActor* pActor = NULL;
 					if (Level().CurrentViewEntity()->CLS_ID == CLSID_OBJECT_ACTOR)

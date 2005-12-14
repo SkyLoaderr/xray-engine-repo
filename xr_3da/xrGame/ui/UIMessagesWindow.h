@@ -19,6 +19,7 @@ class CUIChatWnd;
 class game_cl_GameState;
 class CUIPdaMsgListItem;
 class CUIListWnd;
+class CUIProgressShape;
 
 class CUIMessagesWindow : public CUIWindow {
 public:
@@ -47,8 +48,10 @@ CUIPdaMsgListItem*		AddMessageToList				(LPCSTR message, CUIListWnd* pListWnd, i
 	virtual void Init(float x, float y, float width, float height);
 
 
-	CUIChatLog*	m_pChatLog;
-	CUIChatWnd*	m_pChatWnd;
-	CUIGameLog*	m_pGameLog;
-	Frect		m_ListPos2;
+	CUIChatLog*			m_pChatLog;
+	CUIChatWnd*			m_pChatWnd;
+	CUIGameLog*			m_pGameLog;
+	Frect				m_ListPos2;
+	CUIProgressShape*	m_pReinforcementInidcator;
+	CUIProgressShape*	m_pGranadeInidcator;
 };

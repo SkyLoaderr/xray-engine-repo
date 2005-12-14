@@ -30,12 +30,12 @@ public:
 	virtual 			~CUIGameAHunt			();
 
 	virtual	void		Init					();
-			void		SetReinforcementCaption	(LPCSTR str);
+//			void		SetReinforcementCaption	(LPCSTR str);
 			void		SetScoreCaption			(LPCSTR str);			
 			void		SetTodoCaption			(LPCSTR str);
 			void		SetBuyMsgCaption		(LPCSTR str);
 protected:
-	shared_str				m_reinforcement_caption;
+//	shared_str				m_reinforcement_caption;
 	shared_str				m_score_caption;	
 	shared_str				m_todo_caption;			
 	shared_str				m_buy_msg_caption;		

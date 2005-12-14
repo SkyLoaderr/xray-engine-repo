@@ -2,10 +2,13 @@
 #include "game_cl_teamdeathmatch.h"
 
 class CUIGameAHunt;
+class CUIProgressShape;
 
 class game_cl_ArtefactHunt :public game_cl_TeamDeathmatch
 {
-	CUIGameAHunt*						m_game_ui;
+	friend class CUIMessagesWindow;
+	CUIProgressShape*					m_reinforcement_progress;
+	CUIGameAHunt*						m_game_ui;	
 	shared_str							m_Eff_Af_Spawn;
 	shared_str							m_Eff_Af_Disappear;
 	typedef game_cl_TeamDeathmatch inherited;

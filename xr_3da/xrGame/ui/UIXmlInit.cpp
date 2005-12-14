@@ -18,6 +18,7 @@
 #include "UIRadioButton.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
+#include "UIProgressShape.h"
 #include "UIListWnd.h"
 #include "UITabControl.h"
 #include "UILabel.h"
@@ -526,6 +527,35 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	}
 
 	return true;
+}
+
+bool CUIXmlInit::InitProgressShape(CUIXml& xml_doc, const char* path, int index, CUIProgressShape* pWnd){
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+
+	InitWindow(xml_doc, path, index, pWnd);
+
+	if (xml_doc.ReadAttribInt(path, index, "text"))
+		pWnd->SetTextVisible(true);
+
+	string256 _path;
+
+	CUIStatic* pSt;
+
+	if (xml_doc.NavigateToNode(strconcat(_path, path, ":back"),index))
+	{
+		pSt = pWnd->InitBackground(NULL);
+		InitStatic(xml_doc, _path, index, pSt);
+		pSt->SetStretchTexture(true);
+	}
+
+	pSt = pWnd->InitTexture(NULL);
+
+    InitStatic(xml_doc, strconcat(_path, path, ":front"), index, pSt);
+	pSt->InitTextureEx(xml_doc.Read(strconcat(_path, path, ":front:texture"), index, NULL), "hud\\seta");
+	pSt->SetStretchTexture(true);
+
+
+    return true;
 }
 
 CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd)
