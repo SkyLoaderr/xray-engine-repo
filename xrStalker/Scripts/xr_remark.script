@@ -98,7 +98,7 @@ function action_remark_activity:execute()
 		else
 			synsound = nil
 		end	   
-		state_mgr.set_state(self.object, self.st.anim, cb, 0, self:get_target(), { animation = true }, synsound)
+		state_mgr.set_state(self.object, self.st.anim, cb, 0, self:get_target(), { animation = self.st.anim_reset }, synsound)
 		self.state = state_animation
 		
 	-- Ожидание колбека от стейтменеджера
@@ -201,6 +201,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	if st.anim == "idle" then
 		abort("remark <abort>: object '%s', xr_remark.set_scheme: anim field cannot be [idle]", npc:name())
 	end
+
+	st.anim_reset = utils.cfg_get_bool(ini, section, "anim_reset", npc, false, true)
+	
 
 	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "nil")
 	st.target_id = nil
