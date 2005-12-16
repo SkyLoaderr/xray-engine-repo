@@ -8,13 +8,15 @@
 
 void CControlRunAttack::load(LPCSTR section)
 {
-	m_min_dist	= pSettings->r_float(section,"Run_Attack_Min_Dist");
-	m_max_dist	= pSettings->r_float(section,"Run_Attack_Max_Dist");
+	read_distance	(section,"Run_Attack_Dist", m_min_dist, m_max_dist);
+	read_delay		(section,"Run_Attack_Delay", m_min_delay, m_max_delay);
 }
 
 void CControlRunAttack::reinit()
 {
 	CControl_ComCustom<>::reinit();
+	
+	m_time_next_attack	= 0;
 }
 
 void CControlRunAttack::activate()
@@ -68,6 +70,8 @@ bool CControlRunAttack::check_start_conditions()
 	SVelocityParam &velocity_run			= m_object->move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
 	if (!fsimilar(m_man->movement().velocity_current(), velocity_run.velocity.linear, 2.f)) return false;
 
+	if (m_time_next_attack > time())		return false;
+
 	return true;
 }
 
@@ -75,6 +79,7 @@ void CControlRunAttack::on_event(ControlCom::EEventType type, ControlCom::IEvent
 {
 	switch (type) {
 	case ControlCom::eventAnimationEnd:
+			m_time_next_attack					= time() + Random.randI(m_min_delay,m_max_delay);
 			m_man->notify						(ControlCom::eventRunAttackEnd, 0);
 			break;
 	case ControlCom::eventAnimationStart: // handle blend params

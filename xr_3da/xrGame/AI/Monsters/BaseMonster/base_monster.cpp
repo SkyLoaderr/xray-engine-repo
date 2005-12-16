@@ -35,6 +35,8 @@
 #include "../anomaly_detector.h"
 #include "../monster_cover_manager.h"
 #include "../monster_home.h"
+#include "../../../inventory.h"
+#include "../../../xrserver.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -365,6 +367,7 @@ DLL_Pure *CBaseMonster::_construct	()
 	
 	inherited::_construct		();
 	CStepManager::_construct	();
+	CInventoryOwner::_construct	();
 	return						(this);
 }
 
@@ -457,4 +460,46 @@ bool CBaseMonster::check_start_conditions(ControlCom::EControlType type)
 		if (!is_state(state, eStateAttack_Run)) return false;
 	}
 	return true;
+}
+
+void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
+{
+	inherited::OnEvent			(P,type);
+	CInventoryOwner::OnEvent	(P,type);
+
+	u16 id;
+	switch (type){
+	case GE_OWNERSHIP_TAKE:
+		{
+			P.r_u16				(id);
+			CObject				*O	= Level().Objects.net_Find	(id);
+			VERIFY				(O);
+
+			CGameObject			*GO = smart_cast<CGameObject*>(O);
+			CInventoryItem		*pIItem = smart_cast<CInventoryItem*>(GO);
+			VERIFY				(inventory().CanTakeItem(pIItem));
+			pIItem->m_eItemPlace = eItemPlaceRuck;
+
+			O->H_SetParent		(this);
+			inventory().Take	(GO, true, true);
+		break;
+		}
+	case GE_TRADE_SELL:
+	case GE_OWNERSHIP_REJECT:
+		{
+			P.r_u16		(id);
+			CObject* O	= Level().Objects.net_Find	(id);
+			VERIFY		(O);
+
+			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) {
+				O->H_SetParent	(0);
+				feel_touch_deny	(O,2000);
+
+				CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); VERIFY(e);
+				CSE_ALifeMonsterBase			*se_monster = smart_cast<CSE_ALifeMonsterBase*>(e);
+				se_monster->m_flags.set			(CSE_ALifeMonsterBase::flSkipSpawnItem, FALSE);
+			}
+		}
+		break;
+	}
 }

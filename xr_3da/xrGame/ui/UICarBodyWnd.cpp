@@ -29,6 +29,7 @@
 #include "../level.h"
 #include "../profiler.h"
 #include "UIWpnDragDropItem.h"
+#include "../ai/monsters/BaseMonster/base_monster.h"
 //////////////////////////////////////////////////////////////////////////
 
 using namespace InventoryUtilities;
@@ -143,8 +144,11 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 //	CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pOurObject);
 	UICharacterInfoLeft.InitCharacter(pOurObject->ID());
 //	CInventoryOwner* pOthersInvOwner = smart_cast<CInventoryOwner*>(pOthersObject);
-	if(pOthersObject)	UICharacterInfoRight.InitCharacter(pOthersObject->ID());
-	
+
+	CBaseMonster *monster = smart_cast<CBaseMonster *>(pOthersObject);
+	if (!monster) {
+		if(pOthersObject)	UICharacterInfoRight.InitCharacter(pOthersObject->ID());
+	} 
 
 	m_pMouseCapturer			= NULL;
 	UIPropertiesBox.Hide		();
@@ -379,7 +383,7 @@ bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 	CUICarBodyWnd* this_car_body_wnd =  smart_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_car_body_wnd, "wrong parent addressed as trade wnd");
 
-
+	if (smart_cast<CBaseMonster*>(this_car_body_wnd->m_pOthersObject)) return false;
 
 	PIItem pIItem = (PIItem)(pItem->GetData());
 

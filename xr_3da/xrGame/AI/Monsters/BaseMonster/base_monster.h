@@ -23,6 +23,7 @@
 #include "../control_manager_custom.h"
 #include "../ai_monster_shared_data.h"
 #include "../monster_sound_defs.h"
+#include "../../../inventoryowner.h"
 
 class CCharacterPhysicsSupport;
 class CMonsterCorpseCoverEvaluator;
@@ -43,7 +44,7 @@ class CMonsterCoverManager;
 
 class CMonsterHome;
 
-class CBaseMonster : public CCustomMonster, public CStepManager
+class CBaseMonster : public CCustomMonster, public CStepManager, public CInventoryOwner 
 {
 	typedef	CCustomMonster								inherited;
 	
@@ -62,6 +63,9 @@ public:
 	virtual CCustomMonster*				cast_custom_monster			()	{return this;}
 	virtual CScriptEntity*				cast_script_entity			()	{return this;}
 	virtual CBaseMonster*				cast_base_monster			()	{return this;}
+
+	virtual CInventoryOwner				*cast_inventory_owner		() {return this;}
+	virtual CGameObject*				cast_game_object			() {return this;}
 
 public:
 	
@@ -107,8 +111,8 @@ public:
 	virtual bool			useful							(const CItemManager *manager, const CGameObject *object) const;
 	virtual float			evaluate						(const CItemManager *manager, const CGameObject *object) const;
 
+	virtual void			OnEvent							(NET_Packet& P, u16 type);
 	virtual void			OnHUDDraw						(CCustomHUD* hud)			{return inherited::OnHUDDraw(hud);}
-	virtual void			OnEvent							(NET_Packet& P, u16 type)	{return inherited::OnEvent(P,type);}
 	virtual u16				PHGetSyncItemsNumber			()							{return inherited::PHGetSyncItemsNumber();}
 	virtual CPHSynchronize*	PHGetSyncItem					(u16 item)					{return inherited::PHGetSyncItem(item);}
 	virtual void			PHUnFreeze						()							{return inherited::PHUnFreeze();}
@@ -318,6 +322,13 @@ IC	void					wake_up				(){m_bSleep = false;}
 IC	void					set_ignore_collision_hit (bool value) {ignore_collision_hit = value;}
 	
 	int						m_rank;
+
+	//-----------------------------------------------------------------
+	// Spawn Inventory Item
+private:
+	LPCSTR					m_item_section;
+	float					m_spawn_probability;
+
 
 private:
 	bool					m_first_update_initialized;

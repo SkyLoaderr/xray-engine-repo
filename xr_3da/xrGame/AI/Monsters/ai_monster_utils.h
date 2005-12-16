@@ -72,3 +72,31 @@ IC Fvector get_head_position(CObject *object)
 	return get_bone_position(object, "bip01_head");
 }
 
+//////////////////////////////////////////////////////////////////////////
+// LTX routines
+//////////////////////////////////////////////////////////////////////////
+IC void read_delay(LPCSTR section, LPCSTR name, u32 &delay_min, u32 &delay_max)
+{
+	LPCSTR	delay	= pSettings->r_string(section,name);
+	string128 tempst;	
+
+	if (_GetItemCount(delay) == 2) {
+		delay_min = u32(atoi(_GetItem(delay,0,tempst)));
+		delay_max = u32(atoi(_GetItem(delay,1,tempst)));
+	} else {
+		delay_min	= 0;
+		delay_max	= u32(atoi(delay));
+	}
+}
+
+IC void read_distance(LPCSTR section, LPCSTR name, float &dist_min, float &dist_max)
+{
+	LPCSTR	dist	= pSettings->r_string(section,name);
+	string128 tempst;
+
+	VERIFY			(_GetItemCount(dist) == 2);
+	
+	dist_min		= float(atof(_GetItem(dist,0,tempst)));
+	dist_max		= float(atof(_GetItem(dist,1,tempst)));
+}
+

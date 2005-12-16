@@ -491,6 +491,8 @@ void CControlAnimationBase::check_hit(MotionID motion, float time_perc)
 	if (!is_angle_between(p, from, to)) should_hit = false;
 
 	if (should_hit) m_object->HitEntity(enemy, params.hit_power, params.impulse, params.impulse_dir);
+
+	m_object->MeleeChecker.on_hit_attempt(should_hit);
 }
 
 void parse_anim_params(LPCSTR val, SAAParam &anim) 

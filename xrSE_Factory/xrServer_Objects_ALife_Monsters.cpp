@@ -1804,6 +1804,12 @@ CSE_ALifeMonsterBase::CSE_ALifeMonsterBase	(LPCSTR caSection) : CSE_ALifeMonster
 {
     set_visual					(pSettings->r_string(caSection,"visual"));
 	m_spec_object_id			= 0xffff;
+	
+	// check flCustom was not changed 
+	VERIFY						(flCustom == (u32(1) << 23));
+
+	m_flags.set					(flNeedCheckSpawnItem,	TRUE);
+	m_flags.set					(flSkipSpawnItem,		TRUE);
 }
 
 CSE_ALifeMonsterBase::~CSE_ALifeMonsterBase()

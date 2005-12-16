@@ -18,6 +18,9 @@
 #include "../anomaly_detector.h"
 #include "../monster_cover_manager.h"
 #include "../monster_home.h"
+#include "../../../ai_object_location.h"
+#include "../../../level.h"
+#include "../../../xrserver_objects_alife_monsters.h"
 
 
 void CBaseMonster::Load(LPCSTR section)
@@ -48,6 +51,9 @@ void CBaseMonster::Load(LPCSTR section)
 	CoverMan->load					();
 
 	m_rank							= (pSettings->line_exist(section,"rank")) ? int(pSettings->r_u8(section,"rank")) : 0;
+
+	m_item_section					= pSettings->r_string(section,"Spawn_Inventory_Item_Section");
+	m_spawn_probability				= pSettings->r_float(section,"Spawn_Inventory_Item_Probability");
 }
 
 // if sound is absent just do not load that one
@@ -59,6 +65,7 @@ void CBaseMonster::reload	(LPCSTR section)
 {
 	CCustomMonster::reload		(section);
 	CStepManager::reload		(section);
+	CInventoryOwner::reload		(section);
 	movement().reload	(section);
 
 	// load base sounds
@@ -91,6 +98,7 @@ void CBaseMonster::reload	(LPCSTR section)
 void CBaseMonster::reinit()
 {
 	inherited::reinit					();
+	CInventoryOwner::reinit				();
 
 	EnemyMemory.clear					();
 	SoundMemory.clear					();
@@ -131,7 +139,7 @@ void CBaseMonster::reinit()
 #ifdef DEBUG
 	m_show_debug_info				= 0;
 #endif 
-
+	
 }
 
 
@@ -151,6 +159,22 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 	monster_squad().register_member			((u8)g_Team(),(u8)g_Squad(), this);
 
 	settings_overrides						();
+
+	// spawn inventory item
+	CSE_ALifeMonsterBase					*se_monster = smart_cast<CSE_ALifeMonsterBase*>(DC);
+	VERIFY									(se_monster);
+
+	if (se_monster->m_flags.is(CSE_ALifeMonsterBase::flNeedCheckSpawnItem)) {
+		float prob = Random.randF();
+		if ((prob < m_spawn_probability) || fsimilar(prob, m_spawn_probability)) 
+			se_monster->m_flags.set(CSE_ALifeMonsterBase::flSkipSpawnItem, FALSE);
+	
+		se_monster->m_flags.set(CSE_ALifeMonsterBase::flNeedCheckSpawnItem, FALSE);
+	}
+
+	if (!se_monster->m_flags.is(CSE_ALifeMonsterBase::flSkipSpawnItem)) {
+		Level().spawn_item (m_item_section,Position(),ai_location().level_vertex_id(),ID());
+	}
 
 	return(TRUE);
 }
