@@ -94,8 +94,8 @@ hit_type						= wound					; type of attack
 as_min_dist						= 0.3    
 as_step							= 0.5
 
-Run_Attack_Min_Dist				= 2.5
-Run_Attack_Max_Dist				= 3.0
+Run_Attack_Dist					= 2.5,		3.0
+Run_Attack_Delay				= 10000,	20000
 
 attack_params					= m_bloodsucker_attack_params
 
@@ -121,7 +121,7 @@ Invisibility_Energy_Aggressive_Restore_Velocity		= 0.01
 ; Vampire Ability
 ;-------------------------------------------------------------------------
 
-Vampire_Delay			= 50000
+Vampire_Delay			= 10000
 Vampire_Want_Speed		= 0.01
 
 ;-------------------------------------------------------------------------
@@ -246,6 +246,9 @@ LegsCount						= 2
 
 ;species of monster
 species							= bloodsucker
+
+Spawn_Inventory_Item_Section		= af_gold_fish
+Spawn_Inventory_Item_Probability	= 0.1 
 
 ;=================================================================================
 ; Bloodsucker Damage

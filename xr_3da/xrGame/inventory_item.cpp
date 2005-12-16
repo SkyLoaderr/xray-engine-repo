@@ -851,8 +851,9 @@ void CInventoryItem::UpdateXForm	()
 
 	// Get access to entity and its visual
 	CEntityAlive*	E		= smart_cast<CEntityAlive*>(object().H_Parent());
-
 	if(!E) return;
+	if (E->cast_base_monster()) return;
+
 	R_ASSERT		(E);
 	CKinematics*	V		= smart_cast<CKinematics*>	(E->Visual());
 	VERIFY			(V);
