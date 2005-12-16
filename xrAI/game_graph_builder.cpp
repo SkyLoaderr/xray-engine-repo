@@ -96,36 +96,36 @@ void CGameGraphBuilder::load_graph_point	(NET_Packet &net_packet)
 		graph_type::const_vertex_iterator	E = graph().vertices().begin();
 		for ( ; I != E; ++I) {
 			if ((*I).second->data().tLocalPoint.distance_to_sqr(vertex.tLocalPoint) < EPS_L) {
-#pragma todo("Dima to Dima : add reason of skipping graph point here")
+				Msg			("! removing graph point [%s][%f][%f][%f] because it is too close to the another graph point",entity->name_replace(),VPUSH(entity->o_Position));
 				return;
 			}
 		}
 	}
 
 	vertex.tGlobalPoint		= graph_point->o_Position;
-	vertex.tNodeID			= level_graph().vertex_id(vertex.tLocalPoint);
+	vertex.tNodeID			= level_graph().valid_vertex_position(vertex.tLocalPoint) ? level_graph().vertex_id(vertex.tLocalPoint) : u32(-1);
 	if (!level_graph().valid_vertex_id(vertex.tNodeID)) {
-#pragma todo("Dima to Dima : add reason of skipping graph point here")
+		Msg					("! removing graph point [%s][%f][%f][%f] because it is outside of the AI map",entity->name_replace(),VPUSH(entity->o_Position));
 		return;
 	}
 
 	// check for multiple vertices on a single node id
 	{
 		Fvector				vertex_position = level_graph().vertex_position(vertex.tNodeID);
-		float				distance_sqr = vertex.tLocalPoint.distance_to_sqr(vertex_position);
+//		float				distance_sqr = vertex.tLocalPoint.distance_to_sqr(vertex_position);
 
 		graph_type::const_vertex_iterator	I = graph().vertices().begin();
 		graph_type::const_vertex_iterator	E = graph().vertices().begin();
 		for ( ; I != E; ++I) {
 			if ((*I).second->data().tNodeID == vertex.tNodeID) {
-#pragma todo("Dima to Dima : add reason of skipping graph point here")
+				Msg			("! removing graph point [%s][%f][%f][%f] because it has the same AI node as another graph point",entity->name_replace(),VPUSH(entity->o_Position));
 				return;
 			}
 
-			if ((*I).second->data().tLocalPoint.distance_to_sqr(vertex_position) < distance_sqr) {
-#pragma todo("Dima to Dima : add reason of skipping graph point here")
-				return;
-			}
+//			if ((*I).second->data().tLocalPoint.distance_to_sqr(vertex_position) < distance_sqr) {
+//				Msg			("! removing graph point [%s][%f][%f][%f] because it has the same AI node as another graph point",entity->name_replace(),VPUSH(entity->o_Position));
+//				return;
+//			}
 		}
 	}
 
@@ -487,7 +487,7 @@ void CGameGraphBuilder::load_cross_table	(const float &start, const float &amoun
 	Msg						("Loading cross table");
 
 	string_path				file_name;
-	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_RAW);
+	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_TEST);
 
 	VERIFY					(!m_cross_table);
 	m_cross_table			= xr_new<CGameLevelCrossTable>(file_name);
@@ -521,6 +521,7 @@ void CGameGraphBuilder::fill_neighbours		(const u32 &game_vertex_id)
 				continue;
 
 			GameGraph::_GRAPH_ID		next_game_vertex_id = cross().vertex(next_level_vertex_id).game_vertex_id();
+			VERIFY						(next_game_vertex_id < graph().vertices().size());
 			if (next_game_vertex_id != (GameGraph::_GRAPH_ID)game_vertex_id) {
 				if	(
 						std::find(
