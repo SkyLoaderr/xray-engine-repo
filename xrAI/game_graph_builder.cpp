@@ -170,9 +170,15 @@ void CGameGraphBuilder::load_graph_points	(const float &start, const float &amou
 }
 
 template <typename T>
-IC	bool sort_predicate(const T &first, const T &second)
+IC	bool sort_predicate_less(const T &first, const T &second)
 {
 	return					(first.first < second.first);
+}
+
+template <typename T>
+IC	bool sort_predicate_greater(const T &first, const T &second)
+{
+	return					(first.first > second.first);
 }
 
 void CGameGraphBuilder::remove_incoherent_points	(const float &start, const float &amount)
@@ -186,7 +192,7 @@ void CGameGraphBuilder::remove_incoherent_points	(const float &start, const floa
 	for (u32 i=0; i<graph().header().vertex_count(); ++i)
 		pairs.push_back		(std::make_pair(graph().vertex(i)->data().tNodeID,i));
 
-	std::sort				(pairs.begin(),pairs.end(),sort_predicate<PAIR>);
+	std::sort				(pairs.begin(),pairs.end(),sort_predicate_less<PAIR>);
 
 	xr_vector<PAIR>::iterator	I = pairs.begin(), B = I;
 	xr_vector<PAIR>::iterator	E = pairs.end();
@@ -263,6 +269,8 @@ void CGameGraphBuilder::recursive_update	(const u32 &game_vertex_id, const float
 
 	u32							level_vertex_id = graph().vertex(game_vertex_id)->data().level_vertex_id();
 	xr_vector<u32>				&distances = m_distances[game_vertex_id];
+	m_distances[m_results[level_vertex_id]][level_vertex_id]	= u32(-1);
+//	m_results[level_vertex_id]	= game_vertex_id;
 
 	m_current_fringe.reserve	(distances.size());
 	m_next_fringe.reserve		(distances.size());
@@ -287,8 +295,8 @@ void CGameGraphBuilder::recursive_update	(const u32 &game_vertex_id, const float
 		xr_vector<u32>::iterator			E = m_current_fringe.end();
 		for ( ; I != E; ++I) {
 			u32								*result = &m_results[*I];
-			if (curr_dist < m_distances[*result][*I])
-				*result						= game_vertex_id;
+			VERIFY							(curr_dist < m_distances[*result][*I]);
+			*result							= game_vertex_id;
 
 			distances[*I]					= curr_dist;
 			CLevelGraph::const_iterator		i, e;
@@ -303,6 +311,9 @@ void CGameGraphBuilder::recursive_update	(const u32 &game_vertex_id, const float
 					continue;
 				
 				if (distances[dwNexNodeID] <= curr_dist)
+					continue;
+
+				if (m_distances[m_results[dwNexNodeID]][dwNexNodeID] <= (curr_dist + 1))
 					continue;
 
 				m_next_fringe.push_back		(dwNexNodeID);
@@ -351,8 +362,8 @@ void CGameGraphBuilder::save_cross_table	(const float &start, const float &amoun
 
 	Msg									("Saving cross table");
 
-	CTimer								timer;
-	timer.Start							();
+//	CTimer								timer;
+//	timer.Start							();
 
 	CMemoryWriter						tMemoryStream;
 	CGameLevelCrossTable::CHeader		tCrossTableHeader;
@@ -452,18 +463,18 @@ void CGameGraphBuilder::build_cross_table	(const float &start, const float &amou
 	
 	Msg						("Building cross table");
 
-	CTimer					timer;
-	timer.Start				();
+//	CTimer					timer;
+//	timer.Start				();
 
-	fill_marks				(start + 0.000000f*amount,0.003125f*amount);
+	fill_marks				(start + 0.000000f*amount,0.018725f*amount);
 //	Msg						("CT : %f",timer.GetElapsed_sec());
-	fill_distances			(start + 0.003125f*amount,0.034035f*amount);
+	fill_distances			(start + 0.018725f*amount,0.183732f*amount);
 //	Msg						("CT : %f",timer.GetElapsed_sec());
-	iterate_distances		(start + 0.037159f*amount,0.955690f*amount);
+	iterate_distances		(start + 0.202457f*amount,0.757202f*amount);
 //	Msg						("CT : %f",timer.GetElapsed_sec());
-	save_cross_table		(start + 0.992850f*amount,0.007148f*amount);
+	save_cross_table		(start + 0.959659f*amount,0.040327f*amount);
 //	Msg						("CT : %f",timer.GetElapsed_sec());
-	load_cross_table		(start + 0.999998f*amount,0.000002f*amount);
+	load_cross_table		(start + 0.999986f*amount,0.000014f*amount);
 //	Msg						("CT : %f",timer.GetElapsed_sec());
 	
 	Progress				(start + amount);
@@ -541,8 +552,8 @@ float CGameGraphBuilder::path_distance		(const u32 &game_vertex_id0, const u32 &
 	typedef GraphEngineSpace::CStraightLineParams	CStraightLineParams;
 	CStraightLineParams		parameters(vertex0.data().level_point(),vertex1.data().level_point());
 
-//	float					pure_distance = vertex0.data().level_point().distance_to_xz(vertex1.data().level_point());
-	float					pure_distance = vertex0.data().level_point().distance_to(vertex1.data().level_point());
+	float					pure_distance = vertex0.data().level_point().distance_to_xz(vertex1.data().level_point());
+//	float					pure_distance = vertex0.data().level_point().distance_to(vertex1.data().level_point());
 	VERIFY					(pure_distance < parameters.max_range);
 
 	u32						level_vertex_id = level_graph().check_position_in_direction(vertex0.data().level_vertex_id(),vertex0.data().level_point(),vertex1.data().level_point());
@@ -636,8 +647,7 @@ void CGameGraphBuilder::create_tripples		(const float &start, const float &amoun
 		}
 	}
 
-	std::sort				(m_tripples.begin(),m_tripples.end(),sort_predicate<TRIPPLE>);
-	std::reverse			(m_tripples.begin(),m_tripples.end());
+	std::sort				(m_tripples.begin(),m_tripples.end(),sort_predicate_greater<TRIPPLE>);
 }
 
 void CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
@@ -655,7 +665,8 @@ void CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
 
 		edge					= vertex1.edge((*I).vertex_id());
 		if (edge) {
-			VERIFY				(_min((*I).weight(),edge->weight()) <= tripple.first);
+			VERIFY				(_min((*I).weight(),graph().edge((*I).vertex_id(),tripple.second.first) ? graph().edge((*I).vertex_id(),tripple.second.first)->weight() : (*I).weight()) <= tripple.first);
+			VERIFY				(_min(edge->weight(),graph().edge(edge->vertex_id(),tripple.second.second) ? graph().edge(edge->vertex_id(),tripple.second.second)->weight() : (*I).weight()) <= tripple.first);
 			if (vertex0.edge(tripple.second.second))
 				graph().remove_edge	(tripple.second.first,tripple.second.second);
 			if (vertex1.edge(tripple.second.first))
@@ -786,22 +797,22 @@ void CGameGraphBuilder::build_graph			(const float &start, const float &amount)
 	timer.Start				();
 
 	m_graph_engine			= xr_new<CGraphEngine>(level_graph().header().vertex_count());
-	Progress				(start + 0.000000f*amount + amount*0.077419f);
-//	Msg						("BG : %f",timer.GetElapsed_sec());
+	Progress				(start + 0.000000f*amount + amount*0.067204f);
+	Msg						("BG : %f",timer.GetElapsed_sec());
 
-	generate_edges			(start + 0.077419f*amount, amount*0.914833f);
-//	Msg						("BG : %f",timer.GetElapsed_sec());
+	generate_edges			(start + 0.067204f*amount, amount*0.922647f);
+	Msg						("BG : %f",timer.GetElapsed_sec());
 
 	xr_delete				(m_graph_engine);
-	Progress				(start + 0.992253f*amount + amount*0.002526f);
-//	Msg						("BG : %f",timer.GetElapsed_sec());
+	Progress				(start + 0.989851f*amount + amount*0.002150f);
+	Msg						("BG : %f",timer.GetElapsed_sec());
 
-	connectivity_check		(start + 0.994779f*amount, amount*0.000035f);
-//	Msg						("BG : %f",timer.GetElapsed_sec());
-	optimize_graph			(start + 0.994814f*amount, amount*0.000524f);
-//	Msg						("BG : %f",timer.GetElapsed_sec());
-	save_graph				(start + 0.995338f*amount, amount*0.004662f);
-//	Msg						("BG : %f",timer.GetElapsed_sec());
+	connectivity_check		(start + 0.992001f*amount, amount*0.000030f);
+	Msg						("BG : %f",timer.GetElapsed_sec());
+	optimize_graph			(start + 0.992031f*amount, amount*0.000454f);
+	Msg						("BG : %f",timer.GetElapsed_sec());
+	save_graph				(start + 0.992485f*amount, amount*0.007515f);
+	Msg						("BG : %f",timer.GetElapsed_sec());
 
 	Progress				(start + amount);
 }
@@ -813,20 +824,20 @@ void CGameGraphBuilder::build_graph			(LPCSTR level_name)
 
 	m_level_name			= level_name;
 	
-	CTimer					timer;
-	timer.Start				();
+//	CTimer					timer;
+//	timer.Start				();
 
-	create_graph			(0.000000f,0.000118f);
+	create_graph			(0.000000f,0.000047f);
 //	Msg						("%f",timer.GetElapsed_sec());
-	load_level_graph		(0.000118f,0.000187f);
+	load_level_graph		(0.000047f,0.002470f);
 //	Msg						("%f",timer.GetElapsed_sec());
-	load_graph_points		(0.000305f,0.025693f);
+	load_graph_points		(0.002517f,0.111812f);
 //	Msg						("%f",timer.GetElapsed_sec());
-	remove_incoherent_points(0.025998f,0.000004f);
+	remove_incoherent_points(0.114329f,0.000033f);
 //	Msg						("%f",timer.GetElapsed_sec());
-	build_cross_table		(0.026003f,0.951288f);
+	build_cross_table		(0.114362f,0.773390f);
 //	Msg						("%f",timer.GetElapsed_sec());
-	build_graph				(0.977291f,0.022709f);
+	build_graph				(0.887752f,0.112248f);
 //	Msg						("%f",timer.GetElapsed_sec());
 
 	Msg						("Level graph is generated successfully");
@@ -861,6 +872,8 @@ void compare_graphs							(LPCSTR level_name)
 	graph_type				*graph0 = get_graph(level_name,GAME_LEVEL_GRAPH);
 	graph_type				*graph1 = get_graph(level_name,GAME_LEVEL_GRAPH_TEST);
 
+	u32						diff_count0 = 0;
+	u32						diff_count1 = 0;
 	VERIFY					(graph0->vertices().size() == graph1->vertices().size());
 	for (u32 i=0, n=graph0->vertices().size(); i<n; ++i) {
 		if (graph0->vertex(i)->data().level_vertex_id() != graph1->vertex(i)->data().level_vertex_id())
@@ -873,11 +886,12 @@ void compare_graphs							(LPCSTR level_name)
 			graph_type::const_iterator	E = graph0->vertex(i)->edges().end();
 			for ( ; I != E; ++I) {
 				if (graph1->vertex(i)->edge((*I).vertex_id())) {
-//					if (!fsimilar((*I).weight(),graph1->vertex(i)->edge((*I).vertex_id())->weight(),EPS_L))
-//						Msg	("0 to 1 : [%d]->[%d] = %f : [%d]->[%d] = %f",i,(*I).vertex_id(),(*I).weight(),i,(*I).vertex_id(),graph1->vertex(i)->edge((*I).vertex_id())->weight());
+					if (!fsimilar((*I).weight(),graph1->vertex(i)->edge((*I).vertex_id())->weight(),EPS_L))
+						Msg	("0 to 1 : [%d]->[%d] = %f : [%d]->[%d] = %f",i,(*I).vertex_id(),(*I).weight(),i,(*I).vertex_id(),graph1->vertex(i)->edge((*I).vertex_id())->weight());
 					continue;
 				}
 
+				++diff_count0;
 				Msg			("0 to 1 : [%d]->[%d] = %f : no edge",i,(*I).vertex_id(),(*I).weight());
 			}
 		}
@@ -889,10 +903,14 @@ void compare_graphs							(LPCSTR level_name)
 				if (graph0->vertex(i)->edge((*I).vertex_id()))
 					continue;
 
+				++diff_count1;
 				Msg			("1 to 0 : [%d]->[%d] = %f : no edge",i,(*I).vertex_id(),(*I).weight());
 			}
 		}
 	}
+
+	Msg						("0 to 1 : %d",diff_count0);
+	Msg						("1 to 0 : %d",diff_count1);
 
 	xr_delete				(graph0);
 	xr_delete				(graph1);
