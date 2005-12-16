@@ -658,9 +658,6 @@
 							RelativePath=".\config\misc\gulag_mil_monolith.ltx">
 						</File>
 						<File
-							RelativePath=".\config\misc\gulag_mil_mutants.ltx">
-						</File>
-						<File
 							RelativePath=".\config\misc\gulag_mil_nblockpost.ltx">
 						</File>
 						<File
@@ -788,6 +785,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\string_table_outfit.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\rus\string_table_tutorial.xml">
 					</File>
 					<Filter
 						Name="l01_escape"
@@ -1455,9 +1455,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_keybinding.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_mapinfo.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_videoplayer.xml">
