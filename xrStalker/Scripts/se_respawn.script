@@ -158,13 +158,12 @@ function se_respawn:create(prob)
 		end
 		sum = math.random(0, sum)
 		for k,v in pairs(self.respawn_section) do
-			sum = sum - v.prob
+			sum = sum - v.prob			
 			if sum <= 0 then
 				spawn_section = v.section
 				break
 			end
 		end
-				
 		local obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
