@@ -2173,6 +2173,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"dbg_draw_autopickupbox",	&dbg_net_Draw_Flags,	(1<<8));
 	CMD3(CCC_Mask,		"dbg_draw_rp",				&dbg_net_Draw_Flags,	(1<<9));
 	CMD3(CCC_Mask,		"dbg_draw_climbable",		&dbg_net_Draw_Flags,	(1<<10));
+	CMD3(CCC_Mask,		"dbg_draw_collidable",		&dbg_net_Draw_Flags,	(1<<11));
 
 
 	CMD3(CCC_Mask,		"dbg_draw_ph_contacts",			&ph_dbg_draw_mask,	phDbgDrawContacts);

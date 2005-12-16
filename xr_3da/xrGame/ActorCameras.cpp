@@ -270,6 +270,8 @@ void CActor::OnRender	()
 		m_PhysicMovementControl->dbg_Draw	();
 
 	OnRender_Network();
+
+	inherited::OnRender();
 }
 #endif
 /*
