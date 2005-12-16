@@ -28,6 +28,8 @@ protected:
 
 	virtual			bool				NeedToSendReady_Spectator		(int key, game_PlayerState* ps);
 	virtual			void				LoadSndMessages				();
+
+	virtual			void				OnBuySpawnMenu_Ok		();	
 public:
 	u8									artefactsNum;//ah
 	u16									artefactBearerID;//ah,ZoneMap

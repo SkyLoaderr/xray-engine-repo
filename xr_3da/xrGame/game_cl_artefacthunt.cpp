@@ -14,6 +14,7 @@
 #include "ui/UISkinSelector.h"
 #include "ui/UIPdaWnd.h"
 #include "ui/UIMapDesc.h"
+#include "ui/UIMessageBoxEx.h"
 #include "ui/UIProgressShape.h"
 #include "xr_level_controller.h"
 #include "Artifact.h"
@@ -518,7 +519,14 @@ bool game_cl_ArtefactHunt::CanBeReady				()
 			StartStopMenu(pUITeamSelectWnd,true);
 		return false;
 	};
-
+/*
+	if (!m_bSkinSelected)
+	{
+		if (CanCallSkinMenu())
+			StartStopMenu(pCurSkinMenu,true);
+		return false;
+	};
+*/
 	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
 		ClearBuyMenu();
 
@@ -655,9 +663,16 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 
 bool	game_cl_ArtefactHunt::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
 {
-	return ( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
+	bool res = ( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
 		( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
 		CanBeReady());
+	
+	if (iReinforcementTime != 0 && !pMessageBox->IsShown()) 
+	{
+		if (m_bTeamSelected && m_bSkinSelected)
+			StartStopMenu(pMessageBox, true);
+	};
+	return res;
 }
 
 void	game_cl_ArtefactHunt::OnSpawn					(CObject* pObj)
@@ -688,4 +703,15 @@ void	game_cl_ArtefactHunt::LoadSndMessages				()
 	LoadSndMessage("ahunt_snd_messages", "new_artifact", ID_NEW_AF);
 	LoadSndMessage("ahunt_snd_messages", "artifact_delivered_by_enemy", ID_AF_ENEMY);
 	LoadSndMessage("ahunt_snd_messages", "artifact_stolen", ID_AF_STOLEN);
+};
+
+void	game_cl_ArtefactHunt::OnBuySpawnMenu_Ok		()
+{
+	CObject* curr = Level().CurrentEntity();
+	if (!curr) return;
+	CGameObject* GO = smart_cast<CGameObject*>(curr);
+	NET_Packet			P;
+	GO->u_EventGen		(P,GE_GAME_EVENT,GO->ID()	);
+	P.w_u16(GAME_EVENT_PLAYER_BUY_SPAWN);
+	GO->u_EventSend			(P);
 };

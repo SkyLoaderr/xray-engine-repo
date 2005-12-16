@@ -69,6 +69,8 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 	bNoLostMessage = false;
 	m_bArtefactWasBringedToBase = true;
 	//---------------------------------------------------------------
+	m_iMoney_for_BuySpawn = READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000);
+	//---------------------------------------------------------------
 	Set_RankUp_Allowed(false);
 }
 
@@ -174,17 +176,17 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(game_PlayerState* ps_killer, gam
 
 void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)
 {
+	xrClientData* xrCData	=	m_server->ID_to_client(id);
+	if (!xrCData || !xrCData->owner) return;
 	//	if	(GAME_PHASE_INPROGRESS == phase) return;
 	switch (phase)
 	{
 	case GAME_PHASE_INPROGRESS:
-		{
-			xrClientData* xrCData	=	m_server->ID_to_client(id);
-			if (!xrCData || !xrCData->owner) return;
+		{			
 			CSE_Abstract* pOwner	= xrCData->owner;
 			CSE_Spectator* pS		= smart_cast<CSE_Spectator*>(pOwner);
 
-			if (pS && m_iReinforcementTime != 0 && (m_dwWarmUp_CurTime ==0)) 
+			if (pS && (m_iReinforcementTime != 0 && !xrCData->ps->m_bPayForSpawn) && (m_dwWarmUp_CurTime ==0)) 
 			{
 				return;
 			}
@@ -192,6 +194,21 @@ void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)
 	};
 	inherited::OnPlayerReady(id);
 }
+
+void	game_sv_ArtefactHunt::OnPlayerBuySpawn		(ClientID sender)
+{
+	xrClientData* xrCData	=	m_server->ID_to_client(sender);
+	if (!xrCData || !xrCData->owner) return;
+	if (!xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+	if (xrCData->ps->m_bPayForSpawn) return;
+	xrCData->ps->m_bPayForSpawn = true;
+	Player_AddMoney(xrCData->ps, m_iMoney_for_BuySpawn);
+	OnPlayerReady(sender);
+	if (!xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+	{
+		xrCData->ps->m_bPayForSpawn = false;
+	}
+};
 
 void	game_sv_ArtefactHunt::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
 {

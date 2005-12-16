@@ -47,6 +47,8 @@ game_PlayerState::game_PlayerState()
 	//--------------------------------
 	money_added = 0;
 	m_aBonusMoney.clear();
+	//--------------------------------
+	m_bPayForSpawn = false;
 }
 
 void game_PlayerState::clear()

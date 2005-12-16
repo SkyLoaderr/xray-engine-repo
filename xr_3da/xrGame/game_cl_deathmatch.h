@@ -8,9 +8,8 @@ class CUIGameDM;
 class CUIPdaWnd;
 class CUIInventoryWnd;
 class CUIMapDesc;
-class CUIMessageBoxEx;
 
-void OnBuySpawn(CUIWindow* pWnd, void* p);
+//void OnBuySpawn(CUIWindow* pWnd, void* p);
 
 class game_cl_Deathmatch :public game_cl_mp
 {
@@ -59,7 +58,6 @@ protected:
 	CUIInventoryWnd*				pInventoryMenu;
 
 	CUIMapDesc*						pMapDesc;
-	CUIMessageBoxEx*				pMessageBox;
 	//-------------------------------------------------
 	CUIPdaWnd*						pPdaMenu;
 	//-------------------------------------------------	

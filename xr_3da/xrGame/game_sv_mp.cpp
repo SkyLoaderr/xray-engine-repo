@@ -150,7 +150,12 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 	case GAME_EVENT_PLAYER_READY:// cs & dm 
 		{
 			xrClientData *l_pC = m_server->ID_to_client(sender);
-			OnPlayerReady		(l_pC->ID);			
+			OnPlayerReady		(l_pC->ID);
+		}break;
+	case GAME_EVENT_PLAYER_BUY_SPAWN:
+		{
+			xrClientData *l_pC = m_server->ID_to_client(sender);
+			OnPlayerBuySpawn	(l_pC->ID);
 		}break;
 	case GAME_EVENT_VOTE_START:
 		{

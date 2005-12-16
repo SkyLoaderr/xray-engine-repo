@@ -26,14 +26,6 @@
 
 #define	TEAM0_MENU		"deathmatch_team0"
 
-void OnBuySpawn(CUIWindow* pWnd, void* p){
-#pragma todo("SATAN -> CRAZY_MAZ: put you code here")
-	// write call back code here
-
-}
-
-
-
 game_cl_Deathmatch::game_cl_Deathmatch()
 {
 	pInventoryMenu	= NULL;
@@ -87,7 +79,6 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 	xr_delete(pBuyMenuTeam0);
 	xr_delete(pSkinMenuTeam0);
 	xr_delete(pInventoryMenu);
-	xr_delete(pMessageBox);
 	//---------------------------------------	
 	xr_delete(pPdaMenu);
 	//---------------------------------------
@@ -106,7 +97,6 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	R_ASSERT(m_game_ui);
 	m_game_ui->SetClGame(this);
 	m_game_ui->Init();
-
 	//-----------------------------------------------------------
 	pBuyMenuTeam0	= InitBuyMenu("deathmatch_base_cost", 0);
 	pCurBuyMenu		= pBuyMenuTeam0;
@@ -114,11 +104,7 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	//-----------------------------------------------------------
 	pSkinMenuTeam0	= InitSkinMenu(0);
 	pCurSkinMenu	= pSkinMenuTeam0;
-
-	pMessageBox		= xr_new<CUIMessageBoxEx>();
-	pMessageBox->Init("message_box_buy_spawn");
-	pMessageBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
-
+	
 	pInventoryMenu	= xr_new<CUIInventoryWnd>();
 	//-----------------------------------------------------------	
 	pPdaMenu = xr_new<CUIPdaWnd>();
@@ -508,7 +494,8 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				{
 					if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && 
 						!(pCurSkinMenu && pCurSkinMenu->IsShown()) &&
-						!(pMapDesc && pMapDesc->IsShown())
+						!(pMapDesc && pMapDesc->IsShown()) &&
+						(HUD().GetUI() && !HUD().GetUI()->IndicatorsHidden())
 						)
 					{
 						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
@@ -614,8 +601,6 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 
 	if (kINVENTORY == key )
 	{
-//		StartStopMenu(pMessageBox, true);
-
 		if (pInventoryMenu->IsShown())
 			StartStopMenu(pInventoryMenu,true);
 		else

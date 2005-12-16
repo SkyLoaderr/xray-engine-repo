@@ -15,9 +15,13 @@
 #include "ui/UIInventoryUtilities.h"
 #include "ui/UIMessagesWindow.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UIMessageBoxEx.h"
 #include "CustomZone.h"
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
+
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
@@ -72,13 +76,23 @@ game_cl_mp::~game_cl_mp()
 
 //	xr_delete(m_pSpeechMenu);
 	DestroyMessagesMenus();
+
+	xr_delete(pMessageBox);
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
 {
 //	m_pSpeechMenu = xr_new<CUISpeechMenu>("test_speech_section");
 	HUD().GetUI()->m_pMessagesWnd->SetChatOwner(this);
-
+	//-----------------------------------------------------------
+	pMessageBox		= xr_new<CUIMessageBoxEx>();
+	pMessageBox->Init("message_box_buy_spawn");
+	pMessageBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
+	string1024	BuySpawnText;
+	sprintf(BuySpawnText, "You can buy a spawn for %d $. Press Yes to pay.", 
+		abs(READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000)));
+	pMessageBox->SetText(BuySpawnText);
+	//-----------------------------------------------------------
 	return NULL;
 };
 
@@ -367,12 +381,21 @@ void game_cl_mp::shedule_Update(u32 dt)
 	case GAME_PHASE_INPROGRESS:
 		{
 			if (!local_player || local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+			{
 				HideMessageMenus();
+			};
+			
 		}break;
 	default:
 		{
 		}break;
 	}
+	
+	if (!local_player || !local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || Phase()!= GAME_PHASE_INPROGRESS)
+	{
+		if (pMessageBox->IsShown()) StartStopMenu(pMessageBox, true);
+	};
+
 	UpdateMapLocations();	
 }
 
@@ -912,4 +935,11 @@ void	game_cl_mp::OnGameMenuRespond		(NET_Packet& P)
 			OnGameMenuRespond_ChangeSkin(P);
 		}break;
 	}
+};
+
+void OnBuySpawn(CUIWindow* pWnd, void* p)
+{
+	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
+	if (!game) return;
+	game->OnBuySpawnMenu_Ok();
 };

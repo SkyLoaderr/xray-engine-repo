@@ -529,11 +529,55 @@ void CGameObject::spatial_move	()
 	inherited::spatial_move			();
 }
 
+#ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
+#endif
+
 void CGameObject::renderable_Render	()
 {
 	inherited::renderable_Render();
 	::Render->set_Transform		(&XFORM());
 	::Render->add_Visual		(Visual());
+
+#ifdef DEBUG
+	RCache.OnFrameEnd();
+	if (bDebug && dbg_net_Draw_Flags.test(1<<11))
+	{
+		CCF_Skeleton* Skeleton = smart_cast<CCF_Skeleton*>(collidable.model);
+		if (Skeleton && Position().distance_to_sqr(Device.vCameraPosition) < 225.0f){
+			Skeleton->_dbg_refresh();
+
+			const CCF_Skeleton::ElementVec& Elements = Skeleton->_GetElements();
+			for (CCF_Skeleton::ElementVec::const_iterator I=Elements.begin(); I!=Elements.end(); I++){
+				if (!I->valid())		continue;
+				switch (I->type){
+							case SBoneShape::stBox:{
+								Fmatrix M;
+								M.invert			(I->b_IM);
+								Fvector h_size		= I->b_hsize;
+								RCache.dbg_DrawOBB	(M, h_size, color_rgba(0, 255, 0, 255));
+												   }break;
+							case SBoneShape::stCylinder:{
+								Fmatrix M;
+								M.c.set				(I->c_cylinder.m_center);
+								M.k.set				(I->c_cylinder.m_direction);
+								Fvector				h_size;
+								h_size.set			(I->c_cylinder.m_radius,I->c_cylinder.m_radius,I->c_cylinder.m_height*0.5f);
+								Fvector::generate_orthonormal_basis(M.k,M.j,M.i);
+								RCache.dbg_DrawOBB	(M, h_size, color_rgba(0, 127, 255, 255));
+														}break;
+							case SBoneShape::stSphere:{
+								Fmatrix				l_ball;
+								l_ball.scale		(I->s_sphere.R, I->s_sphere.R, I->s_sphere.R);
+								l_ball.translate_add(I->s_sphere.P);
+								RCache.dbg_DrawEllipse(l_ball, color_rgba(0, 255, 0, 255));
+													  }break;
+				};
+			};
+			RCache.OnFrameEnd();
+		}
+	}
+#endif
 }
 
 /*
@@ -585,7 +629,7 @@ void CGameObject::OnH_B_Independent()
 
 
 #ifdef DEBUG
-extern	Flags32	dbg_net_Draw_Flags;
+
 void CGameObject::OnRender()
 {
 	if (bDebug && Visual())
@@ -594,42 +638,7 @@ void CGameObject::OnRender()
 		Visual()->vis.box.get_CD	(bc,bd);
 		Fmatrix	M = XFORM();		M.c.add (bc);
 		RCache.dbg_DrawOBB			(M,bd,color_rgba(0,0,255,255));
-	}
-	if (bDebug && dbg_net_Draw_Flags.test(1<<11))
-	{
-		CCF_Skeleton* Skeleton = smart_cast<CCF_Skeleton*>(collidable.model);
-		if (Skeleton && Position().distance_to_sqr(Device.vCameraPosition) < 225.0f){
-			Skeleton->_dbg_refresh();
-
-			const CCF_Skeleton::ElementVec& Elements = Skeleton->_GetElements();
-			for (CCF_Skeleton::ElementVec::const_iterator I=Elements.begin(); I!=Elements.end(); I++){
-				if (!I->valid())		continue;
-				switch (I->type){
-							case SBoneShape::stBox:{
-								Fmatrix M;
-								M.invert			(I->b_IM);
-								Fvector h_size		= I->b_hsize;
-								RCache.dbg_DrawOBB	(M, h_size, color_rgba(0, 255, 0, 255));
-												   }break;
-							case SBoneShape::stCylinder:{
-								Fmatrix M;
-								M.c.set				(I->c_cylinder.m_center);
-								M.k.set				(I->c_cylinder.m_direction);
-								Fvector				h_size;
-								h_size.set			(I->c_cylinder.m_radius,I->c_cylinder.m_radius,I->c_cylinder.m_height*0.5f);
-								Fvector::generate_orthonormal_basis(M.k,M.j,M.i);
-								RCache.dbg_DrawOBB	(M, h_size, color_rgba(0, 127, 255, 255));
-														}break;
-							case SBoneShape::stSphere:{
-								Fmatrix				l_ball;
-								l_ball.scale		(I->s_sphere.R, I->s_sphere.R, I->s_sphere.R);
-								l_ball.translate_add(I->s_sphere.P);
-								RCache.dbg_DrawEllipse(l_ball, color_rgba(0, 255, 0, 255));
-													  }break;
-				};
-			};					
-		}
-	}
+	}	
 }
 #endif
 

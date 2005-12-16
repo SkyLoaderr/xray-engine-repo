@@ -18,6 +18,7 @@ private:
 protected:
 	int								m_iReinforcementTime;		//0 - Immediate, -1 - after artefact spawn , other - reinforcement
 	u32								m_dwNextReinforcementTime;
+	int								m_iMoney_for_BuySpawn;
 
 	u32								m_dwArtefactRespawnDelta;
 	u32								m_dwArtefactStayTime;
@@ -80,6 +81,7 @@ public:
 	virtual		void				Victim_Exp				(game_PlayerState* pVictim) {};
 	virtual		void				UpdateTeamScore			(game_PlayerState* ps_killer) {};
 	virtual		void				OnPlayerReady			(ClientID id_who);
+	virtual		void				OnPlayerBuySpawn		(ClientID sender);
 
 	virtual		void				OnTimelimitExceed		();
 

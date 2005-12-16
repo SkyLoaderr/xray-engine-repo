@@ -580,6 +580,7 @@ void				game_cl_TeamDeathmatch::OnSwitchPhase_InProgress()
 {
 	LoadTeamDefaultPresetItems(TEAM1_MENU, pBuyMenuTeam1, &PresetItemsTeam1);
 	LoadTeamDefaultPresetItems(TEAM2_MENU, pBuyMenuTeam2, &PresetItemsTeam2);
+	if (!m_bSkinSelected) m_bTeamSelected = FALSE;
 };
 
 void				game_cl_TeamDeathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)

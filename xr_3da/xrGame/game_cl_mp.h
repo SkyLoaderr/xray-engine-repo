@@ -7,6 +7,9 @@
 #include "ui/UISpeechMenu.h"
 
 class CUISpeechMenu;
+class CUIMessageBoxEx;
+
+void OnBuySpawn(CUIWindow* pWnd, void* p);
 
 struct SND_Message{
 	ref_sound	pSound;
@@ -113,6 +116,8 @@ protected:
 
 	virtual void			UpdateMapLocations		() {};
 //-----------------------------------------------------------------------------------
+	CUIMessageBoxEx*		pMessageBox;
+//-----------------------------------------------------------------------------------
 	ref_shader				m_EquipmentIconsShader;
 	ref_shader				m_KillEventIconsShader;
 	ref_shader				m_RadiationIconsShader;
@@ -167,7 +172,7 @@ public:
 	virtual		void				OnMapInfoAccept			() {};
 	virtual		void				OnSkinMenu_Ok			() {};
 	virtual		void				OnSkinMenu_Cancel		() {};
-	
+	virtual		void				OnBuySpawnMenu_Ok		() {};	
 
 	virtual		void				OnGameMenuRespond				(NET_Packet& P);
 	virtual		void				OnGameMenuRespond_Spectator		(NET_Packet& P) {};

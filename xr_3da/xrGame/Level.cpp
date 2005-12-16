@@ -554,9 +554,7 @@ void CLevel::OnRender()
 			CTeamBaseZone	*team_base_zone = smart_cast<CTeamBaseZone*>(_O);
 			if (team_base_zone)
 				team_base_zone->OnRender();
-			CCar* pCar = smart_cast<CCar*>(_O);
-			if (pCar) pCar->OnRender();
-
+			
 			if (GameID() != GAME_SINGLE)
 			{
 				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(_O);

@@ -107,6 +107,7 @@ public:
 	virtual		void				OnPlayerSelectSpectator	(NET_Packet& P, ClientID sender);
 	virtual		void				OnPlayerSelectTeam		(NET_Packet& P, ClientID sender) {};
 	virtual		void				OnPlayerSelectSkin		(NET_Packet& P, ClientID sender) {};
+	virtual		void				OnPlayerBuySpawn		(ClientID sender)					{};
 	
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				Update					();
@@ -116,8 +117,7 @@ public:
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
 	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
 	virtual		void				SetPlayersDefItems		(game_PlayerState* ps);
-
-
+    
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

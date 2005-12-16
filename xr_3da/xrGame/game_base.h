@@ -76,6 +76,8 @@ struct	game_PlayerState
 	s32			money_added;
 	DEF_VECTOR	(MONEY_BONUS, Bonus_Money_Struct);
 	MONEY_BONUS	m_aBonusMoney;
+	//-------------------------------------
+	bool		m_bPayForSpawn;
 
 /*
 private:
