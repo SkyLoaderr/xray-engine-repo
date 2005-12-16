@@ -21,7 +21,8 @@
 #include "../../../ai_object_location.h"
 #include "../../../level.h"
 #include "../../../xrserver_objects_alife_monsters.h"
-
+#include "../../../alife_simulator.h"
+#include "../../../alife_object_registry.h"
 
 void CBaseMonster::Load(LPCSTR section)
 {
@@ -52,8 +53,11 @@ void CBaseMonster::Load(LPCSTR section)
 
 	m_rank							= (pSettings->line_exist(section,"rank")) ? int(pSettings->r_u8(section,"rank")) : 0;
 
-	m_item_section					= pSettings->r_string(section,"Spawn_Inventory_Item_Section");
-	m_spawn_probability				= pSettings->r_float(section,"Spawn_Inventory_Item_Probability");
+	if (pSettings->line_exist(section,"Spawn_Inventory_Item_Section")) {
+		m_item_section					= pSettings->r_string(section,"Spawn_Inventory_Item_Section");
+		m_spawn_probability				= pSettings->r_float(section,"Spawn_Inventory_Item_Probability");
+	} else m_spawn_probability			= 0.f;
+
 }
 
 // if sound is absent just do not load that one
@@ -161,19 +165,22 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 	settings_overrides						();
 
 	// spawn inventory item
-	CSE_ALifeMonsterBase					*se_monster = smart_cast<CSE_ALifeMonsterBase*>(DC);
-	VERIFY									(se_monster);
+	if (ai().get_alife()) {
+		
+		CSE_ALifeMonsterBase					*se_monster = smart_cast<CSE_ALifeMonsterBase*>(ai().alife().objects().object(ID()));
+		VERIFY									(se_monster);
 
-	if (se_monster->m_flags.is(CSE_ALifeMonsterBase::flNeedCheckSpawnItem)) {
-		float prob = Random.randF();
-		if ((prob < m_spawn_probability) || fsimilar(prob, m_spawn_probability)) 
-			se_monster->m_flags.set(CSE_ALifeMonsterBase::flSkipSpawnItem, FALSE);
-	
-		se_monster->m_flags.set(CSE_ALifeMonsterBase::flNeedCheckSpawnItem, FALSE);
-	}
+		if (se_monster->m_flags.is(CSE_ALifeMonsterBase::flNeedCheckSpawnItem)) {
+			float prob = Random.randF();
+			if ((prob < m_spawn_probability) || fsimilar(m_spawn_probability,1.f)) 
+				se_monster->m_flags.set(CSE_ALifeMonsterBase::flSkipSpawnItem, FALSE);
 
-	if (!se_monster->m_flags.is(CSE_ALifeMonsterBase::flSkipSpawnItem)) {
-		Level().spawn_item (m_item_section,Position(),ai_location().level_vertex_id(),ID());
+			se_monster->m_flags.set(CSE_ALifeMonsterBase::flNeedCheckSpawnItem, FALSE);
+		}
+
+		if (!se_monster->m_flags.is(CSE_ALifeMonsterBase::flSkipSpawnItem)) {
+			Level().spawn_item (m_item_section,Position(),ai_location().level_vertex_id(),ID());
+		}
 	}
 
 	return(TRUE);

@@ -497,7 +497,7 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 
 				CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); VERIFY(e);
 				CSE_ALifeMonsterBase			*se_monster = smart_cast<CSE_ALifeMonsterBase*>(e);
-				se_monster->m_flags.set			(CSE_ALifeMonsterBase::flSkipSpawnItem, FALSE);
+				se_monster->m_flags.set			(CSE_ALifeMonsterBase::flSkipSpawnItem, TRUE);
 			}
 		}
 		break;
