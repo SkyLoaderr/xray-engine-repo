@@ -180,6 +180,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 11, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_stukach"
 		            end         
