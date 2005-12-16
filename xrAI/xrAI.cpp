@@ -144,14 +144,14 @@ void Startup(LPSTR     lpCmdLine)
 //						smart_cover			(prjName);
 //						xrBuildGraph		(prjName);
 //						xrBuildCrossTable	(prjName);
-						CGameGraphBuilder().build_graph	(prjName);
+//						CGameGraphBuilder().build_graph	(prjName);
 //						compare_graphs		(prjName);
 //						xrBuildCrossTable	(prjName);
 //						for (int i=0; i<100; ++i) {
 //							xrBuildGraph		(prjName);
 //							xrBuildCrossTable	(prjName);
 //						}
-//						test_levels			();
+						test_levels			();
 					}
 					else
 						if (strstr(cmd,"-c")) {
