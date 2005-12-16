@@ -1395,7 +1395,61 @@ end
 
 
 
+-------------------------------------------------------------------------------------------
+-- «агрузка работ дл€ мутантов
+-------------------------------------------------------------------------------------------
+function load_job_mil_monster (sj, gname, type, squad, groups)
+    local t, a
+    
+    for a = 1, 10, 1 do
+        -- 
+        t = {section = "logic@mil_monster1",
+	    	idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = ""
+		    }
+	    table.insert(sj, t)	
+	    
+        t = {section = "logic@mil_monster2",
+	    	idle = 0,
+		    prior = 1, state = {1},
+		    squad = squad, group = groups[0],
+		    in_rest = "", out_rest = ""
+		    }
+	    table.insert(sj, t)	
+    end	    
+end
+-------------------------------------------------------------------------------------------
+-- ѕроверка состо€ни€ гулага мутантов
+-------------------------------------------------------------------------------------------
+function check_mil_monster_state (gulag)
+    --создадим переменную, котора€ отвечает за то, что мутанты не попрут назад, когда кто-то
+    --из них помрет
+    if gulag.state == 0 then
+       if gulag:get_population () < 10 then 
+          return 0
+       end
+       return 1
+    else
+       if gulag:get_population () ~= 0 then  
+          return 1 
+       end     
+    end      
+    return 0
+end
 
+-------------------------------------------------------------------------------------------
+-- ѕроверка на принадлежность мутантов нам
+-------------------------------------------------------------------------------------------
+function checkMonster(npc_community, gulag_type)
+
+    if gulag_type == "mil_monster" then
+       return true
+    end    
+    
+    return false   
+end
 
 
 -------------------------------------------------------------------------------------------
@@ -1426,6 +1480,10 @@ function load_job (sj, gname, type, squad, groups)
        this.load_job_monolith (sj, gname, type, squad, groups)
        return
     end   
+    if type == "mil_monster" then
+       this.load_job_mil_monster (sj, gname, type, squad, groups)
+       return
+    end   
 end
 
 
@@ -1452,6 +1510,8 @@ function load_states (gname, type)
        return this.check_dolg_state     
     elseif type == "mil_monolit" then
        return this.check_monolith_state    
+    elseif type == "mil_monster" then
+       return this.check_mil_monster_state    
     end    
     return nil    
 end

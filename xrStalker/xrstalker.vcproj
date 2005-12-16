@@ -658,6 +658,9 @@
 							RelativePath=".\config\misc\gulag_mil_monolith.ltx">
 						</File>
 						<File
+							RelativePath=".\config\misc\gulag_mil_mutants.ltx">
+						</File>
+						<File
 							RelativePath=".\config\misc\gulag_mil_nblockpost.ltx">
 						</File>
 						<File
