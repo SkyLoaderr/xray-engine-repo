@@ -254,6 +254,11 @@ function gulag_population_le(actor, npc, p)
 	return ( not p[1] or not p[2] ) or ( xr_gulag.getGulagPopulation( p[1] ) <= p[2] )
 end
 
+-- true, если  в указанном гулаге народу больше чем надо.
+function gulag_population_ge(actor, npc, p)
+	return ( not p[1] or not p[2] ) or ( xr_gulag.getGulagPopulation( p[1] ) >= p[2] )
+end
+
 -- возвращает количество опасных персонажей в гулаге(живых и не раненных).
 function gulag_population_active(actor, npc, gname)
 	if xr_gulag.fraction[gname] == nil then
