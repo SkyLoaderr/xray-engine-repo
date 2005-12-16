@@ -610,6 +610,14 @@ states = {
 				animation = nil
 			},
 
+	barman_tv = {	weapon = "none",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "barman_tv"
+			},
+
 	barman_wait_free = {	weapon = "none",
 				movement = move.stand,
 				mental = anim.free,
