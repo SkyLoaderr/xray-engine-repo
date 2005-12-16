@@ -150,5 +150,7 @@
 	<snd_item_to_ruck>interface\inv_ruck</snd_item_to_ruck>
 	<snd_properties>interface\inv_properties</snd_properties>
 	<snd_drop_item>interface\inv_drop</snd_drop_item>
+	<snd_attach_addon>interface\inv_drop</snd_attach_addon>
+	<snd_detach_addon>interface\inv_drop</snd_detach_addon>
 </action_sounds>
 </window>
