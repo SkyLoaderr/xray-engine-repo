@@ -27,7 +27,7 @@
 		<text font="letterica16" r="129" g="123" b="113">mm_mp_player_name</text>
 	</static_player_name>
 	<edit_player_name x="237" y="143" width="236" height="24">
-		<options_item entry="mm_net_palyer_name" group="mm_mp_client"/>
+		<options_item entry="mm_net_player_name" group="mm_mp_client"/>
 		<text font="letterica18" r="235" g="219" b="185"></text>
 	</edit_player_name>
 	<cap_cd_key x="561" y="143" width="70" height="24">
