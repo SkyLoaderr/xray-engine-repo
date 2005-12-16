@@ -1092,6 +1092,12 @@
     <string id="mil_max_dialog_9001">
         <text>Вижу, справился с задачей. Отдай Лукашу документы.</text>
     </string>
+    <string id="mil_max_dialog_9100">
+        <text>Сходи к Лукашу, доложись, а потом поговорим.</text>
+    </string>
+    <string id="mil_max_dialog_9101">
+        <text>Ладно.</text>
+    </string>
     <string id="mil_max_dialog_common1_0">
         <text>Расскажи мне о деревне.</text>
     </string>
