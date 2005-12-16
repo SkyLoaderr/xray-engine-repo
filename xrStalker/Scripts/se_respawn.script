@@ -49,6 +49,49 @@ function r_2nums( spawn_ini, section, line, def1, def2 )
 		return def1, def2
 	end
 end
+
+function parse_names( s )
+    local t = {}
+    for name in string.gfind( s, "([%w_.\\]+)%p*" ) do
+        table.insert( t, name )
+    end
+    return t
+end
+
+function r_spawns( spawn_ini, section, line)
+	if spawn_ini:line_exist( section, line ) then
+		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
+		local t = parse_names( spawn_ini:r_string( section, line ) )
+		local n = table.getn( t )
+		
+		local ret_table = {}
+		local k = 1
+		while k <= n do
+			local spawn = {}
+			spawn.section = t[k]
+			-- Проверяем что это не последняя запись
+			if t[k+1] ~= nil then
+				local p = tonumber(t[k+1])
+				-- проверяем что вторым числом задана вероятность, а не другая секция спавну
+				if p then
+					-- забиваем число
+					spawn.prob = p
+					k = k + 2
+				else
+					-- забиваем дефолт 1
+					spawn.prob = 1
+					k = k + 1
+				end
+			else
+				spawn.prob = 1
+				k = k + 1
+			end
+			table.insert(ret_table, spawn)
+		end
+		return ret_table
+	end
+	return nil
+end
 ----------------------------------------------------------------------------------------------------------------------
 -- Серверный объект спавнера
 ----------------------------------------------------------------------------------------------------------------------
@@ -76,9 +119,10 @@ function se_respawn:on_register()
 		return	
 	end
 	
-	self.respawn_section = r_str(ini, section_name, "respawn_section")
-	if self.name == nil then
-		abort("RESPAWN: [%s] field 'name' doesn't exist.", self:name())
+	self.respawn_section = r_spawns(ini, section_name, "respawn_section")
+	print_table(self.respawn_section)
+	if self.respawn_section == nil then
+		abort("RESPAWN: [%s] field 'respawn_section' doesn't exist.", self:name())
 	end
 
 	self.min_count = r_num(ini, section_name, "min_count", 0)
@@ -106,8 +150,22 @@ end
 -- Создаем объект
 function se_respawn:create(prob)
 	if math.random(100) <= tonumber(prob) then
-		
-		local obj = alife():create(self.respawn_section,	
+		local spawn_section = ""
+		local sum = 0
+		-- Производим рандомную взвешенную выборку
+		for k,v in pairs(self.respawn_section) do
+			sum = sum + v.prob
+		end
+		sum = math.random(0, sum)
+		for k,v in pairs(self.respawn_section) do
+			if sum <= 0 then
+				spawn_section = v.section
+				break
+			end
+			sum = sum - v.prob
+		end
+				
+		local obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
 						self.m_game_vertex_id)
