@@ -27,6 +27,8 @@ namespace GameGraph {
 
 class NET_Packet;
 
+class CGraphEngine;
+
 class CGameGraphBuilder {
 private:
 	typedef GameGraph::CVertex						vertex_type;
@@ -47,9 +49,12 @@ private:
 	DISTANCES				m_distances;
 	xr_vector<u32>			m_current_fringe;
 	xr_vector<u32>			m_next_fringe;
+	xr_vector<u32>			m_results;
 	// cross table itself
 	CGameLevelCrossTable	*m_cross_table;
 	TRIPPLES				m_tripples;
+	xr_vector<u32>			m_path;
+	CGraphEngine			*m_graph_engine;
 
 private:
 			void		create_graph				(const float &start, const float &amount);

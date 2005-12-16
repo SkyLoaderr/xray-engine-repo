@@ -317,7 +317,9 @@ public:
 		u32							dwNewEdgeCount = 0;
 		for (int i=0; i<(int)tpaGraph.size(); i++)
 			dwNewEdgeCount += tpaGraph[i].tNeighbourCount;
-		Msg("%d edges are removed",tGraphHeader.dwEdgeCount - dwNewEdgeCount);
+		Msg							("%d edges are removed",tGraphHeader.dwEdgeCount - dwNewEdgeCount);
+		Msg							("%d vertices in graph",tGraphHeader.dwVertexCount);
+		Msg							("%d edges in graph",dwNewEdgeCount);
 
 		tGraph.seek					(12);
 		tGraph.w_u32				(dwNewEdgeCount);

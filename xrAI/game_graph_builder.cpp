@@ -16,6 +16,10 @@
 #include "game_level_cross_table.h"
 #include "xrCrossTable.h"
 #include "guid_generator.h"
+#include "graph_engine.h"
+
+#define CROSS_TABLE_NAME_TEST	"level.gct.test"
+#define GAME_LEVEL_GRAPH_TEST	"level.graph.test"
 
 CGameGraphBuilder::CGameGraphBuilder		()
 {
@@ -253,51 +257,70 @@ void CGameGraphBuilder::fill_distances		(const float &start, const float &amount
 	Progress							(start + amount);
 }
 
-void CGameGraphBuilder::recursive_update	(const u32 &index, const float &start, const float &amount)
+void CGameGraphBuilder::recursive_update	(const u32 &game_vertex_id, const float &start, const float &amount)
 {
 	Progress					(start);
 
-	u32							level_vertex_id = graph().vertex(index)->data().level_vertex_id();
-	xr_vector<u32>				&distances = m_distances[index];
+	u32							level_vertex_id = graph().vertex(game_vertex_id)->data().level_vertex_id();
+	xr_vector<u32>				&distances = m_distances[game_vertex_id];
 
 	m_current_fringe.reserve	(distances.size());
 	m_next_fringe.reserve		(distances.size());
 	distances.assign			(distances.size(),u32(-1));
 	m_current_fringe.push_back	(level_vertex_id);
-	u32							curr_dist = 0, total_count = 0;
+	u32							curr_dist = 0;
+	u32							total_count = 0;
 
 	u32							vertex_count = graph().header().vertex_count();
-	
+
+	float						amount_i = 
+		amount
+		/
+		(
+			float(vertex_count)*
+			float(level_graph().header().vertex_count())
+		);
+
 	Progress					(start);
 	for ( ; !m_current_fringe.empty(); ) {
-		xr_vector<u32>::iterator	I = m_current_fringe.begin();
-		xr_vector<u32>::iterator	E = m_current_fringe.end();
+		xr_vector<u32>::iterator			I = m_current_fringe.begin();
+		xr_vector<u32>::iterator			E = m_current_fringe.end();
 		for ( ; I != E; ++I) {
+			u32								*result = &m_results[*I];
+			if (curr_dist < m_distances[*result][*I])
+				*result						= game_vertex_id;
+
 			distances[*I]					= curr_dist;
 			CLevelGraph::const_iterator		i, e;
 			CLevelGraph::CVertex			*node = level_graph().vertex(*I);
-			level_graph().begin					(*I,i,e);
+			level_graph().begin				(*I,i,e);
 			for ( ; i != e; ++i) {
 				u32							dwNexNodeID = node->link(i);
-				if (!level_graph().valid_vertex_id(dwNexNodeID) || m_marks[dwNexNodeID])
+				if (!level_graph().valid_vertex_id(dwNexNodeID))
 					continue;
-				if (distances[dwNexNodeID] > curr_dist) {
-					m_next_fringe.push_back(dwNexNodeID);
-					m_marks[dwNexNodeID] = true;
-				}
+				
+				if (m_marks[dwNexNodeID])
+					continue;
+				
+				if (distances[dwNexNodeID] <= curr_dist)
+					continue;
+
+				m_next_fringe.push_back		(dwNexNodeID);
+				m_marks[dwNexNodeID]		= true;
 			}
 		}
+		
 		I = m_current_fringe.begin();
 		E = m_current_fringe.end();
 		for ( ; I != E; ++I)
-			m_marks[*I] = false;
+			m_marks[*I]		= false;
 
 		total_count			+= m_current_fringe.size();
 		m_current_fringe	= m_next_fringe;
 		m_next_fringe.clear	();
 		++curr_dist;
 
-		Progress			(start + amount*(float(total_count)/(float(vertex_count)*float(level_graph().header().vertex_count()))));
+		Progress			(start + amount_i*float(total_count));
 	}
 
 	Progress				(start + amount);
@@ -306,14 +329,19 @@ void CGameGraphBuilder::recursive_update	(const u32 &index, const float &start, 
 void CGameGraphBuilder::iterate_distances	(const float &start, const float &amount)
 {
 	Progress							(start);
+
+	m_results.assign					(level_graph().header().vertex_count(),0);
+	
+	float								amount_i = amount/float(graph().vertices().size());
 	for (int i=0, n=(int)graph().vertices().size(); i<n; ++i) {
 		if (i) {
 			for (int k=0, kn=(int)level_graph().header().vertex_count(); k<kn; ++k)
 				m_distances[i][k]		= m_distances[i - 1][k];
 		}
 
-		recursive_update				(i,start + amount*float(i)/float(n),amount*1.f/float(n));
+		recursive_update				(i,start + amount_i*float(i),amount_i);
 	}
+
 	Progress							(start + amount);
 }
 
@@ -322,6 +350,9 @@ void CGameGraphBuilder::save_cross_table	(const float &start, const float &amoun
 	Progress							(start);
 
 	Msg									("Saving cross table");
+
+	CTimer								timer;
+	timer.Start							();
 
 	CMemoryWriter						tMemoryStream;
 	CGameLevelCrossTable::CHeader		tCrossTableHeader;
@@ -337,11 +368,46 @@ void CGameGraphBuilder::save_cross_table	(const float &start, const float &amoun
 	tMemoryStream.close_chunk			();
 	
 	tMemoryStream.open_chunk			(CROSS_TABLE_CHUNK_DATA);
-	{
-		for (int i=0, n=level_graph().header().vertex_count(); i<n; i++) {
-			DISTANCES::iterator			I = m_distances.begin(), B = I;
-			DISTANCES::iterator			E = m_distances.end();
-			CGameLevelCrossTable::CCell tCrossTableCell;
+
+#if 0
+	for (int i=0, n=level_graph().header().vertex_count(); i<n; i++) {
+		DISTANCES::iterator			I = m_distances.begin(), B = I;
+		DISTANCES::iterator			E = m_distances.end();
+		CGameLevelCrossTable::CCell tCrossTableCell;
+		tCrossTableCell.fDistance	= flt_max;
+		tCrossTableCell.tGraphIndex = u16(-1);
+		for ( ; I != E; I++)
+			if (float((*I)[i])*level_graph().header().cell_size() < tCrossTableCell.fDistance) {
+				tCrossTableCell.fDistance	= float((*I)[i])*level_graph().header().cell_size();
+				tCrossTableCell.tGraphIndex = GameGraph::_GRAPH_ID(I - B);
+			}
+		
+		for (int j=0, n=graph().header().vertex_count(); j<n; j++)
+			if ((graph().vertex(j)->data().level_vertex_id() == (u32)i) && (tCrossTableCell.tGraphIndex != j)) {
+				Msg("! Warning : graph points are too close, therefore cross table is automatically validated");
+				Msg("%d : [%f][%f][%f] %d[%f] -> %d[%f]",i,VPUSH(graph().vertex(j)->data().level_point()),tCrossTableCell.tGraphIndex,tCrossTableCell.fDistance,j,m_distances[j][i]);
+				tCrossTableCell.fDistance	= float(m_distances[j][i])*level_graph().header().cell_size();
+				tCrossTableCell.tGraphIndex = (GameGraph::_GRAPH_ID)j;
+			}
+
+		tMemoryStream.w(&tCrossTableCell,sizeof(tCrossTableCell));
+	}
+#else
+	for (int i=0, n=level_graph().header().vertex_count(); i<n; i++) {
+		CGameLevelCrossTable::CCell	tCrossTableCell;
+
+		/**
+		DISTANCES::iterator			I = m_distances.begin(), B = I;
+		DISTANCES::iterator			E = m_distances.end();
+		tCrossTableCell.fDistance	= flt_max;
+		tCrossTableCell.tGraphIndex = u16(-1);
+		for ( ; I != E; I++)
+			if (float((*I)[i])*level_graph().header().cell_size() < tCrossTableCell.fDistance) {
+				tCrossTableCell.fDistance	= float((*I)[i])*level_graph().header().cell_size();
+				tCrossTableCell.tGraphIndex = GameGraph::_GRAPH_ID(I - B);
+			}
+
+		if (m_results[i] != tCrossTableCell.tGraphIndex) {
 			tCrossTableCell.fDistance	= flt_max;
 			tCrossTableCell.tGraphIndex = u16(-1);
 			for ( ; I != E; I++)
@@ -349,22 +415,26 @@ void CGameGraphBuilder::save_cross_table	(const float &start, const float &amoun
 					tCrossTableCell.fDistance	= float((*I)[i])*level_graph().header().cell_size();
 					tCrossTableCell.tGraphIndex = GameGraph::_GRAPH_ID(I - B);
 				}
-			
-			for (int j=0, n=graph().header().vertex_count(); j<n; j++)
-				if ((graph().vertex(j)->data().level_vertex_id() == (u32)i) && (tCrossTableCell.tGraphIndex != j)) {
-					Msg("! Warning : graph points are too close, therefore cross table is automatically validated");
-					Msg("%d : [%f][%f][%f] %d[%f] -> %d[%f]",i,VPUSH(graph().vertex(j)->data().level_point()),tCrossTableCell.tGraphIndex,tCrossTableCell.fDistance,j,m_distances[j][i]);
-					tCrossTableCell.fDistance	= float(m_distances[j][i])*level_graph().header().cell_size();
-					tCrossTableCell.tGraphIndex = (GameGraph::_GRAPH_ID)j;
-				}
-			tMemoryStream.w(&tCrossTableCell,sizeof(tCrossTableCell));
 		}
+		/**/
+		tCrossTableCell.tGraphIndex = (GameGraph::_GRAPH_ID)m_results[i];
+		VERIFY						(graph().header().vertex_count() > tCrossTableCell.tGraphIndex);
+		tCrossTableCell.fDistance	= float(m_distances[tCrossTableCell.tGraphIndex][i])*level_graph().header().cell_size();
+		tMemoryStream.w				(&tCrossTableCell,sizeof(tCrossTableCell));
 	}
+#endif
+
 	tMemoryStream.close_chunk();
 	
+//	Msg						("CT:SAVE : %f",timer.GetElapsed_sec());
+//	Msg						("Flushing cross table");
+
 	string_path				file_name;
-	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_RAW);
+	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_TEST);
 	tMemoryStream.save_to	(file_name);
+//	Msg						("CT:SAVE : %f",timer.GetElapsed_sec());
+
+//	Msg						("Freiing cross table resources");
 
 	m_marks.clear			();
 	m_mark_stack.clear		();
@@ -372,6 +442,7 @@ void CGameGraphBuilder::save_cross_table	(const float &start, const float &amoun
 	m_current_fringe.clear	();
 	m_next_fringe.clear		();
 
+//	Msg						("CT:SAVE : %f",timer.GetElapsed_sec());
 	Progress				(start + amount);
 }
 
@@ -381,11 +452,19 @@ void CGameGraphBuilder::build_cross_table	(const float &start, const float &amou
 	
 	Msg						("Building cross table");
 
-	fill_marks				(start + .00f*amount,.01f*amount);
-	fill_distances			(start + .01f*amount,.01f*amount);
-	iterate_distances		(start + .02f*amount,.96f*amount);
-	save_cross_table		(start + .98f*amount,.01f*amount);
-	load_cross_table		(start + .99f*amount,.01f*amount);
+	CTimer					timer;
+	timer.Start				();
+
+	fill_marks				(start + 0.000000f*amount,0.003125f*amount);
+//	Msg						("CT : %f",timer.GetElapsed_sec());
+	fill_distances			(start + 0.003125f*amount,0.034035f*amount);
+//	Msg						("CT : %f",timer.GetElapsed_sec());
+	iterate_distances		(start + 0.037159f*amount,0.955690f*amount);
+//	Msg						("CT : %f",timer.GetElapsed_sec());
+	save_cross_table		(start + 0.992850f*amount,0.007148f*amount);
+//	Msg						("CT : %f",timer.GetElapsed_sec());
+	load_cross_table		(start + 0.999998f*amount,0.000002f*amount);
+//	Msg						("CT : %f",timer.GetElapsed_sec());
 	
 	Progress				(start + amount);
 }
@@ -450,6 +529,44 @@ void CGameGraphBuilder::fill_neighbours		(const u32 &game_vertex_id)
 	}
 }
 
+float CGameGraphBuilder::path_distance		(const u32 &game_vertex_id0, const u32 &game_vertex_id1)
+{
+//	return					(graph().vertex(game_vertex_id0)->data().level_point().distance_to(graph().vertex(game_vertex_id1)->data().level_point()));
+
+	VERIFY					(m_graph_engine);
+
+	graph_type::CVertex		&vertex0 = *graph().vertex(game_vertex_id0);
+	graph_type::CVertex		&vertex1 = *graph().vertex(game_vertex_id1);
+
+	typedef GraphEngineSpace::CStraightLineParams	CStraightLineParams;
+	CStraightLineParams		parameters(vertex0.data().level_point(),vertex1.data().level_point());
+
+//	float					pure_distance = vertex0.data().level_point().distance_to_xz(vertex1.data().level_point());
+	float					pure_distance = vertex0.data().level_point().distance_to(vertex1.data().level_point());
+	VERIFY					(pure_distance < parameters.max_range);
+
+	u32						level_vertex_id = level_graph().check_position_in_direction(vertex0.data().level_vertex_id(),vertex0.data().level_point(),vertex1.data().level_point());
+	if (level_graph().valid_vertex_id(level_vertex_id))
+		return				(pure_distance);
+
+	bool					successfull = 
+		m_graph_engine->search(
+			level_graph(),
+			vertex0.data().level_vertex_id(),
+			vertex1.data().level_vertex_id(),
+			&m_path,
+			parameters
+		);
+
+	if (successfull)
+		return				(parameters.m_distance);
+
+	Msg						("Cannot build path from [%d] to [%d]",game_vertex_id0,game_vertex_id1);
+	Msg						("Cannot build path from [%f][%f][%f] to [%f][%f][%f]",VPUSH(vertex0.data().level_point()),VPUSH(vertex1.data().level_point()));
+	R_ASSERT2				(false,"Cannot build path, check AI map");
+	return					(flt_max);
+}
+
 void CGameGraphBuilder::generate_edges		(const u32 &game_vertex_id)
 {
 	graph_type::CVertex		*vertex = graph().vertex(game_vertex_id);
@@ -461,11 +578,6 @@ void CGameGraphBuilder::generate_edges		(const u32 &game_vertex_id)
 		float				distance = path_distance(game_vertex_id,*I);
 		graph().add_edge	(game_vertex_id,*I,distance);
 	}
-}
-
-float CGameGraphBuilder::path_distance		(const u32 &game_vertex_id0, const u32 &game_vertex_id1)
-{
-	return					(graph().vertex(game_vertex_id0)->data().level_point().distance_to(graph().vertex(game_vertex_id1)->data().level_point()));
 }
 
 void CGameGraphBuilder::generate_edges		(const float &start, const float &amount)
@@ -543,9 +655,9 @@ void CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
 
 		edge					= vertex1.edge((*I).vertex_id());
 		if (edge) {
-			VERIFY				((*I).weight() <= tripple.first);
-			VERIFY				(edge->weight() <= tripple.first);
-			graph().remove_edge	(tripple.second.first,tripple.second.second);
+			VERIFY				(_min((*I).weight(),edge->weight()) <= tripple.first);
+			if (vertex0.edge(tripple.second.second))
+				graph().remove_edge	(tripple.second.first,tripple.second.second);
 			if (vertex1.edge(tripple.second.first))
 				graph().remove_edge	(tripple.second.second,tripple.second.first);
 			continue;
@@ -553,9 +665,9 @@ void CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
 
 		edge					= graph().vertex((*I).vertex_id())->edge(tripple.second.second);
 		if (edge) {
-			VERIFY				((*I).weight() <= tripple.first);
-			VERIFY				(edge->weight() <= tripple.first);
-			graph().remove_edge	(tripple.second.first,tripple.second.second);
+			VERIFY				(_min((*I).weight(),edge->weight()) <= tripple.first);
+			if (vertex0.edge(tripple.second.second))
+				graph().remove_edge	(tripple.second.first,tripple.second.second);
 			if (vertex1.edge(tripple.second.first))
 				graph().remove_edge	(tripple.second.second,tripple.second.first);
 			continue;
@@ -627,8 +739,7 @@ void CGameGraphBuilder::save_graph			(const float &start, const float &amount)
 	}
 
 	{
-		u32							pointer = writer.tell();
-		u32							edge_offset = pointer + graph().vertices().size()*sizeof(CGameGraph::CVertex);
+		u32								edge_offset = graph().vertices().size()*sizeof(CGameGraph::CVertex);
 
 		graph_type::const_vertex_iterator	I = graph().vertices().begin();
 		graph_type::const_vertex_iterator	E = graph().vertices().end();
@@ -640,7 +751,7 @@ void CGameGraphBuilder::save_graph			(const float &start, const float &amount)
 			vertex.dwEdgeOffset		= edge_offset;
 			edge_offset				+= vertex.tNeighbourCount*sizeof(CGameGraph::CEdge);
 
-			writer.w				(&vertex,sizeof(vertex));
+			writer.w				(&vertex,sizeof(CGameGraph::CVertex));
 		}
 	}
 	
@@ -658,7 +769,7 @@ void CGameGraphBuilder::save_graph			(const float &start, const float &amount)
 	}
 
 	string_path					file_name;
-	strconcat					(file_name,*m_level_name,GAME_LEVEL_GRAPH);
+	strconcat					(file_name,*m_level_name,GAME_LEVEL_GRAPH_TEST);
 	writer.save_to				(file_name);
 	Msg							("%d bytes saved",int(writer.size()));
 
@@ -671,27 +782,118 @@ void CGameGraphBuilder::build_graph			(const float &start, const float &amount)
 
 	Msg						("Building graph");
 
-	generate_edges			(start + .00f*amount, amount*.25f);
-	connectivity_check		(start + .50f*amount, amount*.25f);
-	optimize_graph			(start + .25f*amount, amount*.25f);
-	save_graph				(start + .75f*amount, amount*.25f);
+	CTimer					timer;
+	timer.Start				();
+
+	m_graph_engine			= xr_new<CGraphEngine>(level_graph().header().vertex_count());
+	Progress				(start + 0.000000f*amount + amount*0.077419f);
+//	Msg						("BG : %f",timer.GetElapsed_sec());
+
+	generate_edges			(start + 0.077419f*amount, amount*0.914833f);
+//	Msg						("BG : %f",timer.GetElapsed_sec());
+
+	xr_delete				(m_graph_engine);
+	Progress				(start + 0.992253f*amount + amount*0.002526f);
+//	Msg						("BG : %f",timer.GetElapsed_sec());
+
+	connectivity_check		(start + 0.994779f*amount, amount*0.000035f);
+//	Msg						("BG : %f",timer.GetElapsed_sec());
+	optimize_graph			(start + 0.994814f*amount, amount*0.000524f);
+//	Msg						("BG : %f",timer.GetElapsed_sec());
+	save_graph				(start + 0.995338f*amount, amount*0.004662f);
+//	Msg						("BG : %f",timer.GetElapsed_sec());
 
 	Progress				(start + amount);
 }
 
 void CGameGraphBuilder::build_graph			(LPCSTR level_name)
 {
-	Phase					("Building level graph");
+	Phase					("Building level game graph");
 	Msg						("level \"%s\"",level_name);
 
 	m_level_name			= level_name;
 	
-	create_graph			(0.000f,0.001f);
-	load_level_graph		(0.001f,0.001f);
-	load_graph_points		(0.002f,0.001f);
-	remove_incoherent_points(0.003f,0.001f);
-	build_cross_table		(0.004f,0.995f);
-	build_graph				(0.999f,0.001f);
+	CTimer					timer;
+	timer.Start				();
+
+	create_graph			(0.000000f,0.000118f);
+//	Msg						("%f",timer.GetElapsed_sec());
+	load_level_graph		(0.000118f,0.000187f);
+//	Msg						("%f",timer.GetElapsed_sec());
+	load_graph_points		(0.000305f,0.025693f);
+//	Msg						("%f",timer.GetElapsed_sec());
+	remove_incoherent_points(0.025998f,0.000004f);
+//	Msg						("%f",timer.GetElapsed_sec());
+	build_cross_table		(0.026003f,0.951288f);
+//	Msg						("%f",timer.GetElapsed_sec());
+	build_graph				(0.977291f,0.022709f);
+//	Msg						("%f",timer.GetElapsed_sec());
 
 	Msg						("Level graph is generated successfully");
+}
+
+typedef GameGraph::CVertex						vertex_type;
+typedef CGraphAbstract<vertex_type,float,u32>	graph_type;
+
+graph_type *get_graph						(LPCSTR level_name, LPCSTR graph_name)
+{
+	string_path				file_name;
+	strconcat				(file_name,level_name,graph_name);
+
+	CGameGraph				game_graph(file_name);
+	graph_type				*graph = xr_new<graph_type>();
+	
+	for (u32 i=0, n=game_graph.header().vertex_count(); i<n; ++i)
+		graph->add_vertex	(*game_graph.vertex(i),i);
+
+	for (u32 i=0, n=game_graph.header().vertex_count(); i<n; ++i) {
+		CGameGraph::const_iterator	I,E;
+		game_graph.begin			(i,I,E);
+		for ( ; I != E; ++I)
+			graph->add_edge	(i,game_graph.value(i,I),game_graph.edge_weight(I));
+	}
+
+	return					(graph);
+}
+
+void compare_graphs							(LPCSTR level_name)
+{
+	graph_type				*graph0 = get_graph(level_name,GAME_LEVEL_GRAPH);
+	graph_type				*graph1 = get_graph(level_name,GAME_LEVEL_GRAPH_TEST);
+
+	VERIFY					(graph0->vertices().size() == graph1->vertices().size());
+	for (u32 i=0, n=graph0->vertices().size(); i<n; ++i) {
+		if (graph0->vertex(i)->data().level_vertex_id() != graph1->vertex(i)->data().level_vertex_id())
+			Msg				("0 to 1 : [%d] [%d] [%d]",i,graph0->vertex(i)->data().level_vertex_id(),graph1->vertex(i)->data().level_vertex_id());
+
+		VERIFY				(graph0->vertex(i)->data().level_vertex_id() == graph1->vertex(i)->data().level_vertex_id());
+
+		{
+			graph_type::const_iterator	I = graph0->vertex(i)->edges().begin();
+			graph_type::const_iterator	E = graph0->vertex(i)->edges().end();
+			for ( ; I != E; ++I) {
+				if (graph1->vertex(i)->edge((*I).vertex_id())) {
+//					if (!fsimilar((*I).weight(),graph1->vertex(i)->edge((*I).vertex_id())->weight(),EPS_L))
+//						Msg	("0 to 1 : [%d]->[%d] = %f : [%d]->[%d] = %f",i,(*I).vertex_id(),(*I).weight(),i,(*I).vertex_id(),graph1->vertex(i)->edge((*I).vertex_id())->weight());
+					continue;
+				}
+
+				Msg			("0 to 1 : [%d]->[%d] = %f : no edge",i,(*I).vertex_id(),(*I).weight());
+			}
+		}
+
+		{
+			graph_type::const_iterator	I = graph1->vertex(i)->edges().begin();
+			graph_type::const_iterator	E = graph1->vertex(i)->edges().end();
+			for ( ; I != E; ++I) {
+				if (graph0->vertex(i)->edge((*I).vertex_id()))
+					continue;
+
+				Msg			("1 to 0 : [%d]->[%d] = %f : no edge",i,(*I).vertex_id(),(*I).weight());
+			}
+		}
+	}
+
+	xr_delete				(graph0);
+	xr_delete				(graph1);
 }
