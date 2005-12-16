@@ -598,7 +598,7 @@ void CGameObject::OnRender()
 	if (bDebug && dbg_net_Draw_Flags.test(1<<11))
 	{
 		CCF_Skeleton* Skeleton = smart_cast<CCF_Skeleton*>(collidable.model);
-		if (Skeleton){
+		if (Skeleton && Position().distance_to_sqr(Device.vCameraPosition) < 225.0f){
 			Skeleton->_dbg_refresh();
 
 			const CCF_Skeleton::ElementVec& Elements = Skeleton->_GetElements();
