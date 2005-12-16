@@ -46,9 +46,7 @@ struct SHeliBodyState{
 	float							model_angSpeedPitch;
 
 	//runtime params
-	float							currBodyH;
-	float							currBodyP;
-	float							currBodyB;
+	Fvector							currBodyHPB;
 
 	bool							b_looking_at_point;
 	Fvector							looking_point;
@@ -167,9 +165,9 @@ public:
 	Fmatrix							m_fire_bone_xform;
 	Fmatrix							m_i_bind_x_xform, m_i_bind_y_xform;
 	Fvector2						m_lim_x_rot, m_lim_y_rot;
-	float							m_tgt_x_rot, m_tgt_y_rot;
-	float							m_cur_x_rot, m_cur_y_rot;
-	float							m_bind_x_rot, m_bind_y_rot;
+	Fvector2						m_tgt_rot;
+	Fvector2						m_cur_rot;
+	Fvector2						m_bind_rot;
 	Fvector							m_bind_x, m_bind_y;
 	bool							m_allow_fire;
 	u16								m_last_launched_rocket;

@@ -403,7 +403,7 @@ void SHeliBodyState::reinit()
 	type = eBodyByPath;
 	b_looking_at_point = false;
 	looking_point.set(0.0f,0.0f,0.0f);
-	parent->XFORM().getHPB(currBodyH, currBodyP, currBodyB);
+	parent->XFORM().getHPB(currBodyHPB.x, currBodyHPB.y, currBodyHPB.z);
 
 }
 
@@ -418,18 +418,18 @@ void SHeliBodyState::save(NET_Packet &output_packet)
 {
 	output_packet.w_s16((s16)type);
 	output_packet.w_u8(b_looking_at_point ? 1 : 0);    
-	output_packet.w_float(currBodyH);
-	output_packet.w_float(currBodyP);
-	output_packet.w_float(currBodyB);
+	output_packet.w_float(currBodyHPB.x);
+	output_packet.w_float(currBodyHPB.y);
+	output_packet.w_float(currBodyHPB.z);
 }
 
 void SHeliBodyState::load(IReader &input_packet)
 {
 	type				= (EHeliBodyState)input_packet.r_s16();
 	b_looking_at_point	= !!input_packet.r_u8();
-	currBodyH			= input_packet.r_float();
-	currBodyP			= input_packet.r_float();
-	currBodyB			= input_packet.r_float();
+	currBodyHPB.x			= input_packet.r_float();
+	currBodyHPB.y			= input_packet.r_float();
+	currBodyHPB.z			= input_packet.r_float();
 }
 
 

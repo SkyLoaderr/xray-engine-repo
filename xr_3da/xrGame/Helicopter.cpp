@@ -60,12 +60,9 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 
 void CHelicopter::init()
 {
-	m_cur_x_rot					= 0.0f;
-	m_cur_y_rot					= 0.0f;
-	m_tgt_x_rot					= 0.0f;
-	m_tgt_y_rot					= 0.0f;
-	m_bind_x_rot				= 0.f;
-	m_bind_y_rot				= 0.f;
+	m_cur_rot.set				(0.0f,0.0f);
+	m_tgt_rot.set				(0.0f,0.0f);
+	m_bind_rot.set				(0.0f,0.0f);
 
 	m_allow_fire				= FALSE;
 	m_use_rocket_on_attack		= TRUE;
@@ -219,8 +216,8 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 	K->LL_GetBindTransform	(matrices);
 	m_i_bind_x_xform.invert	(matrices[m_rotate_x_bone]);
 	m_i_bind_y_xform.invert	(matrices[m_rotate_y_bone]);
-	m_bind_x_rot			= matrices[m_rotate_x_bone].k.getP();
-	m_bind_y_rot			= matrices[m_rotate_y_bone].k.getH();
+	m_bind_rot.x			= matrices[m_rotate_x_bone].k.getP();
+	m_bind_rot.y			= matrices[m_rotate_y_bone].k.getH();
 	m_bind_x.set			(matrices[m_rotate_x_bone].c);
 	m_bind_y.set			(matrices[m_rotate_y_bone].c);
 	
@@ -364,15 +361,15 @@ void CHelicopter::MoveStep()
 
 		float center_desired_H,tmp_P;
 		desired_dir.getHP(center_desired_H, tmp_P);
-		angle_lerp			(m_body.currBodyH, center_desired_H, m_movement.GetAngSpeedHeading(m_movement.curLinearSpeed), STEP);
+		angle_lerp			(m_body.currBodyHPB.x, center_desired_H, m_movement.GetAngSpeedHeading(m_movement.curLinearSpeed), STEP);
 	}else{
-		angle_lerp			(m_body.currBodyH, m_movement.currPathH, m_movement.GetAngSpeedHeading(m_movement.curLinearSpeed), STEP);
+		angle_lerp			(m_body.currBodyHPB.x, m_movement.currPathH, m_movement.GetAngSpeedHeading(m_movement.curLinearSpeed), STEP);
 	}
 
 
 	float needBodyP = -m_body.model_pitch_k*m_movement.curLinearSpeed;
 	if(m_movement.curLinearAcc < 0) needBodyP*=-1;
-	angle_lerp	(m_body.currBodyP, needBodyP, m_body.model_angSpeedPitch, STEP);
+	angle_lerp	(m_body.currBodyHPB.y, needBodyP, m_body.model_angSpeedPitch, STEP);
 
 
 	float sign;
@@ -382,10 +379,10 @@ void CHelicopter::MoveStep()
 	float ang_diff = angle_difference (m_movement.currPathH, desired_H);
 	
 	float needBodyB = -ang_diff*sign*m_body.model_bank_k*m_movement.curLinearSpeed;
-	angle_lerp	(m_body.currBodyB, needBodyB, m_body.model_angSpeedBank, STEP);
+	angle_lerp	(m_body.currBodyHPB.z, needBodyB, m_body.model_angSpeedBank, STEP);
 	
 
-	XFORM().setHPB(m_body.currBodyH,m_body.currBodyP,m_body.currBodyB);
+	XFORM().setHPB(m_body.currBodyHPB.x,m_body.currBodyHPB.y,m_body.currBodyHPB.z);
 
 	XFORM().translate_over(m_movement.currP);
 }
