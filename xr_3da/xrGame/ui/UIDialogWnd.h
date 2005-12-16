@@ -15,6 +15,8 @@ class CUIDialogWnd : public CUIWindow
 private:
 	typedef CUIWindow inherited;
 	CDialogHolder*	m_pHolder;
+protected:
+	bool			IR_process					();
 public:
 	CUIDialogWnd								();
 	virtual ~ CUIDialogWnd						();

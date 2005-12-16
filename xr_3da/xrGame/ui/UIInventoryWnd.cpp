@@ -217,6 +217,8 @@ void CUIInventoryWnd::Init()
 	::Sound->create(sounds[eInvItemToRuck], true, uiXml.Read("snd_item_to_ruck",0,NULL));
 	::Sound->create(sounds[eInvProperties], true, uiXml.Read("snd_properties",0,NULL));
 	::Sound->create(sounds[eInvDropItem], true, uiXml.Read("snd_drop_item",0,NULL));
+	::Sound->create(sounds[eInvAttachAddon], true, uiXml.Read("snd_attach_addon",0,NULL));
+	::Sound->create(sounds[eInvDetachAddon], true, uiXml.Read("snd_detach_addon",0,NULL));
 
 	uiXml.SetLocalRoot					(stored_root);
 }
@@ -504,6 +506,7 @@ void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 
 void CUIInventoryWnd::AttachAddon()
 {
+	PlaySnd(eInvAttachAddon);
 	if (OnClient())
 	{
 		NET_Packet P;
@@ -534,6 +537,7 @@ void CUIInventoryWnd::AttachAddon()
 }
 void CUIInventoryWnd::DetachAddon(const char* addon_name)
 {
+	PlaySnd(eInvDetachAddon);
 	if (OnClient())
 	{
 		NET_Packet P;

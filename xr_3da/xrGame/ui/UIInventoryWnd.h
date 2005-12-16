@@ -78,6 +78,8 @@ protected:
 								eInvItemToRuck,
 								eInvProperties,
 								eInvDropItem,
+								eInvAttachAddon,
+								eInvDetachAddon,
 								eInvSndMax};
 	ref_sound				sounds[eInvSndMax];
 	void PlaySnd					(eInventorySndAction a);
