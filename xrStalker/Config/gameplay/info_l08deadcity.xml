@@ -20,6 +20,7 @@
     <info_portion id="cit_jail_doctor_leave"></info_portion>
     
     <info_portion id="cit_doctor_talk"></info_portion>
+    <info_portion id="cit_doctor_dead"></info_portion>
 
     <info_portion id="cit_jail_doctor_weapon_task">
 		<task>cit_doctor_weapon_task</task>
