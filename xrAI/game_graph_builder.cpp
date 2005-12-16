@@ -798,21 +798,21 @@ void CGameGraphBuilder::build_graph			(const float &start, const float &amount)
 
 	m_graph_engine			= xr_new<CGraphEngine>(level_graph().header().vertex_count());
 	Progress				(start + 0.000000f*amount + amount*0.067204f);
-	Msg						("BG : %f",timer.GetElapsed_sec());
+//	Msg						("BG : %f",timer.GetElapsed_sec());
 
 	generate_edges			(start + 0.067204f*amount, amount*0.922647f);
-	Msg						("BG : %f",timer.GetElapsed_sec());
+//	Msg						("BG : %f",timer.GetElapsed_sec());
 
 	xr_delete				(m_graph_engine);
 	Progress				(start + 0.989851f*amount + amount*0.002150f);
-	Msg						("BG : %f",timer.GetElapsed_sec());
+//	Msg						("BG : %f",timer.GetElapsed_sec());
 
 	connectivity_check		(start + 0.992001f*amount, amount*0.000030f);
-	Msg						("BG : %f",timer.GetElapsed_sec());
+//	Msg						("BG : %f",timer.GetElapsed_sec());
 	optimize_graph			(start + 0.992031f*amount, amount*0.000454f);
-	Msg						("BG : %f",timer.GetElapsed_sec());
+//	Msg						("BG : %f",timer.GetElapsed_sec());
 	save_graph				(start + 0.992485f*amount, amount*0.007515f);
-	Msg						("BG : %f",timer.GetElapsed_sec());
+//	Msg						("BG : %f",timer.GetElapsed_sec());
 
 	Progress				(start + amount);
 }
@@ -914,4 +914,152 @@ void compare_graphs							(LPCSTR level_name)
 
 	xr_delete				(graph0);
 	xr_delete				(graph1);
+}
+
+#include "xr_graph_merge.h"
+
+extern LPCSTR GAME_CONFIG;
+extern LPCSTR LEVEL_GRAPH_NAME;
+extern char INI_FILE[256];
+
+void test_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
+{
+	LPCSTR				_N,V;
+	string256			caFileName, file_name;
+	for (u32 k = 0; Ini->r_line("levels",k,&_N,&V); k++) {
+		string256		N;
+		strlwr			(strcpy(N,_N));
+
+		if (!Ini->section_exist(N)) {
+			Msg			("! There is no section %s in the %s!",N,GAME_CONFIG);
+			continue;
+		}
+
+		if (!Ini->line_exist(N,"name")) {
+			Msg			("! There is no line \"name\" in the section %s!",N);
+			continue;
+		}
+		
+		if (!Ini->line_exist(N,"id")) {
+			Msg			("! There is no line \"id\" in the section %s!",N);
+			continue;
+		}
+
+		if (!Ini->line_exist(N,"offset")) {
+			Msg			("! There is no line \"offset\" in the section %s!",N);
+			continue;
+		}
+
+		u32				id = Ini->r_s32(N,"id");
+		LPCSTR			_S = Ini->r_string(N,"name");
+		string256		S;
+		strlwr			(strcpy(S,_S));
+		{
+			bool		ok = true;
+			xr_set<CLevelInfo>::const_iterator	I = levels.begin();
+			xr_set<CLevelInfo>::const_iterator	E = levels.end();
+			for ( ; I != E; ++I) {
+				if (!xr_strcmp((*I).m_section,N)) {
+					Msg	("! Duplicated line %s in section \"levels\" in the %s",N,GAME_CONFIG);
+					ok	= false;
+					break;
+				}
+				if (!xr_strcmp((*I).m_name,S)) {
+					Msg	("! Duplicated level name %s in the %s, sections %s, %s",S,GAME_CONFIG,*(*I).m_section,N);
+					ok	= false;
+					break;
+				}
+				if ((*I).m_id == id) {
+					Msg	("! Duplicated level id %d in the %s, section %s, level %s",id,GAME_CONFIG,N,S);
+					ok	= false;
+					break;
+				}
+			}
+			if (!ok)
+				continue;
+		}
+		IReader			*reader;
+		// ai
+		strconcat		(caFileName,S,"\\",LEVEL_GRAPH_NAME);
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("! There is no ai-map for the level %s! (level is not included into the game graph)",S);
+			continue;
+		}
+		
+		{
+			reader					= FS.r_open	(file_name);
+			CLevelGraph::CHeader	header;
+			reader->r				(&header,sizeof(header));
+			FS.r_close				(reader);
+			if (header.version() != XRAI_CURRENT_VERSION) {
+				Msg					("! AI-map for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
+				continue;
+			}
+		}
+
+		{
+			strconcat				(caFileName,S,"\\");
+			FS.update_path			(file_name,"$game_levels$",caFileName);
+			CGameGraphBuilder().build_graph(file_name);
+		}
+
+		// graph
+		strconcat				(caFileName,S,"\\",GAME_LEVEL_GRAPH);
+		FS.update_path			(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg					("! There is no graph for the level %s! (level is not included into the game graph)",S);
+			continue;
+		}
+
+		{
+			reader				= FS.r_open	(file_name);
+			CGameGraph::CHeader	header;
+			header.load			(reader);
+			FS.r_close			(reader);
+			if (header.version() != XRAI_CURRENT_VERSION) {
+				Msg				("! Graph for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
+				continue;
+			}
+		}
+
+		// cross table
+		strconcat		(caFileName,S,"\\",CROSS_TABLE_NAME_RAW);
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("! There is no cross table for the level %s! (level is not included into the game graph)",S);
+			continue;
+		}
+
+		{
+			reader				= FS.r_open	(file_name);
+			if (!reader->find_chunk(CROSS_TABLE_CHUNK_VERSION)) {
+				FS.r_close		(reader);
+				Msg				("! Cross table for the level %s is corrupted! (level is not included into the game graph)",S);
+				continue;
+			}
+			CGameLevelCrossTable::CHeader	header;
+			IReader				*chunk = reader->open_chunk(CROSS_TABLE_CHUNK_VERSION);
+			chunk->r			(&header,sizeof(header));
+			chunk->close		();
+			FS.r_close			(reader);
+			if (header.version() != XRAI_CURRENT_VERSION) {
+				Msg				("! Cross table for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
+				continue;
+			}
+		}
+		
+		levels.insert	(CLevelInfo(id,S,Ini->r_fvector3(N,"offset"),N));
+	}
+}
+
+void test_levels	()
+{
+	CInifile *Ini = xr_new<CInifile>(INI_FILE);
+	if (!Ini->section_exist("levels"))
+		THROW(false);
+	R_ASSERT						(Ini->section_exist("levels"));
+
+	xr_set<CLevelInfo>				levels;
+	test_levels						(Ini,levels);
 }

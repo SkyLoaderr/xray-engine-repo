@@ -35,6 +35,7 @@ extern void	smart_cover			(LPCSTR name);
 extern void	verify_level_graph	(LPCSTR name, bool verbose);
 extern void connectivity_test	(LPCSTR);
 extern void compare_graphs		(LPCSTR level_name);
+extern void test_levels			();
 
 static const char* h_str = 
 	"The following keys are supported / required:\n"
@@ -143,13 +144,14 @@ void Startup(LPSTR     lpCmdLine)
 //						smart_cover			(prjName);
 //						xrBuildGraph		(prjName);
 //						xrBuildCrossTable	(prjName);
-						CGameGraphBuilder().build_graph	(prjName);
+//						CGameGraphBuilder().build_graph	(prjName);
 //						compare_graphs		(prjName);
 //						xrBuildCrossTable	(prjName);
 //						for (int i=0; i<100; ++i) {
 //							xrBuildGraph		(prjName);
 //							xrBuildCrossTable	(prjName);
 //						}
+						test_levels			();
 					}
 					else
 						if (strstr(cmd,"-c")) {
