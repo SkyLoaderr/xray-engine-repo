@@ -27,6 +27,8 @@
 #include "ai_object_location.h"
 #include "script_callback_ex.h"
 #include "game_object_space.h"
+#include "AI/Monsters/BaseMonster/base_monster.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -339,6 +341,8 @@ void CInventoryOwner::spawn_supplies		()
 {
 	CGameObject								*game_object = smart_cast<CGameObject*>(this);
 	VERIFY									(game_object);
+	if (smart_cast<CBaseMonster*>(this))	return;
+
 
 	if (use_bolts())
 		Level().spawn_item					("bolt",game_object->Position(),game_object->ai_location().level_vertex_id(),game_object->ID());

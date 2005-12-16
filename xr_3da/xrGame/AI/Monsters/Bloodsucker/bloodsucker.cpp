@@ -141,6 +141,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_visual_predator				= pSettings->r_string(section,"Predator_Visual");
 
 	m_vampire_want_speed			= pSettings->r_float(section,"Vampire_Want_Speed");
+	m_vampire_reach_time			= pSettings->r_u32(section,"Vampire_Reach_Time");
 }
 
 

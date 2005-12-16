@@ -36,6 +36,18 @@ void CDamageManager::reload				(LPCSTR section,CInifile* ini)
 	init_bones();
 	if (ini->line_exist(section,"damage"))
 		load_section(ini->r_string(section,"damage"),ini);
+
+	
+	// if bone param == -1 (no bone defined), fill it with default params 
+	CKinematics				*kinematics = smart_cast<CKinematics*>(m_object->Visual());
+	VERIFY					(kinematics);
+	for(u16 i = 0; i<kinematics->LL_BoneCount(); i++)
+	{
+		CBoneInstance			&bone_instance = kinematics->LL_GetBoneInstance(i);
+		if (bone_instance.get_param(0) < 0)		bone_instance.set_param	(0,m_default_hit_factor);
+		if (bone_instance.get_param(2) < 0)		bone_instance.set_param	(2,m_default_wound_factor);
+	}
+
 }
 void CDamageManager::init_bones()
 {
@@ -44,9 +56,9 @@ void CDamageManager::init_bones()
 	for(u16 i = 0; i<kinematics->LL_BoneCount(); i++)
 	{
 		CBoneInstance			&bone_instance = kinematics->LL_GetBoneInstance(i);
-		bone_instance.set_param	(0,1.f);
+		bone_instance.set_param	(0,-1.f);
 		bone_instance.set_param	(1,1.f);
-		bone_instance.set_param	(2,1.f);
+		bone_instance.set_param	(2,-1.f);
 	}
 }
 void CDamageManager::load_section(LPCSTR section,CInifile* ini)

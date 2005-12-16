@@ -17,7 +17,7 @@
 
 #include "specific_character.h"
 #include "alife_registry_wrappers.h"
-
+#include "AI/Monsters/BaseMonster/base_monster.h"
 
 
 CPda::CPda(void)						
@@ -108,6 +108,7 @@ void CPda::feel_touch_new(CObject* O)
 
 	CInventoryOwner* pNewContactInvOwner	= smart_cast<CInventoryOwner*>(O);
 	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
+
 	pOwner->NewPdaContact					(pNewContactInvOwner);
 }
 
@@ -116,6 +117,7 @@ void CPda::feel_touch_delete(CObject* O)
 	if(!H_Parent()) return;//feel_touch_delete called from pure_relcase
 	CInventoryOwner* pLostContactInvOwner	= smart_cast<CInventoryOwner*>(O);
 	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
+
 	pOwner->LostPdaContact					(pLostContactInvOwner);
 }
 
@@ -129,7 +131,7 @@ BOOL CPda::feel_touch_contact(CObject* O)
 		pInvOwner->IsActivePDA()*/)
 		{
 			CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(O);
-			if(pEntityAlive /*&& pEntityAlive->g_Alive()*/ && !pEntityAlive->getDestroy())
+			if(pEntityAlive /*&& pEntityAlive->g_Alive()*/ && !pEntityAlive->getDestroy() && !pEntityAlive->cast_base_monster())
 				return TRUE;
 		}else
 		return FALSE;

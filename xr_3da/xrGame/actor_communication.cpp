@@ -335,7 +335,6 @@ void CActor::UpdateContact		(u16 contact_id)
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
 	if(Game().Type() != GAME_SINGLE) return;
-	if (smart_cast<CBaseMonster*>(pInvOwner)) return;
 
 	bool b_alive = !!(smart_cast<CEntityAlive*>(pInvOwner))->g_Alive();
 	HUD().GetUI()->UIMainIngameWnd->AnimateContacts(b_alive);
@@ -352,7 +351,6 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 {
-
 	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
 	if (GO){
 

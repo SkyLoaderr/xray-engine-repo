@@ -19,6 +19,7 @@ CStateBloodsuckerVampireAbstract::CStateBloodsuckerVampire(_Object *obj) : inher
 	add_state	(eStateVampire_ApproachEnemy,	xr_new<CStateBloodsuckerVampireApproach<_Object> >	(obj));
 	add_state	(eStateVampire_Execute,			xr_new<CStateBloodsuckerVampireExecute<_Object> >	(obj));
 	add_state	(eStateVampire_RunAway,			xr_new<CStateMonsterHideFromPoint<_Object> >		(obj));
+	//add_state	(eStateVampire_Hide,)
 }
 
 TEMPLATE_SPECIALIZATION

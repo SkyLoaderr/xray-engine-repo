@@ -159,18 +159,19 @@ enum EMonsterState {
 	eStateVampire_ApproachEnemy		= eStateCustom | eStateAttack | 2,
 	eStateVampire_Execute			= eStateCustom | eStateAttack | 3,
 	eStateVampire_RunAway			= eStateCustom | eStateAttack | 4,
+	eStateVampire_Camp				= eStateCustom | eStateAttack | 5,
 	
-	eStateBurerAttack_Tele			= eStateCustom | eStateAttack | 5,
-	eStateBurerAttack_Gravi			= eStateCustom | eStateAttack | 6,
-	eStateBurerAttack_RunAround		= eStateCustom | eStateAttack | 7,
-	eStateBurerAttack_FaceEnemy		= eStateCustom | eStateAttack | 8,
-	eStateBurerAttack_Melee			= eStateCustom | eStateAttack | 9,
+	eStateBurerAttack_Tele			= eStateCustom | eStateAttack | 6,
+	eStateBurerAttack_Gravi			= eStateCustom | eStateAttack | 7,
+	eStateBurerAttack_RunAround		= eStateCustom | eStateAttack | 8,
+	eStateBurerAttack_FaceEnemy		= eStateCustom | eStateAttack | 9,
+	eStateBurerAttack_Melee			= eStateCustom | eStateAttack | 10,
 	
-	eStatePredator_MoveToCover		= eStateCustom | eStateAttack | 10,
-	eStatePredator_LookOpenPlace	= eStateCustom | eStateAttack | 11,
-	eStatePredator_Camp				= eStateCustom | eStateAttack | 12,
+	eStatePredator_MoveToCover		= eStateCustom | eStateAttack | 11,
+	eStatePredator_LookOpenPlace	= eStateCustom | eStateAttack | 12,
+	eStatePredator_Camp				= eStateCustom | eStateAttack | 13,
 
-	eStatePredator					= eStateCustom | eStateAttack | 13,
+	eStatePredator					= eStateCustom | eStateAttack | 14,
 
 	// -------------------------------------------------------------
 
