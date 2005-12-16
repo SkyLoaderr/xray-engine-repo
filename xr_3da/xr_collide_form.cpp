@@ -26,7 +26,7 @@ ICollisionForm::~ICollisionForm( )
 }
 
 //----------------------------------------------------------------------------------
-void CCF_Skeleton::SElement::center(Fvector& center)
+void CCF_Skeleton::SElement::center(Fvector& center) const
 {
 	switch (type){
 	case SBoneShape::stBox:

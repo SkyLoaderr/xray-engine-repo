@@ -1451,6 +1451,7 @@ void	CActor::OnRender_Network()
 		{
 			if (this != Level().CurrentViewEntity() || cam_active != eacFirstEye)
 			{
+				/*
 				u16 BoneCount = V->LL_BoneCount();
 				for (u16 i=0; i<BoneCount; i++)
 				{
@@ -1460,6 +1461,44 @@ void	CActor::OnRender_Network()
 					BoneMatrix.mul(XFORM(), BoneMatrixRes);
 					RCache.dbg_DrawOBB(BoneMatrix, BoneOBB.m_halfsize, color_rgba(0, 255, 0, 255));
 				};
+				*/
+				CCF_Skeleton* Skeleton = smart_cast<CCF_Skeleton*>(collidable.model);
+				if (Skeleton)
+				{
+					Skeleton->_dbg_refresh();
+
+					const CCF_Skeleton::ElementVec& Elements = Skeleton->_GetElements();
+					for (CCF_Skeleton::ElementVec::const_iterator I=Elements.begin(); I!=Elements.end(); I++)
+					{
+//						if (!I->valid())		continue;
+						switch (I->type)
+						{
+							case SBoneShape::stBox:
+								{
+									Fmatrix BoneMatrix;
+									BoneMatrix.invert(I->b_IM);
+//									const Fvector h_size = I->b_hsize;
+									RCache.dbg_DrawOBB(BoneMatrix, *((Fvector*)&I->b_hsize), color_rgba(0, 255, 0, 255));
+								}break;
+							case SBoneShape::stCylinder:
+								{
+								}break;
+							case SBoneShape::stSphere:
+								{
+									Fmatrix l_ball = Fidentity;
+									
+									const Fsphere& l_sphere = I->s_sphere;
+									l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R);
+//									Fvector l_p; XFORM().transform(l_p, l_sphere.P);
+									l_ball.translate_add(l_sphere.P);
+									RCache.dbg_DrawEllipse(l_ball, color_rgba(0, 255, 0, 255));
+//									Fmatrix BoneMatrix = Fidentity;
+//									BoneMatrix.translate_add(I->s_sphere.P);
+//									RCache.dbg_DrawEllipse(BoneMatrix, )
+								}break;
+						};
+					};					
+				}
 			};
 		};
 
