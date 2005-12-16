@@ -908,31 +908,31 @@ combat_ignore_cond = {-esc_open_killer_fire}
 
 
 [logic@esc_killer1_raid]
-active = walker@esc_killer1_raid
+active = patrol@esc_killer1_raid
 on_hit = hit@killers
 on_death = death@killers
 combat_ignore = combat_ignore
 
-[walker@esc_killer1_raid]
+[patrol@esc_killer1_raid]
 path_walk = raid2_walk
 path_look = raid2_look
-team = killers
 combat_ignore_cond = {-esc_open_killer_fire}
-def_state_moving = patrol
+formation = back
+commander = true
 
 
 [logic@esc_killer2_raid]
-active = walker@esc_killer2_raid
+active = patrol@esc_killer2_raid
 on_hit = hit@killers
 on_death = death@killers
 combat_ignore = combat_ignore
 
-[walker@esc_killer2_raid]
+[patrol@esc_killer2_raid]
 path_walk = raid3_walk
 path_look = raid3_look
-team = killers
 combat_ignore_cond = {-esc_open_killer_fire}
-def_state_moving = patrol
+formation = back
+commander = true
 
 
 [logic@esc_killer3_raid]
@@ -975,31 +975,27 @@ def_state_moving = patrol
 
 
 [logic@esc_killer1_follower]
-active = follower@esc_killer1_follower
+active = patrol@esc_killer1_follower
 on_hit = hit@killers
 on_death = death@killers
 combat_ignore = combat_ignore
 
-[follower@esc_killer1_follower]
-anim_walk = patrol
-anim_run = rush
-distance = 2
+[patrol@esc_killer1_follower]
+formation = back
 combat_ignore_cond = {-esc_open_killer_fire}
 path_walk = raid2_walk
 
 
 [logic@esc_killer2_follower]
-active = follower@esc_killer2_follower
+active = patrol@esc_killer2_follower
 on_hit = hit@killers
 on_death = death@killers
 combat_ignore = combat_ignore
 
-[follower@esc_killer2_follower]
-anim_walk = patrol
-anim_run = rush
-distance = 2
+[patrol@esc_killer2_follower]
 combat_ignore_cond = {-esc_open_killer_fire}
 path_walk = raid3_walk
+formation = back
 
 
 [logic@esc_killer_fight]

@@ -594,28 +594,24 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 7, state = {0},
 			in_rest = "", out_rest = "",
-			dependent = "logic@esc_killer1_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer1_follower",
 			idle = 0,
 			prior = 7, state = {0},
 			in_rest = "", out_rest = "",
-			dependent = "logic@esc_killer1_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_follower",
 			idle = 0,
 			prior = 7, state = {0},
 			in_rest = "", out_rest = "",
-			dependent = "logic@esc_killer2_raid"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_follower",
 			idle = 0,
 			prior = 7, state = {0},
 			in_rest = "", out_rest = "",
-			dependent = "logic@esc_killer2_raid"
 		}
 		table.insert(sj, t)
 		
