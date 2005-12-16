@@ -48,34 +48,40 @@ function load_ltx(gname, type)
 end
 
 -- Check communities -----------------------------------------------------
-function checkCommon(npc_community, gulag_type)
-    local i, v, n = 0, 0, 0
+--function checkCommon(npc_community, gulag_type)
+local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
     local g = gulags[gulag_type]
-
     if g then
         if g.comm then
-            --for i, v in pairs(g[3]) do
+            if type(g.comm) == "function" then
+                return g.comm(npc_community, gulag_type, npc_rank, se_obj, stalker)
+            end
+
+            local i, v = 0, 0
             for i, v in pairs(g.comm) do
                 if npc_community == v then
                     return true
                 end
-                n = n + 1
             end
-            if n > 0 then
+            if i > 0 then
                 return false
-            else
-                return true
             end
-        else
-            return true
         end
+        return true
     end
-
 	return false
 end
 
-checkStalker = checkCommon
-checkMonster = checkCommon
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
+	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, true)
+end
+
+function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
+	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, false)
+end
+
+--checkStalker = checkCommon
+--checkMonster = checkCommon
 
 
 --------------------------------------------------------------------------
@@ -335,7 +341,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "path_walk           = free_stalker" .. i .. "_attack_walk\n" ..
                    "path_look           = free_stalker" .. i .. "_attack_look\n" ..
                    "on_info             = {+cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
-                   "heli_hunter         = true\n" ..
+                   ";heli_hunter         = true\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 

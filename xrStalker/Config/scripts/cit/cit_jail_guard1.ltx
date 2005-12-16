@@ -19,6 +19,7 @@ path_walk           = jail_guard_walk
 path_look           = jail_guard_look
 on_info             = {+cit_jail_guard2_talk_to_guard1} remark@look_at_guard2_1
 on_info2            = {+cit_jail_door_opened} walker@jail_guard_close_door1
+on_info3            = {+cit_doctor_dead} walker@jail_guard2
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -41,6 +42,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 anim                = wait
 target              = logic@cit_killers_base_guard ;1202 ; guard2
 on_info             = {+cit_jail_kill_actor} remark@jail_guard_kill_actor, {+cit_jail_guard2_talk_to_doctor} walker@jail_guard_go_to_button
+on_info2            = {+cit_doctor_dead} walker@jail_guard2
 ;on_info             = {+cit_jail_kill_actor} remark@jail_guard_kill_actor, {+cit_jail_doctor_out_start} walker@jail_guard_open_door
 combat_ignore_cond  = {=fighting_actor -cit_jail_door_opened -cit_actor_is_free}, {=check_fighting(1200)}
 
@@ -54,6 +56,7 @@ def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
 on_info             = {+cit_jail_kill_actor} remark@jail_guard_kill_actor, {+cit_jail_doctor_out_start} walker@jail_guard_open_door
+on_info2            = {+cit_doctor_dead} walker@jail_guard2
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -74,6 +77,7 @@ def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
 on_info             = {+cit_jail_door_opened} remark@look_at_actor
+on_info2            = {+cit_doctor_dead} walker@jail_guard2
 on_signal           = pressed | remark@look_at_actor %+cit_jail_door_opened%
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
@@ -84,6 +88,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free
 anim                = wait
 target              = actor
 on_info             = {+cit_jail_guard1_close_door} walker@jail_guard_close_door2
+on_info2            = {+cit_doctor_dead} walker@jail_guard2
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -157,7 +162,7 @@ on_timer            = 240000 | walker@jail_guard_go_sleep
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
-;--- патрулируем возле решетки
+;--- 
 ;-----------------------------------------------------------------------------------------------------------
 [walker@jail_guard_attack]
 path_walk           = jail_guard_attack_walk
