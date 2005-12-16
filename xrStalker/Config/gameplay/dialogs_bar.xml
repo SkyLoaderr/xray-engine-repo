@@ -4595,7 +4595,7 @@
             <phrase id="12">
                 <text></text>
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <dont_has_info>bar_x16_document_done</dont_has_info>
+                <dont_has_info>bar_x16_documents_done</dont_has_info>
                 <has_info>agroprom_military_case_done</has_info>
                 <has_info>agroprom_military_case</has_info>
                 <has_info>yan_x16_documents_gain</has_info>
@@ -4638,7 +4638,7 @@
                 <text></text>
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <dont_has_info>bar_deactivate_radar_start</dont_has_info>
-                <has_info>bar_x16_document_done</has_info>
+                <has_info>bar_x16_documents_done</has_info>
                 <next>131</next>
             </phrase>
             <phrase id="131">
