@@ -628,7 +628,7 @@ void CGameGraphBuilder::create_tripples		(const float &start, const float &amoun
 		graph_type::const_iterator	i = (*I).second->edges().begin();
 		graph_type::const_iterator	e = (*I).second->edges().end();
 		for ( ; i != e; ++i) {
-			if ((*i).vertex_id() < (*I).first)
+			if (((*i).vertex_id() < (*I).first) && graph().edge((*i).vertex_id(),(*I).first))
 				continue;
 
 			const graph_type::CEdge	*edge = graph().vertex((*i).vertex_id())->edge((*I).first);
@@ -651,8 +651,9 @@ void CGameGraphBuilder::create_tripples		(const float &start, const float &amoun
 	std::sort				(m_tripples.begin(),m_tripples.end(),sort_predicate_greater<TRIPPLE>);
 }
 
-void CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
+bool CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
 {
+//	Msg							("Processing tripple [%d] -> [%d] = %f",tripple.second.first,tripple.second.second,tripple.first);
 	const graph_type::CVertex	&vertex0 = *graph().vertex(tripple.second.first);
 	const graph_type::CVertex	&vertex1 = *graph().vertex(tripple.second.second);
 
@@ -666,25 +667,47 @@ void CGameGraphBuilder::process_tripple		(const TRIPPLE &tripple)
 
 		edge					= vertex1.edge((*I).vertex_id());
 		if (edge) {
+#if 1
+			{
+				if (!(_min((*I).weight(),graph().edge((*I).vertex_id(),tripple.second.first) ? graph().edge((*I).vertex_id(),tripple.second.first)->weight() : (*I).weight()) <= tripple.first)) {
+					Msg			("[%d] -> [%d] = %f",tripple.second.first,tripple.second.second,graph().edge(tripple.second.first,tripple.second.second)->weight());
+					Msg			("[%d] -> [%d] = %f",tripple.second.second,tripple.second.first,graph().edge(tripple.second.second,tripple.second.first)->weight());
+
+					Msg			("[%d] -> [%d] = %f",tripple.second.first,(*I).vertex_id(),(*I).weight());
+					if (graph().edge((*I).vertex_id(),tripple.second.first))
+						Msg		("[%d] -> [%d] = %f",(*I).vertex_id(),tripple.second.first,graph().edge((*I).vertex_id(),tripple.second.first)->weight());
+					else
+						Msg		("[%d] -> [%d] = no edge",(*I).vertex_id(),tripple.second.first);
+
+					Msg			("[%d] -> [%d] = %f",tripple.second.second,(*I).vertex_id(),graph().edge(tripple.second.second,(*I).vertex_id())->weight());
+					if (graph().edge((*I).vertex_id(),tripple.second.second))
+						Msg		("[%d] -> [%d] = %f",(*I).vertex_id(),tripple.second.second,graph().edge((*I).vertex_id(),tripple.second.second)->weight());
+					else
+						Msg		("[%d] -> [%d] = no edge",(*I).vertex_id(),tripple.second.second);
+				}
+			}
+#endif
 			VERIFY				(_min((*I).weight(),graph().edge((*I).vertex_id(),tripple.second.first) ? graph().edge((*I).vertex_id(),tripple.second.first)->weight() : (*I).weight()) <= tripple.first);
 			VERIFY				(_min(edge->weight(),graph().edge(edge->vertex_id(),tripple.second.second) ? graph().edge(edge->vertex_id(),tripple.second.second)->weight() : (*I).weight()) <= tripple.first);
 			if (vertex0.edge(tripple.second.second))
 				graph().remove_edge	(tripple.second.first,tripple.second.second);
 			if (vertex1.edge(tripple.second.first))
 				graph().remove_edge	(tripple.second.second,tripple.second.first);
-			continue;
+			return				(true);
 		}
 
 		edge					= graph().vertex((*I).vertex_id())->edge(tripple.second.second);
 		if (edge) {
-			VERIFY				(_min((*I).weight(),edge->weight()) <= tripple.first);
+			VERIFY				(_min((*I).weight(),graph().edge((*I).vertex_id(),tripple.second.first) ? graph().edge((*I).vertex_id(),tripple.second.first)->weight() : (*I).weight()) <= tripple.first);
+			VERIFY				(edge->weight() <= tripple.first);
 			if (vertex0.edge(tripple.second.second))
 				graph().remove_edge	(tripple.second.first,tripple.second.second);
 			if (vertex1.edge(tripple.second.first))
 				graph().remove_edge	(tripple.second.second,tripple.second.first);
-			continue;
+			return				(true);
 		}
 	}
+	return						(false);
 }
 
 void CGameGraphBuilder::optimize_graph		(const float &start, const float &amount)
@@ -695,12 +718,33 @@ void CGameGraphBuilder::optimize_graph		(const float &start, const float &amount
 
 	Msg							("edges before optimization : %d",graph().edge_count());
 
+//	{
+//		graph_type::const_iterator	I = graph().vertex(42)->edges().begin();
+//		graph_type::const_iterator	E = graph().vertex(42)->edges().end();
+//		for ( ; I != E; ++I) {
+//			Msg					("[%d] -> [%d] = %f",42,(*I).vertex_id(),(*I).weight());
+//		}
+//	}
+
 	create_tripples				(start + .00f, amount*.50f);
 
 	TRIPPLES::const_iterator	I = m_tripples.begin();
 	TRIPPLES::const_iterator	E = m_tripples.end();
-	for ( ; I != E; ++I)
+	for ( ; I != E; ++I) {
+//		if (process_tripple(*I)) {
+//			Msg					("[%d] -> [%d] is removed",(*I).second.first,(*I).second.second);
+//			continue;
+//		}
+
 		process_tripple			(*I);
+
+//		TRIPPLE					temp = *I;
+//		std::swap				(temp.second.first,temp.second.second);
+//		if (process_tripple(temp)) {
+//			Msg					("[%d] -> [%d] is removed",(*I).second.second,(*I).second.first);
+//		}
+//		Msg						("[%d] -> [%d] is left",(*I).second.first,(*I).second.second);
+	}
 
 	Msg							("edges after optimization : %d",graph().edge_count());
 
