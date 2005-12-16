@@ -37,10 +37,11 @@ extern	float	g_fTimeFactor;
 
 void CLevel::IR_OnMouseWheel( int direction )
 {
-	if( Device.Pause()		) return;
 	if(	g_bDisableAllInput	) return;
 
 	if (HUD().GetUI()->IR_OnMouseWheel(direction)) return;
+	if( Device.Pause()		) return;
+
 	if ( Game().IR_OnMouseWheel(direction) ) return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
@@ -109,10 +110,12 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		break;
 	};
 
-	if( Device.Pause()		) return;
 	if(	g_bDisableAllInput	) return;
 
 	if (pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
+
+	if( Device.Pause()		) return;
+
 	if ( Game().IR_OnKeyboardPress(key) ) return;
 
 	switch (key) {
@@ -328,9 +331,9 @@ void CLevel::IR_OnKeyboardPress	(int key)
 
 void CLevel::IR_OnKeyboardRelease(int key)
 {
-	if( Device.Pause()		) return;
 	if(	g_bDisableAllInput	) return;
 	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
+	if( Device.Pause()		) return;
 	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
@@ -342,10 +345,10 @@ void CLevel::IR_OnKeyboardRelease(int key)
 
 void CLevel::IR_OnKeyboardHold(int key)
 {
-	if( Device.Pause() ) return;
 	if(g_bDisableAllInput) return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
+	if( Device.Pause() ) return;
 	if (CurrentEntity())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);

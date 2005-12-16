@@ -53,7 +53,8 @@ public:
 	Fvector					m_position;
 	Fvector					m_angles;
 
-						CChangeLevelWnd		();
-	virtual				~CChangeLevelWnd	()									{};
-	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+						CChangeLevelWnd				();
+	virtual				~CChangeLevelWnd			()									{};
+	virtual void		SendMessage					(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual bool		WorkInPause					()const {return true;}
 };

@@ -43,7 +43,7 @@ void CUIDialogWnd::Hide()
 bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 {
 	if(!IsEnabled()) return false;
-
+	if(Device.Pause()&&!WorkInPause())	return false;
 	//mouse click
 	if(dik==MOUSE_1 || dik==MOUSE_2)
 	{
@@ -70,6 +70,7 @@ bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 {
 	if(!IsEnabled()) return false;
+	if(Device.Pause()&&!WorkInPause())	return false;
 	
 	//mouse click
 	if(dik==MOUSE_1 || dik==MOUSE_2)
@@ -96,6 +97,8 @@ bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 
 bool CUIDialogWnd::IR_OnMouseWheel (int direction)
 {
+	if(!IsEnabled()) return false;
+	if(Device.Pause()&&!WorkInPause())	return false;
 	Fvector2 pos = GetUICursor()->GetPos();
 
 	if(direction>0)
@@ -109,6 +112,7 @@ bool CUIDialogWnd::IR_OnMouseWheel (int direction)
 bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 {
 	if(!IsEnabled()) return false;
+	if(Device.Pause()&&!WorkInPause())	return false;
 	
 	if (GetUICursor()->IsVisible())
 	{ 
@@ -132,6 +136,9 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 
 bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
+	if(!IsEnabled()) return false;
+	if(Device.Pause()&&!WorkInPause())	return false;
+
 	if (inherited::OnKeyboard(dik, keyboard_action) )
 		return true;
 	return false;
