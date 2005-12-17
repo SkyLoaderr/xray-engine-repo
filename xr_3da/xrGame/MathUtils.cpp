@@ -160,68 +160,72 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 	float sq_nearest_dist=v_smag+tr*tr+tc*tc-2*(cs*tc*tr-Lc*tc+Lr*tr);
 
 	if(sq_nearest_dist>sq_r) return false;
+	//float max_c_diff=//
 
 	float sq_horde=(sq_r-sq_nearest_dist)		;
-	float horde=_sqrt(sq_horde)					;
-	float c_diff=horde/cs						;//ccc
+
+	//float horde=_sqrt(sq_horde)					;
+	float sq_c_diff=sq_horde*sq_sin/sq_cos		;
+	float c_diff=_sqrt(sq_c_diff)				;//ccc
 	float cp1=tc-c_diff							;
 	float cp2=tc+c_diff							;
-	float test=horde+h							;
+	
+	
+	//cp1<cp2 
+	if(cp1>h)
+	{
+		//sphere 
+		float tc_h=tc-h;//!! hi					(=)/;
+		float sq_sphere_dist=sq_sin*tc_h*tc_h;
+		if(sq_sphere_dist>sq_horde)return false;
+		float tr_c=tr-tc_h*cs;//
+		float diff=_sqrt(sq_horde-sq_sphere_dist);
+		tr1=tr_c-diff;
+		if(tr1>R) return false;//
+		if(tr1<0.f)
+		{
+			if(bCull)return false;
+			else{
+				tr2=tr_c+diff;
+				if(tr2<0.f) return false;//
+				if(tr2<R){R=tr2;return true;}
+			}
+		}
+		R=tr1												;
+		return true											;
+	} 
+
+	if(cp2<-h)
+	{
+		//sphere lo								/(=)
+		float tc_h=tc+h;//!!
+		float sq_sphere_dist=sq_sin*tc_h*tc_h;
+		if(sq_sphere_dist>sq_horde)return false;
+		float tr_c=tr-tc_h*cs;//!!
+		float diff=_sqrt(sq_horde-sq_sphere_dist);
+		tr1=tr_c-diff;
+		if(tr1>R) return false;//
+		if(tr1<0.f)
+		{
+			if(bCull)return false;
+			else{
+				tr2=tr_c+diff;
+				if(tr2<0.f) return false;//
+				if(tr2<R){R=tr2;return true;}
+			}
+		}
+		R=tr1												;
+		return true											;
+	} 
 
 	if(cs>0.f)
 	{
-		//cp1<cp2 
-		if(cp1>test) return false;
-		if(cp2<-test)return false;
-
-		if(cp1>h)
-		{
-			//sphere 
-			float tc_h=tc-h;//!! hi					(=)/;
-			float sq_sphere_dist=sq_sin*tc_h*tc_h;
-			if(sq_sphere_dist>sq_horde)return false;
-			float tr_c=tr-tc_h*cs;//!!
-			float diff=_sqrt(sq_horde-sq_sphere_dist);
-			tr1=tr_c-diff;
-			if(tr1>R) return false;//
-			if(tr1<0.f)
-			{
-				if(bCull)return false;
-				else{
-					tr2=tr_c+diff;
-					if(tr2<0.f) return false;//
-					if(tr2<R){R=tr2;return true;}
-				}
-			}
-			R=tr1												;
-			return true											;
-		}else if(cp2<-h)
-		{
-			//sphere lo								/(=)
-			float tc_h=tc+h;//!!
-			float sq_sphere_dist=sq_sin*tc_h*tc_h;
-			if(sq_sphere_dist>sq_horde)return false;
-			float tr_c=tr-tc_h*cs;//!!
-			float diff=_sqrt(sq_horde-sq_sphere_dist);
-			tr1=tr_c-diff;
-			if(tr1>R) return false;//
-			if(tr1<0.f)
-			{
-				if(bCull)return false;
-				else{
-					tr2=tr_c+diff;
-					if(tr2<0.f) return false;//
-					if(tr2<R){R=tr2;return true;}
-				}
-			}
-			R=tr1												;
-			return true											;
-		}else if(cp1 >-h)
+		if(cp1 >-h)
 		{
 			if(cp2<h)
 			{
 				//cylinder							(=/=)
-				float diff=horde*_sqrt(r_sq_sin);
+				float diff=_sqrt(sq_horde*r_sq_sin);
 				tr1=tr-diff;
 				if(tr1>R) return false;//
 				if(tr1<0.f)
@@ -238,7 +242,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 			}
 			else{
 				//mixed//cyl hi sphere					(=/)
-				float diff=horde*_sqrt(r_sq_sin)		;
+				float diff=_sqrt(sq_horde*r_sq_sin)		;
 				tr1=tr-diff								;
 				if(tr1>R) return false;//
 				if(tr1<0.f)
@@ -262,9 +266,9 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 		{
 			if(cp2<h)
 			{
-				//mixed//lo sphere							(/=)
+				//mixed//lo sphere	cyl						(/=)
 				
-				float tc_h=tc+h								;
+				float tc_h=tc+h								;//(tc-(-h))
 				float sq_sphere_dist=sq_sin*tc_h*tc_h;
 				//if(sq_sphere_dist>sq_horde)return false;
 				float diff=_sqrt(sq_horde-sq_sphere_dist)	;
@@ -275,7 +279,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 				{
 					if(bCull)return false;
 					else{
-						float diff=horde*_sqrt(r_sq_sin)	;
+						float diff=_sqrt(sq_horde*r_sq_sin)	;
 						tr2=tr+diff							;
 						if(tr2<0.f) return false			;//
 						if(tr2<R){R=tr2;return true;}
@@ -312,57 +316,12 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 	}
 	else
 	{
-		//cp2<cp1 
-		if(cp2>test) return false;
-		if(cp1<-test)return false;
-		if(cp2>h)
+		if(cp1 >-h) 
 		{
-			//sphere						hi	(=)\ ;
-			float tc_h=tc-h;
-			float sq_sphere_dist=sq_sin*tc_h*tc_h;
-			if(sq_sphere_dist>sq_horde)return false;
-			float tr_c=tr+tc_h*cs;
-			float diff=_sqrt(sq_horde-sq_sphere_dist);
-			tr1=tr_c-diff;
-			if(tr1>R) return false						;//
-			if(tr1<0.f)
-			{
-				if(bCull)return false;
-				else{
-					tr2=tr_c+diff;
-					if(tr2<0.f) return false;//
-					if(tr2<R){R=tr2;return true;}
-				}
-			}
-			R=tr1							;
-			return true						;
-		}else if(cp1<-h)
-		{
-			//sphere						lo \(=)
-			float tc_h=tc+h;
-			float tr_c=tr+tc_h*cs;
-			float sq_sphere_dist=sq_sin*tc_h*tc_h;
-			if(sq_sphere_dist>sq_horde)return false;
-			float diff=_sqrt(sq_horde-sq_sphere_dist);
-			float tr1=tr_c-diff;
-			if(tr1>R) return false						;//
-			if(tr1<0.f)
-			{
-				if(bCull)return false;
-				else{
-					tr2=tr_c+diff;
-					if(tr2<0.f) return false;//
-					if(tr2<R){R=tr2;return true;}
-				}
-			}
-			R=tr1							;
-			return true						;
-		}else if(cp2 >-h) //cp1>cp2
-		{
-			if(cp1<h)//&&cp1>-h
+			if(cp2<h)
 			{
 				//cylinder
-				float diff=horde*_sqrt(r_sq_sin);
+				float diff=_sqrt(sq_horde*r_sq_sin);
 				tr1=tr-diff;
 				if(tr1>R) return false;//
 				if(tr1<0.f)
@@ -377,11 +336,11 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 				R=tr1							;
 				return true						;
 			}
-			else{
+			else{//cp1>-h&&cp2>h
 
 
-				float tc_h=tc-h;			//hi sphere
-				float tr_c=tr+tc_h*cs;
+				float tc_h=tc-h;			//hi sphere/cyl
+				float tr_c=tr-tc_h*cs;
 				float diff=_sqrt(sq_horde-sq_sin*tc_h*tc_h);
 				tr1=tr_c-diff;
 				if(tr1>R) return false						;//
@@ -389,7 +348,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 				{
 					if(bCull)return false;
 					else{
-						diff=horde*_sqrt(r_sq_sin);
+						diff=_sqrt(sq_horde*r_sq_sin);
 						tr2=tr+diff;
 						if(tr2<0.f) return false;//
 						if(tr2<R){R=tr2;return true;}
@@ -398,12 +357,12 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 				R=tr1							;
 				return true						;
 			}
-		}else//cp2<-h
+		}else//cp1<-h
 		{
-
-			if(cp1<h)
+			if(cp2<h)
 			{
-				float diff=horde*_sqrt(r_sq_sin);
+				//cyl/lo sphere
+				float diff=_sqrt(sq_horde*r_sq_sin);
 				tr1=tr-diff;
 				if(tr1>R) return false						;//
 				if(tr1<0.f)
@@ -412,7 +371,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 					else{
 						//mixed//lo 
 						float tc_h=tc+h;			
-						float tr_c=tr+tc_h*cs;
+						float tr_c=tr-tc_h*cs;
 						diff=_sqrt(sq_horde-sq_sin*tc_h*tc_h);
 						tr2=tr_c+diff;
 						if(tr2<0.f) return false;//
@@ -421,12 +380,12 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 				}
 				R=tr1							;
 				return true						;
-			}else//cp1>=h
+			}else//cp2>=h
 			{
-				//-(--)-								//sphere lo&&hi
+				//-(--)-								//sphere hi&&lo
 
 				float tc_h=tc-h								;
-				float tr_c=tr+tc_h*cs						;
+				float tr_c=tr-tc_h*cs						;
 				float diff=_sqrt(sq_horde-sq_sin*tc_h*tc_h)	;
 				tr1=tr_c-diff								;
 				if(tr1>R) return false						;//
@@ -436,7 +395,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 					if(bCull)return false;
 					else{
 						tc_h=tc+h								;
-						tr_c=tr+tc_h*cs							;
+						tr_c=tr-tc_h*cs							;
 						diff=_sqrt(sq_horde-sq_sin*tc_h*tc_h)	;
 						tr2=tr_c+diff							;
 						if(tr2<0.f) return false				;//
