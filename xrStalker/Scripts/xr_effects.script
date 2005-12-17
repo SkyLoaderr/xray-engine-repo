@@ -247,6 +247,11 @@ function play_snd_from_obj(actor, npc, p)
 	end
 end
 
+-- играть звук от указанного объекта
+function play_snd_now(actor, npc, p)
+	xr_sound.set_sound_play(npc, p[1])
+end
+
 -- прибавить к указанному счётчику актёра 1
 function inc_counter(actor, npc, p)
 	if p[1] then
