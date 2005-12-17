@@ -413,7 +413,11 @@ end
 -- для того, чтобы выбрать тот единственный, в который персонаж всё-таки пойдёт.
 -- TODO расстояние
 function se_smart_terrain:suitable( obj )
-	return 1
+	local self_gv = game_graph():vertex( self.m_game_vertex_id )
+	local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
+
+--	printf( "[smart_terrain %s] obj=%s suitable=%d", self:name(), obj:name(), 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ) )
+	return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
 end
 
 -- добавить npc в smart terrain.

@@ -42,7 +42,7 @@ function loadJob(sj, gname, type, squad, groups, gulag)
 			prior = 1, state = {0},
 			predicate = function(obj_info)
 --							printf( "test1: walker1 predicate called" )
-			            	return false
+			            	return true
 			            end,
 			in_rest = "", out_rest = ""
 		}
