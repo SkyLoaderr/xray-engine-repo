@@ -129,7 +129,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 				}
 			}
 		}
-		float diff=_sqrt(sq_r-sq_dist)+h;
+		float diff=_sqrt(sq_r-sq_dist);
 		tr1=Lr-diff;
 		
 		if(tr1>R) return false;//
@@ -167,7 +167,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 	float sq_horde=(sq_r-sq_nearest_dist)		;
 
 	//float horde=_sqrt(sq_horde)					;
-	float sq_c_diff=sq_horde*sq_cos/sq_sin		;
+	float sq_c_diff=sq_horde*sq_cos*r_sq_sin	;
 	float c_diff=_sqrt(sq_c_diff)				;//ccc
 	float cp1=tc-c_diff							;
 	float cp2=tc+c_diff							;
@@ -253,7 +253,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 					else{
 						float tc_h=tc-h								;
 						float sq_sphere_dist=sq_sin*tc_h*tc_h;
-						//if(sq_sphere_dist>sq_horde)return false;
+						//if(sq_sphere_dist>sq_horde)return false	;
 						float tr_c=tr-tc_h*cs						;
 						float diff=_sqrt(sq_horde-sq_sphere_dist)	;
 						tr2=tr_c+diff								;
@@ -412,7 +412,7 @@ IC bool RAYvsCYLINDER(const Fcylinder& c_cylinder, const Fvector &S, const Fvect
 }
 
 
-void test()
+void capped_cylinder_ray_collision_test()
 {
 	Fcylinder c;
 	c.m_center.set(0,0,0);
@@ -442,9 +442,12 @@ void test()
 
 	pos.set(-3,-3,-3);dir.set(1,1,1);dir.normalize();R=10;
 	RAYvsCYLINDER(c,pos,dir,R,TRUE);//true, ?
+	float ir[2];
+	c.intersect(pos,dir,ir);
 	//
 	pos.set(0,0,0);
 	RAYvsCYLINDER(c,pos,dir,R,FALSE);//true, ?
+	c.intersect(pos,dir,ir);
 	RAYvsCYLINDER(c,pos,dir,R,TRUE);//false
 
 }
