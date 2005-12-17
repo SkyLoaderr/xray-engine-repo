@@ -23,7 +23,7 @@
 	</static>
 
 	<!-- DESCRIPTION -->
-	<descr_list x="15" y="220" width="241" height="200" item_height="15">
+	<descr_list x="15" y="220" width="241" height="200" item_height="15" always_show_scroll="0">
 		<font font="letterica16" r="216" g="186" b="140"/>
 	</descr_list>
 
