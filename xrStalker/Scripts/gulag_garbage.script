@@ -483,78 +483,91 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest", 
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
