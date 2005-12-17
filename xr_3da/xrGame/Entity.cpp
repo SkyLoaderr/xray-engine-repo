@@ -18,9 +18,6 @@
 #include "monster_community.h"
 #include "ai_space.h"
 
-#define MAX_ARMOR		200
-#define MAX_HEALTH		100
-
 #define BODY_REMOVE_TIME		600000
 
 //////////////////////////////////////////////////////////////////////
@@ -29,11 +26,22 @@
 
 CEntity::CEntity()
 {
-	fMAX_Health			= MAX_HEALTH;
 }
 
 CEntity::~CEntity()
 {	
+	xr_delete				(m_entity_condition);
+}
+
+
+CEntityConditionSimple *CEntity::create_entity_condition(CEntityConditionSimple* ec)
+{
+	if(!ec)
+		m_entity_condition		= xr_new<CEntityConditionSimple>();
+	else
+		m_entity_condition		= smart_cast<CEntityCondition*>(ec);
+	
+	return		m_entity_condition;
 }
 
 void CEntity::OnEvent		(NET_Packet& P, u16 type)
@@ -123,8 +131,8 @@ void CEntity::Load		(LPCSTR section)
 	inherited::Load		(section);
 
 	setVisible			(FALSE);
-	m_fMaxHealthValue /*= fEntityHealth*/ = 100;
-	SetfHealth			(100);
+//	m_fMaxHealthValue = fEntityHealth = 100;
+//	SetfHealth			(100);
 	
 	// Team params
 	id_Team				= READ_IF_EXISTS(pSettings,r_s32,section,"team",-1);
@@ -199,16 +207,12 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 	// Initialize variables
 	if(E) {
 		SetfHealth			(E->fHealth);
-//		fEntityHealth		= E->fHealth;
 		m_killer_id			= E->m_killer_id;
 		if (m_killer_id == ID())
 			m_killer_id		= ALife::_OBJECT_ID(-1);
 	}
 	else
-		SetfHealth				(100.f);
-//		fEntityHealth		= 100.f;
-
-//	fArmor					= 0;
+		SetfHealth				(1.0f);
 
 	// Register
 	if (g_Alive()) {
@@ -304,6 +308,7 @@ DLL_Pure *CEntity::_construct	()
 {
 	inherited::_construct		();
 	CDamageManager::_construct	();
+	m_entity_condition			= create_entity_condition(NULL);
 	return						(this);
 }
 

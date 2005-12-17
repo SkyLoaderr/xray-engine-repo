@@ -704,7 +704,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	CActor* pActor = smart_cast<CActor*> (Level().Objects.net_Find(ps->GameID));
 	if (pActor)
 	{
-		pActor->SetfHealth(pActor->g_MaxHealth());
+		pActor->SetfHealth(pActor->GetMaxHealth());
 		//-------------------------------------------
 		u_EventGen(P, GE_ACTOR_MAX_POWER, ps->GameID);
 		m_server->SendTo(id_who,P,net_flags(TRUE,TRUE));	
@@ -1066,7 +1066,7 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		pA->o_Position	= Pos;
 		pA->o_Angle		= Angle;
 		//------------------------------------------------
-		pActor->SetfHealth(pActor->g_MaxHealth());
+		pActor->SetfHealth(pActor->GetMaxHealth());
 		//------------------------------------------------
 		P2.w_u8(u8(P.B.count));
 		P2.w(&P.B.data, P.B.count);

@@ -948,7 +948,7 @@ void CSE_ALifeZoneVisual::FillProps(LPCSTR pref, PropItemVec& values)
 CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALifeDynamicObjectVisual(caSection)
 {
 	s_team = s_squad = s_group	= 0;
-	fHealth						= 100;
+	fHealth						= 1;
 	m_bDeathIsProcessed			= false;
 	m_fAccuracy					= 25.f;
 	m_fIntelligence				= 25.f;
@@ -1007,6 +1007,10 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	tNetPacket.r_u8				(s_group);
 	if (m_wVersion > 18)
 		tNetPacket.r_float		(fHealth);
+
+	if (m_wVersion < 115)
+		fHealth	/=100.0f;
+
 	if (m_wVersion < 32)
 		visual_read				(tNetPacket,m_wVersion);
 	o_model						= o_torso.yaw;
@@ -1077,10 +1081,10 @@ u8 CSE_ALifeCreatureAbstract::g_group		()
 void CSE_ALifeCreatureAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProps			(pref,items);
-    PHelper().CreateU8			(items,PrepareKey(pref,*s_name, "Team"),		&s_team, 	0,64,1);
-    PHelper().CreateU8			(items,PrepareKey(pref,*s_name, "Squad"),	&s_squad, 	0,64,1);
-    PHelper().CreateU8			(items,PrepareKey(pref,*s_name, "Group"),	&s_group, 	0,64,1);
-   	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
+    PHelper().CreateU8				(items,PrepareKey(pref,*s_name, "Team"),		&s_team, 	0,64,1);
+    PHelper().CreateU8				(items,PrepareKey(pref,*s_name, "Squad"),	&s_squad, 	0,64,1);
+    PHelper().CreateU8				(items,PrepareKey(pref,*s_name, "Group"),	&s_group, 	0,64,1);
+   	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"Personal",	"Health" 				),&fHealth,	0,2,5);
 }
 
 bool CSE_ALifeCreatureAbstract::used_ai_locations	() const

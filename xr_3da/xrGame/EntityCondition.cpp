@@ -17,20 +17,31 @@
 #define MIN_HEALTH -0.01f
 
 #define MAX_SATIETY 1.0f
+
 #define MAX_POWER 1.0f
 #define MAX_RADIATION 1.0f
 #define MAX_PSY_HEALTH 1.0f
 
+CEntityConditionSimple::CEntityConditionSimple()
+{
+	max_health()		= MAX_HEALTH;
+	health()			= MAX_HEALTH;
+}
+
+CEntityConditionSimple::~CEntityConditionSimple()
+{}
 
 CEntityCondition::CEntityCondition(CEntityAlive *object)
+:CEntityConditionSimple()
 {
 	VERIFY				(object);
+
 	m_object			= object;
+
 	m_use_limping_state = false;
 	m_iLastTimeCalled	= 0;
 	m_bTimeValid		= false;
 
-	m_fHealthMax		= MAX_HEALTH;
 	m_fPowerMax			= MAX_POWER;
 	m_fSatietyMax		= MAX_SATIETY;
 	m_fRadiationMax		= MAX_RADIATION;
@@ -43,7 +54,6 @@ CEntityCondition::CEntityCondition(CEntityAlive *object)
 	m_fV_PsyHealth		= 0.01f;
 
 
-	m_fHealth			= MAX_HEALTH;
 	m_fPower			= MAX_POWER;
 	m_fSatiety			= MAX_SATIETY;
 	m_fRadiation		= 0;
@@ -133,7 +143,7 @@ void CEntityCondition::reinit	()
 	m_iLastTimeCalled		= 0;
 	m_bTimeValid			= false;
 
-	m_fHealthMax			= MAX_HEALTH;
+	max_health()			= MAX_HEALTH;
 	m_fPowerMax				= MAX_POWER;
 	m_fSatietyMax			= MAX_SATIETY;
 	m_fRadiationMax			= MAX_RADIATION;
@@ -142,7 +152,7 @@ void CEntityCondition::reinit	()
 	m_fCircumspection		= m_fCircumspectionMax = 1.f;
 	m_fEntityMorale			=  m_fEntityMoraleMax = 1.f;
 
-	m_fHealth				= MAX_HEALTH;
+	health()				= MAX_HEALTH;
 	m_fPower				= MAX_POWER;
 	m_fSatiety				= MAX_SATIETY;
 	m_fRadiation			= 0;
@@ -261,19 +271,19 @@ void CEntityCondition::UpdateCondition()
 	//-----------------------------------------
 	bool CriticalHealth			= false;
 
-	if (m_fDeltaHealth+m_fHealth <= 0)
+	if (m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth			= true;
 		m_object->OnCriticalHitHealthLoss();
 	}
 	else
 	{
-		if (m_fDeltaHealth<0) m_object->OnHitHealthLoss(m_fHealth+m_fDeltaHealth);
+		if (m_fDeltaHealth<0) m_object->OnHitHealthLoss(GetHealth()+m_fDeltaHealth);
 	}
 	//-----------------------------------------
 	UpdateHealth				();
 	//-----------------------------------------
-	if (!CriticalHealth && m_fDeltaHealth+m_fHealth <= 0)
+	if (!CriticalHealth && m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth			= true;
 		m_object->OnCriticalWoundHealthLoss();
@@ -283,7 +293,7 @@ void CEntityCondition::UpdateCondition()
 	UpdateSatiety				();
 	UpdateRadiation				();
 	//-----------------------------------------
-	if (!CriticalHealth && m_fDeltaHealth+m_fHealth <= 0)
+	if (!CriticalHealth && m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth = true;
 		m_object->OnCriticalRadiationHealthLoss();
@@ -294,7 +304,7 @@ void CEntityCondition::UpdateCondition()
 	UpdateCircumspection		();
 	UpdateEntityMorale			();
 
-	m_fHealth					+= (OnClient())?0:m_fDeltaHealth;
+	health()					+= (OnClient())?0:m_fDeltaHealth;
 	m_fPower					+= m_fDeltaPower;
 	m_fSatiety					+= m_fDeltaSatiety;
 	m_fRadiation				+= m_fDeltaRadiation;
@@ -310,7 +320,7 @@ void CEntityCondition::UpdateCondition()
 	m_fDeltaCircumspection		= 0;
 	m_fDeltaEntityMorale		= 0;
 
-	clamp						(m_fHealth,			MIN_HEALTH, m_fHealthMax);
+	clamp						(health(),			MIN_HEALTH, max_health());
 	clamp						(m_fPower,			0.0f,		m_fPowerMax);
 	clamp						(m_fRadiation,		0.0f,		m_fRadiationMax);
 	clamp						(m_fSatiety,		0.0f,		m_fSatietyMax);
@@ -398,7 +408,7 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 	float hit_power_org = pHDS->damage();
 	float hit_power = hit_power_org;
 	//нормализуем силу удара
-	hit_power = hit_power/100.f;
+//	hit_power = hit_power/100.f;
 	hit_power = HitOutfitEffect(hit_power, pHDS->hit_type, pHDS->element, pHDS->ap);
 
 	bool bAddWound = true;
@@ -563,12 +573,12 @@ bool CEntityCondition::IsLimping() const
 {
 	if (!m_use_limping_state)
 		return	(false);
-	return (m_fPower*m_fHealth <= m_limping_threshold);
+	return (m_fPower*GetHealth() <= m_limping_threshold);
 }
 
 void CEntityCondition::save	(NET_Packet &output_packet)
 {
-	u8 is_alive	= (m_fHealth>0.f)?1:0;
+	u8 is_alive	= (GetHealth()>0.f)?1:0;
 	
 	output_packet.w_u8	(is_alive);
 	if(is_alive)

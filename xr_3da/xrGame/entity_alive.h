@@ -54,99 +54,83 @@ public:
 	virtual void			Die						(CObject* who);
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 	
-	virtual float			GetfHealth				() const;
-	virtual float			SetfHealth				(float value);
+//	virtual float			GetfHealth				() const;
+//	virtual float			SetfHealth				(float value);
 
-	virtual float			g_Health			()	const;
-	virtual float			g_MaxHealth			()	const;
+//	virtual float			g_Health				()	const;
+//	virtual float			g_MaxHealth				()	const;
 
-	virtual float			g_Radiation			()	const;
-	virtual	float			SetfRadiation		(float value);
+	virtual float			g_Radiation				()	const;
+	virtual	float			SetfRadiation			(float value);
 
-	virtual float			CalcCondition		(float hit);
+	virtual float			CalcCondition			(float hit);
 
 	// Visibility related
 	virtual	float			ffGetFov				()	const			= 0;	
 	virtual	float			ffGetRange				()	const			= 0;	
 	
-//	virtual void			BuyItem					(LPCSTR buf);
-	virtual bool			human_being				() const
-	{
-		return				(false);
-	}
+	virtual bool			human_being				() const			{return	(false);}
 public:
-IC	CPHMovementControl* PMovement()
-	{
-		return m_PhysicMovementControl;
-	}
-///////////////////////////////////////////////////////////////////////
+	IC	CPHMovementControl*					PMovement					()						{return m_PhysicMovementControl;}
+
 	virtual u16								PHGetSyncItemsNumber		()						;
 	virtual CPHSynchronize*					PHGetSyncItem				(u16 item)				;
 	virtual void							PHUnFreeze					()						;
 	virtual void							PHFreeze					()						;
-//////////////////////////////////////////////////////////////////////////////////////
+
 	virtual void							PHGetLinearVell				(Fvector& velocity)		;
 	virtual	CCharacterPhysicsSupport*		character_physics_support	()						{return NULL;}
 	virtual	CCharacterPhysicsSupport*		character_physics_support	() const				{return NULL;}
 	virtual CPHSoundPlayer*					ph_sound_player				()						;
-///////////////////////////////////////////////////////////////////////
 
 protected:
-	//информация о партиклах крови, огня или дыма,
-	//прицепляемых на местах ран
-	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
-	//список ран, на которых отыгрываются партиклы
-	WOUND_VECTOR m_ParticleWounds;
+	DEFINE_VECTOR				(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
+	WOUND_VECTOR				m_ParticleWounds;
 
 
-	virtual void StartFireParticles(CWound* pWound);
-	virtual void UpdateFireParticles();
-    	
-	virtual void LoadFireParticles(LPCSTR section);
+	virtual void				StartFireParticles(CWound* pWound);
+	virtual void				UpdateFireParticles();
+	virtual void				LoadFireParticles(LPCSTR section);
 public:	
-	static  void UnloadFireParticles	();
+	static  void				UnloadFireParticles	();
 protected:
-	//имя партиклов огня, которым может гореть EntityAlive
-	static STR_VECTOR* m_pFireParticlesVector;
-	//минимальное время горения
-	static u32	 m_dwMinBurnTime;
-	//размер раны, чтоб запустить партиклы
-	static float m_fStartBurnWoundSize;
-	//размер раны, чтоб остановить партиклы
-	static float m_fStopBurnWoundSize;
+	static STR_VECTOR*			m_pFireParticlesVector;
+	static u32					m_dwMinBurnTime;
+	static float				m_fStartBurnWoundSize;
+	static float				m_fStopBurnWoundSize;
 
 
-	virtual void			BloodyWallmarks			(float P, const Fvector &dir, s16 element, const Fvector& position_in_object_space);
-	static  void			LoadBloodyWallmarks		(LPCSTR section);
+	virtual void				BloodyWallmarks			(float P, const Fvector &dir, s16 element, const Fvector& position_in_object_space);
+	static  void				LoadBloodyWallmarks		(LPCSTR section);
 public:	
-	static  void			UnloadBloodyWallmarks	();
+	static  void				UnloadBloodyWallmarks	();
 protected:
-	virtual void			PlaceBloodWallmark		(const Fvector& dir, const Fvector& start_pos, 
+	virtual void				PlaceBloodWallmark		(const Fvector& dir, const Fvector& start_pos, 
 														float trace_dist, float wallmark_size,
 														SHADER_VECTOR& wallmarks_vector);
 
 	//информация о кровавых отметках на стенах, общая для всех CEntityAlive
-	static SHADER_VECTOR* m_pBloodMarksVector;
-	static float m_fBloodMarkSizeMax;
-	static float m_fBloodMarkSizeMin;
-	static float m_fBloodMarkDistance;
-	static float m_fNominalHit;
+	static SHADER_VECTOR*		m_pBloodMarksVector;
+	static float				m_fBloodMarkSizeMax;
+	static float				m_fBloodMarkSizeMin;
+	static float				m_fBloodMarkDistance;
+	static float				m_fNominalHit;
 
 	//текстурки капель крови
-	static SHADER_VECTOR* m_pBloodDropsVector;
+	static SHADER_VECTOR*		m_pBloodDropsVector;
 	//список ран с которых капает кровь
 	
-	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
-	WOUND_VECTOR m_BloodWounds;
+	DEFINE_VECTOR				(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
+	WOUND_VECTOR				m_BloodWounds;
 	//размер раны, чтоб начала капать кровь
-	static float m_fStartBloodWoundSize;
+	static float				m_fStartBloodWoundSize;
 	//размер раны, чтоб остановить кровь
-	static float m_fStopBloodWoundSize;
-	static float m_fBloodDropSize;
+	static float				m_fStopBloodWoundSize;
+	static float				m_fBloodDropSize;
 
 	//обновление ран, и рисование отметок от капающей крови
-	virtual void			StartBloodDrops			(CWound* pWound);
-	virtual void			UpdateBloodDrops		();
+	virtual void				StartBloodDrops			(CWound* pWound);
+	virtual void				UpdateBloodDrops		();
 
 
 	//отношения между существами и персонажами в зоне
@@ -154,21 +138,18 @@ public:
 	virtual	ALife::ERelationType tfGetRelationType	(const CEntityAlive *tpEntityAlive) const;
 	virtual	bool				 is_relation_enemy	(const CEntityAlive *tpEntityAlive) const;	
 public:	
-	MONSTER_COMMUNITY*		monster_community;
+	MONSTER_COMMUNITY*			monster_community;
 
 private:
 	CEntityCondition			*m_entity_condition;
 	CMaterialManager			*m_material_manager;
 
 protected:
-	virtual	CEntityCondition	*create_entity_condition	();
+	virtual	CEntityConditionSimple	*create_entity_condition	(CEntityConditionSimple* ec);
 
 public:
 	IC		CEntityCondition	&conditions					() const;
-	IC		CMaterialManager	&material					() const {
-		VERIFY			(m_material_manager);
-		return			(*m_material_manager);
-	}
+	IC		CMaterialManager	&material					() const {VERIFY(m_material_manager); return(*m_material_manager);}
 
 
 protected:
@@ -182,10 +163,10 @@ public:
 	virtual u32					ef_detector_type			() const;
 
 public:
-	virtual	void				OnHitHealthLoss					(float NewHealth) {};	//вызывается если entity теряет здоровье
-	virtual	void				OnCriticalHitHealthLoss			() {};	//вызывается если entity умрет от хита 
-	virtual	void				OnCriticalWoundHealthLoss		() {};	//вызывается если entity умрет от потери крови 
-	virtual void				OnCriticalRadiationHealthLoss	() {};	//вызывается если entity умрет от радиации 
+	virtual	void				OnHitHealthLoss				(float NewHealth) {};	//вызывается если entity теряет здоровье
+	virtual	void				OnCriticalHitHealthLoss		() {};	//вызывается если entity умрет от хита 
+	virtual	void				OnCriticalWoundHealthLoss	() {};	//вызывается если entity умрет от потери крови 
+	virtual void				OnCriticalRadiationHealthLoss() {};	//вызывается если entity умрет от радиации 
 };
 
 #include "entity_alive_inline.h"

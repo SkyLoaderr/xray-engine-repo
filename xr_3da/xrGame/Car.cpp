@@ -428,7 +428,7 @@ void CCar::UpdateCL				( )
 		if(HUD().GetUI())//
 		{
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
-			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/100.f);
+			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/* /100.f*/);
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().SetRPM(m_current_rpm/m_max_rpm/2.f);
 		}
@@ -508,7 +508,7 @@ void	CCar::Hit							(SHit* pHDS)
 	}
 	HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
-		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/100.f);
+		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/* /100.f */);
 }
 
 

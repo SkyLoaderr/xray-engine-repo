@@ -792,7 +792,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		
 		//остановить звук тяжелого дыхания
 		m_HeavyBreathSnd.stop();
-		m_bHeavyBreathSndPlaying = false;
 	}
 	
 	Level().client_spawn_manager().add(E->m_holderID,ID(),this);
@@ -1791,7 +1790,7 @@ void				CActor::SetHitInfo				(CObject* who, CObject* weapon, s16 element, Fvect
 	m_iLastHitterID = (who!= NULL) ? who->ID() : u16(-1);
 	m_iLastHittingWeaponID = (weapon != NULL) ? weapon->ID() : u16(-1);
 	m_s16LastHittedElement = element;
-	m_fLastHealth = g_Health();
+	m_fLastHealth = GetfHealth();
 	m_bWasHitted = true;
 	m_vLastHitDir = Dir;
 	m_vLastHitPos = Pos;

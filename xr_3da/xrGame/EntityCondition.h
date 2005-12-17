@@ -12,9 +12,22 @@ class CEntityAlive;
 
 #include "hit_immunity.h"
 #include "Hit.h"
-//#include "../bone.h"
 
-class CEntityCondition: public CHitImmunity
+class CEntityConditionSimple
+{
+	float					m_fHealth;
+	float					m_fHealthMax;
+public:
+							CEntityConditionSimple	();
+	virtual					~CEntityConditionSimple	();
+
+	IC float				GetHealth				() const			{return m_fHealth;}
+	IC float 				GetMaxHealth			() const			{return m_fHealthMax;}
+	IC float&				health					()					{return	m_fHealth;}
+	IC float&				max_health				()					{return	m_fHealthMax;}
+};
+
+class CEntityCondition: public CEntityConditionSimple, public CHitImmunity
 {
 private:
 	bool					m_use_limping_state;
@@ -30,17 +43,15 @@ public:
 	virtual void			save					(NET_Packet &output_packet);
 	virtual void			load					(IReader &input_packet);
 
-	float					GetHealth				() const			{return m_fHealth;}
-	float					GetPower				() const			{return m_fPower;}	
-	float					GetSatiety				() const			{return m_fSatiety;}
-	float					GetRadiation			() const			{return m_fRadiation;}
-	float					GetPsyHealth			() const			{return m_fPsyHealth;}
+	IC float					GetPower				() const			{return m_fPower;}	
+	IC float					GetSatiety				() const			{return m_fSatiety;}
+	IC float					GetRadiation			() const			{return m_fRadiation;}
+	IC float					GetPsyHealth			() const			{return m_fPsyHealth;}
 
-	float 					GetCircumspection		() const			{return m_fCircumspection;}
-	float 					GetEntityMorale			() const			{return m_fEntityMorale;}
+	IC float 					GetCircumspection		() const			{return m_fCircumspection;}
+	IC float 					GetEntityMorale			() const			{return m_fEntityMorale;}
 
-	float 					GetMaxHealth			() const			{return m_fHealthMax;}
-	float 					GetHealthLost			() const			{return m_fHealthLost;}
+	IC float 					GetHealthLost			() const			{return m_fHealthLost;}
 
 	virtual bool 			IsLimping				() const;
 
@@ -51,9 +62,9 @@ public:
 	void 					ChangePsyHealth			(float value);
 	virtual void 			ChangeAlcohol			(float value){};
 
-	void 					MaxPower				()					{m_fPower = m_fPowerMax;};
-	void					SetMaxPower				(float val)			{m_fPowerMax = val; clamp(m_fPowerMax,0.0f,1.0f);};
-	float					GetMaxPower				() const			{return m_fPowerMax;};
+	IC void					MaxPower				()					{m_fPower = m_fPowerMax;};
+	IC void					SetMaxPower				(float val)			{m_fPowerMax = val; clamp(m_fPowerMax,0.0f,1.0f);};
+	IC float				GetMaxPower				() const			{return m_fPowerMax;};
 
 	void 					ChangeBleeding			(float percent);
 
@@ -67,7 +78,7 @@ public:
 	virtual void			UpdateCondition			();
 	void					UpdateWounds			();
 	void					UpdateConditionTime		();
-	void					SetConditionDeltaTime	(u64 DeltaTime) { m_iDeltaTime = DeltaTime; };
+	IC void					SetConditionDeltaTime	(u64 DeltaTime) { m_iDeltaTime = DeltaTime; };
 
 	
 	//скорость потери крови из всех открытых ран 
@@ -102,7 +113,7 @@ protected:
 	void					ClearWounds();
 
 	//все величины от 0 до 1			
-	float m_fHealth;				//здоровье
+//	float* m_fHealth;				//здоровье
 	float m_fPower;					//сила
 	float m_fSatiety;				//сытость (энергия)
 	float m_fRadiation;				//доза радиактивного облучения
@@ -112,7 +123,7 @@ protected:
 	float m_fEntityMorale;			//мораль
 
 	//максимальные величины
-	float m_fHealthMax;
+//	float* m_fHealthMax;
 	float m_fPowerMax;
 	float m_fSatietyMax;
 	float m_fRadiationMax;
@@ -195,7 +206,6 @@ public:
 	
 	IC const	u64					delta_time			() const 	{return		(m_iDeltaTime);			}
 	IC const	WOUND_VECTOR&		wounds				() const	{return		(m_WoundVector);		}
-	IC float&						health				()			{return		(m_fHealth);			}
 	IC float&						radiation			()			{return		(m_fRadiation);			}
 	IC float&						hit_bone_scale		()			{return		(m_fHitBoneScale);		}
 	IC float&						wound_bone_scale	()			{return		(m_fWoundBoneScale);	}

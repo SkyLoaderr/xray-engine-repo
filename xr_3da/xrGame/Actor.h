@@ -213,7 +213,6 @@ public:
 protected:
 	//звук тяжелого дыхания
 	ref_sound			m_HeavyBreathSnd;
-	bool				m_bHeavyBreathSndPlaying;
 
 	xr_vector<const CArtefact*> m_ArtefactsOnBelt;
 
@@ -684,7 +683,7 @@ private:
 	CActorCondition				*m_entity_condition;
 
 protected:
-	virtual	CEntityCondition	*create_entity_condition	();
+	virtual	CEntityConditionSimple	*create_entity_condition	(CEntityConditionSimple* ec);
 
 public:
 	IC		CActorCondition		&conditions					() const;
@@ -715,8 +714,6 @@ public:
 	virtual	bool				InventoryAllowSprint			();
 	virtual void				OnNextWeaponSlot				();
 	virtual void				OnPrevWeaponSlot				();
-public:	//. hack for MP test
-	ref_light					dbgmp_light						;
 
 public:
 	
@@ -741,11 +738,7 @@ public:
 
 IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);
 
-IC	CActorCondition	&CActor::conditions	() const
-{
-	VERIFY			(m_entity_condition);
-	return			(*m_entity_condition);
-}
+IC	CActorCondition	&CActor::conditions	() const{ VERIFY(m_entity_condition); return(*m_entity_condition);}
 
 extern CActor*		g_actor;
 CActor*				Actor		();

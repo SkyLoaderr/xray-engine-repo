@@ -209,7 +209,7 @@ void CSpectator::cam_Update	(CActor* A)
 		}
 		g_pGameLevel->Cameras().Update(cam);
 		// hud output
-		HUD().Font().pFontDI->OutI			(0.f,0.9f,"%s(%d%%)",*A->cName(),iFloor(A->g_Health()+0.5f));
+		HUD().Font().pFontDI->OutI			(0.f,0.9f,"%s(%f)",*A->cName(),A->GetfHealth());
 	}else{
 		CCameraBase* cam			= cameras[eacFreeFly];
 		Fvector point0, point, dangle;

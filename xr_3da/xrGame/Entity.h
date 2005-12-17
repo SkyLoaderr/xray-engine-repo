@@ -1,11 +1,9 @@
 #pragma once
 
 
-#define PropertyGP(a,b) __declspec( property( get=a, put=b ) )
-
 #include "physicsshellholder.h"
 #include "damage_manager.h"
-
+#include "entitycondition.h"
 // refs
 class	ENGINE_API CCameraBase;
 class	ENGINE_API C3DSound;
@@ -15,34 +13,30 @@ class	ENGINE_API CBoneInstance;
 class	CWeaponList;
 class   CPHMovementControl;
 class	CHudItem;
- 
+
 class CEntity : 
 		public CPhysicsShellHolder,
 		public CDamageManager
 {
+	friend class CEntityCondition;
 private:
-	typedef	CPhysicsShellHolder	inherited;			
+	typedef	CPhysicsShellHolder		inherited;			
+	CEntityConditionSimple*			m_entity_condition;
 
-	float				fHealth;
 protected:
-	// health & shield
-
-	virtual float			GetfHealth			() const			{ return fHealth; }
-	virtual float			SetfHealth			(float value)		{fHealth = value; return value;}
-	
-	float				fMAX_Health;
-	float				m_fMaxHealthValue;
-
-
 	//время через которое мертвое тело убирется с уровня
-	ALife::_TIME_ID			m_dwBodyRemoveTime;	
+	ALife::_TIME_ID					m_dwBodyRemoveTime;	
+protected:
+	virtual	CEntityConditionSimple	*create_entity_condition	(CEntityConditionSimple* ec);
 
 public:
-	float				m_fMorale;
+	/*virtual*/IC float			GetfHealth			() const			{ return m_entity_condition->GetHealth(); }
+	/*virtual*/IC float			SetfHealth			(float value)		{m_entity_condition->health()=value; return value;}
+	float						m_fMorale;
 	// Team params
-	int					id_Team;
-	int					id_Squad;
-	int					id_Group;
+	int							id_Team;
+	int							id_Squad;
+	int							id_Group;
 	
 	virtual void		ChangeTeam				(int team, int squad, int group);
 
@@ -58,16 +52,14 @@ public:
 	
 	float					m_fFood;
 
-public:
 	// General
 	CEntity					();
 	virtual ~CEntity		();
-public:
+	virtual DLL_Pure		*_construct				();
 	virtual CEntity*		cast_entity			()						{return this;}
 public:
 
 	// Core events
-	virtual DLL_Pure		*_construct			();
 	virtual void			Load				(LPCSTR section);
 	virtual void			reinit				();
 	virtual void			reload				(LPCSTR section);
@@ -81,10 +73,11 @@ public:
 	bool					IsFocused			()const;
 	bool					IsMyCamera			()const;
 
-	virtual float			g_Health			()const	{ return GetfHealth();}
-	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
+//	virtual float			g_Health			()const	{ return GetfHealth();}
+/*	virtual*/ IC float			GetMaxHealth		()const	{ return m_entity_condition->max_health();	}
+/*	virtual*/ IC void			SetMaxHealth		(float v)	{ m_entity_condition->max_health()=v;}
 
-	/*virtual*/ BOOL		g_Alive				()const	{ return GetfHealth()>0; }
+	/*virtual*/ IC BOOL		g_Alive				()const	{ return GetfHealth()>0; }
 	virtual BOOL			g_State				(SEntityState&) const	{return FALSE;}
 	
 			bool			AlreadyDie			()			{return  0!=GetLevelDeathTime()?true:false;}

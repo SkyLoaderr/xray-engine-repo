@@ -67,7 +67,6 @@ CEntityAlive::~CEntityAlive()
 {
 	xr_delete				(m_PhysicMovementControl);
 	xr_delete				(monster_community);
-	xr_delete				(m_entity_condition);
 	xr_delete				(m_material_manager);
 }
 
@@ -176,7 +175,7 @@ void CEntityAlive::UnloadFireParticles()
 	}
 }
 
-void CEntityAlive::reinit			()
+void CEntityAlive::reinit()
 {
 	CEntity::reinit			();
 	conditions().reinit		();
@@ -328,7 +327,7 @@ float CEntityAlive::CalcCondition(float /**hit/**/)
 	conditions().UpdateCondition();
 
 	//dont call inherited::CalcCondition it will be meaningless
-	return conditions().GetHealthLost()*100.f;
+	return conditions().GetHealthLost();//*100.f;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -598,11 +597,17 @@ BOOL	CEntityAlive::net_SaveRelevant		()
 	return		(TRUE);
 }
 
-CEntityCondition *CEntityAlive::create_entity_condition	()
+CEntityConditionSimple* CEntityAlive::create_entity_condition	(CEntityConditionSimple* ec)
 {
-	return		(xr_new<CEntityCondition>(this));
+	if(!ec)
+		m_entity_condition		= xr_new<CEntityCondition>(this);
+	else
+		m_entity_condition		= smart_cast<CEntityCondition*>(ec);
+	
+	return		(inherited::create_entity_condition(m_entity_condition));
 }
 
+/*
 float CEntityAlive::GetfHealth	() const
 {
 	return conditions().health()*100.f;
@@ -613,31 +618,32 @@ float CEntityAlive::SetfHealth	(float value)
 	conditions().health() = value/100.f;
 	return value;
 }
+*/
 float CEntityAlive::SetfRadiation		(float value)
 {
 	conditions().radiation() = value/100.f;
 	return value;
 }
+/*
 float CEntityAlive::g_Health	() const
 {
 	return conditions().GetHealth()*100.f;
 }
-
+float CEntityAlive::g_MaxHealth	() const
+{
+	return conditions().GetMaxHealth()*100.f;
+}
+*/
 float CEntityAlive::g_Radiation	()	const
 {
 	return conditions().GetRadiation()*100.f;
 }
 
-float CEntityAlive::g_MaxHealth	() const
-{
-	return conditions().GetMaxHealth()*100.f;
-}
 
 DLL_Pure *CEntityAlive::_construct	()
 {
 	inherited::_construct	();
 	m_material_manager		= xr_new<CMaterialManager>(this,m_PhysicMovementControl);
-	m_entity_condition		= create_entity_condition();
 	return					(this);
 }
 

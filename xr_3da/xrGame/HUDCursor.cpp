@@ -202,7 +202,7 @@ void CHUDCursor::Render()
 			}
 			else
 			{
-				if (E && (E->g_Health()>0))
+				if (E && (E->GetfHealth()>0))
 				{
 					if (pCurEnt && GameID() == GAME_SINGLE){	
 						if (GameID() == GAME_DEATHMATCH)			C = C_ON_ENEMY;

@@ -41,19 +41,25 @@ bool SHit::is_valide() const
 void SHit::Read_Packet				(NET_Packet	Packet)
 {
 	u16 type_dummy;	
-	Packet.r_begin		(type_dummy);
-	Packet.r_u32		(Time);
-	Packet.r_u16		(HIT_TYPE);
-	Packet.r_u16		(DestID);
+	Packet.r_begin			(type_dummy);
+	Packet.r_u32			(Time);
+	Packet.r_u16			(HIT_TYPE);
+	Packet.r_u16			(DestID);
+	Read_Packet_Cont		(Packet);
+};
+
+void SHit::Read_Packet_Cont		(NET_Packet	Packet)
+{
 
 	Packet.r_u16			(whoID);
 	Packet.r_u16			(weaponID);
 	Packet.r_dir			(dir);
-	Packet.r_float			(power);
+	Packet.r_float			(power);power/=100.0f;
 	Packet.r_s16			(element);
 	Packet.r_vec3			(p_in_bone_space);
 	Packet.r_float			(impulse);
-	hit_type = (ALife::EHitType)Packet.r_u16();	//hit type
+	hit_type				= (ALife::EHitType)Packet.r_u16();	//hit type
+
 	if (hit_type == ALife::eHitTypeFireWound)
 	{
 		Packet.r_float	(ap);
@@ -63,7 +69,7 @@ void SHit::Read_Packet				(NET_Packet	Packet)
 		Packet.r_u32(BulletID);
 		Packet.r_u32(SenderID);
 	}
-};
+}
 
 void SHit::Write_Packet			(NET_Packet	&Packet)
 {

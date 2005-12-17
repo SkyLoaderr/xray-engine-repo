@@ -14,6 +14,7 @@ IC	const Fvector		&bone_space_position	()																														const	{VE
 IC			float		phys_impulse			()																														const	{VERIFY(is_valide());return impulse;}
 IC	ALife::EHitType		type					()																														const	{VERIFY(is_valide());return hit_type;}								
 	void				Read_Packet				(NET_Packet	P);
+	void				Read_Packet_Cont		(NET_Packet	P);
 	void				Write_Packet			(NET_Packet	&P);
 //private:
 	//GE_HIT

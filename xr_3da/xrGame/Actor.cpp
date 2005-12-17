@@ -105,22 +105,10 @@ Flags32			psActorFlags={0};
 
 
 
-//--------------------------------------------------------------------
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 CActor::CActor() : CEntityAlive()
 {
-	//.
-	dbgmp_light				= ::Render->light_create				();
-	dbgmp_light->set_type	(IRender_Light::POINT);
-	dbgmp_light->set_range	(10.f);
-	dbgmp_light->set_color	(.5f,1.f,.5f);
-	//.
 
-//.	contacts_registry		= xr_new<CKnownContactsRegistryWrapper	>();
 	encyclopedia_registry	= xr_new<CEncyclopediaRegistryWrapper	>();
-//.	game_task_registry		= xr_new<CGameTaskRegistryWrapper		>();
 	game_news_registry		= xr_new<CGameNewsRegistryWrapper		>();
 	// Cameras
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", 0);
@@ -132,12 +120,9 @@ CActor::CActor() : CEntityAlive()
 	fCurAVelocity			= 0.0f;
 	// эффекторы
 	pCamBobbing				= 0;
-//	m_pShootingEffector		= NULL;
 	m_pSleepEffector		= NULL;
 	m_pSleepEffectorPP		= NULL;
 
-	// 
-	//Weapons					= 0;
 
 	r_torso.yaw				= 0;
 	r_torso.pitch			= 0;
@@ -158,8 +143,6 @@ CActor::CActor() : CEntityAlive()
 	m_fFallTime				=	s_fFallTime;
 	m_bAnimTorsoPlayed		=	false;
 
-//	self_gmtl_id			=	GAMEMTL_NONE;
-//	last_gmtl_id			=	GAMEMTL_NONE;
 	m_pPhysicsShell			=	NULL;
 
 
@@ -169,7 +152,7 @@ CActor::CActor() : CEntityAlive()
 	m_pPhysics_support		=	xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etActor,this);
 
 #ifdef DEBUG
-	Device.seqRender.Add(this,REG_PRIORITY_LOW);
+	Device.seqRender.Add	(this,REG_PRIORITY_LOW);
 #endif
 
 	//разрешить использование пояса в inventory
@@ -180,27 +163,23 @@ CActor::CActor() : CEntityAlive()
 	m_pObjectWeLookingAt	= NULL;
 	m_bPickupMode			= false;
 
-	////////////////////////////////////
-	pStatGraph = NULL;
-//	dDesyncVec.set(0, 0, 0);
+	pStatGraph				= NULL;
 
-	m_pActorEffector = NULL;
+	m_pActorEffector		= NULL;
 
-	m_bZoomAimingMode = false;
+	m_bZoomAimingMode		= false;
 
-	m_sDefaultObjAction = NULL;
+	m_sDefaultObjAction		= NULL;
 
-	m_bHeavyBreathSndPlaying = false;
+	m_fSprintFactor			= 4.f;
 
-	m_fSprintFactor					 = 4.f;
-	//-----------------------------------------------------------------------------------
-	hFriendlyIndicator.create				(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
+	hFriendlyIndicator.create(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 
-	m_pUsableObject=NULL;
+	m_pUsableObject			= NULL;
 
 
-	m_anims = xr_new<SActorMotions>();
-	m_vehicle_anims = xr_new<SActorVehicleAnims>();
+	m_anims					= xr_new<SActorMotions>();
+	m_vehicle_anims			= xr_new<SActorVehicleAnims>();
 	m_entity_condition		= NULL;
 	m_iLastHitterID			= u16(-1);
 	m_iLastHittingWeaponID	= u16(-1);
@@ -217,11 +196,7 @@ CActor::~CActor()
 {
 	xr_delete				(m_memory);
 
-	dbgmp_light.destroy		();	//.
-
-//.	xr_delete				(contacts_registry);
 	xr_delete				(encyclopedia_registry);
-//	xr_delete				(game_task_registry);
 	xr_delete				(game_news_registry);
 #ifdef DEBUG
 	Device.seqRender.Remove(this);
@@ -229,25 +204,18 @@ CActor::~CActor()
 	//xr_delete(Weapons);
 	for (int i=0; i<eacMaxCam; ++i) xr_delete(cameras[i]);
 
-	// sounds 2D
 	m_HeavyBreathSnd.destroy();
 
-	// sounds 3D
-	// for (i=0; i<SND_HIT_COUNT; ++i) ::Sound->destroy(sndHit[i]);
-	// for (i=0; i<SND_DIE_COUNT; ++i) ::Sound->destroy(sndDie[i]);
+	xr_delete				(m_pActorEffector);
 
-	xr_delete(m_pActorEffector);
+	xr_delete				(m_pSleepEffector);
 
-//	xr_delete(m_pShootingEffector);
-	xr_delete(m_pSleepEffector);
-	//-----------------------------------------------------------
 	hFriendlyIndicator.destroy();
 
-	xr_delete						(m_pPhysics_support);
+	xr_delete				(m_pPhysics_support);
 
-	xr_delete(m_anims);
-	xr_delete(m_vehicle_anims);
-	//-------------------------------------------------------------
+	xr_delete				(m_anims);
+	xr_delete				(m_vehicle_anims);
 }
 
 void CActor::reinit	()
@@ -395,7 +363,6 @@ void CActor::Load	(LPCSTR section )
 	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"), SOUND_TYPE_MONSTER_DYING);
 
 	m_HeavyBreathSnd.create(TRUE, pSettings->r_string(section,"heavy_breath_snd"), SOUND_TYPE_MONSTER_INJURING);
-	m_bHeavyBreathSndPlaying = false;
 
 	cam_Set					(eacFirstEye);
 
@@ -800,7 +767,6 @@ void CActor::Die	(CObject* who)
 
 	//остановить звук тяжелого дыхания
 	m_HeavyBreathSnd.stop();
-	m_bHeavyBreathSndPlaying = false;
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
@@ -873,48 +839,9 @@ void CActor::UpdateCL	()
 	m_pPhysics_support->in_UpdateCL	();
 	VERIFY2								(_valid(renderable.xform),*cName());
 
-	//. *** dbgmp
-	u32					_C				= 0;
-	if (g_Alive() && Level().CurrentEntity() && (this->ID()!=Level().CurrentEntity()->ID()))	{
-		if (g_bEnableMPL)	{
-			// red for enemy
-			if (GameID() == GAME_DEATHMATCH)								_C = color_xrgb(255,127,127);	// red
-			else	{
-				CEntity*	_me			= smart_cast<CEntity*> (this);
-				CEntity*	_viewer		= smart_cast<CEntity*> (Level().CurrentEntity());
-				if (_me && _viewer && _me->g_Team()!=_viewer->g_Team())		_C = color_xrgb(255,127,127);	// red
-			};
-		}
-		string256		name;	strcpy		(name,cName().c_str());
-		strlwr			(name)	;
-		if (strstr(name,"anton"))			{
-			// blue
-			_C								= color_xrgb(127,127,255);
-		}
-	}
-	if (_C)	{
-		Fvector			C;
-		Center			(C);
-		dbgmp_light->set_rotation	(XFORM().k,XFORM().i);
-		dbgmp_light->set_position	(C);
-		dbgmp_light->set_active		(true);
-		dbgmp_light->set_color		(2.f* color_get_R(_C)/255.f, 2.f* color_get_G(_C)/255.f, 2.f* color_get_B(_C)/255.f);
-	} else {
-		dbgmp_light->set_active		(false);
-	}
-	//. *** dbgmp end
-
 	if (g_Alive()) 
-	{
-		//update the fog of war
-//		Level().FogOfWar().UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
-		//-------------------------------------------------------------------------------
-
-		//if(m_PhysicMovementControl->CharacterExist())
-		//			m_PhysicMovementControl->InterpolatePosition(Position());
-		//обновить информацию о предметах лежащих рядом с актером
 		PickupModeUpdate	();	
-	}
+
 	PickupModeUpdate_COD();
 	//-------------------------------------------------------------------
 //*
@@ -1109,22 +1036,13 @@ void CActor::shedule_Update	(u32 DT)
 
 	//звук тяжелого дыхания при уталости и хромании
 	if(conditions().IsLimping() && g_Alive()){
-#pragma todo("remove 'm_bHeavyBreathSndPlaying' - use feedback")
-		if(!m_bHeavyBreathSndPlaying){
-			Fvector pos;
-			pos.set(0,ACTOR_HEIGHT,0);
-			m_HeavyBreathSnd.play_at_pos(this, pos, sm_Looped | sm_2D);
-#pragma todo("remove 'm_bHeavyBreathSndPlaying' - use feedback")
-			m_bHeavyBreathSndPlaying = true;
+		if(!m_HeavyBreathSnd._feedback()){
+			m_HeavyBreathSnd.play_at_pos(this, Fvector().set(0,ACTOR_HEIGHT,0), sm_Looped | sm_2D);
 		}else{
-			Fvector pos;
-			pos.set(0,ACTOR_HEIGHT,0);
-			m_HeavyBreathSnd.set_position(pos);
+			m_HeavyBreathSnd.set_position(Fvector().set(0,ACTOR_HEIGHT,0));
 		}
-	}else if(m_bHeavyBreathSndPlaying){
-#pragma todo("remove 'm_bHeavyBreathSndPlaying' - use feedback")
-		m_bHeavyBreathSndPlaying = false;
-		m_HeavyBreathSnd.stop();
+	}else if(m_HeavyBreathSnd._feedback()){
+		m_HeavyBreathSnd.stop		();
 	}
 
 	//если в режиме HUD, то сама модель актера не рисуется
@@ -1663,9 +1581,14 @@ CPHDestroyable*	CActor::ph_destroyable	()
 	return smart_cast<CPHDestroyable*>(character_physics_support());
 }
 
-CEntityCondition *CActor::create_entity_condition	()
+CEntityConditionSimple *CActor::create_entity_condition	(CEntityConditionSimple* ec)
 {
-	return		(m_entity_condition = xr_new<CActorCondition>(this));
+	if(!ec)
+		m_entity_condition		= xr_new<CActorCondition>(this);
+	else
+		m_entity_condition		= smart_cast<CActorCondition*>(ec);
+	
+	return		(inherited::create_entity_condition(m_entity_condition));
 }
 
 DLL_Pure *CActor::_construct			()

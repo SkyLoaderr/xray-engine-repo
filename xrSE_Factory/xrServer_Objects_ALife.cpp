@@ -1365,7 +1365,7 @@ CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(
     	set_visual				(pSettings->r_string(caSection,"visual"));
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
-	health						=100.f;
+	health						=1.0f;
 }
 
 CSE_ALifeCar::~CSE_ALifeCar				()
@@ -1382,6 +1382,7 @@ void CSE_ALifeCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float		();
 	if(m_wVersion>92)
 			health=tNetPacket.r_float();
+	if(health>1.0f) health/=100.0f;
 }
 
 void CSE_ALifeCar::STATE_Write			(NET_Packet	&tNetPacket)
@@ -1488,7 +1489,7 @@ void CSE_ALifeCar::FillProps				(LPCSTR pref, PropItemVec& values)
 {
   	inherited1::FillProps			(pref,values);
 	inherited2::FillProps			(pref,values);
-	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Health"),			&health,			0.f, 100.f);
+	PHelper().CreateFloat		(values, PrepareKey(pref,*s_name,"Health"),			&health,			0.f, 1.0f);
 }
 
 ////////////////////////////////////////////////////////////////////////////

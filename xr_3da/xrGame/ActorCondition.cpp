@@ -165,7 +165,7 @@ void CActorCondition::UpdateCondition()
 				RemoveEffector(effPsyHealth);
 		}
 		if(fis_zero(GetPsyHealth()))
-			m_fHealth =0.0f;
+			health() =0.0f;
 	};
 
 	inherited::UpdateCondition();
@@ -222,9 +222,9 @@ bool CActorCondition::IsCantSprint() const
 
 bool CActorCondition::IsLimping() const
 {
-	if(m_fPower< m_fLimpingPowerBegin || m_fHealth < m_fLimpingHealthBegin)
+	if(m_fPower< m_fLimpingPowerBegin || GetHealth() < m_fLimpingHealthBegin)
 		m_bLimping = true;
-	else if(m_fPower > m_fLimpingPowerEnd && m_fHealth > m_fLimpingHealthEnd)
+	else if(m_fPower > m_fLimpingPowerEnd && GetHealth() > m_fLimpingHealthEnd)
 		m_bLimping = false;
 	return m_bLimping;
 }
@@ -374,7 +374,7 @@ void CActorCondition::ProcessSleep(ALife::_TIME_ID sleep_time)
 		UpdateRadiation			(m_fK_SleepRadiation);
 		UpdatePsyHealth			(m_fK_SleepPsyHealth);
 
-		m_fHealth				+= m_fDeltaHealth;
+		health()				+= m_fDeltaHealth;
 		m_fPower				+= m_fDeltaPower;
 		m_fSatiety				+= m_fDeltaSatiety;
 		m_fRadiation			+=  m_fDeltaRadiation;
@@ -389,7 +389,7 @@ void CActorCondition::ProcessSleep(ALife::_TIME_ID sleep_time)
 		m_fDeltaPsyHealth		= 0;
 		
 
-		clamp					(m_fHealth,		0.0f,		m_fHealthMax);
+		clamp					(health(),		0.0f,		GetMaxHealth());
 		clamp					(m_fPower,		0.0f,		m_fPowerMax);
 		clamp					(m_fRadiation,	0.0f,		m_fRadiationMax);
 		clamp					(m_fSatiety,	0.0f,		m_fSatietyMax);

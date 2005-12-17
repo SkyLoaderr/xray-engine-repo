@@ -144,7 +144,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fMoraleDeathDistance	 		= pSettings->r_float (section,"MoraleDeathDistance");
 	m_dwActionRefreshRate	 		= pSettings->r_s32   (section,"ActionRefreshRate");
 
-	m_fMaxHealthValue	 			= pSettings->r_float (section,"MaxHealthValue");
+	SetMaxHealth					(pSettings->r_float (section,"MaxHealthValue"));
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
 	m_bEatMemberCorpses				= pSettings->r_bool  (section,"EatMemberCorpses");

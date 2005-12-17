@@ -86,8 +86,8 @@ float CDistanceFunction::ffGetValue()
 float CPersonalHealthFunction::ffGetValue()
 {
 	if (ef_storage().non_alife().member()) {
-		m_fMaxResultValue = ef_storage().non_alife().member()->g_MaxHealth();
-		return(ef_storage().non_alife().member()->g_Health());
+		m_fMaxResultValue = ef_storage().non_alife().member()->GetMaxHealth();
+		return(ef_storage().non_alife().member()->GetfHealth());
 	}
 	else {
 		const CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = smart_cast<const CSE_ALifeMonsterAbstract*>(ef_storage().alife().member());

@@ -146,8 +146,10 @@
 //	   - CSE_ALifeCustomZone			removed property m_attn
 //	   - CSE_ALifeCustomZone			removed property m_period
 // 114 - CSE_ALifeMonsterAbstract		m_task_reached, internal member, added
+// 115 - CSE_ALifeCreatureAbstract		fHealth now in range 0..1
+
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(114)
+#define SPAWN_VERSION	u16(115)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
