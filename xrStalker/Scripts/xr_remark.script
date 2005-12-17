@@ -88,7 +88,7 @@ function action_remark_activity:execute()
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
 	end
-
+	
 	-- 1. Мы должны повернуться на объект.
 	if self.state == state_initial then
 		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
@@ -128,7 +128,10 @@ function action_remark_activity:execute()
 				self.sound_end_signalled = true
 			end
 		end
-		if self.st.snd_anim_sync == true or self.object:active_sound_count() == 0 then
+		if self.st.snd == nil or
+		   self.st.snd_anim_sync == true or 
+		   self.object:active_sound_count() == 0		   
+		then
 			if self.action_end_signalled == false then
 				self.st.signals["action_end"] = true
 				self.action_end_signalled = true
@@ -203,6 +206,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 
 	st.anim_reset = utils.cfg_get_bool(ini, section, "anim_reset", npc, false, true)
+	printf("anim_reset [%s]", tostring(st.anim_reset))
 	
 
 	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "nil")

@@ -1,5 +1,5 @@
 [logic]
-active              = remark@wait_actor_wake ;walker@go_to_actor
+active              = walker@go_to_actor
 on_death            = death
 combat_ignore       = combat_ignore
 
@@ -18,28 +18,29 @@ victim_wpn 		    = 3 | actor
 [walker@go_to_actor]
 path_walk           = cit_jail_doctor_start_walk
 path_look           = cit_jail_doctor_start_look
-on_signal           = arrived | remark@wait_actor_wake
+on_info             = {!black_screen} remark@wait_actor_wake
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- ждем пока актер проснется
 ;-----------------------------------------------------------------------------------------------------------
 [remark@wait_actor_wake]
-anim                = doctor_wakeup ;wait ;_na
+anim                = doctor_wakeup
 target              = actor
-on_timer            = 4000 | remark@talk_to_actor %+cit_jail_start_waking%
+;snd                 = cit_doctor_start_dlg
+on_signal           = action_end | remark@talk_to_actor %+cit_jail_start_waking =play_snd_now("cit_doctor_start_dlg")%
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- разговариваем с актером
 ;-----------------------------------------------------------------------------------------------------------
 [remark@talk_to_actor]
-anim                = wait_na ;doctor_wakeup
+anim                = wait_na
 anim_reset          = false
 target              = actor
-snd                 = cit_doctor_start_dlg ;speech
-on_timer            = 12000 | %+cit_jail_actor_wake%
-on_signal           = sound_end | remark@look_at_guard1 ;%+cit_jail_scene_start%
+;snd                 = cit_doctor_start_dlg
+;on_timer            = 12000 | remark@look_at_guard1 %+cit_jail_actor_wake%
+on_signal           = action_end | remark@look_at_guard1 %+cit_jail_actor_wake%
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------
