@@ -41,7 +41,7 @@ function loadJob(sj, gname, type, squad, groups, gulag)
 			idle = 0,
 			prior = 1, state = {0},
 			predicate = function(obj_info)
-							printf( "test1: walker1 predicate called" )
+--							printf( "test1: walker1 predicate called" )
 			            	return false
 			            end,
 			in_rest = "", out_rest = ""
