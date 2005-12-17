@@ -411,7 +411,6 @@ end
 -- возвращает меру подходящести персонажа смарттерейну.
 -- вызывается для всех смарттерейнов, которые вернули true из enabled
 -- для того, чтобы выбрать тот единственный, в который персонаж всё-таки пойдёт.
--- TODO расстояние
 function se_smart_terrain:suitable( obj )
 	local self_gv = game_graph():vertex( self.m_game_vertex_id )
 	local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
