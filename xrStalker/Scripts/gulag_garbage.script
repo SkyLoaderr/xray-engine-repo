@@ -563,78 +563,91 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1293,22 +1306,10 @@ function load_states(gname, type)
 	
 	if type == "gar_boars_nest" then        
 		return function(gulag)
-			if t and db.actor then
-				if gulag.state == 0 then
-					if gulag:get_population() >= 12 then
-						return 2
-					else
-						return 0
-					end
-				else
-					if gulag:get_population() >= 0 then
-						return 2
-					else
-						return 0
-					end
-				end
+			if db.actor:has_info("gar_test_info2") then
+				return 2
 			else
-				return gulag.state
+				return 0
 			end
 		end
 	end
