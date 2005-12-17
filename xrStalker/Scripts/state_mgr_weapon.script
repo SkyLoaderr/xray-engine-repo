@@ -41,7 +41,7 @@ function eva_state_mgr_weapon:evaluate()
 		if (self.object:weapon_unstrapped() == true) then
 			temp	= "true";
 		end
-		printf("BLIN : [%s][unstrapped] == [%s]",self.object:active_item():name(),temp)
+--		printf("BLIN : [%s][unstrapped] == [%s]",self.object:active_item():name(),temp)
 		return true
 	end		
 	if (weapon == "none" and
