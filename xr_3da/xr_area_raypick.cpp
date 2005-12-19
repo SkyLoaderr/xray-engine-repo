@@ -337,7 +337,7 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 				d_rd.range	-= (d_res.range+EPS_L);
 				d_rd.start.mad(d_rd.dir,d_res.range+EPS_L);
 				d_res.range	= R.range-d_rd.range-EPS_L;
-				VERIFY	(d_res.range>=0.f);
+ 				VERIFY	(fis_zero(d_res.range,EPS) || d_res.range>=0.f);
 			}else{
 				sd_test.set(d_mask,FALSE);
 			}
