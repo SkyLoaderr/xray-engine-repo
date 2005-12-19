@@ -133,6 +133,18 @@ function load_job_base (sj, gname, type, squad, groups)
 		            end
 		}
 	table.insert(sj, t)		
+	-- Охранник арсенала
+    t = {section = "logic@mil_freedom_aguard",
+		idle = 0,
+		prior = 19, state = {0, 3},
+		squad = squad, group = groups[0],
+		in_rest = "", out_rest = "",
+		predicate = function (info)
+		                     return info.profile_name == "mil_Svoboda_specnaz"
+		            end
+		}
+	table.insert(sj, t)		
+	
     
     -- Max
     t = {section = "logic@mil_freedom_max",

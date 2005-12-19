@@ -260,20 +260,34 @@ use_wpn = false
 meet_dialog = mil_trader_dialog
 
 ;------------------------------------- Охранник арсенала --------------------------
-;[logic@mil_freedom_arsenal]
-;active = zoneguard1@mil_freedom_arsenal
-;on_combat = combat@mil_freedom_max
+[logic@mil_freedom_aguard]
+active = walker1@mil_freedom_aguard
+on_combat = combat
 
-;[zoneguard1@mil_freedom_arsenal]
-;path_walk = armory_walk_warn
-;path_look = armory_look_warn
-;zone_warn = warn_zone
-;no_move = true
-;team = freedom_bodyguards1
-;meet_talk_enabled = true
-;meet_dialog = mil_guard_arsenal_dialog
-;anim = backoff
-;meet_state = backoff
+[walker1@mil_freedom_aguard]
+path_walk = armory_walk_warn
+path_look = armory_look_warn
+on_info = {!is_day} kamp1@mil_freedom_aguard
+meet = meet@mil_freedom_aguard
+danger = danger_condition@mil_freedom_aguard
+
+[meet@mil_freedom_aguard]
+meet_dialog = mil_guard_arsenal_dialog
+use = true
+use_wpn = false
+meet_state = 5|backoff
+meet_sate_wpn = 5|backoff@threat_weap
+victim = 5|actor
+victim_wpn = 5|actor
+
+[kamp1@mil_freedom_aguard]
+center_point = aguard_kamp
+on_info = {=is_day} walker1@mil_freedom_aguard
+danger = danger_condition@mil_freedom_aguard
+
+[danger_condition@mil_freedom_aguard]
+ignore_distance = 0
+ignore_types = corpse
 
 
 
