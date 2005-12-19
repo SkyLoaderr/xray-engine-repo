@@ -169,7 +169,7 @@ function se_respawn:create(prob)
 						self.m_level_vertex_id,	
 						self.m_game_vertex_id)
 		table.insert(self.spawned_obj ,obj.id)
-		local pos = obj:position()
+		local pos = obj.position
 		printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
 	end
 end
