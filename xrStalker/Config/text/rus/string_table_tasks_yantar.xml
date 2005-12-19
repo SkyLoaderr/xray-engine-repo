@@ -35,7 +35,10 @@
 	<text>Поговорить с Кругловым</text>
 </string>
 <string id="yan_scientist_return_task">
-	<text>Поговорить с Профессором</text>
+	<text>Поговорить с Сахаровым</text>
+</string>
+<string id="yan_scientist_return">
+	<text>Вернуться в бункер и поговорить с Профессором</text>
 </string>
 <string id="yan_find_ghost_task">
 	<text>Найти документы</text>
