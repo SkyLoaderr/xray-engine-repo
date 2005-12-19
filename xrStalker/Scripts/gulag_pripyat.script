@@ -73,25 +73,22 @@ end
 local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
     local g = gulags[gulag_type]
     if g then
-        local i, v, n = 0, 0, 0
-
         if g[3] then
+            if type(g[3]) == "function" then
+                return g[3](npc_community, gulag_type, npc_rank, se_obj, stalker)
+            end
+
+            local i, v = 0, 0
             for i, v in pairs(g[3]) do
-                if type(v) == "function" and v(npc_community, gulag_type, npc_rank, se_obj, stalker) then
-                    return true
-                elseif npc_community == v then
+                if npc_community == v then
                     return true
                 end
-                n = n + 1
             end
-            if n > 0 then
+            if i > 0 then
                 return false
-            else
-                return true
             end
-        else
-            return true
         end
+        return true
     end
 	return false
 end
