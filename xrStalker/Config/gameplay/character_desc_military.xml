@@ -780,5 +780,34 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
+
+<!---------------------------BANDIT MASTER----------------------->
+	<specific_character id="mil_bandit_master_1" team_default = "1">
+		<name>Неизвестный бандит</name>
+		<icon x="24" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<team>Bandit_master</team>
+		
+		<class>mil_bandit_master_1</class>
+		<community>bandit</community>
+		
+		<rank>95</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n			
+			wpn_ak74 = 1, 1, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+					
+
+
 	
 </xml>
