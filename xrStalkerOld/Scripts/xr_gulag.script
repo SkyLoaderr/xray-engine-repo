@@ -693,7 +693,7 @@ function gulag:get_stype( obj_id )
 	elseif IsMonster( nil, self.npc_info[obj_id].class_id ) then
 		return modules.stype_mobile
 	else
-		abort( "[smart_terrain %s] object %s: gulag supports stalkers and monsters only!", self.name, self.npc_info[obj_id].name )
+		abort( "[smart_terrain %s] obj=%s clsid=%d: gulag supports stalkers and monsters only!", self.name, self.npc_info[obj_id].name, self.npc_info[obj_id].class_id )
 	end
 end
 
