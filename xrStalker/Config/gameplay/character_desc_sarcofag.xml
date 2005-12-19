@@ -56,6 +56,33 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
+    
+        <specific_character id="sar_monolith_exo_crystal" team_default = "1">
+        <name>GENERATE_NAME</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>Сталкер спецподразделения монолитовцев - "Кристалл", отвечающего за сохранность самого монолита.</bio>
+
+        <class>sar_monolith_exo_crystal</class>
+        <community>monolith</community>
+
+
+        <rank>40</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_g36 \n
+            ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
 	
 	<specific_character id="sar_monolith_commander" team_default = "1">
         <name>GENERATE_NAME</name>

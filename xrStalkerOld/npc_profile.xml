@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding="UTF-8"?>
+﻿<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<!-- НОВЫЕ ПРОФИЛЯ -->
@@ -630,6 +630,9 @@
 	</character>
 	<character id="sar_monolith_exo">
 		<class>sar_monolith_exo</class>
+	</character>
+	<character id="sar_monolith_exo_crystal">
+		<class>sar_monolith_exo_crystal</class>
 	</character>
 	<character id="sar_monolith_commander">
 		<class>sar_monolith_commander</class>
