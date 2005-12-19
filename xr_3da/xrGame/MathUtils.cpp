@@ -449,5 +449,33 @@ void capped_cylinder_ray_collision_test()
 	RAYvsCYLINDER(c,pos,dir,R,FALSE);//true, ?
 	c.intersect(pos,dir,ir);
 	RAYvsCYLINDER(c,pos,dir,R,TRUE);//false
+	CTimer t;t.Start();
+	for(int i=0;i<1000000;i++)
+	{
+		Fcylinder c;
+		c.m_center.random_point(Fvector().set(2,2,2));
+		c.m_direction.random_dir();
+		c.m_height=Random.randF(0.2f,2.f);
+		c.m_radius=Random.randF(0.1f,2.f);
+		//ray
+		Fvector dir,pos;float R=Random.randF(0.1f,2.f);
+		dir.random_dir();pos.random_point(Fvector().set(2,2,2));
+		RAYvsCYLINDER(c,pos,dir,R,TRUE);
+	}
+	Msg("my RAYvsCYLINDE time %f ms",t.GetElapsed_sec()*1000.f);
+	t.Start();
+	for(int i=0;i<1000000;i++)
+	{
+		Fcylinder c;
+		c.m_center.random_point(Fvector().set(2,2,2));
+		c.m_direction.random_dir();
+		c.m_height=Random.randF(0.2f,2.f);
+		c.m_radius=Random.randF(0.1f,2.f);
+		//ray
+		Fvector dir,pos;//float R=Random.randF(0.1f,2.f);
+		dir.random_dir();pos.random_point(Fvector().set(2,2,2));
+		c.intersect(pos,dir,ir);
+	}
+		Msg("current intersect time %f ms",t.GetElapsed_sec()*1000.f);
 
 }
