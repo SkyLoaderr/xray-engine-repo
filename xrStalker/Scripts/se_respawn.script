@@ -164,12 +164,13 @@ function se_respawn:create(prob)
 				break
 			end
 		end
-		printf("SPAWNING [%s] -> [%s]", tostring(self:name()), spawn_section)
 		local obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
 						self.m_game_vertex_id)
 		table.insert(self.spawned_obj ,obj.id)
+		local pos = obj:position()
+		printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
 	end
 end
 -- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
