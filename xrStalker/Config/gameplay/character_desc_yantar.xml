@@ -123,7 +123,7 @@
 			wpn_usp \n
 			ammo_11.43x23_fmj = 1 \n
 			yantar_ghost_pda \n
-			yan_x16_documents \n	
+			lab_x16_documents \n	
 		</supplies>
 </specific_character>
 
