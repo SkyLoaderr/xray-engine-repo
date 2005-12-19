@@ -3338,6 +3338,9 @@
 							RelativePath=".\scripts\quest_garbage.script">
 						</File>
 						<File
+							RelativePath=".\scripts\quest_items.script">
+						</File>
+						<File
 							RelativePath=".\scripts\quest_military.script">
 						</File>
 						<File
