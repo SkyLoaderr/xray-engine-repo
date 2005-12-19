@@ -416,7 +416,7 @@ void CAI_Bloodsucker::set_alien_control(bool val)
 void CAI_Bloodsucker::predator_start()
 {
 	cNameVisual_set					(m_visual_predator);
-	CDamageManager::reload(pSettings->r_string(*cNameSect(),"damage"),pSettings);
+	CDamageManager::reload(*cNameSect(),"damage",pSettings);
 
 	control().animation().restart	();
 	
@@ -427,7 +427,7 @@ void CAI_Bloodsucker::predator_start()
 void CAI_Bloodsucker::predator_stop()
 {
 	cNameVisual_set					(*m_visual_default);
-	CDamageManager::reload(pSettings->r_string(*cNameSect(),"damage"),pSettings);
+	CDamageManager::reload(*cNameSect(),"damage",pSettings);
 
 	control().animation().restart	();
 	

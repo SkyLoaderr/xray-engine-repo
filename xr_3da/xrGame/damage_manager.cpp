@@ -39,6 +39,16 @@ void CDamageManager::reload				(LPCSTR section,CInifile* ini)
 		load_section	(section,ini);
 	}
 }
+
+void CDamageManager::reload(LPCSTR section,LPCSTR line,CInifile* ini)
+{
+	if (ini && ini->section_exist(section) && ini->line_exist(section,line)) {
+		reload(ini->r_string(section,line),ini);	
+	} else {
+		reload(section,0);
+	}
+}
+
 void CDamageManager::init_bones(LPCSTR section,CInifile* ini)
 {
 	// load default factors
