@@ -106,11 +106,7 @@ void CGameGraphBuilder::load_graph_point	(NET_Packet &net_packet)
 		return;
 	}
 
-	// check for multiple vertices on a single node id
 	{
-//		Fvector				vertex_position = level_graph().vertex_position(vertex.tNodeID);
-//		float				distance_sqr = vertex.tLocalPoint.distance_to_sqr(vertex_position);
-
 		graph_type::const_vertex_iterator	I = graph().vertices().begin();
 		graph_type::const_vertex_iterator	E = graph().vertices().end();
 		for ( ; I != E; ++I) {
@@ -118,11 +114,6 @@ void CGameGraphBuilder::load_graph_point	(NET_Packet &net_packet)
 				Msg			("! removing graph point [%s][%f][%f][%f] because it has the same AI node as another graph point",entity->name_replace(),VPUSH(entity->o_Position));
 				return;
 			}
-
-//			if ((*I).second->data().tLocalPoint.distance_to_sqr(vertex_position) < distance_sqr) {
-//				Msg			("! removing graph point [%s][%f][%f][%f] because it has the same AI node as another graph point",entity->name_replace(),VPUSH(entity->o_Position));
-//				return;
-//			}
 		}
 	}
 
@@ -176,31 +167,6 @@ template <typename T>
 IC	bool sort_predicate_greater(const T &first, const T &second)
 {
 	return					(first.first > second.first);
-}
-
-void CGameGraphBuilder::remove_incoherent_points	(const float &start, const float &amount)
-{
-	Progress				(start);
-
-#if 1
-	graph_type				*test_graph = xr_new<graph_type>();
-	
-	xr_vector<PAIR>			pairs;
-	for (u32 i=0; i<graph().header().vertex_count(); ++i)
-		pairs.push_back		(std::make_pair(graph().vertex(i)->data().tNodeID,i));
-
-	std::sort				(pairs.begin(),pairs.end(),sort_predicate_less<PAIR>);
-
-	xr_vector<PAIR>::iterator	I = pairs.begin(), B = I;
-	xr_vector<PAIR>::iterator	E = pairs.end();
-	for ( ; I != E; ++I)
-		test_graph->add_vertex(graph().vertex((*I).second)->data(),u32(I - B));
-
-	xr_delete				(m_graph);
-	m_graph					= test_graph;
-#endif
-
-	Progress				(start + amount);
 }
 
 void CGameGraphBuilder::mark_vertices		(u32 level_vertex_id)
@@ -267,7 +233,6 @@ void CGameGraphBuilder::recursive_update	(const u32 &game_vertex_id, const float
 	u32							level_vertex_id = graph().vertex(game_vertex_id)->data().level_vertex_id();
 	xr_vector<u32>				&distances = m_distances[game_vertex_id];
 	m_distances[m_results[level_vertex_id]][level_vertex_id]	= u32(-1);
-//	m_results[level_vertex_id]	= game_vertex_id;
 
 	m_current_fringe.reserve	(distances.size());
 	m_next_fringe.reserve		(distances.size());
@@ -377,60 +342,13 @@ void CGameGraphBuilder::save_cross_table	(const float &start, const float &amoun
 	
 	tMemoryStream.open_chunk			(CROSS_TABLE_CHUNK_DATA);
 
-#if 0
-	for (int i=0, n=level_graph().header().vertex_count(); i<n; i++) {
-		DISTANCES::iterator			I = m_distances.begin(), B = I;
-		DISTANCES::iterator			E = m_distances.end();
-		CGameLevelCrossTable::CCell tCrossTableCell;
-		tCrossTableCell.fDistance	= flt_max;
-		tCrossTableCell.tGraphIndex = u16(-1);
-		for ( ; I != E; I++)
-			if (float((*I)[i])*level_graph().header().cell_size() < tCrossTableCell.fDistance) {
-				tCrossTableCell.fDistance	= float((*I)[i])*level_graph().header().cell_size();
-				tCrossTableCell.tGraphIndex = GameGraph::_GRAPH_ID(I - B);
-			}
-		
-		for (int j=0, n=graph().header().vertex_count(); j<n; j++)
-			if ((graph().vertex(j)->data().level_vertex_id() == (u32)i) && (tCrossTableCell.tGraphIndex != j)) {
-				Msg("! Warning : graph points are too close, therefore cross table is automatically validated");
-				Msg("%d : [%f][%f][%f] %d[%f] -> %d[%f]",i,VPUSH(graph().vertex(j)->data().level_point()),tCrossTableCell.tGraphIndex,tCrossTableCell.fDistance,j,m_distances[j][i]);
-				tCrossTableCell.fDistance	= float(m_distances[j][i])*level_graph().header().cell_size();
-				tCrossTableCell.tGraphIndex = (GameGraph::_GRAPH_ID)j;
-			}
-
-		tMemoryStream.w(&tCrossTableCell,sizeof(tCrossTableCell));
-	}
-#else
 	for (int i=0, n=level_graph().header().vertex_count(); i<n; i++) {
 		CGameLevelCrossTable::CCell	tCrossTableCell;
-
-		/**
-		DISTANCES::iterator			I = m_distances.begin(), B = I;
-		DISTANCES::iterator			E = m_distances.end();
-		tCrossTableCell.fDistance	= flt_max;
-		tCrossTableCell.tGraphIndex = u16(-1);
-		for ( ; I != E; I++)
-			if (float((*I)[i])*level_graph().header().cell_size() < tCrossTableCell.fDistance) {
-				tCrossTableCell.fDistance	= float((*I)[i])*level_graph().header().cell_size();
-				tCrossTableCell.tGraphIndex = GameGraph::_GRAPH_ID(I - B);
-			}
-
-		if (m_results[i] != tCrossTableCell.tGraphIndex) {
-			tCrossTableCell.fDistance	= flt_max;
-			tCrossTableCell.tGraphIndex = u16(-1);
-			for ( ; I != E; I++)
-				if (float((*I)[i])*level_graph().header().cell_size() < tCrossTableCell.fDistance) {
-					tCrossTableCell.fDistance	= float((*I)[i])*level_graph().header().cell_size();
-					tCrossTableCell.tGraphIndex = GameGraph::_GRAPH_ID(I - B);
-				}
-		}
-		/**/
 		tCrossTableCell.tGraphIndex = (GameGraph::_GRAPH_ID)m_results[i];
 		VERIFY						(graph().header().vertex_count() > tCrossTableCell.tGraphIndex);
 		tCrossTableCell.fDistance	= float(m_distances[tCrossTableCell.tGraphIndex][i])*level_graph().header().cell_size();
 		tMemoryStream.w				(&tCrossTableCell,sizeof(tCrossTableCell));
 	}
-#endif
 
 	tMemoryStream.close_chunk();
 	
@@ -824,235 +742,10 @@ void CGameGraphBuilder::build_graph			(LPCSTR level_name)
 //	Msg						("%f",timer.GetElapsed_sec());
 	load_graph_points		(0.002517f,0.111812f);
 //	Msg						("%f",timer.GetElapsed_sec());
-	remove_incoherent_points(0.114329f,0.000033f);
-//	Msg						("%f",timer.GetElapsed_sec());
-	build_cross_table		(0.114362f,0.773390f);
+	build_cross_table		(0.114329f,0.773423f);
 //	Msg						("%f",timer.GetElapsed_sec());
 	build_graph				(0.887752f,0.112248f);
 //	Msg						("%f",timer.GetElapsed_sec());
 
 	Msg						("Level graph is generated successfully");
-}
-
-typedef GameGraph::CVertex						vertex_type;
-typedef CGraphAbstract<vertex_type,float,u32>	graph_type;
-
-graph_type *get_graph						(LPCSTR level_name, LPCSTR graph_name)
-{
-	string_path				file_name;
-	strconcat				(file_name,level_name,graph_name);
-
-	CGameGraph				game_graph(file_name);
-	graph_type				*graph = xr_new<graph_type>();
-	
-	for (u32 i=0, n=game_graph.header().vertex_count(); i<n; ++i)
-		graph->add_vertex	(*game_graph.vertex(i),i);
-
-	for (u32 i=0, n=game_graph.header().vertex_count(); i<n; ++i) {
-		CGameGraph::const_iterator	I,E;
-		game_graph.begin			(i,I,E);
-		for ( ; I != E; ++I)
-			graph->add_edge	(i,game_graph.value(i,I),game_graph.edge_weight(I));
-	}
-
-	return					(graph);
-}
-
-void compare_graphs							(LPCSTR level_name)
-{
-	/**
-	graph_type				*graph0 = get_graph(level_name,GAME_LEVEL_GRAPH);
-	graph_type				*graph1 = get_graph(level_name,GAME_LEVEL_GRAPH);
-
-	u32						diff_count0 = 0;
-	u32						diff_count1 = 0;
-	VERIFY					(graph0->vertices().size() == graph1->vertices().size());
-	for (u32 i=0, n=graph0->vertices().size(); i<n; ++i) {
-		if (graph0->vertex(i)->data().level_vertex_id() != graph1->vertex(i)->data().level_vertex_id())
-			Msg				("0 to 1 : [%d] [%d] [%d]",i,graph0->vertex(i)->data().level_vertex_id(),graph1->vertex(i)->data().level_vertex_id());
-
-		VERIFY				(graph0->vertex(i)->data().level_vertex_id() == graph1->vertex(i)->data().level_vertex_id());
-
-		{
-			graph_type::const_iterator	I = graph0->vertex(i)->edges().begin();
-			graph_type::const_iterator	E = graph0->vertex(i)->edges().end();
-			for ( ; I != E; ++I) {
-				if (graph1->vertex(i)->edge((*I).vertex_id())) {
-					if (!fsimilar((*I).weight(),graph1->vertex(i)->edge((*I).vertex_id())->weight(),EPS_L))
-						Msg	("0 to 1 : [%d]->[%d] = %f : [%d]->[%d] = %f",i,(*I).vertex_id(),(*I).weight(),i,(*I).vertex_id(),graph1->vertex(i)->edge((*I).vertex_id())->weight());
-					continue;
-				}
-
-				++diff_count0;
-				Msg			("0 to 1 : [%d]->[%d] = %f : no edge",i,(*I).vertex_id(),(*I).weight());
-			}
-		}
-
-		{
-			graph_type::const_iterator	I = graph1->vertex(i)->edges().begin();
-			graph_type::const_iterator	E = graph1->vertex(i)->edges().end();
-			for ( ; I != E; ++I) {
-				if (graph0->vertex(i)->edge((*I).vertex_id()))
-					continue;
-
-				++diff_count1;
-				Msg			("1 to 0 : [%d]->[%d] = %f : no edge",i,(*I).vertex_id(),(*I).weight());
-			}
-		}
-	}
-
-	Msg						("0 to 1 : %d",diff_count0);
-	Msg						("1 to 0 : %d",diff_count1);
-
-	xr_delete				(graph0);
-	xr_delete				(graph1);
-	/**/
-}
-
-#include "xr_graph_merge.h"
-
-extern LPCSTR GAME_CONFIG;
-extern LPCSTR LEVEL_GRAPH_NAME;
-extern char INI_FILE[256];
-
-void test_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
-{
-	LPCSTR				_N,V;
-	string256			caFileName, file_name;
-	for (u32 k = 0; Ini->r_line("levels",k,&_N,&V); k++) {
-		string256		N;
-		strlwr			(strcpy(N,_N));
-
-		if (!Ini->section_exist(N)) {
-			Msg			("! There is no section %s in the %s!",N,GAME_CONFIG);
-			continue;
-		}
-
-		if (!Ini->line_exist(N,"name")) {
-			Msg			("! There is no line \"name\" in the section %s!",N);
-			continue;
-		}
-		
-		if (!Ini->line_exist(N,"id")) {
-			Msg			("! There is no line \"id\" in the section %s!",N);
-			continue;
-		}
-
-		if (!Ini->line_exist(N,"offset")) {
-			Msg			("! There is no line \"offset\" in the section %s!",N);
-			continue;
-		}
-
-		u8				id = Ini->r_u8(N,"id");
-		LPCSTR			_S = Ini->r_string(N,"name");
-		string256		S;
-		strlwr			(strcpy(S,_S));
-		{
-			bool		ok = true;
-			xr_set<CLevelInfo>::const_iterator	I = levels.begin();
-			xr_set<CLevelInfo>::const_iterator	E = levels.end();
-			for ( ; I != E; ++I) {
-				if (!xr_strcmp((*I).m_section,N)) {
-					Msg	("! Duplicated line %s in section \"levels\" in the %s",N,GAME_CONFIG);
-					ok	= false;
-					break;
-				}
-				if (!xr_strcmp((*I).m_name,S)) {
-					Msg	("! Duplicated level name %s in the %s, sections %s, %s",S,GAME_CONFIG,*(*I).m_section,N);
-					ok	= false;
-					break;
-				}
-				if ((*I).m_id == id) {
-					Msg	("! Duplicated level id %d in the %s, section %s, level %s",id,GAME_CONFIG,N,S);
-					ok	= false;
-					break;
-				}
-			}
-			if (!ok)
-				continue;
-		}
-		IReader			*reader;
-		// ai
-		strconcat		(caFileName,S,"\\",LEVEL_GRAPH_NAME);
-		FS.update_path	(file_name,"$game_levels$",caFileName);
-		if (!FS.exist(file_name)) {
-			Msg			("! There is no ai-map for the level %s! (level is not included into the game graph)",S);
-			continue;
-		}
-		
-		{
-			reader					= FS.r_open	(file_name);
-			CLevelGraph::CHeader	header;
-			reader->r				(&header,sizeof(header));
-			FS.r_close				(reader);
-			if (header.version() != XRAI_CURRENT_VERSION) {
-				Msg					("! AI-map for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
-				continue;
-			}
-		}
-
-		{
-			strconcat				(caFileName,S,"\\");
-			FS.update_path			(file_name,"$game_levels$",caFileName);
-			CGameGraphBuilder().build_graph(file_name);
-		}
-
-		// graph
-		strconcat				(caFileName,S,"\\",GAME_LEVEL_GRAPH);
-		FS.update_path			(file_name,"$game_levels$",caFileName);
-		if (!FS.exist(file_name)) {
-			Msg					("! There is no graph for the level %s! (level is not included into the game graph)",S);
-			continue;
-		}
-
-		{
-			reader				= FS.r_open	(file_name);
-			CGameGraph::CHeader	header;
-			header.load			(reader);
-			FS.r_close			(reader);
-			if (header.version() != XRAI_CURRENT_VERSION) {
-				Msg				("! Graph for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
-				continue;
-			}
-		}
-
-		// cross table
-		strconcat		(caFileName,S,"\\",CROSS_TABLE_NAME_RAW);
-		FS.update_path	(file_name,"$game_levels$",caFileName);
-		if (!FS.exist(file_name)) {
-			Msg			("! There is no cross table for the level %s! (level is not included into the game graph)",S);
-			continue;
-		}
-
-		{
-			reader				= FS.r_open	(file_name);
-			if (!reader->find_chunk(CROSS_TABLE_CHUNK_VERSION)) {
-				FS.r_close		(reader);
-				Msg				("! Cross table for the level %s is corrupted! (level is not included into the game graph)",S);
-				continue;
-			}
-			CGameLevelCrossTable::CHeader	header;
-			IReader				*chunk = reader->open_chunk(CROSS_TABLE_CHUNK_VERSION);
-			chunk->r			(&header,sizeof(header));
-			chunk->close		();
-			FS.r_close			(reader);
-			if (header.version() != XRAI_CURRENT_VERSION) {
-				Msg				("! Cross table for the level %s is incompatible (version mismatch)! (level is not included into the game graph)",S);
-				continue;
-			}
-		}
-		
-		levels.insert	(CLevelInfo(id,S,Ini->r_fvector3(N,"offset"),N));
-	}
-}
-
-void test_levels	()
-{
-	CInifile *Ini = xr_new<CInifile>(INI_FILE);
-	if (!Ini->section_exist("levels"))
-		THROW(false);
-	R_ASSERT						(Ini->section_exist("levels"));
-
-	xr_set<CLevelInfo>				levels;
-	test_levels						(Ini,levels);
 }
