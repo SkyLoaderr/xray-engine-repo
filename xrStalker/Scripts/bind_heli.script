@@ -133,13 +133,13 @@ function heli_binder:check_health()
 	if not heli.m_dead then
 		local health = get_heli_health( self.heliObject, self.st )
 
-		if health < 30 and not heli.m_flame_started then
+		if health < 0.30 and not heli.m_flame_started then
 			heli_start_flame( self.object )
 
 			heli_snd.play_snd( self.st, heli_snd.snd_damaged, 3 )
 		end
 
-		if health <= 0.5 and not self.st.immortal then
+		if health <= 0.005 and not self.st.immortal then
 			heli_die( self.object )
 
 			heli_snd.play_snd( self.st, heli_snd.snd_down, 4 )
@@ -206,7 +206,7 @@ function get_heli_health( heli, st )
 	local health
 
 	if st.invulnerable then
-		health = 100
+		health = 1
 		heli:SetfHealth( health )
 	else
 		health = heli:GetfHealth()
@@ -221,7 +221,7 @@ function get_heli_health( heli, st )
 end
 
 function is_heli_alive( obj )
-	return get_heli_health( obj:get_helicopter(), db.storage[obj:id()] ) > 0.5
+	return get_heli_health( obj:get_helicopter(), db.storage[obj:id()] ) > 0.005
 end
 
 function heli_start_flame( obj )

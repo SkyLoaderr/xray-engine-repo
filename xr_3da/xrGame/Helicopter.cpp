@@ -20,13 +20,11 @@ float STEP=0.02f;
 
 CHelicopter::CHelicopter()
 {
-	init();
 	m_pParticle		= NULL;
 	m_light_render	= NULL;
 	m_lanim			= NULL;
 
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
-//	if (self)		self->spatial.type  &= ~STYPE_VISIBLEFORAI;
 	if (self)		self->spatial.type  |=  STYPE_VISIBLEFORAI;
 
 	m_movement.parent	= this;
@@ -73,7 +71,14 @@ void CHelicopter::init()
 	m_time_between_rocket_attack = 0;
 	m_last_rocket_attack		= Device.dwTimeGlobal;
 
-	SetfHealth					(100.0f);
+	SetfHealth					(1.0f);
+}
+
+DLL_Pure* CHelicopter::_construct()
+{
+	CEntity::_construct	();
+	init				();
+	return				this;
 }
 
 void CHelicopter::reinit(){

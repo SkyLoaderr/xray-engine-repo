@@ -81,7 +81,7 @@ function HeliManager:Start()
    end
 
    local health = self.m_heliObject:GetfHealth()
-   if self.m_b_prepered_to_die==false and state ~= CHelicopter.eDead and  health < 30.0 then
+   if self.m_b_prepered_to_die==false and state ~= CHelicopter.eDead and  health < 0.30 then
          self.m_b_prepered_to_die = true
          self.m_heliObject:PrepareDie()
    end

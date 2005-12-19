@@ -182,7 +182,9 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		// Car or trader only!!!!
 		CSE_ALifeCar		*C	= smart_cast<CSE_ALifeCar*>(e);
 		CSE_ALifeTrader		*T	= smart_cast<CSE_ALifeTrader*>(e);
-		R_ASSERT2			(C || T,"Invalid entity (no inheritance from CSE_CreatureAbstract, CSE_ALifeItemCar and CSE_ALifeTrader)!");
+		CSE_ALifeHelicopter	*H	= smart_cast<CSE_ALifeHelicopter*>(e);
+
+		R_ASSERT2			(C||T||H,"Invalid entity (no inheritance from CSE_CreatureAbstract, CSE_ALifeItemCar and CSE_ALifeTrader and CSE_ALifeHelicopter)!");
 		id_Team				= id_Squad = id_Group = 0;
 	}
 	else {

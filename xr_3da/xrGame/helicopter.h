@@ -138,7 +138,7 @@ class CHelicopter : 	public CEntity,
 					#endif
 
 {
-	typedef CPhysicsShellHolder inherited;
+	typedef CEntity inherited;
 public:
 	enum EHeliState {
 		eAlive							= u32(0),
@@ -329,9 +329,10 @@ public:
 	int						GetHuntState					();
 	int						GetBodyState					();
 
-//	virtual float			GetfHealth						() const;
-	virtual float			SetfHealth						(float value) {return CEntity::SetfHealth(value);};
+	virtual DLL_Pure		*_construct						();
 	float					GetSafeAltitude					()				{return m_movement.GetSafeAltitude();};
+	float					GetHeliHealth					() const		{return inherited::GetfHealth();}
+	float					SetHeliHealth					(float value)	{return inherited::SetfHealth(value);}
 
 #ifdef DEBUG
 public:
