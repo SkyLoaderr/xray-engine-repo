@@ -511,6 +511,10 @@ void	CLevel::script_gc				()
 void test_precise_path	();
 #endif
 
+#ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
+#endif
+
 void CLevel::OnRender()
 {
 	inherited::OnRender	();
@@ -560,6 +564,19 @@ void CLevel::OnRender()
 				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(_O);
 				if (pIItem) pIItem->OnRender();
 			}
+
+			
+			if (dbg_net_Draw_Flags.test(1<<11)) //draw skeleton
+			{
+				CGameObject* pGO = smart_cast<CGameObject*>	(_O);
+				if (pGO && pGO != Level().CurrentViewEntity() && !pGO->H_Parent())
+				{
+					if (pGO->Position().distance_to_sqr(Device.vCameraPosition) < 100.0f)
+					{
+						pGO->dbg_DrawSkeleton();
+					}
+				}
+			};
 		}
 		//  [7/5/2005]
 		if (Server && Server->game) Server->game->OnRender();
