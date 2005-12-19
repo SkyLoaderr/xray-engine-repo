@@ -320,7 +320,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 
 		Fvector center;Center(center);
 		Fvector obj_size;BoundingBox().getsize(obj_size);
-		//center.set(0,0,0);
+		center.set(0,0,0);
 		for(int i=0;3>i;++i)
 		{	
 			float lo,hi;
