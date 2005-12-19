@@ -7,9 +7,15 @@
 	<info_portion id="yan_find_scientist_start">
 		<task>yan_find_scientist</task>
 	</info_portion>
-	<info_portion id="yan_find_vasilyev_start"></info_portion>
+	<info_portion id="yan_find_vasilyev_start">
+		<task>yan_find_vasilyev_task</task>
+	</info_portion>
 	<info_portion id="yantar_vasilyev_info">
 		<article>yan_vasilyev_info</article>
+		<task>yan_find_ghost_task</task>
+	</info_portion>
+	<info_portion id="yan_scientist_return_task">
+		<task>yan_scientist_return_task</task>
 	</info_portion>
 	<info_portion id="yantar_hello_scientist"></info_portion>	
 	<info_portion id="yan_find_vasilyev_done"></info_portion>
