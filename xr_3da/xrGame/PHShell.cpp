@@ -594,6 +594,10 @@ void CPHShell::ClearBreakInfo()
 	}	
 	xr_delete(m_spliter_holder);
 }
+ICF bool no_physics_shape(const SBoneShape& shape)
+{
+	return shape.type==SBoneShape::stNone||shape.flags.test(SBoneShape::sfNoPhysics);
+}
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number,bool* vis_check)
 {
 
@@ -625,7 +629,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	bool	breakable=joint_data.ik_flags.test(SJointIKData::flBreakable)	&& 
 		root_e																&&
 		!(
-		SBoneShape::stNone==bone_data.shape.type&&
+		no_physics_shape(bone_data.shape)&&
 		joint_data.type==jtRigid
 		)				
 		;
@@ -648,7 +652,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	u16	 splitter_position=0;
 	u16 fracture_num=u16(-1);
 
-	if(SBoneShape::stNone!=bone_data.shape.type || !root_e)	//
+	if(!no_physics_shape(bone_data.shape)|| !root_e)	//
 	{	
 
 		if(joint_data.type==jtRigid && root_e ) //
@@ -931,7 +935,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		E=root_e;
 	}
 	
-	if(SBoneShape::stNone!=bone_data.shape.type)
+	if(!no_physics_shape(bone_data.shape))
 	{
 		CODEGeom* added_geom	=	E->last_geom();
 		if(added_geom)	added_geom->set_bone_id(id);
@@ -1001,7 +1005,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 	if(mask.is(1ui64<<(u64)id))
 	{
 
-		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
+		if(no_physics_shape(bone_data.shape)||joint_data.type==jtRigid&& element!=u16(-1))
 		{
 
 			B.set_callback(bctPhysics,0,cast_PhysicsElement(elements[element]));
@@ -1053,7 +1057,7 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 	mask.assign(m_pKinematics->LL_GetBonesVisible());
 	if(mask.is(1ui64<<(u64)id))
 	{
-		if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1)){
+		if((no_physics_shape(bone_data.shape)||joint_data.type==jtRigid)	&& element!=u16(-1)){
 			B.set_callback(bctPhysics,0,cast_PhysicsElement(elements[element]));
 		}else{
 			element_position_in_set_calbacks++;
@@ -1360,7 +1364,7 @@ void CPHShell::PlaceBindToElFormsRecursive(Fmatrix parent,u16 id,u16 element,Fla
 	if(mask.is(1ui64<<(u64)id))
 	{
 
-		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
+		if(no_physics_shape(bone_data.shape)||joint_data.type==jtRigid&& element!=u16(-1))
 		{
 
 			
