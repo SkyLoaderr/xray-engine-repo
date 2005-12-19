@@ -1,27 +1,51 @@
 <string id="yan_kill_brain">
-	<text>Отключить источник излучения в лаборатории X16</text>
+	<text>Выбраться из лаборатории X16</text>
 </string>
 <string id="yan_find_vasilyev">
-	<text>Найти записи Васильева с точными координатами входа в лабораторию X16</text>
+	<text>Найти труп Васильева</text>
+</string>
+<string id="yan_find_vasilyev_pda">
+	<text>Взять PDA Васильева</text>
 </string>
 <string id="yan_find_labX16">
 	<text>Проникнуть в лабораторию X16</text>
+</string>
+<string id="yan_find_lab">
+	<text>Проникнуть в лабораторию</text>
 </string>
 <string id="yan_kill_brain_task">
 	<text>Отключить источник излучения</text>
 </string>
 
 <string id="yan_find_scientist">
-	<text>Поговорить с ученым и сопровождать его до места замеров излучения</text>
+	<text>Сделать замеры излучения</text>
 </string>
 
 <string id="yan_psi_zone_find">
-	<text>Поговорить с ученым и сопровождать его до места замеров излучения</text>
+	<text>Сопроводить Круглова к месту замера</text>
 </string>
 
 <string id="yan_zombie_zone">
 	<text>Предположительное местонахождение лаборатории X16</text>
 </string>
 <string id="yan_return_to_bunker">
-	<text>Помочь ученому вернуться в мобильную лабораторию</text>
+	<text>Принести результаты Сахарову</text>
+</string>
+<string id="yan_talk_to_kruglov">
+	<text>Поговорить с Кругловым</text>
+</string>
+<string id="yan_scientist_return_task">
+	<text>Поговорить с Профессором</text>
+</string>
+<string id="yan_find_ghost_task">
+	<text>Найти документы</text>
+</string>
+<string id="yan_find_ghost">
+	<text>Найти труп Призрака</text>
+</string>
+<string id="yan_switcher_off">
+	<text>Отключить три пульта управления питанием</text>
+</string>
+<string id="yan_secret_tonnel">
+	<text>Выбраться через секретный туннель наружу</text>
 </string>
