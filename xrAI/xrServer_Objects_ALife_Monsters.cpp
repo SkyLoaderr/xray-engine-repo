@@ -1039,8 +1039,6 @@ void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(timestamp		);
 	tNetPacket.w_u8				(flags			);
 	tNetPacket.w_vec3			(o_Position		);
-	Log("o_m",o_model);
-	Log("o_t",o_torso.yaw);
 	tNetPacket.w_angle8			(o_model		);
 	tNetPacket.w_angle8			(o_torso.yaw	);
 	tNetPacket.w_angle8			(o_torso.pitch	);
