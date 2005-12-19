@@ -11,7 +11,6 @@
 #include "Weapon.h"
 #include "Inventory.h"
 
-#include "ShootingHitEffector.h"
 #include "SleepEffector.h"
 #include "ActorEffector.h"
 #include "level.h"
