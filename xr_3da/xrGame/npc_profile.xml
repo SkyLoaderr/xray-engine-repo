@@ -495,10 +495,6 @@
     <character id="mil_Svoboda_engineer">
 		<class>mil_Svoboda_engineer</class>
 	</character>
-
-    <character id="mil_bandit_master_1">
-		<class>mil_bandit_master_1</class>
-	</character>
 	
 <!-- Radar -->
 	<!-- Monolith -->
