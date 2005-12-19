@@ -85,12 +85,14 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 //	m_pSpeechMenu = xr_new<CUISpeechMenu>("test_speech_section");
 	HUD().GetUI()->m_pMessagesWnd->SetChatOwner(this);
 	//-----------------------------------------------------------
+	m_iSpawn_Cost = READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000);
+	//-----------------------------------------------------------
 	pMessageBox		= xr_new<CUIMessageBoxEx>();
 	pMessageBox->Init("message_box_buy_spawn");
 	pMessageBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
 	string1024	BuySpawnText;
 	sprintf(BuySpawnText, "You can buy a spawn for %d $. Press Yes to pay.", 
-		abs(READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000)));
+		abs(m_iSpawn_Cost));
 	pMessageBox->SetText(BuySpawnText);
 	//-----------------------------------------------------------
 	return NULL;

@@ -106,6 +106,7 @@ protected:
 
 ///	CUISpeechMenu*					m_pSpeechMenu;	
 	BOOL							m_bSpectatorSelected;
+	int								m_iSpawn_Cost;
 
 	virtual void			LoadTeamData			(char* TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);
