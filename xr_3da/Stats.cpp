@@ -25,7 +25,7 @@ public:
 	void	enable	()	{ if (!enabled_)	{ Engine.External.tune_resume	();	enabled_=TRUE;	}}
 	void	disable	()	{ if (enabled_)		{ Engine.External.tune_pause	();	enabled_=FALSE; }}
 	void	update	(float value)	{
-		if (value < average_*0.75f)	{
+		if (value < average_*0.7f)	{
 			// 25% deviation
 			enable	();
 		} else {
