@@ -7,3 +7,6 @@ end
 function has_labx16_documents ()
 		return db.actor:object ("lab_x16_documents") ~= nil
 end
+function switchers_off ()
+		return db.actor:has_info("yan_labx16_switcher_1_off") and db.actor:has_info("yan_labx16_switcher_2_off") and db.actor:has_info("yan_labx16_switcher_3_off") 
+end
