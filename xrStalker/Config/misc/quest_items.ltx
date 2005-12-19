@@ -820,6 +820,27 @@ inv_grid_height		= 1
 inv_grid_x			= 5
 inv_grid_y			= 14
 cost				= 0
+
+[yan_kruglov_flash]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\yan_kruglov_flash"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_flash_1.ogf
+radius				= 1
+;script_binding		= stalker.object_init
+
+inv_name			= Flash card
+inv_name_short		= Flash card
+inv_weight			= 0.1	;0.2
+;can_trade			= off
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 7
+inv_grid_y			= 19
+cost				= 0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Military
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
