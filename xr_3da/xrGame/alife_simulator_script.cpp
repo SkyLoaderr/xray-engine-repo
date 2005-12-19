@@ -177,7 +177,7 @@ ALife::_SPAWN_ID CALifeSimulator__spawn_id		(CALifeSimulator *self, ALife::_SPAW
 
 LPCSTR get_level_name							(const CALifeSimulator *self, int level_id)
 {
-	return								(*ai().game_graph().header().level(level_id).name());
+	return								(*ai().game_graph().header().level((GameGraph::_LEVEL_ID)level_id).name());
 }
 
 CSE_ALifeCreatureActor *get_actor				(const CALifeSimulator *self)

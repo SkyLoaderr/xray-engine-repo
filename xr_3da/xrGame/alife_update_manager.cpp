@@ -236,7 +236,7 @@ void CALifeUpdateManager::new_game			(LPCSTR save_name)
 
 	do {
 		update							(false);
-#pragma todo("Dima to Dima : increment m_game_time here to simulate game time progress");
+#pragma todo("Dima to Dima : increment m_game_time here to simulate game time progress")
 	}
 	while (time_manager().game_time() < finish_time);
 

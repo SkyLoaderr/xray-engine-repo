@@ -351,12 +351,12 @@ ICF bool CLevelGraph::CVertex::operator==	(const CLevelGraph::CVertex &vertex) c
 	return				(position().xz() == vertex.position().xz());
 }
 
-IC	u32	CLevelGraph::level_id() const
+IC	const GameGraph::_LEVEL_ID &CLevelGraph::level_id() const
 {
 	return				(m_level_id);
 }
 
-IC	void CLevelGraph::level_id(u32 level_id)
+IC	void CLevelGraph::level_id(const GameGraph::_LEVEL_ID &level_id)
 {
 	m_level_id			= level_id;
 }

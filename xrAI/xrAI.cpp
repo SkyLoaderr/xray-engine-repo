@@ -105,8 +105,9 @@ void Startup(LPSTR     lpCmdLine)
 		xrCompiler			(prjName,!!strstr(cmd,"-draft"));
 	else
 		if (strstr(cmd,"-g")) {
-			xrBuildGraph		(prjName);
-			xrBuildCrossTable	(prjName);
+//			xrBuildGraph		(prjName);
+//			xrBuildCrossTable	(prjName);
+			CGameGraphBuilder().build_graph	(prjName);
 		}
 		else {
 			if (strstr(cmd,"-m")) {
@@ -151,7 +152,7 @@ void Startup(LPSTR     lpCmdLine)
 //							xrBuildGraph		(prjName);
 //							xrBuildCrossTable	(prjName);
 //						}
-						test_levels			();
+//						test_levels			();
 					}
 					else
 						if (strstr(cmd,"-c")) {

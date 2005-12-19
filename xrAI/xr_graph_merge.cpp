@@ -20,6 +20,7 @@
 #include "xr_graph_merge.h"
 #include "spawn_constructor_space.h"
 #include "guid_generator.h"
+#include "game_graph_builder.h"
 
 extern LPCSTR GAME_CONFIG;
 extern LPCSTR LEVEL_GRAPH_NAME;
@@ -37,6 +38,8 @@ typedef struct tagSConnectionVertex {
 } SConnectionVertex;
 
 extern  HWND logWindow;
+
+CGameGraph::CHeader				tGraphHeader;
 
 class CCompareVertexPredicate {
 public:
@@ -93,7 +96,7 @@ public:
 
 		VERIFY2					(l_tpCrossTable->header().level_guid() == l_tpAI_Map->header().guid(), "cross table doesn't correspond to the AI-map, rebuild graph!");
 		VERIFY2					(l_tpCrossTable->header().game_guid() == m_tpGraph->header().guid(), "cross table doesn't correspond to the graph, rebuild graph!");
-		VERIFY2					(m_tpGraph->header().level(u32(0)).guid() == l_tpAI_Map->header().guid(), "cross table doesn't correspond to the AI-map, rebuild graph!");
+		VERIFY2					(m_tpGraph->header().level(GameGraph::_LEVEL_ID(0)).guid() == l_tpAI_Map->header().guid(), "cross table doesn't correspond to the AI-map, rebuild graph!");
 
 		VERIFY					(l_tpAI_Map->header().vertex_count() == l_tpCrossTable->header().level_vertex_count());
 		VERIFY					(m_tpGraph->header().vertex_count() == l_tpCrossTable->header().game_vertex_count());
@@ -126,8 +129,10 @@ public:
 			(*I).tpaEdges			= (CGameGraph::CEdge*)xr_malloc((*I).tNeighbourCount*sizeof(CGameGraph::CEdge));
 			b						= i;
 			for ( ; i != e; ++i) {
-				(*I).tpaEdges[i - b]	= *i;
-				(*I).tpaEdges[i - b].dwVertexNumber += dwOffset;
+				GameGraph::CEdge	&edge = (*I).tpaEdges[i - b];
+				edge				= *i;
+				VERIFY				((edge.vertex_id() + dwOffset) < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+				edge.m_vertex_id	= (GameGraph::_GRAPH_ID)(edge.m_vertex_id + dwOffset);
 			}
 			(*I).dwPointOffset		= 0;
 			vfGenerateDeathPoints	(int(I - B),l_tpCrossTable,l_tpAI_Map,(*I).tDeathPointCount);
@@ -287,8 +292,13 @@ public:
 			tVertex.tLevelID		= (*I).tLevelID;
 			tVertex.dwEdgeOffset	= dwOffset;
 			tVertex.dwPointOffset	= dwPointOffset;
-			tVertex.tNeighbourCount = (*I).tNeighbourCount;
-			tVertex.tDeathPointCount = (*I).tDeathPointCount;
+		
+			VERIFY					((*I).tNeighbourCount < (u32(1) << (8*sizeof(u8))));
+			tVertex.tNeighbourCount = (u8)(*I).tNeighbourCount;
+
+			VERIFY					((*I).tDeathPointCount < (u32(1) << (8*sizeof(u8))));
+			tVertex.tDeathPointCount= (u8)(*I).tDeathPointCount;
+
 			tMemoryStream.w			(&tVertex,sizeof(tVertex));
 			dwOffset				+= (*I).tNeighbourCount*sizeof(CGameGraph::CEdge);
 			dwPointOffset			+= (*I).tDeathPointCount*sizeof(CGameGraph::CLevelPoint);
@@ -388,7 +398,7 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels, bool rebuild_graph)
 			continue;
 		}
 
-		u32				id = Ini->r_s32(N,"id");
+		u8				id = Ini->r_u8(N,"id");
 		LPCSTR			_S = Ini->r_string(N,"name");
 		string256		S;
 		strlwr			(strcpy(S,_S));
@@ -445,8 +455,9 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels, bool rebuild_graph)
 				prjName				[0] = 0;
 				FS.update_path		(prjName,"$game_levels$",S);
 				strcat				(prjName,"\\");
-				xrBuildGraph		(prjName);
-				xrBuildCrossTable	(prjName);
+//				xrBuildGraph		(prjName);
+//				xrBuildCrossTable	(prjName);
+				CGameGraphBuilder().build_graph(prjName);
 			}
 
 			if (!FS.exist(file_name)) {
@@ -536,7 +547,7 @@ CGraphMerger::CGraphMerger(LPCSTR name, bool rebuild)
 		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
 		R_ASSERT2					(tpGraphs.find(tLevel.id()) == tpGraphs.end(),"Level ids _MUST_ be different!");
 		tpGraphs.insert				(mk_pair(tLevel.id(),tpLevelGraph));
-		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.id(),tLevel));
+		tGraphHeader.m_levels.insert(std::make_pair(tLevel.id(),tLevel));
 	}
 	
 	R_ASSERT(tpGraphs.size());
@@ -571,10 +582,11 @@ CGraphMerger::CGraphMerger(LPCSTR name, bool rebuild)
 //					}
 					Msg							("Level %s with id %d has VALID connection point %s,\nwhich references to graph point %s on the level %s with id %d\n",*(*I).second->m_tLevel.name(),(*I).second->m_tLevel.id(),(*i).first,tConnectionVertex.caConnectName,*(*K).second->m_tLevel.name(),(*K).second->m_tLevel.id());
 
-					tGraphEdge.dwVertexNumber	= (*M).second.tGraphID + (*K).second->m_dwOffset;
+					VERIFY						(((*M).second.tGraphID + (*K).second->m_dwOffset) < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+					tGraphEdge.m_vertex_id		= (GameGraph::_GRAPH_ID)((*M).second.tGraphID + (*K).second->m_dwOffset);
 					VERIFY3						(tConnectionVertex.tGraphID < (*I).second->m_tpVertices.size(),"Rebuild graph for the level",*(*I).second->m_tLevel.name());
 					VERIFY3						((*M).second.tGraphID < (*K).second->m_tpVertices.size(),"Rebuild graph for the level",*(*K).second->m_tLevel.name());
-					tGraphEdge.fPathDistance	= (*I).second->m_tpVertices[tConnectionVertex.tGraphID].tGlobalPoint.distance_to((*K).second->m_tpVertices[(*M).second.tGraphID].tGlobalPoint);
+					tGraphEdge.m_path_distance	= (*I).second->m_tpVertices[tConnectionVertex.tGraphID].tGlobalPoint.distance_to((*K).second->m_tpVertices[(*M).second.tGraphID].tGlobalPoint);
 					(*I).second->vfAddEdge		((*i).second.tGraphID,tGraphEdge);
 //					tGraphEdge.dwVertexNumber	= (*i).second.tGraphID + (*I).second->m_dwOffset;
 //					(*K).second->vfAddEdge		((*M).second.tGraphID,tGraphEdge);
@@ -583,13 +595,14 @@ CGraphMerger::CGraphMerger(LPCSTR name, bool rebuild)
 	}
 	// counting edges
 	{
-		tGraphHeader.dwEdgeCount			= 0;
-		tGraphHeader.dwDeathPointCount		= 0;
+		tGraphHeader.m_edge_count			= 0;
+		tGraphHeader.m_death_point_count	= 0;
 		GRAPH_P_PAIR_IT						I = tpGraphs.begin();
 		GRAPH_P_PAIR_IT						E = tpGraphs.end();
 		for ( ; I != E; I++) {
-			tGraphHeader.dwEdgeCount		+= (*I).second->dwfGetEdgeCount();
-			tGraphHeader.dwDeathPointCount	+= (*I).second->dwfGetDeathPointCount();
+			VERIFY							((u32(tGraphHeader.m_edge_count) + (*I).second->dwfGetEdgeCount()) < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+			tGraphHeader.m_edge_count		+= (GameGraph::_GRAPH_ID)(*I).second->dwfGetEdgeCount();
+			tGraphHeader.m_death_point_count+= (*I).second->dwfGetDeathPointCount();
 		}
 	}
 
@@ -598,26 +611,10 @@ CGraphMerger::CGraphMerger(LPCSTR name, bool rebuild)
 	// save all the graphs
 	Phase("Saving graph being merged");
 	CMemoryWriter				F;
-	tGraphHeader.dwLevelCount	= tpGraphs.size();
-	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
-	tGraphHeader.dwVertexCount	= dwOffset;
-	F.w_u32						(tGraphHeader.dwVersion);
-	F.w_u32						(tGraphHeader.dwLevelCount);
-	F.w_u32						(tGraphHeader.dwVertexCount);
-	F.w_u32						(tGraphHeader.dwEdgeCount);
-	F.w_u32						(tGraphHeader.dwDeathPointCount);
-	F.w							(&tGraphHeader.m_guid,sizeof(tGraphHeader.m_guid));
-	{
-		GameGraph::LEVEL_MAP::iterator	I = tGraphHeader.tpLevels.begin();
-		GameGraph::LEVEL_MAP::iterator	E = tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			F.w_stringZ	(*(*I).second.name());
-			F.w_fvector3((*I).second.offset());
-			F.w_u32		((*I).second.id());
-			F.w_stringZ	(*(*I).second.section());
-			F.w			(&(*I).second.guid(),sizeof((*I).second.guid()));
-		}
-	}
+	tGraphHeader.m_version		= XRAI_CURRENT_VERSION;
+	VERIFY						(dwOffset < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+	tGraphHeader.m_vertex_count	= (GameGraph::_GRAPH_ID)dwOffset;
+	tGraphHeader.save			(&F);
 
 	u32							vertex_count = 0;
 	dwOffset					*= sizeof(CGameGraph::CVertex);

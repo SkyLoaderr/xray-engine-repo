@@ -40,7 +40,6 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
-CGameGraph::CHeader				tGraphHeader;
 CGameGraph::CEdge				*tpaEdges;		// graph edges
 CGameGraph::CEdge				*tpaFullEdges;	// graph edges
 xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
@@ -262,21 +261,8 @@ public:
 		tLevel.m_name				= name;
 		tLevel.m_section			= "";
 		tLevel.m_guid				= tpAI_Map->header().guid();
-		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.m_id,tLevel));
-		tGraph.w_u32				(tGraphHeader.dwVersion);
-		tGraph.w_u32				(tGraphHeader.dwLevelCount);
-		tGraph.w_u32				(tGraphHeader.dwVertexCount);
-		tGraph.w_u32				(tGraphHeader.dwEdgeCount);
-		tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
-		GameGraph::LEVEL_MAP::iterator	I = tGraphHeader.tpLevels.begin();
-		GameGraph::LEVEL_MAP::iterator	E = tGraphHeader.tpLevels.end();
-		for ( ; I != E; I++) {
-			tGraph.w_stringZ		((*I).second.name());
-			tGraph.w_fvector3		((*I).second.offset());
-			tGraph.w				(&(*I).second.m_id,sizeof((*I).second.m_id));
-			tGraph.w_stringZ		((*I).second.section());
-			tGraph.w				(&(*I).second.m_guid,sizeof((*I).second.m_guid));
-		}
+		tGraphHeader.m_levels.insert(std::make_pair(tLevel.m_id,tLevel));
+		tGraphHeader.save			(tGraph);
 
 		u32							dwPosition = tGraph.size();
 		

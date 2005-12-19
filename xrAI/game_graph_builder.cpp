@@ -18,9 +18,6 @@
 #include "guid_generator.h"
 #include "graph_engine.h"
 
-#define CROSS_TABLE_NAME_TEST	"level.gct.test"
-#define GAME_LEVEL_GRAPH_TEST	"level.graph.test"
-
 CGameGraphBuilder::CGameGraphBuilder		()
 {
 	m_level_graph			= 0;
@@ -93,7 +90,7 @@ void CGameGraphBuilder::load_graph_point	(NET_Packet &net_packet)
 	// check for duplicate graph point positions
 	{
 		graph_type::const_vertex_iterator	I = graph().vertices().begin();
-		graph_type::const_vertex_iterator	E = graph().vertices().begin();
+		graph_type::const_vertex_iterator	E = graph().vertices().end();
 		for ( ; I != E; ++I) {
 			if ((*I).second->data().tLocalPoint.distance_to_sqr(vertex.tLocalPoint) < EPS_L) {
 				Msg			("! removing graph point [%s][%f][%f][%f] because it is too close to the another graph point",entity->name_replace(),VPUSH(entity->o_Position));
@@ -111,11 +108,11 @@ void CGameGraphBuilder::load_graph_point	(NET_Packet &net_packet)
 
 	// check for multiple vertices on a single node id
 	{
-		Fvector				vertex_position = level_graph().vertex_position(vertex.tNodeID);
+//		Fvector				vertex_position = level_graph().vertex_position(vertex.tNodeID);
 //		float				distance_sqr = vertex.tLocalPoint.distance_to_sqr(vertex_position);
 
 		graph_type::const_vertex_iterator	I = graph().vertices().begin();
-		graph_type::const_vertex_iterator	E = graph().vertices().begin();
+		graph_type::const_vertex_iterator	E = graph().vertices().end();
 		for ( ; I != E; ++I) {
 			if ((*I).second->data().tNodeID == vertex.tNodeID) {
 				Msg			("! removing graph point [%s][%f][%f][%f] because it has the same AI node as another graph point",entity->name_replace(),VPUSH(entity->o_Position));
@@ -441,7 +438,7 @@ void CGameGraphBuilder::save_cross_table	(const float &start, const float &amoun
 //	Msg						("Flushing cross table");
 
 	string_path				file_name;
-	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_TEST);
+	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_RAW);
 	tMemoryStream.save_to	(file_name);
 //	Msg						("CT:SAVE : %f",timer.GetElapsed_sec());
 
@@ -487,7 +484,7 @@ void CGameGraphBuilder::load_cross_table	(const float &start, const float &amoun
 	Msg						("Loading cross table");
 
 	string_path				file_name;
-	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_TEST);
+	strconcat				(file_name,*m_level_name,CROSS_TABLE_NAME_RAW);
 
 	VERIFY					(!m_cross_table);
 	m_cross_table			= xr_new<CGameLevelCrossTable>(file_name);
@@ -716,41 +713,27 @@ void CGameGraphBuilder::save_graph			(const float &start, const float &amount)
 	Msg						("Saving graph");
 
 	// header
-	CMemoryWriter			writer;
-	CGameGraph::CHeader		header;
-	header.dwVersion		= XRAI_CURRENT_VERSION;
-	header.dwLevelCount		= 1;
-	header.dwVertexCount	= graph().vertices().size();
-	header.dwEdgeCount		= graph().edge_count();
-	header.dwDeathPointCount= 0;
-	header.m_guid			= m_graph_guid;
-
-	writer.w_u32			(header.dwVersion);
-	writer.w_u32			(header.dwLevelCount);
-	writer.w_u32			(header.dwVertexCount);
-	writer.w_u32			(header.dwEdgeCount);
-	writer.w_u32			(header.dwDeathPointCount);
+	CMemoryWriter				writer;
+	CGameGraph::CHeader			header;
+	header.m_version			= XRAI_CURRENT_VERSION;
+	VERIFY						(graph().vertices().size() < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+	header.m_vertex_count		= (GameGraph::_GRAPH_ID)graph().vertices().size();
+	VERIFY						(graph().edge_count() < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+	header.m_edge_count			= (GameGraph::_GRAPH_ID)graph().edge_count();
+	header.m_death_point_count	= 0;
+	header.m_guid				= m_graph_guid;
 
 	// levels
-	CGameGraph::SLevel		level;
-	level.m_offset.set		(0,0,0);
-	level.m_id				= 0;
-	level.m_name			= m_level_name;
-	level.m_section			= "";
-	level.m_guid			= level_graph().header().guid();
-	header.tpLevels.insert	(std::make_pair(level.m_id,level));
+	CGameGraph::SLevel			level;
+	level.m_offset.set			(0,0,0);
+	level.m_id					= 0;
+	level.m_name				= m_level_name;
+	level.m_section				= "";
+	level.m_guid				= level_graph().header().guid();
 
-	{
-		GameGraph::LEVEL_MAP::iterator	I = header.tpLevels.begin();
-		GameGraph::LEVEL_MAP::iterator	E = header.tpLevels.end();
-		for ( ; I != E; I++) {
-			writer.w_stringZ	((*I).second.name());
-			writer.w_fvector3	((*I).second.offset());
-			writer.w			(&(*I).second.m_id,sizeof((*I).second.m_id));
-			writer.w_stringZ	((*I).second.section());
-			writer.w			(&(*I).second.m_guid,sizeof((*I).second.m_guid));
-		}
-	}
+	header.m_levels.insert		(std::make_pair(level.m_id,level));
+
+	header.save					(&writer);
 
 	{
 		u32								edge_offset = graph().vertices().size()*sizeof(CGameGraph::CVertex);
@@ -776,14 +759,19 @@ void CGameGraphBuilder::save_graph			(const float &start, const float &amount)
 			graph_type::const_iterator	i = (*I).second->edges().begin();
 			graph_type::const_iterator	e = (*I).second->edges().end();
 			for ( ; i != e; ++i) {
-				writer.w_u32				((*i).vertex_id());	
-				writer.w_float				((*i).weight());	
+				GameGraph::CEdge			edge;
+				VERIFY						((*i).vertex_id() < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+				edge.m_vertex_id			= (GameGraph::_GRAPH_ID)(*i).vertex_id();
+				edge.m_path_distance		= (*i).weight();
+
+				writer.w					(&edge.m_vertex_id,sizeof(edge.m_vertex_id));
+				writer.w_float				(edge.m_path_distance);
 			}
 		}
 	}
 
 	string_path					file_name;
-	strconcat					(file_name,*m_level_name,GAME_LEVEL_GRAPH_TEST);
+	strconcat					(file_name,*m_level_name,GAME_LEVEL_GRAPH);
 	writer.save_to				(file_name);
 	Msg							("%d bytes saved",int(writer.size()));
 
@@ -872,8 +860,9 @@ graph_type *get_graph						(LPCSTR level_name, LPCSTR graph_name)
 
 void compare_graphs							(LPCSTR level_name)
 {
+	/**
 	graph_type				*graph0 = get_graph(level_name,GAME_LEVEL_GRAPH);
-	graph_type				*graph1 = get_graph(level_name,GAME_LEVEL_GRAPH_TEST);
+	graph_type				*graph1 = get_graph(level_name,GAME_LEVEL_GRAPH);
 
 	u32						diff_count0 = 0;
 	u32						diff_count1 = 0;
@@ -917,6 +906,7 @@ void compare_graphs							(LPCSTR level_name)
 
 	xr_delete				(graph0);
 	xr_delete				(graph1);
+	/**/
 }
 
 #include "xr_graph_merge.h"
@@ -953,7 +943,7 @@ void test_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 			continue;
 		}
 
-		u32				id = Ini->r_s32(N,"id");
+		u8				id = Ini->r_u8(N,"id");
 		LPCSTR			_S = Ini->r_string(N,"name");
 		string256		S;
 		strlwr			(strcpy(S,_S));

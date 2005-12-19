@@ -18,7 +18,7 @@
 
 namespace GameGraph {
 	typedef u16	_GRAPH_ID;
-	typedef u32 _LEVEL_ID;
+	typedef u8	_LEVEL_ID;
 	typedef u8	_LOCATION_ID;
 
 	enum {
@@ -39,27 +39,33 @@ namespace GameGraph {
 		xrGUID					m_guid;
 
 	public:
-		IC shared_str name() const {
+		IC const shared_str &name		() const
+		{
 			return				(m_name);
 		}
 
-		IC const Fvector &offset() const {
+		IC const Fvector &offset		() const
+		{
 			return				(m_offset);
 		}
 
-		IC _LEVEL_ID id() const {
+		IC const _LEVEL_ID &id			() const
+		{
 			return				(m_id);
 		}
 
-		IC shared_str section() const {
+		IC const shared_str &section	() const
+		{
 			return				(m_section);
 		}
 
-		IC const xrGUID &guid() const {
+		IC const xrGUID &guid			() const
+		{
 			return				(m_guid);
 		}
 
-		IC void load(IReader *reader);
+		IC void load					(IReader *reader);
+		IC void save					(IWriter *writer);
 
 		friend class CGameGraph;
 	};
@@ -73,11 +79,11 @@ namespace GameGraph {
 	class
 #endif
 		CEdge {
-		u32							dwVertexNumber;
-		float						fPathDistance;
+		_GRAPH_ID					m_vertex_id;
+		float						m_path_distance;
 	public:
-		IC	_GRAPH_ID				vertex_id			() const;
-		IC	float					distance			() const;
+		IC	const _GRAPH_ID			&vertex_id			() const;
+		IC	const float				&distance			() const;
 	};
 
 #ifdef AI_COMPILER
@@ -101,10 +107,10 @@ namespace GameGraph {
 		IC	_LEVEL_ID				level_id			() const;
 		IC	u32						level_vertex_id		() const;
 		IC	const u8				*vertex_type		() const;
-		IC	_GRAPH_ID				edge_count			() const;
-		IC	u32						edge_offset			() const;
-		IC	u32						death_point_count	() const;
-		IC	u32						death_point_offset	() const;
+		IC	const u8				&edge_count			() const;
+		IC	const u32				&edge_offset		() const;
+		IC	const u8				&death_point_count	() const;
+		IC	const u32				&death_point_offset	() const;
 		friend class CGameGraph;
 	};
 
@@ -114,25 +120,25 @@ namespace GameGraph {
 	class
 #endif
 		CHeader {
-		u32							dwVersion;
-		u32							dwLevelCount;
-		u32							dwVertexCount;
-		u32							dwEdgeCount;
-		u32							dwDeathPointCount;
-		LEVEL_MAP					tpLevels;
+		u8							m_version;
+		_GRAPH_ID					m_vertex_count;
+		u32							m_edge_count;
+		u32							m_death_point_count;
 		xrGUID						m_guid;
+		LEVEL_MAP					m_levels;
 
 	public:
-		IC	u32						version				() const;
+		IC	const u8				&version			() const;
 		IC	_LEVEL_ID				level_count			() const;
-		IC	_GRAPH_ID				vertex_count		() const;
-		IC	_GRAPH_ID				edge_count			() const;
-		IC	u32						death_point_count	() const;
+		IC	const _GRAPH_ID			&vertex_count		() const;
+		IC	const u32				&edge_count			() const;
+		IC	const u32				&death_point_count	() const;
+		IC	const xrGUID			&guid				() const;
 		IC	const LEVEL_MAP			&levels				() const;
 		IC	const SLevel			&level				(const _LEVEL_ID &id) const;
 		IC	const SLevel			&level				(LPCSTR level_name) const;
 		IC	void					load				(IReader *reader);
-		IC	const xrGUID			&guid				() const;
+		IC	void					save				(IWriter *reader);
 		friend class CGameGraph;
 	};
 #pragma pack(pop)
