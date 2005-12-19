@@ -3,6 +3,9 @@ Respawner. —хема обновлени€ попул€ции всего всего всего в симул€ции.
 by Stohe (ƒиденко –услан)
 --------------------------------------------------------------------------------------------------------------------]]
 
+-- “олько дл€ отладки
+local debug = 1
+
 local section_name = "respawn"
 local i,k,v = 0,0,0
 ----------------------------------------------------------------------------------------------------------------------
@@ -144,6 +147,9 @@ function se_respawn:on_register()
 	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", r_str(ini, section_name, "conditions", 100))
 	self.respawn_online = r_bool(ini, section_name, "respawn_online", false)
 	
+	if debug == 1 then
+		self.respawn_online = true
+	end
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
 end
