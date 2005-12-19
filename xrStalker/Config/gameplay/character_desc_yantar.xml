@@ -103,6 +103,30 @@
 		
 	</specific_character>
 
+<specific_character id="yan_ghost" team_default = "1">
+		<name>Призрак</name>
+		<icon x="8" y="4"></icon>
+		<map_icon x="0" y="6"></map_icon>
+		<bio>Сталкер Призрак</bio>
+
+		<class>yan_ghost</class>
+		<community>stalker</community>
+
+		
+		<rank>80</rank>
+		<reputation>50</reputation>
+
+		<visual>neytral\stalker_prizrak</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_usp \n
+			ammo_11.43x23_fmj = 1 \n
+			yantar_ghost_pda \n
+			yan_x16_documents \n	
+		</supplies>
+</specific_character>
+
 <!---------------------------ECOLOG------------------------>
 	<specific_character id="yan_ecolog_default1" team_default = "1">
 		<name>GENERATE_NAME</name>

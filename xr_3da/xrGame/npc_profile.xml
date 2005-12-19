@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<!-- НОВЫЕ ПРОФИЛЯ -->
@@ -409,7 +409,11 @@
 		<class>yan_ecolog_vasilyev</class>
 		<specific_character>yan_ecolog_vasilyev</specific_character>
 	</character>
-	
+	<!-------------yan_ghost----------->
+	<character id="yan_ghost">
+		<class>yan_ghost</class>
+		<specific_character>yan_ghost</specific_character>
+	</character>
 	<!-- Military -->
 	<character id="mil_Svoboda_specnaz">
 		<class>mil_Svoboda_specnaz</class>
