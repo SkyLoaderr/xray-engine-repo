@@ -948,6 +948,10 @@ void CSE_ALifeZoneVisual::FillProps(LPCSTR pref, PropItemVec& values)
 CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALifeDynamicObjectVisual(caSection)
 {
 	s_team = s_squad = s_group	= 0;
+	o_model						= 0.f;
+	o_torso.pitch				= 0.f;
+	o_torso.yaw					= 0.f;
+	o_torso.roll				= 0.f;
 	fHealth						= 1;
 	m_bDeathIsProcessed			= false;
 	m_fAccuracy					= 25.f;
@@ -1035,6 +1039,8 @@ void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(timestamp		);
 	tNetPacket.w_u8				(flags			);
 	tNetPacket.w_vec3			(o_Position		);
+	Log("o_m",o_model);
+	Log("o_t",o_torso.yaw);
 	tNetPacket.w_angle8			(o_model		);
 	tNetPacket.w_angle8			(o_torso.yaw	);
 	tNetPacket.w_angle8			(o_torso.pitch	);
