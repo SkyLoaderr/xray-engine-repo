@@ -116,7 +116,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>neytral\stalker_prizrak</visual>
+		<visual>actors\neytral\stalker_prizrak</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
