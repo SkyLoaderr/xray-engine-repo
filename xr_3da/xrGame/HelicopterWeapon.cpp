@@ -66,7 +66,7 @@ void CHelicopter::OnShot		()
 	fire_pos = get_CurrentFirePoint();
 	fire_dir = m_fire_dir;
 
-	float fire_trail_speed		= GetCurrVelocity()/2.0f;
+	float fire_trail_speed		= 15.0f;//GetCurrVelocity()/2.0f;
 	clamp(fire_trail_speed,3.0f,300.0f);
 	if(m_enemy.bUseFireTrail){
 		Fvector enemy_pos = m_enemy.destEnemyPos;

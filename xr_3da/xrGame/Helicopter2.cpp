@@ -11,14 +11,15 @@
 #include "ai/stalker/ai_stalker.h"
 #include "CustomZone.h"
 #include "MathUtils.h"
+
 bool CHelicopter::isObjectVisible			(CObject* O)
 {
-	Fvector dir_to_object;
-	Fvector to_point;
-	O->Center(to_point);
-	Fvector from_point = XFORM().c;
-	dir_to_object.sub(to_point,from_point).normalize_safe();
-	float ray_length = from_point.distance_to(to_point);
+	Fvector					dir_to_object;
+	Fvector					to_point;
+	O->Center				(to_point);
+	Fvector from_point		= XFORM().c;
+	dir_to_object.sub		(to_point,from_point).normalize_safe();
+	float ray_length		= from_point.distance_to(to_point);
 
 	BOOL res = Level().ObjectSpace.RayTest(from_point, dir_to_object, ray_length, collide::rqtStatic, NULL, NULL);
 		
@@ -30,19 +31,6 @@ bool CHelicopter::isVisible			(CScriptGameObject* O)
 	return isObjectVisible	(&O->object());
 }
 
-
-/*
-float CHelicopter::GetfHealth() const 
-{ 
-	float f = CEntity::GetfHealth(); 
-	return f;
-}
-
-float CHelicopter::SetfHealth(float value) {
-	CEntity::SetfHealth(value);
-	return value;
-}
-*/
 void CHelicopter::TurnLighting(bool bOn)
 {
 	m_light_render->set_active						(bOn);
@@ -114,23 +102,12 @@ void CHelicopter::ExplodeHelicopter ()
 		m_pParticle->Stop();
 		CParticlesObject::Destroy(m_pParticle);
 	}
-/*
-	m_pParticle = CParticlesObject::Create(*m_explode_particle,FALSE);
-
-	Fvector zero_vector;
-	zero_vector.set(0.f,0.f,0.f);
-	m_pParticle->UpdateParent(m_particleXFORM, zero_vector );
-
-	m_explodeSound.play_at_pos(0,XFORM().c);
-	m_explodeSound.set_position(XFORM().c);
-
-	m_pParticle->Play();
-*/
 	if(CPHDestroyable::CanDestroy())
 		CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 
 	CExplosive::SetInitiator(ID());
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
+	m_brokenSound.stop					();
 
 	m_exploded = true;
 }
@@ -265,10 +242,24 @@ void CHelicopter::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p
 }
 
 
+#include "group_hierarchy_holder.h"
+#include "seniority_hierarchy_holder.h"
+#include "team_hierarchy_holder.h"
+#include "squad_hierarchy_holder.h"
+
 void CHelicopter::DieHelicopter()
 {
 	if ( state() == CHelicopter::eDead )
 		return;
+
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this,false);
+
+	m_engineSound.stop				();
+
+	m_brokenSound.create			(TRUE,pSettings->r_string(*cNameSect(), "broken_snd"));
+	m_brokenSound.play_at_pos		(0,XFORM().c,sm_Looped);
+
+
 	CKinematics* K		= smart_cast<CKinematics*>(Visual());
 	if(true /*!PPhysicsShell()*/){
 		string256						I;
@@ -288,21 +279,22 @@ void CHelicopter::DieHelicopter()
 	}
 	Fvector lin_vel;
 
-	Fvector prev_pos = PositionStack.front().vPosition;
-	lin_vel.sub(XFORM().c,prev_pos);
+	Fvector prev_pos				= PositionStack.front().vPosition;
+	lin_vel.sub						(XFORM().c,prev_pos);
+
 	if(Device.dwTimeGlobal != PositionStack.front().dwTime)
 		lin_vel.div((Device.dwTimeGlobal-PositionStack.front().dwTime)/1000.0f);
 	
-	lin_vel.mul(m_death_lin_vel_k);
-	PPhysicsShell()->set_LinearVel(lin_vel);
-	PPhysicsShell()->set_AngularVel(m_death_ang_vel);
-	PPhysicsShell()->Enable();
-	K->CalculateBones_Invalidate();
-	K->CalculateBones();
-	setState(CHelicopter::eDead);
-	m_engineSound.stop();
-	processing_deactivate();
-	m_dead = true;
+	lin_vel.mul						(m_death_lin_vel_k);
+	PPhysicsShell()->set_LinearVel	(lin_vel);
+	PPhysicsShell()->set_AngularVel	(m_death_ang_vel);
+	PPhysicsShell()->Enable			();
+	K->CalculateBones_Invalidate	();
+	K->CalculateBones				();
+	setState						(CHelicopter::eDead);
+	m_engineSound.stop				();
+	processing_deactivate			();
+	m_dead							= true;
 }
 
 void SHeliEnemy::Load(LPCSTR section)

@@ -35,8 +35,6 @@ CHelicopter::~CHelicopter()
 {
 	HUD_SOUND::DestroySound		(m_sndShot);
 	HUD_SOUND::DestroySound		(m_sndShotRocket);
-	
-
 }
 
 void CHelicopter::setState(CHelicopter::EHeliState s)
@@ -272,6 +270,7 @@ void CHelicopter::net_Destroy()
 	CPHSkeleton::RespawnInit			();
 	CPHDestroyable::RespawnInit			();
 	m_engineSound.stop					();
+	m_brokenSound.stop					();
 	CParticlesObject::Destroy			(m_pParticle);
 	m_light_render.destroy				();
 	m_movement.net_Destroy				();
@@ -404,6 +403,10 @@ void CHelicopter::UpdateCL()
 		K->CalculateBones	();
 		//smoke
 		UpdateHeliParticles();
+
+		if(m_brokenSound._feedback())
+			m_brokenSound.set_position(XFORM().c);
+
 		return;
 	}
 	else
@@ -427,8 +430,9 @@ void CHelicopter::UpdateCL()
 	}
 #endif
 
-///////////////////////////////////////////////////////////////////////////
-	m_engineSound.set_position(XFORM().c);
+	if(m_engineSound._feedback())
+		m_engineSound.set_position(XFORM().c);
+	
 
 
 	m_enemy.Update();

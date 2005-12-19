@@ -214,13 +214,14 @@ protected:
 
 // sound, light, particles...
 	ref_sound						m_engineSound;
+	ref_sound						m_brokenSound;
 //	ref_sound						m_explodeSound;
 	ref_light						m_light_render;
 	CLAItem*						m_lanim;
 	u16								m_light_bone, m_smoke_bone;
 	float							m_light_range, m_light_brightness;
 	Fcolor							m_light_color;
-	shared_str						m_smoke_particle;//, m_explode_particle;
+	shared_str						m_smoke_particle;
 	CParticlesObject*				m_pParticle;
 	Fmatrix							m_particleXFORM;
 
