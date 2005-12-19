@@ -1,3 +1,3 @@
 function main()
-	game.start_tutorial("part_5_crouch_down")
+	game.start_tutorial("part_13_sleep")
 end
