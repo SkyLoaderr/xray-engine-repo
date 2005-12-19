@@ -320,7 +320,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 
 		Fvector center;Center(center);
 		Fvector obj_size;BoundingBox().getsize(obj_size);
-		center.set(0,0,0);
+		//center.set(0,0,0);
 		for(int i=0;3>i;++i)
 		{	
 			float lo,hi;
@@ -375,7 +375,7 @@ void CCar::shedule_Update(u32 dt)
 #endif
 }
 
-void CCar::UpdateEx			(float fov) //called by owner
+void CCar::UpdateEx			(float fov) 
 {
 	#ifdef DEBUG
 	DbgUbdateCl();
@@ -383,6 +383,14 @@ void CCar::UpdateEx			(float fov) //called by owner
 
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
+
+	if(OwnerActor() && OwnerActor()->IsMyCamera()) 
+	{
+		cam_Update(Device.fTimeDelta, fov);
+		OwnerActor()->Cameras().Update(Camera());
+		OwnerActor()->Cameras().ApplyDevice();
+	}
+
 	VisualUpdate(fov);
 }
 
@@ -394,6 +402,7 @@ void CCar::UpdateCL				( )
 	ASCUpdate			();
 	if(Owner()) return;
 //	UpdateEx			(DEFAULT_FOV);
+	VisualUpdate(90);
 	if (GetScriptControl())
 			ProcessScripts();
 
@@ -418,13 +427,14 @@ void CCar::UpdateCL				( )
 		{
 			Owner()->XFORM().mul_43	(XFORM(),m_sits_transforms[0]);
 		}
+/*
 		if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 		{
 			cam_Update(Device.fTimeDelta, fov);
 			OwnerActor()->Cameras().Update(Camera());
 			OwnerActor()->Cameras().ApplyDevice();
 		}
-
+*/
 		if(HUD().GetUI())//
 		{
 			HUD().GetUI()->UIMainIngameWnd->CarPanel().Show(true);
