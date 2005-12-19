@@ -81,7 +81,7 @@ ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEnti
 	
 	ALife::ERelationType relation = ALife::eRelationTypeDummy;
 		
-	if(pOtherIO)
+	if(pOtherIO && !(const_cast<CEntityAlive*>(tpEntityAlive)->cast_base_monster()))
 		relation = RELATION_REGISTRY().GetRelationType(static_cast<const CInventoryOwner*>(this), pOtherIO);
 	
 	if(ALife::eRelationTypeDummy != relation)

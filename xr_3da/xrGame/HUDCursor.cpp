@@ -163,7 +163,7 @@ void CHUDCursor::Render()
 
 			if (GameID() == GAME_SINGLE)
 			{
-				if (E && E->g_Alive() )
+				if (E && E->g_Alive() && !E->cast_base_monster())
 				{
 					CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(pCurEnt);
 					CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(E);
