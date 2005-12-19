@@ -69,7 +69,8 @@ void CStepManager::reload(LPCSTR section)
 
 void CStepManager::on_animation_start(MotionID motion_id, CBlend *blend)
 {
-	if (!blend) return;
+	m_blend	= blend;
+	if (!m_blend) return;
 
 	m_time_anim_started = Device.dwTimeGlobal; 
 	
@@ -89,7 +90,6 @@ void CStepManager::on_animation_start(MotionID motion_id, CBlend *blend)
 		m_step_info.activity[i].cycle	= m_step_info.cur_cycle;
 	}
 
-	m_blend					= blend;
 	VERIFY					(m_blend);
 }
 

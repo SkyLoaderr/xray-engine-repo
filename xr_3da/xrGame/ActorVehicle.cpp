@@ -54,6 +54,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 //	HideCurrentWeapon(GEG_PLAYER_ENTER_CAR);
 	SetWeaponHideState(whs_CAR, TRUE);
 
+	CStepManager::on_animation_start(MotionID(), 0);
 }
 
 void CActor::detach_Vehicle()

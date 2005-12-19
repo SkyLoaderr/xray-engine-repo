@@ -73,7 +73,8 @@ void CHelicopter::OnShot		()
 
 		float	dt		= Device.fTimeGlobal - m_enemy.fStartFireTime; VERIFY(dt>=0);
 		float	dist	= m_enemy.fire_trail_length - dt*fire_trail_speed;
-		if(dist<0)		return;
+		if(dist<0)		
+			return;
 
 		Fvector fp		= fire_pos;
 		fp.y			= enemy_pos.y;
