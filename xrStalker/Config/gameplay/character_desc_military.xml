@@ -27,10 +27,9 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
-<!--#include "gameplay\character_items.xml"			->
-<!--		</supplies>								->
-<!--#include "gameplay\character_dialogs.xml"		->
-			<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_items.xml"			
+		</supplies>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 <!---------------------------SVOBODA ENGINEER----------------------->
@@ -721,11 +720,9 @@
                         wpn_ak74 = 1, 1, 1, 0 \n
                         ammo_5.45x39_ap = 1 \n
                 </supplies>
-#include "gameplay\character_items.xml"
-		</supplies>
 
-#include "gameplay\character_dialogs.xml"			
-	</specific_character>
+                <start_dialog>hello_dialog</start_dialog>
+        </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="mil_Monolit_regular" team_default = "1">
     <name>GENERATE_NAME</name>
@@ -748,12 +745,10 @@
       ammo_9x18_fmj = 1 \n
       wpn_ak74 \n
       ammo_5.45x39_ap = 1 \n
-#include "gameplay\character_items.xml"
-		</supplies>
-
-#include "gameplay\character_dialogs.xml"			
-	</specific_character>
-
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+  </specific_character>
 
 <!---------------------------MONOLIT MASTER----------------------->
   <specific_character id="mil_Monolit_master" team_default = "1">
@@ -780,10 +775,10 @@
       ammo_9x18_fmj = 1 \n
       wpn_ak74 \n
       ammo_5.45x39_ap = 1 \n
-#include "gameplay\character_items.xml"
-		</supplies>
-
-#include "gameplay\character_dialogs.xml"			
-	</specific_character>
-
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+  </specific_character>
+	
 </xml>
