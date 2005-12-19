@@ -720,9 +720,11 @@
                         wpn_ak74 = 1, 1, 1, 0 \n
                         ammo_5.45x39_ap = 1 \n
                 </supplies>
+#include "gameplay\character_items.xml"
+		</supplies>
 
-                <start_dialog>hello_dialog</start_dialog>
-        </specific_character> 
+#include "gameplay\character_dialogs.xml"			
+	</specific_character>
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="mil_Monolit_regular" team_default = "1">
     <name>GENERATE_NAME</name>
@@ -745,10 +747,12 @@
       ammo_9x18_fmj = 1 \n
       wpn_ak74 \n
       ammo_5.45x39_ap = 1 \n
-    </supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-  </specific_character>
+#include "gameplay\character_items.xml"
+		</supplies>
+
+#include "gameplay\character_dialogs.xml"			
+	</specific_character>
+
 
 <!---------------------------MONOLIT MASTER----------------------->
   <specific_character id="mil_Monolit_master" team_default = "1">
@@ -775,11 +779,11 @@
       ammo_9x18_fmj = 1 \n
       wpn_ak74 \n
       ammo_5.45x39_ap = 1 \n
-    </supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-  </specific_character>
+#include "gameplay\character_items.xml"
+		</supplies>
+
+#include "gameplay\character_dialogs.xml"			
+	</specific_character>
 
 <!---------------------------BANDIT MASTER----------------------->
 	<specific_character id="mil_bandit_master_1" team_default = "1">
@@ -806,8 +810,8 @@
 			device_torch \n
 #include "gameplay\character_items.xml"			
 		</supplies>
-					
 
+#include "gameplay\character_dialogs.xml"			
+	</specific_character>
 
-	
 </xml>
