@@ -170,6 +170,11 @@ CSE_Abstract *CALifeSimulator__spawn_item		(CALifeSimulator *self, LPCSTR sectio
 	return								(self->spawn_item(section,position,level_vertex_id,game_vertex_id,ALife::_OBJECT_ID(-1)));
 }
 
+CSE_Abstract *CALifeSimulator__spawn_item2		(CALifeSimulator *self, LPCSTR section, const Fvector &position, u32 level_vertex_id, GameGraph::_GRAPH_ID game_vertex_id, ALife::_OBJECT_ID id_parent)
+{
+	return								(self->spawn_item(section,position,level_vertex_id,game_vertex_id,id_parent));
+}
+
 ALife::_SPAWN_ID CALifeSimulator__spawn_id		(CALifeSimulator *self, ALife::_SPAWN_STORY_ID spawn_story_id)
 {
 	return								(((const CALifeSimulator *)self)->spawns().spawn_id(spawn_story_id));
@@ -254,7 +259,7 @@ void CALifeSimulator::script_register			(lua_State *L)
 			.def("remove_out_restriction",	&remove_out_restriction)
 			.def("remove_all_restrictions",	&CALifeSimulator::remove_all_restrictions)
 			.def("create",					&CALifeSimulator__create)
-			.def("create",					&CALifeSimulator::spawn_item)
+			.def("create",					&CALifeSimulator__spawn_item2)
 			.def("create",					&CALifeSimulator__spawn_item)
 			.def("spawn_id",				&CALifeSimulator__spawn_id)
 			.def("actor",					&get_actor)
