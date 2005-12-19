@@ -78,7 +78,7 @@ class "se_smart_terrain" ( cse_alife_smart_zone )
 function se_smart_terrain:__init( section ) super( section )
 --	log( "se_smart_terrain::se_smart_terrain called!" )
 
-	self.got_se_objs = false
+	self.initialized = false
 end
 
 function se_smart_terrain:detect_probability()
@@ -140,7 +140,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 --	printf( "before read" )
 --	self:print()
 
-	self:initialize()
+	self:read_params()
 
 	-- под LevelEditor не пытаться читать из пакета ничего
 	if editor() then
@@ -183,6 +183,22 @@ function se_smart_terrain:STATE_Read( packet, size )
 --	self:print()
 end
 
+-- инициализировать работу смарт террейна.
+-- после этой функции смарт полностью работоспособен.
+-- вызывается из:
+--   se_smart_terrain:enabled()
+--   se_smart_terrain:update()
+--   xr_gulag.setup_gulag_and_logic_on_spawn()
+function se_smart_terrain:initialize_if_needed()
+	if not self.initialized then
+		db.actor_proxy:init()
+
+		self:get_se_objs()
+
+		self.initialized = true
+	end
+end
+
 -- получить серверные объекты персонажей
 function se_smart_terrain:get_se_objs()
 	local sim = alife()
@@ -197,8 +213,6 @@ function se_smart_terrain:get_se_objs()
 
 		self:fill_npc_info( obj, v )
 	end
-
-	self.got_se_objs = true
 end
 
 -- заполнить информацию о персонаже
@@ -249,7 +263,7 @@ end
 -- инициализация.
 -- чтение custom data.
 -- TODO вызывать из on_register
-function se_smart_terrain:initialize()
+function se_smart_terrain:read_params()
 	local ini  = self:spawn_ini()
 	local sect = "smart_terrain"
 
@@ -392,10 +406,7 @@ function se_smart_terrain:enabled( obj )
 	end
 	--------
 
-	if not self.got_se_objs then
-		db.actor_proxy:init()
-		self:get_se_objs()
-	end
+	self:initialize_if_needed()
 
 	if self:is_gulag_available() then
 --		if obj:clsid() == clsid.GROUP then -- TODO
@@ -640,10 +651,7 @@ function se_smart_terrain:update()
 		return
 	end
 
-	if not self.got_se_objs then
-		db.actor_proxy:init()
-		self:get_se_objs()
-	end
+	self:initialize_if_needed()
 
 --	if self.duration_end < game.time() then
 --		self:remove_gulag()

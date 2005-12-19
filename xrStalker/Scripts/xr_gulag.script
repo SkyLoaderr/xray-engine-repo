@@ -906,21 +906,26 @@ function gulag:changeCasualities(delta)
 	self.casualities = self.casualities + delta
 end
 
--- TODO, TODO, TODO
-function gulag:set_relation (relation, object)
-	for k,v in pairs( self.Object ) do
-		v:set_relation (relation, object)
+-- TODO серверные объекты
+function gulag:set_relation( relation, target_obj )
+	for obj_id, obj in pairs( self.Object ) do
+		if obj ~= true then
+			obj:set_relation( relation, target_obj )
+		end
 	end
 end
 
-function gulag:set_goodwill (goodwill, object)
-	for k,v in pairs( self.Object ) do
-		v:set_community_goodwill (goodwill, object)
+function gulag:set_goodwill( relation, target_obj )
+	for obj_id, obj in pairs( self.Object ) do
+		if obj ~= true then
+			obj:set_community_goodwill( goodwill, target_obj )
+		end
 	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
-
+-- установить логику и сообщить смарту, что объект перешёл в онлайн.
+-- вызывается из net_spawn() объектов
 function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 	local sim = alife()
 	if sim then
@@ -937,6 +942,8 @@ function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 		if strn_id ~= 65535 then
 			local strn             = sim:object( strn_id )
 			local need_setup_logic = strn.gulag.Object_begin_job[obj:id()] and not loaded
+
+			strn:initialize_if_needed()
 
 			strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic )
 
@@ -1005,34 +1012,32 @@ function getGulagPopulation( name_or_sid )
 	return ( gulag and gulag:get_population() ) or 0
 end
 
--- сделать указанного персонажа врагом всех персонажей смарта, которые в онлайне
-function setGulagEnemy(name_or_sid, victim)
-	if not victim then
-		abort("setGulagEnemy: victim == nil")
-	end
-
+-- установить отношение всех членов смарта к указанному объекту
+function setGulagRelation( name_or_sid, relation, target_obj )
 	local gulag = get_gulag( name_or_sid )
 
-	for obj_id, obj in pairs(gulag.Object) do
-		if obj ~= true then
-			obj:set_relation( game_object.enemy, victim )
-		end
+	if gulag then
+		gulag:set_relation( relation, target_obj )
 	end
 end
 
--- сделать указанного персонажа врагом всех персонажей смарта, которые в онлайне
-function setGulagNeutral(name_or_sid, victim)
-	if not victim then
-		abort("setGulagEnemy: victim == nil")
-	end
-
+-- установить расположенине всех членов смарта к указанному объекту
+function setGulagGoodwill( name_or_sid, goodwill, target_obj )
 	local gulag = get_gulag( name_or_sid )
 
-	for obj_id, obj in pairs(gulag.Object) do
-		if obj ~= true then
-			obj:set_relation( game_object.neutral, victim )
-		end
+	if gulag then
+		gulag:set_goodwill( goodwill, target_obj )
 	end
+end
+
+-- сделать указанного персонажа врагом всех персонажей смарта
+function setGulagEnemy( name_or_sid, target_obj )
+	setGulagRelation( name_or_sid, game_object.enemy, target_obj )
+end
+
+-- сделать указанного персонажа врагом всех персонажей смарта, которые в онлайне
+function setGulagNeutral( name_or_sid, target_obj )
+	setGulagRelation( name_or_sid, game_object.neutral, target_obj )
 end
 
 -- получить номер состояния смарта по имени
@@ -1040,20 +1045,6 @@ function getGulagState( name_or_sid )
 	local gulag = get_gulag( name_or_sid )
 
 	return ( gulag and gulag.state ) or 0
-end
-
-function setGulagRelation(gulag_name, relation, object)
-	abort("gulag setGulagRelation: gulag_name=%s", gulag_name)
-
-    if xr_gulag.fraction[gulag_name] == nil then return end
-    xr_gulag.fraction[gulag_name]:set_relation (relation, object)
-end
-
-function setGulagGoodwill(gulag_name, goodwill, object)
-	abort("gulag setGulagGoodwill: gulag_name=%s", gulag_name)
-
-    if xr_gulag.fraction[gulag_name] == nil then return end
-    xr_gulag.fraction[gulag_name]:set_goodwill (goodwill, object)
 end
 
 -- освободить персонажа от работы.
