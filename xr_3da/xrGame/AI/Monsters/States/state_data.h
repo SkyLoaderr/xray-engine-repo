@@ -122,4 +122,15 @@ struct SStateDataMoveAroundPoint {
 	}
 };
 
+//////////////////////////////////////////////////////////////////////////
+// SStateDataActionLook
+//////////////////////////////////////////////////////////////////////////
+struct SStateDataActionLook : public SStateDataAction {
+	Fvector		point;			
+
+	SStateDataActionLook() {
+		point.set	(0.f,0.f,0.f);
+	}
+};
+
 

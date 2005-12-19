@@ -32,33 +32,31 @@ void CDamageManager::reload				(LPCSTR section,CInifile* ini)
 	m_default_hit_factor	= 1.f;
 	m_default_wound_factor	= 1.f;
 
-	//инициализировать default параметрами
-	init_bones();
-	if (ini->line_exist(section,"damage"))
-		load_section(ini->r_string(section,"damage"),ini);
-
-	
-	// if bone param == -1 (no bone defined), fill it with default params 
-	CKinematics				*kinematics = smart_cast<CKinematics*>(m_object->Visual());
-	VERIFY					(kinematics);
-	for(u16 i = 0; i<kinematics->LL_BoneCount(); i++)
-	{
-		CBoneInstance			&bone_instance = kinematics->LL_GetBoneInstance(i);
-		if (bone_instance.get_param(0) < 0)		bone_instance.set_param	(0,m_default_hit_factor);
-		if (bone_instance.get_param(2) < 0)		bone_instance.set_param	(2,m_default_wound_factor);
+	if (ini && ini->section_exist(section)) {
+		//инициализировать default параметрами
+		init_bones		(section,ini);
+		// переписать поверху прописанные параметры
+		load_section	(section,ini);
+	}
+}
+void CDamageManager::init_bones(LPCSTR section,CInifile* ini)
+{
+	// load default factors
+	string32 buffer;
+	if (ini->line_exist(section,"default")) {
+		LPCSTR value			= ini->r_string(section,"default");
+		m_default_hit_factor	= (float)atof(_GetItem(value,0,buffer));
+		m_default_wound_factor  = (float)atof(_GetItem(value,2,buffer));
 	}
 
-}
-void CDamageManager::init_bones()
-{
 	CKinematics				*kinematics = smart_cast<CKinematics*>(m_object->Visual());
 	VERIFY					(kinematics);
 	for(u16 i = 0; i<kinematics->LL_BoneCount(); i++)
 	{
 		CBoneInstance			&bone_instance = kinematics->LL_GetBoneInstance(i);
-		bone_instance.set_param	(0,-1.f);
+		bone_instance.set_param	(0,m_default_hit_factor);
 		bone_instance.set_param	(1,1.f);
-		bone_instance.set_param	(2,-1.f);
+		bone_instance.set_param	(2,m_default_wound_factor);
 	}
 }
 void CDamageManager::load_section(LPCSTR section,CInifile* ini)
@@ -67,12 +65,7 @@ void CDamageManager::load_section(LPCSTR section,CInifile* ini)
 	CKinematics				*kinematics = smart_cast<CKinematics*>(m_object->Visual());
 	CInifile::Sect			&damages = ini->r_section(section);
 	for (CInifile::SectIt i=damages.begin(); damages.end() != i; ++i) {
-		if (!xr_strcmp(*(*i).first,"default"))
-		{
-			m_default_hit_factor	= (float)atof(_GetItem(*(*i).second,0,buffer));
-			m_default_wound_factor  = (float)atof(_GetItem(*(*i).second,2,buffer));
-		}
-		else {
+		if (xr_strcmp(*(*i).first,"default")) { // read all except default line
 			VERIFY					(m_object);
 			int						bone = kinematics->LL_BoneID(i->first);
 			R_ASSERT2				(BI_NONE != bone, *(*i).first);
@@ -101,10 +94,11 @@ void  CDamageManager::HitScale			(const int element, float& hit_scale, float& wo
 	}
 
 	CKinematics* V		= smart_cast<CKinematics*>(m_object->Visual());			VERIFY(V);
-	float scale			= /*fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:*/V->LL_GetBoneInstance(u16(element)).get_param(0);
-	//hit_scale			= m_default_hit_factor*scale;
+	// get hit scale
+	float scale			= V->LL_GetBoneInstance(u16(element)).get_param(0);
 	hit_scale			= scale;
-	scale				= /*fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(2))?1.f:*/V->LL_GetBoneInstance(u16(element)).get_param(2);
-	//wound_scale			= m_default_wound_factor*scale;
+	
+	// get wound scale
+	scale				= V->LL_GetBoneInstance(u16(element)).get_param(2);
 	wound_scale			= scale;
 }

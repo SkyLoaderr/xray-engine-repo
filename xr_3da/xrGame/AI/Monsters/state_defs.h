@@ -159,7 +159,7 @@ enum EMonsterState {
 	eStateVampire_ApproachEnemy		= eStateCustom | eStateAttack | 2,
 	eStateVampire_Execute			= eStateCustom | eStateAttack | 3,
 	eStateVampire_RunAway			= eStateCustom | eStateAttack | 4,
-	eStateVampire_Camp				= eStateCustom | eStateAttack | 5,
+	eStateVampire_Hide				= eStateCustom | eStateAttack | 5,
 	
 	eStateBurerAttack_Tele			= eStateCustom | eStateAttack | 6,
 	eStateBurerAttack_Gravi			= eStateCustom | eStateAttack | 7,

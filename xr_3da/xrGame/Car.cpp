@@ -925,7 +925,7 @@ void CCar::Init()
 		LoadImmunities("immunities",ini);
 	}
 
-	CDamageManager::reload("car_definition",ini);
+	CDamageManager::reload(ini->r_string("car_definition","damage"),ini);
 	
 	HandBreak();
 	Transmission(1);

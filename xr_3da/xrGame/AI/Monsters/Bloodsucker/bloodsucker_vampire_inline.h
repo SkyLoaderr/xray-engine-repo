@@ -3,6 +3,7 @@
 #include "bloodsucker_vampire_execute.h"
 #include "../states/state_hide_from_point.h"
 #include "bloodsucker_vampire_approach.h"
+#include "bloodsucker_vampire_hide.h"
 #include "../../../clsid_game.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
@@ -19,7 +20,7 @@ CStateBloodsuckerVampireAbstract::CStateBloodsuckerVampire(_Object *obj) : inher
 	add_state	(eStateVampire_ApproachEnemy,	xr_new<CStateBloodsuckerVampireApproach<_Object> >	(obj));
 	add_state	(eStateVampire_Execute,			xr_new<CStateBloodsuckerVampireExecute<_Object> >	(obj));
 	add_state	(eStateVampire_RunAway,			xr_new<CStateMonsterHideFromPoint<_Object> >		(obj));
-	//add_state	(eStateVampire_Hide,)
+	add_state	(eStateVampire_Hide,			xr_new<CStateBloodsuckerVampireHide<_Object> >		(obj));
 }
 
 TEMPLATE_SPECIALIZATION

@@ -304,7 +304,7 @@ void CBloodsuckerAlien::update_camera()
 	def_lerp(m_current_fov, m_target_fov, FOV_SPEED, Device.fTimeDelta);
 	
 	// setup camera
-	Actor()->Cameras().Update(m_prev_eye_matrix.c,m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_current_fov,1.f,m_object->eye_range);
+	//Actor()->Cameras().Update(m_prev_eye_matrix.c,m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_current_fov,1.f,m_object->eye_range);
 }
 
 #define	MAX_CAMERA_DIST		0.5f

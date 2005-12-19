@@ -233,7 +233,7 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 	if(ini)
 	{
 		if(ini->section_exist("damage_section"))	
-			CDamageManager::load_section(ini->r_string("damage_section","damage"),pSettings);
+			CDamageManager::reload(pSettings->r_string("damage_section","damage"),ini);
 
 		CParticlesPlayer::LoadParticles(pKinematics);
 	}
@@ -290,7 +290,7 @@ void CEntity::reinit			()
 void CEntity::reload			(LPCSTR section)
 {
 	inherited::reload			(section);
-	CDamageManager::reload		(section,pSettings);
+	CDamageManager::reload		(pSettings->r_string(section,"damage"),pSettings);
 }
 
 void CEntity::set_death_time	()

@@ -2572,6 +2572,12 @@
 								<File
 									RelativePath=".\ai\Monsters\States\state_custom_action_inline.h">
 								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_custom_action_look.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_custom_action_look_inline.h">
+								</File>
 							</Filter>
 							<Filter
 								Name="Test"
@@ -3296,6 +3302,12 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_execute_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_hide.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_hide_inline.h">
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_inline.h">
