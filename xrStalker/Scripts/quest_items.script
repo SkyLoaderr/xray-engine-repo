@@ -51,7 +51,6 @@ function main()
 		alife():create(v,	
 						db.actor:position(),
 						db.actor:level_vertex_id(),	
-						db.actor:game_vertex_id(),
-						db.actor:id())
+						db.actor:game_vertex_id())
 	end	
 end
