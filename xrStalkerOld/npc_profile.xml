@@ -831,12 +831,8 @@
 	</character>
 	<character id="sim_bandit_veteran">
 		<class>sim_bandit_veteran</class>
+	</character>
 	<character id="sim_bandit_master">
 		<class>sim_Bandit_master</class>
 	</character>
-
-
-
-	
-
 </xml>
