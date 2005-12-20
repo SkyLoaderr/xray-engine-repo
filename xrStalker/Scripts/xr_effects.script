@@ -1724,6 +1724,13 @@ function yantar_kruglov_talk(actor,npc)
 	xr_sound.set_sound_play(npc, "rostok_kruglov_help_6")
 end
 
+function yantar_professor_spam_1 (actor, npc)
+    news_manager.send_tip(db.actor, "general_ecolog_tip_1", nil, "ecolog", nil, 902)
+end
+
+function yantar_professor_spam_2 (actor, npc)
+    news_manager.send_tip(db.actor, "general_ecolog_tip_2", nil, "ecolog", nil, 902)
+end
 
 -----------------------------radar
 function rad_sos_spam(actor, npc)
