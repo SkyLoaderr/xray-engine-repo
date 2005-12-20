@@ -173,8 +173,12 @@ void					CRender::flush					()					{ r_dsgraph_render_graph	(0);						}
 BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);								}
 BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);								}
 BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);								}
-
-void					CRender::add_Visual				(IRender_Visual* V ){ add_leafs_Dynamic(V);									}
+ENGINE_API	extern BOOL g_bRendering;
+void					CRender::add_Visual				(IRender_Visual* V )
+{
+	VERIFY				(g_bRendering);
+	add_leafs_Dynamic	(V);									
+}
 void					CRender::add_Geometry			(IRender_Visual* V ){ add_Static(V,View->getMask());						}
 void					CRender::add_StaticWallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* verts)
 {
@@ -195,9 +199,17 @@ void					CRender::add_Occluder			(Fbox2&	bb_screenspace	)
 	VERIFY					(_valid(bb_screenspace));
 	HOM.occlude				(bb_screenspace);
 }
+
+#include "../PS_instance.h"
 void					CRender::set_Object				(IRenderable*		O )	
 {
+	VERIFY					(g_bRendering);
 	val_pObject				= O;		// NULL is OK, trust me :)
+	//.
+	if (val_pObject)		{
+		VERIFY(dynamic_cast<CObject*>(O)||dynamic_cast<CPS_Instance*>(O));
+		if (O->renderable.pROS) { VERIFY(dynamic_cast<CROS_impl*>(O->renderable.pROS)); }
+	}
 	if (PHASE_NORMAL==phase)	{
 		L_Shadows->set_object	(O);
 		L_Projector->set_object	(O);
@@ -211,10 +223,11 @@ void					CRender::apply_object			(IRenderable*		O )
 	if (0==O)			return	;
 	if (PHASE_NORMAL==phase	&& O->renderable_ROS())		{
 		CROS_impl& LT		= *((CROS_impl*)O->renderable.pROS);
+		VERIFY(dynamic_cast<CObject*>(O)||dynamic_cast<CPS_Instance*>(O));
+		VERIFY(dynamic_cast<CROS_impl*>(O->renderable.pROS));
 		float o_hemi		= 0.5f*LT.get_hemi						();
 		float o_sun			= 0.5f*LT.get_sun						();
 		RCache.set_c		(c_ldynamic_props,o_sun,o_sun,o_sun,o_hemi);
-
 		// shadowing
 		if ((LT.shadow_recv_frame==Device.dwFrame) && O->renderable_ShadowReceive())	
 			RImplementation.L_Projector->setup	(LT.shadow_recv_slot);
@@ -464,7 +477,6 @@ void	CRender::rmNormal	()
 void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
-
 	// Begin
 	Target->Begin								();
 	o.vis_intersect								= FALSE			;

@@ -14,8 +14,8 @@ public:
 		BOOL							pROS_Allowed				;
 	}	renderable;
 public:
-	IRenderable();
-	~IRenderable();
+										IRenderable					();
+	virtual								~IRenderable				();
 	IRender_ObjectSpecific*				renderable_ROS				()	;
 	virtual	void						renderable_Render			()	= 0;
 	virtual	BOOL						renderable_ShadowGenerate	()	{ return FALSE; };
