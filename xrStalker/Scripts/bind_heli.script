@@ -144,7 +144,7 @@ function heli_binder:check_health()
 
 			heli_snd.play_snd( self.st, heli_snd.snd_down, 4 )
 		end
-	elseif not heli.m_exploded then
+--[[	elseif not heli.m_exploded then
 		-- вертолёт должен взорваться, если высота меньше 3 м или он замедлил падение (меньше 1 м за 1 с)
 		local altitude = heli:GetRealAltitude()
 
@@ -166,7 +166,7 @@ function heli_binder:check_health()
 			end
 
 			self.st.last_alt = altitude
-		end
+		end]]
 	end
 end
 
