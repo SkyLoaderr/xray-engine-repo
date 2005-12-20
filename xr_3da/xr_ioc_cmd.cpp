@@ -113,12 +113,25 @@ public:
 		Msg		("* [x-ray]: economy: strings[%d K], smem[%d K]",_eco_strings/1024,_eco_smem);
 	}
 };
-class CCC_StrVerify : public IConsole_Command
+class CCC_DbgMemCheck : public IConsole_Command
 {
 public:
-	CCC_StrVerify(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	CCC_DbgMemCheck(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) { if (Memory.debug_mode){ Memory.dbg_check();}else{Msg("! Run with -mem_debug options.");} }
+};
+class CCC_DbgStrCheck : public IConsole_Command
+{
+public:
+	CCC_DbgStrCheck(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) { g_pStringContainer->verify(); }
 };
+class CCC_DbgStrDump : public IConsole_Command
+{
+public:
+	CCC_DbgStrDump(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) { g_pStringContainer->dump();}
+};
+
 //-----------------------------------------------------------------------
 class CCC_MotionsStat : public IConsole_Command
 {
@@ -436,10 +449,13 @@ void CCC_Register()
 
 	CMD1(CCC_MotionsStat,	"stat_motions"		);
 	CMD1(CCC_MemStats,		"stat_memory"		);
-	CMD1(CCC_MemStat,		"stat_mem_dump"		);
-	CMD1(CCC_StrVerify,		"stat_str_verify"	);
 	CMD1(CCC_TexturesStat,	"stat_textures"		);
-	
+
+	CMD1(CCC_MemStat,		"dbg_mem_dump"		);
+	CMD1(CCC_DbgMemCheck,	"dbg_mem_check"		);
+	CMD1(CCC_DbgStrCheck,	"dbg_str_check"		);
+	CMD1(CCC_DbgStrDump,	"dbg_str_dump"		);
+
 	CMD3(CCC_Mask,		"mt_particles",			&psDeviceFlags,			mtParticles);
 #ifdef DEBUG
 
