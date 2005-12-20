@@ -51,6 +51,7 @@ danger = danger_condition@yan_ecolog
 snd = yantar_professor_radiation_quest_2
 anim = wait
 target = 900
+meet = meet@no_talk
 combat_ignore_cond = always
 on_signal = sound_end | walker@go_to_room
 danger = danger_condition@yan_ecolog
@@ -78,6 +79,7 @@ path_look = yan_ucheniy_look_talk
 meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {-yan_actor_talk_ucheniy} walker@yan_1
+on_info2 = {+yantar_scientist_talk_helmet} remark@talk_about_helmet
 meet = meet@yan_general_scientist
 danger = danger_condition@yan_ecolog
 
@@ -94,6 +96,11 @@ use_wpn         = false
 [meet@yan_general_scientist_1]
 use             = true
 use_wpn         = false
+
+[meet@no_talk]
+use             = false
+use_wpn         = false
+
 
 [danger_condition@yan_ecolog]
 ignore_distance = 0
