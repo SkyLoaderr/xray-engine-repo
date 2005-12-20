@@ -228,7 +228,6 @@ protected:
 
 	void							StartFlame					();
 	void							UpdateHeliParticles			();
-	void							ExplodeHelicopter			();
 	void							DieHelicopter				();
 	void							TurnLighting				(bool bOn);
 	void							TurnEngineSound				(bool bOn);
@@ -242,6 +241,7 @@ protected:
 
 	void	UpdateState					();
 public:
+	void							ExplodeHelicopter			();
 
 
 

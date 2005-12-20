@@ -98,6 +98,7 @@ void CHelicopter::UpdateHeliParticles	()
 }
 void CHelicopter::ExplodeHelicopter ()
 {
+	m_exploded = true;
 	if(m_pParticle){
 		m_pParticle->Stop();
 		CParticlesObject::Destroy(m_pParticle);
@@ -108,8 +109,6 @@ void CHelicopter::ExplodeHelicopter ()
 	CExplosive::SetInitiator(ID());
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
 	m_brokenSound.stop					();
-
-	m_exploded = true;
 }
 
 void CHelicopter::SetDestPosition (Fvector* pos)
@@ -247,12 +246,29 @@ void CHelicopter::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p
 #include "team_hierarchy_holder.h"
 #include "squad_hierarchy_holder.h"
 
+#include "extendedgeom.h"
+void CollisionCallbackDead(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{	
+	do_colide=true; 
+
+	dxGeomUserData *l_pUD1	= NULL;
+	dxGeomUserData *l_pUD2	= NULL;
+	l_pUD1					= retrieveGeomUserData(c.geom.g1);
+	l_pUD2					= retrieveGeomUserData(c.geom.g2);
+
+	CHelicopter *l_this		= l_pUD2 ? smart_cast<CHelicopter*>(l_pUD2->ph_ref_object) : NULL;
+
+	if(l_this&& !l_this->m_exploded)
+		l_this->ExplodeHelicopter();
+
+}
+
 void CHelicopter::DieHelicopter()
 {
 	if ( state() == CHelicopter::eDead )
 		return;
-
-	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this,false);
+	CEntity::Die(NULL);
+//	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this,false);
 
 	m_engineSound.stop				();
 
@@ -274,7 +290,7 @@ void CHelicopter::DieHelicopter()
 
 		///PPhysicsShell()=P_build_Shell	(this,false);
 		PPhysicsShell()->EnabledCallbacks(TRUE);
-		PPhysicsShell()->set_ObjectContactCallback(NULL);
+		PPhysicsShell()->set_ObjectContactCallback(CollisionCallbackDead);
 		PPhysicsShell()->set_ContactCallback(ContactShotMark);
 	}
 	Fvector lin_vel;
