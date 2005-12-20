@@ -8,6 +8,7 @@ path_walk = yan_ucheniy_walk_talk
 path_look = yan_ucheniy_look_talk
 combat_ignore_cond = always
 on_info = {+yantar_scientists_talk} remark@yan_professor_talk_1
+danger = danger_condition@yan_ecolog
 
 [remark@yan_professor_talk_1]
 snd = yantar_professor_to_kruglov_1
@@ -17,6 +18,7 @@ target = 900
 on_signal = sound_end | %+yantar_kruglov_phrase_1%
 on_info = {+yantar_professor_phrase_2} remark@yan_professor_talk_2
 combat_ignore_cond = always
+danger = danger_condition@yan_ecolog
 
 [remark@yan_professor_talk_2]
 snd = yantar_professor_to_kruglov_2
@@ -25,7 +27,7 @@ target = 900
 meet_talk_enabled = false
 on_signal = sound_end | walker@yan_1 %+yantar_kruglov_phrase_2%
 combat_ignore_cond = always
-
+danger = danger_condition@yan_ecolog
 
 
 [walker@yan_1]
@@ -35,6 +37,7 @@ meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {+yan_actor_talk_ucheniy} walker@yan_2
 on_info2 = {+yan_find_scientist_done} walker@scientist_quest_good	
+danger = danger_condition@yan_ecolog
 
 [walker@scientist_quest_good]
 path_walk = yan_ucheniy_walk_talk
@@ -42,6 +45,7 @@ path_look = yan_ucheniy_look_talk
 meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {+yantar_scientist_talk_helmet} remark@talk_about_helmet
+danger = danger_condition@yan_ecolog
 
 [remark@talk_about_helmet]
 snd = yantar_professor_radiation_quest_2
@@ -49,12 +53,14 @@ anim = wait
 target = 900
 combat_ignore_cond = always
 on_signal = sound_end | walker@go_to_room
+danger = danger_condition@yan_ecolog
 
 [walker@go_to_room]
 path_walk = yan_general_scientist_room_walk
 path_look = yan_ucheniy_look_talk
 on_timer = 15000 | walker@go_to_actor
 combat_ignore_cond = always
+danger = danger_condition@yan_ecolog
 
 [walker@go_to_actor]
 path_walk = yan_ucheniy_walk_talk
@@ -62,6 +68,7 @@ path_look = yan_ucheniy_look_talk
 meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {+yan_kill_brain_task_start} walker@yan_2
+danger = danger_condition@yan_ecolog
 
 
 
@@ -72,6 +79,7 @@ meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {-yan_actor_talk_ucheniy} walker@yan_1
 meet = meet@yan_general_scientist
+danger = danger_condition@yan_ecolog
 
 
 
@@ -87,6 +95,8 @@ use_wpn         = false
 use             = true
 use_wpn         = false
 
+[danger_condition@yan_ecolog]
+ignore_distance = 0
 
 [actor_dialogs]
 id = yantar_general_ucheniy_talk_start,yantar_general_ucheniy_talk_end
