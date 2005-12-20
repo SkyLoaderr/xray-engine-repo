@@ -3279,6 +3279,9 @@
 							RelativePath=".\Scripts\dialogs_military.script">
 						</File>
 						<File
+							RelativePath=".\scripts\dialogs_yantar.script">
+						</File>
+						<File
 							RelativePath=".\scripts\escape_dialog.script">
 						</File>
 						<File
