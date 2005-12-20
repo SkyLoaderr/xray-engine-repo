@@ -981,4 +981,34 @@
 		<actor_dialog>esc_victor_reward</actor_dialog>
 	</specific_character>
 	
+	<specific_character id="esc_provodnik" team_default = "1">
+		<name>Проводник</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Личность в своем роде легендарная, говорят, что он должен провести в любую точку Зоны. Берет он дорого, но дело не только в деньгах. Не нравящихся ему людей он не поведет ни за какие деньги. Ветеран, знает Зону вдоль и поперек.</bio>
+
+		<class>esc_provodnik</class>
+		<community>stranger</community>
+		
+		<rank>20</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_03\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml" \n
+#include "gameplay\character_food.xml"				
+		</supplies>
+					
+		<start_dialog>esc_provodnik_start</start_dialog>
+		<actor_dialog>esc_provodnik_give_info</actor_dialog>
+	</specific_character>
+	
 </xml>
