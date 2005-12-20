@@ -6,7 +6,8 @@ local level_scripts = {
 	bar_rostok_tasks,
     mil_tasks,
 	radar_tasks,
-	pripyat_tasks
+	pripyat_tasks,
+	deadcity_tasks
 }
 
 function proceed()
