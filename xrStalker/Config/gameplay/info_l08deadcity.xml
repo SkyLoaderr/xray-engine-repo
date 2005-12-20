@@ -77,7 +77,7 @@
 
 	<!-- Узнать, что случилось с Василием Петровичем -->
 	<info_portion id="cit_vp_search">
-		<task>cit_vp_stalker</task>
+		<task>cit_vp_search</task>
 		<article>cit_vp</article>
 	</info_portion>
 	<info_portion id="cit_vp_info"></info_portion>
