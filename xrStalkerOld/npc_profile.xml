@@ -821,7 +821,7 @@
 	</character>
 
 <!-- Simulation -->
-   <!-Bandits->
+   <!--Bandits-->
 
 	<character id="sim_bandit_novice">
 		<class>sim_bandit_novice</class>
