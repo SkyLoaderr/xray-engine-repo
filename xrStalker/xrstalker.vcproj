@@ -536,6 +536,9 @@
 						RelativePath=".\Config\gameplay\character_desc_sarcofag.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\character_desc_simulation.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\character_desc_yantar.xml">
 					</File>
 				</Filter>
