@@ -983,7 +983,7 @@
 	
 	<specific_character id="esc_provodnik" team_default = "1">
 		<name>Проводник</name>
-		<icon x="20" y="8"></icon>
+		<icon x="22" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Личность в своем роде легендарная, говорят, что он должен провести в любую точку Зоны. Берет он дорого, но дело не только в деньгах. Не нравящихся ему людей он не поведет ни за какие деньги. Ветеран, знает Зону вдоль и поперек.</bio>
 
@@ -995,7 +995,7 @@
 		
 		<snd_config>characters_voice\human_03\</snd_config>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<visual>neytral\stalker_neytral_rukzak_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp  \n
