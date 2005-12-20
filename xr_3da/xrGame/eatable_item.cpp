@@ -15,7 +15,6 @@
 #include "entity_alive.h"
 #include "EntityCondition.h"
 
-
 CEatableItem::CEatableItem()
 {
 	m_fHealthInfluence = 0;

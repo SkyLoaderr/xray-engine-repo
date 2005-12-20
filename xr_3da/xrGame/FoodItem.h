@@ -65,7 +65,7 @@ public:
 	virtual bool 		IsPending			() const;
 	virtual bool 		IsHidden			() const					{return FOOD_HIDDEN == STATE;}
 	virtual bool 		IsHiding			() const					{return FOOD_HIDING == STATE;}
-	virtual	void		UpdateXForm			();
 	IC		bool 		ready_to_eat		() const					{return	(m_bReadyToEat);}
+	virtual	void		UpdateXForm			();
 	virtual void		on_renderable_Render();
 };

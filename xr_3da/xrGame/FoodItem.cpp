@@ -43,11 +43,10 @@ BOOL CFoodItem::net_Spawn(CSE_Abstract* DC)
 
 void CFoodItem::Load(LPCSTR section) 
 {
-	CEatableItemObject::Load(section);
-	CHudItem::Load		(section);
+	CEatableItemObject::Load	(section);
+	CHudItem::Load				(section);
 
-	if(m_pHUD)
-	{
+	if (m_pHUD) {
 		m_sAnimIdle		= pSettings->r_string(*hud_sect, "anim_idle");
 		m_sAnimShow		= pSettings->r_string(*hud_sect, "anim_show");
 		m_sAnimHide		= pSettings->r_string(*hud_sect, "anim_hide");
@@ -55,12 +54,6 @@ void CFoodItem::Load(LPCSTR section)
 		m_sAnimPrepare	= pSettings->r_string(*hud_sect, "anim_prepare");
 		m_sAnimEat		= pSettings->r_string(*hud_sect, "anim_eat");
 	}
-
-//	Fvector	position_offset, angle_offset;
-//	position_offset		= pSettings->r_fvector3(section,"position_offset");
-//	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
-//	m_offset.setHPB			(VPUSH(angle_offset));
-//	m_offset.translate_over	(position_offset);
 }
 
 void CFoodItem::net_Destroy() 
@@ -122,6 +115,7 @@ void CFoodItem::OnH_B_Chield		()
 void CFoodItem::renderable_Render() 
 {
 	CHudItem::renderable_Render				();
+	CEatableItemObject::renderable_Render	();
 }
 
 void CFoodItem::Show()
@@ -220,48 +214,6 @@ void CFoodItem::OnStateSwitch	(u32 S)
 	}
 }
 
-void CFoodItem::UpdateXForm	()
-{
-	CEatableItemObject::renderable_Render	();
-/**
-	if (Device.dwFrame!=dwXF_Frame)
-	{
-		dwXF_Frame = Device.dwFrame;
-
-		if (0==H_Parent())	return;
-
-		// Get access to entity and its visual
-		CEntityAlive*	E		= smart_cast<CEntityAlive*>(H_Parent());
-
-		if(!E) return;
-
-		R_ASSERT		(E);
-		CKinematics*	V		= smart_cast<CKinematics*>	(E->Visual());
-		VERIFY			(V);
-
-		// Get matrices
-		int				boneL,boneR,boneR2;
-		E->g_WeaponBones(boneL,boneR,boneR2);
-
-		boneL = boneR2;
-
-		V->CalculateBones	();
-		Fmatrix& mL			= V->LL_GetTransform(u16(boneL));
-		Fmatrix& mR			= V->LL_GetTransform(u16(boneR));
-
-		// Calculate
-		Fmatrix			mRes;
-		Fvector			R,D,N;
-		D.sub			(mL.c,mR.c);	D.normalize_safe();
-		R.crossproduct	(mR.j,D);		R.normalize_safe();
-		N.crossproduct	(D,R);			N.normalize_safe();
-		mRes.set		(R,N,D,mR.c);
-		mRes.mulA_43	(E->XFORM());
-		XFORM().mul		(mRes, offset());
-	}
-/**/
-}
-
 void CFoodItem::OnEvent		(NET_Packet& P, u16 type)
 {
 	CEatableItemObject::OnEvent(P,type);
@@ -288,7 +240,10 @@ bool CFoodItem::IsPending	() const
 	return CHudItem::IsPending();
 }
 
+void CFoodItem::UpdateXForm				()
+{
+}
+
 void CFoodItem::on_renderable_Render	()
 {
-	CEatableItemObject::renderable_Render();
 }
