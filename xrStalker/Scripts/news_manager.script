@@ -41,7 +41,11 @@ news = {
 	bar_territory_dolg_3_hit		= sound_object([[characters_voice\human_01\scenario\bar\pda\voronin_gunfire_pda_3]]),
 	bar_territory_dolg_kill			= sound_object([[characters_voice\human_01\scenario\bar\pda\voronin_gunfire_pda_4]]),
 
-	tips_gar_hellcar_alarm			= sound_object([[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]),
+	general_ecolog_tip_1            = sound_object([[characters_voice\human_01\scenario\yantar\professor_to_actor_pda_1]]),
+    general_ecolog_tip_2            = sound_object([[characters_voice\human_01\scenario\yantar\professor_to_actor_pda_2]]),
+
+
+    tips_gar_hellcar_alarm			= sound_object([[characters_voice\human_01\scenario\garbage\neutrals_commander_pda_1]]),
 	gar_dolg_blokpost_warning		= sound_object([[characters_voice\human_01\scenario\duty\duty_warning1]]),
 	gar_dolg_monster_rush			= sound_object([[characters_voice\human_01\scenario\duty\duty_request1]]),
 	gar_direction_fire				= sound_object([[characters_voice\human_01\scenario\garbage\junkyard_combat_ambush]]),
