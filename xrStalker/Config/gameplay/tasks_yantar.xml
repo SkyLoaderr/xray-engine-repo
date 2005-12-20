@@ -31,7 +31,7 @@
 			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
 			<object_story_id>yan_ecolog_help</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
-			<infoportion_fail>yan_scientist_die</infoportion_fail>
+			<function_fail>yantar_tasks.yan_scientist_task_fail</function_fail>
 		</objective>
 		<objective>
 			<text>yan_talk_to_kruglov</text>
