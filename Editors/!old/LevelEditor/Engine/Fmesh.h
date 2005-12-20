@@ -51,6 +51,7 @@ enum OGF_Chuncks {
 enum OGF_SkeletonVertType	{
 	OGF_VERTEXFORMAT_FVF_1L	= 1*0x12071980,
 	OGF_VERTEXFORMAT_FVF_2L	= 2*0x12071980,
+	OGF_VERTEXFORMAT_FVF_NL	= 3*0x12071980,
 };
 
 const u16	xrOGF_SMParamsVersion	= 3;

@@ -145,6 +145,51 @@ struct	vertHW_2W
 };
 #pragma pack(pop)
 
+/*
+struct	vertHW_NW
+{
+	s16			_P_cnt	[4];	// position x,y,z,cnt,	4*2		=	8b
+	u32			_N		;		// normal	x,y,z,0,	4*1		=	4b,	12b
+	u32			_T		;		// tangent	x,y,z,0,	4*1		=	4b,	16b
+	u32			_B		;		// binormal	x,y,z,0,	4*1		=	4b,	20b
+	u32			_bones	;		// bone ids,			4*1		=	4b,	24b
+	u32			_weights;		// weights,				4*1		=	4b, 28b
+	s16			_tc		[2];	// qtc,					2*2		=	4b,	32b
+	//								*total*						=	32b
+	void set	(Fvector3& P, Fvector3 N, Fvector3 T, Fvector3 B, Fvector2& tc, int index0, int index1, float w)
+	{
+		N.normalize_safe	();
+		T.normalize_safe	();
+		B.normalize_safe	();
+		_P[0]		= q_P	(P.x);
+		_P[1]		= q_P	(P.y);
+		_P[2]		= q_P	(P.z);
+		_P[3]		= 1;
+		_N_w		= color_rgba(q_N(N.x), q_N(N.y), q_N(N.z), u8(clampr(iFloor(w*255.f+.5f),0,255)));
+		_T			= color_rgba(q_N(T.x), q_N(T.y), q_N(T.z), 0);
+		_B			= color_rgba(q_N(B.x), q_N(B.y), q_N(B.z), 0);
+		_tc_i[0]	= q_tc	(tc.x);
+		_tc_i[1]	= q_tc	(tc.y);
+		_tc_i[2]	= s16	(index0);
+		_tc_i[3]	= s16	(index1);
+	}
+	float get_weight()
+	{
+		return	float(color_get_A(_N_w))/255.f;
+	}
+	u16 get_bone(u16 w)
+	{
+		return	u16((u16)_tc_i[w+2]/3);
+	}
+	void get_pos(Fvector& p)
+	{
+		p.x			= u_P(_P[0]);
+		p.y			= u_P(_P[1]);
+		p.z			= u_P(_P[2]);
+	}
+};
+*/
+
 //////////////////////////////////////////////////////////////////////
 // Body Part
 //////////////////////////////////////////////////////////////////////
