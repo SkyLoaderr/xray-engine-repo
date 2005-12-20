@@ -44,7 +44,7 @@ public:
 protected:
 	virtual void	UpdateCLChild	();
 
-	static	void	ObjectContactCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
+	static	void	ObjectContactCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 	//столкновение мочалки с сущностью
 	void BastCollision(CEntityAlive* pEntityAlive);
 

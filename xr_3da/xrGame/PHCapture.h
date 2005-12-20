@@ -65,7 +65,7 @@ private:
 							!m_character->b_exist;
 							};
 
-static void object_contactCallbackFun(bool& do_colide,dContact& c,SGameMtl* /*material_1*/,SGameMtl* /*material_2*/);
+static void object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,SGameMtl* /*material_1*/,SGameMtl* /*material_2*/);
 
 ///////////CPHObject/////////////////////////////
 	virtual void PhDataUpdate(dReal step);

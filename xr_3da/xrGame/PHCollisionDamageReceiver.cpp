@@ -39,7 +39,7 @@ void CPHCollisionDamageReceiver::Init()
 
 
 
-void CPHCollisionDamageReceiver::CollisionCallback(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+void CPHCollisionDamageReceiver::CollisionCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
 	if(material_1->Flags.test(SGameMtl::flPassable)||material_2->Flags.test(SGameMtl::flPassable))return;
 	dBodyID						b1		=	dGeomGetBody(c.geom.g1);

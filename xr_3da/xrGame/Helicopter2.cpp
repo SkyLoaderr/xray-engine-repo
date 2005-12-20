@@ -247,16 +247,11 @@ void CHelicopter::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p
 #include "squad_hierarchy_holder.h"
 
 #include "extendedgeom.h"
-void CollisionCallbackDead(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+void CollisionCallbackDead(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {	
 	do_colide=true; 
 
-	dxGeomUserData *l_pUD1	= NULL;
-	dxGeomUserData *l_pUD2	= NULL;
-	l_pUD1					= retrieveGeomUserData(c.geom.g1);
-	l_pUD2					= retrieveGeomUserData(c.geom.g2);
-
-	CHelicopter *l_this		= l_pUD2 ? smart_cast<CHelicopter*>(l_pUD2->ph_ref_object) : NULL;
+	CHelicopter *l_this		= bo1 ? smart_cast<CHelicopter*>(retrieveGeomUserData(c.geom.g1)->ph_ref_object) : smart_cast<CHelicopter*>(retrieveGeomUserData(c.geom.g2)->ph_ref_object);
 
 	if(l_this&& !l_this->m_exploded)
 		l_this->ExplodeHelicopter();

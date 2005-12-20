@@ -110,12 +110,12 @@ static	void RemoveCallback(CObjectContactCallback*	&callbacks,ObjectContactCallb
 			}
 	}
 
-	void	Call(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+	void	Call(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 	{
 		for(CObjectContactCallback*i=this;i;i=i->next)
 		{
 			VERIFY(i->callback);
-			i->callback(do_colide,c,material_1,material_2);
+			i->callback(do_colide,bo1,c,material_1,material_2);
 		}
 	}
 };

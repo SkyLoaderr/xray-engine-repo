@@ -74,7 +74,7 @@ static	const u16				cAsCallsnum						=3;
 	virtual bool						CanRemoveObject				();
 ////////////////////////////////////////////////////////////////////////
 	static	BONE_P_MAP					bone_map;					//interface for PhysicsShell
-	static	void 						ActorObstacleCallback		(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+	static	void 						ActorObstacleCallback		(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 	virtual void						PhDataUpdate				(dReal step)			;
 	virtual void						PhTune						(dReal step)			;
 /////////////////////////////////////////////////////////////////////////
@@ -158,7 +158,7 @@ public:
 		}									collision_params	;
 
 	IC	static	void			applywheelCollisionParams				(const dxGeomUserData *ud,bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
-		static	void			WheellCollisionCallback					(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)							;
+		static	void			WheellCollisionCallback					(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)							;
 				
 				void 			Init									();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
 				void			Load									(LPCSTR section);

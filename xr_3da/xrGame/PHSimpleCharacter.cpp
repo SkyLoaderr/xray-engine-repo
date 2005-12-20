@@ -9,7 +9,7 @@
 #include "ui/uistatic.h"
 #include "SpaceUtils.h"
 #include "PhysicsGamePars.h"
-#include "MathUtils.h"
+#include "MathUtils.h" 
 #include "level.h"
 #include "gamemtllib.h"
 #include "gameobject.h"
@@ -80,7 +80,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 }
 
 
-void TestPathCallback(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+void TestPathCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	do_colide=false;
 }

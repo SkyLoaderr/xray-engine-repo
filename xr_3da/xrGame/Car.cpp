@@ -166,7 +166,7 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	
 }
 
-void CCar::ActorObstacleCallback					(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	
+void CCar::ActorObstacleCallback					(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	
 {
 	if(!do_colide)
 	{
@@ -383,7 +383,7 @@ void CCar::UpdateEx			(float fov)
 
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
-
+	VisualUpdate(fov);
 	if(OwnerActor() && OwnerActor()->IsMyCamera()) 
 	{
 		cam_Update(Device.fTimeDelta, fov);
@@ -391,7 +391,7 @@ void CCar::UpdateEx			(float fov)
 		OwnerActor()->Cameras().ApplyDevice();
 	}
 
-	VisualUpdate(fov);
+	
 }
 
 void CCar::UpdateCL				( )

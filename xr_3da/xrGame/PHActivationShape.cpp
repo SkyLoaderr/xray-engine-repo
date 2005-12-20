@@ -22,7 +22,7 @@ static	float friction_factor	=0.f;
 static	float cfm				=1.e-10f;
 static	float erp				=1.f;
 
-void	ActivateTestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+void	ActivateTestDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
 	
 	if(do_colide&&!material_1->Flags.test(SGameMtl::flPassable) &&!material_2->Flags.test(SGameMtl::flPassable))
@@ -38,7 +38,7 @@ void	ActivateTestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1
 	}
 
 }
-void  GetMaxDepthCallback (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+void  GetMaxDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
 
 	if(do_colide&&!material_1->Flags.test(SGameMtl::flPassable) &&!material_2->Flags.test(SGameMtl::flPassable))

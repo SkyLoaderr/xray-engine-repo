@@ -16,7 +16,7 @@
 #include "IKLimbsController.h"
 const float default_hinge_friction = 5.f;
 
-void  NodynamicsCollide(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	dBodyID body1=dGeomGetBody(c.geom.g1);
 	dBodyID body2=dGeomGetBody(c.geom.g2);

@@ -240,7 +240,7 @@ void CBreakableObject::SendDestroy()
 	bRemoved=true;
 }
 
-void CBreakableObject::ObjectContactCallback(bool&/**do_colide/**/,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+void CBreakableObject::ObjectContactCallback(bool&/**do_colide/**/,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	dxGeomUserData* usr_data_1= retrieveGeomUserData(c.geom.g1);
 	dxGeomUserData* usr_data_2=retrieveGeomUserData(c.geom.g2);

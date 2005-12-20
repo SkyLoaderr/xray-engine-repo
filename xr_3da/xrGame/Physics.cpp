@@ -236,11 +236,11 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_2&&usr_data_2->object_callbacks){
-			usr_data_2->object_callbacks->Call(do_collide,c,material_1,material_2);
+			usr_data_2->object_callbacks->Call(do_collide,false,c,material_1,material_2);
 		}
 
 		if(usr_data_1&&usr_data_1->object_callbacks){
-			usr_data_1->object_callbacks->Call(do_collide,c,material_1,material_2);
+			usr_data_1->object_callbacks->Call(do_collide,true,c,material_1,material_2);
 		}
 
 		if(usr_data_2){

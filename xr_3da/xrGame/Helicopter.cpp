@@ -148,7 +148,7 @@ void CHelicopter::reload(LPCSTR section)
 	inherited::reload	(section);
 }
 
-void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+void CollisionCallbackAlife(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {	do_colide=false; }
 
 void ContactCallbackAlife(CDB::TRI* T,dContactGeom* c)
