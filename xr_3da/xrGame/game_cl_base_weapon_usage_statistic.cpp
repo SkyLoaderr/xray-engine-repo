@@ -342,12 +342,12 @@ void				WeaponUsageStatistic::OnBullet_Remove		(SBullet* pBullet)
 	RemoveBullet	(BulletIt);
 }
 
-void				WeaponUsageStatistic::OnBullet_Check_Request	(s16 iBoneID, NET_Packet* P)
+void				WeaponUsageStatistic::OnBullet_Check_Request	(SHit* pHDS)
 {
-	if (!P || OnClient()) return;
-	s16 BoneID = iBoneID;
-	u32 BulletID = P->r_u32();
-	u32 SenderID = P->r_u32();
+	if (!pHDS || OnClient()) return;
+	s16 BoneID = pHDS->bone();
+	u32 BulletID = pHDS->BulletID;
+	u32 SenderID = pHDS->SenderID;
 
 	BChA_it pSenderI	= std::find(m_Requests.begin(), m_Requests.end(), SenderID);
 	if (pSenderI == m_Requests.end() || (*pSenderI) != SenderID)

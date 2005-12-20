@@ -160,17 +160,18 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			SHit	HDS = SHit(power, dir, Hitter, element, position_in_bone_space, impulse, (ALife::EHitType)hit_type, ap);
 */
 			SHit	HDS;
+			HDS.PACKET_TYPE = type;
 			HDS.Read_Packet_Cont(P);
 			CObject*	Hitter = Level().Objects.net_Find(HDS.whoID);
 			CObject*	Weapon = Level().Objects.net_Find(HDS.weaponID);
 			HDS.who		= Hitter;
 			//-------------------------------------------------------
-			switch (type)
+			switch (HDS.PACKET_TYPE)
 			{
 			case GE_HIT_STATISTIC:
 				{
 					if (GameID() != GAME_SINGLE)
-						Game().m_WeaponUsageStatistic.OnBullet_Check_Request(HDS.element, &P);
+						Game().m_WeaponUsageStatistic.OnBullet_Check_Request(&HDS);
 				}break;
 			default:
 				{

@@ -43,7 +43,7 @@ void SHit::Read_Packet				(NET_Packet	Packet)
 	u16 type_dummy;	
 	Packet.r_begin			(type_dummy);
 	Packet.r_u32			(Time);
-	Packet.r_u16			(HIT_TYPE);
+	Packet.r_u16			(PACKET_TYPE);
 	Packet.r_u16			(DestID);
 	Read_Packet_Cont		(Packet);
 };
@@ -64,7 +64,7 @@ void SHit::Read_Packet_Cont		(NET_Packet	Packet)
 	{
 		Packet.r_float	(ap);
 	}
-	if (HIT_TYPE == GE_HIT_STATISTIC)
+	if (PACKET_TYPE == GE_HIT_STATISTIC)
 	{
 		Packet.r_u32(BulletID);
 		Packet.r_u32(SenderID);
@@ -75,7 +75,7 @@ void SHit::Write_Packet			(NET_Packet	&Packet)
 {
 	Packet.w_begin	(M_EVENT);
 	Packet.w_u32		(Time);
-	Packet.w_u16		(u16(HIT_TYPE&0xffff));
+	Packet.w_u16		(u16(PACKET_TYPE&0xffff));
 	Packet.w_u16		(u16(DestID&0xffff));
 
 	Packet.w_u16		(whoID);
@@ -90,7 +90,7 @@ void SHit::Write_Packet			(NET_Packet	&Packet)
 	{
 		Packet.w_float	(ap);
 	}
-	if (HIT_TYPE == GE_HIT_STATISTIC)
+	if (PACKET_TYPE == GE_HIT_STATISTIC)
 	{
 		Packet.w_u32(BulletID);
 		Packet.w_u32(SenderID);

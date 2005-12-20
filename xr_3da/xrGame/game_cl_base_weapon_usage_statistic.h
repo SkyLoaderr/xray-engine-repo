@@ -171,7 +171,7 @@ struct WeaponUsageStatistic {
 
 	BChA					m_Requests;
 
-	void				OnBullet_Check_Request		(s16 iBoneID, NET_Packet* P);
+	void				OnBullet_Check_Request		(SHit* pHDS);
 	void				OnBullet_Check_Result		(bool Result);
 	//-----------------------------------------------
 	void				Send_Check_Respond			();
