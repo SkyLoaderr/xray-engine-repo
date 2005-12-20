@@ -9,6 +9,7 @@
 -- TODO серверный объект хранить в self.Object
 -- TODO distance_to перевести на distance_to_sqr
 -- TODO у патруля перевыбор работы не будет в офлайне. надо чтоб был
+-- TODO патрули в офлайне
 
 level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gulag_agroprom_underground, gulag_dark_valley, gulag_labx18, gulag_bar,
                 gulag_military, gulag_radar, gulag_radar_u, gulag_yantar, gulag_pripyat, gulag_kishka, gulag_sarcofag,
@@ -18,6 +19,7 @@ local gulag_tasks_file_name  = "misc\\gulag_tasks.ltx"
 local gulag_tasks_ltx        = ini_file( gulag_tasks_file_name )
 
 local job_position_threshold = 50 -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
+local job_idle_after_death   = 3000 -- в течении такого периода времени после смерти персонажа его работа будет недоступна
 
 idle_nil  = nil
 idle_once = -1
@@ -41,7 +43,7 @@ function gulag:__init(smrttrn, type, squad, groups, npc_info, capacity)
 	self.Object             = {} -- объекты по id. Значения: nil-нету такого, true-есть в офлайне, game_object-есть в онлайн
 	self.Object_begin_job   = {} -- по id. true/nil достиг ли объект места своей работы
 	self.ObjectJob          = {} -- по id. номер работы для каждого персонажа
-	self.JobBeginTime       = {} -- для каждой работы время начала
+	self.JobLoaded          = {} -- для каждой работы загруженные из save данные
 	self.Job_avail_in_state = nil
 
 	self.state      = 0
@@ -80,7 +82,7 @@ function gulag:initialize()
 	self.state_switch_0 = xr_logic.parse_condlist( self.smrttrn, "gulag1", "switch_0", utils.cfg_get_string(ini, sect, "switch_0", self.smrttrn, false, "", "") )
 	self.state_switch_1 = xr_logic.parse_condlist( self.smrttrn, "gulag1", "switch_1", utils.cfg_get_string(ini, sect, "switch_1", self.smrttrn, false, "", "") )
 
-	self.JobBeginTime = nil
+	self.JobLoaded = nil
 end
 
 -- подготовить работы.
@@ -89,19 +91,25 @@ end
 function gulag:prepare_jobs()
 	local ptrl, path_name
 	local capacity = 0
+	local job_loaded
+	local empty_table = {}
 
 	for i, job in ipairs( self.Job ) do
-		job.num            = i
+		job.num              = i
 
-		path_name          = self:get_job_path_name( job )
-		ptrl               = patrol( path_name )
+		path_name            = self:get_job_path_name( job )
+		ptrl                 = patrol( path_name )
 
-		job.path_name      = path_name
+		job.path_name        = path_name
 --		printf( "[smart_terrain %s] gulag.prepare_jobs: job=%s path_name=%s", self.name, job.section, path_name )
-		job.game_vertex_id = ptrl:game_vertex_id( 0 )
-		job.position       = ptrl:point( 0 )
+		job.game_vertex_id   = ptrl:game_vertex_id( 0 )
+		job.position         = ptrl:point( 0 )
 
-		job.begin          = self.JobBeginTime[i]
+		job_loaded           = self.JobLoaded[i] or empty_table
+
+		job.begin            = job_loaded.begin
+		job.fill_idle        = job_loaded.fill_idle
+		job.idle_after_death = job_loaded.idle_after_death
 
 		for i, v in ipairs( job.state ) do
 			if v == 0 then
@@ -182,7 +190,9 @@ function gulag:save_common( packet )
 	packet:w_u8( table.getn( self.Job ) )
 
 	for i, job in ipairs( self.Job ) do
-		packet:w_u32( job.begin or 0 )
+		packet:w_u32( job.begin            or 0 )
+		packet:w_u32( job.fill_idle        or 0 )
+		packet:w_u32( job.idle_after_death or 0 )
 --		printf( "job i=%d", i )
 	end
 end
@@ -195,8 +205,24 @@ function gulag:load_common( packet )
 
 	local n = packet:r_u8()
 
+	local job
+
 	for i = 1, n do
-		table.insert( self.JobBeginTime, packet:r_u32() )
+		job = {}
+		table.insert( self.JobLoaded, job )
+
+		job.begin            = packet:r_u32()
+		job.fill_idle        = packet:r_u32()
+		job.idle_after_death = packet:r_u32()
+
+		if job.fill_idle == 0 then
+			job.fill_idle = idle_nil
+		end
+
+		if job.idle_after_death == 0 then
+			job.idle_after_death = nil
+		end
+
 --		printf( "job i=%d", i )
 	end
 end
@@ -306,6 +332,11 @@ function gulag:update_objs()
 
 		if not obj:alive() then
 			self:changeCasualities( 1 )
+
+			if self.ObjectJob[obj_id] then
+				self.Job[self.ObjectJob[obj_id]].idle_after_death = game.time() + job_idle_after_death
+			end
+
 			self.smrttrn:unregister_npc( npc_info.se_obj )
 		end
 	end
@@ -431,7 +462,9 @@ end
 -- работа доступна, когда время idle истекло (или не задано)
 -- и занята работа, от которой зависит данная работа.
 function gulag:availJob(job)
-	if job.begin == nil or game.time() - job.begin > job.idle then
+	if ( job.begin == nil or game.time() - job.begin > job.idle ) and
+	   ( job.idle_after_death == nil or job.idle_after_death < game.time() )
+	then
 		if job.fill_idle ~= nil then
 			if job.fill_idle == idle_none then
 				printf( "availJob 1" )
@@ -741,6 +774,8 @@ function gulag:setJob(obj_id, job)
 
 	job.object = obj_id
 
+	job.idle_after_death = nil
+
 	self.Object_begin_job [obj_id] = false
 	self.ObjectJob        [obj_id] = job.num
 	self.ObjectJobPathName[obj_id] = job.path_name
@@ -759,6 +794,10 @@ function gulag:beginJob( obj_id )
 	self.Object_begin_job[obj_id] = true
 
 	job.begin = game.time()
+
+	if job.fill_idle == idle_once then
+		job.fill_idle = idle_none
+	end
 
 	self.npc_info[obj_id].se_obj.job_online = job.online
 
