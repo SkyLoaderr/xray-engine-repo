@@ -53,7 +53,7 @@ anim = wait
 target = 900
 meet = meet@no_talk
 combat_ignore_cond = always
-on_signal = sound_end | walker@go_to_room
+on_signal = sound_end | walker@go_to_room %-yantar_scientist_talk_helmet%
 danger = danger_condition@yan_ecolog
 
 [walker@go_to_room]
@@ -62,11 +62,11 @@ path_look = yan_ucheniy_look_talk
 on_timer = 15000 | walker@go_to_actor
 combat_ignore_cond = always
 danger = danger_condition@yan_ecolog
+meet = meet@no_talk
 
 [walker@go_to_actor]
 path_walk = yan_ucheniy_walk_talk
 path_look = yan_ucheniy_look_talk
-meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {+yan_kill_brain_task_start} walker@yan_2
 danger = danger_condition@yan_ecolog
