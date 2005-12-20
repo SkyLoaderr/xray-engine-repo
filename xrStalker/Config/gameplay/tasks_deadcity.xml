@@ -135,6 +135,9 @@
         <infoportion_complete>
             cit_vp_say
         </infoportion_complete>
+        <infoportion_fail>
+            cit_victor_die
+        </infoportion_fail>
     </objective>
     <objective key="1">
         <text>
