@@ -819,6 +819,24 @@
 	<character id="sar2_monolith_exo2">
 		<class>sar2_monolith_exo2</class>
 	</character>
+
+<!-- Simulation -->
+   <!-Bandits->
+
+	<character id="sim_bandit_novice">
+		<class>sim_bandit_novice</class>
+	</character>
+	<character id="sim_bandit_general">
+		<class>sim_bandit_general</class>
+	</character>
+	<character id="sim_bandit_veteran">
+		<class>sim_bandit_veteran</class>
+	<character id="sim_bandit_master">
+		<class>sim_Bandit_master</class>
+	</character>
+
+
+
 	
 
 </xml>
