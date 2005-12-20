@@ -12,6 +12,7 @@ function main()
 		table.insert(spawn_items, "bandit_outfit")
 	elseif level == "l03_agroprom" then
 		table.insert(spawn_items, "stalker_outfit")
+		table.insert(spawn_items, "garbage_seriy_flash")				
 	elseif level == "l03u_agr_underground" then
 		table.insert(spawn_items, "stalker_outfit")
 	elseif level == "l04_darkvalley" then
@@ -22,16 +23,21 @@ function main()
 		table.insert(spawn_items, "stalker_outfit")
 	elseif level == "l05_bar" then
 		table.insert(spawn_items, "stalker_outfit")
+		table.insert(spawn_items, "quest_case_02")
+		table.insert(spawn_items, "bar_darklab_documents")
+		table.insert(spawn_items, "lab_x16_documents")		
 	elseif level == "l06_Rostok" then
 		table.insert(spawn_items, "dolg_outfit")
 	elseif level == "l07_military" then
 		table.insert(spawn_items, "dolg_outfit")
 	elseif level == "l08_yantar" then
 		table.insert(spawn_items, "dolg_outfit")
+		table.insert(spawn_items, "yantar_ghost_pda")
 	elseif level == "l08u_brainlab" then
 		table.insert(spawn_items, "protection_outfit")
 	elseif level == "l10_radar" then
 		table.insert(spawn_items, "protection_outfit")
+		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l10u_bunker" then
 		table.insert(spawn_items, "protection_outfit")
 	elseif level == "l11_pripyat" then
@@ -42,6 +48,7 @@ function main()
 		table.insert(spawn_items, "exo_outfit")
 	elseif level == "l12u_control_monolith" then
 		table.insert(spawn_items, "exo_outfit")
+		table.insert(spawn_items, "decoder")
 	elseif level == "l12_stancia_2" then
 		table.insert(spawn_items, "exo_outfit")
 	end
