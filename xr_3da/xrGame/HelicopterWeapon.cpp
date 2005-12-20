@@ -66,13 +66,13 @@ void CHelicopter::OnShot		()
 	fire_pos = get_CurrentFirePoint();
 	fire_dir = m_fire_dir;
 
-	float fire_trail_speed		= 15.0f;//GetCurrVelocity()/2.0f;
-	clamp(fire_trail_speed,3.0f,300.0f);
+	float fire_trail_speed		= 15.0f;
+	clamp						(fire_trail_speed,GetCurrVelocity(),300.0f);
 	if(m_enemy.bUseFireTrail){
 		Fvector enemy_pos = m_enemy.destEnemyPos;
 
 		float	dt		= Device.fTimeGlobal - m_enemy.fStartFireTime; VERIFY(dt>=0);
-		float	dist	= m_enemy.fire_trail_length - dt*fire_trail_speed;
+		float	dist	= m_enemy.fire_trail_length_curr - dt*fire_trail_speed;
 		if(dist<0)		
 			return;
 
@@ -80,11 +80,11 @@ void CHelicopter::OnShot		()
 		fp.y			= enemy_pos.y;
 		Fvector	fd;
 		fd.sub(enemy_pos,fp).normalize_safe();
-		if(dist > (m_enemy.fire_trail_length/2.0f) ){
+		if(dist > (m_enemy.fire_trail_length_curr/2.0f) ){
 			fd.mul(-1.0f);
-			dist = dist - (m_enemy.fire_trail_length/2.0f);
+			dist = dist - (m_enemy.fire_trail_length_curr/2.0f);
 		}else{
-			dist = (m_enemy.fire_trail_length/2.0f) - dist;
+			dist = (m_enemy.fire_trail_length_curr/2.0f) - dist;
 		}
 		
 
@@ -119,6 +119,21 @@ void CHelicopter::MGunFireStart()
 	if(FALSE==IsWorking() && m_enemy.bUseFireTrail){
 		//start calc fire trail
 		m_enemy.fStartFireTime			= Device.fTimeGlobal;
+		Fvector fp = get_CurrentFirePoint();
+		Fvector ep = m_enemy.destEnemyPos;
+
+		//calc min firetrail length
+		float h = fp.y-ep.y;
+		if(h>0.0f){
+			float dl =h*tan(m_lim_x_rot.y);
+			float ds = fp.distance_to_xz(ep);
+			VERIFY(ds>dl);
+			float half_trail = ds-dl;
+			m_enemy.fire_trail_length_curr = half_trail*2.0f;
+			clamp(m_enemy.fire_trail_length_curr,0.0f,m_enemy.fire_trail_length_des);
+			Msg("Start fire. Desired length=%f, cur_length=%f",m_enemy.fire_trail_length_des,m_enemy.fire_trail_length_curr);
+		}else
+			m_enemy.fire_trail_length_curr	= m_enemy.fire_trail_length_des;
 	}
 
 	CShootingObject::FireStart	();

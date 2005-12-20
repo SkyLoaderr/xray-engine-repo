@@ -25,7 +25,8 @@ struct SHeliEnemy{
 	EHeliHuntState					type;
 	Fvector							destEnemyPos;
 	u32								destEnemyID;
-	float							fire_trail_length;
+	float							fire_trail_length_curr;
+	float							fire_trail_length_des;
 	bool							bUseFireTrail;
 	float							fStartFireTime;
 	void reinit						();

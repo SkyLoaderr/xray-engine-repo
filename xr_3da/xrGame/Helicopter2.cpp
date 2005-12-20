@@ -299,8 +299,8 @@ void CHelicopter::DieHelicopter()
 
 void SHeliEnemy::Load(LPCSTR section)
 {
-	fire_trail_length	= pSettings->r_float(section, "fire_trail_length");
-	bUseFireTrail		= !!pSettings->r_bool(section, "use_fire_trail");
+	fire_trail_length_des	= pSettings->r_float(section, "fire_trail_length");
+	bUseFireTrail			= !!pSettings->r_bool(section, "use_fire_trail");
 }
 
 void SHeliEnemy::reinit()
@@ -333,7 +333,7 @@ void SHeliEnemy::save(NET_Packet &output_packet)
 	output_packet.w_vec3	(destEnemyPos);
 	output_packet.w_u32		(destEnemyID);
 
-	output_packet.w_float	(fire_trail_length);
+	output_packet.w_float	(fire_trail_length_des);
 	output_packet.w_u8		(bUseFireTrail ? 1 : 0);
 }
 
@@ -343,13 +343,13 @@ void SHeliEnemy::load(IReader &input_packet)
 	input_packet.r_fvector3	(destEnemyPos);
 	destEnemyID			= input_packet.r_u32();
 
-	fire_trail_length	= input_packet.r_float();
+	fire_trail_length_des	= input_packet.r_float();
 	bUseFireTrail		= !!input_packet.r_u8();
 }
 
 void CHelicopter::SetFireTrailLength(float val)
 {
-	m_enemy.fire_trail_length	=	val;
+	m_enemy.fire_trail_length_des	=	val;
 }
 bool CHelicopter::UseFireTrail()
 {
