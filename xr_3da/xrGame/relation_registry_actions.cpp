@@ -71,7 +71,7 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 	//вычисление изменения репутации и рейтинга пока ведется 
 	//только для актера
-	if(!inv_owner_from) return;
+	if(!inv_owner_from || from->cast_base_monster()) return;
 	
 	ALife::ERelationType relation = ALife::eRelationTypeDummy;
 	if(stalker)
