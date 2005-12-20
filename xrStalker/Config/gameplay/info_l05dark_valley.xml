@@ -103,6 +103,7 @@
 
 <!-- Начало рейда солдат на монолит -->
 <info_portion id="val_raid_start"></info_portion>
+<info_portion id="val_leave_dv_after_raid"></info_portion>
 
 <!-- Заключенный бандитов -->
 <info_portion id="val_prisoner_sit"></info_portion>
@@ -162,6 +163,7 @@
 <info_portion id="val_explosion_wait"></info_portion>
 <info_portion id="val_explosion_bad"></info_portion>
 
+<info_portion id="val_borov_dead"></info_portion>
 <!-- Игрок нашел флешку Борова -->
 <info_portion id="val_player_knows_password">
 	<article>storyline_borov_flash_info</article>

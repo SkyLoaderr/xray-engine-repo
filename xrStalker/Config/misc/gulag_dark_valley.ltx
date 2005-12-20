@@ -6,7 +6,11 @@
 
 [logic@val_lager_bandits_leader_normal]
 active = walker1@val_lager_bandits_leader_normal
+on_death = death@val_lager_bandits_borov
 combat_ignore = combat_ignore
+
+[death@val_lager_bandits_borov]
+on_info = {+val_borov_dead}
 
 [walker1@val_lager_bandits_leader_normal]
 path_walk = leader_walk
