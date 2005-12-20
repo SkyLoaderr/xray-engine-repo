@@ -81,7 +81,7 @@ void SHit::Write_Packet			(NET_Packet	&Packet)
 	Packet.w_u16		(whoID);
 	Packet.w_u16		(weaponID);
 	Packet.w_dir		(dir);
-	Packet.w_float		(power);
+	Packet.w_float		(power*100.0f);
 	Packet.w_s16		(element);
 	Packet.w_vec3		(p_in_bone_space);
 	Packet.w_float		(impulse);
