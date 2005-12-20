@@ -835,4 +835,105 @@
 	<character id="sim_bandit_master">
 		<class>sim_Bandit_master</class>
 	</character>
+
+  <!--Neutral STALKERS-->
+	<character id="sim_stalker_novice">
+		<class>sim_stalker_novice</class>
+	</character>
+	<character id="sim_stalker_general">
+		<class>sim_Stalker_general</class>
+	</character>
+	<character id="sim_stalker_veteran">
+		<class>sim_Stalker_veteran</class>
+	</character>
+	<character id="sim_stalker_master">
+		<class>sim_Stalker_master</class>
+	</character>
+	<character id="sim_stalker_sniper">
+		<class>sim_Stalker_sniper</class>
+	</character>
+
+   <!--Dolg-->
+	<character id="sim_dolg_regular">
+		<class>sim_Dolg_regular</class>
+	</character>
+	<character id="sim_dolg_veteran">
+		<class>sim_Dolg_specnaz</class>
+	</character>
+	<character id="sim_dolg_master">
+		<class>sim_Dolg_master</class>
+	</character>
+	<character id="sim_dolg_sniper">
+		<class>sim_Dolg_sniper</class>
+	</character>
+
+    <!--Freedom-->
+	<character id="sim_Svoboda_regular">
+		<class>sim_Svoboda_regular</class>
+	</character>
+	<character id="sim_Svoboda_specnaz">
+		<class>sim_Svoboda_specnaz</class>
+	</character>
+	<character id="sim_Svoboda_master">
+		<class>sim_Svoboda_master</class>
+	</character>
+	<character id="sim_Svoboda_sniper">
+		<class>sim_Svoboda_sniper</class>
+	</character>
+
+   <!--KILLERS-->
+	<character id="sim_killer_general">
+		<class>sim_killer_general</class>
+	</character>
+	<character id="sim_killer_veteran">
+		<class>sim_killer_veteran</class>
+	</character>
+	<character id="sim_killer_master">
+		<class>sim_killer_master</class>
+	</character>
+	<character id="sim_killer_sniper">
+		<class>sim_killer_sniper</class>
+	</character>
+
+  <!--MONOLIT-->
+	<character id="sim_monolith_regular">
+		<class>sim_monolith_regular</class>
+	</character>
+	<character id="sim_monolith_specnaz">
+		<class>sim_monolith_specnaz</class>
+	</character>
+	<character id="sim_monolith_master">
+		<class>sim_monolith_master</class>
+	</character>
+	<character id="sim_monolith_sniper">
+		<class>sim_monolith_sniper</class>
+	</character>
+
+   <!--ECOLOG-->
+	<character id="sim_ecolog">
+		<class>sim_Ecolog</class>
+	</character>
+
+  <!--ZOMBIED-->
+	<character id="sim_zombied_novice">
+		<class>sim_zombied_novice</class>
+	</character>
+ 	<character id="sim_zombied_veteran">
+		<class>sim_Zombied_veteran</class>
+	</character>
+	<character id="sim_zombied_master">
+		<class>sim_Zombied_master</class>
+	</character>
+	<character id="sim_fresh_Zombied_stalker">
+		<class>sim_fresh_Zombied</class>
+	</character>
+
+
+
+
+
+
+
+
+
 </xml>
