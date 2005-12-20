@@ -35,6 +35,8 @@
 		<actor_dialog>escape_trader_docs_labx18</actor_dialog>
 		<actor_dialog>escape_trader_blokpost_case</actor_dialog>
 		<actor_dialog>escape_trader_help_wounded</actor_dialog>
+		<actor_dialog>escape_trader_killers_quest</actor_dialog>
+		<actor_dialog>escape_trader_killers_reward</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_wolf" team_default = "1">
@@ -976,7 +978,7 @@
 					
 		<start_dialog>esc_victor_hello</start_dialog>
 		<actor_dialog>esc_victor_quest</actor_dialog>
-		<actor_dialog>esc_viñtor_reward</actor_dialog>
+		<actor_dialog>esc_victor_reward</actor_dialog>
 	</specific_character>
 	
 </xml>
