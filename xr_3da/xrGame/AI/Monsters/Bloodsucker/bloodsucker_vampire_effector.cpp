@@ -47,18 +47,22 @@ BOOL CVampirePPEffector::Process(SPPInfo& pp)
 #define DELTA_ANGLE_Y	DELTA_ANGLE_X
 #define DELTA_ANGLE_Z	DELTA_ANGLE_X
 #define ANGLE_SPEED		0.2f	
-
+#define BEST_DISTANCE	0.3f
 CVampireCameraEffector::CVampireCameraEffector(float time, const Fvector &src, const Fvector &tgt) :
 	inherited(eCEVampire, time)
 {
 	fLifeTime				= time;
 	m_time_total			= time;
-
+	
 	m_dist					= src.distance_to(tgt);
-	if (m_dist > 2.f)	
-		m_direction.sub			(src,tgt);
-	else 
+	
+	if (m_dist < BEST_DISTANCE)	{
+		m_direction.sub		(src,tgt);
+		m_dist = BEST_DISTANCE - m_dist;
+	} else {
 		m_direction.sub			(tgt,src);
+		m_dist = m_dist - BEST_DISTANCE;
+	}
 	
 	m_direction.normalize	();
 

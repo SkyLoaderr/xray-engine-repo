@@ -279,7 +279,7 @@ public:
 		
 	bool			IsVisibleObject					(const CGameObject *object);
 	void			on_kill_enemy					(const CEntity *obj);
-	void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
+	virtual void	HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
 	virtual	void	HitEntityInJump					(const CEntity *pEntity) {}
 	void			Hit_Psy							(CObject *object, float value);
 	void			Hit_Wound						(CObject *object, float value, const Fvector &dir, float impulse);

@@ -38,8 +38,13 @@ public:
 	
 	virtual bool			use_center_to_aim		() const {return true;}
 	virtual bool			check_start_conditions	(ControlCom::EControlType);
-
+	virtual void			HitEntity				(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
 	
+	//--------------------------------------------------------------------
+	// Utils
+	//--------------------------------------------------------------------
+			void			move_actor_cam			();
+
 	//--------------------------------------------------------------------
 	// Bones
 	//--------------------------------------------------------------------

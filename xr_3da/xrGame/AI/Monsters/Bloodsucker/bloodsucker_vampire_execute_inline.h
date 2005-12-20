@@ -75,8 +75,10 @@ void CStateBloodsuckerVampireExecuteAbstract::finalize()
 {
 	inherited::finalize();
 
-	object->CControlledActor::release			();
 	object->CInvisibility::manual_activate		();
+
+	if (object->CControlledActor::is_controlling())
+		object->CControlledActor::release		();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -84,7 +86,8 @@ void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 
-	object->CControlledActor::release			();
+	if (object->CControlledActor::is_controlling())
+		object->CControlledActor::release		();
 	
 	// TODO: Find if need this line
 	//object->anim().TA_Deactivate				();
@@ -146,6 +149,9 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 	object->com_man().ta_pointbreak				();
 	object->sound().play						(CAI_Bloodsucker::eVampireHit);
 	object->SatisfyVampire						();
+
+	if (object->CControlledActor::is_controlling())
+		object->CControlledActor::release		();
 }
 
 //////////////////////////////////////////////////////////////////////////

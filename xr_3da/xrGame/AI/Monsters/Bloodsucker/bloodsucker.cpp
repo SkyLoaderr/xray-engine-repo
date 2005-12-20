@@ -20,6 +20,8 @@
 #include "../control_rotation_jump.h"
 
 #include "../../../sound_player.h"
+#include "../../../../camerabase.h"
+#include "../../../../xr_level_controller.h"
 
 #ifdef DEBUG
 #include <dinput.h>
@@ -445,6 +447,25 @@ void CAI_Bloodsucker::predator_unfreeze()
 	control().animation().unfreeze();
 }
 
+void CAI_Bloodsucker::move_actor_cam()
+{
+	float turn_angle = PI_DIV_2;
+	if (Actor()->cam_Active()) {
+		Actor()->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, turn_angle);	//Random.randF(turn_angle)); 
+		Actor()->cam_Active()->Move(Random.randI(2) ? kUP	 : kDOWN, turn_angle);	//Random.randF(turn_angle)); 
+	}
+}
+
+void CAI_Bloodsucker::HitEntity(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir)
+{
+	inherited::HitEntity(pEntity,fDamage,impulse,dir);
+
+	EMonsterState state = StateMan->get_state_type();
+	if (is_state(state, eStateVampire_Execute)) {
+		move_actor_cam();
+	}
+}
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 {
@@ -453,6 +474,10 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 
 	string128 text;
 	sprintf(text, "Invisibility Value = [%f] Invisible = [%u]", CInvisibility::get_value(), CInvisibility::is_active());
+	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
+	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
+
+	sprintf(text, "Vampire Want Value = [%f] Speed = [%f]", m_vampire_want_value, m_vampire_want_speed);
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 

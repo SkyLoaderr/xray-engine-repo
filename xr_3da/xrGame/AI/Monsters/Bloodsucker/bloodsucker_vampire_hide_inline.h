@@ -19,8 +19,10 @@ TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireHideAbstract::reselect_state()
 {
 	if (prev_substate == eStateVampire_RunAway) {
-		if (get_state(eStatePredator)->check_start_conditions())
+		if (get_state(eStatePredator)->check_start_conditions()) {
 			select_state(eStatePredator);
+			return;
+		}
 	}
 
 	select_state(eStateVampire_RunAway);
