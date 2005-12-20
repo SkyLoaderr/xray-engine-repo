@@ -27,7 +27,6 @@ CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : i
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CAI_Bloodsucker> >				(monster));
 
 	add_state(eStateCustom_Vampire,		xr_new<CStateBloodsuckerVampire<CAI_Bloodsucker> >			(monster));	
-	add_state(eStatePredator,			xr_new<CStateBloodsuckerPredator<CAI_Bloodsucker> >			(monster));	
 }
 
 void CStateManagerBloodsucker::execute()
@@ -35,29 +34,25 @@ void CStateManagerBloodsucker::execute()
 	u32 state_id = u32(-1);
 
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-	
-	if (check_state(eStatePredator)) {
-		state_id = eStatePredator;
-	} else {
-		if (enemy) {
-			if (check_state(eStateCustom_Vampire)) {
-				state_id = eStateCustom_Vampire;
-			} else {
 
-				switch (object->EnemyMan.get_danger_type()) {
-				case eStrong:	state_id = eStatePanic; break;
-				case eWeak:		state_id = eStateAttack; break;
-				}
-			}
-
-		} else if (object->HitMemory.is_hit()) {
-			state_id = eStateHitted;
-		} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
-			state_id = eStateHearInterestingSound;
+	if (enemy) {
+		if (check_state(eStateCustom_Vampire)) {
+			state_id = eStateCustom_Vampire;
 		} else {
-			if (can_eat())	state_id = eStateEat;
-			else			state_id = eStateRest;
+
+			switch (object->EnemyMan.get_danger_type()) {
+			case eStrong:	state_id = eStatePanic; break;
+			case eWeak:		state_id = eStateAttack; break;
+			}
 		}
+
+	} else if (object->HitMemory.is_hit()) {
+		state_id = eStateHitted;
+	} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
+		state_id = eStateHearInterestingSound;
+	} else {
+		if (can_eat())	state_id = eStateEat;
+		else			state_id = eStateRest;
 	}
 
 	select_state(state_id); 

@@ -215,6 +215,11 @@ void CBaseMonster::debug_fsm()
 		case eStateVampire_ApproachEnemy:				sprintf(st,"Vampire :: Approach to enemy");			break;
 		case eStateVampire_Execute:						sprintf(st,"Vampire :: Hit");						break;
 		case eStateVampire_RunAway:						sprintf(st,"Vampire :: Run Away");					break;
+		case eStateVampire_Hide:						sprintf(st,"Vampire :: Hide");						break;
+		case eStatePredator:							sprintf(st,"Predator");								break;
+		case eStatePredator_MoveToCover:				sprintf(st,"Predator :: MoveToCover");				break;
+		case eStatePredator_LookOpenPlace:				sprintf(st,"Predator :: Look Open Place");			break;
+		case eStatePredator_Camp:						sprintf(st,"Predator :: Camp");						break;
 		case eStateBurerAttack_Tele:					sprintf(st,"Attack :: Telekinesis");			break;
 		case eStateBurerAttack_Gravi:					sprintf(st,"Attack :: Gravi Wave");				break;
 		case eStateBurerAttack_RunAround:				sprintf(st,"Attack :: Run Around");			break;

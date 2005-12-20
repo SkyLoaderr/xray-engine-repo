@@ -9,13 +9,9 @@ class CStateBloodsuckerVampireHide : public CState<_Object> {
 public:
 						CStateBloodsuckerVampireHide	(_Object *obj);
 
-	//virtual void		initialize						();
-	//virtual	void		reselect_state					();
-	//virtual	void		finalize						();
-	//virtual	void		critical_finalize				();
-	//virtual bool		check_completion				();
-
-	//virtual void		setup_substates					();
+	virtual	void		reselect_state					();
+	virtual void		setup_substates					();
+	virtual bool		check_completion				();
 };
 
 #include "bloodsucker_vampire_hide_inline.h"

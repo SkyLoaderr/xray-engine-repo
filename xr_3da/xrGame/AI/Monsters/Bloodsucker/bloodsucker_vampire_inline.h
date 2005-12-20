@@ -45,40 +45,45 @@ void CStateBloodsuckerVampireAbstract::initialize()
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerVampireAbstract::execute()
+void CStateBloodsuckerVampireAbstract::reselect_state()
 {
-	bool state_selected = false;
-
-	if (prev_substate == eStateVampire_RunAway) {
-		select_state	(eStateVampire_RunAway);
-		state_selected	= true;
+	u32 state_id = u32(-1);
+		
+	// check if we can start execute
+	if (prev_substate == eStateVampire_ApproachEnemy) {
+		if (get_state(eStateVampire_Execute)->check_start_conditions())		state_id = eStateVampire_Execute;
 	}
 
-	if (!state_selected) {
-		if (prev_substate != eStateVampire_Execute) {
-			if (get_state(eStateVampire_Execute)->check_start_conditions()) state_selected = true;
-		} else {
-			if (!get_state_current()->check_completion())			state_selected = true;
-		}
+	// check if we executed 
+	if (prev_substate == eStateVampire_Execute)
+		state_id = eStateVampire_Hide;
+	
+	// check if reach time in vampire state is out - then hide
+	if ((prev_substate == eStateVampire_ApproachEnemy) && (time_state_started + object->m_vampire_reach_time < time())) 
+		state_id = eStateVampire_Hide;
 
-		if (state_selected) select_state(eStateVampire_Execute);
-	}
+	// check if we hiding - then hide again
+	if ( prev_substate == eStateVampire_Hide) 
+		state_id = eStateVampire_Hide;
 
-	if (!state_selected) {
-		if (prev_substate == eStateVampire_Execute) {
-			select_state	(eStateVampire_RunAway);
-			state_selected	= true;
-		}
-	}
+	// else just 
+	if (state_id == u32(-1)) state_id = eStateVampire_ApproachEnemy;
 
-	if (!state_selected) {
-		select_state(eStateVampire_ApproachEnemy);
-	}
-
-	get_state_current()->execute();
-
-	prev_substate = current_substate;
+	select_state(state_id);	
 }
+
+TEMPLATE_SPECIALIZATION
+void CStateBloodsuckerVampireAbstract::check_force_state()
+{
+	// check if we can start execute
+	if (prev_substate == eStateVampire_ApproachEnemy) {
+		if ((get_state(eStateVampire_Execute)->check_start_conditions()) ||	
+			(time_state_started + object->m_vampire_reach_time < time()))
+		 
+			current_substate = u32(-1);
+	}
+}
+
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireAbstract::finalize()
@@ -122,7 +127,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_completion()
 {
 	// если убежал
-	if ((current_substate == eStateVampire_RunAway) && 
+	if ((current_substate == eStateVampire_Hide) && 
 		get_state_current()->check_completion())	return true;
 
 	// если враг изменился
