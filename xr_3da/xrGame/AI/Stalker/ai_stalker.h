@@ -208,7 +208,7 @@ public:
 	virtual	float						evaluate							(const CItemManager *manager, const CGameObject *object) const;
 	
 	// PDA && Dialogs
-	virtual void						ReceivePdaMessage					(u16 who, EPdaMsg msg, INFO_ID info_id);
+//	virtual void						ReceivePdaMessage					(u16 who, EPdaMsg msg, INFO_ID info_id);
 	virtual void						UpdateAvailableDialogs				(CPhraseDialogManager* partner);
 
 	// scripts

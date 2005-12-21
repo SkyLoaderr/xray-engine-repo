@@ -50,14 +50,15 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 	return true;
 }
 
-
+/*
 void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
 {
 	if(HUD().GetUI())
-		HUD().GetUI()->UIMainIngameWnd->SetDelayForPdaMessage(CStringTable().IndexById(news), show_time);
+		HUD().GetUI()->UIMainIngameWnd->SetDelayForPdaMessage(news, show_time);
 }
+*/
 
-void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name, float x1, float y1, float x2, float y2, LPCSTR templ_name)
+void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
 {
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -65,51 +66,34 @@ void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name
 
 	if(pGameSP->TalkMenu->IsShown())
 	{
-		pGameSP->TalkMenu->AddIconedMessage(*CStringTable().translate(news), texture_name,Frect().set(x1,y1,x2,y2), 
+		pGameSP->TalkMenu->AddIconedMessage(*CStringTable().translate(news), texture_name, tex_rect, 
 			templ_name?templ_name:"iconed_answer_item" );
 	}
 
 }
 
-bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2, u32 delay)
+bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, Frect tex_rect, int delay, int show_time)
 {
-/*	CActor* pActor = smart_cast<CActor*>(&object());
-	if(!pActor) return false;
-*/
-	GAME_NEWS_DATA news_data;
-	news_data.news_text = CStringTable().IndexById(news);
+	GAME_NEWS_DATA				news_data;
+	news_data.news_text			= news;
+	if(show_time!=0)
+		news_data.show_time		= show_time;// override default
 
-	news_data.show_time = DEFAULT_NEWS_SHOW_TIME;
-	
 	if(xr_strlen(texture_name)>0)
 	{
-		news_data.texture_name = texture_name;
-		news_data.x1 = x1;
-		news_data.x2 = x2;
-		news_data.y1 = y1;
-		news_data.y2 = y2;
-	}
-	else
-	{
-		news_data.texture_name = NULL;
+		news_data.texture_name			= texture_name;
+		news_data.tex_rect				= tex_rect;
 	}
 
-	if (news_data.news_text == NO_STRING) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"no entrance found for news in string table", news);
-		return								false;
-	}
 
-//CTimer T;
-//T.Start();
-	if(delay==0){
+	if(delay==0)
 		Actor()->AddGameNews(news_data);
-	}
-	else{
+	else
 		Actor()->AddGameNews_deffered(news_data,delay);
-	}
-//Msg("---CScriptGameObject::GiveGameNews [%d]ms",T.GetElapsed_ms());
+
 	return true;
 }
+/*
 bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject* pFromWho)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
@@ -129,7 +113,7 @@ bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject*
 	object().u_EventSend(P);
 	return			true;
 }
-
+*/
 
 bool  CScriptGameObject::HasInfo				(LPCSTR info_id)
 {

@@ -95,7 +95,17 @@ void CScriptFvector::script_register(lua_State *L)
 		class_<Fbox>("Fbox")
 			.def_readwrite("min",					&Fbox::min)
 			.def_readwrite("max",					&Fbox::max)
+			.def(								constructor<>()),
+
+		class_<Frect>("Frect")
 			.def(								constructor<>())
+			.def("set",							(Frect & (Frect::*)(float,float,float,float))(Frect::set),																return_reference_to(_1))
+			.def_readwrite("lt",				&Frect::lt)
+			.def_readwrite("rb",				&Frect::rb)
+			.def_readwrite("x1",				&Frect::x1)
+			.def_readwrite("x2",				&Frect::x2)
+			.def_readwrite("y1",				&Frect::y1)
+			.def_readwrite("y2",				&Frect::y2)
 
 	];
 }

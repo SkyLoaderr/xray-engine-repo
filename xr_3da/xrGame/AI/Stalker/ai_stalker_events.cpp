@@ -122,11 +122,11 @@ void CAI_Stalker::DropItemSendMessage(CObject *O)
 /////////////////////////
 //PDA functions
 /////////////////////////
-
+/*
 void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 {
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_id);
-}
+}*/
 
 
 void CAI_Stalker::UpdateAvailableDialogs(CPhraseDialogManager* partner)

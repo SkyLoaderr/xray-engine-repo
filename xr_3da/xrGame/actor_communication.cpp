@@ -125,23 +125,10 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 
 void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 {
-	if(news_data.news_id != NOT_SIMULATION_NEWS)
-	{
-		const CALifeNews* pNewsItem  = ai().alife().news().news(news_data.news_id); VERIFY(pNewsItem);
-		//добавляем в архив только новости
-		if(ALife::eNewsTypeKill == pNewsItem->m_news_type/* || ALife::eNewsTypeRetreat == pNewsItem->m_news_type*/)
-		{
-			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(pNewsItem->m_object_id[1]);
-			CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(E); 
-			if(!pTA) return;
-		}
-		else return;
-	}
-		
 
-	GAME_NEWS_VECTOR& news_vector = game_news_registry->registry().objects();
-	news_data.receive_time = Level().GetGameTime();
-	news_vector.push_back(news_data);
+	GAME_NEWS_VECTOR& news_vector	= game_news_registry->registry().objects();
+	news_data.receive_time			= Level().GetGameTime();
+	news_vector.push_back			(news_data);
 
 	if(HUD().GetUI()){
 		HUD().GetUI()->UIMainIngameWnd->ReceiveNews(news_data);
@@ -197,7 +184,7 @@ void CActor::OnDisableInfo(INFO_ID info_id) const
 }
 
 
-
+/*
 void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 {
 	//только если находимся в режиме single
@@ -222,7 +209,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 //.	UpdateContact(pPda->GetOriginalOwnerID());
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_id);
 }
-
+*/
 void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 {
 	//только если находимся в режиме single

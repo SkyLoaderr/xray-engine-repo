@@ -211,7 +211,7 @@ public:
 						CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 						if (pActor) {
 							GAME_NEWS_DATA		news_data;
-							news_data.news_id	=  news_id;
+//							news_data.news_id	=  news_id;
 							pActor->AddGameNews	(news_data);
 						}
 					}

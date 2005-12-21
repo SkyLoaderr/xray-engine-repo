@@ -46,13 +46,7 @@ public:
 
 	// PDA MESSAGES
 		//для отображения сообщения пришедшего по PDA
-	void ReceivePdaMessage				(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
-
-	bool SetDelayForPdaMessage          (int iValue, int iDelay);
-	void AddGameMessage					(LPCSTR message, int iId = -1, int iDelay = 0);
-	void AddIconedGameMessage			(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId = -1, int iDelay = 0);
-protected:
-	CUIPdaMsgListItem* AddMessageToList	(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay);
+//	void ReceivePdaMessage				(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
 
 public:
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
@@ -158,14 +152,11 @@ public:
 		efiMail
 	};
 	
-	// Вкл/выкл мигающую иконку
 	void				SetFlashIconState_				(EFlashingIcons type, bool enable);
 
-	//
 	void				AnimateContacts					(bool b_snd);
 	HUD_SOUND			m_contactSnd;
 
-	// Обработчик события получения новости
 	void				ReceiveNews						(GAME_NEWS_DATA &news);
 	
 protected:

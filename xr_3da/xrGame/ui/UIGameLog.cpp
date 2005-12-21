@@ -93,25 +93,23 @@ void CUIGameLog::Update()
 
 	for (int i = 0; i < /*UILogList.*/GetSize(); ++i)
 	{
-		pItem = /*UILogList.*/GetItem(i);
-		CUIPdaMsgListItem	*pPItem = smart_cast<CUIPdaMsgListItem*>(pItem);
+		pItem						= GetItem(i);
+		CUIPdaMsgListItem	*pPDAItem = smart_cast<CUIPdaMsgListItem*>(pItem);						VERIFY(pItem);
+		anm							= reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());	VERIFY(anm);
 
-		VERIFY(pItem);
-		anm		= reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());
-		VERIFY(anm);
-		anm->Update();
-
-		if (pPItem)
+		if (pPDAItem )
 		{
-			u32 col = subst_alpha(pPItem->UIMsgText.GetTextColor(), color_get_A(anm->GetColor()));
-			pPItem->SetTextColor(col);
-			pPItem->UIIcon.SetColor(col);
-		}
-		else
+			if(pPDAItem->IsTimeToDestroy()){
+				anm->Update();
+				u32 col = subst_alpha(pPDAItem->UIMsgText.GetTextColor(), color_get_A(anm->GetColor()));
+				pPDAItem->SetTextColor(col);
+				pPDAItem->UIIcon.SetColor(col);
+			}
+		}else
 		{
+			anm->Update();
 			pItem->SetTextColor(subst_alpha(pItem->GetTextColor(), color_get_A(anm->GetColor())));
 		}
-
 		// Remove at animation end
 		if (anm->Done())
 			toDelIndexes.insert(i);
@@ -121,19 +119,10 @@ void CUIGameLog::Update()
 	}
 
 	for (int i = 0; i < invisible_items; i++)
-	{
-/*
-		pItem = GetItem(i);
-		anm		= reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());
-		xr_delete(anm);
-*/
 		toDelIndexes.insert(i);
-	}
 	
 
 	// Delete elements
 	for (ToDelIndexes_it it = toDelIndexes.begin(); it != toDelIndexes.end(); ++it)
-	{
 		RemoveItem(*it);
-	}
 }

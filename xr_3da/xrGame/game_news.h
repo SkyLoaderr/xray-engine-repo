@@ -1,8 +1,3 @@
-///////////////////////////////////////////////////////////////
-// game_news.h
-// реестр новостей: новости симуляции + сюжетные
-///////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "alife_space.h"
@@ -11,50 +6,30 @@
 
 #define NOT_SIMULATION_NEWS		ALife::_NEWS_ID(-1)
 #define DEFAULT_NEWS_SHOW_TIME	5000
-//-----------------------------------------------------------------------------/
-//	News related routines
-//-----------------------------------------------------------------------------/
 
 
 struct GAME_NEWS_DATA : public IPureSerializeObject<IReader,IWriter>
 {	
-	GAME_NEWS_DATA();
+						GAME_NEWS_DATA		();
 
-	virtual void load (IReader&);
-	virtual void save (IWriter&);
+	virtual void		load				(IReader&);
+	virtual void		save				(IWriter&);
 
 
-	//id новости из симуляции ALife::_NEWS_ID(-1) то новость - сюжетная
-	ALife::_NEWS_ID news_id;
-	//текст для сюжетной новости
-	STRING_INDEX news_text;
-	//время показывания новости на экране в млс(-1 - бесконечность)
-	int	show_time;
+	xr_string			news_text;
+	int					show_time;
 
-	//время получения новости
 	ALife::_TIME_ID		receive_time;
 
-	//положение иконки и имя текстуры (если задано)
-	LPCSTR texture_name;
-	int x1, y1, x2, y2;
+	shared_str			texture_name;
+	Frect				tex_rect;
 
-	LPCSTR FullText();
+	LPCSTR				SingleLineText();
 
 private:
 	//полный текст новостей, формируется при первом обращении
 	xr_string full_news_text;
 
-	// Структурка описывающая ньюс
-	typedef struct tagNewsTemplate
-	{
-		shared_str		str;
-	} SNewsTemplate;
-
-	// Array of news templates
-	typedef xr_map<u32, SNewsTemplate>	NewsTemplates;
-	NewsTemplates							m_NewsTemplates;
-
-	void LoadNewsTemplates();
 };
 
 DEFINE_VECTOR(GAME_NEWS_DATA, GAME_NEWS_VECTOR, GAME_NEWS_IT);

@@ -91,7 +91,7 @@ void CUIMessagesWindow::Init(float x, float y, float width, float height){
 
 	CUIXmlInit::InitProgressShape(xml, "granade_indicator", 0, m_pGranadeInidcator);
 }
-
+/*
 bool CUIMessagesWindow::SetDelayForPdaMessage(int iValue, int iDelay){
 	int index = m_pGameLog->FindItemWithValue(iValue);
 
@@ -104,7 +104,8 @@ bool CUIMessagesWindow::SetDelayForPdaMessage(int iValue, int iDelay){
 
 	return false;
 }
-
+*/
+/*
 void CUIMessagesWindow::AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id){
 		R_ASSERT(pSender);
 
@@ -127,34 +128,31 @@ void CUIMessagesWindow::AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INF
 	//	pItem->UIMsgText.SetText(CPda::m_PdaMsgStr[msg]);
 	}
 }
-
-void CUIMessagesWindow::AddPdaMessage(LPCSTR message, int iId, int iDelay){
-	AddMessageToList(message, m_pGameLog, iId, iDelay);
+*/
+void CUIMessagesWindow::AddPdaMessage(LPCSTR message, int iDelay){
+	AddMessageToList(message, m_pGameLog, iDelay);
 }
 
-CUIPdaMsgListItem* CUIMessagesWindow::AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay){
-	CUIPdaMsgListItem* pItem = NULL;
-	pItem = xr_new<CUIPdaMsgListItem>(iDelay);
-	pListWnd->AddItem<CUIListItem>(pItem, 0); 
-	pListWnd->ScrollToBegin();
+CUIPdaMsgListItem* CUIMessagesWindow::AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iDelay){
+	CUIPdaMsgListItem* pItem			= xr_new<CUIPdaMsgListItem>(iDelay);
+	pListWnd->AddItem<CUIListItem>		(pItem, 0); 
+	pListWnd->ScrollToBegin				();
 	// create animation
-	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-	R_ASSERT(p);
+	CUIColorAnimatorWrapper *p			= xr_new<CUIColorAnimatorWrapper>("ui_main_msgs_short");
 	// no loop animation
-	p->Cyclic(false);
+	p->Cyclic							(false);
 	// set animation wrapper as Item Data
-	pItem->SetData(p);
+	pItem->SetData						(p);
 	// set id to item. With this we can find item in list and for some manipulation
-	pItem->SetValue(iId);
-//	pItem->UIMsgText.SetWndPos(0, 0);	
-	pItem->UIMsgText.SetText(message);	
+//.	pItem->SetValue						(iId);
+	pItem->UIMsgText.SetText			(message);	
 
 	return pItem;
 }
 
-void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay){
+void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iDelay){
 	
-	CUIPdaMsgListItem *pItem = AddMessageToList(message, m_pGameLog, iId, iDelay);
+	CUIPdaMsgListItem *pItem = AddMessageToList(message, m_pGameLog, iDelay);
 	if (pItem)
 	{
 		pItem->UIIcon.InitTexture			(textureName);

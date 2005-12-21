@@ -1150,31 +1150,12 @@ void CUIMainIngameWnd::ShowAll()
 	g_bShowHudInfo = true;
 }
 
-
+/*
 void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id)
 {
 	HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(pSender, msg, info_id);
-}
+}*/
 
-//////////////////////////////////////////////////////////////////////////
-
-bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
-	return HUD().GetUI()->m_pMessagesWnd->SetDelayForPdaMessage(iValue, iDelay);
-}
-
-void CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, int iDelay)
-{
-	HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(message, iId, iDelay);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iId, int iDelay)
-{
-	HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(textureName, originalRect, message, iId, iDelay);
-}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 {
@@ -1228,20 +1209,13 @@ void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA &news)
 	if (g_bNewsDisable) return;
 
 #ifdef DEBUG
-	Msg("[news]%s", news.FullText());
+	Msg("[news]%s", news.SingleLineText());
 #endif
 		
-	if(news.texture_name)
-	{
-		Frect rect;
-		rect.left		= float(news.x1);
-		rect.right		= float(news.x2);
-		rect.top		= float(news.y1);
-		rect.bottom		= float(news.y2);
-		AddIconedGameMessage(news.texture_name, rect, news.FullText(), news.news_text, news.show_time);
-	}
+	if(news.texture_name.size())
+		HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(*news.texture_name, news.tex_rect, news.SingleLineText(), news.show_time);
 	else
-		AddGameMessage(news.FullText(), news.news_text, news.show_time);
+		HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(news.SingleLineText(), news.show_time);
 }
 
 //////////////////////////////////////////////////////////////////////////

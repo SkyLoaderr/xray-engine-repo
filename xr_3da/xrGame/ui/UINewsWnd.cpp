@@ -28,11 +28,7 @@
 
 CUINewsWnd::CUINewsWnd()
 {
-	SetWindowName("News");
 }
-
-//////////////////////////////////////////////////////////////////////////
-
 CUINewsWnd::~CUINewsWnd()
 {
 
@@ -65,24 +61,16 @@ void CUINewsWnd::AddNews()
 {
 	UIScrollWnd->Clear();
 
-	static u32 lastNewsCount = 0;
-
 	if (Actor())
 	{
 		GAME_NEWS_VECTOR& news_vector = Actor()->game_news_registry->registry().objects();
-		if (lastNewsCount < news_vector.size())
-		{
-			lastNewsCount = news_vector.size();
-			if(GetMessageTarget())
-				GetMessageTarget()->SendMessage(this, DIARY_SET_NEWS_AS_UNREAD, NULL);
-		}
 		
 		// Показать только NEWS_TO_SHOW последних ньюсов
 		int currentNews = 0;
 
 		for (GAME_NEWS_VECTOR::reverse_iterator it = news_vector.rbegin(); it != news_vector.rend() && currentNews < NEWS_TO_SHOW ; ++it)
 		{
-			AddNewsItem(it->FullText());
+			AddNewsItem(it->SingleLineText());
 			++currentNews;
 		}
 	}

@@ -21,56 +21,44 @@
 
 
 
-//ссылка на string table
-const char * const NEWS_TYPE_KILL				= "alife_news_kill";
-const char * const NEWS_TYPE_RETREAT			= "alife_news_retreat";
 
 
-GAME_NEWS_DATA::GAME_NEWS_DATA():news_id(ALife::_NEWS_ID(-1)), news_text(NO_STRING) 
+GAME_NEWS_DATA::GAME_NEWS_DATA()
 {
-	texture_name = NULL;
-	x1 = y1 = x2 = y2 = 0;
-	show_time = DEFAULT_NEWS_SHOW_TIME;
-
-	LoadNewsTemplates ();
-}
-
-void GAME_NEWS_DATA::load (IReader& stream)
-{
-	load_data(news_id, stream);
-	load_data(news_text, stream);
-	load_data(receive_time, stream);
-
-	texture_name = NULL;
-	x1 = y1 = x2 = y2 = 0;
-
-	full_news_text = "";
+	tex_rect.set	(0.0f,0.0f,0.0f,0.0f);
+	show_time		= DEFAULT_NEWS_SHOW_TIME;
 }
 
 void GAME_NEWS_DATA::save (IWriter& stream)
 {
-	save_data(news_id, stream);
-	save_data(news_text, stream);
+	save_data(news_text,	stream);
 	save_data(receive_time, stream);
+	save_data(texture_name,	stream);
+	save_data(tex_rect,		stream);
+}
+
+void GAME_NEWS_DATA::load (IReader& stream)
+{
+	load_data(news_text,	stream);
+	load_data(receive_time, stream);
+	load_data(texture_name,	stream);
+	load_data(tex_rect,		stream);
 }
 
 
-LPCSTR GAME_NEWS_DATA::FullText()
+
+LPCSTR GAME_NEWS_DATA::SingleLineText()
 {
-	if(xr_strlen(full_news_text.c_str()) > 1)
+	if( xr_strlen(full_news_text.c_str()) )
 		return full_news_text.c_str();
-	
-	string1024	newsPhrase = "";
 	string128	time = "";
+/*	
+	string1024	newsPhrase = "";
 	string512	locationName = "";
 	string2048	result = "";
 
-	if(news_id == NOT_SIMULATION_NEWS)
-	{
-		THROW(news_text != NO_STRING);
-		THROW(xr_strlen(*CStringTable().translate((STRING_INDEX)news_text))<sizeof(newsPhrase));
-		strcpy(newsPhrase, *CStringTable().translate((STRING_INDEX)news_text)) ;
-	}
+	strcpy(newsPhrase, *CStringTable().translate((STRING_INDEX)news_text)) ;
+
 	else
 	{
 		const CALifeNews* pNewsItem  = ai().alife().news().news(news_id); VERIFY(pNewsItem);
@@ -117,6 +105,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 		}
 		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)].str, name1, name2);
 	}
+*/
 
 	// Calc current time
 	u32 years, months, days, hours, minutes, seconds, milliseconds;
@@ -124,17 +113,12 @@ LPCSTR GAME_NEWS_DATA::FullText()
 #pragma todo("Satan->Satan : insert carry-over")
 	//sprintf(time, "%02i:%02i \\n", hours, minutes);
 	sprintf		(time, "%02i:%02i ", hours, minutes);
-	strconcat	(result, locationName, time, newsPhrase);
+//	strconcat	(result, locationName, time, newsPhrase);
 
-	full_news_text = result;
+
+	full_news_text			= time;
+	full_news_text			+= *CStringTable().translate(news_text.c_str());
+
 
 	return full_news_text.c_str();
-}
-
-void GAME_NEWS_DATA::LoadNewsTemplates()
-{
-	if(!m_NewsTemplates.empty()) return;
-
-	m_NewsTemplates[ALife::eNewsTypeKill].str = CStringTable().translate(NEWS_TYPE_KILL);
-	m_NewsTemplates[ALife::eNewsTypeRetreat].str = CStringTable().translate(NEWS_TYPE_RETREAT);
 }

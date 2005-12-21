@@ -236,11 +236,11 @@ public:
 	//передача порции информации InventoryOwner
 			bool				GiveInfoPortion		(LPCSTR info_id);
 			bool				DisableInfoPortion	(LPCSTR info_id);
-			bool				GiveInfoPortionViaPda	(LPCSTR info_id, CScriptGameObject* pFromWho);
-			bool				GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2, u32 delay);
-			void				SetNewsShowTime		(LPCSTR news, int show_time);
+//			bool				GiveInfoPortionViaPda	(LPCSTR info_id, CScriptGameObject* pFromWho);
+			bool				GiveGameNews		(LPCSTR news, LPCSTR texture_name, Frect tex_rect, int delay, int show_time);
+//			void				SetNewsShowTime		(LPCSTR news, int show_time);
 
-			void				AddIconedTalkMessage(LPCSTR news, LPCSTR texture_name, float x1, float y1, float x2, float y2, LPCSTR templ_name);
+			void				AddIconedTalkMessage(LPCSTR news, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name);
 	//предикаты наличия/отсутствия порции информации у персонажа
 			bool				HasInfo				(LPCSTR info_id);
 			bool				DontHasInfo			(LPCSTR info_id);

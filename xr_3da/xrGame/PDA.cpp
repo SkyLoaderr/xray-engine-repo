@@ -330,7 +330,7 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 			//отправить сообщение владельцу, только если мы включены
 			if(IsActive())
 			{
-				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, info_id);
+//				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, info_id);
 				AddMessageToLog(id, (EPdaMsg)msg, info_id, true);
 			}
 		}

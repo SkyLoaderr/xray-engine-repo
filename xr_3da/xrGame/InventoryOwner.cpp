@@ -208,8 +208,7 @@ bool CInventoryOwner::IsActivePDA() const
 		return false;
 }
 
-//виртуальная функция обработки сообщений
-//who - id PDA от которого пришло сообщение
+/*
 void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 {
 	if(msg == ePdaMsgInfo)
@@ -227,20 +226,14 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 	CGameObject* pWho = smart_cast<CGameObject*>(pWhoPda->H_Parent());
 
 
-	/*Msg("who pda %d, who parent %d, we pda %d, we parent %d", who, 
-		pWho->ID(),
-		GetPDA()->ID(),
-		GetPDA()->GetOriginalOwnerID());*/
-
 	pThisGameObject->callback(GameObject::eInventoryPda)(
 		pThisGameObject->lua_game_object(),
 		pWho->lua_game_object(), 
 		(int)msg,
 		info_id
 	);
-
 }
-
+*/
 
 
 //who - id PDA которому отправляем сообщение

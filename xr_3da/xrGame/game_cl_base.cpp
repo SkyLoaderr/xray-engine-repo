@@ -8,6 +8,7 @@
 #include "xr_Level_controller.h"
 #include "ui/UIMainIngameWnd.h"
 #include "UI/UIGameTutorial.h"
+#include "UI/UIMessagesWindow.h"
 
 game_cl_GameState::game_cl_GameState()
 {
@@ -229,7 +230,7 @@ ClientID game_cl_GameState::GetClientIDByOrderID	(u32 idx)
 void game_cl_GameState::CommonMessageOut (LPCSTR msg)
 {
 	if (!HUD().GetUI()) return;
-	HUD().GetUI()->UIMainIngameWnd->AddGameMessage(msg, -1, 60000);
+	HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(msg, 60000);
 }
 
 float game_cl_GameState::shedule_Scale		()
