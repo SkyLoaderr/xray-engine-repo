@@ -294,6 +294,16 @@ function load_job(sj, gname, type, squad, groups)
 						end
 		}
 		table.insert(sj, t)
+		-- Племянник
+		t = { section = "logic@esc_lager_victor",
+			idle = 0,
+			prior = 16, state = {0,1},
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "esc_plemiannik"			           
+						end
+		}
+		table.insert(sj, t)
 		
 		-- спящие ночью
 		t = { section = "logic@esc_lager_sleeper1",
@@ -412,6 +422,15 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 			predicate = function(obj_info) 
         					return obj_info.profile_name == "esc_fanat"			           
+						end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_lager_defend13",
+			idle = 0,
+			prior = 20, state = {2},
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
+			predicate = function(obj_info) 
+        					return obj_info.profile_name == "esc_plemiannik"			           
 						end
 		}
 		table.insert(sj, t)
@@ -1603,6 +1622,69 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 	
+	if type == "esc_stalker_camp" then
+		t = { section = "logic@esc_stalker_camp_provodnik", 
+			idle = 0,
+			prior = 10, state = {0},
+			online = false,
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_provodnik"
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_stalker_camp1", 
+			idle = 0,
+			prior = 8, state = {0},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_stalker_camp2", 
+			idle = 0,
+			prior = 8, state = {0},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_stalker_camp3", 
+			idle = 0,
+			prior = 8, state = {0},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@esc_stalker_camp_provodnik", 
+			idle = 0,
+			prior = 10, state = {1},
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_provodnik"
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_stalker_camp1", 
+			idle = 0,
+			prior = 8, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_stalker_camp2", 
+			idle = 0,
+			prior = 8, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_stalker_camp3", 
+			idle = 0,
+			prior = 8, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	
 end
 
 function load_states(gname, type)
@@ -1803,9 +1885,19 @@ function load_states(gname, type)
 		end
 	end
 	
+	if type == "esc_stalker_camp" then
+		return function(gulag)
+			if db.actor:has_info("yan_provodnik_spawn") then
+				return 1
+			else
+				return 0
+			end
+		end
+	end
+	
 	if type == "esc_assault" then
 		return function(gulag)
-			if db.actor:has_info("escape_dynamite_meet") then
+			if db.actor:has_info("escape_dynamite_meet") and db.actor:dont_has_info("cit_jail_actor_wake") then
 				return 1
 			else
 				return 0
@@ -1863,6 +1955,10 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "esc_assault" then
 		return npc_community == "stranger"
 	end 
+	
+	if gulag_type == "esc_stalker_camp" then
+		return npc_community == "stranger"
+	end
 	
 	return false
 end
