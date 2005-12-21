@@ -268,7 +268,6 @@ path_walk = wolf_walk
 path_look = wolf_look
 meet = meet@camp
 
-
 [meet@wolf]
 meet_state		= 15|wait@wait
 meet_state_wpn	= 15|backoff@threat_weap
@@ -280,6 +279,27 @@ syndata		= hello@hail|backoff@threat_weap
 
 [death@wolf]
 on_info = %+esc_wolf_dead%
+
+
+
+[logic@esc_lager_victor]
+active = walker@esc_lager_victor
+on_death = death@victor
+
+[walker@esc_lager_victor]
+path_walk = victor_walk
+path_look = victor_look
+meet = meet@need_help_2
+on_info = {+cit_vp_search} walker@esc_lager_victor2
+
+[walker@esc_lager_victor2]
+path_walk = victor_walk
+path_look = victor_look
+meet = meet@neutral
+
+[death@victor]
+on_info = %+cit_victor_die%
+
 
 ;Fanat
 [logic@esc_lager_fanat]
@@ -625,6 +645,20 @@ path_walk = defend12_walk
 path_look = defend12_look
 combat_ignore_cond = {-esc_open_lager_fire}
 
+
+[logic@esc_lager_defend13]
+active = walker@esc_lager_defend13
+combat_ignore = combat_ignore
+on_hit = hit@victor
+
+[hit@victor]
+on_info = %+esc_victor_hit%
+
+
+[walker@esc_lager_defend13]
+path_walk = defend13_walk
+path_look = defend13_look
+combat_ignore_cond = {-esc_victor_hit}
 
 
 [combat_ignore]
@@ -1520,4 +1554,38 @@ victim_wpn	= 5|actor
 use		= true
 use_wpn		= true
 meet_dialog	= escape_factory_assault_start
+
+
+;---------------------------------
+;-------- Ћагерь у Ћиса ----------
+;---------------------------------
+
+[logic@esc_stalker_camp_provodnik]
+active = kamp@esc_stalker_camp_provodnik
+
+[kamp@esc_stalker_camp_provodnik]
+center_point = camp_point
+meet = meet@neutral
+
+
+[logic@esc_stalker_camp1]
+active = kamp@esc_stalker_camp1
+
+[kamp@esc_stalker_camp1]
+center_point = camp_point
+
+
+[logic@esc_stalker_camp2]
+active = kamp@esc_stalker_camp2
+
+[kamp@esc_stalker_camp2]
+center_point = camp_point
+
+
+[logic@esc_stalker_camp3]
+active = walker@esc_stalker_camp3
+
+[walker@esc_stalker_camp3]
+path_walk = walk
+path_look = look
 
