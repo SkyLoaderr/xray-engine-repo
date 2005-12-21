@@ -57,3 +57,7 @@
         <text>help_to_fox</text>
     </article> 
     
+    <article id="esc_doctor_meet" name="doctor_meet" article_type="task" group="doctor_meet">
+        <text>doctor_meet_text</text>
+    </article> 
+    

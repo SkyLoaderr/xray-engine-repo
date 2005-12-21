@@ -140,4 +140,14 @@
         <text>Поговорить с командиром новичков.</text>
 	</string>	    
     
+    <string id="meet_with_doctor">
+        <text>Встретиться с Доктором.</text>
+	</string>	
+	<string id="meet_with_doctor_1">
+        <text>Встретиться с Доктором.</text>
+	</string>
+	<string id="meet_with_doctor_2">
+        <text>Встретиться с Доктором в тайнике Стрелка.</text>
+	</string>      
+    
                 
