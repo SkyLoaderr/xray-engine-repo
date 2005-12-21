@@ -9,7 +9,6 @@
 
 
 #include "uiwindow.h"
-#include "uistring.h"
 #include "../uistaticitem.h"
 #include "../script_export_space.h"
 
