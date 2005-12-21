@@ -19,6 +19,8 @@
 #include "stalker_animation_manager.h"
 #include "effectorshot.h"
 
+#define ALLOW_STRANGE_BEHAVIOUR
+
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionCommand
 //////////////////////////////////////////////////////////////////////////
@@ -188,8 +190,11 @@ void CObjectActionStrapping::execute			()
 
 void CObjectActionStrapping::finalize		()
 {
-	inherited::finalize();
-	object().animation().setup_storage(0);
+	inherited::finalize					();
+#ifdef ALLOW_STRANGE_BEHAVIOUR
+	object().animation().setup_storage	(0);
+#endif
+	VERIFY								(!object().animation().setup_storage());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -216,8 +221,11 @@ void CObjectActionStrappingToIdle::execute			()
 
 void CObjectActionStrappingToIdle::finalize		()
 {
-	inherited::finalize();
-	object().animation().setup_storage(0);
+	inherited::finalize					();
+#ifdef ALLOW_STRANGE_BEHAVIOUR
+	object().animation().setup_storage	(0);
+#endif
+	VERIFY								(!object().animation().setup_storage());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -245,8 +253,11 @@ void CObjectActionUnstrapping::execute			()
 
 void CObjectActionUnstrapping::finalize		()
 {
-	inherited::finalize();
-	object().animation().setup_storage(0);
+	inherited::finalize					();
+#ifdef ALLOW_STRANGE_BEHAVIOUR
+	object().animation().setup_storage	(0);
+#endif
+	VERIFY								(!object().animation().setup_storage());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -273,8 +284,11 @@ void CObjectActionUnstrappingToIdle::execute			()
 
 void CObjectActionUnstrappingToIdle::finalize		()
 {
-	inherited::finalize();
-	object().animation().setup_storage(0);
+	inherited::finalize					();
+#ifdef ALLOW_STRANGE_BEHAVIOUR
+	object().animation().setup_storage	(0);
+#endif
+	VERIFY								(!object().animation().setup_storage());
 }
 
 //////////////////////////////////////////////////////////////////////////

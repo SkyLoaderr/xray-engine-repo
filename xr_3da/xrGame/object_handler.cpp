@@ -218,35 +218,63 @@ void CObjectHandler::weapon_bones	(int &b0, int &b1, int &b2) const
 bool CObjectHandler::weapon_strapped	() const
 {
 	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-	if (!weapon)
+	if (!weapon) {
+//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//		Msg						("[weapon_strapped][%s][%s][true][not_a_weapon]",*planner().object().cName(),*weapon->cName());
 		return					(false);
+	}
 
 	return						(weapon_strapped(weapon));
+}
+
+void CObjectHandler::actualize_strap_mode	(CWeapon *weapon) const
+{
+	VERIFY						(weapon);
+
+	if (!planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped))
+		weapon->strapped_mode	(false);
+
+	THROW3						(weapon->can_be_strapped(),"Cannot strap weapon",*weapon->cName());
+	weapon->strapped_mode		(true);
 }
 
 bool CObjectHandler::weapon_strapped	(CWeapon *weapon) const
 {
 	VERIFY						(weapon);
 
-	if (!weapon->can_be_strapped())
+	if (!weapon->can_be_strapped()) {
+//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//		Msg						("[weapon_strapped][%s][%s][false][!can_be_strapped]",*planner().object().cName(),*weapon->cName());
 		return					(false);
+	}
 
 	if (
 		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
 		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
 		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
 		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
-	)
+	) {
+//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//		Msg						("[weapon_strapped][%s][%s][false][strapping/unstrapping]",*planner().object().cName(),*weapon->cName());
 		return					(false);
+	}
 
+	actualize_strap_mode		(weapon);
+
+//	if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//	Msg							("[weapon_strapped][%s][%s][%s][strapped_mode]",*planner().object().cName(),*weapon->cName(),weapon->strapped_mode() ? "true" : "false");
 	return						(weapon->strapped_mode());
 }
 
 bool CObjectHandler::weapon_unstrapped	() const
 {
 	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-	if (!weapon)
+	if (!weapon) {
+//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//		Msg						("[weapon_unstrapped][%s][%s][true][not_a_weapon]",*planner().object().cName(),*weapon->cName());
+		VERIFY					(!planner().object().animation().setup_storage());
 		return					(true);
+	}
 
 	return						(weapon_unstrapped(weapon));
 }
@@ -255,17 +283,39 @@ bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
 {
 	VERIFY						(weapon);
 
-	if (!weapon->can_be_strapped())
+	if (!weapon->can_be_strapped()) {
+//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//		Msg						("[weapon_unstrapped][%s][%s][true][!can_be_strapped]",*planner().object().cName(),*weapon->cName());
+		VERIFY					(!planner().object().animation().setup_storage());
 		return					(true);
+	}
 
-	if (
-		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
-		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
-		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
-		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
+	if	(
+			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
+			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
+			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
+			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
 		)
+	{
+//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//		Msg						("[weapon_unstrapped][%s][%s][false][strapping/unstrapping]",*planner().object().cName(),*weapon->cName());
+//		VERIFY					(!planner().object().animation().setup_storage());
 		return					(false);
+	}
 
+//	if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
+//	Msg							("[weapon_unstrapped][%s][%s][%s][strapped_mode][%s]",*planner().object().cName(),*weapon->cName(),!weapon->strapped_mode() ? "true" : "false",planner().action2string(planner().current_action_id()));
+
+//	int							a,b,c;
+//	weapon_bones				(a,b,c);
+	actualize_strap_mode		(weapon);
+
+	VERIFY						(
+		(planner().current_action_state_id() != ObjectHandlerSpace::eWorldOperatorStrapped) ||
+		weapon->strapped_mode()
+	);
+
+	VERIFY						(weapon->strapped_mode() || !planner().object().animation().setup_storage());
 	return						(!weapon->strapped_mode());
 }
 

@@ -24,6 +24,9 @@ void CStalkerAnimationManager::global_play_callback(CBlend *blend)
 	VERIFY						(object);
 	if (object->animation().setup_storage()) {
 		object->animation().setup_storage()->set_property(object->animation().property_id(),object->animation().property_value());
+#ifdef CLEAR_STORAGE_ON_CALLBACK
+		object->animation().setup_storage	(0);
+#endif
 		return;
 	}
 	object->animation().global().make_inactual();

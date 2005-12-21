@@ -13,6 +13,8 @@
 #include "ai_monster_space.h"
 #include "graph_engine_space.h"
 
+#define CLEAR_STORAGE_ON_CALLBACK
+
 class CMotionDef;
 class CBlend;
 class CAI_Stalker;

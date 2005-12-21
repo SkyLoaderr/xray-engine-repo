@@ -345,6 +345,8 @@ void CStalkerActionSmartTerrain::initialize				()
 		return;
 	}
 
+	object().CObjectHandler::set_goal			(eObjectActionIdle);
+
 	CWeapon										*best_weapon = smart_cast<CWeapon*>(object().best_weapon());
 	if (object().CObjectHandler::weapon_strapped(best_weapon))
 		return;

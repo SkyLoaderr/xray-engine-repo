@@ -49,6 +49,9 @@ protected:
 	// we can ignore net_Relcase for this object
 	mutable CInventoryItem			*m_last_best_weapon;
 
+private:
+			void					actualize_strap_mode(CWeapon *weapon) const;
+
 protected:
 	IC		void					switch_torch		(CInventoryItem *inventory_item, bool value);
 

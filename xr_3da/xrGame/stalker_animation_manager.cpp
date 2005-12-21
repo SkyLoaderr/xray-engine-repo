@@ -102,11 +102,17 @@ void CStalkerAnimationManager::update						()
 	try {
 		play_delayed_callbacks	();
 
+		if	(
+				(
+					!script_animations().empty() &&
+					object().callback(GameObject::eScriptAnimation)
+				) ||
+				object().animation().setup_storage()
+			)
+				m_skeleton_animated->UpdateTracks	();
+
 		if (!object().g_Alive())
 			return;
-
-		if (!script_animations().empty() && object().callback(GameObject::eScriptAnimation))
-			m_skeleton_animated->UpdateTracks	();
 
 		if (!script_animations().empty()) {
 #if 0//def DEBUG
@@ -140,9 +146,6 @@ void CStalkerAnimationManager::update						()
 			return;
 		}
 		
-		if (object().animation().setup_storage())
-			m_skeleton_animated->UpdateTracks	();
-
 		script().reset			();
 
 		const MotionID			&global_animation = assign_global_animation();
