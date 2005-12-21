@@ -188,7 +188,9 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		float				power_factor = 3.f*amount/100.f;
 		clamp				(power_factor,0.f,1.f);
 		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
-		animation().play_fx	(power_factor,iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1)));
+		int					fx_index = iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
+		if (fx_index != -1)
+			animation().play_fx	(power_factor,fx_index);
 	}
 	
 	if (g_Alive())
