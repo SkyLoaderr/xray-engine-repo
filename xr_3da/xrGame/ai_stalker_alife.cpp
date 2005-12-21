@@ -13,7 +13,6 @@
 #include "alife_task_registry.h"
 #include "alife_task.h"
 #include "alife_space.h"
-#include "alife_human.h"
 #include "inventory.h"
 #include "clsid_game.h"
 #include "pda.h"
@@ -24,6 +23,10 @@
 #include "ef_storage.h"
 #include "ef_primary.h"
 #include "ef_pattern.h"
+
+#define MAX_ITEM_FOOD_COUNT		3
+#define MAX_ITEM_MEDIKIT_COUNT	3
+#define MAX_AMMO_ATTACH_COUNT	10
 
 IC	bool CAI_Stalker::CTradeItem::operator<	(const CTradeItem &trade_item) const
 {
