@@ -23,12 +23,9 @@ function WeatherManager:reset()
 	if weather == "default" then
 		-- сетим дефолтовую погоду
 		self.weather_list = xr_logic.parse_condlist(db.actor, level.name(), "weather", "default")
-		self.update_level = level.name()
-		level.set_weather("default",true)
-		printf("WEATHER: 'default'")		
-		return
-	end
-	self.weather_list = xr_logic.parse_condlist(db.actor, level.name(), "weather", weather)
+	else		
+		self.weather_list = xr_logic.parse_condlist(db.actor, level.name(), "weather", weather)
+	end	
 	self:select_weather(true)
 end
 
@@ -36,7 +33,7 @@ function WeatherManager:select_weather(now)
 	self.weather_change_day = level.get_time_days()
 	self.update_level = level.name()
 	local weather = xr_logic.pick_section_from_condlist(db.actor, db.actor, self.weather_list)
-	printf("WEATHER: '%s'", weather)
+	printf("WEATHER: '%s' now '%s'", weather, tostring(now))
 	level.set_weather(weather,now);
 end
 
