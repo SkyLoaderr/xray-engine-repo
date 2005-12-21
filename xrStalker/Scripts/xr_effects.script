@@ -80,6 +80,15 @@ function stop_postprocess(actor, npc, p)
     end
 end
 
+function teleport_actor(actor, npc, p)
+	local point = patrol(p[1])
+	local look = patrol(p[2])
+	
+	db.actor:set_actor_position(patrol(point):point(0))
+	local dir = patrol(look):point(0):sub(patrol(point):point(0))
+	db.actor:set_actor_direction(-dir:getH())	
+end
+
 -----------------------------------------------------------------------------
 local drop_point, drop_object = 0, 0
 local function drop_object_item(item)
