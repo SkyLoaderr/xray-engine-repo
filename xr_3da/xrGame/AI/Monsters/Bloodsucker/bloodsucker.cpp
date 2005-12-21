@@ -21,7 +21,7 @@
 
 #include "../../../sound_player.h"
 #include "../../../../camerabase.h"
-#include "../../../../xr_level_controller.h"
+#include "../../../xr_level_controller.h"
 
 #ifdef DEBUG
 #include <dinput.h>
