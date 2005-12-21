@@ -23,8 +23,11 @@ function evaluator_new:evaluate()
 		return false
 	end
 
+	if self.mgr == nil then
+		self.mgr = self.object:motivation_action_manager()
+	end	
 	-- если есть враги - надо не реагировать.
-	if self.object:best_enemy() ~= nil then
+	if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then
 		return false
 	end
 
