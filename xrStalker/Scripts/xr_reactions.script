@@ -178,9 +178,7 @@ function events:calculateObject(v)
 	end
 
 	if type == "stalker" and
- 	   (vo:team() == self.npc:team() and
-		vo:squad() == self.npc:squad() and
-		vo:group() == self.npc:group())
+ 	   (vo:character_community() == self.npc:character_community())
 	then
 		return false
 	end
@@ -276,7 +274,7 @@ function events:print()
 	for key,value in pairs(self.arhive) do
 		if i == 0 then
 			printf("--------------------------------------------------------------")
-			printf("Print Start")
+			printf("Print Start [%s]", self.npc:name())
 			printf("--------------------------------------------------------------")
 		end
 		i = i + 1
