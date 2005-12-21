@@ -70,6 +70,9 @@ CPHElement::CPHElement()																															//aux
 	//m_flags.set(flEnabledOnStep,FALSE);
 	m_flags.assign(0);
 	mXFORM.identity();
+	m_mass.setZero();
+	m_mass_center.set(0,0,0);
+	m_volume=0.f;
 }
 
 void CPHElement::add_Box		(const Fobb&		V)

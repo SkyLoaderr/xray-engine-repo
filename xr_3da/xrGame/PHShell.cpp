@@ -704,8 +704,10 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			//fm_position.transform_tiny(mc,bone_data.center_of_mass);
 			E->set_ParentElement(root_e);
 			///B.set_callback(BonesCallback1,E);
-			E->add_Shape(bone_data.shape);
-			E->setMassMC(bone_data.mass,bone_data.center_of_mass);
+			if(!no_physics_shape(bone_data.shape)){
+				E->add_Shape(bone_data.shape);
+				E->setMassMC(bone_data.mass,bone_data.center_of_mass);
+			}
 			element_number=u16(elements.size());
 			add_Element(E);
 			element_added=true;
@@ -940,7 +942,10 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		CODEGeom* added_geom	=	E->last_geom();
 		if(added_geom)	added_geom->set_bone_id(id);
 	}
-
+#ifdef DEBUG
+	if(E->last_geom())
+	VERIFY(E->last_geom()->bone_id()!=u16(-1));
+#endif
 	if(m_spliter_holder&&E->has_geoms())
 	{
 		m_spliter_holder->AddToGeomMap(mk_pair(id,E->last_geom())); 

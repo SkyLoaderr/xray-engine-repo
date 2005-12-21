@@ -81,6 +81,7 @@ void TransformedGeometryExtensionLocalParams(dGeomID geom_transform,const dReal*
 CODEGeom::CODEGeom()
 {
 	m_geom_transform=NULL;
+	m_bone_id=u16(-1);
 }
 
 CODEGeom::~CODEGeom()
