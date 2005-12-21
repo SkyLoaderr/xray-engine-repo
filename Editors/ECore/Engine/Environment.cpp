@@ -24,7 +24,7 @@
 ENGINE_API	float			psVisDistance	= 1.f;
 static const float			MAX_NOISE_FREQ	= 0.3f;
 
-#define WEATHER_LOGGING
+//#define WEATHER_LOGGING
 
 // real WEATHER->WFX transition time
 #define WFX_TRANS_TIME		5.f
