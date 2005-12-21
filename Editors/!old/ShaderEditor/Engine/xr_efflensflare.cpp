@@ -10,6 +10,7 @@
 
 #ifdef _EDITOR
     #include "ui_toolscustom.h"
+    #include "ui_main.h"
 #else
 	#include "xr_object.h"
 	#include "igame_level.h"
@@ -277,7 +278,7 @@ void CLensFlare::OnFrame(int id)
 	vecY.crossproduct(vecX, vecDir);
 
 #ifdef _EDITOR
-	float dist = flt_max;
+	float dist = UI->ZFar();
     if (Tools->RayPick(Device.m_Camera.GetPosition(),vSunDir,dist))
 		fBlend = fBlend - BLEND_DEC_SPEED * Device.fTimeDelta;
 	else

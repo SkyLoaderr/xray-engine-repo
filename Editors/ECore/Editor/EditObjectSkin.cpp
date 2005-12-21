@@ -173,7 +173,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
 CBone* CEditableObject::PickBone(const Fvector& S, const Fvector& D, const Fmatrix& parent)
 {
     BoneVec& lst 	= m_Bones;
-    float dist 		= flt_max;
+    float dist 		= 10000.f;
     CBone* sel	 	= 0;
     for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
     	if ((*b_it)->Pick(dist,S,D,parent))
