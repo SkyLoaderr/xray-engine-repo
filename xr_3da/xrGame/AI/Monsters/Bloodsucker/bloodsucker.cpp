@@ -22,6 +22,7 @@
 #include "../../../sound_player.h"
 #include "../../../../camerabase.h"
 #include "../../../xr_level_controller.h"
+#include "../../../ActorCondition.h"
 
 #ifdef DEBUG
 #include <dinput.h>
@@ -144,6 +145,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	m_vampire_want_speed			= pSettings->r_float(section,"Vampire_Want_Speed");
 	m_vampire_reach_time			= pSettings->r_u32(section,"Vampire_Reach_Time");
+	m_vampire_wound					= pSettings->r_float(section,"Vampire_Wound");
 }
 
 
@@ -462,7 +464,12 @@ void CAI_Bloodsucker::HitEntity(const CEntity *pEntity, float fDamage, float imp
 
 	EMonsterState state = StateMan->get_state_type();
 	if (is_state(state, eStateVampire_Execute)) {
+		VERIFY(Actor());
+		
 		move_actor_cam();
+		
+		u16 bone_id = smart_cast<CKinematics*>(Actor()->Visual())->LL_BoneID("bip01_head");
+		Actor()->conditions().AddWound(m_vampire_wound, ALife::eHitTypeWound, bone_id);
 	}
 }
 

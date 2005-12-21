@@ -95,7 +95,7 @@ public:
 private:
 	float					m_vampire_want_value;
 	float					m_vampire_want_speed;		// load from ltx
-	
+	float					m_vampire_wound;
 	
 			void			LoadVampirePPEffector	(LPCSTR section);	
 

@@ -86,6 +86,9 @@ public:
 
 	CObject*				GetWhoHitLastTime		() {return m_pWho;}
 	u16						GetWhoHitLastTimeID		() {return m_iWhoID;}
+
+	CWound*					AddWound				(float hit_power, ALife::EHitType hit_type, u16 element);
+
 protected:
 	void					UpdateHealth			();
 	void					UpdatePower				();
@@ -96,7 +99,6 @@ protected:
 	void					UpdateCircumspection	();
 	void					UpdateEntityMorale		();
 
-	CWound*					AddWound				(float hit_power, ALife::EHitType hit_type, u16 element);
 
 	//изменение силы хита в зависимости от надетого костюма
 	//(только для InventoryOwner)
