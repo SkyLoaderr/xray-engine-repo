@@ -227,14 +227,14 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 
 		// Create _new_ frustum and recurse
 		CFrustum				Clip;
-		Clip.CreateFromPortal	(P,PortalTraverser.i_vBase,PortalTraverser.i_mXFORM);
+		Clip.CreateFromPortal	(P, PORTAL->P.n, PortalTraverser.i_vBase,PortalTraverser.i_mXFORM);
 		PORTAL->marker			= PortalTraverser.i_marker;
 		PORTAL->bDualRender		= FALSE;
 		pSector->traverse		(Clip,scissor);
 	}
 }
 
-void CSector::load(IReader& fs)
+void CSector::load		(IReader& fs)
 {
 	// Assign portal polygons
 	u32 size			= fs.find_chunk(fsP_Portals); R_ASSERT(0==(size&1));

@@ -69,7 +69,7 @@ public:
 	BOOL			CreateFromClipPoly	(Fvector* p,	int count,		Fvector& vBase, CFrustum& clip);	// returns 'false' if creation failed
 	void			CreateFromPoints	(Fvector* p,	int count,		Fvector& vBase );
 	void			CreateFromMatrix	(Fmatrix &M,	u32 mask);
-	void			CreateFromPortal	(sPoly* P,		Fvector& vBase, Fmatrix& mFullXFORM);
+	void			CreateFromPortal	(sPoly* P,		Fvector& vPN,	Fvector& vBase, Fmatrix& mFullXFORM);
 	void			CreateFromPlanes	(Fplane* p,		int count);
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest) const;
