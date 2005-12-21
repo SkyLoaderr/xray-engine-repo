@@ -1897,7 +1897,7 @@ function load_states(gname, type)
 	
 	if type == "esc_assault" then
 		return function(gulag)
-			if db.actor:has_info("escape_dynamite_meet") and db.actor:dont_has_info("cit_jail_actor_wake") then
+			if db.actor:has_info("escape_dynamite_meet") then
 				return 1
 			else
 				return 0

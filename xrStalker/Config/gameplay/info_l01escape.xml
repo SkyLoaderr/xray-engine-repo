@@ -215,4 +215,12 @@
 	
 	
 	<info_portion id="esc_zombie_rise2"></info_portion>
+	<info_portion id="esc_victor_hit"></info_portion>
+	
+	<!-- проводник -->
+	<info_portion id="esc_find_doctor_start">
+		<task>doctor_meet</task>
+		<article>esc_doctor_meet</article>
+	</info_portion>
+	
 </game_information_portions>
