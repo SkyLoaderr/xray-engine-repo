@@ -13,7 +13,7 @@
 
 //#define		MAPROT_LIST				"maprot_list.ltx"	
 string_path		MAPROT_LIST		= "";
-BOOL	net_sv_control_hit	= TRUE		;
+BOOL	net_sv_control_hit	= FALSE		;
 BOOL	g_bCollectStatisticData = FALSE;
 
 // Main

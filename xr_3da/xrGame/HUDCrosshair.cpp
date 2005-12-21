@@ -47,6 +47,13 @@ void CHUDCrosshair::Load		()
 //выставляет radius от min_radius до max_radius
 void CHUDCrosshair::SetDispersion	(float disp)
 { 
+	Fvector4 r;
+	Fvector R			= { VIEWPORT_NEAR*_sin(disp), 0.f, VIEWPORT_NEAR };
+	Device.mProject.transform	(r,R);
+	int radius_pixels	= iFloor(0.5f + _abs(r.x)*Device.fWidth_2);
+	//	clamp(radius_pixels, min_radius, max_radius);
+	target_radius		= radius_pixels; 
+/*
 	Fvector E={0,0,0};
 	Fvector D={0,0,1}, R={1,0,0};
 	E.mad(D,_cos(disp));
@@ -57,6 +64,7 @@ void CHUDCrosshair::SetDispersion	(float disp)
 //	clamp(radius_pixels, min_radius, max_radius);
 
 	target_radius = radius_pixels; 
+*/
 }
 
 extern ENGINE_API BOOL g_bRendering; 
@@ -84,8 +92,23 @@ void CHUDCrosshair::OnRender ()
 
 	int y_min = x_min;
 	int y_max = x_max;
+/*
+	pv->set					(center.x+x_min,center.y - y_min, cross_color); pv++;
+	pv->set					(center.x+x_min,center.y + y_min, cross_color); pv++;
 
+	pv->set					(center.x-x_min,center.y - y_min, cross_color); pv++;
+	pv->set					(center.x-x_min,center.y + y_min, cross_color); pv++;
 
+	pv->set					(center.x-x_min,center.y - y_min, cross_color); pv++;
+	pv->set					(center.x+x_min,center.y - y_min, cross_color); pv++;
+
+	pv->set					(center.x-x_min,center.y + y_min, cross_color); pv++;
+	pv->set					(center.x+x_min,center.y + y_min, cross_color); pv++;
+
+	pv->set					(center.x, center.y, cross_color); pv++;
+	pv->set					(center.x+1, center.y, cross_color); pv++;
+
+/*/
 	// 0
 	pv->set					(center.x+1,center.y + y_min, cross_color); pv++;
 	pv->set					(center.x+1,center.y + y_max, cross_color); pv++;
@@ -101,7 +124,7 @@ void CHUDCrosshair::OnRender ()
 	// 4
 	pv->set					(center.x, center.y, cross_color); pv++;
 	pv->set					(center.x+1, center.y, cross_color); pv++;
-
+//*/
 	// render	
 	dwCount 				= u32(pv-pv_start);
 	RCache.Vertex.Unlock	(dwCount,hGeomLine->vb_stride);

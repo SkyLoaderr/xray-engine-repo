@@ -866,7 +866,8 @@ void CActor::UpdateCL	()
 	{
 		if(pWeapon->IsZoomed()/* && !pWeapon->IsRotatingToZoom()*/)
 		{
-			float full_fire_disp = pWeapon->GetFireDispersion(false);
+			float full_fire_disp = pWeapon->GetFireDispersion(true);
+//			Msg("full_fire_disp  - %f", full_fire_disp );
 
 			CEffectorZoomInertion* S = smart_cast<CEffectorZoomInertion*>	(Cameras().GetCamEffector(eCEZoom));
 			if(S) S->SetParams(full_fire_disp);
@@ -881,7 +882,8 @@ void CActor::UpdateCL	()
 //		if(this == smart_cast<CActor*>(Level().CurrentEntity()))
 		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
-			float fire_disp = pWeapon->GetFireDispersion(false);
+			float fire_disp = pWeapon->GetFireDispersion(true);
+//			Msg("fire_disp - %f", fire_disp );
 			HUD().SetCrosshairDisp(fire_disp);
 			HUD().ShowCrosshair(true);
 		}
