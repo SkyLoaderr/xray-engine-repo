@@ -29,7 +29,7 @@ bool __fastcall TUI_ControlSpawnAdd::Start(TShiftState Shift)
 {
     TfraSpawn* F = (TfraSpawn*)parent_tool->pFrame;
 	if (F->ebAttachObject->Down){
-		CCustomObject* from = Scene->RayPickObject(flt_max, UI->m_CurrentRStart, UI->m_CurrentRNorm, OBJCLASS_DUMMY, 0, 0);
+		CCustomObject* from = Scene->RayPickObject(UI->ZFar(), UI->m_CurrentRStart, UI->m_CurrentRNorm, OBJCLASS_DUMMY, 0, 0);
         if (from->ClassID!=OBJCLASS_SPAWNPOINT){
             ObjectList 	lst;
             int cnt 	= Scene->GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0);

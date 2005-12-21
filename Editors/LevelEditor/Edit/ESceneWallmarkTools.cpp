@@ -605,7 +605,7 @@ BOOL ESceneWallmarkTools::AddWallmark_internal(const Fvector& start, const Fvect
     }
     // pick contact poly
     Fvector 				contact_pt;
-    float dist				= flt_max;
+    float dist				= UI->ZFar();
     ObjectList* snap_list	= Scene->GetSnapList(false);
     if (!snap_list){
     	ELog.DlgMsg			(mtError,"Fill and activate snap list.");

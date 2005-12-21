@@ -142,13 +142,13 @@ int EScene::RaySelect(int flag, ObjClassID classfilter)
 {
 	if( !valid() ) return 0;
 
-    float dist					= flt_max;
+    float dist					= UI->ZFar();
     ESceneCustomMTools* mt 		= 0;
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I 	= m_SceneTools.begin();
         SceneToolsMapPairIt _E 	= m_SceneTools.end();
         for (; _I!=_E; _I++){
-        	float range			= flt_max;
+        	float range			= UI->ZFar();
         	_I->second->RaySelect(flag,range,UI->m_CurrentRStart,UI->m_CurrentRNorm,TRUE);
             if (range<dist){
             	dist			= range;
@@ -159,7 +159,7 @@ int EScene::RaySelect(int flag, ObjClassID classfilter)
         mt 						= GetMTools(classfilter);
     }
     int count					= 0;
-    dist						= flt_max;
+    dist						= UI->ZFar();
     if (mt) count=mt->RaySelect	(flag,dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,FALSE);
 	return count;
 /*

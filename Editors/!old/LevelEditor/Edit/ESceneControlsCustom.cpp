@@ -105,7 +105,7 @@ bool __fastcall TUI_CustomControl::AddEnd(TShiftState _Shift)
 bool TUI_CustomControl::CheckSnapList(TShiftState Shift)
 {
 	if (fraLeftBar->ebSnapListMode->Down){
-	    CCustomObject* O=Scene->RayPickObject(flt_max,UI->m_CurrentRStart,UI->m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
+	    CCustomObject* O=Scene->RayPickObject(UI->ZFar(),UI->m_CurrentRStart,UI->m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
         if (O){
             if (Scene->FindObjectInSnapList(O)){
                 if (Shift.Contains(ssAlt)){

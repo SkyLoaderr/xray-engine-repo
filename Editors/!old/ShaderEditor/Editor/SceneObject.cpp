@@ -314,7 +314,7 @@ void CSceneObject::OnShowHint(AStringVec& dest)
 	inherited::OnShowHint(dest);
     dest.push_back(AnsiString("Reference: ")+*m_ReferenceName);
     dest.push_back(AnsiString("-------"));
-    float dist			= flt_max;
+    float dist			= UI->ZFar();
     SRayPickInfo pinf;
     if (m_pReference->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,_ITransform(),&pinf)){
 	    dest.push_back(AnsiString("Object Type: ")+get_token_name(eo_type_token,pinf.e_obj->m_Flags.flags));

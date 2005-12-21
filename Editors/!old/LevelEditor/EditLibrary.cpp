@@ -72,7 +72,7 @@ CSceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fv
 {
 	if (!form) return 0;
 	if (form->cbPreview->Checked){
-    	float dist=flt_max;
+    	float dist=UI->ZFar();
         if (form->m_pEditObject->RayPick(dist,start,direction,pinf)){
         	R_ASSERT(pinf&&pinf->e_mesh&&pinf->e_obj);
         	form->m_Props->OnPick(*pinf);
