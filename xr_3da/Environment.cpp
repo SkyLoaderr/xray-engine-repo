@@ -24,7 +24,7 @@
 ENGINE_API	float			psVisDistance	= 1.f;
 static const float			MAX_NOISE_FREQ	= 0.3f;
 
-//#define WEATHER_LOGGING
+#define WEATHER_LOGGING
 
 // real WEATHER->WFX transition time
 #define WFX_TRANS_TIME		5.f
@@ -124,13 +124,14 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
         EnvsMapIt it		= WeatherCycles.find(name);
         R_ASSERT3			(it!=WeatherCycles.end(),"Invalid weather name.",*name);
 		CurrentCycleName	= it->first;
-		if (forced)			{Invalidate();SelectEnvs(fGameTime);}
+		if (forced)			{Invalidate();			}
 		if (!bWFX){
 			CurrentWeather		= &it->second;
 			CurrentWeatherName	= it->first;
 		}
+		if (forced)			{SelectEnvs(fGameTime);	}
 #ifdef WEATHER_LOGGING
-		Log					("Starting Cycle:",*name);
+		Msg					("Starting Cycle: %s [%s]",*name,forced?"forced":"deferred");
 #endif
     }else{
 #ifndef _EDITOR
