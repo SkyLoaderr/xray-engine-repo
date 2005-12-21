@@ -4730,6 +4730,18 @@
 						<Filter
 							Name="priority_queues"
 							Filter="">
+							<File
+								RelativePath=".\data_storage_double_linked_list.h">
+							</File>
+							<File
+								RelativePath=".\data_storage_double_linked_list_inline.h">
+							</File>
+							<File
+								RelativePath=".\data_storage_single_linked_list.h">
+							</File>
+							<File
+								RelativePath=".\data_storage_single_linked_list_inline.h">
+							</File>
 							<Filter
 								Name="binary_heap"
 								Filter="">
