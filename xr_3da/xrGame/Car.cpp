@@ -1930,11 +1930,7 @@ float	CCar:: RefWheelCurTorque()
 }
 void CCar::GetRayExplosionSourcePos(Fvector &pos)
 {
-	const Fbox &l_b1 = BoundingBox();
-	Fvector l_c, l_d;l_b1.get_CD(l_c,l_d);
-	pos.random_point(l_d);
-	XFORM().transform_tiny(pos);
-	pos.add(l_c);
+	random_point_in_object_box(pos,this);
 }
 void CCar::net_Relcase(CObject* O)
 {

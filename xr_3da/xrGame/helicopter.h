@@ -231,7 +231,10 @@ protected:
 	void							DieHelicopter				();
 	void							TurnLighting				(bool bOn);
 	void							TurnEngineSound				(bool bOn);
-
+	//explosive
+	virtual void					OnAfterExplosion			(){};
+	virtual void					GetRayExplosionSourcePos	(Fvector &pos){random_point_in_object_box(pos,this);}
+	virtual void					ActivateExplosionBox		(const Fvector &size,Fvector &in_out_pos){};
 //general
 	EHeliState						m_curState;
 
