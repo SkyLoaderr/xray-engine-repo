@@ -1,12 +1,5 @@
-//=============================================================================
-//  Filename:   UINewsWnd.cpp
-//	Created by Roman E. Marchenko, vortex@gsc-game.kiev.ua
-//	Copyright 2004. GSC Game World
-//	---------------------------------------------------------------------------
-//  News subwindow in PDA dialog
-//=============================================================================
-
 #include "stdafx.h"
+
 #include "UINewsWnd.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
@@ -24,15 +17,11 @@
 
 #define NEWS_TO_SHOW 50
 
-//////////////////////////////////////////////////////////////////////////
-
 CUINewsWnd::CUINewsWnd()
-{
-}
-CUINewsWnd::~CUINewsWnd()
-{
+{}
 
-}
+CUINewsWnd::~CUINewsWnd()
+{}
 
 void CUINewsWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 {
@@ -55,9 +44,7 @@ void CUINewsWnd::Init()
 	Init				(NEWS_XML,"");
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUINewsWnd::AddNews()
+void CUINewsWnd::LoadNews()
 {
 	UIScrollWnd->Clear();
 
@@ -70,27 +57,49 @@ void CUINewsWnd::AddNews()
 
 		for (GAME_NEWS_VECTOR::reverse_iterator it = news_vector.rbegin(); it != news_vector.rend() && currentNews < NEWS_TO_SHOW ; ++it)
 		{
-			AddNewsItem(it->SingleLineText());
+			AddNewsItem(*it);
 			++currentNews;
 		}
 	}
+	m_flags.set(eNeedAdd,FALSE);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUINewsWnd::AddNewsItem(const shared_str &text)
+void CUINewsWnd::Update()
 {
-	CUINewsItemWnd* itm	= xr_new<CUINewsItemWnd>();
-	itm->Init	(NEWS_XML,"news_item");
-	itm->SetText(text);
-	UIScrollWnd->AddWindow(itm, true);
+	if(m_flags.test(eNeedAdd))
+		LoadNews	();
+}
+
+void CUINewsWnd::AddNews()
+{
+	m_flags.set(eNeedAdd,TRUE);
+}
+
+void CUINewsWnd::AddNewsItem(GAME_NEWS_DATA& news_data)
+{
+	CUIWindow*				itm = NULL;
+	switch(news_data.m_type){
+		case GAME_NEWS_DATA::eNews:{
+			CUINewsItemWnd* _itm		= xr_new<CUINewsItemWnd>();
+			_itm->Init					(NEWS_XML,"news_item");
+			_itm->Setup					(news_data);
+			itm							= _itm;					   
+		}break;
+		case GAME_NEWS_DATA::eTalk:{
+			CUINewsItemWnd* _itm		= xr_new<CUINewsItemWnd>();
+			_itm->Init					(NEWS_XML,"talk_item");
+			_itm->Setup					(news_data);
+			itm							= _itm;					   
+		}break;
+	};
+	UIScrollWnd->AddWindow	(itm, true);
 }
 
 
 void CUINewsWnd::Show(bool status)
 {
 	if (status)
-		AddNews();
+		LoadNews();
 	else
 		InventoryUtilities::SendInfoToActor("ui_pda_news_hide");
 	inherited::Show(status);

@@ -153,13 +153,30 @@ void CUITalkDialogWnd::AddQuestion(const char* str, int value)
 	UIQuestionsList->AddWindow		(itm, true);
 	Register						(itm);
 }
-
+#include "../game_news.h"
+#include "../level.h"
+#include "../actor.h"
+#include "../alife_registry_wrappers.h"
 void CUITalkDialogWnd::AddAnswer(const char* SpeakerName, const char* str, bool bActor)
 {
 	CUIAnswerItem* itm				= xr_new<CUIAnswerItem>(m_uiXml,bActor?"actor_answer_item":"other_answer_item");
 	itm->Init						(str, SpeakerName);
 	UIAnswersList->AddWindow		(itm, true);
 	UIAnswersList->ScrollToEnd		();
+
+	GAME_NEWS_DATA					news_data;
+	news_data.m_type				= GAME_NEWS_DATA::eTalk;
+	news_data.news_text				= SpeakerName;
+	news_data.news_text				+= " >> ";
+	news_data.news_text				+= str;
+	news_data.texture_name			= "ui\\ui_icons_npc";
+	CUICharacterInfo& ci			= bActor?UICharacterInfoLeft:UICharacterInfoRight; 
+	news_data.tex_rect				= ci.UIIcon().GetUIStaticItem().GetOriginalRect();
+	news_data.tex_rect.x2			= news_data.tex_rect.width();
+	news_data.tex_rect.y2			= news_data.tex_rect.height();
+	news_data.receive_time			= Level().GetGameTime();
+
+	Actor()->game_news_registry->registry().objects().push_back(news_data);
 }
 
 void CUITalkDialogWnd::AddIconedAnswer(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name)
