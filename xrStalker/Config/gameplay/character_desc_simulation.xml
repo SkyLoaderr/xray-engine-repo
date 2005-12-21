@@ -2393,8 +2393,394 @@
 
 
 
+<!---------------------------SOLDIER STALKERS------------------------>
+
+<!---------------------------SOLDIER REGULAR----------------------->
+	<specific_character id="sim_soldier_regular_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_regular</class>
+		<community>military</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_bandana</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>	
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_regular_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_regular</class>
+		<community>military</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_regular_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_regular</class>
+		<community>military</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_obichniy</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_regular_default4" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
+
+		<class>sim_Soldier_regular</class>
+		<community>military</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_bandana</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_regular_default5" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_regular</class>
+		<community>military</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_obichniy</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
 
 
+	<!---------------------------SOLDIER SPECNAZ---------------------->
+
+	<specific_character id="sim_soldier_specnaz_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="14" y="2"></icon>
+		<map_icon x="2" y="2"></map_icon>
+		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+
+		<class>sim_Soldier_specnaz</class>
+		<community>military</community>
+		
+		<rank>80</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_specnaz_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="14" y="2"></icon>
+		<map_icon x="2" y="2"></map_icon>
+		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+
+		<class>sim_Soldier_specnaz</class>
+		<community>military</community>
+		
+		<rank>80</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_abakan \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>							
+		<start_dialog>hello_dialog</start_dialog>		
+	</specific_character>
+
+	<!--------------------------- SOLDIER COMMANDERS ----------------------->
+	
+	<specific_character id="sim_soldier_commander1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="20" y="14"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_commander</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_beret</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>	
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_commander2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="20" y="14"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_commander</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_beret_3</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_pbp = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>	
+					
+		<start_dialog>hello_dialog</start_dialog>		
+	</specific_character>
+
+<!---------------------------SOLDIER SNIPER---------------------->
+	<specific_character id="sim_soldier_sniper_default1" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_sniper</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_obichniy</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_sniper_default2" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_sniper</class>
+		<community>military</community>
+	
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_bandana</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+	<specific_character id="sim_soldier_sniper_default3" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>sim_Soldier_sniper</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+	</specific_character>
+
+<!---------------------------SOLDIER MASTER----------------------->
+	<specific_character id="sim_Soldier_master" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="20" y="4"></icon>
+		<map_icon x="2" y="2"></map_icon>
+		<bio> Военный сталкер. Хорошо вооружен и очень опасен.
+		Детальная информация недоступна.</bio>
+
+		<team>Soldier_military</team>
+		
+		<class>sim_Soldier_master</class>
+		<community>military</community>
+
+        <snd_config>characters_voice\human_03\</snd_config>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+    	<panic_threshold>0.0</panic_threshold>
+
+		<visual>actors\militari\stalker_militari_antigas_2</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_fmj = 1 \n
+			wpn_g36 = 1 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
 
 
 
