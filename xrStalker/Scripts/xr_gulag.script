@@ -216,7 +216,7 @@ function gulag:load_common( packet )
 		job.idle_after_death = packet:r_u32()
 
 		if job.fill_idle == 0 then
-			job.fill_idle = idle_nil
+			job.fill_idle = nil
 		end
 
 		if job.idle_after_death == 0 then
