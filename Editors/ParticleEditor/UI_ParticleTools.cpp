@@ -532,7 +532,7 @@ bool CParticleTools::MouseStart(TShiftState Shift)
     case etaMove:{
         if (Shift.Contains(ssCtrl)){
         	if (m_EditObject){
-                float dist = flt_max;
+                float dist = UI->ZFar();
                 SRayPickInfo pinf;
                 if (m_EditObject->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,Fidentity,&pinf))
                     m_Transform.c.set(pinf.pt);
