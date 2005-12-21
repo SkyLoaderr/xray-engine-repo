@@ -25,7 +25,6 @@
 #include "EffectorBobbing.h"
 #include "clsid_game.h"
 
-#include "ShootingHitEffector.h"
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
 
