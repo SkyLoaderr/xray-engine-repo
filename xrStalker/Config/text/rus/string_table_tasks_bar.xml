@@ -146,14 +146,7 @@
 	<text>Ќайти документы лаборатории X16</text>
 </string>
 <string id="x16_yantar">
-	<text>”знать у ученых местонахождение лаборатории X16 и найти в ней документы, 
-	касающиес€ выжигател€ мозгов</text>
-</string>
-<string id="find_x16_location">
-	<text>”знать у ученых местонахождение лаборатории X16</text>
-</string>
-<string id="find_x16_documents">
-	<text>Ќайти документы в лаборатории X16</text>
+	<text>ѕоговорить с учеными</text>
 </string>
 <string id="bring_x16_documents">
 	<text>ѕринести документы бармену</text>
