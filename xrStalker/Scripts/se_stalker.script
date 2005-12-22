@@ -19,6 +19,8 @@ function se_stalker:__init (section) super (section)
 	-- false = всегда в офлайне
 	-- nil   = смарту всё равно
 	self.job_online = nil
+
+	self.is_sniper  = false
 end
 --------------------
 function se_stalker:get_ini()
