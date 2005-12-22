@@ -200,9 +200,12 @@ function se_respawn:spawn()
 		end
 	end	
 
+	if xr_logic.pick_section_from_condlist(db.actor, self, self.conditions) == "0" then
+		return
+	end
 	
 	-- экстренный спаун минимального количества объектов
-	if table.getn(self.spawned_obj) < self.min_count then
+	if table.getn(self.spawned_obj) < self.min_count then	
 		while table.getn(self.spawned_obj) < self.min_count do
 			self:create(100)
 		end
