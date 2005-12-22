@@ -1,8 +1,21 @@
-#include "stdafx.h"
-#pragma hdrstop
+#include	"stdafx.h"
+#pragma		hdrstop
 
-#include "xrRender_console.h"
- 
+#include	"xrRender_console.h"
+
+int			ps_Preset				=	2	;
+
+/*
+xr_token							qpreset_token							[ ]={
+	{ "Minimum",					0											},
+	{ "Low",						1											},
+	{ "Default",					2											},
+	{ "High",						3											},
+	{ "Extreme",					4											},
+	{ 0,							0											}
+};
+*/
+
 // Common
 //int		ps_r__Supersample			= 1		;
 int			ps_r__LightSleepFrames		= 10	;
@@ -183,7 +196,9 @@ public:
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
 {
-	// Common
+	CMD4(CCC_Integer,	"r___preset",			&ps_Preset,	0,		5		);
+
+// Common
 	CMD1(CCC_Screenshot,"screenshot"			);
 
 //	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
