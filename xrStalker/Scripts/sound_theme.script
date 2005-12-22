@@ -116,11 +116,11 @@ ph_snd_themes["aes_teleport"] = {"anomaly\\teleport_incoming"}
 ph_snd_themes["yan_antenna"] = {"characters_voice\\human_01\\scenario\\yantar\\psy_voices_1",
                                 "characters_voice\\human_02\\scenario\\yantar\\psy_voices_1",
                                 "characters_voice\\human_03\\scenario\\yantar\\psy_voices_1"}
-ph_snd_themes["system_message_1"]	= {[characters_voice\human_01\scenario\yantar\system_message_1]]}
-ph_snd_themes["system_message_2"]	= {[characters_voice\human_01\scenario\yantar\system_message_2]]}
-ph_snd_themes["system_message_3"]	= {[characters_voice\human_01\scenario\yantar\system_message_3]]}
-ph_snd_themes["system_message_4"]	= {[characters_voice\human_01\scenario\yantar\system_message_4]]}
-ph_snd_themes["system_message_5"]	= {[characters_voice\human_01\scenario\yantar\system_message_5]]}
+ph_snd_themes["system_message_1"]	= {[[characters_voice\human_01\scenario\yantar\system_message_1]]}
+ph_snd_themes["system_message_2"]	= {[[characters_voice\human_01\scenario\yantar\system_message_2]]}
+ph_snd_themes["system_message_3"]	= {[[characters_voice\human_01\scenario\yantar\system_message_3]]}
+ph_snd_themes["system_message_4"]	= {[[characters_voice\human_01\scenario\yantar\system_message_4]]}
+ph_snd_themes["system_message_5"]	= {[[characters_voice\human_01\scenario\yantar\system_message_5]]}
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
