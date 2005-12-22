@@ -27,6 +27,8 @@ function se_stalker:get_ini()
 		self.ini_initialized = true
 
 		self.spawner_present = self.ini:section_exist ("spawner")
+
+		self.is_sniper       = self.ini:section_exist ("sniper")
 	end
 end
 --------------------
