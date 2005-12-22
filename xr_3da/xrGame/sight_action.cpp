@@ -138,6 +138,8 @@ void CSightAction::execute_object				()
 	else
 		object().sight().SetPointLookAngles		(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch,m_object_to_look);
 
+//	Msg						("execute_object(%f)(%s)my_position[%f][%f][%f],object_position[%f][%f][%f]",object().movement().m_head.target.yaw,*m_object_to_look->cName(),VPUSH(m_object->eye_matrix.c),VPUSH(m_object_to_look->Position()));
+
 	if (m_no_pitch)
 		object().movement().m_head.target.pitch	= 0.f;
 

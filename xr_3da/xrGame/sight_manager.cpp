@@ -75,8 +75,15 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 		if (fis_zero(tTemp.square_magnitude()))
 			tTemp.set	(0.f,0.f,1.f);
 	}
-	else
-		tTemp.sub	(tPosition,m_object->eye_matrix.c);
+	else {
+		Fvector		my_position;
+		if (m_object->eye_matrix.c.distance_to_xz_sqr(tPosition) < .1f)
+			my_position	= m_object->Position();
+		else
+			my_position	= m_object->eye_matrix.c
+
+		tTemp.sub	(tPosition,my_position);
+	}
 
 	tTemp.getHP		(yaw,pitch);
 	VERIFY			(_valid(yaw));
@@ -231,8 +238,8 @@ void CSightManager::Exec_Look		(float dt)
 
 
 #ifdef SIGHT_DEBUG
-//	Msg					("%6d BEFORE BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
-//	Msg					("%6d BEFORE HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
+	Msg					("%6d BEFORE BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+	Msg					("%6d BEFORE HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
 	vfValidateAngleDependency		(body.current.yaw,body.target.yaw,head.current.yaw);
@@ -252,8 +259,8 @@ void CSightManager::Exec_Look		(float dt)
 	head.current.yaw	= angle_normalize_signed	(head.current.yaw);
 	head.current.pitch	= angle_normalize_signed	(head.current.pitch);
 
-//	Msg					("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
-//	Msg					("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
+	Msg					("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+	Msg					("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
 #if 0
@@ -358,4 +365,3 @@ void CSightManager::remove_links					(CObject *object)
 	for ( ; I != E; ++I)
 		(*I).second->remove_links	(object);
 }
-
