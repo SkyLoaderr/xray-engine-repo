@@ -288,9 +288,9 @@ void CEditableObject::EvictObject()
     DefferedUnloadRP			();
 }
 
-bool CEditableObject::PrepareOGF(IWriter& F, bool gen_tb, CEditableMesh* mesh)
+bool CEditableObject::PrepareOGF(IWriter& F, u8 infl, bool gen_tb, CEditableMesh* mesh)
 {
-	return IsSkeleton()?PrepareSkeletonOGF(F):PrepareRigidOGF(F,gen_tb,mesh);
+	return IsSkeleton()?PrepareSkeletonOGF(F,infl):PrepareRigidOGF(F,gen_tb,mesh);
 }
 
 bool CEditableObject::PrepareRigidOGF(IWriter& F, bool gen_tb, CEditableMesh* mesh)
@@ -299,10 +299,10 @@ bool CEditableObject::PrepareRigidOGF(IWriter& F, bool gen_tb, CEditableMesh* me
     return E.Export(F,gen_tb,mesh);
 }
 
-bool CEditableObject::PrepareSVGeometry(IWriter& F)
+bool CEditableObject::PrepareSVGeometry(IWriter& F, u8 infl)
 {
     CExportSkeleton E(this);
-    return E.ExportGeometry(F);
+    return E.ExportGeometry(F, infl);
 }
 
 bool CEditableObject::PrepareSVKeys(IWriter& F)
@@ -317,10 +317,10 @@ bool CEditableObject::PrepareSVDefs(IWriter& F)
     return E.ExportMotionDefs(F);
 }
 
-bool CEditableObject::PrepareSkeletonOGF(IWriter& F)
+bool CEditableObject::PrepareSkeletonOGF(IWriter& F, u8 infl)
 {
     CExportSkeleton E(this);
-    return E.Export(F);
+    return E.Export(F,infl);
 }
 
 bool CEditableObject::PrepareOMF(IWriter& F)

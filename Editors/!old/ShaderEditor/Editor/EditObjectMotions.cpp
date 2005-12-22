@@ -53,7 +53,7 @@ void CEditableObject::OnBindTransformChange()
 {
     for(EditMeshIt mesh_it=FirstMesh();mesh_it!=LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
-        MESH->GenerateSVertices();
+        MESH->UnloadSVertices(true);
     }
 }
 
@@ -384,10 +384,10 @@ shared_str CEditableObject::BoneNameByID(int id)
     return m_Bones[id]->Name();
 }
 
-int	CEditableObject::GetBoneIndexByWMap(const char* wm_name)
+u16	CEditableObject::GetBoneIndexByWMap(const char* wm_name)
 {
 	BoneIt bone = std::find_if(m_Bones.begin(),m_Bones.end(),fBoneWMNameEQ(wm_name));
-    return (bone==m_Bones.end())?-1:bone-m_Bones.begin();
+    return (bone==m_Bones.end())?BI_NONE:(u16)(bone-m_Bones.begin());
 }
 
 void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* motion, Fmatrix& matrix)

@@ -34,6 +34,7 @@ void CEditableMesh::Construct()
     m_FNormals		= 0;
     m_VNormals		= 0;
     m_SVertices		= 0;
+    m_SVertInfl		= 0;
 #ifdef _EDITOR
     m_RenderBuffers	= 0;
 #endif
@@ -194,13 +195,15 @@ void CEditableMesh::GenerateVNormals()
     UnloadAdjacency		();
 }
 
-void CEditableMesh::GenerateSVertices()
+void CEditableMesh::GenerateSVertices(u32 influence)
 {
 	if (!m_Parent->IsSkeleton())return;
 
     m_SVertRefs++;
-    if (m_SVertices)	return;
+    if (m_SVertInfl!=influence) UnloadSVertices(true);
+    if (m_SVertices) 	return;
 	m_SVertices			= xr_alloc<st_SVert>(m_FaceCount*3);
+    m_SVertInfl			= influence;
 
 //	CSMotion* active_motion=m_Parent->ResetSAnimation();
     m_Parent->CalculateAnimation(0);
@@ -222,7 +225,7 @@ void CEditableMesh::GenerateSVertices()
                 st_VMap& VM = *m_VMaps[vmpt_lst.pts[vmpt_id].vmap_index];
                 if (VM.type==vmtWeight){
                     wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name.c_str()),VM.getW(vmpt_lst.pts[vmpt_id].index)));
-                    if (wb.back().bone<=-1){
+                    if (wb.back().bone==BI_NONE){
                         ELog.DlgMsg	(mtError,"Can't find bone assigned to weight map %s",*VM.name);
                         Debug.fatal("Editor crashed.");
                         return;
@@ -232,29 +235,16 @@ void CEditableMesh::GenerateSVertices()
                     SV.uv.set(VM.getUV(vmpt_lst.pts[vmpt_id].index));
                 }
             }
-            wb.normalize_weights(2);
-            int cnt = wb.size();
-            switch (cnt){
-                case 0:
-                	Debug.fatal("Vertex has't any weights attached.");
-                break;
-                case 1:{
-                    SV.bone0 	= (u16)wb[0].bone;
-                    SV.bone1 	= BI_NONE;
-                    SV.w	   	= 0.f;
-                    SV.offs		= P;
-                    SV.norm		= N;
-                }break;
-                case 2:{
-                    SV.bone0 	= (u16)wb[0].bone;
-                    SV.bone1 	= (u16)wb[1].bone;
-                    SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
-                    SV.offs		= P;
-                    SV.norm		= N;
-                }break;
-                default:
-                    Debug.fatal("More than 2 weight per vertex found!");
-            }
+
+            VERIFY(m_SVertInfl<=4);
+            
+            wb.prepare_weights(m_SVertInfl);
+            SV.b[0]	= SV.b[1] = SV.b[2] = SV.b[3] = BI_NONE;
+            SV.w[0]	= SV.w[1] = SV.w[2] = SV.w[3] = 0.f;
+            SV.w_cnt= (u8)wb.size();   
+            SV.offs	= P;
+            SV.norm	= N;
+            for (u8 k=0; k<SV.w_cnt; k++){	SV.b[k]=wb[k].bone; SV.w[k]=wb[k].weight; }
         }
 	}
 

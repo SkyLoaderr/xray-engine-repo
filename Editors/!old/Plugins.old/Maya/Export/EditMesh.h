@@ -22,11 +22,11 @@ const u8	vmtUV		= 0;
 const u8	vmtWeight	= 1;
 
 struct ECORE_API st_WB{                       
-	int 	bone;
+	u16 	bone;
 	float 	weight;
-			st_WB	():bone(-1),weight(0){;}
-			st_WB	(int b, float w):bone(b),weight(w){;}
-	void	set		(int b, float w){bone=b;weight=w;}
+			st_WB	():bone(BI_NONE),weight(0.f){;}
+			st_WB	(u16 b, float w):bone(b),weight(w){;}
+	void	set		(u16 b, float w){bone=b;weight=w;}
 };
 DEFINE_VECTOR(st_WB,WBVec,WBIt);
 struct ECORE_API st_VertexWB:public WBVec{
@@ -48,17 +48,18 @@ public:
 	{
 		std::sort(begin(),end(),compare_by_weight);
 	}
-	void normalize_weights(int max_influence)
+	void prepare_weights(u32 max_influence)
 	{
-		if ((int)size()>max_influence){	
-			WBIt it;
-			sort_by_weight	();
-			erase			(begin()+2,end()); // delete >2 weight
-			float sum_weight=0;
-			for (it=begin(); it!=end(); it++) sum_weight+=it->weight;
-			for (it=begin(); it!=end(); it++) it->weight/=sum_weight;
-			sort_by_bone	();
-		}
+        sort_by_weight	();
+        // delete >max_influence weights
+        if (size()>max_influence) erase(begin()+max_influence,end()); 
+		// accumulate weights
+        float sum_weight=0;
+        WBIt it;
+        for (it=begin(); it!=end(); it++) sum_weight+=it->weight;
+        // normalize weights
+        for (it=begin(); it!=end(); it++) it->weight/=sum_weight;
+        sort_by_bone	();
 	}
 };
 DEFINE_VECTOR(st_VertexWB,VWBVec,VWBIt);
@@ -118,10 +119,10 @@ DEFINE_VECTOR		(st_VMapPtLst,VMRefsVec,VMRefsIt);
 struct ECORE_API st_SVert{
 	Fvector			offs;
     Fvector			norm;
-    u16				bone0;
-    u16				bone1;
-    float			w;
     Fvector2		uv;
+    u16				b[4];
+    float			w[4];
+    u8				w_cnt;
 };
 // faces
 struct ECORE_API st_FaceVert{
@@ -187,8 +188,11 @@ class ECORE_API CEditableMesh {
 public:
     void 			GenerateFNormals	();
     void 			GenerateVNormals	();
-    void            GenerateSVertices	();
+    void            GenerateSVertices	(u32 influence);
 	void 			GenerateAdjacency	();
+
+    bool			IsGeneratedSVertices(u32 influence){return (m_SVertices && (m_SVertInfl==influence));}
+    
     void			UnloadFNormals   	(bool force=false);
     void			UnloadVNormals   	(bool force=false);
     void			UnloadSVertices  	(bool force=false);
@@ -211,6 +215,8 @@ protected:
 	int				m_AdjsRefs;
 	int				m_SVertRefs;
 
+    u32 			m_SVertInfl;
+    
     u32				m_VertCount;
     u32				m_FaceCount;
     

@@ -391,10 +391,10 @@ bool CEditableObject::Load(IReader& F)
 	return bRes;
 }
 
-bool CEditableObject::ExportOGF(LPCSTR fn)
+bool CEditableObject::ExportOGF(LPCSTR fn, u8 infl)
 {
 	CMemoryWriter F;
-    if (PrepareOGF(F)){
+    if (PrepareOGF(F,infl,true,NULL)){
     	return F.save_to(fn);
     }
     return false;

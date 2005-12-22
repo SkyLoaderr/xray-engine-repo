@@ -396,7 +396,7 @@ public:
     BoneIt			FindBoneByNameIt		(LPCSTR name);
     CBone*			FindBoneByName			(LPCSTR name);
     int				GetSelectedBones		(BoneVec& sel_bones);
-    int				GetBoneIndexByWMap		(LPCSTR wm_name);
+    u16				GetBoneIndexByWMap		(LPCSTR wm_name);
     CSMotion* 		FindSMotionByName		(LPCSTR name, const CSMotion* Ignore=0);
     void			GenerateSMotionName		(char* buffer, LPCSTR start_name, const CSMotion* M);
     bool			GenerateBoneShape		(bool bSelOnly);
@@ -408,15 +408,15 @@ public:
     // utils
     void			PrepareOGFDesc			(ogf_desc& desc);
     // skeleton
-    bool			PrepareSVGeometry		(IWriter& F);
+    bool			PrepareSVGeometry		(IWriter& F, u8 infl);
     bool			PrepareSVKeys			(IWriter& F);
     bool			PrepareSVDefs			(IWriter& F);
-    bool			PrepareSkeletonOGF		(IWriter& F);
+    bool			PrepareSkeletonOGF		(IWriter& F, u8 infl);
     // rigid
-    bool			PrepareRigidOGF			(IWriter& F, bool gen_tb=true, CEditableMesh* mesh=NULL);
+    bool			PrepareRigidOGF			(IWriter& F, bool gen_tb, CEditableMesh* mesh);
 	// ogf
-    bool			PrepareOGF				(IWriter& F, bool gen_tb=true, CEditableMesh* mesh=NULL);
-	bool			ExportOGF				(LPCSTR fname);
+    bool			PrepareOGF				(IWriter& F, u8 infl, bool gen_tb, CEditableMesh* mesh);
+	bool			ExportOGF				(LPCSTR fname, u8 skl_infl);
     // omf
     bool			PrepareOMF				(IWriter& F);
 	bool			ExportOMF				(LPCSTR fname);

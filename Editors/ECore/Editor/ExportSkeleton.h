@@ -19,27 +19,27 @@ struct ECORE_API SSkelVert{
     Fvector		T;
     Fvector		B;
     Fvector2	UV;
-	u16			B0;
-	u16			B1;
-    float 		w;
+    float 		w[4];
+	u16			b[4];
+    u8			w_cnt;
 	SSkelVert(){
         UV.set	(0.f,0.f);
         O.set	(0,0,0);
 		N.set	(0,1,0);
         T.set	(1,0,0);
 		B.set	(0,0,1);
-		B0		= BI_NONE;
-		B1		= BI_NONE;
-        w		= 0;
+		b[0]=b[1]=b[2]=b[3]=BI_NONE;
+		w[0]=w[1]=w[2]=w[3]=0.f;
+    	w_cnt	= 0;
 	}
-    void set(const Fvector& o, const Fvector& n, const Fvector2& uv, float _w, u16 b0, u16 b1=BI_NONE)
+    void set(const Fvector& _o, const Fvector& _n, const Fvector2& _uv, u8 _w_cnt, float* _w, u16* _b)
     {
-        O.set   (o);
-        N.set	(n);
-        UV.set	(uv);
-        w		= _w;
-        B0		= b0;
-        B1		= b1;
+        O.set   (_o);
+        N.set	(_n);
+        UV.set	(_uv);
+        w_cnt	= _w_cnt;
+        VERIFY	(w_cnt>0 && w_cnt<4);
+        for (u8 k=0; k<w_cnt; k++)	{w[k]=_w[k]; b[k]=_b[k];}
     }
 	BOOL	similar_pos(SSkelVert& V)
     {
@@ -47,8 +47,8 @@ struct ECORE_API SSkelVert{
     }
 	BOOL	similar(SSkelVert& V)
     {
-		if (B0!=V.B0)					return FALSE;
-		if (B1!=V.B1)					return FALSE;
+    	if (w_cnt!=V.w_cnt)				return FALSE;
+        for (u8 k=0; k<w_cnt; k++)		{ if (!fsimilar(w[k],V.w[k],EPS_L) || (b[k]!=V.b[k])) return FALSE; }
         if (!UV.similar	(V.UV,EPS_S))	return FALSE;
 		if (!O.similar	(V.O,EPS_L))	return FALSE;
 		if (!N.similar	(V.N,EPS_L))	return FALSE;
@@ -170,17 +170,17 @@ protected:
         }
     }
 public:
-    virtual bool    	Export				(IWriter& F)=0;
+    virtual bool    	Export				(IWriter& F, u8 infl)=0;
 };
 
 
 class ECORE_API CExportSkeleton: public CExportSkeletonCustom{
 	CEditableObject*	m_Source;
-    bool				PrepareGeometry		();
+    bool				PrepareGeometry		(u8 influence);
 public:
 						CExportSkeleton		(CEditableObject* object);
-    virtual bool    	Export				(IWriter& F);
-    virtual bool    	ExportGeometry		(IWriter& F);
+    virtual bool    	Export				(IWriter& F, u8 infl);
+    virtual bool    	ExportGeometry		(IWriter& F, u8 infl);
     virtual bool    	ExportMotions		(IWriter& F);
 
     virtual bool    	ExportMotionKeys	(IWriter& F);
