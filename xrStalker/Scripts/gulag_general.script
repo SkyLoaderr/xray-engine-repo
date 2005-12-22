@@ -204,7 +204,10 @@ function load_job(sj, gname, type, squad, groups, st)
 				idle = 0,
 				prior = 10, state = {0,1}, squad = squad, group = groups[1],
 				position_threshold = 20,
-				in_rest = "", out_rest = ""
+				in_rest = "", out_rest = "",
+				predicate = function(npc_info)
+								return npc_info.is_sniper == true
+				            end
 			}
 			table.insert(sj, t)
 
