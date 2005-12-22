@@ -40,7 +40,7 @@ IC		bool	PhOutOfBoundaries			(const Fvector& v)
 CPHShell::~CPHShell				()							
 {
 	m_pKinematics	= 0;
-	if(bActive)		Deactivate();
+	if(isActive())		Deactivate();
 	
 	xr_vector<CPHElement*>::iterator i;
 	for(i=elements.begin();elements.end()!=i;++i)
@@ -55,8 +55,10 @@ CPHShell::~CPHShell				()
 }
 CPHShell::CPHShell()
 {
-	bActive=false;
-	bActivating=false;
+	//bActive=false;
+	//bActivating=false;
+	m_flags.set(flActivating,FALSE);
+	m_flags.set(flActive,FALSE);
 	m_space=NULL;
 	m_pKinematics=NULL;
 	m_spliter_holder=NULL;
@@ -208,8 +210,8 @@ void CPHShell::PhTune(dReal step){
 }
 
 void CPHShell::Update(){
-	if(!bActive) return;
-	if(bActivating) bActivating=false;
+	if(!isActive()) return;
+	if(m_flags.test(flActivating)) m_flags.set(flActivating,FALSE);
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)
 		(*i)->Update();
@@ -245,7 +247,7 @@ void	CPHShell::UnFreezeContent()
 }
 void		CPHShell::	applyForce				(const Fvector& dir, float val)				
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	val/=getMass();
 	for(; e!=i ;++i)
@@ -264,18 +266,18 @@ float val=dir.magnitude();
 };
 void	CPHShell::		applyImpulse			(const Fvector& dir, float val)				
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	(*elements.begin())->applyImpulse			( dir, val);
 	EnableObject(0);
 };
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
-	if(!bActive) return;
+	if(!isActive()) return;
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val, 0);
 	EnableObject(0);
 }
 
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id){
-	if(!bActive) return;
+	if(!isActive()) return;
 	VERIFY(m_pKinematics);
 	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(id);
 	if(instance.Callback_type!=bctPhysics || !instance.Callback_Param) return;
@@ -306,7 +308,7 @@ CPHSynchronize*	CPHShell::get_ElementSync			  (u16 element)
 
 CPhysicsElement* CPHShell::get_Element(u16 bone_id)
 {
-	if(m_pKinematics&& bActive)
+	if(m_pKinematics&& isActive())
 	{
 		CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(bone_id);
 		if(instance.Callback==BonesCallback||instance.Callback==StataticRootBonesCallBack)
@@ -380,7 +382,7 @@ void CPHShell::SetTransform	(const Fmatrix& m0){
 
 void CPHShell::Enable()
 {
-	if(!bActive)
+	if(!isActive())
 		return;
 
 	ELEMENT_I i,e;
@@ -443,7 +445,7 @@ void CPHShell::set_CallbackData(void *cd)
 }
 void CPHShell::SetPhObjectInElements()
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i )
 		(*i)->SetPhObjectInGeomData((CPHObject*)this);
@@ -500,7 +502,7 @@ void CPHShell::TransformPosition(const Fmatrix &form)
 
 void CPHShell::SetGlTransformDynamic(const Fmatrix &form)
 {
-	VERIFY(bActive);
+	VERIFY(isActive());
 	VERIFY(_valid(form));
 	Fmatrix current,replace;
 	GetGlobalTransformDynamic(&current);
@@ -1120,7 +1122,7 @@ void CPHShell::UpdateRoot()
 {
 
 	ELEMENT_I i=elements.begin();
-	if( (!(*i)->bActive) || (*i)->bActivating ) return;
+	if( !(*i)->isFullActive()) return;
 
 	(*i)->InterpolateGlobalTransform(&mXFORM);
 
@@ -1328,7 +1330,7 @@ bool CPHShell::get_ApplyByGravity()
 
 void CPHShell::applyGravityAccel(const Fvector& accel)
 {
-	if(!bActive)return;
+	if(!isActive())return;
 	ELEMENT_I i,e;
 	Fvector a;
 	a.set(accel);

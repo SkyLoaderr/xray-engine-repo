@@ -398,7 +398,7 @@ void CAI_Rat::UpdateCL			()
 		Exec_Look				(Device.fTimeDelta);
 	}
 	else {
-		if (!H_Parent() && m_pPhysicsShell && m_pPhysicsShell->bActive)
+		if (!H_Parent() && m_pPhysicsShell && m_pPhysicsShell->isActive())
 			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 
 		CPhysicsShellHolder::UpdateCL	();

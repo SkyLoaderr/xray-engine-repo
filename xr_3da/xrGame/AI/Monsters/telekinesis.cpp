@@ -182,7 +182,7 @@ static bool RemovePred(CTelekineticObject *tele_object)
 	return (!tele_object->get_object() || 
 		tele_object->get_object()->getDestroy() ||
 		!tele_object->get_object()->PPhysicsShell() ||
-		!tele_object->get_object()->PPhysicsShell()->bActive);
+		!tele_object->get_object()->PPhysicsShell()->isActive());
 }
 
 void  CTelekinesis::clear_notrelevant()

@@ -155,7 +155,7 @@ void CPHSkeleton::SaveNetState(NET_Packet& P)
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 	CPhysicsShell* pPhysicsShell=obj->PPhysicsShell();
 	CKinematics* K	=smart_cast<CKinematics*>(obj->Visual());
-	if(pPhysicsShell&&pPhysicsShell->bActive)			m_flags.set(CSE_PHSkeleton::flActive,pPhysicsShell->isEnabled());
+	if(pPhysicsShell&&pPhysicsShell->isActive())			m_flags.set(CSE_PHSkeleton::flActive,pPhysicsShell->isEnabled());
 
 	P.w_u8 (m_flags.get());
 	if(K)

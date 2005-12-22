@@ -23,7 +23,7 @@
 
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 
-	if(bActive)return;
+	if(isActive())return;
 	PresetActive();
 
 	if(!CPHObject::is_active()) vis_update_deactivate();
@@ -55,8 +55,10 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 		SetCallbacks(GetBonesCallback());
 	}
 
-	bActive=true;
-	bActivating=true;
+	//bActive=true;
+	//bActivating=true;
+	m_flags.set(flActive,TRUE);
+	m_flags.set(flActivating,TRUE);
 	spatial_register();
 ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -71,7 +73,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 
 void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 
-	if(bActive)return;
+	if(isActive())return;
 	PresetActive();	
 	
 	if(!CPHObject::is_active()) vis_update_deactivate();
@@ -96,8 +98,10 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 		SetCallbacks(GetBonesCallback());
 	}
 	spatial_register();
-	bActive=true;
-	bActivating=true;
+	//bActive=true;
+	//bActivating=true;
+	m_flags.set(flActivating,TRUE);
+	m_flags.set(flActive,TRUE);
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 	//mXFORM.set(transform);
@@ -111,7 +115,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 
 void CPHShell::Activate(bool disable)
 { 
-	if(bActive)return;
+	if(isActive())return;
 	PresetActive();
 	
 	if(!CPHObject::is_active()) vis_update_deactivate();
@@ -135,19 +139,19 @@ void CPHShell::Activate(bool disable)
 		SetCallbacks(GetBonesCallback());
 	}
 	spatial_register();
-	bActive=true;
-	bActivating=true;
+	m_flags.set(flActivating,TRUE);
+	m_flags.set(flActive,TRUE);
 
 }
 
 
 void CPHShell::Build(bool disable/*false*/)
 {
-	if(bActive)return;
+	if(isActive())return;
 
 	PresetActive();
-	bActive=true;
-	bActivating=true;
+	m_flags.set(flActivating,TRUE);
+	m_flags.set(flActive,TRUE);
 
 	{		
 		ELEMENT_I i=elements.begin(),e=elements.end();
@@ -186,9 +190,10 @@ void CPHShell::RunSimulation(bool place_current_forms/*true*/)
 
 void CPHShell::AfterSetActive()
 {
-	if(bActive)	return;
+	if(isActive())	return;
 	PureActivate();
-	bActive=true;
+	//bActive=true;
+	m_flags.set(flActive,TRUE);
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(;i!=e;++i)(*i)->PresetActive();
 
@@ -196,8 +201,9 @@ void CPHShell::AfterSetActive()
 
 void CPHShell::PureActivate()
 {
-	if(bActive)	return;
-	bActive=true;
+	if(isActive())	return;
+	//bActive=true;
+	m_flags.set(flActive,TRUE);
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	EnableObject(0);
 	m_object_in_root.identity();
@@ -206,7 +212,7 @@ void CPHShell::PureActivate()
 
 void CPHShell::PresetActive()
 {
-	VERIFY(!bActive);
+	VERIFY(!isActive());
 	if(!m_space) 
 	{
 		m_space=dSimpleSpaceCreate(0);
@@ -218,7 +224,7 @@ void CPHShell::PresetActive()
 
 
 void CPHShell::Deactivate(){
-	if(!bActive)return;
+	if(!isActive())return;
 	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics shell during physics processing!!!");
 	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics shell when ph world is freezed!!!");
 	R_ASSERT2(!CPHObject::IsFreezed(),"can not deactivate freezed !!!");
@@ -242,9 +248,10 @@ void CPHShell::Deactivate(){
 		dSpaceDestroy(m_space);
 		m_space=NULL;
 	}
-	bActive=false;
-	bActivating=false;
-
+	//bActive=false;
+	//bActivating=false;
+	m_flags.set(flActivating,FALSE);
+	m_flags.set(flActive,FALSE);
 	m_traced_geoms.clear();
 	CPHObject::UnsetRayMotions();
 }

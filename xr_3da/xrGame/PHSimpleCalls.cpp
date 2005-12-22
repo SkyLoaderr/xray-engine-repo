@@ -52,12 +52,12 @@ void CPHCallOnStepCondition::set_global_time(u32 time)
 
 CPHShellBasedAction::CPHShellBasedAction(CPhysicsShell	*shell)
 {
-	VERIFY(shell&&shell->bActive);
+	VERIFY(shell&&shell->isActive());
 	m_shell=shell;
 }
 bool CPHShellBasedAction::obsolete() const
 {
-	return !m_shell||!m_shell->bActive;
+	return !m_shell||!m_shell->isActive();
 }
 
 CPHConstForceAction::CPHConstForceAction(CPhysicsShell	*shell, const Fvector &force)

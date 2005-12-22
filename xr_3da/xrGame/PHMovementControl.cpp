@@ -621,12 +621,12 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 		dir.normalize_safe();
 	}
 	to_path_point.mul(1.f/mag);
-
 	if(m_path_size-1==index)//on_path_edge
 	{
 		dir.set(to_path_point);
 		return;
 	}
+
 
 	if(mag<EPS||fis_zero(dXZMag(to_path_point),EPS))
 	{
@@ -756,7 +756,7 @@ void	CPHMovementControl::PHCaptureObject(CPhysicsShellHolder* object)
 {
 if(m_capture) return;
 
-if(!object||!object->PPhysicsShell()||!object->m_pPhysicsShell->bActive) return;
+if(!object||!object->PPhysicsShell()||!object->m_pPhysicsShell->isActive()) return;
 m_capture=xr_new<CPHCapture>(m_character,
 							 object
 							 );
@@ -766,7 +766,7 @@ void	CPHMovementControl::PHCaptureObject(CPhysicsShellHolder* object,u16 element
 {
 	if(m_capture) return;
 
-	if(!object||!object->PPhysicsShell()||!object->PPhysicsShell()->bActive) return;
+	if(!object||!object->PPhysicsShell()||!object->PPhysicsShell()->isActive()) return;
 	m_capture=xr_new<CPHCapture>(m_character,
 		object,
 		element

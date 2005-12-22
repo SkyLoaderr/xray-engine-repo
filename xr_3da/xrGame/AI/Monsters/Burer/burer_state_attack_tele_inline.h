@@ -151,7 +151,7 @@ void CStateBurerAttackTeleAbstract::FindFreeObjects(xr_vector<CObject*> &tpObjec
 		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
 		if (!obj || 
 			!obj->PPhysicsShell() || 
-			!obj->PPhysicsShell()->bActive || 
+			!obj->PPhysicsShell()->isActive()|| 
 			(obj->m_pPhysicsShell->getMass() < object->m_tele_object_min_mass) || 
 			(obj->m_pPhysicsShell->getMass() > object->m_tele_object_max_mass) || 
 			(obj == object) || 

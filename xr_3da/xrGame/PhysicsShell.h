@@ -40,9 +40,6 @@ typedef const  BONE_P_MAP :: iterator			BONE_P_PAIR_CIT;
 class	CPhysicsBase
 {
 public:
-
-	BOOL						bActive																																							;
-	bool						bActivating																																						;
 	Fmatrix						mXFORM																																							;					// In parent space
 public:
 	virtual		void			Activate								(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)													= 0;
@@ -57,6 +54,8 @@ public:
 	virtual		void			GetGlobalPositionDynamic				(Fvector* v)																											= 0;
 	virtual		bool			isBreakable								()																														= 0;
 	virtual		bool			isEnabled								()																														= 0;
+	virtual		bool			isActive								()																														= 0;
+	virtual		bool			isFullActive							()																														= 0;
 	virtual		void			Deactivate								()																														= 0;
 	virtual		void			Enable									()																														= 0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

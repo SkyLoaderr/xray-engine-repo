@@ -94,7 +94,7 @@ void CTelekineticObject::switch_state(ETelekineticState new_state)
 }
 void CTelekineticObject::raise(float step) 
 {
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 		
 	step *= strength;
 	
@@ -133,7 +133,7 @@ void CTelekineticObject::keep()
 	// проверить время последнего обновления
 	//if (time_keep_updated + KEEP_IMPULSE_UPDATE > Device.dwTimeGlobal) return;
 	
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 
 	// проверить высоту
 	float cur_h		= object->Position().y;
@@ -158,7 +158,7 @@ void CTelekineticObject::keep()
 
 void CTelekineticObject::release() 
 {
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 	
 	
 	Fvector dir_inv;
@@ -181,7 +181,7 @@ void CTelekineticObject::fire(const Fvector &target)
 	switch_state(TS_Fire);
 	//time_fire_started	= Device.dwTimeGlobal;
 
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 
 	// вычислить направление
 	Fvector dir;
@@ -206,7 +206,7 @@ void CTelekineticObject::fire(const Fvector &target, float power)
 	switch_state(TS_Fire);
 	//time_fire_started	= Device.dwTimeGlobal;
 
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 
 	// вычислить направление
 	Fvector dir;
@@ -248,7 +248,7 @@ void CTelekineticObject::enable()
 
 void CTelekineticObject::rotate()
 {
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 	
 	// вычислить направление
 	Fvector dir;

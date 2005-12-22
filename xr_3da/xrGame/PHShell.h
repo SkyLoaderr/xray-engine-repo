@@ -13,7 +13,12 @@ class CPHShellSplitterHolder;
 class CPHShell: public CPhysicsShell,public CPHObject {
 
 	friend class CPHShellSplitterHolder;
-
+	enum				
+	{
+		flActive				=	1<<0,
+		flActivating			=	1<<1
+	};
+	Flags8					m_flags;					
 	ELEMENT_STORAGE			elements;
 	JOINT_STORAGE			joints;
 	CPHShellSplitterHolder	*m_spliter_holder;
@@ -149,6 +154,9 @@ public:
 	virtual		void				DisableCollision				();
 	virtual		void				EnableCollision					();
 	virtual		bool				isEnabled						(){return CPHObject::is_active();}
+	virtual		bool				isActive						(){return !!m_flags.test(flActive);}
+	virtual		bool				isFullActive					(){return isActive()&&!m_flags.test(flActivating);}	
+				void				SetNotActivating				(){m_flags.set(flActivating,FALSE);}
 //CPHObject	 
 	virtual		void				vis_update_activate				();
 	virtual		void				vis_update_deactivate	  		();

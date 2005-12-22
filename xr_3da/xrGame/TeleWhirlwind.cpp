@@ -120,7 +120,7 @@ void		CTeleWhirlwindObject::		raise_update			()
 
 void		CTeleWhirlwindObject::		release					()
 {
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 	
 		
 	Fvector dir_inv;
@@ -183,7 +183,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 
 		CPhysicsShell*	p					=	get_object()	->PPhysicsShell();
 	
-		if(!p||!p->bActive)	
+		if(!p||!p->isActive())	
 			return;
 		else
 			{
@@ -201,7 +201,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 
 			CPhysicsElement* E=	p->get_ElementByStoreOrder(element);
 			if(maxE->getMass()<E->getMass())	maxE=E;
-			if (!E->bActive) continue;
+			if (!E->isActive()) continue;
 			Fvector pos=E->mass_Center();
 
 			Fvector diff;
@@ -274,7 +274,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 void		CTeleWhirlwindObject::		keep					()
 {
 	CPhysicsShell*	p					=	get_object()	->PPhysicsShell();
-	if(!p||!p->bActive)	
+	if(!p||!p->isActive())	
 		return;
 	else
 	{
