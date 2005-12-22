@@ -170,11 +170,11 @@ void CFrustum::CreateFromPlanes(Fplane* p, int count){
 void CFrustum::CreateFromPortal(sPoly* poly, Fvector& vPN, Fvector& vBase, Fmatrix& mFullXFORM)
 {
 	Fplane	P;
-	P.build	((*poly)[0],vPN);
+	P.build_precise	((*poly)[0],(*poly)[1],(*poly)[2]);
 
 	if (poly->size()>6) {
 		SimplifyPoly_AABB(poly,P);
-		P.build	((*poly)[0],vPN);
+		P.build_precise	((*poly)[0],(*poly)[1],(*poly)[2]);
 	}
 
 	// Check plane orientation relative to viewer
@@ -182,7 +182,7 @@ void CFrustum::CreateFromPortal(sPoly* poly, Fvector& vPN, Fvector& vBase, Fmatr
 	if (P.classify(vBase)<0)
 	{
 		std::reverse(poly->begin(),poly->end());
-		P.build		((*poly)[0],vPN.mul(-1.f));
+		P.build_precise	((*poly)[0],(*poly)[1],(*poly)[2]);
 	}
 
 	// Base creation
