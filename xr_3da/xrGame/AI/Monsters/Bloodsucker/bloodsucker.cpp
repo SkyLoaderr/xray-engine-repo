@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "bloodsucker.h"
-#include "bloodsucker_effector.h"
+//.#include "bloodsucker_effector.h"
 #include "bloodsucker_state_manager.h"
 #include "../../../../skeletoncustom.h"
 #include "../../../actor.h"
