@@ -127,11 +127,13 @@ void CHelicopter::MGunFireStart()
 		if(h>0.0f){
 			float dl =h*tan(m_lim_x_rot.y);
 			float ds = fp.distance_to_xz(ep);
-			VERIFY(ds>dl);
-			float half_trail = ds-dl;
-			m_enemy.fire_trail_length_curr = half_trail*2.0f;
-			clamp(m_enemy.fire_trail_length_curr,0.0f,m_enemy.fire_trail_length_des);
-			Msg("Start fire. Desired length=%f, cur_length=%f",m_enemy.fire_trail_length_des,m_enemy.fire_trail_length_curr);
+			if(ds>dl){
+				float half_trail = ds-dl;
+				m_enemy.fire_trail_length_curr = half_trail*2.0f;
+				clamp(m_enemy.fire_trail_length_curr,0.0f,m_enemy.fire_trail_length_des);
+				Msg("Start fire. Desired length=%f, cur_length=%f",m_enemy.fire_trail_length_des,m_enemy.fire_trail_length_curr);
+			}else
+				m_enemy.fire_trail_length_curr	= m_enemy.fire_trail_length_des;
 		}else
 			m_enemy.fire_trail_length_curr	= m_enemy.fire_trail_length_des;
 	}
