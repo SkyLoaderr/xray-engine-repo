@@ -1485,6 +1485,7 @@
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3_1</visual>
 		<supplies>
+			[sniper] \n
 			[spawn] \n
 			wpn_sig220 \n
 			ammo_11.43x23_hydro = 1 \n
