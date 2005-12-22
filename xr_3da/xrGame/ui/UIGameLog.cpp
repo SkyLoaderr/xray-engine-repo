@@ -14,7 +14,7 @@
 
 //extern const char * const	CHAT_MP_WND_XML;
 extern const int			fadeDelay;
-const char * const	CHAT_LOG_ITEMS_ANIMATION	= "ui_mp_chat";
+const char * const	CHAT_LOG_ITEMS_ANIMATION	= "ui_main_msgs_short";
 
 CUIGameLog::CUIGameLog(){
 
@@ -30,7 +30,7 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	CUIColorAnimatorWrapper	*animation	= xr_new<CUIColorAnimatorWrapper>(CHAT_LOG_ITEMS_ANIMATION);
 	CUIPdaMsgListItem* pItem = NULL;
 	
-	pItem = xr_new<CUIPdaMsgListItem>(-1);	
+	pItem = xr_new<CUIPdaMsgListItem>(5000);	
 
 	/*UILogList.*/AddItem(pItem, -1); 
 	CUIListItem	*item = /*UILogList.*/GetItem(/*UILogList.*/GetSize() - 1);
@@ -56,7 +56,7 @@ void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	CUIColorAnimatorWrapper	*animation	= xr_new<CUIColorAnimatorWrapper>(CHAT_LOG_ITEMS_ANIMATION);
 	CUIPdaKillMessage* pItem = NULL;
 	
-	pItem = xr_new<CUIPdaKillMessage>(-1);
+	pItem = xr_new<CUIPdaKillMessage>(5000);
 
 	pItem->SetFont(GetFont());
 	/*UILogList.*/AddItem(pItem, -1); 

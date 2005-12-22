@@ -136,7 +136,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 		if (fContactSpeed>fMinCrashSpeed) 
 		{
 				gcontact_HealthLost = 
-				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+				((fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
 
 	}
@@ -148,8 +148,8 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 			gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
 		}
 	}
-	if(ph_world->m_steps_num-m_character->m_creation_step<after_creation_collision_hit_block_steps_number)
-				gcontact_HealthLost=0;
+//	if(ph_world->m_steps_num-m_character->m_creation_step<after_creation_collision_hit_block_steps_number)
+//				gcontact_HealthLost=0;
 	CheckEnvironment(vPosition);
 	bSleep=false;
 }
