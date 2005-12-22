@@ -242,8 +242,9 @@ void CRender::Render		()
 	}
 
 	//******* Occlusion testing of volume-limited light-sources
+	q_sync_count								= (q_sync_count+1)%2;
+	CHK_DX										(q_sync_point[q_sync_count]->Issue(D3DISSUE_END));
 	Target->phase_occq							();
-	CHK_DX										(q_sync_point->Issue(D3DISSUE_END));
 	LP_normal.clear								();
 	LP_pending.clear							();
 	{
@@ -318,7 +319,7 @@ void CRender::Render		()
 		CTimer	T;							T.Start	();
 		BOOL	result						= FALSE;
 		HRESULT	hr							= S_FALSE;
-		while	((hr=q_sync_point->GetData	(&result,sizeof(result),D3DGETDATA_FLUSH))==S_FALSE) {
+		while	((hr=q_sync_point[q_sync_count]->GetData	(&result,sizeof(result),D3DGETDATA_FLUSH))==S_FALSE) {
 			if (!SwitchToThread())			Sleep(0);
 			if (T.GetElapsed_ms() > 500)	{
 				result	= FALSE;
