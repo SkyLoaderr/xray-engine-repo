@@ -153,7 +153,7 @@ function PsyAntenna:generate_phantoms 	()
 end
 
 function PsyAntenna:update_sound()
-	local vol = 1 - self.intensity * self.intensity * 0.9
+	local vol = 1 - ( self.intensity ^ 3 ) * 0.9
 
 	level.set_snd_volume( vol )
 
