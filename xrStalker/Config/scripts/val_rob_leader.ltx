@@ -36,8 +36,9 @@ use = true
 [walker@start]
 path_walk = leader_walk
 path_look = leader_look
-meet = meet@def
+on_info = {+val_rob_buying} kamp1
 on_actor_dist_le = 30 | remark@call
+meet = meet@def
 
 [remark@call]
 anim = wait
