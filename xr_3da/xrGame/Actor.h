@@ -513,6 +513,9 @@ protected:
     int									m_r_finger2;
 	int									m_head;
 
+	int									m_l_clavicle;
+	int									m_r_clavicle;
+	int									m_spine2;
 	int									m_spine1;
 	int									m_spine;
 	int									m_neck;

@@ -954,6 +954,9 @@ void	CActor::OnChangeVisual()
 		m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));
 		//-------------------------------------------------------------------------------
 		m_neck				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_neck");
+		m_l_clavicle		= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_clavicle");
+		m_r_clavicle		= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_clavicle");
+		m_spine2			= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine2");
 		m_spine1			= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine1");
 		m_spine				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine");
 		//-------------------------------------------------------------------------------
@@ -1954,9 +1957,15 @@ bool				CActor::Check_for_BackStab_Bone			(u16 element)
 	else
 		if (element == m_neck) return true;
 		else
-			if (element == m_spine1) return true;
-			else 
-				if (element == m_spine) return true;
+			if (element == m_spine2) return true;
+			else
+				if (element == m_l_clavicle) return true;
+				else
+					if (element == m_r_clavicle) return true;
+					else
+						if (element == m_spine1) return true;
+						else 
+							if (element == m_spine) return true;
 	return false;
 }
 
