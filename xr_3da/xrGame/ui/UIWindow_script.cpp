@@ -76,15 +76,6 @@ void CUIWindow::script_register(lua_State *L)
 		def("GetFontGraffiti50Russian",	&GetFontGraffiti50Russian),
 		def("GetFontLetterica25",		&GetFontLetterica25),
 
-		class_<Frect>("Irect")
-		.def(					constructor<>())
-		.def_readwrite("right",					&Frect::right)
-		.def_readwrite("left",					&Frect::left)
-		.def_readwrite("top",					&Frect::top)
-		.def_readwrite("bottom",				&Frect::bottom)
-		.def("width",							&Frect::width)
-		.def("height",							&Frect::height),
-
 		class_<CUIWindow>("CUIWindow")
 		.def(							constructor<>())
 		.def("AttachChild",				&CUIWindow::AttachChild, adopt(_2))
