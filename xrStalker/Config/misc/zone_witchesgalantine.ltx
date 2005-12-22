@@ -73,3 +73,51 @@ blowout_wind_power			= 0.2			;сила поднимаего ветра (от 0 до 1), в момент blowou
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
 spawn_blowout_artefacts = off
+
+
+
+[zone_witches_galantine_weak]:zone_witches_galantine
+$spawn 			= "zones\witches galantine weak"
+
+artefacts		= af_electra_sparkler,0.8, af_electra_flash, 0.2, af_electra_moonlight, 0.0
+BirthProbability = 0.1
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 30
+max_start_power		= 40
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
+
+
+
+[zone_witches_galantine_average]:zone_witches_galantine
+$spawn 			= "zones\witches galantine average"
+
+artefacts		= af_electra_sparkler,0.6, af_electra_flash, 0.4, af_electra_moonlight, 0.0
+BirthProbability = 0.1
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 90
+max_start_power		= 100
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
+
+
+
+[zone_witches_galantine_strong]:zone_witches_galantine
+$spawn 			= "zones\witches galantine strong"
+
+artefacts		= af_electra_sparkler,0.2, af_electra_flash, 0.6, af_electra_moonlight, 0.2
+BirthProbability = 0.1
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 160
+max_start_power		= 180
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
