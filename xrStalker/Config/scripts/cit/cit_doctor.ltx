@@ -1,5 +1,5 @@
 [logic]
-active              = walker@go_to_actor
+active              = remark@wait_update ;walker@go_to_actor
 on_death            = death
 combat_ignore       = combat_ignore
 
@@ -13,12 +13,22 @@ victim 			    = 3 | actor
 victim_wpn 		    = 3 | actor
 
 ;-----------------------------------------------------------------------------------------------------------
+;--- ждем
+;-----------------------------------------------------------------------------------------------------------
+[remark@wait_update]
+anim                = wait_na
+target              = actor
+on_info             = {!black_screen} walker@go_to_actor
+combat_ignore_cond  = always
+
+;-----------------------------------------------------------------------------------------------------------
 ;--- 
 ;-----------------------------------------------------------------------------------------------------------
 [walker@go_to_actor]
 path_walk           = cit_jail_doctor_start_walk
 path_look           = cit_jail_doctor_start_look
-on_info             = {!black_screen} remark@wait_actor_wake
+on_signal           = arrived | remark@wait_actor_wake
+;on_info             = {!black_screen} remark@wait_actor_wake
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -27,7 +37,6 @@ combat_ignore_cond  = always
 [remark@wait_actor_wake]
 anim                = doctor_wakeup
 target              = actor
-;snd                 = cit_doctor_start_dlg
 on_signal           = action_end | remark@talk_to_actor %+cit_jail_start_waking =play_snd_now("cit_doctor_start_dlg")%
 combat_ignore_cond  = always
 
@@ -38,8 +47,6 @@ combat_ignore_cond  = always
 anim                = wait_na
 anim_reset          = false
 target              = actor
-;snd                 = cit_doctor_start_dlg
-;on_timer            = 12000 | remark@look_at_guard1 %+cit_jail_actor_wake%
 on_signal           = action_end | remark@look_at_guard1 %+cit_jail_actor_wake%
 combat_ignore_cond  = always
 
