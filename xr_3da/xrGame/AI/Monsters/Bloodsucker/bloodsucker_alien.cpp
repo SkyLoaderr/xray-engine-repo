@@ -5,6 +5,7 @@
 #include "../../../actor.h"
 #include "../../../inventory.h"
 #include "../../../HudItem.h"
+#include "../../../../CustomHUD.h"
 #include "../../../../effector.h"
 #include "../../../../effectorPP.h"
 
@@ -110,22 +111,42 @@ class CAlienEffector : public CEffectorCam {
 	Fvector	dangle_target;
 	Fvector dangle_current;
 
+	CAI_Bloodsucker *monster;
+
+	float		m_current_fov;
+	Fmatrix		m_prev_eye_matrix;
+	float		m_inertion;
+
 public:
-					CAlienEffector	(ECamEffectorType type);
+					CAlienEffector	(ECamEffectorType type, CAI_Bloodsucker *obj);
 	virtual	BOOL	Process			(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 
 
-#define DELTA_ANGLE_X	10 * PI / 180
-#define DELTA_ANGLE_Y	10 * PI / 180
-#define DELTA_ANGLE_Z	10 * PI / 180
-#define ANGLE_SPEED		0.2f	
+#define DELTA_ANGLE_X		10 * PI / 180
+#define DELTA_ANGLE_Y		10 * PI / 180
+#define DELTA_ANGLE_Z		10 * PI / 180
+#define ANGLE_SPEED			0.2f	
 
-CAlienEffector::CAlienEffector(ECamEffectorType type) :
+#define MIN_FOV				70.f
+#define	MAX_FOV				175.f
+#define FOV_SPEED			80.f
+#define	MAX_CAMERA_DIST		3.5f
+
+
+CAlienEffector::CAlienEffector(ECamEffectorType type, CAI_Bloodsucker *obj) :
 	inherited(type, flt_max)
 {
-	dangle_target.set	(angle_normalize(Random.randFs(DELTA_ANGLE_X)),angle_normalize(Random.randFs(DELTA_ANGLE_Y)),angle_normalize(Random.randFs(DELTA_ANGLE_Z)));
-	dangle_current.set	(0.f, 0.f, 0.f);
+	dangle_target.set		(angle_normalize(Random.randFs(DELTA_ANGLE_X)),angle_normalize(Random.randFs(DELTA_ANGLE_Y)),angle_normalize(Random.randFs(DELTA_ANGLE_Z)));
+	dangle_current.set		(0.f, 0.f, 0.f);
+
+	monster					= obj;
+	
+	m_prev_eye_matrix.c		= get_head_position(monster);
+	m_prev_eye_matrix.k		= monster->Direction();
+	Fvector::generate_orthonormal_basis(m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_prev_eye_matrix.i);
+	m_inertion				= 1.f;
+	m_current_fov			= MIN_FOV;
 }
 
 BOOL CAlienEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
@@ -138,6 +159,8 @@ BOOL CAlienEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, fl
 	Mdef.i.crossproduct	(n,d);
 	Mdef.c.set			(p);
 
+
+	// set angle 
 	if (angle_lerp(dangle_current.x, dangle_target.x, ANGLE_SPEED, Device.fTimeDelta)) {
 		dangle_target.x = angle_normalize(Random.randFs(DELTA_ANGLE_X));
 	}
@@ -149,6 +172,33 @@ BOOL CAlienEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, fl
 	if (angle_lerp(dangle_current.z, dangle_target.z, ANGLE_SPEED, Device.fTimeDelta)) {
 		dangle_target.z = angle_normalize(Random.randFs(DELTA_ANGLE_Z));
 	}
+
+	// update inertion
+	Fmatrix cur_matrix;
+	cur_matrix.k = monster->Direction();
+	cur_matrix.c = get_head_position(monster);
+
+	float	rel_dist = m_prev_eye_matrix.c.distance_to(cur_matrix.c) / MAX_CAMERA_DIST;
+	clamp	(rel_dist, 0.f, 1.f);
+
+	def_lerp(m_inertion, 1 - rel_dist, rel_dist, Device.fTimeDelta);
+
+	// set pos and dir with inertion
+	m_prev_eye_matrix.c.inertion(cur_matrix.c, m_inertion);
+	m_prev_eye_matrix.k.inertion(cur_matrix.k, m_inertion);
+	Fvector::generate_orthonormal_basis_normalized(m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_prev_eye_matrix.i);	
+
+	// apply position and direction
+	Mdef = m_prev_eye_matrix;
+
+	//set fov
+	float	rel_speed = monster->m_fCurSpeed / 15.f;
+	clamp	(rel_speed,0.f,1.f);
+
+	float	m_target_fov = MIN_FOV + (MAX_FOV-MIN_FOV) * rel_speed;
+	def_lerp(m_current_fov, m_target_fov, FOV_SPEED, Device.fTimeDelta);
+	
+	fFov = m_current_fov;
 	//////////////////////////////////////////////////////////////////////////
 
 	// Установить углы смещения
@@ -169,9 +219,6 @@ BOOL CAlienEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, fl
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-#define MIN_FOV		70.f
-#define	MAX_FOV		175.f
-#define FOV_SPEED	80.f
 
 CBloodsuckerAlien::CBloodsuckerAlien()
 {
@@ -191,53 +238,29 @@ void CBloodsuckerAlien::reinit()
 {
 	m_active				= false;	
 	
-	m_prev_eye_matrix		= m_object->eye_matrix;
-	m_inertion				= 1.f;
-	m_current_fov			= MIN_FOV;
-	m_target_fov			= MAX_FOV;
-}
-
-void CBloodsuckerAlien::update_frame()
-{
-	if (!m_active) return;
-}
-
-void CBloodsuckerAlien::update_scheduled()
-{
-	if (!m_active) return;
+	m_crosshair_show		= false;
 }
 
 void CBloodsuckerAlien::activate()
 {
 	if (m_active) return;
 
-	m_saved_current_entity	= Level().CurrentEntity();
+	VERIFY	(Actor());
+	m_object->CControlledActor::install		(Actor());
+	if (!m_object->EnemyMan.get_enemy())	m_object->EnemyMan.add_enemy(Actor());
+
+	Actor()->inventory().setSlotsBlocked			(true);
+
+	// hide crosshair
+	m_crosshair_show			= psHUD_Flags.is(HUD_CROSSHAIR_RT);
+	if (m_crosshair_show)		psHUD_Flags.set(HUD_CROSSHAIR_RT,FALSE);
+
+	// Start effector
+	m_effector_pp				= xr_new<CAlienEffectorPP>	(m_object->pp_vampire_effector, EFFECTOR_ID_GEN(EEffectorPPType));
+	Actor()->Cameras().AddPPEffector	(m_effector_pp);
 	
-	CObject					*source, *target;
-	source					= Level().CurrentEntity();
-	target					= m_object;
-
-	Level().SetEntity		(target);
-
-	CActor* pActor = smart_cast<CActor*> (source);
-	if (pActor) {
-		pActor->inventory().Items_SetCurrentEntityHud	(false);
-		m_object->CControlledActor::install				(pActor);
-		if (!m_object->EnemyMan.get_enemy())			m_object->EnemyMan.add_enemy(pActor);
-		
-		// Start effector
-		m_effector_pp				= xr_new<CAlienEffectorPP>	(m_object->pp_vampire_effector, EFFECTOR_ID_GEN(EEffectorPPType));
-		pActor->Cameras().AddPPEffector	(m_effector_pp);
-		
-		m_effector					= xr_new<CAlienEffector>	(EFFECTOR_ID_GEN(ECamEffectorType));
-		Actor()->Cameras().AddCamEffector	(m_effector);
-	}
-
-	Engine.Sheduler.Unregister	(source);
-	Engine.Sheduler.Register	(source);
-
-	Engine.Sheduler.Unregister	(target);
-	Engine.Sheduler.Register	(target, TRUE);
+	m_effector					= xr_new<CAlienEffector>	(EFFECTOR_ID_GEN(ECamEffectorType),m_object);
+	Actor()->Cameras().AddCamEffector	(m_effector);
 
 	// fix it
 	m_object->CInvisibility::set_manual_switch	();
@@ -245,37 +268,21 @@ void CBloodsuckerAlien::activate()
 		m_object->CInvisibility::manual_deactivate();
 		m_object->CInvisibility::manual_activate	();
 	} else m_object->CInvisibility::manual_activate	();
-		
 
 	m_active					= true;
+
 }
 
 void CBloodsuckerAlien::deactivate()
 {
 	if (!m_active) return;
 
-	CObject *source				= m_object;
-	CObject *target				= m_saved_current_entity;
+	m_object->CControlledActor::release			();
+	m_object->CInvisibility::set_manual_switch	(false);
 
-	Level().SetEntity			(target);
-
-	CActor* pActor = smart_cast<CActor*> (target);	
-	if (pActor) {
-		pActor->inventory().Items_SetCurrentEntityHud(true);
-
-		CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
-		if (pHudItem) pHudItem->OnStateSwitch(pHudItem->State());
-
-		m_object->CControlledActor::release			();
-	}
-
-	Engine.Sheduler.Unregister						(source);
-	Engine.Sheduler.Register						(source);
-
-	Engine.Sheduler.Unregister						(target);
-	Engine.Sheduler.Register						(target, TRUE);
-
-	m_object->CInvisibility::set_manual_switch		(false);
+	//Actor()->inventory().Items_SetCurrentEntityHud	(true);
+	Actor()->inventory().setSlotsBlocked			(false);
+	if (m_crosshair_show)							psHUD_Flags.set(HUD_CROSSHAIR_RT,TRUE);
 
 	// Stop camera effector
 	Actor()->Cameras().RemoveCamEffector	(EFFECTOR_ID_GEN(ECamEffectorType));
@@ -287,38 +294,5 @@ void CBloodsuckerAlien::deactivate()
 	m_effector_pp					= 0;
 
 	m_active						= false;
-}
 
-
-void CBloodsuckerAlien::update_camera()
-{
-	if (!m_active) return;
-
-	// smooth eye vectors
-	smooth_eye_matrix	();
-	
-	float rel_speed = m_object->m_fCurSpeed / 15.f;
-	clamp(rel_speed,0.f,1.f);
-	m_target_fov = MIN_FOV + (MAX_FOV-MIN_FOV) * rel_speed;
-	
-	def_lerp(m_current_fov, m_target_fov, FOV_SPEED, Device.fTimeDelta);
-	
-	// setup camera
-	//Actor()->Cameras().Update(m_prev_eye_matrix.c,m_prev_eye_matrix.k,m_prev_eye_matrix.j,m_current_fov,1.f,m_object->eye_range);
-}
-
-#define	MAX_CAMERA_DIST		0.5f
-
-void CBloodsuckerAlien::smooth_eye_matrix()
-{
-	// update inertion
-	float	rel_dist = m_prev_eye_matrix.c.distance_to(m_object->eye_matrix.c) / MAX_CAMERA_DIST;
-	clamp	(rel_dist, 0.f, 1.f);
-
-	def_lerp(m_inertion, 1 - rel_dist, rel_dist, Device.fTimeDelta);
-
-	// set inertion
-	m_prev_eye_matrix.c.inertion(m_object->eye_matrix.c, m_inertion);
-	m_prev_eye_matrix.k.inertion(m_object->eye_matrix.k, m_inertion);
-	m_prev_eye_matrix.j.inertion(m_object->eye_matrix.j, m_inertion);
 }

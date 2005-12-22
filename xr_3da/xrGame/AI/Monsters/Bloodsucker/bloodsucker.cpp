@@ -268,7 +268,6 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 
 void CAI_Bloodsucker::ActivateVampireEffector()
 {
-	//_abs(dist - 1.0f)
 	Actor()->Cameras().AddCamEffector(xr_new<CVampireCameraEffector>(6.0f, get_head_position(this), get_head_position(Actor())));
 	Actor()->Cameras().AddPPEffector(xr_new<CVampirePPEffector>(pp_vampire_effector, 6.0f));
 }
@@ -330,8 +329,6 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	
 	if (!g_Alive())	setVisible(TRUE);
 	CInvisibility::schedule_update();
-
-	UpdateCamera();
 }
 
 void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
@@ -386,11 +383,6 @@ void CAI_Bloodsucker::post_fsm_update()
 						(is_state(state, eStateHitted));
 
 	CEnergyHolder::set_aggressive(aggressive);
-}
-
-void CAI_Bloodsucker::UpdateCamera()
-{
-	m_alien_control.update_camera();
 }
 
 bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
@@ -490,5 +482,21 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 
 	return CBaseMonster::SDebugInfo();
 }
+
+#ifdef _DEBUG
+void CAI_Bloodsucker::debug_on_key(int key)
+{
+	switch (key){
+	case DIK_MINUS:
+		set_alien_control(true);
+		break;
+	case DIK_EQUALS:
+		set_alien_control(false);
+		break;
+	}
+}
+#endif
+
+
 #endif
 

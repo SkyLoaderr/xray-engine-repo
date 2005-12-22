@@ -106,7 +106,6 @@ public:
 	CBloodsuckerAlien		m_alien_control;
 	u32						m_time_lunge;
 
-	virtual void			UpdateCamera			();
 			void			set_alien_control		(bool val);
 
 
@@ -143,6 +142,11 @@ public:
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();
+
+#ifdef _DEBUG
+			void debug_on_key						(int key);
+#endif
+
 #endif
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
