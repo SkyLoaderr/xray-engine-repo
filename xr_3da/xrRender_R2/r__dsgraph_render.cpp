@@ -416,15 +416,15 @@ void	R_dsgraph_structure::r_dsgraph_render_distort	()
 
 //////////////////////////////////////////////////////////////////////////
 // sub-space rendering - shortcut to render with frustum extracted from matrix
-void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
+void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic, BOOL _precise_portals)
 {
 	CFrustum	temp;
 	temp.CreateFromMatrix			(mCombined,	FRUSTUM_P_ALL);
-	r_dsgraph_render_subspace		(_sector,&temp,mCombined,_cop,_dynamic);
+	r_dsgraph_render_subspace		(_sector,&temp,mCombined,_cop,_dynamic,_precise_portals);
 }
 
 // sub-space rendering - main procedure
-void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, CFrustum* _frustum, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
+void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, CFrustum* _frustum, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic, BOOL _precise_portals)
 {
 	VERIFY							(_sector);
 	RImplementation.marker			++;			// !!! critical here
@@ -433,6 +433,18 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, CF
 	CFrustum	ViewSave			= ViewBase;
 	ViewBase						= *_frustum;
 	View							= &ViewBase;
+
+	if (_precise_portals && rmPortals)		{
+	// Check if camera is too near to some portal - if so force DualRender
+		Fvector box_radius;		box_radius.set(EPS_L*2,EPS_L*2,EPS_L*2);
+		Sectors_xrc.box_options	(CDB::OPT_FULL_TEST);
+		Sectors_xrc.box_query	(rmPortals,_cop,box_radius);
+		for (int K=0; K<Sectors_xrc.r_count(); K++)
+		{
+			CPortal*	pPortal		= (CPortal*) Portals[rmPortals->get_tris()[Sectors_xrc.r_begin()[K].id].dummy];
+			pPortal->bDualRender	= TRUE;
+		}
+	}
 
 	// Traverse sector/portal structure
 	PortalTraverser.traverse		( _sector, ViewBase, _cop, mCombined, 0 );

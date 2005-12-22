@@ -267,7 +267,8 @@ void CLightR_Manager::render_spot	()
 			L->spatial.sector,
 			L_combine,
 			L_pos,
-			TRUE
+			TRUE,
+			TRUE			// precise portals
 			);
 
 		//		4. Analyze if HUD intersects light volume
