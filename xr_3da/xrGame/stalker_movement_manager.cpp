@@ -3,7 +3,7 @@
 //	Created 	: 27.12.2003
 //  Modified 	: 27.12.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker velocity manager
+//	Description : Stalker movement manager
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -26,7 +26,13 @@
 #	include "level.h"
 #endif
 
-//static float speeds[2][3][2][4];
+#ifndef OLD_VELOCITIES
+static float speeds
+				[3]	// eMentalStateDanger, eMentalStateFree, eMentalStatePanic
+				[3]	// eBodyStateStand, eBodyStateCrouch, eBodyStateStandDamaged
+				[2]	// eMovementTypeWalk, eMovementTypeRun
+				[4];// eMovementDirectionForward, eMovementDirectionBackward, eMovementDirectionLeft, eMovementDirectionRight
+#endif
 
 using namespace StalkerMovement;
 
@@ -96,18 +102,22 @@ void CStalkerMovementManager::set_desired_position(const Fvector *desired_positi
 
 IC	void CStalkerMovementManager::setup_body_orientation	()
 {
-	if (!path().empty() && (path().size() > detail().curr_travel_point_index() + 1)) {
-		Fvector					t;
-		t.sub					(
-			path()[detail().curr_travel_point_index() + 1].position,
-			path()[detail().curr_travel_point_index()].position
-		);
-		float					y,p;
-		t.getHP					(y,p);
-		m_body.target.yaw		= -y;
-		m_head.target.yaw		= -y;
-		m_head.speed			= m_body.speed;
-	}
+	if (path().empty())
+		return;
+	
+	if (path().size() <= detail().curr_travel_point_index() + 1)
+		return;
+
+	Fvector					temp;
+	temp.sub					(
+		path()[detail().curr_travel_point_index() + 1].position,
+		path()[detail().curr_travel_point_index()].position
+	);
+	float					y,p;
+	temp.getHP				(y,p);
+	m_body.target.yaw		= -y;
+	m_head.target.yaw		= -y;
+	m_head.speed			= m_body.speed;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -132,28 +142,42 @@ void CStalkerMovementManager::reload				(LPCSTR section)
 {
 	inherited::reload			(section);
 
-	/**
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionForward]	= pSettings->r_float(section,"speed_danger_crouch_walk_forward");
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionBackward]	= pSettings->r_float(section,"speed_danger_crouch_walk_backward");
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionLeft]		= pSettings->r_float(section,"speed_danger_crouch_walk_left");
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_crouch_walk_right");
+#ifndef OLD_VELOCITIES
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionForward]		= pSettings->r_float(section,"speed_danger_crouch_walk_forward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionBackward]		= pSettings->r_float(section,"speed_danger_crouch_walk_backward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionLeft]			= pSettings->r_float(section,"speed_danger_crouch_walk_left");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeWalk][eMovementDirectionRight]			= pSettings->r_float(section,"speed_danger_crouch_walk_right");
 
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionForward]		= pSettings->r_float(section,"speed_danger_crouch_run_forward");
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionBackward]	= pSettings->r_float(section,"speed_danger_crouch_run_backward");
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionLeft]		= pSettings->r_float(section,"speed_danger_crouch_run_left");
-	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_crouch_run_right");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionForward]			= pSettings->r_float(section,"speed_danger_crouch_run_forward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionBackward]		= pSettings->r_float(section,"speed_danger_crouch_run_backward");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionLeft]			= pSettings->r_float(section,"speed_danger_crouch_run_left");
+	m_speeds[eMentalStateDanger][eBodyStateCrouch][eMovementTypeRun][eMovementDirectionRight]			= pSettings->r_float(section,"speed_danger_crouch_run_right");
 
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionForward]		= pSettings->r_float(section,"speed_danger_stand_walk_forward");
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionBackward]	= pSettings->r_float(section,"speed_danger_stand_walk_backward");
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionLeft]		= pSettings->r_float(section,"speed_danger_stand_walk_left");
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_stand_walk_right");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionForward]			= pSettings->r_float(section,"speed_danger_stand_walk_forward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionBackward]		= pSettings->r_float(section,"speed_danger_stand_walk_backward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionLeft]			= pSettings->r_float(section,"speed_danger_stand_walk_left");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeWalk][eMovementDirectionRight]			= pSettings->r_float(section,"speed_danger_stand_walk_right");
 
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionForward]		= pSettings->r_float(section,"speed_danger_stand_run_forward");
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionBackward]		= pSettings->r_float(section,"speed_danger_stand_run_backward");
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionLeft]			= pSettings->r_float(section,"speed_danger_stand_run_left");
-	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionRight]		= pSettings->r_float(section,"speed_danger_stand_run_right");
-	/**/
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionForward]			= pSettings->r_float(section,"speed_danger_stand_run_forward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionBackward]			= pSettings->r_float(section,"speed_danger_stand_run_backward");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionLeft]				= pSettings->r_float(section,"speed_danger_stand_run_left");
+	m_speeds[eMentalStateDanger][eBodyStateStand][eMovementTypeRun][eMovementDirectionRight]			= pSettings->r_float(section,"speed_danger_stand_run_right");
 
+	m_speeds[eMentalStateFree][eBodyStateStand][eMovementTypeWalk][eMovementDirectionForward]			= pSettings->r_float(section,"speed_free_stand_walk_forward");
+	m_speeds[eMentalStateFree][eBodyStateStand][eMovementTypeRun][eMovementDirectionForward]			= pSettings->r_float(section,"speed_free_stand_run_forward");
+
+	m_speeds[eMentalStatePanic][eBodyStateStand][eMovementTypeRun][eMovementDirectionForward]			= pSettings->r_float(section,"speed_panic_stand_run_forward");
+
+	m_speeds[eMentalStateDanger][eBodyStateStandDamaged][eMovementTypeWalk][eMovementDirectionForward]	= pSettings->r_float(section,"speed_free_damaged_walk_forward");
+	m_speeds[eMentalStateDanger][eBodyStateStandDamaged][eMovementTypeRun][eMovementDirectionForward]	= pSettings->r_float(section,"speed_free_damaged_run_forward");
+	
+	m_speeds[eMentalStateFree][eBodyStateStandDamaged][eMovementTypeWalk][eMovementDirectionForward]	= pSettings->r_float(section,"speed_free_damaged_walk_forward");
+	m_speeds[eMentalStateFree][eBodyStateStandDamaged][eMovementTypeRun][eMovementDirectionForward]		= pSettings->r_float(section,"speed_free_damaged_run_forward");
+
+	m_speeds[eMentalStatePanic][eBodyStateStandDamaged][eMovementTypeRun][eMovementDirectionForward]	= pSettings->r_float(section,"speed_panic_damaged_run_forward");
+	
+#else	
+	
 	m_crouch_factor				= pSettings->r_float(section,"CrouchFactor");
 	m_walk_factor				= pSettings->r_float(section,"WalkFactor");
 	m_walk_back_factor			= pSettings->r_float(section,"WalkBackFactor");
@@ -167,6 +191,8 @@ void CStalkerMovementManager::reload				(LPCSTR section)
 	m_damaged_walk_free_factor	= pSettings->r_float(section,"DamagedWalkFreeFactor");
 	m_damaged_run_free_factor	= pSettings->r_float(section,"DamagedRunFreeFactor");
 	m_damaged_panic_factor		= pSettings->r_float(section,"DamagedPanicFactor");
+
+#endif
 
 	init_velocity_masks			();
 }
@@ -403,10 +429,12 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		if (mental_state() == eMentalStateFree) {
 			setup_body_orientation	();
 			object().sight().enable	(false);
+//			Msg						("%d FALSE",Device.dwTimeGlobal);
 		}
 		if ((mental_state() != eMentalStateFree) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail().curr_travel_point_index())) {
 			m_last_turn_index			= detail().curr_travel_point_index();
 			object().sight().enable(true);
+//			Msg						("%d TRUE",Device.dwTimeGlobal);
 			if (detail().curr_travel_point_index() + 1 < path().size()) {
 				point				= path()[detail().curr_travel_point_index() + 1];
 				current_velocity	= detail().velocity(point.velocity);
@@ -663,4 +691,5 @@ void CStalkerMovementManager::adjust_speed_to_animation	(const EMovementDirectio
 		};
 		default						: NODEFAULT;
 	}
+	/**/
 }

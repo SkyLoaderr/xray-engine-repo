@@ -3,7 +3,7 @@
 //	Created 	: 27.12.2003
 //  Modified 	: 27.12.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker velocity manager
+//	Description : Stalker movement manager
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -14,6 +14,8 @@
 using namespace MonsterSpace;
 
 class CAI_Stalker;
+
+#define OLD_VELOCITIES
 
 class CStalkerMovementManager : public CMovementManager {
 protected:
@@ -80,6 +82,7 @@ public:
 		}
 	};
 
+#ifdef OLD_VELOCITIES
 protected:
 	float							m_crouch_factor;
 	float							m_walk_factor;
@@ -94,6 +97,7 @@ protected:
 	float							m_damaged_walk_free_factor;
 	float							m_damaged_run_free_factor;
 	float							m_damaged_panic_factor;
+#endif
 
 protected:
 	CMovementParams					m_current;
@@ -142,6 +146,7 @@ public:
 			void	set_nearest_accessible_position	(Fvector desired_position, u32 level_vertex_id);
 			void	adjust_speed_to_animation	(const MonsterSpace::EMovementDirection &movement_direction);
 
+#ifdef OLD_VELOCITIES
 public:
 	IC		float	crouch_factor			() const;
 	IC		float	walk_factor				() const;
@@ -156,6 +161,7 @@ public:
 	IC		float	damaged_walk_free_factor() const;
 	IC		float	damaged_run_free_factor	() const;
 	IC		float	damaged_panic_factor	() const;
+#endif
 
 public:
 	IC		const MonsterSpace::SBoneRotation		&head_orientation		() const;

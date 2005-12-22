@@ -3,7 +3,7 @@
 //	Created 	: 27.12.2003
 //  Modified 	: 27.12.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker velocity manager inline functions
+//	Description : Stalker movement manager inline functions
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once

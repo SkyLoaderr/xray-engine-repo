@@ -3,7 +3,7 @@
 //	Created 	: 10.06.2004
 //  Modified 	: 10.06.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker velocity manager space
+//	Description : Stalker movement manager space
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
