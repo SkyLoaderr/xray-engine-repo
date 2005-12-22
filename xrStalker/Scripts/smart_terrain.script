@@ -232,11 +232,14 @@ function se_smart_terrain:fill_npc_info( obj, npc_info )
 	npc_info.community    = self:get_obj_community( obj )
 	npc_info.profile_name = obj.profile_name and obj:profile_name()
 	npc_info.rank         = obj:rank()
-	npc_info.is_sniper    = obj.is_sniper
 
 	npc_info.group        = obj:g_group()
 	npc_info.squad        = obj:g_squad()
 	npc_info.team         = obj:g_team()
+
+	if npc_info.profile_name then
+		npc_info.is_sniper = string.find( npc_info.profile_name, "sniper" ) ~= nil
+	end
 
 	local t               = obj:get_smart_terrain_conditions()
 	if t then
