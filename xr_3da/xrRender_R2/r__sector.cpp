@@ -81,13 +81,18 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 	N.set				(0,0,0);
 
 	FPU::m64r();
+	u32	_cnt			= 0;
 	for (int i=2; i<vcnt; i++) {
-		T.mknormal	(poly[0],poly[i-1],poly[i]);
-		N.add		(T);
+		T.mknormal_non_normalized		(poly[0],poly[i-1],poly[i]);
+		float		m	= T.magnitude	();
+		if (m>EPS_S)	{
+			N.add		(T.div(m))	;
+			_cnt		++			;
+		}
 	}
-	float	tcnt = float(vcnt)-2;
+	R_ASSERT	(_cnt, "Invalid portal detected");
+	float	tcnt = float(_cnt);
 	N.div		(tcnt);
-	N.normalize	();
 	P.build		(poly[0],N);
 	FPU::m24r	();
 
@@ -142,7 +147,7 @@ void CSector::traverse			(CFrustum &F, _scissor& R_scissor)
 		// SSA	(if required)
 		if (PortalTraverser.i_options&CPortalTraverser::VQ_SSA)
 		{
-			Fvector	dir2portal;
+			Fvector				dir2portal;
 			dir2portal.sub		(PORTAL->S.P,	PortalTraverser.i_vBase);
 			float R				=	PORTAL->S.R	;
 			float distSQ		=	dir2portal.square_magnitude();

@@ -182,7 +182,7 @@ void CFrustum::CreateFromPortal(sPoly* poly, Fvector& vPN, Fvector& vBase, Fmatr
 	if (P.classify(vBase)<0)
 	{
 		std::reverse(poly->begin(),poly->end());
-		P.build		((*poly)[0],vPN);
+		P.build		((*poly)[0],vPN.mul(-1.f));
 	}
 
 	// Base creation
