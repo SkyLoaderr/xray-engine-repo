@@ -4,7 +4,7 @@ function main_()
 --	level.remove_pp_effector(999)
 end
 
-function main()
+function main__()
 	db.actor:give_game_news("hello-1 sdfewrf ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 
 --[[
@@ -23,13 +23,13 @@ function main()
 ]]	
 end
 
-function main__()
+function main()
    local h = hit ()
-   h.power = 50
+   h.power = 1
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
-   h.type = hit.fire_wound
+   h.type = hit.wound
    db.actor:hit(h)
 
 

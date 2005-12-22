@@ -12,6 +12,7 @@
 #include "game_cl_base.h"
 #include "entity_alive.h"
 #include "..\SkeletonCustom.h"
+#include "object_broker.h"
 
 #define MAX_HEALTH 1.0f
 #define MIN_HEALTH -0.01f
@@ -583,12 +584,12 @@ void CEntityCondition::save	(NET_Packet &output_packet)
 	output_packet.w_u8	(is_alive);
 	if(is_alive)
 	{
-		output_packet.w_float_q8		(m_fPower,			0.f,1.f);
-		output_packet.w_float_q8		(m_fSatiety,		0.f,1.f);
-		output_packet.w_float_q8		(m_fRadiation,		0.f,1.f);
-		output_packet.w_float_q8		(m_fEntityMorale,	0.f,1.f);
-		output_packet.w_float_q8		(m_fCircumspection,	0.f,1.f);
-		output_packet.w_float_q8		(m_fPsyHealth,		0.f,1.f);
+		save_data						(m_fPower,output_packet);
+		save_data						(m_fSatiety,output_packet);
+		save_data						(m_fRadiation,output_packet);
+		save_data						(m_fEntityMorale,output_packet);
+		save_data						(m_fCircumspection,output_packet);
+		save_data						(m_fPsyHealth,output_packet);
 
 		output_packet.w_u8				((u8)m_WoundVector.size());
 		for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; it++)
@@ -603,13 +604,12 @@ void CEntityCondition::load	(IReader &input_packet)
 	u8 is_alive				= input_packet.r_u8	();
 	if(is_alive)
 	{
-		m_fPower			= input_packet.r_float_q8	(0.f,1.f);
-		m_fSatiety			= input_packet.r_float_q8	(0.f,1.f);
-		m_fRadiation		= input_packet.r_float_q8	(0.f,1.f);
-
-		m_fEntityMorale		= input_packet.r_float_q8	(0.f,1.f);
-		m_fCircumspection	= input_packet.r_float_q8	(0.f,1.f);
-		m_fPsyHealth		= input_packet.r_float_q8	(0.f,1.f);
+		load_data						(m_fPower,input_packet);
+		load_data						(m_fSatiety,input_packet);
+		load_data						(m_fRadiation,input_packet);
+		load_data						(m_fEntityMorale,input_packet);
+		load_data						(m_fCircumspection,input_packet);
+		load_data						(m_fPsyHealth,input_packet);
 
 		ClearWounds();
 		m_WoundVector.resize(input_packet.r_u8());

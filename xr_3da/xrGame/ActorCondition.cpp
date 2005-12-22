@@ -14,6 +14,8 @@
 #include "game_object_space.h"
 #include "ui\UIVideoPlayerWnd.h"
 #include "script_callback_ex.h"
+#include "object_broker.h"
+#include "weapon.h"
 
 #define ENEMIES_RADIUS				20.f
 
@@ -43,6 +45,7 @@ CActorCondition::CActorCondition(CActor *object) :
 	m_actor_sleep_wnd			= NULL;
 	m_can_sleep_callback		= NULL;
 	m_get_sleep_video_name_callback	= NULL;
+	m_condition_flags.zero		();
 }
 
 CActorCondition::~CActorCondition(void)
@@ -169,6 +172,9 @@ void CActorCondition::UpdateCondition()
 	};
 
 	inherited::UpdateCondition();
+
+	if( IsGameTypeSingle() )
+		UpdateTutorialThresholds();
 }
 
 CWound* CActorCondition::ConditionHit(SHit* pHDS)
@@ -350,13 +356,15 @@ EActorSleep CActorCondition::CanSleepHere()
 void CActorCondition::save(NET_Packet &output_packet)
 {
 	inherited::save					(output_packet);
-	output_packet.w_float_q8		(m_fAlcohol,0.f,1.f);
+	save_data						(m_fAlcohol, output_packet);
+	save_data						(m_condition_flags, output_packet);
 }
 
 void CActorCondition::load(IReader &input_packet)
 {
 	inherited::load		(input_packet);
-	m_fAlcohol			= input_packet.r_float_q8(0.f,1.f);
+	load_data			(m_fAlcohol, input_packet);
+	load_data			(m_condition_flags, input_packet);
 }
 
 void CActorCondition::ProcessSleep(ALife::_TIME_ID sleep_time)
@@ -408,4 +416,56 @@ void CActorCondition::reinit	()
 void CActorCondition::ChangeAlcohol	(float value)
 {
 	m_fAlcohol += value;
+}
+
+void CActorCondition::UpdateTutorialThresholds()
+{
+	string256 cb_name;
+	static float _cPowerThr			= pSettings->r_float("tutorial_conditions_thresholds","power");
+	static float _cPowerMaxThr		= pSettings->r_float("tutorial_conditions_thresholds","max_power");
+	static float _cBleeding			= pSettings->r_float("tutorial_conditions_thresholds","bleeding");
+	static float _cSatiety			= pSettings->r_float("tutorial_conditions_thresholds","satiety");
+	static float _cRadiation		= pSettings->r_float("tutorial_conditions_thresholds","radiation");
+	static float _cWpnCondition		= pSettings->r_float("tutorial_conditions_thresholds","weapon_jammed");
+
+	bool b = true;
+	if(b && !m_condition_flags.test(eCriticalPowerReached) && GetPower()<_cPowerThr){
+		m_condition_flags.set			(eCriticalPowerReached, TRUE);b=false;
+		strcpy(cb_name,"_G.on_actor_critical_power");
+	}
+
+	if(b && !m_condition_flags.test(eCriticalMaxPowerReached) && GetMaxPower()<_cPowerMaxThr){
+		m_condition_flags.set			(eCriticalMaxPowerReached, TRUE);b=false;
+		strcpy(cb_name,"_G.on_actor_critical_max_power");
+	}
+
+	if(b && !m_condition_flags.test(eCriticalBleedingSpeed) && BleedingSpeed()>_cBleeding){
+		m_condition_flags.set			(eCriticalBleedingSpeed, TRUE);b=false;
+		strcpy(cb_name,"_G.on_actor_bleeding");
+	}
+
+	if(b && !m_condition_flags.test(eCriticalSatietyReached) && GetSatiety()<_cSatiety){
+		m_condition_flags.set			(eCriticalSatietyReached, TRUE);b=false;
+		strcpy(cb_name,"_G.on_actor_satiety");
+	}
+
+	if(b && !m_condition_flags.test(eCriticalRadiationReached) && GetRadiation()>_cRadiation){
+		m_condition_flags.set			(eCriticalRadiationReached, TRUE);b=false;
+		strcpy(cb_name,"_G.on_actor_radiation");
+	}
+
+	if(b && !m_condition_flags.test(eWeaponJammedReached)&&m_object->inventory().GetActiveSlot()!=NO_ACTIVE_SLOT){
+		PIItem item							= m_object->inventory().ItemFromSlot(m_object->inventory().GetActiveSlot());
+		CWeapon* pWeapon					= smart_cast<CWeapon*>(item); 
+		if(pWeapon&&pWeapon->GetCondition()<_cWpnCondition){
+			m_condition_flags.set			(eWeaponJammedReached, TRUE);b=false;
+			strcpy(cb_name,"_G.on_actor_weapon_jammed");
+		}
+	}
+	
+	if(!b){
+		luabind::functor<LPCSTR>			fl;
+		R_ASSERT							(ai().script_engine().functor<LPCSTR>(cb_name,fl));
+		fl									();
+	}
 }

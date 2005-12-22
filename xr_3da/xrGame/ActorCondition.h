@@ -17,11 +17,19 @@ class CUIActorSleepVideoPlayer;
 class CActorCondition: public CEntityCondition {
 private:
 	typedef CEntityCondition inherited;
-
+	enum {	eCriticalPowerReached			=(1<<0),
+			eCriticalMaxPowerReached		=(1<<1),
+			eCriticalBleedingSpeed			=(1<<2),
+			eCriticalSatietyReached			=(1<<3),
+			eCriticalRadiationReached		=(1<<4),
+			eWeaponJammedReached			=(1<<5),
+			};
+	Flags16											m_condition_flags;
 private:
 	CActor*											m_object;
 	CScriptCallbackEx<LPCSTR>*						m_can_sleep_callback;
 	CScriptCallbackEx<LPCSTR>*						m_get_sleep_video_name_callback;
+	void				UpdateTutorialThresholds	();
 public:
 						CActorCondition				(CActor *object);
 	virtual				~CActorCondition			(void);
