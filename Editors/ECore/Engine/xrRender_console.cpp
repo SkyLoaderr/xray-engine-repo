@@ -3,9 +3,7 @@
 
 #include	"xrRender_console.h"
 
-int			ps_Preset				=	2	;
-
-/*
+u32			ps_Preset				=	2	;
 xr_token							qpreset_token							[ ]={
 	{ "Minimum",					0											},
 	{ "Low",						1											},
@@ -14,7 +12,6 @@ xr_token							qpreset_token							[ ]={
 	{ "Extreme",					4											},
 	{ 0,							0											}
 };
-*/
 
 // Common
 //int		ps_r__Supersample			= 1		;
@@ -192,11 +189,30 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
+class	CCC_Preset		: public CCC_Token
+{
+public:
+	CCC_Preset(LPCSTR N, u32* V, xr_token* T) : CCC_Token(N,V,T)	{}	;
+
+	virtual void	Execute	(LPCSTR args)	{
+		CCC_Token::Execute	(args);
+		LPCSTR	cmd			= 0;
+		switch	(*value)	{
+			case 0:		cmd		= "cfg_load gamedata\\rspec_minimum.ltx";	break;
+			case 1:		cmd		= "cfg_load gamedata\\rspec_low.ltx";		break;
+			default:
+			case 2:		cmd		= "cfg_load gamedata\\rspec_default.ltx";	break;
+			case 3:		cmd		= "cfg_load gamedata\\rspec_high.ltx";		break;
+			case 4:		cmd		= "cfg_load gamedata\\rspec_extreme.ltx";	break;
+		}
+		Console->Execute		(cmd);
+	}
+};
 
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
 {
-	CMD4(CCC_Integer,	"r___preset",			&ps_Preset,	0,		5		);
+	CMD3(CCC_Preset,	"r___preset",			&ps_Preset,	qpreset_token	);
 
 // Common
 	CMD1(CCC_Screenshot,"screenshot"			);
