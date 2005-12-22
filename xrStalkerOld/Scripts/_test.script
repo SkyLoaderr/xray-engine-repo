@@ -5,6 +5,25 @@ function main_()
 end
 
 function main()
+	db.actor:give_game_news("hello-1 sdfewrf ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+
+--[[
+	db.actor:give_game_news("hello-1", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-2", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-3", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-4", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-5", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-6", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-7", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-8", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello-9", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+
+	db.actor:give_game_news("general_fail_task", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("general_complete_task", "ui\\ui_icons_task", Frect():set(350,100,50,50), 0, 5000)
+]]	
+end
+
+function main__()
    local h = hit ()
    h.power = 50
    h.direction = vector():set(0, 0, 1)
