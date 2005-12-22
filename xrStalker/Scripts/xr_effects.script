@@ -1721,6 +1721,9 @@ function yantar_professor_spam_2 (actor, npc)
     news_manager.send_tip(db.actor, "general_ecolog_tip_2", nil, "ecolog", nil, 902)
 end
 
+function yantar_vasilyev_spam (actor, npc)
+    news_manager.send_tip(db.actor, "storyline_vasilyev_tip", nil, "ecolog", nil, 903)
+end
 -----------------------------radar
 function rad_sos_spam(actor, npc)
 	news_manager.send_tip(actor, "tips_rad_sos_suicide", nil, "stalker", nil, 1004)
