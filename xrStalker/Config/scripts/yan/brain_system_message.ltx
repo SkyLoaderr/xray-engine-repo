@@ -2,3 +2,19 @@
 active = ph_idle@system_idle
 
 [ph_idle@system_idle]
+on_info = {+yan_labx16_switcher_1_off -yan_labx16_switcher_1_end} ph_sound@switcher_1
+on_info2 = {+yan_labx16_switcher_2_off -yan_labx16_switcher_2_end} ph_sound@switcher_2
+on_info3 = {+yan_labx16_switcher_3_off -yan_labx16_switcher_3_end} ph_sound@switcher_3
+
+
+[ph_sound@switcher_1]
+snd = system_message_2
+on_timer = 5000 | ph_idle@system_idle %+yan_labx16_switcher_1_end%
+
+[ph_sound@switcher_2]
+snd = system_message_3
+on_timer = 5000 | ph_idle@system_idle %+yan_labx16_switcher_2_end%
+
+[ph_sound@switcher_3]
+snd = system_message_4
+on_timer = 5000 | ph_idle@system_idle %+yan_labx16_switcher_3_end%
