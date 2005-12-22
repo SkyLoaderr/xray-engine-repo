@@ -740,11 +740,13 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				if(flags&CMD_START) 
 				{
 					u32 l_newType = m_ammoType;
+					bool b1,b2;
 					do 
 					{
 						l_newType = (l_newType+1)%m_ammoTypes.size();
-					} while(l_newType != m_ammoType && 
-							!m_pInventory->GetAny(*m_ammoTypes[l_newType] ));
+						b1 = l_newType != m_ammoType;
+						b2 = unlimited_ammo() ? false : (!m_pInventory->GetAny(*m_ammoTypes[l_newType]));
+					} while( b1 && b2);
 				
 					if(l_newType != m_ammoType) 
 					{

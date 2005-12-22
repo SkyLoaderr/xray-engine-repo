@@ -316,7 +316,7 @@ void CWeaponMagazined::ReloadMagazine()
 		}
 	}
 	else
-		m_ammoType = 0;
+		m_ammoType = m_ammoType;
 
 //	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	if((u32)iAmmoElapsed != m_magazine.size()){
