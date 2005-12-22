@@ -204,7 +204,8 @@ public:
 						}
 						default			: NODEFAULT;
 					}
-					ALife::_NEWS_ID news_id = manager->news().add	(news);
+//					ALife::_NEWS_ID news_id = 
+						manager->news().add	(news);
 
 					if (strstr(Core.Params,"-anews")) {
 						//сообщить актеру, о том что пришла новость с симуляции

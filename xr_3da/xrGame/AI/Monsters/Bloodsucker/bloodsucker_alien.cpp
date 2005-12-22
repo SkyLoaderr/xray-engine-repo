@@ -252,7 +252,7 @@ void CBloodsuckerAlien::activate()
 	Actor()->inventory().setSlotsBlocked			(true);
 
 	// hide crosshair
-	m_crosshair_show			= psHUD_Flags.is(HUD_CROSSHAIR_RT);
+	m_crosshair_show			= !!psHUD_Flags.is(HUD_CROSSHAIR_RT);
 	if (m_crosshair_show)		psHUD_Flags.set(HUD_CROSSHAIR_RT,FALSE);
 
 	// Start effector

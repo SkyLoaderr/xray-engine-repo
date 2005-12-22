@@ -76,8 +76,10 @@ void CALifeSimulatorBase::unregister_object	(CSE_ALifeDynamicObject *object, boo
 		scheduled().remove				(object);
 	}
 	else
-		if (object->ID_Parent == 0xffff)
-			graph().level().remove		(object);
+		if (object->ID_Parent == 0xffff) {
+			if (object->used_ai_locations())
+				graph().level().remove	(object);
+		}
 }
 
 void CALifeSimulatorBase::on_death			(CSE_Abstract *killed, CSE_Abstract *killer)
