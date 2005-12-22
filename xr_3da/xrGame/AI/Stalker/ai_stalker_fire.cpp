@@ -37,6 +37,7 @@
 #include "../../weapon.h"
 #include "ai_stalker_space.h"
 #include "../../effectorshot.h"
+#include "../../BoneProtections.h"
 
 using namespace StalkerSpace;
 
@@ -165,34 +166,51 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	}
 }
 
-void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
+void			CAI_Stalker::Hit					(SHit* pHDS)
 {
-	if (getDestroy())
-		return;
+	//хит может меняться в зависимости от ранга (новички получают больше хита, чем ветераны)
+	SHit HDS = *pHDS;
+	HDS.power *= m_fRankImmunity;
+	if(m_boneHitProtection && HDS.hit_type == ALife::eHitTypeFireWound){
+		float BoneArmour = m_boneHitProtection->getBoneArmour(HDS.element);	
+		float NewHitPower = HDS.damage() - BoneArmour;
+		if (NewHitPower < HDS.power*m_boneHitProtection->m_fHitFrac) HDS.power = HDS.power*m_boneHitProtection->m_fHitFrac;
+		else
+			HDS.power = NewHitPower;
+	}
 
 	if (g_Alive()) {
-		CCoverPoint				*cover = agent_manager().member().member(this).cover();
-		if (cover && who && (who->ID() != ID()) && !fis_zero(amount) && brain().affect_cover())
+		CCoverPoint			*cover = agent_manager().member().member(this).cover();
+		if (cover && pHDS->initiator() && (pHDS->initiator()->ID() != ID()) && !fis_zero(pHDS->damage()) && brain().affect_cover())
 			agent_manager().location().add	(xr_new<CDangerCoverLocation>(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE));
 
 		// Play hit-ref_sound
-		CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(who);
+		const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(pHDS->initiator());
 		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
 			sound().play	(eStalkerSoundInjuring);
 		else
 			sound().play	(eStalkerSoundInjuringByFriend);
+		
 		Fvector				D;
 		float				yaw, pitch;
 		D.getHP				(yaw,pitch);
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		float				power_factor = 3.f*amount/100.f;
+		float				power_factor = m_power_fx_factor*pHDS->damage()/100.f;
 		clamp				(power_factor,0.f,1.f);
 		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
-		int					fx_index = iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
+		int					fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
 		if (fx_index != -1)
 			animation().play_fx	(power_factor,fx_index);
 	}
-	
+
+	inherited::Hit(&HDS);
+}
+
+void CAI_Stalker::HitSignal				(float amount, Fvector& vLocalDir, CObject* who, s16 element)
+{
+	if (getDestroy())
+		return;
+
 	if (g_Alive())
 		memory().hit().add	(amount,vLocalDir,who,element);
 }

@@ -113,6 +113,9 @@ private:
 	float							m_disp_stand_crouch_zoom;
 
 private:
+	float							m_power_fx_factor;
+
+private:
 	float							m_fRankDisperison;
 	float							m_fRankVisibility;
 	float							m_fRankImmunity;

@@ -53,9 +53,9 @@
 #include "../../effectorshot.h"
 #include "../../visual_memory_manager.h"
 #include "../../enemy_manager.h"
-#include "../../BoneProtections.h"
 #include "../../alife_human_brain.h"
 #include "../../profiler.h"
+#include "../../BoneProtections.h"
 
 #ifdef DEBUG
 #	include "../../alife_simulator.h"
@@ -79,6 +79,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_movement_manager				= 0;
 	m_group_behaviour				= true;
 	m_boneHitProtection				= NULL;
+	m_power_fx_factor				= flt_max;
 #ifdef DEBUG
 	m_debug_planner					= 0;
 #endif
@@ -203,6 +204,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_disp_stand_crouch				= pSettings->r_float(section,"disp_stand_crouch");
 	m_disp_stand_stand_zoom			= pSettings->r_float(section,"disp_stand_stand_zoom");
 	m_disp_stand_crouch_zoom		= pSettings->r_float(section,"disp_stand_crouch_zoom");
+
+	m_power_fx_factor				= pSettings->r_float(section,"power_fx_factor");
 }
 
 void CAI_Stalker::Die				(CObject* who)
@@ -625,23 +628,6 @@ void CAI_Stalker::UpdateCL()
 	}
 	STOP_PROFILE
 	STOP_PROFILE
-}
-
-//void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
-void			CAI_Stalker::Hit					(SHit* pHDS)
-{
-	//хит может меняться в зависимости от ранга (новички получают больше хита, чем ветераны)
-	SHit HDS = *pHDS;
-	HDS.power *= m_fRankImmunity;
-	if(m_boneHitProtection && HDS.hit_type == ALife::eHitTypeFireWound){
-		float BoneArmour = m_boneHitProtection->getBoneArmour(HDS.element);	
-		float NewHitPower = HDS.damage() - BoneArmour;
-		if (NewHitPower < HDS.power*m_boneHitProtection->m_fHitFrac) HDS.power = HDS.power*m_boneHitProtection->m_fHitFrac;
-		else
-			HDS.power = NewHitPower;
-	}
-//	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	inherited::Hit(&HDS);
 }
 
 void CAI_Stalker ::PHHit				(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /*ALife::eHitTypeWound*/)
