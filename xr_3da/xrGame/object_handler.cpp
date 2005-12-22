@@ -231,8 +231,10 @@ void CObjectHandler::actualize_strap_mode	(CWeapon *weapon) const
 {
 	VERIFY						(weapon);
 
-	if (!planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped))
+	if (!planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped)) {
 		weapon->strapped_mode	(false);
+		return;
+	}
 
 	THROW3						(weapon->can_be_strapped(),"Cannot strap weapon",*weapon->cName());
 	weapon->strapped_mode		(true);
