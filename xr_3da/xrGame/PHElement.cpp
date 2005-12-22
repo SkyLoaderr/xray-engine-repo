@@ -57,8 +57,10 @@ CPHElement::CPHElement()																															//aux
 	//temp_for_push_out=NULL;
 
 	m_body=NULL;
-	bActive=false;
-	bActivating=false;
+	//bActive=false;
+	//bActivating=false;
+	m_flags.set(flActive,FALSE);
+	m_flags.set(flActivating,FALSE);
 	m_parent_element=NULL;
 	m_shell=NULL;
 
@@ -214,12 +216,13 @@ void		CPHElement::Start()
 
 void		CPHElement::Deactivate()
 {
-	VERIFY(bActive);
+	VERIFY(isActive());
 
 	destroy();
-
-	bActive=false;
-	bActivating=false;
+	m_flags.set(flActive,FALSE);
+	m_flags.set(flActivating,FALSE);
+	//bActive=false;
+	//bActivating=false;
 	CKinematics* K=m_shell->PKinematics();
 	if(K)
 	{
@@ -246,7 +249,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 
 void CPHElement::getQuaternion(Fquaternion& quaternion)
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	const float* q=dBodyGetQuaternion(m_body);
 	quaternion.set(-q[0],q[1],q[2],q[3]);
 	VERIFY(_valid(quaternion));
@@ -254,7 +257,7 @@ void CPHElement::getQuaternion(Fquaternion& quaternion)
 void CPHElement::setQuaternion(const Fquaternion& quaternion)
 {
 	VERIFY(_valid(quaternion));
-	if(!bActive) return;
+	if(!isActive()) return;
 	dQuaternion q={-quaternion.w,quaternion.x,quaternion.y,quaternion.z};
 	dBodySetQuaternion(m_body,q);
 	CPHDisablingRotational::Reinit();
@@ -262,14 +265,14 @@ void CPHElement::setQuaternion(const Fquaternion& quaternion)
 }
 void CPHElement::GetGlobalPositionDynamic(Fvector* v)
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	v->set((*(Fvector*)dBodyGetPosition(m_body)));
 	VERIFY(_valid(*v));
 }
 
 void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	VERIFY(_valid(position));
 	dBodySetPosition(m_body,position.x,position.y,position.z);
 	CPHDisablingTranslational::Reinit();
@@ -278,7 +281,7 @@ void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
 
 void CPHElement::TransformPosition(const Fmatrix &form)
 {
-	if(!bActive)return;
+	if(!isActive())return;
 	VERIFY(_valid(form));
 	R_ASSERT2(m_body,"body is not created");
 	Fmatrix bm;
@@ -296,13 +299,13 @@ void CPHElement::TransformPosition(const Fmatrix &form)
 }
 CPHElement::~CPHElement	()
 {
-	if(bActive)Deactivate();
+	if(isActive())Deactivate();
 	DeleteFracturesHolder();
 
 }
 
 void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
-	VERIFY(!bActive);
+	VERIFY(!isActive());
 	mXFORM.set(transform);
 	Start();
 	SetTransform(transform);
@@ -318,8 +321,8 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	m_body_interpolation.SetBody(m_body);
 
 	if(disable) dBodyDisable(m_body);
-	bActive=true;
-	bActivating=true;
+	m_flags.set(flActive,TRUE);
+	m_flags.set(flActivating,TRUE);
 	CKinematics* K=m_shell->PKinematics();
 	if(K)
 	{
@@ -358,8 +361,8 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 }
 
 void CPHElement::Update(){
-	if(!bActive) return;
-	if(bActivating) bActivating=false;
+	if(!isActive()) return;
+	if(m_flags.test(flActivating)) m_flags.set(flActivating,FALSE);
 	if( !dBodyIsEnabled(m_body)&&!m_flags.test(flUpdate)/*!bUpdate*/) return;
 
 	InterpolateGlobalTransform(&mXFORM);
@@ -368,7 +371,7 @@ void CPHElement::Update(){
 
 void CPHElement::PhTune(dReal step)
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	CPHContactBodyEffector* contact_effector=
 		(CPHContactBodyEffector*) dBodyGetData(m_body);
 	if(contact_effector)contact_effector->Apply();
@@ -376,7 +379,7 @@ void CPHElement::PhTune(dReal step)
 }
 void CPHElement::PhDataUpdate(dReal step){
 
-	if(! bActive)return;
+	if(! isActive())return;
 	
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	//b_enabled_onstep=!!dBodyIsEnabled(m_body);
@@ -507,7 +510,7 @@ void CPHElement::PhDataUpdate(dReal step){
 }
 
 void CPHElement::Enable()	{
-	if(!bActive) return;
+	if(!isActive()) return;
 	m_shell->EnableObject(0);
 	if(dBodyIsEnabled(m_body)) return;
 	dBodyEnable(m_body);
@@ -516,7 +519,7 @@ void CPHElement::Enable()	{
 void CPHElement::Disable()	{
 
 //	return;
-	if(!bActive||!dBodyIsEnabled(m_body)) return;
+	if(!isActive()||!dBodyIsEnabled(m_body)) return;
 	FillInterpolation();
 
 	dBodyDisable(m_body);
@@ -543,7 +546,7 @@ void	CPHElement::UnFreeze()
 }
 void	CPHElement::applyImpulseVsMC(const Fvector& pos,const Fvector& dir, float val)
 {
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	/////////////////////////////////////////////////////////////////////////
 	Fvector impulse;
@@ -557,7 +560,7 @@ void	CPHElement::applyImpulseVsMC(const Fvector& pos,const Fvector& dir, float v
 void	CPHElement::applyImpulseVsGF(const Fvector& pos,const Fvector& dir, float val)
 {
 	VERIFY(_valid(pos)&&_valid(dir)&&_valid(val));
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	/////////////////////////////////////////////////////////////////////////
 	Fvector impulse;
@@ -573,7 +576,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 {
 
 	VERIFY(_valid(pos)&&_valid(dir)&&_valid(val));
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	Fvector body_pos;
 	if(id!=BI_NONE)
 	{
@@ -669,10 +672,11 @@ void CPHElement::InterpolateGlobalPosition(Fvector* v){
 
 void CPHElement::build(bool disable){
 
-	if(bActive) return;
-	bActive=true;
-	bActivating=true;
-
+	if(isActive()) return;
+	//bActive=true;
+	//bActivating=true;
+	m_flags.set(flActive,TRUE);
+	m_flags.set(flActivating,TRUE);
 	build();
 	//	if(place_current_forms)
 	{
@@ -708,11 +712,11 @@ void CPHElement::RunSimulation(const Fmatrix& start_from)
 void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 {
 	Fmatrix parent;
-	VERIFY2( bActive,"the element is not active");
+	VERIFY2( isActive(),"the element is not active");
 	VERIFY(_valid(m_shell->mXFORM));
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback resive 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);
-	if(bActivating)
+	if(m_flags.test(flActivating))
 	{
 		//if(!dBodyIsEnabled(m_body))
 		//	dBodyEnable(m_body);
@@ -726,12 +730,13 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		SetTransform(global_transform);
 
 		FillInterpolation();
-		bActivating=false;
+		//bActivating=false;
+		m_flags.set(flActivating,FALSE);
 		if(!m_parent_element) 
 		{
 			m_shell->m_object_in_root.set(mXFORM);
 			m_shell->m_object_in_root.invert();
-			m_shell->bActivating=false;
+			m_shell->SetNotActivating();
 		}
 		B->Callback_overwrite=TRUE;
 		//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback returns 0 matrix");
@@ -773,11 +778,11 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 void CPHElement::BonesCallBack(CBoneInstance* B)
 {
 	Fmatrix parent;
-	VERIFY (bActive);
+	VERIFY (isActive());
 	VERIFY(_valid(m_shell->mXFORM));
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback receive 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);
-	if(bActivating)
+	if(m_flags.test(flActivating))
 	{
 		//if(!dBodyIsEnabled(m_body))
 		//	dBodyEnable(m_body);
@@ -791,12 +796,13 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		SetTransform(global_transform);
 
 		FillInterpolation();
-		bActivating=false;
+		//bActivating=false;
+		m_flags.set(flActivating,FALSE);
 		if(!m_parent_element) 
 		{
 			m_shell->m_object_in_root.set(mXFORM);
 			m_shell->m_object_in_root.invert();
-			m_shell->bActivating=false;
+			m_shell->SetNotActivating();
 		}
 		B->Callback_overwrite=TRUE;
 		//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback returns 0 matrix");
@@ -888,19 +894,19 @@ dMass*	CPHElement::getMassTensor()																						//aux
 void	CPHElement::setInertia(const dMass& M)
 {
 	m_mass=M;
-	if(!bActive||m_flags.test(flFixed))return;
+	if(!isActive()||m_flags.test(flFixed))return;
 	dBodySetMass(m_body,&M);
 }
 
 void	CPHElement::addInertia(const dMass& M)
 {
 	dMassAdd(&m_mass,&M);
-	if(!bActive)return;
+	if(!isActive())return;
 	dBodySetMass(m_body,&m_mass);
 }
 void CPHElement::get_LinearVel(Fvector& velocity)
 {
-	if(!bActive||!dBodyIsEnabled(m_body))
+	if(!isActive()||!dBodyIsEnabled(m_body))
 	{
 		velocity.set(0,0,0);
 		return;
@@ -910,7 +916,7 @@ void CPHElement::get_LinearVel(Fvector& velocity)
 }
 void CPHElement::get_AngularVel	(Fvector& velocity)
 {
-	if(!bActive||!dBodyIsEnabled(m_body))
+	if(!isActive()||!dBodyIsEnabled(m_body))
 	{
 		velocity.set(0,0,0);
 		return;
@@ -920,7 +926,7 @@ void CPHElement::get_AngularVel	(Fvector& velocity)
 
 void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	VERIFY2(_valid(velocity),"not valid arqument velocity");
 	dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
 	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
@@ -928,25 +934,25 @@ void CPHElement::set_LinearVel			  (const Fvector& velocity)
 void CPHElement::set_AngularVel			  (const Fvector& velocity)
 {
 	VERIFY(_valid(velocity));
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
 }
 
 void	CPHElement::getForce(Fvector& force)
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	force.set(*(Fvector*)dBodyGetForce(m_body));
 	VERIFY(dBodyStateValide(m_body));
 }
 void	CPHElement::getTorque(Fvector& torque)
 {
-	if(!bActive) return;
+	if(!isActive()) return;
 	torque.set(*(Fvector*)dBodyGetTorque(m_body));
 	VERIFY(dBodyStateValide(m_body));
 }
 void	CPHElement::setForce(const Fvector& force)
 {
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject(0);
 	dBodySetForce(m_body,force.x,force.y,force.z);
@@ -955,7 +961,7 @@ void	CPHElement::setForce(const Fvector& force)
 }
 void	CPHElement::setTorque(const Fvector& torque)
 {
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject(0);
 	dBodySetTorque(m_body,torque.x,torque.y,torque.z);
@@ -970,7 +976,7 @@ void	CPHElement::applyForce(const Fvector& dir, float val)															//aux
 void	CPHElement::applyForce(float x,float y,float z)																//called anywhere ph state influent
 {
 	VERIFY(_valid(x)&&_valid(y)&&_valid(z));
-	if(!bActive)return;//hack??
+	if(!isActive())return;//hack??
 	if(m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject(0);
@@ -1248,7 +1254,8 @@ void CPHElement::ResetMass(float density)
 	tmp.add(shift_mc);
 	
 
-	bActivating = true;
+	//bActivating = true;
+	m_flags.set(flActivating,TRUE);
 
 	CPHGeometryOwner::setPosition(m_mass_center);
 }
@@ -1272,7 +1279,7 @@ void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
 
 void CPHElement::PresetActive()
 {
-	if(bActive) return;
+	if(isActive()) return;
 
 	CBoneInstance& B=m_shell->PKinematics()->LL_GetBoneInstance(m_SelfID);
 	mXFORM.set(B.mTransform);
@@ -1297,7 +1304,8 @@ void CPHElement::PresetActive()
 	VERIFY(dBodyStateValide(m_body));
 	m_body_interpolation.SetBody(m_body);
 	FillInterpolation();
-	bActive=true;
+	//bActive=true;
+	m_flags.set(flActive,TRUE);
 	RunSimulation();
 	VERIFY(dBodyStateValide(m_body));
 }
@@ -1343,7 +1351,7 @@ void CPHElement::cv2obj_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& 
 
 void CPHElement::set_ApplyByGravity(bool flag)
 {
-	if(!bActive||m_flags.test(flFixed)) return;
+	if(!isActive()||m_flags.test(flFixed)) return;
 	dBodySetGravityMode(m_body,flag);
 }
 bool CPHElement::get_ApplyByGravity()
@@ -1360,7 +1368,7 @@ void	CPHElement::ReleaseFixed()
 {
 	if(!isFixed())	return;
 	m_flags.set(flFixed,FALSE);
-	if(!bActive)return;
+	if(!isActive())return;
 	dBodySetMass(m_body,&m_mass);
 }
 void CPHElement::applyGravityAccel				(const Fvector& accel)
@@ -1379,7 +1387,7 @@ void CPHElement::applyGravityAccel				(const Fvector& accel)
 void CPHElement::CutVelocity(float l_limit,float a_limit)
 {
 	
-	if(!bActive)return;
+	if(!isActive())return;
 	VERIFY(_valid(l_limit)&&_valid(a_limit));
 	dVector3 limitedl,limiteda,diffl,diffa;
 	bool blimitl=dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);

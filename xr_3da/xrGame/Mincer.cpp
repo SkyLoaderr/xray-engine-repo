@@ -165,12 +165,4 @@ void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float
 
 }
 
-bool CMincer::CheckAffectField(CPhysicsShellHolder* GO,float dist_to_radius)
-{
-	if(GO->CLS_ID!=CLSID_OBJECT_ACTOR)
-		return inherited::CheckAffectField(GO,dist_to_radius);
-	else
-	{
-		return dist_to_radius>m_fActorBlowoutRadiusPercent;
-	}
-}
+

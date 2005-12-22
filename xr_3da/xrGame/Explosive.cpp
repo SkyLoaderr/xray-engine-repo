@@ -195,7 +195,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 	Fvector l_c, l_d;l_b1.get_CD(l_c,l_d);
 	float effective_volume=l_d.x*l_d.y*l_d.z;
 	float max_s=l_d.x*l_d.y*l_d.z/(_min(_min(l_d.x,l_d.y),l_d.z));
-	if(blasted_obj->PPhysicsShell()&&blasted_obj->PPhysicsShell()->bActive)
+	if(blasted_obj->PPhysicsShell()&&blasted_obj->PPhysicsShell()->isActive())
 	{
 		float ph_volume=blasted_obj->PPhysicsShell()->getVolume();
 		if(ph_volume<effective_volume)effective_volume=ph_volume;
@@ -657,7 +657,7 @@ void CExplosive::SetExplosionSize(const Fvector	&new_size)
 void CExplosive::ActivateExplosionBox(const Fvector &size,Fvector &in_out_pos)
 {
 	CPhysicsShell* self_shell=smart_cast<CPhysicsShellHolder*>(cast_game_object())->PPhysicsShell();
-	if(self_shell&&self_shell->bActive)self_shell->DisableCollision();
+	if(self_shell&&self_shell->isActive())self_shell->DisableCollision();
 	CPHActivationShape activation_shape;//Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
 	activation_shape.Create(in_out_pos,size,NULL);
 	dBodySetGravityMode(activation_shape.ODEBody(),0);
@@ -665,7 +665,7 @@ void CExplosive::ActivateExplosionBox(const Fvector &size,Fvector &in_out_pos)
 	in_out_pos.set(activation_shape.Position());
 	activation_shape.Size(m_vExplodeSize);
 	activation_shape.Destroy();
-	if(self_shell&&self_shell->bActive)self_shell->EnableCollision();
+	if(self_shell&&self_shell->isActive())self_shell->EnableCollision();
 }
 void CExplosive::net_Relcase(CObject* O)
 {

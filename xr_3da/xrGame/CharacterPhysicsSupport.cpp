@@ -198,7 +198,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 		ActivateShell(who);
 		impulse*=(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
 	}
-	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
+	if(!(m_pPhysicsShell&&m_pPhysicsShell->isActive()))
 	{
 		//m_saved_impulse=impulse* (hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
 		//m_saved_element=element;
@@ -212,7 +212,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	}
 	else {
 		{//if (!m_EntityAlife.g_Alive()) 
-			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
+			if(m_pPhysicsShell&&m_pPhysicsShell->isActive()) 
 				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
 //			else{
@@ -231,7 +231,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 	{
 		return;
 	}
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
+	if(m_pPhysicsShell&&m_pPhysicsShell->isFullActive())
 	{
 
 		//XFORM().set(m_pPhysicsShell->mXFORM);
@@ -240,9 +240,9 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 
 	if(m_pPhysicsShell)
 	{	
-		if(m_pPhysicsShell->bActive)
+		if(m_pPhysicsShell->isActive())
 		{
-			if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
+			if(!b_death_anim_on&&m_pPhysicsShell->isFullActive())
 			{
 				///if(m_eType==etStalker)
 				{
@@ -452,7 +452,7 @@ bool CCharacterPhysicsSupport::CanRemoveObject()
 
 void CCharacterPhysicsSupport::PHGetLinearVell(Fvector &velocity)
 {
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	if(m_pPhysicsShell&&m_pPhysicsShell->isActive())
 	{
 		m_pPhysicsShell->get_LinearVel(velocity);
 	}

@@ -255,6 +255,7 @@ void DBG_PHAbstruactStartFrame(bool dr_frame)
 		dbg_draw_abstruct1.clear();
 	}
 }
+void capped_cylinder_ray_collision_test();
 void DBG_PHAbstructRender()
 {
 	PHABS_DBG_I i,e;
@@ -294,7 +295,7 @@ void DBG_PHAbstructRender()
 		}
 		clear_vector(dbg_draw_simple);
 	}
-
+	//capped_cylinder_ray_collision_test();
 }
 
 void DBG_PHAbstructClear()

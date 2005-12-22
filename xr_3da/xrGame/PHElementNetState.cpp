@@ -16,7 +16,7 @@ void CPHElement::get_State(SPHNetState& state)
 	get_AngularVel(state.angular_vel);
 	getForce(state.force);
 	getTorque(state.torque);
-	if(!bActive) 
+	if(!isActive()) 
 	{
 		state.enabled=false;
 		return;
@@ -37,7 +37,7 @@ void CPHElement::set_State(const SPHNetState& state)
 	set_AngularVel(state.angular_vel);
 	setForce(state.force);
 	setTorque(state.torque);
-	if(!bActive) return;
+	if(!isActive()) return;
 	if(state.enabled&& !dBodyIsEnabled(m_body)) 
 	{
 		dBodyEnable(m_body);

@@ -23,7 +23,7 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CPhysicsShellHolder	*a_tage
 
 	if(!a_taget_object							||
 	   !a_taget_object->m_pPhysicsShell			||
-	   !a_taget_object->m_pPhysicsShell->bActive||
+	   !a_taget_object->m_pPhysicsShell->isActive()||
 	   smart_cast<CInventoryItem*>(a_taget_object)
 	   ) 
 	{
@@ -98,9 +98,9 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CPhysicsShellHolder	*a_taget_
 	b_disabled				=false;
 	e_state					=cstPulling;
 
-	if(!a_taget_object							||
-	   !a_taget_object->m_pPhysicsShell			||
-	   !a_taget_object->m_pPhysicsShell->bActive||
+	if(!a_taget_object								||
+	   !a_taget_object->m_pPhysicsShell				||
+	   !a_taget_object->m_pPhysicsShell->isActive()	||
 	   smart_cast<CInventoryItem*>(a_taget_object)
 	   ) 
 	{

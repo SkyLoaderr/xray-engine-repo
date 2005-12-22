@@ -46,10 +46,12 @@ class CPHElement	:
 	Flags8						m_flags;					//
 	enum				
 	{
-		flUpdate				=	1<<0,
-		flWasEnabledBeforeFreeze=	1<<1,
-		flEnabledOnStep			=	1<<2,
-		flFixed					=	1<<3
+		flActive				=	1<<0,
+		flActivating			=	1<<1,
+		flUpdate				=	1<<2,
+		flWasEnabledBeforeFreeze=	1<<3,
+		flEnabledOnStep			=	1<<4,
+		flFixed					=	1<<5
 	};
 //	bool						was_enabled_before_freeze;
 //	bool						bUpdate;					//->to shell ??		//st
@@ -132,7 +134,9 @@ public:																																				//
 	virtual void						Disable									()	;																			//
 	virtual	void						ReEnable								()	;																			//
 			void						Enable									()	;																			//aux
-	virtual bool						isEnabled								()	{return bActive&&dBodyIsEnabled(m_body);}
+	virtual bool						isEnabled								()	{return isActive()&&dBodyIsEnabled(m_body);}
+	virtual	bool						isFullActive							()	{return isActive()&&!m_flags.test(flActivating);}
+	virtual	bool						isActive								()	{return !!m_flags.test(flActive);}
 	virtual void						Freeze									()	;																			//
 	virtual void						UnFreeze								()	;																			//
 	virtual bool						EnabledStateOnStep						()  {return dBodyIsEnabled(m_body)||m_flags.test(flEnabledOnStep);}							//

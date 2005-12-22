@@ -26,13 +26,15 @@ CPHFracturesHolder::~CPHFracturesHolder()
 void CPHFracturesHolder::ApplyImpactsToElement(CPHElement* E)
 {
 	PH_IMPACT_I i=m_impacts.begin(),e=m_impacts.end();
-	BOOL ac_state=E->bActive;
-	E->bActive=true;
+	BOOL ac_state=E->isActive();
+	//E->bActive=true;
+	E->m_flags.set(CPHElement::flActive,TRUE);
 	for(;e!=i;++i)
 	{
 		E->applyImpact(*i);
 	}
-	E->bActive=ac_state;
+	//E->bActive=ac_state;
+	E->m_flags.set(CPHElement::flActive,ac_state);
 }
 element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
 {

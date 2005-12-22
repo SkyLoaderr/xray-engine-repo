@@ -61,7 +61,7 @@ private:
 			void CreateBody();
 			bool Invalid(){return 
 							!m_taget_object->PPhysicsShell()||
-							!m_taget_object->PPhysicsShell()->bActive||
+							!m_taget_object->PPhysicsShell()->isActive()||
 							!m_character->b_exist;
 							};
 

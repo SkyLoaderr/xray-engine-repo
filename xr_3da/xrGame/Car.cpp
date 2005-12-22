@@ -1315,7 +1315,7 @@ void CCar::PhTune(dReal step)
 	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
 	{
 		CPhysicsElement* e=PPhysicsShell()->get_ElementByStoreOrder(i-1);
-		if(e->bActive&&e->isEnabled())dBodyAddForce(e->get_body(),0,e->getMass()*AntiGravityAccel(),0);
+		if(e->isActive()&&e->isEnabled())dBodyAddForce(e->get_body(),0,e->getMass()*AntiGravityAccel(),0);
 	}
 }
 float CCar::EffectiveGravity()

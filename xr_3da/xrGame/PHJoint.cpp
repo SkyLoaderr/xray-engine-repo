@@ -610,7 +610,7 @@ void CPHJoint::ReattachFirstElement(CPHElement* new_element)
 }
 void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num)
 {
-	if(pShell&&pShell->bActive)pShell->Enable();
+	if(pShell&&pShell->isActive())pShell->Enable();
 	SetForce(force,axis_num);
 	SetVelocity(velocity,axis_num);
 }

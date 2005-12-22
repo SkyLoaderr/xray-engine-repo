@@ -84,7 +84,7 @@ void CPHCapture::PhTune(dReal /**step/**/)
 
 void CPHCapture::PullingUpdate()
 {
-	if(!m_taget_element->bActive||Device.dwTimeGlobal-m_time_start>m_capture_time)
+	if(!m_taget_element->isActive()||Device.dwTimeGlobal-m_time_start>m_capture_time)
 	{
 		Release();
 		return;
@@ -197,7 +197,7 @@ void CPHCapture::CapturedUpdate()
 		m_taget_element->Enable();
 	}
 
-	if(!m_taget_element->bActive||dDOT(m_joint_feedback.f2,m_joint_feedback.f2)>m_capture_force*m_capture_force) 
+	if(!m_taget_element->isActive()||dDOT(m_joint_feedback.f2,m_joint_feedback.f2)>m_capture_force*m_capture_force) 
 	{
 		Release();
 		return;
@@ -265,7 +265,7 @@ void CPHCapture::Release()
 void CPHCapture::Deactivate()
 {
 	Release();
-	if(m_taget_object&&m_taget_element&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->bActive)
+	if(m_taget_object&&m_taget_element&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->isActive())
 	{
 		//m_taget_element->set_ObjectContactCallback(0);
 		m_character->SetObjectContactCallback(0);

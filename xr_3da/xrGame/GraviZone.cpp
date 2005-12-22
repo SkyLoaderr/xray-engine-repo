@@ -130,9 +130,9 @@ bool CBaseGraviZone ::IdleState()
 	return result;
 }
 
-bool CBaseGraviZone::CheckAffectField(CPhysicsShellHolder* /*GO*/,float dist_to_radius)
+bool CBaseGraviZone::CheckAffectField(CPhysicsShellHolder* GO,float dist_to_radius)
 {
-	return dist_to_radius>m_fBlowoutRadiusPercent;
+	return dist_to_radius>BlowoutRadiusPercent(GO);
 }
 void CBaseGraviZone ::Affect(SZoneObjectInfo* O) 
 {
@@ -174,7 +174,12 @@ void CBaseGraviZone ::Affect(SZoneObjectInfo* O)
 		
 		//если время выброса еще не пришло
 		if(m_dwBlowoutExplosionTime<(u32)m_iPreviousStateTime ||
-			m_dwBlowoutExplosionTime>=(u32)m_iStateTime) return;
+			m_dwBlowoutExplosionTime>=(u32)m_iStateTime)
+		{
+
+			AffectPull(GO,throw_in_dir,BlowoutRadiusPercent(GO)*Radius());	
+			return;
+		}
 		AffectThrow(O,GO,throw_in_dir,dist);
 			
 	}
