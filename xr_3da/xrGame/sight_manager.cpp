@@ -80,7 +80,7 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 		if (m_object->eye_matrix.c.distance_to_xz_sqr(tPosition) < .1f)
 			my_position	= m_object->Position();
 		else
-			my_position	= m_object->eye_matrix.c
+			my_position	= m_object->eye_matrix.c;
 
 		tTemp.sub	(tPosition,my_position);
 	}
