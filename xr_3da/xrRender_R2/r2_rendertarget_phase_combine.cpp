@@ -140,7 +140,7 @@ void	CRenderTarget::phase_combine	()
 	// Combine everything + perform AA
 	if		(PP_Complex)	u_setrt		( rt_Color,0,0,HW.pBaseZB );			// LDR RT
 	else					u_setrt		( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
-	u_setrt					( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
+	//. u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 	RCache.set_CullMode		( CULL_NONE )	;
 	RCache.set_Stencil		( FALSE		)	;
 	if (1)	

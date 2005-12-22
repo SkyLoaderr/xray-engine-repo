@@ -116,10 +116,12 @@ private:
 	ref_shader					s_combine_dbg_1;
 	ref_shader					s_combine_dbg_Accumulator;
 	ref_shader					s_combine;
-private:
+public:
 	ref_shader					s_postprocess;
 	ref_geom					g_postprocess;
-
+	ref_shader					s_menu;
+	ref_geom					g_menu;
+private:
 	float						im_noise_time;
 	u32							im_noise_shift_w;
 	u32							im_noise_shift_h;

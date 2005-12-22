@@ -449,6 +449,10 @@ CRenderTarget::CRenderTarget		()
 	s_postprocess.create				("postprocess");
 	g_postprocess.create				(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_SPECULAR|D3DFVF_TEX3,RCache.Vertex.Buffer(),RCache.QuadIB);
 
+	// Menu
+	s_menu.create						("distort");
+	g_menu.create						(FVF::F_TL,RCache.Vertex.Buffer(),RCache.QuadIB);
+
 	// 
 	dwWidth		= Device.dwWidth;
 	dwHeight	= Device.dwHeight;

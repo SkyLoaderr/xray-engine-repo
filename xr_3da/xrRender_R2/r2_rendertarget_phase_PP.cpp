@@ -97,8 +97,7 @@ struct TL_2c3uv		{
 void CRenderTarget::phase_pp		()
 {
 	// combination/postprocess
-	RCache.set_RT		(HW.pBaseRT		);
-	RCache.set_ZB		(HW.pBaseZB		);
+	u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 	RCache.set_Shader	(s_postprocess	);
 
 	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
