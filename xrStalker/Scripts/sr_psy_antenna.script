@@ -23,7 +23,7 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 // phantom gen
 // ----------------------------------------------------------------------------------------
-	self.phantom_max 					= 0 //8 //10	// max phantoms
+	self.phantom_max 					= 8 //10	// max phantoms
 	self.phantom_spawn_probability		= 0	// spawn probability (0..1)
 	self.phantom_spawn_radius			= 30.0	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
