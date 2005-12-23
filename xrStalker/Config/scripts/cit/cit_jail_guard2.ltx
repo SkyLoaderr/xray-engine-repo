@@ -12,7 +12,7 @@ combat_ignore       = combat_ignore
 [walker@base_guard1]
 path_walk           = base_guard_walk
 path_look           = base_guard_look
-on_info             = {+cit_jail_scene_start} remark@base_guard_wait_to_go
+on_info             = {+cit_jail_scene_start} walker@base_guard_to_jail ;remark@base_guard_wait_to_go
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------

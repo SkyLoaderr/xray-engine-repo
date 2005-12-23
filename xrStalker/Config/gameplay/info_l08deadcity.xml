@@ -40,6 +40,7 @@
 
     <info_portion id="cit_button_broken"></info_portion>
 
+    <info_portion id="cit_heli_scene_start"></info_portion>
     <info_portion id="cit_heli_start"></info_portion>
     <info_portion id="cit_heli_end"></info_portion>
 
