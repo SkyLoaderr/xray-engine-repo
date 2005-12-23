@@ -4462,7 +4462,17 @@
 								RelativePath=".\stalker_movement_manager_space.h">
 							</File>
 							<Filter
-								Name="movement_restriction"
+								Name="params"
+								Filter="">
+								<File
+									RelativePath=".\stalker_movement_params.h">
+								</File>
+								<File
+									RelativePath=".\stalker_movement_params_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="restriction"
 								Filter="">
 								<File
 									RelativePath=".\stalker_movement_restriction.h">
@@ -4472,20 +4482,7 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="stalker_velocity_holder"
-								Filter="">
-								<File
-									RelativePath=".\stalker_velocity_holder.cpp">
-								</File>
-								<File
-									RelativePath=".\stalker_velocity_holder.h">
-								</File>
-								<File
-									RelativePath=".\stalker_velocity_holder_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="stalker_velocity_collection"
+								Name="velocity_collection"
 								Filter="">
 								<File
 									RelativePath=".\stalker_velocity_collection.cpp">
@@ -4498,13 +4495,16 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="stalker_movement_params"
+								Name="velocity_holder"
 								Filter="">
 								<File
-									RelativePath=".\stalker_movement_params.h">
+									RelativePath=".\stalker_velocity_holder.cpp">
 								</File>
 								<File
-									RelativePath=".\stalker_movement_params_inline.h">
+									RelativePath=".\stalker_velocity_holder.h">
+								</File>
+								<File
+									RelativePath=".\stalker_velocity_holder_inline.h">
 								</File>
 							</Filter>
 						</Filter>
