@@ -16,3 +16,13 @@ end
 function yan_scientist_task_fail ()
 		return db.actor:has_info("yan_scientist_die") and db.actor:dont_has_info("yan_scientist_return_to_bunker")
 end
+function proceed()
+    local actor = db.actor
+    
+    if actor:dont_has_info("yan_provodnik_spawn") and
+       actor:object("yantar_ghost_pda") ~= nil 
+    then
+       actor:give_info_portion("yan_provodnik_spawn")
+       news_manager.send_tip(db.actor, "storyline_ghost_tip", nil, "stalker", nil, 903)
+     end
+end
