@@ -692,6 +692,22 @@ function se_smart_terrain:update()
 end
 
 --------------------
+function on_death( obj_id )
+--	printf( "on_death obj_id=%d", obj_id )
+
+	local sim = alife()
+
+	if sim then
+		local obj     = sim:object( obj_id )
+		local strn_id = obj:smart_terrain_id()
+
+		if strn_id ~= 65535 then
+			sim:object( strn_id ):unregister_npc( obj )
+		end
+	end
+end
+
+--------------------
 -- прочитать секцию [smart_terrains]
 -- вызывается объектами, которые могут ходить под smart terrain
 function read_smart_terrain_conditions( self )

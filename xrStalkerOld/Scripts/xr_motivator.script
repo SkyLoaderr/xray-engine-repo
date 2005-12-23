@@ -151,6 +151,8 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 end
 
 function motivator_binder:death_callback(victim, who)
+	smart_terrain.on_death( self.object:id() )
+
 	if who:id() == db.actor:id() then
 		xr_statistic.addKillCount(self.object)
 	end
