@@ -27,6 +27,7 @@
 		<disable>yan_scientist_door_2_open</disable>
 		<disable>yan_scientist_door_1_open</disable>
 	</info_portion>
+	<info_portion id="yantar_kruglov_talk"></info_portion>
 	<info_portion id="yan_scientist_door_2_open"></info_portion>
 	<info_portion id="yan_scientist_door_1_open"></info_portion>
 	<info_portion id="yantar_scientists_talk"></info_portion>
