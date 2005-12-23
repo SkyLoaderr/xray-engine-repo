@@ -26,47 +26,47 @@ min_artefact_count	= 1
 max_artefact_count	= 2
 
 
-idle_particles				= explosions\campfire_05
-blowout_particles			= explosions\campfire_blowout
+idle_particles				= anomaly2\studen_idle_bottom
+blowout_particles			= anomaly2\studen_idle_bottom
 
-hit_small_particles			= damage_fx\burn_creatures00
-hit_big_particles			= damage_fx\burn_creatures00
-idle_small_particles		= damage_fx\burn_creatures00
-idle_big_particles			= damage_fx\burn_creatures00
-entrance_small_particles	= damage_fx\burn_creatures00
-entrance_big_particles		= damage_fx\burn_creatures00
+hit_small_particles			= anomaly2\group_items\studen_idle_par_up
+hit_big_particles			= anomaly2\group_items\studen_idle_par_up
+idle_small_particles		= anomaly2\group_items\studen_idle_par_up
+idle_big_particles			= anomaly2\group_items\studen_idle_par_up
+entrance_small_particles	= anomaly2\group_items\studen_idle_par_up
+entrance_big_particles		= anomaly2\group_items\studen_idle_bottom
 
-idle_sound					= ambient\fire2		;постоянный звук
-blowout_sound				= ambient\fire2		;во время выброса(удара) в центре аномалии	
-hit_sound					= ambient\fire2		;на персонаже, когда тот получает хит
-entrance_sound				= ambient\fire2		;при попадании объекта в аномалию
+idle_sound					= anomaly\bfuzz_blowout		;постоянный звук
+blowout_sound				= anomaly\bfuzz_hit		;во время выброса(удара) в центре аномалии	
+hit_sound					= anomaly\bfuzz_hit		;на персонаже, когда тот получает хит
+entrance_sound				= anomaly\bfuzz_hit		;при попадании объекта в аномалию
 
-hit_type					= burn
+hit_type					= chemical_burn
 
 disable_time				= 10000	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small			= -1	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time			= 50000	;время отключения idle партиклов
 
 ignore_nonalive				= false
-ignore_small				= true
-ignore_artefacts			= true
+ignore_small				= false
+ignore_artefacts			= false
 
 blowout_light				= on
-light_color		    		= 1.8,1.7,1.4
-light_animation             = koster
+light_color		    		= 1.2,1.9,1.5
+light_animation             = light_green_01
 light_range		    		= 8
 light_time 		    		= 0.35
 light_height				= 0.75			;подъем источника света на высоту
 
 
-idle_light					= off
+idle_light					= on
 idle_light_range			= 8.0
 idle_light_range_delta 		= 0.25
-idle_light_anim				= koster_00
+idle_light_anim				= light_green_02
 idle_light_height			= 0.70			;подъем источника света на высоту
 
 awaking_time				= 0
-blowout_time				= 1000	
+blowout_time				= 100	
 accamulate_time				= 0
 
 visible_by_detector 		= off
