@@ -351,6 +351,11 @@ function check_state_robbers(gulag)
 	return 0
 end
 
+-- Check stalker ---------------------------------------------------------
+function check_stalker_rob(npc_community, gulag_type, npc_rank, se_obj, stalker)
+    return stalker
+end
+
 -- Dynamic ltx -----------------------------------------------------------
 function load_ltx_robbers(gname, type)
     local i, ltx = 0, ""
@@ -762,7 +767,7 @@ end
 gulags.val_escort           = {load_job_escort,         check_state_escort,         {"bandit", "dolg"}, load_ltx_escort}
 gulags.val_sacrifice        = {load_job_sacrifice,      check_state_sacrifice,      {"bandit", "dolg"}, load_ltx_sacrifice}
 gulags.val_prisoner         = {load_job_prisoner,       check_state_prisoner,       {"dolg"},           load_ltx_prisoner}
-gulags.val_rob              = {load_job_robbers,        check_state_robbers,        {},                 load_ltx_robbers}
+gulags.val_rob              = {load_job_robbers,        check_state_robbers,        {check_stalker_rob},                 load_ltx_robbers}
 gulags.val_lager_bandits    = {load_job_lager_bandits,  check_state_lager_bandits,  {"bandit"}}
 gulags.val_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {check_stalker_monolith_base},  load_ltx_monolith_base}
 gulags.val_war_soldiers     = {load_job_war_soldiers,   check_state_war_soldiers,   {"military"},                   load_ltx_war_soldiers}
