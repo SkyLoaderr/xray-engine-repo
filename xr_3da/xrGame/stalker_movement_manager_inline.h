@@ -152,6 +152,7 @@ IC	CAI_Stalker &CStalkerMovementManager::object						() const
 	return						(*m_object);
 }
 
+#ifdef OLD_VELOCITIES
 IC	float CStalkerMovementManager::crouch_factor			() const
 {
 	return						(m_crouch_factor);
@@ -216,6 +217,7 @@ IC	float CStalkerMovementManager::damaged_panic_factor		() const
 {
 	return						(m_damaged_panic_factor);
 }
+#endif
 
 IC	const MonsterSpace::EMovementType CStalkerMovementManager::target_movement_type	() const
 {

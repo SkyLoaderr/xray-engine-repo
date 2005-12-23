@@ -10,6 +10,7 @@
 
 #include "movement_manager.h"
 #include "ai_monster_space.h"
+#include "stalker_movement_params.h"
 
 using namespace MonsterSpace;
 
@@ -23,64 +24,6 @@ protected:
 
 public:
 	typedef DetailPathManager::EDetailPathType EDetailPathType;
-
-public:
-	struct CMovementParams {
-		Fvector						m_desired_position;
-		Fvector						m_desired_direction;
-		EBodyState					m_body_state;
-		EMovementType				m_movement_type;
-		EMentalState				m_mental_state;
-		EPathType					m_path_type;
-		EDetailPathType				m_detail_path_type;
-		CAbstractVertexEvaluator	*m_node_evaluator;
-		CAbstractVertexEvaluator	*m_path_evaluator;
-		bool						m_use_desired_position;
-		bool						m_use_desired_direction;
-
-		IC	bool	operator==		(const CMovementParams &params) const
-		{
-			if (m_use_desired_position != params.m_use_desired_position)
-				return				(false);
-
-			if (m_use_desired_direction != params.m_use_desired_direction)
-				return				(false);
-
-			if (m_path_evaluator != params.m_path_evaluator)
-				return				(false);
-
-			if (m_node_evaluator != params.m_node_evaluator)
-				return				(false);
-
-			if (m_detail_path_type != params.m_detail_path_type)
-				return				(false);
-
-			if (m_path_type != params.m_path_type)
-				return				(false);
-
-			if (m_mental_state != params.m_mental_state)
-				return				(false);
-
-			if (m_movement_type != params.m_movement_type)
-				return				(false);
-
-			if (m_body_state != params.m_body_state)
-				return				(false);
-
-			if (m_use_desired_direction && !m_desired_direction.similar(params.m_desired_direction))
-				return				(false);
-
-			if (m_use_desired_position && !m_desired_position.similar(params.m_desired_position))
-				return				(false);
-
-			return					(true);
-		}
-
-		IC	bool	operator!=		(const CMovementParams &params) const
-		{
-			return					(!(*this == params));
-		}
-	};
 
 #ifdef OLD_VELOCITIES
 protected:
@@ -100,8 +43,8 @@ protected:
 #endif
 
 protected:
-	CMovementParams					m_current;
-	CMovementParams					m_target;
+	CStalkerMovementParams			m_current;
+	CStalkerMovementParams			m_target;
 	CAI_Stalker						*m_object;
 
 public:

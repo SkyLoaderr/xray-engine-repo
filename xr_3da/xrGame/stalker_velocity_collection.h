@@ -8,13 +8,12 @@
 
 #pragma once
 
-class CStalkerVelocityHolder {
-public:
-	typedef associative_vector<> ;
-
+class CStalkerVelocityCollection {
 private:
 
 public:
-					CStalkerVelocityHolder	();
-	virtual			~CStalkerVelocityHolder	();
+					CStalkerVelocityCollection	();
+	virtual			~CStalkerVelocityCollection	();
 };
+
+#include "stalker_velocity_collection_inline.h"

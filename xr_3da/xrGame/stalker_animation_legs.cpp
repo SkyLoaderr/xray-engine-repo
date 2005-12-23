@@ -20,7 +20,7 @@ const float epsilon						= EPS_L;
 const u32	direction_switch_interval 	= 500;
 const float direction_angles[]			= {
 	0.f,		//	eMovementDirectionForward
-	PI,			//	eMovementDirectionBack
+	PI,			//	eMovementDirectionBackward
 	PI_DIV_2,	//	eMovementDirectionLeft
 	-PI_DIV_2	//	eMovementDirectionRight
 };
@@ -36,12 +36,12 @@ IC	float CStalkerAnimationManager::legs_switch_factor		() const
 {
 	if	(
 			(m_target_direction == eMovementDirectionForward) &&
-			(m_current_direction == eMovementDirectionBack)
+			(m_current_direction == eMovementDirectionBackward)
 		)
 		return					(0.f);
 
 	if	(
-			(m_target_direction == eMovementDirectionBack) &&
+			(m_target_direction == eMovementDirectionBackward) &&
 			(m_current_direction == eMovementDirectionForward)
 		)
 		return					(0.f);
@@ -101,7 +101,7 @@ void CStalkerAnimationManager::legs_process_direction		(float yaw)
 		legs_assign_direction			(switch_factor,eMovementDirectionForward);
 	else {
 		if (difference > test_angle_backward)
-			legs_assign_direction		(switch_factor,eMovementDirectionBack);
+			legs_assign_direction		(switch_factor,eMovementDirectionBackward);
 		else
 			if (left)
 				legs_assign_direction	(switch_factor,eMovementDirectionLeft);
@@ -155,7 +155,7 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 		speed_direction			= eMovementDirectionForward;
 	else {
 		if (difference > test_angle_backward)
-			speed_direction		= eMovementDirectionBack;
+			speed_direction		= eMovementDirectionBackward;
 		else {
 			if (left)
 				speed_direction	= eMovementDirectionLeft;

@@ -26,7 +26,7 @@ namespace MonsterSpace {
 
 	enum EMovementDirection {
 		eMovementDirectionForward = 0,
-		eMovementDirectionBack,
+		eMovementDirectionBackward,
 		eMovementDirectionLeft,
 		eMovementDirectionRight,
 	};
