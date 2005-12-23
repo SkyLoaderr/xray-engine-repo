@@ -59,7 +59,7 @@ extern LPCSTR GAME_CONFIG;
 
 void Startup(LPSTR     lpCmdLine)
 {
-	char cmd[512],name[256];
+	char cmd[4096],name[4096];
 	BOOL bModifyOptions		= FALSE;
 
 	strcpy(cmd,lpCmdLine);
