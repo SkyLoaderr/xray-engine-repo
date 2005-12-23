@@ -95,18 +95,23 @@ void Startup(LPSTR     lpCmdLine)
 		strcat			(name,"\\");
 	string4096			prjName;
 	prjName				[0] = 0;
-	FS.update_path		(prjName,"$game_levels$",name);
+	bool				can_use_name = false;
+	if (xr_strlen(prjName) < sizeof(string_path))
+		FS.update_path	(prjName,"$game_levels$",name);
 
 	u32					dwStartupTime	= timeGetTime();
 	
 	FS.update_path		(INI_FILE,"$game_config$",GAME_CONFIG);
 	
-	if (strstr(cmd,"-f"))
+	if (strstr(cmd,"-f")) {
+		R_ASSERT3			(can_use_name,"Too big level name",name);
 		xrCompiler			(prjName,!!strstr(cmd,"-draft"));
+	}
 	else
 		if (strstr(cmd,"-g")) {
 //			xrBuildGraph		(prjName);
 //			xrBuildCrossTable	(prjName);
+			R_ASSERT3		(can_use_name,"Too big level name",name);
 			CGameGraphBuilder().build_graph	(prjName);
 		}
 		else {
@@ -160,6 +165,7 @@ void Startup(LPSTR     lpCmdLine)
 						}
 						else
 							if (strstr(cmd,"-verify")) {
+								R_ASSERT3			(can_use_name,"Too big level name",name);
 								verify_level_graph	(prjName,!strstr(cmd,"-noverbose"));
 							}
 		}
