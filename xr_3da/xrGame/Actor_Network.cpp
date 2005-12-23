@@ -1803,7 +1803,7 @@ void				CActor::OnHitHealthLoss					(float NewHealth)
 {
 	if (!m_bWasHitted) return;
 	if (GameID() == GAME_SINGLE || !OnServer()) return;
-	float fNewHealth = NewHealth*100;
+	float fNewHealth = NewHealth;
 	m_bWasHitted = false;
 	
 	if (m_iLastHitterID != u16(-1))

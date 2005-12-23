@@ -786,7 +786,7 @@ void	game_sv_mp::OnPlayerHitted			(NET_Packet P)
 {
 	u16		id_hitted = P.r_u16();
 	u16     id_hitter = P.r_u16();
-	float	dHealth = P.r_float();
+	float	dHealth = P.r_float()*100;
 	game_PlayerState* PSHitter		=	get_eid			(id_hitter);
 	if (!PSHitter) return;
 	game_PlayerState* PSHitted		=	get_eid			(id_hitted);
