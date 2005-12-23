@@ -178,7 +178,7 @@ function events:calculateObject(v)
 	end
 
 	if type == "stalker" and
-	   is_enemy(self.npc, vo) ~= true
+	   xr_combat_ignore.is_enemy(self.npc, vo) ~= true
 -- 	   (vo:character_community() == self.npc:character_community())
 	then
 		return false
