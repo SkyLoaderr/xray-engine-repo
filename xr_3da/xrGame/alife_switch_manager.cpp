@@ -124,10 +124,9 @@ bool CALifeSwitchManager::synchronize_location(CSE_ALifeDynamicObject *I)
 	VERIFY3					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id(),*I->s_name,I->name_replace());
 	xr_vector<u16>			test = I->children;
 	std::sort				(test.begin(),test.end());
-	for (u32 i=1, n=test.size(); i<n; ++i)
-		if (test[i - 1] == test[i]) {
-			VERIFY			(false);
-		}
+	for (u32 i=1, n=test.size(); i<n; ++i) {
+		VERIFY3				(test[i - 1] != test[i],"Child is registered twice in the child list",(*I).name_replace());
+	}
 #endif
 
 	// check if we do not use ai locations
