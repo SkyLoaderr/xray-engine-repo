@@ -91,8 +91,8 @@ artefacts		=
 BirthProbability = 0.0
 
 ;----------- Anomaly settings -----------------------
-min_start_power		= 90
-max_start_power		= 100
+min_start_power		= 10
+max_start_power		= 15
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
@@ -181,3 +181,25 @@ attenuation			= 1
 period				= 1
 min_artefact_count	= 0
 max_artefact_count	= 0
+
+
+
+[zone_burning_fuzz_bottom_weak]:zone_burning_fuzz1
+$spawn 			= "zones\burning fuzz bottom"
+
+artefacts		= af_rusty_thorn,0.8, af_rusty_kristall, 0.2, af_rusty_sea-urchin, 0.0
+BirthProbability = 0.2
+
+
+[zone_burning_fuzz_bottom_average]:zone_burning_fuzz1
+$spawn 			= "zones\burning fuzz average"
+
+artefacts		= af_rusty_thorn,0.6, af_rusty_kristall, 0.4, af_rusty_sea-urchin, 0.0
+BirthProbability = 0.2
+
+
+[zone_burning_fuzz_bottom_strong]:zone_burning_fuzz1
+$spawn 			= "zones\burning fuzz strong"
+
+artefacts		= af_rusty_thorn,0.2, af_rusty_kristall, 0.6, af_rusty_sea-urchin, 0.2
+BirthProbability = 0.2
