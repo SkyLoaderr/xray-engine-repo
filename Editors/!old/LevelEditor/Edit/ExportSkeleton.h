@@ -5,6 +5,7 @@
 
 #include "PropSlimTools.h"
 #include "SkeletonCustom.h"
+#include "EditMesh.h"
 //---------------------------------------------------------------------------
 const int clpSMX = 28, clpSMY=16, clpSMZ=28;
 //---------------------------------------------------------------------------
@@ -13,45 +14,37 @@ class CEditableObject;
 class CSurface;
 class CInifile;
 
-struct ECORE_API SSkelVert{
-	Fvector		O;
-	Fvector		N;
-    Fvector		T;
-    Fvector		B;
-    Fvector2	UV;
-    float 		w[4];
-	u16			b[4];
-    u8			w_cnt;
+struct ECORE_API SSkelVert: public st_SVert{
+    Fvector		tang;
+    Fvector		binorm;
 	SSkelVert(){
-        UV.set	(0.f,0.f);
-        O.set	(0,0,0);
-		N.set	(0,1,0);
-        T.set	(1,0,0);
-		B.set	(0,0,1);
-		b[0]=b[1]=b[2]=b[3]=BI_NONE;
-		w[0]=w[1]=w[2]=w[3]=0.f;
-    	w_cnt	= 0;
+        uv.set	(0.f,0.f);
+        offs.set	(0,0,0);
+		norm.set	(0,1,0);
+        tang.set	(1,0,0);
+		binorm.set	(0,0,1);
 	}
-    void set(const Fvector& _o, const Fvector& _n, const Fvector2& _uv, u8 _w_cnt, float* _w, u16* _b)
+    void set(const Fvector& _o, const Fvector& _n, const Fvector2& _uv, u8 _w_cnt, const st_SVert::bone* b)
     {
-        O.set   (_o);
-        N.set	(_n);
-        UV.set	(_uv);
-        w_cnt	= _w_cnt;
-        VERIFY	(w_cnt>0 && w_cnt<4);
-        for (u8 k=0; k<w_cnt; k++)	{w[k]=_w[k]; b[k]=_b[k];}
+        offs.set 	(_o);
+        norm.set	(_n);
+        uv.set		(_uv);
+        VERIFY		(_w_cnt>0 && _w_cnt<4);
+        bones.resize(_w_cnt);
+        for (u8 k=0; k<_w_cnt; k++)	{bones[k]=b[k];}
+        sort_by_bone();
     }
 	BOOL	similar_pos(SSkelVert& V)
     {
-        return O.similar(V.O,EPS_L);
+        return offs.similar(V.offs,EPS_L);
     }
 	BOOL	similar(SSkelVert& V)
     {
-    	if (w_cnt!=V.w_cnt)				return FALSE;
-        for (u8 k=0; k<w_cnt; k++)		{ if (!fsimilar(w[k],V.w[k],EPS_L) || (b[k]!=V.b[k])) return FALSE; }
-        if (!UV.similar	(V.UV,EPS_S))	return FALSE;
-		if (!O.similar	(V.O,EPS_L))	return FALSE;
-		if (!N.similar	(V.N,EPS_L))	return FALSE;
+    	if (bones.size()!=V.bones.size())	return FALSE;
+        for (u8 k=0; k<(u8)bones.size(); k++)	{ if (!bones[k].similar(V.bones[k])) return FALSE; }
+        if (!uv.similar	(V.uv,EPS_S))		return FALSE;
+		if (!offs.similar(V.offs,EPS_L))	return FALSE;
+		if (!norm.similar(V.norm,EPS_L))	return FALSE;
 		return TRUE;
 	}
 };
@@ -93,7 +86,7 @@ public:
     }
 	bool add_face	(SSkelVert& v0, SSkelVert& v1, SSkelVert& v2)
     {
-		if (v0.O.similar(v1.O,EPS) || v0.O.similar(v2.O,EPS) || v1.O.similar(v2.O,EPS)){
+		if (v0.offs.similar(v1.offs,EPS) || v0.offs.similar(v2.offs,EPS) || v1.offs.similar(v2.offs,EPS)){
 			ELog.Msg(mtError,"Degenerate face found. Removed.");
             invalid_faces++;
             return false;
@@ -152,7 +145,7 @@ protected:
             m_Box.invalidate	();
             for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
                 SSkelVert& pV 	= *v_it;
-                m_Box.modify(pV.O);
+                m_Box.modify(pV.offs);
             }
         }
     };

@@ -286,7 +286,7 @@ struct svertRender
 };
 void CEditableMesh::RenderSkeleton(const Fmatrix&, CSurface* S)
 {
-    if (false==IsGeneratedSVertices(2))	GenerateSVertices(2);
+    if (false==IsGeneratedSVertices(RENDER_SKELETON_LINKS)) GenerateSVertices(RENDER_SKELETON_LINKS);
 
 	R_ASSERT2(m_SVertices,"SVertices empty!");
 	SurfFacesPairIt sp_it 	= m_SurfFaces.find(S); R_ASSERT(sp_it!=m_SurfFaces.end());
@@ -300,22 +300,23 @@ void CEditableMesh::RenderSkeleton(const Fmatrix&, CSurface* S)
     int f_cnt=0;
     for (IntIt i_it=face_lst.begin(); i_it!=face_lst.end(); i_it++){
         for (int k=0; k<3; k++,pv++){
-        	st_SVert& SV = m_SVertices[*i_it*3+k];
-            if (SV.w_cnt==2){
-                Fmatrix& M0		= m_Parent->m_Bones[SV.b[0]]->_RenderTransform();
-                Fmatrix& M1		= m_Parent->m_Bones[SV.b[1]]->_RenderTransform();
-                M0.transform_tiny(P0,SV.offs);
-                M0.transform_dir (N0,SV.norm);
-                M1.transform_tiny(P1,SV.offs);
-                M1.transform_dir (N1,SV.norm);
-                pv->P.lerp		(P0,P1,SV.w[1]);
-                pv->N.lerp		(N0,N1,SV.w[1]);
-                pv->uv.set		(SV.uv);
-            }else{                 
-                Fmatrix& M0		= m_Parent->m_Bones[SV.b[0]]->_RenderTransform();
-                M0.transform_tiny(pv->P,SV.offs);
-                M0.transform_dir (pv->N,SV.norm);
-                pv->uv.set		(SV.uv);
+        	st_SVert& SV 		= m_SVertices[*i_it*3+k];
+            pv->uv.set			(SV.uv);
+            float total			= SV.bones[0].w;
+
+            const Fmatrix& M	= m_Parent->m_Bones[SV.bones[0].id]->_RenderTransform();
+            M.transform_tiny	(pv->P,SV.offs);
+            M.transform_dir 	(pv->N,SV.norm);
+
+            Fvector P,N;
+                
+            for (u8 cnt=1; cnt<(u8)SV.bones.size(); cnt++){
+                total			+= SV.bones[cnt].w;
+                const Fmatrix& M = m_Parent->m_Bones[SV.bones[cnt].id]->_RenderTransform();
+                M.transform_tiny(P,SV.offs);
+                M.transform_dir (N,SV.norm);
+                pv->P.lerp		(pv->P,P,SV.bones[cnt].w/total);
+                pv->N.lerp		(pv->N,N,SV.bones[cnt].w/total);
             }
         }
         f_cnt++;

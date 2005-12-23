@@ -59,7 +59,7 @@ public:
         for (it=begin(); it!=end(); it++) sum_weight+=it->weight;
         // normalize weights
         for (it=begin(); it!=end(); it++) it->weight/=sum_weight;
-        sort_by_bone	();
+//		sort_by_bone	(); // need only for export (before add vertex sort_by_bone)
 	}
 };
 DEFINE_VECTOR(st_VertexWB,VWBVec,VWBIt);
@@ -120,9 +120,26 @@ struct ECORE_API st_SVert{
 	Fvector			offs;
     Fvector			norm;
     Fvector2		uv;
-    u16				b[4];
-    float			w[4];
-    u8				w_cnt;
+    struct bone{
+    public:
+    	float		w;
+        u16			id;
+        bone		(){w=0.f;id=BI_NONE;}
+        bool		similar		(const bone& b){return (id==b.id) && fsimilar(w,b.w,EPS_L);}
+    };
+    svector<bone,4> bones;
+    protected:
+        static bool compare_by_weight(const bone& a, const bone& b)
+        {
+            return a.w > b.w; // отсортировать по убыванию
+        }
+        static bool compare_by_bone(const bone& a, const bone& b)
+        {
+            return a.id < b.id; // отсортировать по возрастанию
+        }
+    public:
+    	void		sort_by_weight	()	{std::sort(bones.begin(),bones.end(),compare_by_weight);}
+    	void		sort_by_bone	()	{std::sort(bones.begin(),bones.end(),compare_by_bone);	}
 };
 // faces
 struct ECORE_API st_FaceVert{

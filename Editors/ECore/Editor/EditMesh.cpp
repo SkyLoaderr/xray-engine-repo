@@ -239,12 +239,11 @@ void CEditableMesh::GenerateSVertices(u32 influence)
             VERIFY(m_SVertInfl<=4);
             
             wb.prepare_weights(m_SVertInfl);
-            SV.b[0]	= SV.b[1] = SV.b[2] = SV.b[3] = BI_NONE;
-            SV.w[0]	= SV.w[1] = SV.w[2] = SV.w[3] = 0.f;
-            SV.w_cnt= (u8)wb.size();   
+
             SV.offs	= P;
             SV.norm	= N;
-            for (u8 k=0; k<SV.w_cnt; k++){	SV.b[k]=wb[k].bone; SV.w[k]=wb[k].weight; }
+            SV.bones.resize(wb.size());
+            for (u8 k=0; k<(u8)SV.bones.size(); k++){	SV.bones[k].id=wb[k].bone; SV.bones[k].w=wb[k].weight; }
         }
 	}
 
