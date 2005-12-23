@@ -8,6 +8,10 @@ function is_enemy( obj, enemy, st )
 
 	if not st then
 		st = db.storage[obj:id()].combat_ignore
+
+		if not st then
+			return true
+		end
 	end
 
 	if not st.enabled then
