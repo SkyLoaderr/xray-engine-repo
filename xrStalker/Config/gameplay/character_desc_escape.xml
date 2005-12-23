@@ -152,6 +152,7 @@
 			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
+			esc_wounded_flash \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
