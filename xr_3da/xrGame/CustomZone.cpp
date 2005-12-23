@@ -1055,19 +1055,19 @@ void	CCustomZone::OnEvent (NET_Packet& P, u16 type)
 				switch (S)
 				{
 				case eZoneStateIdle:
-					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Idle",s2));
-					break;																
-				case eZoneStateAwaking:													
-					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Awaking",s2));
-					break;																
-				case eZoneStateBlowout:													
-					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Blowout",s2));
-					break;																
-				case eZoneStateAccumulate:												
-					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Accumulate",s2));
+					if(bDebug) Msg("%s %s",*cName(),strconcat(s1,"zone switch to State Idle",s2));
+					break;															
+				case eZoneStateAwaking:
+					if(bDebug) Msg("%s %s",*cName(),strconcat(s1,"zone switch to State Awaking",s2));
+					break;															
+				case eZoneStateBlowout:
+					if(bDebug) Msg("%s %s",*cName(),strconcat(s1,"zone switch to State Blowout",s2));
+					break;															
+				case eZoneStateAccumulate:
+					if(bDebug) Msg("%s %s",*cName(),strconcat(s1,"zone switch to State Accumulate",s2));
 					break;
-				case eZoneStateDisabled:												
-					if(bDebug) Msg("%s %s %s",*cName(),strconcat(s1,"zone switch to State Disabled",s2));
+				case eZoneStateDisabled:
+					if(bDebug) Msg("%s %s",*cName(),strconcat(s1,"zone switch to State Disabled",s2));
 					break;
 				};
 #endif
