@@ -114,7 +114,8 @@ CALifeTask &CAI_Stalker::current_alife_task	()
 {
 	if (!m_current_alife_task)
 		select_alife_task	();
-	VERIFY					(m_current_alife_task);
+
+	VERIFY3					(m_current_alife_task,"Not enough ALife tasks",*cName());
 	return					(*m_current_alife_task);
 }
 
