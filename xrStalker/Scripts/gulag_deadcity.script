@@ -56,6 +56,9 @@ local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
             if type(g.comm) == "function" then
                 return g.comm(npc_community, gulag_type, npc_rank, se_obj, stalker)
             end
+            if type(g.comm) == "boolean" then
+                return g.comm == stalker
+            end
 
             local i, v = 0, 0
             for i, v in pairs(g.comm) do
