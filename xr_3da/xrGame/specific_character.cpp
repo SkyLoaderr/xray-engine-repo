@@ -137,8 +137,6 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 	data()->m_iIconX		= uiXml.ReadAttribInt("icon", 0, "x");
 	data()->m_iIconY		= uiXml.ReadAttribInt("icon", 0, "y");
-//	data()->m_iMapIconX		= uiXml.ReadAttribInt("map_icon", 0, "x");
-//	data()->m_iMapIconY		= uiXml.ReadAttribInt("map_icon", 0, "y");
 
 	//игровое имя персонажа
 	data()->m_sGameName		= uiXml.Read("name", 0, "");

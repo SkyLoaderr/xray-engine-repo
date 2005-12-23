@@ -1,5 +1,5 @@
 function main_()
-	level.add_pp_effector("duality_circle.ppe", 999, true)
+	level.add_pp_effector("vibros.ppe", 999, true)
 --	level.set_pp_effector_factor(999, 0.1)
 --	level.remove_pp_effector(999)
 end

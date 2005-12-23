@@ -496,6 +496,10 @@ void CApplication::LoadBegin	()
 		ll_hLogo2.create	("font","ui\\ui_logo_nv");
 		ll_hLogo			= ll_hLogo2;
 		sh_progress.create	("hud\\default","ui\\ui_load_progress_bar");
+		
+		sh_progress2.create	("hud\\default","ui\\ui_tmp_progress");
+		ll_hGeom2.create		(FVF::F_TL, RCache.Vertex.Buffer(),NULL);
+
 		load_stage			= 0;
 
 		CheckCopyProtection	();
@@ -513,6 +517,7 @@ void CApplication::LoadEnd		()
 		g_appLoaded				= TRUE;
 	}
 }
+u32 calc_progress_color(u32, u32, int, int);
 void CApplication::LoadDraw		()
 {
 	Device.dwFrame				+= 1;
@@ -546,13 +551,73 @@ void CApplication::LoadDraw		()
 		pFontSystem->SetAligment	(CGameFont::alCenter);
 		pFontSystem->OutI			(0.f,0.93f,app_title);
 		pFontSystem->OnRender		();
-		// Draw Progress
 
-		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
+//progress
 		float bw					= 1024.0f;
 		float bh					= 768.0f;
-
 		Fvector2					k; k.set(float(_w)/bw, float(_h)/bh);
+/*
+		RCache.set_Shader			(sh_progress2);
+		CTexture*	T				= RCache.get_ActiveTexture(0);
+		Fvector2					tsz;
+		tsz.set						((float)T->get_Width(),(float)T->get_Height());
+		Frect						back_text_coords;
+		Frect						back_coords;
+		Fvector2					back_size;
+
+//progress background
+
+		back_size.set				(661,93);
+		back_text_coords.lt.set		(0,0);back_text_coords.rb.add(back_text_coords.lt,back_size);
+		back_coords.lt.set			(180,600);back_coords.rb.add(back_coords.lt,back_size);
+
+		back_coords.lt.mul			(k);back_coords.rb.mul(k);
+
+		back_text_coords.lt.x/=tsz.x; back_text_coords.lt.y/=tsz.y; back_text_coords.rb.x/=tsz.x; back_text_coords.rb.y/=tsz.y;
+
+		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
+		pv->set						(back_coords.lt.x,	back_coords.rb.y,	0+EPS_S, 1, C,back_text_coords.lt.x,	back_text_coords.rb.y);	pv++;
+		pv->set						(back_coords.lt.x,	back_coords.lt.y,	0+EPS_S, 1, C,back_text_coords.lt.x,	back_text_coords.lt.y);	pv++;
+		pv->set						(back_coords.rb.x,	back_coords.rb.y,	0+EPS_S, 1, C,back_text_coords.rb.x,	back_text_coords.rb.y);	pv++;
+		pv->set						(back_coords.rb.x,	back_coords.lt.y,	0+EPS_S, 1, C,back_text_coords.rb.x,	back_text_coords.lt.y);	pv++;
+		RCache.Vertex.Unlock		(4,ll_hGeom.stride());
+
+		RCache.set_Geometry			(ll_hGeom);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+
+//progress bar
+		back_size.set				(268,37);
+		back_text_coords.lt.set		(0,107);back_text_coords.rb.add(back_text_coords.lt,back_size);
+		back_coords.lt.set			(376 ,652);back_coords.rb.add(back_coords.lt,back_size);
+
+		back_coords.lt.mul			(k);back_coords.rb.mul(k);
+
+		back_text_coords.lt.x/=tsz.x; back_text_coords.lt.y/=tsz.y; back_text_coords.rb.x/=tsz.x; back_text_coords.rb.y/=tsz.y;
+
+
+
+		u32 v_cnt					= 40;
+		pv							= (FVF::TL*)RCache.Vertex.Lock	(2*(v_cnt+1),ll_hGeom2.stride(),Offset);
+		FVF::TL* _pv				= pv;
+		float pos_delta				= back_coords.width()/v_cnt;
+		float tc_delta				= back_text_coords.width()/v_cnt;
+		u32 clr;
+
+		for(u32 idx=0; idx<v_cnt+1; ++idx){
+			clr =					calc_progress_color(idx,v_cnt,load_stage,16);
+			pv->set					(back_coords.lt.x+pos_delta*idx,	back_coords.rb.y,	0+EPS_S, 1, clr, back_text_coords.lt.x+tc_delta*idx,	back_text_coords.rb.y);	pv++;
+			pv->set					(back_coords.lt.x+pos_delta*idx,	back_coords.lt.y,	0+EPS_S, 1, clr, back_text_coords.lt.x+tc_delta*idx,	back_text_coords.lt.y);	pv++;
+		}
+		VERIFY						(u32(pv-_pv)==2*(v_cnt+1));
+		RCache.Vertex.Unlock		(2*(v_cnt+1),ll_hGeom2.stride());
+
+		RCache.set_Geometry			(ll_hGeom2);
+		RCache.Render				(D3DPT_TRIANGLESTRIP, Offset, 2*v_cnt);
+*/
+
+// Draw old Progress
+
+		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
 
 		Fvector2 pic_sz;			pic_sz.set(1024.0f,32.0f);
 		
@@ -581,6 +646,25 @@ void CApplication::LoadDraw		()
 
 	Device.End					();
 	CheckCopyProtection			();
+}
+
+u32 calc_progress_color(u32 idx, u32 total, int stage, int max_stage)
+{
+//	float value;
+	if(idx>(total/2)) 
+		idx	= total-idx;
+
+
+	float kk			= (float(stage+1)/float(max_stage))*(total/2.0f);
+	float f				= 1/(exp((float(idx)-kk)*0.5f)+1.0f);
+
+/*
+	float ks			= float(stage+1)/float(max_stage);
+	float kidx			= float(idx)/float(total/2.0f);
+	value				= (kidx>ks)?0x00:0xff;
+*/
+
+	return color_argb_f		(f,1.0f,1.0f,1.0f);
 }
 
 void CApplication::LoadTitle	(char *S, char *S2)
