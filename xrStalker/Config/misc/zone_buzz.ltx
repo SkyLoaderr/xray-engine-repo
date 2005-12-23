@@ -5,7 +5,7 @@ $prefetch 					= 16
 class						= Z_MBALD
 
 hit_impulse_scale			= 0.0
-effective_radius			= 1.3 ;размер радиуса в процентах от оригинального, где действует зона
+effective_radius			= 1.0 ;размер радиуса в процентах от оригинального, где действует зона
 
 ef_anomaly_type				= 1
 ef_weapon_type				= 13
@@ -42,7 +42,7 @@ hit_sound					= anomaly\bfuzz_hit		;на персонаже, когда тот получает хит
 entrance_sound				= anomaly\bfuzz_hit		;при попадании объекта в аномалию
 
 hit_type					= chemical_burn
-
+							  
 disable_time				= 10000	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small			= -1	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time			= 50000	;время отключения idle партиклов
@@ -67,7 +67,7 @@ idle_light_height			= 0.70			;подъем источника света на высоту
 
 awaking_time				= 50
 blowout_time				= 100	
-accamulate_time				= 0
+accamulate_time				= 500
 
 visible_by_detector 		= off
 

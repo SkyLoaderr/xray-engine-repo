@@ -5,7 +5,7 @@ $spawn 			= "zones\radioactive"
 ;$prefetch 		= 16
 class			= Z_RADIO
 hit_impulse_scale	= .01
-effective_radius	= 0.95 ;размер радиуса в процентах от оригинального, где действует зона
+effective_radius	= 1.00 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_rad
 
@@ -18,7 +18,7 @@ BirthProbability = 0.0;0.1
 ;----------- Anomaly settings -----------------------
 min_start_power		= 90
 max_start_power		= 100
-attenuation			= 1
+attenuation			= 0.1
 period				= 1
 min_artefact_count	= 0
 max_artefact_count	= 0
@@ -53,33 +53,38 @@ $spawn 			= "zones\radioactive_weak"
 
 awaking_time		= 100
 blowout_time		= 100	
-accamulate_time		= 500
+accamulate_time		= 100
 
-effective_radius	= 0.7
+;----------- Anomaly settings -----------------------
+min_start_power		= 0.3
+max_start_power		= 0.3
+
+
 
 [zone_radioactive_average]:zone_radioactive
 $spawn 			= "zones\radioactive_average"
-awaking_time		= 70
+awaking_time		= 100
 blowout_time		= 100	
-accamulate_time		= 250
+accamulate_time		= 100
 
-effective_radius	= 0.85
+;----------- Anomaly settings -----------------------
+min_start_power		= 1.0
+max_start_power		= 1.0
+
+
 
 [zone_radioactive_strong]:zone_radioactive
 $spawn 			= "zones\radioactive_strong"
 
-awaking_time		= 50
+awaking_time		= 100
 blowout_time		= 100	
 accamulate_time		= 100
 
-effective_radius	= 1
+;----------- Anomaly settings -----------------------
+min_start_power		= 5.0
+max_start_power		= 5.0
 
-[zone_radioactive_killing]:zone_radioactive
+
+
+[zone_radioactive_killing]:zone_radioactive_strong
 $spawn 			= "zones\radioactive_killing"
-
-awaking_time		= 10
-blowout_time		= 100	
-accamulate_time		= 10
-
-effective_radius	= 1
-
