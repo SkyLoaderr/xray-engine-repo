@@ -81,7 +81,7 @@
 			<object_story_id>yan_vasilyev</object_story_id>
 			<function_complete>yantar_tasks.actor_has_vasilyev_pda</function_complete>
 			<infoportion_set_complete>yantar_vasilyev_info</infoportion_set_complete>
-			<function_set_complete>xr_effects.yantar_vasilyev_spam</function_set_complete>
+			<function_set_complete>yantar_tasks.yantar_vasilyev_spam</function_set_complete>
 		</objective>
 		<objective>
 			<text>yan_find_vasilyev</text>
