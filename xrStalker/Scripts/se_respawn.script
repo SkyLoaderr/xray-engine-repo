@@ -101,6 +101,8 @@ end
 class "se_respawn" ( cse_alife_smart_zone )
 function se_respawn:__init( section ) super( section )
 	self.spawned_obj = {}
+
+	self.proxy_initialized = false
 end
 -- сохранение
 function se_respawn:STATE_Write( packet )
@@ -200,7 +202,7 @@ function se_respawn:spawn()
 		end
 	end	
 
-	if xr_logic.pick_section_from_condlist(db.actor, self, self.conditions) == "0" then
+	if xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions) == "0" then
 		return
 	end
 	
@@ -217,7 +219,7 @@ function se_respawn:spawn()
 		if table.getn(self.spawned_obj) >= self.max_count then
 			return
 		end		
-		self:create(xr_logic.pick_section_from_condlist(db.actor, self, self.conditions))
+		self:create(xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions))
 	end		
 end
 -- Обновление респавнера. В зависимости от настроек обновляется либо только в офлайне, либо и там и там.
@@ -225,6 +227,11 @@ function se_respawn:execute()
 	--printf("RESPAWN: [%s] se_respawn execute", tostring(self:name()))
 	
 	if self.respawn_time < game.get_game_time() then
+		if not self.proxy_initialized then
+			db.actor_proxy:init()
+			self.proxy_initialized = true
+		end
+
 		local idle_time = game.CTime()
 		idle_time:setHMSms( 0, 0, 0, math.random(self.idle_spawn_min, self.idle_spawn_max)*1000)
 		self.respawn_time = game.get_game_time() + idle_time
