@@ -84,9 +84,12 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	/////////////////////////////////////////////////////////////////////////
 	m_CorpseList.clear();
 
+	m_AnomaliesPermanent.clear();
 	m_AnomalySetsList.clear();
 	m_AnomalySetID.clear();	
 	m_bPDAHunt = TRUE;
+	/////////////////////////////////////////////////////////////////////////
+	
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
@@ -1391,6 +1394,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 {	
 	//-----------------------------------------------------------
 	m_AnomalySetsList.clear();
+	m_AnomaliesPermanent.clear();
 	//-----------------------------------------------------------
 	if (!m_AnomalyIDSetsList.empty())
 	{
@@ -1404,7 +1408,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 
 	char* ASetBaseName = GetAnomalySetBaseName();
 
-	string256 SetName, AnomaliesNames, AnomalyName;
+	string1024 SetName, AnomaliesNames, AnomalyName;
 	ANOMALIES		AnomalySingleSet;
 	ANOMALIES_ID	AnomalyIDSingleSet;
 	for (u32 i=0; i<20; i++)
@@ -1430,6 +1434,17 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 		m_AnomalySetsList.push_back(AnomalySingleSet);
 		m_AnomalyIDSetsList.push_back(AnomalyIDSingleSet);
 	};
+	//---------------------------------------------------------
+	if (Level().pLevel->line_exist(ASetBaseName, "permanent"))
+	{
+		std::strcpy(AnomaliesNames, Level().pLevel->r_string(ASetBaseName, "permanent"));
+		u32 count	= _GetItemCount(AnomaliesNames);
+		for (u32 j=0; j<count; j++)
+		{
+			_GetItem(AnomaliesNames, j, AnomalyName);
+			m_AnomaliesPermanent.push_back(AnomalyName);
+		};
+	}
 };
 
 void	game_sv_Deathmatch::Send_EventPack_for_AnomalySet	(u32 AnomalySet, u8 Event)
@@ -1501,7 +1516,8 @@ void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 	else
 		m_dwLastAnomalySetID = NewAnomalySetID;
 
-	Send_EventPack_for_AnomalySet(m_dwLastAnomalySetID, CCustomZone::eZoneStateIdle); //Idle
+	if (m_bAnomaliesEnabled)
+		Send_EventPack_for_AnomalySet(m_dwLastAnomalySetID, CCustomZone::eZoneStateIdle); //Idle
 	/*
 	ANOMALIES* NewAnomalies = &(m_AnomalySetsList[m_dwLastAnomalySetID]);
 	for (u32 i=0; i<NewAnomalies->size(); i++)
@@ -1930,44 +1946,79 @@ bool	game_sv_Deathmatch::check_for_Anomalies()
 	return true;
 }
 
-void game_sv_Deathmatch::OnCreate				(u16 eid_who)
+BOOL	game_sv_Deathmatch::Is_Anomaly_InLists		(CSE_Abstract* E)
 {
-	inherited::OnCreate(eid_who);
+	if (!E) return FALSE;
+	
+	ANOMALIES_it It = std::find(m_AnomaliesPermanent.begin(), m_AnomaliesPermanent.end(),E->name_replace());
+	if (It != m_AnomaliesPermanent.end())
+	{
+		return TRUE;
+	};
+
+	for (u32 j=0; j<m_AnomalySetsList.size(); j++)
+	{
+		ANOMALIES* Anomalies = &(m_AnomalySetsList[j]);
+		ANOMALIES_it It = std::find(Anomalies->begin(), Anomalies->end(),E->name_replace());
+		if (It != Anomalies->end())
+		{
+			return TRUE;
+		};
+	};
+	return FALSE;
+}
+
+BOOL	game_sv_Deathmatch::OnPreCreate				(CSE_Abstract* E)
+{
+	BOOL res = inherited::OnPreCreate(E);
+	if (!res) return res;
+
+	CSE_ALifeCustomZone* pCustomZone	=	smart_cast<CSE_ALifeCustomZone*> (E);
+	if (pCustomZone)
+	{
+		return Is_Anomaly_InLists(pCustomZone);
+	}
+
+	return TRUE;
+};
+
+void game_sv_Deathmatch::OnPostCreate				(u16 eid_who)
+{
+	inherited::OnPostCreate(eid_who);
 
 	CSE_Abstract	*pEntity	= get_entity_from_eid(eid_who);
 	if (!pEntity) return;
 	CSE_ALifeCustomZone* pCustomZone	=	smart_cast<CSE_ALifeCustomZone*> (pEntity);
 	if (!pCustomZone) return;
 	
-	bool bFound = false;
-	if (!m_AnomalySetsList.empty())
+	for (u32 j=0; j<m_AnomalySetsList.size(); j++)
 	{
-		for (u32 j=0; j<m_AnomalySetsList.size(); j++)
+		ANOMALIES* Anomalies = &(m_AnomalySetsList[j]);
+		ANOMALIES_it It = std::find(Anomalies->begin(), Anomalies->end(),pCustomZone->name_replace());
+		if (It != Anomalies->end())
 		{
-			ANOMALIES* Anomalies = &(m_AnomalySetsList[j]);
-			for (u32 i=0; i<Anomalies->size(); i++)
-			{
-				const char *pName = ((*Anomalies)[i]).c_str();
-				if (xr_strcmp(pName, pCustomZone->name_replace())) continue;
-				
-				bFound = true;				
+			m_AnomalyIDSetsList[j].push_back(eid_who);
 
-				m_AnomalyIDSetsList[j].push_back(eid_who);
-			};
+			//-----------------------------------------------------------------------------
+			NET_Packet P;
+			u_EventGen		(P,GE_ZONE_STATE_CHANGE,eid_who);
+			P.w_u8			(u8(CCustomZone::eZoneStateDisabled)); //eZoneStateDisabled
+			u_EventSend(P);
+			//-----------------------------------------------------------------------------
+			return;
 		};
-	}
-
-	if (bFound)
+	};
+	
+	ANOMALIES_it It = std::find(m_AnomaliesPermanent.begin(), m_AnomaliesPermanent.end(),pCustomZone->name_replace());
+	if (It == m_AnomaliesPermanent.end())
 	{
+		Msg("! Anomaly Not Found in any Set : %s", pCustomZone->name_replace());
+
 		NET_Packet P;
 		u_EventGen		(P,GE_ZONE_STATE_CHANGE,eid_who);
 		P.w_u8			(u8(CCustomZone::eZoneStateDisabled)); //eZoneStateDisabled
 		u_EventSend(P);
-	}
-	else
-	{
-		Msg("! Anomaly Not Found in any Set : %s", pCustomZone->name_replace());
-	}
+	};
 };
 
 void	game_sv_Deathmatch::Send_Anomaly_States		(ClientID id_who)

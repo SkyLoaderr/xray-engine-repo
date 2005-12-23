@@ -51,6 +51,7 @@ protected:
 	DEF_VECTOR(ANOMALIES, xr_string);
 	DEF_VECTOR(ANOMALY_SETS, ANOMALIES);
 
+	ANOMALIES						m_AnomaliesPermanent;
 	ANOMALY_SETS					m_AnomalySetsList;
 	xr_vector<u8>					m_AnomalySetID;
 	u32								m_dwAnomalySetLengthTime;
@@ -70,6 +71,8 @@ protected:
 	CObject	*						m_pSM_CurViewEntity;
 	void							SM_SwitchOnNextActivePlayer			();
 	void							SM_SwitchOnPlayer		(CObject* pNewObject);//(game_PlayerState* ps);
+
+	BOOL							Is_Anomaly_InLists		(CSE_Abstract* E);
 
 protected:
 
@@ -125,7 +128,10 @@ public:
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
-	virtual		void				OnCreate				(u16 eid_who);
+
+	virtual		BOOL				OnPreCreate				(CSE_Abstract* E);
+	virtual		void				OnCreate				(u16 eid_who)	{};
+	virtual		void				OnPostCreate			(u16 id_who);
 
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);

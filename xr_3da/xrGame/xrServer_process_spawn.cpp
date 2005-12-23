@@ -22,7 +22,7 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 		E->Spawn_Read		(P);
 		if	(
 				!((game->Type()==E->s_gameid)||(GAME_ANY==E->s_gameid)) ||
-				!E->match_configuration()
+				!E->match_configuration() || !game->OnPreCreate(E)
 			){
 			// Msg			("- SERVER: Entity [%s] incompatible with current game type.",*E->s_name);
 			F_entity_Destroy(E);
@@ -141,6 +141,10 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 		ClientID clientID;clientID.set(0);
 		SendBroadcast		(clientID, Packet, net_flags(TRUE,TRUE));
 	}
+	if (!tpExistedEntity)
+	{
+		game->OnPostCreate(E->ID);
+	};
 
 	// log
 	//Msg		("- SERVER: Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL?CL->Name:"*SERVER*");
