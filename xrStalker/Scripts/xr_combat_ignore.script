@@ -3,17 +3,14 @@
 Чугай Саша 
 --------------------------------------------------------------------------------------------------------------------]]
 
-class "action_process_enemy"
-
-function action_process_enemy:__init( obj, storage )
-	self.object = obj
-	self.st     = storage
-end
-
-function action_process_enemy:enemy_callback( obj, enemy )
+function is_enemy( obj, enemy, st )
 	--printf( "ENEMY_CALLBACK obj='%s', enemy='%s'", obj:name(), enemy:name() )
 
-	if not self.st.enabled then
+	if not st then
+		st = db.storage[obj:id()].combat_ignore
+	end
+
+	if not st.enabled then
 		--printf( "true (scheme disabled) - KILL HIM" )
 		return true
 	end
@@ -42,6 +39,18 @@ function action_process_enemy:enemy_callback( obj, enemy )
 
 	--printf( "true - KILL HIM" )
 	return true
+end
+----------------------------------------------------------------------------------------------------------------------
+
+class "action_process_enemy"
+
+function action_process_enemy:__init( obj, storage )
+	self.object = obj
+	self.st     = storage
+end
+
+function action_process_enemy:enemy_callback( obj, enemy )
+	return is_enemy( obj, enemy, self.st )
 end
 
 function action_process_enemy:hit_callback(obj, amount, local_direction, who, bone_index)
