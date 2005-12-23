@@ -13,8 +13,8 @@ ef_weapon_type				= 13
 sound						= 
 postprocess					= postprocess_flame
 	
-artefacts					= 
-BirthProbability 			= 0.01
+artefacts					= af_ameba_slime, 0.8, af_ameba_slug, 0.2, af_ameba_mica, 0.0
+BirthProbability 			= 0.2
 
 
 ;----------- Anomaly settings -----------------------
@@ -65,7 +65,7 @@ idle_light_range_delta 		= 0.25
 idle_light_anim				= light_green_02
 idle_light_height			= 0.70			;подъем источника света на высоту
 
-awaking_time				= 0
+awaking_time				= 50
 blowout_time				= 100	
 accamulate_time				= 0
 
@@ -81,3 +81,45 @@ blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowou
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
 spawn_blowout_artefacts = off
+
+
+[zone_buzz_weak]:zone_buzz
+$spawn 						= "zones\buzz weak"
+artefacts					= af_ameba_slime, 0.8, af_ameba_slug, 0.2, af_ameba_mica, 0.0
+BirthProbability 			= 0.2
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 10
+max_start_power		= 15
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
+
+
+[zone_buzz_average]:zone_buzz
+$spawn 						= "zones\buzz average"
+artefacts					= af_ameba_slime, 0.6, af_ameba_slug, 0.4, af_ameba_mica, 0.0
+BirthProbability 			= 0.2
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 40
+max_start_power		= 50
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
+
+
+[zone_buzz_strong]:zone_buzz
+$spawn 						= "zones\buzz strong"
+artefacts					= af_ameba_slime, 0.2, af_ameba_slug, 0.6, af_ameba_mica, 0.2
+BirthProbability 			= 0.2
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 90
+max_start_power		= 100
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
