@@ -32,7 +32,7 @@ function evaluator_new:evaluate()
 	end
 
 	self.a.evn:calculate()
-	--self.a.evn:print()
+	self.a.evn:print()
 	-- Необходимо не забыть вставить инерцию возврата.
 	if self.a.reaction_time ~= nil and
 	   game.get_game_time():diffSec(self.a.reaction_time) >= reaction_inertion_time
