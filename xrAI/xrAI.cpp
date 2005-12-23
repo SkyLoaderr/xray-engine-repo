@@ -96,7 +96,7 @@ void Startup(LPSTR     lpCmdLine)
 	string4096			prjName;
 	prjName				[0] = 0;
 	bool				can_use_name = false;
-	if (xr_strlen(prjName) < sizeof(string_path))
+	if (xr_strlen(name) < sizeof(string_path))
 		FS.update_path	(prjName,"$game_levels$",name);
 
 	u32					dwStartupTime	= timeGetTime();
