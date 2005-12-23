@@ -48,11 +48,14 @@ function action_door:initialize(loading)
 		disable_snd = true
 		self.st.script_used_more_than_once = true
 	end
+	
 	if self.st.closed then
 		self:close_door()
 	else
 		self:open_door(disable_snd)
 	end
+
+
 
 	self.object:set_nonscript_usable(false)
 
@@ -191,8 +194,15 @@ function action_door:close_door()
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
 
-	if self.show_tips and self.st.tip_open then
-		self.object:set_tip_text(self.st.tip_open)
+	if self.show_tips then
+		if self.st.locked == true and self.st.tip_unlock then
+			self.object:set_tip_text(self.st.tip_unlock)
+			return
+		end
+
+		if self.st.tip_open then
+			self.object:set_tip_text(self.st.tip_open)
+		end
 	end
 end
 
@@ -269,12 +279,12 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_force  = utils.cfg_get_bool(ini, section, "no_force", npc, false, false)
 
 	st.show_tips = utils.cfg_get_bool(ini, section, "show_tips", npc, false, true)
-	if not st.locked then
-		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_open")
-		st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_door_close")
-	else
-		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_locked")
-	end
+
+	st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_open")		
+	st.tip_unlock  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_locked")
+	st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_door_close")
+	
+	
 	st.snd_init        = utils.cfg_get_string(ini, section, "snd_init", npc, false, "")
 	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "")
 	st.snd_close_start = utils.cfg_get_string(ini, section, "snd_close_start", npc, false, "")

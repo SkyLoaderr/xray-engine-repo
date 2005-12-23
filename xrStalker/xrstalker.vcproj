@@ -1730,13 +1730,25 @@
 					RelativePath=".\Config\scripts\door_metal_large.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\door_metal_large_unlocked.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\door_metal_small.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\door_metal_small_unlocked.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\scripts\door_wood_large.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\door_wood_large_unlocked.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\door_wood_small.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\door_wood_small_unlocked.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\scripts\dummy.ltx">
