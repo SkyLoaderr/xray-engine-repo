@@ -35,6 +35,7 @@ news = {
 	bar_ecolog_escape				= sound_object([[characters_voice\human_01\scenario\Rostok\volkodav_pda_kruglov_escape_1]]),
     storyline_vasilyev_tip			= sound_object([[characters_voice\human_01\scenario\yantar\vasiliev_pda]]),
     storyline_ghost_tip 			= sound_object([[characters_voice\human_01\scenario\yantar\ghost_pda]]),
+    yan_saharov_message 			= sound_object([[characters_voice\human_01\scenario\yantar\professor_to_actor_pda_3]]),
 	
 	bar_psih_come					= sound_object([[characters_voice\human_01\scenario\bar\barman\barman_pda_psycho]]),
 
