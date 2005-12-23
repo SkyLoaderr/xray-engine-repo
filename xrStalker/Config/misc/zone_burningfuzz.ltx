@@ -121,7 +121,7 @@ disable_time		= 500	;время игнорирования неживого объекта в зоне (-1 если не нуж
 disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= 1000	;время отключения idle партиклов
 
-awaking_time				= 500
+awaking_time				= 50
 blowout_time				= 1000	
 accamulate_time				= 5000
 
@@ -147,10 +147,10 @@ spawn_blowout_artefacts = off
 [zone_burning_fuzz_weak]:zone_burning_fuzz1
 $spawn 			= "zones\burning fuzz weak"
 
-min_speed_to_react = 7.01
+min_speed_to_react = 4.00
 ;----------- Anomaly settings -----------------------
-min_start_power		= 90
-max_start_power		= 100
+min_start_power		= 50
+max_start_power		= 60
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
@@ -160,7 +160,7 @@ max_artefact_count	= 0
 [zone_burning_fuzz_average]:zone_burning_fuzz1
 $spawn 			= "zones\burning fuzz average"
 
-min_speed_to_react = 7.01
+min_speed_to_react = 3.00
 ;----------- Anomaly settings -----------------------
 min_start_power		= 90
 max_start_power		= 100
@@ -173,10 +173,10 @@ max_artefact_count	= 0
 [zone_burning_fuzz_strong]:zone_burning_fuzz1
 $spawn 			= "zones\burning fuzz strong"
 
-min_speed_to_react = 7.01
+min_speed_to_react = 1.50  ;   1.00 < 2.00
 ;----------- Anomaly settings -----------------------
-min_start_power		= 90
-max_start_power		= 100
+min_start_power		= 180
+max_start_power		= 200
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
@@ -190,6 +190,15 @@ $spawn 			= "zones\burning fuzz bottom weak"
 artefacts		= af_rusty_thorn,0.8, af_rusty_kristall, 0.2, af_rusty_sea-urchin, 0.0
 BirthProbability = 0.2
 
+min_speed_to_react = 4.00
+;----------- Anomaly settings -----------------------
+min_start_power		= 50
+max_start_power		= 60
+attenuation			= 1
+period				= 1
+min_artefact_count	= 0
+max_artefact_count	= 1
+
 
 [zone_burning_fuzz_bottom_average]:zone_burning_fuzz1
 $spawn 			= "zones\burning fuzz bottom average"
@@ -197,9 +206,27 @@ $spawn 			= "zones\burning fuzz bottom average"
 artefacts		= af_rusty_thorn,0.6, af_rusty_kristall, 0.4, af_rusty_sea-urchin, 0.0
 BirthProbability = 0.2
 
+min_speed_to_react = 3.00
+;----------- Anomaly settings -----------------------
+min_start_power		= 90
+max_start_power		= 100
+attenuation			= 1
+period				= 1
+min_artefact_count	= 0
+max_artefact_count	= 1
+
 
 [zone_burning_fuzz_bottom_strong]:zone_burning_fuzz1
 $spawn 			= "zones\burning fuzz bottom strong"
 
 artefacts		= af_rusty_thorn,0.2, af_rusty_kristall, 0.6, af_rusty_sea-urchin, 0.2
 BirthProbability = 0.2
+
+min_speed_to_react = 1.50  ;   1.00 < 2.00
+;----------- Anomaly settings -----------------------
+min_start_power		= 180
+max_start_power		= 200
+attenuation			= 1
+period				= 1
+min_artefact_count	= 0
+max_artefact_count	= 1
