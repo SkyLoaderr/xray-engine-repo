@@ -516,3 +516,77 @@ blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowou
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
 spawn_blowout_artefacts = off
+
+[zone_zharka_static]
+GroupControlSection	= spawn_group_zone
+$spawn 			= "zones\zharka_statik"
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= 0.0
+effective_radius	= 1.3 ;?acia? ?aaeona a i?ioaioao io i?eaeiaeuiiai, aaa aaenoaoao ciia
+sound			= zone_mosquito_bald
+postprocess		= postprocess_flame
+
+ef_anomaly_type			= 1
+ef_weapon_type			= 13
+
+artefacts		= 
+BirthProbability = 0.0
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 90
+max_start_power		= 100
+attenuation			= 1
+period				= 1
+min_artefact_count	= 0
+max_artefact_count	= 0
+
+idle_particles		= static\buble_distort00
+blowout_particles	= static\zharka_static
+
+hit_small_particles			= damage_fx\burn_creatures
+hit_big_particles			= damage_fx\burn_creatures00
+idle_small_particles		= damage_fx\burn_creatures
+idle_big_particles			= damage_fx\burn_creatures00
+;entrance_small_particles	= damage_fx\burn_creatures
+;entrance_big_particles		= damage_fx\burn_creatures00
+
+idle_sound			= ambient\fire						;iinoiyiiue caoe
+blowout_sound		= ambient\zhar		;ai a?aiy aua?ina(oaa?a) a oaio?a aiiiaeee	
+hit_sound			= ambient\zhar								;ia ia?niia?a, eiaaa oio iieo?aao oeo
+entrance_sound		= ambient\zhar									;i?e iiiaaaiee iauaeoa a aiiiaee?
+
+hit_type			= burn
+
+disable_time		= 10000		;a?aiy eaii?e?iaaiey ia?eaiai iauaeoa a ciia (-1 anee ia io?ii)
+disable_time_small	= -1		;a?aiy eaii?e?iaaiey iaeaiueiai ia?eaiai iauaeoa a ciia (-1 anee ia io?ii)
+disable_idle_time	= 50000		;a?aiy ioee??aiey idle ia?oeeeia
+
+ignore_nonalive		= false
+ignore_small		= true
+ignore_artefacts	= true
+
+blowout_light		= on
+light_color		    = 1.8,1.7,1.4
+light_range		    = 8.0
+light_time 		    = 5
+light_height		= 2			;iiauai enoi?ieea naaoa ia aunioo
+
+
+idle_light			= off
+idle_light_range	= 8.0
+idle_light_range_delta = 0.2
+idle_light_anim		= koster_01
+idle_light_height	= 0.70			;iiauai enoi?ieea naaoa ia aunioo
+
+awaking_time		= 10
+blowout_time		= 50	
+accamulate_time		= 10
+
+visible_by_detector = off
+
+blowout_wind		= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;?i?aaiea a?oaoaeoia ai a?aiy n?aaaouaaiey
+spawn_blowout_artefacts = off
