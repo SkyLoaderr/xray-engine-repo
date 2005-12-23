@@ -104,7 +104,7 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_info = {!see_enemy =rostok_dist_to_actor_le(6)} camper@scientist_3 %=yantar_kruglov_talk%
+on_info = {!see_enemy =rostok_dist_to_actor_le(4)} camper@scientist_3 %=yantar_kruglov_talk%
 
 [camper@scientist_3]
 path_walk = help_walk_1
@@ -145,12 +145,12 @@ path_walk = help_walk_2
 path_look = help_look_2
 combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 meet = meet@scientist_1
-on_signal = arrived_2 | camper@scientist_wait_4
+on_signal = arrived_2 | camper@scientist_wait_4 %-yantar_kruglov_talk%
 def_state_moving = assault
 radius = 0
 no_retreat = true
 danger = danger_condition@1
-on_timer = 3000 | %=yantar_kruglov_talk%
+on_timer = 3000 | {-yantar_kruglov_talk} %=yantar_kruglov_talk +yantar_kruglov_talk%
 
 [camper@scientist_wait_4]
 path_walk = wait_walk_2
@@ -159,7 +159,7 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(30)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_info = {!see_enemy =rostok_dist_to_actor_le(6)} remark@scientist_5 
+on_info = {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_5 
 
 [remark@scientist_5]
 snd = yantar_kruglov_radiation_quest_4
@@ -179,7 +179,6 @@ def_state_moving = assault
 radius = 0
 no_retreat = true
 danger = danger_condition@1
-on_timer = 3000 | %=yantar_kruglov_talk%
 
 [camper@scientist_wait_5]
 path_walk = wait_walk_3
