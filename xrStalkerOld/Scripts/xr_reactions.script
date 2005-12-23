@@ -178,7 +178,7 @@ function events:calculateObject(v)
 	end
 
 	if type == "stalker" and
-	   self.npc:relation(vo) == game_object.enemy
+	   self.npc:relation(vo) ~= game_object.enemy
 -- 	   (vo:character_community() == self.npc:character_community())
 	then
 		return false
