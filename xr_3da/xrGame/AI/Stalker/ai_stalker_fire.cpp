@@ -191,16 +191,20 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		else
 			sound().play	(eStalkerSoundInjuringByFriend);
 		
-		Fvector				D;
-		float				yaw, pitch;
-		D.getHP				(yaw,pitch);
-#pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		float				power_factor = m_power_fx_factor*pHDS->damage()/100.f;
-		clamp				(power_factor,0.f,1.f);
-		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
-		int					fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
-		if (fx_index != -1)
-			animation().play_fx	(power_factor,fx_index);
+		if (pHDS->element != BI_NONE) {
+			Fvector					D;
+			float					yaw, pitch;
+			D.getHP					(yaw,pitch);
+
+	#pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
+			float					power_factor = m_power_fx_factor*pHDS->damage()/100.f;
+			clamp					(power_factor,0.f,1.f);
+			CSkeletonAnimated		*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
+
+			int						fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
+			if (fx_index != -1)
+				animation().play_fx	(power_factor,fx_index);
+		}
 	}
 
 	inherited::Hit(&HDS);
