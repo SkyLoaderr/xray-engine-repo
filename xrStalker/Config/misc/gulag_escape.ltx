@@ -1416,6 +1416,7 @@ active = kamp@esc_assault
 [kamp@esc_assault]
 center_point = kamp_center
 path_walk = kamp_center_task
+soundgroup = esc_attackers
 
 
 [logic@esc_assault1]
@@ -1433,6 +1434,7 @@ on_info = %+esc_assault_start%
 [kamp@esc_assault1]
 center_point = kamp_center
 path_walk = kamp_center_task
+soundgroup = esc_attackers
 on_info = {+esc_bandits_assault} patrol@esc_assault1
 
 [patrol@esc_assault1]
@@ -1464,6 +1466,7 @@ combat_ignore = combat_ignore
 center_point = kamp_center
 path_walk = kamp_center_task
 on_info = {+esc_bandits_assault} patrol@esc_assault2
+soundgroup = esc_attackers
 
 [patrol@esc_assault2]
 path_walk = escape_factory_way1
