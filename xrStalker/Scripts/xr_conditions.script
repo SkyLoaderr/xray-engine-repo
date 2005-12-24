@@ -789,9 +789,9 @@ function rostok_gulag_inactive(actor, npc)
 	local val = 0
 	
 	for k,v in pairs(gulag.Object) do
-		if v:alive() and
-		   not(xr_wounded.is_heavy_wounded_by_id(v:id()) or
-		       xr_wounded.is_psy_wounded_by_id(v:id()))
+		if v == true or ( v:alive() and
+		   not(xr_wounded.is_heavy_wounded_by_id(k) or
+		       xr_wounded.is_psy_wounded_by_id(k)) )
 		then
 			val = val + 1
 		end
@@ -812,9 +812,9 @@ function rostok_gulag_2_inactive(actor, npc)
 	local val = 0
 	
 	for k,v in pairs(gulag.Object) do
-		if v:alive() and
-		   not(xr_wounded.is_heavy_wounded_by_id(v:id()) or
-		       xr_wounded.is_psy_wounded_by_id(v:id()))
+		if v == true or ( v:alive() and
+		   not(xr_wounded.is_heavy_wounded_by_id(k) or
+		       xr_wounded.is_psy_wounded_by_id(k)) )
 		then
 			val = val + 1
 		end
