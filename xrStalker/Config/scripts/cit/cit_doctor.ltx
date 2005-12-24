@@ -18,7 +18,7 @@ victim_wpn 		    = 3 | actor
 [remark@wait_update]
 anim                = wait_na
 target              = actor
-on_info             = {!black_screen} walker@go_to_actor
+on_info             = {!black_screen} remark@wait_actor_wake ;walker@go_to_actor
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -37,7 +37,8 @@ combat_ignore_cond  = always
 [remark@wait_actor_wake]
 anim                = doctor_wakeup
 target              = actor
-on_signal           = action_end | remark@talk_to_actor %+cit_jail_start_waking =play_snd_now("cit_doctor_start_dlg")%
+on_timer            = 6000 | remark@talk_to_actor %+cit_jail_start_waking =play_snd_now("cit_doctor_start_dlg")%
+;on_signal           = action_end | remark@talk_to_actor %+cit_jail_start_waking =play_snd_now("cit_doctor_start_dlg")%
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------

@@ -122,7 +122,9 @@ function load_job_killers(sj, gname, type, squad, groups)
     local ltx = ""
 
     ltx = ltx.."[danger_killers]\n" ..
-               "ignore_distance_sound = 25\n"
+               "ignore_distance        = 20\n" ..
+               "danger_inertion_time   = 60000\n" ..
+               "danger_expiration_time = 40000\n"
 
     -- leader
 	t = { section = "logic@" .. gname .. "_leader",
@@ -469,7 +471,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
     local ltx = ""
 
     ltx = ltx.."[danger_bandits]\n" ..
-               "ignore_distance_sound = 25\n"
+               "ignore_distance = 25\n"
 
     -- leader
 	t = { section = "logic@" .. gname .. "_leader",
