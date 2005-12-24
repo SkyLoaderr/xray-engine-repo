@@ -116,7 +116,7 @@ shared_str CActorMemory::shedule_Name		() const
 
 void CActorMemory::Load						(LPCSTR section)
 {
-	shedule.t_min							= _max(READ_IF_EXISTS(pSettings,r_u32,section,"memory_update_time",50),1);
+	shedule.t_min							= 100;//_max(READ_IF_EXISTS(pSettings,r_u32,section,"memory_update_time",50),1);
 	shedule.t_max							= shedule.t_min;
 	shedule_register						();
 
