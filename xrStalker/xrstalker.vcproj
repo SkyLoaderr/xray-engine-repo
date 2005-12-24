@@ -3359,10 +3359,19 @@
 							RelativePath=".\scripts\quest_bar.script">
 						</File>
 						<File
+							RelativePath=".\scripts\quest_bar2.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\quest_darkvalley.script">
 						</File>
 						<File
+							RelativePath=".\scripts\quest_escape2.script">
+						</File>
+						<File
 							RelativePath=".\scripts\quest_garbage.script">
+						</File>
+						<File
+							RelativePath=".\scripts\quest_garbage2.script">
 						</File>
 						<File
 							RelativePath=".\scripts\quest_items.script">
