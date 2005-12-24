@@ -15,7 +15,7 @@ snd = yantar_professor_to_kruglov_1
 anim = wait
 meet_talk_enabled = false
 target = 900
-on_signal = sound_end | %+yantar_kruglov_phrase_1%
+on_timer = 6000 | %+yantar_kruglov_phrase_1%
 on_info = {+yantar_professor_phrase_2} remark@yan_professor_talk_2
 combat_ignore_cond = always
 danger = danger_condition@yan_ecolog
@@ -25,7 +25,7 @@ snd = yantar_professor_to_kruglov_2
 anim = wait
 target = 900
 meet_talk_enabled = false
-on_signal = sound_end | walker@yan_1 %+yantar_kruglov_phrase_2%
+on_timer = 7000 | walker@yan_1 %+yantar_kruglov_phrase_2%
 combat_ignore_cond = always
 danger = danger_condition@yan_ecolog
 
