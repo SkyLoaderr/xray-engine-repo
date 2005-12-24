@@ -168,7 +168,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	if (m_EffectorsCam.size()){
 		for (int i=m_EffectorsCam.size()-1; i>=0; i--){
 			CEffectorCam* eff		= m_EffectorsCam[i];
-			if ((eff->fLifeTime>0)&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect)){
+			if ((eff->Valid())&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect)){
 				bOverlapped		|= eff->Overlapped();
 			}else{
 				m_EffectorsCam.erase(m_EffectorsCam.begin()+i);

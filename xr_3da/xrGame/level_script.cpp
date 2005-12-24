@@ -378,12 +378,18 @@ void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, l
 }
 
 #include "actoreffector.h"
-void add_cam_effector(LPCSTR fn)
+void add_cam_effector(LPCSTR fn, int id, bool cyclic)
 {
-	CAnimatorCamEffector* e	= xr_new<CAnimatorCamEffector>();
-	e->SetType					(eCEUser);
+	CAnimatorCamEffector* e		= xr_new<CAnimatorCamEffector>();
+	e->SetType					((ECamEffectorType)id);
+	e->SetCyclic				(cyclic);
 	e->Start					(fn);
 	Actor()->Cameras().AddCamEffector(e);
+}
+
+void remove_cam_effector(int id)
+{
+	Actor()->Cameras().RemoveCamEffector((ECamEffectorType)id );
 }
 		
 float get_snd_volume()
@@ -511,6 +517,7 @@ void CLevel::script_register(lua_State *L)
 		def("get_snd_volume",					&get_snd_volume),
 		def("set_snd_volume",					&set_snd_volume),
 		def("add_cam_effector",					&add_cam_effector),
+		def("remove_cam_effector",				&remove_cam_effector),
 		def("add_pp_effector",					&add_pp_effector),
 		def("set_pp_effector_factor",			&set_pp_effector_factor),
 		def("remove_pp_effector",				&remove_pp_effector)
