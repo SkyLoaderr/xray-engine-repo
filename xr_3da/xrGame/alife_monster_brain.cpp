@@ -127,7 +127,7 @@ void CALifeMonsterBrain::select_task			()
 
 	m_last_search_time				= current_time;
 
-	float							best_value = -1.f;
+	float							best_value = flt_min;
 	CALifeSmartTerrainRegistry::OBJECTS::const_iterator	I = ai().alife().smart_terrains().objects().begin();
 	CALifeSmartTerrainRegistry::OBJECTS::const_iterator	E = ai().alife().smart_terrains().objects().end();
 	for ( ; I != E; ++I) {
