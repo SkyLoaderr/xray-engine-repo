@@ -60,9 +60,9 @@ idle_light_range_delta = 0.2
 idle_light_anim		= koster_01
 idle_light_height	= 0.70			;iiauai enoi?ieea naaoa ia aunioo
 
-awaking_time		= 10
-blowout_time		= 50	
-accamulate_time		= 10
+awaking_time		= 100
+blowout_time		= 5000	
+accamulate_time		= 1000
 
 visible_by_detector = off
 
@@ -71,3 +71,50 @@ blowout_wind		= off
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;?i?aaiea a?oaoaeoia ai a?aiy n?aaaouaaiey
 spawn_blowout_artefacts = off
+
+
+[zone_zharka_static_weak]:zone_zharka_static
+$spawn 			= "zones\zharka_statik_weak"
+
+artefacts		= af_drops, 0.8, af_fireball, 0.2, af_cristall, 0.0
+BirthProbability = 0.2
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 30
+max_start_power		= 40
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
+
+
+
+[zone_zharka_static_average]:zone_zharka_static
+$spawn 			= "zones\zharka_statik_average"
+
+artefacts		= af_drops, 0.6, af_fireball, 0.4, af_cristall, 0.0
+BirthProbability = 0.2
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 90
+max_start_power		= 100
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
+
+
+
+[zone_zharka_static_strong]:zone_zharka_static
+$spawn 			= "zones\zharka_statik_strong"
+
+artefacts		= af_drops, 0.2, af_fireball, 0.6, af_cristall, 0.2
+BirthProbability = 0.2
+
+;----------- Anomaly settings -----------------------
+min_start_power		= 160
+max_start_power		= 180
+attenuation			= 1
+period				= 1
+min_artefact_count	= 1
+max_artefact_count	= 2
