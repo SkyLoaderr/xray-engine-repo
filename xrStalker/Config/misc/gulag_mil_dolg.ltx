@@ -204,7 +204,7 @@ def_state_moving = sneak
 radius = 1
 on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier3
 show_spot = false
-danger = danger_condition@mil_dolg_soldier3
+danger = danger_condition@mil_dolg
 attack_sound = false
 
 [follower1@mil_dolg_soldier3]
@@ -221,7 +221,7 @@ no_move = true
 snd = mil_dolg_after_kill3
 snd_anim_sync = true
 anim = search
-target = 722
+target = mil_dolg_bomb_target, 0
 on_signal = action_end | walker2@mil_dolg_soldier3
 danger = danger_condition@mil_dolg
 
@@ -409,7 +409,7 @@ snd_anim_sync = true
 anim = search
 target = 721
 on_signal = action_end | walker2@mil_dolg_soldier6
-danger = danger_condition@mil_dolg_soldier6
+danger = danger_condition@mil_dolg
 
 [walker2@mil_dolg_soldier6]
 path_walk = ambush_walk3_3
@@ -477,7 +477,7 @@ path_look = attack_before_look2
 on_signal = arrive | remark1@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
 on_info = {+mil_dolg_phase2} walker11@mil_dolg_skull_attack
-team = dolg_attack
+;team = dolg_attack
 
 [remark1@mil_dolg_skull_attack]
 snd = mil_dolg_before_attack2

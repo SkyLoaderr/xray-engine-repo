@@ -30,7 +30,7 @@ no_move = true
 snd_anim_sync = true
 snd = mil_guard_to_max
 anim = wait_rac
-on_signal = action_end | walker1@mil_freedom_lukash %-mil_bodyguard_talk%
+on_signal = sound_end | walker1@mil_freedom_lukash %-mil_bodyguard_talk%
 danger = danger@mil_freedom
 target = actor
 
@@ -429,7 +429,7 @@ path_look = max_look
 meet = on_meet@mil_freedom_max
 danger = danger@mil_freedom
 ;on_info = {+mil_max_talk3} remark1@mil_freedom_max
-on_info = {+mil_actor_on_lukash -mil_dolg_dead} %+mil_freedom_attack%
+;on_info = {+mil_actor_on_lukash -mil_dolg_dead} %+mil_freedom_attack%
 ;walker2@mil_freedom_max 
 
 
@@ -709,34 +709,24 @@ radius = 3
 
 ;------------------------------------- stalker18 -----------------------------
 [logic@mil_freedom_sleep1]
-active = kamp11@mil_freedom
+active = sleeper11@mil_freedom
 on_combat = combat@mil_freedom_max
 
-[kamp11@mil_freedom]
-center_point = gulag_sleep1
+[sleeper11@mil_freedom]
+path_main = gulag_sleep1
 danger = danger@mil_freedom
 path_walk = gulag_sleep1_task
 radius = 3
 
 ;------------------------------------- stalker19 -----------------------------
 [logic@mil_freedom_sleep2]
-active = kamp200@mil_freedom
+active = sleeper200@mil_freedom
 on_combat = combat@mil_freedom_max
 
-[kamp200@mil_freedom]
-center_point = gulag_sleep1
+[sleeper200@mil_freedom]
+path_main = gulag_sleep1
 danger = danger@mil_freedom
 path_walk = gulag_sleep1_task
-radius = 3
-
-;------------------------------------- stalker20 -----------------------------
-[logic@mil_freedom_sleep3]
-active = kamp300@mil_freedom
-on_combat = combat@mil_freedom_max
-
-[kamp300@mil_freedom]
-center_point = gulag_sleep1
-danger = danger@mil_freedom
 radius = 3
 
 ;------------------------------------- Screw -----------------------------
