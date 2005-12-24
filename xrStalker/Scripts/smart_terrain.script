@@ -402,7 +402,7 @@ end
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
 function se_smart_terrain:enabled( obj )
-	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+--	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 
 	-- DEBUG
 	if self.disabled then
@@ -416,14 +416,9 @@ function se_smart_terrain:enabled( obj )
 --		if obj:clsid() == clsid.GROUP then -- TODO
 			-- TODO проитерировать группу
 --		else
---			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
-			local b1 = self:obj_accepts_smart_terrain( obj )
-			local b2 = self:smart_terrain_accepts_obj( obj, b1 )
-
-			printf( "obj_accepts_smart_terrain=%s smart_terrain_accepts_obj=%s", tostring( b1 ), tostring( b2 ) )
+			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
 --		end
 	else
-		printf( "smart terrain is unavailable" )
 		return false
 	end
 end
@@ -748,3 +743,4 @@ function get_smart_terrain_conditions( self )
 
 	return self.smart_terrain_conditions
 end
+
