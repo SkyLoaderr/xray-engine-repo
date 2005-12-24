@@ -131,6 +131,7 @@ public:
 	virtual	void			post_fsm_update					();
 			void			squad_notify					();
 
+	virtual bool			IsTalkEnabled					() {return false;}
 	// ---------------------------------------------------------------------------------
 	// Process scripts
 	// ---------------------------------------------------------------------------------
