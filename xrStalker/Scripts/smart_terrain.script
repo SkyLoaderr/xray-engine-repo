@@ -402,7 +402,9 @@ end
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
 function se_smart_terrain:enabled( obj )
---	printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+--	if obj:name() == "esc_vagon_wounded" then
+--		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+--	end
 
 	-- DEBUG
 	if self.disabled then
@@ -417,8 +419,20 @@ function se_smart_terrain:enabled( obj )
 			-- TODO проитерировать группу
 --		else
 			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
+--[[			local b1 = self:obj_accepts_smart_terrain( obj )
+			local b2 = self:smart_terrain_accepts_obj( obj, b1 )
+
+			if obj:name() == "esc_vagon_wounded" then
+				printf( "obj_accepts_smart_terrain=%d smart_terrain_accepts_obj=%s", b1, tostring( b2 ) )
+			end
+
+			return b2]]
 --		end
 	else
+--		if obj:name() == "esc_vagon_wounded" then
+--			printf( "smart terrain is unavailable" )
+--		end
+
 		return false
 	end
 end
@@ -430,8 +444,11 @@ function se_smart_terrain:suitable( obj )
 	local self_gv = game_graph():vertex( self.m_game_vertex_id )
 	local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
 
---	printf( "[smart_terrain %s] obj=%s suitable=%d", self:name(), obj:name(), 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ) )
-	return - obj_gv:game_point():distance_to( self_gv:game_point() )
+--	if obj:name() == "esc_vagon_wounded" then
+--		printf( "[smart_terrain %s] obj=%s suitable=%d", self:name(), obj:name(), 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ) )
+--	end
+
+	return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
 end
 
 -- добавить npc в smart terrain.
