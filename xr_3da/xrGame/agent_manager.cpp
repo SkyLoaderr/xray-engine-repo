@@ -17,8 +17,6 @@
 #include "agent_manager_planner.h"
 #include "profiler.h"
 
-LPCSTR SECTION = "agent_manager";
-
 CAgentManager::CAgentManager			()
 {
 	init_scheduler				();
@@ -34,8 +32,8 @@ CAgentManager::~CAgentManager			()
 
 void CAgentManager::init_scheduler		()
 {
-	shedule.t_min				= pSettings->r_s32	(SECTION,"schedule_min");
-	shedule.t_max				= pSettings->r_s32	(SECTION,"schedule_max");
+	shedule.t_min				= 1000;
+	shedule.t_max				= 1000;
 	shedule_register			();
 }
 
