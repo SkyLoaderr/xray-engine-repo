@@ -4,6 +4,7 @@ local level_scripts = {
 	agroprom_tasks,
 	darkvalley_tasks,
 	bar_rostok_tasks,
+    yantar_tasks,
     mil_tasks,
 	radar_tasks,
 	pripyat_tasks,

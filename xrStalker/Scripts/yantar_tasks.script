@@ -8,6 +8,8 @@ function proceed()
        news_manager.send_tip(db.actor, "storyline_ghost_tip", nil, "stalker", nil, 903)
      end
 end
+function process_info_portion(info_id)
+end
 function actor_has_vasilyev_pda ()
 		return db.actor:object ("yantar_vasilyev_pda") ~= nil
 end
