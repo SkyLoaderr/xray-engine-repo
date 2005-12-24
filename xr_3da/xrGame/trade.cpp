@@ -45,7 +45,6 @@ CTrade::CTrade(CInventoryOwner	*p_io)
 		{
 			pStalker = smart_cast<CAI_Stalker *>(p_io);
 			if (pStalker) pThis.Set(TT_STALKER, pStalker, p_io);
-			else Msg("Incorrect Inventory owner!");
 		}
 	}
 	
