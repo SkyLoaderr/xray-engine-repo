@@ -3365,6 +3365,9 @@
 							RelativePath=".\Scripts\quest_darkvalley.script">
 						</File>
 						<File
+							RelativePath=".\scripts\quest_deadcity.script">
+						</File>
+						<File
 							RelativePath=".\scripts\quest_escape2.script">
 						</File>
 						<File
