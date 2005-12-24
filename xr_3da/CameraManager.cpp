@@ -194,6 +194,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 				_count		+= 1;
 				pp_affected += l_PPInf;
 				pp_affected -= pp_identity;
+				VERIFY(pp_affected.noise.grain>0.0f);
 			} else RemovePPEffector(eff->Type());
 		}
 		if (0==_count)	pp_affected				= pp_identity;
@@ -201,6 +202,8 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	} else {
 		pp_affected				=	pp_identity;
 	}
+
+	VERIFY(pp_affected.noise.grain>0.0f);
 	
 	if (FALSE==bOverlapped && m_bAutoApply)
 			ApplyDevice		();
@@ -230,6 +233,7 @@ void CCameraManager::ApplyDevice ()
 	T->set_gray					(pp_affected.gray);
 	T->set_noise				(pp_affected.noise.intensity);
 	T->set_noise_scale			(pp_affected.noise.grain);
+	VERIFY(pp_affected.noise.grain>0.0f);
 	T->set_noise_fps			(pp_affected.noise.fps);
 	T->set_color_base			(pp_affected.color_base);
 	T->set_color_gray			(pp_affected.color_gray);

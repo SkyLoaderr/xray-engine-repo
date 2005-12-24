@@ -173,6 +173,9 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 	m_EffectorParams.noise.fps		*= 100.0f;
 
 	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
+	if(PPInfo.noise.grain<=0.0f){
+		R_ASSERT3(0,"noise.grain cant be zero! see postprocess",*m_Name);
+	}
 
 	if(fsimilar(m_factor,0.0001f,EPS_S))
 		return FALSE;

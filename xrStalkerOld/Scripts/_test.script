@@ -1,5 +1,7 @@
-function main_()
-	level.add_pp_effector("vibros.ppe", 999, true)
+function main()
+--	level.add_cam_effector("camera_effects\\prison_1.anm", 999, true)
+--	level.add_cam_effector("camera_effects\\prison_1.anm", 999, true)
+	level.remove_cam_effector(999)
 --	level.set_pp_effector_factor(999, 0.1)
 --	level.remove_pp_effector(999)
 end
@@ -23,7 +25,7 @@ function main__()
 ]]	
 end
 
-function main()
+function main______()
    local h = hit ()
    h.power = 1
    h.direction = vector():set(0, 0, 1)
