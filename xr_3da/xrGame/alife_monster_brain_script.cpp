@@ -24,5 +24,6 @@ void CALifeMonsterBrain::script_register	(lua_State *L)
 	[
 		class_<CALifeMonsterBrain>("CALifeMonsterBrain")
 			.def("movement",	&get_movement)
+			.def("update",		&CALifeMonsterBrain::update)
 	];
 }
