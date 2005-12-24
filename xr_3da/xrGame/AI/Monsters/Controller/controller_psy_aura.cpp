@@ -118,9 +118,9 @@ void CPsyAuraController::feel_touch_new(CObject* O)
 	m_actor = smart_cast<CActor*>(O);
 
 	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
-	VERIFY(element == m_enemies.end());
-	
-	m_enemies.push_back(O);
+	//VERIFY(element == m_enemies.end());
+	if (element == m_enemies.end())
+		m_enemies.push_back(O);
 }
 
 void CPsyAuraController::feel_touch_delete(CObject* O)
@@ -128,9 +128,9 @@ void CPsyAuraController::feel_touch_delete(CObject* O)
 	if (smart_cast<CActor*>(O)) m_actor = 0;
 
 	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
-	VERIFY	(element != m_enemies.end());
-
-	m_enemies.erase(element);
+	//VERIFY	(element != m_enemies.end());
+	if (element != m_enemies.end())
+		m_enemies.erase(element);
 }
 //////////////////////////////////////////////////////////////////////////
 
