@@ -1511,12 +1511,12 @@ meet = meet@attacker
 [walker@to_kamp_esc_assault3]
 path_walk = esc_to_camp_walk
 path_look = esc_to_camp_look
-on_signal = bandits_assault| remark@kamp_esc_assault3 %+esc_bandits_assault%
+on_signal = bandits_assault| remark@kamp_esc_assault3
 
 [remark@kamp_esc_assault3]
 anim = guard
 snd = esc_factory_raid
-on_signal = sound_end| patrol@esc_assault3
+on_signal = sound_end| patrol@esc_assault3 %+esc_bandits_assault%
 target = 009
 
 
