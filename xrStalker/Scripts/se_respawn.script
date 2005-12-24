@@ -183,13 +183,12 @@ function se_respawn:create(prob)
 			table.insert(self.spawned_obj ,obj.id)
 			local pos = obj.position
 			printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
+			return true
 		else
 			alife():release(obj, true)
 			printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
-		end
-						
-						
-						
+			return false
+		end																		
 	end
 end
 -- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
@@ -220,7 +219,9 @@ function se_respawn:spawn()
 	-- экстренный спаун минимального количества объектов
 	if table.getn(self.spawned_obj) < self.min_count then	
 		while table.getn(self.spawned_obj) < self.min_count do
-			self:create(100)
+			if self:create(100) == false then
+				return
+			end
 		end
 		return
 	end
@@ -230,7 +231,9 @@ function se_respawn:spawn()
 		if table.getn(self.spawned_obj) >= self.max_count then
 			return
 		end		
-		self:create(xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions))
+		if self:create(xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions)) == false then
+			return
+		end
 	end		
 end
 -- Обновление респавнера. В зависимости от настроек обновляется либо только в офлайне, либо и там и там.
