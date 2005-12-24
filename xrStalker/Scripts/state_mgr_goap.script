@@ -494,5 +494,7 @@ function goap_graph(st, npc)
 	goal:add_property(world_property(st.properties["end"],true))
 	st.planner:set_goal_world_state(goal)
 
-	npc:debug_planner(st.planner)		
+	if npc.debug_planner ~= nil then
+		npc:debug_planner(st.planner)		
+	end
 end
