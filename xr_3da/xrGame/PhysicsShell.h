@@ -241,10 +241,7 @@ IC					CKinematics					*PKinematics								()																{return m_pKinemati
 	virtual			void						add_Joint									(CPhysicsJoint* E)																			= 0;
 	virtual			CPHIsland					*PIsland									()																							= 0;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	///////////
-	virtual			_flags<CLClassBits>			&CollideClassBits							()																							= 0;
-	virtual			CLBits						&CollideBits								()																							= 0;
-	virtual	const	_flags<CLClassBits>			&CollideClassBits							()const																						= 0;
-	virtual	const	CLBits						&CollideBits								()const																						= 0;
+	virtual	const	CGID						&GetCLGroup								()const																							= 0;
 	virtual			void						RegisterToCLGroup							(CGID g)																					= 0;
 	virtual			bool						IsGroupObject								()																							= 0;
 	virtual			void						SetIgnoreStatic								()																							= 0;
@@ -286,6 +283,7 @@ IC					CKinematics					*PKinematics								()																{return m_pKinemati
 	virtual			void						Disable										()																							= 0;
 	virtual			void						DisableCollision							()																							= 0;
 	virtual			void						EnableCollision								()																							= 0;
+	virtual			void						SetRemoveCharacterCollLADisable				()																							= 0;
 	virtual			void						PureStep									(float step = fixed_step)																	= 0;
 	virtual			void						SetGlTransformDynamic						(const Fmatrix &form)																		= 0;
 	virtual			void						StaticCollideStep							(float step = fixed_step)																	= 0;

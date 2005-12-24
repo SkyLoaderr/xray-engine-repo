@@ -57,6 +57,7 @@ CPHShell::CPHShell()
 {
 	//bActive=false;
 	//bActivating=false;
+	m_flags.assign(0);
 	m_flags.set(flActivating,FALSE);
 	m_flags.set(flActive,FALSE);
 	m_space=NULL;
@@ -75,7 +76,8 @@ void CPHShell::DisableObject()
 	InterpolateGlobalTransform(&mXFORM);
 	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
-
+	if(m_flags.test(flRemoveCharacterCollisionAfterDisable))
+			CPHCollideValidator::SetCharacterClassNotCollide(*this);
 }
 void CPHShell::Disable()
 {
@@ -1521,4 +1523,9 @@ void CPHShell::get_Extensions(const Fvector& axis,float center_prg,float& lo_ext
 		if(hi_ext<temp_hi_ext)hi_ext=temp_hi_ext;
 	}
 
+}
+
+const	CGID&	CPHShell::GetCLGroup				()const
+{
+	return CPHCollideValidator::GetGroup(*this);
 }

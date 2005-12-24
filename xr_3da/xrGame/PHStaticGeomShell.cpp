@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "PhysicsShellHolder.h"
 #include "../skeletoncustom.h"
-
+#include "PHCollideValidator.h"
 void CPHStaticGeomShell::get_spatial_params()
 {
 	Fvector					AABB;
@@ -51,6 +51,7 @@ void P_BuildStaticGeomShell(CPHStaticGeomShell* pUnbrokenObject,CGameObject* obj
 	pUnbrokenObject->set_PhysicsRefObject(smart_cast<CPhysicsShellHolder*>(obj));
 	//m_pUnbrokenObject->SetPhObjectInGeomData(m_pUnbrokenObject);
 	pUnbrokenObject->set_ObjectContactCallback(object_contact_callback);
+	CPHCollideValidator::SetNonDynamicObject(*pUnbrokenObject);
 }
 CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback,Fobb &b)
 {

@@ -15,8 +15,10 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	friend class CPHShellSplitterHolder;
 	enum				
 	{
-		flActive				=	1<<0,
-		flActivating			=	1<<1
+		flActive									=	1<<0,
+		flActivating								=	1<<1,
+		flRemoveCharacterCollisionAfterDisable		=	1<<2
+		//flEnableCallback		=	1<<3
 	};
 	Flags8					m_flags;					
 	ELEMENT_STORAGE			elements;
@@ -68,16 +70,12 @@ public:
 			void			PresetActive			();
 			void			AfterSetActive			();
 			void			PureActivate			();
-	virtual void			Deactivate				()		;
-
-	virtual			_flags<CLClassBits>&	CollideClassBits	()			{return CPHObject::collide_class_bits();}
-	virtual			CLBits&					CollideBits			()			{return CPHObject::collide_bits();}
-	virtual const	_flags<CLClassBits>&	CollideClassBits	()const		{return CPHObject::collide_class_bits();}
-	virtual const	CLBits&					CollideBits			()const		{return CPHObject::collide_bits();}
-	virtual			void					RegisterToCLGroup	(CGID g)						;
-	virtual			bool					IsGroupObject		()								;
-	virtual			void					SetIgnoreStatic		()								;
-	virtual			void					SetIgnoreDynamic	()								;
+	virtual void			Deactivate				();
+	virtual const	CGID&	GetCLGroup				()const;
+	virtual			void	RegisterToCLGroup		(CGID g)									;
+	virtual			bool	IsGroupObject			()											;
+	virtual			void	SetIgnoreStatic			()											;
+	virtual			void	SetIgnoreDynamic		()											;
 	virtual void			setMass					(float M)									;
 
 	virtual void			setMass1				(float M)									;
@@ -153,6 +151,7 @@ public:
 	virtual		void				Disable							();
 	virtual		void				DisableCollision				();
 	virtual		void				EnableCollision					();
+	virtual		void				SetRemoveCharacterCollLADisable	(){m_flags.set(flRemoveCharacterCollisionAfterDisable,TRUE);}
 	virtual		bool				isEnabled						(){return CPHObject::is_active();}
 	virtual		bool				isActive						(){return !!m_flags.test(flActive);}
 	virtual		bool				isFullActive					(){return isActive()&&!m_flags.test(flActivating);}	

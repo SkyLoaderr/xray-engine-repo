@@ -17,6 +17,7 @@
 #include "../skeletoncustom.h"
 #include "PHSimpleCharacterInline.h"
 #include "DamageSource.h"
+#include "PHCollideValidator.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
@@ -218,6 +219,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	CPHObject::activate();
 	spatial_register();
 	m_last_move.set(0,0,0)	;
+	CPHCollideValidator::SetCharacterClass(*this);
 }
 void CPHSimpleCharacter::SwitchOFFInitContact()
 {

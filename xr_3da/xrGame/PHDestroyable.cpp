@@ -295,7 +295,7 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 	dn->PPhysicsShellHolder()->setEnabled(TRUE);
 
 	if(own_shell->IsGroupObject())
-		new_shell->RegisterToCLGroup(own_shell->CollideBits());
+		new_shell->RegisterToCLGroup(own_shell->GetCLGroup());//CollideBits
 	CPHSkeleton* ps=dn->PPhysicsShellHolder()->PHSkeleton();
 	if(ps)
 	{
