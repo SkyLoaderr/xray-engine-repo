@@ -180,6 +180,12 @@ ALife::_SPAWN_ID CALifeSimulator__spawn_id		(CALifeSimulator *self, ALife::_SPAW
 	return								(((const CALifeSimulator *)self)->spawns().spawn_id(spawn_story_id));
 }
 
+void CALifeSimulator__release					(CALifeSimulator *self, CSE_Abstract *object, bool)
+{
+	VERIFY								(self);
+	self->release						(object,true);
+}
+
 LPCSTR get_level_name							(const CALifeSimulator *self, int level_id)
 {
 	return								(*ai().game_graph().header().level((GameGraph::_LEVEL_ID)level_id).name());
@@ -261,7 +267,7 @@ void CALifeSimulator::script_register			(lua_State *L)
 			.def("create",					&CALifeSimulator__create)
 			.def("create",					&CALifeSimulator__spawn_item2)
 			.def("create",					&CALifeSimulator__spawn_item)
-			.def("release",					&CALifeSimulator::release)
+			.def("release",					&CALifeSimulator__release)
 			.def("spawn_id",				&CALifeSimulator__spawn_id)
 			.def("actor",					&get_actor)
 			.def("has_info",				&has_info)
