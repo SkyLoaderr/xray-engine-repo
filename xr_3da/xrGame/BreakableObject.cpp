@@ -333,7 +333,7 @@ void CBreakableObject::ApplyExplosion(const Fvector &dir,float impulse)
 
 void CBreakableObject::Init()
 {
-	fHealth					= 100.f;
+	fHealth					= 1.f;
 	m_pUnbrokenObject		= NULL;
 	m_Shell					= NULL;
 	bRemoved				= false;

@@ -18,7 +18,7 @@ extern CPHWorld			*ph_world;
 #endif
 CDestroyablePhysicsObject ::CDestroyablePhysicsObject()
 {
-	m_fHealth=100.f;
+	m_fHealth=1.f;
 }
 
 CDestroyablePhysicsObject::~CDestroyablePhysicsObject()
