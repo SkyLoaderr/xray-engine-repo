@@ -92,9 +92,7 @@ function action_door:update(delta)
 		abort("object '%s': door failed to initialize", self.object:name())
 	end
 
-	local actor = db.actor
-
-	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
 		return
 	end
 end
@@ -141,7 +139,7 @@ function action_door:close_action()
 end
 
 function action_door:open_door(disable_snd)
-	printf("_bp: action_door:open_door()")
+	printf("_bp: [%s] action_door:open_door()", self.object:name())
 	if not disable_snd then
 		if self.st.snd_open_start then
 			self:door_play_snd_from_set(self.st.snd_open_start)
@@ -171,6 +169,7 @@ function action_door:is_closed()
 end
 
 function action_door:close_door()
+	printf("_bp: [%s] action_door:close_door()", self.object:name())
 	local disable_snd = self:is_closed()
 	if not disable_snd then
 		if self.st.snd_close_start then
