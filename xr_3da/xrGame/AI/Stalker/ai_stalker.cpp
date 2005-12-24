@@ -648,6 +648,12 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	START_PROFILE("stalker/schedule_update")
 	VERIFY2				(getEnabled()||PPhysicsShell(), *cName());
 	bug_tracker			bug_tracker(this);
+
+	if (!CObjectHandler::planner().initialized()) {
+		START_PROFILE("stalker/client_update/object_handler")
+		update_object_handler			();
+		STOP_PROFILE
+	}
 //	if (Position().distance_to(Level().CurrentEntity()->Position()) <= 50.f)
 //		Msg				("[%6d][SH][%s]",Device.dwTimeGlobal,*cName());
 	// Queue shrink
