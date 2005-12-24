@@ -2220,6 +2220,9 @@
 					RelativePath=".\Config\misc\zone_witchesgalantine.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\zone_zharka_static.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\zones.ltx">
 				</File>
 				<Filter
