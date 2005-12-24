@@ -46,5 +46,27 @@
 		</supplies>
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
-	
+
+
+<specific_character id="stalker_osoznanie" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>Представитель проекта "Осознание".</bio>
+
+		<class>osoznanie</class>
+		<community>stalker</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\ucheniy\ucheniy_2</visual>
+		<snd_config>characters_voice\human_01\</snd_config>
+		
+		<supplies>
+		</supplies>
+		
+
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>	
 </xml>

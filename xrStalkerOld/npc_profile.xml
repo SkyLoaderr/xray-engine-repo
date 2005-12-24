@@ -824,6 +824,11 @@
 		<class>sar2_monolith_exo2</class>
 	</character>
 
+<!-- O-Soznanie -->
+	<character id="osoznanie">
+		<class>osoznanie</class>
+	</character>
+
 <!-- Simulation -->
    <!--Bandits-->
 
