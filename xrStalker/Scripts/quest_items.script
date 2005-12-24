@@ -40,17 +40,23 @@ function main()
 		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l10u_bunker" then
 		table.insert(spawn_items, "protection_outfit")
+		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l11_pripyat" then
 		table.insert(spawn_items, "military_outfit")
+		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l12_stancia" then
 		table.insert(spawn_items, "military_outfit")
+		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l12u_sarcofag" then
 		table.insert(spawn_items, "exo_outfit")
+		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l12u_control_monolith" then
 		table.insert(spawn_items, "exo_outfit")
 		table.insert(spawn_items, "decoder")
+		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l12_stancia_2" then
 		table.insert(spawn_items, "exo_outfit")
+		table.insert(spawn_items, "good_psy_helmet")
 	end
 
 	local k,v = 0,0
