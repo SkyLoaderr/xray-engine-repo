@@ -419,12 +419,12 @@ void	CActor::Hit							(SHit* pHDS)
 		{
 			bPlaySound = false;
 			if (Device.dwFrame != last_hit_frame &&
-				HDS.element != -1)
+				HDS.bone() != BI_NONE)
 			{		
 				// вычислить позицию и направленность партикла
 				Fmatrix pos; 
 
-				CParticlesPlayer::MakeXFORM(this,HDS.element,HDS.dir,HDS.p_in_bone_space,pos);
+				CParticlesPlayer::MakeXFORM(this,HDS.bone(),HDS.dir,HDS.p_in_bone_space,pos);
 
 				// установить particles
 				CParticlesObject* ps = NULL;
@@ -492,7 +492,7 @@ void	CActor::Hit							(SHit* pHDS)
 		mstate_wishful	&=~mcSprint;
 	};
 	//---------------------------------------------------------------
-	HitMark			(HDS.damage(), HDS.dir, HDS.who, HDS.element, HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
+	HitMark			(HDS.damage(), HDS.dir, HDS.who, HDS.bone(), HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
 	//---------------------------------------------------------------
 	switch (GameID())
 	{
@@ -518,7 +518,7 @@ void	CActor::Hit							(SHit* pHDS)
 	default:
 		{
 			m_bWasBackStabbed = false;
-			if (HDS.hit_type == ALife::eHitTypeWound_2 && Check_for_BackStab_Bone(HDS.element))
+			if (HDS.hit_type == ALife::eHitTypeWound_2 && Check_for_BackStab_Bone(HDS.bone()))
 			{
 				// convert impulse into local coordinate system
 				Fmatrix					mInvXForm;

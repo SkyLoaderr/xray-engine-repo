@@ -183,7 +183,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			Hit				(power,dir,Hitter,element,
 							position_in_bone_space, impulse, (ALife::EHitType)hit_type);
 							*/
-			SetHitInfo(Hitter, Weapon, HDS.element, HDS.p_in_bone_space, HDS.dir);
+			SetHitInfo(Hitter, Weapon, HDS.bone(), HDS.p_in_bone_space, HDS.dir);
 			Hit				(&HDS);
 			//---------------------------------------------------------------------------
 			if (GameID() != GAME_SINGLE)

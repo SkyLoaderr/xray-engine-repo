@@ -116,7 +116,7 @@ void	CEntity::Hit		(SHit* pHDS)
 	float lost_health = CalcCondition(pHDS->damage());
 
 	// Signal hit
-	if(-1!=pHDS->element)	HitSignal(lost_health,vLocalDir,pHDS->who,pHDS->element);
+	if(BI_NONE!=pHDS->bone())	HitSignal(lost_health,vLocalDir,pHDS->who,pHDS->boneID);
 
 	// If Local() - perform some logic
 	if (Local() && !g_Alive() && !AlreadyDie())

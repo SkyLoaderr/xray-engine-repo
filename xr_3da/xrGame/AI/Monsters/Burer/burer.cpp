@@ -305,7 +305,7 @@ void	CBurer::Hit								(SHit* pHDS)
 		// вычислить позицию и направленность партикла
 		Fmatrix pos; 
 		//CParticlesPlayer::MakeXFORM(this,element,Fvector().set(0.f,0.f,1.f),p_in_object_space,pos);
-		CParticlesPlayer::MakeXFORM(this,pHDS->element,pHDS->dir,pHDS->p_in_bone_space,pos);
+		CParticlesPlayer::MakeXFORM(this,pHDS->bone(),pHDS->dir,pHDS->p_in_bone_space,pos);
 
 		// установить particles
 		CParticlesObject* ps = CParticlesObject::Create(particle_fire_shield,TRUE);

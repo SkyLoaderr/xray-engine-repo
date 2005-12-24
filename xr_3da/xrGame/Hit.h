@@ -2,14 +2,14 @@
 
 struct SHit
 {
-	SHit										(float Power,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type, float ap = 0.0f);
+	SHit										(float Power, Fvector &dir, CObject *who, u16 element, Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type, float ap = 0.0f);
 	SHit										();	
 	bool				is_valide				()		const	;	
 	void				invalidate				()				;
 IC	float				damage					()		const	{VERIFY(is_valide());return power;}
 IC	const Fvector		&direction				()		const	{VERIFY(is_valide());return dir;}
 IC	const CObject		*initiator				()		const	{VERIFY(is_valide());return who;}
-IC			s16			bone					()		const	{VERIFY(is_valide());return element;}
+IC			u16			bone					()		const	{VERIFY(is_valide());return boneID;}
 IC	const Fvector		&bone_space_position	()		const	{VERIFY(is_valide());return p_in_bone_space;}
 IC			float		phys_impulse			()		const	{VERIFY(is_valide());return impulse;}
 IC	ALife::EHitType		type					()		const	{VERIFY(is_valide());return hit_type;}								
@@ -27,7 +27,7 @@ IC	ALife::EHitType		type					()		const	{VERIFY(is_valide());return hit_type;}
 	CObject				*who																																					;
 	u16					whoID;
 	u16					weaponID;
-	s16					element																																					;
+	u16					boneID																																					;
 	Fvector				p_in_bone_space																																			;
 	float				impulse																																					;
 	ALife::EHitType		hit_type																																				;
@@ -36,4 +36,7 @@ IC	ALife::EHitType		type					()		const	{VERIFY(is_valide());return hit_type;}
 	//GE_HIT_STATISTIC
 	u32					BulletID;
 	u32					SenderID;
+#ifdef DEBUG
+	void				_dump				();
+#endif
 };

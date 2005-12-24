@@ -205,7 +205,7 @@ void	CHelicopter::Hit							(SHit* pHDS)
 	if(pHDS->who==this)
 		return;
 
-	bonesIt It = m_hitBones.find(pHDS->element);
+	bonesIt It = m_hitBones.find(pHDS->bone());
 	if(It != m_hitBones.end() && pHDS->hit_type==ALife::eHitTypeFireWound) {
 		float curHealth = GetfHealth();
 		curHealth -= pHDS->damage()*It->second*1000.0f;

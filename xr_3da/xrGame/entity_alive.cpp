@@ -266,7 +266,7 @@ void	CEntityAlive::Hit							(SHit* pHDS)
 	if (HDS.hit_type == ALife::eHitTypeWound_2)
 		HDS.hit_type = ALife::eHitTypeWound;
 	//-------------------------------------------------------------------
-	CDamageManager::HitScale(HDS.element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
+	CDamageManager::HitScale(HDS.boneID, conditions().hit_bone_scale(), conditions().wound_bone_scale());
 
 	//изменить состояние, перед тем как родительский класс обработает хит
 	CWound* pWound = conditions().ConditionHit(&HDS);
@@ -280,7 +280,7 @@ void	CEntityAlive::Hit							(SHit* pHDS)
 
 	if (HDS.hit_type != ALife::eHitTypeTelepatic){
 		//добавить кровь на стены
-		BloodyWallmarks (HDS.damage(), HDS.dir, HDS.element, HDS.p_in_bone_space);
+		BloodyWallmarks (HDS.damage(), HDS.dir, HDS.bone(), HDS.p_in_bone_space);
 	}
 
 	//-------------------------------------------

@@ -6,12 +6,12 @@
 #include "NET_utils.h"
 #include "xrMessages.h"
 
-SHit::SHit(float aPower,Fvector &adir,CObject *awho,s16 aelement,Fvector ap_in_bone_space, float aimpulse,  ALife::EHitType ahit_type, float aAP)
+SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement,Fvector ap_in_bone_space, float aimpulse,  ALife::EHitType ahit_type, float aAP)
 {
 		power					=aPower									;
 		dir						.set(adir)								;
 		who						=awho									;
-		element					=aelement								;
+		boneID					=aelement								;
 		p_in_bone_space			.set(ap_in_bone_space)					;
 		impulse					=aimpulse								;
 		hit_type				=ahit_type								;
@@ -27,7 +27,7 @@ void SHit::invalidate()
 	power					=-dInfinity								;
 	dir						.set(-dInfinity,-dInfinity,-dInfinity)	;
 	who						=NULL									;
-	element					=BI_NONE								;
+	boneID					=BI_NONE								;
 	p_in_bone_space		.set(-dInfinity,-dInfinity,-dInfinity)	;
 	impulse					=-dInfinity								;
 	hit_type				=ALife::eHitTypeMax						;
@@ -55,7 +55,7 @@ void SHit::Read_Packet_Cont		(NET_Packet	Packet)
 	Packet.r_u16			(weaponID);
 	Packet.r_dir			(dir);
 	Packet.r_float			(power);power/=100.0f;
-	Packet.r_s16			(element);
+	Packet.r_u16			(boneID);
 	Packet.r_vec3			(p_in_bone_space);
 	Packet.r_float			(impulse);
 	hit_type				= (ALife::EHitType)Packet.r_u16();	//hit type
@@ -82,7 +82,7 @@ void SHit::Write_Packet			(NET_Packet	&Packet)
 	Packet.w_u16		(weaponID);
 	Packet.w_dir		(dir);
 	Packet.w_float		(power*100.0f);
-	Packet.w_s16		(element);
+	Packet.w_u16		(boneID);
 	Packet.w_vec3		(p_in_bone_space);
 	Packet.w_float		(impulse);
 	Packet.w_u16		(u16(hit_type));	
@@ -96,3 +96,20 @@ void SHit::Write_Packet			(NET_Packet	&Packet)
 		Packet.w_u32(SenderID);
 	}
 };
+
+#ifdef DEBUG
+void SHit::_dump()
+{
+	Msg("SHit::_dump()---begin");
+	Log("power=",power);
+	Log("impulse=",impulse);
+	Log("dir=",dir);
+	Log("whoID=",whoID);
+	Log("weaponID=",weaponID);
+	Log("element=",boneID);
+	Log("p_in_bone_space=",p_in_bone_space);
+	Log("hit_type=",(int)hit_type);
+	Log("ap=",ap);
+	Msg("SHit::_dump()---end");
+}
+#endif

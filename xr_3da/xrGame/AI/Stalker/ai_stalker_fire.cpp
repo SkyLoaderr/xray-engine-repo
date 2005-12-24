@@ -172,7 +172,7 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 	SHit HDS = *pHDS;
 	HDS.power *= m_fRankImmunity;
 	if(m_boneHitProtection && HDS.hit_type == ALife::eHitTypeFireWound){
-		float BoneArmour = m_boneHitProtection->getBoneArmour(HDS.element);	
+		float BoneArmour = m_boneHitProtection->getBoneArmour(HDS.bone());	
 		float NewHitPower = HDS.damage() - BoneArmour;
 		if (NewHitPower < HDS.power*m_boneHitProtection->m_fHitFrac) HDS.power = HDS.power*m_boneHitProtection->m_fHitFrac;
 		else
@@ -191,7 +191,7 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		else
 			sound().play	(eStalkerSoundInjuringByFriend);
 		
-		if (pHDS->element != BI_NONE) {
+		if (pHDS->bone() != BI_NONE) {
 			Fvector					D;
 			float					yaw, pitch;
 			D.getHP					(yaw,pitch);
@@ -200,8 +200,14 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 			float					power_factor = m_power_fx_factor*pHDS->damage()/100.f;
 			clamp					(power_factor,0.f,1.f);
 			CSkeletonAnimated		*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
-
-			int						fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->element).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
+#ifdef DEBUG
+			tpKinematics->LL_GetBoneInstance(pHDS->bone());
+			if(pHDS->bone()>=tpKinematics->LL_BoneCount()){
+				Msg("tpKinematics has no bone_id %d",pHDS->bone());
+				pHDS->_dump();
+			}
+#endif
+			int						fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->bone()).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
 			if (fx_index != -1)
 				animation().play_fx	(power_factor,fx_index);
 		}
