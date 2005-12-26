@@ -153,7 +153,16 @@
 
 
 
-
+	<!-- OSOZNANIE -->
+	<info_portion id="oso_who_are_you"></info_portion>
+	<info_portion id="oso_what_is_the_zone"></info_portion>
+	<info_portion id="oso_what_about_me"></info_portion>
+	<info_portion id="oso_why_chernobyl"></info_portion>
+	<info_portion id="oso_chernobyl_crush"></info_portion>
+	<info_portion id="oso_stalker"></info_portion>
+	<info_portion id="oso_death_truck"></info_portion>
+	<info_portion id="oso_what_next"></info_portion>	
+	<info_portion id="oso_question"></info_portion>
    
 
 
