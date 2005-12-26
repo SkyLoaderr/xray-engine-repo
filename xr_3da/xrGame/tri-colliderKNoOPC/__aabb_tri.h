@@ -112,9 +112,12 @@ using namespace Opcode;
 	if(x2<min) min=x2;						\
 	if(x2>max) max=x2;
 
-//! TO BE DOCUMENTED
+#define EXITMINMAX(x0, x1, x2, min, max)		\
+	if(x0<min&&x1<min&&x2<min)return false;		\
+	if(x0>max&&x1>max&&x2>max)return false;
 
-ICF bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
+//! TO BE DOCUMENTED
+ICF bool planeBoxOverlap_slow(const Point& normal, const float d, const Point& maxbox)
 {
 	Point vmin, vmax;
 	if(normal[0]>0.0f)	{ vmin[0] =-maxbox[0]; vmax[0]= maxbox[0]; }
@@ -123,9 +126,16 @@ ICF bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox
 	else				{ vmin[1] = maxbox[1]; vmax[1]=-maxbox[1]; }
 	if(normal[2]>0.0f)	{ vmin[2] =-maxbox[2]; vmax[2]= maxbox[2]; }
 	else				{ vmin[2] = maxbox[2]; vmax[2]=-maxbox[2]; }
-	if((normal|vmin)+d >  0.0f)	return false;
-	if((normal|vmax)+d >= 0.0f)	return true;
+	if((normal|vmin)+d >= 0.0f)	return false;
+	if((normal|vmax)+d >  0.0f)	return true;
 	return	false		;
+}
+
+ICF bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
+{
+	float norm_box_proj=_abs(maxbox.x*normal.x)+_abs(maxbox.y*normal.y)+_abs(maxbox.z*normal.z);
+	if(d>-norm_box_proj&&d<norm_box_proj)return true;
+	else return false;
 }
 
 //! TO BE DOCUMENTED
@@ -187,27 +197,27 @@ IC	bool		aabb_tri_aabb(Point center,Point extents,const Point* mLeafVerts)
 	v2.x = mLeafVerts[2].x - center.x;
 
 	// First, test overlap in the {x,y,z}-directions
-	float min,max;
+	//float min,max;
 	// Find min, max of the triangle in x-direction, and test for overlap in X
-	FINDMINMAX(v0.x, v1.x, v2.x, min, max);
-	if(min>extents.x || max<-extents.x) return false;
-
+	//FINDMINMAX(v0.x, v1.x, v2.x, min, max);
+	//if(min>extents.x || max<-extents.x) return false;
+	EXITMINMAX(v0.x, v1.x, v2.x,-extents.x,extents.x)
 	// Same for Y
 	v0.y = mLeafVerts[0].y - center.y;
 	v1.y = mLeafVerts[1].y - center.y;
 	v2.y = mLeafVerts[2].y - center.y;
 
-	FINDMINMAX(v0.y, v1.y, v2.y, min, max);
-	if(min>extents.y || max<-extents.y) return false;
-
+	//FINDMINMAX(v0.y, v1.y, v2.y, min, max);
+	//if(min>extents.y || max<-extents.y) return false;
+	EXITMINMAX(v0.y, v1.y, v2.y,-extents.y,extents.y)
 	// Same for Z
 	v0.z = mLeafVerts[0].z - center.z;
 	v1.z = mLeafVerts[1].z - center.z;
 	v2.z = mLeafVerts[2].z - center.z;
 
-	FINDMINMAX(v0.z, v1.z, v2.z, min, max);
-	if(min>extents.z || max<-extents.z) return false;
-
+	//FINDMINMAX(v0.z, v1.z, v2.z, min, max);
+	//if(min>extents.z || max<-extents.z) return false;
+	EXITMINMAX(v0.z, v1.z, v2.z,-extents.z,extents.z)
 	// 2) Test if the box intersects the plane of the triangle
 	// compute plane equation of triangle: normal*x+d=0
 	// ### could be precomputed since we use the same leaf triangle several times
@@ -215,7 +225,9 @@ IC	bool		aabb_tri_aabb(Point center,Point extents,const Point* mLeafVerts)
 	const Point e1 = v2 - v1;
 	const Point normal = e0 ^ e1;
 	const float d = -normal|v0;
-	if(!planeBoxOverlap(normal, d, extents)) return false;
+	bool	r0 = planeBoxOverlap(normal, d, extents);
+	VERIFY	(r0 == planeBoxOverlap_slow(normal, d, extents));
+	if(!r0)		return false;
 	return true;
 }
 IC	bool		__aabb_tri		(Point center,Point extents,const Point* mLeafVerts)
@@ -256,7 +268,9 @@ IC	bool		__aabb_tri		(Point center,Point extents,const Point* mLeafVerts)
 		const Point e1 = v2 - v1;
 		const Point normal = e0 ^ e1;
 		const float d = -normal|v0;
-		if(!planeBoxOverlap(normal, d, extents)) return false;
+		bool	r0 = planeBoxOverlap(normal, d, extents);
+		VERIFY	(r0 == planeBoxOverlap_slow(normal, d, extents));
+		if		(!r0)	return false;
 		
 		// 3) "Class III" tests
 		//if(bClass3)
