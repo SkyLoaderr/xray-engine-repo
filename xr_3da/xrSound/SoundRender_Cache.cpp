@@ -78,6 +78,9 @@ BOOL	CSoundRender_Cache::request		(cache_cat& cat, u32 id)
 
 void	CSoundRender_Cache::initialize	(u32 _total_kb_approx, u32 bytes_per_line)
 {
+	// use twice the requisted memory (to avoid bad configs)
+	_total_kb_approx	*=	2;
+
 	// calc
 	_line		= bytes_per_line;
 	_count		= ((_total_kb_approx*1024)/bytes_per_line + 1);
