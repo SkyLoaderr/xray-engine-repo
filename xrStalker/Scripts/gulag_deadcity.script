@@ -471,7 +471,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
     local ltx = ""
 
     ltx = ltx.."[danger_bandits]\n" ..
-               "ignore_distance = 25\n"
+               "ignore_distance = 30\n"
 
     -- leader
 	t = { section = "logic@" .. gname .. "_leader",
@@ -490,7 +490,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                "[walker@" .. gname .. "_leader]\n" ..
                "path_walk           = leader_walk\n" ..
                "path_look           = leader_look\n" ..
-               "danger              = danger_bandits\n" ..
+               --"danger              = danger_bandits\n" ..
                "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
 
     -- leader guards
@@ -511,7 +511,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_leader_guard" .. i .. "]\n" ..
                    "path_walk           = leader_guard" .. i .. "_walk\n" ..
                    "path_look           = leader_guard" .. i .. "_look\n" ..
-                   "danger              = danger_bandits\n" ..
+                   --"danger              = danger_bandits\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -616,7 +616,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                    "center_point        = kamp" .. i .. "\n" ..
                    "def_state_moving    = run\n" ..
                    "soundgroup          = " .. gname .. "_kamp" .. i .. "_sg\n" ..
-                   "danger              = danger_bandits\n" ..
+                   --"danger              = danger_bandits\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -639,7 +639,7 @@ function load_job_bandits(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_base_guard" .. i .. "]\n" ..
                    "path_walk           = base_guard" .. i .. "_walk\n" ..
                    --"path_look           = base_guard" .. i .. "_look\n" ..
-                   "danger              = danger_bandits\n" ..
+                   --"danger              = danger_bandits\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
