@@ -17,7 +17,7 @@ public:
 		fcv_forcedword = u32(-1)
 	};
 	// Ray-sphere intersection
-	IC ERP_Result intersect (const _vector3<T>& S, const _vector3<T>& D, T range, int& quantity, T afT[2]) const
+	ICF ERP_Result intersect (const _vector3<T>& S, const _vector3<T>& D, T range, int& quantity, T afT[2]) const
 	{
 		// set up quadratic Q(t) = a*t^2 + 2*b*t + c
 		_vector3<T> kDiff;  kDiff.sub	(S,P);
@@ -45,7 +45,7 @@ public:
 		return result;
 	}
 
-	IC ERP_Result intersect	(const _vector3<T>& start, const _vector3<T>& dir, T& dist) const
+	ICF ERP_Result intersect	(const _vector3<T>& start, const _vector3<T>& dir, T& dist) const
 	{
 		int				quantity;
 		T				afT[2];
@@ -79,7 +79,7 @@ public:
 		}
 		return rpNone;
 	}
-	IC BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D) const	
+	ICF BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D) const	
 	{
 		_vector3<T> Q;	Q.sub(P,S);
 	
@@ -88,7 +88,7 @@ public:
 		T d = R*R - (c*c - v*v);
 		return (d > 0);
 	}
-	IC BOOL		intersect(const _sphere<T>& S) const
+	ICF BOOL		intersect(const _sphere<T>& S) const
 	{	
 		T SumR = R+S.R;
 		return P.distance_to_sqr(S.P) < SumR*SumR;
