@@ -1,3 +1,12 @@
+function allow_break_dialog(first_speaker, second_speaker, id)
+	if second_speaker:profile_name() == "osoznanie" then
+		return false
+	end
+
+	return true
+end
+
+
 function break_dialog(first_speaker, second_speaker, id)
 	first_speaker:stop_talk()
 	second_speaker:stop_talk()
