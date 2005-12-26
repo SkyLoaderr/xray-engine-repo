@@ -390,7 +390,7 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 	if(NO_REPUTATION == m_reputation)
 		m_reputation = selected_char.Reputation();
 
-	m_character_name = selected_char.Name();
+	m_character_name = *(CStringTable().translate(selected_char.Name()));
 	
 	if( !stricmp(m_character_name.c_str(),"GENERATE_NAME") ){
 		//select name and lastname
