@@ -55,7 +55,26 @@ function enable_ui(actor, npc)
 end
 
 function run_cam_effector(actor, npc, p)
-	level.add_cam_effector("camera_effects\\" .. p[1] .. ".anm")	                  
+    if p[1] then
+        local loop, num = false, (1000 + math.random(100))
+        
+        if p[2] and type(p[2]) == "number" and p[2] > 0 then
+            num = p[2]
+        end
+
+        if p[3] and p[3] == "true" then
+            loop = true
+        end
+        
+        --level.add_pp_effector(p[1] .. ".ppe", num, loop)
+	    level.add_cam_effector("camera_effects\\" .. p[1] .. ".anm", num, loop)	                  
+    end
+end
+
+function stop_cam_effector(actor, npc, p)
+    if p[1] and type(p[1]) == "number" and p[1] > 0 then
+        level.remove_cam_effector(p[1])
+    end
 end
 
 function run_postprocess(actor, npc, p)
