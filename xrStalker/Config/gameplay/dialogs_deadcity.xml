@@ -8,52 +8,33 @@
             <phrase id="11">
                 <text>cit_doctor_hello_dialog_11</text>
             </phrase>
+            <phrase id="2">
+                <text></text>
+                <has_info>cit_jail_scene_start</has_info>
+                <next>21</next>
+            </phrase>
             <phrase id="0">
-                <text />
+                <text></text>
                 <next>1</next>
                 <next>2</next>
             </phrase>
             <phrase id="1">
-                <text />
+                <text></text>
                 <dont_has_info>cit_jail_scene_start</dont_has_info>
                 <next>11</next>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <has_info>cit_jail_scene_start</has_info>
-                <next>21</next>
             </phrase>
         </phrase_list>
     </dialog>
     <dialog id="cit_doctor_main_dialog">
         <dont_has_info>cit_jail_scene_start</dont_has_info>
         <phrase_list>
-            <phrase id="1">
-                <text>cit_doctor_main_dialog_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="41">
-                <text>cit_doctor_main_dialog_41</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>cit_doctor_main_dialog_5</text>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>cit_doctor_main_dialog_51</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>cit_doctor_main_dialog_6</text>
-            </phrase>
-            <phrase id="4">
-                <text>cit_doctor_main_dialog_4</text>
-                <next>41</next>
-            </phrase>
             <phrase id="0">
                 <text>cit_doctor_main_dialog_0</text>
                 <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>cit_doctor_main_dialog_1</text>
+                <next>11</next>
             </phrase>
             <phrase id="11">
                 <text>cit_doctor_main_dialog_11</text>
@@ -77,6 +58,25 @@
                 <give_info>cit_jail_scene_start</give_info>
                 <next>4</next>
             </phrase>
+            <phrase id="4">
+                <text>cit_doctor_main_dialog_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>cit_doctor_main_dialog_41</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>cit_doctor_main_dialog_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>cit_doctor_main_dialog_51</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>cit_doctor_main_dialog_6</text>
+            </phrase>
         </phrase_list>
     </dialog>
     <dialog id="cit_doctor_escape_dialog">
@@ -84,6 +84,18 @@
         <phrase_list>
             <phrase id="13">
                 <text>cit_doctor_escape_dialog_13</text>
+            </phrase>
+            <phrase id="111">
+                <text>cit_doctor_escape_dialog_111</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>cit_doctor_escape_dialog_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>14</next>
+                <next>15</next>
+                <next>13</next>
             </phrase>
             <phrase id="11">
                 <text>cit_doctor_escape_dialog_11</text>
@@ -97,51 +109,45 @@
                 <give_info>cit_jail_doctor_escape_task</give_info>
                 <next>121</next>
             </phrase>
-            <phrase id="141">
-                <text>cit_doctor_escape_dialog_141</text>
-                <next>142</next>
+            <phrase id="121">
+                <text>cit_doctor_escape_dialog_121</text>
+                <next>1</next>
             </phrase>
-            <phrase id="142">
-                <text>cit_doctor_escape_dialog_142</text>
-                <give_info>cit_vp_info</give_info>
-                <next>143</next>
-            </phrase>
-            <phrase id="14">
-                <text>cit_doctor_escape_dialog_14</text>
-                <next>141</next>
+            <phrase id="151">
+                <text>cit_doctor_escape_dialog_151</text>
+                <next>1</next>
             </phrase>
             <phrase id="15">
                 <text>cit_doctor_escape_dialog_15</text>
                 <give_info>cit_doctor_shows_deadcity_zones</give_info>
                 <next>151</next>
             </phrase>
-            <phrase id="111">
-                <text>cit_doctor_escape_dialog_111</text>
-                <next>1</next>
+            <phrase id="14111">
+                <text>cit_doctor_escape_dialog_14111</text>
+                <next>141111</next>
             </phrase>
-            <phrase id="121">
-                <text>cit_doctor_escape_dialog_121</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>cit_doctor_escape_dialog_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>14</next>
-                <next>15</next>
-                <next>13</next>
-            </phrase>
-            <phrase id="143">
-                <text>cit_doctor_escape_dialog_143</text>
-                <next>1</next>
+            <phrase id="141111">
+                <text>cit_doctor_escape_dialog_141111</text>
+                <next>1411111</next>
             </phrase>
             <phrase id="0">
                 <text>cit_doctor_escape_dialog_0</text>
                 <next>1</next>
             </phrase>
-            <phrase id="151">
-                <text>cit_doctor_escape_dialog_151</text>
-                <next>1</next>
+            <phrase id="1411111">
+                <text>cit_doctor_escape_dialog_1411111</text>
+            </phrase>
+            <phrase id="14">
+                <text>cit_doctor_escape_dialog_14</text>
+                <next>141</next>
+            </phrase>
+            <phrase id="141">
+                <text>cit_doctor_escape_dialog_141</text>
+                <next>1411</next>
+            </phrase>
+            <phrase id="1411">
+                <text>cit_doctor_escape_dialog_1411</text>
+                <next>14111</next>
             </phrase>
         </phrase_list>
     </dialog>
