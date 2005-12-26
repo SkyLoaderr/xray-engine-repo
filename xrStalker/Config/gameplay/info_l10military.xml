@@ -298,5 +298,7 @@
 	
 	<info_portion id="mil_actor_in_kamp_zone"></info_portion>
 	
+	<info_portion id="mil_crazy_dead"></info_portion>
+	
 	
 </game_information_portions>
