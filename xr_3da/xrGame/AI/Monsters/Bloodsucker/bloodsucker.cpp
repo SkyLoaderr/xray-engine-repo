@@ -39,6 +39,8 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	com_man().add_ability			(ControlCom::eControlRotationJump);
 
 	invisible_vel.set				(0.1f, 0.1f);
+
+	EnemyMemory.init_external		(this, 40000);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
@@ -144,7 +146,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_visual_predator				= pSettings->r_string(section,"Predator_Visual");
 
 	m_vampire_want_speed			= pSettings->r_float(section,"Vampire_Want_Speed");
-	m_vampire_reach_time			= pSettings->r_u32(section,"Vampire_Reach_Time");
 	m_vampire_wound					= pSettings->r_float(section,"Vampire_Wound");
 }
 
@@ -161,7 +162,7 @@ void CAI_Bloodsucker::reinit()
 	
 	m_alien_control.reinit();
 	
-	state_invisible				= CInvisibility::is_active();
+	state_invisible				= CInvisibility::active();
 	m_last_invisible_run_play	= 0;
 
 	//com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI - 0.01f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
@@ -299,7 +300,7 @@ BOOL CAI_Bloodsucker::net_Spawn (CSE_Abstract* DC)
 	vfAssignBones	();
 
 	// спаунится нивидимым
-	setVisible		(false);
+	// setVisible		(false);
 
 	return(TRUE);
 }
@@ -328,7 +329,6 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	inherited::shedule_Update(dt);
 	
 	if (!g_Alive())	setVisible(TRUE);
-	CInvisibility::schedule_update();
 }
 
 void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
@@ -338,8 +338,6 @@ void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
 
 void CAI_Bloodsucker::on_activate()
 {
-	CInvisibility::on_activate();
-	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
 	state_invisible = true;
 
@@ -348,8 +346,6 @@ void CAI_Bloodsucker::on_activate()
 
 void CAI_Bloodsucker::on_deactivate()
 {
-	CInvisibility::on_deactivate();
-	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 	state_invisible = false;
 
@@ -359,15 +355,12 @@ void CAI_Bloodsucker::on_deactivate()
 void CAI_Bloodsucker::net_Destroy()
 {
 	CInvisibility::deactivate(); 
-	CInvisibility::disable();
 	inherited::net_Destroy();
 }
 
 void CAI_Bloodsucker::Die(CObject* who)
 {
 	CInvisibility::deactivate(); 
-	CInvisibility::disable();
-
 	inherited::Die(who);
 }
 
@@ -375,14 +368,13 @@ void CAI_Bloodsucker::post_fsm_update()
 {
 	inherited::post_fsm_update();
 	
-	EMonsterState state = StateMan->get_state_type();
-	
+	//EMonsterState state = StateMan->get_state_type();
+	//
 	// установить агрессивность
-	bool aggressive =	(is_state(state, eStateAttack)) || 
-						(is_state(state, eStatePanic))	|| 
-						(is_state(state, eStateHitted));
+	//bool aggressive =	(is_state(state, eStateAttack)) || 
+	//					(is_state(state, eStatePanic))	|| 
+	//					(is_state(state, eStateHitted));
 
-	CEnergyHolder::set_aggressive(aggressive);
 }
 
 bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
@@ -443,7 +435,7 @@ void CAI_Bloodsucker::predator_unfreeze()
 
 void CAI_Bloodsucker::move_actor_cam()
 {
-	float turn_angle = PI_DIV_2;
+	float turn_angle = PI_DIV_3;
 	if (Actor()->cam_Active()) {
 		Actor()->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, turn_angle);	//Random.randF(turn_angle)); 
 		Actor()->cam_Active()->Move(Random.randI(2) ? kUP	 : kDOWN, turn_angle);	//Random.randF(turn_angle)); 
@@ -472,11 +464,15 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 	if (!info.active) return CBaseMonster::SDebugInfo();
 
 	string128 text;
-	sprintf(text, "Invisibility Value = [%f] Invisible = [%u]", CInvisibility::get_value(), CInvisibility::is_active());
+	sprintf(text, "Invisibility Value = [%f] Invisible = [%u]", CInvisibility::energy(), CInvisibility::active());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
 	sprintf(text, "Vampire Want Value = [%f] Speed = [%f]", m_vampire_want_value, m_vampire_want_speed);
+	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
+	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
+
+	sprintf(text, "I See Enemy Now = [%u]", (EnemyMan.get_enemy() != 0) && EnemyMan.see_enemy_now());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
@@ -488,10 +484,12 @@ void CAI_Bloodsucker::debug_on_key(int key)
 {
 	switch (key){
 	case DIK_MINUS:
-		set_alien_control(true);
+		Actor()->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, PI_DIV_2);
+		//set_alien_control(true);
 		break;
 	case DIK_EQUALS:
-		set_alien_control(false);
+		Actor()->cam_Active()->Move(Random.randI(2) ? kUP	 : kDOWN, PI_DIV_2);
+		//set_alien_control(false);
 		break;
 	}
 }

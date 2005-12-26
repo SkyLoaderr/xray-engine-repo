@@ -21,7 +21,7 @@ public:
 	virtual	void		execute					();
 	virtual void		setup_substates			();
 
-private:
+protected:
 			bool		check_steal_state		();
 			bool		check_find_enemy_state	();
 			bool		check_run_away_state	();

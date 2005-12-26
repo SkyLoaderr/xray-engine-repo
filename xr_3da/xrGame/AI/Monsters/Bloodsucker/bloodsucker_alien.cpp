@@ -263,8 +263,8 @@ void CBloodsuckerAlien::activate()
 	Actor()->Cameras().AddCamEffector	(m_effector);
 
 	// fix it
-	m_object->CInvisibility::set_manual_switch	();
-	if (m_object->CInvisibility::is_active()) {
+	m_object->CInvisibility::set_manual_control	();
+	if (m_object->CInvisibility::active()) {
 		m_object->CInvisibility::manual_deactivate();
 		m_object->CInvisibility::manual_activate	();
 	} else m_object->CInvisibility::manual_activate	();
@@ -278,7 +278,7 @@ void CBloodsuckerAlien::deactivate()
 	if (!m_active) return;
 
 	m_object->CControlledActor::release			();
-	m_object->CInvisibility::set_manual_switch	(false);
+	m_object->CInvisibility::set_manual_control	(false);
 
 	//Actor()->inventory().Items_SetCurrentEntityHud	(true);
 	Actor()->inventory().setSlotsBlocked			(false);

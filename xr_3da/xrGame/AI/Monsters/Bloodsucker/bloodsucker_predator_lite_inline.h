@@ -16,117 +16,109 @@
 	typename _Object\
 >
 
-#define CStateBloodsuckerPredatorAbstract CStateBloodsuckerPredator<_Object>
+#define CStateBloodsuckerPredatorLiteAbstract CStateBloodsuckerPredatorLite<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateBloodsuckerPredatorAbstract::CStateBloodsuckerPredator(_Object *obj) : inherited(obj)
+CStateBloodsuckerPredatorLiteAbstract::CStateBloodsuckerPredatorLite(_Object *obj) : inherited(obj)
 {
+	add_state	(eStatePredator_Camp,			xr_new<CStateMonsterCustomAction<_Object> >	(obj));
 	add_state	(eStatePredator_MoveToCover,	xr_new<CStateMonsterMoveToPointEx<_Object> >(obj));
 	add_state	(eStatePredator_LookOpenPlace,	xr_new<CStateMonsterLookToPoint<_Object> >	(obj));
-	add_state	(eStatePredator_Camp,			xr_new<CStateMonsterCustomAction<_Object> >	(obj));
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::reinit()
+void CStateBloodsuckerPredatorLiteAbstract::reinit()
 {
 	inherited::reinit	();
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::initialize()
+void CStateBloodsuckerPredatorLiteAbstract::initialize()
 {
 	inherited::initialize						();
 
 	object->predator_start						();
-	object->CInvisibility::set_manual_control	();
-	object->CInvisibility::manual_deactivate	();
+	object->CInvisibility::deactivate			();
 
-	select_camp_point							();
+	m_target_node								= u32(-1);
+	m_freezed									= false;
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::reselect_state()
+void CStateBloodsuckerPredatorLiteAbstract::reselect_state()
 {
 	if (prev_substate == u32(-1)) {
-		select_state(eStatePredator_MoveToCover);
-		return;
-	}
-	
-	if (prev_substate == eStatePredator_MoveToCover) {
-		select_state(eStatePredator_LookOpenPlace);
+		if (enemy_see_me()) select_state(eStatePredator_MoveToCover);
+		else select_state(eStatePredator_LookOpenPlace);
 		return;
 	}
 
+	if (prev_substate == eStatePredator_MoveToCover) {
+		if (enemy_see_me()) select_state(eStatePredator_MoveToCover);
+		else select_state(eStatePredator_LookOpenPlace);
+		return;
+	}
+	
 	if (prev_substate == eStatePredator_LookOpenPlace) {
 		select_state(eStatePredator_Camp);
 		return;
 	}
 
-	select_state(eStatePredator_Camp);
+	if (prev_substate == eStatePredator_Camp) {
+		select_state(eStatePredator_MoveToCover);
+		return;
+	}
+
+	select_state(eStatePredator_MoveToCover);
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::finalize()
+void CStateBloodsuckerPredatorLiteAbstract::finalize()
 {
 	inherited::finalize							();
-
 	object->predator_stop						();
-	object->CInvisibility::set_manual_control	(false);
+	if (m_freezed)	object->predator_unfreeze	();
 
-	object->predator_unfreeze					();
-
-	CMonsterSquad *squad = monster_squad().get_squad(object);
-	squad->unlock_cover(m_target_node);
-
+	if (m_target_node != u32(-1)) 
+		monster_squad().get_squad(object)->unlock_cover(m_target_node);
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::critical_finalize()
+void CStateBloodsuckerPredatorLiteAbstract::critical_finalize()
 {
 	inherited::critical_finalize				();
-
 	object->predator_stop						();
-	object->CInvisibility::set_manual_control	(false);
+	if (m_freezed)	object->predator_unfreeze	();
 
-	object->predator_unfreeze					();
-
-	CMonsterSquad *squad = monster_squad().get_squad(object);
-	squad->unlock_cover(m_target_node);
+	if (m_target_node != u32(-1)) 
+		monster_squad().get_squad(object)->unlock_cover(m_target_node);
 }
 
 TEMPLATE_SPECIALIZATION
-bool CStateBloodsuckerPredatorAbstract::check_start_conditions()
+bool CStateBloodsuckerPredatorLiteAbstract::check_completion()
 {
-	if (Actor()->memory().visual().visible_now(object)) return false;
-	return true;
-}
-
-TEMPLATE_SPECIALIZATION
-bool CStateBloodsuckerPredatorAbstract::check_completion()
-{
-	if (object->HitMemory.get_last_hit_time() > time_state_started) return true;
-	if (object->EnemyMan.get_enemy() && object->EnemyMan.see_enemy_now() && (object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) return true;
-
+	if (object->EnemyMan.see_enemy_now() && (object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) return true;
 	return false;
 }
 
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::setup_substates()
+void CStateBloodsuckerPredatorLiteAbstract::setup_substates()
 {
 	state_ptr state = get_state_current();
-	
-	if (current_substate == eStatePredator_Camp) {
-		object->predator_freeze	();
-		m_time_start_camp		= time();
 
+	if (current_substate == eStatePredator_Camp) {
+		object->predator_freeze		();
+		m_freezed					= true;
 	} else {
-		object->predator_unfreeze();
+		object->predator_unfreeze	();
+		m_freezed					= false;
 	}
 
 	if (current_substate == eStatePredator_MoveToCover) {
+		select_camp_point		();
+		
 		SStateDataMoveToPointEx data;
-
 		data.vertex				= m_target_node;
 		data.point				= ai().level_graph().vertex_position(data.vertex);
 		data.action.action		= ACT_RUN;
@@ -162,7 +154,7 @@ void CStateBloodsuckerPredatorAbstract::setup_substates()
 	}
 
 	if (current_substate == eStatePredator_Camp) {
-		
+
 		SStateDataAction data;
 
 		data.action		= ACT_STAND_IDLE;
@@ -179,25 +171,21 @@ void CStateBloodsuckerPredatorAbstract::setup_substates()
 #define TIME_TO_RESELECT_CAMP	15000
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::check_force_state()
+void CStateBloodsuckerPredatorLiteAbstract::check_force_state()
 {
-	if ((current_substate == eStatePredator_Camp) && (m_time_start_camp + TIME_TO_RESELECT_CAMP < time())) {
-		if (current_substate != u32(-1)) 
-			get_state_current()->critical_finalize();
-
-		prev_substate		= u32(-1);
-		current_substate	= u32(-1);
-
-		CMonsterSquad *squad = monster_squad().get_squad(object);
-		squad->unlock_cover	(m_target_node);
-
-		select_camp_point	();
+	if (prev_substate == eStatePredator_Camp) {
+		if (object->HitMemory.get_last_hit_time() > time_state_started) {
+			current_substate	= u32(-1);
+		}
 	}
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerPredatorAbstract::select_camp_point()
+void CStateBloodsuckerPredatorLiteAbstract::select_camp_point()
 {
+	if (m_target_node != u32(-1)) 
+		monster_squad().get_squad(object)->unlock_cover(m_target_node);
+	
 	m_target_node = u32(-1);
 	if (object->Home->has_home()) {
 		m_target_node							= object->Home->get_place_in_cover();
@@ -207,7 +195,7 @@ void CStateBloodsuckerPredatorAbstract::select_camp_point()
 	} 
 
 	if (m_target_node == u32(-1)) {
-		CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
+		CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),8.f,15.f);
 		if (point) {
 			m_target_node				= point->level_vertex_id	();
 		} 
@@ -216,11 +204,20 @@ void CStateBloodsuckerPredatorAbstract::select_camp_point()
 	if (m_target_node == u32(-1)) 
 		m_target_node = object->ai_location().level_vertex_id();
 
-
-	CMonsterSquad *squad = monster_squad().get_squad(object);
-	squad->lock_cover(m_target_node);
+	monster_squad().get_squad(object)->lock_cover(m_target_node);
 }
 
+TEMPLATE_SPECIALIZATION
+bool CStateBloodsuckerPredatorLiteAbstract::enemy_see_me()
+{
+	//if (object->EnemyMan.get_enemy() == Actor()) 
+	//	return (Actor()->memory().visual().visible_now(object));
+
+	// if I see enemy then probably enemy see me :-)
+	return (object->EnemyMan.see_enemy_now());
+}
+
+
 #undef TEMPLATE_SPECIALIZATION
-#undef CStateBloodsuckerPredatorAbstract
+#undef CStateBloodsuckerPredatorLiteAbstract
 

@@ -3339,6 +3339,28 @@
 							<File
 								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_predator_inline.h">
 							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_predator_lite.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_predator_lite_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Attack"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_attack_state.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_attack_state_hide.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_attack_state_hide_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_attack_state_inline.h">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter

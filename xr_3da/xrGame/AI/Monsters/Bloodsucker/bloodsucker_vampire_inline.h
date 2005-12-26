@@ -35,9 +35,7 @@ TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireAbstract::initialize()
 {
 	inherited::initialize						();
-
-	object->CInvisibility::set_manual_switch	();
-	object->CInvisibility::manual_activate		();
+	object->CInvisibility::activate				();
 
 	enemy	= object->EnemyMan.get_enemy		();
 
@@ -59,7 +57,7 @@ void CStateBloodsuckerVampireAbstract::reselect_state()
 		state_id = eStateVampire_Hide;
 	
 	// check if reach time in vampire state is out - then hide
-	if ((prev_substate == eStateVampire_ApproachEnemy) && (time_state_started + object->m_vampire_reach_time < time())) 
+	if ((prev_substate == eStateVampire_ApproachEnemy) && (object->CInvisibility::energy() < 0.5f)) 
 		state_id = eStateVampire_Hide;
 
 	// check if we hiding - then hide again
@@ -78,7 +76,7 @@ void CStateBloodsuckerVampireAbstract::check_force_state()
 	// check if we can start execute
 	if (prev_substate == eStateVampire_ApproachEnemy) {
 		if ((get_state(eStateVampire_Execute)->check_start_conditions()) ||	
-			(time_state_started + object->m_vampire_reach_time < time()))
+			(object->CInvisibility::energy() < 0.5f))
 		 
 			current_substate = u32(-1);
 	}
@@ -90,7 +88,7 @@ void CStateBloodsuckerVampireAbstract::finalize()
 {
 	inherited::finalize();
 
-	object->CInvisibility::set_manual_switch	(false);
+	object->CInvisibility::deactivate			();
 	m_time_last_vampire							= Device.dwTimeGlobal;
 }
 
@@ -99,7 +97,7 @@ void CStateBloodsuckerVampireAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 	
-	object->CInvisibility::set_manual_switch	(false);
+	object->CInvisibility::deactivate			();
 	m_time_last_vampire							= Device.dwTimeGlobal;
 }
 
@@ -107,6 +105,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 {
 	if (!object->WantVampire()) return false;
+	if (!object->CInvisibility::full_energy()) return false;
 	
 	// является ли враг актером
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();

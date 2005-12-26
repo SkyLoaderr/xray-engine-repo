@@ -28,7 +28,7 @@ void CScriptGameObject::set_manual_invisibility(bool val)
 		return;
 	}
 
-	val ? monster->set_manual_switch(true) : monster->set_manual_switch(false);
+	val ? monster->set_manual_control(true) : monster->set_manual_control(false);
 }
 bool CScriptGameObject::get_invisible()
 {
@@ -38,7 +38,7 @@ bool CScriptGameObject::get_invisible()
 		return false;
 	}
 
-	return monster->CEnergyHolder::is_active();
+	return monster->CInvisibility::active();
 }
 
 bool CScriptGameObject::get_manual_invisibility()

@@ -82,7 +82,6 @@ private:
 public:
 
 	u32						m_vampire_min_delay;
-	u32						m_vampire_reach_time;
 	SAnimationTripleData	anim_triple_vampire;
 
 	SPPInfo					pp_vampire_effector;
