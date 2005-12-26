@@ -429,10 +429,10 @@ void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
 	VERIFY(result.x1>=0&&result.y1>=0&&result.x2<=UI_BASE_WIDTH&&result.y2<=UI_BASE_HEIGHT);
 	m_Scissors.push		(result);
 
-	result.lt.x 		= ClientToScreenScaledX(float(result.lt.x));
-	result.lt.y 		= ClientToScreenScaledY(float(result.lt.y));
-	result.rb.x 		= ClientToScreenScaledX(float(result.rb.x));
-	result.rb.y 		= ClientToScreenScaledY(float(result.rb.y));
+	result.lt.x 		= ClientToScreenScaledX(result.lt.x);
+	result.lt.y 		= ClientToScreenScaledY(result.lt.y);
+	result.rb.x 		= ClientToScreenScaledX(result.rb.x);
+	result.rb.y 		= ClientToScreenScaledY(result.rb.y);
 
 	Irect r;
 	r.x1 = iFloor(result.x1);
