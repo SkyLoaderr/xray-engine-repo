@@ -1143,25 +1143,37 @@ end
 --profiler.setup_hook	()
 
 function on_actor_critical_power()
-	db.actor:give_game_news("on_actor_critical_power", "ui\\ui_icons_task", Frect():set(300,100,50,50), 0, 0)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial("part_14_overload")
+	end
 end
 
 function on_actor_critical_max_power()
-	db.actor:give_game_news("on_actor_critical_max_power", "ui\\ui_icons_task", Frect():set(300,100,50,50), 0, 0)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial("part_11_weakness")
+	end
 end
 
 function on_actor_bleeding()
-	db.actor:give_game_news("on_actor_bleeding", "ui\\ui_icons_task", Frect():set(300,100,50,50), 0, 0)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial("part_8_wound")
+	end
 end
 
 function on_actor_satiety()
-	db.actor:give_game_news("on_actor_satiety", "ui\\ui_icons_task", Frect():set(300,100,50,50), 0, 0)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial("part_7_starvation")
+	end
 end
 
 function on_actor_radiation()
-	db.actor:give_game_news("on_actor_radiation", "ui\\ui_icons_task", Frect():set(300,100,50,50), 0, 0)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial("part_6_radiation")
+	end
 end
 
 function on_actor_weapon_jammed()
-	db.actor:give_game_news("on_actor_weapon_jammed", "ui\\ui_icons_task", Frect():set(300,100,50,50), 0, 0)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial("part_9_weapon")
+	end
 end
