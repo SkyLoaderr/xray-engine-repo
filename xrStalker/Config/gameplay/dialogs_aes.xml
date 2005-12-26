@@ -28,10 +28,6 @@
                 <text>aes_sergeant_diallog_1006</text>
                 <next>1007</next>
             </phrase>
-            <phrase id="1007">
-                <text>aes_sergeant_diallog_1007</text>
-                <next>1008</next>
-            </phrase>
             <phrase id="1008">
                 <text>aes_sergeant_diallog_1008</text>
                 <next>1009</next>
@@ -118,19 +114,9 @@
                 <action>dialogs_aes.aes_segeant_kill</action>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="1010">
-                <text>aes_sergeant_diallog_1010</text>
-                <next>1011</next>
-                <next>1012</next>
-            </phrase>
             <phrase id="1033">
                 <text>aes_sergeant_diallog_1033</text>
                 <next>1034</next>
-            </phrase>
-            <phrase id="0">
-                <text>aes_sergeant_diallog_1001</text>
-                <next>1002</next>
-                <next>1003</next>
             </phrase>
             <phrase id="1034">
                 <text>aes_sergeant_diallog_1034</text>
@@ -148,6 +134,129 @@
                 <text>aes_sergeant_diallog_1035</text>
                 <action>dialogs_aes.aes_segeant_kill</action>
                 <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="1007">
+                <text>aes_sergeant_diallog_1007</text>
+                <next>1008</next>
+            </phrase>
+            <phrase id="1010">
+                <text>aes_sergeant_diallog_1010</text>
+                <next>1011</next>
+                <next>1012</next>
+            </phrase>
+            <phrase id="0">
+                <text>aes_sergeant_diallog_1001</text>
+                <next>1002</next>
+                <next>1003</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_who_are_you">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_who_are_you_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>oso_who_are_you_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_osoznanie_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_osoznanie_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_what_is_the_zone">
+        <phrase_list>
+            <phrase id="1">
+                <text>oso_what_is_the_zone_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>oso_what_is_the_zone_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_why_chernobyl">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_why_chernobyl_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>oso_why_chernobyl_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_stalker">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_stalker_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>oso_stalker_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_what_about_me">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_what_about_me_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>oso_what_about_me_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_chernobyl_crush">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_chernobyl_crush_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>oso_chernobyl_crush_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_what_next">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_what_next_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>oso_what_next_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_yes">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_yes_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_death_truck">
+        <phrase_list>
+            <phrase id="1">
+                <text>oso_death_truck_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>oso_death_truck_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="oso_no">
+        <phrase_list>
+            <phrase id="0">
+                <text>oso_no_0</text>
             </phrase>
         </phrase_list>
     </dialog>

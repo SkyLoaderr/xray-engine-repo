@@ -67,6 +67,16 @@
 		</supplies>
 		
 
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>oso_osoznanie_start</start_dialog>
+		<actor_dialog>oso_who_are_you</actor_dialog>
+		<actor_dialog>oso_what_is_the_zone</actor_dialog>
+		<actor_dialog>oso_what_about_me</actor_dialog>
+		<actor_dialog>oso_why_chernobyl</actor_dialog>
+		<actor_dialog>oso_chernobyl_crush</actor_dialog>
+		<actor_dialog>oso_stalker</actor_dialog>
+		<actor_dialog>oso_death_truck</actor_dialog>
+		<actor_dialog>oso_what_next</actor_dialog>
+		<actor_dialog>oso_yes</actor_dialog>
+		<actor_dialog>oso_no</actor_dialog>
 	</specific_character>	
 </xml>
