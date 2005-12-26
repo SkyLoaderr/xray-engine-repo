@@ -49,6 +49,7 @@ function main()
 		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l12u_sarcofag" then
 		table.insert(spawn_items, "exo_outfit")
+		table.insert(spawn_items, "decoder")
 		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l12u_control_monolith" then
 		table.insert(spawn_items, "exo_outfit")
