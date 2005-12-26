@@ -1,10 +1,19 @@
 [logic@cit_killers_base_guard]
-active              = walker@base_guard1
+active              = walker@base_guard_wait ;walker@base_guard1
 combat_ignore       = combat_ignore
 ;on_hit              = hit
 
 ;[hit]
 ;on_info             = {=hit_by_actor} remark@kill_actor2
+
+;-----------------------------------------------------------------------------------------------------------
+;--- ждем
+;-----------------------------------------------------------------------------------------------------------
+[walker@base_guard_wait]
+path_walk           = base_guard_wait_walk
+path_look           = base_guard_wait_look
+on_info             = {+cit_jail_scene_start} walker@base_guard_to_jail ;remark@base_guard_wait_to_go
+combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- стоим на страже
@@ -16,12 +25,12 @@ on_info             = {+cit_jail_scene_start} walker@base_guard_to_jail ;remark@
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
-;--- ждем 120 секунд
+;--- ждем 5 секунд
 ;-----------------------------------------------------------------------------------------------------------
 [remark@base_guard_wait_to_go]
 anim                = guard
 target              = nil
-on_timer            = 30000 | walker@base_guard_to_jail
+on_timer            = 5000 | walker@base_guard_to_jail
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------

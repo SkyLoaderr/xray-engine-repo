@@ -137,23 +137,23 @@ function load_job_killers(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 
 	ltx = ltx.."[logic@" .. gname .. "_leader]\n" ..
-               "active          = patrol@" .. gname .. "_leader\n" ..
+               "active          = patrol@" .. gname .. "_leader_attack\n" ..
                "combat_ignore   = combat_ignore\n" ..
-
-               "[patrol@" .. gname .. "_leader]\n" ..
-               "path_walk           = leader_walk\n" ..
-               "path_look           = leader_look\n" ..
-               "commander           = true\n" ..
-               "on_info             = {+cit_jail_guard2_talk_to_guard1 -cit_heli_end} patrol@" .. gname .. "_leader_attack\n" ..
-               "soundgroup          = cit_killers_leader_sg\n" ..
-               "danger              = danger_killers\n" ..
-               "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                "[patrol@" .. gname .. "_leader_attack]\n" ..
                "path_walk           = leader_attack_walk\n" ..
                "path_look           = leader_attack_look\n" ..
                "commander           = true\n" ..
                "on_info             = {+cit_heli_end} patrol@" .. gname .. "_leader\n" ..
+               "soundgroup          = cit_killers_leader_sg\n" ..
+               "danger              = danger_killers\n" ..
+               "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
+
+               "[patrol@" .. gname .. "_leader]\n" ..
+               "path_walk           = leader_walk\n" ..
+               "path_look           = leader_look\n" ..
+               "commander           = true\n" ..
+               --"on_info             = {+cit_jail_guard2_talk_to_guard1 -cit_heli_end} patrol@" .. gname .. "_leader_attack\n" ..
                "soundgroup          = cit_killers_leader_sg\n" ..
                "danger              = danger_killers\n" ..
                "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
@@ -170,23 +170,23 @@ function load_job_killers(sj, gname, type, squad, groups)
 	    table.insert(sj, t)
 
 	    ltx = ltx.."[logic@" .. gname .. "_leader_guard" .. i .. "]\n" ..
-                   "active          = patrol@" .. gname .. "_base_patrol" .. i .. "\n" ..
+                   "active          = patrol@" .. gname .. "_base_patrol" .. i .. "_attack\n" ..
                    "combat_ignore   = combat_ignore\n" ..
+
+                   "[patrol@" .. gname .. "_base_patrol" .. i .. "_attack]\n" ..
+                   "path_walk           = leader_attack_walk\n" ..
+                   "path_look           = leader_attack_look\n" ..
+                   "formation           = line\n" ..
+                   "on_info             = {+cit_heli_end} patrol@" .. gname .. "_base_patrol" .. i .. "\n" ..
+                   "soundgroup          = " .. gname .. "_leader_sg\n" ..
+                   "danger              = danger_killers\n" ..
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[patrol@" .. gname .. "_base_patrol" .. i .. "]\n" ..
                    "path_walk           = leader_walk\n" ..
                    "path_look           = leader_look\n" ..
                    "formation           = line\n" ..
-                   "on_info             = {+cit_jail_guard2_talk_to_guard1 -cit_heli_end} patrol@" .. gname .. "_base_patrol" .. i .. "_attack\n" ..
-                   "soundgroup          = " .. gname .. "_leader_sg\n" ..
-                   "danger              = danger_killers\n" ..
-                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
-
-                   "[patrol@" .. gname .. "_base_patrol" .. i .. "_attack]\n" ..
-                   "path_walk           = leader_walk\n" ..
-                   "path_look           = leader_look\n" ..
-                   "formation           = line\n" ..
-                   "on_info             = {+cit_heli_end} patrol@" .. gname .. "_base_patrol" .. i .. "\n" ..
+                   --"on_info             = {+cit_jail_guard2_talk_to_guard1 -cit_heli_end} patrol@" .. gname .. "_base_patrol" .. i .. "_attack\n" ..
                    "soundgroup          = " .. gname .. "_leader_sg\n" ..
                    "danger              = danger_killers\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
