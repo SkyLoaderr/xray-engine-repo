@@ -8,7 +8,7 @@ class CInventory;
 
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
-#include "UIButton.h"
+#include "UI3tButton.h"
 
 #include "UIDragDropItem.h"
 #include "UIWpnDragDropItem.h"
@@ -92,6 +92,8 @@ protected:
 
 	// Подокошко сна
 	CUISleepWnd*			UISleepWnd;
+	// sell all items
+	CUI3tButton*			UISellAll;
 	
 	// Кнопка выброса активного предмета
 	CUIButton			UIDropButton;
@@ -169,6 +171,7 @@ protected:
 	bool ToSlot();
 	bool ToBag();
 	bool ToBelt();
+	void SellItem();
 
 
 	//запуск и остановка меню работы с артефактами

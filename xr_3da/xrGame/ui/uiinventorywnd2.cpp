@@ -45,7 +45,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	CScope* pScope						= smart_cast<CScope*>(m_pCurrentItem);
 	CSilencer* pSilencer				= smart_cast<CSilencer*>(m_pCurrentItem);
 	CGrenadeLauncher* pGrenadeLauncher	= smart_cast<CGrenadeLauncher*>(m_pCurrentItem);
-	
+    
 
 	if(m_pCurrentItem->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
@@ -164,6 +164,11 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	if(!m_pCurrentItem->IsQuestItem())
 		UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
 
+	if (GameID() == GAME_ARTEFACTHUNT)
+	{
+		UIPropertiesBox.AddItem("Sell Item",  NULL, INVENTORY_SELL_ITEM);	
+	}
+
 	UIPropertiesBox.AutoUpdateSize();
 	UIPropertiesBox.BringAllToTop();
 	UIPropertiesBox.Show(x-rect.left, y-rect.top);
@@ -281,6 +286,9 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		{
 			switch(UIPropertiesBox.GetClickedItem()->GetValue())
 			{
+			case INVENTORY_SELL_ITEM:
+				SellItem();
+				break;
 			case INVENTORY_TO_SLOT_ACTION:	
 				ToSlot();
 				break;
@@ -363,8 +371,38 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		Game().StartStopMenu(this,true);
 	}
+	else if (&UIDropButton == pWnd && BUTTON_CLICKED == msg)
+	{
+		SellItem();
+	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
+}
+
+void CUIInventoryWnd::SellItem(){
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
+
+	if (m_pCurrentDragDropItem == UIOutfitSlot.GetDragDropItemsList().front())
+		SendMessage(NULL, UNDRESS_OUTFIT, NULL);
+
+	m_pCurrentDragDropItem->Highlight(false);
+
+	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+		DetachChild(m_pCurrentDragDropItem);
+
+	DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
+	VERIFY(it != m_vDragDropItems.end());
+
+	//-----------------------------------------------------------------------
+#pragma todo("SATAN -> MAD_MAX: i'm waiting for you (: ")
+	// change to sell item
+	SendEvent_ItemDrop(m_pCurrentItem);
+	//-----------------------------------------------------------------------
+	SetCurrentItem(NULL);
+	m_pCurrentDragDropItem = NULL;
+
+	UpdateWeight		(UIBagWnd, true);
 }
 
 void CUIInventoryWnd::InitInventory() 

@@ -63,6 +63,7 @@ CUIInventoryWnd::CUIInventoryWnd()
 
 	SetFont(HUD().Font().pFontMedium);
 	g_pInvWnd = this;
+	UISellAll = NULL;
 }
 
 void CUIInventoryWnd::Init()
@@ -140,12 +141,16 @@ void CUIInventoryWnd::Init()
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 
-	if (GameID() == GAME_SINGLE)
-	{
+	if (GameID() == GAME_SINGLE){
 		UISleepWnd				= xr_new<CUISleepWnd>();UISleepWnd->SetAutoDelete(true);
 		UISleepWnd->Init		();
 		xml_init.InitStatic		(uiXml, "sleep_window", 0, UISleepWnd);
 		AttachChild				(UISleepWnd);
+	}
+	else if(GameID() == GAME_ARTEFACTHUNT){
+		UISellAll = xr_new<CUI3tButton>(); UISellAll->SetAutoDelete(true);
+		CUIXmlInit::Init3tButton(uiXml, "btn_sell_all", 0, UISellAll);
+		AttachChild				(UISellAll);
 	}
 
 	//Списки Drag&Drop
