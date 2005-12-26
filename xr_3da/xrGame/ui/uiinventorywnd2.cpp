@@ -289,6 +289,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			case INVENTORY_SELL_ITEM:
 				SellItem();
 				break;
+
 			case INVENTORY_TO_SLOT_ACTION:	
 				ToSlot();
 				break;
