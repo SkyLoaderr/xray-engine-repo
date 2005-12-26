@@ -145,6 +145,8 @@ public:
 	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
 	virtual		void				OnPlayerConnectFinished	(ClientID id_who);
 	
+	virtual		void				OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P);
+	
 	virtual		void				OnPlayerSelectSkin		(NET_Packet& P, ClientID sender);
 	virtual		void				OnPlayerChangeSkin		(ClientID id_who, s8 skin);
 	

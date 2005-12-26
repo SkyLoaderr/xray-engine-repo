@@ -417,7 +417,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 //	P.w_float						(inventory().TotalWeight());
 //	P.w_u32							(m_dwMoney);
 
-	P.w_float_q16					(GetfHealth(),-500,1000);
+	P.w_float						(GetfHealth());
 
 	P.w_u32							(N.dwTimeStamp);
 	P.w_u8							(0);
@@ -468,7 +468,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	m_dwMoney						= P.r_u32();
 
 	float health;
-	P.r_float_q16		(health,-500,1000);
+	P.r_float			(health);
 	SetfHealth			(health);
 //	fEntityHealth = health;
 

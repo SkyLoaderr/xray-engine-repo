@@ -324,7 +324,7 @@ void CPhantom::net_Export	(NET_Packet& P)					// export to server
 	R_ASSERT			(Local());
 
 	u8					flags = 0;
-	P.w_float_q16		(GetfHealth(),-500,1000);
+	P.w_float			(GetfHealth());
 
 	P.w_float			(0);
 	P.w_u32				(0);
@@ -352,7 +352,7 @@ void CPhantom::net_Import	(NET_Packet& P)
 	u8					flags;
 
 	float health;
-	P.r_float_q16		(health,-500,1000);
+	P.r_float			(health);
 	SetfHealth			(health);
 
 	float fDummy;

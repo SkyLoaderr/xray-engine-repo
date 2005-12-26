@@ -260,7 +260,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16			(GetfHealth(),-500,1000);
+	P.w_float				(GetfHealth());
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -300,7 +300,7 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	u8 flags;
 
 	float health;
-	P.r_float_q16		(health,-500,1000);
+	P.r_float			(health);
 	SetfHealth			(health);	
 	
 	P.r_u32					(N.dwTimeStamp);

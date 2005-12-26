@@ -148,9 +148,9 @@ void CUIInventoryWnd::Init()
 		AttachChild				(UISleepWnd);
 	}
 	else if(GameID() == GAME_ARTEFACTHUNT){
-		UISellAll = xr_new<CUI3tButton>(); UISellAll->SetAutoDelete(true);
-		CUIXmlInit::Init3tButton(uiXml, "btn_sell_all", 0, UISellAll);
-		AttachChild				(UISellAll);
+//		UISellAll = xr_new<CUI3tButton>(); UISellAll->SetAutoDelete(true);
+//		CUIXmlInit::Init3tButton(uiXml, "btn_sell_all", 0, UISellAll);
+//		AttachChild				(UISellAll);
 	}
 
 	//Списки Drag&Drop
@@ -651,7 +651,17 @@ void	CUIInventoryWnd::SendEvent_Item2Ruck			(PIItem	pItem)
 	g_pInvWnd->PlaySnd(eInvItemToRuck);
 };
 
-void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
+void	CUIInventoryWnd::SendEvent_Item_Sell			(PIItem	pItem)
+{
+	NET_Packet	P;
+	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM_SELL, pItem->object().H_Parent()->ID());
+	P.w_u16		(pItem->object().ID());
+	pItem->object().u_EventSend(P);
+
+//	g_pInvWnd->PlaySnd(eInvDropItem);
+};
+
+void	CUIInventoryWnd::SendEvent_Item_Drop			(PIItem	pItem)
 {
 	NET_Packet	P;
 	pItem->object().u_EventGen(P, GEG_PLAYER_ITEMDROP, pItem->object().H_Parent()->ID());

@@ -164,7 +164,10 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	if(!m_pCurrentItem->IsQuestItem())
 		UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
 
-	if (GameID() == GAME_ARTEFACTHUNT)
+	if (GameID() == GAME_ARTEFACTHUNT && Game().local_player && 
+		Game().local_player->testFlag(GAME_PLAYER_FLAG_ONBASE) && 
+		!Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)
+		)
 	{
 		UIPropertiesBox.AddItem("Sell Item",  NULL, INVENTORY_SELL_ITEM);	
 	}
@@ -196,7 +199,7 @@ void CUIInventoryWnd::DropItem()
 //	m_vDragDropItems.erase(it);
 
 	//-----------------------------------------------------------------------
-	SendEvent_ItemDrop(m_pCurrentItem);
+	SendEvent_Item_Drop(m_pCurrentItem);
 	//-----------------------------------------------------------------------
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
@@ -220,9 +223,7 @@ void CUIInventoryWnd::EatItem()
 		DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
 		VERIFY(it != m_vDragDropItems.end());
 //		m_vDragDropItems.erase(it);
-		//-----------------------------------------------------------------------
-		//SendEvent_ItemDrop(m_pCurrentItem);
-		//-----------------------------------------------------------------------
+		//-----------------------------------------------------------------------		
 		m_pCurrentDragDropItem->Highlight(false);
 		SetCurrentItem(NULL);
 		m_pCurrentDragDropItem = NULL;
@@ -398,7 +399,7 @@ void CUIInventoryWnd::SellItem(){
 	//-----------------------------------------------------------------------
 #pragma todo("SATAN -> MAD_MAX: i'm waiting for you (: ")
 	// change to sell item
-	SendEvent_ItemDrop(m_pCurrentItem);
+	SendEvent_Item_Sell(m_pCurrentItem);
 	//-----------------------------------------------------------------------
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;

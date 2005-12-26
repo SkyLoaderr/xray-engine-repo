@@ -61,6 +61,7 @@ public:
 	virtual		void				OnPlayerEnteredGame		(ClientID id_who)	{};
 	virtual		void				OnPlayerConnectFinished	(ClientID id_who)	{};
 	virtual		void				OnPlayerFire			(ClientID id_who, NET_Packet &P) {};
+	virtual		void				OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P) {};
 				void				GenerateGameMessage		(NET_Packet &P);
 	
 

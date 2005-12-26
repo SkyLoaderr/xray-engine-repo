@@ -79,7 +79,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	//CSE_ALifeCreatureAbstract
 	u8					flags = 0;
-	P.w_float_q16		(GetfHealth(),-500,1000);
+	P.w_float			(GetfHealth());
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
 	Fvector				p = Position();
@@ -106,7 +106,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	Fvector				v = m_PhysicMovementControl->GetVelocity();
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
 //	P.w_float_q16		(fArmor,-500,1000);
-	P.w_float_q16		(g_Radiation(),-500,1000);
+	P.w_float			(g_Radiation());
 
 	P.w_u8				(u8(inventory().GetActiveSlot()));
 	/////////////////////////////////////////////////
@@ -296,7 +296,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 
 	//CSE_ALifeCreatureAbstract
 	float health;
-	P.r_float_q16 (health,-500,1000);
+	P.r_float			(health);
 	//----------- for E3 -----------------------------
 	if (OnClient())SetfHealth(health);
 	//------------------------------------------------
@@ -376,9 +376,8 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);
-	float				/*fRArmor, */fRRadiation;
-//	P.r_float_q16		(fRArmor,-500,1000);
-	P.r_float_q16		(fRRadiation,-500,1000);
+	float				fRRadiation;
+	P.r_float			(fRRadiation);
 	//----------- for E3 -----------------------------
 	if (OnClient())		
 	{

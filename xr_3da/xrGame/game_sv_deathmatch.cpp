@@ -861,31 +861,6 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 	};
 
 	CSE_ALifeCreatureActor*		e_Actor	= smart_cast<CSE_ALifeCreatureActor*>(get_entity_from_eid	(ps->GameID));
-/*	
-	if (e_Actor)
-	{
-		//-------------------------------------------------------------------------
-		xr_vector<u16>				ItemsToDelete;
-
-		xr_vector<u16>::const_iterator	I = e_Actor->children.begin	();
-		xr_vector<u16>::const_iterator	E = e_Actor->children.end		();
-		for ( ; I != E; ++I) 
-		{
-			PIItem pItem = smart_cast<PIItem> (Level().Objects.net_Find(*I));
-			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
-		};
-		//-------------------------------------------------------------
-		xr_vector<u16>::iterator	IDI = ItemsToDelete.begin();
-		xr_vector<u16>::iterator	EDI = ItemsToDelete.end();
-		for ( ; IDI != EDI; ++IDI) 
-		{
-			NET_Packet			P;
-			u_EventGen			(P,GE_DESTROY,*IDI);
-			Level().Send(P,net_flags(TRUE,TRUE));
-		};
-		//-------------------------------------------------------------
-	}
-*/
 	CActor* pActor = smart_cast<CActor*>(Level().Objects.net_Find	(ps->GameID));
 	if (pActor)
 	{
@@ -2210,3 +2185,29 @@ void		game_sv_Deathmatch::on_death	(CSE_Abstract *e_dest, CSE_Abstract *e_src)
 	if (!pVictim)
 		return;
 }
+
+void		game_sv_Deathmatch::OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P)
+{
+	game_PlayerState*	ps	=	get_id	(id_who);
+	if (!ps || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+	u16 ItemID = P.r_u16();	
+	CSE_Abstract* eItem = get_entity_from_eid		(ItemID);
+	if (!eItem) return;
+	if (!IsBuyableItem(*eItem->s_name)) return;
+	if (eItem->ID_Parent != ps->GameID) return;
+
+	CSE_ALifeCreatureActor*		e_Actor	= smart_cast<CSE_ALifeCreatureActor*>(get_entity_from_eid	(ps->GameID));
+	CActor* pActor = smart_cast<CActor*>(Level().Objects.net_Find	(ps->GameID));
+	if (!pActor) return;
+	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
+	WeaponDataStruct* pWDS = NULL;
+	if (!GetTeamItem_ByName(&pWDS, &WpnList, *eItem->s_name)) return;
+	//-----------------------------------------------------------------
+	Player_AddMoney(ps, pWDS->Cost/2);
+	//-----------------------------------------------------------------
+	NET_Packet			nP;
+	u_EventGen			(nP,GE_DESTROY,eItem->ID);
+	Level().Send(nP,net_flags(TRUE,TRUE));
+	//-----------------------------------------------------------------
+	signal_Syncronize();
+};
