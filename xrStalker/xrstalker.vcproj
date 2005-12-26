@@ -2178,6 +2178,9 @@
 					<File
 						RelativePath=".\config\scripts\yan\yan_scientist.ltx">
 					</File>
+					<File
+						RelativePath=".\config\scripts\yan\yan_sleep_restrictor.ltx">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
