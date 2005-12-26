@@ -91,8 +91,8 @@ void	CBreakableObject::Hit					(SHit* pHDS)
 		else
 		{
 			//. hack: slipch ???
-			if ((pHDS->impulse>EPS)&&(BI_NONE != pHDS->boneID))
-				m_pPhysicsShell->applyImpulseTrace(pHDS->p_in_bone_space,pHDS->dir,pHDS->impulse,pHDS->boneID);
+			if ((pHDS->impulse>EPS)&&(BI_NONE != pHDS->bone()))
+				m_pPhysicsShell->applyImpulseTrace(pHDS->p_in_bone_space,pHDS->dir,pHDS->impulse,pHDS->bone());
 		}
 	}
 }
