@@ -265,7 +265,7 @@ end
 function se_respawn:update_online()
 	cse_alife_smart_zone.update( self )
 	--printf("RESPAWN: [%s] se_respawn update_online", tostring(self:name()))
-	if  db.actor:position():distance_to_sqr(self:position()) >= 150*150 then
+	if  db.actor:position():distance_to (self:position()) >= 150 then
 		self:execute()
 	else
 		if self.respawn_online == true then
