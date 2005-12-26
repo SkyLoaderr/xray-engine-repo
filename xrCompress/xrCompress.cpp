@@ -314,7 +314,7 @@ void CompressList(LPCSTR in_name, xr_vector<char*>* list, xr_vector<char*>* fl_l
 			}
 			Compress	((*list)[it],in_name,bFast);
 		}
-		fs->close_chunk	();
+//		fs->close_chunk	();
 
 		xr_free			(c_heap);
 		//***main process***: END
