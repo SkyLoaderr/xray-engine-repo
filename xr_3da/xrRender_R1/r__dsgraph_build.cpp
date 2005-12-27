@@ -279,8 +279,6 @@ void CRender::add_leafs_Dynamic	(IRender_Visual *pVisual)
 		{
 			// Add all children, doesn't perform any tests
 			CKinematics * pV			= (CKinematics*)pVisual;
-			pV->CalculateBones			(TRUE);
-			pV->CalculateWallmarks		();		//. bug?
 			BOOL	_use_lod			= FALSE	;
 			if (pV->m_lod)				{
 				Fvector							Tpos;	float		D;
@@ -291,6 +289,8 @@ void CRender::add_leafs_Dynamic	(IRender_Visual *pVisual)
 			if (_use_lod)				{
 				add_leafs_Dynamic			(pV->m_lod)		;
 			} else {
+				pV->CalculateBones			(TRUE);
+				pV->CalculateWallmarks		();		//. bug?
 				I = pV->children.begin		();
 				E = pV->children.end		();
 				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
@@ -399,7 +399,7 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 
 	val_pTransform->transform_tiny	(Tpos, pVisual->vis.sphere.P);
 	VIS = View->testSphere			(Tpos, pVisual->vis.sphere.R,planes);
-	if (fcvNone==VIS) return FALSE;
+	if (fcvNone==VIS) return FALSE	;
 
 	// If we get here visual is visible or partially visible
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
@@ -441,8 +441,6 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 		{
 			// Add all children, doesn't perform any tests
 			CKinematics * pV			= (CKinematics*)pVisual;
-			pV->CalculateBones			(TRUE);
-			//pV->CalculateWallmarks		();		//. bug?
 			BOOL	_use_lod			= FALSE	;
 			if (pV->m_lod)				{
 				Fvector							Tpos;	float		D;
@@ -453,6 +451,8 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 			if (_use_lod)				{
 				add_leafs_Dynamic			(pV->m_lod)		;
 			} else {
+				pV->CalculateBones			(TRUE);
+				//pV->CalculateWallmarks	();		//. bug?
 				I = pV->children.begin		();
 				E = pV->children.end		();
 				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
