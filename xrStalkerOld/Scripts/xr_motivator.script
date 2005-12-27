@@ -386,7 +386,7 @@ end
 
 -- Ёвалюаторы, которые имеют высший приоритет, и, соответственно, перебивают остальные скрипты собой
 function addCommonPrecondition(action)
-	action:add_precondition (world_property(xr_evaluators_id.reaction,false))
+	--action:add_precondition (world_property(xr_evaluators_id.reaction,false))
 	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 1,false))
 	action:add_precondition (world_property(xr_evaluators_id.sidor_wounded_base + 0,  false))
 	action:add_precondition (world_property(xr_evaluators_id.chugai_heli_hunter_base, false))

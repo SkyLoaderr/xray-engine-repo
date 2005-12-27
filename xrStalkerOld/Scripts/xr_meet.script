@@ -312,7 +312,6 @@ function add_to_binder(object, char_ini, scheme, section, st)
 
 	local manager = object:motivation_action_manager()
 
-	properties["event"] 		= xr_evaluators_id.reaction
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1
 	properties["wounded"]		= xr_evaluators_id.sidor_wounded_base
 	properties["abuse"]			= xr_evaluators_id.abuse_base
