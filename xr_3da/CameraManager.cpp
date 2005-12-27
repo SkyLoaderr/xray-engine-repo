@@ -232,6 +232,7 @@ void CCameraManager::ApplyDevice ()
 	T->set_blur					(pp_affected.blur);
 	T->set_gray					(pp_affected.gray);
 	T->set_noise				(pp_affected.noise.intensity);
+	if( !positive(pp_affected.noise.grain) ) pp_affected.noise.grain = pp_identity.noise.grain;
 	T->set_noise_scale			(pp_affected.noise.grain);
 	VERIFY(pp_affected.noise.grain>0.0f);
 	T->set_noise_fps			(pp_affected.noise.fps);
