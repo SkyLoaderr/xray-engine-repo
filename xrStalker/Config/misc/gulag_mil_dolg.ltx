@@ -22,6 +22,7 @@ path_look = path_look1
 meet = meet@mil_dolg_skull
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} true
+on_info = {+mil_sniper_dead} walker2@mil_dolg_skull
 
 [meet@mil_dolg_skull]
 meet_dialog = mil_dolg_skull_dialog
@@ -32,6 +33,13 @@ victim_wpn = 15|actor
 meet_state = 15|hello_wpn@talk_hello|7|ward@talk_hello
 meet_state_wpn = 15|hello_wpn@talk_hello|7|ward@talk_hello
 
+[walker2@mil_dolg_skull]
+path_walk = path_walk1
+path_look = path_look1
+meet = meet@mil_dolg_skull
+danger = danger_condition@mil_dolg
+combat_ignore_cond = {=check_fighting(704)} true
+on_timer = 120000 | %+mil_dolg_skull_talk +mil_dolg_auto_attack%
 
 
 -------------------------

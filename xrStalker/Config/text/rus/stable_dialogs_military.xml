@@ -588,6 +588,12 @@
     <string id="mil_dolg_skull_dialog_602">
         <text>Уболтал...</text>
     </string>
+    <string id="mil_dolg_skull_dialog_701">
+        <text>Иди своей дорогой.</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_702">
+        <text>Да пошел ты...</text>
+    </string>
     <string id="mil_dolg_soldier_dialog_0">
         <text>Вот так тремя засранцанцами стало меньше. А ты появился как нельзя во время, и нас не спалил, и сам цел остался. Я думаю, никто об этом не узнает, а ты?</text>
     </string>
