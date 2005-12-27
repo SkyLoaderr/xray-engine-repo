@@ -43,6 +43,11 @@ void CServerEntityWrapper::save				(IWriter &stream)
 	m_object->UPDATE_Write	(net_packet);
 	stream.w_u16			(u16(net_packet.B.count));
 	stream.w				(net_packet.B.data,net_packet.B.count);
+
+//	u16						ID;
+//	net_packet.r_begin		(ID);
+//	VERIFY					(ID==M_UPDATE);
+//	m_object->UPDATE_Read	(net_packet);
 	
 	stream.close_chunk		();
 }
