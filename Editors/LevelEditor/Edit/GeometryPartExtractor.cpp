@@ -174,7 +174,7 @@ bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
     }
     return m_bValid;
 }
-bool SBPart::Export	(IWriter& F)
+bool SBPart::Export	(IWriter& F, u8 infl)
 {
 	VERIFY			(!m_Bones.empty());
     if (m_Bones.size()>63){
@@ -200,12 +200,16 @@ bool SBPart::Export	(IWriter& F)
         }
         SSplit& split=m_Splits[mtl_idx];
         SSkelVert v[3];
-        for (int k=0; k<3; k++)
-            v[k].set	(face->o[k],face->n[k],face->uv[k],1.f,(u16)face->bone_id,(u16)face->bone_id);
+        for (int k=0; k<3; k++){
+            st_SVert::bone b[1];
+            b[0].id		= face->bone_id;
+            b[0].w		= 1.f;
+            v[k].set	(face->o[k],face->n[k],face->uv[k],1,b);
+        }
         split.add_face		(v[0], v[1], v[2]);
 
         if (face->surf->m_Flags.is(CSurface::sf2Sided)){
-            v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
+            v[0].norm.invert(); v[1].norm.invert(); v[2].norm.invert();
             if (!split.add_face(v[0], v[2], v[1])) split.invalid_faces++;
         }
     }
@@ -225,8 +229,8 @@ bool SBPart::Export	(IWriter& F)
         // subtract offset
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
-		    bone_points[sv_it->B0].push_back(sv_it->O);
-            bone_points[sv_it->B0].back().sub(m_Bones[sv_it->B0].offset);
+		    bone_points[sv_it->bones[0].id].push_back(sv_it->offs);
+            bone_points[sv_it->bones[0].id].back().sub(m_Bones[sv_it->bones[0].id].offset);
         }
     }
 

@@ -78,7 +78,7 @@ struct SBPart: public CExportSkeletonCustom
 public:
 					SBPart				()			{m_Reference=0;m_bValid=true;}
 	bool			Valid				()			{return m_bValid;}
-    virtual bool 	Export				(IWriter& F);
+    virtual bool 	Export				(IWriter& F, u8 infl);
 	void			append_face			(SBFace* F);
     void			use_face			(SBFace* F, u32& cnt, u32 bone_id, float& area);
     void			recurse_fragment	(SBFace* F, u32& cnt, u32 bone_id, u32 max_faces, float& area);

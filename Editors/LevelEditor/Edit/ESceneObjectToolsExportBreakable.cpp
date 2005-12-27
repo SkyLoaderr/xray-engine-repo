@@ -119,7 +119,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams* F)
                 AnsiString sn		= AnsiString().sprintf("meshes\\brkbl#%d.ogf",(p_it-parts.begin()));
                 xr_string fn		= Scene->LevelPath()+sn.c_str();
                 IWriter* W			= FS.w_open(fn.c_str()); R_ASSERT(W);
-                if (!P->Export(*W)){
+                if (!P->Export(*W,1)){
                     ELog.DlgMsg		(mtError,"Invalid breakable object.");
                     bResult 		= false;
                     break;
