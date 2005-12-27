@@ -324,7 +324,7 @@ function actor_punch(npc)
 	local snd_obj = sound_object([[affects\hit_fist]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 
-	level.add_cam_effector("camera_effects\\fusker.anm")		
+	level.add_cam_effector("camera_effects\\fusker.anm", 999, false)		
 end
 
 -- ѕринудительное усыпание игрока на радаре.
