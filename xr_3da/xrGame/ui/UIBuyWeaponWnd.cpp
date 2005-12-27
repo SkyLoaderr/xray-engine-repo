@@ -269,6 +269,59 @@ void CUIBuyWeaponWnd::OnMouseScroll(float iDirection){
 
 }
 
+void CUIBuyWeaponWnd::HighlightCurrentAmmo(const char* weapon, bool activate){
+	xr_map<int, xr_vector<shared_str> >::iterator it;
+	if (activate)
+	{
+		shared_str itemsList; 
+		string256 single_item;
+
+		itemsList = pSettings->r_string(weapon, "ammo_class");
+		int slot = pSettings->r_s32(weapon, "slot");
+
+		it  = m_cur_ammo.find(slot);
+		if(m_cur_ammo.end()!=it)
+            m_cur_ammo.erase(it);
+
+		int itemsCount	= _GetItemCount(*itemsList);
+
+
+		xr_vector<shared_str> items;
+		for (int i = 0; i < itemsCount; i++)
+		{
+			_GetItem(itemsList.c_str(), i, single_item);
+			HighlightItem(single_item, true);
+			items.push_back(single_item);
+		}
+
+		m_cur_ammo.insert(mk_pair(slot,items));
+
+	}
+	else{
+		int slot = pSettings->r_s32(weapon, "slot");
+		it  = m_cur_ammo.find(slot);
+		R_ASSERT(it!=m_cur_ammo.end());
+
+		xr_vector<shared_str>::iterator _it = (*it).second.begin();
+
+		for (;_it != (*it).second.end();_it++)
+			HighlightItem(*(*_it),false);
+
+		// remove color animators here
+		m_cur_ammo.erase(it);
+	}
+}
+
+void CUIBuyWeaponWnd::HighlightItem(const char* name, bool activate){
+	CUIDragDropItemMP* item = UIBagWnd.GetItemBySectoin(name);
+
+	if (activate)
+;//        item->SetLightAnim("ui_btn_hint", true, false, true, true); //ui_slow_blinking
+	else
+;//        item->SetLightAnim(NULL, true, false, true, true);
+
+}
+
 void CUIBuyWeaponWnd::InitInventory() 
 {
 	m_pMouseCapturer = NULL;
@@ -332,6 +385,7 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	{
 		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
+		this_inventory->HighlightCurrentAmmo(pDDItemMP->GetSectionName(),true);
 	}
 	return true;
 }
@@ -373,6 +427,7 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	{
 		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
+		this_inventory->HighlightCurrentAmmo(pDDItemMP->GetSectionName(),true);
 	}
 
 	return true;
