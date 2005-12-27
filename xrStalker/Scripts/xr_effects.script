@@ -47,6 +47,11 @@ end
 function run_tutorial(actor, npc, p)
 	game.start_tutorial(p[1])
 end
+function run_tutorial_if_newbie(actor, npc, p)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial(p[1])
+	end
+end
 
 function enable_ui(actor, npc)
     level.show_indicators()
