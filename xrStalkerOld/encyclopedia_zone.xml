@@ -371,29 +371,6 @@
 
 
 
-
-    <!------------------------------------------------------------------->
-    <!--------------------------- Phenomena ----------------------------->
-    <!------------------------------------------------------------------->
-
-
-    <!-------------------------------- Surge ----------------------------->
-
-    <article id="zone_phenomena_surge_general" name="General" group="Zone/Phenomena/Surge">
-        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-        <text>enc_zone_phenomena_surge_general</text>
-    </article>
-
-
-    <article id="zone_phenomena_surge_surge-story" name="Surge-story" group="Zone/Phenomena/Surge">
-        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-        <text>enc_zone_phenomena_surge_surge-story</text>
-    </article>
-
-
-
-
-
     <!------------------------------------------------------------------->
     <!-------------------------- Zone-story ----------------------------->
     <!------------------------------------------------------------------->

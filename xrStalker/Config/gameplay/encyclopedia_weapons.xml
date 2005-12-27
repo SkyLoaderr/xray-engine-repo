@@ -279,6 +279,13 @@
         <ltx>wpn_spas12</ltx>
         <text>enc_weapons1_wpn-spas12</text>
     </article>
+    
+     <!-------------------------------- wpn-wincheaster1300 ----------------------------->
+
+    <article id="weapons1_wpn-wincheaster1300" name="wpn-wincheaster1300" group="Weapons1">
+        <ltx>wpn_wincheaster1300</ltx>
+        <text>enc_weapons1_wpn-wincheaster1300</text>
+    </article>
 
     <!-------------------------------- wpn-mp5 ----------------------------->
 
@@ -348,6 +355,20 @@
     <article id="weapons1_wpn-l85" name="wpn-l85" group="Weapons1">
         <ltx>wpn_l85</ltx>
         <text>enc_weapons1_wpn-l85</text>
+    </article>
+    
+    <!-------------------------------- wpn-g36 ----------------------------->
+
+    <article id="weapons1_wpn-g36" name="wpn-g36" group="Weapons1">
+        <ltx>wpn_g36</ltx>
+        <text>enc_weapons1_wpn-g36</text>
+    </article>
+    
+    <!-------------------------------- wpn-sig550 ----------------------------->
+
+    <article id="weapons1_wpn-sig550" name="wpn-sig550" group="Weapons1">
+        <ltx>wpn_sig550</ltx>
+        <text>enc_weapons1_wpn-sig550</text>
     </article>
 
     <!-------------------------------- wpn-svd ----------------------------->

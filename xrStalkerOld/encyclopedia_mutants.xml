@@ -65,15 +65,6 @@
         <text>enc_mutant_burer_general</text>
     </article>
 
-
-    <!-------------------------------- Chimera ----------------------------->
-
-    <article id="mutant_chimera_general" name="Chimera" group="Mutants">
-        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-        <text>enc_mutant_chimera_general</text>
-    </article>
-
-
     <!-------------------------------- Pseudogiant ----------------------------->
 
     <article id="mutant_pseudogiant_general" name="Pseudogiant" group="Mutants">
@@ -107,14 +98,7 @@
     </article>
 
 
-    <!-------------------------------- Fracture ----------------------------->
-
-    <article id="mutant_fracture_general" name="Fracture" group="Mutants">
-        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-        <text>enc_mutant_fracture_general</text>
-    </article>
-    
-     <!-------------------------------- Snork ----------------------------->
+    <!-------------------------------- Snork ----------------------------->
 
     <article id="mutant_snork_general" name="Snork" group="Mutants">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
