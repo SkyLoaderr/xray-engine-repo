@@ -4,10 +4,10 @@
 <!------------------------- STALKER ------------------------>
 <!-------------------------- DOCTOR ------------------------>
     <specific_character id="cit_doctor" team_default = "1">
-        <name>Профессор Преображенский</name>
-        <icon x="24" y="10"></icon>
-        <map_icon x="3" y="0"></map_icon>
-        <bio>Доктор.</bio>
+        <name>Доктор</name>
+        <icon x="6" y="0"></icon>
+        <map_icon x="6" y="0"></map_icon>
+        <bio>Доктор</bio>
 
         <class>cit_doctor</class>
         <community>stalker</community>
