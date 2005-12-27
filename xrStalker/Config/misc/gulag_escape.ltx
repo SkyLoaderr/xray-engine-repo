@@ -1158,7 +1158,7 @@ on_death = death@esc_corps_wounded
 [walker@normal_esc_corps_wounded]
 path_walk = esc_wounded_walk
 path_look = esc_wounded_look
-on_info = {+esc_first_novice_dead +esc_second_novice_dead} walker@wounded_esc_corps_wounded
+on_info = {+esc_first_novice_dead +esc_second_novice_dead} walker@wounded_esc_corps_wounded %=run_tutorial_if_newbie(part_10_sprint)%
 danger = danger_condition@tolik
 
 [walker@wounded_esc_corps_wounded]
