@@ -178,6 +178,11 @@ static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 	void		FillItemInfo(CUIDragDropItemMP *pDDItemMP);
 	void		BuyReaction();
 
+
+    xr_map<int, xr_vector<shared_str> >	m_cur_ammo;
+	void		HighlightCurrentAmmo(const char* weapon, bool activate);
+	void		HighlightItem(const char* name, bool activate);
+
 public:
 	bool		CheckBuyAvailabilityInSlots();
 	bool		CanBuyAllItems();

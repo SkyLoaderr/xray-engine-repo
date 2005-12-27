@@ -197,14 +197,14 @@ void CUIStatsPlayerList::Update(){
 	{
 		game_cl_ArtefactHunt* game = static_cast<game_cl_ArtefactHunt*>(&Game());
 		pl_artefacts = game->teams[m_CurTeam - 1].score;
-        sprintf(teaminfo, "Players: %u,  Frags: %d,  Artefacts: %u", pl_count, pl_frags, pl_artefacts);
+        sprintf(teaminfo, "Artefacts: %u, Players: %u,  Frags: %d",pl_artefacts, pl_count, pl_frags );
 		m_header_text->SetText(teaminfo);
 	}
 	else if (GameID() == GAME_TEAMDEATHMATCH && !m_bSpectator)
 	{
 		game_cl_TeamDeathmatch* game = static_cast<game_cl_TeamDeathmatch*>(&Game());
 		pl_frags = game->teams[m_CurTeam - 1].score;
-		sprintf(teaminfo, "Players: %u,  Frags: %d", pl_count, pl_frags);
+		sprintf(teaminfo, "Frags: %d, Players: %u", pl_frags, pl_count);
 		m_header_text->SetText(teaminfo);
 	}	
 
