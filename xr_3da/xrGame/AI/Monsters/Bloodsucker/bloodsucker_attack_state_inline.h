@@ -20,6 +20,13 @@ CBloodsuckerStateAttackAbstract::~CBloodsuckerStateAttack()
 }
 
 TEMPLATE_SPECIALIZATION
+void CBloodsuckerStateAttackAbstract::initialize()
+{
+	inherited::initialize	();
+	m_time_deactivated		= 0;
+}
+
+TEMPLATE_SPECIALIZATION
 void CBloodsuckerStateAttackAbstract::execute()
 {
 	bool selected = false;
@@ -89,24 +96,21 @@ void CBloodsuckerStateAttackAbstract::execute()
 	//////////////////////////////////////////////////////////////////////////
 }
 
+#define INVIS_ACTIVATE_DELAY 3000
+
 TEMPLATE_SPECIALIZATION
 void CBloodsuckerStateAttackAbstract::update_invisibility()
 {
 	// if just turn to Run state
 	if ((current_substate == eStateAttack_Run) && (object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) > 5.f)) {
-		if ((object->CInvisibility::energy() > 0.6f) && !object->CInvisibility::active())
+		if ((object->CInvisibility::energy() > 0.6f) && !object->CInvisibility::active() && (m_time_deactivated + INVIS_ACTIVATE_DELAY < time()))
 			object->CInvisibility::activate();
 	}
-
-	if ((current_substate == eStateAttack_Run) && (prev_substate != eStateAttack_Run)) {
-		if (object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) > 6.f)
-			object->CInvisibility::activate();
-	}
-
 
 	// if just turn to Attack_Melee state
 	if ((current_substate == eStateAttack_Melee) && (prev_substate != eStateAttack_Melee)) {
 		object->CInvisibility::deactivate();
+		m_time_deactivated	= time();
 	}
 }
 

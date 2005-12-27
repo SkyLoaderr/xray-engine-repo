@@ -4,10 +4,14 @@
 template<typename _Object>
 class	CBloodsuckerStateAttack : public CStateMonsterAttack<_Object> {
 	typedef CStateMonsterAttack<_Object> inherited_attack;
+
+	u32				m_time_deactivated;
+
 public:
 					CBloodsuckerStateAttack		(_Object *obj);
 	virtual			~CBloodsuckerStateAttack	();
 
+	virtual	void	initialize					();
 	virtual	void	execute						();
 private:
 			void	update_invisibility			();
