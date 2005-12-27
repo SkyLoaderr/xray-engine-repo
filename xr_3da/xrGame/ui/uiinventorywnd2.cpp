@@ -83,7 +83,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		{
 			UIPropertiesBox.AddItem("Detach silencer",  NULL, INVENTORY_DETACH_SILENCER_ADDON);
 		}
-		if(smart_cast<CWeaponMagazined*>(pWeapon))
+		if(smart_cast<CWeaponMagazined*>(pWeapon) && GameID() == GAME_SINGLE)
 		{
 /*			if(pWeapon->GetAmmoElapsed()!=pWeapon->GetAmmoMagSize())
 				if(	m_pInv->GetAny(*pWeapon->m_ammoTypes[pWeapon->m_ammoType] ) )
