@@ -87,14 +87,14 @@ Accel_Aggressive				= 10.5
 ;--------------------------------------------------------------------------
 ; Attack parameters
 ;--------------------------------------------------------------------------
-MinAttackDist					= 2.5 	;2.4    
-MaxAttackDist					= 3.0 	;3.8	
+MinAttackDist					= 2.6 	;2.4    
+MaxAttackDist					= 3.3 	;3.8	
 EffectDistance					= 20.0
 hit_type						= wound					; type of attack 
 as_min_dist						= 0.3    
 as_step				 			= 0.5
 
-Run_Attack_Dist					= 2.3,		3.1
+Run_Attack_Dist					= 2.5,		3.5
 Run_Attack_Delay				= 1000,		3000 
 
 attack_params					= m_bloodsucker_attack_params
@@ -408,19 +408,19 @@ fire_wound_immunity		= 0.50
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Left hand Strike
-stand_attack_0 =	  	0.30,		15,		    150,        3.5, 2.0, 0.5,		 -1.0, 1.0, -1.0, 1.0,				  2.8
+stand_attack_0 =	  	0.30,		15,		    150,        3.5, 2.0, 0.5,		 -1.0, 1.0, -1.0, 1.0,				  2.5
 ;Both hands Strike
-stand_attack_1 =	  	0.30,		25,		    160,        0.0, 2.0, 4.0,		 -0.8, 0.8, -1.2, 1.2,				  2.8
+stand_attack_1 =	  	0.30,		25,		    160,        0.0, 2.0, 4.0,		 -0.8, 0.8, -1.2, 1.2,				  2.5
 ;Right hand Strike
-stand_attack_2 =	  	0.30,		15,		    150,        -4.0, 2.5, 0.50,	 -1.0, 1.0, -1.0, 1.0,				  2.8
+stand_attack_2 =	  	0.30,		15,		    150,        -4.0, 2.5, 0.50,	 -1.0, 1.0, -1.0, 1.0,				  2.5
 ;Right hand Strike
 vampire_2		=	  	0.60,		50,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
 ;Right hand Strike
 stand_attack_run_0 =	bloodsucker_weak_run_attack_sect
 
 [bloodsucker_weak_run_attack_sect]
-value1			= 0.20,		10,		    150,        0.0, 0.5, 1.50,		  -1.2, 1.2, -1.2, 1.2,				  2.4
-value2			= 0.60,		20,		    200,        0.0, 0.5, 1.50,		  -1.2, 1.2, -1.2, 1.2,				  2.4
+value1			= 0.20,		10,		    150,        0.0, 0.5, 1.50,		  -1.2, 1.2, -1.2, 1.2,				  2.2
+value2			= 0.60,		20,		    200,        0.0, 0.5, 1.50,		  -1.2, 1.2, -1.2, 1.2,				  2.2
 
 [bloodsucker_normal]:m_bloodsucker_e
 $spawn				= "monsters\bloodsuckers\bloodsucker_02_normal"
@@ -446,19 +446,19 @@ fire_wound_immunity		= 0.30
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Left hand Strike
-stand_attack_0 =	  	0.30,		30,		    150,        3.5, 2.0, 0.5,		 -1.0, 1.0, -1.0, 1.0,				  2.8
+stand_attack_0 =	  	0.30,		30,		    150,        3.5, 2.0, 0.5,		 -1.0, 1.0, -1.0, 1.0,				  2.5
 ;Both hands Strike
-stand_attack_1 =	  	0.30,		50,		    160,        0.0, 2.0, 4.0,		 -0.8, 0.8, -1.2, 1.2,				  2.8
+stand_attack_1 =	  	0.30,		50,		    160,        0.0, 2.0, 4.0,		 -0.8, 0.8, -1.2, 1.2,				  2.5
 ;Right hand Strike
-stand_attack_2 =	  	0.30,		30,		    150,        -4.0, 2.5, 0.50,	 -1.0, 1.0, -1.0, 1.0,				  2.8
+stand_attack_2 =	  	0.30,		30,		    150,        -4.0, 2.5, 0.50,	 -1.0, 1.0, -1.0, 1.0,				  2.5
 ;Right hand Strike
 vampire_2		=	  	0.60,		95,			550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
 ;Right hand Strike
 stand_attack_run_0 =	bloodsucker_normal_run_attack_sect
 
 [bloodsucker_normal_run_attack_sect]
-value1			= 0.20,		20,		    250,        0.0, 0.5, 3.00,		  -1.2, 1.2, -1.2, 1.2,				  2.6
-value2			= 0.60,		40,		    300,        0.0, 0.5, 3.00,		  -1.2, 1.2, -1.2, 1.2,				  2.6
+value1			= 0.20,		20,		    250,        0.0, 0.5, 3.00,		  -1.2, 1.2, -1.2, 1.2,				  2.2
+value2			= 0.60,		40,		    300,        0.0, 0.5, 3.00,		  -1.2, 1.2, -1.2, 1.2,				  2.2
 
 
 [bloodsucker_strong]:m_bloodsucker_e
@@ -485,19 +485,19 @@ fire_wound_immunity		= 0.10
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Left hand Strike
-stand_attack_0 =	  	0.30,		60,		    150,        3.5, 2.0, 0.5,		 -1.0, 1.0, -1.0, 1.0,				  2.8
+stand_attack_0 =	  	0.30,		60,		    150,        3.5, 2.0, 0.5,		 -1.0, 1.0, -1.0, 1.0,				  2.5
 ;Both hands Strike
-stand_attack_1 =	  	0.30,		100,		160,        0.0, 2.0, 4.0,		 -0.8, 0.8, -1.2, 1.2,				  2.8
+stand_attack_1 =	  	0.30,		100,		160,        0.0, 2.0, 4.0,		 -0.8, 0.8, -1.2, 1.2,				  2.5
 ;Right hand Strike
-stand_attack_2 =	  	0.30,		60,		    150,        -4.0, 2.5, 0.50,	 -1.0, 1.0, -1.0, 1.0,				  2.8
+stand_attack_2 =	  	0.30,		60,		    150,        -4.0, 2.5, 0.50,	 -1.0, 1.0, -1.0, 1.0,				  2.5
 ;Right hand Strike
 vampire_2		=	  	0.60,		195,	    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
 ;Right hand Strike
 stand_attack_run_0 =	bloodsucker_strong_run_attack_sect
 
 [bloodsucker_strong_run_attack_sect]
-value1			= 0.20,		40,		    350,        0.0, 0.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  2.8
-value2			= 0.60,		80,		    400,        0.0, 0.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  2.8
+value1			= 0.20,		40,		    350,        0.0, 0.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  2.2
+value2			= 0.60,		80,		    400,        0.0, 0.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  2.2
 
 
 ;*********************************************************************************
