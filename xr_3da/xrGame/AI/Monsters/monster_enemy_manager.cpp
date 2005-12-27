@@ -5,6 +5,8 @@
 #include "../../ai_object_location.h"
 #include "../../memory_manager.h"
 #include "../../visual_memory_manager.h"
+#include "../../actor.h"
+#include "../../actor_memory.h"
 
 CMonsterEnemyManager::CMonsterEnemyManager()
 {
@@ -178,7 +180,19 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 
 bool CMonsterEnemyManager::see_enemy_now()
 {
-	return (monster->memory().visual().visible_now(enemy) && (time_last_seen == m_time_updated)); 
+	return (monster->memory().visual().visible_right_now(enemy)); 
+}
+
+bool CMonsterEnemyManager::enemy_see_me_now()
+{
+	if (Actor() == enemy) {
+		return (Actor()->memory().visual().visible_right_now(monster)); 
+	} else {
+		CCustomMonster *cm = const_cast<CEntityAlive*>(enemy)->cast_custom_monster();
+		if (cm) return (cm->memory().visual().visible_right_now(monster));
+	}
+
+	return false; 
 }
 
 bool CMonsterEnemyManager::is_faced(const CEntityAlive *object0, const CEntityAlive *object1)

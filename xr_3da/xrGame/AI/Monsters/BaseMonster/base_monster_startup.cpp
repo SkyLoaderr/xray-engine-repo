@@ -140,6 +140,8 @@ void CBaseMonster::reinit()
 
 	m_skip_transfer_enemy			= false;
 
+	MeleeChecker.init_attack		();
+
 #ifdef DEBUG
 	m_show_debug_info				= 0;
 #endif 

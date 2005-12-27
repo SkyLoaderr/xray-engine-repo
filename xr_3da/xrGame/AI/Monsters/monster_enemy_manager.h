@@ -50,6 +50,7 @@ public:
 	Flags32				&get_flags					() {return flags;}
 	
 	bool				see_enemy_now				();
+	bool				enemy_see_me_now			();
 
 	// вернуть количество врагов
 	u32					get_enemies_count			();

@@ -14,18 +14,17 @@ float CMeleeChecker::distance_to_enemy(const CEntity *enemy)
 	Fvector					enemy_center;
 	enemy->Center			(enemy_center);
 
-	CKinematics *p_visual	= smart_cast<CKinematics*>(m_object->Visual());
-	Fmatrix					global_transform;
-	global_transform.mul_43	(m_object->XFORM(), p_visual->LL_GetBoneInstance(p_visual->LL_BoneID("bip01_head")).mTransform);
-
+	Fvector					my_head_pos = get_head_position(m_object);
+	
 	Fvector					dir; 
-	dir.sub					(enemy_center, global_transform.c);
+	dir.sub					(enemy_center, my_head_pos);
+	dir.normalize_safe		();
 
-	collide::ray_defs		r_query	(global_transform.c, dir, MAX_TRACE_ENEMY_RANGE, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, collide::rqtObject);
+	collide::ray_defs		r_query	(my_head_pos, dir, MAX_TRACE_ENEMY_RANGE, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, collide::rqtObject);
 	collide::rq_results		r_res;
 
-	if (enemy->CFORM()->_RayQuery(r_query, r_res)) {
-		if (r_res.r_begin()->O)
+	if (m_object->CFORM()->_RayQuery(r_query, r_res)) {
+		if (r_res.r_begin()->O == enemy)
 			dist			= r_res.r_begin()->range;
 	}
 

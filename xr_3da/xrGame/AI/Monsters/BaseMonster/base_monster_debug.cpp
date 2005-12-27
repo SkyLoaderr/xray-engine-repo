@@ -28,7 +28,6 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 	u32			delimiter_color	= D3DCOLOR_XRGB(0,0,255);
 
 	DBG().text(this).clear	 ();
-
 	DBG().text(this).add_item("---------------------------------------", x, y+=delta_y, delimiter_color);
 
 	sprintf(text, "-- Monster : [%s]  Current Time = [%u]", *cName(), Device.dwTimeGlobal);
@@ -45,11 +44,15 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 	DBG().text(this).add_item("-----------   MEMORY   ----------------", x, y+=delta_y, delimiter_color);
 
 	if (EnemyMan.get_enemy()) {
-		sprintf(text, "Current Enemy = [%s] Time Seen [%u] see now[%u]", *EnemyMan.get_enemy()->cName(), EnemyMan.get_enemy_time_last_seen(), EnemyMan.see_enemy_now());
+		sprintf(text, "Current Enemy = [%s]", *EnemyMan.get_enemy()->cName());
 	} else 
 		sprintf(text, "Current Enemy = [NONE]");
-
 	DBG().text(this).add_item(text,										 x, y+=delta_y, color);
+	
+	if (EnemyMan.get_enemy()) {
+		sprintf(text, "SeeEnemy[%u] EnemySeeMe[%u] TimeLastSeen[%u]", EnemyMan.see_enemy_now(),EnemyMan.enemy_see_me_now(),EnemyMan.get_enemy_time_last_seen());
+		DBG().text(this).add_item(text,									x, y+=delta_y, color);
+	}
 
 	if (CorpseMan.get_corpse()) {
 		sprintf(text, "Current Corpse = [%s]", *CorpseMan.get_corpse()->cName());
@@ -117,7 +120,23 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 	sprintf(text, "Speed: Linear = [%.3f] Angular = [%.3f]", control().movement().velocity_current(), 0.f);
 	DBG().text(this).add_item(text,										x, y+=delta_y, color);
 	
-	DBG().text(this).add_item("---------------------------------------", x, y+=delta_y, delimiter_color);
+	DBG().text(this).add_item("------- Attack Distances -------------", x, y+=delta_y, delimiter_color);
+	sprintf(text, "MinDist[%.3f] MaxDist[%.3f] As_Step[%3.f] As_MinDist[%.3f]", 
+		MeleeChecker.get_min_distance(),
+		MeleeChecker.get_max_distance(),
+		MeleeChecker.dbg_as_step(),
+		MeleeChecker.dbg_as_min_dist()
+	);
+	DBG().text(this).add_item(text,										x, y+=delta_y, color);
+
+
+	if (EnemyMan.get_enemy()) {
+		sprintf(text, "Current Enemy = [%s]", *EnemyMan.get_enemy()->cName());
+	} else 
+		sprintf(text, "Current Enemy = [NONE]");
+	DBG().text(this).add_item(text,										 x, y+=delta_y, color);
+
+
 
 	return SDebugInfo(x, y, delta_y, color, delimiter_color);
 }

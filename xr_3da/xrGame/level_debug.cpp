@@ -175,6 +175,7 @@ struct DrawInfoPredicate {
 	}
 
 	void operator() (const CLevelDebug::SInfoItem &s) {
+		HUD().Font().pFontMedium->SetAligment(CGameFont::alLeft);
 		HUD().Font().pFontMedium->SetColor	(s.color);
 		HUD().Font().pFontMedium->OutSet	(x, y-=delta_height);
 		HUD().Font().pFontMedium->OutNext	(*(s.text));
@@ -200,6 +201,7 @@ void CLevelDebug::CTextInfo::add_item	(LPCSTR text, float x, float y, u32 color,
 
 struct DrawTextPredicate {
 	void operator() (const CLevelDebug::STextItem &s) {
+		HUD().Font().pFontMedium->SetAligment(CGameFont::alLeft);
 		HUD().Font().pFontMedium->SetColor	(s.color);
 		HUD().Font().pFontMedium->OutSet	(s.x, s.y);
 		HUD().Font().pFontMedium->OutNext	(*(s.text));

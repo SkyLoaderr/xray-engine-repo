@@ -24,6 +24,9 @@
 #include "../../../xr_level_controller.h"
 #include "../../../ActorCondition.h"
 
+#include "../../../PHDestroyable.h"
+#include "../../../CharacterPhysicsSupport.h"
+
 #ifdef DEBUG
 #include <dinput.h>
 #endif
@@ -421,7 +424,10 @@ void CAI_Bloodsucker::predator_start()
 void CAI_Bloodsucker::predator_stop()
 {
 	if (!m_predator)				return;
+	
 	cNameVisual_set					(*m_visual_default);
+	character_physics_support()->in_ChangeVisual();
+
 	CDamageManager::reload(*cNameSect(),"damage",pSettings);
 
 	control().animation().restart	();
