@@ -166,8 +166,11 @@ void	CPhysicsShellHolder::PHFreeze()
 void CPhysicsShellHolder::OnChangeVisual()
 {
 	inherited::OnChangeVisual();
-	if (0==renderable.visual) xr_delete(m_pPhysicsShell);
-	VERIFY(0==m_pPhysicsShell);
+	if (0==renderable.visual) 
+	{
+		xr_delete(m_pPhysicsShell);
+		VERIFY(0==m_pPhysicsShell);
+	}
 }
 
 void CPhysicsShellHolder::UpdateCL	()
