@@ -782,10 +782,25 @@ bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)
 	for (u8 i=0; i<TeamList.size(); i++)
 	{
 		TEAM_WPN_LIST	WpnList = TeamList[i].aWeapons;
-///		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), ItemName);
-//		if (pWpnI != WpnList.end() && ((*pWpnI) == ItemName)) return true;
 		WeaponDataStruct* pWpnS = NULL;
 		if (GetTeamItem_ByName(&pWpnS, &WpnList, ItemName)) return true;
+	};
+	return false;
+};
+
+bool	game_sv_Deathmatch::GetBuyableItemCost		(LPCSTR	ItemName, u16* pCost)
+{
+	*pCost = 0;
+	WeaponDataStruct* tmpWDS = NULL;
+	for (u8 i=0; i<TeamList.size(); i++)
+	{
+		TEAM_WPN_LIST	WpnList = TeamList[i].aWeapons;
+		
+		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), ItemName);
+		if (pWpnI == WpnList.end() || !((*pWpnI) == ItemName)) continue;
+
+		*pCost = (*pWpnI).Cost;
+		return true;
 	};
 	return false;
 };
@@ -794,14 +809,9 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 {
 	if (!pItem || !pItemsDesired || !pItemsToDelete) return;
 
-//	CSE_Abstract* pItem = Level().Server->game->get_entity_from_eid(*I);
-//	R_ASSERT(pItem);
 	WeaponDataStruct* pWpnS = NULL;
 
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-//	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), *(pItem->object().cNameSect()));
-//	if (pWpnI == WpnList.end() || !((*pWpnI) == *(pItem->object().cNameSect()))) return;
-//	pWpnS = &(*pWpnI);
 	if (!GetTeamItem_ByName(&pWpnS, &WpnList, *(pItem->object().cNameSect()))) return;
 	//-------------------------------------------
 	bool	found = false;
@@ -2193,17 +2203,18 @@ void		game_sv_Deathmatch::OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P)
 	u16 ItemID = P.r_u16();	
 	CSE_Abstract* eItem = get_entity_from_eid		(ItemID);
 	if (!eItem) return;
-	if (!IsBuyableItem(*eItem->s_name)) return;
 	if (eItem->ID_Parent != ps->GameID) return;
 
+	u16 ItemCost = 0;
+//	if (!IsBuyableItem(*eItem->s_name)) return;
+	if (!GetBuyableItemCost(*eItem->s_name, &ItemCost)) return;
+	
 	CSE_ALifeCreatureActor*		e_Actor	= smart_cast<CSE_ALifeCreatureActor*>(get_entity_from_eid	(ps->GameID));
 	CActor* pActor = smart_cast<CActor*>(Level().Objects.net_Find	(ps->GameID));
 	if (!pActor) return;
-	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-	WeaponDataStruct* pWDS = NULL;
-	if (!GetTeamItem_ByName(&pWDS, &WpnList, *eItem->s_name)) return;
+	
 	//-----------------------------------------------------------------
-	Player_AddMoney(ps, pWDS->Cost/2);
+	Player_AddMoney(ps, ItemCost/2);
 	//-----------------------------------------------------------------
 	NET_Packet			nP;
 	u_EventGen			(nP,GE_DESTROY,eItem->ID);

@@ -148,9 +148,9 @@ void CUIInventoryWnd::Init()
 		AttachChild				(UISleepWnd);
 	}
 	else if(GameID() == GAME_ARTEFACTHUNT){
-//		UISellAll = xr_new<CUI3tButton>(); UISellAll->SetAutoDelete(true);
-//		CUIXmlInit::Init3tButton(uiXml, "btn_sell_all", 0, UISellAll);
-//		AttachChild				(UISellAll);
+		UISellAll = xr_new<CUI3tButton>(); UISellAll->SetAutoDelete(true);
+		CUIXmlInit::Init3tButton(uiXml, "btn_sell_all", 0, UISellAll);
+		AttachChild				(UISellAll);
 	}
 
 	//Списки Drag&Drop

@@ -183,6 +183,7 @@ public:
 	virtual		void				StartAnomalies			(int AnomalySet = -1);
 
 	virtual		bool				IsBuyableItem			(LPCSTR	ItemName);
+	virtual		bool				GetBuyableItemCost		(LPCSTR	ItemName, u16* pCost);
 	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(ClientID	id_who);
