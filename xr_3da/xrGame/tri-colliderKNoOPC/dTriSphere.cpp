@@ -77,6 +77,9 @@ inline bool FragmentonSphereTest(const dReal* center, const dReal radius,
 	dVector3 Dc={center[0]-Pc[0],center[1]-Pc[1],center[2]-Pc[2]};
 	dReal sq_mag_Dc=dDOT(Dc,Dc);
 	if(sq_mag_Dc>radius*radius)return false;
+	dReal dot_V_Pc=dDOT(V,Pc);
+	if(dDOT(V,pt1)>dot_V_Pc||dDOT(V,pt2)<dot_V_Pc) return false;
+
 	dReal mag=dSqrt(sq_mag_Dc);
 	depth=radius-mag;
 	if(mag>0.f)
