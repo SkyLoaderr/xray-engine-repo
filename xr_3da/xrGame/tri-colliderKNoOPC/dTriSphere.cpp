@@ -11,7 +11,7 @@ inline dReal PointSphereTest(const dReal* center, const dReal radius,
 	norm[1]=center[1]-pt[1];
 	norm[2]=center[2]-pt[2];
 	dReal mag=dSqrt(dDOT(norm,norm));
-	dReal depth=radius-dSqrt(dDOT(norm,norm));
+	dReal depth=radius-mag;
 	if(depth<0.f)	return -1.f;
 	if(mag>0.f)
 	{
@@ -68,31 +68,22 @@ inline dReal FragmentonSphereTest(const dReal* center, const dReal radius,
 inline bool FragmentonSphereTest(const dReal* center, const dReal radius,
 								  const dReal* pt1, const dReal* pt2,dReal* norm,dReal& depth)
 {
-	dVector3 direction={pt2[0]-pt1[0],pt2[1]-pt1[1],pt2[2]-pt1[2]};
-	cast_fv(direction).normalize();
-	dReal center_prg=dDOT(center,direction);
-	dReal pt1_prg=dDOT(pt1,direction);
-	dReal pt2_prg=dDOT(pt2,direction);
-	dReal from1_dist=center_prg-pt1_prg;
-	if(center_prg<pt1_prg||center_prg>pt2_prg) return false;
-	dVector3 line_to_center={
-		-pt1[0]-direction[0]*from1_dist+center[0],
-			-pt1[1]-direction[1]*from1_dist+center[1],
-			-pt1[2]-direction[2]*from1_dist+center[2]
-	};
-
-	float mag=dSqrt(dDOT(line_to_center,line_to_center));
-	//dNormalize3(norm);
-
-
-	dReal ldepth=radius-mag;
-	if(ldepth<0.f) return false;
-	depth=ldepth;
+	dVector3 V={pt2[0]-pt1[0],pt2[1]-pt1[1],pt2[2]-pt1[2]};
+	dVector3 L={pt1[0]-center[0],pt1[1]-center[1],pt1[2]-center[2]};
+	dReal sq_mag_V=dDOT(V,V);
+	dReal dot_L_V=dDOT(L,V);
+	dReal dot_L_V_sq_mag_V=dot_L_V/sq_mag_V;
+	dVector3 Pc={pt1[0]-dot_L_V_sq_mag_V*V[0],pt1[1]-dot_L_V_sq_mag_V*V[1],pt1[2]-dot_L_V_sq_mag_V*V[2]};
+	dVector3 Dc={center[0]-Pc[0],center[1]-Pc[1],center[2]-Pc[2]};
+	dReal sq_mag_Dc=dDOT(Dc,Dc);
+	if(sq_mag_Dc>radius*radius)return false;
+	dReal mag=dSqrt(sq_mag_Dc);
+	depth=radius-mag;
 	if(mag>0.f)
 	{
-		norm[0]=line_to_center[0]/mag;
-		norm[1]=line_to_center[1]/mag;
-		norm[2]=line_to_center[2]/mag;
+		norm[0]=Dc[0]/mag;
+		norm[1]=Dc[1]/mag;
+		norm[2]=Dc[2]/mag;
 	}
 	else
 	{
