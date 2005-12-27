@@ -53,6 +53,7 @@
   <article>weapons1_wpn-toz34</article>
   <article>weapons1_wpn-bm16</article>
   <article>weapons1_wpn-spas12</article>
+  <article>weapons1_wpn-wincheaster1300</article>
   <article>weapons1_wpn-mp5</article>
   <article>weapons1_wpn-ak74</article>
   <article>weapons1_wpn-ak74u</article>
@@ -63,6 +64,8 @@
   <article>weapons1_wpn-lr300</article>
   <article>weapons1_wpn-fn2000</article>
   <article>weapons1_wpn-l85</article>
+  <article>weapons1_wpn-sig550</article>
+  <article>weapons1_wpn-g36</article>
   <article>weapons1_wpn-svd</article>
   <article>weapons1_wpn-svu</article>
   <article>weapons1_wpn-gauss</article>
@@ -73,7 +76,7 @@
   <article>weapons1_grenade-f1</article>
   <article>weapons1_grenade-rgd5</article>
   <article>weapons1_grenade-gd05</article>
-  <article>equipment_food_bread1</article>
+   <article>equipment_food_bread1</article>
   <article>equipment_food_kolbasa1</article>
   <article>equipment_food_conserva1</article>
   <article>equipment_food_vodka1</article>
@@ -111,6 +114,10 @@
   <article>zone_artifact_af-dummy-battery</article>
   <article>zone_artifact_af-dummy-dummy</article>
   <article>zone_artifact_af-dummy-spring</article>
+  <article>zone_zone-story_story-2006</article>
+  <article>zone_zone-story_story-2008</article>
+  <article>zone_zone-story_story-2010</article>
+  <article>zone_zone-story_story-raid</article>
   <article>zone_anomalies_bald</article>
   <article>zone_anomalies_gravi</article>
   <article>zone_anomalies_meat</article>
@@ -140,12 +147,10 @@
   <article>mutant_pseudodog_general</article>
   <article>mutant_bloodsucker_general</article>
   <article>mutant_burer_general</article>
-  <article>mutant_chimera_general</article>
   <article>mutant_pseudogiant_general</article>
   <article>mutant_poltergeist_general</article>
   <article>mutant_controller_general</article>
   <article>mutant_zombie_general</article>
-  <article>mutant_fracture_general</article>
   <article>mutant_snork_general</article>
   <article>social_military_army</article>
   <article>social_military_milstalkers</article>
