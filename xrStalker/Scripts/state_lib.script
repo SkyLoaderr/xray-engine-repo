@@ -460,6 +460,36 @@ states = {
 				animstate = "stand",
 				animation = "raciya"
 			},
+	probe	= {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "probe"
+			},
+	probe_1	= {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "probe_1"
+			},
+	probe_2	= {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "probe_2"
+			},
+	probe_3	= {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "probe_3"
+			},
+			
+			
 				
 
 	-- Раненый
