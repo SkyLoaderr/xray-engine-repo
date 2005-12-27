@@ -51,6 +51,8 @@ public :
 	virtual			char*				getTeamSection			(int Team);
 	virtual			bool				PlayerCanSprint			(CActor* pActor);
 
+	virtual			void				OnSellItemsFromRuck		();
+
 	virtual			void				OnSpawn					(CObject* pObj);
 	virtual			void				OnDestroy				(CObject* pObj);
 };

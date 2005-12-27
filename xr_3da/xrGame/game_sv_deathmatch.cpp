@@ -2200,25 +2200,28 @@ void		game_sv_Deathmatch::OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
-	u16 ItemID = P.r_u16();	
-	CSE_Abstract* eItem = get_entity_from_eid		(ItemID);
-	if (!eItem) return;
-	if (eItem->ID_Parent != ps->GameID) return;
 
-	u16 ItemCost = 0;
-//	if (!IsBuyableItem(*eItem->s_name)) return;
-	if (!GetBuyableItemCost(*eItem->s_name, &ItemCost)) return;
-	
 	CSE_ALifeCreatureActor*		e_Actor	= smart_cast<CSE_ALifeCreatureActor*>(get_entity_from_eid	(ps->GameID));
-	CActor* pActor = smart_cast<CActor*>(Level().Objects.net_Find	(ps->GameID));
-	if (!pActor) return;
-	
-	//-----------------------------------------------------------------
-	Player_AddMoney(ps, ItemCost/2);
-	//-----------------------------------------------------------------
-	NET_Packet			nP;
-	u_EventGen			(nP,GE_DESTROY,eItem->ID);
-	Level().Send(nP,net_flags(TRUE,TRUE));
-	//-----------------------------------------------------------------
+	if (!e_Actor) return;
+
+	u16 ItemsCount = P.r_u16();
+	for (u16 i=0; i<ItemsCount; i++)
+	{
+		u16 ItemID = P.r_u16();	
+		CSE_Abstract* eItem = get_entity_from_eid		(ItemID);
+		if (!eItem) continue;
+
+		if (eItem->ID_Parent != ps->GameID) continue;
+
+		u16 ItemCost = 0;		
+		if (!GetBuyableItemCost(*eItem->s_name, &ItemCost)) continue;
+		//-----------------------------------------------------------------
+		Player_AddMoney(ps, ItemCost/2);
+		//-----------------------------------------------------------------
+		NET_Packet			nP;
+		u_EventGen			(nP,GE_DESTROY,eItem->ID);
+		Level().Send(nP,net_flags(TRUE,TRUE));
+		//-----------------------------------------------------------------
+	};
 	signal_Syncronize();
 };

@@ -173,7 +173,9 @@ public:
 	virtual		void				OnMapInfoAccept			() {};
 	virtual		void				OnSkinMenu_Ok			() {};
 	virtual		void				OnSkinMenu_Cancel		() {};
-	virtual		void				OnBuySpawnMenu_Ok		() {};	
+	virtual		void				OnBuySpawnMenu_Ok		() {};
+	virtual		void				OnSellItemsFromRuck		() {};
+
 
 	virtual		void				OnGameMenuRespond				(NET_Packet& P);
 	virtual		void				OnGameMenuRespond_Spectator		(NET_Packet& P) {};

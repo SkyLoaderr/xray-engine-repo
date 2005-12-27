@@ -57,13 +57,13 @@ CUIInventoryWnd::CUIInventoryWnd()
 
 	m_pCurrentDragDropItem = NULL;
 	m_pItemToUpgrade = NULL;
+	UISellAll = NULL;
 
 	Init();
 	SetCurrentItem(NULL);
 
 	SetFont(HUD().Font().pFontMedium);
-	g_pInvWnd = this;
-	UISellAll = NULL;
+	g_pInvWnd = this;	
 }
 
 void CUIInventoryWnd::Init()
@@ -655,10 +655,11 @@ void	CUIInventoryWnd::SendEvent_Item_Sell			(PIItem	pItem)
 {
 	NET_Packet	P;
 	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM_SELL, pItem->object().H_Parent()->ID());
+	P.w_u16		(1);
 	P.w_u16		(pItem->object().ID());
 	pItem->object().u_EventSend(P);
 
-//	g_pInvWnd->PlaySnd(eInvDropItem);
+	g_pInvWnd->PlaySnd(eInvDropItem);
 };
 
 void	CUIInventoryWnd::SendEvent_Item_Drop			(PIItem	pItem)

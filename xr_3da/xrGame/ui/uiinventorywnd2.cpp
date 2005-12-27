@@ -5,6 +5,7 @@
 #include "../WeaponMagazined.h"
 #include "../inventoryowner.h"
 #include "../game_base_space.h"
+#include "../game_cl_mp.h"
 #include "UIInventoryUtilities.h"
 #include "UIDragDropList.h"
 #include "../inventory.h"
@@ -373,9 +374,11 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		Game().StartStopMenu(this,true);
 	}
-	else if (&UIDropButton == pWnd && BUTTON_CLICKED == msg)
+
+	if (UISellAll == pWnd && BUTTON_CLICKED == msg)
 	{
-		SellItem();
+		game_cl_mp* pGame_MP = smart_cast<game_cl_mp*> (Level().game);
+		if (pGame_MP) pGame_MP->OnSellItemsFromRuck();
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
