@@ -29,7 +29,7 @@ CStatTimer				t_compress;
 u8*						c_heap			= NULL;
 u32						dwTimeStart		= 0;
 
-const u32				XRP_MAX_SIZE	= 1024*1024*1024; // bytes
+const u32				XRP_MAX_SIZE	= 1024*1024*640; // bytes
 
 
 
@@ -248,7 +248,7 @@ void	OpenPack			(LPCSTR tgt_folder, int num)
 
 	string_path		fname;
 	string128		s_num;
-	strconcat		(fname,tgt_folder,".xrp_#",itoa(num,s_num,10));
+	strconcat		(fname,tgt_folder,".db_#",itoa(num,s_num,10));
 	unlink			(fname);
 	fs				= FS.w_open	(fname);
 	fs_desc.clear	();
@@ -262,8 +262,11 @@ void	ClosePack			()
 	fs->close_chunk	(); 
 	// save list
 	bytesDST		= fs->tell	();
+	Log				("...Writing pack desc");
 	fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
+	Msg				("Data size: %d. Desc size: %d.",bytesDST,fs_desc.size());
 	FS.w_close		(fs);
+	Log				("Pack saved.");
 	u32	dwTimeEnd	= timeGetTime();
 	printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\nCompression speed: %3.1f Mb/s",
 		filesTOTAL,filesSKIP,filesVFS,filesALIAS,
@@ -314,12 +317,10 @@ void CompressList(LPCSTR in_name, xr_vector<char*>* list, xr_vector<char*>* fl_l
 			}
 			Compress	((*list)[it],in_name,bFast);
 		}
-//		fs->close_chunk	();
+		ClosePack		();
 
 		xr_free			(c_heap);
 		//***main process***: END
-
-		ClosePack		();
 	} else {
 		Msg			("ERROR: folder not found.");
 	}

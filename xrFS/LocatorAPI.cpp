@@ -97,8 +97,10 @@ IReader* open_chunk(void* ptr, u32 ID)
 	DWORD			read_byte;
 	u32 pt			= SetFilePointer(ptr,0,0,FILE_BEGIN); VERIFY(pt!=INVALID_SET_FILE_POINTER);
 	while (true){
-		res			= ReadFile	(ptr,&dwType,4,&read_byte,0); VERIFY(res&&(read_byte==4));
-		res			= ReadFile	(ptr,&dwSize,4,&read_byte,0); VERIFY(res&&(read_byte==4));
+		res			= ReadFile	(ptr,&dwType,4,&read_byte,0); 
+		VERIFY(res&&(read_byte==4));
+		res			= ReadFile	(ptr,&dwSize,4,&read_byte,0); 
+		VERIFY(res&&(read_byte==4));
 		if ((dwType&(~CFS_CompressMark)) == ID) {
 			u8* src_data	= xr_alloc<u8>(dwSize);
 			res				= ReadFile	(ptr,src_data,dwSize,&read_byte,0); VERIFY(res&&(read_byte==dwSize));
