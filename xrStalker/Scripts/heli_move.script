@@ -198,6 +198,7 @@ end
 function heli_move:check_signals()
 	local sig  = self:waypoint_param( self.path_move_info, self.last_index, "sig" )
 	if sig then
+		printf( "heli_move: check_signals: sig=%s", sig )
 		self.a.signals[sig] = true
 	end
 end
