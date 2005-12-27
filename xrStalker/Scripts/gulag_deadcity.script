@@ -342,9 +342,11 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "[camper@" .. gname .. "_free_stalker" .. i .. "_attack]\n" ..
                    "path_walk           = free_stalker" .. i .. "_attack_walk\n" ..
                    "path_look           = free_stalker" .. i .. "_attack_look\n" ..
-                   "no_retreat          = true\n" ..
+                   --"no_retreat          = true\n" ..
                    "radius              = 8\n" ..
-                   --"heli_hunter         = true\n" ..
+                   "def_state_moving    = assault\n" ..
+                   "def_state_campering = hide\n" ..
+                   "heli_hunter         = true\n" ..
                    "on_info             = {+cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
