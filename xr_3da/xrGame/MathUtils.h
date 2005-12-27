@@ -21,7 +21,7 @@ IC const Fvector &cast_fv(const float* fp)
 	return *((const Fvector*)fp);
 }
 
-ICF void	accurate_normalize(float a[4])
+ICF void	accurate_normalize(float* a)
 {
 	dReal	sqr_magnitude	= a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
 	dReal	epsilon			= 1.192092896e-05F;

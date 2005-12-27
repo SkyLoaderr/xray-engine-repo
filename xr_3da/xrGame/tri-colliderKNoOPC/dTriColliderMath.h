@@ -109,6 +109,11 @@ inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2,
 
 
 							 }
+							
+							 inline bool TriPlaneContainPoint(Triangle* T)
+							 {
+								 return T->dist>0.f;
+							 }
 
 							 inline void PlanePoint(const Triangle& tri,const dReal* from,const dReal* to,float from_dist,dReal* point)
 							 {

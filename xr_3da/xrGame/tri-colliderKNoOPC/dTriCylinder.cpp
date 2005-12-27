@@ -292,17 +292,17 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
   if (maxc > 3) maxc = 3;	// no more than 3 contacts per box allowed
 
 
-  dVector3 triAx;
-  dVector3 triSideAx0={v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
-  dVector3 triSideAx1={v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]};
+  const dVector3 &triAx=T->norm;
+  dVector3 triSideAx0={T->side0[0],T->side0[1],T->side0[2]}; //{v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
+  dVector3 triSideAx1={T->side1[0],T->side1[1],T->side1[2]}; //{v2[0]-v1[0],v2[1]-v1[1],v2[2]-v1[2]};
   dVector3 triSideAx2={v0[0]-v2[0],v0[1]-v2[1],v0[2]-v2[2]};
-  dCROSS(triAx,=,triSideAx0,triSideAx1);
+  //dCROSS(triAx,=,triSideAx0,triSideAx1);
   int code=0;
   dReal signum, outDepth,cos0,cos1,cos2,sin1;
 ////////////////////////////////////////////////////////////////////////////
 //sepparation along tri plane normal;///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-accurate_normalize(triAx);
+//accurate_normalize(triAx);
 
 //cos0=dDOT14(triAx,R+0);
 cos1=dFabs(dDOT14(triAx,R+1));
@@ -318,7 +318,7 @@ sin1=_sqrt(REAL(1.)-cos1*cos1);
 
 dReal sidePr=cos1*hlz+sin1*radius;
 
-dReal dist=dDOT(triAx,v0)-dDOT(triAx,p);
+dReal dist=-T->dist; //dDOT(triAx,v0)-dDOT(triAx,p);
 if(dist>0.f) RETURN0;
 dReal depth=sidePr-dFabs(dist);
 outDepth=depth;
