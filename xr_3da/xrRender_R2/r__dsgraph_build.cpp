@@ -376,7 +376,6 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 		{
 			// General type of visual
 			r_dsgraph_insert_static		(pVisual);
-			Msg							("");	//.
 		}
 		return;
 	default:
@@ -564,7 +563,6 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 		{
 			// General type of visual
 			r_dsgraph_insert_static		(pVisual);
-			Msg							("");	//.
 		}
 		return;
 	default:

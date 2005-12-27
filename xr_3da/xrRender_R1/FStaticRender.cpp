@@ -205,7 +205,6 @@ void					CRender::set_Object				(IRenderable*		O )
 {
 	VERIFY					(g_bRendering);
 	val_pObject				= O;		// NULL is OK, trust me :)
-	//.
 	if (val_pObject)		{
 		VERIFY(dynamic_cast<CObject*>(O)||dynamic_cast<CPS_Instance*>(O));
 		if (O->renderable.pROS) { VERIFY(dynamic_cast<CROS_impl*>(O->renderable.pROS)); }

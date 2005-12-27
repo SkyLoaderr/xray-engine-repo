@@ -39,7 +39,6 @@ void CRender::level_Load(IReader* fs)
 
 	// Components
 
-//.	Target						= xr_new<CRenderTarget>		();
 	L_Shadows					= xr_new<CLightShadows>		();
 	L_Projector					= xr_new<CLightProjector>	();
 	L_DB						= xr_new<CLight_DB>			();
@@ -143,7 +142,6 @@ void CRender::level_Unload		()
 	xr_delete					(L_DB);
 	xr_delete					(L_Projector);
 	xr_delete					(L_Shadows);
-//.	xr_delete					(Target);
 
 	//*** Shaders
 	Shaders.clear_and_free		();
@@ -188,7 +186,7 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			BYTE*	pData		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
 			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
-			CopyMemory		(pData,fs().pointer(),vCount*vSize);	//.???? copy while skip T&B
+			CopyMemory			(pData,fs().pointer(),vCount*vSize);	//.???? copy while skip T&B
 			VB[i]->Unlock		();
 
 			fs().advance		(vCount*vSize);

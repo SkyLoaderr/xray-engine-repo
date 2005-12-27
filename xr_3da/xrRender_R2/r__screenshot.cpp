@@ -84,9 +84,11 @@ void CRender::Screenshot		(IRender_interface::ScreenshotMode mode, LPCSTR name)
 				// save (logical & physical)
 				ID3DXBuffer*		saved	= 0;
 				CHK_DX				(D3DXSaveTextureToFileInMemory (&saved,D3DXIFF_DDS,texture,0));
-				IWriter*			fs		= FS.w_open	(name); R_ASSERT(fs);
-				fs->w				(saved->GetBufferPointer(),saved->GetBufferSize());
-				FS.w_close			(fs);
+				IWriter*			fs		= FS.w_open	(name); 
+				if (fs)				{
+					fs->w				(saved->GetBufferPointer(),saved->GetBufferSize());
+					FS.w_close			(fs);
+				}
 				_RELEASE			(saved);
 
 				// cleanup
