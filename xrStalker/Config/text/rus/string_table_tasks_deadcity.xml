@@ -123,13 +123,8 @@
         Спуститься в канализацию.
     </text>
 </string>
-<string id="cit_doctor_escape_task_3">
-    <text>
-        Найти машину.
-    </text>
-</string>
 <string id="cit_doctor_escape_task_4">
     <text>
-        Добраться до выхода из города.
+        Уйти из города
     </text>
 </string>
