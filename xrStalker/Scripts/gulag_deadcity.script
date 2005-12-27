@@ -330,14 +330,22 @@ function load_job_killers(sj, gname, type, squad, groups)
 
         d = delays[i]
         ltx = ltx.."[logic@" .. gname .. "_free_stalker" .. i .. "]\n" ..
-                   "active          = kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5\n" ..
+                   "active          = kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5_begin\n" ..
                    "combat_ignore   = combat_ignore\n" ..
 
-                   "[kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5]\n" ..
+                   "[kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5_begin]\n" ..
                    "center_point        = kamp5\n" ..
-                   "on_timer            = " .. d[1] .. "000 | walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
-                   "on_info             = {+cit_heli_start -cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
+                   "on_info             = {+cit_jail_doctor_leave} camper@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
                    "soundgroup          = " .. gname .. "_kamp5_sg\n" ..
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
+
+                   "[camper@" .. gname .. "_free_stalker" .. i .. "_attack]\n" ..
+                   "path_walk           = free_stalker" .. i .. "_attack_walk\n" ..
+                   "path_look           = free_stalker" .. i .. "_attack_look\n" ..
+                   "no_retreat          = true\n" ..
+                   "radius              = 8\n" ..
+                   --"heli_hunter         = true\n" ..
+                   "on_info             = {+cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[walker@" .. gname .. "_free_stalker" .. i .. "]\n" ..
@@ -347,15 +355,16 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "def_state_moving2   = patrol\n" ..
                    "def_state_moving3   = patrol\n" ..
                    "on_timer            = " .. d[2] .. "000 | kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5\n" ..
-                   "on_info             = {+cit_jail_guard1_close_door -cit_button_broken} kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5\n" ..
-                   "on_info2            = {+cit_heli_start -cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
+                   --"on_info             = {+cit_jail_guard1_close_door -cit_button_broken} kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5\n" ..
+                   --"on_info2            = {+cit_heli_start -cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
-                   "[walker@" .. gname .. "_free_stalker" .. i .. "_attack]\n" ..
-                   "path_walk           = free_stalker" .. i .. "_attack_walk\n" ..
-                   "path_look           = free_stalker" .. i .. "_attack_look\n" ..
-                   "on_info             = {+cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
-                   ";heli_hunter         = true\n" ..
+                   "[kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5]\n" ..
+                   "center_point        = kamp5\n" ..
+                   "on_timer            = " .. d[1] .. "000 | walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
+                   --"on_info             = {+cit_heli_start -cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
+                   --"on_info2            = {+cit_jail_doctor_leave -cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
+                   "soundgroup          = " .. gname .. "_kamp5_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
