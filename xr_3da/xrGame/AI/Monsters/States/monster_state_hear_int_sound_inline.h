@@ -1,5 +1,7 @@
 #pragma once
 
+#include "state_custom_action_look.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -10,7 +12,7 @@ TEMPLATE_SPECIALIZATION
 CStateMonsterHearInterestingSoundAbstract::CStateMonsterHearInterestingSound(_Object *obj) : inherited(obj)
 {
 	add_state	(eStateHearInterestingSound_MoveToDest,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
-	add_state	(eStateHearInterestingSound_LookAround,	xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateHearInterestingSound_LookAround,	xr_new<CStateMonsterCustomActionLook<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -34,7 +36,7 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 	
 	if (current_substate == eStateHearInterestingSound_MoveToDest) {
 		SStateDataMoveToPoint data;
-		data.point			= object->SoundMemory.GetSound().position;
+		data.point			= get_target_position();
 		data.vertex			= u32(-1);
 		data.action.action	= ACT_WALK_FWD;
 		data.accelerated	= true;
@@ -51,15 +53,28 @@ void CStateMonsterHearInterestingSoundAbstract::setup_substates()
 	}
 
 	if (current_substate == eStateHearInterestingSound_LookAround) {
-		SStateDataAction data;
-		data.action			= ACT_LOOK_AROUND;
-		data.sound_type		= MonsterSound::eMonsterSoundIdle;
-		data.sound_delay	= object->db().m_dwIdleSndDelay;
+		SStateDataActionLook	data;
+		data.action				= ACT_LOOK_AROUND;
+		data.sound_type			= MonsterSound::eMonsterSoundIdle;
+		data.sound_delay		= object->db().m_dwIdleSndDelay;
+		
+		Fvector dir;
+		object->CoverMan->less_cover_direction(dir);
+		data.point.mad			(object->Position(),dir,10.f);
 
-		state->fill_data_with(&data, sizeof(SStateDataAction));
+		state->fill_data_with(&data, sizeof(SStateDataActionLook));
 
 		return;
 	}
+}
+
+TEMPLATE_SPECIALIZATION
+Fvector	CStateMonsterHearInterestingSoundAbstract::get_target_position()
+{
+	Fvector snd_pos = object->SoundMemory.GetSound().position;
+	if (!object->Home->has_home() || object->Home->at_home(snd_pos)) return snd_pos;
+		
+	return ai().level_graph().vertex_position(object->Home->get_place());
 }
 
 #undef TEMPLATE_SPECIALIZATION
