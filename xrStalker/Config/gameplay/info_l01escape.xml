@@ -186,7 +186,8 @@
 	<info_portion id="esc_kill_bandits_quest_kill"></info_portion>
 	<info_portion id="esc_kill_bandits_quest_done"></info_portion>
 	<info_portion id="esc_assault_start"></info_portion>
-	
+	<info_portion id="esc_assault_charge"></info_portion>
+	<info_portion id="esc_heli_go"></info_portion>
 	
 	<!-- random artefacts -->
 	<info_portion id="esc_artefact1_need">
