@@ -200,6 +200,9 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 			fTarget = D3DFMT_X8R8G8B8;
 			if (SUCCEEDED(pD3D->CheckDeviceType(DevAdapter,DevT,fTarget,fTarget,FALSE)))
 				break;
+			fTarget = D3DFMT_A8R8G8B8;
+			if (SUCCEEDED(pD3D->CheckDeviceType(DevAdapter,DevT,fTarget,fTarget,FALSE)))
+				break;
 			fTarget = D3DFMT_R8G8B8;
 			if (SUCCEEDED(pD3D->CheckDeviceType(DevAdapter,DevT,fTarget,fTarget,FALSE)))
 				break;
@@ -246,7 +249,7 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	// Depth/stencil
 	P.EnableAutoDepthStencil= TRUE;
     P.AutoDepthStencilFormat= fDepth;
-	P.Flags					= D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
+	P.Flags					= 0;	//. D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL;
 
 	// Refresh rate
 	P.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
