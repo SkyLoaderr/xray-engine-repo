@@ -48,10 +48,10 @@ inv_grid_height			= 2
 inv_grid_x				= 0
 inv_grid_y				= 12
 
-kill_msg_x			= 84
-kill_msg_y			= 28
-kill_msg_width		= 73
-kill_msg_height		= 30
+kill_msg_x				= 84
+kill_msg_y				= 28
+kill_msg_width			= 73
+kill_msg_height			= 30
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
@@ -59,24 +59,24 @@ fire_dispersion_base		= 0.25; 0.16	;угол (в градусах) базовой дисперсии оружия (
 control_inertion_factor		= 1.35f
 
 ;отдача
-cam_relax_speed        		= 4.2;0.5	;скорость возврата в исходное положение
-cam_dispersion         		= 0.5	;увеличения угла (в градусах) с каждым выстрелом
-cam_dispersion_inc		= 0.12	;увеличениe cam_dispersion с каждым выстрелом
-cam_dispertion_frac		= 1.0	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
-cam_max_angle			= 9.0	;максимальный угол отдачи
-cam_max_angle_horz		= 10.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz		= 0.55	;(degree) size of step camera moved in horizontal position while shooting
+cam_relax_speed         	=3.5; 0.15		;скорость возврата в исходное положение
+cam_dispersion          	= 0.15		;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion_inc			= 0.3		;увеличениe cam_dispersion с каждым выстрелом
+cam_dispertion_frac			= 0.9		;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
+cam_max_angle				= 10.0	    	;максимальный угол отдачи
+cam_max_angle_horz			= 20.0		;(degree) maximum shot horizontal degree 
+cam_step_angle_horz			= 1.0		;(degree) size of step camera moved in horizontal position while shooting
 
-fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.001	;вероятность осечки при максимальном износе 
-condition_shot_dec 		= 0.00003 ;увеличение износа при каждом выстреле
+fire_dispersion_condition_factor 	= 5	    	;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability 		= 0.0003	;вероятность осечки при максимальном износе 
+condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 ;parent dispersion modifiers
-PDM_disp_base 			= 1.0
+PDM_disp_base 				= 1.0
 PDM_disp_vel_factor 		= 1.4
 PDM_disp_accel_factor 		= 1.4
-PDM_crouch	 		= 1.0
-PDM_crouch_no_acc 		= 1.0
+PDM_crouch	 				= 1.0
+PDM_crouch_no_acc 			= 1.0
 
 direction              		=  0, 0, 1
 fire_point             		=  0.0, 0.186, 0.435
@@ -94,11 +94,11 @@ rpm_empty_click 	 		= 200
 
 ; ttc
 hit_power                	= 103
-hit_impulse		 	= 140
-hit_type 			= fire_wound 	
+hit_impulse		 			= 140
+hit_type 					= fire_wound 	
 
 fire_distance            	= 1000
-bullet_speed			= 950	;начальная скорость пули
+bullet_speed				= 950	;начальная скорость пули
 rpm                      	= 650
 ; end ttc
 
@@ -138,7 +138,7 @@ silencer_status				= 2
 grenade_launcher_status		= 2
 
 zoom_enabled				= true
-scope_zoom_factor	    	= 15
+scope_zoom_factor			= 30		;SUSAT 2X
 scope_texture				= wpn\wpn_crosshair_l85
 
 scope_name 					= wpn_addon_scope
