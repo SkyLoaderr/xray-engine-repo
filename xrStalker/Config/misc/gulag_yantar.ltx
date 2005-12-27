@@ -135,9 +135,10 @@ combat_ignore_cond = always
 danger = danger_condition@1
 
 [remark@scientist_41]
+snd_anim_synñ = true 
 snd = yantar_kruglov_radiation_quest_3
-anim = guard_rac
-on_signal = sound_end | camper@scientist_4 
+anim = probe_1
+on_signal = action_end | camper@scientist_4 
 combat_ignore_cond = always
 danger = danger_condition@1
 
@@ -163,9 +164,10 @@ no_retreat = true
 on_info = {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_5 
 
 [remark@scientist_5]
+snd_anim_synñ = true
 snd = yantar_kruglov_radiation_quest_4
-anim = guard_rac
-on_signal = sound_end | camper@scientist_5 
+anim = probe_2
+on_signal = action_end | camper@scientist_5 
 combat_ignore_cond = always
 danger = danger_condition@1
 
@@ -208,7 +210,7 @@ danger = danger_condition@1
 
 [remark@scientist_wounded_1]
 ;snd = yantar_kruglov_radiation_quest_6
-anim = guard_rac
+anim = probe_3
 target = actor
 on_signal = anim_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
 on_timer = 9000 | %+yan_spawn_ghost%
