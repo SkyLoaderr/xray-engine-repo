@@ -172,6 +172,7 @@ void CAI_Bloodsucker::reinit()
 	m_visual_default			= cNameVisual();
 
 	m_vampire_want_value		= 0.f;
+	m_predator					= false;
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -360,8 +361,10 @@ void CAI_Bloodsucker::net_Destroy()
 
 void CAI_Bloodsucker::Die(CObject* who)
 {
-	CInvisibility::deactivate(); 
-	inherited::Die(who);
+	CInvisibility::deactivate	(); 
+	predator_stop				();
+
+	inherited::Die				(who);
 }
 
 void CAI_Bloodsucker::post_fsm_update()
@@ -403,6 +406,7 @@ void CAI_Bloodsucker::set_alien_control(bool val)
 
 void CAI_Bloodsucker::predator_start()
 {
+	if (m_predator)					return;
 	cNameVisual_set					(m_visual_predator);
 	CDamageManager::reload(*cNameSect(),"damage",pSettings);
 
@@ -410,10 +414,13 @@ void CAI_Bloodsucker::predator_start()
 	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
 	sound().play					(CAI_Bloodsucker::eChangeVisibility);
+
+	m_predator						= true;
 }
 
 void CAI_Bloodsucker::predator_stop()
 {
+	if (!m_predator)				return;
 	cNameVisual_set					(*m_visual_default);
 	CDamageManager::reload(*cNameSect(),"damage",pSettings);
 
@@ -421,6 +428,7 @@ void CAI_Bloodsucker::predator_stop()
 	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
 	sound().play					(CAI_Bloodsucker::eChangeVisibility);
+	m_predator						= false;
 }
 
 void CAI_Bloodsucker::predator_freeze()

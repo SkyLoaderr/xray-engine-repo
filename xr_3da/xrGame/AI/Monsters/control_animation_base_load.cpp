@@ -3,35 +3,35 @@
 
 void CControlAnimationBase::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s, LPCSTR fx_front, LPCSTR fx_back, LPCSTR fx_left, LPCSTR fx_right)
 {
-	SAnimItem new_item;
+	SAnimItem *new_item		= new SAnimItem;
 
-	new_item.target_name	= tn;
-	new_item.spec_id		= s_id;
-	new_item.velocity		= *vel;
-	new_item.pos_state		= p_s;
+	new_item->target_name	= tn;
+	new_item->spec_id		= s_id;
+	new_item->velocity		= *vel;
+	new_item->pos_state		= p_s;
 
-	new_item.fxs.front		= fx_front;
-	new_item.fxs.back		= fx_back;
-	new_item.fxs.left		= fx_left;
-	new_item.fxs.right		= fx_right;
+	new_item->fxs.front		= fx_front;
+	new_item->fxs.back		= fx_back;
+	new_item->fxs.left		= fx_left;
+	new_item->fxs.right		= fx_right;
 
-	new_item.count			= 0;
+	new_item->count			= 0;
 
-	m_tAnims.insert			(mk_pair(ma, new_item));
+	m_anim_storage[ma]		= new_item;
 }
 
 void CControlAnimationBase::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s)
 {
-	SAnimItem new_item;
+	SAnimItem *new_item		= new SAnimItem;
 
-	new_item.target_name	= tn;
-	new_item.spec_id		= s_id;
-	new_item.velocity		= *vel;
-	new_item.pos_state		= p_s;
+	new_item->target_name	= tn;
+	new_item->spec_id		= s_id;
+	new_item->velocity		= *vel;
+	new_item->pos_state		= p_s;
 
-	new_item.count			= 0;
+	new_item->count			= 0;
 
-	m_tAnims.insert			(mk_pair(ma, new_item));
+	m_anim_storage[ma]		= new_item;
 }
 
 void CControlAnimationBase::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain, bool skip_aggressive)

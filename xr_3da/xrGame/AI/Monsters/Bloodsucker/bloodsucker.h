@@ -114,6 +114,7 @@ public:
 public:
 	shared_str				m_visual_default;
 	LPCSTR					m_visual_predator;
+	bool					m_predator;
 			
 			void			predator_start			();
 			void			predator_stop			();

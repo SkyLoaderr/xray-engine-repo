@@ -30,6 +30,16 @@ char *dbg_action_name_table[] = {
 		"ACT_JUMP"
 };	
 
+CControlAnimationBase::CControlAnimationBase()
+{
+	init_anim_storage	();
+}
+
+CControlAnimationBase::~CControlAnimationBase()
+{
+	free_anim_storage	();
+}
+
 void CControlAnimationBase::reinit()
 {
 	inherited::reinit		();
@@ -108,20 +118,20 @@ void CControlAnimationBase::select_animation()
 	m_object->ForceFinalAnimation();
 
 	// получить элемент SAnimItem, соответствующий текущей анимации
-	ANIM_ITEM_MAP_IT anim_it = m_tAnims.find(cur_anim_info().motion);
-	VERIFY(m_tAnims.end() != anim_it);
+	SAnimItem *anim_it = m_anim_storage[cur_anim_info().motion];
+	VERIFY(anim_it);
 
 	// определить необходимый индекс
 	int index;
-	if (-1 != anim_it->second.spec_id) index = anim_it->second.spec_id;
+	if (-1 != anim_it->spec_id) index = anim_it->spec_id;
 	else {
-		VERIFY(anim_it->second.count != 0);
-		index = ::Random.randI(anim_it->second.count);
+		VERIFY(anim_it->count != 0);
+		index = ::Random.randI(anim_it->count);
 	}
 
 	// установить анимацию	
 	string128	s1,s2;
-	MotionID	cur_anim		= smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe(strconcat(s2,*anim_it->second.target_name,itoa(index,s1,10)));
+	MotionID	cur_anim		= smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe(strconcat(s2,*anim_it->target_name,itoa(index,s1,10)));
 
 	// Setup Com
 	ctrl_data->global.motion	= cur_anim;
@@ -130,7 +140,7 @@ void CControlAnimationBase::select_animation()
 
 	// Заполнить текущую анимацию
 	string64	st,tmp;
-	strconcat	(st,*anim_it->second.target_name,itoa(index,tmp,10));
+	strconcat	(st,*anim_it->target_name,itoa(index,tmp,10));
 	//	sprintf		(st, "%s%d", *anim_it->second.target_name, index);
 	m_cur_anim.name				= st; 
 	m_cur_anim.index			= u8(index);
@@ -226,10 +236,10 @@ SAAParam &CControlAnimationBase::AA_GetParams(MotionID motion, float time_perc)
 EPState	CControlAnimationBase::GetState (EMotionAnim a)
 {
 	// найти анимацию 
-	ANIM_ITEM_MAP_IT  item_it = m_tAnims.find(a);
-	VERIFY(m_tAnims.end() != item_it);
+	SAnimItem *item_it = m_anim_storage[a];
+	VERIFY(item_it);
 
-	return item_it->second.pos_state;
+	return item_it->pos_state;
 }
 
 #define FX_CAN_PLAY_MIN_INTERVAL	50
@@ -238,17 +248,17 @@ void CControlAnimationBase::FX_Play(EHitSide side, float amount)
 {
 	if (fx_time_last_play + FX_CAN_PLAY_MIN_INTERVAL > m_object->m_dwCurrentTime) return;
 
-	ANIM_ITEM_MAP_IT anim_it = m_tAnims.find(cur_anim_info().motion);
-	VERIFY(m_tAnims.end() != anim_it);
+	SAnimItem *anim_it = m_anim_storage[cur_anim_info().motion];
+	VERIFY(anim_it);
 
 	clamp(amount,0.f,1.f);
 
 	shared_str	*p_str = 0;
 	switch (side) {
-		case eSideFront:	p_str = &anim_it->second.fxs.front;	break;
-		case eSideBack:		p_str = &anim_it->second.fxs.back;	break;
-		case eSideLeft:		p_str = &anim_it->second.fxs.left;	break;
-		case eSideRight:	p_str = &anim_it->second.fxs.right;	break;
+		case eSideFront:	p_str = &anim_it->fxs.front;	break;
+		case eSideBack:		p_str = &anim_it->fxs.back;	break;
+		case eSideLeft:		p_str = &anim_it->fxs.left;	break;
+		case eSideRight:	p_str = &anim_it->fxs.right;	break;
 	}
 
 	if (p_str && p_str->size()) smart_cast<CSkeletonAnimated*>(m_object->Visual())->PlayFX(*(*p_str), amount);
@@ -258,8 +268,8 @@ void CControlAnimationBase::FX_Play(EHitSide side, float amount)
 
 float CControlAnimationBase::GetAnimSpeed(EMotionAnim anim)
 {
-	ANIM_ITEM_MAP_IT	anim_it = m_tAnims.find(anim);
-	VERIFY				(m_tAnims.end() != anim_it);
+	SAnimItem *anim_it = m_anim_storage[anim];
+	VERIFY(anim_it);
 
 	CMotionDef			*def = get_motion_def(anim_it, 0);
 
@@ -269,19 +279,19 @@ float CControlAnimationBase::GetAnimSpeed(EMotionAnim anim)
 
 bool CControlAnimationBase::IsTurningCurAnim()
 {
-	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim_info().motion);
-	VERIFY(m_tAnims.end() != item_it);
+	SAnimItem *item_it = m_anim_storage[cur_anim_info().motion];
+	VERIFY(item_it);
 
-	if (!fis_zero(item_it->second.velocity.velocity.angular_real)) return true;
+	if (!fis_zero(item_it->velocity.velocity.angular_real)) return true;
 	return false;
 }
 
 bool CControlAnimationBase::IsStandCurAnim()
 {
-	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim_info().motion);
-	VERIFY(m_tAnims.end() != item_it);
+	SAnimItem *item_it = m_anim_storage[cur_anim_info().motion];
+	VERIFY(item_it);
 
-	if (fis_zero(item_it->second.velocity.velocity.linear)) return true;
+	if (fis_zero(item_it->velocity.velocity.linear)) return true;
 	return false;
 }
 
@@ -328,10 +338,10 @@ EAction CControlAnimationBase::GetActionFromPath()
 
 LPCSTR CControlAnimationBase::GetAnimationName(EMotionAnim anim)
 {
-	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(anim);
-	VERIFY(m_tAnims.end() != item_it);
+	SAnimItem *item_it = m_anim_storage[anim];
+	VERIFY(item_it);
 
-	return *item_it->second.target_name;
+	return *item_it->target_name;
 }
 
 LPCSTR CControlAnimationBase::GetActionName(EAction action)
@@ -343,13 +353,13 @@ LPCSTR CControlAnimationBase::GetActionName(EAction action)
 
 void CControlAnimationBase::ValidateAnimation()
 {
+	SAnimItem *item_it = m_anim_storage[cur_anim_info().motion];
 
-	ANIM_ITEM_MAP_IT item_it = m_tAnims.find(cur_anim_info().motion);
-	bool is_moving_anim		= !fis_zero(item_it->second.velocity.velocity.linear);
+	bool is_moving_anim		= !fis_zero(item_it->velocity.velocity.linear);
 	bool is_moving_on_path	= m_object->control().path_builder().is_moving_on_path();
 
 	if (is_moving_on_path && is_moving_anim) {
-		m_object->dir().use_path_direction(item_it->first == eAnimDragCorpse);
+		m_object->dir().use_path_direction(cur_anim_info().motion == eAnimDragCorpse);
 		return;
 	}
 
@@ -364,7 +374,7 @@ void CControlAnimationBase::ValidateAnimation()
 		return;
 	}
 
-	if (!m_object->control().direction().is_turning() && ((item_it->first == eAnimStandTurnLeft) || (item_it->first == eAnimStandTurnRight))) {
+	if (!m_object->control().direction().is_turning() && ((cur_anim_info().motion == eAnimStandTurnLeft) || (cur_anim_info().motion == eAnimStandTurnRight))) {
 		cur_anim_info().motion		= eAnimStandIdle;
 		return;
 	}
@@ -375,16 +385,17 @@ void CControlAnimationBase::UpdateAnimCount()
 {
 	CSkeletonAnimated *skel = smart_cast<CSkeletonAnimated*>(m_object->Visual());
 
-	for (ANIM_ITEM_MAP_IT it = m_tAnims.begin(); it != m_tAnims.end(); it++)	{
+	for (ANIM_ITEM_VECTOR_IT it = m_anim_storage.begin(); it != m_anim_storage.end(); it++)	{
+		if (!(*it)) continue;
 
 		// проверить, были ли уже загружены данные
-		if (it->second.count != 0) return;
+		if ((*it)->count != 0) return;
 
 		string128	s, s_temp; 
 		u8 count = 0;
 
 		for (int i=0; ; ++i) {
-			strconcat	(s_temp, *it->second.target_name,itoa(i,s,10));
+			strconcat	(s_temp, *((*it)->target_name),itoa(i,s,10));
 			LPCSTR		name	= s_temp;
 			MotionID	id		= skel->ID_Cycle_Safe(name);
 
@@ -395,19 +406,19 @@ void CControlAnimationBase::UpdateAnimCount()
 			else break;
 		}
 
-		if (count != 0) it->second.count = count;
+		if (count != 0) (*it)->count = count;
 		else {
-			sprintf(s, "Error! No animation: %s for monster %s", *it->second.target_name, *m_object->cName());
+			sprintf(s, "Error! No animation: %s for monster %s", *((*it)->target_name), *m_object->cName());
 			R_ASSERT2(count != 0, s);
 		} 
 	}
 }
 
-CMotionDef *CControlAnimationBase::get_motion_def(ANIM_ITEM_MAP_IT &it, u32 index)
+CMotionDef *CControlAnimationBase::get_motion_def(SAnimItem *it, u32 index)
 {
 	string128			s1,s2;
 	CSkeletonAnimated	*skeleton_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
-	const MotionID		&motion_id = skeleton_animated->ID_Cycle_Safe(strconcat(s2,*it->second.target_name,itoa(index,s1,10)));
+	const MotionID		&motion_id = skeleton_animated->ID_Cycle_Safe(strconcat(s2,*it->target_name,itoa(index,s1,10)));
 	return				(skeleton_animated->LL_GetMotionDef(motion_id));
 }
 
@@ -428,20 +439,20 @@ shared_str CControlAnimationBase::GetAnimTranslation(const MotionID &motion)
 MotionID CControlAnimationBase::get_motion_id(EMotionAnim a, u32 index)
 {
 	// получить элемент SAnimItem, соответствующий текущей анимации
-	ANIM_ITEM_MAP_IT anim_it = m_tAnims.find(a);
-	VERIFY(m_tAnims.end() != anim_it);
+	SAnimItem *anim_it = m_anim_storage[a];
+	VERIFY(anim_it);
 
 	// определить необходимый индекс
 	if (index == u32(-1)) {
-		if (-1 != anim_it->second.spec_id) index = anim_it->second.spec_id;
+		if (-1 != anim_it->spec_id) index = anim_it->spec_id;
 		else {
-			VERIFY(anim_it->second.count != 0);
-			index = ::Random.randI(anim_it->second.count);
+			VERIFY(anim_it->count != 0);
+			index = ::Random.randI(anim_it->count);
 		}
 	}
 
 	string128			s1,s2;
-	return				(smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe(strconcat(s2,*anim_it->second.target_name,itoa(index,s1,10))));
+	return				(smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe(strconcat(s2,*anim_it->target_name,itoa(index,s1,10))));
 }
 
 void CControlAnimationBase::stop_now()
@@ -557,3 +568,22 @@ void CControlAnimationBase::AA_reload(LPCSTR section)
 		}
 	}
 }
+
+void CControlAnimationBase::init_anim_storage()
+{
+	m_anim_storage.reserve(eAnimCount);
+	for (u32 i=0; i<eAnimCount; i++)
+		m_anim_storage.push_back((SAnimItem *)0);
+}
+
+void CControlAnimationBase::free_anim_storage()
+{
+	for (u32 i=0; i<eAnimCount; i++) {
+		SAnimItem *item = m_anim_storage[i];
+		if (item) {
+			xr_delete			(item);
+			m_anim_storage[i]	= 0;
+		}
+	}
+}
+

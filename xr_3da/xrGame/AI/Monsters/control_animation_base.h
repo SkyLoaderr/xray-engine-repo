@@ -50,7 +50,6 @@ protected:
 
 		EMotionAnim				spec_anim; 
 
-		ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 		MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
 		TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
 
@@ -65,6 +64,10 @@ protected:
 protected:
 
 	ANIM_TO_MOTION_MAP			m_anim_motion_map;
+	
+	ANIM_ITEM_VECTOR			m_anim_storage;			
+	void						init_anim_storage	();
+	void						free_anim_storage	();
 
 public:
 
@@ -73,6 +76,8 @@ public:
 	float					m_prev_character_velocity;
 
 public:
+				CControlAnimationBase	();
+	virtual		~CControlAnimationBase	();
 
 	// Control_ComBase interface
 	virtual void		reinit			();
@@ -133,7 +138,7 @@ protected:
 	EPState		GetState				(EMotionAnim a);
 	void		CheckReplacedAnim		();
 
-	CMotionDef	*get_motion_def			(ANIM_ITEM_MAP_IT &it, u32 index);
+	CMotionDef	*get_motion_def			(SAnimItem *it, u32 index);
 
 public:
 	float		GetAnimSpeed			(EMotionAnim anim);

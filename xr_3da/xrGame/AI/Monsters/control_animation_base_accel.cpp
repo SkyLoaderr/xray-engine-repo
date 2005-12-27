@@ -61,9 +61,10 @@ bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_
 		// Пройти по текущему вектору
 		for (IT = IT_B; IT != IT_E; IT++) {
 
-
-			ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(*IT);
-			SVelocityParam		*param	= &item_it->second.velocity;
+			SAnimItem			*item_it = m_anim_storage[*IT];
+			VERIFY(item_it);
+			
+			SVelocityParam		*param	= &item_it->velocity;
 			float				from	= param->velocity.linear * param->min_factor;
 			float				to		= param->velocity.linear * param->max_factor;
 
@@ -71,7 +72,7 @@ bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_
 				((cur_speed < from) && (IT == I->begin()))					|| 
 				((cur_speed + EPS_L >= to) &&	(IT+1 == I->end())) ) {
 					best_anim	= IT;
-					best_param	= &item_it->second.velocity;
+					best_param	= &item_it->velocity;
 				}
 
 				if ((*IT) == target_anim) found = true;
@@ -98,17 +99,18 @@ bool CControlAnimationBase::accel_chain_test()
 
 		VERIFY2(I->size() >= 2, error_msg);
 
-		ANIM_ITEM_MAP_IT	anim_from	= m_tAnims.find(*(I->begin()));
-		ANIM_ITEM_MAP_IT	anim_to;
+		SAnimItem *anim_from = m_anim_storage[*(I->begin())];
+		SAnimItem *anim_to;
+		VERIFY(anim_from);
 
 		// Пройти по текущему вектору
 		for (SEQ_VECTOR_IT IT = I->begin() + 1; IT != I->end(); IT++) {
-			anim_to = m_tAnims.find(*IT);
+			anim_to = m_anim_storage[*IT];
 
-			float from	=	anim_from->second.velocity.velocity.linear * anim_from->second.velocity.max_factor;
-			float to	=	anim_to->second.velocity.velocity.linear * anim_to->second.velocity.min_factor;
+			float from	=	anim_from->velocity.velocity.linear * anim_from->velocity.max_factor;
+			float to	=	anim_to->velocity.velocity.linear * anim_to->velocity.min_factor;
 
-			sprintf(error_msg,"Incompatible speed ranges. Monster[%s] From animation  [%s] To animation [%s]",*m_object->cName(),*anim_from->second.target_name, *anim_to->second.target_name);
+			sprintf(error_msg,"Incompatible speed ranges. Monster[%s] From animation  [%s] To animation [%s]",*m_object->cName(),*anim_from->target_name, *anim_to->target_name);
  			VERIFY2(to < from, error_msg);
 
 			anim_from = anim_to;

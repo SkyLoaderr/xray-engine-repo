@@ -199,6 +199,7 @@ enum EMotionAnim {
 	eAnimGraviPrepare,
 	eAnimGraviFire,
 
+	eAnimCount,
 	eAnimUndefined			= u32(-1)
 };
 
@@ -365,7 +366,7 @@ enum EHitSide {
 };
 
 
-DEFINE_MAP		(EMotionAnim,		SAnimItem,				ANIM_ITEM_MAP,				ANIM_ITEM_MAP_IT);
+DEFINE_VECTOR	(SAnimItem*,		ANIM_ITEM_VECTOR,		ANIM_ITEM_VECTOR_IT);
 DEFINE_VECTOR	(STransition,		TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
 DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,			MOTION_ITEM_MAP_IT);
 DEFINE_VECTOR	(EMotionAnim,		SEQ_VECTOR,				SEQ_VECTOR_IT);
