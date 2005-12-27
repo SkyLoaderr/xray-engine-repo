@@ -335,7 +335,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 
                    "[kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5_begin]\n" ..
                    "center_point        = kamp5\n" ..
-                   "on_info             = {+cit_jail_doctor_leave} camper@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
+                   "on_info             = {+cit_heli_scene_start} camper@" .. gname .. "_free_stalker" .. i .. "_attack\n" ..
                    "soundgroup          = " .. gname .. "_kamp5_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
