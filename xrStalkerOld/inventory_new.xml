@@ -16,7 +16,7 @@
 
     <!-- ARTIFACT MERGER WINDOW -->
     <frame_window x="440" y="260" width="267" height="500">
-		<texture>ui_frame</texture>        
+		<texture>ui_frame</texture>        		
     </frame_window>
 
     <!-- SLEEP PARAMS WINDOW -->
@@ -24,6 +24,12 @@
         <texture>ui\ui_dg_sleep</texture>
         <text>ui_inv_rest</text>
     </sleep_window>
+    
+    <btn_sell_all x="370" y="672" width="157" height="48">
+		<texture>ui_button_main01</texture>
+		<text font="graffiti22" r="238" g="153" b="26">Sell All</text>
+		
+    </btn_sell_all>
 
     <!-- DESCRIPTION WINDOW -->
     <descr_static x="370" y="260" width="335" height="475">
