@@ -16,8 +16,6 @@
 //50fps fixed
 float STEP=0.02f;
 
-
-
 CHelicopter::CHelicopter()
 {
 	m_pParticle		= NULL;
@@ -44,7 +42,7 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 #ifdef DEBUG
 	LPCSTR str;
 	switch			(m_curState) {
-	case CHelicopter::eAlive:			str = "eAlive";				break;
+	case CHelicopter::eAlive:				str = "eAlive";				break;
 	case CHelicopter::eDead:				str = "eDead";					break;
 	default:								str = "unknown";				break;
 	};
@@ -315,13 +313,13 @@ void CHelicopter::MoveStep()
 		dir.normalize_safe();
 		pathDir = dir;
 		dir.getHP(desired_H, desired_P);
-		
+		float speed_ = _min(m_movement.GetSpeedInDestPoint(), GetMaxVelocity() );
 
 		if(angle_difference(m_movement.currPathH,desired_H)>PI_DIV_3)
 			m_movement.curLinearAcc = -m_movement.LinearAcc_bk;
 		else
 			m_movement.curLinearAcc = GetCurrAcc(	m_movement.curLinearSpeed,
-													m_movement.GetSpeedInDestPoint(),
+													speed_,
 													dist*0.95f,
 													m_movement.LinearAcc_fw,
 													-m_movement.LinearAcc_bk);
