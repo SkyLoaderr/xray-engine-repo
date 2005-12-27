@@ -134,7 +134,9 @@ public:
 		eVampireHit				= eAdditionalSounds | 2,
 		eVampireStartHunt		= eAdditionalSounds | 3,
 
-		eChangeVisibility		= eAdditionalSounds | 4,
+		eGrowl					= eAdditionalSounds | 5,
+
+		eChangeVisibility		= eAdditionalSounds | 6,
 	};
 
 	//--------------------------------------------------------------------

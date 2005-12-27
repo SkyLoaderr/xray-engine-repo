@@ -94,6 +94,9 @@ void CBloodsuckerStateAttackAbstract::execute()
 		squad->UpdateGoal	(object, goal);
 	}
 	//////////////////////////////////////////////////////////////////////////
+
+	if (current_substate == eStateAttack_Run)
+		object->sound().play(CAI_Bloodsucker::eGrowl, 0, 0, 8000);
 }
 
 #define INVIS_ACTIVATE_DELAY 3000
