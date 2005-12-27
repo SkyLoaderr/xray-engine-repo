@@ -111,6 +111,8 @@ void CVisualMemoryManager::reinit					()
 
 	if (m_object)
 		m_object->feel_vision_clear		();
+
+	m_last_update_time					= u32(-1);
 }
 
 void CVisualMemoryManager::reload				(LPCSTR section)
@@ -137,6 +139,21 @@ IC	u32	CVisualMemoryManager::visible_object_time_last_seen	(const CObject *objec
 		return (I->m_level_time);	
 	else 
 		return u32(-1);
+}
+
+bool CVisualMemoryManager::visible_right_now	(const CGameObject *game_object) const
+{
+	VISIBLES::const_iterator		I = std::find(objects().begin(),objects().end(),object_id(game_object));
+	if ((objects().end() == I))
+		return						(false);
+
+	if (!(*I).visible(mask()))
+		return						(false);
+
+	if ((*I).m_level_time < m_last_update_time)
+		return						(false);
+
+	return							(true);
 }
 
 bool CVisualMemoryManager::visible_now	(const CGameObject *game_object) const
@@ -493,6 +510,8 @@ void CVisualMemoryManager::update				(float time_delta)
 
 	if (!enabled())
 		return;
+
+	m_last_update_time					= Device.dwTimeGlobal;
 
 	squad_mask_type						mask = this->mask();
 	VERIFY								(m_objects);
