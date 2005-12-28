@@ -623,7 +623,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
+			prior = 9, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 		predicate = function(obj_info)
 				         	return obj_info.story_id == 601
@@ -632,7 +632,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
+			prior = 9, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 		predicate = function(obj_info)
 				         	return obj_info.story_id == 602
@@ -641,7 +641,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
+			prior = 9, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 		predicate = function(obj_info)
 				         	return obj_info.story_id == 603
@@ -650,7 +650,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[0],
+			prior = 9, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 		predicate = function(obj_info)
 				         	return obj_info.story_id == 604
