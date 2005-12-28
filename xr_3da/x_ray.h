@@ -17,14 +17,14 @@ class ENGINE_API CApplication	:
 	};
 	string256				app_title;
 private:
-	ref_shader				ll_hLogo;
-	ref_shader				ll_hLogo1;
-	ref_shader				ll_hLogo2;
+//	ref_shader				ll_hLogo;
+//	ref_shader				ll_hLogo1;
+	ref_shader				hLevelLogo;
 	ref_geom				ll_hGeom;
 	ref_geom				ll_hGeom2;
 
 	ref_shader				sh_progress;
-	ref_shader				sh_progress2;
+//	ref_shader				sh_progress2;
 	int						load_stage;
 
 	u32						ll_dwReference;

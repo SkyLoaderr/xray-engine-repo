@@ -26,6 +26,7 @@ BOOL	g_bIntroFinished			= FALSE;
 extern	void	Intro				( void* fn );
 extern	void	Intro_DSHOW			( void* fn );
 extern	int PASCAL IntroDSHOW_wnd	(HINSTANCE hInstC, HINSTANCE hInstP, LPSTR lpCmdLine, int nCmdShow);
+int		max_load_stage = 0;
 //---------------------------------------------------------------------
 // 2446363
 // umbt@ukr.net
@@ -382,6 +383,47 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	return						0;
 }
 
+LPCSTR _GetFontTexName (LPCSTR section)
+{
+	u32 w = Device.dwWidth;
+
+	static char* tex_names[]={"texture800","texture","texture1600"};
+	int def_idx		= 1;//default 1024x768
+	int idx			= def_idx;
+
+	if(w<=800)		idx = 0;
+	else if(w<=1024)idx = 1;
+	else 			idx = 2;
+
+	while(idx>=0){
+		if( pSettings->line_exist(section,tex_names[idx]) )
+			return pSettings->r_string(section,tex_names[idx]);
+		--idx;
+	}
+	return pSettings->r_string(section,tex_names[def_idx]);
+}
+
+void _InitializeFont(CGameFont*& F, LPCSTR section, u32 flags)
+{
+	LPCSTR font_tex_name = _GetFontTexName(section);
+	R_ASSERT(font_tex_name);
+
+	if(!F){
+		F = xr_new<CGameFont> ("font", font_tex_name, flags);
+		Device.seqRender.Add( F, REG_PRIORITY_LOW-1000 );
+	}else
+		F->Initialize("font",font_tex_name);
+
+	if (pSettings->line_exist(section,"size")){
+		float sz = pSettings->r_float(section,"size");
+		if (flags&CGameFont::fsDeviceIndependent)	F->SetSizeI(sz);
+		else										F->SetSize(sz);
+	}
+	if (pSettings->line_exist(section,"interval"))
+		F->SetInterval(pSettings->r_fvector2(section,"interval"));
+
+}
+
 CApplication::CApplication()
 {
 	ll_dwReference	= 0;
@@ -397,8 +439,9 @@ CApplication::CApplication()
 	Level_Scan					( );
 
 	// Font
-	pFontSystem					= xr_new<CGameFont>	("startup_font",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	Device.seqRender.Add		( pFontSystem, REG_PRIORITY_LOW-1000 );
+//	pFontSystem					= xr_new<CGameFont>	("startup_font",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFontSystem					= NULL;
+
 
 	// Register us
 	Device.seqFrame.Add			(this, REG_PRIORITY_HIGH+1000);
@@ -411,13 +454,14 @@ CApplication::~CApplication()
 {
 	Console->Hide				( );
 
+	// font
+	Device.seqRender.Remove		( pFontSystem		);
+	xr_delete					( pFontSystem		);
+
 	Device.seqFrameMT.Remove	(&SoundProcessor);
 	Device.seqFrame.Remove		(&SoundProcessor);
 	Device.seqFrame.Remove		(this);
 
-	// font
-	Device.seqRender.Remove		( pFontSystem		);
-	xr_delete					( pFontSystem		);
 
 	// events
 	Engine.Event.Handler_Detach	(eDisconnect,this);
@@ -488,16 +532,18 @@ void CApplication::LoadBegin	()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference)	{
-		g_appLoaded				= FALSE;
+		_InitializeFont		(pFontSystem,"ui_font_graffiti19_russian",0);
+
+		g_appLoaded			= FALSE;
 		phase_timer.Start	();
 		::Sound->set_volume (0.f);
 		ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-		ll_hLogo1.create	("font","ui\\ui_logo");
-		ll_hLogo2.create	("font","ui\\ui_logo_nv");
-		ll_hLogo			= ll_hLogo2;
-		sh_progress.create	("hud\\default","ui\\ui_load_progress_bar");
+//		ll_hLogo1.create	("font","ui\\ui_logo");
+//		ll_hLogo2.create	("font","ui\\ui_logo_nv");
+//		ll_hLogo			= ll_hLogo2;
+//		sh_progress.create	("hud\\default","ui\\ui_load_progress_bar");
 		
-		sh_progress2.create	("hud\\default","ui\\ui_tmp_progress");
+		sh_progress.create	("hud\\default","ui\\ui_load");
 		ll_hGeom2.create		(FVF::F_TL, RCache.Vertex.Buffer(),NULL);
 
 		load_stage			= 0;
@@ -510,16 +556,20 @@ void CApplication::LoadEnd		()
 {
 	ll_dwReference--;
 	if (0==ll_dwReference)		{
+		hLevelLogo.destroy		();
+		sh_progress.destroy		();
 		::Sound->set_volume		(1.f);
 		Msg						("* phase time: %d ms",phase_timer.GetElapsed_ms());
 		Msg						("* phase cmem: %d K", Memory.mem_usage()/1024);
 		Console->Execute		("stat_memory");
 		g_appLoaded				= TRUE;
+
 	}
 }
 u32 calc_progress_color(u32, u32, int, int);
 void CApplication::LoadDraw		()
 {
+	if(g_appLoaded)				return;
 	Device.dwFrame				+= 1;
 
 
@@ -528,11 +578,14 @@ void CApplication::LoadDraw		()
 	if	(g_pGamePersistent->bDedicatedServer)	{
 		Console->OnRender			();
 	} else {
+
 		// Draw logo
 		u32	Offset;
 		u32	C						= 0xffffffff;
 		u32	_w						= Device.dwWidth;
 		u32	_h						= Device.dwHeight;
+		FVF::TL* pv					= NULL;
+/*
 		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
 		pv->set						(EPS_S,				float(_h+EPS_S),	0+EPS_S, 1, C, 0, 1);	pv++;
 		pv->set						(EPS_S,				EPS_S,				0+EPS_S, 1, C, 0, 0);	pv++;
@@ -551,13 +604,14 @@ void CApplication::LoadDraw		()
 		pFontSystem->SetAligment	(CGameFont::alCenter);
 		pFontSystem->OutI			(0.f,0.93f,app_title);
 		pFontSystem->OnRender		();
+*/
 
 //progress
 		float bw					= 1024.0f;
 		float bh					= 768.0f;
 		Fvector2					k; k.set(float(_w)/bw, float(_h)/bh);
-/*
-		RCache.set_Shader			(sh_progress2);
+
+		RCache.set_Shader			(sh_progress);
 		CTexture*	T				= RCache.get_ActiveTexture(0);
 		Fvector2					tsz;
 		tsz.set						((float)T->get_Width(),(float)T->get_Height());
@@ -567,9 +621,9 @@ void CApplication::LoadDraw		()
 
 //progress background
 
-		back_size.set				(661,93);
+		back_size.set				(1024,768);
 		back_text_coords.lt.set		(0,0);back_text_coords.rb.add(back_text_coords.lt,back_size);
-		back_coords.lt.set			(180,600);back_coords.rb.add(back_coords.lt,back_size);
+		back_coords.lt.set			(0,0);back_coords.rb.add(back_coords.lt,back_size);
 
 		back_coords.lt.mul			(k);back_coords.rb.mul(k);
 
@@ -587,8 +641,8 @@ void CApplication::LoadDraw		()
 
 //progress bar
 		back_size.set				(268,37);
-		back_text_coords.lt.set		(0,107);back_text_coords.rb.add(back_text_coords.lt,back_size);
-		back_coords.lt.set			(376 ,652);back_coords.rb.add(back_coords.lt,back_size);
+		back_text_coords.lt.set		(0,768);back_text_coords.rb.add(back_text_coords.lt,back_size);
+		back_coords.lt.set			(379 ,727);back_coords.rb.add(back_coords.lt,back_size);
 
 		back_coords.lt.mul			(k);back_coords.rb.mul(k);
 
@@ -601,10 +655,10 @@ void CApplication::LoadDraw		()
 		FVF::TL* _pv				= pv;
 		float pos_delta				= back_coords.width()/v_cnt;
 		float tc_delta				= back_text_coords.width()/v_cnt;
-		u32 clr;
+		u32 clr = C;
 
 		for(u32 idx=0; idx<v_cnt+1; ++idx){
-			clr =					calc_progress_color(idx,v_cnt,load_stage,16);
+			clr =					calc_progress_color(idx,v_cnt,load_stage,max_load_stage);
 			pv->set					(back_coords.lt.x+pos_delta*idx,	back_coords.rb.y,	0+EPS_S, 1, clr, back_text_coords.lt.x+tc_delta*idx,	back_text_coords.rb.y);	pv++;
 			pv->set					(back_coords.lt.x+pos_delta*idx,	back_coords.lt.y,	0+EPS_S, 1, clr, back_text_coords.lt.x+tc_delta*idx,	back_text_coords.lt.y);	pv++;
 		}
@@ -613,8 +667,35 @@ void CApplication::LoadDraw		()
 
 		RCache.set_Geometry			(ll_hGeom2);
 		RCache.Render				(D3DPT_TRIANGLESTRIP, Offset, 2*v_cnt);
-*/
 
+
+		// Draw title
+		VERIFY						(pFontSystem);
+		pFontSystem->Clear			();
+		pFontSystem->SetColor		(color_rgba(157,140,120,255));
+		pFontSystem->SetAligment	(CGameFont::alCenter);
+		pFontSystem->OutI			(0.f,0.815f,app_title);
+		pFontSystem->OnRender		();
+
+
+//draw level-specific screenshot
+		if(hLevelLogo){
+			Frect						r;
+			r.set						(278,367,743,623);
+			r.lt.mul					(k);						
+			r.rb.mul					(k);						
+			pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
+			pv->set						(r.lt.x,				r.rb.y,		0+EPS_S, 1, C, 0, 1);	pv++;
+			pv->set						(r.lt.x,				r.lt.y,		0+EPS_S, 1, C, 0, 0);	pv++;
+			pv->set						(r.rb.x,				r.rb.y,		0+EPS_S, 1, C, 1, 1);	pv++;
+			pv->set						(r.rb.x,				r.lt.y,		0+EPS_S, 1, C, 1, 0);	pv++;
+			RCache.Vertex.Unlock		(4,ll_hGeom.stride());
+
+			RCache.set_Shader			(hLevelLogo);
+			RCache.set_Geometry			(ll_hGeom);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		}
+/*
 // Draw old Progress
 
 		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
@@ -641,7 +722,7 @@ void CApplication::LoadDraw		()
 		RCache.set_Shader			(sh_progress);
 		RCache.set_Geometry			(ll_hGeom);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-
+*/
 	}
 
 	Device.End					();
@@ -650,19 +731,12 @@ void CApplication::LoadDraw		()
 
 u32 calc_progress_color(u32 idx, u32 total, int stage, int max_stage)
 {
-//	float value;
 	if(idx>(total/2)) 
 		idx	= total-idx;
 
 
 	float kk			= (float(stage+1)/float(max_stage))*(total/2.0f);
 	float f				= 1/(exp((float(idx)-kk)*0.5f)+1.0f);
-
-/*
-	float ks			= float(stage+1)/float(max_stage);
-	float kidx			= float(idx)/float(total/2.0f);
-	value				= (kidx>ks)?0x00:0xff;
-*/
 
 	return color_argb_f		(f,1.0f,1.0f,1.0f);
 }
@@ -677,21 +751,24 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	Console->Execute			("stat_memory");
 	Log							(app_title);
 	
-//	string_path					tex;
-//	sprintf						(tex,"%s%d","ui\\ui_start_progress",load_stage);
+	if (g_pGamePersistent->GameType()==1 && strstr(Core.Params,"alife"))
+		max_load_stage			= 16;
+	else
+		max_load_stage			= 13;
 
 	LoadDraw					();
 }
 
 void CApplication::LoadSwitch	()
 {
-	if (ll_hLogo == ll_hLogo1)	ll_hLogo = ll_hLogo2;
-	else						ll_hLogo = ll_hLogo1;
+//	if (ll_hLogo == ll_hLogo1)	ll_hLogo = ll_hLogo2;
+//	else						ll_hLogo = ll_hLogo1;
 }
 
 void CApplication::SetLoadLogo			(ref_shader NewLoadLogo)
 {
-	ll_hLogo = NewLoadLogo;
+//	hLevelLogo = NewLoadLogo;
+//	R_ASSERT(0);
 };
 
 // Sequential
@@ -745,6 +822,14 @@ void CApplication::Level_Set(u32 L)
 	if (L>=Levels.size())	return;
 	Level_Current = L;
 	FS.get_path	("$level$")->_set	(Levels[L].folder);
+
+	string_path					temp;
+	if (FS.exist(temp, "$level$", "ll_logo.dds"))
+	{
+		hLevelLogo.create	("font","ll_logo");
+//		SetLoadLogo(tmp_ll_hLogo);
+	}
+
 	CheckCopyProtection		();
 }
 
