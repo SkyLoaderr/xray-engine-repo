@@ -86,8 +86,9 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 		if(pGameSP) 
 			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::quests);
 	}
-	
-	ChangeStateCallback(t->m_ID,0,eTaskStateInProgress);
+	if(id!="user_task")
+		ChangeStateCallback(t->m_ID,0,eTaskStateInProgress);
+
 	return t;
 }
 
