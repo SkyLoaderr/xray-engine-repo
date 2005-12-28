@@ -695,34 +695,6 @@ void CApplication::LoadDraw		()
 			RCache.set_Geometry			(ll_hGeom);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
-/*
-// Draw old Progress
-
-		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
-
-		Fvector2 pic_sz;			pic_sz.set(1024.0f,32.0f);
-		
-		Fvector2 lt;				lt.set( (bw-pic_sz.x/2.0f)/2.0f,	bh-70.0f);		//lt pos
-		Fvector2 rb;				rb.set( lt.x+pic_sz.x/2.0f,			lt.y+pic_sz.y); //rb pos
-
-		lt.mul						(k);
-		rb.mul						(k);
-		float	cnt					= 32.0f/2.0f;
-		float	uv_base				= 1/32.0f;
-		
-		
-		float pos					= cnt - float(load_stage);
-
-		pv->set						(lt.x,						rb.y,			0+EPS_S,1,C, uv_base*pos,		1);	pv++;
-		pv->set						(lt.x,						lt.y,			0+EPS_S,1,C, uv_base*pos,		0);	pv++;
-		pv->set						(rb.x,						rb.y,			0+EPS_S,1,C, uv_base*(pos+cnt),	1);	pv++;
-		pv->set						(rb.x,						lt.y,			0+EPS_S,1,C, uv_base*(pos+cnt),	0);	pv++;
-		RCache.Vertex.Unlock		(4,ll_hGeom.stride());
-
-		RCache.set_Shader			(sh_progress);
-		RCache.set_Geometry			(ll_hGeom);
-		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-*/
 	}
 
 	Device.End					();
