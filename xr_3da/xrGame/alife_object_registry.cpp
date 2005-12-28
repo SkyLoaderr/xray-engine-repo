@@ -42,6 +42,8 @@ void CALifeObjectRegistry::save				(IWriter &memory_stream)
 		if (!(*I).second->can_save())
 			continue;
 
+		VERIFY2					(((*I).second->ID_Parent == 0xffff) || object((*I).second->ID_Parent)->can_save(),"strange situation : object shouldn't be saved, but shildren should be saved");
+
 		NET_Packet				tNetPacket;
 		// Spawn
 		(*I).second->Spawn_Write(tNetPacket,TRUE);
