@@ -51,24 +51,26 @@ target = logic@mil_freedom_stalker4_attack
 [remark2@mil_freedom_max_attack]
 snd = mil_max_to_kolyan
 anim = wait
-on_signal = action_end | %+mil_freedom_attack_continue1% camper12@mil_freedom_max_attack
+on_signal = action_end | %+mil_freedom_attack_continue1% walker22@mil_freedom_max_attack
 target = logic@mil_freedom_stalker4_attack
 danger = danger@mil_freedom_attack
 
-[camper12@mil_freedom_max_attack]                   ;Поведение 4
+[walker22@mil_freedom_max_attack]                   ;Поведение 4
 path_walk = attack_way7_2
 path_look = attack_look1_2
 on_signal = arrive | %+mil_freedom_arrive% camper13@mil_freedom_max_attack
-no_retreat = true
+;no_retreat = true
 danger = danger@mil_freedom_attack
 team = freedom_attack
 
 [camper13@mil_freedom_max_attack]                   ;Поведение 5
 path_walk = attack_way7_3
 path_look = attack_look3
-no_retreat = true
 danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_max_attack
+no_retreat = true
+radius = 20
+def_state_moving = sneak
 
 [remark4@mil_freedom_max_attack]
 snd = mil_freedom_victory5
@@ -131,9 +133,11 @@ team = freedom_attack
 path_walk = attack_way9_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker1_attack
-retreat = true
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker1_attack
 danger = danger@mil_freedom_attack
+no_retreat = true
+radius = 20
+def_state_moving = sneak
 
 [walker14@mil_freedom_stalker1_attack]
 path_walk = attack_way9_4
@@ -182,9 +186,11 @@ team = freedom_attack
 path_walk = attack_way8_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker2_attack
-retreat = true
+no_retreat = true
+radius = 20
 danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker2_attack
+def_state_moving = sneak
 
 [walker14@mil_freedom_stalker2_attack]
 path_walk = attack_way8_4
@@ -247,8 +253,10 @@ path_walk = attack_way2_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker4_attack
 no_retreat = true
+radius = 20
 danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker4_attack
+def_state_moving = sneak
 
 [walker14@mil_freedom_stalker4_attack]
 path_walk = attack_way2_4
@@ -297,14 +305,16 @@ path_walk = attack_way1_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker5_attack
 no_retreat = true
-radius = 0
+radius = 20
 danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker5_attack
+def_state_moving = sneak
 
 [walker14@mil_freedom_stalker5_attack]
 path_walk = attack_way1_4
 path_look = attack_look4
 on_signal = return | %-mil_freedom_attack%
+danger = danger@mil_freedom_attack
 team = freedom
 
 ;---------------------------------------------------------------------------------
@@ -348,9 +358,10 @@ path_walk = attack_way4_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker6_attack
 no_retreat = true
-radius = 0
+radius = 20
 danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker6_attack
+def_state_moving = sneak
 
 [walker14@mil_freedom_stalker6_attack]
 path_walk = attack_way4_4
@@ -399,9 +410,10 @@ path_walk = attack_way6_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker7_attack
 no_retreat = true
-radius = 0
+radius = 20
 danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker7_attack
+def_state_moving = sneak
 
 [walker14@mil_freedom_stalker7_attack]
 path_walk = attack_way6_4
@@ -441,9 +453,10 @@ path_walk = attack_way3_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker8_attack
 no_retreat = true
-radius = 0
+radius = 20
 danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker8_attack
+def_state_moving = sneak
 
 [walker14@mil_freedom_stalker8_attack]
 path_walk = attack_way3_4
@@ -483,8 +496,9 @@ path_walk = attack_way5_3
 path_look = attack_look3
 on_signal = final | walker14@mil_freedom_stalker9_attack
 no_retreat = true
-radius = 0
+radius = 20
 danger = danger@mil_freedom_attack
+def_state_moving = sneak
 on_info = {+mil_dolg_dead} walker14@mil_freedom_stalker9_attack
 
 [walker14@mil_freedom_stalker9_attack]
