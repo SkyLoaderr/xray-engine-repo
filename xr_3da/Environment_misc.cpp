@@ -111,6 +111,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	far_plane				= pSettings->r_float	(S,"far_plane");
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
 	fog_density				= pSettings->r_float	(S,"fog_density");
+	fog_distance			= pSettings->r_float	(S,"fog_distance");
 	rain_density			= pSettings->r_float	(S,"rain_density");		clamp(rain_density,0.f,1.f);
 	rain_color				= pSettings->r_fvector3	(S,"rain_color");            
 	wind_velocity			= pSettings->r_float	(S,"wind_velocity");
@@ -180,8 +181,9 @@ void CEnvDescriptorMixer::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescripto
 	far_plane				=	(fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
 	fog_color.lerp			(A.fog_color,B.fog_color,f).add(M.fog_color).mul(_power);
 	fog_density				=	(fi*A.fog_density + f*B.fog_density + M.fog_density)*_power;
-	fog_near				=	(1.0f - fog_density)*0.85f * far_plane;
-	fog_far					=	0.99f * far_plane;
+	fog_distance			=	(fi*A.fog_distance + f*B.fog_distance);
+	fog_near				=	(1.0f - fog_density)*0.85f * fog_distance;
+	fog_far					=	0.99f * fog_distance;
 	rain_density			=	fi*A.rain_density + f*B.rain_density;
 	rain_color.lerp			(A.rain_color,B.rain_color,f);
 	bolt_period				=	fi*A.bolt_period + f*B.bolt_period;

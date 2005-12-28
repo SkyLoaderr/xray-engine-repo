@@ -78,6 +78,7 @@ public:
 
 	Fvector3			fog_color;
 	float				fog_density;
+	float				fog_distance;
 
 	float				rain_density;
 	Fvector3			rain_color;
