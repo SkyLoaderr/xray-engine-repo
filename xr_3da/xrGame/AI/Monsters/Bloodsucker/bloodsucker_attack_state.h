@@ -13,6 +13,8 @@ public:
 
 	virtual	void	initialize					();
 	virtual	void	execute						();
+	virtual	void	finalize					();
+	virtual	void	critical_finalize			();
 private:
 			void	update_invisibility			();
 			bool	check_hiding				();

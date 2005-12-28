@@ -27,6 +27,20 @@ void CBloodsuckerStateAttackAbstract::initialize()
 }
 
 TEMPLATE_SPECIALIZATION
+void CBloodsuckerStateAttackAbstract::finalize()
+{
+	inherited::finalize();
+	object->CInvisibility::deactivate();
+}
+
+TEMPLATE_SPECIALIZATION
+void CBloodsuckerStateAttackAbstract::critical_finalize()
+{
+	inherited::critical_finalize();
+	object->CInvisibility::deactivate();
+}
+
+TEMPLATE_SPECIALIZATION
 void CBloodsuckerStateAttackAbstract::execute()
 {
 	bool selected = false;

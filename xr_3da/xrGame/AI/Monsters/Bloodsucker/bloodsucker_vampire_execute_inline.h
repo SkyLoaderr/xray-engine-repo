@@ -27,7 +27,8 @@ void CStateBloodsuckerVampireExecuteAbstract::initialize()
 	m_action				= eActionPrepare;
 	time_vampire_started	= 0;
 
-	object->CInvisibility::manual_deactivate();
+	object->CInvisibility::deactivate();
+	object->predator_stop	();
 
 	m_effector_activated			= false;
 }
@@ -75,7 +76,7 @@ void CStateBloodsuckerVampireExecuteAbstract::finalize()
 {
 	inherited::finalize();
 
-	object->CInvisibility::manual_activate		();
+	object->CInvisibility::activate				();
 
 	if (object->CControlledActor::is_controlling())
 		object->CControlledActor::release		();
@@ -91,7 +92,7 @@ void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
 	
 	// TODO: Find if need this line
 	//object->anim().TA_Deactivate				();
-	object->CInvisibility::manual_activate		();
+	object->CInvisibility::activate				();
 }
 
 TEMPLATE_SPECIALIZATION
