@@ -364,7 +364,7 @@
 
 		<item><!--Для того чтобы перепрыгнуть невысокое препятствие - нажмите клавишу "пробел" $$ACTION_JUMP$$-->
 			<length_sec>5</length_sec>
-			<pause_state>off</pause_state>
+			<pause_state>on</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
