@@ -4,6 +4,7 @@
 
     <info_portion id="cit_jail_door_opened"></info_portion>
     <info_portion id="cit_actor_is_free"></info_portion>
+    <info_portion id="cit_actor_out_killers_base"></info_portion>
     <info_portion id="cit_actor_near_grates"></info_portion>
 
     <info_portion id="cit_jail_start_waking"></info_portion>
