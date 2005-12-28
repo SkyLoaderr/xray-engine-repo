@@ -76,19 +76,13 @@ function action_remark_activity:get_target()
 end
 function action_remark_activity:time_callback()
 	self.state = state_sound
+	self:update()
 end
 function action_remark_activity:turn_end_callback()
 	self.state = state_sound
+	self:update()
 end
-function action_remark_activity:execute()
-	action_base.execute(self)
-
-	-- Try to switch to another scheme:
-	local actor = db.actor
-	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
-		return
-	end
-	
+function action_remark_activity:update()
 	-- 1. Мы должны повернуться на объект.
 	if self.state == state_initial then
 		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
@@ -139,6 +133,15 @@ function action_remark_activity:execute()
 		end
 	end
 	
+end
+function action_remark_activity:execute()
+	action_base.execute(self)
+
+	-- Try to switch to another scheme:
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
+	end
+	self:update()
 end
 function action_remark_activity:finalize()
 	action_base.finalize(self)
@@ -206,9 +209,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 
 	st.anim_reset = utils.cfg_get_bool(ini, section, "anim_reset", npc, false, true)
-	printf("anim_reset [%s]", tostring(st.anim_reset))
 	
-
 	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "nil")
 	st.target_id = nil
 	st.target_position = nil
