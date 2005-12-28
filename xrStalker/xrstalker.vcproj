@@ -1717,7 +1717,7 @@
 					RelativePath=".\config\weathers\weather_test.ltx">
 				</File>
 				<File
-					RelativePath=".\weather_yantar.ltx">
+					RelativePath=".\config\weathers\weather_yantar.ltx">
 				</File>
 			</Filter>
 			<Filter
