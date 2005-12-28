@@ -451,10 +451,10 @@ void	CActor::Hit							(SHit* pHDS)
 			if (this == Level().CurrentControlEntity())
 			{
 				S.set_volume(10.0f);
-				if(!m_sndShockEffector)
+				if(!m_sndShockEffector){
 					m_sndShockEffector = xr_new<SndShockEffector>();
-
-				m_sndShockEffector->Start( S._handle()->length_ms(), HDS.damage() );
+					m_sndShockEffector->Start( S._handle()->length_ms(), HDS.damage() );
+				}
 			}
 			else
 				bPlaySound = false;
