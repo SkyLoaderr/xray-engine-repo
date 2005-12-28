@@ -16,6 +16,7 @@ local killCountProps = {
 	boar_weak = 10, boar_normal = 20, boar_strong = 30,
 	dog_weak = 10, dog_normal = 20, dog_strong = 30,
 	pseudodog_weak = 10, pseudodog_normal = 20, pseudodog_strong = 30,
+	psy_dog_weak = 10, psy_dog_normal = 20, psy_dog_strong = 30,
 	zombie_weak = 10, zombie_normal = 20, zombie_strong = 30,
 	snork_weak = 10, snork_normal = 20, snork_strong = 30,
 	poltergeist_weak = 40,
@@ -32,6 +33,8 @@ local monster_classes = {
 			[clsid.boar_s        ] = "boar",
 			[clsid.dog_s         ] = "dog",
 			[clsid.pseudodog_s   ] = "pseudodog",
+			[clsid.psy_dog_s     ] = "psy_dog",
+			[clsid.psy_dog_phantom_s] = "NIL",
 			[clsid.zombie_s      ] = "zombie",
 			[clsid.snork_s       ] = "snork",
 			[clsid.poltergeist_s ] = "poltergeist",
@@ -41,8 +44,12 @@ local monster_classes = {
 			[clsid.bloodsucker_s ] = "bloodsucker"
 		}		
 
+
 function addKillCount(npc)
 	local props, sect = getNpcType(npc)
+	if props == nil then
+		return
+	end
 	if killCountProps[sect] == nil then
 		abort("Statistic ERROR: required section [%s] not present", sect)
 	end
@@ -84,6 +91,10 @@ function getNpcType(npc)
 		if community == nil then
 			abort("Statistic ERROR: cannot find monstr class for [%s]", npc:name())
 		end
+		if community == "NIL" then
+			return nil,nil
+		end
+		
 		local rank = "weak"
 		if npc:character_rank() >= 80 then
 			rank = "strong"
