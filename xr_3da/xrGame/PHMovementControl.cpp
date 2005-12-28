@@ -284,7 +284,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		if (fContactSpeed>fMinCrashSpeed) 
 		{
 			gcontact_HealthLost = 
-				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+				((fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
 	}
 
