@@ -4,9 +4,9 @@
 
 #include "SoundRender_Core.h"            
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <ALUT/alut.h>
+#include <al.h>
+#include <alc.h>
+#include <alut.h>
 
 #ifdef DEBUG
 #	define A_CHK(expr)		{ alGetError(); 		expr; ALenum error=alGetError(); 			VERIFY2(error==AL_NO_ERROR, (LPCSTR)alGetString(error)); }

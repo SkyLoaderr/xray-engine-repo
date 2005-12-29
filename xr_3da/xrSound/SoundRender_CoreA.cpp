@@ -47,8 +47,46 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 {
 	bPresent			        = FALSE;
 
+	// enumerate devices
+	string256 deviceName;
+	LPSTR defaultDevice;
+	LPSTR deviceList;
+	LPSTR devices[12];
+	int numDevices, numDefaultDevice;
+
+	//Open device
+	strcpy(deviceName, "");
+	if (alcIsExtensionPresent(NULL, (ALCchar*)"ALC_ENUMERATION_EXT") == AL_TRUE) { // try out enumeration extension
+		defaultDevice = (char *)alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER);
+		deviceList = (char *)alcGetString(NULL, ALC_DEVICE_SPECIFIER);
+		for (numDevices = 0; numDevices < 12; numDevices++) {devices[numDevices] = NULL;}
+		for (numDevices = 0; numDevices < 12; numDevices++) {
+			devices[numDevices] = deviceList;
+			if (strcmp(devices[numDevices], defaultDevice) == 0) {
+				numDefaultDevice = numDevices;
+			}
+			deviceList += strlen(deviceList);
+			if (deviceList[0] == 0) {
+				if (deviceList[1] == 0) {
+					break;
+				} else {
+					deviceList += 1;
+				}
+			}
+		}
+		if (devices[numDevices] != NULL) {
+			numDevices++;
+			Log		("* sound: OpenAL: Device list:");
+			for (int i = 0; i < numDevices; i++)
+				Msg	("%d. %s %s", i, devices[i], (numDefaultDevice==i)?"(Default)":"");
+			int cur_device	= numDefaultDevice;
+			strcpy(deviceName, devices[cur_device]);
+		}
+	}
+
+
     // OpenAL device
-    pDevice						= alcOpenDevice		(NULL);
+    pDevice						= alcOpenDevice		(deviceName);
 	if (pDevice == NULL){
 		Log						("* sound: OpenAL: Failed to create device.");
 		bPresent				= FALSE;
