@@ -471,7 +471,7 @@ void	CActor::Hit							(SHit* pHDS)
 	//slow actor, only when he gets hit
 	if(HDS.hit_type == ALife::eHitTypeWound || HDS.hit_type == ALife::eHitTypeStrike)
 	{
-		hit_slowmo				= HDS.damage()/100.f;
+		hit_slowmo				= HDS.damage();
 		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
 	}
 	else
@@ -802,7 +802,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 				Fvector hdir;di->HitDir(hdir);
 				SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
 //				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
-				SHit HDS = SHit(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);
+				SHit HDS = SHit(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,di->HitType());
 				Hit(&HDS);
 				if(!g_Alive())
 					m_PhysicMovementControl->GetDeathPosition(Position());

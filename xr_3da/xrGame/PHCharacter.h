@@ -80,7 +80,7 @@ public:
 			void		SetActorMovable						(bool v)													{b_actor_movable=v;}
 virtual		const ICollisionDamageInfo	*CollisionDamageInfo()const														=0;
 void					SetPLastMaterialIDX					(u16* p)													{p_lastMaterialIDX=p;}													
-const	u16				&LastMaterialIDX					()															{return *p_lastMaterialIDX;}
+const	u16				&LastMaterialIDX					()const														{return *p_lastMaterialIDX;}
 virtual void			SetElevator							(CClimableObject* climable)									{};
 virtual void			SetMaterial							(u16 material)												=0 ;
 virtual void			SetMaximumVelocity					(dReal /**vel/**/)											{}																			//!!

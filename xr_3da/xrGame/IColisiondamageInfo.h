@@ -8,5 +8,6 @@ public:
 		virtual const	Fvector&		HitPos						()				const						=0;
 		virtual u16						DamageInitiatorID			()				const						=0;
 		virtual CObject*				DamageInitiator				()				const						=0;
+		virtual ALife::EHitType			HitType						()				const						=0;
 };
 #endif
