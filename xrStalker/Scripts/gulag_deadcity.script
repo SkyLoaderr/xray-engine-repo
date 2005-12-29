@@ -260,6 +260,8 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "path_walk           = roof_sniper" .. i .. "_walk\n" ..
                    "path_look           = roof_sniper" .. i .. "_look\n" ..
                    "sniper              = true\n" ..
+                   "def_state_campering = threat\n" ..
+                   "def_state_campering_fire = threat_sniper_fire\n" ..
                    --"danger              = danger_bandits\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
