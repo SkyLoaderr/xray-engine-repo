@@ -120,7 +120,6 @@ float CEnvironment::NormalizeTime(float tm)
 
 void CEnvironment::SetWeather(shared_str name, bool forced)
 {
-	name="test";
 	if (name.size())	{
         EnvsMapIt it		= WeatherCycles.find(name);
         R_ASSERT3			(it!=WeatherCycles.end(),"Invalid weather name.",*name);
