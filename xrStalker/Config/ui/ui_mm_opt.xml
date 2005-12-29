@@ -66,7 +66,7 @@
 	</main_dialog>
 	<tab_video>
 		<cap_preset x="20" y="20" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">ui_mm_quality_presets</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_quality_presets</text>			
 		</cap_preset>
 		<cap_resolution x="20" y="45" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_resolution</text>
@@ -90,7 +90,8 @@
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_no_vsync</text>
 		</check_no_vsync>
 		
-		<list_presets x="194" y="20" width="261" height="21">			
+		<list_presets x="194" y="20" width="261" height="21">
+			<options_item entry="r___preset" group="mm_opt_video"/>
 		</list_presets>
 		<list_resolution x="194" y="45" width="261" height="21">
 			<options_item entry="vid_mode" group="mm_opt_video"/>
