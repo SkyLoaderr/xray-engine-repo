@@ -142,7 +142,7 @@ private:
 	virtual		const Fvector&	 HitPos							()const				{return m_collision_damage_info.HitPos();}
 	virtual		u16				 DamageInitiatorID				()const				;
 	virtual		CObject			 *DamageInitiator				()const				;
-	virtual		ALife::EHitType	 HitType						()const{return  GMLib.GetMaterialByIdx(LastMaterialIDX())->Flags.test(SGameMtl::flInjurious) ?ALife::eHitTypeRadiation:ALife::eHitTypeStrike;}
+	virtual		ALife::EHitType	 HitType						()const{return ALife::eHitTypeStrike;}//GMLib.GetMaterialByIdx(LastMaterialIDX())->Flags.test(SGameMtl::flInjurious) ?ALife::eHitTypeRadiation:ALife::eHitTypeStrike;
 public:
 	//Creating
 	virtual		void		Create								(dVector3 sizes)	;
