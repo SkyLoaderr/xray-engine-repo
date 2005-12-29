@@ -362,6 +362,7 @@
 			medkit \n
 			wpn_mp5 \n
 			ammo_9x19_fmj = 1 \n
+			grenade_f1 = 1 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -385,6 +386,7 @@
 			[spawn] \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
+			grenade_f1 = 2 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -434,6 +436,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
+			grenade_rgd5 = 1 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -483,6 +486,7 @@
 			[spawn] \n
 			wpn_spas12 \n
 			ammo_12x70_buck = 1 \n
+			grenade_f1 = 3 \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
