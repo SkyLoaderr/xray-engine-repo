@@ -165,7 +165,7 @@ anim                = sleep_sit
 danger              = danger@jail_guard_sleep
 on_timer            = 300000 | walker@jail_guard3
 on_info             = {=hit_by_actor} remark@jail_guard_kill_actor2
-on_info2            = {+cit_heli_start -cit_heli_end} walker@jail_guard_attack
+on_info2            = {+cit_heli_start -cit_heli_end} camper@jail_guard_attack
 combat_ignore_cond  = always ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -181,9 +181,11 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 ;-----------------------------------------------------------------------------------------------------------
 ;--- 
 ;-----------------------------------------------------------------------------------------------------------
-[walker@jail_guard_attack]
+[camper@jail_guard_attack]
 path_walk           = jail_guard_attack_walk
 path_look           = jail_guard_attack_look
+no_retreat          = true
+radius              = 0
 on_info             = {+cit_heli_end} walker@jail_guard3
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
