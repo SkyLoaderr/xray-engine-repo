@@ -1180,8 +1180,8 @@ danger = danger_condition@tolik
 [walker@to_lager_esc_corps_wounded]
 path_walk = esc_vagon_wounded_to_lager
 path_look = esc_wounded_to_lager_look
-on_signal2 = thanks| remark@esc_corps_wounded
-on_signal = lager_pass| %+esc_path_to_lager%
+on_signal2 = thanks| {-esc_wolf_dead} remark@esc_corps_wounded, %+esc_wounded_arrive%
+on_signal = lager_pass| {-esc_path_to_lager} %+esc_path_to_lager =play_snd_now(esc_tolik_to_lager)%
 meet = meet@esc_corps_wounded
 danger = danger_condition@tolik
 
