@@ -375,7 +375,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "radius              = 8\n" ..
                    "def_state_moving    = assault\n" ..
                    "def_state_campering = hide\n" ..
-                   "heli_hunter         = true\n" ..
+                   "heli_hunter         = {+cit_heli_start} true, false\n" ..
                    "on_info             = {+cit_heli_end} walker@" .. gname .. "_free_stalker" .. i .. "\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
@@ -644,8 +644,8 @@ function load_job_bandits(sj, gname, type, squad, groups)
     end
 
     -- kamps
-    prior = {8, 4, 5, 2}
-    for i, v in pairs({2, 2, 2, 3}) do
+    prior = {8, 2, 4, 5}
+    for i, v in pairs({2, 3, 2, 2}) do
         for j = 1, v do
 	        t = { section = "logic@" .. gname .. "_kamp" .. i,
 		        idle = 0,
