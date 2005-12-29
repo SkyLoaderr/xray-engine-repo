@@ -719,11 +719,12 @@ void CUIMainIngameWnd::Update()
 		float min = m_Thresholds[i].front();
 		float max = m_Thresholds[i].back();
 
-		if (rit != m_Thresholds[i].rend())
-			SetWarningIconColor(i, RGB_ALPHA(0xFF, clampr<u32>(static_cast<u32>(255 * ((*rit - min) / (max - min) * 2)), 0, 255), 
-												   clampr<u32>(static_cast<u32>(255 * (2.0f - (*rit - min) / (max - min) * 2)), 0, 255),
+		if (rit != m_Thresholds[i].rend()){
+			float v = *rit;
+			SetWarningIconColor(i, RGB_ALPHA(0xFF, clampr<u32>(static_cast<u32>(255 * ((v - min) / (max - min) * 2)), 0, 255), 
+												   clampr<u32>(static_cast<u32>(255 * (2.0f - (v - min) / (max - min) * 2)), 0, 255),
 												   0));
-		else
+		}else
 			TurnOffWarningIcon(i);
 
 		i = static_cast<EWarningIcons>(i + 1);
