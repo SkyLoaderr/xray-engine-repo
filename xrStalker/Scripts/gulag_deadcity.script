@@ -186,7 +186,6 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "path_walk           = leader_walk\n" ..
                    "path_look           = leader_look\n" ..
                    "formation           = line\n" ..
-                   --"on_info             = {+cit_jail_guard2_talk_to_guard1 -cit_heli_end} patrol@" .. gname .. "_base_patrol" .. i .. "_attack\n" ..
                    "soundgroup          = " .. gname .. "_leader_sg\n" ..
                    "danger              = danger_killers\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
@@ -236,7 +235,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "path_look           = base_patrol" .. i .. "_look\n" ..
                    "no_retreat          = true\n" ..
                    "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
-                   "danger              = danger_killers\n" ..
+                   --"danger              = danger_killers\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_out_killers_base}, {=check_fighting(1200)}\n"
                    --"combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
@@ -422,7 +421,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "center_point        = kamp" .. i .. "\n" ..
                    "def_state_moving    = run\n" ..
                    "soundgroup          = " .. gname .. "_kamp" .. i .. "_sg\n" ..
-                   "danger              = danger_killers\n" ..
+                   --"danger              = danger_killers\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_out_killers_base}, {=check_fighting(1200)}\n"
                    --"combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
@@ -474,7 +473,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    --"def_state_moving2   = patrol\n" ..
                    --"def_state_moving3   = patrol\n" ..
                    "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
-                   "danger              = danger_killers\n" ..
+                   --"danger              = danger_killers\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
