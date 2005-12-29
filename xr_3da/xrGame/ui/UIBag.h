@@ -16,6 +16,12 @@
 
 #include "UIBuyWeaponStd.h"
 
+
+#define HIGHTLIGHT_ITEM(x)		x->SetLightAnim("ui_slow_blinking", true, true, false, true)
+#define UNHIGHTLIGHT_ITEM(x)	x->SetLightAnim(NULL, true, true, false, true); \
+								x->SetColor(0xffffffff)
+
+
 enum Groups {
 	GROUP_2,
 	GROUP_BOXES,		
@@ -44,6 +50,7 @@ struct BoxInfo
 	CUITabButtonMP*		pButton;
 };
 
+
 class CUIBag : public CUIStatic {	
 public:
 	CUIBag(CHECK_PROC proc);
@@ -70,6 +77,7 @@ public:
 			u8		GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum);
 			void	SetRank(int rank);
 			void	ReloadItemsPrices	();
+			void	HighLightAmmo(const char* slot1, const char* slot2);
 
 CUIDragDropItemMP*	GetItemBySectoin(const char *sectionName, bool bCreateOnFail = false);
 CUIDragDropItemMP*	GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
@@ -82,6 +90,7 @@ CUIDragDropItemMP*	GetItemByKey(int dik, int section);
 			
 	MENU_LEVELS		GetMenuLevel();
 protected:
+			void	HighLightAmmo(const char* slot);
 			bool	SetMenuLevel(MENU_LEVELS level);
 			void	ShowSectionEx(int iSection);
 			void	EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable = true);			
@@ -130,5 +139,5 @@ CUIDragDropList*	GetCurrentGroup();
 	CONFORMITY_TABLE										m_ConformityTable;
    
 	CUIDragDropList m_groups[GROUP_DEFAULT + 1];
-	int subSection_group3[4];
+	int subSection_group3[4];	
 };

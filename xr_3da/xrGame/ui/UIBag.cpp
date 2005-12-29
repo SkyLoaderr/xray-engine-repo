@@ -290,6 +290,51 @@ CUIDragDropItemMP* CUIBag::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
 	return NULL;
 }
 
+#define HIGHTLIGHT_ITEM(x)		x->SetLightAnim("ui_slow_blinking", true, true, false, true)
+#define UNHIGHTLIGHT_ITEM(x)	x->SetLightAnim(NULL, true, true, false, true); \
+								x->SetColor(0xffffffff)
+
+void CUIBag::HighLightAmmo(const char* slot1, const char* slot2){
+		CUIDragDropList* currentDDList = &m_groups[GROUP_4];
+		CUIDragDropItemMP* pDDItem = NULL;
+
+		// unhightlight all
+		DRAG_DROP_LIST ddList = currentDDList->GetDragDropItemsList();
+		DRAG_DROP_LIST_it it;
+		for (it = ddList.begin(); it != ddList.end(); ++it)
+		{
+			pDDItem = (CUIDragDropItemMP*)(*it);
+			UNHIGHTLIGHT_ITEM(pDDItem);
+		}
+
+        HighLightAmmo(slot1);
+        HighLightAmmo(slot2);
+}
+
+void CUIBag::HighLightAmmo(const char* weapon){
+	if (!(weapon && weapon[0]))
+		return;
+
+	shared_str itemsList; 
+	string256 single_item;
+
+	itemsList = pSettings->r_string(weapon, "ammo_class");
+	int itemsCount	= _GetItemCount(*itemsList);
+
+	CUIDragDropItemMP* pDDItem = NULL;
+
+	xr_vector<shared_str> items;
+	for (int i = 0; i < itemsCount; i++)
+	{
+		_GetItem(itemsList.c_str(), i, single_item);
+		pDDItem = this->GetItemBySectoin(single_item);
+		if (pDDItem)
+		{
+			HIGHTLIGHT_ITEM(pDDItem);			
+		}
+	}
+}
+
 void CUIBag::ClearRealRepresentationFlags(){
 	xr_vector<CUIDragDropItemMP*>::iterator it;
 

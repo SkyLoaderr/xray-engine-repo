@@ -269,58 +269,6 @@ void CUIBuyWeaponWnd::OnMouseScroll(float iDirection){
 
 }
 
-void CUIBuyWeaponWnd::HighlightCurrentAmmo(const char* weapon, bool activate){
-	xr_map<int, xr_vector<shared_str> >::iterator it;
-	if (activate)
-	{
-		shared_str itemsList; 
-		string256 single_item;
-
-		itemsList = pSettings->r_string(weapon, "ammo_class");
-		int slot = pSettings->r_s32(weapon, "slot");
-
-		it  = m_cur_ammo.find(slot);
-		if(m_cur_ammo.end()!=it)
-            m_cur_ammo.erase(it);
-
-		int itemsCount	= _GetItemCount(*itemsList);
-
-
-		xr_vector<shared_str> items;
-		for (int i = 0; i < itemsCount; i++)
-		{
-			_GetItem(itemsList.c_str(), i, single_item);
-			HighlightItem(single_item, true);
-			items.push_back(single_item);
-		}
-
-		m_cur_ammo.insert(mk_pair(slot,items));
-
-	}
-	else{
-		int slot = pSettings->r_s32(weapon, "slot");
-		it  = m_cur_ammo.find(slot);
-		R_ASSERT(it!=m_cur_ammo.end());
-
-		xr_vector<shared_str>::iterator _it = (*it).second.begin();
-
-		for (;_it != (*it).second.end();_it++)
-			HighlightItem(*(*_it),false);
-
-		// remove color animators here
-		m_cur_ammo.erase(it);
-	}
-}
-
-void CUIBuyWeaponWnd::HighlightItem(const char* name, bool activate){
-	CUIDragDropItemMP* item = UIBagWnd.GetItemBySectoin(name);
-
-	if (activate)
-;//        item->SetLightAnim("ui_btn_hint", true, false, true, true); //ui_slow_blinking
-	else
-;//        item->SetLightAnim(NULL, true, false, true, true);
-
-}
 
 void CUIBuyWeaponWnd::InitInventory() 
 {
@@ -359,6 +307,29 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	return true;
 }
 
+void CUIBuyWeaponWnd::HighlightCurAmmo(){
+	return;
+	CUIDragDropItem *_slot1 = NULL;
+	CUIDragDropItem *_slot2 = NULL;
+
+	if (!UITopList[PISTOL_SLOT].GetDragDropItemsList().empty())
+		_slot1 = UITopList[PISTOL_SLOT].GetDragDropItemsList().front(); 
+
+	if (!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty())
+        _slot2 = UITopList[RIFLE_SLOT].GetDragDropItemsList().front(); 
+
+	CUIDragDropItemMP *slot1 = NULL;
+	CUIDragDropItemMP *slot2 = NULL;
+
+	if (_slot1)
+		slot1 = smart_cast<CUIDragDropItemMP*>(_slot1);
+
+	if (_slot2)
+		slot2 = smart_cast<CUIDragDropItemMP*>(_slot2);
+
+	UIBagWnd.HighLightAmmo(slot1? slot1->GetSectionName() : NULL, slot2 ? slot2->GetSectionName(): NULL);
+}
+
 // PISTOL SLOT
 bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
@@ -385,7 +356,8 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	{
 		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
-		this_inventory->HighlightCurrentAmmo(pDDItemMP->GetSectionName(),true);
+
+		this_inventory->HighlightCurAmmo();
 	}
 	return true;
 }
@@ -427,7 +399,7 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	{
 		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
-		this_inventory->HighlightCurrentAmmo(pDDItemMP->GetSectionName(),true);
+		this_inventory->HighlightCurAmmo();
 	}
 
 	return true;
@@ -565,6 +537,7 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	{
 		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
+		UNHIGHTLIGHT_ITEM(pDDItemMP);
 	}
 
 	return true;
@@ -895,8 +868,9 @@ void CUIBuyWeaponWnd::Draw()
 void CUIBuyWeaponWnd::Update()
 {
 	// Update money amount for Bag
-	UIBagWnd.UpdateBuyPossibility();
 	UIBagWnd.UpdateMoney(m_iMoneyAmount);
+	UIBagWnd.UpdateBuyPossibility();
+	
 
 	// Если активная вещь изменилась, то обновляем информацию о ее стоимости
 	static CUIDragDropItemMP *pOldCurrentDragDropItem = reinterpret_cast<CUIDragDropItemMP*>(1);
@@ -1193,6 +1167,8 @@ bool CUIBuyWeaponWnd::ToBag()
 	if (UIBagWnd.IsItemInBag(m_pCurrentDragDropItem))
 		return false;
 
+	HighlightCurAmmo();
+
 	// if in belt
 	if (BeltToSection(m_pCurrentDragDropItem)) 
 		return true;
@@ -1220,6 +1196,8 @@ bool CUIBuyWeaponWnd::ToBelt()
 	UITopList[BELT_SLOT].SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DROP, NULL);
 
 	m_pMouseCapturer = NULL;
+
+	HighlightCurAmmo();
 
 	return true;
 }

@@ -92,8 +92,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	//---------------------------------------------------------
 	ClearBuyMenu			();
 	//---------------------------------------------------------
-	pCurBuyMenu->IgnoreMoney(true);
 	pCurBuyMenu->Update();
+	pCurBuyMenu->IgnoreMoney(true);	
 	//---------------------------------------------------------
 	CActor* pCurActor = smart_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (pCurActor)
