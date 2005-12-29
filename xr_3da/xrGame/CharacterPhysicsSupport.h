@@ -6,6 +6,7 @@
 #include "PHSkeleton.h"
 #include "Entity_Alive.h"
 #include "PHSoundPlayer.h"
+#include "Phdestroyable.h"
 class CPhysicsShell;
 class CPHMovementControl;
 class CIKLimbsController;
@@ -31,7 +32,13 @@ enum EState
 private:
 	EType								m_eType;
 	EState								m_eState;
-
+	Flags8								m_flags;
+	enum Fags 
+	{
+		fl_death_anim_on			=1<<0,
+		fl_skeleton_in_shell		=1<<1,
+		fl_specific_bonce_demager	=1<<2
+	};
 	CEntityAlive						&m_EntityAlife																																		;
 	Fmatrix								&mXFORM																																				;
 	CPhysicsShell						*&m_pPhysicsShell																																	;
@@ -47,12 +54,12 @@ private:
 	float								skel_fatal_impulse_factor																															;
 	int									skel_ddelay																																			;
 /////////////////////////////////////////////////
-	bool								b_death_anim_on																																		;
-	bool								b_skeleton_in_shell																																	;
+	//bool								b_death_anim_on																																		;
+	//bool								b_skeleton_in_shell																																	;
 ///////////////////////////////////////////////////////////////////////////
 	float								m_shot_up_factor																																	;
 	float								m_after_death_velocity_factor																														;
-
+	float								m_BonceDamageFactor																																	;
 public:
 EType Type()
 	{
@@ -83,7 +90,8 @@ public:
 		CPHSoundPlayer					*ph_sound_player				()	{return &m_ph_sound_player;}
 		void							SetRemoved						();
 		bool							IsRemoved						(){return m_eState==esRemoved;}
-
+		bool							IsSpecificDamager				()																{return !!m_flags.test(fl_specific_bonce_demager)	;}
+		float							BonceDamageFactor				(){return m_BonceDamageFactor;}
 //////////////////base hierarchi methods///////////////////////////////////////////////////
 		void 							in_UpdateCL()																																		;
 		void 							in_shedule_Update				( u32 DT )																											;

@@ -9,7 +9,7 @@
 #include "Physics.h"
 #include "net_utils.h"
 #include "xrMessages.h"
-
+#include "CharacterPhysicsSupport.h"
 void CPHCollisionDamageReceiver::BoneInsert(u16 id,float k)
 {
 	R_ASSERT2(FindBone(id)==m_controled_bones.end(),"duplicate bone!");
@@ -39,54 +39,38 @@ void CPHCollisionDamageReceiver::Init()
 
 
 
+
 void CPHCollisionDamageReceiver::CollisionCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
 	if(material_1->Flags.test(SGameMtl::flPassable)||material_2->Flags.test(SGameMtl::flPassable))return;
-	dBodyID						b1		=	dGeomGetBody(c.geom.g1);
-	dBodyID						b2		=	dGeomGetBody(c.geom.g2);
-	dxGeomUserData				*ud1	=	retrieveGeomUserData(c.geom.g1);
-	dxGeomUserData				*ud2	=	retrieveGeomUserData(c.geom.g2);
-	CPhysicsShellHolder			*o1		=	NULL;if(ud1)o1=ud1->ph_ref_object;
-	CPhysicsShellHolder			*o2		=	NULL;if(ud2)o2=ud2->ph_ref_object;
-	u16							id1		=	u16(-1);
-	u16							id2		=	u16(-1);
-	CPHCollisionDamageReceiver	*dr1	=	NULL;
-	CPHCollisionDamageReceiver	*dr2	=	NULL;
-	if(o1){dr1=o1->PHCollisionDamageReceiver();id1=o1->ID();}
-	if(o2){dr2=o2->PHCollisionDamageReceiver();id2=o2->ID();}
+	dBodyID						b1					=	dGeomGetBody(c.geom.g1)	;
+	dBodyID						b2					=	dGeomGetBody(c.geom.g2) ;
+	dxGeomUserData				*ud_self			=	bo1 ? retrieveGeomUserData(c.geom.g1):retrieveGeomUserData(c.geom.g2);
+	dxGeomUserData				*ud_damager			=	bo1 ? retrieveGeomUserData(c.geom.g2):retrieveGeomUserData(c.geom.g1);
 	
-	VERIFY2(dr1||dr2,"wrong callback");
-	float dfs=(material_1->fBounceDamageFactor+material_2->fBounceDamageFactor);
+	SGameMtl					*material_self		=	bo1 ? material_1:material_2;
+	SGameMtl					*material_damager	=	bo1 ? material_2:material_1;
+	VERIFY						(ud_self);
+	CPhysicsShellHolder			*o_self			=	ud_self->ph_ref_object;
+	CPhysicsShellHolder			*o_damager		=	NULL;if(ud_damager)o_damager=ud_damager->ph_ref_object;
+	u16							source_id		=	o_damager ? o_damager->ID():u16(-1);
+	CPHCollisionDamageReceiver	*dr	=o_self->PHCollisionDamageReceiver();
+	VERIFY2(dr,"wrong callback");
+	
+	float damager_material_factor=material_damager->fBounceDamageFactor;
+
+	if(ud_damager&&ud_damager->ph_object&&ud_damager->ph_object->CastType()==CPHObject::tpCharacter)
+	{
+		CCharacterPhysicsSupport* phs=o_damager->character_physics_support();
+		if(phs->IsSpecificDamager())damager_material_factor=phs->BonceDamageFactor();
+	}
+
+	float dfs=(material_self->fBounceDamageFactor+damager_material_factor);
 	if(fis_zero(dfs)) return;
-	if(b1)
-	{
-		if(b2)
-		{
-			float E=E_NLD(b1,b2,c.geom.normal);
-			Fvector dir;dir.set(*(Fvector*)c.geom.normal);
-			Fvector pos;
-			pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b1));//it is not true pos in bone space
-			if(dr1) dr1->Hit(id2,ud1->bone_id,E*material_2->fBounceDamageFactor/dfs,dir,pos);
-			pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b2));
-			dir.invert();
-			if(dr2) dr2->Hit(id1,ud2->bone_id,E*material_1->fBounceDamageFactor/dfs,dir,pos);
-		}
-		else
-		{
-			Fvector pos;
-			pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b1));//it is not true pos in bone space
-			Fvector dir;dir.set(*(Fvector*)c.geom.normal);
-			if(dr1) dr1->Hit(id2,ud1->bone_id,E_NlS(b1,c.geom.normal,1.f)*material_2->fBounceDamageFactor/dfs,dir,pos);
-		}
-	}
-	else
-	{
-		Fvector pos;
-		pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dBodyGetPosition(b2));//it is not true pos in bone space
-		Fvector dir;dir.set(*(Fvector*)c.geom.normal);
-		dir.invert();
-		if(dr2)dr2->Hit(id1,ud2->bone_id,E_NlS(b2,c.geom.normal,-1.f)*material_1->fBounceDamageFactor/dfs,dir,pos);
-	}
+	Fvector dir;dir.set(*(Fvector*)c.geom.normal);
+	Fvector pos;
+	pos.sub(*(Fvector*)c.geom.pos,*(Fvector*)dGeomGetPosition(bo1 ? c.geom.g1:c.geom.g2));//it is not true pos in bone space
+	dr->Hit(source_id,ud_self->bone_id,E_NL(b1,b2,c.geom.normal)*damager_material_factor/dfs,dir,pos);
 	
 }
 

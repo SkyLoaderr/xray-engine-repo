@@ -525,7 +525,14 @@ float E_NLD(dBodyID b1,dBodyID b2,const dReal* norm)// norm - from 2 to 1
 
 	return (kin_energy_start-kin_energy_end);
 }
-
+float E_NL(dBodyID b1,dBodyID b2,const dReal* norm)
+{
+	VERIFY(b1||b2);
+	if(b1)
+	{
+		if(b2)return E_NLD(b1,b2,norm);else return  E_NlS(b1,norm,1);
+	}else return E_NlS(b2,norm,-1);
+}
 void ApplyGravityAccel(dBodyID body,const dReal* accel)
 {
 	dMass m;

@@ -26,7 +26,7 @@ void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*materi
 
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
-	if(!b_skeleton_in_shell)xr_delete(m_physics_skeleton);
+	if(m_flags.test(fl_skeleton_in_shell))xr_delete(m_physics_skeleton);//!b_skeleton_in_shell
 }
 
 CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity) 
@@ -36,17 +36,20 @@ CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aen
   mXFORM(aentity->XFORM()),
   m_ph_sound_player(aentity)
 {
-
+m_flags.assign(0);
 m_eType=atype;
 m_eState=esAlive;
-b_death_anim_on					= false;
+//b_death_anim_on					= false;
+m_flags.set(fl_death_anim_on,FALSE);
 m_pPhysicsShell					= NULL;
 //m_saved_impulse					= 0.f;
 m_physics_skeleton				= NULL;
-b_skeleton_in_shell				= false;
+//b_skeleton_in_shell				= false;
+m_flags.set(fl_skeleton_in_shell,FALSE);
 m_shot_up_factor				=0.f;
 m_after_death_velocity_factor	=1.f;
 m_ik_controller					=NULL;
+m_BonceDamageFactor				=1.f;
 switch(atype)
 {
 case etActor:
@@ -66,7 +69,7 @@ case etBitting:
 void CCharacterPhysicsSupport::SetRemoved()
 {
 	m_eState=esRemoved;
-	if(b_skeleton_in_shell)
+	if(m_flags.test(fl_skeleton_in_shell))//b_skeleton_in_shell
 	{
 		if(m_pPhysicsShell->isEnabled())
 		{
@@ -94,6 +97,15 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	if(pSettings->line_exist(section,"ph_skel_shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_skel_shot_up_factor");
 	if(pSettings->line_exist(section,"ph_after_death_velocity_factor")) m_after_death_velocity_factor=pSettings->r_float(section,"ph_after_death_velocity_factor");
+	m_flags.set(fl_specific_bonce_demager,TRUE);
+	if(pSettings->line_exist(section,"bonce_damage_factor"))
+	{
+		
+		m_BonceDamageFactor=pSettings->r_float(section,"bonce_damage_factor_for_objects");
+	}else
+	{
+		m_BonceDamageFactor=pSettings->r_float("collision_damage","bonce_damage_factor_for_objects");
+	}
 	CPHDestroyable::Load(section);
 }
 
@@ -108,6 +120,11 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 		ka->CalculateBones();
 	}
 	CPHSkeleton::Spawn(e);
+	if(m_eType!=etActor)
+	{
+		m_flags.set(fl_specific_bonce_demager,TRUE);
+		m_BonceDamageFactor=1.f;
+	}
 }
 
 void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
@@ -148,7 +165,8 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 		m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
 	}
-	b_skeleton_in_shell=false;
+	//b_skeleton_in_shell=false;
+	m_flags.set(fl_skeleton_in_shell,FALSE);
 	CPHSkeleton::RespawnInit();
 	CPHDestroyable::RespawnInit();
 	m_eState=esAlive;
@@ -242,14 +260,15 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 	{	
 		if(m_pPhysicsShell->isActive())
 		{
-			if(!b_death_anim_on&&m_pPhysicsShell->isFullActive())
+			if(!m_flags.test(fl_death_anim_on)&&m_pPhysicsShell->isFullActive())//!b_death_anim_on&&m_pPhysicsShell->isFullActive()
 			{
 				///if(m_eType==etStalker)
 				{
 						smart_cast<CSkeletonAnimated*>(m_EntityAlife.Visual())->PlayCycle("death_init");
 				}
 	
-				b_death_anim_on=true;
+				//b_death_anim_on=true;
+				m_flags.set(fl_death_anim_on,TRUE);
 			}
 
 			//if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
@@ -336,7 +355,8 @@ Fvector velocity;
 	velocity.mul(1.25f*m_after_death_velocity_factor);
 	m_pPhysicsShell->set_LinearVel(velocity);
 	smart_cast<CKinematics*>(m_EntityAlife.Visual())->CalculateBones();
-	b_death_anim_on=false;
+	//b_death_anim_on=false;
+	m_flags.set(fl_death_anim_on,FALSE);
 	m_eState=esDead;
 }
 void CCharacterPhysicsSupport::CollisionCorrectObjPos(const Fvector& start_from)
@@ -405,9 +425,11 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	
 	K->CalculateBones_Invalidate();
 	K->CalculateBones	();
-	b_death_anim_on=false;
+	//b_death_anim_on=false;
+	m_flags.set(fl_death_anim_on,FALSE);
 	m_eState=esDead;
-	b_skeleton_in_shell=true;
+	//b_skeleton_in_shell=true;
+	m_flags.set(fl_skeleton_in_shell,TRUE);
 	
 	if(IsGameTypeSingle())
 	{
