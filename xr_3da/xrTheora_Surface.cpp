@@ -174,7 +174,6 @@ BOOL CTheoraSurface::Load(const char* fname)
 			VERIFY		(m_rgb->t_info.pixelformat==m_alpha->t_info.pixelformat);
 		}
 #endif
-		VERIFY3			(btwIsPow2(m_rgb->t_info.frame_width)&&btwIsPow2(m_rgb->t_info.frame_height),"Invalid size.",fname);
 		tm_total		= m_rgb->tm_total;
 		VERIFY			(0!=tm_total);
 		// reset playback
