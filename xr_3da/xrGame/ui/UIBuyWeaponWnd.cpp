@@ -1437,7 +1437,8 @@ void CUIBuyWeaponWnd::SetSkin(u8 SkinID)
 	_GetItem(skins, SkinID, item);
 
 	m_current_skin = item;
-	UpdateOutfit();
+	if (0!=xr_strcmp(m_current_skin.c_str(),item))
+        UpdateOutfit();
 }
 
 void CUIBuyWeaponWnd::ClearSlots()
