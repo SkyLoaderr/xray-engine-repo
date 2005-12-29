@@ -194,7 +194,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     -- jail guard
 	t = { section = "logic@" .. gname .. "_jail_guard",
 		idle = 0,
-		prior = 13, state = {0},
+		prior = 2, state = {0}, -- 13
 		squad = squad, group = groups[5],
 		in_rest = "cit_jail_restr", out_rest = "",
 		predicate = k_predicate_v
@@ -349,7 +349,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     for i = 1, 4 do
 	    t = { section = "logic@" .. gname .. "_free_stalker" .. i,
 		    idle = 0,
-		    prior = 14, state = {0},
+		    prior = 1, state = {0}, --14
 		    squad = squad, group = groups[5],
 		    in_rest = "cit_jail_restr", out_rest = "",
 		    predicate = k_predicate_v
