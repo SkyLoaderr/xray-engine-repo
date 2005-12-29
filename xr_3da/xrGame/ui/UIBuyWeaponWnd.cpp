@@ -308,7 +308,6 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 }
 
 void CUIBuyWeaponWnd::HighlightCurAmmo(){
-	return;
 	CUIDragDropItem *_slot1 = NULL;
 	CUIDragDropItem *_slot2 = NULL;
 
@@ -350,14 +349,13 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		else
 			return false;
 	this_inventory->SlotToSection(PISTOL_SLOT);
+	this_inventory->HighlightCurAmmo();
 
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
 		pDDItemMP->m_bAlreadyPaid = true;
-
-		this_inventory->HighlightCurAmmo();
 	}
 	return true;
 }
@@ -393,13 +391,13 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		else
 			return false;
 	this_inventory->SlotToSection(RIFLE_SLOT);
+	this_inventory->HighlightCurAmmo();
 
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-		pDDItemMP->m_bAlreadyPaid = true;
-		this_inventory->HighlightCurAmmo();
+		pDDItemMP->m_bAlreadyPaid = true;		
 	}
 
 	return true;
@@ -827,6 +825,8 @@ void CUIBuyWeaponWnd::OnDDItemDbClick(){
 					m_pCurrentDragDropItem->Rescale(	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleX(),
 														((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleY()	);
 				}
+
+		HighlightCurAmmo();
 	}
 }
 
@@ -1167,15 +1167,19 @@ bool CUIBuyWeaponWnd::ToBag()
 	if (UIBagWnd.IsItemInBag(m_pCurrentDragDropItem))
 		return false;
 
-	HighlightCurAmmo();
-
 	// if in belt
 	if (BeltToSection(m_pCurrentDragDropItem)) 
+	{
+		HighlightCurAmmo();	
 		return true;
+	}
 
 	// if in slot
 	if (SlotToSection(m_pCurrentDragDropItem->GetSlot())) 
+	{
+		HighlightCurAmmo();
 		return true;
+	}
 
 	return false;
 }
@@ -1196,9 +1200,6 @@ bool CUIBuyWeaponWnd::ToBelt()
 	UITopList[BELT_SLOT].SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DROP, NULL);
 
 	m_pMouseCapturer = NULL;
-
-	HighlightCurAmmo();
-
 	return true;
 }
 
