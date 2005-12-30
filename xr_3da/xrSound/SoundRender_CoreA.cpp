@@ -84,6 +84,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 		}
 	}
 
+	Msg				        	("* sound: OpenAL: Selected device '%s'.", deviceName);
 
     // OpenAL device
     pDevice						= alcOpenDevice		(deviceName);
@@ -96,7 +97,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     // Get the device specifier.
     const ALCchar*		        deviceSpecifier;
     deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
-	Msg				        	("* sound: OpenAL: Using device '%s'.", deviceSpecifier);
+	Msg				        	("* sound: OpenAL: Created device '%s'.", deviceSpecifier);
 
     // Create context
     pContext					= alcCreateContext	(pDevice,NULL);
