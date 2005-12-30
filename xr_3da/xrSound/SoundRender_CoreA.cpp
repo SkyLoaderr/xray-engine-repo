@@ -84,7 +84,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 		}
 	}
 
-	Msg				        	("* sound: OpenAL: Selected device '%s'.", deviceName);
+	Msg				        	("* sound: OpenAL: Required device '%s'.", deviceName);
 
     // OpenAL device
     pDevice						= alcOpenDevice		(deviceName);
