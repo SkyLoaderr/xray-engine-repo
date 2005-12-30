@@ -9,7 +9,7 @@ extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static BOOL 				no_log			= TRUE;
 static xrCriticalSection	logCS;
-xr_vector <shared_str>			LogFile;
+xr_vector <shared_str>		LogFile;
 static LogCallback			LogCB			= 0;
 
 void FlushLog			()

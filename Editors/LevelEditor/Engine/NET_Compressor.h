@@ -54,9 +54,9 @@ private:
 
 	// main structure
 	struct rangecoder {
-		u32				low,range,help;
+		u32					low,range,help;
 		BYTE				buffer;
-		u32				bytecount;
+		u32					bytecount;
 		BYTE*				ptr;
 
 		IC void				byte_out		(BYTE B)	{ *ptr++ = B;		}
