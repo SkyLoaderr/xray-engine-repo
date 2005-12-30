@@ -21,7 +21,7 @@ namespace PatrolPathManager {
 
 class CALifeMonsterPatrolPathManager {
 public:
-	typedef CSE_ALifeMonsterAbstract								object_type;
+	typedef CSE_ALifeMonsterAbstract							object_type;
 	typedef PatrolPathManager::EPatrolStartType					EPatrolStartType;
 	typedef PatrolPathManager::EPatrolRouteType					EPatrolRouteType;
 	typedef GameGraph::_GRAPH_ID								_GRAPH_ID;
