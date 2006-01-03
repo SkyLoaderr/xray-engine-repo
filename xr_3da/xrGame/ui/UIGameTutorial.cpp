@@ -10,29 +10,29 @@ extern ENGINE_API BOOL bShowPauseString;
 
 CUIGameTutorial::CUIGameTutorial()
 {
-	m_bActive = false;
+	m_bActive					= false;
+	m_bPlayEachItem				= false;
 }
 
 void CUIGameTutorial::Start(LPCSTR tutor_name)
 {
 	VERIFY(m_items.size()==0);
-	Device.seqFrame.Add(this,REG_PRIORITY_LOW-10000);
-	Device.seqRender.Add(this,REG_PRIORITY_LOW-10000);
+	Device.seqFrame.Add			(this,REG_PRIORITY_LOW-10000);
+	Device.seqRender.Add		(this,REG_PRIORITY_LOW-10000);
 	
-	m_UIWindow						= xr_new<CUIWindow>();
+	m_UIWindow					= xr_new<CUIWindow>();
 
 	CUIXml uiXml;
-	uiXml.Init(CONFIG_PATH, UI_PATH, "game_tutorials.xml");
+	uiXml.Init					(CONFIG_PATH, UI_PATH, "game_tutorials.xml");
 	
+	int items_count				= uiXml.GetNodesNum	(tutor_name,0,"item");
+	uiXml.SetLocalRoot			(uiXml.NavigateToNode(tutor_name,0));
 
-
-	int items_count					= uiXml.GetNodesNum	(tutor_name,0,"item");
-	uiXml.SetLocalRoot				(uiXml.NavigateToNode(tutor_name,0));
+	m_bPlayEachItem				= !!uiXml.ReadInt("play_each_item",0,0);
 
 	CUIXmlInit xml_init;
-	xml_init.InitWindow								(uiXml, "global_wnd", 0,	m_UIWindow);
-	xml_init.InitAutoStaticGroup					(uiXml, "global_wnd",		m_UIWindow);
-	
+	xml_init.InitWindow			(uiXml, "global_wnd", 0,	m_UIWindow);
+	xml_init.InitAutoStaticGroup(uiXml, "global_wnd",		m_UIWindow);
 
 	for(int i=0;i<items_count;++i)
 	{
@@ -51,8 +51,13 @@ void CUIGameTutorial::Start(LPCSTR tutor_name)
 void CUIGameTutorial::Stop()
 {
 	if(m_items.size()){
-		TutorialItem* pCurrItem		= m_items.front();
-		pCurrItem->Stop			(this, true);
+		if (m_bPlayEachItem){
+			Next				();
+			return;
+		}else{
+			TutorialItem* pCurrItem	= m_items.front();
+			pCurrItem->Stop		(this, true);
+		}
 	}
 
 	Device.seqFrame.Remove		(this);
@@ -65,7 +70,7 @@ void CUIGameTutorial::Stop()
 }
 
 void CUIGameTutorial::OnFrame()
-{
+{  
 	if(!m_items.size()){
 		Stop			();
 		return;
@@ -100,8 +105,8 @@ void CUIGameTutorial::Next		()
 
 	if(m_items.size())
 	{
-		pCurrItem					= m_items.front();
-		pCurrItem->Start			(this);
+		pCurrItem				= m_items.front();
+		pCurrItem->Start		(this);
 	}
 }
 
@@ -180,7 +185,9 @@ void CUIGameTutorial::IR_OnKeyboardPress	(int dik)
 TutorialItem::~TutorialItem()
 {
 	delete_data			(m_UIWindow);
-	m_sound.stop		();
+	m_sound_m.stop		();
+	m_sound_s_l.stop	();
+	m_sound_s_r.stop	();
 }
 
 void TutorialItem::Load(CUIXml* xml, int idx)
@@ -189,6 +196,7 @@ void TutorialItem::Load(CUIXml* xml, int idx)
 	xml->SetLocalRoot				(xml->NavigateToNode("item",idx));
 	
 	m_snd_name				= xml->Read				("sound",0,""			);
+	m_flags.set				(etiSoundStereo,xml->ReadInt("sound_stereo",0,0));
 	m_time_length			= xml->ReadFlt			("length_sec",0,0		);
 	m_desired_cursor_pos.x	= xml->ReadAttribFlt	("cursor_pos",0,"x",1024);
 	m_desired_cursor_pos.y	= xml->ReadAttribFlt	("cursor_pos",0,"y",768	);
@@ -213,6 +221,7 @@ void TutorialItem::Load(CUIXml* xml, int idx)
 			}
 		}
 	}
+
 
 	m_flags.set										(etiCanBeStopped,(m_continue_dik_guard==-1));
 
@@ -301,46 +310,53 @@ void TutorialItem::Start		(CUIGameTutorial* t)
 	m_time_start				= Device.dwTimeContinual/1000.0f;
 	t->MainWnd()->AttachChild	(m_UIWindow);
 	if(m_snd_name.size()){
-		::Sound->create			(m_sound, true, *m_snd_name); 
-		VERIFY					(m_sound._handle());
-		m_sound.play			(NULL, sm_2D);
+		if (m_flags.test(etiSoundStereo)){
+			string_path			_l, _r;
+			strconcat			(_l, *m_snd_name, "_l");
+			strconcat			(_r, *m_snd_name, "_r");
+			m_sound_s_l.create	(TRUE,_l,0);
+			m_sound_s_r.create	(TRUE,_r,0);
+			VERIFY				(m_sound_s_l._handle() && m_sound_s_r._handle());
+			m_sound_s_l.play_at_pos(NULL, Fvector().set(-0.5f,0.f,0.3f), sm_2D);
+			m_sound_s_r.play_at_pos(NULL, Fvector().set(+0.5f,0.f,0.3f), sm_2D);
+		}else{
+			::Sound->create		(m_sound_m, true, *m_snd_name); 
+			VERIFY				(m_sound_m._handle());
+			m_sound_m.play		(NULL, sm_2D);
+		}
 	}
 
-	bool bShowPda = false;
-
-	CUIGameSP* ui_game_sp			= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(!stricmp(m_pda_section,"pda_contacts")){
-		ui_game_sp->PdaMenu->SetActiveSubdialog(eptContacts);
-		bShowPda = true;
-	}else
-	if(!stricmp(m_pda_section,"pda_map")){
-		ui_game_sp->PdaMenu->SetActiveSubdialog(eptMap);
-		bShowPda = true;
-	}else
-		if(!stricmp(m_pda_section,"pda_quests")){
-		ui_game_sp->PdaMenu->SetActiveSubdialog(eptQuests);
-		bShowPda = true;
-	}else
-	if(!stricmp(m_pda_section,"pda_diary")){
-		ui_game_sp->PdaMenu->SetActiveSubdialog(eptDiary);
-		bShowPda = true;
-	}else
-	if(!stricmp(m_pda_section,"pda_ranking")){
-		ui_game_sp->PdaMenu->SetActiveSubdialog(eptRanking);
-		bShowPda = true;
-	}else
-	if(!stricmp(m_pda_section,"pda_statistics")){
-		ui_game_sp->PdaMenu->SetActiveSubdialog(eptActorStatistic);
-		bShowPda = true;
-	}else
-		if(!stricmp(m_pda_section,"pda_encyclopedia")){
-		ui_game_sp->PdaMenu->SetActiveSubdialog(eptEncyclopedia);
-		bShowPda = true;
+	if (g_pGameLevel){
+		bool bShowPda			= false;
+		CUIGameSP* ui_game_sp	= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(!stricmp(m_pda_section,"pda_contacts")){
+			ui_game_sp->PdaMenu->SetActiveSubdialog(eptContacts);
+			bShowPda = true;
+		}else{
+			if(!stricmp(m_pda_section,"pda_map")){
+				ui_game_sp->PdaMenu->SetActiveSubdialog(eptMap);
+				bShowPda = true;
+			}else if(!stricmp(m_pda_section,"pda_quests")){
+				ui_game_sp->PdaMenu->SetActiveSubdialog(eptQuests);
+				bShowPda = true;
+			}else if(!stricmp(m_pda_section,"pda_diary")){
+				ui_game_sp->PdaMenu->SetActiveSubdialog(eptDiary);
+				bShowPda = true;
+			}else if(!stricmp(m_pda_section,"pda_ranking")){
+				ui_game_sp->PdaMenu->SetActiveSubdialog(eptRanking);
+				bShowPda = true;
+			}else if(!stricmp(m_pda_section,"pda_statistics")){
+				ui_game_sp->PdaMenu->SetActiveSubdialog(eptActorStatistic);
+				bShowPda = true;
+			}else if(!stricmp(m_pda_section,"pda_encyclopedia")){
+				ui_game_sp->PdaMenu->SetActiveSubdialog(eptEncyclopedia);
+				bShowPda = true;
+			}
+		}
+		if( (!ui_game_sp->PdaMenu->IsShown() && bShowPda) || 
+			(ui_game_sp->PdaMenu->IsShown() && !bShowPda))
+			HUD().GetUI()->StartStopMenu			(ui_game_sp->PdaMenu,true);
 	}
-
-	if( (!ui_game_sp->PdaMenu->IsShown() && bShowPda) || 
-		(ui_game_sp->PdaMenu->IsShown() && !bShowPda))
-		HUD().GetUI()->StartStopMenu			(ui_game_sp->PdaMenu,true);
 }
 
 bool TutorialItem::Stop			(CUIGameTutorial* t, bool bForce)
@@ -349,7 +365,9 @@ bool TutorialItem::Stop			(CUIGameTutorial* t, bool bForce)
 		return false;
 
 	t->MainWnd()->DetachChild	(m_UIWindow);
-	m_sound.stop				();
+	m_sound_m.stop				();
+	m_sound_s_l.stop			();
+	m_sound_s_r.stop			();
 
 	if(m_flags.test(etiNeedPauseOn) && !m_flags.test(etiStoredPauseState))
 		Device.Pause			(FALSE);

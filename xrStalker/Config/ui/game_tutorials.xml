@@ -1,6 +1,48 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-
+<!-- ------------------------------------------------------------------------- -->
+	<intro>
+		<global_wnd x="0" y="0" width="1024" height="768">
+			<auto_static x=0 y="0" width="1024" height="768">
+				<texture>intro\intro_back</texture>
+			</auto_static>
+		</global_wnd>
+		<play_each_item>1</play_each_item>
+		<item>
+			<length_sec>10</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound>intro\intro_gsc</sound>
+			<cursor_pos/>
+			<pda_section/>
+			<grab_input>1</grab_input>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="10000" x="0" y="0" width="1024" height="768" alignment="l" stretch="1"
+							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>intro\intro_gsc</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+		<item>
+			<length_sec>15</length_sec>
+			<pause_state/>
+			<guard_key/>
+			<sound>intro\intro_thq</sound>
+			<sound_stereo>1</sound_stereo>
+			<cursor_pos/>
+			<pda_section/>
+			<grab_input>1</grab_input>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="15000" x="200" y="0" width="624" height="768" alignment="l" stretch="1"
+							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>intro\intro_thq</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+	</intro>
+<!-- ------------------------------------------------------------------------- -->
 	<part_1_pda>
 	<global_wnd/>
 <!--

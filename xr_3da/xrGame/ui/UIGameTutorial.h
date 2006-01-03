@@ -11,6 +11,7 @@ protected:
 	CUIWindow*					m_UIWindow;
 	xr_deque<TutorialItem*>		m_items;
 	bool						m_bActive;
+	bool						m_bPlayEachItem;
 	bool						GrabInput				();
 public:
 							CUIGameTutorial();
@@ -52,11 +53,14 @@ class TutorialItem
 			etiStoredPauseState		= (1<<5),
 			etiCanBeStopped			= (1<<6),
 			etiGrabInput			= (1<<7),
+			etiSoundStereo			= (1<<8)
 		};
 public:
 								~TutorialItem();
 	CUIWindow*					m_UIWindow;
-	ref_sound					m_sound;
+	ref_sound					m_sound_m;
+	ref_sound					m_sound_s_l;
+	ref_sound					m_sound_s_r;
 	float						m_time_start;
 	float						m_time_length;
 	shared_str					m_snd_name;

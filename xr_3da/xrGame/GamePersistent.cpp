@@ -216,19 +216,34 @@ void CGamePersistent::WeathersUpdate()
 			CParticlesObject::Destroy(ambient_particles);
 	}
 }
-bool b_flag = false;
+
+#include "UI/UIGameTutorial.h"
+static CUIGameTutorial* g_intro = NULL;
+static bool b_startup_intro		= true;
+
 void CGamePersistent::OnFrame	()
 {
 #ifdef DEBUG
 	++m_frame_counter;
 #endif
-
-	if(!b_flag && !g_pGameLevel && (Device.dwFrame>100) && (Device.dwFrame<200)  ){
-			b_flag = true;
-			Console->Execute("main_menu on");
+	if (Device.dwPrecacheFrame==0 && b_startup_intro){
+		b_startup_intro			= false;
+		if (0==xr_strlen(m_game_params.m_game_or_spawn)){
+			VERIFY				(NULL==g_intro && NULL==g_pGameLevel);
+			g_intro				= xr_new<CUIGameTutorial>();
+			g_intro->Start		("intro");
+			Console->Hide		();
+		}
 	}
-	if(!g_pGameLevel)				return;
-	if(!g_pGameLevel->bReady)		return;
+	if(g_intro && (false==g_intro->IsActive())){
+		xr_delete				(g_intro);
+		Console->Show			();
+		// start main menu
+		Console->Execute		("main_menu on");
+	}
+
+	if(!g_pGameLevel)			return;
+	if(!g_pGameLevel->bReady)	return;
 
 	__super::OnFrame			();
 
