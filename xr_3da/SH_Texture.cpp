@@ -71,7 +71,7 @@ void CTexture::apply_load	(u32 dwStage)	{
 };
 
 void CTexture::apply_theora	(u32 dwStage)	{
-	if (pTheora->Update(Device.dwTimeDelta)){
+	if (pTheora->Update(m_play_time?m_play_time:Device.dwTimeContinual)){
 		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
 		IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
 		D3DLOCKED_RECT		R;
@@ -172,13 +172,14 @@ void CTexture::Load		()
 	if (FS.exist(fn,"$game_textures$",*cName,".ogm")){
 		// AVI
 		pTheora		= xr_new<CTheoraSurface>();
+		m_play_time	= 0;
 
 		if (!pTheora->Load(fn)) {
 			xr_delete(pTheora);
 			Debug.fatal("Can't open video stream");
 		} else {
 			flags.MemoryUsage	= pTheora->Width()*pTheora->Height()*4;
-			pTheora->Play		(TRUE);
+			pTheora->Play		(TRUE,Device.dwTimeContinual);
 
 			// Now create texture
 			IDirect3DTexture9*	pTexture = 0;
@@ -297,14 +298,14 @@ void CTexture::desc_update	()
 	}
 }
 
-void CTexture::video_Play		(BOOL looped)	
+void CTexture::video_Play		(BOOL looped, u32 _time)	
 { 
-	if (pTheora) pTheora->Play(looped); 
+	if (pTheora) pTheora->Play	(looped,_time?(m_play_time=_time):Device.dwTimeContinual); 
 }
 
 void CTexture::video_Pause		(BOOL state)
 {
-	if (pTheora) pTheora->Pause(state); 
+	if (pTheora) pTheora->Pause	(state); 
 }
 
 void CTexture::video_Stop			()				

@@ -116,21 +116,20 @@ void CTheoraSurface::write_tga(u32 width, u32 height, u32 frame, u32 pixelformat
 	u_free(data);
 }
 */
-void CTheoraSurface::Play(BOOL _looped)		
-{
-	playing=TRUE;
-	looped=_looped;
-	tm_start = Device.dwTimeContinual;
+void CTheoraSurface::Play(BOOL _looped, u32 _time)		
+{	
+	playing				= TRUE;
+	looped				= _looped;
+	tm_start			= _time;
 }
 
-BOOL CTheoraSurface::Update(u32 dt)
+BOOL CTheoraSurface::Update(u32 _time)
 {
 	VERIFY				(Valid());
 	BOOL redraw			= FALSE;
 
-
 	if (playing){
-		tm_play			= Device.dwTimeContinual-tm_start;
+		tm_play			= _time-tm_start;
 		if (tm_play>=tm_total){ 
 			if (looped){	
 				tm_start = tm_start+tm_total;

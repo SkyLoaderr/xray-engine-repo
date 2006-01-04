@@ -41,10 +41,10 @@ public:
 	BOOL				Valid				();
 	BOOL				Load				(const char* fname);
 
-	BOOL				Update				(u32 dt);
+	BOOL				Update				(u32 _time);
 	void				DecompressFrame		(u32* dst);
 
-	void				Play				(BOOL _looped);
+	void				Play				(BOOL _looped, u32 _time);
 	void				Pause				(BOOL _pause)		{playing=!_pause;}
 	void				Stop				()					{playing=FALSE;Reset();}
 	BOOL				IsPlaying			()					{return playing;}

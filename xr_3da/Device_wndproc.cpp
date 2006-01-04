@@ -15,11 +15,13 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			Device.bActive	= (fActive!=WA_INACTIVE) && (!fMinimized);
 			if (Device.bActive)	{
 				Device.seqAppActivate.Process	(rp_AppActivate);
+				::Sound->set_volume (1.f);
 				if (!strstr(Core.Params, "-dedicated")) 
 					ShowCursor	(FALSE);
 			} else	{
 				Device.seqAppDeactivate.Process(rp_AppDeactivate);
 				ShowCursor	(TRUE);
+				::Sound->set_volume (0.f);
 			}
 		}
 		return 0;

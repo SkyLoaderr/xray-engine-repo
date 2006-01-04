@@ -25,8 +25,12 @@ public:
 	float								m_material;
 	shared_str							m_bumpmap;
 
+	union{
+		u32								m_play_time;		// sync theora time
+		u32								seqMSPF;			// Sequence data milliseconds per frame
+	};
+
 	// Sequence data
-	u32									seqMSPF;			// milliseconds per frame
 	xr_vector<IDirect3DBaseTexture9*>	seqDATA;
 
 	// Description
@@ -55,7 +59,8 @@ public:
 	IC u32								get_Width		()		{ desc_enshure(); return desc.Width;	}
 	IC u32								get_Height		()		{ desc_enshure(); return desc.Height;	}
 
-	void								video_Play		(BOOL looped);
+	void								video_Sync		(u32 _time){m_play_time=_time;}
+	void								video_Play		(BOOL looped, u32 _time=0);
 	void								video_Pause		(BOOL state);
 	void								video_Stop		();
 	BOOL								video_IsPlaying	();
