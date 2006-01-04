@@ -1199,7 +1199,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 	
     t = {section = "logic@mil_dolg_soldier4_attack",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 11, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -1210,7 +1210,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 	
     t = {section = "logic@mil_dolg_soldier5_attack",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 11, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
@@ -1221,7 +1221,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 	
     t = {section = "logic@mil_dolg_soldier6_attack",
 		idle = 0,
-		prior = 10, state = {1},
+		prior = 11, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		predicate = function (info)
