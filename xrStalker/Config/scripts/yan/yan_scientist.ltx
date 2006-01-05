@@ -11,13 +11,14 @@ path_look = yan_ucheniy_look_talk
 combat_ignore_cond = always
 on_info = {+yantar_scientists_talk} remark@yan_professor_talk_1
 danger = danger_condition@yan_ecolog
-def_state_moving1 = walk
-def_state_moving2 = walk
-def_state_moving3 = walk
+def_state_standing = yan_professor_wait
+def_state_moving1 = yan_professor_walk
+def_state_moving2 = yan_professor_walk
+def_state_moving3 = yan_professor_walk
 
 [remark@yan_professor_talk_1]
 snd = yantar_professor_to_kruglov_1
-anim = wait
+anim = yan_professor_wait
 meet_talk_enabled = false
 target = logic@scientist_out_rest, yan_scientist
 on_timer = 5000 | %+yantar_kruglov_phrase_1%
@@ -27,7 +28,7 @@ danger = danger_condition@yan_ecolog
 
 [remark@yan_professor_talk_2]
 snd = yantar_professor_to_kruglov_2
-anim = wait
+anim = yan_professor_wait
 target = logic@scientist_out_rest, yan_scientist
 meet_talk_enabled = false
 on_timer = 5000 | walker@yan_1 %+yantar_kruglov_phrase_2%
@@ -42,9 +43,10 @@ combat_ignore_cond = always
 on_info = {+yan_actor_talk_ucheniy} walker@yan_2
 on_info2 = {+yan_find_scientist_done} walker@scientist_quest_good	
 danger = danger_condition@yan_ecolog
-def_state_moving1 = walk
-def_state_moving2 = walk
-def_state_moving3 = walk
+def_state_standing = yan_professor_wait
+def_state_moving1 = yan_professor_walk
+def_state_moving2 = yan_professor_walk
+def_state_moving3 = yan_professor_walk
 
 [walker@scientist_quest_good]
 path_walk = yan_ucheniy_walk_talk
@@ -52,9 +54,10 @@ path_look = yan_ucheniy_look_talk
 combat_ignore_cond = always
 on_info = {+yantar_scientist_talk_helmet} remark@talk_about_helmet
 danger = danger_condition@yan_ecolog
-def_state_moving1 = walk
-def_state_moving2 = walk
-def_state_moving3 = walk
+def_state_standing = yan_professor_wait
+def_state_moving1 = yan_professor_walk
+def_state_moving2 = yan_professor_walk
+def_state_moving3 = yan_professor_walk
 
 [remark@talk_about_helmet]
 snd = yantar_professor_radiation_quest_2
@@ -72,9 +75,10 @@ on_signal = make_helmet | remark@make_helmet
 combat_ignore_cond = always
 danger = danger_condition@yan_ecolog
 meet = meet@no_talk
-def_state_moving1 = walk
-def_state_moving2 = walk
-def_state_moving3 = walk
+def_state_standing = yan_professor_wait
+def_state_moving1 = yan_professor_walk
+def_state_moving2 = yan_professor_walk
+def_state_moving3 = yan_professor_walk
 
 [remark@make_helmet]
 anim = mode_shlem
@@ -90,10 +94,10 @@ path_look = yan_ucheniy_look_talk
 combat_ignore_cond = always
 on_info = {+yan_kill_brain_task_start} walker@yan_2
 danger = danger_condition@yan_ecolog
-def_state_moving1 = walk
-def_state_moving2 = walk
-def_state_moving3 = walk
-
+def_state_standing = yan_professor_wait
+def_state_moving1 = yan_professor_walk
+def_state_moving2 = yan_professor_walk
+def_state_moving3 = yan_professor_walk
 
 
 [walker@yan_2]
@@ -105,15 +109,16 @@ on_info = {-yan_actor_talk_ucheniy} walker@yan_1
 on_info2 = {+yantar_scientist_talk_helmet} remark@talk_about_helmet
 meet = meet@yan_general_scientist
 danger = danger_condition@yan_ecolog
-def_state_moving1 = walk
-def_state_moving2 = walk
-def_state_moving3 = walk
+def_state_standing = yan_professor_wait
+def_state_moving1 = yan_professor_walk
+def_state_moving2 = yan_professor_walk
+def_state_moving3 = yan_professor_walk
 
 
 
 [meet@yan_general_scientist]
-meet_state 		= 2 | wait@yantar_professor_talk_1
-meet_state_wpn 	= 2 | wait@yantar_professor_talk_1
+meet_state 		= 2 | yan_professor_wait@yantar_professor_talk_1
+meet_state_wpn 	= 2 | yan_professor_wait@yantar_professor_talk_1
 victim 			= actor
 victim_wpn 		= nil
 use             = true
