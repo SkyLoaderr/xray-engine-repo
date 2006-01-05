@@ -8,6 +8,7 @@
     <info_portion id="pri_helicopters2_start"></info_portion>
     <info_portion id="pri_helicopter_die"></info_portion>
     <info_portion id="pri_followers_scene_end"></info_portion>
+	<info_portion id="pri_followers_all_dead"></info_portion>
 
     <info_portion id="pri_bomber_dead"></info_portion>
     <info_portion id="pri_followers_actor_enemy"></info_portion>
