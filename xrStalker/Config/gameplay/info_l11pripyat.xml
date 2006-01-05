@@ -131,7 +131,7 @@
     <info_portion id="pri_snork_respawn_n_1"></info_portion>
    
     <!--DELME: only for presentation -->
-    <info_portion id="pripyat_task_1_start">
-		<task>pripyat_task_1</task>
-    </info_portion>
+    <info_portion id="pri_aes_mapspot">
+	</info_portion>
+    
 </game_information_portions>
