@@ -1918,13 +1918,9 @@ path_look = esc_wounded_fox_look
 wounded = wounded@esc_stalker_fox
 meet = no_meet
 on_info = {+escape_fox_heal} remark@esc_stalker_fox
+on_actor_in_zone = esc_ambush_out_restrictor| remark@esc_stalker_fox %=hit_npc(esc_stalker_camp_camp_point:bip01_spine1:1000:0)%
 
 [remark@esc_stalker_fox]
-;anim = hide
-;snd = esc_fox_alert
-;target = esc_stalker_camp_esc_fox_remark, 0
-;on_signal = sound_end| camper@esc_stalker_fox
-;meet = no_meet
 anim = guard
 target = actor
 meet = meet@esc_stalker_fox_2
