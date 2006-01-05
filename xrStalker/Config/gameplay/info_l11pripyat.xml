@@ -97,6 +97,8 @@
     <info_portion id="pri_victim2_suicide"></info_portion>
 
     <info_portion id="pri_monolith_snipers_free"></info_portion>
+    <info_portion id="pri_monolith_base_attacked"></info_portion>
+    <info_portion id="pri_monolith_base_attack_leader_zone"></info_portion>
 
     <info_portion id="pri_actor_in_hotel"></info_portion>
     <info_portion id="pri_actor_in_hiding_place"></info_portion>
