@@ -399,8 +399,10 @@ path_look  = guard_look1
 meet = meet@zoneguard_novice_lager1
 
 [meet@zoneguard_novice_lager1]
-meet_state 		= 20| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} talk_hello, esc_guard_camp
-meet_state_wpn 	= 20| threat@ {+esc_path_to_lager} threat_weap, esc_guard_camp
+;meet_state 		= 20| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} talk_hello, esc_guard_camp
+;meet_state_wpn 	= 20| threat@ {+esc_path_to_lager} threat_weap, esc_guard_camp
+meet_state 		= 20| guard@talk_hello
+meet_state_wpn 	= 20| threat@threat_weap
 victim 			= 20| actor
 victim_wpn 		= 20| actor
 use			= true
@@ -1572,8 +1574,8 @@ active = mob_home@esc_small_home4
 
 [mob_home@esc_small_home4]
 path_home = home
-home_min_radius = 20
-home_max_radius = 40
+home_min_radius = 10
+home_max_radius = 20
 
 
 [logic@esc_small_home5]
@@ -1629,6 +1631,7 @@ path_look = look_wait1
 on_info = {+esc_bandits_assault} patrol@esc_assault1
 danger = danger_condition@esc_assault
 meet = no_meet
+show_spot = false 
 
 [patrol@esc_assault1]
 path_walk = escape_factory_way1
@@ -1653,6 +1656,7 @@ path_look = look_wait2
 on_info = {+esc_bandits_assault} patrol@esc_assault2
 danger = danger_condition@esc_assault
 meet = no_meet
+show_spot = false 
 
 [patrol@esc_assault2]
 path_walk = escape_factory_way1
@@ -1677,7 +1681,7 @@ on_info = %+esc_assault_start +esc_petruha_die%
 [walker1@esc_assault3]
 path_walk = escape_btr_path1
 path_look = escape_btr_look1
-on_info = {+esc_bandits_start} remark@kamp_esc_assault3 
+on_info = {+esc_bandits_start} remark@kamp_esc_assault3 %=smart_terrain_force_update(esc_assault)%
 meet = meet@attacker
 danger = danger_condition@esc_assault
 
@@ -1686,7 +1690,8 @@ anim = guard
 snd = esc_factory_raid
 ;on_timer = 15000| patrol@esc_assault3
 on_signal = sound_end| patrol@esc_assault3 %+esc_bandits_assault%
-target = logic@esc_assault2, esc_assault
+;target = logic@esc_assault2, esc_assault
+target = nil
 meet = no_meet
 
 [patrol@esc_assault3]
