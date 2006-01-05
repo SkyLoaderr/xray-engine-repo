@@ -12,6 +12,7 @@
     <info_portion id="pri_bomber_dead"></info_portion>
     <info_portion id="pri_followers_actor_enemy"></info_portion>
     <info_portion id="pri_followers_actor_leave"></info_portion>
+    <info_portion id="pri_followers_leader_give_info"></info_portion>
 
     <info_portion id="pri_wave1_start"></info_portion>
     <info_portion id="pri_wave1_hide"></info_portion>
