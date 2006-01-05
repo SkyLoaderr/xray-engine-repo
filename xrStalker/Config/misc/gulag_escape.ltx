@@ -319,15 +319,15 @@ on_info = {+esc_kill_bandits_quest_have} remark@esc_lager_volk2
 anim = guard_rac
 snd = esc_wolf_radio
 target = actor
-on_signal = sound_end| remark@esc_lager_volk3
+on_signal = sound_end| remark@esc_lager_volk3 %=play_snd_from_radio%
 on_info = {+esc_petruha_report} walker@esc_lager_volk_walker3
 meet = no_meet
 
 [remark@esc_lager_volk3]
 anim = guard_rac
-snd = esc_wolf_radio_1
+;snd = esc_wolf_radio_1
 target = actor
-on_signal = sound_end| walker@esc_lager_volk_walker3 %+esc_petruha_report%
+on_timer = 5000 | walker@esc_lager_volk_walker3 %+esc_petruha_report%
 on_info = {+esc_petruha_report} walker@esc_lager_volk_walker3
 meet = no_meet
 
