@@ -114,6 +114,7 @@
     <info_portion id="pri_stadium_scene_start"></info_portion>
     <info_portion id="pri_stadium_heli_start"></info_portion>
     <info_portion id="pri_stadium_scene_end"></info_portion>
+	<info_portion id="pri_stadium_reached"></info_portion>
 
     <info_portion id="pri_monolith_decoder_got">
         <task>sar_secret_lab</task>
