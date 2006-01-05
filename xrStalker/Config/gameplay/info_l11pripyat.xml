@@ -71,6 +71,7 @@
     <info_portion id="pri_wave6_end"></info_portion>
 
     <info_portion id="pri_wave7_start"></info_portion>
+    <info_portion id="pri_wave7_sound_start"></info_portion>
     <info_portion id="pri_wave7_leader_phrase_start"></info_portion>
     <info_portion id="pri_wave7_leader_phrase_end"></info_portion>
     <info_portion id="pri_wave7_monolith1_dead"></info_portion>
