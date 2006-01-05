@@ -124,7 +124,7 @@ void	CEffect_Rain::OnFrame	()
 #ifndef _EDITOR
 	CObject* E 					= g_pGameLevel->CurrentViewEntity();
 	if (E&&E->renderable_ROS())
-		hemi_factor				= 1.f-2.5f*(0.2f-_min(_min(1.f,E->renderable_ROS()->get_luminocity_hemi()),0.2f));
+		hemi_factor				= 1.f-2.0f*(0.3f-_min(_min(1.f,E->renderable_ROS()->get_luminocity_hemi()),0.3f));
 #endif
 
 	switch (state)
@@ -149,7 +149,7 @@ void	CEffect_Rain::OnFrame	()
 		Fvector					sndP;
 		sndP.mad				(Device.vCameraPosition,Fvector().set(0,1,0),source_offset);
 		snd_Ambient.set_position(sndP);
-		snd_Ambient.set_volume	(1.5f*factor*hemi_factor);
+		snd_Ambient.set_volume	(1.1f*factor*hemi_factor);
 	}
 }
 
