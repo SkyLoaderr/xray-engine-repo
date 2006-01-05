@@ -1009,6 +1009,33 @@ path_look = post5_look
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 
+[logic@esc_bridge_post6]
+active = walker@esc_bridge_post6
+combat_ignore = combat_ignore@esc_bridge
+on_hit = hit@soldier
+on_death = death@soldier
+
+[walker@esc_bridge_post6]
+path_walk = post6_walk
+path_look = post6_look
+meet = meet@sold_zoneguard
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+on_actor_dist_le = 25| remark@esc_bridge_post2
+
+[remark@esc_bridge_post6]
+anim = guard
+target = actor
+snd = esc_bridge_soldiers
+on_signal = sound_end| walker2@esc_bridge_post6
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+
+[walker2@esc_bridge_post6]
+path_walk = post6_walk
+path_look = post6_look
+meet = meet@sold_zoneguard
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+
+
 [logic@esc_bridge_kamp1]
 active = kamp@esc_bridge_post1
 
@@ -1044,6 +1071,13 @@ center_point = kamp_point
 path_walk = kamp_point_task
 soundgroup = esc_bridge_soldiers
 
+[logic@esc_bridge_kamp5]
+active = kamp@esc_bridge_post5
+
+[kamp@esc_bridge_post5]
+center_point = kamp_point
+path_walk = kamp_point_task
+soundgroup = esc_bridge_soldiers
 
 [logic@esc_bridge_patrol]
 active = walker@esc_bridge_patrol
