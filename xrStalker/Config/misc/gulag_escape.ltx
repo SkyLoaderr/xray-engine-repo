@@ -969,6 +969,7 @@ path_look = post2_look
 meet = meet@sold_zoneguard
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 on_actor_dist_le = 25| remark@esc_bridge_post2
+on_info = {+esc_bridge_pass_fire} walker3@esc_bridge_post2
 
 [remark@esc_bridge_post2]
 anim = guard
@@ -981,6 +982,11 @@ combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 path_walk = post2_walk
 path_look = post2_look
 meet = meet@sold_zoneguard
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+
+[walker3@esc_bridge_post2]
+path_walk = post2_walk
+path_look = post2_look
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 
@@ -1007,6 +1013,13 @@ path_walk = post4_walk
 path_look = post4_look
 meet = meet@sold_zoneguard
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+on_info = {+esc_bridge_pass_fire} walker2@esc_bridge_post4
+
+[walker2@esc_bridge_post4]
+path_walk = post4_walk
+path_look = post4_look
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+
 
 
 [logic@esc_bridge_post5]
@@ -1033,6 +1046,7 @@ path_look = post6_look
 meet = meet@sold_zoneguard
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 on_actor_dist_le = 25| remark@esc_bridge_post2
+on_info = {+esc_bridge_pass_fire} walker3@esc_bridge_post6
 
 [remark@esc_bridge_post6]
 anim = guard
@@ -1047,6 +1061,10 @@ path_look = post6_look
 meet = meet@sold_zoneguard
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
+[walker3@esc_bridge_post6]
+path_walk = post6_walk
+path_look = post6_look
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 [logic@esc_bridge_kamp1]
 active = kamp@esc_bridge_post1
