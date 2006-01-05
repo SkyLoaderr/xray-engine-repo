@@ -1285,22 +1285,21 @@ danger = danger_condition@tolik
 meet = meet@esc_corps_wounded
 
 [remark@thanks_esc_corps_wounded]
-anim = wounded
+anim = wait
 target = actor
 snd = esc_tolik_thanks
 ;wounded = wounded@esc_corps_wounded
-on_signal = animation_end|remark@wait_esc_corps_wounded
-;on_signal = sound_end| walker@to_lager_esc_corps_wounded %=run_tutorial_if_newbie(part_12_relations)%
+on_signal = sound_end| remark@wait_esc_corps_wounded %=run_tutorial_if_newbie(part_12_relations)%
 danger = danger_condition@tolik
 ;meet = meet@friend
 meet = no_meet
 abuse = false
-on_info = %=run_tutorial_if_newbie(part_12_relations)%
+;on_info = %=run_tutorial_if_newbie(part_12_relations)%
 
 [remark@wait_esc_corps_wounded]
-anim = wounded
+anim = wait
 target = actor
-wounded = wounded@esc_corps_wounded
+;wounded = wounded@esc_corps_wounded
 danger = danger_condition@tolik
 meet = meet@friend
 abuse = false
@@ -1720,7 +1719,7 @@ danger = danger_condition@esc_assault
 ;amin = binocular
 anim = guard
 snd = esc_petruha_call
-target = nil
+target = actor
 on_signal = sound_end| remark@talk_esc_assault 
 meet = meet@attacker
 on_info = {+esc_bandits_start} remark@kamp_esc_assault3 %=smart_terrain_force_update(esc_assault)%
@@ -1880,7 +1879,7 @@ on_info = {+escape_stalker_dog_die} remark@end_esc_stalker_fox
 meet = no_meet
 
 [remark@end_esc_stalker_fox]
-snd = gar_hellcar_victory
+snd = esc_fox_thanks
 anim = guard
 target = actor
 on_signal = sound_end|kamp@esc_stalker_fox
