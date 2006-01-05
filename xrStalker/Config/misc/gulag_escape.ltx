@@ -203,7 +203,12 @@ soundgroup = esc_blokpost_specnaz
 
 
 [logic@esc_specnaz_raid1]
-active = patrol@esc_specnaz_raid1
+active = walker@esc_specnaz_raid1
+
+[walker@esc_specnaz_raid1]
+path_walk = way1
+path_look = look1
+on_signal = start_raid| patrol@esc_specnaz_raid1
 
 [patrol@esc_specnaz_raid1]
 path_walk = walk_raid1
@@ -213,7 +218,12 @@ move_type = raid
 
 
 [logic@esc_specnaz_raid2]
-active = patrol@esc_specnaz_raid2
+active = walker@esc_specnaz_raid2
+
+[walker@esc_specnaz_raid2]
+path_walk = way2
+path_look = look2
+on_signal = start_raid| patrol@esc_specnaz_raid2
 
 [patrol@esc_specnaz_raid2]
 path_walk = walk_raid2
@@ -223,7 +233,12 @@ move_type = raid
 
 
 [logic@esc_specnaz_follower1]
-active = patrol@esc_specnaz_follower1
+active = walker@esc_specnaz_follower1
+
+[walker@esc_specnaz_follower1]
+path_walk = way3
+path_look = look1
+on_signal = start_raid| patrol@esc_specnaz_follower1
 
 [patrol@esc_specnaz_follower1]
 path_walk = walk_raid1
@@ -232,7 +247,12 @@ move_type = raid
 
 
 [logic@esc_specnaz_follower2]
-active = patrol@esc_specnaz_follower2
+active = walker@esc_specnaz_follower2
+
+[walker@esc_specnaz_follower2]
+path_walk = way4
+path_look = look1
+on_signal = start_raid| patrol@esc_specnaz_follower2
 
 [patrol@esc_specnaz_follower2]
 path_walk = walk_raid1
@@ -241,7 +261,12 @@ move_type = raid
 
 
 [logic@esc_specnaz_follower3]
-active = patrol@esc_specnaz_follower3
+active = walker@esc_specnaz_follower3
+
+[walker@esc_specnaz_follower3]
+path_walk = way5
+path_look = look2
+on_signal = start_raid| patrol@esc_specnaz_follower3
 
 [patrol@esc_specnaz_follower3]
 path_walk = walk_raid2
@@ -250,7 +275,12 @@ move_type = raid
 
 
 [logic@esc_specnaz_follower4]
-active = patrol@esc_specnaz_follower4
+active = walker@esc_specnaz_follower4
+
+[walker@esc_specnaz_follower4]
+path_walk = way6
+path_look = look2
+on_signal = start_raid| patrol@esc_specnaz_follower4
 
 [patrol@esc_specnaz_follower4]
 path_walk = walk_raid2
