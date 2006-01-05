@@ -1915,15 +1915,16 @@ path_walk = escape_factory_return_path
 anim = guard_rac
 meet = no_meet
 on_actor_dist_le_nvis = 20 | remark@esc_assault_home11
-on_actor_dist_ge_nvis = 21 | remark@esc_assault_home11 %+esc_petruha_report2%
+on_actor_dist_ge_nvis = 20 | remark@esc_assault_home11 %+esc_petruha_report2%
 
 [remark@esc_assault_home11]
+path_walk = escape_factory_return_path
 anim = guard_rac
 snd = esc_petruha_raport
 on_signal = sound_end| kamp@esc_assault_home1 %+esc_report_send%
 meet = no_meet
-
-
+tips = tip_petruha_report
+danger = danger_condition@esc_assault
 
 
 [logic@esc_assault_home2]
@@ -1932,41 +1933,37 @@ on_death = death@petruha_friend
 
 [kamp@esc_assault_home2]
 center_point = kamp_center1
-on_info = {+esc_petruha_die -esc_petruha_report2 esc_report_send} remark@esc_assault_home1
+on_info = {+esc_petruha_die -esc_petruha_report2 -esc_report_send} remark@esc_assault_home1
 
 [remark@esc_assault_home2]
 path_walk = escape_factory_return_path
 anim = guard_rac
 meet = no_meet
 on_actor_dist_le_nvis = 20 | remark@esc_assault_home22
-on_actor_dist_ge_nvis = 21 | remark@esc_assault_home22 %+esc_petruha_report2%
+on_actor_dist_ge_nvis = 20 | remark@esc_assault_home22 %+esc_petruha_report2%
 
 [remark@esc_assault_home22]
+path_walk = escape_factory_return_path
 anim = guard_rac
 snd = esc_petruha_raport
 on_signal = sound_end| kamp@esc_assault_home1 %+esc_report_send%
 meet = no_meet
-
+tips = tip_petruha_report
+danger = danger_condition@esc_assault
 
 [logic@esc_assault_home_leader]
-active = remark@esc_assault_home_change
+active = remark@esc_assault_home
 on_death = death@esc_assault3
 
-[remark@esc_assault_home_change]
-path_walk = escape_factory_return_path
-anim = guard_rac
-meet = no_meet
-on_actor_dist_le_nvis = 20 | remark@esc_assault_home
-on_actor_dist_ge_nvis = 21 | remark@esc_assault_home %+esc_petruha_report2%
-wounded = wounded@petruha
-
 [remark@esc_assault_home]
+path_walk = escape_factory_return_path
 anim = guard_rac
 snd = esc_petruha_raport
 on_signal = sound_end| kamp@esc_assault_home_leader
 meet = no_meet
-path_walk = escape_factory_return_path
+tips = tip_petruha_report
 wounded = wounded@petruha
+danger = danger_condition@esc_assault
 
 [kamp@esc_assault_home_leader]
 center_point = kamp_center1
@@ -1983,7 +1980,7 @@ meet = meet@friend
 
 [danger_condition@esc_assault]
 ;ignore_ distance_sound = 10
-ignore_ distance = 0
+ignore_distance = 0
 
 [meet@attacker]
 meet_state	= 5|guard@wait
