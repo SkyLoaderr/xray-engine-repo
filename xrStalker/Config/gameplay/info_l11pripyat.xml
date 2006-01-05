@@ -110,5 +110,9 @@
         <article>sar_secret_lab_info</article>
     </info_portion>
 
+    <info_portion id="pri_decoder_docs_conclusion_info">
+	    <article>pri_decoder_docs_conclusion_art</article>
+    </info_portion>
+
     <info_portion id="pri_test_psy_hit"></info_portion>
 </game_information_portions>
