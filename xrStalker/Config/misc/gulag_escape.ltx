@@ -914,8 +914,8 @@ path_look = patrol_look
 
 
 [meet@sold_zoneguard]
-meet_state 		= 30| {+esc_bridge_pass_on} wait, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
-meet_state_wpn 	= 30| {+esc_bridge_pass_on} wait, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
+meet_state 		= 30| {+esc_bridge_pass_on} guard, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
+meet_state_wpn 	= 30| {+esc_bridge_pass_on} guard, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
 victim 			= 30| actor
 victim_wpn 		= 30| actor
 use			= true
