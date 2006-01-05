@@ -836,6 +836,20 @@ path_walk = post2_walk
 path_look = post2_look
 meet = meet@sold_zoneguard
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+on_actor_dist_le = 25| remark@esc_bridge_post2
+
+[remark@esc_bridge_post2]
+anim = guard
+target = actor
+snd = esc_bridge_soldiers
+on_signal = sound_end| walker2@esc_bridge_post2
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+
+[walker2@esc_bridge_post2]
+path_walk = post2_walk
+path_look = post2_look
+meet = meet@sold_zoneguard
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 
 [logic@esc_bridge_post3]
@@ -920,8 +934,8 @@ path_look = patrol_look
 
 
 [meet@sold_zoneguard]
-meet_state 		= 30| {+esc_bridge_pass_on} guard, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
-meet_state_wpn 	= 30| {+esc_bridge_pass_on} guard, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
+meet_state 		= 30| {+esc_bridge_pass_on} guard, guard@ {+esc_bridge_pass_on} talk_hello, wait
+meet_state_wpn 	= 30| {+esc_bridge_pass_on} guard, guard@ {+esc_bridge_pass_on} talk_hello, wait
 victim 			= 30| actor
 victim_wpn 		= 30| actor
 use			= true
@@ -1659,6 +1673,74 @@ active = kamp@esc_stalker_camp_provodnik
 [kamp@esc_stalker_camp_provodnik]
 center_point = camp_point
 meet = meet@neutral
+
+[logic@esc_stalker_fox]
+active = walker@esc_stalker_fox
+on_death = death@esc_stalker_fox
+
+[walker@esc_stalker_fox]
+path_walk = esc_wounded_fox_walk
+path_look = esc_wounded_fox_look
+wounded = wounded@esc_stalker_fox
+meet = no_meet
+on_info = {+escape_fox_heal} remark@esc_stalker_fox
+
+[remark@esc_stalker_fox]
+anim = hide
+snd = esc_fox_alert
+target = esc_stalker_camp_esc_fox_remark, 0
+on_signal = sound_end| camper@esc_stalker_fox
+meet = no_meet
+
+[camper@esc_stalker_fox]
+path_walk = esc_fox_walk
+path_look = esc_fox_look
+on_info = {+escape_stalker_dog_die} remark@end_esc_stalker_fox
+meet = no_meet
+
+[remark@end_esc_stalker_fox]
+snd = gar_hellcar_victory
+anim = guard
+target = actor
+on_signal = sound_end|kamp@esc_stalker_fox
+meet = meet@esc_stalker_fox
+danger = danger_condition@fox
+
+[wounded@esc_stalker_fox]
+hp_state = 30|help_me@help|29|wounded_heavy@help_heavy
+hp_state_see = 30|wounded@help_see|29|wounded_heavy@help_heavy
+psy_state = 50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20| {=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy
+hp_victim = 30|nil|10|nil
+hp_cover = 30|true|29|false
+hp_fight = 30|true|29|false
+syndata = wounded@help
+help_dialog = escape_fox_hello_dialog
+
+[kamp@esc_stalker_fox]
+center_point = esc_fox_kamp
+path_walk = esc_fox_kamp_task
+meet = meet@esc_stalker_fox
+danger = danger_condition@fox
+
+[death@esc_stalker_fox]
+on_info = %+esc_dogs_return%
+
+
+[danger_condition@fox]
+ignore_distance = 20
+
+
+[meet@esc_stalker_fox]
+meet_state	= 3|wait@wait
+meet_state_wpn	= 3|wait@wait
+victim		= 3|actor
+victim_wpn	= 3|actor
+use		= true
+use_wpn		= true
+meet_dialog     = escape_fox_hello_dialog
+
+
+
 
 
 [logic@esc_stalker_camp1]
