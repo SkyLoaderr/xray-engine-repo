@@ -55,6 +55,20 @@ CUIDragDropList::~CUIDragDropList()
 
 }
 
+void CUIDragDropList::SortList(DD_Check_func f){	
+	xr_list<CUIDragDropItem*>::iterator it;
+	
+	xr_list<CUIDragDropItem*> copy = m_DragDropItemsList;
+	
+	for (it = copy.begin(); it != copy.end(); it++)
+		DetachChild(*it);
+
+	copy.sort(f);
+
+	for (it = copy.begin(); it != copy.end(); it++)
+		AttachChild(*it);
+}
+
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
 {
 	CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(pChild);

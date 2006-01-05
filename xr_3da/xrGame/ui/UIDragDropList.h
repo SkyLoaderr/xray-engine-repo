@@ -17,6 +17,7 @@
 class CUIDragDropList;
 
 typedef bool (*CHECK_PROC)(CUIDragDropItem* pItem, CUIDragDropList* pList);
+typedef bool(*DD_Check_func)(CUIDragDropItem* v1, CUIDragDropItem* v2);
 
 typedef enum{CELL_EMPTY, CELL_FULL} E_CELL_STATE;
 
@@ -43,6 +44,8 @@ private:
 public:
 				CUIDragDropList					();
 	virtual		~CUIDragDropList				();
+
+			void SortList(DD_Check_func f);
 
 	virtual void AttachChild					(CUIWindow* pChild);
 	virtual void DetachChild					(CUIWindow* pChild);
@@ -166,7 +169,7 @@ protected:
 	CHECK_PROC m_pCheckProc;
 
 	//список эл-тов DrapDrop присоединенных в данный момент к списку
-	DRAG_DROP_LIST								m_DragDropItemsList;
+	xr_list<CUIDragDropItem*>					m_DragDropItemsList;
 
 	// Для возможности изменения размера лежащих на листе элементов, запомним скейл
 	float										m_fItemsScaleX;

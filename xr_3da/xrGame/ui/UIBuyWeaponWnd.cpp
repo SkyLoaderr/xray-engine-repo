@@ -828,6 +828,8 @@ void CUIBuyWeaponWnd::OnDDItemDbClick(){
 
 		HighlightCurAmmo();
 	}
+	CUIDragDropList* owner = smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetOwner());
+	owner->SortList(MP_item_cmp);	
 }
 
 void CUIBuyWeaponWnd::OnMenuLevelChange(){

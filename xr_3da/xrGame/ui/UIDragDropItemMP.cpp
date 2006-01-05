@@ -16,6 +16,22 @@
 
 extern CRestrictions g_mp_restrictions;
 
+bool MP_item_cmp(CUIDragDropItem* i1, CUIDragDropItem* i2){
+	CUIDragDropItemMP* _i1 = smart_cast<CUIDragDropItemMP*>(i1);
+	CUIDragDropItemMP* _i2 = smart_cast<CUIDragDropItemMP*>(i2);
+
+	if (_i1->GetPosInSubSection() > _i2->GetPosInSubSection())
+		return false;
+	else if (_i1->GetPosInSubSection() < _i2->GetPosInSubSection())
+		return true;
+	else
+	{
+		R_ASSERT2(false,"MP_item_cmp(CUIDragDropItem* i1, CUIDragDropItem* i1): pos1 = pos2");
+		return true;
+	}
+
+}
+
 //////////////////////////////////////////////////////////////////////////
 CUIDragDropItemMP::CUIDragDropItemMP()
 	:slotNum					(0),

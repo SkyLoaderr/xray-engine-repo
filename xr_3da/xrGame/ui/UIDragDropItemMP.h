@@ -16,6 +16,7 @@
 #include "UIDragDropList.h"
 
 void WpnDrawIndex(CUIDragDropItem *pDDItem);
+bool MP_item_cmp(CUIDragDropItem* i1, CUIDragDropItem* i2);
 
 
 class CUIBuyWeaponWnd;

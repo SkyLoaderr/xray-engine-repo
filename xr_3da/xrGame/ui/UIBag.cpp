@@ -400,8 +400,11 @@ bool CUIBag::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
 	return str.find("addon") != xr_string::npos;
 }
 
+
+
 void CUIBag::OnItemDrop(CUIDragDropItemMP* pItem){
-	pItem->GetOwner()->SendMessage(pItem, DRAG_DROP_ITEM_DROP, NULL);
+	CUIDragDropList* owner = smart_cast<CUIDragDropList*>(pItem->GetOwner());
+	owner->SendMessage(pItem, DRAG_DROP_ITEM_DROP, NULL);	
 }
 
 void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
