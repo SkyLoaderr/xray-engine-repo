@@ -348,7 +348,7 @@ use			= true
 use_wpn		= true
 zone			= esc_lager_guard_warn_zone1|{-esc_path_to_lager} threat@ {-esc_path_to_lager} esc_guard_camp| esc_lager_guard_kill_zone| {-esc_path_to_lager} true@ {-esc_path_to_lager} talk_abuse
 meet_dialog		= escape_lager_guard_start_dialog
-
+synpairs		= threat@esc_guard_camp
 
 
 [logic@esc_lager_zoneguard2]
@@ -369,6 +369,7 @@ use			= true
 use_wpn		= true
 zone			= esc_lager_guard_warn_zone2| {-esc_path_to_lager} threat@ {-esc_path_to_lager}esc_guard_camp| esc_lager_guard_kill_zone| {-esc_path_to_lager} true@ {-esc_path_to_lager} talk_abuse
 meet_dialog		= escape_lager_guard_start_dialog
+synpairs		= threat@esc_guard_camp
 
 [logic@esc_lager_walker1]
 active = walker1@esc_lager
@@ -1049,6 +1050,7 @@ active = kamp@esc_killer_kamp_wait
 [kamp@esc_killer_kamp_wait]
 center_point = kamp_wait
 soundgroup = esc_killers_wait
+danger = danger_condition@esc_killers
 
 
 [logic@esc_killer_kamp_guard1]
@@ -1057,6 +1059,7 @@ active = camper@esc_killer_kamp_guard1
 [camper@esc_killer_kamp_guard1]
 path_walk = kamp_guard_walk1
 path_look = kamp_guard_look1
+danger = danger_condition@esc_killers
 
 
 [logic@esc_killer_kamp_guard2]
@@ -1065,6 +1068,7 @@ active = camper@esc_killer_kamp_guard2
 [camper@esc_killer_kamp_guard2]
 path_walk = kamp_guard_walk2
 path_look = kamp_guard_look2
+danger = danger_condition@esc_killers
 
 
 [logic@esc_killer_kamp_guard3]
@@ -1073,6 +1077,10 @@ active = camper@esc_killer_kamp_guard3
 [camper@esc_killer_kamp_guard3]
 path_walk = kamp_guard_walk3
 path_look = kamp_guard_look3
+danger = danger_condition@esc_killers
+
+[danger_condition@esc_killers]
+ignore_ distance_sound = 10
 
 
 ;--------------------------
@@ -1431,6 +1439,7 @@ path_walk = kamp_center_task
 soundgroup = esc_attackers
 on_info = {+esc_bandits_assault} patrol@esc_assault1
 on_info2 = {+esc_kill_bandits_quest_kill}walker2@esc_assault1
+danger = danger_condition@esc_assault
 
 [patrol@esc_assault1]
 path_walk = escape_factory_way1
@@ -1467,6 +1476,7 @@ path_walk = kamp_center_task
 on_info = {+esc_bandits_assault} patrol@esc_assault2
 soundgroup = esc_attackers
 on_info2 = {+esc_kill_bandits_quest_kill}walker2@esc_assault2
+danger = danger_condition@esc_assault
 
 [patrol@esc_assault2]
 path_walk = escape_factory_way1
@@ -1506,6 +1516,7 @@ path_look = escape_btr_look1
 on_info = {+esc_bandits_start} walker@to_kamp_esc_assault3
 on_info2 = {+esc_kill_bandits_quest_kill}walker2@esc_assault3
 meet = meet@attacker
+danger = danger_condition@esc_assault
 
 [walker@to_kamp_esc_assault3]
 path_walk = esc_to_camp_walk
@@ -1556,6 +1567,9 @@ use		= true
 use_wpn		= true
 meet_dialog	= escape_factory_assault_start
 
+
+[danger_condition@esc_assault]
+ignore_ distance_sound = 10
 
 ;---------------------------------
 ;-------- Ћагерь у Ћиса ----------
