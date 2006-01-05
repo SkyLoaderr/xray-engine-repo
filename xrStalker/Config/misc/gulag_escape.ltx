@@ -1016,7 +1016,12 @@ on_death = death@soldier
 path_walk = post3_walk
 path_look = post3_look
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+on_info = {+esc_bridge_pass_fire} walker@esc_bridge_post3_fire %=bar_arena_hit%
 
+[walker@esc_bridge_post3_fire]
+path_walk = post3_walk
+path_look = post3_look
+on_info = {-esc_bridge_pass_fire} walker@esc_bridge_post3
 
 [logic@esc_bridge_post4]
 active = walker@esc_bridge_post4
@@ -1029,13 +1034,12 @@ path_walk = post4_walk
 path_look = post4_look
 meet = meet@sold_zoneguard
 combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
-on_info = {+esc_bridge_pass_fire} walker2@esc_bridge_post4
+on_info = {+esc_bridge_pass_fire} walker2@esc_bridge_post4 %=bar_arena_hit%
 
 [walker2@esc_bridge_post4]
 path_walk = post4_walk
 path_look = post4_look
-combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
-
+on_info = {-esc_bridge_pass_fire} walker@esc_bridge_post4
 
 
 [logic@esc_bridge_post5]
