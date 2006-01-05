@@ -330,12 +330,13 @@ syndata		= hello@hail|backoff@threat_weap
 meet_dialog = {-agroprom_military_case_have} escape_lager_volk_hello, escape_lager_leader_hello
 
 [death@wolf]
-on_info = %+esc_wolf_dead%
+on_info = %+esc_wolf_dead +sar2_death_12%
 
 
 ;Fanat
 [logic@esc_lager_fanat]
 active = walker@esc_lager_fanat
+on_death = death@fanat_2
 
 [walker@esc_lager_fanat]
 path_walk = wolf_walk
@@ -357,6 +358,9 @@ meet = meet@wolf
 target = actor
 
 
+
+[death@fanat_2]
+on_info = %+sar2_death_17%
 
 охранники
 
@@ -467,6 +471,7 @@ path_main = sleep3
 ;спящие ночью и днём
 [logic@esc_lager_sleeper4]
 active = sleeper4@esc_lager
+on_death = death@tolik_2
 
 [sleeper4@esc_lager]
 path_main = sleep4
@@ -474,6 +479,7 @@ path_main = sleep4
 
 [logic@esc_lager_sleeper5]
 active = sleeper5@esc_lager
+on_death = death@petruha
 
 [sleeper5@esc_lager]
 path_main = sleep5
@@ -609,7 +615,7 @@ path_walk = guard_walk4
 active = camper@esc_lager_defend9
 combat_ignore = combat_ignore
 on_hit = hit@lager
-on_death = death@lager
+on_death = death@lager_petruha
 
 [camper@esc_lager_defend9]
 path_walk = defend9_walk
@@ -626,7 +632,7 @@ path_walk = guard_walk4
 active = camper@esc_lager_defend10
 combat_ignore = combat_ignore
 on_hit = hit@lager
-on_death = death@lager
+on_death = death@lager_tolik
 
 [camper@esc_lager_defend10]
 path_walk = defend10_walk
@@ -676,6 +682,7 @@ combat_ignore_cond = {-esc_open_lager_fire}
 
 [logic@esc_lager_defend13]
 active = walker@esc_lager_defend13
+on_death = death@wolf
 
 [walker@esc_lager_defend13]
 path_walk = defend13_walk
@@ -691,8 +698,17 @@ on_info = %+esc_open_lager_fire%
 [death@lager]
 on_info = %+esc_open_lager_fire%
 
+[death@lager_petruha]
+on_info = %+esc_open_lager_fire +sar2_death_6%
+
+[death@lager_tolik]
+on_info = %+esc_open_lager_fire +sar2_death_1%
+
+[death@tolik_2]
+on_info = %+sar2_death_1%
+
 [death@fanat]
-on_info = %+esc_open_lager_fire +esc_fanat_die%
+on_info = %+esc_open_lager_fire +esc_fanat_die +sar2_death_17%
 
 [hit@killers]
 on_info = %+esc_open_lager_fire +esc_open_killer_fire%
@@ -829,7 +845,7 @@ combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 active = walker@esc_bridge_post2
 combat_ignore = combat_ignore@esc_bridge
 on_hit = hit@soldier
-on_death = death@soldier
+on_death = death@soldier_kuzn
 
 [walker@esc_bridge_post2]
 path_walk = post2_walk
@@ -900,6 +916,7 @@ soundgroup = esc_bridge_soldiers
 
 [logic@esc_bridge_kamp2]
 active = kamp@esc_bridge_post2
+on_death = death@soldier_kuzn_2
 
 [kamp@esc_bridge_post2]
 center_point = kamp_point
@@ -951,6 +968,12 @@ on_info = {=hit_by_actor} %+esc_bridge_pass_fire%
 
 [death@soldier]
 on_info = {=hit_by_actor} %+esc_bridge_pass_fire%
+
+[death@soldier_kuzn]
+on_info = {=hit_by_actor} %+esc_bridge_pass_fire +sar2_death_34%
+
+[death@soldier_kuzn_2]
+on_info = %+sar2_death_34%
 
 ;-------------------------------
 ;---------- Killers ------------
@@ -1274,7 +1297,7 @@ ignore_distance = 0
 
 
 [death@esc_corps_wounded]
-on_info = {=killed_by_actor} %+tutorial_wounded_die%, %+tutorial_wounded_death%
+on_info = {=killed_by_actor} %+tutorial_wounded_die +sar2_death_1%, %+tutorial_wounded_death +sar2_death_1%
 
 ;------------------------------
 ;------- Dogs to fox ----------
@@ -1498,6 +1521,10 @@ soundgroup = esc_attackers
 meet = meet@friend
 
 
+[death@petruha]
+on_info = %+sar2_death_6%
+
+
 [logic@esc_assault1]
 active = kamp@esc_assault1
 on_hit = hit@esc_assault1
@@ -1561,7 +1588,7 @@ on_death = death@esc_assault3
 combat_ignore = combat_ignore
 
 [death@esc_assault3]
-on_info = %+esc_assault_start +esc_petruha_die%
+on_info = %+esc_assault_start +esc_petruha_die +sar2_death_6%
 
 [walker1@esc_assault3]
 path_walk = escape_btr_path1
@@ -1573,7 +1600,8 @@ danger = danger_condition@esc_assault
 [remark@kamp_esc_assault3]
 anim = guard
 snd = esc_factory_raid
-on_signal = sound_end| patrol@esc_assault3
+on_timer = 10000| patrol@esc_assault3
+;on_signal = sound_end| patrol@esc_assault3
 target = logic@esc_assault2, esc_assault
 meet = no_meet
 
@@ -1718,7 +1746,7 @@ meet = meet@esc_stalker_fox
 danger = danger_condition@fox
 
 [death@esc_stalker_fox]
-on_info = %+esc_dogs_return%
+on_info = %+esc_dogs_return +sar2_death_8%
 
 
 [danger_condition@fox]
@@ -1740,9 +1768,13 @@ meet_dialog     = escape_fox_hello_dialog
 
 [logic@esc_stalker_camp1]
 active = kamp@esc_stalker_camp1
+on_death = death@fox_2
 
 [kamp@esc_stalker_camp1]
 center_point = camp_point
+
+[death@fox_2]
+on_info = %+sar2_death_8%
 
 
 [logic@esc_stalker_camp2]
