@@ -33,10 +33,14 @@ commander = false
 
 [logic@esc_blockpost_commander_day]
 active = camper@esc_blockpost_commander_day
+on_death = death@commander
 
 [camper@esc_blockpost_commander_day]
 path_walk = commander_walk
 path_look = commander_look
+
+[death@commander]
+on_info = {+esc_commander_die}
 
 
 [logic@esc_blockpost_post1]
@@ -92,6 +96,16 @@ path_look = watch_look2
 active = kamp@esc_blockpost_kamp1
 
 [kamp@esc_blockpost_kamp1]
+center_point = kamp
+path_walk = kamp_task
+soundgroup = esc_blokpost_soldier
+
+
+[logic@esc_blockpost_kamp2]
+active = kamp@esc_blockpost_kamp2
+on_death = death@commander
+
+[kamp@esc_blockpost_kamp2]
 center_point = kamp
 path_walk = kamp_task
 soundgroup = esc_blokpost_soldier
@@ -262,6 +276,7 @@ anim = guard
 snd = esc_wolf_say_thanks
 target = actor
 on_timer = 5000| walker@esc_lager_volk_walker3
+meet = meet@wolf
 
 [walker@esc_lager_volk_walker3]
 path_walk = wolf_walk
@@ -272,7 +287,7 @@ on_info = {+escape_dynamite_done} walker@esc_lager_volk_walker_final
 [walker@esc_lager_volk_walker_final]
 path_walk = wolf_walk
 path_look = wolf_look
-meet = meet@neutral
+meet = meet@wolf
 
 [meet@wolf]
 meet_state		= 15|wait@wait
