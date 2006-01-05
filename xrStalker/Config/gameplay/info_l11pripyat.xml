@@ -127,5 +127,9 @@
     <info_portion id="pri_test_psy_hit"></info_portion>
     <info_portion id="pri_monolith_respawn_1"></info_portion>
     <info_portion id="pri_snork_respawn_n_1"></info_portion>
-    
+   
+    <!--DELME: only for presentation -->
+    <info_portion id="pripyat_task_1_start">
+		<task>pripyat_task_1</task>
+    </info_portion>
 </game_information_portions>
