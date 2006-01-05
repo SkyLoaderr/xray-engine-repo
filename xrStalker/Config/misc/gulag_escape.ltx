@@ -1699,8 +1699,9 @@ active = kamp@esc_stalker_camp_provodnik
 [kamp@esc_stalker_camp_provodnik]
 center_point = camp_point
 path_walk = camp_point_task
-
 meet = meet@neutral
+
+
 
 [logic@esc_stalker_fox]
 active = walker@esc_stalker_fox
@@ -1714,11 +1715,16 @@ meet = no_meet
 on_info = {+escape_fox_heal} remark@esc_stalker_fox
 
 [remark@esc_stalker_fox]
-anim = hide
-snd = esc_fox_alert
-target = esc_stalker_camp_esc_fox_remark, 0
-on_signal = sound_end| camper@esc_stalker_fox
-meet = no_meet
+;anim = hide
+;snd = esc_fox_alert
+;target = esc_stalker_camp_esc_fox_remark, 0
+;on_signal = sound_end| camper@esc_stalker_fox
+;meet = no_meet
+anim = guard
+target = actor
+meet = meet@esc_stalker_fox_2
+on_info = {+escape_stalker_done} camper@esc_stalker_fox
+
 
 [camper@esc_stalker_fox]
 path_walk = esc_fox_walk
@@ -1767,6 +1773,14 @@ use		= true
 use_wpn		= true
 meet_dialog     = escape_fox_hello_dialog
 
+[meet@esc_stalker_fox_2]
+meet_state	= 3|guard@wait
+meet_state_wpn	= 3|guard@wait
+victim		= 3|actor
+victim_wpn	= 3|actor
+use		= true
+use_wpn		= true
+meet_dialog     = escape_fox_hello_dialog
 
 
 
