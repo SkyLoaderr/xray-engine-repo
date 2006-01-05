@@ -429,15 +429,12 @@ path_look  = guard_look1
 meet = meet@zoneguard_novice_lager1
 
 [meet@zoneguard_novice_lager1]
-;meet_state 		= 20| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} talk_hello, esc_guard_camp
-;meet_state_wpn 	= 20| threat@ {+esc_path_to_lager} threat_weap, esc_guard_camp
 meet_state 		= 20| guard@talk_hello
 meet_state_wpn 	= 20| threat@threat_weap
 victim 			= 20| actor
 victim_wpn 		= 20| actor
 use			= true
 use_wpn		= true
-;zone			= esc_lager_guard_warn_zone1|{-esc_path_to_lager} threat@ {-esc_path_to_lager} esc_guard_camp
 meet_dialog		= escape_lager_guard_start_dialog
 
 
@@ -450,15 +447,12 @@ path_look  = guard_look2
 meet = meet@zoneguard_novice_lager2
 
 [meet@zoneguard_novice_lager2]
-;meet_state 		= 20| {+esc_path_to_lager} guard, threat@ {+esc_path_to_lager} talk_hello, esc_guard_camp
-;meet_state_wpn 	= 20| threat@ {+esc_path_to_lager} threat_weap, esc_guard_camp
 meet_state 		= 20| guard@talk_hello
 meet_state_wpn 	= 20| threat@threat_weap
 victim 			= 20| actor
 victim_wpn 		= 20| actor
 use			= true
 use_wpn		= true
-;zone			= esc_lager_guard_warn_zone2| {-esc_path_to_lager} threat@ {-esc_path_to_lager} esc_guard_camp
 meet_dialog		= escape_lager_guard_start_dialog
 
 
