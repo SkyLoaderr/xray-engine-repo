@@ -300,13 +300,14 @@ path_walk = wolf_walk
 path_look = wolf_look
 meet = meet@wolf
 on_info = {+esc_wolf_say} remark@esc_lager_volk_wait2
+on_info2 = {+esc_wolf_thanks_complete} walker@esc_lager_volk_walker3
 
 [remark@esc_lager_volk_wait2]
 anim = guard
 snd = esc_wolf_say_thanks
 target = actor
 on_timer = 5000| walker@esc_lager_volk_walker3
-meet = meet@wolf
+meet = no_meet
 
 [walker@esc_lager_volk_walker3]
 path_walk = wolf_walk
@@ -349,7 +350,7 @@ anim = hello
 target = actor
 snd = esc_fanat_dialog
 on_signal = sound_end| remark@esc_lager_fanat_wait
-meet = meet@wolf
+meet = no_meet
 
 [remark@esc_lager_fanat_wait]
 anim = guard
@@ -673,6 +674,7 @@ path_walk = wolf_walk
 anim = guard
 snd = esc_fanat_ready
 on_signal = sound_end| walker@esc_lager_defend12
+meet = no_meet
 
 [walker@esc_lager_defend12]
 path_walk = defend12_walk
@@ -1262,6 +1264,7 @@ snd = esc_tolik_to_wolf
 target = 006
 anim = guard
 on_signal = sound_end| remark@to_gulag_esc_corps_wounded
+meet = no_meet
 
 [remark@to_gulag_esc_corps_wounded]
 on_actor_dist_ge_nvis = 12| {-esc_volk_reward} walker@to_gulag_esc_corps_wounded %=esc_wolf_thanks%, walker@to_gulag_esc_corps_wounded
@@ -1728,7 +1731,7 @@ snd = gar_hellcar_victory
 anim = guard
 target = actor
 on_signal = sound_end|kamp@esc_stalker_fox
-meet = meet@esc_stalker_fox
+meet = no_meet
 danger = danger_condition@fox
 
 [wounded@esc_stalker_fox]
