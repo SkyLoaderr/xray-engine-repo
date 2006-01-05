@@ -463,8 +463,7 @@ active = walker1@esc_lager
 [walker1@esc_lager]
 path_walk  = guard_walk1
 path_look  = guard_look1
-meet = default_meet
-meet_dialog = escape_lager_guard_start_dialog
+meet = meet@lager
 
 
 [logic@esc_lager_walker2]
@@ -473,8 +472,7 @@ active = walker2@esc_lager
 [walker2@esc_lager]
 path_walk  = guard_walk2
 path_look  = guard_look2
-meet_dialog = escape_lager_guard_start_dialog
-meet = default_meet
+meet = meet@lager
 
 
 [logic@esc_lager_walker3]
@@ -482,7 +480,7 @@ active = walker3@esc_lager
 
 [walker3@esc_lager]
 path_walk  = guard_walk3
-meet = default_meet
+meet = meet@lager
 
 
 [logic@esc_lager_walker4]
@@ -490,7 +488,7 @@ active = walker4@esc_lager
 
 [walker4@esc_lager]
 path_walk  = guard_walk4
-meet = default_meet
+meet = meet@lager
 
 
 ; сидящие днём у костра
@@ -501,6 +499,7 @@ active = kamp1@esc_lager
 center_point  = camp_center
 path_walk = camp_center_task
 soundgroup = esc_lager
+meet = meet@lager
 
 
 ;спящие ночью
@@ -509,6 +508,7 @@ active = sleeper1@esc_lager
 
 [sleeper1@esc_lager]
 path_main = sleep1
+meet = meet@lager
 
 
 [logic@esc_lager_sleeper2]
@@ -516,6 +516,7 @@ active = sleeper2@esc_lager
 
 [sleeper2@esc_lager]
 path_main = sleep2
+meet = meet@lager
 
 
 [logic@esc_lager_sleeper3]
@@ -523,6 +524,7 @@ active = sleeper3@esc_lager
 
 [sleeper3@esc_lager]
 path_main = sleep3
+meet = meet@lager
 
 
 ;спящие ночью и днём
@@ -532,6 +534,7 @@ active = sleeper5@esc_lager
 
 [sleeper5@esc_lager]
 path_main = sleep5
+meet = meet@lager
 
 
 [logic@esc_lager_sleeper6]
@@ -539,6 +542,7 @@ active = sleeper6@esc_lager
 
 [sleeper6@esc_lager]
 path_main = sleep6
+meet = meet@lager
 
 
 [logic@esc_lager_sleeper7]
@@ -546,6 +550,7 @@ active = sleeper7@esc_lager
 
 [sleeper7@esc_lager]
 path_main = sleep7
+meet = meet@lager
 
 
 ; защита лагеря
@@ -740,6 +745,8 @@ path_walk = defend13_walk
 path_look = defend13_look
 
 
+[meet@lager]
+meet_dialog = esc_lager_no_talk
 
 [combat_ignore]
 
