@@ -10,6 +10,9 @@ path_look = yan_ucheniy_look_talk
 combat_ignore_cond = always
 on_info = {+yantar_scientists_talk} remark@yan_professor_talk_1
 danger = danger_condition@yan_ecolog
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [remark@yan_professor_talk_1]
 snd = yantar_professor_to_kruglov_1
@@ -39,6 +42,9 @@ combat_ignore_cond = always
 on_info = {+yan_actor_talk_ucheniy} walker@yan_2
 on_info2 = {+yan_find_scientist_done} walker@scientist_quest_good	
 danger = danger_condition@yan_ecolog
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [walker@scientist_quest_good]
 path_walk = yan_ucheniy_walk_talk
@@ -47,6 +53,9 @@ meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {+yantar_scientist_talk_helmet} remark@talk_about_helmet
 danger = danger_condition@yan_ecolog
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [remark@talk_about_helmet]
 snd = yantar_professor_radiation_quest_2
@@ -64,6 +73,9 @@ on_signal = make_helmet | remark@make_helmet
 combat_ignore_cond = always
 danger = danger_condition@yan_ecolog
 meet = meet@no_talk
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [remark@make_helmet]
 anim = mode_shlem
@@ -79,6 +91,9 @@ path_look = yan_ucheniy_look_talk
 combat_ignore_cond = always
 on_info = {+yan_kill_brain_task_start} walker@yan_2
 danger = danger_condition@yan_ecolog
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 
 
@@ -91,12 +106,15 @@ on_info = {-yan_actor_talk_ucheniy} walker@yan_1
 on_info2 = {+yantar_scientist_talk_helmet} remark@talk_about_helmet
 meet = meet@yan_general_scientist
 danger = danger_condition@yan_ecolog
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 
 
 [meet@yan_general_scientist]
-meet_state 		= wait@yantar_professor_talk_1
-meet_state_wpn 	= wait@yantar_professor_talk_1
+meet_state 		= 2 | wait@yantar_professor_talk_1
+meet_state_wpn 	= 2 | wait@yantar_professor_talk_1
 victim 			= nil
 victim_wpn 		= nil
 use             = true
