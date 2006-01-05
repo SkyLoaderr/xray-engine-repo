@@ -1040,6 +1040,7 @@ combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 [logic@esc_bridge_kamp1]
 active = kamp@esc_bridge_post1
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 [kamp@esc_bridge_post1]
 center_point = kamp_point
@@ -1047,17 +1048,9 @@ path_walk = kamp_point_task
 soundgroup = esc_bridge_soldiers
 
 
-[logic@esc_bridge_kamp2]
-active = kamp@esc_bridge_post2
-
-[kamp@esc_bridge_post2]
-center_point = kamp_point
-path_walk = kamp_point_task
-soundgroup = esc_bridge_soldiers
-
-
 [logic@esc_bridge_kamp3]
 active = kamp@esc_bridge_post3
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 [kamp@esc_bridge_post3]
 center_point = kamp_point
@@ -1067,22 +1060,17 @@ soundgroup = esc_bridge_soldiers
 
 [logic@esc_bridge_kamp4]
 active = kamp@esc_bridge_post4
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 [kamp@esc_bridge_post4]
 center_point = kamp_point
 path_walk = kamp_point_task
 soundgroup = esc_bridge_soldiers
 
-[logic@esc_bridge_kamp5]
-active = kamp@esc_bridge_post5
-
-[kamp@esc_bridge_post5]
-center_point = kamp_point
-path_walk = kamp_point_task
-soundgroup = esc_bridge_soldiers
 
 [logic@esc_bridge_patrol]
 active = walker@esc_bridge_patrol
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 [walker@esc_bridge_patrol]
 path_walk = patrol_walk
