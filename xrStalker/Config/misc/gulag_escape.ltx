@@ -914,13 +914,13 @@ path_look = patrol_look
 
 
 [meet@sold_zoneguard]
-meet_state 		= 30| {+esc_bridge_pass_on} wait, hello@ {+esc_bridge_pass_on} talk_hello, threat_back
-meet_state_wpn 	= 30| {+esc_bridge_pass_on} wait, hello@ {+esc_bridge_pass_on} talk_hello, threat_back
+meet_state 		= 30| {+esc_bridge_pass_on} wait, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
+meet_state_wpn 	= 30| {+esc_bridge_pass_on} wait, threat@ {+esc_bridge_pass_on} talk_hello, esc_bridge_soldiers
 victim 			= 30| actor
 victim_wpn 		= 30| actor
 use			= true
 use_wpn		= true
-zone			= esc_bridge_kill_zone|{-esc_bridge_pass_on} threat@ {-esc_path_to_lager} esc_guard_camp| esc_lager_guard_kill_zone| {-esc_path_to_lager} true@ {-esc_path_to_lager} talk_abuse
+;zone			= esc_bridge_kill_zone|{-esc_bridge_pass_on} true@ {-esc_bridge_pass_on} esc_bridge_soldiers
 meet_dialog		= esc_bridge_soldiers_start
 
 [combat_ignore@esc_bridge]
@@ -1214,8 +1214,8 @@ anim = guard
 on_signal = sound_end| remark@to_gulag_esc_corps_wounded
 
 [remark@to_gulag_esc_corps_wounded]
-on_actor_dist_ge_nvis = 12| walker@to_gulag_esc_corps_wounded %=esc_wolf_thanks%
-on_actor_dist_le_nvis = 12| walker@to_gulag_esc_corps_wounded %+esc_wolf_say%
+on_actor_dist_ge_nvis = 12| {-esc_volk_reward} walker@to_gulag_esc_corps_wounded %=esc_wolf_thanks%, walker@to_gulag_esc_corps_wounded
+on_actor_dist_le_nvis = 12| {-esc_volk_reward} walker@to_gulag_esc_corps_wounded %+esc_wolf_say%, walker@to_gulag_esc_corps_wounded
 anim = guard
 target = 006
 
