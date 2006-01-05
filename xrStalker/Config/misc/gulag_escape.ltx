@@ -1449,22 +1449,15 @@ panic = 0
 
 
 [logic@esc_dogs_to_fox]
-active = mob_home@esc_dogs_to_fox_home2
+active = mob_walker@esc_dogs_to_fox_home2
 
-[mob_home@esc_dogs_to_fox_home2]
-path_home = path2
-home_min_radius = 5
-home_max_radius = 10
-aggressive_home
-panic = 0
-on_info = mob_home@esc_dogs_to_fox_home3 %=esc_hit_from_fox%
+[mob_walker@esc_dogs_to_fox_home2]
+path_walk = path2
+on_info = mob_walker@esc_dogs_to_fox_home3 %=esc_hit_from_fox%
 
-[mob_home@esc_dogs_to_fox_home3]
-path_home = path2
-home_min_radius = 12
-home_max_radius = 15
-aggressive_home
-panic = 0
+[mob_walker@esc_dogs_to_fox_home3]
+path_walk = path2
+
 
 ;------------------------------
 ;-------- Dogs swarm ----------
