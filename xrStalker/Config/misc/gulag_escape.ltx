@@ -1040,41 +1040,45 @@ combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 [logic@esc_bridge_kamp1]
 active = kamp@esc_bridge_post1
-combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+combat_ignore = combat_ignore@esc_bridge
 
 [kamp@esc_bridge_post1]
 center_point = kamp_point
 path_walk = kamp_point_task
 soundgroup = esc_bridge_soldiers
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 
 [logic@esc_bridge_kamp3]
 active = kamp@esc_bridge_post3
-combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+combat_ignore = combat_ignore@esc_bridge
 
 [kamp@esc_bridge_post3]
 center_point = kamp_point
 path_walk = kamp_point_task
 soundgroup = esc_bridge_soldiers
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 
 [logic@esc_bridge_kamp4]
 active = kamp@esc_bridge_post4
-combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+combat_ignore = combat_ignore@esc_bridge
 
 [kamp@esc_bridge_post4]
 center_point = kamp_point
 path_walk = kamp_point_task
 soundgroup = esc_bridge_soldiers
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 
 [logic@esc_bridge_patrol]
 active = walker@esc_bridge_patrol
-combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
+combat_ignore = combat_ignore@esc_bridge
 
 [walker@esc_bridge_patrol]
 path_walk = patrol_walk
 path_look = patrol_look
+combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor =is_alive(032)}
 
 
 [meet@sold_zoneguard]
@@ -1684,6 +1688,9 @@ on_info = %+esc_assault_start%
 [death@esc_assault1]
 on_info = %+esc_assault_start%
 
+[death@petruha_friend]
+on_info = %+esc_petruha_friend_die%
+
 [walker@esc_assault1]
 path_walk = walk_wait1
 path_look = look_wait1
@@ -1711,7 +1718,7 @@ meet = no_meet
 [logic@esc_assault2]
 active = walker@esc_assault2
 on_hit = hit@esc_assault1
-on_death = death@esc_assault1
+on_death = death@petruha_friend
 combat_ignore = combat_ignore
 
 [walker@esc_assault2]
@@ -1727,7 +1734,6 @@ path_walk = walk_syn2
 path_look = look_syn2
 on_info = {+esc_bandits_assault} patrol@esc_assault2
 meet = no_meet
-
 
 [patrol@esc_assault2]
 path_walk = escape_factory_way1
@@ -1818,6 +1824,7 @@ def_state_moving3 = assault
 
 [logic@esc_assault_fight2]
 active = walker@esc_assault_fight2
+on_death = death@petruha_friend
 
 [walker@esc_assault_fight2]
 path_walk = final2
@@ -1842,11 +1849,49 @@ def_state_moving2 = assault
 def_state_moving3 = assault
 
 
-[logic@esc_assault_home]
-active = kamp@esc_assault_home
+[logic@esc_assault_home1]
+active = kamp@esc_assault_home1
 
-[kamp@esc_assault_home]
+[kamp@esc_assault_home1]
 center_point = kamp_center1
+on_info = {+esc_petruha_friend_die +esc_petruha_die -esc_petruha_report2 -esc_report_send} remark@esc_assault_home1
+
+[remark@esc_assault_home1]
+path_walk = escape_factory_return_path
+anim = guard_rac
+meet = no_meet
+on_actor_dist_le_nvis = 20 | remark@esc_assault_home11
+on_actor_dist_ge_nvis = 21 | remark@esc_assault_home11 %+esc_petruha_report2%
+
+[remark@esc_assault_home11]
+anim = guard_rac
+snd = esc_petruha_raport
+on_signal = sound_end| kamp@esc_assault_home1 %+esc_report_send%
+meet = no_meet
+
+
+
+
+[logic@esc_assault_home2]
+active = kamp@esc_assault_home2
+on_death = death@petruha_friend
+
+[kamp@esc_assault_home2]
+center_point = kamp_center1
+on_info = {+esc_petruha_die -esc_petruha_report2 esc_report_send} remark@esc_assault_home1
+
+[remark@esc_assault_home2]
+path_walk = escape_factory_return_path
+anim = guard_rac
+meet = no_meet
+on_actor_dist_le_nvis = 20 | remark@esc_assault_home22
+on_actor_dist_ge_nvis = 21 | remark@esc_assault_home22 %+esc_petruha_report2%
+
+[remark@esc_assault_home22]
+anim = guard_rac
+snd = esc_petruha_raport
+on_signal = sound_end| kamp@esc_assault_home1 %+esc_report_send%
+meet = no_meet
 
 
 [logic@esc_assault_home_leader]
@@ -1854,8 +1899,8 @@ active = remark@esc_assault_home_change
 on_death = death@esc_assault3
 
 [remark@esc_assault_home_change]
-anim = guard_rac
 path_walk = escape_factory_return_path
+anim = guard_rac
 meet = no_meet
 on_actor_dist_le_nvis = 20 | remark@esc_assault_home
 on_actor_dist_ge_nvis = 21 | remark@esc_assault_home %+esc_petruha_report2%
@@ -1873,6 +1918,7 @@ wounded = wounded@petruha
 center_point = kamp_center1
 meet = meet@friend
 wounded = wounded@petruha
+
 
 [logic@esc_assault_kamp]
 active = kamp@esc_assault_kamp
