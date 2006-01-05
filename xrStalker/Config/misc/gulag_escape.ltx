@@ -1381,7 +1381,7 @@ on_timer = 60000| walker@to_lager_esc_corps_wounded %+tutorial_wounded_heal%
 [walker@to_lager_esc_corps_wounded]
 path_walk = esc_vagon_wounded_to_lager
 path_look = esc_wounded_to_lager_look
-on_signal2 = thanks| {-esc_wolf_dead} remark@esc_corps_wounded, %+esc_wounded_arrive%
+on_signal = thanks| {-esc_wolf_dead} walker@to_gulag_esc_corps_wounded, %+esc_wounded_arrive%
 meet = no_meet
 ;meet = meet@esc_corps_wounded
 danger = danger_condition@tolik
