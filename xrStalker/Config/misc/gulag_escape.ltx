@@ -319,8 +319,17 @@ on_info = {+esc_kill_bandits_quest_have} remark@esc_lager_volk2
 anim = guard_rac
 snd = esc_wolf_radio
 target = actor
+on_signal = sound_end| remark@esc_lager_volk3
+on_info = {+esc_petruha_report} walker@esc_lager_volk_walker3
+meet = no_meet
+
+[remark@esc_lager_volk3]
+anim = guard_rac
+snd = esc_wolf_radio_1
+target = actor
 on_signal = sound_end| walker@esc_lager_volk_walker3 %+esc_petruha_report%
 on_info = {+esc_petruha_report} walker@esc_lager_volk_walker3
+meet = no_meet
 
 [walker@esc_lager_volk_walker3]
 path_walk = wolf_walk
@@ -1445,6 +1454,14 @@ active = mob_home@esc_dogs_to_fox_home2
 path_home = path2
 home_min_radius = 5
 home_max_radius = 10
+aggressive_home
+panic = 0
+on_info = mob_home@esc_dogs_to_fox_home3 %=esc_hit_from_fox%
+
+[mob_home@esc_dogs_to_fox_home3]
+path_home = path2
+home_min_radius = 12
+home_max_radius = 15
 aggressive_home
 panic = 0
 
