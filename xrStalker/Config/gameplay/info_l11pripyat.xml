@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <game_information_portions>
     <info_portion id="pri_followers_mission_accept"></info_portion>
-    <info_portion id="pri_followers_leader_phrase2_end"></info_portion>
+    <info_portion id="pri_followers_leader_phrase1_end"></info_portion>
     <info_portion id="pri_helicopters_start"></info_portion>
     <info_portion id="pri_followers_start"></info_portion>
     <info_portion id="pri_followers_heli_look"></info_portion>
