@@ -79,6 +79,8 @@
     <info_portion id="pri_wave7_monolith7_dead"></info_portion>
     <info_portion id="pri_wave7_end"></info_portion>
 
+    <info_portion id="pri_undeground_respawn_start"></info_portion>
+
     <info_portion id="pri_show_zones"></info_portion>
 
     <info_portion id="pri_corner_start"></info_portion>
