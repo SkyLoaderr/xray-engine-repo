@@ -1440,6 +1440,7 @@ active = kamp@esc_assault
 center_point = kamp_center
 path_walk = kamp_center_task
 soundgroup = esc_attackers
+meet = meet@friend
 
 
 [logic@esc_assault1]
@@ -1461,6 +1462,7 @@ soundgroup = esc_attackers
 on_info = {+esc_bandits_assault} patrol@esc_assault1
 on_info2 = {+esc_kill_bandits_quest_kill}walker2@esc_assault1
 danger = danger_condition@esc_assault
+meet = meet@friend
 
 [patrol@esc_assault1]
 path_walk = escape_factory_way1
@@ -1470,6 +1472,7 @@ on_info3 = {+esc_assault_charge} walker2@esc_assault1
 on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault1
 on_info2 = {+esc_assault_start} walker@fight_esc_assault1
 combat_ignore_cond = {-esc_assault_start}
+meet = meet@friend
 
 [walker@fight_esc_assault1]
 path_walk = final3
@@ -1478,10 +1481,12 @@ on_info = {+esc_kill_bandits_quest_kill}walker2@esc_assault1
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
+meet = meet@friend
 
 [walker2@esc_assault1]
 path_walk = escape_factory_return_path
 on_signal = b_final | %+esc_assault_to_lager%
+meet = meet@friend
 
 
 
@@ -1498,6 +1503,7 @@ on_info = {+esc_bandits_assault} patrol@esc_assault2
 soundgroup = esc_attackers
 on_info2 = {+esc_kill_bandits_quest_kill}walker2@esc_assault2
 danger = danger_condition@esc_assault
+meet = meet@friend
 
 [patrol@esc_assault2]
 path_walk = escape_factory_way1
@@ -1507,6 +1513,7 @@ on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault2
 on_info2 = {+esc_assault_start} walker@fight_esc_assault2
 on_info3 = {+esc_assault_charge} walker@fight_esc_assault2
 combat_ignore_cond = {-esc_assault_start}
+meet = meet@friend
 
 [walker@fight_esc_assault2]
 path_walk = final2
@@ -1515,10 +1522,12 @@ on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault2
 def_state_moving3 = assault
 def_state_moving2 = assault
 def_state_moving1 = assault
+meet = meet@friend
 
 [walker2@esc_assault2]
 path_walk = escape_factory_return_path
 on_signal = b_final | %+esc_assault_to_lager%
+meet = meet@friend
 
 
 
