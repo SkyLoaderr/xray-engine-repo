@@ -1259,10 +1259,10 @@ hp_fight = 35|false
 help_dialog = tutorial_wounded_give_medkit
 
 [meet@esc_corps_wounded]
-meet_state		= 2|guard@wait
-meet_state_wpn	= 2|guard@wait
-victim			= 1|actor
-victim_wpn		= 1|actor
+meet_state		= 3|guard@wait
+meet_state_wpn	= 3|guard@wait
+victim			= 3|actor
+victim_wpn		= 3|actor
 use				= true
 use_wpn			= true
 
@@ -1513,7 +1513,6 @@ center_point = kamp_center
 path_walk = kamp_center_task
 soundgroup = esc_attackers
 on_info = {+esc_bandits_assault} patrol@esc_assault1
-on_info2 = {+esc_kill_bandits_quest_kill}walker2@esc_assault1
 danger = danger_condition@esc_assault
 meet = meet@friend
 
@@ -1521,29 +1520,11 @@ meet = meet@friend
 path_walk = escape_factory_way1
 path_look = escape_factory_look1
 formation = back
-on_info3 = {+esc_assault_charge} walker2@esc_assault1
-on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault1
-on_info2 = {+esc_assault_start} walker@fight_esc_assault1
 combat_ignore_cond = {-esc_assault_start}
 meet = no_meet
 def_state_moving1 = patrol
 def_state_moving2 = patrol
 def_state_moving3 = patrol
-
-[walker@fight_esc_assault1]
-path_walk = final3
-path_look = final3_look
-on_info = {+esc_kill_bandits_quest_kill}walker2@esc_assault1
-def_state_moving1 = assault
-def_state_moving2 = assault
-def_state_moving3 = assault
-meet = meet@friend
-
-[walker2@esc_assault1]
-path_walk = escape_factory_return_path
-on_signal = b_final | %+esc_assault_to_lager%
-meet = meet@friend
-
 
 
 [logic@esc_assault2]
@@ -1565,29 +1546,11 @@ meet = meet@friend
 path_walk = escape_factory_way1
 path_look = escape_factory_look1
 formation = back
-on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault2
-on_info2 = {+esc_assault_start} walker@fight_esc_assault2
-on_info3 = {+esc_assault_charge} walker@fight_esc_assault2
 combat_ignore_cond = {-esc_assault_start}
 meet = no_meet
 def_state_moving1 = patrol
 def_state_moving2 = patrol
 def_state_moving3 = patrol
-
-[walker@fight_esc_assault2]
-path_walk = final2
-path_look = final2_look
-on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault2
-def_state_moving3 = assault
-def_state_moving2 = assault
-def_state_moving1 = assault
-meet = meet@friend
-
-[walker2@esc_assault2]
-path_walk = escape_factory_return_path
-on_signal = b_final | %+esc_assault_to_lager%
-meet = meet@friend
-
 
 
 [logic@esc_assault3]
@@ -1602,16 +1565,9 @@ on_info = %+esc_assault_start +esc_petruha_die%
 [walker1@esc_assault3]
 path_walk = escape_btr_path1
 path_look = escape_btr_look1
-;on_info = {+esc_bandits_start} walker@to_kamp_esc_assault3
 on_info = {+esc_bandits_start} remark@kamp_esc_assault3 %+esc_bandits_assault%
-on_info2 = {+esc_kill_bandits_quest_kill}walker2@esc_assault3
 meet = meet@attacker
 danger = danger_condition@esc_assault
-
-[walker@to_kamp_esc_assault3]
-path_walk = esc_to_camp_walk
-path_look = esc_to_camp_look
-on_signal = bandits_assault| remark@kamp_esc_assault3
 
 [remark@kamp_esc_assault3]
 anim = guard
@@ -1620,35 +1576,77 @@ on_signal = sound_end| patrol@esc_assault3
 target = logic@esc_assault2, esc_assault
 meet = no_meet
 
-
 [patrol@esc_assault3]
 path_walk = escape_factory_way1
 path_look = escape_factory_look1
 commander = true
 formation = back
-on_signal = assault_start| walker@fight_esc_assault3 %+esc_assault_start +esc_assault_start%
-on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault3
+on_signal = assault_start| %+esc_assault_start%
 combat_ignore_cond = {-esc_assault_start}
 meet = no_meet
 
 
-[walker@fight_esc_assault3]
+
+[logic@esc_assault_fight1]
+active = walker@esc_assault_fight1
+
+[walker@esc_assault_fight1]
+path_walk = final3
+path_look = final3_look
+meet = no_meet
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
+
+
+[logic@esc_assault_fight2]
+active = walker@esc_assault_fight2
+
+[walker@esc_assault_fight2]
+path_walk = final2
+path_look = final2_look
+meet = no_meet
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
+
+
+[logic@esc_assault_fight3]
+active = walker@esc_assault_fight3
+on_death = death@esc_assault3
+
+[walker@esc_assault_fight3]
 path_walk = final1
 path_look = final1_look
-on_info = {+esc_kill_bandits_quest_kill} remark@victory_esc_assault3
-def_state_moving3 = assault
-def_state_moving2 = assault
+meet = no_meet
 def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
 
-[remark@victory_esc_assault3]
-anim = hello
-snd = esc_factory_victory
-on_signal = sound_end| walker2@esc_assault3
 
-[walker2@esc_assault3]
+[logic@esc_assault_home]
+active = walker@esc_assault_home
+
+[walker@esc_assault_home]
 path_walk = escape_factory_return_path
 meet = meet@attacker
 on_signal = b_final | %+esc_assault_to_lager%
+
+
+[logic@esc_assault_home_leader]
+active = remark@esc_assault_home
+on_death = death@esc_assault3
+
+[remark@esc_assault_home]
+anim = hello
+snd = esc_factory_victory
+on_signal = sound_end| walker@esc_assault_home
+meet = no_meet
+path_walk = escape_factory_return_path
+
+
+[danger_condition@esc_assault]
+ignore_ distance_sound = 10
 
 [meet@attacker]
 meet_state	= 5|wait@wait
@@ -1658,10 +1656,6 @@ victim_wpn	= 5|actor
 use		= true
 use_wpn		= true
 meet_dialog	= escape_factory_assault_start
-
-
-[danger_condition@esc_assault]
-ignore_ distance_sound = 10
 
 ;---------------------------------
 ;-------- Ћагерь у Ћиса ----------
