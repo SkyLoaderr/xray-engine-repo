@@ -49,7 +49,6 @@ def_state_moving3 = walk
 [walker@scientist_quest_good]
 path_walk = yan_ucheniy_walk_talk
 path_look = yan_ucheniy_look_talk
-meet_talk_enabled = true
 combat_ignore_cond = always
 on_info = {+yantar_scientist_talk_helmet} remark@talk_about_helmet
 danger = danger_condition@yan_ecolog
@@ -115,7 +114,7 @@ def_state_moving3 = walk
 [meet@yan_general_scientist]
 meet_state 		= 2 | wait@yantar_professor_talk_1
 meet_state_wpn 	= 2 | wait@yantar_professor_talk_1
-victim 			= nil
+victim 			= actor
 victim_wpn 		= nil
 use             = true
 use_wpn         = false
