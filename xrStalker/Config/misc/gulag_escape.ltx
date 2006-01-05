@@ -299,7 +299,7 @@ on_death = death@wolf
 path_walk = wolf_walk
 path_look = wolf_look
 meet = meet@wolf
-on_actor_dist_le = 12| {+tutorial_wounded_start -esc_kill_bandits_quest_kill} remark@esc_lager_volk1 
+on_actor_dist_le = 23| {+tutorial_wounded_start -esc_kill_bandits_quest_kill} remark@esc_lager_volk1 
 
 [remark@esc_lager_volk1]
 anim = hello
@@ -1285,15 +1285,25 @@ danger = danger_condition@tolik
 meet = meet@esc_corps_wounded
 
 [remark@thanks_esc_corps_wounded]
-anim = guard
+anim = wounded
 target = actor
-;snd = esc_tolik_thanks
-wounded = wounded@esc_corps_wounded
+snd = esc_tolik_thanks
+;wounded = wounded@esc_corps_wounded
+on_signal = animation_end|remark@wait_esc_corps_wounded
 ;on_signal = sound_end| walker@to_lager_esc_corps_wounded %=run_tutorial_if_newbie(part_12_relations)%
+danger = danger_condition@tolik
+;meet = meet@friend
+meet = no_meet
+abuse = false
+on_info = %=run_tutorial_if_newbie(part_12_relations)%
+
+[remark@wait_esc_corps_wounded]
+anim = wounded
+target = actor
+wounded = wounded@esc_corps_wounded
 danger = danger_condition@tolik
 meet = meet@friend
 abuse = false
-on_info = %=run_tutorial_if_newbie(part_12_relations)%
 on_timer = 60000| walker@to_lager_esc_corps_wounded %+tutorial_wounded_heal%
 
 [walker@to_lager_esc_corps_wounded]
@@ -1707,7 +1717,8 @@ on_actor_dist_le_nvis = 10| remark@call_esc_assault3
 danger = danger_condition@esc_assault
 
 [remark@call_esc_assault3]
-amin = binocular
+;amin = binocular
+anim = guard
 snd = esc_petruha_call
 target = nil
 on_signal = sound_end| remark@talk_esc_assault 
@@ -1725,8 +1736,8 @@ anim = guard
 snd = esc_factory_raid
 ;on_timer = 15000| patrol@esc_assault3
 on_signal = sound_end| patrol@esc_assault3 %+esc_bandits_assault%
-;target = logic@esc_assault2, esc_assault
-target = nil
+target = logic@esc_assault2, esc_assault
+;target = nil
 meet = no_meet
 
 [patrol@esc_assault3]
@@ -1803,6 +1814,13 @@ meet = no_meet
 path_walk = escape_factory_return_path
 
 [kamp@esc_assault_home_leader]
+center_point = kamp_center1
+meet = meet@friend
+
+[logic@esc_assault_kamp]
+active = kamp@esc_assault_kamp
+
+[kamp@esc_assault_kamp]
 center_point = kamp_center1
 meet = meet@friend
 
