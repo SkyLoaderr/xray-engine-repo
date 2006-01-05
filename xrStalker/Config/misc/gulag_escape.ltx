@@ -477,6 +477,10 @@ on_death = death@tolik_2
 
 [sleeper4@esc_lager]
 path_main = sleep4
+danger = danger_condition@tolik_new
+
+[danger_condition@tolik_new]
+ignore_ distance = 0
 
 
 [logic@esc_lager_sleeper5]
@@ -1180,69 +1184,17 @@ path_look = look2
 ;------------------------------
 ;------ Трупы у вагона --------
 ;------------------------------
-[logic@esc_corps1]
-active = walker@esc_corps1
-on_death = death@corps1
-combat_ignore = combat_ignore
-
-[walker@esc_corps1]
-path_walk = walk1
-path_look = look3
-on_info = {+esc_heli_attack} walker@heli_hunter_esc_corps1
-combat_ignore_cond = always
-meet = no_meet
-
-[walker@heli_hunter_esc_corps1]
-path_walk = walk1
-path_look = look1
-heli_hunter = true
-danger = danger_condition@corps
-combat_ignore_cond = always
-meet = no_meet
-
-
-[logic@esc_corps2]
-active = walker@esc_corps2
-on_death = death@corps2
-combat_ignore = combat_ignore
-
-[walker@esc_corps2]
-path_walk = walk2
-path_look = look3
-on_info = {+esc_heli_attack} walker@heli_hunter_esc_corps2
-combat_ignore_cond = always
-meet = no_meet
-
-[walker@heli_hunter_esc_corps2]
-path_walk = walk2
-path_look = look2
-heli_hunter = true
-danger = danger_condition
-combat_ignore_cond = always
-meet = no_meet
-
-
-[danger_condition@corps]
-ignore_distance = 0
-
-[death@corps1]
-on_info = %+esc_first_novice_dead%
-
-[death@corps2]
-on_info = %+esc_second_novice_dead%
-
-
 
 [logic@esc_corps_wounded]
-active = walker@normal_esc_corps_wounded
+active = walker@wounded_esc_corps_wounded
 on_death = death@esc_corps_wounded
 
-[walker@normal_esc_corps_wounded]
-path_walk = esc_wounded_walk
-path_look = esc_wounded_look
-on_info = {+esc_first_novice_dead +esc_second_novice_dead} walker@wounded_esc_corps_wounded %=run_tutorial_if_newbie(part_10_sprint)%
-danger = danger_condition@tolik
-meet = no_meet
+;[walker@normal_esc_corps_wounded]
+;path_walk = esc_wounded_walk
+;path_look = esc_wounded_look
+;on_info = {+esc_first_novice_dead +esc_second_novice_dead} walker@wounded_esc_corps_wounded %=run_tutorial_if_newbie(part_10_sprint)%
+;danger = danger_condition@tolik
+;meet = no_meet
 
 [walker@wounded_esc_corps_wounded]
 path_walk = esc_wounded_walk
@@ -1250,7 +1202,7 @@ path_look = esc_wounded_look
 wounded = wounded@esc_corps_wounded
 on_info = {+tutorial_wounded_help} remark@thanks_esc_corps_wounded
 danger = danger_condition@tolik
-;meet = meet@esc_corps_wounded
+meet = meet@esc_corps_wounded
 
 [remark@thanks_esc_corps_wounded]
 anim = guard
@@ -1260,7 +1212,6 @@ on_signal = sound_end| walker@to_lager_esc_corps_wounded %=run_tutorial_if_newbi
 danger = danger_condition@tolik
 meet = no_meet
 abuse = false
-
 
 [walker@to_lager_esc_corps_wounded]
 path_walk = esc_vagon_wounded_to_lager
@@ -1311,7 +1262,7 @@ use_wpn			= true
 
 
 [danger_condition@tolik]
-ignore_distance = 2
+ignore_distance = 0
 
 
 [death@esc_corps_wounded]
