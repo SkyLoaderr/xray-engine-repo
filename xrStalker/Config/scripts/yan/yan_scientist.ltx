@@ -14,7 +14,7 @@ danger = danger_condition@yan_ecolog
 snd = yantar_professor_to_kruglov_1
 anim = wait
 meet_talk_enabled = false
-target = logic@scientist_out_rest
+target = logic@scientist_out_rest, yan_scientist
 on_timer = 5000 | %+yantar_kruglov_phrase_1%
 on_info = {+yantar_professor_phrase_2} remark@yan_professor_talk_2
 combat_ignore_cond = always
@@ -23,7 +23,7 @@ danger = danger_condition@yan_ecolog
 [remark@yan_professor_talk_2]
 snd = yantar_professor_to_kruglov_2
 anim = wait
-target = logic@scientist_out_rest
+target = logic@scientist_out_rest, yan_scientist
 meet_talk_enabled = false
 on_timer = 5000 | walker@yan_1 %+yantar_kruglov_phrase_2%
 combat_ignore_cond = always
@@ -50,7 +50,7 @@ danger = danger_condition@yan_ecolog
 [remark@talk_about_helmet]
 snd = yantar_professor_radiation_quest_2
 anim = wait
-target = logic@scientist_out_rest
+target = logic@scientist_out_rest, yan_scientist
 meet = meet@no_talk
 combat_ignore_cond = always
 on_signal = sound_end | walker@go_to_room %-yantar_scientist_talk_helmet%
