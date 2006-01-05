@@ -1702,7 +1702,8 @@ show_spot = false
 [walker@esc_assault1_wait]
 path_walk = walk_syn2
 path_look = look_syn2
-on_info = {+esc_bandits_assault} patrol@esc_assault1
+;on_info = {+esc_bandits_assault} patrol@esc_assault1
+on_signal = run| patrol@esc_assault1 %+esc_bandits_assault%
 meet = no_meet
 
 [patrol@esc_assault1]
@@ -1732,7 +1733,8 @@ show_spot = false
 [walker@esc_assault2_wait]
 path_walk = walk_syn2
 path_look = look_syn2
-on_info = {+esc_bandits_assault} patrol@esc_assault2
+on_signal = run| patrol@esc_assault2 %+esc_bandits_assault%
+;on_info = {+esc_bandits_assault} patrol@esc_assault2
 meet = no_meet
 
 [patrol@esc_assault2]
@@ -1788,7 +1790,8 @@ wounded = wounded@petruha
 [walker@wait_esc_assault]
 path_walk = escape_btr_path1
 path_look = look_syn3
-on_signal = run| patrol@esc_assault3 %+esc_bandits_assault%
+;on_signal = run| patrol@esc_assault3 %+esc_bandits_assault%
+on_info = {+esc_bandits_assault} patrol@esc_assault3
 meet = no_meet
 wounded = wounded@petruha
 
