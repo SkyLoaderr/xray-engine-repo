@@ -333,26 +333,6 @@ meet_dialog = {-agroprom_military_case_have} escape_lager_volk_hello, escape_lag
 on_info = %+esc_wolf_dead%
 
 
-
-[logic@esc_lager_victor]
-active = walker@esc_lager_victor
-on_death = death@victor
-
-[walker@esc_lager_victor]
-path_walk = victor_walk
-path_look = victor_look
-meet = meet@need_help_2
-on_info = {+cit_vp_search} walker@esc_lager_victor2
-
-[walker@esc_lager_victor2]
-path_walk = victor_walk
-path_look = victor_look
-meet = meet@neutral
-
-[death@victor]
-on_info = %+cit_victor_die%
-
-
 ;Fanat
 [logic@esc_lager_fanat]
 active = walker@esc_lager_fanat
