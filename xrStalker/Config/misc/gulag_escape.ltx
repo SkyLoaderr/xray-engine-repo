@@ -971,10 +971,10 @@ combat_ignore_cond = {-esc_bridge_pass_fire =fighting_actor}
 on_info = {=hit_by_actor} %+esc_bridge_pass_fire%
 
 [death@soldier]
-on_info = {=hit_by_actor} %+esc_bridge_pass_fire%
+on_info = {=killed_by_actor} %+esc_bridge_pass_fire%
 
 [death@soldier_kuzn]
-on_info = {=hit_by_actor} %+esc_bridge_pass_fire +sar2_death_34%
+on_info = {=killed_by_actor} %+esc_bridge_pass_fire +sar2_death_34%
 
 [death@soldier_kuzn_2]
 on_info = %+sar2_death_34%
@@ -1253,12 +1253,13 @@ danger = danger_condition@tolik
 ;meet = meet@esc_corps_wounded
 
 [remark@thanks_esc_corps_wounded]
-anim = wait
+anim = guard
 target = actor
 snd = esc_tolik_thanks
 on_signal = sound_end| walker@to_lager_esc_corps_wounded %=run_tutorial_if_newbie(part_12_relations)%
 danger = danger_condition@tolik
 meet = no_meet
+abuse = false
 
 
 [walker@to_lager_esc_corps_wounded]
@@ -1266,8 +1267,10 @@ path_walk = esc_vagon_wounded_to_lager
 path_look = esc_wounded_to_lager_look
 on_signal2 = thanks| {-esc_wolf_dead} remark@esc_corps_wounded, %+esc_wounded_arrive%
 on_signal = lager_pass| {-esc_path_to_lager} %+esc_path_to_lager =play_snd_now(esc_tolik_to_lager)%
-meet = meet@esc_corps_wounded
+meet = no_meet
+;meet = meet@esc_corps_wounded
 danger = danger_condition@tolik
+abuse = false
 
 [remark@esc_corps_wounded]
 snd = esc_tolik_to_wolf
@@ -1275,13 +1278,15 @@ target = 006
 anim = guard
 on_signal = sound_end| remark@to_gulag_esc_corps_wounded
 meet = no_meet
+abuse = false
 
 [remark@to_gulag_esc_corps_wounded]
 on_actor_dist_ge_nvis = 12| {-esc_volk_reward} walker@to_gulag_esc_corps_wounded %=esc_wolf_thanks%, walker@to_gulag_esc_corps_wounded
 on_actor_dist_le_nvis = 12| {-esc_volk_reward} walker@to_gulag_esc_corps_wounded %+esc_wolf_say%, walker@to_gulag_esc_corps_wounded
 anim = guard
 target = 006
-
+meet = no_meet
+abuse = false
 
 [walker@to_gulag_esc_corps_wounded]
 path_walk = esc_to_gulag
@@ -1306,7 +1311,7 @@ use_wpn			= true
 
 
 [danger_condition@tolik]
-ignore_distance = 0
+ignore_distance = 2
 
 
 [death@esc_corps_wounded]
