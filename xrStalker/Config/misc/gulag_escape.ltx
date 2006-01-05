@@ -1187,6 +1187,7 @@ path_walk = esc_wounded_walk
 path_look = esc_wounded_look
 on_info = {+esc_first_novice_dead +esc_second_novice_dead} walker@wounded_esc_corps_wounded %=run_tutorial_if_newbie(part_10_sprint)%
 danger = danger_condition@tolik
+meet = no_meet
 
 [walker@wounded_esc_corps_wounded]
 path_walk = esc_wounded_walk
@@ -1505,6 +1506,9 @@ on_info = {+esc_kill_bandits_quest_kill} walker2@esc_assault1
 on_info2 = {+esc_assault_start} walker@fight_esc_assault1
 combat_ignore_cond = {-esc_assault_start}
 meet = meet@friend
+def_state_moving1 = patrol
+def_state_moving2 = patrol
+def_state_moving3 = patrol
 
 [walker@fight_esc_assault1]
 path_walk = final3
@@ -1546,6 +1550,9 @@ on_info2 = {+esc_assault_start} walker@fight_esc_assault2
 on_info3 = {+esc_assault_charge} walker@fight_esc_assault2
 combat_ignore_cond = {-esc_assault_start}
 meet = meet@friend
+def_state_moving1 = patrol
+def_state_moving2 = patrol
+def_state_moving3 = patrol
 
 [walker@fight_esc_assault2]
 path_walk = final2
