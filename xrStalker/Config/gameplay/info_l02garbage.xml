@@ -30,14 +30,18 @@
 	<info_portion id="gar_alarm"></info_portion>
 	<info_portion id="gar_bandits_raid"></info_portion>
 	<info_portion id="gar_bandits_damaged"></info_portion>
-	<info_portion id="gar_hellcar_help"></info_portion>
+	<info_portion id="gar_hellcar_help">
+		<task>gar_help_dymon</task>
+		<article>graveyard_raid</article>
+	</info_portion>
 	<info_portion id="gar_hellcar_reject"></info_portion>
 	<info_portion id="gar_open_fire"></info_portion>
 	<info_portion id="gar_counter_fire"></info_portion>
 	<info_portion id="gar_direction"></info_portion>
 	<info_portion id="gar_start_graveyard"></info_portion>
 	<info_portion id="gar_start_quest">
-		<task>gar_help_dymon</task>
+		<task>gar_car_graveyard_quest</task>
+		<article>help_for_hellcar</article>
 	</info_portion>
 	<info_portion id="gar_no_mapspot"></info_portion>
 	<info_portion id="gar_animation_radio"></info_portion>
