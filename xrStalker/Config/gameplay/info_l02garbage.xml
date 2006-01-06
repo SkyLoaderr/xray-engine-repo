@@ -6,10 +6,13 @@
 	<info_portion id="garbage_meetstalker_start">
 		<task>garbage_meet_stalker</task>
 		<article>meet_seryi_start</article>
+		<article>sl_fox_meet</article>
 	</info_portion>
 	<info_portion id="garbage_meetstalker_done"></info_portion>
 	<info_portion id="garbage_meetstalker_die"></info_portion>
-	<info_portion id="garbage_meetstalker_end"></info_portion>
+	<info_portion id="garbage_meetstalker_end">
+		<article>sl_seryi_meet</article>
+	</info_portion>
 	<info_portion id="gar_seryi_drug_die"></info_portion>
 	<info_portion id="gar_seryi_drug2_die"></info_portion>
 	
