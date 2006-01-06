@@ -5,7 +5,6 @@
 	<!-- атака бандитов на Серого -->
 	<info_portion id="garbage_meetstalker_start">
 		<task>garbage_meet_stalker</task>
-		<article>meet_seryi_start</article>
 		<article>sl_fox_meet</article>
 	</info_portion>
 	<info_portion id="garbage_meetstalker_done"></info_portion>
@@ -41,7 +40,6 @@
 	<info_portion id="gar_start_graveyard"></info_portion>
 	<info_portion id="gar_start_quest">
 		<task>gar_car_graveyard_quest</task>
-		<article>help_for_hellcar</article>
 	</info_portion>
 	<info_portion id="gar_no_mapspot"></info_portion>
 	<info_portion id="gar_animation_radio"></info_portion>
