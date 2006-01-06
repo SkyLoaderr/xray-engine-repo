@@ -195,7 +195,7 @@ function Cmeet_manager:update()
 	if db.actor:is_talking() and not self.npc:is_talking() then
 		self.sound = "nil"
 	end
-	printf("MEET [%s], state: [%s], sound: [%s]", self.npc:name(), tostring(self.state), tostring(self.sound))
+	--printf("MEET [%s], state: [%s], sound: [%s]", self.npc:name(), tostring(self.state), tostring(self.sound))
 end
 function Cmeet_manager:process_zone()
 	if self.a.zone == nil then return "nil","nil" end
