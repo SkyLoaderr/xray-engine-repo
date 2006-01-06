@@ -1322,7 +1322,7 @@ gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
         t = { section = "logic@" .. way_name,
             idle = 0,
             prior = 1, state = {0}, squad = squad, group = groups[1],
-            in_rest = "", out_rest = "pri_stadium_restr",
+            in_rest = "", out_rest = "pri_stadium_snipers_restr",
             online = "{+pri_stadium_scene_start}",
             predicate = m_predicate_e
         }
@@ -1331,13 +1331,15 @@ gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
         -- добавляем описание должности в лтх.
         ltx = ltx.."[logic@" .. way_name .. "]\n" ..
                    "active = camper@" .. way_name .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
 
                    "[camper@" .. way_name .. "]\n" ..
                    "path_walk                   = sniper_" .. i .. "_walk\n" ..
                    "path_look                   = sniper_look\n" ..
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_sniper_fire\n" ..
-                   "sniper                      = true\n"
+                   "sniper                      = true\n" ..
+                   "combat_ignore_cond          = {=enemy_gulag(pri_stadium_lair)}\n"
         i = i + 1
     end
 
