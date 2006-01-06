@@ -10,7 +10,6 @@ function trader_alredy_give_job(trader, actor)
 	if (actor:has_info("esc_kill_bandits_quest_have") and actor:dont_has_info("esc_kill_bandits_quest_done")) or
 	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done")) or
 	   (actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")) or
-	   (actor:has_info("cit_documents_need") and actor:dont_has_info("cit_documents_give")) or
 	   (actor:has_info("tutorial_artefact_start") and actor:dont_has_info("tutorial_artefact_done")) or
 	   (actor:has_info("tutorial_wounded_start") and actor:dont_has_info("esc_serious_talk"))
 	then
@@ -21,8 +20,7 @@ end
 
 function trader_give_extra_job(trader, actor)
 	local actor = db.actor
-	if (actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")) or
-	   (actor:has_info("cit_documents_need") and actor:dont_has_info("cit_documents_give"))
+	if actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")
 	then
 		return true
 	end
@@ -30,10 +28,8 @@ function trader_give_extra_job(trader, actor)
 end
 
 function trader_need_extra_job(trader, actor)
-	if (actor:dont_has_info("escape_blockpost_case") and 
-	    actor:has_info("esc_return")) or
-	   (actor:dont_has_info("cit_documents_need") and
-	    actor:has_info("escape_lager_killers_die"))
+	if actor:dont_has_info("escape_blockpost_case") and 
+	    actor:has_info("esc_return")
 	then
 		return true
 	end
@@ -56,7 +52,7 @@ end
 
 function not_final_job(trader, actor)
 	local actor = db.actor
-	return actor:dont_has_info("escape_blockpost_case_done") and actor:dont_has_info("cit_documents_give")
+	return actor:dont_has_info("escape_blockpost_case_done")
 end
 
 function trader_test(actor, npc)
@@ -65,7 +61,7 @@ function trader_test(actor, npc)
 end
 
 function is_not_tutorial(trader, actor)
- return not this.is_tutorial(trader, actor)
+	return not this.is_tutorial(trader, actor)
 end
 
 function trader_dont_give_job(first_speaker, second_speaker)
@@ -138,9 +134,7 @@ end
 function trader_dont_has_job(first_speaker, second_speaker)
     if trader_need_free_factory(first_speaker, second_speaker) == false and
 	   trader_need_military_case(first_speaker, second_speaker) == false and
-	   trader_need_blockpost_box(first_speaker, second_speaker) == false and
-	   (trader_need_deadcity(first_speaker, second_speaker) == false or
-	   trader_dont_need_deadcity(first_speaker, second_speaker) == true)
+	   trader_need_blockpost_box(first_speaker, second_speaker) == false
 	then
 		return true
 	end
@@ -252,31 +246,6 @@ function trader_need_blockpost_box(first_speaker, second_speaker)
 	end
 	return false
 end
---' Найти лагерь наемников
-function trader_need_deadcity(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("tutorial_end") and
-	   actor:has_info("escape_lager_killers_die") and
-	   actor:dont_has_info("cit_documents_need")
-	then
-		return true
-	end
-	return false
-end
-
-function trader_dont_need_deadcity(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("tutorial_end") and
-	   actor:dont_has_info("escape_lager_killers_die") and
-	   actor:has_info("escape_blockpost_case_done")
-	then
-		return true
-	end
-	return false
-end
-
 
 --' tutorial wounded in vagon
 function wounded_need_help(first_speaker, second_speaker)
