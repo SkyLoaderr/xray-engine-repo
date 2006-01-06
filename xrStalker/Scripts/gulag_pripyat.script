@@ -1177,7 +1177,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             idle = 0,
             prior = v, state = {0,1},
             squad = squad, group = groups[1],
-            in_rest = in_r, out_rest = gname .. "_base_restr",
+            in_rest = in_r, out_rest = "pri_monolith_base_altar_restr",
             online = "{+pri_monolith_spawn2}",
             predicate = m_predicate_r
         } table.insert(sj, t)
