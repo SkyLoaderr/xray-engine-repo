@@ -155,13 +155,13 @@ function Cmeet_manager:update()
 		local tmp = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_dialog)
 		if self.startdialog ~= tmp then
 			self.startdialog = tmp
-			printf("*DIALOGS %s* SET [%s]", self.npc:name(), utils.to_str(tmp))
+--			printf("*DIALOGS %s* SET [%s]", self.npc:name(), utils.to_str(tmp))
 			if tmp == nil or tmp == "nil" then
 				-- восстановление начального
-				printf("RESTORE")
+--				printf("RESTORE")
 				self.npc:restore_default_start_dialog()
 			else
-				printf("SET")
+--				printf("SET")
 				-- установка нового
 				self.npc:set_start_dialog(tmp)				
 			end
@@ -398,7 +398,7 @@ function reset_meet(npc, scheme, st, section)
 end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 function init_meet(npc, ini, section, st, scheme)
-	printf("MEET SECTION [%s][%s]", tostring(section), tostring(scheme))
+--	printf("MEET SECTION [%s][%s]", tostring(section), tostring(scheme))
 
 	if tostring(section) == st.meet_section and
 	   tostring(section) ~= "nil" 
@@ -633,24 +633,24 @@ end
 function set_actor_dialogs(npc, ini, name, dialog_section)
 --	printf("*ACTOR_DIALOGS*")
 	if dialog_section == nil then return end
-	printf("*ACTOR_DIALOGS*: set_actor_dialogs: npc_name='%s' section='%s'", npc:name(), dialog_section)
+--	printf("*ACTOR_DIALOGS*: set_actor_dialogs: npc_name='%s' section='%s'", npc:name(), dialog_section)
 	
 	local actor_dialogs_string = utils.cfg_get_string(ini, dialog_section, "id", npc, false, "")
 	if actor_dialogs_string ~= nil then
-		printf("*ACTOR_DIALOGS*: actor_dialogs=%s", actor_dialogs_string)
+--		printf("*ACTOR_DIALOGS*: actor_dialogs=%s", actor_dialogs_string)
 		--' Создаем в массиве запись где будут храниться считанные диалоги.
 		db.storage[npc:id()].actor_dialogs = parse_names(actor_dialogs_string)
 	else
-		printf("*ACTOR_DIALOGS*: actor_dialogs=nil")
+--		printf("*ACTOR_DIALOGS*: actor_dialogs=nil")
 	end
 	
 	local actor_disable = utils.cfg_get_string(ini, dialog_section, "disable", npc, false, "")
 	if actor_disable ~= nil then
-		printf("*ACTOR_DIALOGS*: actor_disable=%s", actor_disable)
+--		printf("*ACTOR_DIALOGS*: actor_disable=%s", actor_disable)
 		--' Создаем в массиве запись где будут храниться считанные диалоги.
 		db.storage[npc:id()].actor_disable = parse_names(actor_disable)
 	else
-		printf("*ACTOR_DIALOGS*: actor_disable=nil")
+--		printf("*ACTOR_DIALOGS*: actor_disable=nil")
 	end
 end
 --' ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
@@ -661,14 +661,14 @@ function dialog_manager_reset(npc, stype)
 		local overrides = xr_logic.generic_scheme_overrides(npc)
 		if overrides ~= nil then
 			if overrides.meet_dialog then
-				printf("*DIALOGS_MOB*: Set start dialog %s", overrides.meet_dialog)
+--				printf("*DIALOGS_MOB*: Set start dialog %s", overrides.meet_dialog)
 				npc:set_start_dialog(overrides.meet_dialog)
 			else
-				printf("*DIALOGS_MOB*: Restore start dialog")
+--				printf("*DIALOGS_MOB*: Restore start dialog")
 				npc:restore_default_start_dialog()
 			end
 		else
-			printf("*DIALOGS_MOB*: SCHEME HAS NO OVERRIDES: Restore start dialog")
+--			printf("*DIALOGS_MOB*: SCHEME HAS NO OVERRIDES: Restore start dialog")
 			npc:restore_default_start_dialog()
 		end
 	end
