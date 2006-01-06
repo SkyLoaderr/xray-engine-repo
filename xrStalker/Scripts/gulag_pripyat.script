@@ -1212,6 +1212,8 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
         ltx = ltx.. "[logic@" .. gname .. "_prayer" .. i .. "]\n" ..
                     "active              = walker@" .. gname .. "_prayer" .. i .. "\n" ..
                     "combat_ignore       = combat_ignore\n" ..
+					"on_hit				 = hit@altar_monolith\n" ..
+					"on_death			 = hit@altar_monolith\n"
 
                     "[walker@" .. gname .. "_prayer" .. i .. "]\n" ..
                     "path_walk           = prayer" .. i .. "_walk\n" ..
