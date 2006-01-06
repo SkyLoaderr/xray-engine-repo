@@ -301,19 +301,6 @@ function give_knife_to_actor(first_speaker, second_speaker)
 	end
 end
 
-function path_to_lager(actor, npc)
-	local actor = db.actor
-    if actor ~= nil and
-	   (actor:has_info("tutorial_wounded_death") or
-	   actor:has_info("tutorial_wounded_help")) and
-	   actor:dont_has_info("esc_path_to_lager") and
-	   actor:dont_has_info("esc_wolf_dead")
-	then
-		xr_effects.esc_wolf_thanks(actor, npc)
-	end
-end
-
-
 --' Escape bandits factory
 function give_factory_reward_trader(first_speaker, second_speaker)
 	dialogs.relocate_money(first_speaker, 500, "in")
