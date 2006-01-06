@@ -187,10 +187,6 @@ function have_blockpost_case(first_speaker, second_speaker)
   	return first_speaker:object("quest_case_01") ~= nil
 end
 
-function trader_test(actor, npc)
-	printf ("!!!!!")	
-	return true
-end
 
 function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
@@ -240,7 +236,7 @@ function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("tutorial_end") and
-	   actor:has_info("esc_return") and
+	   actor:has_info("esc_trader_speak") and
 	   actor:dont_has_info("escape_blockpost_case")
 	then
 		return true
