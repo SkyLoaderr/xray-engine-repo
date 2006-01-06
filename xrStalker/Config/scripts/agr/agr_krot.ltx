@@ -39,6 +39,23 @@ meet = meet@no_use
 ;danger = {+agr_help_krot_done +agr_help_stalkers_assault_dead} danger_condition@combat
 danger = danger_condition 
 combat_ignore_cond = {!fighting_actor}
+on_actor_dist_le = 8 | remark@hold2
+
+[remark@hold2]
+anim = guard
+snd = agr_krot_fear
+target = actor
+on_signal = sound_end | walker@combat_2
+combat_ignore_cond = {!fighting_actor}
+danger = danger_condition 
+
+[walker@combat_2]
+path_walk = agr_krot_hold_fake_walk
+path_look = agr_krot_hold_fake_look_2
+on_info   = {=agr_factory_hold_inactive} %+agr_help_krot_done% walker@wait_after_hold
+meet = meet@no_use
+danger = danger_condition 
+combat_ignore_cond = {!fighting_actor}
 
 [walker@wait_after_hold]
 path_walk = agr_krot_hold_walk
