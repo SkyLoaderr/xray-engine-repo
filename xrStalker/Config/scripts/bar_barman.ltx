@@ -18,10 +18,10 @@ danger = danger_condition@barman
 
 
 [meet@at_hole]
-meet_state = 4|barman_talk_free@bar_bar_barmen_hello
-meet_state_wpn = 4|barman_talk_free@bar_bar_barmen_hello
-victim = 4|actor
-victim_wpn = 4|actor
+meet_state = 6|barman_talk_free@bar_bar_barmen_hello
+meet_state_wpn = 6|barman_talk_free@bar_bar_barmen_hello
+victim = 6|actor
+victim_wpn = 6|actor
 use = true
 use_wpn = true
 
@@ -35,6 +35,7 @@ def_state_moving3 = barman_walk_danger
 on_signal = arrived | %+bar_barman_stay_room%
 on_info = {+bar_barman_stay_room +bar_psih_come -bar_psih_done} walker@room_psih, {+bar_barman_stay_room} walker@at_room
 danger = danger_condition@barman
+meet = no_meet
 
 [walker@at_room]
 path_walk = bar_barman_room_walk
@@ -117,6 +118,7 @@ def_state_moving3 = barman_walk_danger
 on_signal = arrived | %+bar_barman_stay_hole%
 on_info = {+bar_barman_stay_hole} walker@at_hole
 danger = danger_condition@barman
+meet = no_meet
 
 [danger_condition@barman]
 ignore_distance       = 0
