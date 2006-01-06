@@ -443,7 +443,7 @@ pri_followers_switcher[state_wave6] = function(actor, delta_time)
     return state_wave6
 end
 pri_followers_switcher[state_wave7] = function(actor, delta_time)
-    if xr_gulag.getGulagPopulation("pri_wave7") < 5
+    if xr_gulag.getGulagPopulation("pri_wave7") < 2
     then
         actor:give_info_portion("pri_undeground_respawn_start")
         actor:give_info_portion("pri_wave7_end")
