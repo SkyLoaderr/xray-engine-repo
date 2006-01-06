@@ -341,6 +341,9 @@ function give_soldiers_bribe(actor, npc)
 	dialogs.relocate_money(npc, 500, "out")	
 end
 
+function fox_pay_money(actor, npc)
+	dialogs.relocate_money(npc, 500, "in")	
+end
 
 function run_tutorial_pda(first_speaker, second_speaker)
 	printf("!-!-!")
