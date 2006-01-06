@@ -366,6 +366,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "path_look           = wave8_stalker" .. i .. "_look\n" ..
                     "def_state_moving1   = assault\n" ..
                     "def_state_moving2   = assault\n" ..
+					"wounded             = wounded@ignore\n" ..
 					"soundgroup			 = pri_followers_soundgroup\n" ..
                     "meet                = meet@ignore_abuse\n" --meet@def
     end
