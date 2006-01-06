@@ -583,7 +583,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
           "ignore_distance = 2\n" ..
 
           "[danger@normal]\n" ..
-          "ignore_types = corpse\n" ..
+          "ignore_types = corpse, sound\n" ..
 
           "[danger@kamp]\n" ..
           "ignore_types = corpse\n" --..
