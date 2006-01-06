@@ -95,7 +95,7 @@ meet = meet@no_use
 [walker@well]
 path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
-meet = meet@well
+meet = meet@no_use
 on_actor_dist_le = 5 | remark@thanks_2 ;%+agr_find_gunslinger_cache_start%
 combat_ignore_cond = {!fighting_actor}
 ;danger = danger_condition 
@@ -111,6 +111,14 @@ danger = danger_condition
 path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
 meet = meet@well
+on_info = {+agr_find_gunslinger_cache_start} walker@well3
+combat_ignore_cond = {!fighting_actor}
+danger = danger_condition 
+
+[walker@well3]
+path_walk = agr_krot_well_walk
+path_look = agr_krot_well_look
+meet = meet@well2
 combat_ignore_cond = {!fighting_actor}
 danger = danger_condition 
 
@@ -130,7 +138,6 @@ victim = 30 | actor
 victim_wpn = 30 | actor
 use = true
 use_wpn = true
-meet_dialog = agr_factory_krot_start
 
 [meet@no_use]
 use = false
