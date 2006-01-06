@@ -44,6 +44,16 @@ function is_tutorial(trader, actor)
 	return not db.actor:has_info("tutorial_end")
 end
 
+function is_not_tutorial_art(actor, trader)
+	local tutorial_artefact = db.actor:object("af_blood_tutorial")
+	if (db.actor:has_info("tutorial_artefact_start") and db.actor:dont_has_info("tutorial_artefact_done")
+		and  tutorial_artefact ~= nil) or db.actor:has_info("tutorial_artefact_done")
+	then
+		return true
+	end
+	return false
+end
+
 function not_final_job(trader, actor)
 	local actor = db.actor
 	return actor:dont_has_info("escape_blockpost_case_done") and actor:dont_has_info("cit_documents_give")
