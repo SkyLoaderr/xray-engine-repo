@@ -785,6 +785,8 @@ function load_ltx_monolith(gname, type)
                    "combat_ignore_cond          = {=pri_monolith_combat_ignore}\n"
         if i == 2 then
             res = res.."sniper = true\n"
+        else
+            res = res.."no_retreat = true\n"
         end
 	end
 
