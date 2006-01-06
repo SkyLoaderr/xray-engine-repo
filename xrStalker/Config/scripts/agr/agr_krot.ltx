@@ -80,8 +80,15 @@ path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
 meet = meet@well
 on_info= {+agr_find_gunslinger_cache_start} walker@well2
+on_actor_dist_le = 5 | remark@thanks_2
 combat_ignore_cond = {!fighting_actor}
 ;danger = danger_condition 
+
+[remark@thanks_2]
+anim = wait
+snd =  agr_krot_thanks_2
+target = actor
+on_signal = sound_end | walker@well2
 
 [walker@well2]
 path_walk = agr_krot_well_walk
