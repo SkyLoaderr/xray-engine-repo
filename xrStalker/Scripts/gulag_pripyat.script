@@ -652,6 +652,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_info                     = {!dist_to_enemy_le(" .. sdist .. ")} camper@" .. idstr .. "\n" ..
                    --"on_actor_dist_ge_nvis       = " .. sdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "\n" ..
                    "on_timer                    = " .. gtime .. " | {=has_enemy} camper@" .. idstr .. "_hide, camper@" .. idstr .. "\n" ..
+                   "on_info                     = {=has_enemy} camper@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
                    "danger                      = danger@normal\n" ..
 
@@ -989,46 +990,6 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     ltx = "[danger@monolith]\n" ..
           "ignore_distance_sound = 150\n" ..
 
-          "[logic@" .. gname .. "_fight_in_base1]\n" ..
-          "active              = kamp@" .. gname .. "_fight_in_base1\n" ..
-          "combat_ignore       = combat_ignore\n" ..
-
-          "[kamp@" .. gname .. "_fight_in_base1]\n" ..
-          "center_point        = kamp1\n" ..
-          "def_state_moving    = assault\n" ..
-          "danger              = danger@monolith\n" ..
-          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
-
-          "[logic@" .. gname .. "_fight_in_base2]\n" ..
-          "active              = kamp@" .. gname .. "_fight_in_base2\n" ..
-          "combat_ignore       = combat_ignore\n" ..
-
-          "[kamp@" .. gname .. "_fight_in_base2]\n" ..
-          "center_point        = kamp2\n" ..
-          "def_state_moving    = assault\n" ..
-          "danger              = danger@monolith\n" ..
-          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
-
-          "[logic@" .. gname .. "_fight_in_base3]\n" ..
-          "active              = kamp@" .. gname .. "_fight_in_base3\n" ..
-          "combat_ignore       = combat_ignore\n" ..
-
-          "[kamp@" .. gname .. "_fight_in_base3]\n" ..
-          "center_point        = kamp5\n" ..
-          "def_state_moving    = assault\n" ..
-          "danger              = danger@monolith\n" ..
-          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
-
-          "[logic@" .. gname .. "_fight_in_base4]\n" ..
-          "active              = kamp@" .. gname .. "_fight_in_base4\n" ..
-          "combat_ignore       = combat_ignore\n" ..
-
-          "[kamp@" .. gname .. "_fight_in_base4]\n" ..
-          "center_point        = kamp7\n" ..
-          "def_state_moving    = assault\n" ..
-          "danger              = danger@monolith\n" ..
-          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
-
           "[logic@" .. gname .. "_fight_in_hotel]\n" ..
           "active              = kamp@" .. gname .. "_fight_in_hotel\n" ..
           "combat_ignore       = combat_ignore\n" ..
@@ -1059,21 +1020,21 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
         predicate = m_predicate_l
     } table.insert(sj, t)
 
-    ltx = ltx.."[logic@" .. gname .. "_leader]\n" ..
-               "active              = walker@" .. gname .. "_leader\n" ..
-               "combat_ignore       = combat_ignore\n" ..
-               "on_death            = death@" .. gname .. "_leader\n" ..
+    ltx = ltx.. "[logic@" .. gname .. "_leader]\n" ..
+                "active              = walker@" .. gname .. "_leader\n" ..
+                "combat_ignore       = combat_ignore\n" ..
+                "on_death            = death@" .. gname .. "_leader\n" ..
 
-               "[death@" .. gname .. "_leader]\n" ..
-               "on_info             = %+sar2_death_55%\n" ..
+                "[death@" .. gname .. "_leader]\n" ..
+                "on_info             = %+sar2_death_55%\n" ..
 
-               "[walker@" .. gname .. "_leader]\n" ..
-               "path_walk           = leader_walk\n" ..
-               "path_look           = leader_look\n" ..
-               "danger              = danger@monolith\n" ..
-               "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+                "[walker@" .. gname .. "_leader]\n" ..
+                "path_walk           = leader_walk\n" ..
+                "path_look           = leader_look\n" ..
+                "danger              = danger@monolith\n" ..
+                "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 
-    t = { section = "logic@" .. gname .. "_leader_attack", --"logic@" .. gname .. "_fight_in_base3", 
+    t = { section = "logic@" .. gname .. "_leader_attack",
         idle = 0,
         prior = 15, state = {1},
         squad = squad, group = groups[1],
@@ -1082,21 +1043,20 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
         predicate = m_predicate_l
     } table.insert(sj, t)
 
-    ltx = ltx.."[logic@" .. gname .. "_leader_attack]\n" ..
-               "active              = camper@" .. gname .. "_leader_attack\n" ..
-               "combat_ignore       = combat_ignore\n" ..
-               "on_death            = death@" .. gname .. "_leader\n" ..
+    ltx = ltx.. "[logic@" .. gname .. "_leader_attack]\n" ..
+                "active              = camper@" .. gname .. "_leader_attack\n" ..
+                "combat_ignore       = combat_ignore\n" ..
+                "on_death            = death@" .. gname .. "_leader\n" ..
 
-               "[camper@" .. gname .. "_leader_attack]\n" ..
-               "path_walk           = leader_attack_walk\n" ..
-               "path_look           = leader_attack_look\n" ..
-               "danger              = danger@monolith\n" ..
-               "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+                "[camper@" .. gname .. "_leader_attack]\n" ..
+                "path_walk           = leader_attack_walk\n" ..
+                "path_look           = leader_attack_look\n" ..
+                "danger              = danger@monolith\n" ..
+                "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 
     -- walkers
     prior = {6, 7, 8, 12, 12, 5}
-    state1_kamp  = {"_fight_in_hotel", "_fight_in_base1", "_fight_in_base3", "_fight_in_base2", "_fight_in_base2", "_fight_in_hotel"}
-    state1_restr = {"_hotel_restr",    "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_hotel_restr"}
+    state1_restr = {"", "_kolos_restr", "_base_restr", "", "", "_hotel_restr"}
     for i, v in pairs({1, 3, 4, 5, 6, 8}) do
         --- state: main
         t = { section = "logic@" .. gname .. "_patrol" .. v, 
@@ -1107,17 +1067,17 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             online = "{+pri_monolith_spawn1}",
             predicate = m_predicate_s
         } table.insert(sj, t)
-        ltx = ltx.."[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
-                   "active              = walker@" .. gname .. "_patrol" .. v .. "\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
+        ltx = ltx.. "[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
+                    "active              = walker@" .. gname .. "_patrol" .. v .. "\n" ..
+                    "combat_ignore       = combat_ignore\n" ..
 
-                   "[walker@" .. gname .. "_patrol" .. v .. "]\n" ..
-                   "path_walk           = patrol" .. v .. "_walk\n" ..
-                   "path_look           = patrol" .. v .. "_look\n" ..
-                   "danger              = danger@monolith\n" ..
-                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+                    "[walker@" .. gname .. "_patrol" .. v .. "]\n" ..
+                    "path_walk           = patrol" .. v .. "_walk\n" ..
+                    "path_look           = patrol" .. v .. "_look\n" ..
+                    "danger              = danger@monolith\n" ..
+                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 
-        t = { section = "logic@" .. gname .. state1_kamp[i], 
+        t = { section = "logic@" .. gname .. "_patrol" .. v .. "_attack",
             idle = 0,
             prior = prior[i], state = {1},
             squad = squad, group = groups[6],
@@ -1125,6 +1085,16 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             online = "{+pri_monolith_spawn1}",
             predicate = m_predicate_s
         } table.insert(sj, t)
+
+        ltx = ltx.. "[logic@" .. gname .. "_patrol" .. v .. "_attack]\n" ..
+                    "active              = camper@" .. gname .. "_patrol" .. v .. "_attack\n" ..
+                    "combat_ignore       = combat_ignore\n" ..
+
+                    "[camper@" .. gname .. "_patrol" .. v .. "_attack]\n" ..
+                    "path_walk           = patrol" .. v .. "_attack_walk\n" ..
+                    "path_look           = patrol" .. v .. "_attack_look\n" ..
+                    "danger              = danger@monolith\n" ..
+                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
     end
 
     -- followers
@@ -1152,17 +1122,17 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                 predicate = m_predicate_s
             } table.insert(sj, t)
         end
-        ltx = ltx.."[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
-                   "active              = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
-                   
-                   "[patrol@" .. gname .. "_group_patrol" .. i .. "]\n" ..
-                   "path_walk           = patrol" .. v .. "_walk\n" ..
-                   "path_look           = patrol" .. v .. "_look\n" ..
-                   "formation           = line\n" ..
-                   "danger              = danger@monolith\n" ..
-                   "soundgroup          = " .. gname .."_group_patrol" .. i .. "_sg\n" ..
-                   "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+        ltx = ltx.. "[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
+                    "active              = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
+                    "combat_ignore       = combat_ignore\n" ..
+                    
+                    "[patrol@" .. gname .. "_group_patrol" .. i .. "]\n" ..
+                    "path_walk           = patrol" .. v .. "_walk\n" ..
+                    "path_look           = patrol" .. v .. "_look\n" ..
+                    "formation           = line\n" ..
+                    "danger              = danger@monolith\n" ..
+                    "soundgroup          = " .. gname .."_group_patrol" .. i .. "_sg\n" ..
+                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
     end
 
     -- rpg, svd, machine-gun
@@ -1178,21 +1148,21 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             online = "{+pri_monolith_spawn1}",
             predicate = pred[i]
         } table.insert(sj, t)
-        ltx = ltx.."[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
-                   "active              = camper@" .. gname .. "_stalker_" .. v .. "\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
-                   
-                   "[camper@" .. gname .. "_stalker_" .. v .. "]\n" ..
-                   "path_walk                   = patrol" .. id[i] .. "_walk\n" ..
-                   "path_look                   = patrol" .. id[i] .. "_look\n" ..
-                   --"no_retreat                  = true\n" ..
-                   "sniper                      = true\n" ..
-                   "radius                      = 20\n" ..
-                   "def_state_campering         = threat\n" ..
-                   "def_state_campering_fire    = threat_fire\n" ..
-                   "danger                      = danger@monolith\n" ..
-                   "soundgroup                  = " .. gname .."_rpg_svd_sg\n" ..
-                   "combat_ignore_cond          = {=pri_monolith_combat_ignore}\n"
+        ltx = ltx.. "[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
+                    "active              = camper@" .. gname .. "_stalker_" .. v .. "\n" ..
+                    "combat_ignore       = combat_ignore\n" ..
+                    
+                    "[camper@" .. gname .. "_stalker_" .. v .. "]\n" ..
+                    "path_walk                   = patrol" .. id[i] .. "_walk\n" ..
+                    "path_look                   = patrol" .. id[i] .. "_look\n" ..
+                    --"no_retreat                  = true\n" ..
+                    "sniper                      = true\n" ..
+                    "radius                      = 20\n" ..
+                    "def_state_campering         = threat\n" ..
+                    "def_state_campering_fire    = threat_fire\n" ..
+                    "danger                      = danger@monolith\n" ..
+                    "soundgroup                  = " .. gname .."_rpg_svd_sg\n" ..
+                    "combat_ignore_cond          = {=pri_monolith_combat_ignore}\n"
         --if i == 2 then
         --    ltx = ltx.."sniper = true\n"
         --else
@@ -1210,15 +1180,15 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             online = "{+pri_monolith_spawn2}",
             predicate = m_predicate_r
         } table.insert(sj, t)
-        ltx = ltx.."[logic@" .. gname .. "_prayer" .. i .. "]\n" ..
-                   "active              = walker@" .. gname .. "_prayer" .. i .. "\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
+        ltx = ltx.. "[logic@" .. gname .. "_prayer" .. i .. "]\n" ..
+                    "active              = walker@" .. gname .. "_prayer" .. i .. "\n" ..
+                    "combat_ignore       = combat_ignore\n" ..
 
-                   "[walker@" .. gname .. "_prayer" .. i .. "]\n" ..
-                   "path_walk           = prayer" .. i .. "_walk\n" ..
-                   "path_look           = prayer_look" .. math.random(1, 2) .. "\n" ..
-                   "danger              = danger@monolith\n" ..
-                   "combat_ignore_cond  = {-pri_monolith_base_attack_altar_zone}\n"
+                    "[walker@" .. gname .. "_prayer" .. i .. "]\n" ..
+                    "path_walk           = prayer" .. i .. "_walk\n" ..
+                    "path_look           = prayer_look" .. math.random(1, 2) .. "\n" ..
+                    "danger              = danger@monolith\n" ..
+                    "combat_ignore_cond  = {-pri_monolith_base_attack_altar_zone}\n"
     end
 
     -- kamps
@@ -1229,8 +1199,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             {m_predicate_s, m_predicate_s, m_predicate_s},
             {m_predicate_e, m_predicate_e, m_predicate_s}}
     online_cond  = {"{+pri_monolith_spawn2}", "{+pri_monolith_spawn2}", "{+pri_monolith_spawn1}", "{+pri_monolith_spawn1}", "{+pri_monolith_spawn2}"}
-    state1_kamp  = {"_fight_in_base1", "_fight_in_base2", "_fight_in_hotel", "_fight_in_kolos", "_fight_in_base3"}
-    state1_restr = {"_base_restr",     "_base_restr",     "_hotel_restr",    "_kolos_restr",    "_base_restr"}
+    state1_restr = {"_base_restr", "_base_restr", "", "_kolos_restr", "_base_restr"}
     local pr, pd
     for i, v in pairs({4, 4, 3, 3, 3}) do
         pr = prior[i]
@@ -1246,7 +1215,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                 predicate = pd[j]
             } table.insert(sj, t)
 
-            t = { section = "logic@" .. gname .. "_kamp" .. i .. "_attack" .. j, --"logic@" .. gname .. state1_kamp[i], 
+            t = { section = "logic@" .. gname .. "_kamp" .. i .. "_attack" .. j,
                 idle = 0,
                 prior = pr[j], state = {1},
                 squad = squad, group = groups[i],
@@ -1286,9 +1255,9 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             online = "{+pri_monolith_spawn1}",
             predicate = m_predicate_s_sniper
         } table.insert(sj, t)
-        ltx = ltx.."[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
-                   "active          = camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
-                   "combat_ignore   = combat_ignore\n" ..
+        ltx = ltx.. "[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
+                    "active          = camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
+                    "combat_ignore   = combat_ignore\n" ..
 
                     "[camper@" .. gname .. "_sniper" .. i .. "_wait]\n" ..
                     "path_walk                  = balcony_sniper" .. i .. "_walk\n" ..
