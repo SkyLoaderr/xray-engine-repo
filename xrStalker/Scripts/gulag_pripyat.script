@@ -546,6 +546,7 @@ gulags.pri_followers.state = function(gulag)
         xr_gulag.getGulagPopulation("pri_ambush7") == 0
     then
         actor:give_info_portion("pri_wave7_end")
+        actor:give_info_portion("pri_undeground_respawn_start")
         return state_wave8
     end
     return state
