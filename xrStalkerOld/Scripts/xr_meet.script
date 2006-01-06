@@ -32,7 +32,7 @@ function evaluator_contact:evaluate()
 		if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then
 			return false
 		end
-		return self.a.meet_manager.state ~= "nil"
+		return tostring(self.a.meet_manager.state) ~= "nil"
 	else
 		return false
 	end

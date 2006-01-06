@@ -140,16 +140,10 @@ function have_tutorial_artefact(first_speaker, second_speaker)
   	return first_speaker:object("af_blood_tutorial") ~= nil
 end
 function give_medkit(first_speaker, second_speaker)
-	local medkit = first_speaker:object("medkit")
-	if medkit ~= nil then
-		dialogs.relocate_item(first_speaker, medkit, "in")
-	else
-		printf("ERROR: Escape trader dont has a medkit.")
-	end
+	dialogs.relocate_item_section(first_speaker, "medkit", "in")
 end
 function give_tutorial_artefact(first_speaker, second_speaker)
-	local artefact = first_speaker:object("af_blood_tutorial")
-	dialogs.relocate_item(second_speaker, artefact, "out")
+	dialogs.relocate_item_section(second_speaker, "af_blood_tutorial", "out")
 end
 
 
@@ -161,17 +155,14 @@ end
 --' fox help
 
 function transfer_medikit_to_fox (player, wounded)
-    local obj = player:object("medkit")
-    dialogs.relocate_item(wounded, obj, "out")   
+    dialogs.relocate_item_section(wounded, "medkit", "out")   
 	wounded:set_relation(game_object.friend, player)
 	db.actor:give_info_portion("escape_fox_heal")
 end
 
 function give_weapon_to_actor (trader, actor)
-    local pm = trader:object("wpn_pm")
-    local ammo = trader:object("ammo_9x18_fmj")
-    dialogs.relocate_item(trader, pm, "in")
-    dialogs.relocate_item(trader, ammo, "in")     
+    dialogs.relocate_item_section(trader, "wpn_pm", "in")
+    dialogs.relocate_item_section(trader, "ammo_9x18_fmj", "in")     
 end
 
 
@@ -182,8 +173,7 @@ end
 
 
 function give_blockpost_case(first_speaker, second_speaker)
-	local case = first_speaker:object("quest_case_01")
-	dialogs.relocate_item(second_speaker, case, "out")
+	dialogs.relocate_item_section(second_speaker, "quest_case_01", "out")
 end
 
 function give_blockpost_case_reward(first_speaker, second_speaker)
@@ -258,28 +248,21 @@ end
 
 --' Escape dynamite for Wolf
 function transfer_wolf_reward(first_speaker, second_speaker)
-	local medusa = first_speaker:object("af_medusa")
-	dialogs.relocate_item(first_speaker, medusa, "in")
+	dialogs.relocate_item_section(first_speaker, "af_medusa", "in")
 end
 
 function wolf_additional_reward(first_speaker, second_speaker)
-	local medkit = first_speaker:object("medkit")
-    local bandage = first_speaker:object("bandage")
-    local fort = first_speaker:object("wpn_fort")
-    local f1 = first_speaker:object("grenade_f1")
-    local ammo = first_speaker:object("ammo_9x18_fmj")
-    dialogs.relocate_item(first_speaker, medkit, "in")
-    dialogs.relocate_item(first_speaker, bandage, "in")
-    dialogs.relocate_item(first_speaker, fort, "in")
-    dialogs.relocate_item(first_speaker, f1, "in") 
-    dialogs.relocate_item(first_speaker, ammo, "in")        
+    dialogs.relocate_item_section(first_speaker, "medkit", "in")
+    dialogs.relocate_item_section(first_speaker, "bandage", "in")
+    dialogs.relocate_item_section(first_speaker, "wpn_fort", "in")
+    dialogs.relocate_item_section(first_speaker, "grenade_f1", "in") 
+    dialogs.relocate_item_section(first_speaker, "ammo_9x18_fmj", "in")        
 end
 
 
 --' Escape Wounded's flash
 function wounded_give_flash(first_speaker, second_speaker)
-	local wounded_flash = first_speaker:object("esc_wounded_flash")
-	dialogs.relocate_item(first_speaker, wounded_flash, "in")
+	dialogs.relocate_item_section(first_speaker, "esc_wounded_flash", "in")
 end
 
 function have_wounded_flash(first_speaker, second_speaker)
@@ -290,16 +273,12 @@ function dont_have_wounded_flash(first_speaker, second_speaker)
 end
 
 function give_wounded_flash(first_speaker, second_speaker)
-	local wounded_flash = first_speaker:object("esc_wounded_flash")
-	dialogs.relocate_item(second_speaker, wounded_flash, "out")
+	dialogs.relocate_item_section(second_speaker, "esc_wounded_flash", "out")
 	dialogs.relocate_money(second_speaker, 1500, "in")
 end
 
 function give_knife_to_actor(first_speaker, second_speaker)
-	local knife = first_speaker:object("wpn_knife")
-	if knife ~= nil then
-		dialogs.relocate_item(first_speaker, knife, "in")
-	end
+	dialogs.relocate_item_section(first_speaker, "wpn_knife", "in")
 end
 
 --' Escape bandits factory
