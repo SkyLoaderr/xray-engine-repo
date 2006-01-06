@@ -1,5 +1,5 @@
 [logic]
-active = walker@room2hole
+active = walker@at_hole
 combat_ignore = combat_ignore
 trade = misc\trade_barman.ltx
 inv_max_weight = 10000
@@ -11,21 +11,44 @@ def_state_standing = barman_wait_free
 def_state_moving1 = barman_walk_free
 def_state_moving2 = barman_walk_free
 def_state_moving3 = barman_walk_free
-on_info = {+bar_barman_need_room} walker@hole2room
-on_info2 = {+yan_x16_documents_gain -bar_psih_come} %+bar_psih_come%
-;on_info3 = {+agroprom_military_case_done -agroprom_military_case_learn} walker@hole2room_agroprom_case
 meet = meet@at_hole
 danger = danger_condition@barman
+on_info = {=actor_in_zone(bar_barman_meet_zone_1)} walker@zone_1,{=actor_in_zone(bar_barman_meet_zone_2)} walker@zone_2,{=actor_in_zone(bar_barman_meet_zone_3)} walker@zone_3
 
-[walker@hole2room_agroprom_case]
-path_walk = bar_barman_hole2room_walk
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-on_signal = arrived | walker@at_hole %+agroprom_military_case_learn%
+[walker@zone_1]
+path_walk = barman_zone_1_walk
+path_look = barman_zone_1_look
+def_state_standing = barman_wait_free
+def_state_moving1 = barman_walk_free
+def_state_moving2 = barman_walk_free
+def_state_moving3 = barman_walk_free
+meet = meet@at_hole
 danger = danger_condition@barman
-meet = no_meet
+on_info = {=actor_in_zone(bar_barman_meet_zone_1)} walker@zone_1,{=actor_in_zone(bar_barman_meet_zone_2)} walker@zone_2,{=actor_in_zone(bar_barman_meet_zone_3)} walker@zone_3, walker@at_hole
+
+[walker@zone_2]
+path_walk = barman_zone_2_walk
+path_look = barman_zone_2_look
+def_state_standing = barman_wait_free
+def_state_moving1 = barman_walk_free
+def_state_moving2 = barman_walk_free
+def_state_moving3 = barman_walk_free
+meet = meet@at_hole
+danger = danger_condition@barman
+on_info = {=actor_in_zone(bar_barman_meet_zone_1)} walker@zone_1,{=actor_in_zone(bar_barman_meet_zone_2)} walker@zone_2,{=actor_in_zone(bar_barman_meet_zone_3)} walker@zone_3, walker@at_hole
+
+[walker@zone_3]
+path_walk = barman_zone_3_walk
+path_look = barman_zone_3_look
+def_state_standing = barman_wait_free
+def_state_moving1 = barman_walk_free
+def_state_moving2 = barman_walk_free
+def_state_moving3 = barman_walk_free
+meet = meet@at_hole
+danger = danger_condition@barman
+on_info = {=actor_in_zone(bar_barman_meet_zone_1)} walker@zone_1,{=actor_in_zone(bar_barman_meet_zone_2)} walker@zone_2,{=actor_in_zone(bar_barman_meet_zone_3)} walker@zone_3, walker@at_hole
+
+
 
 [meet@at_hole]
 meet_state = 6|barman_talk_free@bar_bar_barmen_hello
@@ -35,108 +58,6 @@ victim_wpn = 6|actor
 use = true
 use_wpn = true
 meet_dialog		=  bar_bar_barmen_start
-
-[walker@hole2room]
-path_walk = bar_barman_hole2room_walk
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-on_signal = arrived | %+bar_barman_stay_room%
-on_info = {+bar_barman_stay_room +bar_psih_come -bar_psih_done} walker@room_psih, {+bar_barman_stay_room} walker@at_room
-danger = danger_condition@barman
-meet = meet@no_talk
-
-[walker@at_room]
-path_walk = bar_barman_room_walk
-path_look = bar_barman_room_look
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-meet = meet@at_room
-on_info = {+bar_barman_need_hole} walker@room2hole
-danger = danger_condition@barman
-
-[meet@at_room]
-meet_state = 3|barman_wait_danger@bar_bar_barmen_hello_room|2|barman_wait_danger
-meet_state_wpn = 3|barman_wait_danger@bar_bar_barmen_hello_room|2|barman_wait_danger
-victim = 3|actor
-victim_wpn = 3|actor
-use = true
-use_wpn = true
-meet_dialog		=  bar_bar_barmen_start_room
-
-
-[walker@room_psih]
-path_walk = bar_barman_room_walk_psih
-path_look = bar_barman_room_look_psih
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-meet = meet@room_psih
-on_info = {+bar_barman_need_hole} walker@room2hole, {+bar_psih_suicide -bar_psih_done} walker@room_psih_idle
-on_signal = arrived | %+bar_barman_need_1_phrase%
-on_info2 = {+bar_barman_need_1_phrase -bar_barman_say_1_phrase} remark@room_psih_1
-danger = danger_condition@barman
-
-[remark@room_psih_1]
-anim = barman_wait_danger
-snd = bar_barman_psycho
-target = 517
-on_signal = sound_end | walker@room_psih %+bar_barman_say_1_phrase%
-danger = danger_condition@barman
-
-
-[walker@room_psih_idle]
-path_walk = bar_barman_room_walk_psih
-path_look = bar_barman_room_look_psih
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-on_timer = 10000 | remark@room_psih_2
-danger = danger_condition@barman
-
-[remark@room_psih_2]
-anim = barman_shock
-snd = bar_barman_psycho
-target = 517
-on_timer = 14000 | remark@room_psih_3
-danger = danger_condition@barman
-
-[remark@room_psih_3]
-anim = barman_wait_danger
-snd = bar_barman_psycho
-target = 517
-on_signal = sound_end | walker@room_psih %+bar_psih_done%
-danger = danger_condition@barman
-
-[meet@room_psih]
-;meet_state = 15|barman_wait_danger
-;meet_state_wpn = 15|barman_wait_danger
-;victim = 15|nil
-;victim_wpn = 15|nil
-use = true
-use_wpn = true
-
-[meet@no_talk]
-use             = false
-use_wpn         = false
-abuse = false
-
-
-[walker@room2hole]
-path_walk = bar_barman_room2hole_walk
-def_state_standing = barman_wait_danger
-def_state_moving1 = barman_walk_danger
-def_state_moving2 = barman_walk_danger
-def_state_moving3 = barman_walk_danger
-on_signal = arrived | %+bar_barman_stay_hole%
-on_info = {+bar_barman_stay_hole} walker@at_hole
-danger = danger_condition@barman
-meet = meet@no_talk
 
 [danger_condition@barman]
 ignore_distance       = 0
