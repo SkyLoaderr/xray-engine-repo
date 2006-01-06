@@ -174,7 +174,12 @@ function Cmeet_manager:update()
 		return
 	end
 	
-	self.dist = self.npc:position():distance_to(db.actor:position())
+	if self.npc:is_talking() then
+		self.dist = 0
+	else
+		self.dist = self.npc:position():distance_to(db.actor:position())
+	end
+	
 	self.victim = self:process_victim()
 
 	self.state_zone,self.sound_zone = self:process_zone()
@@ -448,6 +453,17 @@ function init_meet(npc, ini, section, st, scheme)
 		st.meet_dialog		= xr_logic.parse_condlist(npc, section, "meet_dialog", "")
 		st.zone				= parse_zone_data(npc, "")
 		st.syndata			= parse_syn_data(npc, def.syndata)
+		st.precond			= def.precond
+	elseif tostring(section) == "no_meet" then
+		st.meet_state		= parse_data(npc, "")
+		st.meet_state_wpn	= parse_data(npc, "")
+		st.victim			= parse_data(npc, "")
+		st.victim_wpn		= parse_data(npc, "")
+		st.use				= xr_logic.parse_condlist(npc, section, "use", "false")
+		st.use_wpn			= xr_logic.parse_condlist(npc, section, "use_wpn", "false")
+		st.meet_dialog		= xr_logic.parse_condlist(npc, section, "meet_dialog", "")
+		st.zone				= parse_zone_data(npc, "")
+		st.syndata			= parse_syn_data(npc, "")
 		st.precond			= def.precond
 	else
 		st.meet_state		= parse_data(npc, utils.cfg_get_string(ini, section, "meet_state", npc, false, "", def.meet_state))
