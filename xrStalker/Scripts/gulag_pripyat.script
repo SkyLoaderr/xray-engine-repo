@@ -680,8 +680,8 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 		t = { section = "logic@" .. idstr,
 			idle = 0,
 			prior = 1, state = {0}, squad = squad, group = groups[1],
-			in_rest = inr, out_rest = outr,
-			predicate = w_predicate_sn
+			in_rest = inr, out_rest = outr --,
+			--predicate = w_predicate_sn
 		}
 		table.insert(sj, t)
 
@@ -785,8 +785,8 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 		t = { section = "logic@" .. idstr,
 			idle = 0,
 			prior = 1, state = {0}, squad = squad, group = groups[1],
-			in_rest = inr, out_rest = outr,
-			predicate = w_predicate_sn
+			in_rest = inr, out_rest = outr --,
+			--predicate = w_predicate_sn
 		}
 		table.insert(sj, t)
 
