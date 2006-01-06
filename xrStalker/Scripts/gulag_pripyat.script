@@ -1070,21 +1070,82 @@ end
 gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     local i, j, v = 0, 0, 0
     local prior, pred = 0, 0
+    local state1_kamp, state2_kamp = 0, 0
+    local state1_restr, state2_restr = 0, 0
     local ltx = ""
     local in_r = "pri_snork_nest2_big_restr" --pri_snork_nest1_big_restr
 
     ltx = "[danger@monolith]\n" ..
-          "ignore_distance_sound = 150\n"
---[[
+          "ignore_distance_sound = 150\n" ..
+
+          "[logic@" .. gname .. "_fight_in_base1]\n" ..
+          "active              = kamp@" .. gname .. "_fight_in_base1\n" ..
+          "combat_ignore       = combat_ignore\n" ..
+
+          "[kamp@" .. gname .. "_fight_in_base1]\n" ..
+          "center_point        = kamp1\n" ..
+          "def_state_moving    = assault\n" ..
+          "danger              = danger@monolith\n" ..
+          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
+
+          "[logic@" .. gname .. "_fight_in_base2]\n" ..
+          "active              = kamp@" .. gname .. "_fight_in_base2\n" ..
+          "combat_ignore       = combat_ignore\n" ..
+
+          "[kamp@" .. gname .. "_fight_in_base2]\n" ..
+          "center_point        = kamp2\n" ..
+          "def_state_moving    = assault\n" ..
+          "danger              = danger@monolith\n" ..
+          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
+
+          "[logic@" .. gname .. "_fight_in_base3]\n" ..
+          "active              = kamp@" .. gname .. "_fight_in_base3\n" ..
+          "combat_ignore       = combat_ignore\n" ..
+
+          "[kamp@" .. gname .. "_fight_in_base3]\n" ..
+          "center_point        = kamp5\n" ..
+          "def_state_moving    = assault\n" ..
+          "danger              = danger@monolith\n" ..
+          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
+
+          "[logic@" .. gname .. "_fight_in_base4]\n" ..
+          "active              = kamp@" .. gname .. "_fight_in_base4\n" ..
+          "combat_ignore       = combat_ignore\n" ..
+
+          "[kamp@" .. gname .. "_fight_in_base4]\n" ..
+          "center_point        = kamp7\n" ..
+          "def_state_moving    = assault\n" ..
+          "danger              = danger@monolith\n" ..
+          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
+
+          "[logic@" .. gname .. "_fight_in_hotel]\n" ..
+          "active              = kamp@" .. gname .. "_fight_in_hotel\n" ..
+          "combat_ignore       = combat_ignore\n" ..
+
+          "[kamp@" .. gname .. "_fight_in_hotel]\n" ..
+          "center_point        = kamp6\n" ..
+          "def_state_moving    = assault\n" ..
+          "danger              = danger@monolith\n" ..
+          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n" ..
+
+          "[logic@" .. gname .. "_fight_in_kolos]\n" ..
+          "active              = kamp@" .. gname .. "_fight_in_kolos\n" ..
+          "combat_ignore       = combat_ignore\n" ..
+
+          "[kamp@" .. gname .. "_fight_in_kolos]\n" ..
+          "center_point        = kamp4\n" ..
+          "def_state_moving    = assault\n" ..
+          "danger              = danger@monolith\n" ..
+          "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+
     -- leader
 	t = { section = "logic@" .. gname .. "_leader", 
 		idle = 0,
 		prior = 15, state = {0},
 		squad = squad, group = groups[1],
-		in_rest = in_r, out_rest = "",
+		in_rest = in_r, out_rest = "", --gname .. "_leader_restr"
 		predicate = m_predicate_l
-	}
-	table.insert(sj, t)
+	} table.insert(sj, t)
     ltx = ltx.."[logic@" .. gname .. "_leader]\n" ..
                "active              = walker@" .. gname .. "_leader\n" ..
                "combat_ignore       = combat_ignore\n" ..
@@ -1099,9 +1160,21 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                "danger              = danger@monolith\n" ..
                "show_spot           = false\n" ..
                "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
---]]
+
+	t = { section = "logic@" .. gname .. "_fight_in_base3", 
+		idle = 0,
+		prior = 15, state = {1,2},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = gname .. "_base_restr",
+		predicate = m_predicate_l
+	} table.insert(sj, t)
+
     -- walkers
     prior = {6, 7, 8, 12, 12, 5}
+    state1_kamp  = {"_fight_in_hotel", "_fight_in_base1", "_fight_in_base3", "_fight_in_base2", "_fight_in_base2", "_fight_in_hotel"}
+    state1_restr = {"_hotel_restr",    "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_hotel_restr"}
+    state2_kamp  = {"_fight_in_base4", "_fight_in_base3", "_fight_in_base2", "_fight_in_base1", "_fight_in_base1", "_fight_in_base3"}
+    state2_restr = {"_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr"}
     for i, v in pairs({1, 3, 4, 5, 6, 8}) do
         --- state: main
 	    t = { section = "logic@" .. gname .. "_patrol" .. v, 
@@ -1110,8 +1183,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 		    squad = squad, group = groups[6],
 		    in_rest = in_r, out_rest = "",
 		    predicate = m_predicate_s
-	    }
-	    table.insert(sj, t)
+	    } table.insert(sj, t)
         ltx = ltx.."[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
                    "active              = walker@" .. gname .. "_patrol" .. v .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
@@ -1121,10 +1193,30 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                    "path_look           = patrol" .. v .. "_look\n" ..
                    "danger              = danger@monolith\n" ..
                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+
+	    t = { section = "logic@" .. gname .. state1_kamp[i], 
+		    idle = 0,
+		    prior = prior[i], state = {1},
+		    squad = squad, group = groups[6],
+		    in_rest = "", out_rest = gname .. state1_restr[i],
+		    predicate = m_predicate_s
+	    } table.insert(sj, t)
+
+	    t = { section = "logic@" .. gname .. state2_kamp[i], 
+		    idle = 0,
+		    prior = prior[i], state = {2},
+		    squad = squad, group = groups[6],
+		    in_rest = "", out_rest = gname .. state2_restr[i],
+		    predicate = m_predicate_s
+	    } table.insert(sj, t)
 	end
 
 	-- followers
     prior = {6, 6, 4, 4}
+    state1_kamp  = {"_fight_in_kolos", "_fight_in_hotel"}
+    state1_restr = {"_kolos_restr",    "_hotel_restr"}
+    state2_kamp  = {"_fight_in_kolos", "_fight_in_hotel"}
+    state2_restr = {"_kolos_restr",    "_hotel_restr"}
     for i, v in pairs({7, 10}) do
         for j = 1, 2 do
             --- state: main
@@ -1134,8 +1226,23 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 		        squad = squad, group = groups[7],
 		        in_rest = in_r, out_rest = "",
 		        predicate = m_predicate_s
-	        }
-	        table.insert(sj, t)
+	        } table.insert(sj, t)
+
+	        t = { section = "logic@" .. gname .. state1_kamp[i], 
+		        idle = 0,
+		        prior = prior[i + 2 * (j - 1)], state = {1},
+		        squad = squad, group = groups[7],
+		        in_rest = "", out_rest = gname .. state1_restr[i],
+		        predicate = m_predicate_s
+	        } table.insert(sj, t)
+
+	        t = { section = "logic@" .. gname .. state2_kamp[i], 
+		        idle = 0,
+		        prior = prior[i + 2 * (j - 1)], state = {2},
+		        squad = squad, group = groups[7],
+		        in_rest = "", out_rest = gname .. state2_restr[i],
+		        predicate = m_predicate_s
+	        } table.insert(sj, t)
 	    end
         ltx = ltx.."[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
                    "active              = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
@@ -1157,12 +1264,11 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
         --- state: main
 	    t = { section = "logic@" .. gname .. "_stalker_" .. v, 
 		    idle = 0,
-		    prior = 14, state = {0},
+		    prior = 14, state = {0,1,2},
 		    squad = squad, group = groups[8],
 		    in_rest = in_r, out_rest = "",
 		    predicate = pred[i]
-	    }
-	    table.insert(sj, t)
+	    } table.insert(sj, t)
 	    ltx = ltx.."[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
                    "active              = camper@" .. gname .. "_stalker_" .. v .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
@@ -1192,6 +1298,10 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             {m_predicate_e, m_predicate_e, m_predicate_e},
             {m_predicate_s, m_predicate_s, m_predicate_s},
             {m_predicate_e, m_predicate_e, m_predicate_s}}
+    state1_kamp  = {"_fight_in_base1", "_fight_in_base2", "_fight_in_hotel", "_fight_in_kolos", "_fight_in_base3"}
+    state1_restr = {"_base_restr",     "_base_restr",     "_hotel_restr",    "_kolos_restr",    "_base_restr"}
+    state2_kamp  = {"_fight_in_base2", "_fight_in_base3", "_fight_in_base4", "_fight_in_base4", "_fight_in_base1"}
+    state2_restr = {"_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr"}
     local pr, pd
 	for i, v in pairs({4, 4, 3, 3, 3}) do
 	    pr = prior[i]
@@ -1204,8 +1314,23 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 		        squad = squad, group = groups[i],
 		        in_rest = in_r, out_rest = "",
 		        predicate = pd[j]
-	        }
-	        table.insert(sj, t)
+	        } table.insert(sj, t)
+
+	        t = { section = "logic@" .. gname .. state1_kamp[i], 
+		        idle = 0,
+		        prior = pr[j], state = {1},
+		        squad = squad, group = groups[i],
+		        in_rest = "", out_rest = gname .. state1_restr[i],
+		        predicate = pd[j]
+	        } table.insert(sj, t)
+
+	        t = { section = "logic@" .. gname .. state2_kamp[i], 
+		        idle = 0,
+		        prior = pr[j], state = {2},
+		        squad = squad, group = groups[i],
+		        in_rest = "", out_rest = gname .. state2_restr[i],
+		        predicate = pd[j]
+	        } table.insert(sj, t)
 	    end
 	    ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
                    "active              = kamp@" .. gname .. "_kamp" .. i .. "_soldier\n" ..
@@ -1223,11 +1348,11 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     for i = 1, 2 do
 	    t = { section = "logic@" .. gname .. "_sniper" .. i, 
 		    idle = 0,
-		    prior = 14, state = {0}, squad = squad, group = groups[9],
+		    prior = 14, state = {0,1,2},
+		    squad = squad, group = groups[9],
 		    in_rest = in_r, out_rest = "",
 		    predicate = m_predicate_s_svd
-	    }
-	    table.insert(sj, t)
+	    } table.insert(sj, t)
         ltx = ltx.."[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
                    "active          = camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
                    "combat_ignore   = combat_ignore\n" ..
@@ -1235,6 +1360,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                     "[camper@" .. gname .. "_sniper" .. i .. "_wait]\n" ..
                     "path_walk                  = balcony_sniper" .. i .. "_walk\n" ..
                     "path_look                  = balcony_sniper" .. i .. "_look\n" ..
+                    "def_state_moving           = assault\n" ..
                     "def_state_campering        = threat\n" ..
                     "def_state_campering_fire   = threat_fire\n" ..
                     "sniper                     = true\n" ..
@@ -1255,14 +1381,14 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.pri_monolith.state = function(gulag)
---[[
     if gulag.state >= 1 and game.get_game_time():diffSec(gulag.stateBegin) < 180 then -- 3 minutes
-        if db.actor:has_info("pri_monolith_base_attack_leader_zone") then
-            return 2
+        if db.actor:has_info("pri_monolith_base_attack_leader_zone") or gulag:get_population() < 10 then
+            return 2 -- actor inside leader zone or gulag population is less then 10
         else
-            return 1
+            return 1 -- somebody attack base
         end
     else
+        local k, v = 0, 0
         for k,v in pairs(gulag.Object) do
             if v ~= true then
                 local enemy = v:best_enemy()
@@ -1277,8 +1403,8 @@ gulags.pri_monolith.state = function(gulag)
         end
         db.actor:disable_info_portion("pri_monolith_base_attacked")
     end
---]]
-    return 0
+
+    return 0 -- normal state
 end
 
 
