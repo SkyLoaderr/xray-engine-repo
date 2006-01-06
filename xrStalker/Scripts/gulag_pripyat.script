@@ -358,6 +358,7 @@ end
 --------------------------------------------------------------------------
 -- Additional functions --------------------------------------------------
 local function process_range(str, def_val)
+    return def_val
 end
 
 local function process_num(str, def_val)
@@ -949,7 +950,7 @@ end
 -- Jobs ------------------------------------------------------------------
 gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
     local i, j, v = 0, 0, 0
-    local restr = {"_small_restr", "_kill_restr", "_restr"}
+    local restr = {"", "_kill_restr", "_restr"}
     local logic = {"wait", "heli", "free"}
     local ltx = ""
 
