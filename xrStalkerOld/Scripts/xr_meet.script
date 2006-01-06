@@ -487,7 +487,7 @@ function init_meet(npc, ini, section, st, scheme)
 		st.meet_dialog		= xr_logic.parse_condlist(npc, section, "meet_dialog", "")
 		st.zone				= parse_zone_data(npc, "")
 		st.syndata			= parse_syn_data(npc, "")
-		st.precond			= def.precond
+		st.precond			= "usability"
 		st.abuse			= "false"
 	else
 		st.meet_state		= parse_data(npc, utils.cfg_get_string(ini, section, "meet_state", npc, false, "", def.meet_state))
