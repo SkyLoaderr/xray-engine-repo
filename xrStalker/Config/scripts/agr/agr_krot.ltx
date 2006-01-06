@@ -6,7 +6,7 @@ on_death = death
 [walker@hold]
 path_walk = agr_krot_hold_fake_walk
 path_look = agr_krot_hold_fake_look
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 meet = meet@hold
 on_info = {!actor_enemy +agr_krot_skirmish_start} walker@combat
 on_info2 = {!actor_enemy +agr_help_stalkers_done} walker@hold2
@@ -15,7 +15,7 @@ danger = danger_condition
 [walker@hold2]
 path_walk = agr_krot_hold_fake_walk
 path_look = agr_krot_hold_fake_look
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 meet = meet@hold
 on_info = {!actor_enemy +agr_krot_skirmish_start} walker@combat
 on_timer   = 30000 |{!actor_enemy} %+agr_krot_skirmish_start%
@@ -38,7 +38,7 @@ on_info   = {!actor_enemy =agr_factory_hold_inactive} %+agr_help_krot_done% walk
 meet = meet@no_use
 ;danger = {+agr_help_krot_done +agr_help_stalkers_assault_dead} danger_condition@combat
 danger = danger_condition 
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 on_actor_dist_le = 8 | {!actor_enemy} remark@hold2
 
 [remark@hold2]
@@ -47,7 +47,7 @@ snd = agr_krot_fear
 target = actor
 on_info = {=actor_enemy} walker@combat_2
 on_signal = sound_end | walker@combat_2
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 danger = danger_condition 
 
 [walker@combat_2]
@@ -56,13 +56,13 @@ path_look = agr_krot_hold_fake_look_2
 on_info   = {=agr_factory_hold_inactive !actor_enemy} %+agr_help_krot_done% walker@wait_after_hold
 meet = meet@no_use
 danger = danger_condition 
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 
 [walker@wait_after_hold]
 path_walk = agr_krot_hold_walk
 path_look = agr_krot_hold_look
 ;meet = meet@wait_after_hold
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 on_actor_dist_le = 5 |{!actor_enemy} %+agr_factory_spawn_spetsnaz +agr_krot_met% remark@thank
 on_info = {=actor_enemy -agr_factory_spawn_spetsnaz} %+agr_factory_spawn_spetsnaz%
 danger = danger_condition 
@@ -79,7 +79,7 @@ use_wpn = false
 snd = speech
 on_signal = sound_end | %+agr_krot_go_to_well% walker@go_to_well
 anim = guard
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 target = actor
 danger = danger_condition 
 on_info = {=actor_enemy} walker@wait_after_hold
@@ -91,7 +91,7 @@ def_state_moving2 = assault
 def_state_moving3 = assault
 on_signal = well | {!actor_enemy} walker@well
 danger = danger_condition
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 meet = meet@no_use
 
 
@@ -100,7 +100,7 @@ path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
 meet = meet@no_use
 on_actor_dist_le = 5 |{!actor_enemy} remark@thanks_2 ;%+agr_find_gunslinger_cache_start%
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 ;danger = danger_condition 
 
 [remark@thanks_2]
@@ -118,14 +118,14 @@ path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
 meet = meet@well
 on_info = {!actor_enemy +agr_find_gunslinger_cache_start} walker@well3
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 danger = danger_condition 
 
 [walker@well3]
 path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
 meet = meet@well2
-combat_ignore_cond = {!fighting_actor}
+combat_ignore_cond = {!actor_enemy !fighting_actor}
 danger = danger_condition 
 
 [meet@well]
