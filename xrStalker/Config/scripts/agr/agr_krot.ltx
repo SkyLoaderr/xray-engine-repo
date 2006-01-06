@@ -10,6 +10,7 @@ combat_ignore_cond = {!fighting_actor}
 meet = meet@hold
 on_info = {+agr_krot_skirmish_start} walker@combat
 on_info2 = {+agr_help_stalkers_done} walker@hold2
+danger = danger_condition 
 
 [walker@hold2]
 path_walk = agr_krot_hold_fake_walk
@@ -18,6 +19,7 @@ combat_ignore_cond = {!fighting_actor}
 meet = meet@hold
 on_info = {+agr_krot_skirmish_start} walker@combat
 on_timer   = 30000 | %+agr_krot_skirmish_start%
+danger = danger_condition 
 
 [meet@hold]
 meet_state     = 0 | hide_na@speech1
@@ -35,7 +37,7 @@ on_info   = {=gulag_empty(agr_factory_hold)} %+agr_help_krot_done% walker@wait_a
 ;on_info   = {+agr_help_krot_done +agr_help_stalkers_done} walker@wait_after_hold, {+agr_help_krot_done +agr_help_stalkers_assault_dead} walker@wait_after_hold
 meet = meet@no_use
 ;danger = {+agr_help_krot_done +agr_help_stalkers_assault_dead} danger_condition@combat
-danger = danger_condition@combat
+danger = danger_condition 
 
 
 [walker@wait_after_hold]
@@ -44,6 +46,7 @@ path_look = agr_krot_hold_look
 meet = meet@wait_after_hold
 combat_ignore_cond = {!fighting_actor}
 on_actor_dist_le = 5 | %+agr_factory_spawn_spetsnaz +agr_krot_met% remark@thank
+danger = danger_condition 
 
 [meet@wait_after_hold]
 meet_state     = 10 | hello_wpn@talk_hello
@@ -59,6 +62,7 @@ on_signal = sound_end | %+agr_krot_go_to_well% walker@go_to_well
 anim = guard
 combat_ignore_cond = {!fighting_actor}
 target = actor
+danger = danger_condition 
 
 [walker@go_to_well]
 path_walk = agr_krot_to_well_walk
@@ -66,9 +70,10 @@ def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
 on_signal = well | walker@well
-;danger = danger_condition
+danger = danger_condition
 combat_ignore_cond = {!fighting_actor}
 meet = meet@no_use
+
 
 [walker@well]
 path_walk = agr_krot_well_walk
@@ -76,13 +81,14 @@ path_look = agr_krot_well_look
 meet = meet@well
 on_info= {+agr_find_gunslinger_cache_start} walker@well2
 combat_ignore_cond = {!fighting_actor}
-
+danger = danger_condition 
 
 [walker@well2]
 path_walk = agr_krot_well_walk
 path_look = agr_krot_well_look
 meet = meet@well2
 combat_ignore_cond = {!fighting_actor}
+danger = danger_condition 
 
 [meet@well]
 meet_state 		= 30|hello@wait|15|wait@wait|5|wait
