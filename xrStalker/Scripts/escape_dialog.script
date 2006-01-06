@@ -367,6 +367,9 @@ end
 function have_wounded_flash(first_speaker, second_speaker)
   	return first_speaker:object("esc_wounded_flash") ~= nil
 end
+function dont_have_wounded_flash(first_speaker, second_speaker)
+  	return not have_wounded_flash(first_speaker, second_speaker)
+end
 
 function give_wounded_flash(first_speaker, second_speaker)
 	local wounded_flash = first_speaker:object("esc_wounded_flash")
