@@ -7,8 +7,7 @@
 --------------------------------------------------------------------------------------------------------
 function trader_alredy_give_job(trader, actor)
 	local actor = db.actor
-	if (actor:has_info("esc_kill_bandits_quest_have") and actor:dont_has_info("esc_kill_bandits_quest_done")) or
-	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done")) or
+	if (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done")) or
 	   (actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")) or
 	   (actor:has_info("tutorial_artefact_start") and actor:dont_has_info("tutorial_artefact_done")) or
 	   (actor:has_info("tutorial_wounded_start") and actor:dont_has_info("esc_serious_talk"))
@@ -21,6 +20,15 @@ end
 function trader_give_extra_job(trader, actor)
 	local actor = db.actor
 	if actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")
+	then
+		return true
+	end
+	return false
+end
+
+function bandits_die(actor,npc)
+	local actor = db.actor
+	if actor:has_info("esc_kill_bandits_quest_kill") and actor:dont_has_info("esc_kill_bandits_noquest_kill")
 	then
 		return true
 	end
@@ -70,8 +78,7 @@ end
 
 function finalize_quests(first_speaker, second_speaker)
 	if tutorial_artefact_end(first_speaker, second_speaker) == true or
-	   tutorial_wounded_end(first_speaker, second_speaker) == true or
-	   factory_bandits_end(first_speaker, second_speaker) == true
+	   tutorial_wounded_end(first_speaker, second_speaker) == true
 	then
 		return true
 	end
@@ -118,22 +125,8 @@ function tutorial_wounded_end(first_speaker, second_speaker)
 	return false
 end
 
-function factory_bandits_end(first_speaker, second_speaker)
-	local actor = db.actor
-	if actor:has_info("esc_kill_bandits_quest_have")	and 
-	   actor:has_info("esc_kill_bandits_quest_kill")	and 
-	   actor:dont_has_info("esc_kill_bandits_quest_done")
-	then
-		return true
-	end
-	return false
-end
-
-
-
 function trader_dont_has_job(first_speaker, second_speaker)
-    if trader_need_free_factory(first_speaker, second_speaker) == false and
-	   trader_need_military_case(first_speaker, second_speaker) == false and
+    if trader_need_military_case(first_speaker, second_speaker) == false and
 	   trader_need_blockpost_box(first_speaker, second_speaker) == false
 	then
 		return true
@@ -223,17 +216,6 @@ function have_artefact_from_fleshes(first_speaker, second_speaker)
 end
 
 
---' Kill bandits on factory
-function trader_need_free_factory(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("tutorial_end") and
-	   actor:dont_has_info("esc_kill_bandits_quest_have")
-	then
-		return true
-	end
-	return false
-end
 --' ящик с блокпоста
 function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = db.actor
@@ -326,37 +308,48 @@ end
 
 
 --' Escape dynamite for Wolf
-function transfer_wolf_ammo_to_actor(first_speaker, second_speaker)
-	local obj = first_speaker:object("af_medusa")
-	if obj ~= nil then
-		dialogs.relocate_item(first_speaker, obj, "in")
-	end
+function transfer_wolf_reward(first_speaker, second_speaker)
+		dialogs.relocate_money(first_speaker, 1000, "in")
 end
 
-function volk_reward_artefact(first_speaker, second_speaker)
-	if db.actor:has_info("tutorial_wounded_death") or db.actor:has_info("esc_volk_reward") then
-		return true
-	else
-		return false
-	end	
+function wolf_additional_reward(first_speaker, second_speaker)
+	local medkit = first_speaker:object("medkit")
+    local bandage = first_speaker:object("bandage")
+    local fort = first_speaker:object("wpn_fort")
+    local f1 = first_speaker:object("grenade_f1")
+    local ammo = first_speaker:object("ammo_9x18_fmj")
+    dialogs.relocate_item(first_speaker, medkit, "in")
+    dialogs.relocate_item(first_speaker, bandage, "in")
+    dialogs.relocate_item(first_speaker, fort, "in")
+    dialogs.relocate_item(first_speaker, f1, "in") 
+    dialogs.relocate_item(first_speaker, ammo, "in")        
 end
 
-function have_dynamite(first_speaker, second_speaker)
-  	return first_speaker:object("dynamite") ~= nil
-end
 
-function dont_have_dynamite(first_speaker, second_speaker)
-  	return first_speaker:object("dynamite") == nil
-end
+--function volk_reward_artefact(first_speaker, second_speaker)
+--	if db.actor:has_info("tutorial_wounded_death") or db.actor:has_info("esc_volk_reward") then
+--		return true
+--	else
+--		return false
+--	end	
+--end
 
-function give_dynamite(first_speaker, second_speaker)
-	local case = first_speaker:object("dynamite")
-	dialogs.relocate_item(second_speaker, case, "out")
-end
+--function have_dynamite(first_speaker, second_speaker)
+--  	return first_speaker:object("dynamite") ~= nil
+--end
 
-function give_dynamite_reward(first_speaker, second_speaker)
-	dialogs.relocate_money(first_speaker, 1000, "in")
-end
+--function dont_have_dynamite(first_speaker, second_speaker)
+--  	return first_speaker:object("dynamite") == nil
+--end
+
+--function give_dynamite(first_speaker, second_speaker)
+--	local case = first_speaker:object("dynamite")
+--	dialogs.relocate_item(second_speaker, case, "out")
+--end
+--
+--function give_dynamite_reward(first_speaker, second_speaker)
+--	dialogs.relocate_money(first_speaker, 1000, "in")
+--end
 
 
 --' Escape Wounded's flash
@@ -375,10 +368,7 @@ end
 function give_wounded_flash(first_speaker, second_speaker)
 	local wounded_flash = first_speaker:object("esc_wounded_flash")
 	dialogs.relocate_item(second_speaker, wounded_flash, "out")
-end
-
-function give_wounded_flash_reward(first_speaker, second_speaker)
-	dialogs.relocate_money(first_speaker, 250, "in")
+	dialogs.relocate_money(second_speaker, 1000, "in")
 end
 
 function give_knife_to_actor(first_speaker, second_speaker)
@@ -391,8 +381,8 @@ end
 function path_to_lager(actor, npc)
 	local actor = db.actor
     if actor ~= nil and
-	   (actor:has_info("tutorial_wounded_death") 
-	   or actor:has_info("tutorial_wounded_help")) and
+	   (actor:has_info("tutorial_wounded_death") or
+	   actor:has_info("tutorial_wounded_help")) and
 	   actor:dont_has_info("esc_path_to_lager") and
 	   actor:dont_has_info("esc_wolf_dead")
 	then
