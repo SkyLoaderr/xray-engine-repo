@@ -491,13 +491,8 @@ gulags.pri_followers.state = function(gulag)
 	if state == state_wave2 and
 		actor:has_info("pri_wave2_monolith1_dead") and
 		actor:has_info("pri_wave2_monolith2_dead") and
-		--actor:has_info("pri_wave2_monolith3_dead") and
-		actor:has_info("pri_wave2_monolith4_dead") and
-		--actor:has_info("pri_wave2_monolith5_dead") and
-		actor:has_info("pri_wave2_monolith6_dead") --and
-		--actor:has_info("pri_wave2_monolith7_dead") and
-		--actor:has_info("pri_wave2_monolith8_dead") and
-		--actor:has_info("pri_wave2_monolith9_dead")
+		actor:has_info("pri_wave2_monolith3_dead") and
+		actor:has_info("pri_wave2_monolith4_dead")
 	then
 		actor:give_info_portion("pri_wave2_end")
 		--actor:give_info_portion("pri_wave3_end") -- FAKE
@@ -1054,6 +1049,10 @@ end
 -- Monolith
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
+function m_predicate_l(npc_info)
+	return npc_info.story_id == 828
+end
+
 function m_predicate_r(npc_info)
 	return npc_info.profile_name == "pri_monolith_regular"
 end
@@ -1087,7 +1086,30 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 
     ltx = "[danger@monolith]\n" ..
           "ignore_distance_sound = 150\n"
+--[[
+    -- leader
+	t = { section = "logic@" .. gname .. "_leader", 
+		idle = 0,
+		prior = 15, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = in_r, out_rest = "",
+		predicate = m_predicate_l
+	}
+	table.insert(sj, t)
+    ltx = ltx.."[logic@" .. gname .. "_leader]\n" ..
+               "active              = walker@" .. gname .. "_leader\n" ..
+               "combat_ignore       = combat_ignore\n" ..
+               "on_death            = death@" .. gname .. "_leader\n" ..
 
+               "[death@" .. gname .. "_leader]\n" ..
+               "on_info             = %+sar2_death_55%\n" ..
+
+               "[walker@" .. gname .. "_leader]\n" ..
+               "path_walk           = leader_walk\n" ..
+               "path_look           = leader_look\n" ..
+               "danger              = danger@monolith\n" ..
+               "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
+--]]
     -- walkers
     prior = {6, 7, 8, 12, 12, 5}
     for i, v in pairs({1, 3, 4, 5, 6, 8}) do
@@ -1189,7 +1211,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_soldier", 
 		        idle = 0,
 		        prior = pr[j], state = {0},
-		        squad = squad, group = groups[5],
+		        squad = squad, group = groups[i],
 		        in_rest = in_r, out_rest = "",
 		        predicate = pd[j]
 	        }
