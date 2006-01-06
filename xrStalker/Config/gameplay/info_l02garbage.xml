@@ -24,6 +24,7 @@
 	<info_portion id="gar_begin_assault"></info_portion>
 	<info_portion id="gar_seryi_silence"></info_portion>
 	<info_portion id="gar_seryi_change_st"></info_portion>
+	<info_portion id="gar_seryi_meet"></info_portion>
 	
 	<!-- атака сталкеров и бандитов -->
 	<info_portion id="gar_bandit_leader_dead"></info_portion>
