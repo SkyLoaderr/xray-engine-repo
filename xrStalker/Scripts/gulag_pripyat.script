@@ -251,23 +251,19 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
 
                    "[remark@" .. pref .. "_wait]\n" ..
                    "path_walk           = wait_stalker" .. i .. "_walk\n" ..
-                   "anim                = wait\n" ..
+                   "anim                = guard\n" ..
                    "target              = logic@pri_followers_leader_wait\n" ..
                    "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
-                   --"combat_ignore_cond  = always\n" ..
+                   "on_info             = {+pri_followers_leader_phrase1_end} remark@" .. pref .. "_wait_na\n" ..
 
---[[
-                   "[walker@" .. pref .. "_wait]\n" ..
+                   "[remark@" .. pref .. "_wait_na]\n" ..
                    "path_walk           = wait_stalker" .. i .. "_walk\n" ..
-                   "path_look           = wait_stalker" .. i .. "_look\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "def_state_moving3   = assault\n" ..
-                   "meet                = meet@def\n" ..
+                   "anim                = guard_na\n" ..
+                   "target              = logic@pri_followers_leader_wait\n" ..
+                   "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
-                   --"combat_ignore_cond  = always\n" ..
---]]
+
                    --- NAP: WAVE3 --------------------------------------------------------------------------------
                    "[logic@" .. pref .. "_wave3]\n" ..
                    "active              = walker@" .. pref .. "_wave3_wait\n" ..
@@ -358,7 +354,7 @@ pri_followers_switcher[state_wait] = function(actor, delta_time)
     return state_wait
 end
 pri_followers_switcher[state_wave1] = function(actor, delta_time)
-    if delta_time > 3000 or -- 5 min
+    if delta_time > 1300 or -- 2 min
         (actor:has_info("pri_wave1_monolith1_dead") and
         actor:has_info("pri_wave1_monolith2_dead") and
         actor:has_info("pri_wave1_monolith3_dead"))
@@ -369,13 +365,14 @@ pri_followers_switcher[state_wave1] = function(actor, delta_time)
     return state_wave1
 end
 pri_followers_switcher[state_wave2] = function(actor, delta_time)
-    if delta_time > 2400 or -- 4 min
+    if delta_time > 1800 or -- 3 min
         (actor:has_info("pri_wave2_monolith1_dead") and
         actor:has_info("pri_wave2_monolith2_dead") and
         actor:has_info("pri_wave2_monolith3_dead") and
         actor:has_info("pri_wave2_monolith4_dead"))
     then
         actor:give_info_portion("pri_wave2_end")
+        actor:give_info_portion("pri_wave3_end")
         return state_wave4 --3
     end
     return state_wave2
@@ -388,7 +385,7 @@ pri_followers_switcher[state_wave3] = function(actor, delta_time)
     return state_wave3
 end
 pri_followers_switcher[state_wave4] = function(actor, delta_time)
-    if delta_time > 2400 or -- 4 min
+    if delta_time > 1800 or -- 3 min
         (actor:has_info("pri_wave4_monolith1_dead") and
         actor:has_info("pri_wave4_monolith2_dead") and
         actor:has_info("pri_wave4_monolith3_dead") and
@@ -425,7 +422,7 @@ pri_followers_switcher[state_wave6] = function(actor, delta_time)
     return state_wave6
 end
 pri_followers_switcher[state_wave7] = function(actor, delta_time)
-    if xr_gulag.getGulagPopulation("pri_ambush7") < 2
+    if xr_gulag.getGulagPopulation("pri_wave7") < 2
     then
         actor:give_info_portion("pri_undeground_respawn_start")
         actor:give_info_portion("pri_wave7_end")
@@ -558,32 +555,42 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
           "hp_fight = 0|false\n" ..
           "hp_cover = 0|false\n" ..
 
-          "[danger1]\n" ..
+          "[danger@ignore]\n" ..
+          "ignore_types = corpse\n" ..
+          "ignore_distance = 2\n" ..
+
+          "[danger@normal]\n" ..
+          "ignore_types = corpse\n" ..
+
+          "[danger@kamp]\n" ..
+          "ignore_types = corpse\n" --..
+
+          --"[danger1]\n" ..
           --"ignore_distance = 10\n" ..
           --"danger_inertion_time_hit = 1000\n" ..
           --"danger_inertion_time_sound = 500\n" ..
           --"danger_inertion_time_ricochet = 1000\n" ..
-          "ignore_types = corpse\n" ..
+          --"ignore_types = corpse\n" ..
 
-          "[danger2]\n" ..
+          --"[danger2]\n" ..
           --"ignore_distance = 20\n" ..
           --"danger_inertion_time_hit = 1000\n" ..
           --"danger_inertion_time_sound = 1500\n" ..
           --"danger_inertion_time_ricochet = 1000\n" ..
-          "ignore_types = corpse\n"
+          --"ignore_types = corpse\n"
 
     -- Снайперы в окнах.
     i = 1
     while level.patrol_path_exists(gname .. "_wsniper_" .. i .."_walk") do
         -- Необходимо вычитать количество работ из названия точки пути.
         local idstr = gname .. "_wsniper_" .. i
-        local way_name = idstr .."_walk"
+        local way_name = idstr .. "_walk"
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
-        local stime = process_range(wp_prop.stime, 15, 25) * 1000 -- sniper time in seconds
-        local gtime = process_range(wp_prop.gtime, 15, 20) * 1000 -- guard time in seconds
-        local htime = process_range(wp_prop.htime,  6,  8) * 1000 -- hide time in seconds
+        local stime = process_range(wp_prop.stime, 10000, 15000) -- sniper time
+        local gtime = process_range(wp_prop.gtime, 15000, 20000) -- guard time
+        local htime = process_range(wp_prop.htime,  6000,  8000) -- hide time
 
         local sdist = process_num(wp_prop.sdist, 50) -- sniper distance
         local gdist = process_num(wp_prop.gdist, 40) -- guard distance
@@ -598,9 +605,9 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         local deathi = wp_prop.deathi -- death infoportion
 
         local ib = ""
-        if wp_prop.ib then -- ignore bomber
-            ib = ib_cond
-        end
+        --if wp_prop.ib then -- ignore bomber
+        --    ib = ib_cond
+        --end
 
         -- добавляем должность
         t = { section = "logic@" .. idstr,
@@ -616,7 +623,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "combat_ignore = combat_ignore\n"
         
         if starti then
-            ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
+            ltx = ltx.."active = camper@" .. idstr .. "_wait\n"
 
             if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
@@ -624,14 +631,28 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                            "[death@" .. idstr .. "]\n" ..                            
                            "on_info = %+" .. deathi .. "%\n"
             end
-
+--[[
             ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..                            
                        "path_walk           = wsniper_" .. i .. "_wait_walk\n" ..
                        "anim                = hide_na\n" ..
                        "show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
                        "wounded             = wounded\n" ..
-                       --"danger              = danger1\n" ..
+                       "danger              = danger@ignore\n" ..
+                       "combat_ignore_cond  = always\n"
+--]]
+            ltx = ltx.."[camper@" .. idstr .. "_wait]\n" ..                            
+                       "path_walk           = wsniper_" .. i .. "_wait_walk\n" ..
+                       "path_look           = wsniper_" .. i .. "_wait_look\n" ..
+                       --"def_state_campering = hide_na\n" ..
+                       --"def_state_campering_fire = hide_fire\n" ..
+                       "radius              = 4\n" ..
+                       "no_retreat          = true\n" ..
+                       "attack_sound        = false\n" ..
+                       "show_spot           = false\n" ..
+                       "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
+                       "wounded             = wounded\n" ..
+                       "danger              = danger@ignore\n" ..
                        "combat_ignore_cond  = always\n"
         else
             ltx = ltx.."active = camper@" .. idstr .. "\n"
@@ -650,7 +671,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_actor_dist_le_nvis       = " .. gdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "_guard\n" ..
                    "on_timer                    = " .. stime .. " | camper@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
-                   "danger                      = danger1\n" ..
+                   "danger                      = danger@normal\n" ..
                    ib ..
 
                    "[camper@" .. idstr .. "_guard]\n" ..                            
@@ -666,7 +687,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_actor_dist_ge_nvis       = " .. sdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "\n" ..
                    "on_timer                    = " .. gtime .. " | camper@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
-                   "danger                      = danger1\n" ..
+                   "danger                      = danger@normal\n" ..
                    ib ..
 
                    --"[remark@" .. idstr .. "_hide]\n" ..                            
@@ -683,7 +704,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_timer            = " .. htime .. " | {=dist_to_actor_ge(" .. sdist .. ")} camper@" .. idstr .. ", camper@" .. idstr .. "_guard\n" ..
                    "on_timer            = " .. htime .. " | {=dist_to_enemy_ge(" .. sdist .. ")} camper@" .. idstr .. ", camper@" .. idstr .. "_guard\n" ..
                    "wounded             = wounded\n" ..
-                   "danger              = danger1\n" ..
+                   "danger              = danger@normal\n" ..
                    "combat_ignore_cond  = always\n"
         i = i + 1
     end
@@ -693,7 +714,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
     while level.patrol_path_exists(gname .. "_rsniper_" .. i .."_walk") do
         -- Необходимо вычитать количество работ из названия точки пути.
         local idstr = gname .. "_rsniper_" .. i
-        local way_name = idstr .."_walk"
+        local way_name = idstr .. "_walk"
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
@@ -710,14 +731,14 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         local deathi = wp_prop.deathi -- death infoportion
 
         local ib = ""
-        if wp_prop.ib then -- ignore bomber
-            ib = ib_cond
-        end
+        --if wp_prop.ib then -- ignore bomber
+        --    ib = ib_cond
+        --end
 
         -- добавляем должность
         t = { section = "logic@" .. idstr,
             idle = 0,
-            prior = 1, state = {0}, squad = squad, group = groups[1],
+            prior = 1, state = {0}, squad = squad, group = groups[2],
             in_rest = inr, out_rest = outr --,
             --predicate = w_predicate_sn
         }
@@ -728,7 +749,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "combat_ignore = combat_ignore\n"
         
         if starti then
-            ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
+            ltx = ltx.."active = camper@" .. idstr .. "_wait\n"
 
             if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
@@ -736,7 +757,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                            "[death@" .. idstr .. "]\n" ..                            
                            "on_info = %+" .. deathi .. "%\n"
             end
-
+--[[
             ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..                            
                        "path_walk           = rsniper_" .. i .. "_wait_walk\n" ..
                        --"path_look           = rsniper_" .. i .. "_look\n" ..
@@ -744,7 +765,21 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        "show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
                        "wounded             = wounded\n" ..
-                       --"danger              = danger1\n" ..
+                       "danger              = danger@ignore\n" ..
+                       "combat_ignore_cond  = always\n"
+--]]
+            ltx = ltx.."[camper@" .. idstr .. "_wait]\n" ..                            
+                       "path_walk           = rsniper_" .. i .. "_wait_walk\n" ..
+                       "path_look           = rsniper_" .. i .. "_wait_look\n" ..
+                       --"def_state_campering = hide_na\n" ..
+                       --"def_state_campering_fire = hide_fire\n" ..
+                       "radius              = 4\n" ..
+                       "no_retreat          = true\n" ..
+                       "attack_sound        = false\n" ..
+                       "show_spot           = false\n" ..
+                       "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
+                       "wounded             = wounded\n" ..
+                       "danger              = danger@ignore\n" ..
                        "combat_ignore_cond  = always\n"
         else
             ltx = ltx.."active = camper@" .. idstr .. "\n"
@@ -762,7 +797,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_info                     = {=dist_to_enemy_le(" .. gdist .. ")} camper@" .. idstr .. "_guard\n" ..
                    "on_actor_dist_le_nvis       = " .. gdist .. " | camper@" .. idstr .. "_guard\n" ..
                    "wounded                     = wounded\n" ..
-                   "danger                      = danger1\n" ..
+                   "danger                      = danger@normal\n" ..
                    ib ..
 
                    "[camper@" .. idstr .. "_guard]\n" ..                            
@@ -777,7 +812,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_info                     = {!dist_to_enemy_le(" .. sdist .. ")} camper@" .. idstr .. "\n" ..
                    "on_actor_dist_ge_nvis       = " .. sdist .. " | camper@" .. idstr .. "\n" ..
                    "wounded                     = wounded\n" ..
-                   "danger                      = danger1\n" ..
+                   "danger                      = danger@normal\n" ..
                    ib
         i = i + 1
     end
@@ -787,12 +822,12 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
     while level.patrol_path_exists(gname .. "_free_" .. i .."_walk") do
         -- Необходимо вычитать количество работ из названия точки пути.
         local idstr = gname .. "_free_" .. i
-        local way_name = idstr .."_walk"
+        local way_name = idstr .. "_walk"
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
-        local wtime = process_range(wp_prop.wtime, 40,  80) * 1000 -- walker state time in seconds
-        local ktime = process_range(wp_prop.ktime, 90, 180) * 1000 -- kamp state time in seconds
+        local wtime = process_range(wp_prop.wtime, 40000,  80000) -- walker state time
+        local ktime = process_range(wp_prop.ktime, 90000, 180000) -- kamp state time
 
         local kampi = process_num(wp_prop.kampi, 1) -- kamp index
 
@@ -803,14 +838,14 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         local deathi = wp_prop.deathi -- death infoportion
 
         local ib = ""
-        if wp_prop.ib then -- ignore bomber
-            ib = ib_cond
-        end
+        --if wp_prop.ib then -- ignore bomber
+        --    ib = ib_cond
+        --end
 
         -- добавляем должность
         t = { section = "logic@" .. idstr,
             idle = 0,
-            prior = 1, state = {0}, squad = squad, group = groups[1],
+            prior = 1, state = {0}, squad = squad, group = groups[2 + kampi],
             in_rest = inr, out_rest = outr
         }
         table.insert(sj, t)
@@ -820,7 +855,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "combat_ignore = combat_ignore\n"
         
         if starti then
-            ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
+            ltx = ltx.."active = camper@" .. idstr .. "_wait\n"
 
             if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
@@ -828,14 +863,28 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                            "[death@" .. idstr .. "]\n" ..                            
                            "on_info = %+" .. deathi .. "%\n"
             end
-
+--[[
             ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..                            
                        "path_walk           = free_" .. i .. "_wait_walk\n" ..
                        "anim                = hide_na\n" ..
-                       --"show_spot           = false\n" ..
+                       "show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} walker@" .. idstr .. "\n" ..
                        "wounded             = wounded\n" ..
-                       --"danger              = danger2\n" ..
+                       "danger              = danger@ignore\n" ..
+                       "combat_ignore_cond  = always\n"
+--]]
+            ltx = ltx.."[camper@" .. idstr .. "_wait]\n" ..                            
+                       "path_walk           = free_" .. i .. "_wait_walk\n" ..
+                       "path_look           = free_" .. i .. "_wait_look\n" ..
+                       --"def_state_campering = hide_na\n" ..
+                       --"def_state_campering_fire = hide_fire\n" ..
+                       "radius              = 4\n" ..
+                       "no_retreat          = true\n" ..
+                       "attack_sound        = false\n" ..
+                       "show_spot           = false\n" ..
+                       "on_info             = {+" .. starti .. "} walker@" .. idstr .. "\n" ..
+                       "wounded             = wounded\n" ..
+                       "danger              = danger@ignore\n" ..
                        "combat_ignore_cond  = always\n"
         else
             ltx = ltx.."active = walker@" .. idstr .. "\n"
@@ -850,7 +899,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"show_spot                   = false\n" ..
                    "on_timer                    = " .. wtime .. " | kamp@" .. idstr .. "\n" ..
                    "wounded                     = wounded\n" ..
-                   --"danger                      = danger2\n" ..
+                   --"danger                      = danger@kamp\n" ..
                    ib ..
 
                    "[kamp@" .. idstr .. "]\n" ..                            
@@ -859,7 +908,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"show_spot           = false\n" ..
                    "on_timer            = " .. ktime .. " | walker@" .. idstr .. "\n" ..
                    "wounded             = wounded\n" ..
-                   "danger              = danger2\n"
+                   "danger              = danger@kamp\n"
         i = i + 1
     end
 
@@ -1385,49 +1434,6 @@ gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
 
     gulags.pri_stadium.ltx = ltx
 end
-
---[[ Jobs ------------------------------------------------------------------
-gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
-    local i, j, v = 0, 0, 0
-    local restr = {"", "_kill_restr", "_restr"}
-    local logic = {"wait", "heli", "free"}
-    local ltx = ""
-
-    for i, v in pairs(logic) do
-        for j = 1, 10 do
-            t = { section = "logic@" .. gname .. "_gigant_" .. v,
-                idle = 0,
-                prior = 1, state = {i - 1},
-                squad = squad, group = groups[1],
-                in_rest = "", out_rest = gname .. restr[i]
-            }
-            table.insert(sj, t)
-        end
-        ltx = ltx.."[logic@" .. gname .. "_gigant_" .. v .. "]\n" ..
-                   "active     = mob_home@" .. gname .. "_gigant_" .. v .. "\n" ..
-
-                   "[mob_home@" .. gname .. "_gigant_" .. v .. "]\n" ..
-                   "path_home               = home" .. i .. "\n"
-    end
-
-    gulags.pri_stadium.ltx = ltx
-end
-
--- States ----------------------------------------------------------------
-gulags.pri_stadium.state = function(gulag)
-    --local state = gulag.state
-    local actor = db.actor
-    if actor:has_info("pri_stadium_scene_start") then
-        if actor:has_info("pri_stadium_scene_end") then
-            return 2
-        else
-            return 1
-        end
-    else
-        return 0
-    end
-end
---]]
 
 -------------------------------------------------------------------------------------------------------------------------
 --printf("gulag <pri>: table -")
