@@ -256,27 +256,6 @@ function actor_has_documents (actor, npc)
 	end
 end
 
---' Wolf has a job
-function wolf_dont_has_job(first_speaker, second_speaker)
-    if wolf_need_dynamite(first_speaker, second_speaker) == false
-	then
-		return true
-	end
-	return false
-end
-
-function wolf_need_dynamite(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:dont_has_info("escape_dynamite_start") and
-	   actor:dont_has_info("escape_dynamite_have") and
-	   actor:dont_has_info("escape_dynamite_done")
-	then
-		return true
-	end
-	return false
-end
-
 --' WOLF
 function has_novice_access(actor, npc)
 	if db.actor then
@@ -324,32 +303,6 @@ function wolf_additional_reward(first_speaker, second_speaker)
     dialogs.relocate_item(first_speaker, f1, "in") 
     dialogs.relocate_item(first_speaker, ammo, "in")        
 end
-
-
---function volk_reward_artefact(first_speaker, second_speaker)
---	if db.actor:has_info("tutorial_wounded_death") or db.actor:has_info("esc_volk_reward") then
---		return true
---	else
---		return false
---	end	
---end
-
---function have_dynamite(first_speaker, second_speaker)
---  	return first_speaker:object("dynamite") ~= nil
---end
-
---function dont_have_dynamite(first_speaker, second_speaker)
---  	return first_speaker:object("dynamite") == nil
---end
-
---function give_dynamite(first_speaker, second_speaker)
---	local case = first_speaker:object("dynamite")
---	dialogs.relocate_item(second_speaker, case, "out")
---end
---
---function give_dynamite_reward(first_speaker, second_speaker)
---	dialogs.relocate_money(first_speaker, 1000, "in")
---end
 
 
 --' Escape Wounded's flash
