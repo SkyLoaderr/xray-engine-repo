@@ -464,78 +464,96 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
 end
 
 -- States ----------------------------------------------------------------
+local pri_followers_state_switcher = {}
+pri_followers_state_switcher[state_wait] = function(actor)
+    if actor:has_info("pri_followers_start") then
+        return state_wave1
+    end
+    return state_wait
+end
+pri_followers_state_switcher[state_wave1] = function(actor)
+    if actor:has_info("pri_wave1_monolith1_dead") and
+        actor:has_info("pri_wave1_monolith2_dead") and
+        actor:has_info("pri_wave1_monolith3_dead")
+    then
+        actor:give_info_portion("pri_wave1_end")
+        return state_wave2
+    end
+    return state_wave1
+end
+pri_followers_state_switcher[state_wave2] = function(actor)
+    if actor:has_info("pri_wave2_monolith1_dead") and
+        actor:has_info("pri_wave2_monolith2_dead") and
+        actor:has_info("pri_wave2_monolith3_dead") and
+        actor:has_info("pri_wave2_monolith4_dead")
+    then
+        actor:give_info_portion("pri_wave2_end")
+        return state_wave3
+    end
+    return state_wave2
+end
+pri_followers_state_switcher[state_wave3] = function(actor)
+    if actor:has_info("pri_wave3_btr_dead") then
+        actor:give_info_portion("pri_wave3_end")
+        return state_wave4
+    end
+    return state_wave3
+end
+pri_followers_state_switcher[state_wave4] = function(actor)
+    if actor:has_info("pri_wave4_monolith1_dead") and
+        actor:has_info("pri_wave4_monolith2_dead") and
+        actor:has_info("pri_wave4_monolith3_dead") and
+        actor:has_info("pri_wave4_monolith4_dead") and
+        actor:has_info("pri_wave4_monolith5_dead") --and
+        --actor:has_info("pri_wave4_monolith6_dead") and
+        --actor:has_info("pri_wave4_monolith7_dead") and
+        --actor:has_info("pri_wave4_monolith8_dead")
+    then
+        actor:give_info_portion("pri_wave4_end")
+        return state_wave5
+    end
+    return state_wave4
+end
+pri_followers_state_switcher[state_wave5] = function(actor)
+    if actor:has_info("pri_wave5_monolith1_dead") and
+        actor:has_info("pri_wave5_monolith2_dead") and
+        actor:has_info("pri_wave5_monolith3_dead") and
+        actor:has_info("pri_wave5_monolith4_dead")
+    then
+        actor:give_info_portion("pri_wave5_end")
+        return state_wave6
+    end
+    return state_wave5
+end
+pri_followers_state_switcher[state_wave6] = function(actor)
+    if actor:has_info("pri_wave6_monolith1_dead") and
+        actor:has_info("pri_wave6_monolith2_dead") --and
+        --actor:has_info("pri_wave6_monolith3_dead")
+    then
+        actor:give_info_portion("pri_wave6_end")
+        return state_wave7
+    end
+    return state_wave6
+end
+pri_followers_state_switcher[state_wave7] = function(actor)
+    if xr_gulag.getGulagPopulation("pri_ambush7") < 2
+    then
+        actor:give_info_portion("pri_undeground_respawn_start")
+        actor:give_info_portion("pri_wave7_end")
+        return state_wave8
+    end
+    return state_wave7
+end
+pri_followers_state_switcher[state_wave8] = function(actor)
+    return state_wave8
+end
+
 gulags.pri_followers.state = function(gulag)
 	local state = gulag.state
 	local actor = db.actor
     --printf("gulag <state>: prip followers check state(%d).", state)
-	if state == state_wait and actor:has_info("pri_followers_start") then
-		return state_wave1
-	end
-	if state == state_wave1 and
-		actor:has_info("pri_wave1_monolith1_dead") and
-		actor:has_info("pri_wave1_monolith2_dead") and
-		actor:has_info("pri_wave1_monolith3_dead")
-	then
-		actor:give_info_portion("pri_wave1_end")
-		return state_wave2
-	end
-	if state == state_wave2 and
-		actor:has_info("pri_wave2_monolith1_dead") and
-		actor:has_info("pri_wave2_monolith2_dead") and
-		actor:has_info("pri_wave2_monolith3_dead") and
-		actor:has_info("pri_wave2_monolith4_dead")
-	then
-		actor:give_info_portion("pri_wave2_end")
-		--actor:give_info_portion("pri_wave3_end") -- FAKE
-		return state_wave3 --4
-	end
-	if state == state_wave3 and actor:has_info("pri_wave3_btr_dead") then
-		actor:give_info_portion("pri_wave3_end")
-		return state_wave4
-	end
-	if state == state_wave4 and
-		actor:has_info("pri_wave4_monolith1_dead") and
-		actor:has_info("pri_wave4_monolith2_dead") and
-		actor:has_info("pri_wave4_monolith3_dead") and
-		--actor:has_info("pri_wave4_monolith4_dead") and
-		actor:has_info("pri_wave4_monolith5_dead") and
-		--actor:has_info("pri_wave4_monolith6_dead") and
-		--actor:has_info("pri_wave4_monolith7_dead") and
-		actor:has_info("pri_wave4_monolith8_dead")
-	then
-		actor:give_info_portion("pri_wave4_end")
-		return state_wave5
-	end
-	if state == state_wave5 and
-		actor:has_info("pri_wave5_monolith1_dead") and
-		actor:has_info("pri_wave5_monolith2_dead") and
-		actor:has_info("pri_wave5_monolith3_dead") and
-		actor:has_info("pri_wave5_monolith4_dead")
-	then
-	    --if actor:dont_has_info("pri_wave5_leader_phrase_end") then
-		--    actor:give_info_portion("pri_wave5_leader_phrase_start")
-		--    return state_wave5
-	    --else
-		    actor:give_info_portion("pri_wave5_end")
-		    return state_wave6
-		--end
-	end
-	if state == state_wave6 and
-		--actor:has_info("pri_wave6_monolith1_dead") and
-		actor:has_info("pri_wave6_monolith2_dead") and
-		actor:has_info("pri_wave6_monolith3_dead")
-	then
-		actor:give_info_portion("pri_wave6_end")
-		return state_wave7
-	end
-	if state == state_wave7 and
-        xr_gulag.getGulagPopulation("pri_ambush7") < 2
-    then
-        actor:give_info_portion("pri_wave7_end")
-        actor:give_info_portion("pri_undeground_respawn_start")
-        return state_wave8
-    end
-    return state
+
+    return pri_followers_state_switcher[gulag.state](actor)
 end
 
 
@@ -710,14 +728,14 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         ltx = ltx.."[camper@" .. idstr .. "]\n" ..							
                    "path_walk                   = wsniper_" .. i .. "_walk\n" ..
                    "path_look                   = wsniper_" .. i .. "_look\n" ..
-                   "def_state_moving            = rush\n" ..
+                   "def_state_moving            = sneak_run ;assault\n" ..
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_sniper_fire\n" ..
                    "sniper                      = true\n" ..
                    "radius                      = 0\n" ..
                    "show_spot                   = false\n" ..
                    --"on_info                     = {=dist_to_enemy_le(" .. gdist .. ")} camper@" .. idstr .. "_guard\n" ..
-                   "on_actor_dist_le_nvis       = " .. gdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "_guard\n" ..
+                   --"on_actor_dist_le_nvis       = " .. gdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "_guard\n" ..
                    "on_timer                    = " .. stime .. " | remark@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
                    "danger                      = danger1\n" ..
@@ -726,6 +744,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "[camper@" .. idstr .. "_guard]\n" ..							
                    "path_walk                   = wsniper_" .. i .. "_walk\n" ..
                    "path_look                   = wsniper_" .. i .. "_look\n" ..
+                   "def_state_moving            = sneak_run ;assault\n" ..
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_fire\n" ..
                    "no_retreat                  = true\n" ..
@@ -830,6 +849,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "[camper@" .. idstr .. "_guard]\n" ..							
                    "path_walk                   = rsniper_" .. i .. "_walk\n" ..
                    "path_look                   = rsniper_" .. i .. "_look\n" ..
+                   "def_state_moving            = assault\n" ..
                    "def_state_campering         = hide_na\n" ..
                    "def_state_campering_fire    = hide_fire\n" ..
                    "no_retreat                  = true\n" ..
@@ -855,7 +875,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         local wtime = process_range(wp_prop.wtime, 40) * 1000  -- walker state time in seconds
         local ktime = process_range(wp_prop.ktime, 120) * 1000 -- kamp state time in seconds
 
-        local kampi = process_num(wp_prop.sdist, 1) -- kamp index
+        local kampi = process_num(wp_prop.kampi, 1) -- kamp index
 
         local outr = wp_prop.outr or "" -- out restrictors
         local inr = wp_prop.inr or "" -- in restrictors
