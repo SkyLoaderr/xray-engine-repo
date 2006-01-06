@@ -338,6 +338,8 @@ end
 
 -- States ----------------------------------------------------------------
 local pri_followers_state_switcher = {}
+--                  minutes  0     5
+--local pri_followers_timer = {0, 3000}
 pri_followers_state_switcher[state_wait] = function(actor)
     if actor:has_info("pri_followers_start") then
         return state_wave1
@@ -361,7 +363,7 @@ pri_followers_state_switcher[state_wave2] = function(actor)
         actor:has_info("pri_wave2_monolith4_dead")
     then
         actor:give_info_portion("pri_wave2_end")
-        return state_wave3
+        return state_wave4 ;3
     end
     return state_wave2
 end
@@ -426,7 +428,10 @@ gulags.pri_followers.state = function(gulag)
 	local actor = db.actor
     --printf("gulag <state>: prip followers check state(%d).", state)
 
-    return pri_followers_state_switcher[gulag.state](actor)
+    --if state > 0 and game.get_game_time():diffSec(gulag.stateBegin) < pri_followers_timer[state] then
+        return pri_followers_state_switcher[state](actor)
+    --end
+    --return state
 end
 
 
