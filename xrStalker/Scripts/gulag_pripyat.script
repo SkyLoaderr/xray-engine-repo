@@ -1372,7 +1372,7 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.pri_monolith.state = function(gulag)
-    if gulag.state >= 1 and game.get_game_time():diffSec(gulag.stateBegin) < 180 then -- 3 minutes
+    if gulag.state >= 1 and game.get_game_time():diffSec(gulag.stateBegin) < 1800 then -- 3 minutes
         if db.actor:has_info("pri_monolith_base_attack_leader_zone") or gulag:get_population() < 10 then
             return 2 -- actor inside leader zone or gulag population is less then 10
         else
