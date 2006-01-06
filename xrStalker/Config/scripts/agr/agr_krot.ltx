@@ -34,6 +34,7 @@ path_look = agr_krot_hold_combat_look
 ;on_info   = {=gulag_empty(agr_factory_hold)} %+agr_help_krot_done% walker@wait_after_hold
 on_info   = {+agr_help_krot_done} walker@wait_after_hold
 meet = meet@no_use
+danger = danger_condition@combat
 
 [walker@wait_after_hold]
 path_walk = agr_krot_hold_walk
@@ -90,3 +91,7 @@ on_info = %+agr_krot_dead%
 
 [danger_condition]
 ignore_distance = 0
+
+[danger_condition@combat]
+danger_expiration_time = 2000
+danger_inertion_time   = 3000
