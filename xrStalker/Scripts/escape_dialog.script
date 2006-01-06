@@ -304,8 +304,8 @@ end
 function wolf_speak(actor, npc)
 	if db.actor then
 		return db.actor:has_info("tutorial_wounded_death") or
-			   (db.actor:has_info("tutorial_wounded_help") and db.actor:has_info("tutorial_wounded_volk_greet")) or
-			   db.actor:has_info("escape_dynamite_done")
+			   (db.actor:has_info("tutorial_wounded_help") and db.actor:has_info("tutorial_wounded_volk_greet")) and
+			   db.actor:dont_has_info("esc_kill_bandits_quest_have") 
 	end
 	return false
 end
