@@ -29,7 +29,8 @@ function evaluator_contact:evaluate()
 		if self.mgr == nil then
 			self.mgr = self.object:motivation_action_manager()
 		end
-		if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then
+		if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then	
+			self.object:disable_talk()
 			return false
 		end
 		return tostring(self.a.meet_manager.state) ~= "nil"
