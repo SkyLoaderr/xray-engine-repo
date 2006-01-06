@@ -33,7 +33,6 @@
 	<info_portion id="gar_bandits_damaged"></info_portion>
 	<info_portion id="gar_hellcar_help">
 		<task>gar_help_dymon</task>
-		<article>graveyard_raid</article>
 	</info_portion>
 	<info_portion id="gar_hellcar_reject"></info_portion>
 	<info_portion id="gar_open_fire"></info_portion>
