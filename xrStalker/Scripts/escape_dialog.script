@@ -258,7 +258,8 @@ end
 
 --' Escape dynamite for Wolf
 function transfer_wolf_reward(first_speaker, second_speaker)
-		dialogs.relocate_money(first_speaker, 1000, "in")
+	local medusa = first_speaker:object("af_medusa")
+	dialogs.relocate_item(first_speaker, medusa, "in")
 end
 
 function wolf_additional_reward(first_speaker, second_speaker)
@@ -291,7 +292,7 @@ end
 function give_wounded_flash(first_speaker, second_speaker)
 	local wounded_flash = first_speaker:object("esc_wounded_flash")
 	dialogs.relocate_item(second_speaker, wounded_flash, "out")
-	dialogs.relocate_money(second_speaker, 1000, "in")
+	dialogs.relocate_money(second_speaker, 1500, "in")
 end
 
 function give_knife_to_actor(first_speaker, second_speaker)
@@ -329,7 +330,7 @@ function give_soldiers_bribe(actor, npc)
 end
 
 function fox_pay_money(actor, npc)
-	dialogs.relocate_money(npc, 500, "in")	
+	dialogs.relocate_money(npc, 1500, "in")	
 end
 
 function run_tutorial_pda(first_speaker, second_speaker)
