@@ -164,7 +164,7 @@ end
 -- Jobs ------------------------------------------------------------------
 gulags.pri_followers.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
-    --local ltx = "#include \"misc\\gulag_pripyat.ltx\"\n"
+    local ltx = "#include \"misc\\gulag_pripyat.ltx\"\n"
 
     -- gulag members
     local followers = {"leader", "bomber", "nap1", "nap2", "nap3"}
@@ -210,10 +210,38 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
 --[[
     for i = 1, 3 do
         local pref = gname .. "_nap" .. i
-        --- NAP: KAMP ----------------------------------------------------------------------------------
+        
+        for j, v in pairs({1, 2, 4, 5, 6}) do
+                       --- NAP: WAVE<j> --------------------------------------------------------------------------------
+            ltx = ltx.."[logic@" .. pref .. "_wave" .. v .. "]\n" ..
+                       "active              = walker@" .. pref .. "_wave" .. v .. "_wait\n" ..
+                       "on_hit              = followers_hit\n" ..
+                       "on_death            = followers_death\n" ..
+
+                       "[walker@" .. pref .. "_wave" .. v .. "_wait]\n" ..
+                       "path_walk           = wave" .. v .. "_stalker" .. i .. "_syn_walk\n" ..
+                       "path_look           = wave" .. v .. "_stalker" .. i .. "_syn_look\n" ..
+                       "def_state_moving1   = assault\n" ..
+                       "def_state_moving2   = assault\n" ..
+                       "team                = followers\n" ..
+                       "on_signal           = syn | walker@" .. pref .. "_wave" .. v .. "\n" ..
+                       "on_info             = {+pri_wave" .. v .. "_start} walker@" .. pref .. "_wave" .. v .. "\n" ..
+                       "danger              = danger@ignore\n" ..
+                       "meet                = no_meet\n" ..
+
+                       "[walker@" .. pref .. "_wave" .. v .. "]\n" ..
+                       "path_walk           = wave" .. v .. "_stalker" .. i .. "_walk\n" ..
+                       "path_look           = wave" .. v .. "_stalker" .. i .. "_look\n" ..
+                       "def_state_moving1   = assault\n" ..
+                       "def_state_moving2   = assault\n" ..
+                       "on_signal           = arrived | {-pri_wave" .. v .. "_start} %+pri_wave" .. v .. "_start%\n" ..
+                       "meet                = no_meet\n"
+        end
+        
+                   --- NAP: KAMP ----------------------------------------------------------------------------------
         ltx = ltx.."[logic@" .. pref .. "_wait]\n" ..
-                   "active              = walker@" .. pref .. "_wait\n" .. --kamp@" .. pref .. "_wait
-                   "combat_ignore       = combat_ignore\n" ..
+                   "active              = walker@" .. pref .. "_wait\n" ..
+                   --"combat_ignore       = combat_ignore\n" ..
                    "on_hit              = followers_hit\n" ..
                    "on_death            = followers_death\n" ..
 
@@ -224,116 +252,35 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving2   = assault\n" ..
                    "def_state_moving3   = assault\n" ..
                    "meet                = meet@def\n" ..
-                   --"on_info             = {+pri_helicopters_start} remark@pri_followers_stalker" .. i .. "_look_for_heli\n" ..
-                   "combat_ignore_cond  = always\n" ..
-
-                   "[kamp@" .. pref .. "_wait]\n" ..
-                   "center_point        = kamp_point\n" ..
-                   "meet                = meet@def\n" ..
-                   --"combat_ignore_cond  = always\n" ..
-                   "on_info             = {+pri_helicopters_start} remark@" .. pref .. "_look_for_heli\n" ..
-
-                   "[remark@" .. pref .. "_look_for_heli]\n" ..
-                   "anim                = guard\n" ..
-                   "target              = 802\n" ..
-                   --"snd                 = pri_heli_nice_fly\n" ..
-                   "meet                = no_meet\n" ..
-
-                   --- NAP: WAVE1 --------------------------------------------------------------------------------
-                   "[logic@" .. pref .. "_wave1]\n" ..
-                   "active              = walker@" .. pref .. "_wave1_wait\n" .. --{+pri_wave1_start} walker@" .. pref .. "_wave1,
-                   "on_hit              = followers_hit\n" ..
-                   "on_death            = followers_death\n" ..
-
-                   "[walker@" .. pref .. "_wave1_wait]\n" ..
-                   "path_walk           = wave1_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave1_stalker" .. i .. "_look2\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "team                = followers\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = syn | walker@" .. pref .. "_wave1\n" ..
-                   "on_info             = {+pri_wave1_start} walker@" .. pref .. "_wave1\n" ..
                    "danger              = danger@ignore\n" ..
-
-                   "[walker@" .. pref .. "_wave1]\n" ..
-                   "path_walk           = wave1_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave1_stalker" .. i .. "_look1\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "meet                = no_meet\n" ..
-                   --"on_info             = {+pri_followers_heli_look} remark@" .. pref .. "_wave1\n" ..
-
-                   "[remark@" .. pref .. "_wave1]\n" ..
-                   "anim                = threat\n" ..
-                   "on_timer            = 5000 | walker@" .. pref .. "_wave1_cont\n" ..
-                   "meet                = no_meet\n" ..
-
-                   "[walker@" .. pref .. "_wave1_cont]\n" ..
-                   "path_walk           = wave1_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave1_stalker" .. i .. "_look1\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%\n" ..
-
-                   --- NAP: WAVE2 --------------------------------------------------------------------------------
-                   "[logic@" .. pref .. "_wave2]\n" ..
-                   "active              = walker@" .. pref .. "_wave2_wait\n" .. --{+pri_wave2_start} walker@" .. pref .. "_wave2,
-                   "on_hit              = followers_hit\n" ..
-                   "on_death            = followers_death\n" ..
-
-                   "[walker@" .. pref .. "_wave2_wait]\n" ..
-                   "path_walk           = wave2_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave2_stalker" .. i .. "_look1\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "team                = followers\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = syn | walker@" .. pref .. "_wave2\n" ..
-                   "on_info             = {+pri_wave2_start} walker@" .. pref .. "_wave2\n" ..
-
-                   "[walker@" .. pref .. "_wave2]\n" ..
-                   "path_walk           = wave2_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave2_stalker" .. i .. "_look2\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%\n" ..
+                   --"combat_ignore_cond  = always\n" ..
 
                    --- NAP: WAVE3 --------------------------------------------------------------------------------
                    "[logic@" .. pref .. "_wave3]\n" ..
-                   "active              = walker@" .. pref .. "_wave3_wait\n" .. --{+pri_wave3_start} walker@" .. pref .. "_wave3,
+                   "active              = walker@" .. pref .. "_wave3_wait\n" ..
                    "combat_ignore       = combat_ignore\n" ..
                    "on_hit              = followers_hit\n" ..
                    "on_death            = followers_death\n" ..
 
                    "[walker@" .. pref .. "_wave3_wait]\n" ..
-                   "path_walk           = wave3_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave3_stalker" .. i .. "_look1\n" ..
+                   "path_walk           = wave3_stalker" .. i .. "_syn_walk\n" ..
+                   "path_look           = wave3_stalker" .. i .. "_syn_look\n" ..
                    "def_state_moving1   = assault\n" ..
                    "def_state_moving2   = assault\n" ..
                    "team                = followers\n" ..
-                   "meet                = no_meet\n" ..
                    "on_signal           = syn | walker@" .. pref .. "_wave3 %+pri_wave3_start%\n" ..
                    "on_info             = {+pri_wave3_start} walker@" .. pref .. "_wave3\n" ..
+                   "meet                = no_meet\n" ..
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
 
                    "[walker@" .. pref .. "_wave3]\n" ..
-                   "path_walk           = wave3_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave3_stalker" .. i .. "_look2\n" ..
+                   "path_walk           = wave3_stalker" .. i .. "_walk\n" ..
+                   "path_look           = wave3_stalker" .. i .. "_look\n" ..
                    "def_state_moving1   = sprint\n" ..
                    "def_state_moving2   = sprint\n" ..
+                   "on_timer            = 2000 | remark@" .. pref .. "_wave3_fight\n" ..
                    "meet                = no_meet\n" ..
-                   "on_timer            = 2000 | remark@" .. pref .. "_wave3_fight\n" .. --walker@" .. pref .. "_wave3_fight
-                   "danger              = danger@ignore\n" ..
-                   "combat_ignore_cond  = {!fighting_actor}\n" ..
-
-                   "[walker@" .. pref .. "_wave3_fight]\n" ..
-                   "path_walk           = wave3_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave3_stalker" .. i .. "_look3\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_timer            = 5000 | walker@" .. pref .. "_wave3\n" ..
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
 
@@ -345,107 +292,32 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
 
-                   --- NAP: WAVE4 --------------------------------------------------------------------------------
-                   "[logic@" .. pref .. "_wave4]\n" ..
-                   "active              = walker@" .. pref .. "_wave4_wait\n" .. --{+pri_wave4_start} walker@" .. pref .. "_wave4,
-                   "combat_ignore       = combat_ignore\n" ..
-                   "on_hit              = followers_hit\n" ..
-                   "on_death            = followers_death\n" ..
-
-                   "[walker@" .. pref .. "_wave4_wait]\n" ..
-                   "path_walk           = wave4_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave4_stalker" .. i .. "_look1\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "team                = followers\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = syn | walker@" .. pref .. "_wave4\n" ..
-                   "on_info             = {+pri_wave4_start} walker@" .. pref .. "_wave4\n" ..
-                   "combat_ignore_cond  = {=check_fighting(820:821)}\n" ..
-
-                   "[walker@" .. pref .. "_wave4]\n" ..
-                   "path_walk           = wave4_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave4_stalker" .. i .. "_look2\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%\n" ..
-
-                   --- NAP: WAVE5 --------------------------------------------------------------------------------
-                   "[logic@" .. pref .. "_wave5]\n" ..
-                   "active              = walker@" .. pref .. "_wave5_wait\n" .. --{+pri_wave5_start} walker@" .. pref .. "_wave5,
-                   "on_hit              = followers_hit\n" ..
-                   "on_death            = followers_death\n" ..
-
-                   "[walker@" .. pref .. "_wave5_wait]\n" ..
-                   "path_walk           = wave5_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave5_stalker" .. i .. "_look1\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "team                = followers\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = syn | walker@" .. pref .. "_wave5\n" ..
-                   "on_info             = {+pri_wave5_start} walker@" .. pref .. "_wave5\n" ..
-
-                   "[walker@" .. pref .. "_wave5]\n" ..
-                   "path_walk           = wave5_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave5_stalker" .. i .. "_look2\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%\n" ..
-
-                   --- NAP: WAVE6 ------------------------------------------------------------------------------
-                   "[logic@" .. pref .. "_wave6]\n" ..
-                   "active              = walker@" .. pref .. "_wave6_wait\n" .. --{+pri_wave6_start} walker@" .. pref .. "_wave6,
-                   "on_hit              = followers_hit\n" ..
-                   "on_death            = followers_death\n" ..
-
-                   "[walker@" .. pref .. "_wave6_wait]\n" ..
-                   "path_walk           = wave6_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave6_stalker" .. i .. "_look1\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "team                = followers\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = syn | walker@" .. pref .. "_wave6\n" ..
-                   "on_info             = {+pri_wave6_start} walker@" .. pref .. "_wave6\n" ..
-
-                   "[walker@" .. pref .. "_wave6]\n" ..
-                   "path_walk           = wave6_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave6_stalker" .. i .. "_look2\n" ..
-                   "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n" ..
-                   "meet                = no_meet\n" ..
-                   "on_signal           = arrived | {-pri_wave6_start} %+pri_wave6_start%\n" ..
-
                    --- NAP: WAVE7 ------------------------------------------------------------------------------
                    "[logic@" .. pref .. "_wave7]\n" ..
-                   --"active              = {+pri_wave7_start} walker@" .. pref .. "_wave7, walker@" .. pref .. "_wave7_wait\n" ..
                    "active              = walker@" .. pref .. "_wave7_wait\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
+                   --"combat_ignore       = combat_ignore\n" ..
                    "on_hit              = followers_hit\n" ..
                    "on_death            = followers_death\n" ..
 
                    "[walker@" .. pref .. "_wave7_wait]\n" ..
-                   "path_walk           = wave7_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave7_stalker" .. i .. "_look1\n" ..
+                   "path_walk           = wave7_stalker" .. i .. "_syn_walk\n" ..
+                   "path_look           = wave7_stalker" .. i .. "_syn_look\n" ..
                    "def_state_moving1   = assault\n" ..
                    "def_state_moving2   = assault\n" ..
                    "team                = followers\n" ..
-                   "meet                = no_meet\n" ..
-                   --"on_signal           = syn | walker@" .. pref .. "_wave7\n" ..
-                   --"on_info             = {+pri_wave7_start} walker@" .. pref .. "_wave7\n" ..
                    "on_info             = {+pri_wave7_leader_phrase_end} walker@" .. pref .. "_wave7\n" ..
+                   "meet                = no_meet\n" ..
+                   "danger              = danger@ignore\n" ..
 
                    "[walker@" .. pref .. "_wave7]\n" ..
-                   "path_walk           = wave7_stalker" .. i .. "_walk2\n" ..
-                   "path_look           = wave7_stalker" .. i .. "_look2\n" ..
+                   "path_walk           = wave7_stalker" .. i .. "_walk\n" ..
+                   "path_look           = wave7_stalker" .. i .. "_look\n" ..
                    "def_state_moving1   = assault\n" ..
                    "def_state_moving2   = assault\n" ..
-                   "meet                = no_meet\n" ..
                    "on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%\n" ..
-                   "combat_ignore_cond  = {-pri_wave7_start}\n" ..
+                   "meet                = no_meet\n" ..
+                   "danger              = danger@ignore\n" ..
+                   --"combat_ignore_cond  = {-pri_wave7_start}\n" ..
 
                    --- NAP: WAVE8 ------------------------------------------------------------------------------
                    "[logic@" .. pref .. "_wave8]\n" ..
@@ -454,13 +326,14 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "on_death            = followers_death\n" ..
 
                    "[walker@" .. pref .. "_wave8_wait]\n" ..
-                   "path_walk           = wave8_stalker" .. i .. "_walk1\n" ..
-                   "path_look           = wave8_stalker" .. i .. "_look1\n" ..
+                   "path_walk           = wave8_stalker" .. i .. "_walk\n" ..
+                   "path_look           = wave8_stalker" .. i .. "_look\n" ..
                    "def_state_moving1   = assault\n" ..
                    "def_state_moving2   = assault\n" ..
                    "meet                = no_meet\n"
     end
 --]]
+    --gulags.pri_followers.ltx = ltx
 end
 
 -- States ----------------------------------------------------------------
@@ -617,8 +490,16 @@ end
 -- Wave
 --------------------------------------------------------------------------
 -- Additional functions --------------------------------------------------
-local function process_range(str, def_val)
-    return def_val
+local function process_range(str, def_val_min, def_val_max)
+    local v = {}
+    if str then v = parse_nums(str) end
+    local min = v[1] or def_val_min or 5
+    local max = v[2] or def_val_max or 10
+    
+    if min > max then
+        max = min * 1.5
+    end
+    return random_number(min, max)
 end
 
 local function process_num(str, def_val)
@@ -646,10 +527,10 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
           "hp_cover = 0|false\n" ..
 
           "[danger1]\n" ..
-          "ignore_distance = 10\n" ..
-          "danger_inertion_time_hit = 1000\n" ..
-          "danger_inertion_time_sound = 500\n" ..
-          "danger_inertion_time_ricochet = 1000\n" ..
+          --"ignore_distance = 10\n" ..
+          --"danger_inertion_time_hit = 1000\n" ..
+          --"danger_inertion_time_sound = 500\n" ..
+          --"danger_inertion_time_ricochet = 1000\n" ..
           "ignore_types = corpse\n" ..
 
           "[danger2]\n" ..
@@ -668,9 +549,9 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
-        local stime = process_range(wp_prop.stime, 25) * 1000 -- sniper time in seconds
-        local gtime = process_range(wp_prop.gtime, 20) * 1000 -- guard time in seconds
-        local htime = process_range(wp_prop.htime, 5) * 1000  -- hide time in seconds
+        local stime = process_range(wp_prop.stime, 15, 25) * 1000 -- sniper time in seconds
+        local gtime = process_range(wp_prop.gtime, 15, 20) * 1000 -- guard time in seconds
+        local htime = process_range(wp_prop.htime,  6,  8) * 1000 -- hide time in seconds
 
         local sdist = process_num(wp_prop.sdist, 50) -- sniper distance
         local gdist = process_num(wp_prop.gdist, 40) -- guard distance
@@ -736,7 +617,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "show_spot                   = false\n" ..
                    --"on_info                     = {=dist_to_enemy_le(" .. gdist .. ")} camper@" .. idstr .. "_guard\n" ..
                    --"on_actor_dist_le_nvis       = " .. gdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "_guard\n" ..
-                   "on_timer                    = " .. stime .. " | remark@" .. idstr .. "_hide\n" ..
+                   "on_timer                    = " .. stime .. " | camper@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
                    "danger                      = danger1\n" ..
                    ib ..
@@ -752,14 +633,21 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "show_spot                   = false\n" ..
                    --"on_info                     = {!dist_to_enemy_le(" .. sdist .. ")} camper@" .. idstr .. "\n" ..
                    --"on_actor_dist_ge_nvis       = " .. sdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "\n" ..
-                   "on_timer                    = " .. gtime .. " | remark@" .. idstr .. "_hide\n" ..
+                   "on_timer                    = " .. gtime .. " | camper@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
                    "danger                      = danger1\n" ..
                    ib ..
 
-                   "[remark@" .. idstr .. "_hide]\n" ..							
-                   "anim                = hide\n" ..
-                   "target              = actor\n" ..
+                   --"[remark@" .. idstr .. "_hide]\n" ..							
+                   --"anim                = hide\n" ..
+                   --"target              = actor\n" ..
+                   "[camper@" .. idstr .. "_hide]\n" ..							
+                   "path_walk           = wsniper_" .. i .. "_walk\n" ..
+                   "path_look           = wsniper_" .. i .. "_look\n" ..
+                   "def_state_moving    = sneak_run\n" ..
+                   "def_state_campering = hide_na\n" ..
+                   "no_retreat          = true\n" ..
+                   "radius              = 0\n" ..
                    "show_spot           = false\n" ..
                    --"on_timer            = " .. htime .. " | {=dist_to_actor_ge(" .. sdist .. ")} camper@" .. idstr .. ", camper@" .. idstr .. "_guard\n" ..
                    "on_timer            = " .. htime .. " | {=dist_to_enemy_ge(" .. sdist .. ")} camper@" .. idstr .. ", camper@" .. idstr .. "_guard\n" ..
@@ -872,8 +760,8 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
-        local wtime = process_range(wp_prop.wtime, 40) * 1000  -- walker state time in seconds
-        local ktime = process_range(wp_prop.ktime, 120) * 1000 -- kamp state time in seconds
+        local wtime = process_range(wp_prop.wtime, 40,  80) * 1000 -- walker state time in seconds
+        local ktime = process_range(wp_prop.ktime, 90, 180) * 1000 -- kamp state time in seconds
 
         local kampi = process_num(wp_prop.kampi, 1) -- kamp index
 
