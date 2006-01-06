@@ -661,6 +661,12 @@ function cannot_talk_by_weapon(npc)
 		if not isWeapon(db.actor:active_item())	then			
 			return false
 		end		
+		if st.use then
+			local t = xr_logic.pick_section_from_condlist(db.actor, npc, st.use)
+			if t == "false" then
+				return false
+			end
+		end
 		if st.use_wpn then
 			local t = xr_logic.pick_section_from_condlist(db.actor, npc, st.use_wpn)
 			if t == "false" then
