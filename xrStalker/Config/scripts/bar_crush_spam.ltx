@@ -35,16 +35,16 @@ on_timer = 7000 | sr_idle@freedom %=rostok_kruglov_tip_2 +bar_rescue_research_st
 
 
 [sr_idle@freedom]
-on_timer = 12000|{+bar_freedom_attack_ecolog} nil ,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} sr_idle@ecolog_2 %=bar_freedom_spam_1%
+on_timer = 12000|{+bar_freedom_attack_ecolog} nil  %=bar_freedom_attack_start% ,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} sr_idle@ecolog_2 %=bar_freedom_spam_1%
                                                                                                                                                                                             	
 
 [sr_idle@ecolog_2]
-on_timer = 7000| {+bar_freedom_attack_ecolog} nil,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} sr_idle@freedom_3 %=bar_ecolog_spam_2%
+on_timer = 7000| {+bar_freedom_attack_ecolog} nil %=bar_freedom_attack_start%,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} sr_idle@freedom_3 %=bar_ecolog_spam_2%
 
 [sr_idle@freedom_3]
-on_timer = 8000| {+bar_freedom_attack_ecolog} nil,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} sr_idle@ecolog_3 %=bar_freedom_spam_3%
+on_timer = 8000| {+bar_freedom_attack_ecolog} nil %=bar_freedom_attack_start%,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} sr_idle@ecolog_3 %=bar_freedom_spam_3%
 
 [sr_idle@ecolog_3]
-on_timer = 7000| {+bar_freedom_attack_ecolog} nil,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} nil %=bar_ecolog_spam_3%
+on_timer = 7000| {+bar_freedom_attack_ecolog} nil %=bar_freedom_attack_start%,{-bar_heli_scene_volkodav_die -bar_freedom_attack_ecolog} nil %=bar_ecolog_spam_3%
 
 

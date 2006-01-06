@@ -584,10 +584,11 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 
           "[danger@normal]\n" ..
           "ignore_types = corpse, sound\n" ..
-
+          "ignore_distance = 0\n" ..
+  
           "[danger@kamp]\n" ..
-          "ignore_types = corpse\n" --..
-
+          "ignore_types = corpse\n" ..
+          "ignore_distance = 0\n"  
     -- Снайперы в окнах.
     i = 1
     while level.patrol_path_exists(gname .. "_wsniper_" .. i .."_walk") do
