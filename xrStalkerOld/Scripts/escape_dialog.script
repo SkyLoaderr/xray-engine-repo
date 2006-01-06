@@ -170,13 +170,6 @@ function have_fox_info(first_speaker, second_speaker)
   	return first_speaker:object("fox_flash") ~= nil
 end
 
-function give_flash_to_actor(npc, actor)
-	local item = npc:object("fox_flash")
-	if item then
-		dialogs.relocate_item(npc, item, "in")
-	end
-end
-
 --' fox help
 
 function transfer_medikit_to_fox (player, wounded)
@@ -196,7 +189,10 @@ end
 function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	dialogs.relocate_item(second_speaker, case, "out")
-	dialogs.relocate_money(second_speaker, 2000, "in")
+end
+
+function give_blockpost_case_reward(first_speaker, second_speaker)
+	dialogs.relocate_money(first_speaker, 2000, "in")
 end
 
 --' Agroprom military case
@@ -367,14 +363,17 @@ end
 function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
 	dialogs.relocate_item(second_speaker, case, "out")
-	dialogs.relocate_money(second_speaker, 1000, "in")
+end
+
+function give_dynamite_reward(first_speaker, second_speaker)
+	dialogs.relocate_money(first_speaker, 1000, "in")
 end
 
 
 --' Escape Wounded's flash
 function wounded_give_flash(first_speaker, second_speaker)
-	local wounded_flash = second_speaker:object("esc_wounded_flash")
-	dialogs.relocate_item(second_speaker, wounded_flash, "in")
+	local wounded_flash = first_speaker:object("esc_wounded_flash")
+	dialogs.relocate_item(first_speaker, wounded_flash, "in")
 end
 
 function have_wounded_flash(first_speaker, second_speaker)
@@ -387,13 +386,16 @@ end
 function give_wounded_flash(first_speaker, second_speaker)
 	local wounded_flash = first_speaker:object("esc_wounded_flash")
 	dialogs.relocate_item(second_speaker, wounded_flash, "out")
-	dialogs.relocate_money(second_speaker, 250, "in")
+end
+
+function give_wounded_flash_reward(first_speaker, second_speaker)
+	dialogs.relocate_money(first_speaker, 250, "in")
 end
 
 function give_knife_to_actor(first_speaker, second_speaker)
-	local knife = second_speaker:object("wpn_knife")
+	local knife = first_speaker:object("wpn_knife")
 	if knife ~= nil then
-		dialogs.relocate_item(second_speaker, knife, "in")
+		dialogs.relocate_item(first_speaker, knife, "in")
 	end
 end
 
@@ -412,7 +414,7 @@ end
 
 --' Escape bandits factory
 function give_factory_reward_trader(first_speaker, second_speaker)
-	dialogs.relocate_money(second_speaker, 500, "in")
+	dialogs.relocate_money(first_speaker, 500, "in")
 end
 
 --' Give X-18 documents read
@@ -424,7 +426,7 @@ end
 
 --' Kill killers raid
 function give_reward_killers(first_speaker, second_speaker)
-	dialogs.relocate_money(second_speaker, 2500, "in")
+	dialogs.relocate_money(first_speaker, 2500, "in")
 end
 
 
