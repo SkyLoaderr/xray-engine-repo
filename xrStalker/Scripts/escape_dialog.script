@@ -213,7 +213,7 @@ function trader_need_blockpost_box(first_speaker, second_speaker)
     if actor ~= nil and
 	   actor:has_info("tutorial_end") and
 	   actor:has_info("esc_return") and
-	   actor:dont_has_info("esc_blockpost_case")
+	   actor:dont_has_info("escape_blockpost_case")
 	then
 		return true
 	end
