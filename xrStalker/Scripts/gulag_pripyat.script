@@ -157,7 +157,8 @@ function f_predicate(npc_info)
 end
 
 function f_predicate_b(npc_info)
-	return npc_info.profile_name == "pri_followers" and obj_has_item(npc_info, "wpn_rpg7")
+	local pn = npc_info.profile_name
+	return (pn == "pri_followers_bomber" or pn == "pri_followers") and obj_has_item(npc_info, "wpn_rpg7")
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -528,7 +529,7 @@ gulags.pri_followers.state = function(gulag)
 		return state_wave7
 	end
 	if state == state_wave7 and
-        xr_gulag.getGulagPopulation("pri_ambush7") == 0
+        xr_gulag.getGulagPopulation("pri_ambush7") < 2
     then
         actor:give_info_portion("pri_wave7_end")
         actor:give_info_portion("pri_undeground_respawn_start")
@@ -577,7 +578,8 @@ gulags.pri_ambush7.job = function(sj, gname, type, squad, groups)
 
                    "[walker@" .. gname .. "_monolith" .. i .. "]\n" ..
                    "path_walk           = monolith" .. i .. "_walk\n" ..
-                   "path_look           = monolith" .. i .. "_look\n"
+                   "path_look           = monolith" .. i .. "_look\n" ..
+                   "show_spot           = false\n"
     end
 
     gulags.pri_ambush7.ltx = ltx
@@ -699,7 +701,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        "show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
                        "wounded             = wounded\n" ..
-                       "danger              = danger1\n" ..
+                       --"danger              = danger1\n" ..
                        "combat_ignore_cond  = always\n"
 		else
             ltx = ltx.."active = camper@" .. idstr .. "\n"
@@ -804,7 +806,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        "show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
                        "wounded             = wounded\n" ..
-                       "danger              = danger1\n" ..
+                       --"danger              = danger1\n" ..
                        "combat_ignore_cond  = always\n"
 		else
             ltx = ltx.."active = camper@" .. idstr .. "\n"
@@ -895,7 +897,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        "show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} walker@" .. idstr .. "\n" ..
                        "wounded             = wounded\n" ..
-                       "danger              = danger2\n" ..
+                       --"danger              = danger2\n" ..
                        "combat_ignore_cond  = always\n"
 		else
             ltx = ltx.."active = walker@" .. idstr .. "\n"
@@ -910,7 +912,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "show_spot                   = false\n" ..
                    "on_timer                    = " .. wtime .. " | kamp@" .. idstr .. "\n" ..
                    "wounded                     = wounded\n" ..
-                   "danger                      = danger2\n" ..
+                   --"danger                      = danger2\n" ..
                    ib ..
 
                    "[kamp@" .. idstr .. "]\n" ..							
@@ -1095,6 +1097,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                "path_walk           = leader_walk\n" ..
                "path_look           = leader_look\n" ..
                "danger              = danger@monolith\n" ..
+               "show_spot           = false\n" ..
                "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 --]]
     -- walkers
@@ -1226,7 +1229,8 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 	    }
 	    table.insert(sj, t)
         ltx = ltx.."[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
-                    "active     = camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
+                   "active          = camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
+                   "combat_ignore   = combat_ignore\n" ..
 
                     "[camper@" .. gname .. "_sniper" .. i .. "_wait]\n" ..
                     "path_walk                  = balcony_sniper" .. i .. "_walk\n" ..
@@ -1247,6 +1251,34 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     end
 
     gulags.pri_monolith.ltx = ltx
+end
+
+-- States ----------------------------------------------------------------
+gulags.pri_monolith.state = function(gulag)
+--[[
+    if gulag.state >= 1 and game.get_game_time():diffSec(gulag.stateBegin) < 180 then -- 3 minutes
+        if db.actor:has_info("pri_monolith_base_attack_leader_zone") then
+            return 2
+        else
+            return 1
+        end
+    else
+        for k,v in pairs(gulag.Object) do
+            if v ~= true then
+                local enemy = v:best_enemy()
+                if enemy ~= nil then
+                    local enemy_type = get_clsid(enemy)
+                    if enemy_type == clsid.actor or enemy_type == clsid.script_stalker then
+                        db.actor:give_info_portion("pri_monolith_base_attacked")
+                        return 1
+                    end
+                end
+            end
+        end
+        db.actor:disable_info_portion("pri_monolith_base_attacked")
+    end
+--]]
+    return 0
 end
 
 
