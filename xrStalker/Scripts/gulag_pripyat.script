@@ -206,6 +206,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                 in_rest = "", out_rest = restr[j],
                 position_threshold = 100,
                 online = true,
+                idle_after_death = 50,
                 predicate = pd
             }
             table.insert(sj, t)
