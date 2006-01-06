@@ -8,12 +8,31 @@
 function trader_alredy_give_job(trader, actor)
 	local actor = db.actor
 	if (actor:has_info("esc_kill_bandits_quest_have") and actor:dont_has_info("esc_kill_bandits_quest_done")) or
-	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done"))
+	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done")) or
+	   (actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")) or
+	   (actor:has_info("cit_documents_need") and actor:dont_has_info("cit_documents_give")) or
+	   (actor:has_info("tutorial_artefact_start") and actor:dont_has_info("tutorial_artefact_done")) or
+	   (actor:has_info("tutorial_wounded_start") and actor:dont_has_info("esc_serious_talk"))
 	then
 		return true
 	end
 	return false 
 end
+
+function trader_give_extra_job(trader, actor)
+	local actor = db.actor
+	if 	   (actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")) or
+		   (actor:has_info("cit_documents_need") and actor:dont_has_info("cit_documents_give"))
+	then
+		return true
+	end
+	return false
+end
+
+function trader_need_extra_job(trader, actor)
+	return not this.trader_give_extra_job(trader, actor)
+end
+
 function is_tutorial(trader, actor)
 	return not db.actor:has_info("tutorial_end")
 end
@@ -25,15 +44,68 @@ function trader_dont_give_job(first_speaker, second_speaker)
 	return not trader_alredy_give_job(first_speaker, second_speaker)
 end
 
-
-function trader_dont_has_job(first_speaker, second_speaker)
-    if trader_need_free_factory(first_speaker, second_speaker) == false and
-	   trader_need_military_case(first_speaker, second_speaker) == false
+function finalize_quests(first_speaker, second_speaker)
+	if tutorial_artefact_end(first_speaker, second_speaker) == true or
+	   tutorial_wounded_end(first_speaker, second_speaker) == true or
+	   factory_bandits_end(first_speaker, second_speaker) == true
 	then
 		return true
 	end
 	return false
 end
+
+function not_finalize_quests(first_speaker, second_speaker)
+	return not this.finalize_quests(first_speaker, second_speaker)	
+end
+
+function tutorial_artefact_end(first_speaker, second_speaker)
+	local actor = db.actor
+	local tutorial_artefact = first_speaker:object("af_blood_tutorial")
+	if actor:has_info("tutorial_artefact_start") and 
+	   actor:dont_has_info("tutorial_artefact_done") and
+	   tutorial_artefact ~= nil
+	then
+		return true
+	end
+	return false
+end
+
+function tutorial_wounded_end(first_speaker, second_speaker)
+	local actor = db.actor
+	local wounded_flash = first_speaker:object("esc_wounded_flash")
+	if actor:has_info("tutorial_wounded_start")	and 
+	   actor:dont_has_info("esc_serious_talk") and
+	   wounded_flash ~= nil
+	then
+		return true
+	end
+	return false
+end
+
+function factory_bandits_end(first_speaker, second_speaker)
+	local actor = db.actor
+	if actor:has_info("esc_kill_bandits_quest_have")	and 
+	   actor:has_info("esc_kill_bandits_quest_kill")	and 
+	   actor:dont_has_info("esc_kill_bandits_quest_done")
+	then
+		return true
+	end
+	return false
+end
+
+
+
+function trader_dont_has_job(first_speaker, second_speaker)
+    if trader_need_free_factory(first_speaker, second_speaker) == false and
+	   trader_need_military_case(first_speaker, second_speaker) == false and
+	   trader_need_blockpost_box(first_speaker, second_speaker) == false and
+	   trader_need_deadcity(first_speaker, second_speaker) == false
+	then
+		return true
+	end
+	return false
+end
+
 
 --' Escape tutorial artefact
 function have_tutorial_artefact(first_speaker, second_speaker)
@@ -79,16 +151,23 @@ end
 function have_blockpost_case(first_speaker, second_speaker)
   	return first_speaker:object("quest_case_01") ~= nil
 end
-function trader_need_blockpost_box(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("escape_stalker_done") and
+function trader_need_blockpost_box(actor, npc)
+--	if true then return false end
+	printf ("FIRST_SPEAKER : %s", actor:name ())
+	printf ("SECOND_SPEAKER : %s", npc:name ())
+	if actor:has_info("esc_return") and
 	   actor:dont_has_info("escape_blockpost_case")
 	then
 		return true
 	end
 	return false
 end
+
+function trader_test(actor, npc)
+	printf ("!!!!!")	
+	return true
+end
+
 function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	dialogs.relocate_item(second_speaker, case, "out")
@@ -132,6 +211,31 @@ function trader_need_free_factory(first_speaker, second_speaker)
 	end
 	return false
 end
+--' ящик с блокпоста
+function trader_need_blockpost_box(first_speaker, second_speaker)
+	local actor = db.actor
+    if actor ~= nil and
+	   actor:has_info("tutorial_end") and
+	   actor:has_info("esc_return") and
+	   actor:dont_has_info("esc_blockpost_case")
+	then
+		return true
+	end
+	return false
+end
+--' Ќайти лагерь наемников
+function trader_need_deadcity(first_speaker, second_speaker)
+	local actor = db.actor
+    if actor ~= nil and
+	   actor:has_info("tutorial_end") and
+	   actor:has_info("escape_lager_killers_die") and
+	   actor:dont_has_info("cit_documents_need")
+	then
+		return true
+	end
+	return false
+end
+
 
 --' tutorial wounded in vagon
 function wounded_need_help(first_speaker, second_speaker)
@@ -267,6 +371,13 @@ end
 function give_factory_reward_trader(first_speaker, second_speaker)
 	dialogs.relocate_money(second_speaker, 500, "in")
 end
+
+--' Give X-18 documents read
+
+function give_documents_reward (first_speaker, second_speaker)
+	dialogs.relocate_money(first_speaker, 1000, "out")
+end
+
 
 --' Kill killers raid
 function give_reward_killers(first_speaker, second_speaker)
