@@ -654,7 +654,7 @@ end
 --' ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
 function dialog_manager_reset(npc, stype)
 	if stype == modules.stype_mobile then
-		printf("*DIALOGS*: dialog_manager_reset: npc:name='%s'", npc:name())
+--		printf("*DIALOGS*: dialog_manager_reset: npc:name='%s'", npc:name())
 		--' Смена стартового диалога
 		local overrides = xr_logic.generic_scheme_overrides(npc)
 		if overrides ~= nil then
