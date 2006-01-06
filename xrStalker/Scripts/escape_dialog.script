@@ -194,7 +194,7 @@ end
 function trader_need_military_case(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
-	   actor:has_info("esc_kill_bandits_quest_done") and
+	   actor:has_info("esc_serious_talk") and
 	   actor:dont_has_info("agroprom_military_case")
 	then
 		return true
@@ -255,36 +255,6 @@ function actor_has_documents (actor, npc)
 		return false
 	end
 end
-
---' WOLF
-function has_novice_access(actor, npc)
-	if db.actor then
-		return db.actor:has_info("esc_path_lo_lager")
-	end
-	return false
-end
-function not_has_novice_access(actor, npc)
-	return not this.has_novice_access(actor, npc)
-end
-function need_wolf_greet(actor, npc)
-	if db.actor then
-		return db.actor:has_info("tutorial_wounded_help") and db.actor:dont_has_info("tutorial_wounded_volk_greet")
-	end
-	return false	
-end
-function not_need_wolf_greet(actor, npc)
-	return not this.need_wolf_greet(actor, npc)
-end
-
-function wolf_speak(actor, npc)
-	if db.actor then
-		return db.actor:has_info("tutorial_wounded_death") or
-			   (db.actor:has_info("tutorial_wounded_help") and db.actor:has_info("tutorial_wounded_volk_greet")) and
-			   db.actor:dont_has_info("esc_kill_bandits_quest_have") 
-	end
-	return false
-end
-
 
 --' Escape dynamite for Wolf
 function transfer_wolf_reward(first_speaker, second_speaker)
@@ -369,4 +339,11 @@ end
 
 function give_soldiers_bribe(actor, npc)
 	dialogs.relocate_money(npc, 500, "out")	
+end
+
+
+function run_tutorial_pda(first_speaker, second_speaker)
+	first_speaker:stop_talk() 
+	second_speaker:stop_talk()
+	game.start_tutorial("part_1_pda")
 end
