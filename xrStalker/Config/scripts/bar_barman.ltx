@@ -35,7 +35,7 @@ def_state_moving3 = barman_walk_danger
 on_signal = arrived | %+bar_barman_stay_room%
 on_info = {+bar_barman_stay_room +bar_psih_come -bar_psih_done} walker@room_psih, {+bar_barman_stay_room} walker@at_room
 danger = danger_condition@barman
-meet = no_meet
+meet = meet@no_talk
 
 [walker@at_room]
 path_walk = bar_barman_room_walk
@@ -113,6 +113,11 @@ snd_anim_sync = true
 use = true
 use_wpn = true
 
+[meet@no_talk]
+use             = false
+use_wpn         = false
+abuse = false
+
 
 [walker@room2hole]
 path_walk = bar_barman_room2hole_walk
@@ -123,7 +128,7 @@ def_state_moving3 = barman_walk_danger
 on_signal = arrived | %+bar_barman_stay_hole%
 on_info = {+bar_barman_stay_hole} walker@at_hole
 danger = danger_condition@barman
-meet = no_meet
+meet = meet@no_talk
 
 [danger_condition@barman]
 ignore_distance       = 0
