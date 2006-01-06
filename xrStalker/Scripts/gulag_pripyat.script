@@ -343,6 +343,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "def_state_moving1   = assault\n" ..
                     "def_state_moving2   = assault\n" ..
                     "on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%\n" ..
+                    "on_info			 = {-pri_wave7_sound_start =pri_follower_see_ambush} %+pri_wave7_sound_start%"..
                     "wounded             = wounded@ignore\n" ..
                     "meet                = meet@ignore_abuse\n" .. --meet@def
                     "danger              = danger@ignore\n" ..
