@@ -50,16 +50,6 @@ local function obj_has_item(npc_info, item_name, def_val)
 	return t
 end
 
-zombied_in_combat = {}
-
-function is_zombied_in_combat()
-    local k, v = 0, 0
-    for k,v in pairs(zombied_in_combat) do
-        return true
-    end
-    return false
-end
-
 
 --------------------------------------------------------------------------
 -- General
@@ -644,9 +634,9 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 
           "[danger2]\n" ..
           --"ignore_distance = 20\n" ..
-          "danger_inertion_time_hit = 1000\n" ..
-          "danger_inertion_time_sound = 1500\n" ..
-          "danger_inertion_time_ricochet = 1000\n" ..
+          --"danger_inertion_time_hit = 1000\n" ..
+          --"danger_inertion_time_sound = 1500\n" ..
+          --"danger_inertion_time_ricochet = 1000\n" ..
           "ignore_types = corpse\n"
 
 	-- Снайперы в окнах.
@@ -823,8 +813,8 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
         ltx = ltx.."[camper@" .. idstr .. "]\n" ..							
                    "path_walk                   = rsniper_" .. i .. "_walk\n" ..
                    "path_look                   = rsniper_" .. i .. "_look\n" ..
-                   "def_state_moving            = rush\n" ..
-                   "def_state_campering         = hide\n" ..
+                   "def_state_moving            = assault\n" ..
+                   "def_state_campering         = hide_na\n" ..
                    "def_state_campering_fire    = hide_sniper_fire\n" ..
                    "sniper                      = true\n" ..
                    "radius                      = 0\n" ..
@@ -838,7 +828,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "[camper@" .. idstr .. "_guard]\n" ..							
                    "path_walk                   = rsniper_" .. i .. "_walk\n" ..
                    "path_look                   = rsniper_" .. i .. "_look\n" ..
-                   "def_state_campering         = hide\n" ..
+                   "def_state_campering         = hide_na\n" ..
                    "def_state_campering_fire    = hide_fire\n" ..
                    "no_retreat                  = true\n" ..
                    "radius                      = 0\n" ..
@@ -903,23 +893,20 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        --"path_look           = free_" .. i .. "_look\n" ..
                        "anim                = hide_na\n" ..
                        "show_spot           = false\n" ..
-                       "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
+                       "on_info             = {+" .. starti .. "} walker@" .. idstr .. "\n" ..
                        "wounded             = wounded\n" ..
                        "danger              = danger2\n" ..
                        "combat_ignore_cond  = always\n"
 		else
-            ltx = ltx.."active = camper@" .. idstr .. "\n"
+            ltx = ltx.."active = walker@" .. idstr .. "\n"
 		end
 
-        ltx = ltx.."[camper@" .. idstr .. "]\n" ..							
+        ltx = ltx.."[walker@" .. idstr .. "]\n" ..							
                    "path_walk                   = free_" .. i .. "_walk\n" ..
                    "path_look                   = free_" .. i .. "_look\n" ..
-                   "def_state_moving            = rush\n" ..
-                   "def_state_moving_fire       = assault_fire\n" ..
-                   "def_state_campering         = threat\n" ..
-                   "def_state_campering_fire    = threat_sniper_fire\n" ..
-                   --"no_retreat                  = true\n" ..
-                   --"radius                      = 7\n" ..
+                   "def_state_moving1           = patrol\n" ..
+                   "def_state_moving2           = assault\n" ..
+                   "def_state_moving3           = assault\n" ..
                    "show_spot                   = false\n" ..
                    "on_timer                    = " .. wtime .. " | kamp@" .. idstr .. "\n" ..
                    "wounded                     = wounded\n" ..
@@ -930,7 +917,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "center_point        = kamp_" .. kampi .. "\n" ..
                    "def_state_moving    = patrol\n" ..
                    "show_spot           = false\n" ..
-                   "on_timer            = " .. ktime .. " | camper@" .. idstr .. "\n" ..
+                   "on_timer            = " .. ktime .. " | walker@" .. idstr .. "\n" ..
                    "wounded             = wounded\n" ..
                    "danger              = danger2\n"
 		i = i + 1
