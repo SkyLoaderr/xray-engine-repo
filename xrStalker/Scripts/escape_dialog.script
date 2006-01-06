@@ -59,6 +59,11 @@ function not_final_job(trader, actor)
 	return actor:dont_has_info("escape_blockpost_case_done") and actor:dont_has_info("cit_documents_give")
 end
 
+function trader_test(actor, npc)
+ 	printf ("!!!!!")	
+	return true
+end
+
 function is_not_tutorial(trader, actor)
  return not this.is_tutorial(trader, actor)
 end
