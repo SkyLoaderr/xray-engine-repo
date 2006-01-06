@@ -457,8 +457,7 @@ function init_meet(npc, ini, section, st, scheme)
 		def.use				= "true"
 		def.use_wpn			= "false"
 		def.syndata			= ""
-
-		def.precond			= "usability"
+		def.precond			= "visibility"
 		def.abuse			= "true"
 	end		
 
