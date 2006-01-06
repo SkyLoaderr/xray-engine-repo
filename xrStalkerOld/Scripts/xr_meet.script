@@ -16,6 +16,10 @@ function evaluator_contact:evaluate()
 	if self.a.meet_set ~= true then return false end
 	
 	if db.actor then
+		if not db.actor:alive() then
+			return false
+		end
+	
 		if xr_wounded.is_wounded(self.object) then
 			return false
 		end
