@@ -75,8 +75,9 @@ danger = danger_condition@barman
 anim = barman_wait_danger
 snd = bar_barman_psycho
 target = 517
-on_signal = sound_end | walker@room_psih %+bar_barman_say_1_phrase%
+on_signal = action_end | walker@room_psih %+bar_barman_say_1_phrase%
 danger = danger_condition@barman
+snd_anim_sync = true
 
 [walker@room_psih_idle]
 path_walk = bar_barman_room_walk_psih
@@ -94,13 +95,15 @@ snd = bar_barman_psycho
 target = 517
 on_timer = 10000 | remark@room_psih_3
 danger = danger_condition@barman
+snd_anim_sync = true
 
 [remark@room_psih_3]
 anim = barman_wait_danger
 snd = bar_barman_psycho
 target = 517
-on_signal = sound_end| walker@room_psih %+bar_psih_done%
+on_signal = action_end | walker@room_psih %+bar_psih_done%
 danger = danger_condition@barman
+snd_anim_sync = true
 
 [meet@room_psih]
 ;meet_state = 15|barman_wait_danger
