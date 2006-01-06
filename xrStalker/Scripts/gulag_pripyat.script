@@ -412,7 +412,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 		           "combat_ignore = combat_ignore\n"
 		
 		if starti then
-            ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
+            ltx = ltx.."active = walker@" .. idstr .. "_wait\n"
 
 		    if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
@@ -421,9 +421,9 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                            "on_info = %+" .. deathi .. "%\n"
 		    end
 
-            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
+            ltx = ltx.."[walker@" .. idstr .. "_wait]\n" ..							
                        "path_walk           = wsniper_" .. i .. "_wait_walk\n" ..
-                       "anim                = hide\n" ..
+                       "path_look           = wsniper_" .. i .. "_look\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
                        "combat_ignore_cond  = always\n"
 		else
@@ -491,7 +491,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 		           "combat_ignore = combat_ignore\n"
 		
 		if starti then
-            ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
+            ltx = ltx.."active = walker@" .. idstr .. "_wait\n"
 
 		    if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
@@ -500,9 +500,9 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                            "on_info = %+" .. deathi .. "%\n"
 		    end
 
-            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
+            ltx = ltx.."[walker@" .. idstr .. "_wait]\n" ..							
                        "path_walk           = rsniper_" .. i .. "_wait_walk\n" ..
-                       "anim                = hide\n" ..
+                       "path_look           = rsniper_" .. i .. "_look\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
                        "combat_ignore_cond  = always\n"
 		else
@@ -562,7 +562,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 		           "combat_ignore = combat_ignore\n"
 		
 		if starti then
-            ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
+            ltx = ltx.."active = walker@" .. idstr .. "_wait\n"
 
 		    if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
@@ -571,9 +571,9 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                            "on_info = %+" .. deathi .. "%\n"
 		    end
 
-            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
+            ltx = ltx.."[walker@" .. idstr .. "_wait]\n" ..							
                        "path_walk           = free_" .. i .. "_wait_walk\n" ..
-                       "anim                = hide\n" ..
+                       "path_look           = free_" .. i .. "_look\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
                        "combat_ignore_cond  = always\n"
 		else
