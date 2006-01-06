@@ -45,7 +45,7 @@ function trader_need_extra_job(trader, actor)
 end
 
 function is_tutorial(trader, actor)
-	return not db.actor:has_info("tutorial_end")
+	return db.actor:dont_has_info("tutorial_end")
 end
 
 function is_not_tutorial_art(actor, trader)
@@ -69,7 +69,7 @@ function trader_test(actor, npc)
 end
 
 function is_not_tutorial(trader, actor)
-	return not this.is_tutorial(trader, actor)
+	return db.actor:has_info("tutorial_end")
 end
 
 function trader_dont_give_job(first_speaker, second_speaker)

@@ -63,7 +63,7 @@ path_walk = agr_krot_hold_walk
 path_look = agr_krot_hold_look
 ;meet = meet@wait_after_hold
 combat_ignore_cond = {!actor_enemy !fighting_actor}
-on_actor_dist_le = 5 |{!actor_enemy} %+agr_factory_spawn_spetsnaz +agr_krot_met% remark@thank
+on_actor_dist_le = 5 |{!actor_enemy} %+agr_krot_met% remark@thank
 on_info = {=actor_enemy -agr_factory_spawn_spetsnaz} %+agr_factory_spawn_spetsnaz%
 danger = danger_condition 
 
@@ -89,7 +89,7 @@ path_walk = agr_krot_to_well_walk
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
-on_signal = well | {!actor_enemy} walker@well
+on_signal = well | {!actor_enemy} walker@well %+agr_factory_spawn_spetsnaz%
 danger = danger_condition
 combat_ignore_cond = {!actor_enemy !fighting_actor}
 meet = meet@no_use
