@@ -93,6 +93,18 @@ function tutorial_artefact_end(first_speaker, second_speaker)
 	return false
 end
 
+function tutorial_artefact_have_not(first_speaker, second_speaker)
+	local actor = db.actor
+	local tutorial_artefact = first_speaker:object("af_blood_tutorial")
+	if actor:has_info("tutorial_artefact_start") and 
+	   actor:dont_has_info("tutorial_artefact_done") and
+	   tutorial_artefact == nil
+	then
+		return true
+	end
+	return false
+end
+
 function tutorial_wounded_end(first_speaker, second_speaker)
 	local actor = db.actor
 	local wounded_flash = first_speaker:object("esc_wounded_flash")
