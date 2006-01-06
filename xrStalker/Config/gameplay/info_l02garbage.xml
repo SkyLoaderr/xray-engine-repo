@@ -65,9 +65,6 @@
 	<info_portion id="gar_wounded_help"></info_portion>
 	<info_portion id="gar_wounded_fight"></info_portion>
 	
-	<!-- Атака псевдособак -->
-	<info_portion id="gar_dog_attack"></info_portion>
-	
 	<!-- Новичок в туннеле -->
 	<info_portion id="gar_help_newbie">
 		<task>gar_help_tunnel_newbie</task>
