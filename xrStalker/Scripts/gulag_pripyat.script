@@ -580,7 +580,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 
           "[danger@ignore]\n" ..
           "ignore_types = corpse,sound\n" ..
-          "ignore_distance = 2\n" ..
+          "ignore_distance = 0\n" ..
 
           "[danger@normal]\n" ..
           "ignore_types = corpse, sound\n" ..
@@ -663,7 +663,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_timer                    = " .. stime .. " | {=see_enemy} camper@" .. idstr .. "_hide, camper@" .. idstr .. "_guard\n" ..
                    "on_timer                    = " .. stime .. " | {!has_enemy} camper@" .. idstr .. "_guard, camper@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
-                   "danger                      = danger@normal\n" ..
+                   "danger                      = danger@ignore\n" ..
 
                    "[camper@" .. idstr .. "_guard]\n" ..                            
                    "path_walk                   = wsniper_" .. i .. "_walk\n" ..
@@ -679,7 +679,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "on_timer                    = " .. gtime .. " | {!has_enemy} camper@" .. idstr .. ", {!see_enemy} camper@" .. idstr .. "\n" ..
                    "on_info                     = {=has_enemy !see_enemy} camper@" .. idstr .. "\n" ..
                    "wounded                     = wounded\n" ..
-                   "danger                      = danger@normal\n" ..
+                   "danger                      = danger@ignore\n" ..
 
                    "[camper@" .. idstr .. "_hide]\n" ..                            
                    "path_walk           = wsniper_" .. i .. "_walk\n" ..
@@ -692,7 +692,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"on_timer            = " .. htime .. " | {=dist_to_actor_ge(" .. sdist .. ")} camper@" .. idstr .. ", camper@" .. idstr .. "_guard\n" ..
                    "on_timer            = " .. htime .. " | camper@" .. idstr .. "_guard\n" .. -- {=has_enemy} camper@" .. idstr .. ", 
                    "wounded             = wounded\n" ..
-                   "danger              = danger@normal\n" --..
+                   "danger              = danger@ignore\n" --..
                    --"combat_ignore_cond  = always\n"
         i = i + 1
     end
