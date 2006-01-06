@@ -343,7 +343,5 @@ end
 
 
 function run_tutorial_pda(first_speaker, second_speaker)
-	first_speaker:stop_talk() 
-	second_speaker:stop_talk()
 	game.start_tutorial("part_1_pda")
 end
