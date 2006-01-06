@@ -363,7 +363,7 @@ pri_followers_state_switcher[state_wave2] = function(actor)
         actor:has_info("pri_wave2_monolith4_dead")
     then
         actor:give_info_portion("pri_wave2_end")
-        return state_wave4 ;3
+        return state_wave4 --3
     end
     return state_wave2
 end
