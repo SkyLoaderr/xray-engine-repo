@@ -217,7 +217,9 @@ end
 function Cmeet_manager:process_meet()
 	local key
 	local is_talking = self.npc:is_talking()
-	if isWeapon(db.actor:active_item())	then
+	if isWeapon(db.actor:active_item())	and
+       self.npc:relation(db.actor) ~= game_object.friend
+    then
 		key = self:get_key_from_distance(self.a.meet_state_wpn)
 		if key ~= nil then
 			local r1,r2
