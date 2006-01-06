@@ -207,6 +207,7 @@ function Cmeet_manager:process_zone()
 end
 function Cmeet_manager:process_meet()
 	local key
+	local is_talking = self.npc:is_talking()
 	if isWeapon(db.actor:active_item())	then
 		key = self:get_key_from_distance(self.a.meet_state_wpn)
 		if key ~= nil then
@@ -215,8 +216,12 @@ function Cmeet_manager:process_meet()
 				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].state)
 				self.emerg_state = true
 			end
-			if self.a.meet_state_wpn[key].sound then
-				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].sound)
+			if is_talking then
+				r2 = nil
+			else
+				if self.a.meet_state_wpn[key].sound then
+					r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].sound)
+				end
 			end
 			return tostring(r1), tostring(r2)
 		end	
@@ -228,8 +233,12 @@ function Cmeet_manager:process_meet()
 				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].state)
 				self.emerg_state = false
 			end
-			if self.a.meet_state[key].sound then
-				r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].sound)
+			if is_talking then
+				r2 = nil
+			else
+				if self.a.meet_state[key].sound then
+					r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].sound)
+				end
 			end
 			return tostring(r1), tostring(r2)
 		end	
