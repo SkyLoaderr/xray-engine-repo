@@ -93,11 +93,11 @@ function action_meet_wait:execute ()
 			end
 		end
 		
---'		if meet_manager.emerg_state == true then
---'			state_mgr.set_state(self.object, meet_manager.state, nil, nil, {look_object = victim}, {animation = true}, synsound)
---'		else
+		if meet_manager.emerg_state == true then
+			state_mgr.set_state(self.object, meet_manager.state, nil, nil, {look_object = victim}, {animation = true}, synsound)
+		else
 			state_mgr.set_state(self.object, meet_manager.state, nil, nil, {look_object = victim}, nil, synsound)
---'		end
+		end
 	end
 
 	if synsound == nil then
@@ -140,7 +140,7 @@ class "Cmeet_manager"
 function Cmeet_manager:__init(npc, storage)
 	self.npc = npc
 	self.a = storage
---'	self.emerg_state = false	--' Пока что убрал влияние этого флага, так как возникали нехорошие глюки.
+	self.emerg_state = false
 	self.startdialog = nil
 end
 function Cmeet_manager:update()
@@ -205,7 +205,7 @@ function Cmeet_manager:process_zone()
 		local r1,r2
 		if self.a.zone[key].state then
 			r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.zone[key].state)
---'			self.emerg_state = true
+			self.emerg_state = true
 		end
 		if self.a.zone[key].sound then
 			r2 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.zone[key].sound)
@@ -223,7 +223,7 @@ function Cmeet_manager:process_meet()
 			local r1,r2
 			if self.a.meet_state_wpn[key].state then
 				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state_wpn[key].state)
---'				self.emerg_state = true
+				self.emerg_state = true
 			end
 			if is_talking then
 				r2 = nil
@@ -240,7 +240,7 @@ function Cmeet_manager:process_meet()
 			local r1,r2
 			if self.a.meet_state[key].state then
 				r1 = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.meet_state[key].state)
---'				self.emerg_state = false
+				self.emerg_state = false
 			end
 			if is_talking then
 				r2 = nil
