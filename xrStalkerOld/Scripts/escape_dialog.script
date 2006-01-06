@@ -405,7 +405,7 @@ end
 --' Give X-18 documents read
 
 function give_documents_reward (first_speaker, second_speaker)
-	dialogs.relocate_money(first_speaker, 1000, "out")
+	dialogs.relocate_money(first_speaker, 1000, "in")
 end
 
 
