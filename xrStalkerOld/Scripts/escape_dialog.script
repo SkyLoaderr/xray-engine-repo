@@ -139,7 +139,8 @@ function trader_dont_has_job(first_speaker, second_speaker)
     if trader_need_free_factory(first_speaker, second_speaker) == false and
 	   trader_need_military_case(first_speaker, second_speaker) == false and
 	   trader_need_blockpost_box(first_speaker, second_speaker) == false and
-	   trader_need_deadcity(first_speaker, second_speaker) == false
+	   (trader_need_deadcity(first_speaker, second_speaker) == false or
+	   trader_dont_need_deadcity(first_speaker, second_speaker) == true)
 	then
 		return true
 	end
@@ -251,6 +252,18 @@ function trader_need_deadcity(first_speaker, second_speaker)
 	   actor:has_info("tutorial_end") and
 	   actor:has_info("escape_lager_killers_die") and
 	   actor:dont_has_info("cit_documents_need")
+	then
+		return true
+	end
+	return false
+end
+
+function trader_dont_need_deadcity(first_speaker, second_speaker)
+	local actor = db.actor
+    if actor ~= nil and
+	   actor:has_info("tutorial_end") and
+	   actor:dont_has_info("escape_lager_killers_die") and
+	   actor:has_info("escape_blockpost_case_done")
 	then
 		return true
 	end
