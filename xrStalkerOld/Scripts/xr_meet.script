@@ -400,13 +400,13 @@ function init_meet(npc, ini, section, st, scheme)
 	local def = {}	
 	local npc_community = npc:character_community()
 	if tostring(scheme) == "nil" then
-		def.meet_state		= "30|hello@hail|20|wait@wait"
-		def.meet_state_wpn	= "30|backoff@threat_weap"
-		def.victim			= "30|actor"
-		def.victim_wpn		= "30|actor"
+		def.meet_state		= "5|wait@wait"
+		def.meet_state_wpn	= "5|backoff@threat_weap"
+		def.victim			= "5|actor"
+		def.victim_wpn		= "5|actor"
 		def.use				= "true"
 		def.use_wpn			= "false"
-		def.syndata			= "hello@hail|backoff@threat_weap"
+		def.syndata			= "backoff@threat_weap"
 		def.precond			= "visibility"
 		def.abuse			= "true"
 	elseif tostring(scheme) == "kamp" then
