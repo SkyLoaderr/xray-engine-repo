@@ -11,7 +11,6 @@ meet = meet@hold
 on_info = {+agr_krot_skirmish_start} walker@combat
 on_info2 = {+agr_help_stalkers_done} walker@hold2
 
-
 [walker@hold2]
 path_walk = agr_krot_hold_fake_walk
 path_look = agr_krot_hold_fake_look
@@ -32,10 +31,12 @@ meet_dialog = agr_krot_help
 [walker@combat]
 path_walk = agr_krot_hold_combat_walk
 path_look = agr_krot_hold_combat_look
-;on_info   = {=gulag_empty(agr_factory_hold)} %+agr_help_krot_done% walker@wait_after_hold
-on_info   = {+agr_help_krot_done +agr_help_stalkers_done} walker@wait_after_hold, {+agr_help_krot_done +agr_help_stalkers_assault_dead} walker@wait_after_hold
+on_info   = {=gulag_empty(agr_factory_hold)} %+agr_help_krot_done% walker@wait_after_hold
+;on_info   = {+agr_help_krot_done +agr_help_stalkers_done} walker@wait_after_hold, {+agr_help_krot_done +agr_help_stalkers_assault_dead} walker@wait_after_hold
 meet = meet@no_use
-danger = {+agr_help_krot_done +agr_help_stalkers_assault_dead} danger_condition@combat
+;danger = {+agr_help_krot_done +agr_help_stalkers_assault_dead} danger_condition@combat
+danger = danger_condition@combat
+
 
 [walker@wait_after_hold]
 path_walk = agr_krot_hold_walk
@@ -95,5 +96,5 @@ on_info = %+agr_krot_dead%
 ignore_distance = 0
 
 [danger_condition@combat]
-danger_expiration_time = 2000
-danger_inertion_time   = 3000
+danger_expiration_time = 9000
+danger_inertion_time   = 9000
