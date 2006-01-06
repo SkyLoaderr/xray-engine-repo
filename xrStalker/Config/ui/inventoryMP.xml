@@ -1,13 +1,37 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+
+	<btn_pistol_silencer x="240" y="95" width="22" height="22">
+		<texture_e>ui_beltbut_silencer_h</texture_e>
+		<texture_t>ui_beltbut_silencer_t</texture_t>			
+		<texture_h>ui_beltbut_silencer_h</texture_h>
+	</btn_pistol_silencer>
 	
-	<btn_bullets_pistol x="204" y="118" width="44" height="29">
-		<texture>ui_button_arrow_up</texture>		
-	</btn_bullets_pistol>
+	<btn_pistol_bullets x="262" y="95" width="22" height="22">
+		<texture>ui_beltbut_patrons</texture>
+	</btn_pistol_bullets>
 	
-	<btn_bullets_riffle x="444" y="118" width="44" height="29">
-		<texture>ui_button_arrow_up</texture>		
-	</btn_bullets_riffle>
+	<btn_rifle_scope x="531" y="95" width="22" height="22">
+		<texture>ui_beltbut_aim</texture>		
+	</btn_rifle_scope>
+	
+	<btn_rifle_silencer x="553" y="95" width="22" height="22">
+		<texture_e>ui_beltbut_silencer_h</texture_e>
+		<texture_t>ui_beltbut_silencer_t</texture_t>			
+		<texture_h>ui_beltbut_silencer_h</texture_h>
+	</btn_rifle_silencer>
+	
+	<btn_riffle_granadelauncher x="575" y="95" width="22" height="22">
+		<texture>ui_beltbut_granadeBig</texture>
+	</btn_riffle_granadelauncher>
+	
+	<btn_riffle_granades x="597" y="95" width="22" height="22">
+		<texture>ui_beltbut_granade</texture>
+	</btn_riffle_granades>
+	
+	<btn_rifle_bullets x="619" y="95" width="22" height="22">
+		<texture>ui_beltbut_patrons</texture>
+	</btn_rifle_bullets>	
 
 	<autobuy_indication x="607" y="428" width="129" height="15"/>	
 
