@@ -180,9 +180,6 @@ function wolf_need_dynamite(first_speaker, second_speaker)
 	end
 	return false
 end
---function wolf_notify_meet(first_speaker, second_speaker)
---	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 1)
---end
 
 --' WOLF
 function has_novice_access(actor, npc)
