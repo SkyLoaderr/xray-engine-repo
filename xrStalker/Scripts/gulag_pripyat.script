@@ -168,6 +168,14 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                 "use             = false\n" ..
                 "use_wpn         = false\n" ..
                 "abuse           = false\n" ..
+
+                "[wounded@ignore]\n" ..
+                "hp_state        = 0|wounded_heavy@help_heavy\n" ..
+                "hp_state_see    = 0|wounded_heavy@help_heavy\n" ..
+                "hp_victim       = 0|nil\n" ..
+                "hp_fight        = 0|false\n" ..
+                "hp_cover        = 0|false\n" ..
+
                 "#include \"misc\\gulag_pripyat.ltx\"\n"
 
     -- gulag members
@@ -232,6 +240,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                        "on_signal           = syn | walker@" .. pref .. "_wave" .. v .. "\n" ..
                        "on_info             = {+pri_wave" .. v .. "_start} walker@" .. pref .. "_wave" .. v .. "\n" ..
                        "danger              = danger@ignore\n" ..
+                       "wounded             = wounded@ignore\n" ..
                        "meet                = meet@ignore_abuse\n" .. --meet@def
 
                        "[walker@" .. pref .. "_wave" .. v .. "]\n" ..
@@ -240,6 +249,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                        "def_state_moving1   = assault\n" ..
                        "def_state_moving2   = assault\n" ..
                        "on_signal           = arrived | {-pri_wave" .. v .. "_start} %+pri_wave" .. v .. "_start%\n" ..
+                       "wounded             = wounded@ignore\n" ..
                        "meet                = meet@ignore_abuse\n" --meet@def
         end
         
@@ -280,6 +290,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "team                = followers\n" ..
                    "on_signal           = syn | walker@" .. pref .. "_wave3 %+pri_wave3_start%\n" ..
                    "on_info             = {+pri_wave3_start} walker@" .. pref .. "_wave3\n" ..
+                   "wounded             = wounded@ignore\n" ..
                    "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
@@ -290,6 +301,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving1   = assault ;sprint\n" ..
                    "def_state_moving2   = assault ;sprint\n" ..
                    "on_timer            = " .. math.random(30, 40) .. "00 | remark@" .. pref .. "_wave3_fight\n" .. -- 30
+                   "wounded             = wounded@ignore\n" ..
                    "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
@@ -298,6 +310,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "anim                = threat_fire\n" ..
                    "target              = 807\n" ..
                    "on_timer            = " .. math.random(47, 55) .. "00 | walker@" .. pref .. "_wave3\n" .. -- 50
+                   "wounded             = wounded@ignore\n" ..
                    "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
@@ -316,6 +329,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving2   = assault\n" ..
                    "team                = followers\n" ..
                    "on_info             = {+pri_wave7_leader_phrase_end} walker@" .. pref .. "_wave7\n" ..
+                   "wounded             = wounded@ignore\n" ..
                    "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
 
@@ -325,6 +339,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving1   = assault\n" ..
                    "def_state_moving2   = assault\n" ..
                    "on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%\n" ..
+                   "wounded             = wounded@ignore\n" ..
                    "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    --"combat_ignore_cond  = {-pri_wave7_start}\n" ..
@@ -638,7 +653,8 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "radius                      = 0\n" ..
                    --"on_info                     = {=dist_to_enemy_le(" .. gdist .. ")} camper@" .. idstr .. "_guard\n" ..
                    --"on_actor_dist_le_nvis       = " .. gdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "_guard\n" ..
-                   "on_timer                    = " .. stime .. " | {=see_enemy} camper@" .. idstr .. "_hide, camper@" .. idstr .. "_guard\n" ..
+                   --"on_timer                    = " .. stime .. " | {=see_enemy} camper@" .. idstr .. "_hide, camper@" .. idstr .. "_guard\n" ..
+                   "on_timer                    = " .. stime .. " | {!has_enemy} camper@" .. idstr .. "_guard, camper@" .. idstr .. "_hide\n" ..
                    "wounded                     = wounded\n" ..
                    "danger                      = danger@normal\n" ..
 
@@ -652,8 +668,9 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "radius                      = 0\n" ..
                    --"on_info                     = {!dist_to_enemy_le(" .. sdist .. ")} camper@" .. idstr .. "\n" ..
                    --"on_actor_dist_ge_nvis       = " .. sdist .. " | remark@" .. idstr .. "_hide\n" .. --camper@" .. idstr .. "\n" ..
-                   "on_timer                    = " .. gtime .. " | {=has_enemy} camper@" .. idstr .. "_hide, camper@" .. idstr .. "\n" ..
-                   "on_info                     = {=has_enemy} camper@" .. idstr .. "_hide\n" ..
+                   --"on_timer                    = " .. gtime .. " | {=has_enemy} camper@" .. idstr .. "_hide, camper@" .. idstr .. "\n" ..
+                   "on_timer                    = " .. gtime .. " | {!has_enemy} camper@" .. idstr .. ", {!see_enemy} camper@" .. idstr .. "\n" ..
+                   "on_info                     = {=has_enemy !see_enemy} camper@" .. idstr .. "\n" ..
                    "wounded                     = wounded\n" ..
                    "danger                      = danger@normal\n" ..
 
@@ -666,7 +683,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "radius              = 0\n" ..
                    "show_spot           = false\n" ..
                    --"on_timer            = " .. htime .. " | {=dist_to_actor_ge(" .. sdist .. ")} camper@" .. idstr .. ", camper@" .. idstr .. "_guard\n" ..
-                   "on_timer            = " .. htime .. " | {=has_enemy} camper@" .. idstr .. ", camper@" .. idstr .. "_guard\n" ..
+                   "on_timer            = " .. htime .. " | camper@" .. idstr .. "_guard\n" .. -- {=has_enemy} camper@" .. idstr .. ", 
                    "wounded             = wounded\n" ..
                    "danger              = danger@normal\n" --..
                    --"combat_ignore_cond  = always\n"
@@ -753,7 +770,8 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "no_retreat                  = true\n" ..
                    "radius                      = 0\n" ..
                    --"on_info                     = {!dist_to_enemy_le(" .. sdist .. ")} camper@" .. idstr .. "\n" ..
-                   "on_actor_dist_ge_nvis       = " .. sdist .. " | camper@" .. idstr .. "\n" ..
+                   "on_actor_dist_ge_nvis       = " .. sdist .. " | {!has_enemy} camper@" .. idstr .. ", {!see_enemy} camper@" .. idstr .. "\n" ..
+                   "on_info                     = {=has_enemy !see_enemy} camper@" .. idstr .. "\n" ..
                    "wounded                     = wounded\n" ..
                    "danger                      = danger@normal\n"
         i = i + 1
