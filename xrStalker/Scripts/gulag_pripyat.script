@@ -609,32 +609,32 @@ end
 
 -- Jobs ------------------------------------------------------------------
 gulags.pri_corner.job = function(sj, gname, type, squad, groups)
-    local i = 0
+    local ltx, i = "", 0
 
     for i = 1, 3 do
-	    t = { section = "logic@" .. gname .. "_monolith", 
+	    t = { section = "logic@" .. gname .. "_monolith" .. i , 
 		    idle = 0,
 		    prior = 1, state = {0}, squad = squad, group = groups[1],
 		    in_rest = "", out_rest = ""
 	    }
 	    table.insert(sj, t)
+
+        ltx = ltx.."[logic@" .. gname .. "_monolith" .. i .. "]\n" ..
+                   "active              = camper@" .. gname .. "_monolith" .. i .. "_guard\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+
+                   "[camper@" .. gname .. "_monolith" .. i .. "_guard]\n" ..
+                   "path_walk           = guard_" .. i .. "_walk\n" ..
+                   "path_look           = guard_" .. i .. "_look\n" ..
+                   "radius              = 20\n" ..
+                   "on_info             = {+pri_corner_start} patrol@" .. gname .. "_monolith_raid\n" ..
+                   "combat_ignore_cond  = always\n"
     end
 
-    gulags.pri_corner.ltx = "[logic@" .. gname .. "_monolith]\n" ..
-                            "active              = patrol@" .. gname .. "_monolith_wait\n" ..
-                            "combat_ignore       = combat_ignore\n" ..
-
-                            "[patrol@" .. gname .. "_monolith_wait]\n" ..
-                            "path_walk           = monolith_wait_walk\n" ..
-                            "path_look           = monolith_wait_look\n" ..
-                            "formation           = back\n" ..
-                            "on_info             = {+pri_corner_start} patrol@" .. gname .. "_monolith_go\n" ..
-                            "combat_ignore_cond  = always\n" ..
-
-                            "[patrol@" .. gname .. "_monolith_go]\n" ..
-                            "path_walk           = monolith_walk\n" ..
-                            "path_look           = monolith_look\n" ..
-                            "on_signal           = arrived | %+pri_corner_end%\n" 
+    gulags.pri_corner.ltx = ltx.."[patrol@" .. gname .. "_monolith_raid]\n" ..
+                                 "path_walk = raid_walk\n" ..
+                                 "path_look = raid_look\n" ..
+                                 "on_signal = arrived | %+pri_corner_end%\n" 
 end
 
 
