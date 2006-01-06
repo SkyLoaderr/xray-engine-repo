@@ -11,8 +11,8 @@ function trader_alredy_give_job(trader, actor)
 	   (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done")) or
 	   (actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")) or
 	   (actor:has_info("cit_documents_need") and actor:dont_has_info("cit_documents_give")) or
-	   (actor:has_info("tutorial_artefact_start") and actor:dont_has_info("tutorial_artefact_gain")) or
-	   (actor:has_info("tutorial_wounded_start") and actor:dont_has_info("esc_serious_talk"))
+	   (actor:has_info("tutorial_artefact_gain")) or
+	   (actor:has_info("esc_serious_talk"))
 	then
 		return true
 	end
@@ -209,7 +209,6 @@ function trader_need_free_factory(first_speaker, second_speaker)
 end
 --' ящик с блокпоста
 function trader_need_blockpost_box(first_speaker, second_speaker)
-	printf("!!! [%s] [%s]", first_speaker:name(), second_speaker:name())
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("tutorial_end") and
