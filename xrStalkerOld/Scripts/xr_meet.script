@@ -436,14 +436,14 @@ function init_meet(npc, ini, section, st, scheme)
 		def.precond			= "visibility"
 		def.abuse			= "false"
 	else
-		def.meet_state		= ""
+		def.meet_state		= "2|wait"
 		def.meet_state_wpn	= ""
-		def.victim			= ""
+		def.victim			= "2|actor"
 		def.victim_wpn		= ""
 		def.use				= "true"
 		def.use_wpn			= "false"
 		def.syndata			= ""
-		def.precond			= "visibility"
+		def.precond			= "usability"
 		def.abuse			= "true"
 	end		
 
