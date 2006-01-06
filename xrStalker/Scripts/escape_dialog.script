@@ -31,9 +31,9 @@ end
 
 function trader_need_extra_job(trader, actor)
 	if (actor:dont_has_info("escape_blockpost_case") and 
-	    actor:dont_has_info("esc_return")) or
+	    actor:has_info("esc_return")) or
 	   (actor:dont_has_info("cit_documents_need") and
-	    actor:dont_has_info("escape_lager_killers_die"))
+	    actor:has_info("escape_lager_killers_die"))
 	then
 		return true
 	end
