@@ -6,11 +6,10 @@
 -- Trader
 --------------------------------------------------------------------------------------------------------
 function trader_alredy_give_job(trader, actor)
-	local actor = db.actor
-	if (actor:has_info("agroprom_military_case") and actor:dont_has_info("agroprom_military_case_done")) or
-	   (actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")) or
-	   (actor:has_info("tutorial_artefact_start") and actor:dont_has_info("tutorial_artefact_done")) or
-	   (actor:has_info("tutorial_wounded_start") and actor:dont_has_info("esc_serious_talk"))
+	if (has_alife_info("agroprom_military_case") and not has_alife_info("agroprom_military_case_done")) or
+	   (has_alife_info("escape_blockpost_case") and not has_alife_info("escape_blockpost_case_done")) or
+	   (has_alife_info("tutorial_artefact_start") and not has_alife_info("tutorial_artefact_done")) or
+	   (has_alife_info("tutorial_wounded_start") and not has_alife_info("esc_serious_talk"))
 	then
 		return true
 	end
@@ -19,7 +18,7 @@ end
 
 function trader_give_extra_job(trader, actor)
 	local actor = db.actor
-	if actor:has_info("escape_blockpost_case") and actor:dont_has_info("escape_blockpost_case_done")
+	if has_alife_info("escape_blockpost_case") and not has_alife_info("escape_blockpost_case_done")
 	then
 		return true
 	end
@@ -28,7 +27,7 @@ end
 
 function bandits_die(actor,npc)
 	local actor = db.actor
-	if actor:has_info("esc_kill_bandits_quest_kill") and actor:dont_has_info("esc_kill_bandits_noquest_kill")
+	if has_alife_info("esc_kill_bandits_quest_kill") and not has_alife_info("esc_kill_bandits_noquest_kill")
 	then
 		return true
 	end
@@ -36,8 +35,8 @@ function bandits_die(actor,npc)
 end
 
 function trader_need_extra_job(trader, actor)
-	if actor:dont_has_info("escape_blockpost_case") and 
-	    actor:has_info("esc_return")
+	if not has_alife_info("escape_blockpost_case") and 
+	    has_alife_info("esc_return")
 	then
 		return true
 	end
@@ -45,17 +44,17 @@ function trader_need_extra_job(trader, actor)
 end
 
 function is_tutorial()
-	return db.actor:dont_has_info("tutorial_end")
+	return not has_alife_info("tutorial_end")
 end
 
 function is_not_tutorial()
-	return db.actor:has_info("tutorial_end")
+	return has_alife_info("tutorial_end")
 end
 
 function is_not_tutorial_art(actor, trader)
 	local tutorial_artefact = db.actor:object("af_blood_tutorial")
-	if (db.actor:has_info("tutorial_artefact_start") and db.actor:dont_has_info("tutorial_artefact_done")
-		and  tutorial_artefact ~= nil) or db.actor:has_info("tutorial_artefact_done")
+	if (has_alife_info("tutorial_artefact_start") and not has_alife_info("tutorial_artefact_done")
+		and  tutorial_artefact ~= nil) or has_alife_info("tutorial_artefact_done")
 	then
 		return true
 	end
@@ -64,7 +63,7 @@ end
 
 function not_final_job(trader, actor)
 	local actor = db.actor
-	return actor:dont_has_info("escape_blockpost_case_done")
+	return not has_alife_info("escape_blockpost_case_done")
 end
 
 function trader_test(actor, npc)
@@ -94,8 +93,8 @@ end
 function tutorial_artefact_end(first_speaker, second_speaker)
 	local actor = db.actor
 	local tutorial_artefact = first_speaker:object("af_blood_tutorial")
-	if actor:has_info("tutorial_artefact_start") and 
-	   actor:dont_has_info("tutorial_artefact_done") and
+	if has_alife_info("tutorial_artefact_start") and 
+	   not has_alife_info("tutorial_artefact_done") and
 	   tutorial_artefact ~= nil
 	then
 		return true
@@ -106,8 +105,8 @@ end
 function tutorial_artefact_have_not(first_speaker, second_speaker)
 	local actor = db.actor
 	local tutorial_artefact = first_speaker:object("af_blood_tutorial")
-	if actor:has_info("tutorial_artefact_start") and 
-	   actor:dont_has_info("tutorial_artefact_done") and
+	if has_alife_info("tutorial_artefact_start") and 
+	   not has_alife_info("tutorial_artefact_done") and
 	   tutorial_artefact == nil
 	then
 		return true
@@ -118,8 +117,8 @@ end
 function tutorial_wounded_end(first_speaker, second_speaker)
 	local actor = db.actor
 	local wounded_flash = first_speaker:object("esc_wounded_flash")
-	if actor:has_info("tutorial_wounded_start")	and 
-	   actor:dont_has_info("esc_serious_talk") and
+	if has_alife_info("tutorial_wounded_start")	and 
+	   not has_alife_info("esc_serious_talk") and
 	   wounded_flash ~= nil
 	then
 		return true
@@ -185,10 +184,8 @@ end
 
 --' Agroprom military case
 function trader_need_military_case(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("esc_serious_talk") and
-	   actor:dont_has_info("agroprom_military_case")
+    if has_alife_info("esc_serious_talk") and
+	   not has_alife_info("agroprom_military_case")
 	then
 		return true
 	end
@@ -211,11 +208,9 @@ end
 
 --' ящик с блокпоста
 function trader_need_blockpost_box(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("tutorial_end") and
-	   actor:has_info("esc_trader_speak") and
-	   actor:dont_has_info("escape_blockpost_case")
+    if has_alife_info("tutorial_end") and
+	   has_alife_info("esc_trader_speak") and
+	   not has_alife_info("escape_blockpost_case")
 	then
 		return true
 	end
@@ -225,15 +220,13 @@ end
 --' tutorial wounded in vagon
 function wounded_need_help(first_speaker, second_speaker)
 	local actor = db.actor
-	return actor ~= nil and actor:dont_has_info( "tutorial_wounded_help" )
+	return actor ~= nil and not has_alife_info( "tutorial_wounded_help" )
 end
 
 --' trader needs military documents
 function trader_need_military_document(first_speaker, second_speaker)
-	local actor = db.actor
-    if actor ~= nil and
-	   actor:has_info("escape_blockpost_case_done") and
-	   actor:dont_has_info("agroprom_military_case")
+    if has_alife_info("escape_blockpost_case_done") and
+	   not has_alife_info("agroprom_military_case")
 	then
 		return true
 	end
