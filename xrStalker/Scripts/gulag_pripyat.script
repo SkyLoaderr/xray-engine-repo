@@ -451,6 +451,7 @@ pri_followers_switcher[state_wave7] = function(actor, delta_time)
     then
         actor:give_info_portion("pri_undeground_respawn_start")
         actor:give_info_portion("pri_wave7_end")
+		actor:give_info_portion("pri_aes_mapspot")
         return state_wave8
     end
     return state_wave7
