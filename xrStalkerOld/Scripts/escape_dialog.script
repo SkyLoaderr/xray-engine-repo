@@ -180,6 +180,13 @@ function transfer_medikit_to_fox (player, wounded)
 	db.actor:give_info_portion("escape_fox_heal")
 end
 
+function give_weapon_to_actor (trader, actor)
+    local pm = trader:object("wpn_pm")
+    local ammo = trader:object("ammo_9x18_fmj")
+    dialogs.relocate_item(trader, pm, "in")
+    dialogs.relocate_item(trader, ammo, "in")     
+end
+
 
 --' Escape blockpost box
 function have_blockpost_case(first_speaker, second_speaker)
