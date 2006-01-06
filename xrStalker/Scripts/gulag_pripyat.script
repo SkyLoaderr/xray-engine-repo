@@ -337,49 +337,50 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
 end
 
 -- States ----------------------------------------------------------------
-local pri_followers_state_switcher = {}
---                  minutes  0     5
---local pri_followers_timer = {0, 3000}
-pri_followers_state_switcher[state_wait] = function(actor)
+local pri_followers_switcher = {}
+pri_followers_switcher[state_wait] = function(actor, delta_time)
     if actor:has_info("pri_followers_start") then
         return state_wave1
     end
     return state_wait
 end
-pri_followers_state_switcher[state_wave1] = function(actor)
-    if actor:has_info("pri_wave1_monolith1_dead") and
+pri_followers_switcher[state_wave1] = function(actor, delta_time)
+    if delta_time > 3000 or -- 5 min
+        (actor:has_info("pri_wave1_monolith1_dead") and
         actor:has_info("pri_wave1_monolith2_dead") and
-        actor:has_info("pri_wave1_monolith3_dead")
+        actor:has_info("pri_wave1_monolith3_dead"))
     then
         actor:give_info_portion("pri_wave1_end")
         return state_wave2
     end
     return state_wave1
 end
-pri_followers_state_switcher[state_wave2] = function(actor)
-    if actor:has_info("pri_wave2_monolith1_dead") and
+pri_followers_switcher[state_wave2] = function(actor, delta_time)
+    if delta_time > 2400 or -- 4 min
+        (actor:has_info("pri_wave2_monolith1_dead") and
         actor:has_info("pri_wave2_monolith2_dead") and
         actor:has_info("pri_wave2_monolith3_dead") and
-        actor:has_info("pri_wave2_monolith4_dead")
+        actor:has_info("pri_wave2_monolith4_dead"))
     then
         actor:give_info_portion("pri_wave2_end")
         return state_wave4 --3
     end
     return state_wave2
 end
-pri_followers_state_switcher[state_wave3] = function(actor)
+pri_followers_switcher[state_wave3] = function(actor, delta_time)
     if actor:has_info("pri_wave3_btr_dead") then
         actor:give_info_portion("pri_wave3_end")
         return state_wave4
     end
     return state_wave3
 end
-pri_followers_state_switcher[state_wave4] = function(actor)
-    if actor:has_info("pri_wave4_monolith1_dead") and
+pri_followers_switcher[state_wave4] = function(actor, delta_time)
+    if delta_time > 2400 or -- 4 min
+        (actor:has_info("pri_wave4_monolith1_dead") and
         actor:has_info("pri_wave4_monolith2_dead") and
         actor:has_info("pri_wave4_monolith3_dead") and
         actor:has_info("pri_wave4_monolith4_dead") and
-        actor:has_info("pri_wave4_monolith5_dead") --and
+        actor:has_info("pri_wave4_monolith5_dead")) --and
         --actor:has_info("pri_wave4_monolith6_dead") and
         --actor:has_info("pri_wave4_monolith7_dead") and
         --actor:has_info("pri_wave4_monolith8_dead")
@@ -389,7 +390,7 @@ pri_followers_state_switcher[state_wave4] = function(actor)
     end
     return state_wave4
 end
-pri_followers_state_switcher[state_wave5] = function(actor)
+pri_followers_switcher[state_wave5] = function(actor, delta_time)
     if actor:has_info("pri_wave5_monolith1_dead") and
         actor:has_info("pri_wave5_monolith2_dead") and
         actor:has_info("pri_wave5_monolith3_dead") and
@@ -400,7 +401,7 @@ pri_followers_state_switcher[state_wave5] = function(actor)
     end
     return state_wave5
 end
-pri_followers_state_switcher[state_wave6] = function(actor)
+pri_followers_switcher[state_wave6] = function(actor, delta_time)
     if actor:has_info("pri_wave6_monolith1_dead") and
         actor:has_info("pri_wave6_monolith2_dead") --and
         --actor:has_info("pri_wave6_monolith3_dead")
@@ -410,7 +411,7 @@ pri_followers_state_switcher[state_wave6] = function(actor)
     end
     return state_wave6
 end
-pri_followers_state_switcher[state_wave7] = function(actor)
+pri_followers_switcher[state_wave7] = function(actor, delta_time)
     if xr_gulag.getGulagPopulation("pri_ambush7") < 2
     then
         actor:give_info_portion("pri_undeground_respawn_start")
@@ -419,19 +420,15 @@ pri_followers_state_switcher[state_wave7] = function(actor)
     end
     return state_wave7
 end
-pri_followers_state_switcher[state_wave8] = function(actor)
+pri_followers_switcher[state_wave8] = function(actor, delta_time)
     return state_wave8
 end
 
 gulags.pri_followers.state = function(gulag)
 	local state = gulag.state
 	local actor = db.actor
-    --printf("gulag <state>: prip followers check state(%d).", state)
 
-    --if state > 0 and game.get_game_time():diffSec(gulag.stateBegin) < pri_followers_timer[state] then
-        return pri_followers_state_switcher[state](actor)
-    --end
-    --return state
+    return pri_followers_switcher[state](actor, game.get_game_time():diffSec(gulag.stateBegin))
 end
 
 
@@ -600,7 +597,6 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 
             ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
                        "path_walk           = wsniper_" .. i .. "_wait_walk\n" ..
-                       --"path_look           = wsniper_" .. i .. "_look\n" ..
                        "anim                = hide_na\n" ..
                        "show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} camper@" .. idstr .. "\n" ..
@@ -805,7 +801,6 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
 
             ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
                        "path_walk           = free_" .. i .. "_wait_walk\n" ..
-                       --"path_look           = free_" .. i .. "_look\n" ..
                        "anim                = hide_na\n" ..
                        --"show_spot           = false\n" ..
                        "on_info             = {+" .. starti .. "} walker@" .. idstr .. "\n" ..
