@@ -45,9 +45,9 @@ local function obj_has_item(npc_info, item_name, def_val)
         if obj then
             t = obj:object(item_name) ~= nil
         end
-	end
+    end
 
-	return t
+    return t
 end
 
 
@@ -83,9 +83,9 @@ function load_states(gname, type)
         return g.state or check_state_stub
     end
 
-	return nil
+    return nil
 end
-	    
+        
 -- Dynamic ltx -----------------------------------------------------------
 function load_ltx(gname, type)
     local g = gulags[type]
@@ -93,7 +93,7 @@ function load_ltx(gname, type)
         return g.ltx
     end
 
-	return nil
+    return nil
 end
 
 -- Check communities -----------------------------------------------------
@@ -120,15 +120,15 @@ local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
         end
         return true
     end
-	return false
+    return false
 end
 
 function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
-	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, true)
+    return checkCommon(npc_community, gulag_type, npc_rank, se_obj, true)
 end
 
 function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
-	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, false)
+    return checkCommon(npc_community, gulag_type, npc_rank, se_obj, false)
 end
 
 
@@ -138,9 +138,9 @@ end
 function f_predicate4_1(npc_info)
     if npc_info.class_id == clsid.script_stalker or npc_info.class_id == clsid.stalker then
         local prof = npc_info.profile_name
-	    return prof == "pri_soldier_suicide"
-	end
-	return false
+        return prof == "pri_soldier_suicide"
+    end
+    return false
 end
 
 
@@ -153,18 +153,22 @@ end
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
 function f_predicate(npc_info)
-	return npc_info.profile_name == "pri_followers"
+    return npc_info.profile_name == "pri_followers"
 end
 
 function f_predicate_b(npc_info)
-	local pn = npc_info.profile_name
-	return (pn == "pri_followers_bomber" or pn == "pri_followers") and obj_has_item(npc_info, "wpn_rpg7")
+    local pn = npc_info.profile_name
+    return (pn == "pri_followers_bomber" or pn == "pri_followers") and obj_has_item(npc_info, "wpn_rpg7")
 end
 
 -- Jobs ------------------------------------------------------------------
 gulags.pri_followers.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
-    local ltx = "#include \"misc\\gulag_pripyat.ltx\"\n"
+    local ltx = "[meet@ignore_abuse]\n" ..
+                "use             = false\n" ..
+                "use_wpn         = false\n" ..
+                "abuse           = false\n" ..
+                "#include \"misc\\gulag_pripyat.ltx\"\n"
 
     -- gulag members
     local followers = {"leader", "bomber", "nap1", "nap2", "nap3"}
@@ -187,24 +191,24 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    {1, 1, 1, 1, 1, 1, 1, 1, 1}, -- nap2
                    {1, 1, 1, 1, 1, 1, 1, 1, 1}  -- nap3
                   }
-    -- predicates
-    local pred = {f_predicate, f_predicate_b, f_predicate, f_predicate, f_predicate}
+    -- predicates              f_predicate_b
+    local pred = {f_predicate, f_predicate, f_predicate, f_predicate, f_predicate}
 
     local pr, pd
     for i, v in pairs(followers) do
         pr = prior[i]
         pd = pred[i]
         for j = 1, 9 do
-	        t = { section = "logic@" .. gname .. "_" .. v .. "_" .. states_str[j],
-		        idle = 0,
-		        prior = pr[j], state = { states[j] },
-		        squad = squad, group = groups[1],
-		        in_rest = "", out_rest = restr[j],
-		        position_threshold = 100,
-		        online = true,
-		        predicate = pd
-	        }
-	        table.insert(sj, t)
+            t = { section = "logic@" .. gname .. "_" .. v .. "_" .. states_str[j],
+                idle = 0,
+                prior = pr[j], state = { states[j] },
+                squad = squad, group = groups[1],
+                in_rest = "", out_rest = restr[j],
+                position_threshold = 100,
+                online = true,
+                predicate = pd
+            }
+            table.insert(sj, t)
         end
     end
 
@@ -227,7 +231,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                        "on_signal           = syn | walker@" .. pref .. "_wave" .. v .. "\n" ..
                        "on_info             = {+pri_wave" .. v .. "_start} walker@" .. pref .. "_wave" .. v .. "\n" ..
                        "danger              = danger@ignore\n" ..
-                       "meet                = no_meet\n" ..
+                       "meet                = meet@ignore_abuse\n" .. --meet@def
 
                        "[walker@" .. pref .. "_wave" .. v .. "]\n" ..
                        "path_walk           = wave" .. v .. "_stalker" .. i .. "_walk\n" ..
@@ -235,16 +239,25 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                        "def_state_moving1   = assault\n" ..
                        "def_state_moving2   = assault\n" ..
                        "on_signal           = arrived | {-pri_wave" .. v .. "_start} %+pri_wave" .. v .. "_start%\n" ..
-                       "meet                = no_meet\n"
+                       "meet                = meet@ignore_abuse\n" --meet@def
         end
         
                    --- NAP: KAMP ----------------------------------------------------------------------------------
         ltx = ltx.."[logic@" .. pref .. "_wait]\n" ..
-                   "active              = walker@" .. pref .. "_wait\n" ..
+                   "active              = remark@" .. pref .. "_wait\n" ..
                    --"combat_ignore       = combat_ignore\n" ..
                    "on_hit              = followers_hit\n" ..
                    "on_death            = followers_death\n" ..
 
+                   "[remark@" .. pref .. "_wait]\n" ..
+                   "path_walk           = wait_stalker" .. i .. "_walk\n" ..
+                   "anim                = wait\n" ..
+                   "target              = logic@pri_followers_leader_wait\n" ..
+                   "meet                = meet@ignore_abuse\n" .. --meet@def
+                   "danger              = danger@ignore\n" ..
+                   --"combat_ignore_cond  = always\n" ..
+
+--[[
                    "[walker@" .. pref .. "_wait]\n" ..
                    "path_walk           = wait_stalker" .. i .. "_walk\n" ..
                    "path_look           = wait_stalker" .. i .. "_look\n" ..
@@ -254,7 +267,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "meet                = meet@def\n" ..
                    "danger              = danger@ignore\n" ..
                    --"combat_ignore_cond  = always\n" ..
-
+--]]
                    --- NAP: WAVE3 --------------------------------------------------------------------------------
                    "[logic@" .. pref .. "_wave3]\n" ..
                    "active              = walker@" .. pref .. "_wave3_wait\n" ..
@@ -270,7 +283,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "team                = followers\n" ..
                    "on_signal           = syn | walker@" .. pref .. "_wave3 %+pri_wave3_start%\n" ..
                    "on_info             = {+pri_wave3_start} walker@" .. pref .. "_wave3\n" ..
-                   "meet                = no_meet\n" ..
+                   "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
 
@@ -280,7 +293,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving1   = assault ;sprint\n" ..
                    "def_state_moving2   = assault ;sprint\n" ..
                    "on_timer            = " .. math.random(30, 40) .. "00 | remark@" .. pref .. "_wave3_fight\n" .. -- 30
-                   "meet                = no_meet\n" ..
+                   "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
 
@@ -288,7 +301,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "anim                = threat_fire\n" ..
                    "target              = 807\n" ..
                    "on_timer            = " .. math.random(47, 55) .. "00 | walker@" .. pref .. "_wave3\n" .. -- 50
-                   "meet                = no_meet\n" ..
+                   "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    "combat_ignore_cond  = {!fighting_actor}\n" ..
 
@@ -306,7 +319,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving2   = assault\n" ..
                    "team                = followers\n" ..
                    "on_info             = {+pri_wave7_leader_phrase_end} walker@" .. pref .. "_wave7\n" ..
-                   "meet                = no_meet\n" ..
+                   "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
 
                    "[walker@" .. pref .. "_wave7]\n" ..
@@ -315,7 +328,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving1   = assault\n" ..
                    "def_state_moving2   = assault\n" ..
                    "on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%\n" ..
-                   "meet                = no_meet\n" ..
+                   "meet                = meet@ignore_abuse\n" .. --meet@def
                    "danger              = danger@ignore\n" ..
                    --"combat_ignore_cond  = {-pri_wave7_start}\n" ..
 
@@ -330,7 +343,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                    "path_look           = wave8_stalker" .. i .. "_look\n" ..
                    "def_state_moving1   = assault\n" ..
                    "def_state_moving2   = assault\n" ..
-                   "meet                = no_meet\n"
+                   "meet                = meet@ignore_abuse\n" --meet@def
     end
 
     gulags.pri_followers.ltx = ltx
@@ -425,8 +438,25 @@ pri_followers_switcher[state_wave8] = function(actor, delta_time)
 end
 
 gulags.pri_followers.state = function(gulag)
-	local state = gulag.state
-	local actor = db.actor
+    local state = gulag.state
+    local actor = db.actor
+
+    if actor:has_info("pri_followers_mission_accept") and actor:dont_has_info("pri_followers_actor_leave") then
+        -- check min distance to actor
+        local actor_leave = true
+        local npc_id, npc = 0, 0
+	    for npc_id, npc in pairs(gulag.Object) do
+		    if npc ~= true and level.object_by_id(npc_id) ~= nil then
+			    if npc:position():distance_to_sqr(actor:position()) <= 3600 then -- 60*60
+			        actor_leave = false
+			        break
+			    end
+		    end
+	    end
+	    if actor_leave then
+	        actor:give_info_portion("pri_followers_actor_leave")
+	    end
+	end
 
     return pri_followers_switcher[state](actor, game.get_game_time():diffSec(gulag.stateBegin))
 end
@@ -442,18 +472,18 @@ gulags.pri_ambush7.job = function(sj, gname, type, squad, groups)
     local i, ltx = 0, ""
     for i = 1, 7 do
         --- state 0
-	    t = { section = "logic@" .. gname .. "_monolith" .. i .. "_hide", 
-		    idle = 0,
-		    prior = 1, state = {0}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_out_restr"
-	    }
-	    table.insert(sj, t)
+        t = { section = "logic@" .. gname .. "_monolith" .. i .. "_hide", 
+            idle = 0,
+            prior = 1, state = {0}, squad = squad, group = groups[1],
+            in_rest = "", out_rest = gname .. "_out_restr"
+        }
+        table.insert(sj, t)
         --- state 1
-	    t = { section = "logic@" .. gname .. "_monolith" .. i, 
-		    idle = 0,
-		    prior = 1, state = {1}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_out_restr"
-	    }
+        t = { section = "logic@" .. gname .. "_monolith" .. i, 
+            idle = 0,
+            prior = 1, state = {1}, squad = squad, group = groups[1],
+            in_rest = "", out_rest = gname .. "_out_restr"
+        }
         table.insert(sj, t)
 
         ltx = ltx.."[logic@" .. gname .. "_monolith" .. i .. "_hide]\n" ..
@@ -480,11 +510,11 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.pri_ambush7.state = function(gulag)
-	if db.actor:has_info("pri_wave7_start") then
+    if db.actor:has_info("pri_wave7_start") then
         return 1
     else
-	    return 0
-	end
+        return 0
+    end
 end
 
 
@@ -513,7 +543,7 @@ end
 
 -- Predicates ------------------------------------------------------------
 function w_predicate_sn(npc_info)
-	return npc_info.is_sniper == true
+    return npc_info.is_sniper == true
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -542,12 +572,12 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
           --"danger_inertion_time_ricochet = 1000\n" ..
           "ignore_types = corpse\n"
 
-	-- Снайперы в окнах.
-	i = 1
-	while level.patrol_path_exists(gname .. "_wsniper_" .. i .."_walk") do
-		-- Необходимо вычитать количество работ из названия точки пути.
-		local idstr = gname .. "_wsniper_" .. i
-		local way_name = idstr .."_walk"
+    -- Снайперы в окнах.
+    i = 1
+    while level.patrol_path_exists(gname .. "_wsniper_" .. i .."_walk") do
+        -- Необходимо вычитать количество работ из названия точки пути.
+        local idstr = gname .. "_wsniper_" .. i
+        local way_name = idstr .."_walk"
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
@@ -572,30 +602,30 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
             ib = ib_cond
         end
 
-		-- добавляем должность
-		t = { section = "logic@" .. idstr,
-			idle = 0,
-			prior = 1, state = {0}, squad = squad, group = groups[1],
-			in_rest = inr, out_rest = outr --,
-			--predicate = w_predicate_sn
-		}
-		table.insert(sj, t)
+        -- добавляем должность
+        t = { section = "logic@" .. idstr,
+            idle = 0,
+            prior = 1, state = {0}, squad = squad, group = groups[1],
+            in_rest = inr, out_rest = outr --,
+            --predicate = w_predicate_sn
+        }
+        table.insert(sj, t)
 
-		-- добавляем описание должности в лтх.
-		ltx = ltx.."[logic@" .. idstr .. "]\n" ..
-		           "combat_ignore = combat_ignore\n"
-		
-		if starti then
+        -- добавляем описание должности в лтх.
+        ltx = ltx.."[logic@" .. idstr .. "]\n" ..
+                   "combat_ignore = combat_ignore\n"
+        
+        if starti then
             ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
 
-		    if deathi then
+            if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
 
-                           "[death@" .. idstr .. "]\n" ..							
+                           "[death@" .. idstr .. "]\n" ..                            
                            "on_info = %+" .. deathi .. "%\n"
-		    end
+            end
 
-            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
+            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..                            
                        "path_walk           = wsniper_" .. i .. "_wait_walk\n" ..
                        "anim                = hide_na\n" ..
                        "show_spot           = false\n" ..
@@ -603,11 +633,11 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        "wounded             = wounded\n" ..
                        --"danger              = danger1\n" ..
                        "combat_ignore_cond  = always\n"
-		else
+        else
             ltx = ltx.."active = camper@" .. idstr .. "\n"
-		end
+        end
 
-        ltx = ltx.."[camper@" .. idstr .. "]\n" ..							
+        ltx = ltx.."[camper@" .. idstr .. "]\n" ..                            
                    "path_walk                   = wsniper_" .. i .. "_walk\n" ..
                    "path_look                   = wsniper_" .. i .. "_look\n" ..
                    "def_state_moving            = sneak_run ;assault\n" ..
@@ -623,7 +653,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "danger                      = danger1\n" ..
                    ib ..
 
-                   "[camper@" .. idstr .. "_guard]\n" ..							
+                   "[camper@" .. idstr .. "_guard]\n" ..                            
                    "path_walk                   = wsniper_" .. i .. "_walk\n" ..
                    "path_look                   = wsniper_" .. i .. "_look\n" ..
                    "def_state_moving            = sneak_run ;assault\n" ..
@@ -639,10 +669,10 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "danger                      = danger1\n" ..
                    ib ..
 
-                   --"[remark@" .. idstr .. "_hide]\n" ..							
+                   --"[remark@" .. idstr .. "_hide]\n" ..                            
                    --"anim                = hide\n" ..
                    --"target              = actor\n" ..
-                   "[camper@" .. idstr .. "_hide]\n" ..							
+                   "[camper@" .. idstr .. "_hide]\n" ..                            
                    "path_walk           = wsniper_" .. i .. "_walk\n" ..
                    "path_look           = wsniper_" .. i .. "_look\n" ..
                    "def_state_moving    = sneak_run\n" ..
@@ -655,15 +685,15 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "wounded             = wounded\n" ..
                    "danger              = danger1\n" ..
                    "combat_ignore_cond  = always\n"
-		i = i + 1
-	end
+        i = i + 1
+    end
 
-	-- Снайперы на крышах.
-	i = 1
-	while level.patrol_path_exists(gname .. "_rsniper_" .. i .."_walk") do
-		-- Необходимо вычитать количество работ из названия точки пути.
-		local idstr = gname .. "_rsniper_" .. i
-		local way_name = idstr .."_walk"
+    -- Снайперы на крышах.
+    i = 1
+    while level.patrol_path_exists(gname .. "_rsniper_" .. i .."_walk") do
+        -- Необходимо вычитать количество работ из названия точки пути.
+        local idstr = gname .. "_rsniper_" .. i
+        local way_name = idstr .."_walk"
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
@@ -684,30 +714,30 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
             ib = ib_cond
         end
 
-		-- добавляем должность
-		t = { section = "logic@" .. idstr,
-			idle = 0,
-			prior = 1, state = {0}, squad = squad, group = groups[1],
-			in_rest = inr, out_rest = outr --,
-			--predicate = w_predicate_sn
-		}
-		table.insert(sj, t)
+        -- добавляем должность
+        t = { section = "logic@" .. idstr,
+            idle = 0,
+            prior = 1, state = {0}, squad = squad, group = groups[1],
+            in_rest = inr, out_rest = outr --,
+            --predicate = w_predicate_sn
+        }
+        table.insert(sj, t)
 
-		-- добавляем описание должности в лтх.
-		ltx = ltx.."[logic@" .. idstr .. "]\n" ..
-		           "combat_ignore = combat_ignore\n"
-		
-		if starti then
+        -- добавляем описание должности в лтх.
+        ltx = ltx.."[logic@" .. idstr .. "]\n" ..
+                   "combat_ignore = combat_ignore\n"
+        
+        if starti then
             ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
 
-		    if deathi then
+            if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
 
-                           "[death@" .. idstr .. "]\n" ..							
+                           "[death@" .. idstr .. "]\n" ..                            
                            "on_info = %+" .. deathi .. "%\n"
-		    end
+            end
 
-            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
+            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..                            
                        "path_walk           = rsniper_" .. i .. "_wait_walk\n" ..
                        --"path_look           = rsniper_" .. i .. "_look\n" ..
                        "anim                = hide_na\n" ..
@@ -716,11 +746,11 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        "wounded             = wounded\n" ..
                        --"danger              = danger1\n" ..
                        "combat_ignore_cond  = always\n"
-		else
+        else
             ltx = ltx.."active = camper@" .. idstr .. "\n"
-		end
+        end
 
-        ltx = ltx.."[camper@" .. idstr .. "]\n" ..							
+        ltx = ltx.."[camper@" .. idstr .. "]\n" ..                            
                    "path_walk                   = rsniper_" .. i .. "_walk\n" ..
                    "path_look                   = rsniper_" .. i .. "_look\n" ..
                    "def_state_moving            = assault\n" ..
@@ -735,7 +765,7 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "danger                      = danger1\n" ..
                    ib ..
 
-                   "[camper@" .. idstr .. "_guard]\n" ..							
+                   "[camper@" .. idstr .. "_guard]\n" ..                            
                    "path_walk                   = rsniper_" .. i .. "_walk\n" ..
                    "path_look                   = rsniper_" .. i .. "_look\n" ..
                    "def_state_moving            = assault\n" ..
@@ -749,15 +779,15 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    "wounded                     = wounded\n" ..
                    "danger                      = danger1\n" ..
                    ib
-		i = i + 1
-	end
+        i = i + 1
+    end
 
-	-- Свободные волкеры в кемпах.
-	i = 1
-	while level.patrol_path_exists(gname .. "_free_" .. i .."_walk") do
-		-- Необходимо вычитать количество работ из названия точки пути.
-		local idstr = gname .. "_free_" .. i
-		local way_name = idstr .."_walk"
+    -- Свободные волкеры в кемпах.
+    i = 1
+    while level.patrol_path_exists(gname .. "_free_" .. i .."_walk") do
+        -- Необходимо вычитать количество работ из названия точки пути.
+        local idstr = gname .. "_free_" .. i
+        local way_name = idstr .."_walk"
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
 
@@ -777,29 +807,29 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
             ib = ib_cond
         end
 
-		-- добавляем должность
-		t = { section = "logic@" .. idstr,
-			idle = 0,
-			prior = 1, state = {0}, squad = squad, group = groups[1],
-			in_rest = inr, out_rest = outr
-		}
-		table.insert(sj, t)
+        -- добавляем должность
+        t = { section = "logic@" .. idstr,
+            idle = 0,
+            prior = 1, state = {0}, squad = squad, group = groups[1],
+            in_rest = inr, out_rest = outr
+        }
+        table.insert(sj, t)
 
-		-- добавляем описание должности в лтх.
-		ltx = ltx.."[logic@" .. idstr .. "]\n" ..
-		           "combat_ignore = combat_ignore\n"
-		
-		if starti then
+        -- добавляем описание должности в лтх.
+        ltx = ltx.."[logic@" .. idstr .. "]\n" ..
+                   "combat_ignore = combat_ignore\n"
+        
+        if starti then
             ltx = ltx.."active = remark@" .. idstr .. "_wait\n"
 
-		    if deathi then
+            if deathi then
                 ltx = ltx.."on_death = death@" .. idstr .. "\n" ..
 
-                           "[death@" .. idstr .. "]\n" ..							
+                           "[death@" .. idstr .. "]\n" ..                            
                            "on_info = %+" .. deathi .. "%\n"
-		    end
+            end
 
-            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..							
+            ltx = ltx.."[remark@" .. idstr .. "_wait]\n" ..                            
                        "path_walk           = free_" .. i .. "_wait_walk\n" ..
                        "anim                = hide_na\n" ..
                        --"show_spot           = false\n" ..
@@ -807,11 +837,11 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                        "wounded             = wounded\n" ..
                        --"danger              = danger2\n" ..
                        "combat_ignore_cond  = always\n"
-		else
+        else
             ltx = ltx.."active = walker@" .. idstr .. "\n"
-		end
+        end
 
-        ltx = ltx.."[walker@" .. idstr .. "]\n" ..							
+        ltx = ltx.."[walker@" .. idstr .. "]\n" ..                            
                    "path_walk                   = free_" .. i .. "_walk\n" ..
                    "path_look                   = free_" .. i .. "_look\n" ..
                    "def_state_moving1           = patrol\n" ..
@@ -823,15 +853,15 @@ gulags.pri_wave.job = function(sj, gname, type, squad, groups)
                    --"danger                      = danger2\n" ..
                    ib ..
 
-                   "[kamp@" .. idstr .. "]\n" ..							
+                   "[kamp@" .. idstr .. "]\n" ..                            
                    "center_point        = kamp_" .. kampi .. "\n" ..
                    "def_state_moving    = patrol\n" ..
                    --"show_spot           = false\n" ..
                    "on_timer            = " .. ktime .. " | walker@" .. idstr .. "\n" ..
                    "wounded             = wounded\n" ..
                    "danger              = danger2\n"
-		i = i + 1
-	end
+        i = i + 1
+    end
 
     gulags.pri_wave.ltx = ltx
     --printf("gulag <pri_wave>: %s.\nLTX:\n%s", gname, ltx)
@@ -848,12 +878,12 @@ gulags.pri_corner.job = function(sj, gname, type, squad, groups)
     local ltx, i = "", 0
 
     for i = 1, 3 do
-	    t = { section = "logic@" .. gname .. "_monolith" .. i , 
-		    idle = 0,
-		    prior = 1, state = {0}, squad = squad, group = groups[1],
-		    in_rest = "", out_rest = ""
-	    }
-	    table.insert(sj, t)
+        t = { section = "logic@" .. gname .. "_monolith" .. i , 
+            idle = 0,
+            prior = 1, state = {0}, squad = squad, group = groups[1],
+            in_rest = "", out_rest = ""
+        }
+        table.insert(sj, t)
 
         ltx = ltx.."[logic@" .. gname .. "_monolith" .. i .. "]\n" ..
                    "active              = camper@" .. gname .. "_monolith" .. i .. "_guard\n" ..
@@ -879,12 +909,12 @@ end
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
 function z_predicate_c(npc_info)
-	return npc_info.community == "controller"
+    return npc_info.community == "controller"
 end
 
 function z_predicate_pd(npc_info)
-	local c = npc_info.community
-	return c == "psy_dog" or c == "pseudodog"
+    local c = npc_info.community
+    return c == "psy_dog" or c == "pseudodog"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -892,36 +922,36 @@ gulags.pri_depot.job = function(sj, gname, type, squad, groups)
     local i = 0
     local ltx = ""
 
-	local way_name = gname .."_controllers_home"
+    local way_name = gname .."_controllers_home"
     local ptr = patrol(way_name)
     local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
     local count = process_num(wp_prop.count, 3) -- controllers number
         
     for i = 1, count do
-	    t = { section = "logic@" .. gname .. "_controller", 
-		    idle = 0,
-		    prior = 1, state = {0},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_base_restr",
-		    predicate = z_predicate_c
-	    }
-	    table.insert(sj, t)
+        t = { section = "logic@" .. gname .. "_controller", 
+            idle = 0,
+            prior = 1, state = {0},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = gname .. "_base_restr",
+            predicate = z_predicate_c
+        }
+        table.insert(sj, t)
     end
 
-	way_name = gname .."_psydogs_home"
+    way_name = gname .."_psydogs_home"
     ptr = patrol(way_name)
     wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
     count = process_num(wp_prop.count, 9) -- psydogs number
         
     for i = 1, count do
-	    t = { section = "logic@" .. gname .. "_psydog", 
-		    idle = 0,
-		    prior = 1, state = {0},
-		    squad = squad, group = groups[2],
-		    in_rest = gname .. "_base_restr", out_rest = "",
-		    predicate = z_predicate_pd
-	    }
-	    table.insert(sj, t)
+        t = { section = "logic@" .. gname .. "_psydog", 
+            idle = 0,
+            prior = 1, state = {0},
+            squad = squad, group = groups[2],
+            in_rest = gname .. "_base_restr", out_rest = "",
+            predicate = z_predicate_pd
+        }
+        table.insert(sj, t)
     end
 
     ltx = "[logic@" .. gname .. "_controller]\n" ..
@@ -947,23 +977,23 @@ end
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
 function m_predicate_l(npc_info)
-	return npc_info.story_id == 828
+    return npc_info.story_id == 828
 end
 
 function m_predicate_r(npc_info)
-	return npc_info.profile_name == "pri_monolith_regular"
+    return npc_info.profile_name == "pri_monolith_regular"
 end
 
 function m_predicate_s(npc_info)
-	return npc_info.profile_name == "pri_monolith_specnaz"
+    return npc_info.profile_name == "pri_monolith_specnaz"
 end
 
 function m_predicate_e(npc_info)
-	return npc_info.profile_name == "pri_monolith_exo"
+    return npc_info.profile_name == "pri_monolith_exo"
 end
 
 function m_predicate_s_rpg(npc_info)
-	return npc_info.profile_name == "pri_monolith_specnaz" and obj_has_item(npc_info, "wpn_rpg7")
+    return npc_info.profile_name == "pri_monolith_specnaz" and obj_has_item(npc_info, "wpn_rpg7")
 end
 
 --function m_predicate_s_svd(npc_info)
@@ -971,11 +1001,11 @@ end
 --end
 
 function m_predicate_s_sniper(npc_info)
-	return npc_info.profile_name == "pri_monolith_specnaz" and npc_info.is_sniper == true
+    return npc_info.profile_name == "pri_monolith_specnaz" and npc_info.is_sniper == true
 end
 
 function m_predicate_e_rpg(npc_info)
-	return npc_info.profile_name == "pri_monolith_exo" and obj_has_item(npc_info, "wpn_rpg7")
+    return npc_info.profile_name == "pri_monolith_exo" and obj_has_item(npc_info, "wpn_rpg7")
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -1051,13 +1081,13 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
           "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 
     -- leader
-	t = { section = "logic@" .. gname .. "_leader", 
-		idle = 0,
-		prior = 15, state = {0},
-		squad = squad, group = groups[1],
-		in_rest = in_r, out_rest = "", --gname .. "_leader_restr"
-		predicate = m_predicate_l
-	} table.insert(sj, t)
+    t = { section = "logic@" .. gname .. "_leader", 
+        idle = 0,
+        prior = 15, state = {0},
+        squad = squad, group = groups[1],
+        in_rest = in_r, out_rest = "", --gname .. "_leader_restr"
+        predicate = m_predicate_l
+    } table.insert(sj, t)
     ltx = ltx.."[logic@" .. gname .. "_leader]\n" ..
                "active              = walker@" .. gname .. "_leader\n" ..
                "combat_ignore       = combat_ignore\n" ..
@@ -1073,13 +1103,13 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                --"show_spot           = false\n" ..
                "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 
-	t = { section = "logic@" .. gname .. "_fight_in_base3", 
-		idle = 0,
-		prior = 15, state = {1,2},
-		squad = squad, group = groups[1],
-		in_rest = "", out_rest = gname .. "_base_restr",
-		predicate = m_predicate_l
-	} table.insert(sj, t)
+    t = { section = "logic@" .. gname .. "_fight_in_base3", 
+        idle = 0,
+        prior = 15, state = {1,2},
+        squad = squad, group = groups[1],
+        in_rest = "", out_rest = gname .. "_base_restr",
+        predicate = m_predicate_l
+    } table.insert(sj, t)
 
     -- walkers
     prior = {6, 7, 8, 12, 12, 5}
@@ -1089,13 +1119,13 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     state2_restr = {"_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr"}
     for i, v in pairs({1, 3, 4, 5, 6, 8}) do
         --- state: main
-	    t = { section = "logic@" .. gname .. "_patrol" .. v, 
-		    idle = 0,
-		    prior = prior[i], state = {0},
-		    squad = squad, group = groups[6],
-		    in_rest = in_r, out_rest = "",
-		    predicate = m_predicate_s
-	    } table.insert(sj, t)
+        t = { section = "logic@" .. gname .. "_patrol" .. v, 
+            idle = 0,
+            prior = prior[i], state = {0},
+            squad = squad, group = groups[6],
+            in_rest = in_r, out_rest = "",
+            predicate = m_predicate_s
+        } table.insert(sj, t)
         ltx = ltx.."[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
                    "active              = walker@" .. gname .. "_patrol" .. v .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
@@ -1106,24 +1136,24 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                    "danger              = danger@monolith\n" ..
                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 
-	    t = { section = "logic@" .. gname .. state1_kamp[i], 
-		    idle = 0,
-		    prior = prior[i], state = {1},
-		    squad = squad, group = groups[6],
-		    in_rest = "", out_rest = gname .. state1_restr[i],
-		    predicate = m_predicate_s
-	    } table.insert(sj, t)
+        t = { section = "logic@" .. gname .. state1_kamp[i], 
+            idle = 0,
+            prior = prior[i], state = {1},
+            squad = squad, group = groups[6],
+            in_rest = "", out_rest = gname .. state1_restr[i],
+            predicate = m_predicate_s
+        } table.insert(sj, t)
 
-	    t = { section = "logic@" .. gname .. state2_kamp[i], 
-		    idle = 0,
-		    prior = prior[i], state = {2},
-		    squad = squad, group = groups[6],
-		    in_rest = "", out_rest = gname .. state2_restr[i],
-		    predicate = m_predicate_s
-	    } table.insert(sj, t)
-	end
+        t = { section = "logic@" .. gname .. state2_kamp[i], 
+            idle = 0,
+            prior = prior[i], state = {2},
+            squad = squad, group = groups[6],
+            in_rest = "", out_rest = gname .. state2_restr[i],
+            predicate = m_predicate_s
+        } table.insert(sj, t)
+    end
 
-	-- followers
+    -- followers
     prior = {6, 6, 4, 4}
     state1_kamp  = {"_fight_in_kolos", "_fight_in_hotel"}
     state1_restr = {"_kolos_restr",    "_hotel_restr"}
@@ -1132,30 +1162,30 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     for i, v in pairs({7, 10}) do
         for j = 1, 2 do
             --- state: main
-	        t = { section = "logic@" .. gname .. "_group_patrol" .. i, 
-		        idle = 0,
-		        prior = prior[i + 2 * (j - 1)], state = {0},
-		        squad = squad, group = groups[7],
-		        in_rest = in_r, out_rest = "",
-		        predicate = m_predicate_s
-	        } table.insert(sj, t)
+            t = { section = "logic@" .. gname .. "_group_patrol" .. i, 
+                idle = 0,
+                prior = prior[i + 2 * (j - 1)], state = {0},
+                squad = squad, group = groups[7],
+                in_rest = in_r, out_rest = "",
+                predicate = m_predicate_s
+            } table.insert(sj, t)
 
-	        t = { section = "logic@" .. gname .. state1_kamp[i], 
-		        idle = 0,
-		        prior = prior[i + 2 * (j - 1)], state = {1},
-		        squad = squad, group = groups[7],
-		        in_rest = "", out_rest = gname .. state1_restr[i],
-		        predicate = m_predicate_s
-	        } table.insert(sj, t)
+            t = { section = "logic@" .. gname .. state1_kamp[i], 
+                idle = 0,
+                prior = prior[i + 2 * (j - 1)], state = {1},
+                squad = squad, group = groups[7],
+                in_rest = "", out_rest = gname .. state1_restr[i],
+                predicate = m_predicate_s
+            } table.insert(sj, t)
 
-	        t = { section = "logic@" .. gname .. state2_kamp[i], 
-		        idle = 0,
-		        prior = prior[i + 2 * (j - 1)], state = {2},
-		        squad = squad, group = groups[7],
-		        in_rest = "", out_rest = gname .. state2_restr[i],
-		        predicate = m_predicate_s
-	        } table.insert(sj, t)
-	    end
+            t = { section = "logic@" .. gname .. state2_kamp[i], 
+                idle = 0,
+                prior = prior[i + 2 * (j - 1)], state = {2},
+                squad = squad, group = groups[7],
+                in_rest = "", out_rest = gname .. state2_restr[i],
+                predicate = m_predicate_s
+            } table.insert(sj, t)
+        end
         ltx = ltx.."[logic@" .. gname .. "_group_patrol" .. i .. "]\n" ..
                    "active              = patrol@" .. gname .. "_group_patrol" .. i .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
@@ -1171,17 +1201,17 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 
     -- rpg, svd, machine-gun
     local id = {11, 12, 14}
-	pred = {m_predicate_s_rpg, m_predicate_s_sniper, m_predicate_e_rpg}
-	for i, v in pairs({"rpg", "svd", "machine_gun"}) do
+    pred = {m_predicate_s_rpg, m_predicate_s_sniper, m_predicate_e_rpg}
+    for i, v in pairs({"rpg", "svd", "machine_gun"}) do
         --- state: main
-	    t = { section = "logic@" .. gname .. "_stalker_" .. v, 
-		    idle = 0,
-		    prior = 14, state = {0,1,2},
-		    squad = squad, group = groups[8],
-		    in_rest = in_r, out_rest = "",
-		    predicate = pred[i]
-	    } table.insert(sj, t)
-	    ltx = ltx.."[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
+        t = { section = "logic@" .. gname .. "_stalker_" .. v, 
+            idle = 0,
+            prior = 14, state = {0,1,2},
+            squad = squad, group = groups[8],
+            in_rest = in_r, out_rest = "",
+            predicate = pred[i]
+        } table.insert(sj, t)
+        ltx = ltx.."[logic@" .. gname .. "_stalker_" .. v .. "]\n" ..
                    "active              = camper@" .. gname .. "_stalker_" .. v .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
                    
@@ -1201,7 +1231,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
         --else
         --    ltx = ltx.."no_retreat = true\n"
         --end
-	end
+    end
 
     -- kamps
     prior = {{11, 11, 11, 3}, {10, 10, 10, 2}, {11, 11, 11}, {9, 9, 9}, {13, 13, 1}}
@@ -1215,36 +1245,36 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     state2_kamp  = {"_fight_in_base2", "_fight_in_base3", "_fight_in_base4", "_fight_in_base4", "_fight_in_base1"}
     state2_restr = {"_base_restr",     "_base_restr",     "_base_restr",     "_base_restr",     "_base_restr"}
     local pr, pd
-	for i, v in pairs({4, 4, 3, 3, 3}) do
-	    pr = prior[i]
-	    pd = pred[i]
-	    for j = 1, v do
+    for i, v in pairs({4, 4, 3, 3, 3}) do
+        pr = prior[i]
+        pd = pred[i]
+        for j = 1, v do
             --- state: main
-	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_soldier", 
-		        idle = 0,
-		        prior = pr[j], state = {0},
-		        squad = squad, group = groups[i],
-		        in_rest = in_r, out_rest = "",
-		        predicate = pd[j]
-	        } table.insert(sj, t)
+            t = { section = "logic@" .. gname .. "_kamp" .. i .. "_soldier", 
+                idle = 0,
+                prior = pr[j], state = {0},
+                squad = squad, group = groups[i],
+                in_rest = in_r, out_rest = "",
+                predicate = pd[j]
+            } table.insert(sj, t)
 
-	        t = { section = "logic@" .. gname .. state1_kamp[i], 
-		        idle = 0,
-		        prior = pr[j], state = {1},
-		        squad = squad, group = groups[i],
-		        in_rest = "", out_rest = gname .. state1_restr[i],
-		        predicate = pd[j]
-	        } table.insert(sj, t)
+            t = { section = "logic@" .. gname .. state1_kamp[i], 
+                idle = 0,
+                prior = pr[j], state = {1},
+                squad = squad, group = groups[i],
+                in_rest = "", out_rest = gname .. state1_restr[i],
+                predicate = pd[j]
+            } table.insert(sj, t)
 
-	        t = { section = "logic@" .. gname .. state2_kamp[i], 
-		        idle = 0,
-		        prior = pr[j], state = {2},
-		        squad = squad, group = groups[i],
-		        in_rest = "", out_rest = gname .. state2_restr[i],
-		        predicate = pd[j]
-	        } table.insert(sj, t)
-	    end
-	    ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
+            t = { section = "logic@" .. gname .. state2_kamp[i], 
+                idle = 0,
+                prior = pr[j], state = {2},
+                squad = squad, group = groups[i],
+                in_rest = "", out_rest = gname .. state2_restr[i],
+                predicate = pd[j]
+            } table.insert(sj, t)
+        end
+        ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_soldier]\n" ..
                    "active              = kamp@" .. gname .. "_kamp" .. i .. "_soldier\n" ..
                    "combat_ignore       = combat_ignore\n" ..
                    
@@ -1254,17 +1284,17 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                    "def_state_moving    = run\n" ..
                    "soundgroup          = " .. gname .."_kamp" .. i .. "\n" ..
                    "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
-	end
+    end
 
     -- snipers
     for i = 1, 2 do
-	    t = { section = "logic@" .. gname .. "_sniper" .. i, 
-		    idle = 0,
-		    prior = 14, state = {0,1,2},
-		    squad = squad, group = groups[9],
-		    in_rest = in_r, out_rest = "",
-		    predicate = m_predicate_s_sniper
-	    } table.insert(sj, t)
+        t = { section = "logic@" .. gname .. "_sniper" .. i, 
+            idle = 0,
+            prior = 14, state = {0,1,2},
+            squad = squad, group = groups[9],
+            in_rest = in_r, out_rest = "",
+            predicate = m_predicate_s_sniper
+        } table.insert(sj, t)
         ltx = ltx.."[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
                    "active          = camper@" .. gname .. "_sniper" .. i .. "_wait\n" ..
                    "combat_ignore   = combat_ignore\n" ..
@@ -1325,6 +1355,39 @@ end
 --------------------------------------------------------------------------
 -- Jobs ------------------------------------------------------------------
 gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
+    local i, ltx = 1, ""
+    -- Проверяем наличие снайперов в лагере.
+    while level.patrol_path_exists(gname .. "_sniper_" .. i .. "_walk") do
+        -- Необходимо вычитать количество работ из названия точки пути.
+        local way_name = gname .. "_sniper_" .. i .. "_walk"
+
+        -- добавляем должность
+        t = { section = "logic@" .. way_name,
+            idle = 0,
+            prior = 1, state = {0}, squad = squad, group = groups[1],
+            in_rest = "", out_rest = "pri_stadium_restr",
+            predicate = m_predicate_e
+        }
+        table.insert(sj, t)
+
+        -- добавляем описание должности в лтх.
+        ltx = ltx.."[logic@" .. way_name .. "]\n" ..
+                   "active = camper@" .. way_name .. "\n" ..
+
+                   "[camper@" .. way_name .. "]\n" ..
+                   "path_walk                   = sniper_" .. i .. "_walk\n" ..
+                   "path_look                   = sniper_look\n" ..
+                   "def_state_campering         = threat\n" ..
+                   "def_state_campering_fire    = threat_sniper_fire\n" ..
+                   "sniper                      = true\n"
+        i = i + 1
+    end
+
+    gulags.pri_stadium.ltx = ltx
+end
+
+--[[ Jobs ------------------------------------------------------------------
+gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
     local i, j, v = 0, 0, 0
     local restr = {"", "_kill_restr", "_restr"}
     local logic = {"wait", "heli", "free"}
@@ -1332,13 +1395,13 @@ gulags.pri_stadium.job = function(sj, gname, type, squad, groups)
 
     for i, v in pairs(logic) do
         for j = 1, 10 do
-	        t = { section = "logic@" .. gname .. "_gigant_" .. v,
-		        idle = 0,
-		        prior = 1, state = {i - 1},
-		        squad = squad, group = groups[1],
-		        in_rest = "", out_rest = gname .. restr[i]
-	        }
-	        table.insert(sj, t)
+            t = { section = "logic@" .. gname .. "_gigant_" .. v,
+                idle = 0,
+                prior = 1, state = {i - 1},
+                squad = squad, group = groups[1],
+                in_rest = "", out_rest = gname .. restr[i]
+            }
+            table.insert(sj, t)
         end
         ltx = ltx.."[logic@" .. gname .. "_gigant_" .. v .. "]\n" ..
                    "active     = mob_home@" .. gname .. "_gigant_" .. v .. "\n" ..
@@ -1352,18 +1415,19 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.pri_stadium.state = function(gulag)
-	--local state = gulag.state
-	local actor = db.actor
-	if actor:has_info("pri_stadium_scene_start") then
-	    if actor:has_info("pri_stadium_scene_end") then
-	        return 2
-	    else
-	        return 1
-	    end
-	else
-	    return 0
-	end
+    --local state = gulag.state
+    local actor = db.actor
+    if actor:has_info("pri_stadium_scene_start") then
+        if actor:has_info("pri_stadium_scene_end") then
+            return 2
+        else
+            return 1
+        end
+    else
+        return 0
+    end
 end
+--]]
 
 -------------------------------------------------------------------------------------------------------------------------
 --printf("gulag <pri>: table -")
