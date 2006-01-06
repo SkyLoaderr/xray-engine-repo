@@ -1166,7 +1166,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
 
     -- rpg, svd, machine-gun (гранатометчики и снайпер на центральном проходе на базу)
     local id = {11, 12, 14}
-    pred = {m_predicate_s_rpg, m_predicate_s_sniper, m_predicate_e_rpg}
+    pred = {m_predicate_s, m_predicate_s_sniper, m_predicate_s}
     for i, v in pairs({"rpg", "svd", "machine_gun"}) do
         --- state: main
         t = { section = "logic@" .. gname .. "_stalker_" .. v, 
