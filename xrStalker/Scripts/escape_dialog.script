@@ -151,17 +151,6 @@ end
 function have_blockpost_case(first_speaker, second_speaker)
   	return first_speaker:object("quest_case_01") ~= nil
 end
-function trader_need_blockpost_box(actor, npc)
---	if true then return false end
-	printf ("FIRST_SPEAKER : %s", actor:name ())
-	printf ("SECOND_SPEAKER : %s", npc:name ())
-	if actor:has_info("esc_return") and
-	   actor:dont_has_info("escape_blockpost_case")
-	then
-		return true
-	end
-	return false
-end
 
 function trader_test(actor, npc)
 	printf ("!!!!!")	
@@ -213,6 +202,7 @@ function trader_need_free_factory(first_speaker, second_speaker)
 end
 --' ящик с блокпоста
 function trader_need_blockpost_box(first_speaker, second_speaker)
+	printf("!!! [%s] [%s]", first_speaker:name(), second_speaker:name())
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("tutorial_end") and
