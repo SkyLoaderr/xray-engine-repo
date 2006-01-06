@@ -244,7 +244,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                         "danger              = danger@ignore\n" ..
                         "wounded             = wounded@ignore\n" ..
 						"soundgroup			 = pri_followers_soundgroup\n" ..
-                        "meet                = meet@ignore_abuse\n" .. --meet@def
+                        "meet                = no_meet\n" .. --meet@def
 
                         -- бежим
                         "[walker@" .. pref .. "_wave" .. v .. "]\n" ..
@@ -255,7 +255,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                         "on_signal           = arrived | {-pri_wave" .. v .. "_start} %+pri_wave" .. v .. "_start%\n" ..
                         "wounded             = wounded@ignore\n" ..
 						"soundgroup			 = pri_followers_soundgroup\n" ..
-                        "meet                = meet@ignore_abuse\n" --meet@def
+                        "meet                = no_meet\n" --meet@def
         end
         
         -- нестандартные этапы
@@ -270,7 +270,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "path_walk           = wait_stalker" .. i .. "_walk\n" ..
                     "anim                = guard\n" ..
                     "target              = logic@pri_followers_leader_wait\n" ..
-                    "meet                = meet@ignore_abuse\n" .. --meet@def
+                    "meet                = no_meet\n" .. --meet@def
                     "danger              = danger@ignore\n" ..
                     "on_info             = {+pri_followers_leader_phrase1_end} remark@" .. pref .. "_wait_na\n" ..
 
@@ -278,7 +278,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "path_walk           = wait_stalker" .. i .. "_walk\n" ..
                     "anim                = guard_na\n" ..
                     "target              = logic@pri_followers_leader_wait\n" ..
-                    "meet                = meet@ignore_abuse\n" .. --meet@def
+                    "meet                = no_meet\n" .. --meet@def
                     "danger              = danger@ignore\n" ..
 
                     --- NAP: WAVE3 (БТР) --------------------------------------------------------------------------
@@ -297,7 +297,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "on_signal           = syn | walker@" .. pref .. "_wave3 %+pri_wave3_start%\n" ..
                     "on_info             = {+pri_wave3_start} walker@" .. pref .. "_wave3\n" ..
                     "wounded             = wounded@ignore\n" ..
-                    "meet                = meet@ignore_abuse\n" .. --meet@def
+                    "meet                = no_meet\n" .. --meet@def
 					"soundgroup			 = pri_followers_soundgroup\n" ..
                     "danger              = danger@ignore\n" ..
                     "combat_ignore_cond  = {!fighting_actor}\n" ..
@@ -309,7 +309,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "def_state_moving2   = assault ;sprint\n" ..
                     "on_timer            = " .. math.random(30, 40) .. "00 | remark@" .. pref .. "_wave3_fight\n" .. -- 30
                     "wounded             = wounded@ignore\n" ..
-                    "meet                = meet@ignore_abuse\n" .. --meet@def
+                    "meet                = no_meet\n" .. --meet@def
 					"soundgroup			 = pri_followers_soundgroup\n" ..
                     "danger              = danger@ignore\n" ..
                     "combat_ignore_cond  = {!fighting_actor}\n" ..
@@ -319,7 +319,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "target              = 807\n" ..
                     "on_timer            = " .. math.random(47, 55) .. "00 | walker@" .. pref .. "_wave3\n" .. -- 50
                     "wounded             = wounded@ignore\n" ..
-                    "meet                = meet@ignore_abuse\n" .. --meet@def
+                    "meet                = no_meet\n" .. --meet@def
                     "danger              = danger@ignore\n" ..
                     "combat_ignore_cond  = {!fighting_actor}\n" ..
 
@@ -338,7 +338,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "team                = followers\n" ..
                     "on_info             = {+pri_wave7_leader_phrase_end} walker@" .. pref .. "_wave7\n" ..
                     "wounded             = wounded@ignore\n" ..
-                    "meet                = meet@ignore_abuse\n" .. --meet@def
+                    "meet                = no_meet\n" .. --meet@def
 					"soundgroup			 = pri_followers_soundgroup\n" ..
                     "danger              = danger@ignore\n" ..
 
@@ -350,7 +350,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%\n" ..
                     "on_info			 = {-pri_wave7_sound_start =pri_follower_see_ambush} %+pri_wave7_sound_start%"..
                     "wounded             = wounded@ignore\n" ..
-                    "meet                = meet@ignore_abuse\n" .. --meet@def
+                    "meet                = no_meet\n" .. --meet@def
 					"soundgroup			 = pri_followers_soundgroup\n" ..
                     "danger              = danger@ignore\n" ..
                     --"combat_ignore_cond  = {-pri_wave7_start}\n" ..
@@ -368,7 +368,7 @@ gulags.pri_followers.job = function(sj, gname, type, squad, groups)
                     "def_state_moving2   = assault\n" ..
 					"wounded             = wounded@ignore\n" ..
 					"soundgroup			 = pri_followers_soundgroup\n" ..
-                    "meet                = meet@ignore_abuse\n" --meet@def
+                    "meet                = no_meet\n" --meet@def
     end
 
     gulags.pri_followers.ltx = ltx
