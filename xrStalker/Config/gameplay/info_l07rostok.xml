@@ -345,6 +345,8 @@
 	<info_portion id="bar_arena_burer_defeated"></info_portion>	
 
 	<info_portion id="bar_arena_savage_choosen"></info_portion>
-	<info_portion id="bar_arena_savage_defeated"></info_portion>	
+	<info_portion id="bar_arena_savage_defeated"></info_portion>
+	
+	<info_portion id="bar_arena_state_1"></info_portion>	
     
 </game_information_portions>
