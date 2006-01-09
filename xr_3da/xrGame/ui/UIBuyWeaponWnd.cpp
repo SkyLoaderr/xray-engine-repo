@@ -780,9 +780,16 @@ void CUIBuyWeaponWnd::OnBtnSilencerBuy(int slot){
 
 	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[slot].GetDragDropItemsList().begin());
 
-	item->AttachDetachAddon(	CUIDragDropItemMP::ID_SILENCER, 
-								!item->IsAddonAttached(CUIDragDropItemMP::ID_SILENCER), 
-								item->m_bHasRealRepresentation);
+	if (UIBagWnd.GetItemBySectoin(item->m_AddonInfo[CUIDragDropItemMP::ID_SILENCER].strAddonName.c_str()))
+	{
+		item->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, 
+			!item->IsAddonAttached(CUIDragDropItemMP::ID_SILENCER), 
+			item->m_bHasRealRepresentation);
+	}
+	else if (item->IsAddonAttached(CUIDragDropItemMP::ID_SILENCER))
+		item->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, false, item->m_bHasRealRepresentation);
+
+
 }
 
 void CUIBuyWeaponWnd::OnBtnRifleScope(){
@@ -790,9 +797,14 @@ void CUIBuyWeaponWnd::OnBtnRifleScope(){
 
 	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[RIFLE_SLOT].GetDragDropItemsList().begin());
 
-	item->AttachDetachAddon(	CUIDragDropItemMP::ID_SCOPE, 
-								!item->IsAddonAttached(CUIDragDropItemMP::ID_SCOPE), 
-								item->m_bHasRealRepresentation);
+	if (UIBagWnd.GetItemBySectoin(item->m_AddonInfo[CUIDragDropItemMP::ID_SCOPE].strAddonName.c_str())){
+//        GetTop()->SendMessage(item, DRAG_DROP_ITEM_DB_CLICK, NULL);
+		item->AttachDetachAddon(	CUIDragDropItemMP::ID_SCOPE, 
+			!item->IsAddonAttached(CUIDragDropItemMP::ID_SCOPE), 
+			item->m_bHasRealRepresentation);
+	}
+	else if (item->IsAddonAttached(CUIDragDropItemMP::ID_SCOPE))
+		item->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, false, item->m_bHasRealRepresentation);
 
 }
 
@@ -801,10 +813,14 @@ void CUIBuyWeaponWnd::OnBtnRifleGranadelauncher(){
 
 	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[RIFLE_SLOT].GetDragDropItemsList().begin());
 
-	item->AttachDetachAddon(	CUIDragDropItemMP::ID_GRENADE_LAUNCHER, 
-								!item->IsAddonAttached(CUIDragDropItemMP::ID_GRENADE_LAUNCHER), 
-								item->m_bHasRealRepresentation);
-
+	if (UIBagWnd.GetItemBySectoin(item->m_AddonInfo[CUIDragDropItemMP::ID_GRENADE_LAUNCHER].strAddonName.c_str())){
+//        GetTop()->SendMessage(item, DRAG_DROP_ITEM_DB_CLICK, NULL);
+		item->AttachDetachAddon(	CUIDragDropItemMP::ID_GRENADE_LAUNCHER, 
+			!item->IsAddonAttached(CUIDragDropItemMP::ID_GRENADE_LAUNCHER), 
+			item->m_bHasRealRepresentation);
+	}
+	else if (item->IsAddonAttached(CUIDragDropItemMP::ID_GRENADE_LAUNCHER))
+		item->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, false, item->m_bHasRealRepresentation);
 }
 
 void CUIBuyWeaponWnd::OnBtnRifleGranade(){
