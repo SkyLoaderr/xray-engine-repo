@@ -3,24 +3,24 @@
         <text>gunslinger_clan_cache</text>
     </article>
 
-    <article id="storyline_fox_flash_info" name="Fox_Flash" group="Diary">
+    <article id="storyline_fox_flash_info" name="Tolik flash" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
         <text>storyline_fox_flash_info</text>
     </article>
     
-    <article id="storyline_seryi_info" name="seryi_flash" group="Diary">
+    <article id="storyline_seryi_info" name="Seryi flash" group="Diary">
         <text>storyline_seryi_info</text>
     </article>
 
-	<article id="tutorial_secret_place" name="flash_dead_stalker" group="Diary">
+	<article id="tutorial_secret_place" name="Flash dead stalker" group="Diary">
         <text>tutorial_secret_place</text>
     </article>
     
-    <article id="esc_kolyan_lost" name="flash_bandits" group="Diary">
+    <article id="esc_kolyan_lost" name="flash bandits" group="Diary">
         <text>esc_kolyan_lost</text>
     </article>
     
-    <article id="tutorial_moving_anomaly" name="tutorial_dead_flash" group="Diary">
+    <article id="tutorial_moving_anomaly" name="tutorial dead flash" group="Diary">
         <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>tutorial_moving_anomaly_text</text>
     </article>
