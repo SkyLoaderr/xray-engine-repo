@@ -832,6 +832,10 @@ function rostok_dist_to_actor_le(actor, npc, p)
 	end
 	return false
 end
+function see_actor_and_kruglov(actor, npc)
+	local kruglov = level_object_by_sid (503)
+    return npc:see(actor) and npc:see(kruglov)
+end
 -------------------------------------------------------------------------------------
 -- Special for Radar
 -------------------------------------------------------------------------------------
