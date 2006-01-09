@@ -1237,7 +1237,7 @@ function load_states(gname, type)
 	if type == "bar_arena_monstr" then
 		return function(gulag)
 			if db.actor and
-			   db.actor:has_info("bar_arena_monstr_ready")
+			   db.actor:has_info("bar_arena_state_1")
 			then
 				return 1
 			end
