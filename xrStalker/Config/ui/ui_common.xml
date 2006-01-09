@@ -397,8 +397,6 @@
     <texture id="ui_beltbut_aim_e" x="119" y="998" width="23" height="23" />
     <texture id="ui_beltbut_aim_h" x="697" y="693" width="23" height="23" />
     <texture id="ui_beltbut_aim_t" x="697" y="716" width="23" height="23" />
-    <texture id="ui_beltbut_silencer_h" x="697" y="785" width="23" height="23" />
-    <texture id="ui_beltbut_silencer_t" x="697" y="808" width="23" height="23" />
     <texture id="ui_beltbut_granade_d" x="697" y="831" width="23" height="23" />
     <texture id="ui_beltbut_granade_e" x="697" y="854" width="23" height="23" />
     <texture id="ui_beltbut_granade_h" x="697" y="877" width="23" height="23" />
@@ -412,5 +410,7 @@
     <texture id="ui_beltbut_granadeBig_t" x="606" y="1000" width="23" height="23" />
     <texture id="ui_beltbut_granadeBig_d" x="537" y="1000" width="23" height="23" />
     <texture id="ui_beltbut_silencer_e" x="697" y="762" width="23" height="23" />
-    <texture id="ui_beltbut_silence_d" x="697" y="739" width="23" height="23" />
+    <texture id="ui_beltbut_silencer_d" x="697" y="739" width="23" height="23" />
+    <texture id="ui_beltbut_silencer_h" x="697" y="785" width="23" height="23" />
+    <texture id="ui_beltbut_silencer_t" x="697" y="808" width="23" height="23" />
 </ui_texture>

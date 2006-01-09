@@ -21,6 +21,7 @@
 #include "UITextureMaster.h"
 #include "UIScrollView.h"
 
+
 using namespace InventoryUtilities;
 
 int			g_iOkAccelerator, g_iCancelAccelerator;
@@ -183,11 +184,11 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	xml_init.Init3tButton(uiXml, "clear_button", 0, &UIBtnClear);
 	UIBtnClear.EnableTextHighlighting(false);
 
-	AttachChild(&UIBtn_BulletPistol);
-	xml_init.Init3tButton(uiXml, "btn_bullets_pistol", 0, &UIBtn_BulletPistol);
+//	AttachChild(&UIBtn_BulletPistol);
+//	xml_init.Init3tButton(uiXml, "btn_bullets_pistol", 0, &UIBtn_BulletPistol);
 
-	AttachChild(&UIBtn_BulletRiffle);
-	xml_init.Init3tButton(uiXml, "btn_bullets_riffle", 0, &UIBtn_BulletRiffle);
+//	AttachChild(&UIBtn_BulletRiffle);
+//	xml_init.Init3tButton(uiXml, "btn_bullets_riffle", 0, &UIBtn_BulletRiffle);
 
 	UIBagWnd.UpdateBuyPossibility();
 
@@ -263,6 +264,27 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	UpdatePresetPrices();
 	UIAutobuyIndication.SetPrices(m_presets[0].m_price, m_presets[1].m_price, m_presets[2].m_price);
+
+	AttachChild(&UIBtn_PistolSilencer);
+	CUIXmlInit::Init3tButton(uiXml, "btn_pistol_silencer", 0, &UIBtn_PistolSilencer);
+
+	AttachChild(&UIBtn_PistolBullet);
+	CUIXmlInit::Init3tButton(uiXml, "btn_pistol_bullets", 0, &UIBtn_PistolBullet);
+
+	AttachChild(&UIBtn_RifleScope);
+	CUIXmlInit::Init3tButton(uiXml, "btn_rifle_scope", 0, &UIBtn_RifleScope);
+
+	AttachChild(&UIBtn_RifleSilencer);
+	CUIXmlInit::Init3tButton(uiXml, "btn_rifle_silencer", 0, &UIBtn_RifleSilencer);
+
+	AttachChild(&UIBtn_RifleGranadelauncer);
+	CUIXmlInit::Init3tButton(uiXml, "btn_riffle_granadelauncher", 0, &UIBtn_RifleGranadelauncer);
+
+	AttachChild(&UIBtn_RifleGranade);
+	CUIXmlInit::Init3tButton(uiXml, "btn_riffle_granades", 0, &UIBtn_RifleGranade);
+
+	AttachChild(&UIBtn_RifleBullet);
+	CUIXmlInit::Init3tButton(uiXml, "btn_rifle_bullets", 0, &UIBtn_RifleBullet);
 }
 
 void CUIBuyWeaponWnd::OnMouseScroll(float iDirection){
@@ -566,10 +588,20 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			OnBtnClearClicked();
 		else if (&UIBtnAutobuy == pWnd)
 			OnBtnAutobuyClicked();
-		else if (&UIBtn_BulletPistol == pWnd)
+		else if (&UIBtn_PistolBullet == pWnd)
 			OnBtnBulletBuy(PISTOL_SLOT);
-		else if (&UIBtn_BulletRiffle == pWnd)
+		else if (&UIBtn_RifleBullet == pWnd)
 			OnBtnBulletBuy(RIFLE_SLOT);
+		else if (&UIBtn_PistolSilencer == pWnd)
+			OnBtnSilencerBuy(PISTOL_SLOT);
+		else if (&UIBtn_RifleSilencer == pWnd)
+			OnBtnSilencerBuy(RIFLE_SLOT);
+		else if (&UIBtn_RifleScope == pWnd)
+			OnBtnRifleScope();
+		else if (&UIBtn_RifleGranadelauncer == pWnd)
+			OnBtnRifleGranadelauncher();
+		else if (&UIBtn_RifleGranade == pWnd)			
+			OnBtnRifleGranade();
 		break;
 
 	case DRAG_DROP_ITEM_DRAG:
@@ -742,6 +774,84 @@ void CUIBuyWeaponWnd::OnBtnBulletBuy(int slot){
         GetTop()->SendMessage(item, DRAG_DROP_ITEM_DB_CLICK, NULL);
 }
 
+void CUIBuyWeaponWnd::OnBtnSilencerBuy(int slot){
+	R_ASSERT(!UITopList[slot].GetDragDropItemsList().empty());
+		
+
+	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[slot].GetDragDropItemsList().begin());
+
+	item->AttachDetachAddon(	CUIDragDropItemMP::ID_SILENCER, 
+								!item->IsAddonAttached(CUIDragDropItemMP::ID_SILENCER), 
+								item->m_bHasRealRepresentation);
+}
+
+void CUIBuyWeaponWnd::OnBtnRifleScope(){
+	R_ASSERT(!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty());
+
+	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[RIFLE_SLOT].GetDragDropItemsList().begin());
+
+	item->AttachDetachAddon(	CUIDragDropItemMP::ID_SCOPE, 
+								!item->IsAddonAttached(CUIDragDropItemMP::ID_SCOPE), 
+								item->m_bHasRealRepresentation);
+
+}
+
+void CUIBuyWeaponWnd::OnBtnRifleGranadelauncher(){
+	R_ASSERT(!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty());
+
+	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[RIFLE_SLOT].GetDragDropItemsList().begin());
+
+	item->AttachDetachAddon(	CUIDragDropItemMP::ID_GRENADE_LAUNCHER, 
+								!item->IsAddonAttached(CUIDragDropItemMP::ID_GRENADE_LAUNCHER), 
+								item->m_bHasRealRepresentation);
+
+}
+
+void CUIBuyWeaponWnd::OnBtnRifleGranade(){
+	R_ASSERT(!UITopList[RIFLE_SLOT].GetDragDropItemsList().empty());
+
+	CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[RIFLE_SLOT].GetDragDropItemsList().begin());
+
+	R_ASSERT(item->bAddonsAvailable);
+
+	CUIDragDropItemMP* granade = UIBagWnd.GetItemBySectoin(item->GetGranadesSectionName());
+
+	if (granade)
+        GetTop()->SendMessage(granade, DRAG_DROP_ITEM_DB_CLICK, NULL);
+}
+
+void CUIBuyWeaponWnd::UpdateBuyButtons(){
+	if (UITopList[PISTOL_SLOT].GetDragDropItemsList().empty())
+	{
+		UIBtn_PistolBullet.Enable(false);
+		UIBtn_PistolSilencer.Enable(false);
+	} else{
+		CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[PISTOL_SLOT].GetDragDropItemsList().begin());
+		UIBtn_PistolBullet.Enable(true);
+		UIBtn_PistolSilencer.Enable(!item->m_AddonInfo[CUIDragDropItemMP::ID_SILENCER].strAddonName.empty());
+	}
+
+	if (UITopList[RIFLE_SLOT].GetDragDropItemsList().empty())
+	{		
+		UIBtn_RifleBullet.Enable(false);
+		UIBtn_RifleSilencer.Enable(false);
+		UIBtn_RifleScope.Enable(false);
+		UIBtn_RifleGranadelauncer.Enable(false);
+		UIBtn_RifleGranade.Enable(false);
+	} else{
+		CUIDragDropItemMP* item = smart_cast<CUIDragDropItemMP*>(*UITopList[RIFLE_SLOT].GetDragDropItemsList().begin());
+		
+		UIBtn_RifleBullet.Enable(true);
+		UIBtn_RifleSilencer.Enable(!item->m_AddonInfo[CUIDragDropItemMP::ID_SILENCER].strAddonName.empty());
+		UIBtn_RifleScope.Enable(!item->m_AddonInfo[CUIDragDropItemMP::ID_SCOPE].strAddonName.empty());
+		UIBtn_RifleGranadelauncer.Enable(!item->m_AddonInfo[CUIDragDropItemMP::ID_GRENADE_LAUNCHER].strAddonName.empty());
+		UIBtn_RifleGranade.Enable(1 == item->m_AddonInfo[CUIDragDropItemMP::ID_GRENADE_LAUNCHER].iAttachStatus);
+	}
+
+	
+    
+}
+
 bool CUIBuyWeaponWnd::ClearTooExpensiveItems(){
 	bool f = false;
 	bool res;
@@ -869,6 +979,7 @@ void CUIBuyWeaponWnd::Draw()
 
 void CUIBuyWeaponWnd::Update()
 {
+	UpdateBuyButtons();
 	// Update money amount for Bag
 	UIBagWnd.UpdateMoney(m_iMoneyAmount);
 	UIBagWnd.UpdateBuyPossibility();

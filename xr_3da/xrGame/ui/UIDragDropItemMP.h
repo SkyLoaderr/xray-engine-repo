@@ -95,6 +95,7 @@ public:
 	void				AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, bool bAttach, bool bRealRepresentationSet = false);
 	void				AttachDetachAllAddons(bool bAttach);
 	bool				IsAddonAttached(int iAddonIndex) { return m_AddonInfo[iAddonIndex].iAttachStatus == 1; }
+	LPCSTR				GetGranadesSectionName();
 
 	AddonIDs			IsOurAddon(CUIDragDropItemMP * pPossibleAddon);
 	virtual void		Draw();

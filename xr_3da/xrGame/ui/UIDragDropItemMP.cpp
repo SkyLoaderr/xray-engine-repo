@@ -131,15 +131,20 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID] = NULL;
 			}
 		}
-//		this_inventory->CheckBuyAvailabilityInShop();
 	}
 
 	m_AddonInfo[ID].iAttachStatus = bAttach ? 1 : 0;
-	//		m_pAddon[iAddonIndex]->GetUIStaticItem().SetColor(bAttach ? cAttached : cDetached);
-	//		m_pAddon[iAddonIndex]->EnableDragDrop(!bAttach);
-	//		
 }
 
+LPCSTR CUIDragDropItemMP::GetGranadesSectionName(){
+	LPCSTR itemsList; 
+	static string256 single_item;
+
+	itemsList = pSettings->r_string(GetSectionName(), "grenade_class");
+	_GetItem(itemsList, 0, single_item);
+
+	return single_item;
+}
 //////////////////////////////////////////////////////////////////////////
 
 void CUIDragDropItemMP::AttachDetachAllAddons(bool bAttach)
@@ -240,7 +245,7 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 
 		pDDItemMP->GetFont()->SetColor(pDDItemMP->GetColor());
 		UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), left, 
-			bottom - pDDItemMP->GetFont()->CurrentHeight(),
+			bottom - pDDItemMP->GetFont()->CurrentHeightRel(),
 			"%d", (pDDItemMP->GetPosInSubSection() + 1)%10);
 	}
 

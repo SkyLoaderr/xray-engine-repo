@@ -157,9 +157,14 @@ static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 	CUI3tButton UIBtnCancel;
 	CUI3tButton UIBtnAutobuy;
 	CUI3tButton UIBtnClear;
-	CUI3tButton UIBtn_BulletPistol;
-	CUI3tButton UIBtn_BulletRiffle;
 
+	CUI3tButton UIBtn_PistolBullet;
+	CUI3tButton UIBtn_PistolSilencer;
+	CUI3tButton UIBtn_RifleBullet;
+	CUI3tButton UIBtn_RifleSilencer;
+	CUI3tButton UIBtn_RifleScope;
+	CUI3tButton UIBtn_RifleGranadelauncer;
+	CUI3tButton UIBtn_RifleGranade;
 
 	// Дополнительные функции для получения информации о вещах в слотах
 	// Params:	slotNum	- номер слота (раздела) в котором ищем 
@@ -205,7 +210,13 @@ public:
 			void OnBtnAutobuyClicked();
 			void OnBtnAutobuyFocusReceive();
 			void OnBtnAutobuyFocusLost();
-			void OnBtnBulletBuy(int slot);			
+			void OnBtnBulletBuy(int slot);
+			void OnBtnSilencerBuy(int slot);
+			void OnBtnRifleScope();
+			void OnBtnRifleGranadelauncher();
+			void OnBtnRifleGranade();
+			void UpdateBuyButtons();
+
 			void SetCurrentDDItem(CUIWindow* pWnd);
 
 			bool ClearTooExpensiveItems();
