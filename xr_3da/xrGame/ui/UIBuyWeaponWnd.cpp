@@ -285,6 +285,17 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	AttachChild(&UIBtn_RifleBullet);
 	CUIXmlInit::Init3tButton(uiXml, "btn_rifle_bullets", 0, &UIBtn_RifleBullet);
+
+	// disable
+
+	UIBtn_PistolSilencer.Enable(false);
+	UIBtn_PistolSilencer.SetVisible(false);
+	UIBtn_RifleSilencer.Enable(false);
+	UIBtn_RifleSilencer.SetVisible(false);
+	UIBtn_RifleScope.Enable(false);
+	UIBtn_RifleScope.SetVisible(false);
+	UIBtn_RifleGranadelauncer.Enable(false);
+	UIBtn_RifleGranadelauncer.SetVisible(false);
 }
 
 void CUIBuyWeaponWnd::OnMouseScroll(float iDirection){

@@ -22,7 +22,7 @@
 	</btn_riffle_granadelauncher>
 	
 	<btn_riffle_granades x="619" y="77" width="22" height="22" hint="ui_inv_granades_rifle">
-		<texture>ui_beltbut_granade</texture>
+		<texture>ui_beltbut_granadeBig</texture>
 	</btn_riffle_granades>
 	
 	<btn_rifle_bullets x="619" y="99" width="22" height="22" hint="ui_inv_ammo_rifle">
