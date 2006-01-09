@@ -681,7 +681,8 @@ void CApplication::LoadDraw		()
 //draw level-specific screenshot
 		if(hLevelLogo){
 			Frect						r;
-			r.set						(278,367,743,623);
+			r.lt.set					(257,369);
+			r.rb.add					(r.lt,Fvector2().set(512,256));
 			r.lt.mul					(k);						
 			r.rb.mul					(k);						
 			pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
