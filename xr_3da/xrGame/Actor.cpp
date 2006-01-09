@@ -1560,7 +1560,7 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd->MotionIcon();
 	if(mstate_rl&mcClimb)
 	{
-		motion_icon.ShowState(CUIMotionIcon::stClimb);
+//		motion_icon.ShowState(CUIMotionIcon::stClimb);
 	}
 	else
 	{
