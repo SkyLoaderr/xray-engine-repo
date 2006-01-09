@@ -49,19 +49,21 @@ void CUIEncyclopediaArticleWnd::SetArticle(CEncyclopediaArticle* article)
 		img_x							= _max(0.0f, img_x);
 		m_UIImage->SetWndPos			(img_x ,m_UIImage->GetWndPos().y);
 	};
+	m_UIText->SetText					(*CStringTable().translate(article->data()->text.c_str()));
+	m_UIText->AdjustHeightToText		();
 
-	
-	m_UIText->SetWndPos				(m_UIText->GetWndPos().x, m_UIImage->GetWndPos().y + m_UIImage->GetHeight());
-	m_UIText->SetText				(*CStringTable().translate(article->data()->text.c_str()));
-	m_UIText->AdjustHeightToText	();
-
-	SetHeight						(	m_UIImage->GetWndPos().y + m_UIImage->GetHeight()+
-										m_UIText->GetHeight());
+	AdjustLauout						();
 }
 
-void CUIEncyclopediaArticleWnd::SetArticle	(LPCSTR article)
+void CUIEncyclopediaArticleWnd::AdjustLauout()
 {
-	CEncyclopediaArticle	A;
-	A.Load		(article);
-	SetArticle	(&A);
+	m_UIText->SetWndPos					(m_UIText->GetWndPos().x, m_UIImage->GetWndPos().y + m_UIImage->GetHeight());
+	SetHeight							(m_UIImage->GetWndPos().y + m_UIImage->GetHeight()+m_UIText->GetHeight());
+}
+
+void CUIEncyclopediaArticleWnd::SetArticle(LPCSTR article)
+{
+	CEncyclopediaArticle				A;
+	A.Load								(article);
+	SetArticle							(&A);
 }

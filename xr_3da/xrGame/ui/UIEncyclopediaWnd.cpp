@@ -87,10 +87,6 @@ void CUIEncyclopediaWnd::Init()
 	UIInfoList					= xr_new<CUIScrollView>(); UIInfoList->SetAutoDelete(true);
 	UIEncyclopediaInfoBkg->AttachChild(UIInfoList);
 	xml_init.InitScrollView(uiXml, "info_list", 0, UIInfoList);
-//	UIInfoList->EnableScrollBar(true);
-//	UIInfoList->SetNewRenderMethod(true);
-//	UIInfoList->ActivateList(false);
-//	UIInfoList->SetMessageTarget(UIInfo);
 
 
 	string256 header;
@@ -99,12 +95,6 @@ void CUIEncyclopediaWnd::Init()
 
 	xml_init.InitAutoStatic(uiXml, "left_auto_static", UIEncyclopediaInfoBkg);
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", UIEncyclopediaIdxBkg);
-/*
-	// Кнопка возврата
-	AttachChild(&UIBack);
-	xml_init.InitButton(uiXml, "back_button", 0, &UIBack);
-	UIBack.Show(false);
-*/
 }
 
 
@@ -123,8 +113,6 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIEncyclopediaWnd::Draw()
 {

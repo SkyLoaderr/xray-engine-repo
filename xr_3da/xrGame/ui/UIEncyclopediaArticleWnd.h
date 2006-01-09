@@ -12,6 +12,9 @@ CUIStatic*				m_UIImage;
 CUIStatic*				m_UIText;
 CEncyclopediaArticle*	m_Article;
 
+protected:
+			void		AdjustLauout				();
+
 public:
 					CUIEncyclopediaArticleWnd		();
 	virtual			~CUIEncyclopediaArticleWnd		();

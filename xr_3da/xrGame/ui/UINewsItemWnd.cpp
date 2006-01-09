@@ -46,7 +46,7 @@ void CUINewsItemWnd::Init				(LPCSTR xml_name, LPCSTR start_from)
 
 void CUINewsItemWnd::Setup			(GAME_NEWS_DATA& news_data)
 {
-	m_UIText->SetText				(news_data.news_text.c_str());
+	m_UIText->SetTextST				(news_data.news_text.c_str());
 	m_UIText->AdjustHeightToText	();
 	float h1						= m_UIText->GetWndPos().y + m_UIText->GetHeight();
 
@@ -55,7 +55,7 @@ void CUINewsItemWnd::Setup			(GAME_NEWS_DATA& news_data)
 	split_time						(news_data.receive_time, years, months, days, hours, minutes, seconds, milliseconds);
 	sprintf							(_time, "%02i/%02i/%04i %02i:%02i", days, months, years, hours, minutes);
 
-	m_UITextDate->SetTextST			(_time);
+	m_UITextDate->SetText			(_time);
 	m_UITextDate->AdjustHeightToText();
 	float h2						= m_UITextDate->GetWndPos().y + m_UITextDate->GetHeight();
 
