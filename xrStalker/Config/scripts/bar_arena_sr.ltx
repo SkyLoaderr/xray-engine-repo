@@ -15,7 +15,7 @@ on_info = {-bar_arena_start_introduce} sr_idle@inside %+bar_arena_door_2_open +b
 on_info = {+bar_arena_monstr_ready} sr_idle@wait_actor %-bar_arena_door_2_open +bar_arena_door_3_open%
 
 [sr_idle@wait_actor]
-on_info = {=bar_arena_actor_fight} sr_idle@fight %-bar_arena_door_3_open%
+on_timer = 4000 | {=bar_arena_actor_fight} sr_idle@fight %-bar_arena_door_3_open%
 
 [sr_idle@fight]
 on_info = {+bar_arena_monstr_dead} sr_idle@outer %+bar_arena_door_3_open%
