@@ -513,8 +513,11 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_bridge_post2",
 			idle = 0,
-			prior = 10, state = {0},
-			in_rest = "", out_rest = "escape_bridge_zone"
+			prior = 15, state = {0},
+			in_rest = "", out_rest = "escape_bridge_zone",
+			predicate = function(obj_info) 
+			            	return obj_info.profile_name == "esc_soldier_commander"
+			            end			
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_bridge_post3",
