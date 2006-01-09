@@ -1,31 +1,31 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
-	<btn_pistol_silencer x="262" y="77" width="22" height="22" hint="Buy silencer for Pistol (A)">
+	<btn_pistol_silencer x="262" y="77" width="22" height="22" hint="ui_inv_silencer_pistol">
 		<texture>ui_beltbut_silencer</texture>
 	</btn_pistol_silencer>
 	
-	<btn_pistol_bullets x="262" y="99" width="22" height="22" hint="Buy base ammo for Pistol (Q)">
+	<btn_pistol_bullets x="262" y="99" width="22" height="22" hint="ui_inv_ammo_pistol">
 		<texture>ui_beltbut_patrons</texture>
 	</btn_pistol_bullets>
 	
-	<btn_rifle_scope x="619" y="11" width="22" height="22" hint="Buy scope for rifle (S)">
+	<btn_rifle_scope x="619" y="11" width="22" height="22" hint="ui_inv_scope_rifle">
 		<texture>ui_beltbut_aim</texture>		
 	</btn_rifle_scope>
 	
-	<btn_rifle_silencer x="619" y="33" width="22" height="22" hint="Buy silencer for rifle (F)">
+	<btn_rifle_silencer x="619" y="33" width="22" height="22" hint="ui_inv_silencer_rifle">
 		<texture>ui_beltbut_silencer</texture>		
 	</btn_rifle_silencer>
 	
-	<btn_riffle_granadelauncher x="619" y="55" width="22" height="22" hint="Buy granade launcher for rifle (D)">
+	<btn_riffle_granadelauncher x="619" y="55" width="22" height="22" hint="ui_inv_granadelauncher_rifle">
 		<texture>ui_beltbut_granadeBig</texture>
 	</btn_riffle_granadelauncher>
 	
-	<btn_riffle_granades x="619" y="77" width="22" height="22" hint="Buy granades for granade launcher (E)">
+	<btn_riffle_granades x="619" y="77" width="22" height="22" hint="ui_inv_granades_rifle">
 		<texture>ui_beltbut_granade</texture>
 	</btn_riffle_granades>
 	
-	<btn_rifle_bullets x="619" y="99" width="22" height="22" hint="Buy ammo for rifle (W)">
+	<btn_rifle_bullets x="619" y="99" width="22" height="22" hint="ui_inv_ammo_rifle">
 		<texture>ui_beltbut_patrons</texture>
 	</btn_rifle_bullets>	
 
@@ -382,7 +382,7 @@
 		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
 		<hint x="-42" y="12" width="29" height="29">
-			<text font="letterica25" x="0" y="-1" align="c">A</text>
+			<text font="letterica25" x="0" y="-1" align="c">X</text>
 			<text_color>
 				<e a="255" r="255" g="255" b="0"/>
 				<d a="255" r="87" g="87" b="72"/>					

@@ -87,7 +87,25 @@
     <string id="ui_inv_total_money">
         <text>Total Money</text>
     </string>
-    <string id="ui_inv_weight">
-        <text>Weight</text>
+    <string id="ui_inv_silencer_pistol">
+        <text>Buy silencer for Pistol (A)</text>
+    </string>
+    <string id="ui_inv_ammo_pistol">
+        <text>Buy base ammo for Pistol (Q)</text>
+    </string>
+    <string id="ui_inv_scope_rifle">
+        <text>Buy scope for rifle (S)</text>
+    </string>
+    <string id="ui_inv_silencer_rifle">
+        <text>Buy silencer for rifle (F)</text>
+    </string>
+    <string id="ui_inv_granadelauncher_rifle">
+        <text>Buy granade launcher for rifle (D)</text>
+    </string>
+    <string id="ui_inv_granades_rifle">
+        <text>Buy granades for granade launcher (E)</text>
+    </string>
+    <string id="ui_inv_ammo_rifle">
+        <text>Buy ammo for rifle (W)</text>
     </string>
 </string_table>

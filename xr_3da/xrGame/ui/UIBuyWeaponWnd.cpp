@@ -1428,23 +1428,29 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 	if (DIK_ESCAPE == dik)
 		UIBtnCancel.OnClick();
-
 	else if (g_iOkAccelerator == dik || DIK_SPACE == dik)
 		UIBtnOK.OnClick();
-
 	else if (DIK_B == dik)
 		UITabControl.SetActiveState();
-
 	else if (DIK_C == dik)
-		UIBtnClear.OnClick();
-	
-	else if (DIK_A == dik)
+		UIBtnClear.OnClick();	
+	else if (DIK_X == dik)
 		UIBtnAutobuy.OnClick();
-
-	else if (DIK_Q == dik)
+	else if (DIK_Q == dik && UIBtn_PistolBullet.IsEnabled())
 		OnBtnBulletBuy(PISTOL_SLOT);
-	else if (DIK_W == dik)
+	else if (DIK_W == dik && UIBtn_RifleBullet.IsEnabled())
 		OnBtnBulletBuy(RIFLE_SLOT);
+	else if (DIK_E == dik && UIBtn_RifleGranade.IsEnabled())
+		OnBtnRifleGranade();
+	else if (DIK_A == dik && UIBtn_PistolSilencer.IsEnabled())
+		OnBtnSilencerBuy(PISTOL_SLOT);
+	else if (DIK_F == dik && UIBtn_RifleSilencer.IsEnabled())
+		OnBtnSilencerBuy(RIFLE_SLOT);
+	else if (DIK_S == dik && UIBtn_RifleScope.IsEnabled())
+		OnBtnRifleScope();
+	else if (DIK_D == dik && UIBtn_RifleGranadelauncer.IsEnabled())
+		OnBtnRifleGranadelauncher();
+
 
 	return true;
 }

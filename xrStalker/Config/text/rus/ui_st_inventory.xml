@@ -85,9 +85,30 @@
         <text>Тяжелое</text>
     </string>
     <string id="cant_sleep_near_enemies">
-		<text>cant sleep near enemies</text>
+		<text>Нельзя спать возле врагов</text>
     </string>
     <string id="cant_sleep_not_on_solid_ground">
-		<text>cant sleep not on solid ground</text>
+		<text>Нельзя спать на твердой земле</text>
+    </string>
+    <string id="ui_inv_silencer_pistol">
+        <text>Купит глушитель для пистолета (A)</text>
+    </string>
+    <string id="ui_inv_ammo_pistol">
+        <text>Купит базовые патроны для пистолета (Q)</text>
+    </string>
+    <string id="ui_inv_scope_rifle">
+        <text>Купить оптический прицел для винтовки (S)</text>
+    </string>
+    <string id="ui_inv_silencer_rifle">
+        <text>Купить глушитель для винтовки (F)</text>
+    </string>
+    <string id="ui_inv_granadelauncher_rifle">
+        <text>Купить подствольник для винтовки (D)</text>
+    </string>
+    <string id="ui_inv_granades_rifle">
+        <text>Купить гранаты для подствольника (E)</text>
+    </string>
+    <string id="ui_inv_ammo_rifle">
+        <text>Купить патроны для винтовки (W)</text>
     </string>
 </string_table>
