@@ -837,7 +837,7 @@ void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 			return;
 		}
 	}
-	Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - can't find item",pDDItem->GetSectionName());
+//	Msg("mp_buymenu: CUIBag::DeleteCopy(%s) - can't find item",pDDItem->GetSectionName());
  
 }
 
