@@ -9,7 +9,6 @@ public:
 						stNormal,
 						stCrouch,
 						stCreep,
-						stClimb,
 						stLast
 					};
 private:
