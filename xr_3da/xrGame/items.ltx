@@ -381,6 +381,22 @@ animation_slot		= 4
 ;hud item
 hud = wpn_vodka_hud
 
+[energy_drink]:medkit
+$spawn 				= "food and drugs\energy_drink"
+inv_name			= energy_drink_name
+inv_name_short		= energy_drink_short_name
+visual				= equipments\item_aptechka.ogf
+description			= enc_equipment_energydrink
+cost				= 10
+
+eat_health			= 0
+eat_satiety			= 0
+eat_power			= 1.0
+eat_radiation		= 0
+wounds_heal_perc	= 0
+eat_portions_num	= 1
+eat_max_power		= 0.2
+
 
 [bandage]:identity_immunities
 GroupControlSection	= spawn_group
