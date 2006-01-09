@@ -229,12 +229,14 @@ function process_info_portion(info_id)
 		level_tasks.remove_location(025, "green_location")
 		
 	elseif info_id == "esc_kolyan_lost" then
-		printf("esc_kolyan_lost location!!!!!!!!")
 		level_tasks.add_location(028, "crlc_big", "esc_mill")
 		
 	elseif info_id == "esc_kolyan_found" then
 		level_tasks.remove_location(028, "crlc_big")
 		
+	elseif info_id == "esc_bridge_soldiers" then
+		level_tasks.add_location(031, "crlc_big", "soldiers_bridge")
+
 	return false
 	end
 end
