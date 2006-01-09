@@ -628,7 +628,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_balon_1</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		<supplies>
 			[spawn] \n
