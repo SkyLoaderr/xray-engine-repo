@@ -390,7 +390,7 @@
 	<part_2_binocular>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">binoc_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -404,7 +404,7 @@
 			<pda_section/>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="2" length_sec="5000" x="500" y="600" width="500" height="150" alignment="c" stretch="1"
+				<auto_static start_time="2" length_sec="5000" x="500" y="750" width="550" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="letterica25" r="225" g="225" b="250">binoc_tutorial</text>
@@ -417,21 +417,21 @@
 	<part_3_jump><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">move_tutorial</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
 
 		<item><!--Для того чтобы перепрыгнуть невысокое препятствие - нажмите клавишу "пробел" $$ACTION_JUMP$$-->
 			<length_sec>5</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
 			<pda_section/>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="1" length_sec="5000" x="500" y="600" width="500" height="150" alignment="c" stretch="1"
+				<auto_static start_time="1" length_sec="5000" x="500" y="750" width="500" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="letterica25" r="225" g="225" b="250">jump_tutorial</text>
@@ -443,7 +443,7 @@
 	<part_4_crouch><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">move_tutorial</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -457,7 +457,7 @@
 			<pda_section/>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="1" length_sec="5000" x="500" y="700" width="600" height="150" alignment="c" stretch="1"
+				<auto_static start_time="1" length_sec="5000" x="500" y="750" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="letterica25" r="225" g="225" b="250">crouch_tutorial</text>
@@ -470,7 +470,7 @@
 	<part_5_crouch_down><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">move_tutorial</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -484,7 +484,7 @@
 			<pda_section/>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="1" length_sec="5000" x="550" y="700" width="500" height="150" alignment="c" stretch="1"
+				<auto_static start_time="1" length_sec="5000" x="550" y="750" width="500" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="letterica25" r="225" g="225" b="250">crouch_down_tutorial</text>
@@ -496,7 +496,7 @@
 	<part_6_radiation><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">radiation_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -522,7 +522,7 @@
 	<part_7_starvation><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">starvation_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -548,7 +548,7 @@
 	<part_8_wound><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">wound_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -574,7 +574,7 @@
 	<part_9_weapon><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">weapon_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -600,14 +600,14 @@
 	<part_10_sprint><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">sprint_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
 		
 		<item><!-- Бег в спринте -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -626,7 +626,7 @@
 	<part_11_weakness><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">weakness_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
@@ -652,14 +652,14 @@
 	<part_12_relations><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">relation_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
 		
 		<item><!-- отношение персонажей -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -678,12 +678,12 @@
 	<part_13_sleep><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">sleep_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
 		
-		<item><!-- отношение персонажей -->
+		<item><!-- сон -->
 			<length_sec>15</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
@@ -704,7 +704,7 @@
 	<part_14_overload><!--делаю новый туториал-->
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x=900 y="700" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">overload_tut</text>
+				<text/>
 			</auto_static>
 			
 		</global_wnd>
