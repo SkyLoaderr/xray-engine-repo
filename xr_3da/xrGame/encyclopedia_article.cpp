@@ -75,16 +75,17 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	//группа
 	data()->group = uiXml.ReadAttrib(pNode, "group", "");
 	//секция ltx, откуда читать данные
-	data()->ltx = uiXml.Read(pNode, "ltx", 0, NULL);
+	LPCSTR ltx = uiXml.Read(pNode, "ltx", 0, NULL);
 
-	if(*data()->ltx)
+
+	if(ltx)
 	{
 		data()->image.SetShader(InventoryUtilities::GetEquipmentIconsShader());
 
-		float x			= float(pSettings->r_u32(data()->ltx, "inv_grid_x") * INV_GRID_WIDTH);
-		float y			= float(pSettings->r_u32(data()->ltx, "inv_grid_y") * INV_GRID_HEIGHT);
-		float width		= float(pSettings->r_u32(data()->ltx, "inv_grid_width") * INV_GRID_WIDTH);
-		float height	= float(pSettings->r_u32(data()->ltx, "inv_grid_height") * INV_GRID_HEIGHT);
+		float x			= float(pSettings->r_u32(ltx, "inv_grid_x") * INV_GRID_WIDTH);
+		float y			= float(pSettings->r_u32(ltx, "inv_grid_y") * INV_GRID_HEIGHT);
+		float width		= float(pSettings->r_u32(ltx, "inv_grid_width") * INV_GRID_WIDTH);
+		float height	= float(pSettings->r_u32(ltx, "inv_grid_height") * INV_GRID_HEIGHT);
 
 		data()->image.GetUIStaticItem().SetOriginalRect(x, y, width, height);
 		data()->image.ClipperOn();
@@ -139,6 +140,8 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	}else{
 		Msg("incorrect article type definition for [%s]",*item_data.id);
 	}
+
+	data()->ui_template_name = uiXml.ReadAttrib(pNode, "ui_template", "common");
 }
 
 void CEncyclopediaArticle::InitXmlIdToIndex()

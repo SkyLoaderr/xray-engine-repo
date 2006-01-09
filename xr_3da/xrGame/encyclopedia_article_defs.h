@@ -7,9 +7,7 @@
 #include "alife_space.h"
 
 //статьи в энциклопедии
-//typedef int			ARTICLE_INDEX;
 typedef shared_str	ARTICLE_ID;
-//#define NO_ARTICLE	ARTICLE_INDEX(-1)
 
 #include "object_interfaces.h"
 
@@ -34,12 +32,11 @@ struct ARTICLE_DATA : public IPureSerializeObject<IReader,IWriter>
 	virtual void load (IReader& stream);
 	virtual void save (IWriter&);
 
-	ALife::_TIME_ID receive_time;
-	ARTICLE_ID article_id;
-	//whether the article has been read
-	bool readed;
+	ALife::_TIME_ID			receive_time;
+	ARTICLE_ID				article_id;
+	bool					readed;
 
-	EArticleType article_type;
+	EArticleType			article_type;
 };
 
 DEFINE_VECTOR		(ARTICLE_ID, ARTICLE_ID_VECTOR, ARTICLE_ID_IT);
