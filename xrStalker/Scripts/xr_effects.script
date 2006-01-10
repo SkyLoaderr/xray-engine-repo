@@ -311,9 +311,9 @@ end
 -- постпроцесс и влияние удара в морду
 function actor_punch(npc)
 	printf("PUNCH CALLED")
---	if db.actor:position():distance_to_sqr(npc:position()) > 2.25 then
---		return
---	end
+	if db.actor:position():distance_to_sqr(npc:position()) > 4 then
+		return
+	end
 
 	local active_item = db.actor:active_item()
 	if active_item then
