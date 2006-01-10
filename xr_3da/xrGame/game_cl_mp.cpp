@@ -567,10 +567,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 	game_PlayerState* pPlayer = GetPlayerByGameID(KilledID);
 	game_PlayerState* pKiller = GetPlayerByGameID(KillerID);
 	//-----------------------------------------------------------
-	string512 PlayerText = "";
-	string512 Text = "";
-	sprintf(PlayerText, "%s%s ", Color_Teams[pPlayer->team], pPlayer->name);
-
 	KillMessageStruct KMS;
 	KMS.m_victim.m_name = pPlayer->name;
 	KMS.m_victim.m_color = Color_Teams_u32[pPlayer->team];
@@ -589,11 +585,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 
 			if (pWeapon)
 			{
-				sprintf (Text, "%skilled from %s%s ",
-						Color_Main,
-						Color_Weapon,
-						*(pWeapon->cName()));
-				//-----------------------------------
 				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(pWeapon);
 				if (pIItem)
 				{
@@ -604,22 +595,9 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetKillMsgHeight();
 				};
 			}
-			else
-			{
-				sprintf (Text, "%skilled ",
-						Color_Main);
-			};
 
 			if (pKiller || pOKiller)
 			{
-				string512 KillerText;
-				
-				sprintf (KillerText, "%sby %s%s ",
-						Color_Main,
-						pKiller ? Color_Teams[pKiller->team] : Color_Neutral,
-						pKiller ? pKiller->name : *(pOKiller->cNameSect()));
-				std::strcat(Text, KillerText);
-				
 				if (!pKiller)
 				{
 					CCustomZone* pAnomaly = smart_cast<CCustomZone*>(pOKiller);
@@ -632,14 +610,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
 						break;
 					}
-					/*
-					CActor* pActor = smart_cast<CActor*>(pOKiller);
-					if (pActor)
-					{
-						KMS.m_killer.m_name = pKiller ? pKiller->name : *(pActor->cName());
-						KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Teams_u32[pActor->g_Team()];
-					};
-					*/
 				};
 
 				if (pKiller)
@@ -649,7 +619,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				};
 			};
 			//-------------------------------------------
-			string512 SpecialKillText = "";
 			switch (SpecialKill)
 			{
 			case SKT_NONE:		// not special
@@ -662,10 +631,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				}break;
 			case SKT_HEADSHOT:		// Head Shot
 				{
-					sprintf(SpecialKillText, "%swith %sHEADSHOT!",
-						Color_Main,
-						Color_Weapon);					
-
 					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
 					KMS.m_ext_info.m_rect.x1 = 62;
 					KMS.m_ext_info.m_rect.y1 = 202;
@@ -677,11 +642,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				}break;
 			case SKT_BACKSTAB:		// BackStab
 				{
-					
-					sprintf(SpecialKillText, "%swith %sBACKSTAB!",
-						Color_Main,
-						Color_Weapon);
-
 					KMS.m_initiator.m_shader = GetKillEventIconsShader();
 					KMS.m_initiator.m_rect.x1 = 88;
 					KMS.m_initiator.m_rect.y1 = 202;
@@ -692,13 +652,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						PlaySndMessage(ID_ASSASSIN);					
 				}break;
 			}
-			std::strcat(Text, SpecialKillText);
-
 			//suicide
 			if (KilledID == KillerID)
 			{
 				KMS.m_victim.m_name = NULL;
-//				KMS.m_victim.m_name = " ";
 
 				KMS.m_ext_info.m_shader = GetKillEventIconsShader();
 				KMS.m_ext_info.m_rect.x1 = 32;
@@ -711,13 +668,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 		//-----------------------------------------------------------
 	case KT_BLEEDING:			//from bleeding
 		{
-			sprintf(Text, "%shas %sbleed out %s, thanks to %s%s",
-				Color_Main,
-				Color_Weapon,
-				Color_Main,
-				pKiller ? Color_Teams[pKiller->team] : Color_Neutral,
-				pKiller ? pKiller->name : *(pOKiller->cName()));
-
 			KMS.m_initiator.m_shader = GetBloodLossIconsShader();
 			KMS.m_initiator.m_rect.x1 = 238;
 			KMS.m_initiator.m_rect.y1 = 31;
@@ -747,22 +697,15 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 		//-----------------------------------------------------------
 	case KT_RADIATION:			//from radiation
 		{			
-			sprintf(Text, "%shas died from %sradiation",
-				Color_Main,
-				Color_Radiation);
-
 			KMS.m_initiator.m_shader = GetRadiationIconsShader();
 			KMS.m_initiator.m_rect.x1 = 215;
 			KMS.m_initiator.m_rect.y1 = 195;
 			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 24;
 			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 24;
-
 		}break;
 	default:
 		break;
 	}
-	std::strcat(PlayerText, Text);
-
 	if (HUD().GetUI() && HUD().GetUI()->m_pMessagesWnd)
 		HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
 };
