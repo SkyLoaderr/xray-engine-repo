@@ -411,8 +411,8 @@ void	R_dsgraph_structure::r_dsgraph_render_wmarks	()
 {
 #if	RENDER==R_R2
 	// Sorted (back to front)
-	mapEmissive.traverseLR	(sorted_L1);
-	mapEmissive.clear		();
+	mapWmark.traverseLR	(sorted_L1);
+	mapWmark.clear		();
 #endif
 }
 
