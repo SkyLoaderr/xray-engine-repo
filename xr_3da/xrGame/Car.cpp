@@ -516,7 +516,7 @@ void	CCar::Hit							(SHit* pHDS)
 //		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
 		CPHDestroyable::SetFatalHit(HDS);
 	}
-	HitEffect();
+	CDamagableItem::HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
 		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/* /100.f */);
 }
@@ -1734,7 +1734,7 @@ void CCar::CarExplode()
 
 	if(b_exploded) return;
 	if(m_car_weapon)m_car_weapon->Action(CCarWeapon::eWpnActivate,0);
-
+	m_lights.TurnOffHeadLights();
 	b_exploded=true;
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
 

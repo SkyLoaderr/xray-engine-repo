@@ -162,9 +162,22 @@ void CCarLights::SwitchHeadLights()
 	VERIFY(!ph_world->Processing());
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
 	for(;i!=e;++i) (*i)->Switch();
-	
-
 }
+
+void CCarLights::TurnOnHeadLights()
+{
+
+	VERIFY(!ph_world->Processing());
+	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
+	for(;i!=e;++i) (*i)->TurnOn();
+}
+void CCarLights::TurnOffHeadLights()
+{
+	VERIFY(!ph_world->Processing());
+	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
+	for(;i!=e;++i) (*i)->TurnOff();
+}
+
 bool CCarLights::IsLight(u16 bone_id)
 {
 	SCarLight* light=NULL;

@@ -1572,6 +1572,9 @@
 				Name="weapons"
 				Filter="">
 				<File
+					RelativePath=".\Config\weapons\delayed_action_fuse.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\weapons\w_abakan.ltx">
 				</File>
 				<File

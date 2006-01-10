@@ -7978,6 +7978,16 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="DelayedActionFuse"
+						Filter="">
+						<File
+							RelativePath=".\DelayedActionFuse.cpp">
+						</File>
+						<File
+							RelativePath=".\DelayedActionFuse.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Particles"

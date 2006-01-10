@@ -129,6 +129,7 @@ void CExplosive::net_Destroy	()
 	m_blasted_objects.clear		();
 	m_bExploding				= false;
 	StopLight					();
+	m_bExplodeEventSent			= false;
 }
 
 
@@ -501,9 +502,10 @@ void CExplosive::ExplodeParams(const Fvector& pos,
 void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 {
 	if (OnClient() || cast_game_object()->Remote()) return;
+
 //	if( m_bExplodeEventSent ) 
 //		return;
-
+	VERIFY(!m_bExplodeEventSent);
 	VERIFY(0xffff != Initiator());
 
 	NET_Packet		P;
@@ -513,7 +515,7 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 	P.w_vec3		(const_cast<Fvector&>(normal));
 	cast_game_object()->u_EventSend		(P);
 
-//	m_bExplodeEventSent = true;
+	m_bExplodeEventSent = true;
 }
 
 void CExplosive::FindNormal(Fvector& normal)

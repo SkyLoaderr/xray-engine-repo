@@ -35,6 +35,8 @@ public:
 	void	Update				()								;
 	CCar*	PCar				()								{return m_pcar;}
 	void	SwitchHeadLights	()								;
+	void	TurnOnHeadLights	()								;
+	void	TurnOffHeadLights	()								;
 	bool	IsLight				(u16 bone_id)					;
 	bool	findLight			(u16 bone_id,SCarLight* &light);
 			CCarLights			()								;

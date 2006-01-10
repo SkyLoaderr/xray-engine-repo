@@ -15,7 +15,7 @@
 #include "hit_immunity.h"
 #include "Explosive.h"
 #include "PHDestroyable.h"
-
+#include "DelayedActionFuse.h"
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -43,7 +43,8 @@ class CCar :
 	public CPHDestroyable,
 	public CPHCollisionDamageReceiver,
 	public CHitImmunity,
-	public CExplosive
+	public CExplosive,
+	public CDelayedActionFuse
 {
 #ifdef DEBUG
 	CFunctionGraph 					m_dbg_power_rpm			;
@@ -80,6 +81,8 @@ static	const u16				cAsCallsnum						=3;
 /////////////////////////////////////////////////////////////////////////
 	virtual void						ApplyDamage					(u16 level)				;
 	virtual	float						Health						()						{return GetfHealth();}
+	virtual void						ChangeCondition				(float fDeltaCondition)	{CEntity::CalcCondition(fDeltaCondition);}
+	virtual void						StartTimerEffects			()						{};
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						{return static_cast<CPhysicsShellHolder*>(this);}
 	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver	()						{return static_cast<CPHCollisionDamageReceiver*>(this);}

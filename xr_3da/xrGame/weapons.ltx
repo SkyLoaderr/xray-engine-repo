@@ -1,3 +1,4 @@
+#include "delayed_action_fuse.ltx"
 #include "w_ak74.ltx"
 #include "w_ak74u.ltx"
 #include "w_fn2000.ltx"
@@ -1280,7 +1281,7 @@ trail_light_range 	= 8.0
 ;; Explosive Inventory Items
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-[explosive_fuelcan]:identity_immunities
+[explosive_fuelcan]:identity_immunities,delayed_action_fuse
 
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1350,7 +1351,7 @@ explosion_immunity		= 1.0
 fire_wound_immunity		= 0.7
 
 
-[explosive_tank]:identity_immunities
+[explosive_tank]:identity_immunities,delayed_action_fuse
 
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1420,7 +1421,7 @@ explosion_immunity		= 1.0
 fire_wound_immunity		= 0.7
 
 
-[explosive_barrel_low]:identity_immunities
+[explosive_barrel_low]:identity_immunities,delayed_action_fuse
 
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1490,7 +1491,7 @@ explosion_immunity		= 1
 fire_wound_immunity		= 3
 
 
-[explosive_barrel]:identity_immunities
+[explosive_barrel]:identity_immunities,delayed_action_fuse
 
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1560,7 +1561,7 @@ explosion_immunity		= 1
 fire_wound_immunity		= 0.7
 
 
-[explosive_mobiltank]:identity_immunities
+[explosive_mobiltank]:identity_immunities,delayed_action_fuse
 
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -1630,7 +1631,7 @@ explosion_immunity		= 1.0
 fire_wound_immunity		= 0.7
 
 
-[explosive_dinamit]
+[explosive_dinamit],delayed_action_fuse
 
 GroupControlSection	= spawn_group
 discovery_dependency = 
