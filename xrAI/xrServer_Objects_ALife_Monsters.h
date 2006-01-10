@@ -214,6 +214,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	u32								m_ef_detector_type;
 
 	ALife::_OBJECT_ID				m_killer_id;
+	ALife::_TIME_ID					m_game_death_time;
 									
 									CSE_ALifeCreatureAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureAbstract();
@@ -228,6 +229,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual u32						ef_creature_type		() const;
 	virtual u32						ef_weapon_type			() const;
 	virtual u32						ef_detector_type		() const;
+	virtual	void					on_death				(CSE_Abstract *killer);
 #ifdef XRGAME_EXPORTS
 	virtual void					on_spawn				();
 #endif

@@ -189,12 +189,19 @@ void CAI_Stalker::reload			(LPCSTR section)
 #endif
 
 	CCustomMonster::reload			(section);
-	CStepManager::reload			(section);
-	CObjectHandler::reload			(section);
+	if (!already_dead())
+		CStepManager::reload		(section);
+
+//	if (!already_dead())
+		CObjectHandler::reload		(section);
+
 	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
 
-	sight().reload					(section);
-	movement().reload				(section);
+	if (!already_dead())
+		sight().reload				(section);
+
+	if (!already_dead())
+		movement().reload			(section);
 
 	m_disp_walk_stand				= pSettings->r_float(section,"disp_walk_stand");
 	m_disp_walk_crouch				= pSettings->r_float(section,"disp_walk_crouch");
@@ -253,7 +260,8 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	if (!CObjectHandler::net_Spawn(DC) || !inherited::net_Spawn(DC))
 		return						(FALSE);
 
-	m_pPhysics_support->in_NetSpawn	(e);
+	if (!already_dead())
+		m_pPhysics_support->in_NetSpawn	(e);
 	
 	m_dwMoney						= tpHuman->m_dwMoney;
 
@@ -600,7 +608,8 @@ void CAI_Stalker::UpdateCL()
 	STOP_PROFILE
 	
 	START_PROFILE("stalker/client_update/physics")
-	m_pPhysics_support->in_UpdateCL	();
+	if (!already_dead())
+		m_pPhysics_support->in_UpdateCL	();
 	STOP_PROFILE
 
 	if (g_Alive()) {
@@ -937,4 +946,12 @@ void CAI_Stalker::UpdateCamera			()
 	}
 
 	g_pGameLevel->Cameras().Update		(eye_matrix.c,temp,eye_matrix.j,new_fov,.75f,new_range);
+}
+
+bool CAI_Stalker::can_attach			(const CInventoryItem *inventory_item) const
+{
+	if (already_dead())
+		return							(false);
+
+	return								(CObjectHandler::can_attach(inventory_item));
 }

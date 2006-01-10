@@ -86,6 +86,10 @@ void CALifeSimulatorBase::on_death			(CSE_Abstract *killed, CSE_Abstract *killer
 {
 	typedef CSE_ALifeOnlineOfflineGroup::MEMBER	GROUP_MEMBER;
 
+	CSE_ALifeCreatureAbstract			*creature = smart_cast<CSE_ALifeCreatureAbstract*>(killed);
+	if (creature)
+		creature->on_death				(killer);
+
 	GROUP_MEMBER						*member = smart_cast<GROUP_MEMBER*>(killed);
 	if (!member)
 		return;

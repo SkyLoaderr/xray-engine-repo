@@ -961,6 +961,7 @@ CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALi
 	m_ef_weapon_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_weapon_type",u32(-1));
 	m_ef_detector_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_detector_type",u32(-1));
 	m_killer_id					= ALife::_OBJECT_ID(-1);
+	m_game_death_time			= 0;
 }
 
 CSE_ALifeCreatureAbstract::~CSE_ALifeCreatureAbstract()
@@ -991,6 +992,12 @@ u32	 CSE_ALifeCreatureAbstract::ef_detector_type() const
 	return						(m_ef_detector_type);
 }
 
+void CSE_ALifeCreatureAbstract::on_death		(CSE_Abstract *killer)
+{
+	VERIFY						(!m_game_death_time);
+	m_game_death_time			= Level().GetGameTime();
+}
+
 void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
@@ -1001,6 +1008,7 @@ void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	save_data					(m_dynamic_out_restrictions,tNetPacket);
 	save_data					(m_dynamic_in_restrictions,tNetPacket);
 	tNetPacket.w				(&m_killer_id,sizeof(m_killer_id));
+	tNetPacket.w				(&m_game_death_time,sizeof(m_game_death_time));
 }
 
 void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -1028,6 +1036,9 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 
 	o_torso.pitch				= o_Angle.x;
 	o_torso.yaw					= o_Angle.y;
+
+	if (m_wVersion > 115)
+		tNetPacket.r			(&m_game_death_time,sizeof(m_game_death_time));
 }
 
 void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
@@ -1140,10 +1151,13 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 			*I					= READ_IF_EXISTS(pSettings,r_float,imm_section,strcat(strcpy(S,ALife::g_cafHitType2String(ALife::EHitType(I - B))),"_immunity"),1.f);
 	}
 
+	m_flags.set					(flCorpseRemoval,TRUE);
+	
 	if (pSettings->line_exist(caSection,"retreat_threshold"))
 		m_fRetreatThreshold		= pSettings->r_float(caSection,"retreat_threshold");
 	else
 		m_fRetreatThreshold		= 0.2f;
+
 	m_fEyeRange					= pSettings->r_float(caSection,"eye_range");
 
 	m_fGoingSpeed				= pSettings->r_float(caSection, "going_speed");

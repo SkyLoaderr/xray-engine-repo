@@ -195,6 +195,7 @@ public:
 	virtual	void				on_weapon_shot_start	(CWeapon *weapon);
 	virtual	void				on_weapon_shot_stop		(CWeapon *weapon);
 	virtual	void				on_weapon_hide			(CWeapon *weapon);
+	virtual	bool				use_simplified_visual	() const {return (false);};
 };
 
 #include "inventory_owner_inline.h"

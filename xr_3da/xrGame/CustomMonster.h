@@ -254,6 +254,14 @@ protected:
 public:
 			void __stdcall			update_sound_player		();
 	virtual	void					on_restrictions_change	();
+	virtual	LPCSTR					visual_name				(CSE_Abstract *server_entity);
+
+private:
+	bool							m_already_dead;
+
+public:
+	IC		const bool				&already_dead			() const {return (m_already_dead);};
+	virtual	bool					use_simplified_visual	() const {return (already_dead());};
 };
 
 #include "custommonster_inline.h"

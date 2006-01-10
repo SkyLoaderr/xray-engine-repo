@@ -105,6 +105,11 @@ void CWeapon::UpdateXForm	()
 		CEntityAlive*	E		= smart_cast<CEntityAlive*>(H_Parent());
 		
 		if(!E) return;
+
+		const CInventoryOwner	*parent = smart_cast<const CInventoryOwner*>(E);
+		if (parent && parent->use_simplified_visual())
+			return;
+
 		R_ASSERT		(E);
 		CKinematics*	V		= smart_cast<CKinematics*>	(E->Visual());
 		VERIFY			(V);

@@ -88,6 +88,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 		flVisibleForMap		= u32(1) << 10,
 		flUseSmartTerrains	= u32(1) << 11,
 		flCheckForSeparator	= u32(1) << 12,
+		flCorpseRemoval		= u32(1) << 13,
 
 		flCustom			= u32(1) << 23,
 	};

@@ -175,9 +175,12 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 	if (!inherited::net_Spawn(DC))
 		return				(FALSE);
 
-	// load damage params
-	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+//	SetfHealth			(E->fHealth);
+
+	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureAbstract	*E	= smart_cast<CSE_ALifeCreatureAbstract*>(e);
+
+	// load damage params
 	if (!E) {
 		// Car or trader only!!!!
 		CSE_ALifeCar		*C	= smart_cast<CSE_ALifeCar*>(e);
@@ -205,34 +208,31 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		}
 	}
 
-
 	// Initialize variables
-	if(E) {
+	if (E) {
 		SetfHealth			(E->fHealth);
 		m_killer_id			= E->m_killer_id;
 		if (m_killer_id == ID())
 			m_killer_id		= ALife::_OBJECT_ID(-1);
 	}
 	else
-		SetfHealth				(1.0f);
+		SetfHealth			(1.0f);
 
-	// Register
 	if (g_Alive()) {
 		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
 		++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
 	}
 	else {
 		m_level_death_time		= Device.dwTimeGlobal;
-		m_game_death_time		= Level().GetGameTime();
+		m_game_death_time		= E->m_game_death_time;;
 	}
-	
+
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = NULL;
 
 	if(pKinematics) ini = pKinematics->LL_UserData();
-	if(ini)
-	{
-		if(ini->section_exist("damage_section"))	
+	if (ini) {
+		if (ini->section_exist("damage_section") && !use_simplified_visual())
 			CDamageManager::reload(pSettings->r_string("damage_section","damage"),ini);
 
 		CParticlesPlayer::LoadParticles(pKinematics);
@@ -255,9 +255,10 @@ void CEntity::renderable_Render()
 
 void CEntity::KillEntity(u16 whoID)
 {
-	if (whoID && (whoID != ID())) {
+	if (whoID != ID()) {
 		VERIFY			(m_killer_id == ALife::_OBJECT_ID(-1));
 		m_killer_id		= whoID;
+		set_death_time	();
 	}
 
 	if (!getDestroy()){
@@ -267,7 +268,6 @@ void CEntity::KillEntity(u16 whoID)
 		P.w_u32			(0);
 		if (OnServer())
 			u_EventSend	(P);
-		set_death_time	();
 	}
 };
 
@@ -290,7 +290,8 @@ void CEntity::reinit			()
 void CEntity::reload			(LPCSTR section)
 {
 	inherited::reload			(section);
-	CDamageManager::reload		(section,"damage",pSettings);
+	if (!use_simplified_visual())
+		CDamageManager::reload	(section,"damage",pSettings);
 }
 
 void CEntity::set_death_time	()

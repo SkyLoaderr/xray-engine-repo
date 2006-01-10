@@ -116,5 +116,6 @@ private:
 	ALife::_OBJECT_ID		m_killer_id;
 
 public:
-	IC		u16				killer_id			() const {return m_killer_id;};
+	IC		u16				killer_id				() const {return m_killer_id;};
+	virtual	bool			use_simplified_visual	() const {return false;};
 };

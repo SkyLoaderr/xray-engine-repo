@@ -393,6 +393,8 @@ public:
 	IC		CWeaponShotEffector			&weapon_shot_effector			() const;
 	IC		Fvector						weapon_shot_effector_direction	(const Fvector &current) const;
 	virtual void						UpdateCamera					();
+	virtual	bool						can_attach						(const CInventoryItem *inventory_item) const;
+	virtual	bool						use_simplified_visual			() const {return (already_dead());};
 #ifdef DEBUG
 			void						debug_planner					(const script_planner *planner);
 #endif

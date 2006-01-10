@@ -55,6 +55,9 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 	m_object					= _object;
 	m_visual					= object().Visual();
 
+	if (object().already_dead())
+		return;
+
 	m_skeleton_animated			= smart_cast<CSkeletonAnimated*>(m_visual);
 	VERIFY						(m_skeleton_animated);
 
