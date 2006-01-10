@@ -41,7 +41,8 @@ function ph_button:try_switch()
 end
 
 function ph_button:hit_callback(obj, amount, local_direction, who, bone_index)
-	local who_name
+	return
+--[[	local who_name
 	if who then
 		who_name = who:name()
 	else
@@ -56,6 +57,7 @@ function ph_button:hit_callback(obj, amount, local_direction, who, bone_index)
 			return
 		end
 	end
+	]]
 end
 
 function ph_button:use_callback(victim, who)
