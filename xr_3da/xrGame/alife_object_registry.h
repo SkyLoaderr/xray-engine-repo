@@ -18,6 +18,9 @@ public:
 protected:
 	OBJECT_REGISTRY					m_objects;
 
+private:
+			void					save					(IWriter &memory_stream, CSE_ALifeDynamicObject *object, u32 &object_count);
+
 protected:
 			CSE_ALifeDynamicObject	*get_object				(IReader &file_stream);
 

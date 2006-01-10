@@ -23,43 +23,66 @@ CALifeObjectRegistry::~CALifeObjectRegistry	()
 		xr_delete				((*I).second);
 }
 
+void CALifeObjectRegistry::save				(IWriter &memory_stream, CSE_ALifeDynamicObject *object, u32 &object_count)
+{
+	++object_count;
+
+	NET_Packet					tNetPacket;
+	// Spawn
+	object->Spawn_Write			(tNetPacket,TRUE);
+	memory_stream.w_u16			(u16(tNetPacket.B.count));
+	memory_stream.w				(tNetPacket.B.data,tNetPacket.B.count);
+
+	// Update
+	tNetPacket.w_begin			(M_UPDATE);
+	object->UPDATE_Write		(tNetPacket);
+
+	memory_stream.w_u16			(u16(tNetPacket.B.count));
+	memory_stream.w				(tNetPacket.B.data,tNetPacket.B.count);
+
+	ALife::OBJECT_VECTOR::const_iterator	I = object->children.begin();
+	ALife::OBJECT_VECTOR::const_iterator	E = object->children.end();
+	for ( ; I != E; ++I) {
+		CSE_ALifeDynamicObject	*child = this->object(*I,true);
+		if (!child)
+			continue;
+
+		if (!child->can_save())
+			continue;
+
+		save					(memory_stream,child,object_count);
+	}
+}
+
 void CALifeObjectRegistry::save				(IWriter &memory_stream)
 {
 	Msg							("* Saving objects...");
 	memory_stream.open_chunk	(OBJECT_CHUNK_DATA);
+
+	u32							position = memory_stream.tell();
+	memory_stream.w_u32			(u32(-1));
+
 	u32							object_count = 0;
 	OBJECT_REGISTRY::iterator	I = m_objects.begin();
 	OBJECT_REGISTRY::iterator	E = m_objects.end();
-	for ( ; I != E; ++I)
-		if (!(*I).second->can_save())
-			++object_count;
-
-	VERIFY						(object_count <= objects().size());
-
-	memory_stream.w_u32			(u32(objects().size() - object_count));
-	I							= m_objects.begin();
 	for ( ; I != E; ++I) {
 		if (!(*I).second->can_save())
 			continue;
 
-		VERIFY2					(((*I).second->ID_Parent == 0xffff) || object((*I).second->ID_Parent)->can_save(),"strange situation : object shouldn't be saved, but shildren should be saved");
+		if ((*I).second->ID_Parent != 0xffff)
+			continue;
 
-		NET_Packet				tNetPacket;
-		// Spawn
-		(*I).second->Spawn_Write(tNetPacket,TRUE);
-		memory_stream.w_u16		(u16(tNetPacket.B.count));
-		memory_stream.w			(tNetPacket.B.data,tNetPacket.B.count);
-
-		// Update
-		tNetPacket.w_begin		(M_UPDATE);
-		(*I).second->UPDATE_Write(tNetPacket);
-
-		memory_stream.w_u16		(u16(tNetPacket.B.count));
-		memory_stream.w			(tNetPacket.B.data,tNetPacket.B.count);
+		save					(memory_stream,(*I).second, object_count);
 	}
+	
+	u32							last_position = memory_stream.tell();
+	memory_stream.seek			(position);
+	memory_stream.w_u32			(object_count);
+	memory_stream.seek			(last_position);
+
 	memory_stream.close_chunk	();
 	
-	Msg							("* %d objects are successfully saved",u32(objects().size() - object_count));
+	Msg							("* %d objects are successfully saved",object_count);
 }
 
 CSE_ALifeDynamicObject *CALifeObjectRegistry::get_object		(IReader &file_stream)
