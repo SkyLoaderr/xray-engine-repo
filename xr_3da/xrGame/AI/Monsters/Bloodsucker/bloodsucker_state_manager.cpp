@@ -56,11 +56,27 @@ void CStateManagerBloodsucker::execute()
 		else			state_id = eStateRest;
 	}
 
+	///////////////////////////////////////////////////////////////////////////////
+	// Additional
+	///////////////////////////////////////////////////////////////////////////////
+
+	// check if start interesting sound state
+	if ((prev_substate != eStateHearInterestingSound) && (state_id == eStateHearInterestingSound)){
+		object->predator_start();
+	} else
+	// check if stop interesting sound state
+	if ((prev_substate == eStateHearInterestingSound) && (state_id != eStateHearInterestingSound)) {
+		object->predator_stop();
+	}
+	///////////////////////////////////////////////////////////////////////////////
+
+	
 	select_state(state_id); 
 
 	// выполнить текущее состояние
 	get_state_current()->execute();
 
 	prev_substate = current_substate;
+
 }
 

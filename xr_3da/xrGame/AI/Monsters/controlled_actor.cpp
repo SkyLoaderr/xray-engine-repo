@@ -26,9 +26,21 @@ void CControlledActor::release()
 
 void CControlledActor::frame_update()
 {
-	if (is_controlling()) {
+	if (is_controlling() && m_need_turn) {
 		update_turn();
 	}
+}
+
+void CControlledActor::install(CActor *a)
+{
+	inherited::install(a);
+	m_need_turn = true;
+}
+
+void CControlledActor::install()
+{
+	inherited::install();
+	m_need_turn = true;
 }
 
 void CControlledActor::look_point(const Fvector &point)

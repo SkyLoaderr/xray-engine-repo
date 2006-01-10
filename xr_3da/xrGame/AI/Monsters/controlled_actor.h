@@ -14,10 +14,14 @@ class CControlledActor : public CActorInputHandler {
 	u32		m_lock_run_started;
 	u32		m_lock_run_period;
 
+	bool	m_need_turn;
+
 public:
 	virtual void	reinit				();
 	virtual	float	mouse_scale_factor	(){return flt_max;}
 	virtual void	release				();
+	virtual void	install				(CActor *);
+	virtual void	install				();
 	virtual bool	authorized			(int cmd);
 
 			void	look_point			(const Fvector &point);
@@ -25,6 +29,8 @@ public:
 
 			void	frame_update		();
 			bool	is_controlling		() {return m_actor != 0;}
+
+			void	dont_need_turn		(){m_need_turn = false;}
 
 private:
 			void	reset				();

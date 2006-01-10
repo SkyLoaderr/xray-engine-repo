@@ -137,6 +137,8 @@ public:
 		eGrowl					= eAdditionalSounds | 5,
 
 		eChangeVisibility		= eAdditionalSounds | 6,
+		
+		eAlien					= eAdditionalSounds | 7,
 	};
 
 	//--------------------------------------------------------------------

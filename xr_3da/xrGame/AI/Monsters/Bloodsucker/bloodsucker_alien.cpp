@@ -237,7 +237,6 @@ void CBloodsuckerAlien::init_external(CAI_Bloodsucker *obj)
 void CBloodsuckerAlien::reinit()
 {
 	m_active				= false;	
-	
 	m_crosshair_show		= false;
 }
 
@@ -246,7 +245,9 @@ void CBloodsuckerAlien::activate()
 	if (m_active) return;
 
 	VERIFY	(Actor());
-	m_object->CControlledActor::install		(Actor());
+	m_object->CControlledActor::install			(Actor());
+	m_object->CControlledActor::dont_need_turn	();
+
 	if (!m_object->EnemyMan.get_enemy())	m_object->EnemyMan.add_enemy(Actor());
 
 	Actor()->inventory().setSlotsBlocked			(true);
@@ -262,15 +263,12 @@ void CBloodsuckerAlien::activate()
 	m_effector					= xr_new<CAlienEffector>	(EFFECTOR_ID_GEN(ECamEffectorType),m_object);
 	Actor()->Cameras().AddCamEffector	(m_effector);
 
-	// fix it
-	m_object->CInvisibility::set_manual_control	();
-	if (m_object->CInvisibility::active()) {
-		m_object->CInvisibility::manual_deactivate();
-		m_object->CInvisibility::manual_activate	();
-	} else m_object->CInvisibility::manual_activate	();
+	// make invisible
+	m_object->CInvisibility::set_manual_control(true);
+	m_object->state_invisible	= true;
+	m_object->setVisible		(false);
 
 	m_active					= true;
-
 }
 
 void CBloodsuckerAlien::deactivate()
@@ -278,7 +276,6 @@ void CBloodsuckerAlien::deactivate()
 	if (!m_active) return;
 
 	m_object->CControlledActor::release			();
-	m_object->CInvisibility::set_manual_control	(false);
 
 	//Actor()->inventory().Items_SetCurrentEntityHud	(true);
 	Actor()->inventory().setSlotsBlocked			(false);
@@ -295,4 +292,8 @@ void CBloodsuckerAlien::deactivate()
 
 	m_active						= false;
 
+	// make visible
+	m_object->CInvisibility::set_manual_control	(false);
+	m_object->state_invisible	= false;
+	m_object->setVisible		(true);
 }

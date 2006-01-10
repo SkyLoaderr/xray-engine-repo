@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "bloodsucker.h"
-//.#include "bloodsucker_effector.h"
 #include "bloodsucker_state_manager.h"
 #include "../../../../skeletoncustom.h"
 #include "../../../actor.h"
@@ -183,12 +182,13 @@ void CAI_Bloodsucker::reload(LPCSTR section)
 	inherited::reload(section);
 	CInvisibility::reload(section);
 
-	sound().add(pSettings->r_string(section,"Sound_Vampire_Grasp"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 4, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireGrasp,		"bip01_head");
-	sound().add(pSettings->r_string(section,"Sound_Vampire_Sucking"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 3, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireSucking,	"bip01_head");
-	sound().add(pSettings->r_string(section,"Sound_Vampire_Hit"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 2, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireHit,		"bip01_head");
-	sound().add(pSettings->r_string(section,"Sound_Vampire_StartHunt"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 5, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireStartHunt,	"bip01_head");
-	sound().add(pSettings->r_string(section,"Sound_Invisibility_Change_State"),	DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eNormalPriority, MonsterSound::eChannelIndependent << 1,	EBloodsuckerSounds::eChangeVisibility, "bip01_head");
-	sound().add(pSettings->r_string(section,"Sound_Growl"),						DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 6, MonsterSound::eBaseChannel,	EBloodsuckerSounds::eGrowl,				"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Grasp"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 4,	MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireGrasp,		"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Sucking"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 3,	MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireSucking,	"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Hit"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 2,	MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireHit,		"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_StartHunt"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 5,	MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireStartHunt,	"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Invisibility_Change_State"),	DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eNormalPriority,	MonsterSound::eChannelIndependent << 1,	EBloodsuckerSounds::eChangeVisibility, "bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Growl"),						DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 6,	MonsterSound::eBaseChannel,	EBloodsuckerSounds::eGrowl,				"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Alien"),						DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eCriticalPriority,	MonsterSound::eCaptureAllChannels,	EBloodsuckerSounds::eAlien,		"bip01_head");
 }
 
 
@@ -334,6 +334,8 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	inherited::shedule_Update(dt);
 	
 	if (!g_Alive())	setVisible(TRUE);
+
+	if (m_alien_control.active())	sound().play(eAlien);
 }
 
 void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
@@ -484,10 +486,6 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
 	sprintf(text, "Vampire Want Value = [%f] Speed = [%f]", m_vampire_want_value, m_vampire_want_speed);
-	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
-	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
-
-	sprintf(text, "I See Enemy Now = [%u]", (EnemyMan.get_enemy() != 0) && EnemyMan.see_enemy_now());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
