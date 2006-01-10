@@ -106,8 +106,7 @@ function load_dialog:InitControls()
 	self:Register(ctrl, "button_load")
 	
 	ctrl = xml:Init3tButton("form:btn_delete",	self.form)	
-	self:Register(ctrl, "button_delete")
-	ctrl:Enable(false)
+	self:Register(ctrl, "button_del")
 	
 	ctrl = xml:Init3tButton("form:btn_cancel",	self.form)
 	self:Register(ctrl, "button_back")	
@@ -193,6 +192,7 @@ end
 function load_dialog:InitCallBacks()
 	self:AddCallback("button_load",		ui_events.BUTTON_CLICKED,             self.OnButton_load_clicked,	self)
 	self:AddCallback("button_back",		ui_events.BUTTON_CLICKED,             self.OnButton_back_clicked,	self)
+	self:AddCallback("button_del",		ui_events.BUTTON_CLICKED,             self.OnButton_del_clicked,	self)
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_OK_CLICKED,     self.OnMsgOk,					self)
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_CANCEL_CLICKED, self.OnMsgCancel,				self)
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_YES_CLICKED,    self.OnMsgYes,				self)
@@ -208,16 +208,28 @@ function load_dialog:OnListItemClicked()
 	
 	local item_text = item:GetText()
 	
-	local f = getFS();
-	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly) , item_text .. ".dds")
-	local f_cnt = flist:Size()
+--	local f = getFS();
+--	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly) , item_text .. ".dds")
+--	local f_cnt = flist:Size()
 	
-	if f_cnt > 0 then
+	if file_exist(item_text .. ".dds") then
 		picture:InitTexture(item_text)
 	else
 		picture:InitTexture("ui\\ui_no_screenshot")
 	end
 		
+end
+
+function file_exist(fname)
+	local f = getFS();
+	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly) , fname)
+	local f_cnt = flist:Size()
+	
+	if f_cnt > 0 then
+		return true
+	else
+		return false
+	end	
 end
 
 function load_dialog:OnMsgOk()
@@ -258,6 +270,29 @@ end
 function load_dialog:OnButton_back_clicked()
 	self:GetHolder():start_stop_menu(self,true)
 	self.owner:Show(true)
+end
+
+function load_dialog:OnButton_del_clicked()
+	local list = self:GetListWnd("list_window")	
+	local index = list:GetSelectedItem()
+	
+	if index == -1 then return end
+		
+	local item  = list:GetItem(index)
+	local fname = item:GetText()
+	local save_file = fname .. ".sav"
+	local dds_file = fname .. ".dds"
+	
+	local f = getFS()
+	
+	f:file_delete(save_file)
+	
+	if file_exist(dds_file) then
+		f:file_delete(dds_file)
+	end
+	
+	list:RemoveItem(index)
+
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
