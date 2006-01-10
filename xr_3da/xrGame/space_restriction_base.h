@@ -10,7 +10,7 @@
 
 #include "space_restriction_abstract.h"
 
-class CSpaceRestrictionBase : public CSpaceRestrictionAbstract{
+class CSpaceRestrictionBase : public CSpaceRestrictionAbstract {
 private:
 	typedef CSpaceRestrictionAbstract		inherited;
 

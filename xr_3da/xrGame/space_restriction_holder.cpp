@@ -29,7 +29,7 @@ CSpaceRestrictionHolder::~CSpaceRestrictionHolder			()
 
 shared_str CSpaceRestrictionHolder::normalize_string	(shared_str space_restrictors)
 {
-	u32						n = space_restrictors.size();
+	u32						n = xr_strlen(space_restrictors);
 	if (!n)
 		return				("");
 

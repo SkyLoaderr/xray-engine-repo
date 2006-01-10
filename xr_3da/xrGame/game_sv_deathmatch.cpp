@@ -791,7 +791,7 @@ bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)
 bool	game_sv_Deathmatch::GetBuyableItemCost		(LPCSTR	ItemName, u16* pCost)
 {
 	*pCost = 0;
-	WeaponDataStruct* tmpWDS = NULL;
+//	WeaponDataStruct* tmpWDS = NULL;
 	for (u8 i=0; i<TeamList.size(); i++)
 	{
 		TEAM_WPN_LIST	WpnList = TeamList[i].aWeapons;

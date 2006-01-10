@@ -216,7 +216,7 @@ void CEntityAlive::shedule_Update(u32 dt)
 	{
 		if(conditions().GetWhoHitLastTime()) {
 //			Msg			("%6d : KillEntity from CEntityAlive (using who hit last time) for object %s",Device.dwTimeGlobal,*cName());
-			KillEntity(conditions().GetWhoHitLastTimeID());
+			KillEntity	(conditions().GetWhoHitLastTimeID());
 		}
 		else {
 //			Msg			("%6d : KillEntity from CEntityAlive for object %s",Device.dwTimeGlobal,*cName());

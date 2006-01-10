@@ -261,12 +261,14 @@ void CHudItem::OnH_B_Chield		()
 
 void CHudItem::OnH_B_Independent	()
 {
-	SetHUDmode(FALSE);
+	SetHUDmode				(FALSE);
+
 	if (m_pHUD)
-		m_pHUD->Visible(false);
+		m_pHUD->Visible		(false);
 	
-	StopHUDSounds();
-	UpdateXForm();
+	StopHUDSounds			();
+
+	UpdateXForm				();
 }
 
 void CHudItem::OnH_A_Independent	()

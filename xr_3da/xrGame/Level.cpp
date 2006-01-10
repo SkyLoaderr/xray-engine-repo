@@ -879,5 +879,5 @@ u32	GameID()
 
 bool	IsGameTypeSingle()
 {
-	return (GameID()==GAME_SINGLE);
+	return		(GameID()==GAME_SINGLE);
 }
