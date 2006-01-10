@@ -12,7 +12,7 @@
 		<texture_offset x="-29" y="-19"/>
 		
 		<caption x="36" y="-9" width="500" height="25" complex_mode="0">
-			<text font="letterica25" r="215" g="195" b="170">ui_mm_load_game</text>
+			<text font="letterica25" r="184" g="168" b="131">ui_mm_load_game</text>
 		</caption>
 		
 		<picture x="76" y="52" width="128" height="128"/>

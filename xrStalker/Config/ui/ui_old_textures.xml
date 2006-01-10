@@ -30,7 +30,6 @@
     <texture id="ui_frame_01_rt" x="864" y="0" width="32" height="32" />
     <texture id="ui_frame_01_l" x="896" y="0" width="32" height="32" />
     <texture id="ui_frame_01_back" x="928" y="0" width="32" height="32" />
-    <texture id="ui_frame_01_r" x="962" y="0" width="32" height="32" />
     <texture id="ui_frame_02_lb" x="0" y="32" width="64" height="64" />
     <texture id="ui_frame_02_b" x="64" y="32" width="64" height="64" />
     <texture id="ui_frame_02_rb" x="128" y="32" width="64" height="64" />
@@ -95,4 +94,5 @@
     <texture id="ui_pda_frame_sub_rt" x="160" y="96" width="32" height="32" />
     <texture id="ui_pda_frame_sub_lt" x="96" y="96" width="32" height="32" />
     <texture id="ui_keyboardsetup" x="310" y="257" width="453" height="199" />
+    <texture id="ui_frame_01_r" x="960" y="0" width="32" height="32" />
 </ui_texture>
