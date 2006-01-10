@@ -41,6 +41,7 @@ public:
 	R_dsgraph::mapSorted_T										mapDistort;
 
 #if RENDER==R_R2
+	R_dsgraph::mapSorted_T										mapWmarks;			// sorted
 	R_dsgraph::mapSorted_T										mapEmissive;
 #endif
 

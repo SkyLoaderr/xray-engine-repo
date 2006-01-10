@@ -249,6 +249,8 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void CRender::add_leafs_Dynamic	(IRender_Visual *pVisual)
 {
+	if (0==pVisual)				return;
+
 	// Visual is 100% visible - simply add it
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
 
