@@ -1049,7 +1049,7 @@ end
 -- Функция проверки состояния гулага деревни
 --------------------------------------------------------------------------
 function check_village_state (gulag)
-    if db.actor:has_info ("mil_after_hunt_talked") then return 1 end
+    if db.actor:has_info ("mil_miser_task_complete") then return 1 end
     return 0    
 end
 
