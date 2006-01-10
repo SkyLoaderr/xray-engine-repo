@@ -372,6 +372,8 @@ void CWallmarksEngine::Render()
 		FlushStream				(hGeom,slot->shader,w_offset,w_verts,w_start,TRUE);
 	}
 
+	// Level-wmarks
+	RImplementation.r_dsgraph_render_wmarks	();
 	Device.Statistic.RenderDUMP_WM.End		();
 
 	// Projection
