@@ -285,7 +285,7 @@ function load_dialog:OnButton_del_clicked()
 	
 	local f = getFS()
 	
-	f:file_delete(save_file)
+	f:file_delete("$game_saves$",save_file)
 	
 	if file_exist(dds_file) then
 		f:file_delete(dds_file)
