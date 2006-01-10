@@ -229,8 +229,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual u32						ef_creature_type		() const;
 	virtual u32						ef_weapon_type			() const;
 	virtual u32						ef_detector_type		() const;
-	virtual	void					on_death				(CSE_Abstract *killer);
 #ifdef XRGAME_EXPORTS
+	virtual	void					on_death				(CSE_Abstract *killer);
 	virtual void					on_spawn				();
 #endif
 #ifdef DEBUG
