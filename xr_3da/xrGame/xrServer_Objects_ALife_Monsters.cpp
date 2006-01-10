@@ -992,11 +992,13 @@ u32	 CSE_ALifeCreatureAbstract::ef_detector_type() const
 	return						(m_ef_detector_type);
 }
 
+#ifdef XRGAME_EXPORTS
 void CSE_ALifeCreatureAbstract::on_death		(CSE_Abstract *killer)
 {
 	VERIFY						(!m_game_death_time);
 	m_game_death_time			= Level().GetGameTime();
 }
+#endif // XRGAME_EXPORTS
 
 void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
