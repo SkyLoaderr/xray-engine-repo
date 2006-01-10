@@ -1413,7 +1413,7 @@ function load_ltx_rad_prip_teleport(gname, type)
 					"path_walk = cache_quard"..i .. "_walk\n" ..
 					"path_look = cache_quard"..i .. "_look\n" ..
 					"danger=danger_condition@" .. gname .. "\n" .. 
-					"combat_ignore_cond = {!see_actor} true \n" ..
+					";combat_ignore_cond = {!_actor} true \n" ..
 					"on_hit = hit@" .. gname .. "\n"
 
 	end
