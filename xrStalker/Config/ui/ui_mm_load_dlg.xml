@@ -19,7 +19,15 @@
 		
 		<file_info	x="18" y="36" width="512" height="148">
 			<texture>ui\ui_static_loadgameinfo</texture>
-		</file_info>		
+		</file_info>
+		
+		<file_caption x="270" y="110" width="512" height="20">
+			<text font="letterica18" r="201" g="142" b="49"></text>
+		</file_caption>
+		
+		<file_data x="270" y="130" width="512" height="50">
+			<text font="letterica18" r="134" g="127" b="117"></text>
+		</file_data>
 		
 		<list_frame x="36" y="202" width="449" height="200">
 			<texture>ui_frame_01</texture>
@@ -31,10 +39,10 @@
 			<texture>ui\ui_btn_triple_left</texture>
 			<text font="letterica25">ui_mm_load</text>
 			<text_color>
-				<e r="227" g="199" b="178"/>				
-				<t r="180" g="153" b="155"/>				
-				<d r="106" g="95" b="91"/>							
-				<h r="255" g="255" b="200"/>
+				<e r="184" g="168" b="131"/>
+				<t r="207" g="155" b="80"/>
+				<d r="106" g="95" b="91"/>
+				<h r="207" g="155" b="80"/>
 			</text_color>
 		</btn_load>
 		
@@ -42,10 +50,10 @@
 			<texture>ui\ui_btn_triple_center</texture>
 			<text font="letterica25">ui_mm_delete</text>
 			<text_color>
-				<e r="227" g="199" b="178"/>				
-				<t r="180" g="153" b="155"/>				
-				<d r="106" g="95" b="91"/>							
-				<h r="255" g="255" b="200"/>
+				<e r="184" g="168" b="131"/>
+				<t r="207" g="155" b="80"/>
+				<d r="106" g="95" b="91"/>
+				<h r="207" g="155" b="80"/>
 			</text_color>
 		</btn_delete>
 		
@@ -53,10 +61,10 @@
 			<texture>ui\ui_btn_triple_right</texture>			
 			<text font="letterica25">ui_mm_cancel</text>
 			<text_color>
-				<e r="227" g="199" b="178"/>				
-				<t r="180" g="153" b="155"/>				
-				<d r="106" g="95" b="91"/>							
-				<h r="255" g="255" b="200"/>
+				<e r="184" g="168" b="131"/>
+				<t r="207" g="155" b="80"/>
+				<d r="106" g="95" b="91"/>
+				<h r="207" g="155" b="80"/>
 			</text_color>
 		</btn_cancel>		
 	</form>
