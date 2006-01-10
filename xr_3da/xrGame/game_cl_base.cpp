@@ -238,7 +238,7 @@ float game_cl_GameState::shedule_Scale		()
 	return 1.0f;
 }
 
-extern CUIGameTutorial * g_tutorial;
+extern CUISequencer * g_tutorial;
 
 void game_cl_GameState::shedule_Update		(u32 dt)
 {

@@ -11096,7 +11096,10 @@
 					RelativePath=".\ui\UIGameTutorial.h">
 				</File>
 				<File
-					RelativePath=".\ui\UIGameTutorial_item.cpp">
+					RelativePath=".\ui\UIGameTutorialSimpleItem.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIGameTutorialVideoItem.cpp">
 				</File>
 			</Filter>
 		</Filter>

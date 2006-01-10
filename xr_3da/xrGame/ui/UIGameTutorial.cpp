@@ -7,13 +7,13 @@
 #include "../../xr_input.h"
 #include "../xr_level_controller.h"
 
-CUIGameTutorial::CUIGameTutorial()
+CUISequencer::CUISequencer()
 {
 	m_bActive					= false;
 	m_bPlayEachItem				= false;
 }
 
-void CUIGameTutorial::Start(LPCSTR tutor_name)
+void CUISequencer::Start(LPCSTR tutor_name)
 {
 	VERIFY(m_items.size()==0);
 	Device.seqFrame.Add			(this,REG_PRIORITY_LOW-10000);
@@ -34,27 +34,31 @@ void CUIGameTutorial::Start(LPCSTR tutor_name)
 	xml_init.InitAutoStaticGroup(uiXml, "global_wnd",		m_UIWindow);
 
 	for(int i=0;i<items_count;++i){
-		CTutorialItem* pItem	= xr_new<CTutorialItem>();
+		LPCSTR	_tp				= uiXml.ReadAttrib			("item",i,"type","");
+		bool bVideo				= 0==_stricmp(_tp,"video");
+		CUISequenceItem* pItem	= 0;
+		if (bVideo)	pItem		= xr_new<CUISequenceVideoItem>(this);
+		else		pItem		= xr_new<CUISequenceSimpleItem>(this);
 		m_items.push_back		(pItem);
 		pItem->Load				(&uiXml,i);
 	}
 
-	CTutorialItem* pCurrItem	= m_items.front();
-	pCurrItem->Start			(this);
+	CUISequenceItem* pCurrItem	= m_items.front();
+	pCurrItem->Start			();
 	m_pStoredInputReceiver		= pInput->CurrentIR();
 	IR_Capture					();
 	m_bActive					= true;
 }
 
-void CUIGameTutorial::Stop()
+void CUISequencer::Stop()
 {
-	if(m_items.size()){
+	if(m_items.size()){ 
 		if (m_bPlayEachItem){
 			Next				();
 			return;
 		}else{
-			CTutorialItem* pCurrItem	= m_items.front();
-			pCurrItem->Stop		(this, true);
+			CUISequenceItem* pCurrItem	= m_items.front();
+			pCurrItem->Stop		(true);
 		}
 	}
 
@@ -67,15 +71,14 @@ void CUIGameTutorial::Stop()
 	m_pStoredInputReceiver		= NULL;
 }
 
-void CUIGameTutorial::OnFrame()
+void CUISequencer::OnFrame()
 {  
 	if(!m_items.size()){
-		Stop			();
+		Stop					();
 		return;
 	}else{
-		CTutorialItem* pCurrItem		= m_items.front();
-		if((pCurrItem->m_time_start+pCurrItem->m_time_length)<(Device.dwTimeContinual/1000.0f) )
-			Next				();
+		CUISequenceItem* pCurrItem	= m_items.front();
+		if(!pCurrItem->IsPlaying())	Next();
 	}
 	
 	if(!m_items.size()){
@@ -87,17 +90,17 @@ void CUIGameTutorial::OnFrame()
 	m_UIWindow->Update			();
 }
 
-void CUIGameTutorial::OnRender	()
+void CUISequencer::OnRender	()
 {
 	m_UIWindow->Draw			();
 	VERIFY						(m_items.size());
 	m_items.front()->OnRender	();
 }
 
-void CUIGameTutorial::Next		()
+void CUISequencer::Next		()
 {
-	CTutorialItem* pCurrItem	= m_items.front();
-	bool can_stop				= pCurrItem->Stop(this);
+	CUISequenceItem* pCurrItem	= m_items.front();
+	bool can_stop				= pCurrItem->Stop();
 	if	(!can_stop)				return;
 
 	m_items.pop_front			();
@@ -106,11 +109,11 @@ void CUIGameTutorial::Next		()
 	if(m_items.size())
 	{
 		pCurrItem				= m_items.front();
-		pCurrItem->Start		(this);
+		pCurrItem->Start		();
 	}
 }
 
-bool CUIGameTutorial::GrabInput()
+bool CUISequencer::GrabInput()
 {
 	if(m_items.size())
 		return m_items.front()->GrabInput();
@@ -119,55 +122,55 @@ bool CUIGameTutorial::GrabInput()
 
 }
 
-void CUIGameTutorial::IR_OnMousePress		(int btn)
+void CUISequencer::IR_OnMousePress		(int btn)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnMousePress(btn);
 }
 
-void CUIGameTutorial::IR_OnMouseRelease		(int btn)
+void CUISequencer::IR_OnMouseRelease		(int btn)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnMouseRelease(btn);
 }
 
-void CUIGameTutorial::IR_OnMouseHold		(int btn)
+void CUISequencer::IR_OnMouseHold		(int btn)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnMouseHold(btn);
 }
 
-void CUIGameTutorial::IR_OnMouseMove		(int x, int y)
+void CUISequencer::IR_OnMouseMove		(int x, int y)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnMouseMove(x, y);
 }
 
-void CUIGameTutorial::IR_OnMouseStop		(int x, int y)
+void CUISequencer::IR_OnMouseStop		(int x, int y)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnMouseStop(x, y);
 }
 
-void CUIGameTutorial::IR_OnKeyboardRelease	(int dik)
+void CUISequencer::IR_OnKeyboardRelease	(int dik)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnKeyboardRelease(dik);
 }
 
-void CUIGameTutorial::IR_OnKeyboardHold		(int dik)
+void CUISequencer::IR_OnKeyboardHold		(int dik)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnKeyboardHold(dik);
 }
 
-void CUIGameTutorial::IR_OnMouseWheel		(int direction)
+void CUISequencer::IR_OnMouseWheel		(int direction)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnMouseWheel(direction);
 }
 
-void CUIGameTutorial::IR_OnKeyboardPress	(int dik)
+void CUISequencer::IR_OnKeyboardPress	(int dik)
 {
 	if(key_binding[dik]==kQUIT){
 		Stop		();

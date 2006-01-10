@@ -218,7 +218,7 @@ void CGamePersistent::WeathersUpdate()
 }
 
 #include "UI/UIGameTutorial.h"
-static CUIGameTutorial* g_intro = NULL;
+static CUISequencer* g_intro = NULL;
 static bool b_startup_intro		= true;
 
 void CGamePersistent::OnFrame	()
@@ -230,7 +230,7 @@ void CGamePersistent::OnFrame	()
 		b_startup_intro			= false;
 		if (0==xr_strlen(m_game_params.m_game_or_spawn)){
 			VERIFY				(NULL==g_intro && NULL==g_pGameLevel);
-			g_intro				= xr_new<CUIGameTutorial>();
+			g_intro				= xr_new<CUISequencer>();
 			g_intro->Start		("intro");
 			Console->Hide		();
 		}

@@ -21,12 +21,12 @@
 using namespace luabind;
 
 
-CUIGameTutorial* g_tutorial = NULL;
+CUISequencer* g_tutorial = NULL;
 void start_tutorial(LPCSTR name)
 {
 	if(g_tutorial) return;
 		
-	g_tutorial			= xr_new<CUIGameTutorial>();
+	g_tutorial			= xr_new<CUISequencer>();
 	g_tutorial->Start	(name);
 }
 
