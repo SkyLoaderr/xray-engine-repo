@@ -146,10 +146,10 @@
 	</specific_character>
 	
 	<specific_character id="gar_bandit_leader" team_default = "1">
-		<name>Предводитель бандитов</name>
+		<name>Вася "Кабан"</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Пользуется определенным авторитетом у бандитов в Зоне. Подельник Борова.</bio>
 		
 		<class>gar_bandit_leader</class>
 		<community>bandit</community>
