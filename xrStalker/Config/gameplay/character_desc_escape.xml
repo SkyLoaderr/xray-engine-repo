@@ -954,32 +954,6 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
-	<specific_character id="esc_plemiannik" team_default = "1">
-		<name>Витька</name>
-		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Приехал в Зону по вызову дяди, известного сталкера. Но с ним не встретился. Сейчас сидит на Кордоне и вытается узнать где дядя и что с ним произошло.</bio>
-
-		<class>esc_plemiannik</class>
-		<community>stranger</community>
-		
-		<rank>20</rank>
-		<reputation>0</reputation>
-		
-		<snd_config>characters_voice\human_01\</snd_config>
-
-		<visual>actors\novice\green_stalker_3</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_fmj = 1 \n
-			device_torch \n
-		</supplies>
-					
-		<start_dialog>esc_victor_hello</start_dialog>
-		<actor_dialog>esc_victor_quest</actor_dialog>
-		<actor_dialog>esc_victor_reward</actor_dialog>
-	</specific_character>
 	
 	<specific_character id="esc_provodnik" team_default = "1">
 		<name>Проводник</name>
