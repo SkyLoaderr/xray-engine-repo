@@ -34,18 +34,6 @@
 		<text>Волк, лидер лагеря новчиков.</text>
 	</string>
 	
-	<string id="anomaly_field_mincer">
-		<text>Скопление аномалий "карусель". Там может найтись артефакт "кровь камня"</text>
-	</string>
-	
-	<string id="anomaly_field_gravy">
-		<text>Скопление аномалий "воронка". Там может найтись артефакт "выверт"</text>
-	</string>
-	
-	<string id="anomaly_field_mosquito">
-		<text>Скопление аномалий "трамплин". Там может найтись артефакт "медуза"</text>
-	</string>
-	
 	<string id="killers_team">
 		<text>Группа неизвестных наемников.</text>
 	</string>
