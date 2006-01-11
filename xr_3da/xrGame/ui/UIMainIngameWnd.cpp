@@ -189,8 +189,6 @@ void CUIMainIngameWnd::Init()
 	// Для информационных сообщений
 	AttachChild(&UIInfoMessages);
 	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoMessages);
-	UIInfoMessages.SetVertFlip(true);
-
 		
 
 	//Полоса прогресса здоровья
