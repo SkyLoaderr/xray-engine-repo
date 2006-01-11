@@ -29,7 +29,7 @@ end
 
 function ce_switcher:PlayAnim(anim_name)
 	local visual = self:Visual()
-	local ska = visual:dcast_PSkeletonAnimated()
+	local ska = visual:dcast_PKinematicsAnimated()
 	ska:PlayCycle(anim_name)
 end
 

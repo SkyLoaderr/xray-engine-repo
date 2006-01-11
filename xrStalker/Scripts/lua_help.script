@@ -4996,8 +4996,8 @@ C++ class CServerList : CUIWindow {
     function IsAutoDelete();
 };
 
-C++ class CSkeletonAnimated {
-    function PlayCycle(CSkeletonAnimated*, string);
+C++ class dcast_PKinematicsAnimated {
+    function PlayCycle(dcast_PKinematicsAnimated*, string);
 };
 
 C++ class ce_smart_zone : DLL_Pure {
@@ -6737,7 +6737,7 @@ C++ class reader {
 C++ class IRender_Visual {
     IRender_Visual ();
     
-    function dcast_PSkeletonAnimated();
+    function dcast_PKinematicsAnimated();
 };
 
 C++ class IRenderable {

@@ -13,7 +13,7 @@ end
 
 function ph_button:reset_scheme()
 	--local visual = self.object:Visual()
-	--local ska = visual:dcast_PSkeletonAnimated()
+	--local ska = visual:dcast_PKinematicsAnimated()
 	--ska:PlayCycle(self.st.anim)
 	self.object:play_cycle(self.st.anim, self.st.blending)
 
