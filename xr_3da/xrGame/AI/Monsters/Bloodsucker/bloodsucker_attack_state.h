@@ -18,6 +18,7 @@ public:
 private:
 			void	update_invisibility			();
 			bool	check_hiding				();
+			bool	check_berserk				();
 };
 
 #include "bloodsucker_attack_state_inline.h"

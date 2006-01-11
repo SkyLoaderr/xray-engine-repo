@@ -54,7 +54,10 @@ void CStateBloodsuckerPredatorLiteAbstract::reselect_state()
 	}
 
 	if (prev_substate == eStatePredator_MoveToCover) {
-		if (enemy_see_me()) select_state(eStatePredator_MoveToCover);
+		if (enemy_see_me()) {
+			select_state(eStatePredator_MoveToCover);
+			object->time_berserk_start = time();
+		}
 		else select_state(eStatePredator_LookOpenPlace);
 		return;
 	}
@@ -175,7 +178,13 @@ void CStateBloodsuckerPredatorLiteAbstract::check_force_state()
 {
 	if (prev_substate == eStatePredator_Camp) {
 		if (object->HitMemory.get_last_hit_time() > time_state_started) {
-			current_substate	= u32(-1);
+			
+			if (object->EnemyMan.get_enemy() && 
+				(object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) < 10.f)) {
+				object->time_berserk_start = time();
+			} else 
+				current_substate	= u32(-1);
+			
 		}
 	}
 }
@@ -195,7 +204,7 @@ void CStateBloodsuckerPredatorLiteAbstract::select_camp_point()
 	} 
 
 	if (m_target_node == u32(-1)) {
-		CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),8.f,15.f);
+		CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),20.f,30.f);
 		if (point) {
 			m_target_node				= point->level_vertex_id	();
 		} 
@@ -214,7 +223,7 @@ bool CStateBloodsuckerPredatorLiteAbstract::enemy_see_me()
 	//	return (Actor()->memory().visual().visible_now(object));
 
 	// if I see enemy then probably enemy see me :-)
-	return (object->EnemyMan.see_enemy_now());
+	return object->EnemyMan.enemy_see_me_now();
 }
 
 

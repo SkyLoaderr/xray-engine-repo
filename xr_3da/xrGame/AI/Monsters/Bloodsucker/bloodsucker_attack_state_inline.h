@@ -45,7 +45,18 @@ void CBloodsuckerStateAttackAbstract::execute()
 {
 	bool selected = false;
 	
-	if (check_hiding()) {
+	if (check_berserk()) {
+		bool b_melee = false; 
+		
+		if (prev_substate == eStateAttack_Melee) {
+			if (!get_state_current()->check_completion())					b_melee = true;
+		} else {
+			if (get_state(eStateAttack_Melee)->check_start_conditions())	b_melee = true;
+		}
+		
+		select_state(b_melee ? eStateAttack_Melee : eStateAttack_Run);
+		selected		= true;
+	} else if (check_hiding()) {
 		select_state	(eStateAttack_Hide);
 		selected		= true;
 	} else if (check_home_point()) {
@@ -142,6 +153,17 @@ bool CBloodsuckerStateAttackAbstract::check_hiding()
 	if ((object->CInvisibility::energy() > 0.5f) && (object->conditions().health() > 0.5f)) return false;
 	return true;
 }
+
+TEMPLATE_SPECIALIZATION
+bool CBloodsuckerStateAttackAbstract::check_berserk()
+{
+	if (object->time_berserk_start + 20000 < time()) return false;
+	
+	object->predator_stop				();
+	return true;
+}
+
+
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CBloodsuckerStateAttackAbstract
