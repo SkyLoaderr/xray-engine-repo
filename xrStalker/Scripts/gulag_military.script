@@ -1051,8 +1051,10 @@ end
 function check_village_state (gulag)
     if db.actor:has_info ("mil_miser_task_complete") or 
        db.actor:has_info ("mil_after_hunt_talked") then 
+       printf ("VILLAGE GULAG CHANGE STATE TO 1")
        return 1 
     end
+    printf ("VILLAGE GULAG CHANGE STATE TO 0")
     return 0    
 end
 
