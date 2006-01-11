@@ -400,11 +400,20 @@ bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
 
 void CAI_Bloodsucker::play_hidden_run_particles()
 {
-	Fvector pos;
-	pos.set	(Position());
-	pos.y	+= 0.01f;
+	Fvector direction;
+	direction.set(0.f, -1.f, 0.f);
 
-	PlayParticles(invisible_run_particles_name, pos, Direction());
+	Fvector trace_from;
+	Center(trace_from);
+
+	collide::rq_result		l_rq;
+	if (Level().ObjectSpace.RayPick(trace_from, direction, 5.f, collide::rqtStatic, l_rq, this)) {
+		if (l_rq.range < 2.f) {
+			Fvector pos;
+			pos.mad(trace_from, direction, _abs(l_rq.range - 0.15f));
+			PlayParticles(invisible_run_particles_name, pos, Direction());
+		}
+	}
 }
 
 void CAI_Bloodsucker::set_alien_control(bool val)

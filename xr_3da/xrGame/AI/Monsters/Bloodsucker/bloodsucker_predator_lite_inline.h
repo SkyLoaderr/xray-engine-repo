@@ -101,6 +101,8 @@ TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerPredatorLiteAbstract::check_completion()
 {
 	if (object->EnemyMan.see_enemy_now() && (object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) return true;
+	if ((object->CInvisibility::energy() > 0.9f) && (object->conditions().health() > 0.9f)) return true;
+
 	return false;
 }
 
