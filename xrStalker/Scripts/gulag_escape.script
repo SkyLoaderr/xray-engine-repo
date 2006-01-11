@@ -1916,10 +1916,6 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community == "killer"
 	end
 	
-	if gulag_type == "esc_blokpost" then
-		return npc_community == "military"
-	end
-	
 	if gulag_type == "esc_lager" then
 		return npc_community == "stranger"
 	end
