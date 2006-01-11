@@ -16,12 +16,6 @@ public:
 	}
 };
 
-class ENGINE_API	CBoneInstanceRigid	: public CBoneInstance
-{
-public:
-	void				construct		();
-};
-
 class ENGINE_API	CSkeletonRigid		: public CKinematics
 {
 protected:

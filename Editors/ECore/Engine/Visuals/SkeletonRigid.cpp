@@ -8,16 +8,6 @@
 
 extern int	psSkeletonUpdate;
 
-//////////////////////////////////////////////////////////////////////////
-// BoneInstance methods
-void CBoneInstanceRigid::construct	()
-{
-	ZeroMemory					(this,sizeof(*this));
-	mTransform.identity			();
-	mRenderTransform.identity	();
-	Callback_overwrite			= FALSE;
-}
-
 void CSkeletonRigid::CalculateBones			(BOOL bForceExact)
 {
 	// early out.
