@@ -967,6 +967,8 @@ active = walker@gar_bandit_stroyka_1
 [walker@gar_bandit_stroyka_1]
 path_walk = 1_walk
 path_look = 1_look
+danger = danger_condition@stroyka
+
 
 [logic@gar_bandit_stroyka_2]
 active = walker@gar_bandit_stroyka_2
@@ -974,16 +976,17 @@ active = walker@gar_bandit_stroyka_2
 [walker@gar_bandit_stroyka_2]
 path_walk = 2_walk
 path_look = 2_look
+danger = danger_condition@stroyka
 
 
 [logic@gar_bandit_stroyka_3]
 active = walker@gar_bandit_stroyka_3
 wounded = wounded@bandit_wounded
-meet = meet_deafult
 
 [walker@gar_bandit_stroyka_3]
 path_walk = 3_walk
 path_look = 3_look
+danger = danger_condition@stroyka
 
 [wounded@bandit_wounded]
 hp_state = 30|help_me@help|10|wounded_heavy@help_heavy
@@ -1002,6 +1005,7 @@ active = walker@gar_bandit_stroyka_4
 [walker@gar_bandit_stroyka_4]
 path_walk = 4_walk
 path_look = 4_look
+danger = danger_condition@stroyka
 
 [logic@gar_bandit_stroyka_5]
 active = walker@gar_bandit_stroyka_5
@@ -1009,6 +1013,10 @@ active = walker@gar_bandit_stroyka_5
 [walker@gar_bandit_stroyka_5]
 path_walk = 5_walk
 path_look = 5_look
+danger = danger_condition@stroyka
+
+[danger_condition@stroyka]
+ignore_danger_sound = 15
 
 
 ;*************************************
