@@ -119,7 +119,7 @@ protected:
 	CTimer*					device_timer;
 
 	virtual void			new_client			(ClientID clientID, LPCSTR name, bool bLocal)   =0;
-			bool			GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address);
+			bool			GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address, DWORD* pPort = NULL);
 
 			IBannedClient*	GetBannedClient		(const char* Address);			
 			void			BannedAddress_Save	(u32 it, IWriter* fs);
@@ -162,7 +162,7 @@ public:
 	BOOL					HasBandwidth		(IClient* C);
 
 	IC int					GetPort				()			{ return psNET_Port; };
-			bool			GetClientAddress	(ClientID ID, char* Address);
+			bool			GetClientAddress	(ClientID ID, char* Address, DWORD* pPort = NULL);
 	virtual bool			DisconnectClient	(IClient* C);
 	virtual bool			DisconnectAddress	(char* Address);
 	virtual void			BanClient			(IClient* C, u32 BanTime);
