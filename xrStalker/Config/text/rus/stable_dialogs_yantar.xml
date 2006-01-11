@@ -219,6 +219,24 @@
     <string id="yantar_help_scientist_41">
         <text>Привет, Меченый. Как поживаешь?</text>
     </string>
+    <string id="yantar_help_scientist_51">
+        <text>Да, Меченый?</text>
+    </string>
+    <string id="yantar_help_scientist_511">
+        <text>Профессор попросил меня провести тебя, к месту замеров.</text>
+    </string>
+    <string id="yantar_help_scientist_512">
+        <text>Хорошо, отправляемся немедленно. Одному там делать нечего, а с тобой я думаю мы справимся, главное не подпускай к нам кадавров. Ты готов?</text>
+    </string>
+    <string id="yantar_help_scientist_513">
+        <text>Я готов.</text>
+    </string>
+    <string id="yantar_help_scientist_514">
+        <text>Снаружи слишком опасно, иди первым. Разведай территорию снаружи, кадавры опять расшевелились.</text>
+    </string>
+    <string id="yantar_help_scientist_515">
+        <text>Хорошо.</text>
+    </string>
     <string id="yantar_help_scientist_71">
         <text>Привет, Меченый. Как поживаешь?</text>
     </string>
