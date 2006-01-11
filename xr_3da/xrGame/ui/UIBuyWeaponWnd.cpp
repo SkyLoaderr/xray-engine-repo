@@ -1683,7 +1683,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 	CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(grpNum, uIndexInSlot);
 
 	if (UIBagWnd.IsItemInBag(pDDItem))
-//		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot() || GRENADE_SLOT == pDDItem->GetSlot())
+		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot())
 		{
 			pDDItem->m_bHasRealRepresentation = bRealRepresentationSet;
 			SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);

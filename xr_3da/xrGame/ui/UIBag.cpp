@@ -168,9 +168,6 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	FillUpGroups();
 	HideAll();
 	SetMenuLevel(mlRoot);
-//#ifdef DEBUG
-//	CMD4(CCC_Integer,"rank_for_buymenu",&m_iCurrentRank,0,4);
-//#endif
 }
 
 int CUIBag::GetItemRank(const char* item){
@@ -686,6 +683,22 @@ void CUIBag::InitWpnSectStorage()
 		if (!wpnOneType.empty())
 			m_wpnSectStorage.push_back(wpnOneType);
 	}
+
+	wpnOneType.clear();
+
+	CInifile::Sect sect = pSettings->r_section(m_StrPricesSection.c_str());
+	for (CInifile::SectIt it = sect.begin(); it != sect.end(); it++)
+	{
+		u8 group_id, index;
+		GetWeaponIndexByName((*it).first.c_str(), group_id, index);
+
+		if ((u8)(-1) == group_id || (u8)(-1) == index) // item not found
+		{
+			wpnOneType.push_back((*it).first.c_str());			//
+		}	
+	}
+	if (!wpnOneType.empty())
+			m_wpnSectStorage.push_back(wpnOneType);
 }
 
 void CUIBag::FillUpGroups()

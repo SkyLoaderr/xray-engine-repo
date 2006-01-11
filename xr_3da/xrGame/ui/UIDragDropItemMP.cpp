@@ -225,6 +225,8 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pDDItem);
 	R_ASSERT(pDDItemMP);
 	if (!pDDItemMP) return;
+	if (pDDItemMP->GetSectionGroupID() == GROUP_DEFAULT)
+		return;
 
 	if (strstr(pDDItemMP->GetSectionName(), "ammo") && pSettings->r_s32(pDDItemMP->GetSectionName(), "box_size")>1)
 	{
