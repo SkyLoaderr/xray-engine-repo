@@ -810,9 +810,16 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 	if (!pItem || !pItemsDesired || !pItemsToDelete) return;
 
 	WeaponDataStruct* pWpnS = NULL;
-
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-	if (!GetTeamItem_ByName(&pWpnS, &WpnList, *(pItem->object().cNameSect()))) return;
+	if (!GetTeamItem_ByName(&pWpnS, &WpnList, *(pItem->object().cNameSect())))
+	{
+		for (u8 i=0; i<TeamList.size(); i++)
+		{
+			WpnList = TeamList[i].aWeapons;
+			if (GetTeamItem_ByName(&pWpnS, &WpnList, *(pItem->object().cNameSect()))) break;
+		};
+	};
+	if (!pWpnS) return;
 	//-------------------------------------------
 	bool	found = false;
 	for (u32 it = 0; it < pItemsDesired->size(); it++)
