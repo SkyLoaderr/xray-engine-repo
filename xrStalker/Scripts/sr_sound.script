@@ -101,6 +101,7 @@ function action_sound:reset_scheme()
 	self.snd_obj = nil
 	
 	self.slide_active = false
+	printf ("SR_SOUND:RESET_SCHEME CALLED")
 end
 
 function action_sound:update( delta )
@@ -114,14 +115,18 @@ function action_sound:update( delta )
 	-- check for update of sliding sound
 	if self.slide_active and not self.snd_obj:playing() and self.st.sound_slide_once then
 		self.slide_active = false
+		printf ("SR_SOUND:UPDATE 1 CALLED")
 	end
 	
 	if self.slide_active then
+	    printf ("SR_SOUND:UPDATE 2 CALLED")
 		-- play sound
 		if not self.snd_obj:playing() then 
 			self.snd_obj:play_at_pos(self.object, self.current, self.st.delay)
+			printf ("SR_SOUND:UPDATE 3 CALLED")
 		else 
 			self.snd_obj:set_position(self.current)	
+			printf ("SR_SOUND:UPDATE 4 CALLED")
 		end
 		
 		-- update current position
@@ -131,8 +136,10 @@ function action_sound:update( delta )
 		if target_pos:distance_to(self.current) > self.current:distance_to(self.target) then
 			self.cur_point	= self:next_point()
 			self:set_positions()
+			printf ("SR_SOUND:UPDATE 5 CALLED")
 		else
 			self.current	= vector():set(target_pos)
+			printf ("SR_SOUND:UPDATE 6 CALLED")
 		end
 	end
 	---------------------------------------
@@ -147,6 +154,7 @@ function action_sound:update( delta )
 	-- если мы ещё нигде, то не считать ни входа, ни выхода
 	if self.is_actor_inside == nil then
 		self.is_actor_inside = self.object:inside( actor:position() )
+		printf ("SR_SOUND:UPDATE 7 CALLED")
 		return
 	end
 
@@ -154,14 +162,17 @@ function action_sound:update( delta )
 		if not self.is_actor_inside then
 			self:on_enter( actor )
 			self.is_actor_inside = true
+			printf ("SR_SOUND:UPDATE 8 CALLED")
 		end
         if self.snd_obj ~= nil and self.snd_obj:playing () == false then
 		   self.st.signals["sound_end"] = true
+		   printf ("SR_SOUND:UPDATE 9 CALLED")
 		end    
 	else
 		if self.is_actor_inside then
 			--self.on_leave( actor )
 			self.is_actor_inside = false
+			printf ("SR_SOUND:UPDATE 10 CALLED")
 		end
 	end
 
