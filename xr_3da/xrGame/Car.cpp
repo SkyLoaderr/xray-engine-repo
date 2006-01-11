@@ -782,7 +782,7 @@ void CCar::CreateSkeleton()
 {
 
 	if (!Visual()) return;
-	CSkeletonAnimated* K = smart_cast<CSkeletonAnimated*>(Visual());
+	CKinematicsAnimated* K = smart_cast<CKinematicsAnimated*>(Visual());
 	if(K)
 	{
 		K->PlayCycle		("idle");

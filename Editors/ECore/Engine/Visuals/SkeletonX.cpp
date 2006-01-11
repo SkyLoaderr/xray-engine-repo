@@ -321,7 +321,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			size				= dwVertCount*sizeof(vertBoned1W);
 			vertBoned1W* VO = (vertBoned1W*)data->pointer();
 			for (it=0; it<dwVertCount; it++)	{
-				u32		mid = VO[it].matrix;
+				u16		mid = VO[it].matrix;
 				if		(bids.end() == std::find(bids.begin(),bids.end(),mid))	bids.push_back(mid);
 				if		(mid>sw_bones)	sw_bones = mid;
 			}

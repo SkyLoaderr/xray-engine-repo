@@ -156,21 +156,21 @@ void IRender_VisualScript::script_register		(lua_State *L)
 	[
 		class_<IRender_Visual>("IRender_Visual")
 			.def(constructor<>())
-			.def("dcast_PSkeletonAnimated",&IRender_Visual::dcast_PSkeletonAnimated)
+			.def("dcast_PKinematicsAnimated",&IRender_Visual::dcast_PKinematicsAnimated)
 	];
 }
 
-void CSkeletonAnimated_PlayCycle(CSkeletonAnimated* sa, LPCSTR anim)
+void CKinematicsAnimated_PlayCycle(CKinematicsAnimated* sa, LPCSTR anim)
 {
 	sa->PlayCycle(anim);
 }
 
-void CSkeletonAnimatedScript::script_register		(lua_State *L)
+void CKinematicsAnimatedScript::script_register		(lua_State *L)
 {
 	module(L)
 	[
-		class_<CSkeletonAnimated>("CSkeletonAnimated")
-			.def("PlayCycle",		&CSkeletonAnimated_PlayCycle)
+		class_<CKinematicsAnimated>("CKinematicsAnimated")
+			.def("PlayCycle",		&CKinematicsAnimated_PlayCycle)
 	];
 }
 

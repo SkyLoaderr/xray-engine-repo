@@ -842,9 +842,6 @@
 						RelativePath=".\SkeletonRigid.cpp">
 					</File>
 					<File
-						RelativePath=".\SkeletonRigid.h">
-					</File>
-					<File
 						RelativePath=".\SkeletonX.cpp">
 						<FileConfiguration
 							Name="Mixed|Win32">

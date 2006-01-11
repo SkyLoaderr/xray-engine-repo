@@ -13,7 +13,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai/ai_monsters_anims.h"
 
-void CStalkerAnimationPair::synchronize		(CSkeletonAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation) const
+void CStalkerAnimationPair::synchronize		(CKinematicsAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation) const
 {
 	if (!blend())
 		return;
@@ -35,9 +35,9 @@ void CStalkerAnimationPair::synchronize		(CSkeletonAnimated *skeleton_animated, 
 }
 
 #ifndef USE_HEAD_BONE_PART_FAKE
-void CStalkerAnimationPair::play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
+void CStalkerAnimationPair::play_global_animation	(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
 #else
-void CStalkerAnimationPair::play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part)
+void CStalkerAnimationPair::play_global_animation	(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part)
 #endif
 {
 	m_blend				= 0;
@@ -59,9 +59,9 @@ void CStalkerAnimationPair::play_global_animation	(CSkeletonAnimated *skeleton_a
 }
 
 #ifndef USE_HEAD_BONE_PART_FAKE
-void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
+void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
 #else
-void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part)
+void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part)
 #endif
 {
 	VERIFY					(animation());

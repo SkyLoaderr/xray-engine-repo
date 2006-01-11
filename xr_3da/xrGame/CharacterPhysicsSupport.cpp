@@ -114,7 +114,7 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 	CPHDestroyable::Init();//this zerows colbacks !!;
 	if(!m_EntityAlife.g_Alive())
 	{
-		CSkeletonAnimated*ka= smart_cast<CSkeletonAnimated*>(m_EntityAlife.Visual());
+		CKinematicsAnimated*ka= smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual());
 		ka->PlayCycle("death_init");
 		ka->CalculateBones_Invalidate();
 		ka->CalculateBones();
@@ -264,7 +264,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 			{
 				///if(m_eType==etStalker)
 				{
-						smart_cast<CSkeletonAnimated*>(m_EntityAlife.Visual())->PlayCycle("death_init");
+						smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual())->PlayCycle("death_init");
 				}
 	
 				//b_death_anim_on=true;

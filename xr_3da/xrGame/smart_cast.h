@@ -37,13 +37,9 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CKinematics,		IRender_Visual)
 
-		DECLARE_SPECIALIZATION			(CSkeletonRigid,	IRender_Visual,		dcast_PSkeletonRigid);
+		DECLARE_SPECIALIZATION			(CKinematicsAnimated,	IRender_Visual,		dcast_PKinematicsAnimated);
 #		undef cast_type_list
-#		define cast_type_list save_cast_list	(CSkeletonRigid,	IRender_Visual)
-
-		DECLARE_SPECIALIZATION			(CSkeletonAnimated,	IRender_Visual,		dcast_PSkeletonAnimated);
-#		undef cast_type_list
-#		define cast_type_list save_cast_list	(CSkeletonAnimated,	IRender_Visual)
+#		define cast_type_list save_cast_list	(CKinematicsAnimated,	IRender_Visual)
 
 		DECLARE_SPECIALIZATION			(IParticleCustom,	IRender_Visual,		dcast_ParticleCustom);
 #		undef cast_type_list

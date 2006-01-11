@@ -20,7 +20,7 @@ class IRender_Visual;
 class FHierrarhyVisual;
 class CBlend;
 class CKinematics;
-class CSkeletonAnimated;
+class CKinematicsAnimated;
 
 typedef class_exporter<DLL_Pure>	DLL_PureScript;
 add_to_type_list(DLL_PureScript)
@@ -73,8 +73,8 @@ add_to_type_list(CKinematicsScript)
 #define script_type_list save_type_list(CKinematicsScript)
 */
 
-typedef class_exporter<CSkeletonAnimated>	CSkeletonAnimatedScript;
-add_to_type_list(CSkeletonAnimatedScript)
+typedef class_exporter<CKinematicsAnimated>	CKinematicsAnimatedScript;
+add_to_type_list(CKinematicsAnimatedScript)
 #undef script_type_list
-#define script_type_list save_type_list(CSkeletonAnimatedScript)
+#define script_type_list save_type_list(CKinematicsAnimatedScript)
 

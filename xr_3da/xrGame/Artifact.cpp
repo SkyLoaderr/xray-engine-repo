@@ -131,7 +131,7 @@ BOOL CArtefact::net_Spawn(CSE_Abstract* DC)
 	/////////////////////////////////////////
 	m_CarringBoneID = u16(-1);
 	/////////////////////////////////////////
-	CSkeletonAnimated	*K=smart_cast<CSkeletonAnimated*>(Visual());
+	CKinematicsAnimated	*K=smart_cast<CKinematicsAnimated*>(Visual());
 	if(K)K->PlayCycle("idle");
 	
 	o_fastmode					= FALSE	;		// start initially with fast-mode enabled
@@ -422,7 +422,7 @@ void SArtefactActivation::ChangeEffects()
 												iFloor(state_def.m_time*1000) );
 	};
 	if(state_def.m_animation.size()){
-		CSkeletonAnimated	*K=smart_cast<CSkeletonAnimated*>(m_af->Visual());
+		CKinematicsAnimated	*K=smart_cast<CKinematicsAnimated*>(m_af->Visual());
 		if(K)K->PlayCycle(*state_def.m_animation);
 	}
 

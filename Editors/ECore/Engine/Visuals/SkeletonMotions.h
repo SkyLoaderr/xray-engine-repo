@@ -5,7 +5,7 @@
 #include		"skeletoncustom.h"
 
 // refs
-class CSkeletonAnimated;
+class CKinematicsAnimated;
 class CBlend;
 
 // callback

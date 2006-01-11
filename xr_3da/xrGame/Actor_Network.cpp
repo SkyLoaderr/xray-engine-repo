@@ -785,7 +785,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	{
 		mstate_wishful	&=		~mcAnyMove;
 		mstate_real		&=		~mcAnyMove;
-		CSkeletonAnimated* K= smart_cast<CSkeletonAnimated*>(Visual());
+		CKinematicsAnimated* K= smart_cast<CKinematicsAnimated*>(Visual());
 		K->PlayCycle("death_init");
 
 		
@@ -940,7 +940,7 @@ void	CActor::OnChangeVisual()
 		tmp_shell=NULL;
 	}
 
-	CSkeletonAnimated* V	= smart_cast<CSkeletonAnimated*>(Visual());
+	CKinematicsAnimated* V	= smart_cast<CKinematicsAnimated*>(Visual());
 	if (V){
 		SetCallbacks		();
 		m_anims->Create		(V);

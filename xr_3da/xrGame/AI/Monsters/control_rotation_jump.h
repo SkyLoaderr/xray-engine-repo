@@ -33,7 +33,7 @@ class CControlRotationJump : public CControl_ComCustom<SControlRotationJumpData>
 		eNone
 	} m_stage;
 
-	CSkeletonAnimated	*m_skeleton_animated;
+	CKinematicsAnimated	*m_skeleton_animated;
 
 public:
 	virtual void	reinit					();

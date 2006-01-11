@@ -47,10 +47,10 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 		V	= xr_new<FProgressive>			();
 		break;
 	case MT_SKELETON_ANIM:
-		V	= xr_new<CSkeletonAnimated>		();
+		V	= xr_new<CKinematicsAnimated>	();
 		break;
 	case MT_SKELETON_RIGID:
-		V	= xr_new<CSkeletonRigid>		();
+		V	= xr_new<CKinematics>			();
 		break;
 	case MT_SKELETON_GEOMDEF_PM:
 		V	= xr_new<CSkeletonX_PM>			();

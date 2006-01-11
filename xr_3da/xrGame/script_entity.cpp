@@ -340,7 +340,7 @@ bool CScriptEntity::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 		return		(false);
 	if (!xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay))
 		return		(true);
-	CSkeletonAnimated	&tVisualObject = *(smart_cast<CSkeletonAnimated*>(object().Visual()));
+	CKinematicsAnimated	&tVisualObject = *(smart_cast<CKinematicsAnimated*>(object().Visual()));
 	m_tpNextAnimation	= tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 	return			(true);
 }
@@ -581,7 +581,7 @@ bool CScriptEntity::bfScriptAnimation()
 //				Msg				("%6d Playing animation : %s",Device.dwTimeGlobal,*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 #endif
 			if (m_tpScriptAnimation != m_tpNextAnimation)
-				smart_cast<CSkeletonAnimated*>(object().Visual())->PlayCycle(m_tpScriptAnimation = m_tpNextAnimation,TRUE,ScriptCallBack,this);
+				smart_cast<CKinematicsAnimated*>(object().Visual())->PlayCycle(m_tpScriptAnimation = m_tpNextAnimation,TRUE,ScriptCallBack,this);
 			return		(true);
 		}
 	else {

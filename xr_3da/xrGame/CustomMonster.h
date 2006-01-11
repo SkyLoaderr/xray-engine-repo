@@ -17,7 +17,7 @@ namespace MonsterSpace {
 
 class CAI_Rat;
 class CMotionDef;
-class CSkeletonAnimated;
+class CKinematicsAnimated;
 class CMemoryManager;
 class CItemManager;
 class CEnemyManager;
@@ -51,7 +51,7 @@ protected:
 		MotionID		ls;
 		MotionID		rs;
 
-		void			Create(CSkeletonAnimated* K, LPCSTR base);
+		void			Create(CKinematicsAnimated* K, LPCSTR base);
 	};
 
 private:

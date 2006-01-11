@@ -9,7 +9,7 @@ void CControlThreaten::reinit()
 {
 	CControl_ComCustom<>::reinit();
 
-	CSkeletonAnimated *skel = smart_cast<CSkeletonAnimated*>(m_object->Visual());
+	CKinematicsAnimated *skel = smart_cast<CKinematicsAnimated*>(m_object->Visual());
 	m_man->animation().add_anim_event(skel->LL_MotionID("stand_kick_0"),0.63f,CControlAnimation::eAnimationCustom);
 }
 
@@ -34,7 +34,7 @@ void CControlThreaten::activate()
 	SControlAnimationData		*ctrl_anim = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	VERIFY						(ctrl_anim);
 
-	ctrl_anim->global.motion	= smart_cast<CSkeletonAnimated*>(m_object->Visual())->ID_Cycle_Safe("stand_kick_0");
+	ctrl_anim->global.motion	= smart_cast<CKinematicsAnimated*>(m_object->Visual())->ID_Cycle_Safe("stand_kick_0");
 	ctrl_anim->global.actual	= false;
 }
 

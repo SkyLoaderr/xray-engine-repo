@@ -38,15 +38,15 @@ private:
 
 protected:
 #ifndef USE_HEAD_BONE_PART_FAKE
-			void			play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
+			void			play_global_animation	(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
 #else
-			void			play_global_animation	(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part);
+			void			play_global_animation	(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part);
 #endif
 
 public:
 	IC						CStalkerAnimationPair	();
 	IC		void			reset					();
-			void			synchronize				(CSkeletonAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation_pair) const;
+			void			synchronize				(CKinematicsAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation_pair) const;
 	IC		bool			actual					() const;
 	IC		void			animation				(const MotionID &animation);
 	IC		const MotionID	&animation				() const;
@@ -57,9 +57,9 @@ public:
 	IC		bool			global_animation		() const;
 	IC		void			make_inactual			();
 #ifndef USE_HEAD_BONE_PART_FAKE
-			void			play					(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
+			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
 #else
-			void			play					(CSkeletonAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part = all_bone_parts);
+			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part = all_bone_parts);
 #endif
 #ifdef DEBUG
 	IC		void			set_dbg_info			(LPCSTR object_name, LPCSTR animation_type_name);

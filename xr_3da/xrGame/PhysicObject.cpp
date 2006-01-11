@@ -54,15 +54,15 @@ void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
 	if(Visual()&&smart_cast<CKinematics*>(Visual()))
 	{
 		//		CSE_PHSkeleton	*po	= smart_cast<CSE_PHSkeleton*>(D);
-		CSkeletonAnimated*	pSkeletonAnimated=NULL;
+		CKinematicsAnimated*	PKinematicsAnimated=NULL;
 		R_ASSERT			(Visual()&&smart_cast<CKinematics*>(Visual()));
-		pSkeletonAnimated	=smart_cast<CSkeletonAnimated*>(Visual());
-		if(pSkeletonAnimated)
+		PKinematicsAnimated	=smart_cast<CKinematicsAnimated*>(Visual());
+		if(PKinematicsAnimated)
 		{
 			CSE_Visual					*visual = smart_cast<CSE_Visual*>(D);
 			R_ASSERT					(visual);
 			R_ASSERT2					(*visual->startup_animation,"no startup animation");
-			pSkeletonAnimated->PlayCycle(*visual->startup_animation);
+			PKinematicsAnimated->PlayCycle(*visual->startup_animation);
 		}
 		smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate();
 		smart_cast<CKinematics*>(Visual())->CalculateBones	();

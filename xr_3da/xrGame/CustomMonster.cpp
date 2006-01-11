@@ -49,7 +49,7 @@ extern int g_AI_inactive_time;
 Flags32		psAI_Flags	= {0};
 #endif
 
-void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
+void CCustomMonster::SAnimState::Create(CKinematicsAnimated* K, LPCSTR base)
 {
 	char	buf[128];
 	fwd		= K->ID_Cycle_Safe(strconcat(buf,base,"_fwd"));

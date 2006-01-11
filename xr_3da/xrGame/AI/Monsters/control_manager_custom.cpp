@@ -132,7 +132,7 @@ void CControlManagerCustom::update_schedule()
 void CControlManagerCustom::ta_fill_data(SAnimationTripleData &data, LPCSTR s1, LPCSTR s2, LPCSTR s3, bool execute_once, bool skip_prep, u32 capture_type)
 {
 	// Load triple animations
-	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
+	CKinematicsAnimated	*skel_animated = smart_cast<CKinematicsAnimated*>(m_object->Visual());
 	data.pool[0]		= skel_animated->ID_Cycle_Safe(s1);	VERIFY(data.pool[0]);
 	data.pool[1]		= skel_animated->ID_Cycle_Safe(s2);	VERIFY(data.pool[1]);
 	data.pool[2]		= skel_animated->ID_Cycle_Safe(s3);	VERIFY(data.pool[2]);
@@ -266,7 +266,7 @@ void CControlManagerCustom::load_jump_data(LPCSTR s1, LPCSTR s2, LPCSTR s3, LPCS
 {
 	m_jump->setup_data().flags.assign(flags);
 	
-	CSkeletonAnimated	*skel_animated = smart_cast<CSkeletonAnimated*>(m_object->Visual());
+	CKinematicsAnimated	*skel_animated = smart_cast<CKinematicsAnimated*>(m_object->Visual());
 	if (s1) {
 		m_jump->setup_data().state_prepare.motion = skel_animated->ID_Cycle_Safe(s1);
 		VERIFY(m_jump->setup_data().state_prepare.motion);
@@ -471,7 +471,7 @@ void CControlManagerCustom::check_rotation_jump()
 void CControlManagerCustom::add_rotation_jump_data(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags)
 {
 	VERIFY				(m_object->Visual());
-	CSkeletonAnimated	*skeleton_animated	= smart_cast<CSkeletonAnimated*>(m_object->Visual());
+	CKinematicsAnimated	*skeleton_animated	= smart_cast<CKinematicsAnimated*>(m_object->Visual());
 
 	SControlRotationJumpData	data;
 	

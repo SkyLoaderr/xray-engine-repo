@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "stalker_animation_data.h"
 
-CStalkerAnimationData::CStalkerAnimationData	(CSkeletonAnimated *skeleton_animated)
+CStalkerAnimationData::CStalkerAnimationData	(CKinematicsAnimated *skeleton_animated)
 {
 	m_part_animations.Load		(skeleton_animated,"");
 	m_head_animations.Load		(skeleton_animated,"");

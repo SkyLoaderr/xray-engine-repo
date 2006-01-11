@@ -9,8 +9,7 @@
 #define VLOAD_FORCESOFTWARE		(1<<2)
 
 // The class itself
-class	ENGINE_API				CSkeletonAnimated;
-class	ENGINE_API				CSkeletonRigid;
+class	ENGINE_API				CKinematicsAnimated;
 class	ENGINE_API				CKinematics;
 class	ENGINE_API				IParticleCustom;
 
@@ -50,17 +49,16 @@ public:
 	vis_data					vis			;				// visibility-data
 	ref_shader					shader		;				// pipe state, shared
 
-	virtual void				Render					(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
-	virtual void				Load					(const char* N, IReader *data, u32 dwFlags);
-	virtual void				Release					();						// Shared memory release
-	virtual void				Copy					(IRender_Visual* from);
-	virtual void				Spawn					()				{};
-	virtual void				Depart					()				{};
+	virtual void				Render						(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
+	virtual void				Load						(const char* N, IReader *data, u32 dwFlags);
+	virtual void				Release						();						// Shared memory release
+	virtual void				Copy						(IRender_Visual* from);
+	virtual void				Spawn						()				{};
+	virtual void				Depart						()				{};
 
-	virtual	CKinematics*		dcast_PKinematics		()				{ return 0;	}
-	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return 0;	}
-	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return 0;	}
-	virtual IParticleCustom*	dcast_ParticleCustom	()				{ return 0;	}
+	virtual	CKinematics*		dcast_PKinematics			()				{ return 0;	}
+	virtual	CKinematicsAnimated*dcast_PKinematicsAnimated	()				{ return 0;	}
+	virtual IParticleCustom*	dcast_ParticleCustom		()				{ return 0;	}
 
 	IRender_Visual				();
 	virtual ~IRender_Visual		();

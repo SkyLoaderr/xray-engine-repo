@@ -619,7 +619,7 @@ void CAI_Rat::EatCorpse()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
 
-	//	CSkeletonAnimated					*V= smart_cast<CSkeletonAnimated*>(const_cast<CGameObject*>(memory().item().selected())->Visual());
+	//	CKinematicsAnimated					*V= smart_cast<CKinematicsAnimated*>(const_cast<CGameObject*>(memory().item().selected())->Visual());
 	//	R_ASSERT							(V);
 	//	u16									head_bone = V->LL_BoneID("bip01_head");
 	//	Fmatrix								l_tMatrix;

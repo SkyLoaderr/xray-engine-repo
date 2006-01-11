@@ -12,7 +12,7 @@ struct					SActorMotions
 			MotionID	legs_back;
 			MotionID	legs_ls;
 			MotionID	legs_rs;
-			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
+			void		Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1);
 		};
 		struct			STorsoWpn{
 			MotionID	aim;
@@ -32,7 +32,7 @@ struct					SActorMotions
 			MotionID	all_attack_0;
 			MotionID	all_attack_1;
 			MotionID	all_attack_2;
-			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
+			void		Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1);
 		};
 		MotionID		legs_idle;
 		MotionID		jump_begin;
@@ -47,8 +47,8 @@ struct					SActorMotions
 		MotionID		m_head_idle;
 
 		MotionID		m_damage[DAMAGE_FX_COUNT];
-		void			Create(CSkeletonAnimated* K, LPCSTR base);
-		void			CreateClimb(CSkeletonAnimated* K);
+		void			Create(CKinematicsAnimated* K, LPCSTR base);
+		void			CreateClimb(CKinematicsAnimated* K);
 	};
 
 	struct SActorSprintState 
@@ -59,7 +59,7 @@ struct					SActorMotions
 		MotionID		legs_fwd;
 		MotionID		legs_ls;
 		MotionID		legs_rs;
-		void Create		(CSkeletonAnimated* K);
+		void Create		(CKinematicsAnimated* K);
 	};
 
 	MotionID			m_dead_stop;
@@ -68,7 +68,7 @@ struct					SActorMotions
 	SActorState			m_crouch;
 	SActorState			m_climb;
 	SActorSprintState	m_sprint;
-	void				Create(CSkeletonAnimated* K);
+	void				Create(CKinematicsAnimated* K);
 };
 
 //
@@ -83,11 +83,11 @@ struct SActorVehicleAnims
 		MotionID		steer_left			;
 		MotionID		steer_right			;
 						SOneTypeCollection	();
-		void			Create				(CSkeletonAnimated* K,u16 num);
+		void			Create				(CKinematicsAnimated* K,u16 num);
 	};
 	SOneTypeCollection m_vehicles_type_collections[TYPES_NUMBER];
 						SActorVehicleAnims	();
-	void				Create				(CSkeletonAnimated* K);
+	void				Create				(CKinematicsAnimated* K);
 };
 
 

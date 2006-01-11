@@ -36,7 +36,7 @@ struct SAnimationSignalEventData : public ControlCom::IEventData {
 class CControlAnimation : public CControl_ComPure<SControlAnimationData> {
 	typedef CControl_ComPure<SControlAnimationData> inherited;
 
-	CSkeletonAnimated		*m_skeleton_animated;
+	CKinematicsAnimated		*m_skeleton_animated;
 	
 	// animation events
 	struct SAnimationEvent{
@@ -96,7 +96,7 @@ public:
 // get motion time, when just MotionID available
 IC float CControlAnimation::motion_time(MotionID motion_id, IRender_Visual *visual)
 {
-	CSkeletonAnimated	*skeleton_animated	= smart_cast<CSkeletonAnimated*>(visual);
+	CKinematicsAnimated	*skeleton_animated	= smart_cast<CKinematicsAnimated*>(visual);
 	VERIFY				(skeleton_animated);
 	CKinematics			*kinematics			= smart_cast<CKinematics*>(visual);
 	VERIFY				(kinematics);

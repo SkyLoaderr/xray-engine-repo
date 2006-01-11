@@ -18,7 +18,7 @@ void CControllerPsyHit::reinit()
 {
 	inherited::reinit();
 
-	CSkeletonAnimated	*skel = smart_cast<CSkeletonAnimated *>(m_object->Visual());
+	CKinematicsAnimated	*skel = smart_cast<CKinematicsAnimated *>(m_object->Visual());
 	m_stage[0] = skel->ID_Cycle_Safe("psy_attack_0"); VERIFY(m_stage[0]);
 	m_stage[1] = skel->ID_Cycle_Safe("psy_attack_1"); VERIFY(m_stage[1]);
 	m_stage[2] = skel->ID_Cycle_Safe("psy_attack_2"); VERIFY(m_stage[2]);

@@ -97,7 +97,7 @@ public:
 	}
 	// Calculation
 	void				CalculateM2B	(const Fmatrix& Parent);
-	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent)=0;
+	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
 
 	virtual u32			mem_usage		()
 	{
@@ -176,7 +176,7 @@ protected:
 	CSkeletonX*					LL_GetChild				(u32 idx);
 
 	// internal functions
-    virtual CBoneData*			CreateBoneData			(u16 ID)=0;
+	virtual CBoneData*			CreateBoneData			(u16 ID){return xr_new<CBoneData>(ID);}
 	virtual void				IBoneInstances_Create	();
 	virtual void				IBoneInstances_Destroy	();
 	void						Visibility_Invalidate	()	{ Update_Visibility=TRUE; };
@@ -221,7 +221,7 @@ public:
 	void						LL_SetBonesVisible	(u64 mask);
 
 	// Main functionality
-	virtual void				CalculateBones				(BOOL bForceExact	=	FALSE)		=	0;		// Recalculate skeleton
+	virtual void				CalculateBones				(BOOL bForceExact	=	FALSE);		// Recalculate skeleton
 	void						CalculateBones_Invalidate	();
 	void						Callback					(UpdateCallback C, void* Param)		{	Update_Callback	= C; Update_Callback_Param	= Param;	}
 

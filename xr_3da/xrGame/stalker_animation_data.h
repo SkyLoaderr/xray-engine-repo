@@ -24,5 +24,5 @@ public:
 	GLOBAL_ANIMATIONS	m_global_animations;
 
 public:
-						CStalkerAnimationData	(CSkeletonAnimated *skeleton_animated);
+						CStalkerAnimationData	(CKinematicsAnimated *skeleton_animated);
 };

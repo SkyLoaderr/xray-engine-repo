@@ -28,7 +28,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	PickupModeOff		();
 	m_holder=vehicle;
 
-	CSkeletonAnimated* V		= smart_cast<CSkeletonAnimated*>(Visual()); R_ASSERT(V);
+	CKinematicsAnimated* V		= smart_cast<CKinematicsAnimated*>(Visual()); R_ASSERT(V);
 	
 	if(!m_holder->attach_Actor(this)){
 		m_holder=NULL;
@@ -78,7 +78,7 @@ void CActor::detach_Vehicle()
 	r_model_yaw_dest=r_model_yaw;
 	m_holder=NULL;
 	SetCallbacks		();
-	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual()); R_ASSERT(V);
+	CKinematicsAnimated* V= smart_cast<CKinematicsAnimated*>(Visual()); R_ASSERT(V);
 	V->PlayCycle		(m_anims->m_normal.legs_idle);
 	V->PlayCycle		(m_anims->m_normal.m_torso_idle);
 	//mstate_wishful &=~mcAnyMove;

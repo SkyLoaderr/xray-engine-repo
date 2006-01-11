@@ -2,13 +2,11 @@
 #include 	"stdafx.h"
 #pragma hdrstop
 
-#include 	"SkeletonRigid.h"
-#include	"SkeletonX.h"
-#include	"fmesh.h"
+#include 	"SkeletonCustom.h"
 
 extern int	psSkeletonUpdate;
 
-void CSkeletonRigid::CalculateBones			(BOOL bForceExact)
+void CKinematics::CalculateBones			(BOOL bForceExact)
 {
 	// early out.
 	// check if the info is still relevant
@@ -26,7 +24,7 @@ void CSkeletonRigid::CalculateBones			(BOOL bForceExact)
 	// exact computation
 	// Calculate bones
 	Device.Statistic.Animation.Begin();
-	((CBoneDataRigid*)(*bones)[iRoot])->Calculate		(this,&Fidentity);
+	bones->at(iRoot)->Calculate		(this,&Fidentity);
 	Device.Statistic.Animation.End	();
 
 	// Calculate BOXes/Spheres if needed
@@ -68,7 +66,7 @@ void CSkeletonRigid::CalculateBones			(BOOL bForceExact)
 	if (Update_Callback)	Update_Callback(this);
 }
 
-void CBoneDataRigid::Calculate	(CKinematics* K, Fmatrix *parent)
+void CBoneData::Calculate	(CKinematics* K, Fmatrix *parent)
 {
     if (K->LL_GetBoneVisible(SelfID)){
 		CBoneInstance& INST			= (CBoneInstance&)K->LL_GetBoneInstance(SelfID);
@@ -83,6 +81,6 @@ void CBoneDataRigid::Calculate	(CKinematics* K, Fmatrix *parent)
 
         // Calculate children
         for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
-            ((CBoneDataRigid*)(*C))->Calculate(K,&INST.mTransform);
+            (*C)->Calculate(K,&INST.mTransform);
 	}
 }

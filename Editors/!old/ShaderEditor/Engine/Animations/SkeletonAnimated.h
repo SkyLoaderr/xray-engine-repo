@@ -12,7 +12,7 @@ const	u32		MAX_ANIM_SLOT		=	4;
 
 // refs
 class   ENGINE_API CBlend;
-class 	ENGINE_API CSkeletonAnimated;
+class 	ENGINE_API CKinematicsAnimated;
 class	ENGINE_API CBoneDataAnimated;
 class   ENGINE_API CBoneInstanceAnimated;
 struct	ENGINE_API CKey;
@@ -117,10 +117,10 @@ public:
 public:
 						CBoneDataAnimated(u16 ID):CBoneData(ID){}
 	// Motion control
-	void				Motion_Start	(CSkeletonAnimated* K, CBlend* handle);	// with recursion
-	void				Motion_Start_IM	(CSkeletonAnimated* K, CBlend* handle);
-	void				Motion_Stop		(CSkeletonAnimated* K, CBlend* handle);	// with recursion
-	void				Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle);
+	void				Motion_Start	(CKinematicsAnimated* K, CBlend* handle);	// with recursion
+	void				Motion_Start_IM	(CKinematicsAnimated* K, CBlend* handle);
+	void				Motion_Stop		(CKinematicsAnimated* K, CBlend* handle);	// with recursion
+	void				Motion_Stop_IM	(CKinematicsAnimated* K, CBlend* handle);
 
 	// Calculation
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
@@ -131,7 +131,7 @@ public:
 };
 
 //*** The visual itself ***************************************************************************
-class ENGINE_API	CSkeletonAnimated	: public CKinematics
+class ENGINE_API	CKinematicsAnimated	: public CKinematics
 {
 	typedef CKinematics							inherited;
 	friend class								CBoneData;
@@ -211,8 +211,8 @@ public:
 	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void				Release			();
 	virtual void				Spawn			();
-	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return this;	}
-	virtual						~CSkeletonAnimated	();
+	virtual	CKinematicsAnimated*	dcast_PKinematicsAnimated	()				{ return this;	}
+	virtual						~CKinematicsAnimated	();
 
 	virtual u32					mem_usage		(bool bInstance)
 	{
@@ -220,6 +220,6 @@ public:
 		return sz;
 	}
 };
-IC CSkeletonAnimated* PSkeletonAnimated(IRender_Visual* V) { return V?V->dcast_PSkeletonAnimated():0; }
+IC CKinematicsAnimated* PKinematicsAnimated(IRender_Visual* V) { return V?V->dcast_PKinematicsAnimated():0; }
 //---------------------------------------------------------------------------
 #endif

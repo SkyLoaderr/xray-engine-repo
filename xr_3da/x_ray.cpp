@@ -8,7 +8,6 @@
 #include "stdafx.h"
 #include "igame_level.h"
 #include "igame_persistent.h"
-#include "SkeletonAnimated.h"
 
 #include "xr_input.h"
 #include "xr_ioconsole.h"

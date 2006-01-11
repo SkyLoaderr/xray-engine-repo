@@ -17,14 +17,14 @@ class CAniVector {
 public:
 	ANIM_VECTOR		A;
 
-			void	Load	(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName);
+			void	Load	(CKinematicsAnimated *tpKinematics, LPCSTR caBaseName);
 };
 
 template <LPCSTR caBaseNames[]> class CAniFVector {
 public:
 	ANIM_VECTOR		A;
 
-	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
+	IC	void		Load(CKinematicsAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		A.clear			();
 		string256		S;
@@ -45,7 +45,7 @@ template <class TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
 public:
 	xr_vector<TYPE_NAME>	A;
 
-	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
+	IC	void		Load(CKinematicsAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		A.clear		();
 		string256	S;

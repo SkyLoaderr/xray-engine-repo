@@ -24,7 +24,7 @@ BOOL weapon_hud_value::load(const shared_str& section, CHudItem* owner)
 
 	// Visual
 	LPCSTR visual_name			= pSettings->r_string(section, "visual");
-	m_animations				= smart_cast<CSkeletonAnimated*>(::Render->model_Create(visual_name));
+	m_animations				= smart_cast<CKinematicsAnimated*>(::Render->model_Create(visual_name));
 	//	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
@@ -58,7 +58,7 @@ weapon_hud_value::~weapon_hud_value()
 
 u32 shared_weapon_hud::motion_length(MotionID M)
 {
-	CSkeletonAnimated	*skeleton_animated = p_->m_animations;
+	CKinematicsAnimated	*skeleton_animated = p_->m_animations;
 	VERIFY				(skeleton_animated);
 	CMotionDef			*motion_def = skeleton_animated->LL_GetMotionDef(M);
 	VERIFY				(motion_def);
@@ -128,11 +128,11 @@ MotionID CWeaponHUD::animGet		(LPCSTR name)
 void CWeaponHUD::animDisplay		(MotionID M,	BOOL bMixIn)
 {
 	if(m_bVisible){
-		CSkeletonAnimated* pSkeletonAnimated			= smart_cast<CSkeletonAnimated*>(Visual());
-		VERIFY(pSkeletonAnimated);
-		//pSkeletonAnimated->Update						();
-		pSkeletonAnimated->PlayCycle					(M,bMixIn);
-		pSkeletonAnimated->CalculateBones_Invalidate	();
+		CKinematicsAnimated* PKinematicsAnimated			= smart_cast<CKinematicsAnimated*>(Visual());
+		VERIFY(PKinematicsAnimated);
+		//PKinematicsAnimated->Update						();
+		PKinematicsAnimated->PlayCycle					(M,bMixIn);
+		PKinematicsAnimated->CalculateBones_Invalidate	();
 	}
 }
 void CWeaponHUD::animPlay			(MotionID M,	BOOL bMixIn, CInventoryItem* W)
@@ -154,7 +154,7 @@ void CWeaponHUD::Update				()
 	if(m_bStopAtEndAnimIsRunning && Device.dwTimeGlobal > m_dwAnimEndTime)
 		StopCurrentAnim				();
 	if(m_bVisible)
-		smart_cast<CSkeletonAnimated*>(Visual())->UpdateTracks		();
+		smart_cast<CKinematicsAnimated*>(Visual())->UpdateTracks		();
 }
 
 void CWeaponHUD::StopCurrentAnim	()

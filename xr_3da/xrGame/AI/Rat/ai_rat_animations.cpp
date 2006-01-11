@@ -17,7 +17,7 @@
 // animations
 void CAI_Rat::vfLoadAnimations()
 {
-	CSkeletonAnimated* tpVisualObject = smart_cast<CSkeletonAnimated*>(Visual());
+	CKinematicsAnimated* tpVisualObject = smart_cast<CKinematicsAnimated*>(Visual());
 	
 	// loading normal animations
 	m_tRatAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle("norm_death");
@@ -43,7 +43,7 @@ void CAI_Rat::vfLoadAnimations()
 
 void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
 {
-	CSkeletonAnimated	*tpVisualObject = smart_cast<CSkeletonAnimated*>(Visual());
+	CKinematicsAnimated	*tpVisualObject = smart_cast<CKinematicsAnimated*>(Visual());
 	MotionID			tpGlobalAnimation;
 
 	if (!g_Alive()) {
@@ -94,7 +94,7 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation)) {
-		CSkeletonAnimated	*skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
+		CKinematicsAnimated	*skeleton_animated = smart_cast<CKinematicsAnimated*>(Visual());
 		Msg					("%6d %s animation : %s (%f,%f)",Device.dwTimeGlobal,"Global",skeleton_animated->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),movement().m_body.current.yaw,movement().m_body.target.yaw);
 	}
 #endif

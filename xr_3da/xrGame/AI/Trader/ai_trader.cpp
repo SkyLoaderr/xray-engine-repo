@@ -96,7 +96,7 @@ u8 CAI_Trader::get_anim_count(LPCSTR anim)
 	u8 count = 0;
 
 	for (int i=0; ; ++i) {
-		if (smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s_temp, anim,itoa(i,s,10))))  count++;
+		if (smart_cast<CKinematicsAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s_temp, anim,itoa(i,s,10))))  count++;
 		else break;
 	}
 
@@ -118,7 +118,7 @@ void CAI_Trader::select_head_anim(u32 type)
 
 	// construct name
 	string128 s1,s2;
-	m_tpHeadDef = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.name,itoa(index,s1,10)));
+	m_tpHeadDef = smart_cast<CKinematicsAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.name,itoa(index,s1,10)));
 }
 
 // Animation Callbacks
@@ -142,8 +142,8 @@ void CAI_Trader::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /
 	// назначить глобальную анимацию
 	if (!m_tpGlobalDef) {
 		// выбор анимации
-		m_tpGlobalDef = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle("rot_5");
-		smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_tpGlobalDef,TRUE,AnimGlobalCallback,this);
+		m_tpGlobalDef = smart_cast<CKinematicsAnimated*>(Visual())->ID_Cycle("rot_5");
+		smart_cast<CKinematicsAnimated*>(Visual())->PlayCycle(m_tpGlobalDef,TRUE,AnimGlobalCallback,this);
 	}
 
 	AssignHeadAnimation();
@@ -155,7 +155,7 @@ void CAI_Trader::AssignHeadAnimation()
 	if (!m_tpHeadDef)	{
 		if (m_cur_head_anim_type != MonsterSpace::eHeadAnimNone) {
 			select_head_anim(m_cur_head_anim_type);
-			smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_tpHeadDef,TRUE,AnimHeadCallback,this);	
+			smart_cast<CKinematicsAnimated*>(Visual())->PlayCycle(m_tpHeadDef,TRUE,AnimHeadCallback,this);	
 		}
 	}
 }

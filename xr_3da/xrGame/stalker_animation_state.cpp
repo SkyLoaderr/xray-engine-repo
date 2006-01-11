@@ -26,7 +26,7 @@ CStalkerAnimationState::~CStalkerAnimationState	()
 	xr_delete			(m_in_place);
 }
 
-void CStalkerAnimationState::Load				(CSkeletonAnimated *kinematics, LPCSTR base_name)
+void CStalkerAnimationState::Load				(CKinematicsAnimated *kinematics, LPCSTR base_name)
 {
 	string256			S;
 	m_global.Load		(kinematics,base_name);

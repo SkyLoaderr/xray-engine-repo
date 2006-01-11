@@ -32,29 +32,29 @@ void		CBlendInstance::blend_remove	(CBlend* H)
 }
 
 // Motion control
-void	CBoneDataAnimated::Motion_Start	(CSkeletonAnimated* K, CBlend* handle) 
+void	CBoneDataAnimated::Motion_Start	(CKinematicsAnimated* K, CBlend* handle) 
 {
 	K->LL_GetBlendInstance(SelfID).blend_add		(handle);
 	for (vecBonesIt I=children.begin(); I!=children.end(); I++)                        
 		((CBoneDataAnimated*)(*I))->Motion_Start	(K,handle);
 }
-void	CBoneDataAnimated::Motion_Start_IM	(CSkeletonAnimated* K, CBlend* handle) 
+void	CBoneDataAnimated::Motion_Start_IM	(CKinematicsAnimated* K, CBlend* handle) 
 {
 	K->LL_GetBlendInstance(SelfID).blend_add		(handle);
 }
-void	CBoneDataAnimated::Motion_Stop	(CSkeletonAnimated* K, CBlend* handle) 
+void	CBoneDataAnimated::Motion_Stop	(CKinematicsAnimated* K, CBlend* handle) 
 {
 	K->LL_GetBlendInstance(SelfID).blend_remove	(handle);
 	for (vecBonesIt I=children.begin(); I!=children.end(); I++)
 		((CBoneDataAnimated*)(*I))->Motion_Stop	(K,handle);
 }
-void	CBoneDataAnimated::Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle) 
+void	CBoneDataAnimated::Motion_Stop_IM	(CKinematicsAnimated* K, CBlend* handle) 
 {
 	K->LL_GetBlendInstance(SelfID).blend_remove	(handle);
 }
 
 #ifdef DEBUG
-LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(MotionID ID)
+LPCSTR CKinematicsAnimated::LL_MotionDefName_dbg	(MotionID ID)
 {
 	shared_motions& s_mots	= m_Motions[ID.slot];
 	accel_map::iterator _I, _E=s_mots.motion_map()->end();
@@ -62,7 +62,7 @@ LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(MotionID ID)
 	return 0;
 }
 /*
-LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
+LPCSTR CKinematicsAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 {
 //.
 	// cycles
@@ -82,7 +82,7 @@ LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-MotionID CSkeletonAnimated::LL_MotionID	(LPCSTR B)
+MotionID CKinematicsAnimated::LL_MotionID	(LPCSTR B)
 {
 	MotionID motion_ID;
 	for (int k=m_Motions.size()-1; k>=0; --k){
@@ -92,7 +92,7 @@ MotionID CSkeletonAnimated::LL_MotionID	(LPCSTR B)
     }
     return motion_ID;
 }
-u16 CSkeletonAnimated::LL_PartID		(LPCSTR B)
+u16 CKinematicsAnimated::LL_PartID		(LPCSTR B)
 {
 	if (0==m_Partition)	return BI_NONE;
 	for (u16 id=0; id<MAX_PARTS; id++) {
@@ -104,7 +104,7 @@ u16 CSkeletonAnimated::LL_PartID		(LPCSTR B)
 }
 
 // cycles
-MotionID CSkeletonAnimated::ID_Cycle_Safe(LPCSTR  N)
+MotionID CKinematicsAnimated::ID_Cycle_Safe(LPCSTR  N)
 {
 	MotionID motion_ID;
 	for (int k=m_Motions.size()-1; k>=0; --k){
@@ -114,12 +114,12 @@ MotionID CSkeletonAnimated::ID_Cycle_Safe(LPCSTR  N)
     }
     return motion_ID;
 }
-MotionID CSkeletonAnimated::ID_Cycle	(shared_str  N)
+MotionID CKinematicsAnimated::ID_Cycle	(shared_str  N)
 {
 	MotionID motion_ID		= ID_Cycle_Safe	(N);	R_ASSERT3(motion_ID.valid(),"! MODEL: can't find cycle: ", N.c_str());
     return motion_ID;
 }
-MotionID CSkeletonAnimated::ID_Cycle_Safe(shared_str  N)
+MotionID CKinematicsAnimated::ID_Cycle_Safe(shared_str  N)
 {
 	MotionID motion_ID;
 	for (int k=m_Motions.size()-1; k>=0; --k){
@@ -129,12 +129,12 @@ MotionID CSkeletonAnimated::ID_Cycle_Safe(shared_str  N)
 	}
 	return motion_ID;
 }
-MotionID CSkeletonAnimated::ID_Cycle	(LPCSTR  N)
+MotionID CKinematicsAnimated::ID_Cycle	(LPCSTR  N)
 {
 	MotionID motion_ID		= ID_Cycle_Safe	(N);	R_ASSERT3(motion_ID.valid(),"! MODEL: can't find cycle: ", N);
 	return motion_ID;
 }
-void	CSkeletonAnimated::LL_FadeCycle(u16 part, float falloff)
+void	CKinematicsAnimated::LL_FadeCycle(u16 part, float falloff)
 {
 	BlendList&	Blend	= blend_cycles[part];
 	
@@ -146,7 +146,7 @@ void	CSkeletonAnimated::LL_FadeCycle(u16 part, float falloff)
 		if (B.stop_at_end)  B.playing = FALSE;		// callback не должен приходить!
 	}
 }
-void	CSkeletonAnimated::LL_CloseCycle(u16 part)
+void	CKinematicsAnimated::LL_CloseCycle(u16 part)
 {
 	if (BI_NONE==part)		return;
 	if (part>=MAX_PARTS)	return;
@@ -169,7 +169,7 @@ void	CSkeletonAnimated::LL_CloseCycle(u16 part)
 	blend_cycles[part].clear	(); // ?
 }
 
-CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bMixing, float blendAccrue, float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID CallbackParam)
+CBlend*	CKinematicsAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bMixing, float blendAccrue, float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID CallbackParam)
 {
 	// validate and unroll
 	if (!motion_ID.valid())	return 0;
@@ -220,7 +220,7 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bMix
 	B->CallbackParam= CallbackParam;
 	return			B;
 }
-CBlend*	CSkeletonAnimated::LL_PlayCycle		(u16 part, MotionID motion_ID, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
+CBlend*	CKinematicsAnimated::LL_PlayCycle		(u16 part, MotionID motion_ID, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {
 	VERIFY					(motion_ID.valid()); 
     CMotionDef* m_def		= m_Motions[motion_ID.slot].motion_def(motion_ID.idx);
@@ -229,13 +229,13 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle		(u16 part, MotionID motion_ID, BOOL bMi
     						 m_def->Accrue(),m_def->Falloff(),m_def->Speed(),m_def->StopAtEnd(), 
                              Callback,CallbackParam);
 }
-CBlend*	CSkeletonAnimated::PlayCycle		(LPCSTR  N, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
+CBlend*	CKinematicsAnimated::PlayCycle		(LPCSTR  N, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {
 	MotionID motion_ID		= ID_Cycle(N);
 	if (motion_ID.valid())	return PlayCycle(motion_ID,bMixIn,Callback,CallbackParam);
 	else					{ Debug.fatal("! MODEL: can't find cycle: %s", N); return 0; }
 }
-CBlend*	CSkeletonAnimated::PlayCycle		(MotionID motion_ID,  BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
+CBlend*	CKinematicsAnimated::PlayCycle		(MotionID motion_ID,  BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {	
 	VERIFY					(motion_ID.valid()); 
     CMotionDef* m_def		= m_Motions[motion_ID.slot].motion_def(motion_ID.idx);
@@ -246,7 +246,7 @@ CBlend*	CSkeletonAnimated::PlayCycle		(MotionID motion_ID,  BOOL bMixIn, PlayCal
 }
 
 // fx'es
-MotionID CSkeletonAnimated::ID_FX_Safe		(LPCSTR  N)
+MotionID CKinematicsAnimated::ID_FX_Safe		(LPCSTR  N)
 {
 	MotionID motion_ID;
 	for (int k=m_Motions.size()-1; k>=0; --k){
@@ -256,12 +256,12 @@ MotionID CSkeletonAnimated::ID_FX_Safe		(LPCSTR  N)
     }
     return motion_ID;
 }
-MotionID CSkeletonAnimated::ID_FX			(LPCSTR  N)
+MotionID CKinematicsAnimated::ID_FX			(LPCSTR  N)
 {
 	MotionID motion_ID		= ID_FX_Safe(N);R_ASSERT3(motion_ID.valid(),"! MODEL: can't find FX: ", N);
     return motion_ID;
 }
-CBlend*	CSkeletonAnimated::PlayFX			(MotionID motion_ID, float power_scale)
+CBlend*	CKinematicsAnimated::PlayFX			(MotionID motion_ID, float power_scale)
 {
 	VERIFY					(motion_ID.valid()); 
     CMotionDef* m_def		= m_Motions[motion_ID.slot].motion_def(motion_ID.idx);
@@ -270,12 +270,12 @@ CBlend*	CSkeletonAnimated::PlayFX			(MotionID motion_ID, float power_scale)
     						 m_def->Accrue(),m_def->Falloff(),
                              m_def->Speed(),m_def->Power()*power_scale);
 }
-CBlend*	CSkeletonAnimated::PlayFX			(LPCSTR  N, float power_scale)
+CBlend*	CKinematicsAnimated::PlayFX			(LPCSTR  N, float power_scale)
 {
 	MotionID motion_ID		= ID_FX(N);
     return PlayFX 			(motion_ID,power_scale);
 }
-CBlend*	CSkeletonAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float blendAccrue, float blendFalloff, float Speed, float Power)
+CBlend*	CKinematicsAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float blendAccrue, float blendFalloff, float Speed, float Power)
 {
 	if (!motion_ID.valid())	return 0;
 	if (blend_fx.size()>=MAX_BLENDED) return 0;
@@ -303,7 +303,7 @@ CBlend*	CSkeletonAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float blend
 	return			B;
 }
 
-void CSkeletonAnimated::UpdateTracks	()
+void CKinematicsAnimated::UpdateTracks	()
 {
 	if (Update_LastTime==Device.dwTimeGlobal) return;
 	u32 DT	= Device.dwTimeGlobal-Update_LastTime;
@@ -418,7 +418,7 @@ void CSkeletonAnimated::UpdateTracks	()
 	}
 }
 
-void CSkeletonAnimated::Release()
+void CKinematicsAnimated::Release()
 {
 	// xr_free bones
 //.	for (u32 i=0; i<bones->size(); i++)
@@ -436,12 +436,12 @@ void CSkeletonAnimated::Release()
     inherited::Release	();
 }
 
-CSkeletonAnimated::~CSkeletonAnimated	()
+CKinematicsAnimated::~CKinematicsAnimated	()
 {
 	IBoneInstances_Destroy	();
 }
 
-void	CSkeletonAnimated::IBoneInstances_Create()
+void	CKinematicsAnimated::IBoneInstances_Create()
 {
     inherited::IBoneInstances_Create();
 	u32				size	= bones->size();
@@ -450,7 +450,7 @@ void	CSkeletonAnimated::IBoneInstances_Create()
 		blend_instances[i].construct();
 }
 
-void	CSkeletonAnimated::IBoneInstances_Destroy()
+void	CKinematicsAnimated::IBoneInstances_Destroy()
 {
     inherited::IBoneInstances_Destroy();
 	if (blend_instances) {
@@ -460,18 +460,18 @@ void	CSkeletonAnimated::IBoneInstances_Destroy()
 }
 
 #define PCOPY(a)	a = pFrom->a
-void CSkeletonAnimated::Copy(IRender_Visual *P) 
+void CKinematicsAnimated::Copy(IRender_Visual *P) 
 {
 	inherited::Copy	(P);
 
-	CSkeletonAnimated* pFrom = (CSkeletonAnimated*)P;
+	CKinematicsAnimated* pFrom = (CKinematicsAnimated*)P;
 	PCOPY			(m_Motions);
     PCOPY			(m_Partition);
 
 	IBlend_Startup			();
 }
 
-void CSkeletonAnimated::Spawn	()
+void CKinematicsAnimated::Spawn	()
 {
 	inherited::Spawn		();
 
@@ -481,7 +481,7 @@ void CSkeletonAnimated::Spawn	()
 		blend_instances[i].construct();
 }
 
-void CSkeletonAnimated::IBlend_Startup	()
+void CKinematicsAnimated::IBlend_Startup	()
 {
 	CBlend B; ZeroMemory(&B,sizeof(B));
 	B.blend				= CBlend::eFREE_SLOT;
@@ -495,7 +495,7 @@ void CSkeletonAnimated::IBlend_Startup	()
 	blend_fx.clear		();
 }
 
-CBlend*	CSkeletonAnimated::IBlend_Create	()
+CBlend*	CKinematicsAnimated::IBlend_Create	()
 {
 	UpdateTracks	();
 	CBlend *I=blend_pool.begin(), *E=blend_pool.end();
@@ -504,7 +504,7 @@ CBlend*	CSkeletonAnimated::IBlend_Create	()
 	Debug.fatal("Too many blended motions requisted");
 	return 0;
 }
-void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
+void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	inherited::Load	(N, data, dwFlags);
 
@@ -607,7 +607,7 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 
 void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
 {
-	CSkeletonAnimated* K 			= (CSkeletonAnimated*)_K; 
+	CKinematicsAnimated* K 			= (CKinematicsAnimated*)_K; 
 
     if (K->LL_GetBoneVisible(SelfID)){
         CBoneInstance& BONE_INST	= K->LL_GetBoneInstance(SelfID);
@@ -734,7 +734,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
     }
 }
 
-void CSkeletonAnimated::CalculateBones		(BOOL bForceExact)
+void CKinematicsAnimated::CalculateBones		(BOOL bForceExact)
 {
 	// early out.
 	// check if the info is still relevant
@@ -796,7 +796,7 @@ void CSkeletonAnimated::CalculateBones		(BOOL bForceExact)
 }
 
 #ifdef _EDITOR
-MotionID CSkeletonAnimated::ID_Motion(LPCSTR  N, u16 slot)
+MotionID CKinematicsAnimated::ID_Motion(LPCSTR  N, u16 slot)
 {
 	MotionID 				motion_ID;
     if (slot<MAX_ANIM_SLOT){
