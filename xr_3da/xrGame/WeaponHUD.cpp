@@ -64,10 +64,8 @@ u32 shared_weapon_hud::motion_length(MotionID M)
 	VERIFY				(motion_def);
 
 	if (motion_def->flags & esmStopAtEnd) {
-		CBoneData			&bone_data = skeleton_animated->LL_GetData(skeleton_animated->LL_GetBoneRoot());
-		CBoneDataAnimated	*bone_anim = smart_cast<CBoneDataAnimated *>(&bone_data);
-		CMotion				&motion = bone_anim->Motions[M.slot]->at(M.idx);
-		return				iFloor(0.5f + 1000.f*motion.GetLength()/ motion_def->Dequantize(motion_def->speed));
+		CMotion*			motion		= skeleton_animated->LL_GetRootMotion(M);
+		return				iFloor(0.5f + 1000.f*motion->GetLength()/ motion_def->Dequantize(motion_def->speed));
 	}
 	return				0;
 }

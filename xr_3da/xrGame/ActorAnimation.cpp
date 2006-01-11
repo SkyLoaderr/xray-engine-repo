@@ -292,15 +292,7 @@ void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &toroso
 CMotion*        FindMotionKeys(MotionID motion_ID,IRender_Visual* V)
 {
 	CKinematicsAnimated* VA = PKinematicsAnimated(V);
-	if (VA){
-		//MotionID motion_ID= FindMotionID(name,slot);
-		if (motion_ID.valid()){
-			CBoneDataAnimated* BD       =
-				(CBoneDataAnimated*)(&VA->LL_GetData(VA->LL_GetBoneRoot()));
-			return              &(BD->Motions[motion_ID.slot]->at(motion_ID.idx));
-		}
-	}
-	return 0;
+	return (VA && motion_ID.valid())?VA->LL_GetRootMotion(motion_ID):0;
 }
 
 BOOL	g_ShowAnimationInfo = TRUE;

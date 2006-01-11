@@ -145,7 +145,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 	return bRes;
 }
 
-MotionVec* motions_value::motions(shared_str bone_name)
+MotionVec* motions_value::bone_motions(shared_str bone_name)
 {
 	BoneMotionMapIt it			= m_motions.find(bone_name); VERIFY(it!=m_motions.end());
 	return &it->second;

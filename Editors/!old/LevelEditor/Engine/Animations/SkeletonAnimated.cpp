@@ -56,7 +56,7 @@ void	CBoneDataAnimated::Motion_Stop_IM	(CKinematicsAnimated* K, CBlend* handle)
 #ifdef DEBUG
 LPCSTR CKinematicsAnimated::LL_MotionDefName_dbg	(MotionID ID)
 {
-	shared_motions& s_mots	= m_Motions[ID.slot];
+	shared_motions& s_mots	= m_Motions[ID.slot].motions;
 	accel_map::iterator _I, _E=s_mots.motion_map()->end();
 	for (_I	= s_mots.motion_map()->begin(); _I!=_E; ++_I)	if (_I->second==ID.idx) return *_I->first;
 	return 0;
@@ -85,8 +85,8 @@ LPCSTR CKinematicsAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 MotionID CKinematicsAnimated::LL_MotionID	(LPCSTR B)
 {
 	MotionID motion_ID;
-	for (int k=m_Motions.size()-1; k>=0; --k){
-    	shared_motions* s_mots	= &m_Motions[k];
+	for (int k=int(m_Motions.size())-1; k>=0; --k){
+    	shared_motions* s_mots	= &m_Motions[k].motions;
 		accel_map::iterator I 	= s_mots->motion_map()->find(LPSTR(B));
     	if (I!=s_mots->motion_map()->end())	{ motion_ID.set(u16(k),I->second); break; }
     }
@@ -107,8 +107,8 @@ u16 CKinematicsAnimated::LL_PartID		(LPCSTR B)
 MotionID CKinematicsAnimated::ID_Cycle_Safe(LPCSTR  N)
 {
 	MotionID motion_ID;
-	for (int k=m_Motions.size()-1; k>=0; --k){
-    	shared_motions* s_mots	= &m_Motions[k];
+	for (int k=int(m_Motions.size())-1; k>=0; --k){
+    	shared_motions* s_mots	= &m_Motions[k].motions;
 		accel_map::iterator I 	= s_mots->cycle()->find(LPSTR(N));
 		if (I!=s_mots->cycle()->end())	{	motion_ID.set(u16(k),I->second); break;}
     }
@@ -122,8 +122,8 @@ MotionID CKinematicsAnimated::ID_Cycle	(shared_str  N)
 MotionID CKinematicsAnimated::ID_Cycle_Safe(shared_str  N)
 {
 	MotionID motion_ID;
-	for (int k=m_Motions.size()-1; k>=0; --k){
-		shared_motions* s_mots	= &m_Motions[k];
+	for (int k=int(m_Motions.size())-1; k>=0; --k){
+		shared_motions* s_mots	= &m_Motions[k].motions;
 		accel_map::iterator I 	= s_mots->cycle()->find(N);
 		if (I!=s_mots->cycle()->end())	{	motion_ID.set(u16(k),I->second); break;}
 	}
@@ -212,7 +212,7 @@ CBlend*	CKinematicsAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bM
 	B->speed		= Speed;
 	B->motionID		= motion_ID;
 	B->timeCurrent	= 0;
-	B->timeTotal	= Bone->Motions[B->motionID.slot]->at(motion_ID.idx).GetLength();
+	B->timeTotal	= m_Motions[B->motionID.slot].bone_motions[LL_GetBoneRoot()]->at(motion_ID.idx).GetLength();
 	B->bone_or_part	= part;
 	B->playing		= TRUE;
 	B->stop_at_end	= noloop;
@@ -223,7 +223,7 @@ CBlend*	CKinematicsAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bM
 CBlend*	CKinematicsAnimated::LL_PlayCycle		(u16 part, MotionID motion_ID, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {
 	VERIFY					(motion_ID.valid()); 
-    CMotionDef* m_def		= m_Motions[motion_ID.slot].motion_def(motion_ID.idx);
+    CMotionDef* m_def		= m_Motions[motion_ID.slot].motions.motion_def(motion_ID.idx);
     VERIFY					(m_def);
 	return LL_PlayCycle		(part,motion_ID,bMixIn, 
     						 m_def->Accrue(),m_def->Falloff(),m_def->Speed(),m_def->StopAtEnd(), 
@@ -238,7 +238,7 @@ CBlend*	CKinematicsAnimated::PlayCycle		(LPCSTR  N, BOOL bMixIn, PlayCallback Ca
 CBlend*	CKinematicsAnimated::PlayCycle		(MotionID motion_ID,  BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {	
 	VERIFY					(motion_ID.valid()); 
-    CMotionDef* m_def		= m_Motions[motion_ID.slot].motion_def(motion_ID.idx);
+    CMotionDef* m_def		= m_Motions[motion_ID.slot].motions.motion_def(motion_ID.idx);
     VERIFY					(m_def);
 	return LL_PlayCycle		(m_def->bone_or_part,motion_ID,bMixIn, 
     						 m_def->Accrue(),m_def->Falloff(),m_def->Speed(),m_def->StopAtEnd(), 
@@ -249,8 +249,8 @@ CBlend*	CKinematicsAnimated::PlayCycle		(MotionID motion_ID,  BOOL bMixIn, PlayC
 MotionID CKinematicsAnimated::ID_FX_Safe		(LPCSTR  N)
 {
 	MotionID motion_ID;
-	for (int k=m_Motions.size()-1; k>=0; --k){
-    	shared_motions* s_mots	= &m_Motions[k];
+	for (int k=int(m_Motions.size())-1; k>=0; --k){
+    	shared_motions* s_mots	= &m_Motions[k].motions;
 		accel_map::iterator I 	= s_mots->fx()->find(LPSTR(N));
 		if (I!=s_mots->fx()->end())	{	motion_ID.set(u16(k),I->second); break;}
     }
@@ -264,7 +264,7 @@ MotionID CKinematicsAnimated::ID_FX			(LPCSTR  N)
 CBlend*	CKinematicsAnimated::PlayFX			(MotionID motion_ID, float power_scale)
 {
 	VERIFY					(motion_ID.valid()); 
-    CMotionDef* m_def		= m_Motions[motion_ID.slot].motion_def(motion_ID.idx);
+    CMotionDef* m_def		= m_Motions[motion_ID.slot].motions.motion_def(motion_ID.idx);
     VERIFY					(m_def);
 	return LL_PlayFX		(m_def->bone_or_part,motion_ID,
     						 m_def->Accrue(),m_def->Falloff(),
@@ -293,7 +293,7 @@ CBlend*	CKinematicsAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float ble
 	B->speed		= Speed;
 	B->motionID		= motion_ID;
 	B->timeCurrent	= 0;
-	B->timeTotal	= Bone->Motions[B->motionID.slot]->at(motion_ID.idx).GetLength();
+	B->timeTotal	= m_Motions[B->motionID.slot].bone_motions[bone]->at(motion_ID.idx).GetLength();;
 	B->bone_or_part	= bone;
 	
 	B->playing		= TRUE;
@@ -518,6 +518,7 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
         data->r_stringZ	(items_nm,sizeof(items_nm));
         u32 set_cnt		= _GetItemCount(items_nm);
         R_ASSERT		(set_cnt<MAX_ANIM_SLOT);
+		m_Motions.reserve(set_cnt);
     	string_path		nm;
         for (u32 k=0; k<set_cnt; k++){
         	_GetItem	(items_nm,k,nm);
@@ -535,27 +536,29 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
             }
             IReader* MS		= FS.r_open(fn);
             // Check compatibility
-            m_Motions.inc	();
-            m_Motions[k].create(nm,MS,bones);
+            m_Motions.push_back(SMotionsSlot());
+            m_Motions.back().motions.create(nm,MS,bones);
             MS->close		();
     	}
     }else{
 		string_path	nm;
 		strconcat			(nm,N,".ogf");
-        m_Motions.inc		();
-		m_Motions[0].create	(nm,data,bones);
+		m_Motions.push_back(SMotionsSlot());
+		m_Motions.back().motions.create(nm,data,bones);
     }
 
     R_ASSERT				(m_Motions.size());
 
-    m_Partition				= m_Motions[0].partition();
+    m_Partition				= m_Motions[0].motions.partition();
     
-	// initialize BoneDataAnimated
-	for (u32 i=0; i<bones->size(); i++){
-		CBoneDataAnimated* BDA	= (CBoneDataAnimated*)(*bones)[i];
-        ZeroMemory			(BDA->Motions,sizeof(MotionVec*)*MAX_ANIM_SLOT);
-        for (u32 k=0; k<m_Motions.size(); k++)
-        	BDA->Motions[k]	= m_Motions[k].motions(BDA->name);
+	// initialize motions
+	for (MotionsSlotVecIt m_it=m_Motions.begin(); m_it!=m_Motions.end(); m_it++){
+		SMotionsSlot& MS	= *m_it;
+		MS.bone_motions.resize(bones->size());
+		for (u32 i=0; i<bones->size(); i++){
+			CBoneData* BD		= (*bones)[i];
+			MS.bone_motions[i]	= MS.motions.bone_motions(BD->name);
+		}
 	}
 
 	// Init blend pool
@@ -626,7 +629,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
             {
                 CBlend*			B		=	*BI;
                 float			time	=	B->timeCurrent*float(SAMPLE_FPS);
-                CMotion&		M		=	Motions[B->motionID.slot]->at(B->motionID.idx);
+                CMotion&		M		=	*K->LL_GetMotion(B->motionID,SelfID);
                 u32				frame	=	iFloor(time);
                 float			delta	=	time-float(frame);
                 u32				count	=	M.get_count();

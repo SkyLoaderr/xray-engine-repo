@@ -98,16 +98,10 @@ IC float CControlAnimation::motion_time(MotionID motion_id, IRender_Visual *visu
 {
 	CKinematicsAnimated	*skeleton_animated	= smart_cast<CKinematicsAnimated*>(visual);
 	VERIFY				(skeleton_animated);
-	CKinematics			*kinematics			= smart_cast<CKinematics*>(visual);
-	VERIFY				(kinematics);
-
 	CMotionDef			*motion_def			= skeleton_animated->LL_GetMotionDef(motion_id);
 	VERIFY				(motion_def);
-
-	CBoneData			&bone_data = kinematics->LL_GetData(kinematics->LL_GetBoneRoot());
-	CBoneDataAnimated	*bone_anim = smart_cast<CBoneDataAnimated *>(&bone_data);
-	CMotion				&motion = bone_anim->Motions[motion_id.slot]->at(motion_id.idx);
-	
-	return				(motion.GetLength() / motion_def->Speed());
+	CMotion*			motion				= skeleton_animated->LL_GetRootMotion(motion_id);
+	VERIFY				(motion);
+	return				(motion->GetLength() / motion_def->Speed());
 }
 

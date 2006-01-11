@@ -95,8 +95,11 @@ struct accel_str_pred : public std::binary_function<shared_str, shared_str, bool
 	IC bool operator()(const shared_str& x, const shared_str& y) const	{	return xr_strcmp(x,y)<0;	}
 };
 typedef xr_map<shared_str,u16,accel_str_pred> 	accel_map;
-DEFINE_VECTOR			(CMotion,MotionVec,MotionVecIt);
 DEFINE_VECTOR			(CMotionDef,MotionDefVec,MotionDefVecIt);
+
+DEFINE_VECTOR			(CMotion,MotionVec,MotionVecIt);
+DEFINE_VECTOR			(MotionVec*,BoneMotionsVec,BoneMotionsVecIt);
+DEFINE_MAP				(shared_str,MotionVec,BoneMotionMap,BoneMotionMapIt);
 
 // partition
 class ENGINE_API		CPartDef
@@ -125,12 +128,11 @@ struct ENGINE_API		motions_value
 	accel_map			m_fx;				// motion data itself	(shared)
 	CPartition			m_partition;		// partition
 	u32					m_dwReference;
-	DEFINE_MAP			(shared_str,MotionVec,BoneMotionMap,BoneMotionMapIt);
 	BoneMotionMap		m_motions;
     MotionDefVec		m_mdefs;
 
 	BOOL				load				(LPCSTR N, IReader *data, vecBones* bones);
-	MotionVec*			motions				(shared_str bone_name);
+	MotionVec*			bone_motions		(shared_str bone_name);
 
 	u32					mem_usage			(){ 
 		u32 sz			=	sizeof(*this)+m_motion_map.size()*6+m_partition.mem_usage();
@@ -178,7 +180,7 @@ public:
 	bool				operator==		(shared_motions const &rhs)	const {return (p_ == rhs.p_);}
 
 	// misc func
-	MotionVec*			motions			(shared_str bone_name)		{	VERIFY(p_); return p_->motions(bone_name);		}
+	MotionVec*			bone_motions	(shared_str bone_name)		{	VERIFY(p_); return p_->bone_motions(bone_name);		}
 	accel_map*			motion_map		()							{	VERIFY(p_); return &p_->m_motion_map;			}
 	accel_map*			cycle			()							{	VERIFY(p_); return &p_->m_cycle;				}
 	accel_map*			fx				()							{	VERIFY(p_); return &p_->m_fx;					}

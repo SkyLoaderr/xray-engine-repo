@@ -8,7 +8,6 @@
 #include	"Render.h"
 
 int			psSkeletonUpdate	= 32;
-#define		BONE_LOD_0_NAME		"_lod_0"
 xrCriticalSection	UCalc_Mutex	;
 
 //////////////////////////////////////////////////////////////////////////

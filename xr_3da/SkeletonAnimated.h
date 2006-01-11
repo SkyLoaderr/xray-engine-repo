@@ -113,8 +113,6 @@ public:
 class ENGINE_API		CBoneDataAnimated: public CBoneData             
 {
 public:
-	MotionVec*			Motions[MAX_ANIM_SLOT];	// all known motions
-public:
 						CBoneDataAnimated(u16 ID):CBoneData(ID){}
 	// Motion control
 	void				Motion_Start	(CKinematicsAnimated* K, CBlend* handle);	// with recursion
@@ -134,7 +132,7 @@ public:
 class ENGINE_API	CKinematicsAnimated	: public CKinematics
 {
 	typedef CKinematics							inherited;
-	friend class								CBoneData;
+	friend class								CBoneDataAnimated;
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
 public: 
@@ -145,7 +143,13 @@ private:
 #endif
 	CBlendInstance*								blend_instances;
 
-    svector<shared_motions,MAX_ANIM_SLOT>       m_Motions;
+	struct SMotionsSlot{
+		shared_motions							motions;
+		BoneMotionsVec							bone_motions;
+	};
+	DEFINE_VECTOR(SMotionsSlot,MotionsSlotVec,MotionsSlotVecIt);
+	MotionsSlotVec								m_Motions;
+
     CPartition*									m_Partition;
 
 	// Blending
@@ -174,9 +178,11 @@ public:
 	MotionID					ID_Motion		(LPCSTR  N, u16 slot);
 #endif
 	u16							LL_MotionsSlotCount(){return (u16)m_Motions.size();}
-	const shared_motions&		LL_MotionsSlot	(u16 idx){return m_Motions[idx];}
+	const shared_motions&		LL_MotionsSlot	(u16 idx){return m_Motions[idx].motions;}
 
-	CMotionDef*					LL_GetMotionDef	(MotionID id){return m_Motions[id.slot].motion_def(id.idx);}
+	IC CMotionDef*				LL_GetMotionDef	(MotionID id){return m_Motions[id.slot].motions.motion_def(id.idx);}
+	IC CMotion*					LL_GetRootMotion(MotionID id){return &m_Motions[id.slot].bone_motions[iRoot]->at(id.idx);}
+	IC CMotion*					LL_GetMotion	(MotionID id, u16 bone_id){return &m_Motions[id.slot].bone_motions[bone_id]->at(id.idx);}
 
 	// Low level interface
 	MotionID					LL_MotionID		(LPCSTR B);
