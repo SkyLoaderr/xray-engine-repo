@@ -260,7 +260,7 @@ void SndShockEffector::Start(int snd_length, float power)
 	m_cur_length		= 0;
 	psSoundVFactor		= m_stored_volume*SND_MIN_VOLUME_FACTOR;
 	
-	static float		xxx = 6.0f/150.0f; //6sec on max power(150)
+	static float		xxx = 6.0f/1.50f; //6sec on max power(1.5)
 
 	m_life_time			= power*xxx;
 	m_end_time			= Device.fTimeGlobal + m_life_time;
