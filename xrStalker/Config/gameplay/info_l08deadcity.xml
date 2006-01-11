@@ -43,6 +43,7 @@
 
     <info_portion id="cit_doctor_shows_deadcity_zones"></info_portion>
 
+    <info_portion id="cit_button_break_start"></info_portion>
     <info_portion id="cit_button_broken"></info_portion>
 
     <info_portion id="cit_heli_scene_start"></info_portion>
