@@ -7,6 +7,9 @@
 	<info_portion id="yan_find_scientist_start">
 		<task>yan_find_scientist</task>
 	</info_portion>
+	<info_portion id="yan_find_scientist_semenov_start">
+		<task>yan_find_scientist_semenov</task>
+	</info_portion>
 	<info_portion id="yan_find_vasilyev_start">
 		<task>yan_find_vasilyev_task</task>
 	</info_portion>
