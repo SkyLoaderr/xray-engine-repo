@@ -802,4 +802,11 @@ CGameObject::CScriptCallbackExVoid &CGameObject::callback(GameObject::ECallbackT
 	return ((*m_callbacks)[type]);
 }
 
+LPCSTR CGameObject::visual_name			(CSE_Abstract *server_entity)
+{
+	const CSE_Visual			*visual	= smart_cast<const CSE_Visual*>(server_entity);
+	VERIFY						(visual);
+	return						(visual->get_visual());
+}
+
 
