@@ -173,54 +173,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="esc_af_blood">
-		<title>esc_af_blood</title>
-		<objective>
-			<text>esc_af_blood_0</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>esc_artefact2_have</infoportion_complete>
-		</objective>
-		<objective>
-			<text>esc_af_blood_1</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="anomaly_field_mincer">green_location</map_location_type>
-			<object_story_id>esc_anomaly_field_mincer</object_story_id>
-			<infoportion_complete>esc_artefact2_have</infoportion_complete>
-		</objective>		
-	</game_task>
-	
-	<game_task id="esc_af_vyvert">
-		<title>esc_af_vyvert</title>
-		<objective>
-			<text>esc_af_vyvert_0</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>esc_artefact1_have</infoportion_complete>
-		</objective>
-		<objective>
-			<text>esc_af_vyvert_1</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="anomaly_field_gravy">green_location</map_location_type>
-			<object_story_id>esc_anomaly_field_gravy</object_story_id>
-			<infoportion_complete>esc_artefact1_have</infoportion_complete>
-		</objective>		
-	</game_task>
-	
-	<game_task id="esc_af_medusa">
-		<title>esc_af_medusa</title>
-		<objective>
-			<text>esc_af_medusa_0</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>esc_artefact3_have</infoportion_complete>
-		</objective>
-		<objective>
-			<text>esc_af_medusa_1</text>
-			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="anomaly_field_mosquito">green_location</map_location_type>
-			<object_story_id>esc_anomaly_field_mosquito</object_story_id>
-			<infoportion_complete>esc_artefact3_have</infoportion_complete>
-		</objective>		
-	</game_task>
-	
+
 	<game_task id="esc_defend_lager">
 		<title>esc_defend_lager_from_killers</title>
 		<objective>
@@ -245,6 +198,7 @@
 			<infoportion_fail>esc_fanat_die</infoportion_fail>
 		</objective>
 	</game_task>
+	
 	<game_task id="doctor_meet">
 		<title>meet_with_doctor</title>
 		<objective>

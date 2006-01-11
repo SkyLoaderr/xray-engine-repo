@@ -189,20 +189,7 @@
 	<info_portion id="esc_assault_charge"></info_portion>
 	<info_portion id="esc_heli_go"></info_portion>
 	
-	<!-- random artefacts -->
-	<info_portion id="esc_artefact1_need">
-		<task>esc_af_vyvert</task>
-	</info_portion>
-	<info_portion id="esc_artefact1_have"></info_portion>
-	<info_portion id="esc_artefact2_need">
-		<task>esc_af_blood</task>
-	</info_portion>
-	<info_portion id="esc_artefact2_have"></info_portion>
-	<info_portion id="esc_artefact3_need">
-		<task>esc_af_medusa</task>
-	</info_portion>
-	<info_portion id="esc_artefact3_have"></info_portion>	
-	
+
 	<!-- интересные места -->
 	<info_portion id="esc_tutorial_secret_place">
 		<article>tutorial_secret_place</article>
