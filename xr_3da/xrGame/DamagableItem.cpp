@@ -17,7 +17,10 @@ u16 dl=u16(((m_max_health-Health())*m_levels_num)/m_max_health);
 if(dl<m_levels_num)return dl;
 else return m_levels_num;
 }
-
+float	CDamagableItem::DamageLevelToHealth	(u16 dl)
+{
+	return m_max_health/m_levels_num*dl;
+}
 void CDamagableItem::Init(float max_health,u16 level_num)
 {
 	m_max_health=max_health;

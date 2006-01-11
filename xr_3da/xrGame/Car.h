@@ -81,7 +81,7 @@ static	const u16				cAsCallsnum						=3;
 /////////////////////////////////////////////////////////////////////////
 	virtual void						ApplyDamage					(u16 level)				;
 	virtual	float						Health						()						{return GetfHealth();}
-	virtual void						ChangeCondition				(float fDeltaCondition)	{CEntity::CalcCondition(fDeltaCondition);}
+	virtual void						ChangeCondition				(float fDeltaCondition)	;
 	virtual void						StartTimerEffects			()						{};
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						{return static_cast<CPhysicsShellHolder*>(this);}
@@ -138,9 +138,6 @@ public:
 	float	m_break_time;
 	float	m_breaks_to_back_rate;
 	float	m_power_neutral_factor;//multiplier for power when accelerator is not pressed (0-1,0.25)
-
-	u32		m_death_time;
-	u32		m_time_to_explode;
 	bool	b_exploded;
 
 	struct SWheel: 
@@ -585,8 +582,8 @@ public:
 	virtual void			OnHUDDraw					(CCustomHUD* hud);
 	
 	CCameraBase*			Camera						()			{return active_camera;}
-			void			SetExplodeTime				(u32 et)	{m_time_to_explode=et;}
-			u32				ExplodeTime					()			{return m_time_to_explode;}
+	void					SetExplodeTime				(u32 et)	;
+			u32				ExplodeTime					()			;
 	// Inventory for the car	
 	CInventory*						GetInventory						(){return inventory;}
 		  void						VisualUpdate						(float fov=90.0f);

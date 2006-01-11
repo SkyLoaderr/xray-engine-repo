@@ -219,47 +219,41 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 	own_shell		->GetGlobalTransformDynamic		(&own_transform)			;
 	new_shell		->SetGlTransformDynamic			(own_transform)				;
 	////////////////////////////////////////////////////////////
-	Fvector pos;
-	if(m_fatal_hit.is_valide())
+
+	////////////////////////////////////////////////////////////////////////////////////
+	float						random_min										=1.f	;  
+	float						random_hit_imp									=1.f	;
+	////////////////////////////////////////////////////////////////////////////////////
+	u16							ref_bone										=own_K->LL_GetBoneRoot();
+
+	float						imp_transition_factor							=1.f	;
+	float						lv_transition_factor							=1.f	;
+	float						av_transition_factor							=1.f	;
+	////////////////////////////////////////////////////////////////////////////////////
+	if(own_ini&&own_ini->section_exist("impulse_transition_to_parts"))
 	{
-		Fmatrix m;m.set(own_K->LL_GetTransform(m_fatal_hit.bone()));
-		m.mulA_43		(PPhysicsShellHolder()->XFORM());
-		m.transform_tiny(pos,m_fatal_hit.bone_space_position());
+		random_min				=own_ini->r_float("impulse_transition_to_parts","random_min");
+		random_hit_imp			=own_ini->r_float("impulse_transition_to_parts","random_hit_imp");
+		////////////////////////////////////////////////////////
+		if(own_ini->line_exist("impulse_transition_to_parts","ref_bone"))
+			ref_bone				=own_K->LL_BoneID(own_ini->r_string("impulse_transition_to_parts","ref_bone"));
+		imp_transition_factor	=own_ini->r_float("impulse_transition_to_parts","imp_transition_factor");
+		lv_transition_factor	=own_ini->r_float("impulse_transition_to_parts","lv_transition_factor");
+		av_transition_factor	=own_ini->r_float("impulse_transition_to_parts","av_transition_factor");
+	}
 
-		////////////////////////////////////////////////////////////////////////////////////
-		float						random_min										=1.f	;  
-		float						random_hit_imp									=1.f	;
-		////////////////////////////////////////////////////////////////////////////////////
-		u16							ref_bone										=own_K->LL_GetBoneRoot();
-
-		float						imp_transition_factor							=1.f	;
-		float						lv_transition_factor							=1.f	;
-		float						av_transition_factor							=1.f	;
-		////////////////////////////////////////////////////////////////////////////////////
-		if(own_ini&&own_ini->section_exist("impulse_transition_to_parts"))
-		{
-			random_min				=own_ini->r_float("impulse_transition_to_parts","random_min");
-			random_hit_imp			=own_ini->r_float("impulse_transition_to_parts","random_hit_imp");
-			////////////////////////////////////////////////////////
-			if(own_ini->line_exist("impulse_transition_to_parts","ref_bone"))
-				ref_bone				=own_K->LL_BoneID(own_ini->r_string("impulse_transition_to_parts","ref_bone"));
-			imp_transition_factor	=own_ini->r_float("impulse_transition_to_parts","imp_transition_factor");
-			lv_transition_factor	=own_ini->r_float("impulse_transition_to_parts","lv_transition_factor");
-			av_transition_factor	=own_ini->r_float("impulse_transition_to_parts","av_transition_factor");
-		}
-
-		if(new_ini&&new_ini->section_exist("impulse_transition_from_source_bone"))
-		{
-			//random_min				=new_ini->r_float("impulse_transition_from_source_bone","random_min");
-			//random_hit_imp			=new_ini->r_float("impulse_transition_from_source_bone","random_hit_imp");
-			////////////////////////////////////////////////////////
-			if(new_ini->line_exist("impulse_transition_from_source_bone","ref_bone"))
-				ref_bone				=own_K->LL_BoneID(new_ini->r_string("impulse_transition_from_source_bone","ref_bone"));
-			imp_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","imp_transition_factor");
-			lv_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","lv_transition_factor");
-			av_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","av_transition_factor");
-		}
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
+	if(new_ini&&new_ini->section_exist("impulse_transition_from_source_bone"))
+	{
+		//random_min				=new_ini->r_float("impulse_transition_from_source_bone","random_min");
+		//random_hit_imp			=new_ini->r_float("impulse_transition_from_source_bone","random_hit_imp");
+		////////////////////////////////////////////////////////
+		if(new_ini->line_exist("impulse_transition_from_source_bone","ref_bone"))
+			ref_bone				=own_K->LL_BoneID(new_ini->r_string("impulse_transition_from_source_bone","ref_bone"));
+		imp_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","imp_transition_factor");
+		lv_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","lv_transition_factor");
+		av_transition_factor	=new_ini->r_float("impulse_transition_from_source_bone","av_transition_factor");
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		dBodyID own_body=own_shell->get_Element(ref_bone)->get_body()			;
@@ -269,12 +263,18 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 		for(u16 i=0;i<new_el_number;++i)
 		{
 			CPhysicsElement* e=new_shell->get_ElementByStoreOrder(i);
-			float random_hit=random_min*e->getMass()+random_hit_imp*m_fatal_hit.phys_impulse();
+			float random_hit=random_min*e->getMass();
+			if(m_fatal_hit.is_valide())
+			{
+				Fvector pos;
+				Fmatrix m;m.set(own_K->LL_GetTransform(m_fatal_hit.bone()));
+				m.mulA_43		(PPhysicsShellHolder()->XFORM());
+				m.transform_tiny(pos,m_fatal_hit.bone_space_position());
+				e->applyImpulseVsGF(pos,m_fatal_hit.direction(),m_fatal_hit.phys_impulse()*imp_transition_factor);
+				random_hit+=random_hit_imp*m_fatal_hit.phys_impulse();
+			}
 			Fvector rnd_dir;rnd_dir.random_dir();
 			e->applyImpulse(rnd_dir,random_hit);
-
-			e->applyImpulseVsGF(pos,m_fatal_hit.direction(),m_fatal_hit.phys_impulse()*imp_transition_factor);
-
 			Fvector mc; mc.set(e->mass_Center());
 			dVector3 res_lvell;
 			dBodyGetPointVel(own_body,mc.x,mc.y,mc.z,res_lvell);
@@ -285,7 +285,7 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 			res_avell.mul(av_transition_factor);
 			e->set_AngularVel(res_avell);
 		}
-	}
+	
 
 
 

@@ -18,6 +18,7 @@ ICF		bool	CheckCondition			(float current_condition)										{if(isInitialized(
 ICF		bool	isActive				()																{return !!m_dafflags.test(flActive);}
 ICF		bool	isInitialized			()																{return !!m_dafflags.test(flInitialized);}
 		bool	Update					(float current_condition)										;
+		float	Time					()																;
 protected:
 				CDelayedActionFuse		()																;
 virtual void	ChangeCondition			(float fDeltaCondition)											=0;

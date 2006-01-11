@@ -72,8 +72,7 @@ CCar::CCar(void)
 	m_break_start=0.f;
 	m_break_time=1.;
 	m_breaks_to_back_rate=1.f;
-	m_death_time=u32(-1);
-	m_time_to_explode=0;
+
 	b_exploded=false;
 	m_car_weapon=NULL;
 	m_power_neutral_factor=0.25f;
@@ -226,7 +225,6 @@ void	CCar::net_Destroy()
 	m_damage_particles.Clear();
 	CPHDestroyable::RespawnInit();
 	CPHCollisionDamageReceiver::Clear();
-	m_death_time=u32(-1);
 	b_breaks=false;
 }
 
@@ -362,11 +360,9 @@ void CCar::shedule_Update(u32 dt)
 	if(CPHDestroyable::Destroyed())CPHDestroyable::SheduleUpdate(dt);
 	else	CPHSkeleton::Update(dt);
 	
-	if(m_death_time!=u32(-1)&&m_time_to_explode!=u32(-1)&&GetfHealth()<=0.f && Device.dwTimeGlobal-m_death_time>m_time_to_explode)
+	if(CDelayedActionFuse::isActive()&&CDelayedActionFuse::Update(GetfHealth()))
 	{
 		CarExplode();
-		
-		m_death_time=u32(-1);
 	}
 	if(b_exploded&&!m_bExploding&&!getEnabled())
 										setEnabled(TRUE);
@@ -485,20 +481,14 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 //void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 void	CCar::Hit							(SHit* pHDS)
 {
-/*	if(m_car_weapon){
-		Fvector pos;
-		who->Center(pos);
-		m_car_weapon->SetParam(CCarWeapon::eWpnDesiredPos,pos);
-	}*/
 
-	//if(||) P=0.f;
 	SHit	HDS = *pHDS;
-	if(Initiator()==u16(-1)&&HDS.hit_type==ALife::eHitTypeStrike)
+	if(CDelayedActionFuse::isActive()||Initiator()==u16(-1)&&HDS.hit_type==ALife::eHitTypeStrike)
 	{
 		HDS.power=0.f;
 	}
 
-	if(GetfHealth()>0.f&&HDS.who->ID()!=ID())
+	if(HDS.who->ID()!=ID())
 	{
 		CExplosive::SetInitiator(HDS.who->ID());
 	}
@@ -507,20 +497,24 @@ void	CCar::Hit							(SHit* pHDS)
 	float hitScale=1.f,woundScale=1.f;
 	if(HDS.hit_type!=ALife::eHitTypeStrike) CDamageManager::HitScale(HDS.bone(), hitScale, woundScale);
 	HDS.power *= m_HitTypeK[HDS.hit_type]*hitScale;
-	
-//	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+
 	inherited::Hit(&HDS);
-	if(GetfHealth()<=0.f&&HDS.who->ID()!=ID())
+	if(!CDelayedActionFuse::isActive())
 	{
-		CExplosive::SetInitiator(HDS.who->ID());
-//		CPHDestroyable::SetFatalHit(SHit(P,dir,who,element,p_in_object_space,impulse,hit_type));
-		CPHDestroyable::SetFatalHit(HDS);
+		CDelayedActionFuse::CheckCondition(GetfHealth());
 	}
 	CDamagableItem::HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
 		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/* /100.f */);
 }
 
+void CCar::ChangeCondition	(float fDeltaCondition)	
+{
+	CEntity::CalcCondition(-fDeltaCondition);
+	CDamagableItem::HitEffect();
+	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
+		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/* /100.f */);
+}
 
 void CCar::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
@@ -557,7 +551,7 @@ void CCar::ApplyDamage(u16 level)
 			}
 											   break;
 		case 3: m_fuel=0.f;
-				m_death_time=Device.dwTimeGlobal; break;	
+			
 	}
 
 }
@@ -842,7 +836,8 @@ void CCar::Init()
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 	CDamagableItem::Init(GetfHealth(),3);
-
+	float l_time_to_explosion=READ_IF_EXISTS(ini,r_float,"car_definition","time_to_explosion",10.f);
+	CDelayedActionFuse::Initialize(l_time_to_explosion,CDamagableItem::DamageLevelToHealth(2));
 	{
 		xr_map<u16,SWheel>::iterator i,e;
 		i=m_wheels_map.begin();
@@ -1966,4 +1961,15 @@ void CCar::AscCall(EAsyncCalls c)
 bool CCar::CanRemoveObject()
 {
 	return !CExplosive::IsSoundPlaying();
+}
+
+void		CCar::SetExplodeTime				(u32 et)	
+{
+	CDelayedActionFuse::Initialize(float(et)/1000.f,CDamagableItem::DamageLevelToHealth(2));
+}
+u32			CCar::ExplodeTime					()			
+{
+	if(CDelayedActionFuse::isInitialized())
+				return u32(CDelayedActionFuse::Time())*1000;
+	else return 0;
 }

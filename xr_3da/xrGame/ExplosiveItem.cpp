@@ -70,6 +70,7 @@ void CExplosiveItem::shedule_Update(u32 dt)
 		Fvector normal;
 		FindNormal(normal);
 		CExplosive::GenExplodeEvent(Position(), normal);
+		CParticlesPlayer::StopParticles(ID());
 	}
 }
 void CExplosiveItem::renderable_Render()

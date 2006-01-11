@@ -6,14 +6,15 @@ protected:
 	float							m_max_health										;
 	u16								m_level_applied										;
 public:
-									CDamagableItem	()									;
-	virtual		void				Init			(float max_health,u16 level_num)	;
-				void				HitEffect		()									;
-				void				RestoreEffect	()									;
+									CDamagableItem		()									;
+	virtual		void				Init				(float max_health,u16 level_num)	;
+				void				HitEffect			()									;
+				void				RestoreEffect		()									;
+				float				DamageLevelToHealth	(u16 dl)							;
 protected:
-				u16 				DamageLevel		()									;
-	virtual		float				Health			()									=0;
-	virtual		void				ApplyDamage		(u16 level)							;
+				u16 				DamageLevel			()									;
+	virtual		float				Health				()									=0;
+	virtual		void				ApplyDamage			(u16 level)							;
 };
 
 class CDamagableHealthItem : 
