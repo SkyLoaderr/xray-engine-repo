@@ -54,6 +54,37 @@
 		</objective>
 </game_task>
 
+<game_task id="yan_find_scientist_vasilyev">
+		<title>yan_find_scientist</title>
+		<objective>
+			<text>yan_find_scientist</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
+			<object_story_id>yan_vasilyev</object_story_id>
+			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
+			<function_fail>yantar_tasks.yan_scientist_task_fail</function_fail>
+		</objective>
+		<objective>
+			<text>yan_talk_to_kruglov</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
+			<object_story_id>yan_vasilyev</object_story_id>
+			<infoportion_complete>yan_kruglov_after_actor</infoportion_complete>
+		</objective>
+		<objective>
+			<text>yan_psi_zone_find</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>yan_scientist_return_to_bunker</infoportion_complete>
+		</objective>
+		<objective>
+			<text>yan_return_to_bunker</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
+			<object_story_id>yan_general_ecolog</object_story_id>
+			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
+		</objective>
+</game_task>
+
 <game_task id="yan_scientist_return_task">
 		<title>yan_scientist_return_task</title>
 		<objective>
