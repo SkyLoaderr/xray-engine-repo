@@ -1,5 +1,12 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+	<btn_bullets_pistol x="204" y="118" width="44" height="29">
+		<texture>ui_button_arrow_up</texture>		
+	</btn_bullets_pistol>
+	
+	<btn_bullets_riffle x="444" y="118" width="44" height="29">
+		<texture>ui_button_arrow_up</texture>		
+	</btn_bullets_riffle>
 
 	<btn_pistol_silencer x="262" y="77" width="22" height="22" hint="ui_inv_silencer_pistol">
 		<texture>ui_beltbut_silencer</texture>
