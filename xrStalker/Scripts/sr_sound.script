@@ -115,18 +115,18 @@ function action_sound:update( delta )
 	-- check for update of sliding sound
 	if self.slide_active and not self.snd_obj:playing() and self.st.sound_slide_once then
 		self.slide_active = false
-		printf ("SR_SOUND:UPDATE 1 CALLED")
+		printf ("SR_SOUND:UPDATE 1 CALLED %s", self.object:name ())
 	end
 	
 	if self.slide_active then
-	    printf ("SR_SOUND:UPDATE 2 CALLED")
+	    printf ("SR_SOUND:UPDATE 2 CALLED %s", self.object:name ())
 		-- play sound
 		if not self.snd_obj:playing() then 
 			self.snd_obj:play_at_pos(self.object, self.current, self.st.delay)
-			printf ("SR_SOUND:UPDATE 3 CALLED")
+			printf ("SR_SOUND:UPDATE 3 CALLED %s", self.object:name ())
 		else 
 			self.snd_obj:set_position(self.current)	
-			printf ("SR_SOUND:UPDATE 4 CALLED")
+			printf ("SR_SOUND:UPDATE 4 CALLED %s", self.object:name ())
 		end
 		
 		-- update current position
@@ -136,10 +136,10 @@ function action_sound:update( delta )
 		if target_pos:distance_to(self.current) > self.current:distance_to(self.target) then
 			self.cur_point	= self:next_point()
 			self:set_positions()
-			printf ("SR_SOUND:UPDATE 5 CALLED")
+			printf ("SR_SOUND:UPDATE 5 CALLED %s", self.object:name ())
 		else
 			self.current	= vector():set(target_pos)
-			printf ("SR_SOUND:UPDATE 6 CALLED")
+			printf ("SR_SOUND:UPDATE 6 CALLED %s", self.object:name ())
 		end
 	end
 	---------------------------------------
@@ -154,7 +154,7 @@ function action_sound:update( delta )
 	-- если мы ещё нигде, то не считать ни входа, ни выхода
 	if self.is_actor_inside == nil then
 		self.is_actor_inside = self.object:inside( actor:position() )
-		printf ("SR_SOUND:UPDATE 7 CALLED")
+		printf ("SR_SOUND:UPDATE 7 CALLED %s", self.object:name ())
 		return
 	end
 
@@ -162,17 +162,17 @@ function action_sound:update( delta )
 		if not self.is_actor_inside then
 			self:on_enter( actor )
 			self.is_actor_inside = true
-			printf ("SR_SOUND:UPDATE 8 CALLED")
+			printf ("SR_SOUND:UPDATE 8 CALLED %s", self.object:name ())
 		end
         if self.snd_obj ~= nil and self.snd_obj:playing () == false then
 		   self.st.signals["sound_end"] = true
-		   printf ("SR_SOUND:UPDATE 9 CALLED")
+		   printf ("SR_SOUND:UPDATE 9 CALLED %s", self.object:name ())
 		end    
 	else
 		if self.is_actor_inside then
 			--self.on_leave( actor )
 			self.is_actor_inside = false
-			printf ("SR_SOUND:UPDATE 10 CALLED")
+			printf ("SR_SOUND:UPDATE 10 CALLED %s", self.object:name ())
 		end
 	end
 
@@ -181,8 +181,10 @@ end
 
 
 function action_sound:on_enter( obj )
+    printf ("SR_SOUND:ON_ENTER 1 CALLED %s", self.object:name ())
 	if self.st.idle_end < game.time() then
 		self.st.idle_end = game.time() + self.st.idle
+		printf ("SR_SOUND:ON_ENTER 2 CALLED %s", self.object:name ())
 
 		if math.random( 100 ) <= self.st.rnd then
 			local pos
@@ -231,6 +233,7 @@ function action_sound:next_point()
 end
 
 function action_sound:deactivate ()
+    printf ("SR_SOUND:DEACTIVATE 1 CALLED %s", self.object:name ())
     if self.snd_obj ~= nil and self.snd_obj:playing () == false then
        self.snd_obj:stop ()
        self.snd_obj = nil
