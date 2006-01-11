@@ -581,7 +581,7 @@
 	
 	
 	<specific_character id="esc_soldier_commander" team_default = "1">
-		<name>Кузнецов</name>
+		<name>Майор Кузнецов</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
