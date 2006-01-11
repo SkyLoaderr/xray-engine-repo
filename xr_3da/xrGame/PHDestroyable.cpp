@@ -139,7 +139,7 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 	if(!CanDestroy())return ;
 	m_notificate_objects.clear();
 	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
-	obj->PPhysicsShell()->Enable();
+	if(obj->PPhysicsShell())	obj->PPhysicsShell()->Enable()	;
 	obj->processing_activate();
 	if(source_id==obj->ID())
 	{
