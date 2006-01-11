@@ -48,7 +48,7 @@ void CLight_Compute_XFORM_and_VIS::compute_xf_spot	(light* L)
 
 	// factors
 	float	factor0				= powf	(ssa,		1.f/2.f);		// ssa is quadratic
-	float	factor1				= powf	(intensity, 1.f/8.f);		// less perceptually important?
+	float	factor1				= powf	(intensity, 1.f/16.f);		// less perceptually important?
 	float	factor2				= powf	(duel_dot,	1.f/4.f);		// difficult to fast-change this -> visible
 	float	factor3				= powf	(sizefactor,1.f/4.f);		// this shouldn't make much difference
 	float	factor4				= powf	(widefactor,1.f/2.f);		// make it linear ???
