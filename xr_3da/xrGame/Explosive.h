@@ -76,7 +76,7 @@ protected:
 	//ID персонажа который иницировал действие
 	u16							m_iCurrentParentID;
 	
-	bool						m_bReadyToExplode;
+	//bool						m_bReadyToExplode;
 	Fvector						m_vExplodePos;
 	Fvector 					m_vExplodeSize;
 	Fvector 					m_vExplodeDir;
@@ -107,8 +107,15 @@ protected:
 	//общее время взрыва
 	float						m_fExplodeDurationMax;
 	//флаг состояния взрыва
-	bool						m_bExploding;
-	bool						m_bExplodeEventSent;
+	enum{
+		flExploding				=1<<0	,
+		flExplodEventSent		=1<<1	,
+		flReadyToExplode		=1<<2	,
+		flExploded				=1<<3	
+	};
+	Flags8						m_explosion_flags;
+	//bool						m_bExploding;
+	//bool						m_bExplodeEventSent;
 
 	//////////////////////////////////////////////
 	//для разлета осколков

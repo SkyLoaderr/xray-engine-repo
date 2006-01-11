@@ -53,10 +53,11 @@ CExplosive::CExplosive(void)
 
 
 	m_iCurrentParentID		= 0xffff;
-	m_bReadyToExplode		= false;
 
-	m_bExploding			= false;
-	m_bExplodeEventSent		= false;
+//	m_bReadyToExplode		= false;
+//	m_bExploding			= false;
+//	m_bExplodeEventSent		= false;
+	m_explosion_flags.assign(0);
 	m_vExplodeSize.set		(0.001f,0.001f,0.001f);
 }
 
@@ -127,9 +128,10 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 void CExplosive::net_Destroy	()
 {
 	m_blasted_objects.clear		();
-	m_bExploding				= false;
+	//m_bExploding				= false;
 	StopLight					();
-	m_bExplodeEventSent			= false;
+	//m_bExplodeEventSent			= false;
+	m_explosion_flags.assign(0);
 }
 
 
@@ -263,9 +265,10 @@ float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,flo
 void CExplosive::Explode()
 {
 	VERIFY(0xffff != Initiator());
-	VERIFY(m_bReadyToExplode);
+	VERIFY(m_explosion_flags.test(flReadyToExplode));//m_bReadyToExplode
 	VERIFY(!ph_world->Processing());
-	m_bExploding = true;
+	//m_bExploding = true;
+	m_explosion_flags.set(flExploding,TRUE);
 	cast_game_object()->processing_activate();
 
 	Fvector& pos = m_vExplodePos;
@@ -420,18 +423,23 @@ void CExplosive::GetExplVelocity(Fvector &v)
 void CExplosive::UpdateCL() 
 {
 	//VERIFY(!this->getDestroy());
-
-	if(!m_bExploding) return; 
 	VERIFY(!ph_world->Processing());
+	if(!m_explosion_flags.test(flExploding)) return;// !m_bExploding
+	if(m_explosion_flags.test(flExploded))
+	{
+		m_explosion_flags.set(flExploding,FALSE);//m_bExploding = false;
+		OnAfterExplosion();
+		return;
+	}
 	//время вышло, убираем объект взрывчатки
 	if(m_fExplodeDuration < 0.f&&m_blasted_objects.empty()) 
 	{
-		m_bExploding = false;
-		cast_game_object()->processing_deactivate();
-
+		m_explosion_flags.set(flExploded,TRUE);
+		CGameObject* go=cast_game_object();
+		go->processing_deactivate();
 		StopLight();
 		
-		OnAfterExplosion();
+
 //		Msg("---------CExplosive OnAfterExplosion [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
 
 	} 
@@ -466,9 +474,16 @@ void CExplosive::OnAfterExplosion()
 }
 void CExplosive::OnBeforeExplosion()
 {
-	cast_game_object()->setVisible(FALSE);
-	cast_game_object()->setEnabled(FALSE);
-//	Msg("---------CExplosive OnBeforeExplosion setVisible(false) [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
+	CGameObject	*GO=cast_game_object();
+	GO->setVisible(FALSE);
+	GO->setEnabled(FALSE);
+	CPhysicsShell* phshell=(smart_cast<CPhysicsShellHolder*>(GO))->PPhysicsShell();
+	if(phshell)
+	{
+		phshell->Disable();
+		phshell->DisableCollision();
+	}
+    //	Msg("---------CExplosive OnBeforeExplosion setVisible(false) [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
 
 }
 
@@ -494,7 +509,8 @@ void CExplosive::OnEvent(NET_Packet& P, u16 type)
 void CExplosive::ExplodeParams(const Fvector& pos, 
 								const Fvector& dir)
 {
-	m_bReadyToExplode = true;
+	//m_bReadyToExplode = true;
+	m_explosion_flags.set(flReadyToExplode,TRUE);
 	m_vExplodePos = pos;
 	m_vExplodeDir = dir;
 }
@@ -505,7 +521,7 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 
 //	if( m_bExplodeEventSent ) 
 //		return;
-	VERIFY(!m_bExplodeEventSent);
+	VERIFY(!m_explosion_flags.test(flExplodEventSent));//!m_bExplodeEventSent
 	VERIFY(0xffff != Initiator());
 
 	NET_Packet		P;
@@ -515,7 +531,8 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 	P.w_vec3		(const_cast<Fvector&>(normal));
 	cast_game_object()->u_EventSend		(P);
 
-	m_bExplodeEventSent = true;
+	//m_bExplodeEventSent = true;
+	m_explosion_flags.set(flExplodEventSent,TRUE);
 }
 
 void CExplosive::FindNormal(Fvector& normal)

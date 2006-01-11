@@ -364,7 +364,7 @@ void CCar::shedule_Update(u32 dt)
 	{
 		CarExplode();
 	}
-	if(b_exploded&&!m_bExploding&&!getEnabled())
+	if(b_exploded&&!m_explosion_flags.test(flExploding)&&!getEnabled())//!m_bExploding
 										setEnabled(TRUE);
 #ifdef DEBUG
 	DbgSheduleUpdate();
@@ -512,6 +512,8 @@ void CCar::ChangeCondition	(float fDeltaCondition)
 {
 	CEntity::CalcCondition(-fDeltaCondition);
 	CDamagableItem::HitEffect();
+	if (Local() && !g_Alive() && !AlreadyDie())
+		KillEntity	(CExplosive::Initiator());
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
 		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/* /100.f */);
 }

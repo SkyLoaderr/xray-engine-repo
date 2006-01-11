@@ -82,3 +82,11 @@ void CExplosiveItem::net_Relcase(CObject* O )
 	CExplosive::net_Relcase(O);
 	inherited::net_Relcase(O);
 }
+void	CExplosiveItem::ActivateExplosionBox	(const Fvector &size,Fvector &in_out_pos)
+{
+	//PKinematics(Visual())->CalculateBones();
+}
+void CExplosiveItem::GetRayExplosionSourcePos(Fvector &pos)
+{
+	random_point_in_object_box(pos,this);
+}

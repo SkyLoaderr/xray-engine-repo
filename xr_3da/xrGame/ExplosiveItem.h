@@ -21,21 +21,22 @@ public:
 	CExplosiveItem(void);
 	virtual ~CExplosiveItem(void);
 
-	virtual void				Load				(LPCSTR section);
-	virtual BOOL				net_Spawn			(CSE_Abstract* DC)			{return CInventoryItemObject::net_Spawn(DC);}
-	virtual void				net_Destroy			();
-	virtual void				net_Export			(NET_Packet& P)		{CInventoryItemObject::net_Export(P);}
-	virtual void				net_Import			(NET_Packet& P)		{CInventoryItemObject::net_Import(P);}
-	virtual void				net_Relcase			(CObject* O )		;
-	virtual CGameObject			*cast_game_object	()					{return this;}
-	virtual CExplosive*			cast_explosive		()					{return this;}
-	virtual void				GetExplosionBox		(Fvector &size)		{BoundingBox().getsize(size);}
-	virtual void				OnEvent				(NET_Packet& P, u16 type);
-	virtual	void				Hit					(SHit* pHDS);
-	virtual void				shedule_Update		(u32 dt);
-	virtual void				UpdateCL			();
-	virtual void				renderable_Render	(); 
-	virtual void				ChangeCondition		(float fDeltaCondition)	{CInventoryItem::ChangeCondition(fDeltaCondition);};
-	virtual void				StartTimerEffects	();
+	virtual void				Load					(LPCSTR section)							;
+	virtual BOOL				net_Spawn				(CSE_Abstract* DC)							{return CInventoryItemObject::net_Spawn(DC);}
+	virtual void				net_Destroy				()											;
+	virtual void				net_Export				(NET_Packet& P)								{CInventoryItemObject::net_Export(P);}
+	virtual void				net_Import				(NET_Packet& P)								{CInventoryItemObject::net_Import(P);}
+	virtual void				net_Relcase				(CObject* O )								;
+	virtual CGameObject			*cast_game_object		()											{return this;}
+	virtual CExplosive*			cast_explosive			()											{return this;}
+	virtual void				GetRayExplosionSourcePos(Fvector &pos)								;
+	virtual void				ActivateExplosionBox	(const Fvector &size,Fvector &in_out_pos)	;
+	virtual void				OnEvent					(NET_Packet& P, u16 type)					;
+	virtual	void				Hit						(SHit* pHDS)								;
+	virtual void				shedule_Update			(u32 dt)									;
+	virtual void				UpdateCL				()											;
+	virtual void				renderable_Render		()											; 
+	virtual void				ChangeCondition			(float fDeltaCondition)						{CInventoryItem::ChangeCondition(fDeltaCondition);};
+	virtual void				StartTimerEffects		()											;
 
 };
