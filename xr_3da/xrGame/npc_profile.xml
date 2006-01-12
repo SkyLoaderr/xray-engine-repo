@@ -627,6 +627,9 @@
 	<character id="aes_Monolit_specnaz_rg6">
 		<class>aes_Monolit_specnaz_rg6</class>
 	</character>
+	<character id="aes_x">
+		<class>aes_x</class>
+	</character>
 	
 <!-- Sarcofag -->
 	<character id="sar_monolith_specnaz">
@@ -953,6 +956,7 @@
 	<character id="sim_Soldier_master">
 		<class>sim_Soldier_master</class>
 	</character>
+
 
 
 

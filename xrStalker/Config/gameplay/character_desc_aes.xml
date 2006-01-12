@@ -342,5 +342,40 @@
 		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
+<!---------------------------SOLDIER SNIPER---------------------->
+	<specific_character id="aes_x" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="6" y="4"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<team>Soldier_sniper</team>
+		
+		<class>aes_x</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+        <snd_config>characters_voice\human_03\</snd_config>
+
+    	<panic_threshold>0.0</panic_threshold>
+
+		<visual>actors\killer\stalker_ki_temp</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_pbp = 1 \n
+			wpn_sig550 \n
+			ammo_5.56x45_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
 	
 </xml>
