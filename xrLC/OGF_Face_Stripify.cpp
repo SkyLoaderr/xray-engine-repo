@@ -63,6 +63,7 @@ void OGF::Stripify		()
 
 	// fast verts
 	if (x_vertices.size() && x_faces.size())
+		/*
 	try {
 		xr_vector<u16>	indices,permute;
 
@@ -82,7 +83,8 @@ void OGF::Stripify		()
 	} catch (...)	{
 		clMsg		("ERROR: [fast-vert] Stripifying failed. Dump below.");
 		DumpFaces	();
-
+		*/
+	{
 		// alternative stripification - faces
 		{
 			DWORD*		remap	= xr_alloc<DWORD>		(x_faces.size());
