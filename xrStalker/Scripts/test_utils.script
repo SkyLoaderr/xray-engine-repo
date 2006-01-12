@@ -118,7 +118,7 @@ function remove_gulags_except(test_name)
 	-- remove
 	for k, v in pairs(db.smart_terrain_by_id) do
 		if (is_gulag_in_test(v:name(), test_name) == false) then
-			smart_terrain.remove_gulag(v,true)
+			v:remove_gulag(true)
 		end
 	end
 end
