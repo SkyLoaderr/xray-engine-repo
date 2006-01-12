@@ -31,11 +31,9 @@ combat_ignore_cond          = {=check_fighting(403:401)}
 ; ждем на 2 фразы второго охранника
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_guard1_phrase1]
-no_move             = true
-;no_rotate           = true
-target              = 405
 anim                = guard
 snd                 = speech
+target              = 405
 on_signal           = sound_end | %+val_sacrifice_guard1_phrase1_end%
 on_info             = {+val_sacrifice_guard2_phrase2_end} remark@val_sacrifice_guard1_phrase2
 combat_ignore_cond  = {=check_fighting(403:401)}
@@ -44,11 +42,9 @@ combat_ignore_cond  = {=check_fighting(403:401)}
 ; фраза: Угу. А у меня есть идея.
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_guard1_phrase2]
-no_move             = true
-;no_rotate           = true
-target              = 405
 anim                = guard
 snd                 = speech
+target              = 405
 on_signal           = sound_end | remark@val_sacrifice_guard1_phrase3
 combat_ignore_cond  = {=check_fighting(403:401)}
 
@@ -56,11 +52,9 @@ combat_ignore_cond  = {=check_fighting(403:401)}
 ; фраза: А ну прыгай в яму козел.
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_guard1_phrase3]
-no_move             = true
-;no_rotate           = true
-target              = 401
 anim                = guard
 snd                 = speech
+target              = 401
 on_signal           = sound_end | %+val_sacrifice_guard1_phrase3_end%
 on_info             = {+val_sacrifice_victim_phrase2_end} remark@val_sacrifice_guard1_phrase4
 combat_ignore_cond  = {=check_fighting(403:401)}
@@ -69,11 +63,9 @@ combat_ignore_cond  = {=check_fighting(403:401)}
 ; фраза: Ну как хочешь.
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_guard1_phrase4]
-no_move             = true
-;no_rotate           = true
-target              = 401
 anim                = guard
 snd                 = speech
+target              = 401
 on_signal           = sound_end | camper@val_sacrifice_guard1_kill %+val_sacrifice_guard1_phrase4_end%
 combat_ignore_cond  = {=check_fighting(403:401)}
 
@@ -81,26 +73,24 @@ combat_ignore_cond  = {=check_fighting(403:401)}
 ; убиваем пленного
 ;--------------------------------------------------------------------------
 [camper@val_sacrifice_guard1_kill]
-radius                      = 0
 path_walk                   = guard1_walk 
 path_look                   = guard1_look
 def_state_campering         = guard
 def_state_campering_fire    = guard_fire
 def_state_moving            = patrol
 def_state_moving_fire       = patrol_fire
+radius                      = 0
 no_retreat                  = true
 on_info                     = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
-combat_ignore_cond          = {=check_fighting(403)}
 ;danger                      = danger1
+combat_ignore_cond          = {=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Все! Нет человека - нет проблемы. Скажем Борову, что типа доставили пленника куда следует. Идем.
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_guard1_phrase5]
-no_move             = true
-no_rotate           = true
 anim                = guard
 snd                 = speech
 on_signal           = sound_end | %+val_sacrifice_finish%
-combat_ignore_cond  = {=check_fighting(403)}
 ;danger              = danger1
+combat_ignore_cond  = {=check_fighting(403)}
