@@ -225,4 +225,26 @@ extern "C"{
 	{
 		return D3DXPlaneTransform(pOut, pP, pM);
 	}
+
+	ETOOLS_API HRESULT WINAPI
+		D3DX_OptimizeFaces(
+		LPCVOID pIndices,
+		UINT NumFaces,
+		UINT NumVertices,
+		BOOL Indices32Bit,
+		DWORD * pFaceRemap)
+	{
+		return D3DXOptimizeFaces(pIndices, NumFaces, NumVertices, Indices32Bit, pFaceRemap);
+	}
+
+	ETOOLS_API HRESULT WINAPI
+		D3DX_OptimizeVertices(
+		LPCVOID pIndices,
+		UINT NumFaces,
+		UINT NumVertices,
+		BOOL Indices32Bit,
+		DWORD * pVertexRemap)
+	{
+		return D3DX_OptimizeVertices(pIndices, NumFaces, NumVertices, Indices32Bit, pVertexRemap);
+	}
 }

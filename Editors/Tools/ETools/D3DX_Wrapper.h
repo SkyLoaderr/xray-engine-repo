@@ -168,6 +168,14 @@ extern "C" {
       	UINT NumVertices,
       	BOOL Indices32Bit,
       	DWORD * pFaceRemap);
+
+	ETOOLS_API HRESULT WINAPI
+		D3DX_OptimizeVertices(
+		LPCVOID pIndices,
+		UINT NumFaces,
+		UINT NumVertices,
+		BOOL Indices32Bit,
+		DWORD * pVertexRemap);
 }
 
 #ifndef ETOOLS_EXPORTS
@@ -193,6 +201,7 @@ extern "C" {
 	#define D3DXPlaneNormalize						D3DX_PlaneNormalize 
 	#define D3DXPlaneTransform						D3DX_PlaneTransform 
 	#define D3DXOptimizeFaces						D3DX_OptimizeFaces 
+	#define D3DXOptimizeVertices					D3DX_OptimizeVertices 
 #endif
 
 #endif
