@@ -109,7 +109,8 @@ smart_terrains["test1"] = {
     "val_x18_exit_base",
     "val_main_gulag1",
     "val_main_gulag2",
-    "val_soldiers_raid_off"
+    "val_soldiers_raid_off",
+    "val_exit1_ambush"
 }
 
 -- 2
