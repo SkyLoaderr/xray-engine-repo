@@ -183,13 +183,16 @@ end
     2. bone - строка. Имя кости, по которой наносится удар.
     3. power - сила удара
     4. impulse - импульс
-    5. hit_src - точка (waypoint), из которой по объекту наносится хит.
+    5. hit_src - если число, то рассматривается как story_id обьекта, со стороны
+        которого наносится хит (он же является и инициатором хита), иначе это
+        точка (waypoint), из которой по объекту наносится хит.
         Если не задано, то берется позиция обьекта, из которого была вызвана
         данная функция.
 --]]
 function hit_obj(actor, npc, p)
 	local h = hit()
 	local obj = level_object_by_sid(p[1])
+	local sid = nil
 
 	if not obj then
 		abort("HIT_OBJ [%s]. Target object does not exist", npc:name())
@@ -200,14 +203,22 @@ function hit_obj(actor, npc, p)
 	h.power = p[3]
 	h.impulse = p[4]
 
-	--h.direction = vector(0, -1, 0)	
 	if p[5] then
-	    h.direction = vector():sub(patrol(p[5]):point(0), obj:position())
+	    sid = tonumber(p[5])
+	    if sid then
+	        sid = level_object_by_sid(sid)
+	        if sid then
+	            h.direction = vector():sub(sid:position(), obj:position())
+	        end
+	    end
+	    if not sid then
+	        h.direction = vector():sub(patrol(p[5]):point(0), obj:position())
+	    end
 	else
 	    h.direction = vector():sub(npc:position(), obj:position())
 	end
 
-	h.draftsman = npc --nil --obj
+	h.draftsman = sid or npc
 	h.type = hit.wound
 	obj:hit(h)
 end
