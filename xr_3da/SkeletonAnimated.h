@@ -13,7 +13,6 @@ const	u32		MAX_ANIM_SLOT		=	4;
 // refs
 class   ENGINE_API CBlend;
 class 	ENGINE_API CKinematicsAnimated;
-class	ENGINE_API CBoneDataAnimated;
 class   ENGINE_API CBoneInstanceAnimated;
 struct	ENGINE_API CKey;
 class	ENGINE_API CInifile;
@@ -109,32 +108,27 @@ public:
 };
 #pragma pack(pop)
 
-//*** Shared Bone Data ****************************************************************************
-class ENGINE_API		CBoneDataAnimated: public CBoneData             
-{
-public:
-						CBoneDataAnimated(u16 ID):CBoneData(ID){}
-	// Motion control
-	void				Motion_Start	(CKinematicsAnimated* K, CBlend* handle);	// with recursion
-	void				Motion_Start_IM	(CKinematicsAnimated* K, CBlend* handle);
-	void				Motion_Stop		(CKinematicsAnimated* K, CBlend* handle);	// with recursion
-	void				Motion_Stop_IM	(CKinematicsAnimated* K, CBlend* handle);
-
-	// Calculation
-	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
-	virtual u32			mem_usage		()
-	{
-		return			CBoneData::mem_usage()+sizeof(*this);
-	}
-};
 
 //*** The visual itself ***************************************************************************
 class ENGINE_API	CKinematicsAnimated	: public CKinematics
 {
 	typedef CKinematics							inherited;
-	friend class								CBoneDataAnimated;
+	friend class								CBoneData;
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
+private:
+	// Motion control
+	void						Bone_Motion_Start		(CBoneData* bd, CBlend* handle);	// with recursion
+	void						Bone_Motion_Stop		(CBoneData* bd, CBlend* handle);	// with recursion
+
+	void						Bone_Motion_Start_IM	(CBoneData* bd, CBlend* handle);
+	void						Bone_Motion_Stop_IM		(CBoneData* bd, CBlend* handle);
+
+public: 
+	// Calculation
+	virtual void				Bone_Calculate			(CBoneData* bd, Fmatrix* parent);
+
+	virtual void				OnCalculateBones		();
 public: 
 #ifdef _EDITOR
 public:
@@ -158,7 +152,6 @@ private:
 	BlendList									blend_fx;
 protected:
 	// internal functions
-    virtual CBoneData*			CreateBoneData			(u16 ID){return xr_new<CBoneDataAnimated>(ID);}
 	virtual void				IBoneInstances_Create	();
 	virtual void				IBoneInstances_Destroy	();
 
@@ -197,7 +190,6 @@ public:
 	                                                                
 	// Main functionality
 	void						UpdateTracks	();								// Update motions
-	virtual void				CalculateBones	(BOOL bForced=FALSE);			// Recalculate skeleton 
 
 	// cycles
 	MotionID					ID_Cycle		(LPCSTR  N);

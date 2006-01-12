@@ -12,8 +12,9 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 	// check if the info is still relevant
 	// skip all the computations - assume nothing changes in a small period of time :)
 	if		(Device.dwTimeGlobal == UCalc_Time)										return;	// early out for "fast" update
-	if		(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
 	UCalc_mtlock	lock	;
+	OnCalculateBones		();
+	if		(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
 	if		(Update_Visibility)									Visibility_Update	();
 
 	// here we have either:
@@ -24,7 +25,7 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 	// exact computation
 	// Calculate bones
 	Device.Statistic.Animation.Begin();
-	bones->at(iRoot)->Calculate		(this,&Fidentity);
+	Bone_Calculate					(bones->at(iRoot),&Fidentity);
 	Device.Statistic.Animation.End	();
 
 	// Calculate BOXes/Spheres if needed
@@ -66,21 +67,22 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 	if (Update_Callback)	Update_Callback(this);
 }
 
-void CBoneData::Calculate	(CKinematics* K, Fmatrix *parent)
+void CKinematics::Bone_Calculate	(CBoneData* bd, Fmatrix *parent)
 {
-    if (K->LL_GetBoneVisible(SelfID)){
-		CBoneInstance& INST			= (CBoneInstance&)K->LL_GetBoneInstance(SelfID);
+	u16 SelfID						= bd->GetSelfID();
+    if (LL_GetBoneVisible(SelfID)){
+		CBoneInstance& INST			= LL_GetBoneInstance(SelfID);
         if (INST.Callback_overwrite){
 			if (INST.Callback)		INST.Callback(&INST);
         } else {
             // Build matrix
-            INST.mTransform.mul_43	(*parent,bind_transform);
+            INST.mTransform.mul_43	(*parent,bd->bind_transform);
             if (INST.Callback)		INST.Callback(&INST);
         }
-        INST.mRenderTransform.mul_43(INST.mTransform,m2b_transform);
+        INST.mRenderTransform.mul_43(INST.mTransform,bd->m2b_transform);
 
         // Calculate children
-        for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
-            (*C)->Calculate(K,&INST.mTransform);
+        for (xr_vector<CBoneData*>::iterator C=bd->children.begin(); C!=bd->children.end(); C++)
+			Bone_Calculate			(*C,&INST.mTransform);
 	}
 }

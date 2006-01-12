@@ -97,7 +97,6 @@ public:
 	}
 	// Calculation
 	void				CalculateM2B	(const Fmatrix& Parent);
-	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
 
 	virtual u32			mem_usage		()
 	{
@@ -146,6 +145,9 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	typedef FHierrarhyVisual	inherited;
 	friend class				CBoneData;
 	friend class				CSkeletonX;
+public: 
+	virtual void				Bone_Calculate	(CBoneData* bd, Fmatrix* parent);
+	virtual void				OnCalculateBones(){}
 public:
 	typedef xr_vector<std::pair<shared_str,u16> >	accel;
 public:

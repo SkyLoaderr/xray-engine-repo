@@ -32,25 +32,25 @@ void		CBlendInstance::blend_remove	(CBlend* H)
 }
 
 // Motion control
-void	CBoneDataAnimated::Motion_Start	(CKinematicsAnimated* K, CBlend* handle) 
+void	CKinematicsAnimated::Bone_Motion_Start		(CBoneData* bd, CBlend* handle) 
 {
-	K->LL_GetBlendInstance(SelfID).blend_add		(handle);
-	for (vecBonesIt I=children.begin(); I!=children.end(); I++)                        
-		((CBoneDataAnimated*)(*I))->Motion_Start	(K,handle);
+	LL_GetBlendInstance	(bd->GetSelfID()).blend_add	(handle);
+	for (vecBonesIt I=bd->children.begin(); I!=bd->children.end(); I++)                        
+		Bone_Motion_Start	(*I,handle);
 }
-void	CBoneDataAnimated::Motion_Start_IM	(CKinematicsAnimated* K, CBlend* handle) 
+void	CKinematicsAnimated::Bone_Motion_Stop		(CBoneData* bd, CBlend* handle) 
 {
-	K->LL_GetBlendInstance(SelfID).blend_add		(handle);
+	LL_GetBlendInstance	(bd->GetSelfID()).blend_remove	(handle);
+	for (vecBonesIt I=bd->children.begin(); I!=bd->children.end(); I++)
+		Bone_Motion_Stop	(*I,handle);
 }
-void	CBoneDataAnimated::Motion_Stop	(CKinematicsAnimated* K, CBlend* handle) 
+void	CKinematicsAnimated::Bone_Motion_Start_IM	(CBoneData* bd,  CBlend* handle) 
 {
-	K->LL_GetBlendInstance(SelfID).blend_remove	(handle);
-	for (vecBonesIt I=children.begin(); I!=children.end(); I++)
-		((CBoneDataAnimated*)(*I))->Motion_Stop	(K,handle);
+	LL_GetBlendInstance	(bd->GetSelfID()).blend_add		(handle);
 }
-void	CBoneDataAnimated::Motion_Stop_IM	(CKinematicsAnimated* K, CBlend* handle) 
+void	CKinematicsAnimated::Bone_Motion_Stop_IM	(CBoneData* bd, CBlend* handle) 
 {
-	K->LL_GetBlendInstance(SelfID).blend_remove	(handle);
+	LL_GetBlendInstance	(bd->GetSelfID()).blend_remove	(handle);
 }
 
 #ifdef DEBUG
@@ -160,11 +160,7 @@ void	CKinematicsAnimated::LL_CloseCycle(u16 part)
 		
 		CPartDef& P	= (*m_Partition)[B.bone_or_part];
 		for (u32 i=0; i<P.bones.size(); i++)
-			((CBoneDataAnimated*)(*bones)[P.bones[i]])->Motion_Stop(this,*I);
-		/*
-		blend_cycles[part].erase(I);
-		E=blend_cycles[part].end(); I--; 
-		*/
+			Bone_Motion_Stop	((*bones)[P.bones[i]],*I);
 	}
 	blend_cycles[part].clear	(); // ?
 }
@@ -190,12 +186,8 @@ CBlend*	CKinematicsAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bM
 	CPartDef& P	=	(*m_Partition)[part];
 	CBlend*	B	=	IBlend_Create();
 
-	CBoneDataAnimated*	Bone=0;
-	for (u32 i=0; i<P.bones.size(); i++){
-		Bone	= (CBoneDataAnimated*)(*bones)[P.bones[i]]; VERIFY(Bone);
-		Bone->Motion_Start_IM	(this,B);
-	}
-	VERIFY		(Bone);
+	for (u32 i=0; i<P.bones.size(); i++)
+		Bone_Motion_Start_IM	((*bones)[P.bones[i]],B);
 	blend_cycles[part].push_back(B);
 
 	// Setup blend params
@@ -282,8 +274,7 @@ CBlend*	CKinematicsAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float ble
 	if (BI_NONE==bone)		bone = iRoot;
 	
 	CBlend*	B		= IBlend_Create();
-	CBoneDataAnimated*	Bone= (CBoneDataAnimated*)(*bones)[bone];
-	Bone->Motion_Start(this,B);
+	Bone_Motion_Start	((*bones)[bone],B);
 	
 	B->blend		= CBlend::eAccrue;
 	B->blendAmount	= EPS_S;
@@ -359,7 +350,7 @@ void CKinematicsAnimated::UpdateTracks	()
 
 					CPartDef& P		= m_Partition->part(B.bone_or_part);
 					for (u32 i=0; i<P.bones.size(); i++)
-						((CBoneDataAnimated*)(*bones)[P.bones[i]])->Motion_Stop(this,*I);
+						Bone_Motion_Stop((*bones)[P.bones[i]],*I);
 
 					blend_cycles[part].erase(I);
 					E				= blend_cycles[part].end(); I--; 
@@ -408,7 +399,7 @@ void CKinematicsAnimated::UpdateTracks	()
 			if (B.blendAmount<=0) {
 				// destroy fx
 				B.blend = CBlend::eFREE_SLOT;
-				((CBoneDataAnimated*)(*bones)[B.bone_or_part])->Motion_Stop(this,*I);
+				Bone_Motion_Stop((*bones)[B.bone_or_part],*I);
 				blend_fx.erase(I); 
 				E=blend_fx.end(); I--; 
 			}
@@ -608,13 +599,12 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 	std::sort(keys,keys+count);
 }
 
-void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
+void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
 {
-	CKinematicsAnimated* K 			= (CKinematicsAnimated*)_K; 
-
-    if (K->LL_GetBoneVisible(SelfID)){
-        CBoneInstance& BONE_INST	= K->LL_GetBoneInstance(SelfID);
-        CBlendInstance& BLEND_INST	= K->LL_GetBlendInstance(SelfID);
+	u16 SelfID					= bd->GetSelfID();
+    if (LL_GetBoneVisible(SelfID)){
+        CBoneInstance& BONE_INST	= LL_GetBoneInstance(SelfID);
+        CBlendInstance& BLEND_INST	= LL_GetBlendInstance(SelfID);
 
         if (BONE_INST.Callback_overwrite){
             if (BONE_INST.Callback)	BONE_INST.Callback(&BONE_INST);
@@ -629,7 +619,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
             {
                 CBlend*			B		=	*BI;
                 float			time	=	B->timeCurrent*float(SAMPLE_FPS);
-                CMotion&		M		=	*K->LL_GetMotion(B->motionID,SelfID);
+                CMotion&		M		=	*LL_GetMotion(B->motionID,SelfID);
                 u32				frame	=	iFloor(time);
                 float			delta	=	time-float(frame);
                 u32				count	=	M.get_count();
@@ -729,73 +719,17 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
             BONE_INST.mTransform.mul_43(*parent,RES);
             if (BONE_INST.Callback)		BONE_INST.Callback(&BONE_INST);
         }
-        BONE_INST.mRenderTransform.mul_43(BONE_INST.mTransform,m2b_transform);
+        BONE_INST.mRenderTransform.mul_43(BONE_INST.mTransform,bd->m2b_transform);
 
         // Calculate children
-        for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
-            ((CBoneDataAnimated*)(*C))->Calculate(K,&BONE_INST.mTransform);
+        for (xr_vector<CBoneData*>::iterator C=bd->children.begin(); C!=bd->children.end(); C++)
+            Bone_Calculate(*C,&BONE_INST.mTransform);
     }
 }
 
-void CKinematicsAnimated::CalculateBones		(BOOL bForceExact)
+void CKinematicsAnimated::OnCalculateBones		()
 {
-	// early out.
-	// check if the info is still relevant
-	// skip all the computations - assume nothing changes in a small period of time :)
-	if			(Device.dwTimeGlobal == UCalc_Time)										return;	// early out for "fast" update
-	UCalc_mtlock	lock;
 	UpdateTracks	()	;
-	if			(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
-	if			(Update_Visibility)									Visibility_Update	();
-
-	// here we have either:
-	//	1:	timeout elapsed
-	//	2:	exact computation required
-	UCalc_Time			= Device.dwTimeGlobal;
-
-	// exact computation
-	// calculate bones
-	Device.Statistic.Animation.Begin	();
-	((CBoneDataAnimated*)(*bones)[iRoot])->Calculate	(this,&Fidentity);
-	Device.Statistic.Animation.End		();
-
-	// Calculate BOXes/Spheres if needed
-	UCalc_Visibox++; 
-	if (UCalc_Visibox>=psSkeletonUpdate) 
-	{
-		// mark
-		UCalc_Visibox		= -(::Random.randI(16));
-
-		// the update itself
-		Fbox	Box; Box.invalidate();
-		for (u32 b=0; b<bones->size(); b++)
-		{
-			if			(!LL_GetBoneVisible(u16(b)))		continue;
-			Fobb&		obb		= (*bones)[b]->obb;
-			Fmatrix&	Mbone	= bone_instances[b].mTransform;
-			Fmatrix		Mbox;	obb.xform_get(Mbox);
-			Fmatrix		X;		X.mul_43(Mbone,Mbox);
-			Fvector&	S		= obb.m_halfsize;
-
-			Fvector		P, A;
-			A.set( -S.x,	-S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set( -S.x,	-S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set(  S.x,	-S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set(  S.x,	-S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set( -S.x,	 S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set( -S.x,	 S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set(  S.x,	 S.y,	 S.z ); X.transform_tiny(P,A); Box.modify(P);
-			A.set(  S.x, 	 S.y,	-S.z ); X.transform_tiny(P,A); Box.modify(P);
-		}
-
-		// previous frame we have updated box - update sphere
-		vis.box.min.average	(Box.min);
-		vis.box.max.average	(Box.max);
-		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
-	}
-
-	//
-	if (Update_Callback)	Update_Callback(this);
 }
 
 #ifdef _EDITOR
