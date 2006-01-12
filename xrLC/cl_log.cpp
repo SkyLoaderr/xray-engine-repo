@@ -110,8 +110,8 @@ void Phase			(const char *phase_name)
 	Progress			(0);
 
 	// Release focus
-	csLog.Leave			();
 	Msg("\n* New phase started: %s",phase_name);
+	csLog.Leave			();
 }
 
 HWND logWindow=0;
@@ -168,9 +168,10 @@ void logThread(void *dummy)
 
 		BOOL bWasChanges = FALSE;
 		char tbuf		[256];
+		csLog.Enter		();
 		if (LogSize!=LogFile.size())
 		{
-			bWasChanges = TRUE;
+			bWasChanges		= TRUE;
 			for (; LogSize<LogFile.size(); LogSize++)
 			{
 				const char *S = *LogFile[LogSize];
@@ -180,6 +181,7 @@ void logThread(void *dummy)
 			SendMessage		( hwLog, LB_SETTOPINDEX, LogSize-1, 0);
 			FlushLog		( );
 		}
+		csLog.Leave		();
 		if (_abs(PrSave-progress)>EPS_L) {
 			bWasChanges = TRUE;
 			PrSave = progress;
@@ -234,7 +236,9 @@ void __cdecl clMsg( const char *format, ...)
 	va_start	( mark, format );
 	vsprintf	( buf, format, mark );
 
-	char _out_	[4*256];
-	strconcat	(_out_,"    |    | ", buf );   
-	Log			(_out_);
+	csLog.Enter		();
+	char _out_		[4*256];
+	strconcat		(_out_,"    |    | ", buf );   
+	Log				(_out_);
+	csLog.Leave		();
 }

@@ -3,6 +3,26 @@
 
 extern void		Detach		(vecFace* S);
 
+void	setup_bbs	(Fbox& b1, Fbox& b2, Fbox& bb,int edge)	{
+	Fvector	size;
+	b1.set	(bb);	b2.set(bb);
+	size.sub(bb.max,bb.min);
+	switch	(edge)	{
+		case 0:
+			b1.max.x -= size.x/2;
+			b2.min.x += size.x/2;
+			break;
+		case 1:
+			b1.max.y -= size.y/2;
+			b2.min.y += size.y/2;
+			break;
+		case 2:
+			b1.max.z -= size.z/2;
+			b2.min.z += size.z/2;
+			break;
+	}
+};
+
 void CBuild::xrPhase_Subdivide()
 {
 	Status	("Subdividing in space...");
@@ -50,27 +70,29 @@ void CBuild::xrPhase_Subdivide()
 
 		// perform subdivide if needed
 		if (!bSplit)	continue;
-		b1.set(bb);	b2.set(bb);
 		
 		// select longest BBox edge
+		int		box_edge			= -1;	
 		if (size.x>=size.y && size.x>=size.z) {
-			b1.max.x -= size.x/2;
-			b2.min.x += size.x/2;
+			box_edge	= 0;
 		} else {
 			if (size.y>=size.x && size.y>=size.z) {
-				b1.max.y -= size.y/2;
-				b2.min.y += size.y/2;
+				box_edge	= 1;
 			} else {
-				if (size.z>=size.x && size.z>=size.y) {
-					b1.max.z -= size.z/2;
-					b2.min.z += size.z/2;
-				}
+				box_edge	= 2;
 			}
 		}
+		setup_bbs	(b1,b2,bb,box_edge);
 
 		// align plane onto vertices
 		
 		// Process all faces and rearrange them
+		u32		iteration_on_edge	= 0	;	// up to 3
+		u32		iteration_per_edge	= 0	;	// up to 10
+resplit:
+		s2.clear	();
+		s1.clear	();
+		iteration_per_edge		++	;
 		for (vecFaceIt F=g_XSplit[X]->begin(); F!=g_XSplit[X]->end(); F++) 
 		{
 			Face *XF = *F;
@@ -83,6 +105,33 @@ void CBuild::xrPhase_Subdivide()
 		if ((int(s1.size())<c_SS_LowVertLimit) || (int(s2.size())<c_SS_LowVertLimit))
 		{
 			// splitting failed
+			clMsg	("! ERROR: model #%d - split fail, faces: %d, s1/s2:%d/%d",X,g_XSplit[X]->size(),s1.size(),s2.size());
+			if (iteration_per_edge<10)	{
+				if		(g_XSplit[X]->size() > c_SS_LowVertLimit*4)		
+				{
+					if (s2.size()>s1.size())	
+					{	//b2 -less, b1-grow
+						size.sub	(b2.max,b2.min);
+						b1.max[box_edge]	+= size[box_edge]/2;
+						b2.min[box_edge]	=  b1.max[box_edge];
+					} else {
+						//b2 -grow, b1-less
+						size.sub	(b1.max,b1.min);
+						b2.min[box_edge]	-= size[box_edge]/2;
+						b1.max[box_edge]	=  b2.min[box_edge];
+					}
+					goto		resplit;
+				}
+			} else {
+				// switch edge
+				iteration_per_edge	= 0	;
+				iteration_on_edge	++	;
+				if (iteration_on_edge<3)	{
+					box_edge		= (box_edge+1)%3;
+					setup_bbs		(b1,b2,bb,box_edge);
+					goto		resplit;
+				}
+			}
 		} else {
 			// split deflector into TWO
 			if (defl_base)	
@@ -112,4 +161,5 @@ void CBuild::xrPhase_Subdivide()
 		s2.clear	();
 	}
 	clMsg("%d subdivisions.",g_XSplit.size());
+	validate_splits	();
 }

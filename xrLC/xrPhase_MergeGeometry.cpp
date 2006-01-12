@@ -84,6 +84,7 @@ IC BOOL	ValidateMerge	(u32 f1, Fbox& bb_base, u32 f2, Fbox& bb, float& volume)
 void CBuild::xrPhase_MergeGeometry	()
 {
 	Status("Processing...");
+	validate_splits		();
 	for (u32 split=0; split<g_XSplit.size(); split++)
 	{
 		vecFace&	subdiv	= *(g_XSplit[split]);
@@ -118,4 +119,5 @@ void CBuild::xrPhase_MergeGeometry	()
 		Progress(_sqrt(_sqrt(float(split)/float(g_XSplit.size()))));
 	}
 	clMsg("%d subdivisions.",g_XSplit.size());
+	validate_splits			();
 }

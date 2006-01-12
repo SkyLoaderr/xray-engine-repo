@@ -7,10 +7,23 @@
 
 #define	TRY(a) try { a; } catch (...) { clMsg("* E: %s", #a); }
 
+void CBuild::validate_splits			()
+{
+	for (splitIt it=g_XSplit.begin(); it!=g_XSplit.end(); it++)
+	{
+		u32 MODEL_ID		= u32(it-g_XSplit.begin())	;
+		if ((*it)->size() > c_SS_HighVertLimit*2)		{
+			clMsg	("! ERROR: subdiv #%d has more than %d faces (%d)",MODEL_ID,2*c_SS_HighVertLimit,(*it)->size());
+		}
+	};
+}
+
 void CBuild::Flex2OGF()
 {
 	float p_total	= 0;
 	float p_cost	= 1/float(g_XSplit.size());
+
+	validate_splits	();
 
 	g_tree.clear	();
 	g_tree.reserve	(4096);
@@ -108,13 +121,13 @@ void CBuild::Flex2OGF()
 		}
 		
 		try {
-			//clMsg		("%3d: opt : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			clMsg		("%3d: opt : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->Optimize						();
-			//clMsg		("%3d: cb  : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			clMsg		("%3d: cb  : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->CalcBounds					();
-			//clMsg		("%3d: prog: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			clMsg		("%3d: prog: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->MakeProgressive				(c_PM_MetricLimit_static);
-			//clMsg		("%3d: strp: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			clMsg		("%3d: strp: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->Stripify						();
 		} catch (...)
 		{

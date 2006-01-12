@@ -117,6 +117,8 @@ public:
 	void	SaveTREE				(IWriter &fs);
 	void	SaveSectors				(IWriter &fs);
 
+	void	validate_splits			();
+
 	CBuild	();
 	~CBuild	();
 };
