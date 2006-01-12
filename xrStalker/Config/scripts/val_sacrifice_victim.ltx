@@ -25,9 +25,8 @@ combat_ignore_cond  = always
 ; start
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_victim_wait]
-no_move             = true
-no_rotate           = true
 anim                = wait
+target              = 404
 on_info             = {+val_sacrifice_start} remark@val_sacrifice_victim_phrase1
 combat_ignore_cond  = always
 
@@ -36,11 +35,9 @@ combat_ignore_cond  = always
 ; ждем на фразу 3 первого охранника
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_victim_phrase1]
-no_move             = true
-;no_rotate           = true
 anim                = wait
-target              = 404
 snd                 = speech
+target              = 404
 on_signal           = sound_end | %+val_sacrifice_victim_phrase1_end%
 on_info             = {+val_sacrifice_guard1_phrase3_end} remark@val_sacrifice_victim_phrase2
 combat_ignore_cond  = always
@@ -50,17 +47,14 @@ combat_ignore_cond  = always
 ; ждем на фразу 3 первого охранника
 ;--------------------------------------------------------------------------
 [remark@phrase2]
-no_move             = true
-;no_rotate           = true
 anim                = wait
-target              = 404
 snd                 = speech
+target              = 404
 on_signal           = sound_end | remark@stay %+val_sacrifice_victim_phrase2_end%
 combat_ignore_cond  = always
 
 [remark@stay]
-no_move             = true
-no_rotate           = true
 anim                = wait
+target              = 404
 on_info             = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} %+val_sacrifice_finish%
 combat_ignore_cond  = always
