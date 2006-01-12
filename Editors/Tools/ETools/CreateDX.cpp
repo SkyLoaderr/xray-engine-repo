@@ -245,6 +245,6 @@ extern "C"{
 		BOOL Indices32Bit,
 		DWORD * pVertexRemap)
 	{
-		return D3DX_OptimizeVertices(pIndices, NumFaces, NumVertices, Indices32Bit, pVertexRemap);
+		return D3DXOptimizeVertices(pIndices, NumFaces, NumVertices, Indices32Bit, pVertexRemap);
 	}
 }
