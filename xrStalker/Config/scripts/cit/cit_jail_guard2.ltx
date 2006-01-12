@@ -127,6 +127,7 @@ combat_ignore_cond          = {=check_fighting(1200)}
 [remark@base_guard_doctor_out]
 anim                = threat
 target              = actor
+snd                 = cit_base_guard
 on_info             = {+cit_jail_doctor_out_end} remark@talk_to_guard1_2 %+cit_jail_guard2_talk_to_guard1%
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
