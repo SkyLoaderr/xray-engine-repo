@@ -1240,8 +1240,6 @@ reactions = ignore
 danger = danger_condition@gar_dram_novice
 
 [remark@no_money_gar_dram_novice]
-;no_move = true
-;no_rotate = true
 target = 102
 snd = gar_dm_newbie_no_money
 anim = refuse
@@ -1255,7 +1253,6 @@ danger = danger_condition@gar_dram_novice
 [remark1@gar_dram_novice]
 anim = hello
 snd = gar_dm_newbie_help_me
-;no_rotate = true
 target = actor
 on_signal = sound_end | remark2@gar_dram_novice %+gar_dm_novice_asked_for_help%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
@@ -1264,7 +1261,6 @@ reactions = ignore
 danger = danger_condition@gar_dram_novice
 
 [remark2@gar_dram_novice]
-;no_move = true
 target = actor
 anim = wait
 on_actor_dist_le_nvis = 7 | remark3@gar_dram_novice %=gar_dm_bandits_fight%
@@ -1276,7 +1272,6 @@ reactions = ignore
 danger = danger_condition@gar_dram_novice
 
 [remark3@gar_dram_novice]
-;no_move = true
 target = actor
 anim = wait
 snd = help
@@ -1290,7 +1285,7 @@ danger = danger_condition@gar_dram_novice
 anim = guard
 target = actor
 snd = gar_dm_newbie_thank_you
-on_signal = action_end | walker2@gar_dram_novice %=actor_friend%
+on_timer = 8000 | walker2@gar_dram_novice %=actor_friend%
 danger = danger_condition@gar_dram_novice
 meet = meet@gar_dram_novice
 
