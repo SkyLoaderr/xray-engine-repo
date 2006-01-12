@@ -249,7 +249,7 @@ void CCar::SaveNetState(NET_Packet& P)
 	CPHSkeleton::SaveNetState	   (P);
 	P.w_vec3(Position());
 	Fvector Angle;
-	XFORM().getHPB(Angle);
+	XFORM().getXYZ(Angle);
 	P.w_vec3(Angle);
 	{
 		xr_map<u16,SDoor>::iterator i,e;
@@ -303,7 +303,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 	PPhysicsShell()->GetGlobalTransformDynamic(&restored_form);
 /////////////////////////////////////////////////////////////////////
 	Fmatrix inv ,replace,sof;
-	sof.setHPB(co->o_Angle.x,co->o_Angle.y,co->o_Angle.z);
+	sof.setXYZ(co->o_Angle.x,co->o_Angle.y,co->o_Angle.z);
 	sof.c.set(co->o_Position);
 	inv.set(restored_form);
 	inv.invert();
