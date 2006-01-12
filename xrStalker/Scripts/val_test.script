@@ -106,9 +106,10 @@ smart_terrains["test1"] = {
 	"val_prisoner",
 	"val_rob",
 	"val_lager_bandits",
-	"val_offline_group",
-	"val_war_soldiers",
-	"val_monolith_base"
+    "val_x18_exit_base",
+    "val_main_gulag1",
+    "val_main_gulag2",
+    "val_soldiers_raid_off"
 }
 
 -- 2
