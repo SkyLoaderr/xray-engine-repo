@@ -215,11 +215,11 @@ IC void				DisconnectJoint(dxJoint* joint)
 		dWorldRemoveJoint(DWorld(),joint);
 }
 
-IC				ConnectBody(dxBody* body)
+IC void ConnectBody(dxBody* body)
 {
 		dWorldAddBody(DWorld(),body);
 }
-IC				DisconnectBody(dxBody* body)
+IC	void DisconnectBody(dxBody* body)
 {
 		dWorldRemoveBody(DWorld(),body);
 }
