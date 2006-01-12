@@ -453,7 +453,7 @@ void	CActor::Hit							(SHit* pHDS)
 				S.set_volume(10.0f);
 				if(!m_sndShockEffector){
 					m_sndShockEffector = xr_new<SndShockEffector>();
-					m_sndShockEffector->Start( S._handle()->length_ms(), HDS.damage() );
+					m_sndShockEffector->Start( float(S._handle()->length_ms()), HDS.damage() );
 				}
 			}
 			else
@@ -472,7 +472,7 @@ void	CActor::Hit							(SHit* pHDS)
 	if(HDS.hit_type == ALife::eHitTypeWound || HDS.hit_type == ALife::eHitTypeStrike)
 	{
 		hit_slowmo				= HDS.damage();
-		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
+		clamp					(hit_slowmo,0.0f,1.f);
 	}
 	else
 		hit_slowmo = 0.f;
