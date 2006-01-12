@@ -29,10 +29,10 @@ void CPhysicsShellHolder::net_Destroy()
 }
 BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 {
-	BOOL ret=inherited::net_Spawn(DC);
-	b_sheduled				=	true;
-	//create_physic_shell			();
 	CParticlesPlayer::net_SpawnParticles		();
+	BOOL ret=inherited::net_Spawn				(DC);
+	b_sheduled									=	true;
+	//create_physic_shell			();
 	return ret;
 }
 

@@ -410,8 +410,8 @@ void CAI_Bloodsucker::play_hidden_run_particles()
 	if (Level().ObjectSpace.RayPick(trace_from, direction, 5.f, collide::rqtStatic, l_rq, this)) {
 		if (l_rq.range < 2.f) {
 			Fvector pos;
-			pos.mad(trace_from, direction, _abs(l_rq.range - 0.15f));
-			PlayParticles(invisible_run_particles_name, pos, Direction());
+			pos.mad			(trace_from, direction, _abs(l_rq.range - 0.05f));
+			PlayParticles	(invisible_run_particles_name, pos, Direction());
 		}
 	}
 }

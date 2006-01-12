@@ -41,7 +41,10 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 	if (eType == 0xffffffff) return;
 
 	// ignore distant sounds
-	if (this->Position().distance_to(Position) > db().m_max_hear_dist)	return;
+	Fvector center;
+	Center	(center);
+	float dist	= center.distance_to(Position);
+	if (dist > db().m_max_hear_dist)	return;
 
 	// ignore sounds if not from enemies and not help sounds
 	CEntityAlive* entity = smart_cast<CEntityAlive*> (who);
@@ -51,6 +54,9 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 	}
 	
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) power = 1.f;
+
+	if (((eType & SOUND_TYPE_WEAPON_BULLET_HIT) == SOUND_TYPE_WEAPON_BULLET_HIT) && (dist < 2.f)) 
+		HitMemory.add_hit(who,eSideFront);
 
 	// execute callback
 	sound_callback	(who,eType,Position,power);
