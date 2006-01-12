@@ -106,6 +106,15 @@ void CRender::Screenshot		(IRender_interface::ScreenshotMode mode, LPCSTR name)
 				fs->w				(saved->GetBufferPointer(),saved->GetBufferSize());
 				FS.w_close			(fs);
 				_RELEASE			(saved);
+				if (strstr(Core.Params,"-ss_tga"))	{ // hq
+					strconcat			(buf,"ssq_",Core.UserName,"_",timestamp(t_stemp),".tga");
+					ID3DXBuffer*		saved	= 0;
+					CHK_DX				(D3DXSaveSurfaceToFileInMemory (&saved,D3DXIFF_TGA,pFB,0,0));
+					IWriter*		fs	= FS.w_open	("$screenshots$",buf); R_ASSERT(fs);
+					fs->w				(saved->GetBufferPointer(),saved->GetBufferSize());
+					FS.w_close			(fs);
+					_RELEASE			(saved);
+				}
 			}
 			break;
 		case IRender_interface::SM_FOR_LEVELMAP:
