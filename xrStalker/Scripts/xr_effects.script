@@ -136,6 +136,18 @@ function drop_npc_inventory(actor, npc, p)
     end
 end
 
+-----------------------------------------------------------------------------
+--[[
+send_tip(news_id:sender:sender_id)
+    1. news_id
+    2. sender*
+    3. sender_id*
+    * - not necessary
+--]]
+function send_tip(actor, npc, p)
+    news_manager.send_tip(actor, p[1], nil, p[2], nil, p[3])
+end
+
 --[[
 ƒать сталкеру небольшой пинок. Ќапример чтоб скинуть его с возвышени€.
 параметры: actor, npc, p[direction,bone,power,impulse,reverse=false]
