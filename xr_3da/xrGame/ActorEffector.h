@@ -86,7 +86,7 @@ public:
 public:
 								SndShockEffector	();
 								~SndShockEffector	();
-	void						Start				(int snd_length, float power);
+	void						Start				(float snd_length, float power);
 	void						Update				();
 
 	virtual		BOOL			Valid				();

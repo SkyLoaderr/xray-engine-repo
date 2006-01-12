@@ -392,18 +392,27 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 
 	m_character_name = *(CStringTable().translate(selected_char.Name()));
 	
-	if( !stricmp(m_character_name.c_str(),"GENERATE_NAME") ){
+	LPCSTR gen_name = "GENERATE_NAME_";
+	if( strstr(m_character_name.c_str(),gen_name) ){
 		//select name and lastname
-		static u32 name_cnt			= pSettings->r_u32("stalker_names","name_cnt");
-		static u32 last_name_cnt	= pSettings->r_u32("stalker_names","last_name_cnt");
+		LPCSTR subset				= m_character_name.c_str()+xr_strlen(gen_name);
+
+		string32					t1;
+		strconcat						(t1,"stalker_names_",subset);
+		static u32 name_cnt			= pSettings->r_u32(t1, "name_cnt");
+		static u32 last_name_cnt	= pSettings->r_u32(t1, "last_name_cnt");
 		
 		string512			S;
 		xr_string n			= "name_";
+		n					+= t1;
+		n					+= "_";
 		n					+= itoa(::Random.randI(name_cnt),S,10);
 		m_character_name	= *(CStringTable().translate(n.c_str()));
 		m_character_name	+= " ";
 
 		n					= "lname_";
+		n					+= t1;
+		n					+= "_";
 		n					+= itoa(::Random.randI(last_name_cnt),S,10);
 		m_character_name	+= *(CStringTable().translate(n.c_str()));
 

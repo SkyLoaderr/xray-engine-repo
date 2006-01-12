@@ -249,7 +249,7 @@ float SndShockEffector::GetFactor()
 	return f*m_life_time/8.0f;
 }
 
-void SndShockEffector::Start(int snd_length, float power)
+void SndShockEffector::Start(float snd_length, float power)
 {
 	m_snd_length = snd_length;
 
