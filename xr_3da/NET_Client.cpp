@@ -202,8 +202,9 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	net_Address_server = NULL;
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_server )); 
     R_CHK(net_Address_server->SetSP			(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP  ));
+	R_CHK(net_Address_server->AddComponent	(DPNA_KEY_HOSTNAME, ServerNameUNICODE, 2*u32(wcslen(ServerNameUNICODE) + 1), DPNA_DATATYPE_STRING ));
 	R_CHK(net_Address_server->AddComponent	(DPNA_KEY_PORT,	&psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
-    R_CHK(net_Address_server->AddComponent	(DPNA_KEY_HOSTNAME, ServerNameUNICODE, 2*u32(wcslen(ServerNameUNICODE) + 1), DPNA_DATATYPE_STRING ));
+    
 
 	// Debug
 	// dump_URL		("! cl ",	net_Address_device);
@@ -714,3 +715,39 @@ BOOL	IPureClient::net_IsSyncronised()
 {
 	return net_Syncronised;
 }
+
+#include <WINSOCK2.H>
+#include <Ws2tcpip.h>
+bool	IPureClient::GetServerAddress		(char* pAddress, DWORD* pPort)
+{
+	if (!pAddress || !pPort) return false;
+	pAddress[0] = 0; pAddress[1] = 0; pAddress[2] = 0; pAddress[3] = 0;
+	*pPort = 0;
+	if (!net_Address_server) return false;
+
+	WCHAR wstrHostname[ 2048 ] = {0};	
+	DWORD dwHostNameSize = sizeof(wstrHostname);
+	DWORD dwHostNameDataType = DPNA_DATATYPE_STRING;
+	CHK_DX(net_Address_server->GetComponentByName( DPNA_KEY_HOSTNAME, wstrHostname, &dwHostNameSize, &dwHostNameDataType ));
+
+	string2048				HostName;
+	CHK_DX(WideCharToMultiByte(CP_ACP,0,wstrHostname,-1,HostName,sizeof(HostName),0,0));
+
+	hostent* pHostEnt = gethostbyname(HostName);
+	char* localIP;
+	localIP = inet_ntoa (*(struct in_addr *)*pHostEnt->h_addr_list);
+	pHostEnt = gethostbyname(pHostEnt->h_name);
+	localIP = inet_ntoa (*(struct in_addr *)*pHostEnt->h_addr_list);
+	pAddress[0] = (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_net;
+	pAddress[1] = (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_host;
+	pAddress[2] = (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_lh;
+	pAddress[3] = (char)(*(struct in_addr *)*pHostEnt->h_addr_list).s_impno;
+
+	DWORD dwPort = 0;
+	DWORD dwPortSize = sizeof(dwPort);
+	DWORD dwPortDataType = DPNA_DATATYPE_DWORD;
+	CHK_DX(net_Address_server->GetComponentByName( DPNA_KEY_PORT, &dwPort, &dwPortSize, &dwPortDataType ));
+	*pPort = dwPort;
+
+	return true;
+};

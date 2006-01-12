@@ -571,7 +571,7 @@ bool			IPureServer::DisconnectAddress	(char* Address)
 	return true;
 };
 
-bool			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address)
+bool			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address, DWORD* pPort)
 {
 	if (!Address) return false;
 	Address[0] = 0; Address[1] = 0; Address[2] = 0; Address[3] = 0;
@@ -592,10 +592,19 @@ bool			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char*
 		Address[i] = char(atol(a[i]));
 	};
 
+	if (pPort != NULL)
+	{
+		DWORD dwPort = 0;
+		DWORD dwPortSize = sizeof(dwPort);
+		DWORD dwPortDataType = DPNA_DATATYPE_DWORD;
+		CHK_DX(pClientAddress->GetComponentByName( DPNA_KEY_PORT, &dwPort, &dwPortSize, &dwPortDataType ));
+		*pPort = dwPort;
+	};
+
 	return true;
 };
 
-bool			IPureServer::GetClientAddress	(ClientID ID, char* Address)
+bool			IPureServer::GetClientAddress	(ClientID ID, char* Address, DWORD* pPort)
 {
 	if (!Address) return false;
 	Address[0] = 0; Address[1] = 0; Address[2] = 0; Address[3] = 0;
@@ -603,7 +612,7 @@ bool			IPureServer::GetClientAddress	(ClientID ID, char* Address)
 	IDirectPlay8Address* pClAddr = NULL;
 	CHK_DX(NET->GetClientAddress(ID.value(), &pClAddr, 0));
 
-	return GetClientAddress(pClAddr, Address);
+	return GetClientAddress(pClAddr, Address, pPort);
 };
 
 IBannedClient*			IPureServer::GetBannedClient	(const char* Address)

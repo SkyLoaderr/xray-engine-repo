@@ -1057,14 +1057,42 @@ public:
 			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(it);
 			if (!l_pC) continue;
 			char Address[4];
-			Level().Server->GetClientAddress(l_pC->ID, Address);
-			Msg("%d : %s - %i.%i.%i.%i", it+1, l_pC->ps->getName(),
+			DWORD dwPort = 0;
+			Level().Server->GetClientAddress(l_pC->ID, Address, &dwPort);
+			Msg("%d : %s - %i.%i.%i.%i:%i", it+1, l_pC->ps->getName(),
 				unsigned char(Address[0]), 
 				unsigned char(Address[1]), 
 				unsigned char(Address[2]), 
-				unsigned char(Address[3]));
+				unsigned char(Address[3]),
+				dwPort);
 		};
 		Msg("------------------------");
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"List Players"); 
+	}
+};
+
+class CCC_GetServerAddress : public IConsole_Command {
+public:
+	CCC_GetServerAddress(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		char sAddress[4];
+		DWORD dwPort = 0;
+		
+		
+		Level().GetServerAddress(sAddress, &dwPort);
+		
+
+		Msg("Server Address - %i.%i.%i.%i:%i",
+			unsigned char(sAddress[0]), 
+			unsigned char(sAddress[1]), 
+			unsigned char(sAddress[2]), 
+			unsigned char(sAddress[3]),
+			dwPort);
 	};
 
 	virtual void	Info	(TInfo& I)		
@@ -2279,4 +2307,5 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"sv_artefact_spawn_force",		&g_SV_Force_Artefact_Spawn, 0, 1);
 #endif
 	CMD4(CCC_Integer,	"cl_leave_tdemo",		&g_bLeaveTDemo, 0, 1);
+	CMD1(CCC_GetServerAddress,	"get_server_address");		
 }

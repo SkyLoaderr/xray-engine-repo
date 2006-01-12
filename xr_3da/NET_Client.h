@@ -76,6 +76,8 @@ public:
 	BOOL					net_HasBandwidth		();
 	void					ClearStatistic			();
 	IClientStatistic		GetStatistic			() const {return  net_Statistic; }
+
+			bool			GetServerAddress		(char* pAddress, DWORD* pPort);
 	
 	// time management
 	IC u32					timeServer				()	{ return TimeGlobal(device_timer) + net_TimeDelta + net_TimeDelta_User; }
