@@ -124,10 +124,6 @@ void CHelicopter::Load(LPCSTR section)
 
 //lighting & sounds
 	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
-//	m_explode_particle					= pSettings->r_string(section,"explode_particle");
-
-//	shared_str expl_snd					= pSettings->r_string	(section,"explode_sound");
-//	m_explodeSound.create				(TRUE,*expl_snd);
 
 	m_light_range						= pSettings->r_float(section,"light_range");
 	m_light_brightness					= pSettings->r_float(section,"light_brightness");
@@ -315,7 +311,8 @@ void CHelicopter::MoveStep()
 		dir.getHP(desired_H, desired_P);
 		float speed_ = _min(m_movement.GetSpeedInDestPoint(), GetMaxVelocity() );
 
-		if(angle_difference(m_movement.currPathH,desired_H)>PI_DIV_3)
+		static float ang = pSettings->r_float	(cNameSect(),"magic_angle");
+		if(angle_difference(m_movement.currPathH,desired_H)>ang)
 			m_movement.curLinearAcc = -m_movement.LinearAcc_bk;
 		else
 			m_movement.curLinearAcc = GetCurrAcc(	m_movement.curLinearSpeed,
