@@ -2274,6 +2274,9 @@
 						RelativePath=".\Config\models\objects\box_wood_01.ltx">
 					</File>
 					<File
+						RelativePath=".\config\models\objects\door_locker.ltx">
+					</File>
+					<File
 						RelativePath=".\config\models\objects\military_wall_brick_in.ltx">
 					</File>
 				</Filter>
