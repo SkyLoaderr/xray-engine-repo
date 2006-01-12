@@ -272,24 +272,23 @@ void CIKLimb::GoalMatrix(Matrix &M,SCalculateData* cd)
 }
 void CIKLimb::CalculateBones(SCalculateData* cd)
 {
-		VERIFY(cd->m_angles);
-		CKinematics *K=cd->m_K;
-		K->LL_GetBoneInstance(m_bones[0]).set_callback(bctPhysics,BonesCallback0,cd);
-		K->LL_GetBoneInstance(m_bones[1]).set_callback(bctPhysics,BonesCallback1,cd);
-		K->LL_GetBoneInstance(m_bones[2]).set_callback(bctPhysics,BonesCallback2,cd);
-		K->LL_GetBoneInstance(m_bones[0]).Callback_overwrite=TRUE;
-		K->LL_GetBoneInstance(m_bones[1]).Callback_overwrite=TRUE;
-		K->LL_GetBoneInstance(m_bones[2]).Callback_overwrite=TRUE;
-		CBoneData &BD=K->LL_GetData(m_bones[0]);
-		BD.Calculate(K,&K->LL_GetTransform(BD.GetParentID()));
+	VERIFY(cd->m_angles);
+	CKinematics *K=cd->m_K;
+	K->LL_GetBoneInstance(m_bones[0]).set_callback(bctPhysics,BonesCallback0,cd);
+	K->LL_GetBoneInstance(m_bones[1]).set_callback(bctPhysics,BonesCallback1,cd);
+	K->LL_GetBoneInstance(m_bones[2]).set_callback(bctPhysics,BonesCallback2,cd);
+	K->LL_GetBoneInstance(m_bones[0]).Callback_overwrite=TRUE;
+	K->LL_GetBoneInstance(m_bones[1]).Callback_overwrite=TRUE;
+	K->LL_GetBoneInstance(m_bones[2]).Callback_overwrite=TRUE;
+	CBoneData &BD=K->LL_GetData(m_bones[0]);
+	K->Bone_Calculate(&BD,&K->LL_GetTransform(BD.GetParentID()));
 
-		K->LL_GetBoneInstance(m_bones[0]).set_callback(bctPhysics,NULL,NULL);
-		K->LL_GetBoneInstance(m_bones[1]).set_callback(bctPhysics,NULL,NULL);
-		K->LL_GetBoneInstance(m_bones[2]).set_callback(bctPhysics,NULL,NULL);
-		K->LL_GetBoneInstance(m_bones[0]).Callback_overwrite=FALSE;
-		K->LL_GetBoneInstance(m_bones[1]).Callback_overwrite=FALSE;
-		K->LL_GetBoneInstance(m_bones[2]).Callback_overwrite=FALSE;
-
+	K->LL_GetBoneInstance(m_bones[0]).set_callback(bctPhysics,NULL,NULL);
+	K->LL_GetBoneInstance(m_bones[1]).set_callback(bctPhysics,NULL,NULL);
+	K->LL_GetBoneInstance(m_bones[2]).set_callback(bctPhysics,NULL,NULL);
+	K->LL_GetBoneInstance(m_bones[0]).Callback_overwrite=FALSE;
+	K->LL_GetBoneInstance(m_bones[1]).Callback_overwrite=FALSE;
+	K->LL_GetBoneInstance(m_bones[2]).Callback_overwrite=FALSE;
 }
 
 void 	CIKLimb::BonesCallback0				(CBoneInstance* B)
