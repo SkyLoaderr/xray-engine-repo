@@ -2,6 +2,8 @@
 #include "net_client.h"
 #include "net_messages.h"
 
+#define BASE_PORT		5445
+
 void	dump_URL	(LPCSTR p, IDirectPlay8Address* A)
 {
 	string256	aaaa;
@@ -152,7 +154,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	}
 
 	
-	int				psNET_Port	= 5445;
+	int				psNET_Port	= BASE_PORT;
 	if (strstr(options, "port="))
 	{
 		string64	portstr;
@@ -160,7 +162,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		if (strchr(portstr,'/'))	*strchr(portstr,'/') = 0;
 		psNET_Port = atol(portstr);
 	};
-	Msg("* Client connect on port %d\n",psNET_Port);
+//	Msg("* Client connect on port %d\n",psNET_Port);
 /*
 	string4096				session_name;
 	string4096				session_options = "";
@@ -190,10 +192,8 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	
     // Create our IDirectPlay8Address Device Address, --- Set the SP for our Device Address
 	net_Address_device	= NULL;
-//	u32 c_port			= psNET_Port+1;
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Address,NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Address,(LPVOID*) &net_Address_device )); 
-    R_CHK(net_Address_device->SetSP(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP ));
-//	R_CHK(net_Address_device->AddComponent	(DPNA_KEY_PORT, &c_port, sizeof(c_port), DPNA_DATATYPE_DWORD ));
+    R_CHK(net_Address_device->SetSP(bSimulator? &CLSID_NETWORKSIMULATOR_DP8SP_TCPIP : &CLSID_DP8SP_TCPIP ));	
 	
     // Create our IDirectPlay8Address Server Address, --- Set the SP for our Server Address
 	WCHAR	ServerNameUNICODE	[256];
@@ -237,16 +237,30 @@ BOOL IPureClient::Connect	(LPCSTR options)
 			dpAppDesc.pwszPassword	=	SessionPasswordUNICODE;
 		};
 
-		HRESULT res = NET->Connect(
-			&dpAppDesc,				// pdnAppDesc
-			net_Address_server,		// pHostAddr
-			net_Address_device,		// pDeviceInfo
-			NULL,					// pdnSecurity
-			NULL,					// pdnCredentials
-			NULL, 0,				// pvUserConnectData/Size
-			NULL,					// pvAsyncContext
-			NULL,					// pvAsyncHandle
-			DPNCONNECT_SYNC);		// dwFlags
+		u32 c_port			= psNET_Port+1;
+		HRESULT res = S_FALSE;
+		while (res != S_OK && c_port <=BASE_PORT + 100)
+		{
+			R_CHK(net_Address_device->AddComponent	(DPNA_KEY_PORT, &c_port, sizeof(c_port), DPNA_DATATYPE_DWORD ));
+			res = NET->Connect(
+				&dpAppDesc,				// pdnAppDesc
+				net_Address_server,		// pHostAddr
+				net_Address_device,		// pDeviceInfo
+				NULL,					// pdnSecurity
+				NULL,					// pdnCredentials
+				NULL, 0,				// pvUserConnectData/Size
+				NULL,					// pvAsyncContext
+				NULL,					// pvAsyncHandle
+				DPNCONNECT_SYNC);		// dwFlags
+			if (res != S_OK)
+			{
+				//			xr_string res = Debug.error2string(HostSuccess);
+#ifdef DEBUG
+				Msg("IPureClient : port %d is BUSY!", c_port);
+#endif
+				c_port++;
+			};
+		};
 
 //		R_CHK(res);
 		if (res != S_OK) return FALSE;
@@ -277,18 +291,35 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		strcat	(EnumData, "ToConnect");
 		DWORD	EnumSize = xr_strlen(EnumData) + 1;
 		// We now have the host address so lets enum
-		R_CHK(NET->EnumHosts(
-			&dpAppDesc,				// pApplicationDesc
-			net_Address_server,		// pdpaddrHost
-			net_Address_device,		// pdpaddrDeviceInfo
-			EnumData, EnumSize,		// pvUserEnumData, size
-			2,						// dwEnumCount
-			0,						// dwRetryInterval
-			1500,					// dwTimeOut
-			NULL,					// pvUserContext
-			NULL,					// pAsyncHandle
-			DPNENUMHOSTS_SYNC)		// dwFlags
-			);
+		u32 c_port			= BASE_PORT;
+		HRESULT res = S_FALSE;
+		while (res != S_OK && c_port <=BASE_PORT + 100)
+		{
+			R_CHK(net_Address_device->AddComponent	(DPNA_KEY_PORT, &c_port, sizeof(c_port), DPNA_DATATYPE_DWORD ));
+
+			res = NET->EnumHosts(
+				&dpAppDesc,				// pApplicationDesc
+				net_Address_server,		// pdpaddrHost
+				net_Address_device,		// pdpaddrDeviceInfo
+				EnumData, EnumSize,		// pvUserEnumData, size
+				2,						// dwEnumCount
+				0,						// dwRetryInterval
+				1500,					// dwTimeOut
+				NULL,					// pvUserContext
+				NULL,					// pAsyncHandle
+				DPNENUMHOSTS_SYNC		// dwFlags
+				);
+			if (res != S_OK)
+			{
+				//			xr_string res = Debug.error2string(HostSuccess);
+#ifdef DEBUG
+				Msg("! IPureClient : port %d is BUSY!", c_port);
+#endif
+				c_port++;
+			};
+
+		};
+
 		
 		// ****** Connection
 		IDirectPlay8Address*        pHostAddress = NULL;
@@ -309,7 +340,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		
 		R_CHK(net_Hosts.front().pHostAddress->Duplicate(&pHostAddress ) );
 		// dump_URL		("! c2s ",	pHostAddress);
-		HRESULT res = NET->Connect(
+		res = NET->Connect(
 			&dpAppDesc,				// pdnAppDesc
 			pHostAddress,			// pHostAddr
 			net_Address_device,		// pDeviceInfo

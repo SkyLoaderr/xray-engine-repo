@@ -11,7 +11,7 @@ LPCSTR nameBanned	= "banned.ltx";
 
 XRNETSERVER_API int		psNET_ServerUpdate	= 30;		// FPS
 XRNETSERVER_API int		psNET_ServerPending	= 2;
-//XRNETSERVER_API int		psNET_Port			= 5445;
+
 
 void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 {
@@ -51,7 +51,6 @@ IPureServer::IPureServer	(CTimer* timer)
 	device_timer			= timer;
 	stats.clear				();
 	stats.dwSendTime		= TimeGlobal(device_timer);
-	psNET_Port				= 5445;
 	SV_Client = NULL;
 }
 
@@ -231,8 +230,10 @@ BOOL IPureServer::Connect(LPCSTR options)
 		if (HostSuccess != S_OK)
 		{
 //			xr_string res = Debug.error2string(HostSuccess);
-			Msg("xrServer : trying port %d - FAILED!\n", psNET_Port++);
-//			psNET_Port++;
+#ifdef DEBUG
+				Msg("! IPureServer : port %d is BUSY!", psNET_Port);
+#endif	
+				psNET_Port++;
 		};
 	};
 	
