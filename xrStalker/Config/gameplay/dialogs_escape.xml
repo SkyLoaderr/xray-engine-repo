@@ -1410,6 +1410,72 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="esc_provodnik_give_info">
+        <dont_has_info>esc_find_doctor_start</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>esc_provodnik_give_info_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>esc_provodnik_give_info_1</text>
+                <next>12</next>
+            </phrase>
+            <phrase id="12">
+                <text>esc_provodnik_give_info_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>esc_provodnik_give_info_121</text>
+                <next>1211</next>
+            </phrase>
+            <phrase id="1211">
+                <text>esc_provodnik_give_info_1211</text>
+                <next>12111</next>
+            </phrase>
+            <phrase id="12111">
+                <text>esc_provodnik_give_info_12111</text>
+                <next>121111</next>
+            </phrase>
+            <phrase id="121111">
+                <text>esc_provodnik_give_info_121111</text>
+                <next>1211111</next>
+            </phrase>
+            <phrase id="1211111">
+                <text>esc_provodnik_give_info_1211111</text>
+                <next>12111111</next>
+            </phrase>
+            <phrase id="12111111">
+                <text>esc_provodnik_give_info_12111111</text>
+                <give_info>esc_find_doctor_start</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_provodnik_start">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <dont_has_info>esc_find_doctor_start</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="21">
+                <text>esc_provodnik_start_21</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <has_info>esc_find_doctor_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>esc_provodnik_start_11</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="esc_bridge_soldiers_pay">
         <dont_has_info>esc_bridge_pass_on</dont_has_info>
         <phrase_list>
@@ -1466,72 +1532,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="esc_provodnik_give_info">
-        <dont_has_info>esc_find_doctor_start</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>esc_provodnik_give_info_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>esc_provodnik_give_info_1</text>
-                <next>12</next>
-            </phrase>
-            <phrase id="12">
-                <text>esc_provodnik_give_info_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="121">
-                <text>esc_provodnik_give_info_121</text>
-                <next>1211</next>
-            </phrase>
-            <phrase id="1211">
-                <text>esc_provodnik_give_info_1211</text>
-                <next>12111</next>
-            </phrase>
-            <phrase id="12111">
-                <text>esc_provodnik_give_info_12111</text>
-                <next>121111</next>
-            </phrase>
-            <phrase id="121111">
-                <text>esc_provodnik_give_info_121111</text>
-                <next>1211111</next>
-            </phrase>
-            <phrase id="1211111">
-                <text>esc_provodnik_give_info_1211111</text>
-                <next>12111111</next>
-            </phrase>
-            <phrase id="12111111">
-                <text>esc_provodnik_give_info_12111111</text>
-                <give_info>esc_find_doctor_start</give_info>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="esc_provodnik_start">
-        <phrase_list>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>esc_find_doctor_start</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="21">
-                <text>esc_provodnik_start_21</text>
-            </phrase>
-            <phrase id="2">
-                <text></text>
-                <has_info>esc_find_doctor_start</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="11">
-                <text>esc_provodnik_start_11</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="esc_stalker_talk_level" priority="2">
         <phrase_list>
             <phrase id="21">
@@ -1560,63 +1560,9 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_factory_assault_start">
-        <phrase_list>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_start_2</text>
-            </phrase>
-            <phrase id="41">
-                <text>escape_factory_assault_start_41</text>
-            </phrase>
-            <phrase id="4">
-                <text></text>
-                <has_info>esc_kill_bandits_quest_kill</has_info>
-                <next>41</next>
-            </phrase>
-            <phrase id="51">
-                <text>escape_factory_assault_start_51</text>
-            </phrase>
-            <phrase id="5">
-                <text>escape_factory_assault_start_5</text>
-                <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
-                <has_info>esc_bandits_assault</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_factory_assault_start_31</text>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <dont_has_info>esc_bandits_assault</dont_has_info>
-                <has_info>escape_factory_assault_say_hello</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="61">
-                <text>escape_factory_assault_start_61</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text></text>
-                <dont_has_info>esc_bandits_assault</dont_has_info>
-                <has_info>esc_kill_bandits_quest_kill</has_info>
-                <next>61</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_factory_assault_attack">
         <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
+        <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
         <phrase_list>
             <phrase id="2">
                 <text>escape_factory_assault_attack_2</text>
@@ -1654,6 +1600,63 @@
             <phrase id="0">
                 <text>escape_factory_assault_attack_now_0</text>
                 <give_info>esc_bandits_start</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_start">
+        <phrase_list>
+            <phrase id="3">
+                <text></text>
+                <dont_has_info>esc_bandits_assault</dont_has_info>
+                <has_info>escape_factory_assault_say_hello</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_factory_assault_start_5</text>
+                <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
+                <has_info>esc_bandits_assault</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>escape_factory_assault_start_51</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="41">
+                <text>escape_factory_assault_start_41</text>
+            </phrase>
+            <phrase id="4">
+                <text></text>
+                <has_info>esc_kill_bandits_quest_kill</has_info>
+                <has_info>esc_bandits_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_factory_assault_start_31</text>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_start_2</text>
+            </phrase>
+            <phrase id="61">
+                <text>escape_factory_assault_start_61</text>
+            </phrase>
+            <phrase id="6">
+                <text></text>
+                <dont_has_info>esc_bandits_assault</dont_has_info>
+                <has_info>esc_kill_bandits_quest_kill</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
+                <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
+                <next>2</next>
             </phrase>
         </phrase_list>
     </dialog>
