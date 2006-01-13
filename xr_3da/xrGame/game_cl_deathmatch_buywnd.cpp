@@ -17,6 +17,8 @@ static	u16 SlotsToCheck [] = {
 		RIFLE_SLOT		,		// 2
 };
 
+#define UNBUYABLESLOT		20
+
 s16	game_cl_Deathmatch::GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID)
 {
 	R_ASSERT2(SlotID != 0xff && ItemID != 0xff, "Bad Buy Manu Item");
@@ -87,7 +89,9 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	PRESET_ITEMS_it		Et = pCurPresetItems->end();
 	for ( ; It != Et; ++It) 
 	{
-		TmpPresetItems.push_back(*It);
+		s16 ID = *It;
+		if (((ID & 0xff00) >> 0x08) != (UNBUYABLESLOT-1))
+			TmpPresetItems.push_back(ID);
 	};
 	//---------------------------------------------------------
 	ClearBuyMenu			();
@@ -152,6 +156,11 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 	u8 SlotID, ItemID;
 	pCurBuyMenu->GetWeaponIndexByName(*pItem->object().cNameSect(), SlotID, ItemID);
 	if (SlotID == 0xff || ItemID == 0xff) return;
+	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
+	if (pAmmo)
+	{
+		if (pAmmo->m_boxCurr != pAmmo->m_boxSize) return;
+	}
 	//-----------------------------------------------------
 	pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
 	//-----------------------------------------------------

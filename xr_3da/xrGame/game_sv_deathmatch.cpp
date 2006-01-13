@@ -16,6 +16,7 @@
 #include "weapon.h"
 
 #define DELAYED_ROUND_TIME	7000
+#define UNBUYABLESLOT		20
 
 game_sv_Deathmatch::game_sv_Deathmatch()
 {
@@ -828,6 +829,11 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 		if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
 
 		found = true;
+		CWeaponAmmo* pAmmo = 	smart_cast<CWeaponAmmo*>(pItem);
+		if (pAmmo)
+		{
+			if (pAmmo->m_boxCurr != pAmmo->m_boxSize) break;
+		};
 		pItemsDesired->erase(pItemsDesired->begin()+it);
 		//----- Check for Addon Changes ---------------------
 		CWeapon		*pWeapon	=	smart_cast<CWeapon*>(pItem);
@@ -984,7 +990,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 
 	pTeamWpnList->clear();
 
-	for (int i = 1; i < 20; ++i)
+	for (int i = 1; i < UNBUYABLESLOT; ++i)
 	{
 		// Имя поля
 		string16			wpnSection;	
@@ -1008,7 +1014,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 			WeaponDataStruct	NewWpnData;
 
 			NewWpnData.SlotItem_ID = (s16(i-1) << 8) | s16(j);
-			NewWpnData.WeaponName = wpnSingleName;			
+			NewWpnData.WeaponName = wpnSingleName;
 			NewWpnData.Cost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName);
 
 			std::strcat(wpnSingleName, "_cost");
@@ -1018,6 +1024,23 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 			pTeamWpnList->push_back(NewWpnData);
 		}
 	}
+	//-----------------------------------------------------------
+	u32 j=0;
+	CInifile::Sect sect = pSettings->r_section(m_sBaseWeaponCostSection);
+	for (CInifile::SectIt it = sect.begin(); it != sect.end(); it++)
+	{
+		string1024	wpnSingleName;
+		std::strcpy(wpnSingleName, (*it).first.c_str());
+		WeaponDataStruct* pWpnS = NULL;
+		if (GetTeamItem_ByName(&pWpnS, pTeamWpnList, wpnSingleName)) continue;
+				
+		WeaponDataStruct	NewWpnData;
+		NewWpnData.SlotItem_ID = ((s16(UNBUYABLESLOT-1)) << 0x08) | s16(j++);
+		NewWpnData.WeaponName = wpnSingleName;
+		NewWpnData.Cost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName);
+
+		pTeamWpnList->push_back(NewWpnData);
+	};
 };
 
 void	game_sv_Deathmatch::LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins)
