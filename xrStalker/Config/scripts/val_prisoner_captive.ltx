@@ -47,12 +47,12 @@ use_wpn         = true
 [walker@wander]
 path_walk                           = captive_cage_walk
 path_look                           = captive_cage_look
-meet                                = meet@ignore
 on_info                             = {+val_prisoner_sit} walker@sit
 on_info2                            = {+val_prisoner_door_unlocked} walker@outside
 on_actor_in_zone                    = val_prisoner_window_zone | walker@near_window
 on_actor_in_zone2                   = val_prisoner_near_door_zone | walker@near_door %+val_prisoner_near_door%
 on_actor_dist_ge                    = 30 | walker@actor_far
+meet                                = meet@ignore
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -62,8 +62,8 @@ combat_ignore_keep_when_attacked    = true
 [walker@actor_far]
 path_walk                           = captive_sit_walk
 path_look                           = captive_sit_look
-meet                                = meet@ignore
 on_actor_dist_le                    = 30 | walker@wander
+meet                                = meet@ignore
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -73,11 +73,11 @@ combat_ignore_keep_when_attacked    = true
 [walker@near_window]
 path_walk                           = captive_window_walk
 path_look                           = captive_window_look
-meet                                = meet@main
 on_info                             = {+val_prisoner_sit} walker@sit
 on_info2                            = {+val_prisoner_door_unlocked} walker@outside
 on_actor_not_in_zone                = val_prisoner_window_zone | walker@wander
 on_actor_in_zone                    = val_prisoner_near_door_zone | walker@near_door %+val_prisoner_near_door%
+meet                                = meet@main
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -87,9 +87,9 @@ combat_ignore_keep_when_attacked    = true
 [walker@sit]
 path_walk                           = captive_sit_walk
 path_look                           = captive_sit_look
-meet                                = meet@ignore
 on_info                             = {+val_prisoner_door_unlocked} walker@outside
 on_actor_in_zone                    = val_prisoner_near_door_zone | walker@near_door %+val_prisoner_near_door%
+meet                                = meet@ignore
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -99,12 +99,12 @@ combat_ignore_keep_when_attacked    = true
 [walker@near_door]
 path_walk                           = captive_near_door_walk
 path_look                           = captive_near_door_look
-meet                                = meet@main
 def_state_moving1                   = run
 def_state_moving2                   = run
 def_state_moving3                   = run
 on_info                             = {+val_prisoner_door_unlocked} walker@outside %-val_prisoner_near_door%
 on_actor_not_in_zone                = val_prisoner_near_door_zone | {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
+meet                                = meet@main
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -114,9 +114,9 @@ combat_ignore_keep_when_attacked    = true
 [walker@outside]
 path_walk                           = captive_outside_door_walk
 path_look                           = captive_outside_door_look
-meet                                = meet@ignore
 on_signal                           = arrived | remark@outside
 on_info                             = {-val_prisoner_door_unlocked} walker@sit
+meet                                = meet@ignore
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -124,12 +124,11 @@ combat_ignore_keep_when_attacked    = true
 ; благодарим игрока
 ;--------------------------------------------------------------------------
 [remark@outside]
-no_move                             = true
 anim                                = wait
-meet                                = meet@main
 on_actor_dist_ge_nvis               = 30 | %+val_prisoner_free% ;walker@escape
 ;on_info                             = {-val_prisoner_door_unlocked} walker@sit
 ;on_info                             = {+val_prisoner_raid} walker@escape
+meet                                = meet@main
 combat_ignore_cond                  = always ;{=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
@@ -138,9 +137,9 @@ combat_ignore_cond                  = always ;{=check_fighting(403)}
 [walker@escape]
 path_walk                           = captive_escape_walk
 path_look                           = captive_escape_look
-meet                                = meet@ignore
 def_state_moving1                   = assault
 def_state_moving2                   = assault
 def_state_moving3                   = assault
 on_signal                           = arrived | nil
+meet                                = meet@ignore
 combat_ignore_cond                  = {=check_fighting(403)}
