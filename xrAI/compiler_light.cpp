@@ -153,7 +153,6 @@ void	xrLight			()
 		Threads.start(xr_new<LightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
-	*/
 
 	// Smooth
 	Status("Smoothing lighting...");
@@ -177,4 +176,5 @@ void	xrLight			()
 			clamp(Dest.LightLevel,0.f,1.f);
 		}
 	}
+	*/
 }
