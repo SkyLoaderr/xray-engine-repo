@@ -341,8 +341,10 @@ function action_follow:free ()
     local gulag = xr_gulag.get_npc_gulag (self.object)
 
     if gulag ~= nil then
-       printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
-       xr_gulag.resetJob (self.object)
+       if self.st.dont_change_job == false then
+          printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM GULAG", self.object:name ()) 
+          xr_gulag.resetJob (self.object)
+       end   
     else
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC", self.object:name ()) 
@@ -434,4 +436,5 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	if st.sound_theme == "silent" then st.sound_theme = nil end
     st.state_if_leader_in_meet = utils.cfg_get_string (ini, section, "state_if_leader_in_meet", npc, false, "", "idle")
     st.stub_for_corpse = utils.cfg_get_bool (ini, section, "stub_for_corpse", npc, false, false)
+    st.dont_change_job = utils.cfg_get_bool (ini, section, "dont_change_job", npc, false, false)
 end
