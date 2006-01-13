@@ -122,7 +122,8 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_bSynchronization			= false;
 #endif	
 	//---------------------------------------------------------
-	pStatGraph = NULL;
+	pStatGraphR = NULL;
+	pStatGraphS = NULL;
 	//---------------------------------------------------------
 	pObjects4CrPr.clear();
 	pActors4CrPr.clear();
@@ -229,7 +230,8 @@ CLevel::~CLevel()
 	//destroy bullet manager
 	xr_delete					(m_pBulletManager);
 	//-----------------------------------------------------------
-	xr_delete					(pStatGraph);
+	xr_delete					(pStatGraphR);
+	xr_delete					(pStatGraphS);
 
 	//-----------------------------------------------------------
 	xr_delete					(m_ph_commander);
@@ -499,6 +501,15 @@ void CLevel::OnFrame	()
 	// deffer LUA-GC-STEP
 	if (g_mt_config.test(mtLUA_GC))		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CLevel::script_gc));
 	else								script_gc	()	;
+	//-----------------------------------------------------
+	if (pStatGraphR)
+	{	
+		static	float fRPC_Mult = 10.0f;
+		static	float fRPS_Mult = 1.0f;
+
+		pStatGraphR->AppendItem(float(m_dwRPC)*fRPC_Mult, 0xffff0000, 1);
+		pStatGraphR->AppendItem(float(m_dwRPS)*fRPS_Mult, 0xff00ff00, 0);
+	};
 }
 
 int		psLUA_GCSTEP					= 10			;

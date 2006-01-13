@@ -73,8 +73,14 @@ protected:
 	EVENT						eChangeTrack;
 	EVENT						eEnvironment;
 	EVENT						eEntitySpawn;
-
-	CStatGraph					*pStatGraph;
+	//---------------------------------------------
+	CStatGraph					*pStatGraphS;
+	u32							m_dwSPC;	//SendedPacketsCount
+	u32							m_dwSPS;	//SendedPacketsSize
+	CStatGraph					*pStatGraphR;
+	u32							m_dwRPC;	//ReceivedPacketsCount
+	u32							m_dwRPS;	//ReceivedPacketsSize
+	//---------------------------------------------
 	
 public:
 #ifdef DEBUG

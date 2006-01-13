@@ -14,9 +14,16 @@ void CLevel::ClientReceive()
 	Demo_StartFrame();
 
 	Demo_Update();
-    
+
+	m_dwRPC = 0;
+	m_dwRPS = 0;
+
 	for (NET_Packet* P = net_msg_Retreive(); P; P=net_msg_Retreive())
 	{
+		//-----------------------------------------------------
+		m_dwRPC++;
+		m_dwRPS += P->B.count;
+		//-----------------------------------------------------
 		u16			m_type;
 		u16			ID;
 		P->r_begin	(m_type);
@@ -104,12 +111,6 @@ void CLevel::ClientReceive()
 				O->CrPr_SetActivationStep(u32(ph_world->m_steps_num) - NumSteps);
 				AddActor_To_Actors4CrPr(O);
 
-				if (pStatGraph)
-				{
-					pStatGraph->AppendItem(float(Ping), 0xff00ff00, 2);
-					pStatGraph->AppendItem(float(dTime), 0xffffff00, 1);
-					pStatGraph->AppendItem(float(NumSteps*20), 0xffff00ff, 0);
-				}
 			}break;
 		//------------------------------------------------
 		case M_CL_INPUT:
@@ -264,8 +265,6 @@ void CLevel::ClientReceive()
 
 //	if (!g_bDebugEvents) ProcessGameSpawns();
 }
-
-
 
 void				CLevel::OnMessage				(void* data, u32 size)
 {	

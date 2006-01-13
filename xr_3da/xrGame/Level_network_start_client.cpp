@@ -104,6 +104,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 
 	pApp->LoadEnd				(); 
 */
+	
 	return FALSE;
 }
 
@@ -205,5 +206,32 @@ bool	CLevel::net_start_client6				()
 	}
 
 	pApp->LoadEnd					(); 
+/*
+	if (!pStatGraphR)
+	{
+		pStatGraphR = xr_new<CStatGraph>();
+		pStatGraphR->SetRect(0, 0, Device.dwWidth, 100, 0xff000000, 0xff000000);
+
+		pStatGraphR->SetMinMax(-0.0f, 100.0f, Device.dwWidth/4);
+		pStatGraphR->SetGrid(0, 0.0f, 10, 10.0f, 0xff808080, 0xffffffff);
+
+		pStatGraphR->SetStyle(CStatGraph::stBar);
+		pStatGraphR->AppendSubGraph(CStatGraph::stBar);
+		pStatGraphR->AppendSubGraph(CStatGraph::stBarLine);
+	};
+
+	if (!pStatGraphS)
+	{
+		pStatGraphS = xr_new<CStatGraph>();
+		pStatGraphS->SetRect(0, 110, Device.dwWidth, 100, 0xff000000, 0xff000000);
+
+		pStatGraphS->SetMinMax(-0.0f, 100.0f, Device.dwWidth/4);
+		pStatGraphS->SetGrid(0, 0.0f, 10, 10.0f, 0xff808080, 0xffffffff);
+
+		pStatGraphS->SetStyle(CStatGraph::stBar);
+		pStatGraphS->AppendSubGraph(CStatGraph::stBar);
+		pStatGraphS->AppendSubGraph(CStatGraph::stBarLine);
+	};
+*/
 	return true;
 }
