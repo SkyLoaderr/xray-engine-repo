@@ -362,7 +362,7 @@
 
     	<panic_threshold>0.0</panic_threshold>
 
-		<visual>actors\killer\stalker_ki_temp</visual>		
+		<visual>actors\killer\stalker_ki_temp2</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
