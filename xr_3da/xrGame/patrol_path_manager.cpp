@@ -18,6 +18,7 @@
 #include "script_entity_space.h"
 #include "script_callback_ex.h"
 #include "game_object_space.h"
+#include "level_graph.h"
 
 #ifdef DEBUG
 #	include "space_restriction_manager.h"
@@ -131,6 +132,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 			default			: NODEFAULT;
 		}
 		VERIFY3				(vertex || show_restrictions(m_object),*m_path_name,*m_game_object->cName());
+		VERIFY3				(ai().level_graph().valid_vertex_id(vertex->data().level_vertex_id()),*m_path_name,*m_game_object->cName());
 
 		if (!m_path->vertex(m_prev_point_index))
 			m_prev_point_index	= vertex->vertex_id();

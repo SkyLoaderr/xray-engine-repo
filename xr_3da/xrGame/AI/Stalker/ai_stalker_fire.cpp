@@ -191,7 +191,7 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		else
 			sound().play	(eStalkerSoundInjuringByFriend);
 		
-		if (pHDS->bone() != BI_NONE) {
+		if (animation().script_animations().empty() && (pHDS->bone() != BI_NONE)) {
 			Fvector					D;
 			float					yaw, pitch;
 			D.getHP					(yaw,pitch);

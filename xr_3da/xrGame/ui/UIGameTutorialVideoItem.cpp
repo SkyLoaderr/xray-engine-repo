@@ -31,7 +31,7 @@ CUISequenceVideoItem::~CUISequenceVideoItem()
 
 bool CUISequenceVideoItem::IsPlaying()
 {
-	return m_flags.test		(etiPlaying);
+	return					(!!m_flags.test(etiPlaying));
 }
 
 void CUISequenceVideoItem::Load(CUIXml* xml, int idx)

@@ -26,8 +26,12 @@ public:
 
 	IC		void			setup				(const u32 &start_vertex_id, const u32 &dest_vertex_id)
 	{
+		VERIFY				(ai().level_graph().valid_vertex_id(start_vertex_id));
 		m_start_vertex_id	= start_vertex_id;
+		
+		VERIFY				(ai().level_graph().valid_vertex_id(dest_vertex_id));
 		m_dest_vertex_id	= dest_vertex_id;
+
 		m_object->m_wait_for_distributed_computation	= true;
 		Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CLevelPathBuilder::process));
 	}
