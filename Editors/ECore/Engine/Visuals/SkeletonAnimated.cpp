@@ -184,7 +184,7 @@ CBlend*	CKinematicsAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bM
 	if (bMixing)	LL_FadeCycle	(part,blendFalloff);
 	else			LL_CloseCycle	(part);
 	CPartDef& P	=	(*m_Partition)[part];
-	CBlend*	B	=	IBlend_Create();
+	CBlend*	B	=	IBlend_Create	();
 
 	for (u32 i=0; i<P.bones.size(); i++)
 		Bone_Motion_Start_IM	((*bones)[P.bones[i]],B);
