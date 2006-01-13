@@ -357,7 +357,7 @@
 			<options_item entry="mm_net_con_publicserver" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_publicserver</text>
 		</check_public_server>
-		<check_map_rotation x="18" y="65" width="155" height="23">
+		<check_map_rotation x="18" y="65" width="110" height="23">
 			<options_item entry="mm_net_con_maprotation" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_mapratation</text>
 		</check_map_rotation>
