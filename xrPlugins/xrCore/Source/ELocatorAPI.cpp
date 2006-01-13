@@ -149,19 +149,6 @@ BOOL CLocatorAPI::exist			(char* fn, const char* path, const char* name, const c
 }
 
 
-bool PatternMatch(LPCSTR s, LPCSTR mask)
-{
-	LPCSTR cp=0;
-	LPCSTR mp=0;
-  	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
-  	for (;;) {
-        if (!*s) { while (*mask=='*') mask++; return !*mask; }
-        if (*mask=='*') { if (!*++mask) return 1; mp=mask; cp=s+1; continue; }
-        if (*mask==*s||*mask=='?') { mask++, s++; continue; }
-        mask=mp; s=cp++;
-	}
-}
-  
 typedef void	(__stdcall * TOnFind)	(_finddata_t&, void*);
 void Recurse	(LPCSTR, bool, TOnFind, void*);
 void ProcessOne	(LPCSTR path, _finddata_t& F, bool root_only, TOnFind on_find_cb, void* data)

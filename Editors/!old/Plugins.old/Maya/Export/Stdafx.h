@@ -70,6 +70,7 @@ enum TMsgDlgBtn { mbYes, mbNo, mbOK, mbCancel, mbAbort, mbRetry, mbIgnore, mbAll
 typedef TMsgDlgBtn TMsgDlgButtons[mbHelp];
 
 #include "ELog.h"
+#include "bone.h"
 #include <d3dtypes.h>
 #include <time.h>
 

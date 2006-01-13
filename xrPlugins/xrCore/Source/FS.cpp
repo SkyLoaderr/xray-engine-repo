@@ -34,20 +34,21 @@ void*  FileDownload(LPCSTR fn, u32* pdwSize)
 	u32		size;
 	void*	buf;
 
-	hFile	= open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
+	hFile	= _open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL,_S_IREAD);
 	if (hFile<=0)	{
 		Sleep	(1);
-		hFile	= open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
+		hFile	= _open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL,_S_IREAD);
 	}
 	R_ASSERT2(hFile>0,fn);
-	size	= filelength(hFile);
+	size	= _filelength(hFile);
 
 	buf		= Memory.mem_alloc	(size
 #ifdef DEBUG
 		,"FILE in memory"
 #endif
 		);
-	_read	(hFile,buf,size);
+	int r_bytes	= _read	(hFile,buf,size);
+	R_ASSERT3(r_bytes==size,"Can't read file data:",fn);
 	_close	(hFile);
 	if (pdwSize) *pdwSize = size;
 	return buf;

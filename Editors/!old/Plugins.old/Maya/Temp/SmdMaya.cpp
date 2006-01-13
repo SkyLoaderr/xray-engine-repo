@@ -346,7 +346,7 @@ MStatus CXRaySkinExport::exportObject(LPCSTR fn)
 
 	if ((MESH->GetVertexCount()<4)||(MESH->GetFaceCount()<2))
 	{
-		Log		("!Invalid mesh: '%s'. Faces<2 or Verts<4",MESH->GetName());
+		Log		("!Invalid mesh: '%s'. Faces<2 or Verts<4",*MESH->Name());
 		return MStatus::kFailure;
 	}
 
@@ -795,7 +795,7 @@ MStatus CXRaySkinExport::getBones(void)
 						wb.push_back	(st_WB(bone_idx,wts[iInf]));
 					}
 				}
-				wb.normalize_weights(2);
+				wb.prepare_weights(2);
 			}
 		}
 	}

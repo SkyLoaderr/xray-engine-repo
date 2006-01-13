@@ -445,7 +445,7 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 		}
 		if ((MESH->GetVertexCount()<4)||(MESH->GetFaceCount()<2))
 		{
-			Log		("!Invalid mesh: '%s'. Faces<2 or Verts<4",MESH->GetName());
+			Log		("!Invalid mesh: '%s'. Faces<2 or Verts<4",*MESH->Name());
 			return MS::kFailure;
 		}
 	}
