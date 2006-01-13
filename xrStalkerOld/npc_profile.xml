@@ -630,6 +630,9 @@
 	<character id="aes_x">
 		<class>aes_x</class>
 	</character>
+	<character id="aes_x_2">
+		<class>aes_x_2</class>
+	</character>
 	
 <!-- Sarcofag -->
 	<character id="sar_monolith_specnaz">
