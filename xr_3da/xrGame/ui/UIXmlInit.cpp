@@ -805,6 +805,14 @@ bool CUIXmlInit::InitCustomEdit(CUIXml& xml_doc, const char* path, int index, CU
 	if (xml_doc.ReadAttribInt(path, index, "password",0))
 		pWnd->SetPasswordMode();
 
+	float text_x = xml_doc.ReadAttribFlt(foo, index, "x", 0);
+	float text_y = xml_doc.ReadAttribFlt(foo, index, "y", 0);
+
+	if (text_x)
+		pWnd->SetTextPosX(text_x);
+	if (text_y)
+        pWnd->SetTextPosY(text_y);
+
 	return true;
 
 }

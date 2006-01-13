@@ -93,8 +93,8 @@
 			<list_item>
 				<text font="letterica16" r="255" g="255" b="255"/>
 			</list_item>
-			<header x="0" y="0" width="0" height="18" frame_mode="1" align="l" vert_align="c">
-				<text font="arial_14" r="215" g="195" b="170" x="0"/>
+			<header x="0" y="0" width="0" height="18" frame_mode="1">
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" align="l" vert_align="c" complex_mode="0"/>
 				<text_color>
 					<e r="227" g="199" b="178"/>
 					<d r="215" g="195" b="170"/>					
@@ -103,7 +103,7 @@
 				<texture_h>ui_table_button_h</texture_h>
 				<texture_t>ui_table_button_t</texture_t>				
 			</header>
-			<separator x="0" y="0" width="1" height="30" vertical="1">
+			<separator x="0" y="3" width="1" height="29" vertical="1">
 				<texture>ui_table_divider</texture>
 			</separator>
 			<filter>
@@ -114,19 +114,19 @@
 				<texture>ui_linetextSmall_e</texture>
 			</edit_gs_filter>
 			<cap_server_properties x="0" y="191" width="329" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_server_prop</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" vert_align="c" complex_mode="0">mm_mp_server_prop</text>
 				<texture>ui_table_button_e</texture>
 			</cap_server_properties>		
 			<cap_players_list x="337" y="191" width="97" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_players</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" vert_align="c" complex_mode="0">mm_mp_players</text>
 				<texture>ui_table_button_e</texture>
 			</cap_players_list>
 			<cap_frags x="434" y="191" width="44" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_frags</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" vert_align="c" complex_mode="0">mm_mp_frags</text>
 				<texture>ui_table_button_e</texture>
 			</cap_frags>
 			<cap_death x="476" y="191" width="61" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_deaths</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" vert_align="c" complex_mode="0">mm_mp_deaths</text>
 				<texture>ui_table_button_e</texture>
 			</cap_death>
 			<list_server_properties x="0" y="210" width="327" height="96" item_height="18" always_show_scroll="1">
@@ -236,12 +236,12 @@
 		</spin_game_mode>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">
-			<text font="letterica16" r="235" g="219" b="185"></text>
+			<text font="letterica16" r="235" g="219" b="185" x="2"></text>
 			<options_item entry="mm_net_srv_name" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_server_name>		
 		<edit_password x="150" y="65" width="275" height="21" password="1">		
-			<text font="letterica16" r="235" g="219" b="185"></text>
+			<text font="letterica16" r="235" g="219" b="185" x="2"></text>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_password>
 		
@@ -391,7 +391,7 @@
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_noanomalies</text>
 		</check_no_anmalies>
 		
-		<edit_maprotlist x="123" y="65" width="98" height="23">
+		<edit_maprotlist x="130" y="65" width="90" height="23">
 			<text font="letterica16" r="235" g="219" b="185"></text>
 			<options_item entry="mm_net_con_maprotlist" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>			

@@ -197,7 +197,7 @@ void CServerList::UpdateVisibility(){
 	m_frame[LST_SRV_PROP].Show(m_bShowServerInfo ? true : m_bAnimation);
 	m_frame[LST_PLAYERS].Show(m_bShowServerInfo ? true : m_bAnimation);
 
-	for (int i = 0; i<5; i++)
+	for (int i = 0; i< 5; i++)
 		m_header2[i].Show(m_bShowServerInfo ? true : m_bAnimation);
 }
 
@@ -290,27 +290,27 @@ void CServerList::InitHeader(){
 	m_header[0].SetWidth(m_itemInfo.size.icon);
 	m_header[0].SetText(*st.translate("icon"));
 	pos.x += m_itemInfo.size.icon;
-	m_separator[0].SetWndPos(pos.x,y);
+	m_separator[0].SetWndPos(pos.x,y + 3);
 	m_header[1].SetWidth(m_itemInfo.size.server);
 	m_header[1].SetWndPos(pos);
 	m_header[1].SetText(*st.translate("server name"));
 	pos.x += m_itemInfo.size.server;
-	m_separator[1].SetWndPos(pos.x,y);
+	m_separator[1].SetWndPos(pos.x,y + 3);
 	m_header[2].SetWidth(m_itemInfo.size.map);
 	m_header[2].SetWndPos(pos);
 	m_header[2].SetText(*st.translate("map"));
 	pos.x += m_itemInfo.size.map;
-	m_separator[2].SetWndPos(pos.x,y);
+	m_separator[2].SetWndPos(pos.x,y + 3);
 	m_header[3].SetWidth(m_itemInfo.size.game);
 	m_header[3].SetWndPos(pos);
 	m_header[3].SetText(*st.translate("game type"));
 	pos.x += m_itemInfo.size.game;
-	m_separator[3].SetWndPos(pos.x,y);
+	m_separator[3].SetWndPos(pos.x,y + 3);
 	m_header[4].SetWidth(m_itemInfo.size.players);
 	m_header[4].SetWndPos(pos);
 	m_header[4].SetText(*st.translate("players"));
 	pos.x += m_itemInfo.size.players;
-	m_separator[4].SetWndPos(pos.x,y);
+	m_separator[4].SetWndPos(pos.x,y + 3);
 	m_header[5].SetWidth(m_itemInfo.size.ping);
 	m_header[5].SetWndPos(pos);
 	m_header[5].SetText(*st.translate("ping"));
