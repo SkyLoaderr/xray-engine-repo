@@ -80,6 +80,7 @@ void CUIListItemServer::SetParams(LIST_SRV_ITEM& params){
 	m_iconDedicated.Show(params.info.icons.dedicated);
 	m_iconPunkBuster.Show(params.info.icons.punkbuster);
 
+	SetValue(params.info.Index);
 }
 
 void CUIListItemServer::Draw(){

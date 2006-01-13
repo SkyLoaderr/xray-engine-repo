@@ -47,6 +47,9 @@ public:
 	virtual void SetState(UIState state);
 	virtual void Draw();
 
+	virtual void SetWidth(float width);
+	virtual void SetHeight(float heigth);
+
 protected:
 	T* m_stateCurrent;
 	T* m_stateEnabled;
@@ -237,6 +240,30 @@ template <class T>
 void CUIInteractiveBackground<T>::Draw(){
 	if (m_stateCurrent)
         m_stateCurrent->Draw();
+}
+
+template <class T>
+void CUIInteractiveBackground<T>::SetWidth(float width){
+	if (m_stateEnabled)
+		m_stateEnabled->SetWidth(width);
+	if (m_stateDisabled)
+		m_stateDisabled->SetWidth(width);
+	if (m_stateHighlighted)
+		m_stateHighlighted->SetWidth(width);
+	if (m_stateTouched)
+		m_stateTouched->SetWidth(width);
+}
+
+template <class T>
+void CUIInteractiveBackground<T>::SetHeight(float heigth){
+	if (m_stateEnabled)
+		m_stateEnabled->SetHeight(heigth);
+	if (m_stateDisabled)
+		m_stateDisabled->SetHeight(heigth);
+	if (m_stateHighlighted)
+		m_stateHighlighted->SetHeight(heigth);
+	if (m_stateTouched)
+		m_stateTouched->SetHeight(heigth);
 }
 
 typedef CUIInteractiveBackground<CUIFrameWindow> CUI_IB_FrameWindow;

@@ -272,6 +272,8 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextC
 bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd){
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
+	pWnd->SetFrameMode(xml_doc.ReadAttribInt(path, index, "frame_mode", 0) ? true : false);
+
 	InitWindow			(xml_doc, path, index, pWnd);
 	InitMultiText		(xml_doc, path, index, pWnd);
 	InitMultiTexture	(xml_doc, path, index, pWnd);
@@ -1034,7 +1036,10 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
 	{
-			pWnd->m_background.CreateE()->InitTexture(*texture);
+		if (!pWnd->m_b_frameMode)
+            pWnd->m_background.CreateE()->InitTexture(*texture);
+		else
+			pWnd->m_background_frame.CreateE()->InitTexture(*texture);
 			success = true;
 	}
 
@@ -1042,7 +1047,10 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
 	{
+		if (!pWnd->m_b_frameMode)
 			pWnd->m_background.CreateT()->InitTexture(*texture);
+		else
+			pWnd->m_background_frame.CreateT()->InitTexture(*texture);
 			success = true;
 	}
 
@@ -1050,7 +1058,10 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
 	{
+		if (!pWnd->m_b_frameMode)
 			pWnd->m_background.CreateD()->InitTexture(*texture);
+		else
+			pWnd->m_background_frame.CreateD()->InitTexture(*texture);
 			success = true;
 	}
 
@@ -1058,7 +1069,10 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 	texture = xml_doc.Read(buff, index, NULL);   
 	if (texture.size())
 	{
+		if (!pWnd->m_b_frameMode)
 			pWnd->m_background.CreateH()->InitTexture(*texture);
+		else
+			pWnd->m_background_frame.CreateH()->InitTexture(*texture);
 			success = true;
 	}
 

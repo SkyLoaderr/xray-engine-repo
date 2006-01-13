@@ -32,6 +32,8 @@ public:
 			void SetTextColorD(u32 color);
 			void SetTextColorT(u32 color);
 	virtual void SetTextureOffset(float x, float y);	
+	virtual void SetWidth(float width);
+	virtual void SetHeight(float height);
 			void InitSoundH(LPCSTR sound_file);
 			void InitSoundT(LPCSTR sound_file);
 
@@ -55,6 +57,10 @@ public:
 
 	CUIStatic		m_hint;
 	CUI_IB_Static	m_background;
+
+			void SetFrameMode(bool mode);
+	CUI_IB_FrameLineWnd m_background_frame;
+	bool			m_b_frameMode;
 protected:
 	bool			m_bCheckMode;
 private:	
@@ -63,17 +69,4 @@ private:
 
 	ref_sound		m_sound_h;
 	ref_sound		m_sound_t;	
-
-
-
-    // text color
-//	bool m_bUseTextColorD;
-//	bool m_bUseTextColorH;
-//	bool m_bUseTextColorT;
-//	bool m_bUseTextColor[4];
-//	u32  m_dwTextColor[4];
-//	u32  m_dwTextColorE;
-//	u32  m_dwTextColorD;
-//	u32  m_dwTextColorH;
-//	u32  m_dwTextColorT;
 };

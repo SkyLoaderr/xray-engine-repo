@@ -85,7 +85,7 @@
 			<texture>rust_bot_client</texture>
 		</rust_01>
 		<server_list x="8" y="99" width="539" height="310">			
-			<sizes icon="46" server="167" map="124" game="100" players="46" ping="35"/>
+			<sizes icon="46" server="155" map="123" game="100" players="59" ping="54"/>
 			<frame x="0" y="20" width="515" height="290">
 				<texture>ui_cb_listbox</texture>
 			</frame>
@@ -93,9 +93,15 @@
 			<list_item>
 				<text font="letterica16" r="255" g="255" b="255"/>
 			</list_item>
-			<header x="0" y="0" width="0" height="18">
-				<text font="arial_14" r="215" g="195" b="170" x="2"/>
-				<texture>ui_table_button_e</texture>
+			<header x="0" y="0" width="0" height="18" frame_mode="1" align="l" vert_align="c">
+				<text font="arial_14" r="215" g="195" b="170" x="0"/>
+				<text_color>
+					<e r="227" g="199" b="178"/>
+					<d r="215" g="195" b="170"/>					
+				</text_color>
+				<texture_e>ui_table_button_e</texture_e>
+				<texture_h>ui_table_button_h</texture_h>
+				<texture_t>ui_table_button_t</texture_t>				
 			</header>
 			<separator x="0" y="0" width="1" height="30" vertical="1">
 				<texture>ui_table_divider</texture>
@@ -103,11 +109,11 @@
 			<filter>
 				<text font="letterica16" r="215" g="195" b="170"/>
 			</filter>
-			<edit_gs_filter x="46" y2="163" y="273" width="476" height="21">
+			<edit_gs_filter x="46" y2="167" y="277" width="488" height="21">
 				<text font="letterica16" r="235" g="219" b="185"></text>
 				<texture>ui_linetextSmall_e</texture>
 			</edit_gs_filter>
-			<cap_server_properties x="0" y="191" width="310" height="17">
+			<cap_server_properties x="0" y="191" width="329" height="17">
 				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_server_prop</text>
 				<texture>ui_table_button_e</texture>
 			</cap_server_properties>		
@@ -119,7 +125,7 @@
 				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_frags</text>
 				<texture>ui_table_button_e</texture>
 			</cap_frags>
-			<cap_death x="476" y="191" width="44" height="17">
+			<cap_death x="476" y="191" width="61" height="17">
 				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_deaths</text>
 				<texture>ui_table_button_e</texture>
 			</cap_death>

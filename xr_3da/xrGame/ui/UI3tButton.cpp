@@ -27,11 +27,13 @@ CUI3tButton::CUI3tButton(){
 	m_dwTextColor[H] = 0xFFFFFFFF;
 	m_dwTextColor[T] = 0xFFFFFFFF;
 
-	AttachChild(&m_background);	
+	AttachChild(&m_background);
+	AttachChild(&m_background_frame);	
 	AttachChild(&m_hint);
 
 	m_bEnableTextHighlighting = false;
 	m_bCheckMode = false;
+	m_b_frameMode = false;
 }
 
 CUI3tButton::~CUI3tButton(){
@@ -91,7 +93,20 @@ void CUI3tButton::PlaySoundH(){
 
 void CUI3tButton::Init(float x, float y, float width, float height){
 	m_background.Init(0, 0, width, height);
+	m_background_frame.Init(0, 0, width, height);
     CUIButton::Init(x, y, width, height);
+}
+
+void CUI3tButton::SetWidth(float width){
+	CUIButton::SetWidth(width);
+	m_background.SetWidth(width);
+	m_background_frame.SetWidth(width);
+}
+
+void CUI3tButton::SetHeight(float height){
+	CUIButton::SetHeight(height);
+	m_background.SetHeight(height);
+	m_background_frame.SetHeight(height);
 }
 
 void CUI3tButton::InitTexture(LPCSTR tex_name){
@@ -120,32 +135,48 @@ void CUI3tButton::InitTexture(LPCSTR tex_name){
 }
 
 void CUI3tButton::InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched, LPCSTR tex_highlighted){
-	//CUITextureMaster::InitTexture(tex_enabled, m_background.CreateE());
-	//CUITextureMaster::InitTexture(tex_disabled, m_background.CreateD());
-	//CUITextureMaster::InitTexture(tex_touched, m_background.CreateT());
-	//CUITextureMaster::InitTexture(tex_highlighted, m_background.CreateD());
-	m_background.InitEnabledState(tex_enabled);
-	m_background.InitDisabledState(tex_disabled);
-	m_background.InitTouchedState(tex_touched);
-	m_background.InitHighlightedState(tex_highlighted);
+	if (!m_b_frameMode)
+	{
+		m_background.InitEnabledState(tex_enabled);
+		m_background.InitDisabledState(tex_disabled);
+		m_background.InitTouchedState(tex_touched);
+		m_background.InitHighlightedState(tex_highlighted);
+	}else{
+		m_background_frame.InitEnabledState(tex_enabled);
+		m_background_frame.InitDisabledState(tex_disabled);
+		m_background_frame.InitTouchedState(tex_touched);
+		m_background_frame.InitHighlightedState(tex_highlighted);
+	}
 	this->m_bTextureEnable = true;
 }
 
 void CUI3tButton::InitTextureEnabled(LPCSTR texture){
-    m_background.InitEnabledState(texture);
+	if (!m_b_frameMode)
+        m_background.InitEnabledState(texture);
+	else
+		m_background_frame.InitEnabledState(texture);
 	m_bTextureEnable = true;
 }
 
 void CUI3tButton::InitTextureDisabled(LPCSTR texture){
-    m_background.InitDisabledState(texture);
+	if (!m_b_frameMode)
+        m_background.InitDisabledState(texture);
+	else
+		m_background_frame.InitDisabledState(texture);
 }
 
 void CUI3tButton::InitTextureHighlighted(LPCSTR texture){
-    m_background.InitHighlightedState(texture);
+	if (!m_b_frameMode)
+        m_background.InitHighlightedState(texture);
+	else
+		m_background_frame.InitHighlightedState(texture);
 }
 
 void CUI3tButton::InitTextureTouched(LPCSTR texture){
-    m_background.InitTouchedState(texture);
+	if (!m_b_frameMode)
+        m_background.InitTouchedState(texture);
+	else
+		m_background_frame.InitTouchedState(texture);
 }
 
 void CUI3tButton::SetTextColor(u32 color){
@@ -170,7 +201,12 @@ void CUI3tButton::SetTextureOffset(float x, float y){
 
 void CUI3tButton::DrawTexture(){
 	if(m_bTextureEnable)
-        m_background.Draw();
+	{
+		if (!m_b_frameMode)
+            m_background.Draw();
+		else
+			m_background_frame.Draw();
+	}
 }
 
 void CUI3tButton::Update(){
@@ -178,14 +214,22 @@ void CUI3tButton::Update(){
 
 	if(m_bTextureEnable)
 	{
-		if (!m_bIsEnabled)
+		if (!m_bIsEnabled){
             m_background.SetState(S_Disabled);
-		else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
+			m_background_frame.SetState(S_Disabled);
+		}
+		else if (CUIButton::BUTTON_PUSHED == m_eButtonState){
 			m_background.SetState(S_Touched);
-		else if (m_bCursorOverWindow)
+			m_background_frame.SetState(S_Touched);
+		}
+		else if (m_bCursorOverWindow){
 			m_background.SetState(S_Highlighted);
-		else
+			m_background_frame.SetState(S_Highlighted);
+		}
+		else{
 			m_background.SetState(S_Enabled);
+			m_background_frame.SetState(S_Enabled);
+		}
 	}
 
 	u32 textColor;
@@ -216,7 +260,10 @@ void CUI3tButton::Update(){
 	m_hint.SetTextColor(hintColor);
 }
 
-
 void CUI3tButton::SendMessage(CUIWindow *pWnd, s16 msg, void *pData){
 	CUIButton::SendMessage(pWnd, msg, pData);
+}
+
+void CUI3tButton::SetFrameMode(bool mode){
+	m_b_frameMode = mode;
 }

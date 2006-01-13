@@ -5,7 +5,7 @@
 #include "UIListItemServer.h"
 #include "UIFrameWindow.h"
 #include "UIEditBox.h"
-//#include "UILabel.h"
+#include "UI3tButton.h"
 
 
 #include "../GameSpy/GameSpy_Browser.h"
@@ -47,6 +47,7 @@ public:
 			void ConnectToSelected();
 			void SetFilters(SServerFilters& sf);
 			void SetPlayerName(const char* name);
+			void SetSortFunc(const char* func_name, bool make_sort);
 
 	virtual void	RefreshGameSpyList	(bool Local);
 			void	RefreshQuick();
@@ -65,13 +66,23 @@ protected:
 			void FillUpDetailedServerInfo();
 			void ClearDetailedServerInfo();
 
+			void SaveCurItem();
+			void RestoreCurItem();
+			void ResetCurItem();
+
+	static	bool sort_by_ServerName(int p1, int p2);
+	static	bool sort_by_Map(int p1, int p2);
+	static	bool sort_by_GameType(int p1, int p2);
+	static	bool sort_by_Players(int p1, int p2);
+	static	bool sort_by_Ping(int p1, int p2);
+
 	CUIColorAnimatorWrapper* m_pAnimation;
 
 	LIST_SRV_ITEM	m_itemInfo;
 	SServerFilters	m_sf;
 	CUIListWnd		m_list[3];
 	CUIFrameWindow	m_frame[3];
-	CUILabel		m_header[6];
+	CUI3tButton		m_header[6];
 	CUILabel		m_header2[4];
 	CUIFrameLineWnd	m_separator[5];
 	CUIEditBox		m_edit_gs_filter;
@@ -80,10 +91,12 @@ protected:
 	bool			m_bAnimation;
 	float			m_fListH[2];
 	float			m_fEditPos[2];
-
-
+	int				m_cur_item;
 
 	CGameSpy_Browser	m_GSBrowser;	
+
+	shared_str		m_sort_func;
+	xr_vector<int>	m_tmp_srv_lst;
 
 	virtual	void	RefreshList();
 };

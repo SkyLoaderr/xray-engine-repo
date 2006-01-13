@@ -9,6 +9,9 @@
 #include "UIListItemAdv.h"
 
 
+CGameSpy_Browser* g_gs_browser = NULL;
+
+
 CServerList::CServerList(){
 	m_GSBrowser.Init();
 //	m_list[LST_SERVER].ShowSelectedItem();
@@ -38,6 +41,8 @@ CServerList::CServerList(){
 
 	m_bShowServerInfo = false;
 	m_bAnimation = false;
+
+	m_sort_func = "none";
 }
 
 CServerList::~CServerList()
@@ -76,10 +81,27 @@ void CServerList::Update(){
 }
 
 void CServerList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
-	if (m_bShowServerInfo && LIST_ITEM_CLICKED == msg && &m_list[LST_SERVER] == pWnd)
-	{
+	if (m_bShowServerInfo && LIST_ITEM_CLICKED == msg && &m_list[LST_SERVER] == pWnd){
         ClearDetailedServerInfo();
 		FillUpDetailedServerInfo();
+	}
+	else if (BUTTON_CLICKED == msg){
+		if (pWnd == &m_header[1]){
+			SetSortFunc("server_name",true);
+		}
+		else if (pWnd == &m_header[2]){
+			SetSortFunc("map",true);
+		}
+		else if (pWnd == &m_header[3]){
+			SetSortFunc("game_type",true);
+		}
+		else if (pWnd == &m_header[4]){
+			SetSortFunc("player",true);
+		}
+		else if (pWnd == &m_header[5]){
+			SetSortFunc("ping",true);
+		}
+
 	}
 }
 
@@ -231,7 +253,8 @@ void CServerList::InitFromXml(CUIXml& xml_doc, const char* path){
 
 	// init header elements
 	for (int i = 0; i<6; i++)
-		CUIXmlInit::InitLabel(xml_doc,strconcat(buf,path,":header"), 0, &m_header[i]);
+		CUIXmlInit::Init3tButton(xml_doc,strconcat(buf,path,":header"), 0, &m_header[i]);
+	m_header[0].Enable(false);
 	for (int i = 0; i<5; i++)
 	{
 		CUIXmlInit::InitFrameLine(xml_doc, strconcat(buf,path,":separator"), 0, &m_separator[i]);
@@ -300,6 +323,7 @@ void	CServerList::RefreshGameSpyList	(bool Local){
 		Msg("Refresh MasterServer List");
 	
 	m_GSBrowser.RefreshList_Full(Local);
+	ResetCurItem();
 	RefreshList();
 }
 
@@ -340,15 +364,35 @@ void	CServerList::UpdateServerInList(ServerInfo* pServerInfo, CUIListItemServer*
 
 void	CServerList::RefreshList()
 {
+	SaveCurItem();
 	m_list[LST_SERVER].RemoveAll();
 	//-------------------------------
-	int NumServersFound = m_GSBrowser.GetServersCount();
-	for (int i=0; i<NumServersFound; i++)
+	u32 NumServersFound = m_GSBrowser.GetServersCount();
+	g_gs_browser = &m_GSBrowser;
+	m_tmp_srv_lst.resize(NumServersFound);
+
+	
+	for (u32 i=0; i<NumServersFound; i++)
+		m_tmp_srv_lst[i] = i;
+
+	if (0 == xr_strcmp(m_sort_func, "server_name"))
+		sort(m_tmp_srv_lst.begin(), m_tmp_srv_lst.end(), sort_by_ServerName);
+	else if (0 == xr_strcmp(m_sort_func, "map"))
+		sort(m_tmp_srv_lst.begin(), m_tmp_srv_lst.end(), sort_by_Map);
+	else if (0 == xr_strcmp(m_sort_func, "game_type"))
+		sort(m_tmp_srv_lst.begin(), m_tmp_srv_lst.end(), sort_by_GameType);
+	else if (0 == xr_strcmp(m_sort_func, "player"))
+		sort(m_tmp_srv_lst.begin(), m_tmp_srv_lst.end(), sort_by_GameType);
+	else if (0 == xr_strcmp(m_sort_func, "ping"))
+		sort(m_tmp_srv_lst.begin(), m_tmp_srv_lst.end(), sort_by_GameType);
+
+	for (u32 i=0; i<NumServersFound; i++)
 	{
 		ServerInfo NewServerInfo;
-		m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, i);
+		m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, m_tmp_srv_lst[i]);
 		AddServerToList(&NewServerInfo);
 	}
+	RestoreCurItem();
 };
 
 void CServerList::RefreshQuick(){
@@ -357,15 +401,18 @@ void CServerList::RefreshQuick(){
 		return;
 	CUIListItemServer* pItem = (CUIListItemServer*)m_list[LST_SERVER].GetItem(SvId);
 	m_GSBrowser.RefreshQuick(pItem->GetInfo()->info.Index);
-
-
+	
 	RefreshList();
 
 	ClearDetailedServerInfo();
 	FillUpDetailedServerInfo();
-//	ServerInfo NewServerInfo;
-//	m_GSBrowser.GetServerInfoByIndex(&NewServerInfo, pItem->GetInfo()->info.Index);
-//	UpdateServerInList(&NewServerInfo, pItem);
+}
+
+void CServerList::SetSortFunc(const char* func_name, bool make_sort){
+	m_sort_func = func_name;
+
+	if (make_sort)
+		RefreshList();
 }
 
 void CServerList::SrvInfo2LstSrvInfo(const ServerInfo* pServerInfo){
@@ -383,4 +430,80 @@ void CServerList::SrvInfo2LstSrvInfo(const ServerInfo* pServerInfo){
 	m_itemInfo.info.icons.dedicated	= pServerInfo->m_bDedicated;
 	m_itemInfo.info.icons.punkbuster = false;//	= pServerInfo->m_bPunkBuster;
 	m_itemInfo.info.Index	= pServerInfo->Index;   
+}
+
+bool CServerList::sort_by_ServerName(int p1, int p2){
+	CGameSpy_Browser& gs_browser = *g_gs_browser;
+	ServerInfo info1,info2;
+
+	gs_browser.GetServerInfoByIndex(&info1, p1);
+    gs_browser.GetServerInfoByIndex(&info2, p2);
+
+	return -1 == xr_strcmp(info1.m_ServerName, info2.m_ServerName);
+}
+
+bool CServerList::sort_by_Map(int p1, int p2){
+	CGameSpy_Browser& gs_browser = *g_gs_browser;
+	ServerInfo info1,info2;
+
+	gs_browser.GetServerInfoByIndex(&info1, p1);
+    gs_browser.GetServerInfoByIndex(&info2, p2);
+
+	return -1 == xr_strcmp(info1.m_SessionName, info2.m_SessionName);
+}
+
+bool CServerList::sort_by_GameType(int p1, int p2){
+	CGameSpy_Browser& gs_browser = *g_gs_browser;
+	ServerInfo info1,info2;
+
+	gs_browser.GetServerInfoByIndex(&info1, p1);
+    gs_browser.GetServerInfoByIndex(&info2, p2);
+
+	return -1 == xr_strcmp(info1.m_ServerGameType, info2.m_ServerGameType);
+}
+
+bool CServerList::sort_by_Players(int p1, int p2){
+	CGameSpy_Browser& gs_browser = *g_gs_browser;
+	ServerInfo info1,info2;
+
+	gs_browser.GetServerInfoByIndex(&info1, p1);
+    gs_browser.GetServerInfoByIndex(&info2, p2);
+
+	return info1.m_ServerNumPlayers < info2.m_ServerNumPlayers;
+}
+bool CServerList::sort_by_Ping(int p1, int p2){
+	CGameSpy_Browser& gs_browser = *g_gs_browser;
+	ServerInfo info1,info2;
+
+	gs_browser.GetServerInfoByIndex(&info1, p1);
+    gs_browser.GetServerInfoByIndex(&info2, p2);
+
+	return info1.m_Ping < info2.m_Ping;
+}
+
+void CServerList::SaveCurItem(){
+	int SvId = m_list[LST_SERVER].GetSelectedItem();
+	if (-1 == SvId){
+		m_cur_item = -1;
+		return;
+	}
+
+	CUIListItemServer* pItem = (CUIListItemServer*)m_list[LST_SERVER].GetItem(SvId);
+	R_ASSERT(pItem);
+
+	m_cur_item = pItem->GetInfo()->info.Index;
+}
+
+void CServerList::RestoreCurItem(){
+	if (-1 == m_cur_item)
+		return;
+	int index = m_list[LST_SERVER].FindItemWithValue(m_cur_item);
+
+	m_list[LST_SERVER].SetSelectedItem(index);	
+	m_list[LST_SERVER].ScrollToPos(index);
+}
+
+void CServerList::ResetCurItem(){
+	m_list[LST_SERVER].SetSelectedItem(-1);
+	m_list[LST_SERVER].ScrollToBegin();
 }

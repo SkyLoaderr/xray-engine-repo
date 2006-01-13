@@ -87,7 +87,8 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("SetPlayerName",			&CServerList::SetPlayerName)
 		.def("RefreshList",				&CServerList::RefreshGameSpyList)
 		.def("RefreshQuick",			&CServerList::RefreshQuick)
-		.def("ShowServerInfo",			&CServerList::ShowServerInfo),
+		.def("ShowServerInfo",			&CServerList::ShowServerInfo)
+		.def("SetSortFunc",				&CServerList::SetSortFunc),
 		
 
 		class_<CUIMapList, CUIWindow>("CUIMapList")

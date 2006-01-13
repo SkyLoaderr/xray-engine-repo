@@ -164,15 +164,18 @@ function mp_main:OnBtn_Refresh()
 		self.server_list:RefreshList(true)
 	end
 	self:OnFilterChange()
+
 end
 
 function mp_main:OnBtn_RefreshQuick()
-	self.server_list:RefreshQuick()
+	self.server_list:SetSortFunc("map", true)
+--	self.server_list:RefreshQuick()
 end
 
 function mp_main:OnBtn_Calncel()
-	self:GetHolder():start_stop_menu(self,true)	
-	self.owner:Show(true)
+	self.server_list:SetSortFunc("server_name", true)
+--	self:GetHolder():start_stop_menu(self,true)	
+--	self.owner:Show(true)
 end
 
 function mp_main:OnBtn_Create()
