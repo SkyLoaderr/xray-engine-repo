@@ -187,7 +187,7 @@ function se_respawn:create(prob)
 		else
 			alife():release(obj, true)
 			printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
-			--return false
+			return false
 		end																		
 	end
 end
