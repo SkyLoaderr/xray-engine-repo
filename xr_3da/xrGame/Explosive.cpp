@@ -522,7 +522,7 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 //	if( m_bExplodeEventSent ) 
 //		return;
 	VERIFY(!m_explosion_flags.test(flExplodEventSent));//!m_bExplodeEventSent
-	VERIFY(0xffff != Initiator());
+	//VERIFY(0xffff != Initiator());
 
 	NET_Packet		P;
 	cast_game_object()->u_EventGen		(P,GE_GRENADE_EXPLODE,cast_game_object()->ID());	
