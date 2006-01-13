@@ -61,13 +61,13 @@ end
 --	Установка и распарсивание тем в файлы.
 -----------------------------------------------------------------------------------------------------------------------------------
 function set_sound(npc, sound, now, into_timeout)
-	--printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
+	--printf("*SND* [%s] try to change SND to [%s] for [%s]", npc:name(), tostring(sound), npc:name())
 	local npc_id = npc:id()
 	if (db.sound[npc_id] == nil or
 	   db.sound[npc_id].theme ~= sound) or
 	   now == true
 	then
-		printf("*SND* change SND to [%s]", utils.to_str(sound))
+		printf("*SND* change SND to [%s] for [%s]", utils.to_str(sound), npc:name())
 		-- Туточки надобно распарсить имена тем в их id
 		if sound == nil then sound = "" end
 		if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
@@ -107,7 +107,7 @@ function set_sound(npc, sound, now, into_timeout)
 end
 
 function set_sound_play(npc, sound, timeout)
-	printf("*SND* play SND to [%s]", utils.to_str(sound))
+	printf("*SND* play SND to [%s] for [%s]", utils.to_str(sound), npc:name())
 	local npc_id = npc:id()
 	if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
 	if db.sound[npc_id].last_snd == nil then
@@ -203,10 +203,10 @@ function play_sound(npc, themes, timeout)
 			-- играем входные
 			if db.sound[npc_id].last_snd[snd.into_id] == nil then db.sound[npc_id].last_snd[snd.into_id] = -1 end
 			
-			printf("*SND* play seq [%s]", db.sound[npc_id].last_snd[snd.into_id]+1)
+			printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id]+1, npc:name())
 			npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[npc_id].last_snd[snd.into_id]+1)
 			db.sound[npc_id].last_snd[snd.into_id] = db.sound[npc_id].last_snd[snd.into_id] + 1
-			--printf("*SND* play seq [%s]", db.sound[npc_id].last_snd[snd.into_id])
+			--printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id], npc:name())
 			return
 		end		
 		if snd.rnd_max ~= nil and
@@ -231,7 +231,7 @@ function play_sound(npc, themes, timeout)
 			if timeout == nil then
 				timeout = 0
 			end							
-			printf("*SND* play rnd [%s]", s)
+			printf("*SND* play rnd [%s] for [%s]", s, npc:name())
 			npc:play_sound(snd.rnd_id, timeout+1, timeout, 1, 0, s)
 			--db.sound[npc_id].last_snd[snd.rnd_id] = s
 			group_table.last_snd[snd.rnd_id] = s
