@@ -26,6 +26,11 @@
 #include "xrserver.h"
 #include "level_graph.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
 using namespace ALife;
 
 CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
@@ -265,7 +270,24 @@ void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 #endif
 	CSE_ALifeDynamicObject			*object = objects().object(abstract->ID);
 	VERIFY							(object);
-	
+
+	if (!object->children.empty()) {
+		u32							children_count = object->children.size();
+		u32							bytes = children_count*sizeof(ALife::_OBJECT_ID);
+		ALife::_OBJECT_ID			*children = (ALife::_OBJECT_ID*)_alloca(bytes);
+		CopyMemory					(children,&*object->children.begin(),bytes);
+
+		ALife::_OBJECT_ID			*I = children;
+		ALife::_OBJECT_ID			*E = children + children_count;
+		for ( ; I != E; ++I) {
+			CSE_ALifeDynamicObject	*child = objects().object(*I,true);
+			if (!child)
+				continue;
+
+			release					(child,alife_query);
+		}
+	}
+
 	unregister_object				(object,alife_query);
 	
 	object->m_bALifeControl			= false;
