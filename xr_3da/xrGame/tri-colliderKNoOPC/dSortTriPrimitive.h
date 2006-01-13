@@ -1,7 +1,6 @@
 #ifndef D_SORT_TRI_PRIMITIVE_H
 #define D_SORT_TRI_PRIMITIVE_H
 #include "dTriCollideK.h"
-#include "dSortTriPrimitive.h"
 #include "dTriColliderCommon.h"
 #include "dTriColliderMath.h"
 #include "__aabb_tri.h"
@@ -11,15 +10,29 @@
 #include "../PHDebug.h"
 
 #endif
-static 	xr_vector<Triangle> pos_tries;
-static 	xr_vector<Triangle> neg_tries;
+
+static 	xr_vector<Triangle> 		pos_tries		;
+static 	xr_vector<Triangle> 		neg_tries		;
+		xr_vector<bool>				ignored_tries	;
+		xr_vector<int>::iterator	I,E,B			;
+
+void AddToIgnoredTries(u32 v)
+{
+	CDB::TRI*       T_array      = Level().ObjectSpace.GetStaticTris();
+	xr_vector<int>::iterator LI=I+1;
+	for(;E!=LI;++LI)
+	{
+		u32* verts=T_array[*LI].verts;
+		if(verts[0]==v||verts[1]==v||verts[2]==v) ignored_tries[LI-B]=true;
+	}
+}
 ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle,const Point* VRT)
 		{
 			dVectorSub(triangle.side0,VRT[1],VRT[0])				;
 			dVectorSub(triangle.side1,VRT[2],VRT[1])				;
 			triangle.T=XTri											;
 			dCROSS(triangle.norm,=,triangle.side0,triangle.side1)	;
-			accurate_normalize(triangle.norm)						;
+			cast_fv(triangle.norm).normalize()						;
 			triangle.pos=dDOT(VRT[0],triangle.norm)					;
 		}
 ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle,const Fvector*	 V_array)
@@ -153,14 +166,14 @@ int dSortTriPrimitiveCollide (
 		}
 
 	bool b_pushing=*pushing_neg||*pushing_b_neg;
-
-	xr_vector<int>::iterator I=data->cashed_tries.begin(),E=data->cashed_tries.end();
-	for (; I!=E; ++I)
+	ignored_tries.resize(data->cashed_tries.size(),false);
+	B=data->cashed_tries.begin(),E=data->cashed_tries.end();
+	for (I=B; I!=E; ++I)
 	{
 #ifdef DEBUG
 		dbg_saved_tries_for_active_objects++;
 #endif
-		
+		//if(ignored_tries[I-B])continue;
 		CDB::TRI* T = T_array + *I;
 		const Point vertices[3]={Point((dReal*)&V_array[T->verts[0]]),Point((dReal*)&V_array[T->verts[1]]),Point((dReal*)&V_array[T->verts[2]])};
 		if(!aabb_tri_aabb(Point(p),Point((float*)&AABB),vertices))continue;

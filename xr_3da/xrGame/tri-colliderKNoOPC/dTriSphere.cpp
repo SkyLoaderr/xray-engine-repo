@@ -307,15 +307,26 @@ int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 	 }
 	 else
 	 {
-		if(	!(
-			FragmentonSphereTest(pos,radius,v0,v1,ContactNormal,Depth)	||
+		if(!(FragmentonSphereTest(pos,radius,v0,v1,ContactNormal,Depth)||
 			FragmentonSphereTest(pos,radius,v1,v2,ContactNormal,Depth)	||
-			FragmentonSphereTest(pos,radius,v2,v0,ContactNormal,Depth)	||
-			PointSphereTest(pos,radius,v0,ContactNormal,Depth)			||
-			PointSphereTest(pos,radius,v1,ContactNormal,Depth)			||
-			PointSphereTest(pos,radius,v2,ContactNormal,Depth)
-			)
-			)	return 0;
+			FragmentonSphereTest(pos,radius,v2,v0,ContactNormal,Depth)	))
+		{
+			if(ignored_tries[I-B]) 
+									return 0;
+			if(PointSphereTest(pos,radius,v0,ContactNormal,Depth))
+			{
+				AddToIgnoredTries(T->T->verts[0]);
+			}
+			else if(PointSphereTest(pos,radius,v1,ContactNormal,Depth))
+			{
+				AddToIgnoredTries(T->T->verts[1]);
+			}
+			else if(PointSphereTest(pos,radius,v2,ContactNormal,Depth))
+			{
+				AddToIgnoredTries(T->T->verts[2]);
+			}
+			else return 0;
+		 }
 	 }
 
 	 Contacts->normal[0] =-ContactNormal[0];
