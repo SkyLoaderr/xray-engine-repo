@@ -7,11 +7,6 @@ combat_ignore   = combat_ignore
 on_info     = %+val_sacrifice_victim_dead%
 on_info2    = {=killed_by(404)} %=hit_npc(404:bip01_spine1:100:1000)%, {=killed_by(405)} %=hit_npc(405:bip01_spine1:100:1000)%
 
-;401 = "val_sacrifice_victim"
-;403 = "val_sacrifice_bloodsucker"
-;404 = "val_sacrifice_guard1"
-;405 = "val_sacrifice_guard2"
-
 ;--------------------------------------------------------------------------
 ; start
 ;--------------------------------------------------------------------------
@@ -46,14 +41,17 @@ combat_ignore_cond  = always
 ; фраза: 
 ; ждем на фразу 3 первого охранника
 ;--------------------------------------------------------------------------
-[remark@phrase2]
+[remark@val_sacrifice_victim_phrase2]
 anim                = wait
 snd                 = speech
 target              = 404
-on_signal           = sound_end | remark@stay %+val_sacrifice_victim_phrase2_end%
+on_signal           = sound_end | remark@val_sacrifice_victim_stay %+val_sacrifice_victim_phrase2_end%
 combat_ignore_cond  = always
 
-[remark@stay]
+;--------------------------------------------------------------------------
+; wait for scene end
+;--------------------------------------------------------------------------
+[remark@val_sacrifice_victim_stay]
 anim                = wait
 target              = 404
 on_info             = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} %+val_sacrifice_finish%
