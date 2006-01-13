@@ -946,14 +946,16 @@ void CCustomZone::UpdateBlowoutLight	()
 	{
 		m_fLightTimeLeft -= Device.fTimeDelta;
 
-		float scale = m_fLightTimeLeft/m_fLightTime;
+		float scale		= m_fLightTimeLeft/m_fLightTime;
+		scale			= powf(scale+EPS_L, 0.15f);
+		float r			= m_fLightRange*scale;
 		m_pLight->set_color(m_LightColor.r*scale, 
 							m_LightColor.g*scale, 
 							m_LightColor.b*scale);
-		m_pLight->set_range(m_fLightRange*scale);
+		m_pLight->set_range(r);
 
-		Fvector pos = Position();
-		pos.y += m_fLightHeight;
+		Fvector pos			= Position();
+		pos.y				+= m_fLightHeight;
 		m_pLight->set_position(pos);
 	}
 	else
