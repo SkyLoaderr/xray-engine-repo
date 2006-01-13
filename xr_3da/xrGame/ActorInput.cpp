@@ -398,15 +398,7 @@ void CActor::ActorUse()
 					smart_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
 		}
-		else if(m_pVehicleWeLookingAt && smart_cast<CCar*>(m_pVehicleWeLookingAt) && Level().IR_GetKeyState(DIK_LSHIFT))
-		{
-			//только если находимся в режиме single
-			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-			if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
-				m_pVehicleWeLookingAt->GetInventory(),
-				smart_cast<CGameObject*>(m_pVehicleWeLookingAt));
 
-		}
 		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
 		u16 element = BI_NONE;
