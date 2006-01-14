@@ -15,10 +15,8 @@
 #include "EffectorZoomInertion.h"
 #include "xr_level_controller.h"
 #include "level.h"
+#include "object_broker.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapon(name)
 {
 	m_eSoundShow		= ESoundTypes(SOUND_TYPE_ITEM_TAKING | eSoundType);
@@ -1074,3 +1072,19 @@ float	CWeaponMagazined::GetWeaponDeterioration	()
 		return inherited::GetWeaponDeterioration();
 	return m_iShotNum*conditionDecreasePerShot;
 };
+
+void CWeaponMagazined::save(NET_Packet &output_packet)
+{
+	inherited::save	(output_packet);
+	save_data		(m_iQueueSize, output_packet);
+	save_data		(m_iShotNum, output_packet);
+	save_data		(m_iCurFireMode, output_packet);
+}
+
+void CWeaponMagazined::load(IReader &input_packet)
+{
+	inherited::load(input_packet);
+	load_data		(m_iQueueSize, input_packet);SetQueueSize(m_iQueueSize);
+	load_data		(m_iShotNum, input_packet);
+	load_data		(m_iCurFireMode, input_packet);
+}

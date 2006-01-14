@@ -164,6 +164,9 @@ public:
 	virtual	int		GetCurrentFireMode	() { return m_aFireModes[m_iCurFireMode]; };	
 	virtual LPCSTR	GetCurrentFireModeStr	() {return m_sCurFireMode;};
 
+	virtual void	save				(NET_Packet &output_packet);
+	virtual void	load				(IReader &input_packet);
+
 protected:
 	virtual bool	AllowFireWhileWorking() {return false;}
 

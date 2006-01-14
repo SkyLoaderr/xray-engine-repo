@@ -402,7 +402,7 @@ protected:
 // Weapon and ammo
 //////////////////////////////////////////////////////////////////////////
 public:
-	IC int					GetAmmoElapsed		()	const		{	return /*int(m_magazine.size())*/iAmmoElapsed;						}
+	IC int					GetAmmoElapsed		()	const		{	return /*int(m_magazine.size())*/iAmmoElapsed;}
 	IC int					GetAmmoMagSize		()	const		{	return iMagazineSize;						}
 	int						GetAmmoCurrent		(bool use_item_to_spawn = false)  const;
 

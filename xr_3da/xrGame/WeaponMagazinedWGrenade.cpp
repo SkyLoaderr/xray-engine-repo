@@ -11,8 +11,7 @@
 #include "xr_level_controller.h"
 #include "level.h"
 #include "../skeletoncustom.h"
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
+#include "object_broker.h"
 
 CWeaponMagazinedWGrenade::CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoundType) : CWeaponMagazined(name, eSoundType)
 {
@@ -173,7 +172,8 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 		return;
 	}*/
 
-	if(!IsGrenadeLauncherAttached() || eIdle != STATE || IsPending()) 
+	bool bUsefulStateToSwitch = (eIdle==STATE)||(eHidden==STATE)||(eMisfire==STATE)||(eMagEmpty==STATE);
+	if(!IsGrenadeLauncherAttached() || !bUsefulStateToSwitch || IsPending()) 
 		return;
 
 	m_bPending = true;
@@ -610,4 +610,19 @@ void CWeaponMagazinedWGrenade::UpdateGrenadeVisibility(bool visibility)
 	pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID(*grenade_bone_name),visibility,TRUE);
 	pHudVisual->CalculateBones_Invalidate();
 	pHudVisual->CalculateBones();
+}
+
+void CWeaponMagazinedWGrenade::save(NET_Packet &output_packet)
+{
+	inherited::save	(output_packet);
+	save_data		(m_bGrenadeMode, output_packet);
+}
+
+void CWeaponMagazinedWGrenade::load(IReader &input_packet)
+{
+	inherited::load(input_packet);
+	bool b;
+	load_data			(b, input_packet);
+	if(b!=m_bGrenadeMode)
+		SwitchMode	();
 }

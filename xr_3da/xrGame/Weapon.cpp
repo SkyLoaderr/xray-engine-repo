@@ -24,6 +24,8 @@
 #include "ai_object_location.h"
 #include "clsid_game.h"
 #include "mathutils.h"
+#include "object_broker.h"
+
 #define WEAPON_REMOVE_TIME		60000
 #define ROTATION_TIME			0.25f
 
@@ -508,8 +510,8 @@ void CWeapon::net_Import	(NET_Packet& P)
 //	P.r_u8					(m_flagsAddOnState);
 	P.r_u8					(NewAddonState);
 
-	m_flagsAddOnState = NewAddonState;
-	UpdateAddonsVisibility();
+	m_flagsAddOnState		= NewAddonState;
+	UpdateAddonsVisibility	();
 
 	u8 ammoType, wstate;
 	P.r_u8					(ammoType);
@@ -528,29 +530,31 @@ void CWeapon::net_Import	(NET_Packet& P)
 	if (STATE != eFire && STATE != eFire2)
 		SetAmmoElapsed(int(ammo_elapsed));
 
-	/*
-	if (iAmmoElapsed && m_magazine.empty())
-	{
-		CCartridge l_cartridge; 
-		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
-		for(int i = 0; i < iAmmoElapsed; ++i) 
-			m_magazine.push(l_cartridge);
-	};
-
-	*/
-//	STATE = wstate;
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
-	
+
 }
 
 
 void CWeapon::save(NET_Packet &output_packet)
 {
-	inherited::save(output_packet);
+	inherited::save	(output_packet);
+	save_data		(iAmmoElapsed,		output_packet);
+	save_data		(m_flagsAddOnState, output_packet);
+	save_data		(m_ammoType,		output_packet);
+	save_data		(m_bZoomMode,		output_packet);
 }
+
 void CWeapon::load(IReader &input_packet)
 {
-	inherited::load(input_packet);
+	inherited::load	(input_packet);
+	load_data		(iAmmoElapsed,		input_packet);
+	load_data		(m_flagsAddOnState, input_packet);
+	UpdateAddonsVisibility	();
+	load_data		(m_ammoType,		input_packet);
+	load_data		(m_bZoomMode,		input_packet);
+
+	if (m_bZoomMode)	OnZoomIn();
+		else			OnZoomOut();
 }
 
 

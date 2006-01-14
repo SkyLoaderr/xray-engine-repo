@@ -945,10 +945,12 @@ void CCustomZone::UpdateBlowoutLight	()
 	if(m_fLightTimeLeft>0)
 	{
 		m_fLightTimeLeft -= Device.fTimeDelta;
+		clamp(m_fLightTimeLeft,0.0f,m_fLightTime);
 
 		float scale		= m_fLightTimeLeft/m_fLightTime;
 		scale			= powf(scale+EPS_L, 0.15f);
 		float r			= m_fLightRange*scale;
+		VERIFY(_valid(r));
 		m_pLight->set_color(m_LightColor.r*scale, 
 							m_LightColor.g*scale, 
 							m_LightColor.b*scale);
