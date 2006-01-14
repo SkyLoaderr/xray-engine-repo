@@ -141,8 +141,10 @@ void CUITaskRootItem::Update		()
 {
 	inherited::Update				();
 
-	bool bHasLocation					= m_GameTask->HasMapLocations();
-	m_showLocationBtn->Show				(bHasLocation);
+	bool bHasLocation				= m_GameTask->HasMapLocations();
+//.	m_showLocationBtn->Show			(bHasLocation);
+	m_showLocationBtn->Show			(m_EventsWnd->ItemHasDescription(this));
+
 	if(bHasLocation){
 		bool bShown						= m_GameTask->ShownLocations();
 		m_showLocationBtn->SetButtonMode(bShown ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
@@ -265,8 +267,10 @@ void CUITaskSubItem::Update					()
 	bool bHasLocation						= (NULL != ml);
 	m_showPointerBtn->Show					(bHasLocation&&ml->SpotEnabled());
 
-	bool bIsMapMode							= m_EventsWnd->GetDescriptionMode(); 
-	m_showDescriptionBtn->Show				(!bIsMapMode||(bIsMapMode&&bHasLocation&&ml->SpotEnabled()) );
+	m_showDescriptionBtn->Show				(m_EventsWnd->ItemHasDescription(this));
+
+//.	bool bIsMapMode							= m_EventsWnd->GetDescriptionMode(); 
+//.	m_showDescriptionBtn->Show				(!bIsMapMode||(bIsMapMode&&bHasLocation&&ml->SpotEnabled()) );
 	if(bHasLocation){
 		bool bPointer						= m_GameTask->HighlightedSpotOnMap(m_TaskObjectiveIdx);
 		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);

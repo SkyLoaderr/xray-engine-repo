@@ -13,6 +13,7 @@ class CUITabControl;
 class CGameTask;
 class CUITaskDescrWnd;
 class CUIScrollView;
+class CUITaskItem;
 
 class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	typedef CUIWindow			inherited;
@@ -44,6 +45,7 @@ public:
 	void						SetDescriptionMode		(bool bMap);
 	bool						GetDescriptionMode		();
 	void						ShowDescription			(CGameTask* t, int idx);
+	bool						ItemHasDescription		(CUITaskItem*);
 public:
 
 								CUIEventsWnd			();

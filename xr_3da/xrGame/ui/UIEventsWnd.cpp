@@ -274,3 +274,20 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 	}
 
 }
+
+bool CUIEventsWnd::ItemHasDescription(CUITaskItem* itm)
+{
+	if(itm->ObjectiveIdx()==0)// root
+	{
+		bool bHasLocation	= itm->GameTask()->HasMapLocations();
+		return bHasLocation;
+	}else
+	{
+		SGameTaskObjective	*obj				= itm->Objective();
+		CMapLocation* ml						= obj->HasMapLocation();
+		bool bHasLocation						= (NULL != ml);
+		bool bIsMapMode							= GetDescriptionMode(); 
+		bool b									= (bIsMapMode&&bHasLocation&&ml->SpotEnabled());
+		return b;
+	}
+}

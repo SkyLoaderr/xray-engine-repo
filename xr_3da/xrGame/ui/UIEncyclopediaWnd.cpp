@@ -105,10 +105,22 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);
 		R_ASSERT(pTVItem);
 
-		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *SetCurrentArtice(pTVItem);
+		CEncyclopediaArticle* A = m_ArticlesDB[pTVItem->GetValue()];
+		xr_string caption		= *m_InfosHeaderStr;
+		caption					+= "/";
+		caption					+= *(A->data()->group);
+		caption					+= "/";
+		caption					+= *(A->data()->name);
+
+		UIEncyclopediaInfoHeader->UITitleText.SetText(caption.c_str());
+		SetCurrentArtice(pTVItem);
+
+/*		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *SetCurrentArtice(pTVItem);
 		UIEncyclopediaInfoHeader->UITitleText.SetText(caption.c_str());
 		caption.erase(0, caption.find_last_of("/") + 1);
 		UIArticleHeader->SetText(caption.c_str());
+*/
+		UIArticleHeader->SetTextST(*(A->data()->name));
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
