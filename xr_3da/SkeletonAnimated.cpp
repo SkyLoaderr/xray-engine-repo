@@ -160,7 +160,7 @@ void	CKinematicsAnimated::LL_CloseCycle(u16 part)
 		
 		CPartDef& P	= (*m_Partition)[B.bone_or_part];
 		for (u32 i=0; i<P.bones.size(); i++)
-			Bone_Motion_Stop	((*bones)[P.bones[i]],*I);
+			Bone_Motion_Stop_IM	((*bones)[P.bones[i]],*I);
 	}
 	blend_cycles[part].clear	(); // ?
 }
@@ -350,7 +350,7 @@ void CKinematicsAnimated::UpdateTracks	()
 
 					CPartDef& P		= m_Partition->part(B.bone_or_part);
 					for (u32 i=0; i<P.bones.size(); i++)
-						Bone_Motion_Stop((*bones)[P.bones[i]],*I);
+						Bone_Motion_Stop_IM((*bones)[P.bones[i]],*I);
 
 					blend_cycles[part].erase(I);
 					E				= blend_cycles[part].end(); I--; 
