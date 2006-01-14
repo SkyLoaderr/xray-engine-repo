@@ -637,7 +637,6 @@
 		</supplies>	
 					
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
-		
 		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 
@@ -669,7 +668,6 @@
 		</supplies>
 					
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
-		
 		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 
@@ -732,7 +730,6 @@
 		</supplies>		
 					
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
-		
 		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
 
@@ -763,8 +760,35 @@
 		</supplies>		
 					
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
-		
 		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
+	</specific_character>
+	
+	<specific_character id="esc_soldier_blockpost_commander" team_default = "1">
+		<name>GENERATE_NAME</name>
+		<icon x="20" y="14"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Детальная информация отсутствует.</bio>
+
+		<class>esc_soldier_blockpost_commander</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+		
+		<snd_config>characters_voice\human_02\</snd_config>
+
+		<visual>actors\soldier\soldier_beret_1</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+		</supplies>
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>			
 	</specific_character>
 	
 	<specific_character id="esc_soldier_blokpost_default1" team_default = "1">

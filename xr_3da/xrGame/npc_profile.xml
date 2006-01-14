@@ -55,6 +55,10 @@
 	<character id="esc_soldier_commander">
 		<class>esc_soldier_commander</class>
 	</character>
+	
+	<character id="esc_soldier_blockpost_commander">
+		<class>esc_soldier_blockpost_commander</class>
+	</character>
 
 	<character id="esc_soldier_regular">
 		<class>esc_soldier_regular</class>
