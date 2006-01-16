@@ -83,18 +83,21 @@ end
 function update()
 	reinit_complete = false
 end
+-- Вызывать на регистре смарттеррейна
 function reinit()
 	if reinit_complete == false then
 		simulator = nil
 		reinit_complete = true
 	end
 end
+-- Регистрация чувака
 function add(npc)
 	if simulator == nil then
 		simulator = simulation_statistic()
 	end
 	simulator:add(npc)
 end
+-- Неригистрация
 function remove(npc)
 	if simulator == nil then
 		return
