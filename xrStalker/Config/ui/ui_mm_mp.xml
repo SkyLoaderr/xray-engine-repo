@@ -250,11 +250,11 @@
 		</check_dedicated>
 		<map_list x="7" y="158" width="419" height="247">
 			<header_1 x="0" y="0" width="186" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_avail_maps</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="2">mm_mp_avail_maps</text>
 				<texture>ui_table_button_e</texture>
 			</header_1>
 			<header_2 x="235" y="0" width="186" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2">mm_mp_sel_maps</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="2">mm_mp_sel_maps</text>
 				<texture>ui_table_button_e</texture>
 			</header_2>
 			<frame_1 x="0" y="18" width="166" height="231">
