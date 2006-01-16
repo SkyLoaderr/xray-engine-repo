@@ -258,7 +258,6 @@ void CEntity::KillEntity(u16 whoID)
 	if (whoID != ID()) {
 		VERIFY			(m_killer_id == ALife::_OBJECT_ID(-1));
 		m_killer_id		= whoID;
-		set_death_time	();
 	}
 
 	if (!getDestroy()){
@@ -268,6 +267,8 @@ void CEntity::KillEntity(u16 whoID)
 		P.w_u32			(0);
 		if (OnServer())
 			u_EventSend	(P);
+		
+		set_death_time	();
 	}
 };
 
