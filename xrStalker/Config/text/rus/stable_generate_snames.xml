@@ -296,634 +296,304 @@
 	<text>Резкий</text>
 </string>
 <string id="lname_x_100">
-	<text>1</text>
+	<text>Ржавый</text>
 </string>
 <string id="lname_x_101">
-	<text>1</text>
+	<text>Романтик</text>
 </string>
 <string id="lname_x_102">
-	<text>1</text>
+	<text>Свирепый</text>
 </string>
 <string id="lname_x_103">
-	<text>1</text>
+	<text>Силач</text>
 </string>
 <string id="lname_x_104">
-	<text>1</text>
+	<text>Сказочник</text>
 </string>
 <string id="lname_x_105">
-	<text>1</text>
+	<text>Слепой</text>
 </string>
 <string id="lname_x_106">
-	<text>1</text>
+	<text>Смелый</text>
 </string>
 <string id="lname_x_107">
-	<text>1</text>
+	<text>Сопля</text>
 </string>
 <string id="lname_x_108">
-	<text>1</text>
+	<text>Спорщик</text>
 </string>
 <string id="lname_x_109">
-	<text>1</text>
+	<text>Старик</text>
 </string>
 <string id="lname_x_110">
-	<text>1</text>
+	<text>Стиляга</text>
 </string>
 <string id="lname_x_111">
-	<text>1</text>
+	<text>Столичный</text>
 </string>
 <string id="lname_x_112">
-	<text>1</text>
+	<text>Суровый</text>
 </string>
 <string id="lname_x_113">
-	<text>1</text>
+	<text>Сутулый</text>
 </string>
 <string id="lname_x_114">
-	<text>1</text>
+	<text>Сухой</text>
 </string>
 <string id="lname_x_115">
-	<text>1</text>
+	<text>Счастливчик</text>
 </string>
 <string id="lname_x_116">
-	<text>1</text>
+	<text>Тихий</text>
 </string>
 <string id="lname_x_117">
-	<text>1</text>
+	<text>Толстый</text>
 </string>
 <string id="lname_x_118">
-	<text>1</text>
+	<text>Толстяк</text>
 </string>
 <string id="lname_x_119">
-	<text>1</text>
+	<text>Трупак</text>
 </string>
 <string id="lname_x_120">
-	<text>1</text>
+	<text>Умник</text>
 </string>
 <string id="lname_x_121">
-	<text>1</text>
+	<text>Ухарь</text>
 </string>
 <string id="lname_x_122">
-	<text>1</text>
+	<text>Ушастый</text>
 </string>
 <string id="lname_x_123">
-	<text>1</text>
+	<text>Фигляр</text>
 </string>
 <string id="lname_x_124">
-	<text>1</text>
+	<text>Хохмач</text>
 </string>
 <string id="lname_x_125">
-	<text>1</text>
+	<text>Хромой</text>
 </string>
 <string id="lname_x_126">
-	<text>1</text>
+	<text>Хроник</text>
 </string>
 <string id="lname_x_127">
-	<text>1</text>
+	<text>Худой</text>
 </string>
 <string id="lname_x_128">
-	<text>1</text>
+	<text>Циник</text>
 </string>
 <string id="lname_x_129">
-	<text>1</text>
+	<text>Чувак</text>
 </string>
 <string id="lname_x_130">
-	<text>1</text>
+	<text>Шалый</text>
 </string>
 <string id="lname_x_131">
-	<text>1</text>
+	<text>Шустрый</text>
 </string>
 <string id="lname_x_132">
-	<text>1</text>
+	<text>Эстет</text>
 </string>
 <string id="lname_x_133">
-	<text>1</text>
+	<text>Ядреный</text>
 </string>
 <string id="lname_x_134">
-	<text>1</text>
+	<text>Абитуриент</text>
 </string>
 <string id="lname_x_135">
-	<text>1</text>
+	<text>Абориген</text>
 </string>
 <string id="lname_x_136">
-	<text>1</text>
+	<text>Авиатор</text>
 </string>
 <string id="lname_x_137">
-	<text>1</text>
+	<text>Агент</text>
 </string>
 <string id="lname_x_138">
-	<text>1</text>
+	<text>Адвокат</text>
 </string>
 <string id="lname_x_139">
-	<text>1</text>
+	<text>Айболит</text>
 </string>
 <string id="lname_x_140">
-	<text>1</text>
+	<text>Апостол</text>
 </string>
 <string id="lname_x_141">
-	<text>1</text>
+	<text>Артист</text>
 </string>
 <string id="lname_x_142">
-	<text>1</text>
+	<text>Аскет</text>
 </string>
 <string id="lname_x_143">
-	<text>1</text>
+	<text>Аферист</text>
 </string>
 <string id="lname_x_144">
-	<text>1</text>
+	<text>Банкир</text>
 </string>
 <string id="lname_x_145">
-	<text>1</text>
+	<text>Бард</text>
 </string>
 <string id="lname_x_146">
-	<text>1</text>
+	<text>Барон</text>
 </string>
 <string id="lname_x_147">
-	<text>1</text>
+	<text>Барыга</text>
 </string>
 <string id="lname_x_148">
-	<text>1</text>
+	<text>Басурман</text>
 </string>
 <string id="lname_x_149">
-	<text>1</text>
+	<text>Бегун</text>
 </string>
 <string id="lname_x_150">
-	<text>1</text>
+	<text>Боец</text>
 </string>
 <string id="lname_x_151">
-	<text>1</text>
+	<text>Бомж</text>
 </string>
 <string id="lname_x_152">
-	<text>1</text>
+	<text>Боцман</text>
 </string>
 <string id="lname_x_153">
-	<text>1</text>
+	<text>Бродяга</text>
 </string>
 <string id="lname_x_154">
-	<text>1</text>
+	<text>Бурбон</text>
 </string>
 <string id="lname_x_155">
-	<text>1</text>
+	<text>Буржуй</text>
 </string>
 <string id="lname_x_156">
-	<text>1</text>
+	<text>Бюрократ</text>
 </string>
 <string id="lname_x_157">
-	<text>1</text>
+	<text>Вандал</text>
 </string>
 <string id="lname_x_158">
-	<text>1</text>
+	<text>Варвар</text>
 </string>
 <string id="lname_x_159">
-	<text>1</text>
+	<text>Вахтер</text>
 </string>
 <string id="lname_x_160">
-	<text>1</text>
+	<text>Ведьмак</text>
 </string>
 <string id="lname_x_161">
-	<text>1</text>
+	<text>Визитер</text>
 </string>
 <string id="lname_x_162">
-	<text>1</text>
+	<text>Викинг</text>
 </string>
 <string id="lname_x_163">
-	<text>1</text>
+	<text>Водила</text>
 </string>
 <string id="lname_x_164">
-	<text>1</text>
+	<text>Водолаз</text>
 </string>
 <string id="lname_x_165">
-	<text>1</text>
+	<text>Вождь</text>
 </string>
 <string id="lname_x_166">
-	<text>1</text>
+	<text>Вор</text>
 </string>
 <string id="lname_x_167">
-	<text>1</text>
+	<text>Вояжер</text>
 </string>
 <string id="lname_x_168">
-	<text>1</text>
+	<text>Врач</text>
 </string>
 <string id="lname_x_169">
-	<text>1</text>
+	<text>Всадник</text>
 </string>
 <string id="lname_x_170">
-	<text>1</text>
+	<text>Гангстер</text>
 </string>
 <string id="lname_x_171">
-	<text>1</text>
+	<text>Геолог</text>
 </string>
 <string id="lname_x_172">
-	<text>1</text>
+	<text>Гладиатор</text>
 </string>
 <string id="lname_x_173">
-	<text>1</text>
+	<text>Гонец</text>
 </string>
 <string id="lname_x_174">
-	<text>1</text>
+	<text>Гость</text>
 </string>
 <string id="lname_x_175">
-	<text>1</text>
+	<text>Граф</text>
 </string>
 <string id="lname_x_176">
-	<text>1</text>
+	<text>Грузчик</text>
 </string>
 <string id="lname_x_177">
-	<text>1</text>
+	<text>Дед</text>
 </string>
 <string id="lname_x_178">
-	<text>1</text>
+	<text>Дезертир</text>
 </string>
 <string id="lname_x_179">
-	<text>1</text>
+	<text>Делец</text>
 </string>
 <string id="lname_x_180">
-	<text>1</text>
+	<text>Денди</text>
 </string>
 <string id="lname_x_181">
-	<text>1</text>
+	<text>Депутат</text>
 </string>
 <string id="lname_x_182">
-	<text>1</text>
+	<text>Деспот</text>
 </string>
 <string id="lname_x_183">
-	<text>1</text>
+	<text>Дикарь</text>
 </string>
 <string id="lname_x_184">
-	<text>1</text>
+	<text>Дипломат</text>
 </string>
 <string id="lname_x_185">
-	<text>1</text>
+	<text>Док</text>
 </string>
 <string id="lname_x_186">
-	<text>1</text>
+	<text>Доктор</text>
 </string>
 <string id="lname_x_187">
-	<text>1</text>
+	<text>Доцент</text>
 </string>
 <string id="lname_x_188">
-	<text>1</text>
+	<text>Душитель</text>
 </string>
 <string id="lname_x_189">
-	<text>1</text>
+	<text>Егерь</text>
 </string>
 <string id="lname_x_190">
-	<text>1</text>
+	<text>Законник</text>
 </string>
 <string id="lname_x_191">
-	<text>1</text>
+	<text>Зенитчик</text>
 </string>
 <string id="lname_x_192">
-	<text>1</text>
+	<text>Знахарь</text>
 </string>
 <string id="lname_x_193">
-	<text>1</text>
+	<text>Игрок</text>
 </string>
 <string id="lname_x_194">
-	<text>1</text>
+	<text>Индеец</text>
 </string>
 <string id="lname_x_195">
-	<text>1</text>
+	<text>Ирокез</text>
 </string>
 <string id="lname_x_196">
-	<text>1</text>
+	<text>Капитан</text>
 </string>
 <string id="lname_x_197">
-	<text>1</text>
+	<text>Кидала</text>
 </string>
 <string id="lname_x_198">
-	<text>1</text>
+	<text>Клоун</text>
 </string>
 <string id="lname_x_199">
-	<text>1</text>
-</string>
-<string id="lname_x_200">
-	<text>1</text>
-</string>
-<string id="lname_x_201">
-	<text>1</text>
-</string>
-<string id="lname_x_202">
-	<text>1</text>
-</string>
-<string id="lname_x_203">
-	<text>1</text>
-</string>
-<string id="lname_x_204">
-	<text>1</text>
-</string>
-<string id="lname_x_205">
-	<text>1</text>
-</string>
-<string id="lname_x_206">
-	<text>1</text>
-</string>
-<string id="lname_x_207">
-	<text>1</text>
-</string>
-<string id="lname_x_208">
-	<text>1</text>
-</string>
-<string id="lname_x_209">
-	<text>1</text>
-</string>
-<string id="lname_x_210">
-	<text>1</text>
-</string>
-<string id="lname_x_211">
-	<text>1</text>
-</string>
-<string id="lname_x_212">
-	<text>1</text>
-</string>
-<string id="lname_x_213">
-	<text>1</text>
-</string>
-<string id="lname_x_214">
-	<text>1</text>
-</string>
-<string id="lname_x_215">
-	<text>1</text>
-</string>
-<string id="lname_x_216">
-	<text>1</text>
-</string>
-<string id="lname_x_217">
-	<text>1</text>
-</string>
-<string id="lname_x_218">
-	<text>1</text>
-</string>
-<string id="lname_x_219">
-	<text>1</text>
-</string>
-<string id="lname_x_220">
-	<text>1</text>
-</string>
-<string id="lname_x_221">
-	<text>1</text>
-</string>
-<string id="lname_x_222">
-	<text>1</text>
-</string>
-<string id="lname_x_223">
-	<text>1</text>
-</string>
-<string id="lname_x_224">
-	<text>1</text>
-</string>
-<string id="lname_x_225">
-	<text>1</text>
-</string>
-<string id="lname_x_226">
-	<text>1</text>
-</string>
-<string id="lname_x_227">
-	<text>1</text>
-</string>
-<string id="lname_x_228">
-	<text>1</text>
-</string>
-<string id="lname_x_229">
-	<text>1</text>
-</string>
-<string id="lname_x_230">
-	<text>1</text>
-</string>
-<string id="lname_x_231">
-	<text>1</text>
-</string>
-<string id="lname_x_232">
-	<text>1</text>
-</string>
-<string id="lname_x_233">
-	<text>1</text>
-</string>
-<string id="lname_x_234">
-	<text>1</text>
-</string>
-<string id="lname_x_235">
-	<text>1</text>
-</string>
-<string id="lname_x_236">
-	<text>1</text>
-</string>
-<string id="lname_x_237">
-	<text>1</text>
-</string>
-<string id="lname_x_238">
-	<text>1</text>
-</string>
-<string id="lname_x_239">
-	<text>1</text>
-</string>
-<string id="lname_x_240">
-	<text>1</text>
-</string>
-<string id="lname_x_241">
-	<text>1</text>
-</string>
-<string id="lname_x_242">
-	<text>1</text>
-</string>
-<string id="lname_x_243">
-	<text>1</text>
-</string>
-<string id="lname_x_244">
-	<text>1</text>
-</string>
-<string id="lname_x_245">
-	<text>1</text>
-</string>
-<string id="lname_x_246">
-	<text>1</text>
-</string>
-<string id="lname_x_247">
-	<text>1</text>
-</string>
-<string id="lname_x_248">
-	<text>1</text>
-</string>
-<string id="lname_x_249">
-	<text>1</text>
-</string>
-<string id="lname_x_250">
-	<text>1</text>
-</string>
-<string id="lname_x_251">
-	<text>1</text>
-</string>
-<string id="lname_x_252">
-	<text>1</text>
-</string>
-<string id="lname_x_253">
-	<text>1</text>
-</string>
-<string id="lname_x_254">
-	<text>1</text>
-</string>
-<string id="lname_x_255">
-	<text>1</text>
-</string>
-<string id="lname_x_256">
-	<text>1</text>
-</string>
-<string id="lname_x_257">
-	<text>1</text>
-</string>
-<string id="lname_x_258">
-	<text>1</text>
-</string>
-<string id="lname_x_259">
-	<text>1</text>
-</string>
-<string id="lname_x_260">
-	<text>1</text>
-</string>
-<string id="lname_x_261">
-	<text>1</text>
-</string>
-<string id="lname_x_262">
-	<text>1</text>
-</string>
-<string id="lname_x_263">
-	<text>1</text>
-</string>
-<string id="lname_x_264">
-	<text>1</text>
-</string>
-<string id="lname_x_265">
-	<text>1</text>
-</string>
-<string id="lname_x_266">
-	<text>1</text>
-</string>
-<string id="lname_x_267">
-	<text>1</text>
-</string>
-<string id="lname_x_268">
-	<text>1</text>
-</string>
-<string id="lname_x_269">
-	<text>1</text>
-</string>
-<string id="lname_x_270">
-	<text>1</text>
-</string>
-<string id="lname_x_271">
-	<text>1</text>
-</string>
-<string id="lname_x_272">
-	<text>1</text>
-</string>
-<string id="lname_x_273">
-	<text>1</text>
-</string>
-<string id="lname_x_274">
-	<text>1</text>
-</string>
-<string id="lname_x_275">
-	<text>1</text>
-</string>
-<string id="lname_x_276">
-	<text>1</text>
-</string>
-<string id="lname_x_277">
-	<text>1</text>
-</string>
-<string id="lname_x_278">
-	<text>1</text>
-</string>
-<string id="lname_x_279">
-	<text>1</text>
-</string>
-<string id="lname_x_280">
-	<text>1</text>
-</string>
-<string id="lname_x_281">
-	<text>1</text>
-</string>
-<string id="lname_x_282">
-	<text>1</text>
-</string>
-<string id="lname_x_283">
-	<text>1</text>
-</string>
-<string id="lname_x_284">
-	<text>1</text>
-</string>
-<string id="lname_x_285">
-	<text>1</text>
-</string>
-<string id="lname_x_286">
-	<text>1</text>
-</string>
-<string id="lname_x_287">
-	<text>1</text>
-</string>
-<string id="lname_x_288">
-	<text>1</text>
-</string>
-<string id="lname_x_289">
-	<text>1</text>
-</string>
-<string id="lname_x_290">
-	<text>1</text>
-</string>
-<string id="lname_x_291">
-	<text>1</text>
-</string>
-<string id="lname_x_292">
-	<text>1</text>
-</string>
-<string id="lname_x_293">
-	<text>1</text>
-</string>
-<string id="lname_x_294">
-	<text>1</text>
-</string>
-<string id="lname_x_295">
-	<text>1</text>
-</string>
-<string id="lname_x_296">
-	<text>1</text>
-</string>
-<string id="lname_x_297">
-	<text>1</text>
-</string>
-<string id="lname_x_298">
-	<text>1</text>
-</string>
-<string id="lname_x_299">
-	<text>1</text>
-</string>
-<string id="lname_x_300">
-	<text>1</text>
-</string>
-<string id="lname_x_301">
-	<text>1</text>
-</string>
-<string id="lname_x_302">
-	<text>1</text>
-</string>
-<string id="lname_x_303">
-	<text>1</text>
-</string>
-<string id="lname_x_304">
-	<text>1</text>
-</string>
-<string id="lname_x_305">
-	<text>1</text>
-</string>
-<string id="lname_x_306">
-	<text>1</text>
-</string>
-<string id="lname_x_307">
-	<text>1</text>
-</string>
-<string id="lname_x_308">
-	<text>1</text>
-</string>
-<string id="lname_x_309">
-	<text>1</text>
+	<text>Князь</text>
 </string>
 
 
