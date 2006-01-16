@@ -81,7 +81,7 @@
     <!--------------------------- Killers --------------------------->
 
     <article id="social_stalker-clans_killers" name="Killers" group="Social">
-        <texture x="512" y="0" width="128" height="128">ui\ui_icons_npc</texture>
+        <texture x="256" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_killers</text>
     </article>
 
