@@ -55,12 +55,24 @@ function load_job( sj, gname, type, squad, groups )
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "logic@agr_nii_night_commander",
+			idle = 0,
+			prior = 1, state = {1,2},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 		t = { section = "logic@agr_nii_alarm_commander",
 			idle = 0,
 			prior = 9, state = {3},
 			predicate = function(obj_info)
 			            	return obj_info.name == "agr_nii_commander"
 			            end,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@agr_nii_alarm_commander",
+			idle = 0,
+			prior = 1, state = {3},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
