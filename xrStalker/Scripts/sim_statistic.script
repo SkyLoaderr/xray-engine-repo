@@ -1,108 +1,111 @@
-
-local killCountProps = {
-	neutral_novice = 10, neutral_stalker = 20, neutral_veteran = 30, neutral_master = 40,
-	monolith_novice = 10, monolith_stalker = 20, monolith_veteran = 30, monolith_master = 40,
-	military_novice = 10, military_stalker = 20, military_veteran = 30, military_master = 40,
-	killer_novice = 10, killer_stalker = 20, killer_veteran = 30, killer_master = 40,
-	ecolog_novice = 10, ecolog_stalker = 20, ecolog_veteran = 30, ecolog_master = 40,
-	dolg_novice = 10, dolg_stalker = 20, dolg_veteran = 30, dolg_master = 40,
-	freedom_novice = 10, freedom_stalker = 20, freedom_veteran = 30, freedom_master = 40,
-	bandit_novice = 10, bandit_stalker = 20, bandit_veteran = 30, bandit_master = 40,
-	zombied_novice = 10, zombied_stalker = 20, zombied_veteran = 30, zombied_master = 40,
-	
-	rat_weak = 3,	
-	tushkano_weak = 5,
-	flesh_weak = 10, flesh_normal = 20, flesh_strong = 30,
-	boar_weak = 10, boar_normal = 20, boar_strong = 30,
-	dog_weak = 10, dog_normal = 20, dog_strong = 30,
-	pseudodog_weak = 10, pseudodog_normal = 20, pseudodog_strong = 30,
-	psy_dog_weak = 10, psy_dog_normal = 20, psy_dog_strong = 30,
-	zombie_weak = 10, zombie_normal = 20, zombie_strong = 30,
-	snork_weak = 10, snork_normal = 20, snork_strong = 30,
-	poltergeist_weak = 40,
-	pseudo_gigant_weak = 50,
-	controller_weak = 50,
-	burer_weak = 45,
-	bloodsucker_weak = 10, bloodsucker_normal = 20, bloodsucker_strong = 30	
-}
-
-local monster_classes = {
-			[clsid.rat           ] = "rat",
-			[clsid.tushkano_s    ] = "tushkano",
-			[clsid.flesh_s       ] = "flesh",
-			[clsid.boar_s        ] = "boar",
-			[clsid.dog_s         ] = "dog",
-			[clsid.pseudodog_s   ] = "pseudodog",
-			[clsid.psy_dog_s     ] = "psy_dog",
-			[clsid.psy_dog_phantom_s] = "NIL",
-			[clsid.zombie_s      ] = "zombie",
-			[clsid.snork_s       ] = "snork",
-			[clsid.poltergeist_s ] = "poltergeist",
-			[clsid.gigant_s      ] = "pseudo_gigant",
-			[clsid.burer_s       ] = "burer",
-			[clsid.controller_s  ] = "controller",
-			[clsid.bloodsucker_s ] = "bloodsucker"
-		}		
+-- Сбор информации о том какие сталкеры и в каком количестве обитают в симуляции
 
 
-function addKillCount(npc)
-	local props, sect = getNpcType(npc)
-	if props == nil then
-		return
-	end
-	if killCountProps[sect] == nil then
-		abort("Statistic ERROR: required section [%s] not present", sect)
-	end
-	actor_stats.add_points(props, sect, 1, killCountProps[sect])
+-- Была ли произведена реинициализация после лоада.
+local reinit_complete = false
+local simulator = nil
+
+class "simulation_statistic"
+function simulation_statistic:__init()
+	self.objects = {}
+	self.allocation = {}
 end
-
-
-function getNpcType(npc)
+function simulation_statistic:add(npc)
+	local community, rank = getNpcType(npc)
+	self.objects[npc.id] = {community = community, rank = rank}
+	if self.allocation[community] == nil then
+		self.allocation[community] = {}
+	end
+	if self.allocation[community][rank] == nil then
+		self.allocation[community][rank] == 0
+	end
+	self.allocation[community][rank] == self.allocation[community][rank] + 1
+end
+function simulation_statistic:remove(npc)
+	local community, rank = self.objects[npc.id].community, self.objects[npc.id].rank
+	self.allocation[community][rank] == self.allocation[community][rank] - 1
+	self.objects[npc.id] = nil
+end
+function simulation_statistic:getNpcType(npc)
 	if IsStalker(npc) then
 		local community = "neutral"
-		if npc:character_community() == "monolith" then
+		if npc:community() == "monolith" then
 			community = "monolith"
-		elseif npc:character_community() == "military" then
+		elseif npc:community() == "military" then
 			community = "military"
-		elseif npc:character_community() == "killer" then
+		elseif npc:community() == "killer" then
 			community = "killer"
-		elseif npc:character_community() == "ecolog" then
+		elseif npc:community() == "ecolog" then
 			community = "ecolog"
-		elseif npc:character_community() == "dolg" then
+		elseif npc:community() == "dolg" then
 			community = "dolg"
-		elseif npc:character_community() == "freedom" then
+		elseif npc:community() == "freedom" then
 			community = "freedom"
-		elseif npc:character_community() == "bandit" then
+		elseif npc:community() == "bandit" then
 			community = "bandit"
-		elseif npc:character_community() == "zombied" then
+		elseif npc:community() == "zombied" then
 			community = "zombied"
 		end
+		
 		local rank = "novice"
-		if npc:character_rank() >= 90 then
+		if npc:rank() >= 90 then
 			rank = "master"
-		elseif npc:character_rank() >= 60 then
+		elseif npc:rank() >= 60 then
 			rank = "veteran"
-		elseif npc:character_rank() >= 30 then
+		elseif npc:rank() >= 30 then
 			rank = "stalker"
 		end
-		return "stalkerkills", community.."_"..rank
+		return community, rank
 	else
-		local community = monster_classes[get_clsid(npc)]
+		local community = xr_statistic.monster_classes[get_clsid(npc)]
 		if community == nil then
-			abort("Statistic ERROR: cannot find monstr class for [%s]", npc:name())
+			abort("Statistic ERROR: cannot find monstr class for clsid[%s]", get_clsid(npc))
 		end
 		if community == "NIL" then
 			return nil,nil
 		end
 		
 		local rank = "weak"
-		if npc:character_rank() >= 80 then
+		if npc:rank() >= 80 then
 			rank = "strong"
-		elseif npc:character_rank() >= 40 then
+		elseif npc:rank() >= 40 then
 			rank = "normal"
 		end
-		return "monsterkills", community.."_"..rank
-
-
+		return community, rank
 	end	
+end
+function simulation_statistic:pstats(npc)
+	printf("*** SIMULATION POPULATION STATISTIC ***")
+	print_table(self.allocation)
+end
+
+-- На первом вызове апдейта снимаем флаг о том, что реинициализация уже произведена
+function update()
+	reinit_complete = false
+end
+function reinit()
+	if reinit_complete == false then
+		simulator = nil
+		reinit_complete = true
+	end
+end
+function add(npc)
+	if simulator == nil then
+		simulator = simulation_statistic()
+	end
+	simulator:add(npc)
+end
+function remove(npc)
+	if simulator == nil then
+		return
+	end
+	simulator:remove(npc)
+end
+
+
+function pstats()
+	if simulator == nil then
+		return
+	end
+	simulator:pstats(npc)
 end
