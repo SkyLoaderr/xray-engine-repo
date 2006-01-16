@@ -131,7 +131,7 @@
 
 <!---------------------------ECOLOG------------------------>
 	<specific_character id="yan_ecolog_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>g</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
@@ -181,7 +181,7 @@
 
 <!---------------------------ZOMBIED----------------------->
 	<specific_character id="yan_zombied_default1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -204,7 +204,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_default2" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -227,7 +227,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_default3" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -250,7 +250,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_default4" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -273,7 +273,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_default5" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -296,7 +296,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_default6" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -319,7 +319,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_default7" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -343,7 +343,7 @@
 
 <!---------------------------ZOMBIED VETERANS----------------------->
 	<specific_character id="yan_zombied_veteran_default1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -369,7 +369,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default2" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -393,7 +393,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default3" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -418,7 +418,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default4" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -443,7 +443,7 @@
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default5" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
@@ -469,7 +469,7 @@
 
 <!---------------------------ZOMBIED MASTER----------------------->
 	<specific_character id="yan_zombied_master_1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>Один из сталкеров, которым не повезло.</bio>
