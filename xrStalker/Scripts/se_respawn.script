@@ -108,19 +108,14 @@ end
 function se_respawn:STATE_Write( packet )
 	cse_alife_smart_zone.STATE_Write( self, packet )
 
-	if editor()	then
-		return
-	end
---[[	
 	local table_size = table.getn(self.spawned_obj)
 	printf("SPAWNER SAVE table_size[%d]", table_size)
 	print_table(self.spawned_obj)
 	
 	packet:w_u8(table_size)
-	for i=0,table_size do
+	for i=1,table_size do
 		packet:w_u16(self.spawned_obj[i])
 	end
-	]]
 end
 -- восстановление
 function se_respawn:STATE_Read( packet, size )
@@ -129,16 +124,14 @@ function se_respawn:STATE_Read( packet, size )
 	if editor() then
 		return
 	end
---[[	
+
 	local table_size = packet:r_u8()
-		
-	for i=0,table_size do
+	for i=1,table_size do
 		table.insert(self.spawned_obj, packet:r_u16())
 	end
 
 	printf("SPAWNER READ table_size[%d]", table_size)
 	print_table(self.spawned_obj)	
-	]]
 end
 -- инициализация объекта.
 -- вызывается симулятором.
