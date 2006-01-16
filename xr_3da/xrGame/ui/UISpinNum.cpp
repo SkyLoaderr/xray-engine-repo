@@ -35,18 +35,22 @@ void CUISpinNum::Init(float x, float y, float width, float height){
 	SetValue();
 }
 
-void CUISpinNum::OnBtnUpClick(){
+void CUISpinNum::OnBtnUpClick(){	
 	if (m_iVal + m_iStep <= m_iMax)
 		m_iVal += m_iStep;
 
 	SetValue();
+
+	CUICustomSpin::OnBtnUpClick();
 }
 
-void CUISpinNum::OnBtnDownClick(){
+void CUISpinNum::OnBtnDownClick(){	
 	if (m_iVal - m_iStep >= m_iMin)
 		m_iVal -= m_iStep;
 
 	SetValue();
+
+	CUICustomSpin::OnBtnDownClick();
 }
 
 void CUISpinNum::SetValue(){

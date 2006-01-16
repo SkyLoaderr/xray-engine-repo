@@ -32,6 +32,9 @@ CUICustomSpin::CUICustomSpin(){
 	m_pLines->SetVTextAlignment(valCenter);
 	m_pLines->SetFont(UI()->Font()->pFontLetterica16Russian);
 	m_pLines->SetTextColor(color_argb(255,235,219,185));
+
+	m_time_begin = 0;
+	m_delay = 500;	
 }
 
 CUICustomSpin::~CUICustomSpin(){
@@ -45,9 +48,9 @@ void CUICustomSpin::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,SPIN_HEIGHT);
 	m_pFrameLine->Init(0,0,width, SPIN_HEIGHT);
 	m_pFrameLine->InitTexture("ui_spiner");
-	m_pBtnUp->Init(width - BTN_SIZE, 0, BTN_SIZE, BTN_SIZE);
+	m_pBtnUp->Init(width - BTN_SIZE - 1, 0, BTN_SIZE, BTN_SIZE);
 	m_pBtnUp->InitTexture("ui_spiner_button_t");
-	m_pBtnDown->Init(width - BTN_SIZE, BTN_SIZE, BTN_SIZE, BTN_SIZE);
+	m_pBtnDown->Init(width - BTN_SIZE - 1, BTN_SIZE, BTN_SIZE, BTN_SIZE);
 	m_pBtnDown->InitTexture("ui_spiner_button_b");
 
 	m_pLines->Init(0,0,width - BTN_SIZE - 10, SPIN_HEIGHT);
@@ -56,15 +59,11 @@ void CUICustomSpin::Init(float x, float y, float width, float height){
 void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NULL */){
 	if (BUTTON_CLICKED == msg)
 	{
-		if (m_pBtnUp == pWnd)
-		{
-			OnBtnUpClick();
-			GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
+		if (m_pBtnUp == pWnd){
+			OnBtnUpClick();			
 		}
-		else if (m_pBtnDown == pWnd)
-		{
-			OnBtnDownClick();
-			GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
+		else if (m_pBtnDown == pWnd){
+			OnBtnDownClick();			
 		}
 	}
 }
@@ -80,17 +79,56 @@ void CUICustomSpin::Enable(bool status){
 }
 
 void CUICustomSpin::OnBtnUpClick(){
-	// do nothing
+	GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 }
 
 void CUICustomSpin::OnBtnDownClick(){
-	// do nothing
+	GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 }
 
 void CUICustomSpin::Draw(){
 	CUIWindow::Draw();
 	Fvector2 pos = GetAbsolutePos();
 	m_pLines->Draw(pos.x + 3, pos.y);
+}
+
+void CUICustomSpin::Update(){
+	CUIWindow::Update();
+	if (CUIButton::BUTTON_PUSHED == m_pBtnUp->GetButtonsState())
+	{		
+		if (0 == m_time_begin){
+			m_time_begin = Device.dwTimeContinual;
+		}
+
+		if (m_time_begin < Device.dwTimeContinual - m_delay)
+		{
+			OnBtnUpClick();
+			m_time_begin = Device.dwTimeContinual;
+
+			if (m_delay > 100)
+				m_delay -= 100;
+		}
+	}
+	else if (CUIButton::BUTTON_PUSHED == m_pBtnDown->GetButtonsState())
+	{
+		if (0 == m_time_begin){
+			m_time_begin = Device.dwTimeContinual;
+		}
+
+		if (m_time_begin < Device.dwTimeContinual - m_delay)
+		{
+			OnBtnDownClick();
+			m_time_begin = Device.dwTimeContinual;
+
+			if (m_delay > 100)
+				m_delay -= 100;
+		}
+	}
+	else
+	{
+		m_delay = 500;
+		m_time_begin = 0;
+	}
 }
 
 LPCSTR CUICustomSpin::GetText(){

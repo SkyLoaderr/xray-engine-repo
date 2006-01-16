@@ -57,18 +57,22 @@ void CUISpinText::SaveValue(){
 	SaveOptTokenValue(m_pLines->GetText());
 }
 
-void CUISpinText::OnBtnUpClick(){
+void CUISpinText::OnBtnUpClick(){	
 	if (m_curItem < (int)m_list.size() - 1)
 	{
 		m_curItem ++;
 		SetItem();
 	}
+
+	CUICustomSpin::OnBtnUpClick();
 }
 
-void CUISpinText::OnBtnDownClick(){
+void CUISpinText::OnBtnDownClick(){	
 	if (m_curItem > 0)
 	{
 		m_curItem--;
 		SetItem();
 	}
+
+	CUICustomSpin::OnBtnDownClick();
 }
