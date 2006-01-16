@@ -1,3 +1,938 @@
+<string id="lname_stalker_0">
+	<text>Белый</text>
+</string>
+<string id="lname_stalker_1">
+	<text>Зеленый</text>
+</string>
+<string id="lname_stalker_2">
+	<text>Красный</text>
+</string>
+<string id="lname_stalker_3">
+	<text>Ржавый</text>
+</string>
+<string id="lname_stalker_4">
+	<text>Рыжий</text>
+</string>
+<string id="lname_stalker_5">
+	<text>Седой</text>
+</string>
+<string id="lname_stalker_6">
+	<text>Сивый</text>
+</string>
+<string id="lname_stalker_7">
+	<text>Синий</text>
+</string>
+<string id="lname_stalker_8">
+	<text>Черный</text>
+</string>
+<string id="lname_stalker_9">
+	<text>Бес</text>
+</string>
+<string id="lname_stalker_10">
+	<text>Бессметрный</text>
+</string>
+<string id="lname_stalker_11">
+	<text>Бешеный</text>
+</string>
+<string id="lname_stalker_12">
+	<text>Битый</text>
+</string>
+<string id="lname_stalker_13">
+	<text>Блаженный</text>
+</string>
+<string id="lname_stalker_14">
+	<text>Блатной</text>
+</string>
+<string id="lname_stalker_15">
+	<text>Богатырь</text>
+</string>
+<string id="lname_stalker_16">
+	<text>Бодряк</text>
+</string>
+<string id="lname_stalker_17">
+	<text>Болтун</text>
+</string>
+<string id="lname_stalker_18">
+	<text>Борзой</text>
+</string>
+<string id="lname_stalker_19">
+	<text>Босяк</text>
+</string>
+<string id="lname_stalker_20">
+	<text>Бритый</text>
+</string>
+<string id="lname_stalker_21">
+	<text>Бывалый</text>
+</string>
+<string id="lname_stalker_22">
+	<text>Важный</text>
+</string>
+<string id="lname_stalker_23">
+	<text>Везунчик</text>
+</string>
+<string id="lname_stalker_24">
+	<text>Везучий</text>
+</string>
+<string id="lname_stalker_25">
+	<text>Верзила</text>
+</string>
+<string id="lname_stalker_26">
+	<text>Верный</text>
+</string>
+<string id="lname_stalker_27">
+	<text>Глазастый</text>
+</string>
+<string id="lname_stalker_28">
+	<text>Глыба</text>
+</string>
+<string id="lname_stalker_29">
+	<text>Гнилой</text>
+</string>
+<string id="lname_stalker_30">
+	<text>Говорун</text>
+</string>
+<string id="lname_stalker_30">
+	<text>Горбатый</text>
+</string>
+<string id="lname_stalker_31">
+	<text>Горбун</text>
+</string>
+<string id="lname_stalker_32">
+	<text>Гордый</text>
+</string>
+<string id="lname_stalker_33">
+	<text>Горький</text>
+</string>
+<string id="lname_stalker_34">
+	<text>Грозный</text>
+</string>
+<string id="lname_stalker_35">
+	<text>Громила</text>
+</string>
+<string id="lname_stalker_36">
+	<text>Длинный</text>
+</string>
+<string id="lname_stalker_37">
+	<text>Добряк</text>
+</string>
+<string id="lname_stalker_38">
+	<text>Дохлый</text>
+</string>
+<string id="lname_stalker_39">
+	<text>Доходяга</text>
+</string>
+<string id="lname_stalker_30">
+	<text>Дубленый</text>
+</string>
+<string id="lname_stalker_41">
+	<text>Дырявый</text>
+</string>
+<string id="lname_stalker_42">
+	<text>Жадина</text>
+</string>
+<string id="lname_stalker_43">
+	<text>Жалкий</text>
+</string>
+<string id="lname_stalker_44">
+	<text>Железный</text>
+</string>
+<string id="lname_stalker_45">
+	<text>Железячник</text>
+</string>
+<string id="lname_stalker_46">
+	<text>Жженый</text>
+</string>
+<string id="lname_stalker_47">
+	<text>Живчик</text>
+</string>
+<string id="lname_stalker_48">
+	<text>Жирдяй</text>
+</string>
+<string id="lname_stalker_49">
+	<text>Жлоб</text>
+</string>
+<string id="lname_stalker_50">
+	<text>Жмот</text>
+</string>
+<string id="lname_stalker_51">
+	<text>Жмур</text>
+</string>
+<string id="lname_stalker_52">
+	<text>Задумчивый</text>
+</string>
+<string id="lname_stalker_53">
+	<text>Зануда</text>
+</string>
+<string id="lname_stalker_54">
+	<text>Зоркий</text>
+</string>
+<string id="lname_stalker_55">
+	<text>Зубастый</text>
+</string>
+<string id="lname_stalker_56">
+	<text>Зябкий</text>
+</string>
+<string id="lname_stalker_57">
+	<text>Изверг</text>
+</string>
+<string id="lname_stalker_58">
+	<text>Инвалид</text>
+</string>
+<string id="lname_stalker_59">
+	<text>Калека</text>
+</string>
+<string id="lname_stalker_60">
+	<text>Колотун</text>
+</string>
+<string id="lname_stalker_61">
+	<text>Коматозник</text>
+</string>
+<string id="lname_stalker_62">
+	<text>Косой</text>
+</string>
+<string id="lname_stalker_63">
+	<text>Косолапый</text>
+</string>
+<string id="lname_stalker_64">
+	<text>Костлявый</text>
+</string>
+<string id="lname_stalker_65">
+	<text>Кривой</text>
+</string>
+<string id="lname_stalker_66">
+	<text>Кривоног</text>
+</string>
+<string id="lname_stalker_67">
+	<text>Ловкач</text>
+</string>
+<string id="lname_stalker_68">
+	<text>Лохматый</text>
+</string>
+<string id="lname_stalker_69">
+	<text>Лысый</text>
+</string>
+<string id="lname_stalker_70">
+	<text>Любимчик</text>
+</string>
+<string id="lname_stalker_71">
+	<text>Лютый</text>
+</string>
+<string id="lname_stalker_72">
+	<text>Малыш</text>
+</string>
+<string id="lname_stalker_73">
+	<text>Мертвец</text>
+</string>
+<string id="lname_stalker_74">
+	<text>Мертвый</text>
+</string>
+<string id="lname_stalker_75">
+	<text>Местный</text>
+</string>
+<string id="lname_stalker_76">
+	<text>Мрачный</text>
+</string>
+<string id="lname_stalker_77">
+	<text>Мутный</text>
+</string>
+<string id="lname_stalker_78">
+	<text>Мятый</text>
+</string>
+<string id="lname_stalker_79">
+	<text>Нарцисс</text>
+</string>
+<string id="lname_stalker_80">
+	<text>Небрежный</text>
+</string>
+<string id="lname_stalker_81">
+	<text>Неудачник</text>
+</string>
+<string id="lname_stalker_82">
+	<text>Неумеха</text>
+</string>
+<string id="lname_stalker_83">
+	<text>Нудный</text>
+</string>
+<string id="lname_stalker_84">
+	<text>Нытик</text>
+</string>
+<string id="lname_stalker_85">
+	<text>Одноглазый</text>
+</string>
+<string id="lname_stalker_86">
+	<text>Падла</text>
+</string>
+<string id="lname_stalker_87">
+	<text>Паразит</text>
+</string>
+<string id="lname_stalker_88">
+	<text>Параноик</text>
+</string>
+<string id="lname_stalker_89">
+	<text>Пижон</text>
+</string>
+<string id="lname_stalker_90">
+	<text>Плут</text>
+</string>
+<string id="lname_stalker_91">
+	<text>Подлец</text>
+</string>
+<string id="lname_stalker_92">
+	<text>Покойник</text>
+</string>
+<string id="lname_stalker_93">
+	<text>Праведный</text>
+</string>
+<string id="lname_stalker_94">
+	<text>Простак</text>
+</string>
+<string id="lname_stalker_95">
+	<text>Псих</text>
+</string>
+<string id="lname_stalker_96">
+	<text>Работяга</text>
+</string>
+<string id="lname_stalker_97">
+	<text>Рваный</text>
+</string>
+<string id="lname_stalker_98">
+	<text>Рвач</text>
+</string>
+<string id="lname_stalker_99">
+	<text>Резкий</text>
+</string>
+<string id="lname_stalker_100">
+	<text></text>
+</string>
+<string id="lname_stalker_101">
+	<text></text>
+</string>
+<string id="lname_stalker_102">
+	<text></text>
+</string>
+<string id="lname_stalker_103">
+	<text></text>
+</string>
+<string id="lname_stalker_104">
+	<text></text>
+</string>
+<string id="lname_stalker_105">
+	<text></text>
+</string>
+<string id="lname_stalker_106">
+	<text></text>
+</string>
+<string id="lname_stalker_107">
+	<text></text>
+</string>
+<string id="lname_stalker_108">
+	<text></text>
+</string>
+<string id="lname_stalker_109">
+	<text></text>
+</string>
+<string id="lname_stalker_110">
+	<text></text>
+</string>
+<string id="lname_stalker_111">
+	<text></text>
+</string>
+<string id="lname_stalker_112">
+	<text></text>
+</string>
+<string id="lname_stalker_113">
+	<text></text>
+</string>
+<string id="lname_stalker_114">
+	<text></text>
+</string>
+<string id="lname_stalker_115">
+	<text></text>
+</string>
+<string id="lname_stalker_116">
+	<text></text>
+</string>
+<string id="lname_stalker_117">
+	<text></text>
+</string>
+<string id="lname_stalker_118">
+	<text></text>
+</string>
+<string id="lname_stalker_119">
+	<text></text>
+</string>
+<string id="lname_stalker_120">
+	<text></text>
+</string>
+<string id="lname_stalker_121">
+	<text></text>
+</string>
+<string id="lname_stalker_122">
+	<text></text>
+</string>
+<string id="lname_stalker_123">
+	<text></text>
+</string>
+<string id="lname_stalker_124">
+	<text></text>
+</string>
+<string id="lname_stalker_125">
+	<text></text>
+</string>
+<string id="lname_stalker_126">
+	<text></text>
+</string>
+<string id="lname_stalker_127">
+	<text></text>
+</string>
+<string id="lname_stalker_128">
+	<text></text>
+</string>
+<string id="lname_stalker_129">
+	<text></text>
+</string>
+<string id="lname_stalker_130">
+	<text></text>
+</string>
+<string id="lname_stalker_131">
+	<text></text>
+</string>
+<string id="lname_stalker_132">
+	<text></text>
+</string>
+<string id="lname_stalker_133">
+	<text></text>
+</string>
+<string id="lname_stalker_134">
+	<text></text>
+</string>
+<string id="lname_stalker_135">
+	<text></text>
+</string>
+<string id="lname_stalker_136">
+	<text></text>
+</string>
+<string id="lname_stalker_137">
+	<text></text>
+</string>
+<string id="lname_stalker_138">
+	<text></text>
+</string>
+<string id="lname_stalker_139">
+	<text></text>
+</string>
+<string id="lname_stalker_140">
+	<text></text>
+</string>
+<string id="lname_stalker_141">
+	<text></text>
+</string>
+<string id="lname_stalker_142">
+	<text></text>
+</string>
+<string id="lname_stalker_143">
+	<text></text>
+</string>
+<string id="lname_stalker_144">
+	<text></text>
+</string>
+<string id="lname_stalker_145">
+	<text></text>
+</string>
+<string id="lname_stalker_146">
+	<text></text>
+</string>
+<string id="lname_stalker_147">
+	<text></text>
+</string>
+<string id="lname_stalker_148">
+	<text></text>
+</string>
+<string id="lname_stalker_149">
+	<text></text>
+</string>
+<string id="lname_stalker_150">
+	<text></text>
+</string>
+<string id="lname_stalker_151">
+	<text></text>
+</string>
+<string id="lname_stalker_152">
+	<text></text>
+</string>
+<string id="lname_stalker_153">
+	<text></text>
+</string>
+<string id="lname_stalker_154">
+	<text></text>
+</string>
+<string id="lname_stalker_155">
+	<text></text>
+</string>
+<string id="lname_stalker_156">
+	<text></text>
+</string>
+<string id="lname_stalker_157">
+	<text></text>
+</string>
+<string id="lname_stalker_158">
+	<text></text>
+</string>
+<string id="lname_stalker_159">
+	<text></text>
+</string>
+<string id="lname_stalker_160">
+	<text></text>
+</string>
+<string id="lname_stalker_161">
+	<text></text>
+</string>
+<string id="lname_stalker_162">
+	<text></text>
+</string>
+<string id="lname_stalker_163">
+	<text></text>
+</string>
+<string id="lname_stalker_164">
+	<text></text>
+</string>
+<string id="lname_stalker_165">
+	<text></text>
+</string>
+<string id="lname_stalker_166">
+	<text></text>
+</string>
+<string id="lname_stalker_167">
+	<text></text>
+</string>
+<string id="lname_stalker_168">
+	<text></text>
+</string>
+<string id="lname_stalker_169">
+	<text></text>
+</string>
+<string id="lname_stalker_170">
+	<text></text>
+</string>
+<string id="lname_stalker_171">
+	<text></text>
+</string>
+<string id="lname_stalker_172">
+	<text></text>
+</string>
+<string id="lname_stalker_173">
+	<text></text>
+</string>
+<string id="lname_stalker_174">
+	<text></text>
+</string>
+<string id="lname_stalker_175">
+	<text></text>
+</string>
+<string id="lname_stalker_176">
+	<text></text>
+</string>
+<string id="lname_stalker_177">
+	<text></text>
+</string>
+<string id="lname_stalker_178">
+	<text></text>
+</string>
+<string id="lname_stalker_179">
+	<text></text>
+</string>
+<string id="lname_stalker_180">
+	<text></text>
+</string>
+<string id="lname_stalker_181">
+	<text></text>
+</string>
+<string id="lname_stalker_182">
+	<text></text>
+</string>
+<string id="lname_stalker_183">
+	<text></text>
+</string>
+<string id="lname_stalker_184">
+	<text></text>
+</string>
+<string id="lname_stalker_185">
+	<text></text>
+</string>
+<string id="lname_stalker_186">
+	<text></text>
+</string>
+<string id="lname_stalker_187">
+	<text></text>
+</string>
+<string id="lname_stalker_188">
+	<text></text>
+</string>
+<string id="lname_stalker_189">
+	<text></text>
+</string>
+<string id="lname_stalker_190">
+	<text></text>
+</string>
+<string id="lname_stalker_191">
+	<text></text>
+</string>
+<string id="lname_stalker_192">
+	<text></text>
+</string>
+<string id="lname_stalker_193">
+	<text></text>
+</string>
+<string id="lname_stalker_194">
+	<text></text>
+</string>
+<string id="lname_stalker_195">
+	<text></text>
+</string>
+<string id="lname_stalker_196">
+	<text></text>
+</string>
+<string id="lname_stalker_197">
+	<text></text>
+</string>
+<string id="lname_stalker_198">
+	<text></text>
+</string>
+<string id="lname_stalker_199">
+	<text></text>
+</string>
+<string id="lname_stalker_200">
+	<text></text>
+</string>
+<string id="lname_stalker_201">
+	<text></text>
+</string>
+<string id="lname_stalker_202">
+	<text></text>
+</string>
+<string id="lname_stalker_203">
+	<text></text>
+</string>
+<string id="lname_stalker_204">
+	<text></text>
+</string>
+<string id="lname_stalker_205">
+	<text></text>
+</string>
+<string id="lname_stalker_206">
+	<text></text>
+</string>
+<string id="lname_stalker_207">
+	<text></text>
+</string>
+<string id="lname_stalker_208">
+	<text></text>
+</string>
+<string id="lname_stalker_209">
+	<text></text>
+</string>
+<string id="lname_stalker_210">
+	<text></text>
+</string>
+<string id="lname_stalker_211">
+	<text></text>
+</string>
+<string id="lname_stalker_212">
+	<text></text>
+</string>
+<string id="lname_stalker_213">
+	<text></text>
+</string>
+<string id="lname_stalker_214">
+	<text></text>
+</string>
+<string id="lname_stalker_215">
+	<text></text>
+</string>
+<string id="lname_stalker_216">
+	<text></text>
+</string>
+<string id="lname_stalker_217">
+	<text></text>
+</string>
+<string id="lname_stalker_218">
+	<text></text>
+</string>
+<string id="lname_stalker_219">
+	<text></text>
+</string>
+<string id="lname_stalker_220">
+	<text></text>
+</string>
+<string id="lname_stalker_221">
+	<text></text>
+</string>
+<string id="lname_stalker_222">
+	<text></text>
+</string>
+<string id="lname_stalker_223">
+	<text></text>
+</string>
+<string id="lname_stalker_224">
+	<text></text>
+</string>
+<string id="lname_stalker_225">
+	<text></text>
+</string>
+<string id="lname_stalker_226">
+	<text></text>
+</string>
+<string id="lname_stalker_227">
+	<text></text>
+</string>
+<string id="lname_stalker_228">
+	<text></text>
+</string>
+<string id="lname_stalker_229">
+	<text></text>
+</string>
+<string id="lname_stalker_230">
+	<text></text>
+</string>
+<string id="lname_stalker_231">
+	<text></text>
+</string>
+<string id="lname_stalker_232">
+	<text></text>
+</string>
+<string id="lname_stalker_233">
+	<text></text>
+</string>
+<string id="lname_stalker_234">
+	<text></text>
+</string>
+<string id="lname_stalker_235">
+	<text></text>
+</string>
+<string id="lname_stalker_236">
+	<text></text>
+</string>
+<string id="lname_stalker_237">
+	<text></text>
+</string>
+<string id="lname_stalker_238">
+	<text></text>
+</string>
+<string id="lname_stalker_239">
+	<text></text>
+</string>
+<string id="lname_stalker_240">
+	<text></text>
+</string>
+<string id="lname_stalker_241">
+	<text></text>
+</string>
+<string id="lname_stalker_242">
+	<text></text>
+</string>
+<string id="lname_stalker_243">
+	<text></text>
+</string>
+<string id="lname_stalker_244">
+	<text></text>
+</string>
+<string id="lname_stalker_245">
+	<text></text>
+</string>
+<string id="lname_stalker_246">
+	<text></text>
+</string>
+<string id="lname_stalker_247">
+	<text></text>
+</string>
+<string id="lname_stalker_248">
+	<text></text>
+</string>
+<string id="lname_stalker_249">
+	<text></text>
+</string>
+<string id="lname_stalker_250">
+	<text></text>
+</string>
+<string id="lname_stalker_251">
+	<text></text>
+</string>
+<string id="lname_stalker_252">
+	<text></text>
+</string>
+<string id="lname_stalker_253">
+	<text></text>
+</string>
+<string id="lname_stalker_254">
+	<text></text>
+</string>
+<string id="lname_stalker_255">
+	<text></text>
+</string>
+<string id="lname_stalker_256">
+	<text></text>
+</string>
+<string id="lname_stalker_257">
+	<text></text>
+</string>
+<string id="lname_stalker_258">
+	<text></text>
+</string>
+<string id="lname_stalker_259">
+	<text></text>
+</string>
+<string id="lname_stalker_260">
+	<text></text>
+</string>
+<string id="lname_stalker_261">
+	<text></text>
+</string>
+<string id="lname_stalker_262">
+	<text></text>
+</string>
+<string id="lname_stalker_263">
+	<text></text>
+</string>
+<string id="lname_stalker_264">
+	<text></text>
+</string>
+<string id="lname_stalker_265">
+	<text></text>
+</string>
+<string id="lname_stalker_266">
+	<text></text>
+</string>
+<string id="lname_stalker_267">
+	<text></text>
+</string>
+<string id="lname_stalker_268">
+	<text></text>
+</string>
+<string id="lname_stalker_269">
+	<text></text>
+</string>
+<string id="lname_stalker_270">
+	<text></text>
+</string>
+<string id="lname_stalker_271">
+	<text></text>
+</string>
+<string id="lname_stalker_272">
+	<text></text>
+</string>
+<string id="lname_stalker_273">
+	<text></text>
+</string>
+<string id="lname_stalker_274">
+	<text></text>
+</string>
+<string id="lname_stalker_275">
+	<text></text>
+</string>
+<string id="lname_stalker_276">
+	<text></text>
+</string>
+<string id="lname_stalker_277">
+	<text></text>
+</string>
+<string id="lname_stalker_278">
+	<text></text>
+</string>
+<string id="lname_stalker_279">
+	<text></text>
+</string>
+<string id="lname_stalker_280">
+	<text></text>
+</string>
+<string id="lname_stalker_281">
+	<text></text>
+</string>
+<string id="lname_stalker_282">
+	<text></text>
+</string>
+<string id="lname_stalker_283">
+	<text></text>
+</string>
+<string id="lname_stalker_284">
+	<text></text>
+</string>
+<string id="lname_stalker_285">
+	<text></text>
+</string>
+<string id="lname_stalker_286">
+	<text></text>
+</string>
+<string id="lname_stalker_287">
+	<text></text>
+</string>
+<string id="lname_stalker_288">
+	<text></text>
+</string>
+<string id="lname_stalker_289">
+	<text></text>
+</string>
+<string id="lname_stalker_290">
+	<text></text>
+</string>
+<string id="lname_stalker_291">
+	<text></text>
+</string>
+<string id="lname_stalker_292">
+	<text></text>
+</string>
+<string id="lname_stalker_293">
+	<text></text>
+</string>
+<string id="lname_stalker_294">
+	<text></text>
+</string>
+<string id="lname_stalker_295">
+	<text></text>
+</string>
+<string id="lname_stalker_296">
+	<text></text>
+</string>
+<string id="lname_stalker_297">
+	<text></text>
+</string>
+<string id="lname_stalker_298">
+	<text></text>
+</string>
+<string id="lname_stalker_299">
+	<text></text>
+</string>
+<string id="lname_stalker_300">
+	<text></text>
+</string>
+<string id="lname_stalker_301">
+	<text></text>
+</string>
+<string id="lname_stalker_302">
+	<text></text>
+</string>
+<string id="lname_stalker_303">
+	<text></text>
+</string>
+<string id="lname_stalker_304">
+	<text></text>
+</string>
+<string id="lname_stalker_305">
+	<text></text>
+</string>
+<string id="lname_stalker_306">
+	<text></text>
+</string>
+<string id="lname_stalker_307">
+	<text></text>
+</string>
+<string id="lname_stalker_308">
+	<text></text>
+</string>
+<string id="lname_stalker_309">
+	<text></text>
+</string>
+
+
 <string id="lname_0">
 	<text>Аристов</text>
 </string>
