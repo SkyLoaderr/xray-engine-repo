@@ -45,7 +45,18 @@
       происходит торговля и общение сталкеров и ученых.
 </text>
 	</string>
-	<string id="Stalker-clans">
+	<string id="Mobile-groups">
+		<text>Исслебовательские группы</text>
+	</string>
+	<string id="enc_social_scientists_mobile-groups">
+		<text>Вылазки учёных в Зону
+		
+		
+		
+		
+		</text>
+	</string>
+		<string id="Stalker-clans">
 		<text>Кланы сталкеров</text>
 	</string>
 	<string id="Bandits">
@@ -123,7 +134,15 @@
 		<text>Зомбированные сталкеры</text>
 	</string>
 	<string id="enc_social_stalker-clans_zomstalkers">
-		<text> Сталкеры с промытыми мозгами. </text>
+		<text>Те кто уходили в слишком далеко глубь Зоны редко возврашались с добычей,
+		чаше невозвращались, а ещё чаще возвращались, но уже совершенно зомбированными.
+		  </text>
+	</string>
+	<string id="Loners">
+		<text>Сталкеры одиночки</text>
+	</string>
+	<string id="enc_social_stalker-clans_loners">
+		<text>Некоторые из сталкеров пожелали не вступать ни в одну группировкую</text>
 	</string>
 	
 	
