@@ -111,8 +111,8 @@
     <string id="ui_mm_load_game">
         <text>Load Game</text>
     </string>
-    <string id="ui_mm_main">
-        <text>main</text>
+    <string id="ui_mm_key">
+        <text>key</text>
     </string>
     <string id="ui_mm_mouse_sense">
         <text>Mouse Sensitivity</text>
