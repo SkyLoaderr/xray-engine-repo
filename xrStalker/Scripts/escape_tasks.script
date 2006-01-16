@@ -193,10 +193,10 @@ function process_info_portion(info_id)
 		level_tasks.remove_location(006, "green_location")
 		
 	elseif info_id == "esc_kill_bandits_quest_have" then
-		level_tasks.add_location(017, "green_location", "factory_bandits")
+		level_tasks.add_location(017, "crlc_big", "factory_bandits")
 	
 	elseif info_id == "esc_kill_bandits_quest_kill" then
-		level_tasks.remove_location(017, "green_location")
+		level_tasks.remove_location(017, "crlc_big")
 		level_tasks.add_location(003, "blue_location", "trader")
 		
 	elseif info_id == "esc_kill_bandits_quest_done" then
