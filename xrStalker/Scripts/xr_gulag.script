@@ -655,8 +655,8 @@ function gulag:updateJob()
 --	print_table( Job_avail, "   " )
 
 	local obj_avail = self:get_available_objs()
---	printf( "obj_avail:" )
---	print_table( obj_avail, "   " )
+	printf( "obj_avail:" )
+	print_table( obj_avail, "   " )
 
 	local obj_id
 
