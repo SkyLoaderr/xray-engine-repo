@@ -55,7 +55,7 @@
 	</specific_character>
 
 <specific_character id="yan_Semenov" team_default = "1">
-		<name>Средний научный сотрудник Семенов</name>
+		<name>Ассистент Семенов</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Средний научный сотрудник Семенов. Детальная информация отсутствует.</bio>
