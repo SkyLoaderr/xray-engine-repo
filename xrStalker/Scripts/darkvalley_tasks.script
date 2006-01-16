@@ -5,7 +5,7 @@ function proceed()
 	   actor:object("borov_flash") then
 		actor:give_info_portion("val_player_knows_password") 
 	end
-
+--[[
 	if actor:has_info("val_escort_help_prisoner_task") and actor:dont_has_info("val_prisoner_task_finish") then
 	    if actor:has_info("val_prisoner_free") then
 		    level_tasks.set_task_state(task.completed, "val_prisoner_help", 0)
@@ -25,7 +25,7 @@ function proceed()
 		    actor:give_info_portion("val_sos_task_finish")
 	    end
 	end
-
+--]]
 	-- Laboratory X18
 	if actor:dont_has_info("dar_password_info1") and
 	   actor:object("dar_pass_flash") then

@@ -252,6 +252,12 @@
     <string id="val_escort_nap1_dialog_514">
         <text>Да нет, ничего. Проверка связи.</text>
     </string>
+    <string id="val_escort_nap1_dialog_61">
+        <text>Ты ничем не помог. Нам не о чем разговаривать.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_611">
+        <text>Пока.</text>
+    </string>
     <string id="val_monolith_guard_password_0">
         <text>Стоять! Говори пароль.</text>
     </string>
