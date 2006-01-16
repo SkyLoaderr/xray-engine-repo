@@ -46,7 +46,7 @@
 		<command id="kb_contacts"					exe="contacts"/>
 		<command id="kb_torch"						exe="torch"/>
 		<command id="kb_night_vision"				exe="night_vision"/>
-		<command id="kb_binoculars"					exe="binoculars"/>
+		<!--command id="kb_binoculars"					exe="binoculars"/-->
 		<command id="kb_drop"						exe="drop"/>		
 	</group>
 	<group name="kb_grp_common">
@@ -56,7 +56,7 @@
 		<command id="kb_quit"						exe="quit"/>
 		<command id="kb_console"					exe="console"/>
 		<command id="kb_turn_engine"				exe="turn_engine"/>
-		<command id="kb_repair"						exe="repair"/>
+		<!--command id="kb_repair"						exe="repair"/-->
 	</group>
 	<group name="kb_grp_multiplayer">
 		<command id="kb_scores"						exe="scores"/>

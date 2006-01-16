@@ -20,7 +20,7 @@ public:
 #endif
 protected:
 	void FillUpList();
-	CUILabel		m_header[3];
+	CUILabel		m_header[2];
 	CUIFrameWindow	m_frame;
 	CUIListWnd		m_list;
 	u32				m_dwGroupColor;

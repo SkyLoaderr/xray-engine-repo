@@ -11,7 +11,7 @@
 //extern _keybind  keybind[];
 
 CUIKeyBinding::CUIKeyBinding(){
-	for (int i=0; i<3; i++)
+	for (int i=0; i<2; i++)
 		AttachChild(&m_header[i]);
 	AttachChild(&m_frame);
 	AttachChild(&m_list);
@@ -24,7 +24,7 @@ void CUIKeyBinding::InitFromXml(CUIXml& xml_doc, LPCSTR path){
 	CUIXmlInit::InitFrameWindow	(xml_doc, strconcat(buf,path,":frame"),		0, &m_frame);
 	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":header_1"),	0, &m_header[0]);
 	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":header_2"),	0, &m_header[1]);
-	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":header_3"),	0, &m_header[2]);
+//	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf,path,":header_3"),	0, &m_header[2]);
 
 	CGameFont* pFake;
 	CUIXmlInit::InitFont		(xml_doc, strconcat(buf,path,":list:group_name"),0,m_dwGroupColor,pFake);
@@ -73,7 +73,7 @@ void CUIKeyBinding::FillUpList(){
 #endif
 			
 			CUIEditKeyBind* pEditKB = xr_new<CUIEditKeyBind>();
-			pEditKB->Init(0,0,m_header[1].GetWidth(),m_list.GetItemHeight());
+			pEditKB->Init(0,0,m_header[1].GetWidth()/2,m_list.GetItemHeight());
 			pEditKB->Register(*exe,"key_binding");
 
 			pItem->AddWindow(pEditKB);

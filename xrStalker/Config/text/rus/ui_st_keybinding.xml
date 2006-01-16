@@ -1,195 +1,195 @@
 <string_table>
 	<string id="kb_grp_direction">
-		<text>Change direction</text>
+		<text>Направление</text>
 	</string>
 	<string id="kb_grp_movement">
-		<text>Movement</text>
+		<text>Движение</text>
 	</string>
 	<string id="kb_grp_weapons">
-		<text>Weapons</text>
+		<text>Оружие</text>
 	</string>
 	<string id="kb_grp_inventory">
-		<text>Inventory</text>
+		<text>Инвентарь</text>
 	</string>
 	<string id="kb_grp_common">
-		<text>Common</text>
+		<text>Общее</text>
 	</string>
 	<string id="kb_grp_multiplayer">
-		<text>Multiplayer</text>
+		<text>Мультиплеер</text>
 	</string>	
 	<string id="kb_left">
-		<text>Left</text>
+		<text>Влево</text>
 	</string>
 	<string id="kb_right">
-		<text>Right</text>
+		<text>Вправо</text>
 	</string>
 	<string id="kb_up">
-		<text>Up</text>
+		<text>Вверх</text>
 	</string>
 	<string id="kb_down">
-		<text>Down</text>
+		<text>Вниз</text>
 	</string>
 	<string id="kb_forward">
-		<text>Forward</text>
+		<text>Вперед</text>
 	</string>
 	<string id="kb_backward">
-		<text>Backward</text>
+		<text>Назад</text>
 	</string>
 	<string id="kb_left_strafe">
-		<text>Left strafe</text>
+		<text>Шаг влево</text>
 	</string>
 	<string id="kb_right_strafe">
-		<text>Right stafe</text>
+		<text>Шаг вправо</text>
 	</string>
 	<string id="kb_jump">
-		<text>Jump</text>
+		<text>Прыжок</text>
 	</string>
 	<string id="kb_crouch">
-		<text>Crouch</text>
+		<text>Присесть</text>
 	</string>
 	<string id="kb_crouch_toggle">
-		<text>Crouch toggle</text>
+		<text>Всегда в присяди</text>
 	</string>
 	<string id="kb_always_run">
-		<text>Change always run</text>
+		<text>Всегда бежать</text>
 	</string>
 	<string id="kb_sprint">
-		<text>Sprint</text>
+		<text>Спринт</text>
 	</string>
 	<string id="kb_left_lookout">
-		<text>Left look out</text>
+		<text>Выглянуть влево</text>
 	</string>
 	<string id="kb_right_lookout">
-		<text>Right look out</text>
+		<text>Віглянуть вправо</text>
 	</string>
 	<string id="kb_weapon1">
-		<text>Weapon 1</text>
+		<text>Оружие 1</text>
 	</string>
 	<string id="kb_weapon2">
-		<text>Weapon 2</text>
+		<text>Оружие 2</text>
 	</string>
 	<string id="kb_weapon3">
-		<text>Weapon 3</text>
+		<text>Оружие 3</text>
 	</string>
 	<string id="kb_weapon4">
-		<text>Weapon 4</text>
+		<text>Оружие 4</text>
 	</string>
 	<string id="kb_weapon5">
-		<text>Weapon 5</text>
+		<text>Оружие 5</text>
 	</string>
 	<string id="kb_weapon6">
-		<text>Weapon 6</text>
+		<text>Оружие 6</text>
 	</string>
 	<string id="kb_weapon7">
-		<text>Weapon 7</text>
+		<text>Оружие 7</text>
 	</string>
 	<string id="kb_weapon8">
-		<text>Weapon 8</text>
+		<text>Оружие 8</text>
 	</string>
 	<string id="kb_weapon9">
-		<text>Weapon 9</text>
+		<text>Оружие 9</text>
 	</string>	
 	<string id="kb_wpn_next">
-		<text>Next weapon of this type</text>
+		<text>Переключить режим стрельбы</text>
 	</string>
 	<string id="kb_wpn_prev">
-		<text>Previous weapon of this type</text>
+		<text>Предыдущее оружие этого типа</text>		
 	</string>
 	<string id="kb_next_slot">
-		<text>Select weapon of next slot</text>
+		<text>оружие из следующего слота</text>
 	</string>
 	<string id="kb_prev_slot">
-		<text>select weapon of prev slot</text>
+		<text>оружие из предыдущего слота</text>		
 	</string>
 	<string id="kb_fire">
-		<text>Fire</text>
+		<text>Огонь</text>
 	</string>
 	<string id="kb_zoom">
-		<text>Zoom</text>
+		<text>Увеличить</text>
 	</string>
 	<string id="kb_reload">
-		<text>Reload</text>
+		<text>Перезарядить</text>
 	</string>
 	<string id="kb_func">
-		<text>Func (rename me)</text>
+		<text>Режим стрельби</text>
 	</string>
 	<string id="kb_inventory">
-		<text>Show Inventory</text>
+		<text>Инвентарь</text>
 	</string>
 	<string id="kb_pda">
-		<text>Show PDA</text>
+		<text>ПДА</text>
 	</string>
 	<string id="kb_active_jobs">
-		<text>Show active jobs in PDA</text>
+		<text>Активные задачи в ПДА</text>
 	</string>
 	<string id="kb_map">
-		<text>Show map in PDA</text>
+		<text>Карта в ПДА</text>
 	</string>
 	<string id="kb_contacts">
-		<text>Show contacts in PDA</text>
+		<text>Контакты в ПДА</text>
 	</string>
 	<string id="kb_torch">
-		<text>Torch</text>
+		<text>Фонарик</text>
 	</string>
 	<string id="kb_night_vision">
-		<text>Night vision</text>
+		<text>Прибор ночного видения</text>
 	</string>
 	<string id="kb_binoculars">
-		<text>Binoculars</text>
+		<text>Бинокль</text>
 	</string>
 	<string id="kb_drop">
-		<text>Drop</text>
+		<text>Выложить</text>
 	</string>
 	<string id="kb_pause">
-		<text>Pause</text>
+		<text>Пауза</text>
 	</string>
 	<string id="kb_use">
-		<text>Use</text>
+		<text>Использовать</text>
 	</string>
 	<string id="kb_screenshot">
-		<text>Screen shot</text>
+		<text>Скриншот</text>
 	</string>
 	<string id="kb_quit">
-		<text>Quit</text>
+		<text>Выход</text>
 	</string>
 	<string id="kb_console">
-		<text>Console</text>
+		<text>Консоль</text>
 	</string>
 	<string id="kb_turn_engine">
-		<text>Turn engine</text>
+		<text>Включить</text>
 	</string>
 	<string id="kb_repair">
 		<text>Repair</text>
 	</string>
 	<string id="kb_scores">
-		<text>Scores</text>
+		<text>Очки</text>
 	</string>
 	<string id="kb_chat">
-		<text>Chat</text>
+		<text>Чат</text>
 	</string>
 	<string id="kb_chat_team">
-		<text>Team Chat</text>
+		<text>Командный чат</text>
 	</string>
 	<string id="kb_buy_menu">
-		<text>Buy Menu</text>
+		<text>Меню покупки</text>
 	</string>
 	<string id="kb_skin_menu">
-		<text>Select skin menu</text>
+		<text>Меню выбора модели</text>
 	</string>
 	<string id="kb_team_menu">
-		<text>Select team menu</text>
+		<text>Мею выбора команды</text>
 	</string>
 	<string id="kb_vote_yes">
-		<text>Vote yes</text>
+		<text>Проголосовать "Да"</text>
 	</string>
 	<string id="kb_vote_no">
-		<text>Vote no</text>
+		<text>Проголосовать "Нет"</text>
 	</string>
 	<string id="speech_menu_group">
-		<text>Speech menu (Group)</text>
+		<text>Голосовые сообщения (1)</text>
 	</string>
 	<string id="speech_menu_personal">
-		<text>Speech menu (Personal)</text>
+		<text>Голосовые сообщения (2)</text>
 	</string>
 
 </string_table>
