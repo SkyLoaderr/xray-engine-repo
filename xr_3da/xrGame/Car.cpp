@@ -838,7 +838,7 @@ void CCar::Init()
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 	CDamagableItem::Init(GetfHealth(),3);
-	float l_time_to_explosion=READ_IF_EXISTS(ini,r_float,"car_definition","time_to_explosion",10.f);
+	float l_time_to_explosion=READ_IF_EXISTS(ini,r_float,"car_definition","time_to_explosion",120.f);
 	CDelayedActionFuse::Initialize(l_time_to_explosion,CDamagableItem::DamageLevelToHealth(2));
 	{
 		xr_map<u16,SWheel>::iterator i,e;
