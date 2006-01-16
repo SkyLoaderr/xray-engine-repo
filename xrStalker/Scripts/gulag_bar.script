@@ -227,21 +227,12 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic3@bar_dolg_general_guard_center",
 			idle = 0,
 			prior = 9, state = {0,1,2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = "",
-			predicate = function(obj_info)
-			           	return obj_info.profile_name == "bar_dolg_guard_commander"
-			        end
+			in_rest = "", out_rest = ""
+			
         }
 		table.insert(sj, t)		
         
-        t = { section = "logic3@bar_dolg_general_guard_center",
-			idle = 0,
-			prior = 2, state = {0,1,2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-        }
-		table.insert(sj, t)	    
-
-		t = { section = "logic4@bar_dolg_general_kamp",
+      	t = { section = "logic4@bar_dolg_general_kamp",
 			idle = 0,
 			prior = 5, state = {0,1}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
