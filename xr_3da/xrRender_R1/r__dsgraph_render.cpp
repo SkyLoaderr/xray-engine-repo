@@ -493,8 +493,8 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, CF
 			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
 			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 			{
-				CFrustum&	view	= sector->r_frustums[v_it];
-				if (!view.testSphere_dirty(spatial->spatial.sphere.P,spatial->spatial.sphere.R))	continue;
+				set_Frustum			(&(sector->r_frustums[v_it]));
+				if (!view->testSphere_dirty(spatial->spatial.sphere.P,spatial->spatial.sphere.R))	continue;
 
 				// renderable
 				IRenderable*	renderable		= spatial->dcast_Renderable	();
