@@ -18,6 +18,12 @@
 			<article>descr_bar_resque_information</article>
 		</objective>
 		<objective>
+			<text>bar_resque_scientific_follow</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
+			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
+		</objective>
+		<objective>
 			<text>bar_resque_scientific_information_bring</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>

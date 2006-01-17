@@ -140,6 +140,7 @@
 	<info_portion id="bar_rescue_research_fail"></info_portion>	
 	<info_portion id="bar_rescue_research_dead"></info_portion>
 	<info_portion id="bar_rescue_research_reward"></info_portion>
+	<info_portion id="bar_rescue_research_follow"></info_portion>
 	<info_portion id="bar_actor_heared_freedom_talk"></info_portion>
 	
     <info_portion id="bar_spawn_heli_psevdodogs"></info_portion>
