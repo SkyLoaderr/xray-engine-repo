@@ -841,9 +841,10 @@ void CActor::net_Destroy	()
 	};
 	m_pPhysics_support->in_NetDestroy	();
 
-	xr_delete	(pStatGraph);
-	xr_delete	(m_pActorEffector);
-	pCamBobbing = NULL;
+	xr_delete		(m_sndShockEffector);
+	xr_delete		(pStatGraph);
+	xr_delete		(m_pActorEffector);
+	pCamBobbing		= NULL;
 	
 #ifdef DEBUG	
 	LastPosS.clear();
@@ -861,10 +862,7 @@ void CActor::net_Destroy	()
 
 	SetDefaultVisualOutfit(NULL);
 	
-	if(m_sndShockEffector)
-		xr_delete(m_sndShockEffector);
 
-/*	DestroyFollowerInternal();*/
 	if(g_actor == this) g_actor= NULL;
 }
 

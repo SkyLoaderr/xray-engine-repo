@@ -765,7 +765,9 @@ void CActor::Die	(CObject* who)
 
 
 	//остановить звук тяжелого дыхания
-	m_HeavyBreathSnd.stop();
+	m_HeavyBreathSnd.stop	();
+
+	RemoveEffector			(effHit);
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)

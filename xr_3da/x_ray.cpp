@@ -641,7 +641,7 @@ void CApplication::LoadDraw		()
 //progress bar
 		back_size.set				(268,37);
 		back_text_coords.lt.set		(0,768);back_text_coords.rb.add(back_text_coords.lt,back_size);
-		back_coords.lt.set			(379 ,727);back_coords.rb.add(back_coords.lt,back_size);
+		back_coords.lt.set			(379 ,726);back_coords.rb.add(back_coords.lt,back_size);
 
 		back_coords.lt.mul			(k);back_coords.rb.mul(k);
 
