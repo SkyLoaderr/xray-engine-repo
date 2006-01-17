@@ -59,7 +59,7 @@ function simulation_statistic:getNpcType(npc)
 		end
 		return community, rank
 	else
-		local community = xr_statistic.monster_classes[get_clsid(npc)]
+		local community = xr_statistic.monster_classes[cls]
 		if community == nil then
 			abort("Statistic ERROR: cannot find monstr class for clsid[%s]", get_clsid(npc))
 		end
