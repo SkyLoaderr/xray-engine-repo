@@ -97,7 +97,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 [remark@base_guard_wait2]
 anim                = threat
 target              = actor
-on_timer            = 10000 | {-cit_actor_near_grates} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%, remark@base_guard_kill_actor %+cit_jail_kill_actor%
+on_timer            = 10000 | {-cit_actor_near_grates} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%, camper@base_guard_kill_actor %+cit_jail_kill_actor%
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -105,7 +105,8 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 ;-----------------------------------------------------------------------------------------------------------
 [remark@base_guard_kill_actor]
 anim                = wait_na
-on_info             = {=actor_dead} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
+;on_info             = {=actor_dead} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
+on_info             = {-cit_actor_near_grates} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
 combat_ignore_cond  = {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
@@ -118,7 +119,8 @@ no_retreat                  = true
 radius                      = 0
 def_state_campering         = threat
 def_state_campering_fire    = threat_fire
-on_info                     = {=actor_dead} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
+;on_info                     = {=actor_dead} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
+on_info                     = {-cit_actor_near_grates} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
 combat_ignore_cond          = {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
