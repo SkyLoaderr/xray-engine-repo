@@ -11,23 +11,25 @@ function simulation_statistic:__init()
 	self.allocation = {}
 end
 function simulation_statistic:add(npc)
---	local community, rank = self:getNpcType(npc)
---	self.objects[npc.id] = {community = community, rank = rank}
---	if self.allocation[community] == nil then
---		self.allocation[community] = {}
---	end
---	if self.allocation[community][rank] == nil then
---		self.allocation[community][rank] = 0
---	end
---	self.allocation[community][rank] = self.allocation[community][rank] + 1
+	local community, rank = self:getNpcType(npc)
+	self.objects[npc.id] = {community = community, rank = rank}
+	if self.allocation[community] == nil then
+		self.allocation[community] = {}
+	end
+	if self.allocation[community][rank] == nil then
+		self.allocation[community][rank] = 0
+	end
+	self.allocation[community][rank] = self.allocation[community][rank] + 1
 end
 function simulation_statistic:remove(npc)
---	local community, rank = self.objects[npc.id].community, self.objects[npc.id].rank
---	self.allocation[community][rank] = self.allocation[community][rank] - 1
---	self.objects[npc.id] = nil
+	local community, rank = self.objects[npc.id].community, self.objects[npc.id].rank
+	self.allocation[community][rank] = self.allocation[community][rank] - 1
+	self.objects[npc.id] = nil
 end
 function simulation_statistic:getNpcType(npc)
-	if IsStalker(npc) then
+	local cls = npc:clsid()
+
+	if cls == clsid.script_stalker then
 		local community = "neutral"
 		if npc:community() == "monolith" then
 			community = "monolith"
@@ -72,7 +74,7 @@ function simulation_statistic:getNpcType(npc)
 			rank = "normal"
 		end
 		return community, rank
-	end	
+	end
 end
 function simulation_statistic:pstats(npc)
 	printf("*** SIMULATION POPULATION STATISTIC ***")
