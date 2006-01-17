@@ -757,7 +757,7 @@ void CApplication::Level_Append		(LPCSTR folder)
 	string256	N1,N2,N3,N4;
 	strconcat	(N1,folder,"level");
 	strconcat	(N2,folder,"level.ltx");
-	strconcat	(N3,folder,"level.game");
+	strconcat	(N3,folder,"level.geom");
 	strconcat	(N4,folder,"level.cform");
 	if	(
 		FS.exist("$game_levels$",N1)		&&
