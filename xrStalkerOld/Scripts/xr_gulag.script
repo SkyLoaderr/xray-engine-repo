@@ -1006,6 +1006,17 @@ function gulag:set_goodwill( relation, target_obj )
 	end
 end
 
+-- €вл€етс€ ли персонаж врагом хот€бы кому-то из данного смарта?
+function gulag:npc_is_enemy_to_anybody( target_obj )
+	for obj_id, obj in pairs( self.Object ) do
+		if obj ~= true and obj:relation( target_obj ) == game_object.enemy then
+			return true
+		end
+	end
+
+	return false
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 -- установить логику и сообщить смарту, что объект перешЄл в онлайн.
 -- вызываетс€ из net_spawn() объектов
