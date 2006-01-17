@@ -129,13 +129,6 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		dSurfaceParameters		&surface=c.surface;
 		dGeomID					g1		=cgeom.g1;
 		dGeomID					g2		=cgeom.g2;
-		if(!i) {
-			dReal dif=	dFabs(contacts[i-1].geom.pos[0]-cgeom.pos[0])+
-				dFabs(contacts[i-1].geom.pos[1]-cgeom.pos[1])+
-				dFabs(contacts[i-1].geom.pos[2]-cgeom.pos[2]);
-			if(fis_zero (dif)) continue;
-		}
-
 		bool pushing_neg=	false;
 		bool do_collide	=	true;
 		dxGeomUserData* usr_data_1		=NULL;

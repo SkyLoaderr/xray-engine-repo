@@ -11,19 +11,35 @@
 
 #endif
 
-static 	xr_vector<Triangle> 		pos_tries		;
-static 	xr_vector<Triangle> 		neg_tries		;
-		xr_vector<bool>				ignored_tries	;
-		xr_vector<int>::iterator	I,E,B			;
-
-void AddToIgnoredTries(u32 v)
+static 	xr_vector<Triangle> 		pos_tries			;
+static 	xr_vector<Triangle> 		neg_tries			;
+		xr_vector< flags8 >			gl_cl_tries_state	;
+		xr_vector<int>::iterator	I,E,B				;
+	
+void VxToGlClTriState(u32 v)
 {
 	CDB::TRI*       T_array      = Level().ObjectSpace.GetStaticTris();
 	xr_vector<int>::iterator LI=I+1;
 	for(;E!=LI;++LI)
 	{
 		u32* verts=T_array[*LI].verts;
-		if(verts[0]==v||verts[1]==v||verts[2]==v) ignored_tries[LI-B]=true;
+		flags8 &state  =gl_cl_tries_state[LI-B];
+		if(verts[0]==v)state.set(fl_engaged_v0,TRUE);
+		if(verts[1]==v)state.set(fl_engaged_v1,TRUE);
+		if(verts[2]==v)state.set(fl_engaged_v2,TRUE);
+	}
+}
+void SideToGlClTriState(u32 v0,u32 v1)
+{
+	CDB::TRI*       T_array      = Level().ObjectSpace.GetStaticTris();
+	xr_vector<int>::iterator LI=I+1;
+	for(;E!=LI;++LI)
+	{
+		u32* verts=T_array[*LI].verts;
+		flags8 &state  =gl_cl_tries_state[LI-B];
+		if(verts[0]==v1&&verts[1]==v0)state.set(fl_engaged_s0,TRUE);
+		if(verts[1]==v1&&verts[2]==v0)state.set(fl_engaged_s1,TRUE);
+		if(verts[2]==v1&&verts[0]==v0)state.set(fl_engaged_s2,TRUE);
 	}
 }
 ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle,const Point* VRT)
@@ -166,7 +182,7 @@ int dSortTriPrimitiveCollide (
 		}
 
 	bool b_pushing=*pushing_neg||*pushing_b_neg;
-	ignored_tries.resize(data->cashed_tries.size(),false);
+	gl_cl_tries_state.resize(data->cashed_tries.size(),Flags8().assign(0));
 	B=data->cashed_tries.begin(),E=data->cashed_tries.end();
 	for (I=B; I!=E; ++I)
 	{
@@ -268,7 +284,7 @@ int dSortTriPrimitiveCollide (
 			if(ph_dbg_draw_mask.test(phDBgDrawPositiveTries))
 				DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(255,0,0));
 #endif	
-				if(ret>10) continue;
+//				if(ret>10) continue;
 				if(!b_pushing&&(!intersect||no_last_pos))
 					ret+=T::Collide(
 					vertices[0],

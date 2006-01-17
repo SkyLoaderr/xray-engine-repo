@@ -1285,25 +1285,34 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 void CPHSimpleCharacter::FootProcess(dContact* c,bool &do_collide ,bool bo)
 {
 
-	if(m_elevator_state.ClimbingState() ||!is_control||!b_clamb_jump||b_was_side_contact||b_side_contact||b_jumping||b_jump)		
-																											return;
-			
-///////////////////////////////////////////////////////////////////////////////////
-			dReal*		normal				=c->geom.normal						;
-			dReal*		pos					=c->geom.pos						;
+	
 	const	dGeomID		g1					=c->geom.g1							;
 	const	dGeomID		g2					=c->geom.g2							;
-			float		c_pos				=pos[1]-dBodyGetPosition(m_body)[1]	;
-
 			dGeomID		g					=g1									;
 			float		sign				=1.f								;
-/////////////////////////////////////////////////////////////////////////////////////	
+			dReal*		normal				=c->geom.normal						;
 	if(!bo)	{g=g2;	sign=-1.f;	}
+	if(m_elevator_state.ClimbingState() ||!is_control||!b_clamb_jump||b_was_side_contact||b_side_contact||b_jumping||b_jump)
+	{
+		if(g==m_wheel&&sign*normal[1]<0.f)	do_collide=false;
+		return;
+	}
+			
+///////////////////////////////////////////////////////////////////////////////////
+
+			dReal*		pos					=c->geom.pos						;
+
+	
+			float		c_pos				=pos[1]-dBodyGetPosition(m_body)[1]	;
+
+
+/////////////////////////////////////////////////////////////////////////////////////	
+	
 
 	if(dXZDot(m_acceleration,cast_fv(normal))*sign>0.f)return;
 	if(g==m_wheel)
 	{
-		if(sign*normal[1]<0.f)
+		if(sign*normal[1]<=0.f)
 		{
 			normal[0]=normal[2]=0.f;normal[1]=sign;
 			c->geom.depth=c_pos+m_radius;

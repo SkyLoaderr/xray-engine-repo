@@ -628,7 +628,7 @@ if(9!=code)
 /////////////////////////////////////////////////////////////////////
 dVector3 norm;
 unsigned int ret;
-
+flags8& gl_state=gl_cl_tries_state[I-B];
 if(code==0){
 	norm[0]=triAx[0]*signum;
 	norm[1]=triAx[1]*signum;
@@ -739,16 +739,23 @@ else if(code<7)//1-6
 	contact->depth = outDepth;
 	switch((code-1)%3){
 	case 0:
+	if(gl_state.test(fl_engaged_v0))RETURN0;
+	VxToGlClTriState(T->T->verts[0]);
 	contact->pos[0]=v0[0];
 	contact->pos[1]=v0[1];
 	contact->pos[2]=v0[2];
 	break;
 	case 1:
+	if(gl_state.test(fl_engaged_v1))RETURN0;
+	VxToGlClTriState(T->T->verts[1]);
 	contact->pos[0]=v1[0];
 	contact->pos[1]=v1[1];
 	contact->pos[2]=v1[2];
 	break;
 	case 2:
+	if(gl_state.test(fl_engaged_v2))
+									RETURN0;
+	VxToGlClTriState(T->T->verts[2]);
 	contact->pos[0]=v2[0];
 	contact->pos[1]=v2[1];
 	contact->pos[2]=v2[2];
@@ -769,6 +776,12 @@ else {
 
 else {//7-12
 	ret=1;
+	int iv0=(code-7)%3;
+	int iv1=(iv0+1)%3;
+	int flag=fl_engaged_s0<<(iv0);
+	if(gl_state.test(u8(flag&0xff)))
+						RETURN0;
+	SideToGlClTriState(T->T->verts[iv0],T->T->verts[iv1]);
 	contact->depth = outDepth;
 	norm[0]=outAx[0]*signum;
 	norm[1]=outAx[1]*signum;

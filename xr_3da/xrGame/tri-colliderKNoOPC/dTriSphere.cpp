@@ -307,23 +307,35 @@ int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 	 }
 	 else
 	 {
-		if(!(FragmentonSphereTest(pos,radius,v0,v1,ContactNormal,Depth)||
-			FragmentonSphereTest(pos,radius,v1,v2,ContactNormal,Depth)	||
-			FragmentonSphereTest(pos,radius,v2,v0,ContactNormal,Depth)	))
+		flags8& gl_state=gl_cl_tries_state[I-B];
+		if(gl_state.test(fl_engaged_s0)||gl_state.test(fl_engaged_s1)||gl_state.test(fl_engaged_s2))	
+			return 0;
+		if(FragmentonSphereTest(pos,radius,v0,v1,ContactNormal,Depth))
 		{
-			if(ignored_tries[I-B]) 
-									return 0;
+			SideToGlClTriState(T->T->verts[0],T->T->verts[1]);
+		}
+		else if(FragmentonSphereTest(pos,radius,v1,v2,ContactNormal,Depth))
+		{
+			SideToGlClTriState(T->T->verts[1],T->T->verts[2]);
+		}
+		else if(FragmentonSphereTest(pos,radius,v2,v0,ContactNormal,Depth))
+		{
+			SideToGlClTriState(T->T->verts[2],T->T->verts[0]);
+		}
+		else{
+			if(gl_state.test(fl_engaged_v0)||gl_state.test(fl_engaged_v1)||gl_state.test(fl_engaged_v2))	
+																									return 0;
 			if(PointSphereTest(pos,radius,v0,ContactNormal,Depth))
 			{
-				AddToIgnoredTries(T->T->verts[0]);
+				VxToGlClTriState(T->T->verts[0]);
 			}
 			else if(PointSphereTest(pos,radius,v1,ContactNormal,Depth))
 			{
-				AddToIgnoredTries(T->T->verts[1]);
+				VxToGlClTriState(T->T->verts[1]);
 			}
 			else if(PointSphereTest(pos,radius,v2,ContactNormal,Depth))
 			{
-				AddToIgnoredTries(T->T->verts[2]);
+				VxToGlClTriState(T->T->verts[2]);
 			}
 			else return 0;
 		 }
