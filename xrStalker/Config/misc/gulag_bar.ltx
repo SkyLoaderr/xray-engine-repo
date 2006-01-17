@@ -1448,7 +1448,7 @@ path_look = professor_look
 def_state_moving = assault
 meet = meet@ecolog_kruglov
 radius = 0
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 on_info = {=rostok_dist_to_actor_le(7)} remark@kruglov_dialog_1
 danger = danger_condition@2
 
@@ -1457,7 +1457,7 @@ snd = rostok_kruglov_help_1
 anim = hello
 target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 on_info = {+bar_kruglov_follow_actor} remark@kruglov_dialog_2
 danger = danger_condition@2
 
@@ -1465,21 +1465,21 @@ danger = danger_condition@2
 snd = rostok_kruglov_help_2
 target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 on_signal = sound_end | walker@bar_ecolog_professor_companion 
 danger = danger_condition@2
 
 [walker@bar_ecolog_professor_companion]
 path_walk = escape_1_walk
 on_signal = freedom_chase | camper@bar_rescue_research_hide_1a %=bar_freedom_spam_5 +bar_rescue_research_chasing_start%
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 
 [camper@bar_rescue_research_hide_1a]
 path_walk = escape_1a_walk
 path_look = escape_hide_1_look
 on_signal = arrived_1 | camper@bar_rescue_research_hide_1 %=rostok_kruglov_attract_1 -bar_kruglov_follow_talk%
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 def_state_moving = assault
 danger = danger_condition@2
 
@@ -1499,7 +1499,7 @@ snd = rostok_kruglov_help_6
 anim = hide_na
 target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companion_1 %+bar_kruglov_follow_talk%
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 
 
@@ -1538,7 +1538,7 @@ snd = rostok_kruglov_help_6
 anim = hide_na
 target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companion_2a %+bar_bandits_dead%
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 
 
@@ -1569,7 +1569,7 @@ snd = rostok_kruglov_help_6
 anim = hide_na
 target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_companoin_2 %+bar_ambush_dead%
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 
 
@@ -1596,7 +1596,7 @@ snd = rostok_kruglov_help_6
 anim = wait
 target = actor
 on_signal = sound_end | camper@bar_ecolog_professor_torrid %+bar_go_through_anomaly%
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 
 [camper@bar_ecolog_professor_torrid]
@@ -1604,7 +1604,7 @@ path_walk = torrid_walk
 path_look = escape_4_look
 radius = 0
 no_retreat = true
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 on_signal = arrived_torrid |camper@bar_ecolog_professor_companoin_3
 def_state_moving = assault
 danger = danger_condition@2
@@ -1632,7 +1632,7 @@ snd = rostok_kruglov_help_3
 anim = wait
 target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 on_info = {+bar_rescue_research_reward} remark@kruglov_exit_dialog_2
 danger = danger_condition@2
 
@@ -1641,7 +1641,7 @@ snd = rostok_kruglov_help_4
 anim = wait
 target = actor
 meet = meet@ecolog_kruglov
-combat_ignore_cond = always
+combat_ignore_cond = {!actor_enemy}
 on_signal = sound_end | walker@bar_ecolog_professor_exit
 danger = danger_condition@2
 
