@@ -1580,7 +1580,7 @@ path_walk = escape_4_walk
 path_look = escape_4_look
 radius = 0
 no_retreat = true
-on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_done -bar_kruglov_follow_talk%
+on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_follow -bar_kruglov_follow_talk%
 def_state_moving = assault
 danger = danger_condition@2
 
@@ -1589,7 +1589,7 @@ path_walk = end_walk
 path_look = end_look
 meet = meet@ecolog_kruglov
 radius = 0
-on_info = {=rostok_dist_to_actor_le(7)} remark@kruglov_exit_dialog_1
+on_info = {=rostok_dist_to_actor_le(7)} remark@kruglov_exit_dialog_1 
 danger = danger_condition@2
 
 [remark@kruglov_exit_dialog_1]
@@ -1598,7 +1598,7 @@ anim = wait
 target = actor
 meet = meet@ecolog_kruglov
 combat_ignore_cond = {!actor_enemy}
-on_info = {+bar_rescue_research_reward} remark@kruglov_exit_dialog_2
+on_info = {+bar_rescue_research_reward} remark@kruglov_exit_dialog_2 %+bar_rescue_research_done%
 danger = danger_condition@2
 
 [remark@kruglov_exit_dialog_2]
