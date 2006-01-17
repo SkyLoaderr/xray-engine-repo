@@ -468,9 +468,7 @@ function esc_fanat_victory(actor, npc)
 end
 
 function esc_return_dv(actor, npc)
-	if actor:has_info("esc_return") then
 		news_manager.send_tip(actor, "esc_return_dv", 0, "trader", 0)
-	end
 end
 
 function esc_wolf_thanks(actor, npc)
