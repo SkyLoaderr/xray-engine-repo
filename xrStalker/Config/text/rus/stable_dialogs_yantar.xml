@@ -66,17 +66,14 @@
     <string id="yantar_general_ucheniy_talk_start_2111211">
         <text>Хорошо</text>
     </string>
-    <string id="yantar_general_ucheniy_talk_start_211122">
-        <text>Ну вот и отлично, поговори с Семеновым и отправляйтесь. У него все необходимое есть.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_2111221">
-        <text>Хорошо</text>
-    </string>
     <string id="yantar_general_ucheniy_talk_start_21113">
-        <text>Нет, пока не согласен.</text>
+        <text>Согласен.</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_211131">
-        <text>Очень жаль. Мы пока тоже не можем договориться и отправить экспедицию на замеры.</text>
+        <text>Ну вот и отлично, поговори с Семеновым и отправляйтесь. У него все необходимое есть.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_211132">
+        <text>Хорошо</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_21114">
         <text>Не согласен. Просто скажи где она находится, а я попробую туда пробиться.</text>
@@ -95,6 +92,12 @@
     </string>
     <string id="yantar_general_ucheniy_talk_start_211144">
         <text>Вот и отлично.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_21115">
+        <text>Нет, пока не согласен.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_211151">
+        <text>Очень жаль. Мы пока тоже не можем договориться и отправить экспедицию на замеры.</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_31">
         <text>Вы отлично справились. Если замеры верны, то прототип обеспечит вам максимальную защиту от излучения</text>
