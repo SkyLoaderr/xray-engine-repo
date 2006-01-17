@@ -137,9 +137,7 @@
 	<info_portion id="rostok_kruglov_remark_1"></info_portion>
 	<info_portion id="bar_kruglov_follow_talk"></info_portion>
 	<info_portion id="bar_rescue_research_done"></info_portion>
-	<info_portion id="bar_rescue_research_fail">
-		<disable>bar_heli_scene_stay_online</disable>
-	</info_portion>	
+	<info_portion id="bar_rescue_research_fail"></info_portion>	
 	<info_portion id="bar_rescue_research_dead"></info_portion>
 	<info_portion id="bar_rescue_research_reward"></info_portion>
 	<info_portion id="bar_actor_heared_freedom_talk"></info_portion>
