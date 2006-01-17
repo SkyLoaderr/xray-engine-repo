@@ -26,7 +26,7 @@ local killCountProps = {
 	bloodsucker_weak = 10, bloodsucker_normal = 20, bloodsucker_strong = 30	
 }
 
-local monster_classes = {
+monster_classes = {
 			[clsid.rat           ] = "rat",
 			[clsid.tushkano_s    ] = "tushkano",
 			[clsid.flesh_s       ] = "flesh",
