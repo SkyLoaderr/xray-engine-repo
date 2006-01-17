@@ -454,25 +454,35 @@ void CGameObject::spawn_supplies()
 
 void CGameObject::setup_parent_ai_locations(bool assign_position)
 {
-	CGameObject				*l_tpGameObject	= static_cast<CGameObject*>(H_Root());
+//	CGameObject				*l_tpGameObject	= static_cast<CGameObject*>(H_Root());
+	VERIFY					(H_Parent());
+	CGameObject				*l_tpGameObject	= static_cast<CGameObject*>(H_Parent());
 	VERIFY					(l_tpGameObject);
+
 	// get parent's position
 	if (assign_position && use_parent_ai_locations())
 		Position().set		(l_tpGameObject->Position());
 
 	// setup its ai locations
-	if (!UsedAI_Locations() || !ai().get_level_graph())
+	if (!UsedAI_Locations())
 		return;
 
-	if (ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()))
-		ai_location().level_vertex	(l_tpGameObject->ai_location().level_vertex_id());
-	else
-		validate_ai_locations	(false);
+	if (!ai().get_level_graph()))
+		return;
 
-	if (ai().game_graph().valid_vertex_id(l_tpGameObject->ai_location().game_vertex_id()))
-		ai_location().game_vertex	(l_tpGameObject->ai_location().game_vertex_id());
-	else
-		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
+//	if (ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()))
+//		ai_location().level_vertex	(l_tpGameObject->ai_location().level_vertex_id());
+//	else
+//		validate_ai_locations	(false);
+	VERIFY						(ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()));
+	ai_location().level_vertex	(l_tpGameObject->ai_location().level_vertex_id());
+
+//	if (ai().game_graph().valid_vertex_id(l_tpGameObject->ai_location().game_vertex_id()))
+//		ai_location().game_vertex	(l_tpGameObject->ai_location().game_vertex_id());
+//	else
+//		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
+	VERIFY						(ai().game_graph().valid_vertex_id(l_tpGameObject->ai_location().game_vertex_id()));
+	ai_location().game_vertex	(l_tpGameObject->ai_location().game_vertex_id());
 }
 
 void CGameObject::validate_ai_locations			(bool decrement_reference)
