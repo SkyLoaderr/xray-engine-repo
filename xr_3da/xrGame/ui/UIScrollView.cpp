@@ -9,6 +9,7 @@
 CUIScrollView::CUIScrollView()
 {
 	m_rightIdent		= 0.0f;
+	m_vertInterval		= 0.0f;
 	m_flags.zero		();
 	SetFixedScrollBar	(true);
 }
@@ -77,14 +78,16 @@ void CUIScrollView::RecalcSize			()
 	pad_size.set		(0.0f, 0.0f);
 
 	Fvector2			item_pos;
-	item_pos.set		(m_rightIdent, 0.0f);
+	item_pos.set		(m_rightIdent, m_vertInterval);
 
 	if(GetVertFlip()){
 		for(WINDOW_LIST::reverse_iterator it = m_pad->GetChildWndList().rbegin(); m_pad->GetChildWndList().rend() != it; ++it)
 		{
 			(*it)->SetWndPos		(item_pos);
 			item_pos.y				+= (*it)->GetWndSize().y;
+			item_pos.y				+= m_vertInterval; 
 			pad_size.y				+= (*it)->GetWndSize().y;
+			pad_size.y				+= m_vertInterval;
 			pad_size.x				= _max(pad_size.x, (*it)->GetWndSize().x);
 		}
 
@@ -93,12 +96,18 @@ void CUIScrollView::RecalcSize			()
 		{
 			(*it)->SetWndPos		(item_pos);
 			item_pos.y				+= (*it)->GetWndSize().y;
+			item_pos.y				+= m_vertInterval; 
 			pad_size.y				+= (*it)->GetWndSize().y;
+			pad_size.y				+= m_vertInterval;
 			pad_size.x				= _max(pad_size.x, (*it)->GetWndSize().x);
 		}
 	};
 
 	m_pad->SetWndSize			(pad_size);
+
+
+	if(m_flags.test(eInverseDir) )
+		m_pad->SetWndPos		(m_pad->GetWndPos().x, GetHeight()-m_pad->GetHeight());
 
 	UpdateScroll				();
 
@@ -154,7 +163,7 @@ void CUIScrollView::OnScrollV			()
 	m_pad->SetWndPos			(w_pos.x,float(-s_pos));
 }
 
-bool CUIScrollView::OnMouse				(float x, float y, EUIMessages mouse_action)
+bool CUIScrollView::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	if(inherited::OnMouse(x,y,mouse_action)) return true;
 

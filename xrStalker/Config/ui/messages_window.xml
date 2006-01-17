@@ -39,6 +39,6 @@
 		<font font="medium" r="255" g="255" b="255"/>
 	</mp_log_list>
 	
-	<sp_log_list x="15" y="465" width="525" height="220" item_height="40"/>
+	<sp_log_list x="15" y="365" width="525" height="320" item_height="40"/>
 	<sp_log_list2 x="100" y="650" width="824" height="100" item_height="70"/>
 </window>

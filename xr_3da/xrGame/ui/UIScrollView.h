@@ -10,10 +10,11 @@ class CUIScrollView :public CUIWindow, public CUIWndCallback
 typedef CUIWindow	inherited;
 friend class CUIXmlInit; //for init
 protected:
-enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe=(1<<3),};
+enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe=(1<<3),eInverseDir=(1<<4)};
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
 	float			m_rightIdent;
+	float			m_vertInterval;
 	Flags16			m_flags;
 
 virtual void		RecalcSize			();

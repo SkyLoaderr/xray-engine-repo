@@ -30,7 +30,7 @@ class					CLAItem;
 class					CUIZoneMap;
 class					CUIArtefactPanel;
 class					CUIMoneyIndicator;
-
+class					CUIScrollView;
 
 class CUIMainIngameWnd: public CUIWindow  
 {
@@ -113,6 +113,8 @@ protected:
 	CUIStatic			UIPsyHealthIcon;
 	CUIStatic			UIInvincibleIcon;
 	CUIStatic			UISleepIcon;
+
+	CUIScrollView*		m_UIIcons;
 	CUIWindow*			m_pMPChatWnd;
 	CUIWindow*			m_pMPLogWnd;
 public:	
@@ -159,7 +161,7 @@ public:
 	void				ReceiveNews						(GAME_NEWS_DATA &news);
 	
 protected:
-
+	void				SetWarningIconColor				(CUIStatic* s, const u32 cl);
 	void				InitFlashingIcons				(CUIXml* node);
 	void				DestroyFlashingIcons			();
 	void				UpdateFlashingIcons				();

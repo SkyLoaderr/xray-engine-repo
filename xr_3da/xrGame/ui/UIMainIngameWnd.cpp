@@ -50,6 +50,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "UIDragDropListEx.h"
+#include "UIScrollView.h"
 #include "map_hint.h"
 static CTestDragDropWnd* w = NULL;
 
@@ -90,8 +91,6 @@ const u32	g_clWhite					= 0xffffffff;
 //  Textual constants
 //-----------------------------------------------------------------------------/
 
-#define				PDA_INGAME_SINGLEPLAYER_CFG	"ingame_msglog_sp.xml"
-#define				PDA_INGAME_MULTIPLAYER_CFG	"ingame_msglog_mp.xml"
 #define				MAININGAME_XML				"maingame.xml"
 
 //////////////////////////////////////////////////////////////////////
@@ -209,28 +208,38 @@ void CUIMainIngameWnd::Init()
 
 	uiXml.SetLocalRoot(uiXml.GetRoot());
 
+	m_UIIcons = xr_new<CUIScrollView>(); m_UIIcons->SetAutoDelete(true);
+	xml_init.InitScrollView(uiXml, "icons_scroll_view", 0, m_UIIcons);
+	AttachChild(m_UIIcons);
+
 	// Загружаем иконки 
-	AttachChild(&UIWeaponJammedIcon);
+//.	AttachChild(&UIWeaponJammedIcon);
 	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
-	UIWeaponJammedIcon.ClipperOn();
+	UIWeaponJammedIcon.Show(false);
 
-	AttachChild(&UIRadiaitionIcon);
+//.	AttachChild(&UIRadiaitionIcon);
 	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
+	UIRadiaitionIcon.Show(false);
 
-	AttachChild(&UIWoundIcon);
+//.	AttachChild(&UIWoundIcon);
 	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
+	UIWoundIcon.Show(false);
 
-	AttachChild(&UIStarvationIcon);
+//.	AttachChild(&UIStarvationIcon);
 	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
+	UIStarvationIcon.Show(false);
 
-	AttachChild(&UIPsyHealthIcon);
+//.	AttachChild(&UIPsyHealthIcon);
 	xml_init.InitStatic(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
+	UIPsyHealthIcon.Show(false);
 
-	AttachChild(&UIInvincibleIcon);
+//.	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
+	UIInvincibleIcon.Show(false);
 
-	AttachChild(&UISleepIcon);
+//.	AttachChild(&UISleepIcon);
 	xml_init.InitStatic(uiXml, "can_sleep_static", 0, &UISleepIcon);
+	UISleepIcon.Show(false);
 
 	shared_str warningStrings[6] = 
 	{	
@@ -364,18 +373,7 @@ void CUIMainIngameWnd::Draw()
 		UISndNoiseBar.SetProgressPos( (s16)progr );
 	}
 	
-/*
-	for(CUSTOM_TEXTURE_IT it = m_CustomTextures.begin(); m_CustomTextures.end() != it; it++)
-	{
-		CUSTOM_TEXTURE& custom_texture = *it;
-#pragma todo("ALEXMX -> ANDY")
-		custom_texture.static_item->SetPos	(custom_texture.x1, custom_texture.y1);
-		custom_texture.static_item->SetRect	(0,0,custom_texture.x2-custom_texture.x1, custom_texture.y2-custom_texture.y1);
-		custom_texture.static_item->Render	();
-	}
-	m_CustomTextures.clear();
-
-*/	//отрендерить текстуру объектива снайперского прицела или бинокля
+	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pActor->HUDview() && m_pWeapon){
 		m_pWeapon->OnDrawUI();
 	}
@@ -1144,16 +1142,11 @@ void CUIMainIngameWnd::HideAll()
 {
 	g_bShowHudInfo = false;
 }
+
 void CUIMainIngameWnd::ShowAll()
 {
 	g_bShowHudInfo = true;
 }
-
-/*
-void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id)
-{
-	HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(pSender, msg, info_id);
-}*/
 
 
 void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
@@ -1178,8 +1171,6 @@ void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 
 	pItem->UIMsgText.SetText(message);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::RenderQuickInfos()
 {
@@ -1217,17 +1208,25 @@ void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA &news)
 		HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(news.SingleLineText(), news.show_time);
 }
 
-//////////////////////////////////////////////////////////////////////////
-void SetColor(CUIStatic* s, const u32 cl)
+void CUIMainIngameWnd::SetWarningIconColor(CUIStatic* s, const u32 cl)
 {
 	int bOn = (cl>>24);
-	if(bOn){
-		s->Show		(true); 
-		s->SetColor		(cl);
-	}else 
-		s->Show		(false);
+	bool bIsShown = s->IsShown();
 
+	if(bOn)
+		s->SetColor	(cl);
+
+	if(bOn&&!bIsShown){
+		m_UIIcons->AddWindow	(s, false);
+		s->Show					(true);
+	}
+
+	if(!bOn&&bIsShown){
+		m_UIIcons->RemoveWindow	(s);
+		s->Show					(false);
+	}
 }
+
 void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 {
 	bool bMagicFlag = true;
@@ -1238,33 +1237,31 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 	case ewiAll:
 		bMagicFlag = false;
 	case ewiWeaponJammed:
-		SetColor		(&UIWeaponJammedIcon, cl);
+		SetWarningIconColor		(&UIWeaponJammedIcon, cl);
 		if (bMagicFlag) break;
 	case ewiRadiation:
-		SetColor		(&UIRadiaitionIcon, cl);
+		SetWarningIconColor		(&UIRadiaitionIcon, cl);
 		if (bMagicFlag) break;
 	case ewiWound:
-		SetColor		(&UIWoundIcon, cl);
+		SetWarningIconColor		(&UIWoundIcon, cl);
 		if (bMagicFlag) break;
 	case ewiStarvation:
-		SetColor		(&UIStarvationIcon, cl);
+		SetWarningIconColor		(&UIStarvationIcon, cl);
 		if (bMagicFlag) break;
 	case ewiPsyHealth:
-		SetColor		(&UIPsyHealthIcon, cl);
+		SetWarningIconColor		(&UIPsyHealthIcon, cl);
 		if (bMagicFlag) break;
 	case ewiInvincible:
-		SetColor		(&UIInvincibleIcon, cl);
+		SetWarningIconColor		(&UIInvincibleIcon, cl);
 		if (bMagicFlag) break;
 		break;
 	case ewiSleep:
-		SetColor		(&UISleepIcon, cl);
+		SetWarningIconColor		(&UISleepIcon, cl);
 		break;
 	default:
 		R_ASSERT(!"Unknown warning icon type");
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 {
