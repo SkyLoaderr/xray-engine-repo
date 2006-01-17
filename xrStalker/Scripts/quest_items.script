@@ -5,16 +5,9 @@ function main()
 	local level = level.name()
 
 	table.insert(spawn_items, "wpn_fn2000")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
-	table.insert(spawn_items, "ammo_m209")
+	for i = 1,100 do
+		table.insert(spawn_items, "ammo_m209")
+	end
 	table.insert(spawn_items, "device_torch")
 	
 	if level == "l01_escape" then
