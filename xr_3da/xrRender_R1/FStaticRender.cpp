@@ -385,7 +385,7 @@ void CRender::Calculate				()
 				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 				{
 					set_Frustum			(&(sector->r_frustums[v_it]));
-					if (!view->testSphere_dirty(spatial->spatial.sphere.P,spatial->spatial.sphere.R))	continue;
+					if (!View->testSphere_dirty(spatial->spatial.sphere.P,spatial->spatial.sphere.R))	continue;
 
 					if (spatial->spatial.type & STYPE_RENDERABLE)
 					{
