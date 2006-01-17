@@ -798,8 +798,8 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	if(!m_elevator_state.ClimbingState()&&b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
 		dVectorMul(m_control_force,4.f);
 		m_control_force[1]=dFabs(m_control_force[1]);
-		m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_control_force[0];
-		m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
+		m_control_force[0]=m_control_force[0]*accel[0]>=0.f ? m_control_force[0] : -m_control_force[0];
+		m_control_force[2]=m_control_force[2]*accel[2]>=0.f ? m_control_force[2] : -m_control_force[2];
 	}
 	dVectorMul(m_control_force,m_friction_factor);
 }
@@ -1263,11 +1263,11 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		if(g1==m_wheel||g2==m_wheel&&!bClimable)
 		{
 			c->surface.mu = 0.f;//0.00f;
-			c->surface.mode|=dContactFDir1|dContactMotion1;
-			dReal mag=m_acceleration.magnitude();
-			c->surface.motion1=mag/10.f;
-			dVectorSet(c->fdir1,cast_fp(m_acceleration));
-			dVectorMul(c->fdir1,1.f/mag);
+			//c->surface.mode|=dContactFDir1|dContactMotion1;
+			//dReal mag=m_acceleration.magnitude();
+			//c->surface.motion1=mag/10.f;
+			//dVectorSet(c->fdir1,cast_fp(m_acceleration));
+			//dVectorMul(c->fdir1,1.f/mag);
 		}
 		else{
 				c->surface.mu = 0.00f;
