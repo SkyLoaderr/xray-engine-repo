@@ -7,7 +7,7 @@
 			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
-			<infoportion_fail>bar_rescue_research_dead</infoportion_fail>
+			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_get</text>
@@ -15,7 +15,6 @@
 			<map_location_type hint="bar_resque_scientific_information_get">green_location</map_location_type>
 			<object_story_id>rostok_tainyi_hod</object_story_id>
 			<infoportion_complete>rostok_objective_1</infoportion_complete>
-			<function_complete>bar_rostok_tasks.has_professor_research</function_complete>
 			<article>descr_bar_resque_information</article>
 		</objective>
 		<objective>
@@ -24,7 +23,7 @@
 			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>
 			<object_story_id>rostok_kruglov_finish</object_story_id>
 			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
-			<infoportion_fail>bar_rescue_research_dead</infoportion_fail>
+			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
 		</objective>
 	</game_task>
 
