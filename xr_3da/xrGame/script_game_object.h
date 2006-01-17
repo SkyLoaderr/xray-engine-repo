@@ -292,6 +292,7 @@ public:
 			void				RunTalkDialog		(CScriptGameObject* pToWho);
 			void				ActorSleep			(int hours, int minutes);
 			void				ActorFakeSleep		(int hours, int minutes);
+			bool				IsActorSleepeng		();
 
 			void				HideWeapon			();
 			void				RestoreWeapon		();
