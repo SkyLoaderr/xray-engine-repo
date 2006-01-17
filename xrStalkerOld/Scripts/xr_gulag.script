@@ -64,9 +64,43 @@ function gulag:load_jobs()
 
 	self:prepare_jobs_for_new_state()
 
+	local capacity = 0
+
 	for i, job in ipairs( self.Job ) do
 		if self:job_exists_in_state_0( job ) then
 			table.insert( self.Job_avail_in_state_0, job )
+			capacity = capacity + 1
+		end
+	end
+
+	self.capacity = math.min( capacity, self.capacity )
+
+	-- DEBUG
+--	self:validate_jobs()
+end
+
+-- проверки правильности набора работ.
+-- а) в любом состоянии кол-во 100-но доступных работ должно быть >= ёмкости смарта
+function gulag:validate_jobs()
+	local jobs_avail_in_states = {}
+
+	-- а)
+	for i, job in ipairs( self.Job ) do
+		if job.predicate == nil and
+		   job.idle == 0 and
+		   job.timeout == nil and
+		   job.fill_idle == nil
+		then
+			for j, state in ipairs( job.state ) do
+				jobs_avail_in_states[state] = (jobs_avail_in_states[state] or 0) + 1
+			end
+		end
+	end
+
+	for i, v in ipairs( jobs_avail_in_states ) do
+		if v < self.capacity then
+			print_table( self.Job )
+			abort( "[smart_terrain %s] type=%s state=%d capacity=%d: too few absolutely available jobs", self.name, self.type, i, self.capacity )
 		end
 	end
 end
@@ -97,7 +131,6 @@ end
 -- подсчитать ёмкость = min(кол-во работ в 0 состоянии, поле capacity в custom data)
 function gulag:prepare_jobs()
 	local ptrl, path_name
-	local capacity = 0
 	local job_loaded
 	local empty_table = {}
 
@@ -117,13 +150,7 @@ function gulag:prepare_jobs()
 		job.begin            = job_loaded.begin
 		job.fill_idle        = job_loaded.fill_idle
 		job.idle_after_death = job_loaded.idle_after_death
-
-		if self:job_exists_in_state_0( job ) then
-			capacity = capacity + 1
-		end
 	end
-
-	self.capacity = math.min( capacity, self.capacity )
 
 	local job
 
@@ -476,35 +503,38 @@ end
 -- работа доступна, когда время idle истекло (или не задано)
 -- и занята работа, от которой зависит данная работа.
 function gulag:availJob(job)
-	if ( job.begin == nil or game.time() - job.begin > job.idle ) and
-	   ( job.idle_after_death == nil or job.idle_after_death < game.time() )
-	then
-		if job.fill_idle ~= nil then
-			if job.fill_idle == idle_none then
-				printf( "availJob 1" )
-				return false
-			elseif job.fill_idle ~= idle_once and job.fill_idle < game.time() - job.begin then
-				printf( "availJob 2" )
-				return false
-			end
-		end
---[[
-		local jd = job.dependent
-
-		if jd then
-			for i, v in ipairs( self.Job ) do
-				if v.section == jd then
-					return v.object ~= nil
+	if job.begin == nil or game.time() - job.begin > job.idle then
+		if job.idle_after_death == nil or job.idle_after_death < game.time() then
+			if job.fill_idle ~= nil then
+				if job.fill_idle == idle_none then
+					printf( "availJob=false (fill_idle idle_none)" )
+					return false
+				elseif job.fill_idle ~= idle_once and job.fill_idle < game.time() - job.begin then
+					printf( "availJob=false (fill_idle time)" )
+					return false
 				end
 			end
-		end
+--[[
+			local jd = job.dependent
+
+			if jd then
+				for i, v in ipairs( self.Job ) do
+					if v.section == jd then
+						return v.object ~= nil
+					end
+				end
+			end
 ]]
---		printf( "availJob 3" )
-		return true
+--			printf( "availJob=true" )
+			return true
+		else
+			printf( "availJob=false (idle_after_death)" )
+		end
 	else
-		printf( "availJob 4" )
-		return false
+		printf( "availJob=false (idle)" )
 	end
+
+	return false
 end
 
 -- Текущая работа доступна, если не истекло ее время и занята работа, от которой она зависит

@@ -193,6 +193,8 @@ function se_smart_terrain:initialize_if_needed()
 	if not self.initialized then
 		db.actor_proxy:init()
 
+		sim_statistic.update()
+
 		self:get_se_objs()
 
 		self.initialized = true
@@ -497,6 +499,8 @@ function se_smart_terrain:register_npc( obj )
 
 	self.gulag:update()
 
+	sim_statistic.add( obj )
+
 	printf( "[smart_terrain %s] added %s to gulag type=%s", self:name(), obj:name(), self.gparams.type )
 end
 
@@ -520,6 +524,8 @@ function se_smart_terrain:unregister_npc( obj )
 	self.npc_info[obj.id] = nil
 
 	obj:clear_smart_terrain()
+
+	sim_statistic.remove( obj )
 
 	printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), obj:name() or "<<<nil>>>", self.gparams.type )
 end
@@ -660,6 +666,8 @@ function se_smart_terrain:on_register()
 	if self.gulag_working then
 		self.gulag:initialize()
 	end
+
+	sim_statistic.reinit()
 end
 
 -- Обновление. В онлайне вызывается через binder.
