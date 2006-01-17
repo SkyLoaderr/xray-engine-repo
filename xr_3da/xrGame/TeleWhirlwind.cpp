@@ -257,7 +257,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			}
 			
 			
-			E->applyForce(force.x,force.y+ph_world->Gravity()*E->getMass(),force.z);
+			E->applyForce(force.x,force.y+get_object()->EffectiveGravity()*E->getMass(),force.z);
 		}
 		Fvector dist;dist.sub(center,maxE->mass_Center());
 		if(dist.magnitude()<m_telekinesis->keep_radius()&&b_destroyable)

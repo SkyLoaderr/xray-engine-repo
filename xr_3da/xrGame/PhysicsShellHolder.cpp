@@ -10,6 +10,7 @@
 #include "PHScriptCall.h"
 #include "CustomRocket.h"
 #include "Grenade.h"
+#include "phworld.h"
 CPhysicsShellHolder::CPhysicsShellHolder()
 {
 	init();
@@ -178,4 +179,8 @@ void CPhysicsShellHolder::UpdateCL	()
 	inherited::UpdateCL	();
 	//обновить присоединенные партиклы
 	if (m_bActiveBones)	UpdateParticles	();
+}
+float CPhysicsShellHolder::EffectiveGravity()
+{
+	return ph_world->Gravity();
 }

@@ -66,7 +66,7 @@ public:
 	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
 	virtual void			PHUnFreeze			();
 	virtual void			PHFreeze			();
-
+	virtual float			EffectiveGravity	();
 ///////////////////////////////////////////////////////////////
 	virtual void			create_physic_shell		();
 	virtual void			activate_physic_shell	();

@@ -510,10 +510,11 @@ void	CCar::Hit							(SHit* pHDS)
 
 void CCar::ChangeCondition	(float fDeltaCondition)	
 {
+	
 	CEntity::CalcCondition(-fDeltaCondition);
 	CDamagableItem::HitEffect();
 	if (Local() && !g_Alive() && !AlreadyDie())
-		KillEntity	(CExplosive::Initiator());
+		KillEntity	(Initiator());
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
 		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(GetfHealth()/* /100.f */);
 }
@@ -931,7 +932,7 @@ void CCar::Init()
 
 void CCar::Revert()
 {
-	m_pPhysicsShell->applyForce(0,EffectiveGravity()*m_pPhysicsShell->getMass(),0);
+	m_pPhysicsShell->applyForce(0,1.5f*EffectiveGravity()*m_pPhysicsShell->getMass(),0);
 }
 
 void CCar::NeutralDrive()
@@ -1317,7 +1318,9 @@ void CCar::PhTune(dReal step)
 }
 float CCar::EffectiveGravity()
 {
-	return ph_world->Gravity()/2.f;
+	float g= ph_world->Gravity();
+	if(CPHUpdateObject::IsActive())g*=0.5f;
+	return g;
 }
 float CCar::AntiGravityAccel()
 {
@@ -1962,7 +1965,7 @@ void CCar::AscCall(EAsyncCalls c)
 
 bool CCar::CanRemoveObject()
 {
-	return !CExplosive::IsSoundPlaying();
+	return CExplosive::IsExploded()&&!CExplosive::IsSoundPlaying();
 }
 
 void		CCar::SetExplodeTime				(u32 et)	
