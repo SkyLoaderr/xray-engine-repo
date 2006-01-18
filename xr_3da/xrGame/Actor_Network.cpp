@@ -50,9 +50,9 @@ CActor*		g_actor						= NULL;
 
 CActor*			Actor()	
 {	
-	VERIFY(g_actor); 
+	R_ASSERT(g_actor); 
 	if (GameID() != GAME_SINGLE) 
-		VERIFY(g_actor == Level().CurrentControlEntity());
+		R_ASSERT(g_actor == Level().CurrentControlEntity());
 	return g_actor; 
 };
 
