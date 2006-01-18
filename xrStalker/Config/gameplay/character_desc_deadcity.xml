@@ -32,7 +32,7 @@
 <!----------------------------- KILLERS ------------------------->
 <!----------------------------- GENERAL ------------------------->
 	<specific_character id="cit_killer_general1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -65,7 +65,7 @@
 	</specific_character>
 
 	<specific_character id="cit_killer_general2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -99,7 +99,7 @@
 
 <!----------------------------- VETERAN ------------------------->
 	<specific_character id="cit_killer_veteran1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -131,7 +131,7 @@
 	</specific_character>
 
 	<specific_character id="cit_killer_veteran2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -165,7 +165,7 @@
 
 <!------------------------------ NAUCHNIY ----------------------->
 	<specific_character id="cit_killer_nauchniy" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="0"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
@@ -199,7 +199,7 @@
 
 <!------------------------------ EXO ----------------------->
 	<specific_character id="cit_killer_exo" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
@@ -220,6 +220,40 @@
 			wpn_beretta \n
 			ammo_9x19_pbp = 3 \n
 			wpn_sig550 \n
+			ammo_5.56x45_ss190 = 2 \n
+			ammo_5.56x45_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="cit_killer_exo_sniper" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="30" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+
+		<class>cit_killer_exo_sniper</class>
+		<community>killer</community>
+		
+		<rank>90</rank>
+		<reputation>-50</reputation>
+	
+		<snd_config>characters_voice\human_03\</snd_config>
+		
+		<panic_threshold>0</panic_threshold>
+
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 3 \n
+			wpn_sig550 = 1,scope silencer \n
 			ammo_5.56x45_ss190 = 2 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
@@ -254,7 +288,7 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 4 \n
-			wpn_sig550 = 1,scope \n
+			wpn_sig550 = 1,scope launcher \n
 			ammo_5.56x45_ss190 = 3 \n
 			ammo_5.56x45_ap = 3 \n
 			device_torch \n
@@ -271,7 +305,7 @@
 <!-------------------------- BANDITS ----------------------->
 <!--------------------------- DRUNK ------------------------>
     <specific_character id="cit_bandit_drunk" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Алкаш.</bio>
@@ -298,7 +332,7 @@
 
 <!---------------------------BANDIT GENERAL---------------------->
 	<specific_character id="cit_bandit_general_defaul1t" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -329,7 +363,7 @@
 	</specific_character>
 
 	<specific_character id="cit_bandit_general_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -359,7 +393,7 @@
 	</specific_character>
 
 	<specific_character id="cit_bandit_general_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -389,7 +423,7 @@
 	</specific_character>
 
 	<specific_character id="cit_bandit_general_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -420,7 +454,7 @@
 	
 <!---------------------------BANDIT VETERAN---------------------->
 	<specific_character id="cit_bandit_veteran_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -451,7 +485,7 @@
 	</specific_character>
 
 	<specific_character id="cit_bandit_veteran_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -481,7 +515,7 @@
 	</specific_character>
 
 	<specific_character id="cit_bandit_veteran_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -512,7 +546,7 @@
 
 <!-------------------------- VETERAN BEST ----------------------->
 	<specific_character id="cit_bandit_veteran_best" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>

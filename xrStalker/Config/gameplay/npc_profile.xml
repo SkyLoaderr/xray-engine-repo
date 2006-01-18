@@ -233,6 +233,9 @@
 	<character id="cit_killer_exo">
 		<class>cit_killer_exo</class>
 	</character>
+	<character id="cit_killer_exo_sniper">
+		<class>cit_killer_exo_sniper</class>
+	</character>
 	<character id="cit_killer_leader">
 		<class>cit_killer_leader</class>
 		<specific_character>cit_killer_leader</specific_character>
