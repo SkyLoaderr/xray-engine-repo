@@ -456,12 +456,12 @@ LPCSTR			CSE_ALifeTraderAbstract::CommunityName () const
 	return *CHARACTER_COMMUNITY::IndexToId(m_community_index);
 }
 
-CHARACTER_RANK_VALUE			CSE_ALifeTraderAbstract::Rank		() const
+CHARACTER_RANK_VALUE			CSE_ALifeTraderAbstract::Rank		()
 {
 	specific_character();
 	return m_rank;
 }
-CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation () const
+CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation ()
 {
 	specific_character();
 	return m_reputation;
