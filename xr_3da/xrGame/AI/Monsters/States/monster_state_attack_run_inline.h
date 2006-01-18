@@ -33,6 +33,8 @@ void CStateMonsterAttackRunAbstract::execute()
 
 	
 	// обработать squad инфо	
+	object->path().set_use_dest_orient		(false);
+
 	CMonsterSquad *squad	= monster_squad().get_squad(object);
 	if (squad && squad->SquadActive()) {
 		// Получить команду
@@ -42,7 +44,7 @@ void CStateMonsterAttackRunAbstract::execute()
 		if (command.type == SC_ATTACK) {
 			object->path().set_use_dest_orient	(true);
 			object->path().set_dest_direction	(command.direction);
-		}
+		} 
 	}
 }
 

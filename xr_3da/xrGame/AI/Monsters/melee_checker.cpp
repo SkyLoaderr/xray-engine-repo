@@ -44,6 +44,11 @@ void CMeleeChecker::on_hit_attempt(bool hit_success)
 	if (!stack_similar) return;
 
 	// обновить m_current_min_distance
-	if (hit_success && (m_current_min_distance + m_as_step < m_min_attack_distance))	m_current_min_distance += m_as_step;
-	if (!hit_success && (m_current_min_distance > m_as_min_dist + m_as_step)) 			m_current_min_distance -= m_as_step;
+	if (hit_success) {
+		if (m_current_min_distance + m_as_step < m_min_attack_distance)	m_current_min_distance += m_as_step;
+		else m_current_min_distance = m_min_attack_distance;
+	} else {
+		if (m_current_min_distance > m_as_min_dist + m_as_step) m_current_min_distance -= m_as_step;
+		else m_current_min_distance = m_as_min_dist;
+	}
 }

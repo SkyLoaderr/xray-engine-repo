@@ -54,7 +54,8 @@ void CStateBurerAttackRunAroundAbstract::execute()
 	if (!fis_zero(dest_direction.square_magnitude())) {
 		object->path().set_use_dest_orient		(true);
 		object->path().set_dest_direction		(dest_direction);
-	}
+	} else object->path().set_use_dest_orient	(false);
+
 
 	object->set_action							(ACT_RUN);
 	object->path().set_target_point			(selected_point);

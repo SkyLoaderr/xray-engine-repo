@@ -56,7 +56,8 @@ void CStateZombieAttackRunAbstract::execute()
 	if (squad_active) {
 		object->path().set_use_dest_orient	(true);
 		object->path().set_dest_direction	(command.direction);
-	}
+	} else 
+		object->path().set_use_dest_orient	(false);
 	
 	choose_action								();
 	object->anim().m_tAction					= action;	
