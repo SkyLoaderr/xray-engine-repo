@@ -12,6 +12,11 @@ function black_screen(actor, npc)
 	return device().precache_frame > 1
 end
 
+-- 
+function is_actor_sleeping(actor, npc)
+    return db.actor:is_actor_sleeping()
+end
+
 -- проверка, что актер жив
 function actor_alive(actor, npc)
     if db.actor and db.actor:alive() then
@@ -19,6 +24,7 @@ function actor_alive(actor, npc)
 	end
 	return false
 end
+
 -- проверка, что актер мертв
 function actor_dead(actor, npc)
     if db.actor and not db.actor:alive() then
