@@ -270,15 +270,12 @@ function fail_rg6_task (task_id, subtask)
 end
 
 function is_actor_enemy_freedom ()
-    return false
-    --local gulag = xr_gulag.get_gulag_by_name ("mil_freedom")
-    --if gulag == nil then return false end
-    --for k,v in pairs(gulag.Object) do
-        --if v ~= true and v:relation (db.actor) == game_object.enemy then
-           --return true
-        --end
-    --end       
-    --return false
+
+    local gulag = xr_gulag.get_gulag_by_name ("mil_freedom")
+    if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then
+       return false
+    end    
+    return true
 end
 
 function lukash_job_fail (task_id, subtask)
