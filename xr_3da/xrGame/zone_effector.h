@@ -25,12 +25,13 @@ class CZoneEffector {
 	float			r_min_perc;		// min_radius (percents [0..1])
 	float			r_max_perc;		// max_radius (percents [0..1])
 	float			radius;
-	CActor*			m_pActor;
 	CZoneEffectPP	*p_effector;
 
 public:
 			CZoneEffector	();
 			~CZoneEffector	();
+
+	CActor*			m_pActor;
 
 	void	Load			(LPCSTR section);
 	void	SetRadius		(float r);

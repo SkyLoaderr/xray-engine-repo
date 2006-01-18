@@ -380,14 +380,8 @@ void CExplosive::Explode()
 	{
 		float dist_to_actor = pActor->Position().distance_to(pos);
 		float max_dist		= EFFECTOR_RADIUS;
-		if (dist_to_actor < max_dist) {
-			AddEffector			(effExplodeHit, effector.effect_sect_name, (max_dist - dist_to_actor) / max_dist );
-/*
-			CFireHitCamEffector* e = xr_new<CFireHitCamEffector>(eCEExplode, (max_dist - dist_to_actor) / max_dist );
-			e->Start	(*effector.file_name);
-			pActor->Cameras().AddCamEffector(e);
-*/
-		}
+		if (dist_to_actor < max_dist)
+			AddEffector	(pActor, effExplodeHit, effector.effect_sect_name, (max_dist - dist_to_actor) / max_dist );
 	}
 }
 

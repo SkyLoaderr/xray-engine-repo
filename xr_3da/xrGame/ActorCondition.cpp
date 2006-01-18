@@ -150,22 +150,22 @@ void CActorCondition::UpdateCondition()
 		CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
 		if	((m_fAlcohol>0.0001f) ){
 			if(!ce){
-				AddEffector(effAlcohol, "effector_alcohol", GET_KOEFF_FUNC(this, &CActorCondition::GetAlcohol));
+				AddEffector(m_object,effAlcohol, "effector_alcohol", GET_KOEFF_FUNC(this, &CActorCondition::GetAlcohol));
 			}
 		}else{
 			if(ce)
-				RemoveEffector(effAlcohol);
+				RemoveEffector(m_object,effAlcohol);
 		}
 
 		
-		CEffectorPP* ppe = Actor()->Cameras().GetPPEffector((EEffectorPPType)effPsyHealth);
+		CEffectorPP* ppe = object().Cameras().GetPPEffector((EEffectorPPType)effPsyHealth);
 		if	((GetPsyHealth()>0.0001f) ){
 			if(!ppe){
-				AddEffector(effPsyHealth, "effector_psy_health", GET_KOEFF_FUNC(this, &CActorCondition::GetPsy));
+				AddEffector(m_object,effPsyHealth, "effector_psy_health", GET_KOEFF_FUNC(this, &CActorCondition::GetPsy));
 			}
 		}else{
 			if(ppe)
-				RemoveEffector(effPsyHealth);
+				RemoveEffector(m_object,effPsyHealth);
 		}
 		if(fis_zero(GetPsyHealth()))
 			health() =0.0f;

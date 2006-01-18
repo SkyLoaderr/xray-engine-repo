@@ -453,7 +453,7 @@ void	CActor::Hit							(SHit* pHDS)
 				S.set_volume(10.0f);
 				if(!m_sndShockEffector){
 					m_sndShockEffector = xr_new<SndShockEffector>();
-					m_sndShockEffector->Start( float(S._handle()->length_ms()), HDS.damage() );
+					m_sndShockEffector->Start(this, float(S._handle()->length_ms()), HDS.damage() );
 				}
 			}
 			else
@@ -609,7 +609,7 @@ void CActor::HitMark	(float P,
 
 			string64 sect_name;
 			sprintf(sect_name,"effector_fire_hit_%d",id);
-			AddEffector(effFireHit, sect_name, P/100.0f);
+			AddEffector(this, effFireHit, sect_name, P/100.0f);
 			}
 		}
 	}
@@ -745,7 +745,7 @@ void CActor::Die	(CObject* who)
 	//остановить звук тяжелого дыхания
 	m_HeavyBreathSnd.stop	();
 
-	RemoveEffector			(effHit);
+	RemoveEffector			(this, effHit);
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)

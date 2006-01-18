@@ -8,11 +8,11 @@ class CEffectorController;
 
 typedef fastdelegate::FastDelegate0<float>		GET_KOEFF_FUNC;
 
-void AddEffector		(int type, const shared_str& sect_name);
-void AddEffector		(int type, const shared_str& sect_name, float factor);
-void AddEffector		(int type, const shared_str& sect_name, GET_KOEFF_FUNC);
-void AddEffector		(int type, const shared_str& sect_name, CEffectorController*);
-void RemoveEffector		(int type);
+void AddEffector		(CActor* A, int type, const shared_str& sect_name);
+void AddEffector		(CActor* A, int type, const shared_str& sect_name, float factor);
+void AddEffector		(CActor* A, int type, const shared_str& sect_name, GET_KOEFF_FUNC);
+void AddEffector		(CActor* A, int type, const shared_str& sect_name, CEffectorController*);
+void RemoveEffector		(CActor* A, int type);
 
 class CEffectorController
 {
@@ -88,7 +88,7 @@ public:
 public:
 								SndShockEffector	();
 	virtual						~SndShockEffector	();
-	void						Start				(float snd_length, float power);
+	void						Start				(CActor* A, float snd_length, float power);
 	void						Update				();
 
 	virtual		BOOL			Valid				();

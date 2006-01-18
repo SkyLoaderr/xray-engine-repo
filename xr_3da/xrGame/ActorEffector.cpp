@@ -7,7 +7,7 @@
 #include "object_broker.h"
 #include "actor.h"
 
-void AddEffector		(int type, const shared_str& sect_name)
+void AddEffector		(CActor* A, int type, const shared_str& sect_name)
 {
 	if(pSettings->line_exist(sect_name,"pp_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
@@ -17,7 +17,7 @@ void AddEffector		(int type, const shared_str& sect_name)
 
 		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
 		pp_anm->Load						(fn);
-		Actor()->Cameras().AddPPEffector	(pp_anm);
+		A->Cameras().AddPPEffector	(pp_anm);
 	}
 	if(pSettings->line_exist(sect_name,"cam_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
@@ -26,11 +26,11 @@ void AddEffector		(int type, const shared_str& sect_name)
 		cam_anm->SetCyclic					(bCyclic);
 		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
 		cam_anm->Start						(fn);
-		Actor()->Cameras().AddCamEffector	(cam_anm);
+		A->Cameras().AddCamEffector	(cam_anm);
 	}
 }
 
-void AddEffector		(int type, const shared_str& sect_name, CEffectorController* ec)
+void AddEffector		(CActor* A, int type, const shared_str& sect_name, CEffectorController* ec)
 {
 	if(pSettings->line_exist(sect_name,"pp_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
@@ -39,7 +39,7 @@ void AddEffector		(int type, const shared_str& sect_name, CEffectorController* e
 		pp_anm->SetCyclic					(bCyclic);
 		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
 		pp_anm->Load						(fn);
-		Actor()->Cameras().AddPPEffector	(pp_anm);
+		A->Cameras().AddPPEffector			(pp_anm);
 	}
 	if(pSettings->line_exist(sect_name,"cam_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
@@ -48,11 +48,11 @@ void AddEffector		(int type, const shared_str& sect_name, CEffectorController* e
 		cam_anm->SetCyclic					(bCyclic);
 		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
 		cam_anm->Start						(fn);
-		Actor()->Cameras().AddCamEffector	(cam_anm);
+		A->Cameras().AddCamEffector			(cam_anm);
 	}
 }
 
-void AddEffector		(int type, const shared_str& sect_name, GET_KOEFF_FUNC k_func)
+void AddEffector		(CActor* A, int type, const shared_str& sect_name, GET_KOEFF_FUNC k_func)
 {
 	if(pSettings->line_exist(sect_name,"pp_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
@@ -62,7 +62,7 @@ void AddEffector		(int type, const shared_str& sect_name, GET_KOEFF_FUNC k_func)
 		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
 		pp_anm->SetFactorFunc				(k_func);
 		pp_anm->Load						(fn);
-		Actor()->Cameras().AddPPEffector	(pp_anm);
+		A->Cameras().AddPPEffector			(pp_anm);
 	}
 	if(pSettings->line_exist(sect_name,"cam_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
@@ -72,11 +72,11 @@ void AddEffector		(int type, const shared_str& sect_name, GET_KOEFF_FUNC k_func)
 		cam_anm->SetCyclic					(bCyclic);
 		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
 		cam_anm->Start						(fn);
-		Actor()->Cameras().AddCamEffector	(cam_anm);
+		A->Cameras().AddCamEffector			(cam_anm);
 	}
 };
 
-void AddEffector		(int type, const shared_str& sect_name, float factor)
+void AddEffector(CActor* A, int type, const shared_str& sect_name, float factor)
 {
 	if(pSettings->line_exist(sect_name,"pp_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
@@ -86,7 +86,7 @@ void AddEffector		(int type, const shared_str& sect_name, float factor)
 		pp_anm->SetPower					(factor);
 		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
 		pp_anm->Load						(fn);
-		Actor()->Cameras().AddPPEffector	(pp_anm);
+		A->Cameras().AddPPEffector			(pp_anm);
 	}
 	if(pSettings->line_exist(sect_name,"cam_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"cam_eff_cyclic");
@@ -96,15 +96,15 @@ void AddEffector		(int type, const shared_str& sect_name, float factor)
 		cam_anm->SetCyclic					(bCyclic);
 		LPCSTR fn = pSettings->r_string		(sect_name,"cam_eff_name");
 		cam_anm->Start						(fn);
-		Actor()->Cameras().AddCamEffector	(cam_anm);
+		A->Cameras().AddCamEffector			(cam_anm);
 	}
 };
 
 
-void RemoveEffector		(int type)
+void RemoveEffector		(CActor* A, int type)
 {
-	Actor()->Cameras().RemoveCamEffector	((ECamEffectorType)type);
-	Actor()->Cameras().RemovePPEffector		((EEffectorPPType)type);
+	A->Cameras().RemoveCamEffector	((ECamEffectorType)type);
+	A->Cameras().RemovePPEffector		((EEffectorPPType)type);
 }
 
 
@@ -253,7 +253,7 @@ float SndShockEffector::GetFactor()
 	return f*m_life_time/8.0f;
 }
 
-void SndShockEffector::Start(float snd_length, float power)
+void SndShockEffector::Start(CActor* A, float snd_length, float power)
 {
 	m_snd_length = snd_length;
 
@@ -269,7 +269,7 @@ void SndShockEffector::Start(float snd_length, float power)
 	m_life_time			= power*xxx;
 	m_end_time			= Device.fTimeGlobal + m_life_time;
 
-	AddEffector			(effHit,"snd_shock_effector", this);
+	AddEffector			(A, effHit,"snd_shock_effector", this);
 }
 
 void SndShockEffector::Update()

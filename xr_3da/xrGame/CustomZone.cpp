@@ -1354,6 +1354,10 @@ void CCustomZone::net_Relcase(CObject* O)
 	}
 	if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
 
+	// m_effector->m_pActor != NULL means effector in active state
+	if(m_effector->m_pActor && m_effector->m_pActor->ID() == GO->ID())
+		m_effector->Stop();
+
 	inherited::net_Relcase(O);
 }
 

@@ -40,12 +40,15 @@ void CZoneEffectPP::Destroy()
 ////////////////////////////////////////////////////////////////////////////////////
 CZoneEffector::CZoneEffector() 
 {
-	p_effector  = 0;
 	radius		= 1;
+	p_effector  = NULL;
+	m_pActor	= NULL;
 }
 
 CZoneEffector::~CZoneEffector()
 {
+	p_effector  = NULL;
+	m_pActor	= NULL;
 }
 
 void CZoneEffector::Load(LPCSTR section)
@@ -84,7 +87,8 @@ void CZoneEffector::Stop()
 	 
 	m_pActor->Cameras().RemovePPEffector(EEffectorPPType( u32(u64(this) & u32(-1)) ));
 	p_effector->Destroy();
-	p_effector = 0;
+	p_effector	= NULL;
+	m_pActor	= NULL;
 };
 
 void CZoneEffector::Update(float dist)

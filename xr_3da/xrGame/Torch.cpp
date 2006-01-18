@@ -104,7 +104,7 @@ void CTorch::SwitchNightVision(bool vision_on)
 		{
 			CEffectorPP* pp = pA->Cameras().GetPPEffector((EEffectorPPType)effNightvision);
 			if(!pp){
-				AddEffector(effNightvision, "effector_nightvision");
+				AddEffector(pA,effNightvision, "effector_nightvision");
 				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
 				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
 			}
