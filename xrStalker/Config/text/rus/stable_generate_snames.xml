@@ -598,98 +598,1207 @@
 <string id="lname_x_199">
 	<text>Князь</text>
 </string>
-
-
-<string id="lname_0">
-	<text>Аристов</text>
+<string id="lname_stalker_200">
+	<text>Козак</text>
 </string>
-<string id="lname_1">
-	<text>Большаков</text>
+<string id="lname_stalker_201">
+	<text>Кок</text>
 </string>
-<string id="lname_2">
-	<text>Веретянников</text>
+<string id="lname_stalker_202">
+	<text>Колдун</text>
 </string>
-<string id="lname_3">
-	<text>Винниченко</text>
+<string id="lname_stalker_203">
+	<text>Команч</text>
 </string>
-<string id="lname_4">
-	<text>Гончаренко</text>
+<string id="lname_stalker_204">
+	<text>Король</text>
 </string>
-<string id="lname_5">
-	<text>Диденко</text>
+<string id="lname_stalker_205">
+	<text>Крестный отец</text>
 </string>
-<string id="lname_6">
-	<text>Ефимов</text>
+<string id="lname_stalker_206">
+	<text>Купец</text>
 </string>
-<string id="lname_7">
-	<text>Жемейцев</text>
+<string id="lname_stalker_207">
+	<text>Курильщик</text>
 </string>
-<string id="lname_8">
-	<text>Коломиец</text>
+<string id="lname_stalker_208">
+	<text>Курьер</text>
 </string>
-<string id="lname_9">
-	<text>Корунчак</text>
+<string id="lname_stalker_209">
+	<text>Кучер</text>
 </string>
-<string id="lname_10">
-	<text>Кузьменко</text>
+<string id="lname_stalker_210">
+	<text>Легионер</text>
 </string>
-<string id="lname_11">
-	<text>Курбатов</text>
+<string id="lname_stalker_211">
+	<text>Лекарь</text>
 </string>
-<string id="lname_12">
-	<text>Лехно</text>
+<string id="lname_stalker_212">
+	<text>Лесник</text>
 </string>
-<string id="lname_13">
-	<text>Максимов</text>
+<string id="lname_stalker_213">
+	<text>Лорд</text>
 </string>
-<string id="lname_14">
-	<text>Максимчук</text>
+<string id="lname_stalker_214">
+	<text>Магнат</text>
 </string>
-<string id="lname_15">
-	<text>Негробов</text>
+<string id="lname_stalker_215">
+	<text>Мажор</text>
 </string>
-<string id="lname_16">
-	<text>Петровский</text>
+<string id="lname_stalker_216">
+	<text>Маньяк</text>
 </string>
-<string id="lname_17">
-	<text>Подорванный</text>
+<string id="lname_stalker_217">
+	<text>Марсианин</text>
 </string>
-<string id="lname_18">
-	<text>Прохоров</text>
+<string id="lname_stalker_218">
+	<text>Масон</text>
 </string>
-<string id="lname_19">
-	<text>Слипченко</text>
+<string id="lname_stalker_219">
+	<text>Механик</text>
 </string>
-<string id="lname_20">
-	<text>Супрун</text>
+<string id="lname_stalker_220">
+	<text>Могильщик</text>
 </string>
-<string id="lname_21">
-	<text>Сытянов</text>
+<string id="lname_stalker_221">
+	<text>Модератор</text>
 </string>
-<string id="lname_22">
-	<text>Ткаченко</text>
+<string id="lname_stalker_222">
+	<text>Молочник</text>
 </string>
-<string id="lname_23">
+<string id="lname_stalker_223">
+	<text>Мясник</text>
+</string>
+<string id="lname_stalker_224">
+	<text>Наемник</text>
+</string>
+<string id="lname_stalker_225">
+	<text>Настройщик</text>
+</string>
+<string id="lname_stalker_226">
+	<text>Начальник</text>
+</string>
+<string id="lname_stalker_227">
+	<text>Ниндзя</text>
+</string>
+<string id="lname_stalker_228">
+	<text>Оператор</text>
+</string>
+<string id="lname_stalker_229">
+	<text>Оружейник</text>
+</string>
+<string id="lname_stalker_230">
+	<text>Падишах</text>
+</string>
+<string id="lname_stalker_231">
+	<text>Палач</text>
+</string>
+<string id="lname_stalker_232">
+	<text>Полкан</text>
+</string>
+<string id="lname_stalker_233">
+	<text>Панк</text>
+</string>
+<string id="lname_stalker_234">
+	<text>Папа</text>
+</string>
+<string id="lname_stalker_235">
+	<text>Партизан</text>
+</string>
+<string id="lname_stalker_236">
+	<text>Пастор</text>
+</string>
+<string id="lname_stalker_237">
+	<text>Пастух</text>
+</string>
+<string id="lname_stalker_238">
+	<text>Пастырь</text>
+</string>
+<string id="lname_stalker_239">
+	<text>Пахарь</text>
+</string>
+<string id="lname_stalker_240">
+	<text>Пацифист</text>
+</string>
+<string id="lname_stalker_241">
+	<text>Перевозчик</text>
+</string>
+<string id="lname_stalker_242">
+	<text>Пианист</text>
+</string>
+<string id="lname_stalker_243">
+	<text>Пилот</text>
+</string>
+<string id="lname_stalker_244">
+	<text>Пионер</text>
+</string>
+<string id="lname_stalker_245">
+	<text>Пират</text>
+</string>
+<string id="lname_stalker_246">
+	<text>Плотник</text>
+</string>
+<string id="lname_stalker_247">
+	<text>Поджигатель</text>
+</string>
+<string id="lname_stalker_248">
+	<text>Пожарник</text>
+</string>
+<string id="lname_stalker_249">
+	<text>Ползун</text>
+</string>
+<string id="lname_stalker_250">
+	<text>Полярник</text>
+</string>
+<string id="lname_stalker_251">
+	<text>Посол</text>
+</string>
+<string id="lname_stalker_252">
+	<text>Почтальон</text>
+</string>
+<string id="lname_stalker_253">
+	<text>Поэт</text>
+</string>
+<string id="lname_stalker_254">
+	<text>Принц</text>
+</string>
+<string id="lname_stalker_255">
+	<text>Пророк</text>
+</string>
+<string id="lname_stalker_256">
+	<text>Профессор</text>
+</string>
+<string id="lname_stalker_257">
+	<text>Прыгун</text>
+</string>
+<string id="lname_stalker_258">
+	<text>Пчеловод</text>
+</string>
+<string id="lname_stalker_259">
+	<text>Работяга</text>
+</string>
+<string id="lname_stalker_260">
+	<text>Раввин</text>
+</string>
+<string id="lname_stalker_261">
+	<text>Радист</text>
+</string>
+<string id="lname_stalker_262">
+	<text>Разбойник</text>
+</string>
+<string id="lname_stalker_263">
+	<text>Растаман </text>
+</string>
+<string id="lname_stalker_264">
+	<text>Ратник</text>
+</string>
+<string id="lname_stalker_265">
+	<text>Рокер</text>
+</string>
+<string id="lname_stalker_266">
+	<text>Рудокоп</text>
+</string>
+<string id="lname_stalker_267">
+	<text>Самурай</text>
+</string>
+<string id="lname_stalker_268">
+	<text>Сапер</text>
+</string>
+<string id="lname_stalker_269">
+	<text>Связной</text>
+</string>
+<string id="lname_stalker_270">
+	<text>Священник</text>
+</string>
+<string id="lname_stalker_271">
+	<text>Секретарь</text>
+</string>
+<string id="lname_stalker_272">
+	<text>Сердцеед</text>
+</string>
+<string id="lname_stalker_273">
+	<text>Симулянт </text>
+</string>
+<string id="lname_stalker_274">
+	<text>Скиф</text>
+</string>
+<string id="lname_stalker_275">
+	<text>Следопыт</text>
+</string>
+<string id="lname_stalker_276">
+	<text>Слесарь</text>
+</string>
+<string id="lname_stalker_277">
+	<text>Смертник</text>
+</string>
+<string id="lname_stalker_278">
+	<text>Собачник</text>
+</string>
+<string id="lname_stalker_279">
+	<text>Спасатель</text>
+</string>
+<string id="lname_stalker_280">
+	<text>Спортсмен</text>
+</string>
+<string id="lname_stalker_281">
+	<text>Странник</text>
+</string>
+<string id="lname_stalker_282">
+	<text>Студент</text>
+</string>
+<string id="lname_stalker_283">
+	<text>Судья</text>
+</string>
+<string id="lname_stalker_284">
+	<text>Султан</text>
+</string>
+<string id="lname_stalker_285">
+	<text>Сутенер</text>
+</string>
+<string id="lname_stalker_286">
+	<text>Счетовод</text>
+</string>
+<string id="lname_stalker_287">
+	<text>Танкист</text>
+</string>
+<string id="lname_stalker_288">
+	<text>Танцор</text>
+</string>
+<string id="lname_stalker_289">
+	<text>Тиран</text>
+</string>
+<string id="lname_stalker_290">
+	<text>Торгаш</text>
+</string>
+<string id="lname_stalker_291">
+	<text>Трофейщик</text>
+</string>
+<string id="lname_stalker_292">
+	<text>Трубочист</text>
+</string>
+<string id="lname_stalker_293">
+	<text>Туземец</text>
+</string>
+<string id="lname_stalker_294">
+	<text>Турист</text>
+</string>
+<string id="lname_stalker_295">
+	<text>Убийца</text>
+</string>
+<string id="lname_stalker_296">
+	<text>Фанат</text>
+</string>
+<string id="lname_stalker_297">
+	<text>Футболист</text>
+</string>
+<string id="lname_stalker_298">
+	<text>Снайпер</text>
+</string>
+<string id="lname_stalker_299">
+	<text>Химик</text>
+</string>
+<string id="lname_stalker_300">
+	<text>Хирург</text>
+</string>
+<string id="lname_stalker_301">
+	<text>Художник</text>
+</string>
+<string id="lname_stalker_302">
+	<text>Чабан</text>
+</string>
+<string id="lname_stalker_303">
+	<text>Шаман</text>
+</string>
+<string id="lname_stalker_304">
+	<text>Шатун</text>
+</string>
+<string id="lname_stalker_305">
+	<text>Шахтер</text>
+</string>
+<string id="lname_stalker_306">
+	<text>Шериф</text>
+</string>
+<string id="lname_stalker_307">
+	<text>Шеф</text>
+</string>
+<string id="lname_stalker_308">
+	<text>Школяр</text>
+</string>
+<string id="lname_stalker_309">
+	<text>Шофер</text>
+</string>
+<string id="lname_stalker_310">
+	<text>Шпион</text>
+</string>
+<string id="lname_stalker_311">
+	<text>Электрик</text>
+</string>
+<string id="lname_stalker_312">
+	<text>Юнга</text>
+</string>
+<string id="lname_stalker_313">
+	<text>Язычник</text>
+</string>
+<string id="lname_stalker_314">
+	<text>Аллигатор</text>
+</string>
+<string id="lname_stalker_315">
+	<text>Анаконда</text>
+</string>
+<string id="lname_stalker_316">
+	<text>Бабуин</text>
+</string>
+<string id="lname_stalker_317">
+	<text>Бизон</text>
+</string>
+<string id="lname_stalker_318">
+	<text>Бобер</text>
+</string>
+<string id="lname_stalker_319">
+	<text>Богомол</text>
+</string>
+<string id="lname_stalker_320">
+	<text>Бульдог</text>
+</string>
+<string id="lname_stalker_321">
+	<text>Бурундук</text>
+</string>
+<string id="lname_stalker_322">
+	<text>Бык</text>
+</string>
+<string id="lname_stalker_323">
+	<text>Вепрь</text>
+</string>
+<string id="lname_stalker_324">
+	<text>Воробей</text>
+</string>
+<string id="lname_stalker_325">
+	<text>Ворон</text>
+</string>
+<string id="lname_stalker_326">
+	<text>Выхухоль</text>
+</string>
+<string id="lname_stalker_327">
+	<text>Глухарь</text>
+</string>
+<string id="lname_stalker_328">
+	<text>Гоблин</text>
+</string>
+<string id="lname_stalker_329">
+	<text>Грач</text>
+</string>
+<string id="lname_stalker_330">
+	<text>Гриф</text>
+</string>
+<string id="lname_stalker_331">
+	<text>Гусь</text>
+</string>
+<string id="lname_stalker_332">
+	<text>Дельфин</text>
+</string>
+<string id="lname_stalker_333">
+	<text>Динозавр</text>
+</string>
+<string id="lname_stalker_334">
+	<text>Дрозд</text>
+</string>
+<string id="lname_stalker_335">
+	<text>Дятел</text>
+</string>
+<string id="lname_stalker_336">
+	<text>Еж</text>
+</string>
+<string id="lname_stalker_337">
+	<text>Жук</text>
+</string>
+<string id="lname_stalker_338">
+	<text>Заяц</text>
+</string>
+<string id="lname_stalker_339">
+	<text>Зверь</text>
+</string>
+<string id="lname_stalker_340">
+	<text>Змей</text>
+</string>
+<string id="lname_stalker_341">
+	<text>Зубр</text>
+</string>
+<string id="lname_stalker_342">
+	<text>Индюк</text>
+</string>
+<string id="lname_stalker_343">
+	<text>Кабан</text>
+</string>
+<string id="lname_stalker_344">
+	<text>Карась</text>
+</string>
+<string id="lname_stalker_345">
+	<text>Кенарь</text>
+</string>
+<string id="lname_stalker_346">
+	<text>Клоп</text>
+</string>
+<string id="lname_stalker_347">
+	<text>Кобра</text>
+</string>
+<string id="lname_stalker_348">
+	<text>Комар</text>
+</string>
+<string id="lname_stalker_349">
+	<text>Конь</text>
+</string>
+<string id="lname_stalker_350">
+	<text>Кот</text>
+</string>
+<string id="lname_stalker_351">
+	<text>Крокодил</text>
+</string>
+<string id="lname_stalker_352">
+	<text>Кузнечик</text>
+</string>
+<string id="lname_stalker_353">
+	<text>Легавый</text>
+</string>
+<string id="lname_stalker_354">
+	<text>Лось</text>
+</string>
+<string id="lname_stalker_355">
+	<text>Мамонт</text>
+</string>
+<string id="lname_stalker_356">
+	<text>Медведь</text>
+</string>
+<string id="lname_stalker_357">
+	<text>Микроб</text>
+</string>
+<string id="lname_stalker_358">
+	<text>Москит</text>
+</string>
+<string id="lname_stalker_359">
+	<text>Муравей</text>
+</string>
+<string id="lname_stalker_360">
+	<text>Овод</text>
+</string>
+<string id="lname_stalker_361">
+	<text>Паук</text>
+</string>
+<string id="lname_stalker_362">
+	<text>Пацюк</text>
+</string>
+<string id="lname_stalker_363">
+	<text>Пилигрим</text>
+</string>
+<string id="lname_stalker_364">
+	<text>Пиранья</text>
+</string>
+<string id="lname_stalker_365">
+	<text>Питон</text>
+</string>
+<string id="lname_stalker_366">
+	<text>Русак</text>
+</string>
+<string id="lname_stalker_367">
+	<text>Сова</text>
+</string>
+<string id="lname_stalker_368">
+	<text>Сокол</text>
+</string>
+<string id="lname_stalker_369">
+	<text>Сурок</text>
+</string>
+<string id="lname_stalker_370">
+	<text>Суслик</text>
+</string>
+<string id="lname_stalker_371">
+	<text>Сыч</text>
+</string>
+<string id="lname_stalker_372">
+	<text>Таракан</text>
+</string>
+<string id="lname_stalker_373">
+	<text>Тарантул</text>
+</string>
+<string id="lname_stalker_374">
+	<text>Тушканчик</text>
+</string>
+<string id="lname_stalker_375">
+	<text>Удав</text>
+</string>
+<string id="lname_stalker_376">
+	<text>Филин</text>
+</string>
+<string id="lname_stalker_377">
+	<text>Хорек</text>
+</string>
+<string id="lname_stalker_378">
+	<text>Червь</text>
+</string>
+<string id="lname_stalker_379">
+	<text>Шатун</text>
+</string>
+<string id="lname_stalker_380">
+	<text>Абсолют</text>
+</string>
+<string id="lname_stalker_381">
+	<text>Аномалия</text>
+</string>
+<string id="lname_stalker_382">
+	<text>Бампер</text>
+</string>
+<string id="lname_stalker_383">
+	<text>Батон</text>
+</string>
+<string id="lname_stalker_384">
+	<text>Бес</text>
+</string>
+<string id="lname_stalker_385">
+	<text>Беспредел</text>
+</string>
+<string id="lname_stalker_386">
+	<text>Болид</text>
+</string>
+<string id="lname_stalker_387">
+	<text>Болт</text>
+</string>
+<string id="lname_stalker_388">
+	<text>Бритва</text>
+</string>
+<string id="lname_stalker_389">
+	<text>Бубен</text>
+</string>
+<string id="lname_stalker_390">
+	<text>Бублик</text>
+</string>
+<string id="lname_stalker_391">
+	<text>Вакуум</text>
+</string>
+<string id="lname_stalker_392">
+	<text>Валет</text>
+</string>
+<string id="lname_stalker_393">
+	<text>Валун</text>
+</string>
+<string id="lname_stalker_394">
+	<text>Вентилятор</text>
+</string>
+<string id="lname_stalker_395">
+	<text>Вертолет</text>
+</string>
+<string id="lname_stalker_396">
+	<text>Ветер</text>
+</string>
+<string id="lname_stalker_397">
+	<text>Винт</text>
+</string>
+<string id="lname_stalker_398">
+	<text>Ворот</text>
+</string>
+<string id="lname_stalker_399">
+	<text>Гвоздь</text>
+</string>
+<string id="lname_stalker_400">
+	<text>Гильза</text>
+</string>
+<string id="lname_stalker_401">
+	<text>Глобус</text>
+</string>
+<string id="lname_stalker_402">
+	<text>Глыба</text>
+</string>
+<string id="lname_stalker_403">
+	<text>Граната</text>
+</string>
+<string id="lname_stalker_404">
+	<text>Гребень</text>
+</string>
+<string id="lname_stalker_405">
+	<text>Гроб</text>
+</string>
+<string id="lname_stalker_406">
+	<text>Дачник</text>
+</string>
+<string id="lname_stalker_407">
+	<text>Движок</text>
+</string>
+<string id="lname_stalker_408">
+	<text>Динамит</text>
+</string>
+<string id="lname_stalker_409">
+	<text>Дырчик</text>
+</string>
+<string id="lname_stalker_410">
+	<text>Закон</text>
+</string>
+<string id="lname_stalker_411">
+	<text>Замок</text>
+</string>
+<string id="lname_stalker_412">
+	<text>Затвор</text>
+</string>
+<string id="lname_stalker_413">
+	<text>Изотоп</text>
+</string>
+<string id="lname_stalker_414">
+	<text>Камень</text>
+</string>
+<string id="lname_stalker_415">
+	<text>Капкан</text>
+</string>
+<string id="lname_stalker_416">
+	<text>Кардан</text>
+</string>
+<string id="lname_stalker_417">
+	<text>Карма</text>
+</string>
+<string id="lname_stalker_418">
+	<text>Кирпич</text>
+</string>
+<string id="lname_stalker_419">
+	<text>Клей</text>
+</string>
+<string id="lname_stalker_420">
+	<text>Ключ</text>
+</string>
+<string id="lname_stalker_421">
+	<text>Кнут</text>
+</string>
+<string id="lname_stalker_422">
+	<text>Козырь</text>
+</string>
+<string id="lname_stalker_423">
+	<text>Колпак</text>
+</string>
+<string id="lname_stalker_424">
+	<text>Колун</text>
+</string>
+<string id="lname_stalker_425">
+	<text>Коньяк</text>
+</string>
+<string id="lname_stalker_426">
+	<text>Корень</text>
+</string>
+<string id="lname_stalker_427">
+	<text>Коса</text>
+</string>
+<string id="lname_stalker_428">
+	<text>Космос</text>
+</string>
+<string id="lname_stalker_429">
+	<text>Кастет</text>
+</string>
+<string id="lname_stalker_430">
+	<text>Косяк</text>
+</string>
+<string id="lname_stalker_431">
+	<text>Крест</text>
+</string>
+<string id="lname_stalker_432">
+	<text>Крюк</text>
+</string>
+<string id="lname_stalker_433">
+	<text>Курок</text>
+</string>
+<string id="lname_stalker_434">
+	<text>Лапоть</text>
+</string>
+<string id="lname_stalker_435">
+	<text>Лом</text>
+</string>
+<string id="lname_stalker_436">
+	<text>Машина</text>
+</string>
+<string id="lname_stalker_437">
+	<text>Мишень</text>
+</string>
+<string id="lname_stalker_438">
+	<text>Мотор</text>
+</string>
+<string id="lname_stalker_439">
+	<text>Насос</text>
+</string>
+<string id="lname_stalker_440">
+	<text>Ночной</text>
+</string>
+<string id="lname_stalker_441">
+	<text>Обрез</text>
+</string>
+<string id="lname_stalker_442">
+	<text>Панадол</text>
+</string>
+<string id="lname_stalker_443">
+	<text>Парашут</text>
+</string>
+<string id="lname_stalker_444">
+	<text>Патрон</text>
+</string>
+<string id="lname_stalker_445">
+	<text>Перекур</text>
+</string>
+<string id="lname_stalker_446">
+	<text>Перо</text>
+</string>
+<string id="lname_stalker_447">
+	<text>Пистон</text>
+</string>
+<string id="lname_stalker_448">
+	<text>Пластилин</text>
+</string>
+<string id="lname_stalker_449">
+	<text>Порох</text>
+</string>
+<string id="lname_stalker_450">
+	<text>Пятак</text>
+</string>
+<string id="lname_stalker_451">
+	<text>Ракета</text>
+</string>
+<string id="lname_stalker_452">
+	<text>Рама</text>
+</string>
+<string id="lname_stalker_453">
+	<text>Реактор</text>
+</string>
+<string id="lname_stalker_454">
+	<text>Резак</text>
+</string>
+<string id="lname_stalker_455">
+	<text>Решето</text>
+</string>
+<string id="lname_stalker_456">
+	<text>Решка</text>
+</string>
+<string id="lname_stalker_457">
+	<text>Робот</text>
+</string>
+<string id="lname_stalker_458">
+	<text>Рогач</text>
+</string>
+<string id="lname_stalker_459">
+	<text>Совок</text>
+</string>
+<string id="lname_stalker_460">
+	<text>Самогон</text>
+</string>
+<string id="lname_stalker_461">
+	<text>Сапог</text>
+</string>
+<string id="lname_stalker_462">
+	<text>Сидр</text>
+</string>
+<string id="lname_stalker_463">
+	<text>Смерть</text>
+</string>
+<string id="lname_stalker_464">
+	<text>Спирт</text>
+</string>
+<string id="lname_stalker_465">
+	<text>Стамеска</text>
+</string>
+<string id="lname_stalker_466">
+	<text>Ствол</text>
+</string>
+<string id="lname_stalker_467">
+	<text>Сундук</text>
+</string>
+<string id="lname_stalker_468">
+	<text>Топор</text>
+</string>
+<string id="lname_stalker_469">
+	<text>Торец</text>
+</string>
+<string id="lname_stalker_470">
+	<text>Точило</text>
+</string>
+<string id="lname_stalker_471">
 	<text>Туз</text>
 </string>
-<string id="lname_24">
-	<text>Тундук</text>
+<string id="lname_stalker_472">
+	<text>Узел</text>
 </string>
-<string id="lname_25">
-	<text>Хриптул</text>
+<string id="lname_stalker_473">
+	<text>Фактор</text>
 </string>
-<string id="lname_26">
-	<text>Чугай</text>
+<string id="lname_stalker_474">
+	<text>Фонарь</text>
 </string>
-<string id="lname_27">
-	<text>Шишкин</text>
+<string id="lname_stalker_475">
+	<text>Чекан</text>
 </string>
-<string id="lname_28">
-	<text>Шишковцов</text>
+<string id="lname_stalker_476">
+	<text>Червень</text>
 </string>
-<string id="lname_29">
-	<text>Ясенев</text>
+<string id="lname_stalker_477">
+	<text>Чеснок</text>
 </string>
+<string id="lname_stalker_478">
+	<text>Чучело</text>
+</string>
+<string id="lname_stalker_479">
+	<text>Шанс</text>
+</string>
+<string id="lname_stalker_480">
+	<text>Шило</text>
+</string>
+<string id="lname_stalker_481">
+	<text>Шип</text>
+</string>
+<string id="lname_stalker_482">
+	<text>Шкаф</text>
+</string>
+<string id="lname_stalker_483">
+	<text>Шпала</text>
+</string>
+<string id="lname_stalker_484">
+	<text>Штакет</text>
+</string>
+<string id="lname_stalker_485">
+	<text>Штуцер</text>
+</string>
+<string id="lname_stalker_486">
+	<text>Штык</text>
+</string>
+<string id="lname_stalker_487">
+	<text>Штырь</text>
+</string>
+<string id="lname_stalker_488">
+	<text>Шуруп</text>
+</string>
+<string id="lname_stalker_489">
+	<text>Шухер</text>
+</string>
+<string id="lname_stalker_490">
+	<text>Голова</text>
+</string>
+<string id="lname_stalker_491">
+	<text>Клык</text>
+</string>
+<string id="lname_stalker_492">
+	<text>Коготь</text>
+</string>
+<string id="lname_stalker_493">
+	<text>Кость</text>
+</string>
+<string id="lname_stalker_494">
+	<text>Кулак</text>
+</string>
+<string id="lname_stalker_495">
+	<text>Нерв</text>
+</string>
+<string id="lname_stalker_496">
+	<text>Скелет</text>
+</string>
+<string id="lname_stalker_497">
+	<text>Хвост</text>
+</string>
+<string id="lname_stalker_498">
+	<text>Хребет</text>
+</string>
+<string id="lname_stalker_499">
+	<text>Череп</text>
+</string>
+<string id="lname_stalker_500">
+	<text>Бармалей</text>
+</string>
+<string id="lname_stalker_501">
+	<text>Батый</text>
+</string>
+<string id="lname_stalker_502">
+	<text>Богатырь</text>
+</string>
+<string id="lname_stalker_503">
+	<text>Буратино</text>
+</string>
+<string id="lname_stalker_504">
+	<text>Ведьмак</text>
+</string>
+<string id="lname_stalker_505">
+	<text>Воланд</text>
+</string>
+<string id="lname_stalker_506">
+	<text>Гомер</text>
+</string>
+<string id="lname_stalker_507">
+	<text>Горыныч</text>
+</string>
+<string id="lname_stalker_508">
+	<text>Грозный</text>
+</string>
+<string id="lname_stalker_509">
+	<text>Джаконда</text>
+</string>
+<string id="lname_stalker_510">
+	<text>Дуремар</text>
+</string>
+<string id="lname_stalker_511">
+	<text>Железняк</text>
+</string>
+<string id="lname_stalker_512">
+	<text>Икар</text>
+</string>
+<string id="lname_stalker_513">
+	<text>Казанова</text>
+</string>
+<string id="lname_stalker_514">
+	<text>Кащей</text>
+</string>
+<string id="lname_stalker_515">
+	<text>Кесарь</text>
+</string>
+<string id="lname_stalker_516">
+	<text>Колобок</text>
+</string>
+<string id="lname_stalker_517">
+	<text>Кутузов</text>
+</string>
+<string id="lname_stalker_518">
+	<text>Малыш</text>
+</string>
+<string id="lname_stalker_519">
+	<text>Наполеон</text>
+</string>
+<string id="lname_stalker_520">
+	<text>Нельсон</text>
+</string>
+<string id="lname_stalker_521">
+	<text>Нептун</text>
+</string>
+<string id="lname_stalker_522">
+	<text>Оскар</text>
+</string>
+<string id="lname_stalker_523">
+	<text>Прометей</text>
+</string>
+<string id="lname_stalker_524">
+	<text>Пушкин</text>
+</string>
+<string id="lname_stalker_525">
+	<text>Пятница</text>
+</string>
+<string id="lname_stalker_526">
+	<text>Рембо</text>
+</string>
+<string id="lname_stalker_527">
+	<text>Рокфор</text>
+</string>
+<string id="lname_stalker_528">
+	<text>Сусанин</text>
+</string>
+<string id="lname_stalker_529">
+	<text>Терминатор</text>
+</string>
+<string id="lname_stalker_530">
+	<text>Флинт</text>
+</string>
+<string id="lname_stalker_531">
+	<text>Цезарь</text>
+</string>
+<string id="lname_stalker_532">
+	<text>Чапаев</text>
+</string>
+<string id="lname_stalker_533">
+	<text>Чапай</text>
+</string>
+<string id="lname_stalker_534">
+	<text>Чебур</text>
+</string>
+<string id="lname_stalker_535">
+	<text>Чебурашка</text>
+</string>
+<string id="lname_stalker_536">
+	<text>Чингачгук</text>
+</string>
+<string id="lname_stalker_537">
+	<text>Чингиз</text>
+</string>
+<string id="lname_stalker_538">
+	<text>Штирлиц</text>
+</string>
+<string id="lname_stalker_539">
+	<text>Банан</text>
+</string>
+<string id="lname_stalker_540">
+	<text>Барабашка</text>
+</string>
+<string id="lname_stalker_541">
+	<text>Батон</text>
+</string>
+<string id="lname_stalker_542">
+	<text>Батя</text>
+</string>
+<string id="lname_stalker_543">
+	<text>Баян</text>
+</string>
+<string id="lname_stalker_544">
+	<text>Братан</text>
+</string>
+<string id="lname_stalker_545">
+	<text>Булкин</text>
+</string>
+<string id="lname_stalker_546">
+	<text>Бульдозер</text>
+</string>
+<string id="lname_stalker_547">
+	<text>Буфер</text>
+</string>
+<string id="lname_stalker_548">
+	<text>Вареник</text>
+</string>
+<string id="lname_stalker_549">
+	<text>Вист</text>
+</string>
+<string id="lname_stalker_550">
+	<text>Гангрена</text>
+</string>
+<string id="lname_stalker_551">
+	<text>Гибрид</text>
+</string>
+<string id="lname_stalker_552">
+	<text>Глюк</text>
+</string>
+<string id="lname_stalker_553">
+	<text>Гоблин</text>
+</string>
+<string id="lname_stalker_554">
+	<text>Горец</text>
+</string>
+<string id="lname_stalker_555">
+	<text>Градус</text>
+</string>
+<string id="lname_stalker_556">
+	<text>Гремлин</text>
+</string>
+<string id="lname_stalker_557">
+	<text>Дух</text>
+</string>
+<string id="lname_stalker_558">
+	<text>Дядька</text>
+</string>
+<string id="lname_stalker_559">
+	<text>Звездец</text>
+</string>
+<string id="lname_stalker_560">
+	<text>Изгой</text>
+</string>
+<string id="lname_stalker_561">
+	<text>Кагор</text>
+</string>
+<string id="lname_stalker_562">
+	<text>Капуста</text>
+</string>
+<string id="lname_stalker_563">
+	<text>Карбид</text>
+</string>
+<string id="lname_stalker_564">
+	<text>Кастет</text>
+</string>
+<string id="lname_stalker_565">
+	<text>Козырь</text>
+</string>
+<string id="lname_stalker_566">
+	<text>Командор</text>
+</string>
+<string id="lname_stalker_567">
+	<text>Король</text>
+</string>
+<string id="lname_stalker_568">
+	<text>Косяк</text>
+</string>
+<string id="lname_stalker_569">
+	<text>Лапоть</text>
+</string>
+<string id="lname_stalker_570">
+	<text>Лед</text>
+</string>
+<string id="lname_stalker_571">
+	<text>Леший</text>
+</string>
+<string id="lname_stalker_572">
+	<text>Мавр</text>
+</string>
+<string id="lname_stalker_573">
+	<text>Мадера</text>
+</string>
+<string id="lname_stalker_574">
+	<text>Макарон</text>
+</string>
+<string id="lname_stalker_575">
+	<text>Мастер</text>
+</string>
+<string id="lname_stalker_576">
+	<text>Мутант</text>
+</string>
+<string id="lname_stalker_577">
+	<text>Ништяк</text>
+</string>
+<string id="lname_stalker_578">
+	<text>Облом</text>
+</string>
+<string id="lname_stalker_579">
+	<text>Омут</text>
+</string>
+<string id="lname_stalker_580">
+	<text>Опер</text>
+</string>
+<string id="lname_stalker_581">
+	<text>Пельмень</text>
+</string>
+<string id="lname_stalker_582">
+	<text>Перец</text>
+</string>
+<string id="lname_stalker_583">
+	<text>Погон</text>
+</string>
+<string id="lname_stalker_584">
+	<text>Пончик</text>
+</string>
+<string id="lname_stalker_585">
+	<text>Пузырь</text>
+</string>
+<string id="lname_stalker_586">
+	<text>Рашпиль</text>
+</string>
+<string id="lname_stalker_587">
+	<text>Репей</text>
+</string>
+<string id="lname_stalker_588">
+	<text>Рязанский</text>
+</string>
+<string id="lname_stalker_589">
+	<text>Самогон</text>
+</string>
+<string id="lname_stalker_590">
+	<text>Сморчок</text>
+</string>
+<string id="lname_stalker_591">
+	<text>Сухарь</text>
+</string>
+<string id="lname_stalker_592">
+	<text>Табак</text>
+</string>
+<string id="lname_stalker_593">
+	<text>Табель</text>
+</string>
+<string id="lname_stalker_594">
+	<text>Туз</text>
+</string>
+<string id="lname_stalker_595">
+	<text>Тыква</text>
+</string>
+<string id="lname_stalker_596">
+	<text>Упырь</text>
+</string>
+<string id="lname_stalker_597">
+	<text>Фагот</text>
+</string>
+<string id="lname_stalker_598">
+	<text>Фантом</text>
+</string>
+<string id="lname_stalker_599">
+	<text>Фокус</text>
+</string>
+
 
 
 <string id="Osoznanie">
