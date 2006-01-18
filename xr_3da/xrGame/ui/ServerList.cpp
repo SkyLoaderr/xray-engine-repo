@@ -288,7 +288,7 @@ void CServerList::InitHeader(){
 	CStringTable st;
 
 	m_header[0].SetWidth(m_itemInfo.size.icon);
-	m_header[0].SetText(*st.translate("icon"));
+//	m_header[0].SetText(*st.translate("icon"));
 	pos.x += m_itemInfo.size.icon;
 	m_separator[0].SetWndPos(pos.x,y + 3);
 	m_header[1].SetWidth(m_itemInfo.size.server);

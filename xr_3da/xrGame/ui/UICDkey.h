@@ -11,6 +11,7 @@ public:
 	// CUIOptionsItem
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
+	virtual bool	IsChanged();
 	
 			void	CreateCDKeyEntry();
 			void	GetCDKey(char* CDKeyStr);

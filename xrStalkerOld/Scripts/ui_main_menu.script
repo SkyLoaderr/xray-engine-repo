@@ -1,9 +1,10 @@
 -- File:        UI_MAIN_MENU.SCRIPT
 -- Description: Load Dialog for STALKER
 -- Created:     28.10.2004
+-- Lasd edit:	18.01.2006
 -- Copyright:   2004 GSC Game World
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
--- Version:     0.7
+-- Version:     0.9
 
 function main()
 	local dlg = ui_main_menu.main_menu()
@@ -34,7 +35,7 @@ function main_menu:InitControls()
 	math.randomseed(time_global())
 	local vid_file ="ui\\ui_vid_back_0" .. math.random(1,4)
 	st:InitTexture(vid_file)
-    xml:InitStatic("background", self)		
+    xml:InitStatic("background", self)
     xml:InitStatic("fire_movie", self)
     self.shniaga = xml:InitMMShniaga("shniaga_wnd",self);
 	
@@ -83,25 +84,29 @@ end
 function main_menu:OnButton_new_novice_game()
 	local console = get_console()
 	console:execute("g_game_difficulty novice")
-	console:execute("start server(12lvl/single/alife/new) client(localhost)")
+	self:StartGame()	
 end
 
 function main_menu:OnButton_new_stalker_game()
 	local console = get_console()
 	console:execute("g_game_difficulty stalker")
-	console:execute("start server(12lvl/single/alife/new) client(localhost)")
+	self:StartGame()
 end
 
 function main_menu:OnButton_new_veteran_game()
 	local console = get_console()
 	console:execute("g_game_difficulty veteran")
-	console:execute("start server(12lvl/single/alife/new) client(localhost)")
+	self:StartGame()
 end
 
 function main_menu:OnButton_new_master_game()
 	local console = get_console()
 	console:execute("g_game_difficulty master")
-	console:execute("start server(12lvl/single/alife/new) client(localhost)")
+	self:StartGame()
+end
+
+function main_menu:StartGame()
+	console:execute("start server(20lvl/single/alife/new) client(localhost)")
 end
 
 function main_menu:OnButton_disconnect_clicked()

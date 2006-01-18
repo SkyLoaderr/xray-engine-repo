@@ -18,7 +18,7 @@
 			<texture>ui_button_main02</texture>
 		</btn_accept>
 		<btn_cancel x="375" y="426" width="157" height="48">
-			<text font="normal" align="c">ui_mm_back</text>
+			<text font="normal" align="c">ui_mm_cancel</text>
 			<texture>ui_button_main03</texture>
 		</btn_cancel>
 		<tab x="55" y="48" width="461" height="26">

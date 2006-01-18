@@ -108,11 +108,14 @@ void CUIEditKeyBind::SetCurrentValue(){
 }
 
 void CUIEditKeyBind::SaveValue(){
-	if (m_bChanged)
-	{
-        BindAction2Key(m_val.c_str());
-		m_bChanged = false;
-	}
+	CUIOptionsItem::SaveValue();
+
+    BindAction2Key(m_val.c_str());
+	m_bChanged = false;
+}
+
+bool CUIEditKeyBind::IsChanged(){
+	return m_bChanged;
 }
 
 void CUIEditKeyBind::OnMessage(const char* message){

@@ -23,9 +23,10 @@ public:
 						CUITabControl				();
 	virtual				~CUITabControl				();
 
-	// options itme
+	// options item
 	virtual void		SetCurrentValue				();
 	virtual void		SaveValue					();
+	virtual bool		IsChanged					();
 
 	virtual void		Init						(float x, float y, float width, float height);
 	virtual bool		OnKeyboard					(int dik, EUIMessages keyboard_action);

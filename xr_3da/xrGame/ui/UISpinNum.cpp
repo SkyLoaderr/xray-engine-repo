@@ -27,7 +27,14 @@ void CUISpinNum::SetCurrentValue(){
 }
 
 void CUISpinNum::SaveValue(){
+	CUIOptionsItem::SaveValue();
 	SaveOptIntegerValue(m_iVal);
+}
+
+bool CUISpinNum::IsChanged(){
+	int val, min, max;
+	GetOptIntegerValue(val, min, max);
+    return m_iVal != val;
 }
 
 void CUISpinNum::Init(float x, float y, float width, float height){

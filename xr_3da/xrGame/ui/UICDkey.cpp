@@ -88,6 +88,8 @@ void CUICDkey::SetCurrentValue(){
 }
 
 void CUICDkey::SaveValue(){
+	CUIOptionsItem::SaveValue();
+
 	char NewCDKey[32];
 	HKEY KeyCDKey = 0;
 
@@ -104,6 +106,12 @@ void CUICDkey::SaveValue(){
 	}
 
 	if (KeyCDKey) RegCloseKey(KeyCDKey);
+}
+
+bool CUICDkey::IsChanged(){
+	char CDKeyStr[64];
+	GetCDKey(CDKeyStr);
+	return 0 != xr_strcmp(CDKeyStr, m_lines.GetText());
 }
 
 void CUICDkey::CreateCDKeyEntry(){

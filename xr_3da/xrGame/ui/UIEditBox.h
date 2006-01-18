@@ -25,6 +25,7 @@ public:
 	// CUIOptionsItem
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
+	virtual bool	IsChanged();
 
 	// CUIMultiTextureOwner
 	virtual void	InitTexture(const char* texture);

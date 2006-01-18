@@ -57,7 +57,24 @@ void CUITrackBar::SetCurrentValue(){
 }
 
 void CUITrackBar::SaveValue(){
+	CUIOptionsItem::SaveValue();
 	SaveOptFloatValue(m_val);
+}
+
+bool CUITrackBar::IsChanged(){
+	float val,min,max;
+	GetOptFloatValue(val, min, max);
+	return val != m_val;    
+}
+
+void CUITrackBar::SeveBackUpValue(){
+	m_bakc_up = m_val;
+}
+
+void CUITrackBar::Undo(){
+	m_val = m_bakc_up;
+	SaveValue();
+	SetCurrentValue();
 }
 
 void CUITrackBar::Enable(bool status){

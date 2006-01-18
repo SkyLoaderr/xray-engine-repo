@@ -89,14 +89,16 @@ end
 function options_dialog:OnBtnAccept()
 	
 	local opt = COptionsManager()
+	local console = get_console()
 	
---	opt:SaveValues("mm_opt_video")
---	opt:SaveValues("mm_opt_sound")
---	opt:SaveValues("mm_opt_controls")
---	opt:SaveValues("key_binding")
+	opt:SaveValues("key_binding")
+	opt:SaveValues("mm_opt_video")
+	opt:SaveValues("mm_opt_sound")	
+	opt:SaveValues("mm_opt_controls")
+	opt:OptionsPostAccept()	
 --	console:execute("vid_restart")
 	
-	local i = self.tab:GetActiveIndex()
+--[[	local i = self.tab:GetActiveIndex()
 	if i == 0 then
 		local console = get_console()
 		opt:SaveValues("mm_opt_video")
@@ -110,10 +112,17 @@ function options_dialog:OnBtnAccept()
 		opt:SaveValues("mm_opt_controls")
 		opt:SaveValues("key_binding")
 	end
-
+]]
+	self:GetHolder():start_stop_menu(self,true)
+	self.owner:Show(true)
 end
 
 function options_dialog:OnBtnCancel()
+	local opt = COptionsManager()
+	opt:UndoGroup("mm_opt_video")
+	opt:UndoGroup("mm_opt_sound")
+	opt:OptionsPostAccept()
+	
 	self:GetHolder():start_stop_menu(self,true)
 	self.owner:Show(true)
 end

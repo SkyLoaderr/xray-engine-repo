@@ -18,6 +18,7 @@ public:
 	// CUIOptionsItem
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
+	virtual bool	IsChanged();
 
 //	virtual void OnMouse(float x, float y, EUIMessages mouse_action);
 	virtual void Init(float x, float y, float width, float height);

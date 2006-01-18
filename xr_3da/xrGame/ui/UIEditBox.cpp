@@ -24,16 +24,22 @@ void CUIEditBox::Init(float x, float y, float width, float height){
 	CUICustomEdit::Init(x,y,width,height);
 }
 
+void CUIEditBox::InitTexture(const char* texture){
+	m_frameLine.InitTexture(texture);
+}
+
 void CUIEditBox::SetCurrentValue(){
 	SetText(GetOptStringValue());
 }
 
 void CUIEditBox::SaveValue(){
+	CUIOptionsItem::SaveValue();
 	SaveOptStringValue(GetText());
 }
 
-void CUIEditBox::InitTexture(const char* texture){
-	m_frameLine.InitTexture(texture);
+bool CUIEditBox::IsChanged(){
+	return 0 != xr_strcmp(GetOptStringValue(),GetText());
 }
+
 
 

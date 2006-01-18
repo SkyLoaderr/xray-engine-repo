@@ -18,6 +18,9 @@ public:
 	// CUIOptionsItem
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
+	virtual bool	IsChanged();
+	virtual void	SeveBackUpValue();
+	virtual void	Undo();
 	// CUIWindow
 	virtual void Init(float x, float y, float width, float height);
 //	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
@@ -35,4 +38,5 @@ protected:
 	float				m_val;
 	float				m_max;
 	float				m_min;
+	float				m_bakc_up;
 };

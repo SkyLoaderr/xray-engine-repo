@@ -22,10 +22,13 @@ void CUICheckButton::SetCurrentValue(){
 }
 
 void CUICheckButton::SaveValue(){
+	CUIOptionsItem::SaveValue();
 	SaveOptBoolValue(GetCheck());
 }
 
-
+bool CUICheckButton::IsChanged(){
+	return GetOptBoolValue() != GetCheck();
+}
 
 void CUICheckButton::Init(float x, float y, float width, float height){
 	CUIWindow::Init(x,y,width,height);

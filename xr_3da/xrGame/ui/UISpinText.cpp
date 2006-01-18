@@ -54,7 +54,12 @@ void CUISpinText::SetCurrentValue(){
 }
 
 void CUISpinText::SaveValue(){
+	CUIOptionsItem::SaveValue();
 	SaveOptTokenValue(m_pLines->GetText());
+}
+
+bool CUISpinText::IsChanged(){
+	return 0 != xr_strcmp(GetOptTokenValue(), m_pLines->GetText());
 }
 
 void CUISpinText::OnBtnUpClick(){	

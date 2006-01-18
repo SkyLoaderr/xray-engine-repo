@@ -5,6 +5,12 @@
 #include "StdAfx.h"
 #include "UIOptionsManager.h"
 #include "UIOptionsItem.h"
+#include "../../xr_ioconsole.h"
+
+CUIOptionsManager::CUIOptionsManager(){
+	m_b_vid_restart = false;
+	m_b_vid_restart = false;
+}
 
 void CUIOptionsManager::RegisterItem(CUIOptionsItem* item, const char* group){
 	groups_it it = m_groups.find(group);
@@ -52,8 +58,10 @@ void CUIOptionsManager::SetCurrentValues(const char* group){
 
 	R_ASSERT2(m_groups.end() != it, "invalid group name");
 
-	for (u32 i = 0; i < (*it).second.size(); i++)
+	for (u32 i = 0; i < (*it).second.size(); i++){
 		(*it).second[i]->SetCurrentValue();
+		(*it).second[i]->SeveBackUpValue();
+	}
 }
 
 void CUIOptionsManager::SaveValues(const char* group){
@@ -61,11 +69,52 @@ void CUIOptionsManager::SaveValues(const char* group){
 
 	R_ASSERT2(m_groups.end() != it, "invalid group name");
 
-	for (u32 i = 0; i < (*it).second.size(); i++)
-		(*it).second[i]->SaveValue();
+	for (u32 i = 0; i < (*it).second.size(); i++){
+		if ((*it).second[i]->IsChanged())
+            (*it).second[i]->SaveValue();
+	}
 }
 
+bool CUIOptionsManager::IsGroupChanged(const char* group){
+	groups_it it = m_groups.find(group);	
+	R_ASSERT2(m_groups.end() != it, "invalid group name");
 
+	for (u32 i = 0; i < (*it).second.size(); i++)
+	{
+		if ((*it).second[i]->IsChanged())
+			return true;
+	}
+
+	return false;
+}
+
+void CUIOptionsManager::UndoGroup(const char* group){
+	groups_it it = m_groups.find(group);	
+	R_ASSERT2(m_groups.end() != it, "invalid group name");
+
+	for (u32 i = 0; i < (*it).second.size(); i++){
+		if ((*it).second[i]->IsChanged())
+            (*it).second[i]->Undo();
+	}
+}
+
+void CUIOptionsManager::OptionsPostAccept(){
+	if (m_b_vid_restart)
+		Console->Execute("vid_restart");
+	if (m_b_snd_restart)
+		Console->Execute("snd_restart");
+
+	m_b_vid_restart = false;
+	m_b_snd_restart = false;
+}
+
+void CUIOptionsManager::DoVidRestart(){
+	m_b_vid_restart = true;
+}
+
+void CUIOptionsManager::DoSndRestart(){
+    m_b_snd_restart = true;
+}
 
 
 

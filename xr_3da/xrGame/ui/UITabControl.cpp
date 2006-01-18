@@ -29,7 +29,15 @@ void CUITabControl::SetCurrentValue(){
 }
 
 void CUITabControl::SaveValue(){
+	CUIOptionsItem::SaveValue();
 	SaveOptIntegerValue(GetActiveIndex());
+}
+
+bool CUITabControl::IsChanged(){
+	int		ival, imin, imax;
+	GetOptIntegerValue		(ival, imin, imax);
+
+	return GetActiveIndex() != ival;
 }
 
 // добавление кнопки-закладки в список закладок контрола

@@ -105,3 +105,7 @@ void CUIOptionsItem::SaveOptTokenValue(const char* val){
 	SaveOptStringValue(val);
 }
 
+void CUIOptionsItem::SaveValue(){
+	if (m_entry == "vid_mode" || m_entry == "r___preset" || m_entry == "rs_fullscreen")
+		m_optionsManager.DoVidRestart();
+}

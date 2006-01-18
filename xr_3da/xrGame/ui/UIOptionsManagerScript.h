@@ -6,6 +6,9 @@ class CUIOptionsManagerScript {
 public:
 	void SetCurrentValues(const char* group);
 	void SaveValues(const char* group);
+	bool IsGroupChanged(const char* group);
+	void UndoGroup(const char* group);
+	void OptionsPostAccept();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

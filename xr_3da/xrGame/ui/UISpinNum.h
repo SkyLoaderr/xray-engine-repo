@@ -16,6 +16,7 @@ public:
 	// CUIOptionsItem
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
+	virtual bool	IsChanged();
 
     virtual void	OnBtnUpClick();
 	virtual void	OnBtnDownClick();
