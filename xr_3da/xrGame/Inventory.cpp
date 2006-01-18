@@ -763,7 +763,7 @@ bool CInventory::Eat(PIItem pIItem)
 	
 	pItemToEat->UseBy		(entity_alive);
 
-	if(Actor()->m_inventory == this)
+	if(IsGameTypeSingle() && Actor()->m_inventory == this)
 		Actor()->callback(GameObject::eUseObject)((smart_cast<CGameObject*>(pIItem))->lua_game_object());
 
 	if(pItemToEat->Empty() )
