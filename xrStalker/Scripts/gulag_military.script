@@ -111,7 +111,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Охранник Лукаша
     t = {section = "logic@mil_freedom_guard1",
 		idle = 0,
-		prior = 19, state = {0, 4},
+		prior = 19, state = {0, 3 ,4},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
@@ -186,7 +186,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- мужик у костра 1
     t = {section = "logic@mil_freedom_stalker1",
 		idle = 0,
-		prior = 2, state = {0, 4},
+		prior = 2, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -196,7 +196,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- мужик у костра 2
     t = {section = "logic@mil_freedom_stalker2",
 		idle = 0,
-		prior = 2, state = {0, 4},
+		prior = 2, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -218,7 +218,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- одиночный патрульный на базе
     t = {section = "logic@mil_freedom_stalker4",
 		idle = 0,
-		prior = 10, state = {0, 4},
+		prior = 10, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
@@ -256,7 +256,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик на входе
     t = {section = "logic@mil_freedom_stalker9",
 		idle = 0,
-		prior = 10, state = {0, 4},
+		prior = 10, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -265,7 +265,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- просто мужик на входе
     t = {section = "logic@mil_freedom_stalker10",
 		idle = 0,
-		prior = 10, state = {0, 4},
+		prior = 10, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -275,7 +275,7 @@ function load_job_base (sj, gname, type, squad, groups)
         
 	t = { section = "logic@mil_freedom_walker1",
 		idle = 0,
-		prior = 1, state = {0, 4},
+		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
@@ -287,7 +287,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker2",
 		idle = 0,
-		prior = 1, state = {0, 4},
+		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
@@ -299,7 +299,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_walker3",
 		idle = 0,
-		prior = 1, state = {0, 4},
+		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
@@ -347,15 +347,6 @@ function load_job_base (sj, gname, type, squad, groups)
 	------
 	t = { section = "logic@mil_freedom_sleep1",
 		idle = 0,
-		prior = 1, state = {0, 4},
-		squad = squad, group = groups[0],
-		position_threshold = 100,
-		in_rest = "", out_rest = ""
-	}
-	table.insert(sj, t)
-	------
-	t = { section = "logic@mil_freedom_sleep2",
-		idle = 0,
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
@@ -363,23 +354,32 @@ function load_job_base (sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 	------
-	t = { section = "logic@mil_freedom_walker5",
-		idle = 0,
-		prior = 1, state = {0, 3, 4},
-		squad = squad, group = groups[0],
-		position_threshold = 100,
-		in_rest = "", out_rest = ""
-	}
-	table.insert(sj, t)
+--	t = { section = "logic@mil_freedom_sleep2",
+		--idle = 0,
+		--prior = 1, state = {0, 3, 4},
+		--squad = squad, group = groups[0],
+		--position_threshold = 100,
+		--in_rest = "", out_rest = ""
+	--}
+	--table.insert(sj, t)
 	------
-	t = { section = "logic@mil_freedom_camper6",
-		idle = 0,
-		prior = 1, state = {0, 3, 4},
-		squad = squad, group = groups[0],
-		position_threshold = 100,
-		in_rest = "", out_rest = ""
-	}
-	table.insert(sj, t)
+	--t = { section = "logic@mil_freedom_walker5",
+		--idle = 0,
+		--prior = 1, state = {0, 3, 4},
+		--squad = squad, group = groups[0],
+		--position_threshold = 100,
+		--in_rest = "", out_rest = ""
+	--}
+	--table.insert(sj, t)
+	------
+	--t = { section = "logic@mil_freedom_camper6",
+		--idle = 0,
+		--prior = 1, state = {0, 3, 4},
+		--squad = squad, group = groups[0],
+		--position_threshold = 100,
+		--in_rest = "", out_rest = ""
+	--}
+	--table.insert(sj, t)
 	
 	-------------------------------- combat state 1-----------------------------
     -- Лукаш
@@ -674,7 +674,7 @@ function check_state (gulag)
     end   
     
     if gulag.state == 3 then
-       if db.actor:has_info ("mil_dolg_after_explode") then
+       if db.actor:has_info ("mil_dolg_after_explode") or gulag:npc_is_enemy_to_anybody (db.actor) == true then
           db.actor:disable_info_portion ("mil_freedom_attack")
           return 2
        end   
