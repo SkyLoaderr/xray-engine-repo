@@ -562,8 +562,6 @@ void CActor::HitMark	(float P,
 	if ( (hit_type==ALife::eHitTypeFireWound||hit_type==ALife::eHitTypeWound_2) && g_Alive() && Local() && /*(this!=who) && */(Level().CurrentEntity()==this) )	
 	{
 		HUD().Hit(0, P, dir);
-//		Actor()->Cameras().AddPPEffector(xr_new<CShootingHitEffectorPP>(m_pShootingEffector));
-
 
 	if(1||psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
 		CEffectorCam* ce = Cameras().GetCamEffector((ECamEffectorType)effFireHit);
