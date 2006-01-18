@@ -66,7 +66,7 @@ path_look           = jail_guard_bw_look
 def_state_moving1   = walk
 def_state_moving2   = walk
 def_state_moving3   = walk
-on_info             = {+cit_jail_kill_actor} remark@jail_guard_kill_actor, {+cit_jail_doctor_out_start} walker@jail_guard_open_door
+on_info             = {+cit_jail_doctor_out_start} walker@jail_guard_open_door ;, {+cit_jail_kill_actor} remark@jail_guard_kill_actor
 on_info2            = {+cit_doctor_dead} walker@jail_guard2
 meet                = meet@jail_guard
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
