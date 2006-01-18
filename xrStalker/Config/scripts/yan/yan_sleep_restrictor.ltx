@@ -5,7 +5,7 @@ active = sr_idle@1
 on_info = {+yan_spawn_ghost} sr_idle@2_1 %=yan_actor_sleep_1%
 
 [sr_idle@2_1]
-on_timer = 5000 | sr_idle@2_2 %=run_postprocess(total_recall) =run_cam_effector(dream:1002:true) =disable_ui%
+on_timer = 4000 | sr_idle@2_2 %=run_postprocess(total_recall) =run_cam_effector(dream:1002:true) =disable_ui%
 
 [sr_idle@2_2]
 on_timer = 1000 | sr_idle@2 %+yantar_ghost_talk%
