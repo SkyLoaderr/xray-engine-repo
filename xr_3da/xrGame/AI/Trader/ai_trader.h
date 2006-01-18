@@ -166,4 +166,5 @@ public:
 	}
 	virtual bool			natural_weapon			() const {return false;}
 	virtual bool			natural_detector		() const {return false;}
+	virtual bool			AllowItemToTrade 		(CInventoryItem const * item, EItemPlace place) const;
 };

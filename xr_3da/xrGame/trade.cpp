@@ -15,11 +15,9 @@
 
 class CInventoryOwner;
 
-TradeFactors CTrade::m_tTradeFactors;
-
 //////////////////////////////////////////////////////////////////////////////////////////
 // CTrade class //////////////////////////////////////////////////////////////////////////
-CTrade::CTrade(CInventoryOwner	*p_io) 
+CTrade::CTrade(CInventoryOwner *p_io) 
 {
 	TradeState = false;
 	m_dwLastTradeTime	= 0;
@@ -46,17 +44,6 @@ CTrade::CTrade(CInventoryOwner	*p_io)
 			pStalker = smart_cast<CAI_Stalker *>(p_io);
 			if (pStalker) pThis.Set(TT_STALKER, pStalker, p_io);
 		}
-	}
-	
-	// Загрузка коэффициентов торговли
-	if (!m_tTradeFactors.Loaded) 
-	{
-		m_tTradeFactors.fBuyFactorHostile		= pSettings->r_float("trade","buy_price_factor_hostile");
-		m_tTradeFactors.fBuyFactorFriendly		= pSettings->r_float("trade","buy_price_factor_friendly");
-		m_tTradeFactors.fSellFactorHostile		= pSettings->r_float("trade","sell_price_factor_hostile");
-		m_tTradeFactors.fSellFactorFriendly		= pSettings->r_float("trade","sell_price_factor_friendly");
-
-		m_tTradeFactors.Loaded = true;
 	}
 }
 

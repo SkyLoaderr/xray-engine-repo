@@ -33,6 +33,8 @@
 #include "detail_path_manager_space.h"
 #include "level_debug.h"
 #include "ai/monsters/BaseMonster/base_monster.h"
+#include "trade_parameters.h"
+#include "script_ini_file.h"
 
 namespace MemorySpace {
 	struct CVisibleObject;
@@ -751,4 +753,106 @@ void CScriptGameObject::make_object_visible_somewhen	(CScriptGameObject *object)
 	}
 
 	stalker->memory().make_object_visible_somewhen	(entity_alive);
+}
+
+void CScriptGameObject::sell_condition			(CScriptIniFile *ini_file, LPCSTR section)
+{
+	CInventoryOwner								*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member sell_condition!");
+		return;
+	}
+
+	inventory_owner->trade_parameters().process	(CTradeParameters::action_sell(0),*ini_file,section);
+}
+
+void CScriptGameObject::sell_condition			(float friend_factor, float enemy_factor)
+{
+	CInventoryOwner								*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member sell_condition!");
+		return;
+	}
+
+	inventory_owner->trade_parameters().default_factors	(
+		CTradeParameters::action_sell(0),
+		CTradeFactors(
+			friend_factor,
+			enemy_factor
+		)
+	);
+}
+
+void CScriptGameObject::buy_condition			(CScriptIniFile *ini_file, LPCSTR section)
+{
+	CInventoryOwner								*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member buy_condition!");
+		return;
+	}
+
+	inventory_owner->trade_parameters().process	(CTradeParameters::action_buy(0),*ini_file,section);
+}
+
+void CScriptGameObject::buy_condition			(float friend_factor, float enemy_factor)
+{
+	CInventoryOwner								*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member buy_condition!");
+		return;
+	}
+
+	inventory_owner->trade_parameters().default_factors	(
+		CTradeParameters::action_buy(0),
+		CTradeFactors(
+			friend_factor,
+			enemy_factor
+		)
+	);
+}
+
+void CScriptGameObject::buy_supplies			(CScriptIniFile *ini_file, LPCSTR section)
+{
+	CInventoryOwner								*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member buy_condition!");
+		return;
+	}
+
+	inventory_owner->buy_supplies(
+		*ini_file,
+		section
+	);
+}
+
+void sell_condition								(CScriptIniFile *ini_file, LPCSTR section)
+{
+	default_trade_parameters().process	(CTradeParameters::action_sell(0),*ini_file,section);
+}
+
+void sell_condition								(float friend_factor, float enemy_factor)
+{
+	default_trade_parameters().default_factors	(
+		CTradeParameters::action_sell(0),
+		CTradeFactors(
+			friend_factor,
+			enemy_factor
+		)
+	);
+}
+
+void buy_condition								(CScriptIniFile *ini_file, LPCSTR section)
+{
+	default_trade_parameters().process	(CTradeParameters::action_buy(0),*ini_file,section);
+}
+
+void buy_condition								(float friend_factor, float enemy_factor)
+{
+	default_trade_parameters().default_factors	(
+		CTradeParameters::action_buy(0),
+		CTradeFactors(
+			friend_factor,
+			enemy_factor
+		)
+	);
 }

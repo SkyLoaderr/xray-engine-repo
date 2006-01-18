@@ -24,6 +24,7 @@
 #include "../../level.h"
 #include "../../script_callback_ex.h"
 #include "../../game_object_space.h"
+#include "../../clsid_game.h"
 
 CAI_Trader::CAI_Trader()
 {
@@ -515,4 +516,15 @@ DLL_Pure *CAI_Trader::_construct	()
 	CScriptEntity::_construct	();
 	
 	return						(this);
+}
+
+bool CAI_Trader::AllowItemToTrade 	(CInventoryItem const * item, EItemPlace place) const
+{
+	if (!g_Alive())
+		return					(true);
+
+	if (item->object().CLS_ID == CLSID_DEVICE_PDA)
+		return					(false);
+
+	return						(true);
 }

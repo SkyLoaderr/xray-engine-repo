@@ -10,6 +10,7 @@
 #include "script_space.h"
 #include "script_game_object.h"
 #include "game_object_space.h"
+#include "script_ini_file.h"
 
 using namespace luabind;
 
@@ -57,6 +58,11 @@ void CScriptGameObject::script_register(lua_State *L)
 				value("script_animation",		int(GameObject::eScriptAnimation)),
 				value("task_state",				int(GameObject::eTaskStateChange)),
 				value("map_location_added",		int(GameObject::eMapLocationAdded))
-			]
+			],
+
+		def("buy_condition",				(void (*)(CScriptIniFile*,LPCSTR))(&::buy_condition)),
+		def("buy_condition",				(void (*)(float,float))(&::buy_condition)),
+		def("sell_condition",				(void (*)(CScriptIniFile*,LPCSTR))(&::sell_condition)),
+		def("sell_condition",				(void (*)(float,float))(&::sell_condition))
 	];
 }

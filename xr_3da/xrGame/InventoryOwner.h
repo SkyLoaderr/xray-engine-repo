@@ -21,10 +21,10 @@ class CEntityAlive;
 class CCustomZone;
 class CInfoPortionWrapper;
 class NET_Packet;
-
 class CCharacterInfo;
 class CSpecificCharacter;
-
+class CTradeParameters;
+class CPurchaseList;
 
 class CInventoryOwner : public CAttachmentOwner {							
 public:
@@ -195,7 +195,20 @@ public:
 	virtual	void				on_weapon_shot_start	(CWeapon *weapon);
 	virtual	void				on_weapon_shot_stop		(CWeapon *weapon);
 	virtual	void				on_weapon_hide			(CWeapon *weapon);
+
+public:
 	virtual	bool				use_simplified_visual	() const {return (false);};
+
+private:
+	CTradeParameters			*m_trade_parameters;
+	CPurchaseList				*m_purchase_list;
+
+public:
+	IC		CTradeParameters	&trade_parameters		() const;
+	virtual	LPCSTR				trade_section			() const;
+			float				deficit_factor			(const shared_str &section) const;
+			void				buy_supplies			(CInifile &ini_file, LPCSTR section);
+			void				sell_useless_items		();
 };
 
 #include "inventory_owner_inline.h"

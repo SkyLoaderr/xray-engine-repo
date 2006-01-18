@@ -6901,6 +6901,76 @@
 									RelativePath=".\relation_registry_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="trade_parameters"
+								Filter="">
+								<Filter
+									Name="trade_bool_parameters"
+									Filter="">
+									<File
+										RelativePath=".\trade_bool_parameters.h">
+									</File>
+									<File
+										RelativePath=".\trade_bool_parameters_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="trade_factors"
+									Filter="">
+									<File
+										RelativePath=".\trade_factors.h">
+									</File>
+									<File
+										RelativePath=".\trade_factors_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="trade_factor_parameters"
+									Filter="">
+									<File
+										RelativePath=".\trade_factor_parameters.h">
+									</File>
+									<File
+										RelativePath=".\trade_factor_parameters_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="trade_action_parameters"
+									Filter="">
+									<File
+										RelativePath=".\trade_action_parameters.h">
+									</File>
+									<File
+										RelativePath=".\trade_action_parameters_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="trade_parameters"
+									Filter="">
+									<File
+										RelativePath=".\trade_parameters.cpp">
+									</File>
+									<File
+										RelativePath=".\trade_parameters.h">
+									</File>
+									<File
+										RelativePath=".\trade_parameters_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="purchase_list"
+									Filter="">
+									<File
+										RelativePath=".\purchase_list.cpp">
+									</File>
+									<File
+										RelativePath=".\purchase_list.h">
+									</File>
+									<File
+										RelativePath=".\purchase_list_inline.h">
+									</File>
+								</Filter>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="PhysicItem"

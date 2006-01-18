@@ -28,7 +28,8 @@
 #include "script_callback_ex.h"
 #include "game_object_space.h"
 #include "AI/Monsters/BaseMonster/base_monster.h"
-
+#include "trade_parameters.h"
+#include "purchase_list.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -36,6 +37,7 @@
 CInventoryOwner::CInventoryOwner			()
 {
 	m_pTrade					= NULL;
+	m_trade_parameters			= 0;
 	
 	m_inventory					= xr_new<CInventory>();
 	m_pCharacterInfo			= xr_new<CCharacterInfo>();
@@ -48,7 +50,9 @@ CInventoryOwner::CInventoryOwner			()
 
 DLL_Pure *CInventoryOwner::_construct		()
 {
-	m_pTrade					= xr_new<CTrade>(this);
+	m_trade_parameters			= 0;
+	m_purchase_list				= 0;
+
 	return						(0);
 }
 
@@ -58,6 +62,8 @@ CInventoryOwner::~CInventoryOwner			()
 	xr_delete					(m_pTrade);
 	xr_delete					(m_pCharacterInfo);
 	xr_delete					(m_known_info_registry);
+	xr_delete					(m_trade_parameters);
+	xr_delete					(m_purchase_list);
 }
 
 void CInventoryOwner::Load					(LPCSTR section)
@@ -87,6 +93,14 @@ void CInventoryOwner::reinit				()
 //call this after CGameObject::net_Spawn
 BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 {
+	if (!m_pTrade)
+		m_pTrade				= xr_new<CTrade>(this);
+
+	if (m_trade_parameters)
+		xr_delete				(m_trade_parameters);
+
+	m_trade_parameters			= xr_new<CTradeParameters>(trade_section());
+
 	//получить указатель на объект, InventoryOwner
 	m_inventory->setSlotsBlocked(false);
 	CGameObject			*pThis = smart_cast<CGameObject*>(this);
@@ -431,4 +445,36 @@ void CInventoryOwner::on_weapon_shot_stop		(CWeapon *weapon)
 
 void CInventoryOwner::on_weapon_hide			(CWeapon *weapon)
 {
+}
+
+LPCSTR CInventoryOwner::trade_section			() const
+{
+	const CGameObject			*game_object = smart_cast<const CGameObject*>(this);
+	VERIFY						(game_object);
+	return						(READ_IF_EXISTS(pSettings,r_string,game_object->cNameSect(),"trade_section","trade"));
+}
+
+float CInventoryOwner::deficit_factor			(const shared_str &section) const
+{
+	if (!m_purchase_list)
+		return					(1.f);
+
+	return						(m_purchase_list->deficit(section));
+}
+
+void CInventoryOwner::buy_supplies				(CInifile &ini_file, LPCSTR section)
+{
+	if (!m_purchase_list)
+		m_purchase_list			= xr_new<CPurchaseList>();
+
+	m_purchase_list->process	(ini_file,section,*this);
+}
+
+void CInventoryOwner::sell_useless_items		()
+{
+	TIItemContainer::iterator	I = inventory().m_all.begin();
+	TIItemContainer::iterator	E = inventory().m_all.end();
+	for ( ; I != E; ++I)
+		if (AllowItemToTrade(*I,eItemPlaceUndefined))
+			(*I)->Drop			();
 }

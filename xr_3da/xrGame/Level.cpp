@@ -9,67 +9,51 @@
 #include "../environment.h"
 #include "../igame_persistent.h"
 #include "ParticlesObject.h"
-
 #include "Level.h"
 #include "xrServer.h"
 #include "net_queue.h"
 #include "game_cl_base.h"
-
 #include "entity_alive.h"
 #include "hudmanager.h"
 #include "ai_space.h"
 #include "ai_debug.h"
-
-// events
 #include "PHdynamicdata.h"
 #include "Physics.h"
-
 #include "ShootingObject.h"
-
 #include "LevelFogOfWar.h"
 #include "Level_Bullet_Manager.h"
-
 #include "script_process.h"
 #include "script_engine.h"
 #include "script_engine_space.h"
 #include "team_base_zone.h"
-
 #include "infoportion.h"
-
 #include "patrol_path_storage.h"
 #include "date_time.h"
-
 #include "space_restriction_manager.h"
 #include "seniority_hierarchy_holder.h"
 #include "space_restrictor.h"
 #include "client_spawn_manager.h"
 #include "autosave_manager.h"
-
 #include "ClimableObject.h"
-
 #include "level_graph.h"
-
 #include "mt_config.h"
-
 #include "phcommander.h"
 #include "map_manager.h"
 #include "../CameraManager.h"
-
-#ifdef DEBUG
-#include "level_debug.h"
-#endif
-
 #include "level_sounds.h"
 #include "car.h"
+#include "trade_parameters.h"
 
 #ifdef DEBUG
+#	include "level_debug.h"
 #	include "ai/stalker/ai_stalker.h"
 #endif
 
-		CPHWorld*	ph_world						= 0;
-		float		g_cl_lvInterp					= 0;
-		u32			lvInterpSteps					= 0;
-extern	BOOL		g_bDebugDumpPhysicsStep			;
+extern BOOL	g_bDebugDumpPhysicsStep;
+
+CPHWorld	*ph_world			= 0;
+float		g_cl_lvInterp		= 0;
+u32			lvInterpSteps		= 0;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -261,6 +245,11 @@ CLevel::~CLevel()
 	//-----------------------------------------------------------
 	Demo_Clear					();
 	m_aDemoData.clear			();
+
+	// here we clean default trade params
+	// because they should be new for each saved/loaded game
+	// and I didn't find better place to put this code in
+	CTradeParameters::clean		();
 
 	if (m_we_used_old_crach_handler)
 		Debug.set_crashhandler	(m_pOldCrashHandler);

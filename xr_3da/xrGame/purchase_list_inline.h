@@ -19,3 +19,14 @@ IC	const CPurchaseList::DEFICITS &CPurchaseList::deficits	() const
 {
 	return						(m_deficits);
 }
+
+IC	void CPurchaseList::deficit								(const shared_str &section, const float &deficit)
+{
+	DEFICITS::iterator			I = m_deficits.find(section);
+	if (I != m_deficits.end()) {
+		(*I).second				= deficit;
+		return;
+	}
+
+	m_deficits.insert			(std::make_pair(section,deficit));
+}

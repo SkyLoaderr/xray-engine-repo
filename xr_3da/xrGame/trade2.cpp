@@ -12,8 +12,7 @@
 #include "script_callback_ex.h"
 #include "script_game_object.h"
 #include "game_object_space.h"
-
-class CInventoryOwner;
+#include "trade_parameters.h"
 
 bool CTrade::CanTrade()
 {
@@ -132,72 +131,68 @@ CInventoryOwner* CTrade::GetPartner()
 	return pPartner.inv_owner;
 }
 
-u32	CTrade::GetItemPrice(PIItem pItem)
+u32	CTrade::GetItemPrice	(PIItem pItem)
 {
-	CArtefact* pArtefact = smart_cast<CArtefact*>(pItem);
+	CArtefact				*pArtefact = smart_cast<CArtefact*>(pItem);
 
-	// определение коэффициента
-	float factor	= 1.0f;
-	u32 item_cost	= pItem->Cost();
+	// computing base_cost
+	float					base_cost;
+	if (pArtefact && (pThis.type == TT_ACTOR) && (pPartner.type == TT_TRADER)) {
+		CAI_Trader			*pTrader = smart_cast<CAI_Trader*>(pPartner.inv_owner);
+		VERIFY				(pTrader);
+		base_cost			= (float)pTrader->ArtefactPrice(pArtefact);
+	}
+	else
+		base_cost			= (float)pItem->Cost();
 	
-	// condition
+	// computing condition factor
 	// for "dead" weapon we use 10% from base cost, for "good" weapon we use full base cost
-	item_cost		= iFloor	(float(item_cost)*powf(pItem->GetCondition()*0.9f + .1f, 0.75f) + .5f); 
+	float					condition_factor = powf(pItem->GetCondition()*0.9f + .1f, 0.75f); 
+	
+	// computing relation factor
+	float					relation_factor;
 
-	//дл€ актера цену вещи всегда определ€ют 
-	//его собеседники
-	if (pThis.type == TT_ACTOR)
-	{
-		if(pPartner.type == TT_TRADER && pArtefact)
-		{
-			CAI_Trader* pTrader = smart_cast<CAI_Trader*>(pPartner.inv_owner); VERIFY(pTrader);
-			if (pTrader)
-				item_cost = pTrader->ArtefactPrice(pArtefact);
-		}
+	CHARACTER_GOODWILL		attitude = RELATION_REGISTRY().GetAttitude(pPartner.inv_owner, pThis.inv_owner);
 
+	if (NO_GOODWILL == attitude)
+		relation_factor		= 0.f;
+	else
+		relation_factor		= float(attitude + 100.f)/200.f;
 
-		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetAttitude(pPartner.inv_owner, pThis.inv_owner);
-		float goodwill_factor;
+	bool					buying = (pThis.type == TT_ACTOR);
+	const SInventoryOwner	&partner = buying ? pPartner : pThis;
+	VERIFY					(partner.inv_owner);
 
-		attitude += 100;
-		
-		if(NO_GOODWILL == attitude)
-			goodwill_factor = 0.f;
-		else
-			goodwill_factor = float(attitude)/200.f;
+	// computing action factor
+	const CTradeFactors		*p_trade_factors;
+	if (buying)
+		p_trade_factors		= &partner.inv_owner->trade_parameters().factors(CTradeParameters::action_buy(0),pItem->object().cNameSect());
+	else
+		p_trade_factors		= &partner.inv_owner->trade_parameters().factors(CTradeParameters::action_sell(0),pItem->object().cNameSect());
+	
+	const CTradeFactors		&trade_factors = *p_trade_factors;
 
-		factor = m_tTradeFactors.fBuyFactorHostile +
-			(m_tTradeFactors.fBuyFactorFriendly - m_tTradeFactors.fBuyFactorHostile)*goodwill_factor;
-		clamp(factor, m_tTradeFactors.fBuyFactorHostile, m_tTradeFactors.fBuyFactorFriendly);
-	}
-	else if(pPartner.type == TT_ACTOR)
-	{
-		if(pThis.type == TT_TRADER && pArtefact)
-		{
-			CAI_Trader* pTrader = smart_cast<CAI_Trader*>(pThis.inv_owner); VERIFY(pTrader);
-			if (pTrader)
-				item_cost = pTrader->ArtefactPrice(pArtefact);
-		}
+	float					action_factor = 
+		trade_factors.friend_factor() +
+		(
+			trade_factors.enemy_factor() -
+			trade_factors.friend_factor()
+		)*
+		relation_factor;
 
+	clamp					(action_factor,trade_factors.enemy_factor(),trade_factors.friend_factor());
+	
+	// computing deficit_factor
+	float					deficit_factor = partner.inv_owner->deficit_factor(pItem->object().cNameSect());
 
-		CHARACTER_GOODWILL attitude = RELATION_REGISTRY().GetAttitude(pPartner.inv_owner, pThis.inv_owner);
+	// total price calculation
+	u32						result = 
+		iFloor	(
+			base_cost*
+			condition_factor*
+			action_factor*
+			deficit_factor
+		);
 
-		attitude += 100;
-		float goodwill_factor;
-
-		if(NO_GOODWILL == attitude)
-			goodwill_factor = 0.f;
-		else
-			goodwill_factor = float(attitude)/200.f;
-
-		factor = m_tTradeFactors.fSellFactorFriendly +
-			(m_tTradeFactors.fSellFactorHostile - m_tTradeFactors.fSellFactorFriendly) *goodwill_factor;
-		clamp(factor, m_tTradeFactors.fSellFactorFriendly, m_tTradeFactors.fSellFactorHostile);
-
-	}
-
-	// сумма сделки учитыва€ ценовой коэффициент
-	u32	dwTransferMoney = (u32)(((float) item_cost) * factor );
-
-	return dwTransferMoney;
+	return					(result);
 }

@@ -5,17 +5,19 @@ class CInventory;
 class CInventoryItem;
 class CEntity;
 
+/**
 struct TradeFactors {
 	float   fBuyFactorHostile;
 	float   fBuyFactorFriendly;
 	float   fSellFactorHostile;
 	float   fSellFactorFriendly;
 
-	bool	Loaded;
+//	bool	Loaded;
 
-	TradeFactors(){Loaded = false;}
+//	TradeFactors(){Loaded = false;}
+	TradeFactors(){}
 };
-
+/**/
 
 class CTrade {
 	bool	TradeState;					// режим торговли. true - включен
@@ -38,8 +40,6 @@ class CTrade {
 
 	//если нужно провести синхронизацию с сервером для торговцев
 	bool	m_bNeedToUpdateArtefactTasks;
-public:
-	static TradeFactors m_tTradeFactors;
 
 public:
 	void TradeCB(bool bStart);
