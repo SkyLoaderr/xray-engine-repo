@@ -3,7 +3,7 @@
 <xml>
 
 <specific_character id="sar_monolith_specnaz" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -31,7 +31,7 @@
 
 <!---------------------------- EXO ------------------------->
     <specific_character id="sar_monolith_exo" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -58,10 +58,10 @@
     </specific_character>
     
         <specific_character id="sar_monolith_exo_crystal" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер спецподразделения монолитовцев - "Кристалл", отвечающего за сохранность самого монолита.</bio>
+        <bio>Сталкер спецподразделения монолитовцев - "Кристалл", отвечающего за сохранность самого Монолита.</bio>
 
         <class>sar_monolith_exo_crystal</class>
         <community>monolith</community>
@@ -85,7 +85,7 @@
     </specific_character>
 	
 	<specific_character id="sar_monolith_commander" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -230,7 +230,7 @@
     </specific_character>
     
     <specific_character id="sar2_esc_soldier_commander" team_default = "1">
-        <name>Кузнецов</name>
+        <name>Майор Кузнецов</name>
         <icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -300,7 +300,7 @@
     </specific_character>
     
     <specific_character id="sar2_hellcar" team_default = "1">
-        <name>Сталкер Даймон</name>
+        <name>Сталкер Бес</name>
         <icon x="16" y="12"></icon>
 		<map_icon x="0" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -324,7 +324,7 @@
     </specific_character>
     
     <specific_character id="sar2_bandit_leader" team_default = "1">
-        <name>Предводитель бандитов</name>
+        <name>Вася "Кабан"</name>
         <icon x="22" y="14"></icon>
 		<map_icon x="0" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -394,7 +394,7 @@
     </specific_character>
     
     <specific_character id="sar2_ratcatcher" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="60" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1084,7 +1084,7 @@
     </specific_character>
     
 	<specific_character id="sar2_bandit_novice" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="14" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1107,7 +1107,7 @@
     </specific_character>
     
     <specific_character id="sar2_bandit_general" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1130,7 +1130,7 @@
     </specific_character>
     
     <specific_character id="sar2_bandit_veteran" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1153,7 +1153,7 @@
     </specific_character>
     
     <specific_character id="sar2_soldier_regular" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1177,7 +1177,7 @@
     
     
     <specific_character id="sar2_soldier_specnaz" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1200,7 +1200,7 @@
     </specific_character>
     
     <specific_character id="sar2_soldier_stalker" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1223,7 +1223,7 @@
     </specific_character>
     
     <specific_character id="sar2_killer_regular" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1246,7 +1246,7 @@
     </specific_character>
     
     <specific_character id="sar2_killer_specnaz" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1269,7 +1269,7 @@
     </specific_character>
     
     <specific_character id="sar2_killer_exo" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1292,7 +1292,7 @@
     </specific_character>
     
     <specific_character id="sar2_zombied_novice" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1315,7 +1315,7 @@
     </specific_character>
     
     <specific_character id="sar2_zombied_stalker" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1338,7 +1338,7 @@
     </specific_character>
     
     <specific_character id="sar2_zombied_exo" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1361,7 +1361,7 @@
     </specific_character>
     
     <specific_character id="sar2_monolith_regular" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1384,7 +1384,7 @@
     </specific_character>
     
     <specific_character id="sar2_monolith_regular2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1407,7 +1407,7 @@
     </specific_character>
     
     <specific_character id="sar2_monolith_specnaz" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1430,7 +1430,7 @@
     </specific_character>
     
     <specific_character id="sar2_monolith_specnaz2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1455,7 +1455,7 @@
     
 	
 	<specific_character id="sar2_monolith_exo" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
@@ -1478,7 +1478,7 @@
     </specific_character>
     
     <specific_character id="sar2_monolith_exo2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Психоматериальный образ, созданный "Монолитом".</bio>
