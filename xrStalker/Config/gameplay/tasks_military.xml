@@ -85,6 +85,7 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type hint="mil_crazy_hint">crlc_mdl</map_location_type>
             <object_story_id>Mil_Crazy</object_story_id>
+			<infoportion_fail>mil_max_dead</infoportion_fail>
             <function_complete>mil_tasks.mil_task_crazy_flash_have</function_complete>
 		</objective>
 		<objective>
@@ -113,6 +114,7 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type hint="mil_report_to_max_hint">green_location</map_location_type>
 			<object_story_id>Mil_Master_Max</object_story_id>
+			<function_fail>mil_tasks.lukash_job_fail</function_fail>
 			<infoportion_complete>mil_max_arrive</infoportion_complete>
 			<infoportion_fail>mil_max_dead</infoportion_fail>
 			<infoportion_set_fail>mil_lukash_dolg_task_fail</infoportion_set_fail>
@@ -122,6 +124,7 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type hint="mil_kill_dolg_hint">crlc_mdl</map_location_type>
 			<object_story_id>Mil_Dolg_Zoneguard</object_story_id>
+			<function_fail>mil_tasks.lukash_job_fail</function_fail>
 			<infoportion_complete>mil_dolg_dead</infoportion_complete>
             <map_location_hidden>1</map_location_hidden>
 		</objective>
@@ -130,6 +133,7 @@
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type hint="mil_return_to_lukash_hint">blue_location</map_location_type>
 			<object_story_id>Mil_Lukash</object_story_id>
+			<function_fail>mil_tasks.lukash_job_fail</function_fail>
 			<infoportion_complete>mil_lukash_dolg_task_complete</infoportion_complete>
             <map_location_hidden>1</map_location_hidden>
 		</objective>
