@@ -63,7 +63,7 @@ CController::CController()
 #ifdef _DEBUG	
 	P1.set(0.f,0.f,0.f);
 	P2.set(0.f,0.f,0.f);
-#undef 
+#endif
 
 }
 
