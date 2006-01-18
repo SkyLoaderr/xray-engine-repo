@@ -103,6 +103,10 @@ function k_predicate_e(data)
 	return data.profile_name == "cit_killer_exo"
 end
 
+function k_predicate_es(data)
+	return data.profile_name == "cit_killer_exo_sniper"
+end
+
 function k_predicate_v(data)
 	return data.profile_name == "cit_killer_veteran"
 end
@@ -122,7 +126,7 @@ function load_job_killers(sj, gname, type, squad, groups)
     local ltx = ""
 
     ltx = ltx.."[danger_killers]\n" ..
-               "ignore_distance        = 20\n" ..
+               "ignore_distance        = 50\n" ..
                "danger_inertion_time   = 60000\n" ..
                "danger_expiration_time = 40000\n"
 
@@ -146,7 +150,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                "commander           = true\n" ..
                "on_info             = {+cit_heli_end} patrol@" .. gname .. "_leader\n" ..
                "soundgroup          = cit_killers_leader_sg\n" ..
-               "danger              = danger_killers\n" ..
+               --"danger              = danger_killers\n" ..
                "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                "[patrol@" .. gname .. "_leader]\n" ..
@@ -155,7 +159,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                "commander           = true\n" ..
                --"on_info             = {+cit_jail_guard2_talk_to_guard1 -cit_heli_end} patrol@" .. gname .. "_leader_attack\n" ..
                "soundgroup          = cit_killers_leader_sg\n" ..
-               "danger              = danger_killers\n" ..
+               --"danger              = danger_killers\n" ..
                "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
 
     -- leader guards
@@ -179,7 +183,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "formation           = line\n" ..
                    "on_info             = {+cit_heli_end} patrol@" .. gname .. "_base_patrol" .. i .. "\n" ..
                    "soundgroup          = " .. gname .. "_leader_sg\n" ..
-                   "danger              = danger_killers\n" ..
+                   --"danger              = danger_killers\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
                    "[patrol@" .. gname .. "_base_patrol" .. i .. "]\n" ..
@@ -187,7 +191,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "path_look           = leader_look\n" ..
                    "formation           = line\n" ..
                    "soundgroup          = " .. gname .. "_leader_sg\n" ..
-                   "danger              = danger_killers\n" ..
+                   --"danger              = danger_killers\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
@@ -236,8 +240,8 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "no_retreat          = true\n" ..
                    "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
                    --"danger              = danger_killers\n" ..
-                   "combat_ignore_cond  = {=fighting_actor -cit_actor_out_killers_base}, {=check_fighting(1200)}\n"
-                   --"combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
+                   --"combat_ignore_cond  = {=fighting_actor -cit_actor_out_killers_base}, {=check_fighting(1200)}\n"
+                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- snipers
@@ -248,7 +252,7 @@ function load_job_killers(sj, gname, type, squad, groups)
 		    squad = squad, group = groups[8],
 		    in_rest = "", out_rest = "",
     		online = true,
-		    predicate = k_predicate_e
+		    predicate = k_predicate_e --s
 	    }
 	    table.insert(sj, t)
 
@@ -257,13 +261,13 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "combat_ignore       = combat_ignore\n" ..
 
                    "[camper@" .. gname .. "_roof_sniper" .. i .. "]\n" ..
-                   "path_walk           = roof_sniper" .. i .. "_walk\n" ..
-                   "path_look           = roof_sniper" .. i .. "_look\n" ..
-                   "sniper              = true\n" ..
-                   "def_state_campering = threat\n" ..
-                   "def_state_campering_fire = threat_sniper_fire\n" ..
-                   --"danger              = danger_bandits\n" ..
-                   "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
+                   "path_walk                   = roof_sniper" .. i .. "_walk\n" ..
+                   "path_look                   = roof_sniper" .. i .. "_look\n" ..
+                   "sniper                      = true\n" ..
+                   "def_state_campering         = threat\n" ..
+                   "def_state_campering_fire    = threat_sniper_fire\n" ..
+                   --"danger                      = danger_bandits\n" ..
+                   "combat_ignore_cond          = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
     end
 
     -- walkers between kamps
@@ -470,6 +474,7 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "path_walk           = road_patrol" .. i .. "_walk\n" ..
                    "path_look           = road_patrol" .. i .. "_look\n" ..
                    "no_retreat          = true\n" ..
+                   "radius              = 40\n" ..
                    --"def_state_moving1   = patrol\n" ..
                    --"def_state_moving2   = patrol\n" ..
                    --"def_state_moving3   = patrol\n" ..
