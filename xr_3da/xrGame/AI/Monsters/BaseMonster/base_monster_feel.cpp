@@ -169,7 +169,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 				
 				string64 sect_name;
 				sprintf(sect_name,"effector_fire_hit_%d",id);
-				AddEffector(effFireHit, sect_name, fDamage/100.0f);
+				AddEffector(Actor(), effFireHit, sect_name, fDamage/100.0f);
 			}
 			//////////////////////////////////////////////////////////////////////////
 			
