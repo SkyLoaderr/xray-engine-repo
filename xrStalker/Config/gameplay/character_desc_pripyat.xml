@@ -4,7 +4,7 @@
 <!------------------------- MONOLITH ----------------------->
 <!-------------------------- AMBUSH ------------------------>
     <specific_character id="pri_monolith_ambush_default1" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -30,7 +30,7 @@
     </specific_character>
 
     <specific_character id="pri_monolith_ambush_default2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -57,7 +57,7 @@
 
 <!-------------------------- REGULAR ----------------------->
     <specific_character id="pri_monolith_regular_default1" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -84,7 +84,7 @@
     </specific_character>
 
     <specific_character id="pri_monolith_regular_default2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -111,7 +111,7 @@
     </specific_character>
 
     <specific_character id="pri_monolith_regular_default3" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -138,7 +138,7 @@
     </specific_character>
 
     <specific_character id="pri_monolith_regular_default4" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -166,7 +166,7 @@
 
 <!-------------------------- SPECNAZ ----------------------->
     <specific_character id="pri_monolith_specnaz_default1" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -194,7 +194,7 @@
     </specific_character>
 
     <specific_character id="pri_monolith_specnaz_default2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="0" y="4"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -223,7 +223,7 @@
 
 <!---------------------------- EXO ------------------------->
     <specific_character id="pri_monolith_exo_default1" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -251,7 +251,7 @@
     </specific_character>
 
     <specific_character id="pri_monolith_exo_default2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -313,7 +313,7 @@
 <!-------------------------- STALKER ----------------------->
 <!------------------------- FOLLOWERS ---------------------->
 	<specific_character id="pri_followers_stalker1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -342,7 +342,7 @@
 	</specific_character>
 
 	<specific_character id="pri_followers_stalker2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -370,7 +370,7 @@
 	</specific_character>
 
 	<specific_character id="pri_followers_stalker3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
