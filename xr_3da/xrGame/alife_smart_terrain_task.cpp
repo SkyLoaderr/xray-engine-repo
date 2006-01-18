@@ -37,7 +37,7 @@ GameGraph::_GRAPH_ID CALifeSmartTerrainTask::game_vertex_id		() const
 
 u32	CALifeSmartTerrainTask::level_vertex_id						() const
 {
-//	VERIFY3					(ai().level_graph().valid_vertex_id(patrol_point().level_vertex_id()),*m_patrol_path_name,*m_patrol_point->name());
+	VERIFY3					(ai().game_graph().valid_vertex_id(patrol_point().game_vertex_id()),*m_patrol_path_name,*m_patrol_point->name());
 	return					(patrol_point().level_vertex_id());
 }
 
