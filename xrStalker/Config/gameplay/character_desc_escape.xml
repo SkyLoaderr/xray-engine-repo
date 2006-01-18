@@ -610,7 +610,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_regular_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -640,7 +640,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -671,7 +671,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -701,7 +701,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default4" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
@@ -732,7 +732,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default5" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -762,7 +762,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_blockpost_commander" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -790,7 +790,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_blokpost_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -821,7 +821,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_blokpost_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -852,7 +852,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_blokpost_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -883,7 +883,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -914,7 +914,7 @@
 	</specific_character>
 	
 		<specific_character id="esc_soldier_specnaz_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
