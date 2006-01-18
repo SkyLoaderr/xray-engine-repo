@@ -29,7 +29,8 @@ class CMonsterEnemyManager {
 	u32					enemy_vertex_enemy_last_seen;
 
 	u32					m_time_updated;
-
+	u32					m_time_start_see_enemy;
+	
 public:
 						CMonsterEnemyManager		(); 
 						~CMonsterEnemyManager		();
@@ -65,4 +66,7 @@ public:
 
 	u32					get_my_vertex_enemy_last_seen		() {return my_vertex_enemy_last_seen;}
 	u32					get_enemy_vertex_enemy_last_seen	() {return enemy_vertex_enemy_last_seen;}
+
+	u32					see_enemy_duration			();
 };
+

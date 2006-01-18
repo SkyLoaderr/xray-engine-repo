@@ -38,8 +38,9 @@
 #include "../../../InventoryOwner.h"
 #include "../../../character_info.h"
 
-
 #include "controller_psy_hit.h"
+#include "../monster_cover_manager.h"
+
 
 #ifdef _DEBUG
 #	include <dinput.h>
@@ -52,12 +53,16 @@ const float	_pmt_psy_attack_min_angle	= deg(5);
 CController::CController()
 {
 	StateMan = xr_new<CStateManagerController>(this);
-	CPsyAuraController::init_external(this);
+	//CPsyAuraController::init_external(this);
 	time_control_hit_started = 0;
 
 	m_psy_hit			= xr_new<CControllerPsyHit>();
 
 	control().add		(m_psy_hit,  ControlCom::eComCustom1);
+
+	P1.set(0.f,0.f,0.f);
+	P2.set(0.f,0.f,0.f);
+
 }
 
 CController::~CController()
@@ -130,7 +135,7 @@ void CController::Load(LPCSTR section)
 	anim().AddAnim(eAnimEat,			"sit_eat_",				-1, &velocity_none,		PS_SIT);
 	anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND);
 	anim().AddAnim(eAnimWalkDamaged,	"stand_walk_dmg_",		-1, &velocity_walk_dmg,	PS_STAND);
-	anim().AddAnim(eAnimRun,			"stand_run_fwd_",		-1,	&velocity_run,		PS_STAND);
+	anim().AddAnim(eAnimRun,			"run_scared_",			-1,	&velocity_run,		PS_STAND);
 	anim().AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, &velocity_run_dmg,	PS_STAND);
 	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
 	anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND);
@@ -208,11 +213,6 @@ BOOL CController::net_Spawn(CSE_Abstract *DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-	if (!g_Alive()) {
-		CPsyAuraController::deactivate();
-		CPsyAuraController::set_auto_activate(false);
-	}
-	
 	return (TRUE);
 }
 
@@ -288,8 +288,6 @@ void CController::play_control_sound_hit()
 void CController::reload(LPCSTR section)
 {
 	inherited::reload			(section);
-	CPsyAuraController::reload	(section);
-
 	com_man().ta_fill_data(anim_triple_control,	"stand_sit_down_attack_0",	"control_attack_0",	"sit_stand_up_attack_0", true, false);
 }
 
@@ -299,9 +297,6 @@ void CController::reinit()
 	m_mental_state = eStateIdle;
 	
 	inherited::reinit();
-	CPsyAuraController::reinit();
-	
-	int_need_deactivate = false;
 
 	m_psy_fire_start_time	= 0;
 	m_psy_fire_delay		= _pmt_psy_attack_delay;
@@ -312,6 +307,7 @@ void CController::reinit()
 	m_sndShockEffector		 = 0;
 	active_control_fx		 = false;
 
+	m_time_last_tube		= 0;
 }
 
 void CController::control_hit()
@@ -345,14 +341,6 @@ void CController::UpdateCL()
 			xr_delete(m_sndShockEffector);
 	}
 
-
-	CPsyAuraController::frame_update();
-
-	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
-		processing_deactivate();
-		int_need_deactivate = false;
-	}
-	
 	if (active_control_fx) {
 		u32 time_to_show	= 150;
 		float percent		= float((Device.dwTimeGlobal - time_control_hit_started)) / float(time_to_show);
@@ -390,10 +378,12 @@ void CController::UpdateCL()
 void CController::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	CPsyAuraController::schedule_update();
 	
 	if (g_Alive())
 		UpdateControlled();
+
+	if (can_tube_fire())
+		tube_fire();
 
 	// DEBUG
 	test_covers();
@@ -404,11 +394,6 @@ void CController::Die(CObject* who)
 	inherited::Die(who);
 	FreeFromControl();
 
-	CPsyAuraController::deactivate();
-	CPsyAuraController::set_auto_activate(false);
-	
-	processing_activate();
-	int_need_deactivate = true;
 }
 
 void CController::net_Destroy()
@@ -420,7 +405,6 @@ void CController::net_Destroy()
 void CController::net_Relcase(CObject *O)
 {
 	inherited::net_Relcase(O);
-	CPsyAuraController::on_relcase(O);
 }
 
 void CController::FreeFromControl()
@@ -521,6 +505,37 @@ void CController::set_psy_fire_delay_default()
 	m_psy_fire_delay = _pmt_psy_attack_delay;
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+// TUBE
+//////////////////////////////////////////////////////////////////////////
+
+#define SEE_ENEMY_DURATION	1000
+#define MIN_DELAY			10000
+#define TUBE_PROBABILITY	20
+
+void CController::tube_fire()
+{
+	m_time_last_tube	= time();
+
+	// missed
+	if (Random.randI(100) > TUBE_PROBABILITY) return;
+
+	control().activate	(ControlCom::eComCustom1);
+}
+
+
+bool CController::can_tube_fire()
+{
+	if (!EnemyMan.get_enemy()) return false;
+	if (m_time_last_tube + MIN_DELAY > time()) return false;
+	if (EnemyMan.see_enemy_duration() < SEE_ENEMY_DURATION) return false;
+	if (!m_psy_hit->check_start_conditions()) return false;
+	if (EnemyMan.get_enemy()->Position().distance_to(Position()) < 10.f) return false;
+
+	return true;
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -567,16 +582,21 @@ bool CController::is_relation_enemy(const CEntityAlive *tpEntityAlive) const
 	return inherited::is_relation_enemy(tpEntityAlive);
 }
 
+void CController::set_mental_state(EMentalState state)
+{
+	if (m_mental_state == state) return;
+	
+	m_mental_state = state;
+	
+	m_custom_anim_base->on_switch_controller	();
+}
+
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CController::show_debug_info()
 {
 	CBaseMonster::SDebugInfo info = inherited::show_debug_info();
 	if (!info.active) return CBaseMonster::SDebugInfo();
-
-	string128 text;
-	sprintf(text, "Psy Aura: Radius = [%f]  Energy = [%f]", CPsyAuraController::get_current_radius(), CPsyAuraController::get_value());
-	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
-	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
 	
 	// Draw Controlled Lines
@@ -611,17 +631,45 @@ void CController::debug_on_key(int key)
 {
 	switch (key){
 	case DIK_MINUS:
-		m_sound_aura_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
-		m_sound_aura_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+		//m_sound_aura_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		//m_sound_aura_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 		
-		if (m_psy_hit->check_start_conditions()) {
-			control().activate(ControlCom::eComCustom1);
+		//if (m_psy_hit->check_start_conditions()) {
+		//	control().activate(ControlCom::eComCustom1);
+		//}
+		P1.set		(Actor()->Position());		
+		
+		DBG().level_info(this).remove_item	(u32(0));
+		DBG().level_info(this).add_item(P1,0.5f,COLOR_BLUE,0);
+	
+
+		if (!fsimilar(P1.square_magnitude(),0.f) && 
+			!fsimilar(P2.square_magnitude(),0.f)) {
+			CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
+			if (cover) {
+				DBG().level_info(this).remove_item	(3);
+				DBG().level_info(this).add_item		(cover->position(),0.8f,COLOR_RED,3);
+			}
 		}
+
 
 		break;
 	case DIK_EQUALS:
-		m_sound_aura_hit_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
-		m_sound_aura_hit_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+		P2.set		(Actor()->Position());
+		DBG().level_info(this).remove_item	(1);
+		DBG().level_info(this).add_item(P2,0.5f,COLOR_GREEN,1);
+
+		if (!fsimilar(P1.square_magnitude(),0.f) && 
+			!fsimilar(P2.square_magnitude(),0.f)) {
+			CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
+			if (cover) {
+				DBG().level_info(this).remove_item	(3);
+				DBG().level_info(this).add_item		(cover->position(),0.8f,COLOR_RED,3);
+			}
+		}
+		
+		//m_sound_aura_hit_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		//m_sound_aura_hit_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 		break;
 	}
 }

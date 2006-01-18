@@ -3861,6 +3861,12 @@
 								RelativePath=".\ai\Monsters\Controller\controller_state_attack.h">
 							</File>
 							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack_fast_move.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack_fast_move_inline.h">
+							</File>
+							<File
 								RelativePath=".\ai\Monsters\Controller\controller_state_attack_inline.h">
 							</File>
 							<File
@@ -3868,6 +3874,12 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_tube.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_tube_inline.h">
 							</File>
 							<Filter
 								Name="Cover"

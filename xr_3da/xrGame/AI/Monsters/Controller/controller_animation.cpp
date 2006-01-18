@@ -32,16 +32,7 @@ void CControllerAnimation::on_start_control(ControlCom::EControlType type)
 		m_man->subscribe	(this, ControlCom::eventTorsoAnimationEnd);	
 		m_man->subscribe	(this, ControlCom::eventLegsAnimationEnd);
 
-		if (m_controller->m_mental_state == CController::eStateDanger) {
-			m_wait_torso_anim_end	= false;
-			set_body_state			(eTorsoIdle, eLegsTypeStand);
-
-			select_torso_animation	();
-			select_legs_animation	();
-		} else {
-			select_animation		();
-		}
-
+		on_switch_controller();
 		break;
 	}
 }
@@ -165,9 +156,21 @@ void CControllerAnimation::add_path_rotation(ELegsActionType action, float angle
 
 void CControllerAnimation::select_velocity() 
 {
-	if (m_current_legs_action == eLegsTypeRun)
-		m_man->path_builder().set_desirable_speed(4.f);
-	else if (m_current_legs_action == eLegsTypeStealMotion)
+	if (m_current_legs_action == eLegsTypeRun) {
+		
+		// if we are moving, get yaw from path
+		float cur_yaw, target_yaw;
+		m_man->direction().get_heading(cur_yaw, target_yaw);
+		SPathRotations	path_rot = get_path_rotation(cur_yaw);
+		if ((path_rot.legs_motion == eLegsBackRun) ||
+			(path_rot.legs_motion == eLegsRunBkwdLeft) || 
+			(path_rot.legs_motion == eLegsRunBkwdRight)) {
+			m_man->path_builder().set_desirable_speed(2.f);
+		} else {
+			m_man->path_builder().set_desirable_speed(4.f);
+		}
+		
+	} else if (m_current_legs_action == eLegsTypeStealMotion)
 		m_man->path_builder().set_desirable_speed(1.1f);
 	else 
 		m_man->path_builder().set_desirable_speed(0.f);
@@ -333,3 +336,18 @@ void CControllerAnimation::set_path_params()
 		m_object->path().disable_path		();
 	}
 }
+
+void CControllerAnimation::on_switch_controller()
+{
+	if (m_controller->m_mental_state == CController::eStateDanger) {
+		m_wait_torso_anim_end	= false;
+		set_body_state			(eTorsoIdle, eLegsTypeStand);
+
+		select_torso_animation	();
+		select_legs_animation	();
+	} else {
+		select_animation		();
+	}
+}
+
+

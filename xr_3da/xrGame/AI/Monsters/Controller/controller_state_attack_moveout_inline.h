@@ -92,6 +92,13 @@ void CStateControlMoveOutAbstract::update_target_point()
 TEMPLATE_SPECIALIZATION
 void CStateControlMoveOutAbstract::update_look_point()
 {
+	if (object->HitMemory.get_last_hit_time() > object->EnemyMan.get_enemy_time_last_seen()) {
+		m_look_point.mad				(object->Position(),object->HitMemory.get_last_hit_dir(),5.f);
+		m_look_point.y					+= 1.5f;
+		m_last_time_look_point_updated	= time();
+		return;
+	} 
+	
 	if (m_last_time_look_point_updated + m_current_delay > time()) return;
 
 	if ((Random.randI(100) < LOOK_COVER_PROBABILITY) && (m_last_time_look_point_updated != 0)) {

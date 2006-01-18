@@ -94,6 +94,7 @@ public:
 			void		set_body_state		(ETorsoActionType, ELegsActionType);
 
 			void		set_path_params		();
+			void		on_switch_controller	();
 private:
 			void		select_velocity		();
 			void		set_path_direction	();
@@ -104,5 +105,5 @@ private:
 			SPathRotations	get_path_rotation	(float cur_yaw);
 
 			bool		is_moving				();
-
+			
 };

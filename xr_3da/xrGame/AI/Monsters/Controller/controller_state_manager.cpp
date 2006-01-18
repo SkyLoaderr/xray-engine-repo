@@ -56,6 +56,13 @@ CStateManagerController::~CStateManagerController()
 {
 }
 
+void CStateManagerController::reinit()
+{
+	inherited::reinit();
+	object->set_mental_state(CController::eStateIdle);
+}
+
+
 #define FIND_ENEMY_TIME_ENEMY_HIDDEN	5000
 #define FIND_ENEMY_MAX_DISTANCE			10.f
 
@@ -80,11 +87,6 @@ void CStateManagerController::execute()
 		if (can_eat())	state_id = eStateEat;
 		else			state_id = eStateRest;
 	}
-	
-	if (state_id == eStateAttack)
-		object->set_mental_state(CController::eStateDanger);
-	else 
-		object->set_mental_state(CController::eStateIdle);
 
 	if (enemy) object->set_controlled_task(eTaskAttack);
 	else object->set_controlled_task(eTaskFollow);

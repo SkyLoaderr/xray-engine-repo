@@ -47,18 +47,19 @@ enum EMonsterState {
 	eStateAttack_MoveOut			= eStateAttack | 11,
 	eStateAttack_CampInCover		= eStateAttack | 12,
 	eStateAttack_ControlFire		= eStateAttack | 13,
-	eStateAttack_HideInCoverLite	= eStateAttack | 14,
+	eStateAttack_ControlTube		= eStateAttack | 14,
+	eStateAttack_HideInCoverLite	= eStateAttack | 15,
 
-	eStateAttackCamp				= eStateAttack | 15,
-	eStateAttackCamp_Hide			= eStateAttack | 16,
-	eStateAttackCamp_Camp			= eStateAttack | 17,
-	eStateAttackCamp_StealOut		= eStateAttack | 18,
+	eStateAttackCamp				= eStateAttack | 16,
+	eStateAttackCamp_Hide			= eStateAttack | 17,
+	eStateAttackCamp_Camp			= eStateAttack | 18,
+	eStateAttackCamp_StealOut		= eStateAttack | 19,
 
-	eStateAttack_Psy				= eStateAttack | 19,
-	eStateAttack_MoveToHomePoint	= eStateAttack | 20,
-	eStateAttack_HomePoint_Hide		= eStateAttack | 21,
-	eStateAttack_HomePoint_Camp		= eStateAttack | 22,
-	eStateAttack_HomePoint_LookOpenPlace = eStateAttack | 23,
+	eStateAttack_Psy				= eStateAttack | 20,
+	eStateAttack_MoveToHomePoint	= eStateAttack | 21,
+	eStateAttack_HomePoint_Hide		= eStateAttack | 22,
+	eStateAttack_HomePoint_Camp		= eStateAttack | 23,
+	eStateAttack_HomePoint_LookOpenPlace = eStateAttack | 24,
 
 	// -------------------------------------------------------------
 

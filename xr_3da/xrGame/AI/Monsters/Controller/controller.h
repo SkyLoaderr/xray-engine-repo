@@ -1,19 +1,14 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../anim_triple.h"
-#include "controller_psy_aura.h"
 #include "../../../script_export_space.h"
 
 class CControllerAnimation;
 class CControllerDirection;
-
 class SndShockEffector;
-
 class CControllerPsyHit;
 
-class CController : public CBaseMonster, 
-					public CPsyAuraController {
-
+class CController : public CBaseMonster {
 	typedef		CBaseMonster	inherited;
 
 	u8					m_max_controlled_number;
@@ -23,19 +18,11 @@ class CController : public CBaseMonster,
 	ref_sound			m_sound_hit_fx;
 	SndShockEffector*	m_sndShockEffector;					
 
-	ref_sound			m_sound_aura_left_channel;
-	ref_sound			m_sound_aura_right_channel;
-	ref_sound			m_sound_aura_hit_left_channel;
-	ref_sound			m_sound_aura_hit_right_channel;
-
-
 	SAttackEffector		m_control_effector;
 
 	u32					time_control_hit_started;
 	bool				active_control_fx;
 	
-	bool				int_need_deactivate;		// internal var
-
 	LPCSTR				particles_fire;
 
 	CControllerAnimation	*m_custom_anim_base;
@@ -44,7 +31,13 @@ class CController : public CBaseMonster,
 	u32					m_psy_fire_start_time;
 	u32					m_psy_fire_delay;
 
+public:	
 	CControllerPsyHit	*m_psy_hit;
+
+	ref_sound			m_sound_aura_left_channel;
+	ref_sound			m_sound_aura_right_channel;
+	ref_sound			m_sound_aura_hit_left_channel;
+	ref_sound			m_sound_aura_hit_right_channel;
 
 public:	
 	SVelocityParam		m_velocity_move_fwd;
@@ -108,6 +101,10 @@ public:
 
 			void	psy_fire					();
 			bool	can_psy_fire				();
+
+			void	tube_fire					();
+			bool	can_tube_fire				();
+			u32		m_time_last_tube;
 			
 			void	set_psy_fire_delay_zero		();
 			void	set_psy_fire_delay_default	();
@@ -128,10 +125,10 @@ public:
 		eStateDanger
 	} m_mental_state;
 
-	void			set_mental_state			(EMentalState state){m_mental_state = state;}
+	void				set_mental_state			(EMentalState state);
 
 public:
-	virtual bool	use_center_to_aim			() const {return true;}
+	virtual bool		use_center_to_aim			() const {return true;}
 
 	SAnimationTripleData anim_triple_control;
 
@@ -143,6 +140,8 @@ public:
 private:
 #ifdef _DEBUG	
 		virtual void	debug_on_key		(int key);
+
+		Fvector			P1,P2;
 #endif
 
 

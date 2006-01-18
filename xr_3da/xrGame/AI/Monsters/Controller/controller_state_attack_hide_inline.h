@@ -26,6 +26,15 @@ void CStateControllerHideAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateControllerHideAbstract::execute()
 {
+	if (m_state_fast_run) {
+		if (target.position.distance_to(object->Position()) < 5.f) {
+			m_state_fast_run			= false;
+			object->set_mental_state	(CController::eStateDanger);
+		}
+	}
+	
+	object->set_action					(ACT_RUN);
+	
 	object->path().set_target_point		(target.position, target.node);
 	object->path().set_rebuild_time		(0);
 	object->path().set_distance_to_end	(0.f);
@@ -35,7 +44,14 @@ void CStateControllerHideAbstract::execute()
 	object->anim().accel_set_braking	(false);
 	
 	object->sound().play				(MonsterSound::eMonsterSoundAggressive, 0,0,object->db().m_dwAttackSndDelay);
-	object->custom_dir().head_look_point(object->EnemyMan.get_enemy_position());
+	
+	if (object->HitMemory.get_last_hit_time() > object->EnemyMan.get_enemy_time_last_seen()) {
+		Fvector pos;
+		pos.mad(object->Position(),object->HitMemory.get_last_hit_dir(),5.f);
+		pos.y += 1.5f;
+		object->custom_dir().head_look_point(pos);
+	} else 
+		object->custom_dir().head_look_point(object->EnemyMan.get_enemy_position());
 
 	object->custom_anim().set_body_state(CControllerAnimation::eTorsoRun,CControllerAnimation::eLegsTypeRun);
 }
@@ -47,20 +63,18 @@ bool CStateControllerHideAbstract::check_start_conditions()
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateControllerHideAbstract::reinit()
-{
-	inherited::reinit();
-	m_time_finished = 0;
-}
-
-
-TEMPLATE_SPECIALIZATION
 void CStateControllerHideAbstract::finalize()
 {
 	inherited::finalize();
-	m_time_finished	= Device.dwTimeGlobal;
+	object->set_mental_state	(CController::eStateDanger);
 }
 
+TEMPLATE_SPECIALIZATION
+void CStateControllerHideAbstract::critical_finalize()
+{
+	inherited::finalize();
+	object->set_mental_state	(CController::eStateDanger);
+}
 
 TEMPLATE_SPECIALIZATION
 bool CStateControllerHideAbstract::check_completion()
@@ -83,6 +97,10 @@ void CStateControllerHideAbstract::select_target_point()
 		target.node					= 0;
 		target.position				= ai().level_graph().vertex_position(target.node);			
 	}
+
+	m_state_fast_run = (target.position.distance_to(object->Position()) > 20.f);
+	if (m_state_fast_run && (Random.randI(100) < 50)) 
+		object->set_mental_state	(CController::eStateIdle);
 }
 
 #undef TEMPLATE_SPECIALIZATION

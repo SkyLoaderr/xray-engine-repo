@@ -13,6 +13,10 @@ public:
 						CStateControllerAttack	(_Object *obj, state_ptr state_run, state_ptr state_melee);
 	virtual				~CStateControllerAttack	() {}
 
+	virtual void		initialize				();
+	virtual void		finalize				();
+	virtual void		critical_finalize		();
+	
 	virtual void		execute					();
 	virtual void		setup_substates			();
 	virtual void		check_force_state		();

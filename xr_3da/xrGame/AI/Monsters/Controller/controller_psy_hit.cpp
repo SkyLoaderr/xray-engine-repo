@@ -52,6 +52,11 @@ void CControllerPsyHit::activate()
 	//////////////////////////////////////////////////////////////////////////
 	m_current_index					= 0;
 	play_anim						();
+
+
+	CController *monster = smart_cast<CController *>(m_object);
+	monster->m_sound_aura_left_channel.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+	monster->m_sound_aura_right_channel.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 }
 
 void CControllerPsyHit::deactivate()
@@ -89,6 +94,11 @@ void CControllerPsyHit::play_anim()
 
 void CControllerPsyHit::death_glide_start()
 {
+	if (!m_object->EnemyMan.see_enemy_now()) {
+		m_man->deactivate	(this);
+		return;
+	}
+
 	// Start effector
 	CEffectorCam* ce = Actor()->Cameras().GetCamEffector(eCEControllerPsyHit);
 	VERIFY(!ce);
@@ -123,5 +133,13 @@ void CControllerPsyHit::death_glide_end()
 	CEffectorCam* ce = Actor()->Cameras().GetCamEffector(eCEControllerPsyHit);
 	VERIFY(ce);
 	Actor()->Cameras().RemoveCamEffector(eCEControllerPsyHit);
-	smart_cast<CController *>(m_object)->draw_fire_particles();
+	CController *monster = smart_cast<CController *>(m_object);
+	monster->draw_fire_particles();
+
+	monster->m_sound_aura_hit_left_channel.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+	monster->m_sound_aura_hit_right_channel.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+
+	if (monster->m_sound_aura_left_channel._feedback()) 	monster->m_sound_aura_left_channel.stop		();
+	if (monster->m_sound_aura_right_channel._feedback())	monster->m_sound_aura_right_channel.stop	();
+	
 }

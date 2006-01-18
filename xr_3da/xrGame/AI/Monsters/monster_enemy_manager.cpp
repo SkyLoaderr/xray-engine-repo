@@ -19,6 +19,7 @@ CMonsterEnemyManager::CMonsterEnemyManager()
 	my_vertex_enemy_last_seen		= u32(-1);
 	enemy_vertex_enemy_last_seen	= u32(-1);
 	m_time_updated					= 0;
+	m_time_start_see_enemy			= 0;
 }
 
 CMonsterEnemyManager::~CMonsterEnemyManager()
@@ -115,9 +116,11 @@ void CMonsterEnemyManager::update()
 	if (enemy && see_enemy_now()) {
 		my_vertex_enemy_last_seen		= monster->ai_location().level_vertex_id();
 		enemy_vertex_enemy_last_seen	= enemy->ai_location().level_vertex_id();
-	}	
+
+		if (m_time_start_see_enemy == 0) m_time_start_see_enemy = time();
+	} else m_time_start_see_enemy = 0;
 	
-	m_time_updated		= time();
+	m_time_updated			= time();
 }
 
 
@@ -169,6 +172,7 @@ void CMonsterEnemyManager::reinit()
 	enemy_vertex_enemy_last_seen	= u32(-1);
 
 	m_time_updated				= 0;
+	m_time_start_see_enemy		= 0;
 }
 
 
@@ -238,5 +242,10 @@ void CMonsterEnemyManager::transfer_enemy(CBaseMonster *friend_monster)
 		friend_monster->EnemyMan.get_enemy_vertex(),
 		friend_monster->EnemyMan.get_enemy_time_last_seen()
 	);
+}
+
+u32 CMonsterEnemyManager::see_enemy_duration()
+{
+	return ((m_time_start_see_enemy == 0) ? 0 : (time() - m_time_start_see_enemy));
 }
 

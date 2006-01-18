@@ -25,7 +25,8 @@
 #include "../../../UI/UIStatic.h"
 #include "../../../ai_object_location.h"
 #include "../../../profiler.h"
-
+#include "../../../ActorEffector.h"
+#include "../../../../CameraBase.h"
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr user_data, const Fvector &Position, float power)
 {
@@ -114,9 +115,65 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 			s->wnd()->SetHeadingPivot(Fvector2().set(256,512));
 			STOP_PROFILE;
 
-			SetAttackEffector			();
+			//SetAttackEffector			();
 
 			Actor()->lock_accel_for		(2000);
+
+
+
+			//////////////////////////////////////////////////////////////////////////
+			//
+			//////////////////////////////////////////////////////////////////////////
+			
+			CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effFireHit);
+			if(!ce)
+			{
+				int id						= -1;
+				Fvector						cam_pos,cam_dir,cam_norm;
+				Actor()->cam_Active()->Get	(cam_pos,cam_dir,cam_norm);
+				cam_dir.normalize_safe		();
+				dir.normalize_safe			();
+
+				float ang_diff				= angle_difference	(cam_dir.getH(), dir.getH());
+				Fvector						cp;
+				cp.crossproduct				(cam_dir,dir);
+				bool bUp					=(cp.y>0.0f);
+
+				Fvector cross;
+				cross.crossproduct			(cam_dir, dir);
+				VERIFY						(ang_diff>=0.0f && ang_diff<=PI);
+
+				float _s1 = PI_DIV_8;
+				float _s2 = _s1+PI_DIV_4;
+				float _s3 = _s2+PI_DIV_4;
+				float _s4 = _s3+PI_DIV_4;
+
+				if(ang_diff<=_s1){
+					id = 2;
+				}else {
+					if(ang_diff>_s1 && ang_diff<=_s2){
+						id = (bUp)?5:7;
+					}else
+						if(ang_diff>_s2 && ang_diff<=_s3){
+							id = (bUp)?3:1;
+						}else
+							if(ang_diff>_s3 && ang_diff<=_s4){
+								id = (bUp)?4:6;
+							}else
+								if(ang_diff>_s4){
+									id = 0;
+								}else{
+									VERIFY(0);
+								}
+				}
+				
+				string64 sect_name;
+				sprintf(sect_name,"effector_fire_hit_%d",id);
+				AddEffector(effFireHit, sect_name, fDamage/100.0f);
+			}
+			//////////////////////////////////////////////////////////////////////////
+			
+
 		}
 
 		Morale.on_attack_success();
