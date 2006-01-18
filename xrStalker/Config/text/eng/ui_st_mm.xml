@@ -160,7 +160,10 @@
         <text>Save Game</text>
     </string>
     <string id="ui_mm_sfx_volume">
-        <text>SFX volume</text>
+        <text>SFX Volume</text>
+    </string>
+    <string id="ui_mm_master_volume">
+        <text>Master Volume</text>
     </string>
     <string id="ui_mm_shadows_quality">
         <text>Shadows Quality</text>

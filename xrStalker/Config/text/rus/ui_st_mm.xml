@@ -162,6 +162,9 @@
     <string id="ui_mm_sfx_volume">
         <text>SFX volume</text>
     </string>
+    <string id="ui_mm_master_volume">
+        <text>Master volume</text>
+    </string>
     <string id="ui_mm_shadows_quality">
         <text>Shadows Quality</text>
     </string>

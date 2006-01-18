@@ -16,10 +16,22 @@
 		<btn_accept x="219" y="426" width="157" height="48">
 			<text font="normal" align="c">ui_mm_apply</text>
 			<texture>ui_button_main02</texture>
+			<text_color>
+				<e r="227" g="199" b="178"/>				
+				<t r="180" g="153" b="155"/>				
+				<d r="106" g="95" b="91"/>							
+				<h r="0" g="0" b="0"/>
+			</text_color>
 		</btn_accept>
 		<btn_cancel x="375" y="426" width="157" height="48">
 			<text font="normal" align="c">ui_mm_cancel</text>
 			<texture>ui_button_main03</texture>
+			<text_color>
+				<e r="227" g="199" b="178"/>				
+				<t r1="180" g="153" b="155"/>				
+				<d r="106" g="95" b="91"/>							
+				<h r="0" g="0" b="0"/>
+			</text_color>
 		</btn_cancel>
 		<tab x="55" y="48" width="461" height="26">
 			<button x="0" y="0" width="116" height="26">
@@ -112,55 +124,55 @@
 		</btn_advanced>
 	</tab_video>
 	<tab_sound>
-		<cap_speakersetup x="20" y="20" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">ui_mm_speakers_setup</text>
-		</cap_speakersetup>
+		<cap_mastervolume x="20" y="20" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_master_volume</text>
+		</cap_mastervolume>
 		<cap_musicvolume x="20" y="45" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_music_volume</text>
 		</cap_musicvolume>
-		<cap_sfxvolume x="20" y="70" width="143" height="21">
+		<!--cap_sfxvolume x="20" y="70" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_sfx_volume</text>
-		</cap_sfxvolume>
-		<cap_voicevolume x="20" y="95" width="143" height="21">
+		</cap_sfxvolume-->
+		<!--cap_voicevolume x="20" y="95" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_voice_volume</text>
-		</cap_voicevolume>
-		<cap_soundquality x="20" y="120" width="143" height="21">
+		</cap_voicevolume-->
+		<cap_soundquality x="20" y="70" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_sound_quality</text>
 		</cap_soundquality>
 		
 		<check_reverse x="20" y="155" width="143" height="21">
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_reverse_speakers</text>
 		</check_reverse>
-		<check_eax x="20" y="180" width="143" height="21">
+		<check_eax x="20" y="115" width="143" height="21">
 			<options_item entry="snd_efx" group="mm_opt_sound"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_eax</text>
 		</check_eax>
 		
-		<list_speakersetup x="194" y="20" width="261" height="21">			
-		</list_speakersetup>
+		<!--list_speakersetup x="194" y="20" width="261" height="21">			
+		</list_speakersetup-->
+		<track_mastervolume x="194" y="20" width="261" height="21">
+			<options_item entry="snd_volume_eff" group="mm_opt_sound"/>
+		</track_mastervolume>
 		<track_musicvolume x="194" y="45" width="261" height="21">
 			<options_item entry="snd_volume_music" group="mm_opt_sound"/>
 		</track_musicvolume>		
-		<track_sfx x="194" y="70" width="261" height="21">
-			<options_item entry="snd_volume_eff" group="mm_opt_sound"/>
-		</track_sfx>
-		<track_voice x="194" y="95" width="261" height="21">
-		</track_voice>
-		<list_soundquality x="194" y="120" width="261" height="21">
+		<!--track_voice x="194" y="95" width="261" height="21">
+		</track_voice-->
+		<list_soundquality x="194" y="70" width="261" height="21">
 			<options_item entry="snd_freq" group="mm_opt_sound"/>
 		</list_soundquality>		
 	</tab_sound>
 	<tab_gameplay>
-		<cap_crosshair x="20" y="20" width="143" height="21">
+		<!--cap_crosshair x="20" y="20" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_crosshair</text>
-		</cap_crosshair>
-		<cap_difficulty x="20" y="300" width="143" height="21">
+		</cap_crosshair-->
+		<cap_difficulty x="20" y="20" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_difficulty</text>
 		</cap_difficulty>
 		<track_crosshair x="194" y="20" width="261" height="21">			
 		</track_crosshair>
 		
-		<list_difficulty x="194" y="300" width="261" height="21">	
+		<list_difficulty x="194" y="20" width="261" height="21">	
 			<options_item entry="g_game_difficulty" group="mm_opt_gameplay"/>		
 		</list_difficulty>
 		
@@ -168,13 +180,13 @@
 			<options_item entry="hud_info" group="mm_opt_gameplay"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_tips</text>
 		</check_tips>
-		<check_dist x="20" y="80" width="143" height="21">
+		<!--check_dist x="20" y="80" width="143" height="21">
 			<options_item entry="hud_crosshair_dist" group="mm_opt_gameplay"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_crosshair_distance</text>
-		</check_dist>
-		<pic_crosshair x="-7" y="117" width="470" height="179">
+		</check_dist-->
+		<!--pic_crosshair x="-7" y="117" width="470" height="179">
 			<texture>ui_options_tv</texture>
-		</pic_crosshair>
+		</pic_crosshair-->
 	</tab_gameplay>
 	<tab_controls>
 		<cap_mousesens x="20" y="20" width="143" height="21">

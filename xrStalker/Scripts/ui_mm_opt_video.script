@@ -31,8 +31,8 @@ function opt_video:InitControls(x, y, xml, handler)
 	local btn = xml:InitSpinText("tab_video:list_presets",	self)	
 	xml:InitSpinText("tab_video:list_resolution",	self)
 	
-	btn = xml:Init3tButton("tab_video:btn_advanced",	self)
-	btn:Enable(false)
-	handler:Register(btn, "btn_advanced")
+--	btn = xml:Init3tButton("tab_video:btn_advanced",	self)
+--	btn:Enable(false)
+--	handler:Register(btn, "btn_advanced")
 	
 end
