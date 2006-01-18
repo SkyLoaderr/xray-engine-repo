@@ -533,7 +533,7 @@
 <!-------------------------- SOLDIER ----------------------->
 <!-------------------------- REGULAR ----------------------->
 	<specific_character id="val_soldier_regular_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -563,7 +563,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -593,7 +593,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="18" y="14"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -623,7 +623,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default4" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
@@ -654,7 +654,7 @@
 
 <!------------------------- SPECNAZ ------------------------>
 	<specific_character id="val_soldier_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -686,7 +686,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_specnaz_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -716,7 +716,7 @@
 	</specific_character>
 	
     <specific_character id="val_soldier_specnaz_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -746,7 +746,7 @@
 	</specific_character>
 
     <specific_character id="val_soldier_specnaz_default4" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
