@@ -458,10 +458,12 @@ LPCSTR			CSE_ALifeTraderAbstract::CommunityName () const
 
 CHARACTER_RANK_VALUE			CSE_ALifeTraderAbstract::Rank		() const
 {
+	specific_character();
 	return m_rank;
 }
 CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation () const
 {
+	specific_character();
 	return m_reputation;
 }
 

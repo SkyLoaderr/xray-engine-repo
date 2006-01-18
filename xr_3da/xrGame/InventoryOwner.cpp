@@ -103,13 +103,7 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 
 		//синхронизируем параметры персонажа с серверным объектом
 		CharacterInfo().Init(pTrader);
-/*
-		CharacterInfo().m_CurrentCommunity.set(pTrader->m_community_index);
-		CharacterInfo().m_CurrentRank.set(pTrader->m_rank);
-		CharacterInfo().m_CurrentReputation.set(pTrader->m_reputation);
-		CharacterInfo().Load(pTrader->character_profile());
-		CharacterInfo().InitSpecificCharacter (pTrader->specific_character());
-*/
+
 		//-------------------------------------
 		m_known_info_registry->registry().init(E->ID);
 		//-------------------------------------
@@ -207,33 +201,6 @@ bool CInventoryOwner::IsActivePDA() const
 	else
 		return false;
 }
-
-/*
-void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
-{
-	if(msg == ePdaMsgInfo)
-	{
-		//переслать себе же полученную информацию
-		TransferInfo(info_id, true);
-	}
-
-
-	//Запустить скриптовый callback
-	CGameObject* pThisGameObject = cast_game_object();
-	VERIFY(pThisGameObject);
-	CPda* pWhoPda = smart_cast<CPda*>(Level().Objects.net_Find(who));
-	VERIFY(pWhoPda);
-	CGameObject* pWho = smart_cast<CGameObject*>(pWhoPda->H_Parent());
-
-
-	pThisGameObject->callback(GameObject::eInventoryPda)(
-		pThisGameObject->lua_game_object(),
-		pWho->lua_game_object(), 
-		(int)msg,
-		info_id
-	);
-}
-*/
 
 
 //who - id PDA которому отправляем сообщение
@@ -423,23 +390,6 @@ void CInventoryOwner::ChangeReputation	(CHARACTER_REPUTATION_VALUE delta)
 	SetReputation(Reputation() + delta);
 }
 
-
-/*
-CHARACTER_COMMUNITY_INDEX  CInventoryOwner::Community	() const
-{
-	return CharacterInfo().Community().index();
-}
-
-CHARACTER_REPUTATION_VALUE	CInventoryOwner::Rank		() const
-{
-	return CharacterInfo().Rank().value();
-}
-
-CHARACTER_REPUTATION_VALUE	CInventoryOwner::Reputation	() const
-{
-	return CharacterInfo().Reputation().value();
-}
-*/
 
 void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
 {
