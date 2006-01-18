@@ -3,7 +3,7 @@
 <xml>
 <!---------------------------MONOLIT REGULAR----------------------->
 	<specific_character id="rad_monolit_regular_default1" team_default = "3">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -29,7 +29,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_regular_default2" team_default = "3">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -55,7 +55,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_regular_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -81,7 +81,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_regular_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -108,7 +108,7 @@
 
 <!---------------------------MONOLIT SNIPER---------------------->
 	<specific_character id="rad_monolit_sniper_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -134,7 +134,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_sniper_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -161,7 +161,7 @@
 
 <!---------------------------MONOLIT SPECNAZ---------------------->
 	<specific_character id="rad_monolit_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -187,7 +187,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_specnaz_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -213,7 +213,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_specnaz_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -239,7 +239,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_specnaz_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -266,7 +266,7 @@
 
 <!---------------------------MONOLIT REGULAR with RPG----------------------->
 	<specific_character id="rad_monolit_rpg_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -292,7 +292,7 @@
 	</specific_character>
 
 	<specific_character id="rad_monolit_rpg_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -630,7 +630,7 @@
 
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="rad_stalker_veteran_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -658,7 +658,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_veteran_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -686,7 +686,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_veteran_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -714,7 +714,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_veteran_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -742,7 +742,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_veteran_default5" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -771,7 +771,7 @@
 
 <!---------------------------STALKER MASTER----------------------->
 	<specific_character id="rad_stalker_master_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -799,7 +799,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_master_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -827,7 +827,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_master_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -854,7 +854,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_master_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -881,7 +881,7 @@
 	</specific_character>
 
 	<specific_character id="rad_stalker_master_default5" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -911,7 +911,7 @@
 	<!---------------------------SOLDIER SPECNAZ---------------------->
 
 	<specific_character id="rad_soldier_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -939,7 +939,7 @@
 	</specific_character>
 
 	<specific_character id="rad_soldier_specnaz_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -967,7 +967,7 @@
 	</specific_character>
 
 	<specific_character id="rad_soldier_specnaz_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_captain</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -997,7 +997,7 @@
 <!---------------------------SVOBODA MASTER----------------------->
 
 	<specific_character id="rad_Svoboda_master1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Мастер группировки "Свобода"
@@ -1025,7 +1025,7 @@
 	</specific_character>
 
 	<specific_character id="rad_Svoboda_master2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Мастер группировки "Свобода"
@@ -1053,7 +1053,7 @@
 	</specific_character>
 
 	<specific_character id="rad_Svoboda_master3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Мастер группировки "Свобода"
@@ -1082,7 +1082,7 @@
 
 <!---------------------------DOLG MASTER---------------------->
 	<specific_character id="rad_dolg_master_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1109,7 +1109,7 @@
 	</specific_character>
 
 	<specific_character id="rad_dolg_master_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1138,7 +1138,7 @@
 	</specific_character>
 
 	<specific_character id="rad_dolg_master_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1167,7 +1167,7 @@
 	</specific_character>
 
 	<specific_character id="rad_dolg_master_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1196,7 +1196,7 @@
 <!--------------------------- dead SCIENTISTS ---------------------->
 
 	<specific_character id="rad_ecolog_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Учёный. Детальная информация отсутствует.</bio>
@@ -1221,7 +1221,7 @@
 	</specific_character>
 
 	<specific_character id="rad_ecolog_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Охрана учёных. Детальная информация отсутствует.</bio>
@@ -1248,7 +1248,7 @@
 	</specific_character>
 
 	<specific_character id="rad_ecolog_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Охрана учёных. Детальная информация отсутствует.</bio>
