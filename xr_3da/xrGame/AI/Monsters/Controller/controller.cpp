@@ -60,8 +60,10 @@ CController::CController()
 
 	control().add		(m_psy_hit,  ControlCom::eComCustom1);
 
+#ifdef _DEBUG	
 	P1.set(0.f,0.f,0.f);
 	P2.set(0.f,0.f,0.f);
+#undef 
 
 }
 
