@@ -128,7 +128,7 @@ function r_spawns( spawn_ini, section, line)
 			-- ¬ычитываем настройки секций респавна и кешируем их.
 			if sectSpawnProps[spawn.section] == nil then
 				local community = r_str(respawn_ini, spawn.section, "community", "nil")
-				local rank = r_str(respawn_ini, spawn.section, "rank", "nil")
+				local rank = r_str(respawn_ini, spawn.section, "spec_rank", "nil")
 				sectSpawnProps[spawn.section] = {community = community, rank = rank}
 			end
 						
@@ -224,7 +224,7 @@ function se_respawn:create(prob)
 		local spawn_section = ""
 		local sum = 0
 		-- ѕроизводим рандомную взвешенную выборку
-		-- учетом уже заспавленного количества человек.
+		-- с учетом уже заспавленного количества человек.
 		for k,v in pairs(self.respawn_section) do
 			local tt = sectSpawnProps[v.section]
 			local community_rank = tt.community.."_"..tt.rank
