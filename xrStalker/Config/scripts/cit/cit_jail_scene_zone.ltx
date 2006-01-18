@@ -1,5 +1,5 @@
 [logic]
-active    = sr_idle1 %=disable_ui =run_postprocess(deadcity_wake) =run_cam_effector(prison_0:1001:true) =drop_actor_inventory(cit_jail_drop_inventory)%
+active    = sr_idle1 %=run_postprocess(deadcity_wake) =disable_ui =run_cam_effector(prison_0:1001:true) =drop_actor_inventory(cit_jail_drop_inventory)%
  
 [sr_idle1]
 on_info   = {+cit_jail_actor_wake} sr_idle2
