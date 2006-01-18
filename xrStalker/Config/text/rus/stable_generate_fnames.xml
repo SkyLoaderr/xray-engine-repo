@@ -1,3 +1,20 @@
+<string id="name_private_0">
+	<text>Рядовой</text>
+</string>
+
+<string id="name_sergeant_0">
+	<text>Сержант</text>
+</string>
+
+<string id="name_lieutenant_0">
+	<text>Лейтенант</text>
+</string>
+
+<string id="name_captain_0">
+	<text>Капитан</text>
+</string>
+
+
 <string id="name_army_0">
 	<text>Андрей</text>
 </string>
