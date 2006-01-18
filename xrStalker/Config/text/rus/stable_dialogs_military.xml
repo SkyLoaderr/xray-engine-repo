@@ -975,6 +975,12 @@
     <string id="mil_leader_start_dialog_9001">
         <text>Я же тебе сказал - иди на блокпост.</text>
     </string>
+    <string id="mil_max_dialog_10001">
+        <text>Завалим долговцев и поговорим.</text>
+    </string>
+    <string id="mil_max_dialog_10002">
+        <text>Ок</text>
+    </string>
     <string id="mil_max_dialog_1001">
         <text>Лукаш сообщил, что ты подойдешь. Ты видел эту братву на хуторе ?</text>
     </string>
