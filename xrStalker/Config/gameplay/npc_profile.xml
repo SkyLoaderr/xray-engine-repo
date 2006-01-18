@@ -200,6 +200,14 @@
 	<character id="val_stalker_general">
 		<class>val_stalker_general</class>
 	</character>
+	
+<!-- Darkscape -->
+    <character id="ds_soldier_regular">
+		<class>ds_soldier_regular</class>
+	</character>
+	<character id="ds_soldier_novice">
+		<class>ds_soldier_novice</class>
+	</character>
 
 <!-- X18 -->
 	<character id="dar_stalker_explorer">
