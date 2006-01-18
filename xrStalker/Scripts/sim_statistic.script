@@ -57,10 +57,20 @@ function simulation_statistic:getNpcType(npc)
 		return community, rank
 	end
 end
+function simulation_statistic:simNpcCount(community, rank)
+	if self.allocation[community] == nil then
+		return 0
+	end
+	if self.allocation[community][rank] == nil then
+		return 0
+	end
+	return self.allocation[community][rank]
+end
 function simulation_statistic:pstats(npc)
 	printf("*** SIMULATION POPULATION STATISTIC ***")
 	print_table(self.allocation)
 end
+
 
 -- На первом вызове апдейта снимаем флаг о том, что реинициализация уже произведена
 function update()
@@ -87,7 +97,13 @@ function remove(npc)
 	end
 	simulator:remove(npc)
 end
-
+-- Проверка сколько всего сталкеров есть в симуляции
+function simNpcCount(community, rank)
+	if simulator == nil then
+		return 0
+	end
+	return simulator:simNpcCount(community, rank)
+end
 
 function pstats()
 	if simulator == nil then

@@ -8,6 +8,40 @@ local debug = 0
 
 local section_name = "respawn"
 local i,k,v = 0,0,0
+
+local respawn_ini = system_ini()
+
+-- Таблица ограничений на спаун: всего в симуляции не должно быть больше, чем указано.
+local simMaxCount = {
+	stalker_novice = 43, stalker_regular = 48, stalker_veteran = 27, stalker_master = 20,
+	monolith_novice = 0, monolith_regular = 26, monolith_veteran = 34, monolith_master = 26,
+	military_novice = 0, military_regular = 32, military_veteran = 22, military_master = 0,
+	killer_novice = 0, killer_regular = 15, killer_veteran = 15, killer_master = 10,
+	ecolog_novice = 0, ecolog_regular = 0, ecolog_veteran = 0, ecolog_master = 0,
+	dolg_novice = 0, dolg_regular = 24, dolg_veteran = 36, dolg_master = 17,
+	freedom_novice = 50, freedom_regular = 20, freedom_veteran = 26, freedom_master = 21,
+	bandit_novice = 40, bandit_regular = 50, bandit_veteran = 15, bandit_master = 10,
+	zombied_novice = 12, zombied_regular = 15, zombied_veteran = 10, zombied_master = 6,
+	
+	rat_weak = 0,	
+	tushkano_weak = 40,
+	flesh_weak = 5, flesh_normal = 5, flesh_strong = 5,
+	boar_weak = 52, boar_normal = 38, boar_strong = 27,
+	dog_weak = 48, dog_normal = 126, dog_strong = 45,
+	pseudodog_weak = 59, pseudodog_normal = 80, pseudodog_strong = 40,
+	psy_dog_weak = 5, psy_dog_normal = 5, psy_dog_strong = 5,
+	zombie_weak = 5, zombie_normal = 5, zombie_strong = 5,
+	snork_weak = 50, snork_normal = 61, snork_strong = 0,
+	poltergeist_weak = 8,
+	pseudo_gigant_weak = 18,
+	controller_weak = 17,
+	burer_weak = 10,
+	bloodsucker_weak = 7, bloodsucker_normal = 14, bloodsucker_strong = 8	
+}
+
+-- Таблица для кеширования свойств секций респавна.
+local sectSpawnProps = {}
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
@@ -90,6 +124,14 @@ function r_spawns( spawn_ini, section, line)
 				k = k + 1
 			end
 			table.insert(ret_table, spawn)
+	
+			-- Вычитываем настройки секций респавна и кешируем их.
+			if sectSpawnProps[spawn.section] == nil then
+				local community = r_str(respawn_ini, spawn.section, "community", "nil")
+				local rank = r_str(respawn_ini, spawn.section, "rank", "nil")
+				sectSpawnProps[spawn.section] = {community = community, rank = rank}
+			end
+						
 		end
 		return ret_table
 	end
@@ -182,17 +224,40 @@ function se_respawn:create(prob)
 		local spawn_section = ""
 		local sum = 0
 		-- Производим рандомную взвешенную выборку
+		-- учетом уже заспавленного количества человек.
 		for k,v in pairs(self.respawn_section) do
-			sum = sum + v.prob
+			local tt = sectSpawnProps[v.section]
+			local community_rank = tt.community.."_"..tt.rank
+			local s_count = simMaxCount[community_rank]
+			if s_count == nil then
+				s_count = 0
+			end
+			if sim_statistic.simNpcCount(tt.community, tt.rank) < s_count then	
+				sum = sum + v.prob
+			end
 		end
 		sum = math.random(0, sum)
 		for k,v in pairs(self.respawn_section) do
-			sum = sum - v.prob			
-			if sum <= 0 then
-				spawn_section = v.section
-				break
+			local tt = sectSpawnProps[v.section]
+			local community_rank = tt.community.."_"..tt.rank
+			local s_count = simMaxCount[community_rank]
+			if s_count == nil then
+				s_count = 0
+			end			
+			if sim_statistic.simNpcCount(tt.community, tt.rank) < s_count then	
+				sum = sum - v.prob			
+				if sum <= 0 then
+					spawn_section = v.section
+					break
+				end
 			end
 		end
+		
+		if spawn_section == "" then
+			printf("SPAWNING [%s], CANT SPAWN, SIMULATION POPULATION EXCEED", tostring(self:name()))
+			return false
+		end
+		
 		local obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
