@@ -28,34 +28,18 @@ function simulation_statistic:remove(npc)
 end
 function simulation_statistic:getNpcType(npc)
 	local cls = npc:clsid()
+	local npc_rank = npc:rank()
 
 	if cls == clsid.script_stalker then
-		local community = "neutral"
-		if npc:community() == "monolith" then
-			community = "monolith"
-		elseif npc:community() == "military" then
-			community = "military"
-		elseif npc:community() == "killer" then
-			community = "killer"
-		elseif npc:community() == "ecolog" then
-			community = "ecolog"
-		elseif npc:community() == "dolg" then
-			community = "dolg"
-		elseif npc:community() == "freedom" then
-			community = "freedom"
-		elseif npc:community() == "bandit" then
-			community = "bandit"
-		elseif npc:community() == "zombied" then
-			community = "zombied"
-		end
+		local community = npc:community()
 		
-		local rank = "novice"
-		if npc:rank() >= 90 then
+		local rank = "novice"		
+		if npc_rank >= 90 then
 			rank = "master"
-		elseif npc:rank() >= 60 then
+		elseif npc_rank >= 60 then
 			rank = "veteran"
-		elseif npc:rank() >= 30 then
-			rank = "stalker"
+		elseif npc_rank >= 30 then
+			rank = "regular"
 		end
 		return community, rank
 	else
@@ -63,14 +47,11 @@ function simulation_statistic:getNpcType(npc)
 		if community == nil then
 			abort("Statistic ERROR: cannot find monstr class for clsid[%s]", get_clsid(npc))
 		end
-		if community == "NIL" then
-			return nil,nil
-		end
-		
+	
 		local rank = "weak"
-		if npc:rank() >= 80 then
+		if npc_rank >= 80 then
 			rank = "strong"
-		elseif npc:rank() >= 40 then
+		elseif npc_rank >= 40 then
 			rank = "normal"
 		end
 		return community, rank

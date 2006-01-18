@@ -248,8 +248,7 @@ function se_smart_terrain:fill_npc_info( obj, npc_info )
 		t = t[self:name()]
 	end
 
-	npc_info.cond         = t
-
+	npc_info.cond         = t	
 	return npc_info
 end
 
