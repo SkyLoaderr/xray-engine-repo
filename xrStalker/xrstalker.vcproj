@@ -583,6 +583,9 @@
 					RelativePath=".\Config\misc\smart_terrain.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\task_manager.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\trigger.ltx">
 				</File>
 				<Filter
@@ -3268,6 +3271,9 @@
 					</File>
 					<File
 						RelativePath=".\scripts\sim_statistic.script">
+					</File>
+					<File
+						RelativePath=".\scripts\task_manager.script">
 					</File>
 					<File
 						RelativePath=".\scripts\xr_conditions.script">
