@@ -288,6 +288,9 @@ panic_threshold		= 0.5
 rank				= 0
 immunities_sect		= snork_immunities_weak
 attack_params		= snork_attack_params_weak
+spec_rank			= weak
+community			= snork
+
 
 [snork_immunities_weak]
 burn_immunity			= 1.0								;коэффициенты иммунитета 
@@ -322,6 +325,9 @@ panic_threshold		= 0.2
 rank				= 50
 immunities_sect		= snork_immunities_normal
 attack_params		= snork_attack_params_normal
+spec_rank			= normal
+community			= snork
+
 
 [snork_immunities_normal]
 burn_immunity			= 1.0								;коэффициенты иммунитета 
@@ -356,6 +362,9 @@ panic_threshold		= 0.05
 rank				= 100
 immunities_sect		= snork_immunities_strong
 attack_params		= snork_attack_params_strong
+spec_rank			= strong
+community			= snork
+
 
 [snork_immunities_strong]
 burn_immunity			= 1.0								;коэффициенты иммунитета 
@@ -400,7 +409,7 @@ species				= arena_monstr
 
 
 
-[snork_indoor]:m_snork_e
+[snork_indoor]:snork_weak
 $spawn			= "monsters\snorks\snork_indoor"
 monster_type	= indoor
 
@@ -413,11 +422,11 @@ Velocity_RunFwdDamaged	= 2.5,		3.0,			3.0,		0.2,	1
 Velocity_WalkFwdDamaged	= 1.3,		3.0,			3.0,		0.2,	2.0	
 Velocity_WalkFwdNormal	= 2.75,		3.5,			3.5,		0.02,	2.0	
 
-[snork_outdoor]:m_snork_e
+[snork_outdoor]:snork_weak
 $spawn			= "monsters\snorks\snork_outdoor"
 monster_type	= outdoor
 
-[snork_jumper]:m_snork_e
+[snork_jumper]:snork_weak
 $spawn			= "monsters\snorks\snork_jumper"
 monster_type	= outdoor
 panic_threshold		= 0.05
