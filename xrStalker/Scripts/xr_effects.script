@@ -1744,7 +1744,7 @@ function yan_actor_sleep (actor, npc)
 end
 
 function yan_actor_sleep_1 (actor, npc)
-		set_sleep_relocate(patrol ("yan_actor_sleep_1"):point(0), patrol ("yan_actor_sleep_1"):point(1), 60)
+		set_sleep_relocate(patrol ("yan_actor_sleep_1"):point(0), patrol ("yan_actor_sleep_1"):point(1), 90)
 end
 
 function yan_sleep_not_relocate (actor, npc)
