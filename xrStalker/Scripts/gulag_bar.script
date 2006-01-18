@@ -622,31 +622,40 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
 			prior = 9, state = {0}, squad = squad, group = groups[0],
-			online = false, 
-            in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "",
+		predicate = function(obj_info)
+				         	return obj_info.story_id == 601
+			            end		
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
 			prior = 9, state = {0}, squad = squad, group = groups[0],
-            online = false,
 			in_rest = "", out_rest = "",
+		predicate = function(obj_info)
+				         	return obj_info.story_id == 602
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
 			prior = 9, state = {0}, squad = squad, group = groups[0],
-            online = false,
 			in_rest = "", out_rest = "",
+		predicate = function(obj_info)
+				         	return obj_info.story_id == 603
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_offline_walker", 
 			idle = 0,
 			prior = 9, state = {0}, squad = squad, group = groups[0],
-            online = false,
 			in_rest = "", out_rest = "",
+		predicate = function(obj_info)
+				         	return obj_info.story_id == 604
+			            end
 		}
 		table.insert(sj, t)
+		
 		
 		
 		
