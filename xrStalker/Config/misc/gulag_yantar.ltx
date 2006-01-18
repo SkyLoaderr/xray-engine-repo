@@ -147,7 +147,7 @@ path_walk = help_walk_2
 path_look = help_look_2
 combat_ignore_cond = {=fighting_actor =fighting_dist_ge(20)}
 meet = meet@scientist_1
-on_signal = arrived_2 | {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_5  %-yantar_kruglov_talk%
+on_signal = arrived_2 | {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_51  %-yantar_kruglov_talk%
 def_state_moving = assault
 radius = 0
 no_retreat = true
@@ -163,6 +163,13 @@ radius = 0
 no_retreat = true
 on_info = {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_5 
 
+[remark@scientist_51]
+snd = yantar_kruglov_radiation_quest_2
+anim = guard
+target = actor
+on_signal = sound_end | remark@scientist_5
+combat_ignore_cond = always
+danger = danger_condition@1
 
 
 [remark@scientist_5]
