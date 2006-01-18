@@ -108,6 +108,10 @@ void RemoveEffector		(int type)
 }
 
 
+CEffectorController::~CEffectorController()
+{
+	R_ASSERT(!m_ce&&!m_pe);
+}
 
 CAnimatorCamEffector::CAnimatorCamEffector()
 {

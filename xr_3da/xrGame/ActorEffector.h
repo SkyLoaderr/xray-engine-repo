@@ -21,6 +21,8 @@ protected:
 	CEffectorPP*				m_pe;
 public:
 								CEffectorController():m_ce(NULL),m_pe(NULL)	{}
+	virtual						~CEffectorController();
+
 				void			SetPP		(CEffectorPP* p)				{m_pe=p;}
 				void			SetCam		(CEffectorCam* p)				{m_ce=p;}
 	virtual		BOOL			Valid		()								{return m_ce||m_pe;};
@@ -85,7 +87,7 @@ public:
 	float						m_life_time;
 public:
 								SndShockEffector	();
-								~SndShockEffector	();
+	virtual						~SndShockEffector	();
 	void						Start				(float snd_length, float power);
 	void						Update				();
 

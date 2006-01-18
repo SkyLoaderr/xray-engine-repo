@@ -607,28 +607,6 @@ void CActor::HitMark	(float P,
 				VERIFY(0);
 			}
 
-/*
-			CAnimatorCamEffector* e		= xr_new<CFireHitCamEffector>((ECamEffectorType)effFireHit, P/100.0f);
-			string_path fn;
-			if(id==0)	sprintf(fn,"camera_effects\\hit_front.anm");
-			else
-			if(id==1)	sprintf(fn,"camera_effects\\hit_right.anm");
-			else
-			if(id==2)	sprintf(fn,"camera_effects\\hit_back.anm");
-			else
-			if(id==3)	sprintf(fn,"camera_effects\\hit_left.anm");
-			else
-			if(id==4)	sprintf(fn,"camera_effects\\hit_front_left.anm");
-			else
-			if(id==5)	sprintf(fn,"camera_effects\\hit_back_left.anm");
-			else
-			if(id==6)	sprintf(fn,"camera_effects\\hit_front_right.anm");
-			else
-			if(id==7)	sprintf(fn,"camera_effects\\hit_back_right.anm");
-			
-			e->Start							(fn);
-			Cameras	().AddCamEffector			(e);
-*/
 			string64 sect_name;
 			sprintf(sect_name,"effector_fire_hit_%d",id);
 			AddEffector(effFireHit, sect_name, P/100.0f);

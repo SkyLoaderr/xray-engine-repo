@@ -119,7 +119,7 @@ void CCharacterInfo::load_shared	(LPCSTR)
 		else
 			data()->m_Class				= NO_CHARACTER_CLASS;
 			
-		data()->m_Rank = uiXml.ReadInt	("rank",		0,	NO_RANK);
+		data()->m_Rank = uiXml.ReadInt			("rank",		0,	NO_RANK);
 		data()->m_Reputation = uiXml.ReadInt	("reputation",	0,	NO_REPUTATION);
 	}
 	else
