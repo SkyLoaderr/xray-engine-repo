@@ -1,61 +1,18 @@
-[m_burer_attack_params]
-;---------------------------------------------------------------------------------------------------------------------------------------------
-;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
-;---------------------------------------------------------------------------------------------------------------------------------------------
-;Left hand Strike
-stand_attack_0 =	  	0.4,		  40,	     100,        2.0, 1.0, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.5
-
-[m_burer_attack_effector]
-
-duality_h			= 0.1; 0.01 
-duality_v			= 0.01; 0.01
-blur				= 0.01
-gray				= 0.5
-noise_intensity		= 0.1;0.0
-noise_grain			= 1
-noise_fps			= 30
-color_base			= 0.65,0.15,0.1
-color_gray			= 0.333,0.333,0.333
-color_add			= 0.0,0.0,0.0
-time				= 3.00
-time_attack			= 0.05		; fade in
-time_release		= 0.50		; fade out
-
-; camera effects
-ce_time				= 0.30 ;time 
-ce_amplitude		= 12.0 
-ce_period_number	= 2.0 
-ce_power		    = 1.0 ;0.7 ; power 
-
-[m_burer_step_params]
-;---------------------------------------------------------------------------
-;	anim			| Cycles | time1 | power1 | time2 | power2 |
-;---------------------------------------------------------------------------
-stand_walk_fwd_0 	=	   1,	  0.4,    1,      0.9,    0.7,    
-stand_walk_dmg_0 	=	   1,	  0.4,    1,      0.9,    0.7,    
-stand_run_fwd_0	 	=	   1,	  0.4,    1,      0.9,    0.6,    
-stand_run_dmg_0	    =	   1,	  0.4,    1,      0.9,    0.6,    
-
 ;===========================================================================
-; IMMUNITIES
+; BURER
 ;===========================================================================
-[burer_immunities]
-burn_immunity			= 0.8						;коэффициенты иммунитета 
-strike_immunity			= 0.7
-shock_immunity			= 1.0
-wound_immunity			= 1.0
-radiation_immunity		= 0.0
-telepatic_immunity		= 1.0
-chemical_burn_immunity	= 1.0
-explosion_immunity		= 0.5
-fire_wound_immunity		= 0.5
-
 [m_burer_e]
 GroupControlSection		= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_radioactive
 ;$spawn					= "monsters\old\burer"			; option for Level Editor
 $npc					= on						; option for Level Editor
 $prefetch 				 = 16
+visual					= monsters\burer\burer
+MaxHealthValue		    = 100						; range [0..200]
+
+;------------------------------------------------------------------------
+; Offline Alife
+;------------------------------------------------------------------------
 Scheduled				= on						; option for ALife Simulator
 Human		     		= off						; option for ALife Simulator
 Health					= 400						; option for ALife Simulator
@@ -63,26 +20,11 @@ MinSpeed				= 1.0						; option for ALife Simulator
 MaxSpeed				= 5.0						; option for ALife Simulator
 going_speed				= 4.5                      	; option for ALife Simulator
 search_speed			= 1.5                       ; option for ALife Simulator
-visual					= monsters\burer\burer
-MaxHealthValue		    = 100						; range [0..200]
-DynamicObjectsCount		= 32
 smart_terrain_choose_interval	= 00:15:00
 
-ef_creature_type		= 18							; option for evaluation functions
-ef_weapon_type			= 12
-ef_detector_type		= 1
-panic_threshold			= 0.1
-
-cform					= skeleton					; collision class
-class					= SM_BURER					; AI class
-
-script_binding  		= bind_monster.bind
-
-bone_torso				= bip01_spine1 				; bone name
-bone_head				= bip01_head				; bone name
-bone_fire				= bip01_head				; bone name
-weapon_usage			= 0							; boolean
-
+;---------------------------------------------------------------------
+; Physics
+;---------------------------------------------------------------------
 ph_box0_center 			= 0.0,  0.7,  0.0
 ph_box0_size 			= 0.35, 0.7,  0.35
 ph_box1_center 			= 0.0,  0.6,  0.0
@@ -91,12 +33,9 @@ ph_crash_speed_min			= 10
 ph_crash_speed_max			= 30
 ph_collision_damage_factor	= 0.1
 ph_mass 				= 70.
-actor_restrictor		= medium_monster ;medium_monster,stalker,none
-
 
 destroyed_vis_name	 = physics\Dead_Body\trupik_crash
 
-;---------------------------------------------------------------------
 ph_skeleton_airr_lin_factor   = 5.0
 ph_skeleton_airr_ang_factor   = 0.1
 ph_skeleton_hinger_factor1    = 3.0
@@ -105,13 +44,10 @@ ph_skeleton_ddelay	     	  = 500
 ph_skel_fatal_impulse_factor  = 4.0
 ph_after_death_velocity_factor= 1.2
 ph_skel_shot_up_factor        = 0.10
-;---------------------------------------------------------------------
 
-SoundThreshold						= 0.06             ; range [0..1]
-
-eye_fov								= 100
-eye_range							= 90
-max_hear_dist						= 60
+;----------------------------------------------------------------------------
+; Movement::Velocities & Acceleration
+;----------------------------------------------------------------------------
 
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		6.0,			6.0,		0.2,	0.5
@@ -127,41 +63,21 @@ Accel_Generic			= 1.5
 Accel_Calm				= 1.5
 Accel_Aggressive		= 200 ;6.5
 
-;attack parameters
+;--------------------------------------------------------------------------
+; Attack parameters
+;--------------------------------------------------------------------------
 MinAttackDist			= 1.5
 MaxAttackDist			= 2.5
-
 as_min_dist				= 0.5
 as_step					= 0.3
 
-transparency_threshold  = 0.25
-
-DayTime_Begin			= 0			; начала дня для монстра
-DayTime_End				= 21		; конец дня для монстра
-Min_Satiety				= 0.6		; мин. норма сытости (меньше - уже голодный)
-Max_Satiety				= 0.9		; макс. норма сытости (больше - очень сытый)
-
-distance_to_corpse		= 1.2		; дист. до трупа, при которой он переходит в состояние еды
+attack_effector			= m_burer_attack_effector
+attack_params			= m_burer_attack_params
 
 
-;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
-;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
-selector_hear_sound		=      20.0,            1.0,				1000.0,              0.0,               0.0,              1000.0,               10000.0,      
-
-selector_getaway		=      20.0,            20.0,                1000.0,             0.0,               10000.0,		  1000.0,				10000.0,      
-selector_approach		=      20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
-;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
-selector_walk_around	=      20.0,            6.0,                 1000.0,             4.0,               5000.0,					8.0,				5000.0,      
-
-;terrain				= 014,014,014,014,30,40 ;255,255,255,255,30,40
-;terrain				 = 255,255,255,255,30,40
-terrain				 = burer_terrain
-
-hit_type = wound
-
-;entity condition
+;-------------------------------------------------------------------------
+; Entity Conditions
+;-------------------------------------------------------------------------
 
 satiety_v				= 0.0001					;скорость уменьшения сытости со временем
 radiation_v				= 0.00001					;скорость уменьшения радиации
@@ -191,15 +107,14 @@ eat_freq						= 5.0		; частота укусов в сек
 eat_slice						= 0.01	; увеличение сытости при 1 укусе
 eat_slice_weight				= 10.0	; уменьшение еды у трупа
 
+DayTime_Begin			= 0			; начала дня для монстра
+DayTime_End				= 21		; конец дня для монстра
+Min_Satiety				= 0.6		; мин. норма сытости (меньше - уже голодный)
+Max_Satiety				= 0.9		; макс. норма сытости (больше - очень сытый)
 
-; Morale
-Morale_Hit_Quant				= 0.1
-Morale_Attack_Success_Quant		= 0.2
-Morale_Take_Heart_Speed			= 0.1
-Morale_Despondent_Speed			= 0.1
-Morale_Stable_Speed				= 0.1
-Morale_Despondent_Threashold	= 0.5
-
+;---------------------------------------------------------
+; Sounds and sound parameters
+;---------------------------------------------------------
 
 sound_idle				= monsters\burer\burer_idle_
 sound_eat				= monsters\burer\burer_idle_
@@ -223,23 +138,31 @@ idle_sound_delay		= 55000;5000
 eat_sound_delay			= 3000
 attack_sound_delay		= 14000;4000
 
-DamagedThreshold		= 0.5
+SoundThreshold			= 0.06             ; range [0..1]
+max_hear_dist			= 60
 
-material				= creatures\large
+;-------------------------------------------------------------------------
+; Vision
+;-------------------------------------------------------------------------
 DynamicObjectsCount		= 32
+eye_fov					= 100
+eye_range				= 90
 
-squad_attack_algorithm	= 1
-attack_effector			= m_burer_attack_effector
+;-------------------------------------------------------------------------
+; Morale
+;-------------------------------------------------------------------------
 
-attack_params			= m_burer_attack_params
-step_params				= m_burer_step_params
+Morale_Hit_Quant				= 0.1
+Morale_Attack_Success_Quant		= 0.2
+Morale_Take_Heart_Speed			= 0.1
+Morale_Despondent_Speed			= 0.1
+Morale_Stable_Speed				= 0.1
+Morale_Despondent_Threashold	= 0.5
 
-Particle_Gravi_Wave		= anomaly2\burer_wave
-Particle_Gravi_Prepare	= anomaly2\burer_prepare
-Particle_Tele_Object	= static\fire_distort
-Particle_Shield			= anomaly2\burer_shield_01
 
-; Gravi Strike
+;-------------------------------------------------------------------------
+; Gravi Ability
+;-------------------------------------------------------------------------
 Gravi_Speed					= 76	; meter/sec	
 Gravi_Step					= 2		; meter
 Gravi_Time_To_Hold			= 1200	; milisec
@@ -248,14 +171,18 @@ Gravi_Impulse_To_Objects	= 60.0
 Gravi_Impulse_To_Enemy		= 400.0
 Gravi_Hit_Power				= 50.0
 
-; Tele Strike
+;-------------------------------------------------------------------------
+; Tele Ability
+;-------------------------------------------------------------------------
 Tele_Max_Handled_Objects = 1;3	
 Tele_Time_To_Hold		 = 600
 Tele_Object_Min_Mass	 = 30.0
 Tele_Object_Max_Mass	 = 1000.0
 Tele_Find_Radius		 = 7.0
 
+;-------------------------------------------------------------------------
 ; Scanner
+;-------------------------------------------------------------------------
 scan_critical_value		= 25.0	; граничное значение 
 scan_radius				= 50.0  ; радиус сканирования
 scan_velocity_threshold	= 4.0	; граничная скорость, до которой движение актера игнорируется
@@ -265,13 +192,122 @@ scan_trace_time_freq	= 2		; частота трейса скорости (for programmer only) (1 = 2
 scan_sound				= monsters\burer\burer_scan_affect_0
 scan_effector_section	= m_burer_scan_effector
 
-LegsCount				= 2
+;-------------------------------------------------------------------------
+; Particles
+;-------------------------------------------------------------------------
+Particle_Tele_Object	= static\fire_distort
+Particle_Gravi_Wave		= anomaly2\burer_wave
+Particle_Gravi_Prepare	= anomaly2\burer_prepare
+Particle_Shield			= anomaly2\burer_shield_01
 
+
+
+;-------------------------------------------------------------------------
+; Other Stuff (refactoring needed)
+;-------------------------------------------------------------------------
+
+ef_creature_type		= 18							; option for evaluation functions
+ef_weapon_type			= 12
+ef_detector_type		= 1
+panic_threshold			= 0.1
+
+cform					= skeleton					; collision class
+class					= SM_BURER					; AI class
+
+script_binding  		= bind_monster.bind
+
+bone_torso				= bip01_spine1 				; bone name
+bone_head				= bip01_head				; bone name
+bone_fire				= bip01_head				; bone name
+weapon_usage			= 0							; boolean
+actor_restrictor		= medium_monster ;medium_monster,stalker,none
+
+transparency_threshold  = 0.25
+
+distance_to_corpse		= 1.2		; дист. до трупа, при которой он переходит в состояние еды
+
+selector_approach		=  20.0,            1.0,                 1000.0,             0.0,               0.0,              1000.0,				10000.0,      
+terrain					= burer_terrain
+hit_type				= wound
+
+DamagedThreshold		= 0.5
+
+material				= creatures\large
+step_params				= m_burer_step_params
+LegsCount				= 2
 damage					= m_burer_damage
 
 ;species of monster
 species					= burer
 
+;=================================================================================
+; Burer Attack Params
+;=================================================================================
+[m_burer_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Left hand Strike
+stand_attack_0 =	  	0.4,		  40,	     100,        2.0, 1.0, 0.5,		 -1.6, 1.6, -1.6, 1.6,				  2.5
+
+
+;=================================================================================
+; Burer Attack Effector
+;=================================================================================
+
+[m_burer_attack_effector]
+
+duality_h			= 0.1; 0.01 
+duality_v			= 0.01; 0.01
+blur				= 0.01
+gray				= 0.5
+noise_intensity		= 0.1;0.0
+noise_grain			= 1
+noise_fps			= 30
+color_base			= 0.65,0.15,0.1
+color_gray			= 0.333,0.333,0.333
+color_add			= 0.0,0.0,0.0
+time				= 3.00
+time_attack			= 0.05		; fade in
+time_release		= 0.50		; fade out
+
+; camera effects
+ce_time				= 0.30 ;time 
+ce_amplitude		= 12.0 
+ce_period_number	= 2.0 
+ce_power		    = 1.0 ;0.7 ; power 
+
+
+;=================================================================================
+; Burer Step Params
+;=================================================================================
+
+[m_burer_step_params]
+;---------------------------------------------------------------------------
+;	anim			| Cycles | time1 | power1 | time2 | power2 |
+;---------------------------------------------------------------------------
+stand_walk_fwd_0 	=	   1,	  0.4,    1,      0.9,    0.7,    
+stand_walk_dmg_0 	=	   1,	  0.4,    1,      0.9,    0.7,    
+stand_run_fwd_0	 	=	   1,	  0.4,    1,      0.9,    0.6,    
+stand_run_dmg_0	    =	   1,	  0.4,    1,      0.9,    0.6,    
+
+;===========================================================================
+; BURER IMMUNITIES
+;===========================================================================
+[burer_immunities]
+burn_immunity			= 0.8						;коэффициенты иммунитета 
+strike_immunity			= 0.7
+shock_immunity			= 1.0
+wound_immunity			= 1.0
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.5
+fire_wound_immunity		= 0.5
+
+;=================================================================================
+; Burer Damage
+;=================================================================================
 
 [m_Burer_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>
@@ -285,7 +321,9 @@ bip01_spine 			= 0.2, -1, 0.1
 bip01_spine1 			= 0.2, -1, 0.1
 bip01_neck 				= 0.2, -1, 0.1
 bip01_head 				= 1.0, -1, 0.50
-
+;=================================================================================
+; Burer Scan Effector
+;=================================================================================
 [m_burer_scan_effector]
 duality_h			= 0.003
 duality_v			= 0.002
@@ -301,10 +339,19 @@ time				= 10.00
 time_attack			= 0.3		; fade in
 time_release		= 0.85		; fade out
 
+;=================================================================================
+; Terrain
+;=================================================================================
 [burer_terrain]
 	255,000,255,255 ;на всех уровнях, по графам без описания
 	255,008,255,255 ;на всех уровнях, по туннелям
 	255,009,255,255 ;на всех уровнях, по подземельям
+
+
+
+;=================================================================================
+; *** PROFILES *******************************************************************
+;=================================================================================
 
 
 [burer_arena]:m_burer_e
@@ -325,7 +372,7 @@ Gravi_Impulse_To_Enemy		= 400.0
 Gravi_Hit_Power				= 50.0
 
 ; Tele Strike
-Tele_Max_Handled_Objects = 4	;1;3	
+Tele_Max_Handled_Objects = 3	;1;3	
 Tele_Time_To_Hold		 = 100	;600
 Tele_Object_Min_Mass	 = 30.0
 Tele_Object_Max_Mass	 = 2000.0 ;1000.0
