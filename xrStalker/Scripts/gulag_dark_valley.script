@@ -16,13 +16,17 @@ local state_fight = 1
 -- General
 --------------------------------------------------------------------------
 local t = {}
-local gulags = {}
+local gulags = {val_escort = {comm = {"bandit", "dolg"}}, val_sacrifice = {comm = {"bandit", "dolg"}},
+                val_prisoner = {comm = {"dolg"}}, val_rob = {},
+                val_lager_bandits = {comm = {"bandit"}}, val_war_soldiers = {comm = {"military"}},
+                val_monolith_base = {}, val_offline_group = {}}
 
 -- Job -------------------------------------------------------------------
 function load_job(sj, gname, type, squad, groups)
     local g = gulags[type]
     if g then
-        g[1](sj, gname, type, squad, groups)
+        --g[1](sj, gname, type, squad, groups)
+        g.job(sj, gname, type, squad, groups)
     end
 end
 
@@ -31,7 +35,8 @@ function load_states(gname, type)
     local g = gulags[type]
 
     if g then
-        return g[2]
+        --return g[2]
+        return g.state
     end
 
 	return nil
@@ -40,8 +45,9 @@ end
 -- Dynamic ltx -----------------------------------------------------------
 function load_ltx(gname, type)
     local g = gulags[type]
-    if g and g[4] then
-        return g[4](gname, type)
+    if g then --and g.ltx then --g[4] then
+        --return g[4](gname, type)
+        return g.ltx --(gname, type)
     end
 
 	return nil
@@ -51,25 +57,25 @@ end
 local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
     local g = gulags[gulag_type]
     if g then
-        local i, v, n = 0, 0, 0
+        if g.comm then
+            if type(g.comm) == "function" then
+                return g.comm(npc_community, gulag_type, npc_rank, se_obj, stalker)
+            end
+            if type(g.comm) == "boolean" then
+                return g.comm == stalker
+            end
 
-        if g[3] then
-            for i, v in pairs(g[3]) do
-                if type(v) == "function" and v(npc_community, gulag_type, npc_rank, se_obj, stalker) then
-                    return true
-                elseif npc_community == v then
+            local i, v = 0, 0
+            for i, v in pairs(g.comm) do
+                if npc_community == v then
                     return true
                 end
-                n = n + 1
             end
-            if n > 0 then
+            if i > 0 then
                 return false
-            else
-                return true
             end
-        else
-            return true
         end
+        return true
     end
 	return false
 end
@@ -109,86 +115,102 @@ end
 
 -- Jobs ------------------------------------------------------------------
 function load_job_escort(sj, gname, type, squad, groups)
+    local ltx = ""
+
 	t = { section = "logic@" .. gname .. "_nap1",
 		idle = 0,
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = e_predicate_n
 	}
 	table.insert(sj, t)
+    ltx = ltx.."#include \"scripts\\val_escort_nap1.ltx\"\n"
 
 	t = { section = "logic@" .. gname .. "_captive",
 		idle = 0,
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = e_predicate_c
 	}
 	table.insert(sj, t)
+    ltx = ltx.."#include \"scripts\\val_escort_captive.ltx\"\n"
 
 	t = { section = "logic@" .. gname .. "_guard1",
 		idle = 0,
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = e_predicate_g
 	}
 	table.insert(sj, t)
+    ltx = ltx.."#include \"scripts\\val_escort_guard1.ltx\"\n"
 
 	t = { section = "logic@" .. gname .. "_guard2",
 		idle = 0,
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = e_predicate_g
 	}
 	table.insert(sj, t)
+    ltx = ltx.."#include \"scripts\\val_escort_guard2.ltx\"\n"
 
-	t = { section = "logic@" .. gname .. "_wounded_bandit",
+	t = { section = "logic@" .. gname .. "_halfdead",
 		idle = 0,
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = e_predicate_w
 	}
 	table.insert(sj, t)
+
+    ltx = ltx.."[logic@" .. gname .. "_halfdead]\n" ..
+               "active          = remark@" .. gname .. "_halfdead_wait\n" ..
+
+               "[wounded@" .. gname .. "_halfdead]\n" ..
+               "hp_state        = 10|wounded_heavy@nil\n" ..
+               "hp_state_see    = 10|wounded_heavy@nil\n" ..
+               "hp_cover        = 10|false\n" ..
+               "hp_fight        = 10|false\n" ..
+
+               "[remark@" .. gname .. "_halfdead_wait]\n" ..
+               "path_walk           = nap1_look\n" ..
+               "anim                = wait\n" ..
+               "target              = 406\n" ..
+               "on_info             = {+val_nap1_phrase1_end} remark@" .. gname .. "_halfdead_phrase\n" ..
+               "wounded             = wounded@" .. gname .. "_halfdead\n" ..
+               "combat_ignore_cond  = always\n" ..
+
+               --------------------------------------------------------------------------
+               -- фраза: Не-еет!!! Не убивай меня! Твоего напарника, сейчас будут вести на Базу Монолита.
+               --        Это все, что я знаю...бля-буду...
+               --------------------------------------------------------------------------
+               "[remark@" .. gname .. "_halfdead_phrase]\n" ..
+               "anim                = wait\n" ..
+               "snd                 = speech\n" ..
+               "target              = 406\n" ..
+               "on_signal           = sound_end | remark@" .. gname .. "_halfdead_end %+val_halfdead_phrase_end%\n" ..
+               "wounded             = wounded@" .. gname .. "_halfdead\n" ..
+               "combat_ignore_cond  = always\n" ..
+
+               "[remark@" .. gname .. "_halfdead_end]\n" ..
+               "anim            = wait\n" ..
+               "target          = 406\n" ..
+               "wounded         = wounded@" .. gname .. "_halfdead\n"
+
+    gulags.val_escort.ltx = ltx
 end
 
 -- States ----------------------------------------------------------------
 function check_state_escort(gulag)
 	return 0
-end
-
--- Dynamic ltx -----------------------------------------------------------
-function load_ltx_escort(gname, type)
-    local ltx = ""
-
-    ltx = ltx.."#include \"scripts\\val_escort_nap1.ltx\"\n"
-    ltx = ltx.."#include \"scripts\\val_escort_captive.ltx\"\n"
-    ltx = ltx.."#include \"scripts\\val_escort_guard1.ltx\"\n"
-    ltx = ltx.."#include \"scripts\\val_escort_guard2.ltx\"\n"
-    
-    ltx = ltx.."[logic@" .. gname .. "_wounded_bandit]\n" ..
-               "active          = remark@" .. gname .. "_wounded_bandit\n" ..
-
-               "[remark@" .. gname .. "_wounded_bandit]\n" ..
-               "path_walk       = nap1_look\n" ..
-               "no_move         = true\n" ..
-               "no_rotate       = true\n" ..
-               "anim            = wait\n" ..
-               "wounded         = wounded@" .. gname .. "_wounded_bandit\n" ..
-
-               "[wounded@" .. gname .. "_wounded_bandit]\n" ..
-               "hp_state        = 10|wounded_heavy\n" ..
-               "hp_state_see    = 10|wounded_heavy\n" ..
-               "psy_state       = 30|psy_pain\n" ..
-               "hp_victim       = 30|actor|10|nil\n" ..
-               "hp_cover        = 30|true|10|false\n" ..
-               "hp_fight        = 30|true|10|false\n" ..
-               "syndata         = wounded@help\n"
-
-    return ltx
 end
 
 
@@ -219,6 +241,7 @@ function load_job_sacrifice(sj, gname, type, squad, groups)
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = scf_predicate_v
 	}
 	table.insert(sj, t)
@@ -228,6 +251,7 @@ function load_job_sacrifice(sj, gname, type, squad, groups)
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = scf_predicate_g1
 	}
 	table.insert(sj, t)
@@ -237,6 +261,7 @@ function load_job_sacrifice(sj, gname, type, squad, groups)
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = scf_predicate_g2
 	}
 	table.insert(sj, t)
@@ -249,31 +274,27 @@ function load_job_sacrifice(sj, gname, type, squad, groups)
 		predicate = scf_predicate_tb
 	}
 	table.insert(sj, t)
+
+    local ltx = "[combat@" .. gname .. "]\n" ..
+                "on_info = {=see_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
+
+                ";[hit@" .. gname .. "_guard]\n" ..
+                ";on_info = {=hit_by_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
+
+                "[danger@" .. gname .. "_guard]\n" ..
+                "ignore_distance = 1\n" ..
+                    
+                "#include \"scripts\\val_sacrifice_victim.ltx\"\n" ..
+                "#include \"scripts\\val_sacrifice_guard1.ltx\"\n" ..
+                "#include \"scripts\\val_sacrifice_guard2.ltx\"\n" ..
+                "#include \"scripts\\val_tunnel_bandit.ltx\"\n"
+
+    gulags.val_sacrifice.ltx = ltx
 end
 
 -- States ----------------------------------------------------------------
 function check_state_sacrifice(gulag)
 	return 0
-end
-
--- Dynamic ltx -----------------------------------------------------------
-function load_ltx_sacrifice(gname, type)
-    local ltx = ""
-    
-    ltx = ltx.."[combat@" .. gname .. "]\n" ..
-               "on_info = {=see_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
-
-               ";[hit@" .. gname .. "_guard]\n" ..
-               ";on_info = {=hit_by_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
-
-               "[danger@" .. gname .. "_guard]\n" ..
-               "ignore_danger_sound = 1\n"
-
-    ltx = ltx.."#include \"scripts\\val_sacrifice_victim.ltx\"\n" ..
-               "#include \"scripts\\val_sacrifice_guard1.ltx\"\n" ..
-               "#include \"scripts\\val_sacrifice_guard2.ltx\"\n" ..
-               "#include \"scripts\\val_tunnel_bandit.ltx\"\n"
-    return ltx
 end
 
 
@@ -292,19 +313,17 @@ function load_job_prisoner(sj, gname, type, squad, groups)
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		online = true,
 		predicate = p_predicate
 	}
 	table.insert(sj, t)
+
+    gulags.val_prisoner.ltx = "#include \"scripts\\val_prisoner_captive.ltx\"\n"
 end
 
 -- States ----------------------------------------------------------------
 function check_state_prisoner(gulag)
 	return 0
-end
-
--- Dynamic ltx -----------------------------------------------------------
-function load_ltx_prisoner(gname, type)
-    return "#include \"scripts\\val_prisoner_captive.ltx\"\n"
 end
 
 
@@ -315,7 +334,7 @@ end
 
 -- Jobs ------------------------------------------------------------------
 function load_job_robbers(sj, gname, type, squad, groups)
-    local i = 0
+    local i, ltx = 0, ""
 
 	t = { section = "logic@" .. gname .. "_leader",
 		idle = 0,
@@ -324,42 +343,6 @@ function load_job_robbers(sj, gname, type, squad, groups)
 		in_rest = "", out_rest = ""
 	}
 	table.insert(sj, t)
-
-    for i = 1, 2 do
-	    t = { section = "logic@" .. gname .. "_guard" .. i,
-		    idle = 0,
-		    prior = 2, state = {0},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = ""
-	    }
-	    table.insert(sj, t)
-	end
-
-    for i = 1, 4 do
-	    t = { section = "logic@" .. gname .. "_kamp",
-		    idle = 0,
-		    prior = 1, state = {0},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = ""
-	    }
-	    table.insert(sj, t)
-	end
-end
-
--- States ----------------------------------------------------------------
-function check_state_robbers(gulag)
-	return 0
-end
-
--- Check stalker ---------------------------------------------------------
-function check_stalker_rob(npc_community, gulag_type, npc_rank, se_obj, stalker)
-    return stalker
-end
-
--- Dynamic ltx -----------------------------------------------------------
-function load_ltx_robbers(gname, type)
-    local i, ltx = 0, ""
-    
     ltx = ltx.."#include \"scripts\\val_rob_leader.ltx\"\n"
 
     ltx = ltx.."[meet@" .. gname .. "_guard]\n" ..
@@ -372,6 +355,14 @@ function load_ltx_robbers(gname, type)
                "zone           = val_rob_warn_zone| threat@ {+val_rob_buying} val_rob_guard_jeer, threat_back | val_rob_kill_zone| true@talk_abuse\n"
 
     for i = 1, 2 do
+	    t = { section = "logic@" .. gname .. "_guard" .. i,
+		    idle = 0,
+		    prior = 2, state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = ""
+	    }
+	    table.insert(sj, t)
+
         ltx = ltx.."[logic@" .. gname .. "_guard" .. i .. "]\n" ..
                    "active = walker@" .. gname .. "_guard" .. i .. "\n" ..
 
@@ -379,14 +370,35 @@ function load_ltx_robbers(gname, type)
                    "path_walk = guard" .. i .. "_walk\n" ..
                    "path_look = guard" .. i .. "_look\n" ..
                    "meet      = meet@" .. gname .. "_guard\n"
-    end
-    
+	end
+
+    for i = 1, 4 do
+	    t = { section = "logic@" .. gname .. "_kamp",
+		    idle = 0,
+		    prior = 1, state = {0},
+		    squad = squad, group = groups[1],
+		    in_rest = "", out_rest = ""
+	    }
+	    table.insert(sj, t)
+	end
+
     ltx = ltx.."[logic@" .. gname .. "_kamp]\n" ..
                "active = kamp@" .. gname .. "\n" ..
 
                "[kamp@" .. gname .. "]\n" ..
                "center_point = kamp\n"
-    return ltx
+
+    gulags.val_rob.ltx = ltx
+end
+
+-- States ----------------------------------------------------------------
+function check_state_robbers(gulag)
+	return 0
+end
+
+-- Check stalker ---------------------------------------------------------
+function check_stalker_rob(npc_community, gulag_type, npc_rank, se_obj, stalker)
+    return stalker
 end
 
 
@@ -581,6 +593,7 @@ end
 -- Jobs ------------------------------------------------------------------
 function load_job_monolith_base(sj, gname, type, squad, groups)
     local i, v, j
+    local ltx = ""
 
     -- патрули
     for i = 1, 6 do
@@ -591,6 +604,16 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 		    in_rest = "", out_rest = gname .. "_main_building_restrictor"
 	    }
 	    table.insert(sj, t)        
+
+        ltx = ltx.."[logic@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
+                   "active              = walker@" .. gname .. "_patrol_normal" .. i .. "\n" ..
+                   --"combat_ignore       = combat_ignore\n" ..
+
+                   "[walker@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
+                   "path_walk           = in_patrol_walk" .. i .. "\n" ..
+                   "path_look           = in_patrol_look" .. i .. "\n" ..
+                   "def_state_moving    = rush\n" --..
+                   --"combat_ignore_cond  = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%\n"
     end
 
     local pr = {1, 1, 1, 3, 2}
@@ -605,7 +628,18 @@ function load_job_monolith_base(sj, gname, type, squad, groups)
 	        }
 	        table.insert(sj, t)        
         end
+
+        ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
+                   "active              = kamp@" .. gname .. "_kamp" .. i .. "_normal\n" ..
+                   --"combat_ignore       = combat_ignore\n" ..
+
+                   "[kamp@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
+                   "center_point        = in_kamp" .. i .. "\n" ..
+                   "def_state_moving    = rush\n" --..
+                   --"combat_ignore_cond  = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%\n"
     end
+
+    gulags.val_monolith_base.ltx = ltx
 end
 
 -- States ----------------------------------------------------------------
@@ -616,38 +650,6 @@ end
 -- Check stalker ---------------------------------------------------------
 function check_stalker_monolith_base(npc_community, gulag_type, npc_rank, se_obj, stalker)
     return stalker and se_obj:profile_name() == "val_monolith_regular"
-end
-
--- Dynamic ltx -----------------------------------------------------------
-function load_ltx_monolith_base(gname, type)
-    local i, res = 0, ""
-
-    -- патрули
-    for i = 1, 6 do
-        res = res.."[logic@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "active              = walker@" .. gname .. "_patrol_normal" .. i .. "\n" ..
-                   --"combat_ignore      = combat_ignore\n" ..
-
-                   "[walker@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "path_walk           = in_patrol_walk" .. i .. "\n" ..
-                   "path_look           = in_patrol_look" .. i .. "\n" ..
-                   "def_state_moving    = rush\n" --..
-                   --"combat_ignore_cond  = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%\n"
-    end
-
-    -- кемпы
-    for i = 1, 5 do
-        res = res.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
-                   "active              = kamp@" .. gname .. "_kamp" .. i .. "_normal\n" ..
-                   --"combat_ignore      = combat_ignore\n" ..
-
-                   "[kamp@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
-                   "center_point        = in_kamp" .. i .. "\n" ..
-                   "def_state_moving    = rush\n" --..
-                   --"combat_ignore_cond  = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%\n"
-    end
-
-    return res
 end
 
 
@@ -663,6 +665,7 @@ end
 -- Jobs ------------------------------------------------------------------
 function load_job_war_soldiers(sj, gname, type, squad, groups)
     local i, v, j
+    local ltx = ""
 
     -- патрули
     for i = 1, 6 do
@@ -684,6 +687,16 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 		    predicate = ws_predicate
 	    }
 	    table.insert(sj, t)
+
+        ltx = ltx.."[logic@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
+                   "active              = walker@" .. gname .. "_patrol_normal" .. i .. "\n" ..
+                   "combat_ignore       = combat_ignore\n" ..
+
+                   "[walker@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
+                   "path_walk           = in_patrol_walk" .. i .. "\n" ..
+                   "path_look           = in_patrol_look" .. i .. "\n" ..
+                   "def_state_moving    = rush\n" ..
+                   "combat_ignore_cond  = {=check_fighting(410)}\n"
     end
 
     local pr = {1, 1, 1, 3, 2}
@@ -709,37 +722,8 @@ function load_job_war_soldiers(sj, gname, type, squad, groups)
 	        }
 	        table.insert(sj, t)
         end
-    end
-end
 
--- States ----------------------------------------------------------------
-function check_state_war_soldiers(gulag)
-	if db.actor:has_info("val_opendoor_chase_start") then
-		return state_normal
-	end
-	return state_fight
-end
-
--- Dynamic ltx -----------------------------------------------------------
-function load_ltx_war_soldiers(gname, type)
-    local i, res = 0, ""
-
-    -- патрули
-    for i = 1, 6 do
-        res = res.."[logic@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "active              = walker@" .. gname .. "_patrol_normal" .. i .. "\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
-
-                   "[walker@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "path_walk           = in_patrol_walk" .. i .. "\n" ..
-                   "path_look           = in_patrol_look" .. i .. "\n" ..
-                   "def_state_moving    = rush\n" ..
-                   "combat_ignore_cond  = {=check_fighting(410)}\n"
-    end
-
-    -- кемпы
-    for i = 1, 5 do
-        res = res.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
+        ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
                    "active             = kamp@" .. gname .. "_kamp" .. i .. "_normal\n" ..
                    "combat_ignore      = combat_ignore\n" ..
                    
@@ -753,21 +737,140 @@ function load_ltx_war_soldiers(gname, type)
                    "combat_ignore       = combat_ignore\n" ..
 
                    "[remark@" .. gname .. "_fight" .. i .. "]\n" ..
-                   "center_point       = in_kamp" .. i .."\n" ..
+                   "center_point        = in_kamp" .. i .."\n" ..
                    "no_move             = true\n" ..
                    "combat_ignore_cond  = {=check_fighting(410)}\n"
     end
 
-    return res
+    gulags.val_war_soldiers.ltx = ltx
+end
+
+-- States ----------------------------------------------------------------
+function check_state_war_soldiers(gulag)
+	if db.actor:has_info("val_opendoor_chase_start") then
+		return state_normal
+	end
+	return state_fight
+end
+
+
+--------------------------------------------------------------------------
+-- Offline group
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+
+-- Jobs ------------------------------------------------------------------
+function load_job_offline_group(sj, gname, type, squad, groups)
+    local i, it = 0, 1
+    local ltx = ""
+    local pname = "offgroup"
+    local phdr = gname .. "_" .. pname .. "_"
+
+	while true do
+		local way_name = phdr .. it
+		
+		if not level.patrol_path_exists(way_name) then
+            break
+		end
+
+		local ptr = patrol(way_name)
+		local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
+		local job_count, prior = 5, 1
+
+		-- Необходимо вычитать количество работ из названия точки пути.
+		if wp_prop.count ~= nil then
+			job_count = wp_prop.count
+		end
+
+		if wp_prop.prior ~= nil then
+			prior = wp_prop.prior
+		end
+
+		for i = 1, job_count do
+			-- добавляем должность
+			t = { section = "logic@" .. way_name,
+				idle = 0,
+				prior = prior, state = {0}, squad = squad, group = groups[1],
+				position_threshold = 20, in_rest = "", out_rest = "",
+				online = false
+			}
+			table.insert(sj, t)
+		end
+
+		-- добавляем описание должности в лтх.
+		ltx = ltx .. "[logic@" .. way_name .. "]\n" ..
+					 "active    = remark@" .. way_name .. "\n" ..
+
+					 "[remark@" .. way_name .. "]\n" ..
+					 "path_walk = " .. pname .. "_" .. it .. "\n" ..
+					 "anim      = wait_na\n"
+		it = it + 1
+	end
+
+    gulags.val_offline_group.ltx = ltx
+end
+
+-- States ----------------------------------------------------------------
+function check_state_offline_group(gulag)
+	return 0
 end
 
 
 -------------------------------------------------------------------------------------------------------------------------
--- gulags                      -- job_func              -- check_state func         -- communities      -- dynamic ltx func
-gulags.val_escort           = {load_job_escort,         check_state_escort,         {"bandit", "dolg"}, load_ltx_escort}
-gulags.val_sacrifice        = {load_job_sacrifice,      check_state_sacrifice,      {"bandit", "dolg"}, load_ltx_sacrifice}
-gulags.val_prisoner         = {load_job_prisoner,       check_state_prisoner,       {"dolg"},           load_ltx_prisoner}
-gulags.val_rob              = {load_job_robbers,        check_state_robbers,        {check_stalker_rob},                 load_ltx_robbers}
-gulags.val_lager_bandits    = {load_job_lager_bandits,  check_state_lager_bandits,  {"bandit"}}
-gulags.val_monolith_base    = {load_job_monolith_base,  check_state_monolith_base,  {check_stalker_monolith_base},  load_ltx_monolith_base}
-gulags.val_war_soldiers     = {load_job_war_soldiers,   check_state_war_soldiers,   {"military"},                   load_ltx_war_soldiers}
+gulags.val_escort.job           = load_job_escort
+gulags.val_escort.state         = check_state_escort
+
+gulags.val_sacrifice.job        = load_job_sacrifice
+gulags.val_sacrifice.state      = check_state_sacrifice
+
+gulags.val_prisoner.job         = load_job_prisoner
+gulags.val_prisoner.state       = check_state_prisoner
+
+gulags.val_rob.job              = load_job_robbers
+gulags.val_rob.state            = check_state_robbers
+gulags.val_rob.comm             = check_stalker_rob
+
+gulags.val_lager_bandits.job    = load_job_lager_bandits
+gulags.val_lager_bandits.state  = check_state_lager_bandits
+
+gulags.val_monolith_base.job    = load_job_monolith_base
+gulags.val_monolith_base.state  = check_state_monolith_base
+gulags.val_monolith_base.comm   = check_stalker_monolith_base
+
+gulags.val_war_soldiers.job     = load_job_war_soldiers
+gulags.val_war_soldiers.state   = check_state_war_soldiers
+
+gulags.val_offline_group.job    = load_job_offline_group
+gulags.val_offline_group.state  = check_state_offline_group
+----------------------------------
+function check_state_offline_group(gulag)
+	return 0
+end
+
+
+-------------------------------------------------------------------------------------------------------------------------
+gulags.val_escort.job           = load_job_escort
+gulags.val_escort.state         = check_state_escort
+
+gulags.val_sacrifice.job        = load_job_sacrifice
+gulags.val_sacrifice.state      = check_state_sacrifice
+
+gulags.val_prisoner.job         = load_job_prisoner
+gulags.val_prisoner.state       = check_state_prisoner
+
+gulags.val_rob.job              = load_job_robbers
+gulags.val_rob.state            = check_state_robbers
+gulags.val_rob.comm             = check_stalker_rob
+
+gulags.val_lager_bandits.job    = load_job_lager_bandits
+gulags.val_lager_bandits.state  = check_state_lager_bandits
+
+gulags.val_monolith_base.job    = load_job_monolith_base
+gulags.val_monolith_base.state  = check_state_monolith_base
+gulags.val_monolith_base.comm   = check_stalker_monolith_base
+
+gulags.val_war_soldiers.job     = load_job_war_soldiers
+gulags.val_war_soldiers.state   = check_state_war_soldiers
+
+gulags.val_offline_group.job    = load_job_offline_group
+gulags.val_offline_group.state  = check_state_offline_group
