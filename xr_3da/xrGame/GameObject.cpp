@@ -474,14 +474,15 @@ void CGameObject::setup_parent_ai_locations(bool assign_position)
 //		ai_location().level_vertex	(l_tpGameObject->ai_location().level_vertex_id());
 //	else
 //		validate_ai_locations	(false);
-	VERIFY						(ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()));
+	VERIFY2						(l_tpGameObject->UsedAI_Locations(),*l_tpGameObject->cNameSect());
+	VERIFY2						(ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()),*cNameSect());
 	ai_location().level_vertex	(l_tpGameObject->ai_location().level_vertex_id());
 
 //	if (ai().game_graph().valid_vertex_id(l_tpGameObject->ai_location().game_vertex_id()))
 //		ai_location().game_vertex	(l_tpGameObject->ai_location().game_vertex_id());
 //	else
 //		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
-	VERIFY						(ai().game_graph().valid_vertex_id(l_tpGameObject->ai_location().game_vertex_id()));
+	VERIFY2						(ai().game_graph().valid_vertex_id(l_tpGameObject->ai_location().game_vertex_id()),*cNameSect());
 	ai_location().game_vertex	(l_tpGameObject->ai_location().game_vertex_id());
 }
 
