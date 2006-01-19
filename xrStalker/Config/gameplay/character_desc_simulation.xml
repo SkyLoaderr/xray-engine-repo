@@ -5,7 +5,7 @@
 
 	<!---------------------------BANDIT NOVICE----------------------->
 	<specific_character id="sim_bandit_novice_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -34,7 +34,7 @@
 </specific_character>
 
 	<specific_character id="sim_bandit_novice_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -65,7 +65,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_novice_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -96,7 +96,7 @@
  <!---------------------------BANDIT GENERAL---------------------->
 
 	<specific_character id="sim_bandit_general_defaul1t" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -124,7 +124,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_general_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -151,7 +151,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_general_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -178,7 +178,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_general_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -206,7 +206,7 @@
 
 <!---------------------------BANDIT VETERAN---------------------->
 	<specific_character id="sim_bandit_veteran_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -237,7 +237,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_veteran_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -264,7 +264,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_veteran_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -378,7 +378,7 @@
 	<!---------------------------STALKER NOVICE----------------------->
 	
 	<specific_character id="sim_stalker_novice_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -406,7 +406,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_novice_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -435,7 +435,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_novice_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -466,7 +466,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_novice_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -495,7 +495,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_novice_default5" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -524,7 +524,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_novice_default6" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -556,7 +556,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_novice_default7" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -586,7 +586,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_novice_default8" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
@@ -618,7 +618,7 @@
 	<!---------------------------STALKER GENERAL---------------------->
 
 	<specific_character id="sim_stalker_general_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -647,7 +647,7 @@
 
 
 <specific_character id="sim_stalker_general_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -675,7 +675,7 @@
 </specific_character>
 
 <specific_character id="sim_stalker_general_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -703,7 +703,7 @@
 </specific_character>
 
 	<specific_character id="sim_stalker_general_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -731,7 +731,7 @@
 	</specific_character>
 	
 	<specific_character id="sim_stalker_general_default5" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -759,7 +759,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_general_default6" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
@@ -788,7 +788,7 @@
 
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="sim_stalker_veteran_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -816,7 +816,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_veteran_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -844,7 +844,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_veteran_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -872,7 +872,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_veteran_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -900,7 +900,7 @@
 	</specific_character>
 
 	<specific_character id="sim_stalker_veteran_default5" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -988,7 +988,7 @@
 <!-------------------------------Stalker SNIPER------------------------->
 
 	<specific_character id="sim_stalker_sniper_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1022,7 +1022,7 @@
 
 <!---------------------------DOLG REGULAR----------------------->
 	<specific_character id="sim_dolg_regular_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="0"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -1053,7 +1053,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_regular_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -1082,7 +1082,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_regular_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="8"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -1112,7 +1112,7 @@
 
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="sim_dolg_veteran_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1139,7 +1139,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_veteran_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1168,7 +1168,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_veteran_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1197,7 +1197,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_veteran_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1226,7 +1226,7 @@
 
 <!---------------------------DOLG MASTER----------------------->
 	<specific_character id="sim_dolg_master_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
@@ -1254,7 +1254,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_master_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
@@ -1283,7 +1283,7 @@
 
 <!---------------------------DOLG SNIPER---------------------->
 	<specific_character id="sim_dolg_sniper_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -1311,7 +1311,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_sniper_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="8"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -1339,7 +1339,7 @@
 	</specific_character>
 
 	<specific_character id="sim_dolg_sniper_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="0"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
@@ -1372,7 +1372,7 @@
 
 <!---------------------------SVOBODA REGULAR----------------------->
 	<specific_character id="sim_Svoboda_regular" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -1405,7 +1405,7 @@
 
 <!---------------------------SVOBODA SPECNAZ----------------------->
 	<specific_character id="sim_Svoboda_specnaz" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -1436,7 +1436,7 @@
 
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="sim_Svoboda_master" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Мастер группировки "Свобода"
@@ -1468,7 +1468,7 @@
 
 <!---------------------------SVOBODA SNIPER---------------------->
 	<specific_character id="sim_Svoboda_sniper" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -1504,7 +1504,7 @@
 
 <!----------------------------- KILLER GENERAL ------------------------->
 	<specific_character id="sim_killer_general1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1534,7 +1534,7 @@
 	</specific_character>
 
 	<specific_character id="sim_killer_general2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1565,7 +1565,7 @@
 
 <!-----------------------------KILLER VETERAN ------------------------->
 	<specific_character id="sim_killer_veteran1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1595,7 +1595,7 @@
 	</specific_character>
 
 	<specific_character id="sim_killer_veteran2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1626,7 +1626,7 @@
 
 <!------------------------------ KILLER MASTER ----------------------->
 	<specific_character id="sim_killer_master1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="0"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
@@ -1656,7 +1656,7 @@
 	</specific_character>
 
 	<specific_character id="sim_killer_master2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
@@ -1689,7 +1689,7 @@
 <!-----------------------KILLER SNIPER------------------------->
 
 	<specific_character id="sim_killer_sniper" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -1722,7 +1722,7 @@
 
 <!-------------------------- MONOLIT REGULAR ----------------------->
     <specific_character id="sim_monolith_regular_default1" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1748,7 +1748,7 @@
     </specific_character>
 
     <specific_character id="sim_monolith_regular_default2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1774,7 +1774,7 @@
     </specific_character>
 
     <specific_character id="sim_monolith_regular_default3" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1800,7 +1800,7 @@
     </specific_character>
 
     <specific_character id="sim_monolith_regular_default4" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1827,7 +1827,7 @@
 
 <!-------------------------- MONOLIT SPECNAZ ----------------------->
     <specific_character id="sim_monolith_specnaz_default1" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1854,7 +1854,7 @@
     </specific_character>
 
     <specific_character id="sim_monolith_specnaz_default2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="0" y="4"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1882,7 +1882,7 @@
 
 <!---------------------------- MONOLIT MASTER ------------------------->
     <specific_character id="sim_monolith_master_default1" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1909,7 +1909,7 @@
     </specific_character>
 
     <specific_character id="sim_monolith_master_default2" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1938,7 +1938,7 @@
 <!-----------------------------MONOLIT SNIPER-------------------->
 
     <specific_character id="sim_monolith_sniper" team_default = "1">
-        <name>GENERATE_NAME</name>
+        <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -1970,7 +1970,7 @@
 
    <!---------------------------ECOLOG GENERAL------------------------>
 	<specific_character id="sim_ecolog_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
@@ -1997,7 +1997,7 @@
 
 
 	<specific_character id="sim_ecolog_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="4"></icon>
 		<map_icon x="1" y="6"></map_icon>
 		<bio>Научный работник. Детальная информация отсутствует.</bio>
@@ -2397,7 +2397,7 @@
 
 <!---------------------------SOLDIER REGULAR----------------------->
 	<specific_character id="sim_soldier_regular_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -2426,7 +2426,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_regular_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -2455,7 +2455,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_regular_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -2484,7 +2484,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_regular_default4" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
@@ -2513,7 +2513,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_regular_default5" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -2545,7 +2545,7 @@
 	<!---------------------------SOLDIER SPECNAZ---------------------->
 
 	<specific_character id="sim_soldier_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -2574,7 +2574,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_specnaz_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
@@ -2603,7 +2603,7 @@
 	<!--------------------------- SOLDIER COMMANDERS ----------------------->
 	
 	<specific_character id="sim_soldier_commander1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -2632,7 +2632,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_commander2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Детальная информация отсутствует.</bio>
@@ -2661,7 +2661,7 @@
 
 <!---------------------------SOLDIER SNIPER---------------------->
 	<specific_character id="sim_soldier_sniper_default1" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -2690,7 +2690,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_sniper_default2" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -2719,7 +2719,7 @@
 	</specific_character>
 
 	<specific_character id="sim_soldier_sniper_default3" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
@@ -2749,7 +2749,7 @@
 
 <!---------------------------SOLDIER MASTER----------------------->
 	<specific_character id="sim_Soldier_master" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio> Военный сталкер. Хорошо вооружен и очень опасен.
