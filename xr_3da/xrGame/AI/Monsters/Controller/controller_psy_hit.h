@@ -14,9 +14,17 @@ class CControllerPsyHit : public CControl_ComCustom<> {
 	CPsyHitEffectorCam	*m_effector_cam;
 	CPsyHitEffectorPP	*m_effector_pp;
 
+	enum ESoundState{
+		eStart,
+		ePull,
+		eHit,
+		eNone
+	} m_sound_state;
+
 public:
 	virtual void	load					(LPCSTR section);
 	virtual	void	reinit					();
+	virtual	void	update_frame			();
 	virtual bool	check_start_conditions	();
 	virtual void	activate				();
 	virtual void	deactivate				();
@@ -27,5 +35,7 @@ private:
 			void	play_anim				();
 			void	death_glide_start			();
 			void	death_glide_end			();
+
+			void	set_sound_state			(ESoundState state);
 };
 

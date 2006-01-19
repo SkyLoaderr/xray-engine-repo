@@ -181,6 +181,11 @@ void CController::Load(LPCSTR section)
 	m_sound_aura_hit_left_channel.create(TRUE, "monsters\\controller\\controller_psy_hit_l");
 	m_sound_aura_hit_right_channel.create(TRUE, "monsters\\controller\\controller_psy_hit_l");
 
+	m_sound_tube_start.create(TRUE, "monsters\\controller\\controller_first_hit");
+	m_sound_tube_pull.create(TRUE, "monsters\\controller\\controller_whoosh");
+	m_sound_tube_hit_left.create(TRUE, "monsters\\controller\\controller_final_hit_l");
+	m_sound_tube_hit_right.create(TRUE, "monsters\\controller\\controller_final_hit_r");
+
 	particles_fire = pSettings->r_string(section,"Control_Hit");
 		
 }
@@ -636,23 +641,23 @@ void CController::debug_on_key(int key)
 		//m_sound_aura_left_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
 		//m_sound_aura_right_channel.play_at_pos(Level().CurrentEntity(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 		
-		//if (m_psy_hit->check_start_conditions()) {
-		//	control().activate(ControlCom::eComCustom1);
-		//}
-		P1.set		(Actor()->Position());		
-		
-		DBG().level_info(this).remove_item	(u32(0));
-		DBG().level_info(this).add_item(P1,0.5f,COLOR_BLUE,0);
+		if (m_psy_hit->check_start_conditions()) {
+			control().activate(ControlCom::eComCustom1);
+		}
+		//P1.set		(Actor()->Position());		
+		//
+		//DBG().level_info(this).remove_item	(u32(0));
+		//DBG().level_info(this).add_item(P1,0.5f,COLOR_BLUE,0);
 	
 
-		if (!fsimilar(P1.square_magnitude(),0.f) && 
-			!fsimilar(P2.square_magnitude(),0.f)) {
-			CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
-			if (cover) {
-				DBG().level_info(this).remove_item	(3);
-				DBG().level_info(this).add_item		(cover->position(),0.8f,COLOR_RED,3);
-			}
-		}
+		//if (!fsimilar(P1.square_magnitude(),0.f) && 
+		//	!fsimilar(P2.square_magnitude(),0.f)) {
+		//	CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
+		//	if (cover) {
+		//		DBG().level_info(this).remove_item	(3);
+		//		DBG().level_info(this).add_item		(cover->position(),0.8f,COLOR_RED,3);
+		//	}
+		//}
 
 
 		break;

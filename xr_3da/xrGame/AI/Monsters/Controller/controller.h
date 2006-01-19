@@ -39,6 +39,11 @@ public:
 	ref_sound			m_sound_aura_hit_left_channel;
 	ref_sound			m_sound_aura_hit_right_channel;
 
+	ref_sound			m_sound_tube_start;
+	ref_sound			m_sound_tube_pull;
+	ref_sound			m_sound_tube_hit_left;
+	ref_sound			m_sound_tube_hit_right;
+
 public:	
 	SVelocityParam		m_velocity_move_fwd;
 	SVelocityParam		m_velocity_move_bkwd;

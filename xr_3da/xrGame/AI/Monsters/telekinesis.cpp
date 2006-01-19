@@ -131,6 +131,14 @@ void CTelekinesis::fire(CPhysicsShellHolder *obj, const Fvector &target, float p
 	(*it)->fire(target,power);
 }
 
+void CTelekinesis::fire_t(CPhysicsShellHolder *obj, const Fvector &target, float time)
+{
+	TELE_OBJECTS_IT it = std::find_if(objects.begin(), objects.end(),SFindPred(obj));
+	if (it == objects.end()) return;
+
+	// בנמסטעü מבתוךע
+	(*it)->fire_t(target,time);
+}
 
 bool CTelekinesis::is_active_object(CPhysicsShellHolder *obj)
 {

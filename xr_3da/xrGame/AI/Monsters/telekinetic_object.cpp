@@ -181,6 +181,10 @@ void CTelekineticObject::fire_t(const Fvector &target, float time)
 	//time_fire_started	= Device.dwTimeGlobal;
 
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
+
+	// включить гравитацию
+	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+
 	Fvector transference;
 	transference.sub(target,object->Position());
 	TransferenceToThrowVel(transference,time,object->EffectiveGravity());

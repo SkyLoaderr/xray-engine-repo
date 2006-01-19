@@ -50,6 +50,8 @@ private:
 
 			// internal for FindObjects
 			void		FindFreeObjects			(xr_vector<CObject*> &tpObjects, const Fvector &pos);
+
+private:
 };
 
 #include "burer_state_attack_tele_inline.h"

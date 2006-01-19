@@ -43,7 +43,7 @@ void CStateBurerAttackAbstract::reselect_state()
 		return;
 	}
 
-	bool enable_gravi	= get_state(eStateBurerAttack_Gravi)->check_start_conditions	();
+	bool enable_gravi	= false;//get_state(eStateBurerAttack_Gravi)->check_start_conditions	();
 	bool enable_tele	= get_state(eStateBurerAttack_Tele)->check_start_conditions		();
 
 	if (!enable_gravi && !enable_tele) {

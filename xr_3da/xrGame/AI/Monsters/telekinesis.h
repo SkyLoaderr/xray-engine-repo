@@ -41,6 +41,10 @@ virtual		void	clear_notrelevant   ();
 			// бросить объект 'obj' в позицию 'target' с учетом коэф силы 
 			void	fire				(CPhysicsShellHolder *obj, const Fvector &target, float power);
 
+			// бросить объект 'obj' в позицию 'target' с учетом коэф силы 
+			void	fire_t				(CPhysicsShellHolder *obj, const Fvector &target, float time);
+
+
 			// вернуть активность телекинеза
 			bool	is_active			() {return active;}
 

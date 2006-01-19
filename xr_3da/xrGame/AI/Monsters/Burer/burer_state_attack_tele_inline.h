@@ -17,6 +17,7 @@
 TEMPLATE_SPECIALIZATION
 CStateBurerAttackTeleAbstract::CStateBurerAttackTele(_Object *obj) : inherited(obj)
 {
+
 }
 
 TEMPLATE_SPECIALIZATION
@@ -244,23 +245,13 @@ void CStateBurerAttackTeleAbstract::ExecuteTeleFire()
 	float	dist	= selected_object->Position().distance_to(object->EnemyMan.get_enemy()->Position());
 	
 	Fvector enemy_pos;
-	float	power;
 
-	if (object->m_monster_type == CBaseMonster::eMonsterTypeIndoor) {
-		power		= dist/8;
-		enemy_pos	= get_head_position(const_cast<CEntityAlive*>(object->EnemyMan.get_enemy()));
-		enemy_pos.y += 2 * object->EnemyMan.get_enemy()->Radius();
-	} else {
-		enemy_pos	= object->EnemyMan.get_enemy()->Position();
-		enemy_pos.y += 5 * object->EnemyMan.get_enemy()->Radius();
-		power		= dist/12;
-	}
-	
-	object->CTelekinesis::fire(selected_object, enemy_pos, power);
+	enemy_pos	= get_head_position(const_cast<CEntityAlive*>(object->EnemyMan.get_enemy()));
+	object->CTelekinesis::fire_t(selected_object,enemy_pos, 0.55f);
 
-	object->StopTeleObjectParticle(selected_object);
-	object->sound().play(CBurer::eMonsterSoundTeleAttack);
-	object->DeactivateShield();
+	object->StopTeleObjectParticle	(selected_object);
+	object->sound().play			(CBurer::eMonsterSoundTeleAttack);
+	object->DeactivateShield		();
 }
 
 TEMPLATE_SPECIALIZATION

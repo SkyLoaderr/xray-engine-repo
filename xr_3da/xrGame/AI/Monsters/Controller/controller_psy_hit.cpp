@@ -24,6 +24,8 @@ void CControllerPsyHit::reinit()
 	m_stage[2] = skel->ID_Cycle_Safe("psy_attack_2"); VERIFY(m_stage[2]);
 	m_stage[3] = skel->ID_Cycle_Safe("psy_attack_3"); VERIFY(m_stage[3]);
 	m_current_index		= 0;
+
+	m_sound_state		= eNone;
 }
 
 bool CControllerPsyHit::check_start_conditions()
@@ -52,11 +54,6 @@ void CControllerPsyHit::activate()
 	//////////////////////////////////////////////////////////////////////////
 	m_current_index					= 0;
 	play_anim						();
-
-
-	CController *monster = smart_cast<CController *>(m_object);
-	monster->m_sound_aura_left_channel.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
-	monster->m_sound_aura_right_channel.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 }
 
 void CControllerPsyHit::deactivate()
@@ -124,6 +121,8 @@ void CControllerPsyHit::death_glide_start()
 	dir.getHP(h,p);
 	dir.setHP(h,p+PI_DIV_3);
 	Actor()->movement_control()->ApplyImpulse(dir,Actor()->GetMass() * 530.f);
+
+	set_sound_state					(eStart);
 }
 
 void CControllerPsyHit::death_glide_end()
@@ -136,10 +135,39 @@ void CControllerPsyHit::death_glide_end()
 	CController *monster = smart_cast<CController *>(m_object);
 	monster->draw_fire_particles();
 
-	monster->m_sound_aura_hit_left_channel.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
-	monster->m_sound_aura_hit_right_channel.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+	set_sound_state					(eHit);
 
-	if (monster->m_sound_aura_left_channel._feedback()) 	monster->m_sound_aura_left_channel.stop		();
-	if (monster->m_sound_aura_right_channel._feedback())	monster->m_sound_aura_right_channel.stop	();
-	
 }
+
+void CControllerPsyHit::update_frame()
+{
+	//if (m_sound_state == eStart) {
+	//	CController *monster = smart_cast<CController *>(m_object);
+	//	if (!monster->m_sound_tube_start._feedback()) {
+	//		m_sound_state = ePull;
+	//		monster->m_sound_tube_pull.play_at_pos(Actor(), Fvector().set(0.f, 0.f, 0.f), sm_2D);
+	//	}
+	//}
+}
+
+void CControllerPsyHit::set_sound_state(ESoundState state)
+{
+	CController *monster = smart_cast<CController *>(m_object);
+	if (state == eStart) {
+		monster->m_sound_tube_start.play_at_pos(Actor(), Fvector().set(0.f, 0.f, 0.f), sm_2D);
+		monster->m_sound_tube_pull.play_at_pos(Actor(), Fvector().set(0.f, 0.f, 0.f), sm_2D);
+		m_sound_state = eStart;
+		return;
+	}
+	
+	if (state == eHit) {
+		if (monster->m_sound_tube_start._feedback())	monster->m_sound_tube_start.stop();
+		if (monster->m_sound_tube_pull._feedback())		monster->m_sound_tube_pull.stop();
+		
+		monster->m_sound_tube_hit_left.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+		m_sound_state = eHit;
+		return;
+	}
+}
+
