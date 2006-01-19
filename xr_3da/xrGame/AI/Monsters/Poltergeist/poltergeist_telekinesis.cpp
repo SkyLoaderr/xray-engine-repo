@@ -35,11 +35,9 @@ void CPoltergeist::UpdateTelekinesis()
 	if (!tele_enemy) return;
 	if (time_tele_start + TIME_TO_HOLD > Device.dwTimeGlobal) return;
 	
-	Fvector enemy_pos = tele_enemy->Position();
-	enemy_pos.y += 5 * tele_enemy->Radius();
-
-	float dist = tele_object->Position().distance_to(tele_enemy->Position());
-	CTelekinesis::fire(tele_object, enemy_pos, dist/12);
+	Fvector enemy_pos;
+	enemy_pos	= get_head_position(const_cast<CObject*>(tele_enemy));
+	CTelekinesis::fire_t(tele_object,enemy_pos, 0.55f);
 
 	tele_enemy = 0;
 }

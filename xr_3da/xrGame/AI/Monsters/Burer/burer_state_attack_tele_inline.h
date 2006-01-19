@@ -242,10 +242,7 @@ void CStateBurerAttackTeleAbstract::ExecuteTeleFire()
 {
 	object->com_man().ta_pointbreak();
 
-	float	dist	= selected_object->Position().distance_to(object->EnemyMan.get_enemy()->Position());
-	
 	Fvector enemy_pos;
-
 	enemy_pos	= get_head_position(const_cast<CEntityAlive*>(object->EnemyMan.get_enemy()));
 	object->CTelekinesis::fire_t(selected_object,enemy_pos, 0.55f);
 
