@@ -32,7 +32,7 @@
 	</specific_character>
 	
 	<specific_character id="ds_soldier_regular" team_default = "1">
-		<name>GENERATE_NAME_private</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
