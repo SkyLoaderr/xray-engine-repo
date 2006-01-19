@@ -246,6 +246,7 @@ IC	void twoq_2w(const Fquaternion& q1,const Fquaternion& q2,float dt,Fvector& w)
 	if(sinus_2>EPS)	k*=acos(cosinus)/_sqrt(sinus_2);
 	w.mul(k);
 }
+
 IC float	to_mag_and_dir(const Fvector &in_v,Fvector &out_v)
 {
 	float mag=in_v.magnitude();
@@ -333,6 +334,17 @@ IC void limit_below(float& val,float limit)
 {
 	if(val<limit)val=limit;
 }
+
+IC void TransferenceToThrowVel(Fvector &in_transference_out_vel,float time,float gravity_accel)
+{
+	in_transference_out_vel.mul(1.f/time);
+	in_transference_out_vel.y+=time*gravity_accel/2.f;
+}
+IC float ThrowMinVelTime(const Fvector &transference,float gravity_accel)
+{
+	return _sqrt(2.f*transference.magnitude()/gravity_accel);
+}
+
 #define  MAX_OF(x,on_x,y,on_y,z,on_z)\
 	if(x>y){\
 	if	(x>z)	{on_x;}\
