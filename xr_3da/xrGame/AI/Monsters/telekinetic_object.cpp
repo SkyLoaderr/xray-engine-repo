@@ -6,8 +6,7 @@
 #include "../../PHElement.h"
 #include "../../level.h"
 #include "../../gameobject.h"
-#include "../../PHWorld.h"
-extern CPHWorld*				ph_world;
+
 #define KEEP_IMPULSE_UPDATE 200
 #define FIRE_TIME			3000
 #define RAISE_MAX_TIME		5000
@@ -184,7 +183,7 @@ void CTelekineticObject::fire_t(const Fvector &target, float time)
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 	Fvector transference;
 	transference.sub(target,object->Position());
-	TransferenceToThrowVel(transference,time,ph_world->Gravity());
+	TransferenceToThrowVel(transference,time,object->EffectiveGravity());
 	object->m_pPhysicsShell->set_LinearVel(transference);
 
 }
