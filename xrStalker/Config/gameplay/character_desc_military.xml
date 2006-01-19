@@ -5,7 +5,7 @@
 
 <!---------------------------SVOBODA SPECNAZ----------------------->
 	<specific_character id="mil_Svoboda_specnaz" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -65,7 +65,7 @@
 
 <!---------------------------SVOBODA REGULAR----------------------->
 	<specific_character id="mil_Svoboda_regular" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -95,7 +95,7 @@
 	</specific_character>
 <!---------------------------SVOBODA SNIPER---------------------->
 	<specific_character id="mil_Svoboda_sniper" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
@@ -153,7 +153,7 @@
 	</specific_character>
 <!---------------------------SVOBODA ZONEGUARD---------------------->
 	<specific_character id="mil_Svoboda_zoneguard" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -184,7 +184,7 @@
 	</specific_character>
 <!---------------------------SVOBODA BODYGUARD---------------------->
 	<specific_character id="mil_Svoboda_bodyguard" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
@@ -307,7 +307,7 @@
 	</specific_character>
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="mil_Svoboda_master" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Мастер группировки "Свобода"
@@ -443,7 +443,7 @@
 <!---------------------------DOLG PROFILES----------------------->
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="mil_Dolg_specnaz" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -469,7 +469,7 @@
 	</specific_character>
 <!---------------------------DOLG SPECNAZ SILENCE---------------------->
 	<specific_character id="mil_Dolg_specnaz_silence" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -553,7 +553,7 @@
 	</specific_character>
 <!---------------------------KILLER SPECNAZ---------------------->
 	<specific_character id="mil_Killer_specnaz" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
@@ -581,7 +581,7 @@
 
 <!---------------------------KILLER SNIPER---------------------->
 	<specific_character id="mil_killer_sniper" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
@@ -607,7 +607,7 @@
 
 <!---------------------------KILLER MASTER----------------------->
 	<specific_character id="mil_killer_master" team_default = "1">
-		<name>Неизвестный наемник</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
@@ -640,7 +640,7 @@
 <!---------------------------NEUTRAL PROFILES----------------------->
 <!---------------------------STALKER MASTER----------------------->
 	<specific_character id="mil_Stalker_master" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -668,7 +668,7 @@
 	</specific_character>
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="mil_Stalker_veteran" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
@@ -725,7 +725,7 @@
         </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="mil_Monolit_regular" team_default = "1">
-    <name>GENERATE_NAME</name>
+    <name>GENERATE_NAME_stalker</name>
     <icon x="6" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
@@ -752,7 +752,7 @@
 
 <!---------------------------MONOLIT MASTER----------------------->
   <specific_character id="mil_Monolit_master" team_default = "1">
-    <name>GENERATE_NAME</name>
+    <name>GENERATE_NAME_stalker</name>
     <icon x="28" y="8"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Хранитель группировки "Монолит". Лучше держаться от него подальше. Детальная информация отсутствует.</bio>
