@@ -6,7 +6,8 @@
 #include "../../PHElement.h"
 #include "../../level.h"
 #include "../../gameobject.h"
-
+#include "../../PHWorld.h"
+extern CPHWorld*				ph_world;
 #define KEEP_IMPULSE_UPDATE 200
 #define FIRE_TIME			3000
 #define RAISE_MAX_TIME		5000
@@ -175,6 +176,18 @@ void CTelekineticObject::release()
 	switch_state(TS_None);
 }
 
+void CTelekineticObject::fire_t(const Fvector &target, float time)
+{
+	switch_state(TS_Fire);
+	//time_fire_started	= Device.dwTimeGlobal;
+
+	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
+	Fvector transference;
+	transference.sub(target,object->Position());
+	TransferenceToThrowVel(transference,time,ph_world->Gravity());
+	object->m_pPhysicsShell->set_LinearVel(transference);
+
+}
 void CTelekineticObject::fire(const Fvector &target, float power)
 {
 	//state				= TS_Fire;
@@ -194,10 +207,10 @@ void CTelekineticObject::fire(const Fvector &target, float power)
 		if (OnServer()) 
 		{
 		// выполнить бросок
-		for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
-			object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, power * 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
-		}
-	};
+			for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) 
+				object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, power * 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
+			
+		};
 };
 
 bool CTelekineticObject::check_height()

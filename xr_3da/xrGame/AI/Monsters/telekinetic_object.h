@@ -47,6 +47,7 @@ virtual		void				keep					();
 virtual		void				keep_update				();
 virtual		void				release					();
 virtual		void				fire					(const Fvector &target, float power);
+			void				fire_t					(const Fvector &target, float time);
 virtual		void				fire_update				();
 virtual		void				update_state			();
 virtual		bool				can_activate			(CPhysicsShellHolder *obj);
