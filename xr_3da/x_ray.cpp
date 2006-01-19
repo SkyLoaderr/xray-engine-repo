@@ -584,26 +584,6 @@ void CApplication::LoadDraw		()
 		u32	_w						= Device.dwWidth;
 		u32	_h						= Device.dwHeight;
 		FVF::TL* pv					= NULL;
-/*
-		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
-		pv->set						(EPS_S,				float(_h+EPS_S),	0+EPS_S, 1, C, 0, 1);	pv++;
-		pv->set						(EPS_S,				EPS_S,				0+EPS_S, 1, C, 0, 0);	pv++;
-		pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	0+EPS_S, 1, C, 1, 1);	pv++;
-		pv->set						(float(_w+EPS_S),	EPS_S,				0+EPS_S, 1, C, 1, 0);	pv++;
-		RCache.Vertex.Unlock		(4,ll_hGeom.stride());
-
-		RCache.set_Shader			(ll_hLogo);
-		RCache.set_Geometry			(ll_hGeom);
-		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-
-		// Draw title
-		VERIFY						(pFontSystem);
-		pFontSystem->Clear			();
-		pFontSystem->SetColor		(color_rgba(192,192,192,255));
-		pFontSystem->SetAligment	(CGameFont::alCenter);
-		pFontSystem->OutI			(0.f,0.93f,app_title);
-		pFontSystem->OnRender		();
-*/
 
 //progress
 		float bw					= 1024.0f;
@@ -795,12 +775,16 @@ void CApplication::Level_Set(u32 L)
 	Level_Current = L;
 	FS.get_path	("$level$")->_set	(Levels[L].folder);
 
+
 	string_path					temp;
-	if (FS.exist(temp, "$level$", "ll_logo.dds"))
-	{
-		hLevelLogo.create	("font","ll_logo");
-//		SetLoadLogo(tmp_ll_hLogo);
-	}
+	string_path					temp2;
+	strconcat					(temp,"intro\\intro_",Levels[L].folder);
+	temp[xr_strlen(temp)-1] = 0;
+	if (FS.exist(temp2, "$game_textures$", temp, ".dds"))
+		hLevelLogo.create	("font", temp);
+	else
+		hLevelLogo.create	("font", "intro\\intro_no_start_picture");
+		
 
 	CheckCopyProtection		();
 }
