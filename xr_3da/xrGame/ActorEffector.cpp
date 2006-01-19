@@ -230,11 +230,16 @@ SndShockEffector::SndShockEffector	()
 	m_snd_length			= 0.0f;
 	m_cur_length			= 0.0f;
 	m_stored_volume			= -1.0f;
+	m_actor					= NULL;
 }
 
 SndShockEffector::~SndShockEffector	()
 {
 	psSoundVFactor		= m_stored_volume;
+	if(m_actor&&(m_ce||m_pe))
+		RemoveEffector	(m_actor, effHit);
+
+	R_ASSERT	(!m_ce&&!m_pe);
 }
 
 BOOL SndShockEffector::Valid()
@@ -255,7 +260,8 @@ float SndShockEffector::GetFactor()
 
 void SndShockEffector::Start(CActor* A, float snd_length, float power)
 {
-	m_snd_length = snd_length;
+	m_actor			= A;
+	m_snd_length	= snd_length;
 
 	if( m_stored_volume<0.0f )
 		m_stored_volume = psSoundVFactor;

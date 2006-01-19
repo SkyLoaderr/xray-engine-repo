@@ -85,6 +85,7 @@ public:
 	float						m_stored_volume;
 	float						m_end_time;
 	float						m_life_time;
+	CActor*						m_actor;
 public:
 								SndShockEffector	();
 	virtual						~SndShockEffector	();

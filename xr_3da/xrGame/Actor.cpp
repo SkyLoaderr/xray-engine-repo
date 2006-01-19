@@ -733,7 +733,7 @@ void CActor::Die	(CObject* who)
 	};
 	//-------------------------------------
 	// Play ref_sound
-	::Sound->play_at_pos		(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
+	::Sound->play_at_pos	(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 	cam_Set					(eacFreeLook);
 
 	mstate_wishful	&=		~mcAnyMove;
@@ -743,7 +743,7 @@ void CActor::Die	(CObject* who)
 	//остановить звук тяжелого дыхания
 	m_HeavyBreathSnd.stop	();
 
-	RemoveEffector			(this, effHit);
+	xr_delete				(m_sndShockEffector);
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
