@@ -162,11 +162,15 @@
 <!-- Darkvalley -->
 	<!-- Bandits -->	
 	<character id="val_bandit_borov">
-		<class>val_bandit_borov</class>
+		<class>val_bandit_veteran</class>
 		<specific_character>val_bandit_borov</specific_character>
 	</character>
 	<character id="val_bandit_novice">
 		<class>val_bandit_novice</class>
+	</character>
+	<character id="val_escort_halfdead">
+		<class>val_bandit_novice</class>
+		<specific_character>val_escort_halfdead</specific_character>
 	</character>
 	<character id="val_bandit_general">
 		<class>val_bandit_general</class>
@@ -178,6 +182,14 @@
 	<!-- Dolg -->
 	<character id="val_dolg_regular">
 		<class>val_dolg_regular</class>
+	</character>
+	<character id="val_escort_nap1">
+		<class>val_dolg_regular</class>
+		<specific_character>val_escort_nap1</specific_character>
+	</character>
+	<character id="val_escort_captive">
+		<class>val_dolg_regular</class>
+		<specific_character>val_escort_captive</specific_character>
 	</character>
 
 	<!-- Monolit -->
