@@ -175,31 +175,6 @@ void CTelekineticObject::release()
 	switch_state(TS_None);
 }
 
-void CTelekineticObject::fire(const Fvector &target)
-{
-	//state				= TS_Fire;
-	switch_state(TS_Fire);
-	//time_fire_started	= Device.dwTimeGlobal;
-
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
-
-	// вычислить направление
-	Fvector dir;
-	dir.sub(target,object->Position());
-	dir.normalize();
-
-		// включить гравитацию
-		object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
-
-		if (OnServer()) 
-		{	
-		// выполнить бросок
-		for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
-			object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
-		}
-	};	
-}
-
 void CTelekineticObject::fire(const Fvector &target, float power)
 {
 	//state				= TS_Fire;

@@ -35,11 +35,8 @@ virtual		void	clear_notrelevant   ();
 			void	deactivate			(CPhysicsShellHolder *obj);
 			void	remove_object		(TELE_OBJECTS_IT it);
 			void	remove_object		(CPhysicsShellHolder *obj);
-			// бросить объект 'obj' в позицию 'target'
-			void	fire				(CPhysicsShellHolder *obj, const Fvector &target);
-	
 			// бросить все объекты в позицию 'target'
-			void	fire				(const Fvector &target);
+			void	fire_all			(const Fvector &target);
 			
 			// бросить объект 'obj' в позицию 'target' с учетом коэф силы 
 			void	fire				(CPhysicsShellHolder *obj, const Fvector &target, float power);

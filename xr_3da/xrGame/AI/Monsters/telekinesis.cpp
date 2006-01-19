@@ -110,23 +110,13 @@ void CTelekinesis::remove_object		(TELE_OBJECTS_IT it)
 		active = false;
 	}
 }
-void CTelekinesis::fire(const Fvector &target)
+void CTelekinesis::fire_all(const Fvector &target)
 {
 	if (!active) return;
 
-	for (u32 i = 0; i < objects.size(); i++) objects[i]->fire(target);
+	for (u32 i = 0; i < objects.size(); i++) objects[i]->fire(target,1.f);
 
 	deactivate();
-}
-
-void CTelekinesis::fire(CPhysicsShellHolder *obj, const Fvector &target)
-{
-	// найти объект
-	TELE_OBJECTS_IT it = std::find_if(objects.begin(), objects.end(),SFindPred(obj));
-	if (it == objects.end()) return;
-
-	// бросить объект
-	(*it)->fire(target);
 }
 
 // бросить объект 'obj' в позицию 'target' с учетом коэф силы 
