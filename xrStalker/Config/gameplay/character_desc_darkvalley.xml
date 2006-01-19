@@ -515,8 +515,17 @@
 			wpn_abakan = 1,silencer \n
             ammo_5.45x39_ap = 2 \n
 			device_torch \n
-#include "gameplay\character_food.xml"
-#include "gameplay\character_drugs.xml"
+
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 2 \n
+
+            bread = 2 \n
+            kolbasa = 2 \n
+            vodka = 1 \n
+
+            medkit = 5 \n
+            bandage = 6 \n
+            antirad = 2 \n
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
@@ -525,7 +534,7 @@
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>
 
-<!--------------------------- NAP1 ------------------------->
+<!---------------------------- CAPTIVE -------------------------->
 	<specific_character id="val_escort_captive" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="8"></icon>
@@ -542,14 +551,7 @@
 		<snd_config>characters_voice\human_02\</snd_config>
 		<supplies>
 			[spawn] \n
-            wpn_fort \n
-			ammo_9x18_pmm = 2 \n
-            ammo_9x18_fmj = 1\n
-			wpn_abakan = 1,silencer \n
-            ammo_5.45x39_ap = 2 \n
-			device_torch \n
 #include "gameplay\character_food.xml"
-#include "gameplay\character_drugs.xml"
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
