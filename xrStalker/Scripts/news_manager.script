@@ -85,7 +85,8 @@ tips_icons = {
 	krot     = { 200,  50 },
 	barman   = { 400,  50 },
 	wolf	 = { 0, 50 },
-	o_soznanie = { 100, 50 }
+	o_soznanie = { 100, 50 },
+	monolith	 = { 100, 150 }
 }
 
 function send_news(actor, news_id, timeout, showtime)

@@ -1,3 +1,7 @@
     <string id="tips_rad_sos_suicide">
         <text>... люди, помогите, дохну...</text>
     </string>
+    
+    <string id="tips_bun_komand">
+        <text>Группа один и два - проверить первый этаж, группа три - главный зал, четвертая и пятая - второй этаж</text>
+    </string>
