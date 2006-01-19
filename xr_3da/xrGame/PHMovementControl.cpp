@@ -822,88 +822,40 @@ void CPHMovementControl::JumpV(const Fvector &jump_velocity)
 
 void CPHMovementControl::Jump(const Fvector &end_point, float time)
 {
-//vPosition
-Jump(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position(),end_point,time);
+	//vPosition
+	Jump(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position(),end_point,time);
 }
+
+
+
 void CPHMovementControl::Jump(const Fvector &start_point,const Fvector &end_point, float time)
 {
-
-Fvector velosity;
-velosity.x=end_point.x-start_point.x;
-velosity.z=end_point.z-start_point.z;
-
-velosity.x/=time;
-velosity.z/=time;
-velosity.y=time*ph_world->Gravity()/2.f+(end_point.y-start_point.y)/time;
-JumpV(velosity);
+	Fvector velosity;
+	velosity.sub(end_point,start_point);
+	TransferenceToThrowVel(velosity,time,ph_world->Gravity());
+	JumpV(velosity);
 }
 float CPHMovementControl::Jump(const Fvector &end_point)
 {
-Fvector start_point;
-start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
-Fvector velosity;
-velosity.x=end_point.x-start_point.x;
-velosity.y=end_point.y-start_point.y;
-velosity.z=end_point.z-start_point.z;
-float time=_sqrt(2.f*velosity.magnitude()/ph_world->Gravity());
-velosity.x/=time;
-velosity.z/=time;
-velosity.y=time*ph_world->Gravity()/2.f+(velosity.y)/time;
-JumpV(velosity);
-return time;
+	float time =JumpMinVelTime(end_point);
+	Jump(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position(),end_point,time);
+	return time;
 }
 void CPHMovementControl::GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point)
 {
-	Fvector start_point;
-	start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
-	min_vel.x=end_point.x-start_point.x;
-	min_vel.y=end_point.y-start_point.y;
-	min_vel.z=end_point.z-start_point.z;
-	time=_sqrt(2.f*min_vel.magnitude()/ph_world->Gravity());
-	min_vel.x/=time;
-	min_vel.z/=time;
-	min_vel.y=time*ph_world->Gravity()/2.f+(min_vel.y)/time;
-	if(min_vel.y<0.f)
-	{
-		type=jtStrait;
-		return;
-	}
-	float rise_time=min_vel.y/ph_world->Gravity();
-	if(_abs(rise_time-time)<EPS_L)
-	{
-		type=jtHigh;
-	}
-	else if(rise_time>time)
-	{
-		type=jtStrait;
-	}
-	else
-	{
-		type=jtCurved;
-	}
+	time =JumpMinVelTime(end_point);
+	GetJumpParam(min_vel,type,end_point,time);
 }
 
 float CPHMovementControl::JumpMinVelTime(const Fvector &end_point)
 {
-	Fvector start_point,transference;
-	start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
-	transference.x=end_point.x-start_point.x;
-	transference.y=end_point.y-start_point.y;
-	transference.z=end_point.z-start_point.z;
-	return _sqrt(2.f*transference.magnitude()/ph_world->Gravity());
+	return ThrowMinVelTime(Fvector().sub(end_point,smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position()),ph_world->Gravity());
 }
 
 void CPHMovementControl::GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time)
 {
-	Fvector start_point;
-	start_point.set(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position());
-	Fvector velosity;
-	velosity.x=end_point.x-start_point.x;
-	velosity.z=end_point.z-start_point.z;
-	
-	velosity.x/=time;
-	velosity.z/=time;
-	velosity.y=time*ph_world->Gravity()/2.f+(end_point.y-start_point.y)/time;
+	Fvector velosity;velosity.sub(smart_cast<CGameObject*>(m_character->PhysicsRefObject())->Position(),end_point);
+	TransferenceToThrowVel(velosity,time,ph_world->Gravity());
 	if(velocity.y<0.f)
 	{
 		type=jtStrait;
