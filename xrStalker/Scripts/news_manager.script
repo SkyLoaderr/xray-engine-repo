@@ -64,8 +64,8 @@ news = {
 	
 
 	val_monolith_trader_pda1		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog1]]),
-	val_monolith_trader_pda2		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog2]]),
-	val_monolith_trader_pda3		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog3]]),
+	--val_monolith_trader_pda2		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog2]]),
+	--val_monolith_trader_pda3		= sound_object([[characters_voice\human_01\scenario\val\trader_dialog3]]),
 	o_soznanie_text					= sound_object([[characters_voice\human_01\scenario\sarcofag\o_soznanie_call]])
 	
 }
