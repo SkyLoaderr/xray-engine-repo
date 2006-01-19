@@ -25,5 +25,13 @@ combat_ignore_cond          = {=check_fighting(403:401)}
 anim                = guard
 snd                 = speech
 target              = val_sacrifice_tunnel_bandit_look, 0
-on_signal           = sound_end | %+val_tunnel_finish%
+on_signal           = sound_end | walker@val_sacrifice_tunnel_bandit_leave
 combat_ignore_cond  = {=check_fighting(403:401)}
+
+;--------------------------------------------------------------------------
+; leave
+;--------------------------------------------------------------------------
+[walker@val_sacrifice_tunnel_bandit_leave]
+path_walk                   = tunnel_bandit_leave_walk
+on_signal                   = arrived | %+val_tunnel_finish%
+combat_ignore_cond          = {=check_fighting(403:401)}

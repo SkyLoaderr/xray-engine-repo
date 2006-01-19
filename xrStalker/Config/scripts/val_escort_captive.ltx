@@ -48,6 +48,11 @@ hp_victim = 0|nil
 hp_fight = 0|false
 hp_cover = 0|false
 
+[danger@val_escort_captive]
+danger_inertion_time_corpse = 500
+danger_inertion_time_hit    = 500
+danger_inertion_time_sound  = 500
+
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
@@ -63,28 +68,26 @@ combat_ignore_cond  = always
 [patrol@val_escort_captive_go]
 path_walk           = captive_walk
 path_look           = captive_look
-formation           = back
 commander           = true
-on_signal           = fight | walker@val_escort_captive_hide %+val_escort_combat -val_escort_wait%
+formation           = back
+on_signal           = fight | walker@val_escort_captive_cover %+val_escort_combat -val_escort_wait%
 on_signal2          = move_end | %+val_escort_scene_fail%
 on_info             = {+val_escort_combat} walker@val_escort_captive_cover
 on_info2            = {+val_escort_guard1_combat} remark@val_escort_captive_hide, {+val_escort_guard2_combat} remark@val_escort_captive_hide
 meet                = meet@val_escort_captive_ignore
-combat_ignore_cond  = always
 wounded             = wounded@val_escort_captive
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
 [remark@val_escort_captive_hide]
-no_move             = true
-no_rotate           = true
 anim                = hide
-on_info             = {+val_escort_combat} walker@val_escort_captive_cover
+on_info             = {+val_escort_combat} camper@val_escort_captive_cover
 on_info2            = {-val_escort_guard1_combat -val_escort_guard2_combat} walker@val_escort_captive_go
 meet                = meet@val_escort_captive_ignore
-combat_ignore_cond  = always
 wounded             = wounded@val_escort_captive
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
@@ -95,116 +98,124 @@ path_look           = captive_hide_look
 def_state_moving1   = sprint
 def_state_moving2   = sprint
 def_state_moving3   = sprint
-meet                = meet@val_escort_captive_ignore
 on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@val_escort_captive_go_to_nap1
-combat_ignore_cond  = always
+meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
+danger              = danger@val_escort_captive
+combat_ignore_cond  = always
+
+;--------------------------------------------------------------------------
+; 
+;--------------------------------------------------------------------------
+[camper@val_escort_captive_cover]
+path_walk           = captive_hide_walk
+path_look           = captive_hide_look
+no_retreat          = true
+radius              = 3
+def_state_moving    = sprint
+def_state_campering = sprint
+on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@val_escort_captive_go_to_nap1
+meet                = meet@val_escort_captive_ignore
+wounded             = wounded@val_escort_captive
+danger              = danger@val_escort_captive
+combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
 [follower@val_escort_captive_go_to_nap1]
-leader              = 406
-meet                = meet@val_escort_captive_ignore
+leader              = 406 ;logic@val_escort_nap1
 distance            = 2
 stub_for_corpse     = true
+dont_change_job     = true
 on_signal           = leader_dead | remark@val_escort_captive_check_state
 on_info             = {=distance_to_obj_le(406:3)} remark@val_escort_captive_check_state
-;combat_ignore_cond  = always
+meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
+danger              = danger@val_escort_captive
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 [remark@val_escort_captive_check_state]
-no_move             = true
-;no_rotate           = true
-target              = 406
-anim                = wait
-meet                = meet@val_escort_captive_ignore
+anim                = wait_na
+target              = 406 ;logic@val_escort_nap1
 on_info             = {-val_escort_nap1_dead} remark1@val_escort_captive_phrase1, remark1@val_escort_captive_phrase2
-;combat_ignore_cond  = always
+meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
+danger              = danger@val_escort_captive
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Черт подери!!!...Эх-ххх...Пусть земля тебе будет пухом, дружище.
 ;--------------------------------------------------------------------------
 [remark1@val_escort_captive_phrase2]
-no_move             = true
-no_rotate           = true
-;target              = 406
 anim                = wait
 snd                 = val_escort_dead
-meet                = meet@val_escort_captive_ignore
+;target              = 406
 on_signal           = sound_end | {+val_escort_actor_helped} remark@val_escort_captive_talk, patrol@val_escort_captive_leave
 on_timer            = 20000 | {+val_escort_actor_helped} remark@val_escort_captive_talk, patrol@val_escort_captive_leave
-;combat_ignore_cond  = always
+meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Пуля! Спасибо, друг. Я блин уже с жизнью попрощался!!
 ;--------------------------------------------------------------------------
 [remark1@val_escort_captive_phrase1]
-no_move             = true
-;no_rotate           = true
-target              = 406
 anim                = wait
 snd                 = val_escort_captive_phrase2
-meet                = meet@val_escort_captive_ignore
+target              = 406 ;logic@val_escort_nap1
 on_signal           = sound_end | {+val_escort_actor_helped} remark1@val_escort_captive_wait1 %+val_escort_captive_phrase1_end%, remark1@val_escort_captive_wait2 %+val_escort_captive_phrase1_end%
-;combat_ignore_cond  = always
+meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; ждем когда nap1 скажет фразу: Это вот сталкера благодари. Он мне помог.
 ;--------------------------------------------------------------------------
 [remark1@val_escort_captive_wait1]
-no_move             = true
-;no_rotate           = true
-target              = 406
 anim                = wait
-meet                = meet@val_escort_captive_ignore
+target              = 406 ;logic@val_escort_nap1
 on_info             = {+val_escort_nap1_phrase1_end} remark1@val_escort_captive_phrase3
-;combat_ignore_cond  = always
+meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Спасибо, чувак!
 ;--------------------------------------------------------------------------
 [remark1@val_escort_captive_phrase3]
-no_move             = true
-;no_rotate           = true
 anim                = wait
 snd                 = val_escort_captive_phrase3
-meet                = meet@val_escort_captive_ignore
+target              = actor
 on_signal           = sound_end | remark@val_escort_captive_talk
-;combat_ignore_cond  = always
+meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; фраза: Подходи пообщаемся.
 ;--------------------------------------------------------------------------
 [remark@val_escort_captive_talk]
-no_move                 = true
-;no_rotate               = true
 anim                    = wait
 snd                     = val_escort_phrase_invite
-meet                    = meet@val_escort_captive_talk
+target                  = actor
 ;on_timer               = 60000 | patrol@val_escort_captive_leave
 on_actor_dist_ge_nvis   = 30 | patrol@val_escort_captive_leave
-;combat_ignore_cond      = always
+meet                    = meet@val_escort_captive_talk
 wounded                 = wounded@val_escort_captive
+;combat_ignore_cond      = always
 
 ;--------------------------------------------------------------------------
 ; ждем когда nap1 скажет фразу: Жив-здоров? Тогда возвращаемся на Базу за подмогой.
 ;--------------------------------------------------------------------------
 [remark1@val_escort_captive_wait2]
-no_move             = true
-;no_rotate           = true
-target              = 406
 anim                = wait
-meet                = meet@val_escort_captive_ignore
+target              = 406 ;logic@val_escort_nap1
 on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave
-;combat_ignore_cond  = always
+meet                = meet@val_escort_captive_talk
 wounded             = wounded@val_escort_captive
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; уходим с уровня
@@ -213,6 +224,6 @@ wounded             = wounded@val_escort_captive
 path_walk           = leave_walk
 path_look           = leave_look
 formation           = line
-;meet               = meet@val_escort_captive_ignore
-;combat_ignore_cond = always
 on_signal           = arrived | %+val_escort_captive_offline +val_escort_scene_end%
+meet                = meet@val_escort_captive_talk
+;combat_ignore_cond  = always

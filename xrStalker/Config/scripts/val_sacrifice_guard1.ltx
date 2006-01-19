@@ -8,11 +8,6 @@ combat_ignore   = combat_ignore
 on_info     = %+val_sacrifice_guard1_dead%
 ;on_info2    = {=killed_by_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%
 
-;401 = "val_sacrifice_victim"
-;403 = "val_sacrifice_bloodsucker"
-;404 = "val_sacrifice_guard1"
-;405 = "val_sacrifice_guard2"
-
 ;--------------------------------------------------------------------------
 ; ждем пока жертва не скажет первую фразу
 ;--------------------------------------------------------------------------
@@ -52,7 +47,7 @@ combat_ignore_cond  = {=check_fighting(403:401)}
 ; фраза: А ну прыгай в яму козел.
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_guard1_phrase3]
-anim                = guard
+anim                = threat
 snd                 = speech
 target              = 401
 on_signal           = sound_end | %+val_sacrifice_guard1_phrase3_end%
@@ -66,7 +61,7 @@ combat_ignore_cond  = {=check_fighting(403:401)}
 anim                = guard
 snd                 = speech
 target              = 401
-on_signal           = sound_end | camper@val_sacrifice_guard1_kill %+val_sacrifice_guard1_phrase4_end%
+on_signal           = sound_end | remark@val_sacrifice_guard1_kill %+val_sacrifice_guard1_phrase4_end%
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -82,8 +77,18 @@ def_state_moving_fire       = patrol_fire
 radius                      = 0
 no_retreat                  = true
 on_info                     = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
-;danger                      = danger1
+danger                      = danger@val_sacrifice_guard
 combat_ignore_cond          = {=check_fighting(403)}
+
+;--------------------------------------------------------------------------
+; убиваем пленного
+;--------------------------------------------------------------------------
+[remark@val_sacrifice_guard1_kill]
+anim                = guard
+target              = 401
+on_info             = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
+danger              = danger@val_sacrifice_guard
+combat_ignore_cond  = {=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Все! Нет человека - нет проблемы. Скажем Борову, что типа доставили пленника куда следует. Идем.
@@ -92,5 +97,5 @@ combat_ignore_cond          = {=check_fighting(403)}
 anim                = guard
 snd                 = speech
 on_signal           = sound_end | %+val_sacrifice_finish%
-;danger              = danger1
+danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(403)}

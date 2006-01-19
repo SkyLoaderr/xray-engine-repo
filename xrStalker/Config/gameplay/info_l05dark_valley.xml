@@ -22,6 +22,8 @@
 <info_portion id="val_bs_victim_killed"></info_portion>
 
 <!-- Сцена 3 - транспортировка пленного -->
+<info_portion id="val_nap1_phrase1_end"></info_portion>
+<info_portion id="val_halfdead_phrase_end"></info_portion>
 <info_portion id="val_nap1_stop_talk_to_bandit"></info_portion>
 <info_portion id="val_escort_begin"></info_portion>
 <info_portion id="val_escort_show_tip"></info_portion>
