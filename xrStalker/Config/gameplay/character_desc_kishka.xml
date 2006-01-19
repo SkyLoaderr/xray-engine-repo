@@ -8,7 +8,7 @@
 		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
-		<class>ds_Soldier_regular</class>
+		<class>ds_Soldier_novice</class>
 		<community>military</community>
 		
 		<rank>30</rank>
