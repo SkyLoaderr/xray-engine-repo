@@ -13,7 +13,7 @@
 		<class>aes_Monolit_rpg</class>
 		<community>monolith</community>
 
-        <snd_config>characters_voice\human_01\</snd_config>
+        <snd_config>characters_voice\human_01\monolith</snd_config>
 
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -48,7 +48,7 @@
 
     <panic_threshold>0.0</panic_threshold>
 
-    <snd_config>characters_voice\human_02\</snd_config>
+    <snd_config>characters_voice\human_02\monolith</snd_config>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
@@ -76,7 +76,7 @@
     <rank>70</rank>
     <reputation>0</reputation>
 
-    <snd_config>characters_voice\human_02\</snd_config>
+    <snd_config>characters_voice\human_02\monolith</snd_config>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
@@ -104,7 +104,7 @@
 
     <panic_threshold>0.0</panic_threshold>
 
-    <snd_config>characters_voice\human_02\</snd_config>
+    <snd_config>characters_voice\human_02\monolith</snd_config>
 
     <visual>actors\monolit\stalker_mo_head_1</visual>
     <supplies>
@@ -131,7 +131,7 @@
     <rank>50</rank>
     <reputation>0</reputation>
 
-    <snd_config>characters_voice\human_01\</snd_config> 
+    <snd_config>characters_voice\human_01\monolith</snd_config> 
 
 	<panic_threshold>0.0</panic_threshold>
 
@@ -163,7 +163,7 @@
 
     <panic_threshold>0.0</panic_threshold>
 
-    <snd_config>characters_voice\human_03\</snd_config>
+    <snd_config>characters_voice\human_03\monolith</snd_config>
 
     <visual>actors\monolit\stalker_mo_exo</visual>
     <supplies>
@@ -194,7 +194,7 @@
 
     	<panic_threshold>0.0</panic_threshold>
 
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\military</snd_config>
 
 		<visual>actors\soldier\soldier_beret_5</visual>		
 		<supplies>
@@ -223,7 +223,7 @@
 		<class>aes_Soldier_military</class>
 		<community>military</community>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\military</snd_config>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -261,7 +261,7 @@
 
     	<panic_threshold>0.0</panic_threshold>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\military</snd_config>
 
 		<visual>actors\soldier\soldier_antigas</visual>		
 		<supplies>
@@ -292,7 +292,7 @@
 		<rank>80</rank>
 		<reputation>0</reputation>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\military</snd_config>
 
     	<panic_threshold>0.0</panic_threshold>
 
@@ -323,7 +323,7 @@
 		<rank>60</rank>
 		<reputation>0</reputation>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\military</snd_config>
 
     	<panic_threshold>0.0</panic_threshold>
 
@@ -358,7 +358,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\military</snd_config>
 
     	<panic_threshold>0.0</panic_threshold>
 
@@ -392,7 +392,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\military</snd_config>
 
     	<panic_threshold>0.0</panic_threshold>
 
