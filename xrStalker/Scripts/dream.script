@@ -21,7 +21,7 @@ function dream_mgr:__init()
 	local ini = ini_file("misc\\dream.ltx")
     self.videos = nil
     self.regular = nil
-    self.scene = {}
+    self.scenario = {}
 
     if ini:section_exist("videos") then
         self.videos = {}
@@ -79,9 +79,9 @@ function dream_mgr:__init()
                 printf("dream <error>: can't find field <regular> in section [dreams].")
             end
 
-            if ini:line_exist("dreams", "scene") then
-                self.scene = {}
-                local sd_str = ini:r_string("dreams", "scene")
+            if ini:line_exist("dreams", "scenario") then
+                self.scenario = {}
+                local sd_str = ini:r_string("dreams", "scenario")
 
                 if sd_str then
                     for sd_sect in string.gfind(sd_str, "([%w_]+)") do
@@ -111,7 +111,7 @@ function dream_mgr:__init()
                                             to_regular = {prob, tp}
                                         end
 
-                                        self.scene[sd_sect] = {dream_name, cond, to_regular}
+                                        self.scenario[sd_sect] = {dream_name, cond, to_regular}
                                     else
                                         printf("dream <error>: can't find field <cond> in section [%s].", sd_sect)
                                     end
@@ -122,12 +122,12 @@ function dream_mgr:__init()
                                 printf("dream <error>: can't find field <dream> in section [%s].", sd_sect)
                             end
                         else
-                            printf("dream <error>: can't find section [%s] defined in the field <scene> in section [dreams].", sd_sect)
+                            printf("dream <error>: can't find section [%s] defined in the field <scenario> in section [dreams].", sd_sect)
                         end
                     end
                 end
             else
-                printf("dream <error>: can't find field <scene> in section [dreams].")
+                printf("dream <error>: can't find field <scenario> in section [dreams].")
             end
         else
             printf("dream <error>: can't find section [dreams].")
@@ -145,7 +145,7 @@ function dream_mgr:get_dream()
     local k, v
     local dream = nil
 
-    for k, v in pairs(self.scene) do
+    for k, v in pairs(self.scenario) do
 	    local c = xr_logic.pick_section_from_condlist(db.actor, self, v[2].condlist)
 	    --printf("dream <sleep>: dream(%s) cond(%s)", k, tostring(c))
 	    if c == "true" or c == "" then
@@ -188,11 +188,11 @@ function dream_mgr:get_dream()
             end
         end
     else
-        v = self.scene[dream]
+        v = self.scenario[dream]
         local res = self.videos[v[1]]
         if v[3] then -- put this dream into regular
             self.regular[dream] = {v[1], v[3][1], v[3][2]}
-            self.scene[dream] = nil
+            self.scenario[dream] = nil
         end
         return res
     end

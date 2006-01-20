@@ -16,7 +16,7 @@ sdream3     = videos\dreams\scene\gar_fighting
 [dreams]
 regular_probability = 80
 regular     = ;regular_dream1, regular_dream2, regular_dream3
-scene       = intro ;, l01_escape@start, l01_escape@sleep, l02_garbage@fighting2
+scenario    = intro ;, l01_escape@start, l01_escape@sleep, l02_garbage@fighting2
 
 ;--------------------------------------------------------------------------------
 ;--- Regular dreams -------------------------------------------------------------
@@ -37,12 +37,12 @@ probability = 8
 type        = happy
 
 ;--------------------------------------------------------------------------------
-;--- Scene dreams ---------------------------------------------------------------
+;--- Scenario dreams ---------------------------------------------------------------
 ;--------------------------------------------------------------------------------
 [intro]
 dream       = intro_vid
-to_regular  = 3,normal
-cond        = {+val_sacrifice_start}
+;to_regular  = 3,normal
+cond        = {+agr_military_documents_done}
 
 [l01_escape@start]
 dream       = sdream1
