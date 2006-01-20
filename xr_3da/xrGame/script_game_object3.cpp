@@ -35,6 +35,7 @@
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "trade_parameters.h"
 #include "script_ini_file.h"
+#include "sound_player.h"
 
 namespace MemorySpace {
 	struct CVisibleObject;
