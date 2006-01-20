@@ -80,7 +80,7 @@ IC	void CSoundPlayer::sound_prefix									(const shared_str &sound_prefix)
 		m_sound_prefix	= "";
 }
 
-IC	const shared_str &sound_prefix									() const
+IC	const shared_str &CSoundPlayer::sound_prefix					() const
 {
 	return				(m_sound_prefix);
 }
