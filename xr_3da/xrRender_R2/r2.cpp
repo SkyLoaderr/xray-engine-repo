@@ -132,6 +132,7 @@ void					CRender::create					()
 	xrRender_apply_tf			();
 	::PortalTraverser.initialize();
 }
+
 void					CRender::destroy				()
 {
 	::PortalTraverser.destroy	();
