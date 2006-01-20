@@ -16,7 +16,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ucheniy\ucheniy_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>					
+		<snd_config>characters_voice\human_03\ecolog\</snd_config>					
 		<supplies>
 			[spawn] \n
 			bad_psy_helmet \n
@@ -41,7 +41,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -68,7 +68,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -95,7 +95,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -121,7 +121,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\neytral\stalker_prizrak</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -146,7 +146,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -170,7 +170,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -195,7 +195,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -218,7 +218,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -241,7 +241,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_bm16 \n
@@ -264,7 +264,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_bm16 \n
@@ -287,7 +287,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -310,7 +310,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74u \n
@@ -333,7 +333,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_mp5 \n
@@ -357,7 +357,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 
 		<supplies>
 			[spawn] \n
@@ -383,7 +383,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -407,7 +407,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -432,7 +432,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -457,7 +457,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -483,7 +483,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -508,7 +508,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -532,7 +532,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -556,7 +556,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
 			medkit \n
