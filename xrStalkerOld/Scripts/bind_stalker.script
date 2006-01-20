@@ -243,7 +243,7 @@ function actor_binder:update(delta)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:save(packet)
-	printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
+	printf("actor_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save(self, packet)
 
 	xr_logic.pstor_save_all(self.object, packet)
@@ -251,7 +251,7 @@ function actor_binder:save(packet)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:load(reader)
-	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
+	printf("actor_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
 
 	xr_logic.pstor_load_all(self.object, reader)
