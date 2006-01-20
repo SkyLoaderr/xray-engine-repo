@@ -865,7 +865,7 @@ LPCSTR CScriptGameObject::sound_prefix			() const
 		return								(0);
 	}
 
-	return									(*custom_monster->sounds().sound_prefix());
+	return									(*custom_monster->sound().sound_prefix());
 }
 
 void CScriptGameObject::sound_prefix			(LPCSTR sound_prefix)
@@ -876,5 +876,5 @@ void CScriptGameObject::sound_prefix			(LPCSTR sound_prefix)
 		return								(0);
 	}
 
-	custom_monster->sounds().sound_prefix	(sound_prefix);
+	custom_monster->sound().sound_prefix	(sound_prefix);
 }
