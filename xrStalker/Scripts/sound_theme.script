@@ -551,30 +551,67 @@ function select_sound_from_ltx(obj, section, ltx)
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------
+local character_prefix = ""
+local default_prefix = "characters_voice\\"
 function load_sound(obj)
 	local k,v = 0,0
 	
 	-- загрузка звуков на основе данных ltx
-	function load_sound_from_ltx(obj, name, tbl)
+	function load_sound_from_ltx(obj, name, tbl)		
+		function check_prefix(s)
+			local flag = string.sub(s, 1, 2)
+			return flag == "1", string.sub(s, 3)
+		end
+	
 		tbl.max_ids[obj:id()] = {}
 		if snd_ini:section_exist(name.."_rnd") then		
-			local s = select_sound_from_ltx(obj, name.."_rnd", snd_ini)
+			local s = select_sound_from_ltx(obj, name.."_rnd", snd_ini)			
 			if s then
+				local flag, path = check_prefix(s)
+				if flag == 0 then
+					character_prefix = obj:sound_prefix()
+					obj:sound_prefix(default_prefix)
+				end
+
 				tbl.max_ids[obj:id()].rnd_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, tbl.rnd_id)
+
+				if flag == 0 then
+					obj:sound_prefix(character_prefix)
+				end
 			end
 		end
 		if snd_ini:section_exist(name.."_seq") then
 			local s = select_sound_from_ltx(obj, name.."_seq", snd_ini)
 			if s then
+				local flag, path = check_prefix(s)
+				if flag == 0 then
+					character_prefix = obj:sound_prefix()
+					obj:sound_prefix(default_prefix)
+				end
+
 				tbl.max_ids[obj:id()].into_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, tbl.into_id)
 				tbl.max_ids[obj:id()].into_cycled = true
+
+				if flag == 0 then
+					obj:sound_prefix(character_prefix)
+				end
 			end
 		end
 		if snd_ini:section_exist(name.."_single") then
 			local s = select_sound_from_ltx(obj, name.."_single", snd_ini)
 			if s then
+				local flag, path = check_prefix(s)
+				if flag == 0 then
+					character_prefix = obj:sound_prefix()
+					obj:sound_prefix(default_prefix)
+				end
+
 				tbl.max_ids[obj:id()].into_max = obj:add_sound(s, nstl, snd_type.talk, 2, 1, tbl.into_id)
 				tbl.max_ids[obj:id()].into_cycled = false
+
+				if flag == 0 then
+					obj:sound_prefix(character_prefix)
+				end			
 			end
 		end
 	end
