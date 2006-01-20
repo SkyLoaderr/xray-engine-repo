@@ -648,7 +648,35 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
       end
       
-       
+      
+        if type == "bun_ptr20" then
+		t = { section = "logic@bun_ptr20_walker1",
+			idle = 0,
+			prior = 1, state = {0},
+			online = false, 
+			in_rest = "", out_rest = ""
+		}
+       table.insert(sj, t)	
+       t = { section = "logic@bun_ptr20_walker2",
+			idle = 0,
+			prior = 1, state = {0},
+			online = false, 
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+			t = { section = "logic@bun_ptr20_walker11",
+			idle = 0,
+			prior = 1, state = {1},
+			in_rest = "", out_rest = ""
+		}
+       table.insert(sj, t)	
+       t = { section = "logic@bun_ptr20_walker21",
+			idle = 0,
+			prior = 1, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		end
       
       
       if type == "bun_post" then
@@ -707,7 +735,7 @@ function load_states(gname, type)
    
    if type == "bun_kordon2" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if db.actor:has_info("bun_ptr2") then
 				return 1
 			else
 				return 0
@@ -717,7 +745,17 @@ function load_states(gname, type)
 	
 	if type == "bun_kordon3" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if db.actor:has_info("bun_ptr4") then
+				return 1
+			else
+				return 0
+			end
+		end
+	end
+	
+	if type == "bun_ptr20" then
+		return function(gulag)
+			if db.actor:has_info("bun_antenna_off" and "bun_patrol_start") then
 				return 1
 			else
 				return 0
@@ -737,7 +775,7 @@ function load_states(gname, type)
 	
 	if type == "bun_ptr1" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if db.actor:has_info("bun_ptr1") then
 				return 1
 			else
 				return 0
@@ -787,7 +825,7 @@ function load_states(gname, type)
 	
 	if type == "bun_ptr6" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if db.actor:has_info("bun_ptr3") then
 				return 1
 			else
 				return 0
@@ -807,7 +845,7 @@ function load_states(gname, type)
 	
 	if type == "bun_ptr8" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if db.actor:has_info("bun_ptr4") then
 				return 1
 			else
 				return 0
@@ -857,6 +895,10 @@ end
 function checkStalker(npc_community, gulag_type)
     
     if gulag_type == "bun_kordon1" then
+	   return npc_community == "monolith"
+	end
+	
+	if gulag_type == "bun_ptr20" then
 	   return npc_community == "monolith"
 	end
 	
