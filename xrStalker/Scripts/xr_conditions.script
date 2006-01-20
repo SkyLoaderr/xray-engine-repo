@@ -503,8 +503,11 @@ end
 
 function gar_damaged_bandits(actor, npc)
 	return gulag_population_le(actor, npc, {"gar_bandit_agr",5})
---	local g = xr_gulag.fraction["gar_bandit_agr"]
---	return (not g) or (g:get_population() <= 5)
+end
+
+function gar_angar_sleep(actor,npc)
+	return (gulag_empty(actor,npc,{"gar_seryi_bandits"}) and actor:dont_has_info("agr_krot_band_start")) or
+	       (gulag_population_le(actor,npc,{"gar_smart_bandit_large_lager,9}) and actor:has_info("agr_krot_band_start"))
 end
 
 function gar_not_damaged_bandits(actor, npc)
