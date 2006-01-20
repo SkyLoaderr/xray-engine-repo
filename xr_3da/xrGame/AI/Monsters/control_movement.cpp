@@ -50,5 +50,6 @@ float CControlMovement::real_velocity()
 	if (movement_control->IsCharacterEnabled())
 		return				(movement_control->GetVelocityActual());
 
-	return	(m_pos_stack[CURRENT].position.distance_to(m_pos_stack[PREVIOUS].position)/ (float(m_pos_stack[CURRENT].time - m_pos_stack[PREVIOUS].time)/1000.f));
+	//return	(m_pos_stack[CURRENT].position.distance_to(m_pos_stack[PREVIOUS].position)/ (float(m_pos_stack[CURRENT].time - m_pos_stack[PREVIOUS].time)/1000.f));
+	return m_velocity_current;
 }

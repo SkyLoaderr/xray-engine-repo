@@ -45,6 +45,8 @@ void CPseudoGigant::Load(LPCSTR section)
 
 	anim().accel_load			(section);
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRunTurnLeft);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRunTurnRight);
 	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
 	step_effector.time			= pSettings->r_float(section,	"step_effector_time");

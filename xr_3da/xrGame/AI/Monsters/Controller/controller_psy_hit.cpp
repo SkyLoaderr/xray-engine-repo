@@ -71,6 +71,7 @@ void CControllerPsyHit::on_event(ControlCom::EEventType type, ControlCom::IEvent
 			
 			switch (m_current_index) {
 				case 1: death_glide_start();	break;
+				case 2: set_sound_state(eHit);	break;
 				case 3: death_glide_end();		break;
 			}
 		} else {
@@ -134,9 +135,6 @@ void CControllerPsyHit::death_glide_end()
 	Actor()->Cameras().RemoveCamEffector(eCEControllerPsyHit);
 	CController *monster = smart_cast<CController *>(m_object);
 	monster->draw_fire_particles();
-
-	set_sound_state					(eHit);
-
 }
 
 void CControllerPsyHit::update_frame()
