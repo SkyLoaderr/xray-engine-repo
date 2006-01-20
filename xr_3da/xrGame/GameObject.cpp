@@ -639,7 +639,7 @@ void CGameObject::OnH_B_Independent()
 
 	CGameObject					*parent = smart_cast<CGameObject*>(H_Parent());
 	VERIFY						(parent);
-	if (ai().level_graph().valid_vertex_id(parent->ai_location().level_vertex_id()))
+	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(parent->ai_location().level_vertex_id()))
 		validate_ai_locations	(false);
 }
 
