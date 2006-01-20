@@ -79,3 +79,8 @@ IC	void CSoundPlayer::sound_prefix									(const shared_str &sound_prefix)
 	if (!m_sound_prefix)
 		m_sound_prefix	= "";
 }
+
+IC	const shared_str &sound_prefix									() const
+{
+	return				(m_sound_prefix);
+}

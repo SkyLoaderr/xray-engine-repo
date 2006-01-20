@@ -143,12 +143,13 @@ public:
 			void		update						(float time_delta);
 	IC		void		set_sound_mask				(u32 sound_mask);
 	IC		void		remove_active_sounds		(u32 sound_mask);
-	IC		const xr_vector<CSoundSingle> &playing_sounds() const;
+	IC	const xr_vector<CSoundSingle>&playing_sounds() const;
 	IC		u32			active_sound_count			(bool only_playing = false) const;
 			bool		need_bone_data				() const;
-	IC		const SOUND_COLLECTIONS &objects		() const;
+	IC	const SOUND_COLLECTIONS &objects			() const;
 	IC		bool		active_sound_type			(u32 synchro_mask) const;
 	IC		void		sound_prefix				(const shared_str &sound_prefix);
+	IC	const shared_str &sound_prefix				() const;
 };
 
 #include "sound_player_inline.h"
