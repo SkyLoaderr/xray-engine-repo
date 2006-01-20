@@ -3,7 +3,7 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0	=	  	0.35,		10,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0	=	  	0.35,		10,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1.0, 1.0,								  2.5
 ;Jump attack
 run_jamp_1		=		0.55,		10,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
 
@@ -34,7 +34,7 @@ ce_power			= 1.0 ;0.7 ; power
 ;	anim					cycles |	time1 | power1 |	time2 | power2 | time3 | power3 | time4     | power4 |
 ;-----------------------------------------------------------------------------------------------------------------
 stand_walk_fwd_0		=   	1,		0.1,      1,	  	0.34,    1,		 0.6,	 1,			0.84,		1
-stand_walk_dmg_0	=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
+stand_walk_dmg_0		=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
 stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
 stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
 stand_drag_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
@@ -113,31 +113,31 @@ ph_skel_shot_up_factor        = 0.10
 
 SoundThreshold		 = 0.06						; range [0..1]a
 
-eye_fov				 = 90
-eye_range			 = 70	;60
+eye_fov				 = 120
+eye_range			 = 70	
 max_hear_dist		 = 60
 
 
 ; speed factors			linear | angular_real | angular_path | min |  max
-Velocity_Stand			= 0,		2.0,			2.0,		1,		1
-Velocity_RunFwdNormal	= 9.5,		3.0,			3.0,		0.7,	1.0	
-Velocity_RunFwdDamaged	= 4.3,  	3.0,			3.0,		0.2,	1
-Velocity_WalkFwdNormal	= 5,		2.0,			2.0,		0.9,	1.60
-Velocity_WalkFwdDamaged	= 2.6,		3.0,			3.0,		0.8,	2.2	
+Velocity_Stand			= 0,		1.4,			1.4,		1,		1
+Velocity_RunFwdNormal	= 9.0,		3.0,			3.0,		0.5,	1.0	
+Velocity_RunFwdDamaged	= 4.3,  	2.0,			2.0,		0.5,	1.0
+Velocity_WalkFwdNormal	= 5.0,		5.0,			5.0,		0.2,	1.0
+Velocity_WalkFwdDamaged	= 2.6,		3.0,			3.0,		0.2,	2.2	
 Velocity_Drag			= 0.6,		3.0,			3.0,		1,		1
 Velocity_Steal			= 1.6,		3.0,			3.0,		1,		1
 
 ; acceleration
-Accel_Generic			= 2.5;1.5
-Accel_Calm				= 5.5;2.5
-Accel_Aggressive		= 20.0
+Accel_Generic			= 1.5
+Accel_Calm				= 2.5
+Accel_Aggressive		= 7.0
 
 ;attack parameters
-MinAttackDist		= 0.8	
-MaxAttackDist		= 1.8
+MinAttackDist		= 2.3	
+MaxAttackDist		= 3.0
 
-as_min_dist				= 0.1
-as_step					= 0.3
+as_min_dist				= 1.5
+as_step					= 0.4
 
 transparency_threshold  = 0.25
 
@@ -182,8 +182,8 @@ immunities_sect				= pseudodog_immunities
 
 
 ;открытые раны
-bleeding_v					= 0						;потер€ крови при номинальной ране в секунду
-wound_incarnation_v			= 0.01				;крутизна кривой заживлени€ (какой процент раны останетс€ после заживлени€ в игровую секунду)
+bleeding_v					= 0.05						;потер€ крови при номинальной ране в секунду
+wound_incarnation_v			= 0.04				;крутизна кривой заживлени€ (какой процент раны останетс€ после заживлени€ в игровую секунду)
 min_wound_size				= 0.01
 
 
@@ -236,8 +236,8 @@ jump_factor					= 2.5
 jump_ground_trace_range		= 1.0
 jump_hit_trace_range		= 1.0
 jump_build_line_distance	= 1.0
-jump_min_distance			= 4.0 
-jump_max_distance			= 12.0
+jump_min_distance			= 2.0 
+jump_max_distance			= 7.0
 jump_max_angle				= 0.2
 
 DamagedThreshold		= 0.3
@@ -273,13 +273,13 @@ species					= pseudodog
 ;<hit_scale>	- коэфф. изменени€ хита (уменьшени€ здоровь€) 
 ;<wound_scale>	- коэфф. изменени€ величины открытой раны
 
-default				= 0.3,	-1,	0.10
+default				= 0.3,	-1,	0.1
 
 bip01_pelvis 		= 0.5, -1, 0.1
 bip01_spine 		= 0.5, -1, 0.1
-bip01_spine1 		= 0.75, -1, 0.1
-bip01_neck 			= 1, -1, 0.1
-bip01_head 			= 2.0, -1, 0.30
+bip01_spine1 		= 0.7, -1, 0.1
+bip01_neck 			= 0.5, -1, 1.5
+bip01_head 			= 2.0, -1, 0.3
 
 [pseudodogs_terrain]
 	255,000,255,255 ;на всех уровн€х, по графам без описани€
@@ -325,9 +325,9 @@ fire_wound_immunity		= 0.60
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0	=	  	0.35,		15,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0	=	  	0.45,		30,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1.0, 1.0,								  2.5
 ;Jump attack
-run_jamp_1		=		0.55,		30,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
+run_jamp_1		=		0.55,		15,		    220,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
 
 
 
@@ -358,9 +358,9 @@ fire_wound_immunity		= 0.40
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0	=	  	0.35,		25,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0	=	  	0.45,		40,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1.0, 1.0,								  2.5
 ;Jump attack
-run_jamp_1		=		0.55,		40,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
+run_jamp_1		=		0.55,		25,		    320,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
 
 
 
@@ -391,9 +391,9 @@ fire_wound_immunity		= 0.20
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0	=	  	0.35,		35,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0	=	  	0.45,		50,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1.0, 1.0,								  2.5
 ;Jump attack
-run_jamp_1		=		0.55,		50,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
+run_jamp_1		=		0.55,		35,		    420,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
 
 
 
