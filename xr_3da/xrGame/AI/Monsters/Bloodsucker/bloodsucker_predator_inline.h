@@ -38,8 +38,7 @@ void CStateBloodsuckerPredatorAbstract::initialize()
 	inherited::initialize						();
 
 	object->predator_start						();
-	object->CInvisibility::set_manual_control	();
-	object->CInvisibility::manual_deactivate	();
+	object->CInvisibility::deactivate			();
 
 	select_camp_point							();
 }
@@ -71,8 +70,6 @@ void CStateBloodsuckerPredatorAbstract::finalize()
 	inherited::finalize							();
 
 	object->predator_stop						();
-	object->CInvisibility::set_manual_control	(false);
-
 	object->predator_unfreeze					();
 
 	CMonsterSquad *squad = monster_squad().get_squad(object);
@@ -86,8 +83,6 @@ void CStateBloodsuckerPredatorAbstract::critical_finalize()
 	inherited::critical_finalize				();
 
 	object->predator_stop						();
-	object->CInvisibility::set_manual_control	(false);
-
 	object->predator_unfreeze					();
 
 	CMonsterSquad *squad = monster_squad().get_squad(object);
