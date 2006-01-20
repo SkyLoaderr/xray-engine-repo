@@ -213,6 +213,8 @@ function se_smart_terrain:get_se_objs()
 			abort( "[smart_terrain %s] can't get server object id=%d", self:name(), id )
 		end
 
+		sim_statistic.add( obj )
+
 		self:fill_npc_info( obj, v )
 	end
 end
