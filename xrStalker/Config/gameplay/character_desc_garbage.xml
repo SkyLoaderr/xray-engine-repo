@@ -14,7 +14,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\stalker</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_hood_4</visual>
 		<supplies>
@@ -43,7 +43,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
 		<visual>actors\novice\green_stalker_11</visual>
 		<supplies>
@@ -70,7 +70,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -96,7 +96,7 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\stalker</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		
 		<panic_treshold>0</panic_treshold>
 
@@ -131,7 +131,7 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\bandit</snd_config>
+		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -157,7 +157,7 @@
 		<rank>70</rank>
 		<reputation>-20</reputation>
 		
-		<snd_config>characters_voice\human_02\bandit</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
@@ -186,7 +186,7 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\bandit</snd_config>
+		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -213,7 +213,7 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\bandit</snd_config>
+		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -242,7 +242,7 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\bandit</snd_config>
+		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
@@ -272,7 +272,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\bandit</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -302,7 +302,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\bandit</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -332,7 +332,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\bandit</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
@@ -367,7 +367,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
 		<supplies>
@@ -398,7 +398,7 @@
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
-		<snd_config>characters_voice\human_01\stalker</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		
@@ -430,7 +430,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 
@@ -462,7 +462,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<supplies>
@@ -493,7 +493,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		
@@ -526,7 +526,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\bandit</snd_config>
+		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
 		<supplies>
@@ -554,7 +554,7 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 		
-		<snd_config>characters_voice\human_03\dolg</snd_config>
+		<snd_config>characters_voice\human_03\dolg\</snd_config>
 
 		<panic_threshold>0.1</panic_threshold>
 
@@ -588,7 +588,7 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 		
-		<snd_config>characters_voice\human_02\dolg</snd_config>
+		<snd_config>characters_voice\human_02\dolg\</snd_config>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<supplies>
@@ -620,7 +620,7 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 		
-		<snd_config>characters_voice\human_02\dolg</snd_config>
+		<snd_config>characters_voice\human_02\dolg\</snd_config>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<supplies>
@@ -652,7 +652,7 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 
-		<snd_config>characters_voice\human_02\dolg</snd_config>
+		<snd_config>characters_voice\human_02\dolg\</snd_config>
 		
 		<visual>actors\dolg\stalker_do_balon_4</visual>
 		<supplies>
