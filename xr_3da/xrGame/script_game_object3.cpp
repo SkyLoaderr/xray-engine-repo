@@ -856,3 +856,25 @@ void buy_condition								(float friend_factor, float enemy_factor)
 		)
 	);
 }
+
+LPCSTR CScriptGameObject::sound_prefix			() const
+{
+	CCustomMonster							*custom_monster = smart_cast<CCustomMonster*>(&object());
+	if (!custom_monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member sound_prefix!");
+		return								(0);
+	}
+
+	return									(*custom_monster->sounds().sound_prefix());
+}
+
+void CScriptGameObject::sound_prefix			(LPCSTR sound_prefix)
+{
+	CCustomMonster							*custom_monster = smart_cast<CCustomMonster*>(&object());
+	if (!custom_monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member sound_prefix!");
+		return								(0);
+	}
+
+	custom_monster->sounds().sound_prefix	(sound_prefix);
+}

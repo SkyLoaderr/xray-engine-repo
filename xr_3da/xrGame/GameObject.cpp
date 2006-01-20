@@ -113,8 +113,8 @@ void CGameObject::net_Destroy	()
 		Level().SetControlEntity				(0);
 	}
 
-	if (UsedAI_Locations() && !H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
-		ai().level_graph().ref_dec				(ai_location().level_vertex_id());
+//	if (UsedAI_Locations() && !H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
+//		ai().level_graph().ref_dec				(ai_location().level_vertex_id());
 
 	Parent = 0;
 
@@ -523,12 +523,12 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 	if (decrement_reference && (ai_location().level_vertex_id() == l_dwNewLevelVertexID))
 		return;
 
-	if (decrement_reference && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
-		ai().level_graph().ref_dec	(ai_location().level_vertex_id());
+//	if (decrement_reference && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
+//		ai().level_graph().ref_dec	(ai_location().level_vertex_id());
 
 	ai_location().level_vertex		(l_dwNewLevelVertexID);
 
-	ai().level_graph().ref_add		(ai_location().level_vertex_id());
+//	ai().level_graph().ref_add		(ai_location().level_vertex_id());
 
 	if (ai().get_game_graph() && ai().get_cross_table()) {
 		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
@@ -627,8 +627,8 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	///PHSetPushOut();????
-	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
-		ai().level_graph().ref_dec(ai_location().level_vertex_id());
+//	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
+//		ai().level_graph().ref_dec(ai_location().level_vertex_id());
 }
 
 void CGameObject::OnH_B_Independent()
