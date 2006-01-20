@@ -15,7 +15,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -44,7 +44,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
