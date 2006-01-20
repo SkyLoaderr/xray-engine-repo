@@ -131,6 +131,21 @@
 	
 	<info_portion id="bun_patrol_start">
 	</info_portion>	
+	
+	<info_portion id="bun_actor_vstal">
+	</info_portion>	
+	
+	<info_portion id="bun_patr1">
+	</info_portion>
+	
+	<info_portion id="bun_patr2">
+	</info_portion>
+	
+	<info_portion id="bun_patr3">
+	</info_portion>
+	
+	<info_portion id="bun_patr4">
+	</info_portion>
 		
 </game_information_portions>
 
