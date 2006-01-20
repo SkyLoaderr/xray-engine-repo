@@ -443,6 +443,11 @@ function gar_dm_bandit_demand(actor, npc)
 	end
 end
 
+function gar_angar_sleep(actor,npc)
+	return (xr_conditions.gulag_empty(actor,npc,{"gar_seryi_bandits"}) and actor:dont_has_info("agr_krot_band_start")) or
+	       (xr_conditions.gulag_population_le(actor,npc,{"gar_smart_bandit_large_lager,9}) and actor:has_info("agr_krot_band_start"))
+end
+
 function gar_send_dymon_alarm(actor, npc)
 	if actor:has_info("gar_start_graveyard") then
 		news_manager.send_tip(actor, "tips_gar_hellcar_alarm", 10, "stalker", 10000)
@@ -491,9 +496,6 @@ end
 
 function gar_boars_counter(actor, npc)
 	local c = xr_logic.pstor_retrieve(actor, "gar_boars_counter", 0)
-
-	printf( "gar_boars_counter=%d", c )
-	
 	if c <= 2 then
 		news_manager.send_tip(actor, "gar_actor_looser", 0, "dolg", 0)
 	elseif c <= 4 then
