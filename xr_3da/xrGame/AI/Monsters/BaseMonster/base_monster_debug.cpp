@@ -121,7 +121,7 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 	DBG().text(this).add_item(text,										x, y+=delta_y, color);
 	
 	DBG().text(this).add_item("------- Attack Distances -------------", x, y+=delta_y, delimiter_color);
-	sprintf(text, "MinDist[%.3f] MaxDist[%.3f] As_Step[%3.f] As_MinDist[%.3f]", 
+	sprintf(text, "MinDist[%.3f] MaxDist[%.3f] As_Step[%.3f] As_MinDist[%.3f]", 
 		MeleeChecker.get_min_distance(),
 		MeleeChecker.get_max_distance(),
 		MeleeChecker.dbg_as_step(),
