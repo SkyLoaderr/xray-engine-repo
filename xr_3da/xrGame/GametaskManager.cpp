@@ -54,14 +54,20 @@ CGameTask* CGameTaskManager::HasGameTask(const TASK_ID& id)
 	return 0;
 }
 
-CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting)
+CGameTask* CGameTaskManager::GiveGameTaskToActor(const TASK_ID& id, bool bCheckExisting)
 {
 	if(bCheckExisting && HasGameTask(id)) return NULL;
+	CGameTask* t					= xr_new<CGameTask>(id);
+
+	return GiveGameTaskToActor		(t, bCheckExisting);
+}
+
+CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, bool bCheckExisting)
+{
+	if(bCheckExisting && HasGameTask(t->m_ID)) return NULL;
 	m_flags.set					(eChanged, TRUE);
 
-	GameTasks().push_back			(SGameTaskKey(id) );
-
-	CGameTask* t					= xr_new<CGameTask>(id);
+	GameTasks().push_back			(SGameTaskKey(t->m_ID) );
 	GameTasks().back().game_task	= t;
 	t->m_ReceiveTime				= Level().GetGameTime();
 
@@ -75,7 +81,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 			ml->SetSerializable			(true);
 		}
 	}
-	if	(id != "user_task" && CGameTask::m_game_task_flags.test(CGameTask::eForceNewTaskActivation)){
+	if	(t->m_ID != "user_task" && CGameTask::m_game_task_flags.test(CGameTask::eForceNewTaskActivation)){
 		t->HighlightSpotOnMap(1, true);
 	}
 
@@ -86,7 +92,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor				(const TASK_ID& id, bool bCh
 		if(pGameSP) 
 			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::quests);
 	}
-	if(id!="user_task")
+	if(t->m_ID!="user_task")
 		ChangeStateCallback(t->m_ID,0,eTaskStateInProgress);
 
 	return t;
@@ -237,6 +243,45 @@ void CGameTaskManager::RemoveUserTask					(CMapLocation* ml)
 
 }
 
+void SGameTaskObjective::save(IWriter &stream)
+{
+		save_data(idx,					stream);
+		save_data(task_state,			stream);
+
+		save_data(description,			stream);
+		save_data(map_location,			stream);
+		save_data(object_id,			stream);
+		save_data(task_state,			stream);
+		save_data(def_location_enabled,	stream);
+		save_data(map_hint,				stream);
+		save_data(icon_texture_name,	stream);
+		save_data(icon_rect,			stream);
+
+		save_data(m_completeInfos,		stream);
+		save_data(m_failInfos,			stream);
+		save_data(m_infos_on_complete,	stream);
+		save_data(m_infos_on_fail,		stream);
+}
+
+void SGameTaskObjective::load(IReader &stream)
+{
+		load_data(idx,					stream);
+		load_data(task_state,			stream);
+
+		load_data(description,			stream);
+		load_data(map_location,			stream);
+		load_data(object_id,			stream);
+		load_data(task_state,			stream);
+		load_data(def_location_enabled,	stream);
+		load_data(map_hint,				stream);
+		load_data(icon_texture_name,	stream);
+		load_data(icon_rect,			stream);
+
+		load_data(m_completeInfos,		stream);
+		load_data(m_failInfos,			stream);
+		load_data(m_infos_on_complete,	stream);
+		load_data(m_infos_on_fail,		stream);
+}
 
 void SGameTaskKey::save(IWriter &stream)
 {
@@ -246,14 +291,8 @@ void SGameTaskKey::save(IWriter &stream)
 	save_data(game_task->m_Title,			stream);
 	save_data(game_task->m_is_task_general, stream);
 
-	for(u32 i=0; i<game_task->m_Objectives.size(); ++i){
-		save_data(game_task->m_Objectives[i].description,	stream);
-		save_data(game_task->m_Objectives[i].map_location,	stream);
-		save_data(game_task->m_Objectives[i].object_id,		stream);
-		save_data(game_task->m_Objectives[i].task_state,	stream);
-		save_data(game_task->m_Objectives[i].def_location_enabled,stream);
-		save_data(game_task->m_Objectives[i].map_hint,		stream);
-	}
+	save_data(game_task->m_Objectives, stream);
+
 }
 
 void SGameTaskKey::load(IReader &stream)
@@ -265,16 +304,7 @@ void SGameTaskKey::load(IReader &stream)
 	load_data(game_task->m_Title,			stream);
 	load_data(game_task->m_is_task_general, stream);
 
-	for(u32 i=0; i<game_task->m_Objectives.size(); ++i){
-		load_data(game_task->m_Objectives[i].description,	stream);
-		load_data(game_task->m_Objectives[i].map_location,	stream);
-		load_data(game_task->m_Objectives[i].object_id,		stream);
-		load_data(game_task->m_Objectives[i].task_state,	stream);
-		load_data(game_task->m_Objectives[i].def_location_enabled,stream);
-		load_data(game_task->m_Objectives[i].map_hint,stream);
-
-		
-	}
+	load_data(game_task->m_Objectives, stream);
 }
 
 void SGameTaskKey::destroy()

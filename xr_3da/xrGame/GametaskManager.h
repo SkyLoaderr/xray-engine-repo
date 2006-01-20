@@ -23,6 +23,7 @@ public:
 	GameTasks&				GameTasks						();
 	CGameTask*				HasGameTask						(const TASK_ID& id);
 	CGameTask*				GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting=true);
+	CGameTask*				GiveGameTaskToActor				(CGameTask* t, bool bCheckExisting=true);
 	void					SetTaskState					(const TASK_ID& id, int objective_num, ETaskState state);
 	void					SetTaskState					(CGameTask* t, int objective_num, ETaskState state);
 

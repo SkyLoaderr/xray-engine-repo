@@ -6642,6 +6642,9 @@
 								RelativePath=".\GameTask.h">
 							</File>
 							<File
+								RelativePath=".\GameTask_script.cpp">
+							</File>
+							<File
 								RelativePath=".\GameTaskDefs.h">
 							</File>
 							<File

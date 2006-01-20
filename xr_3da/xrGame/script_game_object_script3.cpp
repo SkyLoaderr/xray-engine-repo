@@ -33,7 +33,7 @@
 #include "holder_custom.h"
 #include "script_zone.h"
 #include "relation_registry.h"
-#include "GameTaskDefs.h"
+#include "GameTask.h"
 #include "car.h"
 
 using namespace luabind;
@@ -141,7 +141,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 		.def("get_task_state",				&CScriptGameObject::GetGameTaskState)
 		.def("set_task_state",				&CScriptGameObject::SetGameTaskState)
-//		.def("get_all_tasks",				&CScriptGameObject::GetAllGameTasks)
+		.def("give_task",					&CScriptGameObject::GiveTaskToActor,		adopt(_2))
 
 		.def("send_pda_message",			&CScriptGameObject::SendPdaMessage)
 

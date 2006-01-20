@@ -70,12 +70,21 @@ CGameTask::CGameTask(const TASK_ID& id)
 	m_ReceiveTime	= 0;
 	m_FinishTime	= 0;
 	m_Title			= NULL;
-	m_ID			= id;
 	Load			(id);
+}
+
+CGameTask::CGameTask()
+{
+	m_ReceiveTime	= 0;
+	m_FinishTime	= 0;
+	m_Title			= NULL;
+	m_ID			= NULL;
 }
 
 void CGameTask::Load(const TASK_ID& id)
 {
+	m_ID							= id;
+
 	if(!g_gameTaskXmlInited)
 		g_gameTaskXml.Init			(CONFIG_PATH, "gameplay", "game_tasks.xml");
 	XML_NODE* task_node				= g_gameTaskXml.NavigateToNodeWithAttribute("game_task","id",*id);
@@ -106,14 +115,15 @@ void CGameTask::Load(const TASK_ID& id)
 		if(tag_text)
 			objective.article_key		= tag_text;
 
-		objective.icon_texture_name		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "icon", 0, NULL);
-		if(objective.icon_texture_name.size()){
-			objective.icon_rect.x1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "x");
-			objective.icon_rect.y1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "y");
-			objective.icon_rect.x2			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "width");
-			objective.icon_rect.y2			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "height");
+		if(i==0){
+			objective.icon_texture_name		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "icon", 0, NULL);
+			if(objective.icon_texture_name.size()){
+				objective.icon_rect.x1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "x");
+				objective.icon_rect.y1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "y");
+				objective.icon_rect.x2			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "width");
+				objective.icon_rect.y2			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "height");
+			}
 		}
-
 		objective.map_location			= g_gameTaskXml.Read(l_root, "map_location_type", 0, NULL);
 		LPCSTR object_story_id			= g_gameTaskXml.Read(l_root, "object_story_id", 0, NULL);
 		LPCSTR ddd;
@@ -354,6 +364,70 @@ void SGameTaskObjective::CallAllFuncs	(xr_vector<luabind::functor<bool> >& v)
 	for(;it!=v.end();++it){
 		if( (*it).is_valid() ) (*it)(*(parent->m_ID), idx);
 	}
+}
+void SGameTaskObjective::SetDescription_script(LPCSTR _descr)
+{
+	description = _descr;
+}
+
+void SGameTaskObjective::SetArticleID_script(LPCSTR _id)
+{
+	article_id = _id;
+}
+
+void SGameTaskObjective::SetMapHint_script(LPCSTR _str)
+{
+	map_hint = _str;
+}
+
+void SGameTaskObjective::SetMapLocation_script(LPCSTR _str)
+{
+	map_location = _str;
+}
+
+void SGameTaskObjective::SetObjectID_script(u16 id)
+{
+	object_id = id;
+}
+
+void SGameTaskObjective::SetArticleKey_script(LPCSTR _str)
+{
+	article_key = _str;
+}
+
+void SGameTaskObjective::AddCompleteInfo_script(LPCSTR _str)
+{
+	m_completeInfos.push_back(_str);
+}
+
+void SGameTaskObjective::AddFailInfo_script(LPCSTR _str)
+{
+	m_failInfos.push_back(_str);
+}
+
+void SGameTaskObjective::AddOnCompleteInfo_script(LPCSTR _str)
+{
+	m_infos_on_complete.push_back(_str);
+}
+
+void SGameTaskObjective::AddOnFailInfo_script(LPCSTR _str)
+{
+	m_infos_on_fail.push_back(_str);
+}
+
+void CGameTask::Load_script(LPCSTR _id)		
+{
+	Load(_id);
+}
+
+void CGameTask::SetTitle_script(LPCSTR _title)		
+{
+	m_Title	= _title;
+}
+
+void CGameTask::AddObjective_script(SGameTaskObjective* O)	
+{
+	m_Objectives.push_back(*O);
 }
 
 void ChangeStateCallback(shared_str& task_id, int obj_id, ETaskState state){

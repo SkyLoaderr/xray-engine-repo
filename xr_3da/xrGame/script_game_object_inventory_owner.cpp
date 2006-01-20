@@ -582,29 +582,6 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	Actor()->GameTaskManager().SetTaskState(shared_name, objective_num, state);
 }
 
-STasks CScriptGameObject::GetAllGameTasks()
-{
-	STasks	tasks;
-
-	GameTasks& _tasks = Actor()->GameTaskManager().GameTasks();
-	for(GameTasks::iterator it = _tasks.begin(); it!=_tasks.end();++it){
-		tasks.m_all_tasks.resize(tasks.Size()+1);
-		STask& t = tasks.m_all_tasks.back();
-		t.m_name	= (*it).task_id;
-		t.m_state	= (*it).game_task->m_Objectives[0].TaskState();
-		u32 sub_num = (*it).game_task->m_Objectives.size();
-		for(u32 i=0; i<sub_num;++i){
-			t.m_objectives.resize(t.m_objectives.size()+1);
-			STaskObjective& to	= t.m_objectives.back();
-			to.m_name			= (*it).game_task->m_Objectives[i].description;
-			to.m_state			= (*it).game_task->m_Objectives[i].TaskState();
-		}
-	
-	}
-	return tasks;
-}
-
-//////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
 void  CScriptGameObject::SwitchToTrade		()
@@ -862,4 +839,9 @@ CScriptGameObject *CScriptGameObject::item_in_slot	(u32 slot_id) const
 	}
 
 	return			(inventory_owner->inventory().m_slots[slot_id].m_pIItem->object().lua_game_object());
+}
+
+void CScriptGameObject::GiveTaskToActor(CGameTask* t, bool bCheckExisting)
+{
+	Actor()->GameTaskManager().GiveGameTaskToActor(t, bCheckExisting);
 }

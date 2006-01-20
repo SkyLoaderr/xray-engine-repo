@@ -1,8 +1,3 @@
-///////////////////////////////////////////////////////////////
-// GameTaksDefs.h
-// Класс игрового задания задания
-///////////////////////////////////////////////////////////////
-
 #pragma once
 
 enum ETaskState {
@@ -13,38 +8,9 @@ enum ETaskState {
 	eTaskStateDummy			= u32(-1)
 };
 
-//for scripting access
-struct STaskObjective
-{
-	shared_str					m_name;
-	ETaskState					m_state;
-	LPCSTR						GetName()						{return *m_name;}
-};
-
-struct STask{
-	shared_str					m_name;
-	ETaskState					m_state;
-	xr_vector<STaskObjective>	m_objectives;
-
-	LPCSTR						GetName()						{return *m_name;}
-	int							GetObjectivesNum()				{return m_objectives.size();}
-	STaskObjective				GetObjective(int idx)			{return m_objectives[idx];}
-
-};
-struct STasks{
-	xr_vector<STask>	m_all_tasks;
-	int					Size() {return m_all_tasks.size();}
-	STask				GetAt(int idx) {return m_all_tasks[idx];}
-};
-
-
-
-
 
 typedef shared_str		TASK_ID;
-DEFINE_VECTOR		(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);
-
-//состояние цели и задания
+DEFINE_VECTOR			(TASK_ID, TASK_ID_VECTOR, TASK_ID_IT);
 
 #include "alife_abstract_registry.h"
 

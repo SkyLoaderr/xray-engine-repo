@@ -25,6 +25,7 @@ namespace DetailPathManager { enum EDetailPathType;};
 namespace SightManager {enum ESightType;};
 
 class NET_Packet;
+class CGameTask;
 
 namespace PatrolPathManager { 
 	enum EPatrolStartType;
@@ -248,7 +249,7 @@ public:
 	//работа с заданиями
 			ETaskState			GetGameTaskState	(LPCSTR task_id, int objective_num);
 			void				SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num);
-			STasks				GetAllGameTasks		();
+			void				GiveTaskToActor		(CGameTask* t, bool bCheckExisting);
 
 			bool				SendPdaMessage		(EPdaMsg pda_msg, CScriptGameObject* pForWho);
 			

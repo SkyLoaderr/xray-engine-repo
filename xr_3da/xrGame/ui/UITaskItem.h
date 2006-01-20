@@ -6,7 +6,7 @@
 class CGameTask;
 class CUIStatic;
 class CUIButton;
-struct SGameTaskObjective;
+class SGameTaskObjective;
 class CUIEventsWnd;
 class CUIEditBoxEx;
 class CUIEditBox;
