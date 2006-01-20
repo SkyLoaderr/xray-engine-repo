@@ -488,9 +488,15 @@ states = {
 				animstate = "stand",
 				animation = "probe_3"
 			},
+	mode_shlem	= {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "mode_shlem"
+			},
 			
 			
-				
 
 	-- Раненый
 	wounded = {	weapon = "strapped",

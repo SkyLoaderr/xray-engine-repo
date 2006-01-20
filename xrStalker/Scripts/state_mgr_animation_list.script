@@ -615,6 +615,13 @@ animations = {
 						out		= {	[0]	= {"metering_0_hide_0", {d="detector_elite"}, "metering_0_hide_1"} },
 						idle	= {	[0]	= "metering_0_idle_0" },
 						rnd		= nil },
+		mode_shlem	= {	prop	= { maxidle = 1,
+									sumidle = 1,
+									rnd = 100 },
+						into	= {	[0]	= {"idle_shlem_0"} },
+						out		= nil,
+						idle	= nil,
+						rnd		= nil },
 
 										   
 		raciya		= {	prop	= { maxidle = 1,
