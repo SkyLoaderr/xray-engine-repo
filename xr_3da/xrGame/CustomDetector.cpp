@@ -80,8 +80,6 @@ void CCustomDetector::Load(LPCSTR section)
 			R_ASSERT				(zone_type.min_freq<zone_type.max_freq);
 			sprintf					(temp, "zone_sound_%d_", i);
 
-//			zone_type.detect_snd.create(TRUE,pSettings->r_string(section,temp));
-
 			HUD_SOUND::LoadSound(section, temp	,zone_type.detect_snds		, TRUE, SOUND_TYPE_ITEM);
 
 			sprintf					(temp, "zone_map_location_%d", i);
