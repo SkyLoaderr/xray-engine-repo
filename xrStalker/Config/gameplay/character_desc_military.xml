@@ -12,7 +12,7 @@
 
 		<team>Svoboda_specnaz</team>
 
-        <snd_config>characters_voice\human_03\freedom</snd_config>
+        <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
 		<class>mil_Svoboda_specnaz</class>
 		<community>freedom</community>
@@ -41,7 +41,7 @@
 
 		<team>Svoboda_specnaz</team>
 
-        <snd_config>characters_voice\human_01\freedom</snd_config>
+        <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_engineer</class>
 		<community>freedom</community>
@@ -72,7 +72,7 @@
 
 		<team>Svoboda_regular</team>
 
-        <snd_config>characters_voice\human_01\freedom</snd_config>
+        <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_regular</class>
 		<community>freedom</community>
@@ -102,7 +102,7 @@
 
 		<team>Svoboda_sniper</team>
 
-        <snd_config>characters_voice\human_01\freedom</snd_config>
+        <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_sniper</class>
 		<community>freedom</community>
@@ -131,7 +131,7 @@
 
 		<team>Svoboda_stukach</team>
 
-        <snd_config>characters_voice\human_01\freedom</snd_config>
+        <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_stukach</class>
 		<community>freedom</community>
@@ -163,7 +163,7 @@
 		<class>mil_Svoboda_zoneguard</class>
 		<community>freedom</community>
 
-        <snd_config>characters_voice\human_03\freedom</snd_config>
+        <snd_config>characters_voice\human_03\freedom\</snd_config>
 
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -191,7 +191,7 @@
 
 		<team>Svoboda_regular</team>
 
-        <snd_config>characters_voice\human_03\freedom</snd_config>
+        <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
 		<class>mil_Svoboda_bodyguard</class>
 		<community>freedom</community>
@@ -220,7 +220,7 @@
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Лидер группировки "Свобода".</bio>
 
-        <snd_config>characters_voice\human_02\freedom</snd_config>
+        <snd_config>characters_voice\human_02\freedom\</snd_config>
 
 		<class>mil_Svoboda_leader</class>
 		<community>freedom</community>
@@ -253,7 +253,7 @@
 		<class>mil_Svoboda_trader</class>
 		<community>freedom</community>
 
-        <snd_config>characters_voice\human_02\freedom</snd_config>
+        <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -281,7 +281,7 @@
 
 		<team>Svoboda_master</team>
 
-        <snd_config>characters_voice\human_02\freedom</snd_config>
+        <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
 		<class>mil_Svoboda_master_Max</class>
 		<community>freedom</community>
@@ -318,7 +318,7 @@
 		<class>mil_Svoboda_master</class>
 		<community>freedom</community>
 
-        <snd_config>characters_voice\human_03\freedom</snd_config>
+        <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -344,7 +344,7 @@
 		<class>mil_Svoboda_cook</class>
 		<community>freedom</community>
 
-        <snd_config>characters_voice\human_02\freedom</snd_config>
+        <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -390,7 +390,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-        <snd_config>characters_voice\human_02\freedom</snd_config>
+        <snd_config>characters_voice\human_02\freedom\</snd_config>
 
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
@@ -408,7 +408,7 @@
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
 	<specific_character id="mil_Svoboda_master_Ugrumiy" team_default = "1">
 		<name>"Угрюмый"</name>		
-		<snd_config>characters_voice\human_03\freedom</snd_config>
+		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
@@ -454,7 +454,7 @@
 		<rank>70</rank>
 		<reputation>40</reputation>
 
-        <snd_config>characters_voice\human_03\dolg</snd_config>
+        <snd_config>characters_voice\human_03\dolg\</snd_config>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
 		<supplies>
@@ -477,7 +477,7 @@
 		<class>mil_Dolg_specnaz_silence</class>
 		<community>dolg</community>
 
-        <snd_config>characters_voice\human_03\dolg</snd_config>
+        <snd_config>characters_voice\human_03\dolg\</snd_config>
 
 		<rank>70</rank>
 		<reputation>40</reputation>
@@ -507,7 +507,7 @@
 		<rank>70</rank>
 		<reputation>40</reputation>
 
-        <snd_config>characters_voice\human_03\dolg</snd_config>
+        <snd_config>characters_voice\human_03\dolg\</snd_config>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<supplies>
@@ -538,7 +538,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\\</snd_config>
 
 		<visual>actors\killer\stalker_ki_informator</visual>
 		<supplies>
@@ -563,7 +563,7 @@
 		<class>mil_Killer_specnaz</class>
 		<community>killer</community>
 
-        <snd_config>characters_voice\human_03\killer</snd_config>
+        <snd_config>characters_voice\human_03\killer\</snd_config>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -588,7 +588,7 @@
 
 		<team>Killer_sniper</team>
 
-        <snd_config>characters_voice\human_03\killer</snd_config>
+        <snd_config>characters_voice\human_03\killer\</snd_config>
 		
 		<class>mil_killer_sniper</class>
 		<community>killer</community>
@@ -616,7 +616,7 @@
 
 		<team>Killer_master</team>
 
-        <snd_config>characters_voice\human_03\killer</snd_config>
+        <snd_config>characters_voice\human_03\killer\</snd_config>
 		
 		
 		<class>mil_killer_master</class>
@@ -656,7 +656,7 @@
 		<rank>95</rank>
 		<reputation>0</reputation>
 
-        <snd_config>characters_voice\human_03\stalker</snd_config>
+        <snd_config>characters_voice\human_03\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
@@ -683,7 +683,7 @@
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-        <snd_config>characters_voice\human_03\stalker</snd_config>
+        <snd_config>characters_voice\human_03\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<supplies>
@@ -711,7 +711,7 @@
                 <class>mil_Svoboda_zombi_stalker</class>
                 <community>bandit</community>
 
-                <snd_config>characters_voice\human_02\zombied</snd_config>
+                <snd_config>characters_voice\human_02\zombied\</snd_config>
 
                 <rank>40</rank>
                 <reputation>0</reputation>
@@ -737,7 +737,7 @@
 	<class>mil_Monolit_regular</class>
     <community>monolith</community>
 
-    <snd_config>characters_voice\human_03\monolith</snd_config>
+    <snd_config>characters_voice\human_03\monolith\</snd_config>
 
     <rank>40</rank>
     <reputation>0</reputation>
@@ -770,7 +770,7 @@
 
     <panic_threshold>0.0</panic_threshold>
 
-    <snd_config>characters_voice\human_03\monolith</snd_config>
+    <snd_config>characters_voice\human_03\monolith\</snd_config>
 
     <visual>actors\monolit\stalker_mo_exo</visual>
     <supplies>
