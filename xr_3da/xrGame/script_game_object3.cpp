@@ -874,7 +874,7 @@ void CScriptGameObject::sound_prefix			(LPCSTR sound_prefix)
 	CCustomMonster							*custom_monster = smart_cast<CCustomMonster*>(&object());
 	if (!custom_monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member sound_prefix!");
-		return								(0);
+		return;
 	}
 
 	custom_monster->sound().sound_prefix	(sound_prefix);
