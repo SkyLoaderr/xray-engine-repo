@@ -108,8 +108,8 @@ function teleport_actor(actor, npc, p)
 	local point = patrol(p[1])
 	local look = patrol(p[2])
 	
-	db.actor:set_actor_position(patrol(point):point(0))
-	local dir = patrol(look):point(0):sub(patrol(point):point(0))
+	db.actor:set_actor_position(point:point(0))
+	local dir = look:point(0):sub(point:point(0))
 	db.actor:set_actor_direction(-dir:getH())	
 end
 
