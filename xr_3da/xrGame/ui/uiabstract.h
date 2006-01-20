@@ -166,8 +166,10 @@ protected:
 	EWindowAlignment		m_alignment;
 };
 class CUISelectable{
+protected:
 	bool m_bSelected;
 public:
-	CUISelectable():m_bSelected(false){}
-	virtual void	SetSelected	(bool b){m_bSelected = b;};
+	CUISelectable():m_bSelected(false)		{}
+	bool			GetSelected	() const	{return m_bSelected;}
+	virtual void	SetSelected	(bool b)	{m_bSelected = b;};
 };

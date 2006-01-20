@@ -14,6 +14,7 @@ enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
 	float			m_rightIdent;
+	float			m_leftIdent;
 	float			m_vertInterval;
 	Flags16			m_flags;
 
@@ -21,6 +22,7 @@ virtual void		RecalcSize			();
 		void		UpdateScroll		();	
 		void		OnScrollV			();
 		void		SetRightIndention	(float val);
+		void		SetLeftIndention	(float val);
 		void		SetVertFlip			(bool val)							{m_flags.set(eVertFlip, val);}
 public:
 	using CUIWindow::Init;

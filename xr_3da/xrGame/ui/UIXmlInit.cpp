@@ -1232,9 +1232,13 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 
 	InitWindow							(xml_doc, path, index, pWnd);
 	float ri							= xml_doc.ReadAttribFlt	(path, index, "right_ident", 0.0f);
-	pWnd->SetRightIndention				(ri*UI()->GetScaleX());
-	ri									= xml_doc.ReadAttribFlt	(path, index, "vert_interval", 0.0f);
-	pWnd->m_vertInterval				= (ri*UI()->GetScaleY());
+	pWnd->SetRightIndention				(ri);
+
+	float li							= xml_doc.ReadAttribFlt	(path, index, "left_ident", 0.0f);
+	pWnd->SetLeftIndention				(li);
+
+	float vi							= xml_doc.ReadAttribFlt	(path, index, "vert_interval", 0.0f);
+	pWnd->m_vertInterval				= (vi);
 
 	bool bInverseDir					= (1==xml_doc.ReadAttribInt	(path, index, "inverse_dir", 0));
 	pWnd->m_flags.set					(CUIScrollView::eInverseDir,bInverseDir);

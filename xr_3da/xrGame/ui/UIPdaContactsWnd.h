@@ -37,6 +37,7 @@ public:
 	void Reload					();
 
 	CUIScrollView*					UIListWnd;
+	CUIScrollView*					UIDetailsWnd;
 
 protected:
 
@@ -46,4 +47,15 @@ protected:
 	CUIFrameWindow*				UIRightFrame;
 	CUIFrameLineWnd*			UIRightFrameHeader;
 	CUIAnimatedStatic*			UIAnimation;
+};
+
+#include "UIPdaListItem.h"
+class CUIPdaContactItem :public CUIPdaListItem, public CUISelectable
+{
+	CUIPdaContactsWnd*	m_cw;
+public:
+					CUIPdaContactItem	(CUIPdaContactsWnd* cw)		{m_cw = cw;}
+	virtual			~CUIPdaContactItem	();
+	virtual void	SetSelected			(bool b);
+	virtual void	OnMouseDown			(bool left_button = true);
 };

@@ -88,7 +88,7 @@ bool GreaterRankPred(const SStatData& h1, const SStatData& h2)
 	return (h1.trader->m_rank > h2.trader->m_rank);
 }
 
-extern CSE_ALifeTraderAbstract* get_from_id (u16 id);
+extern CSE_ALifeTraderAbstract* ch_info_get_from_id (u16 id);
 
 void CUIStalkersRankingWnd::FillList()
 {
@@ -102,7 +102,7 @@ void CUIStalkersRankingWnd::FillList()
 	uiXml.SetLocalRoot						(uiXml.NavigateToNode("stalkers_list",0));
 
 	if(g_all_statistic_humans.size()){
-		CSE_ALifeTraderAbstract* pActorAbstract = get_from_id(Actor()->ID());
+		CSE_ALifeTraderAbstract* pActorAbstract = ch_info_get_from_id(Actor()->ID());
 		SStatData	d;
 		d.id		= Actor()->ID();
 		d.trader	= pActorAbstract;
@@ -182,7 +182,7 @@ void CUIStalkersRankingWnd::AddActorItem(CUIXml* xml, int num, CSE_ALifeTraderAb
 
 void add_human_to_top_list(u16 id)
 {
-	CSE_ALifeTraderAbstract* t	= get_from_id(id);
+	CSE_ALifeTraderAbstract* t	= ch_info_get_from_id(id);
 	SStatData	d;
 	d.id		= id;
 	d.trader	= t;
@@ -200,7 +200,7 @@ void add_human_to_top_list(u16 id)
 
 void remove_human_from_top_list(u16 id)
 {
-	CSE_ALifeTraderAbstract* t				= get_from_id(id);
+	CSE_ALifeTraderAbstract* t				= ch_info_get_from_id(id);
 	SStatData	d;
 	d.id		= id;
 	d.trader	= t;

@@ -24,7 +24,7 @@
 
 using namespace InventoryUtilities;
 
-CSE_ALifeTraderAbstract* get_from_id (u16 id)
+CSE_ALifeTraderAbstract* ch_info_get_from_id (u16 id)
 {
 	if( ai().get_alife() && ai().get_game_graph() )
 	{
@@ -163,7 +163,7 @@ void CUICharacterInfo::InitCharacter(u16 id)
 	m_ownerID					= id;
 
 	CCharacterInfo				chInfo;
-	CSE_ALifeTraderAbstract*	T = get_from_id(m_ownerID);
+	CSE_ALifeTraderAbstract*	T = ch_info_get_from_id(m_ownerID);
 
 	chInfo.Init					(T);
 
@@ -263,8 +263,8 @@ void CUICharacterInfo::UpdateRelation()
 		}
 		else
 		{
-			CSE_ALifeTraderAbstract* T = get_from_id	(m_ownerID);
-			CSE_ALifeTraderAbstract* TA = get_from_id	(Actor()->ID());
+			CSE_ALifeTraderAbstract* T = ch_info_get_from_id	(m_ownerID);
+			CSE_ALifeTraderAbstract* TA = ch_info_get_from_id	(Actor()->ID());
 
 			SetRelation(RELATION_REGISTRY().GetRelationType(T,		TA),
 						RELATION_REGISTRY().GetAttitude(T,			TA));
@@ -278,7 +278,7 @@ void CUICharacterInfo::Update()
 
 	if(hasOwner() && (m_bForceUpdate||(Device.dwFrame%100==0))  ){
 		m_bForceUpdate = false;
-		CSE_ALifeTraderAbstract* T = get_from_id	(m_ownerID);
+		CSE_ALifeTraderAbstract* T = ch_info_get_from_id	(m_ownerID);
 		if (NULL==T){
 			m_ownerID = u16(-1);
 			return;

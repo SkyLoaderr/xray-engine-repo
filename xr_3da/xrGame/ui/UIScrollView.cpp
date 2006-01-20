@@ -9,6 +9,7 @@
 CUIScrollView::CUIScrollView()
 {
 	m_rightIdent		= 0.0f;
+	m_leftIdent			= 0.0f;
 	m_vertInterval		= 0.0f;
 	m_flags.zero		();
 	SetFixedScrollBar	(true);
@@ -217,6 +218,12 @@ void CUIScrollView::SetRightIndention	(float val)
 	m_flags.set			(eNeedRecalc,TRUE);
 }
 
+void CUIScrollView::SetLeftIndention	(float val)
+{
+	m_leftIdent			= val;
+	m_flags.set			(eNeedRecalc,TRUE);
+}
+
 u32 CUIScrollView::GetSize				()
 {
 	return m_pad->GetChildNum		();
@@ -230,7 +237,7 @@ CUIWindow* CUIScrollView::GetItem		(u32 idx)
 }
 
 float CUIScrollView::GetDesiredChildWidth(){
-	return GetWidth() - SCROLLBAR_WIDTH;
+	return GetWidth() - SCROLLBAR_WIDTH - m_rightIdent - m_leftIdent;
 }
 
 void CUIScrollView::SetSelected			(CUIWindow* w)
