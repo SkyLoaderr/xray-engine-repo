@@ -16,7 +16,7 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\bandit</snd_config>
 		
 		<panic_threshold>0.2</panic_threshold>
 
@@ -45,7 +45,7 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\bandit</snd_config>
 		
 		<panic_threshold>0.2</panic_threshold>
 
@@ -76,7 +76,7 @@
 		<rank>0</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		
 		<panic_threshold>0.2</panic_threshold>
 
@@ -108,7 +108,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -136,7 +136,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -163,7 +163,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -190,7 +190,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\bandit</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -218,7 +218,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -249,7 +249,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -276,7 +276,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -305,6 +305,8 @@
 		<rank>95</rank>
 		<reputation>-50</reputation>
 
+		<snd_config>characters_voice\human_02\bandit</snd_config>
+
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
 			[spawn] \n
@@ -328,6 +330,8 @@
 		
 		<class>sim_Bandit_master</class>
 		<community>bandit</community>
+
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		
 		<rank>95</rank>
 		<reputation>-50</reputation>
@@ -355,6 +359,8 @@
 		
 		<class>sim_Bandit_master</class>
 		<community>bandit</community>
+
+		<snd_config>characters_voice\human_02\bandit</snd_config>
 		
 		<rank>95</rank>
 		<reputation>-50</reputation>
@@ -389,7 +395,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -417,7 +423,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -446,7 +452,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -477,7 +483,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 
 		<panic_threshold>0.1</panic_threshold>
 
@@ -506,7 +512,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -535,7 +541,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -567,7 +573,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -597,7 +603,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		
 		<panic_threshold>0.1</panic_threshold>
 
@@ -630,7 +636,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -659,7 +665,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -687,7 +693,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -715,7 +721,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -743,7 +749,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -771,7 +777,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -800,7 +806,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -828,7 +834,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -856,7 +862,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -884,7 +890,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -912,7 +918,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -942,6 +948,8 @@
 		<rank>95</rank>
 		<reputation>0</reputation>
 
+		<snd_config>characters_voice\human_03\stalker</snd_config>
+
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
@@ -966,6 +974,8 @@
 
 		<class>sim_Stalker_master</class>
 		<community>stalker</community>
+
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		
 		<rank>95</rank>
 		<reputation>0</reputation>
@@ -1000,7 +1010,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -1036,7 +1046,7 @@
 		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\dolg\stalker_do_mask</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -1065,7 +1075,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 		        wpn_fort \n
@@ -1094,7 +1104,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 		        wpn_fort \n
@@ -1124,7 +1134,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1151,7 +1161,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1180,7 +1190,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -1209,7 +1219,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -1238,7 +1248,7 @@
 		<reputation>60</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -1266,7 +1276,7 @@
 		<reputation>60</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -1295,7 +1305,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -1323,7 +1333,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -1351,7 +1361,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_mask</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -1379,7 +1389,7 @@
 
 		<team>Svoboda_regular</team>
 
-        <snd_config>characters_voice\human_01\</snd_config>
+        <snd_config>characters_voice\human_01\freedom</snd_config>
 		
 		<class>sim_Svoboda_regular</class>
 		<community>freedom</community>
@@ -1412,7 +1422,7 @@
 
 		<team>Svoboda_specnaz</team>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\freedom</snd_config>
 		
 		<class>sim_Svoboda_specnaz</class>
 		<community>freedom</community>
@@ -1447,7 +1457,7 @@
 		<class>sim_Svoboda_master</class>
 		<community>freedom</community>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\freedom</snd_config>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -1475,7 +1485,7 @@
 
 		<team>Svoboda_sniper</team>
 
-        <snd_config>characters_voice\human_01\</snd_config>
+        <snd_config>characters_voice\human_02\freedom</snd_config>
 		
 		<class>sim_Svoboda_sniper</class>
 		<community>freedom</community>
@@ -1515,7 +1525,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\killer</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -1545,7 +1555,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_03\killer</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -1576,7 +1586,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\killer</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -1606,7 +1616,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_03\killer</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -1637,7 +1647,7 @@
 		<rank>90</rank>
 		<reputation>-50</reputation>
 	
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\killer</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -1667,7 +1677,7 @@
 		<rank>90</rank>
 		<reputation>-50</reputation>
 	
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\killer</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -1700,7 +1710,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_03\killer</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -1735,7 +1745,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_fort \n
@@ -1761,7 +1771,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_hpsa \n
@@ -1787,7 +1797,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_fort \n
@@ -1813,7 +1823,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_hpsa \n
@@ -1840,7 +1850,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_usp \n
@@ -1867,7 +1877,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_nauchniy</visual>
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_walther \n
@@ -1895,7 +1905,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_usp \n
@@ -1922,7 +1932,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_walther \n
@@ -1951,7 +1961,7 @@
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\monolith</snd_config>
         <supplies>
             [spawn] \n
             wpn_hpsa \n
@@ -2040,7 +2050,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -2062,7 +2072,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2084,7 +2094,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_bm16 \n
@@ -2106,7 +2116,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_bm16 \n
@@ -2128,7 +2138,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -2150,7 +2160,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74u \n
@@ -2172,7 +2182,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_mp5 \n
@@ -2195,7 +2205,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 
 		<supplies>
 			[spawn] \n
@@ -2219,7 +2229,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -2241,7 +2251,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -2264,7 +2274,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -2287,7 +2297,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -2311,7 +2321,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -2334,7 +2344,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n
@@ -2357,7 +2367,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -2380,7 +2390,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			medkit \n
@@ -2409,7 +2419,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2438,7 +2448,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2467,7 +2477,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2496,7 +2506,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2525,7 +2535,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2557,7 +2567,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -2586,7 +2596,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -2615,7 +2625,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_beret</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -2644,7 +2654,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_beret_3</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2673,7 +2683,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2702,7 +2712,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2731,7 +2741,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -2760,7 +2770,7 @@
 		<class>sim_Soldier_master</class>
 		<community>military</community>
 
-        <snd_config>characters_voice\human_03\</snd_config>
+        <snd_config>characters_voice\human_03\military</snd_config>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
