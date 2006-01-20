@@ -10,119 +10,119 @@ snd_ini = ini_file("misc\\script_sound.ltx")
 theme = {}
 
 ph_snd_themes = {}           
-ph_snd_themes["music"] = {  "characters_voice\\human_01\\scenario\\megafon\\megafon_music_1",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_2",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_3",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_4",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_5",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_6",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_7",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_8",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_9",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_10",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_11",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_12",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_13",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_14",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_15"
+ph_snd_themes["music"] = {  "characters_voice\\scenario\\megafon\\megafon_music_1",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_2",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_3",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_4",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_5",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_6",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_7",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_8",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_9",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_10",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_11",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_12",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_13",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_14",
+	                        "characters_voice\\scenario\\megafon\\megafon_music_15"
 	                        }
-ph_snd_themes["alarm1"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_1",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_10",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_11",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_12",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_13"
+ph_snd_themes["alarm1"] = { "characters_voice\\scenario\\megafon\\megafon_alarm_1",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_10",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_11",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_12",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_13"
 	                        }
-ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_2",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_3",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_4",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_5",
-	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_6"
+ph_snd_themes["alarm2"] = { "characters_voice\\scenario\\megafon\\megafon_alarm_2",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_3",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_4",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_5",
+	                        "characters_voice\\scenario\\megafon\\megafon_alarm_6"
 	                      }
 ph_snd_themes["siren"] =  { "ambient\\siren2" }
 ph_snd_themes["bomb"] = {"detectors\\bomb_timer"}
 ph_snd_themes["detector"] = {"detectors\\da-2_beep1"}
 
 
-ph_snd_themes["radio_music"] = {"characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_4",
-	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_2",
-	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_3",
-	                        "characters_voice\\human_01\\scenario\\bar\\radio_music\\radio_music_1"
+ph_snd_themes["radio_music"] = {"characters_voice\\scenario\\bar\\radio_music\\radio_music_4",
+	                        "characters_voice\\scenario\\bar\\radio_music\\radio_music_2",
+	                        "characters_voice\\scenario\\bar\\radio_music\\radio_music_3",
+	                        "characters_voice\\scenario\\bar\\radio_music\\radio_music_1"
 	                        }
 
-ph_snd_themes["dolg_speech"]		= {[[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_1]],
-									   [[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_2]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_1]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_2]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_3]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_4]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_5]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_1]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_2]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_3]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_5]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_7]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_8]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_9]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_12]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_14]],
-									   [[characters_voice\human_01\scenario\megafon\megafon_music_15]],
-									   [[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_new_fight]]}
-ph_snd_themes["dolg_alarm"]			= {[[characters_voice\human_01\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
-ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
-ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
-ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\human_01\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
-ph_snd_themes["arena_introduce_pseudodog"]	= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_pseudodog]]}
-ph_snd_themes["arena_introduce_snork"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_snork]]}
-ph_snd_themes["arena_introduce_bloodsucker"]= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_bloodsucker]]}
-ph_snd_themes["arena_introduce_burer"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_burer]]}
-ph_snd_themes["arena_introduce_savage"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_zver]]}
-ph_snd_themes["arena_actor_afraid"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_coward]]}
-ph_snd_themes["arena_fight_begin"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_start]]}
-ph_snd_themes["arena_fight_victory"]		= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_1]]}
-ph_snd_themes["arena_fight_victory_notime"]	= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_win_2]]}
-ph_snd_themes["arena_fight_lose"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_out_of_time_win]]}
-ph_snd_themes["arena_fight_death"]			= {[[characters_voice\human_01\scenario\bar\arena_megafon\mega_arena_dead]]}
+ph_snd_themes["dolg_speech"]		= {[[characters_voice\scenario\bar\barman_megafon\megaphone_barman_1]],
+									   [[characters_voice\scenario\bar\barman_megafon\megaphone_barman_2]],
+									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_1]],
+									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_2]],
+									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_3]],
+									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_4]],
+									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_5]],
+									   [[characters_voice\scenario\megafon\megafon_music_1]],
+									   [[characters_voice\scenario\megafon\megafon_music_2]],
+									   [[characters_voice\scenario\megafon\megafon_music_3]],
+									   [[characters_voice\scenario\megafon\megafon_music_5]],
+									   [[characters_voice\scenario\megafon\megafon_music_7]],
+									   [[characters_voice\scenario\megafon\megafon_music_8]],
+									   [[characters_voice\scenario\megafon\megafon_music_9]],
+									   [[characters_voice\scenario\megafon\megafon_music_12]],
+									   [[characters_voice\scenario\megafon\megafon_music_14]],
+									   [[characters_voice\scenario\megafon\megafon_music_15]],
+									   [[characters_voice\scenario\bar\arena_megafon\mega_arena_new_fight]]}
+ph_snd_themes["dolg_alarm"]			= {[[characters_voice\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
+ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
+ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
+ph_snd_themes["dolg_megafon_kill"]	= {[[characters_voice\scenario\bar\dolg_megafon\duty_gunfire_mega_3]]}
+ph_snd_themes["arena_introduce_pseudodog"]	= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_pseudodog]]}
+ph_snd_themes["arena_introduce_snork"]		= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_snork]]}
+ph_snd_themes["arena_introduce_bloodsucker"]= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_bloodsucker]]}
+ph_snd_themes["arena_introduce_burer"]		= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_burer]]}
+ph_snd_themes["arena_introduce_savage"]		= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_zver]]}
+ph_snd_themes["arena_actor_afraid"]			= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_coward]]}
+ph_snd_themes["arena_fight_begin"]			= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_start]]}
+ph_snd_themes["arena_fight_victory"]		= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_win_1]]}
+ph_snd_themes["arena_fight_victory_notime"]	= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_win_2]]}
+ph_snd_themes["arena_fight_lose"]			= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_out_of_time_win]]}
+ph_snd_themes["arena_fight_death"]			= {[[characters_voice\scenario\bar\arena_megafon\mega_arena_dead]]}
 
-ph_snd_themes["bar_start_megafon"]		= {[[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_1]],
-									   [[characters_voice\human_01\scenario\bar\barman_megafon\megaphone_barman_2]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_1]],
-									   [[characters_voice\human_01\scenario\bar\dolg_megafon\mega_duty_propaganda_2]]}
+ph_snd_themes["bar_start_megafon"]		= {[[characters_voice\scenario\bar\barman_megafon\megaphone_barman_1]],
+									   [[characters_voice\scenario\bar\barman_megafon\megaphone_barman_2]],
+									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_1]],
+									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_2]]}
 
-ph_snd_themes["mon_monolith_damaged"]			= {[[characters_voice\human_01\scenario\sarcofag\monolith_damaged]]}
-ph_snd_themes["mon_monolith_heavy_damaged"]		= {[[characters_voice\human_01\scenario\sarcofag\monolith_heavy_damaged]]}
-ph_snd_themes["mon_monolith_alarm"]				= {[[characters_voice\human_01\scenario\sarcofag\monolith_alarm]]}
-ph_snd_themes["mon_monolith_recharged"]			= {[[characters_voice\human_01\scenario\sarcofag\monolith_recharged]]}
-ph_snd_themes["sar_monolith_call"]			= {[[characters_voice\human_01\scenario\sarcofag\monolith_call_1]],
-												[[characters_voice\human_01\scenario\sarcofag\monolith_call_2]],
-												[[characters_voice\human_01\scenario\sarcofag\monolith_call_3]],
-												[[characters_voice\human_01\scenario\sarcofag\monolith_call_4]],
-												[[characters_voice\human_01\scenario\sarcofag\monolith_call_5]],
-												[[characters_voice\human_01\scenario\sarcofag\monolith_call_6]],
-												[[characters_voice\human_01\scenario\sarcofag\monolith_call_7]]}
+ph_snd_themes["mon_monolith_damaged"]			= {[[characters_voice\scenario\sarcofag\monolith_damaged]]}
+ph_snd_themes["mon_monolith_heavy_damaged"]		= {[[characters_voice\scenario\sarcofag\monolith_heavy_damaged]]}
+ph_snd_themes["mon_monolith_alarm"]				= {[[characters_voice\scenario\sarcofag\monolith_alarm]]}
+ph_snd_themes["mon_monolith_recharged"]			= {[[characters_voice\scenario\sarcofag\monolith_recharged]]}
+ph_snd_themes["sar_monolith_call"]			= {[[characters_voice\scenario\sarcofag\monolith_call_1]],
+												[[characters_voice\scenario\sarcofag\monolith_call_2]],
+												[[characters_voice\scenario\sarcofag\monolith_call_3]],
+												[[characters_voice\scenario\sarcofag\monolith_call_4]],
+												[[characters_voice\scenario\sarcofag\monolith_call_5]],
+												[[characters_voice\scenario\sarcofag\monolith_call_6]],
+												[[characters_voice\scenario\sarcofag\monolith_call_7]]}
 
-ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\human_01\scenario\garbage\distance_shooting]]}
-ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\human_01\scenario\bandits\bandit_replic_2]]}
+ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\scenario\garbage\distance_shooting]]}
+ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\scenario\bandits\bandit_replic_2]]}
 ph_snd_themes["aes_battle1"] =        {"ambient\\battle_1"}
 ph_snd_themes["aes_battle2"] =        {"ambient\\battle_2"}
-ph_snd_themes["gar_bandits_seryi"] =   {[[characters_voice\human_01\scenario\garbage\grey_bandit_1]],      
-										[[characters_voice\human_01\scenario\garbage\grey_bandit_2]],
-										[[characters_voice\human_01\scenario\garbage\grey_bandit_3]],
-										[[characters_voice\human_01\scenario\garbage\grey_bandit_4]],
-										[[characters_voice\human_01\scenario\garbage\grey_bandit_5]]}
+ph_snd_themes["gar_bandits_seryi"] =   {[[characters_voice\scenario\garbage\grey_bandit_1]],      
+										[[characters_voice\scenario\garbage\grey_bandit_2]],
+										[[characters_voice\scenario\garbage\grey_bandit_3]],
+										[[characters_voice\scenario\garbage\grey_bandit_4]],
+										[[characters_voice\scenario\garbage\grey_bandit_5]]}
 ph_snd_themes["radar_drone"] = {"ambient\\radar_1"}
 ph_snd_themes["radar_thunder"] = {"ambient\\radar_2"}
 ph_snd_themes["radar_sparks"] = {"ambient\\radarsparks_1"}
 ph_snd_themes["aes_teleport"] = {"anomaly\\teleport_incoming"}
-ph_snd_themes["yan_antenna"] = {"characters_voice\\human_01\\scenario\\yantar\\psy_voices_1",
-                                "characters_voice\\human_02\\scenario\\yantar\\psy_voices_1",
-                                "characters_voice\\human_03\\scenario\\yantar\\psy_voices_1"}
+ph_snd_themes["yan_antenna"] = {"characters_voice\\scenario\\yantar\\psy_voices_1",
+                                "characters_voice\\scenario\\yantar\\psy_voices_1",
+                                "characters_voice\\scenario\\yantar\\psy_voices_1"}
 ph_snd_themes["radar_meh_on"] = {"ambient\\cooling_run"}
 ph_snd_themes["radar_meh_off"] = {"ambient\\cooling_stop"}                               
-ph_snd_themes["system_message_1"]	= {[[characters_voice\human_01\scenario\yantar\system_message_1]]}
-ph_snd_themes["system_message_2"]	= {[[characters_voice\human_01\scenario\yantar\system_message_2]]}
-ph_snd_themes["system_message_3"]	= {[[characters_voice\human_01\scenario\yantar\system_message_3]]}
-ph_snd_themes["system_message_4"]	= {[[characters_voice\human_01\scenario\yantar\system_message_4]]}
-ph_snd_themes["system_message_5"]	= {[[characters_voice\human_01\scenario\yantar\system_message_5]]}
+ph_snd_themes["system_message_1"]	= {[[characters_voice\scenario\yantar\system_message_1]]}
+ph_snd_themes["system_message_2"]	= {[[characters_voice\scenario\yantar\system_message_2]]}
+ph_snd_themes["system_message_3"]	= {[[characters_voice\scenario\yantar\system_message_3]]}
+ph_snd_themes["system_message_4"]	= {[[characters_voice\scenario\yantar\system_message_4]]}
+ph_snd_themes["system_message_5"]	= {[[characters_voice\scenario\yantar\system_message_5]]}
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
