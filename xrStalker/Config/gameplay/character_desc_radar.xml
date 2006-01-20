@@ -15,7 +15,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -41,7 +41,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_02\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -67,7 +67,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -93,7 +93,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -120,7 +120,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -146,7 +146,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -173,7 +173,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -199,7 +199,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_sig220 \n
@@ -225,7 +225,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -251,7 +251,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -278,7 +278,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_head1</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -304,7 +304,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\monolith</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -360,7 +360,7 @@
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -385,7 +385,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -410,7 +410,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -435,7 +435,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -460,7 +460,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -485,7 +485,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -510,7 +510,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -536,7 +536,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -562,7 +562,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -588,7 +588,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -614,7 +614,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\zombied</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -642,7 +642,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -670,7 +670,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -698,7 +698,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -726,7 +726,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -754,7 +754,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -784,7 +784,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -812,7 +812,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -840,7 +840,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -867,7 +867,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -894,7 +894,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\stalker</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -923,7 +923,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -951,7 +951,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -979,7 +979,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
-		<snd_config>characters_voice\human_01\</snd_config>
+		<snd_config>characters_voice\human_01\military</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -1010,7 +1010,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\freedom</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_sig220 \n
@@ -1038,7 +1038,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\freedom</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_sig220 \n
@@ -1066,7 +1066,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\freedom</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_sig220 \n
@@ -1094,7 +1094,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1121,7 +1121,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1150,7 +1150,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1179,7 +1179,7 @@
 		<reputation>40</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\dolg</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -1208,7 +1208,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -1233,7 +1233,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -1260,7 +1260,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
