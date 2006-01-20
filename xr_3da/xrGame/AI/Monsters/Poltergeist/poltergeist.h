@@ -71,7 +71,8 @@ public:
 	
 			// ltx params
 			ref_sound			m_flame_sound;
-			LPCSTR				m_flame_particles;
+			LPCSTR				m_flame_particles_prepare;
+			LPCSTR				m_flame_particles_fire;
 			u32					m_flame_fire_delay;
 			float				m_flame_length;
 			float				m_flame_hit_value;

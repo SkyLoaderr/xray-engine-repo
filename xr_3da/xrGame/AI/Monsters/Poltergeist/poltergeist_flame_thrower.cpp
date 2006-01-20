@@ -17,7 +17,9 @@
 void CPoltergeist::LoadFlame(LPCSTR section)
 {
 	m_flame_sound.create		(TRUE, pSettings->r_string(section,"flame_sound"), SOUND_TYPE_WORLD);
-	m_flame_particles			= pSettings->r_string(section,"flame_particles");
+	
+	m_flame_particles_prepare	= pSettings->r_string(section,"flame_particles_prepare");
+	m_flame_particles_fire		= pSettings->r_string(section,"flame_particles_fire");
 	m_flame_fire_delay			= pSettings->r_u32(section,"flame_fire_delay");
 	m_flame_length				= pSettings->r_float(section,"flame_length");
 	m_flame_hit_value			= pSettings->r_float(section,"flame_hit_value");
@@ -38,31 +40,11 @@ void CPoltergeist::FireFlame(const CObject *target_object)
 	
 	m_flames.push_back			(element);
 
-	// Start Particles
-	CParticlesObject *ps = CParticlesObject::Create(m_flame_particles,TRUE);
-	
-	// вычислить позицию и направленность партикла
-	CKinematics *pK = smart_cast<CKinematics*>(const_cast<CObject*>(target_object)->Visual());
-	Fmatrix bone_transform;
-	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
-
-	Fmatrix global_transform;
-	global_transform.mul_43(target_object->XFORM(),bone_transform);
-
-	Fvector target_point = global_transform.c;
+	Fvector target_point = get_head_position(const_cast<CObject*>(target_object));
 	element->target_dir.sub(target_point, element->position);
 	element->target_dir.normalize();
 
-	Fmatrix pos; 
-	pos.identity();
-	pos.k.set(element->target_dir);
-	Fvector::generate_orthonormal_basis_normalized(pos.k,pos.j,pos.i);
-	// установить позицию
-	pos.translate_over(element->position);
-
-	ps->UpdateParent(pos, zero_vel);
-	ps->Play();	
-
+	PlayParticles(m_flame_particles_prepare,element->position,element->target_dir,TRUE);
 }
 
 
@@ -93,10 +75,18 @@ void CPoltergeist::UpdateFlame()
 			continue;
 		}
 
-		if (element->time_started + m_flame_fire_delay < Device.dwTimeGlobal) {
+		if (element->time_started + m_flame_fire_delay < time()) {
+			//launch the second part particles
+			
+			Fvector target_point = get_head_position(const_cast<CObject*>(element->target_object));
+			element->target_dir.sub(target_point, element->position);
+			element->target_dir.normalize();
+			
+			PlayParticles(m_flame_particles_fire,element->position,element->target_dir,TRUE);
+
 			// Test hit
 			collide::rq_result rq;
-			
+
 			if (Level().ObjectSpace.RayPick(element->position, element->target_dir, m_flame_length, collide::rqtBoth, rq, NULL)) {
 				if ((rq.O == element->target_object) && (rq.range < m_flame_length)) {
 
@@ -114,6 +104,8 @@ void CPoltergeist::UpdateFlame()
 				}
 			}
 			element->time_started = 0;
+
+
 		}
 	}
 
