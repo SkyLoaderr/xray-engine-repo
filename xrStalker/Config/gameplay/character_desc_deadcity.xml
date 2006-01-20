@@ -16,7 +16,7 @@
         <reputation>0</reputation>
 
         <visual>actors\izgoy\izgoy</visual>
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\stalker\</snd_config>
         <supplies>
             [spawn] \n
             cit_doctors_key \n
@@ -43,7 +43,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -76,7 +76,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -110,7 +110,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -142,7 +142,7 @@
 		<rank>70</rank>
 		<reputation>-50</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -176,7 +176,7 @@
 		<rank>90</rank>
 		<reputation>-50</reputation>
 	
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -210,7 +210,7 @@
 		<rank>90</rank>
 		<reputation>-50</reputation>
 	
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -244,7 +244,7 @@
 		<rank>90</rank>
 		<reputation>-50</reputation>
 	
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -279,7 +279,7 @@
 		<rank>90</rank>
 		<reputation>-50</reputation>
 	
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
 		<panic_threshold>0</panic_threshold>
 
@@ -317,7 +317,7 @@
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_drunk</visual>
-        <snd_config>characters_voice\human_02\</snd_config>
+        <snd_config>characters_voice\human_02\bandit\</snd_config>
         <supplies>
             [spawn] \n
             vodka = 3 \n
@@ -344,7 +344,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -375,7 +375,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -405,7 +405,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -435,7 +435,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
-		<snd_config>characters_voice\human_03\</snd_config>
+		<snd_config>characters_voice\human_03\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -466,7 +466,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -497,7 +497,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -527,7 +527,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -558,7 +558,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -589,7 +589,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_02\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<supplies>
