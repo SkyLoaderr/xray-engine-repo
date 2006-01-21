@@ -43,10 +43,39 @@ function prefetch_section(ini, name)
 			prefetch_snd_files(value)
 		end
 	end
+	if ini:section_exist(name.."_single") then
+		local n = ini:line_count(name.."_single")
+		local id, value = "", ""
+		for i=0,n-1 do
+			result, id, value	= ini:r_line(name.."_single",i,"","")
+			prefetch_snd_files(value)
+		end
+	end
 end
 
+local voice = {"human_01", "human_02", "human_03"}
+local community = {"stalker", "bandit", "killer",
+		           "military", "dolg", "freedom",
+		           "ecolog", "monolith", "zombied"}
+local default_prefix = "characters_voice\\"		           
 function prefetch_snd_files(path)
-	level.iterate_sounds(path, sound_theme.nstl, sound_prefetch.prefetch_file);
+	-- Если это звук без префикса - необходимо загрузить только его
+	-- если с префиксом - необходимо его загрузить для всех голосов и комьюнити.
+	local flag, path_clear = sound_theme.check_prefix(path)
+
+	if flag == 0 then
+		level.iterate_sounds(default_prefix..path_clear, sound_theme.nstl, sound_prefetch.prefetch_file);
+		return
+	end
+	
+	-- итерируем по всем голосам и комьюнитям
+	for k,v in pairs(voice) do
+		for kk,vv in pairs(community) do
+			local path_full = default_prefix..v.."\\"..vv.."\\"..path_clear
+			level.iterate_sounds(path_full, sound_theme.nstl, sound_prefetch.prefetch_file);
+		end
+	end
+	
 end
 
 function prefetch_file(name)

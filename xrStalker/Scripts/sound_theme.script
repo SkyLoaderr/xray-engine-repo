@@ -553,16 +553,16 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 local character_prefix = ""
 local default_prefix = "characters_voice\\"
+function check_prefix(s)
+	local flag = string.sub(s, 1, 2)
+	return flag == "1", string.sub(s, 3)
+end
+
 function load_sound(obj)
 	local k,v = 0,0
 	
 	-- загрузка звуков на основе данных ltx
 	function load_sound_from_ltx(obj, name, tbl)		
-		function check_prefix(s)
-			local flag = string.sub(s, 1, 2)
-			return flag == "1", string.sub(s, 3)
-		end
-	
 		tbl.max_ids[obj:id()] = {}
 		if snd_ini:section_exist(name.."_rnd") then		
 			local s = select_sound_from_ltx(obj, name.."_rnd", snd_ini)			
