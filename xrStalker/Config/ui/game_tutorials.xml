@@ -56,7 +56,7 @@
 			<length_sec>15</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_1</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_1</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
@@ -68,7 +68,7 @@
 			<pause_state>on</pause_state>
 			<guard_key/>
 			<cursor_pos/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_2</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_2</sound>
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
 
@@ -85,7 +85,7 @@
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_3</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_3</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
@@ -103,7 +103,7 @@
 			<length_sec>8</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_4</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_4</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
@@ -115,7 +115,7 @@
 			<length_sec>13</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_4_1</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_4_1</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
@@ -139,7 +139,7 @@
 			<length_sec>4</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_5</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_5</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
@@ -156,7 +156,7 @@
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_6</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_6</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
@@ -178,7 +178,7 @@
 			<length_sec>8</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_7</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_7</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
@@ -195,7 +195,7 @@
 			<length_sec>5</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_8</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_8</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
@@ -217,7 +217,7 @@
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_9</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_9</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
@@ -231,7 +231,7 @@
 			<length_sec>23</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_11</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_11</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_contacts</pda_section>
@@ -255,7 +255,7 @@
 			<length_sec>20</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_12</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_12</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_closed</pda_section>
@@ -274,7 +274,7 @@
 			<length_sec>19</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_13</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_13</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_diary</pda_section>
@@ -293,7 +293,7 @@
 			<length_sec>21</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_14</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_14</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_ranking</pda_section>
@@ -310,7 +310,7 @@
 			<length_sec>6</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_14_1</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_14_1</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_statistics</pda_section>
@@ -328,7 +328,7 @@
 			<length_sec>11</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_15</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_15</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_encyclopedia</pda_section>
@@ -348,7 +348,7 @@
 			<length_sec>30</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
-			<sound>characters_voice\human_01\scenario\trader\trader_tutorial_pda_15_1</sound>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_15_1</sound>
 			<cursor_pos/>
 			<grab_input>0</grab_input>
 			<pda_section>pda_closed</pda_section>
