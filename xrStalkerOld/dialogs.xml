@@ -27,6 +27,12 @@
         <precondition>dialogs.actor_have_medkit</precondition>
     </dialog>
 
+    <dialog id="tm_escape_trader_dialog" priority="-1">
+		<init_func>task_manager.init_trader_task_dialog</init_func>
+    </dialog>
+
+
+
     <!-- FINAL DIALOGS -->
     <dialog id="hello_dialog">
         <phrase_list>
