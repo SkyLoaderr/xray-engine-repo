@@ -650,27 +650,27 @@ function load_job(sj, gname, type, squad, groups)
       
       
         if type == "bun_ptr20" then
-		t = { section = "logic@bun_ptr20_walker1",
+		t = { section = "logic@bun_ptr20_walker11",
 			idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = { },
 			online = false, 
 			in_rest = "", out_rest = ""
 		}
        table.insert(sj, t)	
-       t = { section = "logic@bun_ptr20_walker2",
+       t = { section = "logic@bun_ptr20_walker21",
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-			t = { section = "logic@bun_ptr20_walker11",
+			t = { section = "logic@bun_ptr20_walker1",
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
 		}
        table.insert(sj, t)	
-       t = { section = "logic@bun_ptr20_walker21",
+       t = { section = "logic@bun_ptr20_walker2",
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
