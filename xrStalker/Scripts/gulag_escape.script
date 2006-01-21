@@ -1835,13 +1835,24 @@ function load_states(gname, type)
 
 	if type == "esc_dogs_swarm" then
 		return function(gulag)
-			if (level.get_time_hours() > 0 and level.get_time_hours() <= 1) or (level.get_time_hours() > 4 and level.get_time_hours() <= 5) or (level.get_time_hours() > 8 and level.get_time_hours() <= 9) or (level.get_time_hours() > 12 and level.get_time_hours() <= 13) or (level.get_time_hours() > 16 and level.get_time_hours() <= 17) or (level.get_time_hours() > 20 and level.get_time_hours() <= 21) then
-				return 0 -- 1sr
-			elseif (level.get_time_hours() > 2 and level.get_time_hours() <= 3) or (level.get_time_hours() > 6 and level.get_time_hours() <= 7) or (level.get_time_hours() > 10 and level.get_time_hours() <= 11) or (level.get_time_hours() > 14 and level.get_time_hours() <= 15) or (level.get_time_hours() > 18 and level.get_time_hours() <= 19) or (level.get_time_hours() > 22 and level.get_time_hours() <= 23) then
-				return 1 -- 3 sr
-			else
-				return 2 -- 2 sr
+			if game.get_game_time():diffSec(gulag.stateBegin) > 54000 then
+			  then
+				if gulag.state == 0 then
+					return 1
+				elseif gulag.state == 1 then
+					return 2
+				elseif gulag.state == 2 then
+					return 0
+				end
 			end
+		
+--			if (level.get_time_hours() > 0 and level.get_time_hours() <= 1) or (level.get_time_hours() > 4 and level.get_time_hours() <= 5) or (level.get_time_hours() > 8 and level.get_time_hours() <= 9) or (level.get_time_hours() > 12 and level.get_time_hours() <= 13) or (level.get_time_hours() > 16 and level.get_time_hours() <= 17) or (level.get_time_hours() > 20 and level.get_time_hours() <= 21) then
+--				return 0 -- 1sr
+--			elseif (level.get_time_hours() > 2 and level.get_time_hours() <= 3) or (level.get_time_hours() > 6 and level.get_time_hours() <= 7) or (level.get_time_hours() > 10 and level.get_time_hours() <= 11) or (level.get_time_hours() > 14 and level.get_time_hours() <= 15) or (level.get_time_hours() > 18 and level.get_time_hours() <= 19) or (level.get_time_hours() > 22 and level.get_time_hours() <= 23) then
+--				return 1 -- 3 sr
+--			else
+--				return 2 -- 2 sr
+--			end
 		end
 	end
 
