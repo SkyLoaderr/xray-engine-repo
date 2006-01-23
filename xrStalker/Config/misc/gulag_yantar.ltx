@@ -65,10 +65,19 @@ meet = meet@scientist_1
 path_walk = bunker_walk
 path_look = bunker_look
 combat_ignore_cond = always
+on_info = {+yan_kruglov_after_actor} remark@go_after_actor
 danger = danger_condition@1
-on_info = {+yan_scientist_point_to_1} walker@door_2
 meet = meet@scientist
 def_state_moving = walk
+
+[remark@go_after_actor]
+snd = yantar_kruglov_radiation_quest_1
+anim = wait
+target = actor
+on_info = {+yan_scientist_point_to_1} walker@door_2
+combat_ignore_cond = always
+danger = danger_condition@1
+
 
 [walker@door_2]
 path_walk = walk_door_2
