@@ -94,7 +94,7 @@ function se_monster:can_switch_online ()
     end
 end
 --------------------
-function se_stalker:on_register()
+function se_monster:on_register()
 	cse_alife_monster_base.on_register( self )
 
 	self:fill_exclusives()
