@@ -41,3 +41,18 @@ struct ARTICLE_DATA : public IPureSerializeObject<IReader,IWriter>
 
 DEFINE_VECTOR		(ARTICLE_ID, ARTICLE_ID_VECTOR, ARTICLE_ID_IT);
 DEFINE_VECTOR		(ARTICLE_DATA, ARTICLE_VECTOR, ARTICLE_IT);
+
+class FindArticleByIDPred
+{
+public:
+	FindArticleByIDPred(ARTICLE_ID id){object_id = id;}
+	bool operator() (const ARTICLE_DATA& item)
+	{
+		if(item.article_id == object_id)
+			return true;
+		else
+			return false;
+	}
+private:
+	ARTICLE_ID object_id;
+};

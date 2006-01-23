@@ -43,20 +43,6 @@
 
 #include "ai/monsters/basemonster/base_monster.h"
 
-class FindByIDPred
-{
-public:
-	FindByIDPred(ARTICLE_ID id){object_id = id;}
-	bool operator() (const ARTICLE_DATA& item)
-	{
-		if(item.article_id == object_id)
-			return true;
-		else
-			return false;
-	}
-private:
-	ARTICLE_ID object_id;
-};
 
 void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 {
@@ -70,7 +56,7 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 	for(ARTICLE_ID_VECTOR::const_iterator it = info_portion->ArticlesDisable().begin();
 									it != info_portion->ArticlesDisable().end(); it++)
 	{
-		FindByIDPred pred(*it);
+		FindArticleByIDPred pred(*it);
 		last_end = std::remove_if(B, last_end, pred);
 	}
 	article_vector.erase(last_end, E);
@@ -79,7 +65,7 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 	for(ARTICLE_ID_VECTOR::const_iterator it = info_portion->Articles().begin();
 									it != info_portion->Articles().end(); it++)
 	{
-		FindByIDPred pred(*it);
+		FindArticleByIDPred pred(*it);
 		if( std::find_if(article_vector.begin(), article_vector.end(), pred) != article_vector.end() ) continue;
 
 		CEncyclopediaArticle article;

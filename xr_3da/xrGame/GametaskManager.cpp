@@ -11,7 +11,7 @@
 #include "ui/UIMainInGameWnd.h"
 #include "UIGameSP.h"
 #include "ui/UIPDAWnd.h"
-//#include "ui/UIDiaryWnd.h"
+#include "encyclopedia_article.h"
 #include "ui/UIEventsWnd.h"
 
 struct FindTaskByID{
@@ -71,9 +71,21 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, bool bCheckExisti
 	GameTasks().back().game_task	= t;
 	t->m_ReceiveTime				= Level().GetGameTime();
 
+	ARTICLE_VECTOR& article_vector = Actor()->encyclopedia_registry->registry().objects();
+
+
 	SGameTaskObjective	*obj = NULL;
 	for (u32 i = 0; i < t->m_Objectives.size(); ++i){
 		obj = &t->m_Objectives[i];
+		if(obj->article_id.size()){
+		FindArticleByIDPred pred(obj->article_id);
+		if( std::find_if(article_vector.begin(), article_vector.end(), pred) == article_vector.end() ){
+			CEncyclopediaArticle article;
+			article.Load(obj->article_id);
+			article_vector.push_back(ARTICLE_DATA(obj->article_id, Level().GetGameTime(), article.data()->articleType));
+			}
+		}
+
 		if(obj->object_id!=u16(-1) && obj->map_location.size() && obj->def_location_enabled){
 			CMapLocation* ml =	Level().MapManager().AddMapLocation(obj->map_location, obj->object_id);
 			if(obj->map_hint.size())	ml->SetHint(obj->map_hint);
