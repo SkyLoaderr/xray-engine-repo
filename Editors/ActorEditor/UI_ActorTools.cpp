@@ -82,8 +82,8 @@ void CActorTools::PreviewModel::SetPreferences()
 {
 	PropItemVec items;
     PHelper().CreateFlag32		(items, 	"Scroll", 		&m_Flags, 		pmScroll);
-    PHelper().CreateFloat			(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
-    PHelper().CreateFloat			(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
+    PHelper().CreateFloat		(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
+    PHelper().CreateFloat		(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
     PHelper().CreateToken32		(items,		"Scroll axis",	(u32*)&m_ScrollAxis,	sa_token);
 	m_Props->AssignItems		(items);
     m_Props->ShowProperties		();
@@ -263,7 +263,7 @@ void CActorTools::Render()
     m_PreviewObject.Render	();
 	if (m_pEditObject){
         if (m_RenderObject.IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
-        	::Render->model_RenderSingle(m_RenderObject.m_pVisual,Fidentity,m_RenderObject.m_fLOD);
+            ::Render->model_RenderSingle(m_RenderObject.m_pVisual,Fidentity,m_RenderObject.m_fLOD);
         }else{
 	        // update transform matrix
     		m_pEditObject->RenderSkeletonSingle(m_AVTransform);
@@ -356,25 +356,30 @@ void CActorTools::PrepareLighting()
 	Device.SetLight(0,L);
 	Device.LightEnable(0,true);
 
-    L.diffuse.set(0.3,0.3,0.3,1);
+    L.diffuse.set(0.2,0.2,0.2,1);
     L.direction.set(-1,-1,-1); L.direction.normalize();
 	Device.SetLight(1,L);
 	Device.LightEnable(1,true);
 
-    L.diffuse.set(0.3,0.3,0.3,1);
+    L.diffuse.set(0.2,0.2,0.2,1);
     L.direction.set(1,-1,-1); L.direction.normalize();
 	Device.SetLight(2,L);
 	Device.LightEnable(2,true);
 
-    L.diffuse.set(0.3,0.3,0.3,1);
+    L.diffuse.set(0.2,0.2,0.2,1);
     L.direction.set(-1,-1,1); L.direction.normalize();
 	Device.SetLight(3,L);
 	Device.LightEnable(3,true);
 
-	L.diffuse.set(1.0,0.8,0.7,1);
+	L.diffuse.set(1.0,0.4,0.3,1);
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
+
+	L.diffuse.set(0.3,1.0,0.4,1);
+    L.direction.set(-1,-1,-1); L.direction.normalize();
+	Device.SetLight(5,L);
+	Device.LightEnable(5,true);
 }
 
 void CActorTools::OnDeviceCreate()
@@ -484,7 +489,7 @@ bool CActorTools::Save(LPCSTR initial, LPCSTR obj_name, bool bInternal)
 bool CActorTools::ExportOGF(LPCSTR name)
 {
 	VERIFY(m_bReady);
-    if (m_pEditObject&&m_pEditObject->ExportOGF(name)) return true;
+    if (m_pEditObject&&m_pEditObject->ExportOGF(name,2)) return true;
     return false;
 }
 
@@ -851,7 +856,7 @@ bool CActorTools::BatchConvert(LPCSTR fn)
             	Msg				(".Converting '%s' <-> '%s'",it->first.c_str(),it->second.c_str());
                 CEditableObject* O = xr_new<CEditableObject>("convert");
                 BOOL res		= O->Load		(src_name.c_str());
-                if (res) res	= O->ExportOGF	(tgt_name.c_str());
+                if (res) res	= O->ExportOGF	(tgt_name.c_str(),2);
                 Log				(res?".OK":"!.FAILED");
                 xr_delete		(O);
             }else{

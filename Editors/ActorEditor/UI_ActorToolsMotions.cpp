@@ -101,8 +101,8 @@ bool CActorTools::EngineModel::UpdateGeometryStream(CEditableObject* source)
 {
 	m_GeometryStream.clear();
     if (!source) return false;
-    if (source->IsSkeleton())	return (source->PrepareSVGeometry(m_GeometryStream));
-    else						return (source->PrepareOGF(m_GeometryStream));
+    if (source->IsSkeleton())	return (source->PrepareSVGeometry(m_GeometryStream,2));
+    else						return (source->PrepareOGF(m_GeometryStream,2,true,NULL));
 }
 
 bool CActorTools::EngineModel::UpdateMotionDefsStream(CEditableObject* source)
