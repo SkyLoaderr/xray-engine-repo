@@ -97,12 +97,13 @@ bool XRCORE_API PatternMatch(LPCSTR s, LPCSTR mask)
 {
 	LPCSTR cp=0;
 	LPCSTR mp=0;
-	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
+	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return false;
 	for (;;) {
 		if (!*s) { while (*mask=='*') mask++; return !*mask; }
-		if (*mask=='*') { if (!*++mask) return 1; mp=mask; cp=s+1; continue; }
+		if (*mask=='*') { if (!*++mask) return true; mp=mask; cp=s+1; continue; }
 		if (*mask==*s||*mask=='?') { mask++, s++; continue; }
 		mask=mp; s=cp++;
 	}
+    return false;
 }
 
