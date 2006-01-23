@@ -33,6 +33,11 @@
 
 using namespace luabind;
 
+LPCSTR command_line	()
+{
+	return		(_Core.Params);
+}
+
 #ifdef DEBUG
 void check_object(CScriptGameObject *object)
 {
@@ -525,10 +530,14 @@ void CLevel::script_register(lua_State *L)
 	
 	module(L,"actor_stats")
 	[
-		def("add_points",					&add_actor_points),
-		def("get_points",					&get_actor_points),
-		def("add_to_ranking",				&add_human_to_top_list),
-		def("remove_from_ranking",			&remove_human_from_top_list)
+		def("add_points",						&add_actor_points),
+		def("get_points",						&get_actor_points),
+		def("add_to_ranking",					&add_human_to_top_list),
+		def("remove_from_ranking",				&remove_human_from_top_list)
 	];
 
+	module(L)
+	[
+		def("command_line",						&command_line)
+	];
 }
