@@ -64,8 +64,8 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 // sound
 // ----------------------------------------------------------------------------------------
-	self.sound_obj_left					= sound_object( [[characters_voice\human_01\scenario\yantar\psy_voices_1_l]] )
-	self.sound_obj_right				= sound_object( [[characters_voice\human_01\scenario\yantar\psy_voices_1_r]] )
+	self.sound_obj_left					= sound_object( [[characters_voice\scenario\yantar\psy_voices_1_l]] )
+	self.sound_obj_right				= sound_object( [[characters_voice\scenario\yantar\psy_voices_1_r]] )
 	self.sound_obj_left:play_at_pos		(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d + sound_object.looped)
 	self.sound_obj_right:play_at_pos	(db.actor, vector():set( 1, 0, 1), 0, sound_object.s2d + sound_object.looped)
 	self.sound_obj_left.volume			= self.intensity
