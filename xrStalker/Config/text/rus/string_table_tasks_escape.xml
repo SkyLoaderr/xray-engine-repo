@@ -94,35 +94,7 @@
 	<string id="esc_bandits_on_factory_3">
         <text>Поговорить с Волком, чтобы он выделил для атаки на фабрику своих людей.</text>
     </string>
-    <string id="esc_af_blood">
-        <text>Найти артефакт "кровь камня".</text>
-    </string>
-    <string id="esc_af_blood_0">
-        <text>Найти артефакт "кровь камня".</text>
-    </string>
-    <string id="esc_af_blood_1">
-        <text>Найти артефакт "кровь камня" и принести его торговцу.</text>
-    </string>
-    
-    <string id="esc_af_vyvert">
-        <text>Найти артефакт "выверт".</text>
-    </string>
-    <string id="esc_af_vyvert_0">
-        <text>Найти артефакт "выверт".</text>
-    </string>
-    <string id="esc_af_vyvert_1">
-        <text>Найти артефакт "выверт" и принести его торговцу.</text>
-    </string>
-    
-    <string id="esc_af_medusa">
-        <text>Найти артефакт "medusa".</text>
-    </string>
-    <string id="esc_af_medusa_0">
-        <text>Найти артефакт "medusa".</text>
-    </string>
-    <string id="esc_af_medusa_1">
-        <text>Найти артефакт "medusa" и принести его торговцу.</text>
-    </string>
+
  
      <string id="esc_defend_lager_from_killers">
         <text>Защитить лагерь новичков от наемников.</text>
