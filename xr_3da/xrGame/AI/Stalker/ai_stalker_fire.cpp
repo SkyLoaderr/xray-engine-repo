@@ -41,7 +41,7 @@
 
 using namespace StalkerSpace;
 
-const float DANGER_DISTANCE = 10.f;
+const float DANGER_DISTANCE = 3.f;
 const u32	DANGER_INTERVAL = 120000;
 
 const float PRECISE_DISTANCE	 = 2.5f;

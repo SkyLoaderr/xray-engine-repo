@@ -27,13 +27,13 @@ struct CEnemyFiller {
 	ENEMIES			*m_enemies;
 	squad_mask_type	m_mask;
 	
-	IC			CEnemyFiller		(ENEMIES *enemies, squad_mask_type mask)
+	IC			CEnemyFiller					(ENEMIES *enemies, squad_mask_type mask)
 	{
 		m_enemies					= enemies;
 		m_mask						= mask;
 	}
 
-	IC	void	operator()			(const CEntityAlive *enemy) const
+	IC	void	operator()						(const CEntityAlive *enemy) const
 	{
 		ENEMIES::iterator			I = std::find(m_enemies->begin(),m_enemies->end(),enemy);
 		if (I == m_enemies->end()) {
@@ -46,21 +46,21 @@ struct CEnemyFiller {
 };
 
 template <typename T>
-IC	void CAgentEnemyManager::setup_mask	(xr_vector<T> &objects, CMemberEnemy &enemy)
+IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy)
 {
 	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
 	if (I != objects.end())
 		(*I).m_squad_mask.assign	(enemy.m_distribute_mask.get());
 }
 
-IC	void CAgentEnemyManager::setup_mask	(CMemberEnemy &enemy)
+IC	void CAgentEnemyManager::setup_mask			(CMemberEnemy &enemy)
 {
 	setup_mask						(object().memory().visibles(),enemy);
 	setup_mask						(object().memory().sounds(),enemy);
 	setup_mask						(object().memory().hits(),enemy);
 }
 
-float CAgentEnemyManager::evaluate			(const CEntityAlive *object0, const CEntityAlive *object1) const
+float CAgentEnemyManager::evaluate				(const CEntityAlive *object0, const CEntityAlive *object1) const
 {
 	ai().ef_storage().non_alife().member_item() = 0;
 	ai().ef_storage().non_alife().enemy_item() = 0;
@@ -69,7 +69,7 @@ float CAgentEnemyManager::evaluate			(const CEntityAlive *object0, const CEntity
 	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
 }
 
-void CAgentEnemyManager::exchange_enemies	(CMemberOrder &member0, CMemberOrder &member1)
+void CAgentEnemyManager::exchange_enemies		(CMemberOrder &member0, CMemberOrder &member1)
 {
 	u32								enemy0 = member0.selected_enemy();
 	u32								enemy1 = member1.selected_enemy();
@@ -83,7 +83,7 @@ void CAgentEnemyManager::exchange_enemies	(CMemberOrder &member0, CMemberOrder &
 	member1.selected_enemy			(enemy0);
 }
 
-void CAgentEnemyManager::fill_enemies		()
+void CAgentEnemyManager::fill_enemies			()
 {
 	m_enemies.clear					();
 
@@ -105,7 +105,7 @@ void CAgentEnemyManager::fill_enemies		()
 	}
 }
 
-void CAgentEnemyManager::compute_enemy_danger()
+void CAgentEnemyManager::compute_enemy_danger	()
 {
 	ENEMIES::iterator		I = m_enemies.begin();
 	ENEMIES::iterator		E = m_enemies.end();
@@ -123,7 +123,7 @@ void CAgentEnemyManager::compute_enemy_danger()
 	std::sort						(m_enemies.begin(),m_enemies.end());
 }
 
-void CAgentEnemyManager::assign_enemies		()
+void CAgentEnemyManager::assign_enemies			()
 {
 	for (;;) {
 		squad_mask_type	J, K, N = 0;
@@ -167,7 +167,7 @@ void CAgentEnemyManager::assign_enemies		()
 	}
 }
 
-void CAgentEnemyManager::permutate_enemies	()
+void CAgentEnemyManager::permutate_enemies		()
 {
 	// filling member enemies
 	CAgentMemberManager::iterator					I = object().member().combat_members().begin();
@@ -277,7 +277,7 @@ void CAgentEnemyManager::permutate_enemies	()
 	}
 }
 
-void CAgentEnemyManager::assign_enemy_masks	()
+void CAgentEnemyManager::assign_enemy_masks		()
 {
 	ENEMIES::iterator		I = m_enemies.begin();
 	ENEMIES::iterator		E = m_enemies.end();
@@ -297,10 +297,10 @@ void CAgentEnemyManager::distribute_enemies	()
 	assign_enemy_masks		();
 }
 
-void CAgentEnemyManager::remove_links		(CObject *object)
+void CAgentEnemyManager::remove_links			(CObject *object)
 {
 }
 
-void CAgentEnemyManager::update				()
+void CAgentEnemyManager::update					()
 {
 }

@@ -29,11 +29,11 @@
 #include "../../danger_manager.h"
 #include "../../visual_memory_manager.h"
 
-const u32 TOLLS_INTERVAL	= 2000;
-const u32 GRENADE_INTERVAL	= 0*1000;
-const float FRIENDLY_GRENADE_ALARM_DIST	= 5.f;
-const u32 DANGER_INFINITE_INTERVAL		= 60000000;
-const float DANGER_EXPLOSIVE_DISTANCE	= 10.f;
+const u32 TOLLS_INTERVAL					= 2000;
+const u32 GRENADE_INTERVAL					= 0*1000;
+const float FRIENDLY_GRENADE_ALARM_DIST		= 5.f;
+const u32 DANGER_INFINITE_INTERVAL			= 60000000;
+const float DANGER_EXPLOSIVE_DISTANCE		= 10.f;
 
 bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *object) const
 {
