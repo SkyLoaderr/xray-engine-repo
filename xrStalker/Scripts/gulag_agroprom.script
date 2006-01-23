@@ -661,15 +661,15 @@ function load_ltx_agr_road_patrol2(gname, type)
 
 					"[walker1@" .. gname .. i .. "]\n" ..
 					"team=aa\n" ..
-					"path_walk = walk1_" .. i .. "\n" ..
-					"path_look = look1_" .. i .. "\n" ..
+					"path_walk = walk" .. i .. "_1\n" ..
+					"path_look = look" .. i .. "_1\n" ..
 					"danger=danger_condition@" .. gname .. "\n" ..
 					"on_signal=end1_"..i.."|walker2@" .. gname .. i .. "\n" ..
 
 					"[walker2@" .. gname .. i .. "]\n" ..
 					"team=bb\n" ..
-					"path_walk = walk2_" .. i .. "\n" ..
-					"path_look = look2_" .. i .. "\n" ..
+					"path_walk = walk" .. i .. "_2\n" ..
+					"path_look = look" .. i .. "_2\n" ..
 					"danger=danger_condition@" .. gname .. "\n" ..
 					"on_signal=end2_"..i.."|walker1@" .. gname .. i .. "\n" 
 	end
