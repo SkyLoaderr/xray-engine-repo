@@ -207,9 +207,15 @@ end
 
 -- зарезервировать места для эксклюзивных персонажей
 function se_smart_terrain:preserve_exclusives()
-	printf( "[smart_terrain %s] exclusives=%d", self:name(), exclusives[self:name()] or 0 )
+	local e = exclusives[self:name()]
 
-	self.gulag.capacity = self.gulag.capacity - ( exclusives[self:name()] or 0 )
+	if e then
+		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
+
+		self.gulag.capacity = self.gulag.capacity - e
+
+		exclusives[self:name()] = nil
+	end
 end
 
 -- получить серверные объекты персонажей
@@ -356,8 +362,8 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		return false
 	end
 
-	if ( obj_agreement == agreed_exclusive ) or
-	   ( not self.gulag_working or self.gulag:get_population() < self.gulag.capacity )
+	if obj_agreement == agreed_exclusive or
+	   self.gulag:get_population() < self.gulag.capacity
 	then
 		local community, is_stalker = self:get_obj_community( obj )
 
@@ -416,10 +422,6 @@ end
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
 function se_smart_terrain:enabled( obj )
---	if obj:name() == "esc_vagon_wounded" then
---		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
---	end
-
 	-- DEBUG
 	if self.disabled then
 		return false
@@ -433,20 +435,8 @@ function se_smart_terrain:enabled( obj )
 			-- TODO проитерировать группу
 --		else
 			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
---[[			local b1 = self:obj_accepts_smart_terrain( obj )
-			local b2 = self:smart_terrain_accepts_obj( obj, b1 )
-
-			if obj:name() == "esc_vagon_wounded" then
-				printf( "obj_accepts_smart_terrain=%d smart_terrain_accepts_obj=%s", b1, tostring( b2 ) )
-			end
-
-			return b2]]
 --		end
 	else
---		if obj:name() == "esc_vagon_wounded" then
---			printf( "smart terrain is unavailable" )
---		end
-
 		return false
 	end
 end
