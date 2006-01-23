@@ -1843,6 +1843,8 @@ function load_states(gname, type)
 				elseif gulag.state == 2 then
 					return 0
 				end
+			else
+				return gulag.state
 			end
 		
 --			if (level.get_time_hours() > 0 and level.get_time_hours() <= 1) or (level.get_time_hours() > 4 and level.get_time_hours() <= 5) or (level.get_time_hours() > 8 and level.get_time_hours() <= 9) or (level.get_time_hours() > 12 and level.get_time_hours() <= 13) or (level.get_time_hours() > 16 and level.get_time_hours() <= 17) or (level.get_time_hours() > 20 and level.get_time_hours() <= 21) then
