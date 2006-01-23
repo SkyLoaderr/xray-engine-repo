@@ -137,7 +137,7 @@ IC char*						strconcat				( char* dest, const char* S1, const char* S2, const c
 
 // return pointer to ".ext"
 IC char*						strext					( const char* S )
-{	return (char*) strchr(S,'.');	}
+{	return (char*) strrchr(S,'.');	}
 
 IC u32							xr_strlen				( const char* S )
 {	return (u32)strlen(S);			}
