@@ -135,7 +135,7 @@
 
 	<specific_character id="rad_monolit_sniper_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="6" y="2"></icon>
+		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
 		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
