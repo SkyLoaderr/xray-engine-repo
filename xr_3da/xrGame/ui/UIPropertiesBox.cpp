@@ -87,12 +87,12 @@ void CUIPropertiesBox::Show(float x, float y)
 
 
 	//выбрать позицию, чтобы окношко полностью влазило в экран
-	if(x+GetWidth()<float(Device.dwWidth))
+	if(x+GetWidth()<float(Device.dwWidth/UI()->GetScaleX()))
 		x_pos = x;
 	else
 		x_pos = x - (x+GetWidth()-( Device.dwWidth/UI()->GetScaleX() )  );
 	
-	if(y+GetHeight()<float(Device.dwHeight))
+	if(y+GetHeight()<float(Device.dwHeight/UI()->GetScaleY()))
 		y_pos = y;
 	else
 		y_pos = y - (y+GetHeight()-( Device.dwHeight/UI()->GetScaleY() )  );

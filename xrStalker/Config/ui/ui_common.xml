@@ -413,4 +413,5 @@
     <texture id="ui_beltbut_silencer_d" x="697" y="739" width="23" height="23" />
     <texture id="ui_beltbut_silencer_h" x="697" y="785" width="23" height="23" />
     <texture id="ui_beltbut_silencer_t" x="697" y="808" width="23" height="23" />
+    <texture id="ui_buymenu_progBar" x="303" y="207" width="121" height="7" />
 </ui_texture>

@@ -140,9 +140,9 @@
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_sound_quality</text>
 		</cap_soundquality>
 		
-		<check_reverse x="20" y="155" width="143" height="21">
+		<!--check_reverse x="20" y="155" width="143" height="21">
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_reverse_speakers</text>
-		</check_reverse>
+		</check_reverse-->
 		<check_eax x="20" y="115" width="143" height="21">
 			<options_item entry="snd_efx" group="mm_opt_sound"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_eax</text>
