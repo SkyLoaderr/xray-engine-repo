@@ -20,7 +20,7 @@ CUISpeechMenu::CUISpeechMenu(LPCSTR section_name){
 		m_pList->SetItemHeight(h);
 	// default text settings
 	m_text_color = 0xffffffff;
-	SetFont(UI()->Font()->pArialN21Russian);
+	SetFont(UI()->Font()->pFontLetterica18Russian);
 	CUIXmlInit::InitFont(xml_doc,"speech_menu:text",0,m_text_color,m_pFont);	
     InitList(section_name);
 }

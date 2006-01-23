@@ -145,7 +145,7 @@
 	</info_portion>
 	
 	<info_portion id="test_andy_info">
-		<task>andy_task_2</task>
+		<article>descr_bar_resque_information</article>
 	</info_portion>
 
 </game_information_portions>

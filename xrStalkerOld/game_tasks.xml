@@ -85,9 +85,6 @@
 			<text>”ничтожить лагерь плохих реб€т на заданном уровне</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
-		<objective>
-			<text>¬ернутьс€ за наградой к тому-то</text>
-		</objective>
 	</game_task>
 
 

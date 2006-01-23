@@ -19,8 +19,13 @@ void CGameTask::script_register(lua_State *L)
 			.def("add_complete_info",					&SGameTaskObjective::AddCompleteInfo_script		)
 			.def("add_fail_info",						&SGameTaskObjective::AddFailInfo_script			)
 			.def("add_on_complete_info",				&SGameTaskObjective::AddOnCompleteInfo_script	)
-			.def("add_on_fail_info",					&SGameTaskObjective::AddOnFailInfo_script		),
+			.def("add_on_fail_info",					&SGameTaskObjective::AddOnFailInfo_script		)
 			
+			.def("add_complete_func",					&SGameTaskObjective::AddCompleteFunc_script			)
+			.def("add_fail_func",						&SGameTaskObjective::AddFailFunc_script				)
+			.def("add_on_complete_func",					&SGameTaskObjective::AddOnCompleteFunc_script	)
+			.def("add_on_fail_func",					&SGameTaskObjective::AddOnFailFunc_script			),
+
 			class_<CGameTask>("CGameTask")
 			.def(										constructor<>()									)
 			.def("load",								&CGameTask::Load_script							)

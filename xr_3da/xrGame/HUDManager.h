@@ -21,20 +21,16 @@ struct CFontManager :public pureDeviceReset			{
 	typedef FONTS_VEC::iterator						FONTS_VEC_IT;
 	FONTS_VEC				m_all_fonts;
 	void					Render					();
-	// console font
-	CGameFont*				pFontConsole;
-	CGameFont*				pFontStartup;
+
 	// hud font
 	CGameFont*				pFontSmall;
 	CGameFont*				pFontMedium;
 	CGameFont*				pFontDI;
-	CGameFont*				pFontBigDigit;
 	//חאדמכמגמקםûי רנטפע
 	CGameFont*				pFontHeaderRussian;
 	CGameFont*				pFontHeaderEurope;
 	//רנטפעû הכÿ טםעונפויסא
 	CGameFont*				pFontArial14;
-	CGameFont*				pArialN21Russian;
 	CGameFont*				pFontGraffiti19Russian;
 	CGameFont*				pFontGraffiti22Russian;
 	CGameFont*				pFontLetterica16Russian;

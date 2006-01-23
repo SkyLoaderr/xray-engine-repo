@@ -23,7 +23,7 @@
 CUIPropertiesBox::CUIPropertiesBox()
 {
 	m_iClickedElement = -1;
-	SetFont(HUD().Font().pArialN21Russian);
+	SetFont(HUD().Font().pFontArial14);
 }
 
 CUIPropertiesBox::~CUIPropertiesBox()

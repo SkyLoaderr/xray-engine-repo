@@ -23,8 +23,6 @@ CGameFont* GetFontMedium()
 {return mngr().pFontMedium;}
 CGameFont* GetFontDI()
 {return mngr().pFontDI;}
-CGameFont* GetFontBigDigit()
-{return mngr().pFontBigDigit;}
 
 	//חאדמכמגמקםûי רנטפע
 CGameFont* GetFontHeaderRussian()
@@ -33,8 +31,6 @@ CGameFont* GetFontHeaderEurope()
 {return mngr().pFontHeaderEurope;}
 
 //רנטפעû הכÿ טםעונפויסא
-CGameFont* GetFontArialN21Russian()
-{return mngr().pArialN21Russian;}
 CGameFont* GetFontGraffiti19Russian()
 {return mngr().pFontGraffiti19Russian;}
 CGameFont* GetFontGraffiti22Russian()
@@ -64,10 +60,8 @@ void CUIWindow::script_register(lua_State *L)
 		def("GetFontSmall",				&GetFontSmall),
 		def("GetFontMedium",			&GetFontMedium),
 		def("GetFontDI",				&GetFontDI),
-		def("GetFontBigDigit",			&GetFontBigDigit),
 		def("GetFontHeaderRussian",		&GetFontHeaderRussian),
 		def("GetFontHeaderEurope",		&GetFontHeaderEurope),
-		def("GetFontArialN21Russian",	&GetFontArialN21Russian),
 		def("GetFontGraffiti19Russian",	&GetFontGraffiti19Russian),
 		def("GetFontGraffiti22Russian",	&GetFontGraffiti22Russian),
 		def("GetFontLetterica16Russian",&GetFontLetterica16Russian),

@@ -15,16 +15,12 @@ CFontManager::CFontManager()
 {
 	Device.seqDeviceReset.Add(this,REG_PRIORITY_HIGH);
 
-	m_all_fonts.push_back(&pFontConsole				);
-	m_all_fonts.push_back(&pFontStartup				);
-	m_all_fonts.push_back(&pFontSmall				);
-	m_all_fonts.push_back(&pFontMedium				);
-	m_all_fonts.push_back(&pFontDI					);
-	m_all_fonts.push_back(&pFontBigDigit			);
+	m_all_fonts.push_back(&pFontSmall				);// used cpp
+	m_all_fonts.push_back(&pFontMedium				);// used cpp
+	m_all_fonts.push_back(&pFontDI					);// used cpp
 	m_all_fonts.push_back(&pFontHeaderEurope		);
-	m_all_fonts.push_back(&pFontHeaderRussian		);
-	m_all_fonts.push_back(&pFontArial14				);
-	m_all_fonts.push_back(&pArialN21Russian			);
+	m_all_fonts.push_back(&pFontHeaderRussian		); // ???
+	m_all_fonts.push_back(&pFontArial14				);// used xml
 	m_all_fonts.push_back(&pFontGraffiti19Russian	);
 	m_all_fonts.push_back(&pFontGraffiti22Russian	);
 	m_all_fonts.push_back(&pFontLetterica16Russian	);
@@ -46,16 +42,12 @@ CFontManager::CFontManager()
 void CFontManager::InitializeFonts()
 {
 
-	InitializeFont(pFontConsole				,"console_font",				CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	InitializeFont(pFontStartup				,"startup_font",				CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	InitializeFont(pFontSmall				,"hud_font_small"				);
 	InitializeFont(pFontMedium				,"hud_font_medium"				);
 	InitializeFont(pFontDI					,"hud_font_di",					CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	InitializeFont(pFontBigDigit			,"hud_font_big_digit"			);
 	InitializeFont(pFontHeaderEurope		,"ui_font_header_europe"		);
 	InitializeFont(pFontHeaderRussian		,"ui_font_header_russian"		);
 	InitializeFont(pFontArial14				,"ui_font_arial_14"				);
-	InitializeFont(pArialN21Russian			,"ui_font_arial_n_21_russian"	);
 	InitializeFont(pFontGraffiti19Russian	,"ui_font_graffiti19_russian"	);
 	InitializeFont(pFontGraffiti22Russian	,"ui_font_graffiti22_russian"	);
 	InitializeFont(pFontLetterica16Russian	,"ui_font_letterica16_russian"	);

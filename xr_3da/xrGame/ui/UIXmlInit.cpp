@@ -37,7 +37,6 @@
 #define HEADER_FONT_NAME		"header"
 #define ARIAL_FONT_NAME			"arial"
 
-#define BIG_FONT_NAME			"big"
 #define NORMAL_FONT_NAME		"normal"
 #define MEDIUM_FONT_NAME		"medium"
 #define SMALL_FONT_NAME			"small"
@@ -653,17 +652,9 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 		{
 			pFnt = UI()->Font()->pFontGraffiti50Russian;
 		}
-		else if(!xr_strcmp(*font_name, ARIAL_FONT_NAME))
-		{
-			pFnt = UI()->Font()->pArialN21Russian;
-		}
 		else if(!xr_strcmp(*font_name, "arial_14"))
 		{
 			pFnt = UI()->Font()->pFontArial14;
-		}
-		else if(!xr_strcmp(*font_name, BIG_FONT_NAME))
-		{
-			pFnt = UI()->Font()->pFontBigDigit;
 		}
 		else if(!xr_strcmp(*font_name, MEDIUM_FONT_NAME))
 		{
@@ -689,8 +680,10 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 		{
 			pFnt = UI()->Font()->pFontDI;
 		}
-		else
+		else{
+			R_ASSERT3(0,"unknown font",*font_name);
 			pFnt = NULL;
+		}
 	}
 	return true;
 }

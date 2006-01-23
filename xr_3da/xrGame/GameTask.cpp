@@ -277,7 +277,18 @@ def_location_enabled(true),
 parent				(parent),
 idx					(_idx)
 {
+}
 
+SGameTaskObjective::SGameTaskObjective()
+:description		(NULL),
+article_id			(NULL),
+map_location		(NULL),
+object_id			(u16(-1)),
+task_state			(eTaskStateInProgress),
+def_location_enabled(true),
+parent				(NULL),
+idx					(0)
+{
 }
 
 CMapLocation* SGameTaskObjective::HasMapLocation		()
@@ -415,6 +426,25 @@ void SGameTaskObjective::AddOnFailInfo_script(LPCSTR _str)
 	m_infos_on_fail.push_back(_str);
 }
 
+void SGameTaskObjective::AddCompleteFunc_script(LPCSTR _str)
+{
+	m_pScriptHelper.m_s_complete_lua_functions.push_back(_str);
+}
+void SGameTaskObjective::AddFailFunc_script(LPCSTR _str)
+{
+	m_pScriptHelper.m_s_fail_lua_functions.push_back(_str);
+}
+void SGameTaskObjective::AddOnCompleteFunc_script(LPCSTR _str)
+{
+	m_pScriptHelper.m_s_lua_functions_on_complete.push_back(_str);
+}
+void SGameTaskObjective::AddOnFailFunc_script(LPCSTR _str)
+{
+	m_pScriptHelper.m_s_lua_functions_on_fail.push_back(_str);
+}
+
+
+
 void CGameTask::Load_script(LPCSTR _id)		
 {
 	Load(_id);
@@ -427,10 +457,137 @@ void CGameTask::SetTitle_script(LPCSTR _title)
 
 void CGameTask::AddObjective_script(SGameTaskObjective* O)	
 {
+	O->m_pScriptHelper.init_functors(O->m_pScriptHelper.m_s_complete_lua_functions,		O->m_complete_lua_functions);
+	O->m_pScriptHelper.init_functors(O->m_pScriptHelper.m_s_fail_lua_functions,			O->m_fail_lua_functions);
+	O->m_pScriptHelper.init_functors(O->m_pScriptHelper.m_s_lua_functions_on_complete,	O->m_lua_functions_on_complete);
+	O->m_pScriptHelper.init_functors(O->m_pScriptHelper.m_s_lua_functions_on_fail,		O->m_lua_functions_on_fail);
+
 	m_Objectives.push_back(*O);
 }
 
 void ChangeStateCallback(shared_str& task_id, int obj_id, ETaskState state){
 
 	Actor()->callback(GameObject::eTaskStateChange)(*task_id, obj_id, state);
+}
+
+
+void SGameTaskObjective::save(IWriter &stream)
+{
+		save_data(idx,					stream);
+		save_data(task_state,			stream);
+
+		save_data(description,			stream);
+		save_data(map_location,			stream);
+		save_data(object_id,			stream);
+		save_data(task_state,			stream);
+		save_data(def_location_enabled,	stream);
+		save_data(map_hint,				stream);
+		save_data(icon_texture_name,	stream);
+		save_data(icon_rect,			stream);
+		save_data(article_id,			stream);
+
+		save_data(m_completeInfos,		stream);
+		save_data(m_failInfos,			stream);
+		save_data(m_infos_on_complete,	stream);
+		save_data(m_infos_on_fail,		stream);
+
+		bool b_script					= m_pScriptHelper.not_empty();
+		save_data(b_script,				stream);
+		if(b_script)
+			save_data(m_pScriptHelper,	stream);
+
+}
+
+void SGameTaskObjective::load(IReader &stream)
+{
+		load_data(idx,					stream);
+		load_data(task_state,			stream);
+
+		load_data(description,			stream);
+		load_data(map_location,			stream);
+		load_data(object_id,			stream);
+		load_data(task_state,			stream);
+		load_data(def_location_enabled,	stream);
+		load_data(map_hint,				stream);
+		load_data(icon_texture_name,	stream);
+		load_data(icon_rect,			stream);
+		load_data(article_id,			stream);
+
+		load_data(m_completeInfos,		stream);
+		load_data(m_failInfos,			stream);
+		load_data(m_infos_on_complete,	stream);
+		load_data(m_infos_on_fail,		stream);
+
+
+		bool b_script;
+		load_data(b_script,				stream);
+		if(b_script){
+			load_data(m_pScriptHelper,	stream);
+
+			m_pScriptHelper.init_functors	(m_pScriptHelper.m_s_complete_lua_functions,	m_complete_lua_functions);
+			m_pScriptHelper.init_functors	(m_pScriptHelper.m_s_fail_lua_functions,		m_fail_lua_functions);
+			m_pScriptHelper.init_functors	(m_pScriptHelper.m_s_lua_functions_on_complete, m_lua_functions_on_complete);
+			m_pScriptHelper.init_functors	(m_pScriptHelper.m_s_lua_functions_on_fail,		m_lua_functions_on_fail);
+		}
+}
+
+void SScriptObjectiveHelper::init_functors(xr_vector<shared_str>& v_src, xr_vector<luabind::functor<bool> >& v_dest)
+{
+	xr_vector<shared_str>::iterator it		= v_src.begin();
+	xr_vector<shared_str>::iterator it_e	= v_src.end();
+	v_dest.resize(v_src.size());
+
+	for(u32 idx=0 ;it!=it_e;++it,++idx)
+	{
+			bool functor_exists		= ai().script_engine().functor(*(*it) ,v_dest[idx]);
+			if(!functor_exists)		Log("Cannot find script function described in task objective  ", *(*it));
+	}
+}
+
+void SScriptObjectiveHelper::load(IReader &stream)
+{
+		load_data(m_s_complete_lua_functions,		stream);
+		load_data(m_s_fail_lua_functions,			stream);
+		load_data(m_s_lua_functions_on_complete,	stream);
+		load_data(m_s_lua_functions_on_fail,		stream);
+}
+
+void SScriptObjectiveHelper::save(IWriter &stream)
+{
+		save_data(m_s_complete_lua_functions,		stream);
+		save_data(m_s_fail_lua_functions,			stream);
+		save_data(m_s_lua_functions_on_complete,	stream);
+		save_data(m_s_lua_functions_on_fail,		stream);
+}
+
+void SGameTaskKey::save(IWriter &stream)
+{
+	save_data(task_id,						stream);
+	save_data(game_task->m_ReceiveTime,		stream);
+	save_data(game_task->m_FinishTime,		stream);
+	save_data(game_task->m_Title,			stream);
+	save_data(game_task->m_is_task_general, stream);
+
+	save_data(game_task->m_Objectives, stream);
+
+}
+
+void SGameTaskKey::load(IReader &stream)
+{
+	load_data(task_id,						stream);
+	game_task = xr_new<CGameTask>			(task_id);
+	load_data(game_task->m_ReceiveTime,		stream);
+	load_data(game_task->m_FinishTime,		stream);
+	load_data(game_task->m_Title,			stream);
+	load_data(game_task->m_is_task_general, stream);
+
+	load_data(game_task->m_Objectives, stream);
+
+	for(u32 i=0; i<game_task->m_Objectives.size(); ++i)
+		game_task->m_Objectives[i].parent = game_task;
+}
+
+void SGameTaskKey::destroy()
+{
+	delete_data(game_task);
 }

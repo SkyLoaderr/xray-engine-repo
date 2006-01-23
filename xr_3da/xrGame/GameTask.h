@@ -9,6 +9,26 @@ class CGameTaskManager;
 class CMapLocation;
 class CGameTask;
 
+class SScriptObjectiveHelper: public IPureSerializeObject<IReader,IWriter>
+{
+public:
+	xr_vector<shared_str>	m_s_complete_lua_functions;
+	xr_vector<shared_str>	m_s_fail_lua_functions;
+
+	xr_vector<shared_str>	m_s_lua_functions_on_complete;
+	xr_vector<shared_str>	m_s_lua_functions_on_fail;
+public:
+	bool			not_empty		() {return m_s_complete_lua_functions.size()	||
+												m_s_fail_lua_functions.size()		||
+												m_s_lua_functions_on_complete.size()||
+												m_s_lua_functions_on_fail.size		() ;}
+
+	virtual void			save			(IWriter &stream);
+	virtual void			load			(IReader &stream);
+			
+			void			init_functors	(xr_vector<shared_str>& v_src, xr_vector<luabind::functor<bool> >& v_dest);
+};
+
 class SGameTaskObjective : public IPureSerializeObject<IReader,IWriter>
 {
 	friend struct SGameTaskKey;
@@ -25,9 +45,10 @@ private:
 public:
 	virtual void			save			(IWriter &stream);
 	virtual void			load			(IReader &stream);
-
+	
+	SScriptObjectiveHelper	m_pScriptHelper;
 	SGameTaskObjective		(CGameTask* parent, int idx);
-	SGameTaskObjective		(){};
+	SGameTaskObjective		();
 	shared_str				description;
 	ARTICLE_ID				article_id;
 	shared_str				map_hint;
@@ -65,6 +86,11 @@ public:
 	void					AddFailInfo_script		(LPCSTR _str);
 	void					AddOnCompleteInfo_script(LPCSTR _str);
 	void					AddOnFailInfo_script	(LPCSTR _str);
+
+	void					AddCompleteFunc_script	(LPCSTR _str);
+	void					AddFailFunc_script		(LPCSTR _str);
+	void					AddOnCompleteFunc_script(LPCSTR _str);
+	void					AddOnFailFunc_script	(LPCSTR _str);
 };
 
 DEFINE_VECTOR(SGameTaskObjective, OBJECTIVE_VECTOR, OBJECTIVE_VECTOR_IT);

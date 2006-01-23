@@ -21,13 +21,44 @@ function main______________()
 	end	
 end
 
-function main1()
-	local info = "test_andy_info" 
---	local info = "tutorial_artefact_start"
-	db.actor:give_info_portion(info) 
+function compl1()
+	return false
+end
+function compl2()
+	return false
+end
+function fail1()
+	return false
 end
 
 function main()
+
+	  db.actor:give_info_portion("test_andy_info") 
+
+      local task = CGameTask()
+        
+        task:load("eliminate_lager")
+        task:set_title("title_0")
+        
+        local objective = SGameTaskObjective(task,1)
+        objective:set_description("test_description_1")
+		objective:add_complete_func("_test.compl1")
+		objective:add_complete_func("_test.compl2")
+		objective:add_fail_func("_test.fail1")
+        task:add_objective(objective)
+
+        db.actor:give_task(task,false)
+  
+--   game.start_tutorial("part_1_pda")
+end
+
+function main1()
+	local info = "test_andy_info" 
+--	local info = "tutorial_artefact_start"
+	db.actor:give_info_portion("descr_bar_resque_information") 
+end
+
+function main2()
 
 local _task = CGameTask()
 _task:load("andy_task_2")
