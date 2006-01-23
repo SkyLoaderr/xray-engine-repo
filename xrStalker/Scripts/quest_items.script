@@ -9,6 +9,12 @@ function main()
 		table.insert(spawn_items, "ammo_m209")
 	end
 	table.insert(spawn_items, "device_torch")
+	for i = 1,3 do
+		table.insert(spawn_items, "medkit")
+	end
+	for i = 1,10 do
+		table.insert(spawn_items, "bandage")
+	end
 	
 	if level == "l01_escape" then
 	elseif level == "l02_garbage" then
