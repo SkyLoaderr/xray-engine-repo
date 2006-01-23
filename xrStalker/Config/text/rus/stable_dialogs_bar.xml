@@ -468,6 +468,15 @@
     <string id="bar_bar_barmen_start_2211">
         <text>Хорошо</text>
     </string>
+    <string id="bar_bar_barmen_start_23">
+        <text>Да, вот держи документы с Агропрома.</text>
+    </string>
+    <string id="bar_bar_barmen_start_231">
+        <text>Отличная работа, Меченый. Наконец документы у нас. Теперь мне надо в них разобраться, может узнаю как пробиться на Север. </text>
+    </string>
+    <string id="bar_bar_barmen_start_2311">
+        <text>Хорошо</text>
+    </string>
     <string id="bar_bar_barmen_start_3">
         <text>Чего тебе, Меченый?</text>
     </string>
