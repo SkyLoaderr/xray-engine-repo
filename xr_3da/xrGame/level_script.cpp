@@ -35,7 +35,7 @@ using namespace luabind;
 
 LPCSTR command_line	()
 {
-	return		(_Core.Params);
+	return		(Core.Params);
 }
 
 #ifdef DEBUG
