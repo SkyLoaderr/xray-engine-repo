@@ -1006,9 +1006,9 @@ void CWeaponMagazined::OnZoomOut		()
 }
 
 //переключение режимов стрельбы одиночными и очередями
-void CWeaponMagazined::SwitchMode			()
+bool CWeaponMagazined::SwitchMode			()
 {
-	if(eIdle != STATE || IsPending()) return;
+	if(eIdle != STATE || IsPending()) return false;
 
 	if(SingleShotMode())
 		m_iQueueSize = WEAPON_ININITE_QUEUE;
@@ -1016,6 +1016,8 @@ void CWeaponMagazined::SwitchMode			()
 		m_iQueueSize = 1;
 	
 	PlaySound	(sndEmptyClick, get_LastFP());
+
+	return true;
 }
  
 void CWeaponMagazined::StartIdleAnim			()

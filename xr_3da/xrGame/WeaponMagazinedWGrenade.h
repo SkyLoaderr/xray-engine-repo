@@ -49,8 +49,8 @@ public:
 	virtual void	StopHUDSounds	();
 
 	//переключение в режим подствольника
-	virtual void	SwitchMode		();
-	void			PerformSwitch	();
+	virtual bool	SwitchMode		();
+	void			PerformSwitchGL	();
 	void			OnAnimationEnd	();
 
 	//виртуальные функции для проигрывания анимации HUD

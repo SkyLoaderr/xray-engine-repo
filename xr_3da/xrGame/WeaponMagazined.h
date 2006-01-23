@@ -118,7 +118,7 @@ public:
 	// для стрельбы очередями или одиночными
 	//////////////////////////////////////////////
 public:
-	virtual void	SwitchMode				();
+	virtual bool	SwitchMode				();
 	virtual bool	SingleShotMode			()			{return 1 == m_iQueueSize;}
 	virtual void	SetQueueSize			(int size);
 	IC		int		GetQueueSize			() const	{return m_iQueueSize;};
