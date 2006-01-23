@@ -37,7 +37,7 @@ class	CCustomObject;
 #define LOD_SHADER_NAME 		"details\\lod"
 #define LOD_SAMPLE_COUNT 		8
 #define LOD_IMAGE_SIZE 			64
-#define RENDER_SKELETON_LINKS	4
+#define RENDER_SKELETON_LINKS	2
 
 // refs
 class XRayMtl;

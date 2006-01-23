@@ -135,6 +135,7 @@ protected:
             return true;
         }
 		void 			MakeProgressive	();
+        void			MakeStripify	();
 		void 			CalculateTB		();
 
         void 			Save			(IWriter& F);

@@ -35,7 +35,7 @@ void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm	("SoundED",paProperties,alClient);
     m_ItemProps->SetModifiedEvent			(fastdelegate::bind<TOnModifiedEvent>(this,&TfrmSoundLib::OnModified));
-    m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilMultiSelect|TItemList::ilEditMenu|TItemList::ilDragAllowed);
+    m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilMultiSelect/*|TItemList::ilEditMenu|TItemList::ilDragAllowed*/);
     m_ItemList->SetOnItemsFocusedEvent		(fastdelegate::bind<TOnILItemsFocused>(this,&TfrmSoundLib::OnItemsFocused));
     TOnItemRemove on_remove; on_remove.bind	(this,&TfrmSoundLib::RemoveSound);
     TOnItemRename on_rename; on_rename.bind	(this,&TfrmSoundLib::RenameSound);
@@ -167,7 +167,7 @@ void TfrmSoundLib::InitItemsList()
 	FS_FileSetIt it = sound_map.begin();
 	FS_FileSetIt _E = sound_map.end();
     for (; it!=_E; it++)
-        LHelper().CreateItem(items,it->name.c_str(),0);
+		LHelper().CreateItem(items,it->name.c_str(),0);
 
     m_ItemList->AssignItems(items,false,true);
 }

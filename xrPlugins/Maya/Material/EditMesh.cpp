@@ -156,7 +156,7 @@ void CEditableMesh::GenerateVNormals()
 	}else{
 		for (u32 f_i=0; f_i<m_FaceCount; f_i++ ){
 			u32 sg			= m_SGs[f_i];
-//			Fvector& FN 	= m_FNormals[f_i];
+			Fvector& FN 	= m_FNormals[f_i];
 			for (int k=0; k<3; k++){
 				Fvector& N 	= m_VNormals[f_i*3+k];
 				if (sg!=-1){
@@ -175,7 +175,8 @@ void CEditableMesh::GenerateVNormals()
                         N.set	(m_FNormals[a_lst.front()]);
                     }
 				}else{
-					N.set		(0,0,0);
+					N.set		(FN);
+/*                    
 					IntVec& a_lst=(*m_Adjs)[m_Faces[f_i].pv[k].pindex];
 					VERIFY(a_lst.size());
 					for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
@@ -187,6 +188,7 @@ void CEditableMesh::GenerateVNormals()
                     	Msg		("!Invalid smooth group found (No smooth). Object: '%s'. Vertex: [%3.2f, %3.2f, %3.2f]",m_Parent->GetName(),VPUSH(m_Verts[m_Faces[f_i].pv[k].pindex]));
                         N.set	(m_FNormals[a_lst.front()]);
                     }
+*/                    
 				}
 			}
 		}

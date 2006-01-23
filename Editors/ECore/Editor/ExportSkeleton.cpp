@@ -108,6 +108,124 @@ CExportSkeleton::SSplit::SSplit(CSurface* surf, const Fbox& bb, u16 part):CSkele
 }
 //----------------------------------------------------
 
+
+
+
+class VertexCache
+{
+
+public:
+	VertexCache		(int size);
+	VertexCache		();
+	~VertexCache	();
+
+	bool			InCache	(int entry);
+	int				AddEntry(int entry);
+	void			Clear	();
+
+	void			Copy	(VertexCache* inVcache);
+	int				At		(int index);
+	void			Set		(int index, int value);
+
+private:
+	xr_vector<int>	entries;
+};
+
+IC bool VertexCache::InCache(int entry)
+{
+	bool returnVal = false;
+
+	for(u32 i = 0; i < entries.size(); i++)
+	{
+		if(entries[i] == entry)
+		{
+			returnVal = true;
+			break;
+		}
+	}
+
+	return returnVal;
+}
+
+
+IC int VertexCache::AddEntry(int entry)
+{
+	int removed;
+
+	removed = entries[entries.size() - 1];
+
+	//push everything right one
+	for(int i = (u32)entries.size() - 2; i >= 0; i--)
+	{
+		entries[i + 1] = entries[i];
+	}
+
+	entries[0] = entry;
+
+	return removed;
+}
+
+VertexCache::VertexCache()
+{
+  VertexCache(24);
+}
+
+
+VertexCache::VertexCache(int size)
+{
+	entries.assign	(size,-1);
+}
+
+
+VertexCache::~VertexCache()
+{
+	entries.clear	();
+}
+
+
+int VertexCache::At	(int index)
+{
+  return entries[index];
+}
+
+void VertexCache::Set(int index, int value)
+{
+	entries[index] = value;
+}
+
+
+void VertexCache::Clear()
+{
+	for(u32 i = 0; i < entries.size(); i++)
+		entries[i] = -1;
+}
+
+void VertexCache::Copy(VertexCache* inVcache)
+{
+	for(u32 i = 0; i < entries.size(); i++)
+	{
+		inVcache->Set(i, entries[i]);
+	}
+}
+
+int xrSimulate (u16* indices, u32 i_cnt, int iCacheSize )
+{
+	VertexCache C(iCacheSize);
+
+	int count=0;
+	for (u32 i=0; i<i_cnt; i++)
+	{
+		int id = indices[i];
+		if (C.InCache(id)) continue;
+		count++;
+		C.AddEntry(id);
+	}
+	return count;
+}
+
+
+
+
 void CExportSkeleton::SSplit::Save(IWriter& F)
 {
     // Header
@@ -141,7 +259,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
             F.w			(&pV.offs,sizeof(Fvector));		// position (offset)
             F.w			(&pV.norm,sizeof(Fvector));		// normal
             F.w			(&pV.tang,sizeof(Fvector));		// T        
-            F.w			(&pV.binorm,sizeof(Fvector));		// B        
+            F.w			(&pV.binorm,sizeof(Fvector));	// B        
             F.w_float	(pV.bones[1].w/(pV.bones[0].w+pV.bones[1].w));	// SV.w	= wb[1].weight/(wb[0].weight+wb[1].weight);
             F.w			(&pV.uv,sizeof(Fvector2));		// tu,tv
         }
@@ -151,7 +269,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
             F.w			(&pV.offs,sizeof(Fvector));		// position (offset)
             F.w			(&pV.norm,sizeof(Fvector));		// normal
             F.w			(&pV.tang,sizeof(Fvector));		// T        
-            F.w			(&pV.binorm,sizeof(Fvector));		// B        
+            F.w			(&pV.binorm,sizeof(Fvector));	// B        
             F.w			(&pV.uv,sizeof(Fvector2));		// tu,tv
             F.w_u32		(pV.bones[0].id); 
         }
@@ -411,6 +529,37 @@ void CExportSkeleton::SSplit::MakeProgressive()
     VIPM_Destroy		();
 }
 
+void CExportSkeleton::SSplit::MakeStripify()
+{
+//	int ccc 	= xrSimulate	((u16*)&m_Faces.front(),m_Faces.size()*3,24);        
+//	Log("SRC:",ccc);
+	// alternative stripification - faces
+    {
+        DWORD*		remap	= xr_alloc<DWORD>		(m_Faces.size());
+        HRESULT		rhr		= D3DXOptimizeFaces		(&m_Faces.front(),m_Faces.size(),m_Verts.size(),FALSE,remap);
+        R_CHK		(rhr);
+        SkelFaceVec	_source	= m_Faces;
+        for (u32 it=0; it<_source.size(); it++)		m_Faces[it] = _source[remap[it]];  
+        xr_free		(remap);
+        
+//	    int ccc 	= xrSimulate	((u16*)&m_Faces.front(),m_Faces.size()*3,24);
+//		Log("X:",ccc);
+    }
+    // alternative stripification - vertices
+    {
+        DWORD*		remap	= xr_alloc<DWORD>		(m_Verts.size());
+        HRESULT		rhr		= D3DXOptimizeVertices	(&m_Faces.front(),m_Faces.size(),m_Verts.size(),FALSE,remap);
+        R_CHK		(rhr);
+        SkelVertVec	_source = m_Verts;
+        for(u32 vit=0; vit<_source.size(); vit++)	m_Verts[remap[vit]]		= _source[vit];     
+        for(u32 fit=0; fit<m_Faces.size(); fit++)	for (u32 j=0; j<3; j++)	m_Faces[fit].v[j]= remap[m_Faces[fit].v[j]];
+        xr_free		(remap);
+
+//	    int ccc 	= xrSimulate	((u16*)&m_Faces.front(),m_Faces.size()*3,24);
+//		Log("Y:",ccc);
+    }
+}
+
 /*
     // write SMF
     AnsiString r		= "x:\\import\\test.smf";
@@ -623,7 +772,7 @@ bool CExportSkeleton::PrepareGeometry(u8 influence)
                             b[0].id	= b[1].id = sv.bones[0].id;
                             b[0].w	= 1.f;
                             b[1].w	= 0.f;
-                            v[k].set		(sv.offs,sv.norm,sv.uv,2,b);
+                            v[k].set		(sv.offs,sv.norm,sv.uv,2,b); 
                             tmp_bone_list.push_back	(sv.bones[0].id);
                         }else{            
                         	if (fsimilar(sv.bones[1].w,0.f,EPS_L)){
@@ -725,7 +874,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F, u8 infl)
 	bone_points.resize		(m_Source->BoneCount());
 
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
-		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
+		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) 	split_it->MakeProgressive();
+        else														split_it->MakeStripify();
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
 		    bone_points		[sv_it->bones[0].id].push_back						(sv_it->offs);
