@@ -155,7 +155,12 @@ bool CStateMonsterEatAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatAbstract::check_start_conditions()
 {
-	return (object->conditions().GetSatiety() < object->db().m_fMinSatiety);
+	return (
+		object->CorpseMan.get_corpse() && 
+		object->Home->at_home(object->CorpseMan.get_corpse()->Position()) &&
+		(object->conditions().GetSatiety() < object->db().m_fMinSatiety)
+	);
+		
 }
 
 #undef TEMPLATE_SPECIALIZATION
