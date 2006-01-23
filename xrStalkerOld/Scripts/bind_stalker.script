@@ -262,7 +262,7 @@ function actor_init    (npc)
 	npc:bind_object(actor_binder(npc))
 end
 --старт префетча звуков
-sound_prefetch.prefetch_sounds()
+--sound_prefetch.prefetch_sounds()
 
 
 -- Weapon functions
