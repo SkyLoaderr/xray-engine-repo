@@ -30,6 +30,8 @@ local disagreed, agreed, agreed_exclusive = 0, 1, 2
 
 local smart_section = "smart_terrains"
 
+exclusives = {}
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
@@ -197,8 +199,17 @@ function se_smart_terrain:initialize_if_needed()
 
 		self:get_se_objs()
 
+		self:preserve_exclusives()
+
 		self.initialized = true
 	end
+end
+
+-- зарезервировать места для эксклюзивных персонажей
+function se_smart_terrain:preserve_exclusives()
+	printf( "[smart_terrain %s] exclusives=%d", self:name(), exclusives[self:name()] or 0 )
+
+	self.gulag.capacity = self.gulag.capacity - ( exclusives[self:name()] or 0 )
 end
 
 -- получить серверные объекты персонажей
@@ -474,8 +485,8 @@ function se_smart_terrain:register_npc( obj )
 	self:fill_npc_info( obj, npc_info )
 
 	if self.gulag_working and
-	   ( self.gulag:get_population() == self.gulag.capacity or
-	   not self.gulag:is_there_any_suitable_job( npc_info, false ) )
+--	   ( self.gulag:get_population() == self.gulag.capacity or
+	   not self.gulag:is_there_any_suitable_job( npc_info, false ) --)
 	then
 --		printf( "get_population=%d capacity=%d", self.gulag:get_population(), self.gulag.capacity )
 --		printf( "is_there_any_suitable_job=%s", tostring( self.gulag:is_there_any_suitable_job( npc_info, false ) ) )
@@ -769,4 +780,3 @@ function get_smart_terrain_conditions( self )
 
 	return self.smart_terrain_conditions
 end
-

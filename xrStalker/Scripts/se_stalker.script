@@ -106,6 +106,8 @@ function se_stalker:on_register()
 	if(actor_stats.add_to_ranking~=nil)then
 		actor_stats.add_to_ranking(self.id)
 	end
+
+	self:fill_exclusives()
 end
 --------------------
 function se_stalker:on_unregister()
@@ -122,4 +124,14 @@ end
 --------------------
 function se_stalker:get_smart_terrain_conditions()
 	return smart_terrain.get_smart_terrain_conditions( self )
+end
+--------------------
+function se_stalker:fill_exclusives()
+	local s
+
+	if self:get_smart_terrain_conditions() then
+		for name, condlist in pairs( self:get_smart_terrain_conditions() ) do
+			smart_terrain.exclusives[name] = ( smart_terrain.exclusives[name] or 0 ) + 1
+		end
+	end
 end

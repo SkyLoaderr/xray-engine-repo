@@ -94,10 +94,26 @@ function se_monster:can_switch_online ()
     end
 end
 --------------------
+function se_stalker:on_register()
+	cse_alife_monster_base.on_register( self )
+
+	self:fill_exclusives()
+end
+--------------------
 function se_monster:read_smart_terrain_conditions()
 	return smart_terrain.read_smart_terrain_conditions( self )
 end
 --------------------
 function se_monster:get_smart_terrain_conditions()
 	return smart_terrain.get_smart_terrain_conditions( self )
+end
+--------------------
+function se_monster:fill_exclusives()
+	local s
+
+	if self:get_smart_terrain_conditions() then
+		for name, condlist in pairs( self:get_smart_terrain_conditions() ) do
+			smart_terrain.exclusives[name] = ( smart_terrain.exclusives[name] or 0 ) + 1
+		end
+	end
 end
