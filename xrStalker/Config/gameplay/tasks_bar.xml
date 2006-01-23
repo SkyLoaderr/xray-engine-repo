@@ -147,6 +147,7 @@
 		<objective>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_dolg_base_rules_finish</infoportion_complete>			
+			<infoportion_fail>bar_territory_nodolg_2_hit</infoportion_fail>			
 		</objective>
 		<objective>
 			<text>bar_dolg_base_rules_talk</text>
