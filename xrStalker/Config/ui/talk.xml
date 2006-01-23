@@ -52,7 +52,7 @@
 	
 	<other_answer_item x="0" y="0" width="557" height="0" min_height="13" bottom_footer="5">
 		<name_caption x="0" y="0" width="550" height="10">
-			<text font="graffiti22" r="250" g="151" b="22" complex_mode="0"/>
+			<text font="graffiti22" r="157" g="140" b="120" complex_mode="0"/>
 		</name_caption>
 		
 		<content_text x="20" y="22" width="520" height="10">
