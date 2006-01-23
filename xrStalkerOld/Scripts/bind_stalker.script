@@ -131,7 +131,9 @@ function actor_binder:task_callback(id_task, subtask, id_state)
 			news_manager.send_task(db.actor, "new")
 		end
 	else
-		news_manager.send_task(db.actor, "update")
+		if db.actor:get_task_state(id_task, 0) ~= task.completed then
+			news_manager.send_task(db.actor, "update")
+		end
 	end
 	--game_stats.update_task (id_task, subtask, id_state, self.object)
 end
@@ -154,6 +156,9 @@ function actor_binder:update(delta)
 
 	-- апдейт погоды
 	self.weather_manager:update()
+	
+	-- апдейт случайных заданий актера
+	task_manager.update_random_task()
 	
 	--' Проверка потери жизни
 --[[
