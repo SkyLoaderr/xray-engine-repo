@@ -34,6 +34,13 @@
         <texture x="0" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_mutant_blind_general</text>
     </article>
+    
+     <!-------------------------------- TUSHKANO ----------------------------->
+
+    <article id="mutant_tushkano" name="Tushkano" group="Mutants">
+        <texture x="1350" y="0" width="200" height="150">ui\ui_icon_photo</texture>
+        <text>enc_mutant_tushkano</text>
+    </article>
 
 
     <!-------------------------------- Boar ----------------------------->
