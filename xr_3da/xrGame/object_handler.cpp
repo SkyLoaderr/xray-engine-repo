@@ -30,7 +30,7 @@ CObjectHandler::CObjectHandler		()
 {
 	m_planner					= xr_new<CObjectHandlerPlanner>();
 	m_inventory_actual			= false;
-	m_last_enemy_for_best_weapon= 0;
+//	m_last_enemy_for_best_weapon= 0;
 }
 
 CObjectHandler::~CObjectHandler		()
@@ -120,8 +120,11 @@ void CObjectHandler::OnItemDropUpdate	()
 CInventoryItem *CObjectHandler::best_weapon() const
 {
 	if (!planner().object().g_Alive())
-		return							(0);
+		return									(0);
 
+	planner().object().update_best_item_info	();
+	return										(planner().object().m_best_item_to_kill);
+	/**
 	if (m_inventory_actual && (m_last_enemy_for_best_weapon == planner().object().memory().enemy().selected()))
 		return							(m_last_best_weapon);
 
@@ -158,6 +161,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	}
 	
 	return						(m_last_best_weapon);
+	/**/
 }
 
 void CObjectHandler::update		()

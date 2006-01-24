@@ -44,10 +44,10 @@ protected:
 	mutable bool					m_inventory_actual;
 	// since we do not use this object, we just use these pointer,
 	// we can ignore net_Relcase for this object
-	mutable const CEntityAlive		*m_last_enemy_for_best_weapon;
+//	mutable const CEntityAlive		*m_last_enemy_for_best_weapon;
 	// since if object is destroyed, then m_inventory_actual will be false,
 	// we can ignore net_Relcase for this object
-	mutable CInventoryItem			*m_last_best_weapon;
+//	mutable CInventoryItem			*m_last_best_weapon;
 
 private:
 			void					actualize_strap_mode(CWeapon *weapon) const;
