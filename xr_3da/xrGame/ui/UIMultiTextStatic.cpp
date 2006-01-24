@@ -12,6 +12,14 @@
 #include "../../CustomHUD.h"
 
 //////////////////////////////////////////////////////////////////////////
+CUIMultiTextStatic::CUIMultiTextStatic				()
+{
+	m_vPhrases.clear();
+};
+
+CUIMultiTextStatic::~CUIMultiTextStatic				()
+{
+}
 
 CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::AddPhrase()
 {

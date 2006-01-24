@@ -128,7 +128,7 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 	{
 		bool b_need_to_send_ready = false;
 
-		CObject* curr = Level().CurrentEntity();
+		CObject* curr = Level().CurrentControlEntity();
 		if (!curr) return(false);
 
 		bool is_actor		= curr->CLS_ID==CLSID_OBJECT_ACTOR;

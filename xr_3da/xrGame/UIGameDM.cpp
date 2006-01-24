@@ -180,7 +180,7 @@ void CUIGameDM::SetSpectrModeMsgCaption		(LPCSTR str)
 
 void CUIGameDM::SetSpectatorMsgCaption		(LPCSTR str)
 {
-		GameCaptions()->setCaption(m_spectator_caption, str, NORMAL_MSG_COLOR, true);
+		if(GameCaptions()) GameCaptions()->setCaption(m_spectator_caption, str, NORMAL_MSG_COLOR, true);
 }
 
 void CUIGameDM::SetPressJumpMsgCaption		(LPCSTR str)

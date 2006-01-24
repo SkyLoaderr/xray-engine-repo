@@ -39,6 +39,10 @@ public:
 protected:
 	Phrases							m_vPhrases;
 public:
+
+					CUIMultiTextStatic				();
+	virtual			~CUIMultiTextStatic				();
+
 	virtual void Draw();
 	virtual void Update();
 	// Добавить надпись

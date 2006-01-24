@@ -382,7 +382,7 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 				{
 					if (pUITeamSelectWnd->IsShown())
 					{
-						m_game_ui->SetSpectatorMsgCaption("");
+//						m_game_ui->SetSpectatorMsgCaption("");
 					}
 				}
 				//---------------------------------------------------------

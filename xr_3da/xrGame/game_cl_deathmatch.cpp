@@ -463,7 +463,6 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					HUD().GetUI()->UIMainIngameWnd->ChangeTotalMoneyIndicator(MoneyStr);
 				}				
 
-				m_game_ui->SetSpectatorMsgCaption("");
 				m_game_ui->SetPressJumpMsgCaption("");
 				m_game_ui->SetPressBuyMsgCaption("");
 				m_game_ui->SetWarmUpCaption("");
@@ -498,11 +497,26 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						(HUD().GetUI() && !HUD().GetUI()->IndicatorsHidden())
 						)
 					{
-						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
+//						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
 						m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
 						m_game_ui->SetPressBuyMsgCaption("Press 'B' to access buy menu");
 					};
 				};
+
+				if (Level().CurrentControlEntity() && 
+					Level().CurrentControlEntity()->CLS_ID == CLSID_SPECTATOR &&
+					(HUD().GetUI() && !HUD().GetUI()->IndicatorsHidden())
+					)
+				{
+					
+					CSpectator* pSpectator = smart_cast<CSpectator*>(Level().CurrentControlEntity());
+					if (pSpectator)
+					{
+						string1024 SpectatorStr = "";
+						pSpectator->GetSpectatorString(SpectatorStr);
+						m_game_ui->SetSpectatorMsgCaption(SpectatorStr);
+					}
+				}
 
 				u32 CurTime = Level().timeServer();
 				if (IsVoteEnabled() && IsVotingActive() && m_dwVoteEndTime>=CurTime)
@@ -601,16 +615,19 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 
 	if (kINVENTORY == key )
 	{
-		if (pInventoryMenu->IsShown())
-			StartStopMenu(pInventoryMenu,true);
-		else
+		if (Level().CurrentControlEntity() && Level().CurrentControlEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
 		{
-			if (CanCallInventoryMenu())
-			{
+			if (pInventoryMenu->IsShown())
 				StartStopMenu(pInventoryMenu,true);
+			else
+			{
+				if (CanCallInventoryMenu())
+				{
+					StartStopMenu(pInventoryMenu,true);
+				};
 			};
-		};
-		return true;
+			return true;
+		}		
 	};
 
 	if (kBUY == key )

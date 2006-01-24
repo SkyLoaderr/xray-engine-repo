@@ -35,6 +35,8 @@
 bool g_bDisableAllInput = false;
 extern	float	g_fTimeFactor;
 
+#define CURRENT_ENTITY()	((GameID() == GAME_SINGLE) ? CurrentEntity() : CurrentControlEntity())
+
 void CLevel::IR_OnMouseWheel( int direction )
 {
 	if(	g_bDisableAllInput	) return;
@@ -45,8 +47,8 @@ void CLevel::IR_OnMouseWheel( int direction )
 	if ( Game().IR_OnMouseWheel(direction) ) return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
-	if (CurrentEntity())		{
-			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
+	if (CURRENT_ENTITY())		{
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 			if (IR)				IR->IR_OnMouseWheel(direction);
 		}
 
@@ -313,8 +315,8 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
-	if (CurrentEntity())		{
-			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
+	if (CURRENT_ENTITY())		{
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 			if (IR)				IR->IR_OnKeyboardPress(key_binding[key]);
 		}
 
@@ -337,8 +339,8 @@ void CLevel::IR_OnKeyboardRelease(int key)
 	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
-	if (CurrentEntity())		{
-		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
+	if (CURRENT_ENTITY())		{
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 		if (IR)				IR->IR_OnKeyboardRelease			(key_binding[key]);
 	}
 }
@@ -349,8 +351,8 @@ void CLevel::IR_OnKeyboardHold(int key)
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
 	if( Device.Pause() ) return;
-	if (CurrentEntity())		{
-		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
+	if (CURRENT_ENTITY())		{
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);
 	}
 }
@@ -367,8 +369,8 @@ void CLevel::IR_OnMouseMove( int dx, int dy )
 {
 	if(g_bDisableAllInput)						return;
 	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))	return;
-	if (CurrentEntity())		{
-		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
+	if (CURRENT_ENTITY())		{
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 		if (IR)				IR->IR_OnMouseMove					(dx,dy);
 	}
 }
