@@ -584,7 +584,8 @@ function se_smart_terrain:create_gulag()
 	self.gulag_working = true
 end
 
--- всех освободить, убить гулаг, создать новый нерабочий гулаг
+-- всех освободить, убить гулаг,
+-- создать новый нерабочий гулаг, зарезервировать в нём места для эксклюзивных
 function se_smart_terrain:remove_gulag( disable )
 	-- DEBUG
 	self.disabled = disable
