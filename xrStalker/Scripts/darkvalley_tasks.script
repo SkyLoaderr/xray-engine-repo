@@ -1,3 +1,6 @@
+----------------------------------------------------------------------------------------------------
+-- Proceed
+----------------------------------------------------------------------------------------------------
 function proceed()
     local actor = db.actor
 	-- Dark valley
@@ -80,6 +83,9 @@ function proceed()
 		
 end
 
+----------------------------------------------------------------------------------------------------
+-- Process info portions
+----------------------------------------------------------------------------------------------------
 function process_info_portion(info_id)
     if info_id == "val_sos_give_tip" then
 		level_tasks.add_location(422, "val_sos_location")
@@ -97,9 +103,21 @@ function process_info_portion(info_id)
 	return true
 end
 
+----------------------------------------------------------------------------------------------------
+-- Common functions
+----------------------------------------------------------------------------------------------------
 function has_darklab_key(task, objective)
 	return db.actor:object("borov_flash") ~= nil
 end
+
 function has_darklab_documents(task, objective)
 	return db.actor:object("dar_document4") ~= nil
+end
+
+function escort_task_fail(task, objective)
+    local actor = db.actor
+    return actor:has_info("val_escort_captive_dead") or
+           actor:has_info("val_escort_guard1_dead") and
+           actor:has_info("val_escort_guard2_dead") and
+           actor:dont_has_info("val_escort_actor_helped")
 end
