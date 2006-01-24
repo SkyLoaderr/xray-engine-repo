@@ -286,7 +286,7 @@
 
 <!---------------------------BANDIT MASTER----------------------->
 	<specific_character id="sim_bandit_master_default1" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -315,7 +315,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_master_default2" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -344,7 +344,7 @@
 	</specific_character>
 
 	<specific_character id="sim_bandit_master_default3" team_default = "1">
-		<name>Неизвестный бандит</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
@@ -914,7 +914,7 @@
 <!---------------------------STALKER MASTER---------------------->
 
 	<specific_character id="sim_stalker_master_default1" team_default = "1">
-		<name>Неизвестный мастер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
@@ -944,7 +944,7 @@
 	</specific_character>	
 
 	<specific_character id="sim_stalker_master_default5" team_default = "1">
-		<name>Неизвестный мастер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
