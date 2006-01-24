@@ -406,8 +406,6 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\dolg\stalker_do_antigas</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
 		<supplies>

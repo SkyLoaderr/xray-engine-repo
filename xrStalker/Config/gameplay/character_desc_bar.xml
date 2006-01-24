@@ -680,7 +680,7 @@
 		<community>killer</community>
 	
 		<rank>90</rank>
-		<panic_threshold>0.1</panic_threshold>
+		<panic_threshold>0.0</panic_threshold>
 		<reputation>40</reputation>
 
 		<visual>actors\killer\stalker_ki_head_5</visual>
@@ -845,7 +845,7 @@
 		<rank>40</rank>
 		<reputation>20</reputation>
 
-		<panic_threshold>0.1</panic_threshold>
+		<panic_threshold>0.0</panic_threshold>
 
 		<visual>actors\dolg\stalker_do_mask</visual>
 		<snd_config>characters_voice\human_01\dolg\</snd_config>
