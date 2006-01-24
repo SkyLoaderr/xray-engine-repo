@@ -28,7 +28,7 @@ path_look           = guard2_wait_look
 on_info             = {+val_escort_start} patrol@val_escort_guard2_walk
 on_info2            = {+val_escort_nap1_dead} patrol@val_escort_guard2_return %-val_escort_guard2_combat%
 on_info3            = {+val_escort_scene_fail} patrol@val_escort_guard2_return %-val_escort_guard2_combat%
-combat_ignore_cond  = always
+combat_ignore_cond  = {=check_fighting(400)}
 
 ;--------------------------------------------------------------------------
 ; escort captive
@@ -40,7 +40,8 @@ formation           = back
 on_info             = {+val_escort_combat} remark@val_escort_guard2_fight
 on_info2            = {+val_escort_scene_fail} patrol@val_escort_guard2_return %-val_escort_guard2_combat%
 on_info3            = {+val_escort_nap1_dead} patrol@val_escort_guard2_return %-val_escort_guard2_combat%
-combat_ignore_cond  = {=check_fighting(400:406)}
+combat_ignore_cond  = {=check_fighting(400)}
+;combat_ignore_cond  = {=check_fighting(400:406)}
 
 ;--------------------------------------------------------------------------
 ; fight with actor and nap1
