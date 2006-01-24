@@ -1835,7 +1835,7 @@ function load_states(gname, type)
 
 	if type == "esc_dogs_swarm" then
 		return function(gulag)
-			if game.get_game_time():diffSec(gulag.stateBegin) > 54000 then
+			if game.get_game_time():diffSec(gulag.stateBegin) > 900 then
 				if gulag.state == 0 then
 					return 1
 				elseif gulag.state == 1 then
