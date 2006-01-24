@@ -30,6 +30,10 @@
     <dialog id="tm_escape_trader_dialog" priority="-1">
 		<init_func>task_manager.init_trader_task_dialog</init_func>
     </dialog>
+    <dialog id="tm_escape_trader_reward" priority="0">
+		<init_func>task_manager.init_trader_reward_dialog</init_func>
+		<precondition>task_manager.has_active_trader_task</precondition>
+    </dialog>
 
 
 
