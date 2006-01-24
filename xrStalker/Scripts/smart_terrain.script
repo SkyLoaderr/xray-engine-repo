@@ -213,8 +213,6 @@ function se_smart_terrain:preserve_exclusives()
 		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
 
 		self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - e
-
-		exclusives[self:name()] = nil
 	end
 end
 
