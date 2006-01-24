@@ -113,5 +113,11 @@
         <icon height="50" width="50" x="150" y="0">
             ui\ui_icons_task
         </icon>
+        <map_location_type>
+            blue_location
+        </map_location_type>
+        <object_story_id>
+            val_escort_nap1
+        </object_story_id>
     </objective>
 </game_task>
