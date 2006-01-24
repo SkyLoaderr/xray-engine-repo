@@ -344,7 +344,7 @@ function PatrolManager:get_npc_command (npc)    -- get command for NPC
     
     --расчет позиции для салаги
     --сначала получим направление
-    dir_s = vector_rotate_y (dir_s, utils.angle_diff (dir_s, vector ():set (0, 0, 1)))
+    dir_s = vector_rotate_y (dir, utils.angle_diff (dir_s, vector ():set (0, 0, 1)))
     -- в зависимости от типа перемещения будем менять целевую аи ноду
     local d
     --if self.current_state == patrol_move or self.current_state == patrol_hide or self.current_state == patrol_stop then
