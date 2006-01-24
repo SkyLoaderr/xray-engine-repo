@@ -27,6 +27,9 @@
 <info_portion id="val_nap1_stop_talk_to_bandit"></info_portion>
 <info_portion id="val_escort_begin"></info_portion>
 <info_portion id="val_escort_show_tip"></info_portion>
+<info_portion id="val_escort_task_start">
+	<task>val_captive_help</task>
+</info_portion>
 <info_portion id="val_escort_start"></info_portion>
 <info_portion id="val_escort_combat"></info_portion>
 <info_portion id="val_escort_actor_helped"></info_portion>
