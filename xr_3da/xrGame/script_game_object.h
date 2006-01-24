@@ -349,8 +349,8 @@ public:
 			void				SetAmmoElapsed		(int ammo_elapsed);
 			u32					GetAmmoCurrent		() const;
 			void				SetQueueSize		(u32 queue_size);
-			const MemorySpace::CHitObject	*GetBestHit			() const;
-			const MemorySpace::CSoundObject	*GetBestSound		() const;
+//			const MemorySpace::CHitObject	*GetBestHit			() const;
+//			const MemorySpace::CSoundObject	*GetBestSound		() const;
 			CScriptGameObject	*GetBestEnemy		();
 			const CDangerObject	*GetBestDanger		();
 			CScriptGameObject	*GetBestItem		();

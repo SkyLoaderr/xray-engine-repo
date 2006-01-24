@@ -273,21 +273,24 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// sound
 	HUD().Font().pFontSmall->OutNext	("%ssound",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().sound().objects().size());
+#ifdef USE_SELECTED_SOUND
 	if (memory().sound().sound()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
-//		switch (memory().sound().sound()->m_sound_type)
 		HUD().Font().pFontSmall->OutNext	("%s%s%stype",indent,indent,indent);
 		HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().sound().sound()->m_power);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().sound().sound()->m_object ? *memory().sound().sound()->m_object->cName() : "unknown");
 	}
+#endif
 	// hit
 	HUD().Font().pFontSmall->OutNext	("%shit",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().hit().objects().size());
+#ifdef USE_SELECTED_HIT
 	if (memory().hit().hit()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 		HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().hit().hit()->m_amount);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().hit().hit()->m_object ? *memory().hit().hit()->m_object->cName() : "unknown");
 	}
+#endif
 	// enemy
 	HUD().Font().pFontSmall->OutNext	("%senemy",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());

@@ -8,6 +8,10 @@
 
 #pragma once
 
+#ifdef DEBUG
+#	define USE_SELECTED_SOUND
+#endif
+
 namespace MemorySpace {
 	struct CSoundObject;
 };
@@ -18,9 +22,9 @@ class CCustomMonster;
 
 class CSoundMemoryManager {
 public:
-	typedef MemorySpace::CSoundObject			CSoundObject;
-	typedef xr_vector<CSoundObject>				SOUNDS;
-	typedef xr_map<ESoundTypes,u32>				PRIORITIES;
+	typedef MemorySpace::CSoundObject					CSoundObject;
+	typedef xr_vector<CSoundObject>						SOUNDS;
+	typedef xr_map<ESoundTypes,u32>						PRIORITIES;
 
 private:
 	CCustomMonster				*m_object;
@@ -48,7 +52,9 @@ private:
 	float						m_world_factor;
 
 private:
-	const CSoundObject			*m_selected_sound;
+#ifdef USE_SELECTED_SOUND
+	CSoundObject				*m_selected_sound;
+#endif
 
 private:
 	IC		void				update_sound_threshold	();
@@ -73,7 +79,9 @@ public:
 
 public:
 	IC		const SOUNDS		&objects				() const;
+#ifdef USE_SELECTED_SOUND
 	IC		const CSoundObject	*sound					() const;
+#endif
 	IC		void				set_squad_objects		(SOUNDS *squad_objects);
 
 public:

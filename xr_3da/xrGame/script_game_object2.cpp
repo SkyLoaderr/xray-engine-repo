@@ -193,7 +193,7 @@ LPCSTR		CScriptGameObject::get_pda_info				()
 {
 	CPda* pda = smart_cast<CPda*>(&object()); VERIFY(pda);
 	return *(pda->GetInfoPortion());
-}*/
+}
 
 const MemorySpace::CHitObject *CScriptGameObject::GetBestHit	() const
 {
@@ -210,6 +210,7 @@ const MemorySpace::CSoundObject *CScriptGameObject::GetBestSound	() const
 		return				(0);
 	return					(monster->memory().sound().sound());
 }
+*/
 
 CScriptGameObject *CScriptGameObject::GetBestEnemy()
 {

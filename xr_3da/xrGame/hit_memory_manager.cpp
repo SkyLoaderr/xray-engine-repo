@@ -32,14 +32,19 @@ struct CHitObjectPredicate {
 	{
 		if (!m_object)
 			return			(!hit_object.m_object);
+
 		if (!hit_object.m_object)
 			return			(false);
+
 		return				(m_object->ID() == hit_object.m_object->ID());
 	}
 };
 
 CHitMemoryManager::~CHitMemoryManager		()
 {
+#ifdef USE_SELECTED_HIT
+	xr_delete				(m_selected_hit);
+#endif
 }
 
 const CHitObject *CHitMemoryManager::hit					(const CEntityAlive *object) const
@@ -48,6 +53,7 @@ const CHitObject *CHitMemoryManager::hit					(const CEntityAlive *object) const
 	HITS::const_iterator	I = std::find_if(m_hits->begin(),m_hits->end(),CHitObjectPredicate(object));
 	if (m_hits->end() != I)
 		return				(&*I);
+
 	return					(0);
 }
 
@@ -67,7 +73,9 @@ void CHitMemoryManager::reinit				()
 void CHitMemoryManager::reload				(LPCSTR section)
 {
 	m_hits					= 0;
-	m_selected_hit			= 0;
+#ifdef USE_SELECTED_HIT
+	xr_delete				(m_selected_hit);
+#endif
 	m_max_hit_count			= READ_IF_EXISTS(pSettings,r_s32,section,"DynamicHitCount",1);
 }
 
@@ -165,16 +173,18 @@ void CHitMemoryManager::update()
 		m_hits->erase			(I,m_hits->end());
 	}
 
-	m_selected_hit				= 0;
+#ifdef USE_SELECTED_HIT
+	xr_delete					(m_selected_hit);
 	u32							level_time = 0;
 	HITS::const_iterator		I = m_hits->begin();
 	HITS::const_iterator		E = m_hits->end();
 	for ( ; I != E; ++I) {
 		if ((*I).m_level_time > level_time) {
-			m_selected_hit		= &*I;
+			m_selected_hit		= xr_new<CHitObject>(*I);
 			level_time			= (*I).m_level_time;
 		}
 	}
+#endif
 	STOP_PROFILE
 }
 
@@ -192,4 +202,17 @@ void CHitMemoryManager::remove_links	(CObject *object)
 	HITS::iterator		I = std::find_if(m_hits->begin(),m_hits->end(),CHitObjectPredicate(object));
 	if (I != m_hits->end())
 		m_hits->erase	(I);
+
+#ifdef USE_SELECTED_HIT
+	if (!m_selected_hit)
+		return;
+
+	if (!m_selected_hit->m_object)
+		return;
+
+	if (m_selected_hit->m_object->ID() != object->ID())
+		return;
+
+	xr_delete			(m_selected_hit);
+#endif
 }

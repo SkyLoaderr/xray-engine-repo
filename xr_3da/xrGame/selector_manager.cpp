@@ -54,6 +54,7 @@ void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 {
 	const CEntityAlive		*entity_alive = m_object;
 
+	/**
 	if (m_object->memory().hit().hit()) {
 		S.m_hit_direction	= m_object->memory().hit().hit()->m_direction;
 		S.m_hit_time		= m_object->memory().hit().hit()->m_level_time;
@@ -62,6 +63,7 @@ void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 		S.m_hit_direction	= Fvector().set(0,0,0);
 		S.m_hit_time		= 0;
 	}
+	/**/
 
 	S.m_dwCurTime			= Device.dwTimeGlobal;
 	S.m_tMe					= smart_cast<CEntity*>(this);

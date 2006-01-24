@@ -32,6 +32,9 @@
 
 CSoundMemoryManager::~CSoundMemoryManager		()
 {
+#ifdef USE_SELECTED_SOUND
+	xr_delete				(m_selected_sound);
+#endif
 }
 
 void CSoundMemoryManager::Load					(LPCSTR section)
@@ -45,7 +48,9 @@ void CSoundMemoryManager::reinit				()
 	m_last_sound_time		= 0;
 	m_sound_threshold		= m_min_sound_threshold;
 	VERIFY					(_valid(m_sound_threshold));
-	m_selected_sound		= 0;
+#ifdef USE_SELECTED_SOUND
+	xr_delete				(m_selected_sound);
+#endif
 }
 
 void CSoundMemoryManager::reload				(LPCSTR section)
@@ -256,7 +261,7 @@ struct CRemoveOfflinePredicate {
 		if (!object.m_object)
 			return	(false);
 
-		return		(!!object.m_object->getDestroy() || object.m_object->H_Parent());
+		return		(!!object.m_object->H_Parent());
 	}
 };
 
@@ -270,17 +275,20 @@ void CSoundMemoryManager::update()
 		m_sounds->erase						(I,m_sounds->end());
 	}
 
-	m_selected_sound			= 0;
+#ifdef USE_SELECTED_SOUND
+	xr_delete					(m_selected_sound);
 	u32							priority = u32(-1);
 	xr_vector<CSoundObject>::const_iterator	I = m_sounds->begin();
 	xr_vector<CSoundObject>::const_iterator	E = m_sounds->end();
 	for ( ; I != E; ++I) {
 		u32						cur_priority = this->priority(*I);
 		if (cur_priority < priority) {
-			m_selected_sound	= &*I;
+			m_selected_sound	= xr_new<CSoundObject>(*I);
 			priority			= cur_priority;
 		}
 	}
+#endif
+
 	STOP_PROFILE
 }
 
@@ -311,6 +319,16 @@ void CSoundMemoryManager::remove_links	(CObject *object)
 	if (I != m_sounds->end())
 		m_sounds->erase		(I);
 
-	if (m_selected_sound && m_selected_sound->m_object && (m_selected_sound->m_object->ID() == object->ID()))
-		m_selected_sound	= 0;
+#ifdef USE_SELECTED_SOUND
+	if (!m_selected_sound)
+		return;
+	
+	if (!m_selected_sound->m_object)
+		return;
+	
+	if (m_selected_sound->m_object->ID() != object->ID())
+		return;
+
+	xr_delete				(m_selected_sound);
+#endif
 }
