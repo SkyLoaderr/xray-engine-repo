@@ -212,7 +212,12 @@ function se_smart_terrain:preserve_exclusives()
 	if e then
 		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
 
+		self.exclusives = e
 		self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - e
+
+		exclusives[self:name()] = nil
+	else
+		self.exclusives = 0
 	end
 end
 
@@ -607,6 +612,8 @@ function se_smart_terrain:remove_gulag( disable )
 	self.gulag:load_jobs()
 
 	self.gulag_working = false
+
+	self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - self.exclusives
 
 	printf( "[smart_terrain %s] removed gulag type=%s", self:name(), self.gparams.type )
 end
