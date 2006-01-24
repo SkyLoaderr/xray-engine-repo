@@ -212,7 +212,7 @@ function se_smart_terrain:preserve_exclusives()
 	if e then
 		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
 
-		self.gulag.capacity = self.gulag.capacity - e
+		self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - e
 
 		exclusives[self:name()] = nil
 	end
@@ -363,7 +363,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	end
 
 	if obj_agreement == agreed_exclusive or
-	   self.gulag:get_population() < self.gulag.capacity
+	   self.gulag:get_non_exclusive_population() < self.gulag.capacity_non_exclusive
 	then
 		local community, is_stalker = self:get_obj_community( obj )
 
