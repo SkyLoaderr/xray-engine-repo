@@ -313,7 +313,7 @@ wounded             = wounded@val_escort_nap1
 anim                = guard
 target              = 400 ;logic@val_escort_captive
 on_info             = {+val_escort_captive_phrase1_end} remark1@val_escort_nap1_phrase9
-meet                = meet@val_escort_nap1_ignore
+meet                = meet@val_escort_nap1_talk
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
@@ -324,7 +324,7 @@ anim                = guard
 snd                 = val_escort_nap1_phrase5
 target              = 400 ;logic@val_escort_captive
 on_signal           = sound_end | remark1@val_escort_nap1_wait_to_talk_phrase %+val_escort_nap1_phrase1_end%
-meet                = meet@val_escort_nap1_ignore
+meet                = meet@val_escort_nap1_talk
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
@@ -397,4 +397,3 @@ commander               = true
 formation               = line
 on_signal               = arrived | %+val_escort_scene_end%
 meet                    = meet@val_escort_nap1_talk
-va
