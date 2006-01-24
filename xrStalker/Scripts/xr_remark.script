@@ -84,6 +84,7 @@ function action_remark_activity:turn_end_callback()
 end
 function action_remark_activity:update()
 	-- 1. Мы должны повернуться на объект.
+	--printf("REMARK: [%s] state[%s]", self.object:name(), self.state)
 	if self.state == state_initial then
 		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
 		local synsound
