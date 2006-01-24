@@ -296,6 +296,9 @@
 					RelativePath=".\Config\gameplay\storyline_info_sarcofag.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\storyline_info_taskmanager.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\storyline_info_to_diary.xml">
 				</File>
 				<File

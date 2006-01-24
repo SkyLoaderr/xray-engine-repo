@@ -15,6 +15,16 @@
     <string id="tm_seek_job_no">
         <text>Может быть в другой раз.</text>
     </string>
+    <string id="tm_reward_job">
+        <text>Я по поводу задания.</text>
+    </string>
+    <string id="tm_job_refuse">
+        <text>Я отказываюсь выполнять это задание.</text>
+    </string>
+    <string id="tm_job_nothing">
+        <text>Да нет, ничего, в другой раз.</text>
+    </string>
+
 
     <string id="tm_trader_has_no_job">
         <text>На данный момент ничего нет.</text>
@@ -22,14 +32,36 @@
     <string id="tm_trader_list_job">
         <text>Да, есть кое что:</text>
     </string>
+
+    <string id="tm_trader_job_complete">
+        <text>Задание выполнено, получи награду.</text>
+    </string>
+    <string id="tm_trader_job_ask">
+        <text>По поводу какого задания ты хочешь поговорить?</text>
+    </string>
+    <string id="tm_trader_job_what">
+        <text>B что с этим заданием?</text>
+    </string>
+        
     
+    <string id="eliminate_lager">
+        <text>Уничтожение лагеря.</text>
+    </string>
+    <string id="return_for_reward">
+        <text>Вернуться за наградой.</text>
+    </string>
+
+
     
     <!-- Описание квестов   -->
     <string id="tm_eliminate_test_lager">
         <text>Уничтожение лагеря свободы на тесте.</text>
     </string>
+    <string id="tm_eliminate_test_lager_text">
+        <text>Необходимо очистить тестовый лагерь на тестовом уровне.</text>
+    </string>
     <string id="tm_eliminate_test_lager_descr">
-        <text>Необходимо очистить тестовый лагерь на тестовом уровне. Ребята вообще охренели внатуре.</text>
+        <text>Чуваки на тестовом уровне вконец охамели. Тебе нужно наказать их за это.</text>
     </string>
 
     
