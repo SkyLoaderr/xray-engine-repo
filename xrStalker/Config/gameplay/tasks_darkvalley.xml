@@ -102,6 +102,9 @@
         <infoportion_complete>
             val_escort_guard2_dead
         </infoportion_complete>
+        <infoportion_complete>
+            val_escort_actor_helped
+        </infoportion_complete>
     </objective>
     <objective key="1">
         <text>
