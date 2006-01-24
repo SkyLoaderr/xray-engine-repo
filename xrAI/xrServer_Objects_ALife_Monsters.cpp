@@ -262,7 +262,7 @@ SPECIFIC_CHARACTER_ID CSE_ALifeTraderAbstract::specific_character()
 	if (Level().game && (GameID() != GAME_SINGLE)) return m_SpecificCharacter;
 #endif
 
-	if(m_SpecificCharacter.size()) 
+	if(m_SpecificCharacter.size())
 		return m_SpecificCharacter;
 
 
