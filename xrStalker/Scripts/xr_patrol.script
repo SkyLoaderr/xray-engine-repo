@@ -575,9 +575,9 @@ function action_patrol:execute()
 	if self.on_point == false then  -- если позиция не была еще достигнута, то подбежим к ней
 	   local dist = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) 
 	   self.on_point = dist < 3
-	   if dist > 10 then
+	   if dist > 15 then
 	      state_mgr.set_state(self.object, "assault")       -- просто подбегаем    
-       elseif dist < 3 then
+       elseif dist < 5 then
           state_mgr.set_state(self.object, "patrol")       
        end   
 	else
