@@ -18,8 +18,6 @@
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
-
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
 			[spawn] \n
@@ -47,8 +45,6 @@
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
-
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
 			[spawn] \n
@@ -78,8 +74,6 @@
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
-		<panic_threshold>0.2</panic_threshold>
-
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
 			[spawn] \n
@@ -397,8 +391,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
@@ -425,8 +417,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
@@ -454,8 +444,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
@@ -485,8 +473,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
@@ -514,8 +500,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
@@ -543,8 +527,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
@@ -575,8 +557,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
@@ -605,8 +585,6 @@
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
@@ -1042,8 +1020,6 @@
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
-
-		<panic_threshold>0.1</panic_threshold>
 
 		<visual>actors\dolg\stalker_do_mask</visual>
 		<snd_config>characters_voice\human_01\dolg\</snd_config>
@@ -1527,8 +1503,6 @@
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
@@ -1557,8 +1531,6 @@
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
@@ -1588,8 +1560,6 @@
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
@@ -1618,8 +1588,6 @@
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
@@ -1649,8 +1617,6 @@
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<supplies>
 			[spawn] \n
@@ -1679,8 +1645,6 @@
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
@@ -1712,8 +1676,6 @@
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
@@ -2774,8 +2736,6 @@
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
-
-    	<panic_threshold>0.0</panic_threshold>
 
 		<visual>actors\militari\stalker_militari_antigas_2</visual>		
 		<supplies>

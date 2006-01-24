@@ -45,8 +45,6 @@
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
@@ -78,8 +76,6 @@
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
@@ -112,8 +108,6 @@
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
 			[spawn] \n
@@ -144,8 +138,6 @@
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
@@ -178,8 +170,6 @@
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<supplies>
 			[spawn] \n
@@ -212,8 +202,6 @@
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
@@ -245,9 +233,7 @@
 		<reputation>-50</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
-		
-		<panic_threshold>0</panic_threshold>
-
+			
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
@@ -281,8 +267,6 @@
 	
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
-		<panic_threshold>0</panic_threshold>
-
 		<visual>actors\killer\stalker_ki_head_2</visual>
 		<supplies>
 			[spawn] \n

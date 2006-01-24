@@ -556,8 +556,6 @@
 		
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
 
-		<panic_threshold>0.1</panic_threshold>
-
 		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<supplies>
 			[spawn] \n
