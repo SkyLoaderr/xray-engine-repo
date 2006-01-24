@@ -80,9 +80,9 @@
 
 	<!-- Tasks for random quest generator -->
 	<game_task id="eliminate_lager">
-		<title>”ничтожить бл€ лагерь</title>
+		<title>title</title>
 		<objective>
-			<text>”ничтожить лагерь плохих реб€т на заданном уровне</text>
+			<text>objective</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>

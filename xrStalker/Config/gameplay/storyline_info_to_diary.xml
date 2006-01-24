@@ -11,5 +11,6 @@
 #include "gameplay\storyline_info_aes.xml"
 #include "gameplay\storyline_info_sarcofag.xml"
 #include "gameplay\storyline_info_yantar.xml"    
+#include "gameplay\storyline_info_taskmanager.xml"
 
 </encyclopedia>
