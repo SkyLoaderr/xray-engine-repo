@@ -339,8 +339,8 @@ void CMovementManager::verify_detail_path		()
 
 void CMovementManager::on_restrictions_change	()
 {
-//	Msg							("[%6d][%s][on_restrictions_change]",Device.dwTimeGlobal,*object().cName());
-	m_path_actuality			= false;
+//	Msg								("[%6d][%s][on_restrictions_change]",Device.dwTimeGlobal,*object().cName());
+	m_path_actuality				= false;
 	level_path_builder().remove		();
 	detail_path_builder().remove	();
 }
