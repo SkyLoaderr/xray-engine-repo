@@ -15,7 +15,7 @@ on_info2    = {+val_escort_combat -val_escort_nap1_start_combat} %+val_escort_ac
 on_info3    = {=hitted_by(406) -val_escort_actor_start_combat} %+val_escort_nap1_start_combat%
 
 [combat@val_escort_guard2_wait]
-;on_info    = %+val_escort_guard2_combat%
+on_info     = %+val_escort_guard2_combat%
 on_info     = {=see_actor -val_escort_nap1_start_combat -val_escort_actor_start_combat} %+val_escort_actor_start_combat%
 on_info2    = {=see_actor -val_escort_combat} remark@val_escort_guard2_fight %+val_escort_combat%
 
