@@ -447,6 +447,15 @@
     <string id="bar_bar_barmen_start_1512">
         <text>Пока нет.</text>
     </string>
+    <string id="bar_bar_barmen_start_161">
+        <text>Значит так, разобрался я с тем что ты притащил, все тебе расскажу и кроме того есть для тебя работа. Если интересно давай ко мне в комнату.</text>
+    </string>
+    <string id="bar_bar_barmen_start_1611">
+        <text>Интересно</text>
+    </string>
+    <string id="bar_bar_barmen_start_1612">
+        <text>Пока нет.</text>
+    </string>
     <string id="bar_bar_barmen_start_2">
         <text>Здорово, Меченый. Принес документы с Агропрома?</text>
     </string>
@@ -472,7 +481,7 @@
         <text>Да, вот держи документы с Агропрома.</text>
     </string>
     <string id="bar_bar_barmen_start_231">
-        <text>Отличная работа, Меченый. Наконец документы у нас. Теперь мне надо в них разобраться, может узнаю как пробиться на Север. </text>
+        <text>Отличная работа, Меченый. Наконец документы у нас. Теперь мне надо в них разобраться, может узнаю как пробиться на Север.</text>
     </string>
     <string id="bar_bar_barmen_start_2311">
         <text>Хорошо</text>
