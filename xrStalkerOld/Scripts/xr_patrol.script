@@ -338,6 +338,7 @@ function PatrolManager:get_npc_command (npc)    -- get command for NPC
     local vertex_id = commander:level_vertex_id ()
     --уберем влияние вертикальной составляющей
     dir.y = 0
+    dir:normalize ()
     -- получим данные салаги
     local dir_s = self.npc_list[npc_id].dir
     local dist_s = self.npc_list[npc_id].dist
