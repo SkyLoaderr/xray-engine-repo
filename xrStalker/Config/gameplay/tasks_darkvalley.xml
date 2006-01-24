@@ -85,3 +85,30 @@
         </object_story_id>
     </objective>
 </game_task>
+<game_task id="val_captive_help">
+    <title>
+        val_captive_help
+    </title>
+    <objective key="0">
+        <icon height="50" width="50" x="150" y="0">
+            ui\ui_icons_task
+        </icon>
+        <infoportion_fail>
+            val_escort_captive_dead
+        </infoportion_fail>
+        <infoportion_complete>
+            val_escort_guard1_dead
+        </infoportion_complete>
+        <infoportion_complete>
+            val_escort_guard2_dead
+        </infoportion_complete>
+    </objective>
+    <objective key="1">
+        <text>
+            val_captive_help_1
+        </text>
+        <icon height="50" width="50" x="150" y="0">
+            ui\ui_icons_task
+        </icon>
+    </objective>
+</game_task>
