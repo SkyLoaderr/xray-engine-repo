@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "uiprogressbar.h"
 #include "..\MainUI.h"
+#include "UITextureMaster.h"
 
 CUIProgressBar::CUIProgressBar(void)
 {
@@ -41,6 +42,9 @@ void CUIProgressBar::SetProgressTexture(LPCSTR tex_name,
 											u32 color)
 {
 	m_iProgressLength			= progress_length;
+
+//	CUITextureMaster::InitTexture(tex_name, "hud\\default", &m_UIProgressItem);
+//	m_UIProgressItem.SetPos(x,y);
 	
 	m_UIProgressItem.Init		(tex_name, "hud\\default", x, y, alNone);
 	m_UIProgressItem.SetColor	(color);
@@ -58,6 +62,8 @@ void CUIProgressBar::SetBackgroundTexture(LPCSTR tex_name, float x, float y, flo
 {
 	if (tex_name&&tex_name[0]){
 		m_bBackgroundPresent = true;
+
+//		CUITextureMaster::InitTexture(tex_name, "hud\\default", &m_UIBackgroundItem);
 
 		m_UIBackgroundItem.Init		(tex_name, "hud\\default", 0, 0, alNone);
 		m_BackgroundOffset.set		(offs_x,offs_y);

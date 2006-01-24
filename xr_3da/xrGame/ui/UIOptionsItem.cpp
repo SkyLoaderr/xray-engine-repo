@@ -108,4 +108,6 @@ void CUIOptionsItem::SaveOptTokenValue(const char* val){
 void CUIOptionsItem::SaveValue(){
 	if (m_entry == "vid_mode" || m_entry == "r___preset" || m_entry == "rs_fullscreen")
 		m_optionsManager.DoVidRestart();
+	if (m_entry == "snd_freq" || m_entry == "snd_efx")
+		m_optionsManager.DoSndRestart();
 }

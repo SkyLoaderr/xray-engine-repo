@@ -493,6 +493,7 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	float tex_w = xml_doc.ReadAttribFlt(buf, index, "width");
 	float tex_h = xml_doc.ReadAttribFlt(buf, index, "height");
 
+//	u32 color = GetARGB(xml_doc, buf, index);
 	u32 color = RGB_ALPHA(0xFF, r, g, b);
 
 	pWnd->SetProgressTexture(texture,progress_length,tex_x, tex_y, tex_w, tex_h, color);
@@ -508,7 +509,15 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	y = xml_doc.ReadAttribFlt(buf, index, "offs_y");
 
 	pWnd->SetBackgroundTexture(texture,tex_x,tex_y,tex_w,tex_h,x,y);
-	
+
+	r = xml_doc.ReadAttribInt(buf, index, "r");
+	g = xml_doc.ReadAttribInt(buf, index, "g");
+	b = xml_doc.ReadAttribInt(buf, index, "b");
+
+//	color = GetARGB(xml_doc, buf, index);
+	color = RGB_ALPHA(0xFF, r, g, b);
+	pWnd->m_UIBackgroundItem.SetColor(color);
+
 	strconcat(buf,path,":min_color");
 	
 	if( xml_doc.NavigateToNode(buf,index) ){
@@ -526,6 +535,112 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	
 		pWnd->m_maxColor.set(color_rgba(r,g,b,0xFF));
 	}
+
+	return true;
+}
+
+bool CUIXmlInit::InitProgressBar2(CUIXml& xml_doc, LPCSTR path, 
+						int index, CUIProgressBar* pWnd)
+{
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+
+	string256 buf;
+	
+	float x = xml_doc.ReadAttribFlt(path, index, "x");
+	float y = xml_doc.ReadAttribFlt(path, index, "y");
+
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
+
+	float width = xml_doc.ReadAttribFlt(path, index, "width");
+	float height = xml_doc.ReadAttribFlt(path, index, "height");
+	bool is_horizontal = (xml_doc.ReadAttribInt(path, index, "horz", 1)==1);
+
+	pWnd->Init(x, y, width, height, is_horizontal);
+
+	int min = xml_doc.ReadAttribInt(path, index, "min");
+	int max = xml_doc.ReadAttribInt(path, index, "max");
+	int pos = xml_doc.ReadAttribInt(path, index, "pos");
+	
+	pWnd->SetRange((s16)min,(s16)max);
+	pWnd->SetProgressPos((s16)pos);
+
+	pWnd->m_iProgressLength = xml_doc.ReadAttribFlt(path, index, "length");
+
+	// progress
+	strconcat(buf,path,":texture");
+	shared_str texture = xml_doc.Read(buf, index, NULL);
+
+	CUITextureMaster::InitTexture(*texture, &pWnd->m_UIProgressItem);
+	u32 color = GetARGB(xml_doc, buf, index);
+	pWnd->m_UIProgressItem.SetColor(color);
+
+	// background
+	strconcat(buf,path,":background");
+	texture = xml_doc.Read(buf, index, NULL);
+
+    CUITextureMaster::InitTexture(*texture, &pWnd->m_UIBackgroundItem);
+	color = GetARGB(xml_doc, buf, index);
+	pWnd->m_UIBackgroundItem.SetColor(color);
+	pWnd->m_bBackgroundPresent = true;
+
+	if(pWnd->m_bIsHorizontal){
+		pWnd->m_UIProgressItem.SetRect(0, 0, pWnd->m_iProgressLength, pWnd->GetHeight());	
+	}else{
+		pWnd->m_UIProgressItem.SetRect(0, 0, pWnd->GetWidth(), pWnd->m_iProgressLength);
+	}
+
+	if(pWnd->m_bIsHorizontal){
+		pWnd->m_UIBackgroundItem.SetRect(0, 0, pWnd->m_iProgressLength, pWnd->GetHeight());	
+	}else{
+		pWnd->m_UIBackgroundItem.SetRect(0, 0, pWnd->GetWidth(), pWnd->m_iProgressLength);
+	}
+
+	
+//	float tex_x = xml_doc.ReadAttribFlt(buf, index, "x");
+//	float tex_y = xml_doc.ReadAttribFlt(buf, index, "y");
+//	float tex_w = xml_doc.ReadAttribFlt(buf, index, "width");
+//	float tex_h = xml_doc.ReadAttribFlt(buf, index, "height");
+
+	
+//		RGB_ALPHA(0xFF, r, g, b);
+
+//	pWnd->SetProgressTexture(texture,progress_length,tex_x, tex_y, tex_w, tex_h, color);
+
+
+	//texture = xml_doc.Read(buf, index, NULL);
+	//tex_x = xml_doc.ReadAttribFlt(buf, index, "x");
+	//tex_y = xml_doc.ReadAttribFlt(buf, index, "y");
+	//tex_w = xml_doc.ReadAttribFlt(buf, index, "width");
+	//tex_h = xml_doc.ReadAttribFlt(buf, index, "height");
+	//x = xml_doc.ReadAttribFlt(buf, index, "offs_x");
+	//y = xml_doc.ReadAttribFlt(buf, index, "offs_y");
+
+	//pWnd->SetBackgroundTexture(texture,tex_x,tex_y,tex_w,tex_h,x,y);
+
+//	r = xml_doc.ReadAttribInt(buf, index, "r");
+//	g = xml_doc.ReadAttribInt(buf, index, "g");
+//	b = xml_doc.ReadAttribInt(buf, index, "b");
+
+	//color = GetARGB(xml_doc, buf, index);
+	//pWnd->m_UIBackgroundItem.SetColor(color);
+
+	//strconcat(buf,path,":min_color");
+	//
+	//if( xml_doc.NavigateToNode(buf,index) ){
+	//	pWnd->m_bUseColor			= true;
+	//	int r = xml_doc.ReadAttribInt(buf, index, "r");
+	//	int g = xml_doc.ReadAttribInt(buf, index, "g");
+	//	int b = xml_doc.ReadAttribInt(buf, index, "b");
+	//
+	//	pWnd->m_minColor.set(color_rgba(r,g,b,0xFF));
+
+	//	strconcat(buf,path,":max_color");
+	//	r = xml_doc.ReadAttribInt(buf, index, "r");
+	//	g = xml_doc.ReadAttribInt(buf, index, "g");
+	//	b = xml_doc.ReadAttribInt(buf, index, "b");
+	//
+	//	pWnd->m_maxColor.set(color_rgba(r,g,b,0xFF));
+	//}
 
 	return true;
 }

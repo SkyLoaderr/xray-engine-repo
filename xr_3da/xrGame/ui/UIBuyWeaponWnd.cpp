@@ -22,6 +22,7 @@
 #include "UIScrollView.h"
 
 
+
 using namespace InventoryUtilities;
 
 int			g_iOkAccelerator, g_iCancelAccelerator;
@@ -285,6 +286,8 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	AttachChild(&UIBtn_RifleBullet);
 	CUIXmlInit::Init3tButton(uiXml, "btn_rifle_bullets", 0, &UIBtn_RifleBullet);
+
+	UIWpnParams.InitFromXml(uiXml);
 
 	// disable
 
@@ -1830,8 +1833,12 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 				strconcat(tex_name,"rank_",itoa(pDDItemMP->m_iRank,foo,10));
 				UIDescRankIcon.InitTexture(tex_name);
 			}
-			
-			
+
+			if (pSettings->line_exist(pDDItemMP->GetSectionName(), "fire_dispersion_base"))
+			{
+                UIWpnParams.SetInfo(pDDItemMP->GetSectionName());
+                UIItemInfo.UIDesc->AddWindow(&UIWpnParams, false);			
+			}
 
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
 			{
@@ -1841,6 +1848,8 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 				pItem->AdjustHeightToText();
 				UIItemInfo.UIDesc->AddWindow(pItem, true);
 			}
+
+			
 		}
 	}
 }

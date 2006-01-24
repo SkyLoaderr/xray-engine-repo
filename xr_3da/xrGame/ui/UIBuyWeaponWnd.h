@@ -26,6 +26,7 @@
 #include "UIBuyWeaponTab.h"
 #include "UIBag.h"
 #include "UIAutobuyIndication.h"
+#include "UIWpnParams.h"
 
 extern const u32	cDetached;
 extern const u32	cAttached;
@@ -88,6 +89,7 @@ protected:
 
 	// Информация о вещи
 	CUIItemInfo UIItemInfo;
+	CUIWpnParams UIWpnParams;
 
 	static bool SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList);

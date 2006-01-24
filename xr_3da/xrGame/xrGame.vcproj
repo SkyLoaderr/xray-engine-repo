@@ -11065,6 +11065,16 @@
 							RelativePath=".\ui\UITabButtonMP.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="WpnParams"
+						Filter="">
+						<File
+							RelativePath=".\ui\IUWpnParams.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIWpnParams.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="1"

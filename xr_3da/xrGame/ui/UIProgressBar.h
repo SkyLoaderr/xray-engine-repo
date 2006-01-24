@@ -14,6 +14,7 @@
 
 class CUIProgressBar : public CUIWindow
 {
+	friend class CUIXmlInit;
 protected:
 	//горизонтальный или вертикальный 
 	bool			m_bIsHorizontal;
