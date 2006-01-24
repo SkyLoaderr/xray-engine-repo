@@ -135,6 +135,8 @@ public:
 #else
 private:
 #endif
+	u32							Update_LastTime			;
+
 	CBlendInstance*								blend_instances;
 
 	struct SMotionsSlot{

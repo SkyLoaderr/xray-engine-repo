@@ -169,7 +169,6 @@ protected:
 	accel*						bone_map_P;		// bones  associations	(shared)	- sorted by name-pointer
 
 	BOOL						Update_Visibility		;
-	u32							Update_LastTime			;
 	u32							UCalc_Time				;
 	s32							UCalc_Visibox			;
 

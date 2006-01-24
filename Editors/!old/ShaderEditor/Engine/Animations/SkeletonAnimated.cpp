@@ -502,6 +502,7 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	// Globals
 	blend_instances		= NULL;
     m_Partition			= NULL;
+	Update_LastTime 	= 0;
 
 	// Load animation
     if (data->find_chunk(OGF_S_MOTION_REFS)){
