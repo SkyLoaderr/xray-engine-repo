@@ -122,7 +122,7 @@ function actor_binder:on_item_drop (obj)
 end
 ----------------------------------------------------------------------------------------------------------------------
 
-function actor_binder:_task_callback(_task, _objective, _state)
+function actor_binder:task_callback(_task, _objective, _state)
 	if _objective:get_idx() == 0 then
 		if _state == task.fail then
 			news_manager.send_task(db.actor, "fail")
@@ -140,7 +140,7 @@ function actor_binder:_task_callback(_task, _objective, _state)
 end
 
 
-function actor_binder:task_callback(id_task, subtask, id_state)
+function actor_binder:_task_callback(id_task, subtask, id_state)
 	if subtask == 0 then
 		if id_state == task.fail then
 			news_manager.send_task(db.actor, "fail")
