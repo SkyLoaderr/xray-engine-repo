@@ -118,13 +118,13 @@ void CStateMonsterRestAbstract::execute()
 
 					bool state_fun = false;
 
-					if (prev_substate == eStateRest_Fun) {
-						if (!get_state(eStateRest_Fun)->check_completion()) 
-							state_fun = true;
-					} else {
-						if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
-							state_fun = true;
-					}
+					//if (prev_substate == eStateRest_Fun) {
+					//	if (!get_state(eStateRest_Fun)->check_completion()) 
+					//		state_fun = true;
+					//} else {
+					//	if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
+					//		state_fun = true;
+					//}
 
 					if (state_fun) {
 						select_state	(eStateRest_Fun);
