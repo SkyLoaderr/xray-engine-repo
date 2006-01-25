@@ -26,7 +26,7 @@ on_info3    = {=see_actor -val_escort_combat} %+val_escort_combat% ;remark@val_e
 path_walk           = guard2_wait_walk
 path_look           = guard2_wait_look
 on_info             = {+val_escort_start}           patrol@val_escort_guard2_walk
-on_info2            = {+val_escort_captive_dead}    patrol@val_escort_guard2_return %-val_escort_guard2_combat%
+on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard2_free
 combat_ignore_cond  = {=check_fighting(400)}
 
 ;--------------------------------------------------------------------------
@@ -37,8 +37,8 @@ path_walk           = captive_walk
 path_look           = captive_look
 formation           = back
 on_info             = {+val_escort_combat}          remark@val_escort_guard2_fight
-on_info2            = {+val_escort_captive_dead}    patrol@val_escort_guard2_return %-val_escort_guard2_combat%
-on_info3            = {+val_escort_scene_fail}      patrol@val_escort_guard2_return %-val_escort_guard2_combat%
+on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard2_free
+on_info3            = {+val_escort_scene_fail}      remark@val_escort_guard2_free
 combat_ignore_cond  = {=check_fighting(400)}
 ;combat_ignore_cond  = {=check_fighting(400:406)}
 
@@ -47,15 +47,14 @@ combat_ignore_cond  = {=check_fighting(400)}
 ;--------------------------------------------------------------------------
 [remark@val_escort_guard2_fight]
 anim                = wait_na
-on_info             = {+val_escort_actor_start_combat}  patrol@val_escort_guard2_return
-on_info2            = {+val_escort_captive_dead}        patrol@val_escort_guard2_return
+on_info             = {+val_escort_actor_start_combat}  remark@val_escort_guard2_free
+on_info2            = {+val_escort_captive_dead}        remark@val_escort_guard2_free
 on_info3            = {+val_escort_nap1_dead}           patrol@val_escort_guard2_walk   %-val_escort_combat%
 combat_ignore_cond  = {=check_fighting(400)}
 
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
-[patrol@val_escort_guard2_return]
-path_walk = guards_return_walk 
-path_look = guards_return_look
-formation = line
+[remark@val_escort_guard2_free]
+anim                = wait
+on_info             = %+val_escort_guards_free -val_escort_guard2_combat%
