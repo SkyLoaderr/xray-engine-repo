@@ -1786,3 +1786,11 @@ function kishka_heli_mapspot(actor, npc, p)
 		level_tasks.add_location( p[1], "anomaly_zone_location", "vertolyot!" )
 	end
 end
+
+
+------------------------------------------------------------------------------------
+-- Функции для Радара
+------------------------------------------------------------------------------------
+function rad_psi_hit (actor, npc)
+	level.add_pp_effector ("radar_psi.ppe", 2006, false)
+end
