@@ -15,12 +15,12 @@ public:
 
 protected:
 	CUIProgressBar	m_progressAccuracy;
-	CUIProgressBar	m_progressDistance;
+	CUIProgressBar	m_progressHandling;
 	CUIProgressBar	m_progressDamage;
 	CUIProgressBar	m_progressRPM;
 
 	CUIStatic	m_textAccuracy;
-	CUIStatic	m_textDistance;
+	CUIStatic	m_textHandling;
 	CUIStatic	m_textDamage;
 	CUIStatic	m_textRPM;
 };

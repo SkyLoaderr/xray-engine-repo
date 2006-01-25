@@ -388,7 +388,10 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 		found_place = CanPlaceItemInGrid(pItem, place_row, place_col);
 	}
 	if (found_place)
+	{
 		PlaceItemAtPos(place_row, place_col, pItem);
+		GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_PLACED, NULL);
+	}
 	return found_place;
 }
 

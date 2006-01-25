@@ -579,6 +579,7 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
+	CUIDragDropList* list;
 	TABS_VECTOR_it	it;
 
 	switch (msg)
@@ -626,6 +627,10 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if (m_pCurrentDragDropItem) 
 			m_pCurrentDragDropItem->Highlight(true); break;
 
+	case DRAG_DROP_ITEM_PLACED:
+		list = smart_cast<CUIDragDropList*>(pWnd);
+		list->SortList(MP_item_cmp);		
+		break;
 	case STATIC_FOCUS_RECEIVED:
 		if (&UIBtnAutobuy == pWnd)
             OnBtnAutobuyFocusReceive(); break;
@@ -1834,7 +1839,7 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 				UIDescRankIcon.InitTexture(tex_name);
 			}
 
-			if (pSettings->line_exist(pDDItemMP->GetSectionName(), "fire_dispersion_base"))
+			if (pSettings->line_exist(pDDItemMP->GetSectionName(), "fire_dispersion_base") && false)
 			{
                 UIWpnParams.SetInfo(pDDItemMP->GetSectionName());
                 UIItemInfo.UIDesc->AddWindow(&UIWpnParams, false);			
