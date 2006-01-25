@@ -35,12 +35,7 @@
 </string>
 <string id="cit_killers_base_location_2">
     <text>
-        Принести ее Воронину.
-    </text>
-</string>
-<string id="cit_killers_leader">
-    <text>
-        Лидер наемников.
+        Отдать ее долговцам или Свободе.
     </text>
 </string>
 <string id="cit_leader_hunt_0">
@@ -126,5 +121,10 @@
 <string id="cit_doctor_escape_task_4">
     <text>
         Уйти из города
+    </text>
+</string>
+<string id="cit_killers_leader">
+    <text>
+        Task info.
     </text>
 </string>

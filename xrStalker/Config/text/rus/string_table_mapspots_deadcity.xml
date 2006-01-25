@@ -63,3 +63,8 @@
         Район, где доктор в последний раз видел Петровича
     </text>
 </string>
+<string id="mil_return_to_lukash_hint">
+    <text>
+        Map spot info.
+    </text>
+</string>

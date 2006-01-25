@@ -34,9 +34,6 @@
         <object_story_id>
             Escape_Trader
         </object_story_id>
-        <infoportion_complete>
-            cit_documents_give
-        </infoportion_complete>
     </objective>
 </game_task>
 <game_task id="cit_killers_base">
@@ -69,15 +66,6 @@
         <icon height="50" width="50" x="150" y="0">
             ui\ui_icons_task
         </icon>
-        <map_location_type hint="cit_killers_base_location_2_hint">
-            blue_location
-        </map_location_type>
-        <object_story_id>
-            bar_dolg_general_voronin
-        </object_story_id>
-        <infoportion_complete>
-            cit_map_give
-        </infoportion_complete>
     </objective>
 </game_task>
 <game_task id="cit_leader_need_kill">
