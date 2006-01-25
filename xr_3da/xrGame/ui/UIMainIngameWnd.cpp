@@ -1271,6 +1271,10 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 	case ewiSleep:
 		SetWarningIconColor		(&UISleepIcon, cl);
 		break;
+	case ewiArtefact:
+		SetWarningIconColor		(&UIArtefactIcon, cl);
+		break;
+
 	default:
 		R_ASSERT(!"Unknown warning icon type");
 	}
