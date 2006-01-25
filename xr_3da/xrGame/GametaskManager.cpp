@@ -105,7 +105,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, bool bCheckExisti
 			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::quests);
 	}
 	if(t->m_ID!="user_task")
-		ChangeStateCallback(t->m_ID,0,eTaskStateInProgress);
+		t->Objective(0).ChangeStateCallback();
 
 	return t;
 }
@@ -256,3 +256,28 @@ void CGameTaskManager::RemoveUserTask					(CMapLocation* ml)
 }
 
 
+SGameTaskObjective* CGameTaskManager::ActiveTask()
+{
+	GameTasks_it it			= GameTasks().begin();
+	GameTasks_it it_e		= GameTasks().end();
+	for( ;it!=it_e; ++it ){
+		CGameTask* t		= (*it).game_task;
+
+		if(t->Objective(0).TaskState()==eTaskStateFail ||
+			t->Objective(0).TaskState()==eTaskStateCompleted) continue;
+
+		for(u32 i=1; i<t->m_Objectives.size() ;++i){
+			SGameTaskObjective& obj = t->Objective(i);
+
+			//1-st enable hidden locations
+			if(	((obj.TaskState()==eTaskStateInProgress)||(obj.TaskState()==eTaskUserDefined))	&& 
+				obj.object_id!=u16(-1)	)
+			{
+				CMapLocation* ml			=	obj.HasMapLocation();
+				if(ml && ml->PointerEnabled())
+					return &obj;
+			}
+		}
+	}
+	return NULL;
+}

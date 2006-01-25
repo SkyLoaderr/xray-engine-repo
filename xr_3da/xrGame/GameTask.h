@@ -77,6 +77,7 @@ public:
 // for scripting access
 	void					SetDescription_script	(LPCSTR _descr);
 	void					SetArticleID_script		(LPCSTR _id);
+	int						GetIDX_script			()					{return idx;};
 	void					SetMapHint_script		(LPCSTR _str);
 	void					SetMapLocation_script	(LPCSTR _str);
 	void					SetObjectID_script		(u16 id);
@@ -91,6 +92,8 @@ public:
 	void					AddFailFunc_script		(LPCSTR _str);
 	void					AddOnCompleteFunc_script(LPCSTR _str);
 	void					AddOnFailFunc_script	(LPCSTR _str);
+
+	void					ChangeStateCallback		();
 };
 
 DEFINE_VECTOR(SGameTaskObjective, OBJECTIVE_VECTOR, OBJECTIVE_VECTOR_IT);
@@ -128,10 +131,12 @@ public:
 	void					Load_script				(LPCSTR _id);
 	void					SetTitle_script			(LPCSTR _title);
 	void					AddObjective_script		(SGameTaskObjective* O);
+	SGameTaskObjective*		GetObjective_script		(int objective_id)			{return &(Objective(objective_id));}
+	LPCSTR					GetID_script			()							{return *m_ID;}
+	int						GetObjectiveSize_script	()							{return m_Objectives.size();}
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CGameTask)
 #undef script_type_list
 #define script_type_list save_type_list(CGameTask)
-
-void ChangeStateCallback	(shared_str& task_id, int obj_id, ETaskState state);

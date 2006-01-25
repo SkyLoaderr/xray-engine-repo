@@ -73,6 +73,7 @@ protected:
 	CUIStatic			UIWeaponBack;
 	CUIStatic			UIWeaponSignAmmo;
 	CUIStatic			UIWeaponIcon;
+	Frect				UIWeaponIcon_rect;
 
 	// Для мультиплеера выводим денежки
 	CUIMoneyIndicator*	m_pMoneyIndicator;
@@ -170,11 +171,6 @@ protected:
 	CActor*				m_pActor;	
 	CWeapon*			m_pWeapon;
 	CInventoryItem*		m_pItem;
-
-	float				m_iWeaponIconX;
-	float				m_iWeaponIconY;
-	float				m_iWeaponIconWidth;
-	float				m_iWeaponIconHeight;
 
 	// Отображение подсказок при наведении прицела на объект
 	void				RenderQuickInfos();

@@ -311,7 +311,7 @@ void SGameTaskObjective::SetTaskState		(ETaskState new_state)
 				CallAllFuncs			(m_lua_functions_on_complete);
 		}
 		//callback for scripters
-		ChangeStateCallback(parent->m_ID, idx, new_state);
+		ChangeStateCallback();
 	}
 }
 
@@ -465,9 +465,11 @@ void CGameTask::AddObjective_script(SGameTaskObjective* O)
 	m_Objectives.push_back(*O);
 }
 
-void ChangeStateCallback(shared_str& task_id, int obj_id, ETaskState state){
+void SGameTaskObjective::ChangeStateCallback()
+{
 
-	Actor()->callback(GameObject::eTaskStateChange)(*task_id, obj_id, state);
+//	Actor()->callback(GameObject::eTaskStateChange)(*task_id, obj_id, state);
+	Actor()->callback(GameObject::eTaskStateChange)(parent, this, task_state);
 }
 
 

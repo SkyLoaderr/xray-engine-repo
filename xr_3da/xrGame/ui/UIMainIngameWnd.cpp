@@ -153,7 +153,7 @@ void CUIMainIngameWnd::Init()
 	UIWeaponBack.AttachChild(&UIWeaponIcon);
 	xml_init.InitStatic(uiXml, "static_wpn_icon", 0, &UIWeaponIcon);
 	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
-	UIWeaponIcon.ClipperOn();
+	UIWeaponIcon_rect = UIWeaponIcon.GetWndRect();
 	//---------------------------------------------------------
 	AttachChild(&UIPickUpItemIcon);
 	xml_init.InitStatic(uiXml, "pick_up_item", 0, &UIPickUpItemIcon);
@@ -166,12 +166,6 @@ void CUIMainIngameWnd::Init()
 	m_iPickUpItemIconY = UIPickUpItemIcon.GetWndRect().top;
 	//---------------------------------------------------------
 
-	//запомнить оригинальный размер для иконки оружия, 
-	//так как она будет масштабироваться и центрироваться
-	m_iWeaponIconWidth = UIWeaponIcon.GetWidth();
-	m_iWeaponIconHeight = UIWeaponIcon.GetHeight();
-	m_iWeaponIconX = UIWeaponIcon.GetWndRect().left;
-	m_iWeaponIconY = UIWeaponIcon.GetWndRect().top;
 
 	UIWeaponIcon.Enable(false);
 
@@ -392,9 +386,8 @@ void CUIMainIngameWnd::Draw()
 		{
 			CUIWindow::Draw();
 			UIZoneMap->Render();			
-		}else{
-			int i=0;
 		}
+
 		if (m_bShowHudCrosshair && !zoom_mode)
 		{
 			m_bShowHudCrosshair = false;
@@ -643,7 +636,7 @@ void CUIMainIngameWnd::Update()
 				else
 					sprintf			(text_str, "%d/--",AE);
 
-				UIWeaponSignAmmo.SetText(text_str);
+
 			}
 		}
 		else

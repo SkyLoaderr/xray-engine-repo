@@ -23,13 +23,21 @@ void CGameTask::script_register(lua_State *L)
 			
 			.def("add_complete_func",					&SGameTaskObjective::AddCompleteFunc_script			)
 			.def("add_fail_func",						&SGameTaskObjective::AddFailFunc_script				)
-			.def("add_on_complete_func",					&SGameTaskObjective::AddOnCompleteFunc_script	)
-			.def("add_on_fail_func",					&SGameTaskObjective::AddOnFailFunc_script			),
+			.def("add_on_complete_func",				&SGameTaskObjective::AddOnCompleteFunc_script	)
+			.def("add_on_fail_func",					&SGameTaskObjective::AddOnFailFunc_script			)
+
+			.def("get_state",							&SGameTaskObjective::TaskState						)
+			.def("get_idx",								&SGameTaskObjective::GetIDX_script						)
+			.def("get_state",							&SGameTaskObjective::TaskState						),
+
 
 			class_<CGameTask>("CGameTask")
 			.def(										constructor<>()									)
 			.def("load",								&CGameTask::Load_script							)
 			.def("set_title",							&CGameTask::SetTitle_script						)
 			.def("add_objective",						&CGameTask::AddObjective_script,		adopt(_2))
+			.def("get_objective",						&CGameTask::GetObjective_script					)
+			.def("get_id",								&CGameTask::GetID_script						)
+			.def("get_objectives_cnt",					&CGameTask::GetObjectiveSize_script				)
 		];
 }

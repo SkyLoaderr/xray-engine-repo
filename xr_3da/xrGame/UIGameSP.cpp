@@ -9,6 +9,8 @@
 #include "actorcondition.h"
 #include "../xr_ioconsole.h"
 #include "object_broker.h"
+#include "GameTaskManager.h"
+#include "GameTask.h"
 
 #include "ui/UIInventoryWnd.h"
 #include "ui/UITradeWnd.h"
@@ -42,9 +44,9 @@ CUIGameSP::~CUIGameSP()
 
 void CUIGameSP::SetClGame (game_cl_GameState* g)
 {
-	inherited::SetClGame(g);
+	inherited::SetClGame				(g);
 	m_game = smart_cast<game_cl_Single*>(g);
-	R_ASSERT(m_game);
+	R_ASSERT							(m_game);
 }
 
 
@@ -52,7 +54,8 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if( pActor && !pActor->g_Alive() ) return false;
+	if(!pActor)								return false;
+	if( pActor && !pActor->g_Alive() )		return false;
 
 	switch (key_binding[dik])
 	{
@@ -82,6 +85,17 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 			m_game->StartStopMenu(PdaMenu,true);
 			return true;
 		}break;
+
+	case kSCORES:
+		{
+			SDrawStaticStruct* ss	= AddCustomStatic("main_task", true);
+			SGameTaskObjective* o	= pActor->GameTaskManager().ActiveTask();
+			if(!o)
+				ss->m_static->SetTextST	("st_no_active_task");
+			else
+				ss->m_static->SetTextST	(*(o->description));
+
+		}break;
 	}
 	return false;
 }
@@ -89,6 +103,14 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 bool CUIGameSP::IR_OnKeyboardRelease(int dik) 
 {
 	if(inherited::IR_OnKeyboardRelease(dik)) return true;
+
+	switch (key_binding[dik])
+	{
+	case kSCORES:
+		{
+			RemoveCustomStatic		("main_task");
+		}break;
+	};
 	return false;
 }
 
