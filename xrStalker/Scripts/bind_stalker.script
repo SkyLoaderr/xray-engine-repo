@@ -266,8 +266,11 @@ end
 function actor_init    (npc)
 	npc:bind_object(actor_binder(npc))
 end
+
 --старт префетча звуков
---sound_prefetch.prefetch_sounds()
+if string.find(command_line(), "-noprefetch") == nil then
+	sound_prefetch.prefetch_sounds()
+end
 
 
 -- Weapon functions
