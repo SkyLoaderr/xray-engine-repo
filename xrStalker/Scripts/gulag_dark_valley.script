@@ -190,7 +190,7 @@ function load_job_escort(sj, gname, type, squad, groups)
                "[remark@" .. gname .. "_halfdead_wait]\n" ..
                "path_walk           = nap1_look\n" ..
                "anim                = wounded_heavy ;wait\n" ..
-               "target              = 406\n" ..
+               --"target              = 406\n" ..
                "on_info             = {+val_nap1_phrase1_end} remark@" .. gname .. "_halfdead_phrase\n" ..
                "wounded             = wounded@" .. gname .. "_halfdead\n" ..
                "combat_ignore_cond  = always\n" ..
@@ -202,14 +202,14 @@ function load_job_escort(sj, gname, type, squad, groups)
                "[remark@" .. gname .. "_halfdead_phrase]\n" ..
                "anim                = wounded_heavy ;wait\n" ..
                "snd                 = speech\n" ..
-               "target              = 406\n" ..
+               --"target              = 406\n" ..
                "on_signal           = sound_end | remark@" .. gname .. "_halfdead_end %+val_halfdead_phrase_end%\n" ..
                "wounded             = wounded@" .. gname .. "_halfdead1\n" ..
                "combat_ignore_cond  = always\n" ..
 
                "[remark@" .. gname .. "_halfdead_end]\n" ..
                "anim            = wounded_heavy ;wait\n" ..
-               "target          = 406\n" ..
+               --"target          = 406\n" ..
                "wounded         = wounded@" .. gname .. "_halfdead\n"
 
     gulags.val_escort.ltx = ltx
