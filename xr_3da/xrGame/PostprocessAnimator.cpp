@@ -153,7 +153,10 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 {
 	if(m_bCyclic)
 		fLifeTime				= 100000;
-	
+	else
+		fLifeTime				-= Device.fTimeDelta;
+
+	if(!CEffectorPP::Valid()) return FALSE;
 
 	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
 	if(m_bCyclic &&((Device.fTimeGlobal-m_start_time)>f_length)) m_start_time+=f_length;

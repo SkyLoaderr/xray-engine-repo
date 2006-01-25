@@ -6618,7 +6618,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="info &amp; dialogs"
+						Name="tasks_info_dialogs"
 						Filter="">
 						<File
 							RelativePath=".\InfoPortion.cpp">

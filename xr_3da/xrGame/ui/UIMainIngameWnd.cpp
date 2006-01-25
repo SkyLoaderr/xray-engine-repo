@@ -392,6 +392,8 @@ void CUIMainIngameWnd::Draw()
 		{
 			CUIWindow::Draw();
 			UIZoneMap->Render();			
+		}else{
+			int i=0;
 		}
 		if (m_bShowHudCrosshair && !zoom_mode)
 		{
@@ -488,7 +490,8 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-	if(!g_bShowHudInfo) return;
+	if(!g_bShowHudInfo) 
+		return;
 
 
 	if (GameID() == GAME_SINGLE && !(Device.dwFrame%30) )

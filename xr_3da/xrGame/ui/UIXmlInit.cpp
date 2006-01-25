@@ -510,9 +510,9 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 
 	pWnd->SetBackgroundTexture(texture,tex_x,tex_y,tex_w,tex_h,x,y);
 
-	r = xml_doc.ReadAttribInt(buf, index, "r");
-	g = xml_doc.ReadAttribInt(buf, index, "g");
-	b = xml_doc.ReadAttribInt(buf, index, "b");
+	r = xml_doc.ReadAttribInt(buf, index, "r",255);
+	g = xml_doc.ReadAttribInt(buf, index, "g",255);
+	b = xml_doc.ReadAttribInt(buf, index, "b",255);
 
 //	color = GetARGB(xml_doc, buf, index);
 	color = RGB_ALPHA(0xFF, r, g, b);
@@ -522,16 +522,16 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	
 	if( xml_doc.NavigateToNode(buf,index) ){
 		pWnd->m_bUseColor			= true;
-		int r = xml_doc.ReadAttribInt(buf, index, "r");
-		int g = xml_doc.ReadAttribInt(buf, index, "g");
-		int b = xml_doc.ReadAttribInt(buf, index, "b");
+		int r = xml_doc.ReadAttribInt(buf, index, "r",255);
+		int g = xml_doc.ReadAttribInt(buf, index, "g",255);
+		int b = xml_doc.ReadAttribInt(buf, index, "b",255);
 	
 		pWnd->m_minColor.set(color_rgba(r,g,b,0xFF));
 
 		strconcat(buf,path,":max_color");
-		r = xml_doc.ReadAttribInt(buf, index, "r");
-		g = xml_doc.ReadAttribInt(buf, index, "g");
-		b = xml_doc.ReadAttribInt(buf, index, "b");
+		r = xml_doc.ReadAttribInt(buf, index, "r",255);
+		g = xml_doc.ReadAttribInt(buf, index, "g",255);
+		b = xml_doc.ReadAttribInt(buf, index, "b",255);
 	
 		pWnd->m_maxColor.set(color_rgba(r,g,b,0xFF));
 	}
