@@ -157,9 +157,6 @@ function actor_binder:update(delta)
 	-- апдейт погоды
 	self.weather_manager:update()
 	
-	-- апдейт случайных заданий актера
-	task_manager.update_random_task()
-	
 	--' Проверка потери жизни
 --[[
 	if self.object.health - lasthealth > 0.001 or
