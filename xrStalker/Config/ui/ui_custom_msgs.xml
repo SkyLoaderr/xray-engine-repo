@@ -20,18 +20,14 @@
 "letterica25"
 -->
 
-	<hud_timer  x="880" y="15" width="120" height="40">
-		<text x="-10" y="8" font="graffiti32" r="238" g="155" b="23" a="255" align="r"></text>
-		<texture x="0" y="0" width="120" height="40">ui\ui_mn_weapons</texture>
+	<hud_timer  x="880" y="15" width="157" height="67">
+		<text x="-10" y="8" font="graffiti32" r="238" g="155" b="23" a="255" align="r"/>
+		<texture>ui_hud_frame_clock</texture>
 	</hud_timer>
 
 	<sleep_001  x="20" y="20" width="984" height="728">
 		<texture x="0" y="0" width="984" height="728">car\trabantnoise</texture>
 	</sleep_001>
-
-	<torch_night_vision  x="0" y="0" width="1024" height="768" stretch="1">
-		<texture>wpn\wpn_night</texture>
-	</torch_night_vision>
 
 	<controller_fx  x="0" y="0" width="1024" height="768" stretch="1">
 		<texture>act\act_controller_hit</texture>
