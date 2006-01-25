@@ -10,7 +10,7 @@
 
 	<!-- car health bar -->
 	<car_health_progress_bar x="33" y="18" width="110" height="10" length= "110" horz="1" min="0" max="100" pos="0">
-		<texture tile="0" width="110" height="10" length="111">ui\ui_mg_progress_efficiency_empt</texture>
+		<texture tile="0" width="110" height="10" length="111">ui\ui_mg_progress_efficiency_empty</texture>
 		<!-- ui_hud_shk_car -->
 	</car_health_progress_bar>
 	
