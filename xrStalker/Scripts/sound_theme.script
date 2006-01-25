@@ -554,7 +554,7 @@ end
 local character_prefix = ""
 local default_prefix = "characters_voice\\"
 function check_prefix(s)
-	local flag = string.sub(s, 1, 2)
+	local flag = string.sub(s, 1, 1)
 	return flag, string.sub(s, 3)
 end
 
@@ -572,7 +572,8 @@ function load_sound(obj)
 					character_prefix = obj:sound_prefix()
 					obj:sound_prefix(default_prefix)
 				end
-
+					
+				printf("NPC[%s] flag[%s] prefix[%s] path[%s]", obj:name(), flag, obj:sound_prefix(), path)
 				tbl.max_ids[obj:id()].rnd_max = obj:add_sound(path, nstl, snd_type.talk, 2, 1, tbl.rnd_id)
 
 				if flag == "0" then
@@ -589,6 +590,7 @@ function load_sound(obj)
 					obj:sound_prefix(default_prefix)
 				end
 
+				printf("NPC[%s] flag[%s] prefix[%s] path[%s]", obj:name(), flag, obj:sound_prefix(), path)
 				tbl.max_ids[obj:id()].into_max = obj:add_sound(path, nstl, snd_type.talk, 2, 1, tbl.into_id)
 				tbl.max_ids[obj:id()].into_cycled = true
 
@@ -606,6 +608,7 @@ function load_sound(obj)
 					obj:sound_prefix(default_prefix)
 				end
 
+				printf("NPC[%s] flag[%s] prefix[%s] path[%s]", obj:name(), flag, obj:sound_prefix(), path)
 				tbl.max_ids[obj:id()].into_max = obj:add_sound(path, nstl, snd_type.talk, 2, 1, tbl.into_id)
 				tbl.max_ids[obj:id()].into_cycled = false
 
