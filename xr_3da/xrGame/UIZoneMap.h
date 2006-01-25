@@ -34,5 +34,6 @@ public:
 	bool						ZoomIn			();
 	bool						ZoomOut			();
 
+	CUIStatic&					Background		()									{return m_background;};
 };
 

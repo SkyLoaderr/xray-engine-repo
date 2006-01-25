@@ -1463,6 +1463,9 @@
 					RelativePath=".\Config\ui\ui_custom_msgs.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_hud.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_ingame.xml">
 				</File>
 				<File

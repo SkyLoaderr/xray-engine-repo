@@ -1,24 +1,30 @@
 #pragma once
 
-class CUIMotionIcon : public CUIWindow
+class CUIMotionIcon : public CUIStatic
 {
-	typedef CUIWindow inherited													  ;
-	static const	int					states_number							=4;
+	typedef CUIWindow inherited;
 public:
 	enum	EState		{
 						stNormal,
 						stCrouch,
 						stCreep,
+						stClimb,
+						stRun,
+						stSprint,
 						stLast
 					};
 private:
-					EState				m_curren_state;
-//					CUIStatic			m_states[states_number]							;
-					CUIProgressBar		m_PowerBar[states_number];
+							EState				m_curren_state;
+							CUIStatic			m_states[stLast];
+							CUIProgressBar		m_power_progress;
+							CUIProgressBar		m_luminosity_progress;
+							CUIProgressBar		m_noise_progress;
 public:
-	virtual			~CUIMotionIcon				()										;
-					CUIMotionIcon				()										;
-			void			Init				(float x, float y, float width, float height)	;
-			void			ShowState			(EState state)							;
-			void			SetProgressPos		(s16 Pos);
+	virtual					~CUIMotionIcon		();
+							CUIMotionIcon		();
+			void			Init				();
+			void			ShowState			(EState state);
+			void			SetPower			(s16 Pos);
+			void			SetNoise			(s16 Pos);
+			void			SetLuminosity		(s16 Pos);
 };

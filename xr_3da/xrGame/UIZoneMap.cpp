@@ -42,38 +42,40 @@ void CUIZoneMap::Init()
 	CUIXmlInit xml_init;
 	xml_init.InitStatic(uiXml, "minimap:background", 0, &m_background);
 
-	xml_init.InitStatic(uiXml, "minimap:background:level_frame", 0, &m_clipFrame);
-	m_background.AttachChild(&m_clipFrame);
+	xml_init.InitStatic(uiXml, "minimap:level_frame", 0, &m_clipFrame);
+
+//	m_background.AttachChild(&m_clipFrame);
 
 	xml_init.InitStatic(uiXml, "minimap:center", 0, &m_center);
 	
 
 	
-	m_activeMap = xr_new<CUIMiniMap>();
-	m_activeMap->SetAutoDelete(true);
+	m_activeMap						= xr_new<CUIMiniMap>();
+	m_activeMap->SetAutoDelete		(true);
 	m_activeMap->Init(Level().name(),gameLtx,"hud\\default");
-	m_clipFrame.AttachChild(m_activeMap);
-	m_activeMap->SetClipRect( m_clipFrame.GetAbsoluteRect() );
+	m_clipFrame.AttachChild			(m_activeMap);
+	m_activeMap->SetClipRect		(m_clipFrame.GetAbsoluteRect() );
 	
 	Fvector2	wnd_size;
-	float zoom_factor = float(m_clipFrame.GetWndRect().width())/100.0f;
+	float zoom_factor				= float(m_clipFrame.GetWndRect().width())/100.0f;
 	wnd_size.x	= m_activeMap->BoundRect().width()*zoom_factor;
 	wnd_size.y	= m_activeMap->BoundRect().height()*zoom_factor;
 	m_activeMap->SetWndSize(wnd_size);
 //	m_activeMap->SetZoomFactor( float(m_clipFrame.GetWndRect().width())/100.0f );
-	m_activeMap->EnableHeading(true);  
-	xml_init.InitStatic(uiXml, "minimap:compass", 0, &m_compass);
-	m_compass.EnableHeading(true);
+	m_activeMap->EnableHeading		(true);  
+	xml_init.InitStatic				(uiXml, "minimap:compass", 0, &m_compass);
+
 //	m_background.AttachChild(&m_compass);
 
-	m_clipFrame.AttachChild(&m_center);
-	m_center.SetWndPos(m_clipFrame.GetWidth()/2,m_clipFrame.GetHeight()/2);
+	m_clipFrame.AttachChild			(&m_center);
+	m_center.SetWndPos				(m_clipFrame.GetWidth()/2,m_clipFrame.GetHeight()/2);
 }
 
 void CUIZoneMap::Render			()
 {
-	m_background.Draw();
-	m_compass.Draw();
+	m_clipFrame.Draw	();
+	m_background.Draw	();
+	m_compass.Draw		();
 }
 
 void CUIZoneMap::SetHeading		(float angle)
@@ -84,6 +86,7 @@ void CUIZoneMap::SetHeading		(float angle)
 
 void CUIZoneMap::UpdateRadar		(Fvector pos)
 {
+	m_clipFrame.Update();
 	m_background.Update();
 	m_activeMap->SetActivePoint( pos );
 }

@@ -13,7 +13,7 @@ CUIMotionIcon::~CUIMotionIcon()
 {
 
 }
-void CUIMotionIcon::Init			(float x, float y, float width, float height)
+void CUIMotionIcon::Init()
 {
 	CUIXml uiXml;
 	bool result = uiXml.Init(CONFIG_PATH, UI_PATH, MOTION_ICON_XML);
@@ -21,43 +21,72 @@ void CUIMotionIcon::Init			(float x, float y, float width, float height)
 
 	CUIXmlInit	xml_init;
 
-	AttachChild(&m_PowerBar[stNormal]);
-	xml_init.InitProgressBar(uiXml, "power_bar_normal", 0, &m_PowerBar[stNormal]);	
+	xml_init.InitStatic			(uiXml, "background", 0, this);	
 
-	AttachChild(&m_PowerBar[stCrouch]);
-	xml_init.InitProgressBar(uiXml, "power_bar_crouch", 0, &m_PowerBar[stCrouch]);
+	AttachChild					(&m_power_progress);
+	xml_init.InitProgressBar2	(uiXml, "power_progress", 0, &m_power_progress);	
 
-	AttachChild(&m_PowerBar[stCreep]);
-	xml_init.InitProgressBar(uiXml, "power_bar_creep", 0, &m_PowerBar[stCreep]);
+	AttachChild					(&m_luminosity_progress);
+	xml_init.InitProgressBar2	(uiXml, "luminosity_progress", 0, &m_luminosity_progress);	
 
-	Show(true);
-	Enable(true);
-	inherited::Init(x,y, width, height);
+	AttachChild					(&m_noise_progress);
+	xml_init.InitProgressBar2	(uiXml, "noise_progress", 0, &m_noise_progress);	
 	
-	for(int i=stNormal;i!=stLast;++i)
-	{
-		m_PowerBar[i].Show(false);
-		m_PowerBar[i].Enable(false);
-	}
+	AttachChild					(&m_states[stNormal]);
+	xml_init.InitStatic			(uiXml, "state_normal", 0, &m_states[stNormal]);
+	m_states[stNormal].Show		(false);
+
+	AttachChild					(&m_states[stCrouch]);
+	xml_init.InitStatic			(uiXml, "state_crouch", 0, &m_states[stCrouch]);	
+	m_states[stCrouch].Show		(false);
+
+	AttachChild					(&m_states[stCreep]);
+	xml_init.InitStatic			(uiXml, "state_creep", 0, &m_states[stCreep]);	
+	m_states[stCreep].Show		(false);
+
+	AttachChild					(&m_states[stClimb]);
+	xml_init.InitStatic			(uiXml, "state_climb", 0, &m_states[stClimb]);	
+	m_states[stClimb].Show		(false);
+
+	AttachChild					(&m_states[stRun]);
+	xml_init.InitStatic			(uiXml, "state_run", 0, &m_states[stRun]);	
+	m_states[stRun].Show		(false);
+
+	AttachChild					(&m_states[stSprint]);
+	xml_init.InitStatic			(uiXml, "state_sprint", 0, &m_states[stSprint]);	
+	m_states[stSprint].Show		(false);
+
 	ShowState(stNormal);
 }
 
 void CUIMotionIcon::ShowState(EState state)
 {
-	if(m_curren_state==state)return;
+	if(m_curren_state==state)			return;
 	if(m_curren_state!=stLast)
 	{
 	
-		m_PowerBar[m_curren_state].Show(false);
-		m_PowerBar[m_curren_state].Enable(false);
+		m_states[m_curren_state].Show	(false);
+		m_states[m_curren_state].Enable	(false);
 	}
-	m_PowerBar[state].Show(true);
-	m_PowerBar[state].Enable(true);
+	m_states[state].Show				(true);
+	m_states[state].Enable				(true);
 
 	m_curren_state=state;
 }
 
-void CUIMotionIcon::SetProgressPos(s16 Pos)
+void CUIMotionIcon::SetPower(s16 Pos)
 {
-	m_PowerBar[m_curren_state].SetProgressPos(Pos);
+	m_power_progress.SetProgressPos(Pos);
+}
+
+void CUIMotionIcon::SetNoise(s16 Pos)
+{
+	Pos	= clampr(Pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
+	m_noise_progress.SetProgressPos(Pos);
+}
+
+void CUIMotionIcon::SetLuminosity(s16 Pos)
+{
+	Pos	= clampr(Pos, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
+	m_luminosity_progress.SetProgressPos(Pos);
 }

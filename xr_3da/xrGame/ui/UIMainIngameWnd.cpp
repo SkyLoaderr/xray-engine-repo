@@ -125,8 +125,6 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIMainIngameWnd::Init()
 {
 	CUIXml uiXml;
@@ -140,20 +138,20 @@ void CUIMainIngameWnd::Init()
 
 
 	AttachChild(&UIStaticHealth);
-	xml_init.InitStatic(uiXml, "static", 0, &UIStaticHealth);
+	xml_init.InitStatic(uiXml, "static_health", 0, &UIStaticHealth);
 
 	AttachChild(&UIStaticArmor);
-	xml_init.InitStatic(uiXml, "static", 5, &UIStaticArmor);
+	xml_init.InitStatic(uiXml, "static_armor", 0, &UIStaticArmor);
 
 	AttachChild(&UIWeaponBack);
-	xml_init.InitStatic(uiXml, "static", 1, &UIWeaponBack);
+	xml_init.InitStatic(uiXml, "static_weapon", 0, &UIWeaponBack);
 
 	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
-	xml_init.InitStatic(uiXml, "static", 2, &UIWeaponSignAmmo);
+	xml_init.InitStatic(uiXml, "static_ammo", 0, &UIWeaponSignAmmo);
 	UIWeaponSignAmmo.SetElipsis(CUIStatic::eepEnd, 2);
 
 	UIWeaponBack.AttachChild(&UIWeaponIcon);
-	xml_init.InitStatic(uiXml, "static", 3, &UIWeaponIcon);
+	xml_init.InitStatic(uiXml, "static_wpn_icon", 0, &UIWeaponIcon);
 	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
 	UIWeaponIcon.ClipperOn();
 	//---------------------------------------------------------
@@ -177,12 +175,14 @@ void CUIMainIngameWnd::Init()
 
 	UIWeaponIcon.Enable(false);
 
-	//
-	AttachChild(&UIPdaOnline);
-	xml_init.InitStatic(uiXml, "static", 4, &UIPdaOnline);
-	if (GameID() != GAME_SINGLE)
+	//индикаторы 
+	UIZoneMap->Init();
+	UIZoneMap->SetScale(DEFAULT_MAP_SCALE);
+
+	if(IsGameTypeSingle())
 	{
-		UISleepIcon.Show(false);
+		xml_init.InitStatic					(uiXml, "static_pda_online", 0, &UIPdaOnline);
+		UIZoneMap->Background().AttachChild	(&UIPdaOnline);
 	}
 
 	// Для информационных сообщений
@@ -192,15 +192,15 @@ void CUIMainIngameWnd::Init()
 
 	//Полоса прогресса здоровья
 	UIStaticHealth.AttachChild(&UIHealthBar);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIHealthBar);
+	xml_init.InitAutoStaticGroup(uiXml,"static_health", &UIStaticHealth);
+	xml_init.InitProgressBar2(uiXml, "progress_bar_health", 0, &UIHealthBar);
 
 	//Полоса прогресса армора
 	UIStaticArmor.AttachChild(&UIArmorBar);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIArmorBar);
+	xml_init.InitAutoStaticGroup(uiXml,"static_armor", &UIStaticArmor);
+	xml_init.InitProgressBar2(uiXml, "progress_bar_armor", 0, &UIArmorBar);
 
-	//индикаторы 
-	UIZoneMap->Init();
-	UIZoneMap->SetScale(DEFAULT_MAP_SCALE);
+	
 
 	// Подсказки, которые возникают при наведении прицела на объект
 	AttachChild(&UIStaticQuickHelp);
@@ -213,34 +213,36 @@ void CUIMainIngameWnd::Init()
 	AttachChild(m_UIIcons);
 
 	// Загружаем иконки 
-//.	AttachChild(&UIWeaponJammedIcon);
+	if(IsGameTypeSingle())
+	{
+		xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
+		UIStarvationIcon.Show(false);
+
+		xml_init.InitStatic(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
+		UIPsyHealthIcon.Show(false);
+
+		xml_init.InitStatic(uiXml, "can_sleep_static", 0, &UISleepIcon);
+		UISleepIcon.Show(false);
+	}
+
 	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
 	UIWeaponJammedIcon.Show(false);
 
-//.	AttachChild(&UIRadiaitionIcon);
 	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
 	UIRadiaitionIcon.Show(false);
 
-//.	AttachChild(&UIWoundIcon);
 	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
 	UIWoundIcon.Show(false);
 
-//.	AttachChild(&UIStarvationIcon);
-	xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
-	UIStarvationIcon.Show(false);
-
-//.	AttachChild(&UIPsyHealthIcon);
-	xml_init.InitStatic(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
-	UIPsyHealthIcon.Show(false);
-
-//.	AttachChild(&UIInvincibleIcon);
 	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
 	UIInvincibleIcon.Show(false);
 
-//.	AttachChild(&UISleepIcon);
-	xml_init.InitStatic(uiXml, "can_sleep_static", 0, &UISleepIcon);
-	UISleepIcon.Show(false);
 
+	if(GameID()==GAME_ARTEFACTHUNT){
+		xml_init.InitStatic(uiXml, "artefact_static", 0, &UIArtefactIcon);
+		UIArtefactIcon.Show(false);
+	}
+	
 	shared_str warningStrings[6] = 
 	{	
 		"jammed",
@@ -253,7 +255,7 @@ void CUIMainIngameWnd::Init()
 
 	// Загружаем пороговые значения для индикаторов
 	EWarningIcons j = ewiWeaponJammed;
-	while (j <= ewiInvincible)
+	while (j < ewiInvincible)
 	{
 		// Читаем данные порогов для каждого индикатора
 		shared_str cfgRecord = pSettings->r_string("main_ingame_indicators_thresholds", *warningStrings[static_cast<int>(j) - 1]);
@@ -311,26 +313,21 @@ void CUIMainIngameWnd::Init()
 	}
 
 	// Flashing icons initialize
-	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
-	InitFlashingIcons(&uiXml);
+	uiXml.SetLocalRoot				(uiXml.NavigateToNode("flashing_icons"));
+	InitFlashingIcons				(&uiXml);
 
-	uiXml.SetLocalRoot(uiXml.GetRoot());
+	uiXml.SetLocalRoot				(uiXml.GetRoot());
 	
-	AttachChild(&UICarPanel);
-	xml_init.InitWindow(uiXml, "car_panel", 0, &UICarPanel);
+	AttachChild						(&UICarPanel);
+	xml_init.InitWindow				(uiXml, "car_panel", 0, &UICarPanel);
 
-	AttachChild(&UIMotionIcon);
-	xml_init.InitWindow(uiXml, "motion_icon", 0, &UIMotionIcon);
+	AttachChild						(&UIMotionIcon);
+	UIMotionIcon.Init				();
 
-	xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, m_artefactPanel);
-	this->AttachChild(m_artefactPanel);	
-	xr_vector<Irect> vRects;
-
-	AttachChild(&UILuminosityBar);
-	xml_init.InitProgressBar(uiXml, "luminosity_bar", 0, &UILuminosityBar);
-
-	AttachChild(&UISndNoiseBar);
-	xml_init.InitProgressBar(uiXml, "sound_noise_bar", 0, &UISndNoiseBar);
+	if(IsGameTypeSingle()){
+		xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, m_artefactPanel);
+		this->AttachChild(m_artefactPanel);	
+	}
 
 	AttachChild(&UIStaticDiskIO);
 	UIStaticDiskIO.SetWndRect				(1000,750,16,16);
@@ -364,14 +361,12 @@ void CUIMainIngameWnd::Draw()
 	float	luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
 	static float cur_lum = luminocity;
 	cur_lum = luminocity*0.01f + cur_lum*0.99f;
-	UILuminosityBar.SetProgressPos( (s16)iFloor(cur_lum*100.0f) );
+	UIMotionIcon.SetLuminosity((s16)iFloor(cur_lum*100.0f));
 
 	
 	CActor* _pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(_pActor){
-		s32 progr	= clampr(iFloor(_pActor->m_snd_noise*100.0f),(s32)UISndNoiseBar.GetRange_min(),(s32)UISndNoiseBar.GetRange_max());
-		UISndNoiseBar.SetProgressPos( (s16)progr );
-	}
+	if(_pActor)
+		UIMotionIcon.SetNoise((s16)iFloor(_pActor->m_snd_noise*100.0f));
 	
 	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pActor->HUDview() && m_pWeapon){
@@ -519,6 +514,22 @@ void CUIMainIngameWnd::Update()
 
 	};
 
+	// ewiInvincible:
+	bool b_God = (GodMode()||(!Game().local_player)) ? true : Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+	if(b_God)
+		SetWarningIconColor	(ewiInvincible,0xffffffff);
+	else
+		SetWarningIconColor	(ewiInvincible,0x00ffffff);
+
+	// ewiArtefact
+	if(GameID() == GAME_ARTEFACTHUNT){
+		bool b_Artefact = !m_pActor->ArtefactsOnBelt().empty();
+		if(b_Artefact)
+			SetWarningIconColor	(ewiArtefact,0xffffffff);
+		else
+			SetWarningIconColor	(ewiArtefact,0x00ffffff);
+	}
+
 	// Armor indicator stuff
 	PIItem	pItem = m_pActor->inventory().ItemFromSlot(OUTFIT_SLOT);
 	if (pItem)
@@ -662,12 +673,12 @@ void CUIMainIngameWnd::Update()
 		
 	// health&armor
 	UIHealthBar.SetProgressPos		(s16(m_pActor->GetfHealth()*100.0f));
-	UIMotionIcon.SetProgressPos		(s16(m_pActor->conditions().GetPower()*100.0f));
+	UIMotionIcon.SetPower			(s16(m_pActor->conditions().GetPower()*100.0f));
 	
 	
 	EWarningIcons i					= ewiWeaponJammed;
 		
-	while (i <= ewiInvincible)
+	while (i < ewiInvincible)
 	{
 		float value = 0;
 		switch (i)
@@ -688,9 +699,6 @@ void CUIMainIngameWnd::Update()
 			break;
 		case ewiPsyHealth:
 			value = 1 - m_pActor->conditions().GetPsyHealth();
-			break;
-		case ewiInvincible:
-			value = (GodMode()||(!Game().local_player)) ? 1.0f : float(Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
 			break;
 		default:
 			R_ASSERT(!"Unknown type of warning icon");
@@ -723,14 +731,16 @@ void CUIMainIngameWnd::Update()
 		}else
 			TurnOffWarningIcon(i);
 
-		i = static_cast<EWarningIcons>(i + 1);
+		i = (EWarningIcons)(i + 1);
 	}
 
-	FadeUpdate(&UIInfoMessages);
 
-	UpdatePickUpItem();
 
-	CUIWindow::Update();
+	FadeUpdate						(&UIInfoMessages);
+
+	UpdatePickUpItem				();
+
+	CUIWindow::Update				();
 }
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)

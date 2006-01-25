@@ -1538,7 +1538,7 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd->MotionIcon();
 	if(mstate_rl&mcClimb)
 	{
-//		motion_icon.ShowState(CUIMotionIcon::stClimb);
+		motion_icon.ShowState(CUIMotionIcon::stClimb);
 	}
 	else
 	{
@@ -1549,9 +1549,24 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 			else
 				motion_icon.ShowState(CUIMotionIcon::stCrouch);
 		}
-		else 
+		else
+		if(mstate_rl&mcSprint)
+				motion_icon.ShowState(CUIMotionIcon::stSprint);
+		else
+		if(mstate_rl&mcAnyMove && isActorAccelerated(mstate_rl, IsZoomAimingMode()))
+			motion_icon.ShowState(CUIMotionIcon::stRun);
+		else
 			motion_icon.ShowState(CUIMotionIcon::stNormal);
 	}
+
+/*
+						stNormal, --
+						stCrouch, --
+						stCreep,  --
+						stClimb,  --
+						stRun,    --
+						stSprint, --
+*/
 }
 
 

@@ -571,17 +571,29 @@ bool CUIXmlInit::InitProgressBar2(CUIXml& xml_doc, LPCSTR path,
 	shared_str texture = xml_doc.Read(buf, index, NULL);
 
 	CUITextureMaster::InitTexture(*texture, &pWnd->m_UIProgressItem);
-	u32 color = GetARGB(xml_doc, buf, index);
+	//u32 color = GetARGB(xml_doc, buf, index);
+	int a = xml_doc.ReadAttribInt(buf, index, "a",255);
+	int r = xml_doc.ReadAttribInt(buf, index, "r",255);
+	int g = xml_doc.ReadAttribInt(buf, index, "g",255);
+	int b = xml_doc.ReadAttribInt(buf, index, "b",255);
+	u32 color = RGB_ALPHA(a, r, g, b);
 	pWnd->m_UIProgressItem.SetColor(color);
 
 	// background
 	strconcat(buf,path,":background");
 	texture = xml_doc.Read(buf, index, NULL);
 
-    CUITextureMaster::InitTexture(*texture, &pWnd->m_UIBackgroundItem);
-	color = GetARGB(xml_doc, buf, index);
-	pWnd->m_UIBackgroundItem.SetColor(color);
-	pWnd->m_bBackgroundPresent = true;
+	if(texture.size()){
+		CUITextureMaster::InitTexture(*texture, &pWnd->m_UIBackgroundItem);
+		//color = GetARGB(xml_doc, buf, index);
+		a = xml_doc.ReadAttribInt(buf, index, "a",255);
+		r = xml_doc.ReadAttribInt(buf, index, "r",255);
+		g = xml_doc.ReadAttribInt(buf, index, "g",255);
+		b = xml_doc.ReadAttribInt(buf, index, "b",255);
+		color = RGB_ALPHA(a, r, g, b);
+		pWnd->m_UIBackgroundItem.SetColor(color);
+		pWnd->m_bBackgroundPresent = true;
+	}
 
 	if(pWnd->m_bIsHorizontal){
 		pWnd->m_UIProgressItem.SetRect(0, 0, pWnd->m_iProgressLength, pWnd->GetHeight());	

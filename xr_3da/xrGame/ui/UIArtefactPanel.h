@@ -8,9 +8,7 @@
 //
 
 #pragma once
-#include "UIWindow.h"
 #include "UIStatic.h"
-#include "../UIStaticItem.h"
 
 class CArtefact;
 

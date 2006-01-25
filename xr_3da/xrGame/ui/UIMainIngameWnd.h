@@ -44,10 +44,6 @@ public:
 
 	bool OnKeyboardPress(int dik);
 
-	// PDA MESSAGES
-		//для отображения сообщения пришедшего по PDA
-//	void ReceivePdaMessage				(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
-
 public:
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
 	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент
@@ -67,8 +63,6 @@ protected:
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;	
 	CUIZoneMap*			UIZoneMap;
-	CUIProgressBar		UILuminosityBar;
-	CUIProgressBar		UISndNoiseBar;
 
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;
@@ -113,6 +107,7 @@ protected:
 	CUIStatic			UIPsyHealthIcon;
 	CUIStatic			UIInvincibleIcon;
 	CUIStatic			UISleepIcon;
+	CUIStatic			UIArtefactIcon;
 
 	CUIScrollView*		m_UIIcons;
 	CUIWindow*			m_pMPChatWnd;
@@ -133,6 +128,7 @@ public:
 		ewiPsyHealth,
 		ewiInvincible,
 		ewiSleep,
+		ewiArtefact,
 	};
 
 	void				SetMPChatLog					(CUIWindow* pChat, CUIWindow* pLog);
