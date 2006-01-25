@@ -7,6 +7,7 @@
 #define rms_zero	((4+g_params.m_lm_rms_zero)/2)
 #define rms_shrink	((8+g_params.m_lm_rms)/2)
 const	u32	rms_discard		= 8;
+BOOL	gl_linear	= FALSE;
 
 void Jitter_Select(Fvector2* &Jitter, u32& Jcount)
 {
@@ -234,7 +235,9 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 					// Trace Light
 					float R		= _sqrt(sqD);
 					float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
-					float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+					float A		;
+					if (gl_linear)	A	= 1-R/L->range;
+					else			A	= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 
 					C.rgb.x += A * L->diffuse.x;
 					C.rgb.y += A * L->diffuse.y;
