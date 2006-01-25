@@ -16,6 +16,7 @@ BOOL					b_nosun		= FALSE;
 CThreadManager			mu_base;
 CThreadManager			mu_secondary;
 #define		MU_THREADS	4
+BOOL					gl_linear	= FALSE;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -93,6 +94,8 @@ void CBuild::Light_prepare()
 
 void CBuild::Run	(LPCSTR P)
 {
+	if (strstr(Core.Params,"-att"))	gl_linear	= TRUE;
+
 	//****************************************** Open Level
 	strconcat					(path,P,"\\")	;
 	string_path					lfn				;

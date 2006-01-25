@@ -6,8 +6,8 @@
 
 #define rms_zero	((4+g_params.m_lm_rms_zero)/2)
 #define rms_shrink	((8+g_params.m_lm_rms)/2)
-const	u32	rms_discard		= 8;
-BOOL	gl_linear	= FALSE;
+const	u32	rms_discard			= 8;
+extern	BOOL		gl_linear	;
 
 void Jitter_Select(Fvector2* &Jitter, u32& Jcount)
 {
