@@ -8,6 +8,8 @@
 		<objective>
 			<text>yan_switcher_off</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>yan_labx16switcher_lamp1</object_story_id>
 			<function_complete>yantar_tasks.switchers_off</function_complete>
 		</objective>
 		<objective>
