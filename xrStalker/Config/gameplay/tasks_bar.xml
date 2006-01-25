@@ -146,7 +146,7 @@
 		<title>bar_dolg_base_rules</title>
 		<objective>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>bar_dolg_base_rules_finish</infoportion_complete>			
+			<infoportion_complete>bar_dolg_base_rules_talk</infoportion_complete>			
 			<infoportion_fail>bar_dolg_territory_kill_notify</infoportion_fail>			
 		</objective>
 		<objective>
@@ -155,13 +155,6 @@
 			<map_location_type hint="bar_dolg_base_rules_talk">green_location</map_location_type>
 			<object_story_id>bar_dolg_guard_commander</object_story_id>
 			<infoportion_complete>bar_dolg_base_rules_talk</infoportion_complete>			
-		</objective>
-		<objective>
-			<text>bar_dolg_base_rules_fin</text>
-			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="bar_dolg_base_rules_fin">green_location</map_location_type>
-			<object_story_id>bar_Barman</object_story_id>
-			<infoportion_complete>bar_dolg_base_rules_finish</infoportion_complete>			
 		</objective>
 	</game_task>
 
