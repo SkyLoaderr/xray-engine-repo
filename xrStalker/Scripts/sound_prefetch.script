@@ -63,7 +63,7 @@ function prefetch_snd_files(path)
 	-- если с префиксом - необходимо его загрузить для всех голосов и комьюнити.
 	local flag, path_clear = sound_theme.check_prefix(path)
 
-	if flag == false then
+	if flag == "0" then
 		level.iterate_sounds(default_prefix..path_clear, sound_theme.nstl, sound_prefetch.prefetch_file);
 		return
 	end

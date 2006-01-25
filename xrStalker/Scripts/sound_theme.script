@@ -555,7 +555,7 @@ local character_prefix = ""
 local default_prefix = "characters_voice\\"
 function check_prefix(s)
 	local flag = string.sub(s, 1, 2)
-	return flag == "1", string.sub(s, 3)
+	return flag, string.sub(s, 3)
 end
 
 function load_sound(obj)
@@ -568,14 +568,14 @@ function load_sound(obj)
 			local s = select_sound_from_ltx(obj, name.."_rnd", snd_ini)			
 			if s then
 				local flag, path = check_prefix(s)
-				if flag == false then
+				if flag == "0" then
 					character_prefix = obj:sound_prefix()
 					obj:sound_prefix(default_prefix)
 				end
 
 				tbl.max_ids[obj:id()].rnd_max = obj:add_sound(path, nstl, snd_type.talk, 2, 1, tbl.rnd_id)
 
-				if flag == false then
+				if flag == "0" then
 					obj:sound_prefix(character_prefix)
 				end
 			end
@@ -584,7 +584,7 @@ function load_sound(obj)
 			local s = select_sound_from_ltx(obj, name.."_seq", snd_ini)
 			if s then
 				local flag, path = check_prefix(s)
-				if flag == false then
+				if flag == "0" then
 					character_prefix = obj:sound_prefix()
 					obj:sound_prefix(default_prefix)
 				end
@@ -592,7 +592,7 @@ function load_sound(obj)
 				tbl.max_ids[obj:id()].into_max = obj:add_sound(path, nstl, snd_type.talk, 2, 1, tbl.into_id)
 				tbl.max_ids[obj:id()].into_cycled = true
 
-				if flag == false then
+				if flag == "0" then
 					obj:sound_prefix(character_prefix)
 				end
 			end
@@ -601,7 +601,7 @@ function load_sound(obj)
 			local s = select_sound_from_ltx(obj, name.."_single", snd_ini)
 			if s then
 				local flag, path = check_prefix(s)
-				if flag == false then
+				if flag == "0" then
 					character_prefix = obj:sound_prefix()
 					obj:sound_prefix(default_prefix)
 				end
@@ -609,7 +609,7 @@ function load_sound(obj)
 				tbl.max_ids[obj:id()].into_max = obj:add_sound(path, nstl, snd_type.talk, 2, 1, tbl.into_id)
 				tbl.max_ids[obj:id()].into_cycled = false
 
-				if flag == false then
+				if flag == "0" then
 					obj:sound_prefix(character_prefix)
 				end			
 			end
