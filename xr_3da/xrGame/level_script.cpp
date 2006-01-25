@@ -446,6 +446,23 @@ void set_pp_effector_factor(int id, float f)
 
 }
 
+#include "relation_registry.h"
+
+ int g_community_goodwill(int _first, int _second)
+ {
+ 	return RELATION_REGISTRY().GetCommunityGoodwill(u16(_first), u16(_second) );
+ }
+
+void g_set_community_goodwill(int _first, int _second, int val)
+{
+	RELATION_REGISTRY().SetCommunityGoodwill(u16(_first), u16(_second), val);
+}
+
+void g_change_community_goodwill(int _first, int _second, int val)
+{
+	RELATION_REGISTRY().ChangeCommunityGoodwill(u16(_first), u16(_second), val);
+}
+
 void CLevel::script_register(lua_State *L)
 {
 	class_<CEnvDescriptor>("CEnvDescriptor")
@@ -539,5 +556,11 @@ void CLevel::script_register(lua_State *L)
 	module(L)
 	[
 		def("command_line",						&command_line)
+	];
+	module(L,"relation_registry")
+	[
+		def("community_goodwill",				&g_community_goodwill),
+		def("set_community_goodwill",			&g_set_community_goodwill),
+		def("change_community_goodwill",		&g_change_community_goodwill)
 	];
 }
