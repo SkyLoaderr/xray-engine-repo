@@ -98,6 +98,7 @@ void CHelicopter::UpdateHeliParticles	()
 }
 void CHelicopter::ExplodeHelicopter ()
 {
+	m_ready_explode=false;
 	m_exploded = true;
 	if(m_pParticle){
 		m_pParticle->Stop();
@@ -109,6 +110,7 @@ void CHelicopter::ExplodeHelicopter ()
 	CExplosive::SetInitiator(ID());
 	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
 	m_brokenSound.stop					();
+
 }
 
 void CHelicopter::SetDestPosition (Fvector* pos)
@@ -254,7 +256,7 @@ void CollisionCallbackDead(bool& do_colide,bool bo1,dContact& c,SGameMtl* materi
 	CHelicopter *l_this		= bo1 ? smart_cast<CHelicopter*>(retrieveGeomUserData(c.geom.g1)->ph_ref_object) : smart_cast<CHelicopter*>(retrieveGeomUserData(c.geom.g2)->ph_ref_object);
 
 	if(l_this&& !l_this->m_exploded)
-		l_this->ExplodeHelicopter();
+		l_this->m_ready_explode=true;
 
 }
 

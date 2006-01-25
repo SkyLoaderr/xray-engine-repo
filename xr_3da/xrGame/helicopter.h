@@ -198,6 +198,7 @@ public:
 
 	bool							m_flame_started;
 	bool							m_light_started;
+	bool							m_ready_explode;
 	bool							m_exploded;
 	bool							m_dead;
 
@@ -274,7 +275,7 @@ public:
 	virtual void					SpawnInitPhysics	(CSE_Abstract	*D);
 	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()						{return PhysicsShellHolder();}
 	virtual void					net_Save			(NET_Packet& P);
-	virtual	BOOL					net_SaveRelevant	()						{return (inherited::net_SaveRelevant() || BOOL(PPhysicsShell()!=NULL));};					
+	virtual	BOOL					net_SaveRelevant	()						{return (inherited::net_SaveRelevant() && BOOL(PPhysicsShell()!=NULL))&&!m_exploded&&!m_ready_explode;};					
 
 	virtual void					renderable_Render				()			{ inherited::renderable_Render();};
 	virtual BOOL					renderable_ShadowGenerate		()			{ return FALSE;	}

@@ -156,6 +156,7 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 	m_flame_started					=false;
 	m_light_started					=false;
 	m_exploded						=false;
+	m_ready_explode					=false;
 	m_dead							=false;
 	
 	if (!inherited::net_Spawn(DC))
@@ -453,6 +454,7 @@ void CHelicopter::shedule_Update(u32 time_delta)
 		for(u32 i=getRocketCount(); i<4; ++i)
 			CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
 	}
+	if(m_ready_explode)ExplodeHelicopter();
 }
 
 

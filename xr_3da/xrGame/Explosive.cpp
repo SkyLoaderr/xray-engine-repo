@@ -421,6 +421,8 @@ void CExplosive::UpdateCL()
 	if(!m_explosion_flags.test(flExploding)) return;// !m_bExploding
 	if(m_explosion_flags.test(flExploded))
 	{
+		CGameObject* go=cast_game_object();
+		go->processing_deactivate();
 		m_explosion_flags.set(flExploding,FALSE);//m_bExploding = false;
 		OnAfterExplosion();
 		return;
@@ -429,8 +431,8 @@ void CExplosive::UpdateCL()
 	if(m_fExplodeDuration < 0.f&&m_blasted_objects.empty()) 
 	{
 		m_explosion_flags.set(flExploded,TRUE);
-		CGameObject* go=cast_game_object();
-		go->processing_deactivate();
+		
+		
 		StopLight();
 		
 
