@@ -24,6 +24,9 @@
 <string id="yan_psi_zone_find">
 	<text>Сопроводить Круглова к месту замера</text>
 </string>
+<string id="yan_psi_zone_find_semenov">
+	<text>Сопроводить Семенова к месту замера</text>
+</string>
 
 <string id="yan_zombie_zone">
 	<text>Предположительное местонахождение лаборатории X16</text>
