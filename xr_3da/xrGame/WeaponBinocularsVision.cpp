@@ -12,6 +12,7 @@
 #include "game_base_space.h"
 #include "Level.h"
 #include "game_cl_base.h"
+#include "AI/Monsters/BaseMonster/base_monster.h"
 
 #define RECT_SIZE	16
 
@@ -110,8 +111,9 @@ void SBinocVisibleObj::Update()
 
 			CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(Actor());
 			CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(m_object);
+			CBaseMonster	*monster			= smart_cast<CBaseMonster*>(m_object);
 
-			if(our_inv_owner && others_inv_owner){
+			if(our_inv_owner && others_inv_owner && !monster){
 				if (GameID() == GAME_SINGLE)
 				{
 					switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
