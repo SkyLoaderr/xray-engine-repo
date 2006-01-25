@@ -31,9 +31,9 @@ function fail1()
 	return false
 end
 
-function main()
+function main3()
 
-	  db.actor:give_info_portion("test_andy_info") 
+--	  db.actor:give_info_portion("test_andy_info") 
 
       local task = CGameTask()
         
@@ -42,9 +42,7 @@ function main()
         
         local objective = SGameTaskObjective(task,1)
         objective:set_description("test_description_1")
-		objective:add_complete_func("_test.compl1")
-		objective:add_complete_func("_test.compl2")
-		objective:add_fail_func("_test.fail1")
+		objective:set_article_id("descr_bar_resque_information")		
         task:add_objective(objective)
 
         db.actor:give_task(task,false)
@@ -140,63 +138,63 @@ function main________()
 ]]	
 end
 
-function main______()
+function main()
    local h = hit ()
-   h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.radiation
    db.actor:hit(h)
    
-   h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
-   h.impulse = 100
+   h.impulse = 10
    h.draftsman = db.actor
    h.type = hit.wound
    db.actor:hit(h)
 
-   h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.telepatic
   db.actor:hit(h)
 
-   h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.strike
-  db.actor:hit(h)
+--  db.actor:hit(h)
 
-   h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.chemical_burn
   db.actor:hit(h)
 
-   h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.shock
-  db.actor:hit(h)
+ -- db.actor:hit(h)
   
-   h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.burn
-  db.actor:hit(h)
+ -- db.actor:hit(h)
 
-h.power = 600
+   h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.explosion
-  db.actor:hit(h)
+ -- db.actor:hit(h)
   
 --burn  1
 --shock  1

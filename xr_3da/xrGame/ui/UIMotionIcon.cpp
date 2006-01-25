@@ -56,7 +56,7 @@ void CUIMotionIcon::Init()
 	xml_init.InitStatic			(uiXml, "state_sprint", 0, &m_states[stSprint]);	
 	m_states[stSprint].Show		(false);
 
-	ShowState(stNormal);
+	ShowState					(stNormal);
 }
 
 void CUIMotionIcon::ShowState(EState state)
