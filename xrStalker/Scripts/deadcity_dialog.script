@@ -1,3 +1,5 @@
+function printf() end
+
 -- transfer key from doctor
 function take_key(actor, npc)
 	local key = npc:object("cit_doctors_key")
@@ -11,7 +13,6 @@ function take_key(actor, npc)
 end
 
 -- Витек ищет дядю
-
 function have_vp_info(actor, npc)
   	return actor:object("cit_vp_pda") ~= nil
 end
@@ -27,7 +28,6 @@ function give_vp_pda(actor, npc)
 end
 
 -- Документы наемников.
-
 function have_killers_documents(actor, npc)
   	return actor:object("cit_killers_documents") ~= nil
 end
@@ -39,7 +39,6 @@ function give_killer_doc(actor, npc)
 end
 
 -- Карта Deadcity
-
 function have_deadcity_map(actor, npc)
   	return actor:object("cit_deadcity_maps") ~= nil
 end
@@ -51,11 +50,9 @@ function give_killers_maps(actor, npc)
 end
 
 -- Лидер наемников.
-
 function leader_killer_die(actor, npc)
   	return actor:object("cit_leader_killer_pda") ~= nil
 end
-
 
 function give_killers_maps(actor, npc)
 	local kill_pda = actor:object("cit_leader_killer_pda")
