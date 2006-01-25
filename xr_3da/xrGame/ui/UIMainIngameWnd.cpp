@@ -607,6 +607,18 @@ void CUIMainIngameWnd::Update()
 					float h = INV_GRID_HEIGHT*0.9f;//1 cell
 					UIWeaponIcon.SetWidth(w);
 					UIWeaponIcon.SetHeight(h);
+/*
+					float _x = UIWeaponIcon_rect.x1;
+					float _y = UIWeaponIcon_rect.y1;
+
+					if(h<UIWeaponIcon_rect.height())
+						_y			+= (UIWeaponIcon_rect.height()-h)/2.0f;
+
+					if(w<UIWeaponIcon_rect.width())
+						_x			+= (UIWeaponIcon_rect.width()-w)/2.0f;
+
+					UIWeaponIcon.SetWndPos	(_x, _y);
+*/
 
 					string256 sItemName;
 					strcpy(sItemName, pSettings->r_string(sect_name, "inv_name_short"));
@@ -636,7 +648,7 @@ void CUIMainIngameWnd::Update()
 				else
 					sprintf			(text_str, "%d/--",AE);
 
-
+				UIWeaponSignAmmo.SetText(text_str);
 			}
 		}
 		else
