@@ -97,8 +97,7 @@
 			device_torch \n
 			medkit \n
 		</supplies>
-		
-#include "gameplay\character_dialogs.xml"					
+				
 		<start_dialog>escape_lager_leader_hello</start_dialog>
 		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
 		<actor_dialog>escape_lager_leader_request</actor_dialog>		
@@ -549,7 +548,6 @@
 #include "gameplay\character_food.xml"	
 		</supplies>
 			
-#include "gameplay\character_dialogs.xml"	
 		<start_dialog>escape_factory_assault_start</start_dialog>		
 		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack_now</actor_dialog>
@@ -582,7 +580,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
-#include "gameplay\character_dialogs.xml"					
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
 	</specific_character>
@@ -987,7 +984,6 @@
 #include "gameplay\character_food.xml"				
 		</supplies>
 
-#include "gameplay\character_dialogs.xml"					
 		<start_dialog>esc_provodnik_start</start_dialog>
 		<actor_dialog>esc_provodnik_give_info</actor_dialog>
 	</specific_character>
