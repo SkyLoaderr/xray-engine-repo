@@ -31,6 +31,9 @@
 <string id="yan_return_to_bunker">
 	<text>Принести результаты Сахарову</text>
 </string>
+<string id="yan_talk_to_semenov">
+	<text>Поговорить с Семеновым</text>
+</string>
 <string id="yan_talk_to_kruglov">
 	<text>Поговорить с Кругловым</text>
 </string>
