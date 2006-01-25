@@ -84,6 +84,8 @@
 		<objective>
 			<text>objective</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
 		</objective>
 	</game_task>
 

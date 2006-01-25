@@ -98,6 +98,11 @@ function fill_phrase_table()
 		tt.text = task_ini:r_string(id, "text")
 		tt.description = task_ini:r_string(id, "description")
 		
+		tt.reward_money = task_ini:r_s32(id, "reward_money")
+		tt.reward_reputation = task_ini:r_s32(id, "reward_reputation")
+		tt.reward_item = parse_key_value(task_ini:r_string(id, "reward_item"))
+		tt.reward_relation = parse_key_value(task_ini:r_string(id, "reward_relation"))
+		
 		if task_ini:line_exist(id, "community") then
 			tt.community = task_ini:r_string(id, "community")
 		end		
@@ -188,6 +193,7 @@ function action_give_task(actor, npc, p1, p2)
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
 		objective:set_object_id(alife():story_object(tonumber(task_desc.target)).id)
+	    objective:add_complete_func("task_manager.task_complete")
 	end
 	task:add_objective(objective)
 
@@ -201,7 +207,8 @@ function action_give_task(actor, npc, p1, p2)
 	task:add_objective(objective)
 	
 	db.actor:give_task(task,false)
-	
+
+
 	active_task[task_desc.name] = task_desc
 end
 function action_task_show(npc, actor)
@@ -230,6 +237,7 @@ function init_trader_reward_dialog(dlg)
 
 	phr = dlg:AddPhrase("tm_trader_job_complete",get_id("trader"),0,-10000)
 	phrase_script = phr:GetPhraseScript()
+	phrase_script:AddAction("task_manager.action_task_reward")
 	phrase_script:AddPrecondition("task_manager.precondition_have_completed_job")
 			
 	local phrase_ask = get_id("trader")
@@ -275,6 +283,38 @@ function action_has_active_task_init(npc, actor)
 			table.insert(show_tbl, k)
 			tmp_tbl[max_count] = true
 		end		
+	end
+end
+function action_task_reward(npc, actor)
+	local parent = get_parent(npc)
+		
+	for k,v in pairs(active_task) do	
+		if v.completed == true and v.parent == parent then
+			if v.type == "eliminate_lager" then
+				db.actor:set_task_state(task.completed, "eliminate_lager", 0)
+			end	
+
+			-- TODO: Выдача награды за квест.
+--		tt.reward_item = parse_key_value(task_ini:r_string(id, "reward_item"))
+--		tt.reward_relation = parse_key_value(task_ini:r_string(id, "reward_relation"))
+			if v.reward_money ~= nil then
+				dialogs.relocate_money(npc, v.reward_money, "in")
+			end
+
+			if v.reward_reputation ~= nil then
+				db.actor:change_character_reputation(db.actor:character_reputation() + v.reward_reputation)
+			end
+					
+			active_task[v.name].completed = nil
+			active_task[v.name] = nil
+			-- устанавливаем время последнего отказа от задания
+			for kk,vv in pairs(task_info[parent]) do
+				if vv.name == v.name then
+					vv.last_time = game.get_game_time()
+					return
+				end
+			end			
+		end	
 	end
 end
 function precondition_active_task(actor, npc)
@@ -383,21 +423,30 @@ end
 
 
 local last_update_time = 0
-function update_random_task()
+function __update_random_task()
 	if last_update_time > time_global() then
 		return
 	end
 	last_update_time = time_global() + 1000
-
+	
+	local aa = alife()
+	if aa == nil then
+		return
+	end
 	-- Проверка активных заданий на предмет выполнения
 	for k,v in pairs(active_task) do
 		printf("ACTIVE_TASK: [%s], type[%s]", k, v.type)
-		if v.completed ~= true and v.type == "eliminate_lager" then
-			local aa = alife()
-			if aa ~= nil and aa:story_object(tonumber(v.target)).gulag:get_population() == 0 then
+		print_table(v)
+		if v.completed ~= true and v.type == "eliminate_lager" then			
+			if aa:story_object(tonumber(v.target)).gulag:get_population() == 0 then
 				v.completed = true
 				db.actor:set_task_state(task.completed, "eliminate_lager", 1)
 			end
 		end
 	end
+end
+function task_complete(p1, p2, p3, p4)
+	printf("p1[%s] p2[%s] p3[%s] p4[%s]", tostring(p1), tostring(p2), tostring(p3), tostring(p4))
+end
+function task_fail()
 end
