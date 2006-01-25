@@ -60,9 +60,9 @@
 		<cap_accuracy x="0" y="8" width="121" height="8">
 			<text>Accuracy</text>
 		</cap_accuracy>		
-		<cap_distance x="142" y="8" width="121" height="8">
-			<text>Distance</text>
-		</cap_distance>
+		<cap_handling x="142" y="8" width="121" height="8">
+			<text>Handling</text>
+		</cap_handling>
 		<cap_damage x="0" y="39" width="121" height="8">
 			<text>Damage</text>
 		</cap_damage>
@@ -74,10 +74,10 @@
 			<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			<background a="100" r="255" g="255" b="255">ui_buymenu_progBar</background>
 		</progress_accuracy>		
-		<progress_distance x="142" y="24" width="121" height="8" length="121">
+		<progress_handling x="142" y="24" width="121" height="8" length="121">
 			<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			<background a="100" r="255" g="255" b="255">ui_buymenu_progBar</background>
-		</progress_distance>
+		</progress_handling>
 		<progress_damage x="0" y="55" width="121" height="8" length="121">
 			<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			<background a="100" r="255" g="255" b="255">ui_buymenu_progBar</background>
