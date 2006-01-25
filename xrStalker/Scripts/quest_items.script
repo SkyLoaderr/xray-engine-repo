@@ -47,13 +47,14 @@ function main()
 		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l10_radar" then
 		table.insert(spawn_items, "protection_outfit")
-		table.insert(spawn_items, "good_psy_helmet")
+		table.insert(spawn_items, "good_psy_helmet")		
 	elseif level == "l10u_bunker" then
 		table.insert(spawn_items, "protection_outfit")
 		table.insert(spawn_items, "good_psy_helmet")
 	elseif level == "l11_pripyat" then
 		table.insert(spawn_items, "military_outfit")
 		table.insert(spawn_items, "good_psy_helmet")
+		table.insert(spawn_items, "cit_doctors_key")
 	elseif level == "l12_stancia" then
 		table.insert(spawn_items, "military_outfit")
 		table.insert(spawn_items, "good_psy_helmet")
