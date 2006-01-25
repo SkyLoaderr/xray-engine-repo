@@ -43,16 +43,6 @@
         Найти и уничтожить лидера наемников.
     </text>
 </string>
-<string id="cit_leader_hunt_1">
-    <text>
-        Убить лидера наемников.
-    </text>
-</string>
-<string id="cit_leader_hunt_2">
-    <text>
-        Принести доказательства его смерти Лукашу.
-    </text>
-</string>
 <string id="cit_find_vp">
     <text>
         Найти дядю.
@@ -121,10 +111,5 @@
 <string id="cit_doctor_escape_task_4">
     <text>
         Уйти из города
-    </text>
-</string>
-<string id="cit_killers_leader">
-    <text>
-        Task info.
     </text>
 </string>

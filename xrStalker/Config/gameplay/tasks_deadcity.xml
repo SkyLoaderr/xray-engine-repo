@@ -68,50 +68,6 @@
         </icon>
     </objective>
 </game_task>
-<game_task id="cit_leader_need_kill">
-    <title>
-        cit_killers_leader
-    </title>
-    <objective key="0">
-        <icon height="50" width="50" x="150" y="150">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            cit_leader_reward
-        </infoportion_complete>
-        <infoportion_fail>
-            mil_lukash_dead
-        </infoportion_fail>
-    </objective>
-    <objective key="1">
-        <text>
-            cit_leader_hunt_1
-        </text>
-        <icon height="50" width="50" x="350" y="50">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            cit_leader_killed
-        </infoportion_complete>
-    </objective>
-    <objective key="2">
-        <text>
-            cit_leader_hunt_2
-        </text>
-        <icon height="50" width="50" x="150" y="150">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type hint="mil_return_to_lukash_hint">
-            blue_location
-        </map_location_type>
-        <object_story_id>
-            Mil_Lukash
-        </object_story_id>
-        <infoportion_complete>
-            cit_leader_reward
-        </infoportion_complete>
-    </objective>
-</game_task>
 <game_task id="cit_vp_search">
     <title>
         cit_find_vp

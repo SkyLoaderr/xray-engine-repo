@@ -25,37 +25,42 @@
 <info_portion id="val_nap1_phrase1_end"></info_portion>
 <info_portion id="val_halfdead_phrase_end"></info_portion>
 <info_portion id="val_nap1_stop_talk_to_bandit"></info_portion>
+
 <info_portion id="val_escort_begin"></info_portion>
 <info_portion id="val_escort_show_tip"></info_portion>
 <info_portion id="val_escort_task_start">
 	<task>val_captive_help</task>
 </info_portion>
 <info_portion id="val_escort_start"></info_portion>
+
 <info_portion id="val_escort_combat"></info_portion>
+<info_portion id="val_escort_actor_start_combat"></info_portion>
+<info_portion id="val_escort_nap1_start_combat"></info_portion>
 <info_portion id="val_escort_actor_helped"></info_portion>
+
 <info_portion id="val_escort_nap1_phrase3"></info_portion>
 <info_portion id="val_escort_nap1_phrase1_end"></info_portion>
 <info_portion id="val_escort_nap1_phrase2_end"></info_portion>
-<info_portion id="val_escort_nap1_start_combat"></info_portion>
-<info_portion id="val_escort_actor_start_combat"></info_portion>
+<info_portion id="val_escort_nap1_dead"></info_portion>
+
 <info_portion id="val_escort_guard1_combat"></info_portion>
 <info_portion id="val_escort_guard2_combat"></info_portion>
-<info_portion id="val_escort_guard3_combat"></info_portion>
-<info_portion id="val_escort_nap1_dead"></info_portion>
-<info_portion id="val_escort_captive_dead"></info_portion>
-<info_portion id="val_escort_captive_phrase1_end"></info_portion>
 <info_portion id="val_escort_guard1_dead"></info_portion>
 <info_portion id="val_escort_guard2_dead"></info_portion>
-<info_portion id="val_escort_guard3_dead"></info_portion>
+<info_portion id="val_escort_guards_free"></info_portion>
+
+<info_portion id="val_escort_captive_dead"></info_portion>
+<info_portion id="val_escort_captive_phrase1_end"></info_portion>
 <info_portion id="val_escort_captive_fight"></info_portion>
 <info_portion id="val_escort_captive_offline"></info_portion>
 <info_portion id="val_escort_captive_can_leave"></info_portion>
+
 <info_portion id="val_escort_got_reward"></info_portion>
-<info_portion id="val_escort_nap1_join"></info_portion>
-<info_portion id="val_escort_captive_join"></info_portion>
+
 <info_portion id="val_escort_help_prisoner_task">
 	<task>val_prisoner_help</task>
 </info_portion>
+
 <info_portion id="val_escort_scene_fail"></info_portion>
 <info_portion id="val_escort_scene_end"></info_portion>
 
