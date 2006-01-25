@@ -79,9 +79,7 @@ protected:
 	CUIMoneyIndicator*	m_pMoneyIndicator;
 	CUIStatic			UITeam1Sign, UITeam1Score;
 	CUIStatic			UITeam2Sign, UITeam2Score;
-	//  [7/27/2005]
 	CUIStatic			UIRankIndicator;
-	//  [7/27/2005]
 	
 public:
 	// »зменить индикатор текущего количества денег

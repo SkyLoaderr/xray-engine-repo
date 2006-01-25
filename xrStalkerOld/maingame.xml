@@ -5,7 +5,7 @@
 	</speech_menu>
 	
 	<!-- health -->
-	<static_health x="860" y="653" width="155" height="34">
+	<static_health x="860" y="660" width="155" height="34">
 		<texture>ui_hud_shkala_health</texture>
 		<auto_static x="5" y="10" width="19" height="18">
 			<texture>ui_hud_icon_health</texture>
@@ -17,7 +17,7 @@
 	</progress_bar_health>
 	
 	<!-- armor -->
-	<static_armor x="860" y="615" width="155" height="34">
+	<static_armor x="860" y="622" width="155" height="34">
 		<texture>ui_hud_shkala_armor</texture>
 		<auto_static x="5" y="6" width="19" height="18">
 			<texture>ui_hud_icon_armour</texture>
@@ -29,7 +29,7 @@
 	</progress_bar_armor>
 	
 	<!-- WEAPON -->
-	<static_weapon x="860" y="685" width="157" height="65">
+	<static_weapon x="860" y="692" width="157" height="65">
 		<text complex_mode="0" align="l" x="70" y="0" font="letterica16" r="255" g="255" b="255" a="130"/>
 		<texture>ui_hud_frame_patron</texture>
 	</static_weapon>
@@ -45,7 +45,7 @@
 	</static_wpn_icon>
 
 	<!-- CAR_HEALTH -->
-	<car_panel x="860" y="577" width="150" height="200"/>
+	<car_panel x="860" y="584" width="150" height="200"/>
 	
 	<!-- pda online icon -->
 	<static_pda_online x="138" y="167" width="35" height="28" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
@@ -56,16 +56,16 @@
 	
 	<!-- tips static -->
 	<quick_info x="1" y="700" width="1022" height="50"  light_anim="ui_btn_hint"  la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
-		<text align="c" font="letterica18"/>
+		<text align="c" font="graffiti22" r="201" g="201" b="201" a="255" />
 	</quick_info>
 
 	<info_list x="512" y="0" width="525" height="40" item_height="20" fade="2000" flip_vert="0">
-		<font font="letterica25" r="255" g="0" b="0" />
+		<font font="graffiti32"  r="231" g="220" b="179" a="255" />
 	</info_list>
 	
 	
 	
-	<icons_scroll_view  x="955" y="100" width="65" height="445" right_ident="2" always_show_scroll="0" vert_interval="18" inverse_dir="1" flip_vert="0"/>
+	<icons_scroll_view  x="955" y="100" width="65" height="455" right_ident="2" always_show_scroll="0" vert_interval="18" inverse_dir="1" flip_vert="0"/>
 
 	<!--WARNING ICONS-->
 	<weapon_jammed_static x="0" y="0" width="64" height="64">
@@ -152,16 +152,6 @@
 
 	<!-- artefact panel -->
 	<artefact_panel x="70" y="710" width="790" height="50" scale="0.75"/>
-	
-	<luminosity_bar x="5" y="560" length="100" broad="8" horz="1" min="0" max="200" pos="0">
-		<texture tile="0" width="100" height="8" length="100" r="255" g="50" b="50">ui\ui_mg_progress_efficiency_full</texture>
-		<background x="0" y="0" width="100" height="8" >ui\ui_mg_progress_efficiency_empty</background>
-	</luminosity_bar>
-
-	<sound_noise_bar x="5" y="550" length="100" broad="8" horz="1" min="0" max="400" pos="0">
-		<texture tile="0" width="100" height="8" length="100" r="255" g="50" b="50">ui\ui_mg_progress_efficiency_full</texture>
-		<background x="0" y="0" width="100" height="8" >ui\ui_mg_progress_efficiency_empty</background>
-	</sound_noise_bar>
 	
 	<new_contact_snd>detectors\contact_1</new_contact_snd>	
 </window>

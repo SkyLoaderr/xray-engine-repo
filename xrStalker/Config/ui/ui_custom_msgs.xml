@@ -42,6 +42,6 @@
 	</monster_claws>
 	
 	<main_task  x="200" y="60" width="600" height="60">
-		<text x="0" y="0" font="graffiti32" r="238" g="155" b="23" a="255" align="c"/>
+		<text x="0" y="0" font="graffiti32"  r="231" g="220" b="179" a="255" align="c"/>
 	</main_task>
 </header>
