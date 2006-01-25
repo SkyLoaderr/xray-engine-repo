@@ -121,6 +121,25 @@ function actor_binder:on_item_drop (obj)
     --game_stats.update_drop_item (obj, self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
+
+function actor_binder:_task_callback(_task, _objective, _state)
+	if _objective:get_idx() == 0 then
+		if _state == task.fail then
+			news_manager.send_task(db.actor, "fail")
+		elseif _state == task.completed then
+			news_manager.send_task(db.actor, "complete")
+		else
+			news_manager.send_task(db.actor, "new")
+		end
+	else
+		if  _task:get_objective(0):get_state() ~= task.completed then
+			news_manager.send_task(db.actor, "update")
+		end
+	end
+	--game_stats.update_task (id_task, subtask, id_state, self.object)
+end
+
+
 function actor_binder:task_callback(id_task, subtask, id_state)
 	if subtask == 0 then
 		if id_state == task.fail then
