@@ -120,7 +120,7 @@ end
 
 
 -- Создается диалог актера, в котором будут выдаваться задания.
-function init_trader_task_dialog(dlg)
+function init_task_dialog(dlg, parent)
 	if task_table_filled == false then
 		fill_phrase_table()
 		task_table_filled = true
@@ -130,36 +130,39 @@ function init_trader_task_dialog(dlg)
 	local phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("task_manager.action_task_init")
 
-	phr = dlg:AddPhrase("tm_trader_list_job",get_id("trader"),0,-10000)
+	phr = dlg:AddPhrase("tm_"..parent.."_list_job",get_id(parent),0,-10000)
 	phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("task_manager.action_task_show")
-	phrase_script:AddPrecondition("task_manager.precondition_trader_can_task")
+	phrase_script:AddPrecondition("task_manager.precondition_vendor_can_task")
 		
-	phr = dlg:AddPhrase("tm_trader_has_no_job",get_id("trader"),0,-10000)
+	phr = dlg:AddPhrase("tm_"..parent.."_has_no_job",get_id(parent),0,-10000)
 	phrase_script = phr:GetPhraseScript()
-	phrase_script:AddPrecondition("task_manager.precondition_trader_cannot_task")
+	phrase_script:AddPrecondition("task_manager.precondition_vendor_cannot_task")
 	
 	-- Изначально считаем что каждый сталкер знает ВСЮ информацию. Не забыть потом
 	-- вставить инфопоршн, что сталкер сам знает информацию
-	for k,v in pairs(task_info["trader"]) do
-		local phrase_id = get_id("trader")
+	for k,v in pairs(task_info[parent]) do
+		local phrase_id = get_id(parent)
 		phr = dlg:AddPhrase(v.name,phrase_id,1,-10000)		
 		phrase_script = phr:GetPhraseScript()
 		phrase_script:AddPrecondition("task_manager.precondition_active_task")
 
-		local phrase_id_descr = get_id("trader")
+		local phrase_id_descr = get_id(parent)
 		phr = dlg:AddPhrase(v.text,phrase_id_descr, phrase_id,-10000)
 		
-		phrase_id = get_id("trader")
+		phrase_id = get_id(parent)
 		phr = dlg:AddPhrase("tm_seek_job_yes",phrase_id,phrase_id_descr,-10000)
 		phrase_script = phr:GetPhraseScript()
 		phrase_script:AddAction("task_manager.action_give_task")
 		task_by_phrase[phrase_id] = v
 
-		phr = dlg:AddPhrase("tm_seek_job_no",get_id("trader"),phrase_id_descr,-10000)
+		phr = dlg:AddPhrase("tm_seek_job_no",get_id(parent),phrase_id_descr,-10000)
 	end
 
-	dlg:AddPhrase("tm_seek_job_abandon",get_id("trader"),1,-10000)
+	dlg:AddPhrase("tm_seek_job_abandon",get_id(parent),1,-10000)
+end
+function init_trader_task_dialog(dlg)
+	init_task_dialog(dlg, "trader")
 end
 local call_count, max_count = 0,0
 local show_tbl = {}
@@ -209,7 +212,7 @@ function action_give_task(actor, npc, p1, p2)
 	db.actor:give_task(task,false)
 
 
-	active_task[task_desc.name] = task_desc
+	active_task[task_desc.type] = task_desc
 end
 function action_task_show(npc, actor)
 	local parent = get_parent(npc)
@@ -225,7 +228,7 @@ end
 
 
 -- Создается диалог актера, в котором будут приниматься задания
-function init_trader_reward_dialog(dlg)
+function init_reward_dialog(dlg, parent)
 	if task_table_filled == false then
 		fill_phrase_table()
 		task_table_filled = true
@@ -235,42 +238,42 @@ function init_trader_reward_dialog(dlg)
 	local phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("task_manager.action_task_init")
 
-	phr = dlg:AddPhrase("tm_trader_job_complete",get_id("trader"),0,-10000)
+	phr = dlg:AddPhrase("tm_"..parent.."_job_complete",get_id(parent),0,-10000)
 	phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("task_manager.action_task_reward")
 	phrase_script:AddPrecondition("task_manager.precondition_have_completed_job")
 			
-	local phrase_ask = get_id("trader")
-	phr = dlg:AddPhrase("tm_trader_job_ask",phrase_ask,0,-10000)	
+	local phrase_ask = get_id(parent)
+	phr = dlg:AddPhrase("tm_"..parent.."_job_ask",phrase_ask,0,-10000)	
 	phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("task_manager.action_has_active_task_init")
 	phrase_script:AddPrecondition("task_manager.precondition_dont_have_completed_job")
 	
 	-- Список возможных квестов трейдера.
-	for k,v in pairs(task_info["trader"]) do
-		local phrase_id = get_id("trader")
+	for k,v in pairs(task_info[parent]) do
+		local phrase_id = get_id(parent)
 		
 		phr = dlg:AddPhrase(v.name,phrase_id,phrase_ask,-10000)
 		phrase_script = phr:GetPhraseScript()		
 		phrase_script:AddPrecondition("task_manager.precondition_active_task")
 		
-		local phrase_reply = get_id("trader")
-		phr = dlg:AddPhrase("tm_trader_job_what",phrase_reply,phrase_id,-10000)
+		local phrase_reply = get_id(parent)
+		phr = dlg:AddPhrase("tm_"..parent.."_job_what",phrase_reply,phrase_id,-10000)
 		
-		local refuse_id = get_id("trader")
+		local refuse_id = get_id(parent)
 		phr = dlg:AddPhrase("tm_job_refuse",refuse_id,phrase_reply,-10000)
 		phrase_script = phr:GetPhraseScript()
 		phrase_script:AddAction("task_manager.action_refuse_task")
 		task_by_phrase[refuse_id] = v
-		
-		
-		phr = dlg:AddPhrase("tm_job_nothing",get_id("trader"),phrase_reply,-10000)
+			
+		phr = dlg:AddPhrase("tm_job_nothing",get_id(parent),phrase_reply,-10000)
 	end
-
-
+end
+function init_trader_reward_dialog(dlg)
+	init_reward_dialog(dlg, "trader")
 end
 
-local rew_active_task = {}
+
 function action_has_active_task_init(npc, actor)
 	local parent = get_parent(npc)
 	
@@ -279,7 +282,7 @@ function action_has_active_task_init(npc, actor)
 	tmp_tbl = {}
 	for k,v in pairs(task_info[parent]) do	
 		max_count = max_count + 1
-		if active_task[v.name] ~= nil then		
+		if active_task[v.type] ~= nil then		
 			table.insert(show_tbl, k)
 			tmp_tbl[max_count] = true
 		end		
@@ -290,13 +293,10 @@ function action_task_reward(npc, actor)
 		
 	for k,v in pairs(active_task) do	
 		if v.completed == true and v.parent == parent then
-			if v.type == "eliminate_lager" then
-				db.actor:set_task_state(task.completed, "eliminate_lager", 0)
-			end	
+			active_task[v.type].full_completed = true
+
 
 			-- TODO: Выдача награды за квест.
---		tt.reward_item = parse_key_value(task_ini:r_string(id, "reward_item"))
---		tt.reward_relation = parse_key_value(task_ini:r_string(id, "reward_relation"))
 			if v.reward_money ~= nil then
 				dialogs.relocate_money(npc, v.reward_money, "in")
 			end
@@ -304,10 +304,28 @@ function action_task_reward(npc, actor)
 			if v.reward_reputation ~= nil then
 				db.actor:change_character_reputation(db.actor:character_reputation() + v.reward_reputation)
 			end
-					
-			active_task[v.name].completed = nil
-			active_task[v.name] = nil
-			-- устанавливаем время последнего отказа от задания
+			
+			if v.reward_item ~= nil then
+				for k,v in pairs(v.reward_item) do
+					if npc:object(k) ~= nil then
+						for i=1,tonumber(v) do
+							dialogs.relocate_item(npc, k, "in")
+						end
+					end
+				end
+			end
+
+			if v.reward_reputation ~= nil then
+				for k,v in pairs(v.reward_reputation) do
+					-- TODO: Вставить нормальное изменение отношения
+--					change_community_goodwill
+				end
+			end
+
+
+
+							
+			-- устанавливаем время последнего обновления задания
 			for kk,vv in pairs(task_info[parent]) do
 				if vv.name == v.name then
 					vv.last_time = game.get_game_time()
@@ -335,8 +353,8 @@ function action_refuse_task(actor, npc, p1, p2)
 	local parent = get_parent(npc)
 	local task_desc = task_by_phrase[p2]
 	if task_desc.type == "eliminate_lager" then
-		db.actor:set_task_state(task.fail, "eliminate_lager", 0)
-		active_task[task_desc.name] = nil
+		active_task[task_desc.type].full_completed = false
+
 		-- устанавливаем время последнего отказа от задания
 		for k,v in pairs(task_info[parent]) do
 			if v.name == task_desc.name then
@@ -383,10 +401,10 @@ function get_parent(npc)
 	end
 	return parent_by_story[story_id]
 end
-function precondition_trader_can_task(npc, actor)
+function precondition_vendor_can_task(npc, actor)
 	return table.getn(show_tbl) > 0
 end
-function precondition_trader_cannot_task(npc, actor)
+function precondition_vendor_cannot_task(npc, actor)
 	return table.getn(show_tbl) == 0
 end
 
@@ -409,7 +427,7 @@ function calculate_predicate(npc, tbl)
 	
 	
 	-- Проверка что квест еще не выдан
-	if active_task[tbl.name] ~= nil then
+	if active_task[tbl.type] ~= nil then
 		return false
 	end
 	
@@ -422,31 +440,42 @@ function calculate_predicate(npc, tbl)
 end
 
 
-local last_update_time = 0
-function __update_random_task()
-	if last_update_time > time_global() then
-		return
-	end
-	last_update_time = time_global() + 1000
-	
+
+
+
+function task_complete(p1, p2)
 	local aa = alife()
 	if aa == nil then
 		return
 	end
-	-- Проверка активных заданий на предмет выполнения
-	for k,v in pairs(active_task) do
-		printf("ACTIVE_TASK: [%s], type[%s]", k, v.type)
-		print_table(v)
-		if v.completed ~= true and v.type == "eliminate_lager" then			
-			if aa:story_object(tonumber(v.target)).gulag:get_population() == 0 then
-				v.completed = true
-				db.actor:set_task_state(task.completed, "eliminate_lager", 1)
+
+	if p2 == 0 then
+		if active_task[p1].full_completed == true then
+			active_task[p1].full_completed = nil
+			active_task[p1].completed = nil
+			active_task[p1] = nil
+			return true
+		end
+		return false
+	end
+
+	if p2 == 1 then
+		if p1 == "eliminate_lager" then
+			if aa:story_object(tonumber(active_task[p1].target)).gulag:get_population() == 0 then
+				active_task[p1].completed = true
+				return true
 			end
 		end
 	end
+	
+	return false
 end
-function task_complete(p1, p2, p3, p4)
-	printf("p1[%s] p2[%s] p3[%s] p4[%s]", tostring(p1), tostring(p2), tostring(p3), tostring(p4))
-end
-function task_fail()
+function task_fail(p1, p2)
+	if active_task[p1].full_completed == false then
+		active_task[p1].full_completed = nil
+		active_task[p1].completed = nil
+		active_task[p1] = nil
+		return true
+	end
+	return false
 end

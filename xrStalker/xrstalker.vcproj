@@ -754,6 +754,9 @@
 						RelativePath=".\Config\text\rus\mp_st_speechmenu.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\rus\stable_bio_name.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\rus\stable_dialog_manager.xml">
 					</File>
 					<File

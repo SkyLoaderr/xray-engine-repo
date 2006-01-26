@@ -2,21 +2,17 @@
 
 <xml>
 	<specific_character id="escape_trader" no_random = "1">
-		<name>Сидорович</name>
+		<name>escape_trader_name</name>
 		<icon x="2" y="0"></icon>
 		<map_icon x="6" y="0"></map_icon>
-		<bio>Промышлял торговлей с малых лет. В детском садике продавал цветные карандаши.
-		В школе торговал жевательной резинкой.
-		В институте промышлял продажей легкой наркоты. С появлением Зоны смекнул, что на
-		этом можно хорошо заработать. Славится тем, что способен наладить хорошие торговые
-		отношения с самыми разношерстными клиентами.</bio>
+		<bio>escape_trader_bio</bio>
 
 		<class>trader</class>
 		<community>trader</community>
 		<visual>actors\trader\trader</visual>
 				
-		<rank>70</rank>
-		<reputation>65</reputation>
+		<rank>33</rank>
+		<reputation>23</reputation>
 		
 		<supplies>
 			[spawn] \n
@@ -37,6 +33,20 @@
 		<actor_dialog>escape_trader_killers_quest</actor_dialog>
 		<actor_dialog>escape_trader_killers_reward</actor_dialog>
 		<actor_dialog>tm_escape_trader_dialog</actor_dialog>
+		<actor_dialog>escape_trader_talk_level</actor_dialog>
+		<actor_dialog>escape_trader_talk_info</actor_dialog>
+		<actor_dialog>escape_trader_jobs</actor_dialog>
+		<actor_dialog>escape_trader_done_tutorial_artefact</actor_dialog>
+		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>
+		<actor_dialog>escape_trader_tutorial_wounded_end</actor_dialog>		
+		<actor_dialog>escape_trader_bandits_killed</actor_dialog>
+		<actor_dialog>escape_trader_docs_labx18</actor_dialog>
+		<actor_dialog>escape_trader_blokpost_case</actor_dialog>
+		<actor_dialog>escape_trader_help_wounded</actor_dialog>
+		<actor_dialog>escape_trader_killers_quest</actor_dialog>
+		<actor_dialog>escape_trader_killers_reward</actor_dialog>
+		<actor_dialog>tm_escape_trader_dialog</actor_dialog>
+		<actor_dialog>tm_escape_trader_reward</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_wolf" team_default = "1">
