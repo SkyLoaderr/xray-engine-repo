@@ -27,14 +27,45 @@
         <precondition>dialogs.actor_have_medkit</precondition>
     </dialog>
 
-    <dialog id="tm_escape_trader_dialog" priority="-1">
+    <dialog id="tm_trader_dialog" priority="-1">
 		<init_func>task_manager.init_trader_task_dialog</init_func>
     </dialog>
-    <dialog id="tm_escape_trader_reward" priority="0">
+    <dialog id="tm_trader_reward" priority="0">
 		<init_func>task_manager.init_trader_reward_dialog</init_func>
 		<precondition>task_manager.has_active_vendor_task</precondition>
     </dialog>
 
+    <dialog id="tm_barman_dialog" priority="-1">
+		<init_func>task_manager.init_barman_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_barman_reward" priority="0">
+		<init_func>task_manager.init_barman_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+
+    <dialog id="tm_ecolog_dialog" priority="-1">
+		<init_func>task_manager.init_ecolog_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_ecolog_reward" priority="0">
+		<init_func>task_manager.init_ecolog_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+
+    <dialog id="tm_dolg_dialog" priority="-1">
+		<init_func>task_manager.init_dolg_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_dolg_reward" priority="0">
+		<init_func>task_manager.init_dolg_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+
+    <dialog id="tm_freedom_dialog" priority="-1">
+		<init_func>task_manager.init_freedom_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_freedom_reward" priority="0">
+		<init_func>task_manager.init_freedom_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
 
 
     <!-- FINAL DIALOGS -->
