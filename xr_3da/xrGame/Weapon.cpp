@@ -744,7 +744,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			{
 				//если оружие чем-то занято, то ничего не делать
 				if(IsPending()) return false;
-
+				if (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH) return false;
 					
 				if(flags&CMD_START) 
 				{
