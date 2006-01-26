@@ -845,3 +845,13 @@
 <string id="sar2_haron_name">
 	<text>Харон</text>
 </string>
+
+<!-- Darkscape -->
+
+<string id="ds_soldier_regular_bio">
+	<text>Рядовой солдат срочной службы ВС Украины. Детальная информация отсутствует.</text>
+</string>
+
+<string id="ds_sergant_regular_bio">
+	<text>Сержант срочной службы ВС Украины. Детальная информация отсутствует.</text>
+</string>
