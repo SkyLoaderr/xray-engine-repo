@@ -176,14 +176,14 @@ function load_job_escort(sj, gname, type, squad, groups)
                "combat_ignore   = combat_ignore\n" ..
 
                "[wounded@" .. gname .. "_halfdead]\n" ..
-               "hp_state        = 10|wounded_heavy\n" ..
-               "hp_state_see    = 10|wounded_heavy\n" ..
+               "hp_state        = 10|wounded_heavy@nil\n" ..
+               "hp_state_see    = 10|wounded_heavy@nil\n" ..
                "hp_cover        = 10|false\n" ..
                "hp_fight        = 10|false\n" ..
 
                "[wounded@" .. gname .. "_halfdead1]\n" ..
-               "hp_state        = 1|wounded_heavy\n" ..
-               "hp_state_see    = 1|wounded_heavy\n" ..
+               "hp_state        = 1|wounded_heavy@nil\n" ..
+               "hp_state_see    = 1|wounded_heavy@nil\n" ..
                "hp_cover        = 10|false\n" ..
                "hp_fight        = 10|false\n" ..
 
