@@ -4,10 +4,10 @@
 <!------------------------- STALKER ------------------------>
 <!-------------------------- DOCTOR ------------------------>
     <specific_character id="cit_doctor" team_default = "1">
-        <name>Доктор</name>
+        <name>cit_doctor_name</name>
         <icon x="6" y="0"></icon>
         <map_icon x="6" y="0"></map_icon>
-        <bio>Доктор</bio>
+        <bio>cit_doctor_bio</bio>
 
         <class>cit_doctor</class>
         <community>stalker</community>
@@ -254,10 +254,10 @@
 
 <!---------------------------- LEADER ---------------------->
 	<specific_character id="cit_killer_leader" team_default = "1">
-		<name>Душман</name>
+		<name>cit_killers_leader_name</name>
 		<icon x="18" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Лидер группировки наемников. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>cit_killers_leader_bio</bio>
 
 		<class>cit_killer_leader</class>
 		<community>killer</community>
@@ -562,10 +562,10 @@
 
 <!----------------------- Василий Петрович ---------------------->
 	<specific_character id="cit_vp" team_default = "1">
-		<name>Василий Петрович</name>
+		<name>cit_vp_name</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>cit_vp_bio</bio>
 
 		<class>cit_vp</class>
 		<community>stalker</community>
