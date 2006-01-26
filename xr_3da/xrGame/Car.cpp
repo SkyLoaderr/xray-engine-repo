@@ -240,7 +240,8 @@ void CCar::net_Save(NET_Packet& P)
 
 BOOL CCar::net_SaveRelevant()
 {
-	return !m_explosion_flags.test(CExplosive::flExploding)&&!CExplosive::IsExploded()&&!CPHDestroyable::Destroyed()&&!b_exploded;
+	return TRUE;
+	//return !m_explosion_flags.test(CExplosive::flExploding)&&!CExplosive::IsExploded()&&!CPHDestroyable::Destroyed()&&!b_exploded;
 }
 
 void CCar::SaveNetState(NET_Packet& P)
@@ -1737,6 +1738,7 @@ void CCar::CarExplode()
 {
 
 	if(b_exploded) return;
+	CPHSkeleton::SetNotNeedSave();
 	if(m_car_weapon)m_car_weapon->Action(CCarWeapon::eWpnActivate,0);
 	m_lights.TurnOffHeadLights();
 	b_exploded=true;

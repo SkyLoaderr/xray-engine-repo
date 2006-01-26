@@ -654,7 +654,7 @@ void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 
 bool CSE_ALifePHSkeletonObject::can_save			() const
 {
-	return						(!_flags.test(flNotSave));
+	return						CSE_PHSkeleton::need_save();
 }
 
 bool CSE_ALifePHSkeletonObject::used_ai_locations () const
@@ -936,7 +936,7 @@ bool CSE_ALifeObjectPhysic::used_ai_locations	() const
 
 bool CSE_ALifeObjectPhysic::can_save			() const
 {
-	return						(!_flags.test(flNotSave));
+		return						CSE_PHSkeleton::need_save();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1340,6 +1340,10 @@ void CSE_ALifeHelicopter::load		(NET_Packet &tNetPacket)
 	inherited1::load(tNetPacket);
 	inherited3::load(tNetPacket);
 }
+bool CSE_ALifeHelicopter::can_save() const
+{
+	return						CSE_PHSkeleton::need_save();
+}
 
 void CSE_ALifeHelicopter::FillProps(LPCSTR pref, PropItemVec& values)
 {
@@ -1407,6 +1411,11 @@ void CSE_ALifeCar::UPDATE_Write			(NET_Packet	&tNetPacket)
 bool CSE_ALifeCar::used_ai_locations() const
 {
 	return						(false);
+}
+
+bool CSE_ALifeCar::can_save() const
+{
+	return						CSE_PHSkeleton::need_save();
 }
 
 void CSE_ALifeCar::load(NET_Packet &tNetPacket)

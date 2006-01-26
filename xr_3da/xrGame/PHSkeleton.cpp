@@ -358,7 +358,7 @@ void CPHSkeleton::SetAutoRemove(u32 time/*=CSE_PHSkeleton::existence_time*/)
 {
 	b_removing=true;
 	m_remove_time=Device.dwTimeGlobal+iFloor(time/phTimefactor);
-	m_flags.set(CSE_PHSkeleton::flNotSave,TRUE);
+	SetNotNeedSave();
 	PPhysicsShellHolder()->SheduleRegister();
 }
 
@@ -422,4 +422,9 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 	obj->XFORM().getHPB	(D->o_Angle);
 	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
+}
+
+void	CPHSkeleton::SetNotNeedSave		()
+{
+	m_flags.set(CSE_PHSkeleton::flNotSave,TRUE);
 }

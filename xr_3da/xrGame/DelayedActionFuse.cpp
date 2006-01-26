@@ -11,6 +11,7 @@ CDelayedActionFuse::CDelayedActionFuse()
 void CDelayedActionFuse::SetTimer(float current_condition)
 {
 	VERIFY(isInitialized()&&!isActive());
+	m_dafflags.set(flActive,TRUE);
 	ChangeCondition(m_fSpeedChangeCondition-current_condition);
 	VERIFY(!fis_zero(m_fTime)||m_dafflags.test(flNoConditionChange));
 	if(!m_dafflags.test(flNoConditionChange))m_fSpeedChangeCondition/=m_fTime;
@@ -18,7 +19,7 @@ void CDelayedActionFuse::SetTimer(float current_condition)
 	m_fTime+=Device.fTimeGlobal;//+current_condition/m_fSpeedChangeCondition;
 	//Msg("expl moment %f",m_fTime);
 	StartTimerEffects();
-	m_dafflags.set(flActive,TRUE);
+
 }
 float CDelayedActionFuse::Time()
 {

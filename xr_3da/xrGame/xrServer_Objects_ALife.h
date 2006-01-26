@@ -443,6 +443,7 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();
 	virtual	void					load						(NET_Packet &tNetPacket);
+	virtual bool					can_save					() const;
 	virtual bool					used_ai_locations			() const;
 	virtual CSE_Motion*	__stdcall	motion						();
 	virtual CSE_Abstract			*cast_abstract			() {return this;}
@@ -471,8 +472,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual,CSE_PHSke
 									CSE_ALifeCar		(LPCSTR caSection);
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;
-	virtual	void					load					(NET_Packet &tNetPacket);
-	virtual CSE_Abstract			*cast_abstract			() {return this;}
+	virtual	void					load				(NET_Packet &tNetPacket);
+	virtual bool					can_save			() const;
+	virtual CSE_Abstract			*cast_abstract		() {return this;}
 protected:
 	virtual void					data_load				(NET_Packet &tNetPacket);
 	virtual void					data_save				(NET_Packet &tNetPacket);
