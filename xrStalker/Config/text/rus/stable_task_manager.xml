@@ -32,7 +32,6 @@
     <string id="tm_trader_list_job">
         <text>Да, есть кое что:</text>
     </string>
-
     <string id="tm_trader_job_complete">
         <text>Задание выполнено, получи награду.</text>
     </string>
@@ -40,9 +39,73 @@
         <text>По поводу какого задания ты хочешь поговорить?</text>
     </string>
     <string id="tm_trader_job_what">
-        <text>B что с этим заданием?</text>
+        <text>И что с этим заданием?</text>
+    </string>
+
+    <string id="tm_barman_has_no_job">
+        <text>Сейчас ничего не могу предложить.</text>
+    </string>
+    <string id="tm_barman_list_job">
+        <text>Смотри что есть:</text>
+    </string>
+    <string id="tm_barman_job_complete">
+        <text>Молодец, держи награду.</text>
+    </string>
+    <string id="tm_barman_job_ask">
+        <text>И о чем ты хочешь поговорить?</text>
+    </string>
+    <string id="tm_barman_job_what">
+        <text>Что такое?</text>
     </string>
         
+    <string id="tm_ecolog_has_no_job">
+        <text>Извините, на данный момент ничего нет.</text>
+    </string>
+    <string id="tm_ecolog_list_job">
+        <text>Могу предложить следующее:</text>
+    </string>
+    <string id="tm_ecolog_job_complete">
+        <text>Вы выполнили свое задание, получите награду.</text>
+    </string>
+    <string id="tm_ecolog_job_ask">
+        <text>По поводу какого задания вы бы хотели поговорить?</text>
+    </string>
+    <string id="tm_ecolog_job_what">
+        <text>Я вас слушаю.</text>
+    </string>
+
+    <string id="tm_dolg_has_no_job">
+        <text>Сейчас нет заданий.</text>
+    </string>
+    <string id="tm_dolg_list_job">
+        <text>Есть задания:</text>
+    </string>
+    <string id="tm_dolg_job_complete">
+        <text>Молодец, задание выполнено.</text>
+    </string>
+    <string id="tm_dolg_job_ask">
+        <text>Что ты хочешь обсудить?</text>
+    </string>
+    <string id="tm_dolg_job_what">
+        <text>Слушаю.</text>
+    </string>
+
+    <string id="tm_freedom_has_no_job">
+        <text>Сейчас нет работы.</text>
+    </string>
+    <string id="tm_freedom_list_job">
+        <text>Смотри что есть:</text>
+    </string>
+    <string id="tm_freedom_job_complete">
+        <text>Работа сделана, получай награду.</text>
+    </string>
+    <string id="tm_freedom_job_ask">
+        <text>Что ты хочешь обсудить?</text>
+    </string>
+    <string id="tm_freedom_job_what">
+        <text>Что такое?</text>
+    </string>
+
     
     <string id="eliminate_lager">
         <text>Уничтожение лагеря.</text>
