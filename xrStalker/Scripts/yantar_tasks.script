@@ -1,11 +1,5 @@
 function proceed()
-    if db.actor:dont_has_info("yan_provodnik_spawn") and
-       db.actor:object("yantar_ghost_pda") ~= nil 
-    then
-       printf ("has info yan_provodnik_spawn = '%s'",tostring(db.actor:dont_has_info("yan_provodnik_spawn")))
-       db.actor:give_info_portion("yan_provodnik_spawn")
-       news_manager.send_tip(db.actor, "storyline_ghost_tip", nil, "stalker", nil, 903)
-     end
+
 end
 function process_info_portion(info_id)
 end
