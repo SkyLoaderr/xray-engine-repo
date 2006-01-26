@@ -186,5 +186,8 @@
     <string id="mm_mp_quickrefresh">
         <text>Quick Refresh</text>
     </string>
+    <string id="mm_mp_host_port">
+        <text>IP/host:port</text>
+    </string>
     
 </string_table>

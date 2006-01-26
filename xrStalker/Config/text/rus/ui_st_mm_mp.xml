@@ -204,5 +204,8 @@
     <string id="ping">
         <text>ПИНГ</text>
     </string>
+    <string id="mm_mp_host_port">
+        <text>IP/хост:порт</text>
+    </string>
     
 </string_table>
