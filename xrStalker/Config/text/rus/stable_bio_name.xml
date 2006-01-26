@@ -2,7 +2,6 @@
 <string id="escape_trader_name">
 	<text>Сидорович</text>
 </string>
-
 <string id="escape_trader_bio">
 	<text>Промышлял торговлей с малых лет. В детском садике продавал цветные карандаши.
 		В школе торговал жевательной резинкой.
@@ -16,7 +15,6 @@
 <string id="val_borov_name">
 	<text>Боров</text>
 </string>
-
 <string id="val_borov_bio">
 	<text>Лидер бандитов.</text>
 </string>
@@ -24,7 +22,6 @@
 <string id="val_pulia_name">
 	<text>Пуля</text>
 </string>
-
 <string id="val_pulia_bio">
 	<text>Сталкер группировки "Долг". Детальная информация отсутствует.</text>
 </string>
@@ -34,7 +31,6 @@
 <string id="cit_doctor_name">
 	<text>Доктор</text>
 </string>
-
 <string id="cit_doctor_bio">
 	<text>Доктор.</text>
 </string>
@@ -42,7 +38,6 @@
 <string id="cit_killers_leader_name">
 	<text>Душман</text>
 </string>
-
 <string id="cit_killers_leader_bio">
 	<text>Лидер группировки наемников. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</text>
 </string>
@@ -50,7 +45,6 @@
 <string id="cit_vp_name">
 	<text>Василий Петрович</text>
 </string>
-
 <string id="cit_vp_bio">
 	<text>Опытный сталкер. Детальная информация отсутствует.</text>
 </string>
@@ -60,7 +54,6 @@
 <string id="pri_monolith_leader_name">
 	<text>Харон</text>
 </string>
-
 <string id="pri_monolith_leader_bio">
 	<text>Лидер группировки "Монолит". Детальная информация отсутствует.</text>
 </string>
