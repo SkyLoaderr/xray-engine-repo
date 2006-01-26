@@ -1,3 +1,4 @@
+<!-------------------------------- Escape -------------------------------->
 <string id="escape_trader_name">
 	<text>Сидорович</text>
 </string>
@@ -11,7 +12,7 @@
 </string>
 
 
-<!-- DarkValley -->
+<!-------------------------------- DarkValley -------------------------------->
 <string id="val_borov_name">
 	<text>Боров</text>
 </string>
@@ -29,7 +30,7 @@
 </string>
 
 
-<!-- DeadCity -->
+<!-------------------------------- DeadCity -------------------------------->
 <string id="cit_doctor_name">
 	<text>Доктор</text>
 </string>
