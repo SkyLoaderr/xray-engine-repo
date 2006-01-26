@@ -109,8 +109,12 @@ function e_predicate_w(data) -- wounded bandit
 	return data.story_id == 424
 end
 
-function e_predicate_g(data) -- guards
-	return data.profile_name == "val_bandit_general"
+function e_predicate_g1(data) -- guards
+	return data.story_id == 407 --data.profile_name == "val_bandit_general"
+end
+
+function e_predicate_g2(data) -- guards
+	return data.story_id == 408 --data.profile_name == "val_bandit_general"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -145,7 +149,7 @@ function load_job_escort(sj, gname, type, squad, groups)
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		online = true,
-		predicate = e_predicate_g
+		predicate = e_predicate_g1
 	}
 	table.insert(sj, t)
     ltx = ltx.."#include \"scripts\\val_escort_guard1.ltx\"\n"
@@ -156,7 +160,7 @@ function load_job_escort(sj, gname, type, squad, groups)
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
 		online = true,
-		predicate = e_predicate_g
+		predicate = e_predicate_g2
 	}
 	table.insert(sj, t)
     ltx = ltx.."#include \"scripts\\val_escort_guard2.ltx\"\n"
@@ -290,7 +294,16 @@ function load_job_sacrifice(sj, gname, type, squad, groups)
 
                 "[danger@" .. gname .. "_guard]\n" ..
                 "ignore_distance = 1\n" ..
-                    
+
+                -- встреча отключена
+                "[meet@" .. gname .. "]\n" ..
+                "meet_state     = 0|guard\n" ..
+                "meet_state_wpn = 0|guard\n" ..
+                "victim         = 0|actor\n" ..
+                "victim_wpn     = 0|actor\n" ..
+                "use            = false\n" ..
+                "use_wpn        = false\n" ..
+
                 "#include \"scripts\\val_sacrifice_victim.ltx\"\n" ..
                 "#include \"scripts\\val_sacrifice_guard1.ltx\"\n" ..
                 "#include \"scripts\\val_sacrifice_guard2.ltx\"\n" ..

@@ -84,7 +84,7 @@ hp_cover        = 0|false
 [walker@val_escort_nap1_begin]
 path_walk           = nap1_walk
 path_look           = nap1_look
-on_info             = {+val_escort_begin} remark1@val_escort_nap1_phrase1
+on_info             = {+val_escort_begin} remark@val_escort_nap1_phrase1
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -97,7 +97,7 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 path_walk           = nap1_walk
 anim                = search
 target              = 424 ;logic@val_escort_wounded_bandit
-on_info             = {+val_escort_begin} remark1@val_escort_nap1_phrase1
+on_info             = {+val_escort_begin} remark@val_escort_nap1_phrase1
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -106,12 +106,12 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; фразы: ...Рассказывай, иначе узнаешь, как легко пуля пробивает череп.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase1]
+[remark@val_escort_nap1_phrase1]
 anim                = search
 snd                 = val_escort_nap1_phrase1
 target              = 424 ;logic@val_escort_wounded_bandit
-on_info             = {+val_halfdead_phrase_end} remark1@val_escort_nap1_phrase2
-on_info2            = {=is_dead_one(424)} remark1@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
+on_info             = {+val_halfdead_phrase_end} remark@val_escort_nap1_phrase2
+on_info2            = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
 on_signal           = sound_end | %+val_nap1_phrase1_end%
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
@@ -121,12 +121,12 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; фразы: Ладно, мразь, живи. Но больше на глаза мне не попадайся.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase2]
+[remark@val_escort_nap1_phrase2]
 anim                = search
 snd                 = val_escort_nap1_phrase7
 target              = 424 ;logic@val_escort_wounded_bandit
-on_info             = {=is_dead_one(424)} remark1@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
-on_signal           = sound_end | remark1@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
+on_info             = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
+on_signal           = sound_end | remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -135,11 +135,11 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; фраза: Эй, дружище, ПОДХОДИ!!!...помоги отбить напарника у бандитской швали!
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase3]
+[remark@val_escort_nap1_phrase3]
 anim                = guard
 snd                 = val_escort_nap1_phrase1
 target              = actor
-on_signal           = sound_end | remark1@val_escort_nap1_wait1
+on_signal           = sound_end | remark@val_escort_nap1_wait1
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -148,11 +148,11 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; ждем 5 сек
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_wait1]
+[remark@val_escort_nap1_wait1]
 anim                = guard
 target              = actor
-on_actor_dist_le    = 2 | remark1@val_escort_nap1_phrase6
-on_timer            = 5000 | remark1@val_escort_nap1_phrase4
+on_actor_dist_le    = 2 | remark@val_escort_nap1_phrase6
+on_timer            = 5000 | remark@val_escort_nap1_phrase4
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -161,11 +161,11 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; фраза: Скорей же!... время не ждет!..
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase4]
+[remark@val_escort_nap1_phrase4]
 anim                = guard
 snd                 = val_escort_nap1_phrase2
 target              = actor
-on_signal           = sound_end | remark1@val_escort_nap1_wait2
+on_signal           = sound_end | remark@val_escort_nap1_wait2
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -174,11 +174,11 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; ждем 5 сек
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_wait2]
+[remark@val_escort_nap1_wait2]
 anim                = guard
 target              = actor
-on_actor_dist_le    = 2 | remark1@val_escort_nap1_phrase6
-on_timer            = 5000 | remark1@val_escort_nap1_phrase5
+on_actor_dist_le    = 2 | remark@val_escort_nap1_phrase6
+on_timer            = 5000 | remark@val_escort_nap1_phrase5
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -187,7 +187,7 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; фраза: Блин...Ну, как хочешь.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase5]
+[remark@val_escort_nap1_phrase5]
 anim                = guard
 snd                 = val_escort_nap1_phrase2
 target              = actor
@@ -200,7 +200,7 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; фраза: Давай за мной, я знаю место для засады! Поможешь - буду благодарен. Долги в "Долге" возвращают:)!.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase6]
+[remark@val_escort_nap1_phrase6]
 anim                = guard
 snd                 = val_escort_nap1_phrase3
 target              = actor
@@ -220,8 +220,8 @@ def_state_moving1   = rush
 def_state_moving2   = rush
 def_state_moving3   = rush
 on_signal           = escort_start | %+val_escort_start%
-on_signal2          = ambush_start | remark1@val_escort_nap1_wait_for_actor
-on_info             = {+val_escort_combat} remark1@val_escort_nap1_fight
+on_signal2          = ambush_start | remark@val_escort_nap1_wait_for_actor
+on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -230,12 +230,12 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}, {=check_fig
 ;--------------------------------------------------------------------------
 ; Ждем, чтоб актер подошел поближе
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_wait_for_actor]
+[remark@val_escort_nap1_wait_for_actor]
 anim                    = hide
 target                  = val_escort_nap1_rescue_look, 0 ;actor
-on_actor_dist_le_nvis   = 10 | remark1@val_escort_nap1_phrase7
-on_info                 = {+val_escort_combat} remark1@val_escort_nap1_fight
-on_info2                = {=distance_to_obj_le(400:30)} remark1@val_escort_nap1_phrase8
+on_actor_dist_le_nvis   = 10 | remark@val_escort_nap1_phrase7
+on_info                 = {+val_escort_combat} remark@val_escort_nap1_fight
+on_info2                = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
 meet                    = meet@val_escort_nap1_ignore
 danger                  = danger@val_escort_nap1_small
 wounded                 = wounded@val_escort_nap1
@@ -244,13 +244,14 @@ combat_ignore_cond      = {=check_fighting(407:408) -val_escort_combat}
 ;--------------------------------------------------------------------------
 ; фраза: Прячься за укрытием на той стороне дороги. Они скоро появятся. Открывай огонь ТОЛЬКО после меня.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase7]
+[remark@val_escort_nap1_phrase7]
 anim                = hide
 snd                 = val_escort_nap1_phrase4
 target              = val_escort_nap1_rescue_look, 0 ;actor
 on_timer            = 60000 | {+val_escort_scene_fail} remark@val_escort_nap1_fail
-on_info             = {+val_escort_combat} remark1@val_escort_nap1_fight
-on_info2            = {=distance_to_obj_le(400:30)} remark1@val_escort_nap1_phrase8
+on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
+on_info2            = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
+meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -263,6 +264,7 @@ anim                = hide
 snd                 = val_escort_nap1_fail
 target              = actor
 on_signal           = sound_end | patrol@val_escort_nap1_leave
+meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -270,12 +272,12 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 ;--------------------------------------------------------------------------
 ; фраза: Идут. Сейчас мы их.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase8]
+[remark@val_escort_nap1_phrase8]
 anim                = hide
 snd                 = val_escort_nap1_phrase6
 target              = val_escort_nap1_rescue_look, 0 ;actor
-on_info             = {+val_escort_combat} remark1@val_escort_nap1_fight
-;meet               = meet@val_escort_nap1_ignore
+on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
+meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -283,65 +285,65 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 ;--------------------------------------------------------------------------
 ; бой с гвардами
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_fight]
+[remark@val_escort_nap1_fight]
 anim                = guard
 meet                = meet@val_escort_nap1_ignore
-on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} remark1@val_escort_nap1_task_done
+on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@val_escort_nap1_task_done
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
 ; гварды убиты
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_task_done]
+[remark@val_escort_nap1_task_done]
 anim                = guard
 meet                = meet@val_escort_nap1_ignore
-on_info             = {-val_escort_captive_dead} remark1@val_escort_nap1_captive_live, follower1@val_escort_nap1_captive_dead
+on_info             = {-val_escort_captive_dead} remark@val_escort_nap1_captive_live, follower1@val_escort_nap1_captive_dead
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
 ; заложник жив. проверяем помог ли актер
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_captive_live]
+[remark@val_escort_nap1_captive_live]
 anim                = guard
 meet                = meet@val_escort_nap1_ignore
-on_info             = {+val_escort_actor_helped} remark1@val_escort_nap1_captive_live_helped, remark1@val_escort_nap1_captive_live_not_helped
+on_info             = {+val_escort_actor_helped} remark@val_escort_nap1_captive_live_helped, remark@val_escort_nap1_captive_live_not_helped
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
 ; актер помог. ждем пока подойдет заложник и поблагодарит напарника
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_captive_live_helped]
+[remark@val_escort_nap1_captive_live_helped]
 anim                = guard
 target              = 400 ;logic@val_escort_captive
-on_info             = {+val_escort_captive_phrase1_end} remark1@val_escort_nap1_phrase9
-meet                = meet@val_escort_nap1_talk
+on_info             = {+val_escort_captive_phrase1_end} remark@val_escort_nap1_phrase9
+meet                = meet@val_escort_nap1_ignore
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
 ; фраза: Это вот сталкера благодари. Он мне помог.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase9]
+[remark@val_escort_nap1_phrase9]
 anim                = guard
 snd                 = val_escort_nap1_phrase5
 target              = 400 ;logic@val_escort_captive
-on_signal           = sound_end | remark1@val_escort_nap1_wait_to_talk_phrase %+val_escort_nap1_phrase1_end%
-meet                = meet@val_escort_nap1_talk
+on_signal           = sound_end | remark@val_escort_nap1_wait_to_talk_phrase %+val_escort_nap1_phrase1_end%
+meet                = meet@val_escort_nap1_ignore
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
 ; актер не помог. ждем пока подойдет заложник и поблагодарит напарника
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_captive_live_not_helped]
+[remark@val_escort_nap1_captive_live_not_helped]
 anim                = guard
 target              = 400 ;logic@val_escort_captive
-on_info             = {+val_escort_captive_phrase1_end} remark1@val_escort_nap1_phrase11
+on_info             = {+val_escort_captive_phrase1_end} remark@val_escort_nap1_phrase11
 meet                = meet@val_escort_nap1_ignore
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
 ; фраза: Жив-здоров? Тогда возвращаемся на Базу за подмогой.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase11]
+[remark@val_escort_nap1_phrase11]
 anim                = guard
 snd                 = val_escort_nap1_go_home
 target              = 400 ;logic@val_escort_captive
@@ -358,8 +360,8 @@ anim                = guard
 distance            = 2
 stub_for_corpse     = true
 dont_change_job     = true
-on_signal           = leader_dead | remark1@val_escort_nap1_phrase10
-on_info             = {=distance_to_obj_le(400:3)} remark1@val_escort_nap1_phrase10
+on_signal           = leader_dead | remark@val_escort_nap1_phrase10
+on_info             = {=distance_to_obj_le(400:3)} remark@val_escort_nap1_phrase10
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_1
 wounded             = wounded@val_escort_nap1
@@ -367,21 +369,31 @@ wounded             = wounded@val_escort_nap1
 ;--------------------------------------------------------------------------
 ; фраза: Черт подери!!!...Эх-ххх...Пусть земля тебе будет пухом, дружище.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_phrase10]
+[remark@val_escort_nap1_phrase10]
 anim                = guard
 snd                 = val_escort_dead
 target              = 400 ;logic@val_escort_captive
-on_signal           = sound_end | {+val_escort_actor_helped} remark1@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
-on_timer            = 20000 | {+val_escort_actor_helped} remark1@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
+on_signal           = sound_end | {+val_escort_actor_helped} remark@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
+on_timer            = 20000 | {+val_escort_actor_helped} remark@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
 meet                = meet@val_escort_nap1_ignore
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
 ; фраза: Подходи пообщаемся.
 ;--------------------------------------------------------------------------
-[remark1@val_escort_nap1_wait_to_talk_phrase]
+[remark@val_escort_nap1_wait_to_talk_phrase]
 anim                    = guard
 snd                     = val_escort_phrase_invite
+target                  = actor
+on_signal               = sound_end | remark@val_escort_nap1_wait_to_talk
+meet                    = meet@val_escort_nap1_ignore
+wounded                 = wounded@val_escort_nap1
+
+;--------------------------------------------------------------------------
+; диалог
+;--------------------------------------------------------------------------
+[remark@val_escort_nap1_wait_to_talk]
+anim                    = guard
 target                  = actor
 ;on_timer                = 60000 | patrol@val_escort_nap1_leave ; ждем минуту и уходим
 on_actor_dist_ge_nvis   = 30 | patrol@val_escort_nap1_leave
