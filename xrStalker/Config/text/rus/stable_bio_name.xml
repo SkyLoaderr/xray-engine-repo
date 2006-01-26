@@ -9,3 +9,21 @@
 		этом можно хорошо заработать. Славится тем, что способен наладить хорошие торговые
 		отношения с самыми разношерстными клиентами.</text>
 </string>
+
+
+<!-- DarkValley-->
+<string id="val_borov_name">
+	<text>Боров</text>
+</string>
+
+<string id="val_borov_bio">
+	<text>Лидер бандитов.</text>
+</string>
+
+<string id="val_pulia_name">
+	<text>Пуля</text>
+</string>
+
+<string id="val_pulia_bio">
+	<text>Сталкер группировки "Долг". Детальная информация отсутствует.</text>
+</string>

@@ -4,10 +4,10 @@
 <!--------------------------- BANDITS ----------------------->
 <!---------------------------- BOROV ------------------------>
 	<specific_character id="val_bandit_borov" team_default = "1">
-		<name>Боров</name>
+		<name>val_borov_name</name>
 		<icon x="30" y="12"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Лидер бандитов.</bio>
+		<bio>val_borov_bio</bio>
 
 		<class>val_bandit_veteran</class>
 		<community>bandit</community>
@@ -492,10 +492,10 @@
 
 <!--------------------------- NAP1 ------------------------->
 	<specific_character id="val_escort_nap1" team_default = "1">
-		<name>Пуля</name>
+		<name>val_pulia_name</name>
 		<icon x="16" y="8"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>val_pulia_bio</bio>
 
 		<class>val_dolg_regular</class>
 		<community>dolg</community>
