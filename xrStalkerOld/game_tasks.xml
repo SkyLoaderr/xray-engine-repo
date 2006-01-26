@@ -89,5 +89,14 @@
 		</objective>
 	</game_task>
 
+	<game_task id="artefact">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
 
 </game_tasks_data>

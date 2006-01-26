@@ -142,7 +142,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
 		<visual>actors\novice\green_stalker_1</visual>
 		<supplies>
@@ -296,7 +296,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
@@ -325,7 +325,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
@@ -354,7 +354,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -384,7 +384,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -412,7 +412,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -441,7 +441,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -472,7 +472,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
@@ -502,7 +502,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
@@ -533,7 +533,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_8</visual>
 		<supplies>
@@ -949,7 +949,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		<snd_config>characters_voice\human_03\newbie\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_1</visual>
 		<supplies>

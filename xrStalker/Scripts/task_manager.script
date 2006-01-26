@@ -83,6 +83,9 @@ function fill_phrase_table()
 		if not task_ini:line_exist(id, "text") then
 			abort("Task manager error: no text in section [%s]", id)
 		end
+		if not task_ini:line_exist(id, "description") then
+			abort("Task manager error: no description in section [%s]", id)
+		end
 
 		type = task_ini:r_string(id, "type")
 		parent = task_ini:r_string(id, "parent")		
@@ -96,12 +99,12 @@ function fill_phrase_table()
 		tt.type = type
 		tt.target = task_ini:r_string(id, "target")
 		tt.text = task_ini:r_string(id, "text")
-		tt.description = task_ini:r_string(id, "description")
+		tt.description = task_ini:r_string(id, "description")				
 		
-		tt.reward_money = task_ini:r_s32(id, "reward_money")
-		tt.reward_reputation = task_ini:r_s32(id, "reward_reputation")
-		tt.reward_item = parse_key_value(task_ini:r_string(id, "reward_item"))
-		tt.reward_relation = parse_key_value(task_ini:r_string(id, "reward_relation"))
+		tt.reward_money = utils.cfg_get_number(task_ini, id, "reward_money", db.actor, false)
+		tt.reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", db.actor, false)
+		tt.reward_item = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_item", db.actor, false, "")) 
+		tt.reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", db.actor, false, ""))
 		
 		if task_ini:line_exist(id, "community") then
 			tt.community = task_ini:r_string(id, "community")
@@ -211,9 +214,9 @@ function action_give_task(actor, npc, p1, p2)
 	if task_desc.type == "eliminate_lager" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
-		objective:set_object_id(alife():story_object(tonumber(task_desc.target)).id)
-	    objective:add_complete_func("task_manager.task_complete")
+		objective:set_object_id(alife():story_object(tonumber(task_desc.target)).id)	    
 	end
+	objective:add_complete_func("task_manager.task_complete")
 	task:add_objective(objective)
 
 	objective = SGameTaskObjective(task,2)
@@ -344,8 +347,8 @@ function action_task_reward(npc, actor)
 				end
 			end
 
-			if v.reward_reputation ~= nil then
-				for k,v in pairs(v.reward_reputation) do
+			if v.reward_relation ~= nil then
+				for k,v in pairs(v.reward_relation) do
 					relation_registry.change_community_goodwill (k, "actor", v)
 					relation_registry.change_community_goodwill (k, "actor_dolg", v)
 					relation_registry.change_community_goodwill (k, "actor_freedom", v)
@@ -382,15 +385,14 @@ end
 function action_refuse_task(actor, npc, p1, p2)
 	local parent = get_parent(npc)
 	local task_desc = task_by_phrase[p2]
-	if task_desc.type == "eliminate_lager" then
-		active_task[task_desc.type].full_completed = false
 
-		-- устанавливаем время последнего отказа от задания
-		for k,v in pairs(task_info[parent]) do
-			if v.name == task_desc.name then
-				v.last_time = game.get_game_time()
-				return
-			end
+	active_task[task_desc.type].full_completed = false
+
+	-- устанавливаем время последнего отказа от задания
+	for k,v in pairs(task_info[parent]) do
+		if v.name == task_desc.name then
+			v.last_time = game.get_game_time()
+			return
 		end
 	end
 end
@@ -445,6 +447,7 @@ end
 
 function calculate_predicate(npc, tbl)
 	local parent = get_parent(npc)
+	local aa = alife()
 
 	if tbl.parent ~= nil then
 		if tbl.parent ~= parent then return false end
@@ -455,8 +458,13 @@ function calculate_predicate(npc, tbl)
 	if tbl.condlist ~= nil then
 		if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then return false end
 	end
-	-- TODO: Проверка по таргету
-	
+
+	if tbl.type == "eliminate_lager" then
+		local gulag = aa:story_object(tonumber(tbl.target)).gulag		
+		if gulag:get_population() < 0.7*gulag.capacity then
+			return false
+		end	
+	end
 	
 	-- Проверка что квест еще не выдан
 	if active_task[tbl.type] ~= nil then
@@ -494,6 +502,11 @@ function task_complete(p1, p2)
 	if p2 == 1 then
 		if p1 == "eliminate_lager" then
 			if aa:story_object(tonumber(active_task[p1].target)).gulag:get_population() == 0 then
+				active_task[p1].completed = true
+				return true
+			end
+		elseif p1 == "artefact" then			
+			if db.actor:object(active_task[p1].target) ~= nil then
 				active_task[p1].completed = true
 				return true
 			end

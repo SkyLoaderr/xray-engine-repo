@@ -44,7 +44,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\novice\green_stalker_1</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_ak74 \n
@@ -67,7 +67,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\novice\green_stalker_7</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_mp5 \n
@@ -90,7 +90,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\novice\green_stalker_2</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_bm16 \n
@@ -113,7 +113,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\novice\green_stalker_8</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_toz34 \n
@@ -326,7 +326,7 @@
 		<reputation>0</reputation>
  
 		<visual>actors\novice\green_stalker_3</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			ammo_5.56x45_ss190 \n
@@ -824,7 +824,7 @@
 		<reputation>90</reputation>
 
 		<visual>actors\novice\green_stalker_7</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
@@ -1225,7 +1225,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_2</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -1253,7 +1253,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_3</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -1281,7 +1281,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_4</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -1311,7 +1311,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_5</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -1339,7 +1339,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_6</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -1367,7 +1367,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_10</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -1397,7 +1397,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_antigas</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -1425,7 +1425,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_antigas</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n

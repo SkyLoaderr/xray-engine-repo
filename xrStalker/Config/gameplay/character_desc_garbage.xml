@@ -43,7 +43,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
 		<visual>actors\novice\green_stalker_11</visual>
 		<supplies>
@@ -70,7 +70,7 @@
 		<rank>20</rank>
 		<reputation>0</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>

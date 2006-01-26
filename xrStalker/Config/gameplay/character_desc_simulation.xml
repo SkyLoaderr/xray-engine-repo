@@ -389,7 +389,7 @@
 		<rank>12</rank>
 		<reputation>6</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
@@ -415,7 +415,7 @@
 		<rank>18</rank>
 		<reputation>-10</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
@@ -442,7 +442,7 @@
 		<rank>22</rank>
 		<reputation>18</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -471,7 +471,7 @@
 		<rank>24</rank>
 		<reputation>-15</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -498,7 +498,7 @@
 		<rank>26</rank>
 		<reputation>19</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -525,7 +525,7 @@
 		<rank>29</rank>
 		<reputation>20</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -555,7 +555,7 @@
 		<rank>5</rank>
 		<reputation>-20</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
@@ -583,7 +583,7 @@
 		<rank>15</rank>
 		<reputation>6</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
