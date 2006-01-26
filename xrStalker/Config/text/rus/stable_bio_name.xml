@@ -54,3 +54,13 @@
 <string id="cit_vp_bio">
 	<text>Опытный сталкер. Детальная информация отсутствует.</text>
 </string>
+
+
+<!-------------------------------- Pripyat -------------------------------->
+<string id="pri_monolith_leader_name">
+	<text>Харон</text>
+</string>
+
+<string id="pri_monolith_leader_bio">
+	<text>Лидер группировки "Монолит". Детальная информация отсутствует.</text>
+</string>

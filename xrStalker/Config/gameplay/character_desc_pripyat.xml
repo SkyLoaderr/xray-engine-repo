@@ -280,10 +280,10 @@
 
 <!-------------------------- LEADER ------------------------>
     <specific_character id="pri_monolith_leader" team_default = "1">
-        <name>Харон</name>
+        <name>pri_monolith_leader_name</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Лидер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_leader_bio</bio>
 
         <class>pri_monolith_leader</class>
         <community>monolith</community>
@@ -523,5 +523,4 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
-
 </xml>
