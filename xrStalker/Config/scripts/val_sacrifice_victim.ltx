@@ -42,7 +42,7 @@ combat_ignore_cond  = always
 ; ждем на фразу 3 первого охранника
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_victim_phrase2]
-anim                = wait
+anim                = wait_na
 snd                 = speech
 target              = 404
 on_signal           = sound_end | remark@val_sacrifice_victim_stay %+val_sacrifice_victim_phrase2_end%
@@ -52,7 +52,7 @@ combat_ignore_cond  = always
 ; wait for scene end
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_victim_stay]
-anim                = wait
+anim                = wait_na
 target              = 404
 on_info             = {+val_sacrifice_guard1_dead +val_sacrifice_guard2_dead} %+val_sacrifice_finish%
 combat_ignore_cond  = always
