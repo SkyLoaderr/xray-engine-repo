@@ -15,6 +15,11 @@ function val_rob_actor_has_money(first_speaker, second_speaker)
 	return first_speaker:money() >= 800
 end
 
-function val_rob_actor_reloc_money (stalker, player)
+function val_rob_actor_reloc_money(stalker, player)
 	dialogs.relocate_money(stalker, 800, "out")
+end
+
+function val_escort_reward(stalker, player)
+	dialogs.relocate_money(stalker, 1300, "in")
+	dialogs.relocate_item(stalker, player:object("wpn_addon_scope"), "in")
 end
