@@ -13,7 +13,7 @@
 		<community>stalker</community>
 
 		<rank>50</rank>
-		<reputation>0</reputation>
+		<reputation>49</reputation>
 
 		<panic_threshold>0.0</panic_threshold>
 
@@ -47,7 +47,7 @@
 		<community>stalker</community>
 
 		<rank>50</rank>
-		<reputation>0</reputation>
+		<reputation>-29</reputation>
 
 		<visual>actors\soldier\soldier_bandana_6</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -77,7 +77,7 @@
 		<community>stalker</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>27</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -111,7 +111,7 @@
 		<community>stalker</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>42</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -144,7 +144,7 @@
 		<community>stalker</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>18</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -177,7 +177,7 @@
 		<community>stalker</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>36</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -210,7 +210,7 @@
 		<community>stalker</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>23</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -243,7 +243,7 @@
 		<community>stalker</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>33</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -278,7 +278,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>0</reputation>
+		<reputation>-9</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -307,7 +307,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>0</reputation>
+		<reputation>-6</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -336,7 +336,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>0</reputation>
+		<reputation>-3</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -365,7 +365,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>0</reputation>
+		<reputation>-7</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -394,7 +394,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>0</reputation>
+		<reputation>-9</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -425,7 +425,7 @@
 		<community>military</community>
 		
 		<rank>80</rank>
-		<reputation>0</reputation>
+		<reputation>-70</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -454,7 +454,7 @@
 		<community>military</community>
 		
 		<rank>80</rank>
-		<reputation>0</reputation>
+		<reputation>-83</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -485,7 +485,7 @@
 		<community>military</community>
 		
 		<rank>60</rank>
-		<reputation>0</reputation>
+		<reputation>-20</reputation>
 
 		<visual>actors\soldier\soldier_beret</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -514,7 +514,7 @@
 		<community>military</community>
 		
 		<rank>60</rank>
-		<reputation>0</reputation>
+		<reputation>-19</reputation>
 
 		<visual>actors\soldier\soldier_beret_3</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -544,7 +544,7 @@
 		<community>military</community>
 		
 		<rank>60</rank>
-		<reputation>0</reputation>
+		<reputation>-15</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -573,7 +573,7 @@
 		<community>military</community>
 	
 		<rank>60</rank>
-		<reputation>0</reputation>
+		<reputation>-15</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -602,7 +602,7 @@
 		<community>military</community>
 		
 		<rank>60</rank>
-		<reputation>0</reputation>
+		<reputation>-7</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -633,7 +633,7 @@
 		<community>bandit</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-70</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -663,7 +663,7 @@
 		<community>bandit</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-56</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -693,7 +693,7 @@
 		<community>bandit</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-98</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<snd_config>characters_voice\human_01\bandit\</snd_config>

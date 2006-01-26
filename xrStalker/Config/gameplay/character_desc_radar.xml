@@ -12,7 +12,7 @@
 		<community>monolith</community>
 
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-385</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
 		<snd_config>characters_voice\human_01\monolith\</snd_config>
@@ -38,7 +38,7 @@
 		<community>monolith</community>
 
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-729</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
 		<snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -64,7 +64,7 @@
 		<community>monolith</community>
 
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-200</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -90,7 +90,7 @@
 		<community>monolith</community>
 
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-151</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -117,7 +117,7 @@
 		<community>monolith</community>
 
 		<rank>50</rank>
-		<reputation>0</reputation>
+		<reputation>-784</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -143,7 +143,7 @@
 		<community>monolith</community>
 
 		<rank>50</rank>
-		<reputation>0</reputation>
+		<reputation>-393</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -170,7 +170,7 @@
 		<community>monolith</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>-658</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -196,7 +196,7 @@
 		<community>monolith</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>-347</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -222,7 +222,7 @@
 		<community>monolith</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>-398</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -248,7 +248,7 @@
 		<community>monolith</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>-234</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
 		<snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -275,7 +275,7 @@
 		<community>monolith</community>
 
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-743</reputation>
 
 		<visual>actors\monolit\stalker_mo_head1</visual>
 		<snd_config>characters_voice\human_01\monolith\</snd_config>
@@ -301,7 +301,7 @@
 		<community>monolith</community>
 
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-384</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
 		<snd_config>characters_voice\human_01\monolith\</snd_config>
@@ -332,7 +332,7 @@
 		<community>zombied</community>
 
 		<rank>40</rank>
-		<reputation>20</reputation>
+		<reputation>-375</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie1</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -357,7 +357,7 @@
 		<community>zombied</community>
 
 		<rank>40</rank>
-		<reputation>20</reputation>
+		<reputation>-637</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -382,7 +382,7 @@
 		<community>zombied</community>
 
 		<rank>40</rank>
-		<reputation>-20</reputation>
+		<reputation>-847</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -407,7 +407,7 @@
 		<community>zombied</community>
 
 		<rank>40</rank>
-		<reputation>-20</reputation>
+		<reputation>-476</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -432,7 +432,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>50</reputation>
+		<reputation>-987</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -457,7 +457,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>50</reputation>
+		<reputation>-199</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -482,7 +482,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>-50</reputation>
+		<reputation>-653</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -507,7 +507,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>-50</reputation>
+		<reputation>-834</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -533,7 +533,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>-50</reputation>
+		<reputation>-452</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\zombied\</snd_config>
@@ -559,7 +559,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>-50</reputation>
+		<reputation>-245</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\zombied\</snd_config>
@@ -585,7 +585,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>-50</reputation>
+		<reputation>-734</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\zombied\</snd_config>
@@ -611,7 +611,7 @@
 		<community>zombied</community>
 
 		<rank>60</rank>
-		<reputation>-50</reputation>
+		<reputation>-540</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\zombied\</snd_config>
@@ -639,7 +639,7 @@
 		<community>stalker</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>79</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -667,7 +667,7 @@
 		<community>stalker</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>86</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -695,7 +695,7 @@
 		<community>stalker</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>74</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -723,7 +723,7 @@
 		<community>stalker</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>89</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -751,7 +751,7 @@
 		<community>stalker</community>
 
 		<rank>70</rank>
-		<reputation>0</reputation>
+		<reputation>100</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -780,7 +780,7 @@
 		<community>stalker</community>
 
 		<rank>95</rank>
-		<reputation>0</reputation>
+		<reputation>91</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -807,7 +807,7 @@
 		<community>stalker</community>
 
 		<rank>95</rank>
-		<reputation>0</reputation>
+		<reputation>88</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -834,7 +834,7 @@
 		<community>stalker</community>
 
 		<rank>95</rank>
-		<reputation>0</reputation>
+		<reputation>83</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -860,7 +860,7 @@
 		<community>stalker</community>
 
 		<rank>95</rank>
-		<reputation>0</reputation>
+		<reputation>72</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -886,7 +886,7 @@
 		<community>stalker</community>
 
 		<rank>95</rank>
-		<reputation>0</reputation>
+		<reputation>94</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -915,7 +915,7 @@
 		<community>military</community>
 
 		<rank>80</rank>
-		<reputation>0</reputation>
+		<reputation>-74</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -943,7 +943,7 @@
 		<community>military</community>
 
 		<rank>80</rank>
-		<reputation>0</reputation>
+		<reputation>-80</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -971,7 +971,7 @@
 		<community>military</community>
 
 		<rank>80</rank>
-		<reputation>0</reputation>
+		<reputation>-60</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -1001,7 +1001,7 @@
 		<community>freedom</community>
 
 		<rank>90</rank>
-		<reputation>0</reputation>
+		<reputation>93</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
@@ -1028,7 +1028,7 @@
 		<community>freedom</community>
 
 		<rank>90</rank>
-		<reputation>0</reputation>
+		<reputation>100</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
@@ -1055,7 +1055,7 @@
 		<community>freedom</community>
 
 		<rank>90</rank>
-		<reputation>0</reputation>
+		<reputation>90</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
@@ -1083,7 +1083,7 @@
 		<community>dolg</community>
 
 		<rank>90</rank>
-		<reputation>40</reputation>
+		<reputation>95</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1110,7 +1110,7 @@
 		<community>dolg</community>
 
 		<rank>90</rank>
-		<reputation>40</reputation>
+		<reputation>96</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1139,7 +1139,7 @@
 		<community>dolg</community>
 
 		<rank>90</rank>
-		<reputation>40</reputation>
+		<reputation>93</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1168,7 +1168,7 @@
 		<community>dolg</community>
 
 		<rank>90</rank>
-		<reputation>40</reputation>
+		<reputation>90</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
