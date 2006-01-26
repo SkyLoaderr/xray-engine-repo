@@ -29,6 +29,7 @@ anim                = guard
 snd                 = speech
 target              = 404
 on_signal           = sound_end | remark@val_sacrifice_guard2_phrase2
+meet                = meet@val_sacrifice
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -40,4 +41,5 @@ snd                 = speech
 target              = 404
 on_signal           = sound_end | %+val_sacrifice_guard2_phrase2_end%
 danger              = danger@val_sacrifice_guard
+meet                = meet@val_sacrifice
 combat_ignore_cond  = {=check_fighting(403:401)}

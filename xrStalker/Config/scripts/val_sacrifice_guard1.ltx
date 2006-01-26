@@ -19,6 +19,7 @@ def_state_campering_fire    = guard_fire
 def_state_moving            = patrol
 def_state_moving_fire       = patrol_fire
 on_info                     = {+val_sacrifice_victim_phrase1_end} remark@val_sacrifice_guard1_phrase1
+meet                        = meet@val_sacrifice
 combat_ignore_cond          = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ snd                 = speech
 target              = 405
 on_signal           = sound_end | %+val_sacrifice_guard1_phrase1_end%
 on_info             = {+val_sacrifice_guard2_phrase2_end} remark@val_sacrifice_guard1_phrase2
+meet                = meet@val_sacrifice
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -41,6 +43,7 @@ anim                = guard
 snd                 = speech
 target              = 405
 on_signal           = sound_end | remark@val_sacrifice_guard1_phrase3
+meet                = meet@val_sacrifice
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -52,16 +55,18 @@ snd                 = speech
 target              = 401
 on_signal           = sound_end | %+val_sacrifice_guard1_phrase3_end%
 on_info             = {+val_sacrifice_victim_phrase2_end} remark@val_sacrifice_guard1_phrase4
+meet                = meet@val_sacrifice
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Ну как хочешь.
 ;--------------------------------------------------------------------------
 [remark@val_sacrifice_guard1_phrase4]
-anim                = guard
+anim                = threat
 snd                 = speech
 target              = 401
 on_signal           = sound_end | remark@val_sacrifice_guard1_kill %+val_sacrifice_guard1_phrase4_end%
+meet                = meet@val_sacrifice
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -70,10 +75,8 @@ combat_ignore_cond  = {=check_fighting(403:401)}
 [camper@val_sacrifice_guard1_kill]
 path_walk                   = guard1_walk 
 path_look                   = guard1_look
-def_state_campering         = guard
-def_state_campering_fire    = guard_fire
-def_state_moving            = patrol
-def_state_moving_fire       = patrol_fire
+def_state_campering         = threat
+def_state_campering_fire    = threat_fire
 radius                      = 0
 no_retreat                  = true
 on_info                     = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
@@ -87,6 +90,7 @@ combat_ignore_cond          = {=check_fighting(403)}
 anim                = guard
 target              = 401
 on_info             = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
+meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(403)}
 
@@ -97,5 +101,6 @@ combat_ignore_cond  = {=check_fighting(403)}
 anim                = guard
 snd                 = speech
 on_signal           = sound_end | %+val_sacrifice_finish%
+meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(403)}
