@@ -8,7 +8,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_specnaz_bio</bio>
 
 		<team>Svoboda_specnaz</team>
 
@@ -17,8 +17,8 @@
 		<class>mil_Svoboda_specnaz</class>
 		<community>freedom</community>
 
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>80</rank>
+		<reputation>110</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_9</visual>
 		<supplies>
@@ -34,10 +34,10 @@
 
 <!---------------------------SVOBODA ENGINEER----------------------->
 	<specific_character id="mil_Svoboda_engineer" team_default = "1">
-		<name>Шуруп</name>
+		<name>mil_Svoboda_engineer_name</name>
 		<icon x="22" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Известный в Зоне механик. Может из трактора собрать танк. </bio>
+		<bio>mil_Svoboda_engineer_bio</bio>
 
 		<team>Svoboda_specnaz</team>
 
@@ -46,8 +46,8 @@
 		<class>mil_Svoboda_engineer</class>
 		<community>freedom</community>
 
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>91</rank>
+		<reputation>139</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
 		<supplies>
@@ -68,7 +68,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_regular_bio</bio>
 
 		<team>Svoboda_regular</team>
 
@@ -77,8 +77,8 @@
 		<class>mil_Svoboda_regular</class>
 		<community>freedom</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>43</rank>
+		<reputation>74</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
 		<supplies>
@@ -98,7 +98,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_sniper_bio</bio>
 
 		<team>Svoboda_sniper</team>
 
@@ -107,8 +107,8 @@
 		<class>mil_Svoboda_sniper</class>
 		<community>freedom</community>
 
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>56</rank>
+		<reputation>81</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3_1</visual>
 		<supplies>
@@ -124,10 +124,10 @@
 	</specific_character>
 <!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
 	<specific_character id="mil_Svoboda_stukach" team_default = "1">
-		<name>Павлик</name>
+		<name>mil_Svoboda_stukach_name</name>
 		<icon x="30" y="10"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_stukach_bio</bio>
 
 		<team>Svoboda_stukach</team>
 
@@ -136,8 +136,8 @@
 		<class>mil_Svoboda_stukach</class>
 		<community>freedom</community>
 
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>54</rank>
+		<reputation>58</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1</visual>
 		<supplies>
@@ -156,7 +156,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_zoneguard_bio</bio>
 
 		<team>Svoboda_specnaz</team>
 		
@@ -165,8 +165,8 @@
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>91</rank>
+		<reputation>125</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -187,7 +187,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Охранник "Лукаша", лидера группировки "Свобода".</bio>
+		<bio>mil_Svoboda_bodyguard_bio</bio>
 
 		<team>Svoboda_regular</team>
 
@@ -196,8 +196,8 @@
 		<class>mil_Svoboda_bodyguard</class>
 		<community>freedom</community>
 		
-		<rank>80</rank>
-		<reputation>0</reputation>
+		<rank>92</rank>
+		<reputation>101</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -215,18 +215,18 @@
 
 <!---------------------------SVOBODA LEADER---------------------->
 	<specific_character id="mil_Svoboda_leader" team_default = "1">
-		<name>"Лукаш"</name>
+		<name>mil_Svoboda_leader_name</name>
 		<icon x="18" y="10"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Лидер группировки "Свобода".</bio>
+		<bio>mil_Svoboda_leader_bio</bio>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 
 		<class>mil_Svoboda_leader</class>
 		<community>freedom</community>
 		
-		<rank>90</rank>
-		<reputation>-30</reputation>
+		<rank>99</rank>
+		<reputation>136</reputation>
 
 		<visual>actors\svoboda\stalker_sv_leader</visual>
 		<supplies>
@@ -243,10 +243,10 @@
 
 <!---------------------------SVOBODA TRADER----------------------->
 	<specific_character id="mil_Svoboda_trader" team_default = "1">
-		<name>"Скряга"</name>
+		<name>mil_Svoboda_trader_name</name>
 		<icon x="22" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Известен своей жадностью и неуступчивостью, но говорят у него можно достать все что угодно.</bio>
+		<bio>mil_Svoboda_trader_bio</bio>
 
 		<team>Svoboda_master</team>
 		
@@ -255,8 +255,8 @@
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>73</rank>
+		<reputation>96</reputation>
 
 		<visual>actors\svoboda\stalker_sv_balon_1</visual>
 		<supplies>
@@ -273,11 +273,10 @@
 	</specific_character>
 <!---------------------------SVOBODA MASTER MAX----------------------->
 	<specific_character id="mil_Svoboda_master_Max" team_default = "1">
-		<name>"Макс"</name>
+		<name>mil_Svoboda_master_Max_name</name>
 		<icon x="20" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
-		Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_master_Max_bio</bio>
 
 		<team>Svoboda_master</team>
 
@@ -287,8 +286,8 @@
 		<community>freedom</community>
 
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>94</rank>
+		<reputation>145</reputation>
 
 		<visual>actors\svoboda\stalker_sv_max</visual>
 		<supplies>
@@ -310,8 +309,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Мастер группировки "Свобода"
-		Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_master_bio</bio>
 
 		<team>Svoboda_master</team>
 		
@@ -320,8 +318,8 @@
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>92</rank>
+		<reputation>126</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -336,18 +334,18 @@
 	</specific_character>
 <!---------------------------SVOBODA COOK----------------------->
 	<specific_character id="mil_Svoboda_cook" team_default = "1">
-		<name>"Повар"</name>		
+		<name>mil_Svoboda_cook_name</name>		
 		<icon x="22" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Повар группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_cook_bio</bio>
 		
 		<class>mil_Svoboda_cook</class>
 		<community>freedom</community>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>65</rank>
+		<reputation>84</reputation>
 
 		<visual>actors\svoboda\stalker_sv_cook</visual>
 		<supplies>
@@ -377,18 +375,18 @@
 	</specific_character>
 <!---------------------------SVOBODA BLOCKPOST LEADER---------------------->
 	<specific_character id="mil_Svoboda_blockpost_leader" team_default = "1">
-		<name>"Кеп"</name>
+		<name>mil_Svoboda_blockpost_leader_name</name>
 		<icon x="30" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Командир Барьера. Человек, сплотивший вокруг себя людей, готовых гибнуть за общее дело.</bio>
+		<bio>mil_Svoboda_blockpost_leader_bio</bio>
 
     	<team>Svoboda_master</team>
 		
 		<class>mil_Svoboda_blockpost_leader</class>
 		<community>freedom</community>
 
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>96</rank>
+		<reputation>149</reputation>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 
@@ -407,12 +405,11 @@
 	</specific_character>
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
 	<specific_character id="mil_Svoboda_master_Ugrumiy" team_default = "1">
-		<name>"Угрюмый"</name>		
+		<name>mil_Svoboda_master_Ugrumiy_name</name>		
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.
-		Детальная информация отсутствует.</bio>
+		<bio>mil_Svoboda_master_Ugrumiy_bio</bio>
 
 		<team>Svoboda_master</team>
 		
@@ -420,8 +417,8 @@
 		<community>freedom</community>
 
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>84</rank>
+		<reputation>113</reputation>
 
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
 		<supplies>
@@ -446,13 +443,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>mil_Dolg_specnaz_bio</bio>
 
 		<class>mil_Dolg_specnaz</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
-		<reputation>40</reputation>
+		<rank>72</rank>
+		<reputation>96</reputation>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
 
@@ -472,15 +469,15 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>mil_Dolg_specnaz_silence_bio</bio>
 
 		<class>mil_Dolg_specnaz_silence</class>
 		<community>dolg</community>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
 
-		<rank>70</rank>
-		<reputation>40</reputation>
+		<rank>82</rank>
+		<reputation>79</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<supplies>
@@ -494,18 +491,18 @@
 	</specific_character>	
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
 	<specific_character id="mil_Dolg_specnaz_cherep" team_default = "1">
-		<name>"Череп"</name>
+		<name>mil_Dolg_specnaz_cherep_name</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>mil_Dolg_specnaz_cherep_bio</bio>
 
 		<team>Dolg_specnaz</team>
 
 		<class>mil_Dolg_specnaz_cherep</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
-		<reputation>40</reputation>
+		<rank>93</rank>
+		<reputation>135</reputation>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
 
@@ -525,18 +522,17 @@
 <!---------------------------KILLERS PROFILES----------------------->
 <!---------------------------KILLER IHFORMATOR---------------------->
 	<specific_character id="mil_Killer_informator" team_default = "1">
-		<name>Ара</name>
+		<name>mil_Killer_informator_name</name>
 		<icon x="28" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Известный на всю Зону информатор и осведомитель.</bio>
+		<bio>mil_Killer_informator_bio</bio>
 
-		<team>Killer_specnaz</team>
 		
 		<class>mil_Killer_informator</class>
 		<community>killer</community>
 
-		<rank>70</rank>
-		<reputation>-50</reputation>
+		<rank>89</rank>
+		<reputation>-149</reputation>
 
         <snd_config>characters_voice\human_02\\</snd_config>
 
@@ -556,7 +552,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>mil_Killer_specnaz_bio</bio>
 
 		<team>Killer_specnaz</team>
 		
@@ -565,8 +561,8 @@
 
         <snd_config>characters_voice\human_03\killer\</snd_config>
 
-		<rank>70</rank>
-		<reputation>-50</reputation>
+		<rank>74</rank>
+		<reputation>-86</reputation>
 
 		<visual>actors\killer\stalker_ki_antigas</visual>
 		<supplies>
@@ -584,7 +580,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
+		<bio>mil_killer_sniper_bio</bio>
 
 		<team>Killer_sniper</team>
 
@@ -593,8 +589,8 @@
 		<class>mil_killer_sniper</class>
 		<community>killer</community>
 
-		<rank>50</rank>
-		<reputation>-50</reputation>
+		<rank>82</rank>
+		<reputation>-102</reputation>
 
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
@@ -612,7 +608,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>mil_killer_master_bio</bio>
 
 		<team>Killer_master</team>
 
@@ -623,8 +619,8 @@
 		<community>killer</community>
 
 		
-		<rank>90</rank>
-		<reputation>-50</reputation>
+		<rank>93</rank>
+		<reputation>-123</reputation>
 
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
@@ -647,14 +643,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>mil_Stalker_master_bio</bio>
 
 		<class>mil_Stalker_master</class>
 		<community>stalker</community>
 		
 		<rank>95</rank>
-		<reputation>0</reputation>
+		<reputation>19</reputation>
 
         <snd_config>characters_voice\human_03\stalker\</snd_config>
 
@@ -675,13 +670,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>mil_Stalker_veteran_bio</bio>
 
 		<class>mil_Stalker_veteran</class>
 		<community>stalker</community>
 			
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>86</rank>
+		<reputation>-2</reputation>
 
         <snd_config>characters_voice\human_03\stalker\</snd_config>
 
@@ -702,10 +697,10 @@
 <!---------------------------SOME PROFILES----------------------->
 <!---------------------------SVOBODA CRAZY STALKER----------------------->
         <specific_character id="mil_Svoboda_zombi_stalker" team_default = "1">
-                <name>Сумасшедший cталкер группировки "Свобода"</name>
+                <name>mil_Svoboda_zombi_stalker_name</name>
                 <icon x="8" y="0"></icon>
                 <map_icon x="5" y="0"></map_icon>
-                <bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+                <bio>mil_Svoboda_zombi_stalker_bio</bio>
 
 
                 <class>mil_Svoboda_zombi_stalker</class>
@@ -713,8 +708,8 @@
 
                 <snd_config>characters_voice\human_02\zombied\</snd_config>
 
-                <rank>40</rank>
-                <reputation>0</reputation>
+                <rank>56</rank>
+                <reputation>-40</reputation>
 
                 <visual>actors\stalker_zombi\stalker_zombie5</visual>
                 <supplies>
@@ -732,15 +727,15 @@
     <name>GENERATE_NAME_stalker</name>
     <icon x="6" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
-    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+    <bio>mil_Monolit_regular_bio</bio>
 
 	<class>mil_Monolit_regular</class>
     <community>monolith</community>
 
     <snd_config>characters_voice\human_03\monolith\</snd_config>
 
-    <rank>40</rank>
-    <reputation>0</reputation>
+    <rank>34</rank>
+    <reputation>-186</reputation>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
@@ -759,14 +754,14 @@
     <name>GENERATE_NAME_stalker</name>
     <icon x="28" y="8"></icon>
     <map_icon x="3" y="0"></map_icon>
-    <bio>Хранитель группировки "Монолит". Лучше держаться от него подальше. Детальная информация отсутствует.</bio>
+    <bio>mil_Monolit_master_bio</bio>
 
     <class>mil_Monolit_master</class>
     <community>monolith</community>
 
 
-    <rank>90</rank>
-    <reputation>0</reputation>
+    <rank>92</rank>
+    <reputation>-564</reputation>
 
     <panic_threshold>0.0</panic_threshold>
 
