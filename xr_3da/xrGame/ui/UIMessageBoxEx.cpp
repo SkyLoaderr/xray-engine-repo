@@ -46,3 +46,11 @@ void CUIMessageBoxEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NUL
 	}
 	
 }
+
+LPCSTR CUIMessageBoxEx::GetHost(){
+	return m_pMessageBox->GetHost();
+}
+
+LPCSTR CUIMessageBoxEx::GetPassword(){
+	return m_pMessageBox->GetPassword();
+}

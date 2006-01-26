@@ -2,6 +2,7 @@
 #include "UIMessageBox.h"
 #include "UIXmlInit.h"
 #include "UI3tButton.h"
+#include "UIEditBox.h"
 #include "../string_table.h"
 
 CUIMessageBox::CUIMessageBox()
@@ -11,6 +12,11 @@ CUIMessageBox::CUIMessageBox()
 	m_UIButtonCancel	= NULL;
 	m_UIStaticPicture	= NULL;
 	m_UIStaticText		= NULL;
+
+	m_UIEditPass		= NULL;
+	m_UIEditHost		= NULL;
+	m_UIStaticPass		= NULL;
+	m_UIStaticHost		= NULL;
 }
 
 CUIMessageBox::~CUIMessageBox()
@@ -27,6 +33,10 @@ void CUIMessageBox::Clear(){
 	xr_delete(m_UIButtonCancel);
 	xr_delete(m_UIStaticPicture);
 	xr_delete(m_UIStaticText);
+	xr_delete(m_UIEditPass);
+	xr_delete(m_UIEditHost);
+	xr_delete(m_UIStaticPass);
+	xr_delete(m_UIStaticHost);
 }
 
 bool CUIMessageBox::OnMouse(float x, float y, EUIMessages mouse_action)
@@ -50,8 +60,10 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticPicture);
 
 	strconcat								(str,box_template,":message_text");
-	m_UIStaticText							= xr_new<CUIStatic>();AttachChild(m_UIStaticText);
-	xml_init.InitStatic						(uiXml, str, 0, m_UIStaticText);
+	if (uiXml.NavigateToNode(str,0)){
+        m_UIStaticText							= xr_new<CUIStatic>();AttachChild(m_UIStaticText);
+        xml_init.InitStatic						(uiXml, str, 0, m_UIStaticText);
+	}
 
 	strcpy		(str,box_template);
 	xml_init.InitStatic						(uiXml, str, 0, this);
@@ -68,7 +80,14 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 	}else
 	if(0==stricmp(_type,"yes_no_cancel")){
 		m_eMessageBoxStyle	= MESSAGEBOX_YES_NO_CANCEL;
+	}else
+	if(0==stricmp(_type,"direct_ip")){
+		m_eMessageBoxStyle	= MESSAGEBOX_DIRECT_IP;
+	}else
+	if(0==stricmp(_type,"password")){
+		m_eMessageBoxStyle	= MESSAGEBOX_PASSWORD;
 	};
+	
 
 	switch (m_eMessageBoxStyle){
 
@@ -78,6 +97,28 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 			AttachChild							(m_UIButtonYesOk);
 			xml_init.Init3tButton				(uiXml, str, 0, m_UIButtonYesOk);
 		}break;
+
+		case MESSAGEBOX_DIRECT_IP:
+			strconcat							(str,box_template,":cap_host");
+			m_UIStaticHost						= xr_new<CUIStatic>();
+			AttachChild							(m_UIStaticHost);
+			xml_init.InitStatic					(uiXml, str, 0, m_UIStaticHost);
+
+			strconcat							(str,box_template,":edit_host");
+			m_UIEditHost						= xr_new<CUIEditBox>();
+			AttachChild							(m_UIEditHost);
+			xml_init.InitEditBox				(uiXml, str, 0, m_UIEditHost);			
+
+		case MESSAGEBOX_PASSWORD:
+			strconcat							(str,box_template,":cap_password");
+			m_UIStaticPass						= xr_new<CUIStatic>();
+			AttachChild							(m_UIStaticPass);
+			xml_init.InitStatic					(uiXml, str, 0, m_UIStaticPass);
+
+			strconcat							(str,box_template,":edit_password");
+			m_UIEditPass						= xr_new<CUIEditBox>();
+			AttachChild							(m_UIEditPass);
+			xml_init.InitEditBox				(uiXml, str, 0, m_UIEditPass);
 
 		case MESSAGEBOX_YES_NO:{
 			strconcat							(str,box_template,":button_yes");
@@ -121,6 +162,8 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			if(pWnd == m_UIButtonYesOk)
 					GetMessageTarget()->SendMessage(this, MESSAGE_BOX_OK_CLICKED);
 			break;
+		case MESSAGEBOX_DIRECT_IP:
+		case MESSAGEBOX_PASSWORD:
 		case MESSAGEBOX_YES_NO:
 			if(pWnd == m_UIButtonYesOk)
 			{
@@ -148,72 +191,24 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		};
 	};
 	inherited::SendMessage(pWnd, msg, pData);
-	
 }
-/*
-void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
-{
-	m_eMessageBoxStyle = messageBoxStyle;
-
-	float width = GetWidth();
-
-	switch(m_eMessageBoxStyle)
-	{
-	case MESSAGEBOX_OK:
-		m_UIButtonYesOk.Show(true);
-		m_UIButtonYesOk.Enable(true);
-		m_UIButtonYesOk.SetText("OK");
-
-		m_UIButtonYesOk.SetWndRect(width/2 - BUTTON_WIDTH/2, 
-						 m_UIButtonYesOk.GetWndRect().top,
-						 float(BUTTON_WIDTH),50.0f);
-
-		m_UIButtonNo.Show(false);
-		m_UIButtonNo.Enable(false);
-		m_UIButtonCancel.Show(false);
-		m_UIButtonCancel.Enable(false);
-
-		break;
-	case MESSAGEBOX_YES_NO:
-		m_UIButtonYesOk.Show(true);
-		m_UIButtonYesOk.Enable(true);
-		m_UIButtonYesOk.SetText("Yes");
-		
-		m_UIButtonYesOk.SetWndRect(width/4 - BUTTON_WIDTH/2, 
-							 m_UIButtonYesOk.GetWndRect().top,
-							 BUTTON_WIDTH,50);
-				
-
-		m_UIButtonNo.Show(true);
-		m_UIButtonNo.Enable(true);
-		m_UIButtonNo.SetText("No");
-
-
-		m_UIButtonNo.SetWndRect(width/2 + BUTTON_WIDTH/2, 
-							 m_UIButtonNo.GetWndRect().top,
-							 float(BUTTON_WIDTH),50.0f);
-
-		m_UIButtonCancel.Show(false);
-		m_UIButtonCancel.Enable(false);
-		break;
-	case MESSAGEBOX_YES_NO_CANCEL:
-		m_UIButtonYesOk.Show(true);
-		m_UIButtonYesOk.Enable(true);
-		m_UIButtonYesOk.SetText("Yes");
-
-		m_UIButtonNo.Show(true);
-		m_UIButtonNo.Enable(true);
-		m_UIButtonNo.SetText("No");
-
-		m_UIButtonCancel.Show(true);
-		m_UIButtonCancel.Enable(true);
-		m_UIButtonCancel.SetText("Cancel");
-		break;
-	}
-}*/
 
 void CUIMessageBox::SetText(LPCSTR str)
 {
 	m_UIStaticText->SetText(*(CStringTable().translate(str)));
 }
+
+LPCSTR CUIMessageBox::GetHost(){
+	if (m_UIEditHost)
+		return m_UIEditHost->GetText();
+	else return NULL;
+}
+
+LPCSTR CUIMessageBox::GetPassword(){
+	if (m_UIEditPass)
+		return m_UIEditPass->GetText();
+	else return NULL;
+}
+
+
 

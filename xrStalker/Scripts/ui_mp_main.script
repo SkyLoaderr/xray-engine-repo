@@ -81,6 +81,9 @@ function mp_main:InitControls()
 	
 	self.tab = xml:InitTab("tab",self)
 	self:Register(self.tab, "tab")
+	
+	self.message_box = CUIMessageBoxEx()
+	self:Register(self.message_box, "msg_box")	
 end
 
 function mp_main:UpdateControls()
@@ -102,6 +105,9 @@ function mp_main:InitCallBacks()
 	self:AddCallback("check_without_ff",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_without_pb",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_listen_servers",ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)	
+	
+	self:AddCallback("btn_direct_ip",		ui_events.BUTTON_CLICKED,	self.OnBtn_DirectIP,self)
+	
 	-- ui_mm_mp_options	
 	self:AddCallback("spin_game_mode",		ui_events.BUTTON_CLICKED,	self.OnGameModeChange,self)	
 	
@@ -109,9 +115,27 @@ function mp_main:InitCallBacks()
 	-- ui_mm_mp_join
 	self:AddCallback("btn_refresh",			ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
 	self:AddCallback("btn_quick_refresh",	ui_events.BUTTON_CLICKED,	self.OnBtn_RefreshQuick,self)
-	self:AddCallback("btn_server_info",		ui_events.BUTTON_CLICKED,	self.OnBtn_SrvInfo,self)
+	self:AddCallback("btn_server_info",		ui_events.BUTTON_CLICKED,	self.OnBtn_SrvInfo,self)	
 	
-	
+	-- msg_box
+	self:AddCallback("msg_box",				ui_events.MESSAGE_BOX_YES_CLICKED,	self.OnDirectIP_yes,self)
+end
+
+function mp_main:OnBtn_DirectIP()
+--	self.server_list:ShowServerInfo()
+	self.message_box:Init("message_box_direct_ip")
+	self:GetHolder():start_stop_menu(self.message_box,true)
+--	self.message_box:Show();
+end
+
+function mp_main:OnDirectIP_yes()
+
+	if (string.len(self.message_box:GetHost()) ~= 0) then
+		local cmd = "start server(fog_net/deathmatch) client(" .. self.message_box:GetHost() .. "/name=" .. self.player_name:GetText() .. "/psw=" .. self.message_box:GetPassword() .. ")"
+		local console = get_console();	
+		console:execute(cmd)
+	end
+
 end
 
 function mp_main:OnBtn_SrvInfo()

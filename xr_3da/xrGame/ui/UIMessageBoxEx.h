@@ -11,6 +11,10 @@ public:
 			void SetText(LPCSTR text);
 	virtual void Init(LPCSTR xml_template);
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+
+	LPCSTR		 GetHost			();
+	LPCSTR		 GetPassword		();
+
 protected:			
     CUIMessageBox*	m_pMessageBox;
 };

@@ -43,19 +43,15 @@ void CUIWpnParams::SetInfo(const char* wpn_section){
 //	return;
 
 	// RPM
-//	float min = pSettings->r_float("weapon_params_info", "min_rpm");
-//	float max = pSettings->r_float("weapon_params_info", "max_rpm");
 	float val = pSettings->r_float(wpn_section,"rpm");
 
-	val = val > 200 ? pow((val - 200.0f)/720.0f, 2.0f)*100.0f + 15 : pow(val,0.5f);
+	val = val > 200 ? pow((val - 200.0f)/720.0f, 2.0f)*100.0f + 15 : val/14;
 	if (val > 100)
 		val = 100;
 
 	m_progressRPM.SetProgressPos(static_cast<s16>(iFloor(val)));
 
-	// damage
-//	min = pSettings->r_float("weapon_params_info","min_damage");
-//	max = pSettings->r_float("weapon_params_info","max_damage");
+	// DAMAGE
 	val = pSettings->r_float(wpn_section,"hit_power");
 
 	val/=3;
@@ -64,13 +60,24 @@ void CUIWpnParams::SetInfo(const char* wpn_section){
 	
 	m_progressDamage.SetProgressPos(static_cast<s16>(iFloor(val)));
 
-	// accuracy
-	float min = 0.1f; //pSettings->r_float("weapon_params_info","min_dispersion");
-	float max = 2.0f; //pSettings->r_float("weapon_params_info","max_dispersion");
-	val = pSettings->r_float(wpn_section,"fire_dispersion_base");
-	float r = max - min;
-	m_progressAccuracy.SetProgressPos(static_cast<s16>(iFloor(((max - val)/r)*100)));
+	// ACCURACY
+	float cam_dispersion_frac = pSettings->r_float(wpn_section,"cam_dispertion_frac");
+	float fire_dispersion_base = pSettings->r_float(wpn_section,"fire_dispersion_base");
+	float cam_dispersion_inc = pSettings->r_float(wpn_section,"cam_dispersion_inc");
+	float cam_dispersion = pSettings->r_float(wpn_section,"cam_dispersion");
+	float cam_step_angle_horz = pSettings->r_float(wpn_section,"cam_step_angle_horz");
+	char ammo[128];
+	_GetItem(pSettings->r_string(wpn_section,"ammo_class"), 0, ammo);
+	float k_disp =  float(atof(ammo));
 
+    val = 100.0f*pow(1.0f - cam_dispersion_frac, 1.5f) + 0.1f/pow(fire_dispersion_base*k_disp,2.0f) 
+		- 30.0f*pow(fire_dispersion_base*k_disp,0.5f) + 50.0f*(cam_dispersion_inc + 0.5f*cam_dispersion 
+		+ cam_dispersion*pow(cam_step_angle_horz,2.0f));
+	m_progressAccuracy.SetProgressPos(static_cast<s16>(iFloor(val)));
+
+
+
+	// HANDLING
 	float control_inertion_factor;
 	if (pSettings->line_exist(wpn_section, "control_inertion_factor"))
 		control_inertion_factor = pSettings->r_float(wpn_section,"control_inertion_factor");
@@ -80,11 +87,11 @@ void CUIWpnParams::SetInfo(const char* wpn_section){
 	float PDM_disp_base = pSettings->r_float(wpn_section,"PDM_disp_base");
 	float PDM_disp_vel_factor = pSettings->r_float(wpn_section,"PDM_disp_vel_factor");	
 
-	if (control_inertion_factor < 2 && PDM_disp_base < 2){
-		val = (1 - pow(PDM_disp_vel_factor - 0.55f, 2.0f) + pow(2 - control_inertion_factor,2))*50;
+	if (control_inertion_factor < 2 && PDM_disp_base < 1.5){
+		val = (1.2f - pow(PDM_disp_vel_factor - 0.5f, 2.0f) + pow(2.0f - control_inertion_factor,2.0f))*50.0f;
 	}
 	else{
-		val = (25 - PDM_disp_base*control_inertion_factor);
+		val = 15.0f - PDM_disp_base + control_inertion_factor*2.0f;
 	}
 
 	if (val > 100)

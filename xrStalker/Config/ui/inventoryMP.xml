@@ -67,7 +67,7 @@
 			<text>Damage</text>
 		</cap_damage>
 		<cap_rpm x="142" y="39" width="121" height="8">
-			<text>RPM</text>
+			<text>Rate of Fire</text>
 		</cap_rpm>
 		
 		<progress_accuracy x="0" y="24" width="121" height="8" length="121">

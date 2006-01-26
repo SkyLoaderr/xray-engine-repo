@@ -262,7 +262,9 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextC
 
 	shared_str text = xml_doc.Read(path, index, NULL);
 	CStringTable st;
-	pWnd->SetText(*st.translate(*text));
+	if (!!text){
+        pWnd->SetText(*st.translate(*text));
+	}
 
 	return true;
 }

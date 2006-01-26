@@ -173,6 +173,11 @@
 			</button>		
 		</radio_tab_network_connection>
 		
+		<btn_direct_ip x="400" y="40" width="111" height="29">
+			<text align="c" font="letterica16" r="188" g="153" b="123">Direct IP</text>
+			<texture>ui_button_ordinary</texture>
+		</btn_direct_ip>
+		
 		<check_empty x="570" y="40" width="80" height="22">
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_empty</text>
 		</check_empty>

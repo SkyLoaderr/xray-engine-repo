@@ -5,6 +5,7 @@
 #include "../script_export_space.h"
 
 class CUI3tButton;
+class CUIEditBox;
 
 class CUIMessageBox: public CUIStatic
 {
@@ -15,12 +16,14 @@ public:
 	virtual		~CUIMessageBox		();
 
 	//разновидности MessageBox
-	typedef enum {MESSAGEBOX_OK, MESSAGEBOX_YES_NO, MESSAGEBOX_YES_NO_CANCEL } 
+	typedef enum {MESSAGEBOX_OK, MESSAGEBOX_YES_NO, MESSAGEBOX_YES_NO_CANCEL, MESSAGEBOX_DIRECT_IP, MESSAGEBOX_PASSWORD } 
 				E_MESSAGEBOX_STYLE;
 
 			void Init				(LPCSTR box_template);
-			void Clear();
+			void Clear				();
 	virtual void SetText			(LPCSTR str);
+	LPCSTR		 GetHost			();
+	LPCSTR		 GetPassword		();
 
 	virtual bool OnMouse			(float x, float y, EUIMessages mouse_action);
 	virtual void SendMessage		(CUIWindow *pWnd, s16 msg, void *pData);
@@ -33,6 +36,10 @@ protected:
 
 	CUIStatic*	m_UIStaticPicture;
 	CUIStatic*	m_UIStaticText;
+	CUIStatic*	m_UIStaticHost;
+	CUIStatic*	m_UIStaticPass;
+	CUIEditBox* m_UIEditHost;
+	CUIEditBox* m_UIEditPass;
 	 
 	E_MESSAGEBOX_STYLE m_eMessageBoxStyle;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
