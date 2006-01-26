@@ -658,7 +658,7 @@ end
 function parse_key_value( s )
     local t = {}
 	if s == nil then
-		return t
+		return nil
 	end
     local key, nam = nil, nil
     for name in string.gfind( s, "([%w_\\]+)%p*" ) do
