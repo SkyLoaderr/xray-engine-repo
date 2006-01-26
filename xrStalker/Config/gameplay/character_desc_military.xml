@@ -239,6 +239,8 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>tm_freedom_dialog</actor_dialog>
+		<actor_dialog>tm_freedom_reward</actor_dialog>
 	</specific_character>	
 
 <!---------------------------SVOBODA TRADER----------------------->
