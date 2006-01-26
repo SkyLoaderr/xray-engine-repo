@@ -9,6 +9,9 @@
     <string id="val_escort_captive_dialog_1111">
         <text>Никто не знает. Слышал в разговоре бандитов, что у Борова, ихнего лидера, есть ключ от входа в лабораторию. Но к Борову пробраться вообще нереально - в охранниках у него очень серьезные ребята.</text>
     </string>
+    <string id="val_escort_captive_dialog_11111">
+        <text>Понятно.</text>
+    </string>
     <string id="val_escort_captive_dialog_112">
         <text>Постараюсь помочь вашему напарнику. Расскажи где его держат?</text>
     </string>
