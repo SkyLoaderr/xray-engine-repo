@@ -240,7 +240,7 @@ void CCar::net_Save(NET_Packet& P)
 
 BOOL CCar::net_SaveRelevant()
 {
-	return TRUE;
+	return !m_explosion_flags.test(CExplosive::flExploding)&&!CExplosive::IsExploded()&&!CPHDestroyable::Destroyed()&&!b_exploded;
 }
 
 void CCar::SaveNetState(NET_Packet& P)
@@ -550,6 +550,10 @@ void CCar::ApplyDamage(u16 level)
 		case 1: m_damage_particles.Play1(this);break;
 		case 2: 
 			{
+				if(!CDelayedActionFuse::isActive())
+				{
+					CDelayedActionFuse::CheckCondition(GetfHealth());
+				}
 				m_damage_particles.Play2(this);
 			}
 											   break;
