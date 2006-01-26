@@ -59,6 +59,8 @@
 </string>
 
 
+
+
 <!-- Agroprom-->
 <string id="agr_krot_name">
 	<text>Крот</text>
@@ -143,3 +145,211 @@
 <string id="rad_ecolog_guard_name">
 	<text>Научный сотрудник</text>
 </string>
+
+;------------------Military----------------------------------
+;---------Specnaz----------
+<string id="mil_Svoboda_specnaz_bio">
+	<text>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+;----------Engeneer--------
+<string id="mil_Svoboda_engineer_name">
+	<text>Шуруп</text>
+</string>
+<string id="mil_Svoboda_engineer_bio">
+	<text>Известный в Зоне механик. Может из трактора собрать танк.</text>
+</string>
+
+;----------Regular-----------
+<string id="mil_Svoboda_regular_bio">
+	<text>Сталкер группировки "Свобода". Детальная информация отсутствует.</text>
+</string>
+
+;----------Sniper-----------
+<string id="mil_Svoboda_sniper_bio">
+	<text>Снайпер группировки "Свобода". Детальная информация отсутствует.</text>
+</string>
+
+;----------Стукач----------
+<string id="mil_Svoboda_stukach_name">
+	<text>Павлик</text>
+</string>
+<string id="mil_Svoboda_stukach_bio">
+	<text>Сталкер группировки "Свобода". Детальная информация отсутствует.</text>
+</string>
+
+;-----------Zoneguard-----------
+<string id="mil_Svoboda_zoneguard_bio">
+	<text>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+;-----------Bodyguard---------------
+<string id="mil_Svoboda_bodyguard_bio">
+	<text>Охранник "Лукаша", лидера группировки "Свобода".</text>
+</string>
+
+;----------Leader----------------
+<string id="mil_Svoboda_leader_name">
+	<text>Лукаш</text>
+</string>
+<string id="mil_Svoboda_leader_bio">
+	<text>Лидер группировки "Свобода".</text>
+</string>
+
+;----------Trader-------------
+<string id="mil_Svoboda_trader_name">
+	<text>Скряга</text>
+</string>
+<string id="mil_Svoboda_trader_bio">
+	<text>Известен своей жадностью и неуступчивостью, но говорят у него можно достать все что угодно.</text>
+</string>
+
+;----------Max--------------
+<string id="mil_Svoboda_master_Max_name">
+	<text>Макс</text>
+</string>
+<string id="mil_Svoboda_master_Max_bio">
+	<text>Хранитель группировки "Свобода". Фанатично предан группировке. Отлично экипирован и очень опасен.Детальная информация отсутствует.</text>
+</string>
+
+;---------Master-----------
+<string id="mil_Svoboda_master_bio">
+	<text>Мастер группировки "Свобода".Детальная информация отсутствует.</text>
+</string>
+
+;--------Cook------------
+<string id="mil_Svoboda_cook_name">
+	<text>Повар</text>
+</string>
+<string id="mil_Svoboda_cook_bio">
+	<text>Повар группировки "Свобода".Пьяница и дебошир, но готовит отлично.</text>
+</string>
+
+;----------Kep-------------
+<string id="mil_Svoboda_blockpost_leader_name">
+	<text>Кеп</text>
+</string>
+<string id="mil_Svoboda_blockpost_leader_bio">
+	<text>Сталкер группировки "Свобода". Командир Барьера. Человек, сплотивший вокруг себя людей, готовых гибнуть за общее дело.</text>
+</string>
+
+;----------Ugrumii-----------
+<string id="mil_Svoboda_master_Ugrumiy_name">
+	<text>Угрюмый</text>
+</string>
+<string id="mil_Svoboda_master_Ugrumiy_bio">
+	<text>Хранитель группировки "Свобода".Отлично экипирован и очень опасен.Детальная информация отсутствует.</text>
+</string>
+
+;----------Dolg Specnaz--------
+<string id="mil_Dolg_specnaz_bio">
+	<text>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+;--------Dolg Silence----------
+<string id="mil_Dolg_specnaz_silence_bio">
+	<text>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+;---------Cherep-------------
+<string id="mil_Dolg_specnaz_cherep_name">
+	<text>Череп</text>
+</string>
+<string id="mil_Dolg_specnaz_cherep_bio">
+	<text>Командир отряда спецназа группировки "Долг". Обычно хорошо экипирован.</text>
+</string>
+
+
+;--------Informator-----------
+<string id="mil_Killer_informator_name">
+	<text>Ара</text>
+</string>
+<string id="mil_Killer_informator_bio">
+	<text>Известный на всю Зону информатор и осведомитель.</text>
+</string>
+
+;--------Killer Specnaz-----------
+<string id="mil_Killer_specnaz_bio">
+	<text>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</text>
+</string>
+
+;---------Killer Sniper-----------
+<string id="mil_killer_sniper_bio">
+	<text>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</text>
+</string>
+
+;---------Killer Master-----------
+<string id="mil_killer_master_bio">
+	<text>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</text>
+</string>
+
+;---------Stalker Master----------
+<string id="mil_Stalker_master_bio">
+	<text>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</text>
+</string>
+
+;---------Stalker Veteran------------
+<string id="mil_Stalker_veteran_bio">
+	<text>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+;--------Crazy--------------
+<string id="mil_Svoboda_zombi_stalker_name">
+	<text>Сумасшедший cталкер группировки "Свобода"</text>
+</string>
+<string id="mil_Svoboda_zombi_stalker_bio">
+	<text>Сталкер группировки "Свобода". Детальная информация отсутствует.</text>
+</string>
+
+;---------Monolith regular------------
+<string id="mil_Monolit_regular_bio">
+	<text>Сталкер группировки "Монолит". Детальная информация отсутствует.</text>
+</string>
+
+;---------Monolith Master------------
+<string id="mil_Monolit_master_bio">
+	<text>Хранитель группировки "Монолит". Лучше держаться от него подальше. Детальная информация отсутствует.</text>
+</string>
+
+
+;----------STANCIA------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
