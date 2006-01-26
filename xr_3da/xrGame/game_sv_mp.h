@@ -52,6 +52,12 @@ protected:
 	virtual		void				Set_RankUp_Allowed		(bool RUA) {m_bRankUp_Allowed = RUA;};
 
 	virtual		void				UpdatePlayersMoney		();
+
+	BOOL		m_bSpectator_FreeFly	;
+	BOOL		m_bSpectator_FirstEye	;
+	BOOL		m_bSpectator_LookAt		;
+	BOOL		m_bSpectator_FreeLook	;
+	BOOL		m_bSpectator_TeamCamera	;
 	
 protected:
 
@@ -117,6 +123,10 @@ public:
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
 	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
 	virtual		void				SetPlayersDefItems		(game_PlayerState* ps);
+
+	virtual		void				ReadOptions				(shared_str &options);
+	virtual		void				ConsoleCommands_Create	();
+	virtual		void				ConsoleCommands_Clear	();
     
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

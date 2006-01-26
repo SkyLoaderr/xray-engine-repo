@@ -21,6 +21,7 @@
 #include "Inventory.h"
 #include "huditem.h"
 #include "clsid_game.h"
+#include "game_cl_mp.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -150,7 +151,21 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 		}break;
 	case kWPN_ZOOM:
 		{
+			game_cl_mp* pMPGame = smart_cast<game_cl_mp*> (&Game());
+			if (!pMPGame) break;
+			game_PlayerState* PS = Game().local_player;
+			if (!PS || PS->GameID != ID()) break;
+
 			EActorCameras new_camera = EActorCameras((cam_active+1)%eacMaxCam);
+			
+			if (!PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR))
+			{
+				while (!pMPGame->Is_Spectator_Camera_Allowed(new_camera) && new_camera != eacFreeFly)
+				{
+					new_camera = EActorCameras((new_camera+1)%eacMaxCam);
+				}
+			};
+			
 			if (new_camera == eacFreeFly)
 			{
 				cam_Set			(eacFreeFly);	
@@ -158,7 +173,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 			}
 			else
 			{
-				SelectNextPlayerToLook();
+				if (!m_pActorToLookAt) SelectNextPlayerToLook();
 				if (!m_pActorToLookAt)
 					cam_Set			(eacFreeFly);	
 				else
@@ -183,6 +198,9 @@ void CSpectator::IR_OnKeyboardRelease(int cmd)
 void CSpectator::IR_OnKeyboardHold(int cmd)
 {
 	if (Remote())		return;
+
+	game_cl_mp* pMPGame = smart_cast<game_cl_mp*> (&Game());
+	game_PlayerState* PS = Game().local_player;
 
 	if ((cam_active==eacFreeFly)||(cam_active==eacFreeLook)){
 		CCameraBase* C	= cameras	[cam_active];
@@ -213,7 +231,8 @@ void CSpectator::IR_OnKeyboardHold(int cmd)
 			vmove.mad( right, -Device.fTimeDelta*Accel_mul );
 			}break;
 		}
-		XFORM().c.add( vmove );
+		if (cam_active != eacFreeFly || (pMPGame->Is_Spectator_Camera_Allowed(eacFreeFly) || (PS && PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR))))
+			XFORM().c.add( vmove );
 	}
 }
 
@@ -381,6 +400,8 @@ void			CSpectator::SelectNextPlayerToLook	()
 	if (!PS) return;
 	m_pActorToLookAt = NULL;
 
+	game_cl_mp* pMPGame = smart_cast<game_cl_mp*> (&Game());
+
 	game_cl_GameState::PLAYERS_MAP_IT it = Game().players.begin();
 	u16 PPCount = 0;
 	CActor*	PossiblePlayers[32];
@@ -388,7 +409,10 @@ void			CSpectator::SelectNextPlayerToLook	()
 	{
 		game_PlayerState* ps = it->second;
 		if (!ps || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps==PS) continue;
-		if (ps->team != PS->team && !PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
+		if (pMPGame && pMPGame->Is_Spectator_TeamCamera_Allowed())
+		{
+			if (ps->team != PS->team && !PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
+		};
 		u16 id = ps->GameID;
 		CObject* pObject = Level().Objects.net_Find(id);
 		if (!pObject) continue;

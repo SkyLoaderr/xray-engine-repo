@@ -20,6 +20,7 @@
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
 
+
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
@@ -45,6 +46,13 @@ game_cl_mp::game_cl_mp()
 	m_aMessageMenus.clear();
 
 	m_bSpectatorSelected = FALSE;
+	//-------------------------------------
+	m_u8SpectatorModes		= 0xff;
+	m_bSpectator_FreeFly	= true;
+	m_bSpectator_FirstEye	= true;
+	m_bSpectator_LookAt		= true;
+	m_bSpectator_FreeLook	= true;
+	m_bSpectator_TeamCamera	= true;
 };
 
 game_cl_mp::~game_cl_mp()
@@ -794,7 +802,30 @@ void	game_cl_mp::net_import_state		(NET_Packet& P)
 		if (OldTeam != local_player->team)	OnTeamChanged();
 		if (OldRank != local_player->rank)	OnRankChanged();
 	};
+	//-------------------------------------------------------------
+	m_u8SpectatorModes = P.r_u8();
+	
+	m_bSpectator_FreeFly	= (m_u8SpectatorModes & (1<<CSpectator::eacFreeFly	)) != 0;
+	m_bSpectator_FirstEye	= (m_u8SpectatorModes & (1<<CSpectator::eacFirstEye	)) != 0;
+	m_bSpectator_LookAt		= (m_u8SpectatorModes & (1<<CSpectator::eacLookAt	)) != 0;
+	m_bSpectator_FreeLook	= (m_u8SpectatorModes & (1<<CSpectator::eacFreeLook	)) != 0;
+	m_bSpectator_TeamCamera = (m_u8SpectatorModes & (1<<CSpectator::eacMaxCam	)) != 0;
 }
+
+bool	game_cl_mp::Is_Spectator_Camera_Allowed			(CSpectator::EActorCameras Camera)
+{
+	/*
+	switch (Camera)
+	{
+	case CSpectator::eacFreeFly		 : return m_bSpectator_FreeFly	;
+	case CSpectator::eacFirstEye	 : return m_bSpectator_FirstEye	;
+	case CSpectator::eacLookAt		 : return m_bSpectator_LookAt	;
+	case CSpectator::eacFreeLook	 : return m_bSpectator_FreeLook	;	
+	}
+	return false;
+	*/
+	return m_u8SpectatorModes & (1<<Camera);
+};
 
 void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 {

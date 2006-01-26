@@ -5,6 +5,7 @@
 #include "game_cl_mp_snd_messages.h"
 #include "../Sound.h"
 #include "ui/UISpeechMenu.h"
+#include "Spectator.h"
 
 class CUISpeechMenu;
 class CUIMessageBoxEx;
@@ -141,6 +142,13 @@ protected:
 	virtual		void				PlaySndMessage			(u32 ID);	
 	virtual		void				UpdateSndMessages		();
 
+	u8			m_u8SpectatorModes;
+	bool		m_bSpectator_FreeFly;
+	bool		m_bSpectator_FirstEye;
+	bool		m_bSpectator_LookAt;
+	bool		m_bSpectator_FreeLook;
+	bool		m_bSpectator_TeamCamera;
+
 public:
 									game_cl_mp();
 	virtual							~game_cl_mp();
@@ -194,6 +202,9 @@ public:
 
 	virtual		u8					GetTeamCount			() { return 0; };
 	virtual		s16					ModifyTeam				(s16 Team)	{return Team;};
+
+	virtual		bool				Is_Spectator_TeamCamera_Allowed () {return m_bSpectator_TeamCamera;};
+	virtual		bool				Is_Spectator_Camera_Allowed			(CSpectator::EActorCameras Camera);
 	
 //-------------------------------------------------------------------------------------------------
 #include "game_cl_mp_messages_menu.h"

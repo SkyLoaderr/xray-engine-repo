@@ -12,6 +12,7 @@
 #include "../igame_persistent.h"
 #include "date_time.h"
 #include "game_cl_base.h"
+#include "Spectator.h"
 
 u32		g_dwMaxCorpses = 10;
 
@@ -21,6 +22,12 @@ game_sv_mp::game_sv_mp() :inherited()
 	//------------------------------------------------------
 //	g_pGamePersistent->Environment.SetWeather("mp_weather");
 	m_aRanks.clear();	
+	//------------------------------------------------------
+	m_bSpectator_FreeFly	= TRUE;
+	m_bSpectator_FirstEye	= TRUE;
+	m_bSpectator_LookAt		= TRUE;
+	m_bSpectator_FreeLook	= TRUE;
+	m_bSpectator_TeamCamera	= TRUE;
 }
 
 void	game_sv_mp::Update	()
@@ -223,6 +230,15 @@ void game_sv_mp::Create (shared_str &options)
 void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
+	//-------------------------------------
+	u8 SpectatorModes = 0;
+	SpectatorModes |= m_bSpectator_FreeFly	  ? (1<<CSpectator::eacFreeFly	) : 0;
+	SpectatorModes |= m_bSpectator_FirstEye	  ? (1<<CSpectator::eacFirstEye	) : 0;
+	SpectatorModes |= m_bSpectator_LookAt	  ? (1<<CSpectator::eacLookAt	) : 0;
+	SpectatorModes |= m_bSpectator_FreeLook	  ? (1<<CSpectator::eacFreeLook	) : 0;
+	SpectatorModes |= m_bSpectator_TeamCamera ? (1<<CSpectator::eacMaxCam	) : 0;	
+
+	P.w_u8	(SpectatorModes);
 };
 
 void	game_sv_mp::RespawnPlayer			(ClientID id_who, bool NoSpectator)
@@ -1109,4 +1125,43 @@ void	game_sv_mp::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
 	ps->money_for_round = s32(TotalMoney);
 	//---------------------------------------
 	Game().m_WeaponUsageStatistic.OnPlayerAddMoney(ps, MoneyAmount);
+};
+//---------------------------------------------------------------------
+void	game_sv_mp::ReadOptions				(shared_str &options)
+{
+	inherited::ReadOptions(options);	
+	u8 SpectatorModes = u8(get_option_i(*options,"spectr",31) & 0x00ff);
+
+	m_bSpectator_FreeFly	= (SpectatorModes & (1<<CSpectator::eacFreeFly	)) != 0;
+	m_bSpectator_FirstEye	= (SpectatorModes & (1<<CSpectator::eacFirstEye	)) != 0;
+	m_bSpectator_LookAt		= (SpectatorModes & (1<<CSpectator::eacLookAt	)) != 0;
+	m_bSpectator_FreeLook	= (SpectatorModes & (1<<CSpectator::eacFreeLook	)) != 0;
+	m_bSpectator_TeamCamera = (SpectatorModes & (1<<CSpectator::eacMaxCam	)) != 0;
+};
+
+static bool g_bConsoleCommandsCreated_MP = false;
+void game_sv_mp::ConsoleCommands_Create	()
+{
+	inherited::ConsoleCommands_Create();
+	//-------------------------------------
+	string1024 Cmnd;
+	//-------------------------------------	
+	CMD_ADD(CCC_SV_Int,"sv_spectr_freefly"		,	(int*)&m_bSpectator_FreeFly		, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_spectr_firsteye"		,	(int*)&m_bSpectator_FirstEye	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_spectr_lookat"		,	(int*)&m_bSpectator_LookAt		, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_spectr_freelook"		,	(int*)&m_bSpectator_FreeLook	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_spectr_teamcamera"	,	(int*)&m_bSpectator_TeamCamera	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);	
+	//-------------------------------------
+	g_bConsoleCommandsCreated_MP = true;
+};
+
+void game_sv_mp::ConsoleCommands_Clear	()
+{
+	inherited::ConsoleCommands_Clear();
+	//-----------------------------------
+	CMD_CLEAR("sv_spectr_freefly"	);
+	CMD_CLEAR("sv_spectr_firsteye"	);
+	CMD_CLEAR("sv_spectr_lookat"	);
+	CMD_CLEAR("sv_spectr_freelook"	);
+	CMD_CLEAR("sv_spectr_teamcamera");	
 };

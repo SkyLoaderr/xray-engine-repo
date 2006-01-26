@@ -19,11 +19,12 @@ class CSpectator:
 private:
 	typedef CGameObject		inherited;
 protected:
+public:
 	enum EActorCameras {
 		eacFreeFly		= 0,
-		eacFirstEye,
-		eacLookAt,
-		eacFreeLook,
+		eacFirstEye		,
+		eacLookAt		,
+		eacFreeLook		,
 		eacMaxCam
 	};
 private:
