@@ -47,23 +47,23 @@ void CStateMonsterFindEnemyRunAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterFindEnemyRunAbstract::execute()
 {
-	object->set_action							(ACT_RUN);
+	object->set_action						(ACT_RUN);
 	object->anim().accel_activate			(eAT_Aggressive);
-	object->anim().accel_set_braking			(false);
+	object->anim().accel_set_braking		(false);
 	object->path().set_target_point			(target_point, target_vertex);
-	object->path().set_rebuild_time			(object->get_attack_rebuild_time());
+	object->path().set_rebuild_time			(0);
 	object->path().set_use_covers			();
 	object->path().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 	object->path().set_try_min_time			(false);
-	object->set_state_sound						(MonsterSound::eMonsterSoundAggressive);
+	object->set_state_sound					(MonsterSound::eMonsterSoundAggressive);
 }
 
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterFindEnemyRunAbstract::check_completion()
 {	
-	float dist = object->Position().distance_to(target_point);
+	if ((object->ai_location().level_vertex_id() == target_vertex) && 
+		!object->control().path_builder().is_moving_on_path()) return true;
 
-	if (dist > 1.5f) return false;
-	return true;
+	return false;
 }
 

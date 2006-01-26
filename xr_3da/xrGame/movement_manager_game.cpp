@@ -21,7 +21,7 @@
 #include "custommonster.h"
 #include "level_path_builder.h"
 #include "detail_path_builder.h"
-#include "movement_manager_impl.h"
+#include "mt_config.h"
 
 void CMovementManager::process_game_path()
 {

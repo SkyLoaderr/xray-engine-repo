@@ -22,6 +22,8 @@
 #include "level_path_builder.h"
 #include "detail_path_builder.h"
 #include "profiler.h"
+#include "mt_config.h"
+//#include "custommonster.h"
 
 using namespace MovementManager;
 
@@ -344,3 +346,9 @@ void CMovementManager::on_restrictions_change	()
 	level_path_builder().remove		();
 	detail_path_builder().remove	();
 }
+
+bool CMovementManager::can_use_distributed_compuations(u32 option) const
+{
+	return	(!m_build_at_once && g_mt_config.test(option) && !object().getDestroy());
+}
+

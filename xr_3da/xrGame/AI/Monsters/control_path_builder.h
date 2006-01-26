@@ -51,6 +51,7 @@ public:
 	virtual	void	on_travel_point_change	(const u32 &previous_travel_point_index);
 	virtual void	on_build_path			();
 	virtual void	on_selector_failed		();
+	virtual	bool	can_use_distributed_compuations (u32 option) const;
 
 			// services
 			bool	is_path_end				(float dist_to_end);

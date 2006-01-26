@@ -10,6 +10,9 @@
 #include "../../ai_space.h"
 #include "../../movement_manager_space.h"
 #include "../../level_path_manager.h"
+#include "../../actor.h"
+#include "../../Actor_Memory.h"
+#include "../../visual_memory_manager.h"
 
 #ifdef DEBUG
 extern bool show_restrictions(CRestrictedObject *object);
@@ -286,4 +289,9 @@ void CControlPathBuilder::make_inactual()
 	enable_movement(!enabled());
 	// switch twice
 	enable_movement(!enabled());
+}
+bool CControlPathBuilder::can_use_distributed_compuations (u32 option) const
+{	
+	if (Actor()->memory().visual().visible_right_now(inherited_com::m_object)) return false;
+	return inherited::can_use_distributed_compuations(option);
 }

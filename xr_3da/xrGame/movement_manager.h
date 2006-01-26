@@ -243,7 +243,7 @@ public:
 			bool	distance_to_destination_greater	(const float &distance_to_check) const;
 
 	IC		bool	wait_for_distributed_computation			() const;
-	IC		bool	can_use_distributed_compuations				(u32 option) const;
+	virtual	bool	can_use_distributed_compuations				(u32 option) const;
 			
 			void	clear_path				();
 
