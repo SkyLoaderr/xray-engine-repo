@@ -9,7 +9,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_borov_bio</bio>
 
-		<class>val_bandit_veteran</class>
+		<class>val_bandit_borov</class>
 		<community>bandit</community>
 		
 		<rank>60</rank>

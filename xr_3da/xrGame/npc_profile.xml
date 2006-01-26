@@ -162,7 +162,7 @@
 <!-- Darkvalley -->
 	<!-- Bandits -->	
 	<character id="val_bandit_borov">
-		<class>val_bandit_veteran</class>
+		<class>val_bandit_borov</class>
 		<specific_character>val_bandit_borov</specific_character>
 	</character>
 	<character id="val_bandit_novice">
