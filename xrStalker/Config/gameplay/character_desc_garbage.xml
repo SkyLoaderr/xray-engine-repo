@@ -3,10 +3,10 @@
 <xml>
 
 <specific_character id="gar_seriy" team_default = "1">
-		<name>Сталкер Серый</name>
+		<name>gar_seryi_name</name>
 		<icon x="26" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Сталкер с грязным лицом и не менее грязной биографией.</bio>
+		<bio>gar_seryi_bio</bio>
 
 		<class>gar_seriy</class>
 		<community>stalker</community>
@@ -32,10 +32,10 @@
 	</specific_character>	
 	
 	<specific_character id="gar_dram_novice" team_default = "1">
-		<name>Юрик</name>
+		<name>gar_dram_novice_name</name>
 		<icon x="20" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Сталкер новичок. Делает первые шаги в Зоне.</bio>
+		<bio>gar_dram_novice_bio</bio>
 
 		<class>gar_dram_novice</class>
 		<community>stalker</community>
@@ -62,7 +62,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>gar_newbie_bio</bio>
 
 		<class>gar_newbie_in_tonnel</class>
 		<community>stranger</community>
@@ -85,10 +85,10 @@
 	</specific_character>
 	
 	<specific_character id="gar_hellcar" team_default = "1">
-		<name>Сталкер Бес</name>
+		<name>gar_hellcar_name</name>
 		<icon x="16" y="12"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Бежал в Зону, прячась от правоохранительных органов. В одиночку старается поддерживать порядок в Зоне, так, как он себе его представляет. Борец с беспределом. Жесток, но справедлив.</bio>
+		<bio>gar_hellcar_bio</bio>
 
 		<class>gar_hellcar</class>
 		<community>stalker</community>
@@ -122,7 +122,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 
 		
 		<class>gar_bandit_novice_wounded</class>
@@ -146,10 +146,10 @@
 	</specific_character>
 	
 	<specific_character id="gar_bandit_leader" team_default = "1">
-		<name>Вася "Кабан"</name>
+		<name>gar_bandit_leader_name</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Пользуется определенным авторитетом у бандитов в Зоне. Подельник Борова.</bio>
+		<bio>gar_bandit_leader_bio</bio>
 		
 		<class>gar_bandit_leader</class>
 		<community>bandit</community>
@@ -178,7 +178,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 	
 		<class>gar_bandit_novice</class>
 		<community>bandit</community>
@@ -205,7 +205,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>gar_bandit_novice</class>
 		<community>bandit</community>
@@ -234,7 +234,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>gar_bandit_novice</class>
 		<community>bandit</community>
@@ -264,7 +264,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 	
 		<class>gar_bandit_general</class>
 		<community>bandit</community>
@@ -294,7 +294,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>gar_bandit_general</class>
 		<community>bandit</community>
@@ -324,7 +324,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 				
 		<class>gar_bandit_general</class>
 		<community>bandit</community>
@@ -359,7 +359,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>gar_stalker_regular_bio</bio>
 
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
@@ -391,7 +391,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>gar_stalker_regular_bio</bio>
 
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
@@ -422,7 +422,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>gar_stalker_regular_bio</bio>
 
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
@@ -454,7 +454,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>gar_stalker_regular_bio</bio>
 
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
@@ -485,7 +485,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>gar_stalker_regular_bio</bio>
 
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
@@ -518,7 +518,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 
 		<class>gar_wounded_bandit</class>
 		<community>freedom</community>
@@ -546,7 +546,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>gar_dolg_blokpost_bio</bio>
 
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community>
@@ -578,7 +578,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>gar_dolg_blokpost_bio</bio>
 
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community>
@@ -610,7 +610,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>gar_dolg_blokpost_bio</bio>
 		
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community>
@@ -639,10 +639,10 @@
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_commander" team_default = "1">
-		<name>Хантер</name>
+		<name>gar_dolg_blokpost_leader_name</name>
 		<icon x="18" y="12"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Офицер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>gar_dolg_blokpost_leader_bio</bio>
 		
 		<class>gar_dolg_blokpost_commander</class>
 		<community>dolg</community>

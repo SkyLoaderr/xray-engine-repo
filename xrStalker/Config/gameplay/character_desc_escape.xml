@@ -50,10 +50,10 @@
 	</specific_character>
 
 	<specific_character id="esc_wolf" team_default = "1">
-		<name>Сталкер "Волк"</name>
+		<name>esc_wolf_name</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Главарь лагеря новичков.</bio>
+		<bio>esc_wolf_bio</bio>
 
 		<class>esc_wolf</class>
 		<community>stranger</community>
@@ -84,10 +84,10 @@
 	</specific_character>
 	
 	<specific_character id="esc_fanat" team_default = "1">
-		<name>Сталкер "Фанат"</name>
+		<name>esc_fanat_name</name>
 		<icon x="26" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Стал лидером лагеря новичков после Волка. Целеустремлен, агрессивен, пользуется среди новичков заслуженным авторитетом.</bio>
+		<bio>esc_fanat_bio</bio>
 
 		<class>esc_fanat</class>
 		<community>stranger</community>
@@ -114,10 +114,10 @@
 	</specific_character>
 	
 	<specific_character id="esc_fox" team_default = "1">
-		<name>Сталкер "Лис"</name>
+		<name>esc_fox_name</name>
 		<icon x="16" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Старый прожженый зоной одиночка.</bio>
+		<bio>esc_fox_bio</bio>
 
 		<class>esc_fox</class>
 		<community>stalker</community>
@@ -144,10 +144,10 @@
 	</specific_character>
 	
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
-		<name>Толик</name>
+		<name>esc_tolik_name</name>
 		<icon x="30" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Просто сталкер.</bio>
+		<bio>esc_tolik_bio</bio>
 
 		<class>esc_tutorial_wounded</class>
 		<community>stranger</community>
@@ -175,7 +175,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>esc_killer_specnaz_bio</bio>
 
 		<team>Killer_specnaz</team>
 		
@@ -206,7 +206,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 	
 		<class>esc_bandit_novice</class>
 		<community>bandit</community>
@@ -236,7 +236,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>esc_bandit_novice</class>
 		<community>bandit</community>
@@ -268,7 +268,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>esc_bandit_novice</class>
 		<community>bandit</community>
@@ -301,7 +301,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -330,7 +330,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -359,7 +359,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -389,7 +389,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -417,7 +417,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -446,7 +446,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -477,7 +477,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -507,7 +507,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
@@ -535,10 +535,10 @@
 	
 	
 	<specific_character id="esc_ranger" team_default = "1">
-		<name>Петруха</name>
+		<name>esc_petruha_name</name>
 		<icon x="22" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Пользуется особым расположением Волка, который его частенько отправляет на важные задания.</bio>
+		<bio>esc_petruha_bio</bio>
 
 		<class>esc_ranger</class>
 		<community>stranger</community>
@@ -566,10 +566,10 @@
 	
 	
 	<specific_character id="esc_soldier_commander" team_default = "1">
-		<name>Майор Кузнецов</name>
+		<name>esc_soldier_commander_name</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Детальная информация отсутствует.</bio>
+		<bio>esc_soldier_commander_bio</bio>
 
 		<class>esc_soldier_commander</class>
 		<community>military</community>
@@ -598,7 +598,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
 		<community>military</community>
@@ -629,7 +629,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
 		<community>military</community>
@@ -661,7 +661,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
 		<community>military</community>
@@ -692,7 +692,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
+		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
 		<community>military</community>
@@ -724,7 +724,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
 		<community>military</community>
@@ -755,7 +755,7 @@
 		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Детальная информация отсутствует.</bio>
+		<bio>esc_captain_bio</bio>
 
 		<class>esc_soldier_blockpost_commander</class>
 		<community>military</community>
@@ -785,7 +785,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
 		<community>military</community>
@@ -816,7 +816,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
 		<community>military</community>
@@ -847,7 +847,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
 		<community>military</community>
@@ -878,7 +878,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>esc_specnaz_bio</bio>
 
 		<class>esc_soldier_specnaz</class>
 		<community>military</community>
@@ -909,7 +909,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>esc_specnaz_bio</bio>
 		
 		<class>esc_soldier_specnaz</class>
 		<community>military</community>
@@ -941,7 +941,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>esc_specnaz_killer_bio</bio>
 
 		<class>esc_killer_master</class>
 		<community>killer</community>
@@ -968,10 +968,10 @@
 	
 	
 	<specific_character id="esc_provodnik" team_default = "1">
-		<name>Проводник</name>
+		<name>esc_provodnik_name</name>
 		<icon x="22" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Личность в своем роде легендарная, говорят, что он должен провести в любую точку Зоны. Берет он дорого, но дело не только в деньгах. Не нравящихся ему людей он не поведет ни за какие деньги. Ветеран, знает Зону вдоль и поперек.</bio>
+		<bio>esc_provodnik_bio</bio>
 
 		<class>esc_provodnik</class>
 		<community>stranger</community>
