@@ -102,7 +102,8 @@ end
 --------
 function action_wait:execute ()
     action_base.execute (self)
-    
+
+    --printf("follower<wait.execute>: try_switch_to_another_section")
     if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
        return 
     end
@@ -182,6 +183,7 @@ function action_follow:execute ()
        return
     end    
     
+    --printf("follower<follow.execute>: try_switch_to_another_section")
     if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
        self.st.leader_id = nil
        return 
@@ -351,8 +353,8 @@ function action_follow:free ()
           xr_gulag.resetJob (self.object)
        end   
     else
+       --printf("follower<follow.free>: try_switch_to_another_section")
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
-       printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC", self.object:name ()) 
     end
 end
 --------
