@@ -15,13 +15,7 @@ function proceed()
 end
 
 function process_info_portion(info_id)
-	if info_id == "bar_freedom_attack_ecolog" then
-		if db.actor:dont_has_info("bar_freedom_defence_ecolog") then
-			news_manager.send_tip(db.actor, "bar_freedom_attack", nil, "freedom", nil, 509)
-            db.actor:give_info_portion("bar_freedom_defence_ecolog")
-		end
-		return true
-	elseif info_id == "bar_dolg_petrenko" then
+	if  info_id == "bar_dolg_petrenko" then
 		level_tasks.add_location(506, "green_location", "bar_petrenko")
 		return true		
 	elseif info_id == "bar_dolg_community_start" then
