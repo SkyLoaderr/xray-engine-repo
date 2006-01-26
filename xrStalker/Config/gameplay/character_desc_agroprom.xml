@@ -4,10 +4,10 @@
 	<!-------------------------------------- Уникальные профиля --------------------------->
 
 	<specific_character id="agr_krot" team_default = "1">
-		<name>Сталкер "Крот"</name>
+		<name>agr_krot_name</name>
 		<icon x="30" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Бывший диггер, которому с возрастом надоели скучные городские дренажки. Пришёл в зону полазить по заброшенным лабораториям и бункерам в поисках чего-то необычного. Сам не знает, что ищет. Со временем нашёл единомышленников. По традиции их прозвали "группировка Крота"</bio>
+		<bio>agr_krot_bio</bio>
 
 		<class>agr_krot</class>
 		<community>stalker</community>
@@ -41,7 +41,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Бывшый солдат. Сейчас дезертировал.</bio>
+		<bio>agr_renegade_bio</bio>
 
 		<class>agr_ratcatcher</class>
 		<community>stalker</community>
@@ -71,7 +71,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community>
@@ -105,7 +105,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community>
@@ -138,7 +138,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community>
@@ -171,7 +171,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community>
@@ -204,7 +204,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community>
@@ -237,7 +237,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community>
@@ -272,7 +272,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
@@ -301,7 +301,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
@@ -330,7 +330,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
@@ -359,7 +359,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
@@ -388,7 +388,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community>
@@ -419,7 +419,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>agr_specnaz_bio</bio>
 
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community>
@@ -448,7 +448,7 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>agr_specnaz_bio</bio>
 
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community>
@@ -479,7 +479,7 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Детальная информация отсутствует.</bio>
+		<bio>agr_general_bio</bio>
 
 		<class>agr_Soldier_commander</class>
 		<community>military</community>
@@ -508,7 +508,7 @@
 		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Детальная информация отсутствует.</bio>
+		<bio>agr_general_bio</bio>
 
 		<class>agr_Soldier_commander</class>
 		<community>military</community>
@@ -538,7 +538,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
 		<community>military</community>
@@ -567,7 +567,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
 		<community>military</community>
@@ -596,7 +596,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
 		<community>military</community>
@@ -627,7 +627,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>agr_bandit_general_bio</bio>
 	
 		<class>agr_bandit_general</class>
 		<community>bandit</community>
@@ -657,7 +657,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>agr_bandit_general_bio</bio>
 		
 		<class>agr_bandit_general</class>
 		<community>bandit</community>
@@ -687,7 +687,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>agr_bandit_general_bio</bio>
 				
 		<class>agr_bandit_general</class>
 		<community>bandit</community>

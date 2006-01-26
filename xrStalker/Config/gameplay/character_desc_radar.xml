@@ -6,7 +6,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
@@ -32,7 +32,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
@@ -58,7 +58,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
@@ -84,7 +84,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
@@ -111,7 +111,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_sniper</class>
 		<community>monolith</community>
@@ -137,7 +137,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_sniper</class>
 		<community>monolith</community>
@@ -164,7 +164,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_specnaz_bio</bio>
 
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
@@ -190,7 +190,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_specnaz_bio</bio>
 
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
@@ -216,7 +216,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_specnaz_bio</bio>
 
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
@@ -242,7 +242,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="6" y="2"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_specnaz_bio</bio>
 
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
@@ -269,7 +269,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_rpg</class>
 		<community>monolith</community>
@@ -295,7 +295,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>rad_monolith_general_bio</bio>
 
 		<class>rad_Monolit_rpg</class>
 		<community>monolith</community>
@@ -326,7 +326,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -351,7 +351,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -376,7 +376,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -401,7 +401,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -426,7 +426,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -451,7 +451,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -476,7 +476,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -501,7 +501,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
 		<community>zombied</community>
@@ -527,7 +527,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
@@ -553,7 +553,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
@@ -579,7 +579,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
@@ -605,7 +605,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community>
@@ -633,7 +633,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
@@ -661,7 +661,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
@@ -689,7 +689,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
@@ -717,7 +717,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
@@ -745,7 +745,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community>
@@ -774,8 +774,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
@@ -802,8 +801,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
@@ -830,8 +828,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
@@ -857,8 +854,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
@@ -884,8 +880,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
 		<community>stalker</community>
@@ -914,7 +909,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>rad_specnaz_bio</bio>
 
 		<class>rad_soldier_specnaz</class>
 		<community>military</community>
@@ -942,7 +937,7 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>rad_specnaz_bio</bio>
 
 		<class>rad_soldier_specnaz</class>
 		<community>military</community>
@@ -970,7 +965,7 @@
 		<name>GENERATE_NAME_captain</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>rad_specnaz_bio</bio>
 
 		<class>rad_soldier_specnaz</class>
 		<community>military</community>
@@ -1000,8 +995,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Мастер группировки "Свобода"
-		Детальная информация отсутствует.</bio>
+		<bio>rad_svoboda_master_bio</bio>
 
 		<class>rad_Svoboda_master</class>
 		<community>freedom</community>
@@ -1028,8 +1022,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Мастер группировки "Свобода"
-		Детальная информация отсутствует.</bio>
+		<bio>rad_svoboda_master_bio</bio>
 
 		<class>rad_Svoboda_master</class>
 		<community>freedom</community>
@@ -1056,8 +1049,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Мастер группировки "Свобода"
-		Детальная информация отсутствует.</bio>
+		<bio>rad_svoboda_master_bio</bio>
 
 		<class>rad_Svoboda_master</class>
 		<community>freedom</community>
@@ -1085,7 +1077,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
 		<community>dolg</community>
@@ -1112,7 +1104,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
 		<community>dolg</community>
@@ -1141,7 +1133,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
 		<community>dolg</community>
@@ -1170,7 +1162,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
 		<community>dolg</community>
@@ -1196,10 +1188,10 @@
 <!--------------------------- dead SCIENTISTS ---------------------->
 
 	<specific_character id="rad_ecolog_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>rad_ecolog_name</name>
 		<icon x="10" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Учёный. Детальная информация отсутствует.</bio>
+		<bio>rad_ecolog_bio</bio>
 
 		<class>rad_Ecolog</class>
 		<community>ecolog</community>
@@ -1221,10 +1213,10 @@
 	</specific_character>
 
 	<specific_character id="rad_ecolog_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>rad_ecolog_guard_name</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Охрана учёных. Детальная информация отсутствует.</bio>
+		<bio>rad_ecolog_guard_bio</bio>
 
 		<class>rad_Ecolog</class>
 		<community>ecolog</community>
@@ -1248,10 +1240,10 @@
 	</specific_character>
 
 	<specific_character id="rad_ecolog_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>rad_ecolog_guard_name</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Охрана учёных. Детальная информация отсутствует.</bio>
+		<bio>rad_ecolog_guard_bio</bio>
 
 		<class>rad_Ecolog</class>
 		<community>ecolog</community>

@@ -57,3 +57,89 @@
 <string id="pri_monolith_leader_bio">
 	<text>Лидер группировки "Монолит". Детальная информация отсутствует.</text>
 </string>
+
+
+<!-- Agroprom-->
+<string id="agr_krot_name">
+	<text>Крот</text>
+</string>
+
+<string id="agr_krot_bio">
+	<text>Бывший диггер, которому с возрастом надоели скучные городские дренажки. Пришёл в зону полазить по заброшенным лабораториям и бункерам в поисках чего-то необычного. Сам не знает, что ищет. Со временем нашёл единомышленников. По традиции их прозвали "группировка Крота"</text>
+</string>
+
+<string id="agr_renegade_bio">
+	<text>Бывшый солдат. Сейчас дезертировал.</text>
+</string>
+
+<string id="agr_stalker_general_bio">
+	<text>Опытный сталкер. Детальная информация отсутствует.</text>
+</string>
+
+<string id="agr_soldier_general_bio">
+	<text>Рядовой солдат. Детальная информация отсутствует.</text>
+</string>
+
+<string id="agr_specnaz_bio">
+	<text>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</text>
+</string>
+
+<string id="agr_general_bio">
+	<text>Детальная информация отсутствует.</text>
+</string>
+
+<string id="agr_bandit_general_bio">
+	<text>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</text>
+</string>
+
+<!-- Radar-->
+
+<string id="rad_monolith_general_bio">
+	<text>Сталкер группировки "Монолит". Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_monolith_specnaz_bio">
+	<text>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_zombied_general_bio">
+	<text>Один из сталкеров, которым не повезло.</text>
+</string>
+
+<string id="rad_stalker_veteran_bio">
+	<text>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_stalker_master_bio">
+	<text>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
+		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_specnaz_bio">
+	<text>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</text>
+</string>
+
+<string id="rad_svoboda_master_bio">
+	<text>Мастер группировки "Свобода"
+		Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_dolg_master_bio">
+	<text>Мастер группировки "Долг". Очень хорошо экипирован. Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_ecolog_bio">
+	<text>Учёный. Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_ecolog_guard_bio">
+	<text>Охрана учёных. Детальная информация отсутствует.</text>
+</string>
+
+<string id="rad_ecolog_name">
+	<text>Научный сотрудник</text>
+</string>
+
+<string id="rad_ecolog_guard_name">
+	<text>Научный сотрудник</text>
+</string>
