@@ -8,13 +8,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_novice_bio</bio>
 	
 		<class>sim_bandit_novice</class>
 		<community>bandit</community>
 		
 		<rank>23</rank>
-		<reputation>0</reputation>
+		<reputation>-56</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		
@@ -35,13 +35,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_novice_bio</bio>
 		
 		<class>sim_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>14</rank>
+		<reputation>-51</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		
@@ -64,13 +64,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_novice_bio</bio>
 		
 		<class>sim_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>20</rank>
+		<reputation>-63</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
@@ -93,13 +93,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_general_bio</bio>
 		
 		<class>sim_bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>32</rank>
+		<reputation>-68</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -121,13 +121,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_general_bio</bio>
 		
 		<class>sim_bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>42</rank>
+		<reputation>-79</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -148,13 +148,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_general_bio</bio>
 		
 		<class>sim_bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>53</rank>
+		<reputation>-93</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -175,13 +175,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_general_bio</bio>
 				
 		<class>sim_bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>59</rank>
+		<reputation>-105</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<snd_config>characters_voice\human_03\bandit\</snd_config>
@@ -203,13 +203,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_veteran_bio</bio>
 		
 		<class>sim_bandit_veteran</class>
 		<community>bandit</community>
 		
-		<rank>70</rank>
-		<reputation>-20</reputation>
+		<rank>67</rank>
+		<reputation>-112</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -234,13 +234,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_veteran_bio</bio>
 		
 		<class>sim_bandit_veteran</class>
 		<community>bandit</community>
 		
-		<rank>70</rank>
-		<reputation>-20</reputation>
+		<rank>73</rank>
+		<reputation>-126</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -261,13 +261,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_veteran_bio</bio>
 
 		<class>sim_bandit_veteran</class>
 		<community>bandit</community>
 		
-		<rank>70</rank>
-		<reputation>-20</reputation>
+		<rank>86</rank>
+		<reputation>-135</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -289,15 +289,15 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_master_bio</bio>
 		
 		<team>Bandit_master</team>
 		
 		<class>sim_Bandit_master</class>
 		<community>bandit</community>
 		
-		<rank>95</rank>
-		<reputation>-50</reputation>
+		<rank>91</rank>
+		<reputation>-139</reputation>
 
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
@@ -318,7 +318,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_master_bio</bio>
 		
 		<team>Bandit_master</team>
 		
@@ -327,8 +327,8 @@
 
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
-		<rank>95</rank>
-		<reputation>-50</reputation>
+		<rank>94</rank>
+		<reputation>-142</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
@@ -347,7 +347,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>sim_bandit_master_bio</bio>
 		
 		<team>Bandit_master</team>
 		
@@ -356,8 +356,8 @@
 
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
-		<rank>95</rank>
-		<reputation>-50</reputation>
+		<rank>94</rank>
+		<reputation>-150</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
@@ -381,13 +381,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>12</rank>
+		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -407,13 +407,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>18</rank>
+		<reputation>-10</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -434,13 +434,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>22</rank>
+		<reputation>18</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -463,13 +463,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>24</rank>
+		<reputation>-15</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
@@ -490,13 +490,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>26</rank>
+		<reputation>19</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -517,13 +517,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>29</rank>
+		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -547,13 +547,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>5</rank>
+		<reputation>-20</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -575,13 +575,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>15</rank>
+		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -605,13 +605,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>30</rank>
+		<reputation>35</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -634,13 +634,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>36</rank>
+		<reputation>46</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -662,13 +662,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>46</rank>
+		<reputation>63</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -690,13 +690,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>53</rank>
+		<reputation>86</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -718,13 +718,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>59</rank>
+		<reputation>42</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -746,13 +746,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>53</rank>
+		<reputation>-20</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -775,13 +775,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community>
 			
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>63</rank>
+		<reputation>55</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -803,13 +803,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community>
 			
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>75</rank>
+		<reputation>101</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -831,13 +831,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="0"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community>
 		
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>82</rank>
+		<reputation>-56</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -859,13 +859,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community>
 	
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>89</rank>
+		<reputation>123</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -887,13 +887,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community>
 			
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>85</rank>
+		<reputation>-53</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -917,14 +917,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>sim_Stalker_master</class>
 		<community>stalker</community>
 				
-		<rank>95</rank>
-		<reputation>0</reputation>
+		<rank>92</rank>
+		<reputation>145</reputation>
 
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 
@@ -947,16 +946,15 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Один из ветеранов Зоны. Этот сталкер знает Зону как своих пять пальцев.
-		Обычно хорошо экипирован и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>sim_Stalker_master</class>
 		<community>stalker</community>
 
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		
-		<rank>95</rank>
-		<reputation>0</reputation>
+		<rank>91</rank>
+		<reputation>-63</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
@@ -979,13 +977,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_stalker_sniper_bio</bio>
 
 		<class>sim_Stalker_sniper</class>
 		<community>stalker</community>
 			
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>75</rank>
+		<reputation>89</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -1013,13 +1011,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="0"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_regular_bio</bio>
 
 		<class>sim_Dolg_regular</class>
 		<community>dolg</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>36</rank>
+		<reputation>55</reputation>
 
 		<visual>actors\dolg\stalker_do_mask</visual>
 		<snd_config>characters_voice\human_01\dolg\</snd_config>
@@ -1042,13 +1040,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_regular_bio</bio>
 
 		<class>sim_Dolg_regular</class>
 		<community>dolg</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>42</rank>
+		<reputation>65</reputation>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<snd_config>characters_voice\human_01\dolg\</snd_config>
@@ -1071,13 +1069,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="8"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_regular_bio</bio>
 		
 		<class>sim_Dolg_regular</class>
 		<community>dolg</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>56</rank>
+		<reputation>73</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1101,13 +1099,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
-		<reputation>40</reputation>
+		<rank>63</rank>
+		<reputation>89</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1128,13 +1126,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
-		<reputation>40</reputation>
+		<rank>75</rank>
+		<reputation>96</reputation>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1157,13 +1155,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
-		<reputation>40</reputation>
+		<rank>86</rank>
+		<reputation>114</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1186,13 +1184,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
 		<community>dolg</community>
 
-		<rank>70</rank>
-		<reputation>40</reputation>
+		<rank>89</rank>
+		<reputation>124</reputation>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1215,13 +1213,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
+		<bio>sim_dolg_master_bio</bio>
 
 		<class>sim_Dolg_master</class>
 		<community>dolg</community>
 		
-		<rank>95</rank>
-		<reputation>60</reputation>
+		<rank>94</rank>
+		<reputation>136</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1243,13 +1241,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
+		<bio>sim_dolg_master_bio</bio>
 		
 		<class>sim_Dolg_master</class>
 		<community>dolg</community>
 		
-		<rank>95</rank>
-		<reputation>60</reputation>
+		<rank>96</rank>
+		<reputation>143</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1272,13 +1270,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_sniper_bio</bio>
 
 		<class>sim_Dolg_sniper</class>
 		<community>dolg</community>
 		
-		<rank>50</rank>
-		<reputation>20</reputation>
+		<rank>55</rank>
+		<reputation>64</reputation>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
@@ -1300,13 +1298,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="8"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_sniper_bio</bio>
 
 		<class>sim_Dolg_sniper</class>
 		<community>dolg</community>
 	
-		<rank>50</rank>
-		<reputation>20</reputation>
+		<rank>64</rank>
+		<reputation>87</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1328,13 +1326,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="0"></icon>
 		<map_icon x="4" y="0"></map_icon>
-		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
+		<bio>sim_dolg_sniper_bio</bio>
 
 		<class>sim_Dolg_sniper</class>
 		<community>dolg</community>
 	
-		<rank>50</rank>
-		<reputation>20</reputation>
+		<rank>61</rank>
+		<reputation>74</reputation>
 
 		<visual>actors\dolg\stalker_do_mask</visual>
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -1361,7 +1359,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="12"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>sim_Svoboda_regular_bio</bio>
 
 		<team>Svoboda_regular</team>
 
@@ -1370,8 +1368,8 @@
 		<class>sim_Svoboda_regular</class>
 		<community>freedom</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>58</rank>
+		<reputation>73</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
 		<supplies>
@@ -1390,11 +1388,11 @@
 	</specific_character>
 
 <!---------------------------SVOBODA SPECNAZ----------------------->
-	<specific_character id="sim_Svoboda_specnaz" team_default = "1">
+	<specific_character id="" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>sim_Svoboda_specnaz_bio</bio>
 
 		<team>Svoboda_specnaz</team>
 
@@ -1403,8 +1401,8 @@
 		<class>sim_Svoboda_specnaz</class>
 		<community>freedom</community>
 
-		<rank>70</rank>
-		<reputation>0</reputation>
+		<rank>86</rank>
+		<reputation>113</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_9</visual>
 		<supplies>
@@ -1425,8 +1423,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="8"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Мастер группировки "Свобода"
-		Детальная информация отсутствует.</bio>
+		<bio>sim_Svoboda_master_bio</bio>
 
 		<team>Svoboda_master</team>
 		
@@ -1435,8 +1432,8 @@
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>94</rank>
+		<reputation>142</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -1457,7 +1454,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+		<bio>sim_Svoboda_sniper_bio</bio>
 
 		<team>Svoboda_sniper</team>
 
@@ -1466,8 +1463,8 @@
 		<class>sim_Svoboda_sniper</class>
 		<community>freedom</community>
 
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>85</rank>
+		<reputation>125</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3_1</visual>
 		<supplies>
@@ -1493,13 +1490,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>sim_killer_general_bio</bio>
 
 		<class>sim_killer_general</class>
 		<community>killer</community>
 
-		<rank>70</rank>
-		<reputation>-50</reputation>
+		<rank>49</rank>
+		<reputation>-63</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -1521,13 +1518,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>sim_killer_general_bio</bio>
 
 		<class>sim_killer_general</class>
 		<community>killer</community>
 
-		<rank>70</rank>
-		<reputation>-50</reputation>
+		<rank>56</rank>
+		<reputation>-76</reputation>
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
@@ -1550,13 +1547,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>sim_killer_veteran_bio</bio>
 
 		<class>sim_killer_veteran</class>
 		<community>killer</community>
 
-		<rank>70</rank>
-		<reputation>-50</reputation>
+		<rank>65</rank>
+		<reputation>-95</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -1578,13 +1575,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>sim_killer_veteran_bio</bio>
 
 		<class>sim_killer_veteran</class>
 		<community>killer</community>
 
-		<rank>70</rank>
-		<reputation>-50</reputation>
+		<rank>81</rank>
+		<reputation>-105</reputation>
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
@@ -1607,13 +1604,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="0"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>sim_killer_master_bio</bio>
 
 		<class>sim_killer_master</class>
 		<community>killer</community>
 		
 		<rank>90</rank>
-		<reputation>-50</reputation>
+		<reputation>-132</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
@@ -1635,13 +1632,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>sim_killer_master_bio</bio>
 
 		<class>sim_killer_master</class>
 		<community>killer</community>
 		
-		<rank>90</rank>
-		<reputation>-50</reputation>
+		<rank>92</rank>
+		<reputation>-146</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
@@ -1666,13 +1663,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>sim_killer_sniper_bio</bio>
 
 		<class>sim_killer_sniper</class>
 		<community>killer</community>
 
-		<rank>70</rank>
-		<reputation>-50</reputation>
+		<rank>73</rank>
+		<reputation>-83</reputation>
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
@@ -1697,14 +1694,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_regular_bio</bio>
 
         <class>sim_monolith_regular</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>32</rank>
+        <reputation>-189</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -1723,14 +1720,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_regular_bio</bio>
 
         <class>sim_monolith_regular</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>39</rank>
+        <reputation>-245</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -1749,14 +1746,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_regular_bio</bio>
 
         <class>sim_monolith_regular</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>46</rank>
+        <reputation>-289</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -1775,14 +1772,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_regular_bio</bio>
 
         <class>sim_monolith_regular</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>56</rank>
+        <reputation>-378</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -1802,14 +1799,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_specnaz_bio</bio>
 
         <class>sim_monolith_specnaz</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>65</rank>
+        <reputation>-456</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -1829,14 +1826,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="0" y="4"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_specnaz_bio</bio>
 
         <class>sim_monolith_specnaz</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>85</rank>
+        <reputation>-695</reputation>
 
         <visual>actors\monolit\stalker_mo_nauchniy</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -1857,14 +1854,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_master_bio</bio>
 
         <class>sim_monolith_master</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>92</rank>
+        <reputation>-864</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -1884,14 +1881,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_master_bio</bio>
 
         <class>sim_monolith_master</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>94</rank>
+        <reputation>-957</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -1913,14 +1910,14 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>sim_monolith_sniper_bio</bio>
 
         <class>sim_monolith_sniper</class>
         <community>monolith</community>
 
 
-        <rank>40</rank>
-        <reputation>0</reputation>
+        <rank>64</rank>
+        <reputation>-542</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -2000,16 +1997,16 @@
 
 <!---------------------------ZOMBIED NOVICE----------------------->
 	<specific_character id="sim_zombied_novice_default1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_novice_bio</bio>
 		
 		<class>sim_zombied_novice</class>
 		<community>zombied</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>13</rank>
+		<reputation>-153</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie1</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2022,16 +2019,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_novice_default2" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
 		<community>zombied</community>
 	
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>16</rank>
+		<reputation>-189</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2044,16 +2041,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_novice_default3" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
 		<community>zombied</community>
 		
-		<rank>40</rank>
-		<reputation>-20</reputation>
+		<rank>21</rank>
+		<reputation>-213</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2066,16 +2063,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_novice_default4" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
 		<community>zombied</community>
 		
-		<rank>40</rank>
-		<reputation>-20</reputation>
+		<rank>24</rank>
+		<reputation>-312</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2088,16 +2085,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_novice_default5" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>50</reputation>
+		<rank>27</rank>
+		<reputation>-351</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2110,16 +2107,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_novice_default6" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
 		<community>zombied</community>
 	
-		<rank>60</rank>
-		<reputation>50</reputation>
+		<rank>29</rank>
+		<reputation>-364</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2132,16 +2129,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_novice_default7" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>30</rank>
+		<reputation>-412</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2155,16 +2152,16 @@
 
 <!---------------------------ZOMBIED VETERANS----------------------->
 	<specific_character id="sim_zombied_veteran_default1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>32</rank>
+		<reputation>-500</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2179,16 +2176,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_veteran_default2" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>38</rank>
+		<reputation>-546</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2201,16 +2198,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_veteran_default3" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>48</rank>
+		<reputation>-612</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2224,16 +2221,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_veteran_default4" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>51</rank>
+		<reputation>-645</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2247,16 +2244,16 @@
 	</specific_character>
 
 	<specific_character id="sim_zombied_veteran_default5" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>58</rank>
+		<reputation>-723</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2271,16 +2268,16 @@
 
 <!---------------------------ZOMBIED MASTER----------------------->
 	<specific_character id="sim_zombied_master_1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_master_bio</bio>
 
 		<class>sim_Zombied_master</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>85</rank>
+		<reputation>-864</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\zombied\</snd_config>
@@ -2294,16 +2291,16 @@
 
 <!---------------------------FRESH ZOMBIED STALKERS----------------------->
 	<specific_character id="sim_fresh_Zombied_stalker_1" team_default = "1">
-		<name>Свежезомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>sim_fresh_Zombied</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>82</rank>
+		<reputation>-856</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2317,16 +2314,16 @@
 
 
 	<specific_character id="sim_fresh_Zombied_stalker_2" team_default = "1">
-		<name>Свежезомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>sim_fresh_Zombied</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>85</rank>
+		<reputation>-923</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_1</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2340,16 +2337,16 @@
 
 
 	<specific_character id="sim_fresh_Zombied_stalker_3" team_default = "1">
-		<name>Свежезомбированный сталкер</name>
+		<name>zombie_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>sim_fresh_Zombied</class>
 		<community>zombied</community>
 		
-		<rank>60</rank>
-		<reputation>-50</reputation>
+		<rank>86</rank>
+		<reputation>-984</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_2</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
@@ -2372,13 +2369,13 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>5</rank>
+		<reputation>5</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -2401,13 +2398,13 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>7</rank>
+		<reputation>10</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -2430,13 +2427,13 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>8</rank>
+		<reputation>12</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -2459,13 +2456,13 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>16</rank>
+		<reputation>6</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -2488,13 +2485,13 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>24</rank>
+		<reputation>21</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -2520,13 +2517,13 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>sim_soldier_specnaz_bio</bio>
 
 		<class>sim_Soldier_specnaz</class>
 		<community>military</community>
 		
-		<rank>80</rank>
-		<reputation>0</reputation>
+		<rank>67</rank>
+		<reputation>19</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -2549,13 +2546,13 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>sim_soldier_specnaz_bio</bio>
 
 		<class>sim_Soldier_specnaz</class>
 		<community>military</community>
 		
-		<rank>80</rank>
-		<reputation>0</reputation>
+		<rank>74</rank>
+		<reputation>23</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -2578,13 +2575,13 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_commander_bio</bio>
 
 		<class>sim_Soldier_commander</class>
 		<community>military</community>
 		
-		<rank>60</rank>
-		<reputation>0</reputation>
+		<rank>86</rank>
+		<reputation>20</reputation>
 
 		<visual>actors\soldier\soldier_beret</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -2607,13 +2604,13 @@
 		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_commander_bio</bio>
 
 		<class>sim_Soldier_commander</class>
 		<community>military</community>
 		
-		<rank>60</rank>
-		<reputation>0</reputation>
+		<rank>91</rank>
+		<reputation>-23</reputation>
 
 		<visual>actors\soldier\soldier_beret_3</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -2665,13 +2662,13 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_sniper_bio</bio>
 
 		<class>sim_Soldier_sniper</class>
 		<community>military</community>
 	
 		<rank>60</rank>
-		<reputation>0</reputation>
+		<reputation>4</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -2694,13 +2691,13 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>sim_soldier_sniper_bio</bio>
 
 		<class>sim_Soldier_sniper</class>
 		<community>military</community>
 		
-		<rank>60</rank>
-		<reputation>0</reputation>
+		<rank>67</rank>
+		<reputation>-9</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -2724,8 +2721,7 @@
 		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio> Военный сталкер. Хорошо вооружен и очень опасен.
-		Детальная информация недоступна.</bio>
+		<bio>sim_Soldier_master_bio</bio>
 
 		<team>Soldier_military</team>
 		
