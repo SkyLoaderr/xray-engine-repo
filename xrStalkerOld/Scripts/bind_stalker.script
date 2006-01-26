@@ -284,9 +284,9 @@ function actor_init    (npc)
 end
 
 --старт префетча звуков
-if string.find(command_line(), "-noprefetch") == nil then
-	sound_prefetch.prefetch_sounds()
-end
+--if string.find(command_line(), "-noprefetch") == nil then
+--	sound_prefetch.prefetch_sounds()
+--end
 
 
 -- Weapon functions
