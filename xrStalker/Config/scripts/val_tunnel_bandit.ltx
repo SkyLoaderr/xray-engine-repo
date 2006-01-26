@@ -4,6 +4,17 @@ on_combat = combat@val_sacrifice
 combat_ignore = combat_ignore
 
 ;--------------------------------------------------------------------------
+; встреча отключена
+;--------------------------------------------------------------------------
+[meet@val_sacrifice_tunnel_bandit]
+meet_state     = 0|guard
+meet_state_wpn = 0|guard
+victim         = 0|nil
+victim_wpn     = 0|nil
+use            = false
+use_wpn        = false
+
+;--------------------------------------------------------------------------
 ; ждем пока игрок не зайдет в стартовую зону
 ;--------------------------------------------------------------------------
 [camper@val_sacrifice_tunnel_bandit_wait]
@@ -26,6 +37,7 @@ anim                = guard
 snd                 = speech
 target              = val_sacrifice_tunnel_bandit_look, 0
 on_signal           = sound_end | walker@val_sacrifice_tunnel_bandit_leave
+meet                = meet@val_sacrifice_tunnel_bandit
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
