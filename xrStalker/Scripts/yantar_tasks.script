@@ -1,5 +1,4 @@
 function proceed()
-    
     if db.actor:dont_has_info("yan_provodnik_spawn") and
        db.actor:object("yantar_ghost_pda") ~= nil 
     then
