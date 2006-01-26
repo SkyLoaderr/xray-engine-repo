@@ -11,22 +11,22 @@
         <text>Найти свой первый артефакт.</text>
     </string>
     <string id="tutorial_find_artefact_1">
-        <text>Найти первый артефакт.</text>
+        <text>Найти артефакт.</text>
     </string>
     <string id="tutorial_find_artefact_2">
-        <text>Отнести артефакт торговцу.</text>
+        <text>Принести артефакт торговцу.</text>
     </string>
     <string id="tutorial_help_wounded">
-        <text>Забрать информацию у разведчиков торговца.</text>
+        <text>Забрать информацию у разведчиков.</text>
     </string>
     <string id="tutorial_help_wounded_0">
         <text>Забрать информацию у разведчиков торговца.</text>
     </string>
     <string id="tutorial_help_wounded_1">
-        <text>Встретить сталкеров и взять у них флешку с информацией.</text>
+        <text>Получить флешку с информацией у разведчиков.</text>
     </string>
     <string id="tutorial_help_wounded_2">
-        <text>Принести информацию торговцу.</text>
+        <text>Принести флешку торговцу.</text>
     </string>
      <string id="esc_help_wounded_from_raid">
         <text>Помочь раненому Лису.</text>
@@ -38,7 +38,7 @@
         <text>Помочь Лису отбиться от мутантов.</text>
     </string>
     <string id="esc_help_wounded_from_raid_2">
-        <text>Получить у него важную информацию о Стрелке.</text>
+        <text>Поговрить с Лисом о Стрелке</text>
     </string>
     <string id="esc_blockpost_case_to_trader">
         <text>Украсть ящик с блокпоста.</text>
@@ -68,7 +68,7 @@
         <text>Принести динамит Волку.</text>
     </string>
     <string id="garbage_meet_stalker">
-        <text>Встретиться на свалке со сталкером.</text>
+        <text>Встретиться с Серым.</text>
     </string>
     <string id="garbage_meet_stalker_0">
         <text>Встретиться с Серым на свалке.</text>
@@ -80,7 +80,7 @@
         <text>Доставить пакет торговцу. Он сможет тебе помочь.</text>
     </string>
     <string id="esc_bandits_on_factory">
-        <text>Выбить бандитов с фабрики.</text>
+        <text>Уничтожить бандитов на фабрике.</text>
     </string>
     <string id="esc_bandits_on_factory_0">
         <text>Уничтожить бандитов засевших на фабрике.</text>
@@ -89,10 +89,10 @@
         <text>Убить всех бандитов на фабрике.</text>
     </string>
     <string id="esc_bandits_on_factory_2">
-        <text>Отчитаться перед торговцем.</text>
+        <text>Поговрить с торговцем.</text>
     </string>
 	<string id="esc_bandits_on_factory_3">
-        <text>Поговорить с Волком, чтобы он выделил для атаки на фабрику своих людей.</text>
+        <text>Поговорить с Волком.</text>
     </string>
 
  
