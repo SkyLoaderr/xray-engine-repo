@@ -18,13 +18,13 @@
     <texture id="ui_hud_shk_light" x="474" y="65" width="10" height="71" />
     <texture id="ui_hud_shk_noise" x="484" y="65" width="10" height="71" />
     <texture id="ui_hud_shk_stamina" x="347" y="190" width="57" height="7" />
-    
     <texture id="ui_hud_icon_PDA" x="619" y="40" width="48" height="29" />
-    <texture id="ui_hud_soldier_sit" x="0" y="353" width="65" height="75" />
-    <texture id="ui_hud_soldier_walk" x="0" y="428" width="65" height="75" />
-    <texture id="ui_hud_soldier_run" x="0" y="503" width="65" height="75" />
-    <texture id="ui_hud_soldier_stairclimb" x="0" y="578" width="65" height="75" />
-    <texture id="ui_hud_soldier_squat" x="0" y="653" width="65" height="75" />
+    <texture id="ui_hud_soldier_creep" x="0" y="353" width="65" height="75" />
+    <texture id="ui_hud_soldier_normal" x="0" y="428" width="65" height="75" />
+    <texture id="ui_hud_soldier_sprint" x="0" y="503" width="65" height="75" />
+    <texture id="ui_hud_soldier_climb" x="0" y="578" width="65" height="75" />
+    <texture id="ui_hud_soldier_run" x="0" y="653" width="65" height="75" />
+    <texture id="ui_hud_soldier_crouch" x="65" y="354" width="65" height="75" />
     <texture id="ui_hud_teamF_counter" x="981" y="0" width="36" height="70" />
     <texture id="ui_hud_teamF_line" x="0" y="1020" width="404" height="4" />
     <texture id="ui_hud_teamF_leftS" x="494" y="65" width="39" height="43" />
