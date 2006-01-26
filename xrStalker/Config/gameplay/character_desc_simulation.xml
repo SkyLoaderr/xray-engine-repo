@@ -1388,7 +1388,7 @@
 	</specific_character>
 
 <!---------------------------SVOBODA SPECNAZ----------------------->
-	<specific_character id="" team_default = "1">
+	<specific_character id="sim_Svoboda_specnaz" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
