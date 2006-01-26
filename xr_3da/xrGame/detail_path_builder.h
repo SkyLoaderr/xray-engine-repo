@@ -40,10 +40,12 @@ public:
 		m_object->m_wait_for_distributed_computation	= false;
 		m_object->detail().build_path	(*m_level_path,m_path_vertex_index);
 
+		m_object->on_build_path			();
+
 		if (m_object->detail().failed())
-			m_object->m_path_state	= CMovementManager::ePathStateBuildLevelPath;
+			m_object->m_path_state		= CMovementManager::ePathStateBuildLevelPath;
 		else
-			m_object->m_path_state	= CMovementManager::ePathStatePathVerification;
+			m_object->m_path_state		= CMovementManager::ePathStatePathVerification;
 	}
 
 	IC		void			remove			()
