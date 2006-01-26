@@ -53,7 +53,9 @@ end
 function distance_to_obj_le(actor, npc, p)
     local npc1 = level_object_by_sid(p[1])
     if npc1 then
-	    return npc:position():distance_to_sqr(npc1:position()) < p[2]*p[2]
+        local res = npc:position():distance_to_sqr(npc1:position()) < p[2]*p[2]
+        --printf("xr_cond<distance_to_obj_le>: %s", if_then_else(res, "TRUE", "FALSE"))
+	    return res
 	end
 	return false
 end
