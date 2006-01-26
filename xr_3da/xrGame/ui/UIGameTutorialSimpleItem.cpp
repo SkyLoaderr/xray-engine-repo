@@ -24,7 +24,7 @@ CUISequenceSimpleItem::~CUISequenceSimpleItem()
 
 bool CUISequenceSimpleItem::IsPlaying()
 {
-	return (m_time_start+m_time_length)<(Device.dwTimeContinual/1000.0f);
+	return (m_time_start+m_time_length)>(Device.dwTimeContinual/1000.0f);
 }
 
 CUIWindow* find_child_window(CUIWindow* parent, const shared_str& _name)

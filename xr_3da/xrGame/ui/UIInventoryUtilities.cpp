@@ -21,9 +21,7 @@
 #include "../InfoPortion.h"
 #include "../game_base_space.h"
 #include "../actor.h"
-
-#include "UIMainIngameWnd.h"
-//////////////////////////////////////////////////////////////////////////
+#include "uiwpndragdropitem.h"
 
 #define BUY_MENU_TEXTURE "ui\\ui_mp_buy_menu"
 #define EQUIPMENT_ICONS  "ui\\ui_icon_equipment"
@@ -267,7 +265,6 @@ ref_shader&	InventoryUtilities::GetMPCharIconsShader()
 	return g_MPCharIconsShader;
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
 {

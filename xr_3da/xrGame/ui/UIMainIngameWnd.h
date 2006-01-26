@@ -4,17 +4,9 @@
 
 #pragma once
 
-#include "UIButton.h"
-#include "UIFrameWindow.h"
-#include "UIDragDropList.h"
 #include "UIProgressBar.h"
-#include "UIWpnDragDropItem.h"
 #include "UIListWnd.h"
-#include "UIMultiTextStatic.h"
-#include "UIColorAnimatorWrapper.h"
 
-#include "../actor.h"
-#include "../weapon.h"
 #include "../alife_space.h"
 
 #include "UICarPanel.h"
@@ -31,6 +23,7 @@ class					CUIZoneMap;
 class					CUIArtefactPanel;
 class					CUIMoneyIndicator;
 class					CUIScrollView;
+struct					GAME_NEWS_DATA;
 
 class CUIMainIngameWnd: public CUIWindow  
 {
@@ -153,7 +146,7 @@ public:
 	void				AnimateContacts					(bool b_snd);
 	HUD_SOUND			m_contactSnd;
 
-	void				ReceiveNews						(GAME_NEWS_DATA &news);
+	void				ReceiveNews						(GAME_NEWS_DATA* news);
 	
 protected:
 	void				SetWarningIconColor				(CUIStatic* s, const u32 cl);

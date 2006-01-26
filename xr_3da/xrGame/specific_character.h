@@ -33,7 +33,7 @@ struct SSpecificCharacterData : CSharedResource
 	//игровое имя персонажа
 	xr_string	m_sGameName;
 	//текст с биографией персонажа (линк на string table)
-	xr_string	m_sBioText;
+	shared_str	m_sBioText;
 	//строка содержащая предметы, которые нужно проспавнить 
 	xr_string	m_sSupplySpawn;
 	//имя секции конфигурации настроек NPC для персонажа
@@ -121,7 +121,7 @@ public:
 
 #ifdef  XRGAME_EXPORTS
 	LPCSTR						Name		() const ;
-	LPCSTR						Bio			() const ;
+	shared_str					Bio			() const ;
 	const CHARACTER_COMMUNITY&	Community	() const ;
 #endif
 

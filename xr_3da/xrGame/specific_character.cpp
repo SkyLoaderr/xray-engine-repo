@@ -8,6 +8,7 @@
 
 #ifdef  XRGAME_EXPORTS
 #include "PhraseDialog.h"
+#include "string_table.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -17,7 +18,7 @@
 SSpecificCharacterData::SSpecificCharacterData()
 {
 	m_sGameName.clear		();
-	m_sBioText.clear		();
+	m_sBioText				= NULL;
 	m_sVisual.clear			();
 	m_sSupplySpawn.clear	();
 	m_sNpcConfigSect.clear	();
@@ -140,7 +141,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 	//игровое имя персонажа
 	data()->m_sGameName		= uiXml.Read("name", 0, "");
-	data()->m_sBioText		= uiXml.Read("bio", 0, "");
+	data()->m_sBioText		= CStringTable().translate(uiXml.Read("bio", 0, ""));
 
 
 	data()->m_fPanic_threshold		= uiXml.ReadFlt("panic_threshold",0,0.f);
@@ -218,9 +219,9 @@ LPCSTR CSpecificCharacter::Name() const
 	return	data()->m_sGameName.c_str();
 }
 
-LPCSTR CSpecificCharacter::Bio() const 
+shared_str CSpecificCharacter::Bio() const 
 {
-	return	data()->m_sBioText.c_str();
+	return	data()->m_sBioText;
 }
 
 const CHARACTER_COMMUNITY& CSpecificCharacter::Community() const 

@@ -21,33 +21,8 @@ function main______________()
 	end	
 end
 
-function compl1()
-	return false
-end
-function compl2()
-	return false
-end
-function fail1()
-	return false
-end
-
-function main3()
-
---	  db.actor:give_info_portion("test_andy_info") 
-
-      local task = CGameTask()
-        
-        task:load("eliminate_lager")
-        task:set_title("title_0")
-        
-        local objective = SGameTaskObjective(task,1)
-        objective:set_description("test_description_1")
-		objective:set_article_id("descr_bar_resque_information")		
-        task:add_objective(objective)
-
-        db.actor:give_task(task,false)
-  
---   game.start_tutorial("part_1_pda")
+function main()
+   game.start_tutorial("part_1_pda")
 end
 
 function main1()
@@ -121,37 +96,22 @@ end
 
 function main________()
 	db.actor:give_game_news("hello-1 sdfewrf ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-
---[[
-	db.actor:give_game_news("hello-1", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-2", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-3", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-4", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-5", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-6", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-7", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-8", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello-9", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-
-	db.actor:give_game_news("general_fail_task", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("general_complete_task", "ui\\ui_icons_task", Frect():set(350,100,50,50), 0, 5000)
-]]	
 end
 
-function main()
+function main222()
    local h = hit ()
    h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.radiation
-   db.actor:hit(h)
+--   db.actor:hit(h)
    
    h.power = 10
    h.direction = vector():set(0, 0, 1)
    h.impulse = 10
    h.draftsman = db.actor
-   h.type = hit.wound
+   h.type = hit.fire_wound
    db.actor:hit(h)
 
    h.power = 10
@@ -159,7 +119,7 @@ function main()
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.telepatic
-  db.actor:hit(h)
+--  db.actor:hit(h)
 
    h.power = 10
    h.direction = vector():set(0, 0, 1)
@@ -173,7 +133,7 @@ function main()
    h.impulse = 100
    h.draftsman = db.actor
    h.type = hit.chemical_burn
-  db.actor:hit(h)
+--  db.actor:hit(h)
 
    h.power = 10
    h.direction = vector():set(0, 0, 1)
@@ -196,12 +156,13 @@ function main()
    h.type = hit.explosion
  -- db.actor:hit(h)
   
---burn  1
---shock  1
---strike  1
---wound  1
---radiation   1
---telepatic   1
+--burn  		1
+--shock  		1
+--strike  		1
+--wound  		1
+--fire_wound  	1
+--radiation   	1
+--telepatic   	1
 --chemical_burn 1
 --explosion
 
@@ -219,15 +180,6 @@ function _main()
 --actor_stats.add_points("artefacts","af_1",1,800)
 --actor_stats.add_points("quests","help wounded",1,2000)
 
---	level.add_cam_effector("camera_effects\\prison_1.anm")	
-
---   local h = hit ()
---   h.power = 100
---   h.direction = vector():set(0, 0, 1)
---   h.impulse = 100
---   h.draftsman = db.actor
---   h.type = hit.fire_wound
---   db.actor:hit(h)
 	
 --	local info = "esc_kill_gunslinger" 
 --	db.actor:give_info_portion(info) 

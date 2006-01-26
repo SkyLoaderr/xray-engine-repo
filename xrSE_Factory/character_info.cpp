@@ -148,9 +148,8 @@ LPCSTR CCharacterInfo::Name() const
 	return	m_SpecificCharacter.Name();
 }
 
-LPCSTR CCharacterInfo::Bio() const
+shared_str CCharacterInfo::Bio() const
 {
-	R_ASSERT2(m_SpecificCharacterId.size(), m_SpecificCharacter.Bio());
 	return 	m_SpecificCharacter.Bio();
 }
 

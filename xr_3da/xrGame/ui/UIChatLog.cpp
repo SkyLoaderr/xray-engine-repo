@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "UIChatLog.h"
 #include "UIXmlInit.h"
-#include "UIMainIngameWnd.h"
+#include "UIColorAnimatorWrapper.h"
 
 //////////////////////////////////////////////////////////////////////////
 

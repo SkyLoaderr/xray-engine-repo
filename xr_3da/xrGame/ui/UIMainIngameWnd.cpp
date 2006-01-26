@@ -1,7 +1,3 @@
-// UIMainIngameWnd.cpp:  окошки-информация в игре
-// 
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 
 #include "UIMainIngameWnd.h"
@@ -10,10 +6,9 @@
 
 
 #include <dinput.h>
-#include "../Entity.h"
+#include "../actor.h"
 #include "../HUDManager.h"
 #include "../PDA.h"
-#include "../UIStaticItem.h"
 #include "../WeaponHUD.h"
 #include "../character_info.h"
 #include "../inventory.h"
@@ -47,12 +42,12 @@
 #include "../attachable_item.h"
 #include "../../xr_input.h"
 #endif
-//////////////////////////////////////////////////////////////////////////
 
-#include "UIDragDropListEx.h"
 #include "UIScrollView.h"
 #include "map_hint.h"
-static CTestDragDropWnd* w = NULL;
+#include "UIColorAnimatorWrapper.h"
+#include "../game_news.h"
+
 
 
 void test_draw	();
@@ -1212,18 +1207,14 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	}
 }
 
-void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA &news)
+void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA* news)
 {
 	if (g_bNewsDisable) return;
 
-#ifdef DEBUG
-	Msg("[news]%s", news.SingleLineText());
-#endif
-		
-	if(news.texture_name.size())
-		HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(*news.texture_name, news.tex_rect, news.SingleLineText(), news.show_time);
+	if(news->texture_name.size())
+		HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(*(news->texture_name), news->tex_rect, news->SingleLineText(), news->show_time);
 	else
-		HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(news.SingleLineText(), news.show_time);
+		HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(news->SingleLineText(), news->show_time);
 }
 
 void CUIMainIngameWnd::SetWarningIconColor(CUIStatic* s, const u32 cl)

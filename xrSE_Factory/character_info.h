@@ -106,7 +106,7 @@ public:
 #ifdef XRGAME_EXPORTS
 	PROFILE_ID					Profile()			const;
 	LPCSTR						Name()				const;
-	LPCSTR						Bio()				const;
+	shared_str					Bio()				const;
 
 
 	const CHARACTER_COMMUNITY&	Community()			const	{return m_CurrentCommunity;};

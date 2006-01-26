@@ -117,7 +117,7 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	news_vector.push_back			(news_data);
 
 	if(HUD().GetUI()){
-		HUD().GetUI()->UIMainIngameWnd->ReceiveNews(news_data);
+		HUD().GetUI()->UIMainIngameWnd->ReceiveNews(&news_data);
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP) 
 			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::news);
