@@ -847,6 +847,9 @@ function see_actor_and_kruglov(actor, npc)
 	local kruglov = level_object_by_sid (503)
     return npc:see(actor) or npc:see(kruglov)
 end
+function has_ghost_pda ()
+		return db.actor:object ("yantar_ghost_pda") ~= nil
+end
 -------------------------------------------------------------------------------------
 -- Special for Radar
 -------------------------------------------------------------------------------------
