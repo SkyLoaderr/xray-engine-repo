@@ -20,7 +20,7 @@ local task_by_phrase = {}  -- таблица соответствий ID фраз заданиям.
 local active_task = {} -- таблица активных заданий
 
 local parent_by_story = {
-	[003] = "trader",
+	[001] = "trader",
 	[500] = "barman",
 	[902] = "ecolog",
 	[507] = "dolg",
@@ -164,6 +164,22 @@ end
 function init_trader_task_dialog(dlg)
 	init_task_dialog(dlg, "trader")
 end
+function init_barman_task_dialog(dlg)
+	init_task_dialog(dlg, "barman")
+end
+function init_ecolog_task_dialog(dlg)
+	init_task_dialog(dlg, "ecolog")
+end
+function init_dolg_task_dialog(dlg)
+	init_task_dialog(dlg, "dolg")
+end
+function init_freedom_task_dialog(dlg)
+	init_task_dialog(dlg, "freedom")
+end
+
+
+
+
 local call_count, max_count = 0,0
 local show_tbl = {}
 local tmp_tbl = {}
@@ -272,6 +288,18 @@ end
 function init_trader_reward_dialog(dlg)
 	init_reward_dialog(dlg, "trader")
 end
+function init_barman_reward_dialog(dlg)
+	init_reward_dialog(dlg, "barman")
+end
+function init_ecolog_reward_dialog(dlg)
+	init_reward_dialog(dlg, "ecolog")
+end
+function init_dolg_reward_dialog(dlg)
+	init_reward_dialog(dlg, "dolg")
+end
+function init_freedom_reward_dialog(dlg)
+	init_reward_dialog(dlg, "freedom")
+end
 
 
 function action_has_active_task_init(npc, actor)
@@ -296,7 +324,6 @@ function action_task_reward(npc, actor)
 			active_task[v.type].full_completed = true
 
 
-			-- TODO: Выдача награды за квест.
 			if v.reward_money ~= nil then
 				dialogs.relocate_money(npc, v.reward_money, "in")
 			end
@@ -307,9 +334,11 @@ function action_task_reward(npc, actor)
 			
 			if v.reward_item ~= nil then
 				for k,v in pairs(v.reward_item) do
-					if npc:object(k) ~= nil then
-						for i=1,tonumber(v) do
+					for i=1,tonumber(v) do
+						if npc:object(k) ~= nil then
 							dialogs.relocate_item(npc, k, "in")
+						else
+							break
 						end
 					end
 				end
@@ -317,8 +346,9 @@ function action_task_reward(npc, actor)
 
 			if v.reward_reputation ~= nil then
 				for k,v in pairs(v.reward_reputation) do
-					-- TODO: Вставить нормальное изменение отношения
---					change_community_goodwill
+					relation_registry.change_community_goodwill (k, "actor", v)
+					relation_registry.change_community_goodwill (k, "actor_dolg", v)
+					relation_registry.change_community_goodwill (k, "actor_freedom", v)
 				end
 			end
 
@@ -368,7 +398,9 @@ function has_active_vendor_task(actor, npc)
 	local parent = get_parent(npc)
 	
 	for k,v in pairs(active_task) do
-		if v.parent == parent then
+		if v.parent == parent and
+		   v.full_completed == nil
+		then
 			return true
 		end
 	end	
