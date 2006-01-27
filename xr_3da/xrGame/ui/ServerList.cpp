@@ -7,9 +7,11 @@
 #include "UIEditBox.h"
 #include "UIColorAnimatorWrapper.h"
 #include "UIListItemAdv.h"
+#include "UIMessageBoxEx.h"
 
 
 CGameSpy_Browser* g_gs_browser = NULL;
+
 
 
 CServerList::CServerList(){
@@ -43,11 +45,15 @@ CServerList::CServerList(){
 	m_bAnimation = false;
 
 	m_sort_func = "none";
+	m_message_box = xr_new<CUIMessageBoxEx>();
+	m_message_box->Init("message_box_password");
+	m_message_box->SetMessageTarget(this);
 }
 
 CServerList::~CServerList()
 {
 	xr_delete(m_pAnimation);
+	xr_delete(m_message_box);
 };
 
 void CServerList::Init(float x, float y, float width, float height){
@@ -101,7 +107,21 @@ void CServerList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 		else if (pWnd == &m_header[5]){
 			SetSortFunc("ping",true);
 		}
+	}
+	else if (MESSAGE_BOX_YES_CLICKED == msg){
 
+		int sel = m_list[LST_SERVER].GetSelectedItem();
+		if (-1 == sel)
+			return;
+
+		CUIListItemServer* item = smart_cast<CUIListItemServer*>(m_list[LST_SERVER].GetItem(sel));
+		xr_string command;
+		xr_string name_and_pass = m_playerName;
+		name_and_pass += "/psw=";
+		name_and_pass += m_message_box->GetPassword();
+		item->CreateConsoleCommand(command, name_and_pass.c_str());
+//		Console->Execute("main_menu off");
+		Console->Execute(command.c_str());
 	}
 }
 
@@ -269,14 +289,24 @@ void CServerList::ConnectToSelected(){
 	int sel = m_list[LST_SERVER].GetSelectedItem();
 	if (-1 == sel)
 		return;
+
 	CUIListItemServer* item = smart_cast<CUIListItemServer*>(m_list[LST_SERVER].GetItem(sel));
 
-	xr_string command;
+//	params.info.icons.pass
 
-	item->CreateConsoleCommand(command, m_playerName.c_str());
+	if (item->GetInfo()->info.icons.pass)
+	{
+		UI()->StartStopMenu(m_message_box,true);
+	}
+	else
+	{
+		xr_string command;
 
-	Console->Execute("main_menu off");
-	Console->Execute(command.c_str());
+		item->CreateConsoleCommand(command, m_playerName.c_str());
+
+		Console->Execute("main_menu off");
+		Console->Execute(command.c_str());
+	}
 }
 
 void CServerList::InitHeader(){

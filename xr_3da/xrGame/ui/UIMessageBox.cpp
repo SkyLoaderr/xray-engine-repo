@@ -199,8 +199,19 @@ void CUIMessageBox::SetText(LPCSTR str)
 }
 
 LPCSTR CUIMessageBox::GetHost(){
-	if (m_UIEditHost)
-		return m_UIEditHost->GetText();
+	if (m_UIEditHost){
+		xr_string ret_val;
+		ret_val = m_UIEditHost->GetText();
+
+		xr_string::size_type pos = ret_val.find(":");
+
+		if (pos != xr_string::npos)
+		{
+//			ret_val.erase(pos, ret_val.end());
+		}
+
+		return ret_val.c_str();
+	}
 	else return NULL;
 }
 

@@ -13,6 +13,7 @@
 class CUIXml;
 class CGameSpy_Browser;
 class CUIColorAnimatorWrapper;
+class CUIMessageBoxEx;
 
 #define LST_SERVER		0 
 #define LST_SRV_PROP	1
@@ -92,6 +93,8 @@ protected:
 	float			m_fListH[2];
 	float			m_fEditPos[2];
 	int				m_cur_item;
+
+	CUIMessageBoxEx* m_message_box;
 
 	CGameSpy_Browser	m_GSBrowser;	
 
