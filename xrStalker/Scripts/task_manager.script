@@ -11,7 +11,7 @@ local task_freedom_id = 0
 local task_table_filled = false
 local task_info = {
 			trader  = {},
-			barmen  = {},
+			barman  = {},
 			ecolog  = {},
 			dolg    = {},
 			freedom = {}}
@@ -37,7 +37,7 @@ function get_id(type)
 	if type == "trader" then
 		task_trader_id = task_trader_id + 1
 		return task_trader_id
-	elseif type == "barmen" then
+	elseif type == "barman" then
 		task_barman_id = task_barman_id + 1
 		return task_barman_id
 	elseif type == "ecolog" then
@@ -210,7 +210,7 @@ function action_give_task(actor, npc, p1, p2)
 	
 	local objective = SGameTaskObjective(task,1)
 	objective:set_description(task_desc.text)
-	objective:set_article_id("descr_bar_resque_information")
+	objective:set_article_id(task_desc.description)
 	if task_desc.type == "eliminate_lager" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
