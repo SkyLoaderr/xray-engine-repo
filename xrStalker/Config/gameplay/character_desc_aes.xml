@@ -6,7 +6,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="10"></icon>
 		<map_icon x="3" y="0"></map_icon>
-		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+		<bio>aes_Monolit_rpg_bio</bio>
 
 		<team>Monolit_rpg</team>
 
@@ -15,8 +15,8 @@
 
         <snd_config>characters_voice\human_01\monolith\</snd_config>
 
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>52</rank>
+		<reputation>-632</reputation>
 
     	<panic_threshold>0.0</panic_threshold>
 
@@ -38,13 +38,13 @@
     <name>GENERATE_NAME_stalker</name>
     <icon x="4" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
-    <bio>Боевик группировки "Монолит". Хорошо экипирован. Детальная информация отсутствует.</bio>
+    <bio>aes_Monolit_specnaz_bio</bio>
 
     <class>aes_Monolit_specnaz</class>
     <community>monolith</community>
 
-    <rank>70</rank>
-    <reputation>0</reputation>
+    <rank>76</rank>
+    <reputation>-783</reputation>
 
     <panic_threshold>0.0</panic_threshold>
 
@@ -94,13 +94,13 @@
     <name>GENERATE_NAME_stalker</name>
     <icon x="24" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
-    <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+    <bio>aes_Monolit_sniper_bio</bio>
 
     <class>aes_Monolit_sniper</class>
     <community>monolith</community>
 
-    <rank>50</rank>
-    <reputation>0</reputation>
+    <rank>54</rank>
+    <reputation>-364</reputation>
 
     <panic_threshold>0.0</panic_threshold>
 
@@ -128,8 +128,8 @@
     <class>aes_Monolit_sniper_gauss</class>
     <community>monolith</community>
 
-    <rank>50</rank>
-    <reputation>0</reputation>
+    <rank>89</rank>
+    <reputation>-789</reputation>
 
     <snd_config>characters_voice\human_01\monolith\</snd_config> 
 
@@ -158,8 +158,8 @@
     <community>monolith</community>
 
 
-    <rank>90</rank>
-    <reputation>0</reputation>
+    <rank>92</rank>
+    <reputation>-863</reputation>
 
     <panic_threshold>0.0</panic_threshold>
 
@@ -184,13 +184,13 @@
 		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Детальная информация отсутствует.</bio>
+		<bio>aes_Soldier_commander_bio</bio>
 
 		<class>aes_Soldier_commander</class>
 		<community>military</community>
 		
-		<rank>60</rank>
-		<reputation>0</reputation>
+		<rank>86</rank>
+		<reputation>12</reputation>
 
     	<panic_threshold>0.0</panic_threshold>
 
@@ -215,8 +215,7 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio> Военный сталкер. Хорошо вооружен и очень опасен.
-		Детальная информация недоступна.</bio>
+		<bio>aes_Soldier_military_bio</bio>
 
 		<team>Soldier_military</team>
 		
@@ -249,15 +248,15 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="12" y="4"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>aes_Soldier_specnaz_bio</bio>
 
 		<team>Soldier_specnaz</team>
 		
 		<class>aes_Soldier_specnaz</class>
 		<community>military</community>
 		
-		<rank>80</rank>
-		<reputation>0</reputation>
+		<rank>85</rank>
+		<reputation>20</reputation>
 
     	<panic_threshold>0.0</panic_threshold>
 
@@ -282,15 +281,15 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
+		<bio>aes_Soldier_specnaz_aes_bio</bio>
 
 		<team>Soldier_specnaz</team>
 		
 		<class>aes_Soldier_specnaz_aes</class>
 		<community>military</community>
 		
-		<rank>80</rank>
-		<reputation>0</reputation>
+		<rank>89</rank>
+		<reputation>15</reputation>
 
         <snd_config>characters_voice\human_03\military\</snd_config>
 
@@ -313,15 +312,15 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>aes_Soldier_sniper_bio</bio>
 
 		<team>Soldier_sniper</team>
 		
 		<class>aes_Soldier_sniper</class>
 		<community>military</community>
 		
-		<rank>60</rank>
-		<reputation>0</reputation>
+		<rank>66</rank>
+		<reputation>-13</reputation>
 
         <snd_config>characters_voice\human_03\military\</snd_config>
 
