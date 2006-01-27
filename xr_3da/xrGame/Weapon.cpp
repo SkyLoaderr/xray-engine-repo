@@ -294,11 +294,8 @@ void CWeapon::Load		(LPCSTR section)
 	camMaxAngleHorz		= pSettings->r_float		(section,"cam_max_angle_horz"	); 
 	camMaxAngleHorz		= deg2rad					(camMaxAngleHorz);
 	camStepAngleHorz	= pSettings->r_float		(section,"cam_step_angle_horz"	); 
-	camStepAngleHorz	= deg2rad					(camStepAngleHorz);
-	if (pSettings->line_exist(section, "cam_dispertion_frac"))
-		camDispertionFrac = pSettings->r_float(section, "cam_dispertion_frac");
-	else
-		camDispertionFrac = 0.7f;
+	camStepAngleHorz	= deg2rad					(camStepAngleHorz);	
+	camDispertionFrac			= READ_IF_EXISTS(pSettings, r_float, section, "cam_dispertion_frac",	0.7f);
 	//  [8/2/2005]
 	//m_fParentDispersionModifier = READ_IF_EXISTS(pSettings, r_float, section, "parent_dispersion_modifier",1.0f);
 	m_fPDM_disp_base			= READ_IF_EXISTS(pSettings, r_float, section, "PDM_disp_base",	1.0f);
