@@ -824,7 +824,7 @@ bool	game_cl_mp::Is_Spectator_Camera_Allowed			(CSpectator::EActorCameras Camera
 	}
 	return false;
 	*/
-	return m_u8SpectatorModes & (1<<Camera);
+	return (!!(m_u8SpectatorModes & (1<<Camera)));
 };
 
 void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
