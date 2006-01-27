@@ -514,6 +514,8 @@
             ammo_5.45x39_ap = 2 \n
 			device_torch \n
 
+            wpn_addon_scope \n
+
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 2 \n
 
