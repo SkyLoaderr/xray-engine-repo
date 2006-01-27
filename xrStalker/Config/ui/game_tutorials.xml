@@ -473,7 +473,7 @@
 		
 		<item><!-- Радиация -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -499,7 +499,7 @@
 		
 		<item><!-- Голод -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -525,7 +525,7 @@
 		
 		<item><!-- Кровотечения -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -551,7 +551,7 @@
 		
 		<item><!-- Поломка оружия -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -603,7 +603,7 @@
 		
 		<item><!-- Усталость -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -655,7 +655,7 @@
 		
 		<item><!-- сон -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
@@ -681,7 +681,7 @@
 		
 		<item><!-- перегрузка -->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
