@@ -1130,7 +1130,7 @@ void	game_sv_mp::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
 void	game_sv_mp::ReadOptions				(shared_str &options)
 {
 	inherited::ReadOptions(options);	
-	u8 SpectatorModes = u8(get_option_i(*options,"spectr",31) & 0x00ff);
+	u8 SpectatorModes = u8(get_option_i(*options,"spectrmds",31) & 0x00ff);
 
 	m_bSpectator_FreeFly	= (SpectatorModes & (1<<CSpectator::eacFreeFly	)) != 0;
 	m_bSpectator_FirstEye	= (SpectatorModes & (1<<CSpectator::eacFirstEye	)) != 0;
