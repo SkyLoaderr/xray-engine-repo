@@ -278,7 +278,7 @@
 	</specific_character>
 <!---------------------------SOLDIER SPECNAZ AES---------------------->
 	<specific_character id="aes_Soldier_specnaz_aes" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>aes_Soldier_specnaz_aes_name</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>aes_Soldier_specnaz_aes_bio</bio>

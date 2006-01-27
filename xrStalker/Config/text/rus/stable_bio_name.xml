@@ -550,6 +550,10 @@
 </string>
 
 ;----------Soldier Specnaz Aes--------
+<string id="aes_Soldier_specnaz_aes_name">
+	<text>Василь Невезучий</text>
+</string>
+
 <string id="aes_Soldier_specnaz_aes_bio">
 	<text>Армейский спецназ. Хорошо экипирован.Детальная информация недоступна.</text>
 </string>
