@@ -11,8 +11,8 @@
 		<class>gar_seriy</class>
 		<community>stalker</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>51</rank>
+		<reputation>-18</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
 
@@ -40,8 +40,8 @@
 		<class>gar_dram_novice</class>
 		<community>stalker</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>21</rank>
+		<reputation>19</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
@@ -67,8 +67,8 @@
 		<class>gar_newbie_in_tonnel</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>22</rank>
+		<reputation>-4</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
@@ -93,8 +93,8 @@
 		<class>gar_hellcar</class>
 		<community>stalker</community>
 
-		<rank>50</rank>
-		<reputation>0</reputation>
+		<rank>59</rank>
+		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		
@@ -128,8 +128,8 @@
 		<class>gar_bandit_novice_wounded</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>19</rank>
+		<reputation>-120</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
@@ -154,8 +154,8 @@
 		<class>gar_bandit_leader</class>
 		<community>bandit</community>
 		
-		<rank>70</rank>
-		<reputation>-20</reputation>
+		<rank>80</rank>
+		<reputation>-145</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
@@ -183,8 +183,8 @@
 		<class>gar_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>16</rank>
+		<reputation>-65</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
@@ -210,8 +210,8 @@
 		<class>gar_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>26</rank>
+		<reputation>-95</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
@@ -239,8 +239,8 @@
 		<class>gar_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>11</rank>
+		<reputation>-89</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
@@ -269,8 +269,8 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>45</rank>
+		<reputation>-126</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
@@ -299,8 +299,8 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>38</rank>
+		<reputation>-73</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
@@ -329,8 +329,8 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>44</rank>
+		<reputation>-100</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 
@@ -364,8 +364,8 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>42</rank>
+		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -396,8 +396,8 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>35</rank>
+		<reputation>-11</reputation>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
@@ -427,8 +427,8 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>51</rank>
+		<reputation>14</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
@@ -459,8 +459,8 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>54</rank>
+		<reputation>1</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
@@ -490,8 +490,8 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>40</rank>
-		<reputation>0</reputation>
+		<rank>44</rank>
+		<reputation>-15</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		
@@ -524,7 +524,7 @@
 		<community>freedom</community>
 		
 		<rank>40</rank>
-		<reputation>0</reputation>
+		<reputation>-90</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 
@@ -551,8 +551,8 @@
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>49</rank>
+		<reputation>120</reputation>
 		
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
 
@@ -583,8 +583,8 @@
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>52</rank>
+		<reputation>86</reputation>
 		
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
 
@@ -615,8 +615,8 @@
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>47</rank>
+		<reputation>124</reputation>
 		
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
 
@@ -647,8 +647,8 @@
 		<class>gar_dolg_blokpost_commander</class>
 		<community>dolg</community>
 		
-		<rank>40</rank>
-		<reputation>20</reputation>
+		<rank>59</rank>
+		<reputation>140</reputation>
 
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
 		
