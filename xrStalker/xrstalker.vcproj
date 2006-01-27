@@ -2185,6 +2185,12 @@
 						RelativePath=".\config\scripts\yan\brain_system_message.ltx">
 					</File>
 					<File
+						RelativePath=".\config\scripts\yan\yan_ghost.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\yan\yan_klyk.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\yan_labx16_switcher1.ltx">
 					</File>
 					<File
