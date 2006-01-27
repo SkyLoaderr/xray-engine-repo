@@ -132,7 +132,8 @@ function mp_main:OnDirectIP_yes()
 
 	if (string.len(self.message_box:GetHost()) ~= 0) then
 		local cmd = "start server(fog_net/deathmatch) client(" .. self.message_box:GetHost() .. "/name=" .. self.player_name:GetText() .. "/psw=" .. self.message_box:GetPassword() .. ")"
-		local console = get_console();	
+		local console = get_console();
+		console:execute("main_menu off")
 		console:execute(cmd)
 	end
 
@@ -229,7 +230,7 @@ function mp_main:GatherServerData()
 	-- password ---------------------------------------------------------------------
 	tmp = self.edit_password:GetText()
 	if string.len(tmp) > 0 then
-		cmdstr = cmdstr .. "/pasw=" .. tmp
+		cmdstr = cmdstr .. "/psw=" .. tmp
 	end
 	-- max players ------------------------------------------------------------------
 	tmp = self.spin_max_players:GetText()
