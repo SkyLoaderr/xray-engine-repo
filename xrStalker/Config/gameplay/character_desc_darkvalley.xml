@@ -1225,7 +1225,7 @@
 		<class>dar_stalker_explorer</class>
 		<community>stalker</community>
 		
-		<rank>90</rank>
+		<rank>50</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
