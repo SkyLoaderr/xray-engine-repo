@@ -22,6 +22,8 @@
 #include "ai_space.h"
 #include "profiler.h"
 
+static const u32 ENEMY_INERTIA_TIME	= 2000;
+
 #define USE_EVALUATOR
 
 bool CEnemyManager::is_useful				(const CEntityAlive *entity_alive) const
@@ -109,6 +111,7 @@ void CEnemyManager::reload					(LPCSTR section)
 	m_visible_now				= false;
 	m_last_enemy_time			= 0;
 	m_last_enemy				= 0;
+	m_last_enemy_change			= 0;
 	m_useful_callback.clear		();
 	VERIFY						(m_ready_to_save);
 }
@@ -125,8 +128,17 @@ void CEnemyManager::update					()
 	m_ready_to_save				= true;
 	m_visible_now				= false;
 
+	const CEntityAlive			*previous_selected = selected();
+
 	if (!selected() || !m_object->memory().visual().visible_now(selected()) || !selected()->g_Alive())
 		inherited::update		();
+
+	if (selected() && previous_selected && (selected()->ID() != previous_selected->ID()))
+		on_enemy_change			(previous_selected);
+	else {
+		if (selected() && !previous_selected)
+			m_last_enemy_change	= Device.dwTimeGlobal;
+	}
 
 	if (selected()) {
 		m_last_enemy_time		= Device.dwTimeGlobal;
@@ -193,4 +205,29 @@ void CEnemyManager::restore_max_ignore_monster_distance	()
 float CEnemyManager::max_ignore_monster_distance		() const
 {
 	return						(m_max_ignore_distance);
+}
+
+void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
+{
+	VERIFY						(previous_enemy);
+	VERIFY						(selected());
+
+	if (!previous_enemy->g_Alive()) {
+		Msg						("[%d] [%s] changes enemy from [%s] to [%s] because previous is DEAD",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
+		m_last_enemy_change		= Device.dwTimeGlobal;
+		return;
+	}
+
+	if (Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME)) {
+		m_selected				= previous_enemy;
+		return;
+	}
+
+	if (m_object->memory().visual().visible_now(previous_enemy) && !m_object->memory().visual().visible_now(selected())) {
+		m_selected				= previous_enemy;
+		return;
+	}
+
+	Msg							("[%d] [%s] changes enemy from [%s] to [%s] because NO INERTIA",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
+	m_last_enemy_change			= Device.dwTimeGlobal;
 }

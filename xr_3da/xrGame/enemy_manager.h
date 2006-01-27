@@ -29,7 +29,11 @@ private:
 	const CEntityAlive			*m_last_enemy;
 	USEFULE_CALLBACK			m_useful_callback;
 
+private:
+	u32							m_last_enemy_change;
+
 protected:
+			void				on_enemy_change		(const CEntityAlive *previous_enemy);
 			bool				expedient			(const CEntityAlive *object) const;
 
 public:

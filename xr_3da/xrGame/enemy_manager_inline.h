@@ -17,6 +17,7 @@ IC	CEnemyManager::CEnemyManager									(CCustomMonster *object)
 	m_ready_to_save				= true;
 	m_visible_now				= false;
 	m_last_enemy_time			= 0;
+	m_last_enemy_change			= 0;
 }
 
 IC	u32	CEnemyManager::last_enemy_time								() const
