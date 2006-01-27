@@ -151,7 +151,7 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 [remark@val_escort_nap1_wait1]
 anim                = guard
 target              = actor
-on_actor_dist_le    = 2 | remark@val_escort_nap1_phrase6
+on_actor_dist_le    = 2 | remark@val_escort_nap1_phrase6 %+val_escort_task_start%
 on_timer            = 5000 | remark@val_escort_nap1_phrase4
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
@@ -177,7 +177,7 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 [remark@val_escort_nap1_wait2]
 anim                = guard
 target              = actor
-on_actor_dist_le    = 2 | remark@val_escort_nap1_phrase6
+on_actor_dist_le    = 2 | remark@val_escort_nap1_phrase6 %+val_escort_task_start%
 on_timer            = 5000 | remark@val_escort_nap1_phrase5
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
@@ -204,7 +204,7 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 anim                = guard
 snd                 = val_escort_nap1_phrase3
 target              = actor
-on_signal           = sound_end | walker1@val_escort_nap1_ambush_go %+val_escort_task_start%
+on_signal           = sound_end | walker1@val_escort_nap1_ambush_go
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
