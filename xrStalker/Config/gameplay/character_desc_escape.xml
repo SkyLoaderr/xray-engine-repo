@@ -45,8 +45,8 @@
 		<class>esc_wolf</class>
 		<community>stranger</community>
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>43</rank>
+		<reputation>5</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
  
@@ -79,8 +79,8 @@
 		<class>esc_fanat</class>
 		<community>stranger</community>
 		
-		<rank>90</rank>
-		<reputation>0</reputation>
+		<rank>50</rank>
+		<reputation>10</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
  
@@ -109,8 +109,8 @@
 		<class>esc_fox</class>
 		<community>stalker</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>33</rank>
+		<reputation>-3</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
@@ -139,8 +139,8 @@
 		<class>esc_tutorial_wounded</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>19</rank>
+		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
@@ -170,7 +170,7 @@
 		<community>killer</community>
 
 		<rank>70</rank>
-		<reputation>-50</reputation>
+		<reputation>-85</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -198,8 +198,8 @@
 		<class>esc_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>3</rank>
+		<reputation>-56</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		
@@ -228,8 +228,8 @@
 		<class>esc_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>5</rank>
+		<reputation>-60</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		
@@ -260,8 +260,8 @@
 		<class>esc_bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>0</rank>
-		<reputation>0</reputation>
+		<rank>8</rank>
+		<reputation>-67</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
@@ -293,8 +293,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>14</rank>
+		<reputation>12</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -322,8 +322,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>12</rank>
+		<reputation>-8</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -351,8 +351,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>21</rank>
+		<reputation>9</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -381,8 +381,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>17</rank>
+		<reputation>8</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
@@ -409,8 +409,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>26</rank>
+		<reputation>-10</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -438,8 +438,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>13</rank>
+		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -469,8 +469,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>22</rank>
+		<reputation>18</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -499,8 +499,8 @@
 		<class>esc_stalker_novice</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>5</rank>
+		<reputation>-2</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -530,8 +530,8 @@
 		<class>esc_ranger</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
-		<reputation>0</reputation>
+		<rank>27</rank>
+		<reputation>16</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -561,8 +561,8 @@
 		<class>esc_soldier_commander</class>
 		<community>military</community>
 		
-		<rank>60</rank>
-		<reputation>0</reputation>
+		<rank>76</rank>
+		<reputation>-15</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
 
@@ -590,8 +590,8 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>42</rank>
+		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 
@@ -620,8 +620,8 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>47</rank>
+		<reputation>9</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
 
@@ -651,8 +651,8 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>50</rank>
+		<reputation>10</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 
@@ -681,8 +681,8 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>56</rank>
+		<reputation>-18</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
 
@@ -712,8 +712,8 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>48</rank>
+		<reputation>12</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 
@@ -741,8 +741,8 @@
 		<class>esc_soldier_blockpost_commander</class>
 		<community>military</community>
 		
-		<rank>60</rank>
-		<reputation>0</reputation>
+		<rank>79</rank>
+		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
 
@@ -770,7 +770,7 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community>
 		
-		<rank>30</rank>
+		<rank>40</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -800,8 +800,8 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>43</rank>
+		<reputation>-6</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 
@@ -829,8 +829,8 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community>
 		
-		<rank>30</rank>
-		<reputation>0</reputation>
+		<rank>35</rank>
+		<reputation>11</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 
@@ -887,8 +887,8 @@
 		<class>esc_soldier_specnaz</class>
 		<community>military</community>
 		
-		<rank>80</rank>
-		<reputation>0</reputation>
+		<rank>83</rank>
+		<reputation>-4</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
 
@@ -917,8 +917,8 @@
 		<class>esc_killer_master</class>
 		<community>killer</community>
 		
-		<rank>90</rank>
-		<reputation>-50</reputation>
+		<rank>94</rank>
+		<reputation>-109</reputation>
 	
 		<snd_config>characters_voice\human_01\killer\</snd_config>
 		
@@ -946,7 +946,7 @@
 		<class>esc_provodnik</class>
 		<community>stranger</community>
 		
-		<rank>20</rank>
+		<rank>59</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_03\newbie\</snd_config>
