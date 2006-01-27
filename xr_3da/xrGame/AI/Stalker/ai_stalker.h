@@ -398,6 +398,7 @@ public:
 #ifdef DEBUG
 			void						debug_planner					(const script_planner *planner);
 #endif
+	virtual void						on_enemy_change					(const CEntityAlive *enemy);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CAI_Stalker)

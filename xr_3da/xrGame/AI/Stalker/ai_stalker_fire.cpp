@@ -241,6 +241,11 @@ void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
 	m_sell_info_actuality		= false;
 }
 
+void CAI_Stalker::on_enemy_change		(const CEntityAlive *enemy)
+{
+	m_item_actuality			= false;
+}
+
 void CAI_Stalker::update_best_item_info	()
 {
 	// check if we already updated
@@ -274,10 +279,21 @@ void CAI_Stalker::update_best_item_info	()
 			if ((*I)->can_kill()) {
 				ai().ef_storage().non_alife().member_item()	= &(*I)->object();
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
-				if (value > best_value) {
+				if (!fsimilar(value,best_value) && (value < best_value))
+					continue;
+
+				if (!fsimilar(value,best_value) && (value > best_value)) {
 					best_value			= value;
 					m_best_item_to_kill = *I;
+					continue;
 				}
+
+				VERIFY					(fsimilar(value,best_value));
+				if ((*I)->object().ef_weapon_type() <= m_best_item_to_kill->object().ef_weapon_type())
+					continue;
+
+				best_value				= value;
+				m_best_item_to_kill		= *I;
 			}
 		}
 	}

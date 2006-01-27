@@ -262,6 +262,7 @@ private:
 public:
 	IC		const bool				&already_dead			() const {return (m_already_dead);};
 	virtual	bool					use_simplified_visual	() const {return (already_dead());};
+	virtual void					on_enemy_change			(const CEntityAlive *enemy);
 };
 
 #include "custommonster_inline.h"

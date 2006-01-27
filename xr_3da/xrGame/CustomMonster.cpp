@@ -1121,3 +1121,7 @@ LPCSTR CCustomMonster::visual_name	(CSE_Abstract *server_entity)
 
 	return						(pSettings->r_string(cNameSect(),"corpse_visual"));
 }
+
+void CCustomMonster::on_enemy_change(const CEntityAlive *enemy)
+{
+}
