@@ -1,1 +1,20 @@
- 
+[logic]
+active = remark
+on_combat = combat_ignore
+
+[combat_ignore]
+
+[remark]
+anim = wait
+combat_ignore_cond = always
+on_info = {+yantar_klyk_talk} remark@klyk_talk
+
+[remark@klyk_talk]
+snd = yantar_dream_talk_2
+anim = wait
+combat_ignore_cond = always
+on_timer = 9000 | remark@end %+yantar_ghost_talk_2%
+
+[remark@end]
+anim = wait
+combat_ignore_cond = always
