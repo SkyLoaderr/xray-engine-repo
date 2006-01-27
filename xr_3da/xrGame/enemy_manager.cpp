@@ -216,7 +216,7 @@ void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
 	VERIFY						(selected());
 
 	if (!previous_enemy->g_Alive()) {
-		Msg						("[%d] [%s] changes enemy from [%s] to [%s] because previous is DEAD",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
+//		Msg						("[%d] [%s] changes enemy from [%s] to [%s] because previous is DEAD",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
 		m_last_enemy_change		= Device.dwTimeGlobal;
 		return;
 	}
@@ -231,6 +231,6 @@ void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
 		return;
 	}
 
-	Msg							("[%d] [%s] changes enemy from [%s] to [%s] because NO INERTIA",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
+//	Msg							("[%d] [%s] changes enemy from [%s] to [%s] because NO INERTIA",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
 	m_last_enemy_change			= Device.dwTimeGlobal;
 }
