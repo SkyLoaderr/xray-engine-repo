@@ -172,6 +172,7 @@ function action_car:reset_scheme(loading)
 	    --end
 
 	    --printf("car <fire>: target = %s", self.st.fire_target)
+	    local n = 0
 	    if self.st.fire_target == "points" then
 	        self.state_firetarget = state_firetarget_points
 	    else
