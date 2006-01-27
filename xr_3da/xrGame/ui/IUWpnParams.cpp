@@ -53,24 +53,28 @@ void CUIWpnParams::SetInfo(const char* wpn_section){
 
 	// DAMAGE
 	val = pSettings->r_float(wpn_section,"hit_power");
-
-	val/=3;
-	if (val > 100)
-		val = 100;
+	if (val < 160)
+		val = val/2;
+	else
+		val = 80 + pow(val/400,2)*20;
 	
 	m_progressDamage.SetProgressPos(static_cast<s16>(iFloor(val)));
 
 	// ACCURACY
-	float cam_dispersion_frac = pSettings->r_float(wpn_section,"cam_dispertion_frac");
+	float cam_dispersion_frac;
+	if (pSettings->line_exist(wpn_section, "cam_dispertion_frac"))
+        cam_dispersion_frac = pSettings->r_float(wpn_section,"cam_dispertion_frac");
+	else 
+		cam_dispersion_frac = 0.7f;
 	float fire_dispersion_base = pSettings->r_float(wpn_section,"fire_dispersion_base");
 	float cam_dispersion_inc = pSettings->r_float(wpn_section,"cam_dispersion_inc");
 	float cam_dispersion = pSettings->r_float(wpn_section,"cam_dispersion");
 	float cam_step_angle_horz = pSettings->r_float(wpn_section,"cam_step_angle_horz");
 	char ammo[128];
 	_GetItem(pSettings->r_string(wpn_section,"ammo_class"), 0, ammo);
-	float k_disp =  float(atof(ammo));
+	float k_disp =  pSettings->r_float(ammo, "k_disp");
 
-    val = 100.0f*pow(1.0f - cam_dispersion_frac, 1.5f) + 0.1f/pow(fire_dispersion_base*k_disp,2.0f) 
+    val = 100.0f*pow(cam_dispersion_frac, 1.5f) + 0.1f/pow(fire_dispersion_base*k_disp,2.0f) 
 		- 30.0f*pow(fire_dispersion_base*k_disp,0.5f) + 50.0f*(cam_dispersion_inc + 0.5f*cam_dispersion 
 		+ cam_dispersion*pow(cam_step_angle_horz,2.0f));
 	m_progressAccuracy.SetProgressPos(static_cast<s16>(iFloor(val)));
