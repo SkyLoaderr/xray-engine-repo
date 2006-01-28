@@ -1,16 +1,20 @@
 [list]
 tm_eliminate_test_lager
 tm_artefact_vyvert
+tm_kill_svoboda_master
+tm_find_boar_leg
+tm_find_quest_item
+
 
 [tm_eliminate_test_lager]
 type = eliminate_lager
 community = actor
 text = tm_eliminate_test_lager_text
-description = tm_eliminate_test_lager_decr
+description = tm_eliminate_test_lager_descr
 parent = dolg
 target = 10001
 
-reward_item = bandage, 2
+reward_item = bandage
 reward_reputation = -50
 reward_relation = freedom, -100, dolg, 100
 
@@ -20,7 +24,7 @@ reward_relation = freedom, -100, dolg, 100
 type = artefact
 community = actor
 text = tm_artefact_vyvert_text
-description = tm_artefact_vyvert_decr
+description = tm_artefact_vyvert_descr
 parent = dolg
 target = af_vyvert
 
@@ -28,3 +32,42 @@ reward_money = 340
 reward_reputation = 10
 reward_relation = dolg, 100
 
+
+
+[tm_kill_svoboda_master]
+type = kill_stalker
+community = actor
+text = tm_kill_svoboda_master_text
+description = tm_kill_svoboda_master_descr
+parent = dolg
+target = sim_freedom_master_quest
+
+reward_money = 870
+reward_reputation = 10
+reward_relation = dolg, 100, freedom, -100
+
+
+[tm_find_boar_leg]
+type = monster_part
+community = actor
+text = tm_find_boar_leg_text
+description = tm_find_boar_leg_descr
+parent = dolg
+target = boar_leg
+
+reward_money = 100
+reward_reputation = 10
+reward_relation = dolg, 100
+
+
+[tm_find_quest_item]
+type = find_item
+community = actor
+text = tm_find_boar_leg_text
+description = tm_find_boar_leg_descr
+parent = dolg
+target = quest_item
+
+reward_money = 100
+reward_reputation = 10
+reward_relation = dolg, 100
