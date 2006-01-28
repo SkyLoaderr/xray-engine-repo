@@ -1,3 +1,19 @@
-<article id="tm_eliminate_test_lager_decr" name="eliminate_lager" group="Diary">
+<article id="tm_eliminate_test_lager_descr" name="eliminate_lager" group="Diary">
         <text>tm_eliminate_test_lager_descr</text>
+</article>
+
+<article id="tm_artefact_vyvert_descr" name="eliminate_lager" group="Diary">
+        <text>tm_artefact_vyvert_descr</text>
+</article>
+
+<article id="tm_kill_svoboda_master_descr" name="eliminate_lager" group="Diary">
+        <text>tm_artefact_vyvert_descr</text>
+</article>
+
+<article id="tm_find_boar_leg_descr" name="eliminate_lager" group="Diary">
+        <text>tm_artefact_vyvert_descr</text>
+</article>
+
+<article id="tm_find_quest_item_descr" name="eliminate_lager" group="Diary">
+        <text>tm_artefact_vyvert_descr</text>
 </article>
