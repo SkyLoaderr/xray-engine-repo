@@ -65,9 +65,9 @@
 		
 #include "gameplay\character_dialogs.xml"					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
-		<actor_dialog>escape_lager_volk_job</actor_dialog>
+<!--		<actor_dialog>escape_lager_volk_job</actor_dialog>
 		<actor_dialog>escape_lager_volk_info</actor_dialog>		
-		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
+		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>  -->
 	</specific_character>
 	
 	<specific_character id="esc_fanat" team_default = "1">
@@ -96,8 +96,8 @@
 		</supplies>
 				
 		<start_dialog>escape_lager_leader_hello</start_dialog>
-		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
-		<actor_dialog>escape_lager_leader_request</actor_dialog>		
+<!--		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
+		<actor_dialog>escape_lager_leader_request</actor_dialog>		-->
 	</specific_character>
 	
 	<specific_character id="esc_fox" team_default = "1">
@@ -126,8 +126,8 @@
 		</supplies>
 					
 		<start_dialog>escape_fox_hello_dialog</start_dialog>
-		<actor_dialog>escape_fox_flash_dialog</actor_dialog>
-		<actor_dialog>escape_fox_flame_dialog</actor_dialog>
+<!--		<actor_dialog>escape_fox_flash_dialog</actor_dialog>
+		<actor_dialog>escape_fox_flame_dialog</actor_dialog>	-->
 	</specific_character>
 	
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
@@ -185,7 +185,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 	<!---------------------------BANDIT NOVICE----------------------->
@@ -215,8 +214,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 </specific_character>
 
 	<specific_character id="esc_bandit_novice_default2" team_default = "1">
@@ -247,8 +244,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_bandit_novice_default3" team_default = "1">
@@ -277,9 +272,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
+</specific_character>
 	
 	
 	<!---------------------------STALKER NOVICE----------------------->
@@ -546,9 +539,9 @@
 		</supplies>
 			
 		<start_dialog>escape_factory_assault_start</start_dialog>		
-		<actor_dialog>escape_factory_assault_attack</actor_dialog>
+<!--		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack_now</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>		-->
 	</specific_character>
 	
 	
@@ -578,7 +571,7 @@
 		</supplies>
 					
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
-		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>
+<!--		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>	-->
 	</specific_character>
 	
 	<specific_character id="esc_soldier_regular_default1" team_default = "1">
@@ -965,7 +958,7 @@
 		</supplies>
 
 		<start_dialog>esc_provodnik_start</start_dialog>
-		<actor_dialog>esc_provodnik_give_info</actor_dialog>
+<!--		<actor_dialog>esc_provodnik_give_info</actor_dialog> -->
 	</specific_character>
 	
 </xml>
