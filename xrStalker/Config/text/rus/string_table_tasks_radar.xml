@@ -2,3 +2,10 @@
 		<text>Антенны</text>
 	</string>
 	
+	<string id="rad_get_to_aes">
+		<text>Добраться до ЧАЭС</text>
+	</string>
+	
+	<string id="rad_get_to_aes_1">
+		<text>Найти вход в саркофаг</text>
+	</string>	
