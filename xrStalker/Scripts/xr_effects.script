@@ -1028,13 +1028,6 @@ function mil_actor_enemy_reset (actor, npc)
     --xr_gulag.setGulagRelation ("mil_freedom", game_object.neutral, db.actor)    
 end
 
-function val_suicide_stalker_died(actor, npc)
-	if not db.actor:has_info_portion("val_suicide_artefact_given") then
-		db.actor:set_task_state(task.fail, "val_suicide_find_lost_stalker", 0)
-	end
-end
-
-
 function mil_bomb_explode (actor, npc)
     local source = nil
     local sim = alife ()
@@ -1222,9 +1215,10 @@ function gar_send_dolg_warning()
 	end
 end
 
--- DARK VALLEY
--- При смерти кровососа дать ему небольшой пинок в сторону вейпоинта, чтобы он упал
--- с обрыва
+
+-------------------------------------------------------------------------------------
+-- Функции для DarkValley
+-------------------------------------------------------------------------------------
 function val_bs_victim_dead(actor, npc)
 	printf("_bp: val_bs_victim_dead: npc='%s'", npc:name())
 	local h = hit()
@@ -1237,118 +1231,74 @@ function val_bs_victim_dead(actor, npc)
 	npc:hit(h)
 end
 
-function val_suicide_kill_self(actor, npc)
-	local snd_obj = sound_object([[Weapons\walther_shoot]])
-	if snd_obj ~= nil then
-		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
+function val_escort_guard_death(actor, npc)
+    local idx = string.sub(npc:name(), -1)
+	local t = db.storage[npc:id()].death
+
+    actor:disable_info_portion("val_escort_guard" .. idx .. "_combat")
+    actor:give_info_portion("val_escort_guard" .. idx .. "_dead")
+    
+	if t ~= nil and t.killer == actor:id() then
+        actor:give_info_portion("val_escort_actor_helped")
 	end
+    --"on_info     = %-val_escort_guard1_combat +val_escort_guard1_dead%\n" ..
+    --"on_info2    = {=killed_by_actor} %+val_escort_actor_helped%\n" ..
+end
 
-	--[[
-	snd_obj = sound_object("ambient\\random\\rnd_fallscream")
-	if snd_obj ~= nil then
-		snd_obj:play_at_pos(db.actor, npc:position(), sound_object.s3d)
+function val_escort_guard_hit(actor, npc)
+    local idx = string.sub(npc:name(), -1)
+	local t = db.storage[npc:id()].hit
+
+	if t ~= nil then
+	    if t.who == actor:id() then
+            actor:give_info_portion("val_escort_combat")
+            actor:give_info_portion("val_escort_actor_helped")
+            if actor:dont_has_info("val_escort_nap1_start_combat") then
+                actor:give_info_portion("val_escort_captive_enemy")
+            end
+	    else
+	        local npc1 = level_object_by_sid(406)
+	        if npc1 ~= nil and t.who == npc1:id() then
+                actor:give_info_portion("val_escort_combat")
+                actor:give_info_portion("val_escort_nap1_start_combat")
+	        --else
+            --    actor:give_info_portion("val_escort_guard" .. idx .. "_combat")
+	        end
+	    end
 	end
-	--]]
-
-	--[[
-	action(
-		npc,
-		particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
-		cond	(cond.time_end, time_infinite)
-	)
-	--]]
-
-	printf("_bp: val_suicide_kill_self: npc='%s'", npc:name())
-	local h = hit()
-	h.power = 1000
-	h.direction = vector_rotate_y(npc:direction(), 90)
-	h.bone = "bip01_head"
-	h.draftsman = npc 
-	h.impulse = 200 --350
-	h.type = hit.wound
-	npc:hit(h)
+    --"on_info     = {=hit_by_actor} %+val_escort_combat +val_escort_actor_helped%, %+val_escort_guard1_combat%\n" ..
+    --"on_info2    = {+val_escort_combat -val_escort_nap1_start_combat} %+val_escort_captive_enemy%\n" ..
+    --"on_info3    = {=hitted_by(406) -val_escort_captive_enemy} %+val_escort_nap1_start_combat%\n" ..
 end
 
-function val_sacrifice_force_guards_kill_victim(actor, npc)
-	local guard1 = level_object_by_sid(404)
-	if guard1 then
-		npc:set_relation(game_object.enemy, guard1)
-		guard1:set_relation(game_object.enemy, npc)
-	end
-	
-	local guard2 = level_object_by_sid(405)
-	if guard2 then
-		npc:set_relation(game_object.enemy, guard2)
-		guard2:set_relation(game_object.enemy, npc)
-	end
+function val_escort_guard_combat(actor, npc)
+    local idx = string.sub(npc:name(), -1)
+
+    actor:give_info_portion("val_escort_guard" .. idx .. "_combat")
+    
+    if npc:see(actor) then
+        if actor:dont_has_info("val_escort_nap1_start_combat") then
+            actor:give_info_portion("val_escort_captive_enemy")
+        end
+        actor:give_info_portion("val_escort_combat")
+    end
+    --"on_info     = %+val_escort_guard1_combat%\n" ..
+    --"on_info2    = {=see_actor -val_escort_nap1_start_combat -val_escort_captive_enemy} %+val_escort_captive_enemy%\n" ..
+    --"on_info3    = {=see_actor -val_escort_combat} %+val_escort_combat% ;remark@val_escort_guard1_fight\n" ..
 end
 
-function val_escort_captive_friend(actor, npc)
-	local captive = level_object_by_sid(400)
-	if not captive or not captive:alive() then return end
+function val_escort_guard_free(actor, npc)
+    --local idx = string.sub(npc:name(), -1)
 
-	npc:set_relation(game_object.friend, captive)
-	captive:set_relation(game_object.friend, npc)
-	printf("_bp: val_escort_captive_friend")
+    actor:give_info_portion("val_escort_guards_free")
+    actor:disable_info_portion("val_escort_guard" .. string.sub(npc:name(), -1) .. "_combat")
+    --"on_info             = %+val_escort_guards_free -val_escort_guard1_combat%\n"
 end
 
-function val_escort_nap1_friend(actor, npc)
-	local nap1 = level_object_by_sid(406)
-	if not nap1 or not nap1:alive() then return end
 
-	npc:set_relation(game_object.friend, nap1)
-	nap1:set_relation(game_object.friend, npc)
-end
-
-function val_escort_captive_enemy(actor, npc)
-	local captive = level_object_by_sid(400)
-	if not captive or not captive:alive() then return end
-
-	npc:set_relation(game_object.enemy, captive)
-	captive:set_relation(game_object.enemy, npc)
-	printf("_bp: val_escort_captive_enemy")
-end
-
-function val_escort_nap1_enemy(actor, npc)
-	local nap1 = level_object_by_sid(406)
-	if not nap1 or not nap1:alive() then return end
-
-	npc:set_relation(game_object.enemy, nap1)
-	nap1:set_relation(game_object.enemy, npc)
-end
-
-function val_escort_set_fight(actor, npc)
-	--local captive = level_object_by_sid(400)
-	local nap1 = level_object_by_sid(406)
-	if not nap1 or not nap1:alive() then -- or not captive or not captive:alive() then
-		return
-	end
-
-	--local ignore_actor = distance_between(actor, st) > 10
-	
-	npc:set_relation(game_object.enemy, nap1)
-	nap1:set_relation(game_object.enemy, npc)
-
-	--npc:set_relation(game_object.enemy, actor)
-	--actor:set_relation(game_object.enemy, npc)
-end
-
-function val_escort_unset_fight(actor, npc)
-	--local captive = level_object_by_sid(400)
-	local nap1 = level_object_by_sid(406)
-	if not nap1 or not nap1:alive() then -- or not captive or not captive:alive() then
-		return
-	end
-
-	--local ignore_actor = distance_between(actor, st) > 10
-	
-	npc:set_relation(game_object.friend, nap1)
-	nap1:set_relation(game_object.friend, npc)
-
-	--npc:set_relation(game_object.friend, actor)
-	--actor:set_relation(game_object.friend, npc)
-end
-
+-------------------------------------------------------------------------------------
+-- kill
+-------------------------------------------------------------------------------------
 function killactor (actor, npc)
     npc:set_relation (game_object.enemy, actor)
     --actor:give_info_portion ("mil_bodyguard_kill")
@@ -1357,6 +1307,7 @@ end
 function kill(actor, npc)
 	npc:kill( npc )
 end
+
 
 -------------------------------------------------------------------------------------
 -- Функции для Агропрома
