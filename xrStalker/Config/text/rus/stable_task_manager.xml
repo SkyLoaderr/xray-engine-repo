@@ -110,8 +110,23 @@
     <string id="eliminate_lager">
         <text>Уничтожение лагеря.</text>
     </string>
+    <string id="artefact">
+        <text>Добыть артефакт.</text>
+    </string>
+    <string id="kill_stalker">
+        <text>Убить сталкера.</text>
+    </string>
+    <string id="monster_part">
+        <text>Принести часть монстра.</text>
+    </string>
+    <string id="find_item">
+        <text>Найти предмет.</text>
+    </string>
     <string id="return_for_reward">
         <text>Вернуться за наградой.</text>
+    </string>
+    <string id="return_for_reward_bring">
+        <text>Принести заказчику.</text>
     </string>
 
 
@@ -127,5 +142,44 @@
         <text>Чуваки на тестовом уровне вконец охамели. Тебе нужно наказать их за это.</text>
     </string>
 
+    <string id="tm_artefact_vyvert">
+        <text>Добыть артефакт "Выверт".</text>
+    </string>
+    <string id="tm_artefact_vyvert_text">
+        <text>Достать артефакт "Выверт" по заказу генерала Воронина.</text>
+    </string>
+    <string id="tm_artefact_vyvert_descr">
+        <text>По сообщениям сталкеров артефакт "Выверт" встречается рядом с гравитационными аномалиями. Следует поискать на уровне Агропром.</text>
+    </string>
+
+    <string id="tm_kill_svoboda_master">
+        <text>Уничтожить сталкера "Свободы"</text>
+    </string>
+    <string id="tm_kill_svoboda_master_text">
+        <text>Необходимо уничтожить одного из мастеров группировки "Свобода".</text>
+    </string>
+    <string id="tm_kill_svoboda_master_descr">
+        <text>Группировка "Свобода" набирает силу за счет появления в ее рядах нескольких очень сильных сталкеров. Ты можешь ослабить противника, уничтожив одного из них.</text>
+    </string>
+
+    <string id="tm_find_boar_leg">
+        <text>Принести ногу кабана.</text>
+    </string>
+    <string id="tm_find_boar_leg_text">
+        <text>Добыть ногу кабана из трупа кабана.</text>
+    </string>
+    <string id="tm_find_boar_leg_descr">
+        <text>Ученным для исследований необходима нога кабана. По последним данным много кабанов видели в районе свалки.</text>
+    </string>
+
+    <string id="tm_find_quest_item">
+        <text>Найти квестовый предмет.</text>
+    </string>
+    <string id="tm_find_quest_item_text">
+        <text>Необходимо достать квестовый предмет по заказу Воронина.</text>
+    </string>
+    <string id="tm_find_quest_item_descr">
+        <text>Генералу Воронину необходимо доставить один из важных квестовый предметов.</text>
+    </string>
     
 </string_table>
