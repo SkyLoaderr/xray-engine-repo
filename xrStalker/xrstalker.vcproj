@@ -3511,6 +3511,9 @@
 					Name="smart_terrain"
 					Filter="">
 					<File
+						RelativePath=".\scripts\se_smart_terrain.script">
+					</File>
+					<File
 						RelativePath=".\scripts\smart_terrain.script">
 					</File>
 				</Filter>
