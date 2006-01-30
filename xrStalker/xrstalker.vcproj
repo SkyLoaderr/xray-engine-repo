@@ -568,6 +568,9 @@
 					RelativePath=".\Config\misc\items.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\monster_items.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\outfit.ltx">
 				</File>
 				<File
@@ -590,6 +593,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\misc\trigger.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\unique_items.ltx">
 				</File>
 				<Filter
 					Name="gulags"

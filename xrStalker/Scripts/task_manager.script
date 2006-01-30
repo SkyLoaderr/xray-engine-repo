@@ -31,7 +31,14 @@ local story_by_parent = {
 	barman = 500,
 	ecolog = 902,
 	dolg = 507,
-	freedom =707}
+	freedom = 707}
+
+local return_task_by_type = {
+	eliminate_lager = "return_for_reward",
+	kill_stalker = "return_for_reward",
+	artefact = "return_for_reward_bring",
+	monster_part = "return_for_reward_bring",
+	find_tem = "return_for_reward_bring"}
 
 function get_id(type)
 	if type == "trader" then
@@ -103,7 +110,14 @@ function fill_phrase_table()
 		
 		tt.reward_money = utils.cfg_get_number(task_ini, id, "reward_money", db.actor, false)
 		tt.reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", db.actor, false)
-		tt.reward_item = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_item", db.actor, false, "")) 
+		
+		local sss = utils.cfg_get_string(task_ini, id, "reward_item", db.actor, false, "")
+		if sss ~= nil then
+			tt.reward_item = parse_names(sss) 
+		else
+			tt.reward_item = sss
+		end
+		
 		tt.reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", db.actor, false, ""))
 		
 		if task_ini:line_exist(id, "community") then
@@ -215,14 +229,22 @@ function action_give_task(actor, npc, p1, p2)
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
 		objective:set_object_id(alife():story_object(tonumber(task_desc.target)).id)	    
+	elseif task_desc.type == "kill_stalker" then
+		objective:set_map_hint(task_desc.text)
+		objective:set_map_location("green_location")
+		objective:set_object_id(alife():object(task_desc.target).id)	    
+	elseif task_desc.type == "find_item" then
+		objective:set_map_hint(task_desc.text)
+		objective:set_map_location("green_location")
+		objective:set_object_id(alife():object(task_desc.target).id)	    
 	end
 	objective:add_complete_func("task_manager.task_complete")
 	task:add_objective(objective)
 
 	objective = SGameTaskObjective(task,2)
-	objective:set_description("return_for_reward")
+	objective:set_description(return_task_by_type[task_desc.type])
 
-	objective:set_map_hint("return_for_reward")
+	objective:set_map_hint(return_task_by_type[task_desc.type])
 	objective:set_map_location("blue_location")
 	objective:set_object_id(alife():story_object(tonumber(story_by_parent[task_desc.parent])).id)
 	
@@ -324,8 +346,15 @@ function action_task_reward(npc, actor)
 		
 	for k,v in pairs(active_task) do	
 		if v.completed == true and v.parent == parent then
-			active_task[v.type].full_completed = true
+			if v.type == "artefact" then
+				dialogs.relocate_item(npc, db.actor:object(v.target), "out")
+			elseif v.type == "monster_part" then
+				dialogs.relocate_item(npc, db.actor:object(v.target), "out")
+			elseif v.type == "find_item" then
+				dialogs.relocate_item(npc, db.actor:object(v.target), "out")
+			end
 
+			active_task[v.type].full_completed = true
 
 			if v.reward_money ~= nil then
 				dialogs.relocate_money(npc, v.reward_money, "in")
@@ -337,21 +366,19 @@ function action_task_reward(npc, actor)
 			
 			if v.reward_item ~= nil then
 				for k,v in pairs(v.reward_item) do
-					for i=1,tonumber(v) do
-						if npc:object(k) ~= nil then
-							dialogs.relocate_item(npc, k, "in")
-						else
-							break
-						end
+					if npc:object(v) ~= nil then
+						dialogs.relocate_item(npc, npc:object(v), "in")
+					else
+						break
 					end
 				end
 			end
 
 			if v.reward_relation ~= nil then
 				for k,v in pairs(v.reward_relation) do
-					relation_registry.change_community_goodwill (k, "actor", v)
-					relation_registry.change_community_goodwill (k, "actor_dolg", v)
-					relation_registry.change_community_goodwill (k, "actor_freedom", v)
+					relation_registry.change_community_goodwill (k, "actor", tonumber(v))
+					relation_registry.change_community_goodwill (k, "actor_dolg", tonumber(v))
+					relation_registry.change_community_goodwill (k, "actor_freedom", tonumber(v))
 				end
 			end
 
@@ -412,7 +439,23 @@ function precondition_have_completed_job(npc,actor)
 	local parent = get_parent(npc)
 	for k,v in pairs(active_task) do
 		if v.parent == parent and v.completed == true then
-			return true
+			if v.type == "eliminate_lager" then
+				return true
+			elseif v.type == "kill_stalker" then
+				return true
+			elseif v.type == "artefact" then
+				if db.actor:object(v.target) ~= nil then
+					return true
+				end
+			elseif v.type == "monster_part" then
+				if db.actor:object(v.target) ~= nil then
+					return true
+				end
+			elseif v.type == "find_item" then
+				if db.actor:object(v.target) ~= nil then
+					return true
+				end
+			end			
 		end
 	end	
 	return false
@@ -461,7 +504,19 @@ function calculate_predicate(npc, tbl)
 
 	if tbl.type == "eliminate_lager" then
 		local gulag = aa:story_object(tonumber(tbl.target)).gulag		
-		if gulag:get_population() < 0.7*gulag.capacity then
+		if gulag:get_population() == 0 then
+			return false
+		end	
+	elseif tbl.type == "kill_stalker" then
+		printf("KILL STALKER target[%s]", tbl.target)
+		local obj = aa:object(tbl.target)
+		if obj == nil then
+			printf("return false")
+			return false
+		end	
+	elseif tbl.type == "find_item" then
+		local obj = aa:object(tbl.target)
+		if obj == nil then
 			return false
 		end	
 	end
@@ -505,7 +560,22 @@ function task_complete(p1, p2)
 				active_task[p1].completed = true
 				return true
 			end
+		elseif p1 == "kill_stalker" then
+			if aa:object(active_task[p1].target):alive() == false then
+				active_task[p1].completed = true
+				return true
+			end
 		elseif p1 == "artefact" then			
+			if db.actor:object(active_task[p1].target) ~= nil then
+				active_task[p1].completed = true
+				return true
+			end
+		elseif p1 == "monster_part" then			
+			if db.actor:object(active_task[p1].target) ~= nil then
+				active_task[p1].completed = true
+				return true
+			end
+		elseif p1 == "find_item" then			
 			if db.actor:object(active_task[p1].target) ~= nil then
 				active_task[p1].completed = true
 				return true
