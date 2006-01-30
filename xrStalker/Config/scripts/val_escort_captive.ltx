@@ -1,5 +1,5 @@
 [logic@val_escort_captive]
-active = walker@val_escort_captive_wait
+active = patrol@val_escort_captive_wait
 on_death = death@val_escort_captive
 combat_ignore = combat_ignore
 
@@ -57,9 +57,11 @@ danger_inertion_time_sound  = 500
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
-[walker@val_escort_captive_wait]
+[patrol@val_escort_captive_wait]
 path_walk           = captive_wait_walk
 path_look           = captive_wait_look
+commander           = true
+formation           = back
 on_info             = {+val_escort_start} patrol@val_escort_captive_go
 danger              = danger@val_escort_captive
 combat_ignore_cond  = always
@@ -184,7 +186,7 @@ wounded             = wounded@val_escort_captive
 anim                = wait
 target              = 406 ;logic@val_escort_nap1
 on_info             = {+val_escort_nap1_phrase1_end} remark@val_escort_captive_phrase3
-meet                = meet@val_escort_captive_talk
+meet                = meet@val_escort_captive_ignore
 danger              = danger@val_escort_captive
 wounded             = wounded@val_escort_captive
 ;combat_ignore_cond  = always
@@ -234,7 +236,7 @@ wounded                 = wounded@val_escort_captive
 anim                = wait
 target              = 406 ;logic@val_escort_nap1
 on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave
-meet                = meet@val_escort_captive_talk
+meet                = meet@val_escort_captive_ignore
 danger              = danger@val_escort_captive
 wounded             = wounded@val_escort_captive
 ;combat_ignore_cond  = always
