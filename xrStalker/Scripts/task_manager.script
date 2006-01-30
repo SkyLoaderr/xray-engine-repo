@@ -105,20 +105,21 @@ function fill_phrase_table()
 		tt.parent = parent
 		tt.type = type
 		tt.target = task_ini:r_string(id, "target")
+		tt.target_objects = {}
 		tt.text = task_ini:r_string(id, "text")
 		tt.description = task_ini:r_string(id, "description")				
 		
-		tt.reward_money = utils.cfg_get_number(task_ini, id, "reward_money", db.actor, false)
-		tt.reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", db.actor, false)
+		tt.reward_money = utils.cfg_get_number(task_ini, id, "reward_money", nil, false)
+		tt.reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", nil, false)
 		
-		local sss = utils.cfg_get_string(task_ini, id, "reward_item", db.actor, false, "")
+		local sss = utils.cfg_get_string(task_ini, id, "reward_item", nil, false, "")
 		if sss ~= nil then
 			tt.reward_item = parse_names(sss) 
 		else
 			tt.reward_item = sss
 		end
 		
-		tt.reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", db.actor, false, ""))
+		tt.reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", nil, false, ""))
 		
 		if task_ini:line_exist(id, "community") then
 			tt.community = task_ini:r_string(id, "community")
@@ -232,11 +233,11 @@ function action_give_task(actor, npc, p1, p2)
 	elseif task_desc.type == "kill_stalker" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
-		objective:set_object_id(alife():object(task_desc.target).id)	    
+		objective:set_object_id(task_desc.selected_target)
 	elseif task_desc.type == "find_item" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
-		objective:set_object_id(alife():object(task_desc.target).id)	    
+		objective:set_object_id(task_desc.selected_target)
 	end
 	objective:add_complete_func("task_manager.task_complete")
 	task:add_objective(objective)
@@ -376,9 +377,7 @@ function action_task_reward(npc, actor)
 
 			if v.reward_relation ~= nil then
 				for k,v in pairs(v.reward_relation) do
-					relation_registry.change_community_goodwill (k, "actor", tonumber(v))
-					relation_registry.change_community_goodwill (k, "actor_dolg", tonumber(v))
-					relation_registry.change_community_goodwill (k, "actor_freedom", tonumber(v))
+					relation_registry.change_community_goodwill (k, db.actor:id(), tonumber(v))
 				end
 			end
 
@@ -502,25 +501,7 @@ function calculate_predicate(npc, tbl)
 		if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then return false end
 	end
 
-	if tbl.type == "eliminate_lager" then
-		local gulag = aa:story_object(tonumber(tbl.target)).gulag		
-		if gulag:get_population() == 0 then
-			return false
-		end	
-	elseif tbl.type == "kill_stalker" then
-		printf("KILL STALKER target[%s]", tbl.target)
-		local obj = aa:object(tbl.target)
-		if obj == nil then
-			printf("return false")
-			return false
-		end	
-	elseif tbl.type == "find_item" then
-		local obj = aa:object(tbl.target)
-		if obj == nil then
-			return false
-		end	
-	end
-	
+
 	-- Проверка что квест еще не выдан
 	if active_task[tbl.type] ~= nil then
 		return false
@@ -530,6 +511,34 @@ function calculate_predicate(npc, tbl)
 	if tbl.last_time ~= nil and game.get_game_time():diffSec(tbl.last_time) < 18000 then
 		return false
 	end
+
+	-- проверка по таргету
+	if tbl.type == "eliminate_lager" then
+		local gulag = aa:story_object(tonumber(tbl.target)).gulag		
+		if gulag:get_population() == 0 then
+			return false
+		end	
+	elseif tbl.type == "kill_stalker" then
+		for k,v in pairs(tbl.target_objects) do
+			local obj = aa:object(v)
+			if obj ~= nil and
+			   obj:alive() == true 
+			then
+				tbl.selected_target = v
+				return true
+			else
+				tbl.target_objects[k] = nil
+				return false
+			end
+		end
+		return false
+	elseif tbl.type == "find_item" then
+		local obj = aa:object(tbl.target)
+		if obj == nil then
+			return false
+		end	
+	end
+	
 
 	return true
 end
@@ -548,6 +557,7 @@ function task_complete(p1, p2)
 		if active_task[p1].full_completed == true then
 			active_task[p1].full_completed = nil
 			active_task[p1].completed = nil
+			active_task[p1].selected_target = nil
 			active_task[p1] = nil
 			return true
 		end
@@ -561,7 +571,7 @@ function task_complete(p1, p2)
 				return true
 			end
 		elseif p1 == "kill_stalker" then
-			if aa:object(active_task[p1].target):alive() == false then
+			if aa:object(active_task[p1].selected_target):alive() == false then
 				active_task[p1].completed = true
 				return true
 			end
@@ -589,8 +599,34 @@ function task_fail(p1, p2)
 	if active_task[p1].full_completed == false then
 		active_task[p1].full_completed = nil
 		active_task[p1].completed = nil
+		active_task[p1].selected_target = nil
 		active_task[p1] = nil
 		return true
 	end
 	return false
+end
+
+
+function register_target(object)
+	if task_table_filled == false then
+		fill_phrase_table()
+		task_table_filled = true
+	end
+	
+	for k,v in pairs(task_info) do
+		for kk,vv in pairs(v) do
+			if vv.type == "kill_stalker" then
+				if object:alive() == true and
+				   object:section_name() == vv.target 
+				then
+					table.insert(vv.target_objects, object.id)
+				end
+			elseif vv.type == "find_item" then
+				if object:section_name() == vv.target 
+				then
+					table.insert(vv.target_objects, object.id)
+				end			
+			end
+		end
+	end
 end
