@@ -8,9 +8,11 @@ on_info = {+yan_spawn_ghost} sr_idle@2_1 %=yan_actor_sleep_1%
 on_timer = 4000 | sr_idle@2_2 %=run_postprocess(total_recall) =run_cam_effector(dream:1002:true) =disable_ui%
 
 [sr_idle@2_2]
+on_info = %=disable_ui%
 on_timer = 1000 | sr_idle@2 %+yantar_ghost_talk%
 
 [sr_idle@2]
+on_info = %=disable_ui%
 on_timer = 13000 | sr_idle@2_3 %=yan_actor_sleep%
 
 [sr_idle@2_3]
