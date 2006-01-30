@@ -1,65 +1,56 @@
 [logic@val_rob_leader]
-active = walker@start
-
-;--------------------------------------------------------------------------
-; стандартная встреча
-;--------------------------------------------------------------------------
-[meet@def]
-meet_state = 10|wait@|5|wait_na@
-meet_state_wpn = 10|threat@threat_weap
-victim = 15|actor
-victim_wpn = 10|actor
-use = true
+active = walker@val_rob_leader_start
 
 ;--------------------------------------------------------------------------
 ; стартовый диалог
 ;--------------------------------------------------------------------------
-[meet@start]
-meet_dialog = val_rob_dialog
-meet_state = 20|hello@talk_hello|10|wait
-meet_state_wpn = 10|threat@threat_weap
-victim = 20|actor
-victim_wpn = 20|actor
-use = true
+[meet@val_rob_start]
+meet_dialog     = val_rob_dialog
+meet_state      = 20|hello@talk_hello|10|wait
+meet_state_wpn  = 10|threat@threat_weap
+victim          = 20|actor
+victim_wpn      = 20|actor
+use             = true
+use_wpn         = false
 
 ;--------------------------------------------------------------------------
 ; игнорирование игрока
 ;--------------------------------------------------------------------------
-[meet@ignore]
-meet_state = 0|wait
-meet_state_wpn = 3|threat@threat_weap
-victim = 1|actor
-victim_wpn = 3|actor
-use = true
+[meet@val_rob_ignore]
+meet_state      = 0|wait
+meet_state_wpn  = 0|wait
+victim          = 0|actor
+victim_wpn      = 0|actor
+use             = false
+use_wpn         = false
+
 
 ;--------------------------------------------------------------------------
-[walker@start]
-path_walk = leader_walk
-path_look = leader_look
-on_info = {+val_rob_buying} kamp1
-on_actor_dist_le = 30 | remark@call
-meet = meet@def
+[walker@val_rob_leader_start]
+path_walk           = leader_walk
+path_look           = leader_look
+on_info             = {+val_rob_buying} walker@val_rob_leader_to_kamp
+on_actor_dist_le    = 30 | remark@val_rob_leader_call
+meet                = meet@val_rob_start
 
-[remark@call]
-anim = wait
-snd = val_rob_leader_call
-on_signal = sound_end | walker1
+[remark@val_rob_leader_call]
+anim                = wait
+snd                 = val_rob_leader_call
+on_actor_dist_ge    = 30 | walker@val_rob_leader_start
+on_actor_dist_le    = 10 | remark@val_rob_leader_talk
+meet                = meet@val_rob_ignore
 
-[walker1]
-path_walk = leader_walk
-path_look = leader_look
-;meet_dialog = val_rob_dialog
-;meet_enabled = true
-meet = meet@start
-on_info = {+val_rob_buying} walker2
+[remark@val_rob_leader_talk]
+anim                = wait
+on_info             = {+val_rob_buying} walker@val_rob_leader_to_kamp
+on_actor_dist_ge    = 30 | walker@val_rob_leader_start
+meet                = meet@val_rob_start
 
-[walker2]
-path_walk = leader_kamp_walk
-path_look = leader_kamp_look
-def_state_moving = run
-meet = meet@ignore
-on_signal = arrived | kamp1
-
-[kamp1]
-meet = meet@ignore
-center_point = kamp
+[walker@val_rob_leader_to_kamp]
+path_walk           = leader_kamp_walk
+path_look           = leader_kamp_look
+def_state_moving1   = run
+def_state_moving2   = run
+def_state_moving3   = run
+on_signal           = arrived | kamp@val_rob_kamp
+meet                = meet@val_rob_ignore
