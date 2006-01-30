@@ -1,0 +1,8 @@
+class "se_outfit"	(CSE_ALifeItemCustomOutfit)
+function se_outfit:__init (section) super (section)
+end
+function se_outfit:on_register()
+	CSE_ALifeItemCustomOutfit.on_register( self )
+	-- Регистрация в таскменеджере
+	task_manager.register_target(self)
+end
