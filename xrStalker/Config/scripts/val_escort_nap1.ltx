@@ -20,32 +20,10 @@ on_info = {=hitted_by(407:408)} %+val_escort_combat%
 ; встреча отключена
 ;--------------------------------------------------------------------------
 [meet@val_escort_nap1_ignore]
-meet_state     = 0|wait
-meet_state_wpn = 0|guard
+meet_state     = 0|guard@nil
+meet_state_wpn = 0|guard@nil
 victim         = 0|nil
 victim_wpn     = 0|nil
-use            = false
-use_wpn        = false
-
-;--------------------------------------------------------------------------
-; стандартная встреча
-;--------------------------------------------------------------------------
-[meet@val_escort_nap1_def]
-meet_state     = 30|hello|5|guard
-meet_state_wpn = 15|guard
-victim         = 15|actor
-victim_wpn     = 15|actor
-use            = false
-use_wpn        = false
-
-;--------------------------------------------------------------------------
-; стандартная встреча без приветствия
-;--------------------------------------------------------------------------
-[meet@val_escort_nap1_def_no_hello]
-meet_state     = 30|guard
-meet_state_wpn = 15|guard
-victim         = 15|actor
-victim_wpn     = 15|actor
 use            = false
 use_wpn        = false
 
@@ -61,6 +39,9 @@ victim_wpn     = 15|actor
 use            = true
 use_wpn        = true
 
+;--------------------------------------------------------------------------
+; Danger
+;--------------------------------------------------------------------------
 [danger@val_escort_nap1_1]
 ignore_distance_sound     = 10
 ignore_distance_corpse    = 1
@@ -71,6 +52,9 @@ ignore_distance_sound           = 4
 danger_inertion_time_sound      = 2000
 danger_inertion_time_ricochet   = 700
 
+;--------------------------------------------------------------------------
+; Wounded
+;--------------------------------------------------------------------------
 [wounded@val_escort_nap1]
 hp_state        = 10|wounded_heavy@help_heavy
 hp_state_see    = 10|wounded_heavy@help_heavy
