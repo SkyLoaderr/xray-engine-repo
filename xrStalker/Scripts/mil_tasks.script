@@ -249,7 +249,6 @@ end
 
 function mil_task_crazy_flash_have (task_id, subtask)
     if db.actor:object ("crazy_flash") ~= nil then
-       printf ("ACTOR HAVE A CRAZY FLASH CARD") 
        db.actor:give_info_portion ("mil_max_flash_get")
        return true
     end
@@ -270,12 +269,12 @@ function fail_rg6_task (task_id, subtask)
 end
 
 function is_actor_enemy_freedom ()
-
-    local gulag = xr_gulag.get_gulag_by_name ("mil_freedom")
-    if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then
-       return false
-    end    
-    return true
+    return false
+--    local gulag = xr_gulag.get_gulag_by_name ("mil_freedom")
+    --if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then
+       --return false
+    --end    
+    --return true
 end
 
 function lukash_job_fail (task_id, subtask)
