@@ -1759,18 +1759,18 @@ function yantar_kruglov_talk(actor,npc)
 end
 
 function yantar_professor_spam_1 (actor, npc)
-    news_manager.send_tip(db.actor, "general_ecolog_tip_1", nil, "ecolog", nil, 902)
+    news_manager.send_tip(db.actor, "general_ecolog_tip_1", nil, "saharov", nil, 902)
 end
 
 function yantar_professor_spam_2 (actor, npc)
-    news_manager.send_tip(db.actor, "general_ecolog_tip_2", nil, "ecolog", nil, 902)
+    news_manager.send_tip(db.actor, "general_ecolog_tip_2", nil, "saharov", nil, 902)
 end
 
 function yantar_vasilyev_spam (actor, npc)
     news_manager.send_tip(db.actor, "storyline_vasilyev_tip", nil, "ecolog", nil, 903)
 end
 function yan_saharov_message (actor, npc)
-    news_manager.send_tip(db.actor, "yan_saharov_message", nil, "ecolog", nil, 903)
+    news_manager.send_tip(db.actor, "yan_saharov_message", nil, "saharov", nil, 902)
 end
 function yan_ghost_pda (actor, npc)
     db.actor:give_info_portion("yan_provodnik_spawn")
