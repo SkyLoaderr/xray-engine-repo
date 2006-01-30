@@ -357,39 +357,6 @@ void CScriptGameObject::ChangeGoodwill(int delta_goodwill, CScriptGameObject* pW
 	RELATION_REGISTRY().ChangeGoodwill(pInventoryOwner->object_id(), pWhoToSet->object().ID(), delta_goodwill);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CScriptGameObject::SetCommunityGoodwill(int goodwill, CScriptGameObject* pWhoToSet)
-{
-	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInventoryOwner) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"SetCommunityGoodwill available only for InventoryOwner");
-		return ;
-	}
-	RELATION_REGISTRY().SetCommunityGoodwill(pInventoryOwner->object_id(), pWhoToSet->object().ID(), goodwill);
-}
-
-int	CScriptGameObject::GetCommunityGoodwill(CScriptGameObject* pToWho)
-{
-	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-
-	if (!pInventoryOwner) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"GetCommunityGoodwill available only for InventoryOwner");
-		return 0;
-	}
-	return RELATION_REGISTRY().GetCommunityGoodwill(pInventoryOwner->object_id(), pToWho->object().ID());
-}
-
-void CScriptGameObject::ChangeCommunityGoodwill(int delta_goodwill, CScriptGameObject* pWhoToSet)
-{
-	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-
-	if (!pInventoryOwner) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"ChangeCommunityGoodwill available only for InventoryOwner");
-		return ;
-	}
-	RELATION_REGISTRY().ChangeCommunityGoodwill(pInventoryOwner->object_id(), pWhoToSet->object().ID(), delta_goodwill);
-}
 
 //////////////////////////////////////////////////////////////////////////
 

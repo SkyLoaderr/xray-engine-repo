@@ -182,10 +182,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("set_goodwill",				&CScriptGameObject::SetGoodwill)
 		.def("change_goodwill",				&CScriptGameObject::ChangeGoodwill)
 
-		.def("community_goodwill",			&CScriptGameObject::GetCommunityGoodwill)
-		.def("set_community_goodwill",		&CScriptGameObject::SetCommunityGoodwill)
-		.def("change_community_goodwill",	&CScriptGameObject::ChangeCommunityGoodwill)
-
 		.def("general_goodwill",			&CScriptGameObject::GetAttitude)
 		.def("set_relation",				&CScriptGameObject::SetRelation)
 

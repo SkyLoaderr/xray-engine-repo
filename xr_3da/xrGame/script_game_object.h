@@ -279,10 +279,6 @@ public:
 			void				SetGoodwill			(int goodwill, CScriptGameObject* pWhoToSet);
 			void				ChangeGoodwill		(int delta_goodwill, CScriptGameObject* pWhoToSet);
 
-			int					GetCommunityGoodwill	(CScriptGameObject* pToWho);
-			void				SetCommunityGoodwill	(int goodwill, CScriptGameObject* pWhoToSet);
-			void				ChangeCommunityGoodwill	(int delta_goodwill, CScriptGameObject* pWhoToSet);
-
 
 			void				SetStartDialog		(LPCSTR dialog_id);
 			void				GetStartDialog		();

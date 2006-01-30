@@ -448,19 +448,27 @@ void set_pp_effector_factor(int id, float f)
 
 #include "relation_registry.h"
 
- int g_community_goodwill(int _first, int _second)
+ int g_community_goodwill(LPCSTR _first_comm, LPCSTR _second_comm)
  {
- 	return RELATION_REGISTRY().GetCommunityGoodwill(u16(_first), u16(_second) );
+	 CHARACTER_COMMUNITY c1,c2;
+	 c1.set					(_first_comm);
+	 c2.set					(_second_comm);
+
+ 	return RELATION_REGISTRY().GetCommunityGoodwill(c1.index(), c2.index());
  }
 
-void g_set_community_goodwill(int _first, int _second, int val)
+void g_set_community_goodwill(LPCSTR _community, int _entity_id, int val)
 {
-	RELATION_REGISTRY().SetCommunityGoodwill(u16(_first), u16(_second), val);
+	 CHARACTER_COMMUNITY	c1;
+	 c1.set					(_community);
+	RELATION_REGISTRY().SetCommunityGoodwill(c1.index(), u16(_entity_id), val);
 }
 
-void g_change_community_goodwill(int _first, int _second, int val)
+void g_change_community_goodwill(LPCSTR _community, int _entity_id, int val)
 {
-	RELATION_REGISTRY().ChangeCommunityGoodwill(u16(_first), u16(_second), val);
+	 CHARACTER_COMMUNITY	c1;
+	 c1.set					(_community);
+	RELATION_REGISTRY().ChangeCommunityGoodwill(c1.index(), u16(_entity_id), val);
 }
 
 void CLevel::script_register(lua_State *L)
