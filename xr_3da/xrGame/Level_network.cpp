@@ -274,3 +274,18 @@ void			CLevel::ClearAllObjects				()
 	};
 	ProcessGameEvents();
 };
+
+void				CLevel::OnInvalidHost			()
+{
+	IPureClient::OnInvalidHost();
+};
+
+void				CLevel::OnInvalidPassword		()
+{
+	IPureClient::OnInvalidPassword();
+};
+
+void				CLevel::OnSessionFull			()
+{
+	IPureClient::OnSessionFull();
+}

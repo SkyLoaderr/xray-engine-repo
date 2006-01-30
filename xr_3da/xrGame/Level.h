@@ -100,6 +100,10 @@ public:
 	bool						In_NetCorrectionPrediction	() {return m_bIn_CrPr;};
 
 	virtual void				OnMessage				(void* data, u32 size);
+	virtual void				OnInvalidHost			();
+	virtual void				OnInvalidPassword		();
+	virtual void				OnSessionFull			();
+
 private:
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;

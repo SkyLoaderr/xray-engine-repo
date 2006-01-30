@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "net_client.h"
 #include "net_messages.h"
+#include "dxerr9.h"
 
 #define BASE_PORT		5445
 
@@ -313,6 +314,9 @@ BOOL IPureClient::Connect	(LPCSTR options)
 			{
 				//			xr_string res = Debug.error2string(HostSuccess);
 #ifdef DEBUG
+				const char* x = DXGetErrorString9(res);
+				string1024 tmp;
+				DXTRACE_ERR(tmp, res);
 				Msg("! IPureClient : port %d is BUSY!", c_port);
 #endif
 				c_port++;
@@ -323,7 +327,11 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		
 		// ****** Connection
 		IDirectPlay8Address*        pHostAddress = NULL;
-		if (net_Hosts.empty())		return FALSE;
+		if (net_Hosts.empty())		 
+		{
+			OnInvalidHost();
+			return FALSE;
+		};
 
 		WCHAR	SessionPasswordUNICODE[4096];
 		if (xr_strlen(password_str))
@@ -353,6 +361,22 @@ BOOL IPureClient::Connect	(LPCSTR options)
 //		R_CHK(res);		
 		net_csEnumeration.Leave		();
 		_RELEASE					(pHostAddress);
+#ifdef DEBUG	
+		const char* x = DXGetErrorString9(res);
+		string1024 tmp;
+		DXTRACE_ERR(tmp, res);
+		switch (res)
+		{
+		case DPNERR_INVALIDPASSWORD:
+			{
+				OnInvalidPassword();
+			}break;
+		case DPNERR_SESSIONFULL:
+			{
+				OnSessionFull();
+			}break;
+		}
+#endif
 		if (res != S_OK) return FALSE;
 	}
 
@@ -526,6 +550,11 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 			case DPN_MSGID_CONNECT_COMPLETE:			
 				{
 					PDPNMSG_CONNECT_COMPLETE pMsg = (PDPNMSG_CONNECT_COMPLETE)pMessage;
+#ifdef DEBUG
+					const char* x = DXGetErrorString9(pMsg->hResultCode);
+					string1024 tmp;
+					DXTRACE_ERR(tmp, pMsg->hResultCode);
+#endif
 					if (pMsg->dwApplicationReplyDataSize)
 					{
 						string256 ResStr = "";
@@ -605,6 +634,9 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 		);
 	if (FAILED(hr_))	{
 		Msg	("! ERROR: Failed to send net-packet, reason: %s",::Debug.error2string(hr_));
+		const char* x = DXGetErrorString9(hr_);
+		string1024 tmp;
+		DXTRACE_ERR(tmp, hr_);
 	}
 }
 
