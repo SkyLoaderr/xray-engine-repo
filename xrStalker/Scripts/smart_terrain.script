@@ -676,6 +676,9 @@ function se_smart_terrain:on_register()
 	end
 
 	sim_statistic.reinit()
+	
+	-- Регистрация в таскменеджере
+	task_manager.register_target(self)
 end
 
 -- Обновление. В онлайне вызывается через binder.
