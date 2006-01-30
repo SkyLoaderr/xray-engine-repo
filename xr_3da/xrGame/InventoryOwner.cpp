@@ -53,7 +53,7 @@ DLL_Pure *CInventoryOwner::_construct		()
 	m_trade_parameters			= 0;
 	m_purchase_list				= 0;
 
-	return						(0);
+	return						(smart_cast<DLL_Pure*>(this));
 }
 
 CInventoryOwner::~CInventoryOwner			() 
