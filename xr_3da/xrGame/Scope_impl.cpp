@@ -52,3 +52,16 @@ void CScope::renderable_Render()
 {
 	inherited::renderable_Render();
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CScope::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CScope,CGameObject>("CScope")
+			.def(constructor<>())
+	];
+}

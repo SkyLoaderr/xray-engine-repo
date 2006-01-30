@@ -9,3 +9,16 @@ CF1::CF1(void) {
 
 CF1::~CF1(void) {
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CF1::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CF1,CGameObject>("CF1")
+			.def(constructor<>())
+	];
+}

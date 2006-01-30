@@ -17,7 +17,19 @@ CWeaponAK74::CWeaponAK74(LPCSTR name, ESoundTypes eSoundType) : CWeaponMagazined
 */
 }
 
-
 CWeaponAK74::~CWeaponAK74()
 {
+}
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponAK74::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponAK74,CGameObject>("CWeaponAK74")
+			.def(constructor<>())
+	];
 }

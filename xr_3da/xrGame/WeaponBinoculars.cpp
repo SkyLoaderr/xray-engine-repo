@@ -142,3 +142,16 @@ void CWeaponBinoculars::ZoomDec()
 	m_fZoomFactor	+=delta;
 	clamp(m_fZoomFactor,m_fScopeZoomFactor, min_zoom_factor);
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponBinoculars::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponBinoculars,CGameObject>("CWeaponBinoculars")
+			.def(constructor<>())
+	];
+}

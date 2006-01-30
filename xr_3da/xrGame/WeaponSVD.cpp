@@ -29,3 +29,16 @@ void CWeaponSVD::OnAnimationEnd()
 	}
 	inherited::OnAnimationEnd();
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponSVD::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponSVD,CGameObject>("CWeaponSVD")
+			.def(constructor<>())
+	];
+}

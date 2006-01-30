@@ -10,3 +10,16 @@ CWeaponWalther::CWeaponWalther(void) : CWeaponPistol("WALTHER")
 CWeaponWalther::~CWeaponWalther(void)
 {
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponWalther::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponWalther,CGameObject>("CWeaponWalther")
+			.def(constructor<>())
+	];
+}

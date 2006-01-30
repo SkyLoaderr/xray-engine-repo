@@ -1,8 +1,11 @@
 #ifndef __XR_WEAPON_BINOCULAR_H__
 #define __XR_WEAPON_BINOCULAR_H__
+
 #pragma once
 
 #include "WeaponCustomPistol.h"
+#include "script_export_space.h"
+
 class CUIFrameWindow;
 class CUIStatic;
 class CBinocularsVision;
@@ -40,6 +43,11 @@ public:
 	virtual void	OnDrawUI			();
 protected:
 	CBinocularsVision*					m_binoc_vision;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CWeaponBinoculars)
+#undef script_type_list
+#define script_type_list save_type_list(CWeaponBinoculars)
 
 #endif //__XR_WEAPON_BINOCULAR_H__

@@ -157,3 +157,16 @@ void CWeaponRPG7::net_Import			( NET_Packet& P)
 	inherited::net_Import(P);
 	UpdateGrenadeVisibility(!!iAmmoElapsed || STATE == eReload);
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponRPG7::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponRPG7,CGameObject>("CWeaponRPG7")
+			.def(constructor<>())
+	];
+}

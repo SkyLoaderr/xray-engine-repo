@@ -10,3 +10,16 @@ CWeaponGroza::CWeaponGroza(void) : CWeaponMagazinedWGrenade("GROZA",SOUND_TYPE_W
 CWeaponGroza::~CWeaponGroza(void) 
 {
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponGroza::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponGroza,CGameObject>("CWeaponGroza")
+			.def(constructor<>())
+	];
+}

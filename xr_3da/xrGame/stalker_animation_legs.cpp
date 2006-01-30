@@ -115,8 +115,12 @@ void CStalkerAnimationManager::legs_process_direction		(float yaw)
 MotionID CStalkerAnimationManager::legs_move_animation		()
 {
 	// should be removed, because it is not allowed to move in crouch not in danger
-	if (object().movement().body_state() != eBodyStateStand)
-		object().movement().set_mental_state	(eMentalStateDanger);
+//	if (object().movement().body_state() != eBodyStateStand)
+//		object().movement().set_mental_state	(eMentalStateDanger);
+	VERIFY						(
+		(object().movement().body_state() == eBodyStateStand) ||
+		(object().movement().mental_state() != eMentalStateFree)
+	);
 
 	if (eMentalStateDanger != object().movement().mental_state()) {
 		return					(

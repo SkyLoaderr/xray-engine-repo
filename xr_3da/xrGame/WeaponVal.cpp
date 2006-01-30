@@ -10,3 +10,16 @@ CWeaponVal::CWeaponVal(void) : CWeaponMagazined("VAL",SOUND_TYPE_WEAPON_SUBMACHI
 CWeaponVal::~CWeaponVal(void)
 {
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponVal::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponVal,CGameObject>("CWeaponVal")
+			.def(constructor<>())
+	];
+}

@@ -1,10 +1,9 @@
 #pragma once
+
 #include "WeaponCustomPistol.h"
+#include "script_export_space.h"
 
-
-
-class CWeaponKnife: public CWeapon
-{
+class CWeaponKnife: public CWeapon {
 private:
 	typedef CWeapon inherited;
 protected:
@@ -72,4 +71,9 @@ public:
 	virtual bool Action	(s32 cmd, u32 flags);
 
 	virtual void	StartIdleAnim		();
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CWeaponKnife)
+#undef script_type_list
+#define script_type_list save_type_list(CWeaponKnife)

@@ -315,3 +315,16 @@ void CWeaponKnife::LoadFireParams		(LPCSTR section, LPCSTR prefix)
 	fHitImpulse_2		= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse_2"));
 	m_eHitType_2		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_2"));
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponKnife::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponKnife,CGameObject>("CWeaponKnife")
+			.def(constructor<>())
+	];
+}

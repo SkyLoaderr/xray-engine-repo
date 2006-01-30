@@ -364,3 +364,16 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 
 	return cnt;
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponShotgun::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponShotgun,CGameObject>("CWeaponShotgun")
+			.def(constructor<>())
+	];
+}

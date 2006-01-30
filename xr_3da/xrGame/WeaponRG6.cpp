@@ -111,3 +111,15 @@ void CWeaponRG6::OnEvent(NET_Packet& P, u16 type)
 	}
 }
 
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponRG6::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponRG6,CGameObject>("CWeaponRG6")
+			.def(constructor<>())
+	];
+}

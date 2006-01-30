@@ -54,3 +54,16 @@ void	CWeaponLR300::spatial_unregister	()
 	inherited::spatial_unregister();
 }
 */
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CWeaponLR300::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponLR300,CGameObject>("CWeaponLR300")
+			.def(constructor<>())
+	];
+}
