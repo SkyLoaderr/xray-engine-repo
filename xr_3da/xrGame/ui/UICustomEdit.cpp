@@ -260,7 +260,7 @@ bool CUICustomEdit::KeyReleased(int dik)
 void CUICustomEdit::AddChar(char c)
 {
 	int text_length;
-	text_length = (int)m_lines.GetFont()->SizeOf(m_lines.GetText());
+	text_length = (int)m_lines.GetFont()->SizeOfRel(m_lines.GetText());
 	if (!m_lines.GetTextComplexMode() && (text_length>GetWidth() - 1))
             return;
 	m_lines.AddCharAtCursor(c);
