@@ -377,7 +377,7 @@
 				<auto_static start_time="2" length_sec="5000" x="500" y="750" width="550" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">binoc_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">binoc_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -404,7 +404,7 @@
 				<auto_static start_time="1" length_sec="5000" x="500" y="750" width="500" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">jump_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">jump_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -430,7 +430,7 @@
 				<auto_static start_time="1" length_sec="5000" x="500" y="750" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">crouch_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">crouch_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -457,7 +457,7 @@
 				<auto_static start_time="1" length_sec="5000" x="550" y="750" width="500" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">crouch_down_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">crouch_down_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -483,7 +483,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">radiation_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">radiation_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -509,7 +509,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">starvation_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">starvation_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -535,7 +535,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">wound_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">wound_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -561,7 +561,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">weapon_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">weapon_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -587,7 +587,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">sprint_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">sprint_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -613,7 +613,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">weakness_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">weakness_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -639,7 +639,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">relation_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">relation_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -665,7 +665,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">sleep_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">sleep_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -691,7 +691,7 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="letterica25" r="225" g="225" b="250">overload_tutorial</text>
+					<text font="graffiti22" r="201" g="201" b="201" a="255">overload_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
