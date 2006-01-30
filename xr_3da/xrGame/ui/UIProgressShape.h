@@ -5,17 +5,21 @@
 class CUIStatic;
 
 class CUIProgressShape : public CUIWindow {
+friend class CUIXmlInit;
 public:
-	CUIProgressShape();
-	~CUIProgressShape();
-CUIStatic*	InitTexture(LPCSTR texture);
-CUIStatic*	InitBackground(LPCSTR texture);
-	void	SetPos(int pos, int max);
-	void	SetPos(float pos);
-	void	SetTextVisible(bool b);
+						CUIProgressShape		();
+	virtual				~CUIProgressShape		();
+	void				SetPos					(int pos, int max);
+	void				SetPos					(float pos);
+	void				SetTextVisible			(bool b);
+
+	virtual void		Draw					();
 
 protected:
-	CUIStatic*	m_pTexture;
-	CUIStatic*	m_pBackground;
-	bool		m_bText;
+	bool				m_bClockwise;
+	u32					m_sectorCount;
+	float				m_stage;
+	CUIStatic*			m_pTexture;
+	CUIStatic*			m_pBackground;
+	bool				m_bText;
 };

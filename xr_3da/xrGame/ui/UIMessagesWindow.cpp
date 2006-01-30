@@ -27,7 +27,6 @@ CUIMessagesWindow::CUIMessagesWindow(){
 	m_pChatWnd = NULL;
 	m_pGameLog = NULL;
 	m_pReinforcementInidcator = NULL;
-	m_pGranadeInidcator = NULL;
 	Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 }
 
@@ -84,12 +83,6 @@ void CUIMessagesWindow::Init(float x, float y, float width, float height){
 		game->m_reinforcement_progress = m_pReinforcementInidcator;
 	}
 
-	m_pGranadeInidcator = xr_new<CUIProgressShape>();
-	m_pGranadeInidcator->SetAutoDelete(true);
-	m_pGranadeInidcator->SetVisible(false);
-	AttachChild(m_pGranadeInidcator);
-
-	CUIXmlInit::InitProgressShape(xml, "granade_indicator", 0, m_pGranadeInidcator);
 }
 /*
 bool CUIMessagesWindow::SetDelayForPdaMessage(int iValue, int iDelay){

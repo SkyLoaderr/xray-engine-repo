@@ -662,29 +662,21 @@ bool CUIXmlInit::InitProgressBar2(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitProgressShape(CUIXml& xml_doc, const char* path, int index, CUIProgressShape* pWnd){
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	InitWindow(xml_doc, path, index, pWnd);
+	InitWindow						(xml_doc, path, index, pWnd);
 
 	if (xml_doc.ReadAttribInt(path, index, "text"))
-		pWnd->SetTextVisible(true);
+		pWnd->SetTextVisible(		true);
 
 	string256 _path;
 
-	CUIStatic* pSt;
-
 	if (xml_doc.NavigateToNode(strconcat(_path, path, ":back"),index))
-	{
-		pSt = pWnd->InitBackground(NULL);
-		InitStatic(xml_doc, _path, index, pSt);
-		pSt->SetStretchTexture(true);		
-	}
+		InitStatic(xml_doc, _path, index, pWnd->m_pBackground);
 
-	pSt = pWnd->InitTexture(NULL);
 
-    InitStatic(xml_doc, strconcat(_path, path, ":front"), index, pSt);
-	pSt->InitTextureEx(xml_doc.Read(strconcat(_path, path, ":front:texture"), index, NULL), "hud\\seta");
-	pSt->SetStretchTexture(true);
-	pSt->SetColor(0xff7f7f7f);
+    InitStatic(xml_doc, strconcat(_path, path, ":front"), index, pWnd->m_pTexture);
 
+	pWnd->m_sectorCount	= xml_doc.ReadAttribInt(path, index, "sector_count", 8);
+	pWnd->m_bClockwise	= xml_doc.ReadAttribInt(path, index, "clockwise") ? true : false;
 
     return true;
 }

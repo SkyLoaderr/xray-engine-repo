@@ -40,6 +40,7 @@ public:
 	virtual bool	Action				(s32 cmd, u32 flags);
 	virtual void	onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd)				{};
 
+	virtual void	OnDrawUI			()				{};
 	
 	// Events/States
 	u32				STATE, NEXT_STATE;

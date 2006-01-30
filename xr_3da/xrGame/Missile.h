@@ -20,6 +20,8 @@ public:
 			CMissile	(void);
 	virtual ~CMissile	(void);
 
+	virtual void	OnDrawUI			();
+
 	virtual void reinit				();
 	virtual CMissile		*cast_missile		()	{return this;}
 

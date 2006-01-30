@@ -100,6 +100,10 @@ ref_shader& CUIStatic::GetShader(){
 	return m_UIStaticItem.GetShader();
 }
 
+ref_geom CUIStatic::GetGeom(){
+	return m_UIStaticItem.GetGeom();
+}
+
 void CUIStatic::SetTextureColor(u32 color){
 	m_UIStaticItem.SetColor(color);
 }

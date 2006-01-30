@@ -22,7 +22,21 @@ function main______________()
 end
 
 function main()
-   game.start_tutorial("part_1_pda")
+   game.start_tutorial("part_12_relations")
+--   part_3_jump
+--   part_4_crouch
+--   part_5_crouch_down
+  -- part_6_radiation
+  -- part_7_starvation
+   --part_8_wound
+   --part_9_weapon
+   --part_10_sprint
+   --part_11_weakness
+--   part_12_relations
+  -- part_13_sleep
+   --part_14_overload
+   
+   
 end
 
 function main1()

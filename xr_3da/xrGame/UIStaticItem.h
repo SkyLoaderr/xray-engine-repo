@@ -29,7 +29,7 @@ public:
 					CUIStaticItem	();
 	virtual			~CUIStaticItem	();
 
-//GetShader()		
+	ref_geom		GetGeom			()													{return hGeom_fan;}
 	//IUISimpleTextureControl
 			void	SetAlphaRef		(int val)											{alpha_ref=val;};
 	virtual void	CreateShader	(const char* tex, const char* sh = "hud\\default");

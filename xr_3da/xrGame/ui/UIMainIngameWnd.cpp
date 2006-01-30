@@ -109,15 +109,17 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 }
 
 //////////////////////////////////////////////////////////////////////////
+#include "UIProgressShape.h"
+extern CUIProgressShape* g_MissileForceShape;
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
 {
-	DestroyFlashingIcons();
-	xr_delete(UIZoneMap);
-	xr_delete(m_artefactPanel);
-	xr_delete(m_pMoneyIndicator);
-	HUD_SOUND::DestroySound(m_contactSnd);
-
+	DestroyFlashingIcons		();
+	xr_delete					(UIZoneMap);
+	xr_delete					(m_artefactPanel);
+	xr_delete					(m_pMoneyIndicator);
+	HUD_SOUND::DestroySound		(m_contactSnd);
+	xr_delete					(g_MissileForceShape);
 }
 
 void CUIMainIngameWnd::Init()
@@ -352,31 +354,32 @@ void CUIMainIngameWnd::Draw()
 	cur_lum = luminocity*0.01f + cur_lum*0.99f;
 	UIMotionIcon.SetLuminosity((s16)iFloor(cur_lum*100.0f));
 
+	if(!m_pActor) return;
+
+	UIMotionIcon.SetNoise((s16)iFloor(m_pActor->m_snd_noise*100.0f));
 	
-	CActor* _pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(_pActor)
-		UIMotionIcon.SetNoise((s16)iFloor(_pActor->m_snd_noise*100.0f));
-	
-	//отрендерить текстуру объектива снайперского прицела или бинокля
-	if(m_pActor->HUDview() && m_pWeapon){
-		m_pWeapon->OnDrawUI();
-	}
+	if(m_pActor->inventory().GetActiveSlot() != NO_ACTIVE_SLOT)
+	{
+		PIItem item		=  m_pActor->inventory().ItemFromSlot(m_pActor->inventory().GetActiveSlot());
+
+		if(item && m_pActor->HUDview() && smart_cast<CHudItem*>(item))
+			(smart_cast<CHudItem*>(item))->OnDrawUI();
 
 
-	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomHideCrosshair()){
-		zoom_mode = true;
-		if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom()){
-			scope_mode = true;
+		if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomHideCrosshair())
+		{
+			zoom_mode = true;
+			if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom())
+				scope_mode = true;
+
+			if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT)){
+				psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
+				m_bShowHudCrosshair = true;
+			}
+
+			zoom_mode = true;
 		}
-
-		if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT)){
-			psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
-			m_bShowHudCrosshair = true;
-		}
-
-		zoom_mode = true;
 	}
-	
 		if(g_bShowHudInfo)
 		{
 			CUIWindow::Draw();
@@ -1533,8 +1536,27 @@ CUIGameTutorial* g_tut = NULL;
 */
 //#include "../postprocessanimator.h"
 //CPostprocessAnimator* pp = NULL;
+//extern void create_force_progress();
 void test_key	(int dik)
 {
+/*
+	static float k = 0.5f;
+	if(!g_MissileForceShape) create_force_progress();
+	g_MissileForceShape->SetPos(k);
+
+	if(dik==DIK_K){
+		k += 0.05f;
+		clamp(k,0.0f,1.0f);
+		g_MissileForceShape->SetPos(k);
+		Log("kkk=", k);
+	}
+	if(dik==DIK_J){
+		k -= 0.05f;
+		clamp(k,0.0f,1.0f);
+		g_MissileForceShape->SetPos(k);
+		Log("kkk=", k);
+	}
+*/
 /*
 	if(dik==DIK_K){
 	CUIWindow*		wnd_arr [10];
@@ -1595,7 +1617,10 @@ void test_key	(int dik)
 
 void test_draw	()
 {
-/*
+//	if(g_MissileForceShape)
+//		g_MissileForceShape->Draw();
+
+	/*
 	if(g_pTestFont){
 
 	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));

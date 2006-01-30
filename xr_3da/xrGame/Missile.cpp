@@ -11,22 +11,31 @@
 #include "../skeletoncustom.h"
 #include "ai_object_location.h"
 
-//#define MSG1(msg)		\
-//if(H_Parent())\
-//	Msg		("Object [%d][%s] parrent [%s] parent id [%d] [%s] ",ID(),*cName(),*(H_Parent()->cName()),H_Parent()->ID(),msg);\
-//else\
-//	Msg		("Object [%d][%s] parrent [%s] [%s] ",ID(),*cName(),"no parrent",msg);
 
 #define MSG1(msg)			
-
 #define PLAYING_ANIM_TIME 10000
+
+#include "ui/UIProgressShape.h"
+#include "ui/UIXmlInit.h"
+
+CUIProgressShape* g_MissileForceShape = NULL;
+
+void create_force_progress()
+{
+	VERIFY							(!g_MissileForceShape);
+	CUIXml uiXml;
+	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "grenade.xml");
+	R_ASSERT3						(xml_result, "xml file not found", "grenade.xml");
+
+	CUIXmlInit xml_init;
+	g_MissileForceShape				= xr_new<CUIProgressShape>();
+	xml_init.InitProgressShape		(uiXml, "progress", 0, g_MissileForceShape);
+}
 
 CMissile::CMissile(void) 
 {
-	///////////////////////////////////
 	m_throw_direction.set(0.0f, 1.0f, 0.0f);
 	m_throw_matrix.identity();
-	///////////////////////////////////
 	m_throw = false;
 	m_constpower = false;
 	m_ef_weapon_type	= u32(-1);
@@ -223,23 +232,19 @@ void CMissile::UpdateCL()
 {
 	inherited::UpdateCL();
 
-//	if (!H_Parent())
-//		Msg				("MISSILE [%s][%s] : [%f][%f][%f]",*cName(),*cNameSect(),VPUSH(Position()));
-	
 	if(State() == MS_IDLE && m_dwStateTime > PLAYING_ANIM_TIME) 
 		OnStateSwitch(MS_PLAYING);
 	
 	if(State() == MS_READY) 
 	{
-		if(m_throw) 
+		if(m_throw){ 
 			SwitchState(MS_THROW);
-		else 
+		}else 
 		{
 			CActor	*actor = smart_cast<CActor*>(H_Parent());
 			if (actor) {				
 				m_fThrowForce		+= (m_fForceGrowSpeed * Device.dwTimeDelta) * .001f;
-				if (m_fThrowForce > m_fMaxForce)
-					m_fThrowForce = m_fMaxForce;				
+				clamp(m_fThrowForce, m_fMinForce, m_fMaxForce);
 			}
 		}
 	}	
@@ -705,4 +710,19 @@ u32	CMissile::ef_weapon_type		() const
 {
 	VERIFY	(m_ef_weapon_type != u32(-1));
 	return	(m_ef_weapon_type);
+}
+
+
+void CMissile::OnDrawUI()
+{
+	if(State()==MS_READY && !m_throw) 
+	{
+		CActor	*actor = smart_cast<CActor*>(H_Parent());
+		if (actor) {
+			if(!g_MissileForceShape) create_force_progress();
+			float k = (m_fThrowForce-m_fMinForce)/(m_fMaxForce-m_fMinForce);
+			g_MissileForceShape->SetPos	(k);
+			g_MissileForceShape->Draw	();
+		}
+	}	
 }

@@ -394,3 +394,4 @@ void CGrenade::net_Relcase(CObject* O )
 	CExplosive::net_Relcase(O);
 	inherited::net_Relcase(O);
 }
+

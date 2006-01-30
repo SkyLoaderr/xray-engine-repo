@@ -537,11 +537,6 @@ void CApplication::LoadBegin	()
 		phase_timer.Start	();
 		::Sound->set_volume (0.f);
 		ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-//		ll_hLogo1.create	("font","ui\\ui_logo");
-//		ll_hLogo2.create	("font","ui\\ui_logo_nv");
-//		ll_hLogo			= ll_hLogo2;
-//		sh_progress.create	("hud\\default","ui\\ui_load_progress_bar");
-		
 		sh_progress.create	("hud\\default","ui\\ui_load");
 		ll_hGeom2.create		(FVF::F_TL, RCache.Vertex.Buffer(),NULL);
 

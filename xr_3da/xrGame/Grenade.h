@@ -14,6 +14,7 @@ public:
 	CGrenade(void);
 	virtual ~CGrenade(void);
 
+
 	virtual void Load(LPCSTR section);
 	
 	virtual BOOL net_Spawn(CSE_Abstract* DC);
