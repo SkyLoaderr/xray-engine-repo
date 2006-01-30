@@ -2016,9 +2016,6 @@
 						RelativePath=".\Config\scripts\val_escort_guard2.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\scripts\val_escort_guard3.ltx">
-					</File>
-					<File
 						RelativePath=".\Config\scripts\val_escort_nap1.ltx">
 					</File>
 					<File
@@ -2047,18 +2044,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\scripts\val_prisoner_guard.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\scripts\val_rob_guard1.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\scripts\val_rob_guard2.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\scripts\val_rob_helper1.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\scripts\val_rob_helper2.ltx">
 					</File>
 					<File
 						RelativePath=".\Config\scripts\val_rob_leader.ltx">
