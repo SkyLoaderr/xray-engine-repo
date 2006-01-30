@@ -27,8 +27,9 @@ struct SMemItem{
 };
 DEFINE_VECTOR(SMemItem,MemItemVec,MemItemVecIt);
 MemItemVec 		m_items;
-boolVec			m_full_memory;
-U32Vec 			m_cell_memory;
+U32Vec			m_memory;
+U32Vec 			m_cell_frame;
+U32Vec 			m_full_frame;
 u32 			m_begin_ptr		= (u32)-1;
 u32 			m_end_ptr		= 0;
 u32 			m_cell_size		= 1024;
@@ -83,7 +84,6 @@ void DrawBitmap(TMxPanel* panel, const Irect& r, u32* data, u32 w, u32 h)
 
 void TfrmMain::ResizeImage()
 {
-/*
     m_memory.resize	(m_cell_size+(m_end_ptr-m_begin_ptr)/m_cell_size);
     std::fill		(m_memory.begin(),m_memory.end(),0x00000000);
     for (MemItemVecIt it=m_items.begin(); it!=m_items.end(); it++){
@@ -114,51 +114,23 @@ void TfrmMain::ResizeImage()
         }
     	m_memory[k]		 		= color;
 	}
-*/    
 }              
 
 void TfrmMain::DrawImage()
 {
     u32 d_w				= paMem->Width/m_cell_px;
     u32 d_h				= paMem->Height/m_cell_px;
-//	if (!m_memory.empty())
-    {
-        if (m_full_memory.size()!=(d_w*d_h)) m_full_memory.resize(d_w*d_h);
-            u32 r_begin_ptr	= m_draw_offs+m_begin_ptr;
-            u32 r_end_ptr	= m_draw_offs+m_begin_ptr+d_w*d_h;
-            u32 r_size		= r_end_ptr-r_begin_ptr;
-	            
-            std::fill		(m_full_memory.begin(),m_full_memory.begin()+d_size,COLOR_DEF_EMPTY);
-            std::fill		(m_full_memory.begin()+d_size,m_full_memory.begin()+d_w*d_h,COLOR_DEF_UNUSED);
-            MemItemVecIt it	= std::lower_bound(m_items.begin(),m_items.end(),r_begin_ptr,find_ptr_pred);
-            if (it!=m_items.end()){
-                if ((it->ptr>r_begin_ptr) && (it!=m_items.begin())) it--;
-                while((it!=m_items.end())&&(it->ptr<(r_begin_ptr+m_cell_size))){
-                    if (it->ptr+it->r_sz>r_begin_ptr){
-                        int	i_begin	= (_max(r_begin_ptr,it->ptr)-r_begin_ptr);
-                        int	i_end	= (_min(r_end_ptr,it->ptr+it->r_sz)-r_begin_ptr);
-                        std::fill	(m_cell_memory.begin()+i_begin/4,m_cell_memory.begin()+i_end/4,COLOR_DEF_FULL);
-                    }
-                    it++;
-                }
-            }
-    
-            DrawBitmap			(paDetMem,Irect().set(0,0,paDetMem->Width,paDetMem->Height),
-                                m_cell_memory.begin(), d_w,d_h);
-        }
-/*
-        if (m_frame.dwWidth!=d_w || m_frame.dwHeight!=d_h )
-        	m_frame.Create	(d_w,d_h);
-        u32 req_frame_sz	= d_w*d_h;
-        u32 real_frame_sz	= _min(req_frame_sz,m_memory.size()-m_draw_offs);
-		CopyMemory			(m_frame.pData,m_memory.begin()+m_draw_offs,real_frame_sz*4);
+    if (!m_memory.empty()){
+        u32 req_frame_sz		= d_w*d_h;
+        u32 real_frame_sz		= _min(req_frame_sz,m_memory.size()-m_draw_offs);
+        if (m_full_frame.size()!= req_frame_sz)
+        	m_full_frame.resize	(req_frame_sz);
+		CopyMemory				(m_full_frame.begin(),m_memory.begin()+m_draw_offs,real_frame_sz*4);
         if (req_frame_sz!=real_frame_sz)
-		    std::fill		(m_frame.pData+real_frame_sz,m_frame.pData+d_w*d_h,COLOR_DEF_EMPTY);
+		    std::fill			(m_full_frame.begin()+real_frame_sz,m_full_frame.begin()+d_w*d_h,COLOR_DEF_EMPTY);
     
-        DrawBitmap			(paMem,Irect().set(0,0,paMem->Width,paMem->Height),
-                            m_frame.pData, d_w,d_h);
-*/
-        
+        DrawBitmap				(paMem,Irect().set(0,0,paMem->Width,paMem->Height),
+                           		m_full_frame.begin(), d_w,d_h);
 	    // UI update
         if (m_memory.size()>d_w*d_h){
             sbMem->Max			= (m_memory.size()-d_w*d_h+2*d_w)/d_w;
@@ -254,14 +226,7 @@ void __fastcall TfrmMain::OpenClick(TObject *Sender)
 
 		std::sort		(m_items.begin(),m_items.end(),sort_ptr_pred);
 
-        m_full_memory.resize		(m_end_ptr-m_begin_ptr,false);
-        
-        for (MemItemVecIt it=m_items.begin(); it!=m_items.end(); it++){
-            u32 begin	= (it->ptr-m_begin_ptr)/4;
-            int sz		= it->r_sz/4;
-            std::fill	(m_full_memory.begin()+begin,m_full_memory.begin()+begin+sz,true);
-        }
-        
+        ResizeImage		();
         DrawImage		();
     }
 }
@@ -357,15 +322,15 @@ void TfrmMain::DrawDetImage()
     u32 d_w				= paDetMem->Width/m_cell_px;
     u32 d_h				= paDetMem->Height/m_cell_px;
 	if (!m_memory.empty()){
-    	if (m_cell_memory.size()!=(d_w*d_h)) m_cell_memory.resize(d_w*d_h);
+    	if (m_cell_frame.size()!=(d_w*d_h)) m_cell_frame.resize(d_w*d_h);
 
     	u32 r_begin_ptr	= m_curr_cell*m_cell_size+m_begin_ptr;
     	u32 r_end_ptr	= (m_curr_cell+1)*m_cell_size+m_begin_ptr;
     	u32 r_size		= r_end_ptr-r_begin_ptr;
     	u32 d_size		= r_size/4;
 	            
-        std::fill		(m_cell_memory.begin(),m_cell_memory.begin()+d_size,COLOR_DEF_EMPTY);
-        std::fill		(m_cell_memory.begin()+d_size,m_cell_memory.begin()+d_w*d_h,COLOR_DEF_UNUSED);
+        std::fill		(m_cell_frame.begin(),m_cell_frame.begin()+d_size,COLOR_DEF_EMPTY);
+        std::fill		(m_cell_frame.begin()+d_size,m_cell_frame.begin()+d_w*d_h,COLOR_DEF_UNUSED);
         MemItemVecIt it	= std::lower_bound(m_items.begin(),m_items.end(),r_begin_ptr,find_ptr_pred);
         if (it!=m_items.end()){
             if ((it->ptr>r_begin_ptr) && (it!=m_items.begin())) it--;
@@ -373,14 +338,14 @@ void TfrmMain::DrawDetImage()
             	if (it->ptr+it->r_sz>r_begin_ptr){
                 	int	i_begin	= (_max(r_begin_ptr,it->ptr)-r_begin_ptr);
                 	int	i_end	= (_min(r_end_ptr,it->ptr+it->r_sz)-r_begin_ptr);
-					std::fill	(m_cell_memory.begin()+i_begin/4,m_cell_memory.begin()+i_end/4,COLOR_DEF_FULL);
+					std::fill	(m_cell_frame.begin()+i_begin/4,m_cell_frame.begin()+i_end/4,COLOR_DEF_FULL);
                 }
                 it++;
             }
         }
     
         DrawBitmap			(paDetMem,Irect().set(0,0,paDetMem->Width,paDetMem->Height),
-                            m_cell_memory.begin(), d_w,d_h);
+                            m_cell_frame.begin(), d_w,d_h);
     }
     
     // grid
