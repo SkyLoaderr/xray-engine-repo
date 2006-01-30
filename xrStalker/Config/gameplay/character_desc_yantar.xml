@@ -5,7 +5,7 @@
 <!----------------glavniy ucheniy-------------->
 	<specific_character id="yan_general_ecolog" team_default = "1">
 		<name>Профессор Сахаров</name>
-		<icon x="20" y="10"></icon>
+		<icon x="4" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>ученый</bio>
 
@@ -59,7 +59,7 @@
 
 <specific_character id="yan_Semenov" team_default = "1">
 		<name>Ассистент Семенов</name>
-		<icon x="8" y="4"></icon>
+		<icon x="10" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Средний научный сотрудник Семенов. Детальная информация отсутствует.</bio>
 
@@ -86,7 +86,7 @@
 	
 	<specific_character id="yan_ecolog_vasilyev" team_default = "1">
 		<name>Васильев</name>
-		<icon x="8" y="4"></icon>
+		<icon x="10" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Младший научный сотрудник Васильев. Детальная информация отсутствует.</bio>
 
