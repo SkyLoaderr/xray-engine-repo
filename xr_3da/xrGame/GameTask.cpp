@@ -570,7 +570,13 @@ void SGameTaskKey::save(IWriter &stream)
 	save_data(game_task->m_Title,			stream);
 	save_data(game_task->m_is_task_general, stream);
 
-	save_data(game_task->m_Objectives, stream);
+	u32 cnt	= game_task->m_Objectives.size();
+	save_data(cnt, stream);
+
+	OBJECTIVE_VECTOR_IT it		= game_task->m_Objectives.begin();
+	OBJECTIVE_VECTOR_IT it_e	= game_task->m_Objectives.end();
+	for(;it!=it_e;++it)
+		save_data(*it, stream);
 
 }
 
@@ -583,10 +589,16 @@ void SGameTaskKey::load(IReader &stream)
 	load_data(game_task->m_Title,			stream);
 	load_data(game_task->m_is_task_general, stream);
 
-	load_data(game_task->m_Objectives, stream);
+	u32 cnt;
+	load_data(cnt, stream);
 
-	for(u32 i=0; i<game_task->m_Objectives.size(); ++i)
+	if(cnt>game_task->m_Objectives.size())
+		game_task->m_Objectives.resize(cnt);
+
+	for(u32 i=0; i<cnt; ++i){
+		load_data(game_task->m_Objectives[i], stream);
 		game_task->m_Objectives[i].parent = game_task;
+	}
 }
 
 void SGameTaskKey::destroy()
