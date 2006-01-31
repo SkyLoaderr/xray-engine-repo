@@ -251,6 +251,7 @@ bool CMapLocation::Update() //returns actual
 }
 
 extern xr_vector<CLevelChanger*>	g_lchangers;
+xr_vector<u32> map_point_path;
 
 void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 {
@@ -306,17 +307,23 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		}
 	}else
 	if(Level().name()==map->MapName() && GetSpotPointer(sp)){
-		CSE_ALifeDynamicObject* obj = NULL;
-		VERIFY(ai().get_alife());
-		obj = ai().alife().objects().object(m_objectID);
-		VERIFY(obj);
-	
-		
-		xr_vector<u32> path_;
-		bool res = ai().graph_engine().search(ai().game_graph(),Actor()->ai_location().game_vertex_id(), obj->m_tGraphID, &path_, GraphEngineSpace::CBaseParameters());
+		GameGraph::_GRAPH_ID		dest_graph_id;
+
+		if(!IsUserDefined()){
+			CSE_ALifeDynamicObject* obj = NULL;
+			VERIFY(ai().get_alife());
+			obj = ai().alife().objects().object(m_objectID);
+			R_ASSERT(obj);
+			dest_graph_id		= obj->m_tGraphID;
+		}else{
+			dest_graph_id = (smart_cast<CUserDefinedMapLocation*>(this))->m_graph_id;
+		}
+
+		map_point_path.clear();
+		bool res = ai().graph_engine().search(ai().game_graph(),Actor()->ai_location().game_vertex_id(), dest_graph_id, &map_point_path, GraphEngineSpace::CBaseParameters());
 		if(res){
-			xr_vector<u32>::iterator it = path_.begin();
-			xr_vector<u32>::iterator it_e = path_.end();
+			xr_vector<u32>::iterator it = map_point_path.begin();
+			xr_vector<u32>::iterator it_e = map_point_path.end();
 
 			xr_vector<CLevelChanger*>::iterator lit,lit_e;
 			lit_e							= g_lchangers.end();
@@ -333,8 +340,8 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 			if(!bDone&&bbb){
 				Msg("Error. Path from actor to selected map spot does not contain level changer :(");
 				Msg("Path:");
-				xr_vector<u32>::iterator it			= path_.begin();
-				xr_vector<u32>::iterator it_e		= path_.end();
+				xr_vector<u32>::iterator it			= map_point_path.begin();
+				xr_vector<u32>::iterator it_e		= map_point_path.end();
 				for(; it!=it_e;++it){
 //					Msg("%d-%s",(*it),ai().game_graph().vertex(*it));
 					Msg("[%d] level[%s]",(*it),*ai().game_graph().header().level(ai().game_graph().vertex(*it)->level_id()).name());
@@ -576,6 +583,27 @@ void CUserDefinedMapLocation::InitExternal(const shared_str& level_name, const F
 	m_level_name		= level_name;
 	m_position_global	= pos;
 	m_position			= pos;
+	m_graph_id			= GameGraph::_GRAPH_ID(-1);
+
+	if(ai().get_alife()){
+	const CGameGraph::SLevel& level		= ai().game_graph().header().level(*level_name);
+		float min_dist					= flt_max;
+
+		GameGraph::_GRAPH_ID n			= ai().game_graph().header().vertex_count();
+
+		for (GameGraph::_GRAPH_ID i=0; i<n; ++i)
+			if (ai().game_graph().vertex(i)->level_id() == level.id()) {
+				float				distance = ai().game_graph().vertex(i)->game_point().distance_to_sqr(m_position);
+				if (distance < min_dist) {
+					min_dist		= distance;
+					m_graph_id		= i;
+				}
+			}
+		if (!ai().game_graph().vertex(m_graph_id)) {
+			Msg		("! Cannot assign game vertex for CUserDefinedMapLocation [map=%s]", *level_name);
+			R_ASSERT(ai().game_graph().vertex(m_graph_id));
+		}
+	}
 }
 
 bool CUserDefinedMapLocation::Update					()
@@ -588,30 +616,31 @@ shared_str CUserDefinedMapLocation::LevelName()
 	return m_level_name;
 }
 
-Fvector2 CUserDefinedMapLocation::Position				()
+Fvector2 CUserDefinedMapLocation::Position()
 {
 	return Fvector2().set(m_position.x, m_position.z);
 }
 
-Fvector2 CUserDefinedMapLocation::Direction				()
+Fvector2 CUserDefinedMapLocation::Direction()
 {
 	return Fvector2().set(0.0f,0.0f);
 }
 
-void CUserDefinedMapLocation::save				(IWriter &stream)
+void CUserDefinedMapLocation::save(IWriter &stream)
 {
-	inherited::save		(stream);
-
-	stream.w_stringZ	(m_level_name);
-	stream.w_fvector3	(m_position);
+	inherited::save		(stream					);
+	save_data			(m_level_name,	stream	);
+	save_data			(m_position,	stream	);
+	save_data			(m_graph_id,	stream	);
 }
 
-void CUserDefinedMapLocation::load				(IReader &stream)
+void CUserDefinedMapLocation::load(IReader &stream)
 {
 	inherited::load		(stream);
+	load_data			(m_level_name,	stream	);
+	load_data			(m_position,	stream	);
+	load_data			(m_graph_id,	stream	);
 
-	stream.r_stringZ	(m_level_name);
-	stream.r_fvector3	(m_position);
 	m_position_global	= m_position;
 }
 

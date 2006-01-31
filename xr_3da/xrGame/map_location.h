@@ -2,6 +2,7 @@
 #pragma once
 #include "object_interfaces.h"
 #include "alife_space.h"
+#include "game_graph_space.h"
 
 class CMapSpot;
 class CMiniMapSpot;
@@ -118,12 +119,14 @@ class CUserDefinedMapLocation :public CMapLocation
 	shared_str				m_level_name;
 	Fvector					m_position;
 public:
+	GameGraph::_GRAPH_ID	m_graph_id;
 							CUserDefinedMapLocation			(LPCSTR type, u16 object_id);
 	virtual					~CUserDefinedMapLocation		();
 	virtual bool			Update							(); //returns actual
 	virtual Fvector2		Position						();
 	virtual Fvector2		Direction						();
 	virtual shared_str		LevelName						();
+
 			void			InitExternal					(const shared_str& level_name, const Fvector& pos);
 	virtual void			save							(IWriter &stream);
 	virtual void			load							(IReader &stream);

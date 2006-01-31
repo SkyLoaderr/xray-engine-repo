@@ -69,6 +69,7 @@ void CLevelGraph::render()
 #endif
 
 }
+extern xr_vector<u32> map_point_path;
 
 void CLevelGraph::on_render4	()
 {
@@ -124,6 +125,22 @@ void CLevelGraph::on_render4	()
 //				//				RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 //				//			}
 //			}
+	{
+		const xr_vector<u32>	&path = map_point_path;
+		Fvector t1 = ai().game_graph().vertex(path.back())->game_point();
+		t1.y += .6f;
+		NORMALIZE_VECTOR(t1);
+		RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+		for (int i=(int)path.size() - 2; i>=0;--i) {
+			Fvector t2 = ai().game_graph().vertex(path[i])->game_point();
+			t2.y += .6f;
+			NORMALIZE_VECTOR(t2);
+			RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+			RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,0,255));
+			t1 = t2;
+		}
+	}
+
 	if (GameID() == GAME_SINGLE && ai().get_alife()) {
 		{
 			GameGraph::_LEVEL_ID	J = ai().game_graph().vertex(ai().alife().graph().actor()->m_tGraphID)->level_id();
