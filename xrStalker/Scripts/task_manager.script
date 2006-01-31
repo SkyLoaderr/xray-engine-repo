@@ -110,6 +110,7 @@ function fill_phrase_table()
 		tt.description = task_ini:r_string(id, "description")				
 		
 		tt.reward_money = utils.cfg_get_number(task_ini, id, "reward_money", nil, false)
+		tt.reward_rank = utils.cfg_get_number(task_ini, id, "reward_rank", nil, false)
 		tt.reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", nil, false)
 		
 		local sss = utils.cfg_get_string(task_ini, id, "reward_item", nil, false, "")
@@ -224,7 +225,7 @@ function action_give_task(actor, npc, p1, p2)
 	task:set_title(task_desc.type)
 	
 	local objective = SGameTaskObjective(task,1)
-	objective:set_description(task_desc.text)
+	objective:set_description(task_desc.name)
 	objective:set_article_id(task_desc.description)
 	if task_desc.type == "eliminate_lager" then
 		objective:set_map_hint(task_desc.text)
@@ -381,8 +382,9 @@ function action_task_reward(npc, actor)
 				end
 			end
 
-
-
+			if v.reward_rank ~= nil then
+				actor_stats.add_points("quests", v.name, 1, v.reward_rank)
+			end
 							
 			-- устанавливаем время последнего обновления задания
 			for kk,vv in pairs(task_info[parent]) do
@@ -524,19 +526,25 @@ function calculate_predicate(npc, tbl)
 			end
 		end
 	elseif tbl.type == "kill_stalker" then
+		local avail_obj = {}
 		for k,v in pairs(tbl.target_objects) do
 			local obj = aa:object(v)
+			-- создаем список кто может быть выбран
 			if obj ~= nil and
 			   obj:alive() == true 
 			then
-				tbl.selected_target = v
-				return true
+				table.insert(avail_obj, v)
 			else
 				tbl.target_objects[k] = nil
-				return false
 			end
 		end
-		return false
+		local nn = table.getn(avail_obj)
+		if nn > 0 then
+			tbl.selected_target = avail_obj[math.random(nn)]
+			return true
+		else
+			return false
+		end
 	elseif tbl.type == "find_item" then
 		local obj = aa:object(tbl.target)
 		if obj == nil then
