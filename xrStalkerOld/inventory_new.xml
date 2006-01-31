@@ -32,16 +32,14 @@
         <text x="20" y="10" font="graffiti22" r="231" g="153" b="22">ui_inv_description</text>
     </descr_static>
     
-	<frame_window/>
-	
     <!-- CHARACTER WINDOW -->
-    <frame_window x="730" y="260" width="268" height="460">
+    <character_frame_window x="730" y="260" width="268" height="460">
 		<texture>ui_frame</texture>        
         <left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture>
         <title x="100" y="0" width="240" height="60">
 			<text font="graffiti22" r="231" g="153" b="22">ui_inv_personal</text>
         </title>
-    </frame_window>
+    </character_frame_window>
     
     <!-- OUTFIT INFO -->
     <outfit_info_window x="20" y="36" width="268" height="460">
@@ -53,19 +51,6 @@
         <texture> ui\ui_inv_belt</texture>
         <text x="25" y="2" font="graffiti22" r="231" g="153" b="22">ui_inv_belt</text>
     </static>
-
-    <button x="600" y="715" width="150" height="40">
-        <texture>ui\ui_button_01</texture>
-        <text>Medkit</text>
-    </button>
-    <button x="800" y="715" width="150" height="40">
-        <texture>ui\ui_button_01</texture>
-        <text>Antirad</text>
-    </button>
-    <button x="800" y="615" width="150" height="40">
-        <texture>ui\ui_button_01</texture>
-        <text>Food</text>
-    </button>
 
 	<!-- Drop button -->
     <drop_button x="230" y="413" width="110" height="60" hR="255" hB="83" hG="179" highlight_text="1">
@@ -104,36 +89,30 @@
             cell_width = "52" cell_height="52"
             rows_num="2" cols_num="3"/>
 
-    <!-- OUTFIT SLOT -->
-    <!-- <dragdrop_list x="828" y="314" width="150" height="220" -->
     <dragdrop_list x="858" y="314" width="86" height="260" 
             cell_width = "57" cell_height="57"
             rows_num="4" cols_num="4" show_grid="0"/>
 
 
-    <!-- HEALTH BAR -->
-    <progress_bar x="15" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+    <progress_bar_health x="15" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
         <background width="17" height="222" >ui\ui_inv_progress_blood_empty</background>
-    </progress_bar>
+    </progress_bar_health>
 
-    <!-- SATIETY BAR -->
-    <progress_bar x="36" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+    <progress_bar_satiety x="36" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="255" g="255" b="0">ui\ui_inv_progress_food</texture>
         <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_food_empty</background>
-    </progress_bar>
+    </progress_bar_satiety>
 
-    <!-- POWER BAR -->
-    <progress_bar x="58" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+    <progress_bar_psy x="58" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
         <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_end_empty</background>
-    </progress_bar>
+    </progress_bar_psy>
 
-    <!-- RADIATION BAR -->
-    <progress_bar x="79" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+    <progress_bar_radiation x="79" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="0" g="255" b="255">ui\ui_inv_progress_rad</texture>
         <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_rad_empty</background>
-    </progress_bar>
+    </progress_bar_radiation>
 
     <time_static x="15" y="730" width="200" height="30">        
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255">ui_inv_time</text>
