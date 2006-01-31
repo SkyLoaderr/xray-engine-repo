@@ -118,14 +118,12 @@ function mp_main:InitCallBacks()
 	self:AddCallback("btn_server_info",		ui_events.BUTTON_CLICKED,	self.OnBtn_SrvInfo,self)	
 	
 	-- msg_box
-	self:AddCallback("msg_box",				ui_events.MESSAGE_BOX_YES_CLICKED,	self.OnDirectIP_yes,self)
+	self:AddCallback("msg_box",				ui_events.MESSAGE_BOX_YES_CLICKED,			self.OnDirectIP_yes,self)
 end
 
 function mp_main:OnBtn_DirectIP()
---	self.server_list:ShowServerInfo()
 	self.message_box:Init("message_box_direct_ip")
 	self:GetHolder():start_stop_menu(self.message_box,true)
---	self.message_box:Show();
 end
 
 function mp_main:OnDirectIP_yes()
@@ -193,12 +191,10 @@ function mp_main:OnBtn_Refresh()
 end
 
 function mp_main:OnBtn_RefreshQuick()
---	self.server_list:SetSortFunc("map", true)
 	self.server_list:RefreshQuick()
 end
 
 function mp_main:OnBtn_Calncel()
---	self.server_list:SetSortFunc("server_name", true)
 	self:GetHolder():start_stop_menu(self,true)	
 	self.owner:Show(true)
 end

@@ -2481,6 +2481,9 @@
 				<File
 					RelativePath=".\Scripts\ui_spawn_dialog.script">
 				</File>
+				<File
+					RelativePath=".\Scripts\ui_wpn_params.script">
+				</File>
 				<Filter
 					Name="multiplayer"
 					Filter="">

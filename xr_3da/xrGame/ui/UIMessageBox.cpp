@@ -86,6 +86,12 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 	}else
 	if(0==stricmp(_type,"password")){
 		m_eMessageBoxStyle	= MESSAGEBOX_PASSWORD;
+	}else
+	if(0==stricmp(_type,"quit_windows")){
+		m_eMessageBoxStyle	= MESSAGEBOX_QUIT_WINDOWS;
+	}else 
+	if(0==stricmp(_type,"quit_game")){
+		m_eMessageBoxStyle	= MESSAGEBOX_QUIT_GAME;
 	};
 	
 
@@ -120,6 +126,8 @@ void CUIMessageBox::Init	(LPCSTR box_template)
 			AttachChild							(m_UIEditPass);
 			xml_init.InitEditBox				(uiXml, str, 0, m_UIEditPass);
 
+		case MESSAGEBOX_QUIT_WINDOWS:
+		case MESSAGEBOX_QUIT_GAME:
 		case MESSAGEBOX_YES_NO:{
 			strconcat							(str,box_template,":button_yes");
 			m_UIButtonYesOk						= xr_new<CUI3tButton>();
@@ -165,9 +173,16 @@ void CUIMessageBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		case MESSAGEBOX_DIRECT_IP:
 		case MESSAGEBOX_PASSWORD:
 		case MESSAGEBOX_YES_NO:
+		case MESSAGEBOX_QUIT_GAME:
+		case MESSAGEBOX_QUIT_WINDOWS:
 			if(pWnd == m_UIButtonYesOk)
 			{
-				GetMessageTarget()->SendMessage(this, MESSAGE_BOX_YES_CLICKED);
+				if (MESSAGEBOX_QUIT_GAME == m_eMessageBoxStyle)
+                    GetMessageTarget()->SendMessage(this, MESSAGE_BOX_QUIT_GAME_CLICKED);
+				else if (MESSAGEBOX_QUIT_WINDOWS == m_eMessageBoxStyle)
+					GetMessageTarget()->SendMessage(this, MESSAGE_BOX_QUIT_WIN_CLICKED);
+				else
+					GetMessageTarget()->SendMessage(this, MESSAGE_BOX_YES_CLICKED);
 			}
 			else if(pWnd == m_UIButtonNo)
 			{

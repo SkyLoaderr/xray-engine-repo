@@ -1905,3 +1905,19 @@ void	CUIBuyWeaponWnd::ReloadItemsPrices	()
 {
 	UIBagWnd.ReloadItemsPrices();
 }
+//
+//void init___()
+//{
+//	luabind::functor<float>		m_functorRPM;
+//	luabind::functor<float>		m_functorAccuracy;
+//	luabind::functor<float>		m_functorDamage;
+//	luabind::functor<float>		m_functorHandling;
+//
+//	LPCSTR str					= "ui_wpn_params.GetRPM";
+//	bool	functor_exists		= ai().script_engine().functor(str ,m_functor);
+//	VERIFY(functor_exists);
+//	//call
+//	if(m_functor.is_valid()){
+//		float res = m_functor(p1,p2,p3,p4);
+//	}
+//}
