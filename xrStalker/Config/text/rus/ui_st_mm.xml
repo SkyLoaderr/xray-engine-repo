@@ -195,4 +195,13 @@
     <string id="ui_mm_voice_volume">
         <text>Voice volume</text>
     </string>
+    <string id="ui_mm_quit_game_message">
+        <text>Do you really want to end the game?</text>
+    </string>
+    <string id="ui_mm_disconnect_message">
+        <text>Do you really want to disconnect?</text>
+    </string>
+    <string id="ui_mm_quit_windows_message">
+        <text>Do you really want to quit to Windows?</text>
+    </string>
 </string_table>

@@ -549,7 +549,8 @@ void CLevel::script_register(lua_State *L)
 		def("remove_cam_effector",				&remove_cam_effector),
 		def("add_pp_effector",					&add_pp_effector),
 		def("set_pp_effector_factor",			&set_pp_effector_factor),
-		def("remove_pp_effector",				&remove_pp_effector)
+		def("remove_pp_effector",				&remove_pp_effector),
+		def("game_id",							&GameID)
 	],
 	
 	module(L,"actor_stats")

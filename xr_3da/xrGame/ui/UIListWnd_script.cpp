@@ -105,15 +105,13 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("SetMapPic",				&CUIMapList::SetMapPic)
 		.def("SetMapInfo",				&CUIMapList::SetMapInfo),	
 		
-
 		class_<enum_exporter<GAME_TYPE> >("GAME_TYPE")
 		.enum_("gametype")
 		[
 			value("GAME_UNKNOWN",			int(GAME_UNKNOWN)),
 			value("GAME_DEATHMATCH",		int(GAME_DEATHMATCH)),
 			value("GAME_TEAMDEATHMATCH",	int(GAME_TEAMDEATHMATCH)),
-			value("GAME_ARTEFACTHUNT",		int(GAME_ARTEFACTHUNT)),
-			value("GAME_END_LIST",			int(GAME_END_LIST))
+			value("GAME_ARTEFACTHUNT",		int(GAME_ARTEFACTHUNT))
 		]
 		
 	];

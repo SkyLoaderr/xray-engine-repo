@@ -1841,10 +1841,13 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 				UIDescRankIcon.InitTexture(tex_name);
 			}
 
-			if (pSettings->line_exist(pDDItemMP->GetSectionName(), "fire_dispersion_base"))
+            if (0 != xr_strcmp("wpn_binoc", pDDItemMP->GetSectionName()) && 0 != xr_strcmp("mp_wpn_binoc", pDDItemMP->GetSectionName()))
 			{
-                UIWpnParams.SetInfo(pDDItemMP->GetSectionName());
-                UIItemInfo.UIDesc->AddWindow(&UIWpnParams, false);			
+                if (pSettings->line_exist(pDDItemMP->GetSectionName(), "fire_dispersion_base"))
+				{
+					UIWpnParams.SetInfo(pDDItemMP->GetSectionName());
+					UIItemInfo.UIDesc->AddWindow(&UIWpnParams, false);			
+				}
 			}
 
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
