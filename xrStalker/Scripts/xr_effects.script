@@ -137,6 +137,10 @@ function drop_npc_inventory(actor, npc, p)
 end
 
 -----------------------------------------------------------------------------
+function monster_berserk(actor, npc)
+    --npc:berserk()
+end
+
 --[[
 send_tip(news_id:sender:sender_id)
     1. news_id
