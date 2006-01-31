@@ -31,7 +31,9 @@
         <texture> ui\ui_dg_info</texture>
         <text x="20" y="10" font="graffiti22" r="231" g="153" b="22">ui_inv_description</text>
     </descr_static>
-
+    
+	<frame_window/>
+	
     <!-- CHARACTER WINDOW -->
     <frame_window x="730" y="260" width="268" height="460">
 		<texture>ui_frame</texture>        
