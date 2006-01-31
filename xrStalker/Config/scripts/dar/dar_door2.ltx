@@ -5,7 +5,7 @@ active = ph_door@locked
 locked = true
 closed = true
 snd_open_start = trader_door_locked
-on_info = {+dar_codelock2_unlock} ph_door@unlocked %+dar_open_door2%
+on_info = {+dar_codelock2_unlock} ph_door@closed %+dar_open_door2%
 on_info2 = {+x18_door2} ph_door@horror_knock %-x18_door2%
 
 [ph_door@horror_knock]
@@ -28,11 +28,20 @@ snd_open_start = trader_door_locked
 on_timer = 5000| ph_door@horror_knock %-info_knock%
 on_info = {+x18_door2_knock_stop} ph_door@locked  %-info_knock%
 
-[ph_door@unlocked]
+[ph_door@closed]
 locked = false
 closed = true
 snd_init = trader_door_unlock
 snd_open_start = trader_door_open_start
 snd_close_start = trader_door_close_start
 snd_close_stop = trader_door_close_stop
+on_use = ph_door@open
 
+[ph_door@open]
+locked = false
+closed = false
+snd_init = trader_door_unlock
+snd_open_start = trader_door_open_start
+snd_close_start = trader_door_close_start
+snd_close_stop = trader_door_close_stop
+on_use = ph_door@closed
