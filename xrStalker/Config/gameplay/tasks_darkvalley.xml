@@ -18,7 +18,7 @@
             ui\ui_icons_task
         </icon>
         <map_location_type>
-            val_exit_gate_location
+            green_location
         </map_location_type>
         <object_story_id>
             val_exit_gate
@@ -119,5 +119,89 @@
         <object_story_id>
             val_escort_nap1
         </object_story_id>
+    </objective>
+</game_task>
+<game_task id="bar_darklab_documents">
+    <title>
+        bar_darklab_documents
+    </title>
+    <objective key="0">
+        <icon height="50" width="50" x="0" y="0">
+            ui\ui_icons_task
+        </icon>
+        <infoportion_complete>
+            bar_darklab_document_done
+        </infoportion_complete>
+    </objective>
+    <objective key="1">
+        <text>
+            bar_darklab_documents_1
+        </text>
+        <icon height="50" width="50" x="0" y="0">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type hint="bar_darklab_documents_1_hint">
+            green_location
+        </map_location_type>
+        <object_story_id>
+            val_borov
+        </object_story_id>
+        <function_complete>
+            darkvalley_tasks.has_darklab_key
+        </function_complete>
+    </objective>
+    <objective key="2">
+        <text>
+            bar_darklab_documents_2
+        </text>
+        <icon height="50" width="50" x="0" y="0">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type hint="bar_darklab_documents_2_hint">
+            green_location
+        </map_location_type>
+        <object_story_id>
+            val_door_to_x18
+        </object_story_id>
+        <infoportion_complete>
+            val_x18_door_open
+        </infoportion_complete>
+    </objective>
+    <objective key="3">
+        <text>
+            bar_darklab_documents_3
+        </text>
+        <icon height="50" width="50" x="0" y="0">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type hint="bar_darklab_documents_3_hint">
+            green_location
+        </map_location_type>
+        <object_story_id>
+            bar_darklab_documents
+        </object_story_id>
+        <function_complete>
+            darkvalley_tasks.has_darklab_documents
+        </function_complete>
+        <infoportion_set_complete>
+            bar_darklab_document_gain
+        </infoportion_set_complete>
+    </objective>
+    <objective key="4">
+        <text>
+            bar_darklab_documents_4
+        </text>
+        <icon height="50" width="50" x="0" y="0">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type hint="bar_darklab_documents_4_hint">
+            blue_location
+        </map_location_type>
+        <object_story_id>
+            bar_Barman
+        </object_story_id>
+        <infoportion_complete>
+            bar_darklab_document_done
+        </infoportion_complete>
     </objective>
 </game_task>

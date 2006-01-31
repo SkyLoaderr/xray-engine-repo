@@ -1,12 +1,40 @@
-	<string id="val_zone_bandits_hint">
-		<text>Лагерь бандитов</text>
-	</string>
-	<string id="val_zone_monolith_hint">
-		<text>Старая фабрика</text>
-	</string>
-	<string id="val_zone_robbers_hint">
-		<text>Заброшенная свиноферма</text>
-	</string>
-	<string id="val_zone_south_gate_hint">
-		<text>Ворота</text>
-	</string>
+<string id="val_zone_bandits_hint">
+    <text>
+        Лагерь бандитов
+    </text>
+</string>
+<string id="val_zone_monolith_hint">
+    <text>
+        Старая фабрика
+    </text>
+</string>
+<string id="val_zone_robbers_hint">
+    <text>
+        Заброшенная свиноферма
+    </text>
+</string>
+<string id="val_zone_south_gate_hint">
+    <text>
+        Ворота
+    </text>
+</string>
+<string id="bar_darklab_documents_1_hint">
+    <text>
+        Боров
+    </text>
+</string>
+<string id="bar_darklab_documents_2_hint">
+    <text>
+        Вход в лабораторию
+    </text>
+</string>
+<string id="bar_darklab_documents_3_hint">
+    <text>
+        Документы из лаборатории
+    </text>
+</string>
+<string id="bar_darklab_documents_4_hint">
+    <text>
+        Бармен
+    </text>
+</string>

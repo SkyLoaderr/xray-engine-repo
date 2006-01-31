@@ -53,3 +53,28 @@
         Следовать за долговцем к месту засады и помочь освободить его напарника.
     </text>
 </string>
+<string id="bar_darklab_documents">
+    <text>
+        Добыть документы в подземной лаборатории.
+    </text>
+</string>
+<string id="bar_darklab_documents_1">
+    <text>
+        Получить ключ от входа.
+    </text>
+</string>
+<string id="bar_darklab_documents_2">
+    <text>
+        Найти вход в лабораторию.
+    </text>
+</string>
+<string id="bar_darklab_documents_3">
+    <text>
+        Найти и забрать документы.
+    </text>
+</string>
+<string id="bar_darklab_documents_4">
+    <text>
+        Принести документу бармену.
+    </text>
+</string>
