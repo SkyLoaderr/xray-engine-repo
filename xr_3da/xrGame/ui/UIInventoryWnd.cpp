@@ -125,7 +125,7 @@ void CUIInventoryWnd::Init()
 	xml_init.InitProgressBar(uiXml, "progress_bar_psy", 0, &UIProgressBarPsyHealth);
 
 	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
-	xml_init.InitProgressBar(uiXml, "progress_bar_radiation", 3, &UIProgressBarRadiation);
+	xml_init.InitProgressBar(uiXml, "progress_bar_radiation", 0, &UIProgressBarRadiation);
 
 	UIPersonalWnd.AttachChild(&UIStaticPersonal);
 	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", -1, UIPersonalWnd.GetHeight() - 175, 260, 260);
