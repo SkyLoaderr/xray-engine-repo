@@ -1,38 +1,45 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<!-- ITEM INFO IN THE INVENTORY MENU -->
-<window>
-	<!-- NAME -->
-	<static x="20" y="15" width="165" height="25">
-		<text x="0" y="0" font="letterica25" r="238" g="155" b="23"></text>
-	</static>
+<w>
+	<auto>
+		<auto_static x="195" y="10" width="100" height="20">
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">weight</text>
+		</auto_static>
+		
+		<auto_static x="195" y="30" width="100" height="20">
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">base cost</text>
+		</auto_static>
 
-	<!-- WEIGHT -->
-	<static x="190" y="15" width="140" height="18">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
-
-	<!-- COST -->
-	<static x="190" y="51" width="240" height="18">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+		<auto_static x="195" y="50" width="100" height="20">
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">condition</text>
+		</auto_static>
+	</auto>
 	
-	<!-- CONDITION -->
-	<static x="190" y="33" width="240" height="18">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+	<static_name x="20" y="10" width="165" height="25">
+		<text align="l" x="0" y="0" font="letterica25" r="238" g="155" b="23"/>
+	</static_name>
 
-	<!-- DESCRIPTION -->
+	<static_weight x="265" y="10" width="50" height="18">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_weight>
+
+	<static_cost x="265" y="30" width="50" height="18">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_cost>
+	
+	<static_condition x="265" y="50" width="50" height="18">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_condition>
+
 	<descr_list x="20" y="70" width="289" height="130" item_height="15" always_show_scroll="0">
 		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
     
-    <!-- CONDITION BAR -->
-    <condition_progress x="10" y="51" length="180" broad="15" horz="1" min="0" max="100" pos="100">
-		<min_color r="255" g="0" b="0"></min_color>
-		<max_color r="0" g="255" b="0"></max_color>
+    <condition_progress x="13" y="54" length="180" broad="15" horz="1" min="0" max="100" pos="100">
+		<min_color r="255" g="0" b="0"/>
+		<max_color r="0" g="255" b="0"/>
         <texture tile="0" width="120" height="30" length="180" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
         <background x="0" y="0"  width="120" height="30">ui\ui_mg_progress_efficiency_empty</background>
     </condition_progress>
    
-</window>
+</w>
 

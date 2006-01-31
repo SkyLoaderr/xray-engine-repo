@@ -1,42 +1,46 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<!-- ITEM INFO IN THE INVENTORY MENU -->
-<window>
+<w>
+	<auto>
+		<auto_static x="145" y="120" width="100" height="20">
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">weight</text>
+		</auto_static>
+		
+		<auto_static x="145" y="140" width="100" height="20">
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">base cost</text>
+		</auto_static>
 
-	<!-- NAME -->
-	<static x="25" y="-3" width="200" height="60">
-		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
-	</static>
+		<auto_static x="145" y="160" width="100" height="20">
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">condition</text>
+		</auto_static>
+	</auto>
 
-	<!-- WEIGHT -->
-	<static x="150" y="120" width="240" height="18">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+	<static_name x="15" y="-3" width="200" height="60">
+		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"/>
+	</static_name>
 
-	<!-- COST -->
-	<static x="150" y="138" width="240" height="18">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+	<static_weight x="210" y="120" width="50" height="18">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_weight>
 
-	<!-- CONDITION -->
-	<static x="150" y="156" width="240" height="18">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+	<static_cost x="210" y="140" width="50" height="18">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_cost>
 
-	<!-- DESCRIPTION -->
+	<static_condition x="210" y="160" width="50" height="18">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_condition>
+
 	<descr_list x="15" y="220" width="241" height="200" item_height="15" always_show_scroll="0">
 		<font font="letterica16" r="216" g="186" b="140"/>
 	</descr_list>
 
-	<!-- 3D STATIC OLD!!!OLD!!!OLD!!! REMOVE ME!!!-->
-	<static_3d x="0" y="-175" width="250" height="190"></static_3d>
 
-	<!-- IMAGE STATIC -->
-	<image_static x="130" y="95" width="240" height="190" alignment="c"/>
-    <!-- CONDITION BAR -->
-    <condition_progress x="10" y="160" length="130" broad="15" horz="1" min="0" max="100" pos="100">
+	<image_static x="110" y="95" width="240" height="190" alignment="c"/>
+
+    <condition_progress x="10" y="165" length="130" broad="15" horz="1" min="0" max="100" pos="100">
 		<min_color r="255" g="0" b="0"></min_color>
 		<max_color r="0" g="255" b="0"></max_color>
         <texture tile="0" width="120" height="30" length="130" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
         <background x="0" y="0"  width="120" height="30">ui\ui_mg_progress_efficiency_empty</background>
     </condition_progress>
-</window>
+</w>

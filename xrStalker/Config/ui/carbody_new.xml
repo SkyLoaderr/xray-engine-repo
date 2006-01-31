@@ -1,7 +1,5 @@
 ﻿<?xml version='1.0' encoding="UTF-8"?>
 
-<!-- Интерфейс перетаскивания элементов из машины и трупа нам в инвентарь -->
-
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
 	<!-- ICONS OF CHARACTERS -->	
@@ -15,12 +13,12 @@
 	<!-- OUR BAG -->
 	<our_bag_static x="20" y="270" width="290" height="450">
 		<texture>ui\ui_dg_inventory_exchange_trade</texture>
-		<text x="30" y="8" font="graffiti22" r="238" g="153" b="26"></text>
+		<text x="30" y="8" font="graffiti22" r="238" g="153" b="26"/>
 	</our_bag_static>
 
 	<dragdrop_list x="29" y="35" width="250" height="460"
 			cell_width = "41" cell_height="41"
-			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"></dragdrop_list>
+			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"/>
 
 	<!-- OTHERS BAG -->
 	<others_bag_static x="685" y="270" width="305" height="455">

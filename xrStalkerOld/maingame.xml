@@ -50,17 +50,17 @@
 	<!-- pda online icon -->
 	<static_pda_online x="138" y="167" width="35" height="28" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
 		<texture>ui_hud_map_counter</texture>
-		<text y="6" align="c" font="normal" r="239" g="154" b="29" a="230"/>
+		<text y="6" align="c" font="normal" r="238" g="155" b="23" a="255"/>
 	</static_pda_online>
 	
 	
 	<!-- tips static -->
 	<quick_info x="1" y="700" width="1022" height="50"  light_anim="ui_btn_hint"  la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
-		<text align="c" font="graffiti22" r="201" g="201" b="201" a="255" />
+		<text align="c" font="graffiti22" r="225" g="225" b="250" a="255" />
 	</quick_info>
 
 	<info_list x="512" y="0" width="525" height="40" item_height="20" fade="2000" flip_vert="0">
-		<font font="graffiti32"  r="231" g="220" b="179" a="255" />
+		<font font="graffiti32"  r="240" g="217" b="182" a="255" />
 	</info_list>
 	
 	
