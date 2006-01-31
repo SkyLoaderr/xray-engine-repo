@@ -20,6 +20,11 @@ function val_rob_actor_reloc_money(stalker, player)
 end
 
 function val_escort_reward(stalker, player)
-	dialogs.relocate_money(stalker, 1300, "in")
-	dialogs.relocate_item(stalker, player:object("wpn_addon_scope"), "in")
+	local scope = player:object("wpn_addon_scope")
+	if scope then
+	    dialogs.relocate_money(stalker, 1300, "in")
+	    dialogs.relocate_item(stalker, scope, "in")
+	else
+	    dialogs.relocate_money(stalker, 1800, "in")
+	end
 end
