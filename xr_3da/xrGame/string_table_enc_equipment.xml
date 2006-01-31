@@ -66,6 +66,9 @@
     <string id="enc_equipment_devic_device-torch1">
         <text>Фонарик с довольно мощной лампой. В условиях дефицита освещенности в Зоне - ценный помощник.</text>
     </string>
+    <string id="enc_equipment_devic_device-torch1_m1">
+        <text>Фонарик с довольно мощной лампой. За счет усовершенствования трансформатора уменьшено время зарядки.</text>
+    </string>    
     <string id="Detect1">
         <text>Детектор аномалий (ДА-2)</text>
     </string>
