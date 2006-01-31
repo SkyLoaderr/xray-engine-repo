@@ -82,7 +82,7 @@
         <text>Опции погоды</text>
     </string>
     <string id="mm_mp_freezetime">
-        <text>Freeze Time</text>
+        <text>Время задержки</text>
     </string>
     <string id="mm_mp_damageblock">
         <text>Неуязвимость</text>
@@ -97,7 +97,7 @@
         <text>Лимит времени</text>
     </string>
     <string id="mm_mp_artefstay">
-        <text>Artefact Stay (мин.)</text>
+        <text>Задержка артефакта (мин.)</text>
     </string>
     <string id="mm_mp_artefnum">
         <text>Количество артефактов</text>
