@@ -1812,12 +1812,14 @@ bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) con
 void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 {
 	{
+		UIItemInfo.m_b_force_drawing		= false;
 		UIItemInfo.UIName->SetText			("");
-		UIItemInfo.UIWeight->SetText			("");
+		UIItemInfo.UIWeight->SetText		("");
 		UIItemInfo.UIItemImage->TextureOff	();
 		UIItemInfo.UIDesc->Clear			();
 		if (pDDItemMP)
 		{
+			UIItemInfo.m_b_force_drawing		= true;
 			CStringTable stbl;
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_name"))
 				UIItemInfo.UIName->SetText(*stbl.translate(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));

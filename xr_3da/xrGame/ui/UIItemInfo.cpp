@@ -18,6 +18,7 @@ CUIItemInfo::CUIItemInfo()
 	UIItemImageSize.set			(0.0f,0.0f);
 	UICondProgresBar			= NULL;
 	m_pInvItem					= NULL;
+	m_b_force_drawing			= false;
 }
 
 CUIItemInfo::~CUIItemInfo()
@@ -98,6 +99,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	pItem->SetText						(*pInvItem->ItemDescription());
 	pItem->AdjustHeightToText			();
 	UIDesc->AddWindow					(pItem, true);
+	UIDesc->ScrollToBegin				();
 
 	// Загружаем картинку
 	UIItemImage->SetShader				(InventoryUtilities::GetEquipmentIconsShader());
@@ -120,6 +122,6 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 
 void CUIItemInfo::Draw()
 {
-	if(m_pInvItem)
+	if(m_pInvItem || m_b_force_drawing)
 		inherited::Draw();
 }

@@ -1,13 +1,5 @@
-// UIItemInfo.h:  окошко, для отображения информации о вещи
 #pragma once
-
 #include "uiwindow.h"
-//#include "uistatic.h"
-//#include "UIListWnd.h"
-//#include "UIProgressBar.h"
-//#include "UIScrollView.h"
-
-
 
 class CInventoryItem;
 class CUIStatic;
@@ -29,7 +21,7 @@ public:
 	void			InitItem			(CInventoryItem* pInvItem);
 
 	virtual void	Draw				();
-
+	bool			m_b_force_drawing;
 	CUIStatic*		UIName;
 	CUIStatic*		UIWeight;
 	CUIStatic*		UICost;
