@@ -1,3 +1,6 @@
+----------------------------------------------------------------------------------------------------
+-- Proceed
+----------------------------------------------------------------------------------------------------
 function proceed()
     local actor = db.actor
 	
@@ -32,8 +35,9 @@ function proceed()
 	end 
 end
 
-
-
+----------------------------------------------------------------------------------------------------
+-- Process info portions
+----------------------------------------------------------------------------------------------------
 function process_info_portion(info_id)
 	if info_id == "tutorial_artefact_start" then
 		level_tasks.add_location(002, "green_location", "tutorial_artefact")
@@ -54,4 +58,11 @@ function process_info_portion(info_id)
     end
 
     return true
+end
+
+----------------------------------------------------------------------------------------------------
+-- Common functions
+----------------------------------------------------------------------------------------------------
+function has_decoder(task, objective)
+	return db.actor:object("decoder") ~= nil
 end
