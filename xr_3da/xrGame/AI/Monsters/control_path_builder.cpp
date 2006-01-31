@@ -2,7 +2,6 @@
 #include "control_path_builder.h"
 #include "control_manager.h"
 #include "BaseMonster/base_monster.h"
-#include "../../path_manager_params_level_evaluator.h"
 #include "../../game_location_selector.h"
 #include "../../level_location_selector.h"
 #include "../../detail_path_manager.h"
@@ -20,16 +19,14 @@ extern bool show_restrictions(CRestrictedObject *object);
 
 CControlPathBuilder::CControlPathBuilder(CCustomMonster *monster) : CMovementManager(monster)
 {
-	m_selector_approach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 }
+
 CControlPathBuilder::~CControlPathBuilder()
 {
-	xr_delete(m_selector_approach);
 }
 
 void CControlPathBuilder::load(LPCSTR section)
 {
-	m_selector_approach->Load	(section,"selector_approach");
 }
 
 void CControlPathBuilder::reinit()
@@ -71,10 +68,6 @@ void CControlPathBuilder::update_schedule()
 	
 	if (m_data.reset_actuality)				make_inactual();
 
-	// reset evaluator
-	level_selector().set_evaluator			(0);
-	use_selector_path						(false);
-	
 	// set enabled
 	enable_movement							(m_data.enable);
 
@@ -110,13 +103,13 @@ void CControlPathBuilder::update_schedule()
 				set_level_dest_vertex			(m_data.target_node);
 
 			// set selector
-			if (m_data.target_node == u32(-1)) {
-				make_inactual						();
-				level_selector().set_evaluator		(m_selector_approach);
-				level_selector().set_query_interval	(0);
-				init_selector						(m_selector_approach, m_data.target_position);
-				use_selector_path					(true);
-			}
+			if (m_data.target_node == u32(-1))
+				set_level_dest_vertex(
+					find_nearest_vertex	(
+						object().ai_location().level_vertex_id(),
+						m_data.target_position
+					)
+				);
 		}
 	}
 
@@ -125,18 +118,6 @@ void CControlPathBuilder::update_schedule()
 	m_man->notify							(ControlCom::eventPathUpdated, 0);
 	
 	STOP_PROFILE;
-}
-
-void CControlPathBuilder::init_selector(CAbstractVertexEvaluator *S, Fvector target_pos)
-{
-	S->m_dwCurTime		= Device.dwTimeGlobal;
-	S->m_tMe			= inherited_com::m_object;
-	S->m_tpMyNode		= inherited_com::m_object->ai_location().level_vertex();
-	S->m_tMyPosition	= inherited_com::m_object->Position();
-	S->m_dwStartNode	= inherited_com::m_object->ai_location().level_vertex_id();
-	S->m_tStartPosition	= inherited_com::m_object->Position();
-	S->m_tEnemyPosition	= target_pos;
-	S->m_tEnemy			= 0;
 }
 
 void CControlPathBuilder::on_travel_point_change(const u32 &previous_travel_point_index)
@@ -183,7 +164,6 @@ bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel
 	detail().set_try_min_time			(false); 
 	detail().set_use_dest_orientation	(false);
 
-	level_selector().set_evaluator		(0);
 	detail().set_path_type				(eDetailPathTypeSmooth);
 	set_path_type						(MovementManager::ePathTypeLevelPath);
 
@@ -290,8 +270,26 @@ void CControlPathBuilder::make_inactual()
 	// switch twice
 	enable_movement(!enabled());
 }
+
 bool CControlPathBuilder::can_use_distributed_compuations (u32 option) const
 {	
 	if (Actor()->memory().visual().visible_right_now(inherited_com::m_object)) return false;
 	return inherited::can_use_distributed_compuations(option);
+}
+
+u32	 CControlPathBuilder::find_nearest_vertex				(const u32 &level_vertex_id, const Fvector &target_position)
+{
+	xr_vector<u32>	temp;
+
+	ai().graph_engine().search	(
+		ai().level_graph(),
+		level_vertex_id,
+		level_vertex_id,
+		&temp,
+		GraphEngineSpace::CNearestVertexParameters(target_position)
+	);
+
+	VERIFY			(!temp.empty());
+	VERIFY			(temp.size() == 1);
+	return			(temp.front());
 }

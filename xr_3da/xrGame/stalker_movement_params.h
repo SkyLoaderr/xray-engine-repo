@@ -34,8 +34,6 @@ private:
 	MonsterSpace::EMentalState			m_mental_state;
 	MovementManager::EPathType			m_path_type;
 	DetailPathManager::EDetailPathType	m_detail_path_type;
-	CAbstractVertexEvaluator			*m_node_evaluator;
-	CAbstractVertexEvaluator			*m_path_evaluator;
 	bool								m_use_desired_position;
 	bool								m_use_desired_direction;
 

@@ -38,12 +38,10 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 	m_base_level_selector		= xr_new<CBaseParameters>		 ();
 	
 	m_restricted_object			= xr_new<CRestrictedObject>		 (m_object);
-	m_selector_manager			= xr_new<CSelectorManager>		 (m_object);
 	m_location_manager			= xr_new<CLocationManager>		 (m_object);
 
-	m_game_location_selector	= xr_new<CGameLocationSelector	>(m_restricted_object,m_selector_manager,m_location_manager);
+	m_game_location_selector	= xr_new<CGameLocationSelector	>(m_restricted_object,m_location_manager);
 	m_game_path_manager			= xr_new<CGamePathManager		>(m_restricted_object);
-	m_level_location_selector	= xr_new<CLevelLocationSelector	>(m_restricted_object,m_selector_manager);
 	m_level_path_manager		= xr_new<CLevelPathManager		>(m_restricted_object);
 	m_detail_path_manager		= xr_new<CDetailPathManager		>(m_restricted_object);
 	m_patrol_path_manager		= xr_new<CPatrolPathManager		>(m_restricted_object,m_object);
@@ -62,12 +60,10 @@ CMovementManager::~CMovementManager	()
 	xr_delete					(m_base_level_selector		);
 	
 	xr_delete					(m_restricted_object		);
-	xr_delete					(m_selector_manager			);
 	xr_delete					(m_location_manager			);
 	
 	xr_delete					(m_game_location_selector	);
 	xr_delete					(m_game_path_manager		);
-	xr_delete					(m_level_location_selector	);
 	xr_delete					(m_level_path_manager		);
 	xr_delete					(m_detail_path_manager		);
 	xr_delete					(m_patrol_path_manager		);
@@ -97,16 +93,12 @@ void CMovementManager::reinit		()
 
 	enable_movement					(true);
 	game_selector().reinit			(&ai().game_graph());
-	level_selector().reinit			(ai().get_level_graph());
 	detail().reinit					();
 	game_path().reinit				(&ai().game_graph());
 	level_path().reinit				(ai().get_level_graph());
 	patrol().reinit					();
-	selectors().reinit				();
 
 	game_selector().set_dest_path	(game_path().m_path);
-	level_selector().set_dest_path	(level_path().m_path);
-	level_selector().set_dest_vertex(level_path().m_dest_vertex_id);
 }
 
 void CMovementManager::reload		(LPCSTR section)
@@ -197,7 +189,7 @@ void CMovementManager::update_path				()
 				break;
 			}
 			case ePathTypeLevelPath : {
-				m_path_state	= ePathStateSelectLevelVertex;
+				m_path_state	= ePathStateBuildLevelPath;
 				if (!restrictions().accessible(level_path().dest_vertex_id())) {
 					Fvector							temp;
 					level_path().set_dest_vertex	(restrictions().accessible_nearest(ai().level_graph().vertex_position(level_path().dest_vertex_id()),temp));

@@ -28,8 +28,6 @@ CStalkerActionDangerBySoundListenTo::CStalkerActionDangerBySoundListenTo	(CAI_St
 void CStalkerActionDangerBySoundListenTo::initialize						()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -63,8 +61,6 @@ CStalkerActionDangerBySoundCheck::CStalkerActionDangerBySoundCheck	(CAI_Stalker 
 void CStalkerActionDangerBySoundCheck::initialize						()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -98,8 +94,6 @@ CStalkerActionDangerBySoundTakeCover::CStalkerActionDangerBySoundTakeCover	(CAI_
 void CStalkerActionDangerBySoundTakeCover::initialize						()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -133,8 +127,6 @@ CStalkerActionDangerBySoundLookOut::CStalkerActionDangerBySoundLookOut	(CAI_Stal
 void CStalkerActionDangerBySoundLookOut::initialize						()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -168,8 +160,6 @@ CStalkerActionDangerBySoundLookAround::CStalkerActionDangerBySoundLookAround	(CA
 void CStalkerActionDangerBySoundLookAround::initialize						()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);

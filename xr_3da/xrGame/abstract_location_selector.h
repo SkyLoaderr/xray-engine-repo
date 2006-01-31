@@ -10,8 +10,6 @@
 
 #include "restricted_object.h"
 
-class CSelectorManager;
-
 template <
 	typename _Graph,
 	typename _VertexEvaluator,
@@ -28,7 +26,6 @@ protected:
 	xr_vector<_vertex_id_type>	*m_path;
 	_vertex_id_type				*dest_vertex_id;
 	CRestrictedObject			*m_restricted_object;
-	CSelectorManager			*m_selector_manager;
 	
 protected:
 	IC			void			perform_search				(const _vertex_id_type game_vertex_id);
@@ -36,7 +33,7 @@ protected:
 	IC	virtual	void			after_search				();
 
 public:
-	IC							CAbstractLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager);
+	IC							CAbstractLocationSelector	(CRestrictedObject *object);
 	IC	virtual					~CAbstractLocationSelector	();
 	IC	virtual void			reinit						(const _Graph *graph = 0);
 

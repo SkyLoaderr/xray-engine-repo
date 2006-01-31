@@ -131,8 +131,6 @@ void CStalkerActionGetItemToKill::execute	()
 
 	object().movement().set_mental_state		(eMentalStateDanger);
 	object().movement().set_level_dest_vertex	(object().m_best_found_item_to_kill->object().ai_location().level_vertex_id());
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position	(&object().m_best_found_item_to_kill->object().Position());
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
@@ -179,8 +177,6 @@ void CStalkerActionMakeItemKilling::execute	()
 		return;
 
 	object().movement().set_level_dest_vertex	(object().m_best_found_ammo->object().ai_location().level_vertex_id());
-	object().movement().set_node_evaluator	(0);
-	object().movement().set_path_evaluator	(0);
 	object().movement().set_desired_position	(&object().m_best_found_ammo->object().Position());
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
@@ -281,8 +277,6 @@ CStalkerActionGetReadyToKill::CStalkerActionGetReadyToKill(CAI_Stalker *object, 
 void CStalkerActionGetReadyToKill::initialize	()
 {
 	inherited::initialize								();
-	object().movement().set_node_evaluator				(0);
-	object().movement().set_path_evaluator				(0);
 	object().movement().set_desired_direction			(0);
 	object().movement().set_path_type					(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type			(DetailPathManager::eDetailPathTypeSmooth);
@@ -361,8 +355,6 @@ CStalkerActionKillEnemy::CStalkerActionKillEnemy(CAI_Stalker *object, LPCSTR act
 void CStalkerActionKillEnemy::initialize		()
 {
 	inherited::initialize				();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -416,8 +408,6 @@ CStalkerActionTakeCover::CStalkerActionTakeCover(CAI_Stalker *object, LPCSTR act
 void CStalkerActionTakeCover::initialize		()
 {
 	inherited::initialize						();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -508,8 +498,6 @@ CStalkerActionLookOut::CStalkerActionLookOut(CAI_Stalker *object, LPCSTR action_
 void CStalkerActionLookOut::initialize		()
 {
 	inherited::initialize						();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -600,8 +588,6 @@ CStalkerActionHoldPosition::CStalkerActionHoldPosition(CAI_Stalker *object, LPCS
 void CStalkerActionHoldPosition::initialize		()
 {
 	inherited::initialize				();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -661,8 +647,6 @@ void CStalkerActionDetourEnemy::initialize		()
 {
 	inherited::initialize						();
 	object().agent_manager().member().member	(&object()).detour	(true);
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -744,8 +728,6 @@ CStalkerActionSearchEnemy::CStalkerActionSearchEnemy(CAI_Stalker *object, LPCSTR
 void CStalkerActionSearchEnemy::initialize		()
 {
 	inherited::initialize				();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
@@ -841,8 +823,6 @@ CStalkerActionGetDistance::CStalkerActionGetDistance	(CAI_Stalker *object, LPCST
 void CStalkerActionGetDistance::initialize				()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -905,8 +885,6 @@ CStalkerActionHideFromGrenade::CStalkerActionHideFromGrenade	(CAI_Stalker *objec
 void CStalkerActionHideFromGrenade::initialize				()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);

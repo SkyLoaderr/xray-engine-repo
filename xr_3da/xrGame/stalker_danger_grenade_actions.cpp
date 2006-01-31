@@ -42,8 +42,6 @@ void CStalkerActionDangerGrenadeTakeCover::initialize						()
 	set_property			(eWorldPropertyCoverReached,false);
 	set_property			(eWorldPropertyLookedAround,false);
 
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -120,8 +118,6 @@ void CStalkerActionDangerGrenadeWaitForExplosion::initialize							()
 {
 	inherited::initialize						();
 
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -164,8 +160,6 @@ void CStalkerActionDangerGrenadeTakeCoverAfterExplosion::initialize						()
 	set_property			(eWorldPropertyCoverReached,false);
 	set_property			(eWorldPropertyLookedAround,false);
 
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -223,8 +217,6 @@ void CStalkerActionDangerGrenadeLookAround::initialize						()
 
 	inherited::initialize						();
 
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -266,8 +258,6 @@ CStalkerActionDangerGrenadeSearch::CStalkerActionDangerGrenadeSearch	(CAI_Stalke
 void CStalkerActionDangerGrenadeSearch::initialize						()
 {
 	inherited::initialize	();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);

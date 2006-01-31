@@ -16,12 +16,6 @@ IC	bool CStalkerMovementParams::operator==	(const CStalkerMovementParams &params
 	if (m_use_desired_direction != params.m_use_desired_direction)
 		return				(false);
 
-	if (m_path_evaluator != params.m_path_evaluator)
-		return				(false);
-
-	if (m_node_evaluator != params.m_node_evaluator)
-		return				(false);
-
 	if (m_detail_path_type != params.m_detail_path_type)
 		return				(false);
 

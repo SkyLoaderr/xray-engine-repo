@@ -50,7 +50,7 @@ protected:
 	IC			bool		accessible				(const _vertex_id_type vertex_id) const;
 
 public:
-	IC						CBaseLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager, CLocationManager *location_manager);
+	IC						CBaseLocationSelector	(CRestrictedObject *object, CLocationManager *location_manager);
 	IC	virtual				~CBaseLocationSelector	();
 	IC			void		init					();
 	IC	virtual void		reinit					(const _Graph *graph = 0);

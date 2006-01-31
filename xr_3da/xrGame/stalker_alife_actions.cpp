@@ -46,8 +46,6 @@ CStalkerActionGatherItems::CStalkerActionGatherItems	(CAI_Stalker *object, LPCST
 void CStalkerActionGatherItems::initialize	()
 {
 	inherited::initialize			();
-	object().movement().set_node_evaluator	(0);
-	object().movement().set_path_evaluator	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -96,8 +94,6 @@ void CStalkerActionNoALife::initialize	()
 {
 	inherited::initialize						();
 #ifndef STALKER_DEBUG_MODE
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
@@ -113,8 +109,6 @@ void CStalkerActionNoALife::initialize	()
 
 #else
 	object().CObjectHandler::set_goal			(eObjectActionIdle);
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypePatrolPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);

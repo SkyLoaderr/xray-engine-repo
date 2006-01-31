@@ -885,19 +885,6 @@
 							RelativePath=".\restricted_object_inline.h">
 						</File>
 					</Filter>
-					<Filter
-						Name="SelectorManager"
-						Filter="">
-						<File
-							RelativePath=".\selector_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\selector_manager.h">
-						</File>
-						<File
-							RelativePath=".\selector_manager_inline.h">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="ObjectHandler"
@@ -4941,13 +4928,13 @@
 								RelativePath=".\path_manager_level_inline.h">
 							</File>
 							<Filter
-								Name="evaluator"
+								Name="nearest_vertex"
 								Filter="">
 								<File
-									RelativePath=".\path_manager_level_evaluator.h">
+									RelativePath=".\path_manager_level_nearest_vertex.h">
 								</File>
 								<File
-									RelativePath=".\path_manager_level_evaluator_inline.h">
+									RelativePath=".\path_manager_level_nearest_vertex_inline.h">
 								</File>
 							</Filter>
 							<Filter
@@ -4987,10 +4974,7 @@
 								RelativePath=".\path_manager_params_game_vertex_type.h">
 							</File>
 							<File
-								RelativePath=".\path_manager_params_level_evaluator.h">
-							</File>
-							<File
-								RelativePath=".\path_manager_params_level_evaluator_script.cpp">
+								RelativePath=".\path_manager_params_nearest_vertex.h">
 							</File>
 							<File
 								RelativePath=".\path_manager_params_straight_line.h">

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "selector_manager.h"
 #include "profiler.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
@@ -20,12 +19,10 @@
 #define CSelectorTemplate CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CSelectorTemplate::CAbstractLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager)
+IC	CSelectorTemplate::CAbstractLocationSelector	(CRestrictedObject *object)
 {
 	m_restricted_object		= object;
-	m_selector_manager		= selector_manager;
 	VERIFY					(m_restricted_object);
-	VERIFY					(m_selector_manager);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -57,9 +54,6 @@ TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::set_evaluator	(_VertexEvaluator *evaluator)
 {
 	m_evaluator				= evaluator;
-	if (!evaluator)
-		return;
-	m_selector_manager->init_selector(*evaluator);
 }
 
 TEMPLATE_SPECIALIZATION

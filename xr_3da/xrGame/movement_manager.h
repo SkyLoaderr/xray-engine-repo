@@ -62,9 +62,7 @@ class CDetailPathManager;
 class CPHMovementControl;
 class CGameGraph;
 class CLevelGraph;
-class CAbstractVertexEvaluator;
 class CRestrictedObject;
-class CSelectorManager;
 class CLocationManager;
 class CCustomMonster;
 
@@ -106,11 +104,6 @@ protected:
 				u32,
 				u32
 			>		CGamePathManager;
-	typedef CBaseLocationSelector<
-				CLevelGraph,
-				CAbstractVertexEvaluator,
-				u32
-			>		CLevelLocationSelector;
 	typedef CBasePathManager<
 				CLevelGraph,
 				SBaseParameters<
@@ -130,7 +123,6 @@ private:
 		
 		ePathStateSelectPatrolPoint,
 
-		ePathStateSelectLevelVertex,
 		ePathStateBuildLevelPath,
 		ePathStateContinueLevelPath,
 
@@ -171,12 +163,10 @@ public:
 	CBaseParameters			*m_base_level_selector;
 	CGameLocationSelector	*m_game_location_selector;
 	CGamePathManager		*m_game_path_manager;
-	CLevelLocationSelector	*m_level_location_selector;
 	CLevelPathManager		*m_level_path_manager;
 	CDetailPathManager		*m_detail_path_manager;
 	CPatrolPathManager		*m_patrol_path_manager;
 	CRestrictedObject		*m_restricted_object;
-	CSelectorManager		*m_selector_manager;
 	CLocationManager		*m_location_manager;
 	CLevelPathBuilder		*m_level_path_builder;
 	CDetailPathBuilder		*m_detail_path_builder;
@@ -252,12 +242,10 @@ public:
 	IC		CBaseParameters			*base_level_params			() const;
 	IC		CGameLocationSelector	&game_selector				() const;
 	IC		CGamePathManager		&game_path					() const;
-	IC		CLevelLocationSelector	&level_selector				() const;
 	IC		CLevelPathManager		&level_path					() const;
 	IC		CDetailPathManager		&detail						() const;
 	IC		CPatrolPathManager		&patrol						() const;
 	IC		CRestrictedObject		&restrictions				() const;
-	IC		CSelectorManager		&selectors					() const;
 	IC		CLocationManager		&locations					() const;
 	IC		CCustomMonster			&object						() const;
 	IC		CLevelPathBuilder		&level_path_builder			() const;

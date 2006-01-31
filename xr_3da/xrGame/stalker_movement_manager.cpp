@@ -69,8 +69,6 @@ IC	float CStalkerMovementManager::path_direction_angle	()
 
 void CStalkerMovementManager::initialize()
 {
-	set_node_evaluator		(0);
-	set_path_evaluator		(0);
 	set_path_type			(MovementManager::ePathTypeLevelPath);
 	set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	set_body_state			(eBodyStateStand);
@@ -307,8 +305,6 @@ void CStalkerMovementManager::reinit				()
 	m_current.m_use_desired_direction	= false;
 	m_current.m_desired_position		= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
 	m_current.m_desired_direction		= Fvector().set(_sqr(flt_max),_sqr(flt_max),_sqr(flt_max));
-	m_current.m_path_evaluator			= 0;
-	m_current.m_node_evaluator			= 0;
 	m_current.m_body_state				= eBodyStateStand;
 	m_current.m_movement_type			= eMovementTypeStand;
 	m_current.m_mental_state			= eMentalStateDanger;
@@ -340,8 +336,7 @@ void CStalkerMovementManager::setup_movement_params	()
 {
 	inherited::set_path_type				(path_type());
 	detail().set_path_type					(detail_path_type());
-	level_selector().set_evaluator			(node_evaluator());
-	level_path().set_evaluator				(path_evaluator() ? path_evaluator() : base_level_params());
+	level_path().set_evaluator				(base_level_params());
 
 	if (use_desired_position()) {
 		VERIFY								(_valid(desired_position()));

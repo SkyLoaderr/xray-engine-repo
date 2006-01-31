@@ -35,7 +35,7 @@ class
 	> inherited;
 
 public:
-	IC							CBaseLocationSelector		(CRestrictedObject *object, CSelectorManager *selector_manager);
+	IC							CBaseLocationSelector		(CRestrictedObject *object);
 
 protected:
 	IC	virtual	void			before_search				(_vertex_id_type &vertex_id);

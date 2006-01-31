@@ -134,12 +134,6 @@ IC	CMovementManager::CGamePathManager			&CMovementManager::game_path		() const
 	return					(*m_game_path_manager);
 }
 
-IC	CMovementManager::CLevelLocationSelector	&CMovementManager::level_selector	() const
-{
-	VERIFY					(m_level_location_selector);
-	return					(*m_level_location_selector);
-}
-
 IC	CMovementManager::CLevelPathManager			&CMovementManager::level_path		() const
 {
 	VERIFY					(m_level_path_manager);
@@ -162,12 +156,6 @@ IC	CRestrictedObject &CMovementManager::restrictions					() const
 {
 	VERIFY					(m_restricted_object);
 	return					(*m_restricted_object);
-}
-
-IC	CSelectorManager &CMovementManager::selectors						() const
-{
-	VERIFY					(m_selector_manager);
-	return					(*m_selector_manager);
 }
 
 IC	CLocationManager &CMovementManager::locations						() const

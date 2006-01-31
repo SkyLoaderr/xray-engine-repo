@@ -69,16 +69,6 @@ IC	void CStalkerMovementManager::set_detail_path_type(EDetailPathType detail_pat
 	m_target.m_detail_path_type	= detail_path_type;
 }
 
-IC	void CStalkerMovementManager::set_node_evaluator(CAbstractVertexEvaluator *node_evaluator)
-{
-	m_target.m_node_evaluator	= node_evaluator;
-}
-
-IC	void CStalkerMovementManager::set_path_evaluator(CAbstractVertexEvaluator *path_evaluator)
-{
-	m_target.m_path_evaluator	= path_evaluator;
-}
-
 IC	const MonsterSpace::EBodyState CStalkerMovementManager::body_state() const
 {
 	return						(m_current.m_body_state);
@@ -112,16 +102,6 @@ IC	const MovementManager::EPathType CStalkerMovementManager::path_type	() const
 IC	const DetailPathManager::EDetailPathType	CStalkerMovementManager::detail_path_type	() const
 {
 	return						(m_current.m_detail_path_type);
-}
-
-IC	CAbstractVertexEvaluator *CStalkerMovementManager::node_evaluator	() const
-{
-	return						(m_current.m_node_evaluator);
-}
-
-IC	CAbstractVertexEvaluator *CStalkerMovementManager::path_evaluator	() const
-{
-	return						(m_current.m_path_evaluator);
 }
 
 IC	const Fvector &CStalkerMovementManager::desired_position			() const

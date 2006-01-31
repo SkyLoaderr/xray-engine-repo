@@ -49,7 +49,6 @@
 #	include "script_render_device.h"
 #	include "script_game_object.h"
 #	include "cover_point.h"
-#	include "path_manager_params_level_evaluator.h"
 #	include "patrol_path_params.h"
 #	include "particle_params.h"
 #	include "script_movement_action.h"

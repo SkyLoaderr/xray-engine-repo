@@ -255,42 +255,6 @@ void CScriptGameObject::set_actor_relation_flags (Flags32 flags)
 	stalker->m_actor_relation_flags = flags;
 }
 
-void  CScriptGameObject::set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator)
-{
-	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
-	if (!stalker)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->movement().set_node_evaluator	(node_evaluator);
-}
-
-void  CScriptGameObject::set_node_evaluator		()
-{
-	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
-	if (!stalker)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->movement().set_node_evaluator	(0);
-}
-
-void  CScriptGameObject::set_path_evaluator		()
-{
-	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
-	if (!stalker)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->movement().set_path_evaluator	(0);
-}
-
-void CScriptGameObject::set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator)
-{
-	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
-	if (!stalker)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->movement().set_path_evaluator	(path_evaluator);
-}
-
 void CScriptGameObject::set_patrol_path		(LPCSTR path_name, const PatrolPathManager::EPatrolStartType patrol_start_type, const PatrolPathManager::EPatrolRouteType patrol_route_type, bool random)
 {
 	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());

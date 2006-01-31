@@ -481,7 +481,6 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			}
 #endif
 			m_monster->movement().level_path().set_dest_vertex(vertex_id);
-			m_monster->movement().level_selector().set_evaluator(0);
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePathNodePosition : {
@@ -489,7 +488,6 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			m_monster->movement().set_path_type					(MovementManager::ePathTypeLevelPath);
 			m_monster->movement().detail().set_dest_position	(l_tMovementAction.m_tDestinationPosition);
 			m_monster->movement().level_path().set_dest_vertex	(l_tMovementAction.m_tNodeID);
-			m_monster->movement().level_selector().set_evaluator(0);
 			break;
 		}
 		case CScriptMovementAction::eGoalTypeNoPathPosition : {

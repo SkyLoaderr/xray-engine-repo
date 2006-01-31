@@ -3,7 +3,6 @@
 #include "control_combase.h"
 #include "../../movement_manager.h"
 
-class CAbstractVertexEvaluator;
 class CCustomMonster;
 class CControl_Manager;
 
@@ -37,9 +36,10 @@ class CControlPathBuilder :
 	typedef CControl_ComPure<SControlPathBuilderData>	inherited_com;
 
 	friend	class CControl_Manager;
-	
-	CAbstractVertexEvaluator	*m_selector_approach;
 
+private:
+	static	u32		find_nearest_vertex		(const u32 &level_vertex_id, const Fvector &target_position);
+	
 public:
 					CControlPathBuilder		(CCustomMonster *monster);
 	virtual			~CControlPathBuilder	();
@@ -64,7 +64,6 @@ public:
 			
 
 private:	
-			void	init_selector			(CAbstractVertexEvaluator *S, Fvector target_pos);
 			bool	is_path_built			();
 			bool	build_special			(const Fvector &target, u32 node, u32 vel_mask);
 			void	make_inactual			();	

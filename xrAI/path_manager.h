@@ -33,6 +33,8 @@ template <
 #include "path_manager_params.h"
 #include "path_manager_params_flooder.h"
 #include "path_manager_params_straight_line.h"
+#include "path_manager_params_nearest_vertex.h"
+
 //		path manager specializations
 #include "path_manager_game.h"
 #ifndef AI_COMPILER
@@ -42,9 +44,10 @@ template <
 
 #include "path_manager_level.h"
 #ifndef AI_COMPILER
-	#include "path_manager_level_evaluator.h"
+//	#include "path_manager_level_evaluator.h"
 #endif
 #include "path_manager_level_flooder.h"
+#include "path_manager_level_nearest_vertex.h"
 #ifdef AI_COMPILER
 	#include "path_manager_level_straight_line.h"
 #endif

@@ -69,7 +69,6 @@ class CScriptTask;
 class CScriptSoundInfo;
 class CScriptMonsterHitInfo;
 class CScriptBinderObject;
-class CAbstractVertexEvaluator;
 class CCoverPoint;
 class CScriptIniFile;
 class CPhysicsShell;
@@ -425,10 +424,6 @@ public:
 			void				set_desired_position	(const Fvector *desired_position);
 			void				set_desired_direction	();
 			void				set_desired_direction	(const Fvector *desired_direction);
-			void				set_node_evaluator		();
-			void				set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
-			void				set_path_evaluator		();
-			void				set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
 			void				set_patrol_path			(LPCSTR path_name, const PatrolPathManager::EPatrolStartType patrol_start_type, const PatrolPathManager::EPatrolRouteType patrol_route_type, bool random);
 			void				set_dest_level_vertex_id(u32 level_vertex_id);
 			u32					level_vertex_id			() const;

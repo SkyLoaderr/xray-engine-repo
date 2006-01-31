@@ -53,8 +53,6 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
@@ -99,8 +97,6 @@ CStalkerActionReachTaskLocation::CStalkerActionReachTaskLocation	(CAI_Stalker *o
 void CStalkerActionReachTaskLocation::initialize	()
 {
 	inherited::initialize				();
-	object().movement().set_node_evaluator			(0);
-	object().movement().set_path_evaluator			(0);
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
@@ -150,8 +146,6 @@ void CStalkerActionAccomplishTask::setup	(CAI_Stalker *object, CPropertyStorage 
 void CStalkerActionAccomplishTask::initialize	()
 {
 	inherited::initialize						();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
@@ -220,8 +214,6 @@ CStalkerActionReachCustomerLocation::CStalkerActionReachCustomerLocation	(CAI_St
 void CStalkerActionReachCustomerLocation::initialize	()
 {
 	inherited::initialize							();
-	object().movement().set_node_evaluator			(0);
-	object().movement().set_path_evaluator			(0);
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
@@ -275,8 +267,6 @@ CStalkerActionCommunicateWithCustomer::CStalkerActionCommunicateWithCustomer	(CA
 void CStalkerActionCommunicateWithCustomer::initialize	()
 {
 	inherited::initialize							();
-	object().movement().set_node_evaluator			(0);
-	object().movement().set_path_evaluator			(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
@@ -329,8 +319,6 @@ CStalkerActionSmartTerrain::CStalkerActionSmartTerrain	(CAI_Stalker *object, LPC
 void CStalkerActionSmartTerrain::initialize				()
 {
 	inherited::initialize							();
-	object().movement().set_node_evaluator			(0);
-	object().movement().set_path_evaluator			(0);
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);

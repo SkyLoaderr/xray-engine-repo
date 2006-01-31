@@ -83,8 +83,6 @@ public:
 	IC		void	set_mental_state		(EMentalState mental_state);
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_detail_path_type	(EDetailPathType detail_path_type);
-	IC		void	set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
-	IC		void	set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
 			void	set_nearest_accessible_position	();
 			void	set_nearest_accessible_position	(Fvector desired_position, u32 level_vertex_id);
 			void	adjust_speed_to_animation	(const MonsterSpace::EMovementDirection &movement_direction);
@@ -117,8 +115,6 @@ public:
 	IC		const MonsterSpace::EMentalState		target_mental_state		() const;
 	IC		const EPathType							path_type				() const;
 	IC		const EDetailPathType					detail_path_type		() const;
-	IC		CAbstractVertexEvaluator				*node_evaluator			() const;
-	IC		CAbstractVertexEvaluator				*path_evaluator			() const;
 	IC		bool									use_desired_position	() const;
 	IC		bool									use_desired_direction	() const;
 

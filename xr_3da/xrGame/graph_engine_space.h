@@ -51,6 +51,13 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >
+struct SNearestVertex;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
 struct SGameLevel;
 
 namespace GraphEngineSpace {
@@ -117,6 +124,11 @@ namespace GraphEngineSpace {
 				_index_type,
 				_iteration_type
 			>		CStraightLineParams;
+	typedef SNearestVertex<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CNearestVertexParameters;
 	typedef SGameLevel<
 				_dist_type,
 				_index_type,
