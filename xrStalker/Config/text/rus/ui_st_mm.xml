@@ -1,207 +1,144 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
 	<string id="ui_mm_return_game">
-		<text>Return to Game</text>
+		<text>Возврат к игре</text>
 	</string>
 	<string id="ui_mm_newgame">
-        <text>New Game</text>
+        <text>Новая игра</text>
     </string>
     <string id="ui_mm_quit2windows">
-        <text>Quit to Windows</text>
+        <text>Выйти в Windows</text>
     </string>
     <string id="ui_mm_quit_game">
-        <text>Quit the Game</text>
+        <text>Завершить игру</text>
     </string>
     <string id="ui_mm_disconnect">
-        <text>Disconnect</text>
+        <text>Отсоединиться</text>
     </string>    
     <string id="ui_mm_novice">
-        <text>Novice</text>
+        <text>Новичок</text>
     </string>
     <string id="ui_mm_stalker">
-        <text>Stalker</text>
+        <text>Сталкер</text>
     </string>
     <string id="ui_mm_veteran">
-        <text>Veteran</text>
+        <text>Ветеран</text>
     </string>
     <string id="ui_mm_master">
-        <text>Master</text>
+        <text>Мастер</text>
     </string>
     <string id="ui_mm_action">
-        <text>action</text>
-    </string>
-    <string id="ui_mm_advanced">
-        <text>Advanced</text>
+        <text>действие</text>
     </string>
     <string id="ui_mm_alternative">
         <text>alternative</text>
     </string>
-    <string id="ui_mm_anisotropic_filter">
-        <text>Anisotropic filter</text>
-    </string>
-    <string id="ui_mm_antialiasing">
-        <text>Antialiasing</text>
-    </string>
     <string id="ui_mm_apply">
-        <text>Apply</text>
+        <text>Применить</text>
     </string>
     <string id="ui_mm_back">
-        <text>Back</text>
+        <text>Назад</text>
     </string>
     <string id="ui_mm_blood">
-        <text>Blood</text>
+        <text>Кровь</text>
     </string>
     <string id="ui_mm_brightness">
-        <text>Brightness</text>
-    </string>
-    <string id="ui_mm_bump_mapping">
-        <text>Bump Mapping</text>
+        <text>Яркость</text>
     </string>
     <string id="ui_mm_cancel">
-        <text>Cancel</text>
+        <text>Отмена</text>
     </string>
     <string id="ui_mm_contrast">
-        <text>Contrast</text>
+        <text>Контраст</text>
     </string>
     <string id="ui_mm_controls">
-        <text>Controls</text>
-    </string>
-    <string id="ui_mm_corpse_time">
-        <text>Corpse Time Stay</text>
-    </string>
-    <string id="ui_mm_crosshair">
-        <text>Crosshair</text>
+        <text>Управление</text>
     </string>
     <string id="ui_mm_delete">
-        <text>Delete</text>
-    </string>
-    <string id="ui_mm_dinamic_light_source">
-        <text>Dinamic light source(DX8)</text>
+        <text>Удалить</text>
     </string>
     <string id="ui_mm_eax">
         <text>EAX</text>
     </string>
     <string id="ui_mm_fullscreen">
-        <text>Full Screen</text>
+        <text>Полный екран</text>
     </string>
     <string id="ui_mm_gameplay">
-        <text>Gameplay</text>
+        <text>Игра</text>
     </string>
     <string id="ui_mm_gamma">
-        <text>Gamma</text>
-    </string>
-    <string id="ui_mm_grass_density">
-        <text>Grass Density</text>
-    </string>
-    <string id="ui_mm_grass_radius">
-        <text>Grass Radius</text>
+        <text>Гамма</text>
     </string>
     <string id="ui_mm_invert_mouse">
-        <text>Invert Mouse</text>
+        <text>Ивертировать Мышь</text>
     </string>
     <string id="ui_mm_keyboard_setup">
-        <text>Keyboard setup</text>
-    </string>
-    <string id="ui_mm_light_quality">
-        <text>Lighting Quality</text>
+        <text>Настройка клавиатуры</text>
     </string>
     <string id="ui_mm_load">
-        <text>Load</text>
+        <text>Загрузить</text>
     </string>
     <string id="ui_mm_load_game">
-        <text>Load Game</text>
+        <text>Загрузка игры</text>
     </string>
     <string id="ui_mm_key">
-        <text>key</text>
+        <text>кнопка</text>
     </string>
     <string id="ui_mm_mouse_sense">
-        <text>Mouse Sensitivity</text>
+        <text>Чувствительность мыши</text>
     </string>
     <string id="ui_mm_multiplayer">
-        <text>MULTIPLAYER</text>
+        <text>МУЛЬТИПЛЭЕР</text>
     </string>
     <string id="ui_mm_multiplayer_n">
-        <text>Multiplayer</text>
+        <text>Мультиплэер</text>
     </string>    
     <string id="ui_mm_music_volume">
-        <text>Music Volume</text>
+        <text>Громкость музыки</text>
     </string>
     <string id="ui_mm_no_vsync">
-        <text>No VSYNC</text>
+        <text>Без вертикальной синхронизации</text>
     </string>
     <string id="ui_mm_options">
-        <text>OPTIONS</text>
+        <text>ОПЦИИ</text>
     </string>
     <string id="ui_mm_options_n">
-        <text>Options</text>
-    </string>
-    <string id="ui_mm_particles">
-        <text>Particles</text>
-    </string>
-    <string id="ui_mm_particles_amount">
-        <text>Particles amount</text>
-    </string>
-    <string id="ui_mm_phisic_quality">
-        <text>Phisic quality</text>
+        <text>Опции</text>
     </string>
     <string id="ui_mm_quality_presets">
-        <text>Quality presets</text>
+        <text>Установки качества</text>
     </string>
     <string id="ui_mm_resolution">
-        <text>Resolution</text>
-    </string>
-    <string id="ui_mm_reverse_speakers">
-        <text>Reverse Speakers</text>
+        <text>Разрешение</text>
     </string>
     <string id="ui_mm_save">
-        <text>Save</text>
+        <text>Сохранить</text>
     </string>
     <string id="ui_mm_save_game">
-        <text>Save Game</text>
-    </string>
-    <string id="ui_mm_sfx_volume">
-        <text>SFX volume</text>
+        <text>Сохранить игру</text>
     </string>
     <string id="ui_mm_master_volume">
-        <text>Master volume</text>
-    </string>
-    <string id="ui_mm_shadows_quality">
-        <text>Shadows Quality</text>
+        <text>Громкость</text>
     </string>
     <string id="ui_mm_sound">
-        <text>Sound</text>
+        <text>Звук</text>
     </string>
     <string id="ui_mm_sound_quality">
-        <text>Sound Quality</text>
-    </string>
-    <string id="ui_mm_speakers_setup">
-        <text>Speakers Setup</text>
-    </string>
-    <string id="ui_mm_texture_filter">
-        <text>Texture filter</text>
-    </string>
-    <string id="ui_mm_texture_quality">
-        <text>Texture Quality</text>
+        <text>Качесво звука</text>
     </string>
     <string id="ui_mm_tips">
-        <text>Tips</text>
+        <text>Подсказки</text>
     </string>
     <string id="ui_mm_video">
-        <text>Video</text>
-    </string>
-    <string id="ui_mm_view_distance">
-        <text>View distance</text>
-    </string>
-    <string id="ui_mm_voice_volume">
-        <text>Voice volume</text>
+        <text>Видео</text>
     </string>
     <string id="ui_mm_quit_game_message">
-        <text>Do you really want to end the game?</text>
+        <text>Действительно ли вы желаете покинуть игру?</text>
     </string>
     <string id="ui_mm_disconnect_message">
-        <text>Do you really want to disconnect?</text>
+        <text>Действительно ли вы желаете отсоединится?</text>
     </string>
     <string id="ui_mm_quit_windows_message">
-        <text>Do you really want to quit to Windows?</text>
+        <text>Действительно ли выйти в Windows?</text>
     </string>
 </string_table>
