@@ -71,7 +71,7 @@ object frmMain: TfrmMain
       Align = alBottom
       Alignment = taLeftJustify
       BevelInner = bvLowered
-      Caption = ' Detailed current cell'
+      Caption = ' Detailed current cell (16384 bytes)'
       Color = clGray
       TabOrder = 2
     end
@@ -91,7 +91,7 @@ object frmMain: TfrmMain
   object Panel6: TPanel
     Left = 0
     Top = 0
-    Width = 434
+    Width = 435
     Height = 621
     Align = alClient
     BevelOuter = bvNone
@@ -99,7 +99,7 @@ object frmMain: TfrmMain
     object paMemBase: TPanel
       Left = 0
       Top = 18
-      Width = 418
+      Width = 419
       Height = 603
       Align = alClient
       BevelInner = bvLowered
@@ -120,7 +120,7 @@ object frmMain: TfrmMain
       end
     end
     object sbMem: TScrollBar
-      Left = 418
+      Left = 419
       Top = 18
       Width = 16
       Height = 603
@@ -134,7 +134,7 @@ object frmMain: TfrmMain
     object Panel4: TPanel
       Left = 0
       Top = 0
-      Width = 434
+      Width = 435
       Height = 18
       Align = alTop
       Alignment = taLeftJustify
@@ -145,13 +145,13 @@ object frmMain: TfrmMain
     end
   end
   object Panel2: TPanel
-    Left = 434
+    Left = 435
     Top = 0
-    Width = 2
+    Width = 1
     Height = 621
     Align = alRight
     BevelOuter = bvNone
-    Color = clSilver
+    Color = clWhite
     TabOrder = 3
   end
   object od: TOpenDialog
@@ -188,6 +188,7 @@ object frmMain: TfrmMain
     end
   end
   object fsStorage: TFormStorage
+    Version = 1
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredValues = <>

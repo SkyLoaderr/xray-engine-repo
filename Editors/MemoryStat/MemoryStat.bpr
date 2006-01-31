@@ -14,7 +14,7 @@
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib editor.lib elpackB6.lib"/>
-    <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi bcbsmp.bpi"/>
+    <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi"/>
     <PATHCPP value=".;"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -22,7 +22,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_DEBUG;_EDITOR"/>
+    <USERDEFINES value="_DEBUG;_MEMORY_DUMP;_EDITOR"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="MemoryStat.cpp"/>
     <INCLUDEPATH value="&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot;;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps"/>
@@ -36,14 +36,14 @@
       -IR:\SDK\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\ElPack\Code 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -IP:\xrSound 
       -I..\ECore -I..\ECore\Editor -I..\ECore\Engine -I..\ECore\Engine\blenders 
-      -I..\ECore\Engine\visuals -I..\xrEProps -src_suffix cpp -D_DEBUG -D_EDITOR 
-      -boa"/>
+      -I..\ECore\Engine\visuals -I..\xrEProps -src_suffix cpp -D_DEBUG 
+      -D_MEMORY_DUMP -D_EDITOR -boa"/>
     <CFLAG1 value="-Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- -r- 
       -ps -a4 -6 -b- -k -y -v -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -x -v"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -105,13 +105,15 @@ Item1=$(BCB)\Projects\Lib;H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemorySta
 Item2=$(BCB)\Projects\Lib;H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
-Count=1
-Item0=$(BCB)\source\vcl
+Count=2
+Item0=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
+Item1=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=2
-Item0=_DEBUG;_EDITOR
-Item1=_DEBUG
+Count=3
+Item0=_DEBUG;_MEMORY_DUMP;_EDITOR
+Item1=_DEBUG;_EDITOR
+Item2=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=1
@@ -122,7 +124,7 @@ Count=1
 Item0=x:\
 
 [Debugging]
-DebugSourceDirs=$(BCB)\source\vcl
+DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
 
 [Parameters]
 RunParams=

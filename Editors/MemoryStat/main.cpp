@@ -44,8 +44,8 @@ TProperties*	m_Props			= 0;
 
 
 // color defs
-u32		        COLOR_DEF_UNUSED= 0x00D0D0D0;
-u32		        COLOR_DEF_EMPTY = 0x00F0F0F0;
+u32		        COLOR_DEF_UNUSED= 0x00D1D0D0;
+u32		        COLOR_DEF_EMPTY = 0x00F1F0F0;
 u32		        COLOR_DEF_FULL 	= 0x00008000; 	// 100%
 u32		        COLOR_DEF_100 	= 0x0080C000; 	// (75%-100%)
 u32		        COLOR_DEF_75 	= 0x00D08000;	// (50%-75%]
@@ -244,17 +244,16 @@ void __fastcall TfrmMain::IdleHandler(TObject *Sender, bool &Done)
 
 void __fastcall TfrmMain::FormCreate(TObject *Sender)
 {
-	Core._initialize("MemoryStat",0,true);
     m_Props 				= TProperties::CreateForm("",paInfo,alClient,0,0,0,TProperties::plFolderStore|TProperties::plFullExpand);
     Application->OnIdle 	= IdleHandler;
-    m_Flags.zero();
+    m_Flags.zero			();
+    _control87(MCW_EM, MCW_EM); //. FSColorPicker Bugs
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormDestroy(TObject *Sender)
 {
 	TProperties::DestroyForm(m_Props);
-	Core._destroy();
 }
 //---------------------------------------------------------------------------
 
@@ -371,17 +370,17 @@ void __fastcall TfrmMain::paDetMemPaint(TObject *Sender)
 void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-/*	
-    u32 d_w			= paDetMem->Width/m_cell_px;
+	int cc			= m_curr_cell;
+    u32 d_w			= paMem->Width/m_cell_px;
 	switch (Key){
-    case VK_LEFT: 	m_curr_cell++; 		Key=0; break;
-    case VK_RIGHT: 	m_curr_cell--; 		Key=0; break;
-    case VK_DOWN: 	m_curr_cell+=d_w;	Key=0; break;
-    case VK_UP: 	m_curr_cell+=d_w;	Key=0; break;
+    case VK_LEFT: 	cc--; 		Key=0; break;
+    case VK_RIGHT: 	cc++; 		Key=0; break;
+    case VK_DOWN: 	cc+=d_w;	Key=0; break;
+    case VK_UP: 	cc-=d_w;	Key=0; break;
     }
-    clamp			(m_curr_cell,u32(0),m_memory.size());
-    DrawImage		();
-*/
+    clamp			(cc,0,(int)m_memory.size());
+    m_curr_cell		= cc;
+    RedrawBuffer	();
 }
 //---------------------------------------------------------------------------
 
@@ -395,6 +394,7 @@ void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
     COLOR_DEF_75		= fsStorage->ReadInteger("COLOR_DEF_75",	COLOR_DEF_75	);
     COLOR_DEF_50		= fsStorage->ReadInteger("COLOR_DEF_50",	COLOR_DEF_50	);
     COLOR_DEF_25		= fsStorage->ReadInteger("COLOR_DEF_25",	COLOR_DEF_25	);
+    m_cell_size			= fsStorage->ReadInteger("cell_size",		m_cell_size		);
 }
 //---------------------------------------------------------------------------
 
@@ -408,14 +408,21 @@ void __fastcall TfrmMain::fsStorageSavePlacement(TObject *Sender)
     fsStorage->WriteInteger("COLOR_DEF_75",		COLOR_DEF_75	);
     fsStorage->WriteInteger("COLOR_DEF_50",		COLOR_DEF_50	);
     fsStorage->WriteInteger("COLOR_DEF_25",		COLOR_DEF_25	);
+    fsStorage->WriteInteger("cell_size",		m_cell_size		);
 }
 //---------------------------------------------------------------------------
 
 void __stdcall TfrmMain::OnCellChanged	(PropValue* v)
 {
     sbMem->Position	= 0;
-	OnResizeBuffer	(v);
-	OnRedrawBuffer	(v);
+    ResizeBuffer	();
+    RedrawBuffer	();
+}
+
+void __stdcall TfrmMain::OnRefreshBuffer(PropValue* v)
+{
+    ResizeBuffer	();
+    RedrawBuffer	();
 }
 
 void __stdcall TfrmMain::OnRedrawBuffer	(PropValue* v)
@@ -445,15 +452,15 @@ void TfrmMain::RealUpdateProperties()
         V->OnChangeEvent.bind	(this,&TfrmMain::OnCellChanged);
 
         // Legend
-        V=PHelper().CreateColor	(items, "Cell Legend\\Unused", 		&COLOR_DEF_UNUSED);	V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
-        V=PHelper().CreateColor	(items, "Cell Legend\\Empty", 		&COLOR_DEF_EMPTY);  V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
-        V=PHelper().CreateColor	(items, "Cell Legend\\Full", 		&COLOR_DEF_FULL);   V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
-        V=PHelper().CreateColor	(items, "Cell Legend\\(75-100]%", 	&COLOR_DEF_100);    V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
-        V=PHelper().CreateColor	(items, "Cell Legend\\(50-75]%", 	&COLOR_DEF_75);     V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
-        V=PHelper().CreateColor	(items, "Cell Legend\\(25-50]%", 	&COLOR_DEF_50);     V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
-        V=PHelper().CreateColor	(items, "Cell Legend\\(0-25]%", 	&COLOR_DEF_25);     V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\Unused", 		&COLOR_DEF_UNUSED);	V->OnChangeEvent.bind	(this,&TfrmMain::OnRefreshBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\Empty", 		&COLOR_DEF_EMPTY);  V->OnChangeEvent.bind	(this,&TfrmMain::OnRefreshBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\Full", 		&COLOR_DEF_FULL);   V->OnChangeEvent.bind	(this,&TfrmMain::OnRefreshBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\% (75-100]", 	&COLOR_DEF_100);    V->OnChangeEvent.bind	(this,&TfrmMain::OnRefreshBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\% (50-75]", 	&COLOR_DEF_75);     V->OnChangeEvent.bind	(this,&TfrmMain::OnRefreshBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\% (25-50]", 	&COLOR_DEF_50);     V->OnChangeEvent.bind	(this,&TfrmMain::OnRefreshBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\% (0-25]", 	&COLOR_DEF_25);     V->OnChangeEvent.bind	(this,&TfrmMain::OnRefreshBuffer);
 
-        // UI
+        // UI                                                                               
         PHelper().CreateCaption	(items, "Current Cell\\ID",		 	shared_str().sprintf("%d",m_curr_cell));
         PHelper().CreateCaption	(items, "Current Cell\\Address", 	shared_str().sprintf("[0x%08X - 0x%08X)",m_curr_cell*m_cell_size+m_begin_ptr,(m_curr_cell+1)*m_cell_size+m_begin_ptr));
 

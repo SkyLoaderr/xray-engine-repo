@@ -59,6 +59,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
 	void __fastcall IdleHandler(TObject *Sender, bool &Done);
+    void __stdcall OnRefreshBuffer	(PropValue*);
     void __stdcall OnCellChanged	(PropValue*);
     void __stdcall OnResizeBuffer	(PropValue*);
     void __stdcall OnRedrawBuffer	(PropValue*);
