@@ -194,8 +194,8 @@ C++ class story_ids {
     const Escape_novice_lager_volk = 6;
     const Escape_raid_commander1 = 10;
     const Escape_raid_commander2 = 11;
-    const Escape_robbed_novice = 1;
     const Escape_stalker_from_raid = 5;
+    const Escape_trader_self = 1;
     const Escape_tutorial_wounded = 4;
     const Freedom_patrol_commander_base = 700;
     const Freedom_patrol_commander_level = 701;
@@ -368,6 +368,7 @@ C++ class story_ids {
     const gar_wounded = 109;
     const pri_bomber = 806;
     const pri_btr = 807;
+    const pri_bus_station_zone = 824;
     const pri_controller1 = 810;
     const pri_controller2 = 811;
     const pri_controller3 = 812;
@@ -383,6 +384,9 @@ C++ class story_ids {
     const pri_heli2 = 801;
     const pri_heli3 = 802;
     const pri_heli4 = 803;
+    const pri_hotel_zone = 825;
+    const pri_monolith_base_zone = 826;
+    const pri_stadium_zone = 827;
     const pri_wave1_monolith_victim1 = 808;
     const pri_wave2_monolith_victim1 = 804;
     const pri_wave2_monolith_victim2 = 805;
@@ -691,8 +695,8 @@ C++ class snd_type {
 };
 
 C++ class ui_events {
-    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 54;
-    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 55;
+    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 55;
+    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 56;
     const BUTTON_CLICKED = 14;
     const BUTTON_DOWN = 15;
     const CHECK_BUTTON_RESET = 18;
@@ -703,39 +707,39 @@ C++ class ui_events {
     const DRAG_DROP_ITEM_MOVE = 22;
     const DRAG_DROP_ITEM_RBUTTON_CLICK = 24;
     const DRAG_DROP_REFRESH_ACTIVE_ITEM = 25;
-    const INTERACTIVE_ITEM_CLICK = 37;
-    const INVENTORY_ATTACH_ADDON  = 61;
-    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 64;
-    const INVENTORY_DETACH_SCOPE_ADDON = 62;
-    const INVENTORY_DETACH_SILENCER_ADDON = 63;
-    const INVENTORY_DROP_ACTION = 56;
-    const INVENTORY_EAT_ACTION = 57;
-    const INVENTORY_TO_BAG_ACTION = 60;
-    const INVENTORY_TO_BELT_ACTION  = 58;
-    const INVENTORY_TO_SLOT_ACTION = 59;
-    const LIST_ITEM_CLICKED = 34;
-    const MESSAGE_BOX_CANCEL_CLICKED = 42;
-    const MESSAGE_BOX_NO_CLICKED = 41;
-    const MESSAGE_BOX_OK_CLICKED = 39;
-    const MESSAGE_BOX_YES_CLICKED = 40;
-    const OUTFIT_RETURNED_BACK = 53;
-    const PDA_CONTACTS_WND_CONTACT_SELECTED = 49;
-    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 47;
-    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 48;
-    const PROPERTY_CLICKED = 38;
+    const INTERACTIVE_ITEM_CLICK = 38;
+    const INVENTORY_ATTACH_ADDON  = 62;
+    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 65;
+    const INVENTORY_DETACH_SCOPE_ADDON = 63;
+    const INVENTORY_DETACH_SILENCER_ADDON = 64;
+    const INVENTORY_DROP_ACTION = 57;
+    const INVENTORY_EAT_ACTION = 58;
+    const INVENTORY_TO_BAG_ACTION = 61;
+    const INVENTORY_TO_BELT_ACTION  = 59;
+    const INVENTORY_TO_SLOT_ACTION = 60;
+    const LIST_ITEM_CLICKED = 35;
+    const MESSAGE_BOX_CANCEL_CLICKED = 43;
+    const MESSAGE_BOX_NO_CLICKED = 42;
+    const MESSAGE_BOX_OK_CLICKED = 40;
+    const MESSAGE_BOX_YES_CLICKED = 41;
+    const OUTFIT_RETURNED_BACK = 54;
+    const PDA_CONTACTS_WND_CONTACT_SELECTED = 50;
+    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 48;
+    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 49;
+    const PROPERTY_CLICKED = 39;
     const RADIOBUTTON_SET = 19;
-    const SCROLLBAR_HSCROLL = 31;
-    const SCROLLBAR_VSCROLL = 30;
-    const SCROLLBOX_MOVE = 28;
-    const SCROLLBOX_STOP = 29;
-    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 51;
+    const SCROLLBAR_HSCROLL = 32;
+    const SCROLLBAR_VSCROLL = 31;
+    const SCROLLBOX_MOVE = 29;
+    const SCROLLBOX_STOP = 30;
+    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 52;
     const STATIC_FOCUS_LOST = 13;
     const STATIC_FOCUS_RECEIVED = 12;
     const TAB_CHANGED = 16;
-    const TALK_DIALOG_QUESTION_CLICKED = 44;
-    const TALK_DIALOG_TRADE_BUTTON_CLICKED = 43;
-    const TRADE_WND_CLOSED = 50;
-    const UNDRESS_OUTFIT = 52;
+    const TALK_DIALOG_QUESTION_CLICKED = 45;
+    const TALK_DIALOG_TRADE_BUTTON_CLICKED = 44;
+    const TRADE_WND_CLOSED = 51;
+    const UNDRESS_OUTFIT = 53;
     const WINDOW_KEYBOARD_CAPTURE_LOST = 11;
     const WINDOW_KEY_PRESSED = 8;
     const WINDOW_KEY_RELEASED = 9;
@@ -1802,6 +1806,19 @@ C++ class explosive {
     function explode();
 };
 
+C++ class CF1 : CGameObject {
+    CF1 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
 C++ class CFadedBall : CGameObject {
     CFadedBall ();
     
@@ -1871,9 +1888,12 @@ C++ class CGameObject : DLL_Pure,ISheduled,ICollidable,IRenderable {
 C++ class CGameTask {
     CGameTask ();
     
+    function get_objective(number);
+    function get_id();
     function add_objective(SGameTaskObjective*);
     function set_title(string);
     function load(string);
+    function get_objectives_cnt();
 };
 
 C++ class CGraviArtefact : CGameObject {
@@ -2191,6 +2211,19 @@ C++ class CPsyDogPhantom : CGameObject {
 };
 
 C++ class cpure_server_object : ipure_server_object {
+};
+
+C++ class CRGD5 : CGameObject {
+    CRGD5 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
 };
 
 C++ class render_device {
@@ -4214,6 +4247,19 @@ C++ class cse_temporary : cse_abstract {
 C++ class cse_visual {
 };
 
+C++ class CScope : CGameObject {
+    CScope ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
 C++ class cond {
     const act_end = 128;
     const anim_end = 4;
@@ -4372,19 +4418,15 @@ C++ class game_object {
     function mass() const;
     function section() const;
     function get_current_point_index();
+    function set_alien_control(boolean);
     function sound_prefix() const;
     function sound_prefix(string);
-    function inside(const vector&, number) const;
-    function inside(const vector&) const;
+    function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
+    function info_clear();
     function buy_condition(ini_file*, string);
     function buy_condition(number, number);
-    function set_alien_control(boolean);
     function make_object_visible_somewhen(game_object*);
-    function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
     function jump(const vector&, number);
-    function info_clear();
-    function set_tip_text(string);
-    function level_vertex_light(const number&) const;
     function debug_planner(const action_planner*);
     function set_patrol_extrapolate_callback();
     function set_patrol_extrapolate_callback(const function<boolean>&);
@@ -4395,12 +4437,13 @@ C++ class game_object {
     function who_hit_section_name();
     function active_zone_contact(number);
     function change_team(number, number, number);
-    function set_nonscript_usable(boolean);
+    function level_vertex_light(const number&) const;
     function inventory_for_each(const function<void>&);
     function direction() const;
     function kill(game_object*);
     function cost() const;
-    function set_tip_text_default();
+    function inside(const vector&, number) const;
+    function inside(const vector&) const;
     function body_state() const;
     function skip_transfer_enemy(boolean);
     function see(const game_object*);
@@ -4411,9 +4454,9 @@ C++ class game_object {
     function set_item(enum MonsterSpace::EObjectAction, game_object*, number);
     function set_item(enum MonsterSpace::EObjectAction, game_object*, number, number);
     function info_add(string);
-    function set_community_goodwill(number, game_object*);
+    function set_nonscript_usable(boolean);
     function team() const;
-    function fake_death_fall_down();
+    function set_tip_text_default();
     function set_condition(number);
     function set_sight(enum SightManager::ESightType, const vector*, number);
     function set_sight(enum SightManager::ESightType, boolean, boolean);
@@ -4423,16 +4466,16 @@ C++ class game_object {
     function set_sight(game_object*, boolean);
     function set_sight(game_object*, boolean, boolean);
     function set_sight(game_object*, boolean, boolean, boolean);
-    function get_holder_class();
-    function get_physics_shell() const;
+    function set_tip_text(string);
+    function fake_death_fall_down();
     function remove_restrictions(string, string);
     function action_count() const;
     function money();
+    function get_holder_class();
+    function get_physics_shell() const;
     function relation(game_object*);
-    function get_car();
-    function get_helicopter();
     function weapon_unstrapped() const;
-    function accuracy() const;
+    function get_car();
     function name() const;
     function set_range(number);
     function add_sound(string, number, enum ESoundTypes, number, number, number);
@@ -4444,48 +4487,48 @@ C++ class game_object {
     function get_current_direction();
     function action() const;
     function restore_weapon();
+    function get_helicopter();
+    function accuracy() const;
     function get_anomaly_power();
     function disable_anomaly();
-    function enable_anomaly();
-    function set_movement_type(enum MonsterSpace::EMovementType);
     function enable_vision(boolean);
-    function explode(number);
+    function enable_anomaly();
     function alive() const;
     function set_mental_state(enum MonsterSpace::EMentalState);
     function squad() const;
     function reset_action_queue();
     function target_body_state() const;
+    function set_movement_type(enum MonsterSpace::EMovementType);
+    function head_orientation() const;
+    function explode(number);
+    function script(boolean, string);
     function set_desired_position();
     function set_desired_position(const vector*);
-    function head_orientation() const;
-    function get_sound_info();
-    function script(boolean, string);
-    function change_character_reputation(number);
     function set_path_evaluator();
     function set_path_evaluator(vertex_evaluator*);
-    function visibility_threshold() const;
-    function character_reputation();
+    function get_sound_info();
+    function change_character_reputation(number);
     function set_actor_position(vector);
-    function set_character_rank(number);
+    function visibility_threshold() const;
     function remove_all_restrictions();
-    function character_rank();
+    function character_reputation();
     function add_restrictions(string, string);
-    function group() const;
+    function set_character_rank(number);
     function get_monster_hit_info();
-    function switch_to_trade();
-    function set_relation(enum ALife::ERelationType, game_object*);
+    function character_rank();
+    function group() const;
     function item_in_slot(number) const;
     function memory_hit_objects() const;
     function can_script_capture() const;
     function set_sound_mask(number);
-    function community_goodwill(game_object*);
+    function switch_to_trade();
     function vision_enabled() const;
-    function general_goodwill(game_object*);
+    function is_talk_enabled();
     function binded_object();
     function path_completed() const;
     function ignore_monster_threshold(number);
     function ignore_monster_threshold() const;
-    function is_talk_enabled();
+    function general_goodwill(game_object*);
     function attachable_item_enabled() const;
     function change_goodwill(number, game_object*);
     function set_goodwill(number, game_object*);
@@ -4516,7 +4559,7 @@ C++ class game_object {
     function disable_trade();
     function get_current_outfit() const;
     function animation_count() const;
-    function change_community_goodwill(number, game_object*);
+    function set_relation(enum ALife::ERelationType, game_object*);
     function out_restrictions();
     function disable_talk();
     function enable_attachable_item(boolean);
@@ -5049,6 +5092,19 @@ C++ class sound_params {
     
 };
 
+C++ class CStalkerOutfit : CGameObject {
+    CStalkerOutfit ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
 C++ class stalker_ids {
     const action_accomplish_task = 7;
     const action_aim_enemy = 16;
@@ -5157,6 +5213,19 @@ C++ class stalker_ids {
 
 C++ class CThornArtefact : CGameObject {
     CThornArtefact ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CTorch : CGameObject {
+    CTorch ();
     
     function Visual();
     function _construct();
@@ -6205,6 +6274,8 @@ C++ class CUIMessageBox : CUIStatic {
     function GetHeading();
     function GetFont();
     function SetStretchTexture(boolean);
+    function GetPassword();
+    function GetHost();
     function ClipperOn();
     function IsAutoDelete();
     function SetAutoDelete(boolean);
@@ -6244,6 +6315,8 @@ C++ class CUIMessageBoxEx : CUIDialogWnd {
     function SetHeight(number);
     function SetAutoDelete(boolean);
     function SetHolder(CDialogHolder*);
+    function GetPassword();
+    function GetHost();
     function AttachChild(CUIWindow*);
     function GetWidth() const;
     function SetWndPos(number, number);
@@ -6660,6 +6733,253 @@ C++ class GameGraph__CVertex {
     function level_point() const;
 };
 
+C++ class CWeaponAK74 : CGameObject {
+    CWeaponAK74 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponBM16 : CGameObject {
+    CWeaponBM16 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponBinoculars : CGameObject {
+    CWeaponBinoculars ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponFN2000 : CGameObject {
+    CWeaponFN2000 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponFORT : CGameObject {
+    CWeaponFORT ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponGroza : CGameObject {
+    CWeaponGroza ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponHPSA : CGameObject {
+    CWeaponHPSA ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponKnife : CGameObject {
+    CWeaponKnife ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponLR300 : CGameObject {
+    CWeaponLR300 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponPM : CGameObject {
+    CWeaponPM ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponRG6 : CGameObject {
+    CWeaponRG6 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponRPG7 : CGameObject {
+    CWeaponRPG7 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponSVD : CGameObject {
+    CWeaponSVD ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponSVU : CGameObject {
+    CWeaponSVU ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponShotgun : CGameObject {
+    CWeaponShotgun ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponUSP45 : CGameObject {
+    CWeaponUSP45 ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponVal : CGameObject {
+    CWeaponVal ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponVintorez : CGameObject {
+    CWeaponVintorez ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CWeaponWalther : CGameObject {
+    CWeaponWalther ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
 C++ class CZombie : CGameObject {
     CZombie ();
     
@@ -6842,7 +7162,9 @@ C++ class SGameTaskObjective {
     SGameTaskObjective (CGameTask*, number);
     
     function set_article_key(string);
+    function get_idx();
     function add_complete_info(string);
+    function add_fail_info(string);
     function set_object_id(number);
     function add_on_complete_func(string);
     function set_description(string);
@@ -6853,7 +7175,7 @@ C++ class SGameTaskObjective {
     function add_complete_func(string);
     function add_on_complete_info(string);
     function add_fail_func(string);
-    function add_fail_info(string);
+    function get_state();
     function set_map_location(string);
 };
 
@@ -7148,10 +7470,12 @@ namespace  {
     function GetFontGraffiti32Russian();
     function device();
     function cast_alife_object_to_trader_abstract(cse_alife_object*);
+    function bit_not(number);
     function GetFontHeaderRussian();
+    function prefetch(string);
     function game_graph();
     function dik_to_bind(number);
-    function cast_alife_object_to_creature(cse_alife_object*);
+    function GetFontGraffiti19Russian();
     function sell_condition(ini_file*, string);
     function sell_condition(number, number);
     function buy_condition(ini_file*, string);
@@ -7167,6 +7491,7 @@ namespace  {
     function GetFontHeaderEurope();
     function get_console();
     function GetFontGraffiti50Russian();
+    function app_ready();
     function bit_or(number, number);
     function GetFontDI();
     function GetFontLetterica16Russian();
@@ -7175,20 +7500,23 @@ namespace  {
     function cast_planner_to_action(action_planner*);
     function GetFontLetterica25();
     function GetFontMedium();
-    function app_ready();
+    function editor();
     function flush();
     function GetFontGraffiti22Russian();
-    function ef_storage();
-    function cast_action_to_planner(action_base*);
+    function cast_alife_object_to_creature(cse_alife_object*);
     function time_global();
     function verify_if_thread_is_running();
-    function prefetch(string);
-    function bit_not(number);
-    function GetFontGraffiti19Russian();
+    function ef_storage();
+    function cast_action_to_planner(action_base*);
     function user_name();
     function GetARGB(number, number, number, number);
     function script_server_object_version();
-    function editor();
+ 
+    namespace relation_registry {
+        function community_goodwill(string, number);
+        function change_community_goodwill(string, number, number);
+        function set_community_goodwill(string, number, number);
+    };
  
     namespace game {
         function time();
