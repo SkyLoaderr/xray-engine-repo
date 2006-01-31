@@ -271,7 +271,7 @@ void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 		float						min_dist = flt_max;
 		Fvector						current = game_graph().vertex(m_actor->m_tGraphID)->game_point();
 		GameGraph::_GRAPH_ID			n = game_graph().header().vertex_count();
-		for (GameGraph::_GRAPH_ID i=0; i<n; ++i)
+		for (GameGraph::_GRAPH_ID i=0; i<n; ++i) {
 			if (game_graph().vertex(i)->level_id() == level.id()) {
 				float				distance = game_graph().vertex(i)->game_point().distance_to_sqr(current);
 				if (distance < min_dist) {
@@ -279,10 +279,11 @@ void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 					dest			= i;
 				}
 			}
-			if (!game_graph().vertex(dest)) {
-				Msg						("! There is no game vertices on the level %s, cannot jump to the specified level",start_level_name);
-				return;
-			}
+		}
+		if (!game_graph().vertex(dest)) {
+			Msg						("! There is no game vertices on the level %s, cannot jump to the specified level",start_level_name);
+			return;
+		}
 	}
 	else
 		dest						= (GameGraph::_GRAPH_ID)evaluator.selected_vertex_id();
