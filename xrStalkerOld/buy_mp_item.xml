@@ -1,35 +1,44 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<!-- ITEM INFO IN THE INVENTORY MENU -->
-<window>
-	<!-- NAME -->
-	<static x="20" y="199" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+<w>
+	<auto>
+		<auto_static x="20" y="197" width="100" height="20">
+			<text align="l" x="0" y="0" font="letterica18" r="238" g="155" b="23">st_name</text>
+		</auto_static>
 
-	<!-- WEIGHT -->
-	<static x="230" y="130" width="200" height="20">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+		<auto_static x="210" y="130" width="100" height="20">
+			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_weight</text>
+		</auto_static>
+		
+		<auto_static x="210" y="150" width="100" height="20">
+			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_basecost</text>
+		</auto_static>
 
-	<!-- COST -->
-	<static x="210" y="150" width="200" height="20">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
+		<auto_static x="210" y="170" width="100" height="20">
+			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_condition</text>
+		</auto_static>
+	</auto>
 
-	<!-- CONDITION -->
-	<static x="210" y="170" width="200" height="20">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
 
-	<!-- DESCRIPTION -->
+	<static_name x="20" y="199" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_name>
+
+	<static_weight x="230" y="130" width="200" height="20">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_weight>
+
+	<static_cost x="210" y="150" width="200" height="20">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_cost>
+
+	<static_condition x="210" y="170" width="200" height="20">
+		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_condition>
+
 	<descr_list x="20" y="227" width="394" height="161" item_height="15">
 		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
 
-	<!-- 3D STATIC OLD!!!OLD!!!OLD!! REMOVE ME!!! -->
-	<static_3d x="50" y="-185" width="250" height="190"></static_3d>
-
-	<!-- IMAGE STATIC -->
 	<image_static x="132" y="112" width="243" height="160" alignment="c"/>
-</window>
+</w>
 
