@@ -113,12 +113,11 @@ void CControlDirection::pitch_correction()
 		}
 	}
 	
-	
-	CLevelGraph::SContour	contour;
-	ai().level_graph().contour(contour, m_object->ai_location().level_vertex_id());
-
-	Fplane				P;
-	P.build				(contour.v1,contour.v2,contour.v3);
+	// get current plane
+	u32					node = m_object->ai_location().level_vertex_id();
+	Fplane				P;	
+	pvDecompress		(P.n,ai().level_graph().vertex(node)->plane());
+	P.d					= -P.n.dotproduct(ai().level_graph().vertex_position(node));
 
 	Fvector				position_on_plane;
 	P.project			(position_on_plane,m_object->Position());
