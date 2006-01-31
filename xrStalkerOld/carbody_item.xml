@@ -2,15 +2,15 @@
 <w>
 	<auto>
 		<auto_static x="145" y="120" width="100" height="20">
-			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">weight</text>
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_weight</text>
 		</auto_static>
 		
 		<auto_static x="145" y="140" width="100" height="20">
-			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">base cost</text>
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_basecost</text>
 		</auto_static>
 
 		<auto_static x="145" y="160" width="100" height="20">
-			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">condition</text>
+			<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_condition</text>
 		</auto_static>
 	</auto>
 
