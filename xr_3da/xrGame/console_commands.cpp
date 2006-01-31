@@ -37,6 +37,8 @@
 #include "zone_effector.h"
 #include "GameTask.h"
 
+//#define MASTER_GOLD;
+
 #ifdef DEBUG
 #	include "PHDebug.h"
 #	include "ui/UIDebugFonts.h" 
@@ -1496,7 +1498,7 @@ public:
 	}
 };
 
-#ifdef DEBUG
+#ifndef MASTER_GOLD
 class CCC_Script : public IConsole_Command {
 public:
 	CCC_Script(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -2118,10 +2120,6 @@ void CCC_RegisterCommands()
 	CMD1(CCC_ScriptDbg,			"script_debug_stop");
 	CMD1(CCC_ScriptDbg,			"script_debug_restart");
 	
-	CMD1(CCC_Script,			"run_script");
-	CMD1(CCC_ScriptCommand,		"run_string");
-
-
 	CMD1(CCC_ShowMonsterInfo,	"ai_monster_info");
 	CMD1(CCC_DebugFonts,		"debug_fonts");
 	CMD1(CCC_PostprocessTest,	"pp_test");
@@ -2133,6 +2131,11 @@ void CCC_RegisterCommands()
 
 #endif // DEBUG
 	
+#ifndef MASTER_GOLD
+	CMD1(CCC_Script,			"run_script");
+	CMD1(CCC_ScriptCommand,		"run_string");
+#endif
+
 	// Physics
 	CMD4(CCC_Integer,			"ph_fps",						&phFPS						,			10,		100				);
 	CMD4(CCC_Integer,			"ph_tri_clear_disable_count",	&ph_tri_clear_disable_count	,			0,		255				);
