@@ -160,7 +160,7 @@
         <text>Без пароля</text>
     </string>
     <string id="mm_mp_withoutfriendlyfire">
-        <text>Без дружественного огня</text>
+        <text>Без дружеств. огня</text>
     </string>
     <string id="mm_mp_withoutpunkbuster">
         <text>Без Punk Buster</text>
@@ -172,7 +172,7 @@
         <text>Создать</text>
     </string>
     <string id="mm_mp_join">
-        <text>Присоеденится</text>
+        <text>Присоединиться</text>
     </string>
     <string id="mm_mp_cancel">
         <text>Отмена</text>
