@@ -115,8 +115,8 @@ end
 function action_fight_far:initialize()
 	action_base.initialize( self )
 
-	self.object:set_node_evaluator      ()
-	self.object:set_path_evaluator      ()
+--	self.object:set_node_evaluator      ()
+--	self.object:set_path_evaluator      ()
 	self.object:set_desired_direction   ()
 	self.object:set_desired_position    ()
 	self.object:set_detail_path_type    ( move.line )
@@ -189,8 +189,8 @@ function action_go_to_pos:initialize()
 		self.st.last_seen_vert_id = self.object:best_enemy():level_vertex_id()
 	end
 
-	self.object:set_node_evaluator      ()
-	self.object:set_path_evaluator      ()
+--	self.object:set_node_evaluator      ()
+--	self.object:set_path_evaluator      ()
 	self.object:set_desired_direction   ()
 	self.object:set_desired_position    ()
 	self.object:set_detail_path_type    ( move.line )

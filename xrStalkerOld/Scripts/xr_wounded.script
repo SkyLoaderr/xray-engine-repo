@@ -43,8 +43,8 @@ function action_wounded:__init(name, storage) super(nil, name)
 end
 function action_wounded:initialize ()
     action_base.initialize (self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
+--	self.object:set_node_evaluator()
+--	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	self.sound = "nil"
@@ -83,8 +83,8 @@ function action_wounded:execute ()
 					self.vid, vtemp = self.object:accessible_nearest(self.pos, vtemp)
 					self.pos = vtemp
 				end
-				self.object:set_node_evaluator        ()
-				self.object:set_path_evaluator        ()
+--				self.object:set_node_evaluator        ()
+--				self.object:set_path_evaluator        ()
 				self.object:set_desired_position      (self.pos)
 				self.object:set_desired_direction     ()
 				self.object:set_detail_path_type      (move.line)

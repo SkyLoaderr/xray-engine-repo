@@ -42,8 +42,8 @@ function action_go_position:__init (npc_name,action_name,storage) super (nil,act
 end
 function action_go_position:initialize()
 	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
+--	self.object:set_node_evaluator()
+--	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	
@@ -87,8 +87,8 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 end
 function action_wait:initialize()
 	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
+--	self.object:set_node_evaluator()
+--	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	

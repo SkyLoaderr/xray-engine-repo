@@ -36,8 +36,8 @@ function action_sleeper_activity:__init (npc_name, action_name, storage) super(n
 end
 function action_sleeper_activity:initialize()
 	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
+--	self.object:set_node_evaluator()
+--	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()        
 	--self.state = 0

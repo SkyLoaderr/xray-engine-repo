@@ -456,8 +456,8 @@ end
 ----------------------
 function action_commander:initialize()
 	action_base.initialize (self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
+--	self.object:set_node_evaluator()
+--	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	self:activate_scheme ()
@@ -542,8 +542,8 @@ end
 ----------------------
 function action_patrol:initialize()
 	action_base.initialize              (self)
-	self.object:set_node_evaluator      ()
-	self.object:set_path_evaluator      ()
+--	self.object:set_node_evaluator      ()
+--	self.object:set_path_evaluator      ()
 	self.object:set_desired_position    ()
 	self.object:set_desired_direction   ()
     self.on_point = false
