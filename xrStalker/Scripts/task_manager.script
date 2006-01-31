@@ -229,7 +229,7 @@ function action_give_task(actor, npc, p1, p2)
 	if task_desc.type == "eliminate_lager" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
-		objective:set_object_id(alife():story_object(tonumber(task_desc.target)).id)	    
+		objective:set_object_id(task_desc.selected_target)	    
 	elseif task_desc.type == "kill_stalker" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
@@ -514,10 +514,13 @@ function calculate_predicate(npc, tbl)
 
 	-- проверка по таргету
 	if tbl.type == "eliminate_lager" then
-		local gulag = aa:story_object(tonumber(tbl.target)).gulag		
-		if gulag:get_population() == 0 then
-			return false
-		end	
+		for k,v in pairs(tbl.target_objects) do
+			local gulag = aa:object(v).gulag
+			if gulag:get_population() == 0 then
+				tbl.selected_target = v
+				return true
+			end
+		end
 	elseif tbl.type == "kill_stalker" then
 		for k,v in pairs(tbl.target_objects) do
 			local obj = aa:object(v)
@@ -566,7 +569,7 @@ function task_complete(p1, p2)
 
 	if p2 == 1 then
 		if p1 == "eliminate_lager" then
-			if aa:story_object(tonumber(active_task[p1].target)).gulag:get_population() == 0 then
+			if aa:story_object(tonumber(active_task[p1].selected_target)).gulag:get_population() == 0 then
 				active_task[p1].completed = true
 				return true
 			end
@@ -616,11 +619,16 @@ function register_target(object)
 	for k,v in pairs(task_info) do
 		for kk,vv in pairs(v) do
 			if vv.type == "kill_stalker" then
-				if object:alive() == true and
+				if object.alive ~= nil and object:alive() == true and
 				   object:section_name() == vv.target 
 				then
 					table.insert(vv.target_objects, object.id)
 				end
+			elseif vv.type == "eliminate_lager" then
+				if object:name() == vv.target 
+				then
+					table.insert(vv.target_objects, object.id)
+				end			
 			elseif vv.type == "find_item" then
 				if object:section_name() == vv.target 
 				then

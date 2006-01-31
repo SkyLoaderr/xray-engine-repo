@@ -1,13 +1,13 @@
-class "se_outfit"	(CSE_ALifeItemCustomOutfit)
+class "se_outfit" (cse_alife_item_custom_outfit)
 function se_outfit:__init (section) super (section)
 end
 function se_outfit:on_register()
-	CSE_ALifeItemCustomOutfit.on_register( self )
+	cse_alife_item_custom_outfit.on_register( self )
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
 end
 
-class "se_weapon"	(cse_alife_item_weapon)
+class "se_weapon" (cse_alife_item_weapon)
 function se_weapon:__init (section) super (section)
 end
 function se_weapon:on_register()
@@ -25,7 +25,7 @@ function se_item:on_register()
 	task_manager.register_target(self)
 end
 
-class "se_item_torch"	(cse_alife_item_torch)
+class "se_item_torch" (cse_alife_item_torch)
 function se_item_torch:__init (section) super (section)
 end
 function se_item_torch:on_register()
