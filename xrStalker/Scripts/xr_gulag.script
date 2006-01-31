@@ -719,8 +719,8 @@ end
 function gulag:print()
 	local npc_info, going
 
-	printf("***  %s -- State: %d -- Capacity: %d/%d -- Population: %d/%d",
-	         self.name, self.state, self.capacity, self.capacity_non_exclusive, self:get_population(), self:get_non_exclusive_population())
+	printf("***  %s -- State: %d -- Total population: %d/%d -- Non exclusive population: %d/%d",
+	         self.name, self.state, self.capacity, self:get_population(), self.capacity_non_exclusive, self:get_non_exclusive_population())
 
 	printf("Resources:")
 	for k,v in pairs( self.Object ) do
