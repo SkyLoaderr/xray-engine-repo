@@ -224,7 +224,8 @@ public:
 			void				skip_transfer_enemy		(bool val);
 			void				set_home				(LPCSTR name, float r_min, float r_max, bool aggressive);
 			void				remove_home				();
-
+			void				berserk					();
+		
 			template <typename T>
 			IC		T			*action_planner			();
 

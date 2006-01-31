@@ -139,3 +139,8 @@ void CScriptGameObject::fake_death_stand_up()
 	monster->fake_death_stand_up();
 }
 
+void CScriptGameObject::berserk()
+{
+	CBaseMonster *monster = smart_cast<CBaseMonster *>(&object());
+	if (monster) monster->set_berserk();
+}

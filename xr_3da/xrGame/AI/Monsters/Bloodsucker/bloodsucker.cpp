@@ -178,8 +178,6 @@ void CAI_Bloodsucker::reinit()
 
 	m_vampire_want_value		= 0.f;
 	m_predator					= false;
-
-	time_berserk_start			= 0;
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)

@@ -56,7 +56,7 @@ void CStateBloodsuckerPredatorLiteAbstract::reselect_state()
 	if (prev_substate == eStatePredator_MoveToCover) {
 		if (enemy_see_me()) {
 			select_state(eStatePredator_MoveToCover);
-			object->time_berserk_start = time();
+			object->set_berserk();
 		}
 		else select_state(eStatePredator_LookOpenPlace);
 		return;
@@ -101,7 +101,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerPredatorLiteAbstract::check_completion()
 {
 	if (object->EnemyMan.see_enemy_now() && (object->Position().distance_to(object->EnemyMan.get_enemy()->Position()) < 4.f)) {
-		object->time_berserk_start = time();
+		object->set_berserk();
 		return true;
 	}
 	if ((object->CInvisibility::energy() > 0.9f) && (object->conditions().health() > 0.9f)) return true;
@@ -186,7 +186,7 @@ void CStateBloodsuckerPredatorLiteAbstract::check_force_state()
 			
 			if (object->EnemyMan.get_enemy() && 
 				(object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) < 10.f)) {
-				object->time_berserk_start = time();
+				object->set_berserk	();
 			} else 
 				current_substate	= u32(-1);
 			

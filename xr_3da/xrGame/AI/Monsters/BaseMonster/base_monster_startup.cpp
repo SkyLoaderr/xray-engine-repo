@@ -142,6 +142,8 @@ void CBaseMonster::reinit()
 
 	MeleeChecker.init_attack		();
 
+	time_berserk_start				= 0;
+
 #ifdef DEBUG
 	m_show_debug_info				= 0;
 #endif 
