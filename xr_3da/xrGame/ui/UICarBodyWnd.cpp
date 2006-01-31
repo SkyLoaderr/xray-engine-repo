@@ -1,9 +1,3 @@
-// UICarBodyWnd.cpp:  диалог переложения вещей из багажника и с трупа 
-//					  себе в инвентарь
-//////////////////////////////////////////////////////////////////////
-
-
-
 #include "stdafx.h"
 #include "UICarBodyWnd.h"
 #include "UITradeWnd.h"
@@ -342,9 +336,9 @@ void CUICarBodyWnd::Update()
 
 void CUICarBodyWnd::Show() 
 { 
-	inherited::Show();
-	m_pCurrentDragDropItem = NULL;
-	UpdateWeight(UIOurBagWnd);
+	inherited::Show			();
+	SetCurrentItem			(NULL);
+	UpdateWeight			(UIOurBagWnd);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -470,12 +464,8 @@ void CUICarBodyWnd::EnableAll()
 void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
-	const float offset = -10.0f;
 
 	UIItemInfo.InitItem(m_pCurrentItem);
-	UIItemInfo.AlignRight(UIItemInfo.UIWeight,		offset);
-	UIItemInfo.AlignRight(UIItemInfo.UICost,		offset);
-	UIItemInfo.AlignRight(UIItemInfo.UICondition,	offset);
 }
 
 void CUICarBodyWnd::TakeAll()

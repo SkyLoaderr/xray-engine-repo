@@ -710,18 +710,11 @@ void CUITradeWnd::FillList	(TIItemContainer& cont, CUIDragDropList& dragDropList
 
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
-	const float offset = -15.0f;
 
 	m_uidata->UIItemInfo.InitItem(m_pCurrentItem);
-	m_uidata->UIItemInfo.AlignRight(m_uidata->UIItemInfo.UIWeight, offset);
-	m_uidata->UIItemInfo.AlignRight(m_uidata->UIItemInfo.UICost, offset);
-	m_uidata->UIItemInfo.AlignRight(m_uidata->UIItemInfo.UICondition, offset);
-
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -20,20 +20,20 @@ class CUIItemInfo: public CUIWindow
 {
 private:
 	typedef CUIWindow inherited;
+	CInventoryItem* m_pInvItem;
 public:
-	CUIItemInfo();
-	virtual ~CUIItemInfo();
+					CUIItemInfo			();
+	virtual			~CUIItemInfo		();
 
-	void		Init		(float x, float y, float width, float height, const char* xml_name);
-	void		InitItem	(CInventoryItem* pInvItem);
+	void			Init				(float x, float y, float width, float height, const char* xml_name);
+	void			InitItem			(CInventoryItem* pInvItem);
 
-	virtual void Draw();
-	void		AlignRight(CUIStatic* Item, float offset);
+	virtual void	Draw				();
 
-	CUIStatic*	UIName;
-	CUIStatic*	UIWeight;
-	CUIStatic*	UICost;
-	CUIStatic*	UICondition;
+	CUIStatic*		UIName;
+	CUIStatic*		UIWeight;
+	CUIStatic*		UICost;
+	CUIStatic*		UICondition;
 	CUIScrollView*	UIDesc;
 	CUIProgressBar*	UICondProgresBar;
 

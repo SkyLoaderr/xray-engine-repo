@@ -565,12 +565,8 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 void CUIInventoryWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
-	const float offset = -10.0f;
 
 	UIItemInfo.InitItem(m_pCurrentItem);
-	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
-	UIItemInfo.AlignRight(UIItemInfo.UICost, offset);
-	UIItemInfo.AlignRight(UIItemInfo.UICondition, offset);
 }
 
 //-----------------------------------------------------------------------------/
