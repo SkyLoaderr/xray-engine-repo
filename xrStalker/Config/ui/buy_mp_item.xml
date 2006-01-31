@@ -1,24 +1,5 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <w>
-	<auto>
-		<auto_static x="20" y="197" width="100" height="20">
-			<text align="l" x="0" y="0" font="letterica18" r="238" g="155" b="23">st_name</text>
-		</auto_static>
-
-		<auto_static x="210" y="130" width="100" height="20">
-			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_weight</text>
-		</auto_static>
-		
-		<auto_static x="210" y="150" width="100" height="20">
-			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_basecost</text>
-		</auto_static>
-
-		<auto_static x="210" y="170" width="100" height="20">
-			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_condition</text>
-		</auto_static>
-	</auto>
-
-
 	<static_name x="20" y="199" width="240" height="60">
 		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
 	</static_name>
