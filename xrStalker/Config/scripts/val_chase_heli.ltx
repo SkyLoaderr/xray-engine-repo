@@ -14,7 +14,7 @@ combat_enemy        = nil
 combat_use_rocket   = false
 combat_use_mgun     = true
 ;invulnerable       = true
-on_info             = {+val_chase_plr_in_car} heli_move@start
+on_info             = {+val_chase_start} heli_move@start
 
 [heli_move@start]
 path_move           = val_chase_heli_start_move
@@ -26,7 +26,7 @@ combat_use_mgun     = true
 ;invulnerable       = true
 ;on_info            = {+val_stairs_start} heli_move@start
 immortal            = true
-on_info             = {=heli_health_le(25) ~25} heli_move@die1, {=heli_health_le(25) ~50} heli_move@die2, {=heli_health_le(25) ~75} heli_move@die3, {=heli_health_le(25)} heli_move@die4
+on_info             = {=heli_health_le(0.25)} heli_move@die
 on_signal           = arrived | heli_move@chase
 
 [heli_move@chase]
@@ -37,7 +37,13 @@ combat_use_rocket   = true
 combat_use_mgun     = false
 ;invulnerable       = true
 immortal            = true
-on_info             = {=heli_health_le(25) ~25} heli_move@die1, {=heli_health_le(25) ~50} heli_move@die2, {=heli_health_le(25) ~75} heli_move@die3, {=heli_health_le(25)} heli_move@die4
+on_info             = {=heli_health_le(0.25)} heli_move@die
+
+[heli_move@die]
+path_move     = val_chase_heli_chase_move
+combat_ignore = true
+immortal      = true
+on_info       = {~25} heli_move@die1, {~50} heli_move@die2, {~75} heli_move@die3, heli_move@die4
 
 [heli_move@die1]
 path_move     = val_monolith_heli2_die_move1

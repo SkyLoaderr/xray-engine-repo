@@ -17,9 +17,8 @@ local state_fight = 1
 --------------------------------------------------------------------------
 local t = {}
 local gulags = {val_escort = {comm = {"bandit", "dolg"}}, val_sacrifice = {comm = {"bandit", "dolg"}},
-                val_prisoner = {comm = {"dolg"}}, val_rob = {comm = true},
-                val_lager_bandits = {comm = {"bandit"}}, val_war_soldiers = {comm = {"military"}},
-                val_monolith_base = {}, val_offline_group = {}}
+                val_prisoner = {comm = {"dolg"}}, val_sos = {}, val_rob = {comm = true},
+                val_lager_bandits = {comm = {"bandit"}}, val_offline_group = {}}
 
 -- Job -------------------------------------------------------------------
 function load_job(sj, gname, type, squad, groups)
@@ -144,7 +143,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 	table.insert(sj, t)
     ltx = ltx.."#include \"scripts\\val_escort_captive.ltx\"\n"
 
-	t = { section = "logic@" .. gname .. "_guard1",
+	t = { section = "logic@" .. gname .. "_guard",
 		idle = 0,
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
@@ -153,9 +152,9 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 		predicate = e_predicate_g1
 	}
 	table.insert(sj, t)
-    ltx = ltx.."#include \"scripts\\val_escort_guard1.ltx\"\n"
+    --ltx = ltx.."#include \"scripts\\val_escort_guard1.ltx\"\n"
 
-	t = { section = "logic@" .. gname .. "_guard2",
+	t = { section = "logic@" .. gname .. "_guard",
 		idle = 0,
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
@@ -164,7 +163,63 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 		predicate = e_predicate_g2
 	}
 	table.insert(sj, t)
-    ltx = ltx.."#include \"scripts\\val_escort_guard2.ltx\"\n"
+    --ltx = ltx.."#include \"scripts\\val_escort_guard2.ltx\"\n"
+
+    ltx = ltx.."[logic@" .. gname .. "_guard]\n" ..
+               "active          = patrol@" .. gname .. "_guard_wait\n" ..
+               "on_death        = death@" .. gname .. "_guard\n" ..
+               "on_hit          = hit@" .. gname .. "_guard\n" ..
+               "on_combat       = combat@" .. gname .. "_guard\n" ..
+               "combat_ignore   = combat_ignore\n" ..
+
+               "[death@" .. gname .. "_guard]\n" ..
+               "on_info     = %=" .. gname .. "_guard_death%\n" ..
+               --"on_info     = %-val_escort_guard1_combat +val_escort_guard1_dead%\n" ..
+               --"on_info2    = {=killed_by_actor} %+val_escort_actor_helped%\n" ..
+
+               "[hit@" .. gname .. "_guard]\n" ..
+               "on_info     = %=" .. gname .. "_guard_hit%\n" ..
+               --"on_info     = {=hit_by_actor} %+val_escort_combat +val_escort_actor_helped%, %+val_escort_guard1_combat%\n" ..
+               --"on_info2    = {+val_escort_combat -val_escort_nap1_start_combat} %+val_escort_captive_enemy%\n" ..
+               --"on_info3    = {=hitted_by(406) -val_escort_captive_enemy} %+val_escort_nap1_start_combat%\n" ..
+
+               "[combat@" .. gname .. "_guard]\n" ..
+               "on_info     = %=" .. gname .. "_guard_combat%\n" ..
+               --"on_info     = %+val_escort_guard1_combat%\n" ..
+               --"on_info2    = {=see_actor -val_escort_nap1_start_combat -val_escort_captive_enemy} %+val_escort_captive_enemy%\n" ..
+               --"on_info3    = {=see_actor -val_escort_combat} %+val_escort_combat% ;remark@val_escort_guard1_fight\n" ..
+
+               -- wait for scene start
+               "[patrol@" .. gname .. "_guard_wait]\n" ..
+               "path_walk           = captive_wait_walk\n" ..
+               "path_look           = captive_wait_look\n" ..
+               "on_info             = {+val_escort_start}           patrol@val_escort_guard_walk\n" ..
+               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               "combat_ignore_cond  = {=check_fighting(400)}\n" ..
+
+               -- escort captive
+               "[patrol@" .. gname .. "_guard_walk]\n" ..
+               "path_walk           = captive_walk\n" ..
+               "path_look           = captive_look\n" ..
+               "formation           = back\n" ..
+               "on_info             = {+val_escort_combat}          remark@val_escort_guard_fight\n" ..
+               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               "on_info3            = {+val_escort_scene_fail}      remark@val_escort_guard_free\n" ..
+               "combat_ignore_cond  = {=check_fighting(400)}\n" ..
+
+               -- fight with actor and nap1
+               "[remark@" .. gname .. "_guard_fight]\n" ..
+               "anim                = wait_na\n" ..
+               "on_info             = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               "on_info3            = {+val_escort_nap1_dead}       patrol@val_escort_guard_walk   %-val_escort_combat%\n" ..
+               "combat_ignore_cond  = {=check_fighting(400)}\n" ..
+
+               -- 
+               "[remark@" .. gname .. "_guard_free]\n" ..
+               "anim                = wait\n" ..
+               "on_info             = %=" .. gname .. "_guard_free%\n"
+               --"on_info             = %+val_escort_guards_free -val_escort_guard1_combat%\n"
 
 	t = { section = "logic@" .. gname .. "_halfdead",
 		idle = 0,
@@ -330,6 +385,96 @@ gulags.val_prisoner.job = function(sj, gname, type, squad, groups)
 	table.insert(sj, t)
 
     gulags.val_prisoner.ltx = "#include \"scripts\\val_prisoner_captive.ltx\"\n"
+end
+
+
+--------------------------------------------------------------------------
+-- Sos
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+function sos_predicate_w(data) -- wounded
+	return data.story_id == 422
+end
+
+function sos_predicate_bs(data) -- bloodsucker
+	return data.community == "bloodsucker"
+end
+
+-- Jobs ------------------------------------------------------------------
+gulags.val_sos.job = function(sj, gname, type, squad, groups)
+    local ltx = ""
+	t = { section = "logic@" .. gname .. "_wounded",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		--online = true,
+		predicate = sos_predicate_w
+	}
+	table.insert(sj, t)
+	
+	ltx = ltx.."[logic@" .. gname .. "_wounded]\n" ..
+               "active        = remark1\n" ..
+               "on_death      = death@wounded\n" ..
+               "combat_ignore = combat_ignore\n" ..
+
+               "[death@wounded]\n" ..
+               "on_info = %+val_sos_dead%\n" ..
+
+               "[danger]\n" ..
+               "ignore_distance = 5\n" ..
+               "ignore_types    = sound\n" ..
+
+               "[meet1]\n" ..
+               "meet_state     = 0|wait\n" ..
+               "meet_state_wpn = 0|wait\n" ..
+               "victim         = 5|actor\n" ..
+               "victim_wpn     = 5|actor\n" ..
+               "use            = false\n" ..
+               "use_wpn        = false\n" ..
+
+               "[meet2]\n" ..
+               "meet_dialog    = val_sos_dialog\n" ..
+               "meet_state     = 5|wait\n" ..
+               "meet_state_wpn = 5|wait\n" ..
+               "victim         = 5|actor\n" ..
+               "victim_wpn     = 5|actor\n" ..
+               "use            = true\n" ..
+               "use_wpn        = true\n" ..
+
+               "[wounded]\n" ..
+               "hp_state          = 20|wounded_heavy@help\n" ..
+               "hp_state_see      = 20|wounded_heavy@help_see\n" ..
+               "hp_cover          = 20|false\n" ..
+               "hp_fight          = 20|false\n" ..
+               "syndata           = wounded_heavy@help\n" ..
+               "help_start_dialog = val_sos_dialog\n" ..
+
+               "[remark1]\n" ..
+               "path_walk          = wounded_walk\n" ..
+               "anim               = wait\n" ..
+               "on_info            = {+val_sos_got_medkit} remark2\n" ..
+               "meet               = meet1\n" ..
+               "wounded            = wounded\n" ..
+               "combat_ignore_cond = always\n" ..
+
+               "[remark2]\n" ..
+               "anim                  = wait\n" ..
+               "meet                  = meet2\n" ..
+               --"wounded               = wounded\n" ..
+               "on_actor_dist_ge_nvis = 17 | %+val_sos_scene_end%\n"
+
+	t = { section = "logic@" .. gname .. "_bs",
+		idle = 0,
+		prior = 1, state = {0},
+		squad = squad, group = groups[1],
+		in_rest = "", out_rest = "",
+		--online = true,
+		predicate = sos_predicate_bs
+	}
+	table.insert(sj, t)
+
+    gulags.val_sos.ltx = ltx.."#include \"scripts\\val_sos_bs.ltx\"\n"
 end
 
 
@@ -579,170 +724,6 @@ gulags.val_lager_bandits.state = function(gulag)
 		return state_normal -- обычное состояние
 	end
 	return state_alarm -- тревога
-end
-
-
---------------------------------------------------------------------------
--- Monolith base
---------------------------------------------------------------------------
--- Predicates ------------------------------------------------------------
-
--- Jobs ------------------------------------------------------------------
-gulags.val_monolith_base.job = function(sj, gname, type, squad, groups)
-    local i, v, j
-    local ltx = ""
-
-    -- патрули
-    for i = 1, 6 do
-	    t = { section = "logic@" .. gname .. "_patrol_normal" .. i,
-		    idle = 0,
-		    prior = 4, state = {0},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_main_building_restrictor"
-	    }
-	    table.insert(sj, t)        
-
-        ltx = ltx.."[logic@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "active              = walker@" .. gname .. "_patrol_normal" .. i .. "\n" ..
-                   --"combat_ignore       = combat_ignore\n" ..
-
-                   "[walker@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "path_walk           = in_patrol_walk" .. i .. "\n" ..
-                   "path_look           = in_patrol_look" .. i .. "\n" ..
-                   "def_state_moving    = rush\n" --..
-                   --"combat_ignore_cond  = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%\n"
-    end
-
-    local pr = {1, 1, 1, 3, 2}
-    -- кемпы
-    for i, v in pairs({4, 4, 4, 5, 4}) do
-        for j = 1, v do
-	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_normal",
-		        idle = 0,
-		        prior = pr[i], state = {0},
-		        squad = squad, group = groups[1],
-		        in_rest = "", out_rest = gname .. "_main_building_restrictor"
-	        }
-	        table.insert(sj, t)        
-        end
-
-        ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
-                   "active              = kamp@" .. gname .. "_kamp" .. i .. "_normal\n" ..
-                   --"combat_ignore       = combat_ignore\n" ..
-
-                   "[kamp@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
-                   "center_point        = in_kamp" .. i .. "\n" ..
-                   "def_state_moving    = rush\n" --..
-                   --"combat_ignore_cond  = {=val_fighting_captive}, {=fighting_actor +val_monolith_actor_detected} never, {=fighting_actor =actor_wears_bandit_outfit} always, {=fighting_actor} never %+val_monolith_actor_detected%\n"
-    end
-
-    gulags.val_monolith_base.ltx = ltx
-end
-
--- Check stalker ---------------------------------------------------------
-gulags.val_monolith_base.comm = function(npc_community, gulag_type, npc_rank, se_obj, stalker)
-    return stalker and se_obj:profile_name() == "val_monolith_regular"
-end
-
-
---------------------------------------------------------------------------
--- War soldiers
---------------------------------------------------------------------------
--- Predicates ------------------------------------------------------------
-function ws_predicate(data)
-    local pname = data.profile_name
-	return pname == "val_soldier_regular" or pname == "val_soldier_specnaz"
-end
-
--- Jobs ------------------------------------------------------------------
-gulags.val_war_soldiers.job = function(sj, gname, type, squad, groups)
-    local i, v, j
-    local ltx = ""
-
-    -- патрули
-    for i = 1, 6 do
-        -- normal
-	    t = { section = "logic@" .. gname .. "_patrol_normal" .. i,
-		    idle = 0,
-		    prior = 4, state = {state_normal},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		    predicate = ws_predicate
-	    }
-	    table.insert(sj, t)
-	    -- fight
-	    t = { section = "logic@" .. gname .. "_fight1",
-		    idle = 0,
-		    prior = 4, state = {state_fight},
-		    squad = squad, group = groups[1],
-		    in_rest = "", out_rest = "val_monolith_base_war_restrictor",
-		    predicate = ws_predicate
-	    }
-	    table.insert(sj, t)
-
-        ltx = ltx.."[logic@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "active              = walker@" .. gname .. "_patrol_normal" .. i .. "\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
-
-                   "[walker@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
-                   "path_walk           = in_patrol_walk" .. i .. "\n" ..
-                   "path_look           = in_patrol_look" .. i .. "\n" ..
-                   "def_state_moving    = rush\n" ..
-                   "combat_ignore_cond  = {=check_fighting(410)}\n"
-    end
-
-    local pr = {1, 1, 1, 3, 2}
-    -- кемпы
-    for i, v in pairs({4, 4, 4, 5, 4}) do
-        for j = 1, v do
-            -- normal
-	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_normal",
-		        idle = 0,
-		        prior = pr[i], state = {state_normal},
-		        squad = squad, group = groups[1],
-		        in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		        predicate = ws_predicate
-	        }
-	        table.insert(sj, t)        
-	        -- fight
-	        t = { section = "logic@" .. gname .. "_fight" .. i ,
-		        idle = 0,
-		        prior = 1, state = {state_fight},
-		        squad = squad, group = groups[1],
-		        in_rest = "", out_rest = "val_monolith_base_war_restrictor",
-		        predicate = ws_predicate
-	        }
-	        table.insert(sj, t)
-        end
-
-        ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
-                   "active             = kamp@" .. gname .. "_kamp" .. i .. "_normal\n" ..
-                   "combat_ignore      = combat_ignore\n" ..
-                   
-                   "[kamp@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
-                   "center_point       = in_kamp" .. i .."\n" ..
-                   "def_state_moving   = rush\n" ..
-                   "combat_ignore_cond = {=check_fighting(410)}\n" ..
-                   
-                   "[logic@" .. gname .. "_fight" .. i .. "]\n" ..
-                   "active              = remark@" .. gname .. "_fight" .. i .. "\n" ..
-                   "combat_ignore       = combat_ignore\n" ..
-
-                   "[remark@" .. gname .. "_fight" .. i .. "]\n" ..
-                   "center_point        = in_kamp" .. i .."\n" ..
-                   "no_move             = true\n" ..
-                   "combat_ignore_cond  = {=check_fighting(410)}\n"
-    end
-
-    gulags.val_war_soldiers.ltx = ltx
-end
-
--- States ----------------------------------------------------------------
-gulags.val_war_soldiers.state = function(gulag)
-	if db.actor:has_info("val_opendoor_chase_start") then
-		return state_normal
-	end
-	return state_fight
 end
 
 

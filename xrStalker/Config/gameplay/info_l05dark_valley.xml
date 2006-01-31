@@ -2,8 +2,7 @@
 <game_information_portions>
 
 <!-- FAKE: main task -->
-<info_portion id="val_give_main_task">
-</info_portion>
+<info_portion id="val_give_main_task"></info_portion>
 
 <info_portion id="val_x18_door_open"></info_portion>
 
@@ -34,10 +33,12 @@
 <info_portion id="val_escort_start"></info_portion>
 
 <info_portion id="val_escort_combat"></info_portion>
-<info_portion id="val_escort_actor_start_combat"></info_portion>
 <info_portion id="val_escort_nap1_start_combat"></info_portion>
 <info_portion id="val_escort_actor_helped"></info_portion>
 
+<!-- Напарник 1 -->
+<info_portion id="val_escort_nap1_go_rescue"></info_portion>
+<info_portion id="val_escort_nap1_no_thanx"></info_portion>
 <info_portion id="val_escort_nap1_phrase3"></info_portion>
 <info_portion id="val_escort_nap1_phrase1_end"></info_portion>
 <info_portion id="val_escort_nap1_phrase2_end"></info_portion>
@@ -49,6 +50,7 @@
 <info_portion id="val_escort_guard2_dead"></info_portion>
 <info_portion id="val_escort_guards_free"></info_portion>
 
+<info_portion id="val_escort_captive_enemy"></info_portion>
 <info_portion id="val_escort_captive_dead"></info_portion>
 <info_portion id="val_escort_captive_phrase1_end"></info_portion>
 <info_portion id="val_escort_captive_fight"></info_portion>
@@ -65,9 +67,6 @@
 <info_portion id="val_escort_scene_fail"></info_portion>
 <info_portion id="val_escort_scene_end"></info_portion>
 
-<!-- Напарник 1 -->
-<info_portion id="val_escort_nap1_go_rescue"></info_portion>
-<info_portion id="val_escort_nap1_no_thanx"></info_portion>
 <info_portion id="val_show_zones"></info_portion>
 
 <!-- Монолог возле трубы -->
@@ -107,14 +106,10 @@
 <info_portion id="val_sos_got_medkit"></info_portion>
 <info_portion id="val_sos_dead"></info_portion>
 <info_portion id="val_sos_task_finish"></info_portion>
-
-<!-- Гулаг Монолита -->
-<info_portion id="val_monolith_actor_detected"></info_portion>
-<info_portion id="val_monolith_password_ok"></info_portion>
+<info_portion id="val_sos_scene_end"></info_portion>
 
 <!-- Начало рейда солдат на монолит -->
 <info_portion id="val_raid_start"></info_portion>
-<info_portion id="val_leave_dv_after_raid"></info_portion>
 
 <!-- Заключенный бандитов -->
 <info_portion id="val_prisoner_sit"></info_portion>
@@ -131,49 +126,10 @@
 <info_portion id="val_prisoner_task_finish"></info_portion>
 <info_portion id="val_prisoner_scene_end"></info_portion>
 
-<!-- Матюгальник -->
-<info_portion id="val_matugalnik_off"></info_portion>
-
-<!-- Лестница -->
-<info_portion id="val_stairs_start"></info_portion>
-<info_portion id="val_stairs_heli_arrived"></info_portion>
-
-<!-- Ворота -->
-<info_portion id="val_gate_start"></info_portion>
-<info_portion id="val_gate_plr_detected"></info_portion>
-<info_portion id="val_gate_btr_arrived"></info_portion>
-<info_portion id="val_gate_btr_end_fire"></info_portion>
-<info_portion id="val_gate_btr_enter"></info_portion>
-<info_portion id="val_gate_chase_soldier_raid_start"></info_portion>
-
-
-<!-- Открытие дверей -->
-<info_portion id="val_opendoor_start"></info_portion>
-<info_portion id="val_opendoor_soldier_start"></info_portion>
-<info_portion id="val_opendoor_victim_start"></info_portion>
-<info_portion id="val_opendoor_plr_detected"></info_portion>
-<info_portion id="val_opendoor_chase_start"></info_portion>
-<info_portion id="val_opendoor_chase_check"></info_portion>
-<info_portion id="val_opendoor_end"></info_portion>
-<info_portion id="val_opendoor_monolith_chase_start"></info_portion>
-
 <!-- Типсы -->
 <info_portion id="val_exit_gate_show">
     <task>val_come_to_trader</task>
 </info_portion>
-
-<!-- Раздавленный монолитовец -->
-<info_portion id="val_smashed_start"></info_portion>
-<info_portion id="val_smashed_btr_start"></info_portion>
-<info_portion id="val_smashed_kill_victim"></info_portion>
-
-<!-- Взрыв -->
-<info_portion id="val_explosion_check"></info_portion>
-<info_portion id="val_explosion_start"></info_portion>
-<info_portion id="val_explosion_victim_dead"></info_portion>
-<info_portion id="val_explosion_killer_dead"></info_portion>
-<info_portion id="val_explosion_wait"></info_portion>
-<info_portion id="val_explosion_bad"></info_portion>
 
 <info_portion id="val_borov_dead"></info_portion>
 <!-- Игрок нашел флешку Борова -->
@@ -187,7 +143,6 @@
 <info_portion id="val_rob_no_money"></info_portion>
 
 <!-- Погоня -->
-<info_portion id="val_chase_plr_in_car"></info_portion>
-<info_portion id="val_chase_soldier_start"></info_portion>
+<info_portion id="val_chase_start"></info_portion>
 
 </game_information_portions>
