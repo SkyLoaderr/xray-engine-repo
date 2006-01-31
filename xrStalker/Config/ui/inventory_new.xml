@@ -14,11 +14,6 @@
 		<text x="20" y="8" font="graffiti22" r="238" g="153" b="26"></text>
     </money_static>
 
-    <!-- ARTIFACT MERGER WINDOW -->
-    <frame_window x="440" y="260" width="267" height="500">
-		<texture>ui_frame</texture>        		
-    </frame_window>
-
     <!-- SLEEP PARAMS WINDOW -->
     <sleep_window x="370" y="672" width="260" height="53">
         <texture>ui\ui_dg_sleep</texture>
