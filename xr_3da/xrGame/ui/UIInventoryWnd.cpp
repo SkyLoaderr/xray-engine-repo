@@ -112,20 +112,20 @@ void CUIInventoryWnd::Init()
 	////////////////////////////////////
 	//Окно с информации о персонаже
 	AttachChild(&UIPersonalWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIPersonalWnd);
+	xml_init.InitFrameWindow(uiXml, "character_frame_window", 0, &UIPersonalWnd);
 
 	//Полосы прогресса
 	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIProgressBarHealth);
+	xml_init.InitProgressBar(uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
 	
 	UIPersonalWnd.AttachChild(&UIProgressBarSatiety);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIProgressBarSatiety);
+	xml_init.InitProgressBar(uiXml, "progress_bar_satiety", 0, &UIProgressBarSatiety);
 
 	UIPersonalWnd.AttachChild(&UIProgressBarPsyHealth);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBarPsyHealth);
+	xml_init.InitProgressBar(uiXml, "progress_bar_psy", 0, &UIProgressBarPsyHealth);
 
 	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBarRadiation);
+	xml_init.InitProgressBar(uiXml, "progress_bar_radiation", 3, &UIProgressBarRadiation);
 
 	UIPersonalWnd.AttachChild(&UIStaticPersonal);
 	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", -1, UIPersonalWnd.GetHeight() - 175, 260, 260);
