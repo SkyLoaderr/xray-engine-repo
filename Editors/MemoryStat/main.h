@@ -15,36 +15,17 @@
 #include "multi_edit.hpp"
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
+#include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
 class TfrmMain : public TForm
 {
 __published:	// IDE-managed Components
 	TStatusBar *sbStatus;
-	TPanel *Panel1;
+	TPanel *paDesc;
 	TOpenDialog *od;
-	TScrollBar *sbMem;
-	TPanel *Panel2;
-	TPanel *Panel3;
-	TPanel *Panel4;
-	TMxLabel *MxLabel2;
-	TMxLabel *lbEndPtr;
-	TMxLabel *MxLabel4;
-	TMxLabel *lbBeginPtr;
-	TMxLabel *MxLabel3;
-	TMxLabel *lbMemSize;
-	TRadioGroup *rgCellSize;
-	TMxLabel *MxLabel5;
-	TMxLabel *lbMaxBlock;
-	TMxLabel *MxLabel7;
-	TMxLabel *lbMinBlock;
 	TPanel *Panel6;
 	TPanel *paMemBase;
 	TMxPanel *paMem;
-	TPanel *Panel7;
-	TListBox *lbDetDesc;
-	TPanel *Panel8;
-	TMxLabel *MxLabel1;
-	TMxLabel *lbCurrentCell;
 	TMainMenu *MainMenu1;
 	TMenuItem *File1;
 	TMenuItem *Tools1;
@@ -54,6 +35,13 @@ __published:	// IDE-managed Components
 	TMenuItem *Open1;
 	TMenuItem *Close1;
 	TMxPanel *paDetMem;
+	TPanel *paInfo;
+	TFormStorage *fsStorage;
+	TScrollBar *sbMem;
+	TPanel *Panel2;
+	TPanel *Panel3;
+	TPanel *Panel9;
+	TPanel *Panel4;
 	void __fastcall OpenClick(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
@@ -61,15 +49,41 @@ __published:	// IDE-managed Components
 	void __fastcall paMemMouseMove(TObject *Sender, TShiftState Shift, int X,
           int Y);
 	void __fastcall sbMemChange(TObject *Sender);
-	void __fastcall rgCellSizeClick(TObject *Sender);
 	void __fastcall paMemBaseResize(TObject *Sender);
 	void __fastcall paMemMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall paDetMemPaint(TObject *Sender);
+	void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
-	void ResizeImage	();
-	void DrawImage		();
-	void DrawDetImage	();
+	void __fastcall IdleHandler(TObject *Sender, bool &Done);
+    void __stdcall OnCellChanged	(PropValue*);
+    void __stdcall OnResizeBuffer	(PropValue*);
+    void __stdcall OnRedrawBuffer	(PropValue*);
+
+    enum{
+    	flUpdateProps			= (1<<0),
+    	flResizeBuffer			= (1<<1),
+    	flRedrawBuffer			= (1<<2),
+    	flRedrawDetailed		= (1<<3),
+    };
+    Flags32						m_Flags;
+    
+	void ResizeBuffer			(){m_Flags.set(flResizeBuffer,TRUE);}
+	void RealResizeBuffer		();
+
+	void RedrawBuffer			(){m_Flags.set(flRedrawBuffer,TRUE);}
+	void RealRedrawBuffer		();
+
+	void RedrawDetailed			(){m_Flags.set(flRedrawDetailed,TRUE);}
+	void RealRedrawDetailed		();
+
+    void UpdateProperties		(){m_Flags.set(flUpdateProps,TRUE);}
+    void RealUpdateProperties	();
+    
+    void OnFrame				();
 public:		// User declarations
 	__fastcall TfrmMain(TComponent* Owner);
 };

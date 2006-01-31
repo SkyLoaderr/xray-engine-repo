@@ -10,7 +10,7 @@ DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = xrCoreB.dll xrSoundB.dll xrParticlesB.dll xrEPropsB.dll xrECoreB.dll \
-  ActorEditor.exe LevelEditor.exe ParticleEditor.exe ShaderEditor.exe
+  ActorEditor.exe LevelEditor.exe ParticleEditor.exe ShaderEditor.exe Project1.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -49,6 +49,10 @@ xrEPropsB.dll: xrEProps\xrEPropsB.bpr
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
 xrECoreB.dll: ECore\xrECoreB.bpr
+  $(ROOT)\bin\bpr2mak $**
+  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
+
+Project1.exe: MemoryStat\MemoryStat.bpr
   $(ROOT)\bin\bpr2mak $**
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 

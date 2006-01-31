@@ -5,12 +5,14 @@
 
 #include "main.h"
 #include "image.h"
+#include "PropertiesList.h"               
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
 #pragma link "ElFolderDlg"
 #pragma link "MXCtrls"
 #pragma link "multi_edit"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -38,16 +40,38 @@ u32				m_draw_offs		= 0;
 u32				m_min_block		= 0xFFFFFFFF;
 u32				m_max_block		= 0;
 u32				m_curr_cell		= 0;
+TProperties*	m_Props			= 0;
+
 
 // color defs
-static u32		COLOR_DEF_UNUSED= 0x00D0D0D0;
-static u32		COLOR_DEF_EMPTY = 0x00F0F0F0;
-static u32		COLOR_DEF_FULL 	= 0x00007F00;
+u32		        COLOR_DEF_UNUSED= 0x00D0D0D0;
+u32		        COLOR_DEF_EMPTY = 0x00F0F0F0;
+u32		        COLOR_DEF_FULL 	= 0x00008000; 	// 100%
+u32		        COLOR_DEF_100 	= 0x0080C000; 	// (75%-100%)
+u32		        COLOR_DEF_75 	= 0x00D08000;	// (50%-75%]
+u32		        COLOR_DEF_50 	= 0x000080D0;	// (25%-50%]
+u32		        COLOR_DEF_25 	= 0x00FF0000;	// (0%-25%]
+
+xr_token						cell_token	[ ]={
+	{ "8 bytes",		  		8		  	},
+	{ "16 bytes",		  	  	16		  	},
+	{ "32 bytes",		  	  	32		  	},
+	{ "64 bytes",		  	  	64		  	},
+	{ "128 bytes",		  	   	128		  	},
+	{ "256 bytes",		  	   	256		  	},
+	{ "512 bytes",		  	   	512		  	},
+	{ "1024 bytes",		  	   	1024	  	},
+	{ "2048 bytes",		  	   	2048	  	},
+	{ "4096 bytes",		    	4096	  	},
+	{ "8192 bytes",		    	8192	  	},
+	{ "16384 bytes",	  	   	16384	  	},
+	{ 0,					   	0   	 	}
+};
 
 bool sort_ptr_pred(const SMemItem& a, const SMemItem& b) 	{return a.ptr<b.ptr;}
 bool find_ptr_pred(const SMemItem& a, u32 val) 				{return a.ptr<val;}
 
-void DrawBitmap(TMxPanel* panel, const Irect& r, u32* data, u32 w, u32 h)
+void DrawBitmap(TMxPanel* panel, const Irect& r, u32* data, int w, int h)
 {
 	HDC hdc		= panel->Canvas->Handle;
     
@@ -72,55 +96,47 @@ void DrawBitmap(TMxPanel* panel, const Irect& r, u32* data, u32 w, u32 h)
     if (err==GDI_ERROR){
     	Log("!StretchDIBits - Draw failed.");
     }
-/* 
-    frmMain->paMem->Canvas->Pen->Color 	= 0x00808080;
-    frmMain->paMem->Canvas->Brush->Style = bsSolid;
-    for (u32 k=0; k<frmMain->paMem->Height/m_cell_px; k++){
-    	MoveToEx(hdc,0,k*m_cell_px,0);
-    	LineTo(hdc,frmMain->paMem->Width,k*m_cell_px);
-    }
-*/
 }
 
-void TfrmMain::ResizeImage()
+u32 cell_intersect(u32 c_min, u32 c_max, u32 i_min, u32 i_max)
 {
-    m_memory.resize	(m_cell_size+(m_end_ptr-m_begin_ptr)/m_cell_size);
-    std::fill		(m_memory.begin(),m_memory.end(),0x00000000);
-    for (MemItemVecIt it=m_items.begin(); it!=m_items.end(); it++){
-        u32 begin	= iFloor((it->ptr-m_begin_ptr)/m_cell_size);
-        int sz		= iFloor(float(it->r_sz)/float(m_cell_size)+1.f);
-        if (sz==1){
-            m_memory[begin]		+=it->r_sz;
-        }else{
-            u32 cell_begin		= begin*m_cell_size;
-            m_memory[begin]		+=m_cell_size-(it->ptr-m_begin_ptr-cell_begin);
+	u32 x = _max(c_min,i_min);
+	u32 y = _min(c_max,i_max);
+	return (y>x)?y-x:0;
+}
 
-            u32 cell_last		= iFloor((begin+sz)*m_cell_size);
-            u32 local_end		= (it->ptr-m_begin_ptr+it->r_sz);
-            m_memory[begin+sz-1]+= m_cell_size-(cell_last-local_end);
-
-            begin				++; 
-            sz					-=2;
-            if (sz>0) std::fill	(m_memory.begin()+begin,m_memory.begin()+begin+sz,m_cell_size);
+void TfrmMain::RealResizeBuffer()
+{
+	if (!m_items.empty()){
+        m_memory.resize	(m_cell_size+(m_end_ptr-m_begin_ptr)/m_cell_size);
+        std::fill		(m_memory.begin(),m_memory.end(),0x00000000);
+        for (MemItemVecIt it=m_items.begin(); it!=m_items.end(); it++){
+        	u32 i_begin_ptr	= it->ptr-m_begin_ptr;
+        	u32 i_end_ptr	= i_begin_ptr+it->r_sz;
+            u32 c_begin		= i_begin_ptr/m_cell_size;
+            u32 c_end		= i_end_ptr/m_cell_size;
+            for (u32 c=c_begin; c<=c_end; c++)
+	            m_memory[c]	+= cell_intersect(c*m_cell_size,(c+1)*m_cell_size,i_begin_ptr,i_end_ptr);
+        }     
+        u32 m_sz 					= m_memory.size();
+        for (u32 k=0;k<m_sz;k++){ 
+            u32& color				= m_memory[k];
+            float w					= float(color)/float(m_cell_size);
+            if (color==0)				color	= COLOR_DEF_EMPTY;
+            else if (color==m_cell_size)color	= COLOR_DEF_FULL;
+            else if (w>0.75f)			color	= COLOR_DEF_100;
+            else if (w>0.5f)			color	= COLOR_DEF_75;
+            else if (w>0.25f)			color	= COLOR_DEF_50;
+            else 						color	= COLOR_DEF_25;
         }
-    }     
-    u32 m_sz 					= m_memory.size();
-    for (u32 k=0;k<m_sz;k++){ 
-        u32 color				= COLOR_DEF_EMPTY;
-        if (m_memory[k]!=0){
-            if (m_memory[k]==m_cell_size)			color = COLOR_DEF_FULL;
-            else if (m_memory[k]>(m_cell_size/2))	color = 0x00C0C000;
-            else 			 						color = 0x00FF0000;
-        }
-    	m_memory[k]		 		= color;
-	}
+    }
 }              
 
-void TfrmMain::DrawImage()
+void TfrmMain::RealRedrawBuffer()
 {
     u32 d_w				= paMem->Width/m_cell_px;
     u32 d_h				= paMem->Height/m_cell_px;
-    if (!m_memory.empty()){
+    if (!m_items.empty()){
         u32 req_frame_sz		= d_w*d_h;
         u32 real_frame_sz		= _min(req_frame_sz,m_memory.size()-m_draw_offs);
         if (m_full_frame.size()!= req_frame_sz)
@@ -142,31 +158,11 @@ void TfrmMain::DrawImage()
         	sbMem->Enabled		= false;
         }
 
-        lbBeginPtr->Caption	    = AnsiString().sprintf("0x%08X",m_begin_ptr);
-        lbEndPtr->Caption	    = AnsiString().sprintf("0x%08X",m_end_ptr);
-        lbMinBlock->Caption	    = AnsiString().sprintf("%d b",m_min_block);
-        lbMaxBlock->Caption	    = AnsiString().sprintf("%3.3f Kb",float(m_max_block)/1024.f);
-        lbMemSize->Caption	    = AnsiString().sprintf("%3.3f Kb",float(m_end_ptr-m_begin_ptr)/1024.f);
-        lbCurrentCell->Caption	= AnsiString().sprintf("[0x%08X - 0x%08X]",m_curr_cell*m_cell_size+m_begin_ptr,(m_curr_cell+1)*m_cell_size+m_begin_ptr-1);
-        //
-        lbDetDesc->Clear		();
-        u32 real_pos			= m_curr_cell*m_cell_size+m_begin_ptr;
-        MemItemVecIt it			= std::lower_bound(m_items.begin(),m_items.end(),real_pos,find_ptr_pred);
-        if (it!=m_items.end()){
-            if ((it->ptr>real_pos) && (it!=m_items.begin())) it--;
-            while((it!=m_items.end())&&(it->ptr<(real_pos+m_cell_size))){
-            	if (it->ptr+it->r_sz>real_pos){
-	                lbDetDesc->Items->Add	(it->name.c_str());
-                }
-                it++;
-            }
-        }
-        DrawDetImage			();
+        RedrawDetailed			();
     }
     
     // grid
     paMem->Canvas->Pen->Color 	= 0x00808080;
-    paMem->Canvas->Brush->Style = bsSolid;
     for (u32 k=0; k<paMem->Height/m_cell_px; k++){
         paMem->Canvas->MoveTo(0,k*m_cell_px);
         paMem->Canvas->LineTo(paMem->Width,k*m_cell_px);
@@ -175,7 +171,6 @@ void TfrmMain::DrawImage()
     // current cell
     if (!m_memory.empty() && ((m_curr_cell>=m_draw_offs)||(m_curr_cell<m_draw_offs+d_w*d_h))){
         paMem->Canvas->Pen->Color 	= 0x00000000;
-        paMem->Canvas->Brush->Style = bsSolid;
         u32 c			= m_curr_cell-m_draw_offs;
         u32 x			= (c%d_w)*m_cell_px;
         u32 y			= (c/d_w)*m_cell_px;
@@ -185,6 +180,8 @@ void TfrmMain::DrawImage()
         paMem->Canvas->LineTo(x,y+m_cell_px);
         paMem->Canvas->LineTo(x,y);
     }
+
+	UpdateProperties	();
 }
 
 void __fastcall TfrmMain::OpenClick(TObject *Sender)
@@ -226,8 +223,8 @@ void __fastcall TfrmMain::OpenClick(TObject *Sender)
 
 		std::sort		(m_items.begin(),m_items.end(),sort_ptr_pred);
 
-        ResizeImage		();
-        DrawImage		();
+        ResizeBuffer	();
+        RedrawBuffer	();
     }
 }
 //---------------------------------------------------------------------------
@@ -239,22 +236,40 @@ IC u32 GetPowerOf2Plus1	(u32 v)
     return cnt;
 }
 
+void __fastcall TfrmMain::IdleHandler(TObject *Sender, bool &Done)
+{
+    Done = false;
+    OnFrame();
+}
+
 void __fastcall TfrmMain::FormCreate(TObject *Sender)
 {
 	Core._initialize("MemoryStat",0,true);
-    rgCellSize->ItemIndex	= GetPowerOf2Plus1(m_cell_size)-4;
+    m_Props 				= TProperties::CreateForm("",paInfo,alClient,0,0,0,TProperties::plFolderStore|TProperties::plFullExpand);
+    Application->OnIdle 	= IdleHandler;
+    m_Flags.zero();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormDestroy(TObject *Sender)
 {
+	TProperties::DestroyForm(m_Props);
 	Core._destroy();
+}
+//---------------------------------------------------------------------------
+
+void TfrmMain::OnFrame()
+{
+	if (m_Flags.is(flUpdateProps))		{ RealUpdateProperties(); 	m_Flags.set(flUpdateProps,FALSE);	}
+	if (m_Flags.is(flResizeBuffer))		{ RealResizeBuffer(); 		m_Flags.set(flResizeBuffer,FALSE);	}
+	if (m_Flags.is(flRedrawBuffer))		{ RealRedrawBuffer(); 		m_Flags.set(flRedrawBuffer,FALSE);	}
+	if (m_Flags.is(flRedrawDetailed))	{ RealRedrawDetailed(); 	m_Flags.set(flRedrawDetailed,FALSE);}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::paMemPaint(TObject *Sender)
 {
-	DrawImage();
+	RedrawBuffer();
 }
 //---------------------------------------------------------------------------
 
@@ -284,18 +299,7 @@ void __fastcall TfrmMain::sbMemChange(TObject *Sender)
     u32 d_w			= paMem->Width/m_cell_px;
     m_draw_offs		= d_w*(d_w*sbMem->Position/d_w); // align line
 	sbMem->Position	= m_draw_offs/d_w;
-    DrawImage		();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::rgCellSizeClick(TObject *Sender)
-{
-    u32 n_cell_size	= pow(2,rgCellSize->ItemIndex+3);
-    sbMem->Position	= iFloor(float(sbMem->Position)/(float(n_cell_size)/float(m_cell_size)));
-	m_cell_size		= n_cell_size;
-    
-    ResizeImage		();
-    DrawImage		();
+    RedrawBuffer	();
 }
 //---------------------------------------------------------------------------
 
@@ -312,29 +316,29 @@ void __fastcall TfrmMain::paMemMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
     m_curr_cell		= m_draw_offs+(Y/m_cell_px)*(paMem->Width/m_cell_px)+(X/m_cell_px);
-    DrawImage		();
+    RedrawBuffer	();
 }
 //---------------------------------------------------------------------------
 
 
-void TfrmMain::DrawDetImage()
+void TfrmMain::RealRedrawDetailed()
 {
     u32 d_w				= paDetMem->Width/m_cell_px;
     u32 d_h				= paDetMem->Height/m_cell_px;
-	if (!m_memory.empty()){
+	if (!m_items.empty()){
     	if (m_cell_frame.size()!=(d_w*d_h)) m_cell_frame.resize(d_w*d_h);
 
     	u32 r_begin_ptr	= m_curr_cell*m_cell_size+m_begin_ptr;
     	u32 r_end_ptr	= (m_curr_cell+1)*m_cell_size+m_begin_ptr;
     	u32 r_size		= r_end_ptr-r_begin_ptr;
     	u32 d_size		= r_size/4;
-	            
+
         std::fill		(m_cell_frame.begin(),m_cell_frame.begin()+d_size,COLOR_DEF_EMPTY);
         std::fill		(m_cell_frame.begin()+d_size,m_cell_frame.begin()+d_w*d_h,COLOR_DEF_UNUSED);
         MemItemVecIt it	= std::lower_bound(m_items.begin(),m_items.end(),r_begin_ptr,find_ptr_pred);
         if (it!=m_items.end()){
             if ((it->ptr>r_begin_ptr) && (it!=m_items.begin())) it--;
-            while((it!=m_items.end())&&(it->ptr<(r_begin_ptr+m_cell_size))){
+            while((it!=m_items.end())&&(it->ptr<r_end_ptr)){
             	if (it->ptr+it->r_sz>r_begin_ptr){
                 	int	i_begin	= (_max(r_begin_ptr,it->ptr)-r_begin_ptr);
                 	int	i_end	= (_min(r_end_ptr,it->ptr+it->r_sz)-r_begin_ptr);
@@ -359,7 +363,115 @@ void TfrmMain::DrawDetImage()
 
 void __fastcall TfrmMain::paDetMemPaint(TObject *Sender)
 {
-	DrawDetImage();
+	RedrawDetailed();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+/*	
+    u32 d_w			= paDetMem->Width/m_cell_px;
+	switch (Key){
+    case VK_LEFT: 	m_curr_cell++; 		Key=0; break;
+    case VK_RIGHT: 	m_curr_cell--; 		Key=0; break;
+    case VK_DOWN: 	m_curr_cell+=d_w;	Key=0; break;
+    case VK_UP: 	m_curr_cell+=d_w;	Key=0; break;
+    }
+    clamp			(m_curr_cell,u32(0),m_memory.size());
+    DrawImage		();
+*/
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
+{
+	m_Props->RestoreParams(fsStorage);
+    COLOR_DEF_UNUSED	= fsStorage->ReadInteger("COLOR_DEF_UNUSED",COLOR_DEF_UNUSED);
+    COLOR_DEF_EMPTY		= fsStorage->ReadInteger("COLOR_DEF_EMPTY",	COLOR_DEF_EMPTY	);
+    COLOR_DEF_FULL		= fsStorage->ReadInteger("COLOR_DEF_FULL",	COLOR_DEF_FULL	);
+    COLOR_DEF_100		= fsStorage->ReadInteger("COLOR_DEF_100",	COLOR_DEF_100	);
+    COLOR_DEF_75		= fsStorage->ReadInteger("COLOR_DEF_75",	COLOR_DEF_75	);
+    COLOR_DEF_50		= fsStorage->ReadInteger("COLOR_DEF_50",	COLOR_DEF_50	);
+    COLOR_DEF_25		= fsStorage->ReadInteger("COLOR_DEF_25",	COLOR_DEF_25	);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::fsStorageSavePlacement(TObject *Sender)
+{
+	m_Props->SaveParams(fsStorage);
+    fsStorage->WriteInteger("COLOR_DEF_UNUSED",	COLOR_DEF_UNUSED);
+    fsStorage->WriteInteger("COLOR_DEF_EMPTY",	COLOR_DEF_EMPTY	);
+    fsStorage->WriteInteger("COLOR_DEF_FULL",	COLOR_DEF_FULL	);
+    fsStorage->WriteInteger("COLOR_DEF_100",	COLOR_DEF_100	);
+    fsStorage->WriteInteger("COLOR_DEF_75",		COLOR_DEF_75	);
+    fsStorage->WriteInteger("COLOR_DEF_50",		COLOR_DEF_50	);
+    fsStorage->WriteInteger("COLOR_DEF_25",		COLOR_DEF_25	);
+}
+//---------------------------------------------------------------------------
+
+void __stdcall TfrmMain::OnCellChanged	(PropValue* v)
+{
+    sbMem->Position	= 0;
+	OnResizeBuffer	(v);
+	OnRedrawBuffer	(v);
+}
+
+void __stdcall TfrmMain::OnRedrawBuffer	(PropValue* v)
+{
+    RedrawBuffer	();
+}
+
+void __stdcall TfrmMain::OnResizeBuffer	(PropValue* v)
+{
+    ResizeBuffer	();
+}
+
+void TfrmMain::RealUpdateProperties()
+{
+    if (m_Props && !m_items.empty()){
+        PropItemVec 	items;
+
+        PropValue* V	= 0;
+        
+        // Base info
+        PHelper().CreateCaption	(items, "Common\\Begin ptr", 		shared_str().sprintf("0x%08X",m_begin_ptr));
+        PHelper().CreateCaption	(items, "Common\\End ptr", 			shared_str().sprintf("0x%08X",m_end_ptr));
+        PHelper().CreateCaption	(items, "Common\\Memory used", 		shared_str().sprintf("%3.3f Kb",float(m_end_ptr-m_begin_ptr)/1024.f));
+        PHelper().CreateCaption	(items, "Common\\Min block size", 	shared_str().sprintf("%d b",m_min_block));
+        PHelper().CreateCaption	(items, "Common\\Max block size", 	shared_str().sprintf("%3.3f Kb",float(m_max_block)/1024.f));
+        V=PHelper().CreateToken32(items, "Common\\Cell size",		&m_cell_size, cell_token);
+        V->OnChangeEvent.bind	(this,&TfrmMain::OnCellChanged);
+
+        // Legend
+        V=PHelper().CreateColor	(items, "Cell Legend\\Unused", 		&COLOR_DEF_UNUSED);	V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\Empty", 		&COLOR_DEF_EMPTY);  V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\Full", 		&COLOR_DEF_FULL);   V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\(75-100]%", 	&COLOR_DEF_100);    V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\(50-75]%", 	&COLOR_DEF_75);     V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\(25-50]%", 	&COLOR_DEF_50);     V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+        V=PHelper().CreateColor	(items, "Cell Legend\\(0-25]%", 	&COLOR_DEF_25);     V->OnChangeEvent.bind	(this,&TfrmMain::OnResizeBuffer);
+
+        // UI
+        PHelper().CreateCaption	(items, "Current Cell\\ID",		 	shared_str().sprintf("%d",m_curr_cell));
+        PHelper().CreateCaption	(items, "Current Cell\\Address", 	shared_str().sprintf("[0x%08X - 0x%08X)",m_curr_cell*m_cell_size+m_begin_ptr,(m_curr_cell+1)*m_cell_size+m_begin_ptr));
+
+        // Detailed info
+        u32 r_begin_ptr	= m_curr_cell*m_cell_size+m_begin_ptr;
+        u32 r_end_ptr	= (m_curr_cell+1)*m_cell_size+m_begin_ptr;
+        MemItemVecIt it	= std::lower_bound(m_items.begin(),m_items.end(),r_begin_ptr,find_ptr_pred);
+        if (it!=m_items.end()){
+            if ((it->ptr>r_begin_ptr) && (it!=m_items.begin())) it--;
+            while((it!=m_items.end())&&(it->ptr<r_end_ptr)){
+                if (it->ptr+it->r_sz>r_begin_ptr)
+                    PHelper().CreateCaption	(items, AnsiString().sprintf("Current Cell\\Data\\0x%08X",it->ptr).c_str(), AnsiString().sprintf("%d b: %s",it->r_sz,it->name.c_str()).c_str());
+                it++;
+            }
+        }
+        // 
+        m_Props->AssignItems	(items);
+    }
 }
 //---------------------------------------------------------------------------
 
