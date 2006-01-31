@@ -86,8 +86,9 @@ tips_icons = {
 	barman   = { 400,  50 },
 	wolf	 = { 0, 50 },
 	o_soznanie = { 100, 50 },
-	monolith	 = { 100, 150 },
-    saharov  = { 450, 150 }
+	monolith = { 100, 150 },
+    saharov  = { 450, 150 },
+    killer   = { 350,  50 }
 }
 
 
