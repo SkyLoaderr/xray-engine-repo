@@ -516,9 +516,11 @@ function calculate_predicate(npc, tbl)
 	if tbl.type == "eliminate_lager" then
 		for k,v in pairs(tbl.target_objects) do
 			local gulag = aa:object(v).gulag
-			if gulag:get_population() == 0 then
+			if gulag:get_population() > 0 then
 				tbl.selected_target = v
 				return true
+			else
+				return false
 			end
 		end
 	elseif tbl.type == "kill_stalker" then
@@ -569,7 +571,7 @@ function task_complete(p1, p2)
 
 	if p2 == 1 then
 		if p1 == "eliminate_lager" then
-			if aa:story_object(tonumber(active_task[p1].selected_target)).gulag:get_population() == 0 then
+			if aa:object(active_task[p1].selected_target).gulag:get_population() == 0 then
 				active_task[p1].completed = true
 				return true
 			end
