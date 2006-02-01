@@ -686,7 +686,7 @@ void CUIBag::InitWpnSectStorage()
 
 	wpnOneType.clear();
 
-	CInifile::Sect sect = pSettings->r_section(m_StrPricesSection.c_str());
+	CInifile::Sect &sect = pSettings->r_section(m_StrPricesSection.c_str());
 	for (CInifile::SectIt it = sect.begin(); it != sect.end(); it++)
 	{
 		u8 group_id, index;

@@ -1033,7 +1033,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 	}
 	//-----------------------------------------------------------
 	u32 j=0;
-	CInifile::Sect sect = pSettings->r_section(m_sBaseWeaponCostSection);
+	CInifile::Sect &sect = pSettings->r_section(m_sBaseWeaponCostSection);
 	for (CInifile::SectIt it = sect.begin(); it != sect.end(); it++)
 	{
 		string1024	wpnSingleName;

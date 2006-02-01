@@ -104,7 +104,7 @@ IC	void CTradeParameters::process							(_action_type type, CInifile &ini_file, 
 
 	CTradeActionParameters	&_action = action(type);
 
-	CInifile::Sect			S = ini_file.r_section(section);
+	CInifile::Sect			&S = ini_file.r_section(section);
 	CInifile::SectIt		I = S.begin();
 	CInifile::SectIt		E = S.end();
 	for ( ; I != E; ++I) {
