@@ -485,6 +485,7 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 		break;
 		}
 	case GE_TRADE_SELL:
+
 	case GE_OWNERSHIP_REJECT:
 		{
 			P.r_u16		(id);
@@ -495,9 +496,12 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 				O->H_SetParent	(0);
 				feel_touch_deny	(O,2000);
 
-				CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); VERIFY(e);
-				CSE_ALifeMonsterBase			*se_monster = smart_cast<CSE_ALifeMonsterBase*>(e);
-				se_monster->m_flags.set			(CSE_ALifeMonsterBase::flSkipSpawnItem, TRUE);
+				CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); 
+				// check if we handle corpse UI, but not destroy object
+				if (e) {
+					CSE_ALifeMonsterBase			*se_monster = smart_cast<CSE_ALifeMonsterBase*>(e);
+					se_monster->m_flags.set			(CSE_ALifeMonsterBase::flSkipSpawnItem, TRUE);
+				}
 			}
 		}
 		break;
