@@ -671,6 +671,7 @@
 		</supplies>
 				
 		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 		<actor_dialog>bar_ecolog_crush_professor_give_info_dp</actor_dialog>
 	</specific_character>
 
