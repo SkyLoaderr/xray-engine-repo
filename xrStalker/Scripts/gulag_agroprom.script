@@ -67,7 +67,7 @@ function load_job( sj, gname, type, squad, groups )
 			predicate = function(obj_info)
 			            	return obj_info.name == "agr_nii_commander"
 			            end,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_alarm_commander",
@@ -112,63 +112,63 @@ function load_job( sj, gname, type, squad, groups )
 		t = { section = "logic@agr_nii_floor1_day_walker1",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_floor1_alarm_walker1",
 			idle = 0,
 			prior = 3, state = {3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_floor1_day_walker2",
 			idle = 0,
 			prior = 3, state = {0,1,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_floor1_alarm_walker2",
 			idle = 0,
 			prior = 3, state = {3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
         table.insert(sj, t)
 		-- 2-й этаж основного здания
 		t = { section = "logic@agr_nii_floor2_day_walker1",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_floor2_alarm_walker1",
 			idle = 0,
 			prior = 3, state = {3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_floor2_day_walker2",
 			idle = 0,
 			prior = 3, state = {0,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		-- 3-й этаж основного здания
 		t = { section = "logic@agr_nii_floor3_walker1",
 			idle = 0,
 			prior = 4, state = {0,1,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_floor3_walker2",
 			idle = 0,
 			prior = 4, state = {0,1,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_floor3_walker3",
 			idle = 0,
 			prior = 4, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_sr_building"
 		}
 		table.insert(sj, t)
 		-- дневные патрули

@@ -685,7 +685,7 @@
 
 	<specific_character id="agr_bandit_general_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="4"></icon>
+		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>agr_bandit_general_bio</bio>
 				
