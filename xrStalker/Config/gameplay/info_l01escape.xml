@@ -157,6 +157,7 @@
 	<info_portion id="esc_blockpost_normal">
 		<disable>esc_blockpost_alarm</disable>
 	</info_portion>
+	<info_portion id="esc_commander_die"></info_portion>
 
 	<!-- infoportions for bridge soldiers -->
 	<info_portion id="esc_bridge_pass_on">
