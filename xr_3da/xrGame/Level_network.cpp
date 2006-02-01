@@ -164,9 +164,10 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 	if (!Connect(options))		return	FALSE;
 	//---------------------------------------------------------------------------
 	while	(!m_bConnectResultReceived)		{ 
-		ClientReceive	()	;
-		Sleep			(5)	; 
-		Server->Update	()	;
+		ClientReceive	();
+		Sleep			(5); 
+		if(Server)
+			Server->Update()	;
 	}
 	Msg							("%c client : connection %s - <%s>", m_bConnectResult ?'*':'!', m_bConnectResult ? "accepted" : "rejected", m_sConnectResult.c_str());
 	if		(!m_bConnectResult) 

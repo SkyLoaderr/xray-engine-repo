@@ -142,7 +142,7 @@ bool	CLevel::net_start_client3				()
 			return FALSE;
 		}
 		pApp->Level_Set			(level_id);
-
+		m_name					= level_name;
 		// Load level
 		R_ASSERT2							(Load(level_id),"Loading failed.");
 
