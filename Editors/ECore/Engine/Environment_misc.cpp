@@ -12,7 +12,7 @@
 //-----------------------------------------------------------------------------
 void	CEnvModifier::load	(IReader* fs)
 {
-	Fvector			dummy;
+//	Fvector			dummy;
 	fs->r_fvector3	(position);
 	radius			= fs->r_float	();
 	power			= fs->r_float	();
@@ -162,15 +162,15 @@ void CEnvDescriptorMixer::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescripto
 	float	_power			=	1.f/(m_power+1);	// the environment itself
 	float	fi				=	1-f;
 
-	sky_r_textures.clear		();
+	sky_r_textures.clear_not_free		();
 	sky_r_textures.push_back	(mk_pair(0,A.sky_texture));
 	sky_r_textures.push_back	(mk_pair(1,B.sky_texture));
 
-	sky_r_textures_env.clear	();
+	sky_r_textures_env.clear_not_free	();
 	sky_r_textures_env.push_back(mk_pair(0,A.sky_texture_env));
 	sky_r_textures_env.push_back(mk_pair(1,B.sky_texture_env));
 
-	clouds_r_textures.clear		();
+	clouds_r_textures.clear_not_free	();
 	clouds_r_textures.push_back	(mk_pair(0,A.clouds_texture));
 	clouds_r_textures.push_back	(mk_pair(1,B.clouds_texture));
 

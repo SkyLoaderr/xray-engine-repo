@@ -320,7 +320,7 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 			r_temp.r_clear	();
 
 			// Traverse object database
-			g_SpatialSpace->q_ray	(r_spatial,0,d_flags,d_rd.start,d_rd.dir,d_rd.range);
+			g_SpatialSpace->q_ray		(r_spatial,0,d_flags,d_rd.start,d_rd.dir,d_rd.range);
 			// Determine visibility for dynamic part of scene
 			for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
 				CObject*	collidable		= r_spatial[o_it]->dcast_CObject();

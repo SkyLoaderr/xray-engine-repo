@@ -261,9 +261,9 @@ public:
 
 void	ISpatial_DB::q_ray	(xr_vector<ISpatial*>& R, u32 _o, u32 _mask_and, const Fvector&	_start,  const Fvector&	_dir, float _range)
 {
-	cs.Enter			();
-	q_result			= &R;
-	q_result->clear		();
+	cs.Enter						();
+	q_result						= &R;
+	q_result->clear_and_reserve		();
 	if (CPU::ID.feature&_CPU_FEATURE_SSE)	{
 		if (_o & O_ONLYFIRST)
 		{

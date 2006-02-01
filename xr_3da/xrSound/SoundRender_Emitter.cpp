@@ -57,6 +57,7 @@ void CSoundRender_Emitter::Event_ReleaseOwner()
 		}
 	}
 }
+
 void CSoundRender_Emitter::Event_Propagade	()
 {
 	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
