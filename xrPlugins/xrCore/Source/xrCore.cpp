@@ -11,10 +11,13 @@
 XRCORE_API		xrCore Core;
 
 #ifndef XRCORE_STATIC
-BOOL APIENTRY	DllMain(	HANDLE hModule, 
-							DWORD  ul_reason_for_call, 
-							LPVOID lpReserved
-						)
+
+//. why ??? 
+#ifdef _EDITOR
+	BOOL WINAPI DllEntryPoint(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvReserved)
+#else
+	BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvReserved)
+#endif
 {
 	switch (ul_reason_for_call)
 	{
@@ -41,6 +44,7 @@ namespace CPU
 	extern	void			Detect	();
 };
 static u32	init_counter	= 0;
+
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, LPCSTR fs_fname)
 {
 	strcpy					(ApplicationName,_ApplicationName);

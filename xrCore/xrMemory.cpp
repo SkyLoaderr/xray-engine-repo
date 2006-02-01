@@ -141,22 +141,24 @@ void	xrMemory::mem_statistic	()
 {
 }
 #else
-LPCSTR	memstat_file			= "x:\\$memstat$.txt";
+LPCSTR	memstat_file			= "x:\\$memory_dump$.txt";
 void	xrMemory::mem_statistic	()
 {
 	if (!debug_mode)	return	;
 	mem_compact				()	;
 
+	string1024	tmp;
 	debug_cs.Enter			()	;
 	debug_mode				= FALSE;
 
-	FILE*		F			= fopen		(memstat_file,"w");
+	FILE*		Fa			= fopen		(memstat_file,"w");
 	for (u32 it=0; it<debug_info.size(); it++)
 	{
 		if (0==debug_info[it]._p)	continue	;
-		fprintf			(F,"%8d %s\n",debug_info[it]._size,debug_info[it]._name);
+		sprintf				(tmp,"0x%08X: %8d %s\n",(u32)debug_info[it]._p,debug_info[it]._size,debug_info[it]._name);
+		fprintf				(Fa,tmp);
 	}
-	fclose		(F)			;
+	fclose		(Fa)		;
 
 	// leave
 	debug_mode				= TRUE;
