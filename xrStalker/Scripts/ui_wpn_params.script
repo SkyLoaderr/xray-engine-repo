@@ -88,8 +88,13 @@ function GetAccuracy(section)
 	local ammo_list				= ltx:r_string(section,"ammo_class")
 	
 	local pos  = string.find(ammo_list,",",1)
-	local ammo = string.sub(ammo_list,1,pos - 1)
-	local k_disp				= ltx:r_float(ammo, "k_disp");
+	local k_disp
+	if nil ~= pos then
+		local ammo = string.sub(ammo_list,1,pos - 1)
+		k_disp				= ltx:r_float(ammo, "k_disp");
+	else
+		k_disp				= ltx:r_float(ammo_list, "k_disp");
+	end
 	
     val = (0.05*rpm*math.log(1/(cam_dispersion/10 + cam_dispersion_inc)) + 30*math.log(1/(cam_dispersion*cam_step_angle_horz)))*math.pow(cam_dispersion_frac,2) + 50*math.log(1/(fire_dispersion_base*k_disp));
 	
