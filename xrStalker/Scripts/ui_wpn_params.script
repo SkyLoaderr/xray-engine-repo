@@ -8,6 +8,15 @@ function normalize(val)
 	return val
 end
 
+
+function read_if_exist(ltx, section, value, default)
+	if ltx:line_exist(section,value) then
+		return ltx:r_float(section,value)
+	else
+		return default
+	end
+end
+
 function GetRPM(section)
 	local ltx = system_ini()
 
@@ -56,8 +65,8 @@ function GetHandling(section)
 		control_inertion_factor = 1
 	end
 	
-	local PDM_disp_base 		= ltx:r_float(section,"PDM_disp_base")
-	local PDM_disp_vel_factor	= ltx:r_float(section,"PDM_disp_vel_factor")
+	local PDM_disp_base 		= ltx:r_float(section,"PDM_disp_base")			-- this
+	local PDM_disp_vel_factor	= ltx:r_float(section,"PDM_disp_vel_factor")	-- this
 	
 	if control_inertion_factor < 2 and PDM_disp_base < 1.5 then
 		val = (1.2 - math.pow(PDM_disp_vel_factor - 0.5, 2) + math.pow(2 - control_inertion_factor,2))*50	
@@ -73,7 +82,7 @@ function GetAccuracy(section)
 	local val
 	
 	
-	local cam_dispersion_frac;
+	local cam_dispersion_frac
 	if ltx:line_exist(section, "cam_dispertion_frac") then
         cam_dispersion_frac = ltx:r_float(section,"cam_dispertion_frac")
 	else 
@@ -81,11 +90,17 @@ function GetAccuracy(section)
 	end
 	
 	local fire_dispersion_base	= ltx:r_float(section,"fire_dispersion_base")
-	local cam_dispersion_inc	= ltx:r_float(section,"cam_dispersion_inc")
+	local cam_dispersion_inc
+	if ltx:line_exist(section, "cam_dispersion_inc") then
+        cam_dispersion_inc = ltx:r_float(section,"cam_dispersion_inc")
+	else 
+		cam_dispersion_inc = 0
+	end
+--	local cam_dispersion_inc	= ltx:r_float(section,"cam_dispersion_inc")
 	local cam_dispersion		= ltx:r_float(section,"cam_dispersion")
 	local cam_step_angle_horz	= ltx:r_float(section,"cam_step_angle_horz")
-	local rpm 			= ltx:r_float(section,"rpm")
-	local ammo_list			= ltx:r_string(section,"ammo_class")
+	local rpm 					= ltx:r_float(section,"rpm")
+	local ammo_list				= ltx:r_string(section,"ammo_class")
 	
 	local pos  = string.find(ammo_list,",",1)
 	local k_disp
