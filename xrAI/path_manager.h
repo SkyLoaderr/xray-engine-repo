@@ -50,8 +50,9 @@ template <
 #endif
 #include "path_manager_level_flooder.h"
 #ifdef AI_COMPILER
+#	include "path_manager_level_straight_line.h"
+#else
 #	include "path_manager_level_nearest_vertex.h"
-	#include "path_manager_level_straight_line.h"
 #endif
 #include "path_manager_solver.h"
 #ifdef AI_COMPILER
