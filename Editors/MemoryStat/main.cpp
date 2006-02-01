@@ -13,6 +13,8 @@
 #pragma link "MXCtrls"
 #pragma link "multi_edit"
 #pragma link "mxPlacemnt"
+#pragma link "ElScrollBar"
+#pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -108,7 +110,7 @@ u32 cell_intersect(u32 c_min, u32 c_max, u32 i_min, u32 i_max)
 void TfrmMain::RealResizeBuffer()
 {
 	if (!m_items.empty()){
-        m_memory.resize	(m_cell_size+(m_end_ptr-m_begin_ptr)/m_cell_size);
+        m_memory.resize	(1+(m_end_ptr-m_begin_ptr)/m_cell_size);
         std::fill		(m_memory.begin(),m_memory.end(),0x00000000);
         for (MemItemVecIt it=m_items.begin(); it!=m_items.end(); it++){
         	u32 i_begin_ptr	= it->ptr-m_begin_ptr;
@@ -130,6 +132,7 @@ void TfrmMain::RealResizeBuffer()
             else 						color	= COLOR_DEF_25;
         }
     }
+	m_Flags.set(flResizeBuffer,FALSE);    
 }              
 
 void TfrmMain::RealRedrawBuffer()
@@ -149,9 +152,9 @@ void TfrmMain::RealRedrawBuffer()
                            		m_full_frame.begin(), d_w,d_h);
 	    // UI update
         if (m_memory.size()>d_w*d_h){
-            sbMem->Max			= (m_memory.size()-d_w*d_h+2*d_w)/d_w;
-            sbMem->LargeChange	= (d_w*d_h)/d_w;
-            sbMem->SmallChange	= d_w/d_w;
+            sbMem->Max			= 2+m_memory.size()/d_w-d_h;
+			sbMem->LargeChange	= d_h-1;
+			sbMem->SmallChange	= 1;
         	sbMem->Enabled		= true;
         }else{
         	sbMem->Position		= 0;
@@ -162,7 +165,7 @@ void TfrmMain::RealRedrawBuffer()
     }
     
     // grid
-    paMem->Canvas->Pen->Color 	= 0x00808080;
+    paMem->Canvas->Pen->Color 	= TColor(0x00808080);
     for (u32 k=0; k<paMem->Height/m_cell_px; k++){
         paMem->Canvas->MoveTo(0,k*m_cell_px);
         paMem->Canvas->LineTo(paMem->Width,k*m_cell_px);
@@ -170,7 +173,7 @@ void TfrmMain::RealRedrawBuffer()
 
     // current cell
     if (!m_memory.empty() && ((m_curr_cell>=m_draw_offs)||(m_curr_cell<m_draw_offs+d_w*d_h))){
-        paMem->Canvas->Pen->Color 	= 0x00000000;
+        paMem->Canvas->Pen->Color 	= TColor(0x00000000);
         u32 c			= m_curr_cell-m_draw_offs;
         u32 x			= (c%d_w)*m_cell_px;
         u32 y			= (c/d_w)*m_cell_px;
@@ -182,13 +185,13 @@ void TfrmMain::RealRedrawBuffer()
     }
 
 	UpdateProperties	();
+    m_Flags.set			(flRedrawBuffer,FALSE);	
 }
 
 void __fastcall TfrmMain::OpenClick(TObject *Sender)
 {
-//	if (od->Execute())
-    {
-    	LPCSTR fn 	= "x:\\$memory_dump$.txt";//od->FileName.c_str();
+	if (od->Execute()){
+    	LPCSTR fn 	= od->FileName.c_str();
         IReader* F	= FS.r_open	(fn); VERIFY(F);                            
     	m_items.clear	();
         m_items.reserve	(250000);
@@ -247,7 +250,6 @@ void __fastcall TfrmMain::FormCreate(TObject *Sender)
     m_Props 				= TProperties::CreateForm("",paInfo,alClient,0,0,0,TProperties::plFolderStore|TProperties::plFullExpand);
     Application->OnIdle 	= IdleHandler;
     m_Flags.zero			();
-    _control87(MCW_EM, MCW_EM); //. FSColorPicker Bugs
 }
 //---------------------------------------------------------------------------
 
@@ -259,10 +261,10 @@ void __fastcall TfrmMain::FormDestroy(TObject *Sender)
 
 void TfrmMain::OnFrame()
 {
-	if (m_Flags.is(flUpdateProps))		{ RealUpdateProperties(); 	m_Flags.set(flUpdateProps,FALSE);	}
-	if (m_Flags.is(flResizeBuffer))		{ RealResizeBuffer(); 		m_Flags.set(flResizeBuffer,FALSE);	}
-	if (m_Flags.is(flRedrawBuffer))		{ RealRedrawBuffer(); 		m_Flags.set(flRedrawBuffer,FALSE);	}
-	if (m_Flags.is(flRedrawDetailed))	{ RealRedrawDetailed(); 	m_Flags.set(flRedrawDetailed,FALSE);}
+	if (m_Flags.is(flUpdateProps))		{ RealUpdateProperties(); 	}
+	if (m_Flags.is(flResizeBuffer))		{ RealResizeBuffer(); 		}
+	if (m_Flags.is(flRedrawBuffer))		{ RealRedrawBuffer(); 		}
+	if (m_Flags.is(flRedrawDetailed))	{ RealRedrawDetailed(); 	}
 }
 //---------------------------------------------------------------------------
 
@@ -274,10 +276,11 @@ void __fastcall TfrmMain::paMemPaint(TObject *Sender)
 
 void __fastcall TfrmMain::paMemMouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
 {
+	AnsiString address						= "Address:";
+	AnsiString content						= "Content:";
 	if (!m_items.empty()){
         u32 local_pos						= m_draw_offs+(Y/m_cell_px)*(paMem->Width/m_cell_px)+(X/m_cell_px);
         u32 real_pos						= m_begin_ptr+iFloor(float(local_pos)*m_cell_size+0.5f);
-        sbStatus->Panels->Items[0]->Text 	= AnsiString().sprintf("Address: 0x%08X",real_pos);
         MemItemVecIt it						= std::lower_bound(m_items.begin(),m_items.end(),real_pos,find_ptr_pred);
         SStringVec names;
         if (it!=m_items.end()){
@@ -288,17 +291,47 @@ void __fastcall TfrmMain::paMemMouseMove(TObject *Sender, TShiftState Shift, int
                 it++;
             }
         }
-        sbStatus->Panels->Items[1]->Text 	= AnsiString().sprintf("Content: %s",_ListToSequence(names).c_str());
+        address.sprintf("Address: 0x%08X",real_pos); 
+        content.sprintf("Content: %s",_ListToSequence(names).c_str());
     }
+    sbStatus->Panels->Items[0]->Text 		= address;
+    sbStatus->Panels->Items[1]->Text 		= content;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::paDetMemMouseMove(TObject *Sender,
+      TShiftState Shift, int X, int Y)
+{
+	AnsiString address						= "Address:";
+	AnsiString content						= "Content:";
+	if (!m_items.empty()){
+        u32 local_pos						= 4*((Y/m_cell_px)*(paDetMem->Width/m_cell_px)+(X/m_cell_px));
+        if (local_pos<m_cell_size){
+            u32 real_pos					= m_begin_ptr+m_curr_cell*m_cell_size+local_pos;
+            MemItemVecIt it					= std::lower_bound(m_items.begin(),m_items.end(),real_pos,find_ptr_pred);
+            SStringVec names;                                                      
+            if (it!=m_items.end()){
+                if ((it->ptr>real_pos) && (it!=m_items.begin())) it--;
+                while((it!=m_items.end())&&(it->ptr<(real_pos+4))){
+                    if (it->ptr+it->r_sz>real_pos)
+                        names.push_back	  	(it->name.c_str());
+                    it++;
+                }
+            }
+			address.sprintf("Address: 0x%08X",real_pos); 
+			content.sprintf("Content: %s",_ListToSequence(names).c_str());
+        }
+    }
+    sbStatus->Panels->Items[0]->Text 	= address;
+    sbStatus->Panels->Items[1]->Text 	= content;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::sbMemChange(TObject *Sender)
 {
     u32 d_w			= paMem->Width/m_cell_px;
-    m_draw_offs		= d_w*(d_w*sbMem->Position/d_w); // align line
-	sbMem->Position	= m_draw_offs/d_w;
-    RedrawBuffer	();
+    m_draw_offs		= d_w*sbMem->Position;
+    RedrawBuffer	(true);
 }
 //---------------------------------------------------------------------------
 
@@ -306,8 +339,8 @@ void __fastcall TfrmMain::paMemBaseResize(TObject *Sender)
 {
 	paMem->Left 	= 0;	
     paMem->Top 		= 0;	
-	paMem->Width 	= iFloor(float(paMemBase->Width)/m_cell_px+1.f)*m_cell_px;	
-    paMem->Height	= iFloor(float(paMemBase->Height)/m_cell_px+1.f)*m_cell_px;
+	paMem->Width 	= paMemBase->Width+(m_cell_px-paMemBase->Width%m_cell_px);
+    paMem->Height	= paMemBase->Height+(m_cell_px-paMemBase->Height%m_cell_px);
 }
 //---------------------------------------------------------------------------
 
@@ -352,12 +385,13 @@ void TfrmMain::RealRedrawDetailed()
     }
     
     // grid
-    paDetMem->Canvas->Pen->Color 	= 0x00808080;
+    paDetMem->Canvas->Pen->Color 	= TColor(0x00808080);
     paDetMem->Canvas->Brush->Style = bsSolid;
     for (u32 k=0; k<paDetMem->Height/m_cell_px; k++){
         paDetMem->Canvas->MoveTo(0,k*m_cell_px);
         paDetMem->Canvas->LineTo(paDetMem->Width,k*m_cell_px);
     }
+    m_Flags.set(flRedrawDetailed,FALSE);
 }
 
 void __fastcall TfrmMain::paDetMemPaint(TObject *Sender)
@@ -370,17 +404,30 @@ void __fastcall TfrmMain::paDetMemPaint(TObject *Sender)
 void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
+	bool need_redraw= false;
 	int cc			= m_curr_cell;
     u32 d_w			= paMem->Width/m_cell_px;
+    u32 d_h			= paMem->Height/m_cell_px;
 	switch (Key){
-    case VK_LEFT: 	cc--; 		Key=0; break;
-    case VK_RIGHT: 	cc++; 		Key=0; break;
-    case VK_DOWN: 	cc+=d_w;	Key=0; break;
-    case VK_UP: 	cc-=d_w;	Key=0; break;
+    case VK_LEFT: 	cc--; 		    	need_redraw=true; break;
+    case VK_RIGHT: 	cc++; 		    	need_redraw=true; break;
+    case VK_DOWN: 	cc+=d_w;	    	need_redraw=true; break;
+    case VK_UP: 	cc-=d_w;	    	need_redraw=true; break;
+
+    case VK_NEXT: 	cc+=d_w*d_h;		need_redraw=true; break;
+    case VK_PRIOR: 	cc-=d_w*d_h; 	    need_redraw=true; break;
+    case VK_END: 	cc=m_memory.size(); need_redraw=true; break;
+    case VK_HOME: 	cc=0;       		need_redraw=true; break;
     }
-    clamp			(cc,0,(int)m_memory.size());
-    m_curr_cell		= cc;
-    RedrawBuffer	();
+    if (need_redraw){
+	    m_curr_cell		= clampr(cc,0,(int)m_memory.size()-1);
+        if (m_curr_cell<m_draw_offs)				m_draw_offs = m_curr_cell;
+        else if (m_curr_cell>=m_draw_offs+d_w*d_h)	m_draw_offs = m_curr_cell;
+        m_draw_offs		= d_w*(m_draw_offs/d_w);
+        sbMem->Position	= m_draw_offs/d_w;
+    	Key				= 0; 
+    	RedrawBuffer	();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -462,7 +509,8 @@ void TfrmMain::RealUpdateProperties()
 
         // UI                                                                               
         PHelper().CreateCaption	(items, "Current Cell\\ID",		 	shared_str().sprintf("%d",m_curr_cell));
-        PHelper().CreateCaption	(items, "Current Cell\\Address", 	shared_str().sprintf("[0x%08X - 0x%08X)",m_curr_cell*m_cell_size+m_begin_ptr,(m_curr_cell+1)*m_cell_size+m_begin_ptr));
+        PHelper().CreateCaption	(items, "Current Cell\\Begin ptr", 	shared_str().sprintf("0x%08X",m_curr_cell*m_cell_size+m_begin_ptr));
+        PHelper().CreateCaption	(items, "Current Cell\\End ptr", 	shared_str().sprintf("0x%08X",(m_curr_cell+1)*m_cell_size+m_begin_ptr-1));
 
         // Detailed info
         u32 r_begin_ptr	= m_curr_cell*m_cell_size+m_begin_ptr;
@@ -479,6 +527,11 @@ void TfrmMain::RealUpdateProperties()
         // 
         m_Props->AssignItems	(items);
     }
+	m_Flags.set(flUpdateProps,FALSE);	
 }
 //---------------------------------------------------------------------------
+
+
+
+
 

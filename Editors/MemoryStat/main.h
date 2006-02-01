@@ -16,14 +16,16 @@
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
 #include "mxPlacemnt.hpp"
+#include "ElScrollBar.hpp"
+#include "ElXPThemedControl.hpp"
 //---------------------------------------------------------------------------
 class TfrmMain : public TForm
 {
 __published:	// IDE-managed Components
 	TStatusBar *sbStatus;
-	TPanel *paDesc;
+	TPanel *paMainDesc;
 	TOpenDialog *od;
-	TPanel *Panel6;
+	TPanel *paMainMem;
 	TPanel *paMemBase;
 	TMxPanel *paMem;
 	TMainMenu *MainMenu1;
@@ -34,14 +36,20 @@ __published:	// IDE-managed Components
 	TMenuItem *Exit1;
 	TMenuItem *Open1;
 	TMenuItem *Close1;
-	TMxPanel *paDetMem;
 	TPanel *paInfo;
 	TFormStorage *fsStorage;
+	TPanel *paCaptionDesc;
+	TPanel *paCaptionMem;
 	TScrollBar *sbMem;
-	TPanel *Panel2;
-	TPanel *Panel3;
-	TPanel *Panel9;
-	TPanel *Panel4;
+	TBevel *Bevel2;
+	TBevel *Bevel4;
+	TBevel *Bevel1;
+	TPanel *paMainDet;
+	TBevel *Bevel6;
+	TBevel *Bevel7;
+	TPanel *paCaptionDet;
+	TMxPanel *paDetMem;
+	TBevel *Bevel3;
 	void __fastcall OpenClick(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
@@ -57,6 +65,8 @@ __published:	// IDE-managed Components
           TShiftState Shift);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall paDetMemMouseMove(TObject *Sender, TShiftState Shift,
+          int X, int Y);
 private:	// User declarations
 	void __fastcall IdleHandler(TObject *Sender, bool &Done);
     void __stdcall OnRefreshBuffer	(PropValue*);
@@ -75,7 +85,7 @@ private:	// User declarations
 	void ResizeBuffer			(){m_Flags.set(flResizeBuffer,TRUE);}
 	void RealResizeBuffer		();
 
-	void RedrawBuffer			(){m_Flags.set(flRedrawBuffer,TRUE);}
+	void RedrawBuffer			(bool forced=false){m_Flags.set(flRedrawBuffer,TRUE);if (forced) RealRedrawBuffer();}
 	void RealRedrawBuffer		();
 
 	void RedrawDetailed			(){m_Flags.set(flRedrawDetailed,TRUE);}
