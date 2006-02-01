@@ -228,12 +228,14 @@ void CGamePersistent::OnFrame	()
 #endif
 	if (Device.dwPrecacheFrame==0 && b_startup_intro){
 		b_startup_intro			= false;
-		if (0==xr_strlen(m_game_params.m_game_or_spawn)){
-			VERIFY				(NULL==g_intro && NULL==g_pGameLevel);
+
+		if (0==xr_strlen(m_game_params.m_game_or_spawn) && NULL==g_pGameLevel){
+			VERIFY				(NULL==g_intro);
 			g_intro				= xr_new<CUISequencer>();
 			g_intro->Start		("intro");
 			Console->Hide		();
 		}
+
 	}
 	if(g_intro && (false==g_intro->IsActive())){
 		xr_delete				(g_intro);
