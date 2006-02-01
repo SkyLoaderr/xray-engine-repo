@@ -140,7 +140,7 @@ void CEnemyManager::update					()
 			m_last_enemy_change	= Device.dwTimeGlobal;
 	}
 
-	if (selected() && previous_selected && (selected()->ID() != previous_selected->ID()))
+	if (selected() != previous_selected)
 		m_object->on_enemy_change	(previous_selected);
 
 	if (selected()) {

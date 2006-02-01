@@ -118,7 +118,6 @@ void CAI_Stalker::reinit			()
 
 	m_pPhysics_support->in_Init		();
 	
-	m_last_best_item_frame			= 0;
 	m_best_item_to_kill				= 0;
 	m_best_ammo						= 0;
 	m_best_found_item_to_kill		= 0;

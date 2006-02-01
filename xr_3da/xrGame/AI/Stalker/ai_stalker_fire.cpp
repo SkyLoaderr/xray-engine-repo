@@ -228,7 +228,6 @@ void CAI_Stalker::HitSignal				(float amount, Fvector& vLocalDir, CObject* who, 
 void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)
 {
 	CObjectHandler::OnItemTake	(inventory_item);
-	m_last_best_item_frame		= 0;
 	m_item_actuality			= false;
 	m_sell_info_actuality		= false;
 }
@@ -236,7 +235,6 @@ void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)
 void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
 {
 	CObjectHandler::OnItemDrop	(inventory_item);
-	m_last_best_item_frame		= 0;
 	m_item_actuality			= false;
 	m_sell_info_actuality		= false;
 }
@@ -248,18 +246,14 @@ void CAI_Stalker::on_enemy_change		(const CEntityAlive *enemy)
 
 void CAI_Stalker::update_best_item_info	()
 {
-	// check if we already updated
-	if (!frame_check(m_last_best_item_frame))
-		return;
-
 	ai().ef_storage().alife_evaluation(false);
 
-	if (m_item_actuality) {
-		if (m_best_item_to_kill) {
-			if (m_best_item_to_kill->can_kill())
-				return;
-		}
-	}
+	if	(
+			m_item_actuality &&
+			m_best_item_to_kill &&
+			m_best_item_to_kill->can_kill()
+		)
+			return;
 
 	// initialize parameters
 	m_item_actuality							= true;
@@ -278,7 +272,12 @@ void CAI_Stalker::update_best_item_info	()
 		for ( ; I != E; ++I) {
 			if ((*I)->can_kill()) {
 				ai().ef_storage().non_alife().member_item()	= &(*I)->object();
-				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+				float								value;
+				if (memory().enemy().selected())
+					value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+				else
+					value							= (float)(*I)->object().ef_weapon_type();
+
 				if (!fsimilar(value,best_value) && (value < best_value))
 					continue;
 
