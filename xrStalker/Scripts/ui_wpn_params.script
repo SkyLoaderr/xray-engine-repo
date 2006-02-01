@@ -101,7 +101,7 @@ function GetAccuracy(section)
 		k_disp				= ltx:r_float(ammo_list, "k_disp");
 	end
 	
-    val = (0.04*rpm*math.log10(1/(cam_dispersion/10 + cam_dispersion_inc)) + 30*math.log10(1/(cam_dispersion*cam_step_angle_horz)))*math.pow(cam_dispersion_frac,2) + 40*math.log10(1/(fire_dispersion_base*k_disp));
+    val = (0.025*rpm*math.log10(1/(cam_dispersion/10 + cam_dispersion_inc)) + 30*math.log10(1/(cam_dispersion*cam_step_angle_horz)))*math.pow(cam_dispersion_frac,2) + 40*math.log10(1/(fire_dispersion_base*k_disp));
 	
 	return normalize(val)
 end
