@@ -95,6 +95,7 @@ function mp_options:SetGameMode(mode, handler)
 	handler.check_friendly_indicators:Enable(true)
 	handler.edit_reinforcement:Enable(true)
 	handler.edit_frag_limit:Enable(true)
+	handler.check_spec_teamonly:Enable(true)
 	
 	
 	local btn_reinforcement = handler.tab_respawn:GetButtonByIndex(1)
@@ -111,6 +112,7 @@ function mp_options:SetGameMode(mode, handler)
 		handler.edit_artefact_delay:Enable(false)
 		handler.edit_artefact_stay:Enable(false)
 		handler.check_friendly_indicators:Enable(false)
+		handler.check_spec_teamonly:Enable(false)
 		handler.edit_reinforcement:Enable(false)		
 		-- tab
 		handler.tab_respawn:SetNewActiveTab(0)
