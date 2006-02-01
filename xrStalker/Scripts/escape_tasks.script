@@ -177,12 +177,14 @@ function process_info_portion(info_id)
 	elseif info_id == "escape_dynamite_meet" then
 		level_tasks.add_location(009, "green_location", "wolfs_rangers")
 		
-	elseif info_id == "escape_factory_assault_say_hello" then
+	elseif info_id == "esc_bandits_start" then
+		level_tasks.remove_location(009, "green_location")
+		
+	elseif info_id == "esc_petruha_die" then	
 		level_tasks.remove_location(009, "green_location")
 	
 	elseif info_id == "escape_dynamite_gain" then
 		level_tasks.add_location(007, "green_location", "escape_dinamit")
-		level_tasks.remove_location(009, "green_location")
 	
 	elseif info_id == "escape_dynamite_have" then
 		level_tasks.add_location(006, "green_location", "volk")
