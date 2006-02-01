@@ -3304,6 +3304,9 @@
 						RelativePath=".\scripts\task_manager.script">
 					</File>
 					<File
+						RelativePath=".\scripts\trade_manager.script">
+					</File>
+					<File
 						RelativePath=".\scripts\xr_conditions.script">
 					</File>
 					<File
