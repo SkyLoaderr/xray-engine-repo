@@ -21,8 +21,8 @@ void XR_EPROPS_API CheckWindowPos(TForm* form)
 }
 //---------------------------------------------------------------------------
 
-#pragma argsused
-int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*)
+//#pragma argsused
+int WINAPI DllMain(HINSTANCE hinst, unsigned long reason, void*)
 {
 	return 1;
 }

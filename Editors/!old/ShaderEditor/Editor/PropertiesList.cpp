@@ -258,6 +258,7 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
         m_ViewItems.push_back	(prop);
         prop->m_Owner 		= this; 
         prop->item			= FHelper.AppendObject(tvProperties,key,false,false); R_ASSERT3(prop->item,"Duplicate properties key found:",key.c_str());
+        prop->Item()->Hint	= ".";
         prop->Item()->Tag 	= (int)prop;
         prop->Item()->UseStyles=true;
         prop->Item()->CheckBoxEnabled = prop->m_Flags.is(PropItem::flShowCB);
@@ -1070,6 +1071,7 @@ void __fastcall TProperties::WaveFormClick(TElTreeItem* item)
     }
 }
 //---------------------------------------------------------------------------
+extern "C" DLL_API bool FSColorPickerExecute(u32* currentColor, LPDWORD originalColor, const int initialExpansionState);
 
 void __fastcall TProperties::ColorClick(TElTreeItem* item)
 {
