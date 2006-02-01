@@ -689,6 +689,16 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="trade"
+					Filter="">
+					<File
+						RelativePath=".\Config\misc\trade_generic.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\trade_trader.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="mp"
