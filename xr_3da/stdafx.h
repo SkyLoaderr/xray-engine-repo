@@ -12,7 +12,7 @@
 #include <xrCore.h>
 
 // Include DX
-#ifdef DEBUG
+#ifdef _DEBUG
 	#define D3D_DEBUG_INFO
 #endif
 #pragma warning(disable:4995)
