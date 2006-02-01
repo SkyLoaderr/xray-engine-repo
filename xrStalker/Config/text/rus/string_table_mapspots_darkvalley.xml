@@ -18,6 +18,11 @@
         Ворота
     </text>
 </string>
+<string id="val_zone_pipe_hint">
+    <text>
+        Канализационная труба
+    </text>
+</string>
 <string id="bar_darklab_documents_1_hint">
     <text>
         Боров
