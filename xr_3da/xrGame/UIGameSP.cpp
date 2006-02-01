@@ -141,8 +141,6 @@ void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_ver
 	UIChangeLevelWnd->m_level_vertex_id		= level_vert_id;
 	UIChangeLevelWnd->m_position			= pos;
 	UIChangeLevelWnd->m_angles				= ang;
-	Device.Pause							(TRUE);
-	bShowPauseString						= FALSE;
 	m_game->StartStopMenu					(UIChangeLevelWnd,true);
 }
 
@@ -161,7 +159,6 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd==m_messageBox){
 		if(msg==MESSAGE_BOX_YES_CLICKED){
-			Device.Pause							(FALSE);
 
 			Game().StartStopMenu					(this, true);
 			NET_Packet								p;
@@ -174,9 +171,19 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			Level().Send							(p,net_flags(TRUE));
 		}else
 		if(msg==MESSAGE_BOX_NO_CLICKED){
-			Device.Pause							(FALSE);
 			Game().StartStopMenu					(this, true);
 		}
 	}else
 		inherited::SendMessage(pWnd, msg, pData);
+}
+
+void CChangeLevelWnd::Show()
+{
+	Device.Pause							(TRUE);
+	bShowPauseString						= FALSE;
+}
+
+void CChangeLevelWnd::Hide()
+{
+	Device.Pause							(FALSE);
 }

@@ -5,6 +5,9 @@
 #include "UIWindow.h"
 #include "../MainUI.h"
 
+//poolSS< std::_List_nod<WINDOW_LIST::_Myt, uialloc<WINDOW_LIST::_Myt> >, 128>	ui_allocator;
+poolSS< _12b, 128>	ui_allocator;
+
 //#define LOG_ALL_WNDS
 #ifdef LOG_ALL_WNDS
 	int ListWndCount = 0;
@@ -41,6 +44,7 @@ void CUIWindow::ResetPPMode()
 
 CUIWindow::CUIWindow()
 {
+//.	m_dbg_flag.zero			();
 	m_pFont					= NULL;
 	m_pParentWnd			= NULL;
 	m_pMouseCapturer		= NULL;
@@ -67,6 +71,7 @@ CUIWindow::CUIWindow()
 
 CUIWindow::~CUIWindow()
 {
+//.	VERIFY(	m_dbg_flag.get()==0);
 	VERIFY( !(GetParent()&&IsAutoDelete()) );
 
 	CUIWindow* parent	= GetParent();
@@ -107,10 +112,12 @@ void CUIWindow::Init(Frect* pRect)
 
 void CUIWindow::Draw()
 {
+//.	m_dbg_flag.set(1,TRUE);
 	//перерисовать дочерние окна
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 		if((*it)->IsShown())
 			(*it)->Draw();
+//.	m_dbg_flag.set(1,FALSE);
 }
 
 void CUIWindow::Draw(float x, float y){
@@ -135,39 +142,51 @@ void CUIWindow::Update()
 				OnFocusLost();			
 	}
 	
+//.	m_dbg_flag.set(2,TRUE);
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 		if((*it)->IsShown())
 			(*it)->Update();
+//.	m_dbg_flag.set(2,FALSE);
 }
 
 void CUIWindow::AttachChild(CUIWindow* pChild)
 {
+//.	VERIFY(	m_dbg_flag.get()==0);
 	if(!pChild) return;
 	
 	VERIFY( !IsChild(pChild) );
+//.	VERIFY(	m_dbg_flag.get()==0);
 	pChild->SetParent(this);
+//.	VERIFY(	m_dbg_flag.get()==0);
 	m_ChildWndList.push_back(pChild);
 }
 
 void CUIWindow::DetachChild(CUIWindow* pChild)
 {
+//.	VERIFY(	m_dbg_flag.get()==0);
 	if(NULL==pChild)
 		return;
 	
 	if(m_pMouseCapturer == pChild)
 		SetCapture(pChild, false);
 
+//.	VERIFY(	m_dbg_flag.get()==0);
 	SafeRemoveChild(pChild);
+//.	VERIFY(	m_dbg_flag.get()==0);
 	pChild->SetParent(NULL);
 
+//.	VERIFY(	m_dbg_flag.get()==0);
 	if(pChild->IsAutoDelete())
 		xr_delete(pChild);
 }
 
 void CUIWindow::DetachAll()
 {
-	while( !m_ChildWndList.empty() )
+//.	VERIFY(	m_dbg_flag.get()==0);
+	while( !m_ChildWndList.empty() ){
+//.		VERIFY(	m_dbg_flag.get()==0);
 		DetachChild( m_ChildWndList.back() );	
+	}
 }
 
 //абсолютные координаты, от начала экрана
@@ -257,6 +276,7 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	//Проверка на попадание мыши в окно,
 	//происходит в обратном порядке, чем рисование окон
 	//(последние в списке имеют высший приоритет)
+//.	m_dbg_flag.set(4,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for(; it!=m_ChildWndList.rend(); ++it)
@@ -276,11 +296,13 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action))return true;
 		}
 	}
+//.	m_dbg_flag.set(4,FALSE);
 
 	return false;
 }
 
 bool CUIWindow::HasChildMouseHandler(){
+//.	m_dbg_flag.set(8,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for( ; it!=m_ChildWndList.rend(); ++it)
@@ -293,6 +315,7 @@ bool CUIWindow::HasChildMouseHandler(){
 		}
 	}
 
+//.	m_dbg_flag.set(8,FALSE);
 	return false;
 }
 
@@ -369,6 +392,7 @@ bool CUIWindow::OnKeyboard(int dik, EUIMessages keyboard_action)
 		if(result) return true;
 	}
 
+//.	m_dbg_flag.set(16,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for(; it!=m_ChildWndList.rend(); ++it)
@@ -380,6 +404,7 @@ bool CUIWindow::OnKeyboard(int dik, EUIMessages keyboard_action)
 			if(result)	return true;
 		}
 	}
+//.	m_dbg_flag.set(16,FALSE);
 
 	return false;
 }
@@ -407,11 +432,13 @@ void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 void CUIWindow::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	//оповестить дочерние окна
+//.	m_dbg_flag.set(32,TRUE);
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		if((*it)->IsEnabled())
 			(*it)->SendMessage(pWnd,msg,pData);
 	}
+//.	m_dbg_flag.set(32,FALSE);
 }
 
 CUIWindow* CUIWindow::GetCurrentMouseHandler(){
@@ -420,6 +447,7 @@ CUIWindow* CUIWindow::GetCurrentMouseHandler(){
 
 CUIWindow* CUIWindow::GetChildMouseHandler(){
 	CUIWindow* pWndResult;
+//.	m_dbg_flag.set(64,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for(; it!=m_ChildWndList.rend(); ++it)
@@ -440,6 +468,7 @@ CUIWindow* CUIWindow::GetChildMouseHandler(){
 		}
 	}
 
+//.	m_dbg_flag.set(64,FALSE);
     return this;
 }
 
@@ -482,10 +511,12 @@ void CUIWindow::Reset()
 }
 void CUIWindow::ResetAll()
 {
+//.	m_dbg_flag.set(128,TRUE);
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		(*it)->Reset();
 	}
+//.	m_dbg_flag.set(128,FALSE);
 }
 
 CUIWindow* CUIWindow::GetMessageTarget()
@@ -505,6 +536,7 @@ CUIWindow*	CUIWindow::FindChild(const shared_str name)
 	if(WindowName()==name)
 		return this;
 
+//.	m_dbg_flag.set(256,TRUE);
 	WINDOW_LIST::const_iterator it = m_ChildWndList.begin();
 	WINDOW_LIST::const_iterator it_e = m_ChildWndList.end();
 	for(;it!=it_e;++it){
@@ -513,6 +545,7 @@ CUIWindow*	CUIWindow::FindChild(const shared_str name)
 			return pRes;
 	}
 
+//.	m_dbg_flag.set(256,FALSE);
 	return NULL;
 }
 
@@ -524,6 +557,8 @@ void CUIWindow::SetParent(CUIWindow* pNewParent)
 }
 
 void CUIWindow::ShowChildren(bool show){
+//.	m_dbg_flag.set(512,TRUE);
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)		
 			(*it)->Show(show);
+//.	m_dbg_flag.set(512,FALSE);
 }
