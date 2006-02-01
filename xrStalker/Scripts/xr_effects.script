@@ -459,6 +459,26 @@ function gar_direction_fire(actor, npc)
 	end
 end
 
+function gar_hellcar_victory(actor, npc)
+	if actor:has_info("gar_hellcar_help") then
+		news_manager.send_tip(actor, "gar_hellcar_victory", 0, "stalker", 0)
+	end
+end
+
+function gar_boars_counter(actor, npc)
+	local c = xr_logic.pstor_retrieve(actor, "gar_boars_counter", 0)
+	if c <= 2 then
+		news_manager.send_tip(actor, "gar_actor_looser", 0, "dolg", 0)
+	elseif c <= 4 then
+		news_manager.send_tip(actor, "gar_actor_normal", 0, "dolg", 0)
+	else
+		news_manager.send_tip(actor, "gar_actor_winner", 0, "dolg", 0)
+		db.actor:give_info_portion("gar_free_pass")
+	end
+end
+
+--' Escape
+
 function esc_direction_fire(actor, npc)
 	if actor:dont_has_info("esc_fanat_die") then
 		news_manager.send_tip(actor, "esc_direction_fire", 7, "stalker", 0)
@@ -487,23 +507,9 @@ function esc_lager_forgive_actor(actor, npc)
 	xr_gulag.setGulagNeutral("esc_lager", db.actor)
 end
 
-function gar_hellcar_victory(actor, npc)
-	if actor:has_info("gar_hellcar_help") then
-		news_manager.send_tip(actor, "gar_hellcar_victory", 0, "stalker", 0)
-	end
-end
+--' garbage
 
-function gar_boars_counter(actor, npc)
-	local c = xr_logic.pstor_retrieve(actor, "gar_boars_counter", 0)
-	if c <= 2 then
-		news_manager.send_tip(actor, "gar_actor_looser", 0, "dolg", 0)
-	elseif c <= 4 then
-		news_manager.send_tip(actor, "gar_actor_normal", 0, "dolg", 0)
-	else
-		news_manager.send_tip(actor, "gar_actor_winner", 0, "dolg", 0)
-		db.actor:give_info_portion("gar_free_pass")
-	end
-end
+
 	
 function actor_friend(actor, npc)
 	printf("_bp: xr_effects: actor_friend(): npc='%s': time=%d", npc:name(), time_global())
