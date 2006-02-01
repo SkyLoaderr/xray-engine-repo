@@ -150,13 +150,21 @@ reward_rank = 3
 ;--------Barmen----------------------------------------------------------
 ;-----------Eliminate Camp--------
 barmen_eliminate_camp_1
-;barmen_eliminate_camp_2
+barmen_eliminate_camp_2
+barmen_eliminate_camp_3
 ;-----------Artefact------------
-;barmen_find_artefact_1
+barmen_find_artefact_1
+barmen_find_artefact_2
+barmen_find_artefact_3
 ;----------Kill Staker-------
-;barmen_kiil_stalker_1
+barmen_kill_stalker_1
+barmen_kill_stalker_2
+barmen_kill_stalker_3
 ;---------Find Item-----------
-;barmen_find_item_1
+barmen_find_item_1
+barmen_find_item_2
+barmen_find_item_3
+
 
 
 [barmen_eliminate_camp_1]
@@ -178,22 +186,221 @@ community = actor
 text = barmen_eliminate_camp_2_text
 description = barmen_eliminate_camp_2_descr
 parent = barmen
-target = gar_smart_bandit
-reward_money = 1000
+target = ros_smart_killers1
+reward_money = 1700
+reward_reputation = +35
+reward_relation = dolg, 15
+reward_rank = 6
+reward_item = bandage,medkit
+
+[barmen_eliminate_camp_3]
+type = eliminate_lager
+community = actor
+text = barmen_eliminate_camp_3_text
+description = barmen_eliminate_camp_3_descr
+parent = barmen
+target = mil_bandit
+reward_money = 2000
+reward_reputation = +40
+reward_rank = 7
+
+[barmen_find_artefact_1]
+type = artefact
+community = actor
+text = barmen_find_artefact_1_1_text
+description = barmen_find_artefact_1_1_descr
+parent = barmen
+target = af_mincer meat
+reward_money = 1100
+reward_reputation = +35
+reward_rank = 5
+
+[barmen_find_artefact_2]
+type = artefact
+community = actor
+text = barmen_find_artefact_2_text
+description = barmen_find_artefact_2_descr
+parent = barmen
+target = af_rusty kristall
+reward_money = 1700
+reward_reputation = +45
+reward_rank = 6
+
+[barmen_find_artefact_3]
+type = artefact
+community = actor
+text = barmen_find_artefact_3_text
+description = barmen_find_artefact_3_descr
+parent = barmen
+target = af_gold_fish
+reward_money = 2400
+reward_reputation = +60
+reward_rank = 7
+
+[barmen_kill_stalker_1]
+type = kill_stalker
+community = actor
+text = barmen_kill_stalker_1_text
+description = barmen_kill_stalker_1_descr
+parent = barmen
+target = sim_soldier_specnaz
+reward_money = 1100
 reward_reputation = +25
-reward_relation = dolg, 10
+reward_relation = dolg, -5
+reward_item = medkit
+reward_rank = 5
+
+[barmen_kill_stalker_2]
+type = kill_stalker
+community = actor
+text = barmen_kill_stalker_2_text
+description = barmen_kill_stalker_2_descr
+parent = barmen
+target = sim_stalker_master
+reward_money = 2000
+reward_reputation = -45
+reward_rank = 6
+
+[barmen_kill_stalker_3]
+type = kill_stalker
+community = actor
+text = barmen_kill_stalker_3_text
+description = barmen_kill_stalker_3_descr
+parent = barmen
+target = sim_monolith_master
+reward_money = 4500
+reward_reputation = +80
+reward_rank = 8
+
+[barmen_find_item_1]
+type = find_item
+community = actor
+text = barmen_find_item_1_text
+description = barmen_find_item_1_descr
+parent = barmen
+target = outfit_monolith_m1
+reward_money = 1500
+reward_reputation = +30
+reward_rank = 5
+
+[barmen_find_item_2]
+type = find_item
+community = actor
+text = barmen_find_item_2_text
+description = barmen_find_item_2_descr
+parent = barmen
+target = wpn_deserteagle_coll
+reward_money = 2000
+reward_reputation = +35
+reward_rank = 6
+
+[barmen_find_item_3]
+type = find_item
+community = actor
+text = barmen_find_item_3_text
+description = barmen_find_item_3_descr
+parent = barmen
+target = wpn_vintorez_coll
+reward_money = 4000
+reward_reputation = +40
+reward_rank = 8
+
+;---------------Ecolog---------------------
+;---------Monster Part-----------
+ecolog_monster_part_1
+ecolog_monster_part_2
+ecolog_monster_part_3
+ecolog_monster_part_4
+ecolog_monster_part_5
+ecolog_monster_part_6
+ecolog_monster_part_7
+ecolog_monster_part_8
+
+
+[ecolog_monster_part_1]
+type = monster_part
+community = actor
+text = ecolog_monster_part_1_text
+description = ecolog_monster_part_1_descr
+parent = ecolog
+target = mutant_zombie_hand
+reward_money = 200
+reward_reputation = +5
+reward_rank = 1
+
+[ecolog_monster_part_2]
+type = monster_part
+community = actor
+text = ecolog_monster_part_2_text
+description = ecolog_monster_part_2_descr
+parent = ecolog
+target = mutant_flesh_eye
+reward_money = 400
+reward_reputation = +10
+reward_rank = 2
+
+[ecolog_monster_part_3]
+type = monster_part
+community = actor
+text = ecolog_monster_part_3_text
+description = ecolog_monster_part_3_descr
+parent = ecolog
+target = mutant_dog_tail
+reward_money = 600
+reward_reputation = +15
+reward_rank = 3
+
+[ecolog_monster_part_4]
+type = monster_part
+community = actor
+text = ecolog_monster_part_4_text
+description = ecolog_monster_part_4_descr
+parent = ecolog
+target = mutant_boar_leg
+reward_money = 900
+reward_reputation = +20
 reward_rank = 4
-reward_item = bandage
 
+[ecolog_monster_part_5]
+type = monster_part
+community = actor
+text = ecolog_monster_part_5_text
+description = ecolog_monster_part_5_descr
+parent = ecolog
+target = mutant_snork_leg
+reward_money = 1200
+reward_reputation = +25
+reward_rank = 5
 
+[ecolog_monster_part_6]
+type = monster_part
+community = actor
+text = ecolog_monster_part_6_text
+description = ecolog_monster_part_6_descr
+parent = ecolog
+target = mutant_psevdodog_tail
+reward_money = 1500
+reward_reputation = +30
+reward_rank = 6
 
+[ecolog_monster_part_7]
+type = monster_part
+community = actor
+text = ecolog_monster_part_7_text
+description = ecolog_monster_part_7_descr
+parent = ecolog
+target = mutant_burer_hand
+reward_money = 2400
+reward_reputation = +35
+reward_rank = 7
 
-
-
-
-
-
-
-
-
-
+[ecolog_monster_part_8]
+type = monster_part
+community = actor
+text = ecolog_monster_part_8_text
+description = ecolog_monster_part_8_descr
+parent = ecolog
+target = mutant_krovosos_jaw
+reward_money = 3200
+reward_reputation = +40
+reward_rank = 8

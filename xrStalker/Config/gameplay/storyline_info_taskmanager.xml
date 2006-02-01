@@ -1,5 +1,6 @@
 
 ;--------Eliminate Lager------------
+;---------trader--------------
 
 <article id="tm_eliminate_camp_1_descr" name="eliminate_lager" group="Diary">
         <text>tm_eliminate_camp_1_descr</text>
@@ -12,8 +13,20 @@
 <article id="tm_eliminate_camp_3_descr" name="eliminate_lager" group="Diary">
         <text>tm_eliminate_camp_3_descr</text>
 </article>
+;----------Barmen-----------
+<article id="barmen_eliminate_camp_1_descr" name="eliminate_lager" group="Diary">
+        <text>barmen_eliminate_camp_1_descr</text>
+</article>
+<article id="barmen_eliminate_camp_2_descr" name="eliminate_lager" group="Diary">
+        <text>barmen_eliminate_camp_2_descr</text>
+</article>
+<article id="barmen_eliminate_camp_3_descr" name="eliminate_lager" group="Diary">
+        <text>barmen_eliminate_camp_3_descr</text>
+</article>
+
 
 ;--------Artefact------------------
+;---------Trader----------
 
 <article id="tm_find_artefact_1_descr" name="artefact" group="Diary">
         <text>tm_find_artefact_1_descr</text>
@@ -26,9 +39,19 @@
 <article id="tm_find_artefact_3_descr" name="artefact" group="Diary">
         <text>tm_find_artefact_3_descr</text>
 </article>
+;---------Barmen-----------
+<article id="barmen_find_artefact_1_descr" name="artefact" group="Diary">
+        <text>barmen_find_artefact_1_descr</text>
+</article>
+<article id="barmen_find_artefact_2_descr" name="artefact" group="Diary">
+        <text>barmen_find_artefact_2_descr</text>
+</article>
+<article id="barmen_find_artefact_3_descr" name="artefact" group="Diary">
+        <text>barmen_find_artefact_3_descr</text>
+</article>
 
 ;------------Kill Stalker---------
-
+;-------Trader--------
 <article id=">tm_kill_stalker_1_descr" name="kill_stalker" group="Diary">
         <text>tm_kill_stalker_1_descr</text>
 </article>
@@ -38,9 +61,18 @@
 <article id="tm_kill_stalker_3_descr" name="kill_stalker" group="Diary">
         <text>tm_kill_stalker_3_descr</text>
 </article>
-
+;------Barmen--------
+<article id="barmen_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+        <text>barmen_kill_stalker_1_descr</text>
+</article>
+<article id="barmen_kill_stalker_2_descr" name="kill_stalker" group="Diary">
+        <text>barmen_kill_stalker_2_descr</text>
+</article>
+<article id="barmen_kill_stalker_3_descr" name="kill_stalker" group="Diary">
+        <text>barmen_kill_stalker_3_descr</text>
+</article>
 ;------------Find Item-----------------
-
+;-------Trader-------
 <article id="tm_find_item_1_descr" name="find_item" group="Diary">
         <text>tm_find_item_1_descr</text>
 </article>
@@ -48,11 +80,40 @@
 <article id="tm_find_item_2_descr" name="find_item" group="Diary">
         <text>tm_find_item_2_descr</text>
 </article>
+;--------Barmen-------
+<article id="barmen_find_item_1_descr" name="find_item" group="Diary">
+        <text>barmen_find_item_1_descr</text>
+</article>
+<article id="barmen_find_item_2_descr" name="find_item" group="Diary">
+        <text>barmen_find_item_2_descr</text>
+</article>
+<article id="barmen_find_item_3_descr" name="find_item" group="Diary">
+        <text>barmen_find_item_3_descr</text>
+</article>
 
-
-
-
-
-
-
-
+;---------Monster Part--------------
+;--------Ecolog---------
+<article id="ecolog_monster_part_1_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_1_descr</text>
+</article>
+<article id="ecolog_monster_part_2_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_2_descr</text>
+</article>
+<article id="ecolog_monster_part_3_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_3_descr</text>
+</article>
+<article id="ecolog_monster_part_4_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_4_descr</text>
+</article>
+<article id="ecolog_monster_part_5_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_5_descr</text>
+</article>
+<article id="ecolog_monster_part_6_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_6_descr</text>
+</article>
+<article id="ecolog_monster_part_7_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_7_descr</text>
+</article>
+<article id="ecolog_monster_part_8_descr" name="monster_part" group="Diary">
+        <text>ecolog_monster_part_8_descr</text>
+</article>
