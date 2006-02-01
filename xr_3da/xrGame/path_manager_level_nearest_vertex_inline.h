@@ -69,7 +69,9 @@ IC	bool CNearestVertexPathManager::is_goal_reached	(const _index_type &node_inde
 	VERIFY					(path);
 	best_node				= graph->vertex(node_index);
 
-	if (m_target_position.distance_to_xz_sqr(graph->vertex_position(best_node)) < m_best_distance_to_target) {
+	float					current_distance = m_target_position.distance_to_xz_sqr(graph->vertex_position(best_node));
+	if (current_distance < m_best_distance_to_target) {
+		m_best_distance_to_target	= current_distance;
 		path->clear			();
 		path->push_back		(node_index);
 	}

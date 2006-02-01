@@ -38,7 +38,7 @@ class CControlPathBuilder :
 	friend	class CControl_Manager;
 
 private:
-	static	u32		find_nearest_vertex		(const u32 &level_vertex_id, const Fvector &target_position);
+	static	u32		find_nearest_vertex		(const u32 &level_vertex_id, const Fvector &target_position, const float &range);
 	
 public:
 					CControlPathBuilder		(CCustomMonster *monster);

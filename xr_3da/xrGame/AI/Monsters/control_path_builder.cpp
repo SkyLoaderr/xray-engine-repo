@@ -97,19 +97,14 @@ void CControlPathBuilder::update_schedule()
 				game_selector().set_selection_type	(eSelectionTypeRandomBranching);
 		} else if (m_data.path_type != MovementManager::ePathTypePatrolPath) {
 			// set target
-			detail().set_dest_position			(m_data.target_position);
-			
-			if (m_data.target_node != u32(-1))
+			if (m_data.target_node != u32(-1)) {
+				detail().set_dest_position		(m_data.target_position);
 				set_level_dest_vertex			(m_data.target_node);
-
-			// set selector
-			if (m_data.target_node == u32(-1))
-				set_level_dest_vertex(
-					find_nearest_vertex	(
-						object().ai_location().level_vertex_id(),
-						m_data.target_position
-					)
-				);
+			} else {
+				u32 node = find_nearest_vertex(object().ai_location().level_vertex_id(),m_data.target_position,30.f);
+				set_level_dest_vertex(node);
+				detail().set_dest_position	(ai().level_graph().vertex_position(node));
+			}
 		}
 	}
 
@@ -277,7 +272,7 @@ bool CControlPathBuilder::can_use_distributed_compuations (u32 option) const
 	return inherited::can_use_distributed_compuations(option);
 }
 
-u32	 CControlPathBuilder::find_nearest_vertex				(const u32 &level_vertex_id, const Fvector &target_position)
+u32	 CControlPathBuilder::find_nearest_vertex				(const u32 &level_vertex_id, const Fvector &target_position, const float &range)
 {
 	xr_vector<u32>	temp;
 
@@ -286,7 +281,10 @@ u32	 CControlPathBuilder::find_nearest_vertex				(const u32 &level_vertex_id, co
 		level_vertex_id,
 		level_vertex_id,
 		&temp,
-		GraphEngineSpace::CNearestVertexParameters(target_position)
+		GraphEngineSpace::CNearestVertexParameters(
+			target_position,
+			range
+		)
 	);
 
 	VERIFY			(!temp.empty());
