@@ -26,6 +26,29 @@ ph_snd_themes["music"] = {  "characters_voice\\scenario\\megafon\\megafon_music_
 	                        "characters_voice\\scenario\\megafon\\megafon_music_14",
 	                        "characters_voice\\scenario\\megafon\\megafon_music_15"
 	                        }
+ph_snd_themes["humor"] = {  "characters_voice\\scenario\\escape\\comandir_megafon_1",
+							"characters_voice\\scenario\\escape\\comandir_megafon_2",
+							"characters_voice\\scenario\\escape\\comandir_megafon_3",
+							"characters_voice\\scenario\\escape\\comandir_megafon_4",
+							"characters_voice\\scenario\\escape\\comandir_megafon_5",
+							"characters_voice\\scenario\\escape\\comandir_megafon_6",
+							"characters_voice\\scenario\\escape\\comandir_megafon_7",
+							"characters_voice\\scenario\\escape\\comandir_megafon_8",
+							"characters_voice\\scenario\\escape\\comandir_megafon_9",
+							"characters_voice\\scenario\\escape\\comandir_megafon_10",
+							"characters_voice\\scenario\\escape\\comandir_megafon_11",
+							"characters_voice\\scenario\\escape\\comandir_megafon_12",
+							"characters_voice\\scenario\\escape\\comandir_megafon_13",
+							"characters_voice\\scenario\\escape\\comandir_megafon_14",
+							"characters_voice\\scenario\\escape\\comandir_megafon_15",
+							"characters_voice\\scenario\\escape\\comandir_megafon_16",
+							"characters_voice\\scenario\\escape\\comandir_megafon_17"
+	                        }	  
+ph_snd_themes["epic"] = { "characters_voice\\scenario\\escape\\megafon_1",
+							"characters_voice\\scenario\\escape\\megafon_2",
+							"characters_voice\\scenario\\escape\\megafon_3",
+							"characters_voice\\scenario\\escape\\megafon_4"
+	                        }                      
 ph_snd_themes["alarm1"] = { "characters_voice\\scenario\\megafon\\megafon_alarm_1",
 	                        "characters_voice\\scenario\\megafon\\megafon_alarm_10",
 	                        "characters_voice\\scenario\\megafon\\megafon_alarm_11",
