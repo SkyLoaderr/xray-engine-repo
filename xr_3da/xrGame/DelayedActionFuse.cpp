@@ -49,11 +49,14 @@ bool CDelayedActionFuse::Update(float current_condition)
 	
 	bool ret=false;
 	float l_time_to_explosion=m_fTime-Device.fTimeGlobal;
+
 	if(!m_dafflags.test(flNoConditionChange))
 	{
 		float delta_condition=m_fSpeedChangeCondition*l_time_to_explosion-current_condition;
+		//float t=current_condition/m_fSpeedChangeCondition;
+		//if(t<l_time_to_explosion) m_fTime;
 		//VERIFY(delta_condition<=0.f);
-		if(-delta_condition>current_condition)delta_condition=-current_condition;//.
+		if(delta_condition>0.f)	delta_condition=0.f;//.
 		ChangeCondition(delta_condition);
 		ret = current_condition+delta_condition<=0.f;
 	} else

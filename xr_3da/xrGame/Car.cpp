@@ -363,7 +363,7 @@ void CCar::shedule_Update(u32 dt)
 	
 	if(CDelayedActionFuse::isActive()&&CDelayedActionFuse::Update(GetfHealth()))
 	{
-		CarExplode();
+		//CarExplode();
 	}
 	if(b_exploded&&!m_explosion_flags.test(flExploding)&&!getEnabled())//!m_bExploding
 										setEnabled(TRUE);
@@ -1983,4 +1983,10 @@ u32			CCar::ExplodeTime					()
 	if(CDelayedActionFuse::isInitialized())
 				return u32(CDelayedActionFuse::Time())*1000;
 	else return 0;
+}
+
+void	CCar::		Die					(CObject* who)
+{
+	inherited::Die(who);
+	CarExplode();
 }
