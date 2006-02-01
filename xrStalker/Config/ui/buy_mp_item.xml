@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <w>
 	<static_name x="20" y="199" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"complex_mode="0"/>
 	</static_name>
 
 	<static_weight x="230" y="130" width="200" height="20">

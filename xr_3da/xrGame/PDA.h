@@ -81,6 +81,8 @@ public:
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
+	virtual void				save				(NET_Packet &output_packet);
+	virtual void				load				(IReader &input_packet);
 
 	virtual LPCSTR		Name			();
 	virtual LPCSTR		NameComplex		();

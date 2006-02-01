@@ -52,12 +52,10 @@ BOOL CPda::net_Spawn(CSE_Abstract* DC)
 	R_ASSERT					(pda);
 	m_idOriginalOwner			= pda->m_original_owner;
 	m_SpecificChracterOwner		= pda->m_specific_character;
-//	m_InfoPortion				= pda->m_info_portion;
 
-	m_sFullName.clear			();
-	
 	return						(TRUE);
 }
+
 void CPda::net_Destroy() 
 {
 	inherited::net_Destroy		();
@@ -140,17 +138,32 @@ BOOL CPda::feel_touch_contact(CObject* O)
 	return FALSE;
 }
 
+void CPda::save(NET_Packet &output_packet)
+{
+	inherited::save	(output_packet);
+	save_data		(m_sFullName, output_packet);
+}
+
+void CPda::load(IReader &input_packet)
+{
+	inherited::load	(input_packet);
+	load_data		(m_sFullName, input_packet);
+}
 
 void CPda::OnH_A_Chield() 
 {
 	VERIFY(IsOff());
 
 	//включить PDA только если оно находится у первого владельца
-	if(H_Parent()->ID() == m_idOriginalOwner)
+	if(H_Parent()->ID() == m_idOriginalOwner){
 		TurnOn					();
+		if(m_sFullName.empty()){
+			m_sFullName.assign(inherited::Name());
+			m_sFullName += " ";
+			m_sFullName += (smart_cast<CInventoryOwner*>(H_Parent()))->Name();
+		}
+	};
 
-	//передать информацию содержащуюся в pda
-	//объекту, который его поднял
 	CActor* actor = smart_cast<CActor*>(H_Parent());
 	if(!actor) return;
 
@@ -174,18 +187,6 @@ void CPda::OnH_A_Chield()
 	}
 	known_info.clear	();
 	xr_delete			(known_info_registry);
-
-/*	if(m_InfoPortion.size())
-	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
-		P.w_u16			(ID());						//отправитель
-		P.w_stringZ		(m_InfoPortion);			//сообщение
-		P.w_u8			(1);						//добавление сообщения
-		u_EventSend		(P);
-	}
-*/
-
 
 	inherited::OnH_A_Chield		();
 }
@@ -217,25 +218,6 @@ CObject* CPda::GetOwnerObject()
 	CObject* pObject =  Level().Objects.net_Find(GetOriginalOwnerID());
 	return pObject;
 }
-/*
-//отправка сообщения другому владельцу PDA 
-//pda_num - номер PDA в нашем списке
-void CPda::SendMessage(u32 pda_num, EPdaMsg msg, INFO_ID info_id)
-{
-	//найти PDA с нужным номером в списке
-	u32 i=0;
-	for(PDA_LIST_it it = m_PDAList.begin();
-		i<=pda_num && m_PDAList.end() != it; 
-		++i, ++it){}
-
-	CPda* pPda = (*it);
-
-	if(it == m_PDAList.end()) return;
-	if(pPda->IsOff() || pPda->IsPassive()) return;
-	
-	PdaEventSend(pPda->ID(), msg, info_id);
-}*/
-
 
 //отправление сообщению PDA с определенным ID
 //если такое есть в списке контактов
