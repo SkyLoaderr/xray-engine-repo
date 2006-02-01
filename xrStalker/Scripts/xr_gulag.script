@@ -462,7 +462,7 @@ function gulag:is_there_any_suitable_job( npc_info, exclusive )
 --	end
 
 	for i, job in ipairs( self.Job_avail_in_state ) do
-		if not job.predicate or job.predicate( npc_info ) then
+		if not job.predicate or job.predicate( npc_info, self ) then
 			if job.object then
 				if exclusive and not self.npc_info[job.object].exclusive then
 					return true
@@ -487,7 +487,7 @@ function gulag:obj1_job_suits_obj2( obj_id, npc_info )
 		self:print()
 	end
 
-	return not job.predicate or job.predicate( npc_info )
+	return not job.predicate or job.predicate( npc_info, self )
 end
 
 -- существует ли указанное состояние в табличке?
@@ -631,7 +631,7 @@ function gulag:find_nearest_suitable_obj( objs, job )
 	local obj_nearest
 
 	for obj_id, v in pairs( objs ) do
-		if not predicate or predicate( self.npc_info[obj_id] ) then
+		if not predicate or predicate( self.npc_info[obj_id], self ) then
 			dist = self:distance_to_job_location( obj_id, job )
 --			printf( "[smart_terrain %s] dist object=%s to job=%s is %f", self.name, self.npc_info[obj_id].name, job.section, dist )
 
@@ -660,7 +660,7 @@ function gulag:find_obj_on_jobLow_for_jobHigh( Job_avail, job_high )
 	while i > job_high_num and (not priority or priority == Job_avail[i].prior) do
 		job_low = Job_avail[i]
 
-		if job_low.object ~= nil and ( not predicate or predicate(self.npc_info[job_low.object]) ) then
+		if job_low.object ~= nil and ( not predicate or predicate(self.npc_info[job_low.object], self) ) then
 			if not obj_suitable then
 				priority     = job_low.prior
 				obj_suitable = {}
@@ -759,7 +759,7 @@ function gulag:get_population()
 	for obj_id, npc_info in pairs( self.npc_info ) do
 		obj = level.object_by_id( obj_id ) or npc_info.se_obj
 
-		if obj:alive() then
+		5if obj:alive() then
 			i = i + 1
 		end
 	end
