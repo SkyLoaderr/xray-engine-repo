@@ -12,11 +12,6 @@ class CControlMovement : public CControl_ComPure<SControlMovementData> {
 
 	float		m_velocity_current;
 	
-	struct {
-		Fvector		position;
-		u32			time;
-	} m_pos_stack[2];
-	
 public:
 	virtual void	reinit			();
 	virtual void	update_frame	();
