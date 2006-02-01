@@ -94,9 +94,9 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 anim                = search
 snd                 = val_escort_nap1_phrase1
 target              = 424 ;logic@val_escort_wounded_bandit
+on_signal           = sound_end | %+val_nap1_phrase1_end%
 on_info             = {+val_halfdead_phrase_end} remark@val_escort_nap1_phrase2
 on_info2            = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
-on_signal           = sound_end | %+val_nap1_phrase1_end%
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -109,8 +109,8 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 anim                = search
 snd                 = val_escort_nap1_phrase7
 target              = 424 ;logic@val_escort_wounded_bandit
-on_info             = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
 on_signal           = sound_end | remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
+on_info             = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
 meet                = meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
