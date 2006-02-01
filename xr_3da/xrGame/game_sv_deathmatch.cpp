@@ -15,7 +15,8 @@
 #include "hudItem.h"
 #include "weapon.h"
 
-#define DELAYED_ROUND_TIME	7000
+//#define DELAYED_ROUND_TIME	7000
+
 #define UNBUYABLESLOT		20
 
 game_sv_Deathmatch::game_sv_Deathmatch()
@@ -400,10 +401,16 @@ void	game_sv_Deathmatch::Update					()
 	}
 }
 
+INT	g_sv_Pending_Wait_Time = 10000;
+INT g_sv_Wait_For_Players_Ready = 1;
 bool game_sv_Deathmatch::checkForRoundStart()
 {
-
-	if( (Level().timeServer())>u32(10*1000) && AllPlayers_Ready() )
+	if( ((Level().timeServer()-start_time))>u32(g_sv_Pending_Wait_Time) && 
+		(AllPlayers_Ready() 
+#ifdef DEBUG
+		||!g_sv_Wait_For_Players_Ready) 
+#endif		
+		)
 	{
 		if (!SwitchToNextMap() || !OnNextMap())
 		{
@@ -1889,10 +1896,11 @@ void	game_sv_Deathmatch::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 	SpawnWeapon4Actor(pA->ID, "mp_players_rukzak", 0);
 }
 
+INT		G_DELAYED_ROUND_TIME	= 7000;
 void	game_sv_Deathmatch::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
 {
 	m_delayedRoundEnd = true;
-	m_roundEndDelay = Device.TimerAsync() + DELAYED_ROUND_TIME;
+	m_roundEndDelay = Device.TimerAsync() + G_DELAYED_ROUND_TIME;
 }
 
 void	game_sv_Deathmatch::check_ForceRespawn		()
@@ -1917,6 +1925,7 @@ void	game_sv_Deathmatch::check_ForceRespawn		()
 	};
 };
 
+INT	g_sv_Skip_Winner_Waiting = 0;
 bool	game_sv_Deathmatch::HasChampion()
 {
 	game_PlayerState* res = NULL;
@@ -1946,7 +1955,7 @@ bool	game_sv_Deathmatch::HasChampion()
 		}
 	};
 
-	return (MaxFrags>0);
+	return (MaxFrags>0 || g_sv_Skip_Winner_Waiting);
 };
 
 bool	game_sv_Deathmatch::check_for_Anomalies()

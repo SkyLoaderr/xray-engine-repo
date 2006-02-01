@@ -2310,4 +2310,18 @@ void CCC_RegisterCommands()
 #endif
 	CMD4(CCC_Integer,	"cl_leave_tdemo",		&g_bLeaveTDemo, 0, 1);
 	CMD1(CCC_GetServerAddress,	"get_server_address");		
+
+#ifdef DEBUG
+	extern	INT	g_sv_Skip_Winner_Waiting;
+	CMD4(CCC_Integer,	"sv_skip_winner_waiting",		&g_sv_Skip_Winner_Waiting, 0, 1);
+
+	extern	INT g_sv_Wait_For_Players_Ready;
+	CMD4(CCC_Integer,	"sv_wait_for_players_ready",	&g_sv_Wait_For_Players_Ready, 0, 1);
+		
+#endif
+	extern	INT G_DELAYED_ROUND_TIME;	
+	CMD4(CCC_Integer,	"sv_hail_to_winner_time",		&G_DELAYED_ROUND_TIME, 0, 60000);
+
+	extern INT	g_sv_Pending_Wait_Time;
+	CMD4(CCC_Integer,	"sv_pending_wait_time",		&g_sv_Pending_Wait_Time, 0, 60000);
 }
