@@ -1,18 +1,18 @@
 [list]
 
-;----------Trader----------
+;----------Trader--------------------------------------------------
 ;-----------Eliminate Camp--------
-tm_eliminate_bandit_camp_1
-tm_eliminate_bandit_camp_2
-tm_eliminate_bandit_camp_3
+tm_eliminate_camp_1
+tm_eliminate_camp_2
+tm_eliminate_camp_3
 ;-----------Artefact------------
 tm_find_artefact_1
 tm_find_artefact_2
 tm_find_artefact_3
 ;----------Kill Staker-------
-tm_kill_bandit_master_1
-tm_kill_bandit_master_2
-tm_kill_bandit_master_3
+tm_kill_stalker_1
+tm_kill_stalker_2
+tm_kill_stalker_3
 ;---------Find Item-----------
 tm_find_item_1
 tm_find_item_2
@@ -145,3 +145,43 @@ target = wpn_fort_m1
 reward_money = 500
 reward_reputation = +15
 reward_rank = 3
+
+
+;--------Barmen----------------------------------------------------------
+;-----------Eliminate Camp--------
+[barmen_eliminate_camp_1]
+;-----------Artefact------------
+;[barmen_find_artefact_1]
+;----------Kill Staker-------
+;[barmen_kiil_stalker_1]
+;---------Find Item-----------
+;[barmen_find_item_1]
+
+
+[barmen_eliminate_camp_1]
+type = eliminate_lager
+community = actor
+text = barmen_eliminate_camp_1_text
+description = barmen_eliminate_camp_1_descr
+parent = barmen
+target = gar_smart_bandit
+reward_money = 1000
+reward_reputation = +25
+reward_relation = dolg, 10
+reward_rank = 4
+reward_item = bandage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
