@@ -50,15 +50,14 @@
 			<icon x="250" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="tutorial_wounded">green_location</map_location_type>
 			<object_story_id>Escape_tutorial_wounded</object_story_id>
-			<infoportion_complete>tutorial_wounded_help</infoportion_complete>
-			<infoportion_fail>tutorial_wounded_fail</infoportion_fail>	
+			<infoportion_complete>tutorial_wounded_give_info</infoportion_complete>
 		</objective>
 		<objective>
 			<text>tutorial_help_wounded_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="trader">blue_location</map_location_type>
 			<object_story_id>Escape_Trader</object_story_id>
-			<infoportion_complete>esc_serious_talk</infoportion_complete>
+	<!--		<infoportion_complete>esc_serious_talk</infoportion_complete>    -->
 		</objective>
 	</game_task>
 
