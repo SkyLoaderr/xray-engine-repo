@@ -313,6 +313,14 @@ BOOL IPureClient::Connect	(LPCSTR options)
 			if (res != S_OK)
 			{
 				//			xr_string res = Debug.error2string(HostSuccess);
+				switch (res)
+				{
+				case DPNERR_INVALIDHOSTADDRESS:
+					{
+						OnInvalidHost();
+						return FALSE;
+					}break;
+				};
 #ifdef DEBUG
 				const char* x = DXGetErrorString9(res);
 				string1024 tmp;
