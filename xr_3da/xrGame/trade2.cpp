@@ -157,7 +157,9 @@ u32	CTrade::GetItemPrice	(PIItem pItem)
 	if (NO_GOODWILL == attitude)
 		relation_factor		= 0.f;
 	else
-		relation_factor		= float(attitude + 100.f)/200.f;
+		relation_factor		= float(attitude + 1000.f)/2000.f;
+
+	clamp					(relation_factor,0.f,1.f);
 
 	bool					buying = (pThis.type == TT_ACTOR);
 	const SInventoryOwner	&partner = buying ? pPartner : pThis;
