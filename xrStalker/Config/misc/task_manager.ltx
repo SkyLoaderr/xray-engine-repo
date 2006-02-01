@@ -149,13 +149,14 @@ reward_rank = 3
 
 ;--------Barmen----------------------------------------------------------
 ;-----------Eliminate Camp--------
-[barmen_eliminate_camp_1]
+barmen_eliminate_camp_1
+;barmen_eliminate_camp_2
 ;-----------Artefact------------
-;[barmen_find_artefact_1]
+;barmen_find_artefact_1
 ;----------Kill Staker-------
-;[barmen_kiil_stalker_1]
+;barmen_kiil_stalker_1
 ;---------Find Item-----------
-;[barmen_find_item_1]
+;barmen_find_item_1
 
 
 [barmen_eliminate_camp_1]
@@ -171,7 +172,18 @@ reward_relation = dolg, 10
 reward_rank = 4
 reward_item = bandage
 
-
+[barmen_eliminate_camp_2]
+type = eliminate_lager
+community = actor
+text = barmen_eliminate_camp_2_text
+description = barmen_eliminate_camp_2_descr
+parent = barmen
+target = gar_smart_bandit
+reward_money = 1000
+reward_reputation = +25
+reward_relation = dolg, 10
+reward_rank = 4
+reward_item = bandage
 
 
 
