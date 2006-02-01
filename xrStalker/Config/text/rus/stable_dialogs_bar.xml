@@ -315,6 +315,9 @@
     <string id="bar_bar_barmen_jobs_41">
         <text>Пока нет, в другой раз.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_5">
+        <text>Нет, сегодня, ничего нет.</text>
+    </string>
     <string id="bar_bar_barmen_jobs_room_0">
         <text>Что за работа?</text>
     </string>
