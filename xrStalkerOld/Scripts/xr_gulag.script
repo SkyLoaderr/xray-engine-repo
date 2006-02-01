@@ -759,7 +759,7 @@ function gulag:get_population()
 	for obj_id, npc_info in pairs( self.npc_info ) do
 		obj = level.object_by_id( obj_id ) or npc_info.se_obj
 
-		5if obj:alive() then
+		if obj:alive() then
 			i = i + 1
 		end
 	end
