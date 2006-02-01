@@ -1,74 +1,147 @@
 [list]
-tm_eliminate_test_lager
-tm_artefact_vyvert
-tm_kill_svoboda_master
-tm_find_boar_leg
-tm_find_quest_item
 
+;----------Trader----------
+;-----------Eliminate Camp--------
+tm_eliminate_bandit_camp_1
+tm_eliminate_bandit_camp_2
+tm_eliminate_bandit_camp_3
+;-----------Artefact------------
+tm_find_artefact_1
+tm_find_artefact_2
+tm_find_artefact_3
+;----------Kill Staker-------
+tm_kill_bandit_master_1
+tm_kill_bandit_master_2
+tm_kill_bandit_master_3
+;---------Find Item-----------
+tm_find_item_1
+tm_find_item_2
 
-[tm_eliminate_test_lager]
+[tm_eliminate_camp_1]
 type = eliminate_lager
 community = actor
-text = tm_eliminate_test_lager_text
-description = tm_eliminate_test_lager_descr
-parent = dolg
-target = test_terrain
+text = tm_eliminate_camp_1_text
+description = tm_eliminate_camp_1_descr
+parent = trader
+target = gar_smart_bandit_large_lager
+reward_money = 1600
+reward_reputation = +30
+reward_relation = dolg, 15
+reward_rank = 5
 
-reward_item = bandage
-reward_reputation = -50
-reward_relation = freedom, -100, dolg, 100
+[tm_eliminate_camp_2]
+type = eliminate_lager
+community = actor
+text = tm_eliminate_camp_2_text
+description = tm_eliminate_camp_2_descr
+parent = trader
+target = esc_fabrika_bandit
+reward_money = 1100
+reward_reputation = +35
+reward_relation = dolg, 5
+reward_rank = 3
 
+[tm_eliminate_camp_3]
+type = eliminate_lager
+community = actor
+text = tm_eliminate_camp_3_text
+description = tm_eliminate_camp_3_descr
+parent = trader
+target = agr_u_bandits
+reward_money = 1300
+reward_reputation = +25
+reward_relation = dolg, 10
+reward_rank = 5
 
-
-[tm_artefact_vyvert]
+[tm_find_artefact_1]
 type = artefact
 community = actor
-text = tm_artefact_vyvert_text
-description = tm_artefact_vyvert_descr
-parent = dolg
-target = af_vyvert
+text = tm_find_artefact_1_text
+description = tm_find_artefact_1_descr
+parent = trader
+target = af_medusa
+reward_money = 250
+reward_reputation = +5
+reward_rank = 1
 
-reward_money = 340
-reward_reputation = 10
-reward_relation = dolg, 100
+[tm_find_artefact_2]
+type = artefact
+community = actor
+text = tm_find_artefact_2_text
+description = tm_find_artefact_2_descr
+parent = trader
+target = af_cristall_flower
+reward_money = 1000
+reward_reputation = +20
+reward_rank = 3
+reward_item = vodka
 
+[tm_find_artefact_3]
+type = artefact
+community = actor
+text = tm_find_artefact_3_text
+description = tm_find_artefact_3_descr
+parent = trader
+target = af_night_star
+reward_money = 2100
+reward_reputation = +40
+reward_rank = 7
 
-
-[tm_kill_svoboda_master]
+[tm_kill_stalker_1]
 type = kill_stalker
 community = actor
-text = tm_kill_svoboda_master_text
-description = tm_kill_svoboda_master_descr
-parent = dolg
-target = mil_freedom_respawn_1
+text = tm_kill_stalker_1_text
+description = tm_kill_stalker_1_descr
+parent = trader
+target = sim_Bandit_master
+reward_money = 1500
+reward_reputation = +15
+reward_relation = dolg, 5
+reward_item = medkit,bandage
+reward_rank = 6
 
-reward_money = 870
-reward_reputation = 10
-reward_relation = dolg, 100, freedom, -100
-reward_rank = 10
-
-
-[tm_find_boar_leg]
-type = monster_part
+[tm_kill_stalker_2]
+type = kill_stalker
 community = actor
-text = tm_find_boar_leg_text
-description = tm_find_boar_leg_descr
-parent = dolg
-target = mutant_boar_leg
+text = tm_kill_stalker_2_text
+description = tm_kill_stalker_2_descr
+parent = trader
+target = sim_stalker_veteran
+reward_money = 1300
+reward_reputation = -25
+reward_item = medkit
+reward_rank = 4
 
-reward_money = 100
-reward_reputation = 10
-reward_relation = dolg, 100
+[tm_kill_stalker_3]
+type = kill_stalker
+community = actor
+text = tm_kill_stalker_3_text
+description = tm_kill_stalker_3_descr
+parent = trader
+target = sim_stalker_novice
+reward_money = 400
+reward_reputation = -10
+reward_rank = 2
 
-
-[tm_find_quest_item]
+[tm_find_item_1]
 type = find_item
 community = actor
-text = tm_find_quest_item_text
-description = tm_find_quest_item_descr
-parent = dolg
-target = quest_item
+text = tm_find_item_1_text
+description = tm_find_item_1_descr
+parent = trader
+target = outfit_bandit_anom
+reward_money = 2000
+reward_reputation = +35
+reward_item = medkit,bandage
+reward_rank = 6
 
-reward_money = 100
-reward_reputation = 10
-reward_relation = dolg, 100
+[tm_find_item_2]
+type = find_item
+community = actor
+text = tm_find_item_2_text
+description = tm_find_item_2_descr
+parent = trader
+target = wpn_fort_m1
+reward_money = 500
+reward_reputation = +15
+reward_rank = 3

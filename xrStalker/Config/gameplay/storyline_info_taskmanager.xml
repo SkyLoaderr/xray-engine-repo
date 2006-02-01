@@ -1,19 +1,58 @@
-<article id="tm_eliminate_test_lager_descr" name="eliminate_lager" group="Diary">
-        <text>tm_eliminate_test_lager_descr</text>
+
+;--------Eliminate Lager------------
+
+<article id="tm_eliminate_camp_1_descr" name="eliminate_lager" group="Diary">
+        <text>tm_eliminate_camp_1_descr</text>
 </article>
 
-<article id="tm_artefact_vyvert_descr" name="eliminate_lager" group="Diary">
-        <text>tm_artefact_vyvert_descr</text>
+<article id="tm_eliminate_camp_2_descr" name="eliminate_lager" group="Diary">
+        <text>tm_eliminate_camp_2_descr</text>
 </article>
 
-<article id="tm_kill_svoboda_master_descr" name="eliminate_lager" group="Diary">
-        <text>tm_artefact_vyvert_descr</text>
+<article id="tm_eliminate_camp_3_descr" name="eliminate_lager" group="Diary">
+        <text>tm_eliminate_camp_3_descr</text>
 </article>
 
-<article id="tm_find_boar_leg_descr" name="eliminate_lager" group="Diary">
-        <text>tm_artefact_vyvert_descr</text>
+;--------Artefact------------------
+
+<article id="tm_find_artefact_1_descr" name="artefact" group="Diary">
+        <text>tm_find_artefact_1_descr</text>
 </article>
 
-<article id="tm_find_quest_item_descr" name="eliminate_lager" group="Diary">
-        <text>tm_artefact_vyvert_descr</text>
+<article id="tm_find_artefact_2_descr" name="artefact" group="Diary">
+        <text>tm_find_artefact_2_descr</text>
 </article>
+
+<article id="tm_find_artefact_3_descr" name="artefact" group="Diary">
+        <text>tm_find_artefact_3_descr</text>
+</article>
+
+;------------Kill Stalker---------
+
+<article id=">tm_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+        <text>tm_kill_stalker_1_descr</text>
+</article>
+<article id="tm_kill_stalker_2_descr" name="kill_stalker" group="Diary">
+        <text>tm_kill_stalker_2_descr</text>
+</article>
+<article id="tm_kill_stalker_3_descr" name="kill_stalker" group="Diary">
+        <text>tm_kill_stalker_3_descr</text>
+</article>
+
+;------------Find Item-----------------
+
+<article id="tm_find_item_1_descr" name="find_item" group="Diary">
+        <text>tm_find_item_1_descr</text>
+</article>
+
+<article id="tm_find_item_2_descr" name="find_item" group="Diary">
+        <text>tm_find_item_2_descr</text>
+</article>
+
+
+
+
+
+
+
+
