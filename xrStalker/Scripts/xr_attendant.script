@@ -148,6 +148,13 @@ function action_follow:execute ()
     if not self.was_reset then
        self:reset_scheme()
     end
+    
+    --printf("follower<follow.execute>: try_switch_to_another_section")
+    if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
+       self.st.leader_id = nil
+       return 
+    end
+    
     -- FIXME !!! 
     --xr_sound.set_sound(self.object, self.st.sound_theme)
     --local pos = self.object:position ()
@@ -183,11 +190,6 @@ function action_follow:execute ()
        return
     end    
     
-    --printf("follower<follow.execute>: try_switch_to_another_section")
-    if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
-       self.st.leader_id = nil
-       return 
-    end
     
     --получим целевую точку, дистанцию до нее и позицию.
     local vid, vdist, vpos = self:calculate_position ()
