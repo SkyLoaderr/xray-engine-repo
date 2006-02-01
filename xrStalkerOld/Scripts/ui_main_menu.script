@@ -87,6 +87,12 @@ end
 
 function main_menu:OnButton_disconnect_clicked()
 	self.message_box:Init("message_box_quit_game")
+	
+	if (level.game_id() ~= 1) then		
+		self.message_box:SetText("ui_mm_disconnect_message")	-- MultiPlayer
+	else
+		self.message_box:SetText("ui_mm_quit_game_message")		-- SinglePlayer
+	end
 	self:GetHolder():start_stop_menu(self.message_box, true)
 end
 
@@ -218,7 +224,7 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 			self:OnButton_load_spawn()
 			
 		elseif dik == DIK_keys.DIK_Q then
-			self:OnButton_quit_clicked()
+			self:OnMessageQuitWin()
 
 		end
 	

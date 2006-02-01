@@ -64,7 +64,7 @@
         <text>Имя сервера</text>
     </string>
     <string id="mm_mp_serverinfo">
-        <text>Иформация сервера</text>
+        <text>Информ. сервера</text>
     </string>
     <string id="mm_mp_serverlist">
         <text>Сервер</text>
@@ -115,7 +115,7 @@
         <text>Стартовая погода</text>
     </string>
     <string id="mm_mp_rateofchange">
-        <text>Коэфициент изминения</text>
+        <text>Коэф. изминения</text>
     </string>
     <string id="mm_mp_publicserver">
         <text>Публичный сервер</text>

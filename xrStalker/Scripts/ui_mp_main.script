@@ -245,6 +245,27 @@ function mp_main:GatherServerData()
 			cmdstr = cmdstr .. "/spectr=" .. tmp
 		end
 	end
+	
+	-- spectator options --		
+	tmp = 0;
+	if self.check_spec_freefly:GetCheck() then
+		tmp = tmp + 1
+	end
+	if self.check_spec_firsteye:GetCheck() then
+		tmp = tmp + 2
+	end
+	if self.check_spec_lookat:GetCheck() then
+		tmp = tmp + 4
+	end
+	if self.check_spec_freelook:GetCheck() then
+		tmp = tmp + 8
+	end
+	if self.check_spec_teamonly:GetCheck() then
+		tmp = tmp + 16
+	end
+	
+	cmdstr = cmdstr .. "/spectrmds=" .. tmp	
+	
 	-- allow voting ------------------------------------------------------------------
 	tmp = self.check_allow_voting:GetCheck()
 	if true == tmp then

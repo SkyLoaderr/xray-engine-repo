@@ -15,7 +15,7 @@ void CUIRadioButton::Init(float x, float y, float width, float height){
     CUI3tButton::InitTexture("ui_radio");
 	Frect r = m_background.GetE()->GetStaticItem()->GetRect(); 
 	CUI3tButton::SetTextX(r.width());
-    CUI3tButton::Init(x,y, width, r.height());
+    CUI3tButton::Init(x,y, width, r.height() - 5);
 	m_pLines->Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
 }
 
