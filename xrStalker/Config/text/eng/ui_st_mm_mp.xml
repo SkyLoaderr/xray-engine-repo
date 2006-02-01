@@ -189,5 +189,23 @@
     <string id="mm_mp_host_port">
         <text>IP/host:port</text>
     </string>
+    <string id="mm_mp_spectator_options">
+        <text>Spectator Options</text>
+    </string>
+    <string id="mm_mp_spectator_teamonly">
+        <text>Team Only</text>
+    </string>
+    <string id="mm_mp_spectator_freefly">
+        <text>Free Fly</text>
+    </string>
+    <string id="mm_mp_spectator_firsteye">
+        <text>First Eye</text>
+    </string>
+    <string id="mm_mp_spectator_lookat">
+        <text>Look At</text>
+    </string>
+    <string id="mm_mp_spectator_freelook">
+        <text>Free Look</text>
+    </string>
     
 </string_table>

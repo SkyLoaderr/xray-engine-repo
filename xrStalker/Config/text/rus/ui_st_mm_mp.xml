@@ -208,4 +208,23 @@
         <text>IP/хост:порт</text>
     </string>
     
+    <string id="mm_mp_spectator_options">
+        <text>Настройки спектатора</text>
+    </string>
+    <string id="mm_mp_spectator_teamonly">
+        <text>Только для комманды</text>
+    </string>
+    <string id="mm_mp_spectator_freefly">
+        <text>Свободный полет</text>
+    </string>
+    <string id="mm_mp_spectator_firsteye">
+        <text>От первого лица</text>
+    </string>
+    <string id="mm_mp_spectator_lookat">
+        <text>От третьего лица</text>
+    </string>
+    <string id="mm_mp_spectator_freelook">
+        <text>Свободно-привязаный</text>
+    </string>
+    
 </string_table>
