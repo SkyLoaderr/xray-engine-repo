@@ -100,7 +100,7 @@ void CScriptGameObject::Kill					(CScriptGameObject* who)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member Kill!",*object().cName());
 		return;
 	}
-	l_tpEntity->KillEntity	(who ? &who->object() : 0);
+	l_tpEntity->KillEntity	(who ? who->object().ID() : object().ID());
 }
 
 bool CScriptGameObject::Alive					() const

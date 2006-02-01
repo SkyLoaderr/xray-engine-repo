@@ -119,8 +119,10 @@ void	CEntity::Hit		(SHit* pHDS)
 	if(BI_NONE!=pHDS->bone())	HitSignal(lost_health,vLocalDir,pHDS->who,pHDS->boneID);
 
 	// If Local() - perform some logic
-	if (Local() && !g_Alive() && !AlreadyDie())
-		KillEntity	(pHDS->who);
+	if (Local() && !g_Alive() && !AlreadyDie()) {
+//		KillEntity	(pHDS->who);
+		KillEntity	(pHDS->whoID);
+	}
 	//must be last!!! @slipch
 //	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse, hit_type);
 	inherited::Hit(pHDS);
@@ -272,11 +274,11 @@ void CEntity::KillEntity(u16 whoID)
 	}
 };
 
-void CEntity::KillEntity(CObject* who)
-{
-	VERIFY			(who);
-	if (who) KillEntity(who->ID());	
-}
+//void CEntity::KillEntity(CObject* who)
+//{
+//	VERIFY			(who);
+//	if (who) KillEntity(who->ID());	
+//}
 
 void CEntity::reinit			()
 {

@@ -10,6 +10,12 @@
 #include "net_server.h"
 #include "game_sv_base.h"
 #include "id_generator.h"
+
+#ifdef DEBUG
+#	define SLOW_VERIFY_ENTITIES
+#endif
+
+
 class CSE_Abstract;
 
 const u32	NET_Latency		= 50;		// time in (ms)

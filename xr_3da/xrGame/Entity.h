@@ -96,7 +96,7 @@ public:
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 
 	virtual void			Die					(CObject* who);
-			void			KillEntity			(CObject* who);
+//			void			KillEntity			(CObject* who);
 			void			KillEntity			(u16 whoID);
 		
 	// Events

@@ -12,7 +12,9 @@ void xrServer::Perform_destroy	(CSE_Abstract* object, u32 mode)
 	R_ASSERT				(object->ID_Parent == 0xffff);
 
 #ifdef DEBUG
-//	verify_entities			();
+#	ifdef SLOW_VERIFY_ENTITIES
+		verify_entities			();
+#	endif
 #endif
 
 	while (!object->children.empty()) {
@@ -21,7 +23,9 @@ void xrServer::Perform_destroy	(CSE_Abstract* object, u32 mode)
 //		Msg					("SLS-CLEAR : REJECT  [%s][%s] FROM [%s][%s]",child->name(),child->name_replace(),object->name(),object->name_replace());
 		Perform_reject		(child,object,2*NET_Latency);
 #ifdef DEBUG
-//		verify_entities			();
+#	ifdef SLOW_VERIFY_ENTITIES
+		verify_entities			();
+#	endif
 #endif
 		Perform_destroy		(child,mode);
 	}
@@ -31,7 +35,9 @@ void xrServer::Perform_destroy	(CSE_Abstract* object, u32 mode)
 	entity_Destroy			(object);
 
 #ifdef DEBUG
-//	verify_entities			();
+#	ifdef SLOW_VERIFY_ENTITIES
+		verify_entities		();
+#	endif
 #endif
 
 	NET_Packet				P;

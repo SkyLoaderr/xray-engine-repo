@@ -220,7 +220,7 @@ void CEntityAlive::shedule_Update(u32 dt)
 		}
 		else {
 //			Msg			("%6d : KillEntity from CEntityAlive for object %s",Device.dwTimeGlobal,*cName());
-			KillEntity	(this);
+			KillEntity	(ID());
 		}
 	}
 }

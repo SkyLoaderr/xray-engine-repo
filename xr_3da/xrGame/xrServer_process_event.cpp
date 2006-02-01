@@ -39,19 +39,25 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 	case GE_INFO_TRANSFER:{
 		ClientID clientID;clientID.setBroadcast();
 		SendBroadcast			(clientID,P,MODE);
-//		VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+		VERIFY					(verify_entities());
+#	endif
 		}break;
 	case GE_PDA:{
 		ClientID clientID;clientID.setBroadcast();
 		SendBroadcast			(clientID,P,MODE);
-//		VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+		VERIFY					(verify_entities());
+#	endif
 		}break;
 	case GE_INV_ACTION:
 		{
 			xrClientData* CL		= ID_to_client(sender);
 			if (CL)	CL->net_Ready	= TRUE;
 			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-//			VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY					(verify_entities());
+#	endif
 		}break;
 	case GE_RESPAWN:
 		{
@@ -65,14 +71,18 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 				R.phantom			= destination;
 				q_respawn.insert	(R);
 			}
-//			VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY					(verify_entities());
+#	endif
 		}
 		break;
 	case GE_WPN_STATE_CHANGE:
 	case GE_ZONE_STATE_CHANGE:{
 		ClientID clientID;clientID.setBroadcast();
 		SendBroadcast			(clientID,P,MODE);
-//		VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+		VERIFY					(verify_entities());
+#	endif
 		}break;
 	case GE_TRADE_BUY:
 	case GE_OWNERSHIP_TAKE:
@@ -193,14 +203,18 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			ClientID clientID;clientID.setBroadcast();
 			SendBroadcast		(clientID,P,MODE);
-//			VERIFY				(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY				(verify_entities());
+#	endif
 		}break;
 	case GE_ADDON_ATTACH:
 	case GE_ADDON_DETACH:
 	case GE_CHANGE_POS:
 		{			
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-//			VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY					(verify_entities());
+#	endif
 		}break;
 	case GEG_PLAYER_ITEM2SLOT:
 	case GEG_PLAYER_ITEM2BELT:
@@ -237,13 +251,17 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 //			SendBroadcast		(sender,P,MODE);
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 
-//			VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY					(verify_entities());
+#	endif
 		}break;
 	case GEG_PLAYER_ITEMDROP:
 	case GEG_PLAYER_ITEM_EAT:
 		{
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-//			VERIFY					(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY					(verify_entities());
+#	endif
 		}break;	
 	case GEG_PLAYER_ITEM_SELL:
 		{
@@ -271,13 +289,17 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			ClientID clientID;clientID.setBroadcast();
 			SendBroadcast		(clientID,P,MODE);
-//			VERIFY				(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY				(verify_entities());
+#	endif
 		}break;
 	case GEG_PLAYER_PLAY_HEADSHOT_PARTICLE:
 		{
 			ClientID clientID;clientID.setBroadcast();
 			SendBroadcast		(clientID,P,MODE);
-			//			VERIFY				(verify_entities());
+#	ifdef SLOW_VERIFY_ENTITIES
+			VERIFY				(verify_entities());
+#	endif
 		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
