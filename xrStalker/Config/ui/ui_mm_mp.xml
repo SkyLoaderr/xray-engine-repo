@@ -324,7 +324,7 @@
 		</cap_weather_options>
 		<cap_spectator_options x="503" y="115" width="226" height="23">
 			<texture>ui_brokenline</texture>
-			<text font="letterica16" r="215" g="195" b="170" x="10">Spectator options</text>
+			<text font="letterica16" r="215" g="195" b="170" x="10">mm_mp_spectator_options</text>
 		</cap_spectator_options>
 		
 				
@@ -405,23 +405,23 @@
 		</check_no_anmalies>
 		
 		<check_spec_teamonly x="519" y="140" width="143" height="18">
-			<text font="letterica16" r="215" g="195" b="170" >Team Only</text>
+			<text font="letterica16" r="115" g="114" b="112">mm_mp_spectator_teamonly</text>
 			<options_item entry="mm_net_spec_teamonly" group="mm_mp_server"/>
 		</check_spec_teamonly>
 		<check_spec_freefly x="519" y="165" width="143" height="18">
-			<text font="letterica16" r="215" g="195" b="170" >Free Fly</text>
+			<text font="letterica16" r="115" g="114" b="112">mm_mp_spectator_freefly</text>
 			<options_item entry="mm_net_spec_freefly" group="mm_mp_server"/>
 		</check_spec_freefly>
 		<check_spec_firsteye x="519" y="190" width="143" height="18">
-			<text font="letterica16" r="215" g="195" b="170" >First Eye</text>
+			<text font="letterica16" r="115" g="114" b="112">mm_mp_spectator_firsteye</text>
 			<options_item entry="mm_net_spec_firsteye" group="mm_mp_server"/>
 		</check_spec_firsteye>
 		<check_spec_lookat x="519" y="215" width="143" height="18">
-			<text font="letterica16" r="215" g="195" b="170" >Look At</text>
+			<text font="letterica16" r="115" g="114" b="112">mm_mp_spectator_lookat</text>
 			<options_item entry="mm_net_spec_lookat" group="mm_mp_server"/>
 		</check_spec_lookat>
 		<check_spec_freelook x="519" y="240" width="143" height="18">
-			<text font="letterica16" r="215" g="195" b="170" >Free Look</text>
+			<text font="letterica16" r="115" g="114" b="112">mm_mp_spectator_freelook</text>
 			<options_item entry="mm_net_spec_freelook" group="mm_mp_server"/>
 		</check_spec_freelook>
 		
