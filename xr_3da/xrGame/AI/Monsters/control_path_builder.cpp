@@ -97,14 +97,10 @@ void CControlPathBuilder::update_schedule()
 				game_selector().set_selection_type	(eSelectionTypeRandomBranching);
 		} else if (m_data.path_type != MovementManager::ePathTypePatrolPath) {
 			// set target
-			if (m_data.target_node != u32(-1)) {
-				detail().set_dest_position		(m_data.target_position);
-				set_level_dest_vertex			(m_data.target_node);
-			} else {
-				u32 node = find_nearest_vertex(object().ai_location().level_vertex_id(),m_data.target_position,30.f);
-				set_level_dest_vertex(node);
-				detail().set_dest_position	(ai().level_graph().vertex_position(node));
-			}
+			VERIFY(m_data.target_node != u32(-1));
+
+			detail().set_dest_position		(m_data.target_position);
+			set_level_dest_vertex			(m_data.target_node);
 		}
 	}
 

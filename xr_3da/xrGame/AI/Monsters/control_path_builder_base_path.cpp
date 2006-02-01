@@ -174,6 +174,7 @@ void CControlPathBuilderBase::find_node()
 	}
 
 	// нода не найдена. на следующем этапе будет использован селектор
-	m_target_found.node = u32(-1);
+	m_target_found.node		= m_man->path_builder().find_nearest_vertex(m_object->ai_location().level_vertex_id(),m_target_found.position,30.f);
+	m_target_found.position = ai().level_graph().vertex_position(m_target_found.node);
 }
 
