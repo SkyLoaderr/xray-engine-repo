@@ -100,7 +100,6 @@ namespace collide
 		rqVec		results;
 		static bool	r_sort_pred		(const rq_result& a, const rq_result& b)	{	return a.range<b.range;}
 	public:
-		rq_results	()	{	results.reserve(8);	}
 		IC BOOL		append_result	(CObject* _who, float _range, int _element, BOOL bNearest)
 		{
 			if (bNearest&&!results.empty()){
@@ -122,7 +121,8 @@ namespace collide
 		}
 		IC void		append_result	(rq_result& res)
 		{
-			results.push_back(res);
+			if (0==results.capacity())	results.reserve(8);
+			results.push_back			(res);
 		}
 		IC int			r_count			()	{ return results.size();	}
 		IC rq_result*	r_begin			()	{ return &*results.begin();	}
