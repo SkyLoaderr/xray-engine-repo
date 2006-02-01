@@ -39,7 +39,7 @@ function GetDamageMP(section)
 	local ltx = system_ini()
 	local val = ltx:r_float(section,"hit_power")
 	
-	val = 75*(1 + math.log(val/100))
+	val = 75*(1 + math.log10(val/100))
 	
 	return normalize(val)	
 end
@@ -84,8 +84,8 @@ function GetAccuracy(section)
 	local cam_dispersion_inc	= ltx:r_float(section,"cam_dispersion_inc")
 	local cam_dispersion		= ltx:r_float(section,"cam_dispersion")
 	local cam_step_angle_horz	= ltx:r_float(section,"cam_step_angle_horz")
-	local rpm 					= ltx:r_float(section,"rpm")
-	local ammo_list				= ltx:r_string(section,"ammo_class")
+	local rpm 			= ltx:r_float(section,"rpm")
+	local ammo_list			= ltx:r_string(section,"ammo_class")
 	
 	local pos  = string.find(ammo_list,",",1)
 	local k_disp
@@ -96,7 +96,7 @@ function GetAccuracy(section)
 		k_disp				= ltx:r_float(ammo_list, "k_disp");
 	end
 	
-    val = (0.05*rpm*math.log(1/(cam_dispersion/10 + cam_dispersion_inc)) + 30*math.log(1/(cam_dispersion*cam_step_angle_horz)))*math.pow(cam_dispersion_frac,2) + 50*math.log(1/(fire_dispersion_base*k_disp))
+    val = (0.05*rpm*math.log10(1/(cam_dispersion/10 + cam_dispersion_inc)) + 30*math.log10(1/(cam_dispersion*cam_step_angle_horz)))*math.pow(cam_dispersion_frac,2) + 50*math.log10(1/(fire_dispersion_base*k_disp));
 	
 	return normalize(val)
 end
