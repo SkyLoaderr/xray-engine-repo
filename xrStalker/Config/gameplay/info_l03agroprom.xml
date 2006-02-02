@@ -32,6 +32,7 @@
 	<info_portion id="agr_find_gunslinger_cache_done">
 		<disable>agr_find_gunslinger_cache_start</disable>
 	</info_portion>
+	<info_portion id="agr_find_gunslinger_cache_final"></info_portion>
 
 	<info_portion id="agr_krot_secret_info">
 		<article>agr_krot_secret_info</article>
