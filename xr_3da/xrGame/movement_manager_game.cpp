@@ -33,164 +33,156 @@ void CMovementManager::process_game_path()
 	if (!game_path().actual() && (m_path_state > ePathStateBuildGamePath))
 		m_path_state		= ePathStateBuildGamePath;
 
-	EPathState	prev_state	= m_path_state;
-	for (;;) {
-		switch (m_path_state) {
-			case ePathStateSelectGameVertex : {
+	switch (m_path_state) {
+		case ePathStateSelectGameVertex : {
 
-				game_selector().select_location(object().ai_location().game_vertex_id(),game_path().m_dest_vertex_id);
+			game_selector().select_location(object().ai_location().game_vertex_id(),game_path().m_dest_vertex_id);
 
-				if (game_selector().failed())
-					break;
+			if (game_selector().failed())
+				break;
 
-				m_path_state	= ePathStateBuildGamePath;
+			m_path_state	= ePathStateBuildGamePath;
 
 //				if (time_over())
 //					break;
-			}
-			case ePathStateBuildGamePath : {
-				game_path().build_path(object().ai_location().game_vertex_id(),game_dest_vertex_id());
+		}
+		case ePathStateBuildGamePath : {
+			game_path().build_path(object().ai_location().game_vertex_id(),game_dest_vertex_id());
 
-				if (game_path().failed())
-					break;
-				
-				m_path_state	= ePathStateContinueGamePath;
-				
+			if (game_path().failed())
+				break;
+			
+			m_path_state	= ePathStateContinueGamePath;
+			
 //				if (time_over())
 //					break;
+		}
+		case ePathStateContinueGamePath : {
+			game_path().select_intermediate_vertex();
+			if (ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id() != ai().game_graph().vertex(game_path().intermediate_vertex_id())->level_id()) {
+				m_path_state	= ePathStateTeleport;
+				VERIFY			(ai().get_alife());
+				VERIFY			(ai().alife().graph().level().level_id() == ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id());
+				teleport		(game_path().intermediate_vertex_id());
+				break;
 			}
-			case ePathStateContinueGamePath : {
-				game_path().select_intermediate_vertex();
-				if (ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id() != ai().game_graph().vertex(game_path().intermediate_vertex_id())->level_id()) {
-					m_path_state	= ePathStateTeleport;
-					VERIFY			(ai().get_alife());
-					VERIFY			(ai().alife().graph().level().level_id() == ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id());
-					teleport		(game_path().intermediate_vertex_id());
-					break;
-				}
-				
-				m_path_state		= ePathStateBuildLevelPath;
-				
+			
+			m_path_state		= ePathStateBuildLevelPath;
+			
 //				if (time_over())
 //					break;
+		}
+		case ePathStateBuildLevelPath : {
+			u32	dest_level_vertex_id = ai().game_graph().vertex(
+					game_path().intermediate_vertex_id()
+			)->level_vertex_id();
+
+			if (!accessible(dest_level_vertex_id)) {
+				Fvector					dest_pos;
+				dest_level_vertex_id	= restrictions().accessible_nearest(
+					ai().level_graph().vertex_position(dest_level_vertex_id),
+					dest_pos
+				);
 			}
-			case ePathStateBuildLevelPath : {
-				u32	dest_level_vertex_id = ai().game_graph().vertex(
-						game_path().intermediate_vertex_id()
-				)->level_vertex_id();
 
-				if (!accessible(dest_level_vertex_id)) {
-					Fvector					dest_pos;
-					dest_level_vertex_id	= restrictions().accessible_nearest(
-						ai().level_graph().vertex_position(dest_level_vertex_id),
-						dest_pos
-					);
-				}
-
-				if (can_use_distributed_compuations(mtLevelPath)) {
-					level_path_builder().setup(
-						object().ai_location().level_vertex_id(),
-						dest_level_vertex_id
-					);
-
-					break;
-				}
-
-				level_path().build_path(
+			if (can_use_distributed_compuations(mtLevelPath)) {
+				level_path_builder().setup(
 					object().ai_location().level_vertex_id(),
 					dest_level_vertex_id
 				);
 
-				if (level_path().failed()) {
-					m_path_state	= ePathStateBuildLevelPath;
-					break;
-				}
-				
-				m_path_state		= ePathStateContinueLevelPath;
-				
 				break;
 			}
-			case ePathStateContinueLevelPath : {
-				VERIFY				(!level_path().failed());
 
-				level_path().select_intermediate_vertex();
-				
-				m_path_state		= ePathStateBuildDetailPath;
-				
+			level_path().build_path(
+				object().ai_location().level_vertex_id(),
+				dest_level_vertex_id
+			);
+
+			if (level_path().failed()) {
+				m_path_state	= ePathStateBuildLevelPath;
+				break;
+			}
+			
+			m_path_state		= ePathStateContinueLevelPath;
+			
+			break;
+		}
+		case ePathStateContinueLevelPath : {
+			VERIFY				(!level_path().failed());
+
+			level_path().select_intermediate_vertex();
+			
+			m_path_state		= ePathStateBuildDetailPath;
+			
 //				if (time_over())
 //					break;
-			}
-			case ePathStateBuildDetailPath : {
-				detail().set_state_patrol_path(true);
-				detail().set_start_position(object().Position());
-				detail().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
-				detail().set_dest_position( 
-					ai().level_graph().vertex_position(
-						level_path().intermediate_vertex_id()
-					)
-				);
+		}
+		case ePathStateBuildDetailPath : {
+			detail().set_state_patrol_path(true);
+			detail().set_start_position(object().Position());
+			detail().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
+			detail().set_dest_position( 
+				ai().level_graph().vertex_position(
+					level_path().intermediate_vertex_id()
+				)
+			);
 
-				if (can_use_distributed_compuations(mtDetailPath)) {
-					detail_path_builder().setup(
-						level_path().path(),
-						level_path().intermediate_index()
-					);
-
-					break;
-				}
-				
-				detail().build_path(
+			if (can_use_distributed_compuations(mtDetailPath)) {
+				detail_path_builder().setup(
 					level_path().path(),
 					level_path().intermediate_index()
 				);
-				
-				if (detail().failed()) {
-					m_path_state	= ePathStateBuildLevelPath;
-					break;
-				}
 
-				m_path_state		= ePathStatePathVerification;
-				
 				break;
 			}
-			case ePathStatePathVerification : {
-				if (!game_selector().actual(object().ai_location().game_vertex_id(),path_completed()))
-					m_path_state	= ePathStateSelectGameVertex;
+			
+			detail().build_path(
+				level_path().path(),
+				level_path().intermediate_index()
+			);
+			
+			if (detail().failed()) {
+				m_path_state	= ePathStateBuildLevelPath;
+				break;
+			}
+
+			m_path_state		= ePathStatePathVerification;
+			
+			break;
+		}
+		case ePathStatePathVerification : {
+			if (!game_selector().actual(object().ai_location().game_vertex_id(),path_completed()))
+				m_path_state	= ePathStateSelectGameVertex;
+			else
+				if (!game_path().actual())
+					m_path_state	= ePathStateBuildGamePath;
 				else
-					if (!game_path().actual())
-						m_path_state	= ePathStateBuildGamePath;
+					if (!level_path().actual())
+						m_path_state	= ePathStateBuildLevelPath;
 					else
-						if (!level_path().actual())
+						if (!detail().actual())
 							m_path_state	= ePathStateBuildLevelPath;
 						else
-							if (!detail().actual())
-								m_path_state	= ePathStateBuildLevelPath;
-							else
-								if (detail().completed(object().Position(),!detail().state_patrol_path())) {
-									m_path_state	= ePathStateContinueLevelPath;
-									if (level_path().completed()) {
-										m_path_state	= ePathStateContinueGamePath;
-										if (game_path().completed())
-											m_path_state	= ePathStatePathCompleted;
-									}
+							if (detail().completed(object().Position(),!detail().state_patrol_path())) {
+								m_path_state	= ePathStateContinueLevelPath;
+								if (level_path().completed()) {
+									m_path_state	= ePathStateContinueGamePath;
+									if (game_path().completed())
+										m_path_state	= ePathStatePathCompleted;
 								}
-				break;
-			}
-			case ePathStatePathCompleted : {
-				if (!game_selector().actual(object().ai_location().game_vertex_id(),path_completed()))
-					m_path_state	= ePathStateSelectGameVertex;
-				break;
-			}
-			case ePathStateTeleport : {
-				break;
-			}
-			default : NODEFAULT;
-		}
-
-		if ((m_path_state == prev_state) || wait_for_distributed_computation())
+							}
 			break;
-
-		prev_state		= m_path_state;
+		}
+		case ePathStatePathCompleted : {
+			if (!game_selector().actual(object().ai_location().game_vertex_id(),path_completed()))
+				m_path_state	= ePathStateSelectGameVertex;
+			break;
+		}
+		case ePathStateTeleport : {
+			break;
+		}
+		default : NODEFAULT;
 	}
 	
 	STOP_PROFILE
