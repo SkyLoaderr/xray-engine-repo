@@ -484,10 +484,10 @@ void	CCar::Hit							(SHit* pHDS)
 {
 
 	SHit	HDS = *pHDS;
-	if(CDelayedActionFuse::isActive()||Initiator()==u16(-1)&&HDS.hit_type==ALife::eHitTypeStrike)
-	{
-		HDS.power=0.f;
-	}
+	//if(CDelayedActionFuse::isActive()||Initiator()==u16(-1)&&HDS.hit_type==ALife::eHitTypeStrike)
+	//{
+	//	HDS.power=0.f;
+	//}
 
 	if(HDS.who->ID()!=ID())
 	{
@@ -1917,7 +1917,8 @@ u16 CCar::Initiator()
 	{
 		return Owner()->ID();
 	}
-	else return CExplosive::Initiator();
+	else if(CExplosive::Initiator()!=u16(-1))return CExplosive::Initiator();
+	else return ID()	;
 }
 
 float	CCar::RefWheelMaxSpeed()
