@@ -16,9 +16,14 @@ local state_fight = 1
 -- General
 --------------------------------------------------------------------------
 local t = {}
-local gulags = {val_escort = {comm = {"bandit", "dolg"}}, val_sacrifice = {comm = {"bandit", "dolg"}},
-                val_prisoner = {comm = {"dolg"}}, val_sos = {}, val_rob = {comm = true},
-                val_lager_bandits = {comm = {"bandit"}}, val_offline_group = {}}
+local gulags = {val_escort = {comm = {"bandit", "dolg"}},
+                val_sacrifice = {comm = {"bandit", "dolg"}},
+                val_prisoner = {comm = {"dolg"}},
+                val_sos = {},
+                val_rob = {comm = true},
+                val_lager_bandits = {comm = {"bandit"}},
+                val_offline_group = {},
+                val_watchtower = {comm = true}}
 
 -- Job -------------------------------------------------------------------
 function load_job(sj, gname, type, squad, groups)
@@ -97,24 +102,24 @@ end
 -- Escort
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function e_predicate_n(data) -- nap1
-	return data.story_id == 406
+function e_predicate_n(npc_info) -- nap1
+	return npc_info.story_id == 406
 end
 
-function e_predicate_c(data) -- captive
-	return data.story_id == 400
+function e_predicate_c(npc_info) -- captive
+	return npc_info.story_id == 400
 end
 
-function e_predicate_w(data) -- wounded bandit
-	return data.story_id == 424
+function e_predicate_w(npc_info) -- wounded bandit
+	return npc_info.story_id == 424
 end
 
-function e_predicate_g1(data) -- guards
-	return data.story_id == 407 --data.profile_name == "val_bandit_general"
+function e_predicate_g1(npc_info) -- guards
+	return npc_info.story_id == 407 --npc_info.profile_name == "val_bandit_general"
 end
 
-function e_predicate_g2(data) -- guards
-	return data.story_id == 408 --data.profile_name == "val_bandit_general"
+function e_predicate_g2(npc_info) -- guards
+	return npc_info.story_id == 408 --npc_info.profile_name == "val_bandit_general"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -204,19 +209,19 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "path_walk           = captive_walk\n" ..
                "path_look           = captive_look\n" ..
                "formation           = back\n" ..
-               "animation           = guard\n" ..
+               --"animation           = patrol\n" ..
                "on_info             = {+val_escort_combat}          remark@val_escort_guard_fight\n" ..
-               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
-               "on_info3            = {+val_escort_scene_fail}      remark@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_scene_fail}      remark@val_escort_guard_free\n" ..
+               "on_info3            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
                "on_info4            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "combat_ignore_cond  = {=check_fighting(400)}\n" ..
 
                -- fight with actor and nap1
                "[remark@" .. gname .. "_guard_fight]\n" ..
                "anim                = wait_na\n" ..
-               "on_info             = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
-               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
-               "on_info3            = {+val_escort_nap1_dead}       patrol@val_escort_guard_walk   %-val_escort_combat%\n" ..
+               "on_info             = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               "on_info3            = {+val_escort_nap1_dead}       remark@val_escort_guard_free\n" ..
                "combat_ignore_cond  = {=check_fighting(400)}\n" ..
 
                -- 
@@ -284,20 +289,20 @@ end
 -- Sacrifice
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function scf_predicate_v(data) -- victim
-	return data.story_id == 401
+function scf_predicate_v(npc_info) -- victim
+	return npc_info.story_id == 401
 end
 
-function scf_predicate_g1(data) -- guard1
-	return data.story_id == 404
+function scf_predicate_g1(npc_info) -- guard1
+	return npc_info.story_id == 404
 end
 
-function scf_predicate_g2(data) -- guard2
-	return data.story_id == 405
+function scf_predicate_g2(npc_info) -- guard2
+	return npc_info.story_id == 405
 end
 
-function scf_predicate_tb(data) -- tunnel bandit
-	return data.story_id == 409
+function scf_predicate_tb(npc_info) -- tunnel bandit
+	return npc_info.story_id == 409
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -372,8 +377,8 @@ end
 -- Prisoner
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function p_predicate(data) -- prisoner
-	return data.story_id == 402
+function p_predicate(npc_info) -- prisoner
+	return npc_info.story_id == 402
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -396,12 +401,12 @@ end
 -- Sos
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function sos_predicate_w(data) -- wounded
-	return data.story_id == 422
+function sos_predicate_w(npc_info) -- wounded
+	return npc_info.story_id == 422
 end
 
-function sos_predicate_bs(data) -- bloodsucker
-	return data.community == "bloodsucker"
+function sos_predicate_bs(npc_info) -- bloodsucker
+	return npc_info.community == "bloodsucker"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -552,16 +557,20 @@ end
 -- Bandits
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
-function lb_predicate1(data) 
-	return data.profile_name == "val_bandit_borov"
+function lb_predicate1(npc_info) 
+	return npc_info.profile_name == "val_bandit_borov"
 end
 
-function lb_predicate2(data) 
-	return data.profile_name == "val_bandit_veteran"
+function lb_predicate_bg(npc_info) 
+	return npc_info.profile_name == "val_bandit_bodyguard"
 end
 
-function lb_predicate3(data) 
-	return data.profile_name == "val_bandit_general"
+function lb_predicate2(npc_info) 
+	return npc_info.profile_name == "val_bandit_veteran"
+end
+
+function lb_predicate3(npc_info) 
+	return npc_info.profile_name == "val_bandit_general"
 end
 
 -- Jobs ------------------------------------------------------------------
@@ -604,7 +613,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 		    prior = 8, state = {state_normal},
 		    squad = squad, group = groups[1],
 		    in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		    predicate = lb_predicate2
+		    predicate = lb_predicate_bg
 	    }
 	    table.insert(sj, t)
 
@@ -613,7 +622,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 		    prior = 8, state = {state_alarm},
 		    squad = squad, group = groups[1],
 		    in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		    predicate = lb_predicate2
+		    predicate = lb_predicate_bg
 	    }
 	    table.insert(sj, t)
 
@@ -622,7 +631,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 		    prior = 8, state = {state_alarm_actor_inside},
 		    squad = squad, group = groups[1],
 		    in_rest = "", out_rest = gname .. "_main_building_restrictor",
-		    predicate = lb_predicate2
+		    predicate = lb_predicate_bg
 	    }
 	    table.insert(sj, t)
     end
@@ -785,4 +794,81 @@ gulags.val_offline_group.job = function(sj, gname, type, squad, groups)
 	end
 
     gulags.val_offline_group.ltx = ltx
+end
+
+
+--------------------------------------------------------------------------
+-- WatchTower
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+function wt_predicate_g(npc_info, gulag) -- guard
+	return string.find(npc_info.name, gulag.name) ~= nil
+end
+
+function wt_predicate_s(npc_info, gulag) -- sniper
+	return string.find(npc_info.name, gulag.name) ~= nil and npc_info.is_sniper == true
+end
+
+-- Jobs ------------------------------------------------------------------
+gulags.val_watchtower.job = function(sj, gname, type, squad, groups)
+    local i, ltx = 1, ""
+
+	-- Проверяем наличие часовых на вышке.
+	while level.patrol_path_exists(gname .. "_guard_" .. i .. "_walk") do
+		-- Необходимо вычитать количество работ из названия точки пути.
+		local way_name = gname .. "_guard_" .. i .. "_walk"
+
+		-- добавляем должность
+		t = { section = "logic@"..way_name,
+			idle = 0,
+			prior = 1, state = {0}, squad = squad, group = groups[1],
+			position_threshold = 10,
+			in_rest = "", out_rest = gname .. "_restr"
+		}
+		table.insert(sj, t)
+
+		-- добавляем описание должности в лтх.
+		ltx = ltx.."[logic@" .. way_name .. "]\n" ..
+                   "active = camper@" .. way_name .. "\n" ..
+
+                   "[camper@" .. way_name .. "]\n" ..
+                   "meet = meet@generic_lager_guard\n" ..
+                   "path_walk = guard_" .. i .. "_walk\n"
+
+		if level.patrol_path_exists(gname .. "_guard_" .. i .. "_look") then
+			ltx = ltx.."path_look = guard_" .. i .. "_look\n"
+		end
+
+		i = i + 1
+	end
+
+	-- Проверяем наличие снайперов в лагере.
+	i = 1
+	while level.patrol_path_exists(gname .. "_sniper_" .. i .."_walk") do
+		-- Необходимо вычитать количество работ из названия точки пути.
+		local way_name = gname .. "_sniper_" .. i .."_walk"
+
+		-- добавляем должность
+		t = { section = "logic@" .. way_name,
+			idle = 0,
+			prior = 2, state = {0}, squad = squad, group = groups[1],
+			position_threshold = 10,
+			in_rest = "", out_rest = gname .. "_restr",
+			predicate = wt_predicate_s
+		}
+		table.insert(sj, t)
+
+		-- добавляем описание должности в лтх.
+		ltx = ltx.."[logic@" .. way_name .. "]\n" ..
+                   "active = camper@" .. way_name .. "\n" ..
+
+                   "[camper@" .. way_name .. "]\n" ..							
+                   "path_walk = sniper_" .. i .. "_walk\n" ..
+                   "path_look = sniper_" .. i .. "_look\n" ..
+                   "sniper = true\n"
+
+		i = i + 1
+	end
+
+    gulags.val_watchtower.ltx = ltx
 end
