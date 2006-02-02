@@ -913,3 +913,13 @@ void				game_cl_Deathmatch::OnGameMenuRespond_ChangeSkin	(NET_Packet& P)
 		OnKeyboardPress(kJUMP);
 	}
 };
+
+bool				game_cl_Deathmatch::EntityCanBeHarmed		(CObject* pObj)
+{
+	if (OnClient()) return false;
+	if (!inherited::EntityCanBeHarmed(pObj)) return false;	
+	if (!pObj) return true;
+	game_PlayerState* PS = GetPlayerByGameID(pObj->ID());
+	if (!PS) return true;
+	return !PS->testFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+};

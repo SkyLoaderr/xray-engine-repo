@@ -55,4 +55,6 @@ public :
 
 	virtual			void				OnSpawn					(CObject* pObj);
 	virtual			void				OnDestroy				(CObject* pObj);
+
+	virtual			bool				EntityCanBeHarmed		(CObject* pObj);
 };

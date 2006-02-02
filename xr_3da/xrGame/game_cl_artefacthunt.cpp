@@ -736,3 +736,15 @@ void	game_cl_ArtefactHunt::OnSellItemsFromRuck		()
 	};	
 	pCurActor->u_EventSend(P);
 };
+
+extern BOOL	g_bShildedBases;
+bool	game_cl_ArtefactHunt::EntityCanBeHarmed		(CObject* pObj)
+{
+	if (OnClient()) return false;
+	if (!inherited::EntityCanBeHarmed(pObj)) return false;	
+	if (!pObj) return true;
+
+	game_PlayerState* PS = GetPlayerByGameID(pObj->ID());
+	if (!PS) return true;
+	return (!g_bShildedBases || !PS->testFlag(GAME_PLAYER_FLAG_ONBASE));
+};

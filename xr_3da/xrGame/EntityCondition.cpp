@@ -275,11 +275,11 @@ void CEntityCondition::UpdateCondition()
 	if (m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth			= true;
-		m_object->OnCriticalHitHealthLoss();
+		if (Game().EntityCanBeHarmed(m_object)) m_object->OnCriticalHitHealthLoss();
 	}
 	else
 	{
-		if (m_fDeltaHealth<0) m_object->OnHitHealthLoss(GetHealth()+m_fDeltaHealth);
+		if (m_fDeltaHealth<0 && Game().EntityCanBeHarmed(m_object)) m_object->OnHitHealthLoss(GetHealth()+m_fDeltaHealth);
 	}
 	//-----------------------------------------
 	UpdateHealth				();
@@ -287,7 +287,7 @@ void CEntityCondition::UpdateCondition()
 	if (!CriticalHealth && m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth			= true;
-		m_object->OnCriticalWoundHealthLoss();
+		if(Game().EntityCanBeHarmed(m_object)) m_object->OnCriticalWoundHealthLoss();
 	};
 	//-----------------------------------------
 	UpdatePower					();
@@ -297,7 +297,7 @@ void CEntityCondition::UpdateCondition()
 	if (!CriticalHealth && m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth = true;
-		m_object->OnCriticalRadiationHealthLoss();
+		if(Game().EntityCanBeHarmed(m_object)) m_object->OnCriticalRadiationHealthLoss();
 	};
 	//-----------------------------------------
 	UpdatePsyHealth				();
@@ -305,7 +305,7 @@ void CEntityCondition::UpdateCondition()
 	UpdateCircumspection		();
 	UpdateEntityMorale			();
 
-	health()					+= (OnClient())?0:m_fDeltaHealth;
+	health()					+= Game().EntityCanBeHarmed(m_object) ? m_fDeltaHealth : 0;
 	m_fPower					+= m_fDeltaPower;
 	m_fSatiety					+= m_fDeltaSatiety;
 	m_fRadiation				+= m_fDeltaRadiation;
