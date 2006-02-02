@@ -139,12 +139,13 @@ bool	CLevel::net_start_client3				()
 		if (level_id<0)	{
 			Disconnect			();
 			pApp->LoadEnd		();
+			connected_to_server = false;
 			return false;
 		}
 		pApp->Level_Set			(level_id);
 		m_name					= level_name;
 		// Load level
-		R_ASSERT2							(Load(level_id),"Loading failed.");
+		R_ASSERT2				(Load(level_id),"Loading failed.");
 
 	}
 	return true;
