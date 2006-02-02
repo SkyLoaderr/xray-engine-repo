@@ -41,7 +41,6 @@ function main()
 		table.insert(spawn_items, "dolg_outfit")
 	elseif level == "l08_yantar" then
 		table.insert(spawn_items, "dolg_outfit")
-		table.insert(spawn_items, "yantar_ghost_pda")
 	elseif level == "l08u_brainlab" then
 		table.insert(spawn_items, "protection_outfit")
 		table.insert(spawn_items, "good_psy_helmet")
