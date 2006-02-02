@@ -9,7 +9,7 @@ function loadJob(sj, gname, type, squad, groups, gulag)
 		t = { section = "logic@walker1",
 			idle = 0,
 			prior = 0, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "test_sr", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@walker2",

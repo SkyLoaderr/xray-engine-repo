@@ -309,19 +309,24 @@ function gulag:object_setup_offline( obj_id )
 end
 
 -- настроить персонажа на работу в онлайне.
--- вызывается у персонажей из net_spawn().
--- если он уже пришёл на работу, настроить ему логику и рестрикторы.
+-- вызывается у персонажей из net_spawn() и из gulag:object_setup_offline()
+-- если он уже пришёл на работу, настроить ему логику и рестрикторы (при необходимости).
 -- obj=game_object
-function gulag:object_setup_online( obj_id, obj, need_setup_logic )
-	printf( "[smart_terrain %s] gulag: object_setup_online: obj=%s need_setup_logic=%s", self.name, obj:name(), tostring( need_setup_logic) )
+function gulag:object_setup_online( obj_id, obj, need_setup_logic, need_setup_restrictors )
+	printf( "[smart_terrain %s] gulag: object_setup_online: obj=%s need_setup_logic=%s need_setup_restrictors=%s", self.name, obj:name(), tostring(need_setup_logic), tostring(need_setup_restrictors) )
 
 	self.Object[obj_id] = obj
 
-	if need_setup_logic and self.ObjectJob[obj_id] then
+	if self.ObjectJob[obj_id] then
 		local job = self.Job[self.ObjectJob[obj_id]]
 
-		self:set_restrictions( obj, job.out_rest, job.in_rest )
-		self:setup_logic( obj, job.section )
+		if need_setup_logic then
+			self:setup_logic( obj, job.section )
+		end
+
+		if need_setup_restrictors then
+			self:set_restrictions( obj, job.out_rest, job.in_rest )
+		end
 	end
 end
 
@@ -1059,12 +1064,13 @@ function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 --		printf( "strn_id=%s", tostring( strn_id ) )
 
 		if strn_id ~= 65535 then
-			local strn             = sim:object( strn_id )
-			local need_setup_logic = strn.gulag.Object_begin_job[obj:id()] and not loaded
+			local strn                   = sim:object( strn_id )
+			local need_setup_logic       = strn.gulag.Object_begin_job[obj:id()] and not loaded
+			local need_setup_restrictors = strn.gulag.Object_begin_job[obj:id()]
 
 			strn:initialize_if_needed()
 
-			strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic )
+			strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic, need_setup_restrictors )
 
 			if loaded then
 				--memusage.collect_info(obj, "before_logic")
