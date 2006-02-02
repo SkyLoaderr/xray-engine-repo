@@ -49,6 +49,25 @@
 <article id="barmen_find_artefact_3_descr" name="artefact" group="Diary">
         <text>barmen_find_artefact_3_descr</text>
 </article>
+;---------ecolog--------
+<article id="ecolog_find_artefact_1_descr" name="artefact" group="Diary">
+        <text>ecolog_find_artefact_1_descr</text>
+</article>
+<article id="ecolog_find_artefact_2_descr" name="artefact" group="Diary">
+        <text>ecolog_find_artefact_2_descr</text>
+</article>
+<article id="ecolog_find_artefact_3_descr" name="artefact" group="Diary">
+        <text>ecolog_find_artefact_3_descr</text>
+</article>
+<article id="ecolog_find_artefact_4_descr" name="artefact" group="Diary">
+        <text>ecolog_find_artefact_4_descr</text>
+</article>
+<article id="ecolog_find_artefact_5_descr" name="artefact" group="Diary">
+        <text>ecolog_find_artefact_5_descr</text>
+</article>
+<article id="ecolog_find_artefact_6_descr" name="artefact" group="Diary">
+        <text>ecolog_find_artefact_6_descr</text>
+</article>
 
 ;------------Kill Stalker---------
 ;-------Trader--------
