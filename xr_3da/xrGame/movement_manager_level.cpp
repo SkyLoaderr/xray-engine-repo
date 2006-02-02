@@ -46,7 +46,7 @@ void CMovementManager::process_level_path()
 
 			m_path_state		= ePathStateContinueLevelPath;
 
-			if (time_over())
+//			if (time_over())
 				break;
 		}
 		case ePathStateContinueLevelPath : {
@@ -54,8 +54,8 @@ void CMovementManager::process_level_path()
 			
 			m_path_state		= ePathStateBuildDetailPath;
 
-			if (time_over())
-				break;
+//			if (time_over())
+//				break;
 		}
 		case ePathStateBuildDetailPath : {
 			detail().set_state_patrol_path(extrapolate_path());
@@ -85,7 +85,7 @@ void CMovementManager::process_level_path()
 
 			m_path_state		= ePathStatePathVerification;
 
-			if (time_over())
+//			if (time_over())
 				break;
 		}
 		case ePathStatePathVerification : {

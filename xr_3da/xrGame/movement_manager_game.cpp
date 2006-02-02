@@ -117,8 +117,8 @@ void CMovementManager::process_game_path()
 				
 				m_path_state		= ePathStateBuildDetailPath;
 				
-				if (time_over())
-					break;
+//				if (time_over())
+//					break;
 			}
 			case ePathStateBuildDetailPath : {
 				detail().set_state_patrol_path(true);
@@ -187,7 +187,7 @@ void CMovementManager::process_game_path()
 			default : NODEFAULT;
 		}
 
-		if (time_over() || (m_path_state == prev_state) || wait_for_distributed_computation())
+		if ((m_path_state == prev_state) || wait_for_distributed_computation())
 			break;
 
 		prev_state		= m_path_state;

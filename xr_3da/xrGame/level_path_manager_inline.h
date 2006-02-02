@@ -37,16 +37,10 @@ IC	bool CLevelManagerTemplate::actual() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id, bool use_selector_path)
+IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
 	START_PROFILE("Build Path/Level Path");
 	
-	if (use_selector_path) { 
-		m_failed				= false;
-		m_actuality				= true;
-		return;
-	}
-
 	THROW						(ai().level_graph().valid_vertex_id(start_vertex_id) && ai().level_graph().valid_vertex_id(dest_vertex_id));
 	
 	inherited::build_path		(start_vertex_id,dest_vertex_id);

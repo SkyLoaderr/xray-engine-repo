@@ -19,16 +19,6 @@ IC	void CMovementManager::set_path_type(EPathType path_type)
 	m_path_type				= path_type;
 }
 
-IC	void CMovementManager::time_start()
-{
-	m_timer.Start			();
-}
-
-IC	bool CMovementManager::time_over() const
-{
-	return					(!m_build_at_once && (m_timer.GetElapsed_sec() >= m_time_work));
-}
-
 IC	void CMovementManager::enable_movement(bool enabled)
 {
 	m_path_actuality		= m_path_actuality && (m_enabled == enabled);
@@ -50,16 +40,6 @@ IC	bool CMovementManager::path_completed() const
 	return					((m_path_state == ePathStatePathCompleted) && actual());
 }
 
-IC	void CMovementManager::use_selector_path	(bool selector_path_usage)
-{
-	m_selector_path_usage	= selector_path_usage;
-}
-
-IC	bool CMovementManager::selector_path_used	() const
-{
-	return					(m_selector_path_usage);
-}
-
 IC	float CMovementManager::old_desirable_speed		() const
 {
 	return					(m_old_desirable_speed);
@@ -78,16 +58,6 @@ IC	void CMovementManager::set_body_orientation(const CBoneRotation &orientation)
 IC	const CMovementManager::CBoneRotation &CMovementManager::body_orientation() const
 {
 	return					(m_body);
-}
-
-IC	void CMovementManager::set_refresh_rate		(u32 refresh_rate)
-{
-	m_refresh_rate			= refresh_rate;
-}
-
-IC	u32	 CMovementManager::refresh_rate			() const
-{
-	return					(m_refresh_rate);
 }
 
 template <typename T>

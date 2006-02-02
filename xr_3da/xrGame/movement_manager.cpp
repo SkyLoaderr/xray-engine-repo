@@ -79,16 +79,12 @@ void CMovementManager::Load			(LPCSTR section)
 
 void CMovementManager::reinit		()
 {
-	m_time_work						= .0003f;
 	m_speed							= 0.f;
 	m_path_type						= ePathTypeNoPath;
 	m_path_state					= ePathStateDummy;
 	m_path_actuality				= true;
 	m_speed							= 0.f;
-	m_selector_path_usage			= false;//true;
 	m_old_desirable_speed			= 0.f;
-	m_refresh_rate					= 0;
-	m_last_update					= Device.dwTimeGlobal;
 	m_build_at_once					= false;
 
 	enable_movement					(true);
@@ -154,17 +150,10 @@ const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() 
 void CMovementManager::update_path				()
 {
 	START_PROFILE("Build Path::update")
-	if	(
-			!enabled() || 
-			wait_for_distributed_computation() || 
-			((m_last_update > Device.dwTimeGlobal) && !path_completed())
-		)
+
+	if (!enabled() || wait_for_distributed_computation())
 		return;
 
-	m_last_update			= Device.dwTimeGlobal + m_refresh_rate;
-
-	time_start				();
-	
 	if (!game_path().evaluator())
 		game_path().set_evaluator	(base_game_params());
 
@@ -341,6 +330,17 @@ void CMovementManager::on_restrictions_change	()
 
 bool CMovementManager::can_use_distributed_compuations(u32 option) const
 {
-	return	(!m_build_at_once && g_mt_config.test(option) && !object().getDestroy());
+	return							(!m_build_at_once && g_mt_config.test(option) && !object().getDestroy());
 }
 
+void CMovementManager::on_frame					(CPHMovementControl *movement_control, Fvector &dest_position)
+{
+	if	(
+			enabled() &&
+			(m_path_state != ePathStatePathVerification) &&
+			(m_path_state != ePathStatePathCompleted)
+		)
+		update_path					();
+			
+	move_along_path					(movement_control,dest_position,Device.fTimeDelta);
+}

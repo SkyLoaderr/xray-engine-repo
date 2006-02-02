@@ -40,7 +40,7 @@ private:
 	friend class CLevelPathBuilder;
 
 protected:
-	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id, bool use_selector_path = false);
+	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC	virtual	void	before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC	virtual	void	after_search				();
 	IC	virtual	bool	check_vertex				(const _vertex_id_type vertex_id) const;

@@ -148,12 +148,7 @@ private:
 	EPathType				m_path_type;
 	bool					m_path_actuality;
 	bool					m_enabled;
-	CTimer					m_timer;
-	float					m_time_work;
 	float					m_old_desirable_speed;
-	bool					m_selector_path_usage;
-	u32						m_refresh_rate;
-	u32						m_last_update;
 	bool					m_extrapolate_path;
 	bool					m_build_at_once;
 	bool					m_wait_for_distributed_computation;
@@ -173,8 +168,6 @@ public:
 	CCustomMonster			*m_object;
 
 private:
-	IC		void	time_start				();
-	IC		bool	time_over				() const;
 			void	process_game_path		();
 			void	process_level_path		();
 			void	process_patrol_path		();
@@ -193,6 +186,7 @@ public:
 	virtual void	reload					(LPCSTR caSection);
 	virtual BOOL	net_Spawn				(CSE_Abstract* data);
 	virtual void	net_Destroy				();
+	virtual	void	on_frame				(CPHMovementControl *movement_control, Fvector &dest_position);
 	IC		bool	actual					() const;
 			bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);
@@ -207,13 +201,9 @@ public:
 	IC		bool	path_completed			() const;
 	IC		float	old_desirable_speed		() const;
 	IC		void	set_desirable_speed		(float speed);
-	IC		void	use_selector_path		(bool selector_path_usage);
-	IC		bool	selector_path_used		() const;
 			const xr_vector<CTravelPathPoint>	&path	() const;
 	IC		void	set_body_orientation	(const MonsterSpace::SBoneRotation &orientation);
 	IC		const CBoneRotation &body_orientation() const;
-	IC		void	set_refresh_rate		(u32 refresh_rate);
-	IC		u32		refresh_rate			() const;
 			void	update_path				();
 	virtual	void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 
@@ -222,7 +212,6 @@ public:
 
 	virtual void	on_travel_point_change	(const u32 &previous_travel_point_index) {}
 	virtual void	on_build_path			() {}
-	virtual void	on_selector_failed		() {}
 
 	template <typename T>
 	IC		bool	accessible				(T position_or_vertex_id, float radius = EPS_L) const;

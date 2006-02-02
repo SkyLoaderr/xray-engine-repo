@@ -63,7 +63,7 @@ void CMovementManager::process_patrol_path()
 				
 				m_path_state		= ePathStateContinueLevelPath;
 				
-				if (time_over())
+//				if (time_over())
 					break;
 			}
 			case ePathStateContinueLevelPath : {
@@ -71,8 +71,8 @@ void CMovementManager::process_patrol_path()
 				
 				m_path_state		= ePathStateBuildDetailPath;
 				
-				if (time_over())
-					break;
+//				if (time_over())
+//					break;
 			}
 			case ePathStateBuildDetailPath : {
 				detail().set_state_patrol_path(patrol().extrapolate_path());
@@ -101,7 +101,7 @@ void CMovementManager::process_patrol_path()
 	
 				m_path_state		= ePathStatePathVerification;
 
-				if (time_over())
+//				if (time_over())
 					break;
 			}
 			case ePathStatePathVerification : {
@@ -132,7 +132,7 @@ void CMovementManager::process_patrol_path()
 			default : NODEFAULT;
 		}
 
-		if (time_over() || (m_path_state == prev_state) || wait_for_distributed_computation())
+		if ((m_path_state == prev_state) || wait_for_distributed_computation())
 			break;
 
 		prev_state		= m_path_state;

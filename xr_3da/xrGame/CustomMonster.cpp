@@ -452,12 +452,12 @@ void CCustomMonster::UpdateCL	()
 void CCustomMonster::UpdatePositionAnimation()
 {
 	START_PROFILE("CustomMonster/client_update/movement")
-	movement().move_along_path	(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
+	movement().on_frame			(m_PhysicMovementControl,NET_Last.p_pos);
 	STOP_PROFILE
 	
 	START_PROFILE("CustomMonster/client_update/animation")
 	if (!bfScriptAnimation())
-		SelectAnimation		(XFORM().k,movement().detail().direction(),movement().speed());
+		SelectAnimation			(XFORM().k,movement().detail().direction(),movement().speed());
 	STOP_PROFILE
 }
 
