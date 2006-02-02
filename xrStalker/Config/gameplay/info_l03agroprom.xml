@@ -21,6 +21,7 @@
 		<disable>agr_krot_band_start</disable>
 		<disable>agr_can_ask_krot_about_gunslinger</disable>
 	</info_portion>
+	<info_portion id="agr_krot_task_complete"></info_portion>
 
 	<info_portion id="agr_find_gunslinger_cache_start">
 		<task>agroprom_find_gunslinger_cache</task>
