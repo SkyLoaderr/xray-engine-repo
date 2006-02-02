@@ -94,5 +94,15 @@
 	<string id="level_changer_invitation">
 		<text>ѕерейти на следующий уровень ?</text>
 	</string>
+	
+	<string id="st_weight">
+		<text>вес</text>
+	</string>
+	<string id="st_basecost">
+		<text>цена</text>
+	</string>
+	<string id="st_condition">
+		<text>состо€ние</text>
+	</string>	
 </string_table>
 
