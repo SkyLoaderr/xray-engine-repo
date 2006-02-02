@@ -151,9 +151,7 @@ end
 
 -- Выдача задания на отключение радара
 function barman_need_radar(actor,npc)
-	if db.actor:dont_has_info("bar_deactivate_radar_start") and
-	   db.actor:has_info("bar_decoding_done")
-	then
+	if db.actor:has_info("bar_deactivate_radar_start")	then
 		return true
 	end
 	return false
