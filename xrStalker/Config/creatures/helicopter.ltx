@@ -9,48 +9,50 @@ script_binding          = bind_heli.bind
 visual                  = physics\vehicles\mi24\veh_mi24_u_01.ogf
 
 //параметры построения пути
-path_linear_acc_fw				=  4; 3;5; 3.0 ;m/s  ; линейное ускорение при разгоне
-path_linear_acc_bk				=  4; 0.5; 3;  3.5;3 ;8.0 ;m/s	; линейное ускорение торможения
+path_linear_acc_fw				=  8; 3;5; 3.0 ;m/s  ; линейное ускорение при разгоне
+path_linear_acc_bk				=  4;2;4; 0.5; 3;  3.5;3 ;8.0 ;m/s	; линейное ускорение торможения
 
-path_angular_sp_pitch			= 0.25 ;0.35; 0.65; 0.85; 0.45										; скорость изменения высоты пути при скорости "velocity"
-path_angular_sp_pitch_0			= 0.25										; скорость изменения высоты пути при скорости "0"
-path_angular_sp_heading			= 0.7 ;0.75 ;0.85 0.95 0.55; 0.65  ;0.55; 0.45; 0.35; 0.4		    ; угловая скорость пути при скорости "velocity"
-path_angular_sp_heading_0		= 0.7		    ; угловая скорость пути при скорости "0"m/s
+
+path_angular_sp_pitch			= 0.35 ;0.35; 0.65; 0.85; 0.45	; скорость изменения высоты пути при скорости "velocity"
+path_angular_sp_pitch_0			= 0.2		; скорость изменения высоты пути при скорости "0"
+path_angular_sp_heading			= 0.5 ;0.75 ; угловая скорость пути при скорости "velocity"
+path_angular_sp_heading_0		= 1;0.9		    ; угловая скорость пути при скорости "0"m/s
 
 magic_angle						= 0.6
+
 //пфраметры наклона модели 
-model_angular_sp_bank			= 0.45 ;0.35; 0.45; 0.35; 0.4 ;0.35    ; скорость поворота модели по оси Z (как быстро модель повернется по курсу движения с учетом угловой скорости)
-model_angular_sp_pitch			= 0.25 ;0.4; 0.55; 0.35; 0.3     ; скорость поворота модели по оси X в зависимости от текущей линейной скорости
-model_pitch_koef				= 0.018 ;0.020; 0.015; 0.009;0.007   ; коэф наклона модели по оси X в зависимости от текущей линейной скорости
-model_bank_koef					= 0.02 ;0.02    ; коэф наклона модели по оси Z в зависимости от текущих линейной и угловой скоростей
+model_angular_sp_bank			= 0.5 ;0.4 ; скорость поворота модели по оси Z (как быстро модель повернется по курсу движения с учетом угловой скорости)
+model_angular_sp_pitch			= 0.1 ;     ; скорость поворота модели по оси X в зависимости от текущей линейной скорости
+model_pitch_koef				= 0.012;0.018 ;   ; коэф наклона модели по оси X в зависимости от текущей линейной скорости
+model_bank_koef					= 0.018 ;0.02    ; коэф наклона модели по оси Z в зависимости от текущих линейной и угловой скоростей
 on_point_range_dist				= 10.0    ; служебная информация
 
 
 ;default, can be redefined by script
-velocity					= 25.0					;m/sec   скорость, с которой патрулировать
-min_altitude				= 30 ;15 20	;20.0		;m		 min altitude in free state
+velocity					= 35;25					;m/sec   скорость, с которой патрулировать
+min_altitude				= 25;30 ;15 20	;20.0		;m		 min altitude in free state
 ;attack_velocity			= 15.0; 15; 10					;m/sec    скорость, с которой атаковать врага
 ;altitude					= 50	;20.0			;m		 высота, на которой патрулировать
-safe_altitude				= 5.0					; level_bound+5.0
+safe_altitude				= 3.0					; level_bound+5.0
 
 use_rocket					= true			;              использовать ракеты при атаке
 use_mgun					= true			;              использовать пулемет при атаке
-min_mgun_attack_dist		= 20 ;15.0	;m   мин расстояние при котором можно исп пулемет
-max_mgun_attack_dist		= 100 ;300.0 ;m   макс расстояние при котором можно исп пулемет
-min_rocket_attack_dist		= 15.0	;m   мин расстояние при котором можно исп ракеты
-max_rocket_attack_dist		= 200 ;150.0 ;m   макс расстояние при котором можно исп ракеты
+min_mgun_attack_dist		= 15 ;30 ;15.0	;m   мин расстояние при котором можно исп пулемет
+max_mgun_attack_dist		= 150 ;300.0 ;m   макс расстояние при котором можно исп пулемет
+min_rocket_attack_dist		= 100.0	;m   мин расстояние при котором можно исп ракеты
+max_rocket_attack_dist		= 250 ;150.0 ;m   макс расстояние при котором можно исп ракеты
 time_between_rocket_attack	= 1250 ; 1500 ; msec  задержка между ракетами
 syncronize_rocket			= false ; true        пускать ракеты парами или по очереди (лев-прав-лев-прав)
-fire_trail_length			= 50 ;m
+fire_trail_length			= 30 ;m
 use_fire_trail				= true
 barrel_dir_tolerance		= 2 ; degrees. допустимый угол, когда считаем, что дуло направлено в цель
 
-death_angular_vel			= 3.0,3.0,0.0  ; при гибели в воздухе дать угловую скорость модели      
-death_lin_vel_koeff			= 1.2          ; при гибели в воздухе умножить собственную лин скорость на коэфф
+death_angular_vel			= 0.1,6.0,0.2  ; при гибели в воздухе дать угловую скорость модели      
+death_lin_vel_koeff			= 0.9          ; при гибели в воздухе умножить собственную лин скорость на коэфф
 
 ; ------------------------- параметры для универсальной боевой схемы
-flyby_attack_dist           = 70
-search_attack_dist          = 80
+flyby_attack_dist           = 100;70
+search_attack_dist          = 55;80
 
 
 ; light, particles etc
@@ -66,14 +68,14 @@ explode_sound						= weapons\heli_explosion		;звук собственного взрыва
 ;------------------------------все для пулемета
 snd_shoot_rocket					= weapons\heli_rocket_shoot		;звук выстрела ракетой   
 
-fire_dispersion_base	= 5   ;4; 2
+fire_dispersion_base	= 2.5   ;4; 2
 fire_dispersion_null	= 0.02 ;0,01
 fire_trace_width		= 1.0
-rpm                     = 800 ;400
+rpm                     = 900 ;400
 hit_power               = 65 ;35 ;5
 hit_impulse		 		= 220
 fire_distance           = 500
-bullet_speed			= 500			;начальная скорость пули
+bullet_speed			= 350			;начальная скорость пули
 light_color				= 0.9,0.8,0.4
 light_range				= 5
 light_var_color			= 0.05
@@ -87,6 +89,7 @@ shell_particles			= weapons\generic_shells
 snd_shoot				= weapons\weapon_heli
 
 broken_snd				= alexmx\helicopter_down
+
 ;------------------------------все для ракетницы
 rocket_class			= helicopter_missile ;wpn_rpg7_missile 
 launch_speed			= 60 ;45 ;50 ;60 ;76 ;500
@@ -103,7 +106,7 @@ wound_immunity			= 0.0 ;0.15
 radiation_immunity		= 0.0 ;0.2
 telepatic_immunity		= 0.0 ;1.0
 chemical_burn_immunity	= 0.0 ;0.9
-fire_wound_immunity		= 0.01 ;0,35;0.1;0.05
+fire_wound_immunity		= 0.05;0.45 ;0,35;0.1;0.05
 explosion_immunity		= 1
 
 [helicopter_missile]
@@ -118,9 +121,9 @@ immunities_sect			= sect_hm_immunities
 
 cost					= 200
 ;---------------------------------------------------------------
-blast				= 520 ;120
-blast_r				= 12 ;10
-blast_impulse		= 550 ;320
+blast				= 220 ;120
+blast_r				= 8 ;12
+blast_impulse		= 350 ;320
 ;delete
 blast_impulse_factor = 1
 
@@ -198,4 +201,4 @@ radiation_immunity		= 1.0
 telepatic_immunity		= 1.0
 chemical_burn_immunity	= 1.0
 explosion_immunity		= 1.0
-fire_wound_immunity		= 1.0
+fire_wound_immunity		= 0.15
