@@ -1532,7 +1532,9 @@ public:
 		}
 	}
 };
+#endif
 
+#ifdef DEBUG
 class CCC_ScriptDbg : public IConsole_Command {
 public:
 	CCC_ScriptDbg(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
