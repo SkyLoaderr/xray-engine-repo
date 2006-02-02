@@ -250,6 +250,8 @@ public:
 
 			void			LoadZoomOffset		(LPCSTR section, LPCSTR prefix);
 
+	virtual float				Weight			();		
+
 public:
     virtual EHandDependence		HandDependence		()	const		{	return eHandDependence;}
 			bool				IsSingleHanded		()	const		{	return m_bIsSingleHanded; }

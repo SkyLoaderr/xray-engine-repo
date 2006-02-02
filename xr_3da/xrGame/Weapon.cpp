@@ -1424,3 +1424,19 @@ LPCSTR	CWeapon::GetCurrentAmmo_ShortName	()
 	CCartridge &l_cartridge = m_magazine.top();
 	return *(l_cartridge.m_InvShortName);
 }
+
+float CWeapon::Weight()
+{
+	float res = CInventoryItemObject::Weight();
+	if(IsGrenadeLauncherAttached()&&GetGrenadeLauncherName().size()){
+		res += pSettings->r_float(GetGrenadeLauncherName(),"inv_weight");
+	}
+	if(IsScopeAttached()&&GetScopeName().size()){
+		res += pSettings->r_float(GetScopeName(),"inv_weight");
+	}
+	if(IsSilencerAttached()&&GetSilencerName().size()){
+		res += pSettings->r_float(GetSilencerName(),"inv_weight");
+	}
+	
+	return res;
+}
