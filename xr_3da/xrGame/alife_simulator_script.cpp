@@ -272,8 +272,8 @@ void CALifeSimulator::script_register			(lua_State *L)
 			.def("actor",					&get_actor)
 			.def("has_info",				&has_info)
 			.def("dont_has_info",			&dont_has_info)
-//			.def("disable_info_portion",	&disable_info_portion)
-//			.def("give_info_portion",		&give_info_portion)
+			.def("switch_distance",			&CALifeSimulator::switch_distance)
+			.def("switch_distance",			&CALifeSimulator::set_switch_distance)
 
 		,def("alife",						&alife)
 	];
