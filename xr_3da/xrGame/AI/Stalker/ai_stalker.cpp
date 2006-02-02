@@ -351,7 +351,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	sight().setup					(CSightAction(SightManager::eSightTypeCurrentDirection));
 
 #ifdef _DEBUG
-	if (!Level().MapManager().HasMapLocation("debug_stalker",ID())) {
+	if (ai().get_alife() && !Level().MapManager().HasMapLocation("debug_stalker",ID())) {
 		CMapLocation				*map_location = 
 			Level().MapManager().AddMapLocation(
 				"debug_stalker",
