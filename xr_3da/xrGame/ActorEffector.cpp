@@ -78,6 +78,7 @@ void AddEffector		(CActor* A, int type, const shared_str& sect_name, GET_KOEFF_F
 
 void AddEffector(CActor* A, int type, const shared_str& sect_name, float factor)
 {
+	clamp(factor, 0.001f, 1.5f);
 	if(pSettings->line_exist(sect_name,"pp_eff_name")){
 		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
 		CPostprocessAnimatorLerpConst* pp_anm= xr_new<CPostprocessAnimatorLerpConst>();
@@ -255,11 +256,14 @@ BOOL SndShockEffector::InWork()
 float SndShockEffector::GetFactor()
 {
 	float f				= (m_end_time-Device.fTimeGlobal)/m_life_time;
-	return f*m_life_time/8.0f;
+	
+	float ff =	f*m_life_time/8.0f;
+	return clampr(ff, 0.0f, 1.0f);
 }
 
 void SndShockEffector::Start(CActor* A, float snd_length, float power)
 {
+	clamp			(power, 0.1f, 1.5f);
 	m_actor			= A;
 	m_snd_length	= snd_length;
 

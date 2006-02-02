@@ -85,6 +85,7 @@ struct SPPInfo {
 	IC SPPInfo&	lerp(const SPPInfo& def, const SPPInfo& to, float factor)
 	{
 		SPPInfo& pp = *this;
+		clamp(factor, 0.0f, 1.0f);
 
 		pp.duality.h		+= def.duality.h		+ (to.duality.h			- def.duality.h)		* factor; 			
 		pp.duality.v		+= def.duality.v		+ (to.duality.v			- def.duality.v)		* factor;
