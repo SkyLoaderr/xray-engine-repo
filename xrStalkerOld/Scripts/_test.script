@@ -1,16 +1,11 @@
 
 
-function main______________()
+function main()
 	local spawn_items = {}
 	local level = level.name()
 
-	table.insert(spawn_items, "wpn_ak74")
-	table.insert(spawn_items, "wpn_addon_scope")
-	table.insert(spawn_items, "wpn_addon_silencer")
-	table.insert(spawn_items, "wpn_addon_grenade_launcher")
-	
-	table.insert(spawn_items, "device_torch")
-	
+	table.insert(spawn_items, "wpn_binoc")
+
 
 	local k,v = 0,0
 	for k,v in pairs(spawn_items) do
@@ -39,7 +34,7 @@ function main88()
    
 end
 
-function main()
+function main123()
 	local info = "test_andy_info" 
 --	local info = "tutorial_artefact_start"
 	db.actor:give_info_portion(info) 
