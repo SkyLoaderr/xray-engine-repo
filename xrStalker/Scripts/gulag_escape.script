@@ -81,7 +81,7 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_blockpost_kamp1",
+		t = { section = "logic@esc_blockpost_kamp2",
 			idle = 0,
 			prior = 4, state = {1},
 			in_rest = "", out_rest = "escape_blockpost_zone",
