@@ -57,14 +57,16 @@ void CSE_ALifeDynamicObject::add_online				(const bool &update_registries)
 
 void CSE_ALifeDynamicObject::add_offline			(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries)
 {
-	for (u32 i=0, n=saved_children.size(); i<n; ++i) {
-		CSE_ALifeDynamicObject	*child = ai().alife().objects().object(saved_children[i],true);
-		if (child) {
-			alife().release		(child);
-			--i;
-			--n;
-		}
-	}
+	VERIFY						(saved_children.empty());
+
+//	for (u32 i=0, n=saved_children.size(); i<n; ++i) {
+//		CSE_ALifeDynamicObject	*child = ai().alife().objects().object(saved_children[i],true);
+//		if (child) {
+//			alife().release		(child);
+//			--i;
+//			--n;
+//		}
+//	}
 
 	if (!update_registries)
 		return;

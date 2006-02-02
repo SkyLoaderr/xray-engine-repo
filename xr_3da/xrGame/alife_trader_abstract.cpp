@@ -277,7 +277,6 @@ void CSE_ALifeTraderAbstract::add_offline	(const xr_vector<ALife::_OBJECT_ID> &s
 		object->alife().graph().attach	(*object,inventory_item,child->m_tGraphID,true);
 	}
 
-
 	if (!update_registries)
 		return;
 
