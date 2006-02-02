@@ -165,6 +165,9 @@
 		<class>val_bandit_borov</class>
 		<specific_character>val_bandit_borov</specific_character>
 	</character>
+	<character id="val_bandit_bodyguard">
+		<class>val_bandit_bodyguard</class>
+	</character>
 	<character id="val_bandit_novice">
 		<class>val_bandit_novice</class>
 	</character>

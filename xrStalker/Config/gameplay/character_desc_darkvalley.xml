@@ -21,14 +21,18 @@
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
+			ammo_9x19_pbp = 2 \n
 			wpn_l85 = 1, 0, 1, 0 \n
-			ammo_5.56x45_ap = 2 \n
+			ammo_5.56x45_ss190 = 2 \n
+			ammo_5.56x45_ap = 3 \n
 			borov_flash \n
 			device_torch \n
 			val_key_to_underground \n
-#include "gameplay\character_food.xml"
-#include "gameplay\character_drugs.xml"
+			medkit = 3 \n
+			bandage = 4 \n
+			antirad = 2 \n
+			bread = 2 \n
+			kolbasa = 2 \n
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -36,12 +40,46 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
-<!---------------------------BANDIT NOVICE----------------------->
+<!---------------------------- BODYGUARD ------------------------>
+	<specific_character id="val_bandit_bodyguard" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="6"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
+				
+		<class>val_bandit_bodyguard</class>
+		<community>bandit</community>
+		
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\bandit\stalker_bandit_8</visual>
+		<snd_config>characters_voice\human_03\bandit\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+			medkit = 2 \n
+			bandage = 3 \n
+			antirad = 1 \n
+			bread = 2 \n
+			kolbasa = 2 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+	
+<!--------------------------- BANDIT NOVICE ----------------------->
 	<specific_character id="val_bandit_novice_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
 		<class>val_bandit_novice</class>
 		<community>bandit</community>
@@ -71,7 +109,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community>
@@ -102,7 +140,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community>
@@ -132,7 +170,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community>
@@ -161,7 +199,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community>
@@ -183,7 +221,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_general</class>
 		<community>bandit</community>
@@ -214,7 +252,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_general</class>
 		<community>bandit</community>
@@ -244,7 +282,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_general</class>
 		<community>bandit</community>
@@ -274,7 +312,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 				
 		<class>val_bandit_general</class>
 		<community>bandit</community>
@@ -305,7 +343,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_veteran</class>
 		<community>bandit</community>
@@ -336,7 +374,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_veteran</class>
 		<community>bandit</community>
@@ -366,7 +404,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
 		<class>val_bandit_veteran</class>
 		<community>bandit</community>
