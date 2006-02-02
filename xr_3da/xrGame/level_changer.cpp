@@ -46,6 +46,7 @@ void CLevelChanger::net_Destroy	()
 
 BOOL CLevelChanger::net_Spawn	(CSE_Abstract* DC) 
 {
+	m_entrance_time				= 0;
 	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
 	collidable.model			= l_pShape;
 	
@@ -99,26 +100,38 @@ void CLevelChanger::shedule_Update(u32 dt)
 	Fvector						P;
 	XFORM().transform_tiny		(P,s.P);
 	feel_touch_update			(P,s.R);
+
+	update_actor_invitation		();
 }
 
 void CLevelChanger::feel_touch_new	(CObject *tpObject)
 {
-	CActor						*l_tpActor = smart_cast<CActor*>(tpObject);
-	if (l_tpActor) {
-//		NET_Packet				net_packet;
-//		net_packet.w_begin		(M_CHANGE_LEVEL);
-//		net_packet.w			(&m_game_vertex_id,sizeof(m_game_vertex_id));
-//		net_packet.w			(&m_level_vertex_id,sizeof(m_level_vertex_id));
-//		net_packet.w_vec3		(m_position);
-//		net_packet.w_vec3		(m_angles);
-//		Level().Send			(net_packet,net_flags(TRUE));
-		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
+	CActor*			l_tpActor = smart_cast<CActor*>(tpObject);
+	VERIFY			(l_tpActor);
 
-	}
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
+	m_entrance_time		= Device.fTimeGlobal;
 }
 
 BOOL CLevelChanger::feel_touch_contact	(CObject *object)
 {
-	return						((CCF_Shape*)CFORM())->Contact(object);
+	return	(((CCF_Shape*)CFORM())->Contact(object)) && smart_cast<CActor*>(object);
+}
+
+void CLevelChanger::update_actor_invitation()
+{
+	xr_vector<CObject*>::iterator it		= feel_touch.begin();
+	xr_vector<CObject*>::iterator it_e		= feel_touch.end();
+
+	for(;it!=it_e;++it){
+		CActor*			l_tpActor = smart_cast<CActor*>(*it);
+		VERIFY			(l_tpActor);
+
+		if(m_entrance_time+5.0f < Device.fTimeGlobal){
+			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
+			m_entrance_time		= Device.fTimeGlobal;
+		}
+	}
 }

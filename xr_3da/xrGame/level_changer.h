@@ -21,7 +21,8 @@ private:
 	u32						m_level_vertex_id;
 	Fvector					m_position;
 	Fvector					m_angles;
-
+	float					m_entrance_time;
+	void					update_actor_invitation	();
 public:
 	virtual				~CLevelChanger		();
 	virtual BOOL		net_Spawn			(CSE_Abstract* DC);

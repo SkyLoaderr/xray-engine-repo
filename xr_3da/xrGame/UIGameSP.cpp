@@ -137,11 +137,14 @@ void CUIGameSP::ReInitInventoryWnd		()
 extern ENGINE_API BOOL bShowPauseString;
 void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang)
 {
-	UIChangeLevelWnd->m_game_vertex_id		= game_vert_id;
-	UIChangeLevelWnd->m_level_vertex_id		= level_vert_id;
-	UIChangeLevelWnd->m_position			= pos;
-	UIChangeLevelWnd->m_angles				= ang;
-	m_game->StartStopMenu					(UIChangeLevelWnd,true);
+	if( !MainInputReceiver() || MainInputReceiver()!=UIChangeLevelWnd)
+	{
+		UIChangeLevelWnd->m_game_vertex_id		= game_vert_id;
+		UIChangeLevelWnd->m_level_vertex_id		= level_vert_id;
+		UIChangeLevelWnd->m_position			= pos;
+		UIChangeLevelWnd->m_angles				= ang;
+		m_game->StartStopMenu					(UIChangeLevelWnd,true);
+	}
 }
 
 
