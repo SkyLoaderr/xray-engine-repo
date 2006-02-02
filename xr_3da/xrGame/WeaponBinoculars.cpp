@@ -6,9 +6,8 @@
 #include "level.h"
 #include "ui\UIFrameWindow.h"
 #include "WeaponBinocularsVision.h"
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+#include "object_broker.h"
+
 CWeaponBinoculars::CWeaponBinoculars() : CWeaponCustomPistol("BINOCULARS")
 {
 	m_binoc_vision	= NULL;
@@ -83,8 +82,8 @@ void CWeaponBinoculars::OnZoomOut		()
 
 BOOL	CWeaponBinoculars::net_Spawn			(CSE_Abstract* DC)
 {
-	inherited::net_Spawn(DC);
 	m_fRTZoomFactor = m_fScopeZoomFactor;
+	inherited::net_Spawn(DC);
 	return TRUE;
 }
 
@@ -141,6 +140,17 @@ void CWeaponBinoculars::ZoomDec()
 
 	m_fZoomFactor	+=delta;
 	clamp(m_fZoomFactor,m_fScopeZoomFactor, min_zoom_factor);
+}
+void CWeaponBinoculars::save(NET_Packet &output_packet)
+{
+	inherited::save(output_packet);
+	save_data		(m_fRTZoomFactor,output_packet);
+}
+
+void CWeaponBinoculars::load(IReader &input_packet)
+{
+	inherited::load(input_packet);
+	load_data		(m_fRTZoomFactor,input_packet);
 }
 
 #include "script_space.h"
