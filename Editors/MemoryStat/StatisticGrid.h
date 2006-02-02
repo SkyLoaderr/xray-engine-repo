@@ -21,16 +21,24 @@ __published:	// IDE-managed Components
 	TElTreeStringGrid *sgData;
 	TPanel *paCaptionMem;
 	TStatusBar *sbStatus;
-	TFormStorage *FormStorage1;
+	TFormStorage *fsStorage;
 	void __fastcall sgDataHeaderColumnClick(TObject *Sender,
           int SectionIndex);
 	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
+	struct SStatHeader{
+    	AnsiString 		caption;
+        bool			is_text;
+        SStatHeader(AnsiString c, bool t){caption=c; is_text=t;}
+    };
+    DEFINE_VECTOR(SStatHeader,SHVec,SHVecIt);
+public:		// User declarations
+    void Prepare		(AnsiString title, SHVec& columns);
+    void AppendItem		(AStringVec& columns);
+    void SortByColumn	(int num, bool ascend);
+public:		// User declarations
 	__fastcall TfrmStatistic(TComponent* Owner);
-    void ClearItems();
-    void AppendItem(u32 count, u32 mem_pure, u32 mem_alloc, LPCSTR name);
-    void SortByColumn(int num, bool accend);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmStatistic *frmStatistic;

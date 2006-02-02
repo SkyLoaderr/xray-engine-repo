@@ -210,8 +210,8 @@ object frmMain: TfrmMain
     end
   end
   object od: TOpenDialog
-    DefaultExt = '*.txt'
-    Filter = '$memory_dump$|*.txt'
+    DefaultExt = '*.dump'
+    Filter = 'Memory Dump Files|*.dump'
     InitialDir = 'x:\'
     Left = 264
     Top = 8
@@ -228,6 +228,13 @@ object frmMain: TfrmMain
       object Close1: TMenuItem
         Caption = 'Close'
       end
+      object N2: TMenuItem
+        Caption = '-'
+      end
+      object ShowLog1: TMenuItem
+        Caption = 'Show Log'
+        OnClick = ShowLog1Click
+      end
       object N1: TMenuItem
         Caption = '-'
       end
@@ -237,12 +244,25 @@ object frmMain: TfrmMain
     end
     object Tools1: TMenuItem
       Caption = 'Tools'
+      object Statistic1: TMenuItem
+        Caption = 'Show statistic'
+        object Bytype1: TMenuItem
+          Caption = 'By type'
+          OnClick = Bytype1Click
+        end
+        object Bypool1: TMenuItem
+          Caption = 'By pool'
+          OnClick = Bypool1Click
+        end
+      end
     end
     object Help1: TMenuItem
       Caption = 'Help'
     end
   end
   object fsStorage: TFormStorage
+    IniSection = 'main'
+    UseRegistry = True
     Version = 1
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement

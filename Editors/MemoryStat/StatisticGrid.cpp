@@ -39,38 +39,45 @@ void __fastcall TfrmStatistic::sgDataHeaderColumnClick(
 }
 //---------------------------------------------------------------------------
 
-void TfrmStatistic::ClearItems()
+void TfrmStatistic::Prepare(AnsiString title, SHVec& columns)
 {
-	sgData->Items->Clear	();
+    Hide						();
+	Caption						= title;
+	sgData->Items->Clear		();
+	fsStorage->IniSection		= title;
+	sgData->HeaderSections->Clear();
+    for (SHVecIt it=columns.begin(); it!=columns.end(); it++){
+	    TElHeaderSection* sect 	= sgData->HeaderSections->AddSection();
+        sect->Text 				= it->caption;
+        sect->FieldType			= it->is_text?sftText:sftNumber;
+    };
 }
 //---------------------------------------------------------------------------
 
-void TfrmStatistic::AppendItem(u32 count, u32 mem_pure, u32 mem_alloc, LPCSTR name)
+void TfrmStatistic::AppendItem(AStringVec& columns)
 {
-    TElTreeItem* item		= sgData->Items->AddChildObject(0,AnsiString().sprintf("%d",count),0);	
-    item->ColumnText->Add	(AnsiString().sprintf("%d",mem_pure));
-    item->ColumnText->Add	(AnsiString().sprintf("%d",mem_alloc));
-    item->ColumnText->Add	(name);
+	VERIFY					(columns.size()==sgData->HeaderSections->Count);
+    TElTreeItem* item		= sgData->Items->AddChildObject(0,columns[0],0);	
+    for (int k=1; k<columns.size(); ++k)
+	    item->ColumnText->Add(columns[k]);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmStatistic::FormShow(TObject *Sender)
 {
     sbStatus->Panels->Items[0]->Text = AnsiString().sprintf("Items count: %d",sgData->Items->Count);
-    SortByColumn				(2,false);
 }
 //---------------------------------------------------------------------------
 
-void TfrmStatistic::SortByColumn(int num, bool accend)
+void TfrmStatistic::SortByColumn(int num, bool ascend)
 {
 	if (sgData->HeaderSections->Count==0) return;
     for (int k=0; k<sgData->HeaderSections->Count; ++k)
     	sgData->HeaderSections->Item[num]->SortMode = hsmNone; 
 	clamp						(num,0,sgData->HeaderSections->Count-1);
-    sgData->HeaderSections->Item[num]->SortMode 	= accend?hsmAccend:hsmDescend; 
+    sgData->HeaderSections->Item[num]->SortMode 	= ascend?hsmAscend:hsmDescend; 
 	sgData->SortSection 		= num;
 	sgData->Sort				(true);
 }
 //---------------------------------------------------------------------------
-
 

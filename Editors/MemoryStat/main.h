@@ -18,6 +18,8 @@
 #include "mxPlacemnt.hpp"
 #include "ElScrollBar.hpp"
 #include "ElXPThemedControl.hpp"
+#include "ElTree.hpp"
+#include "ElTreeGrids.hpp"
 //---------------------------------------------------------------------------
 class TfrmMain : public TForm
 {
@@ -50,6 +52,11 @@ __published:	// IDE-managed Components
 	TPanel *paCaptionDet;
 	TMxPanel *paDetMem;
 	TBevel *Bevel3;
+	TMenuItem *N2;
+	TMenuItem *ShowLog1;
+	TMenuItem *Statistic1;
+	TMenuItem *Bytype1;
+	TMenuItem *Bypool1;
 	void __fastcall OpenClick(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
@@ -67,6 +74,9 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall paDetMemMouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
+	void __fastcall ShowLog1Click(TObject *Sender);
+	void __fastcall Bytype1Click(TObject *Sender);
+	void __fastcall Bypool1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall IdleHandler(TObject *Sender, bool &Done);
     void __stdcall OnRefreshBuffer	(PropValue*);
@@ -95,6 +105,8 @@ private:	// User declarations
     void RealUpdateProperties	();
     
     void OnFrame				();
+
+    void ShowLog				(bool val);
 public:		// User declarations
 	__fastcall TfrmMain(TComponent* Owner);
 };

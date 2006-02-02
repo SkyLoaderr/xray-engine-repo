@@ -6,6 +6,8 @@
 #include "main.h"
 #include "image.h"
 #include "PropertiesList.h"               
+#include "LogForm.h"
+#include "StatisticGrid.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -15,6 +17,8 @@
 #pragma link "mxPlacemnt"
 #pragma link "ElScrollBar"
 #pragma link "ElXPThemedControl"
+#pragma link "ElTree"
+#pragma link "ElTreeGrids"
 #pragma resource "*.dfm"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -28,9 +32,23 @@ struct SMemItem{
     u32 		ptr;
     u32 		sz;
     u32 		r_sz;
+    s8 			pool_id;
 };
 DEFINE_VECTOR(SMemItem,MemItemVec,MemItemVecIt);
-MemItemVec 		m_items;
+MemItemVec 		m_items_data;
+U32Vec			m_items_ptr;
+U32Vec			m_items_name;
+//bool sort_ptr_pred(const SMemItem& a, const SMemItem& b) 	{return a.ptr<b.ptr;}
+//bool find_ptr_pred(const SMemItem& a, u32 val) 		   	{return a.ptr<val;}
+bool sort_ptr_pred	(const u32& a, const u32& b) 			{return m_items_data[a].ptr<m_items_data[b].ptr;}
+bool find_ptr_pred	(const u32& a, u32 val) 				{return m_items_data[a].ptr<val;}
+bool sort_name_pred	(const u32& a, const u32& b) 			{return strcmp(m_items_data[a].name.c_str(),m_items_data[b].name.c_str())<0;}
+bool find_name_pred	(const u32& a, const char* val)			{return strcmp(m_items_data[a].name.c_str(),val)<0;}
+
+__inline const SMemItem& 	get_item(u32 idx)	{return m_items_data[idx];}
+__inline bool 				items_valid()		{return !m_items_data.empty();}
+
+
 U32Vec			m_memory;
 U32Vec 			m_cell_frame;
 U32Vec 			m_full_frame;
@@ -70,9 +88,6 @@ xr_token						cell_token	[ ]={
 	{ 0,					   	0   	 	}
 };
 
-bool sort_ptr_pred(const SMemItem& a, const SMemItem& b) 	{return a.ptr<b.ptr;}
-bool find_ptr_pred(const SMemItem& a, u32 val) 				{return a.ptr<val;}
-
 void DrawBitmap(TMxPanel* panel, const Irect& r, u32* data, int w, int h)
 {
 	HDC hdc		= panel->Canvas->Handle;
@@ -109,10 +124,10 @@ u32 cell_intersect(u32 c_min, u32 c_max, u32 i_min, u32 i_max)
 
 void TfrmMain::RealResizeBuffer()
 {
-	if (!m_items.empty()){
+	if (items_valid()){
         m_memory.resize	(1+(m_end_ptr-m_begin_ptr)/m_cell_size);
         std::fill		(m_memory.begin(),m_memory.end(),0x00000000);
-        for (MemItemVecIt it=m_items.begin(); it!=m_items.end(); it++){
+        for (MemItemVecIt it=m_items_data.begin(); it!=m_items_data.end(); it++){
         	u32 i_begin_ptr	= it->ptr-m_begin_ptr;
         	u32 i_end_ptr	= i_begin_ptr+it->r_sz;
             u32 c_begin		= i_begin_ptr/m_cell_size;
@@ -139,7 +154,7 @@ void TfrmMain::RealRedrawBuffer()
 {
     u32 d_w				= paMem->Width/m_cell_px;
     u32 d_h				= paMem->Height/m_cell_px;
-    if (!m_items.empty()){
+    if (items_valid()){
         u32 req_frame_sz		= d_w*d_h;
         u32 real_frame_sz		= _min(req_frame_sz,m_memory.size()-m_draw_offs);
         if (m_full_frame.size()!= req_frame_sz)
@@ -188,13 +203,18 @@ void TfrmMain::RealRedrawBuffer()
     m_Flags.set			(flRedrawBuffer,FALSE);	
 }
 
+bool is_chunk		(LPCSTR str, int& num)
+{
+	return			(1==sscanf(str,"$BEGIN CHUNK #%d\n",&num));
+}
+
 void __fastcall TfrmMain::OpenClick(TObject *Sender)
 {
 	if (od->Execute()){
-    	LPCSTR fn 	= od->FileName.c_str();
-        IReader* F	= FS.r_open	(fn); VERIFY(F);                            
-    	m_items.clear	();
-        m_items.reserve	(250000);
+    	LPCSTR fn 		= od->FileName.c_str();
+        IReader* F		= FS.r_open	(fn); VERIFY(F);                            
+    	m_items_data.clear	();
+        m_items_data.reserve(250000);
 
 		m_min_block		= 0xFFFFFFFF;
 		m_max_block		= 0;
@@ -202,32 +222,44 @@ void __fastcall TfrmMain::OpenClick(TObject *Sender)
 		m_end_ptr		= 0;
         m_curr_cell		= 0;
 
-        LPCSTR src	= (LPCSTR)F->pointer();
-        LPSTR data	= (LPSTR)F->pointer();
-        string1024	name;
+        LPCSTR src	    = (LPCSTR)F->pointer();
+        LPSTR data	    = (LPSTR)F->pointer();
+        string1024	    name;
+        int 			chunk=-1;
         do{
-			LPSTR e		= data;
+            LPSTR e		= data;
             for (;e[0]!='\n';e++){}
             e++;
-            SMemItem	item;
-			sscanf		(data,"0x%08X: %d %[^\n]",&item.ptr,&item.sz,name);
-			if (item.sz > 16*65)	item.r_sz	= (((34 + item.sz) - 1)/16 + 1)*16;
-		    else					item.r_sz	= (item.sz/16 + 1)*16;
-            item.name	= _Trim(name);
-            if ((item.ptr+item.r_sz)>m_end_ptr) m_end_ptr 	= item.ptr+item.r_sz;
-            if (item.ptr<m_begin_ptr) 			m_begin_ptr = item.ptr;
-            if (item.r_sz<m_min_block)			m_min_block	= item.r_sz;
-            if (item.r_sz>m_max_block)			m_max_block	= item.r_sz;
-			m_items.push_back(item);
+            if (is_chunk(data,chunk)){
+            }else if (chunk==0){
+            }else if (chunk==1){
+                SMemItem	item;
+                sscanf		(data,"0x%08X[%2d]: %d %[^\n]",&item.ptr,&item.pool_id,&item.sz,name);
+                if (item.sz > 16*65)	item.r_sz	= (((34 + item.sz) - 1)/16 + 1)*16;
+                else					item.r_sz	= (item.sz/16 + 1)*16;
+                item.name	= _Trim(name);
+                if ((item.ptr+item.r_sz)>m_end_ptr) m_end_ptr 	= item.ptr+item.r_sz;
+                if (item.ptr<m_begin_ptr) 			m_begin_ptr = item.ptr;
+                if (item.r_sz<m_min_block)			m_min_block	= item.r_sz;
+                if (item.r_sz>m_max_block)			m_max_block	= item.r_sz;
+                m_items_data.push_back(item);
+            }
             data		= e;
             if ((e-src)>=F->length()) break;
         }while(true);
         FS.r_close		(F);
 
-		std::sort		(m_items.begin(),m_items.end(),sort_ptr_pred);
+        if (m_items_data.size()){
+            m_items_ptr.resize	(m_items_data.size());	
+            m_items_name.resize	(m_items_data.size());
+            for (u32 k=0; k<m_items_data.size(); ++k){m_items_ptr[k]=k;m_items_name[k]=k;}
+        	
+            std::sort		(m_items_ptr.begin(),m_items_ptr.end(),sort_ptr_pred);
+            std::sort		(m_items_name.begin(),m_items_name.end(),sort_name_pred);
 
-        ResizeBuffer	();
-        RedrawBuffer	();
+            ResizeBuffer	();
+            RedrawBuffer	();
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -278,16 +310,16 @@ void __fastcall TfrmMain::paMemMouseMove(TObject *Sender, TShiftState Shift, int
 {
 	AnsiString address						= "Address:";
 	AnsiString content						= "Content:";
-	if (!m_items.empty()){
+	if (items_valid()){
         u32 local_pos						= m_draw_offs+(Y/m_cell_px)*(paMem->Width/m_cell_px)+(X/m_cell_px);
         u32 real_pos						= m_begin_ptr+iFloor(float(local_pos)*m_cell_size+0.5f);
-        MemItemVecIt it						= std::lower_bound(m_items.begin(),m_items.end(),real_pos,find_ptr_pred);
+        U32It it							= std::lower_bound(m_items_ptr.begin(),m_items_ptr.end(),real_pos,find_ptr_pred);
         SStringVec names;
-        if (it!=m_items.end()){
-            if ((it->ptr>real_pos) && (it!=m_items.begin())) it--;
-            while((it!=m_items.end())&&(it->ptr<(real_pos+m_cell_size))){
-            	if (it->ptr+it->r_sz>real_pos)
-                	names.push_back			(it->name.c_str());
+        if (it!=m_items_ptr.end()){
+            if ((get_item(*it).ptr>real_pos) && (it!=m_items_ptr.begin())) it--;
+            while((it!=m_items_ptr.end())&&(get_item(*it).ptr<(real_pos+m_cell_size))){
+            	if (get_item(*it).ptr+get_item(*it).r_sz>real_pos)
+                	names.push_back			(get_item(*it).name.c_str());
                 it++;
             }
         }
@@ -304,17 +336,17 @@ void __fastcall TfrmMain::paDetMemMouseMove(TObject *Sender,
 {
 	AnsiString address						= "Address:";
 	AnsiString content						= "Content:";
-	if (!m_items.empty()){
+	if (items_valid()){
         u32 local_pos						= 4*((Y/m_cell_px)*(paDetMem->Width/m_cell_px)+(X/m_cell_px));
         if (local_pos<m_cell_size){
             u32 real_pos					= m_begin_ptr+m_curr_cell*m_cell_size+local_pos;
-            MemItemVecIt it					= std::lower_bound(m_items.begin(),m_items.end(),real_pos,find_ptr_pred);
+            U32It it						= std::lower_bound(m_items_ptr.begin(),m_items_ptr.end(),real_pos,find_ptr_pred);
             SStringVec names;                                                      
-            if (it!=m_items.end()){
-                if ((it->ptr>real_pos) && (it!=m_items.begin())) it--;
-                while((it!=m_items.end())&&(it->ptr<(real_pos+4))){
-                    if (it->ptr+it->r_sz>real_pos)
-                        names.push_back	  	(it->name.c_str());
+            if (it!=m_items_ptr.end()){
+                if ((get_item(*it).ptr>real_pos) && (it!=m_items_ptr.begin())) it--;
+                while((it!=m_items_ptr.end())&&(get_item(*it).ptr<(real_pos+4))){
+                    if (get_item(*it).ptr+get_item(*it).r_sz>real_pos)
+                        names.push_back	  	(get_item(*it).name.c_str());
                     it++;
                 }
             }
@@ -357,7 +389,7 @@ void TfrmMain::RealRedrawDetailed()
 {
     u32 d_w				= paDetMem->Width/m_cell_px;
     u32 d_h				= paDetMem->Height/m_cell_px;
-	if (!m_items.empty()){
+	if (items_valid()){
     	if (m_cell_frame.size()!=(d_w*d_h)) m_cell_frame.resize(d_w*d_h);
 
     	u32 r_begin_ptr	= m_curr_cell*m_cell_size+m_begin_ptr;
@@ -367,13 +399,13 @@ void TfrmMain::RealRedrawDetailed()
 
         std::fill		(m_cell_frame.begin(),m_cell_frame.begin()+d_size,COLOR_DEF_EMPTY);
         std::fill		(m_cell_frame.begin()+d_size,m_cell_frame.begin()+d_w*d_h,COLOR_DEF_UNUSED);
-        MemItemVecIt it	= std::lower_bound(m_items.begin(),m_items.end(),r_begin_ptr,find_ptr_pred);
-        if (it!=m_items.end()){
-            if ((it->ptr>r_begin_ptr) && (it!=m_items.begin())) it--;
-            while((it!=m_items.end())&&(it->ptr<r_end_ptr)){
-            	if (it->ptr+it->r_sz>r_begin_ptr){
-                	int	i_begin	= (_max(r_begin_ptr,it->ptr)-r_begin_ptr);
-                	int	i_end	= (_min(r_end_ptr,it->ptr+it->r_sz)-r_begin_ptr);
+        U32It it		= std::lower_bound(m_items_ptr.begin(),m_items_ptr.end(),r_begin_ptr,find_ptr_pred);
+        if (it!=m_items_ptr.end()){
+            if ((get_item(*it).ptr>r_begin_ptr) && (it!=m_items_ptr.begin())) it--;
+            while((it!=m_items_ptr.end())&&(get_item(*it).ptr<r_end_ptr)){
+            	if (get_item(*it).ptr+get_item(*it).r_sz>r_begin_ptr){
+                	int	i_begin	= (_max(r_begin_ptr,get_item(*it).ptr)-r_begin_ptr);
+                	int	i_end	= (_min(r_end_ptr,get_item(*it).ptr+get_item(*it).r_sz)-r_begin_ptr);
 					std::fill	(m_cell_frame.begin()+i_begin/4,m_cell_frame.begin()+i_end/4,COLOR_DEF_FULL);
                 }
                 it++;
@@ -484,7 +516,7 @@ void __stdcall TfrmMain::OnResizeBuffer	(PropValue* v)
 
 void TfrmMain::RealUpdateProperties()
 {
-    if (m_Props && !m_items.empty()){
+    if (m_Props && items_valid()){
         PropItemVec 	items;
 
         PropValue* V	= 0;
@@ -515,12 +547,12 @@ void TfrmMain::RealUpdateProperties()
         // Detailed info
         u32 r_begin_ptr	= m_curr_cell*m_cell_size+m_begin_ptr;
         u32 r_end_ptr	= (m_curr_cell+1)*m_cell_size+m_begin_ptr;
-        MemItemVecIt it	= std::lower_bound(m_items.begin(),m_items.end(),r_begin_ptr,find_ptr_pred);
-        if (it!=m_items.end()){
-            if ((it->ptr>r_begin_ptr) && (it!=m_items.begin())) it--;
-            while((it!=m_items.end())&&(it->ptr<r_end_ptr)){
-                if (it->ptr+it->r_sz>r_begin_ptr)
-                    PHelper().CreateCaption	(items, AnsiString().sprintf("Current Cell\\Data\\0x%08X",it->ptr).c_str(), AnsiString().sprintf("%d b: %s",it->r_sz,it->name.c_str()).c_str());
+        U32It it		= std::lower_bound(m_items_ptr.begin(),m_items_ptr.end(),r_begin_ptr,find_ptr_pred);
+        if (it!=m_items_ptr.end()){
+            if ((get_item(*it).ptr>r_begin_ptr) && (it!=m_items_ptr.begin())) it--;
+            while((it!=m_items_ptr.end())&&(get_item(*it).ptr<r_end_ptr)){
+                if (get_item(*it).ptr+get_item(*it).r_sz>r_begin_ptr)
+                    PHelper().CreateCaption	(items, AnsiString().sprintf("Current Cell\\Data\\0x%08X",get_item(*it).ptr).c_str(), AnsiString().sprintf("%d b: %s",get_item(*it).r_sz,get_item(*it).name.c_str()).c_str());
                 it++;
             }
         }
@@ -531,7 +563,118 @@ void TfrmMain::RealUpdateProperties()
 }
 //---------------------------------------------------------------------------
 
+void TfrmMain::ShowLog		(bool val)
+{
+	if (val)				TfrmLog::ShowLog();
+    else					TfrmLog::HideLog();
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::ShowLog1Click(TObject *Sender)
+{
+    ShowLog					(true);
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::Bytype1Click(TObject *Sender)
+{
+	if (items_valid()){
+        TfrmStatistic::SHVec 	headers;
+        headers.push_back		(TfrmStatistic::SStatHeader("Count",			false));
+        headers.push_back		(TfrmStatistic::SStatHeader("Pure Size",		false));
+        headers.push_back		(TfrmStatistic::SStatHeader("Allocated Size",	false));
+        headers.push_back		(TfrmStatistic::SStatHeader("Description",		false));
+    	frmStatistic->Prepare	("Statistic By Type",headers);
+        
+        u32 	diff_cnt= 1;
+        LPCSTR 	nm	= get_item(m_items_name[0]).name.c_str();
+        for (U32It itt=m_items_name.begin(); itt!=m_items_name.end(); itt++){
+            if (0!=strcmp(nm,get_item(*itt).name.c_str())){ 
+                diff_cnt++; nm=get_item(*itt).name.c_str(); 
+            }
+        }
+        nm				= get_item(m_items_name[0]).name.c_str();
+        u32	cnt			= 0;
+        u32	mem_pure	= 0;
+        u32	mem_alloc	= 0;
+        for (itt=m_items_name.begin(); itt!=m_items_name.end(); itt++){
+            const SMemItem& inf	= get_item(*itt);
+            if (0!=strcmp(nm,inf.name.c_str())){ 
+            	AStringVec 	columns;
+                columns.push_back(AnsiString().sprintf("%d",cnt));
+                columns.push_back(AnsiString().sprintf("%d",mem_pure));
+                columns.push_back(AnsiString().sprintf("%d",mem_alloc));
+                columns.push_back(nm);
+            	frmStatistic->AppendItem(columns);
+                cnt			= 0;
+        		mem_pure	= 0;
+        		mem_alloc	= 0;
+                nm			= inf.name.c_str(); 
+            }
+        	cnt			++;
+            mem_pure	+= inf.sz;
+            mem_alloc	+= inf.r_sz;
+        }
+        AStringVec 	columns;
+        columns.push_back(AnsiString().sprintf("%d",cnt));
+        columns.push_back(AnsiString().sprintf("%d",mem_pure));
+        columns.push_back(AnsiString().sprintf("%d",mem_alloc));
+        columns.push_back(nm);
+        frmStatistic->AppendItem	(columns);
+        frmStatistic->SortByColumn	(2,false);
+    	frmStatistic->Show			();
+	}
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::Bypool1Click(TObject *Sender)
+{
+	if (items_valid()){
+        TfrmStatistic::SHVec 	headers;
+        headers.push_back		(TfrmStatistic::SStatHeader("Index",			false));
+        headers.push_back		(TfrmStatistic::SStatHeader("Base Size",		false));
+        headers.push_back		(TfrmStatistic::SStatHeader("Block Count",		false));
+        headers.push_back		(TfrmStatistic::SStatHeader("Description",		false));
+    	frmStatistic->Prepare	("Statistic By Pool",headers);
+        
+        u32 	diff_cnt= 1;
+        LPCSTR 	nm	= get_item(m_items_name[0]).name.c_str();
+        for (U32It itt=m_items_name.begin(); itt!=m_items_name.end(); itt++){
+            if (0!=strcmp(nm,get_item(*itt).name.c_str())){ 
+                diff_cnt++; nm=get_item(*itt).name.c_str(); 
+            }
+        }
+        nm				= get_item(m_items_name[0]).name.c_str();
+        u32	cnt			= 0;
+        u32	mem_pure	= 0;
+        u32	mem_alloc	= 0;
+        for (itt=m_items_name.begin(); itt!=m_items_name.end(); itt++){
+            const SMemItem& inf	= get_item(*itt);
+            if (0!=strcmp(nm,inf.name.c_str())){ 
+            	AStringVec 	columns;
+                columns.push_back(AnsiString().sprintf("%d",cnt));
+                columns.push_back(AnsiString().sprintf("%d",mem_pure));
+                columns.push_back(AnsiString().sprintf("%d",mem_alloc));
+                columns.push_back(nm);
+            	frmStatistic->AppendItem(columns);
+                cnt			= 0;
+        		mem_pure	= 0;
+        		mem_alloc	= 0;
+                nm			= inf.name.c_str(); 
+            }
+        	cnt			++;
+            mem_pure	+= inf.sz;
+            mem_alloc	+= inf.r_sz;
+        }
+        AStringVec 	columns;
+        columns.push_back(AnsiString().sprintf("%d",cnt));
+        columns.push_back(AnsiString().sprintf("%d",mem_pure));
+        columns.push_back(AnsiString().sprintf("%d",mem_alloc));
+        columns.push_back(nm);
+        frmStatistic->AppendItem	(columns);
+        frmStatistic->SortByColumn	(1,true);
+    	frmStatistic->Show			();
+	}
+}
+//---------------------------------------------------------------------------
 
