@@ -9,7 +9,7 @@ script_binding          = bind_heli.bind
 visual                  = physics\vehicles\mi24\veh_mi24_u_01.ogf
 
 //параметры построения пути
-path_linear_acc_fw				=  8; 3;5; 3.0 ;m/s  ; линейное ускорение при разгоне
+path_linear_acc_fw				=  6;8; 3;5; 3.0 ;m/s  ; линейное ускорение при разгоне
 path_linear_acc_bk				=  4;2;4; 0.5; 3;  3.5;3 ;8.0 ;m/s	; линейное ускорение торможения
 
 
@@ -29,8 +29,8 @@ on_point_range_dist				= 10.0    ; служебная информация
 
 
 ;default, can be redefined by script
-velocity					= 35;25					;m/sec   скорость, с которой патрулировать
-min_altitude				= 25;30 ;15 20	;20.0		;m		 min altitude in free state
+velocity					= 30;25					;m/sec   скорость, с которой патрулировать
+min_altitude				= 15;30 ;15 20	;20.0		;m		 min altitude in free state
 ;attack_velocity			= 15.0; 15; 10					;m/sec    скорость, с которой атаковать врага
 ;altitude					= 50	;20.0			;m		 высота, на которой патрулировать
 safe_altitude				= 3.0					; level_bound+5.0
@@ -48,7 +48,7 @@ use_fire_trail				= true
 barrel_dir_tolerance		= 2 ; degrees. допустимый угол, когда считаем, что дуло направлено в цель
 
 death_angular_vel			= 0.1,6.0,0.2  ; при гибели в воздухе дать угловую скорость модели      
-death_lin_vel_koeff			= 0.9          ; при гибели в воздухе умножить собственную лин скорость на коэфф
+death_lin_vel_koeff			= 1          ; при гибели в воздухе умножить собственную лин скорость на коэфф
 
 ; ------------------------- параметры для универсальной боевой схемы
 flyby_attack_dist           = 100;70
