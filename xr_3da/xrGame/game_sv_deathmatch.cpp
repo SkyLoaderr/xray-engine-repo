@@ -408,9 +408,9 @@ bool game_sv_Deathmatch::checkForRoundStart()
 	if( ((Level().timeServer()-start_time))>u32(g_sv_Pending_Wait_Time) && 
 		(AllPlayers_Ready() 
 #ifdef DEBUG
-		||!g_sv_Wait_For_Players_Ready) 
+		||!g_sv_Wait_For_Players_Ready
 #endif		
-		)
+		))
 	{
 		if (!SwitchToNextMap() || !OnNextMap())
 		{
