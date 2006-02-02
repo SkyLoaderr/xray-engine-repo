@@ -130,7 +130,7 @@ function mp_main:OnDirectIP_yes()
 
 	if (string.len(self.message_box:GetHost()) ~= 0) then
 		local cmd = "start client(" .. self.message_box:GetHost() .. "/name=" .. self.player_name:GetText() .. "/psw=" .. self.message_box:GetPassword() .. ")"
-		local console = get_console();
+		local console = get_console()
 		console:execute("main_menu off")
 		console:execute(cmd)
 	end
