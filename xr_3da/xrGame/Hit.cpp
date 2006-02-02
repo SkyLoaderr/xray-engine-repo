@@ -11,6 +11,10 @@ SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement,Fvector ap_in_
 		power					=aPower									;
 		dir						.set(adir)								;
 		who						=awho									;
+		if (awho)
+			whoID				= awho->ID()							;
+		else 
+			whoID				= 0										;
 		boneID					=aelement								;
 		p_in_bone_space			.set(ap_in_bone_space)					;
 		impulse					=aimpulse								;
