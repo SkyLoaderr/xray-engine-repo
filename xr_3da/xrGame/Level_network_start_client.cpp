@@ -139,7 +139,7 @@ bool	CLevel::net_start_client3				()
 		if (level_id<0)	{
 			Disconnect			();
 			pApp->LoadEnd		();
-			connected_to_server = false;
+			connected_to_server = FALSE;
 			return false;
 		}
 		pApp->Level_Set			(level_id);
@@ -203,7 +203,9 @@ bool	CLevel::net_start_client6				()
 		// Sync
 		pApp->LoadTitle				("CLIENT: Synchronising...");
 		Device.PreCache				(30);
-		net_start_result_total		= true;
+		net_start_result_total		= TRUE;
+	}else{
+		net_start_result_total		= FALSE;
 	}
 
 	pApp->LoadEnd					(); 
