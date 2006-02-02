@@ -450,7 +450,7 @@ ALife::ERelationType	CALifeCombatManager::relation_type	(CSE_ALifeMonsterAbstrac
 
 void CALifeCombatManager::kill_entity	(CSE_ALifeMonsterAbstract *l_tpALifeMonsterAbstract, const GameGraph::_GRAPH_ID &l_tGraphID, CSE_ALifeSchedulable *schedulable)
 {
-	VERIFY									(!l_tpALifeMonsterAbstract->g_Alive());
+	VERIFY									(l_tpALifeMonsterAbstract->g_Alive());
 	append_item_vector						(l_tpALifeMonsterAbstract->children,m_temp_item_vector);
 	GameGraph::_GRAPH_ID					l_tGraphID1 = l_tpALifeMonsterAbstract->m_tGraphID;
 	assign_death_position					(l_tpALifeMonsterAbstract, l_tGraphID, schedulable);
