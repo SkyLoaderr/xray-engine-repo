@@ -20,6 +20,7 @@ SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement,Fvector ap_in_
 		impulse					=aimpulse								;
 		hit_type				=ahit_type								;
 		ap						= aAP									;
+		PACKET_TYPE				= 0										;
 }
 
 SHit::SHit()
@@ -31,11 +32,13 @@ void SHit::invalidate()
 	power					=-dInfinity								;
 	dir						.set(-dInfinity,-dInfinity,-dInfinity)	;
 	who						=NULL									;
+	whoID					= 0;
 	boneID					=BI_NONE								;
 	p_in_bone_space		.set(-dInfinity,-dInfinity,-dInfinity)	;
 	impulse					=-dInfinity								;
 	hit_type				=ALife::eHitTypeMax						;
 	ap						= 0.0f;
+	PACKET_TYPE				= 0;
 }
 bool SHit::is_valide() const
 {
