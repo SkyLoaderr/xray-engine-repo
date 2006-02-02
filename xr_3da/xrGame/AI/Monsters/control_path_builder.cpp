@@ -97,7 +97,8 @@ void CControlPathBuilder::update_schedule()
 				game_selector().set_selection_type	(eSelectionTypeRandomBranching);
 		} else if (m_data.path_type != MovementManager::ePathTypePatrolPath) {
 			// set target
-			VERIFY(m_data.target_node != u32(-1));
+			// TODO: make it VERIFY
+			if (m_data.target_node == u32(-1)) return;
 
 			detail().set_dest_position		(m_data.target_position);
 			set_level_dest_vertex			(m_data.target_node);
