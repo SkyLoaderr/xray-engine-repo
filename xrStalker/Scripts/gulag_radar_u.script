@@ -652,7 +652,7 @@ function load_job(sj, gname, type, squad, groups)
         if type == "bun_ptr20" then
 		t = { section = "logic@bun_ptr20_walker11",
 			idle = 0,
-			prior = 1, state = { },
+			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
 		}
