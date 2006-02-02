@@ -102,6 +102,10 @@ function GetAccuracy(section)
 	else
 		k_disp				= ltx:r_float(ammo_list, "k_disp");
 	end
+	
+	if k_disp > 5 then	--
+		k_disp = 1
+	end
 
 	local fir = math.log10(1/(fire_dispersion_base*k_disp))
 	local inc = math.log10(1/(cam_dispersion/10 + cam_dispersion_inc))
