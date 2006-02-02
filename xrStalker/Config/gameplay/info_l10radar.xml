@@ -146,6 +146,9 @@
 	
 	<info_portion id="bun_ptr4">
 	</info_portion>
+	
+	<info_portion id="bun_snd_psi_hit">
+	</info_portion>
 		
 </game_information_portions>
 
