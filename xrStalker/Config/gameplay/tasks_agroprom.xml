@@ -44,7 +44,6 @@
             <map_location_type hint="agr_take_krots_info_hint">green_location</map_location_type>
             <object_story_id>agr_krot</object_story_id>
             <function_complete>agroprom_tasks.have_krots_flash</function_complete>
-            <infoportion_set_complete>agr_krot_task_complete</infoportion_set_complete>
 		</objective>
 	</game_task>
 
