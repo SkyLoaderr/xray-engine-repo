@@ -73,7 +73,7 @@ function GetHandling(section)
 	local PDM_disp_vel_factor	= read_if_exist(ltx, section, "PDM_disp_vel_factor", 1) 
 	
 	if control_inertion_factor < 2 and PDM_disp_base < 1.5 then
-		val = (1.2 - math.pow(PDM_disp_vel_factor - 0.5, 2) + math.pow(2 - control_inertion_factor,2))*50	
+		val = (1 - math.pow(PDM_disp_vel_factor - 0.5, 2) + math.pow(2 - control_inertion_factor,2))*50	
 	else
 		val = 15 - (2*PDM_disp_base + control_inertion_factor);
 	end	
@@ -103,7 +103,7 @@ function GetAccuracy(section)
 		k_disp				= ltx:r_float(ammo_list, "k_disp");
 	end
 	
-	if k_disp > 5 then	--
+	if k_disp > 3.5 then	
 		k_disp = 1
 	end
 
