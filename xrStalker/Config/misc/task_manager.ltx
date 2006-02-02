@@ -478,3 +478,133 @@ target = af_dummy spring
 reward_money = 8500
 reward_reputation = +45
 reward_rank = 10
+
+
+;--------Dolg------------------------
+;----------Eliminate Camp----
+dolg_eliminate_kamp_1
+dolg_eliminate_kamp_2
+dolg_eliminate_kamp_3
+dolg_eliminate_kamp_4
+dolg_eliminate_kamp_5
+;----------Kill Staker-------
+dolg_kill_stalker_1
+dolg_kill_stalker_2
+dolg_kill_stalker_3
+dolg_kill_stalker_4
+;----------Find Item---------
+
+
+[dolg_eliminate_kamp_1]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_kamp_1_text
+description = dolg_eliminate_kamp_1_descr
+parent = dolg
+target = gar_smart_monster_lair2
+reward_money = 800
+reward_reputation = +15
+reward_relation = dolg, 60
+reward_rank = 4
+reward_item = bread
+
+[dolg_eliminate_kamp_2]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_kamp_2_text
+description = dolg_eliminate_kamp_2_descr
+parent = dolg
+target = agr2_st_factory
+reward_money = 2300
+reward_reputation = -35
+reward_relation = dolg, 170
+reward_rank = 7
+reward_item = medkit,bandage
+
+[dolg_eliminate_kamp_3]
+type = eliminate_lager
+community = actor_dolg
+text = dolg_eliminate_kamp_3_text
+description = dolg_eliminate_kamp_3_descr
+parent = dolg
+target = ros_smart_stalker_killers1
+reward_money = 2100
+reward_reputation = +30
+reward_relation = dolg, 90
+reward_rank = 6
+reward_item = medkit,bandage
+
+[dolg_eliminate_kamp_4]
+type = eliminate_lager
+community = actor_dolg
+text = dolg_eliminate_kamp_4_text
+description = dolg_eliminate_kamp_4_descr
+parent = dolg
+target = val_bandits
+reward_money = 3000
+reward_reputation = +40
+reward_relation = dolg, 150
+reward_rank = 7
+reward_item = medkit,bandage
+
+[dolg_eliminate_kamp_5]
+type = eliminate_lager
+community = actor_dolg
+text = dolg_eliminate_kamp_5_text
+description = dolg_eliminate_kamp_5_descr
+parent = dolg
+target = yan_tonnel_snorks
+reward_money = 2000
+reward_reputation = +40
+reward_relation = dolg, 100
+reward_rank = 6
+reward_item = medkit
+
+[dolg_kill_stalker_1]
+type = kiil_stalker
+community = actor_dolg
+text = dolg_kill_stalker_1_text
+description = dolg_kill_stalker_1_descr
+parent = dolg
+target = mil_Svoboda_blockpost_leader
+reward_money = 2500
+reward_reputation = -40
+reward_relation = dolg, 200
+reward_rank = 7
+
+[dolg_kill_stalker_2]
+type = kiil_stalker
+community = actor
+text = dolg_kill_stalker_2_text
+description = dolg_kill_stalker_2_descr
+parent = dolg
+target = mil_Svoboda_engineer
+reward_money = 2000
+reward_reputation = -10
+reward_relation = dolg, 150
+reward_rank = 6
+
+[dolg_kill_stalker_3]
+type = kiil_stalker
+community = actor_dolg
+text = dolg_kill_stalker_3_text
+description = dolg_kill_stalker_3_descr
+parent = dolg
+target = mil_Svoboda_master_Max
+reward_money = 3000
+reward_reputation = -25
+reward_relation = dolg, 250
+reward_rank = 7
+
+[dolg_kill_stalker_4]
+type = kiil_stalker
+community = actor_dolg
+text = dolg_kill_stalker_4_text
+description = dolg_kill_stalker_4_descr
+parent = dolg
+target = mil_Svoboda_master_Max
+reward_money = 1500
+reward_reputation = +35
+reward_relation = dolg, 100
+reward_rank = 5
+
