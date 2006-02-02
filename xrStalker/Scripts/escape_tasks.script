@@ -38,6 +38,7 @@ function proceed()
 	   actor:object("esc_wounded_flash") ~= nil
 	then
 		actor:give_info_portion("tutorial_wounded_give_info")
+		actor:disable_info_portion("esc_trader_direct")
 	end     	
 
 --' Потерявшийся Колян

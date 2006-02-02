@@ -121,6 +121,7 @@
 	<info_portion id="esc_trader_newbie_course_done"></info_portion>
 	<info_portion id="esc_trader_tutorial_chosen"></info_portion>
 	<info_portion id="esc_trader_can_leave"></info_portion>
+	<info_portion id="esc_trader_direct"></info_portion>
 
 	<!-- вспомогательные в лагере -->
 	<info_portion id="esc_lager_bariga_talk_klans"></info_portion>

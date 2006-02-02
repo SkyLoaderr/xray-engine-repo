@@ -29,7 +29,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 100, state = {0,2},
 			in_rest = "", out_rest = "escape_blockpost_zone",
 			predicate = function(obj_info)
-			            	return obj_info.profile_name == "esc_soldier_commander"
+			            	return obj_info.name == "esc_blokpost_commander"
 			            end
 		}
 		table.insert(sj, t)
@@ -83,10 +83,10 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_blockpost_kamp2",
 			idle = 0,
-			prior = 4, state = {1},
+			prior = 10, state = {1},
 			in_rest = "", out_rest = "escape_blockpost_zone",
 			predicate = function(obj_info)
-			            	return obj_info.profile_name == "esc_soldier_commander"
+			            	return obj_info.name == "esc_blokpost_commander"
 			            end
 		}
 		table.insert(sj, t)
