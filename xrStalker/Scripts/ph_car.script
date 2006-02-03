@@ -56,16 +56,31 @@ function action_car:reset_scheme(loading)
 
 	self.object:set_nonscript_usable(false)
 
+    self.object:set_tip_text("")
+	self.show_tips = self.st.show_tips
+	self.tip_use = self.st.tip_use
+	self.tip_locked = self.st.tip_locked
+
+	if self.st.invulnerable then
+	    self.def_health = self.object.health
+	end
+
+	self.headlights = object.deactivate
+	if self.st.headlights == "on" then
+	    self.headlights = object.activate
+	end
+	printf("car <state>: headlights %s", self.st.headlights)
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, object("left_light",  self.headlights), cond(cond.time_end, time_infinite))
+	xr_logic.mob_capture(self.object, true)
+	action(self.object, object("right_light", self.headlights), cond(cond.time_end, time_infinite))
+
     self.usable = self.st.usable
     
     --if self.usable ~= nil then
 	--    self.car_holder = self.object.get_current_holder() --engaged()
 	--else
     if self.usable == nil then
-	    if self.st.invulnerable then
-	        self.def_health = self.object.health
-	    end
-
 	    self.car = self.object:get_car()
 	    self.car:SetExplodeTime(0) -- (-1)
 
@@ -94,16 +109,6 @@ function action_car:reset_scheme(loading)
 
 	    --xr_logic.mob_capture(self.object, true)
 	    self.st.signals = {}
-
-	    self.headlights = object.deactivate
-	    if self.st.headlights == "on" then
-	        self.headlights = object.activate
-	    end
-	    printf("car <state>: headlights %s", self.st.headlights)
-	    xr_logic.mob_capture(self.object, true)
-	    action(self.object, object("left_light",  self.headlights), cond(cond.time_end, time_infinite))
-	    xr_logic.mob_capture(self.object, true)
-	    action(self.object, object("right_light", self.headlights), cond(cond.time_end, time_infinite))
 
 	    self.fc_upd_num = 0 -- fastcall updates num
 	    self.fc_upd_avg = 10 -- average time of the fastcall updates (in millisecond)
@@ -888,9 +893,21 @@ function action_car:fastcall()
 	
 	if self.usable ~= nil then
 	    local cu = xr_logic.pick_section_from_condlist(db.actor, self.object, self.usable.condlist)
-	    self.object:set_nonscript_usable(cu == "true" or cu == "")
+	    local u = (cu == "true" or cu == "")
+
+	    if u then
+	        if self.show_tips and self.tip_use then
+		        self.object:set_tip_text(self.st.tip_use)
+	        end
+	    elseif self.show_tips and self.tip_locked then
+		    self.object:set_tip_text(self.st.tip_locked)
+	    end
+
+	    self.object:set_nonscript_usable(u)
+
 	    return false
 	end
+
 	return self:fast_update()
 end
 
@@ -1169,14 +1186,19 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	    st.fire_time        = utils.cfg_get_number(ini, section, "fire_time",       npc, false, def_min_fire_time)
 	    st.fire_rep         = utils.cfg_get_string(ini, section, "fire_repeat",     npc, false, gulag_name, nil)
 	    st.fire_target      = utils.cfg_get_string(ini, section, "target",          npc, false, gulag_name, "points")
-	    st.invulnerable     = utils.cfg_get_bool(ini,   section, "invulnerable",    npc, false, false)
-	    st.headlights       = utils.cfg_get_string(ini, section, "headlights",      npc, false, gulag_name, "off")
-	    st.on_death_info    = utils.cfg_get_string(ini, section, "on_death_info",   npc, false, gulag_name, nil)
 
 	    st.on_target_vis    = xr_logic.cfg_get_string_and_condlist(ini, section, "on_target_vis", npc)
 	    st.on_target_nvis   = xr_logic.cfg_get_string_and_condlist(ini, section, "on_target_nvis", npc)
 
 	    st.path_walk_info   = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще не загружены.
 	    st.path_fire_info   = nil
+	else
+	    st.show_tips    = utils.cfg_get_bool(ini,   section, "show_tips",  npc, false, true)
+	    st.tip_use      = utils.cfg_get_string(ini, section, "tip_use",    npc, false, "", "tip_car_use")		
+	    st.tip_locked   = utils.cfg_get_string(ini, section, "tip_locked", npc, false, "", "tip_car_locked")
 	end
+
+	st.invulnerable     = utils.cfg_get_bool(ini,   section, "invulnerable",    npc, false, false)
+	st.headlights       = utils.cfg_get_string(ini, section, "headlights",      npc, false, gulag_name, "off")
+	st.on_death_info    = utils.cfg_get_string(ini, section, "on_death_info",   npc, false, gulag_name, nil)
 end
