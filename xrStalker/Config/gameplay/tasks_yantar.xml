@@ -112,8 +112,8 @@
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
 			<object_story_id>yan_vasilyev</object_story_id>
-			<function_complete>yantar_tasks.actor_has_vasilyev_pda</function_complete>
 			<infoportion_set_complete>yantar_vasilyev_info</infoportion_set_complete>
+			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
 			<function_call_complete>yantar_tasks.yantar_vasilyev_spam</function_call_complete>
 		</objective>
 		<objective>
@@ -128,6 +128,7 @@
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
 			<object_story_id>yan_vasilyev</object_story_id>
 			<function_complete>yantar_tasks.actor_has_vasilyev_pda</function_complete>
+			<infoportion_set_complete>yan_find_vasilyev_end</infoportion_set_complete>
 		</objective>
 </game_task>
 
@@ -138,7 +139,7 @@
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_ghost_task">green_location</map_location_type>
 			<object_story_id>yan_mapspot_from_vasilyev</object_story_id>
-			<function_complete>yantar_tasks.has_labx16_documents</function_complete>
+			<infoportion_complete>yantar_find_ghost_task_end</infoportion_complete>
 			<infoportion_set_complete>yan_kill_brain_task_start</infoportion_set_complete>
 		</objective>
 		<objective>

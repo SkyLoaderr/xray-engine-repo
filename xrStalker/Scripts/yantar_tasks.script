@@ -10,7 +10,11 @@ function yan_labx16_mapspot (actor, npc)
     	level_tasks.add_location (907, "green_location")
 end
 function has_labx16_documents ()
-		return db.actor:object ("lab_x16_documents") ~= nil
+        if db.actor:object ("lab_x16_documents") ~= nil then
+           db.actor:give_info_portion ("yantar_find_ghost_task_end")
+           return true
+        end    
+		return false
 end
 function switchers_off ()
 		return db.actor:has_info("yan_labx16_switcher_1_off") and db.actor:has_info("yan_labx16_switcher_2_off") and db.actor:has_info("yan_labx16_switcher_3_off") 
