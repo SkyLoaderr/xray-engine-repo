@@ -317,12 +317,6 @@ function load_job(sj, gname, type, squad, groups)
 
 	-- Гулаг ветеранов Долга внутри базы Долга
 	if type == "bar_dolg_veterans" then
-		t = { section = "logic7@bar_dolg_veterans_bunker", 
-			idle = 0,
-			prior = 10, state = {0,1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		    
 		t = { section = "logic3@bar_dolg_veterans_gates1", 
 			idle = 0,
 			prior = 7, state = {0,1}, squad = squad, group = groups[0],
@@ -344,13 +338,6 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic2@bar_dolg_veterans_guard_bunker2", 
 			idle = 0,
 			prior = 7, state = {0,1,2}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-			
-		t = { section = "logic8@bar_dolg_veterans_bunker_camper", 
-			idle = 0,
-			prior = 5, state = {2}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
