@@ -498,10 +498,6 @@
                 <text>agr_swamp_ratcatcher_talks_120</text>
                 <next>30</next>
             </phrase>
-            <phrase id="0">
-                <text>agr_swamp_ratcatcher_talks_0</text>
-                <next>10</next>
-            </phrase>
             <phrase id="20">
                 <text>agr_swamp_ratcatcher_talks_20</text>
                 <next>120</next>
@@ -523,15 +519,18 @@
                 <text>agr_swamp_ratcatcher_talks_150</text>
                 <give_info>agr_zaz_location</give_info>
             </phrase>
-            <phrase id="140">
-                <text>agr_swamp_ratcatcher_talks_140</text>
-                <give_info>agr_nii_security_plan_flash_have</give_info>
-                <give_info>agr_docs_update_info</give_info>
-                <next>50</next>
-            </phrase>
             <phrase id="40">
                 <text>agr_swamp_ratcatcher_talks_40</text>
                 <next>140</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_swamp_ratcatcher_talks_0</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="140">
+                <text>agr_swamp_ratcatcher_talks_140</text>
+                <give_info>agr_nii_security_plan_flash_have</give_info>
+                <next>50</next>
             </phrase>
         </phrase_list>
     </dialog>

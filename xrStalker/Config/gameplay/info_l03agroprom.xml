@@ -143,9 +143,3 @@
 	<info_portion id="agr_nii_location">
 	</info_portion>	 		
 	
-	<info_portion id="agr_docs_update_info">
-		<task>agroprom_get_military_documents</task>
-		<article>agr_mil_case_update_info</article>
-	</info_portion>	  
- 
-</game_information_portions>
