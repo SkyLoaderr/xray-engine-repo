@@ -422,6 +422,29 @@
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
+	<specific_character id="pri_soldier_suicide_default2" team_default = "1">
+		<name>Зомбированный солдат.</name>
+		<icon x="14" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
+		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+
+		<class>pri_soldier_suicide</class>
+		<community>zombied</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_bandana</visual>
+		<snd_config>characters_voice\human_02\military\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_fmj = 2 \n
+		</supplies>	
+					
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
+
 <!---------------------- ZOMBIED ----------------------------->
 	<specific_character id="pri_zombied_suicide_default1" team_default = "1">
 		<name>Зомбированный сталкер</name>
