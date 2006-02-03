@@ -14,6 +14,15 @@
 		<text>слишком истощен, чтобы идти</text>
 	</string>
 
+	<!-- Использование машины -->
+    <string id="tip_car_use">
+        <text>Открыть дверь ($$ACTION_USE$$)</text>
+    </string>
+
+    <string id="tip_car_locked">
+        <text>Заблокировано</text>
+    </string>
+
 	<!-- Надпись на физической двери -->
 	<string id="tip_door_locked">
 		<text>Дверь заперта</text>
