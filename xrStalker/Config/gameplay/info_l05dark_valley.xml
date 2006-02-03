@@ -127,8 +127,7 @@
 <info_portion id="val_prisoner_task_finish"></info_portion>
 <info_portion id="val_prisoner_scene_end"></info_portion>
 
-<!-- Òèïñû -->
-<info_portion id="val_exit_gate_show">
+<info_portion id="val_come_to_trader_task">
     <task>val_come_to_trader</task>
 </info_portion>
 
