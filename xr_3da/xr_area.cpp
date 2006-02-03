@@ -29,7 +29,7 @@ void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 	VERIFY					(_valid(p->volume));
 
 	// Query objects
-	xr_vector<ISpatial*>	snd_ER	;	snd_ER.reserve	(8+iCeil(range/10.f));
+	static xr_vector<ISpatial*>	snd_ER	;	//snd_ER.reserve	(8+iCeil(range/10.f));
 	Fvector					bb_size	=	{range,range,range};
 	g_SpatialSpace->q_box	(snd_ER,0,STYPE_REACTTOSOUND,p->position,bb_size);
 
@@ -60,6 +60,7 @@ void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 			}
 		}
 	}
+	snd_ER.clear_not_free	();
 }
 
 void	IGame_Level::SoundEvent_Dispatch	( )
