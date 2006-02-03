@@ -139,7 +139,6 @@ end
 ----------------------------------------------------------------------------------------------
 
 function have_quest_case_02(task, objective)
---	printf("GOT MULITARY CASE!!!! LOVE!!!")
 	return db.actor:object("quest_case_02") ~= nil
 end
 
