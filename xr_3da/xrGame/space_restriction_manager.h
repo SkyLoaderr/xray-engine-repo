@@ -42,7 +42,6 @@ public:
 protected:
 	IC		void				join_restrictions				(shared_str &restrictions, shared_str update);
 	IC		void				difference_restrictions			(shared_str &restrictions, shared_str update);
-	IC		bool				restriction_presented			(shared_str restrictions, shared_str restriction) const;
 	IC		CRestrictionPtr		restriction						(ALife::_OBJECT_ID id);
 			CRestrictionPtr		restriction						(shared_str out_restrictors, shared_str in_restrictors);
 	IC		void				collect_garbage					();
@@ -69,6 +68,8 @@ public:
 			bool				accessible						(ALife::_OBJECT_ID id, const Fsphere &sphere);
 			bool				accessible						(ALife::_OBJECT_ID id, u32 level_vertex_id, float radius);
 			u32					accessible_nearest				(ALife::_OBJECT_ID id, const Fvector &position, Fvector &result);
+
+	IC		bool				restriction_presented			(shared_str restrictions, shared_str restriction) const;
 
 #ifdef DEBUG
 	IC		const SPACE_RESTRICTIONS &restrictions				() const;

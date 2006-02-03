@@ -3,6 +3,8 @@
 #include "BaseMonster/base_monster.h"
 #include "../../restricted_object.h"
 #include "../../customzone.h"
+#include "../../level.h"
+#include "../../space_restriction_manager.h"
 
 CAnomalyDetector::CAnomalyDetector(CBaseMonster *monster) : m_object(monster)
 {
@@ -71,6 +73,9 @@ void CAnomalyDetector::on_contact(CObject *obj)
 	
 	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(obj);
 	if (!custom_zone) return;
+
+	if (Level().space_restriction_manager().restriction_presented(
+		m_object->control().path_builder().restrictions().in_restrictions(),custom_zone->cName())) return;
 
 	ANOMALY_INFO_VEC_IT it = std::find(m_storage.begin(), m_storage.end(), custom_zone);	
 	if (it != m_storage.end()) {
