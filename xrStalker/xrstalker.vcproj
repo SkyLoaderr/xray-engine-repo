@@ -3591,6 +3591,31 @@
 					RelativePath=".\scripts\version.script">
 				</File>
 			</Filter>
+			<Filter
+				Name="Test"
+				Filter="">
+				<File
+					RelativePath=".\Scripts\task_level1.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\task_level2.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\task_level3.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\task_level4.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\task_level5.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\task_level6.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\task_level7.script">
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
