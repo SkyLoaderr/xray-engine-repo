@@ -216,7 +216,7 @@
 		<objective>
 			<text>look_for_x16_lab</text>
 			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="bring_x16_documents">blue_location</map_location_type>
+			<map_location_type>green_location</map_location_type>
 			<object_story_id>yan_general_ecolog</object_story_id>
 			<infoportion_complete>yan_find_scientist_start</infoportion_complete>	
 			<infoportion_complete>yan_find_scientist_semenov_start</infoportion_complete>	
