@@ -80,10 +80,8 @@ function process_info_portion(info_id)
 		return true
 
 	elseif info_id == "agr_zaz_found" then
-		if level_tasks.is_map_spot_present(307, "crlc_small") then
 			level_tasks.remove_location(307, "crlc_small")
-			return true
-		end
+	end
 
 -- collector entrance
 	elseif info_id == "agr_collector_entrance_info" then
