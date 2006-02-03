@@ -23,6 +23,9 @@
 #include "../../../xrserver_objects_alife_monsters.h"
 #include "../../../alife_simulator.h"
 #include "../../../alife_object_registry.h"
+#include "../../../xrServer.h"
+#include "../../../inventory_item.h"
+#include "../../../xrServer_Objects_ALife.h"
 
 void CBaseMonster::Load(LPCSTR section)
 {
@@ -183,7 +186,17 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 		}
 
 		if (!se_monster->m_flags.is(CSE_ALifeMonsterBase::flSkipSpawnItem)) {
-			Level().spawn_item (m_item_section,Position(),ai_location().level_vertex_id(),ID());
+			CSE_Abstract	*object = Level().spawn_item (m_item_section,Position(),ai_location().level_vertex_id(),ID(),true);
+			CSE_ALifeObject	*alife_object = smart_cast<CSE_ALifeObject*>(object);
+			if (alife_object)
+				alife_object->m_flags.set	(CSE_ALifeObject::flCanSave,FALSE);
+
+			{
+				NET_Packet				P;
+				object->Spawn_Write		(P,TRUE);
+				Level().Send			(P,net_flags(TRUE));
+				F_entity_Destroy		(object);
+			}
 		}
 	}
 
@@ -197,6 +210,9 @@ void CBaseMonster::net_Destroy()
 	if (StateMan) StateMan->critical_finalize	();
 
 	inherited::net_Destroy				();
+	
+	CInventoryOwner::net_Destroy		();
+
 	m_pPhysics_support->in_NetDestroy	();
 
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
@@ -298,4 +314,12 @@ void CBaseMonster::settings_overrides()
 	m_current_settings.create	(crc,1,data);
 }
 
-
+void CBaseMonster::on_before_sell	(CInventoryItem *item)
+{
+	// since there can be only single item in the monster inventory
+	CSE_Abstract					*object	= Level().Server->game->get_entity_from_eid(item->object().ID()); 
+	VERIFY							(object);
+	CSE_ALifeObject					*alife_object = smart_cast<CSE_ALifeObject*>(object);
+	if (alife_object)
+		alife_object->m_flags.set	(CSE_ALifeObject::flCanSave,TRUE);
+}

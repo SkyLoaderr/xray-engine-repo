@@ -18,6 +18,9 @@
 
 void CSE_ALifeDynamicObject::on_spawn				()
 {
+#ifdef DEBUG
+//	Msg			("[LSS] spawning object [%d][%d][%s][%s]",ID,ID_Parent,name(),name_replace());
+#endif
 }
 
 void CSE_ALifeDynamicObject::on_register			()

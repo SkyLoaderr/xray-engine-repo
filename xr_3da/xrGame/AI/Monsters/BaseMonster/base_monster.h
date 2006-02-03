@@ -405,7 +405,9 @@ public:
 #ifdef DEBUG
 	virtual void			debug_on_key		(int key) {}
 #endif
+
+public:
+	virtual	void			on_before_sell		(CInventoryItem *item);
 };
 
 #include "base_monster_inline.h"
-

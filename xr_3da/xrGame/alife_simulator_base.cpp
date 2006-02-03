@@ -246,6 +246,10 @@ void CALifeSimulatorBase::create	(CSE_ALifeObject *object)
 	}
 	VERIFY						(dynamic_object->m_bOnline);
 
+#ifdef DEBUG
+//	Msg							("Creating object from client spawn [%d][%d][%s][%s]",dynamic_object->ID,dynamic_object->ID_Parent,dynamic_object->name(),dynamic_object->name_replace());
+#endif
+
 	if (0xffff != dynamic_object->ID_Parent) {
 		u16							id = dynamic_object->ID_Parent;
 		CSE_ALifeDynamicObject		*parent = objects().object(id);

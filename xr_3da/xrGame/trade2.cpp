@@ -66,10 +66,10 @@ void CTrade::SellItem(CInventoryItem* pItem)
 {
 	// сумма сделки учитывая ценовой коэффициент
 	// актер цену не говорит никогда, все делают за него
-	u32	dwTransferMoney;
+	u32						dwTransferMoney = GetItemPrice(pItem);
 
-	dwTransferMoney = GetItemPrice(pItem);
-
+	pThis.inv_owner->on_before_sell		(pItem);
+	pPartner.inv_owner->on_before_buy	(pItem);
 
 	// выбросить у себя 
 	NET_Packet				P;
@@ -104,7 +104,6 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	if((pPartner.type==TT_ACTOR) || (pThis.type==TT_ACTOR)){
 		bool bDir = (pThis.type==TT_ACTOR);
 		Actor()->callback(GameObject::eTradeSellBuyItem)(pItem->object().lua_game_object(), bDir, dwTransferMoney);
-	
 	}
 }
 

@@ -209,6 +209,8 @@ public:
 			float				deficit_factor			(const shared_str &section) const;
 			void				buy_supplies			(CInifile &ini_file, LPCSTR section);
 			void				sell_useless_items		();
+	virtual	void				on_before_sell			(CInventoryItem *item) {}
+	virtual	void				on_before_buy			(CInventoryItem *item) {}
 };
 
 #include "inventory_owner_inline.h"
