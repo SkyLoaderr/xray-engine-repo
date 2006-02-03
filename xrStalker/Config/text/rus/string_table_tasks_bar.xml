@@ -134,7 +134,9 @@
 <string id="bring_x16_documents">
 	<text>Принести документы бармену</text>
 </string>
-
+<string id="look_for_x16_lab">
+	<text>узнать у ученых где находится лаборатория x16</text>
+</string>
 	
 <string id="descr_deactivate_radar">
 	<text>Отключить выжигатель мозгов</text>
