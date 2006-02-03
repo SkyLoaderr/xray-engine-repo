@@ -5,18 +5,21 @@
 rdream1     = sleep\Movie-003_Rats_OutPut-010
 rdream2     = ui\ui_start_avi
 rdream3     = videos\dreams\regular\dream3
-intro_vid   = sleep\Movie-003_Rats_OutPut-010
-sdream1     = videos\dreams\scene\esc_start
-sdream2     = videos\dreams\scene\esc_sleep
-sdream3     = videos\dreams\scene\gar_fighting
+scenario1   = sleep\Movie-003_Rats_OutPut-010
+scenario2   = sleep\Movie-003_Rats_OutPut-010
+scenario3   = sleep\Movie-003_Rats_OutPut-010
+;sdream1     = videos\dreams\scene\esc_start
+;sdream2     = videos\dreams\scene\esc_sleep
+;sdream3     = videos\dreams\scene\gar_fighting
 
 ;--------------------------------------------------------------------------------
 ;--- Dreams ---------------------------------------------------------------------
 ;--------------------------------------------------------------------------------
 [dreams]
 regular_probability = 80
-regular     = ;regular_dream1, regular_dream2, regular_dream3
-scenario    = intro ;, l01_escape@start, l01_escape@sleep, l02_garbage@fighting2
+dream_types         = nightmare, normal, happy
+regular             = ;regular_dream1, regular_dream2, regular_dream3
+scenario            = scenario1, scenario2, scenario3 ;, l01_escape@start, l01_escape@sleep, l02_garbage@fighting2
 
 ;--------------------------------------------------------------------------------
 ;--- Regular dreams -------------------------------------------------------------
@@ -39,8 +42,18 @@ type        = happy
 ;--------------------------------------------------------------------------------
 ;--- Scenario dreams ---------------------------------------------------------------
 ;--------------------------------------------------------------------------------
-[intro]
-dream       = intro_vid
+[scenario1]
+dream       = scenario1
+;to_regular  = 3,normal
+cond        = {+agr_military_documents_done}
+
+[scenario2]
+dream       = scenario2
+;to_regular  = 3,normal
+cond        = {+agr_military_documents_done}
+
+[scenario3]
+dream       = scenario3
 ;to_regular  = 3,normal
 cond        = {+agr_military_documents_done}
 
