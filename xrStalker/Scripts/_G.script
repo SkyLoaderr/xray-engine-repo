@@ -723,12 +723,8 @@ function random_choice_weighted( a )
 end
 
 -- проверяет, есть ли объект в онлайне
-function is_object_online (object_id)
-    local sim = alife ()
-    if sim == nil then return true end
-    local obj = sim:object (object_id)
-    if obj == nil then return false end
-    return obj.online
+function is_object_online(obj_id)
+	return level.object_by_id(obj_id) ~= nil
 end
 
 function get_clsid(npc)
