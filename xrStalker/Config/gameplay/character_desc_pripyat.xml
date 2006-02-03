@@ -406,7 +406,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<class>pri_soldier_suicide</class>
-		<community>military</community>
+		<community>zombied</community>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
