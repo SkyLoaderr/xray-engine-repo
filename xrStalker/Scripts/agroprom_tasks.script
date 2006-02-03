@@ -80,9 +80,8 @@ function process_info_portion(info_id)
 		return true
 
 	elseif info_id == "agr_zaz_found" then
-			level_tasks.remove_location(307, "crlc_small")
-	end
-
+		level_tasks.remove_location(307, "crlc_small")
+		return true
 -- collector entrance
 	elseif info_id == "agr_collector_entrance_info" then
 		level_tasks.add_location(311, "crlc_small", "to_agroprom_underground")
