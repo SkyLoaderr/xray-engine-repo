@@ -24,6 +24,8 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
+#include "ActorCondition.h"
+
 #define	TEAM0_MENU		"deathmatch_team0"
 
 game_cl_Deathmatch::game_cl_Deathmatch()
@@ -914,12 +916,16 @@ void				game_cl_Deathmatch::OnGameMenuRespond_ChangeSkin	(NET_Packet& P)
 	}
 };
 
-bool				game_cl_Deathmatch::EntityCanBeHarmed		(CObject* pObj)
+void			game_cl_Deathmatch::OnPlayerFlagsChanged	(game_PlayerState* ps)
 {
-	if (OnClient()) return false;
-	if (!inherited::EntityCanBeHarmed(pObj)) return false;	
-	if (!pObj) return true;
-	game_PlayerState* PS = GetPlayerByGameID(pObj->ID());
-	if (!PS) return true;
-	return !PS->testFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+	inherited::OnPlayerFlagsChanged(ps);
+	if (!ps) return;
+	if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+	CObject* pObject = Level().Objects.net_Find(ps->GameID);
+	if (!pObject) return;
+
+	if (pObject->CLS_ID != CLSID_OBJECT_ACTOR) return;
+	CActor* pActor = smart_cast<CActor*>(pObject);
+	if (!pActor) return;
+	pActor->conditions().SetCanBeHarmedState(!ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
 };

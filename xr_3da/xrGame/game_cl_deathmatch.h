@@ -136,8 +136,8 @@ public:
 	virtual		void				OnSwitchPhase_InProgress();
 
 	virtual		u8					GetTeamCount			() { return 1; };
-
-	virtual		bool				EntityCanBeHarmed		(CObject* pObj);
+	
+	virtual		void				OnPlayerFlagsChanged	(game_PlayerState* ps);
 };
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

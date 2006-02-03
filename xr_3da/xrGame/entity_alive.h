@@ -102,6 +102,8 @@ protected:
 	static  void				LoadBloodyWallmarks		(LPCSTR section);
 public:	
 	static  void				UnloadBloodyWallmarks	();
+
+	void						ClearBloodWounds		() {m_BloodWounds.clear();};
 protected:
 	virtual void				PlaceBloodWallmark		(const Fvector& dir, const Fvector& start_pos, 
 														float trace_dist, float wallmark_size,

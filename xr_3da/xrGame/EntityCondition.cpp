@@ -93,6 +93,7 @@ CEntityCondition::CEntityCondition(CEntityAlive *object)
 	m_fWoundBoneScale		= 1.f;
 
 	m_bIsBleeding			= false;
+	m_bCanBeHarmed			= true;
 }
 
 CEntityCondition::~CEntityCondition(void)
@@ -178,8 +179,8 @@ void CEntityCondition::reinit	()
 
 void CEntityCondition::ChangeHealth(float value)
 {
-	VERIFY(_valid(value));
-	m_fDeltaHealth += value;
+	VERIFY(_valid(value));	
+	m_fDeltaHealth += (CanBeHarmed() || (value > 0)) ? value : 0;
 }
 void CEntityCondition::ChangePower(float value)
 {
@@ -275,11 +276,11 @@ void CEntityCondition::UpdateCondition()
 	if (m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth			= true;
-		if (Game().EntityCanBeHarmed(m_object)) m_object->OnCriticalHitHealthLoss();
+		m_object->OnCriticalHitHealthLoss();
 	}
 	else
 	{
-		if (m_fDeltaHealth<0 && Game().EntityCanBeHarmed(m_object)) m_object->OnHitHealthLoss(GetHealth()+m_fDeltaHealth);
+		if (m_fDeltaHealth<0) m_object->OnHitHealthLoss(GetHealth()+m_fDeltaHealth);
 	}
 	//-----------------------------------------
 	UpdateHealth				();
@@ -287,7 +288,7 @@ void CEntityCondition::UpdateCondition()
 	if (!CriticalHealth && m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth			= true;
-		if(Game().EntityCanBeHarmed(m_object)) m_object->OnCriticalWoundHealthLoss();
+		m_object->OnCriticalWoundHealthLoss();
 	};
 	//-----------------------------------------
 	UpdatePower					();
@@ -297,7 +298,7 @@ void CEntityCondition::UpdateCondition()
 	if (!CriticalHealth && m_fDeltaHealth+GetHealth() <= 0)
 	{
 		CriticalHealth = true;
-		if(Game().EntityCanBeHarmed(m_object)) m_object->OnCriticalRadiationHealthLoss();
+		m_object->OnCriticalRadiationHealthLoss();
 	};
 	//-----------------------------------------
 	UpdatePsyHealth				();
@@ -305,7 +306,7 @@ void CEntityCondition::UpdateCondition()
 	UpdateCircumspection		();
 	UpdateEntityMorale			();
 
-	health()					+= Game().EntityCanBeHarmed(m_object) ? m_fDeltaHealth : 0;
+	health()					+= m_fDeltaHealth;
 	m_fPower					+= m_fDeltaPower;
 	m_fSatiety					+= m_fDeltaSatiety;
 	m_fRadiation				+= m_fDeltaRadiation;
@@ -420,7 +421,7 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 		// temp (till there is no death from psy hits)
 		hit_power *= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart*m_fHitBoneScale;
-		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaHealth -= CanBeHarmed() ? m_fHealthLost : 0;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		// -------------------------------------------------
 
@@ -431,7 +432,7 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 	case ALife::eHitTypeBurn:
 		hit_power *= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart*m_fHitBoneScale;
-		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaHealth -= CanBeHarmed() ? m_fHealthLost : 0;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		bAddWound		=  false;
 		break;
@@ -441,7 +442,7 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 	case ALife::eHitTypeShock:
 		hit_power		*= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost	=  hit_power*m_fHealthHitPart;
-		m_fDeltaHealth	-= m_fHealthLost;
+		m_fDeltaHealth -= CanBeHarmed() ? m_fHealthLost : 0;
 		m_fDeltaPower	-= hit_power*m_fPowerHitPart;
 		bAddWound		=  false;
 		break;
@@ -454,14 +455,14 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 	case ALife::eHitTypeStrike:
 		hit_power *= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart;
-		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaHealth -= CanBeHarmed() ? m_fHealthLost : 0;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		break;
 	case ALife::eHitTypeFireWound:
 	case ALife::eHitTypeWound:
 		hit_power *= m_HitTypeK[pHDS->hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart*m_fHitBoneScale;
-		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaHealth -= CanBeHarmed() ? m_fHealthLost : 0;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
 		break;
 	}
@@ -493,7 +494,7 @@ void CEntityCondition::UpdateHealth()
 	
 	float bleeding_speed		= BleedingSpeed() * delta_time * m_fV_Bleeding;
 	m_bIsBleeding				= fis_zero(bleeding_speed)?false:true;
-	m_fDeltaHealth				-= bleeding_speed;
+	m_fDeltaHealth				-= CanBeHarmed() ? bleeding_speed : 0;
 	VERIFY						(_valid(m_fDeltaHealth));
 	ChangeBleeding				(m_fV_WoundIncarnation * delta_time);
 }
@@ -528,10 +529,12 @@ void CEntityCondition::UpdateSatiety(float k)
 	//сытость увеличивает здоровье только если нет открытых ран
 	if(!m_bIsBleeding)
 	{
-		m_fDeltaHealth += m_fV_SatietyHealth*
+		m_fDeltaHealth += CanBeHarmed() ? 
+					(m_fV_SatietyHealth*
 					(m_fSatiety>m_fSatietyCritical?1.f:-1.f)*
 //					sleep_k*
-					m_iDeltaTime/1000;
+					m_iDeltaTime/1000)
+					: 0;
 	}
 
 	//коэффициенты уменьшения восстановления силы от сытоти и радиации
@@ -553,7 +556,7 @@ void CEntityCondition::UpdateRadiation(float k)
 							k*
 							m_iDeltaTime/1000;
 
-		m_fDeltaHealth -= m_fV_RadiationHealth*m_fRadiation*m_iDeltaTime/1000;
+		m_fDeltaHealth -= CanBeHarmed() ? m_fV_RadiationHealth*m_fRadiation*m_iDeltaTime/1000 : 0;
 	}
 }
 

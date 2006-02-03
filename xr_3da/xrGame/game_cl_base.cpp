@@ -68,7 +68,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	P.r_u32			(start_time);
 	m_bVotingEnabled = !!P.r_u8();
 	m_bServerControlHits = !!P.r_u8();	
-	Game().m_WeaponUsageStatistic.SetCollectData(!!P.r_u8());
+	m_WeaponUsageStatistic.SetCollectData(!!P.r_u8());
 
 	// Players
 	u16	p_count;
@@ -84,16 +84,24 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	{
 		ClientID			ID;
 		P.r_clientID		(ID);
+		
 		game_PlayerState*   IP;
 		I = players.find(ID);
 		if( I!=players.end() ){
 			IP = I->second;
+			u16 OldFlags = IP->flags;
 			IP->net_Import(P);
+			if (OldFlags != IP->flags)
+				if (Type() != GAME_SINGLE) OnPlayerFlagsChanged(IP);
+
 			players_new.insert(mk_pair(ID,IP));
 			players.erase(I);
 		}else{
 			IP = createPlayerState();
 			IP->net_Import		(P);
+
+			if (Type() != GAME_SINGLE) OnPlayerFlagsChanged(IP);
+
 			players_new.insert(mk_pair(ID,IP));
 		}
 		if (IP->testFlag(GAME_PLAYER_FLAG_LOCAL) ) local_player = IP;
@@ -127,13 +135,18 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	if (players.end()!=I)
 	{
 		game_PlayerState* IP		= I->second;
-//		CopyMemory	(&IP,&PS,sizeof(PS));
-		IP->net_Import		(P);
+//		CopyMemory	(&IP,&PS,sizeof(PS));		
+
+		u16 OldFlags = IP->flags;
+		IP->net_Import(P);
+		if (OldFlags != IP->flags)
+			if (Type() != GAME_SINGLE) OnPlayerFlagsChanged(IP);
 	}
 	else
 	{
 		game_PlayerState*	PS = createPlayerState();
 		PS->net_Import		(P);
+		if (Type() != GAME_SINGLE) OnPlayerFlagsChanged(PS);
 		xr_delete(PS);
 	};
 
@@ -256,7 +269,7 @@ void game_cl_GameState::shedule_Update		(u32 dt)
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
-			if (GameID() != GAME_SINGLE)
+			if (Type() != GAME_SINGLE)
 				m_WeaponUsageStatistic.Update();
 		}break;
 	default:

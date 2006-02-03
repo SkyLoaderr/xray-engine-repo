@@ -9,9 +9,11 @@
 class CWound;
 class NET_Packet;
 class CEntityAlive;
+class CLevel;
 
 #include "hit_immunity.h"
 #include "Hit.h"
+#include "Level.h"
 
 class CEntityConditionSimple
 {
@@ -89,6 +91,10 @@ public:
 
 	CWound*					AddWound				(float hit_power, ALife::EHitType hit_type, u16 element);
 
+	IC void 				SetCanBeHarmedState		(bool CanBeHarmed) 			{m_bCanBeHarmed = CanBeHarmed;}
+	IC bool					CanBeHarmed				() const					{return OnServer() && m_bCanBeHarmed;};
+	
+	void					ClearWounds();
 protected:
 	void					UpdateHealth			();
 	void					UpdatePower				();
@@ -112,7 +118,7 @@ protected:
 	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
 	WOUND_VECTOR			m_WoundVector;
 	//очистка массива ран
-	void					ClearWounds();
+	
 
 	//все величины от 0 до 1			
 //	float* m_fHealth;				//здоровье
@@ -202,6 +208,8 @@ protected:
 	float m_fWoundBoneScale;
 
 	float m_limping_threshold;
+
+	bool m_bCanBeHarmed;
 
 public:
 	virtual void					reinit				();

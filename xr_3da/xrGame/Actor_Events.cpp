@@ -224,6 +224,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GE_ACTOR_MAX_POWER:
 		{
 			conditions().MaxPower();
+			conditions().ClearWounds();
+			ClearBloodWounds();
 		}break;
 	case GEG_PLAYER_ATTACH_HOLDER:
 		{

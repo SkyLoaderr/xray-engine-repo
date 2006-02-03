@@ -20,6 +20,7 @@
 #include "Artifact.h"
 #include "map_location.h"
 #include "Inventory.h"
+#include "ActorCondition.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -736,15 +737,19 @@ void	game_cl_ArtefactHunt::OnSellItemsFromRuck		()
 	};	
 	pCurActor->u_EventSend(P);
 };
-
+/*
 extern BOOL	g_bShildedBases;
-bool	game_cl_ArtefactHunt::EntityCanBeHarmed		(CObject* pObj)
+void			game_cl_ArtefactHunt::OnPlayerFlagsChanged	(game_PlayerState* ps)
 {
-	if (OnClient()) return false;
-	if (!inherited::EntityCanBeHarmed(pObj)) return false;	
-	if (!pObj) return true;
+	inherited::OnPlayerFlagsChanged(ps);
+	if (!ps) return;
+	if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
+	CObject* pObject = Level().Objects.net_Find(ps->GameID);
+	if (!pObject) return;
 
-	game_PlayerState* PS = GetPlayerByGameID(pObj->ID());
-	if (!PS) return true;
-	return (!g_bShildedBases || !PS->testFlag(GAME_PLAYER_FLAG_ONBASE));
+	if (pObject->CLS_ID != CLSID_OBJECT_ACTOR) return;
+	CActor* pActor = smart_cast<CActor*>(pObject);
+	if (!pActor) return;
+	pActor->conditions().SetCanBeHarmedState(!g_bShildedBases || !ps->testFlag(GAME_PLAYER_FLAG_ONBASE));
 };
+*/

@@ -54,7 +54,5 @@ public :
 	virtual			void				OnSellItemsFromRuck		();
 
 	virtual			void				OnSpawn					(CObject* pObj);
-	virtual			void				OnDestroy				(CObject* pObj);
-
-	virtual			bool				EntityCanBeHarmed		(CObject* pObj);
+	virtual			void				OnDestroy				(CObject* pObj);	
 };
