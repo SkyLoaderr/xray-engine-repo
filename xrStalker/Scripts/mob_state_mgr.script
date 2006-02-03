@@ -21,6 +21,7 @@ function set_state(obj, actor, state)
 	end
 	
 	local obj_clsid = get_clsid(obj)
+	--printf("mob_state_mgr <set_state>: [%s].clsid = %s, state = %s", obj:name(), tostring(obj_clsid), state)
 	if obj_clsid == clsid.bloodsucker_s then
 		if state == "invis" then
 			obj:set_invisible(true)
