@@ -39,6 +39,10 @@
 <article id="dolg_eliminate_kamp_5_descr" name="eliminate_lager" group="Diary">
         <text>dolg_eliminate_kamp_5_descr</text>
 </article>
+;--------Freedom---------
+<article id="freedom_eliminate_camp_1_descr" name="eliminate_lager" group="Diary">
+        <text>freedom_eliminate_camp_1_descr</text>
+</article>
 
 
 ;--------Artefact------------------
@@ -142,6 +146,20 @@
 <article id="barmen_find_item_3_descr" name="find_item" group="Diary">
         <text>barmen_find_item_3_descr</text>
 </article>
+;--------Dolg----------
+<article id="dolg_find_item_1_descr" name="find_item" group="Diary">
+        <text>dolg_find_item_1_descr</text>
+</article>
+<article id="dolg_find_item_2_descr" name="find_item" group="Diary">
+        <text>dolg_find_item_2_descr</text>
+</article>
+<article id="dolg_find_item_3_descr" name="find_item" group="Diary">
+        <text>dolg_find_item_3_descr</text>
+</article>
+<article id="dolg_find_item_4_descr" name="find_item" group="Diary">
+        <text>dolg_find_item_4_descr</text>
+</article>
+
 
 ;---------Monster Part--------------
 ;--------Ecolog---------

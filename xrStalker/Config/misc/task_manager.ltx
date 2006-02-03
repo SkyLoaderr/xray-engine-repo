@@ -493,6 +493,10 @@ dolg_kill_stalker_2
 dolg_kill_stalker_3
 dolg_kill_stalker_4
 ;----------Find Item---------
+dolg_find_item_1
+dolg_find_item_2
+dolg_find_item_3
+dolg_find_item_4
 
 
 [dolg_eliminate_kamp_1]
@@ -608,3 +612,73 @@ reward_reputation = +35
 reward_relation = dolg, 100
 reward_rank = 5
 
+[dolg_find_item_1]
+type = find_item
+community = actor
+text = dolg_find_item_1_text
+description = dolg_find_item_1_descr
+parent = dolg
+target = outfit_stalker_anom
+reward_money = 3000
+reward_reputation = +35
+reward_rank = 7
+reward_relation = dolg, 100
+
+[dolg_find_item_2]
+type = find_item
+community = actor_dolg
+text = dolg_find_item_2_text
+description = dolg_find_item_2_descr
+parent = dolg
+target = wpn_ak74_m1
+reward_money = 1500
+reward_reputation = -10
+reward_rank = 4
+reward_relation = dolg, 70
+
+[dolg_find_item_3]
+type = find_item
+community = actor
+text = dolg_find_item_3_text
+description = dolg_find_item_3_descr
+parent = dolg
+target = wpn_walther_coll
+reward_money = 2000
+reward_reputation = +30
+reward_rank = 5
+reward_relation = dolg, 130
+
+[dolg_find_item_4]
+type = find_item
+community = actor_dolg
+text = dolg_find_item_4_text
+description = dolg_find_item_4_descr
+parent = dolg
+target = susat_anom
+reward_money = 5000
+reward_reputation = +45
+reward_rank = 8
+reward_relation = dolg, 250
+
+;--------Freedom------------------------
+;----------Eliminate Camp----
+freedom_eliminate_camp_1
+
+;----------Kill Staker-------
+
+;----------Find Item---------
+
+
+
+[freedom_eliminate_camp_1]
+type = eliminate_lager
+community = actor
+text = freedom_eliminate_camp_1_text
+description = freedom_eliminate_camp_1_descr
+parent = freedom
+target = gar_smart_monster_lair2
+reward_money = 800
+reward_reputation = +15
+reward_relation = dolg, 60
+reward_rank = 4
+reward_item = bread
