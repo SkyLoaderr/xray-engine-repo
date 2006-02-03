@@ -489,22 +489,26 @@
                 <text>agr_swamp_ratcatcher_talks_10</text>
                 <next>100</next>
             </phrase>
-            <phrase id="0">
-                <text>agr_swamp_ratcatcher_talks_0</text>
-                <next>10</next>
-            </phrase>
             <phrase id="100">
                 <text>agr_swamp_ratcatcher_talks_100</text>
                 <give_info>agr_ratcatcher_friend</give_info>
                 <next>20</next>
             </phrase>
+            <phrase id="120">
+                <text>agr_swamp_ratcatcher_talks_120</text>
+                <next>30</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_swamp_ratcatcher_talks_0</text>
+                <next>10</next>
+            </phrase>
             <phrase id="20">
                 <text>agr_swamp_ratcatcher_talks_20</text>
                 <next>120</next>
             </phrase>
-            <phrase id="120">
-                <text>agr_swamp_ratcatcher_talks_120</text>
-                <next>30</next>
+            <phrase id="50">
+                <text>agr_swamp_ratcatcher_talks_50</text>
+                <next>150</next>
             </phrase>
             <phrase id="30">
                 <text>agr_swamp_ratcatcher_talks_30</text>
@@ -512,25 +516,22 @@
             </phrase>
             <phrase id="130">
                 <text>agr_swamp_ratcatcher_talks_130</text>
+                <give_info>agr_collector_entrance_info</give_info>
                 <next>40</next>
+            </phrase>
+            <phrase id="150">
+                <text>agr_swamp_ratcatcher_talks_150</text>
+                <give_info>agr_zaz_location</give_info>
+            </phrase>
+            <phrase id="140">
+                <text>agr_swamp_ratcatcher_talks_140</text>
+                <give_info>agr_nii_security_plan_flash_have</give_info>
+                <give_info>agr_docs_update_info</give_info>
+                <next>50</next>
             </phrase>
             <phrase id="40">
                 <text>agr_swamp_ratcatcher_talks_40</text>
                 <next>140</next>
-            </phrase>
-            <phrase id="140">
-                <text>agr_swamp_ratcatcher_talks_140</text>
-                <next>50</next>
-            </phrase>
-            <phrase id="50">
-                <text>agr_swamp_ratcatcher_talks_50</text>
-                <next>150</next>
-            </phrase>
-            <phrase id="150">
-                <text>agr_swamp_ratcatcher_talks_150</text>
-                <give_info>agr_collector_entrance_info</give_info>
-                <give_info>agr_nii_security_plan_flash_have</give_info>
-                <give_info>agr_zaz_location</give_info>
             </phrase>
         </phrase_list>
     </dialog>
