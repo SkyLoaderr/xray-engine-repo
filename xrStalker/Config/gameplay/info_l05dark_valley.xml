@@ -130,6 +130,7 @@
 <info_portion id="val_come_to_trader_task">
     <task>val_come_to_trader</task>
 </info_portion>
+<info_portion id="val_actor_behind_gate"></info_portion>
 
 <info_portion id="val_borov_dead"></info_portion>
 <!-- Игрок нашел флешку Борова -->
