@@ -435,6 +435,9 @@
     <string id="escape_lager_volk_hello_61">
         <text>Ну, привет. Что надо?</text>
     </string>
+    <string id="escape_lager_volk_hello_71">
+        <text>Здорово старик, рад тебя видеть. Что тебе от меня надо?</text>
+    </string>
     <string id="escape_lager_volk_info_0">
         <text>У меня есть вопросы.</text>
     </string>
