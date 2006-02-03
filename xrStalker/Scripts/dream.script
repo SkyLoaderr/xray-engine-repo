@@ -7,7 +7,7 @@
 can_sleep   = false
 dream_prob  = -1
 type        = "all"
-dream_types = {nightmare = 1, normal = 1, happy = 1, all = 2}
+dream_types = {all = 2}
 
 local def_global_regular_probability = 80
 local def_regular_probability = 2
@@ -31,6 +31,14 @@ function dream_mgr:__init()
                 local rp = ini:r_float("dreams", "regular_probability")
                 if rp >= 0 or rp <= 100 then
                     self.regular_probability = rp
+                end
+            end
+            if ini:line_exist("dreams", "dream_types") then
+                local rt_str = ini:r_string("dreams", "dream_types")
+                if rt_str then
+                    for rt in string.gfind(rt_str, "([%w_]+)") do
+                        dream_types[rt] = 1
+                    end
                 end
             end
             if ini:line_exist("dreams", "regular") then
