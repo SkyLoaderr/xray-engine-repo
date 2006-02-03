@@ -8,19 +8,19 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@dar_com_center_poltergeist",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "dar_poltergeist_territory",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_com_center_poltergeist",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "dar_poltergeist_territory",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_com_center_poltergeist",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "dar_poltergeist_territory",
 		}
 		table.insert(sj, t)
 	end
