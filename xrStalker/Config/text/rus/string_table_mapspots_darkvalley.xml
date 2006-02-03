@@ -43,3 +43,13 @@
         Бармен
     </text>
 </string>
+<string id="val_come_to_trader_1_hint">
+    <text>
+        Южные ворота
+    </text>
+</string>
+<string id="val_come_to_trader_2_hint">
+    <text>
+        Торговец
+    </text>
+</string>

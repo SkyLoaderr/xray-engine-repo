@@ -8,11 +8,6 @@
         Как можно быстрее вернуться к торговцу.
     </text>
 </string>
-<string id="val_come_to_trader_main">
-    <text>
-        Вернуться к торговцу.
-    </text>
-</string>
 <string id="val_sos_help">
     <text>
         Помочь сталкеру.
@@ -76,5 +71,15 @@
 <string id="bar_darklab_documents_4">
     <text>
         Принести документу бармену.
+    </text>
+</string>
+<string id="val_come_to_trader_1">
+    <text>
+        Выбраться с Темной Долины.
+    </text>
+</string>
+<string id="val_come_to_trader_2">
+    <text>
+        Показать документы торговцу.
     </text>
 </string>
