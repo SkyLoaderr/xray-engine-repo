@@ -131,6 +131,12 @@
 	<info_portion id="agr_ratcatcher_friend">
 	</info_portion>
 	
+	<info_portion id="agr_zaz_location">
+	</info_portion>
+	
+	<info_portion id="agr_zaz_found">
+	</info_portion>	
+		
 	<info_portion id="agr_factory_location">
 	</info_portion>		
 	

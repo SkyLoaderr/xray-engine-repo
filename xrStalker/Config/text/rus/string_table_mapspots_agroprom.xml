@@ -1,6 +1,9 @@
 	<string id="agr_swamp_hint">
 		<text>Безопасное место</text>
 	</string>
+	<string id="agr_zaz_hint">
+		<text>Запорожец</text>
+	</string>	
 	<string id="agr_collector_entrance_hint">
 		<text>Вход в катакомбы</text>
 	</string>

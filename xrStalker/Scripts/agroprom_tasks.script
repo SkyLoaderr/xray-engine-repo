@@ -74,6 +74,16 @@ function process_info_portion(info_id)
 	if info_id == "agr_sold_about_ratcatcher" then
 		level_tasks.add_location(304, "crlc_mdl", "agr_swamp_hint")
 		return true
+-- Zaporozhets
+	elseif info_id == "agr_zaz_location" then
+		level_tasks.add_location(307, "crlc_small", "agr_zaz_hint")
+		return true
+
+	elseif info_id == "agr_zaz_found" then
+		if level_tasks.is_map_spot_present(307, "crlc_small") then
+			level_tasks.remove_location(307, "crlc_small")
+			return true
+		end
 
 -- collector entrance
 	elseif info_id == "agr_collector_entrance_info" then
