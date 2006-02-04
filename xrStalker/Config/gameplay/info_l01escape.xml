@@ -85,6 +85,7 @@
 	<info_portion id="escape_dynamite_have"></info_portion>
 	<info_portion id="escape_dynamite_done"></info_portion>
 	<info_portion id="esc_petruha_die"></info_portion>
+	<info_portion id="esc_volk_reward"></info_portion>
 
 	<!-- Newbie_lager_help -->
 	<info_portion id="escape_lager_help">
