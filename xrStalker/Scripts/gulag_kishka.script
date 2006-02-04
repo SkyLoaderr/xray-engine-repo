@@ -22,7 +22,22 @@ if type == "ds_kem4" then
 		}
 		table.insert(sj, t)	
   end
-
+  
+  if type == "ds_deb1" then
+		t = { section = "logic@ds_deb1_walker1",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+       table.insert(sj, t)	
+       t = { section = "logic@ds_deb1_walker2",
+			idle = 0,
+			prior = 1, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+ end
+ 
 if type == "ds_kem3" then
 		t = { section = "logic@ds_kem3_camper1",
 			idle = 0,
@@ -423,6 +438,12 @@ if type == "ds_kem3" then
 		end
 	end
 	
+if type == "ds_deb1" then
+		return function(gulag)
+			return 0
+		end
+	end	
+	
 	if type == "ds_kem4" then
 		return function(gulag)
 			return 0
@@ -519,6 +540,11 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "ds_kem3" then
 	   return npc_community == "military"
 	end
+	
+	if gulag_type == "ds_deb1" then
+	   return npc_community == "military"
+	end
+	
 	if gulag_type == "ds_kem4" then
 	   return npc_community == "military"
 	end
