@@ -152,9 +152,9 @@
 			device_torch \n
 			esc_wounded_flash \n
 		</supplies>
-					
+
+#include "gameplay\character_dialogs.xml"					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>tutorial_wounded_give_medkit</actor_dialog>
 		<actor_dialog>tutorial_wounded_thanks</actor_dialog>
 	</specific_character>
 	
