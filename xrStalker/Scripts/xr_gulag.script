@@ -364,6 +364,7 @@ end
 -- когда биндер смарттеррейна убивается до персонажа).
 -- следит, дошёл ли персонаж до места работы.
 -- измененяет потери в лагере.
+-- вызывается из gulag:update() и smart_terrain.on_death()
 function gulag:update_objs()
 	local obj, cl_obj, online
 

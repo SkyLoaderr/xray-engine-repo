@@ -738,7 +738,8 @@ function on_death( obj_id )
 		local strn_id = obj:smart_terrain_id()
 
 		if strn_id ~= 65535 then
-			sim:object( strn_id ):unregister_npc( obj )
+--			sim:object( strn_id ):unregister_npc( obj )
+			sim:object( strn_id ).gulag:update_objs()
 		end
 	end
 end
