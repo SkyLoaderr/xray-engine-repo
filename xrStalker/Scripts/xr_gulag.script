@@ -380,7 +380,15 @@ function gulag:update_objs()
 		obj = cl_obj or npc_info.se_obj
 
 		if not obj:alive() then
+			if self.name == "gar_hellcar_group" then
+				printf( "Casualities obj=%s cas=%d", obj:name(), self.casualities )
+			end
+
 			self:changeCasualities( 1 )
+
+			if self.name == "gar_hellcar_group" then
+				printf( "Casualities obj=%s cas=%d", obj:name(), self.casualities )
+			end
 
 			if self.ObjectJob[obj_id] then
 				self.Job[self.ObjectJob[obj_id]].idle_after_death = game.time() + job_idle_after_death
