@@ -160,6 +160,7 @@ function evaluator_danger:evaluate()
 		end
 		return false
 	else
+		printf("DANGER [%s]->[%s] [TRUE] general, type [%s]", self.object:name(), best_danger_name, tostring(bd_type))
 		self.danger_time = best_danger:time()
 		return true
 	end
