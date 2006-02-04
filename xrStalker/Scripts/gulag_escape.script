@@ -1397,37 +1397,37 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_zombie_1_fd",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_selo2_sr"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_zombie_2_fd",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_selo2_sr"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_zombie_3_fd",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_selo2_sr"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_zombie_4_fd",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_selo2_sr"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_zombie_5_fd",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_selo2_sr"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_zombie_6_fd",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "esc_selo2_sr"
+			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 	end
