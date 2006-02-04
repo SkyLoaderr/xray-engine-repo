@@ -128,6 +128,11 @@
 		<article>agr_nii_security_plan</article>
 	</info_portion>
 	
+	<info_portion id="agr_nii_fab_mil_task">
+		<article>agr_nii_fab_mil_task</article>
+		<task>agroprom_get_military_documents</task>		
+	</info_portion>
+		
 	<info_portion id="agr_ratcatcher_friend">
 	</info_portion>
 	

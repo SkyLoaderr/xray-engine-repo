@@ -421,9 +421,13 @@ path_main = sleep11
 ; -------------- подкрадываются к сталкерам Крота -----------------------
 [combat_ignore@agr_factory_assault]
 
+[info@about_nii]
+in = agr_nii_fab_mil_task
+
 [logic@agr_factory_assault_walker1]
 active = walker1@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker1@agr_factory_assault]
 path_walk = walk1
@@ -436,6 +440,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 [logic@agr_factory_assault_walker2]
 active = walker2@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker2@agr_factory_assault]
 path_walk = walk2
@@ -448,6 +453,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 [logic@agr_factory_assault_walker3]
 active = walker3@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker3@agr_factory_assault]
 path_walk = walk3
@@ -460,6 +466,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 [logic@agr_factory_assault_walker4]
 active = walker4@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker4@agr_factory_assault]
 path_walk = walk4
@@ -472,6 +479,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 [logic@agr_factory_assault_walker5]
 active = walker5@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker5@agr_factory_assault]
 path_walk = walk5
@@ -484,6 +492,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 [logic@agr_factory_assault_walker6]
 active = walker6@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker6@agr_factory_assault]
 path_walk = walk6
@@ -496,6 +505,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 [logic@agr_factory_assault_walker7]
 active = walker7@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker7@agr_factory_assault]
 path_walk = walk7
@@ -508,6 +518,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 [logic@agr_factory_assault_walker8]
 active = walker8@agr_factory_assault
 combat_ignore = combat_ignore@agr_factory_assault
+info = info@about_nii
 
 [walker8@agr_factory_assault]
 path_walk = walk8
@@ -520,6 +531,7 @@ on_signal = s | %+agr_factory_assault_skirmish%
 ;--------------------------- дерутся с группой Крота. -------------------------
 [logic@agr_factory_assault_skirmish_walker1]
 active = walker1@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker1@agr_factory_assault_skirmish]
 path_walk = skirmish_walk1
@@ -528,6 +540,7 @@ path_walk = skirmish_walk1
 
 [logic@agr_factory_assault_skirmish_walker2]
 active = walker2@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker2@agr_factory_assault_skirmish]
 path_walk = skirmish_walk2
@@ -536,6 +549,7 @@ path_walk = skirmish_walk2
 
 [logic@agr_factory_assault_skirmish_walker3]
 active = walker3@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker3@agr_factory_assault_skirmish]
 path_walk = skirmish_walk3
@@ -544,6 +558,7 @@ path_walk = skirmish_walk3
 
 [logic@agr_factory_assault_skirmish_walker4]
 active = walker4@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker4@agr_factory_assault_skirmish]
 path_walk = skirmish_walk4
@@ -552,6 +567,7 @@ path_walk = skirmish_walk4
 
 [logic@agr_factory_assault_skirmish_walker5]
 active = walker5@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker5@agr_factory_assault_skirmish]
 path_walk = skirmish_walk5
@@ -560,6 +576,7 @@ path_walk = skirmish_walk5
 
 [logic@agr_factory_assault_skirmish_walker6]
 active = walker6@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker6@agr_factory_assault_skirmish]
 path_walk = skirmish_walk6
@@ -568,6 +585,7 @@ path_walk = skirmish_walk6
 
 [logic@agr_factory_assault_skirmish_walker7]
 active = walker7@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker7@agr_factory_assault_skirmish]
 path_walk = skirmish_walk7
@@ -576,6 +594,7 @@ path_walk = skirmish_walk7
 
 [logic@agr_factory_assault_skirmish_walker8]
 active = walker8@agr_factory_assault_skirmish
+info = info@about_nii
 
 [walker8@agr_factory_assault_skirmish]
 path_walk = skirmish_walk8
@@ -590,6 +609,7 @@ ignore_distance = 10
 
 [logic@agr_factory_assault_bld_walker1]
 active = walker1@agr_factory_assault_bld
+info = info@about_nii
 
 [walker1@agr_factory_assault_bld]
 path_walk = bld_walk1
@@ -599,6 +619,7 @@ danger = danger_condition@agr_factory_assault
 
 [logic@agr_factory_assault_bld_walker2]
 active = walker2@agr_factory_assault_bld
+info = info@about_nii
 
 [walker2@agr_factory_assault_bld]
 path_walk = bld_walk2
@@ -608,6 +629,7 @@ danger = danger_condition@agr_factory_assault
 
 [logic@agr_factory_assault_bld_walker3]
 active = walker3@agr_factory_assault_bld
+info = info@about_nii
 
 [walker3@agr_factory_assault_bld]
 path_walk = bld_walk3
@@ -617,6 +639,7 @@ danger = danger_condition@agr_factory_assault
 
 [logic@agr_factory_assault_bld_walker4]
 active = walker4@agr_factory_assault_bld
+info = info@about_nii
 
 [walker4@agr_factory_assault_bld]
 path_walk = bld_walk4
@@ -626,6 +649,7 @@ danger = danger_condition@agr_factory_assault
 
 [logic@agr_factory_assault_bld_walker5]
 active = walker5@agr_factory_assault_bld
+info = info@about_nii
 
 [walker5@agr_factory_assault_bld]
 path_walk = bld_walk5
@@ -635,6 +659,7 @@ danger = danger_condition@agr_factory_assault
 
 [logic@agr_factory_assault_bld_walker6]
 active = walker6@agr_factory_assault_bld
+info = info@about_nii
 
 [walker6@agr_factory_assault_bld]
 path_walk = bld_walk6
@@ -644,6 +669,7 @@ danger = danger_condition@agr_factory_assault
 
 [logic@agr_factory_assault_bld_walker7]
 active = walker7@agr_factory_assault_bld
+info = info@about_nii
 
 [walker7@agr_factory_assault_bld]
 path_walk = bld_walk7
@@ -653,6 +679,7 @@ danger = danger_condition@agr_factory_assault
 
 [logic@agr_factory_assault_bld_walker8]
 active = walker8@agr_factory_assault_bld
+info = info@about_nii
 
 [walker8@agr_factory_assault_bld]
 path_walk = bld_walk8
