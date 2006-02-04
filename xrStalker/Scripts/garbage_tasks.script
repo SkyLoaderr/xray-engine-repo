@@ -24,8 +24,27 @@ function task_hellcar_complete()
 end
 
 function task_hellcar_fail()
-	if xr_gulag.getGulagPopulation("gar_hellcar_group") < 1 then
+	printf("task_hellcar_fail: pop=%d cas=%d gar_hellcar_help=%s",
+			xr_gulag.getGulagPopulation("gar_hellcar_group"),
+			xr_gulag.getCasualities("gar_hellcar_group"),
+			tostring(db.actor:dont_has_info("gar_hellcar_help")))
+
+	if xr_gulag.getGulagPopulation("gar_hellcar_group") < 1 or
+		(xr_gulag.getCasualities("gar_hellcar_group") > 0 and
+	   db.actor:dont_has_info("gar_hellcar_help"))
+	then
 		return true
+	else
+		return false
+	end
+end
+
+function task_hellcar_fail2()
+	local actor = db.actor
+	if 	xr_gulag.getCasualities("gar_hellcar_group") > 0 and
+	   actor:dont_has_info("gar_hellcar_help")
+	then
+	   return true
 	else
 		return false
 	end

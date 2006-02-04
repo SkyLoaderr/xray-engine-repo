@@ -37,3 +37,6 @@
     <string id="gar_say_free_pass">
         <text>Сообщить новичку, что путь свободен</text>
     </string>
+	<string id="gar_dialog_hellcar">
+        <text>Предложить свою помощь лидеру нейтралов.</text>
+    </string>
