@@ -15,6 +15,9 @@ function give_dolg_bribe(actor, npc)
 	dialogs.relocate_money(npc, 500, "out")	
 end
 
+function hellcar_payment (stalker, player)
+	dialogs.relocate_money(stalker, 1500, "in")
+end
 
 
 function give_money_from_newbie(first_speaker, second_speaker)	
