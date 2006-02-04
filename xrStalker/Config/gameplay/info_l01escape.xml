@@ -124,7 +124,6 @@
 	<info_portion id="esc_trader_direct"></info_portion>
 
 	<!-- вспомогательные в лагере -->
-	<info_portion id="esc_lager_bariga_talk_klans"></info_portion>
 	<info_portion id="esc_return"></info_portion>
 	<info_portion id="esc_darklab_documents_read"></info_portion>
 	<info_portion id="esc_wolf_thanks_complete"></info_portion>
