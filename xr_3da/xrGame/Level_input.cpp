@@ -283,7 +283,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 			if (GameID() != GAME_SINGLE) 
 			{
 				Msg("For this game type Demo Record is disabled.");
-				return;
+///				return;
 			};
 			Console->Hide	();
 			char fn[256];
