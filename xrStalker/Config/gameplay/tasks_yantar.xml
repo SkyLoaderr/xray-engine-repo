@@ -163,3 +163,16 @@
 			<function_complete>yantar_tasks.has_labx16_documents</function_complete>
 		</objective>
 </game_task>
+<game_task id="yan_provodnik_task">
+		<title>yan_provodnik_task</title>
+		<objective>
+			<text>yan_provodnik_task</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>esc_find_doctor_start</infoportion_complete>
+		</objective>
+		<objective>
+			<text>yan_provodnik_about_doctor</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>esc_find_doctor_start</infoportion_complete>
+		</objective>
+</game_task>

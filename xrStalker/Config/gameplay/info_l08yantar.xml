@@ -103,6 +103,8 @@
 	<info_portion id="yan_labx16_switcher_3_end"></info_portion>
 	<info_portion id="yan_labx16_switcher_primary_try"></info_portion>
 	<!-- Spawn Provodnik -->
-	<info_portion id="yan_provodnik_spawn"></info_portion>
+	<info_portion id="yan_provodnik_spawn">
+		<task>yan_provodnik_task</task>
+	</info_portion>
     
 </game_information_portions>

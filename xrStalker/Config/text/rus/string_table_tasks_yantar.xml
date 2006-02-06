@@ -58,3 +58,11 @@
 <string id="yan_secret_tonnel">
 	<text>Выбраться через секретный туннель наружу</text>
 </string>
+
+<string id="yan_provodnik_task">
+	<text>Встретиться с проводником</text>
+</string>
+
+<string id="yan_provodnik_about_doctor">
+	<text>Поговорить с проводником</text>
+</string>
