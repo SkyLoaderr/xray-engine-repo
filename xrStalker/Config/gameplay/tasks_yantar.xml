@@ -167,7 +167,7 @@
 		<title>yan_provodnik_task</title>
 		<objective>
 			<text>yan_provodnik_task</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>esc_find_doctor_start</infoportion_complete>
 		</objective>
 		<objective>
