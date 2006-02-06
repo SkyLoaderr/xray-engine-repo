@@ -1401,6 +1401,7 @@ path_walk = seryi_drug4_walk
 path_look = seryi_drug4_look
 combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
 on_info = {=gar_bandits_seryi_die} kamp@gar_angar_wounded
+on_info2 = {!is_wounded} walker@gar_angar_drug2
 
 [kamp@gar_angar_wounded]
 center_point = gar_seryi_kamp
@@ -1438,35 +1439,35 @@ danger = danger_condition@gar_angar_drug1
 ignore_distance = 10
 
 
-[logic@gar_angar_drug2]
-active = walker@gar_angar_drug2
-combat_ignore = combat_ignore
-on_hit = hit@gar_angar_drug2
-on_death = death@gar_angar_drug2
-meet = meet@friend
+;[logic@gar_angar_drug2]
+;active = walker@gar_angar_drug2
+;combat_ignore = combat_ignore
+;on_hit = hit@gar_angar_drug2
+;on_death = death@gar_angar_drug2
+;meet = meet@friend
 
 [walker@gar_angar_drug2]
 path_walk = seryi_drug2_walk
 path_look = seryi_drug2_look
 combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
 meet_talk_enabled = true
-on_info = {=gar_bandits_seryi_die} kamp@gar_angar_drug2
+on_info = {=gar_bandits_seryi_die} kamp@gar_angar_drug1
 danger = danger_condition@gar_angar_drug2
 
-[hit@gar_angar_drug2]
-on_info = %+gar_seryi_counter_fire%
+;[hit@gar_angar_drug2]
+;on_info = %+gar_seryi_counter_fire%
 
-[death@gar_angar_drug2]
-on_info = %+gar_seryi_counter_fire +gar_seryi_drug2_die%
+;[death@gar_angar_drug2]
+;on_info = %+gar_seryi_counter_fire +gar_seryi_drug2_die%
 
-[kamp@gar_angar_drug2]
-center_point = gar_seryi_kamp
-path_walk = gar_seryi_kamp_task
-on_game_timer = 150000 | %+gar_seryi_change_st%
-danger = danger_condition@gar_angar_drug2
+;[kamp@gar_angar_drug2]
+;center_point = gar_seryi_kamp
+;path_walk = gar_seryi_kamp_task
+;on_game_timer = 150000 | %+gar_seryi_change_st%
+;danger = danger_condition@gar_angar_drug2
 
-[danger_condition@gar_angar_drug2]
-ignore_distance = 15
+;[danger_condition@gar_angar_drug2]
+;ignore_distance = 15
 
 
 ;****************************
