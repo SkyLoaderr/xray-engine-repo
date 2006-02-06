@@ -211,7 +211,7 @@ function hit_obj(actor, npc, p)
 	local sid = nil
 
 	if not obj then
-		abort("HIT_OBJ [%s]. Target object does not exist", npc:name())
+--		abort("HIT_OBJ [%s]. Target object does not exist", npc:name())
 		return
 	end
 
