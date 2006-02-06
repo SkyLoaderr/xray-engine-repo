@@ -373,6 +373,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 //		const char* x = DXGetErrorString9(res);
 		string1024 tmp;
 		DXTRACE_ERR(tmp, res);
+#endif
 		switch (res)
 		{
 		case DPNERR_INVALIDPASSWORD:
@@ -384,7 +385,6 @@ BOOL IPureClient::Connect	(LPCSTR options)
 				OnSessionFull();
 			}break;
 		}
-#endif
 		if (res != S_OK) return FALSE;
 	}
 
