@@ -1331,18 +1331,8 @@ void CCustomZone::CreateHit	(	u16 id_to,
 			id_from	= (u16)m_owner_id;
 
 		NET_Packet	l_P;
-/*		u_EventGen	(l_P,GE_HIT, id_to);
-		l_P.w_u16	(id_from);
-		l_P.w_u16	(id_from);
-		l_P.w_dir	(hit_dir);
-		l_P.w_float	(hit_power);
-		l_P.w_s16	(bone_id);
-		l_P.w_vec3	(pos_in_bone);
-		l_P.w_float	(hit_impulse);
-		l_P.w_u16	( (u16)hit_type );
-*/		
 		Fvector hdir = hit_dir;
-		SHit	Hit = SHit(hit_power, hdir, this, bone_id, pos_in_bone, hit_impulse, hit_type);
+		SHit	Hit = SHit(hit_power/100.0f, hdir, this, bone_id, pos_in_bone, hit_impulse, hit_type);
 		Hit.Time = Level().timeServer();
 		Hit.PACKET_TYPE = GE_HIT;
 		Hit.DestID = id_to;		

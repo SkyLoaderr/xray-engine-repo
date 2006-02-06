@@ -61,7 +61,7 @@ void SHit::Read_Packet_Cont		(NET_Packet	Packet)
 	Packet.r_u16			(whoID);
 	Packet.r_u16			(weaponID);
 	Packet.r_dir			(dir);
-	Packet.r_float			(power);power/=100.0f;
+	Packet.r_float			(power);
 	Packet.r_u16			(boneID);
 	Packet.r_vec3			(p_in_bone_space);
 	Packet.r_float			(impulse);
@@ -88,7 +88,7 @@ void SHit::Write_Packet			(NET_Packet	&Packet)
 	Packet.w_u16		(whoID);
 	Packet.w_u16		(weaponID);
 	Packet.w_dir		(dir);
-	Packet.w_float		(power*100.0f);
+	Packet.w_float		(power);
 	Packet.w_u16		(boneID);
 	Packet.w_vec3		(p_in_bone_space);
 	Packet.w_float		(impulse);
