@@ -137,7 +137,7 @@ function save_dialog:OnButton_ok_clicked()
 	flist:Free()	
 	self:SaveFile(self.new_save)
 	self:GetHolder():start_stop_menu(self, true)
-
+	self.owner:Show(true)
 end
 
 function save_dialog:OnButton_cancel_clicked()
