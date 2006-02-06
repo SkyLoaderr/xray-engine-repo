@@ -48,6 +48,10 @@ function see_npc(actor, npc, p)
     end
 end
 
+function is_wounded(actor, npc)
+	return xr_wounded.is_wounded(npc)
+end
+
 function dist_to_actor_le(actor, npc, p)
     local actor = db.actor
     local d = p[1]
