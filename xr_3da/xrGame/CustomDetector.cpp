@@ -306,7 +306,7 @@ void CCustomDetector::UpdateMapLocations() // called on turn on/off only
 #include "clsid_game.h"
 void CCustomDetector::UpdateNightVisionMode()
 {
-	CObject* tmp = Level().CurrentViewEntity();
+//	CObject* tmp = Level().CurrentViewEntity();
 	bool bNightVision = Level().CurrentViewEntity() && 
 						Level().CurrentViewEntity()->CLS_ID == CLSID_OBJECT_ACTOR && 
 						( Actor()->Cameras().GetPPEffector(EEffectorPPType(effNightvision))!=NULL );

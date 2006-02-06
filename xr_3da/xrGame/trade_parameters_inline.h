@@ -100,9 +100,8 @@ IC	void CTradeParameters::process							(_action_type type, CInifile &ini_file, 
 {
 	VERIFY					(ini_file.section_exist(section));
 
-	clear					();
-
 	CTradeActionParameters	&_action = action(type);
+	_action.clear			();
 
 	CInifile::Sect			&S = ini_file.r_section(section);
 	CInifile::SectIt		I = S.begin();

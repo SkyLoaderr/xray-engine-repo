@@ -160,9 +160,18 @@ u32	CTrade::GetItemPrice	(PIItem pItem)
 
 	clamp					(relation_factor,0.f,1.f);
 
-	bool					buying = (pThis.type == TT_ACTOR);
-	const SInventoryOwner	&partner = buying ? pPartner : pThis;
-	VERIFY					(partner.inv_owner);
+	const SInventoryOwner	*_partner = 0;
+	bool					buying = true;
+	bool					is_actor = (pThis.type == TT_ACTOR) || (pPartner.type == TT_ACTOR);
+	if (is_actor) {
+		buying				= (pPartner.type == TT_ACTOR);
+		_partner			= &(buying ? pThis : pPartner);
+	}
+	else {
+		// rare case
+		_partner			= &pPartner;
+	}
+	const SInventoryOwner	&partner = *_partner;
 
 	// computing action factor
 	const CTradeFactors		*p_trade_factors;
