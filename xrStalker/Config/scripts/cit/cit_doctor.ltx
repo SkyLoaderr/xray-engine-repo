@@ -68,7 +68,7 @@ combat_ignore_cond  = always
 [remark@look_at_guard2]
 anim                = wait
 target              = logic@cit_killers_base_guard, cit_killers ;1202 ; guard2
-on_info             = {+cit_jail_door_opened} remark@bye_to_actor
+on_info             = {+cit_jail_door_opened =actor_alive} remark@bye_to_actor, {+cit_jail_door_opened} walker@go_out
 combat_ignore_cond  = always
 
 ;-----------------------------------------------------------------------------------------------------------

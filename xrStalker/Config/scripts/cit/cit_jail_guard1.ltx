@@ -95,11 +95,11 @@ meet                = meet@jail_guard
 combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
 
 ;-----------------------------------------------------------------------------------------------------------
-;--- смотрим за актером, шоб не сбежал
+;--- смотрим за доктором, шоб не сбежал
 ;-----------------------------------------------------------------------------------------------------------
 [remark@look_at_actor]
 anim                = wait
-target              = actor
+target              = 1200 ;actor
 on_info             = {+cit_jail_guard1_close_door} walker@jail_guard_close_door2
 on_info2            = {+cit_doctor_dead} walker@jail_guard2
 meet                = meet@jail_guard
@@ -125,7 +125,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free
 [walker@jail_guard2]
 path_walk           = jail_guard_walk
 path_look           = jail_guard_look
-on_timer            = 10000 | walker@jail_guard_go_sleep_say
+on_timer            = 10000 | {=actor_alive} walker@jail_guard_go_sleep_say, walker@jail_guard_go_sleep
 ;heli_hunter         = {+cit_heli_start -cit_heli_end} true, false
 meet                = meet@jail_guard
 combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
