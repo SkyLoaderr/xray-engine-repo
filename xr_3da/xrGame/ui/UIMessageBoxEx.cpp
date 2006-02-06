@@ -29,20 +29,20 @@ void CUIMessageBoxEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NUL
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
 	if (pWnd == m_pMessageBox)
 	{
-
-//		R_ASSERT3(GetMessageTarget(),*m_windowName,"window has no message target");
-		if (GetMessageTarget())
-            GetMessageTarget()->SendMessage(this,msg,pData);
 		switch (msg){
 			case MESSAGE_BOX_OK_CLICKED:
 			case MESSAGE_BOX_YES_CLICKED:
 			case MESSAGE_BOX_NO_CLICKED:
 			case MESSAGE_BOX_CANCEL_CLICKED:
+			case MESSAGE_BOX_QUIT_WIN_CLICKED:
+			case MESSAGE_BOX_QUIT_GAME_CLICKED:
 				GetHolder()->StartStopMenu(this, true);
 			default:
 				break;
 		}
-		
+
+		if (GetMessageTarget())
+            GetMessageTarget()->SendMessage(this,msg,pData);
 	}
 	
 }

@@ -107,12 +107,12 @@
 		<!--message_text x="170" y="40" width="310" height="60">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">You can buy a spawn for 1000 $. Press Yes to pay</text>
 		</message_text-->
-		<cap_host x="180" y="50" width="112" height="24">
+		<cap_host x="180" y="55" width="112" height="24">
 			<text font="letterica16" r="207" g="155" b="80">mm_mp_host_port</text>
 			<!--text  r="235" g="219" b="185" x="2"></text-->						
 		</cap_host>
 		
-		<cap_password x="180" y="91" width="112" height="24">
+		<cap_password x="180" y="95" width="112" height="24">
 			<text font="letterica16" r="207" g="155" b="80">mm_mp_password</text>
 		</cap_password>
 		

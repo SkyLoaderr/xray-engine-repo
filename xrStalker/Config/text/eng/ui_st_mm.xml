@@ -36,12 +36,6 @@
     <string id="ui_mm_alternative">
         <text>alternative</text>
     </string>
-    <string id="ui_mm_anisotropic_filter">
-        <text>Anisotropic filter</text>
-    </string>
-    <string id="ui_mm_antialiasing">
-        <text>Antialiasing</text>
-    </string>
     <string id="ui_mm_apply">
         <text>Apply</text>
     </string>
@@ -54,9 +48,6 @@
     <string id="ui_mm_brightness">
         <text>Brightness</text>
     </string>
-    <string id="ui_mm_bump_mapping">
-        <text>Bump Mapping</text>
-    </string>
     <string id="ui_mm_cancel">
         <text>Cancel</text>
     </string>
@@ -66,17 +57,8 @@
     <string id="ui_mm_controls">
         <text>Controls</text>
     </string>
-    <string id="ui_mm_corpse_time">
-        <text>Corpse Time Stay</text>
-    </string>
-    <string id="ui_mm_crosshair">
-        <text>Crosshair</text>
-    </string>
     <string id="ui_mm_delete">
         <text>Delete</text>
-    </string>
-    <string id="ui_mm_dinamic_light_source">
-        <text>Dinamic light source(DX8)</text>
     </string>
     <string id="ui_mm_eax">
         <text>EAX</text>
@@ -90,20 +72,11 @@
     <string id="ui_mm_gamma">
         <text>Gamma</text>
     </string>
-    <string id="ui_mm_grass_density">
-        <text>Grass Density</text>
-    </string>
-    <string id="ui_mm_grass_radius">
-        <text>Grass Radius</text>
-    </string>
     <string id="ui_mm_invert_mouse">
         <text>Invert Mouse</text>
     </string>
     <string id="ui_mm_keyboard_setup">
         <text>Keyboard setup</text>
-    </string>
-    <string id="ui_mm_light_quality">
-        <text>Lighting Quality</text>
     </string>
     <string id="ui_mm_load">
         <text>Load</text>
@@ -135,15 +108,6 @@
     <string id="ui_mm_options_n">
         <text>Options</text>
     </string>
-    <string id="ui_mm_particles">
-        <text>Particles</text>
-    </string>
-    <string id="ui_mm_particles_amount">
-        <text>Particles amount</text>
-    </string>
-    <string id="ui_mm_phisic_quality">
-        <text>Phisic quality</text>
-    </string>
     <string id="ui_mm_quality_presets">
         <text>Quality presets</text>
     </string>
@@ -165,9 +129,6 @@
     <string id="ui_mm_master_volume">
         <text>Master Volume</text>
     </string>
-    <string id="ui_mm_shadows_quality">
-        <text>Shadows Quality</text>
-    </string>
     <string id="ui_mm_sound">
         <text>Sound</text>
     </string>
@@ -177,20 +138,11 @@
     <string id="ui_mm_speakers_setup">
         <text>Speakers Setup</text>
     </string>
-    <string id="ui_mm_texture_filter">
-        <text>Texture filter</text>
-    </string>
-    <string id="ui_mm_texture_quality">
-        <text>Texture Quality</text>
-    </string>
     <string id="ui_mm_tips">
         <text>Tips</text>
     </string>
     <string id="ui_mm_video">
         <text>Video</text>
-    </string>
-    <string id="ui_mm_view_distance">
-        <text>View distance</text>
     </string>
     <string id="ui_mm_voice_volume">
         <text>Voice volume</text>
