@@ -108,11 +108,7 @@ void CUIListItemServer::SetFont(CGameFont* pFont){
 }
 
 void CUIListItemServer::CreateConsoleCommand(xr_string& command, LPCSTR player_name){
-	command = "start server(";
-	command+= *m_srv_info.info.map;
-	command+= "/";
-	command+= *m_srv_info.info.game;
-	command+= ") client(";
+	command = "start client(";
 	command+= *m_srv_info.info.address;
 	command+= "/name=";
 	command+= player_name;

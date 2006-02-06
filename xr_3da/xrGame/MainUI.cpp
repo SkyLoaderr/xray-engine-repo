@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainUI.h"
 #include "UI/UIDialogWnd.h"
+#include "ui/UIMessageBoxEx.h"
 #include "UICursor.h"
 #include "HUDManager.h"
 #include "../xr_IOConsole.h"
@@ -117,6 +118,10 @@ CMainUI::CMainUI	()
 	CUIXmlInit::InitColorDefs	();
 	g_btnHint					= xr_new<CUIButtonHint>();
 	m_bPostprocess				= false;
+
+	m_pMessageInvalidHost = NULL;
+	m_pMessageInvalidPass = NULL;
+	m_pMessageSessionFull = NULL;
 }
 
 CMainUI::~CMainUI	()
@@ -125,6 +130,9 @@ CMainUI::~CMainUI	()
 	xr_delete						(m_startDialog);
 	xr_delete						(m_pFontManager);
 	xr_delete						(m_pUICursor);
+	xr_delete						(m_pMessageInvalidHost);
+	xr_delete						(m_pMessageInvalidPass);
+	xr_delete						(m_pMessageSessionFull);
 	g_pGamePersistent->m_pMainUI	= NULL;
 	CUITextureMaster::WriteLog		();
 }
@@ -490,4 +498,34 @@ void CMainUI::UnregisterPPDraw				(CUIWindow* w)
 {
 	xr_vector<CUIWindow*>::iterator it = remove( m_pp_draw_wnds.begin(), m_pp_draw_wnds.end(), w);
 	m_pp_draw_wnds.erase(it, m_pp_draw_wnds.end());
+}
+
+void CMainUI::OnInvalidHost(){
+	if (!m_pMessageInvalidHost)
+	{
+        m_pMessageInvalidHost = xr_new<CUIMessageBoxEx>();
+		m_pMessageInvalidHost->Init("message_box_invalid_host");
+	}
+
+	StartStopMenu(m_pMessageInvalidHost, false);
+}
+
+void CMainUI::OnInvalidPass(){
+	if (!m_pMessageInvalidPass)
+	{
+        m_pMessageInvalidPass = xr_new<CUIMessageBoxEx>();
+		m_pMessageInvalidPass->Init("message_box_invalid_pass");
+	}
+
+	StartStopMenu(m_pMessageInvalidPass, false);
+}
+
+void CMainUI::OnSessionFull(){
+		if (!m_pMessageSessionFull)
+	{
+        m_pMessageSessionFull = xr_new<CUIMessageBoxEx>();
+		m_pMessageSessionFull->Init("message_box_session_full");
+	}
+
+	StartStopMenu(m_pMessageSessionFull, false);
 }

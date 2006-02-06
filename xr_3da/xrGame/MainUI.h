@@ -4,6 +4,7 @@ struct CFontManager;
 class CUIWindow;
 class CUIDialogWnd;
 class CUICursor;
+class CUIMessageBoxEx;
 #include "../IInputReceiver.h"
 #include "../IGame_Persistent.h"
 #include "UIDialogHolder.h"
@@ -115,6 +116,15 @@ public:
 
 	void			RegisterPPDraw					(CUIWindow* w);
 	void			UnregisterPPDraw				(CUIWindow* w);
+
+	void			OnInvalidHost					();
+	void			OnInvalidPass					();
+	void			OnSessionFull					();
+
+protected:
+	CUIMessageBoxEx*	m_pMessageInvalidHost;
+	CUIMessageBoxEx*	m_pMessageInvalidPass;
+	CUIMessageBoxEx*	m_pMessageSessionFull;
 };
 
 extern CUICursor*	GetUICursor();
