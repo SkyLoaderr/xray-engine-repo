@@ -459,7 +459,16 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 					};
 				};
 			*/
-			};			
+			};
+
+			if (Level().CurrentViewEntity() && m_game_ui)
+			{
+				game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
+				if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
+
+
+				m_game_ui->SetFraglimit(ps->kills, artefactsNum);
+			}
 		}break;
 	case GAME_PHASE_TEAM1_ELIMINATED:
 		{
