@@ -3714,7 +3714,7 @@
             </phrase>
             <phrase id="2">
                 <text />
-                <has_info>bar_resque_research_done</has_info>
+                <has_info>bar_rescue_research_done</has_info>
                 <next>21</next>
             </phrase>
             <phrase id="21">
@@ -3722,7 +3722,7 @@
             </phrase>
             <phrase id="3">
                 <text />
-                <dont_has_info>bar_resque_research_done</dont_has_info>
+                <dont_has_info>bar_rescue_research_done</dont_has_info>
                 <next>31</next>
             </phrase>
             <phrase id="31">
