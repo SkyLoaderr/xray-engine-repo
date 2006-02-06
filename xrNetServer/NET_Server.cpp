@@ -142,6 +142,7 @@ BOOL IPureServer::Connect(LPCSTR options)
 	string4096				session_name;
 	string4096				session_options = "";
 	string64				password_str = "";
+	u32						dwMaxPlayers = 0;
 
 	strcpy					(session_name,options);
 	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
@@ -152,8 +153,19 @@ BOOL IPureServer::Connect(LPCSTR options)
 		if (strchr(PSW, '/')) 
 			strncpy(password_str, PSW, strchr(PSW, '/') - PSW);
 		else
-			strcpy(password_str, PSW);
+			strncpy(password_str, PSW, 63);
 	}
+	if (strstr(options, "maxplayers="))
+	{
+		char* sMaxPlayers = strstr(options, "maxplayers=") + 11;
+		string64 tmpStr = "";
+		if (strchr(sMaxPlayers, '/')) 
+			strncpy(tmpStr, sMaxPlayers, strchr(sMaxPlayers, '/') - sMaxPlayers);
+		else
+			strncpy(tmpStr, sMaxPlayers, 63);
+		dwMaxPlayers = atol(tmpStr);
+	}
+	Msg("MaxPlayers = %d", dwMaxPlayers);
 
     // Create the IDirectPlay8Client object.
     CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET));
@@ -197,6 +209,7 @@ BOOL IPureServer::Connect(LPCSTR options)
     dpAppDesc.dwFlags			= DPNSESSION_CLIENT_SERVER | DPNSESSION_NODPNSVR;
     dpAppDesc.guidApplication	= NET_GUID;
     dpAppDesc.pwszSessionName	= SessionNameUNICODE;
+	dpAppDesc.dwMaxPlayers		= (dwMaxPlayers == 0) ? 0 : (dwMaxPlayers+1);
 	dpAppDesc.pvApplicationReservedData	= session_options;
 	dpAppDesc.dwApplicationReservedDataSize = xr_strlen(session_options)+1;
 

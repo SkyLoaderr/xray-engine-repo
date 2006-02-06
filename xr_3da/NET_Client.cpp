@@ -322,7 +322,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 					}break;
 				};
 #ifdef DEBUG
-				const char* x = DXGetErrorString9(res);
+//				const char* x = DXGetErrorString9(res);
 				string1024 tmp;
 				DXTRACE_ERR(tmp, res);
 				Msg("! IPureClient : port %d is BUSY!", c_port);
@@ -352,7 +352,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		net_csEnumeration.Enter		();
 		// real connect
 		for (u32 I=0; I<net_Hosts.size(); I++) 
-			Msg("* HOST #%d: %s\n",I+1,net_Hosts[I].dpSessionName);
+			Msg("* HOST #%d: %s\n",I+1,*net_Hosts[I].dpSessionName);
 		
 		R_CHK(net_Hosts.front().pHostAddress->Duplicate(&pHostAddress ) );
 		// dump_URL		("! c2s ",	pHostAddress);
@@ -370,7 +370,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		net_csEnumeration.Leave		();
 		_RELEASE					(pHostAddress);
 #ifdef DEBUG	
-		const char* x = DXGetErrorString9(res);
+//		const char* x = DXGetErrorString9(res);
 		string1024 tmp;
 		DXTRACE_ERR(tmp, res);
 		switch (res)
@@ -559,7 +559,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 				{
 					PDPNMSG_CONNECT_COMPLETE pMsg = (PDPNMSG_CONNECT_COMPLETE)pMessage;
 #ifdef DEBUG
-					const char* x = DXGetErrorString9(pMsg->hResultCode);
+//					const char* x = DXGetErrorString9(pMsg->hResultCode);
 					string1024 tmp;
 					DXTRACE_ERR(tmp, pMsg->hResultCode);
 #endif
@@ -642,7 +642,7 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 		);
 	if (FAILED(hr_))	{
 		Msg	("! ERROR: Failed to send net-packet, reason: %s",::Debug.error2string(hr_));
-		const char* x = DXGetErrorString9(hr_);
+//		const char* x = DXGetErrorString9(hr_);
 		string1024 tmp;
 		DXTRACE_ERR(tmp, hr_);
 	}
