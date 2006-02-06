@@ -155,6 +155,7 @@ void CStateBurerAttackTeleAbstract::FindFreeObjects(xr_vector<CObject*> &tpObjec
 			!obj->PPhysicsShell() || 
 			!obj->PPhysicsShell()->isActive()|| 
 			custom_monster ||
+			(obj->spawn_ini() && obj->spawn_ini()->section_exist("ph_heavy")) || 
 			(obj->m_pPhysicsShell->getMass() < object->m_tele_object_min_mass) || 
 			(obj->m_pPhysicsShell->getMass() > object->m_tele_object_max_mass) || 
 			(obj == object) || 

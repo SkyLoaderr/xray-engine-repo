@@ -31,13 +31,29 @@ CStateBurerAttackAbstract::CStateBurerAttack(_Object *obj) : inherited(obj)
 }
 
 TEMPLATE_SPECIALIZATION
+void CStateBurerAttackAbstract::initialize()
+{
+	inherited::initialize	();
+	m_force_gravi			= false;
+}
+
+TEMPLATE_SPECIALIZATION
 void CStateBurerAttackAbstract::reselect_state()
 {
 	if (get_state(eStateBurerAttack_Melee)->check_start_conditions()) {
 		select_state(eStateBurerAttack_Melee);
 		return;
 	}
-	
+
+	if (m_force_gravi) {
+		m_force_gravi = false;
+
+		if (get_state(eStateBurerAttack_Gravi)->check_start_conditions()) {
+			select_state		(eStateBurerAttack_Gravi);
+			return;
+		}
+	}
+
 	if (get_state(eStateCustomMoveToRestrictor)->check_start_conditions()) {
 		select_state(eStateCustomMoveToRestrictor);
 		return;
@@ -99,6 +115,18 @@ void CStateBurerAttackAbstract::setup_substates()
 		return;
 	}
 
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateBurerAttackAbstract::check_force_state()
+{
+	// check if we can start execute
+	if ((current_substate == eStateCustomMoveToRestrictor) || (eStateBurerAttack_RunAround)) {
+		if (get_state(eStateBurerAttack_Gravi)->check_start_conditions()) {
+			current_substate	= u32(-1);
+			m_force_gravi		= true;
+		}
+	}
 }
 
 #undef TEMPLATE_SPECIALIZATION
