@@ -54,6 +54,22 @@ void CLevel::IR_OnMouseWheel( int direction )
 
 }
 
+class		vtune_		{
+	BOOL	enabled_	;
+public:
+	optimizer	()		{
+		enabled_	= FALSE;
+	}
+	void	enable	()	{ if (!enabled_)	{ 
+		Engine.External.tune_resume	();	enabled_=TRUE;	
+		Msg	("vtune : enabled");
+	}}
+	void	disable	()	{ if (enabled_)		{ 
+		Engine.External.tune_pause	();	enabled_=FALSE; 
+		Msg	("vtune : disabled");
+	}}
+}	vtune	;
+
 // Обработка нажатия клавиш
 extern	BOOL	g_bEnableMPL;	//.
 void CLevel::IR_OnKeyboardPress	(int key)
@@ -72,6 +88,9 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		}
 	}
 	//. dbgmp end
+
+	if (DIK_F10 == key)		vtune.enable();
+	if (DIK_F11 == key)		vtune.disable();
 
 	if (DIK_F12 == key)
 	{
