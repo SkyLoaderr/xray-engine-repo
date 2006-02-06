@@ -17,6 +17,7 @@ void	MEMPOOL::block_create	()
 		*access(E)			= E+s_element;
 	}
 	*access	(list+(s_count-1)*s_element)	= NULL;
+	block_count				++;
 }
 
 void	MEMPOOL::_initialize	(u32 _element, u32 _sector, u32 _header)
@@ -27,4 +28,5 @@ void	MEMPOOL::_initialize	(u32 _element, u32 _sector, u32 _header)
 	s_count			= s_sector/s_element;
 	s_offset		= _header;
 	list			= NULL;
+	block_count		= 0;
 }

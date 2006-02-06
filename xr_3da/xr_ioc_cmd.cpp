@@ -65,13 +65,12 @@ class CCC_MemStat : public IConsole_Command
 public:
 	CCC_MemStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
-		Memory.mem_statistic				();
-		Msg	("* ----- lua VM storage -----"	);
-		Msg ("- %d bytes",0/*u32(lua_memusage())*/);
-		Msg	("* ----- string storage -----"	);
-		g_pStringContainer->dump			();
-		Msg	("* ----- shared memory -----"	);
-		g_pSharedMemoryContainer->dump		();
+		string_path fn;
+		if (args&&args[0])	sprintf	(fn,"%s.dump",args);
+		else				strcpy	(fn,"x:\\$memory$.dump");
+		Memory.mem_statistic				(fn);
+//		g_pStringContainer->dump			();
+//		g_pSharedMemoryContainer->dump		();
 	}
 };
 static void vminfo (size_t *_free, size_t *reserved, size_t *committed) {

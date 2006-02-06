@@ -141,22 +141,33 @@ void	xrMemory::mem_statistic	()
 {
 }
 #else
-LPCSTR	memstat_file			= "x:\\$memory_dump$.txt";
-void	xrMemory::mem_statistic	()
+ICF	u8*		acc_header			(void* P)	{	u8*		_P		= (u8*)P;	return	_P-1;	}
+ICF	u32		get_header			(void* P)	{	return	(u32)*acc_header(P);				}
+void	xrMemory::mem_statistic	(LPCSTR fn)
 {
 	if (!debug_mode)	return	;
 	mem_compact				()	;
 
-	string1024	tmp;
 	debug_cs.Enter			()	;
 	debug_mode				= FALSE;
 
-	FILE*		Fa			= fopen		(memstat_file,"w");
+	FILE*		Fa			= fopen		(fn,"w");
+	fprintf					(Fa,"$BEGIN CHUNK #0\n");
+	fprintf					(Fa,"POOL: %d %dKb\n",mem_pools_count,mem_pools_ebase);
+
+	fprintf					(Fa,"$BEGIN CHUNK #1\n");
+	for (u32 k=0; k<mem_pools_count; ++k)
+		fprintf				(Fa,"%2d: %d %db\n",k,mem_pools[k].get_block_count(),(k+1)*16);
+	
+	fprintf					(Fa,"$BEGIN CHUNK #2\n");
 	for (u32 it=0; it<debug_info.size(); it++)
 	{
 		if (0==debug_info[it]._p)	continue	;
-		sprintf				(tmp,"0x%08X: %8d %s\n",(u32)debug_info[it]._p,debug_info[it]._size,debug_info[it]._name);
-		fprintf				(Fa,tmp);
+
+		u32 p_current		= get_header(debug_info[it]._p);
+		int pool_id			= (mem_generic==p_current)?-1:p_current;
+
+		fprintf				(Fa,"0x%08X[%2d]: %8d %s\n",(u32)debug_info[it]._p,pool_id,debug_info[it]._size,debug_info[it]._name);
 	}
 	fclose		(Fa)		;
 

@@ -15,7 +15,7 @@
 #include "sh_constant.h"
 #include "sh_rt.h"
 
-typedef svector<shared_str,16>	sh_list;
+typedef xr_vector<shared_str>	sh_list;
 class	ENGINE_API				CBlender_Compile;
 class	ENGINE_API				IBlender;
 #define	SHADER_PASSES_MAX		2
