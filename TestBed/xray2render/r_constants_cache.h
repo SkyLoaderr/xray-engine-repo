@@ -31,13 +31,13 @@ public:
 	typedef		R_constant_cache<BOOL,16>		t_b;
 public:
 	ALIGN(16)	t_f					c_f;
-	ALIGN(16)	t_i					c_i;
-	ALIGN(16)	t_b					c_b;
+//	ALIGN(16)	t_i					c_i;
+//	ALIGN(16)	t_b					c_b;
 	BOOL							b_dirty;
 public:
 	t_f&					get_array_f		()	{ return c_f;	}
-	t_i&					get_array_i		()	{ return c_i;	}
-	t_b&					get_array_b		()	{ return c_b;	}
+//	t_i&					get_array_i		()	{ return c_i;	}
+//	t_b&					get_array_b		()	{ return c_b;	}
 
 	void					set		(R_constant* C, R_constant_load& L, const Fmatrix& A)
 	{

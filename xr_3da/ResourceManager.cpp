@@ -81,8 +81,7 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 			N.push_back	(0);
 			strlwr		(N.begin());
 			if (strext(N.begin())) *strext(N.begin())=0;
-			dest.last	()	= N.begin();
-			dest.inc	();
+			dest.push_back(N.begin());
 			N.clear		();
 		} else {
 			N.push_back	(*P);
@@ -95,8 +94,7 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 		N.push_back	(0);
 		strlwr		(N.begin());
 		if (strext(N.begin())) *strext(N.begin())=0;
-		dest.last	()	= N.begin();
-		dest.inc	();
+		dest.push_back(N.begin());
 	}
 }
 
