@@ -565,7 +565,7 @@ reward_rank = 6
 reward_item = medkit
 
 [dolg_kill_stalker_1]
-type = kiil_stalker
+type = kill_stalker
 community = actor_dolg
 text = dolg_kill_stalker_1_text
 description = dolg_kill_stalker_1_descr
@@ -577,7 +577,7 @@ reward_relation = dolg, 200
 reward_rank = 7
 
 [dolg_kill_stalker_2]
-type = kiil_stalker
+type = kill_stalker
 community = actor
 text = dolg_kill_stalker_2_text
 description = dolg_kill_stalker_2_descr
@@ -589,7 +589,7 @@ reward_relation = dolg, 150
 reward_rank = 6
 
 [dolg_kill_stalker_3]
-type = kiil_stalker
+type = kill_stalker
 community = actor_dolg
 text = dolg_kill_stalker_3_text
 description = dolg_kill_stalker_3_descr
@@ -601,7 +601,7 @@ reward_relation = dolg, 250
 reward_rank = 7
 
 [dolg_kill_stalker_4]
-type = kiil_stalker
+type = kill_stalker
 community = actor_dolg
 text = dolg_kill_stalker_4_text
 description = dolg_kill_stalker_4_descr
@@ -663,10 +663,25 @@ reward_relation = dolg, 250
 ;--------Freedom------------------------
 ;----------Eliminate Camp----
 freedom_eliminate_camp_1
+freedom_eliminate_camp_2
+freedom_eliminate_camp_3
+freedom_eliminate_camp_4
+freedom_eliminate_camp_5
 
 ;----------Kill Staker-------
+freedom_kill_stalker_1
+freedom_kill_stalker_2
+freedom_kill_stalker_3
+freedom_kill_stalker_4
+freedom_kill_stalker_5
 
 ;----------Find Item---------
+freedom_find_item_1
+freedom_find_item_2
+freedom_find_item_3
+
+;-------Monster Part-------
+freedom_monster_part_1
 
 
 
@@ -676,9 +691,165 @@ community = actor
 text = freedom_eliminate_camp_1_text
 description = freedom_eliminate_camp_1_descr
 parent = freedom
-target = gar_smart_monster_lair2
-reward_money = 800
+target = agr2_st_nii
+reward_money = 3000
+reward_reputation = +40
+reward_relation = dolg, -50, freedom, +100
+reward_rank = 7
+
+[freedom_eliminate_camp_2]
+type = eliminate_lager
+community = actor_freedom
+text = freedom_eliminate_camp_2_text
+description = freedom_eliminate_camp_2_descr
+parent = freedom
+target = mil_mercs
+reward_money = 2000
+reward_reputation = +30
+reward_relation = freedom, +80
+reward_rank = 5
+
+[freedom_eliminate_camp_3]
+type = eliminate_lager
+community = actor_freedom
+text = freedom_eliminate_camp_3_text
+description = freedom_eliminate_camp_3_descr
+parent = freedom
+target = ros_smart_stalker2
+reward_money = 2500
+reward_reputation = +5
+reward_relation = freedom, +90, dolg, -150
+reward_rank = 6
+
+[freedom_eliminate_camp_4]
+type = eliminate_lager
+community = actor_freedom
+text = freedom_eliminate_camp_4_text
+description = freedom_eliminate_camp_4_descr
+parent = freedom
+target = gar_dolg_blokpost
+reward_money = 1500
+reward_reputation = +35
+reward_relation = freedom, +60, dolg, -70
+reward_rank = 5
+
+[freedom_eliminate_camp_5]
+type = eliminate_lager
+community = actor_freedom
+text = freedom_eliminate_camp_5_text
+description = freedom_eliminate_camp_5_descr
+parent = freedom
+target = mil_village_lair
+reward_money = 2300
+reward_reputation = +35
+reward_relation = freedom, +120, dolg, -30
+reward_rank = 7
+
+[freedom_kill_stalker_1]
+type = kill_stalker
+community = actor_freedom
+text = freedom_kill_stalker_1_text
+description = freedom_kill_stalker_1_descr
+parent = freedom
+target = bar_dolg_guard_commander
+reward_money = 2000
+reward_reputation = +5
+reward_relation = freedom, +100, dolg, -100
+reward_rank = 6
+
+[freedom_kill_stalker_2]
+type = kill_stalker
+community = actor_freedom
+text = freedom_kill_stalker_2_text
+description = freedom_kill_stalker_2_descr
+parent = freedom
+target = bar_dolg_ivancov
+reward_money = 3500
+reward_reputation = 0
+reward_relation = freedom, +200, dolg, -200
+reward_rank = 8
+
+[freedom_kill_stalker_3]
+type = kill_stalker
+community = actor_freedom
+text = freedom_kill_stalker_3_text
+description = freedom_kill_stalker_3_descr
+parent = freedom
+target = bar_dolg_petrenko
+reward_money = 5000
+reward_reputation = 0
+reward_relation = freedom, +250, dolg, -250
+reward_rank = 9
+
+[freedom_kill_stalker_4]
+type = kill_stalker
+community = actor_freedom
+text = freedom_kill_stalker_4_text
+description = freedom_kill_stalker_4_descr
+parent = freedom
+target = bar_dolg_leader
+reward_money = 8000
+reward_reputation = 0
+reward_relation = freedom, +300, dolg, -300
+reward_rank = 10
+
+[freedom_kill_stalker_5]
+type = kill_stalker
+community = actor_freedom
+text = freedom_kill_stalker_5_text
+description = freedom_kill_stalker_5_descr
+parent = freedom
+target = sim_Dolg_master
+reward_money = 4000
+reward_reputation = 0
+reward_relation = freedom, +150, dolg, -150
+reward_rank = 8
+
+[freedom_find_item_1]
+type = find_item
+community = actor
+text = freedom_find_item_1_text
+description = freedom_find_item_1_descr
+parent = freedom
+target = wpn_svd_m1
+reward_money = 5000
+reward_reputation = +45
+reward_rank = 8
+reward_relation = dolg, -150, freedom +150
+
+[freedom_find_item_2]
+type = find_item
+community = actor_freedom
+text = freedom_find_item_2_text
+description = freedom_find_item_2_descr
+parent = freedom
+target = wpn_winchester_m1
+reward_money = 3000
+reward_reputation = +30
+reward_rank = 5
+reward_relation = dolg, -50, freedom +70
+
+[freedom_find_item_3]
+type = find_item
+community = actor_freedom
+text = freedom_find_item_3_text
+description = freedom_find_item_3_descr
+parent = freedom
+target = outfit_specops_m1
+reward_money = 6000
+reward_reputation = +40
+reward_rank = 7
+reward_relation = dolg, -100, freedom +150
+
+[freedom_monster_part_1]
+type = monster_part
+community = actor
+text = freedom_monster_part_1_text
+description = freedom_monster_part_1_descr
+parent = freedom
+target = mutant_boar_leg
+reward_money = 1000
 reward_reputation = +15
-reward_relation = dolg, 60
 reward_rank = 4
-reward_item = bread
+reward_relation = dolg, -50, freedom +50
+
