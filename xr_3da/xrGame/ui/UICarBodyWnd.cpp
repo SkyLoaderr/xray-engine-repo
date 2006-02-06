@@ -139,10 +139,14 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 	UICharacterInfoLeft.InitCharacter(pOurObject->ID());
 //	CInventoryOwner* pOthersInvOwner = smart_cast<CInventoryOwner*>(pOthersObject);
 
-	CBaseMonster *monster = smart_cast<CBaseMonster *>(pOthersObject);
-	if (!monster) {
-		if(pOthersObject)	UICharacterInfoRight.InitCharacter(pOthersObject->ID());
-	} 
+	if(pOthersObject) {
+		CBaseMonster *monster = smart_cast<CBaseMonster *>(pOthersObject);
+		if (!monster) {
+			UICharacterInfoRight.InitCharacter(pOthersObject->ID());
+		} else {
+			UICharacterInfoRight.ClearInfo();
+		}
+	}
 
 	m_pMouseCapturer			= NULL;
 	UIPropertiesBox.Hide		();
