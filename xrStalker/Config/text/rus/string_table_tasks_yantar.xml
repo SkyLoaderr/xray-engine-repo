@@ -1,17 +1,17 @@
 <string id="yan_kill_brain">
-	<text>Выбраться из лаборатории X16</text>
+	<text>Отключить излучение.</text>
 </string>
 <string id="yan_find_vasilyev">
-	<text>Найти труп Васильева</text>
+	<text>Найти труп Васильева.</text>
 </string>
 <string id="yan_find_vasilyev_pda">
-	<text>Взять PDA Васильева</text>
+	<text>Взять PDA Васильева.</text>
 </string>
 <string id="yan_find_labX16">
-	<text>Проникнуть в лабораторию X16</text>
+	<text>Проникнуть в лабораторию X16.</text>
 </string>
 <string id="yan_find_lab">
-	<text>Проникнуть в лабораторию</text>
+	<text>Проникнуть в лабораторию.</text>
 </string>
 <string id="yan_kill_brain_task">
 	<text>Отключить источник излучения</text>
