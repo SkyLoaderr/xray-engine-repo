@@ -4,7 +4,6 @@
 		<text font="letterica25" r="155" g="255" b="155"/>		
 	</speech_menu>
 	
-	<!-- health -->
 	<static_health x="860" y="660" width="155" height="34">
 		<texture>ui_hud_shkala_health</texture>
 		<auto_static x="5" y="10" width="19" height="18">
@@ -16,7 +15,6 @@
 		<texture length="110">ui_hud_shk_health</texture>
 	</progress_bar_health>
 	
-	<!-- armor -->
 	<static_armor x="860" y="622" width="155" height="34">
 		<texture>ui_hud_shkala_armor</texture>
 		<auto_static x="5" y="6" width="19" height="18">
@@ -28,33 +26,27 @@
 		<texture tile="0" width="110" height="10" length="110">ui_hud_shk_armour</texture>
 	</progress_bar_armor>
 	
-	<!-- WEAPON -->
 	<static_weapon x="860" y="692" width="157" height="65">
 		<text complex_mode="0" align="l" x="70" y="0" font="letterica16" r="255" g="255" b="255" a="130"/>
 		<texture>ui_hud_frame_patron</texture>
 	</static_weapon>
 	
-	<!-- ammo name -->
 	<static_ammo x="82" y="22" width="85" height="30">
 		<text x="0" y="0" font="graffiti32" r="238" g="155" b="23" a="255">Ammo</text>
 	</static_ammo>
 	
-	<!-- weapon icon -->
 	<static_wpn_icon x="40" y="37" width="55" height="42" alignment="c">
 		<text font="normal" r="239" g="154" b="29" a="230"/>
 	</static_wpn_icon>
 
-	<!-- CAR_HEALTH -->
 	<car_panel x="860" y="584" width="150" height="200"/>
 	
-	<!-- pda online icon -->
 	<static_pda_online x="138" y="167" width="35" height="28" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
 		<texture>ui_hud_map_counter</texture>
 		<text y="6" align="c" font="normal" r="238" g="155" b="23" a="255"/>
 	</static_pda_online>
 	
 	
-	<!-- tips static -->
 	<quick_info x="1" y="700" width="1022" height="50"  light_anim="ui_btn_hint"  la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
 		<text align="c" font="graffiti22" r="225" g="225" b="250" a="255" />
 	</quick_info>
@@ -67,7 +59,6 @@
 	
 	<icons_scroll_view  x="955" y="100" width="65" height="455" right_ident="2" always_show_scroll="0" vert_interval="18" inverse_dir="1" flip_vert="0"/>
 
-	<!--WARNING ICONS-->
 	<weapon_jammed_static x="0" y="0" width="64" height="64">
 		<texture>ui_hud_icon_weapon</texture>
 	</weapon_jammed_static>
@@ -99,8 +90,7 @@
 	<artefact_static x="0" y="0" width="64" height="64">
 		<texture>ui_hud_icon_artefact</texture>
 	</artefact_static>
-	
-	<!-- MONEY INDICATORS. MP ONLY -->
+<!--remove it-->	
 	<money_mt_static x="860" y="10" width="200" height="200">
 		<text x="85" y="4" font="letterica16" r="255" g="255" b="255" a="130">money</text>
 		<texture>ui\ui_mn_weapons</texture>
@@ -125,32 +115,27 @@
 		</money_bonus>
 	</money_wnd>
 	
-	<!-- TEAM 1 SCORE -->
 	<t1_score x="948" y="80" width="32" height="32" >		
 		<text font="graffiti32" r="0" g="255" b="0" a="255" align="r"/>
 	</t1_score>
 	<t1_static x="980" y="80" width="32" height="32" stretch = "1"/>		
-	<!-- TEAM 2 SIGN -->
 	<t2_score x="948" y="110" width="32" height="32">
 		<text font="graffiti32" r="0" g="255" b="255" a="255" align="r"/>
 	</t2_score>
 	<t2_static x="980" y="112" width="32" height="32" stretch = "1"/>		
-	<!-- Rank Icon -->
 	<rank_icon x="826" y="26" width="32" height="32" stretch = "1">
 		<texture width="32" height="32"tile="0">ui\ui_mp_icon_rank</texture>
 	</rank_icon>
-	
-	<!-- FLASHING ICONS INDICATORS -->
+<!-- end remove it -->	
+
 	<flashing_icons>
 		<flashing_icon x="13" y="210" width="48" height="29" type="pda" light_anim="ui_slow_blinking_alpha">
 			<texture>ui_hud_icon_PDA</texture>
 		</flashing_icon>
 	</flashing_icons>
 
-	<!-- pickup item icon-->
 	<pick_up_item x="437" y="400" width="150" height="100"/>
 
-	<!-- artefact panel -->
 	<artefact_panel x="70" y="710" width="790" height="50" scale="0.75"/>
 	
 	<new_contact_snd>detectors\contact_1</new_contact_snd>	
