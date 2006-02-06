@@ -1,10 +1,12 @@
 #pragma once
 #include "uiwindow.h"
 
+
 class CInventoryItem;
 class CUIStatic;
 class CUIScrollView;
 class CUIProgressBar;
+class CUIWpnParams;
 
 extern const char * const 		fieldsCaptionColor;
 
@@ -19,6 +21,7 @@ public:
 
 	void			Init				(float x, float y, float width, float height, const char* xml_name);
 	void			InitItem			(CInventoryItem* pInvItem);
+	void			TryAddWpnInfo		(const char* wpn_section);
 
 	virtual void	Draw				();
 	bool			m_b_force_drawing;
@@ -28,6 +31,7 @@ public:
 	CUIStatic*		UICondition;
 	CUIScrollView*	UIDesc;
 	CUIProgressBar*	UICondProgresBar;
+	CUIWpnParams*	UIWpnParams;
 
 	//для изображения предмета крупным планом
 	Fvector2	UIItemImageSize; 

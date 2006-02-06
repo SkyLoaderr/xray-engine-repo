@@ -15,6 +15,7 @@ public:
 
 	void InitFromXml(CUIXml& xml_doc);
 	void SetInfo(const char* wnp_section);
+	bool Check(const char* wpn_section);
 
 protected:
 	CUIProgressBar	m_progressAccuracy;

@@ -287,8 +287,6 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	AttachChild(&UIBtn_RifleBullet);
 	CUIXmlInit::Init3tButton(uiXml, "btn_rifle_bullets", 0, &UIBtn_RifleBullet);
 
-	UIWpnParams.InitFromXml(uiXml);
-
 	// disable
 
 	UIBtn_PistolSilencer.Enable(false);
@@ -1843,14 +1841,7 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 				UIDescRankIcon.InitTexture(tex_name);
 			}
 
-            if (0 != xr_strcmp("wpn_binoc", pDDItemMP->GetSectionName()) && 0 != xr_strcmp("mp_wpn_binoc", pDDItemMP->GetSectionName()))
-			{
-                if (pSettings->line_exist(pDDItemMP->GetSectionName(), "fire_dispersion_base"))
-				{
-					UIWpnParams.SetInfo(pDDItemMP->GetSectionName());
-					UIItemInfo.UIDesc->AddWindow(&UIWpnParams, false);			
-				}
-			}
+			UIItemInfo.TryAddWpnInfo(pDDItemMP->GetSectionName());
 
 			if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
 			{

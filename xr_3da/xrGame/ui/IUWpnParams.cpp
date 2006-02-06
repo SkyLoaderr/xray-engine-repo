@@ -25,6 +25,8 @@ CUIWpnParams::~CUIWpnParams(){
 }
 
 void CUIWpnParams::InitFromXml(CUIXml& xml_doc){
+	if (!xml_doc.NavigateToNode("wpn_params", 0))
+		return;
 	CUIXmlInit::InitWindow(xml_doc, "wpn_params", 0, this);
 
 	CUIXmlInit::InitStatic(xml_doc, "wpn_params:cap_accuracy",	0, &m_textAccuracy);
@@ -59,83 +61,20 @@ void CUIWpnParams::SetInfo(const char* wpn_section){
 	else
 		m_progressDamage.SetProgressPos(static_cast<s16>(m_functorDamageMP(wpn_section)));
 	m_progressHandling.SetProgressPos(static_cast<s16>(m_functorHandling(wpn_section)));
+}
 
-	//// RPM
-	//float rpm = pSettings->r_float(wpn_section,"rpm");
+bool CUIWpnParams::Check(const char* wpn_section){
+	if (pSettings->line_exist(wpn_section, "fire_dispersion_base"))
+	{
+        if (0==xr_strcmp(wpn_section, "wpn_addon_silencer"))
+            return false;
+        if (0==xr_strcmp(wpn_section, "wpn_binoc"))
+            return false;
+        if (0==xr_strcmp(wpn_section, "mp_wpn_binoc"))
+            return false;
 
-	//float val = rpm > 200 ? pow((rpm - 200.0f)/720.0f, 2.0f)*100.0f + 15 : rpm/14;
-	//if (val > 100)
-	//	val = 100;
-
-	//m_progressRPM.SetProgressPos(static_cast<s16>(iFloor(val)));
-
-	//// DAMAGE
-	//val = pSettings->r_float(wpn_section,"hit_power");
-	//if (GameID() == GAME_SINGLE)
-	//{
-	//	if (val < 150)
-	//		val = val/2;
-	//	else
-	//		val = 75 + pow(val/400,2)*25;
-	//}
-	//else
-	//{
-	//	val = 75*(1 + log(val/100));
-	//}
-	//if (val < 0)
-	//	val = 1;
-	//if (val > 100)
-	//	val = 100;
-
-	//m_progressDamage.SetProgressPos(static_cast<s16>(iFloor(val)));
-	//////////////////////////////////////////////////////////////////	
-
-	//// ACCURACY
-	//float cam_dispersion_frac;
-	//if (pSettings->line_exist(wpn_section, "cam_dispertion_frac"))
- //       cam_dispersion_frac = pSettings->r_float(wpn_section,"cam_dispertion_frac");
-	//else 
-	//	cam_dispersion_frac = 0.7f;
-	//float fire_dispersion_base = pSettings->r_float(wpn_section,"fire_dispersion_base");
-	//float cam_dispersion_inc = pSettings->r_float(wpn_section,"cam_dispersion_inc");
-	//float cam_dispersion = pSettings->r_float(wpn_section,"cam_dispersion");
-	//float cam_step_angle_horz = pSettings->r_float(wpn_section,"cam_step_angle_horz");
-	//char ammo[128];
-	//_GetItem(pSettings->r_string(wpn_section,"ammo_class"), 0, ammo);
-	//float k_disp =  pSettings->r_float(ammo, "k_disp");
-
- //   val = (0.05f*rpm*log(1/(cam_dispersion/10.0f + cam_dispersion_inc)) 
-	//	+ 30.0f*log(1/(cam_dispersion*cam_step_angle_horz))
-	//	)*pow(cam_dispersion_frac,2.0f) 
-	//	+ 50.0f*log(1/(fire_dispersion_base*k_disp));
-
-	//m_progressAccuracy.SetProgressPos(static_cast<s16>(iFloor(val)));
-
-
-
-	//// HANDLING
-	//float control_inertion_factor;
-	//if (pSettings->line_exist(wpn_section, "control_inertion_factor"))
-	//	control_inertion_factor = pSettings->r_float(wpn_section,"control_inertion_factor");
-	//else
-	//	control_inertion_factor = 1;
-
-	//float PDM_disp_base = pSettings->r_float(wpn_section,"PDM_disp_base");
-	//float PDM_disp_vel_factor = pSettings->r_float(wpn_section,"PDM_disp_vel_factor");	
-
-	//if (control_inertion_factor < 2 && PDM_disp_base < 1.5){
-	//	val = (1.2f - pow(PDM_disp_vel_factor - 0.5f, 2.0f) + pow(2.0f - control_inertion_factor,2.0f))*50.0f;
-	//}
-	//else{
-	//	val = 15.0f - (PDM_disp_base + control_inertion_factor);
-	//}
-
-	//if (val > 100)
-	//	val = 100;
-	//if (val < 1 )
-	//	val = 1;
-
-
-	//m_progressHandling.SetProgressPos(static_cast<s16>(iFloor(val)));
-	
+        return true;		
+	}
+	else
+		return false;
 }
