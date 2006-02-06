@@ -49,7 +49,11 @@ void TfrmStatistic::Prepare(AnsiString title, SHVec& columns)
     for (SHVecIt it=columns.begin(); it!=columns.end(); it++){
 	    TElHeaderSection* sect 	= sgData->HeaderSections->AddSection();
         sect->Text 				= it->caption;
-        sect->FieldType			= it->is_text?sftText:sftNumber;
+        switch (it->type){
+        case SStatHeader::sctText: 		sect->FieldType = sftText;		break;
+        case SStatHeader::sctInteger: 	sect->FieldType = sftNumber;	break;
+        case SStatHeader::sctFloat: 	sect->FieldType = sftFloating;	break;
+        }
     };
 }
 //---------------------------------------------------------------------------

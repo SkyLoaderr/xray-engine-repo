@@ -28,9 +28,14 @@ __published:	// IDE-managed Components
 private:	// User declarations
 public:		// User declarations
 	struct SStatHeader{
+    	enum EColumnType{
+        	sctText,
+            sctInteger,
+            sctFloat
+        };
     	AnsiString 		caption;
-        bool			is_text;
-        SStatHeader(AnsiString c, bool t){caption=c; is_text=t;}
+        EColumnType		type;
+        SStatHeader(AnsiString c, EColumnType t){caption=c; type=t;}
     };
     DEFINE_VECTOR(SStatHeader,SHVec,SHVecIt);
 public:		// User declarations

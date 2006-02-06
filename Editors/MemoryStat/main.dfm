@@ -167,6 +167,7 @@ object frmMain: TfrmMain
       Height = 748
       Align = alClient
       BevelOuter = bvNone
+      Color = 15790320
       TabOrder = 0
       OnResize = paMemBaseResize
       object paMem: TMxPanel
