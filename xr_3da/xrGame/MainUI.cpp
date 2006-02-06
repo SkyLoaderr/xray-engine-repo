@@ -521,7 +521,7 @@ void CMainUI::OnInvalidPass(){
 }
 
 void CMainUI::OnSessionFull(){
-		if (!m_pMessageSessionFull)
+	if (!m_pMessageSessionFull)
 	{
         m_pMessageSessionFull = xr_new<CUIMessageBoxEx>();
 		m_pMessageSessionFull->Init("message_box_session_full");
