@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="binoc_tutorial">
-        <text>Для того, чтобы использовать бинокль нажмите правую кнопку мыши.</text>
+        <text>Для того, чтобы использовать бинокль выберите его ($$ACTION_wpn_5$$) и нажмите "огонь" для приближения.</text>
     </string>
     <string id="jump_tutorial">
         <text>Для того, чтобы прыгнуть нажмите ($$ACTION_jump$$)</text>
