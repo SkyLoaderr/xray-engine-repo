@@ -1031,7 +1031,7 @@ void CActor::shedule_Update	(u32 DT)
 	collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	
 
-	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
+	if(!input_external_handler_installed() && RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
 		m_pObjectWeLookingAt			= smart_cast<CGameObject*>(RQ.O);
 		

@@ -149,10 +149,12 @@ void CStateBurerAttackTeleAbstract::FindFreeObjects(xr_vector<CObject*> &tpObjec
 	Level().ObjectSpace.GetNearest	(tpObjects, pos, object->m_tele_find_radius, NULL);
 
 	for (u32 i=0;i<tpObjects.size();i++) {
-		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
+		CPhysicsShellHolder *obj			= smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
+		CCustomMonster		*custom_monster	= smart_cast<CCustomMonster *>(tpObjects[i]);
 		if (!obj || 
 			!obj->PPhysicsShell() || 
 			!obj->PPhysicsShell()->isActive()|| 
+			custom_monster ||
 			(obj->m_pPhysicsShell->getMass() < object->m_tele_object_min_mass) || 
 			(obj->m_pPhysicsShell->getMass() > object->m_tele_object_max_mass) || 
 			(obj == object) || 
