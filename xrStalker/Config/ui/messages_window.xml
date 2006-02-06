@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
+
+<!-- remove it-->
 	<reinforcement x="492" y="10" width="40" height="40" text="1"  sector_count="30" clockwise="0">
 		<front x="2" y="34" width="33" height="33">
 			<texture>ui_hud_teamF_counterC</texture>
@@ -10,7 +12,8 @@
 			<texture>ui_hud_teamF_counter</texture>
 		</back>
 	</reinforcement>
-	
+<!-- end remove it-->
+
     <!-- PREFIX -->
 	<chat_prefix x="20" y="385" width="70" height="30">
 		<text font="letterica18" r="225" g="225" b="250" vert_align="c" complex_mode="0"></text>
