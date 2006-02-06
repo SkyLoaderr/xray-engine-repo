@@ -1488,7 +1488,13 @@
 					RelativePath=".\Config\ui\ui_custom_msgs.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\ui_hud.xml">
+					RelativePath=".\Config\ui\ui_game_ahunt.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_game_dm.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\ui_game_tdm.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_ingame.xml">
@@ -1550,6 +1556,9 @@
 					Filter="">
 					<File
 						RelativePath=".\Config\ui\ui_common.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_hud.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_icons_map.xml">
