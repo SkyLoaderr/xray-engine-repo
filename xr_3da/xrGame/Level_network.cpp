@@ -6,6 +6,7 @@
 #include "game_cl_base.h"
 #include "PHCommander.h"
 #include "net_queue.h"
+#include "MainUI.h"
 
 void CLevel::net_Stop		()
 {
@@ -279,14 +280,17 @@ void			CLevel::ClearAllObjects				()
 void				CLevel::OnInvalidHost			()
 {
 	IPureClient::OnInvalidHost();
+	UI()->OnInvalidHost();
 };
 
 void				CLevel::OnInvalidPassword		()
 {
 	IPureClient::OnInvalidPassword();
+	UI()->OnInvalidPass();
 };
 
 void				CLevel::OnSessionFull			()
 {
 	IPureClient::OnSessionFull();
+	UI()->OnSessionFull();
 }
