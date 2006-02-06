@@ -15,18 +15,18 @@
 		</auto_static>
 	</team2_icon>
 
-	<team1_score x="375" y="7" width="110" height="30">
+	<team1_score x="375" y="7" width="120" height="30">
 		<text align="r" font="graffiti50" r="0" g="255" b="0" a="255"/>
 
-		<auto_static x="0" y="0" width="110" height="30">
+		<auto_static x="0" y="0" width="120" height="30">
 			<text align="l" font="graffiti32" r="0" g="255" b="0" a="255">WOLF</text>
 		</auto_static>
 	</team1_score>
 
-	<team2_score x="534" y="7" width="110" height="30">
+	<team2_score x="534" y="7" width="120" height="30">
 		<text align="l" font="graffiti50" r="0" g="0" b="255" a="255"/>
 
-		<auto_static x="0" y="0" width="110" height="30">
+		<auto_static x="0" y="0" width="120" height="30">
 			<text align="r" font="graffiti32" r="0" g="0" b="255" a="255">EAGLE</text>
 		</auto_static>
 	</team2_score>
