@@ -20,9 +20,15 @@
 		<objective>
 			<text>yan_secret_tonnel</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
+			<infoportion_complete>yantar_tunnel_finish</infoportion_complete>
 		</objective>
-				
+		<objective>
+			<text>yan_scientist_return</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
+			<object_story_id>yan_general_ecolog</object_story_id>
+			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
+		</objective>		
 </game_task>
 
 <game_task id="yan_find_scientist">
