@@ -202,6 +202,8 @@
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		
+		<panic_treshold>0</panic_treshold>
+		
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
 			[spawn] \n
@@ -229,6 +231,8 @@
 		<reputation>-60</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		
+		<panic_treshold>0</panic_treshold>
 		
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -259,6 +263,8 @@
 		<reputation>-67</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		
+		<panic_treshold>0</panic_treshold>
 		
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
