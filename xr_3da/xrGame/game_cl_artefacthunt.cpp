@@ -348,12 +348,8 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	//out game information
 //	m_game_ui->SetReinforcementCaption("");
 	m_game_ui->SetBuyMsgCaption		("");
-	m_game_ui->SetScoreCaption		("");
 	m_game_ui->SetTodoCaption		("");
 	m_game_ui->SetPressBuyMsgCaption	("");	
-
-	if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
-		HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText("");
 
 	switch (phase)
 	{
@@ -389,10 +385,6 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				game_TeamState team0 = teams[0];
 				game_TeamState team1 = teams[1];
 
-				string256 S;
-
-				m_reinforcement_progress->SetVisible(iReinforcementTime != 0);
-				
 				if (dReinforcementTime != 0 && Level().CurrentViewEntity() && m_cl_dwWarmUp_Time == 0)
 				{
 					u32 CurTime = Level().timeServer();
@@ -405,7 +397,8 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 //					strconcat(S, "Next reinforcement will arrive at . . .", tmp);
 					
 //					m_game_ui->SetReinforcementCaption(S);
-					m_reinforcement_progress->SetPos(dTime, iReinforcementTime/1000);
+					m_game_ui->m_pReinforcementInidcator->SetPos(dTime, iReinforcementTime/1000);
+
 /*
 					CActor* pActor = NULL;
 					if (Level().CurrentViewEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
@@ -418,7 +411,9 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 						m_game_ui->SetReinforcementCaption("");
 						*/
 
-				};
+				}else
+					m_game_ui->m_pReinforcementInidcator->SetPos(0, 0);
+
 
 				s16 lt = local_player->team;
 				if (lt>=0)
@@ -429,12 +424,16 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 //									artefactsNum);
 //					m_game_ui->SetScoreCaption(S);
 
-					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+					if(m_game_ui)
+						m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
+
+/*					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 					{
 						sprintf(S, "%d", artefactsNum);
 						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
 						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
 					}
+*/
 				};
 	/*
 			if ( (artefactBearerID==0))// && (artefactID!=0) )

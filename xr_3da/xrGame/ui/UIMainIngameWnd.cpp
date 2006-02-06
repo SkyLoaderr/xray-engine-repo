@@ -27,7 +27,6 @@
 #include "../../LightAnimLibrary.h"
 
 #include "UIInventoryUtilities.h"
-#include "UIMoneyIndicator.h"
 
 
 #include "UIXmlInit.h"
@@ -105,7 +104,6 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_artefactPanel				= xr_new<CUIArtefactPanel>();
 	m_pMPChatWnd				= NULL;
 	m_pMPLogWnd					= NULL;	
-	m_pMoneyIndicator			= NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,7 +115,6 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 	DestroyFlashingIcons		();
 	xr_delete					(UIZoneMap);
 	xr_delete					(m_artefactPanel);
-	xr_delete					(m_pMoneyIndicator);
 	HUD_SOUND::DestroySound		(m_contactSnd);
 	xr_delete					(g_MissileForceShape);
 }
@@ -265,43 +262,6 @@ void CUIMainIngameWnd::Init()
 		j = static_cast<EWarningIcons>(j + 1);
 	}
 
-	// Money
-	if (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH || GameID() == GAME_ARTEFACTHUNT)
-	{
-		m_pMoneyIndicator = xr_new<CUIMoneyIndicator>();
-		AttachChild(m_pMoneyIndicator);
-		m_pMoneyIndicator->InitFromXML(uiXml);
-
-		if (GameID() == GAME_TEAMDEATHMATCH || GameID() == GAME_ARTEFACTHUNT)
-		{
-			AttachChild(&UITeam1Sign);
-			AttachChild(&UITeam2Sign);
-			xml_init.InitStatic(uiXml, "t1_static", 0, &UITeam1Sign);
-			xml_init.InitStatic(uiXml, "t2_static", 0, &UITeam2Sign);
-
-			R_ASSERT(pSettings->section_exist("team_logo_small"));
-			R_ASSERT(pSettings->line_exist("team_logo_small", "team1"));
-			R_ASSERT(pSettings->line_exist("team_logo_small", "team2"));
-
-			UITeam1Sign.InitTexture(pSettings->r_string("team_logo_small", "team1"));
-			UITeam2Sign.InitTexture(pSettings->r_string("team_logo_small", "team2"));
-
-			AttachChild(&UITeam1Score);
-			AttachChild(&UITeam2Score);
-			xml_init.InitStatic(uiXml, "t1_score", 0, &UITeam1Score);
-			xml_init.InitStatic(uiXml, "t2_score", 0, &UITeam2Score);
-
-			UITeam1Score.SetText("10");
-			UITeam2Score.SetText("10");
-
-		}
-
-		//  [7/27/2005]
-		AttachChild(&UIRankIndicator);
-		xml_init.InitStatic(uiXml, "rank_icon", 0, &UIRankIndicator);
-		SetRank(0);
-		//  [7/27/2005]
-	}
 
 	// Flashing icons initialize
 	uiXml.SetLocalRoot				(uiXml.NavigateToNode("flashing_icons"));
@@ -1286,39 +1246,6 @@ void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::ChangeTotalMoneyIndicator(shared_str newMoneyString)
-{
-	m_pMoneyIndicator->SetMoneyAmount(*newMoneyString);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIMainIngameWnd::DisplayMoneyChange(shared_str deltaMoney)
-{
-	m_pMoneyIndicator->SetMoneyChange(*deltaMoney);
-}
-
-void CUIMainIngameWnd::DisplayMoneyBonus(shared_str bonus){
-	m_pMoneyIndicator->SetMoneyBonus(*bonus);
-}
-/*
-struct priority_greater : public std::binary_function<CUSTOM_TEXTURE, CUSTOM_TEXTURE, bool>
-{	// functor for operator>
-	bool operator()(const CUSTOM_TEXTURE& Left, const CUSTOM_TEXTURE& Right) const
-	{	// apply operator> to operands
-		return (Left.texPriority > Right.texPriority);
-	}
-} priority_greater_functor;
-
-
-void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, float left, float top, float right, float bottom, int priority)
-{
-	m_CustomTextures.push_back(CUSTOM_TEXTURE(si, left, top, right, bottom, priority));
-
-	std::sort(m_CustomTextures.begin(), m_CustomTextures.end(), priority_greater_functor);
-}
-*/
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd)
 {
@@ -1485,38 +1412,6 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 	UIPickUpItemIcon.Show(true);
 };
 
-//  [7/4/2005]
-void	CUIMainIngameWnd::UpdateTeamsScore	(int t1, int t2)
-{
-	Frect	xT1Rect, xT2Rect;
-	xT1Rect = UITeam1Score.GetAbsoluteRect();
-	xT2Rect = UITeam2Score.GetAbsoluteRect();
-
-	string16 tmp; 
-	sprintf(tmp, "%d", t1);		UITeam1Score.SetText(tmp);
-	sprintf(tmp, "%d", t2);		UITeam2Score.SetText(tmp);
-
-	if ((xT1Rect.y1 < xT2Rect.y1 && t1<t2) || (xT1Rect.y1>xT2Rect.y1 && t1>t2))
-	{
-		int x=0;
-		x=x;
-
-		UITeam1Score.SetWndPos(xT1Rect.x1, xT2Rect.y1);
-		UITeam2Score.SetWndPos(xT2Rect.x1, xT1Rect.y1);
-
-		xT1Rect = UITeam1Sign.GetAbsoluteRect();
-		xT2Rect = UITeam2Sign.GetAbsoluteRect();
-
-		UITeam1Sign.SetWndPos(xT1Rect.x1, xT2Rect.y1);
-		UITeam2Sign.SetWndPos(xT2Rect.x1, xT1Rect.y1);
-
-	};
-}
-
-void	CUIMainIngameWnd::SetRank				(int rank)
-{
-	UIRankIndicator.SetOriginalRect(rank*32.0f, 0.0f, 32.0f, 32.0f);	
-};
 
 /*
 #include "d3dx9core.h"

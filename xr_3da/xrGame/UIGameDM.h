@@ -1,25 +1,16 @@
-#ifndef __XR_UIGAMEDM_H__
-#define __XR_UIGAMEDM_H__
 #pragma once
 
 #include "UIGameCustom.h"
 
 
-//#include "ui/UIDialogWnd.h"
-//#include "ui/UIInventoryWnd.h"
-
-//#include "ui/UIBuyWeaponWnd.h"
-//#include "ui/UISkinSelector.h"
-//#include "ui/UITextBanner.h"
-
-
-// refs 
 class CUIDMFragList;
 class CUIDMPlayerList;
 class CUIDMStatisticWnd;
 class CUIBuyWeaponWnd;
 class CUISkinSelectorWnd;
 class game_cl_Deathmatch;
+class CUIMoneyIndicator;
+class CUIRankIndicator;
 
 class CUIGameDM: public CUIGameCustom
 {
@@ -56,16 +47,28 @@ protected:
 
 	virtual	void					ClearLists				();
 
+	CUIMoneyIndicator*				m_pMoneyIndicator;
+	CUIRankIndicator*				m_pRankIndicator;
+	CUIStatic*						m_pFragLimitIndicator;
+
 public:
 									CUIGameDM				();
 	virtual 						~CUIGameDM				();
 
 	virtual void					SetClGame				(game_cl_GameState* g);
 	virtual	void					Init					();
+	virtual void					Render					();
+	virtual void					OnFrame					();
 
+	void							SetRank							(s16 team, u8 rank);
 
-			void					SetTimeMsgCaption		(LPCSTR str);
-			void					SetSpectrModeMsgCaption		(LPCSTR str);
+	void							ChangeTotalMoneyIndicator		(LPCSTR newMoneyString);
+	void							DisplayMoneyChange				(LPCSTR deltaMoney);
+	void							DisplayMoneyBonus				(LPCSTR bonus);
+	virtual void					SetFraglimit					(int local_frags, int fraglimit);
+
+			void					SetTimeMsgCaption				(LPCSTR str);
+			void					SetSpectrModeMsgCaption			(LPCSTR str);
 
 			void					SetSpectatorMsgCaption			(LPCSTR str);
 			void					SetPressJumpMsgCaption			(LPCSTR str);
@@ -90,4 +93,3 @@ public:
 			void					ShowStatistic			(bool bShow);
 	virtual void					ReInitInventoryWnd		(); 
 };
-#endif // __XR_UIGAMEDM_H__

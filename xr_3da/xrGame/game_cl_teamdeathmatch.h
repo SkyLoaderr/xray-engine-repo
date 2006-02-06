@@ -43,6 +43,7 @@ public :
 
 	virtual			void				Set_ShowPlayerNames		(bool Show) {m_bShowPlayersNames = Show;};
 	virtual			bool				Get_ShowPlayerNames		() {return m_bShowPlayersNames;};
+	virtual			s16					ModifyTeam				(s16 Team)	{return (Team != -1) ? Team-1 : Team;};
 
 //from UIGameTDM
 protected:
@@ -59,8 +60,6 @@ protected:
 
 	BOOL				m_bTeamSelected;
 	bool				m_bShowPlayersNames;
-
-	virtual s16			ModifyTeam			(s16 Team)	{return (Team != -1) ? Team-1 : Team;};
 
 	virtual bool		CanBeReady			();
 	virtual	void		SetCurrentBuyMenu	();

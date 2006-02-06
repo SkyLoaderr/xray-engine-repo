@@ -1,5 +1,3 @@
-#ifndef __XR_UIGAMETDM_H__
-#define __XR_UIGAMETDM_H__
 #pragma once
 
 #include "UIGameCustom.h"
@@ -19,6 +17,7 @@ class CUITDMPlayerList;
 class CUIBuyWeaponWnd;
 class CUISkinSelectorWnd;
 class game_cl_TeamDeathmatch;
+class CUIStatic;
 
 class CUIGameTDM: public CUIGameDM
 {
@@ -27,14 +26,21 @@ private:
 	typedef CUIGameDM inherited;
 
 protected:
+	CUIStatic*			m_team1_icon;
+	CUIStatic*			m_team2_icon;
+	CUIStatic*			m_team1_score;
+	CUIStatic*			m_team2_score;
 
 public:
 	CUIGameTDM			();
-	virtual 			~CUIGameTDM			();
-	virtual void		SetClGame			(game_cl_GameState* g);
-	virtual	void		Init				();
+	virtual 			~CUIGameTDM				();
+	virtual void		SetClGame				(game_cl_GameState* g);
+	virtual	void		Init					();
+			void		SetScoreCaption			(int t1, int t2);			
+	virtual void		SetFraglimit			(int local_frags, int fraglimit);
+	virtual void		Render					();
+	virtual void		OnFrame					();
 	
-	virtual	bool				IR_OnKeyboardPress		( int dik );
-	virtual bool				IR_OnKeyboardRelease	( int dik );
+	virtual	bool		IR_OnKeyboardPress		( int dik );
+	virtual bool		IR_OnKeyboardRelease	( int dik );
 };
-#endif // __XR_UIGAMETDM_H__

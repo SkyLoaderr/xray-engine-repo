@@ -4,9 +4,9 @@
 #include "Entity.h"
 #include "HUDManager.h"
 #include "UIGameSP.h"
-#include "UIGameDM.h"
-#include "UIGameTDM.h"
-#include "UIGameAHunt.h"
+//.#include "UIGameDM.h"
+//.#include "UIGameTDM.h"
+//.#include "UIGameAHunt.h"
 #include "actor.h"
 #include "level.h"
 #include "game_cl_base.h"
@@ -70,16 +70,21 @@ void CUI::UIOnFrame()
 	}
 
 	// out GAME-style depend information
-	if (pUIGame) pUIGame->OnFrame	();
-
+	if(m_bShowIndicators)
+	{
+		if (pUIGame) pUIGame->OnFrame	();
+	}
 	m_pMessagesWnd->Update();
 }
 //--------------------------------------------------------------------
 
 bool CUI::Render()
 {
-	if (pUIGame) 
-		pUIGame->Render	();
+	if(m_bShowIndicators)
+	{
+		if (pUIGame) 
+			pUIGame->Render	();
+	}
 
 	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor)

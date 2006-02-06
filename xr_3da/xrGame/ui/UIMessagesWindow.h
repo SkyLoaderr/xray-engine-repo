@@ -52,5 +52,4 @@ CUIPdaMsgListItem*		AddMessageToList				(LPCSTR message, CUIListWnd* pListWnd, i
 	CUIChatWnd*			m_pChatWnd;
 	CUIGameLog*			m_pGameLog;
 	Frect				m_ListPos2;
-	CUIProgressShape*	m_pReinforcementInidcator;
 };

@@ -10760,6 +10760,12 @@
 					<File
 						RelativePath="UIGameDM.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIRankIndicator.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIRankIndicator.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Single"

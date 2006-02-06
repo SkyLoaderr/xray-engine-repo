@@ -17,7 +17,23 @@
 //--------------------------------------------------------------------
 CUIGameTDM::CUIGameTDM()
 {
-	m_game				= NULL;
+	m_game							= NULL;
+
+	CUIXml							uiXml;
+	CUIXmlInit						xml_init;
+	uiXml.Init						(CONFIG_PATH, UI_PATH, "ui_game_tdm.xml");
+	m_team1_icon					= xr_new<CUIStatic>();
+	m_team2_icon					= xr_new<CUIStatic>();
+	m_team1_score					= xr_new<CUIStatic>();
+	m_team2_score					= xr_new<CUIStatic>();
+	xml_init.InitStatic				(uiXml, "team1_icon", 0,	m_team1_icon);
+	xml_init.InitAutoStaticGroup	(uiXml, "team1_icon",		m_team1_icon);
+	xml_init.InitStatic				(uiXml, "team2_icon", 0,	m_team2_icon);
+	xml_init.InitAutoStaticGroup	(uiXml, "team2_icon",		m_team2_icon);
+	xml_init.InitStatic				(uiXml, "team1_score", 0,	m_team1_score);
+	xml_init.InitAutoStaticGroup	(uiXml, "team1_score",		m_team1_score);
+	xml_init.InitStatic				(uiXml, "team2_score", 0,	m_team2_score);
+	xml_init.InitAutoStaticGroup	(uiXml, "team2_score",		m_team2_score);
 }
 //--------------------------------------------------------------------
 void CUIGameTDM::SetClGame (game_cl_GameState* g)
@@ -81,6 +97,10 @@ void CUIGameTDM::Init ()
 //--------------------------------------------------------------------
 CUIGameTDM::~CUIGameTDM()
 {
+	xr_delete			(m_team1_icon);
+	xr_delete			(m_team2_icon);
+	xr_delete			(m_team1_score);
+	xr_delete			(m_team2_score);
 }
 //--------------------------------------------------------------------
 bool CUIGameTDM::IR_OnKeyboardPress(int dik)
@@ -90,8 +110,6 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 		{
 			if (m_game)
 			{
-//by adny
-//				m_game->Set_ShowPlayerNames(true);
 				m_game->Set_ShowPlayerNames( !m_game->Get_ShowPlayerNames() );
 				return true;
 			};
@@ -103,16 +121,45 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 
 bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
 {
-	switch (dik) {
-		case DIK_CAPSLOCK :
-			{
-				if (m_game)
-				{
-//					m_game->Set_ShowPlayerNames(false);
-					return true;
-				};
-			}break;
-	}
 	if(inherited::IR_OnKeyboardRelease(dik)) return true;
 	return false;
+}
+
+void CUIGameTDM::OnFrame()
+{
+	inherited::OnFrame();
+	m_team1_icon->Update();
+	m_team2_icon->Update();
+	m_team1_score->Update();
+	m_team2_score->Update();
+}
+
+void CUIGameTDM::Render()
+{
+	inherited::Render();
+	m_team1_icon->Draw();
+	m_team2_icon->Draw();
+	m_team1_score->Draw();
+	m_team2_score->Draw();
+}
+
+void CUIGameTDM::SetScoreCaption(int t1, int t2)
+{
+	string32				str;
+	sprintf					(str,"%d", t1);
+	m_team1_score->SetText	(str);
+
+	sprintf					(str,"%d", t2);
+	m_team2_score->SetText	(str);
+}
+
+void CUIGameTDM::SetFraglimit(int local_frags, int fraglimit)
+{
+	string64 str;
+	if(fraglimit)
+		sprintf(str,"%d", fraglimit);
+	else
+		sprintf(str,"%s", "--");
+
+	m_pFragLimitIndicator->SetText(str);
 }

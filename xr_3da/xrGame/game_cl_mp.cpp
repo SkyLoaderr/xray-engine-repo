@@ -19,6 +19,7 @@
 #include "CustomZone.h"
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
+#include "UIGameDM.h"
 
 
 #include <boost/function.hpp>
@@ -830,13 +831,15 @@ bool	game_cl_mp::Is_Spectator_Camera_Allowed			(CSpectator::EActorCameras Camera
 void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 {
 	if (!local_player) return;
-	shared_str MoneyStr;
 	s32 Money_Added = P.r_s32();
 	if (Money_Added != 0)
 	{
-		MoneyStr.sprintf((Money_Added>0)?"+%d":"%d", Money_Added);
-		if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
-			HUD().GetUI()->UIMainIngameWnd->DisplayMoneyChange(MoneyStr);
+		if(CUIGameDM* pUIdm = smart_cast<CUIGameDM*>(m_game_ui_custom))
+		{
+			string256					MoneyStr;
+			sprintf						(MoneyStr,(Money_Added>0)?"+%d":"%d", Money_Added);
+			pUIdm->DisplayMoneyChange	(MoneyStr);
+		}
 	};
 	u8 NumBonuses = P.r_u8();
 	s32 TotalBonusMoney = 0;
@@ -870,9 +873,12 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 	{
 		if (BonusStr.size()) CommonMessageOut(BonusStr.c_str());
 
-		MoneyStr.sprintf("+%d", TotalBonusMoney);
-		if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
-			HUD().GetUI()->UIMainIngameWnd->DisplayMoneyBonus(MoneyStr);
+		if(CUIGameDM* pUIdm = smart_cast<CUIGameDM*>(m_game_ui_custom))
+		{
+			string256					MoneyStr;
+			sprintf						(MoneyStr, "+%d", TotalBonusMoney);
+			pUIdm->DisplayMoneyBonus	(MoneyStr);
+		}
 	};	
 };
 

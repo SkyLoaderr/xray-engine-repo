@@ -71,7 +71,6 @@ protected:
 	u32								m_dwVoteEndTime;
 
 			void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
-	virtual s16						ModifyTeam				(s16 Team)	{return Team;};
 
 			void					ClearBuyMenu			();
 			CUIBuyWeaponWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
@@ -100,6 +99,8 @@ protected:
 	virtual		void				PlayParticleEffect		(LPCSTR EffName, Fvector& pos);
 
 public:
+	virtual s16						ModifyTeam				(s16 Team)	{return Team;};
+
 	virtual		char*				getTeamSection			(int Team);
 	virtual	void					SetCurrentBuyMenu		();
 	virtual	void					SetCurrentSkinMenu		()	{pCurSkinMenu = pSkinMenuTeam0; };

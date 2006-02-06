@@ -21,7 +21,6 @@ class					CUIPdaMsgListItem;
 class					CLAItem;
 class					CUIZoneMap;
 class					CUIArtefactPanel;
-class					CUIMoneyIndicator;
 class					CUIScrollView;
 struct					GAME_NEWS_DATA;
 
@@ -67,22 +66,8 @@ protected:
 	CUIStatic			UIWeaponSignAmmo;
 	CUIStatic			UIWeaponIcon;
 	Frect				UIWeaponIcon_rect;
-
-	// Для мультиплеера выводим денежки
-	CUIMoneyIndicator*	m_pMoneyIndicator;
-	CUIStatic			UITeam1Sign, UITeam1Score;
-	CUIStatic			UITeam2Sign, UITeam2Score;
-	CUIStatic			UIRankIndicator;
-	
 public:
-	// Изменить индикатор текущего количества денег
-	void				ChangeTotalMoneyIndicator		(shared_str newMoneyString);
-	// Показать (с анимацией) помледнте заработанные/отняные денежки
-	void				DisplayMoneyChange				(shared_str deltaMoney);
-	void				DisplayMoneyBonus				(shared_str bonus);
 	CUIStatic*			GetPDAOnline					() { return &UIPdaOnline; };
-	void				UpdateTeamsScore				(int t1, int t2);
-	void				SetRank							(int rank);
 protected:
 
 

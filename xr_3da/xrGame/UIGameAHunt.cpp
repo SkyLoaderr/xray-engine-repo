@@ -10,6 +10,7 @@
 #include "level.h"
 #include "game_cl_ArtefactHunt.h"
 #include "ui/UIFrags2.h"
+#include "ui/UIProgressShape.h"
 
 #define MSGS_OFFS 510
 
@@ -22,9 +23,20 @@
 #define DI2PY(y) float(iFloor((y+1)*float(UI_BASE_HEIGHT)*0.5f))
 #define SZ(x) x*UI_BASE_WIDTH
 
-//--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt()
 {
+	CUIXml							uiXml;
+	uiXml.Init						(CONFIG_PATH, UI_PATH, "ui_game_ahunt.xml");
+	if(m_pFragLimitIndicator)
+		xr_delete(m_pFragLimitIndicator);
+
+	m_pFragLimitIndicator			= xr_new<CUIStatic>();
+	CUIXmlInit::InitStatic			(uiXml, "fraglimit",0,		m_pFragLimitIndicator);
+
+    m_pReinforcementInidcator = xr_new<CUIProgressShape>();
+
+	CUIXmlInit::InitProgressShape	(uiXml, "reinforcement", 0, m_pReinforcementInidcator);			
+
 }
 //--------------------------------------------------------------------
 void CUIGameAHunt::SetClGame (game_cl_GameState* g)
@@ -71,11 +83,6 @@ void CUIGameAHunt::Init	()
 	//-----------------------------------------------------------
 	m_pPlayerLists->AttachChild(pPlayerListT1);
 	//-----------------------------------------------------------
-//	m_reinforcement_caption			=	"ah_reinforcement";		
-//	GameCaptions()->addCustomMessage(m_reinforcement_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");
-
-	m_score_caption					=	"ah_score";		
-	GameCaptions()->addCustomMessage(m_score_caption, DI2PX(0.0f), DI2PY(-0.85f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, SCORE_MSG_COLOR, "");
 
 	m_todo_caption					=	"ah_todo";
 	GameCaptions()->addCustomMessage(m_todo_caption, 0.0f, -0.8f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, TODO_MSG_COLOR, "");
@@ -98,15 +105,6 @@ CUIGameAHunt::~CUIGameAHunt()
 {
 }
 
-//void CUIGameAHunt::SetReinforcementCaption(LPCSTR str)
-//{
-//	GameCaptions()->setCaption(m_reinforcement_caption, str, REINFORCEMENT_MSG_COLOR, true);
-//}
-
-void CUIGameAHunt::SetScoreCaption(LPCSTR str)
-{
-	GameCaptions()->setCaption(m_score_caption, str, SCORE_MSG_COLOR, true);
-}
 
 void CUIGameAHunt::SetTodoCaption(LPCSTR str)
 {
@@ -116,4 +114,16 @@ void CUIGameAHunt::SetTodoCaption(LPCSTR str)
 void CUIGameAHunt::SetBuyMsgCaption(LPCSTR str)
 {
 	GameCaptions()->setCaption(m_buy_msg_caption, str, BUY_MSG_COLOR, true);
+}
+
+void CUIGameAHunt::Render()
+{
+	m_pReinforcementInidcator->Draw();
+	inherited::Render();
+}
+
+void CUIGameAHunt::OnFrame()
+{
+	inherited::OnFrame();
+	m_pReinforcementInidcator->Update();
 }

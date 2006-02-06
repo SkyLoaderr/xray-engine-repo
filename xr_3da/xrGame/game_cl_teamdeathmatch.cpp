@@ -372,10 +372,13 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 				s16 lt = local_player->team;
 				if (lt>=0)
 				{
-					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
-					{
-						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
-					}
+					if(m_game_ui)
+						m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
+
+//					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+//					{
+//						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
+//					}
 				};
 
 				if (m_game_ui)

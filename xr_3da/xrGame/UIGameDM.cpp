@@ -17,6 +17,8 @@
 #include "ui/xrXmlParser.h"
 #include "ui/UIFrags.h"
 #include "game_cl_Deathmatch.h"
+#include "ui/UIMoneyIndicator.h"
+#include "ui/UIRankIndicator.h"
 
 #define MSGS_OFFS 510
 
@@ -42,7 +44,7 @@ CUIGameDM::CUIGameDM()
 	m_pStatisticWnds					= xr_new<CUIWindow>();
 
 	m_time_caption = "timelimit";
-	GameCaptions()->addCustomMessage(m_time_caption, DI2PX(0.0f), DI2PY(-0.95f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_time_caption, DI2PX(0.0f), DI2PY(-0.8f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
 	m_spectrmode_caption = "spetatormode";
 	GameCaptions()->addCustomMessage(m_spectrmode_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
 	m_spectator_caption = "spectator";
@@ -67,6 +69,15 @@ CUIGameDM::CUIGameDM()
 	GameCaptions()->addCustomMessage(m_vote_caption0, DI2PX(-1.0f), DI2PY(-0.45f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
 	GameCaptions()->addCustomMessage(m_vote_caption1, DI2PX(-1.0f), DI2PY(-0.4f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE1_MSG_COLOR, "");
 	GameCaptions()->addCustomMessage(m_votetimeresult_caption, DI2PX(-1.0f), DI2PY(-0.35f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
+
+	CUIXml							uiXml;
+	uiXml.Init						(CONFIG_PATH, UI_PATH, "ui_game_dm.xml");
+	m_pMoneyIndicator				= xr_new<CUIMoneyIndicator>();
+	m_pMoneyIndicator->InitFromXML	(uiXml);
+	m_pRankIndicator				= xr_new<CUIRankIndicator>();
+	m_pRankIndicator->InitFromXml	(uiXml);
+	m_pFragLimitIndicator			= xr_new<CUIStatic>();
+	CUIXmlInit::InitStatic			(uiXml,"fraglimit",0,m_pFragLimitIndicator);
 }
 //--------------------------------------------------------------------
 void CUIGameDM::SetClGame (game_cl_GameState* g)
@@ -117,22 +128,25 @@ void	CUIGameDM::Init				()
 	pStatisticWnd->SetWndRect((ScreenW-FrameW)/2.0f, (ScreenH - FrameH)/2.0f, FrameW, FrameH);
 
 	m_pStatisticWnds->AttachChild(pStatisticWnd);
+
 };
 //--------------------------------------------------------------------
 
 void	CUIGameDM::ClearLists ()
 {
-	m_pFragLists->DetachAll();
-	m_pPlayerLists->DetachAll();
-	m_pStatisticWnds->DetachAll();
+	m_pFragLists->DetachAll		();
+	m_pPlayerLists->DetachAll	();
+	m_pStatisticWnds->DetachAll	();
 }
 //--------------------------------------------------------------------
 CUIGameDM::~CUIGameDM()
 {
-	ClearLists();
-	xr_delete(m_pFragLists);
-	xr_delete(m_pPlayerLists);
-	xr_delete(m_pStatisticWnds);
+	ClearLists					();
+	xr_delete					(m_pFragLists);
+	xr_delete					(m_pPlayerLists);
+	xr_delete					(m_pStatisticWnds);
+	xr_delete					(m_pMoneyIndicator);
+	xr_delete					(m_pRankIndicator);
 }
 
 void	CUIGameDM::ReInitInventoryWnd		() 
@@ -232,10 +246,21 @@ void CUIGameDM::SetVoteTimeResultMsg			(LPCSTR str)
 {
 	GameCaptions()->setCaption(m_votetimeresult_caption, str, VOTE0_MSG_COLOR, true);
 }
-
+#include <dinput.h>
 bool		CUIGameDM::IR_OnKeyboardPress		(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
+	static u8 rrr = 0;
+	if(dik==DIK_J){
+		++rrr;
+		clamp<u8>(rrr,0,9);
+		m_pRankIndicator->SetRank		(0, rrr);
+	}
+	if(dik==DIK_K){
+		--rrr;
+		clamp<u8>(rrr,0,9);
+		m_pRankIndicator->SetRank		(0, rrr);
+	}
 
 	switch (key_binding[dik])
 	{
@@ -251,7 +276,55 @@ bool		CUIGameDM::IR_OnKeyboardPress		(int dik)
 	return false;
 };
 
-bool		CUIGameDM::IR_OnKeyboardRelease	(int dik)
+bool CUIGameDM::IR_OnKeyboardRelease	(int dik)
 {
 	return false;
 };
+
+void CUIGameDM::OnFrame()
+{
+	inherited::OnFrame();
+	m_pMoneyIndicator->Update();
+	m_pRankIndicator->Update();
+	
+	m_pFragLimitIndicator->Update();
+}
+
+void CUIGameDM::Render()
+{
+	inherited::Render();
+	m_pMoneyIndicator->Draw();
+	m_pRankIndicator->Draw();
+
+	m_pFragLimitIndicator->Draw();
+}
+
+void CUIGameDM::DisplayMoneyChange(LPCSTR deltaMoney)
+{
+	m_pMoneyIndicator->SetMoneyChange(deltaMoney);
+}
+
+void CUIGameDM::DisplayMoneyBonus(LPCSTR bonus){
+	m_pMoneyIndicator->SetMoneyBonus(bonus);
+}
+
+void CUIGameDM::ChangeTotalMoneyIndicator(LPCSTR newMoneyString)
+{
+	m_pMoneyIndicator->SetMoneyAmount(newMoneyString);
+}
+
+void	CUIGameDM::SetRank(s16 team, u8 rank)
+{
+	m_pRankIndicator->SetRank(u8(m_game->ModifyTeam(team)), rank);
+};
+
+void CUIGameDM::SetFraglimit(int local_frags, int fraglimit)
+{
+	string64 str;
+	if(fraglimit)
+		sprintf(str,"%d/%d", local_frags, fraglimit);
+	else
+		sprintf(str,"%d", local_frags);
+
+	m_pFragLimitIndicator->SetText(str);
+}

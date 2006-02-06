@@ -1,5 +1,3 @@
-#ifndef __XR_UIGAMEAHUNT_H__
-#define __XR_UIGAMEAHUNT_H__
 #pragma once
 
 #include "UIGameCustom.h"
@@ -17,6 +15,7 @@ class CUIAHuntFragList;
 class CUIAHuntPlayerList;
 class CUIBuyWeaponWnd;
 class game_cl_ArtefactHunt;
+class CUIProgressShape;
 
 class CUIGameAHunt: public CUIGameTDM
 {
@@ -24,21 +23,24 @@ private:
 	game_cl_ArtefactHunt * m_game;
 	typedef CUIGameTDM inherited;
 
+
+public:
+	CUIProgressShape*	m_pReinforcementInidcator;
+
 public:
 	virtual void		SetClGame				(game_cl_GameState* g);
 	CUIGameAHunt								();
 	virtual 			~CUIGameAHunt			();
 
 	virtual	void		Init					();
-//			void		SetReinforcementCaption	(LPCSTR str);
-			void		SetScoreCaption			(LPCSTR str);			
 			void		SetTodoCaption			(LPCSTR str);
 			void		SetBuyMsgCaption		(LPCSTR str);
+
+	virtual void		Render					();
+	virtual void		OnFrame					();
+
 protected:
-//	shared_str				m_reinforcement_caption;
-	shared_str				m_score_caption;	
 	shared_str				m_todo_caption;			
 	shared_str				m_buy_msg_caption;		
 
 };
-#endif // __XR_UIGAMEAHUNT_H__

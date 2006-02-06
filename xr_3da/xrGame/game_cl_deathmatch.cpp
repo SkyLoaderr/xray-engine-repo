@@ -439,7 +439,6 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					u32 Rest = (start_time + timelimit) - lts;
 					string64 S;
 					ConvertTime2String(&S, Rest);
-					//SetTimeMsgCaption(S);
 					if(m_game_ui)
 						m_game_ui->SetTimeMsgCaption(S);
 				}
@@ -458,11 +457,11 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					StartStopMenu(pMapDesc, TRUE);
 				};
 
-				if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+				if (m_game_ui)
 				{
-					shared_str MoneyStr;
-					MoneyStr.sprintf("%d", local_player->money_for_round);
-					HUD().GetUI()->UIMainIngameWnd->ChangeTotalMoneyIndicator(MoneyStr);
+					string256 MoneyStr;
+					sprintf(MoneyStr, "%d", local_player->money_for_round);
+					m_game_ui->ChangeTotalMoneyIndicator(MoneyStr);
 				}				
 
 				m_game_ui->SetPressJumpMsgCaption("");
@@ -557,22 +556,17 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						m_game_ui->SetForceRespawnTimeCaption(FullS);
 					};
 				};
-		//-----------------------------------------------------
-				if (fraglimit)
-				{
-					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
-					{
-						string64 S; sprintf(S, "%d", fraglimit);
-						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
-					}
-				}
 
-				if (Level().CurrentViewEntity() && HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
+
+				if (Level().CurrentViewEntity() && m_game_ui)
 				{
 					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
-					if (ps) HUD().GetUI()->UIMainIngameWnd->SetRank(int(ps->rank));
+					if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
+
+
+					m_game_ui->SetFraglimit(ps->kills, fraglimit);
+
 				}
-				//-----------------------------------------------------------------------
 			};
 		}break;
 	case GAME_PHASE_PENDING:
