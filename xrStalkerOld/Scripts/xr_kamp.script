@@ -209,7 +209,7 @@ function CKampManager:__init(path)
 						joke				= { directed = "play_joke", undirected = ""},
 						post_joke			= { directed = "", undirected = "reac_joke"}}
 	-- Таблица таймаутов по состоянию. Если состояние установилось, то некоторое время оно не может быт изменено.						
-	self.timeout	 = {idle				= { min = 10000 },
+	self.timeout	 = {idle				= { min = 60000 },
 						pre_harmonica		= { min = 3000 },
 						harmonica			= { min = 5000, soundstart = true },
 						post_harmonica		= { min = 3000 },
