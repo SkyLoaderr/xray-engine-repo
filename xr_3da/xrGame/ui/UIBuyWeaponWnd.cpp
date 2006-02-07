@@ -626,10 +626,9 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			m_pCurrentDragDropItem->Highlight(true); break;
 
 	case DRAG_DROP_ITEM_PLACED:
-		if (pWnd != &UITopList[BELT_SLOT] && pWnd != &UITopList[PISTOL_SLOT] && pWnd != &UITopList[RIFLE_SLOT]){
 			list = smart_cast<CUIDragDropList*>(pWnd);
-			list->SortList(MP_item_cmp);
-		}
+			if (UIBagWnd.IsChild(list))
+                list->SortList(MP_item_cmp);
 		break;
 	case STATIC_FOCUS_RECEIVED:
 		if (&UIBtnAutobuy == pWnd)
