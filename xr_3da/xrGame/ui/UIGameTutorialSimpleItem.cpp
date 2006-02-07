@@ -74,6 +74,25 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 	m_flags.set						(etiCanBeStopped,	(m_continue_dik_guard==-1));
 	m_flags.set						(etiGrabInput,		1==xml->ReadInt("grab_input",0,1));
 
+	int disabled_cnt				= xml->GetNodesNum	(xml->GetLocalRoot(), "disabled_key");
+	
+	for(int i=0; i<disabled_cnt;++i){
+		LPCSTR str				= xml->Read				("disabled_key", i, NULL);
+
+		if(str)
+		{
+			for(int i=0; keybind[i].name; ++i) 
+			{
+				if(0==_stricmp(keybind[i].name,str))
+				{
+					m_disabled_actions.push_back(keybind[i].DIK);
+					break;
+				}
+			}
+		}
+	};
+
+
 	//ui-components
 	m_UIWindow						= xr_new<CUIWindow>();
 	m_UIWindow->SetAutoDelete		(false);
@@ -213,4 +232,13 @@ void CUISequenceSimpleItem::OnKeyboardPress	(int dik)
 			m_flags.set(etiCanBeStopped, TRUE); //match key
 
 	}
+}
+
+bool CUISequenceSimpleItem::AllowKey(int dik)
+{
+	xr_vector<int>::iterator it = std::find(m_disabled_actions.begin(),m_disabled_actions.end(),key_binding[dik]);
+	if(it==m_disabled_actions.end())
+		return true;
+	else
+		return false;
 }

@@ -178,6 +178,9 @@ void CUISequencer::IR_OnKeyboardPress	(int dik)
 	}
 	if(m_items.size())	m_items.front()->OnKeyboardPress			(dik);
 	
-	if(!GrabInput())	m_pStoredInputReceiver->IR_OnKeyboardPress	(dik);
+	bool b = true;
+	if(m_items.size()) b &= m_items.front()->AllowKey(dik);
+
+	if(b&&!GrabInput())	m_pStoredInputReceiver->IR_OnKeyboardPress	(dik);
 }
 
