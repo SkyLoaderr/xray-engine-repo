@@ -4706,6 +4706,18 @@
                 <precondition>bar_dialogs.barman_dont_has_job</precondition>
                 <precondition>bar_dialogs.barman_dont_has_room_job</precondition>
             </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_jobs_2</text>
+                <precondition>bar_dialogs.barman_has_job</precondition>
+                <precondition>bar_dialogs.barman_dont_has_room_job</precondition>
+                <dont_has_info>bar_heli_scene_stay_online</dont_has_info>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barmen_jobs_21</text>
+                <next>23</next>
+            </phrase>
             <phrase id="23">
                 <text></text>
                 <next>231</next>
@@ -4717,19 +4729,6 @@
                 <dont_has_info>bar_kill_veteran_start</dont_has_info>
                 <has_info>bar_rescue_research_start</has_info>
                 <next>2311</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barmen_jobs_21</text>
-                <next>23</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_jobs_2</text>
-                <precondition>bar_dialogs.barman_has_job</precondition>
-                <precondition>bar_dialogs.barman_dont_has_room_job</precondition>
-                <dont_has_info>bar_heli_scene_stay_online</dont_has_info>
-                <has_info>bar_rescue_research_start</has_info>
-                <next>21</next>
-                <next>22</next>
             </phrase>
         </phrase_list>
     </dialog>
