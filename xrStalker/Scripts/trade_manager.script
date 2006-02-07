@@ -39,7 +39,6 @@ end
 function update(npc)
 	local tt = trade_manager[npc:id()]
 	
-	printf("NPC: [%s]", npc:name())
 	local str = xr_logic.pick_section_from_condlist(db.actor, npc, tt.buy_condition)
 	if tt.current_buy_condition ~= str then
 		npc:buy_condition(tt.config, str)
@@ -49,5 +48,13 @@ function update(npc)
 	if tt.current_sell_condition ~= str then
 		npc:sell_condition(tt.config, str)
 	end
+
+	if tt.buy_supplies == nil then
+		return
+	end
 	
+	str = xr_logic.pick_section_from_condlist(db.actor, npc, tt.buy_supplies)
+	if tt.current_buy_condition ~= str then
+		npc:buy_supplies(tt.config, str)
+	end	
 end
