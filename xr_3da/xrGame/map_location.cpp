@@ -316,7 +316,9 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 			R_ASSERT(obj);
 			dest_graph_id		= obj->m_tGraphID;
 		}else{
-			dest_graph_id = (smart_cast<CUserDefinedMapLocation*>(this))->m_graph_id;
+			CUserDefinedMapLocation	*temp = smart_cast<CUserDefinedMapLocation*>(this);
+			VERIFY					(temp);
+			dest_graph_id			= temp->m_graph_id;
 		}
 
 		map_point_path.clear();

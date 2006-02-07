@@ -20,7 +20,11 @@ public:
 #ifdef DEBUG
 		shared_str	comment;
 #endif
-		Item() : first(0), second(0), comment(0) {};
+		Item() : first(0), second(0)
+#ifdef DEBUG
+			, comment(0)
+#endif
+		{};
 	};
 	typedef xr_vector<Item>			Items;
 	typedef Items::iterator			SectIt;
@@ -34,7 +38,7 @@ public:
 		IC void			clear()		{ Data.clear();			}
 	    BOOL			line_exist	(LPCSTR L, LPCSTR* val=0);
 	};
-	typedef	xr_vector<Sect>			Root;
+	typedef	xr_vector<Sect*>		Root;
 	typedef Root::iterator			RootIt;
 
 	// factorisation

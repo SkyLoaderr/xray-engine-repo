@@ -60,7 +60,7 @@ void*  FileDownload(LPCSTR fn, u32* pdwSize)
 #endif
 		);
 	int r_bytes	= _read	(hFile,buf,size);
-	R_ASSERT3(r_bytes==size,"Can't read file data:",fn);
+	R_ASSERT3(r_bytes==(int)size,"Can't read file data:",fn);
 	_close	(hFile);
 	if (pdwSize) *pdwSize = size;
 	return buf;

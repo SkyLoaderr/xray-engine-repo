@@ -167,7 +167,7 @@ void	xrMemory::mem_statistic	(LPCSTR fn)
 		u32 p_current		= get_header(debug_info[it]._p);
 		int pool_id			= (mem_generic==p_current)?-1:p_current;
 
-		fprintf				(Fa,"0x%08X[%2d]: %8d %s\n",(u32)debug_info[it]._p,pool_id,debug_info[it]._size,debug_info[it]._name);
+		fprintf				(Fa,"0x%08X[%2d]: %8d %s\n",*(u32*)(&debug_info[it]._p),pool_id,debug_info[it]._size,debug_info[it]._name);
 	}
 	fclose		(Fa)		;
 

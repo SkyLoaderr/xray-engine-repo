@@ -182,7 +182,7 @@ void*	xrMemory::mem_realloc	(void* P, size_t size
 			,_name
 #endif
 			);
-		mem_copy				(p_new,p_old,size);
+		mem_copy				(p_new,p_old,(u32)size);
 		mem_free				(p_old);
 		_ptr					= p_new;
 	}

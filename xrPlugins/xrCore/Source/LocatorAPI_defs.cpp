@@ -104,6 +104,5 @@ bool XRCORE_API PatternMatch(LPCSTR s, LPCSTR mask)
 		if (*mask==*s||*mask=='?') { mask++, s++; continue; }
 		mask=mp; s=cp++;
 	}
-    return false;
 }
 
