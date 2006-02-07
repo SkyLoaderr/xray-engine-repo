@@ -1,3 +1,7 @@
+--------------------------------------------------------------------------
+-- Stuff
+--------------------------------------------------------------------------
+function printf() end
 
 --------------------------------------------------------------------------
 -- Member counts
@@ -13,24 +17,28 @@ local bandits_kamp_count = 6
 -- General
 --------------------------------------------------------------------------
 local t = {}
-local gulags = {cit_bandits = {comm = {"bandit"}}, cit_killers = {comm = {"killer"}}}
+local gulags = {cit_bandits = {comm = {"bandit"}},
+                cit_killers = {comm = {"killer"}},
+                cit_beasts  = {comm = false}}
 
 -- Job -------------------------------------------------------------------
 function load_job(sj, gname, type, squad, groups)
     local g = gulags[type]
     if g then
-        --g[1](sj, gname, type, squad, groups)
         g.job(sj, gname, type, squad, groups)
     end
 end
 
 -- State -----------------------------------------------------------------
+function check_state_stub(gulag)
+    return 0
+end
+
 function load_states(gname, type)
     local g = gulags[type]
 
     if g then
-        --return g[2]
-        return g.state
+        return g.state or check_state_stub
     end
 
 	return nil
@@ -39,16 +47,14 @@ end
 -- Dynamic ltx -----------------------------------------------------------
 function load_ltx(gname, type)
     local g = gulags[type]
-    if g then --and g.ltx then --g[4] then
-        --return g[4](gname, type)
-        return g.ltx --(gname, type)
+    if g then
+        return g.ltx
     end
 
 	return nil
 end
 
 -- Check communities -----------------------------------------------------
---function checkCommon(npc_community, gulag_type)
 local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
     local g = gulags[gulag_type]
     if g then
@@ -82,9 +88,6 @@ end
 function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
 	return checkCommon(npc_community, gulag_type, npc_rank, se_obj, false)
 end
-
---checkStalker = checkCommon
---checkMonster = checkCommon
 
 
 --------------------------------------------------------------------------
@@ -120,7 +123,7 @@ function k_predicate_n(data)
 end
 
 -- Jobs ------------------------------------------------------------------
-function load_job_killers(sj, gname, type, squad, groups)
+gulags.cit_killers.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
     local prior, pred, gr = 0, 0, 0
     local ltx = ""
@@ -261,8 +264,8 @@ function load_job_killers(sj, gname, type, squad, groups)
                    "combat_ignore       = combat_ignore\n" ..
 
                    "[camper@" .. gname .. "_roof_sniper" .. i .. "]\n" ..
-                   "path_walk                   = roof_sniper" .. i .. "_walk\n" ..
-                   "path_look                   = roof_sniper" .. i .. "_look\n" ..
+                   "path_walk                   = sniper" .. i .. "_walk\n" ..
+                   "path_look                   = sniper" .. i .. "_look\n" ..
                    "sniper                      = true\n" ..
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_sniper_fire\n" ..
@@ -486,14 +489,9 @@ function load_job_killers(sj, gname, type, squad, groups)
     gulags.cit_killers.ltx = ltx
 end
 
--- States ----------------------------------------------------------------
-function check_state_killers(gulag)
-    return 0
-end
-
 
 --------------------------------------------------------------------------
--- Followers
+-- Bandits
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
 function b_predicate_vb(data)
@@ -513,7 +511,7 @@ function b_predicate_d(data)
 end
 
 -- Jobs ------------------------------------------------------------------
-function load_job_bandits(sj, gname, type, squad, groups)
+gulags.cit_bandits.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
     local prior, pred, gr = 0, 0, 0
     local ltx = ""
@@ -779,18 +777,49 @@ function load_job_bandits(sj, gname, type, squad, groups)
     gulags.cit_bandits.ltx = ltx
 end
 
--- States ----------------------------------------------------------------
-function check_state_bandits(gulag)
-    return 0
+
+--------------------------------------------------------------------------
+-- Beasts
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+
+-- Jobs ------------------------------------------------------------------
+gulags.cit_beasts.job = function(sj, gname, type, squad, groups)
+    local ltx = ""
+
+	-- Проверяем наличие моб_хом.
+	local i = 1
+	while level.patrol_path_exists(gname .. "_home_" .. i) do
+		-- Необходимо вычитать количество работ из названия точки пути.
+		local way_name = gname .. "_home_" .. i
+		local ptr = patrol(way_name)
+		local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
+		local job_count = 10
+		if wp_prop.count ~= nil then
+			job_count = wp_prop.count
+		end
+
+		for i = 1, job_count do
+			-- добавляем должность
+			t = { section = "logic@" .. way_name,
+				idle = 0,
+				prior = 1, state = {0}, squad = squad, group = groups[1],
+				position_threshold = 20,
+				in_rest = "", out_rest = gname .. "_restr"
+			}
+			table.insert(sj, t)
+		end
+
+		-- добавляем описание должности в лтх.
+		local job_ltx = "[logic@" .. way_name .. "]\n" ..
+						"active = mob_home@" .. way_name .. "\n" ..
+
+						"[mob_home@" .. way_name .. "]\n" ..
+						"path_home = home_" .. i .. "\n"
+
+		ltx = ltx..job_ltx
+		it = it + 1
+	end
+
+    gulags.cit_beasts.ltx = ltx
 end
-
-
--------------------------------------------------------------------------------------------------------------------------
-gulags.cit_killers.job      = load_job_killers
-gulags.cit_killers.state    = check_state_killers
-
-gulags.cit_bandits.job      = load_job_bandits
-gulags.cit_bandits.state    = check_state_bandits
-
---printf("gulag <pri>: table -")
---print_table(gulags)
