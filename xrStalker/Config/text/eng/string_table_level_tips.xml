@@ -7,7 +7,7 @@
         <text>Talk ($$ACTION_USE$$)</text>
     </string>
     <string id="dead_character_use">
-        <text>Search corpse ($$ACTION_USE$$)</text>
+        <text>Search corpse ($$ACTION_USE$$) \nDrag corpse (SHIFT+$$ACTION_USE$$)</text>
     </string>
     <string id="general_complete_task">
         <text>Task accomplished.</text>

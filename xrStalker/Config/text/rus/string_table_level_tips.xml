@@ -7,7 +7,7 @@
         <text>Говорить ($$ACTION_USE$$)</text>
     </string>
     <string id="dead_character_use">
-        <text>Обыскать труп ($$ACTION_USE$$)</text>
+        <text>Обыскать труп ($$ACTION_USE$$) \n Тащить труп (SHIFT+$$ACTION_USE$$)</text>
     </string>
     <string id="car_character_use">
         <text>Открыть дверь ($$ACTION_USE$$)</text>
