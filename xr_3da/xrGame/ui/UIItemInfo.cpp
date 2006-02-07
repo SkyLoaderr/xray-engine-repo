@@ -107,7 +107,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 
 	UIDesc->Clear						();
 	VERIFY(0==UIDesc->GetSize());
-	TryAddWpnInfo(*pInvItem->object().cName());
+	TryAddWpnInfo(*pInvItem->object().cNameSect());
 	CUIStatic* pItem					= xr_new<CUIStatic>();
 	pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
 	pItem->SetText						(*pInvItem->ItemDescription());
