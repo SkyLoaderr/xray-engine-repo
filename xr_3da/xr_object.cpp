@@ -129,7 +129,7 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 	if (0==collidable.model) 	{
 		if (pSettings->line_exist(cNameSect(),"cform")) {
 			LPCSTR cf			= pSettings->r_string	(*cNameSect(), "cform");
-			R_ASSERT3			(*NameVisual, "Model isn't assigned for object, but cform requisted",*cName());
+			VERIFY3				(*NameVisual, "Model isn't assigned for object, but cform requisted",*cName());
 			collidable.model	= xr_new<CCF_Skeleton>	(this);
 		}
 	}
