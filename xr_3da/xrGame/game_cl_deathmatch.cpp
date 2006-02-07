@@ -562,10 +562,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				{
 					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
 					if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
-
-
-					m_game_ui->SetFraglimit(ps->kills, fraglimit);
-
+					if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, fraglimit);
 				}
 			};
 		}break;
