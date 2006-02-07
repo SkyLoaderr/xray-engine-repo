@@ -54,7 +54,7 @@
 					другие знать будут как и где. Хе-хе. Шучу. Давай напомню кратко, как
 					пользоваться…-->
 			<length_sec>15</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_1</sound>
 			<cursor_pos/>
@@ -65,7 +65,7 @@
 
 		<item><!--Твои Задания расположены в первом разделе ПДА.-->
 			<length_sec>4</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<cursor_pos/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_2</sound>
@@ -83,7 +83,7 @@
 		
 		<item><!--Для большинства заданий есть кнопки переключения на дополнительную информацию к заданию…-->
 			<length_sec>6</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_3</sound>
 			<cursor_pos/>
@@ -101,7 +101,7 @@
 		
 		<item><!--Запомни – каждое новое задание автоматически переключает целеуказание на мини-карте на себя-->
 			<length_sec>8</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_4</sound>
 			<cursor_pos/>
@@ -113,7 +113,7 @@
 		<item><!--и... если оно тебя в данный момент не интересует – то переключайся на предыдущее вручную. 
 				Для  собственных заданий и пометок на карте существует отдельный раздел…Во-оот-->
 			<length_sec>13</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_4_1</sound>
 			<cursor_pos/>
@@ -137,7 +137,7 @@
 
 		<item><!--Дальше: Второй раздел ПДА – это Карта.-->
 			<length_sec>4</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_5</sound>
 			<cursor_pos/>
@@ -154,7 +154,7 @@
 
 		<item><!--…кнопки над картой позволят тебе увеличивать или уменьшать карту…кхе-->
 			<length_sec>6</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_6</sound>
 			<cursor_pos/>
@@ -176,7 +176,7 @@
 
 		<item><!--…э-эээ… плюс отцентрировать карту по твоему месторасположению…что еще?-->
 			<length_sec>8</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_7</sound>
 			<cursor_pos/>
@@ -193,7 +193,7 @@
 
 		<item><!--…Еще сможешь добавлять или убирать собственные пометки на карте... -->
 			<length_sec>5</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_8</sound>
 			<cursor_pos/>
@@ -215,7 +215,7 @@
 
 		<item><!--вобщем разберешься…там не сложно…В ПДА есть раздел Контакты -->
 			<length_sec>6</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_9</sound>
 			<cursor_pos/>
@@ -229,7 +229,7 @@
 					Запомни, пока ты - нейтрал, и только от тебя зависит, как к тебе будут относится потом. 
 					Если поможешь кому, то обрати внимание, как изменится его отношение к тебе...  -->
 			<length_sec>23</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_11</sound>
 			<cursor_pos/>
@@ -253,7 +253,7 @@
 					друзья отмечены зеленым, нейтралы - желтым. А..ну и ПДА мертвых сталкеров подсвечиваются серым. 
 					В мародерстве помогает. гы-ыы…Что еще?...ах да есть Дневник…-->
 			<length_sec>20</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_12</sound>
 			<cursor_pos/>
@@ -272,7 +272,7 @@
 					плюс новости…даже то, что я тебе сейчас втолковываю, ты там найдешь…Потом…В разделе ПДА 
 					под названием Рейтинг…кх-хх-->
 			<length_sec>19</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_13</sound>
 			<cursor_pos/>
@@ -291,7 +291,7 @@
 					информацию для поддержания соревновательного духа..гы-ыыы..Глядишь и ты когда-нить вырвешся в лидеры..
 					Кто знает?..Твои собственные успехи заносятся в раздел Статистика…-->
 			<length_sec>21</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_14</sound>
 			<cursor_pos/>
@@ -308,7 +308,7 @@
 		
 		<item><!--ну там все просто..э-эээ...Далее....Энциклопедия..К-хе-->
 			<length_sec>6</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_14_1</sound>
 			<cursor_pos/>
@@ -326,7 +326,7 @@
 		<item><!--В нее заносится информация о Зоне и советы по выживанию, которые ты найдешь или получишь 
 					от сталкеров.... В принципе все.. -->
 			<length_sec>11</length_sec>
-			<pause_state>on</pause_state>
+			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_15</sound>
 			<cursor_pos/>
