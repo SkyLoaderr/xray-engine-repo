@@ -516,19 +516,19 @@
 	
 	<specific_character id="gar_wounded_bandit" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="12"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>esc_bandit_novice_bio</bio>
+		<icon x="24" y="4"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>gar_stalker_regular_bio</bio>
 
 		<class>gar_wounded_bandit</class>
-		<community>freedom</community>
+		<community>stalker</community>
 		
 		<rank>40</rank>
 		<reputation>-90</reputation>
 		
-		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
-		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
+		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
