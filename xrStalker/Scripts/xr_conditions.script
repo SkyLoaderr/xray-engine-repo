@@ -914,3 +914,39 @@ end
 function actor_has_decoder(actor, npc)
 	return actor:object("decoder") ~= nil
 end
+
+
+-------------------------------------------------------------------------------------
+-- Special for Trade
+-------------------------------------------------------------------------------------
+local trade_by_level = {
+	l01_escape = "escape",
+	l02_garbage = "garbage",
+	l03_agroprom = "garbage",
+	l03u_agr_underground = "garbage",
+	l04_darkvalley = "garbage",
+	k01_darkscap = "garbage",
+	l04u_labx18 = "garbage",
+	l05_bar = "bar",
+	l06_Rostok = "bar",
+	l07_military = "bar",
+	l08_yantar = "yantar",
+	l08u_brainlab = "yantar",
+	l09_deadcity = "yantar",
+	l10_radar = "radar",
+	l10u_bunker = "radar",
+	l11_pripyat = "radar"
+	}
+function npc_trade_by_level(actor, npc, p)
+	local trade = trade_by_level[level.name()]	
+
+	if trade == nil then
+		return false
+	end
+
+	if trade == p[1] then
+		return true
+	else
+		return false
+	end
+end
