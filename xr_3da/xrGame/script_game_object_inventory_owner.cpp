@@ -566,16 +566,7 @@ void  CScriptGameObject::SwitchToTrade		()
 }
 void  CScriptGameObject::SwitchToTalk		()
 {
-	CActor* pActor = smart_cast<CActor*>(&object());	if(!pActor) return;
-
-	//только если находимся в режиме single
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(!pGameSP) return;
-
-	if(pGameSP->TradeMenu->IsShown())
-	{
-		pGameSP->TradeMenu->SwitchToTalk();
-	}
+	R_ASSERT("switch_to_talk called ;)");
 }
 
 void  CScriptGameObject::RunTalkDialog			(CScriptGameObject* pToWho)

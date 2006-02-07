@@ -35,7 +35,6 @@ public:
 	void				ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang);
 
 	CUIInventoryWnd*	InventoryMenu;
-	CUITradeWnd*		TradeMenu;
 	CUIPdaWnd*			PdaMenu;
 	CUITalkWnd*			TalkMenu;
 	CUICarBodyWnd*		UICarBodyMenu;

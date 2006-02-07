@@ -73,8 +73,6 @@ protected:
 	void FillList	(TIItemContainer& cont, CUIDragDropList& list, bool do_colorize);
 	bool			m_bDealControlsVisible;
 
-	void SwitchDealControls(bool on);
-	bool GetDealControlStatus() { return m_bDealControlsVisible; }
 	bool CanMoveToOther(CUIDragDropItem* pItem);
 	//список элементов drag drop
 	xr_vector<CUIWpnDragDropItem*>	m_vDragDropItems;

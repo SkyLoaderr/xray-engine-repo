@@ -18,6 +18,7 @@ CUIItemInfo::CUIItemInfo()
 {
 	UIItemImageSize.set			(0.0f,0.0f);
 	UICondProgresBar			= NULL;
+	UICondition					= NULL;
 	UIWpnParams					= NULL;
 	m_pInvItem					= NULL;
 	m_b_force_drawing			= false;
@@ -33,7 +34,6 @@ void CUIItemInfo::Init(float x, float y, float width, float height, const char* 
 	UIName			= xr_new<CUIStatic>();	 AttachChild(UIName);		UIName->SetAutoDelete(true);
 	UIWeight		= xr_new<CUIStatic>();	 AttachChild(UIWeight);	UIWeight->SetAutoDelete(true);
 	UICost			= xr_new<CUIStatic>();	 AttachChild(UICost);		UICost->SetAutoDelete(true);
-	UICondition		= xr_new<CUIStatic>();	 AttachChild(UICondition);UICondition->SetAutoDelete(true);
 	UIItemImage		= xr_new<CUIStatic>();	 AttachChild(UIItemImage);UIItemImage->SetAutoDelete(true);
 	UIWpnParams		= xr_new<CUIWpnParams>();//must be without "autodelete"
 
@@ -52,8 +52,13 @@ void CUIItemInfo::Init(float x, float y, float width, float height, const char* 
 	xml_init.InitStatic			(uiXml, "static_name", 0,			UIName);
 	xml_init.InitStatic			(uiXml, "static_weight", 0,			UIWeight);
 	xml_init.InitStatic			(uiXml, "static_cost", 0,			UICost);
-	xml_init.InitStatic			(uiXml, "static_condition", 0,		UICondition);
 
+	if(uiXml.NavigateToNode("static_condition",0)){
+		UICondition					= xr_new<CUIStatic>();	 
+		AttachChild(UICondition);
+		UICondition->SetAutoDelete(true);
+		xml_init.InitStatic			(uiXml, "static_condition", 0,		UICondition);
+	}
 
 	if(uiXml.NavigateToNode("condition_progress",0)){
 		UICondProgresBar= xr_new<CUIProgressBar>(); AttachChild(UICondProgresBar);UICondProgresBar->SetAutoDelete(true);
@@ -82,16 +87,18 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	string256			str;
 	UIName->SetText		(pInvItem->Name());
 
-	sprintf				(str, "%3.2f", pInvItem->Weight());
+	sprintf				(str, "%3.2f kg", pInvItem->Weight());
 	UIWeight->SetText	(str);
 
-	sprintf				(str, "%d", pInvItem->Cost());
+	sprintf				(str, "%d RU", pInvItem->Cost());
 	UICost->SetText		(str);
 	
 	float cond = pInvItem->GetCondition();
 
 	sprintf				(str, "%3.2f", cond);
-	UICondition->SetText(str);
+	
+	if(UICondition)
+		UICondition->SetText(str);
 
 	if(UICondProgresBar){
 		UICondProgresBar->Show				(true);
@@ -127,7 +134,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	UIItemImage->SetHeight	(_min(v_r.height(),	UIItemImageSize.y));
 }
 
-void CUIItemInfo::TryAddWpnInfo (const char* wpn_section){
+void CUIItemInfo::TryAddWpnInfo (LPCSTR wpn_section){
 	if (UIWpnParams->Check(wpn_section))
 	{
 		UIWpnParams->SetInfo(wpn_section);

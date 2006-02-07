@@ -582,6 +582,18 @@ bool CMissile::Action(s32 cmd, u32 flags)
 			m_constpower = true;			
 			if(flags&CMD_START) 
 			{
+				m_throw = true;
+				if(State() == MS_IDLE) 
+					SwitchState(MS_THREATEN);
+			} 
+			return true;
+		}break;
+
+/*	case kWPN_FIRE:
+		{
+			m_constpower = true;			
+			if(flags&CMD_START) 
+			{
 				m_throw = false;
 				if(State() == MS_IDLE) 
 					SwitchState(MS_THREATEN);
@@ -599,6 +611,7 @@ bool CMissile::Action(s32 cmd, u32 flags)
 			}
 			return true;
 		}break;
+*/
 	case kWPN_ZOOM:
 		{
 			m_constpower = false;

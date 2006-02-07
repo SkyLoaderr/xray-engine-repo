@@ -24,7 +24,6 @@ CUIGameSP::CUIGameSP()
 	m_game			= NULL;
 
 	InventoryMenu	= xr_new<CUIInventoryWnd>	();
-	TradeMenu		= xr_new<CUITradeWnd>		();
 	PdaMenu			= xr_new<CUIPdaWnd>			();
 	TalkMenu		= xr_new<CUITalkWnd>		();
 	UICarBodyMenu	= xr_new<CUICarBodyWnd>		();
@@ -35,7 +34,6 @@ CUIGameSP::CUIGameSP()
 CUIGameSP::~CUIGameSP() 
 {
 	delete_data(InventoryMenu);
-	delete_data(TradeMenu);	
 	delete_data(PdaMenu);	
 	delete_data(TalkMenu);
 	delete_data(UICarBodyMenu);

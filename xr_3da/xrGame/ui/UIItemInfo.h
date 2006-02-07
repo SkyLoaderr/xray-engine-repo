@@ -21,7 +21,7 @@ public:
 
 	void			Init				(float x, float y, float width, float height, const char* xml_name);
 	void			InitItem			(CInventoryItem* pInvItem);
-	void			TryAddWpnInfo		(const char* wpn_section);
+	void			TryAddWpnInfo		(LPCSTR wpn_section);
 
 	virtual void	Draw				();
 	bool			m_b_force_drawing;

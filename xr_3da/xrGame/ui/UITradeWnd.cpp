@@ -40,7 +40,9 @@ struct CUITradeInternal{
 	CUIStatic			UIStaticBottom;
 
 	CUIStatic			UIOurBagWnd;
+	CUIStatic			UIOurMoneyStatic;
 	CUIStatic			UIOthersBagWnd;
+	CUIStatic			UIOtherMoneyStatic;
 	CUIDragDropList		UIOurBagList;
 	CUIDragDropList		UIOthersBagList;
 
@@ -62,14 +64,11 @@ struct CUITradeInternal{
 	CUICharacterInfo	UICharacterInfoRight;
 
 	//информация о перетаскиваемом предмете
-	CUIFrameWindow		UIDescWnd;
+	CUIStatic			UIDescWnd;
 	CUIItemInfo			UIItemInfo;
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;
-	CUIStatic		UIDealMsg;
-	CUIButton		UIDealClose;
-
 };
 
 CUITradeWnd::CUITradeWnd()
@@ -128,6 +127,12 @@ void CUITradeWnd::Init()
 	AttachChild(&m_uidata->UIOthersBagWnd);
 	xml_init.InitStatic(uiXml, "others_bag_static", 0, &m_uidata->UIOthersBagWnd);
 
+	m_uidata->UIOurBagWnd.AttachChild(&m_uidata->UIOurMoneyStatic);
+	xml_init.InitStatic(uiXml, "our_money_static", 0, &m_uidata->UIOurMoneyStatic);
+
+	m_uidata->UIOthersBagWnd.AttachChild(&m_uidata->UIOtherMoneyStatic);
+	xml_init.InitStatic(uiXml, "other_money_static", 0, &m_uidata->UIOtherMoneyStatic);
+
 	AttachChild(&m_uidata->UIOurTradeWnd);
 	xml_init.InitStatic(uiXml, "static", 0, &m_uidata->UIOurTradeWnd);
 	AttachChild(&m_uidata->UIOthersTradeWnd);
@@ -160,7 +165,7 @@ void CUITradeWnd::Init()
 	
 	//информация о предмете
 	AttachChild(&m_uidata->UIDescWnd);
-	xml_init.InitFrameWindow(uiXml, "desc_frame_window", 0, &m_uidata->UIDescWnd);
+	xml_init.InitStatic(uiXml, "desc_static", 0, &m_uidata->UIDescWnd);
 	m_uidata->UIDescWnd.AttachChild(&m_uidata->UIItemInfo);
 	m_uidata->UIItemInfo.Init(0,0, m_uidata->UIDescWnd.GetWidth(), m_uidata->UIDescWnd.GetHeight(), TRADE_ITEM_XML);
 
@@ -169,12 +174,6 @@ void CUITradeWnd::Init()
 	m_uidata->UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
 	m_uidata->UIPropertiesBox.Hide();
 
-//	AttachChild(&UIMessageBox);
-//	UIMessageBox.Init("ui\\ui_frame", 0, 0, 300, 300);
-//	UIMessageBox.AutoCenter();
-//	UIMessageBox.Hide();
-	
-	//////
 	m_uidata->UIOurBagList.SetCheckProc(OurBagProc);
 	m_uidata->UIOurTradeList.SetCheckProc(OurTradeProc);
 	m_uidata->UIOthersBagList.SetCheckProc(OthersBagProc);
@@ -192,14 +191,6 @@ void CUITradeWnd::Init()
 	AttachChild(&m_uidata->UIToTalkButton);
 	xml_init.InitButton(uiXml, "button", 1, &m_uidata->UIToTalkButton);
 
-	m_uidata->UIDescWnd.AttachChild(&m_uidata->UIDealMsg);
-	xml_init.InitStatic(uiXml, "deal_static", 0, &m_uidata->UIDealMsg);
-	m_uidata->UIDealMsg.Show(false);
-
-	m_uidata->UIDescWnd.AttachChild(&m_uidata->UIDealClose);
-	xml_init.InitButton(uiXml, "deal_button", 0, &m_uidata->UIDealClose);
-	m_uidata->UIDealClose.Show(false);
-	m_uidata->UIDealClose.SetMessageTarget(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -524,7 +515,6 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 
 void CUITradeWnd::PerformTrade()
 {
-	if(GetDealControlStatus()) return;
 
 	if (m_uidata->UIOurTradeList.GetDragDropItemsList().empty() && m_uidata->UIOthersTradeList.GetDragDropItemsList().empty()) return;
 
@@ -536,18 +526,8 @@ void CUITradeWnd::PerformTrade()
 	our_money+=delta_price;
 	others_money-=delta_price;
 
-	CStringTable stbl;
-
-	if(our_money<0) 
-	{
-		m_uidata->UIDealMsg.SetText(*stbl.translate("You don't have enought money!"));
-	} 
-	else if(others_money<0) 
-	{
-		m_uidata->UIDealMsg.SetText(*stbl.translate("Your opponent doesn't have enought money!"));
-	}
 	//денег хватает, продать вещи
-	else if(m_iOurTradePrice>0 || m_iOthersTradePrice>0)
+	if(our_money>0 && others_money>0 && (m_iOurTradePrice>0 || m_iOthersTradePrice>0))
 	{
 		m_pOthersTrade->OnPerformTrade(m_iOthersTradePrice, m_iOurTradePrice);
 		
@@ -555,13 +535,8 @@ void CUITradeWnd::PerformTrade()
 		SellItems(&m_uidata->UIOurTradeList, &m_uidata->UIOthersBagList, m_pTrade);
 		SellItems(&m_uidata->UIOthersTradeList, &m_uidata->UIOurBagList, m_pOthersTrade);
 		UpdatePrices();
-		
-	//	UIDealMsg.SetText(*stbl("The deal is done!"));
-
 	}
 	SetCurrentItem(NULL);
-//	SwitchDealControls(true);
-//	DisableAll();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -598,10 +573,13 @@ void CUITradeWnd::UpdatePrices()
 	sprintf(buf, "%d$", m_iOthersTradePrice);
 	m_uidata->UIOthersPriceCaption.GetPhraseByIndex(2)->str = buf;
 
-	sprintf(buf, "%d$", m_pInvOwner->m_dwMoney);
-	m_uidata->UIOurBagWnd.SetText(buf);
-	sprintf(buf, "%d$", m_pOthersInvOwner->m_dwMoney);
-	m_uidata->UIOthersBagWnd.SetText(buf);
+	sprintf(buf, "%d RU", m_pInvOwner->m_dwMoney);
+	m_uidata->UIOurMoneyStatic.SetText(buf);
+//.	m_uidata->UIOurBagWnd.SetText(buf);
+
+	sprintf(buf, "%d RU", m_pOthersInvOwner->m_dwMoney);
+	m_uidata->UIOtherMoneyStatic.SetText(buf);
+//.	m_uidata->UIOthersBagWnd.SetText(buf);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -717,26 +695,7 @@ void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 	m_uidata->UIItemInfo.InitItem(m_pCurrentItem);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-
 void CUITradeWnd::SwitchToTalk()
 {
 	GetMessageTarget()->SendMessage(this, TRADE_WND_CLOSED);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUITradeWnd::SwitchDealControls(bool on)
-{
-	m_bDealControlsVisible = on;
-
-	m_uidata->UIDealClose.Show(on);
-//	UIDealClose.SetCapture(this, on);
-	m_uidata->UIDealClose.Enable(on);
-	m_uidata->UIDealClose.HighlightItem(false);
-
-	m_uidata->UIDealMsg.Show(on);
-
-	m_uidata->UIItemInfo.Show(!on);
 }
