@@ -53,7 +53,7 @@ LPCSTR	file_header = 0;
 #	include "script_debugger.h"
 #endif
 
-static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
+static void *lua_alloc_xr	(void *ud, void *ptr, size_t osize, size_t nsize) {
   (void)ud;
   (void)osize;
   if (nsize == 0) {
@@ -68,6 +68,18 @@ static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
 #endif
 }
 
+extern "C"	{
+	void*	dlrealloc(void*, size_t);
+	void	dlfree(void*);
+};
+
+static void *lua_alloc_dl	(void *ud, void *ptr, size_t osize, size_t nsize) {
+  (void)ud;
+  (void)osize;
+  if (nsize == 0)	{	dlfree			(ptr);	 return	NULL;  }
+  else				return dlrealloc	(ptr, nsize);
+}
+
 CScriptStorage::CScriptStorage		()
 {
 	m_current_thread		= 0;
@@ -75,10 +87,10 @@ CScriptStorage::CScriptStorage		()
 	m_stack_is_ready		= false;
 #endif
 	m_virtual_machine		= 0;
-	m_virtual_machine		= lua_newstate(lua_alloc, NULL);
+	m_virtual_machine		= lua_newstate(lua_alloc_dl, NULL);		// switch to lua_alloc_XR - to track memory consumption
 	if (!m_virtual_machine) {
 		Msg					("! ERROR : Cannot initialize script virtual machine!");
-		return;
+		return				;
 	}
 	// initialize lua standard library functions 
 	luaopen_base			(lua()); 

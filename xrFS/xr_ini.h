@@ -13,18 +13,19 @@ struct	xr_token;
 class XRCORE_API CInifile
 {
 public:
-	struct XRCORE_API Item
+	struct XRCORE_API	Item
 	{
 		shared_str	first;
 		shared_str	second;
+#ifdef DEBUG
 		shared_str	comment;
-
+#endif
 		Item() : first(0), second(0), comment(0) {};
 	};
 	typedef xr_vector<Item>			Items;
 	typedef Items::iterator			SectIt;
-    struct XRCORE_API Sect {
-		shared_str			Name;
+    struct XRCORE_API	Sect {
+		shared_str		Name;
 		Items			Data;
 
 		IC SectIt		begin()		{ return Data.begin();	}
@@ -33,13 +34,13 @@ public:
 		IC void			clear()		{ Data.clear();			}
 	    BOOL			line_exist	(LPCSTR L, LPCSTR* val=0);
 	};
-	typedef	xr_vector<Sect>		Root;
-	typedef Root::iterator		RootIt;
+	typedef	xr_vector<Sect>			Root;
+	typedef Root::iterator			RootIt;
 
 	// factorisation
-	static CInifile*	Create	( LPCSTR szFileName, BOOL ReadOnly=TRUE);
-	static void			Destroy	( CInifile*);
-    static IC BOOL		IsBOOL	( LPCSTR B)	{ return (xr_strcmp(B,"on")==0 || xr_strcmp(B,"yes")==0 || xr_strcmp(B,"true")==0 || xr_strcmp(B,"1")==0);}
+	static CInifile*	Create		( LPCSTR szFileName, BOOL ReadOnly=TRUE);
+	static void			Destroy		( CInifile*);
+    static IC BOOL		IsBOOL		( LPCSTR B)	{ return (xr_strcmp(B,"on")==0 || xr_strcmp(B,"yes")==0 || xr_strcmp(B,"true")==0 || xr_strcmp(B,"1")==0);}
 private:
 	LPSTR		fName;
 	Root		DATA;

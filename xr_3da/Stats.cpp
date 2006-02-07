@@ -115,7 +115,7 @@ void CStats::Show()
 	// calc FPS & TPS
 	if (Device.fTimeDelta>EPS_S) {
 		float fps  = 1.f/Device.fTimeDelta;
-		if (Engine.External.tune_enabled)	vtune.update	(fps);
+		//if (Engine.External.tune_enabled)	vtune.update	(fps);
 		float fOne = 0.3f;
 		float fInv = 1.f-fOne;
 		fFPS = fInv*fFPS + fOne*fps;
@@ -126,10 +126,10 @@ void CStats::Show()
 		}
 	}
 	{
-		float mem_count	=	float	(Memory.stat_calls - dwMem_calls);
-		dwMem_calls		=	Memory.stat_calls;
+		float mem_count		= float	(Memory.stat_calls);
 		if (mem_count>fMem_calls)	fMem_calls	=	mem_count;
 		else						fMem_calls	=	.9f*fMem_calls + .1f*mem_count;
+		Memory.stat_calls	= 0		;
 	}
 	int frm = 2000;
 	div_t ddd = div(Device.dwFrame,frm);
