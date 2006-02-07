@@ -1452,7 +1452,7 @@ function check_dolg_state (gulag)
        return 2
     end    
     
-    if actor:has_info ("mil_dolg_skull_talk") == true then
+    if actor:has_info ("mil_dolg_skull_talk") == true and db.actor:dont_has_info ("mil_lukash_dead") then
        return 1
     end    
     
