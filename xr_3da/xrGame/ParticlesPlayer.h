@@ -69,6 +69,7 @@ public:
 							CParticlesPlayer		(void);
 	virtual					~CParticlesPlayer		(void);
 	void					LoadParticles			(CKinematics* K);
+
 	void					net_DestroyParticles	();
 	void					net_SpawnParticles		();
 	
@@ -88,7 +89,7 @@ public:
 	static void				MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
 	static void				GetBonePos				(CObject* pObject, u16 bone_id, const Fvector& offset, Fvector& result);
 	u16						GetNearestBone			(CKinematics* K, u16 bone_id);
-	IC u16					GetRandomBone			(){return m_Bones.size()?(u16)Random.randI(m_Bones.size()):BI_NONE;}
+	IC u16					GetRandomBone			(){ u16 l_PBCount=u16(m_Bones.size()); if(l_PBCount) return m_Bones[(u16)Random.randI(l_PBCount)].index; else return BI_NONE;}
 
 	void					SetParentVel			(const Fvector& vel) {parent_vel = vel;}
 	

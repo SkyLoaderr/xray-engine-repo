@@ -114,6 +114,6 @@ void CPHSimpleCharacter::UpdateDynamicDamage(dContact* c,SGameMtl* obj_material,
 		m_collision_damage_info.m_dmc_signum=bo1 ? 1.f : -1.f;
 		m_collision_damage_info.m_dmc_type=SCollisionDamageInfo::ctObject;
 		m_collision_damage_info.m_damege_contact=*c;
-		m_collision_damage_info.m_object=0;//bo1 ? retrieveRefObject(c->geom.g2) : retrieveRefObject(c->geom.g1);
+		m_collision_damage_info.m_object=bo1 ? retrieveRefObject(c->geom.g2) : retrieveRefObject(c->geom.g1);
 	}
 }

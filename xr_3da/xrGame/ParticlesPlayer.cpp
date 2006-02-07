@@ -62,7 +62,7 @@ void CParticlesPlayer::LoadParticles(CKinematics* K)
 	VERIFY				(K);
 
 	m_Bones.clear();
-	m_Bones.push_back	(SBoneInfo(K->LL_GetBoneRoot(),Fvector().set(0,0,0)));
+	
 
 	//считать список косточек и соответствующих
 	//офсетов  куда можно вешать партиклы
@@ -79,6 +79,11 @@ void CParticlesPlayer::LoadParticles(CKinematics* K)
 			m_Bones.push_back		(SBoneInfo(index,offs));
 			bone_mask				|= u64(1)<<u64(index);
 		}
+	}
+	if(m_Bones.empty())
+	{
+		bone_mask			= u64(1)<<u64(0);
+		m_Bones.push_back	(SBoneInfo(K->LL_GetBoneRoot(),Fvector().set(0,0,0)));
 	}
 }
 //уничтожение партиклов на net_Destroy
@@ -325,4 +330,5 @@ void CParticlesPlayer::net_SpawnParticles	()
 	VERIFY				(!m_self_object);
 	m_self_object		= smart_cast<CObject*>(this);
 	VERIFY				(m_self_object);
+
 }
