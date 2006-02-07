@@ -206,7 +206,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_pmm = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
@@ -275,7 +275,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_pmm = 1 \n
 			wpn_abakan = 1, scope launcher cond=0.9 \n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
@@ -309,7 +309,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_pmm = 1 \n
 			wpn_abakan = 1, scope launcher cond=0.9 \n
 	    	ammo_5.45x39_ap = 1 \n
 			device_torch \n
@@ -340,7 +340,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_pmm = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
 			device_torch \n

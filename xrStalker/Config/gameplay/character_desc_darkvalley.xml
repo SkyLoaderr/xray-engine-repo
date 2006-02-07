@@ -234,7 +234,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_pmm = 1 \n
 			wpn_toz34 \n
 			ammo_12x76_dart = 1 \n
 			device_torch \n
@@ -799,7 +799,7 @@
 			[spawn] \n
             wpn_fort \n
 			ammo_9x18_pmm = 1 \n
-			ammo_9x18_pbp = 2 \n
+			ammo_9x18_pmm = 2 \n
             wpn_abakan \n
             ammo_5.45x39_ap = 1 \n
             ammo_5.45x39_fmj = 2 \n
@@ -860,7 +860,7 @@
 		<supplies>
 			[spawn] \n
             wpn_fort \n
-			ammo_9x18_pbp = 2 \n
+			ammo_9x18_pmm = 2 \n
             wpn_abakan \n
             ammo_5.45x39_fmj = 1 \n
 			device_torch \n
@@ -890,7 +890,7 @@
 		<supplies>
 			[spawn] \n
             wpn_fort \n
-			ammo_9x18_pbp = 2 \n
+			ammo_9x18_pmm = 2 \n
             wpn_abakan \n
             ammo_5.45x39_fmj = 1 \n
 			device_torch \n
@@ -1236,7 +1236,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
-			ammo_9x18_pbp \n
+			ammo_9x18_pmm \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 			device_torch \n

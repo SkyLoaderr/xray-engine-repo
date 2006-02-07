@@ -439,7 +439,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_pmm = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
 		</supplies>
@@ -514,7 +514,7 @@
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
-			ammo_9x18_pbp = 1 \n
+			ammo_9x18_pmm = 1 \n
 			wpn_spas12 \n
 			ammo_12x76_zhekan = 1 \n
 		</supplies>
