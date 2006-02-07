@@ -43,11 +43,11 @@ function proceed()
 --		level_tasks.set_task_state(task.completed, "agroprom_find_gunslinger_cache", 0)
 --	end
 
-	if actor:dont_has_info("agroprom_find_stalker_phantom") and
-	   actor:object("gunslinger_flash") ~= nil
-	then
-		actor:give_info_portion("agroprom_find_stalker_phantom")
-	end
+--	if actor:dont_has_info("agroprom_find_stalker_phantom") and
+--	   actor:object("gunslinger_flash") ~= nil
+--	then
+--		actor:give_info_portion("agroprom_find_stalker_phantom")
+--	end
 end
 
 function process_info_portion(info_id)
