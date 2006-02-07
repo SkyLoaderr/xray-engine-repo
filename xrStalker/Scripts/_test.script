@@ -1,4 +1,4 @@
-
+run_string db.actor:give_info_portion("esc_trader_newbie")
 
 function main44()
 	local spawn_items = {}
@@ -16,8 +16,8 @@ function main44()
 	end	
 end
 
-function main88()
-   game.start_tutorial("part_12_relations")
+function main()
+   game.start_tutorial("part_1_pda")
 --   part_3_jump
 --   part_4_crouch
 --   part_5_crouch_down
@@ -107,7 +107,7 @@ function main________()
 	db.actor:give_game_news("hello-1 sdfewrf ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
-function main()
+function main11111()
    local h = hit()
    h.power = 1000000
    h.direction = vector():set(0, 0, 1)
