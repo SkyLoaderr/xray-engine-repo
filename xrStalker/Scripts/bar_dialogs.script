@@ -75,7 +75,7 @@ end
 
 function barman_has_job(actor,npc)
 	if db.actor:has_info("bar_darklab_document_done") and
-	   barman_need_kill_veterans(actor,npc)
+	   barman_need_kill_veterans(actor,npc) and db.actor:has_info("bar_rescue_research_start")
 	then
 		return true
 	end
