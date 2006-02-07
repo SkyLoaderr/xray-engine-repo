@@ -375,14 +375,15 @@ void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )
 	if(sp->GetParent()) return ;// already is child
 	float		heading;
 	Fvector2	pointer_pos;
-	map->GetPointerTo(m_position_on_map, sp->GetWidth()/2, pointer_pos, heading);
+	if( map->GetPointerTo(m_position_on_map, sp->GetWidth()/2, pointer_pos, heading) )
+	{
+		sp->SetWndPos(pointer_pos);
+		sp->SetHeading(heading);
 
-	sp->SetWndPos(pointer_pos);
-	sp->SetHeading(heading);
-
-	Frect clip_rect = map->GetClipperRect();
-	sp->SetClipRect( clip_rect );
-	map->AttachChild(sp);
+		Frect clip_rect = map->GetClipperRect();
+		sp->SetClipRect( clip_rect );
+		map->AttachChild(sp);
+	}
 }
 
 void CMapLocation::UpdateMiniMap(CUICustomMap* map)

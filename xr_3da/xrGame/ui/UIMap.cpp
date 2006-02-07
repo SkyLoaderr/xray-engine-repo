@@ -120,7 +120,7 @@ bool CUICustomMap::GetPointerTo(const Fvector2& src, float item_radius, Fvector2
 
 	Frect		rect;
 	BOOL res = rect.intersection(clip_rect_abs, map_rect_abs);
-	VERIFY(res);
+	if(!res) return false;
 	
 	rect = clip_rect_abs;
 	rect.sub(map_rect_abs.lt.x,map_rect_abs.lt.y);

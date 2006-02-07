@@ -137,7 +137,7 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 }
 
 #ifndef DEBUG
-void	xrMemory::mem_statistic	()
+void	xrMemory::mem_statistic	(LPCSTR fn)
 {
 }
 #else
