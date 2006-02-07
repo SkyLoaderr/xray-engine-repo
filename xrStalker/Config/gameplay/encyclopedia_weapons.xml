@@ -21,13 +21,6 @@
         <text>enc_weapons1_ammo_ammo-9x18-pmm</text>
     </article>
 
-    <!-------------------------------- ammo-9x18-pbp ----------------------------->
-
-    <article id="weapons1_ammo_ammo-9x18-pbp" name="ammo-9x18-pbp" group="Weapons1/Ammo">
-        <ltx>ammo_9x18_pbp</ltx>
-        <text>enc_weapons1_ammo_ammo-9x18-pbp</text>
-    </article>
-
     <!-------------------------------- ammo-9x19-fmj ----------------------------->
 
     <article id="weapons1_ammo_ammo-9x19-fmj" name="ammo-9x19-fmj" group="Weapons1/Ammo">
