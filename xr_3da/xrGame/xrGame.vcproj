@@ -10626,6 +10626,9 @@
 					Name="SpinBox"
 					Filter="">
 					<File
+						RelativePath=".\ui\UICustomSpin.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\UICustomSpin.h">
 					</File>
 					<File
