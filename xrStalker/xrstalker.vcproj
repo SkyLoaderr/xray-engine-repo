@@ -1347,9 +1347,6 @@
 					RelativePath=".\Config\ui\car_panel.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\carbody_item.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\carbody_new.xml">
 				</File>
 				<File
@@ -1365,9 +1362,6 @@
 					RelativePath=".\Config\ui\events_new.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\follower_character.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\follower_panel.xml">
 				</File>
 				<File
@@ -1378,12 +1372,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\hint_item.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\inventory_character.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\inventory_item.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\inventory_new.xml">
@@ -1399,9 +1387,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\maingame.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\maingame_character.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\maingame_pda_msg.xml">
@@ -1437,9 +1422,6 @@
 					RelativePath=".\Config\ui\pda_dialog.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\pda_dialog_character.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\pda_events.xml">
 				</File>
 				<File
@@ -1464,9 +1446,6 @@
 					RelativePath=".\Config\ui\stalkers_ranking.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\stalkers_ranking_character.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\statisticwnd.xml">
 				</File>
 				<File
@@ -1477,12 +1456,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\trade.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\trade_character.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\trade_item.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_custom_msgs.xml">
@@ -1608,6 +1581,38 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_mm_save_dlg.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="item_infos"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\carbody_item.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\inventory_item.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\trade_item.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="character_desc"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\follower_character.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\inventory_character.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\pda_dialog_character.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\stalkers_ranking_character.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\trade_character.xml">
 					</File>
 				</Filter>
 			</Filter>
