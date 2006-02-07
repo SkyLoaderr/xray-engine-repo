@@ -37,6 +37,7 @@
 #include "../monster_home.h"
 #include "../../../inventory.h"
 #include "../../../xrserver.h"
+#include "../ai_monster_squad.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -222,18 +223,24 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 	
 	} else {
 
+		// get count of monsters in squad
+		u8 objects_count = monster_squad().get_squad(this)->get_count(this, 20.f);
+		
+		// include myself
+		objects_count++;
+		VERIFY(objects_count > 0);
+
 		u32 delay = 0;
 		switch (type) {
 		case MonsterSound::eMonsterSoundIdle : 
-		
-			delay = db().m_dwIdleSndDelay;
+			delay = u32(float(db().m_dwIdleSndDelay) * _sqrt(float(objects_count)));
 			break;
 		case MonsterSound::eMonsterSoundEat:
-			delay = db().m_dwEatSndDelay;
+			delay = u32(float(db().m_dwEatSndDelay) * _sqrt(float(objects_count)));
 			break;
 		case MonsterSound::eMonsterSoundAggressive:
 		case MonsterSound::eMonsterSoundPanic:
-			delay = db().m_dwAttackSndDelay;
+			delay = u32(float(db().m_dwAttackSndDelay) * _sqrt(float(objects_count)));
 			break;
 		}
 
