@@ -8067,12 +8067,6 @@
 					<File
 						RelativePath=".\ParticlesObject.h">
 					</File>
-					<File
-						RelativePath=".\PSObject.cpp">
-					</File>
-					<File
-						RelativePath=".\PSObject.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="Spectator"
@@ -10601,9 +10595,6 @@
 				<Filter
 					Name="SpinBox"
 					Filter="">
-					<File
-						RelativePath=".\ui\UICustomSpin.cpp">
-					</File>
 					<File
 						RelativePath=".\ui\UICustomSpin.h">
 					</File>
