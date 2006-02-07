@@ -37,6 +37,7 @@
 	<info_portion id="mil_patrol_man2_dead"></info_portion>
 	<info_portion id="mil_patrol_man3_dead"></info_portion>
 	<info_portion id="mil_patrol_go_cover"></info_portion>
+	<info_portion id="mil_dolg_task_final"></info_portion>
 	
 	<!-- Разговоры с патрулями на базе Свободы -->
 	<info_portion id="mil_patrol1_talk"></info_portion>

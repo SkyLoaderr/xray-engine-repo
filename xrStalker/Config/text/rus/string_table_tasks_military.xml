@@ -14,6 +14,10 @@
 	<text>Убить Лукаша</text>
 </string>
 
+<string id="mil_dolg_return_to_khutor">
+	<text>Вернуться на хутор Долга и получить гонорар</text>
+</string>
+
     <string id="mil_quest_report_dolg">
 	<text>Сообщить о выполнении группе Долга.</text>
 </string>

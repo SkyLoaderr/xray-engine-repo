@@ -389,6 +389,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
+		in_rest = "", out_rest = "mil_headquarter_restrictor",
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_leader"
 		            end
@@ -425,6 +426,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
+		in_rest = "", out_rest = "mil_headquarter_restrictor",
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_bodyguard"
 		            end
@@ -437,6 +439,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
+		in_rest = "", out_rest = "mil_headquarter_restrictor",
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_bodyguard"
 		            end
@@ -478,10 +481,10 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
-		online = true,
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_specnaz"
-		            end
+		online = true--,
+		--predicate = function (info)
+		                     --return info.profile_name == "mil_Svoboda_specnaz"
+		            --end
 		}
 	table.insert(sj, t)		
 	-- Мужик у костра 2
@@ -491,16 +494,16 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
-		online = true,
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_specnaz"
-		            end
+		online = true--,
+		--predicate = function (info)
+		                     --return info.profile_name == "mil_Svoboda_specnaz"
+		            --end
 		}
 	table.insert(sj, t)		
 	-- Мужик у костра 3
     t = {section = "logic@mil_freedom_stalker3_attack",
 		idle = 0,
-		prior = 14, state = {3},
+		prior = 20, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
@@ -516,10 +519,10 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
-		online = true,
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_specnaz"
-		            end
+		online = true--,
+		--predicate = function (info)
+		                     --return info.profile_name == "mil_Svoboda_specnaz"
+		            --end
 		}
 	table.insert(sj, t)		
 	-- 
@@ -529,10 +532,10 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
-		online = true,
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_specnaz"
-		            end
+		online = true--,
+		--predicate = function (info)
+		                     --return info.profile_name == "mil_Svoboda_specnaz"
+		            --end
 		}
 	table.insert(sj, t)		
 	-- 
@@ -558,7 +561,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker8_attack",
 		idle = 0,
-		prior = 14, state = {3},
+		prior = 16, state = {3},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
@@ -1342,6 +1345,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 13, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     if info.community ~= "dolg" then return false end
 		                     if db.actor:has_info ("mil_scull_dead") then return true end
@@ -1355,6 +1359,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1366,6 +1371,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 12, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1377,6 +1383,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1388,6 +1395,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1399,6 +1407,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1410,6 +1419,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1421,6 +1431,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {2},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
