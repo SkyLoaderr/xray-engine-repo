@@ -136,7 +136,7 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 	if (m_bDead)					return;
 	u32 dt							= Device.dwTimeGlobal - dwLastTime;
 	if (dt)							{
-		if (psDeviceFlags.test(mtParticles))	{
+		if (0){//.psDeviceFlags.test(mtParticles))	{    //. AlexMX comment this line
 			mt_dt					= dt;
 			fastdelegate::FastDelegate0<>		delegate	(this,&CParticlesObject::PerformAllTheWork_mt);
 			Device.seqParallel.push_back		(delegate);
