@@ -29,7 +29,7 @@ void CPurchaseList::process	(CInifile &ini_file, LPCSTR section, CInventoryOwner
 		VERIFY				((*I).second.size());
 
 		string256			temp0, temp1;
-		THROW3				(_GetItemCount(*(*I).second) != 2,"Invalid parameters in section",section);
+		THROW3				(_GetItemCount(*(*I).second) == 2,"Invalid parameters in section",section);
 		process				(
 			game_object,
 			(*I).first,
