@@ -818,7 +818,7 @@ gulags.cit_beasts.job = function(sj, gname, type, squad, groups)
 						"path_home = home_" .. i .. "\n"
 
 		ltx = ltx..job_ltx
-		it = it + 1
+		i = i + 1
 	end
 
     gulags.cit_beasts.ltx = ltx
