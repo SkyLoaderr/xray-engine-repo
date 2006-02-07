@@ -57,7 +57,7 @@ void CLevel::IR_OnMouseWheel( int direction )
 class		vtune_		{
 	BOOL	enabled_	;
 public:
-	optimizer	()		{
+			vtune_	()		{
 		enabled_	= FALSE;
 	}
 	void	enable	()	{ if (!enabled_)	{ 

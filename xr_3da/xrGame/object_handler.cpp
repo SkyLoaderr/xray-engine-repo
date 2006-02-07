@@ -349,3 +349,10 @@ void CObjectHandler::detach				(CInventoryItem *inventory_item)
 			planner().object().animation().setup_storage(0);
 	inherited::detach			(inventory_item);
 }
+
+extern BOOL g_ai_use_torch_dynamic_lights;
+
+bool CObjectHandler::can_use_dynamic_lights	()
+{
+	return						(!!g_ai_use_torch_dynamic_lights);
+}

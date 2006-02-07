@@ -16,11 +16,13 @@
 #include "UIGameCustom.h"
 #include "actorEffector.h"
 
-static const float		TIME_2_HIDE				= 5.f;
-static const float		TORCH_INERTION_CLAMP	= PI_DIV_6;
-static const float		TORCH_INERTION_SPEED_MAX= 7.5f;
-static const float		TORCH_INERTION_SPEED_MIN= 0.5f;
-static const Fvector	TORCH_OFFSET			= {-0.2f,+0.1f,-0.3f};
+static const float		TIME_2_HIDE					= 5.f;
+static const float		TORCH_INERTION_CLAMP		= PI_DIV_6;
+static const float		TORCH_INERTION_SPEED_MAX	= 7.5f;
+static const float		TORCH_INERTION_SPEED_MIN	= 0.5f;
+static const Fvector	TORCH_OFFSET				= {-0.2f,+0.1f,-0.3f};
+
+static bool stalker_use_dynamic_lights	= false;
 
 CTorch::CTorch(void) 
 {
@@ -28,6 +30,7 @@ CTorch::CTorch(void)
 	light_render				= ::Render->light_create();
 	light_render->set_type		(IRender_Light::SPOT);
 	light_render->set_shadow	(true);
+	m_switched_on				= light_render->get_active();
 	glow_render					= ::Render->glow_create();
 	lanim						= 0;
 	time2hide					= 0;
@@ -49,6 +52,18 @@ CTorch::~CTorch(void)
 	HUD_SOUND::DestroySound	(m_NightVisionOnSnd);
 	HUD_SOUND::DestroySound	(m_NightVisionOffSnd);
 	HUD_SOUND::DestroySound	(m_NightVisionIdleSnd);
+}
+
+inline bool CTorch::can_use_dynamic_lights	()
+{
+	if (!H_Parent())
+		return				(true);
+
+	CInventoryOwner			*owner = smart_cast<CInventoryOwner*>(H_Parent());
+	if (!owner)
+		return				(true);
+
+	return					(owner->can_use_dynamic_lights());
 }
 
 void CTorch::Load(LPCSTR section) 
@@ -162,17 +177,19 @@ void CTorch::UpdateSwitchNightVision   ()
 
 void CTorch::Switch()
 {
-	bool bActive			= !light_render->get_active();
+//	bool bActive			= !light_render->get_active();
+	bool bActive			= !m_switched_on;
 	Switch(bActive);
 }
 
 void CTorch::Switch	(bool light_on)
 {
-	light_render->set_active(light_on);
+	m_switched_on			= light_on;
+	if (can_use_dynamic_lights())
+		light_render->set_active(light_on);
 	glow_render->set_active	(light_on);
 
-	if(*light_trace_bone)
-	{
+	if (*light_trace_bone) {
 		CKinematics* pVisual = smart_cast<CKinematics*>(Visual()); VERIFY(pVisual);
 		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(light_trace_bone),light_on,TRUE);
 		pVisual->CalculateBones_Invalidate();
@@ -259,86 +276,102 @@ void CTorch::OnH_B_Independent	()
 void CTorch::UpdateCL			() 
 {
 	inherited::UpdateCL			();
+	
 	UpdateSwitchNightVision		();
 
-	if (light_render->get_active()){
-		CBoneInstance& BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(guid_bone);
-		Fmatrix M;
+	if (!m_switched_on)
+		return;
 
-		if (H_Parent()) {
-			CActor* actor	= smart_cast<CActor*>(H_Parent());
-			if (actor)		smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
+	CBoneInstance			&BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(guid_bone);
+	Fmatrix					M;
 
-			if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(m_range))
-			{
-				// near camera
-				smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
-				M.mul_43				(XFORM(),BI.mTransform);
-			} else {
-				// approximately the same
-				M	= H_Parent()->XFORM	();
-				H_Parent()->Center		(M.c);
-			}
+	if (H_Parent()) {
+		CActor				*actor = smart_cast<CActor*>(H_Parent());
+		if (actor)
+			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
 
-			if(actor)	{
-				m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
-				m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
+		if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(m_range)) {
+			// near camera
+			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
+			M.mul_43				(XFORM(),BI.mTransform);
+		}
+		else {
+			// approximately the same
+			M	= H_Parent()->XFORM	();
+			H_Parent()->Center		(M.c);
+		}
 
-				Fvector			dir,right,up;	
-				dir.setHP		(m_prev_hp.x+m_delta_h,m_prev_hp.y);
-				Fvector::generate_orthonormal_basis_normalized(dir,up,right);
+		if (actor) {
+			m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
+			m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 
-				Fvector offset	= M.c; 
-				offset.mad		(M.i,TORCH_OFFSET.x);
-				offset.mad		(M.j,TORCH_OFFSET.y);
-				offset.mad		(M.k,TORCH_OFFSET.z);
+			Fvector			dir,right,up;	
+			dir.setHP		(m_prev_hp.x+m_delta_h,m_prev_hp.y);
+			Fvector::generate_orthonormal_basis_normalized(dir,up,right);
 
+			Fvector offset	= M.c; 
+			offset.mad		(M.i,TORCH_OFFSET.x);
+			offset.mad		(M.j,TORCH_OFFSET.y);
+			offset.mad		(M.k,TORCH_OFFSET.z);
+
+			if (can_use_dynamic_lights())
 				light_render->set_position	(offset);
-				glow_render->set_position	(M.c);
+			glow_render->set_position	(M.c);
 
+			if (can_use_dynamic_lights())
 				light_render->set_rotation	(dir, right);
-				glow_render->set_direction	(dir);
+			glow_render->set_direction	(dir);
 
-			}else{
+		}
+		else {
+			if (can_use_dynamic_lights()) {
 				light_render->set_position	(M.c);
 				light_render->set_rotation	(M.k,M.i);
-				glow_render->set_position	(M.c);
-				glow_render->set_direction	(M.k);
 			}
-		}
-		else
-		{
-			if(getVisible() && m_pPhysicsShell) {
-				M.mul					(XFORM(),BI.mTransform);
 
-				if (light_render->get_active())	{
-					light_render->set_rotation	(M.k,M.i);
-					light_render->set_position	(M.c);
-					glow_render->set_position	(M.c);
-					glow_render->set_direction	(M.k);
-
-					time2hide			-= Device.fTimeDelta;
-					if (time2hide<0){
-						light_render->set_active(false);
-						glow_render->set_active(false);
-					}
-				}
-			} 
-		}
-
-		// calc color animator
-		if (lanim){
-			int frame;
-			// возвращает в формате BGR
-			u32 clr			= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
-
-			Fcolor			fclr;
-			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
-			fclr.mul_rgb	(fBrightness/255.f);
-			light_render->set_color(fclr);
-			glow_render->set_color(fclr);
+			glow_render->set_position	(M.c);
+			glow_render->set_direction	(M.k);
 		}
 	}
+	else {
+		if (getVisible() && m_pPhysicsShell) {
+			M.mul						(XFORM(),BI.mTransform);
+
+			//. what should we do in case when 
+			// light_render is not active at this moment,
+			// but m_switched_on is true?
+//			light_render->set_rotation	(M.k,M.i);
+//			light_render->set_position	(M.c);
+//			glow_render->set_position	(M.c);
+//			glow_render->set_direction	(M.k);
+//
+//			time2hide					-= Device.fTimeDelta;
+//			if (time2hide<0)
+			{
+				m_switched_on			= false;
+				light_render->set_active(false);
+				glow_render->set_active	(false);
+			}
+		} 
+	}
+
+	if (!m_switched_on)
+		return;
+
+	// calc color animator
+	if (!lanim)
+		return;
+
+	int						frame;
+	// возвращает в формате BGR
+	u32 clr					= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
+
+	Fcolor					fclr;
+	fclr.set				((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
+	fclr.mul_rgb			(fBrightness/255.f);
+	if (can_use_dynamic_lights())
+		light_render->set_color	(fclr);
+	glow_render->set_color		(fclr);
 }
 
 void CTorch::renderable_Render	() 
@@ -374,14 +407,13 @@ void CTorch::setup_physic_shell	()
 void CTorch::net_Export			(NET_Packet& P)
 {
 	inherited::net_Export		(P);
-	P.w_u8						(light_render->get_active() ? 1 : 0);
+	P.w_u8						(m_switched_on ? 1 : 0);
 }
 
 void CTorch::net_Import			(NET_Packet& P)
 {
 	inherited::net_Import		(P);
-//	light_render->set_active	(!!P.r_u8());
-	Switch(!!P.r_u8());
+	Switch						(!!P.r_u8());
 }
 
 bool  CTorch::can_be_attached		() const
