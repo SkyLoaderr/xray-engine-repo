@@ -74,10 +74,7 @@
 	<info_portion id="cit_map_give"></info_portion>
 	
 	<!-- Убить лидера наемников -->
-	<info_portion id="cit_leader_need_kill">
-		<task>cit_leader_need_kill</task>
-		<article>cit_leader_killer</article>
-	</info_portion>
+	<info_portion id="cit_leader_need_kill"></info_portion>
 	<info_portion id="cit_leader_killed"></info_portion>
 	<info_portion id="cit_leader_has_flash"></info_portion>
 	<info_portion id="cit_leader_reward"></info_portion>
