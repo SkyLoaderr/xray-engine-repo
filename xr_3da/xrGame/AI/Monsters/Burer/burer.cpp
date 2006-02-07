@@ -13,6 +13,8 @@
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 
+bool CBurer::can_scan = true;
+
 CBurer::CBurer()
 {
 	StateMan = xr_new<CStateManagerBurer>(this);
@@ -35,6 +37,11 @@ void CBurer::reinit()
 	time_last_scan				= 0;
 }
 
+void CBurer::net_Destroy()
+{
+	inherited::net_Destroy();
+	TScanner::on_destroy();
+}
 
 void CBurer::reload(LPCSTR section)
 {
@@ -324,6 +331,7 @@ void	CBurer::Hit								(SHit* pHDS)
 void CBurer::Die(CObject* who)
 {
 	inherited::Die(who);
+	TScanner::on_destroy();
 
 	if (com_man().ta_is_active()) com_man().ta_deactivate();
 	CTelekinesis::Deactivate();

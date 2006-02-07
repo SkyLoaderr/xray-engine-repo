@@ -121,7 +121,7 @@ TEMPLATE_SPECIALIZATION
 void CStateBurerAttackAbstract::check_force_state()
 {
 	// check if we can start execute
-	if ((current_substate == eStateCustomMoveToRestrictor) || (eStateBurerAttack_RunAround)) {
+	if ((current_substate == eStateCustomMoveToRestrictor) || (prev_substate == eStateBurerAttack_RunAround)) {
 		if (get_state(eStateBurerAttack_Gravi)->check_start_conditions()) {
 			current_substate	= u32(-1);
 			m_force_gravi		= true;

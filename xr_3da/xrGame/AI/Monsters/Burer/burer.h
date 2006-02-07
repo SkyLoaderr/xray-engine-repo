@@ -17,9 +17,10 @@ public:
 	typedef		CScanningAbility<CBurer>	TScanner;
 
 
-	u32			last_hit_frame;
+	static		bool	can_scan;
 
-	u32			time_last_scan;
+				u32		last_hit_frame;
+				u32		time_last_scan;
 	
 
 	typedef		CTelekinesis				TTelekinesis;
@@ -103,6 +104,7 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 
+	virtual void	net_Destroy			();
 	virtual void	net_Relcase			(CObject *O);
 	virtual	void	shedule_Update		(u32 dt);
 	virtual void	UpdateCL			();

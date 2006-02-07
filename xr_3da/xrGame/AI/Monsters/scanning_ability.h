@@ -29,8 +29,11 @@ class CScanningAbility {
 
 	u32			time_last_trace;
 
+	bool		m_this_scan;
+
 public:
 			void	init_external			(_Object *obj) {object = obj;}
+			void	on_destroy				();
 
 			void	load					(LPCSTR section);
 	virtual	void	reinit					();

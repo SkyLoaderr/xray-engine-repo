@@ -8,6 +8,13 @@
 #define CScanningAbilityAbstract CScanningAbility<_Object>
 
 TEMPLATE_SPECIALIZATION
+void CScanningAbilityAbstract::on_destroy()
+{
+	if (m_this_scan)	object->can_scan = true;
+	m_this_scan			= false;
+}
+
+TEMPLATE_SPECIALIZATION
 void CScanningAbilityAbstract::load(LPCSTR section)
 {
 	::Sound->create(sound_scan,	TRUE, pSettings->r_string(section,"scan_sound"), SOUND_TYPE_WORLD);
@@ -47,14 +54,21 @@ void CScanningAbilityAbstract::reinit()
 	scan_value			= 0.f;
 
 	time_last_trace		= 0;
+
+	m_this_scan			= false;
 }
 
 TEMPLATE_SPECIALIZATION
 void CScanningAbilityAbstract::schedule_update()
 {
-	// инициализировать переменную первого сканирования
-
+	// check if we end scanning
+	if (m_this_scan && !sound_scan._feedback()) {
+		object->can_scan = true;
+		m_this_scan		 = false;
+	}
+	
 	if (state == eStateDisabled) return;
+	if (!object->g_Alive()) return;
 
 	CActor *scan_obj	= smart_cast<CActor *>(Level().CurrentEntity());
 	if (!scan_obj)		return;
@@ -79,12 +93,17 @@ void CScanningAbilityAbstract::schedule_update()
 			
 			if (sound_scan._feedback()) sound_scan.set_position(scan_obj->Position());
 			else {
-				// играть звук
-				::Sound->play_at_pos(sound_scan, 0, scan_obj->Position());
+				if (object->can_scan) {
+					// играть звук
+					::Sound->play_at_pos(sound_scan, 0, scan_obj->Position());
 				
-				// постпроцесс
-				// TODO: make this postprocess with static check (only one for all scanners)
-				Actor()->Cameras().AddPPEffector(xr_new<CMonsterEffector>(m_effector_info, m_effector_time, m_effector_time_attack, m_effector_time_release));
+					// постпроцесс
+					// TODO: make this postprocess with static check (only one for all scanners)
+					Actor()->Cameras().AddPPEffector(xr_new<CMonsterEffector>(m_effector_info, m_effector_time, m_effector_time_attack, m_effector_time_release));
+
+					object->can_scan	= false;
+					m_this_scan			= true;
+				}
 			}
 			on_scanning();
 		}
