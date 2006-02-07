@@ -1,5 +1,4 @@
 function main ()
-    task_level1.main ()
 -------------------------------------------------------------------------------
 -- Задачи Escape
 -------------------------------------------------------------------------------
@@ -51,7 +50,6 @@ function main ()
         db.actor:give_info_portion ("gar_help_newbie")
         db.actor:give_info_portion ("gar_help_newbie_done")
         db.actor:give_info_portion ("gar_help_newbie_reward")
-        -- мочилово лишнего народа
 -------------------------------------------------------------------------------
 -- Задачи Agroprom
 -------------------------------------------------------------------------------
@@ -63,20 +61,8 @@ function main ()
         db.actor:give_info_portion ("agr_krot_band_start")
         db.actor:give_info_portion ("agr_krot_met")
         db.actor:give_info_portion ("agr_krot_task_complete")
-        -- нахождение флешки в тайнике Стрелка
-        db.actor:give_info_portion ("agr_find_gunslinger_cache_start")
-        db.actor:give_info_portion ("agr_find_gunslinger_cache_found")
-        db.actor:give_info_portion ("agr_find_gunslinger_cache_final")
-        -- помощь каким-то сталкерам...
-        db.actor:give_info_portion ("agr_help_stalkers_start")
-        db.actor:give_info_portion ("agr_help_stalkers_assault_dead")
-        -- Помочь Кроту
-        db.actor:give_info_portion ("agr_help_krot_start")
-        db.actor:give_info_portion ("agr_help_krot_done")
--------------------------------------------------------------------------------
--- Основная задача для связки 2 (Документы из лаборатории DarkValley Underground)
--------------------------------------------------------------------------------
-        -- появление Фаната
-        db.actor:give_info_portion ("esc_fanat_spawn")
-        db.actor:give_info_portion ("bar_darklab_document_start")
-end        
+        -- разговор  с военным
+        db.actor:give_info_portion ("agr_nii_security_plan_flash_have")
+        db.actor:give_info_portion ("agr_zaz_location")
+        
+end
