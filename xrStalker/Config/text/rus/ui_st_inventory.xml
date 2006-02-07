@@ -111,4 +111,16 @@
     <string id="ui_inv_ammo_rifle">
         <text>Купить патроны для винтовки (W)</text>
     </string>
+    <string id="ui_inv_accuracy">
+        <text>Точность</text>
+    </string>
+    <string id="ui_inv_damage">
+        <text>Повреждение</text>
+    </string>
+    <string id="ui_inv_rate_of_fire">
+        <text>Скорострельность</text>
+    </string>
+    <string id="ui_inv_handling">
+        <text>Удобность</text>
+    </string>
 </string_table>
