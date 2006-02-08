@@ -115,12 +115,6 @@ void CBaseMonster::UpdateCL()
 
 void CBaseMonster::shedule_Update(u32 dt)
 {
-	// finalize initialization of the object on the first update
-	if (!m_first_update_initialized) {
-		on_first_update();
-		m_first_update_initialized	= true;
-	}
-
 	inherited::shedule_Update	(dt);
 	control().update_schedule	();
 
@@ -223,29 +217,39 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 	
 	} else {
 
-		// get count of monsters in squad
-		u8 objects_count = monster_squad().get_squad(this)->get_count(this, 20.f);
-		
-		// include myself
-		objects_count++;
-		VERIFY(objects_count > 0);
+		// handle situation, when monster want to play attack sound for the first time
+		if ((type == MonsterSound::eMonsterSoundAggressive) && 
+			(m_prev_sound_type != MonsterSound::eMonsterSoundAggressive)) {
+			
+			sound().play(MonsterSound::eMonsterSoundAttackHit);
 
-		u32 delay = 0;
-		switch (type) {
-		case MonsterSound::eMonsterSoundIdle : 
-			delay = u32(float(db().m_dwIdleSndDelay) * _sqrt(float(objects_count)));
-			break;
-		case MonsterSound::eMonsterSoundEat:
-			delay = u32(float(db().m_dwEatSndDelay) * _sqrt(float(objects_count)));
-			break;
-		case MonsterSound::eMonsterSoundAggressive:
-		case MonsterSound::eMonsterSoundPanic:
-			delay = u32(float(db().m_dwAttackSndDelay) * _sqrt(float(objects_count)));
-			break;
-		}
+		} else {
+			// get count of monsters in squad
+			u8 objects_count = monster_squad().get_squad(this)->get_count(this, 20.f);
 
-		sound().play(type, 0, 0, delay);
+			// include myself
+			objects_count++;
+			VERIFY(objects_count > 0);
+
+			u32 delay = 0;
+			switch (type) {
+			case MonsterSound::eMonsterSoundIdle : 
+				delay = u32(float(db().m_dwIdleSndDelay) * _sqrt(float(objects_count)));
+				break;
+			case MonsterSound::eMonsterSoundEat:
+				delay = u32(float(db().m_dwEatSndDelay) * _sqrt(float(objects_count)));
+				break;
+			case MonsterSound::eMonsterSoundAggressive:
+			case MonsterSound::eMonsterSoundPanic:
+				delay = u32(float(db().m_dwAttackSndDelay) * _sqrt(float(objects_count)));
+				break;
+			}
+
+			sound().play(type, 0, 0, delay);
+		} 
 	}
+
+	m_prev_sound_type	= type;
 }
 
 BOOL CBaseMonster::feel_touch_on_contact	(CObject *O)
@@ -341,11 +345,6 @@ void CBaseMonster::on_kill_enemy(const CEntity *obj)
 	
 	// удалить всю информацию о хитах
 	HitMemory.remove_hit_info	(entity);
-}
-
-
-void CBaseMonster::on_first_update()
-{
 }
 
 CMovementManager *CBaseMonster::create_movement_manager	()

@@ -94,7 +94,6 @@ public:
 
 	virtual void			UpdateCL						();
 	virtual void			shedule_Update					(u32 dt);
-	virtual void			on_first_update					();
 
 	virtual void			InitThink						() {}
 	virtual void			Think							();
@@ -312,7 +311,8 @@ public:
 	IC void					set_berserk						() {time_berserk_start = time();}
 	//--------------------------------------------------------------------
 
-	
+
+	u32						m_prev_sound_type;
 	u32						get_attack_rebuild_time	();
 
 	IC	virtual	EAction		CustomVelocityIndex2Action	(u32 velocity_index) {return ACT_STAND_IDLE;}
@@ -340,7 +340,6 @@ private:
 
 
 private:
-	bool					m_first_update_initialized;
 	bool					ignore_collision_hit;	
 	
 	CAnomalyDetector		*m_anomaly_detector;

@@ -131,8 +131,6 @@ void CBaseMonster::reinit()
 	m_force_real_speed				= false;
 	m_script_processing_active		= false;
 
-	m_first_update_initialized		= false;
-
 	if (m_controlled)				m_controlled->on_reinit();
 
 	ignore_collision_hit			= false;
@@ -146,6 +144,8 @@ void CBaseMonster::reinit()
 	MeleeChecker.init_attack		();
 
 	time_berserk_start				= 0;
+
+	m_prev_sound_type				= MonsterSound::eMonsterSoundIdle;
 
 #ifdef DEBUG
 	m_show_debug_info				= 0;
