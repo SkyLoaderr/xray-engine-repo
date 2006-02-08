@@ -27,7 +27,7 @@ public:
 
 public:
 	IC		void			deficit			(const shared_str &section, const float &deficit);
-	IC		const float		&deficit		(const shared_str &section) const;
+	IC		float			deficit			(const shared_str &section) const;
 	IC		const DEFICITS	&deficits		() const;
 };
 
