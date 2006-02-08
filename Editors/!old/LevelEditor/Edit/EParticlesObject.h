@@ -15,7 +15,7 @@ class EParticlesObject: public CCustomObject
     IParticleCustom*	m_Particles;
     
 	void __stdcall  	OnRefChange			(PropValue* V);
-	void __stdcall  	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnControlClick		(ButtonValue* sender, bool& bModif, bool& bSafe);
 public:
 	                	EParticlesObject   	(LPVOID data, LPCSTR name);
     void            	Construct   		(LPVOID data);
