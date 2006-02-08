@@ -198,6 +198,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 	if(!CanMove()) 
 	{
+		if(mstate_wf&mcAnyMove) m_PhysicMovementControl->EnableCharacter();
 		return;
 	}
 
