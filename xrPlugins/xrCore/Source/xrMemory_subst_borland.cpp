@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #ifdef __BORLANDC__
+MEMPOOL		mem_pools			[mem_pools_count];
 // Borland doesn't support marked aligned allocs ???
 void*	xrMemory::mem_alloc		(size_t size, LPCSTR)
 {
