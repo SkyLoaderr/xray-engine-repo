@@ -1719,11 +1719,20 @@ end
 -- Функции для Янтаря
 ----------------------------------------------------------------------------------
 function yan_actor_sleep (actor, npc)
-		set_sleep_relocate(patrol ("yan_actor_sleep"):point(0), patrol ("yan_actor_sleep"):point(1), 180)
+		set_sleep_relocate(patrol ("yan_actor_sleep"):point(0), patrol ("yan_actor_sleep"):point(1), 120)
 end
 
 function yan_actor_sleep_1 (actor, npc)
-		set_sleep_relocate(patrol ("yan_actor_sleep_1"):point(0), patrol ("yan_actor_sleep_1"):point(1), 90)
+		set_sleep_relocate(patrol ("yan_actor_sleep_1"):point(0), patrol ("yan_actor_sleep_1"):point(1), 60)
+         
+        local sound_obj_l		= sound_object( [[characters_voice\scenario\yantar\dream_talk_l]] )
+        local sound_obj_r		= sound_object( [[characters_voice\scenario\yantar\dream_talk_r]] )
+        
+--        sound_obj_l:play_at_pos	(actor, vector():set(-1, 0, 1), 0, sound_object.s2d )
+--        sound_obj_r:play_at_pos	(actor, vector():set( 1, 0, 1), 0, sound_object.s2d )
+
+		sound_obj_l:play_no_feedback(actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
+		sound_obj_r:play_no_feedback(actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
 end
 
 function yan_sleep_not_relocate (actor, npc)
