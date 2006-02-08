@@ -1728,9 +1728,6 @@ function yan_actor_sleep_1 (actor, npc)
         local sound_obj_l		= sound_object( [[characters_voice\scenario\yantar\dream_talk_l]] )
         local sound_obj_r		= sound_object( [[characters_voice\scenario\yantar\dream_talk_r]] )
         
---        sound_obj_l:play_at_pos	(actor, vector():set(-1, 0, 1), 0, sound_object.s2d )
---        sound_obj_r:play_at_pos	(actor, vector():set( 1, 0, 1), 0, sound_object.s2d )
-
 		sound_obj_l:play_no_feedback(actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
 		sound_obj_r:play_no_feedback(actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
 end
