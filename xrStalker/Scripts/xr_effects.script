@@ -811,7 +811,7 @@ function bar_freedom_attack_start(actor,npc)
 	end
 function bar_arena_hit(actor, npc)
 	local h = hit()
-	h.power = 1
+	h.power = 0.01
 	h.direction = npc:direction()
 	h.draftsman = db.actor 
 	h.impulse = 1
