@@ -5,7 +5,7 @@
 #include "../bone.h"
 #include "NET_utils.h"
 #include "xrMessages.h"
-#include "Level.h""
+#include "Level.h"
 
 SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement, Fvector ap_in_bone_space, float aimpulse,  ALife::EHitType ahit_type, float aAP)
 {
@@ -56,7 +56,7 @@ bool SHit::is_valide() const
 
 void	SHit::GenHeader				(u16 PacketType, u16 ID)
 {
-	whoID = ID;
+	DestID = ID;
 	PACKET_TYPE = PacketType;
 	Time = Level().timeServer();
 };
