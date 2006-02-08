@@ -781,6 +781,14 @@ public:
 			return;
 		}
 #endif
+		if(!IsGameTypeSingle()){
+			Msg("for single-mode only");
+			return;
+		}
+		if(!Actor()->g_Alive()){
+			Msg("game is over:(");
+			return;
+		}
 
 		string_path				S,S1;
 		S[0]					= 0;
