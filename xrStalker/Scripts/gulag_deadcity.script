@@ -260,7 +260,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 	    table.insert(sj, t)
 
 	    ltx = ltx.."[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
-                   "active              = camper@" .. gname .. "_roof_sniper" .. i .. "\n" ..
+                   "active              = camper@" .. gname .. "_sniper" .. i .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
 
                    "[camper@" .. gname .. "_sniper" .. i .. "]\n" ..
