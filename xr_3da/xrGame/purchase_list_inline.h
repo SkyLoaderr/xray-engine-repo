@@ -11,8 +11,10 @@
 IC	const float &CPurchaseList::deficit						(const shared_str &section) const
 {
 	DEFICITS::const_iterator	I = m_deficits.find(section);
-	VERIFY						(I != m_deficits.end());
-	return						((*I).second);
+    if (I != m_deficits.end())
+		return					((*I).second);
+
+	return						(1.f);
 }
 
 IC	const CPurchaseList::DEFICITS &CPurchaseList::deficits	() const
