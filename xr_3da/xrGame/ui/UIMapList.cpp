@@ -246,7 +246,7 @@ void CUIMapList::LoadMapList(){
 		if (!GetToken(&s, e, token)) break;
 		if (xr_strcmp(token, "{")) break;
 
-		m_MapsNum[MapListType] = 0;
+//		m_MapsNum[MapListType] = 0;
 		while (1)
 		{
 			if (!GetToken(&s, e, token)) break;
@@ -255,10 +255,15 @@ void CUIMapList::LoadMapList(){
 			if (!xr_strcmp(token, "mapname"))
 			{
 				GetToken(&s, e, token);
-				strcpy(m_Maps[MapListType][m_MapsNum[MapListType]++], token);
+				//strcpy(m_Maps[MapListType][m_MapsNum[MapListType]++], token);
+				m_Maps[MapListType].push_back(token);
 			};
 		};
 	};
+
+	std::sort(m_Maps[GAME_DEATHMATCH].begin(),		m_Maps[GAME_DEATHMATCH].end(),		MP_map_cmp);
+	std::sort(m_Maps[GAME_TEAMDEATHMATCH].begin(),	m_Maps[GAME_TEAMDEATHMATCH].end(),	MP_map_cmp);
+	std::sort(m_Maps[GAME_ARTEFACTHUNT].begin(),	m_Maps[GAME_ARTEFACTHUNT].end(),	MP_map_cmp);
 }
 
 void	CUIMapList::SaveMapList(){
@@ -354,8 +359,8 @@ void CUIMapList::UpdateMapList(GAME_TYPE GameType){
 	m_pList1->RemoveAll();
 	m_pList2->RemoveAll();
 
-	for (int i=0; i<m_MapsNum[GameType]; i++)
-		m_pList1->AddItem<CUIListItem>(m_Maps[GameType][i]);
+	for (u32 i=0; i<m_Maps[GameType].size(); i++)
+		m_pList1->AddItem<CUIListItem>(*(m_Maps[GameType][i]));
 }
 
 void CUIMapList::OnBtnLeftClick(){
@@ -405,9 +410,8 @@ void CUIMapList::OnBtnDownClick(){
 		m_pList2->AddItem<CUIListItem>(text.c_str(), 0.0f, NULL, 0, isel+1);
 		m_pList2->SetSelectedItem(isel+1);
 	}
-
-
 }
+
 
 
 bool GetToken(char** sx, char* e, char* token)
@@ -494,3 +498,7 @@ skipspace:
 	};
 	return true;
 };
+
+bool MP_map_cmp(shared_str map1, shared_str map2){
+    return -1 == xr_strcmp(map1,map2);
+}

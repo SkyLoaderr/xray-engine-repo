@@ -24,6 +24,7 @@ enum	GAME_TYPE
 };
 
 bool GetToken(char** sx, char* e, char* token);
+bool MP_map_cmp(shared_str map1, shared_str map2);
 
 class CUIMapList : public CUIWindow {
 public:
@@ -76,8 +77,9 @@ private:
 	CUIMapInfo*			m_pMapInfo;
 
 	GAME_TYPE	m_GameType;
-	char		m_Maps[GAME_END_LIST][20][1024];
-	int			m_MapsNum[GAME_END_LIST];	
+	
+	xr_vector<shared_str> m_Maps[GAME_END_LIST];
+//	int			m_MapsNum[GAME_END_LIST];	
 
 	xr_map<xr_string,int> m_mapWeather;
 	xr_string	m_command;
