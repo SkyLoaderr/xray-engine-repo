@@ -786,7 +786,7 @@ public:
 			return;
 		}
 		if(!Actor()->g_Alive()){
-			Msg("game is over:(");
+			Msg("cannot make saved game because actor is dead :(");
 			return;
 		}
 
