@@ -23,6 +23,7 @@
 #include "ef_storage.h"
 #include "ef_primary.h"
 #include "ef_pattern.h"
+#include "trade_parameters.h"
 
 #define MAX_ITEM_FOOD_COUNT		3
 #define MAX_ITEM_MEDIKIT_COUNT	3
@@ -130,21 +131,34 @@ bool CAI_Stalker::alife_task_completed			()
 	return				(task_completed(&current_alife_task()));
 }
 
+bool CAI_Stalker::tradable_item					(CInventoryItem *inventory_item, const u16 &current_owner_id)
+{
+	if (!inventory_item->useful_for_NPC())
+		return			(false);
+
+	if (CLSID_DEVICE_PDA == inventory_item->object().CLS_ID) {
+		CPda			*pda = smart_cast<CPda*>(inventory_item);
+		VERIFY			(pda);
+		if (pda->GetOriginalOwnerID() == current_owner_id)
+			return		(false);
+	}
+
+	return				(
+		trade_parameters().enabled(
+			CTradeParameters::action_buy(0),
+			inventory_item->object().cNameSect()
+		)
+	);
+}
+
 u32 CAI_Stalker::fill_items						(CInventory &inventory, CGameObject *old_owner, ALife::_OBJECT_ID new_owner_id)
 {
 	u32							result = 0;
 	TIItemContainer::iterator	I = inventory.m_all.begin();
 	TIItemContainer::iterator	E = inventory.m_all.end();
 	for ( ; I != E; ++I) {
-		if (!(*I)->useful_for_NPC())
+		if (!tradable_item(*I,old_owner->ID()))
 			continue;
-
-		if (CLSID_DEVICE_PDA == (*I)->object().CLS_ID) {
-			CPda				*pda = smart_cast<CPda*>(*I);
-			VERIFY				(pda);
-			if (pda->GetOriginalOwnerID() == old_owner->ID())
-				continue;
-		}
 		
 		m_temp_items.push_back	(CTradeItem(*I,old_owner->ID(),new_owner_id));
 		result					+= (*I)->Cost();
@@ -406,15 +420,8 @@ void CAI_Stalker::update_sell_info					()
 	TIItemContainer::iterator	I = inventory().m_all.begin();
 	TIItemContainer::iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I) {
-		if (!(*I)->useful_for_NPC())
+		if (!tradable_item(*I,ID()))
 			m_temp_items.push_back	(CTradeItem(*I,ID(),ID()));
-
-		if (CLSID_DEVICE_PDA == (*I)->object().CLS_ID) {
-			CPda				*pda = smart_cast<CPda*>(*I);
-			VERIFY				(pda);
-			if (pda->GetOriginalOwnerID() == ID())
-				m_temp_items.push_back	(CTradeItem(*I,ID(),ID()));
-		}
 	}
 }
 
