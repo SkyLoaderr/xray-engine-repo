@@ -14,8 +14,8 @@ void __stdcall  FillEntity(ChooseItemVec& items, void* param)
     CInifile::Root& data 			= pSettings->sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
     	LPCSTR val;
-    	if (it->line_exist("$spawn",&val))
-            items.push_back(SChooseItem(*it->Name,""));
+    	if ((*it)->line_exist("$spawn",&val))
+            items.push_back(SChooseItem(*(*it)->Name,""));
     }
 }
 //---------------------------------------------------------------------------
@@ -234,10 +234,10 @@ void __stdcall  FillGameMaterial(ChooseItemVec& items, void* param)
 void __stdcall  FillSkeletonAnims(ChooseItemVec& items, void* param)
 {
 	IRender_Visual* V 				= ::Render->model_Create((LPCSTR)param);
-    if (PSkeletonAnimated(V)){
-		u32 cnt						= PSkeletonAnimated(V)->LL_MotionsSlotCount();
+    if (PKinematicsAnimated(V)){
+		u32 cnt						= PKinematicsAnimated(V)->LL_MotionsSlotCount();
     	for (u32 k=0; k<cnt; k++){
-            accel_map *ll_motions	= PSkeletonAnimated(V)->LL_Motions(k);
+            accel_map *ll_motions	= PKinematicsAnimated(V)->LL_Motions(k);
             accel_map::iterator 	_I, _E;
             _I						= ll_motions->begin();
             _E						= ll_motions->end();
@@ -255,8 +255,8 @@ void __stdcall  FillSkeletonBones(ChooseItemVec& items, void* param)
 {
 	IRender_Visual* V 				= ::Render->model_Create((LPCSTR)param);
     if (PKinematics(V)){
-        CSkeletonAnimated::accel  	*ll_bones	= PKinematics(V)->LL_Bones();
-        CSkeletonAnimated::accel::iterator _I, _E;
+        CKinematicsAnimated::accel  	*ll_bones	= PKinematics(V)->LL_Bones();
+        CKinematicsAnimated::accel::iterator _I, _E;
         _I							= ll_bones->begin();
         _E							= ll_bones->end();
         for (; _I!=_E; ++_I) 		items.push_back(SChooseItem(*_I->first,""));

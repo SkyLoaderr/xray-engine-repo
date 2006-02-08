@@ -77,10 +77,9 @@ void CActorTools::OnChangeTransform(PropValue* sender)
 }
 //------------------------------------------------------------------------------
 
-void CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif, bool& bSafe)
+void CActorTools::OnMotionEditClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     xr_string fn;
     switch (V->btn_num){
     case 0:{ // append
@@ -177,9 +176,8 @@ void CActorTools::OnMotionNameChange(PropValue* V)
 }
 //------------------------------------------------------------------------------
 
-void CActorTools::OnMotionControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+void CActorTools::OnMotionControlClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: PlayMotion();	break;
     case 1: StopMotion();	break;
@@ -195,10 +193,9 @@ void  CActorTools::OnMotionRefsChange(PropValue* sender)
 	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 }
 
-void  CActorTools::OnBoxAxisClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnBoxAxisClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	CBone* BONE 			= (CBone*)sender->tag;
-	ButtonValue* V 			= dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+	CBone* BONE 			= (CBone*)V->tag;
     switch (V->btn_num){
     case 0: BONE->shape.box.m_rotate.k.set(1,0,0); break;
     case 1: BONE->shape.box.m_rotate.k.set(0,1,0); break;
@@ -208,10 +205,9 @@ void  CActorTools::OnBoxAxisClick(PropValue* sender, bool& bModif, bool& bSafe)
 	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 }
 
-void  CActorTools::OnCylinderAxisClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnCylinderAxisClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	CBone* BONE 			= (CBone*)sender->tag;
-	ButtonValue* V 			= dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+	CBone* BONE 			= (CBone*)V->tag;
     switch (V->btn_num){
     case 0: BONE->shape.cylinder.m_direction.set(1,0,0); break;
     case 1: BONE->shape.cylinder.m_direction.set(0,1,0); break;
@@ -229,7 +225,7 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
     AnsiString m_cnt;
     if (m_pEditObject->m_SMotionRefs.size()){ 
 	    if (fraLeftBar->ebRenderEngineStyle->Down){
-            CSkeletonAnimated* V	= dynamic_cast<CSkeletonAnimated*>(m_RenderObject.m_pVisual);
+            CKinematicsAnimated* V	= PKinematicsAnimated(m_RenderObject.m_pVisual);
             if (V) m_cnt	= V->LL_CycleCount()+V->LL_FXCount();
         }else{
         	m_cnt	 		= AnsiString(m_pEditObject->SMotionCount())+" (Inaccessible)";
@@ -324,20 +320,18 @@ void  CActorTools::OnBindTransformChange(PropValue* V)
 	UI->RedrawScene();
 }
 
-void  CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnBoneShapeClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: m_pEditObject->GenerateBoneShape(false); break;
     case 1: m_pEditObject->GenerateBoneShape(true); break;
 	}
 }
 
-void  CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnBoneEditClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: 
     	m_pEditObject->GotoBindPose(); 
@@ -357,10 +351,9 @@ void  CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bool& bSafe)
 	}
 }
 
-void  CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnBoneFileClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {              
 	R_ASSERT(m_pEditObject);
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{ 
     	xr_string fn;

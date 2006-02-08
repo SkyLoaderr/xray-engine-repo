@@ -19,13 +19,13 @@
 MotionID CActorTools::EngineModel::FindMotionID(LPCSTR name, u16 slot)
 {
 	MotionID M;
-	CSkeletonAnimated* VA 	= PSkeletonAnimated(m_pVisual);
+	CKinematicsAnimated* VA = PKinematicsAnimated(m_pVisual);
     if (VA) M				= VA->ID_Motion	(name,slot);
     return M;
 }
 CMotionDef*	CActorTools::EngineModel::FindMotionDef(LPCSTR name, u16 slot)
 {
-	CSkeletonAnimated* VA 	= PSkeletonAnimated(m_pVisual);
+	CKinematicsAnimated* VA 	= PKinematicsAnimated(m_pVisual);
     if (VA){
         MotionID M				= FindMotionID(name,slot);
         if (M.valid())			return VA->LL_GetMotionDef(M);
@@ -34,13 +34,10 @@ CMotionDef*	CActorTools::EngineModel::FindMotionDef(LPCSTR name, u16 slot)
 }
 CMotion*	CActorTools::EngineModel::FindMotionKeys(LPCSTR name, u16 slot)
 {
-	CSkeletonAnimated* VA = PSkeletonAnimated(m_pVisual);
+	CKinematicsAnimated* VA 	= PKinematicsAnimated(m_pVisual);
     if (VA){
-    	MotionID motion_ID= FindMotionID(name,slot);
-        if (motion_ID.valid()){
-            CBoneDataAnimated* BD	= (CBoneDataAnimated*)(&VA->LL_GetData(VA->LL_GetBoneRoot()));
-            return 		&(BD->Motions[motion_ID.slot]->at(motion_ID.idx));
-        }
+    	MotionID motion_ID		= FindMotionID(name,slot);
+        return VA->LL_GetMotion	(motion_ID,VA->LL_GetBoneRoot());
     }
     return 0;
 }
@@ -49,22 +46,22 @@ void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, 
 {
     LHelper().CreateItem			(items, pref,  modeID, 0);
     if (IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
-    	CSkeletonAnimated* SA	= dynamic_cast<CSkeletonAnimated*>(m_pVisual);
+    	CKinematicsAnimated* SA		= PKinematicsAnimated(m_pVisual);
 		if (SA){
             for (int k=SA->m_Motions.size()-1; k>=0; --k){
             	xr_string slot_pref	= ATools->BuildMotionPref((u16)k,pref);
 			    LHelper().CreateItem(items, slot_pref.c_str(),  modeID, ListItem::flSorted);
 	            // cycles
                 accel_map::const_iterator I,E;
-                I = SA->m_Motions[k].cycle()->begin(); 
-                E = SA->m_Motions[k].cycle()->end();              
+                I = SA->m_Motions[k].motions.cycle()->begin(); 
+                E = SA->m_Motions[k].motions.cycle()->end();              
                 for ( ; I != E; ++I){
                 	shared_str tmp = PrepareKey(slot_pref.c_str(),*(*I).first);
                     LHelper().CreateItem(items, tmp.c_str(), modeID, 0, *(void**)&MotionID((u16)k,I->second));
             	}
                 // fxs
-                I = SA->m_Motions[k].fx()->begin(); 
-                E = SA->m_Motions[k].fx()->end(); 
+                I = SA->m_Motions[k].motions.fx()->begin(); 
+                E = SA->m_Motions[k].motions.fx()->end(); 
                 for ( ; I != E; ++I){
                 	shared_str tmp = PrepareKey(slot_pref.c_str(),*(*I).first);
                     LHelper().CreateItem(items, tmp.c_str(), modeID, 0, *(void**)&MotionID((u16)k,I->second));
@@ -75,25 +72,25 @@ void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, 
 }
 void CActorTools::EngineModel::PlayCycle(LPCSTR name, int part, u16 slot)
 {
-    MotionID D = PSkeletonAnimated(m_pVisual)->ID_Motion(name,slot);
+    MotionID D = PKinematicsAnimated(m_pVisual)->ID_Motion(name,slot);
     if (D.valid())
-        PSkeletonAnimated(m_pVisual)->LL_PlayCycle((u16)part,D,TRUE,0,0);
+        PKinematicsAnimated(m_pVisual)->LL_PlayCycle((u16)part,D,TRUE,0,0);
 }
 
 void CActorTools::EngineModel::PlayFX(LPCSTR name, float power, u16 slot)
 {
-    MotionID D = PSkeletonAnimated(m_pVisual)->ID_Motion(name,slot);
+    MotionID D = PKinematicsAnimated(m_pVisual)->ID_Motion(name,slot);
     if (D.valid())
-    	PSkeletonAnimated(m_pVisual)->PlayFX(D,power);
+    	PKinematicsAnimated(m_pVisual)->PlayFX(D,power);
 }
 
 void CActorTools::EngineModel::StopAnimation()
 {
     if (m_pVisual){
-        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(0);
-        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(1);
-        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(2);
-        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(3);
+        PKinematicsAnimated(m_pVisual)->LL_CloseCycle(0);
+        PKinematicsAnimated(m_pVisual)->LL_CloseCycle(1);
+        PKinematicsAnimated(m_pVisual)->LL_CloseCycle(2);
+        PKinematicsAnimated(m_pVisual)->LL_CloseCycle(3);
     }
 }
 
@@ -154,7 +151,7 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
 
 void CActorTools::EngineModel::PlayMotion(LPCSTR name, u16 slot)
 {
-    CSkeletonAnimated* SA 		= PSkeletonAnimated(m_pVisual);
+    CKinematicsAnimated* SA 	= PKinematicsAnimated(m_pVisual);
 	if (IsRenderable()&&SA){
         MotionID motion_ID 		= FindMotionID(name, slot);
         if (motion_ID.valid()){

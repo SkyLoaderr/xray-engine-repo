@@ -124,17 +124,17 @@ class CActorTools: public CToolsCustom
 	void __stdcall  	OnChangeTransform		(PropValue* sender);
 	void __stdcall  	OnMotionNameChange		(PropValue* sender);
 
-	void  __stdcall  	OnBoxAxisClick			(PropValue* sender, bool& bModif, bool& bSafe);
-	void  __stdcall  	OnCylinderAxisClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void  __stdcall  	OnBoxAxisClick			(ButtonValue* sender, bool& bModif, bool& bSafe);
+	void  __stdcall  	OnCylinderAxisClick		(ButtonValue* sender, bool& bModif, bool& bSafe);
     
-	void __stdcall  	OnMotionEditClick		(PropValue* sender, bool& bModif, bool& bSafe);
-	void __stdcall  	OnMotionControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnMotionEditClick		(ButtonValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnMotionControlClick	(ButtonValue* sender, bool& bModif, bool& bSafe);
 
     void __stdcall  	OnObjectItemFocused		(ListItemsVec& items);
 
-    void __stdcall 		OnBoneShapeClick  		(PropValue* sender, bool& bModif, bool& bSafe);
-    void __stdcall 		OnBoneEditClick			(PropValue* sender, bool& bModif, bool& bSafe);
-    void __stdcall 		OnBoneFileClick			(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall 		OnBoneShapeClick  		(ButtonValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall 		OnBoneEditClick			(ButtonValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall 		OnBoneFileClick			(ButtonValue* sender, bool& bModif, bool& bSafe);
     void __stdcall 		OnBoneLimitsChange		(PropValue* sender);
     
 	void __stdcall  	OnJointTypeChange		(PropValue* sender);
