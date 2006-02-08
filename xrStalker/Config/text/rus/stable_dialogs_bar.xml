@@ -366,6 +366,9 @@
     <string id="bar_bar_barmen_jobs_room_31121">
         <text>Готовься, Меченый. Такое дело не может долго ждать.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_room_81">
+        <text>Не спеши. Узнай сначала у психа, когда выжигатель отключается.</text>
+    </string>
     <string id="bar_bar_barmen_jobs_room_complete_0">
         <text>Я вернулся, задание выполнено.</text>
     </string>
