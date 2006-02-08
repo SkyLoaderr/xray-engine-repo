@@ -167,6 +167,11 @@ SDrawStaticStruct::SDrawStaticStruct	()
 	m_endTime	= -1.0f;	
 }
 
+void SDrawStaticStruct::destroy()
+{
+	delete_data(m_static);
+}
+
 bool SDrawStaticStruct::IsActual()
 {
 	if(m_endTime<0) return true;
@@ -182,7 +187,7 @@ void SDrawStaticStruct::Draw()
 void SDrawStaticStruct::Update()
 {
 	if(!IsActual())	
-		xr_delete(m_static);
+		delete_data(m_static);
 	else
 		m_static->Update();
 }

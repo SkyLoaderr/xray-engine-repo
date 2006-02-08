@@ -8,6 +8,7 @@
 
 //#include "ui/UIMultiTextStatic.h"
 #include "script_export_space.h"
+#include "object_interfaces.h"
 // refs
 class CUI;
 class CTeamBaseZone;
@@ -16,8 +17,9 @@ class CUIDialogWnd;
 class CUICaption;
 class CUIStatic;
 
-struct SDrawStaticStruct{
+struct SDrawStaticStruct :public IPureDestroyableObject{
 	SDrawStaticStruct	();
+	virtual	void	destroy			();
 	CUIStatic*		m_static;
 	float			m_endTime;
 	shared_str		m_name;
