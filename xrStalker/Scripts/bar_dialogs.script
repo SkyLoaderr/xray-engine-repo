@@ -52,8 +52,7 @@ function barman_dont_has_room_job(actor,npc)
 	return not barman_has_room_job(actor,npc)
 end
 function barman_has_room_job(actor,npc)	
-	if barman_need_darklab_documents(actor,npc) or
-	   barman_need_radar(actor,npc)
+	if barman_need_darklab_documents(actor,npc)
 	then
 		return true
 	end
