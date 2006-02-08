@@ -52,9 +52,8 @@ void PS::CPEDef::Copy(const CPEDef& src)
 	Compile				();
 }
 
-void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void __fastcall PS::CPEDef::OnControlClick(ButtonValue* B, bool& bDataModified, bool& bSafe)
 {
-	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
     case 0: 			PTools->PlayCurrent();		break;
     case 1: 			PTools->StopCurrent(false);	break;
@@ -76,9 +75,8 @@ IC __fastcall void PS::CPEDef::FillActionList(ChooseItemVec& items, void* param)
         items.push_back(SChooseItem(actions_token[i].name,actions_token[i].info));
 }
 
-void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void __fastcall PS::CPEDef::OnActionsClick(ButtonValue* B, bool& bDataModified, bool& bSafe)
 {
-	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
     case 0:{
     	LPCSTR 		nm;
@@ -137,10 +135,9 @@ void PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, xr_string& draw_val)
 	draw_sprintf(draw_val,_sqrt(V->GetValue()),V->dec);
 }
 
-void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void __fastcall PS::CPEDef::OnActionEditClick(ButtonValue* B, bool& bDataModified, bool& bSafe)
 {
     bDataModified	= false;
-	ButtonValue* B 	= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     int idx			= B->tag;
     switch (B->btn_num){
     case 0:		    // up

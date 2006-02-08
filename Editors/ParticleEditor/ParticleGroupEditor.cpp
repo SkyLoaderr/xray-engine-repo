@@ -27,15 +27,14 @@ BOOL PS::CPGDef::Equal(const CPGDef* pg)
 	return TRUE;
 }
 
-void  PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void  PS::CPGDef::OnEffectsEditClick(ButtonValue* B, bool& bDataModified, bool& bSafe)
 {
-	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
     case 0:
         m_Effects.push_back(xr_new<SEffect>());
         m_Effects.back()->m_Flags.set(CPGDef::SEffect::flEnabled,FALSE);
         ExecCommand		(COMMAND_UPDATE_PROPERTIES);
-        OnParamsChange	(sender);
+        OnParamsChange	(B);
         bDataModified	= true;
     break;
     }
@@ -47,9 +46,8 @@ void  PS::CPGDef::OnEffectTypeChange(PropValue* sender)
     OnParamsChange		(sender);
 }
 
-void  PS::CPGDef::OnControlClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void  PS::CPGDef::OnControlClick(ButtonValue* B, bool& bDataModified, bool& bSafe)
 {
-	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
     case 0: 			PTools->PlayCurrent();		break;
     case 1: 			PTools->StopCurrent(false);	break;
@@ -58,9 +56,8 @@ void  PS::CPGDef::OnControlClick(PropValue* sender, bool& bDataModified, bool& b
     bDataModified		= false;
 }
 
-void  PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void  PS::CPGDef::OnEffectEditClick(ButtonValue* B, bool& bDataModified, bool& bSafe)
 {
-	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
     case 0:		    	
     	PTools->PlayCurrent	(B->tag);    
@@ -78,7 +75,7 @@ void  PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModified, bool
         	xr_delete		(eff);
             m_Effects.erase	(m_Effects.begin()+B->tag);
             ExecCommand		(COMMAND_UPDATE_PROPERTIES);
-            OnParamsChange	(sender);
+            OnParamsChange	(B);
             bDataModified	= true;
         }else{
 			bDataModified	= false;
