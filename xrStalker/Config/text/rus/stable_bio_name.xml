@@ -49,6 +49,13 @@
 	<text>Опытный сталкер. Детальная информация отсутствует.</text>
 </string>
 
+<string id="cit_bandits_leader_name">
+	<text>Борзый</text>
+</string>
+<string id="cit_bandits_leader_bio">
+	<text>Один из бандитских лидеров. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</text>
+</string>
+
 
 <!-------------------------------- Pripyat -------------------------------->
 <string id="pri_monolith_leader_name">
