@@ -285,7 +285,7 @@ class ButtonValue: public PropValue{
 public:
 	RStringVec			value;
     int					btn_num;
-	typedef fastdelegate::FastDelegate3<PropValue*, bool&, bool&> 	TOnBtnClick;
+	typedef fastdelegate::FastDelegate3<ButtonValue*, bool&, bool&> 	TOnBtnClick;
     TOnBtnClick			OnBtnClickEvent;
     enum{
     	flFirstOnly		= (1<<0)
