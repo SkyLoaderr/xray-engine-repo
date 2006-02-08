@@ -236,17 +236,18 @@ void CPseudoGigant::on_threaten_execute()
 	}
 
 	NET_Packet	l_P;
-	u_EventGen	(l_P,GE_HIT, pA->ID());
-	l_P.w_u16	(ID());
-	l_P.w_u16	(ID());
-	l_P.w_dir	(Fvector().set(0.f,1.f,0.f));
-	l_P.w_float	(m_kick_damage);
-	l_P.w_s16	(smart_cast<CKinematics*>(pA->Visual())->LL_GetBoneRoot());
-	l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
-	l_P.w_float	(20 * pA->movement_control()->GetMass());
-	l_P.w_u16	( u16(ALife::eHitTypeWound) );
+	SHit			HS;
+	HS.GenHeader(GE_HIT, pA->ID());														//	u_EventGen	(l_P,GE_HIT, pA->ID());
+	HS.whoID			= (ID());														//	l_P.w_u16	(ID());
+	HS.weaponID			= (ID());														//	l_P.w_u16	(ID());
+	HS.dir				= (Fvector().set(0.f,1.f,0.f));									//	l_P.w_dir	(Fvector().set(0.f,1.f,0.f));
+	HS.power			= (m_kick_damage);												//	l_P.w_float	(m_kick_damage);
+	HS.boneID			= (smart_cast<CKinematics*>(pA->Visual())->LL_GetBoneRoot());	//	l_P.w_s16	(smart_cast<CKinematics*>(pA->Visual())->LL_GetBoneRoot());
+	HS.p_in_bone_space	= (Fvector().set(0.f,0.f,0.f));									//	l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
+	HS.impulse			= (20 * pA->movement_control()->GetMass());						//	l_P.w_float	(20 * pA->movement_control()->GetMass());
+	HS.hit_type			= ( ALife::eHitTypeWound);										//	l_P.w_u16	( u16(ALife::eHitTypeWound) );
+	HS.Write_Packet(l_P);
 	u_EventSend	(l_P);	
-
 }
 
 void CPseudoGigant::HitEntityInJump		(const CEntity *pEntity) 

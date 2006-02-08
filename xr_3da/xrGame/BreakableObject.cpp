@@ -10,6 +10,7 @@
 #include "net_utils.h"
 #include "clsid_game.h"
 #include "../skeletoncustom.h"
+#include "Level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -287,15 +288,18 @@ void CBreakableObject::ProcessDamage()
 	
 	//Hit(m_max_frame_damage,m_contact_damage_dir,0,0,m_contact_damage_pos,m_max_frame_damage,ALife::eHitTypeStrike);
 	NET_Packet		P;
-	u_EventGen(P,GE_HIT,ID());
-	P.w_u16		(ID());
-	P.w_u16		(ID());
-	P.w_dir		(m_contact_damage_dir);
-	P.w_float	(m_max_frame_damage);
-	P.w_s16		(PKinematics(Visual())->LL_GetBoneRoot());
-	P.w_vec3	(m_contact_damage_pos);
-	P.w_float	(0.f);
-	P.w_u16		(ALife::eHitTypeStrike);
+	SHit	HS;	
+	HS.GenHeader(GE_HIT,ID());							//	u_EventGen(P,GE_HIT,ID());
+	HS.whoID  =ID();									//	P.w_u16		(ID());
+	HS.weaponID = ID();									//	P.w_u16		(ID());
+	HS.dir = m_contact_damage_dir;						//	P.w_dir		(m_contact_damage_dir);
+	HS.power = m_max_frame_damage;						//	P.w_float	(m_max_frame_damage);
+	HS.boneID = PKinematics(Visual())->LL_GetBoneRoot();//	P.w_s16		(PKinematics(Visual())->LL_GetBoneRoot());
+	HS.p_in_bone_space = m_contact_damage_pos;			//	P.w_vec3	(m_contact_damage_pos);
+	HS.impulse = 0.f;									//	P.w_float	(0.f);
+	HS.hit_type = (ALife::eHitTypeStrike);				//	P.w_u16		(ALife::eHitTypeStrike);
+	HS.Write_Packet(P);
+
 	u_EventSend(P);
 	m_max_frame_damage		= 0.f;
 	b_resived_damage		=false;

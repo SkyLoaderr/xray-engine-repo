@@ -1333,9 +1333,7 @@ void CCustomZone::CreateHit	(	u16 id_to,
 		NET_Packet	l_P;
 		Fvector hdir = hit_dir;
 		SHit	Hit = SHit(hit_power, hdir, this, bone_id, pos_in_bone, hit_impulse, hit_type);
-		Hit.Time = Level().timeServer();
-		Hit.PACKET_TYPE = GE_HIT;
-		Hit.DestID = id_to;		
+		Hit.GenHeader(GE_HIT, id_to);
 		Hit.weaponID = this->ID();
 		Hit.Write_Packet(l_P);
 

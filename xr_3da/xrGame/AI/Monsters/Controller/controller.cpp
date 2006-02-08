@@ -455,15 +455,17 @@ void CController::draw_fire_particles()
 	// check probability
 	if (Random.randI(100) > 30) {
 		NET_Packet	l_P;
-		u_EventGen	(l_P,GE_HIT, enemy->ID());
-		l_P.w_u16	(ID());
-		l_P.w_u16	(ID());
-		l_P.w_dir	(dir);
-		l_P.w_float	(20.f);
-		l_P.w_s16	(smart_cast<CKinematics*>(enemy->Visual())->LL_GetBoneRoot());
-		l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
-		l_P.w_float	(200.f);
-		l_P.w_u16	( u16(ALife::eHitTypeWound) );
+		SHit			HS;
+		HS.GenHeader(GE_HIT, enemy->ID());													//		u_EventGen	(l_P,GE_HIT, enemy->ID());										
+		HS.whoID			= (ID());														//		l_P.w_u16	(ID());
+		HS.weaponID			= (ID());														//		l_P.w_u16	(ID());
+		HS.dir				= (dir);														//		l_P.w_dir	(dir);
+		HS.power			= (20.f);														//		l_P.w_float	(20.f);
+		HS.boneID			= (smart_cast<CKinematics*>(enemy->Visual())->LL_GetBoneRoot());//		l_P.w_s16	(smart_cast<CKinematics*>(enemy->Visual())->LL_GetBoneRoot());
+		HS.p_in_bone_space	= (Fvector().set(0.f,0.f,0.f));									//		l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
+		HS.impulse			= (200.f);														//		l_P.w_float	(200.f);
+		HS.hit_type			= ( ALife::eHitTypeWound );										//		l_P.w_u16	( u16(ALife::eHitTypeWound) );
+		HS.Write_Packet(l_P);
 		u_EventSend	(l_P);
 
 		play_control_sound_hit		();

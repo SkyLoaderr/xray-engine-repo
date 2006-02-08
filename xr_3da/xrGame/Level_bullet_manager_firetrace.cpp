@@ -288,7 +288,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		};
 /*		
 		NET_Packet		P;
-		CGameObject::u_EventGen	(P,(AddStatistic)? GE_HIT_STATISTIC : GE_HIT,E.R.O->ID());
+//		CGameObject::u_EventGen	(P,(AddStatistic)? GE_HIT_STATISTIC : GE_HIT,E.R.O->ID());
 		P.w_u16			(E.bullet.parent_id);
 		P.w_u16			(E.bullet.weapon_id);
 		P.w_dir			(original_dir);
@@ -315,13 +315,10 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 							E.bullet.hit_type,
 							E.bullet.ap						);
 
-		Hit.Time			= Level().timeServer();
-		u32 _type = (AddStatistic)? GE_HIT_STATISTIC : GE_HIT;
-		Hit.PACKET_TYPE		= u16(_type&0xffff);
+		Hit.GenHeader(u16((AddStatistic)? GE_HIT_STATISTIC : GE_HIT)&0xffff, E.R.O->ID());
 		Hit.whoID			= E.bullet.parent_id;
 		Hit.weaponID		= E.bullet.weapon_id;
 		Hit.BulletID		= E.bullet.m_dwID;
-		Hit.DestID			= E.R.O->ID();		
 
 		NET_Packet			np;
 		Hit.Write_Packet	(np);

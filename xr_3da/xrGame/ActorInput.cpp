@@ -245,17 +245,19 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 				position_in_bone_space.set(0, 1, 0);				
 
 				NET_Packet		P;
-				CGameObject::u_EventGen	(P,GE_HIT,RQ.O->ID());
-				P.w_u16			(ID());
-				P.w_u16			(ID());
-				P.w_dir			(original_dir);
-				P.w_float		(0);
-				P.w_s16			((s16)RQ.element);
-				P.w_vec3		(position_in_bone_space);
-				P.w_float		(float(FullKickTime)*10);
-				P.w_u16			(2);
-				Level().Send(P);
+				SHit	HS;				
+				HS.GenHeader(GE_HIT,RQ.O->ID());				//				CGameObject::u_EventGen	(P,GE_HIT,RQ.O->ID());
+				HS.whoID  =ID();								//				P.w_u16			(ID());
+				HS.weaponID = ID();								//				P.w_u16			(ID());
+				HS.dir = original_dir;							//				P.w_dir			(original_dir);
+				HS.power = 0.0f;								//				P.w_float		(0);
+				HS.boneID = (s16)RQ.element;					//				P.w_s16			((s16)RQ.element);
+				HS.p_in_bone_space = position_in_bone_space;	//				P.w_vec3		(position_in_bone_space);
+				HS.impulse = float(FullKickTime)*10;			//				P.w_float		(float(FullKickTime)*10);
+				HS.hit_type = (ALife::eHitTypeStrike);			//				P.w_u16			(2);
+				HS.Write_Packet(P);
 
+				Level().Send(P);
 			}break;
 		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().Phase()) g_PerformDrop();				break;
 		}

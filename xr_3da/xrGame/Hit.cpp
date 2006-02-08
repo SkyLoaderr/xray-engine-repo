@@ -5,6 +5,7 @@
 #include "../bone.h"
 #include "NET_utils.h"
 #include "xrMessages.h"
+#include "Level.h""
 
 SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement, Fvector ap_in_bone_space, float aimpulse,  ALife::EHitType ahit_type, float aAP)
 {
@@ -30,7 +31,7 @@ SHit::SHit()
 void SHit::invalidate()
 {
 	Time					= 0;
-	PACKET_TYPE				= GE_HIT;
+	PACKET_TYPE				= 0;
 	DestID					= 0;
 
 	power					=-dInfinity								;
@@ -52,6 +53,13 @@ bool SHit::is_valide() const
 {
 	return hit_type!=ALife::eHitTypeMax;
 }
+
+void	SHit::GenHeader				(u16 PacketType, u16 ID)
+{
+	whoID = ID;
+	PACKET_TYPE = PacketType;
+	Time = Level().timeServer();
+};
 
 void SHit::Read_Packet				(NET_Packet	Packet)
 {
