@@ -275,7 +275,6 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 	if (E.bullet.flags.allow_sendhit && !E.Repeated)
 	{
 		//-------------------------------------------------
-		NET_Packet		P;
 		bool AddStatistic = false;
 		if (GameID() != GAME_SINGLE && E.bullet.flags.allow_sendhit && E.R.O->CLS_ID == CLSID_OBJECT_ACTOR
 			&& Game().m_WeaponUsageStatistic.CollectData())
@@ -287,29 +286,47 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 				AddStatistic = true;
 			};
 		};
-		
+/*		
+		NET_Packet		P;
 		CGameObject::u_EventGen	(P,(AddStatistic)? GE_HIT_STATISTIC : GE_HIT,E.R.O->ID());
 		P.w_u16			(E.bullet.parent_id);
 		P.w_u16			(E.bullet.weapon_id);
 		P.w_dir			(original_dir);
 		P.w_float		(power);
-		//×ÒÎÁ ÁÎËÜØÅ ÒÀÊÎÃÎ ÍÅ ÄÅËÀËÈ!!!!!!
-///		P.w_float		(power*gCheckHitK);
 		P.w_s16			((s16)E.R.element);
 		P.w_vec3		(position_in_bone_space);
 		P.w_float		(impulse);
 		P.w_u16			(u16(E.bullet.hit_type));
 		if (E.bullet.hit_type == ALife::eHitTypeFireWound)
-		{
 			P.w_float	(E.bullet.ap);
-		}
-		//-------------------------------------------------
+
 		if (AddStatistic)
-		{
 			P.w_u32(E.bullet.m_dwID);
-		};
+
 		CGameObject::u_EventSend (P);
-		//-------------------------------------------------
+*/
+
+		SHit	Hit = SHit(	power, 
+							original_dir, 
+							NULL, 
+							u16(E.R.element), 
+							position_in_bone_space, 
+							impulse, 
+							E.bullet.hit_type,
+							E.bullet.ap						);
+
+		Hit.Time			= Level().timeServer();
+		u32 _type = (AddStatistic)? GE_HIT_STATISTIC : GE_HIT;
+		Hit.PACKET_TYPE		= u16(_type&0xffff);
+		Hit.whoID			= E.bullet.parent_id;
+		Hit.weaponID		= E.bullet.weapon_id;
+		Hit.BulletID		= E.bullet.m_dwID;
+		Hit.DestID			= E.R.O->ID();		
+
+		NET_Packet			np;
+		Hit.Write_Packet	(np);
+
+		CGameObject::u_EventSend(np);
 	}
 }
 
