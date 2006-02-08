@@ -129,12 +129,12 @@ namespace PS
 		bool __stdcall  	CollisionCutoffOnAfterEdit		(PropValue* sender, float& edit_val);
 		void __stdcall  	CollisionCutoffOnBeforeEdit		(PropValue* sender, float& edit_val);
 		void __stdcall  	CollisionCutoffOnDraw			(PropValue* sender, xr_string& draw_val);
-		void __stdcall  	OnActionEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void __stdcall  	OnActionEditClick	(ButtonValue* sender, bool& bDataModified, bool& bSafe);
 	    void __stdcall  	OnFrameResize		(PropValue* sender);
 	    void __stdcall  	OnShaderChange		(PropValue* sender);
 	    void __stdcall  	OnFlagChange		(PropValue* sender);
-		void __stdcall  	OnControlClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-		void __stdcall  	OnActionsClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void __stdcall  	OnControlClick		(ButtonValue* sender, bool& bDataModified, bool& bSafe);
+		void __stdcall  	OnActionsClick		(ButtonValue* sender, bool& bDataModified, bool& bSafe);
         bool __stdcall  	OnAfterActionNameEdit(PropValue* sender, shared_str& edit_val);
 		void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		void				Copy				(const CPEDef& src);
