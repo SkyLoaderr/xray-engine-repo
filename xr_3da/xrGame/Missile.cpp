@@ -461,8 +461,10 @@ void CMissile::Show()
 
 void CMissile::Hide() 
 {
-	//SwitchState(MS_HIDING);
-	SwitchState(MS_HIDDEN);
+	if(IsGameTypeSingle())
+		SwitchState(MS_HIDING);
+	else
+		SwitchState(MS_HIDDEN);
 }
 
 void CMissile::setup_throw_params()

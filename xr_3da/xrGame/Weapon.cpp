@@ -1440,3 +1440,17 @@ float CWeapon::Weight()
 	
 	return res;
 }
+void CWeapon::Hide		()
+{
+	if(IsGameTypeSingle())
+		SwitchState(eHiding);
+	else
+		SwitchState(eHidden);
+
+	OnZoomOut();
+}
+
+void CWeapon::Show		()
+{
+	SwitchState(eShowing);
+}

@@ -93,8 +93,6 @@ public:
 	virtual void	FireEnd			();
 	virtual void	Reload			();
 	
-	virtual void	Hide			();
-	virtual void	Show			();
 
 	virtual	void	UpdateCL		();
 	virtual void	net_Destroy		();

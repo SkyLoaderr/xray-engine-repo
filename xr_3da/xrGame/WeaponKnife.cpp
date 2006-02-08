@@ -100,20 +100,6 @@ void CWeaponKnife::UpdateCL	()
 	}
 }
 
-void CWeaponKnife::Hide	()
-{
-	//if (Local())	SwitchState						(eHiding);
-	SwitchState(eHidden);
-}
-
-void CWeaponKnife::Show	()
-{
-	if (Local())				
-	{
-		SwitchState						(eShowing);
-	}
-}
-
 void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 {
 	CCartridge cartridge; 

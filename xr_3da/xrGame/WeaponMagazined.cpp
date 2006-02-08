@@ -522,18 +522,6 @@ void CWeaponMagazined::SetDefaults	()
 	CWeapon::SetDefaults		();
 }
 
-void CWeaponMagazined::Hide		()
-{
-	// add shot effector
-	//SwitchState(eHiding);
-	OnZoomOut();
-	SwitchState(eHidden);
-}
-void CWeaponMagazined::Show		()
-{
-	SwitchState(eShowing);
-}
-
 
 void CWeaponMagazined::OnShot		()
 {

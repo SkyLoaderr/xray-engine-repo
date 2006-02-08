@@ -58,9 +58,6 @@ public:
 	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual	void	UpdateCL			();
 
-	virtual void	Hide				();
-	virtual void	Show				();
-
 	virtual void	Fire2Start			();
 	virtual void	Fire2End			();
 	virtual void	FireStart			();
