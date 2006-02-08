@@ -174,7 +174,7 @@
 		<objective>
 			<text>bar_dolg_svoboda_ambush_return</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>bar_barman_location</map_location_type>
+			<map_location_type>blue_location</map_location_type>
 			<object_story_id>bar_Barman</object_story_id>
 			<infoportion_complete>bar_kill_svoboda_ambush_done</infoportion_complete>
 		</objective>
