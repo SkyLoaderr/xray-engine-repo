@@ -277,6 +277,10 @@
 	<character id="cit_bandit_veteran_best">
 		<class>cit_bandit_veteran_best</class>
 	</character>
+	<character id="cit_bandit_leader">
+		<class>cit_bandit_leader</class>
+		<specific_character>cit_bandit_leader</specific_character>
+	</character>
 
 <!-- Bar + Rostok -->
 	<character id="bar_barman">

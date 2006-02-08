@@ -560,6 +560,38 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
+<!-------------------------- LEADER ----------------------->
+	<specific_character id="cit_bandit_leader" team_default = "1">
+		<name>cit_bandits_leader_name</name>
+		<icon x="22" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>cit_bandits_leader_bio</bio>
+		
+		<class>cit_bandit_leader</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 3 \n
+			wpn_l85 = 1,silencer \n
+			ammo_5.56x45_ss190 = 3 \n
+			ammo_5.56x45_ap = 2 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 <!----------------------- Василий Петрович ---------------------->
 	<specific_character id="cit_vp" team_default = "1">
 		<name>cit_vp_name</name>
