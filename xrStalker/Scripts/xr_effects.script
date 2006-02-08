@@ -1724,7 +1724,9 @@ end
 
 function yan_actor_sleep_1 (actor, npc)
 		set_sleep_relocate(patrol ("yan_actor_sleep_1"):point(0), patrol ("yan_actor_sleep_1"):point(1), 60)
-         
+end
+
+function yan_dream_voices (actor, npc)
         local sound_obj_l		= sound_object( [[characters_voice\scenario\yantar\dream_talk_l]] )
         local sound_obj_r		= sound_object( [[characters_voice\scenario\yantar\dream_talk_r]] )
         
