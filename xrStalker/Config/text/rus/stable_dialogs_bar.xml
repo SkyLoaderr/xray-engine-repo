@@ -447,6 +447,12 @@
     <string id="bar_bar_barmen_start_1512">
         <text>Пока нет.</text>
     </string>
+    <string id="bar_bar_barmen_start_161">
+        <text>Чего тебе, Меченый?</text>
+    </string>
+    <string id="bar_bar_barmen_start_162">
+        <text>Привет, Меченый. Время идет, а ты не меняешься, все такой же нелюдимый. Садись выпей, может подобреешь чуток.</text>
+    </string>
     <string id="bar_bar_barmen_start_2">
         <text>Здорово, Меченый. Принес документы с Агропрома?</text>
     </string>
