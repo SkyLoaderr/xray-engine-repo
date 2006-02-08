@@ -298,13 +298,25 @@
         <text>Не спеши, Меченый. Ты еще с ветеранами не разобрался, а уже рвешься делать что-то еще.</text>
     </string>
     <string id="bar_bar_barmen_jobs_3">
-        <text>Есть одно поручение. Но здесь о нем я говорить не желаю. Слишком шумно, да и лишних ушей много. Если интересует, пойдем поговорим наедине.</text>
+        <text>Есть работа, для ветеранов.</text>
     </string>
     <string id="bar_bar_barmen_jobs_31">
-        <text>Меня интересует работа и посерьезней.</text>
+        <text>Ближе к делу. Что нужно сделать?</text>
     </string>
     <string id="bar_bar_barmen_jobs_311">
-        <text>Идем в мою комнату. Гарик тебя пропустит.</text>
+        <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3111">
+        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3112">
+        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3121">
+        <text>Нет, не буду браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3122">
+        <text>Ну как знаешь.</text>
     </string>
     <string id="bar_bar_barmen_jobs_32">
         <text>Нет, сейчас не интересует.</text>
@@ -316,6 +328,12 @@
         <text>Пока нет, в другой раз.</text>
     </string>
     <string id="bar_bar_barmen_jobs_5">
+        <text>Нет, сегодня, ничего нет.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_6">
+        <text>Нет, сегодня, ничего нет.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_7">
         <text>Нет, сегодня, ничего нет.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_0">
