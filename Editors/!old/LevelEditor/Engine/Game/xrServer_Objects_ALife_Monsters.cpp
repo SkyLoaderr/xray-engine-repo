@@ -722,8 +722,6 @@ void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Shift time (sec)"),	&m_start_time_shift,0,100000);
 	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Enabled time (sec)"),	&m_enabled_time,	0,100000);
 	PHelper().CreateU32			(items,PrepareKey(pref,*s_name,"on/off mode\\Disabled time (sec)"),	&m_disabled_time,	0,100000);
-
-	
 }
 
 ////////////////////////////////////////////////////////////////////////////
