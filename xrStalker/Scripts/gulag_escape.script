@@ -1345,7 +1345,7 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "esc_assault" then
 		t = { section = "logic@esc_assault_wait",
 			idle = 0,
-			prior = 8, state = {0},
+			prior = 10, state = {0},
 			online = false,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
