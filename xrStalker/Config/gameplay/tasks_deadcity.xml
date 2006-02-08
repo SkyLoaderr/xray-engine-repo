@@ -176,7 +176,7 @@
             cit_actor_weapon_zone
         </object_story_id>
         <infoportion_complete>
-            cit_doctor_weapon_task_end
+            cit_jail_doctor_weapon_task_end
         </infoportion_complete>
     </objective>
 </game_task>
