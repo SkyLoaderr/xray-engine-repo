@@ -115,13 +115,34 @@ end
 -- (можно задавать несколько через двоеточие)
 function enemy_group(actor, npc, p)
 	local g = db.storage[npc:id()].enemy:group()
+	local i, v = 0, 0
 	for i, v in pairs(p) do
 		if v == g then
-			printf("_bp: npc enemy is from group %d", v)
+			--printf("_bp: [%s]'s enemy is from group [%d]", npc:name(), v)
 			return true
 		end
 	end
 	return false
+end
+
+function enemy_gulag(actor, npc, p)
+	local enemy = db.storage[npc:id()].enemy
+
+	if enemy and enemy:alive() then
+        local g = xr_gulag.get_npc_gulag(enemy)
+
+        if g ~= nil then
+            local n = g.name
+	        local i, v = 0, 0
+
+            for i, v in pairs(p) do
+                if n == v then
+                    return true
+                end
+            end
+        end
+    end
+    return false
 end
 
 -- Проверка того что удар был нанесен кем-то из npc указанных в списке.
