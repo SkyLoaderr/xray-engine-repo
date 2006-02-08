@@ -20,7 +20,7 @@ void CParticleTools::OnParticleItemRemove(LPCSTR name, EItemType type, bool& res
     res				= true;
 }
 
-void  CParticleTools::OnControlClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void  CParticleTools::OnControlClick(ButtonValue* sender, bool& bDataModified, bool& bSafe)
 {
 	m_Transform.identity();
     bDataModified	= false;
