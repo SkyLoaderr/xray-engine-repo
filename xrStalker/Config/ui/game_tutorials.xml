@@ -3,7 +3,7 @@
 <!-- ------------------------------------------------------------------------- -->
 	<intro>
 		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=0 y="0" width="1024" height="768" stretch="1">
+			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -27,6 +27,13 @@
 			<delay>1</delay>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_stalker</texture>
+			</video_wnd>
+		</item>
+		<item type="video">
+			<sound>intro\intro_mission</sound>
+			<delay>1</delay>
+			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
+				<texture>intro\intro_mission</texture>
 			</video_wnd>
 		</item>
 	</intro>
