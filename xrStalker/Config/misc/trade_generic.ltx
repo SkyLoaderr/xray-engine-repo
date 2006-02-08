@@ -1,869 +1,286 @@
 [trader]
-buy_condition = {=npc_trade_by_level("escape")} generic_buy_escape, {=npc_trade_by_level("garbage")} generic_buy_garbage, {=npc_trade_by_level("bar")} generic_buy_bar, {=npc_trade_by_level("yantar")} generic_buy_yantar, generic_buy_radar
+buy_condition = generic_buy
 sell_condition = generic_sell
 
 
 [generic_sell]
 ;Артефакты
-af_medusa				= 1, 1
-af_cristall_flower		= 1, 1
-af_night_star			= 1, 1
-af_vyvert				= 1, 1
-af_gravi				= 1, 1
-af_gold_fish			= 1, 1
-af_blood				= 1, 1
-af_mincer_meat			= 1, 1
-af_soul					= 1, 1
-af_electra_sparkler		= 1, 1
-af_electra_flash		= 1, 1
-af_electra_moonlight	= 1, 1
-af_rusty_thorn			= 1, 1
-af_rusty_kristall		= 1, 1
-af_rusty_sea-urchin		= 1, 1
-af_ameba_slime			= 1, 1
-af_ameba_slug			= 1, 1
-af_ameba_mica			= 1, 1
-af_drops				= 1, 1
-af_fireball				= 1, 1
-af_cristall				= 1, 1
-af_dummy_glassbeads		= 1, 1
-af_dummy_pellicle		= 1, 1
-af_dummy_battery		= 1, 1
-af_dummy_dummy			= 1, 1
-af_dummy_spring			= 1, 1
-af_fuzz_kolobok			= 1, 1
+af_medusa				= 0,	0 ;NO TRADE
+af_cristall_flower		= 0,	0 ;NO TRADE
+af_night_star			= 0,	0 ;NO TRADE
+af_vyvert				= 0,	0 ;NO TRADE
+af_gravi				= 0,	0 ;NO TRADE
+af_gold_fish			= 0,	0 ;NO TRADE
+af_blood				= 0,	0 ;NO TRADE
+af_mincer_meat			= 0,	0 ;NO TRADE
+af_soul					= 0,	0 ;NO TRADE
+af_electra_sparkler		= 0,	0 ;NO TRADE
+af_electra_flash		= 0,	0 ;NO TRADE
+af_electra_moonlight	= 0,	0 ;NO TRADE
+af_rusty_thorn			= 0,	0 ;NO TRADE
+af_rusty_kristall		= 0,	0 ;NO TRADE
+af_rusty_sea-urchin		= 0,	0 ;NO TRADE
+af_ameba_slime			= 0,	0 ;NO TRADE
+af_ameba_slug			= 0,	0 ;NO TRADE
+af_ameba_mica			= 0,	0 ;NO TRADE
+af_drops				= 0,	0 ;NO TRADE
+af_fireball				= 0,	0 ;NO TRADE
+af_cristall				= 0,	0 ;NO TRADE
+af_dummy_glassbeads		= 0,	0 ;NO TRADE
+af_dummy_pellicle		= 0,	0 ;NO TRADE
+af_dummy_battery		= 0,	0 ;NO TRADE
+af_dummy_dummy			= 0,	0 ;NO TRADE
+af_dummy_spring			= 0,	0 ;NO TRADE
+af_fuzz_kolobok			= 0,	0 ;NO TRADE
 
 ;Аммуниция
-9x18_fmj				= 1, 1
-9x18_pmm				= 1, 1
-9x19_pbp				= 1, 1
-9x19_fmj				= 1, 1
-11.43x23_hydro			= 1, 1
-11.43x23_fmj			= 1, 1
-12x70_buck				= 1, 1
-12x76_dart				= 1, 1
-12x76_zhekan			= 1, 1
-5.45x39_ap				= 1, 1
-5.45x39_fmj				= 1, 1
-9x39_sp5				= 1, 1
-9x39_ap					= 1, 1
-9x39_pab9				= 1, 1
-5.56x45_ss190			= 1, 1
-5.56x45_ap				= 1, 1
-7.62x54_7h14			= 1, 1
-7.62x54_7h1				= 1, 1
-7.62x54_ap				= 1, 1
-ammo_og-7b				= 1, 1
-ammo_vog-25p			= 1, 1
-ammo_vog-25				= 1, 1
-grenade_f1				= 1, 1
-grenade_rgd5			= 1, 1
-ammo_m209				= 1, 1
+9x18_fmj				= 1,	2
+9x18_pmm				= 1,	2
+9x19_pbp				= 1,	2
+9x19_fmj				= 1,	2
+11.43x23_hydro			= 1,	2
+11.43x23_fmj			= 1,	2
+12x70_buck				= 1,	2
+12x76_dart				= 1,	2
+12x76_zhekan			= 1,	2
+5.45x39_ap				= 1,	2
+5.45x39_fmj				= 1,	2
+9x39_sp5				= 1,	2
+9x39_ap					= 1,	2
+9x39_pab9				= 1,	2
+5.56x45_ss190			= 1,	2
+5.56x45_ap				= 1,	2
+7.62x54_7h14			= 1,	2
+7.62x54_7h1				= 1,	2
+7.62x54_ap				= 1,	2
+ammo_og-7b				= 1,	2
+ammo_vog-25p			= 1,	2
+ammo_vog-25				= 1,	2
+grenade_f1				= 1,	2
+grenade_rgd5			= 1,	2
+ammo_m209				= 1,	2
 
 ;Оружие
-wpn_pm					= 1, 1
-wpn_pb					= 1, 1
-wpn_fort				= 1, 1
-wpn_hpsa				= 1, 1
-wpn_beretta				= 1, 1
-wpn_walther				= 1, 1
-wpn_sig220				= 1, 1
-wpn_colt1911			= 1, 1
-wpn_usp					= 1, 1
-wpn_desert_eagle		= 1, 1
-wpn_bm16				= 1, 1
-wpn_toz34				= 1, 1
-wpn_wincheaster1300		= 1, 1
-wpn_spas12				= 1, 1
-wpn_ak74u				= 1, 1
-wpn_mp5					= 1, 1
-wpn_ak74				= 1, 1
-wpn_abakan				= 1, 1
-wpn_l85					= 1, 1
-wpn_lr300				= 1, 1
-wpn_sig550				= 1, 1
-wpn_groza				= 1, 1
-wpn_val					= 1, 1
-wpn_vintorez			= 1, 1
-wpn_svu					= 1, 1
-wpn_svd					= 1, 1
-wpn_rg-6				= 1, 1
-wpn_rpg7				= 1, 1
+wpn_pm					= 1,	2
+wpn_pb					= 1,	2
+wpn_fort				= 1,	2
+wpn_hpsa				= 1,	2
+wpn_beretta				= 1,	2
+wpn_walther				= 1,	2
+wpn_sig220				= 1,	2
+wpn_colt1911			= 1,	2
+wpn_usp					= 1,	2
+wpn_desert_eagle		= 1,	2
+wpn_bm16				= 1,	2
+wpn_toz34				= 1,	2
+wpn_wincheaster1300		= 1,	2
+wpn_spas12				= 1,	2
+wpn_ak74u				= 1,	2
+wpn_mp5					= 1,	2
+wpn_ak74				= 1,	2
+wpn_abakan				= 1,	2
+wpn_l85					= 1,	2
+wpn_lr300				= 1,	2
+wpn_sig550				= 1,	2
+wpn_groza				= 1,	2
+wpn_val					= 1,	2
+wpn_vintorez			= 1,	2
+wpn_svu					= 1,	2
+wpn_svd					= 1,	2
+wpn_rg-6				= 1,	2
+wpn_rpg7				= 1,	2
 
 ;ADDONS
-wpn_addon_scope					= 1, 1
-wpn_addon_scope_susat			= 1, 1
-wpn_addon_silencer				= 1, 1
-wpn_addon_grenade_launcher		= 1, 1
-wpn_addon_grenade_launcher_m203 = 1, 1
+wpn_addon_scope					= 1,	2
+wpn_addon_scope_susat			= 1,	2
+wpn_addon_silencer				= 1,	2
+wpn_addon_grenade_launcher		= 1,	2
+wpn_addon_grenade_launcher_m203 = 1,	2
 
 ;Броники
-bandit_outfit			= 1, 1
-killer_outfit			= 1, 1
-monolit_outfit			= 1, 1
-soldier_outfit			= 1, 1
-specops_outfit			= 1, 1
-military_outfit			= 1, 1
-stalker_outfit			= 1, 1
-scientific_outfit		= 1, 1
-exo_outfit				= 1, 1
-svoboda_light_outfit	= 1, 1
-svoboda_heavy_outfit	= 1, 1
-dolg_outfit				= 1, 1
-dolg_scientific_outfit	= 1, 1
-ecolog_outfit			= 1, 1
-protection_outfit		= 1, 1
+bandit_outfit			= 1,	2
+killer_outfit			= 1,	2
+monolit_outfit			= 1,	2
+soldier_outfit			= 1,	2
+specops_outfit			= 1,	2
+military_outfit			= 1,	2
+stalker_outfit			= 1,	2
+scientific_outfit		= 1,	2
+exo_outfit				= 1,	2
+svoboda_light_outfit	= 1,	2
+svoboda_heavy_outfit	= 1,	2
+dolg_outfit				= 1,	2
+dolg_scientific_outfit	= 1,	2
+ecolog_outfit			= 1,	2
+protection_outfit		= 1,	2
 
 ;Медикаменты
-bandage					= 1, 1
-medkit					= 1, 1
-antirad					= 1, 1
+bandage					= 1,	2
+medkit					= 1,	2
+antirad					= 1,	2
 
 ;Детали монстров
-mutant_flesh_eye		= 1, 1
-mutant_boar_leg			= 1, 1
-mutant_dog_tail			= 1, 1
-mutant_psevdodog_tail	= 1, 1
-mutant_krovosos_jaw		= 1, 1
-mutant_burer_hand		= 1, 1
-mutant_zombie_hand		= 1, 1
-mutant_snork_leg		= 1, 1
+mutant_flesh_eye		= 0,	0 ;NO TRADE
+mutant_boar_leg			= 0,	0 ;NO TRADE
+mutant_dog_tail			= 0,	0 ;NO TRADE
+mutant_psevdodog_tail	= 0,	0 ;NO TRADE
+mutant_krovosos_jaw		= 0,	0 ;NO TRADE
+mutant_burer_hand		= 0,	0 ;NO TRADE
+mutant_zombie_hand		= 0,	0 ;NO TRADE
+mutant_snork_leg		= 0,	0 ;NO TRADE
 
 ;Еда
-bread					= 1, 1
-kolbasa					= 1, 1
-conserva				= 1, 1
-vodka					= 1, 1
-energy_drink			= 1, 1
+bread					= 1,	2
+kolbasa					= 1,	2
+conserva				= 1,	2
+vodka					= 1,	2
+energy_drink			= 1,	2
 
 ;Предметы
-device_torch			= 1, 1
-detector_simple			= 1, 1
-detector_advances		= 1, 1
-detector_elite			= 1, 1
-device_pda				= 1, 1
+device_torch			= 1,	2
+detector_simple			= 1,	2
+detector_advances		= 1,	2
+detector_elite			= 1,	2
+device_pda				= 0,	0 ;NO TRADE
 
 
 
-;*************************************************
-;  ESCAPE SETTINGS
-;*************************************************
-[generic_buy_escape]
+[generic_buy]
 ;Артефакты
-af_medusa				= 1, 1
-af_cristall_flower		= 1, 1
-af_night_star			= 1, 1
-af_vyvert				= 1, 1
-af_gravi				= 1, 1
-af_gold_fish			= 1, 1
-af_blood				= 1, 1
-af_mincer_meat			= 1, 1
-af_soul					= 1, 1
-af_electra_sparkler		= 1, 1
-af_electra_flash		= 1, 1
-af_electra_moonlight	= 1, 1
-af_rusty_thorn			= 1, 1
-af_rusty_kristall		= 1, 1
-af_rusty_sea-urchin		= 1, 1
-af_ameba_slime			= 1, 1
-af_ameba_slug			= 1, 1
-af_ameba_mica			= 1, 1
-af_drops				= 1, 1
-af_fireball				= 1, 1
-af_cristall				= 1, 1
-af_dummy_glassbeads		= 1, 1
-af_dummy_pellicle		= 1, 1
-af_dummy_battery		= 1, 1
-af_dummy_dummy			= 1, 1
-af_dummy_spring			= 1, 1
-af_fuzz_kolobok			= 1, 1
+af_medusa				= 1,	0.5
+af_cristall_flower		= 1,	0.5
+af_night_star			= 1,	0.5
+af_vyvert				= 1,	0.5
+af_gravi				= 1,	0.5
+af_gold_fish			= 1,	0.5
+af_blood				= 1,	0.5
+af_mincer_meat			= 1,	0.5
+af_soul					= 1,	0.5
+af_electra_sparkler		= 1,	0.5
+af_electra_flash		= 1,	0.5
+af_electra_moonlight	= 1,	0.5
+af_rusty_thorn			= 1,	0.5
+af_rusty_kristall		= 1,	0.5
+af_rusty_sea-urchin		= 1,	0.5
+af_ameba_slime			= 1,	0.5
+af_ameba_slug			= 1,	0.5
+af_ameba_mica			= 1,	0.5
+af_drops				= 1,	0.5
+af_fireball				= 1,	0.5
+af_cristall				= 1,	0.5
+af_dummy_glassbeads		= 1,	0.5
+af_dummy_pellicle		= 1,	0.5
+af_dummy_battery		= 1,	0.5
+af_dummy_dummy			= 1,	0.5
+af_dummy_spring			= 1,	0.5
+af_fuzz_kolobok			= 1,	0.5
 
 ;Аммуниция
-9x18_fmj				= 1, 1
-9x18_pmm				= 1, 1
-9x19_pbp				= 1, 1
-9x19_fmj				= 1, 1
-11.43x23_hydro			= 1, 1
-11.43x23_fmj			= 1, 1
-12x70_buck				= 1, 1
-12x76_dart				= 1, 1
-12x76_zhekan			= 1, 1
-5.45x39_ap				= 1, 1
-5.45x39_fmj				= 1, 1
-9x39_sp5				= 1, 1
-9x39_ap					= 1, 1
-9x39_pab9				= 1, 1
-5.56x45_ss190			= 1, 1
-5.56x45_ap				= 1, 1
-7.62x54_7h14			= 1, 1
-7.62x54_7h1				= 1, 1
-7.62x54_ap				= 1, 1
-ammo_og-7b				= 1, 1
-ammo_vog-25p			= 1, 1
-ammo_vog-25				= 1, 1
-grenade_f1				= 1, 1
-grenade_rgd5			= 1, 1
-ammo_m209				= 1, 1
+9x18_fmj				= 0.8,	0.4
+9x18_pmm				= 0.8,	0.4
+9x19_pbp				= 0.8,	0.4
+9x19_fmj				= 0.8,	0.4
+11.43x23_hydro			= 0.8,	0.4
+11.43x23_fmj			= 0.8,	0.4
+12x70_buck				= 0.8,	0.4
+12x76_dart				= 0.8,	0.4
+12x76_zhekan			= 0.8,	0.4
+5.45x39_ap				= 0.8,	0.4
+5.45x39_fmj				= 0.8,	0.4
+9x39_sp5				= 0.8,	0.4
+9x39_ap					= 0.8,	0.4
+9x39_pab9				= 0.8,	0.4
+5.56x45_ss190			= 0.8,	0.4
+5.56x45_ap				= 0.8,	0.4
+7.62x54_7h14			= 0.8,	0.4
+7.62x54_7h1				= 0.8,	0.4
+7.62x54_ap				= 0.8,	0.4
+ammo_og-7b				= 0.8,	0.4
+ammo_vog-25p			= 0.8,	0.4
+ammo_vog-25				= 0.8,	0.4
+grenade_f1				= 0.8,	0.4
+grenade_rgd5			= 0.8,	0.4
+ammo_m209				= 0.8,	0.4
 
 ;Оружие
-wpn_pm					= 1, 1
-wpn_pb					= 1, 1
-wpn_fort				= 1, 1
-wpn_hpsa				= 1, 1
-wpn_beretta				= 1, 1
-wpn_walther				= 1, 1
-wpn_sig220				= 1, 1
-wpn_colt1911			= 1, 1
-wpn_usp					= 1, 1
-wpn_desert_eagle		= 1, 1
-wpn_bm16				= 1, 1
-wpn_toz34				= 1, 1
-wpn_wincheaster1300		= 1, 1
-wpn_spas12				= 1, 1
-wpn_ak74u				= 1, 1
-wpn_mp5					= 1, 1
-wpn_ak74				= 1, 1
-wpn_abakan				= 1, 1
-wpn_l85					= 1, 1
-wpn_lr300				= 1, 1
-wpn_sig550				= 1, 1
-wpn_groza				= 1, 1
-wpn_val					= 1, 1
-wpn_vintorez			= 1, 1
-wpn_svu					= 1, 1
-wpn_svd					= 1, 1
-wpn_rg-6				= 1, 1
-wpn_rpg7				= 1, 1
+wpn_pm					= 0.3,	0.1
+wpn_pb					= 0.3,	0.1
+wpn_fort				= 0.3,	0.1
+wpn_hpsa				= 0.3,	0.1
+wpn_beretta				= 0.3,	0.1
+wpn_walther				= 0.3,	0.1
+wpn_sig220				= 0.3,	0.1
+wpn_colt1911			= 0.3,	0.1
+wpn_usp					= 0.3,	0.1
+wpn_desert_eagle		= 0.3,	0.1
+wpn_bm16				= 0.3,	0.1
+wpn_toz34				= 0.3,	0.1
+wpn_wincheaster1300		= 0.3,	0.1
+wpn_spas12				= 0.3,	0.1
+wpn_ak74u				= 0.3,	0.1
+wpn_mp5					= 0.3,	0.1
+wpn_ak74				= 0.3,	0.1
+wpn_abakan				= 0.3,	0.1
+wpn_l85					= 0.3,	0.1
+wpn_lr300				= 0.3,	0.1
+wpn_sig550				= 0.3,	0.1
+wpn_groza				= 0.3,	0.1
+wpn_val					= 0.3,	0.1
+wpn_vintorez			= 0.3,	0.1
+wpn_svu					= 0.3,	0.1
+wpn_svd					= 0.3,	0.1
+wpn_rg-6				= 0.3,	0.1
+wpn_rpg7				= 0.3,	0.1
 
 ;ADDONS
-wpn_addon_scope					= 1, 1
-wpn_addon_scope_susat			= 1, 1
-wpn_addon_silencer				= 1, 1
-wpn_addon_grenade_launcher		= 1, 1
-wpn_addon_grenade_launcher_m203 = 1, 1
+wpn_addon_scope					= 0.6,	0.3
+wpn_addon_scope_susat			= 0.6,	0.3
+wpn_addon_silencer				= 0.6,	0.3
+wpn_addon_grenade_launcher		= 0.6,	0.3
+wpn_addon_grenade_launcher_m203 = 0.6,	0.3
 
 ;Броники
-bandit_outfit			= 1, 1
-killer_outfit			= 1, 1
-monolit_outfit			= 1, 1
-soldier_outfit			= 1, 1
-specops_outfit			= 1, 1
-military_outfit			= 1, 1
-stalker_outfit			= 1, 1
-scientific_outfit		= 1, 1
-exo_outfit				= 1, 1
-svoboda_light_outfit	= 1, 1
-svoboda_heavy_outfit	= 1, 1
-dolg_outfit				= 1, 1
-dolg_scientific_outfit	= 1, 1
-ecolog_outfit			= 1, 1
-protection_outfit		= 1, 1
+bandit_outfit			= 1,	0.5
+killer_outfit			= 1,	0.5
+monolit_outfit			= 1,	0.5
+soldier_outfit			= 1,	0.5
+specops_outfit			= 1,	0.5
+military_outfit			= 1,	0.5
+stalker_outfit			= 1,	0.5
+scientific_outfit		= 1,	0.5
+exo_outfit				= 1,	0.5
+svoboda_light_outfit	= 1,	0.5
+svoboda_heavy_outfit	= 1,	0.5
+dolg_outfit				= 1,	0.5
+dolg_scientific_outfit	= 1,	0.5
+ecolog_outfit			= 1,	0.5
+protection_outfit		= 1,	0.5
 
 ;Медикаменты
-bandage					= 1, 1
-medkit					= 1, 1
-antirad					= 1, 1
+bandage					= 1,	0.7
+medkit					= 1,	0.7
+antirad					= 1,	0.7
 
 ;Детали монстров
-mutant_flesh_eye		= 1, 1
-mutant_boar_leg			= 1, 1
-mutant_dog_tail			= 1, 1
-mutant_psevdodog_tail	= 1, 1
-mutant_krovosos_jaw		= 1, 1
-mutant_burer_hand		= 1, 1
-mutant_zombie_hand		= 1, 1
-mutant_snork_leg		= 1, 1
+mutant_flesh_eye		= 0,	0 ;NO TRADE
+mutant_boar_leg			= 0,	0 ;NO TRADE
+mutant_dog_tail			= 0,	0 ;NO TRADE
+mutant_psevdodog_tail	= 0,	0 ;NO TRADE
+mutant_krovosos_jaw		= 0,	0 ;NO TRADE
+mutant_burer_hand		= 0,	0 ;NO TRADE
+mutant_zombie_hand		= 0,	0 ;NO TRADE
+mutant_snork_leg		= 0,	0 ;NO TRADE
 
 ;Еда
-bread					= 1, 1
-kolbasa					= 1, 1
-conserva				= 1, 1
-vodka					= 1, 1
-energy_drink			= 1, 1
+bread					= 0.2,	0.1
+kolbasa					= 0.2,	0.1
+conserva				= 0.2,	0.1
+vodka					= 0.2,	0.1
+energy_drink			= 0.2,	0.1
 
 ;Предметы
-device_torch			= 1, 1
-detector_simple			= 1, 1
-detector_advances		= 1, 1
-detector_elite			= 1, 1
-device_pda				= 1, 1
-
-
-
-;*************************************************
-;  GARBAGE SETTINGS
-;*************************************************
-[generic_buy_garbage]
-;Артефакты
-af_medusa				= 1, 1
-af_cristall_flower		= 1, 1
-af_night_star			= 1, 1
-af_vyvert				= 1, 1
-af_gravi				= 1, 1
-af_gold_fish			= 1, 1
-af_blood				= 1, 1
-af_mincer_meat			= 1, 1
-af_soul					= 1, 1
-af_electra_sparkler		= 1, 1
-af_electra_flash		= 1, 1
-af_electra_moonlight	= 1, 1
-af_rusty_thorn			= 1, 1
-af_rusty_kristall		= 1, 1
-af_rusty_sea-urchin		= 1, 1
-af_ameba_slime			= 1, 1
-af_ameba_slug			= 1, 1
-af_ameba_mica			= 1, 1
-af_drops				= 1, 1
-af_fireball				= 1, 1
-af_cristall				= 1, 1
-af_dummy_glassbeads		= 1, 1
-af_dummy_pellicle		= 1, 1
-af_dummy_battery		= 1, 1
-af_dummy_dummy			= 1, 1
-af_dummy_spring			= 1, 1
-af_fuzz_kolobok			= 1, 1
-
-;Аммуниция
-9x18_fmj				= 1, 1
-9x18_pmm				= 1, 1
-9x19_pbp				= 1, 1
-9x19_fmj				= 1, 1
-11.43x23_hydro			= 1, 1
-11.43x23_fmj			= 1, 1
-12x70_buck				= 1, 1
-12x76_dart				= 1, 1
-12x76_zhekan			= 1, 1
-5.45x39_ap				= 1, 1
-5.45x39_fmj				= 1, 1
-9x39_sp5				= 1, 1
-9x39_ap					= 1, 1
-9x39_pab9				= 1, 1
-5.56x45_ss190			= 1, 1
-5.56x45_ap				= 1, 1
-7.62x54_7h14			= 1, 1
-7.62x54_7h1				= 1, 1
-7.62x54_ap				= 1, 1
-ammo_og-7b				= 1, 1
-ammo_vog-25p			= 1, 1
-ammo_vog-25				= 1, 1
-grenade_f1				= 1, 1
-grenade_rgd5			= 1, 1
-ammo_m209				= 1, 1
-
-;Оружие
-wpn_pm					= 1, 1
-wpn_pb					= 1, 1
-wpn_fort				= 1, 1
-wpn_hpsa				= 1, 1
-wpn_beretta				= 1, 1
-wpn_walther				= 1, 1
-wpn_sig220				= 1, 1
-wpn_colt1911			= 1, 1
-wpn_usp					= 1, 1
-wpn_desert_eagle		= 1, 1
-wpn_bm16				= 1, 1
-wpn_toz34				= 1, 1
-wpn_wincheaster1300		= 1, 1
-wpn_spas12				= 1, 1
-wpn_ak74u				= 1, 1
-wpn_mp5					= 1, 1
-wpn_ak74				= 1, 1
-wpn_abakan				= 1, 1
-wpn_l85					= 1, 1
-wpn_lr300				= 1, 1
-wpn_sig550				= 1, 1
-wpn_groza				= 1, 1
-wpn_val					= 1, 1
-wpn_vintorez			= 1, 1
-wpn_svu					= 1, 1
-wpn_svd					= 1, 1
-wpn_rg-6				= 1, 1
-wpn_rpg7				= 1, 1
-
-;ADDONS
-wpn_addon_scope					= 1, 1
-wpn_addon_scope_susat			= 1, 1
-wpn_addon_silencer				= 1, 1
-wpn_addon_grenade_launcher		= 1, 1
-wpn_addon_grenade_launcher_m203 = 1, 1
-
-;Броники
-bandit_outfit			= 1, 1
-killer_outfit			= 1, 1
-monolit_outfit			= 1, 1
-soldier_outfit			= 1, 1
-specops_outfit			= 1, 1
-military_outfit			= 1, 1
-stalker_outfit			= 1, 1
-scientific_outfit		= 1, 1
-exo_outfit				= 1, 1
-svoboda_light_outfit	= 1, 1
-svoboda_heavy_outfit	= 1, 1
-dolg_outfit				= 1, 1
-dolg_scientific_outfit	= 1, 1
-ecolog_outfit			= 1, 1
-protection_outfit		= 1, 1
-
-;Медикаменты
-bandage					= 1, 1
-medkit					= 1, 1
-antirad					= 1, 1
-
-;Детали монстров
-mutant_flesh_eye		= 1, 1
-mutant_boar_leg			= 1, 1
-mutant_dog_tail			= 1, 1
-mutant_psevdodog_tail	= 1, 1
-mutant_krovosos_jaw		= 1, 1
-mutant_burer_hand		= 1, 1
-mutant_zombie_hand		= 1, 1
-mutant_snork_leg		= 1, 1
-
-;Еда
-bread					= 1, 1
-kolbasa					= 1, 1
-conserva				= 1, 1
-vodka					= 1, 1
-energy_drink			= 1, 1
-
-;Предметы
-device_torch			= 1, 1
-detector_simple			= 1, 1
-detector_advances		= 1, 1
-detector_elite			= 1, 1
-device_pda				= 1, 1
-
-
-
-;*************************************************
-;  BAR SETTINGS
-;*************************************************
-[generic_buy_bar]
-;Артефакты
-af_medusa				= 1, 1
-af_cristall_flower		= 1, 1
-af_night_star			= 1, 1
-af_vyvert				= 1, 1
-af_gravi				= 1, 1
-af_gold_fish			= 1, 1
-af_blood				= 1, 1
-af_mincer_meat			= 1, 1
-af_soul					= 1, 1
-af_electra_sparkler		= 1, 1
-af_electra_flash		= 1, 1
-af_electra_moonlight	= 1, 1
-af_rusty_thorn			= 1, 1
-af_rusty_kristall		= 1, 1
-af_rusty_sea-urchin		= 1, 1
-af_ameba_slime			= 1, 1
-af_ameba_slug			= 1, 1
-af_ameba_mica			= 1, 1
-af_drops				= 1, 1
-af_fireball				= 1, 1
-af_cristall				= 1, 1
-af_dummy_glassbeads		= 1, 1
-af_dummy_pellicle		= 1, 1
-af_dummy_battery		= 1, 1
-af_dummy_dummy			= 1, 1
-af_dummy_spring			= 1, 1
-af_fuzz_kolobok			= 1, 1
-
-;Аммуниция
-9x18_fmj				= 1, 1
-9x18_pmm				= 1, 1
-9x19_pbp				= 1, 1
-9x19_fmj				= 1, 1
-11.43x23_hydro			= 1, 1
-11.43x23_fmj			= 1, 1
-12x70_buck				= 1, 1
-12x76_dart				= 1, 1
-12x76_zhekan			= 1, 1
-5.45x39_ap				= 1, 1
-5.45x39_fmj				= 1, 1
-9x39_sp5				= 1, 1
-9x39_ap					= 1, 1
-9x39_pab9				= 1, 1
-5.56x45_ss190			= 1, 1
-5.56x45_ap				= 1, 1
-7.62x54_7h14			= 1, 1
-7.62x54_7h1				= 1, 1
-7.62x54_ap				= 1, 1
-ammo_og-7b				= 1, 1
-ammo_vog-25p			= 1, 1
-ammo_vog-25				= 1, 1
-grenade_f1				= 1, 1
-grenade_rgd5			= 1, 1
-ammo_m209				= 1, 1
-
-;Оружие
-wpn_pm					= 1, 1
-wpn_pb					= 1, 1
-wpn_fort				= 1, 1
-wpn_hpsa				= 1, 1
-wpn_beretta				= 1, 1
-wpn_walther				= 1, 1
-wpn_sig220				= 1, 1
-wpn_colt1911			= 1, 1
-wpn_usp					= 1, 1
-wpn_desert_eagle		= 1, 1
-wpn_bm16				= 1, 1
-wpn_toz34				= 1, 1
-wpn_wincheaster1300		= 1, 1
-wpn_spas12				= 1, 1
-wpn_ak74u				= 1, 1
-wpn_mp5					= 1, 1
-wpn_ak74				= 1, 1
-wpn_abakan				= 1, 1
-wpn_l85					= 1, 1
-wpn_lr300				= 1, 1
-wpn_sig550				= 1, 1
-wpn_groza				= 1, 1
-wpn_val					= 1, 1
-wpn_vintorez			= 1, 1
-wpn_svu					= 1, 1
-wpn_svd					= 1, 1
-wpn_rg-6				= 1, 1
-wpn_rpg7				= 1, 1
-
-;ADDONS
-wpn_addon_scope					= 1, 1
-wpn_addon_scope_susat			= 1, 1
-wpn_addon_silencer				= 1, 1
-wpn_addon_grenade_launcher		= 1, 1
-wpn_addon_grenade_launcher_m203 = 1, 1
-
-;Броники
-bandit_outfit			= 1, 1
-killer_outfit			= 1, 1
-monolit_outfit			= 1, 1
-soldier_outfit			= 1, 1
-specops_outfit			= 1, 1
-military_outfit			= 1, 1
-stalker_outfit			= 1, 1
-scientific_outfit		= 1, 1
-exo_outfit				= 1, 1
-svoboda_light_outfit	= 1, 1
-svoboda_heavy_outfit	= 1, 1
-dolg_outfit				= 1, 1
-dolg_scientific_outfit	= 1, 1
-ecolog_outfit			= 1, 1
-protection_outfit		= 1, 1
-
-;Медикаменты
-bandage					= 1, 1
-medkit					= 1, 1
-antirad					= 1, 1
-
-;Детали монстров
-mutant_flesh_eye		= 1, 1
-mutant_boar_leg			= 1, 1
-mutant_dog_tail			= 1, 1
-mutant_psevdodog_tail	= 1, 1
-mutant_krovosos_jaw		= 1, 1
-mutant_burer_hand		= 1, 1
-mutant_zombie_hand		= 1, 1
-mutant_snork_leg		= 1, 1
-
-;Еда
-bread					= 1, 1
-kolbasa					= 1, 1
-conserva				= 1, 1
-vodka					= 1, 1
-energy_drink			= 1, 1
-
-;Предметы
-device_torch			= 1, 1
-detector_simple			= 1, 1
-detector_advances		= 1, 1
-detector_elite			= 1, 1
-device_pda				= 1, 1
-
-
-
-;*************************************************
-;  YANTAR SETTINGS
-;*************************************************
-[generic_buy_yantar]
-;Артефакты
-af_medusa				= 1, 1
-af_cristall_flower		= 1, 1
-af_night_star			= 1, 1
-af_vyvert				= 1, 1
-af_gravi				= 1, 1
-af_gold_fish			= 1, 1
-af_blood				= 1, 1
-af_mincer_meat			= 1, 1
-af_soul					= 1, 1
-af_electra_sparkler		= 1, 1
-af_electra_flash		= 1, 1
-af_electra_moonlight	= 1, 1
-af_rusty_thorn			= 1, 1
-af_rusty_kristall		= 1, 1
-af_rusty_sea-urchin		= 1, 1
-af_ameba_slime			= 1, 1
-af_ameba_slug			= 1, 1
-af_ameba_mica			= 1, 1
-af_drops				= 1, 1
-af_fireball				= 1, 1
-af_cristall				= 1, 1
-af_dummy_glassbeads		= 1, 1
-af_dummy_pellicle		= 1, 1
-af_dummy_battery		= 1, 1
-af_dummy_dummy			= 1, 1
-af_dummy_spring			= 1, 1
-af_fuzz_kolobok			= 1, 1
-
-;Аммуниция
-9x18_fmj				= 1, 1
-9x18_pmm				= 1, 1
-9x19_pbp				= 1, 1
-9x19_fmj				= 1, 1
-11.43x23_hydro			= 1, 1
-11.43x23_fmj			= 1, 1
-12x70_buck				= 1, 1
-12x76_dart				= 1, 1
-12x76_zhekan			= 1, 1
-5.45x39_ap				= 1, 1
-5.45x39_fmj				= 1, 1
-9x39_sp5				= 1, 1
-9x39_ap					= 1, 1
-9x39_pab9				= 1, 1
-5.56x45_ss190			= 1, 1
-5.56x45_ap				= 1, 1
-7.62x54_7h14			= 1, 1
-7.62x54_7h1				= 1, 1
-7.62x54_ap				= 1, 1
-ammo_og-7b				= 1, 1
-ammo_vog-25p			= 1, 1
-ammo_vog-25				= 1, 1
-grenade_f1				= 1, 1
-grenade_rgd5			= 1, 1
-ammo_m209				= 1, 1
-
-;Оружие
-wpn_pm					= 1, 1
-wpn_pb					= 1, 1
-wpn_fort				= 1, 1
-wpn_hpsa				= 1, 1
-wpn_beretta				= 1, 1
-wpn_walther				= 1, 1
-wpn_sig220				= 1, 1
-wpn_colt1911			= 1, 1
-wpn_usp					= 1, 1
-wpn_desert_eagle		= 1, 1
-wpn_bm16				= 1, 1
-wpn_toz34				= 1, 1
-wpn_wincheaster1300		= 1, 1
-wpn_spas12				= 1, 1
-wpn_ak74u				= 1, 1
-wpn_mp5					= 1, 1
-wpn_ak74				= 1, 1
-wpn_abakan				= 1, 1
-wpn_l85					= 1, 1
-wpn_lr300				= 1, 1
-wpn_sig550				= 1, 1
-wpn_groza				= 1, 1
-wpn_val					= 1, 1
-wpn_vintorez			= 1, 1
-wpn_svu					= 1, 1
-wpn_svd					= 1, 1
-wpn_rg-6				= 1, 1
-wpn_rpg7				= 1, 1
-
-;ADDONS
-wpn_addon_scope					= 1, 1
-wpn_addon_scope_susat			= 1, 1
-wpn_addon_silencer				= 1, 1
-wpn_addon_grenade_launcher		= 1, 1
-wpn_addon_grenade_launcher_m203 = 1, 1
-
-;Броники
-bandit_outfit			= 1, 1
-killer_outfit			= 1, 1
-monolit_outfit			= 1, 1
-soldier_outfit			= 1, 1
-specops_outfit			= 1, 1
-military_outfit			= 1, 1
-stalker_outfit			= 1, 1
-scientific_outfit		= 1, 1
-exo_outfit				= 1, 1
-svoboda_light_outfit	= 1, 1
-svoboda_heavy_outfit	= 1, 1
-dolg_outfit				= 1, 1
-dolg_scientific_outfit	= 1, 1
-ecolog_outfit			= 1, 1
-protection_outfit		= 1, 1
-
-;Медикаменты
-bandage					= 1, 1
-medkit					= 1, 1
-antirad					= 1, 1
-
-;Детали монстров
-mutant_flesh_eye		= 1, 1
-mutant_boar_leg			= 1, 1
-mutant_dog_tail			= 1, 1
-mutant_psevdodog_tail	= 1, 1
-mutant_krovosos_jaw		= 1, 1
-mutant_burer_hand		= 1, 1
-mutant_zombie_hand		= 1, 1
-mutant_snork_leg		= 1, 1
-
-;Еда
-bread					= 1, 1
-kolbasa					= 1, 1
-conserva				= 1, 1
-vodka					= 1, 1
-energy_drink			= 1, 1
-
-;Предметы
-device_torch			= 1, 1
-detector_simple			= 1, 1
-detector_advances		= 1, 1
-detector_elite			= 1, 1
-device_pda				= 1, 1
-
-
-
-;*************************************************
-;  RADAR SETTINGS
-;*************************************************
-[generic_buy_radar]
-;Артефакты
-af_medusa				= 1, 1
-af_cristall_flower		= 1, 1
-af_night_star			= 1, 1
-af_vyvert				= 1, 1
-af_gravi				= 1, 1
-af_gold_fish			= 1, 1
-af_blood				= 1, 1
-af_mincer_meat			= 1, 1
-af_soul					= 1, 1
-af_electra_sparkler		= 1, 1
-af_electra_flash		= 1, 1
-af_electra_moonlight	= 1, 1
-af_rusty_thorn			= 1, 1
-af_rusty_kristall		= 1, 1
-af_rusty_sea-urchin		= 1, 1
-af_ameba_slime			= 1, 1
-af_ameba_slug			= 1, 1
-af_ameba_mica			= 1, 1
-af_drops				= 1, 1
-af_fireball				= 1, 1
-af_cristall				= 1, 1
-af_dummy_glassbeads		= 1, 1
-af_dummy_pellicle		= 1, 1
-af_dummy_battery		= 1, 1
-af_dummy_dummy			= 1, 1
-af_dummy_spring			= 1, 1
-af_fuzz_kolobok			= 1, 1
-
-;Аммуниция
-9x18_fmj				= 1, 1
-9x18_pmm				= 1, 1
-9x19_pbp				= 1, 1
-9x19_fmj				= 1, 1
-11.43x23_hydro			= 1, 1
-11.43x23_fmj			= 1, 1
-12x70_buck				= 1, 1
-12x76_dart				= 1, 1
-12x76_zhekan			= 1, 1
-5.45x39_ap				= 1, 1
-5.45x39_fmj				= 1, 1
-9x39_sp5				= 1, 1
-9x39_ap					= 1, 1
-9x39_pab9				= 1, 1
-5.56x45_ss190			= 1, 1
-5.56x45_ap				= 1, 1
-7.62x54_7h14			= 1, 1
-7.62x54_7h1				= 1, 1
-7.62x54_ap				= 1, 1
-ammo_og-7b				= 1, 1
-ammo_vog-25p			= 1, 1
-ammo_vog-25				= 1, 1
-grenade_f1				= 1, 1
-grenade_rgd5			= 1, 1
-ammo_m209				= 1, 1
-
-;Оружие
-wpn_pm					= 1, 1
-wpn_pb					= 1, 1
-wpn_fort				= 1, 1
-wpn_hpsa				= 1, 1
-wpn_beretta				= 1, 1
-wpn_walther				= 1, 1
-wpn_sig220				= 1, 1
-wpn_colt1911			= 1, 1
-wpn_usp					= 1, 1
-wpn_desert_eagle		= 1, 1
-wpn_bm16				= 1, 1
-wpn_toz34				= 1, 1
-wpn_wincheaster1300		= 1, 1
-wpn_spas12				= 1, 1
-wpn_ak74u				= 1, 1
-wpn_mp5					= 1, 1
-wpn_ak74				= 1, 1
-wpn_abakan				= 1, 1
-wpn_l85					= 1, 1
-wpn_lr300				= 1, 1
-wpn_sig550				= 1, 1
-wpn_groza				= 1, 1
-wpn_val					= 1, 1
-wpn_vintorez			= 1, 1
-wpn_svu					= 1, 1
-wpn_svd					= 1, 1
-wpn_rg-6				= 1, 1
-wpn_rpg7				= 1, 1
-
-;ADDONS
-wpn_addon_scope					= 1, 1
-wpn_addon_scope_susat			= 1, 1
-wpn_addon_silencer				= 1, 1
-wpn_addon_grenade_launcher		= 1, 1
-wpn_addon_grenade_launcher_m203 = 1, 1
-
-;Броники
-bandit_outfit			= 1, 1
-killer_outfit			= 1, 1
-monolit_outfit			= 1, 1
-soldier_outfit			= 1, 1
-specops_outfit			= 1, 1
-military_outfit			= 1, 1
-stalker_outfit			= 1, 1
-scientific_outfit		= 1, 1
-exo_outfit				= 1, 1
-svoboda_light_outfit	= 1, 1
-svoboda_heavy_outfit	= 1, 1
-dolg_outfit				= 1, 1
-dolg_scientific_outfit	= 1, 1
-ecolog_outfit			= 1, 1
-protection_outfit		= 1, 1
-
-;Медикаменты
-bandage					= 1, 1
-medkit					= 1, 1
-antirad					= 1, 1
-
-;Детали монстров
-mutant_flesh_eye		= 1, 1
-mutant_boar_leg			= 1, 1
-mutant_dog_tail			= 1, 1
-mutant_psevdodog_tail	= 1, 1
-mutant_krovosos_jaw		= 1, 1
-mutant_burer_hand		= 1, 1
-mutant_zombie_hand		= 1, 1
-mutant_snork_leg		= 1, 1
-
-;Еда
-bread					= 1, 1
-kolbasa					= 1, 1
-conserva				= 1, 1
-vodka					= 1, 1
-energy_drink			= 1, 1
-
-;Предметы
-device_torch			= 1, 1
-detector_simple			= 1, 1
-detector_advances		= 1, 1
-detector_elite			= 1, 1
-device_pda				= 1, 1
+device_torch			= 0.2,	0.1
+detector_simple			= 0.2,	0.1
+detector_advances		= 0.2,	0.1
+detector_elite			= 0.2,	0.1
+device_pda				= 0,	0 ;NO TRADE
