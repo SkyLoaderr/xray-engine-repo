@@ -96,6 +96,8 @@ void CRadioactiveZone::UpdateWorkload					(u32	dt)
 
 				SHit HS;
 				HS.PACKET_TYPE	= GE_HIT;
+				HS.DestID = (*it).object->ID();
+				HS.Time = Level().timeServer();
 				HS.whoID  =ID();
 				HS.weaponID = ID();
 				HS.dir = Fvector().set(0,0,0);
