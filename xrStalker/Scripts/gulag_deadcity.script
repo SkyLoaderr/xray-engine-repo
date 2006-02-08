@@ -249,7 +249,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 
     -- snipers
     for i = 1, 3 do
-	    t = { section = "logic@" .. gname .. "_roof_sniper" .. i,
+	    t = { section = "logic@" .. gname .. "_sniper" .. i,
 		    idle = 0,
 		    prior = 11, state = {0},
 		    squad = squad, group = groups[8],
@@ -259,11 +259,11 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 	    }
 	    table.insert(sj, t)
 
-	    ltx = ltx.."[logic@" .. gname .. "_roof_sniper" .. i .. "]\n" ..
+	    ltx = ltx.."[logic@" .. gname .. "_sniper" .. i .. "]\n" ..
                    "active              = camper@" .. gname .. "_roof_sniper" .. i .. "\n" ..
                    "combat_ignore       = combat_ignore\n" ..
 
-                   "[camper@" .. gname .. "_roof_sniper" .. i .. "]\n" ..
+                   "[camper@" .. gname .. "_sniper" .. i .. "]\n" ..
                    "path_walk                   = sniper" .. i .. "_walk\n" ..
                    "path_look                   = sniper" .. i .. "_look\n" ..
                    "sniper                      = true\n" ..
