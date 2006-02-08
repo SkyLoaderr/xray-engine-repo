@@ -255,30 +255,26 @@ void __fastcall TfrmSoundLib::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+void __fastcall TfrmSoundLib::OnControlClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: m_Snd.play(0,sm_2D); 	break;
     case 1: m_Snd.stop();			break;
     case 2:{ 
-    	ButtonValue* B = dynamic_cast<ButtonValue*>(sender); VERIFY(B);
     	bAutoPlay=!bAutoPlay; 
-        B->value[V->btn_num] = shared_str().sprintf("Auto (%s)",bAutoPlay?"on":"off");
+        V->value[V->btn_num] = shared_str().sprintf("Auto (%s)",bAutoPlay?"on":"off");
     }break;
 	}
     bModif = false;
 }
 //------------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::OnControl2Click(PropValue* sender, bool& bModif, bool& bSafe)
+void __fastcall TfrmSoundLib::OnControl2Click(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{
-    	ButtonValue* B = dynamic_cast<ButtonValue*>(sender); VERIFY(B);
     	bAutoPlay=!bAutoPlay; 
-        B->value[V->btn_num] = bAutoPlay?"on":"off";
+        V->value[V->btn_num] = bAutoPlay?"on":"off";
     }break;
 	}
     bModif = false;
@@ -339,10 +335,9 @@ void  TfrmSoundLib::OnAttenuationDraw(CanvasValue* sender, void* _canvas, const 
     }
 }
 
-void __stdcall TfrmSoundLib::OnAttClick(PropValue* sender, bool& bModif, bool& bSafe)
+void __stdcall TfrmSoundLib::OnAttClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
     bModif = true;
-	ButtonValue* V 			= dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     ESoundThumbnail* thm	= m_THM_Current.back();
     switch (V->btn_num){
     case 0:{

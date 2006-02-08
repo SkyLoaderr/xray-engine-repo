@@ -94,9 +94,8 @@ void CheckValidate(ShortcutValue*, const xr_shortcut& new_val, bool& result)
     }
 }
 
-void CCustomPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModif, bool&)
+void CCustomPreferences::OnKeyboardCommonFileClick(ButtonValue* B, bool& bModif, bool&)
 {
-	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;
     xr_string fn;
 	switch(B->btn_num){

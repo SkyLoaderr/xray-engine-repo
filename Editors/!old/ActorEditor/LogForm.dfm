@@ -23,7 +23,7 @@ object frmLog: TfrmLog
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 171
+    Top = 178
     Width = 392
     Height = 20
     Align = alBottom
@@ -106,7 +106,7 @@ object frmLog: TfrmLog
     Left = 0
     Top = 0
     Width = 392
-    Height = 171
+    Height = 178
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
@@ -114,7 +114,7 @@ object frmLog: TfrmLog
       Left = 0
       Top = 0
       Width = 392
-      Height = 171
+      Height = 178
       Style = lbOwnerDrawFixed
       AutoComplete = False
       Align = alClient

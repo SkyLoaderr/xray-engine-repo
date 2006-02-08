@@ -60,7 +60,7 @@ public:
     // objects
     Flags32			object_flags;
 protected:
-	void 			OnKeyboardCommonFileClick	(PropValue* value, bool& bModif, bool& bSafe);
+	void 			OnKeyboardCommonFileClick	(ButtonValue* value, bool& bModif, bool& bSafe);
 	void 	__stdcall  OnClose	();
     void			ApplyValues			();
 

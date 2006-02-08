@@ -297,7 +297,7 @@ void TfrmImageLib::OnTypeChange(PropValue* )
 	UpdateProperties();
 }
 
-void TfrmImageLib::OnCubeMapBtnClick(PropValue* value, bool& bModif, bool& )
+void TfrmImageLib::OnCubeMapBtnClick(ButtonValue* value, bool& bModif, bool& )
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;

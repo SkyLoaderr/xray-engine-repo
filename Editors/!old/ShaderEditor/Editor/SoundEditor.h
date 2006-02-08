@@ -85,9 +85,9 @@ private:	// User declarations
     static FS_FileSet	modif_map;
 	ref_sound			m_Snd;
     void				PlaySound			(LPCSTR name, u32& size, u32& time);
-	void __stdcall  	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
-	void __stdcall  	OnControl2Click		(PropValue* sender, bool& bModif, bool& bSafe);
-	void __stdcall  	OnAttClick			(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnControlClick		(ButtonValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnControl2Click		(ButtonValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnAttClick			(ButtonValue* sender, bool& bModif, bool& bSafe);
     void __stdcall  	OnAttenuationDraw	(CanvasValue* sender, void* _canvas, const Irect& _rect);
 
     void				AppendModif			(LPCSTR nm);

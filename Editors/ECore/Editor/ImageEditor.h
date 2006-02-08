@@ -60,7 +60,7 @@ private:
     void 				InitItemsList		();
 	void __stdcall  	OnItemsFocused		(ListItemsVec& items);
 
-    void __stdcall  	OnCubeMapBtnClick	(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall  	OnCubeMapBtnClick	(ButtonValue* value, bool& bModif, bool& bSafe);
     
 	enum{
     	flUpdateProperties = (1<<0),
