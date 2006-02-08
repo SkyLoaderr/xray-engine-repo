@@ -738,7 +738,7 @@ MotionID CKinematicsAnimated::ID_Motion(LPCSTR  N, u16 slot)
 {
 	MotionID 				motion_ID;
     if (slot<MAX_ANIM_SLOT){
-        shared_motions* s_mots	= &m_Motions[slot];
+        shared_motions* s_mots	= &m_Motions[slot].motions;
         // find in cycles
         accel_map::iterator I 	= s_mots->cycle()->find(LPSTR(N));
         if (I!=s_mots->cycle()->end())	motion_ID.set(slot,I->second);

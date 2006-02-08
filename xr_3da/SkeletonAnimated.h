@@ -167,9 +167,9 @@ public:
 //	LPCSTR						LL_MotionDefName_dbg	(LPVOID		ptr);
 #endif
 #ifdef _EDITOR
-    u32							LL_CycleCount	(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].cycle()->size(); return cnt;}
-    u32							LL_FXCount		(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].fx()->size(); return cnt;}
-	accel_map*					LL_Motions		(u32 slot){return m_Motions[slot].motion_map();}
+    u32							LL_CycleCount	(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].motions.cycle()->size(); return cnt;}
+    u32							LL_FXCount		(){u32 cnt=0; for (u32 k=0; k<m_Motions.size(); k++) cnt+=m_Motions[k].motions.fx()->size(); return cnt;}
+	accel_map*					LL_Motions		(u32 slot){return m_Motions[slot].motions.motion_map();}
 	MotionID					ID_Motion		(LPCSTR  N, u16 slot);
 #endif
 	u16							LL_MotionsSlotCount(){return (u16)m_Motions.size();}
