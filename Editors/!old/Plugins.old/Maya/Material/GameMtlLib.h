@@ -167,8 +167,8 @@ public:
     PropValue*			propCollideParticles;
     PropValue*			propCollideMarks;
     void __stdcall	 	OnFlagChange	(PropValue* sender);
-	void __stdcall	 	OnParentClick	(PropValue* sender, bool& bModif, bool& bSafe);
-	void __stdcall	 	OnCommandClick	(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall	 	OnParentClick	(ButtonValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall	 	OnCommandClick	(ButtonValue* sender, bool& bModif, bool& bSafe);
     void __stdcall	 	FillChooseMtl	(ChooseItemVec& items, void* param);
 #endif
 public:

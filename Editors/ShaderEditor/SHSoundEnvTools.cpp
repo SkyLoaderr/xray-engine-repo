@@ -67,9 +67,8 @@ void CSHSoundEnvTools::OnChangeWAV	(PropValue* prop)
 	if (bPlay) 		m_PreviewSnd.play	(0,sm_Looped);
 }
 
-void CSHSoundEnvTools::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+void CSHSoundEnvTools::OnControlClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: m_PreviewSnd.play	(0,sm_Looped);	break;
     case 1: m_PreviewSnd.stop	();				break;
@@ -272,12 +271,11 @@ void CSHSoundEnvTools::ResetCurrentItem()
 	UseEnvironment	();
 }
 
-void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender, bool& bModif, bool& bSafe)
+void __fastcall CSHSoundEnvTools::OnRevResetClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: m_Env->set_identity();	break;
-    case 1: OnEnvChange(sender);    break;
+    case 1: OnEnvChange(V);    		break;
 	}
     Ext.m_ItemProps->RefreshForm();
     Modified();

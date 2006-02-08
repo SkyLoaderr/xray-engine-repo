@@ -19,11 +19,11 @@ class CSHSoundEnvTools: public ISHTools
     shared_str					m_SoundName;
     CSound_params				m_Params;
     ref_sound					m_PreviewSnd;
-	void __stdcall  			OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  			OnControlClick		(ButtonValue* sender, bool& bModif, bool& bSafe);
 	void __stdcall  			OnChangeWAV			(PropValue* prop);
 
 
-    void __stdcall  			OnRevResetClick		(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall  			OnRevResetClick		(ButtonValue* sender, bool& bModif, bool& bSafe);
 	void __stdcall  			OnEnvSizeChange		(PropValue* sender);
 	void __stdcall  			OnEnvChange			(PropValue* sender);
 public:

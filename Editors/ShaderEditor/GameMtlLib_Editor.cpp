@@ -174,10 +174,9 @@ void __fastcall SGameMtlPair::FillChooseMtl(ChooseItemVec& items, void* param)
     }
 }
 
-void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, bool& bSafe)
+void __fastcall SGameMtlPair::OnParentClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
     bModif = false;
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{
         LPCSTR MP=0;
@@ -205,10 +204,9 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, boo
 	}
 }
 
-void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif, bool& bSafe)
+void __fastcall SGameMtlPair::OnCommandClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
     bModif = false;
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{
         LPCSTR MP=0;
