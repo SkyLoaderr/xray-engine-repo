@@ -6,6 +6,7 @@
 #include "../bone.h"
 #include "clsid_game.h"
 #include "game_base_space.h"
+#include "Hit.h"
 
 
 CRadioactiveZone::CRadioactiveZone(void) 
@@ -89,19 +90,24 @@ void CRadioactiveZone::UpdateWorkload					(u32	dt)
 				l_P.write_start();
 				l_P.read_start();
 
-				l_P.w_u16	(ID());
-				l_P.w_u16	(ID());
-				l_P.w_dir	(Fvector().set(0,0,0));
 				float dist = (*it).object->Position().distance_to(pos);
-				float power = Power(dist);
+				float power = Power(dist)*dt/1000;
 ///				Msg("Zone Dist %f, Radiation Power %f, ", dist, power);
-				l_P.w_float	(power/1000*dt);
-				l_P.w_s16	(BI_NONE);
-				l_P.w_vec3	(Fvector().set(0,0,0));
-				l_P.w_float	(0.0f);
-				l_P.w_u16	(ALife::eHitTypeRadiation);
 
-				(*it).object->OnEvent(l_P, GE_HIT);
+				SHit HS;
+				HS.PACKET_TYPE	= GE_HIT;
+				HS.whoID  =ID();
+				HS.weaponID = ID();
+				HS.dir = Fvector().set(0,0,0);
+				HS.power = power;
+				HS.boneID = BI_NONE;
+				HS.p_in_bone_space = Fvector().set(0, 0, 0);
+				HS.impulse = 0.0f;
+				HS.hit_type = ALife::eHitTypeRadiation;
+				
+				HS.Write_Packet_Cont(l_P);
+
+				(*it).object->OnEvent(l_P, HS.PACKET_TYPE);
 				//=====================================
 			};
 		}

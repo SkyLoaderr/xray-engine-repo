@@ -29,17 +29,25 @@ SHit::SHit()
 }
 void SHit::invalidate()
 {
+	Time					= 0;
+	PACKET_TYPE				= GE_HIT;
+	DestID					= 0;
+
 	power					=-dInfinity								;
 	dir						.set(-dInfinity,-dInfinity,-dInfinity)	;
 	who						=NULL									;
 	whoID					= 0;
+	weaponID				= 0;
+
 	boneID					=BI_NONE								;
 	p_in_bone_space		.set(-dInfinity,-dInfinity,-dInfinity)	;
+
 	impulse					=-dInfinity								;
 	hit_type				=ALife::eHitTypeMax						;
-	ap						= 0.0f;
-	PACKET_TYPE				= 0;
+
+	ap						= 0.0f;	
 }
+
 bool SHit::is_valide() const
 {
 	return hit_type!=ALife::eHitTypeMax;
@@ -78,13 +86,8 @@ void SHit::Read_Packet_Cont		(NET_Packet	Packet)
 	}
 }
 
-void SHit::Write_Packet			(NET_Packet	&Packet)
+void SHit::Write_Packet_Cont		(NET_Packet	&Packet)
 {
-	Packet.w_begin	(M_EVENT);
-	Packet.w_u32		(Time);
-	Packet.w_u16		(u16(PACKET_TYPE&0xffff));
-	Packet.w_u16		(u16(DestID&0xffff));
-
 	Packet.w_u16		(whoID);
 	Packet.w_u16		(weaponID);
 	Packet.w_dir		(dir);
@@ -102,6 +105,15 @@ void SHit::Write_Packet			(NET_Packet	&Packet)
 		Packet.w_u32(BulletID);
 		Packet.w_u32(SenderID);
 	}
+}
+void SHit::Write_Packet			(NET_Packet	&Packet)
+{
+	Packet.w_begin	(M_EVENT);
+	Packet.w_u32		(Time);
+	Packet.w_u16		(u16(PACKET_TYPE&0xffff));
+	Packet.w_u16		(u16(DestID&0xffff));
+
+	Write_Packet_Cont (Packet);	
 };
 
 #ifdef DEBUG

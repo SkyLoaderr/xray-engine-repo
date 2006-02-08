@@ -405,12 +405,14 @@ INT	g_sv_Pending_Wait_Time = 10000;
 INT g_sv_Wait_For_Players_Ready = 1;
 bool game_sv_Deathmatch::checkForRoundStart()
 {
-	if( ((Level().timeServer()-start_time))>u32(g_sv_Pending_Wait_Time) && 
-		(AllPlayers_Ready() 
+	if (m_bFastRestart ||
+		(AllPlayers_Ready() || (
 #ifdef DEBUG
-		||!g_sv_Wait_For_Players_Ready
+		!g_sv_Wait_For_Players_Ready &&
 #endif		
-		))
+		(((Level().timeServer()-start_time))>u32(g_sv_Pending_Wait_Time)))
+		)
+		)
 	{
 		if (!SwitchToNextMap() || !OnNextMap())
 		{
@@ -531,8 +533,7 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 
 BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 {
-	if (!m_server->GetServerClient()) return FALSE;
-	if (m_bFastRestart) return TRUE;
+	if (!m_server->GetServerClient()) return FALSE;	
 	// Check if all players ready
 	u32		cnt		= get_players_count	();
 	u32		ready	= 0;
@@ -2004,6 +2005,19 @@ BOOL	game_sv_Deathmatch::OnPreCreate				(CSE_Abstract* E)
 	}
 
 	return TRUE;
+};
+
+void game_sv_Deathmatch::OnCreate				(u16 eid_who)
+{
+	inherited::OnCreate(eid_who);
+
+	CSE_Abstract	*pEntity	= get_entity_from_eid(eid_who);
+	if (!pEntity) return;
+	CSE_ALifeCustomZone* pCustomZone	=	smart_cast<CSE_ALifeCustomZone*> (pEntity);
+	if (pCustomZone) 
+	{
+		pCustomZone->m_maxPower = pSettings->r_float(*pCustomZone->s_name,"max_start_power");
+	}
 };
 
 void game_sv_Deathmatch::OnPostCreate				(u16 eid_who)

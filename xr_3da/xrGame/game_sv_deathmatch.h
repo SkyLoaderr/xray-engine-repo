@@ -130,7 +130,7 @@ public:
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 
 	virtual		BOOL				OnPreCreate				(CSE_Abstract* E);
-	virtual		void				OnCreate				(u16 eid_who)	{};
+	virtual		void				OnCreate				(u16 eid_who);
 	virtual		void				OnPostCreate			(u16 id_who);
 
 	virtual		void				OnPlayerConnect			(ClientID id_who);

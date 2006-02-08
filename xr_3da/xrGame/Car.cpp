@@ -1754,27 +1754,7 @@ void CCar::CarExplode()
 	}
 
 	if(CPHDestroyable::CanDestroy())
-		CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
-	//m_damage_particles.PlayExplosion(this);
-	//m_car_sound->Explosion();
-	//
-	//if (Owner()&&OnServer())
-	//{
-	//	NET_Packet	l_P;
-	//	u_EventGen	(l_P,GE_HIT, Owner()->ID());
-	//	l_P.w_u16	(u16(Owner()->ID()));
-	//	l_P.w_u16	(ID());
-	//	l_P.w_dir	(Fvector().set(0.f,-1.f,0.f));//dir
-	//	l_P.w_float	(100.f);
-	//	l_P.w_s16	(0/*(s16)BI_NONE*/);
-	//	Fvector		position_in_bone_space={0.f,0.f,0.f};
-	//	l_P.w_vec3	(position_in_bone_space);
-	//	l_P.w_float	(0.f);
-	//	l_P.w_u16	(ALife::eHitTypeExplosion);
-	//	u_EventSend	(l_P);
-	//	/////////////////////////////////////////////////////////
-	//	return;
-	//};
+		CPHDestroyable::Destroy(ID(),"physic_destroyable_object");	
 }
 //void CCar::object_contactCallbackFun(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 //{

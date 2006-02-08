@@ -264,56 +264,7 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer_Case	(game_PlayerState* ps_hitter
 
 void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P)
 {
-	inherited::OnPlayerHitPlayer(id_hitter, id_hitted, P);
-	/*
-	CSE_Abstract*		e_hitter		= get_entity_from_eid	(id_hitter	);
-	CSE_Abstract*		e_hitted		= get_entity_from_eid	(id_hitted	);
-	
-	if (!e_hitter || !e_hitted) return;
-
-	CSE_ALifeCreatureActor*		a_hitted		= smart_cast <CSE_ALifeCreatureActor*> (e_hitted);
-	
-	if (!a_hitted) return;
-
-	game_PlayerState*	ps_hitter = get_eid(id_hitter);
-	game_PlayerState*	ps_hitted = get_eid(id_hitted);
-
-	if (!ps_hitter || !ps_hitted) return;
-
-	SHit	HitS;
-	HitS.Read_Packet(P);
-
-	HitS.whoID	= ps_hitter->GameID;
-
-	if (ps_hitted->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))//Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
-	{
-		HitS.power = 0;
-		HitS.impulse = 0;
-	}
-	//---------------------------------------
-	if (ps_hitted != ps_hitter)
-	{	
-		if (ps_hitted->team != ps_hitter->team)
-		{
-		}
-		else
-		{
-			//---------------------------------------
-			//friendly fire case
-
-			HitS.power *= m_fFriendlyFireModifier;
-			HitS.impulse *= m_fFriendlyFireModifier;
-		};
-	};
-	//---------------------------------------
-	if (HitS.power > 0)
-	{
-		ps_hitted->lasthitter = ps_hitter->GameID;
-		ps_hitted->lasthitweapon = HitS.weaponID;
-	};
-	//---------------------------------------
-	HitS.Write_Packet(P);
-	*/
+	inherited::OnPlayerHitPlayer(id_hitter, id_hitted, P);	
 };
 
 void	game_sv_TeamDeathmatch::LoadTeams			()
