@@ -18,11 +18,11 @@
 		<text align="l" x="0" y="0" font="letterica18" r="238" g="155" b="23"complex_mode="0"/>
 	</static_name>
 
-	<static_weight x="280" y="130" width="50" height="20">
+	<static_weight x="240" y="130" width="90" height="20">
 		<text align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
 	</static_weight>
 
-	<static_cost x="280" y="150" width="50" height="20">
+	<static_cost x="240" y="150" width="90" height="20">
 		<text align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
 	</static_cost>
 

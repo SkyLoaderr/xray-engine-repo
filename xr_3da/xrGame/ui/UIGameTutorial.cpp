@@ -158,11 +158,13 @@ void CUISequencer::IR_OnKeyboardRelease	(int dik)
 		m_pStoredInputReceiver->IR_OnKeyboardRelease(dik);
 }
 
+
 void CUISequencer::IR_OnKeyboardHold		(int dik)
 {
 	if(!GrabInput())
 		m_pStoredInputReceiver->IR_OnKeyboardHold(dik);
 }
+
 
 void CUISequencer::IR_OnMouseWheel		(int direction)
 {

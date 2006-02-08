@@ -6,7 +6,7 @@
 #include "NET_utils.h"
 #include "xrMessages.h"
 
-SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement,Fvector ap_in_bone_space, float aimpulse,  ALife::EHitType ahit_type, float aAP)
+SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement, Fvector ap_in_bone_space, float aimpulse,  ALife::EHitType ahit_type, float aAP)
 {
 		power					=aPower									;
 		dir						.set(adir)								;
