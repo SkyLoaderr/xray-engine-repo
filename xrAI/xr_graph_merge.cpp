@@ -10,7 +10,6 @@
 #include "xr_ini.h"
 #include "xrLevel.h"
 #include "xrAI.h"
-#include "xrGraph.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "factory_api.h"
 #include "xrCrossTable.h"

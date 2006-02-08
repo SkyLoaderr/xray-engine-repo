@@ -6,7 +6,6 @@
 #include "process.h"
 #include "xrAI.h"
 
-#include "xrGraph.h"
 #include "xr_graph_merge.h"
 #include "game_spawn_constructor.h"
 #include "xrCrossTable.h"
