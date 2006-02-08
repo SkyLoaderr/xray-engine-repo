@@ -304,8 +304,8 @@ void CUIGameDM::DisplayMoneyChange(LPCSTR deltaMoney)
 	m_pMoneyIndicator->SetMoneyChange(deltaMoney);
 }
 
-void CUIGameDM::DisplayMoneyBonus(LPCSTR bonus){
-	m_pMoneyIndicator->SetMoneyBonus(bonus);
+void CUIGameDM::DisplayMoneyBonus(KillMessageStruct bonus){
+	m_pMoneyIndicator->AddBonusMoney(bonus);
 }
 
 void CUIGameDM::ChangeTotalMoneyIndicator(LPCSTR newMoneyString)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIGameCustom.h"
+#include "ui/KillMessageStruct.h"
 
 
 class CUIDMFragList;
@@ -64,7 +65,7 @@ public:
 
 	void							ChangeTotalMoneyIndicator		(LPCSTR newMoneyString);
 	void							DisplayMoneyChange				(LPCSTR deltaMoney);
-	void							DisplayMoneyBonus				(LPCSTR bonus);
+	void							DisplayMoneyBonus				(KillMessageStruct bonus);
 	virtual void					SetFraglimit					(int local_frags, int fraglimit);
 
 			void					SetTimeMsgCaption				(LPCSTR str);
