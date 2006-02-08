@@ -523,122 +523,6 @@ void	CActor::net_Import_Physic_proceed	( )
 	CrPr_SetActivationStep(0);
 };
 
-void CActor::net_ImportInput	(NET_Packet &P)
-{
-	net_input			NI;
-
-	P.r_float			(NI.cam_yaw);
-	P.r_float			(NI.cam_pitch);
-	P.r_float			(NI.cam_roll);
-	//-----------------------------------
-	NetInput_Apply(&NI);
-};
-
-void CActor::NetInput_Save()
-{
-	net_input	NI;
-
-	//----------- for E3 -----------------------------
-//	if (Local() && OnClient()) return;
-	//-------------------------------------------------
-
-//	if (getSVU() || !g_Alive()) return; //don't need to store/send input on server
-	if (OnServer()) return;
-
-	//Store Input
-	NI.m_dwTimeStamp		= Level().timeServer();
-	NI.mstate_wishful		= mstate_wishful;
-
-	NI.cam_mode				= u8(cam_active);
-	NI.cam_yaw				= cam_Active()->yaw;
-	NI.cam_pitch			= cam_Active()->pitch;
-	NI.cam_roll				= unaffected_r_torso.roll;	
-
-	if (!NET_InputStack.empty() && NET_InputStack.back().m_dwTimeStamp == NI.m_dwTimeStamp)
-		NET_InputStack.pop_back();
-
-	if (NET_InputStack.size()>5)
-		NET_InputStack.pop_back();
-
-	NET_InputStack.push_back(NI);
-}
-
-
-static	u32	dwLastUpdateTime = 0;
-void	CActor::NetInput_Send()
-{
-	//----------- for E3 -----------------------------
-//	if (Local() && OnClient()) return;
-	//-------------------------------------------------
-
-	if (OnServer()) return; //don't need to store/send input on server
-
-	//Send Input
-	NET_Packet		NP;
-	net_input		NI = NET_InputStack.back();
-
-	NP.w_begin		(M_CL_INPUT);
-
-	NP.w_u16		(u16(ID()));
-//	NP.w_u32		(NI.m_dwTimeStamp);
-//	NP.w_u32		(NI.mstate_wishful);
-
-//	NP.w_u8			(NI.cam_mode	);
-	NP.w_float		(NI.cam_yaw		);
-	NP.w_float		(NI.cam_pitch	);
-	NP.w_float		(NI.cam_roll	);
-
-//	if (Level().net_HasBandwidth()) 
-	u32 DeviceTime = Device.dwTimeGlobal;
-	if (dwLastUpdateTime+g_dwInputUpdateDelta < DeviceTime)
-	{ 
-		Level().Send	(NP,net_flags(net_cl_inputguaranteed,TRUE));
-		dwLastUpdateTime = DeviceTime;
-	};
-};
-
-void CActor::NetInput_Apply			(net_input* pNI)
-{
-	cam_Active()->yaw	= pNI->cam_yaw;
-	cam_Active()->pitch = pNI->cam_pitch;
-
-	unaffected_r_torso.yaw		= -pNI->cam_yaw;
-	unaffected_r_torso.pitch	= pNI->cam_pitch;
-	unaffected_r_torso.roll		= pNI->cam_roll;
-
-	//-----------------------------------
-	if (OnClient())
-	{
-		float Jump = 0;
-		float dt = 0;
-		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
-		g_cl_Orientate			(mstate_real,dt);
-		g_Orientate				(mstate_real,dt);
-
-		g_Physics				(NET_SavedAccel,Jump,dt);
-		g_cl_ValidateMState		(dt,mstate_wishful);
-		g_SetAnimation			(mstate_real);
-
-	}
-};
-
-static u32 g_dwTime0;
-static u32 g_dwTime1;
-
-void CActor::NetInput_Update	(u32 Time)
-{
-	g_dwTime0 = Time;
-	g_dwTime1 = g_dwTime0 + u32(fixed_step*1000);
-
-	xr_deque<net_input>::iterator I = NET_InputStack.begin();
-	while (I != NET_InputStack.end())
-	{
-		if (I->m_dwTimeStamp >= g_dwTime0 && I->m_dwTimeStamp < g_dwTime1)
-			NetInput_Apply(&(*I));
-		I++;
-	};
-};
-
 BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 {
 	m_snd_noise			= 0.0f;
@@ -1032,9 +916,7 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 		{
 			PHUnFreeze();
 
-			pSyncObj->set_State(NET_A.back().State);
-
-			NetInput_Update(NET_A.back().dwTimeStamp);
+			pSyncObj->set_State(NET_A.back().State);			
 		}
 		else
 		{
@@ -1099,13 +981,7 @@ void CActor::PH_I_CrPr		()		// actions & operations between two phisic predictio
 		if (!pSyncObj) return;
 		////////////////////////////////////
 		pSyncObj->get_State(RecalculatedState);
-		////////////////////////////////////
-		//----------- for E3 -----------------------------
-		if (Local() && OnClient())
-		//------------------------------------------------
-		{
-			NetInput_Update(g_dwTime1);
-		};
+		////////////////////////////////////		
 	}; 
 };
 
@@ -1122,19 +998,6 @@ void CActor::PH_A_CrPr		()
 	if (!pSyncObj) return;
 	////////////////////////////////////
 	pSyncObj->get_State(PredictedState);
-	//----------- for E3 -----------------------------
-	if (Local() && OnClient())
-	//------------------------------------------------
-	{
-		xr_deque<net_input>::iterator	B = NET_InputStack.begin();
-		xr_deque<net_input>::iterator	E = NET_InputStack.end();
-		xr_deque<net_input>::iterator I = std::lower_bound(B,E,g_dwTime1-1);
-		while (I!= E)
-		{
-			NetInput_Apply(&(*I));
-			I++;
-		};		
-	};
 	////////////////////////////////////
 	pSyncObj->set_State(RecalculatedState);
 	////////////////////////////////////

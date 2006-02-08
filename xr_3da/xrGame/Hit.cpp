@@ -22,6 +22,8 @@ SHit::SHit(float aPower,Fvector &adir,CObject *awho, u16 aelement, Fvector ap_in
 		hit_type				=ahit_type								;
 		ap						= aAP									;
 		PACKET_TYPE				= 0										;
+		BulletID				= 0;
+		SenderID				= 0;
 }
 
 SHit::SHit()
@@ -47,6 +49,8 @@ void SHit::invalidate()
 	hit_type				=ALife::eHitTypeMax						;
 
 	ap						= 0.0f;	
+	BulletID				= 0;
+	SenderID				= 0;
 }
 
 bool SHit::is_valide() const

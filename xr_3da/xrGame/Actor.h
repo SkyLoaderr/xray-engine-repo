@@ -532,7 +532,6 @@ public:
 	virtual void						net_Export			( NET_Packet& P);				// export to server
 	virtual void						net_Import			( NET_Packet& P);				// import from server
 	virtual void						net_Destroy			();
-	virtual void						net_ImportInput		( NET_Packet& P);				// import input from remote client
 	virtual BOOL						net_Relevant		();//	{ return getSVU() | getLocal(); };		// relevant for export to server
 	virtual	void						net_Relcase			( CObject* O );					//
 	virtual void						on_reguested_spawn  (CObject *object);
@@ -554,11 +553,7 @@ protected:
 	void					net_Import_Base_proceed		( );
 	void					net_Import_Physic_proceed	( );
 	//---------------------------------------------
-	xr_deque<net_input>		NET_InputStack;
-	void					NetInput_Save			( );
-	void					NetInput_Send			( );
-	void					NetInput_Apply			(net_input* pNI);
-	void					NetInput_Update			( u32 Time );
+	
 
 
 ////////////////////////////////////////////////////////////////////////////

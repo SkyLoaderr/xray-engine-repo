@@ -23,7 +23,7 @@ CShootingObject::CShootingObject(void)
 {
 	fTime							= 0;
  	fTimeToFire						= 0;
-	iHitPower						= 0;
+	fHitPower						= 0.0f;
 	m_fStartBulletSpeed				= 1000.f;
 
 	m_vCurrentShootDir.set			(0,0,0);
@@ -86,7 +86,7 @@ void CShootingObject::LoadFireParams	(LPCSTR section, LPCSTR prefix)
 	fireDispersionBase	= pSettings->r_float	(section,"fire_dispersion_base"	);
 	fireDispersionBase	= deg2rad				(fireDispersionBase);
 	//сила выстрела и его мощьность
-	iHitPower			= pSettings->r_s32		(section,strconcat(full_name, prefix, "hit_power"));
+	fHitPower			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_power"));
 	fHitImpulse			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse"));
 	//максимальное расстояние полета пули
 	fireDistance		= pSettings->r_float	(section,strconcat(full_name, prefix, "fire_distance"));
@@ -366,7 +366,7 @@ void CShootingObject::FireBullet(const Fvector& pos,
 	m_vCurrentShootPos = pos;
 	m_iCurrentParentID = parent_id;
 
-	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
+	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, fHitPower, 
 										fHitImpulse, parent_id, weapon_id, 
 										ALife::eHitTypeFireWound, fireDistance, cartridge, send_hit);
 }

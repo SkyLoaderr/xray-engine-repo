@@ -936,12 +936,6 @@ void CActor::shedule_Update	(u32 DT)
 	if (Level().CurrentControlEntity() == this)
 	//------------------------------------------------
 	{
-		//-----------------------------------
-//		NetInput_Save			( );
-
-//		NetInput_Send			( );
-		//-----------------------------------
-		
 		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
 		g_cl_Orientate			(mstate_real,dt);
 		g_Orientate				(mstate_real,dt);
