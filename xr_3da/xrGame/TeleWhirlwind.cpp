@@ -17,17 +17,17 @@ CTeleWhirlwind ::CTeleWhirlwind ()
 
 }
 
-bool CTeleWhirlwind::activate(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot)
+CTelekineticObject* CTeleWhirlwind::activate(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot)
 {
 	if(inherited::activate(obj,strength,height,max_time_keep,rot))
 	{
 		CTeleWhirlwindObject*o=smart_cast<CTeleWhirlwindObject*>(objects.back());
 		VERIFY(o);
 		o->set_throw_power(m_throw_power);
-		return true;
+		return o;
 	}
 	else
-		return false;
+		return 0;
 }
 void CTeleWhirlwind::clear_impacts()
 {

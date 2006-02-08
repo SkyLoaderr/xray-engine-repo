@@ -32,13 +32,17 @@ public:
 	float				strength;
 
 	bool				m_rotate;
+	
+	ref_sound			sound_hold;
+	ref_sound			sound_throw;
 
 public:
 								CTelekineticObject		();
 								~CTelekineticObject		();
 	
 virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk, bool rot = true); 
-	
+			void				set_sound				(const ref_sound &snd_hold, const ref_sound &snd_throw);
+
 virtual		void				raise					(float step);
 virtual		void				raise_update			();
 
@@ -71,5 +75,7 @@ virtual		void				switch_state			(ETelekineticState new_state);
 			}
 
 			void				rotate					();
+private:
+			void				update_hold_sound		();
 
 };

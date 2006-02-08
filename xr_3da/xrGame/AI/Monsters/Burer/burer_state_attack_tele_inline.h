@@ -337,7 +337,9 @@ void CStateBurerAttackTeleAbstract::SelectObjects()
 		float	height = (object->m_monster_type == CBaseMonster::eMonsterTypeIndoor) ? 1.3f : 2.f;
 		bool	rotate = (object->m_monster_type == CBaseMonster::eMonsterTypeIndoor) ? false : true;
 		
-		object->CTelekinesis::activate		(obj, 3.f, height, 10000, rotate);
+		CTelekineticObject *tele_obj = object->CTelekinesis::activate		(obj, 3.f, height, 10000, rotate);
+		tele_obj->set_sound		(object->sound_tele_hold,object->sound_tele_throw);
+
 		object->StartTeleObjectParticle		(obj);
 
 		// удалить из списка

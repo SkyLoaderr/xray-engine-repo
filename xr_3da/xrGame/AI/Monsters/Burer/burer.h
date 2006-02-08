@@ -64,6 +64,9 @@ public:
 	// Sounds
 	ref_sound	sound_gravi_wave;
 	ref_sound	sound_scan;
+	
+	ref_sound	sound_tele_hold;
+	ref_sound	sound_tele_throw;
 
 	enum EBurerSounds {
 		eAdditionalSounds			= MonsterSound::eMonsterSoundCustom,

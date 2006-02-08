@@ -73,6 +73,8 @@ void CBurer::Load(LPCSTR section)
 	particle_tele_object	= pSettings->r_string(section,"Particle_Tele_Object");
 	
 	::Sound->create(sound_gravi_wave,	TRUE, pSettings->r_string(section,"sound_gravi_wave"),	SOUND_TYPE_WORLD);
+	::Sound->create(sound_tele_hold,	TRUE, pSettings->r_string(section,"sound_tele_hold"),	SOUND_TYPE_WORLD);
+	::Sound->create(sound_tele_throw,	TRUE, pSettings->r_string(section,"sound_tele_throw"),	SOUND_TYPE_WORLD);
 
 	m_gravi_speed					= pSettings->r_u32(section,"Gravi_Speed");
 	m_gravi_step					= pSettings->r_u32(section,"Gravi_Step");

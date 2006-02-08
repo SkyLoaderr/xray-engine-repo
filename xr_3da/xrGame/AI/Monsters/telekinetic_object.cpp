@@ -54,6 +54,13 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 	return true;
 }
 
+void CTelekineticObject::set_sound(const ref_sound &snd_hold, const ref_sound &snd_throw)
+{
+	sound_hold.clone	(snd_hold);
+	sound_throw.clone	(snd_throw);
+}
+
+
 void CTelekineticObject::raise_update()
 {
 	if (check_height()) prepare_keep();// начать удержание предмета
@@ -95,7 +102,7 @@ void CTelekineticObject::switch_state(ETelekineticState new_state)
 void CTelekineticObject::raise(float step) 
 {
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
-		
+	
 	step *= strength;
 	
 	Fvector dir;
@@ -105,6 +112,9 @@ void CTelekineticObject::raise(float step)
 	dir.mul(elem_size*elem_size);
 
 	if (OnServer()) (object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
+
+
+	update_hold_sound	();
 }
 
 void CTelekineticObject::prepare_keep()
@@ -154,6 +164,8 @@ void CTelekineticObject::keep()
 
 	// установить время последнего обновления
 	time_keep_updated = Device.dwTimeGlobal;
+
+	update_hold_sound	();
 }
 
 void CTelekineticObject::release() 
@@ -189,6 +201,12 @@ void CTelekineticObject::fire_t(const Fvector &target, float time)
 	transference.sub(target,object->Position());
 	TransferenceToThrowVel(transference,time,object->EffectiveGravity());
 	object->m_pPhysicsShell->set_LinearVel(transference);
+
+	if (sound_throw._handle()) 
+		sound_throw.play_at_pos(object,object->Position());
+
+	if (sound_hold._handle() && sound_hold._feedback()) 
+		sound_hold.stop();
 
 }
 void CTelekineticObject::fire(const Fvector &target, float power)
@@ -252,4 +270,14 @@ void CTelekineticObject::rotate()
 bool CTelekineticObject::can_activate(CPhysicsShellHolder *obj)
 {
 	return (obj && obj->m_pPhysicsShell);
+}
+
+void CTelekineticObject::update_hold_sound()
+{
+	if (!sound_hold._handle()) return;
+
+	if (sound_hold._feedback()) 
+		sound_hold.set_position(object->Position());
+	else 
+		sound_hold.play_at_pos(object,object->Position());
 }

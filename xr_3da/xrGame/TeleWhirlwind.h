@@ -53,7 +53,7 @@ public:
 		void					set_destroing_particles (const shared_str& destroying_particles){m_destroying_particles=destroying_particles;}
 		const shared_str&		destroing_particles		()										{return m_destroying_particles;}
 		void					play_destroy			(CTeleWhirlwindObject* obj);
-virtual	bool					activate				(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot = true);
+virtual	CTelekineticObject*		activate				(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot = true);
 virtual void					clear					()										;
 virtual	void					clear_notrelevant		()										;
 virtual CTelekineticObject*		alloc_tele_object		()										{return static_cast<CTelekineticObject*>(xr_new<CTeleWhirlwindObject>());}

@@ -15,18 +15,21 @@ CTelekinesis::~CTelekinesis()
 	}
 }
 
-bool	CTelekinesis::activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot)
+CTelekineticObject*	CTelekinesis::activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep, bool rot)
 {
 	active = true;
 
 	CTelekineticObject* tele_object=alloc_tele_object();		
-	if (!tele_object->init(this,obj,strength, height,max_time_keep,rot)) return false;
+	if (!tele_object->init(this,obj,strength, height,max_time_keep,rot)) {
+		xr_delete(tele_object);
+		return 0;
+	}
 
 	// добавить объект
 	objects.push_back(tele_object);
 
 	if (!objects.empty()) CPHUpdateObject::Activate();
-	return true;
+	return tele_object;
 }
 
 void CTelekinesis::clear()
