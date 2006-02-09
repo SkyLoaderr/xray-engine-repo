@@ -63,7 +63,7 @@ void CSE_ALifeMonsterAbstract::script_register(lua_State *L)
 		.def("smart_terrain_id",				&smart_terrain_id)
 		.def("clear_smart_terrain",				&clear_smart_terrain)
 		.def("brain",							&monster_brain)
-		.def("rank",							Rank)
+		.def("rank",							&CSE_ALifeMonsterAbstract::Rank)
 		.def("smart_terrain_task_activate",		&smart_terrain_task_activate)
 		.def("smart_terrain_task_deactivate",	&smart_terrain_task_deactivate)
 	];
@@ -79,6 +79,7 @@ void CSE_ALifeHumanAbstract::script_register(lua_State *L)
 			CSE_ALifeMonsterAbstract
 		)
 		.def("brain",				&human_brain)
+		.def("rank",				&CSE_ALifeTraderAbstract::Rank)
 	];
 }
 
