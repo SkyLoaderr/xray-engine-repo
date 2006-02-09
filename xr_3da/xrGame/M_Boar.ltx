@@ -136,8 +136,8 @@ max_hear_dist						= 60
 Velocity_Stand			= 0,		1.4,			1.4,		1,		1	
 Velocity_RunFwdNormal	= 7.0,		3.5,			3.5,		0.4,	1	
 Velocity_RunFwdDamaged	= 4.5,		3.0,			3.0,		0.2,	1
-Velocity_WalkFwdDamaged	= 1.3,		5.5,			5.5,		0.2,	2.0	
-Velocity_WalkFwdNormal	= 1.75,		5.5,			5.5,		0.02,	3.0	
+Velocity_WalkFwdDamaged	= 1.3,		2.5,			2.5,		0.2,	2.0	
+Velocity_WalkFwdNormal	= 1.75,		2.5,			2.5,		0.02,	3.0	
 Velocity_Drag			= -1.0,		3.0,			3.0,		1,		1
 Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
 
@@ -147,10 +147,10 @@ Accel_Calm				= 2.5
 Accel_Aggressive		= 5.5
 
 ;attack parameters
-MinAttackDist			= 2.3	;0.5
-MaxAttackDist			= 3.9 ;2.9	;3.8
-as_min_dist				= 1.7
-as_step					= 0.3
+MinAttackDist			= 2.4	;0.5
+MaxAttackDist			= 3.3 ;2.9	;3.8
+as_min_dist				= 1.5
+as_step					= 0.5
 
 Run_Attack_Dist			= 3.5,		4.0
 Run_Attack_Delay		= 1000,		3000
@@ -307,9 +307,9 @@ fire_wound_immunity		= 0.70
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0 =	  	0.30,		0.15,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.5
+stand_attack_0 =	  	0.30,		0.15,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.3
 ;Bite2
-stand_attack_1 =	  	0.30,		0.15,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.5
+stand_attack_1 =	  	0.30,		0.15,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.3
 ;Right Leg Attack
 stand_attack_2 =	  	0.30,		0.20,	      100,        0.0, 1.0, 2.0,	 -0.8, 0.8, -1.0, 1.0,					  2.5
 stand_attack_run_0 =    0.50,		0.30,	      200,        0.0, 1.0, 2.0,	 -1.0, 1.0, -1.0, 1.0,					  2.2
@@ -379,9 +379,9 @@ fire_wound_immunity		= 0.30
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0 =	  	0.20,		0.35,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.5
+stand_attack_0 =	  	0.20,		0.35,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.3
 ;Bite2
-stand_attack_1 =	  	0.20,		0.35,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.5
+stand_attack_1 =	  	0.20,		0.35,	      100,        0.0, 0.5, 0.5,	 -1.0, 1.0, -1.0, 1.0,					  2.3
 ;Right Leg Attack
 stand_attack_2 =	  	0.20,		0.50,	      100,        0.0, 1.0, 2.0,	 -0.8, 0.8, -1.0, 1.0,					  2.5
 stand_attack_run_0 =    0.50,		0.70,	      200,        0.0, 1.0, 2.0,	 -1.0, 1.0, -1.0, 1.0,					  2.2
