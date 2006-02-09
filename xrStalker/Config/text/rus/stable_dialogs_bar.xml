@@ -1507,7 +1507,7 @@
         <text>Хорошо.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_1012">
-        <text>Опасности пока нет, можно идти дальше.</text>
+        <text>Идем дальше, попробуем прорваться.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_10121">
         <text>Идем скорее.</text>
@@ -1555,10 +1555,10 @@
         <text>Хорошо.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_512">
-        <text>Опасности пока нет, можно идти дальше.</text>
+        <text>Идем дальше, попробуем прорваться.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_5121">
-        <text>Идем скорее.</text>
+        <text>Идем.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_61">
         <text>Меченый, останови их! Они же нас прикончат!!!</text>
@@ -1570,7 +1570,7 @@
         <text>Хорошо, я жду здесь.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_612">
-        <text>Вроде все спокойно, можно идти.</text>
+        <text>Идем дальше, попробуем прорваться.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_6121">
         <text>Хорошо, идем скорее.</text>
