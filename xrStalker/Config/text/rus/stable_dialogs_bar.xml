@@ -247,7 +247,7 @@
         <text>Работа для меня найдется?</text>
     </string>
     <string id="bar_bar_barmen_jobs_1">
-        <text>Нет, сегодня, ничего нет.</text>
+        <text>Нет, сегодня, ничего нет. 0</text>
     </string>
     <string id="bar_bar_barmen_jobs_2">
         <text>Есть работа, для ветеранов.</text>
@@ -325,13 +325,13 @@
         <text>Пока нет, в другой раз.</text>
     </string>
     <string id="bar_bar_barmen_jobs_5">
-        <text>Нет, сегодня, ничего нет.</text>
+        <text>Нет, сегодня, ничего нет. 1</text>
     </string>
     <string id="bar_bar_barmen_jobs_6">
-        <text>Нет, сегодня, ничего нет.</text>
+        <text>Нет, сегодня, ничего нет. 2</text>
     </string>
     <string id="bar_bar_barmen_jobs_7">
-        <text>Нет, сегодня, ничего нет.</text>
+        <text>Нет, сегодня, ничего нет. 3</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_0">
         <text>Что за работа?</text>
