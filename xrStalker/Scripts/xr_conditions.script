@@ -128,7 +128,7 @@ end
 function enemy_gulag(actor, npc, p)
 	local enemy = db.storage[npc:id()].enemy
 
-	if enemy and enemy:id() ~= actor:id() and enemy:alive() then
+	if enemy and enemy:alive() and enemy:id() ~= actor:id() then
         local g = xr_gulag.get_npc_gulag(enemy)
 
         if g ~= nil then
