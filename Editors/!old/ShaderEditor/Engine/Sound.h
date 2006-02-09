@@ -287,8 +287,8 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);											}
-IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);															}
+IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);	Log("+ rsd",fName);						}
+IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);					Log("- rsd",handle->file_name());		}
 
 IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,_3D,name,type);							}
 IC void	ref_sound::clone						( const ref_sound& from,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->clone		(*this,from,type);								}
