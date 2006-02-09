@@ -71,6 +71,7 @@ void CSoundRender_Core::_initialize	(u64 window)
     bReady						= TRUE;
 }
 
+extern xr_vector<u8> g_target_temp_data;
 void CSoundRender_Core::_clear	()
 {
     bReady						= FALSE;
@@ -86,6 +87,8 @@ void CSoundRender_Core::_clear	()
 	for (u32 eit=0; eit<s_emitters.size(); eit++)
     	xr_delete				(s_emitters[eit]);
     s_emitters.clear			();
+
+	g_target_temp_data.clear	();
 }
 
 void CSoundRender_Core::stop_emitters()

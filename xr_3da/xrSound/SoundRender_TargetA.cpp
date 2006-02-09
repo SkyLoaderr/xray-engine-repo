@@ -5,7 +5,7 @@
 #include "soundrender_emitter.h"
 #include "soundrender_source.h"
 
-static xr_vector<u8> buf_temp_data;
+xr_vector<u8> g_target_temp_data;
 
 CSoundRender_TargetA::CSoundRender_TargetA():CSoundRender_Target()
 {
@@ -51,7 +51,7 @@ void	CSoundRender_TargetA::start			(CSoundRender_Emitter* E)
 
 	// Calc storage
 	buf_block		= sdef_target_block*wfx.nAvgBytesPerSec/1000;
-    buf_temp_data.resize(buf_block);
+    g_target_temp_data.resize(buf_block);
 }
 
 void	CSoundRender_TargetA::render		()
@@ -157,8 +157,8 @@ void	CSoundRender_TargetA::fill_block	(ALuint BufferID)
 #pragma todo("check why pEmitter is NULL")
 	if (0==pEmitter)	return;
 
-	pEmitter->fill_block(&buf_temp_data.front(),buf_block);
+	pEmitter->fill_block(&g_target_temp_data.front(),buf_block);
 
 	ALuint format 		= (wfx.nChannels==1)?AL_FORMAT_MONO16:AL_FORMAT_STEREO16;
-    A_CHK				(alBufferData(BufferID, format, &buf_temp_data.front(), buf_block, wfx.nSamplesPerSec));
+    A_CHK				(alBufferData(BufferID, format, &g_target_temp_data.front(), buf_block, wfx.nSamplesPerSec));
 }
