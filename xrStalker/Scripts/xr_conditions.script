@@ -429,7 +429,7 @@ function talking_or_tutor(actor, npc)
 end
 
 function see_actor(actor, npc)
-	return npc:see(actor)
+	return npc:alive() and npc:see(actor)
 end
 
 -- видит ли вертолёт актера
