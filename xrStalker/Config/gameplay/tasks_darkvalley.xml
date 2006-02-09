@@ -9,6 +9,9 @@
         <infoportion_complete>
             esc_darklab_documents_read
         </infoportion_complete>
+        <infoportion_fail>
+            bar_darklab_document_done
+        </infoportion_fail>
     </objective>
     <objective key="1">
         <text>
