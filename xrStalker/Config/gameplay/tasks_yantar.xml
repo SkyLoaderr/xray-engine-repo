@@ -2,29 +2,25 @@
 		<title>yan_kill_brain</title>
 		<objective>
 			<text>yan_kill_brain</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_switcher_off</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>green_location</map_location_type>
 			<object_story_id>yan_labx16switcher_lamp1</object_story_id>
 			<function_complete>yantar_tasks.switchers_off</function_complete>
 		</objective>
 		<objective>
 			<text>yan_kill_brain_task</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_labx16_switcher_primary_off</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_secret_tonnel</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yantar_tunnel_finish</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_scientist_return</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
 			<object_story_id>yan_general_ecolog</object_story_id>
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
@@ -35,7 +31,7 @@
 		<title>yan_find_scientist</title>
 		<objective>
 			<text>yan_find_scientist</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
 			<object_story_id>yan_ecolog_help</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
@@ -43,19 +39,16 @@
 		</objective>
 		<objective>
 			<text>yan_talk_to_kruglov</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
 			<object_story_id>yan_ecolog_help</object_story_id>
 			<infoportion_complete>yan_kruglov_after_actor</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_psi_zone_find</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_scientist_return_to_bunker</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_return_to_bunker</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
 			<object_story_id>yan_general_ecolog</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
@@ -66,7 +59,7 @@
 		<title>yan_find_scientist</title>
 		<objective>
 			<text>yan_find_scientist</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
 			<object_story_id>yan_semenov_help</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
@@ -74,19 +67,16 @@
 		</objective>
 		<objective>
 			<text>yan_talk_to_semenov</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
 			<object_story_id>yan_semenov_help</object_story_id>
 			<infoportion_complete>yan_kruglov_after_actor</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_psi_zone_find_semenov</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_scientist_return_to_bunker</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_return_to_bunker</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
 			<object_story_id>yan_general_ecolog</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
@@ -102,7 +92,6 @@
 		</objective>
 		<objective>
 			<text>yan_scientist_return</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
 			<object_story_id>yan_general_ecolog</object_story_id>
 			<infoportion_complete>yan_find_vasilyev_start</infoportion_complete>
@@ -122,13 +111,11 @@
 		</objective>
 		<objective>
 			<text>yan_find_vasilyev</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
 			<object_story_id>yan_vasilyev</object_story_id>
 		</objective>
 		<objective>
 			<text>yan_find_vasilyev_pda</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
 			<object_story_id>yan_vasilyev</object_story_id>
 			<function_complete>yantar_tasks.actor_has_vasilyev_pda</function_complete>
@@ -140,7 +127,7 @@
 		<title>yan_find_ghost_task</title>
 		<objective>
 			<text>yan_find_ghost_task</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_ghost_task">green_location</map_location_type>
 			<object_story_id>yan_mapspot_from_vasilyev</object_story_id>
 			<infoportion_complete>yantar_find_ghost_task_end</infoportion_complete>
@@ -150,12 +137,10 @@
 			<text>yan_find_labX16</text>
 			<map_location_type hint="yan_find_labX16">green_location</map_location_type>
 			<object_story_id>yan_mapspot_from_vasilyev</object_story_id>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>labx16_find</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_find_ghost</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="yan_find_ghost_task">green_location</map_location_type>
 			<object_story_id>yan_ghost</object_story_id>
 			<function_complete>yantar_tasks.has_labx16_documents</function_complete>
