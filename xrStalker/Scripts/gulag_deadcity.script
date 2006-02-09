@@ -371,7 +371,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 
                    "[kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5_begin]\n" ..
                    "center_point        = kamp5\n" ..
-                   "on_info             = {+cit_heli_scene_start} camper@" .. gname .. "_free_stalker" .. i .. "_attack %=hit_npc(1201:bip01_spine:1:0)%\n" ..
+                   "on_info             = {+cit_heli_scene_start} camper@" .. gname .. "_free_stalker" .. i .. "_attack %=hit_npc(1201:bip01_spine:0.01:0)%\n" ..
                    "soundgroup          = " .. gname .. "_kamp5_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
