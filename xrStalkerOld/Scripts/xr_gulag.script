@@ -1143,6 +1143,9 @@ function get_npc_gulag( obj )
 
 	obj = sim:object( obj:id() )
 
+    --if obj.smart_terrain_id == nil then
+    --    printf("xr_gulag <get_npc_gulag>: name = %s", obj:name())
+    --end
 	if obj:smart_terrain_id() ~= 65535 then
 		local strn = sim:object( obj:smart_terrain_id() )
 
