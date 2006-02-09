@@ -118,7 +118,7 @@ function cfg_get_number(char_ini, section, field, object, mandatory, default_val
 
 	--printf("DEBUG: conf_get_number: section='%s', field='%s'", section, field)
 	if section and char_ini:section_exist(section) and char_ini:line_exist(section, field) then
-		return char_ini:r_s32(section, field)
+		return char_ini:r_float(section, field)
 	end
 	if not mandatory then
 		return default_val
