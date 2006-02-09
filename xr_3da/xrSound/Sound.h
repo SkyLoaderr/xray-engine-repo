@@ -244,6 +244,7 @@ protected:
 	virtual void					_create_data			( ref_sound_data& S, BOOL _3D,	LPCSTR fName, int	type=st_SourceType)					= 0;
 	virtual void					_destroy_data			( ref_sound_data& S)																	= 0;
 public:
+	virtual							~CSound_manager_interface(){}
 	//@{
 	/// General
 	static void						_create					( u64 window );
