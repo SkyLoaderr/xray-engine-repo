@@ -90,7 +90,7 @@
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
-
+	</specific_character>
 	<!---------------------------STALKER GENERAL---------------------->
 
 	<specific_character id="agr_stalker_general_default1" team_default = "1">
