@@ -32,6 +32,8 @@ void CRenderDevice::Destroy	(void) {
 
 	// real destroy
 	HW.DestroyDevice			();
+
+	seqParallel.clear			();
 }
 
 void CRenderDevice::Reset		()
