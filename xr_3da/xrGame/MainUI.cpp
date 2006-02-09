@@ -185,7 +185,7 @@ void CMainUI::Activate	(bool bActivate)
 			Device.seqRender.Remove	(g_pGameLevel);
 			CCameraManager::ResetPP	();
 		};
-		Device.seqRender.Add		(this);
+		Device.seqRender.Add		(this, 3); // 1-console 2-cursor
 	}else{
 		m_Flags.set					(flActive,				FALSE);
 		m_Flags.set					(flNeedChangeCapture,	TRUE);
@@ -291,13 +291,16 @@ void CMainUI::IR_OnMouseWheel(int direction)
 
 bool CMainUI::OnRenderPPUI_query()
 {
-	return IsActive();
+	return IsActive() && !m_Flags.is(flGameSaveScreenshot);
 }
 
 
 void CMainUI::OnRender	()
 {
-		Render->Render				();
+	if(m_Flags.is(flGameSaveScreenshot))
+		return;
+
+	Render->Render				();
 }
 
 void CMainUI::OnRenderPPUI_main	()
@@ -312,8 +315,6 @@ void CMainUI::OnRenderPPUI_main	()
 
 	m_2DFrustum2.CreateFromRect	(Frect().set(	0.0f,
 												0.0f,
-//												float(Device.dwWidth),
-//												float(Device.dwHeight)
 												ClientToScreenScaledX(UI_BASE_WIDTH),
 												ClientToScreenScaledY(UI_BASE_HEIGHT)
 												));
@@ -364,6 +365,7 @@ void	CMainUI::OnFrame		(void)
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
+			Device.Pause			(TRUE);
 		};
 
 		if(m_Flags.is(flRestoreConsole))
@@ -481,6 +483,7 @@ void CMainUI::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR na
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Add		(g_pGameLevel);
 			Device.seqRender.Add	(g_pGameLevel);
+			Device.Pause			(FALSE);
 		};
 		m_screenshotFrame			= Device.dwFrame+1;
 		m_Flags.set					(flRestoreConsole,		Console->bVisible);

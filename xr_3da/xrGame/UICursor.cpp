@@ -23,7 +23,7 @@ CUICursor::CUICursor()
 
 	hShader.create	("hud\\cursor","ui\\ui_ani_cursor");
 	m_si.SetShader(hShader);
-	Device.seqRender.Add	(this,REG_PRIORITY_LOW);
+	Device.seqRender.Add	(this,2);
 }
 //--------------------------------------------------------------------
 CUICursor::~CUICursor	()

@@ -443,7 +443,7 @@ void CConsole::Show			()
 	fAccel					= 1.0f;
 
 	IR_Capture				( );
-	Device.seqRender.Add	(this, REG_PRIORITY_NORMAL-5);
+	Device.seqRender.Add	(this, 1);
 	Device.seqFrame.Add		(this);
 }
 
