@@ -96,6 +96,45 @@ public:
 		b_loaded			= FALSE	;
 	};
 
+	void		r_dsgraph_destroy()
+	{
+		nrmVS.clear				();
+		nrmPS.clear				();
+		nrmCS.clear				();
+		nrmStates.clear			();
+		nrmTextures.clear		();
+		nrmTexturesTemp.clear	();
+
+		matVS.clear				();
+		matPS.clear				();
+		matCS.clear				();
+		matStates.clear			();
+		matTextures.clear		();
+		matTexturesTemp.clear	();
+
+		lstLODs.clear			();
+		lstLODgroups.clear		();
+		lstRenderables.clear	();
+		lstSpatial.clear		();
+		lstVisuals.clear		();
+
+		lstRecorded.clear		();
+
+		mapNormal[0].destroy	();
+		mapNormal[1].destroy	();
+		mapMatrix[0].destroy	();
+		mapMatrix[1].destroy	();
+		mapSorted.destroy		();
+		mapHUD.destroy			();
+		mapLOD.destroy			();
+		mapDistort.destroy		();
+
+#if RENDER==R_R2
+		mapWmark.destroy		();
+		mapEmissive.destroy		();
+#endif
+	}
+
 	void		r_pmask											(bool _1, bool _2)				{ pmask[0]=_1; pmask[1]=_2;			}
 
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);

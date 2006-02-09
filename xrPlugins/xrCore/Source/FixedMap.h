@@ -120,8 +120,9 @@ public:
 	void		destroy()
 	{
 		if (nodes) {
+			for (TNode* cur = begin(); cur!=last(); cur++)
+				cur->~TNode();
 			xr_free(nodes);
-			nodes	= 0;
 		}
 	}
 	IC TNode*	insert(const K& k) {

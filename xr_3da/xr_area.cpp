@@ -29,7 +29,6 @@ void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
 	VERIFY					(_valid(p->volume));
 
 	// Query objects
-	static xr_vector<ISpatial*>	snd_ER	;	//snd_ER.reserve	(8+iCeil(range/10.f));
 	Fvector					bb_size	=	{range,range,range};
 	g_SpatialSpace->q_box	(snd_ER,0,STYPE_REACTTOSOUND,p->position,bb_size);
 

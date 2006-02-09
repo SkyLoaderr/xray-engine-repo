@@ -30,6 +30,9 @@ protected:
 	u32							Sounds_Random_dwNextTime;
 	BOOL						Sounds_Random_Enabled;
 	CCameraManager*				m_pCameras;
+
+	// temporary
+	xr_vector<ISpatial*>		snd_ER;
 public:
 	CObjectList					Objects; 
 	CObjectSpace				ObjectSpace;

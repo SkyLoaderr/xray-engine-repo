@@ -91,6 +91,8 @@ void					CRender::destroy				()
 	//*** Components
 	xr_delete					(Target);
 	Device.seqFrame.Remove		(this);
+
+	r_dsgraph_destroy			();
 }
 
 void					CRender::reset_begin			()
