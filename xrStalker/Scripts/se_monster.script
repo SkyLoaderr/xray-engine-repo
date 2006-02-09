@@ -1,3 +1,8 @@
+--[[
+Изменения script_version:
+	4 - сохранение поля job_online
+]]
+
 class "se_monster" (cse_alife_monster_base)
 --------------------
 function se_monster:__init (section) super (section)
@@ -11,6 +16,12 @@ function se_monster:__init (section) super (section)
 
 	self.check_distance = false
 	self.min_distance   = 150
+
+	-- этот флаг берётся из работы смарта
+	-- true  = всегда в онлайне
+	-- false = всегда в офлайне
+	-- nil   = смарту всё равно
+	self.job_online = nil
 end
 --------------------
 function se_monster:get_ini()
@@ -49,10 +60,18 @@ function se_monster:get_ini()
 end
 --------------------
 function se_monster:can_switch_offline ()
-	return cse_alife_monster_base.can_switch_offline (self)
+	if self.job_online ~= nil then
+		return not self.job_online
+	else
+		return cse_alife_monster_base.can_switch_offline (self)
+	end
 end
 --------------------
 function se_monster:can_switch_online ()
+	if self.job_online ~= nil then
+		return self.job_online
+	end
+
 	self:get_ini()
 
     --стандартная проверка у родителя, если нет спавнера или игрок помер
@@ -92,6 +111,34 @@ function se_monster:can_switch_online ()
         end
         return cse_alife_monster_base.can_switch_online (self)
     end
+end
+--------------------
+function se_monster:STATE_Write(packet)
+	cse_alife_monster_base.STATE_Write (self, packet)
+
+	if self.job_online == true then
+		packet:w_u8(0)
+	elseif self.job_online == false then
+		packet:w_u8(1)
+	else
+		packet:w_u8(2)
+	end
+end
+--------------------
+function se_monster:STATE_Read(packet, size)
+	cse_alife_monster_base.STATE_Read (self, packet, size)
+
+	if self.script_version >= 4 then
+		local t = packet:r_u8()
+
+		if t == 0 then
+			self.job_online = true
+		elseif t == 1 then
+			self.job_online = false
+		else
+			self.job_online = nil
+		end
+	end
 end
 --------------------
 function se_monster:on_register()
