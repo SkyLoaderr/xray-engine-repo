@@ -238,6 +238,12 @@ public:
 		r		(S,(u32)len+1);
 	}
     
+	IC void		r_stringZ		( xr_string& dest )
+	{
+		dest		= LPCSTR(&B.data[r_pos]);
+		r_advance	(dest.size()+1);
+	}
+
 	void 		r_stringZ		(shared_str& dest)
     {
         dest		= LPCSTR(&B.data[r_pos]);
