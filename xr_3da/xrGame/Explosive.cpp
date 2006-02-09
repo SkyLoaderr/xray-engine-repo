@@ -197,7 +197,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 	const Fbox &l_b1 = blasted_obj->BoundingBox();
 	Fvector l_c, l_d;l_b1.get_CD(l_c,l_d);
 	float effective_volume=l_d.x*l_d.y*l_d.z;
-	float max_s=l_d.x*l_d.y*l_d.z/(_min(_min(l_d.x,l_d.y),l_d.z));
+	float max_s=effective_volume/(_min(_min(l_d.x,l_d.y),l_d.z));
 	if(blasted_obj->PPhysicsShell()&&blasted_obj->PPhysicsShell()->isActive())
 	{
 		float ph_volume=blasted_obj->PPhysicsShell()->getVolume();
@@ -237,7 +237,7 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 	
 		float l_S=effective_volume*(_abs(l_dir.dotproduct(obj_xform.i))/l_d.x+_abs(l_dir.dotproduct(obj_xform.j))/l_d.y+_abs(l_dir.dotproduct(obj_xform.k))/l_d.z);
 
-		effect+=l_S/max_s*TestPassEffect(l_source_p,l_dir,mag,expl_radius,storage,blasted_obj);
+		effect+=_sqrt(l_S/max_s)*TestPassEffect(l_source_p,l_dir,mag,expl_radius,storage,blasted_obj);
 
 	}
 	return effect/TEST_RAYS_PER_OBJECT;
