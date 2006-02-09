@@ -214,6 +214,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@scientist_not_in_rest",
 			idle = 0,
 			prior = 9, state = {1}, squad = squad, group = groups[2],
+		    online = true,
 			in_rest = "yantar_bunker_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		    
