@@ -480,7 +480,7 @@ combat_ignore_cond  = {!fighting_actor}
 path_walk           = wave3_bomber_walk3
 path_look           = wave3_bomber_look3
 meet                = meet@ignore
-on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:600:2000)%
+on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:6:2000)%
 on_signal           = arrived | %+pri_wave3_bomber_on_position%
 wounded             = wounded@ignore
 danger              = danger@ignore
@@ -491,7 +491,7 @@ no_move             = true
 anim                = hide_fire
 target              = 807
 meet                = meet@ignore
-on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:600:2000)%
+on_timer            = 2700 | walker@pri_followers_bomber_wave3_die %=hit_npc(807:bip01_spine1:6:2000)%
 wounded             = wounded@ignore
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
