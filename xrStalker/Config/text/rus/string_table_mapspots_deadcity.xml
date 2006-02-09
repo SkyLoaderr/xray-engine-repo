@@ -38,11 +38,6 @@
         Выход из города
     </text>
 </string>
-<string id="cit_doctor_escape_task_3_hint">
-    <text>
-        Машина
-    </text>
-</string>
 <string id="cit_killers_base_zone_hint">
     <text>
         Лагерь наемников
@@ -61,5 +56,10 @@
 <string id="cit_vp_position_hint">
     <text>
         Район, где доктор в последний раз видел Петровича
+    </text>
+</string>
+<string id="cit_doctor_escape_task_3_hint">
+    <text>
+        Труба
     </text>
 </string>

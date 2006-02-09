@@ -208,7 +208,7 @@
             ui\ui_icons_task
         </icon>
         <map_location_type hint="cit_doctor_escape_task_2_hint">
-            blue_location
+            green_location
         </map_location_type>
         <object_story_id>
             cit_actor_escape_zone
@@ -224,5 +224,11 @@
         <icon height="50" width="50" x="100" y="50">
             ui\ui_icons_task
         </icon>
+        <map_location_type hint="cit_doctor_escape_task_3_hint">
+            green_location
+        </map_location_type>
+        <object_story_id>
+            cit_level_exit_zone
+        </object_story_id>
     </objective>
 </game_task>
