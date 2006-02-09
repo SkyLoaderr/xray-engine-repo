@@ -300,7 +300,7 @@ float SHeliMovementState::GetSafeAltitude()
 
 void SHeliMovementState::CreateRoundPoints(Fvector center, float radius, float start_h, float end_h, xr_vector<STmpPt>& round_points)
 {
-	float	height = GetSafeAltitude();
+	float	height = center.y;
 
 	float				round_len	= 2*PI*radius;
 	static float		dist		= 30.0f;//dist between points
