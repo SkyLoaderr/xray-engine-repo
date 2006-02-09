@@ -242,6 +242,10 @@ bool CFoodItem::IsPending	() const
 
 void CFoodItem::UpdateXForm				()
 {
+	if (enabled())
+		return;
+
+	CEatableItemObject::UpdateXForm	();
 }
 
 void CFoodItem::on_renderable_Render	()
