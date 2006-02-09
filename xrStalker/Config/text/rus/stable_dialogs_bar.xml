@@ -798,6 +798,9 @@
     <string id="bar_bar_psih_start_pain_15">
         <text>Моя голова. Она. Она не моя!</text>
     </string>
+    <string id="bar_bar_psih_start_pain_21">
+        <text>Горбун, это ты? Я ничего не вижу... Что случилось?</text>
+    </string>
     <string id="bar_bar_psih_talk_gorbun_0">
         <text>Да, я - Горбун.</text>
     </string>
