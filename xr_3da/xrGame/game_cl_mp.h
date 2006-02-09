@@ -92,6 +92,33 @@ struct cl_MessageMenu
 	*/
 };
 
+struct Bonus_Struct
+{
+	shared_str	BonusName;
+	shared_str	BonusTypeName;
+	shared_str	MoneyStr;
+	int			Money;	
+	ref_shader	IconShader;
+	xr_vector<Frect>	IconRects;
+	Bonus_Struct()
+	{
+		BonusTypeName	= "";
+		BonusName = "";
+		MoneyStr = "";
+		Money = 0;
+		IconShader = NULL;
+		IconRects.clear();
+	}
+	~Bonus_Struct()
+	{
+		if (IconShader)
+			IconShader.destroy();
+		IconShader = NULL;
+		IconRects.clear();
+	}
+
+	bool operator == (LPCSTR TypeName){return !xr_strcmp(BonusTypeName.c_str(), TypeName);}
+};
 class game_cl_mp :public game_cl_GameState
 {
 	typedef game_cl_GameState	inherited;
@@ -104,6 +131,9 @@ protected:
 	bool							m_bJustRestarted;
 	DEF_VECTOR(SNDMESSAGESINPLAY, SND_Message*);
 	SNDMESSAGESINPLAY				m_pSndMessagesInPlay;
+
+	DEF_VECTOR(BONUSES, Bonus_Struct);
+	BONUSES							m_pBonusList;
 
 ///	CUISpeechMenu*					m_pSpeechMenu;	
 	BOOL							m_bSpectatorSelected;
@@ -148,6 +178,8 @@ protected:
 	bool		m_bSpectator_LookAt;
 	bool		m_bSpectator_FreeLook;
 	bool		m_bSpectator_TeamCamera;
+
+	virtual		void		LoadBonuses				();
 
 public:
 									game_cl_mp();

@@ -20,6 +20,7 @@
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
 #include "UIGameDM.h"
+#include "ui/UITextureMaster.h"
 
 
 #include <boost/function.hpp>
@@ -54,6 +55,9 @@ game_cl_mp::game_cl_mp()
 	m_bSpectator_LookAt		= true;
 	m_bSpectator_FreeLook	= true;
 	m_bSpectator_TeamCamera	= true;
+	//-------------------------------------
+	LoadBonuses();
+	//-------------------------------------	
 };
 
 game_cl_mp::~game_cl_mp()
@@ -87,6 +91,8 @@ game_cl_mp::~game_cl_mp()
 	DestroyMessagesMenus();
 
 	xr_delete(pMessageBox);
+
+	m_pBonusList.clear();
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
@@ -103,7 +109,7 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	sprintf(BuySpawnText, "You can buy a spawn for %d $. Press Yes to pay.", 
 		abs(m_iSpawn_Cost));
 	pMessageBox->SetText(BuySpawnText);
-	//-----------------------------------------------------------
+	//-----------------------------------------------------------	
 	return NULL;
 };
 
@@ -640,22 +646,32 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				}break;
 			case SKT_HEADSHOT:		// Head Shot
 				{
-					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-					KMS.m_ext_info.m_rect.x1 = 62;
-					KMS.m_ext_info.m_rect.y1 = 202;
-					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 26;
-					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;
+					BONUSES_it it = std::find(m_pBonusList.begin(), m_pBonusList.end(), "headshot");
+					if (it != m_pBonusList.end() && (*it == "headshot")) 
+					{
+						Bonus_Struct* pBS = &(*it);
+						KMS.m_ext_info.m_shader = pBS->IconShader;
+						KMS.m_ext_info.m_rect.x1 = pBS->IconRects[0].x1;
+						KMS.m_ext_info.m_rect.y1 = pBS->IconRects[0].y1;
+						KMS.m_ext_info.m_rect.x2 = pBS->IconRects[0].x1 + pBS->IconRects[0].x2;
+						KMS.m_ext_info.m_rect.y2 = pBS->IconRects[0].y1 + pBS->IconRects[0].y2;
+					};
 
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 						PlaySndMessage(ID_HEADSHOT);
 				}break;
 			case SKT_BACKSTAB:		// BackStab
 				{
-					KMS.m_initiator.m_shader = GetKillEventIconsShader();
-					KMS.m_initiator.m_rect.x1 = 88;
-					KMS.m_initiator.m_rect.y1 = 202;
-					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 30;
-					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
+					BONUSES_it it = std::find(m_pBonusList.begin(), m_pBonusList.end(), "backstab");
+					if (it != m_pBonusList.end() && (*it == "backstab")) 
+					{
+						Bonus_Struct* pBS = &(*it);
+						KMS.m_ext_info.m_shader = pBS->IconShader;
+						KMS.m_ext_info.m_rect.x1 = pBS->IconRects[0].x1;
+						KMS.m_ext_info.m_rect.y1 = pBS->IconRects[0].y1;
+						KMS.m_ext_info.m_rect.x2 = pBS->IconRects[0].x1 + pBS->IconRects[0].x2;
+						KMS.m_ext_info.m_rect.y2 = pBS->IconRects[0].y1 + pBS->IconRects[0].y2;
+					};
 
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 						PlaySndMessage(ID_ASSASSIN);					
@@ -832,13 +848,14 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 {
 	if (!local_player) return;
 	s32 Money_Added = P.r_s32();
+	CUIGameDM* pUIDM = smart_cast<CUIGameDM*>(m_game_ui_custom);
 	if (Money_Added != 0)
 	{
-		if(CUIGameDM* pUIdm = smart_cast<CUIGameDM*>(m_game_ui_custom))
+		if(pUIDM)
 		{
 			string256					MoneyStr;
 			sprintf						(MoneyStr,(Money_Added>0)?"+%d":"%d", Money_Added);
-			pUIdm->DisplayMoneyChange	(MoneyStr);
+			pUIDM->DisplayMoneyChange	(MoneyStr);
 		}
 	};
 	u8 NumBonuses = P.r_u8();
@@ -851,44 +868,63 @@ void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 		u8 BonusKills = (BonusReason == SKT_KIR)? P.r_u8() : 0;
 		TotalBonusMoney += BonusMoney;
 		//---------------------------------------------------------
+		KillMessageStruct BMS;
+		string256	MoneyStr;
+		if (BonusMoney >=0)
+			sprintf		(MoneyStr, "+%d", BonusMoney);
+		else
+			sprintf		(MoneyStr, "-%d", BonusMoney);
+		BMS.m_victim.m_name = MoneyStr;
+		BMS.m_victim.m_color = 0xff00ff00;
+		u32 RectID = 0;
+		//---------------------------------------------------------
 		shared_str BName = "";
-		string256 tmp;
 		switch (BonusReason)
 		{
-		case SKT_HEADSHOT: BName = "headshot"; break;
-		case SKT_BACKSTAB: BName = "backstab"; break;
-		case SKT_KNIFEKILL: BName = "knife_kill"; break;
-		case SKT_PDA: BName = "pda_taken"; break;
-		case SKT_KIR: BName.sprintf("%d_kill_in_row", BonusKills); break;
-		case SKT_NEWRANK:BName = "new_rank"; break;
+		case SKT_HEADSHOT: 
+			{
+				BName = "headshot"; 
+			}break;
+		case SKT_BACKSTAB: 
+			{
+				BName = "backstab"; 
+			}break;
+		case SKT_KNIFEKILL: 
+			{
+				BName = "knife_kill"; 
+			}break;
+		case SKT_PDA: 
+			{
+				BName = "pda_taken"; 
+			}break;
+		case SKT_KIR: 
+			{				
+				BName.sprintf("%d_kill_in_row", BonusKills);
+				
+				sprintf		(MoneyStr, "%d", BonusKills);
+				BMS.m_killer.m_name = MoneyStr;
+				BMS.m_killer.m_color = 0xffff0000;
+			}break;
+		case SKT_NEWRANK:
+			{
+				BName = "new_rank"; 
+				RectID = (local_player->rank+1)*2 + ModifyTeam(local_player->team);
+			}break;
 		};
-		shared_str BStr = READ_IF_EXISTS(pSettings, r_string, "mp_bonus_money", BName.c_str(), "");
-		if (!BStr.size()) continue;			
-		_GetItem(BStr.c_str(), 1, tmp);
-		if (BonusReason == SKT_KIR) sprintf(tmp, "%s Kill", tmp);
-
-		BonusStr.sprintf("%s%s +%d%s", BonusStr.c_str(), tmp, BonusMoney, (i == NumBonuses-1) ? "" : "; ");		
-	};
-	if (TotalBonusMoney != 0)
-	{
-		if (BonusStr.size()) CommonMessageOut(BonusStr.c_str());
-
-		if(CUIGameDM* pUIdm = smart_cast<CUIGameDM*>(m_game_ui_custom))
+		BONUSES_it it = std::find(m_pBonusList.begin(), m_pBonusList.end(), BName.c_str());
+		if (it != m_pBonusList.end() && (*it == BName.c_str())) 
 		{
-			string256					MoneyStr;
-			sprintf						(MoneyStr, "+%d", TotalBonusMoney);
-			KillMessageStruct bonus;
-			bonus.m_victim.m_name = MoneyStr;
-			bonus.m_victim.m_color = 0xff00ff00;
-			bonus.m_initiator.m_shader = GetKillEventIconsShader();
-			bonus.m_initiator.m_rect.x1 = 62;
-			bonus.m_initiator.m_rect.y1 = 202;
-			bonus.m_initiator.m_rect.x2 = bonus.m_initiator.m_rect.x1 + 26;
-			bonus.m_initiator.m_rect.y2 = bonus.m_initiator.m_rect.y1 + 30;
+			Bonus_Struct* pBS = &(*it);
+						
+			BMS.m_initiator.m_shader = pBS->IconShader;
+			BMS.m_initiator.m_rect.x1 = pBS->IconRects[RectID].x1;
+			BMS.m_initiator.m_rect.y1 = pBS->IconRects[RectID].y1;
+			BMS.m_initiator.m_rect.x2 = pBS->IconRects[RectID].x1 + pBS->IconRects[RectID].x2;
+			BMS.m_initiator.m_rect.y2 = pBS->IconRects[RectID].y1 + pBS->IconRects[RectID].y2;		
+		};
 
-			pUIdm->DisplayMoneyBonus	(bonus);
-		}
-	};	
+		if (pUIDM) pUIDM->DisplayMoneyBonus(BMS);
+	};
 };
 
 void	game_cl_mp::OnSpectatorSelect		()
@@ -933,4 +969,78 @@ void OnBuySpawn(CUIWindow* pWnd, void* p)
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
 	if (!game) return;
 	game->OnBuySpawnMenu_Ok();
+};
+
+void		game_cl_mp::LoadBonuses				()
+{
+	if (!pSettings->section_exist("mp_bonus_money")) return;
+	m_pBonusList.clear();
+	u32 BonusCount = pSettings->line_count("mp_bonus_money");
+	for (u32 i=0; i<BonusCount; i++)
+	{
+		LPCSTR line, name;
+		pSettings->r_line("mp_bonus_money", i, &name, &line);
+		//-------------------------------------
+		string1024 tmp0, tmp1, IconStr;
+		_GetItem(line, 0, tmp0);
+		_GetItem(line, 1, tmp1);
+		if (strstr(name, "kill_in_row")) 
+		{
+			sprintf(tmp1, "%s Kill", tmp1);
+			sprintf(IconStr, "kill_in_row");
+		}
+		else
+			sprintf(IconStr, "%s",name);
+		//-------------------------------------
+		Bonus_Struct	NewBonus;
+		NewBonus.BonusTypeName = name;
+		NewBonus.BonusName = tmp1;
+		NewBonus.MoneyStr = tmp0;
+		NewBonus.Money = atol(tmp0);
+		//-------------------------------------
+		if (!strstr(name, "new_rank"))
+		{
+			string1024 IconShader, IconX, IconY, IconW, IconH;
+			sprintf(IconShader, "%s_shader", IconStr);
+			sprintf(IconX, "%s_x", IconStr);
+			sprintf(IconY, "%s_y", IconStr);
+			sprintf(IconW, "%s_w", IconStr);
+			sprintf(IconH, "%s_h", IconStr);
+			if (pSettings->line_exist("mp_bonus_icons", IconShader))
+			{			
+				NewBonus.IconShader.create("hud\\default", pSettings->r_string("mp_bonus_icons", IconShader));
+			}
+			Frect IconRect;
+			IconRect.x1 = READ_IF_EXISTS(pSettings, r_float, "mp_bonus_icons", IconX,0);
+			IconRect.y1 = READ_IF_EXISTS(pSettings, r_float, "mp_bonus_icons", IconY,0);
+			IconRect.x2 = READ_IF_EXISTS(pSettings, r_float, "mp_bonus_icons", IconW,0);
+			IconRect.y2 = READ_IF_EXISTS(pSettings, r_float, "mp_bonus_icons", IconH,0);
+			NewBonus.IconRects.push_back(IconRect);
+		}
+		else
+		{
+			LPCSTR IconShader = CUITextureMaster::GetTextureFileName("ui_hud_status_blue_01");			
+			NewBonus.IconShader.create("hud\\default", IconShader);
+
+			Frect IconRect;
+			for (u32 r=1; r<=5; r++)
+			{
+				string256 rankstr;				
+
+				sprintf(rankstr, "ui_hud_status_green_0%d", r);
+				IconRect = CUITextureMaster::GetTextureRect(rankstr);
+				IconRect.x2 -= IconRect.x1;
+				IconRect.y2 -= IconRect.y1;
+				NewBonus.IconRects.push_back(IconRect);
+
+				sprintf(rankstr, "ui_hud_status_blue_0%d", r);
+				IconRect = CUITextureMaster::GetTextureRect(rankstr);
+				IconRect.x2 -= IconRect.x1;
+				IconRect.y2 -= IconRect.y1;
+				NewBonus.IconRects.push_back(IconRect);
+			}			
+		};
+		//--------------------------------------
+		m_pBonusList.push_back(NewBonus);
+	};
 };
