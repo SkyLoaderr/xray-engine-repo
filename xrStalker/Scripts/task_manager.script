@@ -525,6 +525,7 @@ function calculate_predicate(npc, tbl)
 				return false
 			end
 		end
+		return false
 	elseif tbl.type == "kill_stalker" then
 		local avail_obj = {}
 		for k,v in pairs(tbl.target_objects) do
