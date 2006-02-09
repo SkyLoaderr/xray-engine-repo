@@ -527,7 +527,6 @@ void CLevel::OnRender()
 	//отрисовать интерфейc пользователя
 	HUD().RenderUI();
 
-	autosave_manager().OnRender();
 
 #ifdef DEBUG
 	ph_world->OnRender	();

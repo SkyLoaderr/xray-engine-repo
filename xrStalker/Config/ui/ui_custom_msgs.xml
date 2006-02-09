@@ -44,4 +44,13 @@
 	<main_task  x="200" y="60" width="600" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</main_task>
+	
+	<game_saved  x="100" y="660" width="800" height="60">
+		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
+	</game_saved>
+
+	<autosave  x="100" y="660" width="800" height="60">
+		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">Autosave...</text>
+	</autosave>
+	
 </header>

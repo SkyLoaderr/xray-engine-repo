@@ -769,7 +769,7 @@ public:
 		  }
 	  }
 };
-
+#include "UIGameCustom.h"
 class CCC_ALifeSave : public IConsole_Command {
 public:
 	CCC_ALifeSave(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -816,6 +816,11 @@ public:
 #ifdef DEBUG
 		Msg						("Game save overhead  : %f milliseconds",timer.GetElapsed_sec()*1000.f);
 #endif
+		SDrawStaticStruct* _s		= HUD().GetUI()->UIGame()->AddCustomStatic("game_saved", true);
+		_s->m_endTime				= Device.fTimeGlobal+3.0f;// 3sec
+		string_path					save_name;
+		strconcat					(save_name,*CStringTable().translate("st_game_saved"),": ", S);
+		_s->wnd()->SetText			(save_name);
 
 		strcat					(S,".dds");
 		FS.update_path			(S1,"$game_saves$",S);
