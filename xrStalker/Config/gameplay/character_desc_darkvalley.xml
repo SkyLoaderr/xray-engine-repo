@@ -430,6 +430,67 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
+<!-------------------------- WATCHTOWER BANDIT ----------------------->
+	<specific_character id="val_watchtower_bandit_guard1" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		
+		<class>val_watchtower_bandit_guard</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="val_watchtower_bandit_sniper1" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
+
+		<class>val_watchtower_bandit_sniper</class>
+		<community>bandit</community>
+		
+		<rank>70</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_l85 \n
+			ammo_5.56x45_ss190 = 1 \n
+			device_torch \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 <!---------------------------- DOLG ------------------------>
 <!-------------------------- REGULAR ----------------------->
 	<specific_character id="val_dolg_regular_default1" team_default = "1">

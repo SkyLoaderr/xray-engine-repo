@@ -182,6 +182,14 @@
 		<class>val_bandit_veteran</class>
 	</character>
 
+	<!-- Watchtower bandits -->
+	<character id="val_watchtower_bandit_guard">
+		<class>val_watchtower_bandit_guard</class>
+	</character>
+	<character id="val_watchtower_bandit_sniper">
+		<class>val_watchtower_bandit_sniper</class>
+	</character>
+
 	<!-- Dolg -->
 	<character id="val_dolg_regular">
 		<class>val_dolg_regular</class>
