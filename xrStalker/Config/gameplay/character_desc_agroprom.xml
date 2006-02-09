@@ -63,7 +63,33 @@
 		</supplies>
 		<actor_dialog>agr_swamp_ratcatcher_talks</actor_dialog>
 	</specific_character>
+	
+	<specific_character id="agr_nii_commander" team_default = "1">
+		<name>tips_captain_name</name>
+		<icon x="20" y="14"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>agr_general_bio</bio>
 
+		<class>agr_nii_commander</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>-20</reputation>
+
+		<visual>actors\soldier\soldier_beret</visual>		
+		<snd_config>characters_voice\human_02\military\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>	
+					
+		<start_dialog>hello_dialog</start_dialog>
 
 	<!---------------------------STALKER GENERAL---------------------->
 
@@ -505,7 +531,7 @@
 	</specific_character>
 
 	<specific_character id="agr_soldier_commander2" team_default = "1">
-		<name>GENERATE_NAME_captain</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>agr_general_bio</bio>
