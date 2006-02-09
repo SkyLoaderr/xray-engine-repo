@@ -186,11 +186,14 @@ function se_smart_terrain:STATE_Read( packet, size )
 end
 
 -- инициализировать работу смарт террейна.
--- после этой функции смарт полностью работоспособен.
--- вызываетс€ из:
+-- после этой функции смарт ѕќЋЌќ—“№ё работоспособен.
+-- вызываетс€ из всех мест, которые могут вызвать другие объекты:
 --   se_smart_terrain:enabled()
 --   se_smart_terrain:update()
 --   xr_gulag.setup_gulag_and_logic_on_spawn()
+--   xr_gulag.get_npc_gulag()
+--   xr_gulag.get_gulag_by_name()
+--   xr_gulag.get_gulag_by_sid()
 function se_smart_terrain:initialize_if_needed()
 	if not self.initialized then
 		db.actor_proxy:init()

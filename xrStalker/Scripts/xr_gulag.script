@@ -1057,6 +1057,9 @@ function gulag:npc_is_enemy_to_anybody( target_obj )
 end
 
 ----------------------------------------------------------------------------------------------------------------------
+-- Функции, которые могут вызываться извне
+----------------------------------------------------------------------------------------------------------------------
+
 -- установить логику и сообщить смарту, что объект перешёл в онлайн.
 -- вызывается из net_spawn() объектов
 function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
@@ -1098,22 +1101,30 @@ function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 	end
 end
 
-----------------------------------------------------------------------------------------------------------------------
--- Functions
-----------------------------------------------------------------------------------------------------------------------
-
--- получить гулаг по имени смарта
--- работает только для смартов, которые в онлайне
+-- получить гулаг по имени смарта.
+-- работает только для смартов, которые в онлайне.
 function get_gulag_by_name( name )
 	local go_strn = db.zone_by_name[name]
 
-	return go_strn and alife():object( go_strn:id() ).gulag
+	if go_strn then
+		local strn = alife():object( go_strn:id() )
+
+		strn:initialize_if_needed()
+
+		return strn.gulag
+	else
+		return nil
+	end
 end
 
 -- получить гулаг по story id смарта
 -- работает всегда
 function get_gulag_by_sid( sid )
-	return alife():story_object( sid ).gulag
+	local strn = alife():story_object( sid )
+	
+	strn:initialize_if_needed()
+
+	return strn.gulag
 end
 
 -- получить гулаг по имени или story id смарта
@@ -1133,7 +1144,11 @@ function get_npc_gulag( obj )
 	obj = sim:object( obj:id() )
 
 	if obj:smart_terrain_id() ~= 65535 then
-		return sim:object( obj:smart_terrain_id() ).gulag
+		local strn = sim:object( obj:smart_terrain_id() )
+
+		strn:initialize_if_needed()
+
+		return strn.gulag
 	else
 		return nil
 	end
