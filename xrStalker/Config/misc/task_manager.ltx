@@ -1,5 +1,4 @@
 [list]
-
 ;----------Trader--------------------------------------------------
 ;-----------Eliminate Camp--------
 tm_eliminate_camp_1
@@ -16,6 +15,78 @@ tm_kill_stalker_3
 ;---------Find Item-----------
 tm_find_item_1
 tm_find_item_2
+;--------Barmen----------------------------------------------------------
+;-----------Eliminate Camp--------
+barmen_eliminate_camp_1
+barmen_eliminate_camp_2
+barmen_eliminate_camp_3
+;-----------Artefact------------
+barmen_find_artefact_1
+barmen_find_artefact_2
+barmen_find_artefact_3
+;----------Kill Staker-------
+barmen_kill_stalker_1
+barmen_kill_stalker_2
+barmen_kill_stalker_3
+;---------Find Item-----------
+barmen_find_item_1
+barmen_find_item_2
+barmen_find_item_3
+;---------------Ecolog---------------------
+;---------Monster Part-----------
+ecolog_monster_part_1
+ecolog_monster_part_2
+ecolog_monster_part_3
+ecolog_monster_part_4
+ecolog_monster_part_5
+ecolog_monster_part_6
+ecolog_monster_part_7
+ecolog_monster_part_8
+;--------Artefact---------------
+ecolog_find_artefact_1
+ecolog_find_artefact_2
+ecolog_find_artefact_3
+ecolog_find_artefact_4
+ecolog_find_artefact_5
+ecolog_find_artefact_6
+;--------Dolg------------------------
+;----------Eliminate Camp----
+dolg_eliminate_kamp_1
+dolg_eliminate_kamp_2
+dolg_eliminate_kamp_3
+dolg_eliminate_kamp_4
+dolg_eliminate_kamp_5
+;----------Kill Staker-------
+dolg_kill_stalker_1
+dolg_kill_stalker_2
+dolg_kill_stalker_3
+dolg_kill_stalker_4
+;----------Find Item---------
+dolg_find_item_1
+dolg_find_item_2
+dolg_find_item_3
+dolg_find_item_4
+;--------Freedom------------------------
+;----------Eliminate Camp----
+freedom_eliminate_camp_1
+freedom_eliminate_camp_2
+freedom_eliminate_camp_3
+freedom_eliminate_camp_4
+freedom_eliminate_camp_5
+;----------Kill Staker-------
+freedom_kill_stalker_1
+freedom_kill_stalker_2
+freedom_kill_stalker_3
+freedom_kill_stalker_4
+freedom_kill_stalker_5
+;----------Find Item---------
+freedom_find_item_1
+freedom_find_item_2
+freedom_find_item_3
+;-------Monster Part-------
+freedom_monster_part_1
+
+
 
 [tm_eliminate_camp_1]
 type = eliminate_lager
@@ -147,23 +218,6 @@ reward_reputation = +15
 reward_rank = 3
 
 
-;--------Barmen----------------------------------------------------------
-;-----------Eliminate Camp--------
-barmen_eliminate_camp_1
-barmen_eliminate_camp_2
-barmen_eliminate_camp_3
-;-----------Artefact------------
-barmen_find_artefact_1
-barmen_find_artefact_2
-barmen_find_artefact_3
-;----------Kill Staker-------
-barmen_kill_stalker_1
-barmen_kill_stalker_2
-barmen_kill_stalker_3
-;---------Find Item-----------
-barmen_find_item_1
-barmen_find_item_2
-barmen_find_item_3
 
 
 
@@ -172,7 +226,7 @@ type = eliminate_lager
 community = actor
 text = barmen_eliminate_camp_1_text
 description = barmen_eliminate_camp_1_descr
-parent = barmen
+parent = barman
 target = gar_smart_bandit
 reward_money = 1000
 reward_reputation = +25
@@ -185,7 +239,7 @@ type = eliminate_lager
 community = actor
 text = barmen_eliminate_camp_2_text
 description = barmen_eliminate_camp_2_descr
-parent = barmen
+parent = barman
 target = ros_smart_killers1
 reward_money = 1700
 reward_reputation = +35
@@ -198,7 +252,7 @@ type = eliminate_lager
 community = actor
 text = barmen_eliminate_camp_3_text
 description = barmen_eliminate_camp_3_descr
-parent = barmen
+parent = barman
 target = mil_bandit
 reward_money = 2000
 reward_reputation = +40
@@ -209,7 +263,7 @@ type = artefact
 community = actor
 text = barmen_find_artefact_1_text
 description = barmen_find_artefact_1_descr
-parent = barmen
+parent = barman
 target = af_mincer meat
 reward_money = 1100
 reward_reputation = +35
@@ -220,7 +274,7 @@ type = artefact
 community = actor
 text = barmen_find_artefact_2_text
 description = barmen_find_artefact_2_descr
-parent = barmen
+parent = barman
 target = af_rusty kristall
 reward_money = 1700
 reward_reputation = +45
@@ -231,7 +285,7 @@ type = artefact
 community = actor
 text = barmen_find_artefact_3_text
 description = barmen_find_artefact_3_descr
-parent = barmen
+parent = barman
 target = af_gold_fish
 reward_money = 2400
 reward_reputation = +60
@@ -242,7 +296,7 @@ type = kill_stalker
 community = actor
 text = barmen_kill_stalker_1_text
 description = barmen_kill_stalker_1_descr
-parent = barmen
+parent = barman
 target = sim_soldier_specnaz
 reward_money = 1100
 reward_reputation = +25
@@ -255,7 +309,7 @@ type = kill_stalker
 community = actor
 text = barmen_kill_stalker_2_text
 description = barmen_kill_stalker_2_descr
-parent = barmen
+parent = barman
 target = sim_stalker_master
 reward_money = 2000
 reward_reputation = -45
@@ -266,7 +320,7 @@ type = kill_stalker
 community = actor
 text = barmen_kill_stalker_3_text
 description = barmen_kill_stalker_3_descr
-parent = barmen
+parent = barman
 target = sim_monolith_master
 reward_money = 4500
 reward_reputation = +80
@@ -277,7 +331,7 @@ type = find_item
 community = actor
 text = barmen_find_item_1_text
 description = barmen_find_item_1_descr
-parent = barmen
+parent = barman
 target = outfit_monolith_m1
 reward_money = 1500
 reward_reputation = +30
@@ -288,7 +342,7 @@ type = find_item
 community = actor
 text = barmen_find_item_2_text
 description = barmen_find_item_2_descr
-parent = barmen
+parent = barman
 target = wpn_deserteagle_coll
 reward_money = 2000
 reward_reputation = +35
@@ -299,29 +353,13 @@ type = find_item
 community = actor
 text = barmen_find_item_3_text
 description = barmen_find_item_3_descr
-parent = barmen
+parent = barman
 target = wpn_vintorez_coll
 reward_money = 4000
 reward_reputation = +40
 reward_rank = 8
 
-;---------------Ecolog---------------------
-;---------Monster Part-----------
-ecolog_monster_part_1
-ecolog_monster_part_2
-ecolog_monster_part_3
-ecolog_monster_part_4
-ecolog_monster_part_5
-ecolog_monster_part_6
-ecolog_monster_part_7
-ecolog_monster_part_8
-;--------Artefact---------------
-ecolog_find_artefact_1
-ecolog_find_artefact_2
-ecolog_find_artefact_3
-ecolog_find_artefact_4
-ecolog_find_artefact_5
-ecolog_find_artefact_6
+
 
 [ecolog_monster_part_1]
 type = monster_part
@@ -480,23 +518,6 @@ reward_reputation = +45
 reward_rank = 10
 
 
-;--------Dolg------------------------
-;----------Eliminate Camp----
-dolg_eliminate_kamp_1
-dolg_eliminate_kamp_2
-dolg_eliminate_kamp_3
-dolg_eliminate_kamp_4
-dolg_eliminate_kamp_5
-;----------Kill Staker-------
-dolg_kill_stalker_1
-dolg_kill_stalker_2
-dolg_kill_stalker_3
-dolg_kill_stalker_4
-;----------Find Item---------
-dolg_find_item_1
-dolg_find_item_2
-dolg_find_item_3
-dolg_find_item_4
 
 
 [dolg_eliminate_kamp_1]
@@ -660,28 +681,6 @@ reward_reputation = +45
 reward_rank = 8
 reward_relation = dolg, 250
 
-;--------Freedom------------------------
-;----------Eliminate Camp----
-freedom_eliminate_camp_1
-freedom_eliminate_camp_2
-freedom_eliminate_camp_3
-freedom_eliminate_camp_4
-freedom_eliminate_camp_5
-
-;----------Kill Staker-------
-freedom_kill_stalker_1
-freedom_kill_stalker_2
-freedom_kill_stalker_3
-freedom_kill_stalker_4
-freedom_kill_stalker_5
-
-;----------Find Item---------
-freedom_find_item_1
-freedom_find_item_2
-freedom_find_item_3
-
-;-------Monster Part-------
-freedom_monster_part_1
 
 
 
