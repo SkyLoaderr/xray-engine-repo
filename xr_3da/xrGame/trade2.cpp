@@ -190,7 +190,11 @@ u32	CTrade::GetItemPrice	(PIItem pItem)
 		)*
 		relation_factor;
 
-	clamp					(action_factor,trade_factors.enemy_factor(),trade_factors.friend_factor());
+	clamp					(
+		action_factor,
+		_min(trade_factors.enemy_factor(),trade_factors.friend_factor()),
+		_max(trade_factors.enemy_factor(),trade_factors.friend_factor())
+	);
 	
 	// computing deficit_factor
 	float					deficit_factor = partner.inv_owner->deficit_factor(pItem->object().cNameSect());
