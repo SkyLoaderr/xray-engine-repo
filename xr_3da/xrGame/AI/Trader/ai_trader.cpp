@@ -526,5 +526,5 @@ bool CAI_Trader::AllowItemToTrade 	(CInventoryItem const * item, EItemPlace plac
 	if (item->object().CLS_ID == CLSID_DEVICE_PDA)
 		return					(false);
 
-	return						(true);
+	return						(CInventoryOwner::AllowItemToTrade(item,place));
 }

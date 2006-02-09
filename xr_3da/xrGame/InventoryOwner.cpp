@@ -478,3 +478,13 @@ void CInventoryOwner::sell_useless_items		()
 		if (AllowItemToTrade(*I,eItemPlaceUndefined))
 			(*I)->Drop			();
 }
+
+bool CInventoryOwner::AllowItemToTrade 			(CInventoryItem const * item, EItemPlace place) const
+{
+	return						(
+		trade_parameters().enabled(
+			CTradeParameters::action_sell(0),
+			item->object().cNameSect()
+		)
+	);
+}
