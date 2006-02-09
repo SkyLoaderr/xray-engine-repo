@@ -15,12 +15,13 @@ class CUITextureMaster{
 public:
 	static void ParseShTexInfo			(LPCSTR xml_file);
 
-	static void InitTexture(const char* texture_name,		IUISimpleTextureControl* tc);
-	static void InitTexture(const char* texture_name, const char* shader_name, IUISimpleTextureControl* tc);
-	static float GetTextureHeight(const char* texture_name);
-	static float GetTextureWidth(const char* texture_name);
-	static Frect GetTextureRect(const char* texture_name);
-	static LPCSTR GetTextureFileName(const char* texture_name);
+	static void		InitTexture			(LPCSTR texture_name,		IUISimpleTextureControl* tc);
+	static void		InitTexture			(LPCSTR texture_name, const char* shader_name, IUISimpleTextureControl* tc);
+	static float	GetTextureHeight	(LPCSTR texture_name);
+	static float	GetTextureWidth		(LPCSTR texture_name);
+	static Frect	GetTextureRect		(LPCSTR texture_name);
+	static LPCSTR	GetTextureFileName	(LPCSTR texture_name);
+	static void		GetTextureShader	(LPCSTR texture_name, ref_shader& sh);
 
 	static void WriteLog();
 

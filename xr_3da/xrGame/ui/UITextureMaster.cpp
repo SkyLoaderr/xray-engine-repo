@@ -144,3 +144,12 @@ LPCSTR CUITextureMaster::GetTextureFileName(const char* texture_name){
 	R_ASSERT3(false,"CUITextureMaster::GetTextureFileName Can't find texture", texture_name);
 	return 0;
 }
+
+void CUITextureMaster::GetTextureShader(LPCSTR texture_name, ref_shader& sh){
+	xr_map<shared_str, TEX_INFO>::iterator	it;
+	it = m_textures.find(texture_name);
+
+	R_ASSERT3(it != m_textures.end(), "can't find texture", texture_name);
+
+	sh.create("hud\\default", *((*it).second.file));	
+}
