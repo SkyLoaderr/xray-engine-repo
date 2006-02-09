@@ -255,9 +255,8 @@ void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, i
 void	CSoundRender_Core::clone				( ref_sound& S, const ref_sound& from, int	type )
 {
 	if (!bPresent)		return;
-	S._p				= xr_new<ref_sound_data>(*from._p);
-	S._p->feedback		= 0;
-	S._p->g_object		= 0;
+	S._p				= xr_new<ref_sound_data>();
+	S._p->handle		= from._p->handle;
 	S._p->g_type		= (type==st_SourceType)?S._p->handle->game_type():type;
 }
 
@@ -275,8 +274,10 @@ void	CSoundRender_Core::play_no_feedback		( ref_sound& S, CObject* O, u32 flags,
 {
 	if (!bPresent || 0==S._handle())return;
 	verify_refsound		(S);
-	ref_sound_data_ptr old = S._p;
-	S._p				= xr_new<ref_sound_data>(*S._p);
+	ref_sound_data_ptr	orig = S._p;
+	S._p				= xr_new<ref_sound_data>();
+	S._p->handle		= orig->handle;
+	S._p->g_type		= orig->g_type;
 	S._p->g_object		= O;
 	i_play				(&S,flags&sm_Looped,delay);
 	if (flags&sm_2D)	S._feedback()->switch_to_2D();
@@ -284,7 +285,7 @@ void	CSoundRender_Core::play_no_feedback		( ref_sound& S, CObject* O, u32 flags,
 	if (freq)			S._feedback()->set_frequency(*freq);
 	if (range)			S._feedback()->set_range   	((*range)[0],(*range)[1]);
 	if (vol)			S._feedback()->set_volume   (*vol);
-	S._p				= old;
+	S._p				= orig;
 }
 void	CSoundRender_Core::play_at_pos			( ref_sound& S, CObject* O, const Fvector &pos, u32 flags, float delay)
 {

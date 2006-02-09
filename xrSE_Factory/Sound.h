@@ -88,7 +88,7 @@ public:
 	CObject*						g_object;		//!< Game object that emitts ref_sound
 	CSound_UserDataPtr				g_userdata;
 public:
-									ref_sound_data	(){handle=0;feedback=0;g_type=0;g_object=0;}
+									ref_sound_data	();
 									ref_sound_data	(BOOL _3D, LPCSTR fName, int type);
 	virtual							~ref_sound_data	();
 };
@@ -289,8 +289,9 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);	nm=fName;Log("+ rsd",nm.c_str());			}
-IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);					Log("- rsd",nm.c_str());				}
+IC ref_sound_data::ref_sound_data				()														{	handle=0;feedback=0;g_type=0;g_object=0;															}
+IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);											}
+IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);															}
 
 IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,_3D,name,type);							}
 IC void	ref_sound::clone						( const ref_sound& from,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->clone		(*this,from,type);								}
