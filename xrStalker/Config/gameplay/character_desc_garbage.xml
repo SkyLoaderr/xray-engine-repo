@@ -52,7 +52,8 @@
 			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 		</supplies>
-					
+		
+#include "gameplay\character_dialogs.xml"					
 		<start_dialog>gar_dramm_novice_start</start_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
 	</specific_character>
