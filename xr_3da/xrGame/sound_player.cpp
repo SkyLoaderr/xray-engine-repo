@@ -37,8 +37,7 @@ void CSoundPlayer::clear			()
 	xr_vector<CSoundSingle>::iterator	I = m_playing_sounds.begin();
 	xr_vector<CSoundSingle>::iterator	E = m_playing_sounds.end();
 	for ( ; I != E; ++I)
-		if ((*I).m_sound->_feedback())
-			(*I).m_sound->stop		();
+		(*I).destroy				();
 
 	m_playing_sounds.clear			();
 
