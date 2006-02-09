@@ -191,11 +191,12 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 			if (Current){
 				char*		name	= str;
 				char*		t		= strchr(name,'=');
-				_Trim		(name);
 				if (t)		{
 					*t		= 0;
+					_Trim	(name);
 					_parse	(str2,++t);
 				} else {
+					_Trim	(name);
 					str2[0]	= 0;
 				}
 
