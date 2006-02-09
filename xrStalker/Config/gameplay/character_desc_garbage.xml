@@ -571,7 +571,7 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default2" team_default = "1">
@@ -602,7 +602,7 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default3" team_default = "1">
@@ -633,7 +633,7 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_talk_level</actor_dialog>
+		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_commander" team_default = "1">
