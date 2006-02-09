@@ -145,7 +145,7 @@ bool CAI_Stalker::tradable_item					(CInventoryItem *inventory_item, const u16 &
 
 	return				(
 		trade_parameters().enabled(
-			CTradeParameters::action_buy(0),
+			CTradeParameters::action_sell(0),
 			inventory_item->object().cNameSect()
 		)
 	);
