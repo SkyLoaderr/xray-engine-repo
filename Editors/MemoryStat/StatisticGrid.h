@@ -20,11 +20,19 @@ class TfrmStatistic : public TForm
 __published:	// IDE-managed Components
 	TElTreeStringGrid *sgData;
 	TPanel *paCaptionMem;
-	TStatusBar *sbStatus;
 	TFormStorage *fsStorage;
+	TPanel *Panel1;
+	TPanel *paQuickSearchEdit;
+	TPanel *paQuickSearchCaption;
+	TEdit *edQuickSearch;
+	TLabel *lbQuickSearchCaption;
+	TPanel *paItemsCount;
 	void __fastcall sgDataHeaderColumnClick(TObject *Sender,
           int SectionIndex);
 	void __fastcall FormShow(TObject *Sender);
+	void __fastcall paQuickSearchEditResize(TObject *Sender);
+	void __fastcall edQuickSearchKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
 private:	// User declarations
 public:		// User declarations
 	struct SStatHeader{

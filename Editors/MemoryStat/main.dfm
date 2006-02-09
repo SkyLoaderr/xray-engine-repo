@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 303
-  Top = 98
-  Width = 831
+  Left = 270
+  Top = 104
+  Width = 912
   Height = 833
   Caption = 'Memory Dump'
   Color = clBtnFace
@@ -21,7 +21,7 @@ object frmMain: TfrmMain
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel3: TBevel
-    Left = 561
+    Left = 642
     Top = 0
     Width = 2
     Height = 768
@@ -32,7 +32,7 @@ object frmMain: TfrmMain
   object sbStatus: TStatusBar
     Left = 0
     Top = 768
-    Width = 823
+    Width = 904
     Height = 19
     Panels = <
       item
@@ -44,7 +44,7 @@ object frmMain: TfrmMain
     SimplePanel = False
   end
   object paMainDesc: TPanel
-    Left = 563
+    Left = 644
     Top = 0
     Width = 260
     Height = 768
@@ -128,13 +128,13 @@ object frmMain: TfrmMain
   object paMainMem: TPanel
     Left = 0
     Top = 0
-    Width = 561
+    Width = 642
     Height = 768
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
     object Bevel2: TBevel
-      Left = 543
+      Left = 624
       Top = 18
       Width = 2
       Height = 748
@@ -145,7 +145,7 @@ object frmMain: TfrmMain
     object Bevel4: TBevel
       Left = 0
       Top = 766
-      Width = 561
+      Width = 642
       Height = 2
       Align = alBottom
       Shape = bsBottomLine
@@ -163,7 +163,7 @@ object frmMain: TfrmMain
     object paMemBase: TPanel
       Left = 2
       Top = 18
-      Width = 541
+      Width = 622
       Height = 748
       Align = alClient
       BevelOuter = bvNone
@@ -187,7 +187,7 @@ object frmMain: TfrmMain
     object paCaptionMem: TPanel
       Left = 0
       Top = 0
-      Width = 561
+      Width = 642
       Height = 18
       Align = alTop
       Alignment = taLeftJustify
@@ -197,7 +197,7 @@ object frmMain: TfrmMain
       TabOrder = 1
     end
     object sbMem: TScrollBar
-      Left = 545
+      Left = 626
       Top = 18
       Width = 16
       Height = 748
@@ -228,6 +228,7 @@ object frmMain: TfrmMain
       end
       object Close1: TMenuItem
         Caption = 'Close'
+        Enabled = False
       end
       object N2: TMenuItem
         Caption = '-'
@@ -245,20 +246,21 @@ object frmMain: TfrmMain
     end
     object Tools1: TMenuItem
       Caption = 'Tools'
-      object Statistic1: TMenuItem
-        Caption = 'Show statistic'
-        object Bytype1: TMenuItem
-          Caption = 'By type'
-          OnClick = Bytype1Click
-        end
-        object Bypool1: TMenuItem
-          Caption = 'By pool'
-          OnClick = Bypool1Click
-        end
+      object Bypool1: TMenuItem
+        Caption = 'Statistic By Pool'
+        OnClick = Bypool1Click
+      end
+      object Bytype1: TMenuItem
+        Caption = 'Statistic By Type'
+        OnClick = Bytype1Click
+      end
+      object N3: TMenuItem
+        Caption = '-'
       end
     end
     object Help1: TMenuItem
       Caption = 'Help'
+      Enabled = False
     end
   end
   object fsStorage: TFormStorage

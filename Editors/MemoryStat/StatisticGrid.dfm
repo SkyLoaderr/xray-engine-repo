@@ -1,6 +1,6 @@
 object frmStatistic: TfrmStatistic
-  Left = 1458
-  Top = 172
+  Left = 470
+  Top = 327
   Width = 544
   Height = 417
   Caption = 'Statistic'
@@ -18,12 +18,13 @@ object frmStatistic: TfrmStatistic
     Left = 0
     Top = 18
     Width = 536
-    Height = 353
+    Height = 352
     Cursor = crDefault
     LeftPosition = 0
     ColCount = 0
-    RowCount = 0
+    goRowSelect = True
     goEditing = False
+    goTabs = True
     Align = alClient
     DockOrientation = doNoOrient
     DragCursor = crDrag
@@ -42,6 +43,36 @@ object frmStatistic: TfrmStatistic
     HorzScrollBarStyles.ShowTrackHint = False
     HorzScrollBarStyles.Width = 16
     HorzScrollBarStyles.ButtonSize = 16
+    Items.Data = {
+      F3FFFFFF0000000080000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF83871200
+      60D257050000000000000000000000000000887C0000000000ED120000000000
+      0000000000000000FFFFFFFF14EE120090421901D8ED1200000000001E000000
+      28EE12000832E606DC1360078F4219018F421901246719011E2919010C421901
+      B8EE000000000000FFFFFFFF00000000000000000005000000F3FFFFFF000000
+      0000001200FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8387120008061400000000
+      00000000000000000000001200000000000001817C0000000000000000000000
+      00FFFFFFFF0103000090000000040000005AF5024034ED120024ED1200647E02
+      400400000040ED02406300000075000000DC13600722BB8B040CED12004DBB8B
+      04FFFFFFFF00000000000000000000000000F3FFFFFF0000000000001200FFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFF838712000806140000000000000000000000
+      000000001200000000000001817C000000000000000000000000FFFFFFFF0103
+      000090000000040000005AF5024034ED120024ED1200647E02400400000040ED
+      02406300000075000000DC13600722BB8B040CED12004DBB8B04FFFFFFFF0000
+      0000000000000000000000F3FFFFFF0000000000001200FFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFF83871200080614000000000000000000000000000000120000
+      0000000001817C000000000000000000000000FFFFFFFF010300009000000004
+      0000005AF5024034ED120024ED1200647E02400400000040ED02406300000075
+      000000DC13600722BB8B040CED12004DBB8B04FFFFFFFF000000000000000000
+      00000000F3FFFFFF0000000000001200FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      838712000806140000000000000000000000000000001200000000000001817C
+      000000000000000000000000FFFFFFFF0103000090000000040000005AF50240
+      34ED120024ED1200647E02400400000040ED02406300000075000000DC136007
+      22BB8B040CED12004DBB8B04FFFFFFFF00000000000000000000000000F3FFFF
+      FF0000000000001200FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF83871200080614
+      0000000000000000000000000000001200000000000001817C00000000000000
+      0000000000FFFFFFFF0103000090000000040000005AF5024034ED120024ED12
+      00647E02400400000040ED02406300000075000000DC13600722BB8B040CED12
+      004DBB8B04FFFFFFFF00000000000000000000000000}
     LineBorderActiveColor = clBlack
     LineBorderInactiveColor = clBlack
     ScrollbarOpposite = False
@@ -67,19 +98,64 @@ object frmStatistic: TfrmStatistic
     Color = clGray
     TabOrder = 1
   end
-  object sbStatus: TStatusBar
+  object Panel1: TPanel
     Left = 0
-    Top = 371
+    Top = 370
     Width = 536
-    Height = 19
-    Panels = <
-      item
-        Width = 150
+    Height = 20
+    Align = alBottom
+    Alignment = taLeftJustify
+    BevelOuter = bvLowered
+    TabOrder = 2
+    object paQuickSearchEdit: TPanel
+      Left = 257
+      Top = 1
+      Width = 278
+      Height = 18
+      Align = alClient
+      BevelInner = bvLowered
+      BevelOuter = bvNone
+      TabOrder = 0
+      OnResize = paQuickSearchEditResize
+      object edQuickSearch: TEdit
+        Left = 1
+        Top = 1
+        Width = 429
+        Height = 15
+        BorderStyle = bsNone
+        Color = 15790320
+        TabOrder = 0
+        OnKeyDown = edQuickSearchKeyDown
       end
-      item
-        Width = 50
-      end>
-    SimplePanel = False
+    end
+    object paQuickSearchCaption: TPanel
+      Left = 121
+      Top = 1
+      Width = 136
+      Height = 18
+      Align = alLeft
+      Alignment = taLeftJustify
+      BevelInner = bvLowered
+      TabOrder = 1
+      object lbQuickSearchCaption: TLabel
+        Left = 2
+        Top = 3
+        Width = 30
+        Height = 13
+        Caption = '----------'
+      end
+    end
+    object paItemsCount: TPanel
+      Left = 1
+      Top = 1
+      Width = 120
+      Height = 18
+      Align = alLeft
+      Alignment = taLeftJustify
+      BevelInner = bvLowered
+      Caption = ' Items count: 999999'
+      TabOrder = 2
+    end
   end
   object fsStorage: TFormStorage
     UseRegistry = True

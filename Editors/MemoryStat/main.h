@@ -54,9 +54,9 @@ __published:	// IDE-managed Components
 	TBevel *Bevel3;
 	TMenuItem *N2;
 	TMenuItem *ShowLog1;
-	TMenuItem *Statistic1;
 	TMenuItem *Bytype1;
 	TMenuItem *Bypool1;
+	TMenuItem *N3;
 	void __fastcall OpenClick(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
@@ -80,15 +80,16 @@ __published:	// IDE-managed Components
 private:	// User declarations
 	void __fastcall IdleHandler(TObject *Sender, bool &Done);
     void __stdcall OnRefreshBuffer	(PropValue*);
-    void __stdcall OnCellChanged	(PropValue*);
-    void __stdcall OnResizeBuffer	(PropValue*);
-    void __stdcall OnRedrawBuffer	(PropValue*);
-
+    void __stdcall OnCellSizeChanged(PropValue*);
+	void __stdcall OnCategoryCommandClick(ButtonValue*, bool&, bool&);
+	void __stdcall OnCommonCommandClick(ButtonValue*, bool&, bool&);
+    
     enum{
     	flUpdateProps			= (1<<0),
     	flResizeBuffer			= (1<<1),
     	flRedrawBuffer			= (1<<2),
     	flRedrawDetailed		= (1<<3),
+    	flUpdateCatProps		= (1<<4),
     };
     Flags32						m_Flags;
     
@@ -103,6 +104,9 @@ private:	// User declarations
 
     void UpdateProperties		(){m_Flags.set(flUpdateProps,TRUE);}
     void RealUpdateProperties	();
+
+    void UpdateCatProperties	(){m_Flags.set(flUpdateCatProps,TRUE);}
+    void RealUpdateCatProperties();
     
     void OnFrame				();
 
