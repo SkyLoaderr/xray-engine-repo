@@ -81,6 +81,7 @@ typedef resptr_core<CSound_UserData,resptr_base<CSound_UserData> >	CSound_UserDa
 
 class ref_sound_data	: public xr_resource		{
 public:
+	shared_str						nm;
 	CSound_source*					handle;			//!< Pointer to wave-source interface
 	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
 	int								g_type;			//!< Sound type, usually for AI
@@ -287,8 +288,8 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);	Log("+ rsd",fName);						}
-IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);					Log("- rsd",handle->file_name());		}
+IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);	nm=fName;Log("+ rsd",nm.c_str());			}
+IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);					Log("- rsd",nm.c_str());				}
 
 IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,_3D,name,type);							}
 IC void	ref_sound::clone						( const ref_sound& from,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->clone		(*this,from,type);								}
