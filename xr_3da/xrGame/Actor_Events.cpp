@@ -59,15 +59,13 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 
 				inventory().Take(_GO, false, true);
 
-				//добавить новый артефакт в меню, если
-				//мы работали с устройством сочетания 
 				CUIGameSP* pGameSP = NULL;
 				CUI* ui = HUD().GetUI();
 				if( ui&&ui->UIGame() )
 				{
 					pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 					if (Level().CurrentViewEntity() == this)
-							HUD().GetUI()->UIGame()->ReInitInventoryWnd();
+							HUD().GetUI()->UIGame()->ReInitShownUI();
 				};
 				
 				//добавить отсоединенный аддон в инвентарь
@@ -126,7 +124,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			if (pWeapon || pGrenade) SelectBestWeapon();
 
 			if (Level().CurrentViewEntity() == this && HUD().GetUI() && HUD().GetUI()->UIGame())
-				HUD().GetUI()->UIGame()->ReInitInventoryWnd();
+				HUD().GetUI()->UIGame()->ReInitShownUI();
 		}
 		break;
 	case GE_INV_ACTION:

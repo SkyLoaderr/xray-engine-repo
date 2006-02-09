@@ -126,11 +126,15 @@ void CUIGameSP::StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 	m_game->StartStopMenu(UICarBodyMenu,true);
 }
 
-void CUIGameSP::ReInitInventoryWnd		() 
+void CUIGameSP::ReInitShownUI() 
 { 
 	if (InventoryMenu->IsShown()) 
-		InventoryMenu->InitInventory(); 
+		InventoryMenu->InitInventory_delayed(); 
+	else if(UICarBodyMenu->IsShown())
+		UICarBodyMenu->UpdateLists_delayed();
+	
 };
+
 
 extern ENGINE_API BOOL bShowPauseString;
 void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang)
@@ -188,3 +192,4 @@ void CChangeLevelWnd::Hide()
 {
 	Device.Pause							(FALSE);
 }
+

@@ -56,14 +56,15 @@ CUIInventoryWnd::CUIInventoryWnd()
 	Hide();	
 
 	m_pCurrentDragDropItem = NULL;
-	m_pItemToUpgrade = NULL;
-	UISellAll = NULL;
+	m_pItemToUpgrade	= NULL;
+	UISellAll			= NULL;
 
-	Init();
-	SetCurrentItem(NULL);
+	Init				();
+	SetCurrentItem		(NULL);
 
 	SetFont(HUD().Font().pFontMedium);
-	g_pInvWnd = this;	
+	g_pInvWnd			= this;	
+	m_b_need_reinit		= false;
 }
 
 void CUIInventoryWnd::Init()
@@ -264,7 +265,10 @@ void CUIInventoryWnd::Draw()
 
 void CUIInventoryWnd::Update()
 {
-	//CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(m_b_need_reinit)
+		InitInventory	();
+
+
 	CEntityAlive *pEntityAlive = smart_cast<CEntityAlive*>(Level().CurrentEntity());
 
 	if(pEntityAlive) 
@@ -309,8 +313,6 @@ void CUIInventoryWnd::Update()
 			}
 		}
 
-		UpdateWeight(UIBagWnd, true);
-
 		// update money
 		CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pEntityAlive);
 		char sMoney[50];
@@ -324,7 +326,6 @@ void CUIInventoryWnd::Update()
 		UIOutfitInfo.Update(*outfit);		
 	}
 
-	// Update time indicator
 	UITimeWnd.Update();
 
 

@@ -85,11 +85,6 @@ CInventory::~CInventory()
 
 void CInventory::Clear()
 {
-	m_dwModifyFrame = Device.dwFrame;
-
-	//for multiplayer modes
-//	if (GameID() != GAME_SINGLE) m_iMaxBelt+=2;
-	
 	m_all.clear();
 	m_ruck.clear();
 	m_belt.clear();

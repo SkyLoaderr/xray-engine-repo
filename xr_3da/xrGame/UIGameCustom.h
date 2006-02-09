@@ -74,7 +74,7 @@ public:
 	void				RemoveDialogToRender	(CUIWindow* pDialog);
 	
 	CUIDialogWnd*		MainInputReceiver		();
-	virtual void		ReInitInventoryWnd		() = 0;
+	virtual void		ReInitShownUI			() = 0;
 
 			void		AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color);
 			void		AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color/*, LPCSTR def_text*/, float flicker );

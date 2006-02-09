@@ -149,7 +149,7 @@ CUIGameDM::~CUIGameDM()
 	xr_delete					(m_pRankIndicator);
 }
 
-void	CUIGameDM::ReInitInventoryWnd		() 
+void	CUIGameDM::ReInitShownUI		() 
 {
 	if (m_game && m_game->GetInventoryWnd() && m_game->GetInventoryWnd()->IsShown())
 	{	

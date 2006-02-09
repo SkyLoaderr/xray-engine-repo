@@ -19,16 +19,15 @@ class CInventory;
 
 #include "UIEditBox.h"
 #include "UIListWnd.h"
-//#include "UIMessageBox.h"
 
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
-
 
 class CUICarBodyWnd: public CUIDialogWnd
 {
 private:
 	typedef CUIDialogWnd inherited;
+	bool			m_b_need_update;
 public:
 	CUICarBodyWnd();
 	virtual ~CUICarBodyWnd();
@@ -55,6 +54,7 @@ public:
 	CInventory*		m_pOthersInv;
 	CGameObject*	m_pOurObject;
 	CGameObject*	m_pOthersObject;
+	void			UpdateLists_delayed			();
 
 protected:
 	CUIStatic			UIStaticTop;
@@ -78,35 +78,35 @@ protected:
 
 	//  нопка "вз€ть всЄ"
 	CUIButton			UITakeAll;
+	void				UpdateLists					();
 
 	//функции, выполн€ющие согласование отображаемых окошек
 	//с реальным инвентарем
 	static bool OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-
-	bool ToOurBag();
-	bool ToOthersBag();
 	
-	//произвести торговлю
-	void UpdateLists();
+	void				ActivatePropertiesBox		();
+	void				EatItem						();
+
+	bool				ToOurBag					();
+	bool				ToOthersBag					();
+	
 
 	//pop-up меню вызываемое по нажатию правой кнопки
-	CUIPropertiesBox UIPropertiesBox;
-	//окно с сообщением
-//	CUIMessageBox	 UIMessageBox;
+	CUIPropertiesBox	UIPropertiesBox;
 
-	DD_ITEMS_VECTOR m_vDragDropItems;
+	DD_ITEMS_VECTOR		m_vDragDropItems;
 
 	//дл€ сортировки вещей
-	TIItemContainer ruck_list;
+	TIItemContainer		ruck_list;
 
 	//элемент с которым работают в текущий момент
-	PIItem m_pCurrentItem;
-	CUIDragDropItem* m_pCurrentDragDropItem;
+	PIItem				m_pCurrentItem;
+	CUIDragDropItem*	m_pCurrentDragDropItem;
 
 	//устанавливает текущий предмет
-	void		SetCurrentItem(CInventoryItem* pItem);
+	void				SetCurrentItem				(CInventoryItem* pItem);
 
 	// ¬з€ть все
-	void		TakeAll();
+	void				TakeAll						();
 };

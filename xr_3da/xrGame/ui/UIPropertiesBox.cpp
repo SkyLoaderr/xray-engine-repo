@@ -9,8 +9,8 @@
 #include "../hudmanager.h"
 #include "../level.h"
 
-#define OFFSET_X (20*UI()->GetScaleX())
-#define OFFSET_Y (18*UI()->GetScaleY())
+#define OFFSET_X (20)
+#define OFFSET_Y (18)
 #define FRAME_BORDER_WIDTH	20
 #define FRAME_BORDER_HEIGHT	22
 
@@ -147,8 +147,10 @@ void CUIPropertiesBox::AutoUpdateSize()
 {
 	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize()+
 			  FRAME_BORDER_HEIGHT*2);
-	SetWidth(float(m_UIListWnd.GetLongestSignWidth()+FRAME_BORDER_WIDTH*2));
-	m_UIListWnd.SetWidth(float(m_UIListWnd.GetLongestSignWidth()));
+	float f = float(m_UIListWnd.GetLongestSignWidth()+FRAME_BORDER_WIDTH*2); 
+	SetWidth(_max(100.0f,f));
+		f = float(m_UIListWnd.GetLongestSignWidth());
+	m_UIListWnd.SetWidth(_max(100.0f-FRAME_BORDER_WIDTH*2,f));
 }
 
 int CUIPropertiesBox::GetClickedIndex() 

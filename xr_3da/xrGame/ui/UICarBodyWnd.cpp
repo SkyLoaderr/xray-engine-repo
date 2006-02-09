@@ -24,7 +24,7 @@
 #include "../profiler.h"
 #include "UIWpnDragDropItem.h"
 #include "../ai/monsters/BaseMonster/base_monster.h"
-//////////////////////////////////////////////////////////////////////////
+#include "../WeaponMagazined.h"
 
 using namespace InventoryUtilities;
 
@@ -41,6 +41,7 @@ CUICarBodyWnd::CUICarBodyWnd()
 	Hide();
 
 	SetFont(HUD().Font().pFontMedium);
+	m_b_need_update		= false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -108,7 +109,7 @@ void CUICarBodyWnd::Init()
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 	AttachChild(&UIPropertiesBox);
-	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
+	UIPropertiesBox.Init("ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
 
 	UIOurBagList.SetCheckProc(OurBagProc);
@@ -157,6 +158,10 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 	UpdateLists					();
 
 }  
+void CUICarBodyWnd::UpdateLists_delayed()
+{
+		m_b_need_update = true;
+}
 
 void CUICarBodyWnd::UpdateLists()
 {
@@ -256,14 +261,8 @@ void CUICarBodyWnd::UpdateLists()
 	}
 
 	UpdateWeight(UIOurBagWnd);
-
-//	Msg("-CUICarBodyWnd::UpdateLists: %f",T.GetElapsed_sec());
-	
+	m_b_need_update = false;
 }
-
-//////////////////////////////////////////////////////////////////////////
-//как только подняли элемент, сделать его текущим
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
@@ -298,9 +297,51 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		TakeAll();
 	}
+	else if(msg == DRAG_DROP_ITEM_RBUTTON_CLICK)
+	{
+		PIItem pInvItem				= (PIItem)((CUIDragDropItem*)pWnd)->GetData();
+				
+		SetCurrentItem				(pInvItem);
+		m_pCurrentDragDropItem		= (CUIDragDropItem*)pWnd;
+		
+		ActivatePropertiesBox		();
+	}
+	else if(pWnd == &UIPropertiesBox &&	msg == PROPERTY_CLICKED)
+	{
+		if(UIPropertiesBox.GetClickedItem())
+		{
+			switch(UIPropertiesBox.GetClickedItem()->GetValue())
+			{
+			case INVENTORY_EAT_ACTION:	//съесть объект
+				EatItem();
+				break;
+/*			case INVENTORY_ATTACH_ADDON:{
+					m_pItemToUpgrade = (PIItem)pData;
+					AttachAddon();
+				}break;
+			case INVENTORY_DETACH_SCOPE_ADDON:
+				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
+				break;
+			case INVENTORY_DETACH_SILENCER_ADDON:
+				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
+				break;
+			case INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON:
+				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
+				break;
+*/
+			case INVENTORY_UNLOAD_MAGAZINE:
+				(smart_cast<CWeaponMagazined*>(m_pCurrentItem))->UnloadMagazine();
+				break;
+			}
+		}
+	}
 
-	CUIWindow::SendMessage(pWnd, msg, pData);
+
+
+	CUIWindow::SendMessage			(pWnd, msg, pData);
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -313,11 +354,13 @@ void CUICarBodyWnd::Draw()
 
 void CUICarBodyWnd::Update()
 {
+	if(m_b_need_update||m_pInv->ModifyFrame()==Device.dwFrame || m_pOthersInv->ModifyFrame()==Device.dwFrame)
+		UpdateLists		();
 
 	if(m_pOurObject->Position().distance_to(m_pOthersObject->Position()) > 3.0f){
 			GetHolder()->StartStopMenu(this,true);
 	}
-
+/*
 	//убрать объект drag&drop для уже использованной вещи
 	for(u32 i = 0; i <m_vDragDropItems.size(); ++i) 
 	{
@@ -332,7 +375,7 @@ void CUICarBodyWnd::Update()
 			m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
 		}
 	}
-
+*/
 	inherited::Update();
 }
 
@@ -480,7 +523,6 @@ void CUICarBodyWnd::TakeAll()
 		int iData = 111;
 		SendMessage(*it++, DRAG_DROP_ITEM_DB_CLICK, (void*)(&iData) );
 	}
-//	Msg("-CUICarBodyWnd::TakeAll: %f",T.GetElapsed_sec());
 	SetCurrentItem(NULL);
 }
 
@@ -496,4 +538,48 @@ bool CUICarBodyWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 			return true;
 	}
 	return false;
+}
+
+void CUICarBodyWnd::ActivatePropertiesBox()
+{
+	float x,y;
+
+	Frect rect = GetAbsoluteRect();
+	GetUICursor()->GetPos(x,y);
+		
+	UIPropertiesBox.RemoveAll();
+	
+	CWeaponMagazined*		pWeapon			= smart_cast<CWeaponMagazined*>(m_pCurrentItem);
+	CEatableItem*			pEatableItem	= smart_cast<CEatableItem*>(m_pCurrentItem);
+    bool					b_show			= false;
+	if(pWeapon && pWeapon->GetAmmoElapsed())
+	{
+			UIPropertiesBox.AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
+			b_show			= true;
+	}
+	
+	
+	if(pEatableItem)
+	{
+		UIPropertiesBox.AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
+		b_show			= true;
+	}
+
+	if(b_show){
+		UIPropertiesBox.AutoUpdateSize	();
+		UIPropertiesBox.BringAllToTop	();
+		UIPropertiesBox.Show			(x-rect.left, y-rect.top);
+	}
+}
+
+void CUICarBodyWnd::EatItem()
+{
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
+
+	NET_Packet	P;
+	CGameObject::u_EventGen(P, GEG_PLAYER_ITEM_EAT, Actor()->ID());
+	P.w_u16		(m_pCurrentItem->object().ID());
+	CGameObject::u_EventSend(P);
+
 }

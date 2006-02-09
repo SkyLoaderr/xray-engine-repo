@@ -15,7 +15,7 @@ function main44()
 	end	
 end
 
-function main()
+function main1222()
    game.start_tutorial("part_1_pda")
 --   part_3_jump
 --   part_4_crouch
@@ -106,43 +106,15 @@ function main________()
 	db.actor:give_game_news("hello-1 sdfewrf ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
-function main11111()
+function main()
    local h = hit()
-   h.power = 1000000
+   h.power = 0.2
    h.direction = vector():set(0, 0, 1)
-   h.impulse = 58880
+   h.impulse = 0
    h.draftsman = db.actor
    h.type = hit.fire_wound
    db.actor:hit(h)
 
-	h.direction = vector():set(0, 0, 1)
-	db.actor:hit(h)
-
-	h.direction = vector():set(0, 0, -1)
-	db.actor:hit(h)
-
-	h.direction = vector():set(1, 0, 1)
-	db.actor:hit(h)
-	
-	h.direction = vector():set(-1, 0, 1)
-	db.actor:hit(h)
-	
-	h.direction = vector():set(-1, 0, 0)
-	db.actor:hit(h)
-	
-	h.direction = vector():set(1, 0, 0)
-	db.actor:hit(h)
-	h.direction = vector():set(1, 0, 0.5)
-	db.actor:hit(h)
-	h.direction = vector():set(1.5, 0, 0.5)
-	db.actor:hit(h)
-	h.direction = vector():set(0.7, 0, 0.5)
-	db.actor:hit(h)
-	h.direction = vector():set(0.7, 0, -0.5)
-	db.actor:hit(h)
-  
-	h.direction = vector():set(0.3, 0, -0.5)
-	db.actor:hit(h)
 --burn  		1
 --shock  		1
 --strike  		1

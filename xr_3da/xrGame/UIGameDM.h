@@ -92,5 +92,5 @@ public:
 			void					ShowFragList			(bool bShow);
 			void					ShowPlayersList			(bool bShow);
 			void					ShowStatistic			(bool bShow);
-	virtual void					ReInitInventoryWnd		(); 
+	virtual void					ReInitShownUI		(); 
 };
