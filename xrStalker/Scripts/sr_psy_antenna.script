@@ -119,7 +119,7 @@ function PsyAntenna:update_psy_hit		(dt)
 		if power > 0 then
 			local psy_hit 				= hit()
 --			psy_hit.power 				= self.power_factor.a*self.hit_amplitude*self.hit_intensity
-			psy_hit.power 				= power
+			psy_hit.power 				= power * 0.01
 			psy_hit.direction 			= vector():set( 0, 0, 0 )
 			psy_hit.impulse 			= 0
 			psy_hit.draftsman 			= db.actor
