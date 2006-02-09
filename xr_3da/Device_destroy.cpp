@@ -33,6 +33,14 @@ void CRenderDevice::Destroy	(void) {
 	// real destroy
 	HW.DestroyDevice			();
 
+	seqRender.R.clear			();
+	seqAppActivate.R.clear		();
+	seqAppDeactivate.R.clear	();
+	seqAppStart.R.clear			();
+	seqAppEnd.R.clear			();
+	seqFrame. R.clear			();
+	seqFrameMT.R.clear			();
+	seqDeviceReset.R.clear		();
 	seqParallel.clear			();
 }
 

@@ -78,6 +78,10 @@ void*	xrMemory::mem_alloc		(size_t size
 	//if(g_globalCheckAddr==_ptr){
 	//	__asm int 3;
 	//}
+	//if (_name && (0==strcmp(_name,"class shared_str")))// && (size==35280))
+	//{
+	//	__asm int 3;
+	//}
 #endif
 	return	_ptr;
 }
