@@ -404,7 +404,7 @@ bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 }
 
 //////////////////////////////////////////////////////////////////////////
-
+#include "../trade_parameters.h"
 bool CUITradeWnd::CanMoveToOther(CUIDragDropItem* itm)
 {
 	PIItem pItem = (PIItem)itm->GetData();
@@ -415,6 +415,12 @@ bool CUITradeWnd::CanMoveToOther(CUIDragDropItem* itm)
 	float itmWeight			= pItem->Weight();
 	float otherInvWeight	= m_pOthersInv->CalcTotalWeight();
 	float otherMaxWeight	= m_pOthersInv->GetMaxWeight();
+
+	if (!m_pOthersInvOwner->trade_parameters().enabled(
+			CTradeParameters::action_buy(0),
+			pItem->object().cNameSect()
+		))
+		return				(false);
 
 	if(otherInvWeight-r2+r1+itmWeight > otherMaxWeight){
 		Msg("partner inventory is full");

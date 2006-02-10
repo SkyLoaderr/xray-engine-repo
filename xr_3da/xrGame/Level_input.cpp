@@ -368,6 +368,7 @@ void CLevel::IR_OnKeyboardHold(int key)
 {
 	if(g_bDisableAllInput) return;
 
+	if (pHUD->GetUI()->IR_OnKeyboardHold(key)) return;
 	if( HUD().GetUI()->MainInputReceiver() )return;
 	if( Device.Pause() ) return;
 	if (CURRENT_ENTITY())		{

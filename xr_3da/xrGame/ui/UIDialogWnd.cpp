@@ -39,6 +39,23 @@ void CUIDialogWnd::Hide()
 	
 }
 
+bool CUIDialogWnd::IR_OnKeyboardHold(int dik)
+{
+	if(!IR_process()) return false;
+	if (OnKeyboardHold(dik)) 
+		return true;
+
+	if( !StopAnyMove() && g_pGameLevel ){
+		CObject* O = Level().CurrentEntity();
+		if( O ){
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
+			if (!IR)
+				return			(false);
+			IR->IR_OnKeyboardHold(key_binding[dik]);
+		}
+	}
+	return false;
+}
 
 bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 {
@@ -128,6 +145,11 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 	};
 
 	return true;
+}
+
+bool CUIDialogWnd::OnKeyboardHold(int dik)
+{
+	return false;
 }
 
 bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)

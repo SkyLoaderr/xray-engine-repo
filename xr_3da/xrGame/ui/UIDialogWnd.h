@@ -28,7 +28,9 @@ public:
 	virtual bool IR_OnKeyboardRelease			(int dik);
 	virtual bool IR_OnMouseMove					(int dx, int dy);
 	virtual bool IR_OnMouseWheel				(int direction);
+	virtual bool IR_OnKeyboardHold				(int dik);
 	virtual bool OnKeyboard						(int dik, EUIMessages keyboard_action);
+	virtual bool OnKeyboardHold					(int dik);
 
 	CDialogHolder* GetHolder					()					{return m_pHolder;};
 			void SetHolder						(CDialogHolder* h)	{m_pHolder = h;};

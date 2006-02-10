@@ -130,6 +130,20 @@ bool	CUI::IR_OnMouseWheel			(int direction)
 }
 
 //--------------------------------------------------------------------
+bool CUI::IR_OnKeyboardHold(int dik)
+{
+	if ( MainInputReceiver() ) {
+		if( MainInputReceiver()->IR_OnKeyboardHold(dik) )
+			return true;
+	}
+
+	if( MainInputReceiver() )
+		return true;
+
+	return false;
+}
+
+
 bool CUI::IR_OnKeyboardPress(int dik)
 {
 	if(UIMainIngameWnd->OnKeyboardPress(dik))
