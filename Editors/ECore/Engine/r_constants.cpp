@@ -11,7 +11,7 @@
 #include "r_constants.h"
 
 // pool
-static	poolSS<R_constant,512>			g_constant_allocator;
+//.static	poolSS<R_constant,512>			g_constant_allocator;
 
 R_constant_table::~R_constant_table	()	{	Device.Resources->_DeleteConstantTable(this);	}
 
@@ -21,29 +21,29 @@ void	R_constant_table::fatal			(LPCSTR S)
 }
 
 // predicates
-IC bool	p_search	(R_constant* C, LPCSTR S)
+IC bool	p_search	(ref_constant C, LPCSTR S)
 {
 	return xr_strcmp(*C->name,S)<0;
 }
-IC bool	p_sort		(R_constant* C1, R_constant* C2)
+IC bool	p_sort		(ref_constant C1, ref_constant C2)
 {
 	return xr_strcmp(C1->name,C2->name)<0;
 }
 
-R_constant* R_constant_table::get	(LPCSTR S)
+ref_constant R_constant_table::get	(LPCSTR S)
 {
 	// assumption - sorted by name
 	c_table::iterator I	= std::lower_bound(table.begin(),table.end(),S,p_search);
 	if (I==table.end() || (0!=xr_strcmp(*(*I)->name,S)))	return 0;
 	else												return *I;
 }
-R_constant* R_constant_table::get	(shared_str& S)
+ref_constant R_constant_table::get	(shared_str& S)
 {
 	// linear search, but only ptr-compare
 	c_table::iterator I	= table.begin	();
 	c_table::iterator E	= table.end		();
 	for (; I!=E; ++I)	{
-		R_constant*		C		= *I;
+		ref_constant	C		= *I;
 		if (C->name.equal(S))	return C;
 	}
 	return	0;
@@ -121,9 +121,9 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 					{
 						// ***Register sampler***
 						// We have determined all valuable info, search if constant already created
-						R_constant*	C		=	get	(name);
-						if (0==C)	{
-							C					=	g_constant_allocator.create();
+						ref_constant	C		=	get	(name);
+						if (!C)	{
+							C					=	xr_new<R_constant>();//.g_constant_allocator.create();
 							C->name				=	name;
 							C->destination		=	RC_dest_sampler;
 							C->type				=	RC_sampler;
@@ -154,9 +154,9 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 		if (bSkip)			continue;
 
 		// We have determined all valuable info, search if constant already created
-		R_constant*	C		=	get	(name);
-		if (0==C)	{
-			C					=	g_constant_allocator.create();
+		ref_constant	C		=	get	(name);
+		if (!C)	{
+			C					=	xr_new<R_constant>();//.g_constant_allocator.create();
 			C->name				=	name;
 			C->destination		=	destination;
 			C->type				=	type;
@@ -183,10 +183,10 @@ void R_constant_table::merge(R_constant_table* T)
 	// Real merge
 	for (u32 it=0; it<T->table.size(); it++)
 	{
-		R_constant*	src			=	T->table[it];
-		R_constant*	C			=	get	(*src->name);
-		if (0==C)	{
-			C					=	g_constant_allocator.create();
+		ref_constant src		=	T->table[it];
+		ref_constant C			=	get	(*src->name);
+		if (!C)	{
+			C					=	xr_new<R_constant>();//.g_constant_allocator.create();
 			C->name				=	src->name;
 			C->destination		=	src->destination;
 			C->type				=	src->type;
@@ -210,11 +210,10 @@ void R_constant_table::merge(R_constant_table* T)
 
 void R_constant_table::clear	()
 {
-	/*
+	//.
 	for (u32 it=0; it<table.size(); it++)
-		g_constant_allocator.destroy(table[it]);
-	*/
-	table.clear();
+		table[it]	= 0;//.g_constant_allocator.destroy(table[it]);
+	table.clear		();
 }
 
 BOOL R_constant_table::equal(R_constant_table& C)
@@ -223,7 +222,7 @@ BOOL R_constant_table::equal(R_constant_table& C)
 	u32 size			= table.size();
 	for (u32 it=0; it<size; it++)
 	{
-		if (!table[it]->equal(C.table[it]))	return FALSE;
+		if (!table[it]->equal(&*C.table[it]))	return FALSE;
 	}
 	return TRUE;
 }

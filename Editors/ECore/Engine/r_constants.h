@@ -44,7 +44,7 @@ struct	R_constant_load
 	}
 };
 
-struct	R_constant
+struct	R_constant			:public xr_resource
 {
 	shared_str				name;		// HLSL-name
 	u16						type;		// float=0/integer=1/boolean=2
@@ -66,6 +66,7 @@ struct	R_constant
 		return equal(*C);
 	}
 };
+typedef	resptr_core<R_constant,resptr_base<R_constant> > ref_constant;
 
 // Automatic constant setup
 class	ENGINE_API			R_constant_setup
@@ -76,7 +77,7 @@ public:
 
 class	ENGINE_API			R_constant_table	: public xr_resource_flagged	{
 public:
-	typedef xr_vector<R_constant*>		c_table;
+	typedef xr_vector<ref_constant>		c_table;
 	c_table					table;
 private:
 	void					fatal		(LPCSTR s);
@@ -86,8 +87,8 @@ public:
 	void					clear		();
 	BOOL					parse		(void* desc, u16 destination);
 	void					merge		(R_constant_table* C);
-	R_constant*				get			(LPCSTR		name);		// slow search
-	R_constant*				get			(shared_str&	name);		// fast search
+	ref_constant			get			(LPCSTR		name);		// slow search
+	ref_constant			get			(shared_str&	name);		// fast search
 
 	BOOL					equal		(R_constant_table& C);
 	BOOL					equal		(R_constant_table* C)	{	return equal(*C);		}

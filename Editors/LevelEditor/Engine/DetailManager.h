@@ -129,17 +129,17 @@ public:
 	u32								hw_BatchSize;
 	IDirect3DVertexBuffer9*			hw_VB;
 	IDirect3DIndexBuffer9*			hw_IB;
-	R_constant*						hwc_consts;
-	R_constant*						hwc_wave;
-	R_constant*						hwc_wind;
-	R_constant*						hwc_array;
-	R_constant*						hwc_s_consts;
-	R_constant*						hwc_s_xform;
-	R_constant*						hwc_s_array;
+	ref_constant					hwc_consts;
+	ref_constant					hwc_wave;
+	ref_constant					hwc_wind;
+	ref_constant					hwc_array;
+	ref_constant					hwc_s_consts;
+	ref_constant					hwc_s_xform;
+	ref_constant					hwc_s_array;
 	void							hw_Load			();
 	void							hw_Unload		();
 	void							hw_Render		();
-	void							hw_Render_dump	(R_constant* array, u32 var_id, u32 lod_id, u32 c_base);
+	void							hw_Render_dump	(ref_constant array, u32 var_id, u32 lod_id, u32 c_base);
 
 public:
 	// get unpacked slot

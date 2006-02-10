@@ -34,12 +34,12 @@ void*	xrMemory::mem_alloc		(size_t size
 	// if (mem_initialized)		Memory.dbg_check			();
 	stat_calls++;
 
-#if 0//def DEBUG
-	if (_name && (0==strcmp(_name,"C++ NEW")) && (12==size))
-	{
-		debug_cs.Enter		();
-		debug_cs.Leave		();
-	}
+#ifdef DEBUG
+	//if (_name && (0==strcmp(_name,"C++ NEW")) && (12==size))
+	//{
+	//	debug_cs.Enter		();
+	//	debug_cs.Leave		();
+	//}
 #endif
 	// if (size>14310800 && size<14310860)	__asm int 3;
 #ifdef DEBUG
@@ -78,7 +78,7 @@ void*	xrMemory::mem_alloc		(size_t size
 	//if(g_globalCheckAddr==_ptr){
 	//	__asm int 3;
 	//}
-	//if (_name && (0==strcmp(_name,"class shared_str")))// && (size==35280))
+	//if (_name && (0==strcmp(_name,"storage: sstring")) && (size==103))
 	//{
 	//	__asm int 3;
 	//}

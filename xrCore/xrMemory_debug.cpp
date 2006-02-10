@@ -145,4 +145,8 @@ XRCORE_API void	dbg_dump_leaks			()
 	Memory.mem_statistic	("x:\\$memory_leak$.dump");
 }
 
+XRCORE_API void	dbg_dump_str_leaks			()
+{
+	g_pStringContainer->dump();
+}
 #endif

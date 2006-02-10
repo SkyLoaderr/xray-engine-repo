@@ -43,7 +43,7 @@ struct	ENGINE_API		SMatrixList		: public xr_resource_flagged, public svector<ref
 };
 typedef	resptr_core<SMatrixList,resptr_base<SMatrixList> >									ref_matrix_list;
 //////////////////////////////////////////////////////////////////////////
-struct	ENGINE_API		SConstantList	: public xr_resource_flagged, public svector<ref_constant,4>	{
+struct	ENGINE_API		SConstantList	: public xr_resource_flagged, public svector<ref_constant_obsolette,4>	{
 						~SConstantList	();
 };
 typedef	resptr_core<SConstantList,resptr_base<SConstantList> >								ref_constant_list;

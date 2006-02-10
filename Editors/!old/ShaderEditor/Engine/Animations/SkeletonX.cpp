@@ -18,7 +18,7 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-static	shared_str	sbones_array;
+shared_str	s_bones_array_const;
 
 #pragma pack(push,1)
 float u_P	(s16 v)
@@ -237,14 +237,14 @@ void CSkeletonX::_Render	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
 	case RM_SKINNING_2B:
 		{
 			// transfer matrices
-			R_constant*				array	= RCache.get_c				(sbones_array);
+			ref_constant			array	= RCache.get_c				(s_bones_array_const);
 			u32						count	= RMS_bonecount;
 			for (u32 mid = 0; mid<count; mid++)	{
 				Fmatrix&	M				= Parent->LL_GetTransform_R				(u16(mid));
 				u32			id				= mid*3;
-				RCache.set_ca	(array,id+0,M._11,M._21,M._31,M._41);
-				RCache.set_ca	(array,id+1,M._12,M._22,M._32,M._42);
-				RCache.set_ca	(array,id+2,M._13,M._23,M._33,M._43);
+				RCache.set_ca	(&*array,id+0,M._11,M._21,M._31,M._41);
+				RCache.set_ca	(&*array,id+1,M._12,M._22,M._32,M._42);
+				RCache.set_ca	(&*array,id+2,M._13,M._23,M._33,M._43);
 			}
 
 			// render
@@ -296,7 +296,7 @@ void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCo
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount) 
 {	
-	sbones_array	= "sbones_array";
+	s_bones_array_const	= "sbones_array";
 	xr_vector<u16>	bids;
 
 	// Load vertices
@@ -321,7 +321,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			size				= dwVertCount*sizeof(vertBoned1W);
 			vertBoned1W* VO = (vertBoned1W*)data->pointer();
 			for (it=0; it<dwVertCount; it++)	{
-				u16		mid = VO[it].matrix;
+				u16		mid = (u16)VO[it].matrix;
 				if		(bids.end() == std::find(bids.begin(),bids.end(),mid))	bids.push_back(mid);
 				if		(mid>sw_bones)	sw_bones = mid;
 			}

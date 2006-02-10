@@ -154,12 +154,14 @@ MotionVec* motions_value::bone_motions(shared_str bone_name)
 motions_container::motions_container()
 {
 }
+extern shared_str s_bones_array_const;
 motions_container::~motions_container()
 {
 //	clean	(false);
 //	clean	(true);
 //	dump	();
 	VERIFY	(container.empty());
+	s_bones_array_const = 0;
 }
 motions_value* motions_container::dock(shared_str key, IReader *data, vecBones* bones)
 {
