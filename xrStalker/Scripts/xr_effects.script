@@ -44,15 +44,6 @@ function disable_ui(actor, npc)
     level.hide_indicators()
 end
 
-function run_tutorial(actor, npc, p)
-	game.start_tutorial(p[1])
-end
-function run_tutorial_if_newbie(actor, npc, p)
-	if db.actor:has_info("esc_trader_newbie") then
-		game.start_tutorial(p[1])
-	end
-end
-
 function enable_ui(actor, npc)
     level.show_indicators()
     level.enable_input()
@@ -102,6 +93,15 @@ function stop_postprocess(actor, npc, p)
     if p[1] and type(p[1]) == "number" and p[1] > 0 then
         level.remove_pp_effector(p[1])
     end
+end
+
+function run_tutorial(actor, npc, p)
+	game.start_tutorial(p[1])
+end
+function run_tutorial_if_newbie(actor, npc, p)
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial(p[1])
+	end
 end
 
 function teleport_actor(actor, npc, p)
