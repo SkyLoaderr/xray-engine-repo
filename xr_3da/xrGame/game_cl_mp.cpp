@@ -763,24 +763,14 @@ void	game_cl_mp::LoadSndMessages				()
 
 void	game_cl_mp::OnRankChanged	()
 {
-	/*
-	KillMessageStruct KMS;
-	KMS.m_killer.m_name = "You are now";
-	sprintf(tmp, "rank_%d",local_player->rank);
-	KMS.m_victim.m_name.sprintf("%s", READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
-//	KMS.m_initiator.m_shader = GetRankIconsShader();
-//	KMS.m_initiator.m_rect.x1 = float(local_player->rank*32);
-//	KMS.m_initiator.m_rect.y1 = 0;
-//	KMS.m_initiator.m_rect.x2 = float((local_player->rank+1)*32);
-//	KMS.m_initiator.m_rect.y2 = 32;
-
-	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(KMS);
-*/
+#ifdef DEBUG
 	string256 tmp;
 	string1024 RankStr;
 	sprintf(tmp, "rank_%d",local_player->rank);
 	sprintf(RankStr, "Your rank now is : %s", READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
 	CommonMessageOut(RankStr);	
+	Msg("- %s", RankStr);
+#endif
 };
 
 void	game_cl_mp::net_import_update		(NET_Packet& P)
