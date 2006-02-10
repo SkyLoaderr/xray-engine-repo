@@ -117,6 +117,10 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 	m_fExplodeDurationMax	= ini->r_float(section, "explode_duration");
 
 	effector.effect_sect_name= ini->r_string("explode_effector","effect_sect_name");
+	if( ini->line_exist(section,"wallmark_section") )
+	{
+		m_wallmark_manager.Load(pSettings,ini->r_string(section,"wallmark_section"));
+	}
 /*
 	effector.time			= ini->r_float("explode_effector","time");
 	effector.amplitude		= ini->r_float("explode_effector","amplitude");
@@ -289,6 +293,7 @@ void CExplosive::Explode()
 	CParticlesObject* pStaticPG; 
 	pStaticPG = CParticlesObject::Create(*m_sExplodeParticles,TRUE); 
 	
+	m_wallmark_manager.PlaceWallmarks(pos,cast_game_object());
 	Fvector vel;
 	smart_cast<CPhysicsShellHolder*>(cast_game_object())->PHGetLinearVell(vel);
 

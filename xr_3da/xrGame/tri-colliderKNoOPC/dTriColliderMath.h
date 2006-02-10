@@ -1,5 +1,29 @@
 #ifndef D_TRI_COLLIDER_MATH_H
 #define D_TRI_COLLIDER_MATH_H
+#include "__aabb_tri.h"
+#include "../ode_include.h"
+#include "../mathutils.h"
+struct Triangle 
+{
+	//dReal* v0;
+	//dReal* v1;
+	//dReal* v2;
+	dVector3 side0;
+	dVector3 side1;
+	dVector3 norm;
+	dReal dist;
+	dReal pos;
+	dReal depth;
+	CDB::TRI* T ;
+	Triangle()
+	{
+		T		=NULL;
+#ifdef DEBUG
+		depth	=-dInfinity;
+		dist	=-dInfinity;
+#endif
+	}
+};
 
 inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2,
 							 const dReal* triSideAx0,const dReal* triSideAx1,const dReal* triSideAx2,
@@ -77,5 +101,33 @@ inline bool  TriPlaneContainPoint(const dReal* v0,const dReal* v1,const dReal* v
 	 point[1]=from[1]-dir[1]												;	
 	 point[2]=from[2]-dir[2]												;
 
+ }
+
+
+ ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle,const Point* VRT)
+ {
+	 dVectorSub(triangle.side0,VRT[1],VRT[0])				;
+	 dVectorSub(triangle.side1,VRT[2],VRT[1])				;
+	 triangle.T=XTri											;
+	 dCROSS(triangle.norm,=,triangle.side0,triangle.side1)	;
+	 cast_fv(triangle.norm).normalize()						;
+	 triangle.pos=dDOT(VRT[0],triangle.norm)					;
+ }
+ ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle,const Fvector*	 V_array)
+ {
+	 const Point vertices[3]={Point((dReal*)&V_array[XTri->verts[0]]),Point((dReal*)&V_array[XTri->verts[1]]),Point((dReal*)&V_array[XTri->verts[2]])};
+	 InitTriangle(XTri,triangle,vertices);
+ }
+
+ ICF	void CalculateTri(CDB::TRI* XTri,const float* pos,Triangle& triangle,const Fvector* V_array)
+ {
+	 InitTriangle(XTri,triangle,V_array);
+	 triangle.dist=dDOT(pos,triangle.norm)-triangle.pos;
+ }
+
+ ICF	void CalculateTri(CDB::TRI* XTri,const float* pos,Triangle& triangle,const Point* VRT)
+ {
+	 InitTriangle(XTri,triangle,VRT);
+	 triangle.dist=dDOT(pos,triangle.norm)-triangle.pos;
  }
  #endif

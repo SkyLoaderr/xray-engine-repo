@@ -7784,6 +7784,12 @@
 							<File
 								RelativePath=".\ExplosiveScript.cpp">
 							</File>
+							<File
+								RelativePath=".\wallmark_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\wallmark_manager.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="MPPlayersBag"

@@ -4,6 +4,7 @@
 #include "../Level.h"
 #include "../ode_include.h"
 #include "../ExtendedGeom.h"
+#include "dTriColliderMath.h"
 enum{
 	fl_engaged_v0 =1<<0,
 	fl_engaged_v1 =1<<1,
