@@ -246,21 +246,10 @@ void CUIGameDM::SetVoteTimeResultMsg			(LPCSTR str)
 {
 	GameCaptions()->setCaption(m_votetimeresult_caption, str, VOTE0_MSG_COLOR, true);
 }
-#include <dinput.h>
+
 bool		CUIGameDM::IR_OnKeyboardPress		(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
-	static u8 rrr = 0;
-	if(dik==DIK_J){
-		++rrr;
-		clamp<u8>(rrr,0,9);
-		m_pRankIndicator->SetRank		(0, rrr);
-	}
-	if(dik==DIK_K){
-		--rrr;
-		clamp<u8>(rrr,0,9);
-		m_pRankIndicator->SetRank		(0, rrr);
-	}
 
 	switch (key_binding[dik])
 	{
