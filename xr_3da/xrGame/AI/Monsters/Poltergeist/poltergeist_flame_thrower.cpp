@@ -90,13 +90,16 @@ void CPoltergeist::UpdateFlame()
 			if (Level().ObjectSpace.RayPick(element->position, element->target_dir, m_flame_length, collide::rqtBoth, rq, NULL)) {
 				if ((rq.O == element->target_object) && (rq.range < m_flame_length)) {
 
+					float			hit_value;
+					hit_value		= m_flame_hit_value - m_flame_hit_value * rq.range / m_flame_length;
+
 					NET_Packet		P;
 					SHit			HS;
 					HS.GenHeader		(GE_HIT, element->target_object->ID());	//					u_EventGen		(P,GE_HIT, element->target_object->ID());
 					HS.whoID			= (ID());								//					P.w_u16			(ID());
 					HS.weaponID			= (ID());								//					P.w_u16			(ID());
 					HS.dir				= (element->target_dir);				//					P.w_dir			(element->target_dir);
-					HS.power			= (m_flame_hit_value);					//					P.w_float		(m_flame_hit_value);
+					HS.power			= (hit_value);							//					P.w_float		(m_flame_hit_value);
 					HS.boneID			= (BI_NONE);							//					P.w_s16			(BI_NONE);
 					HS.p_in_bone_space	= (Fvector().set(0.f,0.f,0.f));			//					P.w_vec3		(Fvector().set(0.f,0.f,0.f));
 					HS.impulse			= (0.f);								//					P.w_float		(0.f);
