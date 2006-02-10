@@ -19,6 +19,8 @@
 #pragma link "ElXPThemedControl"
 #pragma link "ElTree"
 #pragma link "ElTreeGrids"
+#pragma link "ElBiProgr"
+#pragma link "CGAUGES"
 #pragma resource "*.dfm"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -37,20 +39,27 @@ struct SMemCat{
 };
 DEFINE_VECTOR	(SMemCat*,MemCatVec,MemCatVecIt);
 MemCatVec		m_cat_data;
-bool 			sort_cat_name_pred	(const SMemCat* a, const SMemCat* b) {return strcmp(a->name.c_str(),b->name.c_str())<0;}
+bool 			sort_cat_name_pred	(const SMemCat* a, const SMemCat* b){return strcmp(a->name.c_str(),b->name.c_str())<0;}
+bool 			find_cat_name_pred	(const SMemCat* a, LPCSTR b) 		{return strcmp(a->name.c_str(),b)<0;}
 SMemCat* 		create_cat			(LPCSTR key, u32 r_sz, u32 p_sz)
 {
-    for (MemCatVecIt c_it=m_cat_data.begin(); c_it!=m_cat_data.end(); c_it++)
-    	if (0==strcmp((*c_it)->name.c_str(),key)){	
-        	(*c_it)->count++;
-        	(*c_it)->min_sz = _min((*c_it)->min_sz,r_sz);
-        	(*c_it)->max_sz = _max((*c_it)->max_sz,r_sz);
-        	(*c_it)->real_sz+= r_sz;
-        	(*c_it)->pure_sz+= p_sz;
-        	return *c_it;
+	MemCatVecIt c_it = std::lower_bound(m_cat_data.begin(),m_cat_data.end(),key,find_cat_name_pred);
+    if (c_it!=m_cat_data.end()){
+     	if (0==strcmp((*c_it)->name.c_str(),key)){
+            (*c_it)->count++;
+            (*c_it)->min_sz = _min((*c_it)->min_sz,r_sz);
+            (*c_it)->max_sz = _max((*c_it)->max_sz,r_sz);
+            (*c_it)->real_sz+= r_sz;
+            (*c_it)->pure_sz+= p_sz;
+            return *c_it;
+        }else{
+		    m_cat_data.insert	(c_it,xr_new<SMemCat>(key,r_sz,p_sz));
+			return 				m_cat_data.back();
         }
-    m_cat_data.push_back(xr_new<SMemCat>(key,r_sz,p_sz));
-	return 		m_cat_data.back();
+    }else{
+        m_cat_data.push_back	(xr_new<SMemCat>(key,r_sz,p_sz));
+        return 					m_cat_data.back();
+    }
 }
 struct SMemItem{
 	SMemCat*	cat;
@@ -269,6 +278,8 @@ void __fastcall TfrmMain::OpenClick(TObject *Sender)
         LPSTR data	    = (LPSTR)F->pointer();
         string1024	    name;
         int 			chunk=-1;
+        cgProgress->Show		();
+		cgProgress->MaxValue 	= F->length();
         do{
             LPSTR e		= data;
             for (;e[0]!='\n';e++){}
@@ -298,6 +309,7 @@ void __fastcall TfrmMain::OpenClick(TObject *Sender)
             }
             data		= e;
             if ((e-src)>=F->length()) break;
+            if ((e-src)%1000 == 0) cgProgress->Progress = e-src;
         }while(true);
         FS.r_close		(F);
 
@@ -315,7 +327,9 @@ void __fastcall TfrmMain::OpenClick(TObject *Sender)
             ResizeBuffer	();
             RedrawBuffer	();
         }
-        UpdateCatProperties	();
+        UpdateCatProperties		();
+        cgProgress->Progress 	= 0;
+        cgProgress->Hide		();
     }
 }
 //---------------------------------------------------------------------------
@@ -439,8 +453,8 @@ void __fastcall TfrmMain::paMemMouseMove(TObject *Sender, TShiftState Shift, int
         address.sprintf("Address: 0x%08X",real_pos); 
         content.sprintf("Content: %s",_ListToSequence(names).c_str());
     }
-    sbStatus->Panels->Items[0]->Text 		= address;
-    sbStatus->Panels->Items[1]->Text 		= content;
+    paStatus0->Caption 		= address;
+    paStatus1->Caption 		= content;
 }
 //---------------------------------------------------------------------------
 
@@ -467,8 +481,8 @@ void __fastcall TfrmMain::paDetMemMouseMove(TObject *Sender,
 			content.sprintf("Content: %s",_ListToSequence(names).c_str());
         }
     }
-    sbStatus->Panels->Items[0]->Text 	= address;
-    sbStatus->Panels->Items[1]->Text 	= content;
+    paStatus0->Caption 		= address;
+    paStatus1->Caption 		= content;
 }
 //---------------------------------------------------------------------------
 
@@ -787,4 +801,37 @@ void __fastcall TfrmMain::Bypool1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::AllItems1Click(TObject *Sender)
+{
+	if (items_valid()){
+        TfrmStatistic::SHVec 	headers;
+        headers.push_back		(TfrmStatistic::SStatHeader("Address",			TfrmStatistic::SStatHeader::sctInteger));
+        headers.push_back		(TfrmStatistic::SStatHeader("Pool ID",			TfrmStatistic::SStatHeader::sctInteger));
+        headers.push_back		(TfrmStatistic::SStatHeader("Pure Size, b",		TfrmStatistic::SStatHeader::sctInteger));
+        headers.push_back		(TfrmStatistic::SStatHeader("Allocated Size, b",TfrmStatistic::SStatHeader::sctInteger));
+        headers.push_back		(TfrmStatistic::SStatHeader("Description",		TfrmStatistic::SStatHeader::sctText));
+    	frmStatistic->Prepare	("View All Items",headers);
+        
+        cgProgress->Show		();
+		cgProgress->MaxValue	= m_items_data.size();
+        AStringVec 				columns;
+        frmStatistic->LockUpdating();
+        for (MemItemVecIt it=m_items_data.begin(); it!=m_items_data.end(); it++){
+            if ((it-m_items_data.begin())%1000 == 0) cgProgress->Progress = it-m_items_data.begin();
+            columns.clear_not_free();
+            columns.push_back	(AnsiString().sprintf("0x%08X",it->ptr));
+            columns.push_back	(AnsiString().sprintf("%d",it->pool_id));
+            columns.push_back	(AnsiString().sprintf("%d",it->sz));
+            columns.push_back	(AnsiString().sprintf("%d",it->r_sz));
+            columns.push_back	(AnsiString().sprintf("%s",it->cat->name.c_str()));
+			frmStatistic->AppendItem(columns);
+        }
+        frmStatistic->SortByColumn	(1,true);
+        frmStatistic->UnlockUpdating();
+    	frmStatistic->Show			();
+        cgProgress->Progress 	= 0;
+        cgProgress->Hide		();
+	}
+}
+//---------------------------------------------------------------------------
 

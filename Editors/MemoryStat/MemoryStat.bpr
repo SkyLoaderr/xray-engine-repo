@@ -13,7 +13,7 @@
     <RESDEPEN value="$(RESFILES) main.dfm StatisticGrid.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib"/>
-    <SPARELIBS value="vcl.lib rtl.lib editor.lib elpackB6.lib"/>
+    <SPARELIBS value="vcl.lib rtl.lib editor.lib elpackB6.lib bcbsmp.lib vclx.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi"/>
     <PATHCPP value=".;"/>
     <PATHPAS value=".;"/>

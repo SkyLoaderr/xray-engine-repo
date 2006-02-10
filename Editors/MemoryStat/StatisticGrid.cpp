@@ -64,7 +64,7 @@ void TfrmStatistic::Prepare(AnsiString title, SHVec& columns)
 void TfrmStatistic::AppendItem(AStringVec& columns)
 {
 	VERIFY					((int)columns.size()==sgData->HeaderSections->Count);
-    TElTreeItem* item		= sgData->Items->AddChildObject(0,columns[0],0);	
+    TElTreeItem* item		= sgData->Items->Add(0,columns[0]);	
     for (u32 k=1; k<columns.size(); ++k)
 	    item->ColumnText->Add(columns[k]);
 }

@@ -50,6 +50,8 @@ public:		// User declarations
     void Prepare		(AnsiString title, SHVec& columns);
     void AppendItem		(AStringVec& columns);
     void SortByColumn	(int num, bool ascend);
+    void LockUpdating	(){ sgData->IsUpdating = true; }
+    void UnlockUpdating	(){ sgData->IsUpdating = false; }
 public:		// User declarations
 	__fastcall TfrmStatistic(TComponent* Owner);
 };

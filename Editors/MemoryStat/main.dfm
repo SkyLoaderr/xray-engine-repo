@@ -1,8 +1,8 @@
 object frmMain: TfrmMain
-  Left = 270
-  Top = 104
-  Width = 912
-  Height = 833
+  Left = 3
+  Top = 131
+  Width = 1104
+  Height = 787
   Caption = 'Memory Dump'
   Color = clBtnFace
   Constraints.MinHeight = 550
@@ -21,41 +21,27 @@ object frmMain: TfrmMain
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel3: TBevel
-    Left = 642
+    Left = 834
     Top = 0
     Width = 2
-    Height = 768
+    Height = 722
     Align = alRight
     Shape = bsLeftLine
     Style = bsRaised
   end
-  object sbStatus: TStatusBar
-    Left = 0
-    Top = 768
-    Width = 904
-    Height = 19
-    Panels = <
-      item
-        Width = 150
-      end
-      item
-        Width = 4096
-      end>
-    SimplePanel = False
-  end
   object paMainDesc: TPanel
-    Left = 644
+    Left = 836
     Top = 0
     Width = 260
-    Height = 768
+    Height = 722
     Align = alRight
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 0
     object paInfo: TPanel
       Left = 0
       Top = 18
       Width = 260
-      Height = 474
+      Height = 428
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
@@ -74,7 +60,7 @@ object frmMain: TfrmMain
     end
     object paMainDet: TPanel
       Left = 0
-      Top = 492
+      Top = 446
       Width = 260
       Height = 276
       Align = alBottom
@@ -128,24 +114,24 @@ object frmMain: TfrmMain
   object paMainMem: TPanel
     Left = 0
     Top = 0
-    Width = 642
-    Height = 768
+    Width = 834
+    Height = 722
     Align = alClient
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 1
     object Bevel2: TBevel
-      Left = 624
+      Left = 816
       Top = 18
       Width = 2
-      Height = 748
+      Height = 702
       Align = alRight
       Shape = bsRightLine
       Style = bsRaised
     end
     object Bevel4: TBevel
       Left = 0
-      Top = 766
-      Width = 642
+      Top = 720
+      Width = 834
       Height = 2
       Align = alBottom
       Shape = bsBottomLine
@@ -155,7 +141,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 18
       Width = 2
-      Height = 748
+      Height = 702
       Align = alLeft
       Shape = bsLeftLine
       Style = bsRaised
@@ -163,8 +149,8 @@ object frmMain: TfrmMain
     object paMemBase: TPanel
       Left = 2
       Top = 18
-      Width = 622
-      Height = 748
+      Width = 814
+      Height = 702
       Align = alClient
       BevelOuter = bvNone
       Color = 15790320
@@ -187,7 +173,7 @@ object frmMain: TfrmMain
     object paCaptionMem: TPanel
       Left = 0
       Top = 0
-      Width = 642
+      Width = 834
       Height = 18
       Align = alTop
       Alignment = taLeftJustify
@@ -197,10 +183,10 @@ object frmMain: TfrmMain
       TabOrder = 1
     end
     object sbMem: TScrollBar
-      Left = 626
+      Left = 818
       Top = 18
       Width = 16
-      Height = 748
+      Height = 702
       Align = alRight
       Ctl3D = True
       Kind = sbVertical
@@ -208,6 +194,87 @@ object frmMain: TfrmMain
       ParentCtl3D = False
       TabOrder = 2
       OnChange = sbMemChange
+    end
+  end
+  object paStatusBar: TPanel
+    Left = 0
+    Top = 722
+    Width = 1096
+    Height = 19
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 2
+    object Panel1: TPanel
+      Left = 0
+      Top = 0
+      Width = 1096
+      Height = 2
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 0
+    end
+    object Panel4: TPanel
+      Left = 337
+      Top = 2
+      Width = 2
+      Height = 17
+      Align = alLeft
+      BevelOuter = bvNone
+      TabOrder = 1
+    end
+    object Panel5: TPanel
+      Left = 185
+      Top = 2
+      Width = 2
+      Height = 17
+      Align = alLeft
+      BevelOuter = bvNone
+      TabOrder = 2
+    end
+    object paStatus0: TPanel
+      Left = 0
+      Top = 2
+      Width = 185
+      Height = 17
+      Align = alLeft
+      Alignment = taLeftJustify
+      BevelOuter = bvLowered
+      TabOrder = 3
+    end
+    object paStatus1: TPanel
+      Left = 339
+      Top = 2
+      Width = 757
+      Height = 17
+      Align = alClient
+      Alignment = taLeftJustify
+      BevelOuter = bvLowered
+      TabOrder = 4
+    end
+    object Panel2: TPanel
+      Left = 187
+      Top = 2
+      Width = 150
+      Height = 17
+      Align = alLeft
+      Alignment = taLeftJustify
+      BevelOuter = bvLowered
+      TabOrder = 5
+      object cgProgress: TCGauge
+        Left = 1
+        Top = 1
+        Width = 148
+        Height = 15
+        Align = alClient
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Serif'
+        Font.Style = []
+        ForeColor = 5592405
+        ParentFont = False
+        Visible = False
+      end
     end
   end
   object od: TOpenDialog
@@ -245,7 +312,7 @@ object frmMain: TfrmMain
       end
     end
     object Tools1: TMenuItem
-      Caption = 'Tools'
+      Caption = 'View'
       object Bypool1: TMenuItem
         Caption = 'Statistic By Pool'
         OnClick = Bypool1Click
@@ -256,6 +323,11 @@ object frmMain: TfrmMain
       end
       object N3: TMenuItem
         Caption = '-'
+      end
+      object AllItems1: TMenuItem
+        Caption = 'View All Items'
+        Enabled = False
+        OnClick = AllItems1Click
       end
     end
     object Help1: TMenuItem

@@ -20,11 +20,12 @@
 #include "ElXPThemedControl.hpp"
 #include "ElTree.hpp"
 #include "ElTreeGrids.hpp"
+#include "ElBiProgr.hpp"
+#include "CGAUGES.h"
 //---------------------------------------------------------------------------
 class TfrmMain : public TForm
 {
 __published:	// IDE-managed Components
-	TStatusBar *sbStatus;
 	TPanel *paMainDesc;
 	TOpenDialog *od;
 	TPanel *paMainMem;
@@ -57,6 +58,15 @@ __published:	// IDE-managed Components
 	TMenuItem *Bytype1;
 	TMenuItem *Bypool1;
 	TMenuItem *N3;
+	TMenuItem *AllItems1;
+	TPanel *paStatusBar;
+	TPanel *Panel1;
+	TPanel *Panel4;
+	TPanel *Panel5;
+	TPanel *paStatus0;
+	TPanel *paStatus1;
+	TPanel *Panel2;
+	TCGauge *cgProgress;
 	void __fastcall OpenClick(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
@@ -77,6 +87,7 @@ __published:	// IDE-managed Components
 	void __fastcall ShowLog1Click(TObject *Sender);
 	void __fastcall Bytype1Click(TObject *Sender);
 	void __fastcall Bypool1Click(TObject *Sender);
+	void __fastcall AllItems1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall IdleHandler(TObject *Sender, bool &Done);
     void __stdcall OnRefreshBuffer	(PropValue*);
