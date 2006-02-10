@@ -28,6 +28,8 @@ INetQueue::~INetQueue()
 	for				(it=0; it<ready.size(); it++)	xr_delete(ready[it]);
 	cs.Leave		();
 }
+
+static u32 LastTimeCreate = 0;
 NET_Packet*		INetQueue::Create	()
 {
 	NET_Packet*	P			= 0;
@@ -40,7 +42,24 @@ NET_Packet*		INetQueue::Create	()
 		ready.push_back		(unused.back());
 		unused.pop_back		();
 		P					= ready.back	();
+	}	
+	//---------------------------------------------------------------------
+	if (unused.empty())
+	{
+		LastTimeCreate = GetTickCount();
 	}
+	else
+	{
+		u32 tmp_time = GetTickCount()-60000;
+		u32 size = unused.size();
+		if ((LastTimeCreate < tmp_time) &&  (size > 32))
+		{
+			xr_delete(unused.back());
+			unused.pop_back();
+		}
+	};
+	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
+	//---------------------------------------------------------------------
 	cs.Leave		();
 	return	P;
 }
@@ -57,6 +76,23 @@ NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
 		unused.pop_back		();
 		P					= ready.back	();
 	}
+	//---------------------------------------------------------------------
+	if (unused.empty())
+	{
+		LastTimeCreate = GetTickCount();
+	}
+	else
+	{
+		u32 tmp_time = GetTickCount()-60000;
+		u32 size = unused.size();
+		if ((LastTimeCreate < tmp_time) &&  (size > 32))
+		{
+			xr_delete(unused.back());
+			unused.pop_back();
+		}
+	};
+	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
+	//---------------------------------------------------------------------
 	CopyMemory	(P,&_other,sizeof(NET_Packet));
 	cs.Leave		();
 	return			P;

@@ -1439,7 +1439,10 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 		AnomalySingleSet.clear();
 		AnomalyIDSingleSet.clear();
 
+
 		sprintf(SetName, "set%i", i);
+		Msg("g_pGameLevel -> %x", g_pGameLevel);
+		Msg("Level().pLevel -> %x", Level().pLevel);
 		if (!Level().pLevel->line_exist(ASetBaseName, SetName))
 			continue;
 

@@ -30,6 +30,7 @@ GameEvent*		GameEventQueue::Create	()
 		unused.pop_back		();
 		ge					= ready.back	();
 	}
+	Msg ("GameEventQueue - ready %d, unused %d, capacity %d", ready.size(), unused.size(), unused.capacity());
 	cs.Leave		();
 	return	ge;
 }
@@ -46,6 +47,7 @@ GameEvent*		GameEventQueue::Create	(NET_Packet& P, u16 type, u32 time, ClientID 
 		unused.pop_back		();
 		ge					= ready.back	();
 	}
+	Msg ("GameEventQueue - ready %d, unused %d, capacity %d", ready.size(), unused.size(), unused.capacity());
 	CopyMemory	(&(ge->P),&P,sizeof(NET_Packet));
 	ge->sender	= clientID;
 	ge->time	= time;
