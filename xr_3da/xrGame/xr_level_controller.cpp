@@ -46,9 +46,6 @@ _keybind  keybind[]		= {
 	{ "wpn_4",			kWPN_4			},
 	{ "wpn_5",			kWPN_5			},
 	{ "wpn_6",			kWPN_6			},
-	{ "wpn_7",			kWPN_7			},
-	{ "wpn_8",			kWPN_8			},
-	{ "wpn_9",			kWPN_9			},
 	{ "wpn_next",		kWPN_NEXT		},
 	{ "wpn_prev",		kWPN_PREV		},
 	{ "wpn_fire",		kWPN_FIRE		},
@@ -100,12 +97,6 @@ _keybind  keybind[]		= {
 	{ "next_slot",		kNEXT_SLOT		},
 	{ "prev_slot",		kPREV_SLOT		},
 
-	{ "follower1",		kFOLLOWER1		},
-	{ "follower2",		kFOLLOWER2		},
-	{ "follower3",		kFOLLOWER3		},
-	{ "follower4",		kFOLLOWER4		},
-	{ "follower5",		kFOLLOWER5		},
-
 	{ "speech_menu_0",	kSPEECH_MENU_0	},
 	{ "speech_menu_1",	kSPEECH_MENU_1	},
 	{ "speech_menu_2",	kSPEECH_MENU_2	},
@@ -118,6 +109,8 @@ _keybind  keybind[]		= {
 	{ "speech_menu_9",	kSPEECH_MENU_9	},
 
 	{ "insult_msg",		kINSULT_MSG		},
+	{ "use_bandage",	kUSE_BANDAGE	},
+	{ "use_medkit",		kUSE_MEDKIT		},
 	{ "insult_jesture",	kINSULT_JESTURE	},
 
 	{ NULL, 			0				}

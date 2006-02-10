@@ -50,7 +50,11 @@
 	</game_saved>
 
 	<autosave  x="100" y="660" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">Autosave...</text>
+		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_autosave</text>
 	</autosave>
+	
+	<item_used  x="100" y="660" width="800" height="60">
+		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
+	</item_used>
 	
 </header>

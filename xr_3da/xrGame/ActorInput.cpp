@@ -20,19 +20,13 @@
 #include "clsid_game.h"
 #include "actorcondition.h"
 #include "actor_input_handler.h"
-
-float gCheckHitK = 1.0f;
+#include "string_table.h"
+#include "UI/UIStatic.h"
 
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
 
-	if(GameID()!=GAME_DEATHMATCH){
-		if(cmd == kEXT_14)
-			gCheckHitK = 2.0f;
-		if(cmd == kEXT_13)
-			gCheckHitK = 4.0f;
-	}
 	if (conditions().IsSleeping())	return;
 	if (IsTalking())	return;
 	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;
@@ -129,9 +123,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kWPN_4:	
 	case kWPN_5:	
 	case kWPN_6:	
-	case kWPN_7:	
-	case kWPN_8:	
-	case kWPN_9:	
 		//Weapons->ActivateWeaponID	(cmd-kWPN_1);			
 		break;
 	case kBINOCULARS:
@@ -179,6 +170,21 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		{
 			OnPrevWeaponSlot();
 		}break;
+
+	case kUSE_BANDAGE:
+	case kUSE_MEDKIT:
+		{
+			PIItem itm = inventory().item((cmd==kUSE_BANDAGE)?  CLSID_IITEM_BANDAGE:CLSID_IITEM_MEDKIT );	
+			if(itm)
+			{
+				inventory().Eat				(itm);
+				SDrawStaticStruct* _s		= HUD().GetUI()->UIGame()->AddCustomStatic("item_used", true);
+				_s->m_endTime				= Device.fTimeGlobal+3.0f;// 3sec
+				string1024					str;
+				strconcat					(str,*CStringTable().translate("st_item_used"),": ", itm->Name());
+				_s->wnd()->SetText			(str);
+			}
+		}break;
 	}
 }
 void CActor::IR_OnMouseWheel(int direction)
@@ -194,12 +200,6 @@ void CActor::IR_OnMouseWheel(int direction)
 void CActor::IR_OnKeyboardRelease(int cmd)
 {
 	if (Remote())		return;
-	if(GameID()!=GAME_DEATHMATCH){
-		if(cmd == kEXT_14)
-			gCheckHitK = 1.0f;
-		if(cmd == kEXT_13)
-			gCheckHitK = 1.0f;
-	}
 
 	if (conditions().IsSleeping())	return;
 	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;

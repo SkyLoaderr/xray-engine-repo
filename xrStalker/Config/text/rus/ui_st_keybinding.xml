@@ -80,15 +80,6 @@
 	<string id="kb_weapon6">
 		<text>Оружие 6</text>
 	</string>
-	<string id="kb_weapon7">
-		<text>Оружие 7</text>
-	</string>
-	<string id="kb_weapon8">
-		<text>Оружие 8</text>
-	</string>
-	<string id="kb_weapon9">
-		<text>Оружие 9</text>
-	</string>	
 	<string id="kb_wpn_next">
 		<text>Переключить режим стрельбы</text>
 	</string>
@@ -191,5 +182,13 @@
 	<string id="speech_menu_personal">
 		<text>Голосовые сообщения (2)</text>
 	</string>
+
+	<string id="kb_use_bandage">
+		<text>Быстрое использ. бинта</text>
+	</string>
+	<string id="kb_use_medkit">
+		<text>Быстрое использ. аптечки</text>
+	</string>
+
 
 </string_table>

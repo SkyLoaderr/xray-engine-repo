@@ -36,9 +36,6 @@ enum	EKeyBinding
 	kWPN_4			,
 	kWPN_5			,
 	kWPN_6			,
-	kWPN_7			,
-	kWPN_8			,
-	kWPN_9			,
 	kWPN_NEXT		,
 	kWPN_PREV		,
 	kWPN_FIRE		,
@@ -91,12 +88,6 @@ enum	EKeyBinding
 	kNEXT_SLOT		,
 	kPREV_SLOT		,
 	
-	kFOLLOWER1		,
-	kFOLLOWER2		,
-	kFOLLOWER3		,
-	kFOLLOWER4		,
-	kFOLLOWER5		,
-
 	kSPEECH_MENU_0	,
 	kSPEECH_MENU_1	,
 	kSPEECH_MENU_2	,
@@ -110,6 +101,9 @@ enum	EKeyBinding
 
 	kINSULT_MSG		,
 	kINSULT_JESTURE	,
+
+	kUSE_BANDAGE	,
+	kUSE_MEDKIT		,
 
 	kFORCEDWORD		= u32(-1)
 };
@@ -137,9 +131,10 @@ public:
 	void clear();
 	void save(IWriter* F);
 };
-void GetActionBinding(LPCSTR action, char* dst_buff);
-void GetActionBindingEx(LPCSTR action, char* dst_buff);
-bool IsActionExist(LPCSTR action);
+
+void GetActionBinding		(LPCSTR action, char* dst_buff);
+void GetActionBindingEx		(LPCSTR action, char* dst_buff);
+bool IsActionExist			(LPCSTR action);
 
 extern ConsoleBindCmds	bindConsoleCmds;
 

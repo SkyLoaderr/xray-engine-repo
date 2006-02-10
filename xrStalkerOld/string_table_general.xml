@@ -56,6 +56,12 @@
 	<string id="Btn_Cancel">
 		<text>Отменить</text>
 	</string>
+	<string id="st_autosave">
+		<text>Автосохранение...</text>
+	</string>
 	
+	<string id="st_item_used">
+		<text>Использован</text>
+	</string>
 </string_table>
 
