@@ -183,7 +183,6 @@ void Startup					( )
 
 	// Main cycle
 	CheckCopyProtection			( );
-	Msg				("strt-L: %d",Memory.mem_usage()/1024);
 	Device.Run					( );
 
 	// Destroy APP

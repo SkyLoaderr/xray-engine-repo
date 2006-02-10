@@ -444,6 +444,7 @@ void CCar::UpdateCL				( )
 	UpdateExhausts	();
 	m_lights.Update	();
 }
+
 void	CCar::renderable_Render				( )
 {
 	inherited::renderable_Render			();

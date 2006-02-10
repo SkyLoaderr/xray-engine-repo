@@ -10,6 +10,11 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
+void CObject::MakeMeCrow_internal	()
+{
+	g_pGameLevel->Objects.o_crow	(this);
+}
+
 void CObject::cName_set			(shared_str N)
 { 
 	NameObject	=	N; 
@@ -128,7 +133,7 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 
 	if (0==collidable.model) 	{
 		if (pSettings->line_exist(cNameSect(),"cform")) {
-			LPCSTR cf			= pSettings->r_string	(*cNameSect(), "cform");
+			//LPCSTR cf			= pSettings->r_string	(*cNameSect(), "cform");
 			VERIFY3				(*NameVisual, "Model isn't assigned for object, but cform requisted",*cName());
 			collidable.model	= xr_new<CCF_Skeleton>	(this);
 		}
@@ -141,7 +146,9 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 	processing_activate			();
 	setDestroy					(false);
 
-	return TRUE;
+	MakeMeCrow					();
+
+	return TRUE					;
 }
 
 void CObject::net_Destroy		()
@@ -189,7 +196,7 @@ void	CObject::spatial_update		(float eps_P, float eps_R)
 		}
 	}
 
-	if (bUpdate)		{	
+	if (bUpdate)		{
 		spatial_move	();
 	} else {
 		if (spatial.node_ptr)	
@@ -221,14 +228,26 @@ void CObject::UpdateCL			()
 #endif
 
 	spatial_update				(base_spu_epsP*5,base_spu_epsR*5);
+
+	// crow
+	if (AlwaysTheCrow())																	MakeMeCrow	();
+	else if (Device.vCameraPosition.distance_to_sqr(Position()) < CROW_RADIUS*CROW_RADIUS)	MakeMeCrow	();
 }
 
 void CObject::shedule_Update	( u32 T )
 {
 	// consistency check
-	// Msg							("-SUB-:[%x][%s] CObject::shedule_Update",dynamic_cast<void*>(this),*cName());
+	// Msg						("-SUB-:[%x][%s] CObject::shedule_Update",dynamic_cast<void*>(this),*cName());
 	ISheduled::shedule_Update	(T);
 	spatial_update				(base_spu_epsP*1,base_spu_epsR*1);
+
+	// Always make me crow on shedule-update 
+	// Makes sure that update-cl called at least with freq of shedule-update
+	MakeMeCrow					();	
+	/*
+	if (AlwaysTheCrow())																	MakeMeCrow	();
+	else if (Device.vCameraPosition.distance_to_sqr(Position()) < CROW_RADIUS*CROW_RADIUS)	MakeMeCrow	();
+	*/
 }
 
 void	CObject::spatial_register	()
@@ -258,6 +277,7 @@ CObject::SavedPosition CObject::ps_Element(u32 ID) const
 
 void CObject::renderable_Render	()
 {
+	MakeMeCrow	();
 }
 
 CObject* CObject::H_SetParent	(CObject* new_parent)

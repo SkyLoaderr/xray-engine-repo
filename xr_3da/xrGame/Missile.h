@@ -20,10 +20,11 @@ public:
 			CMissile	(void);
 	virtual ~CMissile	(void);
 
-	virtual void	OnDrawUI			();
+	virtual BOOL						AlwaysTheCrow				()				{ return TRUE; }
+	virtual void						OnDrawUI					();
 
-	virtual void reinit				();
-	virtual CMissile		*cast_missile		()	{return this;}
+	virtual void						reinit						();
+	virtual CMissile		*			cast_missile				()				{return this;}
 
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(CSE_Abstract* DC);

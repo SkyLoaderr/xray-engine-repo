@@ -15,26 +15,26 @@ ENGINE_API extern	int		psTextureLOD		;
 
 // psDeviceFlags
 enum {
-	rsFullscreen		= (1ul<<0ul),
-	rsClearBB			= (1ul<<1ul),
-	rsNoVSync			= (1ul<<2ul),
-	rsWireframe			= (1ul<<3ul),
-	rsWarmHZB			= (1ul<<4ul),
-	rsOcclusion			= (1ul<<5ul),
-	rsStatistic			= (1ul<<6ul),
-	rsDetails			= (1ul<<7ul),
-	rsRefresh60hz		= (1ul<<8ul),
-	rsConstantFPS		= (1ul<<9ul),
-	rsDrawStatic		= (1ul<<10ul),
-	rsDrawDynamic		= (1ul<<11ul),
+	rsFullscreen					= (1ul<<0ul),
+	rsClearBB						= (1ul<<1ul),
+	rsNoVSync						= (1ul<<2ul),
+	rsWireframe						= (1ul<<3ul),
+	rsOcclusion						= (1ul<<4ul),
+	rsStatistic						= (1ul<<5ul),
+	rsDetails						= (1ul<<6ul),
+	rsRefresh60hz					= (1ul<<7ul),
+	rsConstantFPS					= (1ul<<8ul),
+	rsDrawStatic					= (1ul<<9ul),
+	rsDrawDynamic					= (1ul<<10ul),
+	rsTreatObjectsAsCrows			= (1ul<<11ul),
 
-	rsOcclusionDraw		= (1ul<<12ul),
-	rsOcclusionStats	= (1ul<<13ul),
+	rsOcclusionDraw					= (1ul<<12ul),
+	rsOcclusionStats				= (1ul<<13ul),
 
-	mtSound				= (1ul<<14ul),
-	mtPhysics			= (1ul<<15ul),
-	mtNetwork			= (1ul<<16ul),
-	mtParticles			= (1ul<<17ul),
+	mtSound							= (1ul<<14ul),
+	mtPhysics						= (1ul<<15ul),
+	mtNetwork						= (1ul<<16ul),
+	mtParticles						= (1ul<<17ul),
 
 	// 20-32 bit - reserved to Editor
 };

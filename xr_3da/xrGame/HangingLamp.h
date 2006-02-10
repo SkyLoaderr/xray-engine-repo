@@ -57,8 +57,6 @@ public:
 	virtual void	net_Save			(NET_Packet& P)																	;
 	virtual	BOOL	net_SaveRelevant	()																				;
 
-	virtual void	renderable_Render		( );
-
 	virtual BOOL	renderable_ShadowGenerate	( ) { return TRUE;	}
 	virtual BOOL	renderable_ShadowReceive	( ) { return TRUE;	}
 	

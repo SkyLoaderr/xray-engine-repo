@@ -16,6 +16,8 @@ class	NET_Packet	;
 class	CSE_Abstract;
 
 //-----------------------------------------------------------------------------------------------------------
+#define CROW_RADIUS	(30.f)
+//-----------------------------------------------------------------------------------------------------------
 //	CObject
 //-----------------------------------------------------------------------------------------------------------
 #pragma pack(push,4)
@@ -66,6 +68,20 @@ public:
 	u32									dbg_update_cl;
 #endif
 	u32									dwFrame_UpdateCL;
+	u32									dwFrame_AsCrow;
+
+	// Crow-MODE
+	// if (object_is_visible)
+	// if (object_is_near)
+	// if (object_is_crow_always)
+		void							MakeMeCrow_internal	();
+	ICF	void							MakeMeCrow			()					{
+		if (Device.dwFrame == dwFrame_AsCrow)	return		;
+		dwFrame_AsCrow	= Device.dwFrame					;
+		if (!processing_enabled())				return		;
+		MakeMeCrow_internal						()			;
+	}
+	virtual BOOL						AlwaysTheCrow		()					{ return FALSE; }
 
 	// Network
 	ICF BOOL							Local				()			const	{ return Props.net_Local;	}

@@ -21,11 +21,13 @@ public:
 	u32			dwSND_Played,dwSND_Allocated;	// Play/Alloc
 	float		fShedulerLoad		;
 
-	CStatTimer	EngineTOTAL;		// 
-	CStatTimer	Sheduler;			// 
-	CStatTimer	UpdateClient;		// 
-	u32			UpdateClient_active;//
-	u32			UpdateClient_total;	//
+	CStatTimer	EngineTOTAL;			// 
+	CStatTimer	Sheduler;				// 
+	CStatTimer	UpdateClient;			// 
+	u32			UpdateClient_updated;	//
+	u32			UpdateClient_crows;		//
+	u32			UpdateClient_active;	//
+	u32			UpdateClient_total;		//
 	u32			Particles_starting;	// starting
 	u32			Particles_active;	// active
 	u32			Particles_destroy;	// destroying

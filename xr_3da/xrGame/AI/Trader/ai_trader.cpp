@@ -335,11 +335,6 @@ void CAI_Trader::g_WeaponBones	(int &L, int &R1, int &R2)
 	L				= V->LL_BoneID("bip01_l_finger1");
 }
 
-void CAI_Trader::renderable_Render	()
-{
-	inherited::renderable_Render	();
-}
-
 void CAI_Trader::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
 	if (g_Alive() && inventory().ActiveItem()) {

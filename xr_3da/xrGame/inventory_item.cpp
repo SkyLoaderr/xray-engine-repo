@@ -785,11 +785,6 @@ void CInventoryItem::make_Interpolation	()
 }
 
 
-void CInventoryItem::renderable_Render	()
-{
-	inherited::renderable_Render	();
-}
-
 void CInventoryItem::reload		(LPCSTR section)
 {
 	inherited::reload		(section);

@@ -250,11 +250,6 @@ void CEntity::net_Destroy	()
 	set_ready_to_save		();
 }
 
-void CEntity::renderable_Render()
-{
-	inherited::renderable_Render		();
-}
-
 void CEntity::KillEntity(u16 whoID)
 {
 	if (whoID != ID()) {

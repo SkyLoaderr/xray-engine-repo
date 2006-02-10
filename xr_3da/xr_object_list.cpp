@@ -20,6 +20,7 @@ CObjectList::CObjectList	( )
 {
 	objects_dup_memsz		= 512;
 	objects_dup				= xr_alloc	<CObject*>	(objects_dup_memsz);
+	crows					= &crows_0	;
 }
 
 CObjectList::~CObjectList	( )
@@ -84,7 +85,7 @@ void	CObjectList::SingleUpdate	(CObject* O)
 	if (O->processing_enabled() &&	(Device.dwFrame != O->dwFrame_UpdateCL))
 	{
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
-		Device.Statistic.UpdateClient_active	++;
+		Device.Statistic.UpdateClient_updated	++;
 		O->dwFrame_UpdateCL		=				Device.dwFrame;
 		O->UpdateCL				();
 		VERIFY3					(O->dbg_update_cl == Device.dwFrame, "Broken sequence of calls to 'UpdateCL'",*O->cName());
@@ -100,20 +101,37 @@ void	CObjectList::SingleUpdate	(CObject* O)
 
 void CObjectList::Update		()
 {
+	// Select Crow-Mode
+	Device.Statistic.UpdateClient_updated	= 0;
+	Device.Statistic.UpdateClient_crows		= crows->size	();
+	xr_vector<CObject*>*		workload	= 0;
+	if (psDeviceFlags.test(rsTreatObjectsAsCrows))	{
+		workload = crows			;
+		if (crows==&crows_0)		crows=&crows_1;
+		else						crows=&crows_0;
+		crows->clear_not_free		();
+	} else {
+		workload	= &objects_active;
+		crows_0.clear_not_free		();
+		crows_1.clear_not_free		();
+	}
+
 	// Clients
 	if (Device.fTimeDelta>EPS_S)			{
 		Device.Statistic.UpdateClient.Begin		();
 		Device.Statistic.UpdateClient_active	= objects_active.size	();
 		Device.Statistic.UpdateClient_total		= objects_active.size	() + objects_sleeping.size();
-		u32 objects_count	= objects_active.size();
+
+		u32 objects_count	= workload->size();
 		if (objects_count > objects_dup_memsz)	{
 			// realloc
 			while (objects_count > objects_dup_memsz)	objects_dup_memsz	+= 32;
 			objects_dup	= (CObject**)xr_realloc(objects_dup,objects_dup_memsz*sizeof(CObject*));
 		}
-		CopyMemory	(objects_dup,&*objects_active.begin(),objects_count*sizeof(CObject*));
+		CopyMemory	(objects_dup,&*workload->begin(),objects_count*sizeof(CObject*));
 		for (u32 O=0; O<objects_count; O++) 
 			SingleUpdate	(objects_dup[O]);
+
 		Device.Statistic.UpdateClient.End		();
 	}
 
@@ -124,20 +142,22 @@ void CObjectList::Update		()
 		for (xr_vector<CObject*>::iterator oit=objects_active.begin(); oit!=objects_active.end(); oit++)
 			for (int it = destroy_queue.size()-1; it>=0; it--){	
 				(*oit)->net_Relcase		(destroy_queue[it]);
-				Sound->object_relcase	(destroy_queue[it]);
 			}
 		for (xr_vector<CObject*>::iterator oit=objects_sleeping.begin(); oit!=objects_sleeping.end(); oit++)
 			for (int it = destroy_queue.size()-1; it>=0; it--)	(*oit)->net_Relcase	(destroy_queue[it]);
+
+		for (int it = destroy_queue.size()-1; it>=0; it--)	Sound->object_relcase	(destroy_queue[it]);
 		
-		RELCASE_CALLBACK_VEC::iterator It = m_relcase_callbacks.begin();
-		RELCASE_CALLBACK_VEC::iterator Ite = m_relcase_callbacks.end();
-		for(;It!=Ite; ++It){
+		RELCASE_CALLBACK_VEC::iterator It	= m_relcase_callbacks.begin();
+		RELCASE_CALLBACK_VEC::iterator Ite	= m_relcase_callbacks.end();
+		for(;It!=Ite; ++It)	{
 			VERIFY			(*(*It).m_ID==(It-m_relcase_callbacks.begin()));
-			xr_vector<CObject*>::iterator dIt = destroy_queue.begin();
-			xr_vector<CObject*>::iterator dIte = destroy_queue.end();
+			xr_vector<CObject*>::iterator dIt	= destroy_queue.begin();
+			xr_vector<CObject*>::iterator dIte	= destroy_queue.end();
 			for (;dIt!=dIte; ++dIt)
 				(*It).m_Callback(*dIt);
 		}
+
 		// Destroy
 		for (int it = destroy_queue.size()-1; it>=0; it--)
 		{
@@ -280,6 +300,13 @@ void		CObjectList::Destroy			( CObject*	O		)
 	if (0==O)								return;
 	net_Unregister							(O);
 
+	// crows
+	xr_vector<CObject*>::iterator _i0		= std::find(crows_0.begin(),crows_0.end(),O);
+	if	(_i0!=crows_0.end())				crows_0.erase	(_i0);
+	xr_vector<CObject*>::iterator _i1		= std::find(crows_1.begin(),crows_1.end(),O);
+	if	(_i1!=crows_1.end())				crows_1.erase	(_i1);
+
+	// active/inactive
 	xr_vector<CObject*>::iterator _i		= std::find(objects_active.begin(),objects_active.end(),O);
 	if	(_i!=objects_active.end())			objects_active.erase	(_i);
 	else {
@@ -290,7 +317,7 @@ void		CObjectList::Destroy			( CObject*	O		)
 	g_pGamePersistent->ObjectPool.destroy	(O);
 }
 
-void CObjectList::relcase_register	(RELCASE_CALLBACK cb, int *ID)
+void CObjectList::relcase_register		(RELCASE_CALLBACK cb, int *ID)
 {
 #ifdef DEBUG
 	RELCASE_CALLBACK_VEC::iterator It = std::find(	m_relcase_callbacks.begin(),

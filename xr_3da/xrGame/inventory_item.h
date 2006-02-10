@@ -242,7 +242,6 @@ protected:
 public:
 	virtual BOOL				net_Spawn				(CSE_Abstract* DC);
 	virtual void				net_Destroy				();
-	virtual void				renderable_Render		();
 	virtual void				reload					(LPCSTR section);
 	virtual void				reinit					();
 	virtual bool				can_kill				() const;

@@ -170,7 +170,6 @@ public:
 //	virtual	void				feel_touch_new			(CObject	*O);
 	virtual BOOL				feel_visible_isRelevant	(CObject		*O);
 	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
-	virtual void				renderable_Render		();
 	virtual	void				Hit						(SHit* pHDS);
 
 	virtual void				OnEvent					( NET_Packet& P, u16 type		);

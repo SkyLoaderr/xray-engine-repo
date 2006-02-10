@@ -236,12 +236,6 @@ void CHangingLamp::UpdateCL	()
 	}
 }
 
-void CHangingLamp::renderable_Render()
-{
-	VERIFY							(Visual());
-	inherited::renderable_Render	();
-}
-
 void CHangingLamp::TurnOn	()
 {
 	light_render->set_active						(true);

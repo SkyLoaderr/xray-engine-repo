@@ -99,7 +99,6 @@ public:
 	virtual	void		feel_touch_new			(CObject* O);
 	virtual	void		DropItemSendMessage		(CObject *O);
 	virtual void		shedule_Update			(u32 dt);
-	virtual void		renderable_Render		();
 
 	virtual BOOL		UsedAI_Locations		();
 	///////////////////////////////////////////////////////////////////////

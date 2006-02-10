@@ -13,10 +13,13 @@ private:
 	xr_vector<CObject*>			destroy_queue		;
 	xr_vector<CObject*>			objects_active		;
 	xr_vector<CObject*>			objects_sleeping	;
-	
+
+	xr_vector<CObject*>			crows_0				;
+	xr_vector<CObject*>			crows_1				;
+	xr_vector<CObject*>*		crows				;
+
 	CObject**					objects_dup			;
 	u32							objects_dup_memsz	;
-
 
 public:
 	typedef fastdelegate::FastDelegate1<CObject*>	RELCASE_CALLBACK;
@@ -56,6 +59,10 @@ public:
 	u32							net_Export			( NET_Packet*	P,		u32 _start, u32 _count	);	// return next start
 	void						net_Import			( NET_Packet*	P		);
 	CObject*					net_Find			( u32 ID				);
+
+	void						o_crow				(CObject*	O)			{
+		crows->push_back(O)		;
+	}
 
 	void						o_remove			( xr_vector<CObject*>&	v,  CObject*	O);
 	void						o_activate			( CObject*		O		);

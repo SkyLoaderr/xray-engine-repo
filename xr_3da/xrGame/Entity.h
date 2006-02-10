@@ -68,8 +68,6 @@ public:
 	
 	virtual void			shedule_Update		(u32 dt);
 
-	virtual void			renderable_Render	();
-
 	bool					IsFocused			()const;
 	bool					IsMyCamera			()const;
 

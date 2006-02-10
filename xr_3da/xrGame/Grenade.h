@@ -43,8 +43,6 @@ public:
 
 	virtual void						net_Import			(NET_Packet& P);					// import from server
 	virtual void						net_Export			(NET_Packet& P);					// export to server
-	virtual void renderable_Render() {inherited::renderable_Render();}
-//	virtual void OnH_A_Chield() {inherited::OnH_A_Chield();}
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 
 	virtual bool IsPending() const {return inherited::IsPending();}

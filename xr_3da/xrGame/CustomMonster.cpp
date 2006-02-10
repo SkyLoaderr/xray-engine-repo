@@ -847,11 +847,6 @@ void CCustomMonster::Exec_Action(float /**dt/**/)
 {
 }
 
-void CCustomMonster::renderable_Render()
-{
-	inherited::renderable_Render		();
-}
-
 //void CCustomMonster::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 void			CCustomMonster::Hit					(SHit* pHDS)
 {
