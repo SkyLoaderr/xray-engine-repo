@@ -225,12 +225,12 @@ void __fastcall TProperties::FormClose(TObject *Sender,
 {
 	ApplyEditControl	();
     if (Visible&&!OnCloseEvent.empty()) 	OnCloseEvent();
-	ClearParams			();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TProperties::FormDestroy(TObject *Sender)
 {
+	ClearParams		();
     xr_delete		(m_BMCheck);
     xr_delete		(m_BMDot);
     xr_delete		(m_BMEllipsis);
