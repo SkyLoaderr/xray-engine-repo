@@ -150,13 +150,13 @@ void CUIOutfitInfo::Update(shared_str section_name){
 void CUIOutfitInfo::GetInfoFromSettings(int values[], shared_str section_name){
 	if (GameID() == GAME_SINGLE)
 	{
-        values[0] = iFloor(100.f*pSettings->r_float(section_name, "burn_immunity"));
-        values[1] = iFloor(100.f*pSettings->r_float(section_name, "chemical_burn_immunity"));
+        values[0] = 100 - iFloor(100.f*pSettings->r_float(section_name, "burn_immunity"));
+        values[1] = 100 - iFloor(100.f*pSettings->r_float(section_name, "chemical_burn_immunity"));
 	}
-	values[2] = iFloor(100.f*pSettings->r_float(section_name, "explosion_immunity"));
-	values[3] = iFloor(100.f*pSettings->r_float(section_name, "fire_wound_immunity"));
-	values[4] = iFloor(100.f*pSettings->r_float(section_name, "shock_immunity"));
-	values[5] = iFloor(100.f*pSettings->r_float(section_name, "strike_immunity"));
+	values[2] = 100 - iFloor(100.f*pSettings->r_float(section_name, "explosion_immunity"));
+	values[3] = 100 - iFloor(100.f*pSettings->r_float(section_name, "fire_wound_immunity"));
+	values[4] = 100 - iFloor(100.f*pSettings->r_float(section_name, "shock_immunity"));
+	values[5] = 100 - iFloor(100.f*pSettings->r_float(section_name, "strike_immunity"));
 }
 
 void CUIOutfitInfo::SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIListItem* listItem, shared_str sstr){
