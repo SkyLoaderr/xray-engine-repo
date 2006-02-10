@@ -365,7 +365,6 @@ void	CMainUI::OnFrame		(void)
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
-			Device.Pause			(TRUE);
 		};
 
 		if(m_Flags.is(flRestoreConsole))
@@ -483,7 +482,6 @@ void CMainUI::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR na
 		if(g_pGameLevel && m_Flags.is(flActive)){
 			Device.seqFrame.Add		(g_pGameLevel);
 			Device.seqRender.Add	(g_pGameLevel);
-			Device.Pause			(FALSE);
 		};
 		m_screenshotFrame			= Device.dwFrame+1;
 		m_Flags.set					(flRestoreConsole,		Console->bVisible);
