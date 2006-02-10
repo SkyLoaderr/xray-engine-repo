@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<string_table>
+    <string id="artefact">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_eliminate_camp_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_artefact_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_find_item_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="barmen_kill_stalker_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_4">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_4_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_4_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_5">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_5_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_eliminate_kamp_5_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_4">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_4_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_find_item_4_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_4">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_4_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dolg_kill_stalker_4_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_4">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_4_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_4_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_5">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_5_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_5_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_6">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_6_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_find_artefact_6_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_4">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_4_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_4_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_5">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_5_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_5_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_6">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_6_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_6_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_7">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_7_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_7_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_8">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_8_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ecolog_monster_part_8_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="eliminate_lager">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="find_item">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_4">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_4_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_4_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_5">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_5_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_eliminate_camp_5_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_find_item_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_4">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_4_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_4_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_5">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_5_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_kill_stalker_5_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_monster_part_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_monster_part_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="freedom_monster_part_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="kill_stalker">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="monster_part">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="return_for_reward">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="return_for_reward_bring">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_barman_has_no_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_barman_job_ask">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_barman_job_complete">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_barman_job_what">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_barman_list_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_dolg_has_no_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_dolg_job_ask">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_dolg_job_complete">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_dolg_job_what">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_dolg_list_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_ecolog_has_no_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_ecolog_job_ask">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_ecolog_job_complete">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_ecolog_job_what">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_ecolog_list_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_eliminate_camp_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_artefact_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_item_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_item_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_item_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_item_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_item_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_find_item_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_freedom_has_no_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_freedom_job_ask">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_freedom_job_complete">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_freedom_job_what">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_freedom_list_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_job_nothing">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_job_refuse">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_1_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_1_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_2">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_2_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_2_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_3">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_3_descr">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_kill_stalker_3_text">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_reward_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_seek_job_abandon">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_seek_job_no">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_seek_job_yes">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_seek_new_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_trader_has_no_job">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_trader_job_ask">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_trader_job_complete">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_trader_job_what">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tm_trader_list_job">
+        <text>This string was added automatically</text>
+    </string>
+</string_table>

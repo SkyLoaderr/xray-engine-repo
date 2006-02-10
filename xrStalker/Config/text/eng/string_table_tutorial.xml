@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<string_table>
+    <string id="binoc_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="binoc_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="crouch_down_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="crouch_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="jump_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="move_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="overload_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="overload_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="radiation_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="radiation_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="relation_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="relation_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sleep_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sleep_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sprint_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sprint_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="starvation_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="starvation_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="weakness_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="weakness_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="weapon_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="weapon_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="wound_tut">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="wound_tutorial">
+        <text>This string was added automatically</text>
+    </string>
+</string_table>

@@ -1,0 +1,603 @@
+    <string id="aes_Monolit_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Monolit_rpg_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Monolit_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Monolit_sniper_gauss_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Monolit_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Soldier_commander_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Soldier_military_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Soldier_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Soldier_specnaz_aes_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Soldier_specnaz_aes_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="aes_Soldier_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_bandit_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_krot_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_krot_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_renegade_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_soldier_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="agr_stalker_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="cit_doctor_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="cit_doctor_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="cit_killers_leader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="cit_killers_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="cit_vp_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="cit_vp_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dar_corpse_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dar_explorer_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="dar_explorer_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ds_sergant_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="ds_soldier_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_bandit_novice_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_captain_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_fanat_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_fanat_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_fox_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_fox_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_killer_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_petruha_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_petruha_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_provodnik_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_provodnik_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_sergant_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_soldier_commander_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_soldier_commander_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_soldier_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_specnaz_killer_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_stalker_novice_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_tolik_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_tolik_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_wolf_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="esc_wolf_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="escape_trader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="escape_trader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_bandit_leader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_bandit_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_dolg_blokpost_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_dolg_blokpost_leader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_dolg_blokpost_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_dram_novice_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_dram_novice_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_hellcar_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_hellcar_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_newbie_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_seryi_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_seryi_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="gar_stalker_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Dolg_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Dolg_specnaz_cherep_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Dolg_specnaz_cherep_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Dolg_specnaz_silence_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Killer_informator_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Killer_informator_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Killer_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Monolit_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Monolit_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Stalker_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Stalker_veteran_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_blockpost_leader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_blockpost_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_bodyguard_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_cook_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_cook_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_engineer_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_engineer_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_leader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_master_Max_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_master_Max_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_master_Ugrumiy_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_master_Ugrumiy_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_stukach_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_stukach_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_trader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_trader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_zombi_stalker_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_zombi_stalker_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_Svoboda_zoneguard_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_killer_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="mil_killer_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="pri_monolith_leader_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="pri_monolith_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_dolg_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_ecolog_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_ecolog_guard_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_ecolog_guard_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_ecolog_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_monolith_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_monolith_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_stalker_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_stalker_veteran_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_svoboda_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="rad_zombied_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_arena_manager_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_arena_savage_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_bandit_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_borov_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_crazy_svoboda_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_dolg_blokpost_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_dolg_guard_commander_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_dolg_skull_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_dolg_zastava_commander_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_dram_novice_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_explorer_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_fanat_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_fox_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_gordon_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_haron_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_hellcar_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_informator_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_ivancov_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_krot_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_kruglov_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_kuznetsov_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_lucky_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_petrenko_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_petruha_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_professor_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_ryaboy_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_seryi_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_blockpost_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_bodyguard_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_cook_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_engeneer_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_leader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_max_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_stukach_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_trader_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_svoboda_ugrumyi_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_tiran_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_tolik_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_volkodav_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_voronin_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar2_wolf_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar_monolith_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sar_monolith_cristall_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_Soldier_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_Svoboda_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_Svoboda_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_Svoboda_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_Svoboda_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_bandit_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_bandit_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_bandit_novice_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_bandit_veteran_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_dolg_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_dolg_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_dolg_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_dolg_veteran_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_fresh_Zombied_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_killer_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_killer_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_killer_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_killer_veteran_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_monolith_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_monolith_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_monolith_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_monolith_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_soldier_commander_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_soldier_regular_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_soldier_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_soldier_specnaz_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_stalker_general_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_stalker_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_stalker_novice_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_stalker_sniper_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_stalker_veteran_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_zombied_master_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_zombied_novice_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="sim_zombied_veteran_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="val_borov_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="val_borov_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="val_pulia_bio">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="val_pulia_name">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="zombie_name">
+        <text>This string was added automatically</text>
+    </string>
