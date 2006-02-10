@@ -534,7 +534,7 @@ void CUITradeWnd::PerformTrade()
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		SellItems(&m_uidata->UIOurTradeList, &m_uidata->UIOthersBagList, m_pTrade);
 		SellItems(&m_uidata->UIOthersTradeList, &m_uidata->UIOurBagList, m_pOthersTrade);
-		UpdatePrices();
+		UpdateLists();
 	}
 	SetCurrentItem(NULL);
 }
