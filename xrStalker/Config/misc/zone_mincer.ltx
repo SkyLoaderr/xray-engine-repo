@@ -137,6 +137,14 @@ awaking_time				= 50
 blowout_time				= 10000	
 accamulate_time				= 4000
 
+; Не производящая артефактов слабая аномалия
+[zone_mincer_weak_noart]:zone_mincer_weak
+artefacts		=
+min_artefact_count	= 0
+max_artefact_count	= 0
+
+
+
 [zone_mincer_average]:zone_mincer
 $spawn 						= "zones\mincer zone_average"
 hit_impulse_scale			= 0.1	
