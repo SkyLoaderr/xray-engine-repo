@@ -10,6 +10,7 @@
 #include "clsid_game.h"
 #include "entity_alive.h"
 #include "PHDestroyableNotificate.h"
+#include "clsid_game.h"
 
 CMincer::CMincer(void) 
 {
@@ -165,4 +166,7 @@ void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float
 
 }
 
-
+float CMincer::BlowoutRadiusPercent	(CPhysicsShellHolder* GO)
+{
+	return	(GO->CLS_ID!=CLSID_OBJECT_ACTOR? m_fBlowoutRadiusPercent:m_fActorBlowoutRadiusPercent);
+}
