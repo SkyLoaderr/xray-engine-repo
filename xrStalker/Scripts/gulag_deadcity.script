@@ -229,7 +229,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 11, state = {0},
 		squad = squad, group = groups[6],
-		in_rest = "cit_jail_restr", out_rest = "",
+		in_rest = "cit_selmag_up_floor_restr", out_rest = "",
 		predicate = k_predicate_v
 	}
 	table.insert(sj, t)
@@ -241,7 +241,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
                 "[camper@" .. gname .. "_base_patrol]\n" ..
                 "path_walk           = base_patrol_walk\n" ..
                 "path_look           = base_patrol_look\n" ..
-                "radius              = 10\n" ..
+                "radius              = 12\n" ..
                 "no_retreat          = true\n" ..
                 "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
                 --"danger              = danger_killers\n" ..
@@ -287,7 +287,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 100 + i, state = {0}, -- 9
 		    squad = squad, group = groups[9],
-		    in_rest = "cit_selmag_up_floor_restr", out_rest = "",
+		    in_rest = "cit_selmag_restr", out_rest = "",
 		    predicate = k_predicate_e
 	    }
 	    table.insert(sj, t)
@@ -593,7 +593,7 @@ gulags.cit_bandits.job = function(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 9, state = {0},
 		    squad = squad, group = groups[11],
-		    in_rest = "cit_selmag_up_floor_restr", out_rest = "",
+		    in_rest = "cit_selmag_restr", out_rest = "",
 		    predicate = b_predicate_v
 	    }
 	    table.insert(sj, t)
@@ -728,7 +728,7 @@ gulags.cit_bandits.job = function(sj, gname, type, squad, groups)
 		    idle = 0,
 		    prior = 10, state = {0},
 		    squad = squad, group = groups[8],
-		    in_rest = "cit_selmag_up_floor_restr", out_rest = "",
+		    in_rest = "cit_selmag_restr", out_rest = "",
 		    predicate = b_predicate_v
 	    }
 	    table.insert(sj, t)
