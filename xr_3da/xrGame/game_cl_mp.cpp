@@ -338,6 +338,7 @@ void game_cl_mp::ChatSayAll(const shared_str &phrase)
 	P.w_s16(0);
 	P.w_stringZ(local_player->getName());
 	P.w_stringZ(phrase.c_str());
+	P.w_s16(local_player->team);
 	u_EventSend(P);
 }
 
@@ -352,6 +353,7 @@ void game_cl_mp::ChatSayTeam(const shared_str &phrase)
 	P.w_s16(local_player->team);
 	P.w_stringZ(local_player->getName());
 	P.w_stringZ(phrase.c_str());
+	P.w_s16(local_player->team);
 	u_EventSend(P);
 }
 
@@ -362,6 +364,8 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	P->r_stringZ(PlayerName);
 	string256 ChatMsg;
 	P->r_stringZ(ChatMsg);
+	s16 team;
+	P->r_s16(team);
 #ifdef DEBUG
 	Msg("Chat: %s : %s", PlayerName, ChatMsg);
 #endif	
