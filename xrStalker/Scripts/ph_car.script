@@ -321,13 +321,15 @@ end
 
 function action_car:save()
     printf("car <state>: saving")
-	xr_logic.pstor_store(self.object, "speed", self.speed)
-	xr_logic.pstor_store(self.object, "loop", self.loop)
-	xr_logic.pstor_store(self.object, "min_delta_per_sec", self.min_delta_per_sec)
-	xr_logic.pstor_store(self.object, "min_car_explode_time", self.min_car_explode_time)
-	xr_logic.pstor_store(self.object, "state_moving", self.state_moving)
-	xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt) -- or -2)
-	printf("car <save>: target_walk_pt(%d)", self.target_walk_pt)
+    if self.usable == nil then
+	    xr_logic.pstor_store(self.object, "speed", self.speed)
+	    xr_logic.pstor_store(self.object, "loop", self.loop)
+	    xr_logic.pstor_store(self.object, "min_delta_per_sec", self.min_delta_per_sec)
+	    xr_logic.pstor_store(self.object, "min_car_explode_time", self.min_car_explode_time)
+	    xr_logic.pstor_store(self.object, "state_moving", self.state_moving)
+	    xr_logic.pstor_store(self.object, "target_walk_pt", self.target_walk_pt) -- or -2)
+	    printf("car <save>: target_walk_pt(%d)", self.target_walk_pt)
+	end
 end
 
 --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
