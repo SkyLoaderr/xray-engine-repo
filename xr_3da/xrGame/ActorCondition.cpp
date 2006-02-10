@@ -138,13 +138,16 @@ void CActorCondition::UpdateCondition()
 	};
 	
 	float delta_time = float(m_iDeltaTime)/1000.f;
-	if( !IsSleeping() && GameID()==GAME_SINGLE ){
-		// update power_leak
-		float k_max_power = (object().inventory().TotalWeight()/40.0f);
-		if(k_max_power<1.0)
-			k_max_power = 1.0f;
 
-		SetMaxPower		(GetMaxPower()-m_fPowerLeakSpeed*delta_time*k_max_power);
+	if( !IsSleeping() && IsGameTypeSingle() ){
+
+		float k_max_power = 1.0f;
+		float weight = object().inventory().TotalWeight();
+		float base_w = 40.0f;
+
+		k_max_power = 1.0f + _min(weight,base_w)/base_w + _max(0.0f, (weight-base_w)/10.0f);
+
+		SetMaxPower		(GetMaxPower() - m_fPowerLeakSpeed*delta_time*k_max_power);
 	}
 
 	m_fAlcohol		+= m_fV_Alcohol*delta_time;

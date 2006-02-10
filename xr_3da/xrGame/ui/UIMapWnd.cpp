@@ -364,6 +364,38 @@ void CUIMapWnd::Draw()
 
 bool CUIMapWnd::OnKeyboard				(int dik, EUIMessages keyboard_action)
 {
+	switch(dik){
+		case DIK_UP:
+		case DIK_DOWN:
+		case DIK_LEFT:
+		case DIK_RIGHT:
+			{
+				Fvector2 pos_delta; pos_delta.set(0.0f, 0.0f);
+
+
+				if(dik==DIK_UP)					pos_delta.y	+= 3.0f;
+				if(dik==DIK_DOWN)				pos_delta.y	-= 3.0f;
+				if(dik==DIK_LEFT)				pos_delta.x	+= 3.0f;
+				if(dik==DIK_RIGHT)				pos_delta.x	-= 3.0f;
+				GlobalMap()->MoveWndDelta		(pos_delta);
+				UpdateScroll					();
+				m_hint->SetOwner				(NULL);
+				return true;
+			}break;
+		case DIK_SUBTRACT:
+			{
+				SetZoom(GetZoom()/1.5f);
+				ResetActionPlanner				();
+				return true;
+			}break;
+		case DIK_ADD:
+			{
+				SetZoom(GetZoom()*1.5f);
+				ResetActionPlanner				();
+				return true;
+			}break;
+	}
+	
 	return inherited::OnKeyboard	(dik, keyboard_action);
 }
 
