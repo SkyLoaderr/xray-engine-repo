@@ -31,7 +31,7 @@
 			<texture>ui_hud_status_green_03</texture>
 		</rank_2>
 		<rank_3 x="7" y="15" width="46" height="47">
-			<texture>ui_hud_status_green_05</texture>
+			<texture>ui_hud_status_green_04</texture>
 		</rank_3>
 		<rank_4 x="7" y="15" width="46" height="47">
 			<texture>ui_hud_status_green_05</texture>
