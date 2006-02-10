@@ -107,7 +107,7 @@ throw_out_power				= 15								;импульс с которым артефакт будет выброшен из зон
 artefact_spawn_height		= 10								;(м) высота на центром зоны где будет рожден артефакт
 
 [zone_mincer_weak]:zone_mincer
-$spawn 						= "zones\mincer zone_weak"
+$spawn 						= "zones\mincer_zone_weak"
 
 hit_impulse_scale			= 0.1	
 effective_radius			= 0.75
@@ -139,6 +139,7 @@ accamulate_time				= 4000
 
 ; Не производящая артефактов слабая аномалия
 [zone_mincer_weak_noart]:zone_mincer_weak
+$spawn 						= "zones\mincer_zone_weak_noart"
 artefacts		=
 min_artefact_count	= 0
 max_artefact_count	= 0
