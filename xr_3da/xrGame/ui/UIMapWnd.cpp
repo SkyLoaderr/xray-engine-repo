@@ -373,10 +373,10 @@ bool CUIMapWnd::OnKeyboardHold(int dik)
 				Fvector2 pos_delta; pos_delta.set(0.0f, 0.0f);
 
 
-				if(dik==DIK_UP)					pos_delta.y	+= 0.5f;
-				if(dik==DIK_DOWN)				pos_delta.y	-= 0.5f;
-				if(dik==DIK_LEFT)				pos_delta.x	+= 0.5f;
-				if(dik==DIK_RIGHT)				pos_delta.x	-= 0.5f;
+				if(dik==DIK_UP)					pos_delta.y	-= 1.0f;
+				if(dik==DIK_DOWN)				pos_delta.y	+= 1.0f;
+				if(dik==DIK_LEFT)				pos_delta.x	-= 1.0f;
+				if(dik==DIK_RIGHT)				pos_delta.x	+= 1.0f;
 				GlobalMap()->MoveWndDelta		(pos_delta);
 				UpdateScroll					();
 				m_hint->SetOwner				(NULL);
@@ -389,13 +389,13 @@ bool CUIMapWnd::OnKeyboardHold(int dik)
 bool CUIMapWnd::OnKeyboard				(int dik, EUIMessages keyboard_action)
 {
 	switch(dik){
-		case DIK_SUBTRACT:
+		case DIK_NUMPADMINUS:
 			{
 				SetZoom(GetZoom()/1.5f);
 				ResetActionPlanner				();
 				return true;
 			}break;
-		case DIK_ADD:
+		case DIK_NUMPADPLUS:
 			{
 				SetZoom(GetZoom()*1.5f);
 				ResetActionPlanner				();

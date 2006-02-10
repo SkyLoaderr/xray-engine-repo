@@ -51,16 +51,16 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	}
 
 	if (!g_Alive()) return;
-/*
-	switch(cmd){
-		case kFOLLOWER1:
-		case kFOLLOWER2:
-		case kFOLLOWER3:
-		case kFOLLOWER4:
-		case kFOLLOWER5:
-			SendCmdToFollowers(cmd);	break;
+
+	if(cmd==kNIGHT_VISION)
+	{
+		CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
+			if (I){
+				CTorch* torch = smart_cast<CTorch*>(I);
+				if (torch) torch->SwitchNightVision();
+			}
 	};
-*/
+
 	if(m_holder && kUSE != cmd)
 	{
 		m_holder->OnKeyboardPress			(cmd);
@@ -103,13 +103,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
-	case kNIGHT_VISION: {
-		CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
-			if (I){
-				CTorch* torch = smart_cast<CTorch*>(I);
-				if (torch) torch->SwitchNightVision();
-			}
-		}break;
 	case kTORCH:{ 
 			CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
 			if (I){

@@ -146,13 +146,14 @@ bool CUI::IR_OnKeyboardHold(int dik)
 
 bool CUI::IR_OnKeyboardPress(int dik)
 {
-	if(UIMainIngameWnd->OnKeyboardPress(dik))
-		return true;
 
 	if ( MainInputReceiver() ) {
 		if( MainInputReceiver()->IR_OnKeyboardPress(dik) )
 			return true;
 	}
+
+	if(UIMainIngameWnd->OnKeyboardPress(dik))
+		return true;
 
 	if (pUIGame && pUIGame->IR_OnKeyboardPress(dik)) 
 		return true;

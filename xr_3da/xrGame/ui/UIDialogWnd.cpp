@@ -149,7 +149,8 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 
 bool CUIDialogWnd::OnKeyboardHold(int dik)
 {
-	return false;
+	if(!IR_process()) return false;
+	return inherited::OnKeyboardHold(dik);
 }
 
 bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
