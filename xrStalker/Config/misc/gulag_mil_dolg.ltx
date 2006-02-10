@@ -491,12 +491,10 @@ on_signal = arrive | remark1@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
 on_info = {+mil_dolg_phase2} walker11@mil_dolg_skull_attack
 def_state_moving1 = walk
-;team = dolg_attack
+team = dolg_attack
 
 [remark1@mil_dolg_skull_attack]
 snd = mil_dolg_before_attack2
-no_rotate = true
-no_move = true
 on_signal = action_end | %+mil_dolg_phase1% remark20@mil_dolg_skull_attack
 anim = wait
 danger = danger_condition@mil_dolg
@@ -574,15 +572,14 @@ path_look = attack_before_look1
 on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier1_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
-def_state_moving1 = walk
 def_state_moving1 = run
 
 [remark10@mil_dolg_soldier1_attack]
-no_rotate = true
-no_move = true
 on_signal = action_end | walker1@mil_dolg_soldier1_attack
 anim = salut
-target = 708
+snd_anim_sync = true
+snd = mil_dolg_fight
+target = mil_dolg_attack_before_walk1,2
 danger = danger_condition@mil_dolg
 
 [walker1@mil_dolg_soldier1_attack]
@@ -630,11 +627,11 @@ danger = danger_condition@mil_dolg
 def_state_moving1 = run
 
 [remark10@mil_dolg_soldier2_attack]
-no_rotate = true
-no_move = true
 on_signal = action_end | walker1@mil_dolg_soldier2_attack
 anim = salut
-target = 708
+snd_anim_sync = true
+snd = mil_dolg_fight
+target = mil_dolg_attack_before_walk1,2
 danger = danger_condition@mil_dolg
 
 [walker1@mil_dolg_soldier2_attack]
@@ -673,11 +670,11 @@ danger = danger_condition@mil_dolg
 def_state_moving1 = run
 
 [remark10@mil_dolg_soldier3_attack]
-no_rotate = true
-no_move = true
 anim = salut
+snd_anim_sync = true
+snd = mil_dolg_fight
 on_signal = action_end | walker3@mil_dolg_soldier3_attack
-target = 708
+target = mil_dolg_attack_before_walk1,2
 danger = danger_condition@mil_dolg
 
 [walker3@mil_dolg_soldier3_attack]
@@ -718,11 +715,11 @@ danger = danger_condition@mil_dolg
 def_state_moving1 = run
 
 [remark10@mil_dolg_soldier4_attack]
-no_rotate = true
-no_move = true
 anim = salut
+snd_anim_sync = true
+snd = mil_dolg_fight
 on_signal = action_end | walker3@mil_dolg_soldier4_attack
-target = 708
+target = mil_dolg_attack_before_walk1,2
 danger = danger_condition@mil_dolg
 
 [walker3@mil_dolg_soldier4_attack]
@@ -754,18 +751,18 @@ on_death = death@mil_dolg_soldier5
 
 [walker10@mil_dolg_soldier5_attack]
 path_walk = attack_before_walk7
-path_lool = attack_before_look1
+path_look = attack_before_look1
 on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier5_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
 
 [remark10@mil_dolg_soldier5_attack]
-no_rotate = true
-no_move = true
 anim = salut
+snd_anim_sync = true
+snd = mil_dolg_fight
 on_signal = action_end | walker1@mil_dolg_soldier5_attack
-target = 708
+target = mil_dolg_attack_before_walk1,2
 danger = danger_condition@mil_dolg
 
 [walker1@mil_dolg_soldier5_attack]
@@ -804,11 +801,11 @@ danger = danger_condition@mil_dolg
 def_state_moving1 = run
 
 [remark10@mil_dolg_soldier6_attack]
-no_rotate = true
-no_move = true
 anim = salut
+snd_anim_sync = true
+snd = mil_dolg_fight
 on_signal = action_end | walker3@mil_dolg_soldier6_attack
-target = 708
+target = mil_dolg_attack_before_walk1,2
 danger = danger_condition@mil_dolg
 
 [walker3@mil_dolg_soldier6_attack]
@@ -847,11 +844,11 @@ danger = danger_condition@mil_dolg
 def_state_moving1 = run
 
 [remark10@mil_dolg_soldier7_attack]
-no_rotate = true
-no_move = true
 anim = salut
+snd_anim_sync = true
+snd = mil_dolg_fight
 on_signal = action_end | walker1@mil_dolg_soldier7_attack
-target = 708
+target = mil_dolg_attack_before_walk1,2
 danger = danger_condition@mil_dolg
 
 [walker1@mil_dolg_soldier7_attack]
