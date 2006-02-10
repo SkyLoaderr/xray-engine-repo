@@ -836,7 +836,7 @@ function cit_combat_ignore(actor, npc, p)
     local enemy = db.storage[npc:id()].enemy
     if enemy and enemy:alive() then
         if enemy:id() == actor:id() then
-            return actor:dont_has_info(p[1])
+            return p[1] ~= nil and actor:dont_has_info(p[1])
         elseif enemy:story_id() == 1200 then
             return true
         else
