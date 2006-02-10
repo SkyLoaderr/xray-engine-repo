@@ -630,6 +630,18 @@ active = kamp@gar_dolg_blokpost_kamp1
 center_point = kamp_point
 meet = meet@neutral
 soundgroup = gar_dolg_blokpost
+on_info = {+gar_test_info2} walker@alarm_dolg_blokpost_kamp1
+
+[walker@alarm_dolg_blokpost_kamp1]
+path_walk = alarm_walk1
+path_look = alarm_look1
+on_info = {=gulag_population_le(gar_boars_nest:2)} kamp@final_gar_dolg_blokpost
+
+[kamp@final_gar_dolg_blokpost]
+center_point = kamp_point
+meet = meet@neutral
+soundgroup = gar_dolg_blokpost
+
 
 
 [logic@gar_dolg_blokpost_kamp2]
@@ -639,6 +651,13 @@ active = kamp@gar_dolg_blokpost_kamp2
 center_point = kamp_point
 meet = meet@neutral
 soundgroup = gar_dolg_blokpost
+on_info = {+gar_test_info2} walker@alarm_dolg_blokpost_kamp2
+
+[walker@alarm_dolg_blokpost_kamp2]
+path_walk = alarm_walk2
+path_look = alarm_look2
+on_info = {=gulag_population_le(gar_boars_nest:2)} kamp@final_gar_dolg_blokpost
+
 
 
 [logic@gar_dolg_blokpost_kamp3]
@@ -648,6 +667,14 @@ active = kamp@gar_dolg_blokpost_kamp3
 center_point = kamp_point
 meet = meet@neutral
 soundgroup = gar_dolg_blokpost
+on_info = {+gar_test_info2} walker@alarm_dolg_blokpost_kamp3
+
+[walker@alarm_dolg_blokpost_kamp3]
+path_walk = alarm_walk3
+path_look = alarm_look3
+on_info = {=gulag_population_le(gar_boars_nest:2)} kamp@final_gar_dolg_blokpost
+
+
 
 
 [logic@gar_dolg_blokpost_raid1]
@@ -663,60 +690,60 @@ formation = back
 ;*****************************************************************
 
 [logic@gar_seryi_bandits_camper10]
-active = camper@gar_seryi_bandits_camper10
+active = walker@gar_seryi_bandits_camper10
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper10]
+[walker@gar_seryi_bandits_camper10]
 path_walk = camper10_walk
 path_look = camper10_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper20]
-active = camper@gar_seryi_bandits_camper20
+active = walker@gar_seryi_bandits_camper20
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper20]
+[walker@gar_seryi_bandits_camper20]
 path_walk = camper20_walk
 path_look = camper20_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper30]
-active = camper@gar_seryi_bandits_camper30
+active = walker@gar_seryi_bandits_camper30
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper30]
+[walker@gar_seryi_bandits_camper30]
 path_walk = camper30_walk
 path_look = camper30_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper40]
-active = camper@gar_seryi_bandits_camper40
+active = walker@gar_seryi_bandits_camper40
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper40]
+[walker@gar_seryi_bandits_camper40]
 path_walk = camper40_walk
 path_look = camper40_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper50]
-active = camper@gar_seryi_bandits_camper50
+active = walker@gar_seryi_bandits_camper50
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper50]
+[walker@gar_seryi_bandits_camper50]
 path_walk = camper50_walk
 path_look = camper50_look
 combat_ignore_cond = {-gar_seryi_open_fire}
@@ -742,12 +769,12 @@ on_info = %+gar_seryi_open_fire%
 
 
 [logic@gar_seryi_bandits_camper11]
-active = camper@gar_seryi_bandits_camper11
+active = walker@gar_seryi_bandits_camper11
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper11]
+[walker@gar_seryi_bandits_camper11]
 path_walk = camper11_walk
 path_look = camper11_look
 combat_ignore_cond = {-gar_seryi_open_fire}
@@ -767,60 +794,60 @@ anim = hide
 
 
 [logic@gar_seryi_bandits_camper21]
-active = camper@gar_seryi_bandits_camper21
+active = walker@gar_seryi_bandits_camper21
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper21]
+[walker@gar_seryi_bandits_camper21]
 path_walk = camper21_walk
 path_look = camper21_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper31]
-active = camper@gar_seryi_bandits_camper31
+active = walker@gar_seryi_bandits_camper31
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper31]
+[walker@gar_seryi_bandits_camper31]
 path_walk = camper31_walk
 path_look = camper31_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper41]
-active = camper@gar_seryi_bandits_camper41
+active = walker@gar_seryi_bandits_camper41
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper41]
+[walker@gar_seryi_bandits_camper41]
 path_walk = camper41_walk
 path_look = camper41_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper51]
-active = camper@gar_seryi_bandits_camper51
+active = walker@gar_seryi_bandits_camper51
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper51]
+[walker@gar_seryi_bandits_camper51]
 path_walk = camper51_walk
 path_look = camper51_look
 combat_ignore_cond = {-gar_seryi_open_fire}
 
 
 [logic@gar_seryi_bandits_camper61]
-active = camper@gar_seryi_bandits_camper61
+active = walker@gar_seryi_bandits_camper61
 combat_ignore = combat_ignore
 on_hit = hit@bandits_seryi
 on_death = death@bandits_seryi
 
-[camper@gar_seryi_bandits_camper61]
+[walker@gar_seryi_bandits_camper61]
 path_walk = camper61_walk
 path_look = camper61_look
 combat_ignore_cond = {-gar_seryi_open_fire}
@@ -1592,16 +1619,18 @@ active = mob_home@gar_boars_nest
 path_home = home
 home_min_radius = 25
 home_max_radius = 50
+aggressive_home
 
 
 [logic@gar_boars_nest_rush]
-active = mob_home@gar_boars_nest
+active = mob_home@gar_boars_nest2
 on_death = mob_death@gar_boars_rush
 
 [mob_home@gar_boars_nest2]
 path_home = home_rush
 home_min_radius = 35
 home_max_radius = 50
+aggressive_home
 
 [mob_death@gar_boars_rush]
 on_info = {=killed_by_actor} %=inc_counter(gar_boars_counter)%
