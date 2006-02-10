@@ -2166,6 +2166,18 @@
 						RelativePath=".\Config\scripts\pri_heli4.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\pri\pri_respawn_custom_data_dolg.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\pri\pri_respawn_custom_data_freedom.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\pri\pri_respawn_custom_data_military.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\pri\pri_respawn_custom_data_neutral.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\pri_wave3_btr.ltx">
 					</File>
 				</Filter>
