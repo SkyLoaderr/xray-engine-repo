@@ -13,7 +13,7 @@ combat_ignore       = combat_ignore
 path_walk           = base_guard_wait_walk
 path_look           = base_guard_wait_look
 on_info             = {+cit_jail_scene_start} walker@base_guard_to_jail ;remark@base_guard_wait_to_go
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- стоим на страже
@@ -22,7 +22,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 path_walk           = base_guard_walk
 path_look           = base_guard_look
 on_info             = {+cit_jail_scene_start} walker@base_guard_to_jail ;remark@base_guard_wait_to_go
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- ждем 5 секунд
@@ -31,7 +31,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 anim                = guard
 target              = nil
 on_timer            = 5000 | walker@base_guard_to_jail
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- идем к камере
@@ -40,7 +40,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 path_walk           = base_guard_jail_walk
 path_look           = base_guard_jail_look
 on_signal           = arrived | remark@talk_to_guard1_1 %+cit_jail_guard2_talk_to_guard1%
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- сообщаем первому охраннику, что забираем доктора
@@ -50,7 +50,7 @@ anim                = guard
 target              = logic@cit_killers_jail_guard ;1201 ; guard1
 snd                 = cit_base_guard
 on_signal           = sound_end | remark@base_guard_talk_to_doctor %+cit_jail_guard2_talk_to_doctor -cit_jail_guard2_talk_to_guard1%
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- говорим доктору, чтоб шел с нами
@@ -60,7 +60,7 @@ anim                = guard
 target              = 1200 ; doctor
 snd                 = cit_base_guard
 on_signal           = sound_end | remark@base_guard_talk_to_actor1 %+cit_jail_guard2_near_grates -cit_jail_guard2_talk_to_doctor%
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- приказываем актеру отойти к дальней стене
@@ -70,7 +70,7 @@ anim                = threat
 target              = actor
 snd                 = cit_base_guard
 on_signal           = sound_end | {+cit_actor_near_grates} remark@base_guard_wait1, remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- если актер не отошел, ждем 5 сек
@@ -79,7 +79,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 anim                = threat
 target              = actor
 on_timer            = 5000 | remark@base_guard_talk_to_actor2
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- повторяем приказ отойти актеру к стене
@@ -89,7 +89,7 @@ anim                = threat
 target              = actor
 snd                 = cit_base_guard_talk_to_actor2
 on_signal           = sound_end | {+cit_actor_near_grates} remark@base_guard_wait2, remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- ждем еще 10 сек
@@ -98,7 +98,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 anim                = threat
 target              = actor
 on_timer            = 10000 | {-cit_actor_near_grates} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%, camper@base_guard_kill_actor %+cit_jail_kill_actor%
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- если актер не послушался и не отошел к стене, убиваем его
@@ -107,7 +107,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 anim                = wait_na
 ;on_info             = {=actor_dead} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
 on_info             = {-cit_actor_near_grates} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
-combat_ignore_cond  = {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore()} ;{=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- если актер не послушался и не отошел к стене, убиваем его
@@ -121,7 +121,7 @@ def_state_campering         = threat
 def_state_campering_fire    = threat_fire
 ;on_info                     = {=actor_dead} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
 on_info                     = {-cit_actor_near_grates} remark@base_guard_doctor_out %+cit_jail_doctor_out_start%
-combat_ignore_cond          = {=check_fighting(1200)}
+combat_ignore_cond          = {=cit_combat_ignore()} ;{=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- ждем, когда первый охранник откроет решетку и доктор выйдет
@@ -131,7 +131,7 @@ anim                = threat
 target              = actor
 snd                 = cit_base_guard
 on_info             = {+cit_jail_doctor_out_end} remark@talk_to_guard1_2 %+cit_jail_guard2_talk_to_guard1%
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- приказываем первому охраннику закрыть решетку
@@ -142,7 +142,7 @@ target              = actor
 snd                 = cit_base_guard
 on_signal           = sound_end | %+cit_jail_guard1_close_door -cit_jail_guard2_talk_to_guard1%
 on_info             = {-cit_jail_door_opened} follower@base_guard_leave
-combat_ignore_cond  = {=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_near_grates -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- уводим доктора
@@ -152,7 +152,7 @@ leader              = 1200 ; doctor
 anim_walk           = patrol
 anim_run            = assault
 on_info             = {+cit_jail_doctor_leave} walker@base_guard2
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- 
@@ -161,7 +161,7 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 path_walk           = base_guard_walk
 path_look           = base_guard_look
 heli_hunter         = {+cit_heli_start -cit_heli_end} true, false
-combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
 ;--- убиваем актера
@@ -169,4 +169,4 @@ combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(120
 [remark@base_guard_kill_actor2]
 anim                = threat
 ;on_info             = {=actor_dead +cit_jail_doctor_out_start} walker@base_guard_open_door
-combat_ignore_cond  = {=check_fighting(1200)}
+combat_ignore_cond  = {=cit_combat_ignore()} ;{=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}

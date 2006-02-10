@@ -22,8 +22,8 @@ combat_ignore       = true
 path_move     = cit_assault_heli_start_move
 path_look     = cit_assault_heli_start_look
 invulnerable  = true
-on_signal     = arrived | %+cit_button_broken%
-on_timer      = 45000 | heli_move@leave %+cit_button_broken%
+on_signal     = arrived | %+cit_button_break_start% ;%+cit_button_broken%
+on_timer      = 45000 | heli_move@leave %+cit_button_break_start% ;%+cit_button_broken%
 on_info       = {+cit_actor_is_free} heli_move@leave
 ;on_info2      = {=heli_health_le(5)} heli_move@die
 combat_ignore = true ;{-cit_button_broken}
