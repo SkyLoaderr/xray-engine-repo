@@ -241,7 +241,7 @@ public:
 	IC void		r_stringZ		( xr_string& dest )
 	{
 		dest		= LPCSTR(&B.data[r_pos]);
-		r_advance	(dest.size()+1);
+		r_advance	(u32(dest.size()+1));
 	}
 
 	void 		r_stringZ		(shared_str& dest)

@@ -5794,7 +5794,8 @@
 							Name="Debug|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								WarningLevel="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
