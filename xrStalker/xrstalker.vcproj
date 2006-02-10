@@ -693,6 +693,18 @@
 					Name="trade"
 					Filter="">
 					<File
+						RelativePath=".\Config\misc\trade_barman.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\trade_dolg.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\trade_ecolog.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\misc\trade_freedom.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\misc\trade_generic.ltx">
 					</File>
 					<File
