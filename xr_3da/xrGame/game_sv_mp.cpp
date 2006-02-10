@@ -15,10 +15,13 @@
 #include "Spectator.h"
 
 u32		g_dwMaxCorpses = 10;
+#define		VOTE_LENGTH_TIME		2
 
 game_sv_mp::game_sv_mp() :inherited()
 {
 	m_bVotingActive = false;
+	m_fVoteQuota = 0.6f;
+	m_dwVoteTime = VOTE_LENGTH_TIME;
 	//------------------------------------------------------
 //	g_pGamePersistent->Environment.SetWeather("mp_weather");
 	m_aRanks.clear();	
@@ -560,6 +563,7 @@ _votecommands	votecommands[] = {
 	{ "kick",			"sv_kick"	},
 	{ "ban",			"sv_banplayer"	},
 	{ "restart",		"g_restart"	},
+	{ "restart_fast",	"g_restart_fast"	},
 	{ "nextmap",		"sv_nextmap"},
 	{ "prevmap",		"sv_prevmap"},
 	{ "changemap",		"sv_changelevel"},
@@ -568,8 +572,6 @@ _votecommands	votecommands[] = {
 
 	{ NULL, 			NULL }
 };
-
-#define		VOTE_LENGTH_TIME		120000
 
 void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 {
@@ -602,7 +604,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	//-----------------------------------------------------------------------------
 	SetVotingActive(true);
 	u32 CurTime = Level().timeServer();
-	m_uVoteEndTime = CurTime+VOTE_LENGTH_TIME;
+	m_uVoteEndTime = CurTime+m_dwVoteTime*60000;
 	m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
 
 	xrClientData *pStartedPlayer = NULL;
@@ -627,7 +629,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	P.w_u32(GAME_EVENT_VOTE_START);
 	P.w_stringZ(VoteCommand);
 	P.w_stringZ(pStartedPlayer ? pStartedPlayer->ps->getName() : "");
-	P.w_u32(VOTE_LENGTH_TIME);
+	P.w_u32(m_dwVoteTime*60000);
 	u_EventSend(P);
 	//-----------------------------------------------------------------------------	
 };
@@ -657,7 +659,7 @@ void		game_sv_mp::UpdateVote				()
 	}
 	else
 	{
-		VoteSucceed = (float(NumAgreed)/float(NumToCount)) > 50.0f;		
+		VoteSucceed = (float(NumAgreed)/float(NumToCount)) > m_fVoteQuota;		
 	};
 
 	SetVotingActive(false);
@@ -1151,6 +1153,9 @@ void game_sv_mp::ConsoleCommands_Create	()
 	CMD_ADD(CCC_SV_Int,"sv_spectr_lookat"		,	(int*)&m_bSpectator_LookAt		, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_spectr_freelook"		,	(int*)&m_bSpectator_FreeLook	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_spectr_teamcamera"	,	(int*)&m_bSpectator_TeamCamera	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);	
+	//-------------------------------------	
+	CMD_ADD(CCC_SV_Float,"sv_vote_quota"		,	&m_fVoteQuota					, 0.0f,1.0f,g_bConsoleCommandsCreated_MP,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_vote_time"			,	(int*)&m_dwVoteTime				, 1, 10 ,g_bConsoleCommandsCreated_MP,Cmnd);	
 	//-------------------------------------
 	g_bConsoleCommandsCreated_MP = true;
 };
@@ -1164,4 +1169,6 @@ void game_sv_mp::ConsoleCommands_Clear	()
 	CMD_CLEAR("sv_spectr_lookat"	);
 	CMD_CLEAR("sv_spectr_freelook"	);
 	CMD_CLEAR("sv_spectr_teamcamera");	
+	//-----------------------------------
+	CMD_CLEAR("sv_vote_quota");	
 };

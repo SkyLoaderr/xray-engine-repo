@@ -41,6 +41,8 @@ protected:
 	//-------------------------------------------------------
 	bool			m_bVotingActive;
 	u32				m_uVoteEndTime;
+	float			m_fVoteQuota;
+	u32				m_dwVoteTime;
 	shared_str		m_pVoteCommand;
 
 	virtual		void				LoadRanks				();

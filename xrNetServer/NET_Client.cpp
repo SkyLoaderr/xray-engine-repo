@@ -58,7 +58,7 @@ NET_Packet*		INetQueue::Create	()
 			unused.pop_back();
 		}
 	};
-	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
+//	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
 	//---------------------------------------------------------------------
 	cs.Leave		();
 	return	P;
@@ -91,7 +91,7 @@ NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
 			unused.pop_back();
 		}
 	};
-	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
+//	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
 	//---------------------------------------------------------------------
 	CopyMemory	(P,&_other,sizeof(NET_Packet));
 	cs.Leave		();

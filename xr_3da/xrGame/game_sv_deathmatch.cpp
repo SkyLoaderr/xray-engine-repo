@@ -1428,6 +1428,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 		m_AnomalyIDSetsList.clear();
 	};
 	//-----------------------------------------------------------
+	if (!g_pGameLevel || !Level().pLevel) return;
 
 	char* ASetBaseName = GetAnomalySetBaseName();
 
@@ -1439,10 +1440,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 		AnomalySingleSet.clear();
 		AnomalyIDSingleSet.clear();
 
-
-		sprintf(SetName, "set%i", i);
-		Msg("g_pGameLevel -> %x", g_pGameLevel);
-		Msg("Level().pLevel -> %x", Level().pLevel);
+		sprintf(SetName, "set%i", i);		
 		if (!Level().pLevel->line_exist(ASetBaseName, SetName))
 			continue;
 
@@ -1917,7 +1915,7 @@ void	game_sv_Deathmatch::check_ForceRespawn		()
 		game_PlayerState* ps	= l_pC->ps;
 		if (!l_pC->net_Ready || ps->Skip) continue;
 		if (!ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
-		if (!ps->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
+		if (ps->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
 		u32 CurTime = Device.dwTimeGlobal;
 		if (ps->DeathTime + m_u32ForceRespawn < CurTime)
 		{
