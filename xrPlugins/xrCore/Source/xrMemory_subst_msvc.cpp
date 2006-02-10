@@ -34,7 +34,7 @@ void*	xrMemory::mem_alloc		(size_t size
 	// if (mem_initialized)		Memory.dbg_check			();
 	stat_calls++;
 
-#ifdef DEBUG
+#if 0//def DEBUG
 	if (_name && (0==strcmp(_name,"C++ NEW")) && (12==size))
 	{
 		debug_cs.Enter		();
