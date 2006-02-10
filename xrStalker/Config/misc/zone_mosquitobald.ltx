@@ -76,7 +76,7 @@ visible_by_detector = on
 artefacts		= af_medusa,0.7, af_cristall_flower, 0.25,af_night_star, 0.05
 
 ;;во время срабатывания в online
-spawn_blowout_artefacts = off
+spawn_blowout_artefacts = on
 
 artefact_spawn_probability = 0.09				;вероятность, что во время срабатывания аномалии будет рожден артефакт
 artefact_spawn_particles = anomaly2\pux_blast	;партиклы, которые отыграются на месте рождения артефакта (опционально)
@@ -106,6 +106,8 @@ effective_radius	= 0.65
 actor_blowout_radius_percent= 0.6
 
 artefacts		= af_medusa,0.8, af_cristall_flower, 0.2,af_night_star, 0.0
+BirthProbability	= 0.1
+spawn_blowout_artefacts = on
 
 ;----------- Anomaly settings -----------------------
 min_start_power		= 0.25
@@ -126,8 +128,7 @@ blowout_wind_power			= 0.2
 ; Не производящая артефактов слабая аномалия
 [zone_mosquito_bald_weak_noart]:zone_mosquito_bald_weak
 $spawn 			= "zones\mosquito bald_weak_noart"
-artefacts		=
-BirthProbability			= 0.0
+spawn_blowout_artefacts = off
 min_artefact_count	= 0
 max_artefact_count	= 0
 
@@ -142,6 +143,8 @@ effective_radius	= 0.75
 actor_blowout_radius_percent= 0.8
 
 artefacts		= af_medusa,0.6, af_cristall_flower, 0.4,af_night_star, 0.0
+BirthProbability	= 0.1
+spawn_blowout_artefacts = on
 
 ;----------- Anomaly settings -----------------------
 min_start_power		= 0.80
@@ -171,6 +174,8 @@ effective_radius	= 0.8
 actor_blowout_radius_percent= 0.85
 
 artefacts		= af_medusa,0.2, af_cristall_flower, 0.6,af_night_star, 0.2
+BirthProbability	= 0.1
+spawn_blowout_artefacts = on
 
 ;----------- Anomaly settings -----------------------
 min_start_power		= 1.60
@@ -211,8 +216,12 @@ sound			= zone_mosquito_bald
 
 postprocess		= mosquito_bald
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;рождение артефактов 
+artefacts		= 
 BirthProbability	= 0.0
+spawn_blowout_artefacts = off
+
 hit_type			= strike
 
 ;----------- Anomaly settings -----------------------
@@ -220,8 +229,8 @@ min_start_power		= 1.60
 max_start_power		= 1.70
 attenuation			= 1
 period				= 1
-min_artefact_count	= 1
-max_artefact_count	= 2
+min_artefact_count	= 0
+max_artefact_count	= 0
 
 idle_particles		= anomaly2\bold_idle_sarkofag
 blowout_particles	= anomaly2\bold_sarkofag_blast
@@ -267,13 +276,7 @@ idle_light			= off
 
 visible_by_detector = on
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;рождение артефактов 
 
-artefacts		= 
-
-;;во время срабатывания в online
-spawn_blowout_artefacts = off
 
 artefact_spawn_probability = 0.00				;вероятность, что во время срабатывания аномалии будет рожден артефакт
 artefact_spawn_particles = anomaly2\pux_blast	;партиклы, которые отыграются на месте рождения артефакта (опционально)
