@@ -28,7 +28,7 @@ end
 
 function process_info_portion(info_id)
 	if info_id == "bar_deactivate_radar_start" then
-		level_tasks.add_location(1000, "rad_antenna_location")
+		level_tasks.add_location(1000, "crlc_big", "rad_antenna_location")
 	elseif info_id == "bar_deactivate_radar_done" then
 		level_tasks.remove_location(1000, "rad_antenna_location")
 
