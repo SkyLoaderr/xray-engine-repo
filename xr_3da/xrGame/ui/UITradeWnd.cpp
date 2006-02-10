@@ -225,7 +225,7 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	EnableAll();
 
 	ClearDragDrop(m_vDragDropItems);
-	UpdateLists();
+	UpdateLists(eBoth);
 }  
 
 //------------------------------------------------
@@ -301,6 +301,19 @@ extern void UpdateCameraDirection(CGameObject* pTo);
 
 void CUITradeWnd::Update()
 {
+	EListType et = eNone;
+	if(m_pInv->ModifyFrame()==Device.dwFrame && m_pOthersInv->ModifyFrame()==Device.dwFrame){
+		et = eBoth;
+	}else
+	if(m_pInv->ModifyFrame()==Device.dwFrame){
+		et = e1st;
+	}else
+	if(m_pOthersInv->ModifyFrame()==Device.dwFrame){
+		et = e2nd;
+	}
+	if(et!=eNone)
+		UpdateLists(et);
+
 	//убрать объект drag&drop для уже использованной вещи
 	for(u32 i = 0; i <m_vDragDropItems.size(); ++i) 
 	{
@@ -534,12 +547,9 @@ void CUITradeWnd::PerformTrade()
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		SellItems(&m_uidata->UIOurTradeList, &m_uidata->UIOthersBagList, m_pTrade);
 		SellItems(&m_uidata->UIOthersTradeList, &m_uidata->UIOurBagList, m_pOthersTrade);
-		UpdateLists();
 	}
 	SetCurrentItem(NULL);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::DisableAll()
 {
@@ -563,7 +573,7 @@ void CUITradeWnd::EnableAll()
 
 void CUITradeWnd::UpdatePrices()
 {
-	m_iOurTradePrice = CalcItemsPrice(&m_uidata->UIOurTradeList,		 m_pTrade);
+	m_iOurTradePrice	= CalcItemsPrice(&m_uidata->UIOurTradeList,		 m_pTrade);
 	m_iOthersTradePrice = CalcItemsPrice(&m_uidata->UIOthersTradeList, m_pOthersTrade);
 
 
@@ -575,14 +585,10 @@ void CUITradeWnd::UpdatePrices()
 
 	sprintf(buf, "%d RU", m_pInvOwner->m_dwMoney);
 	m_uidata->UIOurMoneyStatic.SetText(buf);
-//.	m_uidata->UIOurBagWnd.SetText(buf);
 
 	sprintf(buf, "%d RU", m_pOthersInvOwner->m_dwMoney);
 	m_uidata->UIOtherMoneyStatic.SetText(buf);
-//.	m_uidata->UIOthersBagWnd.SetText(buf);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 							CUIDragDropList* pBuyList,
@@ -598,45 +604,45 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 		pDragDropItem->SetColor(0xffffffff);//un-colorize
 		pTrade->SellItem((PIItem)pDragDropItem->GetData());
 			
-		//заносим в список того, кто покупает товар
-		//если это простой сталкер, то 
-		//вещь обязана появиться у него,
-		//а с  торговцем надо решать.
 		if(pDragDropItem->GetParent())
 			pDragDropItem->GetParent()->DetachChild(pDragDropItem);
+
 		pBuyList->AttachChild(pDragDropItem);
 	}
 	pSellList->DropAll();
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUITradeWnd::UpdateLists()
+void CUITradeWnd::UpdateLists(EListType mode)
 {
-	//очистить после предыдущего запуска
-	m_uidata->UIOurBagList.DropAll();
-	m_uidata->UIOthersBagList.DropAll();
-	m_uidata->UIOurTradeList.DropAll();
-	m_uidata->UIOthersTradeList.DropAll();
+	if(mode==eBoth||mode==e1st){
+		m_uidata->UIOurBagList.DropAll();
+		m_uidata->UIOurTradeList.DropAll();
+	}
+
+	if(mode==eBoth||mode==e2nd){
+		m_uidata->UIOthersBagList.DropAll();
+		m_uidata->UIOthersTradeList.DropAll();
+	}
 
 	//обновить надписи
 	UpdatePrices();
 
 	ClearDragDrop(m_vDragDropItems);
 
-	ruck_list.clear				();
-   	m_pInv->AddAvailableItems	(ruck_list, true);
-	std::sort					(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
-	//Наш рюкзак
-	FillList(ruck_list, m_uidata->UIOurBagList, true);
+	if(mode==eBoth||mode==e1st){
+		ruck_list.clear				();
+   		m_pInv->AddAvailableItems	(ruck_list, true);
+		std::sort					(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
+		FillList(ruck_list, m_uidata->UIOurBagList, true);
+	}
 
-	ruck_list.clear					();
-	m_pOthersInv->AddAvailableItems	(ruck_list, true);
-	std::sort						(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
-
-	//Чужой рюкзак
-	FillList(ruck_list, m_uidata->UIOthersBagList, false);
+	if(mode==eBoth||mode==e2nd){
+		ruck_list.clear					();
+		m_pOthersInv->AddAvailableItems	(ruck_list, true);
+		std::sort						(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
+		FillList(ruck_list, m_uidata->UIOthersBagList, false);
+	}
 }
 
 void CUITradeWnd::FillList	(TIItemContainer& cont, CUIDragDropList& dragDropList, bool do_colorize)

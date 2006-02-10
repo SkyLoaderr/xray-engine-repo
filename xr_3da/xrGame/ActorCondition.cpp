@@ -92,6 +92,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 
 	m_fK_SleepHealth		= pSettings->r_float(section,"sleep_health");
 	m_fK_SleepPower			= pSettings->r_float(section,"sleep_power");
+	m_fK_SleepMaxPower		= pSettings->r_float(section,"sleep_max_power");
 	m_fK_SleepSatiety		= pSettings->r_float(section,"sleep_satiety");	
 	m_fK_SleepRadiation		= pSettings->r_float(section,"sleep_radiation");
 	m_fK_SleepPsyHealth		= pSettings->r_float(section,"sleep_psy_health");
@@ -139,7 +140,11 @@ void CActorCondition::UpdateCondition()
 	float delta_time = float(m_iDeltaTime)/1000.f;
 	if( !IsSleeping() && GameID()==GAME_SINGLE ){
 		// update power_leak
-		SetMaxPower		(GetMaxPower()-m_fPowerLeakSpeed*delta_time);
+		float k_max_power = (object().inventory().TotalWeight()/40.0f);
+		if(k_max_power<1.0)
+			k_max_power = 1.0f;
+
+		SetMaxPower		(GetMaxPower()-m_fPowerLeakSpeed*delta_time*k_max_power);
 	}
 
 	m_fAlcohol		+= m_fV_Alcohol*delta_time;
@@ -388,7 +393,7 @@ void CActorCondition::ProcessSleep(ALife::_TIME_ID sleep_time)
 		m_fRadiation			+=  m_fDeltaRadiation;
 		m_fPsyHealth			+= m_fDeltaPsyHealth;
 
-		SetMaxPower				(m_fPowerMax+m_fDeltaPower);
+		SetMaxPower				(m_fPowerMax+m_fK_SleepMaxPower*float(m_iDeltaTime)/1000.0f );
 
 		m_fDeltaHealth			= 0;
 		m_fDeltaPower			= 0;

@@ -68,7 +68,9 @@ protected:
 	//произвести торговлю
 	void PerformTrade();
 	void UpdatePrices();
-	void UpdateLists();
+
+	enum EListType{eNone,e1st,e2nd,eBoth};
+	void UpdateLists			(EListType);
 
 	void FillList	(TIItemContainer& cont, CUIDragDropList& list, bool do_colorize);
 	bool			m_bDealControlsVisible;

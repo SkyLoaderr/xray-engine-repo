@@ -100,6 +100,7 @@ protected:
 	float m_fK_SleepSatiety;
 	float m_fK_SleepRadiation;
 	float m_fK_SleepPsyHealth;
+	float m_fK_SleepMaxPower;
 
 	mutable bool m_bLimping;
 	mutable bool m_bCantWalk;
