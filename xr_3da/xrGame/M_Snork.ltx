@@ -200,7 +200,7 @@ min_wound_size				= 0.01
 
 
 ;Health from which to play injured animation
-DamagedThreshold		= 0.1
+DamagedThreshold		= 0.9
 
 ;Sleep Settings
 sleep_health			= 1.0		;1.5				;úþ¤¯¯ø¡øõýªv ¸úþ¨þ¸ªõù ø÷üõýõýø  ÿð¨ðüõª¨þò òþ ò¨õü  ¸ýð
@@ -262,7 +262,7 @@ LegsCount				= 2
 jump_delay					= 3000
 jump_factor					= 1.5
 jump_ground_trace_range		= 1.5
-jump_hit_trace_range		= 3.0
+jump_hit_trace_range		= 2.0
 jump_build_line_distance	= 6.0
 jump_min_distance			= 3.5
 jump_max_distance			= 10.0
@@ -417,13 +417,14 @@ $spawn			= "monsters\snorks\snork_indoor"
 monster_type	= indoor
 
 jump_min_distance			= 2.5
+jump_max_angle				= 0.4
 
 ; speed factors			linear | angular_real | angular_path | min	 |  max
-Velocity_Stand			= 0,		3.5,			3.5,		1,		1	
-Velocity_RunFwdNormal	= 5.0,		3.0,			3.0,		0.4,	1	
-Velocity_RunFwdDamaged	= 2.5,		3.0,			3.0,		0.2,	1
-Velocity_WalkFwdDamaged	= 1.3,		3.0,			3.0,		0.2,	2.0	
-Velocity_WalkFwdNormal	= 2.75,		3.5,			3.5,		0.02,	2.0	
+;Velocity_Stand			= 0,		3.5,			3.5,		1,		1	
+;Velocity_RunFwdNormal	= 5.0,		3.0,			3.0,		0.4,	1	
+;Velocity_RunFwdDamaged	= 2.5,		3.0,			3.0,		0.2,	1
+;Velocity_WalkFwdDamaged	= 1.3,		3.0,			3.0,		0.2,	2.0	
+;Velocity_WalkFwdNormal	= 2.75,		3.5,			3.5,		0.02,	2.0	
 
 [snork_outdoor]:snork_weak
 $spawn			= "monsters\snorks\snork_outdoor"
