@@ -1,91 +1,97 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
     <string id="Army">
-        <text>Армия</text>
+        <text>Army</text>
     </string>
     <string id="Bandits">
-        <text>Бандитская группа «Черные слизни»</text>
+        <text>Bandits </text>
     </string>
     <string id="Barman">
-        <text>Бармен</text>
+        <text>Bartender</text>
     </string>
     <string id="Clear-sky">
-        <text>Группа сталкеров «Чистое небо»</text>
+        <text>Stalkers grouping "Clear sky"</text>
     </string>
     <string id="Duty">
-        <text>Группировка "Долг"</text>
+        <text>"Duty" grouping</text>
     </string>
     <string id="Freedom">
-        <text>Группировка «Свобода»</text>
+        <text>"Freedom" grouping</text>
     </string>
     <string id="Gunslinger">
-        <text>Стрелок</text>
+        <text>Gunslinger</text>
     </string>
     <string id="Gunslinger-clan">
-        <text>Группировка Стрелка</text>
+        <text>Gunslinger's grouping</text>
+    </string>
+    <string id="Killers">
+        <text>Mercenaries</text>
     </string>
     <string id="Military">
-        <text>Военизированные части</text>
+        <text>Paramilitary units</text>
     </string>
     <string id="Milstalkers">
-        <text>Военные сталкеры</text>
+        <text>Military stalkers</text>
     </string>
     <string id="Mobile-labs">
-        <text>Передвижные лаборатории</text>
+        <text>Mobile laboratories</text>
     </string>
     <string id="Monolith">
-        <text>Группировка «Монолит»</text>
+        <text>"Monolith" grouping</text>
     </string>
     <string id="Phantom">
-        <text>Призрачный сталкер</text>
+        <text>Ghostly stalker</text>
     </string>
     <string id="Res-groups">
-        <text>Иследовательские группы</text>
+        <text>Reseach groups</text>
     </string>
     <string id="Scientists">
-        <text>Ученые</text>
+        <text>Scientists</text>
     </string>
     <string id="Sin">
-        <text>Темные сталкеры "Грех"</text>
+        <text>Dark stalkers "Sin"</text>
     </string>
     <string id="Social">
-        <text>Общества</text>
+        <text>Societies</text>
     </string>
     <string id="Stalker-clans">
-        <text>Кланы сталкеров</text>
+        <text>Stalkers clans</text>
     </string>
     <string id="Stalkers">
-        <text>Сталкеры</text>
+        <text>Stalkers</text>
     </string>
     <string id="Trader">
-        <text>Торговец на Escape</text>
+        <text>Trader Sydorovich</text>
     </string>
     <string id="Traders">
-        <text>Торговцы</text>
+        <text>Traders</text>
     </string>
     <string id="enc_social_military_army">
-        <text>Солдаты регулярных армейских частей, охраняют подходы к закрытой территории Зоны. Патрулируют периметр, расстреливая мутантов и отлавливая мародеров и браконьеров. Армейский спецназ - элитные армейские подразделения. Высаживаются в Зоне для проведения спасательных и спецопераций.</text>
+        <text>Solders of the regular military units guard passages to the closed Zone areas. They patrol perimeter shooting down \nmutants and catching marodeurs and poachers. S.W.A.T. is an elite army unit, land in Zone to lead special and rescue \noperations.</text>
     </string>
     <string id="enc_social_military_milstalkers">
-        <text>Ветераны солдаты, прошедшие специальную подготовку, обвешаны кучей аппаратуры. Хорошо вооружены. Встречаются редко. Армия заинтересована в изучении последствий и причин катастрофы, картографировании Зоны и ее аномалий. Для этих целей они используют военных сталкеров, которых набирают среди сталкеров и солдатской элиты. Военные сталкеры могут ходить как по одиночке, так и группами до пяти сталкеров. Встречают простых сталкеров огнем. Военных сталкеров посылают на несколько, интересующих военных, объектов (место большой катастрофы, потерянный НИИ и т.д.). Так, например военные сталкеры на территории НИИ «Агропром» изучают остаточную радиацию и местные аномалии.</text>
+        <text>Soldiers veterans have special training and a lot of equipment. They are well armed. Can be seen rarely. The army is \ninterested in studying results and reasons of the meltdown drawing maps of the Zone anomaly areas. For these \npurposes they use military stalkers hired from soldier's elite. Military stalkers walk alone or in groups up to five persons. \nThey meet common stalkers with gunfire. Military stalkers usually are sent to interested objects such as the place of \ngreat disaster or lost SRI. For example military stalkers on the territory of the SRI "Agroprom" study residual radiation \nand local anomalies.   </text>
     </string>
     <string id="enc_social_scientists_mobile-labs">
-        <text>Mobile-labs</text>
+        <text>Mobile-lab looks like small metal bunker with tiny toned windows. In the front part is sluice compartment. The laboratory is \ntotal waterproof and is able to stand any demages as well chemical as phusical. It is transported into the Zone by cargo \nhelicopter. The lab is equipped with all necessary stuff to maintain life within several months. There's  call button with \nintegrated videocam on the outside of the sluice door. Friendly stalkers are let into the sluice compartment where trade \nand negotiations happen.Admission into the laboratry itself is prohibited. </text>
     </string>
     <string id="enc_social_scientists_res-groups">
         <text>Res-groups</text>
     </string>
     <string id="enc_social_stalker-clans_bandits">
-        <text>Бандитские группы действуют только по скриптам. За PDA бандита по особым расценкам платит торговец. Одежда бандитов изношена (практически рванье - другая текстура). Атакуют только новичков или усталых израненных сталкеров одиночек, сталкеров группировок избегают (боятся). Бандитские группы можно встретить в «предбаннике» Зоны, углубляться они боятся.</text>
+        <text>The representatives of the criminal world came into the zone for easy money. They haven't grounded  yet but disturb \nstalkers already. Criminals are grouped in small gangs with no comprehention among them. Mostly bandits are in the Zone \noutskirt area, apprehending to go to the center.</text>
     </string>
     <string id="enc_social_stalker-clans_duty">
-        <text>1. Группировка a. Милитаристская (полувоенная) b. Четкий устав i. Надо написать! 2. Главная цель: a. Наш долг - защитить и избавить мир от нашествия мутантов и аномальной заразы. 3. Приоритетные задания и цели: a. Выжигание скоплений мутантов b. Уничтожение зомби, зомбированных сталкеров и человекоподобных мутантов c. Проникновение к генераторам d. Охота за научными документами 4. Правила: a. Мы не убиваем просто так. b. Не стой на пути. 5. Характер группировки: a. Законопослушный Нейтральный (Lawful Neutral) 6. Отношение к характерам: a. Хорошее: i. Lawful Neutral ii. Lawful Good iii. Neutral Good b. Нейтральное: i. True Neutral ii. Lawful Evil iii. Chaotic Good iv. Chaotic Neutral c. Плохое: i. Neutral Evil ii. Chaotic Evil 7. Состояние войны с: a. Анархистской группировкой «Свобода»</text>
+        <text>"Duty" is a military grouping notable for its strict discipline and popular principles. They virtualy live according army \nregulations. "Duty" is the only who doesn't deliver artifacts in the common world, exept national defence industry. They \nconsider their mission to protect the word from Zone influence. The members of the "Duty" think they are chernobyl \nsweepers and monster destroyers. That's why they hunt dark stalkers and other scums destroying mutant's nests and \nhives. They've been in enmity with "Freedom" grouping for a long time. </text>
     </string>
     <string id="enc_social_stalker-clans_freedom">
-        <text>Анархисты, борцы за свободу от любого контроля. Сражаются против армии и правительства, их цель – это Зона, свободный заповедник. Считают, что информацию о происходящем в Зоне должны знать все. И если правда то, что в центре есть «исполнитель желаний», то Зону надо открыть для свободных исследователей. Конфликт с группой «Долг». Атакуют армейские блокпосты, уничтожают экспедиции военных сталкеров. Анархисты где-то раздобыли несколько прототипов пси-защиты, которые обеспечивают защиту от ПСИ-Установок. *** Анархисты обращаются друг к другу - «свободный» сталкер, «свободные» сталкеры</text>
+        <text>They are anarchists, madcaps and freedom-lovers consider themselves freedom fighters. They fight against army and \ngovernment, their purpose-make the Zone like freedom reserve. The members of this grouping consider information \nabout Zone events to become public property. They contest military monopoly as for possessing Chernobyl secrets. And \nwhen it is truth Monolith can make wishes come true, they should open the Zone for free researchers. They fight against \n"Duty" attacks army posts, destroy military stalker expeditions. Anarchists adress each other like "free stalke"'.  </text>
+    </string>
+    <string id="enc_social_stalker-clans_killers">
+        <text>Misterious grouping considered to be a legend. They can help to get "read of a problem" if you pay them. According \nrumours their shelter is right in the Zone center.</text>
     </string>
     <string id="enc_social_stalker-clans_monolith">
-        <text>Группа сталкеров верит, что в центре Зоны лежит неземной эволюционный модуль, кристалл «Монолит». До полного зомбирования был конфликт с группировками «Долг» и «Свобода». Группа препятствует продвижению сталкеров к центру Зоны, мотивируя это, возможностью повредить, а то и разрушить Монолит. «Мы никого не пропустим, любое ваше вмешательство может повлечь окончательную гибель Монолита. Мы откроем огонь по любому, кто подойдет ближе чем 30 метров.» Вот что говорит один сталкер ветеран в баре «Сталкер»: «Верящие в Монолит психи, они кричат о нем, но никто не знает, что находится в центре Зоны. Невидимый кристалл упавший с небес… Ха, ха. Я думаю, это рванула одна из секретных лабораторий. Кто-то даже говорил, что когда-то работал там. Но, конечно, бомбить Зону нельзя, мало того, что радиацию разнесет по всему миру, так еще реакция Зоны может разворотить пол Европы.» Часть группы «Монолит» подверглась зомбированию во время исследования озера «Янтарь». *** У группировки есть секретная база, куда игрок никак не сможет попасть.</text>
+        <text>The group of stalkers by organisation remins religious sect. Its representatives believe in the Zone center situated \nunearthly evolutionary module crystall Monolith. The most stalkers hate Monolith followers consider them to be insane. \nFrom the times of its formation they have been constantly hinder stalkers from moving into the Zone center, condsider \nMonolith could be destroyed. "We woun't let anybody, any kind of your interference can lead to final Monolith death. We \nshoot down anyone who approaches less then 30 meters."\nHere is the speech of the veteran stalker in the "Stalker" bar:" They are crazy, who believe in Monolith, they cry out \nabout it but noone knows what is in the Zone center. Unvisable crystal fallen from heaven! Ha...Ha.... I think one of the \nsecret laboratory exploded. Someone even told he worked there. Of course you can't bomb the Zone, the radiation can \nbe spreaded all over the world, so the reaction can destroy half of Europe"\nIt is rumoured Monolith members havebig base somewhere near the Zone center, but noione knows its presize location, \nexept grouping members.  </text>
     </string>
     <string id="enc_social_stalker-clans_sin">
         <text>Группа темных сталкеров - «Грех», это зомбированая группа сталкеров. Когда-то члены этой группировки были религиозными фанатиками, которые верили в божественную сущность Зоны, в последнее искупление человечества. Конфликт со всеми группами. Атакуют любых сталкеров. Темные сталкеры одеты в темные плащи с сильно надвинутыми капюшонами, так что не видно лица. Если задрать капюшон, то откроется лысая голова с кровавыми дырами, вырванных глаз.</text>
@@ -97,12 +103,12 @@
         <text>Gunslinger</text>
     </string>
     <string id="enc_social_stalkers_phantom">
-        <text>2222</text>
+        <text>I went with Gunslinger and Hampback towards the Zone center. It is known Gunslinger was lost and Ghoust turned back. \nHe went to mobile scientist's camp on Jantar. Weird guy, tall big-nosed taciturn person. He was good shooter and could \nsteal through everything. Thay say he killed "Last day"gang leader.\n</text>
     </string>
     <string id="enc_social_traders_barman">
-        <text>Barman</text>
+        <text>He isn't saint and isn't scum, that's why respected by stalkers. They say he hides in the Zone away from his dark past. \nAfter getting into the anomaly became lamp, and decided to change his profile. He managed a bar not far from the \n"Duty" which became the famous place for the veterans. Bartender has many contacts as well in the Zon as outside it.</text>
     </string>
     <string id="enc_social_traders_trader">
-        <text>Trader</text>
+        <text>He used to trade for many years. He sold colour pencils in the kinder garden. He sold chewing gum in the school. He sold \nlight drugs in the institute. As the Zone appeared he realized he could earn good money. He is remarkable for his ability \nto put right good trade relations with all kind of clients.</text>
     </string>
 </string_table>

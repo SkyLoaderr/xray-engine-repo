@@ -4,7 +4,7 @@
         <text>Show active jobs in PDA</text>
     </string>
     <string id="kb_always_run">
-        <text>Always run (On/Off)</text>
+        <text>Change always run</text>
     </string>
     <string id="kb_backward">
         <text>Backward</text>
@@ -31,7 +31,7 @@
         <text>Crouch</text>
     </string>
     <string id="kb_crouch_toggle">
-        <text>Toggle crouch on/off</text>
+        <text>Crouch toggle</text>
     </string>
     <string id="kb_down">
         <text>Down</text>
@@ -46,7 +46,7 @@
         <text>Forward</text>
     </string>
     <string id="kb_func">
-        <text>Switch fire mode</text>
+        <text>Func (rename me)</text>
     </string>
     <string id="kb_grp_common">
         <text>Common</text>
@@ -136,7 +136,7 @@
         <text>Torch</text>
     </string>
     <string id="kb_turn_engine">
-        <text>Turn vehicle engine</text>
+        <text>Turn engine</text>
     </string>
     <string id="kb_up">
         <text>Up</text>
@@ -178,18 +178,18 @@
         <text>Weapon 9</text>
     </string>
     <string id="kb_wpn_next">
-        <text>Change ammo type</text>
+        <text>Next weapon of this type</text>
     </string>
     <string id="kb_wpn_prev">
         <text>Previous weapon of this type</text>
     </string>
     <string id="kb_zoom">
-        <text>Aim</text>
+        <text>Zoom</text>
     </string>
     <string id="speech_menu_group">
-        <text>Speech menu (1)</text>
+        <text>Speech menu (Group)</text>
     </string>
     <string id="speech_menu_personal">
-        <text>Speech menu (2)</text>
+        <text>Speech menu (Personal)</text>
     </string>
 </string_table>

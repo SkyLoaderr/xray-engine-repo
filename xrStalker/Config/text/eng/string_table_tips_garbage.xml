@@ -1,12 +1,3 @@
-    <string id="gar_actor_looser">
-        <text>What kind of dweeb are, Branded One, you are of no use. So, you will receive no gratitude from me. You have nothing to be grateful for.</text>
-    </string>
-    <string id="gar_actor_normal">
-        <text>Not bad, stalker, you have knocked down the mutants. But you didn't distinguish yourself with the excel agility. So if you want to pass - you'll have to pay.</text>
-    </string>
-    <string id="gar_actor_winner">
-        <text>Perfect, Branded One, you have really helped us. Let's suppose, that you have paid off your pass. You can go to the bar.</text>
-    </string>
     <string id="gar_direction_fire">
         <text>Let's allow them to approach closer, so that no one escapes. I'll fire first, then you do.</text>
     </string>

@@ -1,51 +1,51 @@
     <string id="mil_cap_hint">
-        <text>Поговорить с командиром блокпоста "Барьер"</text>
+        <text>Talk to "Barrier" armypost commander</text>
     </string>
     <string id="mil_courier_hint1">
-        <text>Проследить за стукачом</text>
+        <text>Spy upon squealer.</text>
     </string>
     <string id="mil_courier_hint2">
-        <text>Дождаться вызова стукачом информатора</text>
+        <text>Wait until informer is called by squealer</text>
     </string>
     <string id="mil_courier_hint3">
-        <text>Убить стукача</text>
+        <text>Kill the squealer</text>
     </string>
     <string id="mil_courier_hint4">
-        <text>Убить информатора</text>
+        <text>Kill the informer</text>
     </string>
     <string id="mil_crazy_hint">
-        <text>Взять флешку у сумасшедшего сталкера</text>
+        <text>Take the flash-drive from mad stalker</text>
     </string>
     <string id="mil_freedom_sniper">
-        <text>Убить снайпера</text>
+        <text>Kill sniper</text>
     </string>
     <string id="mil_hunters_hint1">
-        <text>Поговорить с Угрюмым</text>
+        <text>Talk to Morose</text>
     </string>
     <string id="mil_hunters_hint2">
-        <text>Вернуться к Скряге</text>
+        <text>Get back to Skinflint</text>
     </string>
     <string id="mil_kill_dolg_hint">
-        <text>Уничтожить отряд Долга</text>
+        <text>Eliminate Duty's squadron</text>
     </string>
     <string id="mil_kill_lukash_hint">
-        <text>Убить Лукаша</text>
+        <text>Kill Lucash</text>
     </string>
     <string id="mil_report_to_max_hint">
-        <text>Доложить Максу</text>
+        <text>Report to Max</text>
     </string>
     <string id="mil_return_to_lukash_hint">
-        <text>Доложить Лукашу</text>
+        <text>Report to Lucash</text>
     </string>
     <string id="mil_return_to_max_hint">
-        <text>Отдать флешку Максу</text>
+        <text>Give a flash-drive back to Max</text>
     </string>
     <string id="mil_rg6_hint1">
-        <text>Найти повара на базе "Свободы"</text>
+        <text>Find a cook at "Freedom" base</text>
     </string>
     <string id="mil_rg6_hint2">
-        <text>Поговорить с поваром</text>
+        <text>Talk to cook</text>
     </string>
     <string id="mil_rg6_hint3">
-        <text>Забрать РГ6 из схрона в деревне</text>
+        <text>Take away RG6 from storage at the village</text>
     </string>

@@ -51,6 +51,15 @@
     <string id="val_escort_captive_dialog_11113">
         <text>Understood. See you.</text>
     </string>
+    <string id="val_escort_captive_dialog_112">
+        <text>I'll try to help your comrade. Tell me where he is kept?</text>
+    </string>
+    <string id="val_escort_captive_dialog_1121">
+        <text>Sergiy and me were held in the basement of big unfinished building.</text>
+    </string>
+    <string id="val_escort_captive_dialog_11211">
+        <text>Okay, I'll do my best to help.</text>
+    </string>
     <string id="val_escort_captive_dialog_21">
         <text>Thanks for the help.</text>
     </string>
@@ -95,6 +104,12 @@
     </string>
     <string id="val_escort_captive_dialog_52">
         <text>Don't mention it. Make sure bandits never get you again.</text>
+    </string>
+    <string id="val_escort_captive_dialog_61">
+        <text>You didn't help me - we have nothing to talk about. Bye.</text>
+    </string>
+    <string id="val_escort_captive_dialog_611">
+        <text>See you.</text>
     </string>
     <string id="val_escort_nap1_dialog_11">
         <text>Stalker, help us freeing a friend. "Duty" sent our scout group of three here, but we faced a bandit ambush on the way back. I found out that one of my teammates \nwill now be escorted to the Monolith base, but, I'm afraid I won't be able to cope with them alone. Help me out, I will repay duly.\n</text>
@@ -245,6 +260,12 @@
     </string>
     <string id="val_escort_nap1_dialog_514">
         <text>Nothing. Just testing the communication.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_61">
+        <text>You didn't help me whatsoever. We have nothing to talk about.</text>
+    </string>
+    <string id="val_escort_nap1_dialog_611">
+        <text>Bye.</text>
     </string>
     <string id="val_monolith_guard_password_0">
         <text>Freeze! Say password.</text>

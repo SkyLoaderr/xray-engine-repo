@@ -16,7 +16,7 @@
         <text>Diary</text>
     </string>
     <string id="pda_btn_encyclopedia">
-        <text>Encyclopedia</text>
+        <text>Encyclopaedia</text>
     </string>
     <string id="pda_btn_failed">
         <text>Failed</text>
@@ -42,20 +42,7 @@
     <string id="pda_btn_ranking">
         <text>Ranking</text>
     </string>
-    <string id="pda_btn_reputation">
-        <text>Reputation</text>
-    </string>
     <string id="pda_btn_statistics">
         <text>Statistics</text>
     </string>
-    
-	<string id="st_weight">
-		<text>weight</text>
-	</string>
-	<string id="st_basecost">
-		<text>cost</text>
-	</string>
-	<string id="st_condition">
-		<text>condition</text>
-	</string>    
 </string_table>

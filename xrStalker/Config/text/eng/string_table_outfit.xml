@@ -13,81 +13,81 @@
         <text>PS3-9d suit</text>
     </string>
     <string id="dolg_scientific_outfit_description">
-        <text>Manufactured by one of the defense Kiev Research Institute on the order of "Duty" faction. It's composed of: suit PS3-9d, respitation system with closed \ncycle, embedded system of suppressing anomaly fields effect. Provides a good defense from bullet and splinter hits. The level of protection from anomalous \nactivity is average. Level of radiation defense is high.</text>
+        <text>Manufactured by one of the defense Kiev Research Institute on the order of "Duty" faction. It's composed of: suit PS3-9d, \nrespitation system with closed \ncycle, embedded system of suppressing anomaly fields effect. Provides a good defense from bullet and splinter hits. The \nlevel of protection from anomalous \nactivity is average. Level of radiation defense is high.</text>
     </string>
     <string id="dolg_scientific_outfit_name">
         <text>Suit PS3-9Md</text>
     </string>
     <string id="ecolog_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Manufactured for the work within the conditions of Zone, the suit of chemical protection SSP-99. Used by the expeditions of scientists and collaborating with \nthem stalkers-ecologists. Has implemented filtration and conditioning system. termperature-resistant. Badly conducts electricity. Very good protection from \nradiation and biological anomaloes. Resistant to chemically active environments. Is not suited for warfare, thus lacks defense against bullet or splinter damage.</text>
     </string>
     <string id="ecolog_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Suit SSP-99</text>
     </string>
     <string id="exo_outfit_description">
-        <text>This string was added automatically</text>
+        <text>It's an experimental model of military exoskeleton. It wasn't in repetition work due to extreme high price and some \nmistakes in designing. In spite of this it had been produced in limited lots by underground organization outside of Ukraine. \nThis kind of exoskeleton considered to belong to the third generation. All constructional defects, which greately \ndecreased agility, had been eliminated. The armour also had been reinforced. Provides a good protection of bullet and \nsplinter hits. The anomaly activity resistance level estimated as low.</text>
     </string>
     <string id="exo_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Exoskeleton</text>
     </string>
     <string id="killer_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Staker's coverall. "Mercenaries" formation. The samples of S.W.A.T. equipment had been taken as the basis. Due to \nspecial cloth processing, heat-proof and anti-rad properties had been reinforced. Surpasses army flak jacket PZS-7 series \na little bit in defence properties.</text>
     </string>
     <string id="killer_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Mecenary's coverall</text>
     </string>
     <string id="military_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Army armoured suit SKAT-9M is created for leading storm operations in high anomalous activity zones. It contains: heavy \narmy armoured suit PSZ-12p, integrated compensation suit, Sphere-12M helmet. Provides an exellent protection against \nbullet \nand splinter hits. Do not decreases agility. It has balanced proof system  against anomalous effect.   </text>
     </string>
     <string id="military_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Army armoured suit SKAT-9M</text>
     </string>
     <string id="monolit_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Stalker's coverall from "Monolith" formation. Manufacturer is unlknown. It loses to army flak jacket PSZ-9a series in technical \ncharacteristics. Stucturally it looks similar to widespreaded among neutral Stalkers suit where a flak jacket is combined \nwith anti-rad suit. It protects against week shooting weapons. The level of anomalous activity defense is low due to lack \nof air filtration system.    </text>
     </string>
     <string id="monolit_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Monolith coverall.</text>
     </string>
     <string id="protection_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Modified coverall SSP-99. Bullet and splinter injuries proof in trunk part is added. It is used as guard equipment for \nscientific ecpedition. Heat-proof. Conduct electricity very bad. It is good protection against radiation and  biological \nanomaly. Persistant to agressive chemical medium.     </text>
     </string>
     <string id="protection_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Coverall SSP-99M</text>
     </string>
     <string id="scientific_outfit_description">
-        <text>This string was added automatically</text>
+        <text>This coveral is manufactured by defense SRI in Kiev, and is a good alternative to other stalker's coverall, prodused in \nunderground condition. It is a good combination of armoured coverall, breathing system with closed cycle and integrated \nsystem of  anomalous fields supression. Due to sucsesfully picked materials this suit is the best in his class. It has medium \nproof against bullets and splinter injuries. The level of anomalous activity proof has been estimated as medium. The only \ndisadvantage is the price.\n </text>
     </string>
     <string id="scientific_outfit_name">
-        <text>This string was added automatically</text>
+        <text>"SEVA" coverall</text>
     </string>
     <string id="soldier_outfit_description">
-        <text>This string was added automatically</text>
+        <text>The army flak jacket series PZS-7 (Personal Protection System) pvovides a sufficient level of protection for leading war \noperation against easy equipted opponent. There is no aomalous activity proof. </text>
     </string>
     <string id="soldier_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Army flak jacket PZS-7</text>
     </string>
     <string id="specops_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Modified equipment of S.W.A.T. Beryll-5M assigned for Zone conditions. It contains army flak jacket series PZS-9a \ncovered with berylium and helmet Sphere-08. Assigned for storm operations in high radioactive areas. The level of \nanomalous effect proof is low. </text>
     </string>
     <string id="specops_outfit_name">
-        <text>This string was added automatically</text>
+        <text>Army flak jacket Beryll-5M</text>
     </string>
     <string id="stalker_outfit_description">
-        <text>This string was added automatically</text>
+        <text>The coverall made by "folk skilled craftsmen" is an effective combination of lightweight flak jacket made of gummed cloth. \nIt is reinforsed by integrated kevlar plates. It isn't bad in bullet protection. It can also protect from week anomalous activity \nand radiation.   </text>
     </string>
     <string id="stalker_outfit_name">
-        <text>This string was added automatically</text>
+        <text>\nStalker's coverall</text>
     </string>
     <string id="svoboda_heavy_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Made by craftsmen of "Freedom" formation reinforsed Stalker's coverall. It contains medium army flak jacket, reinforcing \nzirconium elements providing good protection against machine-gun bullets and splinters on medium and far distanses. The \nstuff of the suit is of two layers: special processed leather and cloth with asbestos thread. It is a good proof against \nradiation and week anomalies. </text>
     </string>
     <string id="svoboda_heavy_outfit_name">
-        <text>This string was added automatically</text>
+        <text>"Freedom's guard" coverall</text>
     </string>
     <string id="svoboda_light_outfit_description">
-        <text>This string was added automatically</text>
+        <text>Made by craftsmen of "Freedom" formation light-weighted stalker's coverall. It contains leightweighted army flak jacket \nand reinforcing kevlar elements. It can protect from leight shooting weapon. The cloth is impregnated with special \nmixture, increasing resistance to anomalous activity.</text>
     </string>
     <string id="svoboda_light_outfit_name">
-        <text>This string was added automatically</text>
+        <text>"Wind of Freedom" coverall</text>
     </string>
 </string_table>

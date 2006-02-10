@@ -1075,6 +1075,9 @@
 						Name="UI"
 						Filter="">
 						<File
+							RelativePath=".\Config\text\eng\ui_mm_team_desc.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\ui_mp_teamdesc.xml">
 						</File>
 						<File
@@ -1098,6 +1101,9 @@
 						Filter="">
 						<File
 							RelativePath=".\Config\text\eng\mp_st_speechmenu.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\stable_bio_name.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\stable_dialog_manager.xml">
@@ -1163,6 +1169,9 @@
 							RelativePath=".\Config\text\eng\stable_storyline_info_darkvalley.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\stable_storyline_info_deadcity.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\stable_storyline_info_escape.xml">
 						</File>
 						<File
@@ -1182,6 +1191,9 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\stable_storyline_info_yantar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\stable_task_manager.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\storyline_info_yantar.xml">
@@ -1220,6 +1232,9 @@
 							RelativePath=".\Config\text\eng\string_table_level_tips.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\string_table_mapspot_deadcity.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\string_table_mapspots_aes.xml">
 						</File>
 						<File
@@ -1232,6 +1247,9 @@
 							RelativePath=".\Config\text\eng\string_table_mapspots_darkvalley.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\string_table_mapspots_deadcity.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\string_table_mapspots_escape.xml">
 						</File>
 						<File
@@ -1239,6 +1257,9 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_mapspots_military.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\string_table_mapspots_pripyat.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_mapspots_radar.xml">
@@ -1266,6 +1287,9 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_tasks_darkvalley.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\string_table_tasks_deadcity.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\string_table_tasks_escape.xml">
@@ -1316,7 +1340,13 @@
 							RelativePath=".\Config\text\eng\string_table_tips_yantar.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\string_table_tutorial.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\string_table_ui.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\tasks_yantar.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\test_string.xml">

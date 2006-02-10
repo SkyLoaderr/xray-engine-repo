@@ -315,6 +315,9 @@
     <string id="bar_bar_barmen_jobs_41">
         <text>Not now, next time.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_5">
+        <text>No, nothing for today.</text>
+    </string>
     <string id="bar_bar_barmen_jobs_room_0">
         <text>What's the job?</text>
     </string>
@@ -1167,6 +1170,15 @@
     <string id="bar_dolg_ivancov_test_start_1112">
         <text>This deceptive easiness puts me on the guard. Probably, but not today.</text>
     </string>
+    <string id="bar_dolg_ivancov_test_start_1113">
+        <text>I've already succeeded at the arena.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_start_11131">
+        <text>Perfect, lets consider that you've passed the tryout. Take the pass into the bunker. Now go to general Voronin, only he'll be able to admit you to the faction.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_start_111311">
+        <text>Thanks.</text>
+    </string>
     <string id="bar_dolg_leader_job_0">
         <text>What can I do for Duty?</text>
     </string>
@@ -1180,235 +1192,235 @@
         <text>Laudable wish. Colonel Petrenko and captain Ivantsov have reported on you. Before I accept you, I want you to fulfil one task. Personally for me, you get it?</text>
     </string>
     <string id="bar_dolg_leader_join_11">
-        <text>Думаю, что понимаю. Что я должен сделать?</text>
+        <text>I think I got. What must I do?</text>
     </string>
     <string id="bar_dolg_leader_join_111">
-        <text>Видишь ли, тут такое дело. Сейчас у нас идут территориальные боевые действия с группой Свободы и нам не хватает оружия помощней того, что у нас есть. У Свободы есть несколько отличных гранатометов РГ-6, если бы у тебя получилось проникнуть на территорию Свободы и выкрасть хотя бы один такой гранатомет, то я бы с удовольствием принял такого отважного сталкера в нашу группировку. Пока ты не в группировке, ты легко можешь втереться в доверие к Свободе и при удачном раскладе спереть РГ-6. Ну, что думаешь?</text>
+        <text>You see, now we are engaged in territorial combat actions with Freedom faction and we lack in weapons more powerful than we've got. Freedom has some perfect  RG-6 grenade launchers, if you manage to slip into the territory of that factions and steal at least one such grenade launcher, I would gladly enroll a courageous stalker in our faction. Until you're not in the faction, you can easily warm yourself into Freedom's confidence and if you are lucky enough you can snatch RG-6 from the warehouse. Well, what do you think?</text>
     </string>
     <string id="bar_dolg_leader_join_1111">
-        <text>Хорошо, я возьмусь выкрасть РГ-6 у Свободы.</text>
+        <text>Good, I'll try to steal RG-6 from Freedom.</text>
     </string>
     <string id="bar_dolg_leader_join_11111">
-        <text>Ну вот и отлично. Я скину тебе информацию по местонахождению складов на территории военной базы, на которой сейчас размещена Свобода. И еще совет - у нас есть информация на некоего Повара, члена группы "Свободы", он знает где именно хранится РГ-6. Он слаб на выпивку, поэтому постарайся его опоить. Короче говоря, возьми побольше водки. Хехе. Пригодится.</text>
+        <text>Well, that's great. I'll copy you the information on the location of warehouses on the territory of the military base, where Freedom faction is now situated. And one more advice - we have a profile for some Cook, member of "Freedom" grouping, he knows the exact place where RG-6 is kept. He has a weak point in drinking, thus try to make him drunk. In short, take a little more vodka with you. hehe. He can make a good use of it.</text>
     </string>
     <string id="bar_dolg_leader_join_111111">
-        <text>Это все?</text>
+        <text>That's it?</text>
     </string>
     <string id="bar_dolg_leader_join_1111111">
-        <text>И еще одно напоследок. Полковник Череп со своими ребятами ослушались моего приказа и самовольно отправились штурмовать базу "Свободы". Самоубийцы, ну так пусть получат сполна. Черепа уже давно пора было проучить. Не вмешивайся в их личную войну, постарайся втереться в доверие к "Свободе" и добудь мне РГ6, остальное не важно.</text>
+        <text>And one more thing. Colonel Skull together with his guys disobeyed my order and went assaulting Freedom base unauthorized. Self-killers, let them get in full what they deserve. Skull must have been taught a lesson long ago. Don't interfere in their personal war, try to warm into Freedom's confidence and get RG-6 for me, the other things are not as important for me.</text>
     </string>
     <string id="bar_dolg_leader_join_1112">
-        <text>Нет, я пока не готов к таким подвигам.</text>
+        <text>No, you're not yet ready for such feats</text>
     </string>
     <string id="bar_dolg_leader_join_11121">
-        <text>Дело твое.</text>
+        <text>Your choice.</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_0">
-        <text>Я готов принять присягу!</text>
+        <text>I'm ready to swear an oath!</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_1">
-        <text>Молодец! Тогда повторяй за мной: Я, сталкер по прозвищу Меченный, клянусь защищать цели и идеалы Долга.</text>
+        <text>Good boy! Repeat after me: I, stalker nicknamed Branded One, swear to protect goals purposes and lofty ideals of Duty.</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_2">
-        <text>Я, сталкер по прозвищу Меченный, клянусь защищать цели и идеалы Долга.</text>
+        <text>I, stalker nicknamed Branded One, swear to protect goals purposes and lofty ideals of Duty.</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_3">
-        <text>Беречь Землю от опасностей Зоны. Преследовать и уничтожать любые проявления Зоны как внутри ее, так и за ее границами.</text>
+        <text>Preserve the Earth from the perils of the Zone. Pursue and eliminate all Zone's onsets both within it and beyond.</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_4">
-        <text>Беречь Землю от опасностей Зоны. Преследовать и уничтожать любые проявления Зоны как внутри ее, так и за ее границами.</text>
+        <text>Preserve the Earth from the perils of the Zone. Pursue and eliminate all Zone's onsets both within it and beyond.</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_5">
-        <text>Бороться с любым инакомыслием в лице как отдельных сталкеров, так и группировок.</text>
+        <text>Struggle with any dissent both in the person of single stalkers and groupings.</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_6">
-        <text>Бороться с любым инакомыслием в лице как отдельных сталкеров, так и группировок.</text>
+        <text>Struggle with any dissent both in the person of single stalkers and groupings.</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_7">
-        <text>И отдать жизнь, во имя справедливости и порядка на Земле!</text>
+        <text>And give life for the sake justice and order on the Earth!</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_8">
-        <text>И отдать жизнь, во имя справедливости и порядка на Земле!</text>
+        <text>And give life for the sake justice and order on the Earth!</text>
     </string>
     <string id="bar_dolg_leader_prisyaga_9">
-        <text>Поздравляю! Отныне ты являешься полноправным членом группировки Долг.</text>
+        <text>Contratulations! From now on you are a full member of the Duty faction.</text>
     </string>
     <string id="bar_dolg_leader_quest_rg6_finish_0">
-        <text>Я выполнил Вашу просьбу, принес РГ-6.</text>
+        <text>I've pulled off your request - brought RG-6.</text>
     </string>
     <string id="bar_dolg_leader_quest_rg6_finish_1">
-        <text>Хорошая работа, новобранец. Это как раз то, что надо. Ну что, Меченый, ты прошел проверку и я принимаю тебя в нашу группировку. Отныне ты рядовой боец группировки Долг. Я подготовлю для тебя текущие задачи. За выполнение каждой из них, ты будешь вознагражден и, возможно, повышен в звании.</text>
+        <text>Good work, soldier. That's exactly what we need. So what, Branded One, you've passed the tryout and I include you in our faction. From now on you are the private soldier of the Duty faction. I'll prepare current tasks for you. You'll be rewarded for accomplishing each of them, and perhaps, promoted as well.</text>
     </string>
     <string id="bar_dolg_leader_quest_svoboda_leader_finish_0">
-        <text>Я выполнил свою миссию - лидер Свободы убит, вот его личные вещи.</text>
+        <text>I've coped with my task - Freedom's leader is killed, here's his personal stuff.</text>
     </string>
     <string id="bar_dolg_leader_quest_svoboda_leader_finish_1">
-        <text>Невероятно, Меченый. Ты уничтожил лидера анархистов Свободы. Это приведет к скорому распаду группировки. Война еще не закончена, но исход ее уже предрешен. Твоя заслуга очень велика, мы этого не забудем. За твои заслуги перед Долгом, я повышаю тебя в звании до мастера Долга. Иди к Петренко, он выдаст тебе награду.</text>
+        <text>Unbelievable, Branded One. You've eliminated Freedom's anarchists' kingpin. This will lead to faction collapse in the nearest future. War isn't over yet, but its outcome has already been predetermined. Your merit is valuable, we'll not forget it. For your accomplishments before the Duty faction, I promote you to Duty master. Go to Petrenko, he'll give you out the reward.</text>
     </string>
     <string id="bar_dolg_leader_quest_svoboda_leader_start_0">
-        <text>Какие мои текущие задачи?</text>
+        <text>What are my current tasks?</text>
     </string>
     <string id="bar_dolg_leader_quest_svoboda_leader_start_1">
-        <text>Война со Свободой близится к концу, Меченый. Ты внес вклад в общее дело и теперь я хочу поставить точку в этой войне. Я хочу чтобы ты уничтожил лидера Свободы.</text>
+        <text>War with Duty comes to an end, Branded One. You've made your contribution to the common cause and now I want to put a full stop in this war. I want you to gun down Freedom's leader.</text>
     </string>
     <string id="bar_dolg_leader_start_11">
-        <text>Слушаю.</text>
+        <text>I'm listening.</text>
     </string>
     <string id="bar_dolg_leader_start_21">
-        <text>Что привело тебя ко мне, брат?</text>
+        <text>What has led you to me, bro?</text>
     </string>
     <string id="bar_dolg_leader_start_51">
-        <text>Война со Свободой близится к концу, Меченый. Ты внес вклад в общее дело и теперь я хочу поставить точку в этой войне. Я хочу чтобы ты уничтожил лидера Свободы.</text>
+        <text>War with Duty comes to an end, Branded One. You've made your contribution to the common cause and now I want to put a full stop in this war. I want you to gun down Freedom's leader.</text>
     </string>
     <string id="bar_dolg_leader_start_81">
-        <text>Что привело тебя ко мне, брат? Ты уничтожил лидера анархистов Свободы, что привело к распаду группировки. Война еще не закончена, но исход ее уже предрешен. Твоя заслуга очень велика, мы этого не забудем.</text>
+        <text>What has led you to me, brother? You've eliminated Freedom's anarchists kingpin, which led to faction collapse. War isn't over yet, but its outcome has alredy been predetermined. Your merit is valuable, we won't forget it.</text>
     </string>
     <string id="bar_dolg_newbie_start_11">
-        <text>Здоров, сталкер. Вступай в Долг, нам нужны хорошие бойцы. Я сам недавно вступил. Ты только посмотри, какую классную форму мне выдали!</text>
+        <text>Hello, stalker. Join the Duty, we need skillful combatants. I've joined it recently myself. Just look what superb uniform I've been given!</text>
     </string>
     <string id="bar_dolg_newbie_start_21">
-        <text>Привет, Меченый. Хорошо что ты с нами, скоро Долгу понадобятся хорошие бойцы.</text>
+        <text>Hi, Branded One. It's good that you're with us, soon Duty will require competent fighters.</text>
     </string>
     <string id="bar_dolg_novice_start_2">
-        <text>Здравствуй, брат сталкер.</text>
+        <text>Hello, stalker bro.</text>
     </string>
     <string id="bar_dolg_novice_start_3">
-        <text>Расскажи о Долге.</text>
+        <text>Tell me about the Duty.</text>
     </string>
     <string id="bar_dolg_novice_start_31">
-        <text>Мы тут с самого начала. Группировку основали выжившие члены одного из спецотрядов, отправленных в Зону, чтобы разобраться с причиной ее появления. Мы попали в серьезную передрягу. После того, как половина отряда погибла при ужасных обстоятельствах, выжившие поклялись, что не уйдут, пока не разберутся с тем, что произошло в Зоне. Пока не справятся с ней.</text>
+        <text>We're here from the very beginning. Faction was founded by survived members of one of special task forces detachment, sent to the Zone so as to investigate the reasons of its appearance. We've trapped into a serious scrape. After half of the detachment perished under horrible circumstances, the survived swore, that they wouldn't leave until they grasp everything that happened in the Zone. Until they cope with it.</text>
     </string>
     <string id="bar_dolg_novice_start_4">
-        <text>Расскажи о Свободе.</text>
+        <text>Tell me about the Freedom faction.</text>
     </string>
     <string id="bar_dolg_novice_start_41">
-        <text>Они - отморозки, которые не понимают, что Зона - это язва на теле Земли. Хотят по всему миру ее растащить, в каждый дом по кусочку. И ради своей цели они пойдут на любые средства. Жду не дождусь, когда мы с ними покончим.</text>
+        <text>They are freaks, who don't understand that Zone is a sore on the boyd of the Earth. They want to spread it throughout the whole world, one peace to each home. And they use all the means for the sake of their goal. I'm impatiently waiting for finishing with them.</text>
     </string>
     <string id="bar_dolg_novice_start_5">
-        <text>Вы хотите справиться с Зоной?</text>
+        <text>You want to cope with the Zone?</text>
     </string>
     <string id="bar_dolg_novice_start_51">
-        <text>Да, и мы очень многое делаем для этого. Наши очистительные миссии выжигают целые гнезда мутированной заразы на подходах к центру Зоны.</text>
+        <text>Yes, and we're doing a lot to succeed. Our cleansing missions burn out the entire nests of mutated scum over the approaches to the center of the Zone.</text>
     </string>
     <string id="bar_dolg_novice_start_6">
-        <text>Спасибо.</text>
+        <text>Thanks.</text>
     </string>
     <string id="bar_dolg_petrenko_join_0">
-        <text>Хочу вступить в группировку Долг.</text>
+        <text>I want to join up the Duty faction.</text>
     </string>
     <string id="bar_dolg_petrenko_join_1">
-        <text>Для чего?</text>
+        <text>What for?</text>
     </string>
     <string id="bar_dolg_petrenko_join_3">
-        <text>Вести беспощадную борьбу с нечистью Зоны.</text>
+        <text>To struggle fiercely against the vermins of the Zone.</text>
     </string>
     <string id="bar_dolg_petrenko_join_31">
-        <text>Твоя слава опережает тебя. Ты думал нам нужны такие беспредельщики? Ты ошибался. Таким как ты дорога в Долг закрыта, и я не советую тебе переходить нам дорогу. А теперь убирайся.</text>
+        <text>Your renown surpasses you. You thought we need such mayhem makers? So, you were wrong. For those like you the door to the Duty is shut tight. And now get lost.</text>
     </string>
     <string id="bar_dolg_petrenko_join_4">
-        <text>Вести беспощадную борьбу с нечистью Зоны.</text>
+        <text>Wage ruthless fight with the Zone's scum.</text>
     </string>
     <string id="bar_dolg_petrenko_join_41">
-        <text>Хмм... Ты достаточно опытен, кроме того, ничего плохого о тебе я не слышал. Думаю, у тебя есть шанс вступить в Долг, но перед этим придется доказать капитану Иванцову, чего ты стоишь. Вот, держи мое разрешение и ступай с ним к Иванцову.</text>
+        <text>Hem... You're experienced enough, besides I've heard nothing that would harm your reputation. I guess you have the chance to join the Duty, but before you'll have to show captain Ivantsov what you are worth. Here, take my permit and be off to Ivantsov.</text>
     </string>
     <string id="bar_dolg_petrenko_join_411">
-        <text>Спасибо.</text>
+        <text>Thanks.</text>
     </string>
     <string id="bar_dolg_petrenko_start_11">
-        <text>Слушаю.</text>
+        <text>I'm all ears.</text>
     </string>
     <string id="bar_dolg_petrenko_start_21">
-        <text>Чем могу помочь?</text>
+        <text>How can I help you?</text>
     </string>
     <string id="bar_dolg_petrenko_start_31">
-        <text>Здравствуй, брат. Что привело тебя ко мне?</text>
+        <text>Hello, bro. What has brought you here?</text>
     </string>
     <string id="bar_dolg_petrenko_talk_1">
-        <text>Мы тут с самого начала. Группировку основали выжившие члены одного из спецотрядов, отправленных в Зону, чтобы разобраться с причиной ее появления. Мы попали в серьезную передрягу. После того, как половина отряда погибла при ужасных обстоятельствах, выжившие поклялись, что не уйдут, пока не разберутся с тем, что произошло в Зоне. Пока не справятся с ней.</text>
+        <text>We're here from the very beginning. Faction was founded by survived members of one of special task forces detachment, sent to the Zone so as to investigate the reasons of its appearance. We've trapped into a serious scrape. After half of the detachment perished under horrible circumstances, the survived swore, that they wouldn't leave until they grasp everything that happened in the Zone. Until they cope with it.</text>
     </string>
     <string id="bar_dolg_veteran_start_2">
-        <text>Чего тебе?</text>
+        <text>What do you need?</text>
     </string>
     <string id="bar_dolg_zastava_11">
-        <text>Проходи, не задерживайся... Чего уставился?</text>
+        <text>Move, don't stick around... What are you staring at?</text>
     </string>
     <string id="bar_dolg_zastava_21">
-        <text>О, привет старик! Рад, что тебя еще мутанты не сожрали.</text>
+        <text>Oh, hi old chum! I'm glad that mutant haven't chomped you yet.</text>
     </string>
     <string id="bar_dolg_zastava_about_zastava_0">
-        <text>Перед заставой была какая-то бойня, что случилось?</text>
+        <text>There was kind of carnage in front of the army post, what happened?</text>
     </string>
     <string id="bar_dolg_zastava_about_zastava_1">
-        <text>Это останки от прошлой "волны" мутантов, которая прошла перед Выбросом. Дня три четыре затишье, а затем опять будет "волна". Если бы не мы, ни Бара ни Долга уже бы не было, мы последний заслон от обезумевших стай мутантов. Много наших тут полегло.</text>
+        <text>These are the remains of the previous "wave" of mutants, which went right before the surge. Three days of tranquility, and then a "wave" again. If it were not for us, neither Bar nor Duty would stand on this Earth, we're the last barrier from distracted flights of mutants. Lots of ours perished here.</text>
     </string>
     <string id="bar_dolg_zastava_talk_0">
-        <text>Я бы хотел кое-что узнать.</text>
+        <text>I'd like to know something.</text>
     </string>
     <string id="bar_dolg_zastava_talk_1">
-        <text>Что ты хочешь узнать?</text>
+        <text>What would you like to know?</text>
     </string>
     <string id="bar_dolg_zastava_talk_2">
-        <text>Я тут впервые, можешь немного рассказать об этом месте?</text>
+        <text>I'm here for the first time, could you tell me about this place a bit?</text>
     </string>
     <string id="bar_dolg_zastava_talk_21">
         <text>Prior to the accident in 86 this was an industrial zone. Now, as far as you understand, only the demolished ruins remain. Near the hangar you might find "100 \nRontgen" bar, stalkers from all over the Zone drop in there, local trader works as the barkeep, keeps so to say the premises. Go there if you want to trade, \ntalk or receive an interesting task, you'll also find out some fresh news. There is an Arena, where you can battle mutants and earn some money there. Not \nfar from the arena one might find Duty's faction base. If you want to try to enter Duty, you have to go straightly that way, they'll tell whom must you apply to. \nAll that territory is under Duty's control, thus behave yourself carefully, don't draw your gun without any reason, and if you are not wise enough to start \nshooting, patrol shall calm you in one go.</text>
     </string>
     <string id="bar_dolg_zastava_talk_211">
-        <text>Ты сказал здесь есть Бар. Можешь подсказать где он?</text>
+        <text>You said there was a Bar somewhere. Could you point me to it?</text>
     </string>
     <string id="bar_dolg_zastava_talk_2111">
-        <text>В подвале за ангаром, я тебе отмечу на карте.</text>
+        <text>In the basement behind the hangar, I'll mark it on your map.</text>
     </string>
     <string id="bar_dolg_zastava_talk_21111">
-        <text>Спасибо за информацию</text>
+        <text>Thanks</text>
     </string>
     <string id="bar_dolg_zastava_talk_212">
-        <text>You said that here is Duty's base. Tell me how can I reach it.</text>
+        <text>You said that there was the Duty's base somewhere. Tell me how can I reach it.</text>
     </string>
     <string id="bar_dolg_zastava_talk_2121">
         <text>Not far from the Arena, I've marked in on your map.</text>
     </string>
     <string id="bar_dolg_zastava_talk_21211">
-        <text>Спасибо за информацию</text>
+        <text>Thanks for the info</text>
     </string>
     <string id="bar_dolg_zastava_talk_213">
-        <text>Ты сказал здесь есть Арена. Можешь подсказать где она?</text>
+        <text>You said that there was the Arena somewhere. Could you point me towards it?</text>
     </string>
     <string id="bar_dolg_zastava_talk_2131">
-        <text>Как выйдешь из ангара с пробитой крышей сразу выйдешь к ней, я тебе отмечу на карте.</text>
+        <text>As soon as you leave the hangar with the pierced roof you'll run against it, I'll mark it on your map.</text>
     </string>
     <string id="bar_dolg_zastava_talk_21311">
-        <text>Спасибо за информацию</text>
+        <text>Thanks</text>
     </string>
     <string id="bar_dolg_zastava_talk_214">
         <text>Thanks for the information.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_0">
-        <text>Я тут по делу.</text>
+        <text>I'm here on business.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_1">
-        <text>Я догадываюсь, явно чего-то хочешь.</text>
+        <text>I see, you obviously want something.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_11">
-        <text>Я там завалил одну свинью по дороге. Говорят, ценный экспонат.</text>
+        <text>I've knocked off sore of a pig on the road here. It's said to be a valuable exhibit.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_111">
-        <text>Наслышан, ты пристрелил Борова. Ну что же, тебе полагается премия и хороший ствол. Не опозорь честное оружие.</text>
+        <text>I'm familiar by hearsay with you having gunned down Boar. Well then, you are supposed to have a bonus and a good gun. And don't you discredit an honorable weapon.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_1111">
-        <text>Не беспокойся за меня.</text>
+        <text>Don't worry for me.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_12">
-        <text>Я там поговорил с Тираном из Свободы, в общем он понял свою ошибку и пообещал больше не безобразничать. И я уверен, что свое слово он сдержит, метрвые не врут.</text>
+        <text>I was speaking to Tyrant from Freedom, well in a word I understood my mistake, and promised not to bevahe disgracefully any more. And I'm sure, that he keeps his word, dead do not tell lies, you know.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_121">
-        <text>Да, Тиран был бельмом у нас на глазу долгое время. Рад, что ты его убил. Вот премиальные и вот "Гроза" - наше фирменное оружие.</text>
+        <text>Yes, Tyrant has been a thorn in our side for a long time. I'm glad that you've done him in. Here is your bonus and "Groza" - our house weapon.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_1211">
-        <text>Неплохо. Ну я пошел на дальнейшие подвиги, счастливо оставаться.</text>
+        <text>Not bad. Well, I'm gone for further deeds, so long.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_13">
-        <text>А что, Воронин тебе еще ничего не рассказал?</text>
+        <text>Haven't Voronin told you anything?</text>
     </string>
     <string id="bar_dolg_zavskald_reward_131">
         <text>Поздравляю, завалить лидера Свободы - это подвиг. Ты честно заслужил свою награду. Хотел бы я быть таким крутым как ты.</text>

@@ -13,7 +13,7 @@
         <text>Find my assistant and you'll have the money.</text>
     </string>
     <string id="rad_find_deputy_dialog_1_1000">
-        <text>Fine, but this time no tricks!</text>
+        <text>Fine, but no tricks this time!</text>
     </string>
     <string id="rad_find_stalkers_dialog_1_0">
         <text>Who are you?</text>
@@ -31,7 +31,7 @@
         <text>What do you know about Prypyat?</text>
     </string>
     <string id="rad_find_stalkers_dialog_2_10">
-        <text>I know that this is old abandoned town of the communism epoch! This is mainly from history.\nI believe that it is now aswarmed with monsters and the crowds of monolithians! The ones who went there haven't returned!</text>
+        <text>I know that this is old abandoned town of the communism epoch! This is mainly from history. I believe that it is now aswarmed with monsters and the crowds of monolithians! The ones who went there haven't returned!</text>
     </string>
     <string id="rad_find_stalkers_dialog_2_100">
         <text>Do you think it's very dangerous there?</text>
@@ -43,28 +43,28 @@
         <text>Have you seen militaries somewhere nearby?</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_10">
-        <text>No, no militaries in view, it has been a long time I haven't seen any militant</text>
+        <text>No, no militaries in view, it has been a long time I haven't seen any militant.</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_100">
         <text>Maybe you've met any military stalkers?</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_20">
-        <text>Rumors say that they've appeared somewhere on the very Radar base, well right near the antennas! Once they were deactivated, a lot of people rushed to \nRadar and further to Prypyat!</text>
+        <text>Rumors say that they've appeared somewhere on the very Radar base, well right near the antennas! Once they were deactivated, a lot of people rushed to Radar and further to Prypyat! We've been stuck here for day, but no one yet poked a nose in here. Perhaps, someone blocked off the road here.</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_200">
         <text>You think the path to Radar is blocked off by the militaries?</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_30">
-        <text>I don't think so, it's been a long time I haven't seen them, but the military stalkers could for sure! They don't play jokes, they are really tough guys, acting swiftly \nand well-coordinated, I wonder why haven't they blocked the road up earlier!</text>
+        <text>I don't think so, it's been a long time I haven't seen them, but the military stalkers could for sure! They don't play jokes, they are really tough guys, acting swiftly and well-coordinated, I wonder why haven't they blocked the road up earlier!</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_300">
         <text>Why haven't they gone to Prypyat or haven't blocked off the road there?</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_40">
-        <text>I dunno, maybe they are afraid and or preparing to something, he have only to guess what they have on mind.</text>
+        <text>I dunno, maybe they are afraid and or preparing to something, we have only to guess what they have on mind.</text>
     </string>
     <string id="rad_find_stalkers_dialog_4_0">
-        <text>Maybe you have task for me?</text>
+        <text>Maybe you have a task for me?</text>
     </string>
     <string id="rad_find_stalkers_dialog_4_10">
         <text>Well, I've got one, but it's not of easy ones, will you take it?</text>
@@ -79,7 +79,7 @@
         <text>I see, but I'm scared too, I prefer to spend some money and send someone instead of me and my guys!</text>
     </string>
     <string id="rad_find_stalkers_dialog_4_20">
-        <text>Well, good!\nThe task is as follows, find my scouts, Crowbar and Log! They went to Prypyat, while I decided not to go headlong into the tiger's jaw, thus I've sent the best \nof the best there!\nFind them alive and get them there, and if they perished bring me their guns!\nOnce you fufil the task and you'll receive 2000 dough!!!</text>
+        <text>Well, good! The task is as follows, find my scouts, Crowbar and Log! They went to Prypyat, while I decided not to go headlong into the tiger's jaw, thus I've sent the best of the best there! Find them alive and get them there, and if they perished bring me their guns! Once you fufil the task and you'll receive 2000 dough!!!</text>
     </string>
     <string id="rad_find_stalkers_dialog_4_200">
         <text>Okay, deal!</text>
@@ -103,7 +103,7 @@
         <text>Take it, give me the money!</text>
     </string>
     <string id="rad_found_deputy_dialog_1_1100">
-        <text>Insolent seput, if to consider that he had nothing with him!</text>
+        <text>What a cheeky setup, if to consider that he had nothing with him!</text>
     </string>
     <string id="rad_found_deputy_dialog_1_1200">
         <text>I'm gonna whack you now!</text>
@@ -124,19 +124,19 @@
         <text>I haven't found him yet!</text>
     </string>
     <string id="rad_found_deputy_dialog_2_10">
-        <text>Find him quicker, if you want to receive your money!</text>
+        <text>Find him quicker, if you want to get your money!</text>
     </string>
     <string id="rad_found_stalkers_dialog_1_0">
         <text>I've found your guys, they died - here is their weapons!</text>
     </string>
     <string id="rad_found_stalkers_dialog_1_100">
-        <text>Thanks, then I think that they have perished, thus there is no sense to go to Prypyat yet! The only problem remains, I can't give you money for the task. My \nassistant has gone with the money!</text>
+        <text>Thanks, then I think that they have perished, thus there is no sense to go to Prypyat yet! The only problem remains, I can't give you money for the task. My assistant has gone with the money!</text>
     </string>
     <string id="rad_found_stalkers_dialog_1_1001">
-        <text>Good, I'll find him! Tell me where to search for him? And don't even think to junk me chuck me again!</text>
+        <text>Good, I'll find him! Tell me where to search for him? And don't even think to chuck me again!</text>
     </string>
     <string id="rad_found_stalkers_dialog_1_200">
-        <text>I think he couldn't get away long ago, he can be, let me mark it on your map, here or here! As you find it, bring him to me, or his pda.</text>
+        <text>I think he couldn't get away long ago, he can be, let me mark it on your map, here or here! When you find him, bring him to me or his pda.</text>
     </string>
     <string id="rad_found_stalkers_dialog_1_2000">
         <text>Good, wait for me!!!</text>
