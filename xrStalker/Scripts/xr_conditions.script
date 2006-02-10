@@ -543,6 +543,7 @@ function esc_tutorial_flesh_died_in_anomaly(actor, npc)
 	return false
 end
 
+
 ------------------------------------------------------------------------------------
 -- Special functions for Garbage
 ------------------------------------------------------------------------------------
@@ -697,6 +698,7 @@ function actor_wears_bandit_outfit(actor, npc)
 	return xr_conditions_impl.actor_has_object(actor, "bandit_outfit")
 end
 
+
 ------------------------------------------------------------------------------------
 -- Special functions for Pripyat
 ------------------------------------------------------------------------------------
@@ -740,6 +742,7 @@ function esc_blokpost_night(actor,npc)
 	return false
 end
 
+
 ------------------------------------------------------------------------------------
 -- Special functions for LabX18
 ------------------------------------------------------------------------------------
@@ -750,8 +753,6 @@ end
 function dar_actor_has_a_key2(actor,npc)
 	return xr_conditions_impl.actor_has_object(actor,"krot_flash")
 end
-------------------------------------------------------------------------------------
-
 
 
 ------------------------------------------------------------------------------------
@@ -800,13 +801,14 @@ end
 
 function is_courier_time (actor, npc)
     return level.get_time_hours() >= 22 and level.get_time_hours() < 23
-end    
+end
 
 function is_controller_dead (actor, npc)
     local c = level_object_by_sid (729)
     if c == nil then return false end
     return not c:alive ()
-end    
+end
+
 
 ------------------------------------------------------------------------------------
 -- Special functions for Military
@@ -824,26 +826,29 @@ function mil_actor_enemy (actor, npc)
         end         
     end
     return npc:relation (actor) == game_object.enemy
-end    
+end
 
 
 ------------------------------------------------------------------------------------
 -- Special functions for Deadcity
 ------------------------------------------------------------------------------------
+function cit_combat_ignore(actor, npc, p)
+    local enemy = db.storage[npc:id()].enemy
+    if enemy and enemy:alive() then
+        if enemy:id() == actor:id() then
+            return actor:dont_has_info(p[1])
+        elseif enemy:story_id() == 1200 then
+            return true
+        else
+            local g = xr_gulag.get_npc_gulag(enemy)
+            local gulags = {cit_kanaliz1 = 1, cit_kanaliz2 = 1, cit_kanaliz3 = 1}
+            return g ~= nil and gulags[g] == 1
+        end
+    end
+    return false
+end
 
-function cit_fighting_hunt_victim(actor, npc)
-	-- FIXME: use SID!!!
-	return db.storage[npc:id()].enemy:name() == "cit_hunt_victim"
-end    
 
-function cit_fighting_hunt_killer(actor, npc)
-	-- FIXME: use SID!!!
-	local nam = db.storage[npc:id()].enemy:name()
-	return nam == "cit_hunt_killer1" or
-		nam == "cit_hunt_killer2" or
-		nam == "cit_hunt_killer3" or
-		nam == "cit_hunt_killer4"
-end    
 -------------------------------------------------------------------------------------
 -- Special for Agroprom
 -------------------------------------------------------------------------------------
@@ -856,6 +861,7 @@ end
 function is_wfx_playing (actor, npc)
     return level.is_wfx_playing ()
 end
+
 
 -------------------------------------------------------------------------------------
 -- Special for rostok
@@ -920,6 +926,8 @@ end
 function has_ghost_pda ()
 		return db.actor:object ("yantar_ghost_pda") ~= nil
 end
+
+
 -------------------------------------------------------------------------------------
 -- Special for Radar
 -------------------------------------------------------------------------------------
