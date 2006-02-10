@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 3
-  Top = 131
+  Left = 232
+  Top = 171
   Width = 1104
   Height = 787
   Caption = 'Memory Dump'
