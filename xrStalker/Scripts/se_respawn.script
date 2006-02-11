@@ -220,6 +220,12 @@ function se_respawn:on_register()
 end
 -- Создаем объект
 function se_respawn:create(prob)
+	if tostring(prob) == "nil" then		
+		prob = 0
+		printf("RESPAWN[%s]", tostring(self:name()))
+		print_table(self.conditions)
+	end
+	
 	if math.random(100) <= tonumber(prob) then
 		local spawn_section = ""
 		local sum = 0
