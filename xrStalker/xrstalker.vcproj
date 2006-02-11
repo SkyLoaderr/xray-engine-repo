@@ -1358,9 +1358,6 @@
 							RelativePath=".\Config\text\eng\string_table_ui.xml">
 						</File>
 						<File
-							RelativePath=".\Config\text\eng\tasks_yantar.xml">
-						</File>
-						<File
 							RelativePath=".\Config\text\eng\test_string.xml">
 						</File>
 					</Filter>
