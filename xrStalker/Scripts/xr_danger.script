@@ -277,9 +277,10 @@ function check_danger_distance(npc, danger)
 	local bd_type = danger:type()
 	local danger_distance_sqr = danger:position():distance_to_sqr(npc:position())	
 	
---	printf("DANGER_DIST [%s] [%s]", npc:name(), danger_distance_sqr)
+	printf("DANGER_DIST [%s] [%s]", npc:name(), tostring(danger_distance_sqr))
 
 	if danger_settings ~= nil then
+		print_table(danger_settings)
 		if danger_distance_sqr >= danger_settings.ignore_distance then
 			return false
 		end
