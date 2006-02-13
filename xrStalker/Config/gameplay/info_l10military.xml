@@ -133,6 +133,9 @@
 	<info_portion id="mil_lukash_blockpost">
 		<task>mil_blockpost_job2</task>
 	</info_portion>		
+	<info_portion id="mil_blockpost_free_task">
+		<task>mil_blockpost_job2</task>
+	</info_portion>
 	<info_portion id="mil_actor_on_lukash"></info_portion>
 	<info_portion id="mil_bodyguard_talk"></info_portion>
 	

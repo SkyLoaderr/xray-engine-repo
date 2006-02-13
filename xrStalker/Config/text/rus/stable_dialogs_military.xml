@@ -679,15 +679,18 @@
         <text>Выбери себе место, а то потом будет некогда.</text>
     </string>
     <string id="mil_freedom_commander_3001">
-        <text>Всех положили или еще будут ?</text>
+        <text>Ты как ?</text>
     </string>
     <string id="mil_freedom_commander_3002">
-        <text>Похоже, что всех. Как по мне, то на сегодня достаточно. Спасибо за помощь. Вот, возьми деньжат - они тебе пригодятся.</text>
+        <text>Терпимо. Всех положили или еще будут ?</text>
     </string>
     <string id="mil_freedom_commander_3003">
-        <text>Удачи вам...</text>
+        <text>Похоже, что всех. Как по мне, то на сегодня достаточно. Спасибо за помощь. Вот, возьми деньжат - они тебе пригодятся.</text>
     </string>
     <string id="mil_freedom_commander_3004">
+        <text>Удачи вам...</text>
+    </string>
+    <string id="mil_freedom_commander_3005">
         <text>Спасибо, она нам не помешает.</text>
     </string>
     <string id="mil_freedom_commander_4001">

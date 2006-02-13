@@ -828,6 +828,12 @@ function mil_actor_enemy (actor, npc)
     return npc:relation (actor) == game_object.enemy
 end
 
+function mil_actor_enemy_freedom (actor, npc)
+    if relation_registry.community_goodwill ("freedom", actor:id ()) < -500 then
+       return true
+    end   
+    return false
+end
 
 ------------------------------------------------------------------------------------
 -- Special functions for Deadcity
