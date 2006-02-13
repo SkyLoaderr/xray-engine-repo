@@ -658,6 +658,6 @@ function load_sound(obj)
 	-- делаем заготовку в db.sound
 	db.sound[obj:id()] = {}
 	
-	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
-	--print_table(theme)
+	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+	print_table(theme)
 end
