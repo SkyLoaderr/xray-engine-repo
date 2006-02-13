@@ -221,9 +221,9 @@ end
 -- Создаем объект
 function se_respawn:create(prob)
 	if tostring(prob) == "nil" then		
-		prob = 0
-		printf("RESPAWN[%s]", tostring(self:name()))
 		print_table(self.conditions)
+		abort("RESPAWN[%s]spawn probability doesn't set", tostring(self:name()))
+		prob = 0
 	end
 	
 	if math.random(100) <= tonumber(prob) then
