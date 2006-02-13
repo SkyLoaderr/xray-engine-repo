@@ -217,6 +217,7 @@ function motivator_binder:update(delta)
 
     if device ():time_global () - self.last_update > 1000 then
        sr_light.check_light_zone (self.object)
+       -- Тут же апдейтим и торговлю.       
        self.last_update = device ():time_global ()
     end
 	--self.torch:update()
