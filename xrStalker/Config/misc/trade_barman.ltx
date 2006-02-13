@@ -1,7 +1,7 @@
 [trader]
 buy_condition = barman_generic_buy
-sell_condition = 
-buy_supplies = 
+sell_condition = {+bar_deactivate_radar_done} barman_sell_after_radar, {+yan_kill_brain_done} barman_sell_after_brain, {+bar_darklab_document_done} barman_sell_after_darkvalley, barman_sell_start
+buy_supplies = {+bar_deactivate_radar_done} supplies_after_radar, {+yan_kill_brain_done} supplies_after_brain, {+bar_darklab_document_done} supplies_after_darkvalley, supplies_start
 
 
 [barman_generic_buy]
