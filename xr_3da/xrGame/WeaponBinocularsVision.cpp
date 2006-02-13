@@ -168,7 +168,6 @@ CBinocularsVision::~CBinocularsVision()
 
 void CBinocularsVision::Update()
 {
-
 	const CVisualMemoryManager::VISIBLES& vVisibles = Actor()->memory().visual().objects();
 
 	VIS_OBJECTS_IT	it = m_active_objects.begin();

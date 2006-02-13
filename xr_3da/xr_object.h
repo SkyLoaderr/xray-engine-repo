@@ -48,6 +48,7 @@ public:
 			u32	net_Local		:	1;
 			u32	net_Ready		:	1;
 			u32 net_SV_Update	:	1;
+			u32 crow			:	1;
 		};
 		u32	storage;
 	};
@@ -76,10 +77,13 @@ public:
 	// if (object_is_crow_always)
 		void							MakeMeCrow_internal	();
 	ICF	void							MakeMeCrow			()					{
-		if (Device.dwFrame == dwFrame_AsCrow)	return		;
-		dwFrame_AsCrow	= Device.dwFrame					;
-		if (!processing_enabled())				return		;
-		MakeMeCrow_internal						()			;
+		if (Props.crow)					return	;
+		Props.crow						= true	;
+		if (!processing_enabled())		return	;
+		MakeMeCrow_internal				()		;
+	}
+	ICF	void							IAmNotACrowAnyMore	()					{
+		Props.crow						= false	;
 	}
 	virtual BOOL						AlwaysTheCrow		()					{ return FALSE; }
 

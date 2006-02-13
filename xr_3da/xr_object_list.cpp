@@ -84,10 +84,11 @@ void	CObjectList::SingleUpdate	(CObject* O)
 {
 	if (O->processing_enabled() &&	(Device.dwFrame != O->dwFrame_UpdateCL))
 	{
-		if (O->H_Parent())		SingleUpdate(O->H_Parent());
+		if (O->H_Parent())		SingleUpdate	(O->H_Parent());
 		Device.Statistic.UpdateClient_updated	++;
 		O->dwFrame_UpdateCL		=				Device.dwFrame;
-		O->UpdateCL				();
+		O->IAmNotACrowAnyMore	()				;
+		O->UpdateCL				()				;
 		VERIFY3					(O->dbg_update_cl == Device.dwFrame, "Broken sequence of calls to 'UpdateCL'",*O->cName());
 		if (O->getDestroy() && !O->shedule.b_locked)	destroy_queue.push_back(O);
 		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) && !O->shedule.b_locked)	{
