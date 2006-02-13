@@ -249,7 +249,7 @@
 		<objective>
 			<text>mil_find_cook</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type hint="mil_rg6_hint1">crlc_big</map_location_type>
+            <map_location_type hint="mil_rg6_hint1">green_location</map_location_type>
             <object_story_id>Mil_Freedom_base</object_story_id>
             <function_fail>mil_tasks.fail_rg6_task</function_fail>
             <infoportion_complete>mil_cook_question_already</infoportion_complete>
