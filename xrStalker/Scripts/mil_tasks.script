@@ -328,7 +328,7 @@ function finalize_dolg (task_id, subtask)
     if db.actor:dont_has_info ("mil_lukash_dead") then return false end
     if db.actor:has_info ("mil_dolg_dead") then 
        db.actor:give_info_portion ("mil_dolg_task_final") 
-       return false
+       return true
     end
     return false    
 end

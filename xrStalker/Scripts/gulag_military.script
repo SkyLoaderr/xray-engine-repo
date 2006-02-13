@@ -887,6 +887,11 @@ end
 -- Функция проверки состояния гулага Свободы у выхода на Радар
 --------------------------------------------------------------------------
 function check_fblockpost_state (gulag)
+
+    if gulag:npc_is_enemy_to_anybody (db.actor) == true then
+       xr_gulag.setGulagEnemy ("mil_fneutral", db.actor)
+    end   
+
     if db.actor:has_info ("mil_fblockpost_alarm") then
        return 2 
     elseif utils.is_day () == true then
@@ -1019,6 +1024,11 @@ end
 -- Функция проверки состояния гулага нейтралов у выхода на Радар
 --------------------------------------------------------------------------
 function check_blockpost_state (gulag)
+
+    if gulag:npc_is_enemy_to_anybody (db.actor) == true then
+       xr_gulag.setGulagEnemy ("mil_fblockpost", db.actor)
+    end   
+
     if db.actor:has_info ("mil_fblockpost_alarm") then
        return 2 
     elseif utils.is_day () == true then
