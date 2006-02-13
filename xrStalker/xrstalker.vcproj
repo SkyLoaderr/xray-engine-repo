@@ -2002,6 +2002,9 @@
 						RelativePath=".\Config\scripts\bar_entry_zone.ltx">
 					</File>
 					<File
+						RelativePath=".\config\scripts\bar_petrenko.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\bar_psih.ltx">
 					</File>
 					<File
