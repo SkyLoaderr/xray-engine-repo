@@ -3,9 +3,6 @@ Respawner. —хема обновлени€ попул€ции всего всего всего в симул€ции.
 by Stohe (ƒиденко –услан)
 --------------------------------------------------------------------------------------------------------------------]]
 
--- “олько дл€ отладки
-local debug = 0
-
 local section_name = "respawn"
 local i,k,v = 0,0,0
 
@@ -212,9 +209,8 @@ function se_respawn:on_register()
 	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", r_str(ini, section_name, "conditions", 100))
 	self.respawn_online = r_bool(ini, section_name, "respawn_online", false)
 	
-	if debug == 1 then
-		self.respawn_online = true
-	end
+	self.respawn_radius = r_num(ini, section_name, "respawn_radius", 150)
+	
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
 end
@@ -357,11 +353,7 @@ end
 function se_respawn:update_online()
 	cse_alife_smart_zone.update( self )
 	--printf("RESPAWN: [%s] se_respawn update_online", tostring(self:name()))
-	if  db.actor:position():distance_to (self.position) >= 150 then
+	if db.actor:position():distance_to (self.position) >= self.respawn_radius then
 		self:execute()
-	else
-		if self.respawn_online == true then
-			self:execute()
-		end
 	end
 end
