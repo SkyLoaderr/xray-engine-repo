@@ -979,3 +979,16 @@ function npc_trade_by_level(actor, npc, p)
 		return false
 	end
 end
+
+function actor_in_dolg(actor, npc)
+	if db.actor then
+		return db.actor:character_community() == "actor_dolg"
+	end
+	return false
+end
+function actor_in_freedom(actor, npc)
+	if db.actor then
+		return db.actor:character_community() == "actor_freedom"
+	end
+	return false
+end
