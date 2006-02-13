@@ -198,7 +198,12 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 {
 	
 	const Fmatrix	&obj_xform=blasted_obj->XFORM();
+	Fmatrix	inv_obj_form;inv_obj_form.invert(obj_xform);
+	Fvector	local_exp_center;inv_obj_form.transform_tiny(local_exp_center,expl_centre);
+
 	const Fbox &l_b1 = blasted_obj->BoundingBox();
+	if(l_b1.contains(local_exp_center)) 
+										return 1.f;
 	Fvector l_c, l_d;l_b1.get_CD(l_c,l_d);
 	float effective_volume=l_d.x*l_d.y*l_d.z;
 	float max_s=effective_volume/(_min(_min(l_d.x,l_d.y),l_d.z));
@@ -223,6 +228,11 @@ float CExplosive::ExplosionEffect(collide::rq_results& storage, CExplosive*exp_o
 		l_end_p.add(l_c);
 		obj_xform.transform_tiny(l_end_p);
 		GetRaySourcePos(exp_obj,expl_centre,l_source_p);
+		Fvector l_local_source_p;inv_obj_form.transform_tiny(l_local_source_p,l_source_p);
+		if(l_b1.contains(l_local_source_p))
+		{
+			effect+=1.f;continue;
+		}
 		Fvector l_dir; l_dir.sub(l_end_p,l_source_p);
 		float mag=l_dir.magnitude();
 		
@@ -523,7 +533,7 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 //	if( m_bExplodeEventSent ) 
 //		return;
 	VERIFY(!m_explosion_flags.test(flExplodEventSent));//!m_bExplodeEventSent
-	//VERIFY(0xffff != Initiator());
+	VERIFY(0xffff != Initiator());
 
 	NET_Packet		P;
 	cast_game_object()->u_EventGen		(P,GE_GRENADE_EXPLODE,cast_game_object()->ID());	
@@ -712,4 +722,11 @@ void CExplosive::net_Relcase(CObject* O)
 	{
 		m_blasted_objects.erase(I);
 	}
+}
+
+u16	CExplosive::Initiator()
+{
+	u16 initiator=CurrentParentID();
+	if(initiator==u16(-1))initiator=cast_game_object()->ID();
+	return initiator;
 }

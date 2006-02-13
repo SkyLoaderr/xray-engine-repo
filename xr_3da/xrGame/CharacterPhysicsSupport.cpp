@@ -115,7 +115,10 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 	if(!m_EntityAlife.g_Alive())
 	{
 		CKinematicsAnimated*ka= smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual());
-		ka->PlayCycle("death_init");
+		if(m_eType!=etStalker)
+			ka->PlayCycle("waunded_1_idle_0");
+		else
+			ka->PlayCycle("death_init");
 		ka->CalculateBones_Invalidate();
 		ka->CalculateBones();
 	}

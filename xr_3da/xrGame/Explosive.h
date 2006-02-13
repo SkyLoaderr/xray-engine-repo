@@ -45,7 +45,7 @@ public:
 	IC		u16 				CurrentParentID		() const {return m_iCurrentParentID;}
 
 	virtual	void				SetInitiator(u16 id){SetCurrentParentID(id);}
-	virtual	u16					Initiator(){return CurrentParentID();}
+	virtual	u16					Initiator();
 
 	virtual void				UpdateExplosionPos(){}
 	virtual void				GetExplVelocity(Fvector	&v);
