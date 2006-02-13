@@ -1013,14 +1013,14 @@ void CLevelGraph::build_detail_path()
 		return;
 
 #ifndef AI_COMPILER
-	Device.Statistic.TEST0.Begin			();
+	Device.Statistic->TEST0.Begin			();
 #endif
 	VERIFY									(!m_tpaNodes.empty());
 	if (m_tpaNodes.size() == 1) {
 		if (!compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			m_tpTravelLine.clear			();
 #ifndef AI_COMPILER
-			Device.Statistic.TEST0.End		();
+			Device.Statistic->TEST0.End		();
 #endif
 			return;
 		}
@@ -1029,7 +1029,7 @@ void CLevelGraph::build_detail_path()
 		if (compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			Msg	("%d : ok, %d points",Device.dwTimeGlobal,m_tpTravelLine.size());
 #ifndef AI_COMPILER
-			Device.Statistic.TEST0.End		();
+			Device.Statistic->TEST0.End		();
 #endif
 			return;
 		}
@@ -1052,7 +1052,7 @@ void CLevelGraph::build_detail_path()
 			if (i >= m - 1) {
 				if (i <= _i) {
 #ifndef AI_COMPILER
-					Device.Statistic.TEST0.End();
+					Device.Statistic->TEST0.End();
 #endif
 					return;
 				}
@@ -1065,7 +1065,7 @@ void CLevelGraph::build_detail_path()
 					}
 					else {
 #ifndef AI_COMPILER
-						Device.Statistic.TEST0.End();
+						Device.Statistic->TEST0.End();
 #endif
 						return;
 					}
@@ -1094,7 +1094,7 @@ void CLevelGraph::build_detail_path()
 				if (I == P) {
 					m_tpTravelLine.clear	();
 #ifndef AI_COMPILER
-					Device.Statistic.TEST0.End();
+					Device.Statistic->TEST0.End();
 #endif
 					return;
 				}
@@ -1118,7 +1118,7 @@ void CLevelGraph::build_detail_path()
 				if (!compute_path(level_graph,s,d,start_set,dest_set,0)) {
 					m_tpTravelLine.clear	();
 #ifndef AI_COMPILER
-					Device.Statistic.TEST0.End();
+					Device.Statistic->TEST0.End();
 #endif
 					return;
 				}
@@ -1134,7 +1134,7 @@ void CLevelGraph::build_detail_path()
 		}
 	}
 #ifndef AI_COMPILER
-	Device.Statistic.TEST0.End				();
+	Device.Statistic->TEST0.End				();
 #endif
 }
 

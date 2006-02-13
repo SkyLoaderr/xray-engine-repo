@@ -78,7 +78,7 @@ void*	xrMemory::mem_alloc		(size_t size
 	//if(g_globalCheckAddr==_ptr){
 	//	__asm int 3;
 	//}
-	//if (_name && (0==strcmp(_name,"storage: sstring")) && (size==103))
+	//if (_name && (0==strcmp(_name,"class ISpatial *")) && (size==376))
 	//{
 	//	__asm int 3;
 	//}

@@ -223,7 +223,7 @@ void		sort_tlist_mat
 
 void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 {
-	Device.Statistic.RenderDUMP.Begin		();
+	Device.Statistic->RenderDUMP.Begin		();
 
 	// **************************************************** NORMAL
 	// Perform sorting based on ScreenSpaceArea
@@ -354,7 +354,7 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 		if(_clear) vs.clear		();
 	}
 
-	Device.Statistic.RenderDUMP.End	();
+	Device.Statistic->RenderDUMP.End	();
 }
 
 //////////////////////////////////////////////////////////////////////////

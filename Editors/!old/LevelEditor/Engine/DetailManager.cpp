@@ -190,7 +190,7 @@ void CDetailManager::UpdateVisibleM()
 
 	// Initialize 'vis' and 'cache'
 	// Collect objects for rendering
-	Device.Statistic.RenderDUMP_DT_VIS.Begin	();
+	Device.Statistic->RenderDUMP_DT_VIS.Begin	();
 	for (int _mz=0; _mz<dm_cache1_line; _mz++){
 		for (int _mx=0; _mx<dm_cache1_line; _mx++){
 			CacheSlot1& MS		= cache_level1[_mz][_mx];
@@ -261,7 +261,7 @@ void CDetailManager::UpdateVisibleM()
 			}
 		}
 	}
-	Device.Statistic.RenderDUMP_DT_VIS.End	();
+	Device.Statistic->RenderDUMP_DT_VIS.End	();
 }
 
 void CDetailManager::Render		()
@@ -277,17 +277,17 @@ void CDetailManager::Render		()
 	int s_x	= iFloor			(EYE.x/dm_slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
 
-	Device.Statistic.RenderDUMP_DT_Cache.Begin	();
+	Device.Statistic->RenderDUMP_DT_Cache.Begin	();
 	cache_Update				(s_x,s_z,EYE,dm_max_decompress);
-	Device.Statistic.RenderDUMP_DT_Cache.End	();
+	Device.Statistic->RenderDUMP_DT_Cache.End	();
 
 	UpdateVisibleM				();
 
-	Device.Statistic.RenderDUMP_DT_Render.Begin	();
+	Device.Statistic->RenderDUMP_DT_Render.Begin	();
 	RCache.set_CullMode		(CULL_NONE);
 	RCache.set_xform_world	(Fidentity);
 	if (UseVS())			hw_Render	();
 	else					soft_Render	();
 	RCache.set_CullMode		(CULL_CCW);
-	Device.Statistic.RenderDUMP_DT_Render.End	();
+	Device.Statistic->RenderDUMP_DT_Render.End	();
 }

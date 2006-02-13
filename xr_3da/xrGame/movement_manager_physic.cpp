@@ -150,7 +150,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	}
 
 	// Физика устанавливает новую позицию
-	Device.Statistic.Physics.Begin	();
+	Device.Statistic->Physics.Begin	();
 
 	// получить физ. объекты в радиусе
 	xr_vector<CObject*>					tpNearestList	;
@@ -206,7 +206,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		}
 	}
 	
-	Device.Statistic.Physics.End	();
+	Device.Statistic->Physics.End	();
 
 	STOP_PROFILE
 }

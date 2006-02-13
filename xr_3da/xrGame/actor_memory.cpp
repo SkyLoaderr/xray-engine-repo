@@ -49,7 +49,7 @@ float CActorMemory::shedule_Scale			()
 void CActorMemory::eye_pp_s01				()
 {
 	// Standart visibility
-	Device.Statistic.AI_Vis_Query.Begin		();
+	Device.Statistic->AI_Vis_Query.Begin		();
 	
 	Fvector									c,k,j;
 	m_actor->cam_Active()->Get				(c,k,j);
@@ -60,18 +60,18 @@ void CActorMemory::eye_pp_s01				()
 	mProject.build_projection				(deg2rad(m_actor->cam_Active()->f_fov),m_actor->cam_Active()->f_aspect,0.1f,g_pGamePersistent->Environment.CurrentEnv.far_plane);
 	mFull.mul								(mProject,mView);
 	feel_vision_query						(mFull,c);
-	Device.Statistic.AI_Vis_Query.End		();
+	Device.Statistic->AI_Vis_Query.End		();
 }
 
 void CActorMemory::eye_pp_s2				()
 {
 	// Tracing
-	Device.Statistic.AI_Vis_RayTests.Begin	();
+	Device.Statistic->AI_Vis_RayTests.Begin	();
 	u32										dwTime = Level().timeServer();
 	u32										dwDT = dwTime - m_time_stamp;
 	m_time_stamp							= dwTime;
 	feel_vision_update						(m_actor,m_position,float(dwDT)/1000.f,visual().transparency_threshold());
-	Device.Statistic.AI_Vis_RayTests.End	();
+	Device.Statistic->AI_Vis_RayTests.End	();
 }
 
 void CActorMemory::shedule_Update			(u32 dt)

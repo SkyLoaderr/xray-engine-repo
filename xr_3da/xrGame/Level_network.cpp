@@ -135,15 +135,15 @@ void CLevel::net_Update	()
 {
 	if(game_configured){
 		// If we have enought bandwidth - replicate client data on to server
-		Device.Statistic.netClient.Begin	();
+		Device.Statistic->netClient.Begin	();
 		ClientSend							();
-		Device.Statistic.netClient.End		();
+		Device.Statistic->netClient.End		();
 	}
 	// If server - perform server-update
 	if (Server && OnServer())	{
-		Device.Statistic.netServer.Begin();
+		Device.Statistic->netServer.Begin();
 		Server->Update					();
-		Device.Statistic.netServer.End	();
+		Device.Statistic->netServer.End	();
 	}
 }
 

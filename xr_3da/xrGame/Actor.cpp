@@ -836,9 +836,9 @@ void CActor::UpdateCL	()
 	else 
 		cam_Update(dt, DEFAULT_FOV);
 */
-	Device.Statistic.TEST1.Begin		();
+	Device.Statistic->TEST1.Begin		();
 	cam_Update(float(Device.dwTimeDelta)/1000.0f, currentFOV());
-	Device.Statistic.TEST1.End		();
+	Device.Statistic->TEST1.End		();
 
 	if(pWeapon)
 	{

@@ -74,8 +74,10 @@ extern void dbg_dump_leaks();
 extern void dbg_dump_str_leaks();
 void	xrMemory::_destroy()
 {
+#ifndef M_BORLAND
 #ifdef DEBUG
 	if (debug_mode)				dbg_dump_str_leaks	();
+#endif
 #endif
 	xr_delete					(g_pSharedMemoryContainer);
 	xr_delete					(g_pStringContainer);
@@ -174,13 +176,18 @@ void	xrMemory::mem_statistic	(LPCSTR fn)
 		fprintf				(Fa,"0x%08X[%2d]: %8d %s\n",*(u32*)(&debug_info[it]._p),pool_id,debug_info[it]._size,debug_info[it]._name);
 	}
 
+	/*
 	fprintf					(Fa,"$BEGIN CHUNK #3\n");
 	for (u32 it=0; it<debug_info.size(); it++)
 	{
 		if (0==debug_info[it]._p)	continue	;
-		if (0==strcmp(debug_info[it]._name,"storage: sstring"))
-			fprintf			(Fa,"0x%08X: %8d %s %s\n",*(u32*)(&debug_info[it]._p),debug_info[it]._size,debug_info[it]._name,((str_value*)(*(u32*)(&debug_info[it]._p)))->value);
+		try{
+			if (0==strcmp(debug_info[it]._name,"storage: sstring"))
+				fprintf		(Fa,"0x%08X: %8d %s %s\n",*(u32*)(&debug_info[it]._p),debug_info[it]._size,debug_info[it]._name,((str_value*)(*(u32*)(&debug_info[it]._p)))->value);
+		}catch(...){
+		}
 	}
+	*/
 
 	fclose		(Fa)		;
 

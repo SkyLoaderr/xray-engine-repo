@@ -10,24 +10,9 @@
 #include "alife_simulator.h"
 #include "xrServer_Objects_ALife.h"
 #include "ai_space.h"
+#include "../IGame_Persistent.h"
 
 LPCSTR alife_section = "alife";
-
-union params {
-	struct {
-		string256	m_game_or_spawn;
-		string256	m_game_type;
-		string256	m_alife;
-		string256	m_new_or_load;
-	};
-	string256		m_params[4];
-
-	IC				params()
-	{
-		for (int i=0; i<4; ++i)
-			strcpy	(m_params[i],"");
-	}
-};
 
 CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 	CALifeUpdateManager			(server,alife_section),
@@ -38,12 +23,8 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 	ai().set_alife				(this);
 	setup_command_line			(command_line);
 
-	params						p;
-	int							n = _min(4,_GetItemCount(**command_line,'/'));
-	for (int i=0; i<n; ++i) {
-		_GetItem				(**command_line,i,p.m_params[i],'/');
-		strlwr					(p.m_params[i]);
-	}
+	typedef IGame_Persistent::params params;
+	params							&p = g_pGamePersistent->m_game_params;
 	
 	R_ASSERT2					(
 		xr_strlen(p.m_game_or_spawn) && 
