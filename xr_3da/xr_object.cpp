@@ -230,7 +230,8 @@ void CObject::UpdateCL			()
 	spatial_update				(base_spu_epsP*5,base_spu_epsR*5);
 
 	// crow
-	if (AlwaysTheCrow())																	MakeMeCrow	();
+	if (Parent == g_pGameLevel->CurrentViewEntity())										MakeMeCrow	();
+	else if (AlwaysTheCrow())																MakeMeCrow	();
 	else if (Device.vCameraPosition.distance_to_sqr(Position()) < CROW_RADIUS*CROW_RADIUS)	MakeMeCrow	();
 }
 
