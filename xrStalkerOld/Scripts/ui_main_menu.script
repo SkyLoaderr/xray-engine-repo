@@ -138,6 +138,7 @@ end
 function main_menu:StartGame()
 	local console = get_console()
 	console:execute("start server(20lvl/single/alife/new) client(localhost)")
+	console:execute("main_menu off")
 end
 
 function main_menu:OnButton_load_spawn()
