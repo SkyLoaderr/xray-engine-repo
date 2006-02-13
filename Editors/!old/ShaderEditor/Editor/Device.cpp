@@ -123,6 +123,7 @@ void CRenderDevice::ResetNearer(){
 bool CRenderDevice::Create()
 {
 	if (bReady)	return false;
+    Statistic			= xr_new<CStats>();
 	ELog.Msg(mtInformation,"Starting RENDER device...");
 
 	HW.CreateDevice		(m_hRenderWnd,dwWidth,dwHeight);
@@ -166,6 +167,7 @@ void CRenderDevice::Destroy(){
 	HW.DestroyDevice	();
 
 	ELog.Msg( mtInformation, "D3D: device cleared" );
+    xr_delete			(Statistic);
 }
 //---------------------------------------------------------------------------
 void CRenderDevice::_SetupStates()

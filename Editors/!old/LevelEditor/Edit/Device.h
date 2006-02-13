@@ -82,7 +82,7 @@ public:
 
 	// Dependent classes
 	CResourceManager*		Resources;	  
-	CStats					Statistic;
+	CStats*					Statistic;
 
 	CGameFont* 				pSystemFont;
 
