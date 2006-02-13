@@ -735,6 +735,7 @@ public:
 	void						OnDifficultyChanged				();
 
 	IC float					HitProbability					() {return hit_probability;}
+	virtual	CVisualMemoryManager*visual_memory					() const;
 };
 
 IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

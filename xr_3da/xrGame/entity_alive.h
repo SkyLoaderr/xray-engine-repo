@@ -12,6 +12,7 @@ class CEntityCondition;
 class CWound;
 class CCharacterPhysicsSupport;
 class CMaterialManager;
+class CVisualMemoryManager;
 
 class CEntityAlive : public CEntity {
 private:
@@ -167,6 +168,8 @@ public:
 	virtual	void				OnCriticalHitHealthLoss		() {};	//вызывается если entity умрет от хита 
 	virtual	void				OnCriticalWoundHealthLoss	() {};	//вызывается если entity умрет от потери крови 
 	virtual void				OnCriticalRadiationHealthLoss() {};	//вызывается если entity умрет от радиации 
+
+	virtual	CVisualMemoryManager*visual_memory				() const {return(0);}
 };
 
 #include "entity_alive_inline.h"

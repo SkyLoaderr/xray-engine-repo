@@ -1120,3 +1120,8 @@ LPCSTR CCustomMonster::visual_name	(CSE_Abstract *server_entity)
 void CCustomMonster::on_enemy_change(const CEntityAlive *enemy)
 {
 }
+
+CVisualMemoryManager *CCustomMonster::visual_memory	() const
+{
+	return						(&memory().visual());
+}

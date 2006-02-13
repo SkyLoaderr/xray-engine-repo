@@ -37,6 +37,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyLookedOut,
 		eWorldPropertyPositionHolded,
 		eWorldPropertyEnemyDetoured,
+		eWorldPropertyUseSuddenness,
 		eWorldPropertyPureEnemy,
 
 		eWorldPropertyDangerUnknown,
@@ -94,6 +95,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorDetourEnemy,
 		eWorldOperatorSearchEnemy,
 		eWorldOperatorHideFromGrenade,
+		eWorldOperatorSuddenAttack,
 		eWorldOperatorPostCombatWait,
 
 // danger

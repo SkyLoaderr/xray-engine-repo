@@ -47,6 +47,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_looked_out",						StalkerDecisionSpace::eWorldPropertyLookedOut),
 				luabind::value("property_position_holded",					StalkerDecisionSpace::eWorldPropertyPositionHolded),
 				luabind::value("property_enemy_detoured",					StalkerDecisionSpace::eWorldPropertyEnemyDetoured),
+				luabind::value("property_use_suddenness",					StalkerDecisionSpace::eWorldPropertyUseSuddenness),
 
 				luabind::value("property_danger_unknown",					StalkerDecisionSpace::eWorldPropertyDangerUnknown),
 				luabind::value("property_danger_in_direction",				StalkerDecisionSpace::eWorldPropertyDangerInDirection),
@@ -92,6 +93,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("action_get_distance",						StalkerDecisionSpace::eWorldOperatorGetDistance),
 				luabind::value("action_detour_enemy",						StalkerDecisionSpace::eWorldOperatorDetourEnemy),
 				luabind::value("action_search_enemy",						StalkerDecisionSpace::eWorldOperatorSearchEnemy),
+				luabind::value("action_sudden_attack",						StalkerDecisionSpace::eWorldOperatorSuddenAttack),
 
 				luabind::value("action_danger_unknown_planner",				StalkerDecisionSpace::eWorldOperatorDangerUnknownPlanner),
 				luabind::value("action_danger_in_direction_planner",		StalkerDecisionSpace::eWorldOperatorDangerInDirectionPlanner),

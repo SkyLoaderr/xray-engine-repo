@@ -1714,3 +1714,8 @@ void CActor::OnDifficultyChanged	()
 	strconcat						(tmp,"hit_probability_",diff_name);
 	hit_probability					= pSettings->r_float(*cNameSect(),tmp);
 }
+
+CVisualMemoryManager	*CActor::visual_memory	() const
+{
+	return							(&memory().visual());
+}

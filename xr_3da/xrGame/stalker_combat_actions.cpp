@@ -731,10 +731,10 @@ void CStalkerActionSearchEnemy::initialize		()
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type			(eMovementTypeRun);
+	object().movement().set_body_state				(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateDanger);
-	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
+	object().CObjectHandler::set_goal				(eObjectActionAimReady1,object().best_weapon());
 	object().agent_manager().member().member(m_object).cover(0);
 }
 
@@ -885,6 +885,9 @@ CStalkerActionHideFromGrenade::CStalkerActionHideFromGrenade	(CAI_Stalker *objec
 void CStalkerActionHideFromGrenade::initialize				()
 {
 	inherited::initialize	();
+
+	m_storage->set_property						(eWorldPropertyUseSuddenness,false);
+
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -989,4 +992,91 @@ void CStalkerActionHideFromGrenade::execute					()
 void CStalkerActionHideFromGrenade::finalize				()
 {
 	inherited::finalize		();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionSuddenAttack
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionSuddenAttack::CStalkerActionSuddenAttack		(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object, action_name)
+{
+}
+
+void CStalkerActionSuddenAttack::initialize					()
+{
+	inherited::initialize	();
+
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
+}
+
+void CStalkerActionSuddenAttack::finalize					()
+{
+	inherited::finalize		();
+}
+
+void CStalkerActionSuddenAttack::execute					()
+{
+	inherited::execute		();
+
+	if (!object().memory().enemy().selected())
+		return;
+
+	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
+
+	if (!mem_object.m_object)
+		return;
+
+	bool								visible_now = object().memory().visual().visible_now(object().memory().enemy().selected());
+	if (visible_now)
+		object().sight().setup			(CSightAction(object().memory().enemy().selected(),true));
+	else
+		object().sight().setup			(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
+
+	object().movement().set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+//	object().movement().set_desired_position	(&mem_object.m_object_params.m_position);
+
+	float								distance = object().Position().distance_to(mem_object.m_object_params.m_position);
+	if (distance >= 15.f) {
+		object().movement().set_body_state				(eBodyStateStand);
+		object().movement().set_movement_type			(eMovementTypeRun);
+	}
+	else {
+		if (distance >= 8.f) {
+			object().movement().set_body_state			(eBodyStateStand);
+			object().movement().set_movement_type		(eMovementTypeWalk);
+		}
+		else {
+			if (distance >= 6.f) {
+				object().movement().set_body_state		(eBodyStateCrouch);
+				object().movement().set_movement_type	(eMovementTypeRun);
+			}
+			else {
+				if ((distance >= 4.f) || !visible_now) {
+					object().movement().set_body_state		(eBodyStateCrouch);
+					object().movement().set_movement_type	(eMovementTypeRun);
+				}
+				else {
+					object().movement().set_body_state		(eBodyStateCrouch);
+					object().movement().set_movement_type	(eMovementTypeStand);
+
+					u32									queue_interval, queue_size;
+					float								distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
+					select_queue_params					(distance,queue_interval, queue_size);
+					object().CObjectHandler::set_goal	(eObjectActionFire1,object().best_weapon(),queue_size,queue_interval);
+				}
+			}
+		}
+	}
+
+	CVisualMemoryManager	*visual_memory_manager = object().memory().enemy().selected()->visual_memory();
+	VERIFY					(visual_memory_manager);
+	if (!visual_memory_manager->visible_now(&object()))
+		return;
+
+	m_storage->set_property	(eWorldPropertyUseSuddenness,	false);
 }
