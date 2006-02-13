@@ -20,11 +20,6 @@
 #include "../../stalker_movement_manager.h"
 #include "../../ai_space.h"
 
-void CAI_Stalker::UseObject(const CObject *tpObject)
-{
-#pragma todo("Dima to Dima : Use object specified by script")
-}
-
 CWeapon	*CAI_Stalker::GetCurrentWeapon() const
 {
 	return			(smart_cast<CWeapon*>(inventory().ActiveItem()));

@@ -802,8 +802,6 @@ void CALifeCommunicationManager::vfPerformCommunication()
 		for ( ; i != e; ++i) {
 			if (!(*I)->base()->children.empty() || !(*i)->base()->children.empty())
 				vfPerformTrading(smart_cast<CSE_ALifeHumanAbstract*>(*I),smart_cast<CSE_ALifeHumanAbstract*>(*i));
-			// update events
-#pragma todo("Dima to Dima: Update events")
 		}
 	}
 }
@@ -878,7 +876,6 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->brain().m_dwTotalMoney;
 	tpALifeHumanAbstract->brain().m_dwTotalMoney	= u32(-1);
 
-#pragma todo("Dima to Dima : Process situation if trader has not enough money")
 	R_ASSERT2								(int(tpALifeTrader->m_dwMoney) >= 0,"Trader must have enough money to pay for the artefacts!");
 
 #ifdef DEBUG
@@ -900,7 +897,4 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 		tpALifeTrader->detach				(original_pda);
 		tpALifeHumanAbstract->attach		(original_pda,true);
 	}
-
-	// update events
-#pragma todo("Dima to Dima: Update events")
 }

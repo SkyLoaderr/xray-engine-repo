@@ -91,7 +91,6 @@ public:
 	virtual bool				CheckIfCompleted		() const										{return false;};
 	virtual	CScriptEntityAction	*GetCurrentAction		();
 	virtual	void				AddAction				(const CScriptEntityAction*tpEntityAction, bool bHighPriority = false);
-	virtual void				UseObject				(const CObject		*tpObject);
 	virtual void				ProcessScripts			();
 	virtual	void				ResetScriptData			(void				*P = 0);
 	virtual void				ClearActionQueue		();

@@ -164,11 +164,6 @@ bool CScriptEntity::CheckTypeVisibility(const char* section_name)
 	return				(false);
 }
 
-void CScriptEntity::UseObject(const CObject *tpObject)
-{
-#pragma todo("Dima to Dima : Use object specified by script")
-}
-
 void CScriptEntity::AddAction(const CScriptEntityAction *tpEntityAction, bool bHighPriority)
 {
 	bool				empty = m_tpActionQueue.empty();

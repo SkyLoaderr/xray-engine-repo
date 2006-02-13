@@ -63,6 +63,7 @@ void CScriptGameObject::script_register(lua_State *L)
 		def("buy_condition",				(void (*)(CScriptIniFile*,LPCSTR))(&::buy_condition)),
 		def("buy_condition",				(void (*)(float,float))(&::buy_condition)),
 		def("sell_condition",				(void (*)(CScriptIniFile*,LPCSTR))(&::sell_condition)),
-		def("sell_condition",				(void (*)(float,float))(&::sell_condition))
+		def("sell_condition",				(void (*)(float,float))(&::sell_condition)),
+		def("show_condition",				&::show_condition)
 	];
 }

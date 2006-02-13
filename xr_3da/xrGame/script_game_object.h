@@ -202,7 +202,6 @@ public:
 			void				ChangeTeam			(u8 team, u8 squad, u8 group);
 
 	// CAI_Stalker
-			void				UseObject			(const CScriptGameObject *tpLuaGameObject);
 			CScriptGameObject	*GetCurrentWeapon	() const;
 			CScriptGameObject	*GetFood			() const;
 			CScriptGameObject	*GetMedikit			() const;
@@ -535,6 +534,7 @@ public:
 			void				sell_condition						(float friend_factor, float enemy_factor);
 			void				buy_condition						(CScriptIniFile *ini_file, LPCSTR section);
 			void				buy_condition						(float friend_factor, float enemy_factor);
+			void				show_condition						(CScriptIniFile *ini_file, LPCSTR section);
 			void				buy_supplies						(CScriptIniFile *ini_file, LPCSTR section);
 
 			LPCSTR				sound_prefix						() const;
@@ -550,3 +550,4 @@ extern void sell_condition	(CScriptIniFile *ini_file, LPCSTR section);
 extern void sell_condition	(float friend_factor, float enemy_factor);
 extern void buy_condition	(CScriptIniFile *ini_file, LPCSTR section);
 extern void buy_condition	(float friend_factor, float enemy_factor);
+extern void show_condition	(CScriptIniFile *ini_file, LPCSTR section);

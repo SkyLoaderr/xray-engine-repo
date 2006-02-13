@@ -130,15 +130,6 @@ CScriptGameObject *CScriptGameObject::GetCorpse() const
 	}
 }
 
-void CScriptGameObject::UseObject(const CScriptGameObject *tpLuaGameObject)
-{
-	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(&object());
-	if (l_tpCustomMonster)
-		l_tpCustomMonster->UseObject(&tpLuaGameObject->object());
-	else
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member UseObject!");
-}
-
 bool CScriptGameObject::CheckTypeVisibility(const char *section_name)
 {
 	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(&object());
@@ -776,6 +767,21 @@ void CScriptGameObject::buy_condition			(float friend_factor, float enemy_factor
 	);
 }
 
+void CScriptGameObject::show_condition			(CScriptIniFile *ini_file, LPCSTR section)
+{
+	CInventoryOwner								*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member show_condition!");
+		return;
+	}
+
+	inventory_owner->trade_parameters().process	(
+		CTradeParameters::action_show(0),
+		*ini_file,
+		section
+	);
+}
+
 void CScriptGameObject::buy_supplies			(CScriptIniFile *ini_file, LPCSTR section)
 {
 	CInventoryOwner								*inventory_owner = smart_cast<CInventoryOwner*>(&object());
@@ -820,6 +826,11 @@ void buy_condition								(float friend_factor, float enemy_factor)
 			enemy_factor
 		)
 	);
+}
+
+void show_condition								(CScriptIniFile *ini_file, LPCSTR section)
+{
+	default_trade_parameters().process	(CTradeParameters::action_show(0),*ini_file,section);
 }
 
 LPCSTR CScriptGameObject::sound_prefix			() const

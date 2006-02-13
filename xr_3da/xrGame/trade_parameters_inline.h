@@ -59,6 +59,11 @@ IC	const CTradeActionParameters &CTradeParameters::action	(action_sell) const
 	return					(m_sell);
 }
 
+IC	const CTradeBoolParameters &CTradeParameters::action	(action_show) const
+{
+	return					(m_show);
+}
+
 IC	CTradeActionParameters &CTradeParameters::action	(action_buy)
 {
 	return					(m_buy);
@@ -67,6 +72,11 @@ IC	CTradeActionParameters &CTradeParameters::action	(action_buy)
 IC	CTradeActionParameters &CTradeParameters::action	(action_sell)
 {
 	return					(m_sell);
+}
+
+IC	CTradeBoolParameters &CTradeParameters::action		(action_show)
+{
+	return					(m_show);
 }
 
 template <typename _action_type>

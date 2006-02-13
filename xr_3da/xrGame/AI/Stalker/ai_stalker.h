@@ -214,7 +214,6 @@ public:
 	virtual void						UpdateAvailableDialogs				(CPhraseDialogManager* partner);
 
 	// scripts
-	virtual void						UseObject				(const CObject			*tpObject);
 	virtual CWeapon						*GetCurrentWeapon		() const;
 	virtual u32							GetWeaponAmmo			() const;
 //	virtual CInventoryItem				*GetCurrentEquipment	() const; <- moved to InventoryOwner::GetCurrentOutfit

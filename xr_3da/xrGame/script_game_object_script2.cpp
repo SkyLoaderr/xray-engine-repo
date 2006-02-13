@@ -116,7 +116,6 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("who_hit_name",				&CScriptGameObject::WhoHitName)
 		.def("who_hit_section_name",		&CScriptGameObject::WhoHitSectionName)
 		
-		.def("use",							&CScriptGameObject::UseObject)
 		.def("rank",						&CScriptGameObject::GetRank)
 		.def("command",						CScriptGameObject::AddAction)
 		.def("action",						&CScriptGameObject::GetCurrentAction, adopt(result))
