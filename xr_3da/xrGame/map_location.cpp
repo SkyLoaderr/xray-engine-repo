@@ -324,18 +324,20 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		map_point_path.clear();
 		bool res = ai().graph_engine().search(ai().game_graph(),Actor()->ai_location().game_vertex_id(), dest_graph_id, &map_point_path, GraphEngineSpace::CBaseParameters());
 		if(res){
-			xr_vector<u32>::iterator it = map_point_path.begin();
-			xr_vector<u32>::iterator it_e = map_point_path.end();
+			xr_vector<u32>::reverse_iterator it = map_point_path.rbegin();
+			xr_vector<u32>::reverse_iterator it_e = map_point_path.rend();
 
 			xr_vector<CLevelChanger*>::iterator lit,lit_e;
 			lit_e							= g_lchangers.end();
 			bool bDone						= false;
 			for(; (it!=it_e)&&(!bDone) ;++it){
 				for(lit=g_lchangers.begin();lit!=lit_e; ++lit){
+					
 					if((*it)==(*lit)->ai_location().game_vertex_id() ){
 						bDone = true;
 						break;
 					}
+
 				}
 			}
 			static bool bbb = false;
