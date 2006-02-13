@@ -10,7 +10,7 @@ void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 
 	// before destroy
 	bReady						= FALSE;
-	Statistic.OnDeviceDestroy	();
+	Statistic->OnDeviceDestroy	();
 	::Render->destroy			();
 	Resources->OnDeviceDestroy	(bKeepTextures);
 	RCache.OnDeviceDestroy		();
@@ -42,6 +42,8 @@ void CRenderDevice::Destroy	(void) {
 	seqFrameMT.R.clear			();
 	seqDeviceReset.R.clear		();
 	seqParallel.clear			();
+
+	xr_delete					(Statistic);
 }
 
 void CRenderDevice::Reset		()

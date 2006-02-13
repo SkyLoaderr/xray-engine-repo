@@ -79,7 +79,7 @@ public:
 
 	// Dependent classes
 	CResourceManager*						Resources;	  
-	CStats									Statistic;
+	CStats*									Statistic;
 	CGammaControl							Gamma;
 
 	// Engine flow-control

@@ -142,6 +142,15 @@ ISpatial_DB::ISpatial_DB()
 	stat_objects			= 0;
 }
 
+ISpatial_DB::~ISpatial_DB()
+{
+	while (!allocator_pool.empty()){
+		allocator.destroy		(allocator_pool.back());
+		allocator_pool.pop_back	();
+	}
+}
+
+
 void			ISpatial_DB::initialize(Fbox& BB)
 {
 	if (0==m_root)			

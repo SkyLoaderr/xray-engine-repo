@@ -158,10 +158,11 @@ private:
 	void							_remove			(ISpatial_NODE* N, ISpatial_NODE* N_sub);
 public:
 	ISpatial_DB();
+	~ISpatial_DB();
 
 	// managing
 	void							initialize		(Fbox& BB);
-	void							destroy			();
+	//void							destroy			();
 	void							insert			(ISpatial* S);
 	void							remove			(ISpatial* S);
 	void							update			(u32 nodes=8);

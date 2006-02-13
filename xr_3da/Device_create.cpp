@@ -67,7 +67,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	Gamma.Update				();
 	Resources->OnDeviceCreate	(shName);
 	::Render->create			();
-	Statistic.OnDeviceCreate	();
+	Statistic->OnDeviceCreate	();
 	m_WireShader.create			("editor\\wire");
 	m_SelectionShader.create	("editor\\selection");
 
@@ -78,6 +78,7 @@ void CRenderDevice::_Create	(LPCSTR shName)
 void CRenderDevice::Create	() 
 {
 	if (bReady)	return;		// prevent double call
+	Statistic	= xr_new<CStats>();
 	Log("Starting RENDER device...");
 
 	HW.CreateDevice		(m_hWnd,dwWidth,dwHeight);

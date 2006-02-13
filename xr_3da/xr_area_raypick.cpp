@@ -17,6 +17,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 {
 	Lock.Enter		();
 	BOOL	_ret	= _RayTest(start,dir,range,tgt,cache,ignore_object);
+	r_spatial.clear	();
 	Lock.Leave		();
 	return			_ret;
 }
@@ -93,6 +94,7 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 {
 	Lock.Enter		();
 	BOOL	_res	= _RayPick(start,dir,range,tgt,R,ignore_object);
+	r_spatial.clear	();
 	Lock.Leave		();
 	return	_res;
 }
@@ -145,6 +147,7 @@ BOOL CObjectSpace::RayQuery		(collide::rq_results& dest, const collide::ray_defs
 {
 	Lock.Enter		();
 	BOOL	_res	= _RayQuery(dest,R,CB,user_data,tb,ignore_object);
+	r_spatial.clear	();
 	Lock.Leave		();
 	return	_res;
 }
@@ -380,7 +383,7 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 		}
 		if ((R.flags&CDB::OPT_ONLYFIRST)||(R.flags&CDB::OPT_ONLYNEAREST)) break;
 	} while (next_test!=rqtNone)		;
-	return r_dest.r_count()	;
+	return r_dest.r_count	()	;
 }
 
 BOOL CObjectSpace::RayQuery	(collide::rq_results& r_dest, ICollisionForm* target, const collide::ray_defs& R)

@@ -200,12 +200,12 @@ void	CEffect_Rain::Render	()
 
 		one.P.mad		(one.D,one.fSpeed*dt);
 
-		Device.Statistic.TEST1.Begin();
+		Device.Statistic->TEST1.Begin();
 		Fvector	wdir;	wdir.set(one.P.x-vEye.x,0,one.P.z-vEye.z);
 		float	wlen	= wdir.square_magnitude();
 		if (wlen>b_radius_wrap_sqr)	{
 			wlen		= _sqrt(wlen);
-			Device.Statistic.TEST3.Begin();
+			Device.Statistic->TEST3.Begin();
 			if ((one.P.y-vEye.y)<sink_offset){
 				// need born
 				one.invalidate();
@@ -235,9 +235,9 @@ void	CEffect_Rain::Render	()
 //					Log("4");
 				}
 			}
-			Device.Statistic.TEST3.End();
+			Device.Statistic->TEST3.End();
 		}
-		Device.Statistic.TEST1.End();
+		Device.Statistic->TEST1.End();
 
 		// Build line
 		Fvector&	pos_head	= one.P;

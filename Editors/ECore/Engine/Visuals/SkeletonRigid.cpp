@@ -24,9 +24,9 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 
 	// exact computation
 	// Calculate bones
-	Device.Statistic.Animation.Begin();
+	Device.Statistic->Animation.Begin();
 	Bone_Calculate					(bones->at(iRoot),&Fidentity);
-	Device.Statistic.Animation.End	();
+	Device.Statistic->Animation.End	();
 
 	// Calculate BOXes/Spheres if needed
 	UCalc_Visibox++; 

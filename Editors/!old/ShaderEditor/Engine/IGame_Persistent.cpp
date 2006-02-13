@@ -121,9 +121,9 @@ void IGame_Persistent::OnFrame		()
 	Environment.OnFrame				();
 #ifndef _EDITOR
 
-	Device.Statistic.Particles_starting	= ps_needtoplay.size	();
-	Device.Statistic.Particles_active	= ps_active.size		();
-	Device.Statistic.Particles_destroy	= ps_destroy.size		();
+	Device.Statistic->Particles_starting	= ps_needtoplay.size	();
+	Device.Statistic->Particles_active	= ps_active.size		();
+	Device.Statistic->Particles_destroy	= ps_destroy.size		();
 
 	// Play req particle systems
 	while (ps_needtoplay.size())
