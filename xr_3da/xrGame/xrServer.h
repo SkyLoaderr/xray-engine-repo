@@ -12,7 +12,7 @@
 #include "id_generator.h"
 
 #ifdef DEBUG
-#	define SLOW_VERIFY_ENTITIES
+//#	define SLOW_VERIFY_ENTITIES
 #endif
 
 
