@@ -770,6 +770,7 @@ public:
 	  }
 };
 #include "UIGameCustom.h"
+#include "HUDManager.h"
 class CCC_ALifeSave : public IConsole_Command {
 public:
 	CCC_ALifeSave(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
