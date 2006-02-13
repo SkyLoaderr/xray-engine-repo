@@ -42,9 +42,9 @@
 #ifdef DEBUG
 #	include "PHDebug.h"
 #	include "ui/UIDebugFonts.h" 
-#	include "hudmanager.h"
 #endif
 #include "MainUI.h"
+#	include "hudmanager.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
