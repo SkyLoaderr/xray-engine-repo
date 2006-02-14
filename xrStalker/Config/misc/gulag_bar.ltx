@@ -359,6 +359,7 @@ path_walk = commander_1_walk
 path_look = commander_1_look
 meet = meet@bar_dolg_zastava_comander1
 soundgroup = bar_dolg_zastava1
+danger = danger@zastava_1
 
 [logic@bar_dolg_zastava1_walker1]
 active = walker1@bar_dolg_zastava1_walker1
@@ -368,6 +369,7 @@ path_walk = guard_1_walk
 path_look = guard_1_look
 meet = meet@bar_dolg_zastava1
 soundgroup = bar_dolg_zastava1
+danger = danger@zastava_1
 
 [logic@bar_dolg_zastava1_walker2]
 active = walker2@bar_dolg_zastava1_walker2
@@ -377,6 +379,7 @@ path_walk = guard_2_walk
 path_look = guard_2_look
 meet = meet@bar_dolg_zastava1
 soundgroup = bar_dolg_zastava1
+danger = danger@zastava_1
 
 [logic@bar_dolg_zastava1_walker3]
 active = walker3@bar_dolg_zastava1_walker3
@@ -386,6 +389,7 @@ path_walk = guard_3_walk
 ;path_look = guard_3_look
 meet = meet@bar_dolg_zastava1
 soundgroup = bar_dolg_zastava1
+danger = danger@zastava_1
 
 [meet@bar_dolg_zastava1]
 meet_state 		= 20| guard@talk_hello|4| guard
@@ -403,6 +407,9 @@ victim 			= 10| actor
 victim_wpn 		= 10| actor
 use = true
 use_wpn = false
+
+[danger@zastava_1]
+ignore_distance = 10
 
 ; Застава 2
 
