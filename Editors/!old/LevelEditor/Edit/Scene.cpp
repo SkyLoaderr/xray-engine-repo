@@ -480,9 +480,8 @@ xr_token		js_token	[ ]={
 	{ 0,					0 	}
 };
 
-void EScene::OnBuildControlClick	(PropValue* sender, bool& bModif, bool& bSafe)
+void EScene::OnBuildControlClick	(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: m_LevelOp.SetDraftQuality();	break;
     case 1: m_LevelOp.SetHighQuality();		break;

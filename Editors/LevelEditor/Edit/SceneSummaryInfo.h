@@ -32,7 +32,7 @@ private:
         objinf_map			objects;
         float				effective_area;
         float				pixel_area;
-		void 				OnHighlightClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void 				OnHighlightClick		(ButtonValue* sender, bool& bDataModified, bool& bSafe);
     public:
     	STextureInfo(const shared_str& fn, ESummaryTextureType t)
         {
@@ -102,8 +102,8 @@ public:
     int 		pe_static_cnt;
     Fbox		bbox;
 private:
-	void 		OnFileClick			(PropValue* sender, bool& bModif, bool& bSafe);
-	void 		OnHighlightClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+	void 		OnFileClick			(ButtonValue* sender, bool& bModif, bool& bSafe);
+	void 		OnHighlightClick	(ButtonValue* sender, bool& bDataModified, bool& bSafe);
 public:
     void		Prepare				();
 protected:

@@ -95,7 +95,7 @@ protected:
 
     void 			FindObjectByNameCB			(LPCSTR new_name, bool& res){res=!!FindObjectByName(new_name,(CCustomObject*)0);}
 
-	void __stdcall 	OnBuildControlClick			(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall 	OnBuildControlClick			(ButtonValue* sender, bool& bModif, bool& bSafe);
 	void __stdcall 	OnRTFlagsChange				(PropValue* sender);
 public:
 	enum{

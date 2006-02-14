@@ -37,8 +37,8 @@ protected:
     // light control
 	int					lcontrol_last_idx;
 	RTokenVec			lcontrols;
-    void __stdcall  	OnControlAppendClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-    void __stdcall  	OnControlRenameRemoveClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+    void __stdcall  	OnControlAppendClick		(ButtonValue* sender, bool& bDataModified, bool& bSafe);
+    void __stdcall  	OnControlRenameRemoveClick	(ButtonValue* sender, bool& bDataModified, bool& bSafe);
 protected:
     // controls
     virtual void 		CreateControls			();

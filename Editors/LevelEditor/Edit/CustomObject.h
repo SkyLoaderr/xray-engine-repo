@@ -85,9 +85,9 @@ public:
 	bool __stdcall  OnObjectNameAfterEdit	(PropValue* sender, shared_str& edit_val);
     void __stdcall 	OnTransformChange		(PropValue* value); 
 	void __stdcall  OnMotionableChange		(PropValue* sender);
-    void __stdcall 	OnMotionCommandsClick	(PropValue* value, bool& bModif, bool& bSafe);
-    void __stdcall 	OnMotionFilesClick		(PropValue* value, bool& bModif, bool& bSafe);
-    void __stdcall 	OnMotionControlClick	(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnMotionCommandsClick	(ButtonValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnMotionFilesClick		(ButtonValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnMotionControlClick	(ButtonValue* value, bool& bModif, bool& bSafe);
     void __stdcall 	OnMotionFrameChange		(PropValue* value); 
     void __stdcall 	OnMotionCurrentFrameChange(PropValue* value); 
     void __stdcall 	OnMotionCameraViewChange(PropValue* value); 

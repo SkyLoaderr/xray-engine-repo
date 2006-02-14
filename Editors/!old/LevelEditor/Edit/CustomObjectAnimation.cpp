@@ -96,7 +96,7 @@ void CCustomObject::AnimationDrawPath()
 #endif    
 }
 
-void 	CCustomObject::OnMotionControlClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CCustomObject::OnMotionControlClick(ButtonValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -142,7 +142,7 @@ void 	CCustomObject::OnMotionControlClick(PropValue* value, bool& bModif, bool& 
     bModif = false;
 }
 
-void 	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CCustomObject::OnMotionCommandsClick(ButtonValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -200,7 +200,7 @@ void 	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bModif, bool&
 	bModif = true;
 }
 
-void 	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CCustomObject::OnMotionFilesClick(ButtonValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;

@@ -11,7 +11,7 @@
 #include "ui_main.h"
 
 //----------------------------------------------------
-void 	CLight::OnAutoClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CLight::OnAutoClick(ButtonValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -32,7 +32,7 @@ void 	CLight::OnAutoClick(PropValue* value, bool& bModif, bool& bSafe)
 	OnPointDataChange(value);
 }
 
-void 	CLight::OnFuzzyGenerateClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CLight::OnFuzzyGenerateClick(ButtonValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){

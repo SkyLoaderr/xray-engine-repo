@@ -98,8 +98,8 @@ public:
     void __stdcall 	OnFuzzyDataChange	(PropValue* value);
     void __stdcall 	OnFuzzyTypeChange	(PropValue* value);
 
-    void __stdcall 	OnFuzzyGenerateClick(PropValue* value, bool& bModif, bool& bSafe);
-    void __stdcall 	OnAutoClick		(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnFuzzyGenerateClick(ButtonValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnAutoClick		(ButtonValue* value, bool& bModif, bool& bSafe);
     void __stdcall 	OnNeedUpdate	(PropValue* value);
 
     void __stdcall 	OnPointDataChange(PropValue* value);

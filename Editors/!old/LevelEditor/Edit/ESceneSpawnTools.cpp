@@ -45,10 +45,10 @@ ESceneSpawnTools::ESceneSpawnTools	():ESceneCustomOTools(OBJCLASS_SPAWNPOINT)
     CInifile::Root& data 	= pSettings->sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++){
     	LPCSTR val;
-    	if (it->line_exist	("$spawn",&val)){
-        	CLASS_ID cls_id	= pSettings->r_clsid(it->Name,"class");
-        	shared_str v	= pSettings->r_string_wb(it->Name,"$spawn");
-        	m_Classes[cls_id].push_back(SChooseItem(*v,*it->Name));
+    	if ((*it)->line_exist	("$spawn",&val)){
+        	CLASS_ID cls_id	= pSettings->r_clsid((*it)->Name,"class");
+        	shared_str v	= pSettings->r_string_wb((*it)->Name,"$spawn");
+        	m_Classes[cls_id].push_back(SChooseItem(*v,*(*it)->Name));
         }
     }
     

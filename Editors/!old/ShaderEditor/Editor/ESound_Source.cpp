@@ -232,9 +232,8 @@ void ESoundSource::OnChangeSource	(PropValue* prop)
 	m_Source.set_params			(&m_Params);
 }
 
-void ESoundSource::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+void ESoundSource::OnControlClick(ButtonValue* V, bool& bModif, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: Play();		break;
     case 1: Stop();		break;

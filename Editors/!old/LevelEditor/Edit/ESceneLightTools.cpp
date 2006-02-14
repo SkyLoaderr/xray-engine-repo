@@ -107,8 +107,8 @@ void ESceneLightTools::BeforeRender()
             Device.SetRS	(D3DRS_AMBIENT,C.get());
         }else				Device.SetRS(D3DRS_AMBIENT,0x00000000);
         
-        Device.Statistic.dwTotalLight 	= l_cnt;
-        Device.Statistic.dwLightInScene = frame_light.size();
+        Device.Statistic->dwTotalLight 	= l_cnt;
+        Device.Statistic->dwLightInScene = frame_light.size();
     }
 }
 //------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ void  ESceneLightTools::OnRender(int priority, bool strictB2F)
 }
 //------------------------------------------------------------------------------
 
-void ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void ESceneLightTools::OnControlAppendClick(ButtonValue* sender, bool& bDataModified, bool& bSafe)
 {
 	AppendLightControl(GenLightControlName().c_str());
     ExecCommand(COMMAND_UPDATE_PROPERTIES);
@@ -151,10 +151,9 @@ void ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModifi
 }
 //------------------------------------------------------------------------------
 
-void ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void ESceneLightTools::OnControlRenameRemoveClick(ButtonValue* V, bool& bDataModified, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
-    AnsiString item_name = sender->Owner()->Item()->Text;
+    AnsiString item_name = V->Owner()->Item()->Text;
     switch (V->btn_num){
     case 0:{ 
     	AnsiString new_name=item_name;

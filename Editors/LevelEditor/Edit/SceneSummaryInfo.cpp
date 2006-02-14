@@ -99,7 +99,7 @@ void SSceneSummary::STextureInfo::Prepare	()
     }
 }
 
-void SSceneSummary::STextureInfo::OnHighlightClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void SSceneSummary::STextureInfo::OnHighlightClick(ButtonValue* sender, bool& bDataModified, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     AnsiString item_name = sender->Owner()->Item()->Text;
@@ -185,7 +185,7 @@ void SSceneSummary::STextureInfo::Export	(IWriter* F, u32& mem_use)
 	F->w_string		(tmp.c_str());
 }
 
-void SSceneSummary::OnFileClick(PropValue* sender, bool& bModif, bool& bSafe)
+void SSceneSummary::OnFileClick(ButtonValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -198,10 +198,9 @@ void SSceneSummary::OnFileClick(PropValue* sender, bool& bModif, bool& bSafe)
 	}
     bModif = false;
 }
-void SSceneSummary::OnHighlightClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void SSceneSummary::OnHighlightClick(ButtonValue* V, bool& bDataModified, bool& bSafe)
 {
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
-    AnsiString item_name = sender->Owner()->Item()->Text;
+    AnsiString item_name = V->Owner()->Item()->Text;
     switch (V->btn_num){
     case 0:{ 
     	ExecCommand				(COMMAND_CLEAR_DEBUG_DRAW);

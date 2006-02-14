@@ -66,9 +66,9 @@ void CSpawnPoint::CLE_Visual::OnChangeVisual	()
 void CSpawnPoint::CLE_Visual::PlayAnimation ()
 {
     // play motion if skeleton
-    if (PSkeletonAnimated(visual)){ 
-        MotionID			M = PSkeletonAnimated(visual)->ID_Cycle_Safe(source->startup_animation.c_str());
-        if (M.valid())		PSkeletonAnimated(visual)->PlayCycle(M); 
+    if (PKinematicsAnimated(visual)){ 
+        MotionID			M = PKinematicsAnimated(visual)->ID_Cycle_Safe(source->startup_animation.c_str());
+        if (M.valid())		PKinematicsAnimated(visual)->PlayCycle(M); 
     }
     if (PKinematics(visual))PKinematics(visual)->CalculateBones();
 }

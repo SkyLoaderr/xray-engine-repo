@@ -247,8 +247,8 @@ void CSceneObject::OnFrame()
 	if (m_pReference) m_pReference->OnFrame();
 	if (psDeviceFlags.is(rsStatistic)){
     	if (IsStatic()||IsMUStatic()||Selected()){
-            Device.Statistic.dwLevelSelFaceCount 	+= GetFaceCount();
-            Device.Statistic.dwLevelSelVertexCount 	+= GetVertexCount();
+            Device.Statistic->dwLevelSelFaceCount 	+= GetFaceCount();
+            Device.Statistic->dwLevelSelVertexCount += GetVertexCount();
         }
     }
 }

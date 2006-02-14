@@ -20,7 +20,7 @@ class ESoundSource: public CCustomObject
     // edit events
     void __stdcall 	OnChangeWAV		(PropValue* prop);
     void __stdcall 	OnChangeSource	(PropValue* prop);
-	void __stdcall  OnControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  OnControlClick	(ButtonValue* sender, bool& bModif, bool& bSafe);
     void			ResetSource		();
     enum{
     	flLooped	= (1<<0),
