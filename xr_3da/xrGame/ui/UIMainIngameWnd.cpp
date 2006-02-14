@@ -309,7 +309,10 @@ void CUIMainIngameWnd::Draw()
 	}
 	FS.dwOpenCounter = 0;
 
-	float	luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
+	float		luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
+	float		power = log(luminocity > .001f ? luminocity : .001f)*current_state().m_luminocity_factor;
+	luminocity	= exp(power);
+
 	static float cur_lum = luminocity;
 	cur_lum = luminocity*0.01f + cur_lum*0.99f;
 	UIMotionIcon.SetLuminosity((s16)iFloor(cur_lum*100.0f));
