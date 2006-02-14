@@ -81,7 +81,7 @@ protected:
 		float	GetIndentByAlign(float length)											const;
 		float	GetVIndentByAlign();
 		void	CutFirstColoredTextEntry(xr_string& entry, u32& color,xr_string& text)	const;
-	CUILine*	ParseTextToColoredLine(const xr_string& str)							const;
+	CUILine*	ParseTextToColoredLine(const xr_string& str);
 
 	// IUITextControl data
 	typedef xr_string						Text;
