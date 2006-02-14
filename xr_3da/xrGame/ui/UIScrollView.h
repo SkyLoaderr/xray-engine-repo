@@ -45,6 +45,7 @@ public:
 			void	SetFixedScrollBar	(bool b);
 			float	GetDesiredChildWidth();
 			void	SetSelected			(CUIWindow*);
+			void	ForceUpdate			();
 };
 
 #define ADD_TEXT_TO_VIEW3(txt,st,view)		st = xr_new<CUIStatic>();						\

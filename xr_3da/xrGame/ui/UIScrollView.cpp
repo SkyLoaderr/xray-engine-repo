@@ -27,6 +27,10 @@ void CUIScrollView::SendMessage	(CUIWindow* pWnd, s16 msg, void* pData)
 		m_flags.set			(eNeedRecalc,TRUE);
 }
 
+void CUIScrollView::ForceUpdate(){
+	m_flags.set			(eNeedRecalc,TRUE);
+}
+
 void CUIScrollView::Init				()
 {
 	m_pad						= xr_new<CUIWindow>(); m_pad->SetAutoDelete(true);
@@ -119,6 +123,7 @@ void CUIScrollView::UpdateScroll		()
 {
 
 	Fvector2 w_pos					= m_pad->GetWndPos();
+	m_VScrollBar->SetHeight(GetHeight());
 	m_VScrollBar->SetRange		(0,iFloor(m_pad->GetHeight()));
 
 	m_VScrollBar->SetScrollPos	(iFloor(-w_pos.y));
