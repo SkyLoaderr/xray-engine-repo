@@ -7,7 +7,6 @@
 #include "level.h"
 #include "hudmanager.h"
 #include "ui/UIChatWnd.h"
-#include "ui/UIChatLog.h"
 #include "ui/UIGameLog.h"
 #include "clsid_game.h"
 #include <dinput.h>
@@ -369,8 +368,10 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 #ifdef DEBUG
 	Msg("Chat: %s : %s", PlayerName, ChatMsg);
 #endif	
+	string256 colPlayerName;
+	sprintf(colPlayerName, "%s%s:%s", Color_Teams[team], PlayerName, "%c<default>");
 	if (Level().CurrentViewEntity())
-		HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, PlayerName);
+		HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, colPlayerName);
 };
 
 void game_cl_mp::CommonMessageOut		(LPCSTR msg)
