@@ -1,5 +1,5 @@
 function main ()
-    task_level5.main2 ()
+    task_level5.main ()
     local actor = db.actor
     
     db.actor:give_info_portion ("bar_deactivate_radar_start")    
