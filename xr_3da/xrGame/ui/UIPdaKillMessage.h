@@ -9,14 +9,12 @@
 #include "KillMessageStruct.h"
 #include "UIPdaMsgListItem.h"
 
-class CUIPdaKillMessage : public CUIPdaMsgListItem{
+class CUIPdaKillMessage : public CUIStatic {
 typedef CUIPdaMsgListItem inherited;
 public:
 	CUIPdaKillMessage();
-	CUIPdaKillMessage(int iDelay);
 	virtual ~CUIPdaKillMessage();
 
-	virtual void Init(float x, float y, float width, float height);
 			void Init(KillMessageStruct& msg);
 	virtual void SetFont(CGameFont* pFont);
 	virtual void SetTextColor(u32 color);

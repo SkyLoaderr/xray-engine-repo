@@ -14,7 +14,6 @@
 #include "../InfoPortionDefs.h"
 
 class CUIGameLog;
-class CUIChatLog;
 class CUIChatWnd;
 class game_cl_GameState;
 class CUIPdaMsgListItem;
@@ -28,10 +27,8 @@ public:
 
 	void				DrawPdaMessages					();
 
-//	void				AddPdaMessage					(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
 	void				AddPdaMessage					(LPCSTR message, int iDelay);
 	void				AddIconedPdaMessage				(LPCSTR textureName, Frect originalRect, LPCSTR message, int iDelay);
-//	bool				SetDelayForPdaMessage			(int iValue, int iDelay);
 
 	void				AddLogMessage					(const shared_str& msg);
 	void				AddLogMessage					(KillMessageStruct& msg);
@@ -43,12 +40,10 @@ public:
 
 
 protected:
-CUIPdaMsgListItem*		AddMessageToList				(LPCSTR message, CUIListWnd* pListWnd, int iDelay);
-	
 	virtual void Init(float x, float y, float width, float height);
 
 
-	CUIChatLog*			m_pChatLog;
+	CUIGameLog*			m_pChatLog;
 	CUIChatWnd*			m_pChatWnd;
 	CUIGameLog*			m_pGameLog;
 	Frect				m_ListPos2;

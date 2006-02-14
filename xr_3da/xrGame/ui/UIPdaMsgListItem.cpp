@@ -17,24 +17,6 @@
 
 using namespace InventoryUtilities;
 
-CUIPdaMsgListItem::CUIPdaMsgListItem(void)
-{
-	m_iDelay = 0;
-	m_timeBegin = 0;
-}
-
-CUIPdaMsgListItem::CUIPdaMsgListItem(int iDelay){
-	m_iDelay = iDelay;
-	m_timeBegin = 0;
-}
-
-CUIPdaMsgListItem::~CUIPdaMsgListItem(void)
-{
-#pragma todo ("fixme")
-	CUIColorAnimatorWrapper *p = reinterpret_cast<CUIColorAnimatorWrapper*>(GetData());
-	if(p)
-		delete_data(p);
-}
 
 void CUIPdaMsgListItem::SetFont(CGameFont* pFont){
 	UIMsgText.SetFont(pFont);
@@ -42,7 +24,7 @@ void CUIPdaMsgListItem::SetFont(CGameFont* pFont){
 
 void CUIPdaMsgListItem::Init(float x, float y, float width, float height)
 {
-	inherited::Init			(x, y, width, height);
+	CUIStatic::Init			(x, y, width, height);
 
 	CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH,PDA_MSG_MAINGAME_CHAR);
@@ -51,7 +33,6 @@ void CUIPdaMsgListItem::Init(float x, float y, float width, float height)
 	CUIXmlInit				xml_init;
 	AttachChild				(&UIIcon);
 	xml_init.InitStatic		(uiXml, "icon_static", 0, &UIIcon);
-//	UIIcon.ClipperOn();
 
 	AttachChild(&UIName);
 	if(uiXml.NavigateToNode	("name_static",0))
@@ -65,22 +46,12 @@ void CUIPdaMsgListItem::Init(float x, float y, float width, float height)
 	xml_init.InitStatic		(uiXml, "text_static", 0, &UIMsgText);	
 }
 
-void CUIPdaMsgListItem::SetDelay(int iDelay){
-	m_iDelay = iDelay;
-}
-
 void CUIPdaMsgListItem::SetTextColor(u32 color){
 	UIMsgText.SetTextColor	(color);
 }
 
-void CUIPdaMsgListItem::Update()
-{
-	inherited::Update		();
-}
-
-void CUIPdaMsgListItem::Draw()
-{
-	inherited::Draw			();
+void CUIPdaMsgListItem::SetColor(u32 color){
+	UIIcon.SetColor(color);
 }
 
 void CUIPdaMsgListItem::InitCharacter(CInventoryOwner* pInvOwner)
@@ -97,25 +68,4 @@ void CUIPdaMsgListItem::InitCharacter(CInventoryOwner* pInvOwner)
 					float(pInvOwner->CharacterInfo().TradeIconY()*ICON_GRID_HEIGHT),
 					float(pInvOwner->CharacterInfo().TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH),
 					float(pInvOwner->CharacterInfo().TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT));
-}
-
-bool CUIPdaMsgListItem::IsTimeToDestroy(){
-	if (m_iDelay < 0 )  // if delay less than ZERO then we never returns true
-		return false;
-
-	if (0 == m_iDelay)
-		return true;
-
-	if (0 == m_timeBegin)	
-		m_timeBegin = Device.dwTimeGlobal;
-
-	if (m_iDelay < Device.dwTimeGlobal - m_timeBegin)
-	{		
-		CUIColorAnimatorWrapper *p = reinterpret_cast<CUIColorAnimatorWrapper*>(GetData());
-		p->Reset();
-		m_iDelay = 0;
-		return true;
-	}
-
-	return false;
 }

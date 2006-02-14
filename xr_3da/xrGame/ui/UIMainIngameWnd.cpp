@@ -174,8 +174,13 @@ void CUIMainIngameWnd::Init()
 	}
 
 	// Для информационных сообщений
+	u32			color;
+	CGameFont*	pFont;
 	AttachChild(&UIInfoMessages);
-	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoMessages);
+	xml_init.InitScrollView(uiXml, "info_list", 0, &UIInfoMessages);
+	CUIXmlInit::InitFont(uiXml, "info_list:font", 0, color, pFont);
+	UIInfoMessages.SetTextAtrib(pFont, color);
+
 		
 
 	//Полоса прогресса здоровья
@@ -703,19 +708,13 @@ void CUIMainIngameWnd::Update()
 		i = (EWarningIcons)(i + 1);
 	}
 
-
-
-	FadeUpdate						(&UIInfoMessages);
-
 	UpdatePickUpItem				();
-
 	CUIWindow::Update				();
 }
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
 	test_key(dik);
-
 
 	// поддержка режима adjust hud mode
 	bool flag = false;
@@ -1130,25 +1129,9 @@ void CUIMainIngameWnd::ShowAll()
 
 void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 {
-	CUIPdaMsgListItem* pItem = NULL;
-	pItem = xr_new<CUIPdaMsgListItem>();
-	UIInfoMessages.AddItem<CUIListItem>(pItem, 0); 
-	R_ASSERT(UIInfoMessages.GetFont());
-	pItem->UIMsgText.SetFont(UIInfoMessages.GetFont());
-	pItem->UIMsgText.SetTextColor(UIInfoMessages.GetTextColor());
-	pItem->UIMsgText.SetWndPos(-(UIInfoMessages.GetFont()->SizeOf(message) / 2.0f),
-								pItem->UIMsgText.GetWndRect().top);
-	UIInfoMessages.ScrollToBegin();
-
-	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-	R_ASSERT(p);
-	p->Cyclic(false);
-//	p->SetColorToModify(&pItem->UIMsgText.GetColorRef());
-	pItem->SetData(p);
-
-	UIInfoMessages.Show(true);	
-
-	pItem->UIMsgText.SetText(message);
+	CUIStatic* pItem = UIInfoMessages.AddLogMessage(message);
+	pItem->SetLightAnim("ui_main_msgs", false, true, true, true);
+	pItem->SetTextAlignment(CGameFont::alCenter);
 }
 
 void CUIMainIngameWnd::RenderQuickInfos()
@@ -1245,42 +1228,6 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 {
 	SetWarningIconColor(icon, 0x00ffffff);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-
-void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd)
-{
-
-	for(int i=0; i<pWnd->GetSize(); i++)
-	{
-		CUIListItem			*pItem	= pWnd->GetItem(i);
-		CUIPdaMsgListItem	*pPItem = smart_cast<CUIPdaMsgListItem*>(pItem);
-
-		if (! pPItem->IsTimeToDestroy() )
-			return;
-
-		CUIColorAnimatorWrapper *p = reinterpret_cast<CUIColorAnimatorWrapper*>(pItem->GetData());
-		if (p)
-		{
-			p->Update();
-			if (pPItem)
-			{
-				pPItem->UIMsgText.SetTextColor(subst_alpha(pPItem->UIMsgText.GetTextColor(), color_get_A(p->GetColor())));
-			}
-			else
-			{
-				pItem->SetTextColor(subst_alpha(pItem->GetTextColor(), color_get_A(p->GetColor())));
-			}
-
-			if (p->Done())
-			{
-//				xr_delete(p);
-				pWnd->RemoveItem(i);
-			}
-		}
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1437,6 +1384,7 @@ CUIGameTutorial* g_tut = NULL;
 //extern void create_force_progress();
 void test_key	(int dik)
 {
+	
 /*
 	static float k = 0.5f;
 	if(!g_MissileForceShape) create_force_progress();

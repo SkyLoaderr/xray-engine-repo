@@ -1,7 +1,8 @@
 #pragma once
 #include "UIDialogWnd.h"
 
-class CUIListWnd;
+class CUIScrollView;
+
 
 class CUISpeechMenu : public CUIDialogWnd{
 public:
@@ -13,6 +14,6 @@ public:
 	virtual bool OnKeyboard		(int dik, EUIMessages keyboard_action);
 	virtual bool StopAnyMove	() {return false;}
 private:
-	CUIListWnd*		m_pList;
+	CUIScrollView*	m_pList;
 	u32				m_text_color;
 };

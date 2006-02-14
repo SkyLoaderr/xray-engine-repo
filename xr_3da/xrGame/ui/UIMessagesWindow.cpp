@@ -13,7 +13,6 @@
 #include "UIGameLog.h"
 #include "xrXmlParser.h"
 #include "UIXmlInit.h"
-#include "UIChatLog.h"
 #include "UIChatWnd.h"
 #include "UIPdaMsgListItem.h"
 #include "UIColorAnimatorWrapper.h"
@@ -37,12 +36,14 @@ void CUIMessagesWindow::AddLogMessage(KillMessageStruct& msg){
 }
 
 void CUIMessagesWindow::AddLogMessage(const shared_str& msg){
-	m_pGameLog->AddLogMessage(msg);
+	m_pGameLog->AddLogMessage(*msg);
 }
 
 void CUIMessagesWindow::Init(float x, float y, float width, float height){
 
-	CUIXml xml;
+	CUIXml		 xml;
+	u32			color;
+	CGameFont*	pFont;
 
 	xml.Init(CONFIG_PATH, UI_PATH, "messages_window.xml");
 
@@ -51,97 +52,56 @@ void CUIMessagesWindow::Init(float x, float y, float width, float height){
 	AttachChild(m_pGameLog);
 	if ( IsGameTypeSingle() )
 	{
-		CUIXmlInit::InitListWnd(xml, "sp_log_list", 0, m_pGameLog);
+		CUIXmlInit::InitScrollView(xml, "sp_log_list", 0, m_pGameLog);
+		
+		//CUIXmlInit::InitFont(xml, "sp_log_list:font", 0, color, pFont);
+		//m_pGameLog->SetTextAtrib(pFont, color);
+
 		m_ListPos2 = CUIXmlInit::GetFRect(xml, "sp_log_list2", 0);
 	}
 	else
 	{
-		m_pChatLog = xr_new<CUIChatLog>(); m_pChatLog->SetAutoDelete(true);
+		m_pChatLog = xr_new<CUIGameLog>(); m_pChatLog->SetAutoDelete(true);
 		m_pChatLog->Show(true);
 		AttachChild(m_pChatLog);
 		m_pChatWnd = xr_new<CUIChatWnd>(m_pChatLog); m_pChatWnd->SetAutoDelete(true);
 		AttachChild(m_pChatWnd);
 
-		CUIXmlInit::InitListWnd(xml, "mp_log_list", 0, m_pGameLog);
-		CUIXmlInit::InitListWnd(xml, "chat_log_list", 0, m_pChatLog);
+		CUIXmlInit::InitScrollView(xml, "mp_log_list", 0, m_pGameLog);
+		CUIXmlInit::InitFont(xml, "mp_log_list:font", 0, color, pFont);
+		m_pGameLog->SetTextAtrib(pFont, color);
+
+		CUIXmlInit::InitScrollView(xml, "chat_log_list", 0, m_pChatLog);
+		CUIXmlInit::InitFont(xml, "chat_log_list:font", 0, color, pFont);
+		m_pChatLog->SetTextAtrib(pFont, color);
 		
 		m_pChatWnd->Init(xml);
 	}	
 
 }
-/*
-bool CUIMessagesWindow::SetDelayForPdaMessage(int iValue, int iDelay){
-	int index = m_pGameLog->FindItemWithValue(iValue);
 
-	if (index >= 0)
-	{
-        CUIPdaMsgListItem* item = smart_cast<CUIPdaMsgListItem*>(m_pGameLog->GetItem(index));
-        item->SetDelay(iDelay);
-		return true;
-	}
-
-	return false;
-}
-*/
-/*
-void CUIMessagesWindow::AddPdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id){
-		R_ASSERT(pSender);
-
-	CUIPdaMsgListItem* pItem = NULL;
-	pItem = xr_new<CUIPdaMsgListItem>();
-	m_pGameLog->AddItem<CUIListItem>(pItem, 0); 
-	pItem->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
-	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-	R_ASSERT(p);
-	p->Cyclic(false);
-	pItem->SetData(p);
-	if(msg == ePdaMsgInfo)
-	{
-		CInfoPortion info_portion;
-		info_portion.Load(info_id);
-		pItem->UIMsgText.SetText(*CStringTable().translate(info_portion.GetText()));
-	}
-	else
-	{
-	//	pItem->UIMsgText.SetText(CPda::m_PdaMsgStr[msg]);
-	}
-}
-*/
 void CUIMessagesWindow::AddPdaMessage(LPCSTR message, int iDelay){
-	AddMessageToList(message, m_pGameLog, iDelay);
-}
-
-CUIPdaMsgListItem* CUIMessagesWindow::AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iDelay){
-	CUIPdaMsgListItem* pItem			= xr_new<CUIPdaMsgListItem>(iDelay);
-	pListWnd->AddItem<CUIListItem>		(pItem, 0); 
-	pListWnd->ScrollToBegin				();
-	// create animation
-	CUIColorAnimatorWrapper *p			= xr_new<CUIColorAnimatorWrapper>("ui_main_msgs_short");
-	// no loop animation
-	p->Cyclic							(false);
-	// set animation wrapper as Item Data
-	pItem->SetData						(p);
-	// set id to item. With this we can find item in list and for some manipulation
-//.	pItem->SetValue						(iId);
-	pItem->UIMsgText.SetText			(message);	
-
-	return pItem;
+	m_pGameLog->AddPdaMessage(message, float(iDelay));
 }
 
 void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iDelay){
 	
-	CUIPdaMsgListItem *pItem = AddMessageToList(message, m_pGameLog, iDelay);
-	if (pItem)
-	{
-		pItem->UIIcon.InitTexture			(textureName);
-		pItem->UIIcon.SetOriginalRect		(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-//		pItem->UIMsgText.SetWndPos			(originalRect.x2, pItem->UIMsgText.GetWndPos().y);
-		pItem->UIMsgText.SetVTextAlignment	(valTop);
-	}
+	CUIPdaMsgListItem *pItem = m_pGameLog->AddPdaMessage(message, float(iDelay));
+	pItem->UIIcon.InitTexture			(textureName);
+	pItem->UIIcon.SetOriginalRect		(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
+	pItem->UIMsgText.SetWidth(m_pGameLog->GetDesiredChildWidth() - pItem->UIIcon.GetWidth());
+	pItem->UIMsgText.SetWndPos(pItem->UIIcon.GetWidth(), pItem->UIMsgText.GetWndPos().y);
+	pItem->UIMsgText.AdjustHeightToText();
+
+	if (pItem->UIIcon.GetHeight() > pItem->UIMsgText.GetHeight())
+		pItem->SetHeight(pItem->UIIcon.GetHeight());
+	else
+		pItem->SetHeight(pItem->UIMsgText.GetHeight());
+	m_pGameLog->SendMessage(pItem,CHILD_CHANGED_SIZE);
 }
 
 void CUIMessagesWindow::AddChatMessage(shared_str msg, shared_str author){
-	 m_pChatLog->AddLogMessage(msg, author);
+	 m_pChatLog->AddChatMessage(*msg, *author);
 }
 
 void CUIMessagesWindow::SetChatOwner(game_cl_GameState* owner){
@@ -153,13 +113,17 @@ void CUIMessagesWindow::SetChatOwner(game_cl_GameState* owner){
 
 void CUIMessagesWindow::DrawPdaMessages(){
 	Frect tmp = m_pGameLog->GetWndRect		();
-	m_pGameLog->SetWndPos					(m_ListPos2.x1, m_ListPos2.y1);m_pGameLog->SetWidth(m_ListPos2.width());
-	m_pGameLog->SetWidth					(m_ListPos2.height());
+	m_pGameLog->SetWndPos					(m_ListPos2.x1, m_ListPos2.y1);
+	m_pGameLog->SetWidth					(m_ListPos2.width());
+	m_pGameLog->SetHeight					(m_ListPos2.height());
+	m_pGameLog->ForceUpdate					();
+	m_pGameLog->Update();
 	m_pGameLog->Draw						();
 
 	m_pGameLog->SetWndPos					(tmp.x1, tmp.y1);
 	m_pGameLog->SetWidth					(tmp.width());
-	m_pGameLog->SetWidth					(tmp.height());
+	m_pGameLog->SetHeight					(tmp.height());
+	m_pGameLog->ForceUpdate					();
 }
 void CUIMessagesWindow::Update()
 {

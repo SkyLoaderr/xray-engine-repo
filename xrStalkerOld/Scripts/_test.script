@@ -102,11 +102,14 @@ db.actor:give_task(_task,false)
 --	level.remove_pp_effector(999)
 end
 
-function main________()
-	db.actor:give_game_news("hello-1 sdfewrf ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+function main()
+	db.actor:give_game_news("11 first message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("33 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("44 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
-function main()
+function main7777()
    local h = hit()
    h.power = 0.2
    h.direction = vector():set(0, 0, 1)

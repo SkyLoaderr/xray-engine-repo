@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="UTF-8" ?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
-	<speech_menu x="300" y="400" width="300" height="400" item_height="20">
-		<text font="letterica25" r="155" g="255" b="155"/>		
+	<speech_menu x="300" y="400" width="300" height="300" always_show_scroll="0">
+		<text font="letterica16" r="238" g="224" b="198"/>		
 	</speech_menu>
 	
 	<static_health x="860" y="660" width="155" height="34">
@@ -51,7 +51,7 @@
 		<text align="c" font="graffiti22" r="225" g="225" b="250" a="255" />
 	</quick_info>
 
-	<info_list x="512" y="0" width="525" height="40" item_height="20" fade="2000" flip_vert="0">
+	<info_list x="249" y="70" width="525" height="60" vert_interval="5" always_show_scroll="0">
 		<font font="graffiti32"  r="240" g="217" b="182" a="255" />
 	</info_list>
 	
@@ -90,30 +90,6 @@
 	<artefact_static x="0" y="0" width="64" height="64">
 		<texture>ui_hud_icon_artefact</texture>
 	</artefact_static>
-<!--remove it-->	
-	<money_mt_static x="860" y="10" width="200" height="200">
-		<text x="85" y="4" font="letterica16" r="255" g="255" b="255" a="130">money</text>
-		<texture>ui\ui_mn_weapons</texture>
-		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"/>
-		<phrase x="20" y="65" font="graffiti32" r="238" g="155" b="23" a="255">
-			<animation anim="fade" period="3" cyclic="0"/>
-		</phrase>
-	</money_mt_static>
-	<money_wnd x="860" y="10" width="200" height="200">
-		<money_indicator x="0" y="0" width="200" height="64">
-			<texture>ui\ui_mn_weapons</texture>
-			<text x="85" y="4" font="letterica16" r="255" g="255" b="255" a="130">money</text>
-			<total_money x="20" y="15">
-				<text font="graffiti50" r="238" g="155" b="23" a="255">total</text>
-			</total_money>
-		</money_indicator>
-		<money_change x="20" y="65" width="130" height="32">
-			<text font="graffiti22" r="238" g="155" b="23" a="255">change</text>
-		</money_change>
-		<money_bonus x="20" y="87" width="130" height="32">
-			<text font="graffiti22" r="53" g="255" b="53" a="255">bonus</text>
-		</money_bonus>
-	</money_wnd>
 	
 	<t1_score x="948" y="80" width="32" height="32" >		
 		<text font="graffiti32" r="0" g="255" b="0" a="255" align="r"/>

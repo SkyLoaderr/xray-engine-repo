@@ -5,7 +5,7 @@
 #pragma once
 
 #include "UIProgressBar.h"
-#include "UIListWnd.h"
+#include "UIGameLog.h"
 
 #include "../alife_space.h"
 
@@ -59,7 +59,7 @@ protected:
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;
 	// Список входящих информационных сообщений
-	CUIListWnd			UIInfoMessages;
+	CUIGameLog			UIInfoMessages;
 	
 	//изображение оружия
 	CUIStatic			UIWeaponBack;
@@ -150,8 +150,6 @@ protected:
 
 	// Отображение подсказок при наведении прицела на объект
 	void				RenderQuickInfos();
-	// Просчитать анимационные параметры фейда для айтемов листа
-	void				FadeUpdate(CUIListWnd *pWnd);//, int fadeDuration);
 
 public:
 	CUICarPanel&		CarPanel							(){return UICarPanel;};

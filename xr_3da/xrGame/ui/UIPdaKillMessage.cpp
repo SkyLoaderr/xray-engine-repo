@@ -21,31 +21,20 @@ CUIPdaKillMessage::CUIPdaKillMessage(){
 	AttachChild(&m_ext_info);
 }
 
-CUIPdaKillMessage::CUIPdaKillMessage(int iDelay){
-	AttachChild(&m_victim_name);
-	AttachChild(&m_killer_name);	
-	AttachChild(&m_initiator);
-	AttachChild(&m_ext_info);
-
-   	m_iDelay = iDelay;
-	m_timeBegin = 0;
-}
-
 CUIPdaKillMessage::~CUIPdaKillMessage(){
 
 }
 
 void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 #ifdef DEBUG
-//	R_ASSERT2(xr_strlen(msg.m_victim.m_name), "CUIPdaKillMessage::Init(msg) - victim has no name");
 	R_ASSERT2(GetWidth(),  "CUIPdaKillMessage::Init(msg) - need to call ::Init(x, y, width, height) before");
 	R_ASSERT2(GetHeight(), "CUIPdaKillMessage::Init(msg) - need to call ::Init(x, y, width, height) before");
 #endif	
 
-	float		x = 0;
-	float width = 0;
+	float x		= 0;
+	float width	= 0;
 
-	width = InitText(m_killer_name, x, msg.m_killer);		x += width + INDENT;
+	width = InitText(m_killer_name, x, msg.m_killer);		x += x ? width + INDENT : 0;
 	width = InitIcon(m_initiator,   x, msg.m_initiator);	x += width + INDENT;
 	width = InitText(m_victim_name, x, msg.m_victim);		x += width + INDENT;
 			InitIcon(m_ext_info,	x, msg.m_ext_info);
@@ -60,7 +49,7 @@ float CUIPdaKillMessage::InitText(CUIStatic& refStatic, float x, PlayerInfo& inf
 	float		selfHeight = GetHeight();
 	CGameFont*	pFont = GetFont();
 
-	float width = pFont->SizeOf(*info.m_name);
+	float width = pFont->SizeOfRel(*info.m_name);
 	float height = pFont->CurrentHeight();
 	y = (selfHeight - height)/2;
 
@@ -76,14 +65,15 @@ float CUIPdaKillMessage::InitText(CUIStatic& refStatic, float x, PlayerInfo& inf
 }
 
 void CUIPdaKillMessage::SetTextColor(u32 color){	
-	m_victim_name.SetTextColor(subst_alpha(m_victim_name.GetTextColor(), color_get_A(color)));
-	m_killer_name.SetTextColor(subst_alpha(m_killer_name.GetTextColor(), color_get_A(color)));
-	SetColor(color);
+	m_victim_name.SetTextColor(color);
+	m_killer_name.SetTextColor(color);
+	CUIStatic::SetTextColor(color);
 }
 
 void CUIPdaKillMessage::SetColor(u32 color){	
-	m_initiator.SetColor(color);	
+	m_initiator.SetColor(color);
 	m_ext_info.SetColor(color);
+	CUIStatic::SetColor(color);
 }
 
 float CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, float x, IconInfo& info){
@@ -101,7 +91,9 @@ float CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, float x, IconInfo& info)
 	float width = rect.width();
 	float height = rect.height();
 	
-	scale = 1;
+	scale = selfHeight/height;
+	if (scale > 1)
+		scale = 1;
 	width  = width*scale;
 	height = height*scale;
 	y = (selfHeight - height) /2;
@@ -111,10 +103,6 @@ float CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, float x, IconInfo& info)
 	refStatic.SetStretchTexture(true);
 
 	return width;
-}
-
-void CUIPdaKillMessage::Init(float x, float y, float width, float height){
-	inherited::Init(x, y, width, height);
 }
 
 void CUIPdaKillMessage::SetFont(CGameFont* pFont){

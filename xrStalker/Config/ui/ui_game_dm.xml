@@ -11,7 +11,7 @@
 		<money_change x="20" y="65" width="80" height="32">
 			<text font="graffiti22" r="238" g="155" b="23" a="255">change</text>
 		</money_change>
-		<money_bonus_list x="0" y="87" width="80" height="80" item_height="18" always_hide_scroll="1">
+		<money_bonus_list x="0" y="87" width="80" height="80" always_show_scroll="0">
 			<font font="graffiti22" r="253" g="255" b="53" a="255"/>
 		</money_bonus_list>
 	</money_wnd>

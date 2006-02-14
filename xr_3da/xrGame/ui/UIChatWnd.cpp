@@ -1,14 +1,6 @@
-//=============================================================================
-//  Filename:   UIChatWnd.cpp
-//	Created by Roman E. Marchenko, vortex@gsc-game.kiev.ua
-//	Copyright 2004. GSC Game World
-//	---------------------------------------------------------------------------
-//  Simple chat window for multiplayer purposes
-//=============================================================================
-
 #include <stdafx.h>
 #include "UIChatWnd.h"
-#include "UIChatLog.h"
+#include "UIGameLog.h"
 #include "UIEditBox.h"
 #include "UIXmlInit.h"
 #include "../game_cl_base.h"
@@ -16,14 +8,7 @@
 #include "../Level.h"
 #include "../../xr_object.h"
 
-//////////////////////////////////////////////////////////////////////////
-
-//const char * const	CHAT_MP_WND_XML	= "chat_mp.xml";
-const int			fadeDelay		= 5000;
-
-//////////////////////////////////////////////////////////////////////////
-
-CUIChatWnd::CUIChatWnd(CUIChatLog *pList)
+CUIChatWnd::CUIChatWnd(CUIGameLog *pList)
 	:	pUILogList				(pList),
 		sendNextMessageToTeam	(false),
 		pOwner					(NULL)

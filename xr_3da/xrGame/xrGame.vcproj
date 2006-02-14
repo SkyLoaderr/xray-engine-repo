@@ -10983,12 +10983,6 @@
 						Name="Chat"
 						Filter="">
 						<File
-							RelativePath=".\ui\UIChatLog.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIChatLog.h">
-						</File>
-						<File
 							RelativePath=".\ui\UIChatWnd.cpp">
 						</File>
 						<File
