@@ -918,7 +918,7 @@
 		<class>sim_Dolg_specnaz</class>
 	</character>
 	<character id="sim_dolg_master">
-		<class>sim_Dolg_master</class>
+		<class>sim_dolg_master</class>
 	</character>
 	<character id="sim_dolg_sniper">
 		<class>sim_Dolg_sniper</class>

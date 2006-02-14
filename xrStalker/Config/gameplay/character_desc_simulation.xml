@@ -1215,7 +1215,7 @@
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_master_bio</bio>
 
-		<class>sim_Dolg_master</class>
+		<class>sim_dolg_master</class>
 		<community>dolg</community>
 		
 		<rank>94</rank>
@@ -1243,7 +1243,7 @@
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_master_bio</bio>
 		
-		<class>sim_Dolg_master</class>
+		<class>sim_dolg_master</class>
 		<community>dolg</community>
 		
 		<rank>96</rank>
