@@ -260,6 +260,9 @@ void CInput::iRelease(IInputReceiver *p)
 
 void CInput::OnAppActivate		(void)
 {
+	if (CurrentIR())
+		CurrentIR()->IR_OnActivate();
+
 	SetAllAcquire	( true );
 	ZeroMemory		( mouseState,	sizeof(mouseState) );
 	ZeroMemory		( KBState,		sizeof(KBState) );
@@ -270,6 +273,9 @@ void CInput::OnAppActivate		(void)
 
 void CInput::OnAppDeactivate	(void)
 {
+	if (CurrentIR())
+		CurrentIR()->IR_OnDeactivate();
+
 	SetAllAcquire	( false );
 	ZeroMemory		( mouseState,	sizeof(mouseState) );
 	ZeroMemory		( KBState,		sizeof(KBState) );

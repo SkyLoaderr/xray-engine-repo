@@ -113,6 +113,7 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	u32								safe_level_vertex_id	= graph().actor()->m_tNodeID;
 	Fvector							safe_position			= graph().actor()->o_Position;
 	Fvector							safe_angles				= graph().actor()->o_Angle;
+	SRotation						safe_torso				= graph().actor()->o_torso;
 	
 	GameGraph::_GRAPH_ID			holder_safe_graph_vertex_id = GameGraph::_GRAPH_ID(-1);
 	u32								holder_safe_level_vertex_id = u32(-1);
@@ -124,6 +125,10 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	net_packet.r					(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
 	net_packet.r_vec3				(graph().actor()->o_Position);
 	net_packet.r_vec3				(graph().actor()->o_Angle);
+
+	graph().actor()->o_torso.yaw	= graph().actor()->o_Angle.y;
+	graph().actor()->o_torso.pitch	= graph().actor()->o_Angle.x;
+	graph().actor()->o_torso.roll	= 0.f;
 
 	if (graph().actor()->m_holderID != 0xffff) {
 		holder						= objects().object(graph().actor()->m_holderID);
@@ -152,6 +157,7 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	graph().actor()->m_tNodeID		= safe_level_vertex_id;
 	graph().actor()->o_Position		= safe_position;
 	graph().actor()->o_Angle		= safe_angles;
+	graph().actor()->o_torso		= safe_torso;
 
 	if (graph().actor()->m_holderID != 0xffff) {
 		VERIFY						(holder);
