@@ -19,7 +19,7 @@ function trade_init(npc, cfg)
 	end
 	trade_manager[npc:id()].buy_condition = xr_logic.parse_condlist(npc, "trade_manager", "buy_condition", str)
 	
-	-- коэфицисенты продажи
+	-- коэфициенты продажи
 	str = utils.cfg_get_string(trade_manager[npc:id()].config, "trader", "sell_condition", npc, true, "")
 	if str == nil then
 		abort("Incorrect trader settings. Cannot find sell_condition. [%s]->[%s]", npc:name(), cfg)
@@ -39,22 +39,38 @@ end
 function update(npc)
 	local tt = trade_manager[npc:id()]
 	
+	if tt == nil then
+		return
+	end
+
+	if tt.update_time ~= nil and tt.update_time < time_global() then
+		return
+	end
+	tt.update_time = time_global() + 3600000
+	
 	local str = xr_logic.pick_section_from_condlist(db.actor, npc, tt.buy_condition)
 	if tt.current_buy_condition ~= str then
 		npc:buy_condition(tt.config, str)
+		tt.current_buy_condition = str
 	end
 
 	str = xr_logic.pick_section_from_condlist(db.actor, npc, tt.sell_condition)
 	if tt.current_sell_condition ~= str then
 		npc:sell_condition(tt.config, str)
+		tt.current_sell_condition = str
 	end
 
 	if tt.buy_supplies == nil then
 		return
 	end
-	
+
 	str = xr_logic.pick_section_from_condlist(db.actor, npc, tt.buy_supplies)
-	if tt.current_buy_condition ~= str then
+	if tt.current_buy_supplies ~= str then
+		if tt.resuply_time ~= nil and tt.resuply_time < time_global() then
+			return
+		end
 		npc:buy_supplies(tt.config, str)
+		tt.current_buy_supplies = str
+		tt.resuply_time = time_global() + 24*3600000
 	end	
 end

@@ -226,11 +226,18 @@ function motivator_binder:update(delta)
 	if self.st.state_mgr then
 		if self.object:alive() then
 			self.st.state_mgr:update()
+			-- Апдейт торговли
+			if self.st.state_mgr.combat == false and
+			   self.st.state_mgr.alife == false
+			then
+				trade_manager.update(self.object)
+			end			
 		else
 			self.st.state_mgr = nil
 		end
 	end
 
+	
 	--' Апдейт саундменеджера
 	if self.object:alive() then
 		xr_sound.update(self.object)
