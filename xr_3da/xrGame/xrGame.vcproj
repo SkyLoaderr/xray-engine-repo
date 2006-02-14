@@ -5801,19 +5801,22 @@
 							Name="Mixed|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								WarningLevel="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								WarningLevel="0"/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="DebugNoExceptions|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								WarningLevel="0"/>
 						</FileConfiguration>
 					</File>
 					<File
