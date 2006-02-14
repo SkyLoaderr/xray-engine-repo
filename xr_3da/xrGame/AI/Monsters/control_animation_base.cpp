@@ -324,7 +324,7 @@ EAction CControlAnimationBase::GetActionFromPath()
 		next_point_velocity_index = m_object->movement().detail().path()[m_object->movement().detail().curr_travel_point_index() + 1].velocity;
 
 	if ((cur_point_velocity_index == MonsterMovement::eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-		if (!m_object->control().direction().is_turning()) 
+		if (!m_object->control().direction().is_turning(deg(1))) 
 			action = VelocityIndex2Action(next_point_velocity_index);
 	}
 
