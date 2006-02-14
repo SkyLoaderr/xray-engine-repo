@@ -10,8 +10,6 @@ void CMonsterSquad::ProcessAttack()
 	// Выделить элементы с общими врагами и состянием атаки 
 	for (MEMBER_GOAL_MAP_IT it_goal = m_goals.begin(); it_goal != m_goals.end(); it_goal++) {
 		CEntity *member = it_goal->first;
-		VERIFY(member && !member->getDestroy());		
-
 		SMemberGoal goal = it_goal->second;
 
 		if (goal.type == MG_AttackEnemy) {
