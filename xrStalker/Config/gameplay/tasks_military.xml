@@ -33,6 +33,7 @@
 			<text>mil_dolg_assault_freedom</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_fail>mil_dolg_lukash_kill_fail</infoportion_fail>
+			<function_complete>mil_tasks.final_subtask_dolg_main</function_complete>
 			<infoportion_complete>mil_dolg_task_final</infoportion_complete>
 			<infoportion_set_complete>mil_dolg_mission_complete</infoportion_set_complete>
 		</objective>
@@ -64,7 +65,6 @@
             <object_story_id>Mil_Lukash</object_story_id>
             <map_location_hidden>1</map_location_hidden>
             <infoportion_complete>mil_lukash_dead</infoportion_complete>
-            <function_complete>mil_tasks.finalize_dolg</function_complete>
 			<infoportion_set_fail>mil_dolg_lukash_kill_fail</infoportion_set_fail>
 		</objective>
 		<objective>
@@ -74,7 +74,6 @@
             <map_location_type hint="mil_dolg_khutor">blue_location</map_location_type>
             <object_story_id>Mil_Dolg_Khutor</object_story_id>
             <map_location_hidden>1</map_location_hidden>
-            <function_complete>mil_tasks.finalize_dolg</function_complete>
             <infoportion_complete>mil_dolg_task_final</infoportion_complete>
             <infoportion_fail>mil_dolg_dead</infoportion_fail>
 		</objective>

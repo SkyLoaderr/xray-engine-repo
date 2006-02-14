@@ -324,11 +324,15 @@ function dolg_task_final (task_id, subtask)
     return true
 end
 
-function finalize_dolg (task_id, subtask)
-    if db.actor:dont_has_info ("mil_lukash_dead") then return false end
-    if db.actor:has_info ("mil_dolg_dead") then 
-       db.actor:give_info_portion ("mil_dolg_task_final") 
-       return true
-    end
-    return false    
+function final_subtask_dolg4 (task_id, subtask)
+     return db.actor:has_info ("mil_lukash_dead") 
 end
+
+function final_subtask_dolg5 (task_id, subtask)
+    return db.actor:has_info ("mil_dolg_task_final")
+end
+
+function final_subtask_dolg_main (task_id, subtask)
+    return db.actor:has_info ("mil_lukash_dead") and (db.actor:has_info ("mil_dolg_dead") or db.actor:has_info ("mil_dolg_task_final"))
+end
+
