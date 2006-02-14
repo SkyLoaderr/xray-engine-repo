@@ -19,7 +19,7 @@ local gulag_tasks_file_name  = "misc\\gulag_tasks.ltx"
 local gulag_tasks_ltx        = ini_file( gulag_tasks_file_name )
 
 local job_position_threshold = 50 -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
-local job_idle_after_death   = 3000 -- в течении такого периода времени после смерти персонажа его работа будет недоступна
+local job_idle_after_death   = 600000 -- в течении такого периода времени после смерти персонажа его работа будет недоступна
 
 idle_nil  = nil
 idle_once = -1
