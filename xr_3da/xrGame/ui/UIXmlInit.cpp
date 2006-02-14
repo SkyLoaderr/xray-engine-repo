@@ -13,7 +13,7 @@
 #include "../string_table.h"
 #include "UIFrameWindow.h"
 #include "UIStatic.h"
-#include "UICheckButton.h" // #include "UI3tButton.h" // #include "UIButton.h"
+#include "UICheckButton.h"
 #include "UICustomSpin.h"
 #include "UIRadioButton.h"
 #include "UIDragDropList.h"
@@ -79,7 +79,7 @@ Frect CUIXmlInit::GetFRect(CUIXml& xml_doc, const char* path, int index){
 	rect.x1 = xml_doc.ReadAttribFlt(path, index, "x");
 	rect.y1	= xml_doc.ReadAttribFlt(path, index, "y");
 	rect.x2 = rect.x1 + xml_doc.ReadAttribFlt(path, index, "width");
-	rect.y2 = rect.y2 + xml_doc.ReadAttribFlt(path, index, "height");
+	rect.y2 = rect.y1 + xml_doc.ReadAttribFlt(path, index, "height");
 
 	return rect;
 }
