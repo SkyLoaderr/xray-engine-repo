@@ -74,10 +74,6 @@ function action_remark_activity:get_target()
 
     return look_tbl
 end
-function action_remark_activity:time_callback()
-	self.state = state_sound
-	self:update()
-end
 function action_remark_activity:turn_end_callback()
 	self.state = state_sound
 	self:update()
@@ -86,7 +82,7 @@ function action_remark_activity:update()
 	-- 1. Мы должны повернуться на объект.
 	--printf("REMARK: [%s] state[%s]", self.object:name(), self.state)
 	if self.state == state_initial then
-		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
+		local cb = { obj = self, turn_end_func = self.turn_end_callback }
 		local synsound
 		if self.st.snd_anim_sync == true then
 			synsound = self.st.snd
