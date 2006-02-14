@@ -47,7 +47,7 @@ public:
 			bool	is_from_right		(const Fvector &position);
 			bool	is_from_right		(float yaw);
 
-			bool	is_turning			();
+			bool	is_turning			(float eps_angle = EPS);
 
 			void	get_heading			(float &current, float &target);
 			float	get_heading_current	();	

@@ -169,9 +169,9 @@ bool CControlDirection::is_from_right(float yaw)
 	return (from_right(yaw,m_heading.current_angle));
 }
 
-bool CControlDirection::is_turning()
+bool CControlDirection::is_turning(float eps_angle)
 {
-	return (!fsimilar(m_heading.current_angle,m_data.heading.target_angle));
+	return (!fsimilar(m_heading.current_angle,m_data.heading.target_angle, eps_angle));
 }
 void CControlDirection::get_heading(float &current, float &target)
 {

@@ -122,10 +122,6 @@ void CControlPathBuilder::on_build_path()
 	m_man->notify	(ControlCom::eventPathBuilt, 0);
 }
 
-void CControlPathBuilder::on_selector_failed()
-{
-	m_man->notify	(ControlCom::eventPathSelectorFailed, 0);
-}
 
 //////////////////////////////////////////////////////////////////////////
 // Special Build Path
