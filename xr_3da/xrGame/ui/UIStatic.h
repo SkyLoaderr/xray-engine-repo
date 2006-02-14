@@ -26,7 +26,8 @@ class CUIStatic : public CUIWindow, public CUISingleTextureOwner, public IUIText
 private:
 	typedef CUIWindow inherited;
 	CLAItem*				m_lanim;
-	float					m_lainm_start_time;
+	float					m_lanim_start_time;
+	float					m_lanim_delay_time;
 public:
 	using CUISimpleWindow::SetWndRect;
 
@@ -72,6 +73,8 @@ public:
 			void		EnableTextHighlighting(bool value)		{ m_bEnableTextHighlighting = value; }
 			void		SetLightAnim				(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor);
 			void		ResetAnimation				();
+			bool		IsAnimStoped				();
+			void		SetAnimDelay				(float delay);
 	virtual void		Init						(LPCSTR tex_name, float x, float y, float width, float height);	
 			void		InitEx						(LPCSTR tex_name, LPCSTR sh_name, float x, float y, float width, float height);
 

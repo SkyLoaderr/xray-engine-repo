@@ -45,7 +45,8 @@ CUIStatic:: CUIStatic()
 	m_bHeading				= false;
 	m_fHeading				= 0.0f;
 	m_lanim					= NULL;	
-	m_lainm_start_time		= -1.0f;
+	m_lanim_start_time		= -1.0f;
+	m_lanim_delay_time		= 0.0f;
 	m_pLines				= NULL;
 	m_lanimFlags.zero		();
 	m_bEnableTextHighlighting = false;
@@ -184,12 +185,16 @@ void CUIStatic::Update()
 	//update light animation if defined
 	if (m_lanim)
 	{
-		if(m_lainm_start_time<0.0f)		ResetAnimation	();
+		if(m_lanim_start_time<0.0f)		ResetAnimation	();
 		float t = Device.dwTimeContinual/1000.0f;
-		if(m_lanimFlags.test(LA_CYCLIC) || t-m_lainm_start_time < m_lanim->Length_sec()){
+
+		if (t < m_lanim_start_time)	// consider animation delay
+			return;
+
+		if(m_lanimFlags.test(LA_CYCLIC) || t-m_lanim_start_time < m_lanim->Length_sec()){
 
 			int frame;
-			u32 clr					= m_lanim->CalculateRGB(t-m_lainm_start_time,frame);
+			u32 clr					= m_lanim->CalculateRGB(t-m_lanim_start_time,frame);
 
 			if(m_lanimFlags.test(LA_TEXTURECOLOR))
 				if(m_lanimFlags.test(LA_ONLYALPHA))
@@ -209,7 +214,22 @@ void CUIStatic::Update()
 
 void CUIStatic::ResetAnimation()
 {
-	m_lainm_start_time = Device.dwTimeContinual/1000.0f;
+	m_lanim_start_time = Device.dwTimeContinual/1000.0f + m_lanim_delay_time/1000.0f;
+}
+
+void CUIStatic::SetAnimDelay(float delay){
+	m_lanim_delay_time = delay;
+}
+
+bool CUIStatic::IsAnimStoped(){
+	if (m_lanimFlags.test(LA_CYCLIC) || m_lanim_start_time<0.0f)
+		return false;
+	
+	float t = Device.dwTimeContinual/1000.0f;
+	if(t-m_lanim_start_time < m_lanim->Length_sec())
+		return false;
+	else 
+		return true;
 }
 
 void CUIStatic::SetFont(CGameFont* pFont){
