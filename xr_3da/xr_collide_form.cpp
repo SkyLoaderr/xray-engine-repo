@@ -173,6 +173,7 @@ void CCF_Skeleton::BuildTopLevel()
 	bv_sphere.P.average	(K->vis.sphere.P);
 	bv_sphere.R			+= K->vis.sphere.R;
 	bv_sphere.R			*= 0.5f;
+	VERIFY(_valid(bv_sphere));
 }
 
 BOOL CCF_Skeleton::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
@@ -186,7 +187,10 @@ BOOL CCF_Skeleton::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R
 
 	// 
 	float tgt_dist						= Q.range;
-	if (Fsphere::rpNone==w_bv_sphere.intersect(Q.start,Q.dir,tgt_dist)) return FALSE;
+	float aft[2];
+	int quant;
+	Fsphere::ERP_Result res				= w_bv_sphere.intersect(Q.start,Q.dir,tgt_dist,quant,aft);
+	if ((Fsphere::rpNone==res)||((Fsphere::rpOriginOutside==res)&&(aft[0]>tgt_dist)) ) return FALSE;
 
 	if (dwFrame != Device.dwFrame)		BuildState	();
 	else{

@@ -81,7 +81,3 @@
 		<texture x="32" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</esc_wolf_spot>
 
-	<quest_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
-		<texture x="8" y="7" width="15" height="17" r="200" g="200" b="200">ui\ui_map_arrow_02</texture>
-	</quest_pointer>
-	
