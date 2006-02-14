@@ -21,7 +21,7 @@ public:
 	void			IR_Release						(void);
 
 	virtual void	IR_OnDeactivate					(void);
-	virtual void	IR_OnActivate					(void)			{};
+	virtual void	IR_OnActivate					(void);
 
 	virtual void	IR_OnMousePress					(int btn)		{};
 	virtual void	IR_OnMouseRelease				(int btn)		{};

@@ -33,6 +33,10 @@ void IInputReceiver::IR_OnDeactivate					(void)
 	IR_OnMouseStop	( DIMOFS_Y, 0 );
 }
 
+void IInputReceiver::IR_OnActivate(void)
+{
+}
+
 BOOL IInputReceiver::IR_GetKeyState(int dik)
 {
 	VERIFY(pInput);

@@ -398,3 +398,33 @@ void CLevel::IR_OnMouseMove( int dx, int dy )
 void CLevel::IR_OnMouseStop( int /**axis/**/, int /**value/**/)
 {
 }
+
+void CLevel::IR_OnActivate()
+{
+	if(!pInput) return;
+	int i;
+	for (i = 0; i < CInput::COUNT_KB_BUTTONS; i++ ){
+		if(IR_GetKeyState(i)){
+
+			int action = key_binding[i];
+			switch (action){
+			case kFWD			:
+			case kBACK			:
+			case kL_STRAFE		:
+			case kR_STRAFE		:
+			case kLEFT			:
+			case kRIGHT			:
+			case kUP			:
+			case kDOWN			:
+			case kCROUCH		:
+			case kACCEL			:
+			case kL_LOOKOUT		:
+			case kR_LOOKOUT		:	
+			case kWPN_FIRE		:
+				{
+					IR_OnKeyboardPress	(i);
+				}break;
+			};
+		};
+	}
+}
