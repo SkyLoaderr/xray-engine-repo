@@ -155,7 +155,6 @@ private:
 		void		on_path_built				();
 		void		on_path_end					();
 		void		on_path_updated				();
-		void		on_selector_failed			();
 
 		// нашли позицию, найти ноду
 		void		find_node					();

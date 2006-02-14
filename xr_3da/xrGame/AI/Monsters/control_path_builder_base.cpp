@@ -63,7 +63,6 @@ void CControlPathBuilderBase::on_event(ControlCom::EEventType type, ControlCom::
 	case ControlCom::eventPathBuilt:				on_path_built(); break;
 	case ControlCom::eventPathUpdated:				on_path_updated(); break;
 	case ControlCom::eventTravelPointChange:		travel_point_changed(); break;
-	case ControlCom::eventPathSelectorFailed:		on_selector_failed(); break;
 	}
 }
 
@@ -73,7 +72,6 @@ void CControlPathBuilderBase::on_start_control(ControlCom::EControlType type)
 	case ControlCom::eControlPath:	m_man->subscribe	(this, ControlCom::eventPathBuilt);	
 									m_man->subscribe	(this, ControlCom::eventTravelPointChange);	
 									m_man->subscribe	(this, ControlCom::eventPathUpdated);
-									m_man->subscribe	(this, ControlCom::eventPathSelectorFailed);
 									break;
 	}
 }
@@ -84,7 +82,6 @@ void CControlPathBuilderBase::on_stop_control(ControlCom::EControlType type)
 	case ControlCom::eControlPath:	m_man->unsubscribe	(this, ControlCom::eventPathBuilt);	
 									m_man->unsubscribe	(this, ControlCom::eventTravelPointChange);	
 									m_man->unsubscribe	(this, ControlCom::eventPathUpdated);
-									m_man->unsubscribe	(this, ControlCom::eventPathSelectorFailed);
 									break;
 	}
 }
@@ -148,11 +145,6 @@ void CControlPathBuilderBase::on_path_updated()
 		}
 
 	m_time_path_updated_external = time();
-}
-
-void CControlPathBuilderBase::on_selector_failed()
-{
-	m_failed = true;
 }
 
 void CControlPathBuilderBase::on_path_end()
