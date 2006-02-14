@@ -27,6 +27,18 @@ function se_stalker:get_ini()
 		self.ini_initialized = true
 
 		self.spawner_present = self.ini:section_exist ("spawner")
+
+		if string.find( self:name(), "pri_respawn_freedom" ) ~= nil then
+			printf( "se_stalker:get_ini()", self:name() )
+
+			if self.ini:section_exist ("smart_terrains") then
+				printf( "[smart_terrains]" )
+
+				if self.ini:line_exist( "smart_terrains", "none" ) then
+					printf( "none=", tostring(self.ini:r_string("smart_terrains", "none")) )
+				end
+			end
+		end
 	end
 end
 --------------------
