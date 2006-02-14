@@ -30,7 +30,7 @@ void	uber_deffer	(CBlender_Compile& C, bool hq, LPCSTR _vspec, LPCSTR _pspec, BO
 		fnameA[0] = fnameB[0] = 0;
 		strcat			(vs,"_flat");
 		strcat			(ps,"_flat");
-		if (C.bDetail_Diffuse)	{
+		if (hq && C.bDetail_Diffuse)	{
 			strcat		(vs,"_d");
 			strcat		(ps,"_d");
 		}
@@ -39,7 +39,7 @@ void	uber_deffer	(CBlender_Compile& C, bool hq, LPCSTR _vspec, LPCSTR _pspec, BO
 		strconcat		(fnameB,fnameA,"#");
 		strcat			(vs,"_bump");
 		strcat			(ps,"_bump");
-		if (C.bDetail_Bump)		{
+		if (hq && C.bDetail_Bump)		{
 			strcat		(vs,"_d"	);
 			strcat		(ps,"_d"	);
 			strcat		(dt,"_bump"	);
