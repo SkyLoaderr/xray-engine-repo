@@ -122,7 +122,7 @@ states = {
 				animstate = "stand",
 				animation = "idle"
 			},
-	wait_trader = {	weapon = "none",
+	wait_trade = {	weapon = "none",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
