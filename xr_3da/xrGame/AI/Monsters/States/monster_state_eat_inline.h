@@ -28,18 +28,6 @@ CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj) : inherited(obj)
 }
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj, state_ptr state_eat) : inherited(obj)
-{
-	add_state	(eStateEat_CorpseApproachRun,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
-	add_state	(eStateEat_CorpseApproachWalk,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
-	add_state	(eStateEat_CheckCorpse,			xr_new<CStateMonsterCustomAction<_Object> >(obj));
-	add_state	(eStateEat_Eat,					state_eat);
-	add_state	(eStateEat_WalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
-	add_state	(eStateEat_Rest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
-	add_state	(eStateEat_Drag,				xr_new<CStateMonsterDrag<_Object> >(obj));
-}
-
-TEMPLATE_SPECIALIZATION
 CStateMonsterEatAbstract::~CStateMonsterEat()
 {
 }

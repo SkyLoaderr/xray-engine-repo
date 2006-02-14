@@ -15,7 +15,6 @@
 #include "../states/monster_state_attack_melee.h"
 #include "../states/monster_state_attack_run.h"
 #include "../states/monster_state_eat.h"
-#include "../states/monster_state_eat_eat.h"
 #include "../states/monster_state_panic.h"
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
@@ -41,15 +40,8 @@ CStateManagerController::CStateManagerController(CController *obj) : inherited(o
 		)
 	);
 
-	add_state(
-		eStateEat,
-		xr_new<CStateMonsterEat<CController> >(obj,
-			xr_new<CStateMonsterEating<CController> >(obj)
-		)
-	);
-
-
-	add_state(eStateCustom, xr_new<CStateControlHide<CController> >(obj));
+	add_state(eStateEat,		xr_new<CStateMonsterEat<CController> >(obj));
+	add_state(eStateCustom,		xr_new<CStateControlHide<CController> >(obj));
 }
 
 CStateManagerController::~CStateManagerController()

@@ -47,6 +47,7 @@ void CMovementManager::process_level_path()
 			m_path_state		= ePathStateContinueLevelPath;
 
 //			if (time_over())
+			if (!m_build_at_once)
 				break;
 		}
 		case ePathStateContinueLevelPath : {
