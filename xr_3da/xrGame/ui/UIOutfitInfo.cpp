@@ -166,7 +166,7 @@ void CUIOutfitInfo::SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIL
 
 	strcpy(str, *sstr);
 	fValue = &outfit ? outfit.GetDefHitTypeProtection(hitType) : 0;
-	iValue = 100-( iFloor(fValue*100+0.5) );
+	iValue = 100-( iFloor(fValue*100+0.5f) );
 	strcat(str, "  +");
 	strcat(str, itoa(iValue, strIVal, 10));
 	strcat(str, "%");
