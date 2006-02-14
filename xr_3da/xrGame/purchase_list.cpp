@@ -53,7 +53,7 @@ void CPurchaseList::process	(const CGameObject &owner, const shared_str &name, c
 			continue;
 
 		++j;
-		Level().spawn_item	(*name,position,level_vertex_id,id,false);
+		Level().spawn_item		(*name,position,level_vertex_id,id,false);
 	}
 
 	DEFICITS::const_iterator	I = m_deficits.find(name);

@@ -30,6 +30,7 @@
 #include "AI/Monsters/BaseMonster/base_monster.h"
 #include "trade_parameters.h"
 #include "purchase_list.h"
+#include "clsid_game.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -472,11 +473,25 @@ void CInventoryOwner::buy_supplies				(CInifile &ini_file, LPCSTR section)
 
 void CInventoryOwner::sell_useless_items		()
 {
+	CGameObject					*object = smart_cast<CGameObject*>(this);
+
 	TIItemContainer::iterator	I = inventory().m_all.begin();
 	TIItemContainer::iterator	E = inventory().m_all.end();
-	for ( ; I != E; ++I)
-		if (AllowItemToTrade(*I,eItemPlaceUndefined))
-			(*I)->Drop			();
+	for ( ; I != E; ++I) {
+		if ((*I)->object().CLS_ID == CLSID_IITEM_BOLT)
+			continue;
+
+		if ((*I)->object().CLS_ID == CLSID_DEVICE_PDA) {
+			CPda				*pda = smart_cast<CPda*>(*I);
+			VERIFY				(pda);
+			if (pda->GetOriginalOwnerID() == object->ID())
+				continue;
+		}
+
+		NET_Packet				packet;
+		object->u_EventGen		(packet,GE_DESTROY,(*I)->object().ID());
+		object->u_EventSend		(packet);
+	}
 }
 
 bool CInventoryOwner::AllowItemToTrade 			(CInventoryItem const * item, EItemPlace place) const
