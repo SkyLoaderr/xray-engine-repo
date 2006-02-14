@@ -904,7 +904,7 @@
 		<class>sim_Stalker_veteran</class>
 	</character>
 	<character id="sim_stalker_master">
-		<class>sim_Stalker_master</class>
+		<class>sim_stalker_master</class>
 	</character>
 	<character id="sim_stalker_sniper">
 		<class>sim_Stalker_sniper</class>
