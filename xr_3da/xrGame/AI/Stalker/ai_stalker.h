@@ -342,6 +342,7 @@ protected:
 			void						update_sell_info				();
 			bool						tradable_item					(CInventoryItem *inventory_item, const u16 &current_owner_id);
 			bool						can_sell						(CInventoryItem const * item);
+			bool						can_take						(CInventoryItem const * item);
 	virtual bool						AllowItemToTrade 				(CInventoryItem const * item, EItemPlace place) const;
 public:
 			CALifeTask					&current_alife_task				();

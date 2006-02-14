@@ -440,3 +440,8 @@ bool CAI_Stalker::AllowItemToTrade 					(CInventoryItem const * item, EItemPlace
 
 	return					(const_cast<CAI_Stalker*>(this)->can_sell(item));
 }
+
+bool CAI_Stalker::can_take							(CInventoryItem const * item)
+{
+	return					(true);
+}
