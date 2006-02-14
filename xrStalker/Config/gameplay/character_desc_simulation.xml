@@ -919,7 +919,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
-		<class>sim_Stalker_master</class>
+		<class>sim_stalker_master</class>
 		<community>stalker</community>
 				
 		<rank>92</rank>
@@ -948,7 +948,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
-		<class>sim_Stalker_master</class>
+		<class>sim_stalker_master</class>
 		<community>stalker</community>
 
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
