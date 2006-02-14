@@ -310,7 +310,7 @@ void CUIMainIngameWnd::Draw()
 	FS.dwOpenCounter = 0;
 
 	float		luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
-	float		power = log(luminocity > .001f ? luminocity : .001f)*current_state().m_luminocity_factor;
+	float		power = log(luminocity > .001f ? luminocity : .001f)*(1.f/*luminocity_factor*/);
 	luminocity	= exp(power);
 
 	static float cur_lum = luminocity;
