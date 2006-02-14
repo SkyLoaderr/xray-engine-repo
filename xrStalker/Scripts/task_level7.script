@@ -1,3 +1,23 @@
 function main ()
-        
+    task_level5.main2 ()
+    
+    local actor = db.actor
+-------------------------------------------------------------------------------
+-- Задачи DeadCity
+-------------------------------------------------------------------------------
+    -- Встречаемся с доктором
+    actor:give_info_portion ("cit_jail_actor_wake")    
+    -- Задачка доктора на Припять
+    actor:give_info_portion ("cit_jail_doctor_pryp_task")
+    -- Найти свое оружие
+    actor:give_info_portion ("cit_jail_doctor_weapon_task")    
+    actor:give_info_portion ("cit_jail_doctor_weapon_task_end")    
+    -- Спастись с DeadCity
+    actor:give_info_portion ("cit_jail_doctor_escape_task")    
+    actor:give_info_portion ("cit_actor_in_sewer")    
+    actor:give_info_portion ("cit_jail_doctor_escape_task_end")    
+    -- документы наемников    
+    actor:give_info_portion ("cit_documents_need")    
+    actor:give_info_portion ("cit_documents_find")    
+    actor:give_info_portion ("cit_documents_give")    
 end

@@ -1,3 +1,10 @@
 function main ()
-        
+    task_level4.main ()        
+-------------------------------------------------------------------------------
+-- Задачи c бара
+-------------------------------------------------------------------------------
+    actor:give_info_portion ("bar_deactivate_radar_start")    
+
+    -- Создадим различные объекты, которые нам необходимы
+	alife():create ("good_psy_helmet", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
 end
