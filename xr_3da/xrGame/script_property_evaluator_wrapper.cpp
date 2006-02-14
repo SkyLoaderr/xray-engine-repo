@@ -24,6 +24,8 @@ void CScriptPropertyEvaluatorWrapper::setup_static	(CScriptPropertyEvaluator *ev
 
 bool CScriptPropertyEvaluatorWrapper::evaluate		()
 {
+	THROW_EXCEPTION_IF_NO_SCRIPTS_IN_GOAP;
+
 	try {
 		return	(luabind::call_member<bool>(this,"evaluate"));
 	}

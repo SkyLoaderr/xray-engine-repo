@@ -182,13 +182,23 @@ u32	CTrade::GetItemPrice	(PIItem pItem)
 	
 	const CTradeFactors		&trade_factors = *p_trade_factors;
 
-	float					action_factor = 
-		trade_factors.friend_factor() +
-		(
-			trade_factors.enemy_factor() -
-			trade_factors.friend_factor()
-		)*
-		relation_factor;
+	float					action_factor;
+	if (trade_factors.friend_factor() <= trade_factors.enemy_factor())
+		action_factor		= 
+			trade_factors.friend_factor() +
+			(
+				trade_factors.enemy_factor() -
+				trade_factors.friend_factor()
+			)*
+			(1.f - relation_factor);
+	else
+		action_factor		= 
+			trade_factors.enemy_factor() +
+			(
+				trade_factors.friend_factor() -
+				trade_factors.enemy_factor()
+			)*
+			relation_factor;
 
 	clamp					(
 		action_factor,
