@@ -1177,6 +1177,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 13, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg" and info.story_id == 708
 		            end
@@ -1188,6 +1189,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1199,6 +1201,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 12, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg" and info.story_id == 711
 		            end
@@ -1210,6 +1213,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1221,6 +1225,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1232,6 +1237,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1243,6 +1249,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1254,6 +1261,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {0},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1265,6 +1273,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 13, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     if info.community ~= "dolg" then return false end
 		                     if db.actor:has_info ("mil_scull_dead") then return true end
@@ -1278,6 +1287,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1289,6 +1299,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 12, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg" and info.story_id == 711
 		            end
@@ -1300,6 +1311,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1311,6 +1323,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 11, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1322,6 +1335,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 11, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1333,6 +1347,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 11, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
@@ -1344,6 +1359,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		prior = 10, state = {1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
+		position_threshold = 100,
 		predicate = function (info)
 		                     return info.community == "dolg"
 		            end
