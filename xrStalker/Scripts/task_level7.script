@@ -1,23 +1,48 @@
 function main ()
     task_level5.main2 ()
-    
     local actor = db.actor
--------------------------------------------------------------------------------
--- Задачи DeadCity
--------------------------------------------------------------------------------
-    -- Встречаемся с доктором
-    actor:give_info_portion ("cit_jail_actor_wake")    
-    -- Задачка доктора на Припять
-    actor:give_info_portion ("cit_jail_doctor_pryp_task")
-    -- Найти свое оружие
-    actor:give_info_portion ("cit_jail_doctor_weapon_task")    
-    actor:give_info_portion ("cit_jail_doctor_weapon_task_end")    
-    -- Спастись с DeadCity
-    actor:give_info_portion ("cit_jail_doctor_escape_task")    
-    actor:give_info_portion ("cit_actor_in_sewer")    
-    actor:give_info_portion ("cit_jail_doctor_escape_task_end")    
-    -- документы наемников    
-    actor:give_info_portion ("cit_documents_need")    
-    actor:give_info_portion ("cit_documents_find")    
-    actor:give_info_portion ("cit_documents_give")    
+    
+    db.actor:give_info_portion ("bar_deactivate_radar_start")    
+    db.actor:give_info_portion ("bar_deactivate_radar_done")
+
+	alife():create ("cit_doctors_key", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+
+    -- Создадим различные объекты, которые нам необходимы
+	alife():create ("good_psy_helmet", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+
+    -- Создадим различные объекты, которые нам необходимы
+	alife():create ("wpn_g36", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    for a = 1, 12, 1 do
+	        alife():create ("ammo_5.56x45_ss190", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+        end	        
+	    alife():create ("wpn_addon_scope", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+        for a = 1, 15, 1 do	    
+	        alife():create ("grenade_f1", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    end
+        for a = 1, 15, 1 do	    
+	        alife():create ("medkit", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    end
+        for a = 1, 30, 1 do	    
+	        alife():create ("bandage", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    end
+        for a = 1, 10, 1 do	    
+	        alife():create ("antirad", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    end
+	    alife():create ("bread", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("bread", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("kolbasa", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("kolbasa", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("device_torch", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("detector_simple", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("wpn_desert_eagle", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("ammo_11.43x23_hydro", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("ammo_11.43x23_hydro", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("ammo_11.43x23_hydro", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("exo_outfit", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())    
+    
 end

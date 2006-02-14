@@ -1,5 +1,10 @@
-function main ()
-    task_level4.main2 ()
+function main (need_items)
+    
+    if need_items == nil then
+       task_level4.main2 (true)
+    else   
+       task_level4.main2 () 
+    end   
     
     local actor = db.actor
 -------------------------------------------------------------------------------
@@ -24,9 +29,5 @@ function main ()
 -- Задачи c бара
 -------------------------------------------------------------------------------
     actor:give_info_portion ("bar_deactivate_radar_start")    
-
-    -- Создадим различные объекты, которые нам необходимы
-	alife():create ("good_psy_helmet", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	alife():create ("cit_doctors_key", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
     	
 end
