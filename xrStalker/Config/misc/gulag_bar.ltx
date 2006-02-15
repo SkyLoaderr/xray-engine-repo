@@ -1,12 +1,16 @@
 ;*****************************************************************
 ; Bar visitor
 ;*****************************************************************
+[danger@bar_inside]
+ignore_distance = 40
+
 [logic@bar_visitors_kamp1]
 active = kamp@bar_visitors_kamp1
 
 [kamp@bar_visitors_kamp1]
 center_point = kamp_1
 soundgroup = bar_visitors_kamp1
+danger = danger@bar_inside
 
 [logic@bar_visitors_kamp2]
 active = kamp@bar_visitors_kamp2
@@ -14,6 +18,7 @@ active = kamp@bar_visitors_kamp2
 [kamp@bar_visitors_kamp2]
 center_point = kamp_2
 soundgroup = bar_visitors_kamp2
+danger = danger@bar_inside
 
 [logic@bar_visitors_kamp3]
 active = kamp@bar_visitors_kamp3
@@ -21,6 +26,7 @@ active = kamp@bar_visitors_kamp3
 [kamp@bar_visitors_kamp3]
 center_point = kamp_3
 soundgroup = bar_visitors_kamp3
+danger = danger@bar_inside
 
 [logic@bar_visitors_kamp4]
 active = kamp@bar_visitors_kamp4
@@ -28,6 +34,7 @@ active = kamp@bar_visitors_kamp4
 [kamp@bar_visitors_kamp4]
 center_point = kamp_4
 soundgroup = bar_visitors_kamp4
+danger = danger@bar_inside
 
 [logic@bar_visitors_walker]
 active = walker@bar_visitors_walker
@@ -35,6 +42,7 @@ active = walker@bar_visitors_walker
 [walker@bar_visitors_walker]
 path_walk = walker_walk
 meet = meet@bar_visitors_walker
+danger = danger@bar_inside
 
 [meet@bar_visitors_walker]
 meet_state 		= 3| guard@talk_hello|4| guard
@@ -52,6 +60,7 @@ active = walker@@bar_visitors_arena_1
 path_walk = arena_walk_1
 path_look = arena_look_1
 soundgroup = bar_visitors_arena_1
+danger = danger@bar_inside
 
 [logic@bar_visitors_arena_2]
 active = walker@@bar_visitors_arena_2
@@ -60,6 +69,7 @@ active = walker@@bar_visitors_arena_2
 path_walk = arena_walk_2
 path_look = arena_look_2
 soundgroup = bar_visitors_arena_1
+danger = danger@bar_inside
 
 [logic@bar_visitors_arena_3]
 active = walker@@bar_visitors_arena_3
@@ -68,6 +78,7 @@ active = walker@@bar_visitors_arena_3
 path_walk = arena_walk_3
 path_look = arena_look_3
 soundgroup = bar_visitors_arena_1
+danger = danger@bar_inside
 
 [logic@bar_visitors_arena_4]
 active = walker@@bar_visitors_arena_4
@@ -76,6 +87,7 @@ active = walker@@bar_visitors_arena_4
 path_walk = arena_walk_4
 path_look = arena_look_4
 soundgroup = bar_visitors_arena_1
+danger = danger@bar_inside
 
 [logic@bar_visitors_arena_5]
 active = walker@@bar_visitors_arena_5
@@ -84,6 +96,7 @@ active = walker@@bar_visitors_arena_5
 path_walk = arena_walk_5
 path_look = arena_look_5
 soundgroup = bar_visitors_arena_2
+danger = danger@bar_inside
 
 [logic@bar_visitors_arena_6]
 active = walker@@bar_visitors_arena_6
@@ -92,6 +105,7 @@ active = walker@@bar_visitors_arena_6
 path_walk = arena_walk_6
 path_look = arena_look_6
 soundgroup = bar_visitors_arena_2
+danger = danger@bar_inside
 
 [logic@bar_visitors_arena_7]
 active = walker@@bar_visitors_arena_7
@@ -99,6 +113,7 @@ active = walker@@bar_visitors_arena_7
 [walker@@bar_visitors_arena_7]
 path_walk = arena_walk_7
 path_look = arena_look_7
+danger = danger@bar_inside
 
 [logic@bar_visitors_arena_8]
 active = walker@@bar_visitors_arena_2
@@ -107,6 +122,7 @@ active = walker@@bar_visitors_arena_2
 path_walk = arena_walk_8
 path_look = arena_look_8
 soundgroup = bar_visitors_arena_2
+danger = danger@bar_inside
 
 ; ïîñò ïåğåä âõîäîì âî äâîğ "äîëãà"
 
@@ -160,6 +176,7 @@ active = kamp1@bar_dolg_general_kamp
 [kamp1@bar_dolg_general_kamp]
 center_point = kamp_center
 soundgroup = bar_dolg_general_kamp
+danger = danger@bar_inside
 
 [logic5@bar_dolg_general_patrol1]
 active = walker4@bar_dolg_general_patrol1
@@ -168,6 +185,7 @@ active = walker4@bar_dolg_general_patrol1
 path_walk = patrol_1_walk
 path_look = patrol_1_look
 soundgroup = bar_dolg_general_patrol1
+danger = danger@bar_inside
 
 [logic6@bar_dolg_general_patrol2]
 active = walker5@bar_dolg_general_patrol2
@@ -176,6 +194,7 @@ active = walker5@bar_dolg_general_patrol2
 path_walk = patrol_2_walk
 path_look = patrol_2_look
 soundgroup = bar_dolg_general_patrol1
+danger = danger@bar_inside
 
 [logic6@bar_dolg_general_camper]
 active = walker1@bar_dolg_general_camper
@@ -188,6 +207,7 @@ def_state_moving_fire = assault_fire
 def_state_campering = hide
 def_state_campering_fire = hide_fire
 soundgroup = bar_dolg_general_patrol1
+danger = danger@bar_inside
 
 [logic7@bar_dolg_general_camper]
 active = walker2@bar_dolg_general_camper
@@ -200,6 +220,7 @@ def_state_moving_fire = assault_fire
 def_state_campering = hide
 def_state_campering_fire = hide_fire
 soundgroup = bar_dolg_general_camper
+danger = danger@bar_inside
 
 [logic8@bar_dolg_general_camper]
 active = walker3@bar_dolg_general_camper
@@ -212,6 +233,7 @@ def_state_moving_fire = assault_fire
 def_state_campering = hide
 def_state_campering_fire = hide_fire
 soundgroup = bar_dolg_general_camper
+danger = danger@bar_inside
 
 [logic9@bar_dolg_general_camper]
 active = walker4@bar_dolg_general_camper
@@ -224,6 +246,7 @@ def_state_moving_fire = assault_fire
 def_state_campering = hide
 def_state_campering_fire = hide_fire
 soundgroup = bar_dolg_general_camper
+danger = danger@bar_inside
 
 [logic10@bar_dolg_general_camper]
 active = walker5@bar_dolg_general_camper
@@ -236,6 +259,7 @@ def_state_moving_fire = assault_fire
 def_state_campering = hide
 def_state_campering_fire = hide_fire
 soundgroup = bar_dolg_general_camper
+danger = danger@bar_inside
 
 ; ÂÅÒÅĞÀÍÛ ÄÎËÃÀ
 
@@ -248,6 +272,7 @@ path_walk = guard_bunker_1_walk
 path_look = guard_bunker_1_look
 meet = meet@bar_dolg_veterans_guard_bunker
 soundgroup = bar_dolg_veterans_guard_bunker
+danger = danger@bar_inside
 
 [meet@bar_dolg_veterans_guard_bunker]
 ;meet_state = 5|{-bar_dolg_community_leader}threat@threat_stop,{+bar_dolg_community_leader}guard@talk_hello
@@ -270,6 +295,7 @@ path_walk = guard_bunker_2_walk
 path_look = guard_bunker_2_look
 ;meet = meet@bar_dolg_veterans_guard_bunker
 soundgroup = bar_dolg_veterans_guard_bunker
+danger = danger@bar_inside
 
 
 [logic3@bar_dolg_veterans_gates1]
@@ -279,6 +305,7 @@ active = walker2@bar_dolg_veterans_gates1
 path_walk = guard_gates_walk1
 path_look = guard_gates_look1
 soundgroup = bar_dolg_veterans_gates1
+danger = danger@bar_inside
 
 [logic4@bar_dolg_veterans_gates2]
 active = walker3@bar_dolg_veterans_gates2
@@ -287,6 +314,7 @@ active = walker3@bar_dolg_veterans_gates2
 path_walk = guard_gates_walk2
 path_look = guard_gates_look2
 soundgroup = bar_dolg_veterans_gates1
+danger = danger@bar_inside
 
 [logic5@bar_dolg_veterans_gates_alarm1]
 active = walker6@bar_dolg_veterans_gates_alarm1
@@ -295,6 +323,7 @@ active = walker6@bar_dolg_veterans_gates_alarm1
 path_walk = guard_gates_walk1
 path_look = guard1_alarm
 soundgroup = bar_dolg_veterans_gates1
+danger = danger@bar_inside
 
 [logic6@bar_dolg_veterans_gates_alarm2]
 active = walker7@bar_dolg_veterans_gates_alarm2
@@ -303,6 +332,7 @@ active = walker7@bar_dolg_veterans_gates_alarm2
 path_walk = guard_gates_walk2
 path_look = guard2_alarm
 soundgroup = bar_dolg_veterans_gates1
+danger = danger@bar_inside
 
 ; ÁÓÍÊÅĞ ÄÎËÃÀ
 
@@ -314,6 +344,7 @@ path_walk = guard_2_walk
 path_look = guard_2_look
 meet = meet@bar_dolg_bunker
 soundgroup = bar_dolg_bunker
+danger = danger@bar_inside
 
 [logic3@bar_dolg_bunker]
 active = walker3@bar_dolg_bunker
@@ -322,6 +353,7 @@ active = walker3@bar_dolg_bunker
 path_walk = rest_2_walk
 path_look = rest_2_look
 soundgroup = bar_dolg_bunker
+danger = danger@bar_inside
 
 [logic4@bar_dolg_bunker]
 active = walker4@bar_dolg_bunker
@@ -330,6 +362,7 @@ active = walker4@bar_dolg_bunker
 path_walk = rest_1_walk
 path_look = rest_1_look
 soundgroup = bar_dolg_bunker
+danger = danger@bar_inside
 
 [logic5@bar_dolg_bunker]
 active = sleeper1@bar_dolg_bunker
@@ -337,6 +370,7 @@ active = sleeper1@bar_dolg_bunker
 [sleeper1@bar_dolg_bunker]
 path_main = sleeper_1
 soundgroup = bar_dolg_bunker
+danger = danger@bar_inside
 
 [meet@bar_dolg_bunker]
 use = true
@@ -421,6 +455,7 @@ path_walk = square_1_place_4_walk
 path_look = square_1_place_1_look
 meet = meet@bar_dolg_zastava2
 soundgroup = bar_dolg_zastava2
+danger = danger@zastava_1
 
 [logic@bar_dolg_zastava2_walker2]
 active = walker@bar_dolg_zastava2_walker2
@@ -430,6 +465,7 @@ path_walk = square_1_place_6_walk
 path_look = square_1_place_6_look
 meet = meet@bar_dolg_zastava2
 soundgroup = bar_dolg_zastava2
+danger = danger@zastava_1
 
 [logic@bar_dolg_zastava2_walker3]
 active = walker@bar_dolg_zastava2_walker3
@@ -439,6 +475,7 @@ path_walk = square_1_place_2_walk
 path_look = square_1_place_1_look
 meet = meet@bar_dolg_zastava2
 soundgroup = bar_dolg_zastava2
+danger = danger@zastava_1
 
 [meet@bar_dolg_zastava2]
 meet_state 		= 50| guard@talk_hello|4| guard
