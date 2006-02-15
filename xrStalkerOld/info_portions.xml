@@ -67,5 +67,7 @@
 		<disable>ui_inventory</disable>
    </info_portion>
 
+   <info_portion id="tutorial_part_15_hide_weapon"></info_portion>
+
 
 </game_information_portions>
