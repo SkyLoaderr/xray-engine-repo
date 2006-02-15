@@ -1,9 +1,9 @@
 
-function main44()
+function main()
 	local spawn_items = {}
 	local level = level.name()
 
-	table.insert(spawn_items, "wpn_binoc")
+	table.insert(spawn_items, "device_torch")
 
 
 	local k,v = 0,0
@@ -15,8 +15,8 @@ function main44()
 	end	
 end
 
-function main1222()
-   game.start_tutorial("part_1_pda")
+function main44()
+   game.start_tutorial("part_2_binocular")
 --   part_3_jump
 --   part_4_crouch
 --   part_5_crouch_down

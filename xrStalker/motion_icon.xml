@@ -1,26 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
-	<power_bar_normal x="0" y="0" length="64" broad="64" horz="0" min="0" max="100" pos="0">
-		<background	x="0" y="0"		width="64" height="64" >ui\ui_motion_icon</background>
-		<texture	x="0" y="64"	width="64" height="64" length="64" r="0" g="255" b="0">ui\ui_motion_icon</texture>
-	</power_bar_normal>
-
-	<power_bar_crouch x="0" y="0" length="53" broad="64" horz="0" min="0" max="100" pos="0">
-		<background	x="64" y="0" width="64" height="64" >ui\ui_motion_icon</background>
-		<texture x="64" y="64" width="64" height="64" tile="0" length="64" r="0" g="255" b="0">ui\ui_motion_icon</texture>
-	</power_bar_crouch>
-
-	<power_bar_creep x="0" y="0" length="45" broad="64" horz="0" min="0" max="100" pos="0">
-		<background	x="128" y="0" width="64" height="64" >ui\ui_motion_icon</background>
-		<texture x="128" y="64" width="64" height="64" tile="0" length="64" r="0" g="255" b="0">ui\ui_motion_icon</texture>
-	</power_bar_creep>
-	
-	<power_bar_climb x="0" y="0" length="64" broad="64" horz="0" min="0" max="100" pos="0">
-		<background	x="0" y="0"		width="64" height="64" >ui\ui_motion_icon</background>
-		<texture	x="0" y="64"	width="64" height="64" length="64" r="0" g="255" b="0">ui\ui_motion_icon</texture>
-	</power_bar_climb>
-	
 	<background  x="0" y="640" width="125" height="125">
 		<texture>ui_hud_stamina_full</texture>
 	</background>
