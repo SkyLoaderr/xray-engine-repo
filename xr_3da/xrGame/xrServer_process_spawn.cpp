@@ -33,6 +33,12 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 	}
 	else {
 		VERIFY				(E->m_bALifeControl);
+//		E->owner			= CL;
+//		if (CL != NULL)
+//		{
+//			int x=0;
+//			x=x;
+//		};
 //		E->m_bALifeControl = true;
 	}
 
