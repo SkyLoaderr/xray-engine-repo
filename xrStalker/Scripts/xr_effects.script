@@ -504,23 +504,23 @@ function esc_wolf_thanks(actor, npc)
 	end
 end
 
-function esc_lager_forgive_actor(actor, npc)
-	xr_gulag.setGulagNeutral("esc_lager", db.actor)
-end
+-- function esc_lager_forgive_actor(actor, npc)
+--	xr_gulag.setGulagNeutral("esc_lager", db.actor)
+-- end
 
-function esc_lager_promise_actor(actor, npc)
-	local gulag = xr_gulag.get_gulag_by_name ("esc_lager")
-    if (gulag) then
-       gulag:set_relation (game_object.neutral, actor)
-    end  
-end
+-- function esc_lager_promise_actor(actor, npc)
+--	local gulag = xr_gulag.get_gulag_by_name ("esc_lager")
+--    if (gulag) then
+--       gulag:set_relation (game_object.neutral, actor)
+--    end  
+-- end
 
-function esc_lager_rage_actor(actor, npc)
-	local gulag = xr_gulag.get_gulag_by_name ("esc_lager")
-    if (gulag) then
-       gulag:set_relation (game_object.enemy, actor)
-    end  
-end
+-- function esc_lager_rage_actor(actor, npc)
+--	local gulag = xr_gulag.get_gulag_by_name ("esc_lager")
+--    if (gulag) then
+--       gulag:set_relation (game_object.enemy, actor)
+--    end  
+-- end
 
 --' garbage
 
