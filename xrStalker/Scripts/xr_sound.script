@@ -167,6 +167,7 @@ function play_sound(npc, themes, timeout)
 	for k,v in pairs(themes) do
 		snd_table[t] = {}
 		if sound_theme.theme[v] ~= nil then
+			snd_table[t].theme = v
 			get_sound(sound_theme.theme[v], snd_table[t], npc)
 		else
 			abort("ERROR: ILLEGAL PLAY SOUND!!! %s for %s", v, npc:name())
@@ -204,6 +205,7 @@ function play_sound(npc, themes, timeout)
 			if db.sound[npc_id].last_snd[snd.into_id] == nil then db.sound[npc_id].last_snd[snd.into_id] = -1 end
 			
 			printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id]+1, npc:name())
+			process_tutor_on_sound(snd.theme)
 			npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[npc_id].last_snd[snd.into_id]+1)
 			db.sound[npc_id].last_snd[snd.into_id] = db.sound[npc_id].last_snd[snd.into_id] + 1
 			--printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id], npc:name())
@@ -232,6 +234,7 @@ function play_sound(npc, themes, timeout)
 				timeout = 0
 			end							
 			printf("*SND* play rnd [%s] for [%s]", s, npc:name())
+			process_tutor_on_sound(snd.theme)
 			npc:play_sound(snd.rnd_id, timeout+1, timeout, 1, 0, s)
 			--db.sound[npc_id].last_snd[snd.rnd_id] = s
 			group_table.last_snd[snd.rnd_id] = s
@@ -252,4 +255,19 @@ end
 
 function load_sound(npc)
 	sound_theme.load_sound(npc)
+end
+
+function process_tutor_on_sound(theme)
+	if db.actor == nil then
+		return
+	end
+	
+	if db.actor:dont_has_info("esc_trader_newbie") then
+		return
+	end
+	
+	if theme == "threat_weap" and db.actor:dont_has_info("tutorial_part_15_hide_weapon") then		
+		game.start_tutorial("part_15_hide_weapon")
+		db.actor:give_info_portion("tutorial_part_15_hide_weapon")
+	end
 end
