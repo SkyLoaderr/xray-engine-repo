@@ -500,7 +500,6 @@ function esc_wolf_thanks(actor, npc)
 		news_manager.send_tip(actor, "esc_wolf_thanks", 0, "wolf", 0)
 		actor:give_info_portion("esc_path_to_lager")
 		actor:give_info_portion("esc_wolf_thanks_complete")
-		this.esc_lager_promise_actor(actor, npc)
 	end
 end
 
