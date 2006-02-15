@@ -421,8 +421,19 @@ extern void add_human_to_top_list		(u16 id);
 extern void remove_human_from_top_list	(u16 id);
 
 
-#include "postprocessanimator.h"
 
+#include "ActorEffector.h"
+void add_complex_effector(LPCSTR section, int id)
+{
+	AddEffector(Actor(),id, section);
+}
+
+void remove_complex_effector(int id)
+{
+	RemoveEffector(Actor(),id);
+}
+
+#include "postprocessanimator.h"
 void add_pp_effector(LPCSTR fn, int id, bool cyclic)
 {
 	CPostprocessAnimator* pp		= xr_new<CPostprocessAnimator>(id, cyclic);
@@ -550,6 +561,10 @@ void CLevel::script_register(lua_State *L)
 		def("add_pp_effector",					&add_pp_effector),
 		def("set_pp_effector_factor",			&set_pp_effector_factor),
 		def("remove_pp_effector",				&remove_pp_effector),
+
+		def("add_complex_effector",				&add_complex_effector),
+		def("remove_complex_effector",			&remove_complex_effector),
+		
 		def("game_id",							&GameID)
 	],
 	
