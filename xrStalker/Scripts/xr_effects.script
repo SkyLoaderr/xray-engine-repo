@@ -136,6 +136,25 @@ function drop_npc_inventory(actor, npc, p)
     end
 end
 
+function drop_npc_item(actor, npc, p)
+    if p[1] then
+        local item = npc:object(p[1])
+        if item then
+		    npc:drop_item(item)
+		end
+    end
+end
+
+function drop_npc_items(actor, npc, p)
+    local item = 0
+	for i, v in pairs(p) do
+        item = npc:object(v)
+        if item then
+		    npc:drop_item(item)
+        end
+    end
+end
+
 -----------------------------------------------------------------------------
 function monster_berserk(actor, npc)
     npc:berserk()
