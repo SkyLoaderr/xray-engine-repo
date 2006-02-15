@@ -157,7 +157,6 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 		predicate = e_predicate_g1
 	}
 	table.insert(sj, t)
-    --ltx = ltx.."#include \"scripts\\val_escort_guard1.ltx\"\n"
 
 	t = { section = "logic@" .. gname .. "_guard",
 		idle = 0,
@@ -168,7 +167,6 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 		predicate = e_predicate_g2
 	}
 	table.insert(sj, t)
-    --ltx = ltx.."#include \"scripts\\val_escort_guard2.ltx\"\n"
 
     ltx = ltx.."[logic@" .. gname .. "_guard]\n" ..
                "active          = patrol@" .. gname .. "_guard_wait\n" ..
@@ -194,6 +192,12 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                --"on_info2    = {=see_actor -val_escort_nap1_start_combat -val_escort_captive_enemy} %+val_escort_captive_enemy%\n" ..
                --"on_info3    = {=see_actor -val_escort_combat} %+val_escort_combat% ;remark@val_escort_guard1_fight\n" ..
 
+               "[danger@" .. gname .. "_guard]\n" ..
+               "ignore_types                = corpse\n" ..
+               "ignore_ distance_sound      = 30\n" ..
+               "danger_inertion_time_sound  = 5000\n" ..
+               "danger_inertion_time_hit    = 7000\n" ..
+
                -- wait for scene start
                "[patrol@" .. gname .. "_guard_wait]\n" ..
                "path_walk           = captive_wait_walk\n" ..
@@ -202,6 +206,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "on_info             = {+val_escort_start}           patrol@val_escort_guard_walk\n" ..
                "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
                "on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               "danger              = danger@" .. gname .. "_guard\n" ..
                "combat_ignore_cond  = {=check_fighting(400)}\n" ..
 
                -- escort captive
@@ -214,6 +219,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "on_info2            = {+val_escort_scene_fail}      remark@val_escort_guard_free\n" ..
                "on_info3            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
                "on_info4            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               "danger              = danger@" .. gname .. "_guard\n" ..
                "combat_ignore_cond  = {=check_fighting(400)}\n" ..
 
                -- fight with actor and nap1
@@ -596,7 +602,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
     local restr, gr, prior, rst = 0, 0, 0, 0
     local ltx = ""
-    local combat_ignore = "combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}"
+    local combat_ignore = "combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}\n"
 
 	-- ÁÎÐÎÂ
 	t = { section = "logic@" .. gname .. "_leader_normal",
@@ -876,7 +882,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 
     --ltx = ltx.."#include \"misc\\gulag_dark_valley.ltx\"\n"
 
-    --gulags.val_lager_bandits.ltx = ltx
+    gulags.val_lager_bandits.ltx = ltx
 end
 
 -- States ----------------------------------------------------------------
@@ -1054,17 +1060,17 @@ gulags.val_watchtower.job = function(sj, gname, type, squad, groups)
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_sniper_fire\n" ..
                    "sniper                      = true\n" ..
-                   "on_actor_dist_le_nvis       = 40 | walker@" .. way_name .. "_sniper_free\n" ..
+                   "on_actor_dist_le_nvis       = 50 | walker@" .. way_name .. "_sniper_free\n" ..
                    "on_timer                    = " .. d_sniper .. "000 | remark@" .. way_name .. "\n" ..
 
                    "[walker@" .. way_name .. "_sniper_free]\n" ..							
                    "path_walk                   = sniper_" .. i .. "_walk\n" ..
                    "path_look                   = sniper_" .. i .. "_look\n" ..
-                   "on_actor_dist_ge_nvis       = 50 | camper@" .. way_name .. "_sniper\n" ..
+                   "on_actor_dist_ge_nvis       = 60 | camper@" .. way_name .. "_sniper\n" ..
 
                    "[remark@" .. way_name .. "]\n" ..							
                    "anim                    = guard\n" ..
-                   "on_actor_dist_le_nvis   = 40 | walker@" .. way_name .. "_sniper_free\n" ..
+                   "on_actor_dist_le_nvis   = 50 | walker@" .. way_name .. "_sniper_free\n" ..
                    "on_timer                = " .. d_wait .. "000 | camper@" .. way_name .. "_sniper\n"
 
 		i = i + 1
