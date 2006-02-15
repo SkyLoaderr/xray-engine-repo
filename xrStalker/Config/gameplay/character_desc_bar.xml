@@ -307,9 +307,9 @@
 	
 		
 	
-		<start_dialog>dm_trade_info_dialog</start_dialog>
-	<!---	<actor_dialog>bar_bar_osvedomitel_trade_info</actor_dialog>
-		<actor_dialog>bar_bar_osvedomitel_reward</actor_dialog>
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_trade_info_dialog</actor_dialog>
+	<!---	<actor_dialog>bar_bar_osvedomitel_reward</actor_dialog>
 		<actor_dialog>bar_bar_osvedomitel_talk</actor_dialog>
 		<actor_dialog>bar_bar_osvedomitel_talk_about_freedom</actor_dialog>  ---->
 	</specific_character>	
