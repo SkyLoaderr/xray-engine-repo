@@ -280,7 +280,6 @@ function check_danger_distance(npc, danger)
 	printf("DANGER_DIST [%s] [%s]", npc:name(), tostring(danger_distance_sqr))
 
 	if danger_settings ~= nil then
-		print_table(danger_settings)
 		if danger_distance_sqr >= danger_settings.ignore_distance then
 			return false
 		end
