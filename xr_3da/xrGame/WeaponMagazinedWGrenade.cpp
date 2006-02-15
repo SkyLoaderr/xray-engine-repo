@@ -116,10 +116,9 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 	m_bPending = false;
 
 	m_DefaultCartridge2.Load(*m_ammoTypes2[m_ammoType2]);
+/*
 	if (!m_bGrenadeMode && IsGrenadeLauncherAttached() && !getRocketCount())
 	{
-
-//		for(int i = 0; i < iAmmoElapsed; ++i) 
 		m_magazine2.push(m_DefaultCartridge2);
 
 		shared_str grenade_name = m_DefaultCartridge2.m_ammoSect;
@@ -127,6 +126,14 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 
 		CRocketLauncher::SpawnRocket(*fake_grenade_name, this);
 	}
+*/
+	if(iAmmoElapsed && m_bGrenadeMode && !getRocketCount()) 
+	{
+		shared_str fake_grenade_name = pSettings->r_string(m_magazine.top().m_ammoSect, "fake_grenade_name");
+		
+		CRocketLauncher::SpawnRocket(*fake_grenade_name, this);
+	}
+
 	return l_res;
 }
 void CWeaponMagazinedWGrenade::switch2_Idle() 
