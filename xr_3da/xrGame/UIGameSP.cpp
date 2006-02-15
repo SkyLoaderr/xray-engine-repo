@@ -51,9 +51,12 @@ void CUIGameSP::SetClGame (game_cl_GameState* g)
 bool CUIGameSP::IR_OnKeyboardPress(int dik) 
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
+
+#ifndef DEBUG
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor)								return false;
 	if( pActor && !pActor->g_Alive() )		return false;
+#endif
 
 	switch (key_binding[dik])
 	{
