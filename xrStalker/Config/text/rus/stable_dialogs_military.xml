@@ -796,7 +796,7 @@
         <text>А вы тут чего сидите ?</text>
     </string>
     <string id="mil_hunter_dialog_205">
-        <text>Пришли артефактов поискать, да двое наших где-то там полегли. Тварь какая-то, видать, с Радара пролезла.</text>
+        <text>Пришли артефактов поискать, да двое наших ушли и не вернулись. Тварь какая-то, видать, с Радара пролезла.</text>
     </string>
     <string id="mil_hunter_dialog_3">
         <text>Именно. Он говорит, что вы тут застряли и вам не улыбается поход в деревню. Что-то случилось?</text>
@@ -856,10 +856,49 @@
         <text>Обойдешься. Ладно, пошел я зверей ваших ловить.</text>
     </string>
     <string id="mil_hunter_dialog_6">
-        <text>То то и оно. Ну, а раз ты со Скрягой договорился, то иди в деревню, смотри... Адрес оставь, мы похоронку тебе отправим, если что...</text>
+        <text>То то и оно. Наши ребята должны были пойти к старой водонапорной башне. Видимо там они и полегли. Ну, а раз ты со Скрягой договорился, то сходи туда и посмотри... Адрес оставь, мы похоронку тебе отправим, если что...</text>
+    </string>
+    <string id="mil_hunter_dialog_601">
+        <text>Ты через деревню шел ?</text>
+    </string>
+    <string id="mil_hunter_dialog_602">
+        <text>Да, а что ?</text>
+    </string>
+    <string id="mil_hunter_dialog_603">
+        <text>Там пара наших ушла и не вернулась. Видел их ?</text>
+    </string>
+    <string id="mil_hunter_dialog_604">
+        <text>Только их трупы. Какая-то тварь тварь их положила.</text>
+    </string>
+    <string id="mil_hunter_dialog_605">
+        <text>Что за тварь ?</text>
+    </string>
+    <string id="mil_hunter_dialog_606">
+        <text>Да хрен его знает. Похожа на мужика в рванье, только морда какая-то странная. Завалил я ее.</text>
+    </string>
+    <string id="mil_hunter_dialog_607">
+        <text>Ну, спасибо, удружил. Сходи к Скряге на нашу базу - он тебя вознаградит.</text>
+    </string>
+    <string id="mil_hunter_dialog_608">
+        <text>Схожу пожалуй.</text>
     </string>
     <string id="mil_hunter_dialog_7">
         <text>Обойдешься. Ладно, пошел я зверей ваших ловить.</text>
+    </string>
+    <string id="mil_hunter_dialog_701">
+        <text>Как успехи?</text>
+    </string>
+    <string id="mil_hunter_dialog_702">
+        <text>Нормально. Завалил я тварь.</text>
+    </string>
+    <string id="mil_hunter_dialog_703">
+        <text>И на что она похожа ?</text>
+    </string>
+    <string id="mil_hunter_dialog_704">
+        <text>На странного мужика в каком-то рванье, пойдете - увидите. На мозги действует, сука. Кстати, ваши возле водокачки лежат и похоже они застрелились сами.</text>
+    </string>
+    <string id="mil_hunter_dialog_705">
+        <text>Дела... Сходи к Скряге на нашу базу - он тебя вознаградит.</text>
     </string>
     <string id="mil_hunter_dialog_80">
         <text>Как хочешь...</text>
@@ -1442,6 +1481,21 @@
     </string>
     <string id="mil_trader_dialog_6002">
         <text>Не очень-то и хотелось.</text>
+    </string>
+    <string id="mil_trader_dialog_7001">
+        <text>Тут народ передал, что ты тварь в деревне завалил. Правда ?</text>
+    </string>
+    <string id="mil_trader_dialog_7002">
+        <text>Правда.</text>
+    </string>
+    <string id="mil_trader_dialog_7003">
+        <text>Что за тварь ?</text>
+    </string>
+    <string id="mil_trader_dialog_7004">
+        <text>Какой-то мужик в рваных штанах. И еще, гад, на мозги действует, умеет неплохо прятаться. Никогда раньше такого не видел.</text>
+    </string>
+    <string id="mil_trader_dialog_7005">
+        <text>Интересно... Лезет всякая гадость из центра Зоны. Откуда только берется... Ладно, вот плата за твою работу.</text>
     </string>
     <string id="mil_zoneguard_common1_0">
         <text>У вас тут повар есть ?</text>

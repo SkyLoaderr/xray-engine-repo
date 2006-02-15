@@ -338,6 +338,9 @@
 		<objective>
 			<text>mil_hunters_phase2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type hint="mil_watertower_hint">green_location</map_location_type>
+            <object_story_id>Mil_WaterTower</object_story_id>
+            <map_location_hidden>1</map_location_hidden>
 			<infoportion_complete>mil_controller_dead</infoportion_complete>
             <infoportion_fail>mil_miser_task_failed</infoportion_fail>
 		</objective>
@@ -351,3 +354,44 @@
             <map_location_hidden>1</map_location_hidden>
 		</objective>
 	</game_task>
+	
+	<game_task id = "mil_go_to_miser">
+		<objective>
+			<title>mil_go_to_miser_task_main</title>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_go_to_miser_end</infoportion_complete>
+            <infoportion_fail>mil_miser_dead</infoportion_fail>
+		</objective>
+		<objective>
+			<text>mil_go_to_miser_task</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type hint="mil_miser_hint">blue_location</map_location_type>
+            <object_story_id>Mil_Miser</object_story_id>
+            <infoportion_complete>mil_go_to_miser_end</infoportion_complete>
+            <infoportion_fail>mil_miser_dead</infoportion_fail>
+		</objective>
+	</game_task>
+	
+	<game_task id = "mil_kill_controller">
+		<objective>
+			<title>mil_kill_controller_main</title>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>mil_hunt_end</infoportion_complete>
+            <infoportion_fail>mil_ugrumy_dead</infoportion_fail>
+		</objective>
+		<objective>
+			<text>mil_kill_controller</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type hint="mil_watertower_hint">green_location</map_location_type>
+            <object_story_id>Mil_WaterTower</object_story_id>
+            <infoportion_complete>mil_controller_dead</infoportion_complete>
+		</objective>
+		<objective>
+			<text>mil_return_to_ugrumy</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type hint="mil_hunters_hint1">blue_location</map_location_type>
+            <object_story_id>Mil_Hunter3</object_story_id>
+            <infoportion_complete>mil_hunt_end</infoportion_complete>
+            <infoportion_fail>mil_ugrumy_dead</infoportion_fail>
+        </objective>    
+	</game_task>	

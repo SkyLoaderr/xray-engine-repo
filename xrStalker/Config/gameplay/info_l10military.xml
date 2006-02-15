@@ -25,6 +25,11 @@
 	
 	<info_portion id="mil_ugrumy_dead"></info_portion>
 	
+	<info_portion id="mil_go_to_miser">
+		<task>mil_go_to_miser</task>
+	</info_portion>
+	<info_portion id="mil_go_to_miser_end"></info_portion>
+	<info_portion id="mil_miser_dead"></info_portion>
 	
 	<!-- Нападение на базу Свободы -->
 	<info_portion id="mil_enemy_nearest"></info_portion>
@@ -274,7 +279,10 @@
 
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>
-	<info_portion id="mil_controller_ready"></info_portion>
+	<info_portion id="mil_controller_ready">
+		<task>mil_kill_controller</task>
+	</info_portion>
+	<info_portion id="mil_hunt_end"></info_portion>
 	<info_portion id="mil_hunter_after_dialog"></info_portion>
 
 

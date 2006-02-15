@@ -172,3 +172,24 @@
 <string id="mil_test_task_phase3">
 	<text>Поднять РГ6 для выполнения задачи или LR300 для провала</text>
 </string>
+
+
+<string id="mil_go_to_miser_task">
+	<text>Сходить на базу Свободы к Скряге за наградой</text>
+</string>
+
+<string id="mil_go_to_miser_task_main">
+	<text>Получить награду за убитого контроллера</text>
+</string>
+
+<string id="mil_kill_controller">
+	<text>Убить контроллера</text>
+</string>
+
+<string id="mil_kill_controller_main">
+	<text>Убить контроллера</text>
+</string>
+
+<string id="mil_return_to_ugrumy">
+	<text>Сообщить Угрюмому о выполнении</text>
+</string>
