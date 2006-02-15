@@ -698,11 +698,11 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 		//-----------------------------------------------------------
 	case KT_BLEEDING:			//from bleeding
 		{
-			/*KMS.m_initiator.m_shader = GetBloodLossIconsShader();
+			KMS.m_initiator.m_shader = GetBloodLossIconsShader();
 			KMS.m_initiator.m_rect.x1 = 238;
 			KMS.m_initiator.m_rect.y1 = 31;
 			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 17;
-			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 26;*/
+			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 26;
 
 			if (!pKiller)
 			{
