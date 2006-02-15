@@ -4770,8 +4770,15 @@
                 <text>bar_bar_barmen_jobs_room_31</text>
                 <next>311</next>
             </phrase>
-            <phrase id="81">
-                <text>bar_bar_barmen_jobs_room_81</text>
+            <phrase id="0">
+                <text>bar_bar_barmen_jobs_room_0</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="7">
+                <text></text>
+                <next>77</next>
+                <next>99</next>
+                <next>8</next>
             </phrase>
             <phrase id="8">
                 <text></text>
@@ -4780,15 +4787,8 @@
                 <has_info>yan_x16_documents_gain</has_info>
                 <next>81</next>
             </phrase>
-            <phrase id="7">
-                <text></text>
-                <next>77</next>
-                <next>99</next>
-                <next>8</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_barmen_jobs_room_0</text>
-                <next>7</next>
+            <phrase id="81">
+                <text>bar_bar_barmen_jobs_room_81</text>
             </phrase>
         </phrase_list>
     </dialog>
