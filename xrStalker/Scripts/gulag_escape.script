@@ -237,51 +237,51 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_zoneguard1",
 			idle = 0,
 			prior = 9, state = {0, 1},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_zoneguard2",
 			idle = 0,
 			prior = 9, state = {0, 1},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_walker3",
 			idle = 0,
 			prior = 8, state = {0, 1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_walker4",
 			idle = 0,
 			prior = 8, state = {0, 1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		-- у костра днём
 		t = { section = "logic@esc_lager_kamp1",
 			idle = 0,
 			prior = 6, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_kamp1",
 			idle = 0,
 			prior = 6, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_kamp1",
 			idle = 0,
 			prior = 6, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		-- Волк, собственной персоной.
 		t = { section = "logic@esc_lager_volk",
 			idle = 0,
 			prior = 16, state = {0,1},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 			predicate = function(obj_info)
         					return obj_info.profile_name == "esc_wolf"
 						end
@@ -291,7 +291,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_fanat",
 			idle = 0,
 			prior = 16, state = {0,1},
-			in_rest = "", out_rest = "",
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 			predicate = function(obj_info)
         					return obj_info.profile_name == "esc_fanat"
 						end
@@ -302,44 +302,44 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_sleeper1",
 			idle = 0,
 			prior = 3, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper2",
 			idle = 0,
 			prior = 3, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper3",
 			idle = 0,
 			prior = 3, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		-- спящие ночью и днёи
 		t = { section = "logic@esc_lager_sleeper4",
 			idle = 0,
 			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper5",
 			idle = 0,
 			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper6",
 			idle = 0,
 			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_lager_sleeper7",
 			idle = 0,
 			prior = 0, state = {0,1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 
