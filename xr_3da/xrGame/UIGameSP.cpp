@@ -53,10 +53,18 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
 
 #ifndef DEBUG
+	if(key_binding[dik]== kINVENTORY)
+	{
+		if( !MainInputReceiver() || MainInputReceiver()==InventoryMenu){
+			m_game->StartStopMenu(InventoryMenu,true);
+			return true;
+		}break;
+	}
+#endif
+
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor)								return false;
 	if( pActor && !pActor->g_Alive() )		return false;
-#endif
 
 	switch (key_binding[dik])
 	{
