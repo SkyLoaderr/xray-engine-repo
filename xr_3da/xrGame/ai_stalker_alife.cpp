@@ -441,7 +441,185 @@ bool CAI_Stalker::AllowItemToTrade 					(CInventoryItem const * item, EItemPlace
 	return					(const_cast<CAI_Stalker*>(this)->can_sell(item));
 }
 
+bool CAI_Stalker::non_conflicted					(const CInventoryItem *item, const CWeapon *new_weapon) const
+{
+	if (item->object().ID() == new_weapon->ID())
+		return				(true);
+
+	const CWeapon			*weapon = smart_cast<const CWeapon*>(item);
+	if (!weapon)
+		return				(true);
+
+	switch (weapon->ef_weapon_type()) {
+		// knives
+		case 1 : {
+			if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
+				return		(true);
+
+			break;
+		}
+		// pistols
+		case 5 : {
+			if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
+				return		(true);
+
+			break;
+		}
+		// automatic weapon
+		case 6 :
+		// shotguns
+		case 7 :
+		// sniper rifles
+		case 8 : {
+			if ((new_weapon->ef_weapon_type() < 6) || (new_weapon->ef_weapon_type() > 8))
+				return		(true);
+
+			break;
+		}
+		case 9 : {
+			if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
+				return		(true);
+
+			break;
+		}
+		case 10 : {
+			if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
+				return		(true);
+
+			break;
+		}
+	}
+
+	return					(false);
+}
+
+static int enough_ammo_box_count = 1;
+
+bool CAI_Stalker::enough_ammo						(const CWeapon *new_weapon) const
+{
+	int						ammo_box_count = 0;
+
+	TIItemContainer::const_iterator	I = inventory().m_all.begin();
+	TIItemContainer::const_iterator	E = inventory().m_all.end();
+	for ( ; I != E; ++I) {
+		if (std::find(new_weapon->m_ammoTypes.begin(),new_weapon->m_ammoTypes.end(),(*I)->object().cNameSect()) == new_weapon->m_ammoTypes.end())
+			continue;
+
+		++ammo_box_count;
+		if (ammo_box_count >= enough_ammo_box_count)
+			return			(true);
+	}
+
+	return					(false);
+}
+
+static int rank										(const CWeapon *weapon)
+{
+	return					(0);
+}
+
+bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *new_weapon, bool new_wepon_enough_ammo) const
+{
+	if (non_conflicted(item,new_weapon))
+		return				(false);
+
+	const CWeapon			*weapon = smart_cast<const CWeapon*>(item);
+	VERIFY					(weapon);
+
+	bool					current_wepon_enough_ammo = enough_ammo(weapon);
+	if (current_wepon_enough_ammo && !new_wepon_enough_ammo)
+		return				(true);
+
+	if (!current_wepon_enough_ammo && new_wepon_enough_ammo)
+		return				(false);
+
+	if (!fsimilar(weapon->GetCondition(),new_weapon->GetCondition(),EPS_L))
+		return				(weapon->GetCondition() >= new_weapon->GetCondition());
+
+	if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
+		return				(weapon->ef_weapon_type() >= new_weapon->ef_weapon_type());
+
+	if (rank(weapon) != rank(new_weapon))
+		return				(rank(weapon) >= rank(new_weapon));
+
+	return					(weapon->GetCondition() >= new_weapon->GetCondition());
+}
+
 bool CAI_Stalker::can_take							(CInventoryItem const * item)
 {
-	return					(true);
+	const CWeapon				*new_weapon = smart_cast<const CWeapon*>(item);
+	if (!new_weapon)
+		return					(false);
+
+	bool						new_weapon_enough_ammo = enough_ammo(new_weapon);
+
+	TIItemContainer::iterator	I = inventory().m_all.begin();
+	TIItemContainer::iterator	E = inventory().m_all.end();
+	for ( ; I != E; ++I)
+		if (conflicted(*I,new_weapon,new_weapon_enough_ammo))
+			return				(false);
+
+	return						(true);
+}
+
+void CAI_Stalker::remove_personal_only_ammo			(const CInventoryItem *item)
+{
+	const CWeapon			*weapon = smart_cast<const CWeapon*>(item);
+	VERIFY					(weapon);
+
+	xr_vector<shared_str>::const_iterator	I = weapon->m_ammoTypes.begin();
+	xr_vector<shared_str>::const_iterator	E = weapon->m_ammoTypes.end();
+	for ( ; I != E; ++I) {
+		bool				found = false;
+
+		TIItemContainer::const_iterator	i = inventory().m_all.begin();
+		TIItemContainer::const_iterator	e = inventory().m_all.end();
+		for ( ; i != e; ++i) {
+			if ((*i)->object().ID() == weapon->ID())
+				continue;
+
+			const CWeapon	*temp = smart_cast<const CWeapon*>(*i);
+			if (!temp)
+				continue;
+
+			if (std::find(temp->m_ammoTypes.begin(),temp->m_ammoTypes.end(),*I) == temp->m_ammoTypes.end())
+				continue;
+
+			found			= true;
+			break;
+		}
+
+		if (found)
+			continue;
+
+		for (i = inventory().m_all.begin(); i != e; ++i) {
+			if (std::find(weapon->m_ammoTypes.begin(),weapon->m_ammoTypes.end(),*I) == weapon->m_ammoTypes.end())
+				continue;
+
+			NET_Packet		packet;
+			u_EventGen		(packet,GE_DESTROY,(*i)->object().ID());
+			u_EventSend		(packet);
+		}
+	}
+}
+
+void CAI_Stalker::update_conflicted					(CInventoryItem *item, const CWeapon *new_weapon)
+{
+	if (non_conflicted(item,new_weapon))
+		return;
+
+	remove_personal_only_ammo	(item);
+	item->Drop					();
+}
+
+void CAI_Stalker::on_after_take						(const CGameObject *object)
+{
+	const CWeapon				*new_weapon = smart_cast<const CWeapon*>(object);
+	if (!new_weapon)
+		return;
+
+	TIItemContainer::iterator	I = inventory().m_all.begin();
+	TIItemContainer::iterator	E = inventory().m_all.end();
+	for ( ; I != E; ++I)
+		update_conflicted		(*I,new_weapon);
 }

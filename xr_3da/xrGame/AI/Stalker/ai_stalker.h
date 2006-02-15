@@ -343,6 +343,13 @@ protected:
 			bool						tradable_item					(CInventoryItem *inventory_item, const u16 &current_owner_id);
 			bool						can_sell						(CInventoryItem const * item);
 			bool						can_take						(CInventoryItem const * item);
+
+			bool						non_conflicted					(const CInventoryItem *item, const CWeapon *new_weapon) const;
+			bool						enough_ammo						(const CWeapon *new_weapon) const;
+			bool						conflicted						(const CInventoryItem *item, const CWeapon *new_weapon, bool new_wepon_enough_ammo) const;
+			void						update_conflicted				(CInventoryItem *item, const CWeapon *new_weapon);
+			void						remove_personal_only_ammo		(const CInventoryItem *item);
+			void						on_after_take					(const CGameObject *object);
 	virtual bool						AllowItemToTrade 				(CInventoryItem const * item, EItemPlace place) const;
 public:
 			CALifeTask					&current_alife_task				();

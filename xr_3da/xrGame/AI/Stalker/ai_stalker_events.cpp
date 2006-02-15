@@ -47,6 +47,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 				if (!inventory().ActiveItem() && GetScriptControl() && smart_cast<CShootingObject*>(O))
 					CObjectHandler::set_goal	(eObjectActionIdle,_O);
 
+				on_after_take			(_O);
 #ifndef SILENCE
 				Msg("TAKE - %s (%d)", *O->cName(),O->ID());
 #endif
