@@ -10,7 +10,6 @@ void CMonsterSquad::ProcessIdle()
 
 	// Выделить элементы с общими врагами и состянием атаки 
 	for (MEMBER_GOAL_MAP_IT it_goal = m_goals.begin(); it_goal != m_goals.end(); it_goal++) {
-		CEntity		*member = it_goal->first;
 		SMemberGoal goal = it_goal->second;
 		if ((goal.type == MG_Rest) || (goal.type == MG_WalkGraph)) {
 			m_temp_entities.push_back(it_goal->first);
