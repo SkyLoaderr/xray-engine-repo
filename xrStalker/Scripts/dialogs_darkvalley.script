@@ -21,13 +21,13 @@ function val_rob_actor_reloc_money(actor, npc)
 	dialogs.relocate_money(npc, 800, "out")
 end
 
-function val_escort_reward(npc, actor)
-    printf("dialogs <darkvalley.val_escort_reward>: npc:name(%s)", npc:name())
+function val_escort_reward(actor, npc)
+    --printf("dialogs <darkvalley.val_escort_reward>: npc:name(%s)", npc:name())
 	local scope = npc:object("wpn_addon_scope")
 	if scope ~= nil then
-	    dialogs.relocate_money(actor, 1300, "in")
-	    dialogs.relocate_item(actor, scope, "in")
+	    dialogs.relocate_money(npc, 1300, "in")
+	    dialogs.relocate_item(npc, scope, "in")
 	else
-	    dialogs.relocate_money(actor, 1800, "in")
+	    dialogs.relocate_money(npc, 1800, "in")
 	end
 end
