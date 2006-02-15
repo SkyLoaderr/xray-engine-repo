@@ -134,7 +134,7 @@ ph_box1_size 		 = 0.40, 0.6,  0.40
 ph_crash_speed_min			= 100
 ph_crash_speed_max			= 300
 ph_collision_damage_factor	= 0.1
-ph_mass 		     = 370.
+ph_mass 		     = 370
 
 destroyed_vis_name	 = physics\Dead_Body\trupik_crash
 
@@ -156,9 +156,9 @@ max_hear_dist		 = 80
 
 
 ; speed factors			linear | angular_real | angular_path | min |  max
-Velocity_Stand			= 0,		3.0,			3.0,		1,		1
-Velocity_WalkFwdNormal	= 1.25,		3.9,			3.9,		0.1,	2.0
-Velocity_RunFwdNormal	= 12.5,		2.0,			2.0,		0.16,	1	
+Velocity_Stand			= 0,		2.0,			2.0,		1,		1
+Velocity_WalkFwdNormal	= 1.3,		1.5,			1.5,		0.1,	2.0
+Velocity_RunFwdNormal	= 12.5,		4.0,			2.5,		0.2,	1	
 Velocity_WalkFwdDamaged	= 2.0,		3.0,			3.0,		0.5,	1.5	
 Velocity_RunFwdDamaged	= 6.0,  	4.0,			4.0,		0.2,	1
 Velocity_Drag			= 1.0,		3.0,			3.0,		1,		1
@@ -169,7 +169,7 @@ Velocity_JumpGround		= 12.5,		2.0,			2.0,		0.16,	1
 ; acceleration
 Accel_Generic		= 1.5
 Accel_Calm			= 1.5
-Accel_Aggressive	= 8.5
+Accel_Aggressive	= 15.5
 
 ;-----------------------------------------------------------------------
 ; Attack Distance Parameters
@@ -181,11 +181,11 @@ MaxAttackDist		= 3.5	;3.8
 ; Attack-Stop
 ;-----------------------------------------------------------------------
 as_min_dist				= 2.0
-as_step					= 0.2
+as_step					= 0.3
 ;-----------------------------------------------------------------------
 ; Run Attack 
 ;-----------------------------------------------------------------------
-Run_Attack_Dist			= 6.0,		7.0
+Run_Attack_Dist			= 5.0,		9.0
 Run_Attack_Delay		= 3000,		6000 
 
 ;-----------------------------------------------------------------------
@@ -277,7 +277,7 @@ idle_sound_delay		= 85000
 eat_sound_delay			= 3000
 attack_sound_delay		= 14000
 
-DamagedThreshold		= 0.25
+DamagedThreshold		= 0.2
 
 material				= creatures\large
 DynamicObjectsCount		= 32
@@ -319,7 +319,7 @@ jump_max_angle				= 0.3
 Anomaly_Detect_Radius			= 15.0
 Anomaly_Detect_Time_Remember	= 10000
 
-HugeKick_Damage				= 80
+HugeKick_Damage				= 0.8
 
 
 monster_type				= outdoor
@@ -334,12 +334,11 @@ monster_type				= outdoor
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
 default				= 0.2, -1, 0.1
-
-;bip01_pelvis 		= 0.5, -1, 0.1
-;bip01_spine 		= 0.5, -1, 0.1
-;bip01_spine1 		= 0.5, -1, 0.1
-;bip01_neck 		= 0.5, -1, 0.5
-bip01_head 			= 0.2, -1, 0.5
+bone01				= 0.2, -1, 0.1
+bip01_pelvis 		= 0.4, -1, 0.1
+bip01_spine 		= 0.4, -1, 0.1
+bip01_neck 			= 0.4, -1, 0.5
+bip01_head 			= 0.2, -1, 0.2
 
 
 ;---------------------------
