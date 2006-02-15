@@ -1793,7 +1793,7 @@ function load_states(gname, type)
 					return 1  -- рейд
 				end
 
-				if game.get_game_time():diffSec(gulag.alarm_start) > 14400 then
+				if game.get_game_time():diffSec(gulag.alarm_start) > 57600 then
 					actor:disable_info_portion("esc_raid1_start")
 					return 0
 				end
