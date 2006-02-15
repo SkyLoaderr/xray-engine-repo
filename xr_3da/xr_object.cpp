@@ -23,6 +23,7 @@ void CObject::cNameSect_set		(shared_str N)
 { 
 	NameSection	=	N; 
 }
+#include "SkeletonCustom.h"
 void CObject::cNameVisual_set	(shared_str N)
 { 
 	// check if equal
@@ -32,9 +33,18 @@ void CObject::cNameVisual_set	(shared_str N)
 	// replace model
 	if (*N && N[0]) 
 	{
-		::Render->model_Delete	(renderable.visual);
+		IRender_Visual			*old_v = renderable.visual;
 		NameVisual				= N;
 		renderable.visual		= Render->model_Create	(*N);
+		
+		CKinematics* old_k	= old_v?old_v->dcast_PKinematics():NULL;
+		CKinematics* new_k	= renderable.visual->dcast_PKinematics();
+
+		if(old_k && new_k){
+			new_k->Update_Callback			= old_k->Update_Callback;
+			new_k->Update_Callback_Param	= old_k->Update_Callback_Param;
+		}
+		::Render->model_Delete	(old_v);
 	} else {
 		::Render->model_Delete	(renderable.visual);
 		NameVisual				= 0;
