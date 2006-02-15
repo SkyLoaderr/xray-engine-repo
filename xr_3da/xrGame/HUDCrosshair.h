@@ -13,12 +13,10 @@ private:
 	float			cross_length_perc;
 	float			min_radius_perc;
 	float			max_radius_perc;
-	Ivector2		center;
 
 	//текущий радиус прицела
-	int				radius;
-	int				target_radius;
-	int				radius_speed;
+	float			radius;
+	float			target_radius;
 	float			radius_speed_perc; 
 
 	ref_geom 		hGeomLine;

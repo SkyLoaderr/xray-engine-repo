@@ -50,7 +50,8 @@ void CHUDCrosshair::SetDispersion	(float disp)
 	Fvector4 r;
 	Fvector R			= { VIEWPORT_NEAR*_sin(disp), 0.f, VIEWPORT_NEAR };
 	Device.mProject.transform	(r,R);
-	int radius_pixels	= iFloor(0.5f + _abs(r.x)*Device.fWidth_2);
+
+	float radius_pixels		= _abs(r.x)*Device.fWidth_2;
 	//	clamp(radius_pixels, min_radius, max_radius);
 	target_radius		= radius_pixels; 
 /*
@@ -70,45 +71,28 @@ void CHUDCrosshair::SetDispersion	(float disp)
 extern ENGINE_API BOOL g_bRendering; 
 void CHUDCrosshair::OnRender ()
 {
-	VERIFY(g_bRendering);
-
-	center.set(int(Device.dwWidth)/2,int(Device.dwHeight)/2);
+	VERIFY			(g_bRendering);
+	Fvector2		center;
+	center.set		(Device.dwWidth/2.0f, Device.dwHeight/2.0f);
 
 	// draw back
 	u32			dwOffset,dwCount;
 	FVF::TL0uv* pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(10,hGeomLine->vb_stride,dwOffset);
 	FVF::TL0uv* pv						= pv_start;
 	
-//	u32 color = cross_color.get			();
 
-	int cross_length = iFloor(0.5f + cross_length_perc*Device.dwWidth);
-	int min_radius = iFloor(0.5f + min_radius_perc*Device.dwWidth);
-	int max_radius = iFloor(0.5f + max_radius_perc*Device.dwWidth);
+	float cross_length					= cross_length_perc*Device.dwWidth;
+	float min_radius					= min_radius_perc*Device.dwWidth;
+	float max_radius					= max_radius_perc*Device.dwWidth;
 
-	clamp(target_radius , min_radius, max_radius);
+	clamp								(target_radius , min_radius, max_radius);
 
-	int x_min = min_radius + radius;
-	int x_max = x_min + cross_length;
+	float x_min							= min_radius + radius;
+	float x_max							= x_min + cross_length;
 
-	int y_min = x_min;
-	int y_max = x_max;
-/*
-	pv->set					(center.x+x_min,center.y - y_min, cross_color); pv++;
-	pv->set					(center.x+x_min,center.y + y_min, cross_color); pv++;
+	float y_min							= x_min;
+	float y_max							= x_max;
 
-	pv->set					(center.x-x_min,center.y - y_min, cross_color); pv++;
-	pv->set					(center.x-x_min,center.y + y_min, cross_color); pv++;
-
-	pv->set					(center.x-x_min,center.y - y_min, cross_color); pv++;
-	pv->set					(center.x+x_min,center.y - y_min, cross_color); pv++;
-
-	pv->set					(center.x-x_min,center.y + y_min, cross_color); pv++;
-	pv->set					(center.x+x_min,center.y + y_min, cross_color); pv++;
-
-	pv->set					(center.x, center.y, cross_color); pv++;
-	pv->set					(center.x+1, center.y, cross_color); pv++;
-
-/*/
 	// 0
 	pv->set					(center.x+1,center.y + y_min, cross_color); pv++;
 	pv->set					(center.x+1,center.y + y_max, cross_color); pv++;
@@ -133,23 +117,27 @@ void CHUDCrosshair::OnRender ()
 	RCache.set_Geometry		(hGeomLine);
 	RCache.Render	   		(D3DPT_LINELIST,dwOffset,dwCount/2);
 
-	radius_speed = iFloor(0.5f + radius_speed_perc*float(Device.dwWidth)*Device.fTimeDelta);
-	if(radius_speed<=0)
-		radius_speed = 1;
 
+	if(!fsimilar(target_radius,radius))
+	{
+		float sp				= radius_speed_perc*float(Device.dwWidth)*UI()->GetScaleX();
+		float radius_change		= sp*Device.fTimeDelta;
+		clamp					(radius_change, 0.0f, sp*0.033f); // clamp to 30 fps
+		clamp					(radius_change, 0.0f, _abs(target_radius-radius));
+
+		if(target_radius < radius)
+			radius -= radius_change;
+		else
+			radius += radius_change;
+	};
+/*
 	if(_abs(target_radius - radius)>0){
 		if(target_radius < radius)
 			radius -= radius_speed;
 		else
 			radius += radius_speed;
 	};
-	clamp(radius,2,radius);
-/*
-	if(target_radius - radius>radius_speed)
-		radius += radius_speed;
-	else if(radius - target_radius >radius_speed)
-		radius -= radius_speed;
-	else 
-		radius = target_radius;
+
+	clamp(radius,2.0f,radius);
 */
 }
