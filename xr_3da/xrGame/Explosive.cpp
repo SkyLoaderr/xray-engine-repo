@@ -281,7 +281,9 @@ float CExplosive::TestPassEffect(const	Fvector	&source_p,	const	Fvector	&dir,flo
 	float shoot_factor=1.f;
 	if(range>EPS_L)
 	{
+		VERIFY(!fis_zero(dir.square_magnitude()));
 		collide::ray_defs	RD		(source_p,dir,range,CDB::OPT_CULL,collide::rqtBoth);
+		VERIFY							(!fis_zero(RD.dir.square_magnitude()));
 #ifdef DEBUG
 		SExpQParams			ep		(source_p,dir);
 #else

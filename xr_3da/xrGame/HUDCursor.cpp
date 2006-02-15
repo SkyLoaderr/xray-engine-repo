@@ -117,6 +117,7 @@ void CHUDCursor::CursorOnFrame ()
 		
 		collide::ray_defs RD(p1, dir, RQ.range, CDB::OPT_CULL, collide::rqtBoth);
 		collide::rq_results	RQR;
+		VERIFY							(!fis_zero(RD.dir.square_magnitude()));
 		if(Level().ObjectSpace.RayQuery(RQR,RD, pick_trace_callback, &RQ, NULL, Level().CurrentEntity()))
 			clamp		(RQ.range,NEAR_LIM,RQ.range);
 	}
