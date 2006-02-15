@@ -1,11 +1,12 @@
 [logic@val_escort_captive]
-active = patrol@val_escort_captive_wait
-on_death = death@val_escort_captive
-combat_ignore = combat_ignore
+active          = patrol@val_escort_captive_wait
+on_death        = death@val_escort_captive
+danger          = danger@val_escort_captive
+combat_ignore   = combat_ignore
 
 [death@val_escort_captive]
-on_info  = %+val_escort_captive_dead%
-;on_info2 = {+val_escort_nap1_dead} %+val_escort_scene_end%
+on_info     = %+val_escort_captive_dead%
+;on_info2    = {+val_escort_nap1_dead} %+val_escort_scene_end%
 
 ;--------------------------------------------------------------------------
 ; встреча отключена
@@ -22,12 +23,12 @@ use_wpn        = false
 ; стандартный диалог
 ;--------------------------------------------------------------------------
 [meet@val_escort_captive_def]
-meet_state = 3|wait
-meet_state_wpn = 3|wait
-victim = 30|actor
-victim_wpn = 20|actor
-use = true
-use_wpn = true
+meet_state      = 3|wait
+meet_state_wpn  = 3|wait
+victim          = 30|actor
+victim_wpn      = 20|actor
+use             = true
+use_wpn         = true
 
 ;--------------------------------------------------------------------------
 ; стандартный диалог
@@ -36,17 +37,17 @@ use_wpn = true
 meet_dialog     = val_escort_captive_dialog
 meet_state      = 3|wait
 meet_state_wpn  = 3|wait
-victim = 30|actor
-victim_wpn = 20|actor
-use = true
-use_wpn = true
+victim          = 30|actor
+victim_wpn      = 20|actor
+use             = true
+use_wpn         = true
 
 [wounded@val_escort_captive]
-hp_state = 10|wounded_heavy@help_heavy
-hp_state_see = 10|wounded_heavy@help_heavy
-hp_victim = 0|nil
-hp_fight = 0|false
-hp_cover = 0|false
+hp_state        = 10|wounded_heavy@help_heavy
+hp_state_see    = 10|wounded_heavy@help_heavy
+hp_victim       = 0|nil
+hp_fight        = 0|false
+hp_cover        = 0|false
 
 [danger@val_escort_captive]
 ignore_types                = corpse
