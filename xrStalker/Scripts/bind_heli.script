@@ -172,7 +172,7 @@ end
 
 ------------------------------ callbacks ---------------------------------
 function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
-	printf( "heli_binder: hit callback" )
+	printf( "heli_binder: hit callback")
 
 	local enemy        = level.object_by_id( enemy_id )
 	local enemy_cls_id = get_clsid( enemy )
