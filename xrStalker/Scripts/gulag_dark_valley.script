@@ -595,6 +595,8 @@ end
 gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
     local restr, gr, prior, rst = 0, 0, 0, 0
+    local ltx = ""
+    local combat_ignore = "combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}"
 
 	-- ¡Œ–Œ¬
 	t = { section = "logic@" .. gname .. "_leader_normal",
@@ -624,6 +626,28 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 	}
 	table.insert(sj, t)
 
+    ltx = ltx.."[logic@val_lager_bandits_leader_normal]\n" ..
+               "active = walker1@val_lager_bandits_leader_normal\n" ..
+               "on_death = death@val_lager_bandits_borov\n" ..
+               "combat_ignore = combat_ignore\n" ..
+
+               "[death@val_lager_bandits_borov]\n" ..
+               "on_info = %+val_borov_dead%\n" ..
+
+               "[walker1@val_lager_bandits_leader_normal]\n" ..
+               "path_walk = leader_walk\n" ..
+               "path_look = leader_look\n" ..
+               combat_ignore ..
+
+               "[logic@val_lager_bandits_leader_alarm]\n" ..
+               "active = walker1@val_lager_bandits_leader_alarm\n" ..
+               "combat_ignore = combat_ignore\n" ..
+
+               "[walker1@val_lager_bandits_leader_alarm]\n" ..
+               "path_walk = leader_alarm_walk\n" ..
+               "path_look = leader_alarm_look\n" ..
+               combat_ignore
+
 	-- Œ’–¿ÕÕ» » ¡Œ–Œ¬¿
     for i = 1, 3 do
 	    t = { section = "logic@" .. gname .. "_bodyguard_normal" .. i,
@@ -652,12 +676,38 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 		    predicate = lb_predicate_bg
 	    }
 	    table.insert(sj, t)
+
+	    ltx = ltx.."[logic@val_lager_bandits_bodyguard_normal" .. i .. "]\n" ..
+                   "active = walker@val_lager_bandits_bodyguard_normal" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[walker@val_lager_bandits_bodyguard_normal" .. i .. "]\n" ..
+                   "path_walk = bodyguard_walk" .. i .. "\n" ..
+                   "path_look = bodyguard_look" .. i .. "\n" ..
+                   combat_ignore ..
+
+                   "[logic@val_lager_bandits_bodyguard_alarm" .. i .. "]\n" ..
+                   "active = walker@val_lager_bandits_bodyguard_alarm" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[walker@val_lager_bandits_bodyguard_alarm" .. i .. "]\n" ..
+                   "path_walk = bodyguard_alarm_walk" .. i .. "\n" ..
+                   "path_look = bodyguard_alarm_look" .. i .. "\n" ..
+                   combat_ignore
     end
 
 	-- —»ƒﬂŸ»≈ ¬  ≈Ãœ≈ 1 ¬Œ«À≈ ¡Œ–Œ¬¿ » ¬  ≈Ãœ≈ 2 Õ¿ ¬“Œ–ŒÃ ›“¿∆≈
 	restr = {gname .. "_main_building_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor"}
 	local pr = {7, 7, 2}
 	for i, v in pairs({3, 4, 2}) do
+	    ltx = ltx.."[logic@val_lager_bandits_kamp" .. i .. "_normal]\n" ..
+                   "active = kamp@val_lager_bandits_kamp" .. i .. "_normal\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[kamp@val_lager_bandits_kamp" .. i .. "_normal]\n" ..
+                   "center_point = kamp" .. i .. "\n" ..
+                   combat_ignore
+
 	    for j = 1, v do
 	        t = { section = "logic@" .. gname .. "_kamp" .. i .. "_normal",
 		        idle = 0,
@@ -685,17 +735,27 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 		        predicate = lb_predicate3
 	        }
 	        table.insert(sj, t)
+
+	        ltx = ltx.."[logic@val_lager_bandits_kamp" .. i .. "_alarm" .. j .. "]\n" ..
+                       "active = walker@val_lager_bandits_kamp" .. i .. "_alarm" .. j .. "\n" ..
+                       "combat_ignore = combat_ignore\n" ..
+
+                       "[walker@val_lager_bandits_kamp" .. i .. "_alarm" .. j .. "]\n" ..
+                       "path_walk = kamp" .. i .. "_alarm_walk" .. j .. "\n" ..
+                       "path_look = kamp" .. i .. "_alarm_look" .. j .. "\n" ..
+                       combat_ignore
 	    end
 	end
 
-	-- ¡¿Õƒ»“€ Õ¿ ¬Œ–Œ“¿’
+	-- ¡¿Õƒ»“€
 	restr =  {{gname .. "_main_side_restrictor", gname .. "_restrictor"},
 	          {gname .. "_main_side_restrictor", gname .. "_restrictor", gname .. "_restrictor", gname .. "_restrictor"},
 	          {gname .. "_restrictor"},
 	          {gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor"}}
 	gr = {"guard", "patrol", "sniper", "sleeper"}
 	prior =  {6, 5, 4, 3}
-	for i, v in pairs({2, 4, 1, 4}) do
+	local quantity = {2, 4, 1, 4}
+	for i, v in pairs(quantity) do
 	    rst = restr[i]
 	    for j = 1, v do
 	        t = { section = "logic@" .. gname .. "_" .. gr[i] .. "_normal" .. j,
@@ -726,6 +786,97 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 	        table.insert(sj, t)
 	    end
 	end
+
+	for i = 1, quantity[1] do
+        ltx = ltx.."[logic@val_lager_bandits_guard_normal" .. i .. "]\n" ..
+                   "active = walker@val_lager_bandits_guard_normal" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[walker@val_lager_bandits_guard_normal" .. i .. "]\n" ..
+                   "path_walk = guard_walk" .. i .. "\n" ..
+                   "path_look = guard_look" .. i .. "\n" ..
+                   combat_ignore ..
+
+                   "[logic@val_lager_bandits_guard_alarm" .. i .. "]\n" ..
+                   "active = walker@val_lager_bandits_guard_alarm" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+                   
+                   "[walker@val_lager_bandits_guard_alarm" .. i .. "]\n" ..
+                   "path_walk = guard_alarm_walk" .. i .. "\n" ..
+                   "path_look = guard_alarm_look" .. i .. "\n" ..
+                   combat_ignore
+	end
+
+	for i = 1, quantity[2] do
+        ltx = ltx.."[logic@val_lager_bandits_patrol_normal" .. i .. "]\n" ..
+                   "active = walker@val_lager_bandits_patrol_normal" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+                    
+                   "[walker@val_lager_bandits_patrol_normal" .. i .. "]\n" ..
+                   "path_walk = patrol_walk" .. i .. "\n" ..
+                   "path_look = patrol_look" .. i .. "\n" ..
+                   combat_ignore ..
+                    
+                   "[logic@val_lager_bandits_patrol_alarm" .. i .. "]\n" ..
+                   "active = walker@val_lager_bandits_patrol_alarm" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+                    
+                   "[walker@val_lager_bandits_patrol_alarm" .. i .. "]\n" ..
+                   "path_walk = patrol_alarm_walk" .. i .. "\n" ..
+                   "path_look = patrol_alarm_look" .. i .. "\n" ..
+                   combat_ignore
+	end
+
+	for i = 1, quantity[3] do
+        ltx = ltx.."[logic@val_lager_bandits_sniper_normal" .. i .. "]\n" ..
+                   "active = camper@val_lager_bandits_sniper_normal" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[camper@val_lager_bandits_sniper_normal" .. i .. "]\n" ..
+                   "path_walk = sniper_walk" .. i .. "\n" ..
+                   "path_look = sniper_look" .. i .. "\n" ..
+                   "def_state_moving = patrol\n" ..
+                   "def_state_moving_fire = patrol_fire\n" ..
+                   "def_state_campering = guard\n" ..
+                   "def_state_campering_fire = guard_fire\n" ..
+                   combat_ignore ..
+
+                   "[logic@val_lager_bandits_sniper_alarm" .. i .. "]\n" ..
+                   "active = camper@val_lager_bandits_sniper_alarm" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+
+                   "[camper@val_lager_bandits_sniper_alarm" .. i .. "]\n" ..
+                   "path_walk = sniper_alarm_walk" .. i .. "\n" ..
+                   "path_look = sniper_alarm_look" .. i .. "\n" ..
+                   "def_state_moving = sneak\n" ..
+                   "def_state_moving_fire = sneak_fire\n" ..
+                   "def_state_campering = hide\n" ..
+                   "def_state_campering_fire = hide_fire\n" ..
+                   combat_ignore
+	end
+
+	for i = 1, quantity[4] do
+        ltx = ltx.."[logic@val_lager_bandits_sleeper_normal" .. i .. "]\n" ..
+                   "active = sleeper@val_lager_bandits_sleeper_normal" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+                    
+                   "[sleeper@val_lager_bandits_sleeper_normal" .. i .. "]\n" ..
+                   "path_main = sleeper" .. i .. "\n" ..
+                   combat_ignore ..
+                    
+                   "[logic@val_lager_bandits_sleeper_alarm" .. i .. "]\n" ..
+                   "active = walker@val_lager_bandits_sleeper_alarm" .. i .. "\n" ..
+                   "combat_ignore = combat_ignore\n" ..
+                    
+                   "[walker@val_lager_bandits_sleeper_alarm" .. i .. "]\n" ..
+                   "path_walk = sleeper_alarm_walk" .. i .. "\n" ..
+                   "path_look = sleeper_alarm_look" .. i .. "\n" ..
+                   combat_ignore
+	end
+
+    --ltx = ltx.."#include \"misc\\gulag_dark_valley.ltx\"\n"
+
+    --gulags.val_lager_bandits.ltx = ltx
 end
 
 -- States ----------------------------------------------------------------
