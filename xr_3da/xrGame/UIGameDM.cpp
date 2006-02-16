@@ -233,7 +233,7 @@ void CUIGameDM::SetVoteMessage					(LPCSTR str)
 	if (str[0])
 	{
 		GameCaptions()->setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
-		GameCaptions()->setCaption(m_vote_caption1, "Press [ for Yes or ] for No", VOTE1_MSG_COLOR, true);
+///		GameCaptions()->setCaption(m_vote_caption1, "Press [ for Yes or ] for No", VOTE1_MSG_COLOR, true);
 	}
 	else
 	{
