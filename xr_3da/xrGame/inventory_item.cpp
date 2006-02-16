@@ -243,9 +243,26 @@ void CInventoryItem::OnH_A_Chield		()
 {
 	inherited::OnH_A_Chield		();
 }
+#ifdef DEBUG
+extern	Flags32	dbg_net_Draw_Flags;
+#endif
 
 void CInventoryItem::UpdateCL()
 {
+#ifdef DEBUG
+	if(bDebug){
+		if (dbg_net_Draw_Flags.test(1<<4) )
+		{
+			Device.seqRender.Remove(this);
+			Device.seqRender.Add(this);
+		}else
+		{
+			Device.seqRender.Remove(this);
+		}
+	}
+
+#endif
+
 }
 
 void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
@@ -850,6 +867,9 @@ void CInventoryItem::UpdateXForm	()
 	if (parent && parent->use_simplified_visual())
 		return;
 
+	if (parent->attached(this))
+		return;
+
 	R_ASSERT		(E);
 	CKinematics*	V		= smart_cast<CKinematics*>	(E->Visual());
 	VERIFY			(V);
@@ -892,7 +912,7 @@ void CInventoryItem::UpdateXForm	()
 
 
 #ifdef DEBUG
-extern	Flags32	dbg_net_Draw_Flags;
+
 void CInventoryItem::OnRender()
 {
 	if (bDebug && object().Visual())

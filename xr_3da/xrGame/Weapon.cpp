@@ -112,6 +112,9 @@ void CWeapon::UpdateXForm	()
 		if (parent && parent->use_simplified_visual())
 			return;
 
+		if (parent->attached(this))
+			return;
+
 		R_ASSERT		(E);
 		CKinematics*	V		= smart_cast<CKinematics*>	(E->Visual());
 		VERIFY			(V);

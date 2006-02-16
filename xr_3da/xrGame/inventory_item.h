@@ -35,6 +35,9 @@ struct SHit;
 class CInventoryItem : 
 	public CAttachableItem,
 	public CHitImmunity
+#ifdef DEBUG
+	, public pureRender
+#endif
 {
 private:
 	typedef CAttachableItem inherited;

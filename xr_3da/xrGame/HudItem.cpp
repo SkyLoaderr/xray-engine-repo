@@ -92,8 +92,18 @@ void CHudItem::renderable_Render()
 			::Render->set_Transform		(&m_pHUD->Transform());
 			::Render->add_Visual		(m_pHUD->Visual());
 		}
-	}else if(!object().H_Parent() || (!_hud_render && m_pHUD && !m_pHUD->IsHidden() && !item().IsHidden())){
-		on_renderable_Render	();
+	}
+	else {
+		if (!object().H_Parent() || (!_hud_render && m_pHUD && !m_pHUD->IsHidden() && !item().IsHidden()))
+			on_renderable_Render		();
+		else
+			if (object().H_Parent()) {
+				CInventoryOwner	*owner = smart_cast<CInventoryOwner*>(object().H_Parent());
+				VERIFY			(owner);
+				CInventoryItem	*self = smart_cast<CInventoryItem*>(this);
+				if (owner->attached(self))
+					on_renderable_Render();
+			}
 	}
 }
 

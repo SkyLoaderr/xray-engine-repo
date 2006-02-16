@@ -423,6 +423,9 @@ void CMissile::UpdateXForm	()
 		if (parent && parent->use_simplified_visual())
 			return;
 
+		if (parent->attached(this))
+			return;
+
 		VERIFY				(E);
 		CKinematics*		V		= smart_cast<CKinematics*>	(E->Visual());
 		VERIFY				(V);
