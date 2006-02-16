@@ -30,6 +30,7 @@
 #include "phvalidevalues.h"
 #include "PHActivationShape.h"
 #include "game_base_space.h"
+#include "profiler.h"
 #define EFFECTOR_RADIUS 30.f
 const u16	TEST_RAYS_PER_OBJECT=5;
 const u16	BLASTED_OBJ_PROCESSED_PER_FRAME=3;
@@ -397,7 +398,9 @@ void CExplosive::Explode()
 	}
 
 	GetExplosionBox(m_vExplodeSize);
+START_PROFILE("explosive/activate explosion box")
 	ActivateExplosionBox(m_vExplodeSize,m_vExplodePos);
+STOP_PROFILE
 	//---------------------------------------------------------------------
 #ifdef DEBUG
 	if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
