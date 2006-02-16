@@ -103,6 +103,7 @@ public:
 	virtual void				OnInvalidHost			();
 	virtual void				OnInvalidPassword		();
 	virtual void				OnSessionFull			();
+	virtual void				OnConnectRejected		();
 
 private:
 	BOOL						m_bNeed_CrPr;

@@ -173,6 +173,7 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 	Msg							("%c client : connection %s - <%s>", m_bConnectResult ?'*':'!', m_bConnectResult ? "accepted" : "rejected", m_sConnectResult.c_str());
 	if		(!m_bConnectResult) 
 	{
+		OnConnectRejected	();	
 		Disconnect		()	;
 		return FALSE		;
 	};
@@ -294,3 +295,9 @@ void				CLevel::OnSessionFull			()
 	IPureClient::OnSessionFull();
 	UI()->OnSessionFull();
 }
+
+void				CLevel::OnConnectRejected		()
+{
+	IPureClient::OnConnectRejected();
+	//m_sConnectResult
+};
