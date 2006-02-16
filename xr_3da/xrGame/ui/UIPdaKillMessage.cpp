@@ -34,9 +34,9 @@ void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 	float x		= 0;
 	float width	= 0;
 
-	width = InitText(m_killer_name, x, msg.m_killer);		x += x ? width + INDENT : 0;
-	width = InitIcon(m_initiator,   x, msg.m_initiator);	x += width + INDENT;
-	width = InitText(m_victim_name, x, msg.m_victim);		x += width + INDENT;
+	width = InitText(m_killer_name, x, msg.m_killer);		x += width ? width + INDENT : 0;
+	width = InitIcon(m_initiator,   x, msg.m_initiator);	x += width ? width + INDENT : 0;
+	width = InitText(m_victim_name, x, msg.m_victim);		x += width ? width + INDENT : 0;
 			InitIcon(m_ext_info,	x, msg.m_ext_info);
 }
 
