@@ -163,6 +163,7 @@ void	CActor::PickupModeUpdate_COD	()
 		CInventoryItem*	pIItem	= smart_cast<CInventoryItem*> (spatial->dcast_CObject        ());
 		if (0 == pIItem) continue;
 		if (pIItem->object().H_Parent() != NULL) continue;
+		if (!pIItem->CanTake()) continue;
 		if (pIItem->object().CLS_ID == CLSID_OBJECT_G_RPG7 || pIItem->object().CLS_ID == CLSID_OBJECT_G_FAKE)
 			continue;
 		CGrenade*	pGrenade	= smart_cast<CGrenade*> (spatial->dcast_CObject        ());

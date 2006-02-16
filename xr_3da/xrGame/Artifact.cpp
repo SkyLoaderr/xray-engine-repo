@@ -351,7 +351,8 @@ void SArtefactActivation::Start()
 	NET_Packet						P;
 	CGameObject::u_EventGen			(P,GE_OWNERSHIP_REJECT, m_af->H_Parent()->ID());
 	P.w_u16							(m_af->ID());
-	CGameObject::u_EventSend		(P);
+	if (OnServer())
+		CGameObject::u_EventSend		(P);
 	m_light->set_active				(true);
 	ChangeEffects					();
 }
@@ -375,7 +376,7 @@ void SArtefactActivation::UpdateActivation()
 		ChangeEffects				();
 
 
-	if(m_cur_activation_state==eSpawnZone)
+	if(m_cur_activation_state==eSpawnZone && OnServer())
 		SpawnAnomaly	();
 
 	}

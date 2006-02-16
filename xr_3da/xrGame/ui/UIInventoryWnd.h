@@ -160,9 +160,13 @@ protected:
 	static void	SendEvent_Item_Drop			(PIItem	pItem);
 	static void	SendEvent_Item_Eat			(PIItem	pItem);
 	static void SendEvent_Item_Sell			(PIItem	pItem);
+	static void SendEvent_ActivateArtefact	(PIItem	pItem);
 	//---------------------------------------------------------------------
 	//для запуска меню по правой клавиши
 	void ActivatePropertiesBox();
+
+	//активировать артефакт
+	void Activate_Artefact();
 
 	//выбросить элемент
 	void DropItem();

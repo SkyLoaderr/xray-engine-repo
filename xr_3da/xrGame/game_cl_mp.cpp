@@ -613,7 +613,19 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_initiator.m_rect.y1 = pIItem->GetKillMsgYPos();
 					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + pIItem->GetKillMsgWidth();
 					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetKillMsgHeight();
-				};
+				}
+				else
+				{
+					CCustomZone* pAnomaly = smart_cast<CCustomZone*>(pWeapon);
+					if (pAnomaly)
+					{
+						KMS.m_initiator.m_shader = GetKillEventIconsShader();
+						KMS.m_initiator.m_rect.x1 = 1;
+						KMS.m_initiator.m_rect.y1 = 202;
+						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 31;
+						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;						
+					}
+				}
 			}
 
 			if (pKiller || pOKiller)

@@ -1332,8 +1332,9 @@ void CCustomZone::CreateHit	(	u16 id_to,
 
 		NET_Packet	l_P;
 		Fvector hdir = hit_dir;
-		SHit	Hit = SHit(hit_power, hdir, this, bone_id, pos_in_bone, hit_impulse, hit_type);
+		SHit	Hit = SHit(hit_power, hdir, this, bone_id, pos_in_bone, hit_impulse, hit_type);		
 		Hit.GenHeader(GE_HIT, id_to);
+		Hit.whoID = id_from;
 		Hit.weaponID = this->ID();
 		Hit.Write_Packet(l_P);
 
@@ -1349,7 +1350,8 @@ void CCustomZone::net_Relcase(CObject* O)
 		exit_Zone(*it);
 		m_ObjectInfoMap.erase(it);
 	}
-	if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
+	if (GameID() == GAME_SINGLE)
+		if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
 
 	// m_effector->m_pActor != NULL means effector in active state
 	if(m_effector->m_pActor && m_effector->m_pActor->ID() == GO->ID())

@@ -677,6 +677,15 @@ void	CUIInventoryWnd::SendEvent_Item_Eat			(PIItem	pItem)
 	pItem->object().u_EventSend(P);
 };
 
+void	CUIInventoryWnd::SendEvent_ActivateArtefact			(PIItem	pItem)
+{
+	NET_Packet	P;
+	pItem->object().u_EventGen(P, GEG_PLAYER_ACTIVATEARTEFACT, pItem->object().H_Parent()->ID());
+	P.w_u16		(pItem->object().ID());
+	pItem->object().u_EventSend(P);	
+};
+
+
 
 #include "../xr_level_controller.h"
 #include <dinput.h>

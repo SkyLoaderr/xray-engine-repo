@@ -290,6 +290,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 
 	case GEG_PLAYER_ATTACH_HOLDER:
 	case GEG_PLAYER_DETACH_HOLDER:
+	case GEG_PLAYER_ACTIVATEARTEFACT:
 		{
 			ClientID clientID;clientID.setBroadcast();
 			SendBroadcast		(clientID,P,MODE);

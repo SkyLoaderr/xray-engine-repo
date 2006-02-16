@@ -17,6 +17,8 @@ GameEventQueue::~GameEventQueue()
 	for				(it=0; it<ready.size(); it++)	xr_delete(ready[it]);
 	cs.Leave		();
 }
+
+static u32 LastTimeCreate = 0;
 GameEvent*		GameEventQueue::Create	()
 {
 	GameEvent*	ge			= 0;
@@ -25,12 +27,17 @@ GameEvent*		GameEventQueue::Create	()
 	{
 		ready.push_back		(xr_new<GameEvent> ());
 		ge					= ready.back	();
+		//---------------------------------------------
+#ifdef _DEBUG
+//		Msg ("* GameEventQueue::Create - ready %d, unused %d", ready.size(), unused.size());
+#endif
+		LastTimeCreate = GetTickCount();
+		//---------------------------------------------
 	} else {
 		ready.push_back		(unused.back());
 		unused.pop_back		();
 		ge					= ready.back	();
 	}
-	Msg ("GameEventQueue - ready %d, unused %d, capacity %d", ready.size(), unused.size(), unused.capacity());
 	cs.Leave		();
 	return	ge;
 }
@@ -42,12 +49,17 @@ GameEvent*		GameEventQueue::Create	(NET_Packet& P, u16 type, u32 time, ClientID 
 	{
 		ready.push_back		(xr_new<GameEvent> ());
 		ge					= ready.back	();
+		//---------------------------------------------
+#ifdef _DEBUG
+//		Msg ("* GameEventQueue::Create - ready %d, unused %d", ready.size(), unused.size());
+#endif
+		LastTimeCreate = GetTickCount();
+		//---------------------------------------------
 	} else {
 		ready.push_back		(unused.back());
 		unused.pop_back		();
 		ge					= ready.back	();
 	}
-	Msg ("GameEventQueue - ready %d, unused %d, capacity %d", ready.size(), unused.size(), unused.capacity());
 	CopyMemory	(&(ge->P),&P,sizeof(NET_Packet));
 	ge->sender	= clientID;
 	ge->time	= time;
@@ -61,14 +73,42 @@ GameEvent*		GameEventQueue::Retreive	()
 	GameEvent*	ge			= 0;
 	cs.Enter		();
 	if (!ready.empty())		ge = ready.front();
+	//---------------------------------------------	
+	else
+	{
+		u32 tmp_time = GetTickCount()-60000;
+		u32 size = unused.size();
+		if ((LastTimeCreate < tmp_time) &&  (size > 32))
+		{
+			xr_delete(unused.back());
+			unused.pop_back();
+#ifdef _DEBUG
+//			Msg ("GameEventQueue::Retreive - ready %d, unused %d", ready.size(), unused.size());
+#endif
+		}		
+	}
+	//---------------------------------------------	
 	cs.Leave		();
 	return	ge;
 }
+
 void			GameEventQueue::Release	()
 {
 	cs.Enter		();
 	R_ASSERT		(!ready.empty());
-	unused.push_back(ready.front());
+	//---------------------------------------------
+	u32 tmp_time = GetTickCount()-60000;
+	u32 size = unused.size();
+	if ((LastTimeCreate < tmp_time) &&  (size > 32))
+	{
+		xr_delete(ready.front());
+#ifdef _DEBUG
+//		Msg ("GameEventQueue::Release - ready %d, unused %d", ready.size(), unused.size());
+#endif
+	}
+	else
+		unused.push_back(ready.front());
+	//---------------------------------------------		
 	ready.pop_front	();
 	cs.Leave		();
 }

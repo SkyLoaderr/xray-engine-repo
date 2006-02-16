@@ -154,6 +154,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GEG_PLAYER_ITEM2RUCK:
 	case GEG_PLAYER_ITEMDROP:
 	case GEG_PLAYER_ITEM_EAT:
+	case GEG_PLAYER_ACTIVATEARTEFACT:
 		{
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
@@ -164,6 +165,12 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			case GEG_PLAYER_ITEM2BELT:	inventory().Belt(smart_cast<CInventoryItem*>(O)); break;
 			case GEG_PLAYER_ITEM2RUCK:	inventory().Ruck(smart_cast<CInventoryItem*>(O)); break;
 			case GEG_PLAYER_ITEM_EAT:	inventory().Eat(smart_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ACTIVATEARTEFACT:
+				{
+					CArtefact* pArtefact = smart_cast<CArtefact*>(O);
+					if (!pArtefact) break;
+					pArtefact->ActivateArtefact();
+				}break;
 			case GEG_PLAYER_ITEMDROP:	
 				{
 					CInventoryItem* pIItem = smart_cast<CInventoryItem*>(O);

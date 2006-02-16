@@ -208,6 +208,14 @@ void CUIInventoryWnd::DropItem()
 	UpdateWeight		(UIBagWnd, true);
 }
 
+void	CUIInventoryWnd::Activate_Artefact()
+{
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
+
+	SendEvent_ActivateArtefact(m_pCurrentItem);
+};
+
 void CUIInventoryWnd::EatItem()
 {
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -321,7 +329,8 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
 				break;
 			case INVENTORY_ACTIVATE_ARTEFACT_ACTION:
-				(smart_cast<CArtefact*>(m_pCurrentItem))->ActivateArtefact();
+				Activate_Artefact();
+//				(smart_cast<CArtefact*>(m_pCurrentItem))->ActivateArtefact();
 				break;
 			case INVENTORY_RELOAD_MAGAZINE:
 				(smart_cast<CWeapon*>(m_pCurrentItem))->Action(kWPN_RELOAD, CMD_START);

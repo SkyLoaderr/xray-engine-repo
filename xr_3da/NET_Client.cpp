@@ -38,28 +38,17 @@ NET_Packet*		INetQueue::Create	()
 	{
 		ready.push_back		(xr_new<NET_Packet> ());
 		P					= ready.back	();
+		//---------------------------------------------
+#ifdef _DEBUG
+//		Msg ("- INetQueue::Create - ready %d, unused %d", ready.size(), unused.size());
+#endif
+		LastTimeCreate = GetTickCount();
+		//---------------------------------------------
 	} else {
 		ready.push_back		(unused.back());
 		unused.pop_back		();
 		P					= ready.back	();
-	}	
-	//---------------------------------------------------------------------
-	if (unused.empty())
-	{
-		LastTimeCreate = GetTickCount();
 	}
-	else
-	{
-		u32 tmp_time = GetTickCount()-60000;
-		u32 size = unused.size();
-		if ((LastTimeCreate < tmp_time) &&  (size > 32))
-		{
-			xr_delete(unused.back());
-			unused.pop_back();
-		}
-	};
-//	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
-	//---------------------------------------------------------------------
 	cs.Leave		();
 	return	P;
 }
@@ -71,29 +60,18 @@ NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
 	{
 		ready.push_back		(xr_new<NET_Packet> ());
 		P					= ready.back	();
+		//---------------------------------------------
+#ifdef _DEBUG
+//		Msg ("- INetQueue::Create - ready %d, unused %d", ready.size(), unused.size());
+#endif
+		LastTimeCreate = GetTickCount();
+		//---------------------------------------------
 	} else {
 		ready.push_back		(unused.back());
 		unused.pop_back		();
 		P					= ready.back	();
-	}
-	//---------------------------------------------------------------------
-	if (unused.empty())
-	{
-		LastTimeCreate = GetTickCount();
-	}
-	else
-	{
-		u32 tmp_time = GetTickCount()-60000;
-		u32 size = unused.size();
-		if ((LastTimeCreate < tmp_time) &&  (size > 32))
-		{
-			xr_delete(unused.back());
-			unused.pop_back();
-		}
-	};
-//	Msg ("INetQueue - ready %d, unused %d", ready.size(), unused.size());
-	//---------------------------------------------------------------------
-	CopyMemory	(P,&_other,sizeof(NET_Packet));
+	}	
+	CopyMemory	(P,&_other,sizeof(NET_Packet));	
 	cs.Leave		();
 	return			P;
 }
@@ -102,6 +80,21 @@ NET_Packet*		INetQueue::Retreive	()
 	NET_Packet*	P			= 0;
 	cs.Enter		();
 	if (!ready.empty())		P = ready.front();
+	//---------------------------------------------	
+	else
+	{
+		u32 tmp_time = GetTickCount()-60000;
+		u32 size = unused.size();
+		if ((LastTimeCreate < tmp_time) &&  (size > 32))
+		{
+			xr_delete(unused.back());
+			unused.pop_back();
+#ifdef _DEBUG
+//			Msg ("INetQueue::Retreive - ready %d, unused %d", ready.size(), unused.size());
+#endif
+		}		
+	}
+	//---------------------------------------------	
 	cs.Leave		();
 	return	P;
 }
@@ -109,7 +102,19 @@ void			INetQueue::Release	()
 {
 	cs.Enter		();
 	VERIFY			(!ready.empty());
-	unused.push_back(ready.front());
+	//---------------------------------------------
+	u32 tmp_time = GetTickCount()-60000;
+	u32 size = unused.size();
+	if ((LastTimeCreate < tmp_time) &&  (size > 32))
+	{
+		xr_delete(ready.front());
+#ifdef _DEBUG
+//		Msg ("INetQueue::Release - ready %d, unused %d", ready.size(), unused.size());
+#endif
+	}
+	else
+		unused.push_back(ready.front());
+	//---------------------------------------------	
 	ready.pop_front	();
 	cs.Leave		();
 }
