@@ -64,6 +64,8 @@ news = {
 	esc_fanat_victory				= sound_object([[characters_voice\scenario\escape\lager_fanat_victory]]),
 	esc_wolf_thanks					= sound_object([[characters_voice\scenario\escape\wolf_to_dialog]]),
 	
+	rad_barman_spam					= sound_object([[characters_voice\scenario\radar\rad_barman_message]]),
+
 
 	val_monolith_trader_pda1		= sound_object([[characters_voice\scenario\val\trader_dialog1]]),
 	o_soznanie_text					= sound_object([[characters_voice\scenario\sarcofag\o_soznanie_call]])
