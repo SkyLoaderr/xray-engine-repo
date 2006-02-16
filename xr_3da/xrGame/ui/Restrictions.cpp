@@ -15,7 +15,7 @@ int get_rank(const shared_str &section){
 		if (!pSettings->section_exist(rank))
 			return -1;
 
-		if (strstr(pSettings->r_string(rank, "available_items"), section))
+		if (strstr(pSettings->r_string(rank, "available_items"), *section))
 			return i;
 	}
 }
