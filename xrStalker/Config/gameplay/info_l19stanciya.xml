@@ -82,7 +82,6 @@
 	<info_portion id="aes_found_sarcofag"></info_portion>
 	<info_portion id="aes_get_soldier_map">
 		<article>aes_soldier_info</article>
-		<task>aes_military_task</task>
 	</info_portion>
 	
 	<info_portion id="aes_activate_zone"></info_portion>

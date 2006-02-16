@@ -15,3 +15,10 @@
 </text>
     </string>
 
+<string id="aes_military_task_head">
+	<text>Обстановка</text>
+</string>
+
+<string id="aes_military_task">
+	<text>Операция "Монолит"</text>
+</string>
