@@ -1,5 +1,11 @@
-
 function main()
+	level.add_complex_effector("effector_fire_hit",999)
+--	level.set_pp_effector_factor(999, 0.1)
+--	level.remove_pp_effector(999)
+
+end
+
+function main111111()
 	local spawn_items = {}
 	local level = level.name()
 
@@ -102,7 +108,7 @@ db.actor:give_task(_task,false)
 --	level.remove_pp_effector(999)
 end
 
-function main()
+function mai22222n()
 	db.actor:give_game_news("11 first message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 	db.actor:give_game_news("hello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 	db.actor:give_game_news("33 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
@@ -128,23 +134,4 @@ function main7777()
 --chemical_burn 1
 --explosion
 
-end
-
-function _main()
---	"stalkerkills"
---	"monsterkills"
---	"quests"
---	"artefacts"
-
---actor_stats.add_points("stalkerkills","dolg",2,22)
---actor_stats.add_points("stalkerkills","svoboda",1,45)
---actor_stats.add_points("stalkerkills","urod",1,5)
---actor_stats.add_points("artefacts","af_1",1,800)
---actor_stats.add_points("quests","help wounded",1,2000)
-
-	
---	local info = "esc_kill_gunslinger" 
---	db.actor:give_info_portion(info) 
-
-   
 end
