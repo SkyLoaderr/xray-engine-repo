@@ -674,10 +674,15 @@ bool	game_cl_ArtefactHunt::NeedToSendReady_Spectator			(int key, game_PlayerStat
 		( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
 		CanBeReady());
 	
-	if (iReinforcementTime != 0 && !pMessageBox->IsShown() && local_player && (local_player->money_for_round+m_iSpawn_Cost)>=0) 
+	if (GAME_PHASE_INPROGRESS	== Phase() && iReinforcementTime != 0 && !pBuySpawnMsgBox->IsShown() && local_player && (local_player->money_for_round+m_iSpawn_Cost)>=0) 
 	{
+		string1024	BuySpawnText;
+		sprintf(BuySpawnText, "You have %d$. You can buy a spawn for %d$. Press Yes to pay.", 
+			abs(local_player->money_for_round), abs(m_iSpawn_Cost));
+		pBuySpawnMsgBox->SetText(BuySpawnText);
+
 		if (m_bTeamSelected && m_bSkinSelected)
-			StartStopMenu(pMessageBox, true);
+			StartStopMenu(pBuySpawnMsgBox, true);
 		return false;
 	};
 	return res;

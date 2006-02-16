@@ -89,7 +89,7 @@ game_cl_mp::~game_cl_mp()
 //	xr_delete(m_pSpeechMenu);
 	DestroyMessagesMenus();
 
-	xr_delete(pMessageBox);
+	xr_delete(pBuySpawnMsgBox);
 
 	m_pBonusList.clear();
 };
@@ -101,13 +101,13 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	//-----------------------------------------------------------
 	m_iSpawn_Cost = READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000);
 	//-----------------------------------------------------------
-	pMessageBox		= xr_new<CUIMessageBoxEx>();
-	pMessageBox->Init("message_box_buy_spawn");
-	pMessageBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
+	pBuySpawnMsgBox		= xr_new<CUIMessageBoxEx>();
+	pBuySpawnMsgBox->Init("message_box_buy_spawn");
+	pBuySpawnMsgBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
 	string1024	BuySpawnText;
 	sprintf(BuySpawnText, "You can buy a spawn for %d $. Press Yes to pay.", 
 		abs(m_iSpawn_Cost));
-	pMessageBox->SetText(BuySpawnText);
+	pBuySpawnMsgBox->SetText(BuySpawnText);
 	//-----------------------------------------------------------	
 	return NULL;
 };
@@ -415,7 +415,7 @@ void game_cl_mp::shedule_Update(u32 dt)
 	
 	if (!local_player || !local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || Phase()!= GAME_PHASE_INPROGRESS)
 	{
-		if (pMessageBox->IsShown()) StartStopMenu(pMessageBox, true);
+		if (pBuySpawnMsgBox->IsShown()) StartStopMenu(pBuySpawnMsgBox, true);
 	};
 
 	UpdateMapLocations();	

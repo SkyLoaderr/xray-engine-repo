@@ -49,7 +49,7 @@ game_cl_Deathmatch::game_cl_Deathmatch()
 
 	m_game_ui		= NULL;
 
-	pMessageBox		= NULL;
+	pBuySpawnMsgBox		= NULL;
 	
 	m_iCurrentPlayersMoney = 0;
 //	pChatWnd		= NULL;

@@ -148,7 +148,7 @@ protected:
 
 	virtual void			UpdateMapLocations		() {};
 //-----------------------------------------------------------------------------------
-	CUIMessageBoxEx*		pMessageBox;
+	CUIMessageBoxEx*		pBuySpawnMsgBox;
 //-----------------------------------------------------------------------------------
 	ref_shader				m_EquipmentIconsShader;
 	ref_shader				m_KillEventIconsShader;
