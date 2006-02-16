@@ -43,15 +43,12 @@ function action_wounded:__init(name, storage) super(nil, name)
 end
 function action_wounded:initialize ()
     action_base.initialize (self)
---	self.object:set_node_evaluator()
---	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	self.sound = "nil"
 	self.object:enable_talk()
 
 	if self.a.help_start_dialog then
-		printf( "WOUNDED set_start_dialog id=%s", self.a.help_start_dialog )
 		self.object:set_start_dialog(self.a.help_start_dialog)
 	end
 end
@@ -83,8 +80,6 @@ function action_wounded:execute ()
 					self.vid, vtemp = self.object:accessible_nearest(self.pos, vtemp)
 					self.pos = vtemp
 				end
---				self.object:set_node_evaluator        ()
---				self.object:set_path_evaluator        ()
 				self.object:set_desired_position      (self.pos)
 				self.object:set_desired_direction     ()
 				self.object:set_detail_path_type      (move.line)

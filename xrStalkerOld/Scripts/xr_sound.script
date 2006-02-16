@@ -67,7 +67,7 @@ function set_sound(npc, sound, now, into_timeout)
 	   db.sound[npc_id].theme ~= sound) or
 	   now == true
 	then
-		printf("*SND* change SND to [%s] for [%s]", utils.to_str(sound), npc:name())
+		---printf("*SND* change SND to [%s] for [%s]", utils.to_str(sound), npc:name())
 		-- Туточки надобно распарсить имена тем в их id
 		if sound == nil then sound = "" end
 		if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
