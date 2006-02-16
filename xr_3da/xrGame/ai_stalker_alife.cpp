@@ -513,12 +513,9 @@ bool CAI_Stalker::enough_ammo						(const CWeapon *new_weapon) const
 	return					(false);
 }
 
-static int rank										(const CWeapon *weapon)
-{
-	return					(0);
-}
+extern int get_rank									(const shared_str &section);
 
-bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *new_weapon, bool new_wepon_enough_ammo) const
+bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *new_weapon, bool new_wepon_enough_ammo, int new_weapon_rank) const
 {
 	if (non_conflicted(item,new_weapon))
 		return				(false);
@@ -539,8 +536,10 @@ bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *ne
 	if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
 		return				(weapon->ef_weapon_type() >= new_weapon->ef_weapon_type());
 
-	if (rank(weapon) != rank(new_weapon))
-		return				(rank(weapon) >= rank(new_weapon));
+	int						weapon_rank = get_rank(*weapon->cNameSect());
+
+	if (weapon_rank != new_weapon_rank)
+		return				(weapon_rank >= new_weapon_rank);
 
 	return					(weapon->GetCondition() >= new_weapon->GetCondition());
 }
@@ -552,11 +551,12 @@ bool CAI_Stalker::can_take							(CInventoryItem const * item)
 		return					(false);
 
 	bool						new_weapon_enough_ammo = enough_ammo(new_weapon);
+	int							new_weapon_rank = get_rank(new_weapon->cNameSect());
 
 	TIItemContainer::iterator	I = inventory().m_all.begin();
 	TIItemContainer::iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I)
-		if (conflicted(*I,new_weapon,new_weapon_enough_ammo))
+		if (conflicted(*I,new_weapon,new_weapon_enough_ammo,new_weapon_rank))
 			return				(false);
 
 	return						(true);

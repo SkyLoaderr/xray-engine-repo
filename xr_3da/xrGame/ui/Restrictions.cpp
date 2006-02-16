@@ -6,7 +6,7 @@
 #include "../../xr_ioc_cmd.h"
 #endif //#ifdef DEBUG
 
-int get_rank(LPCSTR section){
+int get_rank(const shared_str &section){
 	// ATTENTION: low performance
 	string256 rank;
 	for (int i = 0; true; i++)
