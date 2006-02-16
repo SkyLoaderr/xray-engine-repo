@@ -87,9 +87,9 @@ anim = idle_0_def_0
 on_signal = action_end | {=talking} mob_remark@idle_0_def_0, {~50} mob_remark@idle_0_spec_scratch_0, mob_remark@idle_0_def_0
 on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolog_1 %+esc_trader_monolog_1_played%,   {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_remark@tut_choice %+esc_trader_tutorial_choice_played%
 on_info2 = {+esc_trader_tutorial_chosen +esc_trader_newbie -esc_trader_newbie_course_done} %=run_tutorial(part_1_pda) +esc_trader_newbie_course_done%
-on_actor_dist_le_nvis = 4 | {+tutorial_end -esc_trader_hello_played} mob_remark@hello_what_have_you_got %+esc_trader_hello_played%
-on_actor_dist_ge_nvis = 4 | {-esc_trader_bye_played +esc_trader_hello_played} mob_remark@bye %+esc_trader_bye_played%
-on_actor_dist_ge_nvis2 = 10 | %-esc_trader_hello_played -esc_trader_bye_played%
+on_actor_dist_le_nvis = 3 | {+tutorial_end -esc_trader_hello_played} mob_remark@hello_what_have_you_got %+esc_trader_hello_played%
+on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_remark@bye %+esc_trader_bye_played%
+;on_actor_dist_ge_nvis2 = 10 | %-esc_trader_hello_played -esc_trader_bye_played%
 
 
 ; ------------------------------------------------------------------------------------------------------
