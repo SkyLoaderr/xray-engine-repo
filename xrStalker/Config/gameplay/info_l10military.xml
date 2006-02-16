@@ -143,6 +143,7 @@
 	</info_portion>
 	<info_portion id="mil_actor_on_lukash"></info_portion>
 	<info_portion id="mil_bodyguard_talk"></info_portion>
+	<info_portion id="mil_lukash_delay"></info_portion>
 	
 	
 	<!--  вест с курьером-->
