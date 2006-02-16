@@ -100,7 +100,17 @@ const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
 	else if (0 == xr_strcmp(id,"artefacts"))
 		sprintf(ans,"%d",(int)m_pPlayerInfo->af_count);
 	else if (0 == xr_strcmp(id,"rank"))
-		sprintf(ans,"rank_%d",(int)m_pPlayerInfo->rank);
+	{
+		int team = m_pPlayerInfo->team;
+		if (GameID() != GAME_DEATHMATCH)
+			team -= 1;
+
+		if (0 == team)
+            sprintf(ans,"ui_hud_status_green_0%d",(int)m_pPlayerInfo->rank + 1);
+		else
+			sprintf(ans,"ui_hud_status_blue_0%d",(int)m_pPlayerInfo->rank + 1);
+
+	}
 	else if (0 == xr_strcmp(id, "death_atf"))
 	{		
 		if (m_pPlayerInfo->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
