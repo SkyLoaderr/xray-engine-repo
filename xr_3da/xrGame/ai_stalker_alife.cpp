@@ -593,8 +593,10 @@ void CAI_Stalker::remove_personal_only_ammo			(const CInventoryItem *item)
 			continue;
 
 		for (i = inventory().m_all.begin(); i != e; ++i) {
-			if (std::find(weapon->m_ammoTypes.begin(),weapon->m_ammoTypes.end(),*I) == weapon->m_ammoTypes.end())
+			if (!xr_strcmp(*I,(*i)->object().cNameSect()))
 				continue;
+
+//			Msg				("destroying item [%s][%s]",*(*i)->object().cNameSect(),*(*i)->object().cName());
 
 			NET_Packet		packet;
 			u_EventGen		(packet,GE_DESTROY,(*i)->object().ID());
@@ -610,6 +612,7 @@ void CAI_Stalker::update_conflicted					(CInventoryItem *item, const CWeapon *ne
 
 	remove_personal_only_ammo	(item);
 	item->Drop					();
+	Msg							("dropping item [%s][%s]",*item->object().cNameSect(),*item->object().cName());
 }
 
 void CAI_Stalker::on_after_take						(const CGameObject *object)
