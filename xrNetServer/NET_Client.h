@@ -76,6 +76,7 @@ public:
 	virtual void			OnInvalidHost			()	{};
 	virtual void			OnInvalidPassword		()	{};
 	virtual void			OnSessionFull			()	{};
+	virtual void			OnConnectRejected		()	{};
 	BOOL					net_HasBandwidth		();
 	void					ClearStatistic			();
 	IClientStatistic		GetStatistic			() const {return  net_Statistic; }
