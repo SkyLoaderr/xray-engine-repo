@@ -50,7 +50,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
-				AdditionalDependencies="vorbisfile_static_d.lib ogg_static_d.lib"
+				AdditionalDependencies="vorbisfile_static_d.lib ogg_static_d.lib OpenAL32.lib"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -118,7 +118,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="vorbisfile_static.lib ogg_static.lib"
+				AdditionalDependencies="vorbisfile_static.lib ogg_static.lib OpenAL32.lib"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -187,7 +187,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="vorbisfile_static.lib ogg_static.lib"
+				AdditionalDependencies="vorbisfile_static.lib ogg_static.lib OpenAL32.lib"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -372,6 +372,12 @@
 		<Filter
 			Name="Core"
 			Filter="">
+			<File
+				RelativePath=".\OpenALDeviceList.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenALDeviceList.h">
+			</File>
 			<File
 				RelativePath="SoundRender_Core.cpp">
 			</File>

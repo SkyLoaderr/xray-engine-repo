@@ -8,6 +8,8 @@
 #include <alc.h>
 #include <alut.h>
 
+#include "OpenALDeviceList.h"
+
 #ifdef DEBUG
 #	define A_CHK(expr)		{ alGetError(); 		expr; ALenum error=alGetError(); 			VERIFY2(error==AL_NO_ERROR, (LPCSTR)alGetString(error)); }
 #	define AC_CHK(expr)		{ alcGetError(pDevice); expr; ALCenum error=alcGetError(pDevice); 	VERIFY2(error==ALC_NO_ERROR,(LPCSTR)alcGetString(pDevice,error)); }
@@ -27,6 +29,7 @@ class CSoundRender_CoreA: public CSoundRender_Core
 	EAXGet*					eaxGet;					// EAXGet function, retrieved if EAX Extension is supported
 	ALCdevice* 				pDevice;
     ALCcontext*				pContext;
+	ALDeviceList*			pDeviceList;
 
 	struct SListener{
 		Fvector				position;
