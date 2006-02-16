@@ -614,7 +614,30 @@ function val_escort_captive_dist_to_guards_ge(actor, npc, p)
         end
 	end
 
-    printf("xr_cond <captive_dist_to_guards>: TRUE")
+    --printf("xr_cond <captive_dist_to_guards>: TRUE")
+	return true
+end
+
+function val_escort_captive_dist_to_guards_le(actor, npc, p)
+    local d2 = p[1] * p[1]
+
+    local g1 = level_object_by_sid(407)
+    if g1 and g1:alive() then
+        if npc:position():distance_to_sqr(g1:position()) > d2 then
+            --printf("xr_cond <captive_dist_to_guards>: FALSE")
+            return false
+        end
+	end
+
+    local g2 = level_object_by_sid(408)
+    if g2 and g2:alive() then
+        if npc:position():distance_to_sqr(g2:position()) > d2 then
+            --printf("xr_cond <captive_dist_to_guards>: FALSE")
+            return false
+        end
+	end
+
+    --printf("xr_cond <captive_dist_to_guards>: TRUE")
 	return true
 end
 
