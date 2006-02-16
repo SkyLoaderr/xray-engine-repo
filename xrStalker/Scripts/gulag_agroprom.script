@@ -543,7 +543,7 @@ function load_states( gname, type )
 				elseif actor:has_info( "agr_krot_skirmish_start" ) then
 					-- раздать всем хиты, чтоб не ходили спокойно
 					local h     = hit()
-					h.power     = 1
+					h.power     = 0.01
 					h.direction = vector():set( 1, 0, 0 )
 					h.draftsman = level_object_by_sid( 302 )
 					h.impulse   = 1

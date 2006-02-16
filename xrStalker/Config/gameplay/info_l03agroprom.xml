@@ -11,6 +11,8 @@
 	<info_portion id="agroprom_military_case_done">
 	</info_portion>
 
+	<info_portion id="agr_meet_krot_band_done">
+	</info_portion>
 	<info_portion id="agr_krot_band_start">
 		<task>agr_meet_krot_band</task>
 		<article>storyline_seriy_flash_info</article>
