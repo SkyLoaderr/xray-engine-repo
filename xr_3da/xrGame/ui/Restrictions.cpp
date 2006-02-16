@@ -6,6 +6,20 @@
 #include "../../xr_ioc_cmd.h"
 #endif //#ifdef DEBUG
 
+int get_rank(LPCSTR section){
+	// ATTENTION: low performance
+	string256 rank;
+	for (int i = 0; true; i++)
+	{
+		sprintf(rank,"rank_%i",i);
+		if (!pSettings->section_exist(rank))
+			return -1;
+
+		if (strstr(pSettings->r_string(rank, "available_items"), section))
+			return i;
+	}
+}
+
 CRestrictions::CRestrictions(){	
 	m_rank = 0;
 	m_bInited = false;
