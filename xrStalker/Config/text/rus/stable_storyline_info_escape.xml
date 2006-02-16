@@ -46,3 +46,18 @@
 	<string id="doctor_meet_text">
 		<text>Хорошо, я встречусь с человеком Призрака. Буду ждать его в тайнике Стрелка. Если это кто-то из своих, значит знает, где меня искать. Доктор.</text>
 	</string>
+	<string id="Tolik flash">
+		<text>Дневник Толика</text>
+	</string>
+	<string id="Seryi flash">
+		<text>Флешка Серого</text>
+	</string>
+	<string id="Flash dead stalker">
+		<text>Флешка мертвого сталкера</text>
+	</string>
+	<string id="Bandit's flash">
+		<text>Флешка бандита с завода</text>
+	</string>
+	<string id="Dead novice's flash">
+		<text>Флешка мертвого новичка</text>
+	</string>
