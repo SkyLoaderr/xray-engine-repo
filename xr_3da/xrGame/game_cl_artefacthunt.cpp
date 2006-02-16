@@ -671,10 +671,10 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 bool	game_cl_ArtefactHunt::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
 {
 	bool res = ( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
-		( (kWPN_FIRE == key || kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
+		( (/*kWPN_FIRE == key || */kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
 		CanBeReady());
 	
-	if (GAME_PHASE_INPROGRESS	== Phase() && iReinforcementTime != 0 && !pBuySpawnMsgBox->IsShown() && local_player && (local_player->money_for_round+m_iSpawn_Cost)>=0) 
+	if (GAME_PHASE_INPROGRESS == Phase() && iReinforcementTime != 0 && !pBuySpawnMsgBox->IsShown() && local_player && (local_player->money_for_round+m_iSpawn_Cost)>=0) 
 	{
 		string1024	BuySpawnText;
 		sprintf(BuySpawnText, "You have %d$. You can buy a spawn for %d$. Press Yes to pay.", 
