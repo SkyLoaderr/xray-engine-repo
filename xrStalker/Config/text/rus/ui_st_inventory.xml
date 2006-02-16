@@ -123,4 +123,7 @@
     <string id="ui_inv_handling">
         <text>Удобность</text>
     </string>
+    <string id="ui_inv_money">
+		<text>Деньги</text>
+    </string>
 </string_table>

@@ -1836,6 +1836,12 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 			{
 				string64 tex_name;
 				string64 foo;
+//				string64 team;
+//				if ()
+//                    strcpy(team, "blue");
+//				else 
+//					strcpy(team, "green");
+				
 				strconcat(tex_name,"rank_",itoa(pDDItemMP->m_iRank,foo,10));
 				UIDescRankIcon.InitTexture(tex_name);
 			}

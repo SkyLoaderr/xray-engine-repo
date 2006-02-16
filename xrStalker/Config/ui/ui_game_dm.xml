@@ -5,11 +5,11 @@
 			<texture>ui_hud_frame_money</texture>
 			<text x="20" y="0" font="letterica16" r="255" g="255" b="255" a="130">money</text>
 			<total_money x="0" y="15" width="100" height="65">
-				<text y="7" align="c" font="graffiti32" r="238" g="155" b="23" a="255">999999</text>
+				<text y="7" align="c" font="graffiti32" r="238" g="155" b="23" a="255">0</text>
 			</total_money>
 		</money_indicator>
 		<money_change x="20" y="65" width="80" height="32">
-			<text font="graffiti22" r="238" g="155" b="23" a="255">change</text>
+			<text font="graffiti22" r="238" g="155" b="23" a="255"></text>
 		</money_change>
 		<money_bonus_list x="0" y="87" width="80" height="80" always_show_scroll="0">
 			<font font="graffiti22" r="253" g="255" b="53" a="255"/>
@@ -36,7 +36,6 @@
 		<rank_4 x="7" y="15" width="46" height="47">
 			<texture>ui_hud_status_green_05</texture>
 		</rank_4>
-
 		<rank_5 x="7" y="15" width="46" height="47">
 			<texture>ui_hud_status_blue_01</texture>
 		</rank_5>

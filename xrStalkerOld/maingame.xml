@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8" ?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
-	<speech_menu x="300" y="400" width="300" height="300" always_show_scroll="0">
+	<speech_menu x="260" y="550" width="300" height="265" always_show_scroll="0">
 		<text font="letterica16" r="238" g="224" b="198"/>		
 	</speech_menu>
 	
