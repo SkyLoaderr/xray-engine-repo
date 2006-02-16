@@ -593,7 +593,7 @@ void CAI_Stalker::remove_personal_only_ammo			(const CInventoryItem *item)
 			continue;
 
 		for (i = inventory().m_all.begin(); i != e; ++i) {
-			if (!xr_strcmp(*I,(*i)->object().cNameSect()))
+			if (xr_strcmp(*I,(*i)->object().cNameSect()))
 				continue;
 
 			NET_Packet		packet;
