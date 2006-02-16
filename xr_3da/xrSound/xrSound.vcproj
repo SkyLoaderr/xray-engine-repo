@@ -373,12 +373,6 @@
 			Name="Core"
 			Filter="">
 			<File
-				RelativePath=".\OpenALDeviceList.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenALDeviceList.h">
-			</File>
-			<File
 				RelativePath="SoundRender_Core.cpp">
 			</File>
 			<File
@@ -393,18 +387,32 @@
 			<File
 				RelativePath="SoundRender_Core_StartStop.cpp">
 			</File>
-			<File
-				RelativePath=".\SoundRender_CoreA.cpp">
-			</File>
-			<File
-				RelativePath=".\SoundRender_CoreA.h">
-			</File>
-			<File
-				RelativePath=".\SoundRender_CoreD.cpp">
-			</File>
-			<File
-				RelativePath=".\SoundRender_CoreD.h">
-			</File>
+			<Filter
+				Name="OpenAL"
+				Filter="">
+				<File
+					RelativePath=".\OpenALDeviceList.cpp">
+				</File>
+				<File
+					RelativePath=".\OpenALDeviceList.h">
+				</File>
+				<File
+					RelativePath=".\SoundRender_CoreA.cpp">
+				</File>
+				<File
+					RelativePath=".\SoundRender_CoreA.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="DSound"
+				Filter="">
+				<File
+					RelativePath=".\SoundRender_CoreD.cpp">
+				</File>
+				<File
+					RelativePath=".\SoundRender_CoreD.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Emitter"
