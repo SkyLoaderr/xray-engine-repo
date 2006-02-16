@@ -576,6 +576,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
+#include "gameplay\character_dialogs.xml"					
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
 <!--		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>	-->
 	</specific_character>
