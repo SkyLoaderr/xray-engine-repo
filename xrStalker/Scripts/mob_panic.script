@@ -4,12 +4,7 @@
 -- Разработчик: Чугай Александр
 ----------------------------------------------------------------------------------------------------
 
-class "mob_death"
-
-function mob_panic:__init( obj, storage )
-	self.object = obj
-	self.st     = storage
-end
+class "mob_panic"
 
 function mob_panic:reset_panic( npc, scheme, st, section )
 	self.panic_threshold = utils.cfg_get_number( st.ini, section, "panic", npc, false, nil )
