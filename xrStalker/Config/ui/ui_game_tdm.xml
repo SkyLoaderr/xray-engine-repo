@@ -15,7 +15,7 @@
 		</auto_static>
 	</team2_icon>
 
-	<team1_score x="375" y="7" width="120" height="30">
+	<team1_score x="365" y="7" width="120" height="30">
 		<text align="r" font="graffiti50" r="0" g="255" b="0" a="255"/>
 
 		<auto_static x="0" y="0" width="120" height="30">
