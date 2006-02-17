@@ -168,16 +168,22 @@ BOOL IPureServer::Connect(LPCSTR options)
 	Msg("MaxPlayers = %d", dwMaxPlayers);
 
 	//---------------------------
-	HRESULT CoInitializeRes = CoInitialize(NULL);
 	string1024 tmp;
-	DXTRACE_ERR(tmp, CoInitializeRes);
-	CHK_DX(CoInitializeRes);
+	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);	
+	if (CoInitializeExRes != S_OK || CoInitializeExRes != S_FALSE)
+	{
+		DXTRACE_ERR(tmp, CoInitializeExRes);
+		CHK_DX(CoInitializeExRes);
+	};	
 	//---------------------------
     // Create the IDirectPlay8Client object.
 	HRESULT CoCreateInstanceRes = CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET);
 	//---------------------------	
-	DXTRACE_ERR(tmp, CoCreateInstanceRes );
-    CHK_DX(CoCreateInstanceRes );
+	if (CoCreateInstanceRes != S_OK)
+	{
+		DXTRACE_ERR(tmp, CoCreateInstanceRes );
+		CHK_DX(CoCreateInstanceRes );
+	}	
 	//---------------------------
 	
     // Initialize IDirectPlay8Client object.
