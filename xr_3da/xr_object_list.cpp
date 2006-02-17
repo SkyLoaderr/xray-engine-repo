@@ -100,8 +100,16 @@ void	CObjectList::SingleUpdate	(CObject* O)
 	}
 }
 
+void clear_crow_vec	(xr_vector<CObject*>& o)
+{
+	for (u32 _it=0; _it<o.size(); _it++)	o[_it]->IAmNotACrowAnyMore();
+	o.clear_not_free();
+}
+
 void CObjectList::Update		()
 {
+	if (Device.Pause())		return		;
+
 	// Select Crow-Mode
 	Device.Statistic->UpdateClient_updated	= 0;
 	Device.Statistic->UpdateClient_crows	= crows->size	();
@@ -110,11 +118,11 @@ void CObjectList::Update		()
 		workload = crows			;
 		if (crows==&crows_0)		crows=&crows_1;
 		else						crows=&crows_0;
-		crows->clear_not_free		();
+		clear_crow_vec				(*crows);
 	} else {
 		workload	= &objects_active;
-		crows_0.clear_not_free		();
-		crows_1.clear_not_free		();
+		clear_crow_vec				(crows_0);
+		clear_crow_vec				(crows_1);
 	}
 
 	// Clients
