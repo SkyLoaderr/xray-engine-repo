@@ -1004,6 +1004,9 @@
 								RelativePath=".\goap_test.cpp">
 							</File>
 							<File
+								RelativePath=".\goap_test2.cpp">
+							</File>
+							<File
 								RelativePath=".\seed.dat">
 							</File>
 							<Filter
@@ -1659,6 +1662,6 @@
 	<Globals>
 		<Global
 			Name="DevPartner_IsInstrumented"
-			Value="0"/>
+			Value="1"/>
 	</Globals>
 </VisualStudioProject>
