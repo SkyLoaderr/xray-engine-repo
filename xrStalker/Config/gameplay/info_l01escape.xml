@@ -129,6 +129,7 @@
 	<info_portion id="esc_return"></info_portion>
 	<info_portion id="esc_darklab_documents_read"></info_portion>
 	<info_portion id="esc_wolf_thanks_complete"></info_portion>
+	<info_portion id="esc_trader_speak"></info_portion>
 
 	<!-- Приветствия торговца -->
 	<info_portion id="esc_trader_hello_played"></info_portion>
