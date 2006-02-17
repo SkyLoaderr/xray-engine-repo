@@ -3142,6 +3142,9 @@
 							RelativePath=".\Scripts\mob_death.script">
 						</File>
 						<File
+							RelativePath=".\scripts\mob_panic.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\mob_trade.script">
 						</File>
 					</Filter>
