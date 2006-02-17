@@ -101,17 +101,19 @@ protected:
 
 	u32  m_contact_count			;
 
-	bool is_control					;
-	bool b_meet_control				;
-	bool b_lose_control				;
-	bool was_control				;
-	bool b_stop_control				;
-	bool b_depart_control			;
-	bool b_jump						;
-	bool b_jumping					;
-	bool b_clamb_jump				;
-	bool b_external_impulse;
-	bool b_death_pos;
+	bool	is_control					;
+	bool	b_meet_control				;
+	bool	b_lose_control				;
+	bool	was_control				;
+	bool	b_stop_control				;
+	bool	b_depart_control			;
+	bool	b_jump						;
+	bool	b_jumping					;
+	bool	b_clamb_jump				;
+	bool	b_external_impulse			;
+	u64		m_ext_impuls_stop_step		;
+	Fvector m_ext_imulse				;
+	bool	b_death_pos					;
 
 	dReal m_friction_factor;
 

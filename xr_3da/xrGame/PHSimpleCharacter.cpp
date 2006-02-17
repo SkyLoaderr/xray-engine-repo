@@ -42,6 +42,8 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	m_hat_transform=NULL;
 	m_acceleration.set(0,0,0);
 	b_external_impulse=false;
+	m_ext_impuls_stop_step=u64(-1);
+	m_ext_imulse.set(0,0,0);
 	m_phys_ref_object=NULL;
 	b_on_object=false;
 	m_friction_factor=1.f;
@@ -324,6 +326,8 @@ void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
 	Enable();
 	b_lose_control=true;
 	b_external_impulse=true;
+	m_ext_impuls_stop_step=ph_world->m_steps_num+30;
+	m_ext_imulse.set(dir);
 	dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
 }
 
@@ -363,7 +367,12 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		return;
 	}
 	///////////////////////
-	b_external_impulse			=	false			;
+	if(ph_world->m_steps_num>m_ext_impuls_stop_step)
+	{
+		b_external_impulse			=	false			;
+		m_ext_impuls_stop_step		=	u64(-1)			;
+		m_ext_imulse					.set(0,0,0)		;
+	}
 	was_contact					=	is_contact		;
 	was_control					=	is_control		;
 	b_was_side_contact			=	b_side_contact	;
@@ -480,8 +489,10 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	if(b_lose_control											 &&
 		(
 			b_on_ground												 &&
-			m_ground_contact_normal[1]>M_SQRT1_2/2.f				 && 
-			!b_external_impulse										 /*&& 
+			m_ground_contact_normal[1]>M_SQRT1_2/2.f				 
+			//&& 
+//			!b_external_impulse										
+			/*&& 
 			dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.*/||
 			fis_zero(linear_vel_smag)								 ||
 			m_elevator_state.ClimbingState()
@@ -974,10 +985,17 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
 	//limit velocity
 	dReal l_limit;
-	if(is_control&&!b_lose_control) 
+	 if(is_control&&!b_lose_control) 
 		l_limit = m_max_velocity/phTimefactor;
 	else			
 		l_limit=10.f/fixed_step;
+
+	 if(b_external_impulse)
+	 {
+		 float ll_limit=m_ext_imulse.dotproduct(cast_fv(linear_velocity))*10.f/fixed_step;
+		 if(ll_limit>l_limit)l_limit=ll_limit;
+	 }
+	 
 
 	dReal mag;
 
