@@ -30,7 +30,7 @@ void	CSoundRender_Core::i_start		(CSoundRender_Emitter* E)
 
 	// Associate
 	E->target			= T;
-	T->start			(E);
+	E->target->start	(E);
 	T->priority			= Ptest;
 }
 

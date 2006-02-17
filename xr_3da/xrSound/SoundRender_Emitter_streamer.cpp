@@ -4,6 +4,7 @@
 #include "SoundRender_Core.h"
 #include "SoundRender_Source.h"
 #include "SoundRender_Emitter.h"
+#include "SoundRender_Target.h"
 
 void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 {
@@ -51,7 +52,7 @@ void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 	{
 		// cache access
 		if (SoundRender->cache.request(source->CAT,line))		{
-			source->decompress	(line);
+			source->decompress	(line,target->get_data());
 		}
                                                 
 		// fill block

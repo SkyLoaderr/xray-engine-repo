@@ -12,6 +12,13 @@ protected:
 	BOOL						rendering;
 public:
 	float						priority;
+protected:
+	OggVorbis_File				ovf;
+	IReader*					wave;					
+	void						attach				();
+	void						dettach				();
+public:
+	OggVorbis_File*				get_data			(){return &ovf;}
 public:
 								CSoundRender_Target	(void);
 	virtual 					~CSoundRender_Target(void);

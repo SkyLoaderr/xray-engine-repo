@@ -10,8 +10,8 @@ struct OggVorbis_File;
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
+	shared_str				pname;
 	shared_str				fname;
-	IReader*				wave;					// real source
 	cache_cat				CAT;
 	BOOL					_3D;
 	u32						dwTimeTotal;			// всего
@@ -34,8 +34,8 @@ public:
 
 	void					load					(LPCSTR name,	BOOL b3D);
     void					unload					();
-	void					decompress				(u32	line);
-
+	void					decompress				(u32 line, OggVorbis_File* ovf);
+	
 	virtual	u32				length_ms				()	{return dwTimeTotal;	}
 	virtual u32				game_type				()	{return m_uGameType;	}
 	virtual LPCSTR			file_name				()	{return *fname;	}

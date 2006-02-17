@@ -35,42 +35,34 @@ long ov_tell_func(void *datasource)
 	return ((IReader*)datasource)->tell(); 
 }
 
-void CSoundRender_Source::decompress		(u32 line)
+void CSoundRender_Source::decompress		(u32 line, OggVorbis_File* ovf)
 {
-	OggVorbis_File ovf;
-	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
-
-	wave->seek				(0);
-	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
-
+	VERIFY	(ovf);
 	// decompression of one cache-line
-	u32		line_size	= SoundRender->cache.get_linesize();
-	char*	dest		= (char*)	SoundRender->cache.get_dataptr	(CAT,line);
-	u32		buf_offs	= (psSoundFreq==sf_22K)?(line*line_size):(line*line_size)/2;
-	u32		left_file	= dwBytesTotal - buf_offs;
-	u32		left		= _min	(left_file,line_size);
+	u32		line_size		= SoundRender->cache.get_linesize();
+	char*	dest			= (char*)	SoundRender->cache.get_dataptr	(CAT,line);
+	u32		buf_offs		= (psSoundFreq==sf_22K)?(line*line_size):(line*line_size)/2;
+	u32		left_file		= dwBytesTotal - buf_offs;
+	u32		left			= _min	(left_file,line_size);
 	// seek
-	u32	cur_pos			= u32	(ov_pcm_tell(&ovf));
+	u32	cur_pos				= u32	(ov_pcm_tell(ovf));
 	if (cur_pos!=buf_offs){
-		ov_pcm_seek		(&ovf,buf_offs);
+		ov_pcm_seek			(ovf,buf_offs);
 	}
 	// decompress
-	if (psSoundFreq==sf_22K)	i_decompress_hr(&ovf,dest,left);
-	else						i_decompress_fr(&ovf,dest,left);
-	
-	ov_clear					(&ovf);
+	if (psSoundFreq==sf_22K)i_decompress_hr(ovf,dest,left);
+	else					i_decompress_fr(ovf,dest,left);
 }
 
 void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 {
+	pname					= pName;
+
 	// Load file into memory and parse WAV-format
-	wave					= FS.r_open(pName); 
-	R_ASSERT3				(wave&&wave->length(),"Can't open wave file:",pName);
-
-	OggVorbis_File ovf;
+	OggVorbis_File			ovf;
 	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
-
-	wave->seek				(0);
+	IReader* wave			= FS.r_open		(pname.c_str()); 
+	R_ASSERT3				(wave&&wave->length(),"Can't open wave file:",pname.c_str());
 	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
 
 	vorbis_info* ovi		= ov_info(&ovf,-1);
@@ -117,10 +109,12 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 			Log				("! Invalid ogg-comment version, file: ",pName);
 		}
 	}else{
-		Log				("! Missing ogg-comment, file: ",pName);
+		Log					("! Missing ogg-comment, file: ",pName);
 	}
 	R_ASSERT3((m_fMaxAIDist>=0.1f)&&(m_fMaxDist>=0.1f),"Invalid max distance.",pName);
-	ov_clear			(&ovf);
+
+	ov_clear				(&ovf);
+	FS.r_close				(wave);
 }
 
 void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
@@ -141,7 +135,7 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 		FS.update_path	(fn,"$game_sounds$","$no_sound.ogg");
     }
 #endif
-	LoadWave			(fn,_3D);	R_ASSERT(wave);
+	LoadWave			(fn,_3D);//.R_ASSERT(wave);
 	SoundRender->cache.cat_create	(CAT, dwBytesTotal);
 
 	if (dwTimeTotal<100)					{
@@ -151,8 +145,6 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 
 void CSoundRender_Source::unload()
 {
-//	ov_clear						(ovf);
-	FS.r_close						(wave);
 	SoundRender->cache.cat_destroy	(CAT);
     dwTimeTotal						= 0;
     dwBytesTotal					= 0;
