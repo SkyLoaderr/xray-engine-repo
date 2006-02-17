@@ -1463,91 +1463,91 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home4",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home2",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home2",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home2",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home2",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home2",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home3",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home3",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home3",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home3",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home3",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home4",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home4",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home4",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_zombie_2_home",
+		t = { section = "logic@esc_zombie_2_home4",
 			idle = 0,
 			prior = 5, state = {0},
 			in_rest = "", out_rest = ""
