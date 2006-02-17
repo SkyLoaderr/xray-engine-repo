@@ -21,13 +21,13 @@
 #include "huditem.h"
 #include "ui/UIDialogWnd.h"
 #include "clsid_game.h"
+#include "../xr_input.h"
 
 #ifdef DEBUG
 #	include "ai/monsters/BaseMonster/base_monster.h"
 #endif
 
 #ifdef DEBUG
-#	include "../xr_input.h"
 	extern void try_change_current_entity();
 	extern void restore_actor();
 #endif
