@@ -1,54 +1,54 @@
 <string_table>
 	<string id="speech_attack">
-		<text>Attack, team!</text>
+		<text>Все в атаку!</text>
 	</string>
 	<string id="speech_retreat">
-		<text>Retreat!</text>
+		<text>Отступаем!</text>
 	</string>
 	<string id="speech_holdpos">
-		<text>Holding position!</text>
+		<text>Держим позицию!</text>
 	</string>
 	<string id="speech_report">
-		<text>Report!</text>
+		<text>Доложите ситуацию!</text>
 	</string>
 	<string id="speech_silence">
-		<text>Shut the fuck up!!</text>
+		<text>Заткнитесь!!</text>
 	</string>
 	<string id="speech_guardartifact">
-		<text>Guard the artifact</text>
+		<text>Охраняем арефакт.Пока не берем! </text>
 	</string>
 	<string id="speech_takeartifact">
-		<text>Take the artifact now!</text>
+		<text>Берем артефакт!</text>
 	</string>
 	<string id="speech_roger">
-		<text>Roger..</text>
+		<text>Вас понял</text>
 	</string>
 	<string id="speech_no">
-		<text>No</text>
+		<text>Нет</text>
 	</string>
 	<string id="speech_needhelp">
-		<text>I need help</text>
+		<text>Нужна помощь</text>
 	</string>
 	<string id="speech_noenemy">
-		<text>No one near</text>
+		<text>Никого поблизости</text>
 	</string>
 	<string id="speech_holdingpos">
-		<text>I'll stay here</text>
+		<text>Остаюсь на позиции</text>
 	</string>
 	<string id="speech_sticktogether">
-		<text>Stick together</text>
+		<text>Держимся вместе</text>
 	</string>
 	<string id="speech_followme">
-		<text>Follow me</text>
+		<text>За мной!</text>
 	</string>
 	<string id="speech_needmoney">
-		<text>Not enough money, please buy equipment</text>
+		<text>Нет денег, купите экипировку</text>
 	</string>
 	<string id="speech_icoverartifact">
-		<text>Take the artifact! I'll cover you</text>
+		<text>Берите артефакт! Я прикрою</text>
 	</string>
 	<string id="speech_covermeartifact">
-		<text>I'll take artefact! Please cover me</text>
+		<text>Беру артефакт! Прикройте</text>
 	</string>
 			
 </string_table>
