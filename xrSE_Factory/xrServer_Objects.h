@@ -148,8 +148,9 @@
 // 114 - CSE_ALifeMonsterAbstract		m_task_reached, internal member, added
 // 115 - CSE_ALifeCreatureAbstract		fHealth now in range 0..1
 // 116 - CSE_ALifeCreatureAbstract		appended with property m_game_death_time
+// 117 - CSE_ALifeLevelChanger		appended with property m_bSilentMode
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(116)
+#define SPAWN_VERSION	u16(117)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

@@ -59,6 +59,7 @@ BOOL CLevelChanger::net_Spawn	(CSE_Abstract* DC)
 	m_position					= l_tpALifeLevelChanger->m_tNextPosition;
 	m_angles					= l_tpALifeLevelChanger->m_tAngles;
 
+	m_bSilentMode				= l_tpALifeLevelChanger->m_bSilentMode;
 	if (ai().get_level_graph()) {
 		//. this information should be computed in xrAI
 		ai_location().level_vertex	(ai().level_graph().vertex(u32(-1),Position()));
@@ -109,9 +110,21 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 	CActor*			l_tpActor = smart_cast<CActor*>(tpObject);
 	VERIFY			(l_tpActor);
 
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
-	m_entrance_time		= Device.fTimeGlobal;
+
+	if(m_bSilentMode)
+	{
+		NET_Packet								p;
+		p.w_begin								(M_CHANGE_LEVEL);
+		p.w										(&m_game_vertex_id,sizeof(m_game_vertex_id));
+		p.w										(&m_level_vertex_id,sizeof(m_level_vertex_id));
+		p.w_vec3								(m_position);
+		p.w_vec3								(m_angles);
+		Level().Send							(p,net_flags(TRUE));
+	}else{
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
+		m_entrance_time		= Device.fTimeGlobal;
+	}
 }
 
 BOOL CLevelChanger::feel_touch_contact	(CObject *object)
