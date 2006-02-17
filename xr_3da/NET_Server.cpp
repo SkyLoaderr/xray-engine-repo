@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#include "dxerr9.h"
 #include "net_server.h"
 
 #define		BASE_PORT		5445
@@ -168,7 +168,12 @@ BOOL IPureServer::Connect(LPCSTR options)
 	Msg("MaxPlayers = %d", dwMaxPlayers);
 
     // Create the IDirectPlay8Client object.
-    CHK_DX(CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET));
+	HRESULT CCIRes = CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET);
+	//---------------------------
+	string1024 tmp;
+	DXTRACE_ERR(tmp, CCIRes);
+    CHK_DX(CCIRes);
+	//---------------------------
 	
     // Initialize IDirectPlay8Client object.
 #ifdef DEBUG
