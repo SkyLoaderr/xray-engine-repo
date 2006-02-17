@@ -16,12 +16,6 @@
 	CAttachableItem*	CAttachableItem::m_dbgItem = NULL;
 #endif
 
-IC	CInventoryItem &CAttachableItem::item			() const
-{
-	VERIFY				(m_item);
-	return				(*m_item);
-}
-
 IC	CPhysicsShellHolder &CAttachableItem::object	() const
 {
 	return				(item().object());

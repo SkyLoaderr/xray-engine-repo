@@ -738,7 +738,7 @@ public:
 	virtual	CVisualMemoryManager*visual_memory					() const;
 };
 
-IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);
+extern bool		isActorAccelerated			(u32 mstate, bool ZoomMode);
 
 IC	CActorCondition	&CActor::conditions	() const{ VERIFY(m_entity_condition); return(*m_entity_condition);}
 

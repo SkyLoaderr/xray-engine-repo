@@ -49,3 +49,9 @@ IC	bool CAttachableItem::enabled					() const
 //	VERIFY				(m_valid);
 	return				(m_enabled);
 }
+
+IC	CInventoryItem &CAttachableItem::item			() const
+{
+	VERIFY				(m_item);
+	return				(*m_item);
+}

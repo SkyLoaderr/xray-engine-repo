@@ -9,5 +9,5 @@
 
 extern Flags32 psActorFlags;
 
-IC BOOL		GodMode	();	
+extern BOOL		GodMode	();	
 

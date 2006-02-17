@@ -21,6 +21,7 @@
 #include "sound_memory_manager.h"
 #include "hit_memory_manager.h"
 #include "enemy_manager.h"
+#include "memory_space_impl.h"
 
 struct CEnemyFiller {
 	typedef CAgentEnemyManager::ENEMIES ENEMIES;
