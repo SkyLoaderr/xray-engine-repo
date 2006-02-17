@@ -300,12 +300,16 @@ function enable_generic_schemes(ini, npc, stype, section)
 		if hit_section then
 			xr_hit.set_hit_checker(npc, ini, "hit", hit_section)
 		end
+
+		mob_panic.set_scheme(npc, ini, "mob_panic")
+
 	elseif stype == modules.stype_item then
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
 		printf("HIT SECTION [%s]", tostring(hit_section))
 		if hit_section then
 			ph_on_hit.set_scheme(npc, ini, "ph_on_hit", hit_section)
 		end
+
 	elseif stype == modules.stype_heli then
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
 		if hit_section then
@@ -422,6 +426,9 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme, section)
 				--npc:set_invisible(false)
 			end
 		end
+
+		mob_panic.reset_panic(npc, scheme, st, section)
+
 	elseif st.stype == modules.stype_item then
 		npc:set_callback(callback.use_object, nil)
 		npc:set_nonscript_usable(true)
