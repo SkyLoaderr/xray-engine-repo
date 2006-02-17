@@ -11,12 +11,6 @@ function mob_death:__init(obj, storage)
 	self.st = storage
 end
 
-function mob_death:reset_scheme()
-end
-
-function mob_death:update(delta)
-end
-
 function mob_death:death_callback(victim, who)
 	if who ~= nil then
 		printf("mob_death: [%s] killed by [%s]", victim:name(), who:name())
