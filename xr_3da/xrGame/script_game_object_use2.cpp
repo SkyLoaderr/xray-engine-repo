@@ -144,3 +144,17 @@ void CScriptGameObject::berserk()
 	CBaseMonster *monster = smart_cast<CBaseMonster *>(&object());
 	if (monster) monster->set_berserk();
 }
+
+void CScriptGameObject::set_custom_panic_threshold(float value)
+{
+	CBaseMonster *monster = smart_cast<CBaseMonster *>(&object());
+	if (monster) monster->set_custom_panic_threshold(value);
+}
+
+void CScriptGameObject::set_default_panic_threshold()
+{
+	CBaseMonster *monster = smart_cast<CBaseMonster *>(&object());
+	if (monster) monster->set_default_panic_threshold();
+}
+
+

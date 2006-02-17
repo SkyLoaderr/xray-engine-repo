@@ -302,15 +302,30 @@ public:
 	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
 
 	//---------------------------------------------------------------------------------------
-	
+
+
+	//-----------------------------------------------------------------
+	// Spawn Inventory Item
+	//-----------------------------------------------------------------
+private:
+	LPCSTR					m_item_section;
+	float					m_spawn_probability;
+
 	//--------------------------------------------------------------------
 	// Berserk
 	//--------------------------------------------------------------------
 public:
 	u32						time_berserk_start;
 	IC void					set_berserk						() {time_berserk_start = time();}
+
+	//--------------------------------------------------------------------
+	// Panic Threshold (extension for scripts)
 	//--------------------------------------------------------------------
 
+		float				m_default_panic_threshold;
+	IC	void				set_custom_panic_threshold	(float value);
+	IC	void				set_default_panic_threshold	();
+	//--------------------------------------------------------------------
 
 	u32						m_prev_sound_type;
 	u32						get_attack_rebuild_time	();
@@ -331,12 +346,6 @@ IC	void					wake_up				(){m_bSleep = false;}
 IC	void					set_ignore_collision_hit (bool value) {ignore_collision_hit = value;}
 	
 	int						m_rank;
-
-	//-----------------------------------------------------------------
-	// Spawn Inventory Item
-private:
-	LPCSTR					m_item_section;
-	float					m_spawn_probability;
 
 
 private:

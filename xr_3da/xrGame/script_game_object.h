@@ -223,7 +223,10 @@ public:
 			void				set_home				(LPCSTR name, float r_min, float r_max, bool aggressive);
 			void				remove_home				();
 			void				berserk					();
-		
+			void				set_custom_panic_threshold	(float value);
+			void				set_default_panic_threshold	();
+
+
 			template <typename T>
 			IC		T			*action_planner			();
 

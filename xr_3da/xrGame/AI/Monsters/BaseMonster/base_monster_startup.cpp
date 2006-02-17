@@ -100,7 +100,11 @@ void CBaseMonster::reload	(LPCSTR section)
 	}
 
 	Home->load						("home");
+
+	// save panic_threshold
+	m_default_panic_threshold = m_panic_threshold;
 }
+
 
 void CBaseMonster::reinit()
 {
