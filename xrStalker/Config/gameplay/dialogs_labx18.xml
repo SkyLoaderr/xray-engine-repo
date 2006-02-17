@@ -36,22 +36,14 @@
                 <text>dar_explorer_dialog_1</text>
                 <next>11</next>
             </phrase>
-            <phrase id="21113">
-                <text>dar_explorer_dialog_21113</text>
-                <next>25</next>
-            </phrase>
-            <phrase id="112">
-                <text>dar_explorer_dialog_112</text>
-                <next>2111</next>
-            </phrase>
             <phrase id="11">
                 <text>dar_explorer_dialog_11</text>
                 <next>111</next>
                 <next>112</next>
             </phrase>
-            <phrase id="21112">
-                <text>dar_explorer_dialog_21112</text>
-                <next>25</next>
+            <phrase id="112">
+                <text>dar_explorer_dialog_112</text>
+                <next>2111</next>
             </phrase>
             <phrase id="2">
                 <text>dar_explorer_dialog_2</text>
@@ -77,9 +69,13 @@
                 <text>dar_explorer_dialog_21111</text>
                 <next>2121</next>
             </phrase>
-            <phrase id="252">
-                <text>dar_explorer_dialog_252</text>
-                <next>2521</next>
+            <phrase id="21112">
+                <text>dar_explorer_dialog_21112</text>
+                <next>25</next>
+            </phrase>
+            <phrase id="21113">
+                <text>dar_explorer_dialog_21113</text>
+                <next>25</next>
             </phrase>
             <phrase id="25">
                 <text>dar_explorer_dialog_25</text>
@@ -95,6 +91,10 @@
                 <text>dar_explorer_dialog_2511</text>
                 <next>26</next>
                 <next>27</next>
+            </phrase>
+            <phrase id="252">
+                <text>dar_explorer_dialog_252</text>
+                <next>2521</next>
             </phrase>
             <phrase id="2521">
                 <text>dar_explorer_dialog_2521</text>
