@@ -11,9 +11,9 @@
 #include "condition_evaluator.h"
 #include "graph_engine.h"
 
-u32 world_state_dimension = 8;
-const u32 min_operator_count	= 4;
-const u32 max_operator_count	= 8;
+extern u32 world_state_dimension;
+extern const u32 min_operator_count;
+extern const u32 max_operator_count;
 
 typedef u32																						_condition_type;
 typedef bool																					_value_type;
