@@ -101,9 +101,10 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				{
 #pragma todo("убрать поиск Level().Objects.net_Find, так как могут быть тормоза")
 					CAI_Stalker* defending_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->defender));
-					CAI_Stalker* attacking_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->attacker));
-					if(defending_stalker)
+					if(defending_stalker)	{
+						CAI_Stalker*	attacking_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->attacker));
 						Action(actor, defending_stalker, attacking_stalker?FIGHT_HELP_HUMAN:FIGHT_HELP_MONSTER);
+					}
 				}
 			}
 
