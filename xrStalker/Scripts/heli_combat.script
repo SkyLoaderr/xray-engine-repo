@@ -409,7 +409,8 @@ function heli_combat:search_choose_attack_dist( retreat )
 end
 
 function heli_combat:search_setup_flight( direction, retreat )
-	self.center_pos = self.enemy_last_seen_pos
+	self.center_pos   = self.enemy_last_seen_pos
+	self.center_pos.y = self.safe_altitude
 
 	printf( "heli_combat:search_setup_flight GoPatrolByRoundPath" )
 	self.heliObject:GoPatrolByRoundPath( self.center_pos, self:search_choose_attack_dist( retreat ), direction )
