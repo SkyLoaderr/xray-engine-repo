@@ -34,6 +34,7 @@
 #include "CustomOutfit.h"
 
 #include "actorcondition.h"
+#include "UIGameCustom.h"
 
 
 // breakpoints
@@ -744,6 +745,9 @@ void CActor::Die	(CObject* who)
 	m_HeavyBreathSnd.stop	();
 
 	xr_delete				(m_sndShockEffector);
+	if(IsGameTypeSingle()){
+		HUD().GetUI()->UIGame()->AddCustomStatic("game_over", true);
+	}
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
