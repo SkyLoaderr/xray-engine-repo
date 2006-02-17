@@ -12,6 +12,8 @@
 #include "gameobject.h"
 #include "level.h"
 #include "ai_space.h"
+#include "ai_space.h"
+#include "ai_object_locatio.h"
 
 template <typename T>
 IC	SRotation CObjectParams<T>::orientation	(const T *object) const
