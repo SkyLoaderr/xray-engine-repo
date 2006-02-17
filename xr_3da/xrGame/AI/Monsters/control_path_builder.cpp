@@ -126,11 +126,6 @@ void CControlPathBuilder::on_build_path()
 //////////////////////////////////////////////////////////////////////////
 // Special Build Path
 //////////////////////////////////////////////////////////////////////////
-bool CControlPathBuilder::is_path_built()
-{
-	return (!path_completed() && (detail().time_path_built() >= Device.dwTimeGlobal));
-}
-
 bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel_mask)
 {
 	if (!accessible(target)) return false;
@@ -161,7 +156,8 @@ bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel
 	set_build_path_at_once				();
 	update_path							();	
 
-	if (is_path_built())				return true;
+	// check if path built successfully
+	if (!path_completed() && (detail().time_path_built() >= Device.dwTimeGlobal))	return true;
 
 	return false;
 }
@@ -172,6 +168,8 @@ bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel
 
 bool CControlPathBuilder::is_path_end(float dist_to_end)
 {
+	if (!is_path_built())			return false;
+
 	if (detail().path().size() < 2) return true;
 	if (path_completed())			return true;
 
@@ -284,3 +282,9 @@ u32	 CControlPathBuilder::find_nearest_vertex				(const u32 &level_vertex_id, co
 	VERIFY			(temp.size() == 1);
 	return			(temp.front());
 }
+
+bool CControlPathBuilder::is_path_built()
+{
+	return actual_all();
+}
+

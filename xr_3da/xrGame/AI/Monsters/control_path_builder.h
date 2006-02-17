@@ -60,8 +60,9 @@ public:
 			
 	static	u32		find_nearest_vertex		(const u32 &level_vertex_id, const Fvector &target_position, const float &range);
 
-private:	
 			bool	is_path_built			();
+
+private:
 			bool	build_special			(const Fvector &target, u32 node, u32 vel_mask);
 			void	make_inactual			();	
 };
