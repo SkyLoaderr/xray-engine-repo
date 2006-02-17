@@ -1037,8 +1037,10 @@ void CStalkerActionSuddenAttack::execute					()
 	else
 		object().sight().setup			(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
-	object().movement().set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-//	object().movement().set_desired_position	(&mem_object.m_object_params.m_position);
+	if (object().movement().accessible(mem_object.m_object_params.m_level_vertex_id))
+		object().movement().set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+	else
+		object().movement().set_nearest_accessible_position	(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id),mem_object.m_object_params.m_level_vertex_id);
 
 	float								distance = object().Position().distance_to(mem_object.m_object_params.m_position);
 	if (distance >= 15.f) {
