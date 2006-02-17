@@ -220,8 +220,19 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	net_Syncronised	= FALSE;
 	net_Disconnected= FALSE;
 
+	//---------------------------
+	HRESULT CoInitializeRes = CoInitialize(NULL);
+	string1024 tmp;
+	DXTRACE_ERR(tmp, CoInitializeRes);
+	CHK_DX(CoInitializeRes);
+	//---------------------------
     // Create the IDirectPlay8Client object.
-    R_CHK(CoCreateInstance	(CLSID_DirectPlay8Client, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Client, (LPVOID*) &NET));
+    HRESULT CoCreateInstanceRes = CoCreateInstance	(CLSID_DirectPlay8Client, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Client, (LPVOID*) &NET);
+	//---------------------------	
+	DXTRACE_ERR(tmp, CoCreateInstanceRes );
+	CHK_DX(CoCreateInstanceRes );
+	//---------------------------
+	Msg("NET - %x", NET);
 	
     // Initialize IDirectPlay8Client object.
 #ifdef DEBUG
@@ -361,6 +372,11 @@ BOOL IPureClient::Connect	(LPCSTR options)
 						OnInvalidHost();
 						return FALSE;
 					}break;
+				case DPNERR_SESSIONFULL:
+					{
+						OnSessionFull();
+						return FALSE;
+					}break;
 				};
 #ifdef DEBUG
 //				const char* x = DXGetErrorString9(res);
@@ -451,6 +467,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 
 void IPureClient::Disconnect()
 {
+	Msg("NET - %x", NET);
     if( NET )	NET->Close(0);
 
     // Clean up Host _list_
