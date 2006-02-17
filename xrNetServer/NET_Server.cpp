@@ -169,12 +169,12 @@ BOOL IPureServer::Connect(LPCSTR options)
 
 	//---------------------------
 	string1024 tmp;
-	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);	
-	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
-	{
-		DXTRACE_ERR(tmp, CoInitializeExRes);
-		CHK_DX(CoInitializeExRes);
-	};	
+//	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);	
+//	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
+//	{
+//		DXTRACE_ERR(tmp, CoInitializeExRes);
+//		CHK_DX(CoInitializeExRes);
+//	};	
 	//---------------------------
     // Create the IDirectPlay8Client object.
 	HRESULT CoCreateInstanceRes = CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET);
