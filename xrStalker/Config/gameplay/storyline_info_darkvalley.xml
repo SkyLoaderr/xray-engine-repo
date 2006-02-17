@@ -1,4 +1,4 @@
-<article group="Diary" id="storyline_borov_flash_info" name="Borov Flash">
+<article article_type="journal" group="Diary" id="storyline_borov_flash_info" name="Borov Flash">
     <texture height="150" width="200" x="200" y="650">
         ui\ui_icon_photo
     </texture>
