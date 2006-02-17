@@ -97,10 +97,14 @@
 			<options_item entry="rs_fullscreen" group="mm_opt_video"/>	
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_fullscreen</text>
 		</check_fullscreen>
-		<check_no_vsync x="20" y="180" width="143" height="21">
+		<check_no_vsync x="20" y="180" width="343" height="21">
 			<options_item entry="rs_no_v_sync" group="mm_opt_video"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_no_vsync</text>
 		</check_no_vsync>
+		<check_dyn_lignt x="20" y="205" width="243" height="21">
+			<options_item entry="ai_use_torch_dynamic_lights" group="mm_opt_video"/>
+			<text font="letterica16" r="115" g="114" b="112">ui_mm_switch_torch</text>
+		</check_dyn_lignt>
 		
 		<list_presets x="194" y="20" width="261" height="21">
 			<options_item entry="r___preset" group="mm_opt_video"/>

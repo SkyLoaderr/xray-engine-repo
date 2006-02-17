@@ -350,9 +350,10 @@ void CObjectHandler::detach				(CInventoryItem *inventory_item)
 	inherited::detach			(inventory_item);
 }
 
-extern BOOL g_ai_use_torch_dynamic_lights;
+extern Flags32 g_uCommonFlags;
 
 bool CObjectHandler::can_use_dynamic_lights	()
-{
-	return						(!!g_ai_use_torch_dynamic_lights);
+{	
+	// flAiUseTorchDynamicLights == 1
+	return !!g_uCommonFlags.test(1);
 }

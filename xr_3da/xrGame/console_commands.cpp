@@ -109,7 +109,10 @@ extern	BOOL	g_bDrawBulletHit;
 #endif
 
 int g_AI_inactive_time = 0;
-BOOL g_ai_use_torch_dynamic_lights = 1;
+Flags32 g_uCommonFlags;
+enum E_COMMON_FLAGS{
+	flAiUseTorchDynamicLights = 1
+};
 BOOL g_use_scripts_in_goap = 1;
 
 CUIOptConCom g_OptConCom;
@@ -2344,6 +2347,10 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"sv_pending_wait_time",		&g_sv_Pending_Wait_Time, 0, 60000);
 
 	CMD4(CCC_Integer,	"sv_pending_wait_time",			&g_sv_Pending_Wait_Time, 0, 60000);
-	CMD4(CCC_Integer,	"ai_use_torch_dynamic_lights",	&g_ai_use_torch_dynamic_lights, 0, 1);
+
+	g_uCommonFlags.zero();
+	g_uCommonFlags.set(flAiUseTorchDynamicLights, TRUE);
+
+	CMD3(CCC_Mask,		"ai_use_torch_dynamic_lights",	&g_uCommonFlags, flAiUseTorchDynamicLights);
 	CMD4(CCC_Integer,	"use_scripts_in_goap",			&g_use_scripts_in_goap, 0, 1);
 }
