@@ -20,7 +20,7 @@
       Intermediate\SoundRender_Cache.obj Intermediate\SoundRender_TargetA.obj 
       Intermediate\SoundRender_CoreA.obj Intermediate\sound.obj 
       Intermediate\xrCDB_Collector.obj Intermediate\soundrender_targetD.obj 
-      Intermediate\SoundRender_CoreD.obj"/>
+      Intermediate\SoundRender_CoreD.obj Intermediate\OpenALDeviceList.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -97,6 +97,7 @@
       <FILE FILENAME="xrCDB_Collector.cpp" FORMNAME="" UNITNAME="xrCDB_Collector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="soundrender_targetD.cpp" FORMNAME="" UNITNAME="soundrender_targetD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_CoreD.cpp" FORMNAME="" UNITNAME="SoundRender_CoreD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OpenALDeviceList.cpp" FORMNAME="" UNITNAME="OpenALDeviceList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
