@@ -435,7 +435,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 11, state = {2},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
 		position_threshold = 100,
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "mil_headquarter_restrictor",
 		predicate = function (info)
