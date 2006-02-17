@@ -585,7 +585,10 @@ void CApplication::LoadDraw		()
 
 void CApplication::load_draw_internal()
 {
-
+	if(!sh_progress){
+		CHK_DX			(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(0,0,0,0),1,0));
+		return;
+	}
 		// Draw logo
 		u32	Offset;
 		u32	C						= 0xffffffff;
