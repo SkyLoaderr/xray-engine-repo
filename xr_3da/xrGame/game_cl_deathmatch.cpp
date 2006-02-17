@@ -852,10 +852,13 @@ void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		}break;
 	case GAME_PHASE_PLAYER_SCORES:
 		{
-			if (!xr_strcmp(WinnerName, local_player->getName()))
+			if (local_player)
 			{
-				PlaySndMessage(ID_YOU_WON);
-			}
+				if (!xr_strcmp(WinnerName, local_player->getName()))
+				{
+					PlaySndMessage(ID_YOU_WON);
+				}
+			}			
 		}break;
 	default:
 		{			
