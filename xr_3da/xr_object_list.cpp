@@ -104,9 +104,9 @@ void CObjectList::Update		()
 {
 	// Select Crow-Mode
 	Device.Statistic->UpdateClient_updated	= 0;
-	Device.Statistic->UpdateClient_crows		= crows->size	();
+	Device.Statistic->UpdateClient_crows	= crows->size	();
 	xr_vector<CObject*>*		workload	= 0;
-	if (psDeviceFlags.test(rsTreatObjectsAsCrows))	{
+	if (!psDeviceFlags.test(rsDisableObjectsAsCrows))	{
 		workload = crows			;
 		if (crows==&crows_0)		crows=&crows_1;
 		else						crows=&crows_0;
