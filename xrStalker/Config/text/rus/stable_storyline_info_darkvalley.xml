@@ -43,3 +43,43 @@
         Долговец Пуля просит помочь ему освободить напарника, попавшего в плен к бандитам. Его должны скоро конвоировать на заброшенную фабрику.
     </text>
 </string>
+<string id="LabX-18 documents">
+    <text>
+        Журнал из лаборатории Х-18
+    </text>
+</string>
+<string id="dar_document1">
+    <text>
+        Журнал лобратории. 1 часть
+    </text>
+</string>
+<string id="dar_document2">
+    <text>
+        Журнал лобратории. 2 часть
+    </text>
+</string>
+<string id="dar_document3">
+    <text>
+        Журнал лобратории. 3 часть
+    </text>
+</string>
+<string id="dar_document4">
+    <text>
+        Журнал лобратории. 4 часть
+    </text>
+</string>
+<string id="dar_document5">
+    <text>
+        Журнал лобратории. 5 часть
+    </text>
+</string>
+<string id="LabX18 first key">
+    <text>
+        Код допуска 2го уровня
+    </text>
+</string>
+<string id="LabX18 second key">
+    <text>
+        Код допуска 1го уровня
+    </text>
+</string>
