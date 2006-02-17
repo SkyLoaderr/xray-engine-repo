@@ -71,7 +71,7 @@ void CControllerPsyHit::on_event(ControlCom::EEventType type, ControlCom::IEvent
 			
 			switch (m_current_index) {
 				case 1: death_glide_start();	break;
-				case 2: set_sound_state(eHit);	break;
+				case 2: hit();					break;
 				case 3: death_glide_end();		break;
 			}
 		} else {
@@ -165,7 +165,15 @@ void CControllerPsyHit::set_sound_state(ESoundState state)
 		monster->m_sound_tube_hit_left.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
 		monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 		m_sound_state = eHit;
+
 		return;
 	}
 }
 
+void CControllerPsyHit::hit()
+{
+	CController *monster	= smart_cast<CController *>(m_object);
+	
+	set_sound_state			(eHit);
+	m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
+}

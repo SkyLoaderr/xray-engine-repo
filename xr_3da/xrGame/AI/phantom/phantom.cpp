@@ -294,11 +294,11 @@ void CPhantom::UpdatePosition(const Fvector& tgt_pos)
 
 void CPhantom::PsyHit(const CObject *object, float value) 
 {
-	NET_Packet		P;
-	SHit			HS;
+	NET_Packet			P;
+	SHit				HS;
 	HS.GenHeader		(GE_HIT, object->ID());				//				//	u_EventGen		(P,GE_HIT, object->ID());				
-	HS.whoID			= (object->ID());					// own			//	P.w_u16			(object->ID());							
-	HS.weaponID			= (object->ID());					// own			//	P.w_u16			(object->ID());							
+	HS.whoID			= (ID());					// own			//	P.w_u16			(object->ID());							
+	HS.weaponID			= (ID());					// own			//	P.w_u16			(object->ID());							
 	HS.dir				= (Fvector().set(0.f,1.f,0.f));		// direction	//	P.w_dir			(Fvector().set(0.f,1.f,0.f));			
 	HS.power			= (value);							// hit value	//	P.w_float		(value);								
 	HS.boneID			= (BI_NONE);						// bone			//	P.w_s16			(BI_NONE);								

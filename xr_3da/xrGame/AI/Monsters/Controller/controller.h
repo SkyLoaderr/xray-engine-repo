@@ -111,6 +111,9 @@ public:
 			bool	can_tube_fire				();
 			u32		m_time_last_tube;
 			
+			float	m_psy_hit_damage;
+			float	m_tube_damage;
+
 			void	set_psy_fire_delay_zero		();
 			void	set_psy_fire_delay_default	();
 

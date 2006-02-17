@@ -37,5 +37,6 @@ private:
 			void	death_glide_end			();
 
 			void	set_sound_state			(ESoundState state);
+			void	hit						();
 };
 
