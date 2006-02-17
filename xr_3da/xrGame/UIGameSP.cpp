@@ -52,6 +52,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
 
+	/*
 #ifndef DEBUG
 	if(key_binding[dik]== kINVENTORY)
 	{
@@ -61,6 +62,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		}break;
 	}
 #endif
+	*/
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor)								return false;

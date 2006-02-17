@@ -14,7 +14,9 @@
 CBlender_Tree::CBlender_Tree()
 {
 	description.CLS		= B_TREE;
-	description.version	= 0;
+	description.version	= 1;
+	oBlend.value		= FALSE;
+	oNotAnTree.value	= FALSE;
 }
 
 CBlender_Tree::~CBlender_Tree()
@@ -26,12 +28,16 @@ void	CBlender_Tree::Save		(IWriter& fs )
 {
 	IBlender::Save		(fs);
 	xrPWRITE_PROP		(fs,"Alpha-blend",	xrPID_BOOL,		oBlend);
+	xrPWRITE_PROP		(fs,"Object LOD",	xrPID_BOOL,		oNotAnTree);
 }
 
 void	CBlender_Tree::Load		(IReader& fs, u16 version )
 {
 	IBlender::Load		(fs,version);
 	xrPREAD_PROP		(fs,xrPID_BOOL,		oBlend);
+	if (version>=1)		{
+		xrPREAD_PROP		(fs,xrPID_BOOL,		oNotAnTree);
+	}
 }
 
 #if RENDER==R_R1
@@ -60,24 +66,34 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		const u32			tree_aref		= 200;
+		u32							tree_aref		= 200;
+		if (oNotAnTree.value)		tree_aref		= 0;
+
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:
-			// Level view
-			if (C.bDetail_Diffuse)
-			{
-				if (oBlend.value)	C.r_Pass	("tree_w_dt","vert_dt",	TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,tree_aref);
-				else				C.r_Pass	("tree_w_dt","vert_dt",	TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,		D3DBLEND_ZERO,			TRUE,tree_aref);
-				C.r_Sampler		("s_base",	C.L_textures[0]);
-				C.r_Sampler		("s_detail",C.detail_texture);
-				C.r_End			();
+			if (oNotAnTree.value)	{
+				// Level view
+				if (oBlend.value)	C.r_Pass	("tree_s",	"vert",		TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,tree_aref);
+				else				C.r_Pass	("tree_s",	"vert",		TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,		D3DBLEND_ZERO,			TRUE,tree_aref);
+				C.r_Sampler			("s_base",	C.L_textures[0]);
+				C.r_End				();
 			} else {
-				if (oBlend.value)	C.r_Pass	("tree_w",	"vert",		TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,tree_aref);
-				else				C.r_Pass	("tree_w",	"vert",		TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,		D3DBLEND_ZERO,			TRUE,tree_aref);
-				C.r_Sampler		("s_base",	C.L_textures[0]);
-				C.r_Sampler		("s_detail",C.detail_texture);
-				C.r_End			();
+				// Level view
+				if (C.bDetail_Diffuse)
+				{
+					if (oBlend.value)	C.r_Pass	("tree_w_dt","vert_dt",	TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,tree_aref);
+					else				C.r_Pass	("tree_w_dt","vert_dt",	TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,		D3DBLEND_ZERO,			TRUE,tree_aref);
+					C.r_Sampler			("s_base",	C.L_textures[0]);
+					C.r_Sampler			("s_detail",C.detail_texture);
+					C.r_End				();
+				} else {
+					if (oBlend.value)	C.r_Pass	("tree_w",	"vert",		TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,tree_aref);
+					else				C.r_Pass	("tree_w",	"vert",		TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,		D3DBLEND_ZERO,			TRUE,tree_aref);
+					C.r_Sampler			("s_base",	C.L_textures[0]);
+					C.r_Sampler			("s_detail",C.detail_texture);
+					C.r_End				();
+				}
 			}
 			break;
 		case SE_R1_NORMAL_LQ:
