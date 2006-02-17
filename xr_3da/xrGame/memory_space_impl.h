@@ -14,6 +14,7 @@
 #include "ai_space.h"
 #include "ai_space.h"
 #include "ai_object_location.h"
+#include "level_graph.h"
 
 template <typename T>
 IC	SRotation CObjectParams<T>::orientation	(const T *object) const
