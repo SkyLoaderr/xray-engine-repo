@@ -238,7 +238,6 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		CHK_DX(CoCreateInstanceRes );
 	}	
 	//---------------------------
-	Msg("NET - %x", NET);
 	
     // Initialize IDirectPlay8Client object.
 #ifdef DEBUG
@@ -473,7 +472,6 @@ BOOL IPureClient::Connect	(LPCSTR options)
 
 void IPureClient::Disconnect()
 {
-	Msg("NET - %x", NET);
     if( NET )	NET->Close(0);
 
     // Clean up Host _list_
