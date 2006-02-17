@@ -63,5 +63,8 @@
 	<string id="st_item_used">
 		<text>Использован</text>
 	</string>
+	<string id="st_no_active_task">
+		<text>Нет активного задания</text>
+	</string>
 </string_table>
 

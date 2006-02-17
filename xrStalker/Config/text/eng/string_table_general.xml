@@ -42,7 +42,15 @@
     <string id="health">
         <text>Health</text>
     </string>
-    <string id="test2">
-        <text>This is a another GENERAL test string</text>
-    </string>
+	<string id="st_autosave">
+		<text>Autosave...</text>
+	</string>
+	
+	<string id="st_item_used">
+		<text>Used</text>
+	</string>
+	<string id="st_no_active_task">
+		<text>No active task</text>
+	</string>
+
 </string_table>
