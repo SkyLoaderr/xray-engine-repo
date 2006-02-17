@@ -216,6 +216,7 @@ public:
 protected:
 	//звук тяжелого дыхания
 	ref_sound			m_HeavyBreathSnd;
+	ref_sound			m_BloodSnd;
 
 	xr_vector<const CArtefact*> m_ArtefactsOnBelt;
 

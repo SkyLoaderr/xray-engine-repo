@@ -205,6 +205,7 @@ CActor::~CActor()
 	for (int i=0; i<eacMaxCam; ++i) xr_delete(cameras[i]);
 
 	m_HeavyBreathSnd.destroy();
+	m_BloodSnd.destroy		();
 
 	xr_delete				(m_pActorEffector);
 
@@ -363,6 +364,7 @@ void CActor::Load	(LPCSTR section )
 	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"), SOUND_TYPE_MONSTER_DYING);
 
 	m_HeavyBreathSnd.create(TRUE, pSettings->r_string(section,"heavy_breath_snd"), SOUND_TYPE_MONSTER_INJURING);
+	m_BloodSnd.create(TRUE, pSettings->r_string(section,"heavy_blood_snd"), SOUND_TYPE_MONSTER_INJURING);
 
 	cam_Set					(eacFirstEye);
 
@@ -743,6 +745,7 @@ void CActor::Die	(CObject* who)
 
 	//остановить звук тяжелого дыхания
 	m_HeavyBreathSnd.stop	();
+	m_BloodSnd.stop			();		
 
 	xr_delete				(m_sndShockEffector);
 	if(IsGameTypeSingle()){
@@ -1022,6 +1025,24 @@ void CActor::shedule_Update	(u32 DT)
 		m_HeavyBreathSnd.stop		();
 	}
 
+	float bs = conditions().BleedingSpeed();
+	if(bs>0.025f)
+	{
+		Fvector snd_pos;
+		snd_pos.set(0,ACTOR_HEIGHT,0);
+		if(!m_BloodSnd._feedback())
+			m_BloodSnd.play_at_pos(this, snd_pos, sm_Looped | sm_2D);
+		else
+			m_BloodSnd.set_position(snd_pos);
+
+		float v = bs+0.25f;
+
+		m_BloodSnd.set_volume	(v);
+	}else{
+		if(m_BloodSnd._feedback())
+			m_BloodSnd.stop();
+	}
+	
 	//если в режиме HUD, то сама модель актера не рисуется
 	if(!character_physics_support()->IsRemoved())
 										setVisible				(!HUDview	());
