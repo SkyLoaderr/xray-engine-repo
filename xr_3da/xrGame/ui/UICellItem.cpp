@@ -54,13 +54,10 @@ CUIFlyingItem::CUIFlyingItem(CUICellItem* parent)
 {
 	m_pParent						= parent;
 	AttachChild						(&m_static);
-	HUD().GetUI()->StartStopMenu	(this,false);
-//	GetUICursor()->SetMoveReceiver(CUICursor::CURSOR_MOVE_EVENT(this,&CUIFlyingItem::OnMouseMoved));
 }
 
 CUIFlyingItem::~CUIFlyingItem()
 {
-	HUD().GetUI()->StartStopMenu	(this,false);
 }
 
 void CUIFlyingItem::Init(const ref_shader& sh, const Frect& rect, const Frect& text_rect)
@@ -77,20 +74,17 @@ void CUIFlyingItem::Init(const ref_shader& sh, const Frect& rect, const Frect& t
 
 bool CUIFlyingItem::OnMouse(float x, float y, EUIMessages mouse_action)
 {
-	if(mouse_action == WINDOW_MOUSE_MOVE){
+/*	if(mouse_action == WINDOW_MOUSE_MOVE){
 		MoveWndDelta(GetUICursor()->GetPosDelta());
 		return true;
-	}
+	}*/
 	return false;
 }
 
-void CUIFlyingItem::OnMouseMoved(Fvector2 delta)
-{
-	MoveWndDelta(delta);
-}
 
 void CUIFlyingItem::Draw()
 {
+	MoveWndDelta(GetUICursor()->GetPosDelta());
 	UI()->PushScissor(UI()->ScreenRect(),true);
 
 	inherited::Draw();

@@ -1382,38 +1382,12 @@ CUIGameTutorial* g_tut = NULL;
 //#include "../postprocessanimator.h"
 //CPostprocessAnimator* pp = NULL;
 //extern void create_force_progress();
+
+#include "UIDragDropListEx.h"
+CTestDragDropWnd* w = NULL;
 void test_key	(int dik)
 {
-	
-/*
-	static float k = 0.5f;
-	if(!g_MissileForceShape) create_force_progress();
-	g_MissileForceShape->SetPos(k);
 
-	if(dik==DIK_K){
-		k += 0.05f;
-		clamp(k,0.0f,1.0f);
-		g_MissileForceShape->SetPos(k);
-		Log("kkk=", k);
-	}
-	if(dik==DIK_J){
-		k -= 0.05f;
-		clamp(k,0.0f,1.0f);
-		g_MissileForceShape->SetPos(k);
-		Log("kkk=", k);
-	}
-*/
-/*
-	if(dik==DIK_K){
-	CUIWindow*		wnd_arr [10];
-	for(int i=0; i<10; ++i)
-		wnd_arr[i] = xr_new<CUIWindow>();
-
-	delete_data(wnd_arr);
-	}
-*/
-
-/*
 	if(dik==DIK_K&&strstr(Core.Params,"andy")){
 		if(!w){
 			w = xr_new<CTestDragDropWnd>	();
@@ -1423,7 +1397,7 @@ void test_key	(int dik)
 			xr_delete						(w);
 		}
 	}
-*/
+
 
 
 /*

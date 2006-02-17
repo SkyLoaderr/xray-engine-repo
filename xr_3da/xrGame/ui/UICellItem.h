@@ -34,10 +34,10 @@ public:
 
 };
 
-class CUIFlyingItem: public CUIDialogWnd
+class CUIFlyingItem: public CUIWindow
 {
 private:
-	typedef		CUIDialogWnd	inherited;
+	typedef		CUIWindow	inherited;
 	CUIStatic				m_static;
 	CUICellItem*			m_pParent;
 public:
@@ -46,5 +46,4 @@ public:
 	virtual					~CUIFlyingItem();
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
-	void	__stdcall		OnMouseMoved			(Fvector2 delta);
 };

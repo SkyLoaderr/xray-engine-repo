@@ -10363,12 +10363,6 @@
 					Name="DragDrop"
 					Filter="">
 					<File
-						RelativePath=".\ui\UICellItem.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UICellItem.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIDragDropItem.cpp">
 					</File>
 					<File
@@ -10379,12 +10373,6 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIDragDropList.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropListEx.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropListEx.h">
 					</File>
 				</Filter>
 				<Filter
@@ -10729,6 +10717,22 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIVideoPlayerWnd.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="DragDrop2"
+					Filter="">
+					<File
+						RelativePath=".\ui\UICellItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICellItem.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIDragDropListEx.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIDragDropListEx.h">
 					</File>
 				</Filter>
 			</Filter>

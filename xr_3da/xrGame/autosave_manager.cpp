@@ -46,6 +46,7 @@ float CAutosaveManager::shedule_Scale		()
 }
 
 #include "UIGameCustom.h"
+#include "Actor.h"
 void CAutosaveManager::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update	(dt);
@@ -56,7 +57,7 @@ void CAutosaveManager::shedule_Update		(u32 dt)
 	if (last_autosave_time() + autosave_interval() >= Device.dwTimeGlobal)
 		return;
 
-	if (!ready_for_autosave()) {
+	if (!ready_for_autosave() || !Actor()->g_Alive()) {
 		delay_autosave			();
 		return;
 	}
