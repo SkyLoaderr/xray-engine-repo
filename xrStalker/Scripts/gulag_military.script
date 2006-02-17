@@ -11,7 +11,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_leader" and info.story_id == 707
@@ -23,7 +23,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 2, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_cook"
@@ -35,7 +35,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 2, 3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 704
@@ -48,7 +48,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 2, 3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 731
@@ -61,7 +61,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 2, 3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 730
@@ -74,7 +74,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 19, state = {0, 2, 3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper"
@@ -87,7 +87,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 2, 3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper" and info.story_id == 732
@@ -100,7 +100,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_trader" and info.story_id == 734
@@ -113,7 +113,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 19, state = {0, 3 ,4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_specnaz"
@@ -125,7 +125,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 19, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_bodyguard"
@@ -137,7 +137,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 19, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_bodyguard"
@@ -149,7 +149,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 19, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_specnaz"
@@ -163,7 +163,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {0, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_master_Max"
@@ -175,7 +175,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 19, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
     	predicate = function (info)
 	                    return info.profile_name == "mil_Svoboda_engineer"
@@ -189,7 +189,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 2, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
 
@@ -199,7 +199,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 2, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
     -- Павлик Морозов
@@ -207,7 +207,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 11, state = {0, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		online = true,
 		position_threshold = 100,
 		predicate = function (info)
@@ -220,7 +220,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_specnaz"
@@ -233,7 +233,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 10, state = {0, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_specnaz"
@@ -246,7 +246,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 13, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_zoneguard"
@@ -259,7 +259,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 10, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
 	-- просто мужик на входе
@@ -268,7 +268,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 10, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
 
@@ -277,7 +277,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                return (level.get_time_hours() > 6 and level.get_time_hours() < 21)
@@ -289,7 +289,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                return (level.get_time_hours() > 6 and level.get_time_hours() < 21)
@@ -301,7 +301,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                return (level.get_time_hours() > 6 and level.get_time_hours() < 21)
@@ -314,7 +314,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 5, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	}
 	table.insert(sj, t)		
 	------
@@ -323,7 +323,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	    }
 	table.insert(sj, t)		
 	------
@@ -332,7 +332,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	}
 	table.insert(sj, t)
 	------
@@ -341,7 +341,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	}
 	table.insert(sj, t)
 	------
@@ -350,7 +350,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		prior = 1, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	}
 	table.insert(sj, t)
 	------
@@ -387,9 +387,8 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 11, state = {2},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
 		position_threshold = 100,
-		in_rest = "", out_rest = "mil_headquarter_restrictor",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "mil_headquarter_restrictor",
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_leader"
 		            end
@@ -400,7 +399,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 11, state = {2},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_trader"
@@ -412,7 +411,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 11, state = {2},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_specnaz"
@@ -424,9 +423,8 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 11, state = {2},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
 		position_threshold = 100,
-		in_rest = "", out_rest = "mil_headquarter_restrictor",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "mil_headquarter_restrictor",
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_bodyguard"
 		            end
@@ -439,7 +437,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
-		in_rest = "", out_rest = "mil_headquarter_restrictor",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "mil_headquarter_restrictor",
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_bodyguard"
 		            end
@@ -455,7 +453,7 @@ function load_job_base (sj, gname, type, squad, groups)
    		    prior = 8, state = {2},
 		    squad = squad, group = groups[0],
     		position_threshold = 100,
-		    in_rest = "", out_rest = "mil_freedom_gulag_defense_res"
+		    in_rest = "mil_freedom_wall_restrictor", out_rest = "mil_freedom_gulag_defense_res"
 	        }
 	    table.insert(sj, t)
     end
@@ -466,7 +464,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 18, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		online = true,
 		predicate = function (info)
@@ -479,7 +477,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 16, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		online = true--,
 		--predicate = function (info)
@@ -492,7 +490,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 16, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		online = true--,
 		--predicate = function (info)
@@ -505,7 +503,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_stukach"
@@ -517,7 +515,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 17, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		online = true--,
 		--predicate = function (info)
@@ -530,7 +528,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 16, state = {3},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		online = true--,
 		--predicate = function (info)
@@ -545,7 +543,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
 	-- 
@@ -555,7 +553,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
 	-- 
@@ -565,7 +563,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
 	-- 
@@ -575,7 +573,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
-		in_rest = "", out_rest = ""
+		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
 	
@@ -585,7 +583,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     if db.actor:has_info ("mil_lukash_dead") then return true end
@@ -599,7 +597,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper"
@@ -612,7 +610,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper"
@@ -625,7 +623,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper"
@@ -638,7 +636,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 19, state = {4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper"
@@ -651,7 +649,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		idle = 0,
 		prior = 20, state = {4},
 		squad = squad, group = groups[0],
-		in_rest = "", out_rest = "",
+		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_sniper"

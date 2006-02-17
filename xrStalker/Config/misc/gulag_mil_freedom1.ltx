@@ -507,8 +507,14 @@ no_rotate = true
 no_move = true
 anim = wait_rac
 snd = mil_pavlik_to_ara
-on_signal = sound_end | %+mil_courier_call%
+on_signal = action_end | %+mil_courier_call% remark3@mil_freedom_stalker3
 snd_anim_sync = true
+on_actor_dist_le = 7 | %=killactor%
+target = mil_courier_look_point, 0
+combat_ignore_cond = {=check_fighting(712,713,714,719)} false
+
+[remark3@mil_freedom_stalker3]
+anim = guard
 on_info = {+mil_ara_end} walker4@mil_freedom_stalker3
 on_actor_dist_le = 7 | %=killactor%
 target = mil_courier_look_point, 0
