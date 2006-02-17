@@ -549,9 +549,6 @@ void CApplication::LoadEnd		()
 {
 	ll_dwReference--;
 	if (0==ll_dwReference)		{
-		hLevelLogo.destroy		();
-		sh_progress.destroy		();
-		::Sound->set_volume		(1.f);
 		Msg						("* phase time: %d ms",phase_timer.GetElapsed_ms());
 		Msg						("* phase cmem: %d K", Memory.mem_usage()/1024);
 		Console->Execute		("stat_memory");
@@ -559,7 +556,16 @@ void CApplication::LoadEnd		()
 
 	}
 }
+
+void CApplication::destroy_loading_shaders()
+{
+		hLevelLogo.destroy		();
+		sh_progress.destroy		();
+		::Sound->set_volume		(1.f);
+}
+
 u32 calc_progress_color(u32, u32, int, int);
+
 void CApplication::LoadDraw		()
 {
 	if(g_appLoaded)				return;
@@ -568,9 +574,17 @@ void CApplication::LoadDraw		()
 
 	if(!Device.Begin () )		return;
 
-	if	(g_pGamePersistent->bDedicatedServer)	{
+	if	(g_pGamePersistent->bDedicatedServer)
 		Console->OnRender			();
-	} else {
+	else
+		load_draw_internal			();
+
+	Device.End					();
+	CheckCopyProtection			();
+}
+
+void CApplication::load_draw_internal()
+{
 
 		// Draw logo
 		u32	Offset;
@@ -669,10 +683,7 @@ void CApplication::LoadDraw		()
 			RCache.set_Geometry			(ll_hGeom);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
-	}
 
-	Device.End					();
-	CheckCopyProtection			();
 }
 
 u32 calc_progress_color(u32 idx, u32 total, int stage, int max_stage)

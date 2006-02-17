@@ -64,7 +64,6 @@ extern void CheckPrivilegySlowdown		( );
 void CRenderDevice::End		(void)
 {
 	VERIFY	(HW.pDevice);
-	g_bRendering = 	FALSE;
 
 	if (HW.Caps.SceneMode)	overdrawEnd		();
 
@@ -72,15 +71,18 @@ void CRenderDevice::End		(void)
 	if (dwPrecacheFrame)
 	{
 		dwPrecacheFrame	--;
-		CHK_DX			(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(0,0,0,0),1,0));
+//.		CHK_DX			(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(0,0,0,0),1,0));
+		pApp->load_draw_internal	();
 		if (0==dwPrecacheFrame)
 		{
+			pApp->destroy_loading_shaders();
 			Memory.mem_compact		();
 			Msg						("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
 			CheckPrivilegySlowdown ();
 		}
 	}
 
+	g_bRendering = 	FALSE;
 	// end scene
 	RCache.OnFrameEnd	();
     CHK_DX(HW.pDevice->EndScene());

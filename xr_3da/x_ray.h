@@ -56,10 +56,12 @@ public:
 	virtual	void			OnEvent				(EVENT E, u64 P1, u64 P2);
 
 	// Other
-							CApplication	( );
-							~CApplication	( );
+							CApplication		();
+							~CApplication		();
 
-	virtual void			OnFrame			( );
+	virtual void			OnFrame				();
+			void			load_draw_internal	();
+			void			destroy_loading_shaders();
 };
 
 extern ENGINE_API	CApplication*	pApp;
