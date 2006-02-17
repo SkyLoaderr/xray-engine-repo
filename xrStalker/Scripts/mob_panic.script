@@ -4,25 +4,16 @@
 -- Разработчик: Чугай Александр
 ----------------------------------------------------------------------------------------------------
 
-class "mob_panic"
+function reset_panic( npc, scheme, st, section )
+	local panic_threshold = utils.cfg_get_number( st.ini, section, "panic", npc, false, nil )
 
-function mob_panic:__init( obj, storage )
-	self.object = obj
-	self.st     = storage
-end
-
-function mob_panic:reset_panic( npc, scheme, st, section )
-	self.panic_threshold = utils.cfg_get_number( st.ini, section, "panic", npc, false, nil )
-
-	if self.panic_threshold then
+	if panic_threshold then
 		
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------
 function add_to_binder( npc, ini, scheme, section, storage )
- 	local action = mob_panic( npc, storage )
- 	xr_logic.subscribe_action_for_events( npc, storage, action )
 end
 
 function set_scheme( npc, ini, scheme, section, gulag_name )
