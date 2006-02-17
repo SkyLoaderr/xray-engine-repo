@@ -5,9 +5,9 @@
 ----------------------------------------------------------------------------------------------------
 
 function reset_panic( npc, scheme, st, section )
-	self.panic_threshold = utils.cfg_get_number( st.ini, section, "panic", npc, false, nil )
+	panic_threshold = utils.cfg_get_number( st.ini, section, "panic", npc, false, nil )
 
-	if self.panic_threshold then
+	if panic_threshold then
 		npc:set_custom_panic_threshold	(self.panic_threshold)
 	else 
 		npc:set_default_panic_threshold	()
