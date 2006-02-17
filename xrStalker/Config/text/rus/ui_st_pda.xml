@@ -89,6 +89,10 @@
 		<text>Редактировать описание</text>
 	</string>
 
+	<string id="show_only_general_task">
+		<text>показывать только сюжетные</text>
+	</string>
+
 
 
 	<string id="level_changer_invitation">

@@ -45,4 +45,8 @@
     <string id="pda_btn_statistics">
         <text>Statistics</text>
     </string>
+	<string id="show_only_general_task">
+		<text>show only general</text>
+	</string>
+    
 </string_table>
