@@ -223,7 +223,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	//---------------------------
 	string1024 tmp;
 	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);
-	if (CoInitializeExRes != S_OK || CoInitializeExRes != S_FALSE)
+	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
 	{
 		DXTRACE_ERR(tmp, CoInitializeExRes);
 		CHK_DX(CoInitializeExRes);
@@ -624,8 +624,11 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 					PDPNMSG_CONNECT_COMPLETE pMsg = (PDPNMSG_CONNECT_COMPLETE)pMessage;
 #ifdef DEBUG
 //					const char* x = DXGetErrorString9(pMsg->hResultCode);
-					string1024 tmp;
-					DXTRACE_ERR(tmp, pMsg->hResultCode);
+					if (pMsg->hResultCode != S_OK)
+					{
+						string1024 tmp;
+						DXTRACE_ERR(tmp, pMsg->hResultCode);
+					}					
 #endif
 					if (pMsg->dwApplicationReplyDataSize)
 					{

@@ -520,6 +520,8 @@ void game_sv_mp::OnDestroyObject			(u16 eid_who)
 bool game_sv_mp::OnNextMap				()
 {
 	if (!m_bMapRotation) return false;
+	Msg("m_bMapSwitched - %s", m_bMapSwitched ? "true" : "false");
+	if (m_bMapSwitched) return false;
 	if (!m_pMapRotation_List.size()) return false;
 
 	xr_string MapName = m_pMapRotation_List.front();
@@ -529,6 +531,7 @@ bool game_sv_mp::OnNextMap				()
 	MapName = m_pMapRotation_List.front();
 
 	Msg("Going to level %s", MapName.c_str());
+	m_bMapSwitched = true;
 
 	if (!stricmp(MapName.c_str(), Level().name().c_str())) return false;
 	string1024 Command;
@@ -540,6 +543,8 @@ bool game_sv_mp::OnNextMap				()
 void game_sv_mp::OnPrevMap				()
 {
 	if (!m_bMapRotation) return;
+	Msg("m_bMapSwitched - %s", m_bMapSwitched ? "true" : "false");
+	if (m_bMapSwitched) return;
 	if (!m_pMapRotation_List.size()) return;
 	
 	xr_string MapName = m_pMapRotation_List.back();
@@ -547,6 +552,8 @@ void game_sv_mp::OnPrevMap				()
 	m_pMapRotation_List.push_front(MapName);
 
 	Msg("Goint to level %s", MapName.c_str());
+	m_bMapSwitched = true;
+
 	if (!stricmp(MapName.c_str(), Level().name().c_str())) return;
 
 	string1024	Command;

@@ -170,7 +170,7 @@ BOOL IPureServer::Connect(LPCSTR options)
 	//---------------------------
 	string1024 tmp;
 	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);	
-	if (CoInitializeExRes != S_OK || CoInitializeExRes != S_FALSE)
+	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
 	{
 		DXTRACE_ERR(tmp, CoInitializeExRes);
 		CHK_DX(CoInitializeExRes);

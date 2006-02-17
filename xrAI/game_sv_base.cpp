@@ -512,6 +512,7 @@ game_sv_GameState::game_sv_GameState()
 	m_event_queue = xr_new<GameEventQueue>();
 
 	m_bMapRotation = false;
+	m_bMapSwitched = false;
 	m_bMapNeedRotation = false;
 	m_bFastRestart = false;
 	m_pMapRotation_List.clear();
