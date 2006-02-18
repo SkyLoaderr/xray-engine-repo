@@ -232,6 +232,7 @@ target                  = val_escort_nap1_rescue_look, 0 ;actor
 on_actor_dist_le_nvis   = 10 | remark@val_escort_nap1_phrase7
 on_info                 = {+val_escort_combat} remark@val_escort_nap1_fight
 on_info2                = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
+on_info3                = {+val_escort_captive_dead} remark@val_escort_nap1_fail
 meet                    = no_meet ;meet@val_escort_nap1_ignore
 danger                  = danger@val_escort_nap1_small
 wounded                 = wounded@val_escort_nap1
@@ -244,22 +245,9 @@ combat_ignore_cond      = {=check_fighting(407:408) -val_escort_combat}
 anim                = hide
 snd                 = val_escort_nap1_phrase4
 target              = val_escort_nap1_rescue_look, 0 ;actor
-on_timer            = 60000 | {+val_escort_scene_fail} remark@val_escort_nap1_fail
 on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
 on_info2            = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
-meet                = no_meet ;meet@val_escort_nap1_ignore
-danger              = danger@val_escort_nap1_small
-wounded             = wounded@val_escort_nap1
-combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
-
-;--------------------------------------------------------------------------
-; фраза: 
-;--------------------------------------------------------------------------
-[remark@val_escort_nap1_fail]
-anim                = hide
-snd                 = val_escort_nap1_fail
-target              = actor
-on_signal           = sound_end | patrol@val_escort_nap1_leave
+on_info3            = {+val_escort_captive_dead} remark@val_escort_nap1_fail
 meet                = no_meet ;meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -273,6 +261,20 @@ anim                = hide
 snd                 = val_escort_nap1_phrase6
 target              = 400 ;val_escort_nap1_rescue_look, 0 ;actor
 on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
+on_info2            = {+val_escort_captive_dead} remark@val_escort_nap1_fail
+meet                = no_meet ;meet@val_escort_nap1_ignore
+danger              = danger@val_escort_nap1_small
+wounded             = wounded@val_escort_nap1
+combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
+
+;--------------------------------------------------------------------------
+; если пленный мертв, то ждем 20 сек и уходим
+;--------------------------------------------------------------------------
+[remark@val_escort_nap1_fail]
+anim                = hide
+;snd                 = val_escort_nap1_fail
+target              = val_escort_nap1_rescue_look, 0 ;actor
+on_timer            = 20000 | patrol@val_escort_nap1_leave
 meet                = no_meet ;meet@val_escort_nap1_ignore
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -322,7 +324,7 @@ wounded             = wounded@val_escort_nap1
 anim                = guard_na
 snd                 = val_escort_nap1_phrase5
 target              = 400 ;logic@val_escort_captive
-on_signal           = sound_end | remark@val_escort_nap1_wait_to_talk_phrase %+val_escort_nap1_phrase1_end%
+on_signal           = sound_end | remark@val_escort_nap1_wait_to_talk_phrase %+val_escort_nap1_phrase1_end =drop_npc_item(wpn_ak74u)% ;:ammo_5.45x39_fmj:ammo_5.45x39_fmj:medkit:medkit:bandage:bandage)%
 meet                = no_meet ;meet@val_escort_nap1_ignore
 wounded             = wounded@val_escort_nap1
 
