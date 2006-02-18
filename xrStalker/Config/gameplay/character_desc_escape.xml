@@ -43,7 +43,7 @@
 		<bio>esc_wolf_bio</bio>
 
 		<class>esc_wolf</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>43</rank>
 		<reputation>5</reputation>
@@ -76,7 +76,7 @@
 		<bio>esc_fanat_bio</bio>
 
 		<class>esc_fanat</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>50</rank>
 		<reputation>10</reputation>
@@ -136,7 +136,7 @@
 		<bio>esc_tolik_bio</bio>
 
 		<class>esc_tutorial_wounded</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>19</rank>
 		<reputation>6</reputation>
@@ -290,7 +290,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>14</rank>
 		<reputation>12</reputation>
@@ -319,7 +319,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>12</rank>
 		<reputation>-8</reputation>
@@ -348,7 +348,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>21</rank>
 		<reputation>9</reputation>
@@ -378,7 +378,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>17</rank>
 		<reputation>8</reputation>
@@ -406,7 +406,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>26</rank>
 		<reputation>-10</reputation>
@@ -435,7 +435,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>13</rank>
 		<reputation>6</reputation>
@@ -466,7 +466,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>22</rank>
 		<reputation>18</reputation>
@@ -496,7 +496,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>5</rank>
 		<reputation>-2</reputation>
@@ -527,7 +527,7 @@
 		<bio>esc_petruha_bio</bio>
 
 		<class>esc_ranger</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>27</rank>
 		<reputation>16</reputation>
@@ -543,7 +543,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
-			
+
+#include "gameplay\character_dialogs.xml"			
 		<start_dialog>escape_factory_assault_start</start_dialog>		
 <!--		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>escape_factory_assault_attack_now</actor_dialog>
@@ -944,7 +945,7 @@
 		<bio>esc_provodnik_bio</bio>
 
 		<class>esc_provodnik</class>
-		<community>stranger</community>
+		<community>stalker</community>
 		
 		<rank>59</rank>
 		<reputation>0</reputation>
