@@ -24,10 +24,6 @@ function task_hellcar_complete()
 end
 
 function task_hellcar_fail()
-			xr_gulag.getGulagPopulation("gar_hellcar_group"),
-			xr_gulag.getCasualities("gar_hellcar_group"),
-			tostring(db.actor:dont_has_info("gar_hellcar_help")))
-
 	if xr_gulag.getGulagPopulation("gar_hellcar_group") < 1 or
 		(xr_gulag.getCasualities("gar_hellcar_group") > 0 and
 	   db.actor:dont_has_info("gar_hellcar_help"))
