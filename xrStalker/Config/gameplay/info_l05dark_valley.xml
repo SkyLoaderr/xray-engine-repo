@@ -64,7 +64,6 @@
 	<task>val_prisoner_help</task>
 </info_portion>
 
-<info_portion id="val_escort_scene_fail"></info_portion>
 <info_portion id="val_escort_scene_end"></info_portion>
 
 <info_portion id="val_show_zones"></info_portion>

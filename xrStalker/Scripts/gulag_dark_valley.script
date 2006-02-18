@@ -142,6 +142,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		position_threshold = 50,
 		online = true,
 		predicate = e_predicate_c
 	}
@@ -153,6 +154,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		position_threshold = 50,
 		online = true,
 		predicate = e_predicate_g1
 	}
@@ -163,6 +165,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 		prior = 1, state = {0},
 		squad = squad, group = groups[1],
 		in_rest = "", out_rest = "",
+		position_threshold = 50,
 		online = true,
 		predicate = e_predicate_g2
 	}
@@ -177,38 +180,31 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
 
                "[death@" .. gname .. "_guard]\n" ..
                "on_info     = %=" .. gname .. "_guard_death%\n" ..
-               --"on_info     = %-val_escort_guard1_combat +val_escort_guard1_dead%\n" ..
-               --"on_info2    = {=killed_by_actor} %+val_escort_actor_helped%\n" ..
 
                "[hit@" .. gname .. "_guard]\n" ..
                "on_info     = %=" .. gname .. "_guard_hit%\n" ..
-               --"on_info     = {=hit_by_actor} %+val_escort_combat +val_escort_actor_helped%, %+val_escort_guard1_combat%\n" ..
-               --"on_info2    = {+val_escort_combat -val_escort_nap1_start_combat} %+val_escort_captive_enemy%\n" ..
-               --"on_info3    = {=hitted_by(406) -val_escort_captive_enemy} %+val_escort_nap1_start_combat%\n" ..
 
                "[combat@" .. gname .. "_guard]\n" ..
                "on_info     = %=" .. gname .. "_guard_combat%\n" ..
-               --"on_info     = %+val_escort_guard1_combat%\n" ..
-               --"on_info2    = {=see_actor -val_escort_nap1_start_combat -val_escort_captive_enemy} %+val_escort_captive_enemy%\n" ..
-               --"on_info3    = {=see_actor -val_escort_combat} %+val_escort_combat% ;remark@val_escort_guard1_fight\n" ..
 
                "[danger@" .. gname .. "_guard]\n" ..
-               "ignore_types                = corpse\n" ..
-               "ignore_ distance_sound      = 30\n" ..
-               "danger_inertion_time_sound  = 5000\n" ..
-               "danger_inertion_time_hit    = 7000\n" ..
+               "ignore_types                    = corpse\n" ..
+               "ignore_ distance_sound          = 30\n" ..
+               "danger_inertion_time_sound      = 5000\n" ..
+               "danger_inertion_time_hit        = 7000\n" ..
+               "danger_inertion_time_ricochet   = 4000\n" ..
 
                -- wait for scene start
                "[patrol@" .. gname .. "_guard_wait]\n" ..
                "path_walk           = captive_wait_walk\n" ..
                "path_look           = captive_wait_look\n" ..
                "animation           = guard\n" ..
-               "on_info             = {+val_escort_start}           patrol@val_escort_guard_walk\n" ..
+               "on_info             = {+val_escort_start}           follower@val_escort_guard_walk\n" .. --patrol
                "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
-               "on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "danger              = danger@" .. gname .. "_guard\n" ..
-               "combat_ignore_cond  = {=check_fighting(400)}\n" ..
-
+               "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
+--[[
                -- escort captive
                "[patrol@" .. gname .. "_guard_walk]\n" ..
                "path_walk           = captive_walk\n" ..
@@ -216,25 +212,34 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "formation           = back\n" ..
                --"animation           = patrol\n" ..
                "on_info             = {+val_escort_combat}          remark@val_escort_guard_fight\n" ..
-               "on_info2            = {+val_escort_scene_fail}      remark@val_escort_guard_free\n" ..
-               "on_info3            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
-               "on_info4            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "danger              = danger@" .. gname .. "_guard\n" ..
-               "combat_ignore_cond  = {=check_fighting(400)}\n" ..
+               "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
+--]]
+               "[follower@" .. gname .. "_guard_walk]\n" ..
+               "leader              = 400\n" ..
+               "dont_change_job     = true\n" ..
+               "anim_walk           = patrol\n" ..
+               "anim_run            = assault\n" ..
+               "on_info             = {+val_escort_combat}          remark@val_escort_guard_fight\n" ..
+               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               "danger              = danger@" .. gname .. "_guard\n" ..
+               "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
 
                -- fight with actor and nap1
                "[remark@" .. gname .. "_guard_fight]\n" ..
                "anim                = wait_na\n" ..
-               "on_info             = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
-               "on_info2            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
-               "on_info3            = {+val_escort_nap1_dead}       remark@val_escort_guard_free\n" ..
-               "combat_ignore_cond  = {=check_fighting(400)}\n" ..
+               "on_info             = {+val_escort_nap1_dead}       remark@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
+               "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
 
                -- 
                "[remark@" .. gname .. "_guard_free]\n" ..
                "anim                = wait\n" ..
                "on_info             = %=" .. gname .. "_guard_free%\n"
-               --"on_info             = %+val_escort_guards_free -val_escort_guard1_combat%\n"
 
 	t = { section = "logic@" .. gname .. "_halfdead",
 		idle = 0,
