@@ -38,176 +38,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="esc_stalker_talk_level" priority="2">
-        <phrase_list>
-            <phrase id="10">
-                <text>esc_stalker_talk_level_10</text>
-                <give_info>esc_bridge_soldiers</give_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>esc_stalker_talk_level_11</text>
-            </phrase>
-            <phrase id="21">
-                <text>esc_stalker_talk_level_21</text>
-            </phrase>
-            <phrase id="1">
-                <text>esc_stalker_talk_level_1</text>
-                <next>2</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="2">
-                <text>esc_stalker_talk_level_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="0">
-                <text>esc_stalker_talk_level_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_factory_assault_attack">
-        <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
-        <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>escape_factory_assault_attack_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_attack_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_factory_assault_attack_3</text>
-                <next>31</next>
-                <next>32</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_factory_assault_attack_31</text>
-                <give_info>esc_bandits_start</give_info>
-            </phrase>
-            <phrase id="32">
-                <text>escape_factory_assault_attack_32</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="0">
-                <text>escape_factory_assault_attack_0</text>
-                <give_info>escape_factory_assault_say_hello</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_factory_assault_attack_now">
-        <has_info>escape_factory_assault_say_hello</has_info>
-        <dont_has_info>esc_bandits_start</dont_has_info>
-        <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>escape_factory_assault_attack_now_0</text>
-                <give_info>esc_bandits_start</give_info>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_factory_assault_start">
-        <phrase_list>
-            <phrase id="611">
-                <text>escape_factory_assault_start_611</text>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
-                <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
-                <next>2</next>
-            </phrase>
-            <phrase id="211112">
-                <text>escape_factory_assault_start_211112</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="311">
-                <text>escape_factory_assault_start_311</text>
-                <give_info>esc_bandits_start</give_info>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <dont_has_info>esc_bandits_assault</dont_has_info>
-                <dont_has_info>esc_bandits_start</dont_has_info>
-                <has_info>escape_factory_assault_say_hello</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_factory_assault_start_31</text>
-                <next>311</next>
-                <next>211112</next>
-            </phrase>
-            <phrase id="41">
-                <text>escape_factory_assault_start_41</text>
-            </phrase>
-            <phrase id="4">
-                <text />
-                <has_info>esc_kill_bandits_quest_kill</has_info>
-                <has_info>esc_bandits_start</has_info>
-                <next>41</next>
-            </phrase>
-            <phrase id="511">
-                <text>escape_factory_assault_start_511</text>
-            </phrase>
-            <phrase id="6">
-                <text />
-                <dont_has_info>esc_bandits_assault</dont_has_info>
-                <has_info>esc_kill_bandits_quest_kill</has_info>
-                <next>61</next>
-            </phrase>
-            <phrase id="61">
-                <text>escape_factory_assault_start_61</text>
-                <next>611</next>
-            </phrase>
-            <phrase id="51">
-                <text>escape_factory_assault_start_51</text>
-                <next>511</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_start_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_factory_assault_start_21</text>
-                <give_info>escape_factory_assault_say_hello</give_info>
-                <next>211</next>
-            </phrase>
-            <phrase id="211">
-                <text>escape_factory_assault_start_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>escape_factory_assault_start_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="21111">
-                <text>escape_factory_assault_start_21111</text>
-                <next>211111</next>
-                <next>211112</next>
-            </phrase>
-            <phrase id="5">
-                <text />
-                <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
-                <has_info>esc_bandits_assault</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="211111">
-                <text>escape_factory_assault_start_211111</text>
-                <give_info>esc_bandits_start</give_info>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_bandits_killed" priority="10">
         <has_info>esc_kill_bandits_quest_kill</has_info>
         <dont_has_info>esc_kill_bandits_quest_done</dont_has_info>
@@ -685,204 +515,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_fox_flash_dialog">
-        <has_info>escape_stalker_meet</has_info>
-        <has_info>escape_stalker_dog_die</has_info>
-        <dont_has_info>escape_stalker_give</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>escape_fox_flash_dialog_1</text>
-                <action>escape_dialog.give_flash_to_actor</action>
-            </phrase>
-            <phrase id="0">
-                <text>escape_fox_flash_dialog_0</text>
-                <give_info>escape_stalker_done</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_fox_hello_dialog">
-        <phrase_list>
-            <phrase id="211">
-                <text>escape_fox_hello_dialog_211</text>
-                <next>2111</next>
-                <next>2112</next>
-                <next>2113</next>
-            </phrase>
-            <phrase id="2111">
-                <text>escape_fox_hello_dialog_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="21111">
-                <text>escape_fox_hello_dialog_21111</text>
-            </phrase>
-            <phrase id="4">
-                <text>escape_fox_hello_dialog_4</text>
-                <dont_has_info>escape_stalker_dog_die</dont_has_info>
-            </phrase>
-            <phrase id="12">
-                <text />
-                <dont_has_info>escape_stalker_dog_die</dont_has_info>
-                <has_info>escape_fox_heal</has_info>
-                <next>4</next>
-            </phrase>
-            <phrase id="2113">
-                <text>escape_fox_hello_dialog_2113</text>
-            </phrase>
-            <phrase id="21121">
-                <text>escape_fox_hello_dialog_21121</text>
-            </phrase>
-            <phrase id="2112">
-                <text>escape_fox_hello_dialog_2112</text>
-                <dont_has_info>garbage_meetstalker_start</dont_has_info>
-                <give_info>garbage_meetstalker_start</give_info>
-                <next>21121</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_fox_hello_dialog_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_fox_hello_dialog_31</text>
-                <give_info>escape_stalker_done</give_info>
-                <next>311</next>
-            </phrase>
-            <phrase id="11">
-                <text />
-                <dont_has_info>escape_stalker_done</dont_has_info>
-                <has_info>escape_stalker_dog_die</has_info>
-                <has_info>escape_fox_heal</has_info>
-                <next>3</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <has_info>escape_stalker_dog_die</has_info>
-                <has_info>escape_fox_heal</has_info>
-                <has_info>escape_stalker_done</has_info>
-                <next>2</next>
-            </phrase>
-            <phrase id="311">
-                <text>escape_fox_hello_dialog_311</text>
-                <action>escape_dialog.give_flash_to_actor</action>
-            </phrase>
-            <phrase id="21">
-                <text>escape_fox_hello_dialog_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="56">
-                <text>escape_fox_hello_dialog_56</text>
-            </phrase>
-            <phrase id="55">
-                <text>escape_fox_hello_dialog_55</text>
-                <precondition>dialogs.medikit_yes</precondition>
-                <action>escape_dialog.transfer_medikit_to_fox</action>
-            </phrase>
-            <phrase id="2">
-                <text>escape_fox_hello_dialog_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="13">
-                <text />
-                <dont_has_info>escape_fox_heal</dont_has_info>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>escape_fox_hello_dialog_5</text>
-                <next>55</next>
-                <next>56</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_lager_access">
-        <precondition>dialogs.dialog_allowed</precondition>
-        <precondition>escape_dialog.not_has_novice_access</precondition>
-        <dont_has_info>esc_path_to_lager</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>escape_lager_access_1</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
-            <phrase id="11">
-                <text>escape_lager_access_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="12">
-                <text>escape_lager_access_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="111">
-                <text>escape_lager_access_111</text>
-            </phrase>
-            <phrase id="121">
-                <text>escape_lager_access_121</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_lager_access_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_lager_guard_start_dialog">
-        <phrase_list>
-            <phrase id="3">
-                <text>escape_lager_guard_start_dialog_3</text>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>esc_path_to_lager</dont_has_info>
-                <next>2</next>
-            </phrase>
-            <phrase id="22">
-                <text>escape_lager_guard_start_dialog_22</text>
-            </phrase>
-            <phrase id="2">
-                <text>escape_lager_guard_start_dialog_2</text>
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_lager_guard_start_dialog_21</text>
-                <next>212</next>
-            </phrase>
-            <phrase id="212">
-                <text>escape_lager_guard_start_dialog_212</text>
-                <next>2121</next>
-                <next>2122</next>
-            </phrase>
-            <phrase id="2122">
-                <text>escape_lager_guard_start_dialog_2122</text>
-                <next>21221</next>
-            </phrase>
-            <phrase id="2121">
-                <text>escape_lager_guard_start_dialog_2121</text>
-                <next>21211</next>
-            </phrase>
-            <phrase id="21211">
-                <text>escape_lager_guard_start_dialog_21211</text>
-            </phrase>
-            <phrase id="21221">
-                <text>escape_lager_guard_start_dialog_21221</text>
-            </phrase>
-            <phrase id="11">
-                <text />
-                <has_info>esc_path_to_lager</has_info>
-                <next>3</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>11</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_lager_leader_hello">
         <phrase_list>
             <phrase id="11">
@@ -1198,94 +830,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="esc_provodnik_start">
-        <phrase_list>
-            <phrase id="21">
-                <text>esc_provodnik_start_21</text>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <has_info>esc_find_doctor_start</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="15">
-                <text>esc_provodnik_start_15</text>
-                <next>16</next>
-            </phrase>
-            <phrase id="14">
-                <text>esc_provodnik_start_14</text>
-                <next>15</next>
-            </phrase>
-            <phrase id="13">
-                <text>esc_provodnik_start_13</text>
-                <next>14</next>
-            </phrase>
-            <phrase id="12">
-                <text>esc_provodnik_start_12</text>
-                <next>13</next>
-            </phrase>
-            <phrase id="11">
-                <text>esc_provodnik_start_11</text>
-                <next>12</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>esc_find_doctor_start</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="18">
-                <text>esc_provodnik_start_18</text>
-            </phrase>
-            <phrase id="17">
-                <text>esc_provodnik_start_17</text>
-                <next>18</next>
-            </phrase>
-            <phrase id="16">
-                <text>esc_provodnik_start_16</text>
-                <give_info>esc_find_doctor_start</give_info>
-                <next>17</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_fox_flame_dialog">
-        <has_info>escape_stalker_dog_die</has_info>
-        <phrase_list>
-            <phrase id="111">
-                <text>escape_fox_flame_dialog_111</text>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_fox_flame_dialog_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_fox_flame_dialog_3</text>
-                <dont_has_info>garbage_meetstalker_start</dont_has_info>
-                <give_info>garbage_meetstalker_start</give_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_fox_flame_dialog_21</text>
-            </phrase>
-            <phrase id="31">
-                <text>escape_fox_flame_dialog_31</text>
-            </phrase>
-            <phrase id="10">
-                <text>escape_fox_flame_dialog_10</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_fox_flame_dialog_0</text>
-                <next>111</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_done_tutorial_artefact" priority="10">
         <precondition>escape_dialog.have_tutorial_artefact</precondition>
         <dont_has_info>tutorial_artefact_done</dont_has_info>
@@ -1337,47 +881,6 @@
             <phrase id="0">
                 <text>escape_trader_killers_reward_0</text>
                 <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="esc_provodnik_give_info">
-        <dont_has_info>esc_find_doctor_start</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>esc_provodnik_give_info_1</text>
-                <next>12</next>
-            </phrase>
-            <phrase id="121">
-                <text>esc_provodnik_give_info_121</text>
-                <next>1211</next>
-            </phrase>
-            <phrase id="1211">
-                <text>esc_provodnik_give_info_1211</text>
-                <next>12111</next>
-            </phrase>
-            <phrase id="12111">
-                <text>esc_provodnik_give_info_12111</text>
-                <next>121111</next>
-            </phrase>
-            <phrase id="121111">
-                <text>esc_provodnik_give_info_121111</text>
-                <next>1211111</next>
-            </phrase>
-            <phrase id="1211111">
-                <text>esc_provodnik_give_info_1211111</text>
-                <next>12111111</next>
-            </phrase>
-            <phrase id="12111111">
-                <text>esc_provodnik_give_info_12111111</text>
-                <give_info>esc_find_doctor_start</give_info>
-            </phrase>
-            <phrase id="0">
-                <text>esc_provodnik_give_info_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="12">
-                <text>esc_provodnik_give_info_12</text>
-                <next>121</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -1434,41 +937,10 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="esc_bridge_soldiers_pay">
-        <dont_has_info>esc_bridge_pass_on</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>esc_bridge_soldiers_pay_1</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
-            <phrase id="11">
-                <text>esc_bridge_soldiers_pay_11</text>
-                <precondition>escape_dialog.has_soldiers_bribe</precondition>
-                <action>escape_dialog.give_soldiers_bribe</action>
-                <give_info>esc_bridge_pass_on</give_info>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>esc_bridge_soldiers_pay_111</text>
-            </phrase>
-            <phrase id="121">
-                <text>esc_bridge_soldiers_pay_121</text>
-            </phrase>
-            <phrase id="12">
-                <text>esc_bridge_soldiers_pay_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="0">
-                <text>esc_bridge_soldiers_pay_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_start_dialog">
         <phrase_list>
             <phrase id="311">
-                <text></text>
+                <text />
                 <action>dialogs.break_dialog</action>
                 <action>dialogs.disable_talk_self</action>
             </phrase>
@@ -1476,7 +948,7 @@
                 <text>escape_trader_start_dialog_5212111</text>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
                 <give_info>esc_trader_monolog_1</give_info>
@@ -1492,7 +964,7 @@
                 <next>211</next>
             </phrase>
             <phrase id="211">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>12</next>
                 <next>13</next>
@@ -1501,7 +973,7 @@
                 <next>16</next>
             </phrase>
             <phrase id="12">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1515,7 +987,7 @@
                 <next>211</next>
             </phrase>
             <phrase id="13">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_dont_give_job</precondition>
                 <has_info>esc_return</has_info>
                 <next>4</next>
@@ -1532,7 +1004,7 @@
                 <next>521211</next>
             </phrase>
             <phrase id="18">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_return</dont_has_info>
                 <has_info>tutorial_wounded_start</has_info>
@@ -1558,7 +1030,7 @@
                 <give_info>esc_trader_direct</give_info>
             </phrase>
             <phrase id="17">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <precondition>escape_dialog.trader_dont_give_job</precondition>
                 <next>171</next>
@@ -1570,13 +1042,13 @@
                 <text>escape_trader_start_dialog_200</text>
             </phrase>
             <phrase id="20">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_give_extra_job</precondition>
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <next>200</next>
             </phrase>
             <phrase id="30">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_need_extra_job</precondition>
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <next>300</next>
@@ -1585,7 +1057,7 @@
                 <text>escape_trader_start_dialog_300</text>
             </phrase>
             <phrase id="19">
-                <text></text>
+                <text />
                 <precondition>bar_dialogs.have_darklab_documents</precondition>
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <dont_has_info>bar_darklab_document_done</dont_has_info>
@@ -1594,17 +1066,17 @@
                 <next>191</next>
             </phrase>
             <phrase id="5212">
-                <text></text>
+                <text />
                 <has_info>tutorial_wounded_die</has_info>
                 <next>52121</next>
             </phrase>
             <phrase id="521">
-                <text></text>
+                <text />
                 <next>5211</next>
                 <next>5212</next>
             </phrase>
             <phrase id="5211">
-                <text></text>
+                <text />
                 <dont_has_info>tutorial_wounded_die</dont_has_info>
                 <next>52111</next>
             </phrase>
@@ -1644,7 +1116,7 @@
                 <next>19111</next>
             </phrase>
             <phrase id="16">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>tutorial_artefact_gain</dont_has_info>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1659,12 +1131,12 @@
                 <next>531</next>
             </phrase>
             <phrase id="531">
-                <text></text>
+                <text />
                 <next>5311</next>
                 <next>5312</next>
             </phrase>
             <phrase id="5311">
-                <text></text>
+                <text />
                 <action>escape_dialog.give_factory_reward_trader</action>
                 <dont_has_info>tutorial_wounded_die</dont_has_info>
                 <next>53111</next>
@@ -1673,7 +1145,7 @@
                 <text>escape_trader_start_dialog_53111</text>
             </phrase>
             <phrase id="5312">
-                <text></text>
+                <text />
                 <action>escape_dialog.give_factory_reward_trader</action>
                 <give_info>esc_lager_friendship</give_info>
                 <give_info>esc_path_to_lager</give_info>
@@ -1709,7 +1181,7 @@
                 <next>311</next>
             </phrase>
             <phrase id="15">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_trader_can_leave</dont_has_info>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1728,7 +1200,7 @@
                 <next>32111</next>
             </phrase>
             <phrase id="32111">
-                <text></text>
+                <text />
                 <action>dialogs.break_dialog</action>
                 <action>dialogs.disable_talk_self</action>
             </phrase>
@@ -1747,7 +1219,7 @@
                 <next>1111</next>
             </phrase>
             <phrase id="14">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_alredy_give_job</precondition>
                 <precondition>escape_dialog.is_not_tutorial_art</precondition>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1767,7 +1239,7 @@
                 <next>5111</next>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <dont_has_info>tutorial_wounded_start</dont_has_info>
                 <has_info>tutorial_artefact_done</has_info>
                 <next>111</next>
@@ -1777,11 +1249,11 @@
                 <next>51111</next>
             </phrase>
             <phrase id="51111">
-                <text></text>
+                <text />
                 <next>11</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>12</next>
                 <next>13</next>
@@ -1851,13 +1323,13 @@
                 <next>61111111</next>
             </phrase>
             <phrase id="101">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_need_free_factory</precondition>
                 <next>102</next>
                 <next>103</next>
             </phrase>
             <phrase id="102">
-                <text></text>
+                <text />
                 <dont_has_info>tutorial_wounded_die</dont_has_info>
                 <next>10</next>
             </phrase>
@@ -1872,7 +1344,7 @@
                 <text>escape_trader_jobs_106</text>
             </phrase>
             <phrase id="103">
-                <text></text>
+                <text />
                 <has_info>tutorial_wounded_die</has_info>
                 <next>104</next>
             </phrase>
@@ -1948,6 +1420,534 @@
             <phrase id="52">
                 <text>escape_trader_jobs_52</text>
                 <next>521</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_bridge_soldiers_pay">
+        <dont_has_info>esc_bridge_pass_on</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>esc_bridge_soldiers_pay_1</text>
+                <next>11</next>
+                <next>12</next>
+            </phrase>
+            <phrase id="11">
+                <text>esc_bridge_soldiers_pay_11</text>
+                <precondition>escape_dialog.has_soldiers_bribe</precondition>
+                <action>escape_dialog.give_soldiers_bribe</action>
+                <give_info>esc_bridge_pass_on</give_info>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>esc_bridge_soldiers_pay_111</text>
+            </phrase>
+            <phrase id="121">
+                <text>esc_bridge_soldiers_pay_121</text>
+            </phrase>
+            <phrase id="12">
+                <text>esc_bridge_soldiers_pay_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="0">
+                <text>esc_bridge_soldiers_pay_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_provodnik_start">
+        <phrase_list>
+            <phrase id="21">
+                <text>esc_provodnik_start_21</text>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <has_info>esc_find_doctor_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="15">
+                <text>esc_provodnik_start_15</text>
+                <next>16</next>
+            </phrase>
+            <phrase id="14">
+                <text>esc_provodnik_start_14</text>
+                <next>15</next>
+            </phrase>
+            <phrase id="13">
+                <text>esc_provodnik_start_13</text>
+                <next>14</next>
+            </phrase>
+            <phrase id="12">
+                <text>esc_provodnik_start_12</text>
+                <next>13</next>
+            </phrase>
+            <phrase id="11">
+                <text>esc_provodnik_start_11</text>
+                <next>12</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>esc_find_doctor_start</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="18">
+                <text>esc_provodnik_start_18</text>
+            </phrase>
+            <phrase id="17">
+                <text>esc_provodnik_start_17</text>
+                <next>18</next>
+            </phrase>
+            <phrase id="16">
+                <text>esc_provodnik_start_16</text>
+                <give_info>esc_find_doctor_start</give_info>
+                <next>17</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_start">
+        <phrase_list>
+            <phrase id="611">
+                <text>escape_factory_assault_start_611</text>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
+                <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="211112">
+                <text>escape_factory_assault_start_211112</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="311">
+                <text>escape_factory_assault_start_311</text>
+                <give_info>esc_bandits_start</give_info>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <dont_has_info>esc_bandits_assault</dont_has_info>
+                <dont_has_info>esc_bandits_start</dont_has_info>
+                <has_info>escape_factory_assault_say_hello</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_factory_assault_start_31</text>
+                <next>311</next>
+                <next>211112</next>
+            </phrase>
+            <phrase id="41">
+                <text>escape_factory_assault_start_41</text>
+            </phrase>
+            <phrase id="4">
+                <text></text>
+                <has_info>esc_kill_bandits_quest_kill</has_info>
+                <has_info>esc_bandits_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="511">
+                <text>escape_factory_assault_start_511</text>
+            </phrase>
+            <phrase id="6">
+                <text></text>
+                <dont_has_info>esc_bandits_assault</dont_has_info>
+                <has_info>esc_kill_bandits_quest_kill</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="61">
+                <text>escape_factory_assault_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="51">
+                <text>escape_factory_assault_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_start_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_factory_assault_start_21</text>
+                <give_info>escape_factory_assault_say_hello</give_info>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>escape_factory_assault_start_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>escape_factory_assault_start_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="21111">
+                <text>escape_factory_assault_start_21111</text>
+                <next>211111</next>
+                <next>211112</next>
+            </phrase>
+            <phrase id="5">
+                <text></text>
+                <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
+                <has_info>esc_bandits_assault</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="211111">
+                <text>escape_factory_assault_start_211111</text>
+                <give_info>esc_bandits_start</give_info>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_fox_hello_dialog">
+        <phrase_list>
+            <phrase id="211">
+                <text>escape_fox_hello_dialog_211</text>
+                <next>2111</next>
+                <next>2112</next>
+                <next>2113</next>
+            </phrase>
+            <phrase id="2111">
+                <text>escape_fox_hello_dialog_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="21111">
+                <text>escape_fox_hello_dialog_21111</text>
+            </phrase>
+            <phrase id="4">
+                <text>escape_fox_hello_dialog_4</text>
+                <dont_has_info>escape_stalker_dog_die</dont_has_info>
+            </phrase>
+            <phrase id="12">
+                <text></text>
+                <dont_has_info>escape_stalker_dog_die</dont_has_info>
+                <has_info>escape_fox_heal</has_info>
+                <next>4</next>
+            </phrase>
+            <phrase id="2113">
+                <text>escape_fox_hello_dialog_2113</text>
+            </phrase>
+            <phrase id="21121">
+                <text>escape_fox_hello_dialog_21121</text>
+            </phrase>
+            <phrase id="2112">
+                <text>escape_fox_hello_dialog_2112</text>
+                <dont_has_info>garbage_meetstalker_start</dont_has_info>
+                <give_info>garbage_meetstalker_start</give_info>
+                <next>21121</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_fox_hello_dialog_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_fox_hello_dialog_31</text>
+                <give_info>escape_stalker_done</give_info>
+                <next>311</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <dont_has_info>escape_stalker_done</dont_has_info>
+                <has_info>escape_stalker_dog_die</has_info>
+                <has_info>escape_fox_heal</has_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <has_info>escape_stalker_dog_die</has_info>
+                <has_info>escape_fox_heal</has_info>
+                <has_info>escape_stalker_done</has_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="311">
+                <text>escape_fox_hello_dialog_311</text>
+                <action>escape_dialog.give_flash_to_actor</action>
+            </phrase>
+            <phrase id="21">
+                <text>escape_fox_hello_dialog_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="56">
+                <text>escape_fox_hello_dialog_56</text>
+            </phrase>
+            <phrase id="55">
+                <text>escape_fox_hello_dialog_55</text>
+                <precondition>dialogs.medikit_yes</precondition>
+                <action>escape_dialog.transfer_medikit_to_fox</action>
+            </phrase>
+            <phrase id="2">
+                <text>escape_fox_hello_dialog_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="13">
+                <text></text>
+                <dont_has_info>escape_fox_heal</dont_has_info>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_fox_hello_dialog_5</text>
+                <next>55</next>
+                <next>56</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_provodnik_give_info">
+        <dont_has_info>esc_find_doctor_start</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>esc_provodnik_give_info_1</text>
+                <next>12</next>
+            </phrase>
+            <phrase id="121">
+                <text>esc_provodnik_give_info_121</text>
+                <next>1211</next>
+            </phrase>
+            <phrase id="1211">
+                <text>esc_provodnik_give_info_1211</text>
+                <next>12111</next>
+            </phrase>
+            <phrase id="12111">
+                <text>esc_provodnik_give_info_12111</text>
+                <next>121111</next>
+            </phrase>
+            <phrase id="121111">
+                <text>esc_provodnik_give_info_121111</text>
+                <next>1211111</next>
+            </phrase>
+            <phrase id="1211111">
+                <text>esc_provodnik_give_info_1211111</text>
+                <next>12111111</next>
+            </phrase>
+            <phrase id="12111111">
+                <text>esc_provodnik_give_info_12111111</text>
+                <give_info>esc_find_doctor_start</give_info>
+            </phrase>
+            <phrase id="12">
+                <text>esc_provodnik_give_info_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="0">
+                <text>esc_provodnik_give_info_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_stalker_talk_level" priority="2">
+        <phrase_list>
+            <phrase id="10">
+                <text>esc_stalker_talk_level_10</text>
+                <give_info>esc_bridge_soldiers</give_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>esc_stalker_talk_level_11</text>
+            </phrase>
+            <phrase id="21">
+                <text>esc_stalker_talk_level_21</text>
+            </phrase>
+            <phrase id="1">
+                <text>esc_stalker_talk_level_1</text>
+                <next>2</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="2">
+                <text>esc_stalker_talk_level_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="0">
+                <text>esc_stalker_talk_level_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_attack">
+        <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
+        <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>escape_factory_assault_attack_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_attack_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_factory_assault_attack_3</text>
+                <next>31</next>
+                <next>32</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_factory_assault_attack_31</text>
+                <give_info>esc_bandits_start</give_info>
+            </phrase>
+            <phrase id="32">
+                <text>escape_factory_assault_attack_32</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text>escape_factory_assault_attack_0</text>
+                <give_info>escape_factory_assault_say_hello</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_attack_now">
+        <has_info>escape_factory_assault_say_hello</has_info>
+        <dont_has_info>esc_bandits_start</dont_has_info>
+        <dont_has_info>esc_kill_bandits_quest_kill</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>escape_factory_assault_attack_now_0</text>
+                <give_info>esc_bandits_start</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_fox_flame_dialog">
+        <has_info>escape_stalker_dog_die</has_info>
+        <phrase_list>
+            <phrase id="111">
+                <text>escape_fox_flame_dialog_111</text>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_fox_flame_dialog_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_fox_flame_dialog_3</text>
+                <dont_has_info>garbage_meetstalker_start</dont_has_info>
+                <give_info>garbage_meetstalker_start</give_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_fox_flame_dialog_21</text>
+            </phrase>
+            <phrase id="31">
+                <text>escape_fox_flame_dialog_31</text>
+            </phrase>
+            <phrase id="10">
+                <text>escape_fox_flame_dialog_10</text>
+            </phrase>
+            <phrase id="0">
+                <text>escape_fox_flame_dialog_0</text>
+                <next>111</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_fox_flash_dialog">
+        <has_info>escape_stalker_meet</has_info>
+        <has_info>escape_stalker_dog_die</has_info>
+        <dont_has_info>escape_stalker_give</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>escape_fox_flash_dialog_1</text>
+                <action>escape_dialog.give_flash_to_actor</action>
+            </phrase>
+            <phrase id="0">
+                <text>escape_fox_flash_dialog_0</text>
+                <give_info>escape_stalker_done</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_lager_access">
+        <precondition>dialogs.dialog_allowed</precondition>
+        <precondition>escape_dialog.not_has_novice_access</precondition>
+        <dont_has_info>esc_path_to_lager</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>escape_lager_access_1</text>
+                <next>11</next>
+                <next>12</next>
+            </phrase>
+            <phrase id="11">
+                <text>escape_lager_access_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="12">
+                <text>escape_lager_access_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>escape_lager_access_121</text>
+            </phrase>
+            <phrase id="0">
+                <text>escape_lager_access_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="111">
+                <text>escape_lager_access_111</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_lager_guard_start_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>esc_path_to_lager</dont_has_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_lager_guard_start_dialog_2</text>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_lager_guard_start_dialog_21</text>
+                <next>212</next>
+            </phrase>
+            <phrase id="212">
+                <text>escape_lager_guard_start_dialog_212</text>
+                <next>2121</next>
+                <next>2122</next>
+            </phrase>
+            <phrase id="2121">
+                <text>escape_lager_guard_start_dialog_2121</text>
+                <next>21211</next>
+            </phrase>
+            <phrase id="21211">
+                <text>escape_lager_guard_start_dialog_21211</text>
+            </phrase>
+            <phrase id="2122">
+                <text>escape_lager_guard_start_dialog_2122</text>
+                <next>21221</next>
+            </phrase>
+            <phrase id="21221">
+                <text>escape_lager_guard_start_dialog_21221</text>
+            </phrase>
+            <phrase id="22">
+                <text>escape_lager_guard_start_dialog_22</text>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <has_info>esc_path_to_lager</has_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_lager_guard_start_dialog_3</text>
             </phrase>
         </phrase_list>
     </dialog>
