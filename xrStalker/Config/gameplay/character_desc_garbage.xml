@@ -522,7 +522,7 @@
 		<bio>gar_stalker_regular_bio</bio>
 
 		<class>gar_wounded_bandit</class>
-		<community>stalker</community>
+		<community>bandit</community>
 		
 		<rank>40</rank>
 		<reputation>-90</reputation>
