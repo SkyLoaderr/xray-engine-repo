@@ -88,6 +88,20 @@ function distance_to_obj_ge(actor, npc, p)
 	return false
 end
 
+-- проверка того что npc находится в заданной зоне
+-- !!! ВЫЗЫВАТЬ ТОЛЬКО ИЗ SPACE RESTRICTOR !!!
+-- параметры: [sid1:sid2:...]
+function obj_in_zone(actor, zone, p)
+    local npc1, i, v = 0, 0, 0
+	for i, v in pairs(p) do
+	    npc1 = level_object_by_sid(v)
+        if npc1 and zone:inside(npc1:position()) then
+            return true
+        end
+    end
+    return false
+end
+
 -- true, если здоровье npc <= заданному значению
 -- false в противном случае
 function health_le(actor, npc, p)
