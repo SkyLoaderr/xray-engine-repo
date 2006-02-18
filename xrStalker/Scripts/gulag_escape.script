@@ -1936,7 +1936,7 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 	end
 
 	if gulag_type == "esc_lager" then
-		return npc_community == "stranger"
+		return npc_community == "stalker"
 	end
 
 	if gulag_type == "esc_fabrika_bandit" then
@@ -1948,15 +1948,15 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 	end
 
 	if gulag_type == "esc_corps" then
-		return npc_community == "stranger"
+		return npc_community == "stalker"
 	end
 
 	if gulag_type == "esc_assault" then
-		return npc_community == "stranger"
+		return npc_community == "stalker"
 	end
 
 	if gulag_type == "esc_stalker_camp" then
-		return npc_community == "stranger"
+		return npc_community == "stalker"
 	end
 
 	return false
