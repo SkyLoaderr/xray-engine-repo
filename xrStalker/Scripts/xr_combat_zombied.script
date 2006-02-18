@@ -3,7 +3,7 @@
 Чугай Саша
 
 Сделать:
-	- звуки
+	- анимация поворота
 ------------------------------------------------------------------------------------------------------------]]
 
 local turn_threshold_cos = math.cos( math.rad( 10 ) )
@@ -36,12 +36,17 @@ function action_zombie_shoot:initialize()
 	self.object:set_detail_path_type    ( move.line )
 
 	self.last_state = nil
+
+	local be  = self.object:best_enemy()
+
+	self.enemy_last_seen_pos = be:position()
+	self.enemy_last_seen_vid = be:level_vertex_id()
 end
 
 function action_zombie_shoot:set_state( state, be )
 	if state ~= self.last_state then
 		self.t.look_object   = be
-		self.t.look_position = be:position()
+		self.t.look_position = self.enemy_last_seen_pos
 		state_mgr.set_state( self.object, state, nil, nil, self.t )
 
 		self.last_state = state
@@ -52,40 +57,46 @@ end
 function action_zombie_shoot:execute()
 	action_base.execute( self )
 
-	local be = self.object:best_enemy()
+	local be  = self.object:best_enemy()
+	local see = self.object:see( be )
 
-	self.object:set_path_type           ( game_object.level_path )
+	if see then
+		self.enemy_last_seen_pos = be:position()
+		self.enemy_last_seen_vid = be:level_vertex_id()
+	end
 
-	if self.object:position():distance_to_sqr( be:position() ) > 9 then
-		utils.send_to_nearest_accessible_vertex( self.object, be:level_vertex_id() )
+	self.object:set_path_type( game_object.level_path )
 
-		if self:can_shoot( be ) then
+	if self.object:position():distance_to_sqr( self.enemy_last_seen_pos ) > 9 then
+		utils.send_to_nearest_accessible_vertex( self.object, self.enemy_last_seen_vid )
+
+		if self:can_shoot( be, see ) then
 			self:set_state( "raid_fire", be )
 		else
 			self:set_state( "raid",      be )
 		end
     else
-		if self:can_shoot( be ) then
+		if self:can_shoot( be, see ) then
 			self:set_state( "guard_fire",  be )
 		else
 			self:set_state( "guard_na",    be )
 		end
-	end    
+	end
 end
 
 function action_zombie_shoot:finalize()
 	action_base.finalize( self )
 end
 
-function action_zombie_shoot:can_shoot( be )
-	if self.object:see( be ) then
+function action_zombie_shoot:can_shoot( be, see )
+	if see then
 		local v1 = self.object:head_orientation()
-		local v2 = be:position():sub( self.object:position() )
+		local v2 = self.enemy_last_seen_pos:sub( self.object:position() )
 
 		-- повёрнут к врагу с погрешностью
 		local ang_cos = ( (v1.x*v2.x) + (v1.z*v2.z) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z) * math.sqrt(v2.x*v2.x + v2.z*v2.z) )
 
-		self.object:info_add( tostring( math.deg( math.acos( ang_cos ) ) ) )
+--		self.object:info_add( tostring( math.deg( math.acos( ang_cos ) ) ) )
 
 		return ang_cos > turn_threshold_cos
 	else
