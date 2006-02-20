@@ -308,8 +308,8 @@ CObject* CObject::H_SetParent	(CObject* new_parent)
 	if (0==old_parent)	OnH_A_Chield		();	// after attach
 	else				OnH_A_Independent	(); // after detach
 	// if (Parent)	Parent->H_ChildAdd		(this);
-
-	return		old_parent;
+	MakeMeCrow			();
+	return				old_parent;
 }
 
 void CObject::OnH_A_Chield		()

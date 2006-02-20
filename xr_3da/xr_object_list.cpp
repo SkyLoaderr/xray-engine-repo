@@ -72,12 +72,14 @@ void	CObjectList::o_activate		( CObject*		O		)
 	VERIFY						(O && O->processing_enabled());
 	o_remove					(objects_sleeping,O);
 	objects_active.push_back	(O);
+	O->MakeMeCrow				();
 }
 void	CObjectList::o_sleep		( CObject*		O		)
 {
 	VERIFY	(O && !O->processing_enabled());
 	o_remove					(objects_active,O);
 	objects_sleeping.push_back	(O);
+	O->MakeMeCrow				();
 }
 
 void	CObjectList::SingleUpdate	(CObject* O)
