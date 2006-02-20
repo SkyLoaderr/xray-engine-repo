@@ -231,7 +231,7 @@ void CStats::Show()
 		F.OutNext	("  HOM:       %2.2fms, %d",RenderCALC_HOM.result,	RenderCALC_HOM.count);
 		F.OutNext	("  Skeletons: %2.2fms, %d",Animation.result,		Animation.count);
 		F.OutNext	("R_DUMP:      %2.2fms, %2.1f%%",RenderDUMP.result,	PPP(RenderDUMP.result));	
-		F.OutNext	("  Wait:	   %2.2fms",RenderDUMP_Wait.result);	
+		F.OutNext	("  Wait:      %2.2fms",RenderDUMP_Wait.result);	
 		F.OutNext	("  Skinning:  %2.2fms",RenderDUMP_SKIN.result);	
 		F.OutNext	("  DT_Vis/Cnt:%2.2fms",RenderDUMP_DT_VIS.result,RenderDUMP_DT_Count);	
 		F.OutNext	("  DT_Render: %2.2fms",RenderDUMP_DT_Render.result);	
@@ -265,9 +265,10 @@ void CStats::Show()
 		F.OutNext	("TEST 3:      %2.2fms, %d",TEST3.result,TEST3.count);
 #ifdef	DEBUG
 		F.OutSkip	();
-		F.OutNext	("str: cmp[%d], dock[%d]",Memory.stat_strcmp,Memory.stat_strdock);	
+		F.OutNext	("str: cmp[%3d], dock[%3d], qpc[%3d]",Memory.stat_strcmp,Memory.stat_strdock,CPU::qpc_counter);
 		Memory.stat_strcmp	=	0		;
 		Memory.stat_strdock	=	0		;
+		CPU::qpc_counter	=	0		;
 #endif
 
 		//////////////////////////////////////////////////////////////////////////

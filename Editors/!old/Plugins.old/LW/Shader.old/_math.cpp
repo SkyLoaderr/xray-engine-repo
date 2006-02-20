@@ -127,9 +127,10 @@ namespace CPU
 	XRCORE_API float			clk_to_seconds	;
 	XRCORE_API float			clk_to_milisec	;
 	XRCORE_API float			clk_to_microsec	;
-	XRCORE_API u64				qpc_freq			;
-	XRCORE_API u64				qpc_overhead		;
-
+	XRCORE_API u64				qpc_freq		= 0	;
+	XRCORE_API u64				qpc_overhead	= 0	;
+	XRCORE_API u32				qpc_counter		= 0	;
+	
 	XRCORE_API _processor_info	ID;
 
 #ifdef M_BORLAND
@@ -140,7 +141,7 @@ namespace CPU
 	}
 #endif
 
-	void Detect()
+	void Detect	()
 	{
 		// General CPU identification
 		if (!_cpuid	(&ID))	
@@ -153,7 +154,7 @@ namespace CPU
 		u64			start,end;
 		u32			dwStart,dwTest;
 
-		SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+		SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 
 		// Detect Freq
 		dwTest	= timeGetTime();
@@ -164,7 +165,7 @@ namespace CPU
 		clk_per_second = end-start;
 
 		// Detect RDTSC Overhead
-		clk_overhead = 0;
+		clk_overhead	= 0;
 		u64 dummy		= 0;
 		for (int i=0; i<256; i++)	{
 			start			=	GetCLK();
