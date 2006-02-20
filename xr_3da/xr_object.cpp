@@ -326,3 +326,10 @@ void CObject::OnH_A_Independent	()
 void CObject::OnH_B_Independent	()
 {
 }
+void CObject::MakeMeCrow			()
+{
+		if (Props.crow)					return	;
+		if (!processing_enabled())		return	;
+		Props.crow						= true	;
+		MakeMeCrow_internal				()		;
+}

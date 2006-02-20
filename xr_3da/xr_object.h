@@ -76,12 +76,8 @@ public:
 	// if (object_is_near)
 	// if (object_is_crow_always)
 		void							MakeMeCrow_internal	();
-	ICF	void							MakeMeCrow			()					{
-		if (Props.crow)					return	;
-		Props.crow						= true	;
-		if (!processing_enabled())		return	;
-		MakeMeCrow_internal				()		;
-	}
+		void							MakeMeCrow			();
+
 	ICF	void							IAmNotACrowAnyMore	()					{
 		Props.crow						= false	;
 	}
