@@ -243,6 +243,9 @@
     <string id="bar_bar_barmen_about_psih_1">
         <text>Да черт его разберет. Совсем, наверное, головой сдвинулся. Водки ему чтоли налить, или укол какой сделать.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_0">
+        <text>1</text>
+    </string>
     <string id="bar_bar_barmen_jobs_111">
         <text>Нет, сегодня, ничего нет. 0</text>
     </string>
@@ -314,6 +317,9 @@
     </string>
     <string id="bar_bar_barmen_jobs_271">
         <text>Не спеши, Меченый. Ты еще с ветеранами не разобрался, а уже рвешься делать что-то еще.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3">
+        <text>2</text>
     </string>
     <string id="bar_bar_barmen_jobs_31">
         <text>Спецзадания есть?</text>
