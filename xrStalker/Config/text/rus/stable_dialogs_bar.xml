@@ -246,7 +246,7 @@
     <string id="bar_bar_barmen_jobs_0">
         <text>Спецзадание для меня найдется?</text>
     </string>
-    <string id="bar_bar_barmen_jobs_1">
+    <string id="bar_bar_barmen_jobs_111">
         <text>Нет, сегодня, ничего нет. 0</text>
     </string>
     <string id="bar_bar_barmen_jobs_2">
@@ -297,40 +297,40 @@
     <string id="bar_bar_barmen_jobs_271">
         <text>Не спеши, Меченый. Ты еще с ветеранами не разобрался, а уже рвешься делать что-то еще.</text>
     </string>
-    <string id="bar_bar_barmen_jobs_3">
-        <text>Есть работа, для ветеранов.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_31">
-        <text>Ближе к делу. Что нужно сделать?</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_311">
-        <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_3111">
-        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_3112">
-        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_3121">
-        <text>Нет, не буду браться.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_3122">
-        <text>Ну как знаешь.</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_32">
-        <text>Нет, сейчас не интересует.</text>
-    </string>
     <string id="bar_bar_barmen_jobs_41">
         <text>Пока нет, в другой раз.</text>
     </string>
-    <string id="bar_bar_barmen_jobs_5">
+    <string id="bar_bar_barmen_jobs_441">
+        <text>Есть работа, для ветеранов.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_442">
+        <text>Ближе к делу. Что нужно сделать?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_443">
+        <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_4431">
+        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_44311">
+        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_4432">
+        <text>Нет, не буду браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_44321">
+        <text>Ну как знаешь.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_45">
+        <text>Нет, сейчас не интересует.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_52">
         <text>Нет, сегодня, ничего нет. 1</text>
     </string>
-    <string id="bar_bar_barmen_jobs_6">
+    <string id="bar_bar_barmen_jobs_62">
         <text>Нет, сегодня, ничего нет. 2</text>
     </string>
-    <string id="bar_bar_barmen_jobs_7">
+    <string id="bar_bar_barmen_jobs_72">
         <text>Нет, сегодня, ничего нет. 3</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_0">
