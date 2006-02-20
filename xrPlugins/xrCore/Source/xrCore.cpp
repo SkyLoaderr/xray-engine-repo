@@ -28,10 +28,11 @@ XRCORE_API		xrCore Core;
 			_control87		( _RC_CHOP, MCW_RC );
 			_control87		( _RC_NEAR, MCW_RC );
 			_control87		( _MCW_EM,  MCW_EM );
-			CoInitializeEx	(NULL, COINIT_MULTITHREADED);
 		}
 		break;
 	case DLL_THREAD_ATTACH:
+		CoInitializeEx	(NULL, COINIT_MULTITHREADED);
+		break;
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
 		break;
