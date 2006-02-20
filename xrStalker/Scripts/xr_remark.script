@@ -53,7 +53,8 @@ function action_remark_activity:activate_scheme()
 		self.snd_scheduled = false
 	end
 
-
+	self.snd_started = false
+	
 	-- Задаем стартовое состояние
 	self.state = state_initial
 end
@@ -85,6 +86,7 @@ function action_remark_activity:update()
 		local cb = { obj = self, turn_end_func = self.turn_end_callback }
 		local synsound
 		if self.st.snd_anim_sync == true then
+			self.snd_started = true
 			synsound = self.st.snd
 		else
 			synsound = nil
@@ -104,6 +106,7 @@ function action_remark_activity:update()
 		end
 	
 		if self.snd_scheduled == true then
+			self.snd_started = true
 			xr_sound.set_sound_play(self.object, self.st.snd)
 		end
 	
@@ -113,7 +116,14 @@ function action_remark_activity:update()
 	-- должны выдать сигнал action_end
 	-- должны выдать сигнал sound_end
 	elseif self.state == state_finish then
-		if self.object:active_sound_count() == 0 then
+		-- Проверить что звук уже запущен:
+		if self.snd_started == true then
+			if self.object:active_sound_count() ~= 0 then
+				self.snd_started = false
+			end
+		end
+	
+		if self.snd_started == false and self.object:active_sound_count() == 0 then
 			if self.sound_end_signalled == false then
 				self.st.signals["sound_end"] = true
 				self.sound_end_signalled = true
