@@ -127,7 +127,7 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	net_packet.r_vec3				(graph().actor()->o_Position);
 	net_packet.r_vec3				(graph().actor()->o_Angle);
 
-	Level().ClientSave			();
+	Level().ClientSave				();
 
 	graph().actor()->o_torso.yaw	= graph().actor()->o_Angle.y;
 	graph().actor()->o_torso.pitch	= graph().actor()->o_Angle.x;
