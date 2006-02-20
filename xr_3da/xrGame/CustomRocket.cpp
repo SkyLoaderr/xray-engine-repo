@@ -85,10 +85,11 @@ void CCustomRocket::SetLaunchParams (const Fmatrix& xform,
 									 const Fvector& vel,
 									 const Fvector& angular_vel)
 {
-	VERIFY2(_valid(xform),"SetLaunchParams. Invalid xform argument!");
-	m_LaunchXForm = xform;
-	m_vLaunchVelocity = vel;
-	m_vLaunchAngularVelocity = angular_vel;
+	VERIFY2						(_valid(xform),"SetLaunchParams. Invalid xform argument!");
+	m_LaunchXForm				= xform;
+	m_vLaunchVelocity			= vel;
+	m_vLaunchAngularVelocity	= angular_vel;
+	m_time_to_explode			= Device.fTimeGlobal + pSettings->r_float(cNameSect(), "force_explode_time")/1000.0f;
 }
 
 
@@ -375,6 +376,14 @@ void CCustomRocket::UpdateCL()
 		UpdateLights();
 		UpdateParticles();
 		break;
+	}
+	if(m_eState==eEngine || m_eState==eFlying )
+	{
+		if(m_time_to_explode<Device.fTimeGlobal)
+		{
+			Contact(Position(), Direction());
+			Msg("--cobtact");
+		}
 	}
 }
 

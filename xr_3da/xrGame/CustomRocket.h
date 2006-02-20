@@ -38,6 +38,7 @@ public:
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(CSE_Abstract* DC);
 	virtual void net_Destroy();
+	virtual BOOL						AlwaysTheCrow				()				{ return TRUE; }
 
 	virtual void reinit		();
 	virtual void reload		(LPCSTR section);
@@ -147,6 +148,7 @@ protected:
 	CParticlesObject*	m_pFlyParticles;
 
 	Fvector				m_vPrevVel;
+	float				m_time_to_explode;
 
 protected:
 	virtual void		StartEngineParticles();
