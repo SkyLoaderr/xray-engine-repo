@@ -561,3 +561,17 @@ function send_to_nearest_accessible_vertex( npc, v_id )
 
 	return v_id
 end
+
+-- происходит ли в данный момент смена уровня?
+-- нужно для того, чтобы объекты знали, какую информацию записывать при сохранении, а какую нет
+function level_changing()
+	local sim = alife()
+
+	if not sim then
+		return false
+	end
+
+	local gv = game_graph():vertex( sim:actor().m_game_vertex_id )
+
+	return sim:level_name( gv:level_id() ) ~= level.name()
+end

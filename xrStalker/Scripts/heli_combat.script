@@ -159,7 +159,15 @@ function heli_combat:initialize()
 end
 
 function heli_combat:save( packet )
-	packet:w_bool( self.retreat_already )
+--	packet:w_bool( self.retreat_already )
+
+--	printf( "heli_combat:save level_changing=%s", tostring( utils.level_changing() ) )
+
+	if utils.level_changing() then
+		packet:w_bool( false )
+		return
+	end
+
 	packet:w_bool( self.initialized )
 
 	if self.initialized then
@@ -185,7 +193,7 @@ function heli_combat:save( packet )
 end
 
 function heli_combat:load( packet )
-	self.retreat_already = packet:r_bool()
+--	self.retreat_already = packet:r_bool()
 	self.initialized     = packet:r_bool()
 
 	if self.initialized then
