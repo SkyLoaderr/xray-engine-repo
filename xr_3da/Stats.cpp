@@ -323,8 +323,13 @@ void CStats::Show()
 		F.SetColor	(color_rgba(255,16,16,191));
 		F.OutSet	(200,0);
 		F.SetSize	(f_base_size);
+#if 0
 		for (u32 it=0; it<errors.size(); it++)
 			F.OutNext("%s",errors[it].c_str());
+#else
+		for (u32 it=(u32)_max(int(0),(int)errors.size() - (int)count); it<errors.size(); it++)
+			F.OutNext("%s",errors[it].c_str());
+#endif
 		F.OnRender	();
 	}
 #endif
