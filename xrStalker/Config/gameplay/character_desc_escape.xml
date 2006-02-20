@@ -82,6 +82,7 @@
 		<reputation>10</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<panic_treshold>0</panic_treshold>
  
 		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
 		<supplies>
@@ -112,6 +113,7 @@
 		<reputation>-3</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<panic_treshold>0</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_balon_4</visual>
 		<supplies>
@@ -173,6 +175,7 @@
 		<reputation>-85</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
+		<panic_treshold>0</panic_treshold>
 		
 		<visual>actors\killer\stalker_ki_head_1</visual>
 		<supplies>
