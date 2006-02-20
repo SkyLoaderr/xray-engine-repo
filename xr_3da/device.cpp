@@ -173,6 +173,9 @@ void CRenderDevice::Run			()
         else
         {
 			if (bReady) {
+				if (psDeviceFlags.test(rsStatistic))	g_bEnableStatGather	= TRUE;
+				else									g_bEnableStatGather	= FALSE;
+
 				if(g_loading_events.size()){
 					if( g_loading_events.front()() )
 						g_loading_events.pop_front();
@@ -216,7 +219,7 @@ void CRenderDevice::Run			()
 					}
 				}
 				Statistic->RenderTOTAL_Real.End			();
-				Statistic->RenderTOTAL_Real.FrameEnd		();
+				Statistic->RenderTOTAL_Real.FrameEnd	();
 				Statistic->RenderTOTAL.accum	= Statistic->RenderTOTAL_Real.accum;
 
 				// *** Suspend threads

@@ -65,6 +65,7 @@ public:
 	}
 };
 
+extern XRCORE_API BOOL			g_bEnableStatGather;
 class XRCORE_API CStatTimer
 {
 public:
@@ -77,8 +78,8 @@ public:
 	void		FrameStart		();
 	void		FrameEnd		();
 
-	ICF void	Begin			()		{	count++; T.Start();				}
-	ICF void	End				()		{	accum += T.GetElapsed_ticks();	}
+	ICF void	Begin			()		{	if (!g_bEnableStatGather) return;	count++; T.Start();				}
+	ICF void	End				()		{	if (!g_bEnableStatGather) return;	accum += T.GetElapsed_ticks();	}
 
 	ICF u64		GetElapsed_ticks()const	{	return accum;					}
 

@@ -240,9 +240,9 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 void			ISpatial_DB::insert		(ISpatial* S)
 {
 	cs.Enter			();
+#ifdef DEBUG
 	stat_insert.Begin	();
 
-#ifdef DEBUG
 	BOOL		bValid	= _valid(S->spatial.sphere.R) && _valid(S->spatial.sphere.P);
 	if (!bValid)	
 	{
@@ -269,7 +269,9 @@ void			ISpatial_DB::insert		(ISpatial* S)
 		S->spatial.node_center.set	(m_center);
 		S->spatial.node_radius		=	m_bounds;
 	}
+#ifdef DEBUG
 	stat_insert.End		();
+#endif
 	cs.Leave			();
 }
 
@@ -298,13 +300,17 @@ void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
 void			ISpatial_DB::remove		(ISpatial* S)
 {
 	cs.Enter			();
+#ifdef DEBUG
 	stat_remove.Begin	();
+#endif
 	ISpatial_NODE* N	= S->spatial.node_ptr;
 	N->_remove			(S);
 
 	// Recurse
 	if (N->_empty())					_remove(N->parent,N);
+#ifdef DEBUG
 	stat_remove.End		();
+#endif
 	cs.Leave			();
 }
 
