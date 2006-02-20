@@ -105,7 +105,8 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	if (m_changing_level)
 		return						(false);
 
-	prepare_objects_for_save		();
+//	prepare_objects_for_save		();
+	Level().ClientSend				();
 
 	m_changing_level				= true;
 	
@@ -125,6 +126,8 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	net_packet.r					(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
 	net_packet.r_vec3				(graph().actor()->o_Position);
 	net_packet.r_vec3				(graph().actor()->o_Angle);
+
+	Level().ClientSave			();
 
 	graph().actor()->o_torso.yaw	= graph().actor()->o_Angle.y;
 	graph().actor()->o_torso.pitch	= graph().actor()->o_Angle.x;
