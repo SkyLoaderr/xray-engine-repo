@@ -133,6 +133,13 @@ namespace CPU
 	
 	XRCORE_API _processor_info	ID;
 
+	XRCORE_API u64				QPC	()			{
+		u64		_dest	;
+		QueryPerformanceCounter			((PLARGE_INTEGER)&_dest);
+		qpc_counter	++	;
+		return	_dest	;
+	}
+
 #ifdef M_BORLAND
 	u64	__fastcall GetCLK		(void)
 	{

@@ -271,6 +271,10 @@ void CStats::Show()
 		Memory.stat_strcmp	=	0		;
 		Memory.stat_strdock	=	0		;
 		CPU::qpc_counter	=	0		;
+#else
+		F.OutSkip	();
+		F.OutNext	("qpc[%3d]",CPU::qpc_counter);
+		CPU::qpc_counter	=	0		;
 #endif
 
 		//////////////////////////////////////////////////////////////////////////

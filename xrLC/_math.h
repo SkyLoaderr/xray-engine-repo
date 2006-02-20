@@ -24,14 +24,8 @@ namespace CPU {
 	XRCORE_API extern u64				qpc_overhead		;
 	XRCORE_API extern u32				qpc_counter			;
 
-	XRCORE_API extern _processor_info	ID					;
-
-	__forceinline		u64				QPC	()	{
-		u64		_dest	;
-		QueryPerformanceCounter			((PLARGE_INTEGER)&_dest);
-		qpc_counter	++	;
-		return	_dest	;
-	}
+	XRCORE_API extern	_processor_info	ID					;
+	XRCORE_API extern	u64				QPC	()				;
 
 #ifdef M_VISUAL
 	#ifndef _M_AMD64
