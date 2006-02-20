@@ -212,7 +212,7 @@ public:
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
 {
-	CMD3(CCC_Preset,	"r___preset",			&ps_Preset,	qpreset_token	);
+	CMD3(CCC_Preset,	"_preset",				&ps_Preset,	qpreset_token	);
 
 // Common
 	CMD1(CCC_Screenshot,"screenshot"			);
