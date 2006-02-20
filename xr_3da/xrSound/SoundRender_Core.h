@@ -30,6 +30,7 @@ public:
 
     WAVEFORMATEX						wfm;
 	CTimer								Timer;
+	u32									Timer_Value;
 	sound_event*						Handler;
 protected:
 	// Collider

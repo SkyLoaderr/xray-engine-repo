@@ -23,8 +23,9 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 
 	if (0==bReady)				return;
     bLocked						= TRUE;
+	Timer_Value					= Timer.GetElapsed_ms();
 
-	s_emitters_u	++;
+	s_emitters_u	++	;
 
 	// Firstly update emitters, which are now being rendered
 	//Msg	("! update: r-emitters");

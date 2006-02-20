@@ -278,7 +278,9 @@ BOOL CHOM::visible		(vis_data& vis)
 	u32 frame_current	= Device.dwFrame;
 	// u32	frame_prev		= frame_current-1;
 
+#ifdef DEBUG
 	Device.Statistic->RenderCALC_HOM.Begin	();
+#endif
 	BOOL result			= _visible			(vis.box,m_xform_01);
 	u32  delay			= 1;
 	if (result)
@@ -290,8 +292,10 @@ BOOL CHOM::visible		(vis_data& vis)
 	}
 	vis.hom_frame			= frame_current + delay;
 	vis.hom_tested			= frame_current;
-
+#ifdef DEBUG
 	Device.Statistic->RenderCALC_HOM.End	();
+#endif
+
 	return result;
 }
 

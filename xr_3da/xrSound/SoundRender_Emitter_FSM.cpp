@@ -9,7 +9,7 @@ XRSOUND_API extern float			psSoundCull				;
 
 void CSoundRender_Emitter::update	(float dt)
 {
-	u32	dwTime			= SoundRender->Timer.GetElapsed_ms();
+	u32	dwTime			= SoundRender->Timer_Value;
 
 	VERIFY2(!!(owner_data) || (!(owner_data)&&(state==stStopped)),"owner");
 	VERIFY2(owner_data?(int)owner_data->feedback:1,"owner");
