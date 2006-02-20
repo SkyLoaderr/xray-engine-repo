@@ -9,8 +9,10 @@
 #include "../../../PhysicsShell.h"
 #include "../../../PHMovementControl.h"
 
-#include "../../../level.h"
-#include "../../../level_debug.h"
+#ifdef _DEBUG
+#	include "../../../level.h"
+#	include "../../../level_debug.h"
+#endif
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -108,13 +110,14 @@ void CStateMonsterEatAbstract::setup_substates()
 			nearest_bone_pos	= corpse->Position(); 
 		} else nearest_bone_pos = object->m_PhysicMovementControl->PHCaptureGetNearestElemPos(corpse);
 
+#ifdef _DEBUG
 		DBG().level_info(this).clear		();
 		Fvector pos1;
 		pos1.set(nearest_bone_pos);
 		pos1.y+=20.f;
 
 		DBG().level_info(this).add_item		(nearest_bone_pos, pos1, COLOR_GREEN);
-
+#endif
 		SStateDataMoveToPoint data;
 		data.point			= nearest_bone_pos;
 		data.vertex			= u32(-1);
