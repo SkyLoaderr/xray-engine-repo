@@ -515,7 +515,7 @@
 		<snd_config>characters_voice\human_01\dolg\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza \n
+			wpn_groza_coll \n
 			ammo_9x39_ap \n
 			dolg_outfit \n
 #include "gameplay\character_food.xml" \n
@@ -582,6 +582,7 @@
 			[spawn] \n
 			wpn_spas12 \n
 			ammo_12x70_buck \n
+			outfit_dolg_m1 \n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
@@ -696,8 +697,9 @@
 			[spawn] \n
 			wpn_desert_eagle \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_lr300 \n
+			wpn_l85_m1 \n
 			ammo_5.56x45_ss190 \n
+			outfit_killer_m1 \n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
@@ -830,7 +832,7 @@
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_desert_eagle \n
+			wpn_desert_eagle_coll \n
 			ammo_11.43x23_fmj \n
 		</supplies>
 			

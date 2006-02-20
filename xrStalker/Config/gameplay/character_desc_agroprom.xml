@@ -23,7 +23,7 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 2 \n
-			wpn_ak74 = 1, scope\n
+			wpn_ak74_m1 = 1, scope\n
 			ammo_5.45x39_ap \n
 			device_torch \n
 			medkit = 2 \n

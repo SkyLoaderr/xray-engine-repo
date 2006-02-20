@@ -19,7 +19,7 @@
 		<visual>actors\neytral\stalker_neytral_hood_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_ak74u \n
+			wpn_aksu_anom \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
 			medkit = 1 \n
@@ -655,7 +655,7 @@
 			[spawn] \n
             wpn_fort \n
 			ammo_9x18_pmm = 1 \n
-            wpn_spas12 \n
+            wpn_spas12_m1 \n
 			ammo_12x76_dart \n
 			device_torch \n
 #include "gameplay\character_drugs.xml" \n
