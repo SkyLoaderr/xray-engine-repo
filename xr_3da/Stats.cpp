@@ -6,6 +6,8 @@
 #include "IGame_Persistent.h"
 #include "render.h"
 
+int	g_ErrorLineCount = 15;
+
 // stats
 DECLARE_RP(Stats);
 
@@ -327,7 +329,7 @@ void CStats::Show()
 		for (u32 it=0; it<errors.size(); it++)
 			F.OutNext("%s",errors[it].c_str());
 #else
-		for (u32 it=(u32)_max(int(0),(int)errors.size() - (int)count); it<errors.size(); it++)
+		for (u32 it=(u32)_max(int(0),(int)errors.size() - g_ErrorLineCount); it<errors.size(); it++)
 			F.OutNext("%s",errors[it].c_str());
 #endif
 		F.OnRender	();

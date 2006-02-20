@@ -430,6 +430,9 @@ extern int			psNET_DedicatedSleep;
 extern char			psNET_Name[32];
 extern Flags32		psEnvFlags;
 extern float		r__dtex_range;
+
+extern int			g_ErrorLineCount;
+
 ENGINE_API int			ps_r__Supersample			= 1;
 void CCC_Register()
 {
@@ -517,7 +520,11 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"snd_efx",				&psSoundFlags,		ssEAX		);
 	CMD4(CCC_Integer,	"snd_targets",			&psSoundTargets,	4,32		);
 	CMD4(CCC_Integer,	"snd_cache_size",		&psSoundCacheSizeMB,4,32		);
-	
+
+#ifdef DEBUG
+	CMD4(CCC_Integer,	"error_line_count",		&g_ErrorLineCount,	6,	1024	);
+#endif
+
 	// Mouse
 	CMD3(CCC_Mask,		"mouse_invert",			&psMouseInvert,1);
 	psMouseSens = 0.2f;
