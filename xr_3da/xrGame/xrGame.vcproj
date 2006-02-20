@@ -3407,53 +3407,6 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="Rat"
-						Filter="">
-						<File
-							RelativePath="AI\Rat\ai_rat.cpp">
-						</File>
-						<File
-							RelativePath="AI\Rat\ai_rat.h">
-						</File>
-						<File
-							RelativePath="AI\Rat\ai_rat_animations.cpp">
-						</File>
-						<File
-							RelativePath="AI\Rat\ai_rat_feel.cpp">
-						</File>
-						<File
-							RelativePath="AI\Rat\ai_rat_fire.cpp">
-						</File>
-						<File
-							RelativePath="AI\Rat\ai_rat_fsm.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\rat\ai_rat_impl.h">
-						</File>
-						<File
-							RelativePath=".\ai\rat\ai_rat_inline.h">
-						</File>
-						<File
-							RelativePath=".\ai\rat\ai_rat_space.h">
-						</File>
-						<File
-							RelativePath="AI\Rat\ai_rat_templates.cpp">
-						</File>
-						<Filter
-							Name="MagicBox3"
-							Filter="">
-							<File
-								RelativePath=".\magic_box3.cpp">
-							</File>
-							<File
-								RelativePath=".\magic_box3.h">
-							</File>
-							<File
-								RelativePath=".\magic_box3_inline.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
 						Name="PseudoDog"
 						Filter="">
 						<File
