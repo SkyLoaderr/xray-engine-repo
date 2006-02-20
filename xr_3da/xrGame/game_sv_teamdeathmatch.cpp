@@ -295,9 +295,10 @@ void	game_sv_TeamDeathmatch::Update					()
 		} break;
 	};
 }
+extern INT g_sv_Skip_Winner_Waiting;
 bool	game_sv_TeamDeathmatch::HasChampion				()
 {
-	return GetTeamScore(0)!=GetTeamScore(1);
+	return (GetTeamScore(0)!=GetTeamScore(1) || g_sv_Skip_Winner_Waiting);
 }
 
 void	game_sv_TeamDeathmatch::OnTimelimitExceed		()
