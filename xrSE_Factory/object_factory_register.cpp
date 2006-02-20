@@ -24,7 +24,6 @@
 #	include "actor.h"
 #	include "spectator.h"
 
-#	include "ai/rat/ai_rat.h"
 #	include "ai/monsters/flesh/flesh.h"
 #	include "ai/monsters/chimera/chimera.h"
 #	include "ai/monsters/dog/dog.h"
