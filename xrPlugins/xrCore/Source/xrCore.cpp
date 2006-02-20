@@ -23,11 +23,12 @@ XRCORE_API		xrCore Core;
 	{
 	case DLL_PROCESS_ATTACH:
 		{
-			_clear87	();
-			_control87	( _PC_53,   MCW_PC );
-			_control87	( _RC_CHOP, MCW_RC );
-			_control87	( _RC_NEAR, MCW_RC );
-			_control87	( _MCW_EM,  MCW_EM );
+			_clear87		();
+			_control87		( _PC_53,   MCW_PC );
+			_control87		( _RC_CHOP, MCW_RC );
+			_control87		( _RC_NEAR, MCW_RC );
+			_control87		( _MCW_EM,  MCW_EM );
+			CoInitializeEx	(NULL, COINIT_MULTITHREADED);
 		}
 		break;
 	case DLL_THREAD_ATTACH:
