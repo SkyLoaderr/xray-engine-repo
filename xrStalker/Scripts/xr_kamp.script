@@ -173,29 +173,29 @@ function CKampManager:__init(path)
 	end
 	--print_table(self.position)
 	--Таблица соответствий состояния лагеря и допустимых анимаций и звуков.	
-	self.avail_state = {idle				= { directed	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+	self.avail_state = {idle				= { directed	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						pre_harmonica		= { directed	= { "wait_harmonica"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						harmonica			= { directed	= { "play_harmonica"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						post_harmonica		= { directed	= { "wait_harmonica"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						pre_guitar			= { directed	= { "wait_guitar"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						guitar				= { directed	= { "play_guitar"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						post_guitar			= { directed	= { "wait_guitar"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						story				= { directed	= { "declarate"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						post_story			= { directed	= { "declarate"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						pre_joke			= { directed	= { "declarate"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						joke				= { directed	= { "declarate"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}},
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}},
 						post_joke			= { directed	= { "declarate"},
-												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_bread", "trans"}}}
+												undirected	= { "wait", "sit", "sit_ass", "sit_knee", "eat_kolbasa", "eat_vodka", "eat_energy", "eat_bread", "trans"}}}
 	self.avail_sound = {idle				= { directed = "idle"},
 						pre_harmonica		= { directed = "pre_harmonica", undirected = ""},
 						harmonica			= { directed = "play_harmonica", undirected = ""},
@@ -567,6 +567,12 @@ function CKampManager:checkNpcAbility(npc)
 		else
 			self.npc[npc_id].states["eat_vodka"] = false
 		end
+		-- пить енергитический напиток
+		if npc:object("energy_drink") then
+			self.npc[npc_id].states["eat_energy"] = true
+		else
+			self.npc[npc_id].states["eat_energy"] = false
+		end
 		-- есть хлеб
 		if npc:object("bread") then
 			self.npc[npc_id].states["eat_bread"] = true
@@ -634,12 +640,12 @@ function CKampManager:addNpc(npc)
 	then
 		self.npc[npc:id()] = {name = npc:name(), position = nil, current = nil, speak = 0, states = {
 								stand_wait = false, sit = false, sit_ass = false, sit_knee = false, declarate = true,
-								eat_kolbasa = false, eat_vodka = false, eat_bread = false, trans = true,
+								eat_kolbasa = false, eat_vodka = false, eat_energy = false, eat_bread = false, trans = true,
 								play_harmonica = false, play_guitar = false, play_joke = false, play_story = false}}
 	else
 		self.npc[npc:id()] = {name = npc:name(), position = nil, current = nil, speak = 0, states = {
 								stand_wait = true, sit = true, sit_ass = true, sit_knee = true, declarate = true,
-								eat_kolbasa = false, eat_vodka = false, eat_bread = false, trans = false,
+								eat_kolbasa = false, eat_vodka = false, eat_energy = false, eat_bread = false, trans = false,
 								play_harmonica = false, play_guitar = false, play_joke = false, play_story = false}}
 	end
 	self:selectPosition(npc:id())	

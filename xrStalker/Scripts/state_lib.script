@@ -327,6 +327,13 @@ states = {
 				animstate = "sit_ass",
 				animation = "eat_vodka"
 			},
+	eat_energy	= {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit_ass",
+				animation = "eat_energy"
+			},
 	eat_kolbasa	= {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,

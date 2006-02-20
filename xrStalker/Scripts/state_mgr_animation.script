@@ -156,6 +156,7 @@ function animation:__init(npc, mgr)
 		attach_items = {hand_radio	= {mode = "detach", done = true},
 						bread		= {mode = "detach", done = true},
 						vodka		= {mode = "detach", done = true},
+						energy_drink= {mode = "detach", done = true},
 						kolbasa		= {mode = "detach", done = true},
 						guitar_a	= {mode = "detach", done = true},
 						harmonica_a	= {mode = "detach", done = true},
