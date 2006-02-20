@@ -145,7 +145,6 @@ enum EMotionAnim {
 	eAnimFastTurn,
 
 	eAnimAttack,
-	eAnimAttackRat,
 	eAnimAttackFromBack,
 	eAnimAttackRun,
 

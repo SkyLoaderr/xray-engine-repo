@@ -64,7 +64,6 @@ void CAI_Flesh::Load(LPCSTR section)
 	anim().AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&velocity_run_dmg,	PS_STAND);
 
 	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
-	anim().AddAnim(eAnimAttackRat,		"stand_attack_rat_",	-1, &velocity_turn,		PS_STAND);
 	anim().AddAnim(eAnimAttackFromBack,	"stand_attack_back_",	-1, &velocity_none,		PS_STAND);
 	anim().AddAnim(eAnimCheckCorpse,		"stand_eat_",			 1,	&velocity_none,		PS_STAND);
 
@@ -118,7 +117,6 @@ void CAI_Flesh::CheckSpecParams(u32 spec_params)
 		com_man().seq_run(anim().get_motion_id(eAnimAttackFromBack));
 	}
 
-	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) anim().SetCurAnim(eAnimAttackRat);
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) anim().SetCurAnim(eAnimThreaten);
 }
 

@@ -408,9 +408,7 @@ void CCustomMonster::UpdateCL	()
 			Fvector					l_tOldPosition = Position();
 			NET_Last.lerp			(A,B,factor);
 			if (Local()) {
-				if (CLSID_AI_RAT != CLS_ID) {
-					NET_Last.p_pos		= l_tOldPosition;
-				}
+				NET_Last.p_pos		= l_tOldPosition;
 			}
 			else {
 				if (!bfScriptAnimation())

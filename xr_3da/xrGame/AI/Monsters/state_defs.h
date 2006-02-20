@@ -39,7 +39,6 @@ enum EMonsterState {
 	eStateAttack_Steal				= eStateAttack | 6,
 
 	eStateAttack_AttackHidden		= eStateAttack | 7,
-	eStateAttack_AttackRat			= eStateAttack | 8,
 
 	eStateAttack_Hide				= eStateAttack | 9,
 

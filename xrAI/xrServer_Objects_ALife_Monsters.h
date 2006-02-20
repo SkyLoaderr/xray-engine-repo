@@ -367,43 +367,6 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreaturePhantom)
 #define script_type_list save_type_list(CSE_ALifeCreaturePhantom)
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_ALifeInventoryItem)
-	// Personal characteristics:
-	float							fEyeFov;
-	float							fEyeRange;
-	float							fMinSpeed;
-	float							fMaxSpeed;
-	float							fAttackSpeed;
-	float							fMaxPursuitRadius;
-	float							fMaxHomeRadius;
-	// morale
-	float							fMoraleSuccessAttackQuant;
-	float							fMoraleDeathQuant;
-	float							fMoraleFearQuant;
-	float							fMoraleRestoreQuant;
-	u16								u16MoraleRestoreTimeInterval;
-	float							fMoraleMinValue;
-	float							fMoraleMaxValue;
-	float							fMoraleNormalValue;
-	// attack
-	float							fHitPower;
-	u16								u16HitInterval;
-	float							fAttackDistance;
-	float							fAttackAngle;
-	float							fAttackSuccessProbability;
-
-									CSE_ALifeMonsterRat	(LPCSTR caSection);				// constructor for variable initialization
-	virtual							~CSE_ALifeMonsterRat();
-	virtual bool					bfUseful();
-	virtual CSE_Abstract			*init				();
-	virtual CSE_Abstract			*base				();
-	virtual const CSE_Abstract		*base				() const;
-	virtual CSE_Abstract			*cast_abstract			() {return this;};
-	virtual CSE_ALifeInventoryItem	*cast_inventory_item	() {return this;};
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_ALifeMonsterRat)
-#define script_type_list save_type_list(CSE_ALifeMonsterRat)
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
 	// Personal characteristics:
 	float							fEyeFov;

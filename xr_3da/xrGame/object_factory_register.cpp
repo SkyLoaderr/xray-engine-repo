@@ -201,7 +201,6 @@ void CObjectFactory::register_classes	()
 #endif
 
 	// server entities
-	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat>	>			(CLSID_AI_RAT_GROUP				,"rat_group");
 	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBase> >			(CLSID_AI_FLESH_GROUP			,"flesh_group");
 //	add<CSE_SpawnGroup>											(CLSID_AI_SPAWN_GROUP			,"spawn_group");
 	add<CSE_ALifeGraphPoint>									(CLSID_AI_GRAPH					,"graph_point");
@@ -211,11 +210,9 @@ void CObjectFactory::register_classes	()
 	ADD(CActor					,CSE_ALifeCreatureActor			,CLSID_OBJECT_ACTOR				,"actor");
 	ADD(CSpectator				,CSE_Spectator					,CLSID_SPECTATOR				,"spectator");
 
-	ADD(CAI_Rat					,CSE_ALifeMonsterRat			,CLSID_AI_RAT					,"rat");
 	ADD(CAI_Flesh				,CSE_ALifeMonsterBase			,CLSID_AI_FLESH					,"flesh");
 	ADD(CChimera				,CSE_ALifeMonsterBase			,CLSID_AI_CHIMERA				,"chimera");
 	ADD(CAI_Dog					,CSE_ALifeMonsterBase			,CLSID_AI_DOG_RED				,"dog_red");
-	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_SOLDIER				,"soldier");
 	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_STALKER				,"stalker");
 	ADD(CAI_Bloodsucker			,CSE_ALifeMonsterBase			,CLSID_AI_BLOODSUCKER			,"bloodsucker");
 	ADD(CAI_Boar				,CSE_ALifeMonsterBase			,CLSID_AI_BOAR					,"boar");

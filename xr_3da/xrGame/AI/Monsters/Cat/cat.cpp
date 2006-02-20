@@ -50,7 +50,6 @@ void CCat::Load(LPCSTR section)
 	anim().AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&velocity_none,				PS_STAND);
 	anim().AddAnim(eAnimEat,				"stand_eat_",			-1, &velocity_none,				PS_STAND);
 	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND);
-	anim().AddAnim(eAnimAttackRat,		"stand_attack_rat_",	-1, &velocity_turn,		PS_STAND);
 	anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,				PS_STAND);
 	anim().AddAnim(eAnimLieIdle,			"lie_idle_",			-1, &velocity_none,				PS_LIE);
 	anim().AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, &velocity_none,				PS_LIE);		
@@ -112,8 +111,6 @@ void CCat::CheckSpecParams(u32 spec_params)
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
 		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
 	}
-
-	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) anim().SetCurAnim(eAnimAttackRat);
 
 	if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {
 		//float yaw, pitch;

@@ -3930,28 +3930,6 @@
 							RelativePath=".\ai\Monsters\Cat\cat_state_manager.h">
 						</File>
 						<Filter
-							Name="Attack Rat"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_inline.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_melee.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_melee_inline.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_run.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_run_inline.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="Script"
 							Filter="">
 							<File

@@ -198,10 +198,9 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		id_Group			= E->g_group();
 
 
-		CSE_ALifeMonsterRat		*rat		= smart_cast<CSE_ALifeMonsterRat*>(E);
 		CSE_ALifeMonsterBase	*monster	= smart_cast<CSE_ALifeMonsterBase*>(E);
 
-		if (monster || rat) {
+		if (monster) {
 			MONSTER_COMMUNITY		monster_community;
 			monster_community.set	(pSettings->r_string(*cNameSect(), "species"));
 

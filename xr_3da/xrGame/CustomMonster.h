@@ -15,7 +15,6 @@ namespace MonsterSpace {
 	struct SBoneRotation;
 };
 
-class CAI_Rat;
 class CMotionDef;
 class CKinematicsAnimated;
 class CMemoryManager;
@@ -199,8 +198,6 @@ public:
 	virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
 	
 	virtual	const MonsterSpace::SBoneRotation &head_orientation	() const;
-	
-	virtual CAI_Rat				*dcast_Rat				() {return 0;}
 	
 	virtual void				UpdatePositionAnimation	();
 	virtual void				set_ready_to_save		();

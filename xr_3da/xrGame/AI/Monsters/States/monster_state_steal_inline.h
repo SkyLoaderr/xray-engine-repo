@@ -54,9 +54,6 @@ bool CStateMonsterStealAbstract::check_conditions()
 	// if i see enemy
 	if (!object->EnemyMan.see_enemy_now())						return false;
 	
-	// Enemy is rat?
-	if (object->EnemyMan.get_enemy()->CLS_ID == CLSID_AI_RAT)	return false;
-
 	// This is the only enemy
 	if (object->EnemyMan.get_enemies_count() > 1)				return false;
 	

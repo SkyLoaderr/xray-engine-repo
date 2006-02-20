@@ -100,10 +100,6 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CGameObject,		CInventoryOwner)
 
-		DECLARE_SPECIALIZATION	(CAI_Rat,			CCustomMonster,		dcast_Rat);
-#		undef cast_type_list
-#		define cast_type_list save_cast_list	(CAI_Rat,			CCustomMonster)
-
 		DECLARE_SPECIALIZATION	(CWeapon,			CInventoryItem,			cast_weapon);
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CWeapon,			CInventoryItem)

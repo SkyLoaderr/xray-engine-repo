@@ -9,30 +9,19 @@
 // all the monsters
 #define CLSID_LEVEL_POINT			MK_CLSID('L','V','L','P','O','I','N','T')
 #define CLSID_SCRIPT_OBJECT			MK_CLSID('S','C','R','P','T','O','B','J')
-//#define CLSID_AI_SPAWN_GROUP		MK_CLSID('A','I','_','S','P','G','R','P')
 #define CLSID_AI_GRAPH				MK_CLSID('A','I','_','G','R','A','P','H')
 #define CLSID_AI_CROW				MK_CLSID('A','I','_','C','R','O','W',' ')
 
-#define CLSID_AI_RAT				MK_CLSID('A','I','_','R','A','T',' ',' ')
-#define CLSID_AI_RAT_GROUP			MK_CLSID('A','I','_','R','A','T','_','G')
-
-#define CLSID_AI_RAT_WOLF			MK_CLSID('A','I','_','R','A','T','_','W')
 #define CLSID_AI_ZOMBIE				MK_CLSID('A','I','_','Z','O','M',' ',' ')
-#define CLSID_AI_ZOMBIE_HUMAN		MK_CLSID('A','I','_','Z','O','M','_','H')
 #define CLSID_AI_POLTERGEIST		MK_CLSID('A','I','_','P','O','L','T','R')
 
 #define CLSID_AI_FLESH				MK_CLSID('A','I','_','F','L','E','S','H')
 #define CLSID_AI_FLESH_GROUP		MK_CLSID('A','I','_','F','L','E','_','G')
 
-#define CLSID_AI_DWARF				MK_CLSID('A','I','_','D','W','A','R','F')
-#define CLSID_AI_SCIENTIST			MK_CLSID('A','I','_','S','C','I','E','N')
 #define CLSID_AI_PHANTOM			MK_CLSID('A','I','_','P','H','A','N','T')
 #define CLSID_AI_SPONGER			MK_CLSID('A','I','_','S','P','O','N','G')
 #define CLSID_AI_CONTROLLER			MK_CLSID('A','I','_','C','O','N','T','R')
 #define CLSID_AI_BLOODSUCKER		MK_CLSID('A','I','_','B','L','O','O','D')
-#define CLSID_AI_SOLDIER			MK_CLSID('A','I','_','S','O','L','D','R')
-#define CLSID_AI_STALKER_DARK		MK_CLSID('A','I','_','S','T','L','_','D')
-#define CLSID_AI_STALKER_MILITARY	MK_CLSID('A','I','_','S','T','L','_','M')
 #define CLSID_AI_STALKER			MK_CLSID('A','I','_','S','T','L',' ',' ')
 #define CLSID_AI_BURER				MK_CLSID('A','I','_','B','U','R','E','R')
 #define CLSID_AI_GIANT				MK_CLSID('A','I','_','G','I','A','N','T')
