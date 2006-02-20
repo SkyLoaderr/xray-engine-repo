@@ -177,6 +177,7 @@ BOOL IPureServer::Connect(LPCSTR options)
 //	};	
 	//---------------------------
     // Create the IDirectPlay8Client object.
+	CoInitializeEx	(NULL, COINIT_MULTITHREADED);	//. ?
 	HRESULT CoCreateInstanceRes = CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET);
 	//---------------------------	
 	if (CoCreateInstanceRes != S_OK)
