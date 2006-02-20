@@ -243,20 +243,14 @@
     <string id="bar_bar_barmen_about_psih_1">
         <text>Да черт его разберет. Совсем, наверное, головой сдвинулся. Водки ему чтоли налить, или укол какой сделать.</text>
     </string>
-    <string id="bar_bar_barmen_jobs_0">
-        <text>Спецзадание для меня найдется?</text>
-    </string>
     <string id="bar_bar_barmen_jobs_111">
         <text>Нет, сегодня, ничего нет. 0</text>
-    </string>
-    <string id="bar_bar_barmen_jobs_2">
-        <text>Есть работа, для ветеранов.</text>
     </string>
     <string id="bar_bar_barmen_jobs_21">
         <text>Ближе к делу. Что нужно сделать?</text>
     </string>
-    <string id="bar_bar_barmen_jobs_22">
-        <text>Извини, не буду пока браться.</text>
+    <string id="bar_bar_barmen_jobs_221">
+        <text>Нет, сегодня, ничего нет. 1</text>
     </string>
     <string id="bar_bar_barmen_jobs_2311">
         <text>Есть одно серьезное дело. На "дикой территории" опять появилась группа ветеранов-убийц. Ко мне приходили люди из Долга и просили разобраться с этими ветеранами. У Долга есть непровержимые доказательства причастности ветеранов к убийствам одиночек. Дело тут в том, что у них с Долгом старый договор, который Долг не может нарушить, а ребята эти уж слишком наглеют. Короче, Долг хочет чтобы их тихо убрали. Задание сложное, но хорошо оплачивается.</text>
@@ -279,6 +273,27 @@
     <string id="bar_bar_barmen_jobs_23111121">
         <text>Ну как знаешь, просто помни что это хороший шанс получить благодарность от долговцев.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_24">
+        <text>Ближе к делу. Что нужно сделать?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_241">
+        <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2411">
+        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_24111">
+        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2412">
+        <text>Нет, не буду браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_24121">
+        <text>Ну как знаешь.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_251">
+        <text>Нет, сегодня, ничего нет. 2</text>
+    </string>
     <string id="bar_bar_barmen_jobs_261">
         <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
     </string>
@@ -294,8 +309,80 @@
     <string id="bar_bar_barmen_jobs_26121">
         <text>Ну как знаешь.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_266">
+        <text>Нет, сегодня, ничего нет. 3</text>
+    </string>
     <string id="bar_bar_barmen_jobs_271">
         <text>Не спеши, Меченый. Ты еще с ветеранами не разобрался, а уже рвешься делать что-то еще.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_31">
+        <text>Спецзадания есть?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_311">
+        <text>Нет, сегодня, ничего нет. 0</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32">
+        <text>Спецзадания есть?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_321">
+        <text>Есть одно серьезное дело. На "дикой территории" опять появилась группа ветеранов-убийц. Ко мне приходили люди из Долга и просили разобраться с этими ветеранами. У Долга есть непровержимые доказательства причастности ветеранов к убийствам одиночек. Дело тут в том, что у них с Долгом старый договор, который Долг не может нарушить, а ребята эти уж слишком наглеют. Короче, Долг хочет чтобы их тихо убрали. Задание сложное, но хорошо оплачивается.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3211">
+        <text>Еще какие-то дополнительные условия? И странно что Долг так все спускает.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32111">
+        <text>Долг дорожит своей репутацией. Поэтому они хотят все сделать тихо. Тебе достаточно уничтожить главаря по кличке "Счастливчик" и принести его PDA в качестве доказательства.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32112">
+        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_321121">
+        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32113">
+        <text>Нет, не буду браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_321131">
+        <text>Ну как знаешь, просто помни что это хороший шанс получить благодарность от долговцев.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32121">
+        <text>text in default</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_33">
+        <text>Спецзадания есть?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_331">
+        <text>Твоя задача уничтожение Тирана, лидера группы Наемников. Отряд Наемников прорвался на дикую территорию и засел на стройке. Будь осторожен, часть боевиков сидит в засадах при подходах к стройке. Как только принесешь мне PDA Тирана, награда твоя.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3312">
+        <text>Берусь. Буду надеяться, что я об этом не пожалею.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_33121">
+        <text>Отличное решение, и я думаю жалеть тут не о чем.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3313">
+        <text>Нет, не буду браться.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_33131">
+        <text>Ну как знаешь.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_34">
+        <text>Спецзадания есть?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_341">
+        <text>Нет, сегодня, ничего нет. 1</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_35">
+        <text>Спецзадания есть?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_351">
+        <text>Нет, сегодня, ничего нет. 2</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_36">
+        <text>Спецзадания есть?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_361">
+        <text>Нет, сегодня, ничего нет. 3</text>
     </string>
     <string id="bar_bar_barmen_jobs_41">
         <text>Пока нет, в другой раз.</text>
@@ -326,6 +413,12 @@
     </string>
     <string id="bar_bar_barmen_jobs_52">
         <text>Нет, сегодня, ничего нет. 1</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_531">
+        <text>Нет, сегодня, ничего нет. 2</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_541">
+        <text>Нет, сегодня, ничего нет. 3</text>
     </string>
     <string id="bar_bar_barmen_jobs_62">
         <text>Нет, сегодня, ничего нет. 2</text>
