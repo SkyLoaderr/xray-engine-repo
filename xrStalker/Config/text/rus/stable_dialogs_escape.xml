@@ -774,6 +774,15 @@
     <string id="escape_trader_start_dialog_56">
         <text>Да, никак в общем. В процессе.</text>
     </string>
+    <string id="escape_trader_start_dialog_571">
+        <text>Ну, где артефакт?</text>
+    </string>
+    <string id="escape_trader_start_dialog_5711">
+        <text>Не достал я пока его.</text>
+    </string>
+    <string id="escape_trader_start_dialog_57111">
+        <text>Пока не принесешь, говорить нам не о чем.</text>
+    </string>
     <string id="escape_trader_start_dialog_6">
         <text>Меченый, я тебе уже все сказал, дуй на задание!</text>
     </string>
