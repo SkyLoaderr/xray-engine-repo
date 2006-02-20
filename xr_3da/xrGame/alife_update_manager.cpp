@@ -106,6 +106,11 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 		return						(false);
 
 //	prepare_objects_for_save		();
+	// we couldn't use prepare_objects_for_save since we need 
+	// get updates from client 
+	// then change actor server entity 
+	// then call client net_Save 
+	// then restore actor server entity 
 	Level().ClientSend				();
 
 	m_changing_level				= true;
