@@ -129,9 +129,9 @@ function action_remark_activity:update()
 				self.sound_end_signalled = true
 			end
 		end
-		if self.st.snd == nil or
-		   self.st.snd_anim_sync == true or 
-		   self.object:active_sound_count() == 0		   
+
+		if self.sound_end_signalled == true and
+		   self.anim_end_signalled == true
 		then
 			if self.action_end_signalled == false then
 				self.st.signals["action_end"] = true
