@@ -16,7 +16,6 @@ CSoundRender_TargetA::CSoundRender_TargetA():CSoundRender_Target()
 
 CSoundRender_TargetA::~CSoundRender_TargetA()
 {
-	VERIFY				(wave==0);
 }
 
 BOOL	CSoundRender_TargetA::_initialize		()

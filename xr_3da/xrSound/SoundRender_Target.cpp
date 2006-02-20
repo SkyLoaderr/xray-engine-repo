@@ -15,6 +15,7 @@ CSoundRender_Target::CSoundRender_Target(void)
 
 CSoundRender_Target::~CSoundRender_Target(void)
 {
+	VERIFY				(wave==0);
 }
 
 BOOL CSoundRender_Target::_initialize()
