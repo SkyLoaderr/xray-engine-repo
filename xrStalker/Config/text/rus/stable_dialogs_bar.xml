@@ -384,6 +384,12 @@
     <string id="bar_bar_barmen_jobs_361">
         <text>Нет, сегодня, ничего нет. 3</text>
     </string>
+    <string id="bar_bar_barmen_jobs_37">
+        <text>Спецзадания есть?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_371">
+        <text>Нет, сегодня, ничего нет. 4</text>
+    </string>
     <string id="bar_bar_barmen_jobs_41">
         <text>Пока нет, в другой раз.</text>
     </string>
