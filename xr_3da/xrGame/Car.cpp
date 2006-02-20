@@ -1718,7 +1718,7 @@ void CCar::PhDataUpdate(dReal step)
 
 BOOL CCar::UsedAI_Locations()
 {
-	return					(TRUE);
+	return					(FALSE);
 }
 
 u16 CCar::DriverAnimationType()
