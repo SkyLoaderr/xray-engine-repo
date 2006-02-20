@@ -117,12 +117,12 @@
 		</cap_password>
 		
 		<edit_host  x="294" y="50" width="170" height="24">
-			<text r="207" g="155" b="80"></text>
+			<text font="letterica16" r="207" g="155" b="80"></text>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_host>
 		
 		<edit_password x="294" y="91" width="170" height="24" password="1">
-			<text r="207" g="155" b="80"></text>
+			<text font="letterica16" r="207" g="155" b="80"></text>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_password>
 		
@@ -149,7 +149,7 @@
 		</cap_password>
 		
 		<edit_password x="294" y="70" width="170" height="24" password="1">
-			<text r="207" g="155" b="80"></text>
+			<text font="letterica16" r="207" g="155" b="80"></text>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_password>		
 		
