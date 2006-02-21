@@ -130,6 +130,13 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 
 	string256		fn;				strconcat(fn,base,"\\",path);
 
+	if (::GetFileAttributes(fn)==u32(-1)){
+		filesSKIP	++;
+		printf		(" - CAN'T OPEN");
+		Msg			("%-80s   - CAN'T OPEN",path);
+		return;
+	}
+
 	IReader*		src				=	FS.r_open	(fn);
 	if (0==src){
 		filesSKIP	++;
