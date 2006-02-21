@@ -10,6 +10,7 @@
 
 #include "alife_space.h"
 #include "game_graph_space.h"
+#include "script_export_space.h"
 
 class CSavedGameWrapper {
 public:
@@ -24,6 +25,10 @@ public:
 							CSavedGameWrapper	(LPCSTR saved_game_name);
 	inline	const _TIME_ID	&game_time			() const;
 	inline	const _LEVEL_ID	&level_id			() const;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CSavedGameWrapper)
+#undef script_type_list
+#define script_type_list save_type_list(CSavedGameWrapper)
 
 #include "saved_game_wrapper_inline.h"

@@ -2233,6 +2233,9 @@
 					<File
 						RelativePath=".\saved_game_wrapper_inline.h">
 					</File>
+					<File
+						RelativePath=".\saved_game_wrapper_script.cpp">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
