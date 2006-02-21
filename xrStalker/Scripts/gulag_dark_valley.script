@@ -464,14 +464,6 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
                "ignore_types    = sound\n" ..
 
                "[meet1]\n" ..
-               "meet_state     = 0|wait\n" ..
-               "meet_state_wpn = 0|wait\n" ..
-               "victim         = 5|actor\n" ..
-               "victim_wpn     = 5|actor\n" ..
-               "use            = false\n" ..
-               "use_wpn        = false\n" ..
-
-               "[meet2]\n" ..
                "meet_dialog    = val_sos_dialog\n" ..
                "meet_state     = 5|wait\n" ..
                "meet_state_wpn = 5|wait\n" ..
@@ -492,13 +484,13 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
                "path_walk          = wounded_walk\n" ..
                "anim               = wait\n" ..
                "on_info            = {+val_sos_got_medkit} remark2\n" ..
-               "meet               = meet1\n" ..
+               "meet               = no_meet\n" ..
                "wounded            = wounded\n" ..
                "combat_ignore_cond = always\n" ..
 
                "[remark2]\n" ..
                "anim                  = wait\n" ..
-               "meet                  = meet2\n" ..
+               "meet                  = meet1\n" ..
                --"wounded               = wounded\n" ..
                "on_actor_dist_ge_nvis = 17 | %+val_sos_scene_end%\n"
 
