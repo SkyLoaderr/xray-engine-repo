@@ -833,7 +833,6 @@ function object_type(obj)
     then
         type = "stalker"
     elseif  otype == clsid.crow or
-        otype == clsid.rat or
         otype == clsid.rat_group or
         otype == clsid.zombie or
         otype == clsid.flesh or
