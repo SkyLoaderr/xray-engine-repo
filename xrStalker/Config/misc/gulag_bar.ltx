@@ -1527,7 +1527,7 @@ path_walk = escape_2_walk
 path_look = escape_hide_2_look
 radius = 0
 no_retreat = true
-on_signal = bandits_alive | camper@bar_ecolog_professor_companion_1a %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\scenario\Rostok\killer_radio_enemy_3)%
+on_signal = bandits_alive | {=rostok_gulag_2_inactive} camper@bar_ecolog_professor_companion_2a %+bar_bandits_dead%, camper@bar_ecolog_professor_companion_1a %+bar_bandits_alive -bar_kruglov_follow_talk =play_snd(characters_voice\scenario\Rostok\killer_radio_enemy_3)%
 def_state_moving = assault
 danger = danger_condition@2
 
