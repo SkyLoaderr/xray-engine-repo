@@ -361,7 +361,7 @@ dont_change_job     = true
 on_signal           = leader_dead | remark@val_escort_nap1_phrase10
 on_info             = {=distance_to_obj_le(400:3)} remark@val_escort_nap1_phrase10
 meet                = no_meet ;meet@val_escort_nap1_ignore
-danger              = danger@val_escort_nap1_1
+danger              = danger@val_escort_nap1_small ;danger@val_escort_nap1_1
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
@@ -374,6 +374,7 @@ target              = 400 ;logic@val_escort_captive
 on_signal           = sound_end | {+val_escort_actor_helped} remark@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
 on_timer            = 20000 | {+val_escort_actor_helped} remark@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
 meet                = no_meet ;meet@val_escort_nap1_ignore
+danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
