@@ -74,10 +74,16 @@ RELATION_REGISTRY::~RELATION_REGISTRY ()
 
 //////////////////////////////////////////////////////////////////////////
 
+extern void load_attack_goodwill();
+extern bool IsGameTypeSingle	();
 CRelationRegistryWrapper& RELATION_REGISTRY::relation_registry()
 {
-	if(!m_relation_registry)
+	if(!m_relation_registry){
+		VERIFY(IsGameTypeSingle());
+
 		m_relation_registry = xr_new<CRelationRegistryWrapper>();
+		load_attack_goodwill();
+	}
 
 	return *m_relation_registry;
 }

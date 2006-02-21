@@ -1,45 +1,63 @@
-//////////////////////////////////////////////////////////////////////////
-// relation_registry_actions.cpp:	реестр для хранения данных об отношении персонажа к 
-//									другим персонажам
-//////////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "relation_registry.h"
 #include "alife_registry_wrappers.h"
 
-#include "character_community.h"
-#include "character_reputation.h"
-#include "character_rank.h"
-
 #include "actor.h"
-#include "inventoryowner.h"
-#include "entity_alive.h"
 #include "ai/stalker/ai_stalker.h"
-#include "ai/monsters/BaseMonster/base_monster.h"
-#include "level.h"
 
 #include "seniority_hierarchy_holder.h"
 #include "team_hierarchy_holder.h"
 #include "squad_hierarchy_holder.h"
 #include "group_hierarchy_holder.h"
 
-//#ifndef _DEBUG
 #	define DEFAULT_HIT_BEHAVIOUR
 #	define DEFAULT_KILL_BEHAVIOUR
-//#endif
 
-//////////////////////////////////////////////////////////////////////////
+
+struct SAttackGoodwillStorage
+{
+	CHARACTER_GOODWILL	friend_attack_goodwill;
+	CHARACTER_GOODWILL	neutral_attack_goodwill;
+	CHARACTER_GOODWILL	enemy_attack_goodwill;
+
+	CHARACTER_GOODWILL	friend_attack_reputation;
+	CHARACTER_GOODWILL	neutral_attack_reputation;
+	CHARACTER_GOODWILL	enemy_attack_reputation;
+	
+	void load(LPCSTR prefix)
+	{
+		string128					s;
+		friend_attack_goodwill		= pSettings->r_s32(ACTIONS_POINTS_SECT, strconcat(s,prefix,"friend_attack_goodwill"));
+		neutral_attack_goodwill		= pSettings->r_s32(ACTIONS_POINTS_SECT, strconcat(s,prefix,"neutral_attack_goodwill"));
+		enemy_attack_goodwill		= pSettings->r_s32(ACTIONS_POINTS_SECT, strconcat(s,prefix,"enemy_attack_goodwill"));
+
+		friend_attack_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, strconcat(s,prefix,"friend_attack_reputation"));
+		neutral_attack_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, strconcat(s,prefix,"neutral_attack_reputation"));
+		enemy_attack_reputation		= pSettings->r_s32(ACTIONS_POINTS_SECT, strconcat(s,prefix,"enemy_attack_reputation"));
+	}
+};
+SAttackGoodwillStorage gw_danger,gw_free;
+
+void load_attack_goodwill()
+{
+	gw_danger.load("danger_");
+	gw_free.load("free_");
+}
+#include "memory_manager.h"
+#include "enemy_manager.h"
 
 void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationAction action)
 {
-	static CHARACTER_GOODWILL friend_attack_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_attack_goodwill");
-	static CHARACTER_GOODWILL neutral_attack_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_attack_goodwill");
-	static CHARACTER_GOODWILL enemy_attack_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_attack_goodwill");
+/*
+	static CHARACTER_GOODWILL friend_attack_goodwill	= pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_attack_goodwill");
+	static CHARACTER_GOODWILL neutral_attack_goodwill	= pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_attack_goodwill");
+	static CHARACTER_GOODWILL enemy_attack_goodwill		= pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_attack_goodwill");
 
-	static CHARACTER_GOODWILL friend_attack_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_attack_reputation");
+
+	static CHARACTER_GOODWILL friend_attack_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_attack_reputation");
 	static CHARACTER_GOODWILL neutral_attack_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_attack_reputation");
-	static CHARACTER_GOODWILL enemy_attack_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_attack_reputation");
-
+	static CHARACTER_GOODWILL enemy_attack_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_attack_reputation");
+*/
 	static CHARACTER_GOODWILL friend_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_kill_goodwill");
 	static CHARACTER_GOODWILL neutral_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_kill_goodwill");
 	static CHARACTER_GOODWILL enemy_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_kill_goodwill");
@@ -50,7 +68,7 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 	static CHARACTER_REPUTATION_VALUE enemy_kill_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_kill_reputation");
 
 	//порог величины хита, после которого регистрируется помощь актера персонажу
-	static float help_hit_threshold		= pSettings->r_float(ACTIONS_POINTS_SECT, "help_hit_threshold");
+//.	static float help_hit_threshold		= pSettings->r_float(ACTIONS_POINTS_SECT, "help_hit_threshold");
 	//(с) мин. время через которое снова будет зарегестрировано сообщение об атаке на персонажа
 	static u32	 min_attack_delta_time	= u32(1000.f * pSettings->r_float(ACTIONS_POINTS_SECT, "min_attack_delta_time"));
 
@@ -88,7 +106,7 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 			{
 				//учитывать ATTACK и FIGHT_HELP, только если прошло время
 				//min_attack_delta_time 
-				FIGHT_DATA* fight_data_from = FindFight (from->ID());
+				FIGHT_DATA* fight_data_from = FindFight (from->ID(), true);
 				if(Device.dwTimeGlobal - fight_data_from->attack_time < min_attack_delta_time)
 					break;
 
@@ -96,8 +114,8 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 				//если мы атаковали персонажа или монстра, который 
 				//кого-то атаковал, то мы помогли тому, кто защищался
-				FIGHT_DATA* fight_data = FindFight (to->ID());
-				if(fight_data && fight_data->total_hit > help_hit_threshold)
+				FIGHT_DATA* fight_data = FindFight (to->ID(),true);
+				if(fight_data /* && fight_data->total_hit > help_hit_threshold*/)
 				{
 #pragma todo("убрать поиск Level().Objects.net_Find, так как могут быть тормоза")
 					CAI_Stalker* defending_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->defender));
@@ -110,22 +128,24 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 
 			if(stalker)
 			{
+				SAttackGoodwillStorage*		st = stalker->memory().enemy().selected()?&gw_danger:&gw_free;
+
 				CHARACTER_GOODWILL delta_goodwill = 0;
 				CHARACTER_REPUTATION_VALUE	delta_reputation = 0;
 				if(ALife::eRelationTypeEnemy == relation)
 				{
-					delta_goodwill = enemy_attack_goodwill;
-					delta_reputation = enemy_attack_reputation;
+					delta_goodwill		= st->enemy_attack_goodwill;
+					delta_reputation	= st->enemy_attack_reputation;
 				}
 				else if(ALife::eRelationTypeNeutral == relation)
 				{
-					delta_goodwill = neutral_attack_goodwill;
-					delta_reputation = neutral_attack_reputation;
+					delta_goodwill		= st->neutral_attack_goodwill;
+					delta_reputation	= st->neutral_attack_reputation;
 				}
 				else if(ALife::eRelationTypeFriend == relation)
 				{
-					delta_goodwill = friend_attack_goodwill;
-					delta_reputation = friend_attack_reputation;
+					delta_goodwill		= st->friend_attack_goodwill;
+					delta_reputation	= st->friend_attack_reputation;
 				}
 
 				//сталкер при нападении на членов своей же группировки отношения не меняют
@@ -155,7 +175,7 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 		{
 			if(stalker)
 			{
-				FIGHT_DATA* fight_data_from = FindFight (from->ID());	
+				FIGHT_DATA* fight_data_from = FindFight (from->ID(), true);	
 				
 				//мы помним то, какое отношение обороняющегося к атакующему
 				//было перед началом драки

@@ -1015,32 +1015,36 @@ void CActor::shedule_Update	(u32 DT)
 	pCamBobbing->SetState						(mstate_real, conditions().IsLimping(), IsZoomAimingMode());
 
 	//звук тяжелого дыхания при уталости и хромании
-	if(conditions().IsLimping() && g_Alive()){
-		if(!m_HeavyBreathSnd._feedback()){
-			m_HeavyBreathSnd.play_at_pos(this, Fvector().set(0,ACTOR_HEIGHT,0), sm_Looped | sm_2D);
-		}else{
-			m_HeavyBreathSnd.set_position(Fvector().set(0,ACTOR_HEIGHT,0));
-		}
-	}else if(m_HeavyBreathSnd._feedback()){
-		m_HeavyBreathSnd.stop		();
-	}
-
-	float bs = conditions().BleedingSpeed();
-	if(bs>0.025f)
+	if(this==Level().CurrentControlEntity())
 	{
-		Fvector snd_pos;
-		snd_pos.set(0,ACTOR_HEIGHT,0);
-		if(!m_BloodSnd._feedback())
-			m_BloodSnd.play_at_pos(this, snd_pos, sm_Looped | sm_2D);
-		else
-			m_BloodSnd.set_position(snd_pos);
+		if(conditions().IsLimping() && g_Alive()){
+			if(!m_HeavyBreathSnd._feedback()){
+				m_HeavyBreathSnd.play_at_pos(this, Fvector().set(0,ACTOR_HEIGHT,0), sm_Looped | sm_2D);
+			}else{
+				m_HeavyBreathSnd.set_position(Fvector().set(0,ACTOR_HEIGHT,0));
+			}
+		}else if(m_HeavyBreathSnd._feedback()){
+			m_HeavyBreathSnd.stop		();
+		}
 
-		float v = bs+0.25f;
+		float bs = conditions().BleedingSpeed();
+		if(bs>0.025f)
+		{
+			Fvector snd_pos;
+			snd_pos.set(0,ACTOR_HEIGHT,0);
+			if(!m_BloodSnd._feedback())
+				m_BloodSnd.play_at_pos(this, snd_pos, sm_Looped | sm_2D);
+			else
+				m_BloodSnd.set_position(snd_pos);
 
-		m_BloodSnd.set_volume	(v);
-	}else{
-		if(m_BloodSnd._feedback())
-			m_BloodSnd.stop();
+			float v = bs+0.25f;
+
+			m_BloodSnd.set_volume	(v);
+		}else{
+			if(m_BloodSnd._feedback())
+				m_BloodSnd.stop();
+		}
+
 	}
 	
 	//если в режиме HUD, то сама модель актера не рисуется

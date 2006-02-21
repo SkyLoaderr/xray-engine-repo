@@ -114,7 +114,7 @@ void SBinocVisibleObj::Update()
 			CBaseMonster	*monster			= smart_cast<CBaseMonster*>(m_object);
 
 			if(our_inv_owner && others_inv_owner && !monster){
-				if (GameID() == GAME_SINGLE)
+				if (IsGameTypeSingle())
 				{
 					switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
 					{

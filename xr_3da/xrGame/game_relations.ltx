@@ -111,12 +111,28 @@ master			=        0
 ;в зависимости от совершенного действия
 [action_points]
 
+;-------------------------------------------------------
+free_friend_attack_goodwill			= -100
+free_neutral_attack_goodwill		= -200
+free_enemy_attack_goodwill			= 0
+
+danger_friend_attack_goodwill		= -100
+danger_neutral_attack_goodwill		= -200
+danger_enemy_attack_goodwill		= 0
+
+free_friend_attack_reputation		= 0
+free_neutral_attack_reputation		= 0
+free_enemy_attack_reputation		= 0
+
+danger_friend_attack_reputation		= 0
+danger_neutral_attack_reputation	= 0
+danger_enemy_attack_reputation		= 0
+;--------------------------------------------------
+
 friend_attack_goodwill			= -100
 neutral_attack_goodwill			= -200
 enemy_attack_goodwill			= 0
 
-; Имхо репутация не должна меняться при атаке, только при убийстве.
-; Иначе за пару боев мы себе устроим отрицательную репутацию :)
 friend_attack_reputation		= 0
 neutral_attack_reputation		= 0
 enemy_attack_reputation			= 0

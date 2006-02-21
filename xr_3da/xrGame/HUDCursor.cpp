@@ -162,7 +162,7 @@ void CHUDCursor::Render()
 			CEntityAlive*	pCurEnt = smart_cast<CEntityAlive*>	(Level().CurrentEntity());
 			PIItem			l_pI	= smart_cast<PIItem>		(RQ.O);
 
-			if (GameID() == GAME_SINGLE)
+			if (IsGameTypeSingle())
 			{
 				if (E && E->g_Alive() && !E->cast_base_monster())
 				{
