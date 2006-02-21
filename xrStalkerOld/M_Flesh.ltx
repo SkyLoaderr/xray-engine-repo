@@ -1,14 +1,6 @@
 ;===========================================================================
 ; FLESH
 ;===========================================================================
-[flesh_group]
-GroupControlSection	= spawn_group
-;$spawn              = "monsters\flesh-group"		; option for Level Editor
-$npc			    = on						; option for Level Editor
-Human		     	= off						; option for ALife Simulator
-class               = AI_FLE_G					; AI class
-monster_section		= m_flesh_e
-
 [m_flesh_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_gravi_zone
@@ -433,3 +425,12 @@ fire_wound_immunity		= 0.30
 stand_attack_0 =	  	0.25,		0.30,		    70,        0.0, 0.5, 1.0,		  -1.0, 1.0, -1.0, 1.0,								  2.0
 ;Both leg strike
 stand_attack_1 =	  	0.30,		0.35,		    150,        0.0, 0.5, 1.0,		  -1.0, 1.0, -1.0, 1.0,								  2.0
+
+
+[flesh_group]
+GroupControlSection	= spawn_group
+;$spawn              = "monsters\flesh-group"		; option for Level Editor
+$npc			    = on						; option for Level Editor
+Human		     	= off						; option for ALife Simulator
+class               = AI_FLE_G					; AI class
+monster_section		= m_flesh_e
