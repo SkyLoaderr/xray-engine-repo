@@ -180,6 +180,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("skip_transfer_enemy",			&CScriptGameObject::skip_transfer_enemy)
 		.def("set_home",					&CScriptGameObject::set_home)
 		.def("remove_home",					&CScriptGameObject::remove_home)
+		.def("berserk",						&CScriptGameObject::berserk)
 		.def("can_script_capture",			&CScriptGameObject::can_script_capture)
 		.def("set_custom_panic_threshold",	&CScriptGameObject::set_custom_panic_threshold)
 		.def("set_default_panic_threshold",	&CScriptGameObject::set_default_panic_threshold)
