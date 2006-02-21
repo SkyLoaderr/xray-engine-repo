@@ -910,6 +910,7 @@ void CAI_Stalker::net_Relcase				(CObject*	 O)
 		return;
 
 	agent_manager().remove_links		(O);
+	m_pPhysics_support->in_NetRelcase	(O);
 }
 
 CMovementManager *CAI_Stalker::create_movement_manager	()

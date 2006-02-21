@@ -19,7 +19,7 @@ virtual				~CPHCapture							();
 
 bool				Failed								(){return b_failed;};
 void				Release								();
-
+void				net_Relcase							(CObject* O);
 protected:
 CPHCharacter		*m_character;
 CPhysicsElement*	m_taget_element;

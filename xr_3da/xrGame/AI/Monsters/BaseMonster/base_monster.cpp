@@ -395,6 +395,7 @@ void CBaseMonster::net_Relcase(CObject *O)
 		
 		monster_squad().remove_links(O);
 	}
+	m_pPhysics_support->in_NetRelcase(O);
 }
 	
 void CBaseMonster::create_base_controls()

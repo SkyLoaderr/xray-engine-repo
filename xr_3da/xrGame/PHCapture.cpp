@@ -25,7 +25,7 @@ void CPHCapture::CreateBody()
 
 CPHCapture::~CPHCapture()
 {
-	CPHUpdateObject::Deactivate();
+	
 	Deactivate();
 }
 void CPHCapture::PhDataUpdate(dReal /**step/**/)
@@ -84,7 +84,7 @@ void CPHCapture::PhTune(dReal /**step/**/)
 
 void CPHCapture::PullingUpdate()
 {
-	if(!m_taget_element->isActive()||Device.dwTimeGlobal-m_time_start>m_capture_time)
+	if(!m_taget_element->isActive()||Device.dwTimeGlobal-m_time_start>m_capture_time&&false)
 	{
 		Release();
 		return;
@@ -111,23 +111,9 @@ void CPHCapture::PullingUpdate()
 		m_joint=dJointCreateBall(0,0);
 		m_island.AddJoint(m_joint);
 		m_ajoint=dJointCreateAMotor(0,0);
+		m_island.AddJoint(m_ajoint);
 		dJointSetAMotorMode (m_ajoint, dAMotorEuler);
 		dJointSetAMotorNumAxes (m_ajoint, 3);
-
-
-
-		//dJointSetAMotorParam(m_ajoint,dParamFMax ,m_capture_force*0.2f);
-		//dJointSetAMotorParam(m_ajoint,dParamVel  ,0.f);
-
-		dJointSetAMotorParam(m_ajoint,dParamFMax2 ,m_capture_force*0.2f);
-		dJointSetAMotorParam(m_ajoint,dParamVel2  ,0.f);
-
-		dJointSetAMotorParam(m_ajoint,dParamFMax3 ,m_capture_force*0.2f);
-		dJointSetAMotorParam(m_ajoint,dParamVel3  ,0.f);
-
-
-
-
 
 		CreateBody();
 		dBodySetPosition(m_body,capture_bone_position.x,capture_bone_position.y,capture_bone_position.z);
@@ -177,12 +163,58 @@ void CPHCapture::PullingUpdate()
 				dJointSetAMotorAxis (m_ajoint, 2, 2, 0.f,0.f,1.f);
 			}
 		}
+		//float hi=-M_PI/2.f,lo=-hi;
+		//dJointSetAMotorParam(m_ajoint,dParamLoStop ,lo);
+		//dJointSetAMotorParam(m_ajoint,dParamHiStop ,hi);	
+		//dJointSetAMotorParam(m_ajoint,dParamLoStop2 ,lo);
+		//dJointSetAMotorParam(m_ajoint,dParamHiStop2 ,hi);	
+		//dJointSetAMotorParam(m_ajoint,dParamLoStop3 ,lo);
+		//dJointSetAMotorParam(m_ajoint,dParamHiStop3 ,hi);	
 
+
+		dJointSetAMotorParam(m_ajoint,dParamFMax ,m_capture_force*0.2f);
+		dJointSetAMotorParam(m_ajoint,dParamVel  ,0.f);
+
+		dJointSetAMotorParam(m_ajoint,dParamFMax2 ,m_capture_force*0.2f);
+		dJointSetAMotorParam(m_ajoint,dParamVel2  ,0.f);
+
+		dJointSetAMotorParam(m_ajoint,dParamFMax3 ,m_capture_force*0.2f);
+		dJointSetAMotorParam(m_ajoint,dParamVel3  ,0.f);
+
+
+///////////////////////////////////
+		float sf=0.1f,df=10.f;
+
+		float erp=ERP(world_spring*sf,world_damping*df);
+		float cfm=CFM(world_spring*sf,world_damping*df);
+		dJointSetAMotorParam(m_ajoint,dParamStopERP ,erp);
+		dJointSetAMotorParam(m_ajoint,dParamStopCFM ,cfm);
+
+		dJointSetAMotorParam(m_ajoint,dParamStopERP2 ,erp);
+		dJointSetAMotorParam(m_ajoint,dParamStopCFM2 ,cfm);
+
+		dJointSetAMotorParam(m_ajoint,dParamStopERP3 ,erp);
+		dJointSetAMotorParam(m_ajoint,dParamStopCFM3 ,cfm);
+		/////////////////////////////////////////////////////////////////////
+		///dJointSetAMotorParam(m_joint1,dParamFudgeFactor ,0.1f);
+		//dJointSetAMotorParam(m_joint1,dParamFudgeFactor2 ,0.1f);
+		//dJointSetAMotorParam(m_joint1,dParamFudgeFactor3 ,0.1f);
+		/////////////////////////////////////////////////////////////////////////////
+		sf=0.1f,df=10.f;
+		erp=ERP(world_spring*sf,world_damping*df);
+		cfm=CFM(world_spring*sf,world_damping*df);
+		dJointSetAMotorParam(m_ajoint,dParamCFM ,cfm);
+		dJointSetAMotorParam(m_ajoint,dParamCFM2 ,cfm);
+		dJointSetAMotorParam(m_ajoint,dParamCFM3 ,cfm);
+	
+		
+///////////////////////////
 
 		//dJointSetAMotorParam(m_ajoint,dParamLoStop ,0.f);
 		//dJointSetAMotorParam(m_ajoint,dParamHiStop ,0.f);	
 
 		m_taget_element->set_DynamicLimits();
+		//m_taget_object->PPhysicsShell()->set_JointResistance()
 		e_state=cstCaptured;
 		return;
 	}
@@ -243,9 +275,17 @@ void CPHCapture::Release()
 	if(m_joint) 
 	{
 		m_island.RemoveJoint(m_joint);
+	
 		dJointDestroy(m_joint);
+
 	}
 	m_joint=NULL;
+	if(m_ajoint)
+	{
+		m_island.RemoveJoint(m_ajoint);
+		dJointDestroy(m_ajoint);
+	}
+	m_ajoint=NULL;
 	if(m_body) 
 	{
 		m_island.RemoveBody(m_body);
@@ -253,7 +293,7 @@ void CPHCapture::Release()
 	}
 	m_body=NULL;
 
-	if(m_taget_element&&m_taget_object->PPhysicsShell())
+	if(e_state==cstPulling&&m_taget_element&&!m_taget_object->getDestroy()&&m_taget_object->PPhysicsShell()&&m_taget_object->PPhysicsShell()->isActive())
 	{
 		m_taget_element->set_DynamicLimits();
 	}
@@ -265,11 +305,15 @@ void CPHCapture::Release()
 void CPHCapture::Deactivate()
 {
 	Release();
-	if(m_taget_object&&m_taget_element&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->isActive())
-	{
-		//m_taget_element->set_ObjectContactCallback(0);
-		m_character->SetObjectContactCallback(0);
-	}
+	//if(m_taget_object&&m_taget_element&&!m_taget_object->getDestroy()&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->isActive())
+	//{
+	//	m_taget_element->set_ObjectContactCallback(0);
+
+	//}
+	m_character->SetObjectContactCallback(0);
+	CPHUpdateObject::Deactivate();
+	m_taget_object=NULL;
+	m_taget_element=NULL;
 }
 
 void CPHCapture::object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
@@ -316,5 +360,12 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,
 			
 		}
 
+	}
+}
+void CPHCapture::net_Relcase(CObject* O)
+{
+	if(static_cast<CObject*>(m_taget_object)==O)
+	{
+		Deactivate();
 	}
 }

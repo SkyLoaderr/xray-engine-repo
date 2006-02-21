@@ -14,6 +14,7 @@
 #include "level.h"
 #include "PHActivationShape.h"
 #include "IKLimbsController.h"
+#include "PHCapture.h"
 const float default_hinge_friction = 5.f;
 
 void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
@@ -319,7 +320,7 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	pShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
 	pShell->SmoothElementsInertia(0.3f);
-	pShell->set_JointResistance(0.f);
+	//pShell->set_JointResistance(0.f);
 	pShell->set_PhysicsRefObject(&m_EntityAlife);
 	SAllDDOParams disable_params;
 	disable_params.Load(smart_cast<CKinematics*>(m_EntityAlife.Visual())->LL_UserData());
@@ -514,4 +515,13 @@ void CCharacterPhysicsSupport::DestroyIKController()
 void CCharacterPhysicsSupport::CalculateIK(CKinematics* K)
 {
 	m_ik_controller->Calculate(K,mXFORM);
+}
+
+void		 CCharacterPhysicsSupport::in_NetRelcase(CObject* O)																													
+{
+	CPHCapture* c=m_PhysicMovementControl.PHCapture();
+	if(c)
+	{
+		c->net_Relcase(O);
+	}
 }

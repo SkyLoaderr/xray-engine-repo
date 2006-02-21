@@ -97,6 +97,7 @@ public:
 		void 							in_shedule_Update				( u32 DT )																											;
 		void 							in_NetSpawn						(CSE_Abstract* e)																									;
 		void 							in_NetDestroy					()																													;
+		void							in_NetRelcase					(CObject* O)																										;
 		void 							in_Init							()																													;
 		void 							in_Load							(LPCSTR section)																									;
 		void 							in_Hit							(float P,Fvector &dir, CObject *who, s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing=false);

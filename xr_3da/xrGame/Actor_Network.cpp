@@ -770,6 +770,7 @@ void CActor::net_Relcase	(CObject* O)
 	inherited::net_Relcase	(O);
 
 	memory().remove_links	(O);
+	m_pPhysics_support->in_NetRelcase(O);
 }
 
 BOOL	CActor::net_Relevant		()				// relevant for export to server
