@@ -156,4 +156,5 @@
 #	include "WeaponVal.h"
 #	include "WeaponVintorez.h"
 #	include "WeaponWalther.h"
+#	include "saved_game_wrapper.h"
 #endif
