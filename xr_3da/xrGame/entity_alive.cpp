@@ -286,7 +286,6 @@ void	CEntityAlive::Hit							(SHit* pHDS)
 	//-------------------------------------------
 	conditions().SetConditionDeltaTime(0);
 	//-------------------------------------------
-//	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
 	inherited::Hit(&HDS);
 
 	if (g_Alive()&&IsGameTypeSingle()) {
@@ -297,13 +296,13 @@ void	CEntityAlive::Hit							(SHit* pHDS)
 			RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
 		}
 	}
+
 }
 
 void CEntityAlive::Die	(CObject* who)
 {
 	if(IsGameTypeSingle())
 		RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);
-
 	inherited::Die(who);
 	
 	const CGameObject *who_object = smart_cast<const CGameObject*>(who);

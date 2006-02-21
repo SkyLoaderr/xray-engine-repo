@@ -115,7 +115,7 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				//если мы атаковали персонажа или монстра, который 
 				//кого-то атаковал, то мы помогли тому, кто защищался
 				FIGHT_DATA* fight_data = FindFight (to->ID(),true);
-				if(fight_data /* && fight_data->total_hit > help_hit_threshold*/)
+				if(fight_data)
 				{
 #pragma todo("убрать поиск Level().Objects.net_Find, так как могут быть тормоза")
 					CAI_Stalker* defending_stalker = smart_cast<CAI_Stalker*>(Level().Objects.net_Find(fight_data->defender));
