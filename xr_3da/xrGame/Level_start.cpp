@@ -8,6 +8,7 @@
 #include "xrGameSpyServer.h"
 #include "../x_ray.h"
 #include "../device.h"
+#include "../IGame_Persistent.h"
 
 BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {
@@ -129,14 +130,18 @@ bool CLevel::net_start1				()
 	{
 		pApp->LoadTitle			("SERVER: Starting...");
 
+		typedef IGame_Persistent::params params;
+		params							&p = g_pGamePersistent->m_game_params;
 		// Connect
-		if (strstr(*m_caServerOptions, "/single"))
+		if (!xr_strcmp(p.m_game_type,"single"))
 			Server					= xr_new<xrServer>();		
 		else
 			Server					= xr_new<xrGameSpyServer>();
 		
 
-		if (!strstr(*m_caServerOptions,"/alife")) {
+//		if (!strstr(*m_caServerOptions,"/alife")) 
+		if (xr_strcmp(p.m_alife,"alife"))
+		{
 			string64			l_name = "";
 			const char* SOpts = *m_caServerOptions;
 			strncpy(l_name, *m_caServerOptions, strchr(SOpts, '/') - SOpts);
