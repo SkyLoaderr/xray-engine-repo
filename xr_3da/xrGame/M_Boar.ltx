@@ -27,49 +27,6 @@ smart_terrain_choose_interval	= 00:15:00
 Spawn_Inventory_Item_Section = mutant_boar_leg
 Spawn_Inventory_Item_Probability = 0.2
 
-
-;------------------------------------------------------------------------
-; Sound
-;------------------------------------------------------------------------
-
-sound_idle				= monsters\boar\boar_idle_			; idle_
-sound_eat				= monsters\boar\boar_eat_			; eat_
-sound_aggressive			= monsters\boar\boar_aggressive_	; attack_
-sound_attack_hit		= monsters\boar\attack_hit_
-sound_take_damage		= monsters\boar\boar_pain_			; hit_
-sound_die				= monsters\boar\boar_death_			; die_
-sound_bkgnd				= monsters\biting\def_
-sound_threaten			= monsters\boar\boar_aggressive_	; threaten_
-sound_landing			= monsters\boar\landing_
-sound_steal				= monsters\biting\def_
-sound_panic				= monsters\boar\boar_panic_			; hit_
-sound_growling			= monsters\biting\def_
-sound_die_in_anomaly	= monsters\boar\boar_death_
-
-killer_clsids			= Z_MINCER,Z_GALANT
-
-
-;Frequency of sounds to be played
-idle_sound_delay		= 18000
-eat_sound_delay			= 5000
-attack_sound_delay		= 4000
-
-SoundThreshold			= 0.06             ; range [0..1]
-max_hear_dist			= 60
-
-;------------------------------------------------------------------------
-; Vision
-;------------------------------------------------------------------------
-min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
-max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
-visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
-always_visible_distance 	= 0.3
-time_quant					= 0.001
-decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
-velocity_factor		     	= 0.5
-luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
-transparency_threshold		= 0.25
-
 ;------------------------------------------------------------------------
 ; Physics
 ;------------------------------------------------------------------------
@@ -82,6 +39,7 @@ ph_crash_speed_max			= 30
 ph_collision_damage_factor	= 0.1
 ph_mass 				= 250	;110
 
+destroyed_vis_name	 	= physics\dead_body\skelet_crash_monster
 
 ph_skeleton_airr_lin_factor   = 350.0
 ph_skeleton_airr_ang_factor   = 0.3
@@ -90,28 +48,6 @@ ph_skeleton_ddelay	     	  = 1500
 ph_skel_fatal_impulse_factor  = 5.0
 ph_after_death_velocity_factor= 0.75
 ph_skel_shot_up_factor        = 0.15
-
-
-;------------------------------------------------------------------------
-; Attack
-;------------------------------------------------------------------------
-
-
-attack_effector			= m_boar_attack_effector
-attack_params			= m_boar_attack_params
-;attack parameters
-MinAttackDist			= 2.6	
-MaxAttackDist			= 3.2
-as_min_dist				= 1.4
-as_step					= 0.5
-
-Run_Attack_Dist			= 3.5,		4.0
-Run_Attack_Delay		= 1000,		3000
-
-
-hit_type				= wound				; type of attack
-damage					= m_boar_damage
-
 
 ;------------------------------------------------------------------------
 ; Movement
@@ -131,9 +67,24 @@ Accel_Generic			= 1.5
 Accel_Calm				= 2.5
 Accel_Aggressive		= 5.5
 
+;------------------------------------------------------------------------
+; Attack
+;------------------------------------------------------------------------
 
-step_params				= m_boar_step_params
-LegsCount				= 4
+attack_effector			= m_boar_attack_effector
+attack_params			= m_boar_attack_params
+;attack parameters
+MinAttackDist			= 2.6	
+MaxAttackDist			= 3.2
+as_min_dist				= 1.4
+as_step					= 0.5
+
+Run_Attack_Dist			= 3.5,		4.0
+Run_Attack_Delay		= 1000,		3000
+
+
+hit_type				= wound				; type of attack
+damage					= m_boar_damage
 
 ;------------------------------------------------------------------------
 ; Conditions
@@ -174,6 +125,60 @@ eat_freq				=	5.0							; ўрёЄюЄр єъєёют т ёхъ
 eat_slice				=	0.01						; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
 eat_slice_weight		=	10.0						; єьхэ№°хэшх хфv є ЄЁєяр
 
+;------------------------------------------------------------------------
+; Sound
+;------------------------------------------------------------------------
+
+sound_idle				= monsters\boar\boar_idle_			; idle_
+sound_eat				= monsters\boar\boar_eat_			; eat_
+sound_aggressive			= monsters\boar\boar_aggressive_	; attack_
+sound_attack_hit		= monsters\boar\attack_hit_
+sound_take_damage		= monsters\boar\boar_pain_			; hit_
+sound_die				= monsters\boar\boar_death_			; die_
+sound_bkgnd				= monsters\biting\def_
+sound_threaten			= monsters\boar\boar_aggressive_	; threaten_
+sound_landing			= monsters\boar\landing_
+sound_steal				= monsters\biting\def_
+sound_panic				= monsters\boar\boar_panic_			; hit_
+sound_growling			= monsters\biting\def_
+sound_die_in_anomaly	= monsters\boar\boar_death_
+
+killer_clsids			= Z_MINCER,Z_GALANT
+
+
+;Frequency of sounds to be played
+idle_sound_delay		= 18000
+eat_sound_delay			= 5000
+attack_sound_delay		= 4000
+
+SoundThreshold			= 0.06             ; range [0..1]
+max_hear_dist			= 60
+
+;------------------------------------------------------------------------
+; Vision
+;------------------------------------------------------------------------
+eye_fov						= 110
+eye_range					= 50	
+
+min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
+always_visible_distance 	= 0.3
+time_quant					= 0.001
+decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
+velocity_factor		     	= 0.5
+luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
+transparency_threshold		= 0.25
+
+;-------------------------------------------------------------------------
+; Morale
+;-------------------------------------------------------------------------
+Morale_Hit_Quant				= 0.02
+Morale_Attack_Success_Quant		= 0.1
+Morale_Take_Heart_Speed			= 0.1
+Morale_Despondent_Speed			= 0.1
+Morale_Stable_Speed				= 0.05
+Morale_Despondent_Threashold	= 0.5
 
 ;------------------------------------------------------------------------
 ; Other
@@ -195,12 +200,9 @@ bone_fire				= bip01_head				; bone name
 weapon_usage			= 0						; boolean
 
 actor_restrictor		= medium_monster ;medium_monster,stalker,none
-destroyed_vis_name	 	= physics\dead_body\skelet_crash_monster
 
-
-;Field of view, look and hear distance
-eye_fov					= 110
-eye_range				= 50	
+step_params				= m_boar_step_params
+LegsCount				= 4
 
 DayTime_Begin					= 0			; эрўрыр фэ  фы  ьюэёЄЁр
 DayTime_End						= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
@@ -210,14 +212,6 @@ Max_Satiety						= 1.0		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
 distance_to_corpse				= 1.5		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
 
 terrain							= boar_terrain
-
-;Morale
-Morale_Hit_Quant				= 0.02
-Morale_Attack_Success_Quant		= 0.1
-Morale_Take_Heart_Speed			= 0.1
-Morale_Despondent_Speed			= 0.1
-Morale_Stable_Speed				= 0.05
-Morale_Despondent_Threashold	= 0.5
 
 
 material				= creatures\hoof
@@ -241,7 +235,9 @@ stand_attack_1 =	  	0.30,		0.25,	      150,        0.0, 0.5, 0.5,	 -0.6, 0.6, -0
 stand_attack_2 =	  	0.30,		0.35,	      200,        0.0, 1.0, 2.0,	 -0.6, 0.6, -0.6, 0.6,					  3.2
 stand_attack_run_0 =    0.50,		0.35,	      200,        0.0, 1.0, 2.0,	 -0.6, 0.6, -0.6, 0.6,					  2.2
 
-
+;===========================================================================
+; SPECIAL EFFECTORS
+;===========================================================================
 [m_boar_attack_effector]
 
 duality_h			= 0.05;0.01
@@ -264,13 +260,35 @@ ce_amplitude		= 10				; head shake after hit
 ce_period_number	= 2.0				; camera shake times
 ce_power			= 2.5; 2.0			; power 
 
+;=================================================================================
+; Boar Damage
+;=================================================================================
+[m_Boar_damage]
+;bone_name		 = <hit_scale>,-1,<wound_scale>
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale>	- коэфф. изменения величины открытой раны
+
+default				= 0.1, -1, 0.3
+
+bip01_pelvis 		= 0.2, -1, 0.3
+bip01_spine 		= 0.2, -1, 0.3
+bip01_spine1 		= 0.2, -1, 0.3
+bip01_neck 			= 0.2, -1, 1.5
+bip01_head 			= 0.4, -1, 0.3
+
+;=================================================================================
+; Boar Terrain
+;=================================================================================
 [boar_terrain]
 	255,000,255,255 ;на всех уровнях, по графам без описания
 	255,001,255,255 ;на всех уровнях, по равнинам
 	255,002,255,255 ;на всех уровнях, по склонам
 	255,005,255,255 ;на всех уровнях, по деревням
 	255,011,255,255 ;на всех уровнях, по берегу
-
+	
+;===========================================================================
+; Step Events
+;===========================================================================
 [m_boar_step_params]
    
 ;-------------------------------------------------------------------------------------------------------------
@@ -298,19 +316,9 @@ chemical_burn_immunity	= 0.8
 explosion_immunity		= 0.15
 fire_wound_immunity		= 0.15
 
-
-[m_Boar_damage]
-;bone_name		 = <hit_scale>,-1,<wound_scale>
-;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
-;<wound_scale>	- коэфф. изменения величины открытой раны
-
-default				= 0.1, -1, 0.3
-
-bip01_pelvis 		= 0.2, -1, 0.3
-bip01_spine 		= 0.2, -1, 0.3
-bip01_spine1 		= 0.2, -1, 0.3
-bip01_neck 			= 0.2, -1, 1.5
-bip01_head 			= 0.4, -1, 0.3
+;*********************************************************************************
+; BASE PROFILES
+;*********************************************************************************
 
 [boar_weak]:m_boar_e
 $spawn				= "monsters\boars\boar_01_weak"

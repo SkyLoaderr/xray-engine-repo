@@ -108,37 +108,6 @@ attack_effector					= m_bloodsucker_attack_effector
 vampire_effector				= m_bloodsucker_vampire_effector
 
 ;-------------------------------------------------------------------------
-; Invisible Ability
-;-------------------------------------------------------------------------
-Particle_Invisible				= anomaly2\bloodsucker_shield
-Particles_Invisible_Tracks		= monsters\bloodsucker_step
-Particles_Invisible_Tracks_Freq	= 70;100
-
-Invisibility_BlinkTime								= 300
-Invisibility_BlinkMicroInterval  					= 30
-Invisibility_EnergySpeed							= 0.05
-
-
-;-------------------------------------------------------------------------
-; Vampire Ability
-;-------------------------------------------------------------------------
-
-Vampire_Delay			= 100000
-Vampire_Want_Speed		= 0.01
-Vampire_Wound			= 0.2
-
-;--- OUTDATED :: REMOVE THIS PARAM ---------------
-Vampire_Reach_Time		= 15000
-;-------------------------------------------------
-
-
-
-;-------------------------------------------------------------------------
-; Predator Ability
-;-------------------------------------------------------------------------
-Predator_Visual	= monsters\krovosos\krovosos_xray
-
-;-------------------------------------------------------------------------
 ; Entity Conditions
 ;-------------------------------------------------------------------------
 satiety_v 					= 0.0001			;0.01	;скорость уменьшения сытости со временем [0...1]
@@ -194,27 +163,24 @@ idle_sound_delay			= 95000
 eat_sound_delay				= 3000
 attack_sound_delay			= 1000 ;6000
 
-SoundThreshold		 		= 0.01					       ; range [0..1]
-max_hear_dist				= 80 
-
-
 Sound_Invisibility_Change_State		= monsters\bloodsucker\invisible
-
 Sound_Vampire_Grasp					= monsters\bloodsucker\vampire_grasp
 Sound_Vampire_Sucking				= monsters\bloodsucker\vampire_sucking
 Sound_Vampire_Hit					= monsters\bloodsucker\vampire_hit
 Sound_Vampire_StartHunt				= monsters\bloodsucker\vampire_grasp
 Sound_Growl							= monsters\bloodsucker\sucker_growl_
-
 Sound_Alien							= monsters\bloodsucker\sucker_breath_
+
+SoundThreshold		 		= 0.01					       ; range [0..1]
+max_hear_dist				= 80 
 
 ;-------------------------------------------------------------------------
 ; Vision
 ;-------------------------------------------------------------------------
-eye_fov							= 120	
-eye_range						= 80	
+eye_fov						= 120	
+eye_range					= 80	
 
-DynamicObjectsCount	 			= 32
+DynamicObjectsCount	 		= 32
 
 min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
 max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
@@ -225,7 +191,6 @@ decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект 
 velocity_factor		     	= 0.5
 luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
 transparency_threshold		= 0.25
-
 
 ;-------------------------------------------------------------------------
 ; Morale
@@ -263,6 +228,38 @@ LegsCount						= 2
 ;species of monster
 species							= bloodsucker
 
+;-------------------------------------------------------------------------
+; Invisible Ability
+;-------------------------------------------------------------------------
+Particle_Invisible				= anomaly2\bloodsucker_shield
+Particles_Invisible_Tracks		= monsters\bloodsucker_step
+Particles_Invisible_Tracks_Freq	= 70;100
+
+Invisibility_BlinkTime								= 300
+Invisibility_BlinkMicroInterval  					= 30
+Invisibility_EnergySpeed							= 0.05
+
+
+;-------------------------------------------------------------------------
+; Vampire Ability
+;-------------------------------------------------------------------------
+
+Vampire_Delay			= 100000
+Vampire_Want_Speed		= 0.01
+Vampire_Wound			= 0.2
+
+;--- OUTDATED :: REMOVE THIS PARAM ---------------
+Vampire_Reach_Time		= 15000
+;-------------------------------------------------
+
+
+;-------------------------------------------------------------------------
+; Predator Ability
+;-------------------------------------------------------------------------
+Predator_Visual	= monsters\krovosos\krovosos_xray
+
+
+
 ;=================================================================================
 ; Bloodsucker Damage
 ;=================================================================================
@@ -290,6 +287,21 @@ bip01_head 			= 0.8, -1, 0.5
 	255,007,255,255 ;на всех уровнях, по промзастройкам
 	255,008,255,255 ;на всех уровнях, по туннелям
 	255,009,255,255 ;на всех уровнях, по подземельям
+	
+;===========================================================================
+; Step Events
+;===========================================================================
+[m_bloodsucker_step_params]
+; order: front_left, front_right
+;--------------------------------------------------------------------------
+;	anim			Cycles	| time1 | power1 | time2 | power2 | 
+;--------------------------------------------------------------------------
+stand_run_0			=	1,    0.15,    1.0,	   0.70,     1.0,
+stand_run_dmg_0		=	1,	  0.15,    1.0,	   0.40,     1.0,   
+stand_walk_fwd_0	=	1,	  0.05,    1.0,    0.50,     1.0 
+stand_walk_dmg_0	=   1,	  0.05,    1.0,	   0.60,     1.0,   
+stand_steal_0		=	2,	  0.15,    0.2,    0.50,     0.2,   
+;stand_drag_0		=	1,	  0.2,	   1.0,	   0.25,     0.7,   
 
 
 ;===========================================================================
@@ -313,21 +325,6 @@ stand_attack_run_0 =	bloodsucker_run_attack_sect
 [bloodsucker_run_attack_sect]
 value1			= 0.20,		0.1,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
 value2			= 0.60,		0.2,		    550,        0.0, 2.5, 4.50,		  -1.2, 1.2, -1.2, 1.2,				  4.5
-
-;===========================================================================
-; Step Events
-;===========================================================================
-[m_bloodsucker_step_params]
-; order: front_left, front_right
-;--------------------------------------------------------------------------
-;	anim			Cycles	| time1 | power1 | time2 | power2 | 
-;--------------------------------------------------------------------------
-stand_run_0			=	1,    0.15,    1.0,	   0.70,     1.0,
-stand_run_dmg_0		=	1,	  0.15,    1.0,	   0.40,     1.0,   
-stand_walk_fwd_0	=	1,	  0.05,    1.0,    0.50,     1.0 
-stand_walk_dmg_0	=   1,	  0.05,    1.0,	   0.60,     1.0,   
-stand_steal_0		=	2,	  0.15,    0.2,    0.50,     0.2,   
-;stand_drag_0		=	1,	  0.2,	   1.0,	   0.25,     0.7,   
 
 ;===========================================================================
 ; Immunities
