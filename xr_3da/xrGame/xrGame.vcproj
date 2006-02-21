@@ -2221,6 +2221,19 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="saved_game_wrapper"
+					Filter="">
+					<File
+						RelativePath=".\saved_game_wrapper.cpp">
+					</File>
+					<File
+						RelativePath=".\saved_game_wrapper.h">
+					</File>
+					<File
+						RelativePath=".\saved_game_wrapper_inline.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="AMonsters"

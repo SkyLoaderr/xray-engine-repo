@@ -21,8 +21,8 @@ protected:
 private:
 			void					save					(IWriter &memory_stream, CSE_ALifeDynamicObject *object, u32 &object_count);
 
-protected:
-			CSE_ALifeDynamicObject	*get_object				(IReader &file_stream);
+public:
+	static	CSE_ALifeDynamicObject	*get_object				(IReader &file_stream);
 
 public:
 									CALifeObjectRegistry	(LPCSTR section);
