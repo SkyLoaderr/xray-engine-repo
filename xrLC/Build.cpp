@@ -291,7 +291,8 @@ void CBuild::Run	(LPCSTR P)
 void CBuild::err_save	()
 {
 	string256		log_name;
-	strconcat		(log_name,"logs\\build_",Core.UserName,".err");
+	strconcat		(log_name,"build_",Core.UserName,".err");
+	FS.update_path	(log_name,"$logs$",log_name);
 
 	IWriter*		fs	= FS.w_open(log_name);
 	IWriter&		err = *fs;
