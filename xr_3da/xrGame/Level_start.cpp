@@ -130,7 +130,11 @@ bool CLevel::net_start1				()
 		pApp->LoadTitle			("SERVER: Starting...");
 
 		// Connect
-		Server					= xr_new<xrGameSpyServer>();
+		if (strstr(*m_caServerOptions, "/single"))
+			Server					= xr_new<xrServer>();		
+		else
+			Server					= xr_new<xrGameSpyServer>();
+		
 
 		if (!strstr(*m_caServerOptions,"/alife")) {
 			string64			l_name = "";
