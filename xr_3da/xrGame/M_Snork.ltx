@@ -1,51 +1,3 @@
-[m_snork_attack_effector]
-duality_h			= 0.05;0.01
-duality_v			= 0.02;0.01
-blur				= 0.01
-gray				= 0.5
-noise_intensity		= 0.0
-noise_grain			= 1
-noise_fps			= 30
-color_base			= 0.65,0.15,0.1
-color_gray			= 0.333,0.333,0.333
-color_add			= 0,0,0
-time				= 0.30
-time_attack			= 0.05				; fade in
-time_release	    = 0.15				; fade out
-
-; camera effects
-ce_time				= 0.35				; time 
-ce_amplitude		= 10				; head shake after hit
-ce_period_number	= 2.0				; camera shake times
-ce_power			= 2.5; 2.0			; power 
-
-[m_snork_step_params]			   
-;-------------------------------------------------------------------------------------------------------------
-;	anim			| Cycles | time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
-;-------------------------------------------------------------------------------------------------------------
-stand_walk_fwd_0 	=	  5,    0.01,   1,		 0.5,     0.7,    0.15,   1.0,     0.5,   1.0
-stand_walk_dmg_0	=  	  4,	0.2,    1,	     0.25,    0.7,    0.5,    1.0,     0.7,   1.0
-stand_run_fwd_0	 	=  	  6,	0.01,   1,	     0.05,    0.7,    0.2,    1.0,     0.2,   0.2
-stand_run_dmg_0		=	  4,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
-stand_steal_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
-stand_drag_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
-
-
-;===========================================================================
-; IMMUNITIES
-;===========================================================================
-[snork_immunities]
-burn_immunity			= 0.8								;коэффициенты иммунитета 
-strike_immunity			= 0.8
-shock_immunity			= 0.8
-wound_immunity			= 0.8	;0.75	;1.0		
-radiation_immunity		= 0.01	;0.5
-telepatic_immunity		= 1.0
-chemical_burn_immunity	= 0.8
-explosion_immunity		= 0.8
-fire_wound_immunity		= 0.18
-
-
 [m_snork_e]
 GroupControlSection		= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
@@ -265,6 +217,55 @@ bip01_spine 		= 1.0, -1, 0.1
 bip01_spine1 		= 1.0, -1, 0.1
 bip01_neck 			= 1.0, -1, 0.5
 bip01_head 			= 3.0, -1, 0.1
+
+[m_snork_attack_effector]
+duality_h			= 0.05;0.01
+duality_v			= 0.02;0.01
+blur				= 0.01
+gray				= 0.5
+noise_intensity		= 0.0
+noise_grain			= 1
+noise_fps			= 30
+color_base			= 0.65,0.15,0.1
+color_gray			= 0.333,0.333,0.333
+color_add			= 0,0,0
+time				= 0.30
+time_attack			= 0.05				; fade in
+time_release	    = 0.15				; fade out
+
+; camera effects
+ce_time				= 0.35				; time 
+ce_amplitude		= 10				; head shake after hit
+ce_period_number	= 2.0				; camera shake times
+ce_power			= 2.5; 2.0			; power 
+
+[m_snork_step_params]			   
+;-------------------------------------------------------------------------------------------------------------
+;	anim			| Cycles | time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
+;-------------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0 	=	  5,    0.01,   1,		 0.5,     0.7,    0.15,   1.0,     0.5,   1.0
+stand_walk_dmg_0	=  	  4,	0.2,    1,	     0.25,    0.7,    0.5,    1.0,     0.7,   1.0
+stand_run_fwd_0	 	=  	  6,	0.01,   1,	     0.05,    0.7,    0.2,    1.0,     0.2,   0.2
+stand_run_dmg_0		=	  4,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
+stand_steal_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
+stand_drag_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.0
+
+
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[snork_immunities]
+burn_immunity			= 0.8								;коэффициенты иммунитета 
+strike_immunity			= 0.8
+shock_immunity			= 0.8
+wound_immunity			= 0.8	;0.75	;1.0		
+radiation_immunity		= 0.01	;0.5
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 0.8
+explosion_immunity		= 0.8
+fire_wound_immunity		= 0.18
+
+
 
 [snork_weak]:m_snork_e
 $spawn				= "monsters\snorks\snork_01_weak"
