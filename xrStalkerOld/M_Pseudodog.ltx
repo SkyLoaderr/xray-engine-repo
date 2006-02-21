@@ -1,58 +1,3 @@
-[m_pseudodog_attack_params]
-;---------------------------------------------------------------------------------------------------------------------------------------------
-;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
-;---------------------------------------------------------------------------------------------------------------------------------------------
-;Bite
-stand_attack_0	=	  	0.35,		0.10,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1.0, 1.0,								  2.5
-;Jump attack
-run_jamp_1		=		0.55,		0.10,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
-
-[m_pseudodog_attack_effector]
-
-duality_h		= 0.01
-duality_v		= 0.01
-blur			= 0.01
-gray			= 0.5
-noise_intensity = 0.0
-noise_grain		= 1
-noise_fps		= 30
-color_base		= 0.65,0.15,0.1
-color_gray		= 0.333,0.333,0.333
-color_add		= 0,0,0
-time			= 0.3
-time_attack		= 0.05		; fade in
-time_release	        = 0.25		; fade out
-
-; camera effects
-ce_time				= 0.45 ;time 
-ce_amplitude		= -15.0 
-ce_period_number	= 2.0 
-ce_power			= 1.0 ;0.7 ; power 
-
-[m_pseudodog_step_params]                left             right            right           left
-;------------------------------------------------------------------------------------------------------------------
-;	anim					cycles |	time1 | power1 |	time2 | power2 | time3 | power3 | time4     | power4 |
-;-----------------------------------------------------------------------------------------------------------------
-stand_walk_fwd_0		=   	1,		0.1,      1,	  	0.34,    1,		 0.6,	 1,			0.84,		1
-stand_walk_dmg_0		=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
-stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
-stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
-stand_drag_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
-
-;===========================================================================
-; IMMUNITIES
-;===========================================================================
-[pseudodog_immunities]
-burn_immunity 		= 0.5				;коэффициенты иммунитета 
-strike_immunity 	= 0.5
-shock_immunity 		= 0.5
-wound_immunity 		= 0.5	;0.75	;1.0		
-radiation_immunity 	= 0.0000001	;1.0
-telepatic_immunity 	= 1.0
-chemical_burn_immunity 	= 0.8
-explosion_immunity 	= 0.4
-fire_wound_immunity  	= 0.10;0.15	;0.45
-
 [m_pseudodog_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
@@ -91,8 +36,10 @@ bone_fire			 = bip01_head				; bone name
 
 weapon_usage		 = 0						; boolean
 
-; movement
 
+;---------------------------------------------------------------------
+; Physics
+;---------------------------------------------------------------------
 ph_box0_center 		 = 0.0,  0.2,  0.0	;0.0,  0.9,  0.0
 ph_box0_size 		 = 0.50, 0.4,  0.50	
 ph_box1_center 		 = 0.0,  0.2,  0.0
@@ -114,13 +61,9 @@ ph_after_death_velocity_factor= 0.75
 ph_skel_shot_up_factor        = 0.15
 ;---------------------------------------------------------------------
 
-SoundThreshold		 = 0.06						; range [0..1]a
-
-eye_fov				 = 120
-eye_range			 = 70	
-max_hear_dist		 = 60
-
-
+;----------------------------------------------------------------------------
+; Movement::Velocities & Acceleration
+;----------------------------------------------------------------------------
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		1.4,			1.4,		1,		1
 Velocity_RunFwdNormal	= 8.0,		3.0,			3.0,		0.05,	1.0	
@@ -135,7 +78,9 @@ Accel_Generic			= 1.5
 Accel_Calm				= 2.5
 Accel_Aggressive		= 7.0
 
-;attack parameters
+;--------------------------------------------------------------------------
+; Attack parameters
+;--------------------------------------------------------------------------
 MinAttackDist		= 1.6	
 MaxAttackDist		= 2.0
 
@@ -149,25 +94,15 @@ Max_Satiety			= 1.0		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
 
 distance_to_corpse	= 1.8		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
 
-
-min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
-max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
-visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
-always_visible_distance 	= 0.3
-time_quant					= 0.001
-decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
-velocity_factor		     	= 0.5
-luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
-transparency_threshold		= 0.25
-
-
 ;terrain				 = 255,255,255,255,30,40
 terrain				 = pseudodogs_terrain
 
 hit_type = wound
 
-;entity condition
 
+;-------------------------------------------------------------------------
+; Entity Conditions
+;-------------------------------------------------------------------------
 satiety_v 		= 0.0001				;0.01			;скорость уменьшения сытости со временем
 radiation_v 		= 0.00001		;0.004			;скорость уменьшения радиации
 satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости 
@@ -199,17 +134,9 @@ eat_freq			=	5.0		; ўрёЄюЄр єъєёют т ёхъ
 eat_slice			=	0.01	; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
 eat_slice_weight	=	10.0	; єьхэ№°хэшх хфv є ЄЁєяр
 
-
-; Morale
-Morale_Hit_Quant				= 0.1
-Morale_Attack_Success_Quant		= 0.1
-Morale_Take_Heart_Speed			= 0.1
-Morale_Despondent_Speed			= 0.1
-Morale_Stable_Speed				= 0.01
-Morale_Despondent_Threashold	= 0.5
-
-
-; Sounds
+;---------------------------------------------------------
+; Sounds and sound parameters
+;---------------------------------------------------------
 sound_idle				= monsters\pseudodog\pdog_howl_            ;idle_
 sound_eat				= monsters\pseudodog\pdog_chew_            ;eat_
 sound_aggressive			= monsters\pseudodog\pdog_attack_          ;dog\attack_
@@ -232,8 +159,39 @@ idle_sound_delay		= 92000
 eat_sound_delay			= 3000
 attack_sound_delay		= 28500
 
-; jump parameters
-jump_delay					= 3000 ;3000
+SoundThreshold		 = 0.06						; range [0..1]
+max_hear_dist		 = 60
+;-------------------------------------------------------------------------
+; Vision
+;-------------------------------------------------------------------------
+eye_fov				 = 120
+eye_range			 = 70	
+
+
+min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
+always_visible_distance 	= 0.3
+time_quant					= 0.001
+decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
+velocity_factor		     	= 0.5
+luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
+transparency_threshold		= 0.25
+
+;-------------------------------------------------------------------------
+; Morale
+;-------------------------------------------------------------------------
+Morale_Hit_Quant				= 0.1
+Morale_Attack_Success_Quant		= 0.1
+Morale_Take_Heart_Speed			= 0.1
+Morale_Despondent_Speed			= 0.1
+Morale_Stable_Speed				= 0.01
+Morale_Despondent_Threashold	= 0.5
+
+;----------------------------------------------------------------------------
+; Jump Parameters
+;----------------------------------------------------------------------------
+ jump_delay					= 3000 ;3000
 jump_factor					= 2.5
 jump_ground_trace_range		= 1.0
 jump_hit_trace_range		= 2.0
@@ -242,6 +200,9 @@ jump_min_distance			= 4.0
 jump_max_distance			= 8.0
 jump_max_angle				= 0.2
 
+;-------------------------------------------------------------------------
+; Other Stuff (refactoring needed)
+;-------------------------------------------------------------------------
 DamagedThreshold		= 0.3
 
 material				= creatures\medium
@@ -249,12 +210,8 @@ DynamicObjectsCount		= 32
 
 squad_attack_algorithm	= 1
 
-
-
 attack_effector			= m_pseudodog_attack_effector
 damage					= m_pseudodog_damage
-
-	
 
 attack_params			= m_pseudodog_attack_params
 step_params			= m_pseudodog_step_params
@@ -264,12 +221,73 @@ LegsCount				= 4
 anger_hunger_threshold	= 0.1
 anger_loud_threshold	= 0.7
 
-
-
 ;species of monster
 species					= pseudodog
 
+[m_pseudodog_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Bite
+stand_attack_0	=	  	0.35,		0.10,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1.0, 1.0,								  2.5
+;Jump attack
+run_jamp_1		=		0.55,		0.10,		    120,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
 
+;===========================================================================
+; SPECIAL EFFECTORS
+;===========================================================================
+[m_pseudodog_attack_effector]
+
+duality_h		= 0.01
+duality_v		= 0.01
+blur			= 0.01
+gray			= 0.5
+noise_intensity = 0.0
+noise_grain		= 1
+noise_fps		= 30
+color_base		= 0.65,0.15,0.1
+color_gray		= 0.333,0.333,0.333
+color_add		= 0,0,0
+time			= 0.3
+time_attack		= 0.05		; fade in
+time_release	        = 0.25		; fade out
+
+; camera effects
+ce_time				= 0.45 ;time 
+ce_amplitude		= -15.0 
+ce_period_number	= 2.0 
+ce_power			= 1.0 ;0.7 ; power 
+
+;===========================================================================
+; Step Events
+;===========================================================================
+[m_pseudodog_step_params]                left             right            right           left
+;------------------------------------------------------------------------------------------------------------------
+;	anim					cycles |	time1 | power1 |	time2 | power2 | time3 | power3 | time4     | power4 |
+;-----------------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0		=   	1,		0.1,      1,	  	0.34,    1,		 0.6,	 1,			0.84,		1
+stand_walk_dmg_0		=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
+stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
+stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
+stand_drag_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
+
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[pseudodog_immunities]
+burn_immunity 		= 0.5				;коэффициенты иммунитета 
+strike_immunity 	= 0.5
+shock_immunity 		= 0.5
+wound_immunity 		= 0.5	;0.75	;1.0		
+radiation_immunity 	= 0.0000001	;1.0
+telepatic_immunity 	= 1.0
+chemical_burn_immunity 	= 0.8
+explosion_immunity 	= 0.4
+fire_wound_immunity  	= 0.10;0.15	;0.45
+
+;=================================================================================
+; PSEUDO-DOG Damage
+;=================================================================================
 [m_Pseudodog_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
@@ -283,6 +301,9 @@ bip01_spine1 		= 0.7, -1, 0.1
 bip01_neck 			= 0.5, -1, 1.5
 bip01_head 			= 2.0, -1, 0.3
 
+;=================================================================================
+; PSEUDO-DOG Terrain
+;=================================================================================
 [pseudodogs_terrain]
 	255,000,255,255 ;на всех уровнях, по графам без описания
 	255,001,255,255 ;на всех уровнях, по равнинам
@@ -299,7 +320,9 @@ bip01_head 			= 2.0, -1, 0.3
 	255,014,255,255 ;на всех уровнях, по железнодорожным насыпям
 	255,015,255,255 ;на всех уровнях, по искусственным заграждениям
 
-
+;*********************************************************************************
+; WEAK PROFILE
+;*********************************************************************************
 [pseudodog_weak]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_01_weak"
 visual				= monsters\pseudodog\pseudodog
@@ -331,8 +354,9 @@ stand_attack_0	=	  	0.45,		0.30,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1
 ;Jump attack
 run_jamp_1		=		0.55,		0.15,		    220,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
 
-
-
+;*********************************************************************************
+; NORMAL PROFILE
+;*********************************************************************************
 [pseudodog_normal]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_02_normal"
 visual				= monsters\pseudodog\pseudodog
@@ -365,7 +389,9 @@ stand_attack_0	=	  	0.45,		0.40,		    100,        0.0, 1.0, 1.0,		 -1.0, 1.0, -1
 run_jamp_1		=		0.55,		0.25,		    320,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  1.0
 
 
-
+;*********************************************************************************
+; STRONG PROFILE
+;*********************************************************************************
 [pseudodog_strong]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_03_strong"
 visual				= monsters\pseudodog\pseudodog_grey
@@ -401,6 +427,9 @@ run_jamp_1		=		0.55,		0.35,		    420,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1
 
 
 
+;*********************************************************************************
+; CUSTOM PROFILES
+;*********************************************************************************
 
 [pseudodog_arena]:pseudodog_strong
 $spawn				= "monsters\arena\pseudodog_arena"
