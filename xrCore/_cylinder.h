@@ -169,7 +169,7 @@ public:
 			bool		o_inside	= false;
 			bool		b_result	= false;
 			for (int k=0; k<cnt; k++){
-				if (afT[k]<0.f)		{VERIFY(cnt==2);	o_inside=true;	continue;	}
+				if (afT[k]<0.f)		{if(cnt==2)o_inside=true;	continue;	}
 				if (afT[k]<dist)	{dist=afT[k];		b_result=true;				}
 			}
 			return		b_result?(o_inside?rpOriginInside:rpOriginOutside):rpNone;
