@@ -383,6 +383,9 @@ void CLevel::ProcessGameEvents		()
 
 void CLevel::OnFrame	()
 {
+	if (GameID()!=GAME_SINGLE)			psDeviceFlags.set(rsDisableObjectsAsCrows,true);
+	else								psDeviceFlags.set(rsDisableObjectsAsCrows,false);
+
 	// commit events from bullet manager from prev-frame
 	Device.Statistic->TEST0.Begin		();
 	BulletManager().CommitEvents		();
