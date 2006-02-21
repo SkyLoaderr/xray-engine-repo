@@ -3,7 +3,7 @@
 //	Created 	: 27.02.2003
 //  Modified 	: 27.02.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Miscellanious functions for monster "Stalker"
+//	Description : Miscellaneous functions for monster "Stalker"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

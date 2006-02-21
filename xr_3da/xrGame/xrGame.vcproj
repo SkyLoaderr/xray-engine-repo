@@ -4477,7 +4477,7 @@
 							</Filter>
 						</Filter>
 						<Filter
-							Name="Miscellanious"
+							Name="Miscellaneous"
 							Filter="">
 							<File
 								RelativePath=".\ai_stalker_alife.cpp">
