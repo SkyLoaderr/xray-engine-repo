@@ -27,7 +27,6 @@ local killCountProps = {
 }
 
 monster_classes = {
-			[clsid.rat           ] = "rat",
 			[clsid.tushkano_s    ] = "tushkano",
 			[clsid.flesh_s       ] = "flesh",
 			[clsid.boar_s        ] = "boar",
