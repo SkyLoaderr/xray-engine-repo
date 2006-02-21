@@ -571,7 +571,7 @@ function level_changing()
 		return false
 	end
 
-	local gv = game_graph():vertex( sim:actor().m_game_vertex_id )
+	local actor_gv = game_graph():vertex( sim:actor().m_game_vertex_id )
 
-	return sim:level_name( gv:level_id() ) ~= level.name()
+	return actor_gv:level_id() ~= sim:level_id()
 end
