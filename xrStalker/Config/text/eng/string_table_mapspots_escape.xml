@@ -28,6 +28,9 @@
     <string id="novice_leader">
         <text>Novices camp leader.</text>
     </string>
+    <string id="soldiers_bridge">
+        <text>Military post near ruinous bridge. Sometimes accept bribes for brige pass. </text>
+    </string>
     <string id="trader">
         <text>Trader.</text>
     </string>

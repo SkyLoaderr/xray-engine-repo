@@ -1,6 +1,9 @@
     <string id="gar_defend_garbage">
         <text>Eliminate bandits' raid.</text>
     </string>
+    <string id="gar_dialog_hellcar">
+        <text>Propose help to Neutrals Leader </text>
+    </string>
     <string id="gar_hellcar_alive">
         <text>Talk to Damon.</text>
     </string>

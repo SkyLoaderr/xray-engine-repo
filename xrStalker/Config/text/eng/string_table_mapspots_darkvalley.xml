@@ -1,8 +1,29 @@
+    <string id="bar_darklab_documents_1_hint">
+        <text>Borov (Hog)</text>
+    </string>
+    <string id="bar_darklab_documents_2_hint">
+        <text></text>
+    </string>
+    <string id="bar_darklab_documents_3_hint">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="bar_darklab_documents_4_hint">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="val_come_to_trader_1_hint">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="val_come_to_trader_2_hint">
+        <text>This string was added automatically</text>
+    </string>
     <string id="val_zone_bandits_hint">
         <text>Bandits' camp</text>
     </string>
     <string id="val_zone_monolith_hint">
         <text>Monolith base</text>
+    </string>
+    <string id="val_zone_pipe_hint">
+        <text>This string was added automatically</text>
     </string>
     <string id="val_zone_robbers_hint">
         <text>Abandoned pigfarm</text>

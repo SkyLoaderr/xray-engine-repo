@@ -10,6 +10,9 @@
     <string id="bar_dolg_base_rules">
         <text>Check in at Duty's commander</text>
     </string>
+    <string id="bar_dolg_base_rules_fin">
+        <text>Turn back to Bartender.</text>
+    </string>
     <string id="bar_dolg_base_rules_talk">
         <text>Find Duty's commander and check-in.</text>
     </string>
@@ -52,6 +55,9 @@
     <string id="bar_dolg_return_rg6">
         <text>Deliver RG6 to General Voronin</text>
     </string>
+    <string id="bar_dolg_return_to_ivancov">
+        <text>Turn back to Ivancov with a victory.</text>
+    </string>
     <string id="bar_dolg_rg6_quest">
         <text>Task for entering the Duty</text>
     </string>
@@ -69,6 +75,9 @@
     </string>
     <string id="bar_dolg_test_quest">
         <text>Test for entering the Duty</text>
+    </string>
+    <string id="bar_dolg_win_on_arena">
+        <text>Win on the Arena</text>
     </string>
     <string id="bar_hunter_find_rifle">
         <text>Find the rifle lost at bloodsuckers' hut</text>
@@ -98,22 +107,25 @@
         <text>Destroy the camp of mad veterans</text>
     </string>
     <string id="bar_resque_information">
-        <text>Save the research of Professor Kruglov.</text>
+        <text>Help Professor Kruglov to get out from wild territory.</text>
+    </string>
+    <string id="bar_resque_scientific_follow">
+        <text>Escort Kruglov through the "wild territory".</text>
     </string>
     <string id="bar_resque_scientific_information">
         <text>...</text>
     </string>
     <string id="bar_resque_scientific_information_bring">
-        <text>Deliver the flash memory card to bartender.</text>
+        <text>Help Professor Kruglov to get out from wild territory.\n</text>
     </string>
     <string id="bar_resque_scientific_information_get">
-        <text>Obtain a flash memory card with the research results from the professor.</text>
+        <text>Beat through ambushes of Hirelings to professor Kruglov. </text>
     </string>
     <string id="bring_secret_documents">
         <text>Deliver the documents to bartender</text>
     </string>
     <string id="bring_x16_documents">
-        <text>Bring to bartender</text>
+        <text>Bring papers to bartender</text>
     </string>
     <string id="deactivate_radar_now">
         <text>Deactivate the equipment</text>
@@ -122,7 +134,7 @@
         <text>Disable brain scorcher.</text>
     </string>
     <string id="find_and_deactivate_radar">
-        <text>Locate and deactivate the radar</text>
+        <text>Locate control bunker.</text>
     </string>
     <string id="find_darklab_entrance">
         <text>Locate the laboratory entrance</text>
@@ -139,6 +151,9 @@
     <string id="get_darklab_key">
         <text>Obtain the key to the entrance</text>
     </string>
+    <string id="look_for_x16_lab">
+        <text>Find out from scientists the location of laboratory X16</text>
+    </string>
     <string id="mil_svoboda_leader_kill">
         <text>On the territory of the Military base locate and neutralise the leader of Freedom grouping. Rip the clan Leader's insignia off as a proof of his death.</text>
     </string>
@@ -152,5 +167,5 @@
         <text>Find the documents from laboratory X16</text>
     </string>
     <string id="x16_yantar">
-        <text>Find laboratory X16 and obtain there the documents relating to brain scorcher.</text>
+        <text>Talk to scientists</text>
     </string>

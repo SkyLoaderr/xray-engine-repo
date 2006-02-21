@@ -7,7 +7,7 @@
         <text>How are you?</text>
     </string>
     <string id="actor_help_wounded_1">
-        <text>Can’t you see I’m off color? Need medicine kit or at least bandage.</text>
+        <text>Can’t you see I’m off color? Need medicine kit or at least a bandage.</text>
     </string>
     <string id="actor_help_wounded_11">
         <text>Take the kit.</text>
@@ -22,22 +22,22 @@
         <text>Sorry, I’m all out.</text>
     </string>
     <string id="actor_help_wounded_131">
-        <text>Hiking without medicines? You may catch some infection, and you even won't be able to heal yourself.</text>
+        <text>Hiking without medicines? You may catch some infection and you won't even be able to heal yourself.</text>
     </string>
     <string id="actor_help_wounded_14">
         <text>Oh, get on with it, will ya? Sorry, but you won't have mine ones, otherwise I'll be all out.</text>
     </string>
     <string id="actor_help_wounded_141">
-        <text>You choose, but don’t think it does an honor for you.</text>
+        <text>You choose, but don’t think it makes an honor to you.</text>
     </string>
     <string id="companion_hire_dialog_0">
-        <text>Don't you with to accompany me?</text>
+        <text>Don't you wish to accompany me?</text>
     </string>
     <string id="companion_hire_dialog_1">
         <text>Why not. I agree.</text>
     </string>
     <string id="companion_hire_dialog_2">
-        <text>Sorry, I have another things to do.</text>
+        <text>Sorry, I have another plans to realize.</text>
     </string>
     <string id="companion_management_dialog_0">
         <text>Listen to my command.</text>

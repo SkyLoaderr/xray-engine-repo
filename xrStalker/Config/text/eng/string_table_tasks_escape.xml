@@ -103,6 +103,15 @@
     <string id="garbage_meet_stalker_0">
         <text>Meet Grey on Garbage.</text>
     </string>
+    <string id="meet_with_doctor">
+        <text>Meet Doctor </text>
+    </string>
+    <string id="meet_with_doctor_1">
+        <text>Meet Doctor</text>
+    </string>
+    <string id="meet_with_doctor_2">
+        <text>Meet Doctor at Gunslinger's cache</text>
+    </string>
     <string id="storyline_escape_eliminate_gunslinger">
         <text>Kill the Gunslinger.</text>
     </string>

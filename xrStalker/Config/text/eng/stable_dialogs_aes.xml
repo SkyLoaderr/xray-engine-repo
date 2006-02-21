@@ -10,13 +10,13 @@
         <text>Help... Help...</text>
     </string>
     <string id="aes_sergeant_diallog_1002">
-        <text>Whoa... Yeah, Mr. Soldier, I see you've been damaged fairly much...</text>
+        <text>Whoa... Yeah, Mr. Soldier, I see you're spoiled a bit...</text>
     </string>
     <string id="aes_sergeant_diallog_1003">
         <text>Screw you, scoundrel!</text>
     </string>
     <string id="aes_sergeant_diallog_1004">
-        <text>Are you a... hum... monolithian? I've he-e-ard... colonel called you so..</text>
+        <text>Are you a... hem... monolithian? I've he-e-ard... colonel called you so..</text>
     </string>
     <string id="aes_sergeant_diallog_1005">
         <text>If I were one of them, you wouldn't have a chance to talk now... I am Branded one, stalker. And what kind of nut are you?</text>
@@ -43,16 +43,16 @@
         <text>Well, I'm not holding you back.</text>
     </string>
     <string id="aes_sergeant_diallog_1013">
-        <text>Thanks, man... Colonel siad...that you all had to be some kind of inhuman brutes here... kh... whilst you seem to be pretty adequate...</text>
+        <text>Thanks, man... Colonel siad...that you all had to be some kind of inhuman brutes here... kh... while you seem to be pretty sane...</text>
     </string>
     <string id="aes_sergeant_diallog_1014">
         <text>Yeah, there's a plenty of brutes here, that's for sure. Tell me more, who did it to you?</text>
     </string>
     <string id="aes_sergeant_diallog_1015">
-        <text>No, my friend. I'm not really adequate - it just looks to be so. I'm going to fry you and eat... in fact, forget the fry stuff.</text>
+        <text>No, my friend. I'm not that sound - it just looks to be so. I'm going to fry you up and eat... in fact, forget the fry stuff.</text>
     </string>
     <string id="aes_sergeant_diallog_1016">
-        <text>Like total newbies... hem... There was a radiochemical reconnaissance... conducted by the copters... they had too much confidence in those ones... and where wiped out in a jiffy... And then you column was blocked up... and as well was screwed... Only I made it.. to... knock a couple of foes off..</text>
+        <text>Like kids... hem... There was a radiochemical reconnaissance... led by the copters... they had too much trust \nin those ones... and where wiped out in a jiffy... And then you column was blocked up... and as well was screwed... Only I made it.. \nto... knock a couple of foes off...</text>
     </string>
     <string id="aes_sergeant_diallog_1017">
         <text>Fighting-cocks.. It took a few seconds for you to appear here! The radar has just shut down.</text>
@@ -64,7 +64,7 @@
         <text>This is the case in point. Someone was really noisy there.</text>
     </string>
     <string id="aes_sergeant_diallog_1020">
-        <text>Maybe someone of us, alive... could settle there... We had... a task - to capture the path to Sarco... hk... khe... Sarcophagus... if something happens - we must wait for reinforcements..</text>
+        <text>Maybe someone of us, alive... could settle there... We had... a task - to secure the path to Sarco... hk... khe... Sarcophagus... if \nsomething happens - we must wait for reinforcements..</text>
     </string>
     <string id="aes_sergeant_diallog_1021">
         <text>Reinforcements?</text>
@@ -88,7 +88,7 @@
         <text>Sergeant?</text>
     </string>
     <string id="aes_sergeant_diallog_1028">
-        <text>Yes... sergeant Lucklessy Gled... The enemy has at least three machine-gun dots and several snipers encamped... Man, you'd better not.. don't go there... keh..</text>
+        <text>Yes... sergeant Lucklezy Gled... The enemy has at least three machine-gun dots and several snipers encamped... Man, you'd better \nnot.. don't go there... keh..</text>
     </string>
     <string id="aes_sergeant_diallog_1029">
         <text>Few more seconds, sergeant! When a hell... When this cursed task force arrives?</text>
@@ -115,19 +115,19 @@
         <text>Was the explosion of 1986 the work of yours as well?</text>
     </string>
     <string id="oso_chernobyl_crush_1">
-        <text>No! We have nothing to do with it. Most of us was only starting the scientific activity that time. Someone just decided to gain promotion via intensive mindwork and hence transgress the processing of reactor functionining. Human's blunder. As it's said, "Today, for peace the atom’s nursed; while Europe says it should be cursed".</text>
+        <text>No! We have nothing to do with it. Most of us was only starting the scientific activity then. Someone just decided to gain promotion \nvia intensive mindwork and hence transgress the processing of reactor functionining. Human's blunder. As it's said, "Today, for \npeace the atom’s nursed; while Europe says it should be cursed".</text>
     </string>
     <string id="oso_death_truck_0">
         <text>What are those "death trucks"?</text>
     </string>
     <string id="oso_death_truck_1">
-        <text>Any production has waste products. Nearly the half of all stalkers die during enlistment. We consider it to be a natural selection. Those who can't manage to bear it are removed. Someone thought that you couldn't stand the draft and you were located to one of the trucks. But you proved to be stronger.</text>
+        <text>Any production has waste products. Nearly the half of all stalkers die during enlistment. We consider it to be a natural selection. \nThose who can't manage to bear it are removed. Someone thought that you couldn't stand the draft and you were located to one of \nthe trucks. But you proved to be stronger.</text>
     </string>
     <string id="oso_no_0">
         <text>I'm not helping you with deceiving people.</text>
     </string>
     <string id="oso_osoznanie_start_11">
-        <text>So what, Gunslinger, it's time to come back to you with the answers to all your questions.</text>
+        <text>So what, Gunslinger, it's high time to come back to you with the answers to all your questions.</text>
     </string>
     <string id="oso_osoznanie_start_21">
         <text>Gunslinger, it's your choice to make.</text>
@@ -136,25 +136,25 @@
         <text>What does your S.T.A.L.K.E.R. tatooo means?</text>
     </string>
     <string id="oso_stalker_1">
-        <text>S.T.A.L.K.E.R. - is one of the traps, meant for concealing our project. The device itself is situated inside APP's sarcophagus. You are more inclined to call it \nMonolith. Everyone who desires the wish granting become our marionette. You receive the mark and you're inculcated in that you have a task, which has to \nbe accomplished. Something turned not right with you. Because you've been instructed to kill yourself.</text>
+        <text>S.T.A.L.K.E.R. - is one of the traps, meant for concealing our project. The device itself is situated inside APP's sarcophagus. You \nare more inclined to call it Monolith. Everyone who desires the wish granting become our marionette. You receive the mark and \nyou're inculcated in that you have a task, which has to be accomplished. Something turned not right with you. Because you've been \ninstructed to kill yourself.</text>
     </string>
     <string id="oso_what_about_me_0">
         <text>What happened to me?</text>
     </string>
     <string id="oso_what_about_me_1">
-        <text>You're the small screw that dropped out of the mechanism. And the mechanism turned out to be that big, that we didn't notice you falling out. Since the \nmoment when Zone emerged, many have tried to get to its center and find out what's in there. But we can't afford it. The humanity isn't ready for it yet. Thus \nwe've "recruited" braves, like you, tempting you with your own crapulence. And sent you to protect the mystery of the Zone.</text>
+        <text>You're a small screw that dropped out of the mechanism. And the mechanism turned out to be that big, that we didn't notice you \nfalling out. Since the moment when Zone emerged, many have tried to get to its center and find out what's in there. But we can't \nafford it. The humanity isn't ready for it yet. Thus we've "recruited" braves, like you, tempting you with your own crapulence. And sent \nyou to protect the mystery of the Zone.</text>
     </string>
     <string id="oso_what_is_the_zone_0">
         <text>What is the Zone? How did it emerge?</text>
     </string>
     <string id="oso_what_is_the_zone_1">
-        <text>Zone is a result of hasty intervention into the Earth's noosphere. Such an interference was followed by a local noosphere slit. Singular surgical cut. Zone is \njust a demonstration of this cut on the Earth.</text>
+        <text>Zone is a result of hasty intervention into the Earth's noosphere. Such an interference was followed by a local noosphere slit. \nSingular surgical cut. Zone is just a demonstration of this cut on the Earth.</text>
     </string>
     <string id="oso_what_next_0">
         <text>What will happen to us?</text>
     </string>
     <string id="oso_what_next_1">
-        <text>What will be next depends on you. You see, the Zone is swelling. We are trying to keep it back, but your vigor isn't infinite. Besides, too many of them were \nspent to struggle with you. You can't just eliminate us physically. All that you see here is just an illusion. Our bodies are in anabiosis deep under the soild. You \ncan join us and we, with your strength and knowlegde, will be able to hold back the growing of the Zone. You may not join, but otherwise, you won't leave \nthis room.</text>
+        <text>What will be next depends on you. You see, the Zone is swelling. We are trying to keep it back, but your vigor isn't infinite. Besides, \ntoo many of them were spent to struggle with you. You can't just eliminate us physically. All that you see here is just an illusion. \nOur bodies are in anabiosis deep under the soild. You can join us and we, with your strength and knowlegde, will be able to hold \nback the growing of the Zone. You may not join, but otherwise, you won't leave this room.</text>
     </string>
     <string id="oso_who_are_you_0">
         <text>Who are you?</text>

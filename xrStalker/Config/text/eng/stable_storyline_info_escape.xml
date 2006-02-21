@@ -1,8 +1,26 @@
+    <string id="Bandit&apos;s flash">
+        <text>The flash of a bandit from the plant</text>
+    </string>
+    <string id="Dead novice&apos;s flash">
+        <text>The flash of a dead novice</text>
+    </string>
+    <string id="Flash dead stalker">
+        <text>The flash of a dead stalker</text>
+    </string>
+    <string id="Seryi flash">
+        <text>Seryi flash</text>
+    </string>
+    <string id="Tolik flash">
+        <text>Tolik Flash</text>
+    </string>
     <string id="blokpost_case_text">
         <text>Trader: A strange case, which contains the report of one of the military expeditions to the center of the Zone, has been delivered to the armypost... It is \nguarded as if it were filled with plutonium. But at nights there are only one or two guardsmen left. Sneak there utterly quietly and snatch that case for me.</text>
     </string>
     <string id="defend_lager_text">
         <text>Wolf: yesterday, several men came here from "Mercenaries" grouping... Came and pressured at full scale, like, you have one day term to leave the camp... \nLike, now it is their territory... Today, them may come again. The plan is as follows... The most obvious stalker wannabes will be sent to houses-basements \nwith an order not to poke out of there... Or they'll perish as they've never existed... And we together with another couple of guys, who are more serious and \nbeefy, will occupy good sectors to provide shooting on the zone around the campfire. We'll let them near the fire and with my command will strike from all \nsides... They'll come from the direction of bridge... So, look for a proper cover with the sight on the campfire and stand by for my command...</text>
+    </string>
+    <string id="doctor_meet_text">
+        <text>OK. I meet Ghoust's man. I wait him in the cache of Gunslinger. If he isn't stranger, he knows where to find me. Doctor</text>
     </string>
     <string id="esc_kolyan_lost">
         <text>One guy went to scout the abandoned windmill and we have heard nothing about him since then. We'd better go and find out, where he disappeared.</text>
@@ -33,6 +51,9 @@
     </string>
     <string id="tutorial_artefact_find">
         <text>Trader: here is a field of "Mincer" anomalies. Artifact is in its center. The coordinates of the place are sent to your PDA along wih the information on the Mincer \nand its artifacts.</text>
+    </string>
+    <string id="tutorial_moving_anomaly_text">
+        <text>There is some strange anomaly. It looks like she moves. I'll try to calculate its trajectory and time of displacement, because I got no \nmoney to pay solders for bridge passage.</text>
     </string>
     <string id="tutorial_secret_place">
         <text>I've left a small cache at the abandoned farm. There is a lot of food, bullets. I couldn't carry them, my powers are weakening. I'm not sure, if I can get to the \ncamp.</text>

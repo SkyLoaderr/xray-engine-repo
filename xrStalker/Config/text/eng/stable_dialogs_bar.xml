@@ -306,6 +306,18 @@
     <string id="bar_bar_barmen_jobs_311">
         <text>Let's go to my room. Garry will let you in.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_3111">
+        <text>I'll take it. Hope I won't regret.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3112">
+        <text>Bonzer! And I thing you'll have nothing to regret.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3121">
+        <text>Nope, I won't take it.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3122">
+        <text>Well, your choice.</text>
+    </string>
     <string id="bar_bar_barmen_jobs_32">
         <text>No, I have no interest in it right now.</text>
     </string>
@@ -317,6 +329,12 @@
     </string>
     <string id="bar_bar_barmen_jobs_5">
         <text>No, nothing for today.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_6">
+        <text>No, nothing for today. 2</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_7">
+        <text>No, nothing for today. 3</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_0">
         <text>What's the job?</text>
@@ -365,6 +383,9 @@
     </string>
     <string id="bar_bar_barmen_jobs_room_31121">
         <text>Get ready, Branded one. Such an affair cannot lie in waiting for long.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_room_81">
+        <text>Hush! Ask loony how to shut off the scorcher first of all.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_complete_0">
         <text>I'm back. Quest complete.</text>
@@ -449,6 +470,12 @@
     </string>
     <string id="bar_bar_barmen_start_1512">
         <text>Not now.</text>
+    </string>
+    <string id="bar_bar_barmen_start_161">
+        <text>What do you want, Branded One?</text>
+    </string>
+    <string id="bar_bar_barmen_start_162">
+        <text>Hi, Branded One. Time elapses, but you don't change, still unsociable and lonely. Sit here, knock back, maybe you'll put on weight \na bit.</text>
     </string>
     <string id="bar_bar_barmen_start_2">
         <text>Hi, Branded one. Did you bring the documents from Agroprom?</text>
@@ -779,6 +806,9 @@
     </string>
     <string id="bar_bar_psih_start_pain_15">
         <text>My head. It's. It's not mine!</text>
+    </string>
+    <string id="bar_bar_psih_start_pain_21">
+        <text>Hunchback, is that you? I can't see anything... What happened?</text>
     </string>
     <string id="bar_bar_psih_talk_gorbun_0">
         <text>Yes, I'm - Humpback.</text>
@@ -1195,7 +1225,7 @@
         <text>I think I got. What must I do?</text>
     </string>
     <string id="bar_dolg_leader_join_111">
-        <text>You see, now we are engaged in territorial combat actions with Freedom faction and we lack in weapons more powerful than we've got. Freedom has some perfect  RG-6 grenade launchers, if you manage to slip into the territory of that factions and steal at least one such grenade launcher, I would gladly enroll a courageous stalker in our faction. Until you're not in the faction, you can easily warm yourself into Freedom's confidence and if you are lucky enough you can snatch RG-6 from the warehouse. Well, what do you think?</text>
+        <text>You see, now we are engaged in territorial combat actions with Freedom faction and we lack in weapons more powerful than we've got. Freedom has some perfect RG-6 grenade launchers, if you manage to slip into the territory of that factions and steal at least one such grenade launcher, I would gladly enroll a courageous stalker in our faction. Until you're not in the faction, you can easily warm yourself into Freedom's confidence and if you are lucky enough you can snatch RG-6 from the warehouse. Well, what do you think?</text>
     </string>
     <string id="bar_dolg_leader_join_1111">
         <text>Good, I'll try to steal RG-6 from Freedom.</text>
@@ -1423,10 +1453,10 @@
         <text>Haven't Voronin told you anything?</text>
     </string>
     <string id="bar_dolg_zavskald_reward_131">
-        <text>Поздравляю, завалить лидера Свободы - это подвиг. Ты честно заслужил свою награду. Хотел бы я быть таким крутым как ты.</text>
+        <text>Congrats, to knock down Freedom's leader is a real feat of arms. You have fairly earned your reward. I'd greatly like to become a tough guy like you.</text>
     </string>
     <string id="bar_dolg_zavskald_reward_1311">
-        <text>Тренируйся, ешь манную кашу по утрам и слушайся маму. Спасибо за обновку, я пошел.</text>
+        <text>Train a lot, breakfast with muesli and listen to your mom. Thanks for the new thing, I'm gone.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_0">
         <text>I would like to find out something.</text>

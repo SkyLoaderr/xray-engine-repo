@@ -168,6 +168,15 @@
     <string id="kb_weapon6">
         <text>Weapon 6</text>
     </string>
+    <string id="kb_weapon7">
+        <text>Weapon 7</text>
+    </string>
+    <string id="kb_weapon8">
+        <text>Weapon 8</text>
+    </string>
+    <string id="kb_weapon9">
+        <text>Weapon 9</text>
+    </string>
     <string id="kb_wpn_next">
         <text>Next weapon of this type</text>
     </string>
@@ -183,12 +192,4 @@
     <string id="speech_menu_personal">
         <text>Speech menu (Personal)</text>
     </string>
-
-	<string id="kb_use_bandage">
-		<text>Quick use bandage</text>
-	</string>
-	<string id="kb_use_medkit">
-		<text>Quick use medkit</text>
-	</string>
-    
 </string_table>

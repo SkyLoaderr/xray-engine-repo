@@ -159,8 +159,4 @@
     <string id="ui_mm_voice_volume">
         <text>Voice volume</text>
     </string>
-    <string id="ui_mm_switch_torch">
-		<text>Enable torch for AI</text>
-    </string>
-    
 </string_table>

@@ -115,19 +115,19 @@
         <text>Don't shoot, bro!</text>
     </string>
     <string id="agr_stalker_esc_0">
-        <text>Who are you?</text>
+        <text>What are you doing here?</text>
     </string>
     <string id="agr_stalker_esc_20">
-        <text>Name Eye.</text>
+        <text>It's not of your business.</text>
     </string>
     <string id="agr_stalker_esc_200">
-        <text>What are you doing here?</text>
+        <text>I'm just asking, calm down!</text>
     </string>
     <string id="agr_stalker_esc_30">
         <text>And what's your business in it?</text>
     </string>
     <string id="agr_stalker_esc_300">
-        <text>Just asking, don't get too excited.</text>
+        <text>Clear, thanks.\n</text>
     </string>
     <string id="agr_stalker_esc_40">
         <text>Alright, I'm coming from the factory, which lies westwards straight by the road. I don't know how, but our group has been detected by the militaries. I didn't wait for their return and left. Hopefully our guys has already fled, otherwise they won't have survived for long - you've seen the chopters, haven't you.</text>
@@ -214,7 +214,7 @@
         <text>Well, thirty and we're done?</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_40">
-        <text>There is car at the radioactive bog, it's possible to settle there for a while. However the territory around it is radiated, so it's better to approach to the car from thewestern swamp side. And one more thing: we've seen a soldier there not so long ago, apparently from Intitute's base. He has been camping there for several days.Perhaps, he has flew off the handle - he's gonna die there alone.</text>
+        <text>There is the way out of railway tunnel not far. It's quite dangerous in it in a dead end. At least no one \nhad been eaten asleep there. There is car at the radioactive bog, it's possible to settle there for a \nwhile. However the territory around it is radiated, so it's better to approach to the car from thewestern \nswamp side. And one more thing: we've seen a soldier there not so long ago, apparently from \nIntitute's base. He has been camping there for several days.Perhaps, he has flew off the handle - he's \ngonna die there alone.</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_9999">
         <text>Bye!</text>
@@ -295,13 +295,16 @@
         <text>What are the catacombs?</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_130">
-        <text>What can you tell me about your base?</text>
+        <text>I need papers you've messed around with recently. Tell, where is it!</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_140">
         <text>What are you planning to do next?</text>
     </string>
+    <string id="agr_swamp_ratcatcher_talks_141">
+        <text>What are you planning to do next?\n</text>
+    </string>
     <string id="agr_swamp_ratcatcher_talks_150">
-        <text>Well, you may camp here, I'm not going to kill you. Don't you die of hunger.</text>
+        <text>Well, come on, buzzard warrior.Don't you die of hunger.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_20">
         <text>I'm from the reconnaissance detachment. We've been sent to the collectors, in order to examine what was happening under the base. There is a total mess. The others are most likely to be dead. But I have no desire to get back to the base. They always cut all ways for us in the Zone, damn bastards.</text>
@@ -310,9 +313,9 @@
         <text>Underground tunnels. They lead from the Institute outside its territory, I'll show you the exits. The maps of the catacombs themselves aren't in my posession.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_40">
-        <text>I can draft the guard plan for you. I'll also mark the captain's cab on the map - he's a scum indeed. If you want to break your way to the base, listen to what I'm gonna tell you, my lad: gates are virtually impassable, the most appropriate way is through that damn catacombs. And one more thing: the main building is usually empty during the watch switch.</text>
+        <text> A captain manages all this. He has organized a staff on the third floor of institute. There are these \ndamned papers. But you have to reach there first.\n In the day-time territory is guarded. At night there are less patrols. After eleven evenings there is \nchanging of guard, at this time in the main building almost nobody is present. If you want to get \nthrough on the base, I say: you will not pass through the gates, the most \nreal way is - through these damned catacombs.\nHere is a flash with the plan of base -it's everything marked there.</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_50">
-        <text>Hem. I don't know. According to the military laws I'm supposed to be a slacker. I'll hide my ass for a while.</text>
+        <text>Hem. I don't know. According to the military laws I'm supposed to be a slacker. And I need to get out \nsomehow. When we came here there was Zaporozhets in the garage, almost in working order. I \nreturned it to life in half an hour, and captain took it from me. He said it was according to army \nregulations. It were perfect to steal this Zaporozhets. It is more reliadle to flee on the wheels.\n\n</text>
     </string>
 </string_table>
