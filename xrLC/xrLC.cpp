@@ -119,7 +119,8 @@ void Startup(LPSTR     lpCmdLine)
 	// Call for builder
 	string256				lfn;
 	CTimer	dwStartupTime;	dwStartupTime.Start();
-	pBuild->Run				(strconcat(lfn,"gamedata\\levels\\",name));
+	FS.update_path			(lfn,_game_levels_,name);
+	pBuild->Run				(lfn);
 	xr_delete				(pBuild);
 
 	// Show statistic

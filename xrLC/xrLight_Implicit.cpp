@@ -242,7 +242,8 @@ void CBuild::ImplicitLighting()
 			sscanf					(strstr(Core.Params,"-f")+2,"%s",name);
 			R_ASSERT				(name[0] && defl.texture);
 			b_BuildTexture& TEX		=	*defl.texture;
-			strconcat				(out_name,"gamedata\\levels\\",name,"\\",TEX.name,".dds");
+			strconcat				(out_name,name,"\\",TEX.name,".dds");
+			FS.update_path			(out_name,_game_levels_,out_name);
 			clMsg					("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
 			BYTE* raw_data			=	LPBYTE(TEX.pSurface);
@@ -266,7 +267,8 @@ void CBuild::ImplicitLighting()
 			string256				name, out_name;
 			sscanf					(strstr(GetCommandLine(),"-f")+2,"%s",name);
 			b_BuildTexture& TEX		=	*defl.texture;
-			strconcat				(out_name,"gamedata\\levels\\",name,"\\",TEX.name,"_lm.dds");
+			strconcat				(out_name,name,"\\",TEX.name,".dds");
+			FS.update_path			(out_name,_game_levels_,out_name);
 			clMsg					("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
 			BYTE* raw_data			= LPBYTE(&*packed.begin());
