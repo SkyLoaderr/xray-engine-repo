@@ -101,7 +101,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 
 	LPCSTR cb_name			= READ_IF_EXISTS(pSettings,r_string,section,"can_sleep_callback","");
 
-	if(xr_strlen(cb_name)){
+	if(cb_name && xr_strlen(cb_name)){
 		m_can_sleep_callback		= xr_new<CScriptCallbackEx<LPCSTR> >();
 		luabind::functor<LPCSTR>		f;
 		R_ASSERT					(ai().script_engine().functor<LPCSTR>(cb_name,f));
@@ -109,7 +109,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	}
 	cb_name					= READ_IF_EXISTS(pSettings,r_string,section,"sleep_video_name_callback","");
 
-	if(xr_strlen(cb_name)){
+	if(cb_name && xr_strlen(cb_name)){
 		m_get_sleep_video_name_callback		= xr_new<CScriptCallbackEx<LPCSTR> >();
 		luabind::functor<LPCSTR>			fl;
 		R_ASSERT							(ai().script_engine().functor<LPCSTR>(cb_name,fl));
