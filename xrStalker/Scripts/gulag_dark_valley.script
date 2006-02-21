@@ -894,7 +894,6 @@ gulags.val_lager_bandits.state = function(gulag)
 				    return state_alarm_actor_inside
 			    end
 			    if enemy_type == clsid.actor or
-  	   			    enemy_type == clsid.soldier or
 	   			    enemy_type == clsid.script_stalker or
    				    enemy_type == clsid.trader
    			    then
