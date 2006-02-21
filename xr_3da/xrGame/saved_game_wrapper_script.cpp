@@ -11,17 +11,13 @@
 #include "script_space.h"
 #include "ai_space.h"
 #include "game_graph.h"
-#include "date_time.h"
+#include "xr_time.h"
 
 using namespace luabind;
 
-xr_string CSavedGameWrapper__game_time		(const CSavedGameWrapper *self)
+xrTime CSavedGameWrapper__game_time		(const CSavedGameWrapper *self)
 {
-	u32				years, months, days, hours, minutes, seconds, milliseconds;
-	split_time		(self->game_time(), years, months, days, hours, minutes, seconds, milliseconds);
-	string256		temp;
-	sprintf			(temp,"%d:%d:%d:%d:%d:%d",years, months, days, hours, minutes, seconds, milliseconds);
-	return			(temp);
+	return			(xrTime(self->game_time()));
 }
 
 LPCSTR CSavedGameWrapper__level_name	(const CSavedGameWrapper *self)
