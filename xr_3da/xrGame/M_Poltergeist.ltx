@@ -1,58 +1,4 @@
 
-[m_poltergeist_attack_params]
-;---------------------------------------------------------------------------------------------------------------------------------------------
-;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
-;---------------------------------------------------------------------------------------------------------------------------------------------
-;Left hand Strike
-stand_attack_0	=	  	0.30,		0.20,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
-;Left hand Strike2
-stand_attack_1	=	  	0.30,		0.15,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
-
-[m_poltergeist_attack_effector]
-
-duality_h		= 0.01
-duality_v		= 0.01
-blur			= 0.01
-gray			= 0.5
-noise_intensity = 0.0
-noise_grain		= 1
-noise_fps		= 30
-color_base		= 0.65,0.15,0.1
-color_gray		= 0.333,0.333,0.333
-color_add		= 0,0,0
-time			= 0.3
-time_attack		= 0.05		; fade in
-time_release	 = 0.25		; fade out
-
-; camera effects
-ce_time				= 0.45 ;time 
-ce_amplitude		= -15.0 
-ce_period_number	= 1.5 ;2.0 
-ce_power			= 1.5 ;0.7 ; power 
-
-[m_poltergeist_step_params]                left             right            right           left
-;------------------------------------------------------------------------------------------------------------------
-;	anim					cycles |	time1 | power1 |	time2 | power2 | time3 | power3 | time4     | power4 |
-;-----------------------------------------------------------------------------------------------------------------
-stand_walk_fwd_0		=   	1,		0.1,      1,	  	0.34,    1,		 0.6,	 1,			0.84,		1
-stand_walk_fwd_dmg_0	=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
-stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
-stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
-
-;===========================================================================
-; IMMUNITIES
-;===========================================================================
-[poltergeist_immunities]
-burn_immunity 		= 0.3					;коэффициенты иммунитета 
-strike_immunity 	= 0.7
-shock_immunity 		= 0.5
-wound_immunity 		= 0.3
-radiation_immunity 	= 0.0
-telepatic_immunity 	= 1.0
-chemical_burn_immunity 	= 1.0
-explosion_immunity 	= 1.0
-fire_wound_immunity = 0.5
-
 [m_poltergeist_e]
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_radioactive
@@ -88,8 +34,10 @@ bone_fire			 = bip01_head				; bone name
 
 weapon_usage		 = 0						; boolean
 
-; movement
 
+;---------------------------------------------------------------------
+; Physics
+;---------------------------------------------------------------------
 ph_box0_center 		 = 0.0,  0.2,  0.0	;0.0,  0.9,  0.0
 ph_box0_size 		 = 0.50, 0.4,  0.50	
 ph_box1_center 		 = 0.0,  0.2,  0.0
@@ -111,12 +59,10 @@ ph_after_death_velocity_factor= 0.75
 ph_skel_shot_up_factor        = 0.15
 ;---------------------------------------------------------------------
 
-SoundThreshold		 = 0.06						; range [0..1]a
 
-eye_fov				 = 90
-eye_range			 = 60	;60
-max_hear_dist		 = 60
-
+;----------------------------------------------------------------------------
+; Movement::Velocities & Acceleration
+;----------------------------------------------------------------------------
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		5.0,			5.0,		0.2,	0.5
 Velocity_WalkFwdNormal	= 1.7,		2.0,			2.0,		0.2,	2.0	
@@ -133,8 +79,11 @@ Velocity_Invisible_Angular		= 3.5
 ; acceleration
 Accel_Generic			= 1.5
 Accel_Calm				= 2.5
-Accel_Aggressive		= 10.0
+Accel_Aggressive		= 3.0
 
+;--------------------------------------------------------------------------
+; Attack parameters
+;--------------------------------------------------------------------------
 ;attack parameters
 MinAttackDist		= 0.5	;2.1
 MaxAttackDist		= 2.0
@@ -142,6 +91,9 @@ MaxAttackDist		= 2.0
 as_min_dist				= 0.1
 as_step					= 0.3
 
+;-------------------------------------------------------------------------
+; Entity Conditions
+;-------------------------------------------------------------------------
 DayTime_Begin		= 0		
 DayTime_End			= 21	
 Min_Satiety			= 0.7	
@@ -168,18 +120,6 @@ psy_health_v 		= 0.1					;скорость восстановления psy-здоровья
 
 immunities_sect		= poltergeist_immunities
 
-
-min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
-max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
-visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
-always_visible_distance 	= 0.3
-time_quant					= 0.001
-decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
-velocity_factor		     	= 0.5
-luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
-transparency_threshold		= 0.25
-
-
 ;открытые раны
 bleeding_v			= 0						;потеря крови при номинальной ране в секунду
 wound_incarnation_v	= 0.3				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
@@ -195,16 +135,11 @@ eat_freq			=	5.0
 eat_slice			=	0.01	
 eat_slice_weight	=	10.0	
 
-; Morale
-Morale_Hit_Quant				= 0.01
-Morale_Attack_Success_Quant		= 0.3
-Morale_Take_Heart_Speed			= 0.1
-Morale_Despondent_Speed			= 0.1
-Morale_Stable_Speed				= 0.3
-Morale_Despondent_Threashold	= 0.5
 
-; Sounds
 
+;---------------------------------------------------------
+; Sounds and sound parameters
+;---------------------------------------------------------
 sound_idle				= monsters\poltergeist\idle_
 sound_eat				= monsters\poltergeist\idle_
 sound_aggressive			= monsters\poltergeist\attack_
@@ -225,10 +160,45 @@ idle_sound_delay		= 20000
 eat_sound_delay			= 3000
 attack_sound_delay		= 8500
 
+SoundThreshold		 = 0.06						; range [0..1]
+max_hear_dist		 = 60
+
+;-------------------------------------------------------------------------
+; Vision
+;-------------------------------------------------------------------------
+
+eye_fov				 = 90
+eye_range			 = 60	;60
+
+DynamicObjectsCount		= 32
+
+min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
+always_visible_distance 	= 0.3
+time_quant					= 0.001
+decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
+velocity_factor		     	= 0.5
+luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
+transparency_threshold		= 0.25
+
+;-------------------------------------------------------------------------
+; Morale
+;-------------------------------------------------------------------------
+Morale_Hit_Quant				= 0.01
+Morale_Attack_Success_Quant		= 0.3
+Morale_Take_Heart_Speed			= 0.1
+Morale_Despondent_Speed			= 0.1
+Morale_Stable_Speed				= 0.3
+Morale_Despondent_Threashold	= 0.5
+
+;-------------------------------------------------------------------------
+; Other Stuff (refactoring needed)
+;-------------------------------------------------------------------------
 DamagedThreshold		= 0.4
 
 material				= creatures\large	;objects\bullet
-DynamicObjectsCount		= 32
+
 
 squad_attack_algorithm	= 1
 attack_effector			= m_poltergeist_attack_effector
@@ -294,6 +264,59 @@ bip01_spine 		= 1.0, -1, 0.2
 bip01_spine1 		= 1.0, -1, 0.2
 bip01_neck 			= 1.2, -1, 0.5
 bip01_head 			= 3.0, -1, 0.3
+[m_poltergeist_attack_params]
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;Left hand Strike
+stand_attack_0	=	  	0.30,		0.20,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+;Left hand Strike2
+stand_attack_1	=	  	0.30,		0.15,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+
+[m_poltergeist_attack_effector]
+
+duality_h		= 0.01
+duality_v		= 0.01
+blur			= 0.01
+gray			= 0.5
+noise_intensity = 0.0
+noise_grain		= 1
+noise_fps		= 30
+color_base		= 0.65,0.15,0.1
+color_gray		= 0.333,0.333,0.333
+color_add		= 0,0,0
+time			= 0.3
+time_attack		= 0.05		; fade in
+time_release	 = 0.25		; fade out
+
+; camera effects
+ce_time				= 0.45 ;time 
+ce_amplitude		= -15.0 
+ce_period_number	= 1.5 ;2.0 
+ce_power			= 1.5 ;0.7 ; power 
+
+[m_poltergeist_step_params]                left             right            right           left
+;------------------------------------------------------------------------------------------------------------------
+;	anim					cycles |	time1 | power1 |	time2 | power2 | time3 | power3 | time4     | power4 |
+;-----------------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0		=   	1,		0.1,      1,	  	0.34,    1,		 0.6,	 1,			0.84,		1
+stand_walk_fwd_dmg_0	=   	1,		0.2,      1,	  	0.25,    1,		 0.5,	 1,			0.7,		1
+stand_run_0				=		1,		0.1,      1,	  	0.3,     1,		 0.5,	 1,			0.55,		1
+stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
+
+;===========================================================================
+; IMMUNITIES
+;===========================================================================
+[poltergeist_immunities]
+burn_immunity 		= 0.3					;коэффициенты иммунитета 
+strike_immunity 	= 0.7
+shock_immunity 		= 0.5
+wound_immunity 		= 0.3
+radiation_immunity 	= 0.0
+telepatic_immunity 	= 1.0
+chemical_burn_immunity 	= 1.0
+explosion_immunity 	= 1.0
+fire_wound_immunity = 0.5
 
 
 [m_poltergeist_normal]:m_poltergeist_e
