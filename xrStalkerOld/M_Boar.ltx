@@ -58,6 +58,19 @@ SoundThreshold			= 0.06             ; range [0..1]
 max_hear_dist			= 60
 
 ;------------------------------------------------------------------------
+; Vision
+;------------------------------------------------------------------------
+min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
+always_visible_distance 	= 0.3
+time_quant					= 0.001
+decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
+velocity_factor		     	= 0.5
+luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
+transparency_threshold		= 0.25
+
+;------------------------------------------------------------------------
 ; Physics
 ;------------------------------------------------------------------------
 ph_box0_center 			= 0.0,  0.6,  0.0
@@ -188,8 +201,6 @@ destroyed_vis_name	 	= physics\dead_body\skelet_crash_monster
 ;Field of view, look and hear distance
 eye_fov					= 110
 eye_range				= 50	
-
-transparency_threshold  = 0.25
 
 DayTime_Begin					= 0			; эрўрыр фэ  фы  ьюэёЄЁр
 DayTime_End						= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр

@@ -175,20 +175,26 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	Fvector								eye_position = Fvector().set(0.f,0.f,0.f), eye_direction;
 	Fmatrix								eye_matrix;
 
-	if (m_stalker) {
+	if (m_object) {
 		eye_matrix						= 
 			smart_cast<CKinematics*>(
 				m_object->Visual()
 			)
 			->LL_GetTransform		(
-				u16(m_stalker->eye_bone)
+				u16(m_object->eye_bone)
 			);
 
 		Fvector							temp;
 		eye_matrix.transform_tiny		(temp,eye_position);
 		m_object->XFORM().transform_tiny(eye_position,temp);
-		eye_direction.setHP				(-m_stalker->movement().m_head.current.yaw, -m_stalker->movement().m_head.current.pitch);
-	}
+
+		if (m_stalker) {
+			eye_direction.setHP				(-m_stalker->movement().m_head.current.yaw, -m_stalker->movement().m_head.current.pitch);
+		} else { // if its a monster
+			const MonsterSpace::SBoneRotation &head_orient = m_object->head_orientation();
+			eye_direction.setHP				(-head_orient.current.yaw, -head_orient.current.pitch);
+		}
+	} 
 	else {
 		Fvector							temp;
 		m_actor->cam_Active()->Get		(eye_position,eye_direction,temp);
@@ -201,8 +207,8 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	object_direction.normalize_safe		();
 	
 	float								object_range, object_fov;
-	if (m_stalker)
-		m_stalker->update_range_fov		(object_range,object_fov,m_stalker->eye_range,deg2rad(m_stalker->eye_fov));
+	if (m_object)
+		m_object->update_range_fov		(object_range,object_fov,m_object->eye_range,deg2rad(m_object->eye_fov));
 	else {
 		object_fov						= deg2rad(m_actor->cam_Active()->f_fov);
 		object_range					= g_pGamePersistent->Environment.CurrentEnv.far_plane;
@@ -301,8 +307,10 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	if (game_object->getDestroy())
 		return					(false);
 
+#ifndef USE_STALKER_VISION_FOR_MONSTERS
 	if (!m_stalker && !m_actor)
 		return					(true);
+#endif
 
 	float						object_distance, distance = object_visible_distance(game_object,object_distance);
 

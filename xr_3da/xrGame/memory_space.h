@@ -34,6 +34,8 @@
 
 //#define USE_ORIENTATION
 
+#define USE_STALKER_VISION_FOR_MONSTERS
+
 class CEntityAlive;
 class CGameObject;
 
