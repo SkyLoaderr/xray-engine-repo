@@ -1878,7 +1878,7 @@
 
 	<specific_character id="bar_killer_regular_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="16"></icon>
+		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
 		
