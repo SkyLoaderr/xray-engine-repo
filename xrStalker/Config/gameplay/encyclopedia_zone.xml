@@ -235,7 +235,7 @@
     <!-------------------------------- Electra ----------------------------->
 
     <article id="zone_anomalies_electra" name="Electra" group="Anomalies">
-        <texture x="500" y="150" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_electra</text>
     </article>
 
