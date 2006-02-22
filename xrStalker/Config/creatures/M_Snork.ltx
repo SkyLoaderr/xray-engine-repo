@@ -38,6 +38,9 @@ bone_head				= bip01_head				; bone name
 bone_fire				= bip01_head				; bone name
 weapon_usage			= 0						; boolean
 
+;---------------------------------------------------------------------
+; Physics
+;---------------------------------------------------------------------
 ph_box0_center 			= 0.0,  0.9,  0.0
 ph_box0_size 			= 0.35, 0.9,  0.35
 ph_box1_center 			= 0.0,  0.6,  0.0
@@ -59,13 +62,9 @@ ph_after_death_velocity_factor= 0.75
 ph_skel_shot_up_factor        = 0.15
 ;---------------------------------------------------------------------
 
-SoundThreshold						= 0.02             ; range [0..1]
-
-;Field of view, look and hear distance
-eye_fov								= 90
-eye_range							= 50	
-max_hear_dist						= 60
-
+;----------------------------------------------------------------------------
+; Movement::Velocities & Acceleration
+;----------------------------------------------------------------------------
 ; speed factors			linear | angular_real | angular_path | min	 |  max
 Velocity_Stand			= 0,		2.4,			2.4,		1,		1
 Velocity_WalkFwdNormal	= 1.2,		1.0,			1.0,		0.02,	2.0
@@ -82,38 +81,20 @@ Accel_Generic			= 1.5
 Accel_Calm				= 2.5
 Accel_Aggressive		= 10.0
 
-;attack parameters
+;--------------------------------------------------------------------------
+; Attack parameters
+;--------------------------------------------------------------------------
 MinAttackDist			= 1.9	;0.5
 MaxAttackDist			= 2.9	;3.8
 as_min_dist				= 1.5
 as_step					= 0.4
 hit_type				= wound				; type of attack
 
-
-DayTime_Begin			= 0			; эрўрыр фэ  фы  ьюэёЄЁр
-DayTime_End				= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
-Min_Satiety				= 0.4		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
-Max_Satiety				= 1.0		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
-
-distance_to_corpse		= 1.2		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
-
-
-min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
-max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
-visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
-always_visible_distance 	= 0.3
-time_quant					= 0.001
-decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
-velocity_factor		     	= 0.5
-luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
-transparency_threshold		= 0.25
-
-
 terrain					 = 255,255,255,255,30,40
 
-;entity condition
-
-; entity condition
+;-------------------------------------------------------------------------
+; Entity Conditions
+;-------------------------------------------------------------------------
 satiety_v 				= 0.005			;скорость уменьшения сытости со временем
 radiation_v 			= 0.00001		;0.004				;скорость уменьшения радиации
 satiety_power_v 		= 0.005		;0.01					;увеличение силы при уменьшении сытости 
@@ -149,8 +130,9 @@ eat_freq				=	5.0							; ўрёЄюЄр єъєёют т ёхъ
 eat_slice				=	0.01						; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
 eat_slice_weight		=	10.0						; єьхэ№°хэшх хфv є ЄЁєяр
 
-
-;Morale
+;-------------------------------------------------------------------------
+; Morale
+;-------------------------------------------------------------------------
 Morale_Hit_Quant				= 0.1
 Morale_Attack_Success_Quant		= 0.1
 Morale_Take_Heart_Speed			= 0.1
@@ -159,7 +141,9 @@ Morale_Stable_Speed				= 0.01
 Morale_Despondent_Threashold	= 0.5
 
 
-; Sounds
+;---------------------------------------------------------
+; Sounds and sound parameters
+;---------------------------------------------------------
 sound_idle				= monsters\snork\snork_idle_	; idle_
 sound_eat				= monsters\biting\def_			; eat_
 sound_aggressive			= monsters\snork\snork_attack_	; attack_
@@ -182,6 +166,27 @@ idle_sound_delay		= 300000
 eat_sound_delay			= 3000
 attack_sound_delay		= 4000
 
+SoundThreshold						= 0.02             ; range [0..1]
+max_hear_dist						= 60
+
+;-------------------------------------------------------------------------
+; Vision
+;-------------------------------------------------------------------------
+eye_fov								= 90
+eye_range							= 50	
+
+min_view_distance   		= 0.8				; коэффициент, который множится на eye_range, в зависимости от угла
+max_view_distance	 		= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
+visibility_threshold	 	= 100.0				; значение, при достижении суммой которого объект считается видимым
+always_visible_distance 	= 0.3
+time_quant					= 0.001
+decrease_value				= 0.01				; значение, на которое уменьшается вес, если объект попал в фрустум, но отсёкся по каким-то причинам
+velocity_factor		     	= 0.5
+luminocity_factor			= 1.5 				; фактор освещения (только для Актёра)
+transparency_threshold		= 0.25
+;-------------------------------------------------------------------------
+; Other Stuff (refactoring needed)
+;-------------------------------------------------------------------------
 material				= creatures\medium
 DynamicObjectsCount		= 32
 
@@ -192,7 +197,16 @@ damage					= m_snork_damage
 
 LegsCount				= 2
 
-; jump parameters
+DayTime_Begin			= 0			; эрўрыр фэ  фы  ьюэёЄЁр
+DayTime_End				= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
+Min_Satiety				= 0.4		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
+Max_Satiety				= 1.0		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
+
+distance_to_corpse		= 1.2		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
+
+;--------------------------------------------------------------------------
+; Jump parameters
+;--------------------------------------------------------------------------
 jump_delay					= 3000
 jump_factor					= 1.5
 jump_ground_trace_range		= 1.5
