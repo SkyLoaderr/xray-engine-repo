@@ -266,6 +266,9 @@
 					RelativePath=".\Config\gameplay\npc_profile.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\stories.xml">
+				</File>
+				<File
 					RelativePath=".\config\gameplay\storyline_info_aes.xml">
 				</File>
 				<File
@@ -795,6 +798,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\stable_generate_snames.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\rus\stable_stories.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\stable_task_manager.xml">
