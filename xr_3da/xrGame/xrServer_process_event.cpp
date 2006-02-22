@@ -26,7 +26,11 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 
 	CSE_Abstract*	receiver	= game->get_entity_from_eid	(destination);
 	if (receiver)	
+	{
+		R_ASSERT(receiver->owner);
 		receiver->OnEvent						(P,type,timestamp,sender);
+
+	};
 
 	switch		(type)
 	{

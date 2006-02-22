@@ -95,7 +95,7 @@ public:
 	virtual		u16					get_id_2_eid			(ClientID id);
 	virtual		ClientID			get_it_2_id				(u32 it);
 	virtual		u32					get_players_count		();
-	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);
+				CSE_Abstract*		get_entity_from_eid		(u16 id);
 				RPoint				getRP					(u16 team_idx, u32 rp_idx);
 				u32					getRPcount				(u16 team_idx);
 	// Signals

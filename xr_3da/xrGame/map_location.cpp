@@ -210,7 +210,7 @@ shared_str CMapLocation::LevelName()
 {
 	if(ai().get_alife() && ai().get_game_graph())		
 	{
-		CSE_Abstract* E = Level().Server->game->get_entity_from_eid(m_objectID); //VERIFY(E);
+		CSE_Abstract* E = ai().alife().objects().object(m_objectID,true);//Level().Server->game->get_entity_from_eid(m_objectID); //VERIFY(E);
 		if(!E){
 			Msg("! Critical: SMapLocation binded to non-existent object id=%d",m_objectID);
 			return "ERROR";
