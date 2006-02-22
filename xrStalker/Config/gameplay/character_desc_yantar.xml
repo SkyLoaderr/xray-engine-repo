@@ -54,6 +54,7 @@
 		</supplies>
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 		
 	</specific_character>
 
@@ -107,6 +108,7 @@
 		</supplies>
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 		
 	</specific_character>
 
