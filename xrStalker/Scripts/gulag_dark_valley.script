@@ -22,8 +22,8 @@ local gulags = {val_escort = {comm = {"bandit", "dolg"}},
                 val_sos = {},
                 val_rob = {comm = true},
                 val_lager_bandits = {comm = {"bandit"}},
-                val_offline_group = {},
-                val_watchtower = {comm = true}}
+                val_watchtower = {comm = true},
+                offline_group = {}}
 
 -- Job -------------------------------------------------------------------
 function load_job(sj, gname, type, squad, groups)
@@ -917,7 +917,7 @@ end
 -- Predicates ------------------------------------------------------------
 
 -- Jobs ------------------------------------------------------------------
-gulags.val_offline_group.job = function(sj, gname, type, squad, groups)
+gulags.offline_group.job = function(sj, gname, type, squad, groups)
     local i, it = 0, 1
     local ltx = ""
     local pname = "offgroup"
@@ -964,7 +964,7 @@ gulags.val_offline_group.job = function(sj, gname, type, squad, groups)
 		it = it + 1
 	end
 
-    gulags.val_offline_group.ltx = ltx
+    gulags.offline_group.ltx = ltx
 end
 
 
