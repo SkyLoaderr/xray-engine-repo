@@ -239,7 +239,7 @@ void CPHCapture::CapturedUpdate()
 
 	//m_back_force=m_back_force*0.999f+ ((mag<m_capture_force/5.f) ? mag : (m_capture_force/5.f))*0.001f;
 	//
-	if(mag>m_capture_force/2.2f)
+	if(b_character_feedback&&mag>m_capture_force/2.2f)
 	{
 		float f=mag/(m_capture_force/15.f);
 		m_character->ApplyForce(m_joint_feedback.f1[0]/f,m_joint_feedback.f1[1]/f,m_joint_feedback.f1[2]/f);
@@ -268,53 +268,7 @@ void CPHCapture::ReleaseInCallBack()
 	//	if(!b_failed) return;
 	b_collide=true;
 }
-void CPHCapture::Release()
-{
-	if(b_failed) return;
-	if(e_state==cstReleased) return;
-	if(m_joint) 
-	{
-		m_island.RemoveJoint(m_joint);
-	
-		dJointDestroy(m_joint);
 
-	}
-	m_joint=NULL;
-	if(m_ajoint)
-	{
-		m_island.RemoveJoint(m_ajoint);
-		dJointDestroy(m_ajoint);
-	}
-	m_ajoint=NULL;
-	if(m_body) 
-	{
-		m_island.RemoveBody(m_body);
-		dBodyDestroy(m_body);
-	}
-	m_body=NULL;
-
-	if(e_state==cstPulling&&m_taget_element&&!m_taget_object->getDestroy()&&m_taget_object->PPhysicsShell()&&m_taget_object->PPhysicsShell()->isActive())
-	{
-		m_taget_element->set_DynamicLimits();
-	}
-
-	e_state=cstReleased;
-	b_collide=true;
-}
-
-void CPHCapture::Deactivate()
-{
-	Release();
-	//if(m_taget_object&&m_taget_element&&!m_taget_object->getDestroy()&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->isActive())
-	//{
-	//	m_taget_element->set_ObjectContactCallback(0);
-
-	//}
-	m_character->SetObjectContactCallback(0);
-	CPHUpdateObject::Deactivate();
-	m_taget_object=NULL;
-	m_taget_element=NULL;
-}
 
 void CPHCapture::object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {

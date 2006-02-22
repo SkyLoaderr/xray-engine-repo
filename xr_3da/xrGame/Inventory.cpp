@@ -74,6 +74,7 @@ CInventory::CInventory()
 	m_iPrevActiveSlot = NO_ACTIVE_SLOT;
 
 	m_drop_last_frame = false;
+	m_bDoBlockAllSlots=0;
 }
 
 
@@ -971,9 +972,20 @@ void CInventory::Items_SetCurrentEntityHud(bool current_entity)
 
 void CInventory::setSlotsBlocked(bool b)
 {
+	
+	if(b)
+	{
+		m_bDoBlockAllSlots++;
+		VERIFY2(m_bDoBlockAllSlots< 5,"block slots overflow");
+	}else
+	{
+		m_bDoBlockAllSlots--;
+		VERIFY2(m_bDoBlockAllSlots>-5,"block slots underflow");
+	}
+
 	u32 InventorySlot		= GetActiveSlot();
 	u32 InventoryPrevSlot	= GetPrevActiveSlot();
-	if(b){
+	if(isSlotsBlocked()){
 		if(InventorySlot != NO_ACTIVE_SLOT)
 			if (Activate(NO_ACTIVE_SLOT,true))
 				SetPrevActiveSlot(InventorySlot);
@@ -982,5 +994,5 @@ void CInventory::setSlotsBlocked(bool b)
 			if (Activate(InventoryPrevSlot,true))
 				SetPrevActiveSlot(NO_ACTIVE_SLOT);
 	}
-	m_bDoBlockAllSlots = b;
+	 
 }

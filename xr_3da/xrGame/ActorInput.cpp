@@ -406,7 +406,7 @@ void CActor::ActorUse()
 			if(!m_PhysicMovementControl->PHCapture())
 			{
 				m_PhysicMovementControl->PHCaptureObject(object,element);
-			
+
 			}
 
 		}

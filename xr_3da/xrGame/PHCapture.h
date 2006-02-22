@@ -41,7 +41,7 @@ CPHIsland			m_island;
 bool				b_failed;
 bool				b_collide;
 bool				b_disabled;
-
+bool				b_character_feedback;
 
 private:
 	enum 

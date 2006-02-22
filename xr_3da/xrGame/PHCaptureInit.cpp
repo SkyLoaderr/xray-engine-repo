@@ -7,6 +7,8 @@
 #include "Entity.h"
 #include "inventory_item.h"
 #include "../skeletoncustom.h"
+#include "Actor.h"
+#include "Inventory.h"
 extern	class CPHWorld	*ph_world;
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +20,8 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CPhysicsShellHolder	*a_tage
 	m_ajoint				=NULL;
 	m_body					=NULL;
 	b_failed				=false;
-	b_disabled				=false;
+	b_disabled				=false;	
+	b_character_feedback	=false;
 	e_state					=cstPulling;
 
 	if(!a_taget_object							||
@@ -97,7 +100,7 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CPhysicsShellHolder	*a_taget_
 	b_failed				=false;
 	b_disabled				=false;
 	e_state					=cstPulling;
-
+	b_character_feedback	=false;
 	if(!a_taget_object								||
 	   !a_taget_object->m_pPhysicsShell				||
 	   !a_taget_object->m_pPhysicsShell->isActive()	||
@@ -212,7 +215,14 @@ void CPHCapture::Init(CInifile* ini)
 	Fvector dir;
 	Fvector capture_bone_position;
 	capture_bone_position.set(m_capture_bone->mTransform.c);
-	smart_cast<CObject*>(m_character->PhysicsRefObject())->XFORM().transform_tiny(capture_bone_position);
+	b_character_feedback=true;
+	(m_character->PhysicsRefObject())->XFORM().transform_tiny(capture_bone_position);
+
+	CActor* A=smart_cast<CActor*>(m_character->PhysicsRefObject());
+	if(A)
+	{
+		A->inventory().setSlotsBlocked(true);
+	}
 	m_taget_element->GetGlobalPositionDynamic(&dir);
 	dir.sub(capture_bone_position,dir);
 
@@ -242,4 +252,58 @@ void CPHCapture::Init(CInifile* ini)
 	//m_taget_element->PhysicsShell()->set_ObjectContactCallback(object_contactCallbackFun);
 	m_character->SetObjectContactCallback(object_contactCallbackFun);
 	m_island.Init();
+
+}
+
+void CPHCapture::Release()
+{
+	if(b_failed) return;
+	if(e_state==cstReleased) return;
+	if(m_joint) 
+	{
+		m_island.RemoveJoint(m_joint);
+
+		dJointDestroy(m_joint);
+
+	}
+	m_joint=NULL;
+	if(m_ajoint)
+	{
+		m_island.RemoveJoint(m_ajoint);
+		dJointDestroy(m_ajoint);
+	}
+	m_ajoint=NULL;
+	if(m_body) 
+	{
+		m_island.RemoveBody(m_body);
+		dBodyDestroy(m_body);
+	}
+	m_body=NULL;
+
+	if(e_state==cstPulling&&m_taget_element&&!m_taget_object->getDestroy()&&m_taget_object->PPhysicsShell()&&m_taget_object->PPhysicsShell()->isActive())
+	{
+		m_taget_element->set_DynamicLimits();
+	}
+
+	e_state=cstReleased;
+	b_collide=true;
+	CActor* A=smart_cast<CActor*>(m_character->PhysicsRefObject());
+	if(A)
+	{
+		A->inventory().setSlotsBlocked(false);
+	}
+}
+
+void CPHCapture::Deactivate()
+{
+	Release();
+	//if(m_taget_object&&m_taget_element&&!m_taget_object->getDestroy()&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->isActive())
+	//{
+	//	m_taget_element->set_ObjectContactCallback(0);
+
+	//}
+	m_character->SetObjectContactCallback(0);
+	CPHUpdateObject::Deactivate();
+	m_taget_object=NULL;
+	m_taget_element=NULL;
 }

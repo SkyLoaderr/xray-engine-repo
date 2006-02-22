@@ -18,6 +18,7 @@ public:
 	bool m_bCanBeActivated;
 	//может ли слот вообще быть использован
 	bool m_bUsable;
+
 };
 typedef xr_vector<CInventorySlot> TISlotArr;
 
@@ -150,7 +151,7 @@ public:
 	u32			ModifyFrame							() const				{return m_dwModifyFrame;}
 	void		Items_SetCurrentEntityHud			(bool current_entity);
 	bool		isBeautifulForActiveSlot			(CInventoryItem *pIItem);
-	bool		isSlotsBlocked						()			{return m_bDoBlockAllSlots;}
+	bool		isSlotsBlocked						()			{return m_bDoBlockAllSlots>0;}
 	void		setSlotsBlocked						(bool b);
 protected:
 	// Активный слот и слот который станет активным после смены
@@ -182,7 +183,7 @@ protected:
 
 	//кадр на котором произошло последнее изменение в инвенторе
 	u32	m_dwModifyFrame;
-	bool		m_bDoBlockAllSlots;
+	int	m_bDoBlockAllSlots;
 
 	//буфферный список
 	TIItemContainer			l_subs; 
