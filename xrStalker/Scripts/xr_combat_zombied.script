@@ -6,8 +6,6 @@
 	- анимация поворота
 ------------------------------------------------------------------------------------------------------------]]
 
-local turn_threshold_cos = math.cos( math.rad( 10 ) )
-
 class "evaluator_combat_zombied" ( property_evaluator )
 
 function evaluator_combat_zombied:__init( name, glob_storage ) super ( nil, name )
@@ -25,6 +23,8 @@ class "action_zombie_shoot" ( action_base )
 function action_zombie_shoot:__init( name, storage )  super ( nil, name )
 	self.st = storage
 	self.t  = {}
+
+	self.was_hit = false
 end
 
 function action_zombie_shoot:initialize()
@@ -41,17 +41,24 @@ function action_zombie_shoot:initialize()
 
 	self.enemy_last_seen_pos = be:position()
 	self.enemy_last_seen_vid = be:level_vertex_id()
+
+	self.last_vid  = nil
+
+	self.turn_time = 0
 end
 
-function action_zombie_shoot:set_state( state, be )
-	if state ~= self.last_state then
-		self.t.look_object   = be
-		self.t.look_position = self.enemy_last_seen_pos
-		state_mgr.set_state( self.object, state, nil, nil, self.t )
+function action_zombie_shoot:set_state( state, be, pos )
+	self.t.look_object = be
 
-		self.last_state = state
---		printf( "set state !!!!!!!!!!!" )
+	if be then
+		self.t.look_position = self.enemy_last_seen_pos
+	else
+		self.t.look_position = pos
 	end
+
+	state_mgr.set_state( self.object, state, nil, nil, self.t )
+
+	self.last_state = state
 end
 
 function action_zombie_shoot:execute()
@@ -68,39 +75,68 @@ function action_zombie_shoot:execute()
 	self.object:set_path_type( game_object.level_path )
 
 	if self.object:position():distance_to_sqr( self.enemy_last_seen_pos ) > 9 then
-		utils.send_to_nearest_accessible_vertex( self.object, self.enemy_last_seen_vid )
+		if self.last_vid ~= self.enemy_last_seen_vid then
+			self.last_vid = self.enemy_last_seen_vid
 
-		if self:can_shoot( be, see ) then
+			utils.send_to_nearest_accessible_vertex( self.object, self.last_vid )
+		end
+
+		if see then
 			self:set_state( "raid_fire", be )
 		else
-			self:set_state( "raid",      be )
+			self:set_state( "raid",      nil, self.enemy_last_seen_pos )
 		end
+
+		self.turn_time = 0
     else
-		if self:can_shoot( be, see ) then
+		if see then
 			self:set_state( "guard_fire",  be )
+
+			self.turn_time = 0
 		else
-			self:set_state( "guard_na",    be )
+			if self.was_hit then
+				self.was_hit = false
+
+				self.turn_time = time_global() + math.random( 5000, 7000 )
+
+				self:set_state( "guard_na", nil, self.enemy_last_seen_pos )
+
+			elseif self.turn_time < time_global() then
+				self.turn_time = time_global() + math.random( 3000, 5000 )
+
+				self:set_state( "guard_na", nil, self:calc_random_direction() )
+			end
 		end
 	end
+end
+
+function action_zombie_shoot:calc_random_direction()
+	local ang      = math.pi * 2 * math.random()
+	local look_pos = vector():set( self.object:position() )
+
+	look_pos.x = look_pos.x + math.cos( ang )
+	look_pos.z = look_pos.z + math.sin( ang )
+
+	return look_pos
 end
 
 function action_zombie_shoot:finalize()
 	action_base.finalize( self )
 end
 
-function action_zombie_shoot:can_shoot( be, see )
-	if see then
-		local v1 = self.object:head_orientation()
-		local v2 = self.enemy_last_seen_pos:sub( self.object:position() )
+function action_zombie_shoot:hit_callback( obj, amount, local_direction, who, bone_index )
+	if who == nil then
+		return
+	end
 
-		-- повёрнут к врагу с погрешностью
-		local ang_cos = ( (v1.x*v2.x) + (v1.z*v2.z) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z) * math.sqrt(v2.x*v2.x + v2.z*v2.z) )
+	local be = self.object and self.object:best_enemy()
 
---		self.object:info_add( tostring( math.deg( math.acos( ang_cos ) ) ) )
+	-- если получили хит от текущего врага, то мы знаем, где он
+	if be and who:id() == be:id() then
+		self.enemy_last_seen_pos = be:position()
+		self.enemy_last_seen_vid = be:level_vertex_id()
 
-		return ang_cos > turn_threshold_cos
-	else
-		return false
+		self.was_hit = true
 	end
 end
 
@@ -182,7 +218,9 @@ function add_to_binder( npc, ini, st, planner )
 	action:add_effect      ( world_property( stalker_ids.property_enemy,           false ) )
 	planner:add_action( xr_actions_id.combat_zombied_base, action )
 
-	local action = action_zombie_go_to_danger( "action_zombie_go_to_danger", st )
+	xr_logic.subscribe_action_for_events( npc, st, action )
+
+	action = action_zombie_go_to_danger( "action_zombie_go_to_danger", st )
 	action:add_precondition( world_property( stalker_ids.property_alive,           true  ) )
 	action:add_precondition( world_property( xr_evaluators_id.combat_zombied_base, true  ) )
 	action:add_precondition( world_property( stalker_ids.property_enemy,           false ) )
