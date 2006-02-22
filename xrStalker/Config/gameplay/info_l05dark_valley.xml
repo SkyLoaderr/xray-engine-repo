@@ -4,8 +4,6 @@
 <!-- FAKE: main task -->
 <info_portion id="val_give_main_task"></info_portion>
 
-<info_portion id="val_x18_door_open"></info_portion>
-
 <!-- Нападение на игрока около входа на уровень -->
 <info_portion id="val_ambush_kill_plr"></info_portion>
 <info_portion id="val_ambush_t1_started"></info_portion>
@@ -93,11 +91,6 @@
 <info_portion id="val_sacrifice_guard1_phrase5_end"></info_portion>
 <info_portion id="val_sacrifice_guard2_phrase2_end"></info_portion>
 
-<!-- Стартует машина около бензоколонки -->
-<info_portion id="val_truck_actor_near_gas_st"></info_portion>
-<info_portion id="val_truck_start"></info_portion>
-<info_portion id="val_truck_arrived"></info_portion>
-
 <!-- SOS на бензоколонке -->
 <info_portion id="val_sos_actor_near_wounded"></info_portion>
 <info_portion id="val_sos_give_tip"></info_portion>
@@ -137,6 +130,8 @@
 <info_portion id="val_player_knows_password">
 	<article>storyline_borov_flash_info</article>
 </info_portion>
+
+<info_portion id="val_x18_door_open"></info_portion>
 
 <!-- Развод лоха -->
 <info_portion id="val_rob_buying"></info_portion>
