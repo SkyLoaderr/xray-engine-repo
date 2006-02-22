@@ -500,6 +500,24 @@ function heavy_wounded(actor, npc)
 	return xr_wounded.is_heavy_wounded_by_id( npc:id() )
 end
 
+--[[
+ѕроверка на заданный период времени
+¬рем€ задаетс€ в минутах
+ѕараметры: (time_shift:period_min)
+           time_shift - периодичность срабатывани€
+           period - период срабатывани€ на котором мы получаем true
+
+ѕримеры:
+time_period(60:10) - возвращает true каждый час на прот€жении первых 10 минут
+--]]
+function time_period(actor, npc, p)
+    local tshift, period = p[1], p[2]
+    if tshift ~= nil and pmin ~= nil then
+        return tshift > period and level.get_time_minutes() % tshift <= period
+    end
+    return false
+end    
+
 function is_day (actor, npc)
     return level.get_time_hours() >= 6 and level.get_time_hours() < 21
 end    
