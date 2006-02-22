@@ -81,9 +81,8 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 		// перевод из локальных координат в мировые вектора направления импульса
 		Fvector hit_dir;
-		XFORM().transform_dir(hit_dir,dir);
-		hit_dir = dir;
-		hit_dir.normalize();
+		XFORM().transform_dir	(hit_dir,dir);
+		hit_dir.normalize		();
 
 		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
 		VERIFY		(pEntityNC);
