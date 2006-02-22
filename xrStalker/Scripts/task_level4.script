@@ -5,15 +5,26 @@ function main (need_items)
 -------------------------------------------------------------------------------
 -- Задачи Bar
 -------------------------------------------------------------------------------
+    db.actor:give_info_portion ("bar_ecolog_crush_heli_start")
+    db.actor:give_info_portion ("bar_ecolog_crush_heli_down")
+    db.actor:give_info_portion ("bar_rescue_research_start")
+    db.actor:give_info_portion ("bar_rescue_research_done")
+    db.actor:give_info_portion ("bar_rescue_research_reward")
+    db.actor:give_info_portion ("rostok_objective_1")
+    db.actor:give_info_portion ("bar_ecolog_research_normal")
+
+
+    
     -- мочилово безумных ветеранов
-    db.actor:give_info_portion ("bar_kill_veteran_start")
-    db.actor:give_info_portion ("bar_dolg_veteran_done")
+    --db.actor:give_info_portion ("bar_kill_veteran_start")
+    --db.actor:give_info_portion ("bar_dolg_veteran_done")
     -- фамильное ружье
     db.actor:give_info_portion ("bar_bar_hunter_quest_start")
     db.actor:give_info_portion ("bar_bar_hunter_quest_finish")
     -- убиение мозга
     db.actor:give_info_portion ("yan_kill_brain_task_start")
     db.actor:give_info_portion ("yan_labx16_switcher_primary_off")
+    db.actor:give_info_portion ("yan_x16_documents_gain")
     db.actor:give_info_portion ("yan_kill_brain_done")
     -- труп Призрака
     db.actor:give_info_portion ("yantar_vasilyev_info")
@@ -27,22 +38,39 @@ function main (need_items)
     db.actor:give_info_portion ("yan_find_vasilyev_start")
     -- теперь еще и Семенов затесался...
     db.actor:give_info_portion ("yan_find_scientist_semenov_start")
-    db.actor:give_info_portion ("yan_kruglov_after_actor")
     db.actor:give_info_portion ("yan_scientist_return_to_bunker")
     db.actor:give_info_portion ("yan_find_scientist_done")
+    db.actor:give_info_portion ("yan_kruglov_after_actor")
     -- опять какой-то ученый... задрали
     db.actor:give_info_portion ("yan_find_scientist_start")
+    db.actor:give_info_portion ("yan_psi_zone_find_done")
+    
     db.actor:give_info_portion ("yan_kruglov_after_actor")
     db.actor:give_info_portion ("yan_scientist_return_to_bunker")
     db.actor:give_info_portion ("yan_find_scientist_done")
+    
+    db.actor:give_info_portion ("yantar_tunnel_start")
+    db.actor:give_info_portion ("yantar_tunnel_finish")
+    
+
+    db.actor:give_info_portion ("yan_provodnik_spawn")
+    
     -- отмечаемся у начальника отдела кадров
     db.actor:give_info_portion ("bar_dolg_base_rules_start")
     db.actor:give_info_portion ("bar_dolg_base_rules_talk")
     -- задача на вступление в Долг
-    db.actor:give_info_portion ("bar_dolg_community_start")
-    db.actor:give_info_portion ("bar_dolg_veteran_done")
-    db.actor:give_info_portion ("bar_svoboda_rg6_done")
-    db.actor:give_info_portion ("bar_dolg_community_leader_done")
+    --db.actor:give_info_portion ("bar_dolg_community_start")
+    --db.actor:give_info_portion ("bar_dolg_veteran_done")
+    --db.actor:give_info_portion ("bar_svoboda_rg6_done")
+    --db.actor:give_info_portion ("bar_dolg_community_leader_done")
+    
+    db.actor:give_info_portion ("bar_x16_documents_done")
+    db.actor:give_info_portion ("bar_radar_shedule")
+    db.actor:give_info_portion ("bar_deactivate_radar_start")
+    
+    
+
+
     -- инфопоршен на поиск доктора    
     --db.actor:give_info_portion ("esc_find_doctor_start")
 
