@@ -243,7 +243,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
                 "path_look           = base_patrol_look\n" ..
                 "radius              = 12\n" ..
                 "no_retreat          = true\n" ..
-                "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
+                "heli_hunter         = {+cit_heli_start -cit_heli_end}\n" ..
                 --"danger              = danger_killers\n" ..
                 --"combat_ignore_cond  = {=fighting_actor -cit_actor_out_killers_base}, {=check_fighting(1200)}\n"
                 combat_ignore
@@ -498,7 +498,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
                    "def_state_moving2   = patrol\n" ..
                    "def_state_moving3   = patrol\n" ..
 --]]
-                   "heli_hunter         = {+cit_heli_start -cit_heli_end} true, false\n" ..
+                   "heli_hunter         = {+cit_heli_start -cit_heli_end}\n" ..
                    --"danger              = danger_killers\n" ..
                    combat_ignore
                    --"combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n"
