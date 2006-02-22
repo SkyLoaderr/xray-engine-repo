@@ -120,6 +120,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *RI.val_pTransform;
 		N->val.se				= sh;							
+		return					;
 	}
 #endif
 
@@ -223,6 +224,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= Fidentity;
 		N->val.se				= sh;							
+		return					;
 	}
 #endif
 
