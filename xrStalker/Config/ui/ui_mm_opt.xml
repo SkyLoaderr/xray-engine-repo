@@ -107,7 +107,7 @@
 		</check_dyn_lignt>
 		
 		<list_presets x="194" y="20" width="261" height="21">
-			<options_item entry="r___preset" group="mm_opt_video"/>
+			<!--options_item entry="r___preset" group="mm_opt_video"/-->
 		</list_presets>
 		<list_resolution x="194" y="45" width="261" height="21">
 			<options_item entry="vid_mode" group="mm_opt_video"/>
