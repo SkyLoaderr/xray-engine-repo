@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 484
+  Height = 277
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -46,7 +46,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 14
+        Height = 13
         Align = alTop
         Alignment = taCenter
         Caption = 'Scene'
@@ -331,7 +331,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 14
+        Height = 13
         Align = alTop
         Alignment = taCenter
         Caption = 'Tools'
@@ -1114,7 +1114,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 14
+        Height = 13
         Align = alTop
         Alignment = taCenter
         Caption = 'Edit Mode'
@@ -1550,7 +1550,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 1
         Width = 216
-        Height = 14
+        Height = 13
         Align = alTop
         Alignment = taCenter
         Caption = 'Snap List'
@@ -1723,7 +1723,7 @@ object fraLeftBar: TfraLeftBar
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ItemHeight = 14
+        ItemHeight = 13
         ParentFont = False
         Sorted = True
         TabOrder = 0

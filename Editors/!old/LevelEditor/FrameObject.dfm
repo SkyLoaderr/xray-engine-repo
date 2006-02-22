@@ -1,6 +1,6 @@
 object fraObject: TfraObject
-  Left = 300
-  Top = 321
+  Left = 469
+  Top = 571
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
@@ -22,8 +22,8 @@ object fraObject: TfraObject
   object Label5: TLabel
     Left = 5
     Top = 16
-    Width = 84
-    Height = 13
+    Width = 47
+    Height = 26
     Caption = 'Select by Current:'
     WordWrap = True
   end
@@ -117,8 +117,8 @@ object fraObject: TfraObject
   object Label3: TLabel
     Left = 5
     Top = 31
-    Width = 92
-    Height = 13
+    Width = 47
+    Height = 26
     Caption = 'Select by Selected:'
     WordWrap = True
   end

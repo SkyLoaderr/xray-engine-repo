@@ -14,7 +14,7 @@
       intermediate\FramePortal.obj intermediate\FramePS.obj 
       intermediate\FrameSector.obj intermediate\FrameShape.obj 
       intermediate\FrameSpawn.obj intermediate\FrameWayPoint.obj 
-      intermediate\leftbar.obj intermediate\ObjectList.obj 
+      intermediate\LeftBar.obj intermediate\ObjectList.obj 
       intermediate\previewimage.obj intermediate\PropertiesEObject.obj 
       intermediate\Splash.obj intermediate\ui_leveltools.obj 
       intermediate\UI_LevelMain.obj intermediate\WayPoint.obj 
@@ -86,7 +86,7 @@
       EditLibrary.dfm EditLightAnim.dfm FrameAIMap.dfm FrameDetObj.dfm 
       FrameGroup.dfm FrameLight.dfm FrameObject.dfm FramePortal.dfm FramePS.dfm 
       FrameSector.dfm FrameShape.dfm FrameSpawn.dfm FrameWayPoint.dfm 
-      leftbar.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm Splash.dfm"/>
+      LeftBar.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm Splash.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -157,7 +157,7 @@
       <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameWayPoint.cpp" FORMNAME="fraWayPoint" UNITNAME="FrameWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="leftbar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesEObject.cpp" FORMNAME="frmPropertiesEObject" UNITNAME="PropertiesEObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -291,7 +291,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=125
+Build=126
 Debug=1
 PreRelease=0
 Special=0
@@ -303,7 +303,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.125
+FileVersion=1.0.2.126
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -354,9 +354,11 @@ Count=1
 Item0=intermediate
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
+Count=4
 Item0=x:\
-Item1=z:\
+Item1=u:\preliminary\
+Item2=u:\preliminary
+Item3=z:\
 
 [Debugging]
 DebugSourceDirs=
