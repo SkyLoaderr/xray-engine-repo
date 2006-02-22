@@ -102,15 +102,17 @@ function evaluator_danger:evaluate()
 
 	-- отсеиваем по настройке combat_ignore/danger
 	db.storage[self.object:id()].enemy = best_danger:object()
-	local overrides = xr_logic.generic_scheme_overrides(self.object)
-	if overrides and
-	   overrides.combat_ignore and
-	   active_scheme ~= nil and
-	   xr_logic.pick_section_from_condlist(db.actor, self.object, overrides.combat_ignore.condlist ) ~= nil
-	then
-		printf("DANGER [%s]->[%s] [FALSE] ignore_danger", self.object:name(), best_danger_name)
-		return false
-	end
+	if db.storage[self.object:id()].enemy ~= nil then
+	    local overrides = xr_logic.generic_scheme_overrides(self.object)
+	    if overrides and
+	    overrides.combat_ignore and
+	    active_scheme ~= nil and
+	    xr_logic.pick_section_from_condlist(db.actor, self.object, overrides.combat_ignore.condlist ) ~= nil
+	    then
+		    printf("DANGER [%s]->[%s] [FALSE] ignore_danger", self.object:name(), best_danger_name)
+		    return false
+	    end
+    end	    
 
 	-- инерция возврата. Только не для кемпера.
 	if self.danger_time then
