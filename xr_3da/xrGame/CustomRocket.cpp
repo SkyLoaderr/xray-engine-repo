@@ -382,7 +382,7 @@ void CCustomRocket::UpdateCL()
 		if(m_time_to_explode<Device.fTimeGlobal)
 		{
 			Contact(Position(), Direction());
-			Msg("--cobtact");
+//			Msg("--contact");
 		}
 	}
 }
