@@ -27,6 +27,7 @@ function PsyAntenna:__init				()
 	self.phantom_spawn_probability		= 0	// spawn probability (0..1)
 	self.phantom_spawn_radius			= 30.0	// average radius 30.0m +-15m
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
+	self.phantom_fov					= 45   // ширина сектора перед глазами актёра, в котором могут рождаться фантомы
 	// antenna
 	self.hit_amplitude					= 10.0	// размер хита = self.hit_amplitude*self.hit_intensity
 // ----------------------------------------------------------------------------------------
@@ -141,12 +142,18 @@ function PsyAntenna:generate_phantoms 	()
 
 		if math.random() < self.phantom_spawn_probability then
 			if phantom_manager:phantom_count() < self.phantom_max then
-				local yaw	 			= math.pi*2.0*math.random()
+--[[				local yaw	 			= math.pi*2.0*math.random()
 				local radius 			= self.phantom_spawn_radius*(math.random()/2.0+0.5)
 				local height 			= self.phantom_spawn_height*math.random()
 				local a_pos 			= db.actor:position()
 				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z)
-				phantom_manager.spawn_phantom(pos)
+				phantom_manager.spawn_phantom(pos)]]
+
+				local radius = self.phantom_spawn_radius * ( math.random()/2.0+0.5 )
+				local ang    = self.phantom_fov * math.random() - self.phantom_fov * 0.5
+				local dir    = vector_rotate_y( db.actor:direction(), ang )
+
+				phantom_manager.spawn_phantom( db.actor:position():add( dir:mul(radius) ) )
 			end
 		end
 	end
