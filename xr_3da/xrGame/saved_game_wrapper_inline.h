@@ -17,3 +17,8 @@ inline const CSavedGameWrapper::_LEVEL_ID &CSavedGameWrapper::level_id	() const
 {
 	return	(m_level_id);
 }
+
+inline const float &CSavedGameWrapper::actor_health						() const
+{
+	return	(m_actor_health);
+}

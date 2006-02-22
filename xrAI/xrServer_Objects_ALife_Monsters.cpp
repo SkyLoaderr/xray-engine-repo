@@ -259,7 +259,7 @@ SPECIFIC_CHARACTER_ID CSE_ALifeTraderAbstract::specific_character()
 {
 #ifdef XRGAME_EXPORTS
 #pragma todo("Dima to Yura, MadMax : Remove that hacks, please!")
-	if (Level().game && (GameID() != GAME_SINGLE)) return m_SpecificCharacter;
+	if (g_pGameLevel && Level().game && (GameID() != GAME_SINGLE)) return m_SpecificCharacter;
 #endif
 
 	if(m_SpecificCharacter.size())

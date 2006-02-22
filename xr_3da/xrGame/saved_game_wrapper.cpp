@@ -37,8 +37,12 @@ CSavedGameWrapper::CSavedGameWrapper	(LPCSTR saved_game_name)
 		VERIFY					(count > 0);
 		CSE_ALifeDynamicObject	*object = CALifeObjectRegistry::get_object(*reader);
 		VERIFY					(object->ID == 0);
-		VERIFY					(smart_cast<CSE_ALifeCreatureActor*>(object));
+		CSE_ALifeCreatureActor	*actor = smart_cast<CSE_ALifeCreatureActor*>(object);
+		VERIFY					(actor);
+
+		m_actor_health			= actor->g_Health();
 		m_level_id				= ai().game_graph().vertex(object->m_tGraphID)->level_id();
+
 		F_entity_Destroy		(object);
 	}
 

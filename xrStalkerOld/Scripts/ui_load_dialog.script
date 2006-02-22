@@ -117,12 +117,20 @@ end
 
 function file_data(fname)
 	local f = getFS();
-	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly) , fname)
+	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly) , fname .. ".sav")
 	local f_cnt = flist:Size()
 	
 	if f_cnt > 0 then
-		local file		=	flist:GetAt(0)		
-		return "[" .. file:Modif() .. "]"		
+		local file		=	flist:GetAt(0)
+		local sg = CSavedGameWrapper(fname)
+		
+		local y,m,d,h,min,sec,ms = 0,0,0,0,0,0,0
+		y,m,d,h,min,sec,ms = sg:game_time():get(y,m,d,h,min,sec,ms)
+		
+		local date_time = string.format("[%d:%d:%d %d]",m,d,h,min,y)
+		local health = string.format("\\nhealth %d%s",sg:actor_health()*100,"%")
+		
+		return "level: " .. sg:level_name() .. "\\ntime: " .. date_time .. health
 	else
 		return "no file data"
 	end	
@@ -135,7 +143,7 @@ function load_dialog:OnListItemClicked()
 	
 	local item_text = item:GetText()
 	self.file_caption:SetText(item_text)
-	self.file_data:SetText(file_data(item_text .. ".sav"))
+	self.file_data:SetText(file_data(item_text))
 	
 	if file_exist(item_text .. ".dds") then
 		picture:InitTexture(item_text)

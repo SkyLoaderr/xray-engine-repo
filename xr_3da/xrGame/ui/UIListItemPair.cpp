@@ -33,14 +33,14 @@ CUIListItemPair::CUIListItemPair(){
 
 	// file name field
 	m_staticFileName.SetFont(UI()->Font()->pFontMedium);
-	m_staticFileName.SetTextColor(color_argb(255, 255, 255, 255));
+	m_staticFileName.SetTextColor(color_argb(255, 240, 217, 182));
 	m_staticFileName.SetTextAlignment(CGameFont::alLeft);
 	m_staticFileName.Init(0,0,0,0);
 	m_staticFileName.SetElipsis(CUIStatic::eepNone, 1);
 
 	// date/time field
 	m_staticDateTime.SetFont(UI()->Font()->pFontMedium);
-	m_staticDateTime.SetTextColor(color_argb(255, 255, 255, 255));
+	m_staticDateTime.SetTextColor(color_argb(255, 216, 186, 140));
 	m_staticDateTime.SetTextAlignment(CGameFont::alLeft);
 	m_staticDateTime.Init(0,0,0,0);
 }
@@ -154,4 +154,9 @@ LPCSTR CUIListItemPair::GetTextDateTime(){
 
 LPCSTR CUIListItemPair::GetText(){
 	return this->m_staticFileName.GetText();	
+}
+
+void CUIListItemPair::SetTextColor(u32 color){
+	m_staticFileName.SetTextColor(color);
+	m_staticDateTime.SetTextColor(color);
 }

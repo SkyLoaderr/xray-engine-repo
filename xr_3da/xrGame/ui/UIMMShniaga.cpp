@@ -10,6 +10,7 @@
 #include "../level.h"
 #include "../object_broker.h"
 #include <math.h>
+#include "../Actor.h"
 
 
 CUIMMShniaga::CUIMMShniaga(){
@@ -95,7 +96,12 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 	CUIStatic* st;
 
 	for (int i = 0; i < nodes_num; ++i)
-	{
+	{		
+		if (0 == xr_strcmp("btn_lastsave",xml_doc.ReadAttrib("btn", i, "name")))
+		{
+			if (Actor()->g_Alive())
+				continue;
+		}
 		st = xr_new<CUIStatic>();
 		st->Init(0,0,m_view->GetDesiredChildWidth(), height);
 		st->SetTextST(xml_doc.ReadAttrib("btn", i, "caption"));
@@ -106,8 +112,7 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 		st->SetVTextAlignment(valCenter);
 		st->SetWindowName(xml_doc.ReadAttrib("btn", i, "name"));
 		st->SetMessageTarget(this);
-//		st->InitTexture("ui\\ui_debug_red_n_black");
-//		st->SetStretchTexture(true);
+
 		lst.push_back(st);
 	}
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());

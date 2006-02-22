@@ -31,8 +31,9 @@ void CSavedGameWrapper::script_register	(lua_State *L)
 	[
 		class_<CSavedGameWrapper>("CSavedGameWrapper")
 			.def(constructor<LPCSTR>())
-			.def("game_time",	&CSavedGameWrapper__game_time)
-			.def("level_name",	&CSavedGameWrapper__level_name)
-			.def("level_id",	&CSavedGameWrapper::level_id)
+			.def("game_time",		&CSavedGameWrapper__game_time)
+			.def("level_name",		&CSavedGameWrapper__level_name)
+			.def("level_id",		&CSavedGameWrapper::level_id)
+			.def("actor_health",	&CSavedGameWrapper::actor_health)
 	];
 }

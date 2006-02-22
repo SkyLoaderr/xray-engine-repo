@@ -31,6 +31,7 @@ public:
 			int  GetBorder();
 			void SetBorder(int iBorder);
 	virtual LPCSTR GetText();
+	virtual void SetTextColor(u32 color);
 
 	virtual void Draw();
 
