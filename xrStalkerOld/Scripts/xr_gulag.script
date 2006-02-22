@@ -741,8 +741,8 @@ function gulag:print()
 		printf("id: %d name: %s", k, self.npc_info[k].name)
 	end
 
-	printf("Jobs:")
-	for k,v in ipairs( self.Job ) do
+	printf("Jobs in this state:")
+	for k,v in ipairs( self.Job_avail_in_state ) do
 		printf("section: %s, prior %d", v.section, v.prior)
 		if v.object ~= nil then
 			npc_info = self.npc_info[v.object]

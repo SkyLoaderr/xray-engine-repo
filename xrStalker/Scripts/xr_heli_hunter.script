@@ -60,7 +60,7 @@ function evaluator_shoot:evaluate()
 
 		-- проверка не потерялся ли вертолет.
 --		if db.heli[self.a.heli:id()] ~= nil and
-		printf( "dist=%d %d", self.a.heli:position():distance_to_sqr(self.object:position()), self.a.attack_dist_sqr )
+--		printf( "dist=%d", self.a.heli:position():distance_to_sqr(self.object:position()) )
 		if self.a.heli:position():distance_to_sqr(self.object:position()) > self.a.attack_dist_sqr then
 			self.a.heli = nil
 			return false
