@@ -240,7 +240,7 @@ void CSightAction::execute_fire_object			()
 		case 0 : {
 			execute_object	();
 
-			if (target_reached()) {
+			if (target_reached() && object().inventory().ActiveItem()) {
 				if (!m_object->can_kill_enemy() || m_object->can_kill_member())
 					m_state_fire_object	= 1;
 			}
