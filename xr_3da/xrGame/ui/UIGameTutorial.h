@@ -38,6 +38,8 @@ public:
 	virtual void			IR_OnKeyboardHold	(int dik);
 
 	virtual void			IR_OnMouseWheel		(int direction)	;
+	virtual void			IR_OnActivate		(void);
+
 };
 
 class CUISequenceItem

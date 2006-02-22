@@ -944,7 +944,8 @@ void CWeaponMagazined::PlayAnimIdle()
 		if(pActor){
 			CEntity::SEntityState st;
 			pActor->g_State(st);
-			if(st.bSprint && mhud_idle_sprint.size())	m = &mhud_idle_sprint;
+			if(st.bSprint && mhud_idle_sprint.size())	
+				m = &mhud_idle_sprint;
 		}
 	}
 	m_pHUD->animPlay((*m)[Random.randI(m->size())], TRUE);
