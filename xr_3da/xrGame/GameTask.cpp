@@ -19,7 +19,7 @@
 #include "game_object_space.h"
 #include "object_broker.h"
 
-w
+
 ALife::_STORY_ID	story_id		(LPCSTR story_id);
 u16					storyId2GameId	(ALife::_STORY_ID);
 
