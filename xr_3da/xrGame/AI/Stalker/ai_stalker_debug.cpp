@@ -231,9 +231,6 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 {
 	inherited::OnHUDDraw				(hud);
 
-	if (!g_Alive())
-		return;
-
 	if (!psAI_Flags.test(aiStalker))
 		return;
 
@@ -258,39 +255,41 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	update_range_fov					(object_range,object_fov,eye_range,deg2rad(eye_fov));
 	HUD().Font().pFontSmall->OutNext	("%s%seye range   : %f",indent,indent,object_range);
 	HUD().Font().pFontSmall->OutNext	("%s%sFOV         : %f",indent,indent,rad2deg(object_fov));
-	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().visual().objects().size());
-	HUD().Font().pFontSmall->OutNext	("%s%snot yet     : %d",indent,indent,memory().visual().not_yet_visible_objects().size());
-	HUD().Font().pFontSmall->OutNext	("%s%sin frustum  : %d",indent,indent,memory().visual().raw_objects().size());
-	if (memory().visual().visible_now(actor))
-		HUD().Font().pFontSmall->OutNext("%s%sactor       : visible",indent,indent);
-	else {
-		MemorySpace::CNotYetVisibleObject	*object = memory().visual().not_yet_visible_object(actor);
-		if (object && !fis_zero(object->m_value))
-			HUD().Font().pFontSmall->OutNext("%s%sactor       : not yet visible : %f",indent,indent,object->m_value);
-		else
-			HUD().Font().pFontSmall->OutNext("%s%sactor       : not visible",indent,indent);
-	}
-	// sound
-	HUD().Font().pFontSmall->OutNext	("%ssound",indent);
-	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().sound().objects().size());
+	if (g_Alive()) {
+		HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().visual().objects().size());
+		HUD().Font().pFontSmall->OutNext	("%s%snot yet     : %d",indent,indent,memory().visual().not_yet_visible_objects().size());
+		HUD().Font().pFontSmall->OutNext	("%s%sin frustum  : %d",indent,indent,memory().visual().raw_objects().size());
+		if (memory().visual().visible_now(actor))
+			HUD().Font().pFontSmall->OutNext("%s%sactor       : visible",indent,indent);
+		else {
+			MemorySpace::CNotYetVisibleObject	*object = memory().visual().not_yet_visible_object(actor);
+			if (object && !fis_zero(object->m_value))
+				HUD().Font().pFontSmall->OutNext("%s%sactor       : not yet visible : %f",indent,indent,object->m_value);
+			else
+				HUD().Font().pFontSmall->OutNext("%s%sactor       : not visible",indent,indent);
+		}
+		// sound
+		HUD().Font().pFontSmall->OutNext	("%ssound",indent);
+		HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().sound().objects().size());
 #ifdef USE_SELECTED_SOUND
-	if (memory().sound().sound()) {
-		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
-		HUD().Font().pFontSmall->OutNext	("%s%s%stype",indent,indent,indent);
-		HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().sound().sound()->m_power);
-		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().sound().sound()->m_object ? *memory().sound().sound()->m_object->cName() : "unknown");
-	}
+		if (memory().sound().sound()) {
+			HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
+			HUD().Font().pFontSmall->OutNext	("%s%s%stype",indent,indent,indent);
+			HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().sound().sound()->m_power);
+			HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().sound().sound()->m_object ? *memory().sound().sound()->m_object->cName() : "unknown");
+		}
 #endif
-	// hit
-	HUD().Font().pFontSmall->OutNext	("%shit",indent);
-	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().hit().objects().size());
+		// hit
+		HUD().Font().pFontSmall->OutNext	("%shit",indent);
+		HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().hit().objects().size());
 #ifdef USE_SELECTED_HIT
-	if (memory().hit().hit()) {
-		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
-		HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().hit().hit()->m_amount);
-		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().hit().hit()->m_object ? *memory().hit().hit()->m_object->cName() : "unknown");
-	}
+		if (memory().hit().hit()) {
+			HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
+			HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().hit().hit()->m_amount);
+			HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().hit().hit()->m_object ? *memory().hit().hit()->m_object->cName() : "unknown");
+		}
 #endif
+	}
 	// enemy
 	HUD().Font().pFontSmall->OutNext	("%senemy",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
@@ -309,63 +308,67 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 				break;
 			}
 
-		if (!g_mt_config.test(mtAiVision))
-			VERIFY							(!memory().visual().visible_now(memory().enemy().selected()) || (fuzzy > 0.f));
+		if (g_Alive()) {
+			if (!g_mt_config.test(mtAiVision))
+				VERIFY						(!memory().visual().visible_now(memory().enemy().selected()) || (fuzzy > 0.f));
+		}
 		HUD().Font().pFontSmall->OutNext	("%s%s%svisible   : %s %f",indent,indent,indent,memory().visual().visible_now(memory().enemy().selected()) ? "+" : "-",fuzzy);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,*memory().enemy().selected()->cName());
-		float								interval = (1.f - panic_threshold())*.25f, left = -1.f, right = -1.f;
-		LPCSTR								description = "invalid";
-		u32									result = dwfChooseAction(
-			2000,
-			1.f - interval,
-			1.f - 2*interval,
-			1.f - 3*interval,
-			panic_threshold(),
-			g_Team(),
-			g_Squad(),
-			g_Group(),
-			0,
-			1,
-			2,
-			3,
-			4,
-			this,
-			300.f
-		);
-		switch (result) {
-			case 0 : {
-				description					= "attack";
-				left						= 1.f;
-				right						= 1.f - 1.f*interval;
-				break;
+		if (g_Alive()) {
+			float								interval = (1.f - panic_threshold())*.25f, left = -1.f, right = -1.f;
+			LPCSTR								description = "invalid";
+			u32									result = dwfChooseAction(
+				2000,
+				1.f - interval,
+				1.f - 2*interval,
+				1.f - 3*interval,
+				panic_threshold(),
+				g_Team(),
+				g_Squad(),
+				g_Group(),
+				0,
+				1,
+				2,
+				3,
+				4,
+				this,
+				300.f
+			);
+			switch (result) {
+				case 0 : {
+					description					= "attack";
+					left						= 1.f;
+					right						= 1.f - 1.f*interval;
+					break;
+				}
+				case 1 : {
+					description					= "careful attack";
+					left						= 1.f - 1.f*interval;
+					right						= 1.f - 2.f*interval;
+					break;
+				}
+				case 2 : {
+					description					= "defend";
+					left						= 1.f - 2.f*interval;
+					right						= 1.f - 3.f*interval;
+					break;
+				}
+				case 3 : {
+					description					= "retreat";
+					left						= 1.f - 3*interval;
+					right						= panic_threshold();
+					break;
+				}
+				case 4 : {
+					description					= "panic";
+					left						= panic_threshold();
+					right						= 0.f;
+					break;
+				}
+				default : NODEFAULT;
 			}
-			case 1 : {
-				description					= "careful attack";
-				left						= 1.f - 1.f*interval;
-				right						= 1.f - 2.f*interval;
-				break;
-			}
-			case 2 : {
-				description					= "defend";
-				left						= 1.f - 2.f*interval;
-				right						= 1.f - 3.f*interval;
-				break;
-			}
-			case 3 : {
-				description					= "retreat";
-				left						= 1.f - 3*interval;
-				right						= panic_threshold();
-				break;
-			}
-			case 4 : {
-				description					= "panic";
-				left						= panic_threshold();
-				right						= 0.f;
-				break;
-			}
-			default : NODEFAULT;
+			HUD().Font().pFontSmall->OutNext	("%s%s%svictory   : [%5.2f%%,%5.2f%%] -> %s",indent,indent,indent,100.f*right,100.f*left,description);
 		}
-		HUD().Font().pFontSmall->OutNext	("%s%s%svictory   : [%5.2f%%,%5.2f%%] -> %s",indent,indent,indent,100.f*right,100.f*left,description);
 	}
 	// danger
 	HUD().Font().pFontSmall->OutNext	("%sdanger",indent);
@@ -386,24 +389,29 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// agent manager
 	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("agent manager");
+	if (g_Alive()) {
 	HUD().Font().pFontSmall->OutNext	("%smembers           : %d",indent,agent_manager().member().members().size());
 	HUD().Font().pFontSmall->OutNext	("%senemies           : %d",indent,agent_manager().enemy().enemies().size());
 	HUD().Font().pFontSmall->OutNext	("%scorpses           : %d",indent,agent_manager().corpse().corpses().size());
 	HUD().Font().pFontSmall->OutNext	("%sdanger locations  : %d",indent,agent_manager().location().locations().size());
 	HUD().Font().pFontSmall->OutNext	("%smembers in combat : %d",indent,agent_manager().member().combat_members().size());
-	HUD().Font().pFontSmall->OutNext	("%sI am in combat    : %s",indent,agent_manager().member().registered_in_combat(this) ? "+" : "-");
+	if (g_Alive())
+		HUD().Font().pFontSmall->OutNext("%sI am in combat    : %s",indent,agent_manager().member().registered_in_combat(this) ? "+" : "-");
 	HUD().Font().pFontSmall->OutNext	("%smembers in detour : %d",indent,agent_manager().member().in_detour());
-	HUD().Font().pFontSmall->OutNext	("%sI am in detour    : %s",indent,agent_manager().member().member(this).detour() ? "+" : "-");
+	if (g_Alive())
+		HUD().Font().pFontSmall->OutNext("%sI am in detour    : %s",indent,agent_manager().member().member(this).detour() ? "+" : "-");
 
-	if (agent_manager().member().member(this).cover())
-		HUD().Font().pFontSmall->OutNext("%scover         : [%f][%f][%f]",indent,VPUSH(agent_manager().member().member(this).cover()->position()));
+		if (g_Alive()) {
+			if (agent_manager().member().member(this).cover())
+				HUD().Font().pFontSmall->OutNext("%scover         : [%f][%f][%f]",indent,VPUSH(agent_manager().member().member(this).cover()->position()));
 
-	if (agent_manager().member().member(this).member_death_reaction().m_processing)
-		HUD().Font().pFontSmall->OutNext("%react on death : %s",indent,*agent_manager().member().member(this).member_death_reaction().m_member->cName());
+			if (agent_manager().member().member(this).member_death_reaction().m_processing)
+				HUD().Font().pFontSmall->OutNext("%react on death : %s",indent,*agent_manager().member().member(this).member_death_reaction().m_member->cName());
 
-	if (agent_manager().member().member(this).grenade_reaction().m_processing)
-		HUD().Font().pFontSmall->OutNext("%react on grenade : %s",indent,agent_manager().member().member(this).grenade_reaction().m_game_object ? *agent_manager().member().member(this).grenade_reaction().m_game_object->cName() : "unknown");
-
+			if (agent_manager().member().member(this).grenade_reaction().m_processing)
+				HUD().Font().pFontSmall->OutNext("%react on grenade : %s",indent,agent_manager().member().member(this).grenade_reaction().m_game_object ? *agent_manager().member().member(this).grenade_reaction().m_game_object->cName() : "unknown");
+		}
+	}
 
 	// objects
 	HUD().Font().pFontSmall->OutNext	(" ");
