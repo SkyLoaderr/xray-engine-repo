@@ -73,19 +73,19 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	//порог силы и здоровья меньше которого актер начинает хромать
 	m_fLimpingHealthBegin		= pSettings->r_float(section,	"limping_health_begin");
 	m_fLimpingHealthEnd			= pSettings->r_float(section,	"limping_health_end");
-	R_ASSERT					(m_fLimpingHealthBegin<m_fLimpingHealthEnd);
+	R_ASSERT					(m_fLimpingHealthBegin<=m_fLimpingHealthEnd);
 
 	m_fLimpingPowerBegin		= pSettings->r_float(section,	"limping_power_begin");
 	m_fLimpingPowerEnd			= pSettings->r_float(section,	"limping_power_end");
-	R_ASSERT					(m_fLimpingPowerBegin<m_fLimpingPowerEnd);
+	R_ASSERT					(m_fLimpingPowerBegin<=m_fLimpingPowerEnd);
 
 	m_fCantWalkPowerBegin		= pSettings->r_float(section,	"cant_walk_power_begin");
 	m_fCantWalkPowerEnd			= pSettings->r_float(section,	"cant_walk_power_end");
-	R_ASSERT					(m_fCantWalkPowerBegin<m_fCantWalkPowerEnd);
+	R_ASSERT					(m_fCantWalkPowerBegin<=m_fCantWalkPowerEnd);
 
 	m_fCantSprintPowerBegin		= pSettings->r_float(section,	"cant_sprint_power_begin");
 	m_fCantSprintPowerEnd		= pSettings->r_float(section,	"cant_sprint_power_end");
-	R_ASSERT					(m_fCantSprintPowerBegin<m_fCantSprintPowerEnd);
+	R_ASSERT					(m_fCantSprintPowerBegin<=m_fCantSprintPowerEnd);
 
 	m_fPowerLeakSpeed			= READ_IF_EXISTS(pSettings,r_float,section,"max_power_leak_speed",0.0f);
 
