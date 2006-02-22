@@ -55,6 +55,7 @@
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
 		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
+		<actor_dialog>yantar_wounded_scientist</actor_dialog>
 		
 	</specific_character>
 
@@ -82,7 +83,7 @@
 		</supplies>
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
-		
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="yan_ecolog_vasilyev" team_default = "1">
@@ -109,6 +110,7 @@
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
 		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
+		<actor_dialog>yantar_wounded_scientist</actor_dialog>
 		
 	</specific_character>
 
