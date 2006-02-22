@@ -322,7 +322,7 @@ void CRenderDevice::End()
 
     seqRender.Process						(rp_Render);
     
-	Statistic.Show(pSystemFont);
+	Statistic->Show(pSystemFont);
 	Device.SetRS	(D3DRS_FILLMODE,D3DFILL_SOLID);
 	pSystemFont->OnRender();
     Device.SetRS	(D3DRS_FILLMODE,Device.dwFillMode);

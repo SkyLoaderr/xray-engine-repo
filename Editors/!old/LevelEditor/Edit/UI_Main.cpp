@@ -347,7 +347,7 @@ void TUI::Redraw()
 {
 	PrepareRedraw();
     try{
-    	Device.Statistic.RenderDUMP_RT.Begin();
+    	Device.Statistic->RenderDUMP_RT.Begin();
         if (Device.Begin()){
             Device.UpdateView		();
             Device.ResetMaterial	();
@@ -392,7 +392,7 @@ void TUI::Redraw()
 		    	ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type C]");
             }
         }
-    	Device.Statistic.RenderDUMP_RT.End();
+    	Device.Statistic->RenderDUMP_RT.End();
     }catch(...){
     	ELog.DlgMsg(mtError, "Please notify AlexMX!!! Critical error has occured in render routine!!! [Type A]");
 //		_clear87();
