@@ -36,7 +36,8 @@ news = {
     storyline_vasilyev_tip			= sound_object([[characters_voice\scenario\yantar\vasiliev_pda]]),
     storyline_ghost_tip 			= sound_object([[characters_voice\scenario\yantar\ghost_pda]]),
     yan_saharov_message 			= sound_object([[characters_voice\scenario\yantar\professor_to_actor_pda_3]]),
-	
+	yan_saharov_message_2 			= sound_object([[characters_voice\scenario\yantar\professor_to_actor_pda_4]]),
+
 	bar_psih_come					= sound_object([[characters_voice\scenario\bar\barman\barman_pda_psycho]]),
 
 	bar_territory_dolg_1_hit		= sound_object([[characters_voice\scenario\bar\pda\voronin_gunfire_pda_1]]),
