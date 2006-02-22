@@ -63,13 +63,13 @@ master			=   0,      0,        0,        0
 [reputation_relations]
 ;			   terrible, very_bad, bad, neutral, good, very_good, excellent
 ;================================================================
-terrible		=  1000,   800,	  500,	 -200,	 -400,	 -700,	-1000
-very_bad		=   800,   600,	  400,	 -150,	 -250,	 -400,	 -500
-bad				=   600,   300,	  200,	 -100,	 -100,	 -200,	 -300
-neutral			=  -200,  -100,	  -50,		0,	  100,	  200,	  400
-good			=  -300,  -200,	 -100,	  100,	  200,	  300,	  600
-very_good		=  -600,  -300,	 -150,	  200,	  400,	  600,	  800
-excellent		= -1000,  -600,  -300,	  300,	  500,	  800,	 1000
+terrible		= -1000,  -600,	 -300,	    0,	  300,	  600,	 1000
+very_bad		= -1000,  -600,	 -300,	    0,	  300,	  600,	 1000
+bad				= -1000,  -600,	 -300,	    0,	  300,	  600,	 1000
+neutral			= -1000,  -600,	 -300,		0,	  300,	  600,	 1000
+good			= -1000,  -600,	 -300,	    0,	  300,	  600,	 1000
+very_good		= -1000,  -600,	 -300,	    0,	  300,	  600,	 1000
+excellent		= -1000,  -600,  -300,	    0,	  300,	  600,	 1000
 
 
 ;
@@ -87,10 +87,10 @@ actor_freedom =		0.0
 stalker		=		0.0
 monolith	=		0.0
 military	=		0.0
-killer		=		0.01
-ecolog		=		0.01
-dolg		=		0.01
-freedom		=		0.01
+killer		=		0.05
+ecolog		=		0.05
+dolg		=		0.05
+freedom		=		0.05
 bandit		=		0.0
 zombied		=		0.0
 trader		=		0.0
@@ -110,72 +110,59 @@ master			=        0
 ;очки рейтинга, репутации и доброжелательности начисляемые
 ;в зависимости от совершенного действия
 [action_points]
-
 ;-------------------------------------------------------
-free_friend_attack_goodwill			= -100
-free_neutral_attack_goodwill		= -200
+free_friend_attack_goodwill			= -3000
+free_neutral_attack_goodwill		= -2000
 free_enemy_attack_goodwill			= 0
 
-danger_friend_attack_goodwill		= -100
+danger_friend_attack_goodwill		= -200
 danger_neutral_attack_goodwill		= -200
 danger_enemy_attack_goodwill		= 0
 
-free_friend_attack_reputation		= 0
-free_neutral_attack_reputation		= 0
+free_friend_attack_reputation		= -20
+free_neutral_attack_reputation		= -10
 free_enemy_attack_reputation		= 0
 
 danger_friend_attack_reputation		= 0
 danger_neutral_attack_reputation	= 0
 danger_enemy_attack_reputation		= 0
 ;--------------------------------------------------
-
-friend_attack_goodwill			= -100
-neutral_attack_goodwill			= -200
-enemy_attack_goodwill			= 0
-
-friend_attack_reputation		= 0
-neutral_attack_reputation		= 0
-enemy_attack_reputation			= 0
-
 ;(с) мин. время через которое снова будет зарегистрировано 
 ;сообщение об атаке на персонажа, и соответственно вычтеся attack_goodwill и attack_reputation
 ;(работает аналогично и при помощи другим персонажам в бою)
 min_attack_delta_time = 3		
 
-
-friend_kill_goodwill			= -500
-neutral_kill_goodwill			= -500
+friend_kill_goodwill			= -1000
+neutral_kill_goodwill			= -1000
 enemy_kill_goodwill				= 0
-community_member_kill_goodwill  = -500
+community_member_kill_goodwill  = -1000
 
 ;убийство члена группировки отражается на отношении
 ;группировки (умножается на communities_sympathy)
 
-friend_kill_reputation			= -50
-neutral_kill_reputation			= -20
+friend_kill_reputation			= -40
+neutral_kill_reputation			= -15
 enemy_kill_reputation			= 0
 
 ;
 ; помощь актера персонажу во время боя
 ;
-
-;порог величины хита, который нанес актер атакующему,
-;после которого регистрируется помощь актера персонажу которого атаковали
-help_hit_threshold = 30
-
 fight_remember_time = 10		;(c) время которое про драку будет помнить реестр
 
-friend_fight_help_goodwill   = 30
-neutral_fight_help_goodwill	 = 30 
+friend_fight_help_goodwill   = 200
+neutral_fight_help_goodwill	 = 200 
 enemy_fight_help_goodwill    = 0
 
-friend_fight_help_reputation  = 2
-neutral_fight_help_reputation = 2
+friend_fight_help_reputation  = 10
+neutral_fight_help_reputation = 10
 enemy_fight_help_reputation	  = 0
 
 ;свойства, которые изменяются у сталкеров в 
 ;зависимости от их ранга 
 ;коэффициенты линейно интерполируются для рангов от 0 (novice) до 100 (experienced)
+
+
+
 
 [ranks_properties]
 immunities_novice_k			= 1.0
