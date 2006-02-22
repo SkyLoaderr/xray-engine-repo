@@ -55,10 +55,11 @@ float CActor::GetWeaponAccuracy() const
 
 void CActor::g_fireParams	(const CHudItem* pHudItem, Fvector &fire_pos, Fvector &fire_dir)
 {
-	fire_pos = Cameras().Pos();
-	fire_dir = Cameras().Dir();
+	VERIFY			(inventory().ActiveItem());
+	fire_pos		= Cameras().Pos();
+	fire_dir		= Cameras().Dir();
 
-	const CMissile* pMissile = smart_cast <const CMissile*> (pHudItem);
+	const CMissile	*pMissile = smart_cast <const CMissile*> (pHudItem);
 	if (pMissile)
 	{
 		Fvector offset;

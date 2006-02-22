@@ -280,7 +280,8 @@ private:
 public:
 	IC		bool						can_kill_member			();
 	IC		bool						can_kill_enemy			();
-	IC		float						pick_distance			();
+			float						pick_distance			();
+	IC		float						start_pick_distance		() const;
 			bool						fire_make_sense			();
 			
 	virtual LPCSTR						Name					() const;

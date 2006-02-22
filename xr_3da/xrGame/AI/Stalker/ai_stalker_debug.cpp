@@ -293,10 +293,14 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// enemy
 	HUD().Font().pFontSmall->OutNext	("%senemy",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
-	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill member : %s",indent,indent,indent,can_kill_member() ? "+" : "-");
-	HUD().Font().pFontSmall->OutNext	("%s%s%scan kill enemy  : %s",indent,indent,indent,can_kill_enemy() ? "+" : "-");
-	HUD().Font().pFontSmall->OutNext	("%s%s%spick distance   : %f",indent,indent,indent,pick_distance());
-	HUD().Font().pFontSmall->OutNext	("%s%s%sfire make sense : %s",indent,indent,indent,fire_make_sense() ? "+" : "-");
+
+	if (inventory().ActiveItem()) {
+		HUD().Font().pFontSmall->OutNext("%s%s%scan kill member : %s",indent,indent,indent,can_kill_member() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%s%scan kill enemy  : %s",indent,indent,indent,can_kill_enemy() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%s%spick distance   : %f",indent,indent,indent,pick_distance());
+		HUD().Font().pFontSmall->OutNext("%s%s%sfire make sense : %s",indent,indent,indent,fire_make_sense() ? "+" : "-");
+	}
+
 	if (memory().enemy().selected()) {
 		HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 		
@@ -770,12 +774,14 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 
 void CAI_Stalker::OnRender			()
 {
-	Fvector					position, direction, temp;
-	g_fireParams			(0,position,direction);
-	temp					= direction;
-	temp.mul				(1.f);
-	temp.add				(position);
-	RCache.dbg_DrawLINE		(Fidentity,position,temp,D3DCOLOR_XRGB(0*255,255,0*255));
+	if (inventory().ActiveItem()) {
+		Fvector					position, direction, temp;
+		g_fireParams			(0,position,direction);
+		temp					= direction;
+		temp.mul				(1.f);
+		temp.add				(position);
+		RCache.dbg_DrawLINE		(Fidentity,position,temp,D3DCOLOR_XRGB(0*255,255,0*255));
+	}
 
 	if (IsMyCamera()) {
 		if (!g_Alive())

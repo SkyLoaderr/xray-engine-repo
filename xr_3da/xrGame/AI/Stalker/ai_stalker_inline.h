@@ -10,50 +10,50 @@
 
 IC	BOOL CAI_Stalker::UsedAI_Locations							()
 {
-	return	(TRUE);
+	return					(TRUE);
 }
 
 IC	CStalkerAnimationManager &CAI_Stalker::animation			() const
 {
-	VERIFY	(m_animation_manager);
-	return	(*m_animation_manager);
+	VERIFY					(m_animation_manager);
+	return					(*m_animation_manager);
 }
 
 IC	CStalkerPlanner &CAI_Stalker::brain			() const
 {
-	VERIFY	(m_brain);
-	return	(*m_brain);
+	VERIFY					(m_brain);
+	return					(*m_brain);
 }
 
 IC	CSightManager &CAI_Stalker::sight							() const
 {
-	VERIFY	(m_sight_manager);
-	return	(*m_sight_manager);
+	VERIFY					(m_sight_manager);
+	return					(*m_sight_manager);
 }
 
 IC	LPCSTR CAI_Stalker::Name									() const
 {
-	return	(CInventoryOwner::Name());
+	return					(CInventoryOwner::Name());
 }
 
 IC	CStalkerMovementManager	&CAI_Stalker::movement				() const
 {
-	VERIFY			(m_movement_manager);
-	return			(*m_movement_manager);
+	VERIFY					(m_movement_manager);
+	return					(*m_movement_manager);
 }
 
 IC	bool CAI_Stalker::frame_check								(u32 &frame)
 {
 	if (Device.dwFrame == frame)
-		return		(false);
+		return				(false);
 
-	frame			= Device.dwFrame;
-	return			(true);
+	frame					= Device.dwFrame;
+	return					(true);
 }
 
 IC	bool CAI_Stalker::group_behaviour							() const
 {
-	return			(m_group_behaviour);
+	return					(m_group_behaviour);
 }
 
 IC	bool CAI_Stalker::can_kill_member							()
@@ -66,12 +66,6 @@ IC	bool CAI_Stalker::can_kill_enemy							()
 {
 	update_can_kill_info	();
 	return					(m_can_kill_enemy);
-}
-
-IC	float CAI_Stalker::pick_distance							()
-{
-	update_can_kill_info	();
-	return					(m_pick_distance);
 }
 
 IC	CWeaponShotEffector &CAI_Stalker::weapon_shot_effector		() const

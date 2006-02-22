@@ -512,11 +512,6 @@ void CStalkerActionLookOut::initialize		()
 IC	float current_cover					(CAI_Stalker *object)
 {
 	Fvector								position, direction;
-//	object->g_fireParams				(0,position,direction);
-
-//	object->Center						(position);
-//	position.x							= object->Position().x;
-//	position.z							= object->Position().z;
 	position							= object->eye_matrix.c;
 	direction							= object->eye_matrix.k;
 	collide::rq_result					ray_query_result;

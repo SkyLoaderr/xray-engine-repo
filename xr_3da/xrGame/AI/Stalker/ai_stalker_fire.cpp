@@ -83,8 +83,12 @@ float CAI_Stalker::GetWeaponAccuracy	() const
 
 void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
-	if (!inventory().ActiveItem())
-		return;
+	VERIFY				(inventory().ActiveItem());
+//	if (!inventory().ActiveItem()) {
+//		P				= Position();
+//		D				= Fvector().set(0.f,0.f,1.f);
+//		return;
+//	}
 
 	CWeapon				*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (!weapon) {
@@ -452,10 +456,13 @@ IC BOOL ray_query_callback	(collide::rq_result& result, LPVOID params)
 
 void CAI_Stalker::can_kill_entity		(const Fvector &position, const Fvector &direction, float distance, collide::rq_results& rq_storage)
 {
-//	VERIFY							(getEnabled());
+	VERIFY							(!fis_zero(direction.square_magnitude()));
+
 	collide::ray_defs				ray_defs(position,direction,distance,CDB::OPT_CULL,collide::rqtBoth);
-	ray_query_param					params(this,memory().visual().transparency_threshold(),distance);
 	VERIFY							(!fis_zero(ray_defs.dir.square_magnitude()));
+	
+	ray_query_param					params(this,memory().visual().transparency_threshold(),distance);
+
 	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,ray_query_callback,&params,NULL,this);
 	m_can_kill_enemy				= m_can_kill_enemy  || params.m_can_kill_enemy;
 	m_can_kill_member				= m_can_kill_member || params.m_can_kill_member;
@@ -492,6 +499,29 @@ void CAI_Stalker::can_kill_entity_from	(const Fvector &position, Fvector directi
 	can_kill_entity			(position,direction,distance,rq_storage);
 }
 
+IC	float CAI_Stalker::start_pick_distance	() const
+{
+	float					result = 50.f;
+	if (!memory().enemy().selected())
+		return				(result);
+
+	return					(
+		_max(
+			result,
+			memory().enemy().selected()->Position().distance_to(Position()) + 1.f
+		)
+	);
+}
+
+float CAI_Stalker::pick_distance		()
+{
+	if (!inventory().ActiveItem())
+		return				(start_pick_distance());
+		
+	update_can_kill_info	();
+	return					(m_pick_distance);
+}
+
 void CAI_Stalker::update_can_kill_info	()
 {
 	if (m_pick_frame_id == Device.dwFrame)
@@ -503,12 +533,7 @@ void CAI_Stalker::update_can_kill_info	()
 
 	Fvector					position, direction;
 	g_fireParams			(0,position,direction);
-	
-	float					distance = 50.f;
-	if (memory().enemy().selected())
-		distance			= _max(distance,memory().enemy().selected()->Position().distance_to(Position()) + 1.f);
-
-	can_kill_entity_from	(position,direction,distance);
+	can_kill_entity_from	(position,direction,start_pick_distance());
 }
 
 bool CAI_Stalker::undetected_anomaly	()

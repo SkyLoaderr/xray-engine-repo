@@ -337,6 +337,7 @@ void CAI_Trader::g_WeaponBones	(int &L, int &R1, int &R2)
 
 void CAI_Trader::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
+	VERIFY			(inventory().ActiveItem());
 	if (g_Alive() && inventory().ActiveItem()) {
 		Center(P);
 		D.setHP(0,0);
