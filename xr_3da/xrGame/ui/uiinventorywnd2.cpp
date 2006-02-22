@@ -159,7 +159,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		UIPropertiesBox.AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
 	}
 
-	if(pArtefact&&pArtefact->CanBeActivated())
+	if(pArtefact&&pArtefact->CanBeActivated()&&!GetInventory()->isSlotsBlocked())
 		UIPropertiesBox.AddItem("Activate artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);
 
 	if(!m_pCurrentItem->IsQuestItem())

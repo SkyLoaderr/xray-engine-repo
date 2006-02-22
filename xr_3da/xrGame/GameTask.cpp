@@ -19,7 +19,7 @@
 #include "game_object_space.h"
 #include "object_broker.h"
 
-
+w
 ALife::_STORY_ID	story_id		(LPCSTR story_id);
 u16					storyId2GameId	(ALife::_STORY_ID);
 
@@ -47,7 +47,8 @@ ALife::_STORY_ID	story_id	(LPCSTR story_id)
 u16 storyId2GameId	(ALife::_STORY_ID id)
 {
 	if(ai().get_alife()){ 
-		return ai().alife().story_objects().object(id, false)->ID;
+		CSE_ALifeDynamicObject* so = ai().alife().story_objects().object(id, true);
+		return (so)?so->ID:u16(-1);
 	}else{
 		u32 cnt = Level().Objects.o_count();
 		for(u32 it=0;it<cnt;++it){
@@ -138,6 +139,7 @@ void CGameTask::Load(const TASK_ID& id)
 		
 		objective.object_id				= u16(-1);
 		objective.map_hint				= g_gameTaskXml.ReadAttrib(l_root, "map_location_type", 0, "hint", NULL);
+
 		if(object_story_id){
 			ALife::_STORY_ID _sid		= story_id(object_story_id);
 			objective.object_id			= storyId2GameId(_sid);
