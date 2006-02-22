@@ -5,7 +5,7 @@ function main7777()
 
 end
 
-function main111111()
+function main()
 	local spawn_items = {}
 	local level = level.name()
 
@@ -14,10 +14,8 @@ function main111111()
 
 	local k,v = 0,0
 	for k,v in pairs(spawn_items) do
-		alife():create(v,	
-						db.actor:position(),
-						db.actor:level_vertex_id(),	
-						db.actor:game_vertex_id())
+	
+	alife():create(v, db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 	end	
 end
 
@@ -115,7 +113,7 @@ function mai22222n()
 	db.actor:give_game_news("44 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
-function main()
+function main123456()
    local h = hit()
    h.power = 0.2
    h.direction = vector():set(0, 0, 1)
