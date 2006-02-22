@@ -535,8 +535,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 10, state = {0}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
-				         	return obj_info.profile_name == "bar_ecolog_professor"
-			            end
+				         	return obj_info.story_id == 503
+   			            end
 		}
 		table.insert(sj, t)
         t = { section = "logic@bar_ecolog_professor", 
