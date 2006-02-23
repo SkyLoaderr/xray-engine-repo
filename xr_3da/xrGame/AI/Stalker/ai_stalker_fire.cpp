@@ -41,12 +41,13 @@
 
 using namespace StalkerSpace;
 
-const float DANGER_DISTANCE = 3.f;
-const u32	DANGER_INTERVAL = 120000;
+const float DANGER_DISTANCE				= 3.f;
+const u32	DANGER_INTERVAL				= 120000;
 
-const float PRECISE_DISTANCE	 = 2.5f;
-const float FLOOR_DISTANCE		 = 2.f;
-const float NEAR_DISTANCE		 = 2.5f;
+const float PRECISE_DISTANCE			= 2.5f;
+const float FLOOR_DISTANCE				= 2.f;
+const float NEAR_DISTANCE				= 2.5f;
+const u32	FIRE_MAKE_SENSE_INTERVAL	= 20000;
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -588,19 +589,27 @@ void CAI_Stalker::update_range_fov		(float &new_range, float &new_fov, float sta
 
 bool CAI_Stalker::fire_make_sense		()
 {
-	if (!memory().enemy().selected())
-		return							(false);
+	const CEntityAlive		*enemy = memory().enemy().selected();
+	if (!enemy)
+		return				(false);
 
-	if ((pick_distance() + PRECISE_DISTANCE) < Position().distance_to(memory().enemy().selected()->Position()))
-		return							(false);
+	if ((pick_distance() + PRECISE_DISTANCE) < Position().distance_to(enemy->Position()))
+		return				(false);
 
-	if (_abs(Position().y - memory().enemy().selected()->Position().y) > FLOOR_DISTANCE)
-		return							(false);
+	if (_abs(Position().y - enemy->Position().y) > FLOOR_DISTANCE)
+		return				(false);
 
 	if (pick_distance() < NEAR_DISTANCE)
-		return							(false);
+		return				(false);
 
-	return								(true);
+	if (memory().visual().visible_right_now(enemy))
+		return				(true);
+
+	u32						last_time_seen = memory().visual().visible_object_time_last_seen(enemy);
+	if (Device.dwTimeGlobal > last_time_seen + FIRE_MAKE_SENSE_INTERVAL)
+		return				(false);
+
+	return					(true);
 }
 
 // shot effector stuff
