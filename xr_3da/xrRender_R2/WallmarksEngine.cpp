@@ -300,11 +300,11 @@ ICF void FlushStream(ref_geom hGeom, ref_shader shader, u32& w_offset, FVF::LIT*
 		Device.Statistic->RenderDUMP_WMT_Count += w_count/3;
 	}
 }
+
 void CWallmarksEngine::Render()
 {
-	if (marks.empty())			return;
-
-	lock.Enter	();				// Physics may add wallmarks in parallel with rendering
+//	if (marks.empty())			return;
+	lock.Enter		();			// Physics may add wallmarks in parallel with rendering
 
 	// Projection and xform
 	float _43					= Device.mProject._43;
