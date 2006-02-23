@@ -17,7 +17,7 @@
 		
 		<edit x="36" y="36" width="257" height="23">
 			<texture>ui_string_06</texture>
-			<text font="letterica25"/>
+			<text font="letterica18" r="240" g="217" b="182"/>
 		</edit>
 		
 		<list_frame x="36" y="77" width="449" height="307">
@@ -28,23 +28,21 @@
 				
 		<btn_save x="36" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_left</texture>
-			<text font="letterica25" r="215" g="195" b="170">ui_mm_save</text>
+			<text font="letterica18">ui_mm_save</text>
 			<text_color>
-				<e r="184" g="168" b="131"/>
-				<t r="207" g="155" b="80"/>
-				<d r="106" g="95" b="91"/>
-				<h r="207" g="155" b="80"/>
+				<e r="216" g="186" b="140"/>
+				<t r="255" g="232" b="208"/>
+				<h r="238" g="155" b="23"/>
 			</text_color>
 		</btn_save>
 		
 		<btn_cancel x="338" y="408" width="147" height="60">
 			<texture>ui\ui_btn_triple_right</texture>			
-			<text font="letterica25" r="215" g="195" b="170">ui_mm_cancel</text>
+			<text font="letterica18">ui_mm_cancel</text>
 			<text_color>
-				<e r="184" g="168" b="131"/>
-				<t r="207" g="155" b="80"/>
-				<d r="106" g="95" b="91"/>
-				<h r="207" g="155" b="80"/>
+				<e r="216" g="186" b="140"/>
+				<t r="255" g="232" b="208"/>
+				<h r="238" g="155" b="23"/>
 			</text_color>
 		</btn_cancel>		
 	</form>
