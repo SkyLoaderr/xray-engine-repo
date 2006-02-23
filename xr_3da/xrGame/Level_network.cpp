@@ -12,16 +12,17 @@ void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
 	
-	if (OnServer())					Server->SLS_Clear	();
+	if (OnServer())
+		Server->SLS_Clear		();
 	
-	if (OnClient()) ClearAllObjects();
+	if (OnClient())
+		ClearAllObjects			();
 
 	for (int i=0; i<6; ++i) {
 		ClientReceive			();
 		ProcessGameEvents		();
 		Objects.Update			();
 	}
-
 	
 	IGame_Level::net_Stop		();
 	IPureClient::Disconnect		();
@@ -29,8 +30,7 @@ void CLevel::net_Stop		()
 	BulletManager().Clear		();
 	ph_commander().clear		();
 	ph_commander_scripts().clear();
-	if (Server)
-	{
+	if (Server) {
 		Server->Disconnect		();
 		xr_delete				(Server);
 	}
