@@ -269,6 +269,8 @@ function actor_binder:save(packet)
 
 	xr_logic.pstor_save_all(self.object, packet)
 	self.weather_manager:save(packet)
+
+	sr_psy_antenna.save( packet )
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:load(reader)
@@ -277,6 +279,8 @@ function actor_binder:load(reader)
 
 	xr_logic.pstor_load_all(self.object, reader)
 	self.weather_manager:load(reader)
+
+	sr_psy_antenna.load( reader )
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)

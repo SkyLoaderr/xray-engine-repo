@@ -65,10 +65,9 @@ function PsyAntenna:__init				()
 // ----------------------------------------------------------------------------------------
 // sound
 // ----------------------------------------------------------------------------------------
+	self.sound_initialized				= false
 	self.sound_obj_left					= sound_object( [[characters_voice\scenario\yantar\psy_voices_1_l]] )
 	self.sound_obj_right				= sound_object( [[characters_voice\scenario\yantar\psy_voices_1_r]] )
-	self.sound_obj_left:play_at_pos		(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d + sound_object.looped)
-	self.sound_obj_right:play_at_pos	(db.actor, vector():set( 1, 0, 1), 0, sound_object.s2d + sound_object.looped)
 	self.sound_obj_left.volume			= self.intensity
 	self.sound_obj_right.volume			= self.intensity
 	self.snd_volume						= level.get_snd_volume()
@@ -160,6 +159,13 @@ function PsyAntenna:generate_phantoms 	()
 end
 
 function PsyAntenna:update_sound()
+	if not self.sound_initialized then
+		self.sound_obj_left:play_at_pos		(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d + sound_object.looped)
+		self.sound_obj_right:play_at_pos	(db.actor, vector():set( 1, 0, 1), 0, sound_object.s2d + sound_object.looped)
+
+		self.sound_initialized = true
+	end
+
 	local vol = 1 - ( self.intensity ^ 3 ) * 0.9
 
 	level.set_snd_volume( vol )
@@ -196,14 +202,25 @@ function PsyAntenna:update			(dt)
 	self:update_psy_hit				(dt)
 end
 
+function PsyAntenna:save( p )
+	p:w_float( self.intensity )
+	p:w_float( self.intensity_base )
+	p:w_float( self.hit_intensity )
+end
+
+function PsyAntenna:load( p )
+	self.intensity      = p:r_float()
+	self.intensity_base = p:r_float()
+	self.hit_intensity  = p:r_float()
+end
 
 ----------------------------------------------------------------------------------------------------
 -- логическая схема для space restrictor
 ----------------------------------------------------------------------------------------------------
 
 
+local state_outside = 0 -- актер снаружи
 local state_inside  = 1 -- актер внутри
-local state_outside = 2 -- актер снаружи
 
 psy_antenna = false
 
@@ -216,14 +233,18 @@ function action_psy_antenna:__init( obj, storage )
 	self.state  = state_outside -- еще не ясно, в зоне он, или нет
 end
 
-function action_psy_antenna:reset_scheme()
-	if self.state == state_inside then
-		self:zone_leave()
+function action_psy_antenna:reset_scheme( loading )
+	if loading then
+		self.state = xr_logic.pstor_retrieve( self.object, "inside"  )
+	else
+		if self.state == state_inside then
+			self:zone_leave()
+		end
+
+		self.state = state_outside
+
+		self:switch_state(db.actor)
 	end
-
-	self.state = state_outside
-
-	self:switch_state(db.actor)
 end
 
 function action_psy_antenna:deactivate()
@@ -242,7 +263,6 @@ function action_psy_antenna:update( delta )
 	end
 
 	self:switch_state( actor )
-
 end
 
 function action_psy_antenna:switch_state( actor )
@@ -281,13 +301,42 @@ function action_psy_antenna:zone_leave()
 	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability - self.st.phantom_prob
 end
 
+function action_psy_antenna:save()
+	xr_logic.pstor_store( self.object, "inside", self.state )
+end
+
 ---------------------------------------------------------------------------------------------------------------------
+function save( p )
+	if psy_antenna then
+		p:w_bool( true )
+
+		psy_antenna:save( p )
+	else
+		p:w_bool( false )
+	end
+end
+
+function load( p )
+	local b = p:r_bool()
+
+	if b then
+		if psy_antenna then
+			abort( "sr_psy_antenna.psy_antenna already exists!" )
+		end
+
+		psy_antenna = PsyAntenna()
+		psy_antenna:construct()
+
+		psy_antenna:load( p )
+	end
+end
+
 function add_to_binder(npc, ini, scheme, section, storage)
 	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
 
-	if not sr_psy_antenna.psy_antenna then
-		sr_psy_antenna.psy_antenna = PsyAntenna()
-		sr_psy_antenna.psy_antenna:construct()
+	if not psy_antenna then
+		psy_antenna = PsyAntenna()
+		psy_antenna:construct()
 	end
 
 	local new_action = action_psy_antenna(npc, storage)
