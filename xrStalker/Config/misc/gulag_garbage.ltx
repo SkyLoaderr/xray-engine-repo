@@ -1594,9 +1594,14 @@ path_look = gar_look_spy2
 combat_ignore_cond = {-gar_wounded_fight}
 radius = 2
 ;sniper = true
-danger = danger_condition@gar_psevdowounded_2
+;danger = danger_condition@gar_psevdowounded_2
 ;on_actor_dist_le = 15| %+gar_wounded_fight%
 show_spot = {-gar_wounded_fight} false
+on_actor_in_zone = gar_sniper_in_restrictor| walker@gar_psevdowounded_2
+
+[walker@gar_psevdowounded_2]
+path_walk = gar_way_spy2
+path_look = gar_look_spy2
 
 [hit@gar_psevdowounded_2]
 on_info = %+gar_wounded_fight%
