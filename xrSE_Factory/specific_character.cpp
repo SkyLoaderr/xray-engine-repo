@@ -169,6 +169,8 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_sNpcConfigSect = uiXml.Read("npc_config", 0, "");
 	data()->m_sound_voice_prefix = uiXml.Read("snd_config", 0, "");
 
+	data()->m_terrain_sect = uiXml.Read("terrain_sect", 0, "");
+
 #endif
 
 	data()->m_Classes.clear();
@@ -256,6 +258,10 @@ float CSpecificCharacter::hit_probability_factor () const
 
 #endif
 
+shared_str CSpecificCharacter::terrain_sect		() const
+{
+	return	data()->m_terrain_sect;
+}
 
 CHARACTER_RANK_VALUE CSpecificCharacter::Rank() const 
 {

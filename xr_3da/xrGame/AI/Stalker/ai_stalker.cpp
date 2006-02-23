@@ -268,7 +268,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);
 }
-
+#include "../../location_manager.h"
 BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 {
 #ifdef DEBUG
@@ -392,6 +392,11 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 		Msg							("CAI_Stalker::net_Spawn() : %d",Memory.mem_usage() - start);
 	}
 #endif
+
+	if(SpecificCharacter().terrain_sect().size())
+	{
+		movement().locations().Load(*SpecificCharacter().terrain_sect());
+	}
 
 	return							(TRUE);
 }

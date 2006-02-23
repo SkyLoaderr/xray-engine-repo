@@ -384,6 +384,14 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 			creature->s_team = selected_char.Community().team();
 	}
 
+
+
+//----
+	CSE_ALifeMonsterAbstract* monster = smart_cast<CSE_ALifeMonsterAbstract*>(base());
+	if(monster&&selected_char.terrain_sect().size()){
+		setup_location_types_section	(monster->m_tpaTerrain, pSettings, *(selected_char.terrain_sect()));
+	}
+//----
 	if(NO_RANK == m_rank)
 		m_rank = selected_char.Rank();
 
