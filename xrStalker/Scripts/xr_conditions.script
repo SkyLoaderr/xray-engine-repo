@@ -512,7 +512,7 @@ time_period(60:10) - возвращает true каждый час на протяжении первых 10 минут
 --]]
 function time_period(actor, npc, p)
     local tshift, period = p[1], p[2]
-    if tshift ~= nil and pmin ~= nil then
+    if tshift ~= nil and period ~= nil then
         return tshift > period and level.get_time_minutes() % tshift <= period
     end
     return false
@@ -561,6 +561,18 @@ end
 -- текущий враг на расстоянии больше или равном 20м
 function fighting_dist_ge_20(actor, npc)
 	return db.storage[npc:id()].enemy:position():distance_to_sqr( npc:position() ) >= 400 -- 20^2
+end
+
+-- расстояние до текущего реального врага больше или равно заданного значения
+function dist_to_enemy_ge(actor, npc, p)
+    local d, enemy = p[1], npc:best_enemy()
+	return d and enemy and enemy:position():distance_to_sqr(npc:position()) >= d * d
+end
+
+-- расстояние до текущего реального врага меньше или равно заданного значения
+function dist_to_enemy_le(actor, npc, p)
+    local d, enemy = p[1], npc:best_enemy()
+	return d and enemy and enemy:position():distance_to_sqr(npc:position()) <= d * d
 end
 
 function esc_tutorial_flesh_died_in_anomaly(actor, npc)
