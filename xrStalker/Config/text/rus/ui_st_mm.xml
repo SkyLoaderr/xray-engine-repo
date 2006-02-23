@@ -27,11 +27,11 @@
     <string id="ui_mm_master">
         <text>Мастер</text>
     </string>
+    <string id="ui_mm_last_save">
+        <text>Последн. сохран.</text>
+    </string>    
     <string id="ui_mm_action">
         <text>действие</text>
-    </string>
-    <string id="ui_mm_alternative">
-        <text>alternative</text>
     </string>
     <string id="ui_mm_apply">
         <text>Применить</text>
