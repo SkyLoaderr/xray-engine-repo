@@ -606,6 +606,9 @@ bool CAI_Stalker::fire_make_sense		()
 		return				(true);
 
 	u32						last_time_seen = memory().visual().visible_object_time_last_seen(enemy);
+	if (last_time_seen == u32(-1))
+		return				(false);
+
 	if (Device.dwTimeGlobal > last_time_seen + FIRE_MAKE_SENSE_INTERVAL)
 		return				(false);
 

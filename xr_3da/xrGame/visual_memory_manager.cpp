@@ -132,7 +132,7 @@ IC	const CVisionParameters &CVisualMemoryManager::current_state() const
 	return				(!m_stalker || (m_stalker->movement().mental_state() != eMentalStateDanger) ? m_free : m_danger);
 }
 
-IC	u32	CVisualMemoryManager::visible_object_time_last_seen	(const CObject *object) const
+u32	CVisualMemoryManager::visible_object_time_last_seen	(const CObject *object) const
 {
 	VISIBLES::iterator	I = std::find(m_objects->begin(),m_objects->end(),object_id(object));
 	if (I != m_objects->end()) 
