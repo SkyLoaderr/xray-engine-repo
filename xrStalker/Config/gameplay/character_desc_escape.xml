@@ -161,7 +161,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_killer_specnaz" team_default = "1">
-		<terrain_sect>stalker_terrain</terrain_sect>
+		<terrain_sect_>stalker_terrain</terrain_sect_>
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
