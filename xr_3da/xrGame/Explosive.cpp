@@ -8,7 +8,7 @@
 
 #include "PhysicsShell.h"
 #include "entity.h"
-#include "PSObject.h"
+//#include "PSObject.h"
 #include "ParticlesObject.h"
 
 //для вызова статических функций поражения осколками
