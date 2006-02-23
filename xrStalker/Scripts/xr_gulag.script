@@ -476,7 +476,7 @@ function gulag:is_there_any_suitable_job( npc_info, exclusive )
 --	end
 
 	for i, job in ipairs( self.Job_avail_in_state ) do
-		if ( not job.predicate or job.predicate( npc_info, self ) ) and availJob( job ) then
+		if ( not job.predicate or job.predicate( npc_info, self ) ) and self:availJob( job ) then
 			if job.object then
 				if exclusive and not self.npc_info[job.object].exclusive then
 					return true
