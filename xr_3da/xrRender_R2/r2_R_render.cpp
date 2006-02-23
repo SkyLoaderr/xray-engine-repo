@@ -285,7 +285,7 @@ void CRender::Render		()
 	LP_pending.sort							();
 
 	// Wall marks
-	if(Wallmarks)		{
+	if(Wallmarks)	{
 		Target->phase_wallmarks					();
 		Wallmarks->Render						();				// wallmarks has priority as normal geometry
 	}
