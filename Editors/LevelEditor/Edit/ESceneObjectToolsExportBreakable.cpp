@@ -257,7 +257,7 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams* F)
                     m_Shape->assign_shapes		(&shape,1);
 					// orientate object
 	          		if (!OrientToNorm(local_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize)){
-                    	ELog.DlgMsg(mtError,"Invalid climable object found. [%3.2f, %3.2f, %3.2f]",VPUSH(P->m_RefOffset));
+                    	ELog.Msg(mtError,"Invalid climable object found. [%3.2f, %3.2f, %3.2f]",VPUSH(P->m_RefOffset));
 					}else{
                         Fmatrix M; M.set			(P->m_OBB.m_rotate.i,P->m_OBB.m_rotate.j,P->m_OBB.m_rotate.k,P->m_OBB.m_translate);
                         M.getXYZ					(P->m_RefRotate); // не i потому что в движке так

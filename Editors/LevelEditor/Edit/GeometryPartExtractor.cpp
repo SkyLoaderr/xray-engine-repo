@@ -129,7 +129,22 @@ bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
         }while(bone_idx<bone_cnt_max);
         
         // attach small single face to big fragment
+        u32 face_accum_total_saved 		= face_accum_total;
         while (face_accum_total<m_Faces.size()){
+        	if (face_accum_total_saved!=face_accum_total){
+				face_accum_total_saved 	= face_accum_total;
+            }else{
+            	// если проход оказался безрезультатным (т.е. не смогли добавить хоть один фейс) - добавляем 
+                //  все неприаттаченные фейсы к 0-кости (иначе зацикливается (mike - L03_agroprom))
+                for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+                    SBFace* F				= *f_it;
+                    if (-1==F->bone_id){
+                        F->marked		= true;
+                        F->bone_id		= 0;
+                        face_accum_total++;
+                    }
+                } 
+            }
             for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
                 SBFace* F				= *f_it;
                 if (-1==F->bone_id){
