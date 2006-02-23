@@ -193,36 +193,42 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_specnaz_raid1",
 			idle = 0,
 			prior = 10, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_raid2",
 			idle = 0,
 			prior = 10, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_follower1",
 			idle = 0,
 			prior = 7, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_follower2",
 			idle = 0,
 			prior = 7, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_follower3",
 			idle = 0,
 			prior = 7, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_follower4",
 			idle = 0,
 			prior = 7, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1787,16 +1793,17 @@ function load_states(gname, type)
 		return function(gulag)
 			local actor = db.actor
 			if actor:has_info("esc_raid1_start") then
-				if gulag.alarm_start == nil then
-					xr_gulag.changeCasualities( "esc_blockpost", -xr_gulag.getCasualities("esc_blockpost"))
-					gulag.alarm_start = game.get_game_time()
-					return 1  -- рейд
-				end
-
-				if game.get_game_time():diffSec(gulag.alarm_start) > 57600 then
-					actor:disable_info_portion("esc_raid1_start")
-					return 0
-				end
+--				if gulag.alarm_start == nil then
+--					xr_gulag.changeCasualities( "esc_blockpost", -xr_gulag.getCasualities("esc_blockpost"))
+--					gulag.alarm_start = game.get_game_time()
+--					return 1  -- рейд
+--				end
+--
+--				if game.get_game_time():diffSec(gulag.alarm_start) > 57600 then
+--					actor:disable_info_portion("esc_raid1_start")
+--					return 0
+--				end
+				return 1
 			end
 			return 0
 		end
