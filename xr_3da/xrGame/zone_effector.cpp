@@ -29,9 +29,6 @@ BOOL CZoneEffectPP::Process(SPPInfo& pp)
 
 void CZoneEffectPP::Destroy()
 {
-	fLifeTime		= 0.f;
-	CZoneEffectPP	*self = this;
-	xr_delete		(self);
 }
 
 
@@ -47,8 +44,7 @@ CZoneEffector::CZoneEffector()
 
 CZoneEffector::~CZoneEffector()
 {
-	p_effector  = NULL;
-	m_pActor	= NULL;
+	Stop		();
 }
 
 void CZoneEffector::Load(LPCSTR section)
@@ -86,8 +82,7 @@ void CZoneEffector::Stop()
 	if (!p_effector) return;
 	 
 	m_pActor->Cameras().RemovePPEffector(EEffectorPPType( u32(u64(this) & u32(-1)) ));
-	p_effector->Destroy();
-	p_effector	= NULL;
+	xr_delete	(p_effector);
 	m_pActor	= NULL;
 };
 

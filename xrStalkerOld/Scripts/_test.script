@@ -5,7 +5,7 @@ function main7777()
 
 end
 
-function main()
+function main222222()
 	local spawn_items = {}
 	local level = level.name()
 
@@ -19,7 +19,7 @@ function main()
 	end	
 end
 
-function main44()
+function main()
    game.start_tutorial("part_2_binocular")
 --   part_3_jump
 --   part_4_crouch

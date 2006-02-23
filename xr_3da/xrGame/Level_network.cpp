@@ -18,7 +18,9 @@ void CLevel::net_Stop		()
 	if (OnClient())
 		ClearAllObjects			();
 
+	BOOL b_stored = psDeviceFlags.test(rsDisableObjectsAsCrows);
 	for (int i=0; i<6; ++i) {
+		psDeviceFlags.set(rsDisableObjectsAsCrows,TRUE);
 		ClientReceive			();
 		ProcessGameEvents		();
 		Objects.Update			();
@@ -34,6 +36,8 @@ void CLevel::net_Stop		()
 		Server->Disconnect		();
 		xr_delete				(Server);
 	}
+	psDeviceFlags.set(rsDisableObjectsAsCrows, b_stored);
+
 }
 
 BOOL	g_bCalculatePing = FALSE;
