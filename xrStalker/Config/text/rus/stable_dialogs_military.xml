@@ -1642,25 +1642,22 @@
         <text>Иди в главное здание. Там на первом этаже найдешь.</text>
     </string>
     <string id="mil_zoneguard_dialog_6">
-        <text>Стой!!</text>
+        <text>Здорово, бродяга ! Зашел к нам на огонек ?</text>
     </string>
     <string id="mil_zoneguard_dialog_601">
-        <text>Стою!</text>
+        <text>Да вот, забрел.</text>
     </string>
     <string id="mil_zoneguard_dialog_602">
-        <text>Пароль?</text>
+        <text>Хочешь присоединиться к нам или как ?</text>
     </string>
     <string id="mil_zoneguard_dialog_603">
-        <text>Бомопаглавибли.</text>
+        <text>Посмотрим.</text>
     </string>
     <string id="mil_zoneguard_dialog_604">
-        <text>Чего???</text>
+        <text>Присоединяйся, у нас тут весело.</text>
     </string>
     <string id="mil_zoneguard_dialog_605">
-        <text>Бомопаглавибли.</text>
-    </string>
-    <string id="mil_zoneguard_dialog_606">
-        <text>Не, не тот...</text>
+        <text>Я подумаю...</text>
     </string>
     <string id="mil_zoneguard_dialog_607">
         <text>Говорящая лошадь?</text>
