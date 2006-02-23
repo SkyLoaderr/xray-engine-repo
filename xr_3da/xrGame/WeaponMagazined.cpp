@@ -808,6 +808,8 @@ void CWeaponMagazined::InitAddons()
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Прицел
+	m_fIronSightZoomFactor = READ_IF_EXISTS(pSettings, r_float, cNameSect(), "ironsight_zoom_factor", 50.0f);
+
 	if(IsScopeAttached())
 	{
 		if(m_eScopeStatus == ALife::eAddonAttachable)
@@ -840,7 +842,7 @@ void CWeaponMagazined::InitAddons()
 			m_UIScope.GetShader().destroy();	
 		
 		if(IsZoomEnabled())
-			m_fScopeZoomFactor = pSettings->r_float	(cNameSect(), "scope_zoom_factor");
+			m_fIronSightZoomFactor = pSettings->r_float	(cNameSect(), "scope_zoom_factor");
 	}
 
 	

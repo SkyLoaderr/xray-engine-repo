@@ -177,6 +177,7 @@ public:
 	virtual bool GrenadeLauncherAttachable();
 	virtual bool ScopeAttachable();
 	virtual bool SilencerAttachable();
+	virtual bool UseScopeTexture() {return true;};
 
 	//обновление видимости для косточек аддонов
 			void UpdateAddonsVisibility();
@@ -228,6 +229,8 @@ protected:
 	float			m_fZoomRotateTime;
 	//текстура для снайперского прицела, в режиме приближения
 	CUIStaticItem	m_UIScope;
+	//коэффициент увеличения прицеливания
+	float			m_fIronSightZoomFactor;
 	//коэффициент увеличения прицела
 	float			m_fScopeZoomFactor;
 	//когда режим приближения включен
@@ -248,6 +251,7 @@ public:
 			bool			ZoomHideCrosshair	()			{return m_bHideCrosshairInZoom || ZoomTexture();}
 
 	IC float				GetZoomFactor		() const		{	return m_fZoomFactor;	}
+	virtual	float			CurrentZoomFactor	();
 	//показывает, что оружие находится в соостоянии поворота для приближенного прицеливания
 			bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
 

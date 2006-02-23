@@ -489,6 +489,19 @@ void CWeaponMagazinedWGrenade::InitAddons()
 
 	if(GrenadeLauncherAttachable())
 	{
+		if(m_bZoomEnabled && m_pHUD)
+		{
+			if(m_bGrenadeMode)
+				LoadZoomOffset(*hud_sect, "grenade_");
+			else 
+			{
+				if(IsGrenadeLauncherAttached())
+					LoadZoomOffset(*hud_sect, "grenade_normal_");
+				else
+					LoadZoomOffset(*hud_sect, "");
+			}
+		}
+/*
 		if(IsGrenadeLauncherAttached())
 		{
 			CRocketLauncher::m_fLaunchSpeed = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
@@ -501,11 +514,24 @@ void CWeaponMagazinedWGrenade::InitAddons()
 			if(m_bZoomEnabled && m_pHUD)
 				LoadZoomOffset(*hud_sect, "");
 		}
+*/
 	}
+
+	
 }
 
+bool	CWeaponMagazinedWGrenade::UseScopeTexture()
+{
+	if (IsGrenadeLauncherAttached() && m_bGrenadeMode) return false;
+	
+	return true;
+};
 
-
+float	CWeaponMagazinedWGrenade::CurrentZoomFactor	()
+{
+	if (IsGrenadeLauncherAttached() && m_bGrenadeMode) return m_fIronSightZoomFactor;
+	return inherited::CurrentZoomFactor();
+}
 
 //виртуальные функции для проигрывания анимации HUD
 void CWeaponMagazinedWGrenade::PlayAnimShow()

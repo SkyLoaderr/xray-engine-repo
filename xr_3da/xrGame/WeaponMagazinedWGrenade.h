@@ -31,6 +31,8 @@ public:
 	virtual bool	CanAttach(PIItem pIItem);
 	virtual bool	CanDetach(const char* item_section_name);
 	virtual void	InitAddons();
+	virtual bool	UseScopeTexture();
+	virtual	float	CurrentZoomFactor	();
 
 	
 	virtual void	OnStateSwitch	(u32 S);

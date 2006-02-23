@@ -1094,11 +1094,15 @@ void CWeapon::InitAddons()
 {
 }
 
+float CWeapon::CurrentZoomFactor	()
+{
+	return IsScopeAttached() ? m_fScopeZoomFactor : m_fIronSightZoomFactor;
+};
 
 void CWeapon::OnZoomIn()
 {
 	m_bZoomMode = true;
-	m_fZoomFactor = m_fScopeZoomFactor;
+	m_fZoomFactor = CurrentZoomFactor();
 	StopHudInertion();
 }
 
@@ -1112,7 +1116,7 @@ void CWeapon::OnZoomOut()
 
 CUIStaticItem* CWeapon::ZoomTexture()
 {
-	if(m_UIScope.GetShader()) 
+	if(m_UIScope.GetShader() && UseScopeTexture()) 
 		return &m_UIScope;
 	else 
 		return NULL;
