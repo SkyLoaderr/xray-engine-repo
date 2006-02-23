@@ -286,6 +286,7 @@ void CObjectList::Unload	( )
 		CObject*	O	= objects_sleeping.back	();
 		Msg				("! s[%4d]-[%s]-[%s]", O->ID(), *O->cNameSect(), *O->cName());
 		O->setDestroy	( true );
+		
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}
@@ -294,6 +295,7 @@ void CObjectList::Unload	( )
 		CObject*	O	= objects_active.back	();
 		Msg				("! a[%4d]-[%s]-[%s]", O->ID(), *O->cNameSect(), *O->cName());
 		O->setDestroy	( true );
+
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}
