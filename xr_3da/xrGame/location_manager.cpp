@@ -18,7 +18,11 @@ CLocationManager::~CLocationManager	()
 
 void CLocationManager::Load			(LPCSTR section)
 {
-	setup_location_types			(m_vertex_types,pSettings,pSettings->r_string(section,"terrain"));
+	if(pSettings->line_exist(section,"terrain"))
+		setup_location_types			(m_vertex_types,pSettings,pSettings->r_string(section,"terrain"));
+	else
+		setup_location_types			(m_vertex_types,pSettings,section);
+
 }
 
 void CLocationManager::reload		(LPCSTR section)

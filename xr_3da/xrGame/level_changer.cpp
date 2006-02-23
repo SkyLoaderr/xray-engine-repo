@@ -134,6 +134,7 @@ BOOL CLevelChanger::feel_touch_contact	(CObject *object)
 
 void CLevelChanger::update_actor_invitation()
 {
+	if(m_bSilentMode)						return;
 	xr_vector<CObject*>::iterator it		= feel_touch.begin();
 	xr_vector<CObject*>::iterator it_e		= feel_touch.end();
 
