@@ -43,8 +43,8 @@ struct SSpecificCharacterData : CSharedResource
 
 	float		m_fPanic_threshold;
 	float		m_fHitProbabilityFactor;
-	shared_str	m_terrain_sect;
 #endif
+	shared_str	m_terrain_sect;
 
 	//имя модели
 	xr_string m_sVisual;
@@ -141,8 +141,8 @@ public:
 	int		TradeIconY	() const	 {return data()->m_iIconY;}
 //	int		MapIconX	() const 	 {return data()->m_iMapIconX;}
 //	int		MapIconY	() const	 {return data()->m_iMapIconY;}
-	shared_str					terrain_sect		() const;
 #endif
+	shared_str					terrain_sect		() const;
 };
 
 
