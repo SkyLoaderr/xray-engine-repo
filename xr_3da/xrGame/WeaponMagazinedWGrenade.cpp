@@ -496,7 +496,11 @@ void CWeaponMagazinedWGrenade::InitAddons()
 			else 
 			{
 				if(IsGrenadeLauncherAttached())
+				{
+					CRocketLauncher::m_fLaunchSpeed = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
+
 					LoadZoomOffset(*hud_sect, "grenade_normal_");
+				}
 				else
 					LoadZoomOffset(*hud_sect, "");
 			}
@@ -504,7 +508,7 @@ void CWeaponMagazinedWGrenade::InitAddons()
 /*
 		if(IsGrenadeLauncherAttached())
 		{
-			CRocketLauncher::m_fLaunchSpeed = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
+			
 
 			if(m_bZoomEnabled && m_pHUD)
 				LoadZoomOffset(*hud_sect, "grenade_normal_");
