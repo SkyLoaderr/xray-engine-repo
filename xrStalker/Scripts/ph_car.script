@@ -17,6 +17,7 @@ local def_arriving_dist = 1.0
 local def_not_rotating_angle = 0.4
 local def_min_fire_time = 0
 local def_update_time = 1.6
+local def_fire_range = 50
 
 local def_max_fc_upd_num = 1000 -- default maximum fastcall updates num
 local def_arriving_koef = 3 --70
@@ -260,6 +261,8 @@ function action_car:reset_scheme(loading)
 	        self.fire_rep = self.def_fire_rep
 	        printf("car <fire>: def_rep = %d (%s)", self.fire_rep, utils.to_str(self.st.fire_rep))
     	    
+	        self.fire_range_sqr = self.st.fire_range * self.st.fire_range
+
 	        -- path_fire
 	        if self.state_firetarget == state_firetarget_points and self.st.path_fire then
 	            printf("car <state>: firetarget = points")
@@ -1101,7 +1104,10 @@ function action_car:fast_update()
 	            end
 	        end
 	    elseif self.state_firetarget == state_firetarget_enemy then
-	        if self.target_obj:alive() and self.car:IsObjectVisible(self.target_obj) then
+	        if self.target_obj:alive() and
+	           self.car:position():distance_to_sqr(self.target_obj:position()) <= self.fire_range_sqr and
+	           self.car:IsObjectVisible(self.target_obj)
+	        then
 	            printf("car <fire>: enemy(%s) is visible.", self.target_obj:name())
 
 		        self.target_fire_pt = self.target_obj:position()
@@ -1187,6 +1193,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	    st.auto_fire        = utils.cfg_get_bool(ini,   section, "auto_fire",       npc, false, false)
 	    st.fire_time        = utils.cfg_get_number(ini, section, "fire_time",       npc, false, def_min_fire_time)
 	    st.fire_rep         = utils.cfg_get_string(ini, section, "fire_repeat",     npc, false, gulag_name, nil)
+	    st.fire_range       = utils.cfg_get_number(ini, section, "fire_range",      npc, false, def_fire_range)
 	    st.fire_target      = utils.cfg_get_string(ini, section, "target",          npc, false, gulag_name, "points")
 
 	    st.on_target_vis    = xr_logic.cfg_get_string_and_condlist(ini, section, "on_target_vis", npc)
