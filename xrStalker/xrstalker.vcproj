@@ -3396,6 +3396,9 @@
 						RelativePath=".\scripts\xr_effects.script">
 					</File>
 					<File
+						RelativePath=".\scripts\xr_info.script">
+					</File>
+					<File
 						RelativePath=".\scripts\xr_statistic.script">
 					</File>
 					<Filter
