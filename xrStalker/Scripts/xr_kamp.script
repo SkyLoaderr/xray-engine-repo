@@ -741,14 +741,3 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.def_state_moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "", "walk")
 end
-
-
-function loadStories(npc, char_ini)
-	if char_ini:section_exist("game_info") then
-		local tmp = utils.cfg_get_string(char_ini, "game_info", "stories", npc, false, "")
-		if tmp then
-			printf("*KAMP* Load stories for [%s] -> [%s]", npc:name(), tmp)
-			db.story_by_id[npc:id()] = parse_names(tmp)
-		end
-	end
-end

@@ -67,7 +67,7 @@ function motivator_binder:reinit()
 	--memusage.collect_info(self.object, "after_statemgr")
 
     --' Загрузка историй для лагеря.
-	xr_kamp.loadStories(self.object, char_ini)
+	xr_info.loadInfo(self.object, char_ini)
 	-- Загрузка информации на продажу.`
 	dialog_manager.load_trade_info(self.object)
 	--memusage.collect_info(self.object, "reinit_end")
