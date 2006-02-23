@@ -6,19 +6,18 @@
 
 IC	bool	pred_sp_sort	(ISpatial*	_1, ISpatial* _2)
 {
-	float	d1		= _1->spatial.sphere.P.distance_to_sqr(Device.vCameraPosition);
-	float	d2		= _2->spatial.sphere.P.distance_to_sqr(Device.vCameraPosition);
-	return	d1<d2;
+	float	d1		= _1->spatial.sphere.P.distance_to_sqr	(Device.vCameraPosition);
+	float	d2		= _2->spatial.sphere.P.distance_to_sqr	(Device.vCameraPosition);
+	return	d1<d2	;
 }
 
 void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 {
 //	Msg						("---begin");
-	marker									++;
+	marker					++;
 
 	// Calculate sector(s) and their objects
-	if (pLastSector)
-	{
+	if (pLastSector)		{
 		// Traverse sector/portal structure
 		PortalTraverser.traverse	
 			(
@@ -221,14 +220,14 @@ void CRender::Render		()
 	//******* Main calc - DEFERRER RENDERER
 	// Main calc
 	Device.Statistic->RenderCALC.Begin			();
-	r_pmask										(true,false);	// enable priority "0"
+	r_pmask										(true,false,true);	// enable priority "0",+ capture wmarks
 	if (bSUN)									set_Recorder	(&main_coarse_structure);
 	else										set_Recorder	(NULL);
 	phase										= PHASE_NORMAL;
 	render_main									(Device.mFullTransform,true);
 	set_Recorder								(NULL);
 	r_pmask										(true,false);	// disable priority "1"
-	Device.Statistic->RenderCALC.End				( );
+	Device.Statistic->RenderCALC.End			();
 
 	//******* Main render
 	{

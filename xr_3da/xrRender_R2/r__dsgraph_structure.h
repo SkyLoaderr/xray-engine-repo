@@ -30,11 +30,12 @@ public:
 	xr_vector<Fbox3>*											val_recorder;		// coarse structure recorder
 	u32															phase;
 	u32															marker;
-	bool														pmask		[2];
+	bool														pmask		[2]		;
+	bool														pmask_wmark			;
 public:
 	// Dynamic scene graph
-	R_dsgraph::mapNormal_T										mapNormal	[2];	// 2==(priority/2)
-	R_dsgraph::mapMatrix_T										mapMatrix	[2];
+	R_dsgraph::mapNormal_T										mapNormal	[2]		;	// 2==(priority/2)
+	R_dsgraph::mapMatrix_T										mapMatrix	[2]		;
 	R_dsgraph::mapSorted_T										mapSorted;
 	R_dsgraph::mapHUD_T											mapHUD;
 	R_dsgraph::mapLOD_T											mapLOD;
@@ -135,7 +136,7 @@ public:
 #endif
 	}
 
-	void		r_pmask											(bool _1, bool _2)				{ pmask[0]=_1; pmask[1]=_2;			}
+	void		r_pmask											(bool _1, bool _2, bool _wm=false)				{ pmask[0]=_1; pmask[1]=_2;	pmask_wmark = _wm; }
 
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
 	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);
