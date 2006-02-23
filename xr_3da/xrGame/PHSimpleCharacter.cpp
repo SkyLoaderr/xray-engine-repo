@@ -714,7 +714,7 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
 			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
 			dCROSS(norm,=,side0,side1);//optimize it !!!
-			accurate_normalize(norm);
+			cast_fv(norm).normalize();
 			//if(b_leader)dVectorSet((dReal*)&leader_norm,norm);
 			if(dDOT(norm,(float*)&accel)<-CHWON_ANG_COS) 
 				return 
@@ -730,7 +730,7 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
 			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
 			dCROSS(norm,=,side0,side1);//optimize it !!!
-			accurate_normalize(norm);
+			cast_fv(norm).normalize();
 			if(norm[1]>CHWON_ANG_COS) return 
 				true;
 		}
