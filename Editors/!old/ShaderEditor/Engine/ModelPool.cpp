@@ -12,7 +12,6 @@
     #include "..\fmesh.h"
     #include "..\fhierrarhyvisual.h"
     #include "..\SkeletonAnimated.h"
-    #include "..\SkeletonRigid.h"
 	#include "fvisual.h"
 	#include "fprogressive.h"
 	#include "fskinned.h"
