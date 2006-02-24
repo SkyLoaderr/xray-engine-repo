@@ -931,7 +931,7 @@ function load_job(sj, gname, type, squad, groups)
 	end
 	
 	-- Засада боевиков Наемников на стройке
-	if type == "bar_svoboda_ambush" then
+	if type == "bar_killers_ambush" then
 		t = { section = "logic@bar_svoboda_ambush_sniper_1", 
 			idle = 0,
 			prior = 4, state = {0}, squad = squad, group = groups[0],
@@ -1225,7 +1225,7 @@ function load_states(gname, type)
 			    return 0
 		end
 	end
-	if type == "bar_svoboda_ambush" then        
+	if type == "bar_killers_ambush" then        
 		return function (gulag)
 			return 0
 		end
