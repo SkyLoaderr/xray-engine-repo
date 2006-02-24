@@ -59,6 +59,42 @@ explosion_immunity 			= 0.0
 fire_wound_immunity  		= 0.0 
 wound_2_immunity  			= 0.0
 
+[stalker_zombied_movement_speeds]
+; zombied stalkers can't crouch or run
+	; danger
+	;; crouch
+	;;; walk
+	danger_crouch_walk_forward	= 0.8
+	danger_crouch_walk_backward	= 0.575
+	danger_crouch_walk_left		= 0.8
+	danger_crouch_walk_right	= 0.8
+	;;; run						  
+	danger_crouch_run_forward	= 2.0
+	danger_crouch_run_backward	= 1.1
+	danger_crouch_run_left		= 2.0
+	danger_crouch_run_right		= 2.0
+	;; stand
+	;;; walk
+	danger_stand_walk_forward	= 0.8
+	danger_stand_walk_backward	= 0.8
+	danger_stand_walk_left		= 0.8
+	danger_stand_walk_right		= 0.8
+	;;; run
+	danger_stand_run_forward	= 0.8
+	danger_stand_run_backward	= 0.8
+	danger_stand_run_left		= 0.8
+	danger_stand_run_right		= 0.8
+	; free
+	;; stand
+	;;; forward
+	free_stand_walk_forward		= 0.8
+	free_stand_run_forward		= 0.8
+	; panic
+	;; stand
+	;;; run
+	;;;; forward
+	panic_stand_run_forward		= 7.0
+
 [stalker_zombied]:stalker
 ;---LEVEL EDITOR------------------------------------------------------
 $spawn							= "stalkers\stalker_zombied"	; option for Level Editor
@@ -100,6 +136,8 @@ sound_running_in_danger			= states\breath\stalker\breath_1
 sound_walking_in_danger			= states\breath\stalker\breath_2
 
 ;---MOVEMENT----------------------------------------------------------
+movement_speeds					= stalker_zombied_movement_speeds;
+;---these parameters are obsolete and will be removed after the next update
 CrouchFactor					= 0.33
 WalkFactor			            = 0.8	;2.15
 WalkBackFactor					= 0.8	;2.15
