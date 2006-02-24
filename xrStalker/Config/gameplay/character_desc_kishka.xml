@@ -9,7 +9,7 @@
 		<bio>ds_soldier_regular_bio</bio>
 
 		<class>ds_Soldier_novice</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -38,7 +38,7 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>

@@ -43,7 +43,7 @@
 		<bio>esc_wolf_bio</bio>
 
 		<class>esc_wolf</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>43</rank>
 		<reputation>5</reputation>
@@ -76,7 +76,7 @@
 		<bio>esc_fanat_bio</bio>
 
 		<class>esc_fanat</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>50</rank>
 		<reputation>10</reputation>
@@ -107,7 +107,7 @@
 		<bio>esc_fox_bio</bio>
 
 		<class>esc_fox</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>33</rank>
 		<reputation>-3</reputation>
@@ -138,7 +138,7 @@
 		<bio>esc_tolik_bio</bio>
 
 		<class>esc_tutorial_wounded</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>19</rank>
 		<reputation>6</reputation>
@@ -170,7 +170,7 @@
 		<team>Killer_specnaz</team>
 		
 		<class>esc_killer_specnaz</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-85</reputation>
@@ -199,7 +199,7 @@
 		<bio>esc_bandit_novice_bio</bio>
 	
 		<class>esc_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>3</rank>
 		<reputation>-56</reputation>
@@ -229,7 +229,7 @@
 		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>esc_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>5</rank>
 		<reputation>-60</reputation>
@@ -261,7 +261,7 @@
 		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>esc_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>8</rank>
 		<reputation>-67</reputation>
@@ -294,7 +294,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>14</rank>
 		<reputation>12</reputation>
@@ -323,7 +323,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>12</rank>
 		<reputation>-8</reputation>
@@ -352,7 +352,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>21</rank>
 		<reputation>9</reputation>
@@ -382,7 +382,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>17</rank>
 		<reputation>8</reputation>
@@ -410,7 +410,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>26</rank>
 		<reputation>-10</reputation>
@@ -439,7 +439,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>13</rank>
 		<reputation>6</reputation>
@@ -470,7 +470,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>22</rank>
 		<reputation>18</reputation>
@@ -500,7 +500,7 @@
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>5</rank>
 		<reputation>-2</reputation>
@@ -531,7 +531,7 @@
 		<bio>esc_petruha_bio</bio>
 
 		<class>esc_ranger</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>27</rank>
 		<reputation>16</reputation>
@@ -563,7 +563,7 @@
 		<bio>esc_soldier_commander_bio</bio>
 
 		<class>esc_soldier_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>76</rank>
 		<reputation>-15</reputation>
@@ -593,7 +593,7 @@
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>42</rank>
 		<reputation>6</reputation>
@@ -623,7 +623,7 @@
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>47</rank>
 		<reputation>9</reputation>
@@ -654,7 +654,7 @@
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>50</rank>
 		<reputation>10</reputation>
@@ -684,7 +684,7 @@
 		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>56</rank>
 		<reputation>-18</reputation>
@@ -715,7 +715,7 @@
 		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>48</rank>
 		<reputation>12</reputation>
@@ -744,7 +744,7 @@
 		<bio>esc_captain_bio</bio>
 
 		<class>esc_soldier_blockpost_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>79</rank>
 		<reputation>20</reputation>
@@ -773,7 +773,7 @@
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -803,7 +803,7 @@
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>43</rank>
 		<reputation>-6</reputation>
@@ -832,7 +832,7 @@
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>35</rank>
 		<reputation>11</reputation>
@@ -861,7 +861,7 @@
 		<bio>esc_specnaz_bio</bio>
 
 		<class>esc_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
@@ -889,7 +889,7 @@
 		<bio>esc_specnaz_bio</bio>
 		
 		<class>esc_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>83</rank>
 		<reputation>-4</reputation>
@@ -918,7 +918,7 @@
 		<bio>esc_specnaz_killer_bio</bio>
 
 		<class>esc_killer_master</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>94</rank>
 		<reputation>-109</reputation>
@@ -947,7 +947,7 @@
 		<bio>esc_provodnik_bio</bio>
 
 		<class>esc_provodnik</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>59</rank>
 		<reputation>0</reputation>

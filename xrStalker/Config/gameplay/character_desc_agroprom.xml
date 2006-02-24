@@ -10,7 +10,7 @@
 		<bio>agr_krot_bio</bio>
 
 		<class>agr_krot</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>50</rank>
 		<reputation>49</reputation>
@@ -44,7 +44,7 @@
 		<bio>agr_renegade_bio</bio>
 
 		<class>agr_ratcatcher</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>50</rank>
 		<reputation>-29</reputation>
@@ -71,7 +71,7 @@
 		<bio>agr_general_bio</bio>
 
 		<class>agr_nii_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-20</reputation>
@@ -100,7 +100,7 @@
 		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>27</reputation>
@@ -134,7 +134,7 @@
 		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>42</reputation>
@@ -167,7 +167,7 @@
 		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>18</reputation>
@@ -200,7 +200,7 @@
 		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>36</reputation>
@@ -233,7 +233,7 @@
 		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>23</reputation>
@@ -266,7 +266,7 @@
 		<bio>agr_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>33</reputation>
@@ -301,7 +301,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>-9</reputation>
@@ -330,7 +330,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>-6</reputation>
@@ -359,7 +359,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>-3</reputation>
@@ -388,7 +388,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>-7</reputation>
@@ -417,7 +417,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>-9</reputation>
@@ -448,7 +448,7 @@
 		<bio>agr_specnaz_bio</bio>
 
 		<class>agr_Soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>-70</reputation>
@@ -477,7 +477,7 @@
 		<bio>agr_specnaz_bio</bio>
 
 		<class>agr_Soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>-83</reputation>
@@ -508,7 +508,7 @@
 		<bio>agr_general_bio</bio>
 
 		<class>agr_Soldier_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-20</reputation>
@@ -537,7 +537,7 @@
 		<bio>agr_general_bio</bio>
 
 		<class>agr_Soldier_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-19</reputation>
@@ -567,7 +567,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-15</reputation>
@@ -596,7 +596,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 	
 		<rank>60</rank>
 		<reputation>-15</reputation>
@@ -625,7 +625,7 @@
 		<bio>agr_soldier_general_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-7</reputation>
@@ -656,7 +656,7 @@
 		<bio>agr_bandit_general_bio</bio>
 	
 		<class>agr_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>-70</reputation>
@@ -686,7 +686,7 @@
 		<bio>agr_bandit_general_bio</bio>
 		
 		<class>agr_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>-56</reputation>
@@ -716,7 +716,7 @@
 		<bio>agr_bandit_general_bio</bio>
 				
 		<class>agr_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>-98</reputation>

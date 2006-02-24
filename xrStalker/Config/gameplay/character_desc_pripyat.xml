@@ -319,7 +319,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>pri_followers</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -348,7 +348,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>pri_followers</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -376,7 +376,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>pri_followers</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -406,7 +406,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<class>pri_soldier_suicide</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -429,7 +429,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<class>pri_soldier_suicide</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -453,7 +453,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>pri_zombied_suicide</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>-20</reputation>
@@ -477,7 +477,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>pri_zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>-20</reputation>
@@ -504,7 +504,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>pri_zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -530,7 +530,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>pri_zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>

@@ -15,7 +15,7 @@
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
 		<class>mil_Svoboda_specnaz</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>80</rank>
 		<reputation>110</reputation>
@@ -44,7 +44,7 @@
         <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_engineer</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>91</rank>
 		<reputation>139</reputation>
@@ -75,7 +75,7 @@
         <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_regular</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
 		<rank>43</rank>
 		<reputation>74</reputation>
@@ -105,7 +105,7 @@
         <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_sniper</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>56</rank>
 		<reputation>81</reputation>
@@ -134,7 +134,7 @@
         <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>mil_Svoboda_stukach</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>54</rank>
 		<reputation>58</reputation>
@@ -161,7 +161,7 @@
 		<team>Svoboda_specnaz</team>
 		
 		<class>mil_Svoboda_zoneguard</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 
@@ -194,7 +194,7 @@
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
 		<class>mil_Svoboda_bodyguard</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
 		<rank>92</rank>
 		<reputation>101</reputation>
@@ -223,7 +223,7 @@
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 
 		<class>mil_Svoboda_leader</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
 		<rank>99</rank>
 		<reputation>136</reputation>
@@ -253,7 +253,7 @@
 		<team>Svoboda_master</team>
 		
 		<class>mil_Svoboda_trader</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
@@ -284,7 +284,7 @@
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
 		<class>mil_Svoboda_master_Max</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		
 		<rank>94</rank>
@@ -315,7 +315,7 @@
 		<team>Svoboda_master</team>
 		
 		<class>mil_Svoboda_master</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
@@ -341,7 +341,7 @@
 		<bio>mil_Svoboda_cook_bio</bio>
 		
 		<class>mil_Svoboda_cook</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
@@ -384,7 +384,7 @@
     	<team>Svoboda_master</team>
 		
 		<class>mil_Svoboda_blockpost_leader</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>96</rank>
 		<reputation>149</reputation>
@@ -415,7 +415,7 @@
 		<team>Svoboda_master</team>
 		
 		<class>mil_Svoboda_master_Ugrumiy</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		
 		<rank>84</rank>
@@ -447,7 +447,7 @@
 		<bio>mil_Dolg_specnaz_bio</bio>
 
 		<class>mil_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>72</rank>
 		<reputation>96</reputation>
@@ -473,7 +473,7 @@
 		<bio>mil_Dolg_specnaz_silence_bio</bio>
 
 		<class>mil_Dolg_specnaz_silence</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
 
@@ -500,7 +500,7 @@
 		<team>Dolg_specnaz</team>
 
 		<class>mil_Dolg_specnaz_cherep</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>93</rank>
 		<reputation>135</reputation>
@@ -530,7 +530,7 @@
 
 		
 		<class>mil_Killer_informator</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>89</rank>
 		<reputation>-149</reputation>
@@ -558,7 +558,7 @@
 		<team>Killer_specnaz</team>
 		
 		<class>mil_Killer_specnaz</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\killer\</snd_config>
 
@@ -588,7 +588,7 @@
         <snd_config>characters_voice\human_03\killer\</snd_config>
 		
 		<class>mil_killer_sniper</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>82</rank>
 		<reputation>-102</reputation>
@@ -617,7 +617,7 @@
 		
 		
 		<class>mil_killer_master</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		
 		<rank>93</rank>
@@ -647,7 +647,7 @@
 		<bio>mil_Stalker_master_bio</bio>
 
 		<class>mil_Stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>95</rank>
 		<reputation>19</reputation>
@@ -674,7 +674,7 @@
 		<bio>mil_Stalker_veteran_bio</bio>
 
 		<class>mil_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>86</rank>
 		<reputation>-2</reputation>
@@ -705,7 +705,7 @@
 
 
                 <class>mil_Svoboda_zombi_stalker</class>
-                <community>bandit</community>
+                <community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 
                 <snd_config>characters_voice\human_02\zombied\</snd_config>
 

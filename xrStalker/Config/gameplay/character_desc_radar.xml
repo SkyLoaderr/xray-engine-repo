@@ -329,7 +329,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>40</rank>
 		<reputation>-375</reputation>
@@ -354,7 +354,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>40</rank>
 		<reputation>-637</reputation>
@@ -379,7 +379,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>40</rank>
 		<reputation>-847</reputation>
@@ -404,7 +404,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>40</rank>
 		<reputation>-476</reputation>
@@ -429,7 +429,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-987</reputation>
@@ -454,7 +454,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-199</reputation>
@@ -479,7 +479,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-653</reputation>
@@ -504,7 +504,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-834</reputation>
@@ -530,7 +530,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-452</reputation>
@@ -556,7 +556,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-245</reputation>
@@ -582,7 +582,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-734</reputation>
@@ -608,7 +608,7 @@
 		<bio>rad_zombied_general_bio</bio>
 
 		<class>rad_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
 		<rank>60</rank>
 		<reputation>-540</reputation>
@@ -636,7 +636,7 @@
 		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>79</reputation>
@@ -664,7 +664,7 @@
 		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>86</reputation>
@@ -692,7 +692,7 @@
 		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>74</reputation>
@@ -720,7 +720,7 @@
 		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>89</reputation>
@@ -748,7 +748,7 @@
 		<bio>rad_stalker_veteran_bio</bio>
 
 		<class>rad_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>100</reputation>
@@ -777,7 +777,7 @@
 		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>95</rank>
 		<reputation>91</reputation>
@@ -804,7 +804,7 @@
 		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>95</rank>
 		<reputation>88</reputation>
@@ -831,7 +831,7 @@
 		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>95</rank>
 		<reputation>83</reputation>
@@ -857,7 +857,7 @@
 		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>95</rank>
 		<reputation>72</reputation>
@@ -883,7 +883,7 @@
 		<bio>rad_stalker_master_bio</bio>
 
 		<class>rad_Stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<rank>95</rank>
 		<reputation>94</reputation>
@@ -912,7 +912,7 @@
 		<bio>rad_specnaz_bio</bio>
 
 		<class>rad_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
 		<rank>80</rank>
 		<reputation>-74</reputation>
@@ -940,7 +940,7 @@
 		<bio>rad_specnaz_bio</bio>
 
 		<class>rad_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
 		<rank>80</rank>
 		<reputation>-80</reputation>
@@ -968,7 +968,7 @@
 		<bio>rad_specnaz_bio</bio>
 
 		<class>rad_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
 		<rank>80</rank>
 		<reputation>-60</reputation>
@@ -998,7 +998,7 @@
 		<bio>rad_svoboda_master_bio</bio>
 
 		<class>rad_Svoboda_master</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>90</rank>
 		<reputation>93</reputation>
@@ -1025,7 +1025,7 @@
 		<bio>rad_svoboda_master_bio</bio>
 
 		<class>rad_Svoboda_master</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>90</rank>
 		<reputation>100</reputation>
@@ -1052,7 +1052,7 @@
 		<bio>rad_svoboda_master_bio</bio>
 
 		<class>rad_Svoboda_master</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>90</rank>
 		<reputation>90</reputation>
@@ -1080,7 +1080,7 @@
 		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>90</rank>
 		<reputation>95</reputation>
@@ -1107,7 +1107,7 @@
 		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>90</rank>
 		<reputation>96</reputation>
@@ -1136,7 +1136,7 @@
 		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>90</rank>
 		<reputation>93</reputation>
@@ -1165,7 +1165,7 @@
 		<bio>rad_dolg_master_bio</bio>
 
 		<class>rad_Dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>90</rank>
 		<reputation>90</reputation>
@@ -1194,7 +1194,7 @@
 		<bio>rad_ecolog_bio</bio>
 
 		<class>rad_Ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>50</reputation>
@@ -1219,7 +1219,7 @@
 		<bio>rad_ecolog_guard_bio</bio>
 
 		<class>rad_Ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		<rank>80</rank>
 		<reputation>50</reputation>
@@ -1246,7 +1246,7 @@
 		<bio>rad_ecolog_guard_bio</bio>
 
 		<class>rad_Ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		<rank>80</rank>
 		<reputation>50</reputation>

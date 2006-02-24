@@ -10,7 +10,7 @@
 		<bio>ученый</bio>
 
 		<class>yan_general_ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>50</reputation>
@@ -37,7 +37,7 @@
 		<bio>Доктор биологических наук. За пределами Зоны занимался патогенными мутациями у животных. В Зону отправился для изучения мутаций слепых псов.</bio>
 
 		<class>yan_ecolog_help</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
 		<rank>80</rank>
@@ -66,7 +66,7 @@
 		<bio>Средний научный сотрудник Семенов. Детальная информация отсутствует.</bio>
 
 		<class>yan_Semenov</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
 		<rank>80</rank>
@@ -93,7 +93,7 @@
 		<bio>Младший научный сотрудник Васильев. Детальная информация отсутствует.</bio>
 
 		<class>yan_Ecolog_vasilyev</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
 		<rank>80</rank>
@@ -121,7 +121,7 @@
 		<bio>Сталкер Призрак</bio>
 
 		<class>yan_ghost</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		
 		<rank>80</rank>
@@ -147,7 +147,7 @@
 		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
 
 		<class>yan_Ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
 		<rank>80</rank>
@@ -172,7 +172,7 @@
 		<bio>Научный работник. Детальная информация отсутствует.</bio>
 		
 		<class>yan_Ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>50</reputation>
@@ -197,7 +197,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 		
 		<class>yan_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -220,7 +220,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 	
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -243,7 +243,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>-20</reputation>
@@ -266,7 +266,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>-20</reputation>
@@ -289,7 +289,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>50</reputation>
@@ -312,7 +312,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 	
 		<rank>60</rank>
 		<reputation>50</reputation>
@@ -335,7 +335,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -359,7 +359,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -385,7 +385,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -409,7 +409,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -434,7 +434,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -459,7 +459,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -485,7 +485,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_Zombied_master</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -510,7 +510,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_fresh_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -534,7 +534,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_fresh_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>
@@ -558,7 +558,7 @@
 		<bio>Один из сталкеров, которым не повезло.</bio>
 
 		<class>yan_fresh_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>-50</reputation>

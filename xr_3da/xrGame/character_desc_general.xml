@@ -29,7 +29,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -55,7 +55,7 @@
 		<bio>Представитель проекта "Осознание".</bio>
 
 		<class>osoznanie</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>

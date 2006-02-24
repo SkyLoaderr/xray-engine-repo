@@ -10,7 +10,7 @@
         <bio>cit_doctor_bio</bio>
 
         <class>cit_doctor</class>
-        <community>stalker</community>
+        <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
         <rank>40</rank>
         <reputation>0</reputation>
@@ -38,7 +38,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_general</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -69,7 +69,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_general</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -101,7 +101,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_veteran</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -131,7 +131,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_veteran</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -163,7 +163,7 @@
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_nauchniy</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>-50</reputation>
@@ -195,7 +195,7 @@
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_exo</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>-50</reputation>
@@ -227,7 +227,7 @@
 		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
 
 		<class>cit_killer_exo_sniper</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>-50</reputation>
@@ -260,7 +260,7 @@
 		<bio>cit_killers_leader_bio</bio>
 
 		<class>cit_killer_leader</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>-50</reputation>
@@ -296,7 +296,7 @@
         <bio>Алкаш.</bio>
 
         <class>cit_bandit_drunk</class>
-        <community>bandit</community>
+        <community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 
         <rank>40</rank>
         <reputation>0</reputation>
@@ -323,7 +323,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>cit_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -354,7 +354,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>cit_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -384,7 +384,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>cit_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -414,7 +414,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 				
 		<class>cit_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -445,7 +445,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>cit_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -476,7 +476,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>cit_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -506,7 +506,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
 		<class>cit_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -537,7 +537,7 @@
 		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>cit_bandit_veteran_best</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -569,7 +569,7 @@
 		<bio>cit_bandits_leader_bio</bio>
 		
 		<class>cit_bandit_leader</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -601,7 +601,7 @@
 		<bio>cit_vp_bio</bio>
 
 		<class>cit_vp</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>

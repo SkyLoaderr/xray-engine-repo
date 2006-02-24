@@ -10,7 +10,7 @@
 		<bio>val_borov_bio</bio>
 
 		<class>val_bandit_borov</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<hit_probability_factor>1.5</hit_probability_factor>
@@ -49,7 +49,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 				
 		<class>val_bandit_bodyguard</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -83,7 +83,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
 		<class>val_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>0</rank>
 		<reputation>0</reputation>
@@ -113,7 +113,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>0</rank>
 		<reputation>0</reputation>
@@ -144,7 +144,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>0</rank>
 		<reputation>0</reputation>
@@ -174,7 +174,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>0</rank>
 		<reputation>0</reputation>
@@ -203,7 +203,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>0</rank>
 		<reputation>0</reputation>
@@ -225,7 +225,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -256,7 +256,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -286,7 +286,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -316,7 +316,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 				
 		<class>val_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -347,7 +347,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -378,7 +378,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -408,7 +408,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
 		<class>val_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -439,7 +439,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 		
 		<class>val_watchtower_bandit_guard</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -469,7 +469,7 @@
 		<bio>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</bio>
 
 		<class>val_watchtower_bandit_sniper</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>-20</reputation>
@@ -501,7 +501,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>val_dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -533,7 +533,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>val_dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -565,7 +565,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>val_dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -598,7 +598,7 @@
 		<bio>val_pulia_bio</bio>
 
 		<class>val_dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -642,7 +642,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>val_dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -729,7 +729,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<class>val_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -759,7 +759,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<class>val_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -789,7 +789,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<class>val_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -819,7 +819,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
 
 		<class>val_soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -850,7 +850,7 @@
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
 		<class>val_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
@@ -882,7 +882,7 @@
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
 		<class>val_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
@@ -912,7 +912,7 @@
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
 		<class>val_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
@@ -942,7 +942,7 @@
 		<bio>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</bio>
 
 		<class>val_soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
@@ -974,7 +974,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1003,7 +1003,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1034,7 +1034,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1062,7 +1062,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1090,7 +1090,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1120,7 +1120,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1149,7 +1149,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1185,7 +1185,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1220,7 +1220,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1254,7 +1254,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1288,7 +1288,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>val_stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1323,7 +1323,7 @@
 		<bio>dar_explorer_bio</bio>
 
 		<class>dar_stalker_explorer</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>50</rank>
 		<reputation>0</reputation>
@@ -1348,7 +1348,7 @@
 		<bio>dar_corpse_bio</bio>
 
 		<class>dar_corpse</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -1368,7 +1368,7 @@
 		<bio>dar_corpse_bio</bio>
 
 		<class>dar_corpse</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -1388,7 +1388,7 @@
 		<bio>dar_corpse_bio</bio>
 
 		<class>dar_corpse</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -1408,7 +1408,7 @@
 		<bio>dar_corpse_bio</bio>
 
 		<class>dar_corpse</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>

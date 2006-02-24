@@ -193,7 +193,7 @@
 		<bio>Детальная информация отсутствует.</bio>
 
 		<class>aes_Soldier_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>0</reputation>
@@ -228,7 +228,7 @@
 		<team>Soldier_military</team>
 		
 		<class>aes_Soldier_military</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\</snd_config>
 		
@@ -262,7 +262,7 @@
 		<team>Soldier_specnaz</team>
 		
 		<class>aes_Soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
@@ -296,7 +296,7 @@
 		<team>Soldier_specnaz</team>
 		
 		<class>aes_Soldier_specnaz_aes</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>0</reputation>
@@ -327,7 +327,7 @@
 		<team>Soldier_sniper</team>
 		
 		<class>aes_Soldier_sniper</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>0</reputation>

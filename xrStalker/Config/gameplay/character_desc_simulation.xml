@@ -11,7 +11,7 @@
 		<bio>sim_bandit_novice_bio</bio>
 	
 		<class>sim_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>23</rank>
 		<reputation>-56</reputation>
@@ -38,7 +38,7 @@
 		<bio>sim_bandit_novice_bio</bio>
 		
 		<class>sim_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>14</rank>
 		<reputation>-51</reputation>
@@ -67,7 +67,7 @@
 		<bio>sim_bandit_novice_bio</bio>
 		
 		<class>sim_bandit_novice</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>-63</reputation>
@@ -96,7 +96,7 @@
 		<bio>sim_bandit_general_bio</bio>
 		
 		<class>sim_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>32</rank>
 		<reputation>-68</reputation>
@@ -124,7 +124,7 @@
 		<bio>sim_bandit_general_bio</bio>
 		
 		<class>sim_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>42</rank>
 		<reputation>-79</reputation>
@@ -151,7 +151,7 @@
 		<bio>sim_bandit_general_bio</bio>
 		
 		<class>sim_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>53</rank>
 		<reputation>-93</reputation>
@@ -178,7 +178,7 @@
 		<bio>sim_bandit_general_bio</bio>
 				
 		<class>sim_bandit_general</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>59</rank>
 		<reputation>-105</reputation>
@@ -206,7 +206,7 @@
 		<bio>sim_bandit_veteran_bio</bio>
 		
 		<class>sim_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>67</rank>
 		<reputation>-112</reputation>
@@ -237,7 +237,7 @@
 		<bio>sim_bandit_veteran_bio</bio>
 		
 		<class>sim_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>73</rank>
 		<reputation>-126</reputation>
@@ -264,7 +264,7 @@
 		<bio>sim_bandit_veteran_bio</bio>
 
 		<class>sim_bandit_veteran</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>86</rank>
 		<reputation>-135</reputation>
@@ -294,7 +294,7 @@
 		<team>Bandit_master</team>
 		
 		<class>sim_Bandit_master</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>91</rank>
 		<reputation>-139</reputation>
@@ -323,7 +323,7 @@
 		<team>Bandit_master</team>
 		
 		<class>sim_Bandit_master</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
@@ -352,7 +352,7 @@
 		<team>Bandit_master</team>
 		
 		<class>sim_Bandit_master</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
@@ -384,7 +384,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>12</rank>
 		<reputation>6</reputation>
@@ -410,7 +410,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>18</rank>
 		<reputation>-10</reputation>
@@ -437,7 +437,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>22</rank>
 		<reputation>18</reputation>
@@ -466,7 +466,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>24</rank>
 		<reputation>-15</reputation>
@@ -493,7 +493,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>26</rank>
 		<reputation>19</reputation>
@@ -520,7 +520,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>29</rank>
 		<reputation>20</reputation>
@@ -550,7 +550,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>5</rank>
 		<reputation>-20</reputation>
@@ -578,7 +578,7 @@
 		<bio>sim_stalker_novice_bio</bio>
 
 		<class>sim_stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>15</rank>
 		<reputation>6</reputation>
@@ -608,7 +608,7 @@
 		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>35</reputation>
@@ -637,7 +637,7 @@
 		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>36</rank>
 		<reputation>46</reputation>
@@ -665,7 +665,7 @@
 		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>46</rank>
 		<reputation>63</reputation>
@@ -693,7 +693,7 @@
 		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>53</rank>
 		<reputation>86</reputation>
@@ -721,7 +721,7 @@
 		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>59</rank>
 		<reputation>42</reputation>
@@ -749,7 +749,7 @@
 		<bio>sim_stalker_general_bio</bio>
 
 		<class>sim_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>53</rank>
 		<reputation>-20</reputation>
@@ -778,7 +778,7 @@
 		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>63</rank>
 		<reputation>55</reputation>
@@ -806,7 +806,7 @@
 		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>75</rank>
 		<reputation>101</reputation>
@@ -834,7 +834,7 @@
 		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>82</rank>
 		<reputation>-56</reputation>
@@ -862,7 +862,7 @@
 		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 	
 		<rank>89</rank>
 		<reputation>123</reputation>
@@ -890,7 +890,7 @@
 		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>sim_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>85</rank>
 		<reputation>-53</reputation>
@@ -920,7 +920,7 @@
 		<bio>sim_stalker_master_bio</bio>
 
 		<class>sim_stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 				
 		<rank>92</rank>
 		<reputation>145</reputation>
@@ -949,7 +949,7 @@
 		<bio>sim_stalker_master_bio</bio>
 
 		<class>sim_stalker_master</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		
@@ -980,7 +980,7 @@
 		<bio>sim_stalker_sniper_bio</bio>
 
 		<class>sim_Stalker_sniper</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>75</rank>
 		<reputation>89</reputation>
@@ -1014,7 +1014,7 @@
 		<bio>sim_dolg_regular_bio</bio>
 
 		<class>sim_Dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>36</rank>
 		<reputation>55</reputation>
@@ -1043,7 +1043,7 @@
 		<bio>sim_dolg_regular_bio</bio>
 
 		<class>sim_Dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>42</rank>
 		<reputation>65</reputation>
@@ -1072,7 +1072,7 @@
 		<bio>sim_dolg_regular_bio</bio>
 		
 		<class>sim_Dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>56</rank>
 		<reputation>73</reputation>
@@ -1102,7 +1102,7 @@
 		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>63</rank>
 		<reputation>89</reputation>
@@ -1129,7 +1129,7 @@
 		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>75</rank>
 		<reputation>96</reputation>
@@ -1158,7 +1158,7 @@
 		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>86</rank>
 		<reputation>114</reputation>
@@ -1187,7 +1187,7 @@
 		<bio>sim_dolg_veteran_bio</bio>
 
 		<class>sim_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>89</rank>
 		<reputation>124</reputation>
@@ -1216,7 +1216,7 @@
 		<bio>sim_dolg_master_bio</bio>
 
 		<class>sim_dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>94</rank>
 		<reputation>136</reputation>
@@ -1244,7 +1244,7 @@
 		<bio>sim_dolg_master_bio</bio>
 		
 		<class>sim_dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>96</rank>
 		<reputation>143</reputation>
@@ -1273,7 +1273,7 @@
 		<bio>sim_dolg_sniper_bio</bio>
 
 		<class>sim_Dolg_sniper</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>55</rank>
 		<reputation>64</reputation>
@@ -1301,7 +1301,7 @@
 		<bio>sim_dolg_sniper_bio</bio>
 
 		<class>sim_Dolg_sniper</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 	
 		<rank>64</rank>
 		<reputation>87</reputation>
@@ -1329,7 +1329,7 @@
 		<bio>sim_dolg_sniper_bio</bio>
 
 		<class>sim_Dolg_sniper</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 	
 		<rank>61</rank>
 		<reputation>74</reputation>
@@ -1366,7 +1366,7 @@
         <snd_config>characters_voice\human_01\freedom\</snd_config>
 		
 		<class>sim_Svoboda_regular</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
 		<rank>58</rank>
 		<reputation>73</reputation>
@@ -1399,7 +1399,7 @@
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
 		<class>sim_Svoboda_specnaz</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>86</rank>
 		<reputation>113</reputation>
@@ -1428,7 +1428,7 @@
 		<team>Svoboda_master</team>
 		
 		<class>sim_Svoboda_master</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
@@ -1461,7 +1461,7 @@
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
 		<class>sim_Svoboda_sniper</class>
-		<community>freedom</community>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		<rank>85</rank>
 		<reputation>125</reputation>
@@ -1493,7 +1493,7 @@
 		<bio>sim_killer_general_bio</bio>
 
 		<class>sim_killer_general</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>49</rank>
 		<reputation>-63</reputation>
@@ -1521,7 +1521,7 @@
 		<bio>sim_killer_general_bio</bio>
 
 		<class>sim_killer_general</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>56</rank>
 		<reputation>-76</reputation>
@@ -1550,7 +1550,7 @@
 		<bio>sim_killer_veteran_bio</bio>
 
 		<class>sim_killer_veteran</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>65</rank>
 		<reputation>-95</reputation>
@@ -1578,7 +1578,7 @@
 		<bio>sim_killer_veteran_bio</bio>
 
 		<class>sim_killer_veteran</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>81</rank>
 		<reputation>-105</reputation>
@@ -1607,7 +1607,7 @@
 		<bio>sim_killer_master_bio</bio>
 
 		<class>sim_killer_master</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>-132</reputation>
@@ -1635,7 +1635,7 @@
 		<bio>sim_killer_master_bio</bio>
 
 		<class>sim_killer_master</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>92</rank>
 		<reputation>-146</reputation>
@@ -1666,7 +1666,7 @@
 		<bio>sim_killer_sniper_bio</bio>
 
 		<class>sim_killer_sniper</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>73</rank>
 		<reputation>-83</reputation>
@@ -1945,7 +1945,7 @@
 		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
 
 		<class>sim_Ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
 		<rank>80</rank>
@@ -1972,7 +1972,7 @@
 		<bio>Научный работник. Детальная информация отсутствует.</bio>
 		
 		<class>sim_Ecolog</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>50</reputation>
@@ -2003,7 +2003,7 @@
 		<bio>sim_zombied_novice_bio</bio>
 		
 		<class>sim_zombied_novice</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>13</rank>
 		<reputation>-153</reputation>
@@ -2025,7 +2025,7 @@
 		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 	
 		<rank>16</rank>
 		<reputation>-189</reputation>
@@ -2047,7 +2047,7 @@
 		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>21</rank>
 		<reputation>-213</reputation>
@@ -2069,7 +2069,7 @@
 		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>24</rank>
 		<reputation>-312</reputation>
@@ -2091,7 +2091,7 @@
 		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>27</rank>
 		<reputation>-351</reputation>
@@ -2113,7 +2113,7 @@
 		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 	
 		<rank>29</rank>
 		<reputation>-364</reputation>
@@ -2135,7 +2135,7 @@
 		<bio>sim_zombied_novice_bio</bio>
 
 		<class>sim_zombied_novice</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>-412</reputation>
@@ -2158,7 +2158,7 @@
 		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>32</rank>
 		<reputation>-500</reputation>
@@ -2182,7 +2182,7 @@
 		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>38</rank>
 		<reputation>-546</reputation>
@@ -2204,7 +2204,7 @@
 		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>48</rank>
 		<reputation>-612</reputation>
@@ -2227,7 +2227,7 @@
 		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>51</rank>
 		<reputation>-645</reputation>
@@ -2250,7 +2250,7 @@
 		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>sim_Zombied_veteran</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>58</rank>
 		<reputation>-723</reputation>
@@ -2274,7 +2274,7 @@
 		<bio>sim_zombied_master_bio</bio>
 
 		<class>sim_Zombied_master</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>85</rank>
 		<reputation>-864</reputation>
@@ -2297,7 +2297,7 @@
 		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>sim_fresh_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>82</rank>
 		<reputation>-856</reputation>
@@ -2320,7 +2320,7 @@
 		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>sim_fresh_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>85</rank>
 		<reputation>-923</reputation>
@@ -2343,7 +2343,7 @@
 		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>sim_fresh_Zombied</class>
-		<community>zombied</community>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
 		<rank>86</rank>
 		<reputation>-984</reputation>
@@ -2372,7 +2372,7 @@
 		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>5</rank>
 		<reputation>5</reputation>
@@ -2401,7 +2401,7 @@
 		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>7</rank>
 		<reputation>10</reputation>
@@ -2430,7 +2430,7 @@
 		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>8</rank>
 		<reputation>12</reputation>
@@ -2459,7 +2459,7 @@
 		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>16</rank>
 		<reputation>6</reputation>
@@ -2488,7 +2488,7 @@
 		<bio>sim_soldier_regular_bio</bio>
 
 		<class>sim_Soldier_regular</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>24</rank>
 		<reputation>21</reputation>
@@ -2520,7 +2520,7 @@
 		<bio>sim_soldier_specnaz_bio</bio>
 
 		<class>sim_Soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>67</rank>
 		<reputation>19</reputation>
@@ -2549,7 +2549,7 @@
 		<bio>sim_soldier_specnaz_bio</bio>
 
 		<class>sim_Soldier_specnaz</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>74</rank>
 		<reputation>23</reputation>
@@ -2578,7 +2578,7 @@
 		<bio>sim_soldier_commander_bio</bio>
 
 		<class>sim_Soldier_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>86</rank>
 		<reputation>20</reputation>
@@ -2607,7 +2607,7 @@
 		<bio>sim_soldier_commander_bio</bio>
 
 		<class>sim_Soldier_commander</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>91</rank>
 		<reputation>-23</reputation>
@@ -2636,7 +2636,7 @@
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<class>sim_Soldier_sniper</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>60</rank>
 		<reputation>0</reputation>
@@ -2665,7 +2665,7 @@
 		<bio>sim_soldier_sniper_bio</bio>
 
 		<class>sim_Soldier_sniper</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 	
 		<rank>60</rank>
 		<reputation>4</reputation>
@@ -2694,7 +2694,7 @@
 		<bio>sim_soldier_sniper_bio</bio>
 
 		<class>sim_Soldier_sniper</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>67</rank>
 		<reputation>-9</reputation>
@@ -2726,7 +2726,7 @@
 		<team>Soldier_military</team>
 		
 		<class>sim_Soldier_master</class>
-		<community>military</community>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\military\</snd_config>
 		

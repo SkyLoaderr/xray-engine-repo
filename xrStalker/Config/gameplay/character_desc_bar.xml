@@ -38,7 +38,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_white_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -61,7 +61,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_white_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -84,7 +84,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_brown_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -107,7 +107,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_brown_novice</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -130,7 +130,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -153,7 +153,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -176,7 +176,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_dolg</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -199,7 +199,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_bandit</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -222,7 +222,7 @@
 		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
 
 		<class>bar_stalker_killer</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -245,7 +245,7 @@
 		<bio>Охранник бара. Или, если хотите, телохранитель бармена. О его настоящем, как и о прошлом ничего не известно.</bio>
 
 		<class>bar_stalker_guard</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -268,7 +268,7 @@
 		<bio>Брат-близнец Гарика. Охранник на входе бара. Такой же молчаливый, как и его брат.</bio>
 
 		<class>bar_stalker_guard2</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -292,7 +292,7 @@
 		<bio>Таинственный сталкер, который очень много знает. Торгует информацией в баре.</bio>
 
 		<class>bar_stalker_osvedomitel</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -322,7 +322,7 @@
 		<bio>Добродушный весельчак, единственная его проблема это то, что умеет стрелять только из охотничьего ружья. Остальное даже не пробует. Недавно попал в передрягу на Дикой территории и потерял там свое фамильное ружье. Теперь околачивается в баре, надеется, что кто-то вернет ему его ружье.</bio>
 
 		<class>bar_stalker_hunter</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -347,7 +347,7 @@
 		<bio>Постоянно пьяный член группировки Долга. Долг дал ему последнюю возможность остаться в Долге, выполнив задание, но он пьян и не может его выполнить.</bio>
 
 		<class>bar_stalker_drunk_dolg</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -372,7 +372,7 @@
 		<bio>Информация отсутствует.</bio>
 
 		<class>bar_stalker_lisiy</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -396,7 +396,7 @@
 		<bio>Неизвестно.</bio>
 
 		<class>Bar_psih</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>30</reputation>
@@ -429,7 +429,7 @@
 		костюмы от Армани и галстуки от Версаче, но стволы предпочитает советские.</bio>
 
 		<class>bar_arena_manager</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>90</reputation>
@@ -457,7 +457,7 @@
 		<bio>Телохранитель хозяина Арены. О его прошлом известно только плохое, ненавидит своих братьев.</bio>
 
 		<class>bar_arena_guard</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>0</reputation>
@@ -506,7 +506,7 @@
 		<bio>Лидер Долга. Основатель группировки Долг, вот уже пять лет возглавляет группировку.</bio>
 
 		<class>bar_dolg_leader</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>99</rank>
 		<reputation>0</reputation>
@@ -541,7 +541,7 @@
 		<bio>Один из основателей Долга и по совместительству главный идеолог. Правая рука Воронина. Это он разработал свод правил и завербовал практически всех нынешних членов Долга.</bio>
 
 		<class>bar_dolg_petrenko</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>50</rank>
 		<reputation>0</reputation>
@@ -571,7 +571,7 @@
 		<bio>Левая рука лидера Долга, руководитель всех карательных операций и операций по зачистке крупных скоплений мутантов.</bio>
 
 		<class>bar_dolg_ivancov</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>50</rank>
 		<reputation>0</reputation>
@@ -601,7 +601,7 @@
 		<bio>Начальник охраны на территории Долга.</bio>
 
 		<class>bar_dolg_guard_commander</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>50</rank>
 		<reputation>0</reputation>
@@ -630,7 +630,7 @@
 		<bio>Информация отсутствует.</bio>
 
 		<class>bar_zastava_commander</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
@@ -659,7 +659,7 @@
 		<bio>Доктор биологических наук. За пределами Зоны занимался патогенными мутациями у животных. В Зону отправился для изучения мутаций слепых псов.</bio>
 
 		<class>bar_ecolog_professor</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>90</reputation>
@@ -685,7 +685,7 @@
 		<bio>Один из полевых командиров "Наемников". Командир отряда боевиков, которые именуют себя "псами". Анархист, презирает любые законы, кроме законов силы.</bio>
 
 		<class>bar_svoboda_attack_commander</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 	
 		<rank>90</rank>
 		<panic_threshold>0.0</panic_threshold>
@@ -716,7 +716,7 @@
 		<bio>Один из «героев» группировки Наемников. Простреленный всеми калибрами ветеран. Редкий псих и садист.</bio>
 
 		<class>bar_killer_ambush_tiran</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
 		<rank>90</rank>
 		<reputation>40</reputation>
@@ -745,7 +745,7 @@
 		<bio>Мародер и убийца. За его голову неоднократно объявляли награду. Когда-то был в хороших отношениях с Долгом, помог им отбить нынешнюю территорию. Теперь обитает на дикой территории и по слухам грабит со своей бандой одиноких сталкеров.</bio>
 
 		<class>bar_crazy_veterans_lucky</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 	
 		<rank>75</rank>
 		<reputation>-40</reputation>
@@ -771,7 +771,7 @@
 		<bio>Неизвестный мародер.</bio>
 
 		<class>bar_crazy_veterans</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 	
 		<rank>60</rank>
 		<reputation>-40</reputation>
@@ -796,7 +796,7 @@
 		<bio>Неизвестный мародер.</bio>
 
 		<class>bar_crazy_veterans</class>
-		<community>bandit</community>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 	
 		<rank>60</rank>
 		<reputation>-40</reputation>
@@ -823,7 +823,7 @@
 		С недавнего времени считался пропавшим без вести.</bio>
 
 		<class>bar_stalker_freeman</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>90</reputation>
@@ -849,7 +849,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -881,7 +881,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -912,7 +912,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 		
 		<class>bar_Dolg_regular</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>20</reputation>
@@ -944,7 +944,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_sniper</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>50</rank>
 		<reputation>20</reputation>
@@ -975,7 +975,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_sniper</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 	
 		<rank>50</rank>
 		<reputation>20</reputation>
@@ -1006,7 +1006,7 @@
 		<bio>Сталкер группировки "Долг". Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_sniper</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 	
 		<rank>50</rank>
 		<reputation>20</reputation>
@@ -1038,7 +1038,7 @@
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>40</reputation>
@@ -1068,7 +1068,7 @@
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>40</reputation>
@@ -1100,7 +1100,7 @@
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>40</reputation>
@@ -1132,7 +1132,7 @@
 		<bio>Боевик группировки "Долг". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Dolg_specnaz</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>40</reputation>
@@ -1163,7 +1163,7 @@
 		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
 
 		<class>bar_Dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>95</rank>
 		<reputation>60</reputation>
@@ -1192,7 +1192,7 @@
 		<bio>Хранитель группировки "Долг". Если вы не их друг - вам лучше их избегать. Детальная информация недоступна.</bio>
 		
 		<class>bar_Dolg_master</class>
-		<community>dolg</community>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
 		<rank>95</rank>
 		<reputation>60</reputation>
@@ -1224,7 +1224,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1252,7 +1252,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1280,7 +1280,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1310,7 +1310,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1338,7 +1338,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1366,7 +1366,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1396,7 +1396,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1424,7 +1424,7 @@
 		<bio>Новичок. Недавно в Зоне. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_novice</class>
-		<community>stranger</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>20</rank>
 		<reputation>0</reputation>
@@ -1453,7 +1453,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1489,7 +1489,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1524,7 +1524,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1559,7 +1559,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1594,7 +1594,7 @@
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_general</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>40</rank>
 		<reputation>0</reputation>
@@ -1630,7 +1630,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -1664,7 +1664,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -1698,7 +1698,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -1732,7 +1732,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 	
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -1766,7 +1766,7 @@
 		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
 
 		<class>bar_Stalker_veteran</class>
-		<community>stalker</community>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
 		<rank>70</rank>
 		<reputation>0</reputation>
@@ -1802,7 +1802,7 @@
 		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
 
 		<class>bar_Ecolog_guard</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
 		<rank>80</rank>
@@ -1828,7 +1828,7 @@
 		<bio>Научный работник. Детальная информация отсутствует.</bio>
 		
 		<class>bar_ecolog_general</class>
-		<community>ecolog</community>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
 		<rank>80</rank>
 		<reputation>50</reputation>
@@ -1855,7 +1855,7 @@
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_regular</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 					
 		<rank>40</rank>
 		<reputation>-30</reputation>
@@ -1883,7 +1883,7 @@
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_regular</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 					
 		<rank>40</rank>
 		<reputation>-30</reputation>
@@ -1911,7 +1911,7 @@
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_regular</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 					
 		<rank>40</rank>
 		<reputation>-30</reputation>
@@ -1940,7 +1940,7 @@
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_sniper</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>50</rank>
 		<reputation>-50</reputation>
@@ -1967,7 +1967,7 @@
 		<bio>Неизвестный наемник. Судя по всему в Зоне недавно. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_sniper_on_enter</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>50</rank>
 		<reputation>-50</reputation>
@@ -1995,7 +1995,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_specnaz</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -2024,7 +2024,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_specnaz</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -2053,7 +2053,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_specnaz</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
@@ -2083,7 +2083,7 @@
 		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
 		
 		<class>bar_Killer_specnaz</class>
-		<community>killer</community>
+		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		<rank>70</rank>
 		<reputation>-50</reputation>
