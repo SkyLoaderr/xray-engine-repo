@@ -249,7 +249,7 @@ Global
 		SccLocalPath20 = ..\\ETools
 		CanCheckoutShared = true
 		SccProjectUniqueName21 = Stalker_net\\Stalker_net\\Stalker_net.vcproj
-		SccProjectName21 = \u0022$/xr_3da/xrGame/Stalker_net/Stalker_net\u0022,\u0020SXBBAAAA
+		SccProjectName21 = \u0022$/xr_3da/xrGame/Stalker_net\u0022,\u0020RXBBAAAA
 		SccLocalPath21 = Stalker_net\\Stalker_net
 		CanCheckoutShared = true
 		SccProjectUniqueName22 = xrGame\\xrD3D9-Null\\xrD3D9-Null.vcproj
@@ -257,7 +257,7 @@ Global
 		SccLocalPath22 = xrGame\\xrD3D9-Null
 		CanCheckoutShared = true
 		SccProjectUniqueName23 = xrStatisticConvert\\xrStatisticConvert\\xrStatisticConvert.vcproj
-		SccProjectName23 = \u0022$/xr_3da/xrGame/xrStatisticConvert/xrStatisticConvert\u0022,\u0020MBDBAAAA
+		SccProjectName23 = \u0022$/xr_3da/xrGame/xrStatisticConvert\u0022,\u0020LBDBAAAA
 		SccLocalPath23 = xrStatisticConvert\\xrStatisticConvert
 		CanCheckoutShared = true
 		SccProjectUniqueName24 = xrGame\\xrGameSpy\\xrGameSpy.vcproj
