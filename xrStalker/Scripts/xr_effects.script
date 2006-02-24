@@ -506,12 +506,12 @@ end
 
 function esc_fanat_victory(actor, npc)
 	if actor:has_info("escape_lager_killers_die") then
-		news_manager.send_tip(actor, "esc_fanat_victory", 0, "stalker", 0)
+		news_manager.send_tip(actor, "esc_fanat_victory", 0, "stalker", 10000)
 	end
 end
 
 function esc_return_dv(actor, npc)
-		news_manager.send_tip(actor, "esc_return_dv", 0, "trader", 0)
+		news_manager.send_tip(actor, "esc_return_dv", 0, "trader", 10)
 end
 
 function esc_wolf_thanks(actor, npc)
