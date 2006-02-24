@@ -147,7 +147,7 @@ danger = danger_condition@1
 [remark@scientist_41]
 anim = probe_1
 target = actor
-on_signal = action_end | camper@scientist_4 
+on_signal = sound_end | camper@scientist_4 
 combat_ignore_cond = always
 danger = danger_condition@1
 
@@ -184,7 +184,7 @@ danger = danger_condition@1
 [remark@scientist_5]
 ;snd = yantar_kruglov_radiation_quest_4
 anim = probe_2
-on_signal = action_end | camper@scientist_5 
+on_signal = sound_end | camper@scientist_5 
 combat_ignore_cond = always
 danger = danger_condition@1
 
@@ -230,7 +230,7 @@ danger = danger_condition@1
 ;snd = yantar_kruglov_radiation_quest_6
 anim = probe_3
 target = actor
-on_signal = action_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
+on_signal = sound_end | walker@scientist_wounded_1 %+yan_spawn_ghost%
 on_timer = 10000 | %+yan_spawn_ghost%
 combat_ignore_cond = always
 danger = danger_condition@1
