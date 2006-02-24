@@ -113,7 +113,7 @@ function action_shoot:execute()
 	action_base.execute( self )
 
 	state_mgr.set_state( self.object, "threat_fire", nil, nil,
-	                     {look_object = self.a.heli} )
+	                     {look_object = self.a.heli}, nil, nil, {yaw_delta=10} )
 end
 
 function action_shoot:finalize()
@@ -131,12 +131,17 @@ function add_to_binder( npc, ini, scheme, section, storage )
 
 	local action = this.action_shoot( "action_shoot", storage )
 	action:add_precondition( world_property(stalker_ids.property_alive,               true  ) )
---	action:add_precondition( world_property(stalker_ids.property_enemy,               false ) )
 	action:add_precondition( world_property(xr_evaluators_id.chugai_heli_hunter_base, true  ) )
 	action:add_effect      ( world_property(xr_evaluators_id.chugai_heli_hunter_base, false ) )
 	manager:add_action( xr_actions_id.chugai_heli_hunter_base, action )
 
 	action = manager:action( xr_actions_id.alife )
+	action:add_precondition( world_property( xr_evaluators_id.chugai_heli_hunter_base, false ) )
+
+	action = manager:action( stalker_ids.action_combat_planner )
+	action:add_precondition( world_property( xr_evaluators_id.chugai_heli_hunter_base, false ) )
+
+	action = manager:action( stalker_ids.action_danger_planner )
 	action:add_precondition( world_property( xr_evaluators_id.chugai_heli_hunter_base, false ) )
 end
 
