@@ -344,7 +344,40 @@ IC float ThrowMinVelTime(const Fvector &transference,float gravity_accel)
 {
 	return _sqrt(2.f*transference.magnitude()/gravity_accel);
 }
-
+//returns num result, tgA result tangents of throw angle 
+IC u8 TransferenceAndThrowVelToTgA(const Fvector &transference,float throw_vel,float gravity_accel,Fvector2& tgA)
+{
+	float sqx=transference.x*transference.x+transference.z*transference.z;
+	float sqv=throw_vel*throw_vel;
+	float sqD4=1.f-gravity_accel/(sqv*sqv)*(2.f*transference.y*sqv+gravity_accel*sqx);
+	if(sqD4<0.f) return 0;
+	float mlt=sqv/(gravity_accel*_sqrt(sqx));
+	if(sqD4==0.f) 
+	{
+		tgA.x=tgA.y=mlt;
+		return 1;
+	}
+	float D4=_sqrt(sqD4);
+	tgA.x=mlt*(1.f-D4);tgA.y=mlt*(1.f+D4);
+	return 2;
+}
+ 
+IC u8 TransferenceAndThrowVelToThrowDir(const Fvector &transference,float throw_vel,float gravity_accel,Fvector	&throw_dir[0])
+{
+	return 0;
+	//throw_dir[0]=throw_dir[1]=transference;
+	//Fvector2 tgA;
+	//u8 ret=TransferenceAndThrowVelToTgA(transference,throw_vel,gravity_accel,tgA);
+	//switch(ret) {
+	//case 0: return 0;
+	//	break;
+	//case 1: throw_dir[0].y=
+	//	break;
+	//case 2:
+	//	break;
+	//default: NODEFAULT;
+	//}
+}
 #define  MAX_OF(x,on_x,y,on_y,z,on_z)\
 	if(x>y){\
 	if	(x>z)	{on_x;}\
