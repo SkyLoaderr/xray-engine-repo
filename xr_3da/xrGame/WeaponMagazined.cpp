@@ -932,6 +932,24 @@ void CWeaponMagazined::PlayAnimReload()
 	m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 
+bool CWeaponMagazined::TryPlayAnimIdle()
+{
+	if(!IsZoomed()){
+		CActor* pActor = smart_cast<CActor*>(H_Parent());
+		if(pActor)
+		{
+			CEntity::SEntityState st;
+			pActor->g_State(st);
+			if(st.bSprint && mhud_idle_sprint.size())
+			{
+				m_pHUD->animPlay(mhud_idle_sprint[Random.randI(mhud_idle_sprint.size())], TRUE);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 void CWeaponMagazined::PlayAnimIdle()
 {
 	MotionSVec* m = NULL;
@@ -942,14 +960,9 @@ void CWeaponMagazined::PlayAnimIdle()
 	}
 	else{
 		m = &mhud_idle;
-		CActor* pActor = smart_cast<CActor*>(H_Parent());
-		if(pActor){
-			CEntity::SEntityState st;
-			pActor->g_State(st);
-			if(st.bSprint && mhud_idle_sprint.size())	
-				m = &mhud_idle_sprint;
-		}
+		if (TryPlayAnimIdle()) return;
 	}
+
 	m_pHUD->animPlay((*m)[Random.randI(m->size())], TRUE);
 }
 void CWeaponMagazined::PlayAnimShoot()

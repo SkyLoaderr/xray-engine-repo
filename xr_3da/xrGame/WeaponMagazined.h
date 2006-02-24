@@ -74,6 +74,8 @@ protected:
 	virtual void	UpdateSounds	();
 
 	bool			TryReload		();
+	bool			TryPlayAnimIdle	();
+
 protected:
 	virtual void	ReloadMagazine	();
 			void	ApplySilencerKoeffs	();

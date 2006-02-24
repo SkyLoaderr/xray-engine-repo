@@ -50,6 +50,8 @@ void CWeaponBM16::PlayAnimReload()
 
 void CWeaponBM16::PlayAnimIdle()
 {
+	if(TryPlayAnimIdle())	return;
+
 	if(IsZoomed())
 	{
 		switch (m_magazine.size())

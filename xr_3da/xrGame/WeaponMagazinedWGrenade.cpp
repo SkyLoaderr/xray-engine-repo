@@ -569,6 +569,7 @@ void CWeaponMagazinedWGrenade::PlayAnimReload()
 
 void CWeaponMagazinedWGrenade::PlayAnimIdle()
 {
+	if(TryPlayAnimIdle())	return;
 	if(IsGrenadeLauncherAttached())
 	{
 		if(m_bGrenadeMode)
