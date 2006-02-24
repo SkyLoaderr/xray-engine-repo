@@ -86,6 +86,8 @@
 	
 	<info_portion id="aes_activate_zone"></info_portion>
 	<info_portion id="aes_activate_sound"></info_portion>
+	<info_portion id="aes_activate_zone_immediate"></info_portion>
+	
 
 
 
