@@ -3,7 +3,6 @@
 #include "PhysicsShell.h"
 #include "WeaponHUD.h"
 #include "entity.h"
-#include "PSObject.h"
 #include "ParticlesObject.h"
 #include "actor.h"
 #include "inventory.h"
