@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "PSObject.h"
 #include "hudmanager.h"
 #include "WeaponHUD.h"
 #include "WeaponMagazined.h"

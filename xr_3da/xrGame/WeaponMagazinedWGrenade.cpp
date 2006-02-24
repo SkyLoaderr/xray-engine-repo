@@ -2,7 +2,6 @@
 #include "weaponmagazinedwgrenade.h"
 #include "WeaponHUD.h"
 #include "entity.h"
-#include "PSObject.h"
 #include "ParticlesObject.h"
 #include "GrenadeLauncher.h"
 #include "xrserver_objects_alife_items.h"
