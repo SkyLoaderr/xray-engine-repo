@@ -1105,7 +1105,7 @@ function action_car:fast_update()
 	        end
 	    elseif self.state_firetarget == state_firetarget_enemy then
 	        if self.target_obj:alive() and
-	           self.car:position():distance_to_sqr(self.target_obj:position()) <= self.fire_range_sqr and
+	           self.object:position():distance_to_sqr(self.target_obj:position()) <= self.fire_range_sqr and
 	           self.car:IsObjectVisible(self.target_obj)
 	        then
 	            printf("car <fire>: enemy(%s) is visible.", self.target_obj:name())
