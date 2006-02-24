@@ -2,10 +2,10 @@
 active = sr_idle@1
 
 [sr_idle@1]
-on_info = {+yan_spawn_ghost} sr_idle@2_1 %=yan_actor_sleep_1%
+on_info = {+yan_spawn_ghost} sr_idle@2_1 %=yan_actor_sleep_1 =disable_ui%
 
 [sr_idle@2_1]
-on_timer = 4000 | sr_idle@2 %=run_postprocess(deadcity_wake) =run_cam_effector(dream:1002:true) =disable_ui =yan_dream_voices%
+on_timer = 4000 | sr_idle@2 %=run_postprocess(deadcity_wake) =run_cam_effector(dream:1002:true) =yan_dream_voices%
 
 [sr_idle@2]
 on_timer = 12000 | sr_idle@2_3 %=yan_actor_sleep%
