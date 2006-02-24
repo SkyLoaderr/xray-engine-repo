@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "PHDynamicData.h"
 
+#include "PHDynamicData.h"
 #include "ExtendedGeom.h"
 #include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
@@ -686,11 +686,12 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 	center_forbid.set(center);
 	center_forbid.y+=CHWON_CALL_FB_HIGHT;
 	center.y+=m_radius+CHWON_CALL_UP_SHIFT;
-#ifdef DRAW_BOXES
-	m_bcenter.set(center);
-	m_bcenter_forbid.set(center_forbid);
-	m_AABB.set(AABB);
-	m_AABB_forbid.set(AABB_forbid);
+#ifdef DEBUG
+if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+{
+	DBG_DrawAABB(center,AABB,D3DCOLOR_XRGB(0,255,0));
+	DBG_DrawAABB(center_forbid,AABB_forbid,D3DCOLOR_XRGB(255,0,0));
+}
 #endif
 	// perform single query / two usages
 	Fbox			query,tmp		;

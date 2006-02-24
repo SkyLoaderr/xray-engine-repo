@@ -11,18 +11,13 @@ namespace ALife {
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
-//#define DRAW_BOXES
+
 
 class CPHSimpleCharacter : 
 	public CPHCharacter,
 	ICollisionDamageInfo
 {
-#ifdef DRAW_BOXES
-	Fvector m_bcenter;
-	Fvector m_bcenter_forbid;
-	Fvector m_AABB;
-	Fvector m_AABB_forbid;
-#endif
+
 	
 protected:
 	CElevatorState			m_elevator_state;

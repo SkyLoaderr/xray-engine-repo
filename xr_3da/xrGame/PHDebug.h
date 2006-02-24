@@ -62,7 +62,8 @@ enum
 	phDbgDispObjCollisionDammage=		1<<25,
 	phDbgIKAnimGoalOnly			=		1<<26,
 	phDbgDrawIKGoal				=		1<<27,
-	phDbgIKLimits				=		1<<28
+	phDbgIKLimits				=		1<<28,
+	phDbgCharacterControl		=		1<<29
 };
 struct SPHObjDBGDraw
 {

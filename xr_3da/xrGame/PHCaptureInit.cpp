@@ -19,11 +19,13 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CPhysicsShellHolder	*a_tage
 	m_joint					=NULL;	
 	m_ajoint				=NULL;
 	m_body					=NULL;
+	m_taget_object			=NULL;
+	m_character				=NULL;
 	b_failed				=false;
 	b_disabled				=false;	
 	b_character_feedback	=false;
 	e_state					=cstPulling;
-
+	
 	if(!a_taget_object							||
 	   !a_taget_object->m_pPhysicsShell			||
 	   !a_taget_object->m_pPhysicsShell->isActive()||
@@ -101,6 +103,8 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CPhysicsShellHolder	*a_taget_
 	b_disabled				=false;
 	e_state					=cstPulling;
 	b_character_feedback	=false;
+	m_taget_object			=NULL;
+	m_character				=NULL;
 	if(!a_taget_object								||
 	   !a_taget_object->m_pPhysicsShell				||
 	   !a_taget_object->m_pPhysicsShell->isActive()	||
@@ -302,8 +306,9 @@ void CPHCapture::Deactivate()
 	//	m_taget_element->set_ObjectContactCallback(0);
 
 	//}
-	m_character->SetObjectContactCallback(0);
+	if(m_character)m_character->SetObjectContactCallback(0);
 	CPHUpdateObject::Deactivate();
-	m_taget_object=NULL;
-	m_taget_element=NULL;
+	m_character		=NULL;
+	m_taget_object	=NULL;
+	m_taget_element	=NULL;
 }
