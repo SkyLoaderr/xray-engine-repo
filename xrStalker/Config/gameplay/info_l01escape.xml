@@ -22,6 +22,7 @@
 	<info_portion id="esc_kill_gunslinger">
 		<task>storyline_eliminate_gunslinger</task>
 		<article>storyline_gunslinger</article>
+		<article>about_enciclopedia</article>
 	</info_portion>
 
 	<!-- Tutorial wounded -->
