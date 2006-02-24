@@ -11,11 +11,15 @@
 #include "xrserver_space.h"
 
 namespace MonsterSpace {
+	enum EMentalState {
+		eMentalStateDanger = u32(0),
+		eMentalStateFree,
+		eMentalStatePanic,
+	};
+
 	enum EBodyState {
 		eBodyStateCrouch = 0,
 		eBodyStateStand,
-		eBodyStateStandDamaged,
-		eBodyStateLie,
 	};
 
 	enum EMovementType {
@@ -29,22 +33,6 @@ namespace MonsterSpace {
 		eMovementDirectionBackward,
 		eMovementDirectionLeft,
 		eMovementDirectionRight,
-	};
-
-	enum EDirectionType {
-		eDirectionTypeForward = 0,
-		eDirectionTypeForwardDodge,
-		eDirectionTypeForwardCover,
-		eDirectionTypeBack,
-		eDirectionTypeBackDodge,
-		eDirectionTypeBackCover,
-	};
-
-	enum EPathState {
-		ePathStateSearchNode = 0,
-		ePathStateBuildNodePath,
-		ePathStateBuildTravelLine,
-		ePathStateDodgeTravelLine,
 	};
 
 	enum EObjectAction {
@@ -78,13 +66,10 @@ namespace MonsterSpace {
 		eObjectActionDummy			= u32(-1),
 	};
 
-	enum EMentalState {
-		eMentalStateDanger = u32(0),
-		eMentalStateFree,
-		eMentalStatePanic,
-		eMentalStateAsleep,
-		eMentalStateZombied,
-		eMentalStateDummy = u32(-1),
+	struct SBoneRotation {
+		SRotation		current;
+		SRotation		target;
+		float			speed;
 	};
 
 	enum EScriptMonsterMoveAction {
@@ -96,7 +81,6 @@ namespace MonsterSpace {
 		eMA_Steal
 	};
 	
-
 	enum EScriptMonsterSpeedParam {
 		eSP_Default				= u32(0),
 		eSP_ForceSpeed,	
@@ -136,11 +120,5 @@ namespace MonsterSpace {
 		eHeadAnimKind,
 
 		eHeadAnimNone			= u32(-1),
-	};
-
-	struct SBoneRotation {
-		SRotation		current;
-		SRotation		target;
-		float			speed;
 	};
 };

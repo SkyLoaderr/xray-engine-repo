@@ -21,10 +21,7 @@ void CScriptAnimationAction::script_register(lua_State *L)
 			[
 				value("free",					int(MonsterSpace::eMentalStateFree)),
 				value("danger",					int(MonsterSpace::eMentalStateDanger)),
-				value("panic",					int(MonsterSpace::eMentalStatePanic)),
-				value("asleep",					int(MonsterSpace::eMentalStateAsleep)),
-				value("zombied",				int(MonsterSpace::eMentalStateZombied)),
-				value("dummy",					int(MonsterSpace::eMentalStateDummy))
+				value("panic",					int(MonsterSpace::eMentalStatePanic))
 			]
 			.enum_("monster")
 			[

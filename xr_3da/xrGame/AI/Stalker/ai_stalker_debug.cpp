@@ -534,10 +534,6 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			body_state					= "crouch";
 			break;
 		}
-		case MonsterSpace::eBodyStateStandDamaged : {
-			body_state					= "stand damaged";
-			break;
-		}
 		default : NODEFAULT;
 	}
 	HUD().Font().pFontSmall->OutNext	("%s%sbody state      : %s",indent,indent,body_state);

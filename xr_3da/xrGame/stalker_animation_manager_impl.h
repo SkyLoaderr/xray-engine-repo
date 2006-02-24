@@ -10,14 +10,7 @@
 
 IC	CStalkerAnimationManager::EBodyState CStalkerAnimationManager::body_state	() const
 {
-	const EBodyState		&body_state = object().movement().body_state();
-	if (!object().conditions().IsLimping())
-		return				(body_state);
-
-	if (eBodyStateStand != body_state)
-		return				(body_state);
-
-	return					(eBodyStateStandDamaged);
+	return					(object().movement().body_state());
 }
 
 IC	bool CStalkerAnimationManager::standing										() const

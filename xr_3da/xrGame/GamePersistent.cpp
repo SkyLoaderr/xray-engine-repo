@@ -18,6 +18,7 @@
 #include "weaponhud.h"
 //  [7/11/2005]
 #include "stalker_animation_data_storage.h"
+#include "stalker_velocity_holder.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"
@@ -163,9 +164,12 @@ void CGamePersistent::OnGameStart()
 
 void CGamePersistent::OnGameEnd	()
 {
-	__super::OnGameEnd			();
-	xr_delete					(g_stalker_animation_data_storage);
-	CWeaponHUD::CleanSharedContainer();
+	__super::OnGameEnd					();
+
+	xr_delete							(g_stalker_animation_data_storage);
+	xr_delete							(g_stalker_velocity_holder);
+
+	CWeaponHUD::CleanSharedContainer	();
 }
 
 void CGamePersistent::WeathersUpdate()

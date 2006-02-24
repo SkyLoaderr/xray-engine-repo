@@ -107,16 +107,6 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 	}
 
 	switch (movement().body_state()) {
-		case eBodyStateStandDamaged : {
-			D.setHP		(-movement().m_head.current.yaw,-movement().m_head.current.pitch);
-			if (weapon_shot_effector().IsActive())
-				D		= weapon_shot_effector_direction(D);
-
-			Center		(P);
-			P.mad		(D,.5f);
-			P.y			+= .50f;
-			return;
-		}
 		case eBodyStateStand : {
 			if (movement().movement_type() == eMovementTypeStand) {
 				P		= eye_matrix.c;

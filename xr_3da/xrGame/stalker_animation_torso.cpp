@@ -92,13 +92,6 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 		case ObjectHandlerSpace::eWorldOperatorAimingReady2:
 		case ObjectHandlerSpace::eWorldOperatorQueueWait1:
 		case ObjectHandlerSpace::eWorldOperatorQueueWait2:	{
-			if (eBodyStateStandDamaged == body_state) {
-				if	((movement.body_state() == eBodyStateStand) && !standing())
-					return			(animation[9].A[1]);
-
-				return				(animation[9].A[0]);
-			}
-
 			if (standing())
 				return				(animation[6].A[0]);
 

@@ -15,93 +15,97 @@
 using namespace MonsterSpace;
 
 class CAI_Stalker;
+class CStalkerVelocityCollection;
 
-#define OLD_VELOCITIES
+//#define OLD_VELOCITIES
 
 class CStalkerMovementManager : public CMovementManager {
 protected:
-	typedef CMovementManager inherited;
+	typedef CMovementManager					inherited;
 
 public:
-	typedef DetailPathManager::EDetailPathType EDetailPathType;
+	typedef DetailPathManager::EDetailPathType	EDetailPathType;
 
-#ifdef OLD_VELOCITIES
+#ifndef OLD_VELOCITIES
 protected:
-	float							m_crouch_factor;
-	float							m_walk_factor;
-	float							m_walk_back_factor;
-	float							m_run_factor;
-	float							m_run_back_factor;
-	float							m_walk_free_factor;
-	float							m_run_free_factor;
-	float							m_panic_factor;
-	float							m_damaged_walk_factor;
-	float							m_damaged_run_factor;
-	float							m_damaged_walk_free_factor;
-	float							m_damaged_run_free_factor;
-	float							m_damaged_panic_factor;
+	const CStalkerVelocityCollection	*m_velocities;
+#else
+protected:
+	float								m_crouch_factor;
+	float								m_walk_factor;
+	float								m_walk_back_factor;
+	float								m_run_factor;
+	float								m_run_back_factor;
+	float								m_walk_free_factor;
+	float								m_run_free_factor;
+	float								m_panic_factor;
+	float								m_damaged_walk_factor;
+	float								m_damaged_run_factor;
+	float								m_damaged_walk_free_factor;
+	float								m_damaged_run_free_factor;
+	float								m_damaged_panic_factor;
 #endif
 
 protected:
-	CStalkerMovementParams			m_current;
-	CStalkerMovementParams			m_target;
-	CAI_Stalker						*m_object;
+	CStalkerMovementParams				m_current;
+	CStalkerMovementParams				m_target;
+	CAI_Stalker							*m_object;
 
 public:
-	MonsterSpace::SBoneRotation		m_head;
-	u32								m_last_turn_index;
+	MonsterSpace::SBoneRotation			m_head;
+	u32									m_last_turn_index;
 
 protected:
-	IC		void	setup_head_speed		();
-	IC		void	add_velocity			(int mask, float linear, float compute_angular, float angular);
-	IC		void	add_velocity			(int mask, float linear, float compute_angular);
-	IC		void	setup_body_orientation	();
-			void	init_velocity_masks		();
-			void	setup_movement_params	();
-			bool	script_control			();
-			void	setup_velocities		();
-			void	parse_velocity_mask		();
+	IC		void	setup_head_speed				();
+	IC		void	add_velocity					(int mask, float linear, float compute_angular, float angular);
+	IC		void	add_velocity					(int mask, float linear, float compute_angular);
+	IC		void	setup_body_orientation			();
+			void	init_velocity_masks				();
+			void	setup_movement_params			();
+			bool	script_control					();
+			void	setup_velocities				();
+			void	parse_velocity_mask				();
 
 public:
-					CStalkerMovementManager	(CAI_Stalker *object);
-	virtual			~CStalkerMovementManager();
-	virtual	void	Load					(LPCSTR section);
-	virtual	void	reinit					();
-	virtual	void	reload					(LPCSTR section);
-	virtual	void	update					(u32 time_delta);
-	virtual void	on_travel_point_change	(const u32 &previous_travel_point_index);
-	virtual	void	on_restrictions_change	();
-			void	initialize				();
-	IC		float	path_direction_angle	();
-	IC		bool	turn_in_place			() const;
+					CStalkerMovementManager			(CAI_Stalker *object);
+	virtual			~CStalkerMovementManager		();
+	virtual	void	Load							(LPCSTR section);
+	virtual	void	reinit							();
+	virtual	void	reload							(LPCSTR section);
+	virtual	void	update							(u32 time_delta);
+	virtual void	on_travel_point_change			(const u32 &previous_travel_point_index);
+	virtual	void	on_restrictions_change			();
+			void	initialize						();
+	IC		float	path_direction_angle			();
+	IC		bool	turn_in_place					() const;
 
-	IC		void	set_head_orientation	(const MonsterSpace::SBoneRotation &orientation);
-			void	set_desired_position	(const Fvector *desired_position);
-	IC		void	set_desired_direction	(const Fvector *desired_direction);
-	IC		void	set_body_state			(EBodyState body_state);
-	IC		void	set_movement_type		(EMovementType movement_type);
-	IC		void	set_mental_state		(EMentalState mental_state);
-	IC		void	set_path_type			(EPathType path_type);
-	IC		void	set_detail_path_type	(EDetailPathType detail_path_type);
+	IC		void	set_head_orientation			(const MonsterSpace::SBoneRotation &orientation);
+			void	set_desired_position			(const Fvector *desired_position);
+	IC		void	set_desired_direction			(const Fvector *desired_direction);
+	IC		void	set_body_state					(EBodyState body_state);
+	IC		void	set_movement_type				(EMovementType movement_type);
+	IC		void	set_mental_state				(EMentalState mental_state);
+	IC		void	set_path_type					(EPathType path_type);
+	IC		void	set_detail_path_type			(EDetailPathType detail_path_type);
 			void	set_nearest_accessible_position	();
 			void	set_nearest_accessible_position	(Fvector desired_position, u32 level_vertex_id);
-			void	adjust_speed_to_animation	(const MonsterSpace::EMovementDirection &movement_direction);
+			void	adjust_speed_to_animation		(const MonsterSpace::EMovementDirection &movement_direction);
 
 #ifdef OLD_VELOCITIES
 public:
-	IC		float	crouch_factor			() const;
-	IC		float	walk_factor				() const;
-	IC		float	walk_back_factor		() const;
-	IC		float	run_factor				() const;
-	IC		float	run_back_factor			() const;
-	IC		float	walk_free_factor		() const;
-	IC		float	run_free_factor			() const;
-	IC		float	panic_factor			() const;
-	IC		float	damaged_walk_factor		() const;
-	IC		float	damaged_run_factor		() const;
-	IC		float	damaged_walk_free_factor() const;
-	IC		float	damaged_run_free_factor	() const;
-	IC		float	damaged_panic_factor	() const;
+	IC		float	crouch_factor					() const;
+	IC		float	walk_factor						() const;
+	IC		float	walk_back_factor				() const;
+	IC		float	run_factor						() const;
+	IC		float	run_back_factor					() const;
+	IC		float	walk_free_factor				() const;
+	IC		float	run_free_factor					() const;
+	IC		float	panic_factor					() const;
+	IC		float	damaged_walk_factor				() const;
+	IC		float	damaged_run_factor				() const;
+	IC		float	damaged_walk_free_factor		() const;
+	IC		float	damaged_run_free_factor			() const;
+	IC		float	damaged_panic_factor			() const;
 #endif
 
 public:

@@ -185,7 +185,9 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 
 MotionID CStalkerAnimationManager::legs_no_move_animation	()
 {
-	object().movement().adjust_speed_to_animation	(eMovementDirectionForward);
+//	object().movement().adjust_speed_to_animation	(eMovementDirectionForward);
+	object().m_fCurSpeed						= 0.f;
+	object().movement().set_desirable_speed		(object().m_fCurSpeed);
 
 	const xr_vector<MotionID>	&animation = m_data_storage->m_part_animations.A[body_state()].m_in_place->A;
 
