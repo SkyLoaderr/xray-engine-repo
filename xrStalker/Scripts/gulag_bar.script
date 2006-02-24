@@ -1277,7 +1277,7 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "bar_freedom_chasers_attack" then
 		return npc_community == "killer"
 	end
-	if gulag_type == "bar_svoboda_ambush" then
+	if gulag_type == "bar_killers_ambush" then
 		return npc_community == "killer"
 	end
 	if gulag_type == "bar_ecolog_crush" then
