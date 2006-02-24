@@ -20,27 +20,35 @@ using namespace StalkerSpace;
 
 void CStalkerAnimationManager::global_play_callback(CBlend *blend)
 {
-	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
-	VERIFY						(object);
-	if (object->animation().setup_storage()) {
-		object->animation().setup_storage()->set_property(object->animation().property_id(),object->animation().property_value());
+	CAI_Stalker						*object = (CAI_Stalker*)blend->CallbackParam;
+	VERIFY							(object);
+	CStalkerAnimationManager		&animation = object->animation();
+	CPropertyStorage				*setup_storage = animation.setup_storage();
+	if (setup_storage) {
+		setup_storage->set_property	(animation.property_id(),animation.property_value());
+
 #ifdef CLEAR_STORAGE_ON_CALLBACK
-		object->animation().setup_storage	(0);
+		animation.setup_storage		(0);
 #endif
 		return;
 	}
-	object->animation().global().make_inactual();
+	animation.global().make_inactual();
 }
 
 MotionID CStalkerAnimationManager::assign_global_animation	()
 {
+	VERIFY						(eMentalStatePanic == object().movement().mental_state());
+	VERIFY						(!fis_zero(object().movement().speed(object().m_PhysicMovementControl)));
 	if ((eMentalStatePanic == object().movement().mental_state()) && !fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 		return					(m_data_storage->m_part_animations.A[body_state()].m_global.A[1].A[0]);
 
-	CFoodItem					*food_item = smart_cast<CFoodItem*>(object().inventory().ActiveItem());
-	if (!food_item)
-		return					(MotionID());
+	return						(assign_food_animation());
+}
 
+MotionID CStalkerAnimationManager::assign_food_animation	()
+{
+	CFoodItem					*food_item = smart_cast<CFoodItem*>(object().inventory().ActiveItem());
+	VERIFY						(food_item);
 	u32							slot = food_item->animation_slot();
 	switch (food_item->STATE) {
 		case FOOD_HIDDEN:
@@ -57,5 +65,7 @@ MotionID CStalkerAnimationManager::assign_global_animation	()
 			return				(m_data_storage->m_global_animations.A[slot].A[1].A[0]);
 		default					: NODEFAULT;
 	}
+#ifdef DEBUG
 	return						(MotionID());
+#endif
 }

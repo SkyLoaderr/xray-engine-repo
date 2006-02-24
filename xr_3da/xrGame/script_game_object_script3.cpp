@@ -109,8 +109,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("accessible_nearest",			&CScriptGameObject::accessible_nearest, out_value(_3))
 
 		//////////////////////////////////////////////////////////////////////////
-		.def("limping",						&CScriptGameObject::limping)
-		//////////////////////////////////////////////////////////////////////////
 		.def("enable_attachable_item",		&CScriptGameObject::enable_attachable_item)
 		.def("attachable_item_enabled",		&CScriptGameObject::attachable_item_enabled)
 		.def("weapon_strapped",				&CScriptGameObject::weapon_strapped)

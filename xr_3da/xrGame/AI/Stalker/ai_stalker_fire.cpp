@@ -149,7 +149,6 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	R1				= r_hand;
 	R2				= r_finger2;
 	if	(
-			(conditions().IsLimping() && (movement().mental_state() == eMentalStateFree)) || 
 			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage) ||
 			(!animation().script_animations().empty() && animation().script_animations().front().hand_usage())
 		)

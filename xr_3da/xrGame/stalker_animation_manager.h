@@ -63,18 +63,20 @@ private:
 
 private:
 	bool							m_call_script_callback;
+
 #ifdef USE_HEAD_BONE_PART_FAKE
+private:
 	u32								m_script_bone_part_mask;
 #endif
 
-protected:
+private:
 	IC		bool					strapped				() const;
 	IC		bool					standing				() const;
 	IC		void					fill_object_info		();
 	IC		u32						object_slot				() const;
 	IC		EBodyState				body_state				() const;
 
-protected:
+private:
 			MotionID				no_object_animation		(const EBodyState &body_state) const;
 			MotionID				unknown_object_animation(u32 slot, const EBodyState &body_state) const;
 			MotionID				weapon_animation		(u32 slot, const EBodyState &body_state) const;
@@ -86,6 +88,9 @@ private:
 			void					legs_process_direction	(float yaw);
 			MotionID				legs_move_animation		();
 			MotionID				legs_no_move_animation	();
+
+private:
+			MotionID				assign_food_animation	();
 
 protected:
 			void					assign_bone_callbacks	();

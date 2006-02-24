@@ -54,9 +54,6 @@ MotionID CStalkerAnimationManager::no_object_animation(const EBodyState &body_st
 		if (standing())
 			return					(animation[9].A[1]);
 
-		if (stalker.conditions().IsLimping())
-            return					(animation[9].A[0]);
-
 		return						(animation[7 + movement.movement_type()].A[1]);
 	}
 		
@@ -102,7 +99,6 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 			return					(animation[6].A[3]);
 		}
 
-		// we do use only STAND body state here, since we do not have enough animations and will
 		case ObjectHandlerSpace::eWorldOperatorStrapping		:
 			return					(animation_stand[11].A[0]);
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping		:
@@ -120,36 +116,22 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 			*object().cName()
 		);
 
-		if (standing() || stalker.conditions().IsLimping())
+		if (standing())
 			return					(animation[9].A[1]);
 
 		return						(animation[7 + movement.movement_type()].A[1]);
 	}
 
-	if (standing())  {
-		if (stalker.conditions().IsLimping())
-			return					(animation[9].A[0]);
-
+	if (standing())
 		return						(animation[6].A[0]);
-	}
 
-	if (eMovementTypeWalk == movement.movement_type()) {
-//		if (eBodyStateStand == movement.body_state())
-//			return					(animation[7].A[0]);
-//
-//		return						(animation[6].A[0]);
+	if (eMovementTypeWalk == movement.movement_type())
 		return						(animation[6].A[2]);
-	}
 
 	VERIFY							(eMovementTypeRun == movement.movement_type());
 
-	if (eBodyStateStand == movement.body_state()) {
-//		if (stalker.conditions().IsLimping())
-//			return					(animation[7].A[0]);
-//
-//		return						(animation[8].A[0]);
+	if (eBodyStateStand == movement.body_state())
 		return						(animation[6].A[3]);
-	}
 
 	return							(animation[6].A[3]);
 }
@@ -182,12 +164,8 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 		case CWeapon::eFire2 : {
 			CAI_Stalker				&stalker = object();
 			CStalkerMovementManager	&movement = stalker.movement();
-			if (standing()) {
-//				if ((eBodyStateStand == movement.body_state()))
-//					return			(animation[1].A[1]);
-			
+			if (standing())
 				return				(animation[1].A[0]);
-			}
 
 			if (eMovementTypeWalk == movement.movement_type())
 				return				(animation[1].A[2]);

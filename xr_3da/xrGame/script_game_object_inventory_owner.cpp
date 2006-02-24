@@ -731,16 +731,6 @@ u32	 CScriptGameObject::accessible_nearest	(const Fvector &position, Fvector &re
 	return									(monster->movement().restrictions().accessible_nearest(position,result));
 }
 
-bool CScriptGameObject::limping				() const
-{
-	CEntityAlive							*entity_alive = smart_cast<CEntityAlive*>(&object());
-	if (!entity_alive) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member limping!");
-		return								(false);
-	}
-	return									(entity_alive->conditions().IsLimping());
-}
-
 void CScriptGameObject::enable_attachable_item	(bool value)
 {
 	CAttachableItem							*attachable_item = smart_cast<CAttachableItem*>(&object());

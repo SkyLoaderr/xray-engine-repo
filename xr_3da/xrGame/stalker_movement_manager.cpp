@@ -158,16 +158,10 @@ void CStalkerMovementManager::init_velocity_masks	()
 	add_velocity	(eVelocityStandingFreeStand						,0.f							,PI_DIV_4	,PI_MUL_2	);
 	add_velocity	(eVelocityStandingPanicStand					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingDangerStand					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingFreeStandDamaged				,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingPanicStandDamaged				,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerStandDamaged			,0.f							,PI_MUL_2	);
 
 	add_velocity	(eVelocityStandingFreeCrouch					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingPanicCrouch					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingDangerCrouch					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingFreeCrouchDamaged				,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingPanicCrouchDamaged			,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerCrouchDamaged			,0.f							,PI_MUL_2	);
 
 	add_velocity	(eVelocityWalkFreePositive						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,PI_DIV_8/1	,cf*PI_DIV_8/1	);
 	add_velocity	(eVelocityRunFreePositive						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
@@ -176,14 +170,6 @@ void CStalkerMovementManager::init_velocity_masks	()
 	add_velocity	(eVelocityRunDangerStandPositive				,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
 	add_velocity	(eVelocityRunDangerCrouchPositive				,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
 	add_velocity	(eVelocityRunPanicStandPositive					,m_velocities->velocity(eMentalStatePanic,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-																	 																						
-	add_velocity	(eVelocityWalkFreeDamagedPositive				,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-	add_velocity	(eVelocityRunFreeDamagedPositive				,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandDamagedPositive		,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchDamagedPositive		,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeWalk,eMovementDirectionForward),100*PI		,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandDamagedPositive			,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityRunDangerCrouchDamagedPositive		,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityRunPanicDamagedStandPositive			,m_velocities->velocity(eMentalStatePanic,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 																																							
 //	add_velocity	(eVelocityWalkFreeNegative						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,PI_DIV_8/1	,cf*PI_DIV_8/1	);
 //	add_velocity	(eVelocityRunFreeNegative						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
@@ -192,28 +178,14 @@ void CStalkerMovementManager::init_velocity_masks	()
 	add_velocity	(eVelocityRunDangerStandNegative				,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
 	add_velocity	(eVelocityRunDangerCrouchNegative				,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
 //	add_velocity	(eVelocityRunPanicStandNegative					,m_velocities->velocity(eMentalStatePanic,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-																																							
-//	add_velocity	(eVelocityWalkFreeDamagedNegative				,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-//	add_velocity	(eVelocityRunFreeDamagedNegative				,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandDamagedNegative		,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchDamagedNegative		,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeWalk,eMovementDirectionForward),100*PI		,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandDamagedNegative			,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityRunDangerCrouchDamagedNegative		,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-//	add_velocity	(eVelocityRunPanicDamagedStandNegative			,m_velocities->velocity(eMentalStatePanic,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 #else
 	add_velocity	(eVelocityStandingFreeStand						,0.f							,PI_DIV_4	,PI_MUL_2		);
 	add_velocity	(eVelocityStandingPanicStand					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingDangerStand					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingFreeStandDamaged				,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingPanicStandDamaged				,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerStandDamaged			,0.f							,PI_MUL_2	);
 
 	add_velocity	(eVelocityStandingFreeCrouch					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingPanicCrouch					,0.f							,PI_MUL_2	);
 	add_velocity	(eVelocityStandingDangerCrouch					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingFreeCrouchDamaged				,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingPanicCrouchDamaged			,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerCrouchDamaged			,0.f							,PI_MUL_2	);
 
 	add_velocity	(eVelocityWalkFreePositive						,walk_free_factor()				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
 	add_velocity	(eVelocityRunFreePositive						,run_free_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
@@ -223,14 +195,6 @@ void CStalkerMovementManager::init_velocity_masks	()
 	add_velocity	(eVelocityRunDangerCrouchPositive				,run_factor()*crouch_factor()	,100*PI		,cf*PI			);
 	add_velocity	(eVelocityRunPanicStandPositive					,panic_factor()					,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 																																							
-	add_velocity	(eVelocityWalkFreeDamagedPositive				,damaged_walk_free_factor()		,PI_DIV_8	,cf*PI_DIV_8	);
-	add_velocity	(eVelocityRunFreeDamagedPositive				,damaged_run_free_factor()		,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandDamagedPositive		,damaged_walk_factor()			,PI			,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchDamagedPositive		,walk_factor()*crouch_factor()	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandDamagedPositive			,damaged_run_factor()			,PI_DIV_2	,2*cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchDamagedPositive		,run_factor()*crouch_factor()	,PI			,cf*PI			);
-	add_velocity	(eVelocityRunPanicDamagedStandPositive			,damaged_panic_factor()			,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-																																							
 //	add_velocity	(eVelocityWalkFreeNegative						,-walk_free_factor()				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
 //	add_velocity	(eVelocityRunFreeNegative						,-run_free_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 	add_velocity	(eVelocityWalkDangerStandNegative				,-walk_factor()					,PI			,cf*PI			);
@@ -238,14 +202,6 @@ void CStalkerMovementManager::init_velocity_masks	()
 	add_velocity	(eVelocityRunDangerStandNegative				,-run_factor()					,PI_DIV_2	,cf*PI_DIV_2	);
 	add_velocity	(eVelocityRunDangerCrouchNegative				,-run_factor()*crouch_factor()	,PI			,cf*PI			);
 //	add_velocity	(eVelocityRunPanicStandNegative					,-panic_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-																																							
-//	add_velocity	(eVelocityWalkFreeDamagedNegative				,-damaged_walk_free_factor()		,PI_DIV_8	,cf*PI_DIV_8	);
-//	add_velocity	(eVelocityRunFreeDamagedNegative				,-damaged_run_free_factor()		,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandDamagedNegative		,-damaged_walk_factor()			,PI			,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchDamagedNegative		,-walk_factor()*crouch_factor()	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandDamagedNegative			,-damaged_run_factor()			,PI_DIV_2	,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchDamagedNegative		,-run_factor()*crouch_factor()	,PI			,cf*PI			);
-//	add_velocity	(eVelocityRunPanicDamagedStandNegative			,-damaged_panic_factor()			,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 #endif
 }
 
@@ -328,10 +284,6 @@ void CStalkerMovementManager::setup_velocities		()
 	// if we want to stand, do not setup velocity to prevent path rebuilding
 
 	int						velocity_mask = eVelocityPositiveVelocity;
-
-	// setup health state
-	if (object().conditions().IsLimping())
-		velocity_mask		|= eVelocityDamaged;
 
 	// setup body state
 	switch (body_state()) {
