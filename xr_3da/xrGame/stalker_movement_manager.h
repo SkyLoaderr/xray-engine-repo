@@ -17,8 +17,6 @@ using namespace MonsterSpace;
 class CAI_Stalker;
 class CStalkerVelocityCollection;
 
-//#define OLD_VELOCITIES
-
 class CStalkerMovementManager : public CMovementManager {
 protected:
 	typedef CMovementManager					inherited;
@@ -26,25 +24,8 @@ protected:
 public:
 	typedef DetailPathManager::EDetailPathType	EDetailPathType;
 
-#ifndef OLD_VELOCITIES
-protected:
+private:
 	const CStalkerVelocityCollection	*m_velocities;
-#else
-protected:
-	float								m_crouch_factor;
-	float								m_walk_factor;
-	float								m_walk_back_factor;
-	float								m_run_factor;
-	float								m_run_back_factor;
-	float								m_walk_free_factor;
-	float								m_run_free_factor;
-	float								m_panic_factor;
-	float								m_damaged_walk_factor;
-	float								m_damaged_run_factor;
-	float								m_damaged_walk_free_factor;
-	float								m_damaged_run_free_factor;
-	float								m_damaged_panic_factor;
-#endif
 
 protected:
 	CStalkerMovementParams				m_current;
@@ -90,23 +71,6 @@ public:
 			void	set_nearest_accessible_position	();
 			void	set_nearest_accessible_position	(Fvector desired_position, u32 level_vertex_id);
 			void	adjust_speed_to_animation		(const MonsterSpace::EMovementDirection &movement_direction);
-
-#ifdef OLD_VELOCITIES
-public:
-	IC		float	crouch_factor					() const;
-	IC		float	walk_factor						() const;
-	IC		float	walk_back_factor				() const;
-	IC		float	run_factor						() const;
-	IC		float	run_back_factor					() const;
-	IC		float	walk_free_factor				() const;
-	IC		float	run_free_factor					() const;
-	IC		float	panic_factor					() const;
-	IC		float	damaged_walk_factor				() const;
-	IC		float	damaged_run_factor				() const;
-	IC		float	damaged_walk_free_factor		() const;
-	IC		float	damaged_run_free_factor			() const;
-	IC		float	damaged_panic_factor			() const;
-#endif
 
 public:
 	IC		const MonsterSpace::SBoneRotation		&head_orientation		() const;

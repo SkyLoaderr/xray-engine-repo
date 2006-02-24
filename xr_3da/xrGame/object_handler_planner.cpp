@@ -236,23 +236,25 @@ void CObjectHandlerPlanner::setup	(CAI_Stalker *object)
 void CObjectHandlerPlanner::add_item			(CInventoryItem *inventory_item)
 {
 	CWeapon						*weapon		= smart_cast<CWeapon*>		(inventory_item);
-	CMissile					*missile	= smart_cast<CMissile*>		(inventory_item);
-	CFoodItem					*eatable	= smart_cast<CFoodItem*>	(inventory_item);
-
 	if (weapon) {
 		add_evaluators			(weapon);
 		add_operators			(weapon);
+		return;
 	}
-	else
-		if (missile) {
-			add_evaluators		(missile);
-			add_operators		(missile);
-		}
-		else
-			if (eatable) {
-				add_evaluators	(eatable);
-				add_operators	(eatable);
-			}
+
+	CMissile					*missile	= smart_cast<CMissile*>		(inventory_item);
+	if (missile) {
+		add_evaluators			(missile);
+		add_operators			(missile);
+		return;
+	}
+
+	CFoodItem					*eatable	= smart_cast<CFoodItem*>	(inventory_item);
+	if (eatable) {
+		add_evaluators			(eatable);
+		add_operators			(eatable);
+		return;
+	}
 }
 
 void CObjectHandlerPlanner::remove_item		(CInventoryItem *inventory_item)

@@ -89,9 +89,6 @@ private:
 			MotionID				legs_move_animation		();
 			MotionID				legs_no_move_animation	();
 
-private:
-			MotionID				assign_food_animation	();
-
 protected:
 			void					assign_bone_callbacks	();
 			MotionID				assign_global_animation	();

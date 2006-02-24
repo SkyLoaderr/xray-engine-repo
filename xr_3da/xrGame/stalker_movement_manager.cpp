@@ -128,25 +128,7 @@ void CStalkerMovementManager::Load					(LPCSTR section)
 void CStalkerMovementManager::reload				(LPCSTR section)
 {
 	inherited::reload			(section);
-
-#ifndef OLD_VELOCITIES
 	m_velocities				= &stalker_velocity_holder().collection(pSettings->r_string(section,"movement_speeds"));
-#else
-	m_crouch_factor				= pSettings->r_float(section,"CrouchFactor");
-	m_walk_factor				= pSettings->r_float(section,"WalkFactor");
-	m_walk_back_factor			= pSettings->r_float(section,"WalkBackFactor");
-	m_run_factor				= pSettings->r_float(section,"RunFactor");
-	m_run_back_factor			= pSettings->r_float(section,"RunBackFactor");
-	m_walk_free_factor			= pSettings->r_float(section,"WalkFreeFactor");
-	m_run_free_factor			= pSettings->r_float(section,"RunFreeFactor");
-	m_panic_factor				= pSettings->r_float(section,"PanicFactor");
-	m_damaged_walk_factor		= pSettings->r_float(section,"DamagedWalkFactor");
-	m_damaged_run_factor		= pSettings->r_float(section,"DamagedRunFactor");
-	m_damaged_walk_free_factor	= pSettings->r_float(section,"DamagedWalkFreeFactor");
-	m_damaged_run_free_factor	= pSettings->r_float(section,"DamagedRunFreeFactor");
-	m_damaged_panic_factor		= pSettings->r_float(section,"DamagedPanicFactor");
-#endif
-
 	init_velocity_masks			();
 }
 
@@ -154,55 +136,26 @@ void CStalkerMovementManager::init_velocity_masks	()
 {
 	float			cf = 2.f;
 
-#ifndef OLD_VELOCITIES
-	add_velocity	(eVelocityStandingFreeStand						,0.f							,PI_DIV_4	,PI_MUL_2	);
-	add_velocity	(eVelocityStandingPanicStand					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerStand					,0.f							,PI_MUL_2	);
+	add_velocity	(eVelocityStandingFreeStand			,0.f,	PI_DIV_4	,PI_MUL_2	);
+	add_velocity	(eVelocityStandingPanicStand		,0.f,	PI_MUL_2);
+	add_velocity	(eVelocityStandingDangerStand		,0.f,	PI_MUL_2);
 
-	add_velocity	(eVelocityStandingFreeCrouch					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingPanicCrouch					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerCrouch					,0.f							,PI_MUL_2	);
+	add_velocity	(eVelocityStandingFreeCrouch		,0.f,	PI_MUL_2);
+	add_velocity	(eVelocityStandingPanicCrouch		,0.f,	PI_MUL_2);
+	add_velocity	(eVelocityStandingDangerCrouch		,0.f,	PI_MUL_2);
 
-	add_velocity	(eVelocityWalkFreePositive						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-	add_velocity	(eVelocityRunFreePositive						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandPositive				,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchPositive				,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeWalk,eMovementDirectionForward),100*PI		,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandPositive				,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityRunDangerCrouchPositive				,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityRunPanicStandPositive					,m_velocities->velocity(eMentalStatePanic,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-																																							
-//	add_velocity	(eVelocityWalkFreeNegative						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-//	add_velocity	(eVelocityRunFreeNegative						,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandNegative				,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchNegative				,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeWalk,eMovementDirectionForward),100*PI		,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandNegative				,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityRunDangerCrouchNegative				,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
-//	add_velocity	(eVelocityRunPanicStandNegative					,m_velocities->velocity(eMentalStatePanic,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-#else
-	add_velocity	(eVelocityStandingFreeStand						,0.f							,PI_DIV_4	,PI_MUL_2		);
-	add_velocity	(eVelocityStandingPanicStand					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerStand					,0.f							,PI_MUL_2	);
-
-	add_velocity	(eVelocityStandingFreeCrouch					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingPanicCrouch					,0.f							,PI_MUL_2	);
-	add_velocity	(eVelocityStandingDangerCrouch					,0.f							,PI_MUL_2	);
-
-	add_velocity	(eVelocityWalkFreePositive						,walk_free_factor()				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-	add_velocity	(eVelocityRunFreePositive						,run_free_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandPositive				,walk_factor()					,100*PI		,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchPositive				,walk_factor()*crouch_factor()	,100*PI_DIV_2,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandPositive				,run_factor()					,100*PI		,2*cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchPositive				,run_factor()*crouch_factor()	,100*PI		,cf*PI			);
-	add_velocity	(eVelocityRunPanicStandPositive					,panic_factor()					,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-																																							
-//	add_velocity	(eVelocityWalkFreeNegative						,-walk_free_factor()				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
-//	add_velocity	(eVelocityRunFreeNegative						,-run_free_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandNegative				,-walk_factor()					,PI			,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchNegative				,-walk_factor()*crouch_factor()	,3*PI_DIV_2	,cf*3*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerStandNegative				,-run_factor()					,PI_DIV_2	,cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchNegative				,-run_factor()*crouch_factor()	,PI			,cf*PI			);
-//	add_velocity	(eVelocityRunPanicStandNegative					,-panic_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-#endif
+	add_velocity	(eVelocityWalkFreePositive			,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,PI_DIV_8/1	,cf*PI_DIV_8/1	);
+	add_velocity	(eVelocityRunFreePositive			,m_velocities->velocity(eMentalStateFree,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+	add_velocity	(eVelocityWalkDangerStandPositive	,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,100*PI		,cf*PI			);
+	add_velocity	(eVelocityWalkDangerCrouchPositive	,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeWalk,eMovementDirectionForward),100*PI		,cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerStandPositive	,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
+	add_velocity	(eVelocityRunDangerCrouchPositive	,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
+	add_velocity	(eVelocityRunPanicStandPositive		,m_velocities->velocity(eMentalStatePanic,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,PI_DIV_8/2	,cf*PI_DIV_8/2	);
+																																				
+	add_velocity	(eVelocityWalkDangerStandNegative	,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward)	,100*PI		,cf*PI			);
+	add_velocity	(eVelocityWalkDangerCrouchNegative	,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeWalk,eMovementDirectionForward),100*PI		,cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerStandNegative	,m_velocities->velocity(eMentalStateDanger,eBodyStateStand,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
+	add_velocity	(eVelocityRunDangerCrouchNegative	,m_velocities->velocity(eMentalStateDanger,eBodyStateCrouch,eMovementTypeRun,eMovementDirectionForward)	,100*PI		,cf*PI			);
 }
 
 void CStalkerMovementManager::reinit				()
@@ -525,7 +478,6 @@ void CStalkerMovementManager::on_restrictions_change	()
 
 void CStalkerMovementManager::adjust_speed_to_animation	(const EMovementDirection &movement_direction)
 {
-#ifndef OLD_VELOCITIES
 	VERIFY								(movement_type() != eMovementTypeStand);
 
 	object().m_fCurSpeed				=
@@ -537,45 +489,4 @@ void CStalkerMovementManager::adjust_speed_to_animation	(const EMovementDirectio
 		);
 
 	set_desirable_speed					(object().m_fCurSpeed);
-#else
-	switch (body_state()) {
-		case MonsterSpace::eBodyStateStand : {
-			if (movement_direction != MonsterSpace::eMovementDirectionBackward) {
-				if (movement_type() == MonsterSpace::eMovementTypeWalk)
-					set_desirable_speed(object().m_fCurSpeed = walk_factor());
-				else
-					if (movement_type() == MonsterSpace::eMovementTypeRun)
-						set_desirable_speed(object().m_fCurSpeed = run_factor());
-			}
-			else {
-				if (movement_type() == MonsterSpace::eMovementTypeWalk)
-					set_desirable_speed(object().m_fCurSpeed = walk_back_factor());
-				else
-					if (movement_type() == MonsterSpace::eMovementTypeRun)
-						set_desirable_speed(object().m_fCurSpeed = run_back_factor());
-			}
-
-			break;
-		};
-		case eBodyStateCrouch : {
-			if (movement_direction != MonsterSpace::eMovementDirectionBackward) {
-				if (movement_type() == MonsterSpace::eMovementTypeWalk)
-					set_desirable_speed(object().m_fCurSpeed = crouch_factor()*walk_factor());
-				else
-					if (movement_type() == MonsterSpace::eMovementTypeRun)
-						set_desirable_speed(object().m_fCurSpeed = crouch_factor()*run_factor());
-			}
-			else {
-				if (movement_type() == MonsterSpace::eMovementTypeWalk)
-					set_desirable_speed(object().m_fCurSpeed = crouch_factor()*walk_back_factor());
-				else
-					if (movement_type() == MonsterSpace::eMovementTypeRun)
-						set_desirable_speed(object().m_fCurSpeed = crouch_factor()*run_back_factor());
-			}
-
-			break;
-		};
-		default						: NODEFAULT;
-	}
-#endif
 }

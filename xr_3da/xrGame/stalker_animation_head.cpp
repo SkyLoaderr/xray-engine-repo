@@ -15,19 +15,19 @@
 
 void CStalkerAnimationManager::head_play_callback		(CBlend *blend)
 {
-	CAI_Stalker	*object = (CAI_Stalker*)blend->CallbackParam;
-	VERIFY		(object);
+	CAI_Stalker		*object = (CAI_Stalker*)blend->CallbackParam;
+	VERIFY			(object);
 	object->animation().head().make_inactual();
 }
 
 MotionID CStalkerAnimationManager::assign_head_animation	()
 {
-	if (!object().sound().active_sound_count(true))
-		return	(m_data_storage->m_head_animations.A[0]);
+	CSoundPlayer	&sound = object().sound();
+	if (!sound.active_sound_count(true))
+		return		(m_data_storage->m_head_animations.A[0]);
 
+	if (!sound.active_sound_type((u32)StalkerSpace::eStalkerSoundMaskMovingInDanger))
+		return		(m_data_storage->m_head_animations.A[1]);
 
-	if (!object().sound().active_sound_type((u32)StalkerSpace::eStalkerSoundMaskMovingInDanger))
-		return	(m_data_storage->m_head_animations.A[1]);
-
-	return		(m_data_storage->m_head_animations.A[0]);
+	return			(m_data_storage->m_head_animations.A[0]);
 }

@@ -29,6 +29,9 @@ public:
 	typedef CActionPlanner<CAI_Stalker,true>			inherited;
 	typedef GraphEngineSpace::_solver_value_type		_value_type;
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
+	typedef ObjectHandlerSpace::EWorldProperties		EWorldProperties;
+	typedef MonsterSpace::EObjectAction					EObjectAction;
+	typedef CActionBase<CAI_Stalker>					CSActionBase;
 
 protected:
 			void			add_evaluators			(CWeapon		*weapon);
@@ -40,7 +43,7 @@ protected:
 			void			remove_evaluators		(CObject		*object);
 			void			remove_operators		(CObject		*object);
 			void			init_storage			();
-	IC		ObjectHandlerSpace::EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;
+	IC	EWorldProperties	object_property			(EObjectAction object_action) const;
 #ifdef LOG_ACTION
 public:
 	virtual LPCSTR			action2string			(const _action_id_type &action_id);
@@ -54,8 +57,8 @@ public:
 	IC		u32				current_action_state_id	() const;
 	IC		u32				action_object_id		(_condition_type action_id) const;
 	IC		u32				action_state_id			(_condition_type action_id) const;
-	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
-	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
+	IC		void			add_condition			(CSActionBase *action, u16 id, EWorldProperties property, _value_type value);
+	IC		void			add_effect				(CSActionBase *action, u16 id, EWorldProperties property, _value_type value);
 	IC		CAI_Stalker		&object					() const;
 
 public:
@@ -63,7 +66,7 @@ public:
 	virtual	void			update					();
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
-			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
+			void			set_goal				(EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
 };
 
 #include "object_handler_planner_inline.h"
