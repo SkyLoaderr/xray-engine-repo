@@ -126,7 +126,6 @@ combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor 
 path_walk           = jail_guard_walk
 path_look           = jail_guard_look
 on_timer            = 10000 | {=actor_alive} walker@jail_guard_go_sleep_say, kamp@jail_guard_go_sleep ;walker@jail_guard_go_sleep
-;heli_hunter         = {+cit_heli_start -cit_heli_end}
 meet                = no_meet ;meet@jail_guard
 combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
@@ -167,7 +166,8 @@ combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor 
 [kamp@jail_guard_go_sleep]
 center_point        = kamp5
 radius              = 1.6
-on_timer            = 25000 | remark@jail_guard_sleep
+heli_hunter         = {+cit_heli_start -cit_heli_end}
+on_timer            = 20000 | remark@jail_guard_sleep
 meet                = no_meet ;meet@jail_guard
 soundgroup          = cit_killers_kamp5_sg
 combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
@@ -189,6 +189,7 @@ combat_ignore_cond  = always ;{=fighting_actor -cit_actor_is_free}, {=check_figh
 [walker@jail_guard3]
 path_walk           = jail_guard_walk
 path_look           = jail_guard_look
+heli_hunter         = {+cit_heli_start -cit_heli_end}
 on_timer            = 240000 | kamp@jail_guard_go_sleep ;walker@jail_guard_go_sleep
 meet                = no_meet ;meet@jail_guard
 combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
