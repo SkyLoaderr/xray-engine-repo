@@ -378,7 +378,7 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 
                    "[kamp@" .. gname .. "_free_stalker" .. i .. "_kamp5_begin]\n" ..
                    "center_point        = kamp5\n" ..
-                   "on_info             = {+cit_heli_scene_start} camper@" .. gname .. "_free_stalker" .. i .. "_attack %=hit_npc(1201:bip01_spine:1:0)%\n" ..
+                   "on_info             = {+cit_heli_scene_start} camper@" .. gname .. "_free_stalker" .. i .. "_attack %=hit_npc(1201:bip01_spine:0:0.1)%\n" ..
                    "soundgroup          = " .. gname .. "_kamp5_sg\n" ..
                    "combat_ignore_cond  = {=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}\n" ..
 
@@ -482,22 +482,22 @@ gulags.cit_killers.job = function(sj, gname, type, squad, groups)
 	    table.insert(sj, t)
 
 	    ltx = ltx.."[logic@" .. gname .. "_road_patrol" .. i .. "]\n" ..
-                   "active          = camper@" .. gname .. "_road_patrol" .. i .. "\n" ..
+                   "active          = walker@" .. gname .. "_road_patrol" .. i .. "\n" ..
                    "combat_ignore   = combat_ignore\n" ..
-
+--[[
                    "[camper@" .. gname .. "_road_patrol" .. i .. "]\n" ..
                    "path_walk           = road_patrol" .. i .. "_walk\n" ..
                    "path_look           = road_patrol" .. i .. "_look\n" ..
                    "no_retreat          = true\n" ..
                    "radius              = 25\n" ..
---[[
+--]]
                    "[walker@" .. gname .. "_road_patrol" .. i .. "]\n" ..
                    "path_walk           = road_patrol" .. i .. "_walk\n" ..
                    "path_look           = road_patrol" .. i .. "_look\n" ..
                    "def_state_moving1   = patrol\n" ..
                    "def_state_moving2   = patrol\n" ..
                    "def_state_moving3   = patrol\n" ..
---]]
+
                    "heli_hunter         = {+cit_heli_start -cit_heli_end}\n" ..
                    --"danger              = danger_killers\n" ..
                    combat_ignore
