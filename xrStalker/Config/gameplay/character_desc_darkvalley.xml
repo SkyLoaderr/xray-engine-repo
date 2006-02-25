@@ -607,17 +607,14 @@
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
 		<supplies>
 			[spawn] \n
-            wpn_fort = 2 \n
-			ammo_9x18_pmm = 3 \n
-            ammo_9x18_fmj = 2\n
+            wpn_beretta \n
+			ammo_9x19_fmj = 3 \n
+            ammo_9x19_pbp = 2\n
 			wpn_abakan = 1,silencer \n
             ammo_5.45x39_ap = 2 \n
 			device_torch \n
 
             wpn_addon_scope \n
-
-			wpn_ak74u \n
-			ammo_5.45x39_fmj = 2 \n
 
             bread = 2 \n
             kolbasa = 2 \n
