@@ -46,7 +46,7 @@ function action_wounded:initialize ()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	self.sound = "nil"
-	self.object:enable_talk()
+
 
 	if self.a.help_start_dialog then
 		self.object:set_start_dialog(self.a.help_start_dialog)
@@ -68,7 +68,16 @@ function action_wounded:execute ()
 		end
 	end
 
-	-- отправляем чудака в кавер.
+	if self.object:relation(db.actor) == game_object.enemy then
+		self.object:disable_talk()
+	else
+		self.object:enable_talk()
+	end
+    
+    
+    
+	-- отправляем чудака в кавер. Пока что отключено за ненадобностью
+--[[
 	if wound_manager.cover == "true" then
 		if self.pos == nil or self.vid == nil then
 			local pt = self.object:safe_cover(self.object:position(), 20, 0)
@@ -103,12 +112,9 @@ function action_wounded:execute ()
 		self.pos = nil
 		self.vid = nil
 	end    
-
+]]
     
 
-
-
-	
 	local synsound = nil
 	if wound_manager.state == "true" then
 		local h = hit()

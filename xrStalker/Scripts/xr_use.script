@@ -36,23 +36,18 @@ function notify_on_use(victim, who)
 		-- Мы согласны говорить
 		if victim:best_enemy() ~= nil then
 			-- Во время боя
-			printf("use_yes_fight")
 			xr_sound.set_sound_play(victim, "use_yes_fight")
 		elseif xr_wounded.is_wounded(victim) then
 			-- Юзание раненого
-			printf("use_yes_wounded")
 			return
 		elseif db.storage[victim:id()].state_mgr.animstate:state() == "sleep" then
 			-- Юзание спящего
-			printf("use_yes_sleep")
 			xr_sound.set_sound_play(victim, "use_yes_sleep")
 		elseif db.storage[victim:id()].active_scheme == "kamp" then
 			-- Юзание чувака в лагере
-			printf("use_yes_kamp")
 			xr_sound.set_sound_play(victim, "use_yes_kamp")
 		else
 			-- Дефолт
-			printf("use_yes_default")
 			xr_sound.set_sound_play(victim, "use_yes_default")
 		end
 ]]		
@@ -64,27 +59,21 @@ function notify_on_use(victim, who)
 		-- Мы не согласны говорить
 		if victim:best_enemy() ~= nil and victim:relation(db.actor) ~= game_object.enemy then
 			-- Во время боя
-			printf("use_no_fight")
 			xr_sound.set_sound_play(victim, "use_no_fight")
 		elseif xr_wounded.is_wounded(victim) then
 			-- Юзание раненого
-			printf("use_no_wounded")
 			return
 		elseif xr_sleeper.is_npc_asleep(victim) then
 			-- Юзание спящего
-			printf("use_no_sleep")
 			xr_sound.set_sound_play(victim, "use_no_sleep")
 		elseif xr_meet.cannot_talk_by_weapon(victim) then
 			-- Необходимо спрятать оружие
-			printf("use_no_weapon")
 			xr_sound.set_sound_play(victim, "use_no_weapon")
 		elseif db.storage[victim:id()].active_scheme == "kamp" then
 			-- Юзание чувака в лагере
-			printf("use_no_kamp")
 			return	
 		else
 			-- Дефолт
-			printf("use_no_default")
 			xr_sound.set_sound_play(victim, "use_no_default")
 		end
 	end	

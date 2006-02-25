@@ -122,6 +122,11 @@ function act_state_mgr_to_idle:execute()
 	self.st:set_state("idle")	
 end
 function act_state_mgr_to_idle:finalize()
+	-- По завершению перехода нужно записать -1 в указатель "на кого смотреть", 
+	-- чтобы при возврате было понятно что его нужно переинициализировать.
+	
+	self.st.current_object = -1
+	
 	action_base.finalize(self)
 end
 
