@@ -383,7 +383,7 @@ function action_patrol:process_danger()
 	
 	if urgent_danger == true then
 		local danger_object_position = {look_position = danger_obj:position()}
-		if self.a.suggested_state.campering then
+		if self.a.suggested_state.campering_fire then
 			state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, danger_object_position, {animation = true}, nil, {yaw_delta = 0.2})
 		else
 			state_mgr.set_state(self.object, "hide_fire", nil, nil, danger_object_position, {animation = true}, nil, {yaw_delta = 0.2})
