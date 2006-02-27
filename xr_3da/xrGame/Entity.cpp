@@ -256,6 +256,8 @@ void CEntity::KillEntity(u16 whoID)
 		m_killer_id		= whoID;
 	}
 
+	set_death_time		();
+
 	if (!getDestroy()){
 		NET_Packet		P;
 		u_EventGen		(P,GE_DIE,ID());
@@ -263,8 +265,6 @@ void CEntity::KillEntity(u16 whoID)
 		P.w_u32			(0);
 		if (OnServer())
 			u_EventSend	(P);
-		
-		set_death_time	();
 	}
 };
 
