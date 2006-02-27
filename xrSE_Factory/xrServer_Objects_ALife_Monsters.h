@@ -53,6 +53,7 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	LPCSTR							CommunityName			() const;
 	CHARACTER_RANK_VALUE			Rank					();
 	CHARACTER_REPUTATION_VALUE		Reputation				();
+	void							SetRank					(CHARACTER_RANK_VALUE val);
 
 #endif
 

@@ -464,11 +464,18 @@ LPCSTR			CSE_ALifeTraderAbstract::CommunityName () const
 	return *CHARACTER_COMMUNITY::IndexToId(m_community_index);
 }
 
-CHARACTER_RANK_VALUE			CSE_ALifeTraderAbstract::Rank		()
+CHARACTER_RANK_VALUE CSE_ALifeTraderAbstract::Rank		()
 {
 	specific_character();
 	return m_rank;
 }
+
+void CSE_ALifeTraderAbstract::SetRank(CHARACTER_RANK_VALUE val)
+{
+	specific_character();
+	m_rank = val;
+}
+
 CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation ()
 {
 	specific_character();
@@ -479,14 +486,10 @@ CHARACTER_REPUTATION_VALUE	CSE_ALifeTraderAbstract::Reputation ()
 
 void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-//	tNetPacket.w_float			(m_fCumulativeItemMass);
-//	tNetPacket.w_u32			(m_dwMoney);
 };
 
 void CSE_ALifeTraderAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
-//	tNetPacket.r_float			(m_fCumulativeItemMass);
-//	tNetPacket.r_u32			(m_dwMoney);
 };
 
 
