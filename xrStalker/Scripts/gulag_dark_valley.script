@@ -462,6 +462,7 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
                "[danger]\n" ..
                "ignore_distance = 5\n" ..
                "ignore_types    = corpse\n" ..
+               "danger_inertion_time_sound = 4000\n" ..
 
                "[meet1]\n" ..
                "meet_dialog    = val_sos_dialog\n" ..
