@@ -45,4 +45,8 @@
     <string id="test2">
         <text>This is a another GENERAL test string</text>
     </string>
+	<string id="st_not_enough_money">
+		<text>Not enough money</text>
+	</string>
+    
 </string_table>

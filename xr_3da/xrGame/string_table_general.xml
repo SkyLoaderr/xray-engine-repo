@@ -66,5 +66,9 @@
 	<string id="st_no_active_task">
 		<text>Нет активного задания</text>
 	</string>
+	
+	<string id="st_not_enough_money">
+		<text>Недостаточно денег</text>
+	</string>
 </string_table>
 
