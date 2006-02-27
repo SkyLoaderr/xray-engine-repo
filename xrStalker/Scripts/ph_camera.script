@@ -239,7 +239,7 @@ function action_camera_activity:update(delta)
 					printf("_hr: set MOVING action")
 					action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_p), cond(cond.look_end))
 				-- Двигаем камеру в диапазоне
-				//elseif self.st.state == "range_tracking" then
+				--elseif self.st.state == "range_tracking" then
 				end
 			end
 		end
@@ -271,7 +271,7 @@ function action_camera_activity:update(delta)
 
 	in_focus = check_in_focus(a1, a2, self.st.focus_type, self.st.focus_angle)
 	
-	// если камера не выполняет движение на игрока
+	-- если камера не выполняет движение на игрока
 	if self.track_enemy and self.object:action() then
 		return
 	else
@@ -337,7 +337,7 @@ function action_camera_activity:update(delta)
 		    --action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
 		    action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_p), cond(cond.look_end))
         -- Двигаем камеру в диапазоне
-        //elseif self.st.state == "range_tracking" then
+        --elseif self.st.state == "range_tracking" then
         end
 	end
 --]]
@@ -358,20 +358,20 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
-    // state:
-    //  off - камера выключена,
-    //  path_tracking - движение по пути,
-    //  range_tracking - движение камеры в определенных угловых границах
+    -- state:
+    --  off - камера выключена,
+    --  path_tracking - движение по пути,
+    --  range_tracking - движение камеры в определенных угловых границах
 	st.state = utils.cfg_get_string(ini, section, "state", npc, false, "", "path_tracking")
 
     if st.state == "path_tracking" then
-        // path_look - путь, по которому будет поворачиваться камера
-        // start_wp - вейпоинт, с которого будет начинаться движение камеры
+        -- path_look - путь, по которому будет поворачиваться камера
+        -- start_wp - вейпоинт, с которого будет начинаться движение камеры
 	    st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, "")
 	    st.start_wp  = utils.cfg_get_number(ini, section, "start_wp", npc, false, 0)
 --[[	elseif st.state == "range_tracking" then
-        // angle_h1, angle_h2 - начальный и конечный углы по горизонтали
-        // angle_p - угол наклона камеры
+        -- angle_h1, angle_h2 - начальный и конечный углы по горизонтали
+        -- angle_p - угол наклона камеры
 	    st.angle_h1 = utils.cfg_get_number(ini, section, "angle_h1", npc, false, -45)
 	    st.angle_h2 = utils.cfg_get_number(ini, section, "angle_h2", npc, false, 45)
 	    st.angle_p  = utils.cfg_get_number(ini, section, "angle_p", npc, false, 0)
@@ -380,31 +380,31 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
         st.state = "off"
     end
 
-    // speed_h, speed_p - скорость поворота камеры по горизонтали и вертикали
+    -- speed_h, speed_p - скорость поворота камеры по горизонтали и вертикали
 	st.speed_h = utils.cfg_get_number(ini, section, "speed_h", npc, false, 1)
 	st.speed_p = utils.cfg_get_number(ini, section, "speed_p", npc, false, 1)
 
-	// focus_type - тип фокуса: cone - конический, rect - квадратный
+	-- focus_type - тип фокуса: cone - конический, rect - квадратный
 	st.focus_type = utils.cfg_get_string(ini, section, "focus_type", npc, false, "", "cone")
 
     if st.focus_type == "rect" then
-		// focus_angle_h, focus_angle_p - угол видимости камеры по горизонтали и вертикали
+		-- focus_angle_h, focus_angle_p - угол видимости камеры по горизонтали и вертикали
 		st.focus_angle = {}
 		st.focus_angle_h = utils.cfg_get_number(ini, section, "focus_angle_h", npc, false, 90)
 		st.focus_angle_p = utils.cfg_get_number(ini, section, "focus_angle_p", npc, false, 90)
 	else
-		// focus_angle - конический угол видимости
+		-- focus_angle - конический угол видимости
 		st.focus_type = "cone"
 		st.focus_angle = utils.cfg_get_number(ini, section, "focus_angle", npc, false, 135)
 	end
 
-    // enemy_stalker - имя вражеского сталкера, за которым камера будет следить
-    // с самого начала
+    -- enemy_stalker - имя вражеского сталкера, за которым камера будет следить
+    -- с самого начала
 	--st.enemy_stalker = utils.cfg_get_string(ini, section, "enemy_stalker", npc, false, "")
 
-	// расстояние, на котором "замечаются" враги
+	-- расстояние, на котором "замечаются" враги
     st.warn_distance = utils.cfg_get_number(ini, section, "warn_distance", npc, false, 10)
     
-    // pause_after_lost_target - пауза после того, как цель вышла из поля зрения
+    -- pause_after_lost_target - пауза после того, как цель вышла из поля зрения
     st.pause_after_lost_target = utils.cfg_get_number(ini, section, "pause_after_lost_target", npc, false, 5000)
 end
