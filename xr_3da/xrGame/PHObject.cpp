@@ -5,7 +5,9 @@
 #include "PHMoveStorage.h"
 #include "dRayMotions.h"
 #include "PHCollideValidator.h"
-
+#ifdef DEBUG
+#include "phdebug.h"
+#endif
 extern CPHWorld* ph_world;
 
 CPHObject::CPHObject	()	: ISpatial(g_SpatialSpacePhysic)
@@ -97,6 +99,15 @@ void CPHObject::Collide()
 					dGeomID	motion_ray=ph_world->GetMotionRayGeom();
 					dGeomRayMotionSetGeom(motion_ray,I.dGeom());
 					dGeomRayMotionsSet(motion_ray,(const dReal*) from,(const dReal*)&dir,magnitude);
+#ifdef DEBUG
+					if(ph_dbg_draw_mask.test(phDbgDrawRayMotions))
+					{
+						DBG_OpenCashedDraw();
+						DBG_DrawLine(*from,Fvector().add(*from,Fvector().mul(dir,magnitude)),D3DCOLOR_XRGB(0,255,0));
+						DBG_ClosedCashedDraw(30000);
+					}
+					
+#endif
 					NearCallback(this,obj2,motion_ray,obj2->dSpacedGeom());
 				}
 		}

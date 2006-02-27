@@ -63,7 +63,9 @@ enum
 	phDbgIKAnimGoalOnly			=		1<<26,
 	phDbgDrawIKGoal				=		1<<27,
 	phDbgIKLimits				=		1<<28,
-	phDbgCharacterControl		=		1<<29
+	phDbgCharacterControl		=		1<<29,
+	phDbgDrawRayMotions			=		1<<30
+
 };
 struct SPHObjDBGDraw
 {
