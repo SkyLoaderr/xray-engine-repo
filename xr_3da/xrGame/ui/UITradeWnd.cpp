@@ -69,6 +69,8 @@ struct CUITradeInternal{
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;
+
+	SDrawStaticStruct*	UIDealMsg;
 };
 
 CUITradeWnd::CUITradeWnd()
@@ -191,6 +193,7 @@ void CUITradeWnd::Init()
 	AttachChild(&m_uidata->UIToTalkButton);
 	xml_init.InitButton(uiXml, "button", 1, &m_uidata->UIToTalkButton);
 
+	m_uidata->UIDealMsg = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -294,6 +297,8 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 void CUITradeWnd::Draw()
 {
 	inherited::Draw();
+	if(m_uidata->UIDealMsg)		m_uidata->UIDealMsg->Draw();
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -333,6 +338,15 @@ void CUITradeWnd::Update()
 
 	inherited::Update			();
 	UpdateCameraDirection		(smart_cast<CGameObject*>(m_pOthersInvOwner));
+	if(m_uidata->UIDealMsg){
+		m_uidata->UIDealMsg->Update();
+		if( !m_uidata->UIDealMsg->IsActual()){
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money");
+			m_uidata->UIDealMsg = NULL;
+		}
+
+	}
+
 }
 
 void CUITradeWnd::Show()
@@ -342,6 +356,7 @@ void CUITradeWnd::Show()
 
 	SetCurrentItem		(NULL);
 	ResetAll			();
+	m_uidata->UIDealMsg = NULL;
 }
 
 void CUITradeWnd::Hide()
@@ -350,7 +365,11 @@ void CUITradeWnd::Hide()
 	inherited::Enable(false);
 	if(bStarted)
 		StopTrade();
+	
+	m_uidata->UIDealMsg = NULL;
+	HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money");
 }
+
 void CUITradeWnd::StartTrade()
 {
 	if (m_pTrade)m_pTrade->TradeCB(true);
@@ -530,8 +549,6 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 	return iPrice;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUITradeWnd::PerformTrade()
 {
 
@@ -553,6 +570,10 @@ void CUITradeWnd::PerformTrade()
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		SellItems(&m_uidata->UIOurTradeList, &m_uidata->UIOthersBagList, m_pTrade);
 		SellItems(&m_uidata->UIOthersTradeList, &m_uidata->UIOurBagList, m_pOthersTrade);
+	}else
+	{
+		m_uidata->UIDealMsg				= HUD().GetUI()->UIGame()->AddCustomStatic("not_enough_money", true);
+		m_uidata->UIDealMsg->m_endTime	= Device.fTimeGlobal+2.0f;// sec
 	}
 	SetCurrentItem(NULL);
 }
