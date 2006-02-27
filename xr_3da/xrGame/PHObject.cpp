@@ -91,6 +91,15 @@ void CPHObject::Collide()
 				if(magnitude<EPS) continue;
 				dir.mul(1.f/magnitude);
 				g_SpatialSpacePhysic->q_ray(ph_world->r_spatial,0,STYPE_PHYSIC,*from,dir,magnitude);//|ISpatial_DB::O_ONLYFIRST
+#ifdef DEBUG
+				if(ph_dbg_draw_mask.test(phDbgDrawRayMotions))
+				{
+					DBG_OpenCashedDraw();
+					DBG_DrawLine(*from,Fvector().add(*from,Fvector().mul(dir,magnitude)),D3DCOLOR_XRGB(0,255,0));
+					DBG_ClosedCashedDraw(30000);
+				}
+
+#endif
 				qResultVec& result=ph_world->r_spatial;
 				qResultIt i=result.begin(),e=result.end();
 				for(;i!=e;++i)	{
@@ -99,15 +108,6 @@ void CPHObject::Collide()
 					dGeomID	motion_ray=ph_world->GetMotionRayGeom();
 					dGeomRayMotionSetGeom(motion_ray,I.dGeom());
 					dGeomRayMotionsSet(motion_ray,(const dReal*) from,(const dReal*)&dir,magnitude);
-#ifdef DEBUG
-					if(ph_dbg_draw_mask.test(phDbgDrawRayMotions))
-					{
-						DBG_OpenCashedDraw();
-						DBG_DrawLine(*from,Fvector().add(*from,Fvector().mul(dir,magnitude)),D3DCOLOR_XRGB(0,255,0));
-						DBG_ClosedCashedDraw(30000);
-					}
-					
-#endif
 					NearCallback(this,obj2,motion_ray,obj2->dSpacedGeom());
 				}
 		}
