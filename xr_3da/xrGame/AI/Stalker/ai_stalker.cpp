@@ -574,27 +574,11 @@ void CAI_Stalker::update_object_handler	()
 	}
 }
 
-struct bug_tracker {
-	CCustomMonster		*m_object;
-
-	bug_tracker		(CCustomMonster *object)
-	{
-		VERIFY					(object);
-		m_object				= object;
-	}
-
-	~bug_tracker	()
-	{
-		VERIFY2					(m_object->PPhysicsShell()||m_object->getEnabled(), *m_object->cName());
-	}
-};
-
 void CAI_Stalker::UpdateCL()
 {
 	START_PROFILE("stalker")
 	START_PROFILE("stalker/client_update")
 	VERIFY2						(PPhysicsShell()||getEnabled(), *cName());
-	bug_tracker					bug_tracker(this);
 
 	if (g_Alive()) {
 		if (g_mt_config.test(mtObjectHandler) && CObjectHandler::planner().initialized()) {
@@ -652,7 +636,7 @@ void CAI_Stalker::UpdateCL()
 			sight().update			();
 		}
 
-		Exec_Look					(Device.fTimeDelta);
+		Exec_Look					(client_update_fdelta());
 		STOP_PROFILE
 
 		START_PROFILE("stalker/client_update/step_manager")
@@ -685,7 +669,6 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	START_PROFILE("stalker")
 	START_PROFILE("stalker/schedule_update")
 	VERIFY2				(getEnabled()||PPhysicsShell(), *cName());
-	bug_tracker			bug_tracker(this);
 
 	if (!CObjectHandler::planner().initialized()) {
 		START_PROFILE("stalker/client_update/object_handler")

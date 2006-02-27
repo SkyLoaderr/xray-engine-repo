@@ -342,5 +342,5 @@ void CMovementManager::on_frame					(CPHMovementControl *movement_control, Fvect
 		)
 		update_path					();
 			
-	move_along_path					(movement_control,dest_position,Device.fTimeDelta);
+	move_along_path					(movement_control,dest_position,object().client_update_fdelta());
 }

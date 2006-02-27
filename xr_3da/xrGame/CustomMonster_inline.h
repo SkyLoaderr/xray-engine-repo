@@ -58,5 +58,20 @@ IC	CSound_UserDataVisitor *CCustomMonster::sound_user_data_visitor	() const
 
 IC	float CCustomMonster::panic_threshold				() const
 {
-	return	(m_panic_threshold);
+	return			(m_panic_threshold);
+}
+
+IC	float CCustomMonster::client_update_fdelta			() const
+{
+	return			((float)m_client_update_delta/1000.f);
+}
+
+IC	const u32 &CCustomMonster::client_update_delta		() const
+{
+	return			(m_client_update_delta);
+}
+
+IC	const u32 &CCustomMonster::last_client_update_time	() const
+{
+	return			(m_last_client_update_time);
 }

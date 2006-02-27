@@ -41,6 +41,10 @@ private:
 	CMovementManager	*m_movement_manager;
 	CSoundPlayer		*m_sound_player;
 
+private:
+	u32					m_client_update_delta;
+	u32					m_last_client_update_time;
+
 protected:
 	
 	struct				SAnimState
@@ -260,6 +264,11 @@ public:
 	virtual	bool					use_simplified_visual	() const {return (already_dead());};
 	virtual void					on_enemy_change			(const CEntityAlive *enemy);
 	virtual	CVisualMemoryManager	*visual_memory			() const;
+
+public:
+	IC		float					client_update_fdelta	() const;
+	IC		const u32				&client_update_delta	() const;
+	IC		const u32				&last_client_update_time() const;
 };
 
 #include "custommonster_inline.h"

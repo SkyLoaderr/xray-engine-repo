@@ -12,13 +12,6 @@
 #include "graph_engine_space.h"
 #include "game_graph_space.h"
 
-//	TODO:
-//		1. use GOAP for path processing
-//		2. a possiblity to specify custom path types
-//		3. use navigation hierachy for level path building
-//		4. dynamic obstacles avoiding
-//		5. fast location inaccessability detection
-
 namespace MovementManager {
 	enum EPathType;
 };

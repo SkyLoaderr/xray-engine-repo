@@ -163,6 +163,9 @@ void CCustomMonster::reinit		()
 	movement().reinit			();
 	sound().reinit				();
 
+	m_client_update_delta		= 0;
+	m_last_client_update_time	= Device.dwTimeGlobal;
+
 	eye_pp_stage				= 0;
 	m_dwLastUpdateTime			= 0xffffffff;
 	m_tEyeShift.set				(0,0,0);
@@ -346,12 +349,14 @@ void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMons
 
 void CCustomMonster::update_sound_player()
 {
-	sound().update	(Device.fTimeDelta);
+	sound().update	(client_update_fdelta());
 }
 
 void CCustomMonster::UpdateCL	()
 { 
 	START_PROFILE("CustomMonster/client_update")
+	m_client_update_delta		= Device.dwTimeGlobal - m_last_client_update_time;
+	m_last_client_update_time	= Device.dwTimeGlobal;
 	
 	START_PROFILE("CustomMonster/client_update/inherited")
 	inherited::UpdateCL			();
