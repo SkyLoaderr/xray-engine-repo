@@ -461,7 +461,7 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
 
                "[danger]\n" ..
                "ignore_distance = 5\n" ..
-               "ignore_types    = sound\n" ..
+               "ignore_types    = corpse\n" ..
 
                "[meet1]\n" ..
                "meet_dialog    = val_sos_dialog\n" ..
@@ -485,13 +485,14 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
                "anim               = wait\n" ..
                "on_info            = {+val_sos_got_medkit} remark2\n" ..
                "meet               = no_meet\n" ..
+               "danger             = danger\n" ..
                "wounded            = wounded\n" ..
                "combat_ignore_cond = always\n" ..
 
                "[remark2]\n" ..
                "anim                  = wait\n" ..
                "meet                  = meet1\n" ..
-               --"wounded               = wounded\n" ..
+               "danger                = danger\n" ..
                "on_actor_dist_ge_nvis = 17 | %+val_sos_scene_end%\n"
 
 	t = { section = "logic@" .. gname .. "_bs",
