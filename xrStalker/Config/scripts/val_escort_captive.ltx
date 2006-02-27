@@ -93,9 +93,10 @@ path_walk           = captive_walk
 path_look           = captive_look
 on_signal           = fight | {-val_escort_nap1_dead} camper@val_escort_captive_cover %+val_escort_combat -val_escort_wait%
 on_signal2          = move_end | %+val_escort_captive_enemy%
-on_info             = {+val_escort_combat} camper@val_escort_captive_cover
-on_info2            = {+val_escort_guard1_combat} remark@val_escort_captive_hide, {+val_escort_guard2_combat} remark@val_escort_captive_hide
-on_info3            = {=val_escort_captive_dist_to_guards_ge(10)} remark@val_escort_captive_hide
+on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@val_escort_captive_go_to_nap1
+on_info2            = {+val_escort_combat} camper@val_escort_captive_cover
+on_info3            = {+val_escort_guard1_combat} remark@val_escort_captive_hide, {+val_escort_guard2_combat} remark@val_escort_captive_hide
+on_info4            = {=val_escort_captive_dist_to_guards_ge(10)} remark@val_escort_captive_hide
 meet                = meet@val_escort_captive_ignore
 danger              = danger@val_escort_captive
 wounded             = wounded@val_escort_captive
@@ -106,9 +107,10 @@ combat_ignore_cond  = always
 ;--------------------------------------------------------------------------
 [remark@val_escort_captive_hide]
 anim                = hide
-on_info             = {+val_escort_combat} camper@val_escort_captive_cover
-on_info2            = {-val_escort_guard1_combat -val_escort_guard2_combat =val_escort_captive_dist_to_guards_le(7)} walker@val_escort_captive_go
-on_info3            = {=val_escort_captive_dist_to_guards_ge(35)} camper@val_escort_captive_cover %+val_escort_captive_enemy%
+on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@val_escort_captive_go_to_nap1
+on_info2            = {+val_escort_combat} camper@val_escort_captive_cover
+on_info3            = {-val_escort_guard1_combat -val_escort_guard2_combat =val_escort_captive_dist_to_guards_le(7)} walker@val_escort_captive_go
+on_info4            = {=val_escort_captive_dist_to_guards_ge(35)} camper@val_escort_captive_cover %+val_escort_captive_enemy%
 on_timer            = 70000 | camper@val_escort_captive_cover %+val_escort_captive_enemy%
 meet                = meet@val_escort_captive_ignore
 wounded             = wounded@val_escort_captive
@@ -190,7 +192,7 @@ danger              = danger@val_escort_captive
 [remark@val_escort_captive_wait1]
 anim                = wait_na
 target              = 406 ;logic@val_escort_nap1
-on_info             = {+val_escort_nap1_phrase1_end} remark@val_escort_captive_phrase3
+on_info             = {+val_escort_nap1_phrase1_end} remark@val_escort_captive_phrase3 %=create_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
 meet                = meet@val_escort_captive_ignore
 danger              = danger@val_escort_captive
 ;wounded             = wounded@val_escort_captive
@@ -240,7 +242,7 @@ meet                    = meet@val_escort_captive_talk
 [remark@val_escort_captive_wait2]
 anim                = wait
 target              = 406 ;logic@val_escort_nap1
-on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave
+on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave %=create_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
 meet                = meet@val_escort_captive_ignore
 danger              = danger@val_escort_captive
 ;wounded             = wounded@val_escort_captive
