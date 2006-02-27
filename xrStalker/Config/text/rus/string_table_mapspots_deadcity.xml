@@ -8,11 +8,6 @@
         Воронин
     </text>
 </string>
-<string id="cit_doctor_task_1_hint">
-    <text>
-        Тайник
-    </text>
-</string>
 <string id="esc_vp_finder_hint">
     <text>
         Map spot info.
@@ -61,5 +56,10 @@
 <string id="cit_doctor_escape_task_3_hint">
     <text>
         Труба
+    </text>
+</string>
+<string id="cit_doctor_task_1_hint">
+    <text>
+        Гостинница
     </text>
 </string>

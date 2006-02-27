@@ -80,7 +80,7 @@
 </string>
 <string id="cit_doctor_task_1">
     <text>
-        Разыскать и обследовать тайник Стрелка на Припяти.
+        Добраться до гостинницы.
     </text>
 </string>
 <string id="cit_doctor_weapon_task">
@@ -111,5 +111,15 @@
 <string id="cit_doctor_escape_task_3">
     <text>
         Уйти из города
+    </text>
+</string>
+<string id="cit_doctor_task_2">
+    <text>
+        Найти комнату с тайником.
+    </text>
+</string>
+<string id="cit_doctor_task_3">
+    <text>
+        Обследовать тайник.
     </text>
 </string>

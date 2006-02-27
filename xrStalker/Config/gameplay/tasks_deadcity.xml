@@ -146,8 +146,33 @@
             blue_location
         </map_location_type>
         <object_story_id>
-            pri_decoder_room_door
+            pri_hotel_zone
         </object_story_id>
+        <infoportion_complete>
+            pri_actor_in_hotel
+        </infoportion_complete>
+    </objective>
+    <objective key="2">
+        <text>
+            cit_doctor_task_2
+        </text>
+        <icon height="50" width="50" x="0" y="0">
+            ui\ui_icons_task
+        </icon>
+        <infoportion_complete>
+            pri_actor_in_hiding_place
+        </infoportion_complete>
+    </objective>
+    <objective key="3">
+        <text>
+            cit_doctor_task_3
+        </text>
+        <icon height="50" width="50" x="0" y="0">
+            ui\ui_icons_task
+        </icon>
+        <function_complete>
+            deadcity_tasks.has_decoder
+        </function_complete>
     </objective>
 </game_task>
 <game_task id="cit_doctor_weapon_task">
