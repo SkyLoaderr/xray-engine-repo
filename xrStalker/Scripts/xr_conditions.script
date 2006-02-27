@@ -33,11 +33,6 @@ function actor_dead(actor, npc)
 	return false
 end
 
--- провер€ем есть ли у актера определенный предмет
-function actor_has_item(actor, obj, p)
-    return p[1] and actor:object(p[1]) ~= nil
-end
-
 function see_npc(actor, npc, p)
     local npc1 = level_object_by_sid(p[1])
     if npc and npc1 then
