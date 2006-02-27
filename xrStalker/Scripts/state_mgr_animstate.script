@@ -302,7 +302,7 @@ function body_state:__init(npc)
 						wounded_heavy={nrm = {"sleep_to_sit_0","sit_0_to_idle_0","idle_to_wounded_1"},
 									   lazy = {"sleep_to_sit_0","sit_0_lazy_idle_0","idle_to_wounded_1"}} },
 
-		wounded		= {	stand		= {nrm = {}},
+		wounded		= {	stand		= {nrm = {"wounded_to_idle_0"}},
 						sit			= {nrm = {"wounded_to_idle_0","idle_0_to_sit_0"}},
 						sit_knee	= {nrm = {"wounded_to_idle_0","idle_0_to_sit_1"}},
 						sit_ass		= {nrm = {"wounded_to_idle_0","idle_0_to_sit_2"}},
@@ -357,16 +357,16 @@ function body_state:set_state(id)
 	then
 		-- здесь проверяем, необходимо ли нам ленивое или быстрое вставание
 		local astate = self.transfer_anim[self.current_state][id]
-		local lazy = true
-		if self.npc:best_enemy() ~= nil or
-		   self.npc:best_danger() ~= nil
+		local lazy = astate.lazy ~= nil
+		
+		if lazy == true and 
+		   (self.npc:best_enemy() ~= nil or
+		   self.npc:best_danger() ~= nil)
 		then
 			lazy = false
 		end
 		
-		if lazy == true and
-		   astate.lazy ~= nil 
-		then
+		if lazy == true	then
 			for k,v in pairs(astate.lazy) do
 				self.npc:add_animation(v,true)
 			end		
