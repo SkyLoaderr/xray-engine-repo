@@ -297,14 +297,16 @@ end
 
 -- настроить персонажа на работу в офлайне.
 -- если он в это время в онлайне, то вызвать object_setup_online
-function gulag:object_setup_offline( obj_id )
+function gulag:object_setup_offline( obj_id, was_online )
 	printf( "[smart_terrain %s] gulag: object_setup_offline: obj=%s", self.name, self.npc_info[obj_id].name )
 
 	self.Object[obj_id] = true
 
-	local obj = level.object_by_id( obj_id )
-	if obj ~= nil then
-		self:object_setup_online( obj_id, obj, true )
+	if not was_online then
+		local obj = level.object_by_id( obj_id )
+		if obj ~= nil then
+			self:object_setup_online( obj_id, obj, true )
+		end
 	end
 end
 

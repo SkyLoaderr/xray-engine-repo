@@ -56,7 +56,7 @@ function smart_terrain_binder:net_Relcase( obj )
 --	printf( "smart_terrain_binder.net_Relcase: self.object=%s obj=%s", self.object:name(), obj:name() )
 
 	if self.se_smart_terrain.npc_info[obj:id()] then
-		self.se_smart_terrain.gulag:object_setup_offline( obj:id() )
+		self.se_smart_terrain.gulag:object_setup_offline( obj:id(), true )
 	end
 end
 
