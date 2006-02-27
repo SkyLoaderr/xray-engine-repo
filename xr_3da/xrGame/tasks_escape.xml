@@ -155,6 +155,7 @@
 			<object_story_id>Escape_novice_lager_volk</object_story_id>
 			<infoportion_complete>escape_dynamite_start</infoportion_complete>
 			<infoportion_fail>tutorial_wounded_die</infoportion_fail>
+			<infoportion_fail>esc_wolf_dead</infoportion_fail>
 		</objective>
 		<objective>
 			<text>esc_bandits_on_factory_1</text>
