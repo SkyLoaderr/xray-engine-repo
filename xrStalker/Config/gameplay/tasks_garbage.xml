@@ -25,6 +25,7 @@
 			<text>gar_kill_boars_main</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>gar_kill_boars_request</infoportion_complete>
+			<infoportion_complete>gar_free_pass</infoportion_complete>
 		</objective>
 		<objective>
 			<text>gar_kill_boars_1</text>
