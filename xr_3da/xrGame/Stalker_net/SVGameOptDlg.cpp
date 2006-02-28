@@ -40,6 +40,7 @@ void SVGameOptDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_NOANOMALIES, m_pNoAnomalies);
 	DDX_Control(pDX, IDC_AUTOTEAMBALANCE, m_pAutoTeamBalance);
 	DDX_Control(pDX, IDC_FRIENDLYINDICATORS, m_pFriendlyIndicators);
+	DDX_Control(pDX, IDC_FRIENDLYNAMES, m_pFriendlyNames);
 	DDX_Control(pDX, IDC_ANMSETLENGTH, m_pAnomalySetTime);
 	DDX_Control(pDX, IDC_WARMUPTIME, m_pWarmUpTime);
 	DDX_Control(pDX, IDC_WARMUPSTATIC, m_pStaticWU);
@@ -109,6 +110,8 @@ BOOL SVGameOptDlg::OnInitDialog()
 	*/
 	m_pFriendlyIndicators.EnableWindow(FALSE);
 	m_pFriendlyIndicators.SetCheck(0);
+	m_pFriendlyNames.EnableWindow(FALSE);
+	m_pFriendlyNames.SetCheck(0);
 	return TRUE;
 }
 
@@ -143,6 +146,7 @@ void	SVGameOptDlg::OnGameTypeSwitch(byte NewGameType)
 			m_pArtefactDelay.EnableWindow(FALSE);	m_pStaticAD.EnableWindow(FALSE);
 			m_pArtefactStay.EnableWindow(FALSE);	m_pStaticAST.EnableWindow(FALSE);
 			m_pFriendlyIndicators.EnableWindow(FALSE); m_pFriendlyIndicators.SetCheck(0);
+			m_pFriendlyNames.EnableWindow(FALSE);	m_pFriendlyNames.SetCheck(0);
 			m_pWarmUpTime.EnableWindow(TRUE);		m_pStaticWU.EnableWindow(TRUE);
 		}break;
 	case GAME_TEAMDEATHMATCH :
@@ -156,6 +160,7 @@ void	SVGameOptDlg::OnGameTypeSwitch(byte NewGameType)
 			m_pArtefactDelay.EnableWindow(FALSE);	m_pStaticAD.EnableWindow(FALSE);
 			m_pArtefactStay.EnableWindow(FALSE);	m_pStaticAST.EnableWindow(FALSE);
 			m_pFriendlyIndicators.EnableWindow(TRUE);
+			m_pFriendlyNames.EnableWindow(TRUE);
 			m_pWarmUpTime.EnableWindow(TRUE);		m_pStaticWU.EnableWindow(TRUE);
 		}break;
 	case GAME_ARTEFACTHUNT:
@@ -169,6 +174,7 @@ void	SVGameOptDlg::OnGameTypeSwitch(byte NewGameType)
 			m_pArtefactDelay.EnableWindow(TRUE);	m_pStaticAD.EnableWindow(TRUE);
 			m_pArtefactStay.EnableWindow(TRUE);		m_pStaticAST.EnableWindow(TRUE);
 			m_pFriendlyIndicators.EnableWindow(TRUE);
+			m_pFriendlyNames.EnableWindow(TRUE);
 			m_pWarmUpTime.EnableWindow(TRUE);		m_pStaticWU.EnableWindow(TRUE);
 		}break;
 	};

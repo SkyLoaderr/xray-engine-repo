@@ -75,7 +75,6 @@
 #define IDC_SP_LAM                      1043
 #define IDC_FORCERESPAWN                1044
 #define IDC_AST2                        1044
-#define IDC_AUTOTEAMBALANCE4            1044
 #define IDC_SP_FLM                      1044
 #define IDC_FORCERESPAWNTIME            1045
 #define IDC_ANMSETLENGTH2               1045
@@ -88,6 +87,8 @@
 #define IDC_AUTOTEAMSWAP                1047
 #define IDC_MAXPLAYERS                  1048
 #define IDC_LAN                         1048
+#define IDC_FRIENDLYINDICATORS2         1048
+#define IDC_FRIENDLYNAMES               1048
 #define IDC_FEMPTY                      1061
 #define IDC_FFULL                       1062
 #define IDC_CDK1                        1062

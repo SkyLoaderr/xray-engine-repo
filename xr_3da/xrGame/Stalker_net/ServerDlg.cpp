@@ -503,6 +503,11 @@ void CServerDlg::OnBnClickedStartServer()
 	{
 		sprintf(FIStr, "/fi=1");
 	}
+	char FNStr[1024] = "";
+	if (m_pSVGameOptDlg->m_pFriendlyNames.IsWindowEnabled() && m_pSVGameOptDlg->m_pFriendlyNames.GetCheck())
+	{
+		sprintf(FNStr, "/fn=1");
+	}
 	char DmgBlkStr[1024] = "";
 	if (m_pSVRepawnDlg->m_pDmBlockLimit.GetWindowTextLength())
 	{
@@ -561,7 +566,7 @@ void CServerDlg::OnBnClickedStartServer()
 
 //	-noprefetch
 	char cmdline[4096];
-	sprintf(cmdline, "xr_3da.exe %s%s%s%s%s%s%s -external -nocache -start Server(%s/%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s) client(localhost%s)", 
+	sprintf(cmdline, "xr_3da.exe %s%s%s%s%s%s%s -external -nocache -start Server(%s/%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s) client(localhost%s)", 
 			(iCatchInput == 1) ? "-i " : "", 
 			(iDedicated == 1) ? "-dedicated " : "",
 			(iBuild == 1) ? "-build " : "",
@@ -595,6 +600,7 @@ void CServerDlg::OnBnClickedStartServer()
 			(MapRotStr[0]) ? MapRotStr : "",
 			(VoteStr[0]) ? VoteStr : "",
 			(FIStr[0]) ? FIStr : "",
+			(FNStr[0]) ? FNStr : "",
 			(DmgBlkStr[0]) ? DmgBlkStr : "",
 			(DmgBlkStrInd[0]) ? DmgBlkStrInd : "",
 			(WeatherTime[0]) ? WeatherTime : "",

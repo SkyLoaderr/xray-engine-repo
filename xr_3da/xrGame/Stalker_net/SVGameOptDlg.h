@@ -45,6 +45,7 @@ public:
 //	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CButton m_pAutoTeamBalance;
 	CButton m_pFriendlyIndicators;
+	CButton m_pFriendlyNames;
 	CEdit m_pAnomalySetTime;
 	afx_msg void OnBnClickedNoAnomalies();
 	CEdit m_pWarmUpTime;
