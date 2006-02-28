@@ -69,6 +69,13 @@ end
 function simulation_statistic:pstats(npc)
 	printf("*** SIMULATION POPULATION STATISTIC ***")
 	print_table(self.allocation)
+	local sum = 0
+	for k,v in pairs(self.allocation) do
+		for kk,vv in pairs(v) do
+			sum = sum + vv
+		end	
+	end
+	printf("TOTAL: [%s]", sum)		
 end
 
 
