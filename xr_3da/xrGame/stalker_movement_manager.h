@@ -22,6 +22,9 @@ protected:
 	typedef CMovementManager					inherited;
 
 public:
+	using inherited::speed;
+
+public:
 	typedef DetailPathManager::EDetailPathType	EDetailPathType;
 
 private:
@@ -70,7 +73,8 @@ public:
 	IC		void	set_detail_path_type			(EDetailPathType detail_path_type);
 			void	set_nearest_accessible_position	();
 			void	set_nearest_accessible_position	(Fvector desired_position, u32 level_vertex_id);
-			void	adjust_speed_to_animation		(const MonsterSpace::EMovementDirection &movement_direction);
+			float	speed							(const EMovementDirection &movement_direction);
+			void	setup_speed_from_animation		(const float &speed);
 
 public:
 	IC		const MonsterSpace::SBoneRotation		&head_orientation		() const;

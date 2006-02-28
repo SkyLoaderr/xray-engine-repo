@@ -31,10 +31,12 @@ IC	bool CStalkerAnimationPair::actual				() const
 	return					(m_actual);
 }
 
-IC	void CStalkerAnimationPair::animation			(const MotionID &animation)
+IC	bool CStalkerAnimationPair::animation			(const MotionID &animation)
 {
-	m_actual				= m_actual && (m_animation == animation);
+	bool					result = (m_animation == animation);
+	m_actual				= m_actual && result;
 	m_animation				= animation;
+	return					(result);
 }
 
 IC	const MotionID &CStalkerAnimationPair::animation() const

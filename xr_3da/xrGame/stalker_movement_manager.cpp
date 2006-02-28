@@ -476,17 +476,21 @@ void CStalkerMovementManager::on_restrictions_change	()
 		set_nearest_accessible_position	();
 }
 
-void CStalkerMovementManager::adjust_speed_to_animation	(const EMovementDirection &movement_direction)
+float CStalkerMovementManager::speed					(const EMovementDirection &movement_direction)
 {
 	VERIFY								(movement_type() != eMovementTypeStand);
 
-	object().m_fCurSpeed				=
+	return								(
 		m_velocities->velocity	(
 			mental_state(),
 			body_state(),
 			movement_type(),
 			movement_direction
-		);
+		)
+	);
+}
 
-	set_desirable_speed					(object().m_fCurSpeed);
+void CStalkerMovementManager::setup_speed_from_animation(const float &speed)
+{
+	set_desirable_speed					(object().m_fCurSpeed = speed);
 }

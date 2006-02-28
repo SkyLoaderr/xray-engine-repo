@@ -123,6 +123,8 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 	);
 
 	if (eMentalStateDanger != movement.mental_state()) {
+		m_current_speed			= movement.speed(eMovementDirectionForward);
+
 		return					(
 			m_data_storage->m_part_animations.A[
 				body_state()
@@ -168,7 +170,7 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 		}
 	}
 
-	movement.adjust_speed_to_animation	(speed_direction);
+	m_current_speed				= movement.speed(speed_direction);
 
 	return						(
 		m_data_storage->m_part_animations.A[
@@ -185,6 +187,8 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 
 MotionID CStalkerAnimationManager::legs_no_move_animation	()
 {
+	m_current_speed				= 0.f;
+
 	const xr_vector<MotionID>	&animation = m_data_storage->m_part_animations.A[body_state()].m_in_place->A;
 
 	CStalkerMovementManager		&movement = object().movement();

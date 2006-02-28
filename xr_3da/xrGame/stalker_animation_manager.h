@@ -70,6 +70,10 @@ private:
 #endif
 
 private:
+	float							m_previous_speed;
+	float							m_current_speed;
+
+private:
 	IC		bool					strapped				() const;
 	IC		bool					standing				() const;
 	IC		void					fill_object_info		();

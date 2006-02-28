@@ -48,6 +48,9 @@ void CStalkerAnimationManager::reinit				()
 	m_storage					= 0;
 
 	m_call_script_callback		= false;
+
+	m_previous_speed			= 0.f;
+	m_current_speed				= 0.f;
 }
 
 void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
@@ -166,6 +169,7 @@ void CStalkerAnimationManager::update						()
 #endif
 			torso().reset		();
 			legs().reset		();
+
 			global().animation	(global_animation);
 #ifndef USE_HEAD_BONE_PART_FAKE
 			global().play		(m_skeleton_animated,global_play_callback,&object());
@@ -185,8 +189,27 @@ void CStalkerAnimationManager::update						()
 		torso().animation		(assign_torso_animation());
 		torso().play			(m_skeleton_animated,torso_play_callback,&object());
 
-		legs().animation		(assign_legs_animation());
+		float					speed = 0.f;
+		bool					first_time = !legs().animation();
+		bool					result = legs().animation(assign_legs_animation());
+		
+		if (!first_time && !result) {
+			VERIFY				(legs().blend());
+			float				amount = legs().blend()->blendAmount;
+			m_previous_speed	= (m_current_speed - m_previous_speed)*amount + m_previous_speed;
+		}
+
 		legs().play				(m_skeleton_animated,legs_play_callback,&object());
+		
+		if (result) {
+			VERIFY				(legs().blend());
+			float				amount = legs().blend()->blendAmount;
+			speed				= (m_current_speed - m_previous_speed)*amount + m_previous_speed;
+		}
+
+		if (!fis_zero(speed))
+			object().movement().setup_speed_from_animation	(speed);
+//			object().movement().setup_speed_from_animation	(m_current_speed);
 
 		VERIFY					(head().animation());
 		VERIFY					(torso().animation());

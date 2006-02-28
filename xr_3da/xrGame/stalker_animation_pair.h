@@ -48,7 +48,7 @@ public:
 	IC		void			reset					();
 			void			synchronize				(CKinematicsAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation_pair) const;
 	IC		bool			actual					() const;
-	IC		void			animation				(const MotionID &animation);
+	IC		bool			animation				(const MotionID &animation);
 	IC		const MotionID	&animation				() const;
 	IC		CBlend			*blend					() const;
 	IC		void			step_dependence			(bool value);
@@ -56,11 +56,15 @@ public:
 	IC		void			global_animation		(bool global_animation);
 	IC		bool			global_animation		() const;
 	IC		void			make_inactual			();
+
+public:
 #ifndef USE_HEAD_BONE_PART_FAKE
 			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
 #else
 			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part = all_bone_parts);
 #endif
+
+public:
 #ifdef DEBUG
 	IC		void			set_dbg_info			(LPCSTR object_name, LPCSTR animation_type_name);
 #endif
