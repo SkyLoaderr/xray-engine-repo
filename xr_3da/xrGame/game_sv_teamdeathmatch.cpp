@@ -150,7 +150,7 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 	{
 		team				= AutoTeam();
 	};
-//-----------------------------------------------------
+	//-----------------------------------------------------
 	NET_Packet Px;
 	GenerateGameMessage(Px);
 	Px.w_u32(GAME_EVENT_PLAYER_GAME_MENU_RESPOND);
@@ -159,12 +159,18 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 	m_server->SendTo(id_who,Px,net_flags(TRUE,TRUE));
 	//-----------------------------------------------------
 	if (ps_who->team == team) return;
-	
+	//-----------------------------------------------------
+	KillPlayer(id_who, ps_who->GameID);
+	//-----------------------------------------------------	
 	s16 OldTeam = ps_who->team;
 	ps_who->team = team;
-	if (OldTeam == 0) Money_SetStart(id_who);
+	TeamStruct* pTS = GetTeamData(team);
+	if (pTS)
+	{
+		if ((ps_who->money_for_round < pTS->m_iM_Start) || (OldTeam == 0))
+			Money_SetStart(id_who);
+	}
 
-	KillPlayer(id_who, ps_who->GameID);
 /////////////////////////////////////////////////////////
 	//Send Switch team message
 	NET_Packet			P;
