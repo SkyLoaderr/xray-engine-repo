@@ -457,7 +457,7 @@ bool	game_sv_mp::GetPosAngleFromActor				(ClientID id, Fvector& Pos, Fvector &An
 	return true;
 };
 
-TeamStruct* game_sv_mp::GetTeamData				(u8 Team)
+TeamStruct* game_sv_mp::GetTeamData				(u32 Team)
 {
 	VERIFY(TeamList.size());
 	if (TeamList.empty()) return NULL;

@@ -965,6 +965,54 @@ public:
 	}
 };
 
+
+class CCC_StartTeamMoney : public IConsole_Command {
+public:
+	CCC_StartTeamMoney(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+
+		game_sv_mp* pGameMP = smart_cast<game_sv_Deathmatch *>(Level().Server->game);
+		if (!pGameMP) return;
+
+		char Team[128] = "";
+		s32 TeamMoney = 0;
+		sscanf	(args,"%s %i", Team, &TeamMoney);
+
+		if (!Team[0])
+		{
+			Msg("- --------------------");
+			Msg("Teams start money:");
+			u32 TeamCount = pGameMP->GetTeamCount();
+			for (u32 i=0; i<TeamCount; i++)
+			{
+				TeamStruct* pTS = pGameMP->GetTeamData(i);
+				if (!pTS) continue;
+				Msg ("Team %d: %d", i, pTS->m_iM_Start);
+			}
+			Msg("- --------------------");
+			return;
+		}
+		else
+		{
+			u32 TeamID = 0;
+			s32 TeamStartMoney = 0;
+			sscanf	(args,"%i %i", &TeamID, &TeamStartMoney);
+			TeamStruct* pTS = pGameMP->GetTeamData(TeamID);
+			if (pTS) 
+			{
+				pTS->m_iM_Start = TeamStartMoney;
+			}
+		}
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Set Start Team Money"); 
+	}
+};
+
 class CCC_BanPlayer : public IConsole_Command {
 public:
 	CCC_BanPlayer(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
@@ -2340,6 +2388,8 @@ void CCC_RegisterCommands()
 
 	extern	INT g_sv_Wait_For_Players_Ready;
 	CMD4(CCC_Integer,	"sv_wait_for_players_ready",	&g_sv_Wait_For_Players_Ready, 0, 1);
+
+	CMD1(CCC_StartTeamMoney,	"sv_startteammoney"		);		
 		
 #endif
 	extern	INT G_DELAYED_ROUND_TIME;	

@@ -67,8 +67,7 @@ protected:
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 				void				SpawnPlayer				(ClientID id, LPCSTR N);
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
-				bool				GetPosAngleFromActor	(ClientID id, Fvector& Pos, Fvector &Angle);
-				TeamStruct*			GetTeamData				(u8 Team);
+				bool				GetPosAngleFromActor	(ClientID id, Fvector& Pos, Fvector &Angle);				
 				void				AllowDeadBodyRemove		(ClientID id, u16 GameID);
 				void				SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons );
 				void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
@@ -129,6 +128,9 @@ public:
 	virtual		void				ReadOptions				(shared_str &options);
 	virtual		void				ConsoleCommands_Create	();
 	virtual		void				ConsoleCommands_Clear	();
+
+	virtual		u32					GetTeamCount			()	{return TeamList.size();};	
+				TeamStruct*			GetTeamData				(u32 Team);
     
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
