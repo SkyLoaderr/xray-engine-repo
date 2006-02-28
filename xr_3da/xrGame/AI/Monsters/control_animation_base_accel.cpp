@@ -120,28 +120,29 @@ bool CControlAnimationBase::accel_chain_test()
 	return true;
 }
 
-bool CControlAnimationBase::accel_check_braking(float before_interval)
+bool CControlAnimationBase::accel_check_braking(float before_interval, float nominal_speed)
 {
-	if (!m_object->control().path_builder().is_moving_on_path())	return false;
-	if (!accel_active(eAV_Braking))		return false;
+	if (!m_man->path_builder().is_moving_on_path())						return (braking_mode = false);
+	if (!accel_active(eAV_Braking))										return (braking_mode = false);
 
 	float acceleration = accel_get(eAV_Braking);
-	float braking_dist	= (m_man->movement().velocity_current() * m_man->movement().velocity_current()) / acceleration;
+	float braking_dist	= (nominal_speed * ((braking_mode) ? nominal_speed : m_man->movement().velocity_current())) / (2 * acceleration);
+
 	braking_dist += before_interval;
+	if (m_man->path_builder().is_path_end(braking_dist))				return (braking_mode = true);
 
 	// проверить точки пути, где необходимо остановиться
 	float dist = 0.f;	// дистанция до найденной точки	
-	for (u32 i=m_object->movement().detail().curr_travel_point_index()+1; i < m_object->movement().detail().path().size(); i++) {
-		dist += m_object->movement().detail().path()[i].position.distance_to(m_object->movement().detail().path()[i-1].position);
+	for (u32 i=m_man->path_builder().detail().curr_travel_point_index()+1; i < m_man->path_builder().detail().path().size(); i++) {
+		dist += m_man->path_builder().detail().path()[i].position.distance_to(m_man->path_builder().detail().path()[i-1].position);
 
-		if ((m_object->movement().detail().path()[i].velocity == MonsterMovement::eVelocityParameterStand) && (dist < braking_dist)) {
-			return true;
+		if (m_man->path_builder().detail().path()[i].velocity == MonsterMovement::eVelocityParameterStand) {
+			if (dist < braking_dist) return (braking_mode = true);
+			else break;
 		}
 	}
 
-	if (m_object->control().path_builder().is_path_end(braking_dist)) return true;
-
-	return false;
+	return (braking_mode = false);
 }
 
 

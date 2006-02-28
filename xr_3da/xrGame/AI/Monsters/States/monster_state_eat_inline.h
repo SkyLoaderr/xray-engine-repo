@@ -52,13 +52,13 @@ void CStateMonsterEatAbstract::reselect_state()
 	//if (prev_substate == eStateEat_CorpseApproachWalk) { select_state(eStateEat_CheckCorpse); return; }
 
 	if (prev_substate == eStateEat_CorpseApproachRun) { select_state(eStateEat_CheckCorpse); return; }
-
+	
 	if (prev_substate == eStateEat_CheckCorpse) { 
 		if (object->ability_can_drag()) select_state(eStateEat_Drag);
 		else							select_state(eStateEat_Eat);
 		return; 
 	}
-	
+
 	if (prev_substate == eStateEat_Drag)		{ select_state(eStateEat_Eat);		return; }
 	if (prev_substate == eStateEat_Eat)			{ select_state(eStateEat_WalkAway); return; }
 	if (prev_substate == eStateEat_WalkAway)	{ select_state(eStateEat_Rest);		return; }
@@ -133,11 +133,10 @@ void CStateMonsterEatAbstract::setup_substates()
 		return;
 	}
 
-
 	if (current_substate == eStateEat_CheckCorpse) {
 		SStateDataAction data;
 		data.action			= ACT_STAND_IDLE;
-		data.spec_params	= ASP_CHECK_CORPSE;
+		data.spec_params	= 0;
 		data.time_out		= 1500;
 		data.sound_type	= MonsterSound::eMonsterSoundEat;
 		data.sound_delay = object->db().m_dwEatSndDelay;

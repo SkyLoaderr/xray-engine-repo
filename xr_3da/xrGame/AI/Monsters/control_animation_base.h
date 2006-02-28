@@ -189,7 +189,8 @@ public:
 	bool	accel_chain_get			(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
 	bool	accel_chain_test		();
 
-	bool	accel_check_braking		(float before_interval);
+	bool	accel_check_braking		(float before_interval, float nominal_speed);
+	bool	braking_mode;
 
 	// --------------------------------------------------------------------------------	
 

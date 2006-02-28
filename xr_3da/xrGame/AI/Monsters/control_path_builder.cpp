@@ -169,19 +169,22 @@ bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel
 bool CControlPathBuilder::is_path_end(float dist_to_end)
 {
 	if (!is_path_built())			return false;
-
-	if (detail().path().size() < 2) return true;
 	if (path_completed())			return true;
+	if (!is_moving_on_path())		return true;
 
-	//detail().completed(object().Position(),!detail().state_patrol_path()
+	u32 cur_point_idx	= detail().curr_travel_point_index();
+	u32	path_size		= detail().path().size();
+	if (path_size < 2)					return true;
+	if (cur_point_idx + 1 >= path_size)	return true;
 
-	float cur_dist_to_end = 0.f;
-	for (u32 i=detail().curr_travel_point_index(); i<detail().path().size()-1; i++) {
+	// count distance from current object position to the path end
+	float cur_dist_to_end = object().Position().distance_to(detail().path()[detail().curr_travel_point_index()+1].position);
+	for (u32 i=detail().curr_travel_point_index()+1; i<detail().path().size()-1; i++) {		
 		cur_dist_to_end += detail().path()[i].position.distance_to(detail().path()[i+1].position);
 		if (cur_dist_to_end > dist_to_end) break;
 	}
 
-	if (!is_moving_on_path() || (cur_dist_to_end < dist_to_end)) return true;
+	if ((cur_dist_to_end < dist_to_end)) return true;
 	return false;
 }
 

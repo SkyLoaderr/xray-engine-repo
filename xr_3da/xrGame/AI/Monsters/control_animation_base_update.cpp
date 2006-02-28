@@ -6,7 +6,7 @@
 #include "../../PHMovementControl.h"
 #include "../../detail_path_manager.h"
 #include "monster_velocity_space.h"
-
+#include "control_path_builder_base.h"
 
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
@@ -43,7 +43,7 @@ void CControlAnimationBase::update()
 void CControlAnimationBase::SelectAnimation()
 {
 	EAction							action = m_tAction;
-	if (m_object->control().path_builder().is_moving_on_path()) action = GetActionFromPath();
+	if (m_object->control().path_builder().is_moving_on_path() && m_object->path().enabled()) action = GetActionFromPath();
 
 	cur_anim_info().motion			= m_tMotions[action].anim;
 
@@ -119,24 +119,29 @@ void CControlAnimationBase::SelectVelocities()
 	//	// проверить на совпадение
 	//	R_ASSERT(fsimilar(path_vel.linear,	anim_vel.linear));
 	//	R_ASSERT(fsimilar(path_vel.angular,	anim_vel.angular));
-
+	
 	// установка линейной скорости	
 	if (m_object->state_invisible) {
 		// если невидимый, то установить скорость из пути
 		m_object->move().set_velocity(_abs(path_vel.linear));
 	} else {
-
-		// - проверить на возможность торможения
-		if (!accel_check_braking(0.f)) {
-			if (fis_zero(_abs(anim_vel.linear))) stop_now();
-			else m_object->move().set_velocity(_abs(anim_vel.linear));
-		} else {
-			m_object->move().stop_accel();
+		
+		if (fis_zero(_abs(anim_vel.linear))) stop_now();
+		else {
+			// - проверить на возможность торможения
+			if (!accel_check_braking(-2.f, _abs(anim_vel.linear))) {
+				m_object->move().set_velocity(_abs(anim_vel.linear));
+				//no braking mode
+			} else {
+				m_object->move().stop_accel();
+				//braking mode
+			}
 		}
 	}
 	
 	// финальная корректировка скорости анимации по физической скорости
 	if (b_moving) {
+			
 		EMotionAnim new_anim;
 		float		a_speed;
 

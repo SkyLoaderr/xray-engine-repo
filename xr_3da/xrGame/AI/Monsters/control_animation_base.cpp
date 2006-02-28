@@ -77,6 +77,9 @@ void CControlAnimationBase::reinit()
 	m_man->subscribe			(this, ControlCom::eventAnimationSignal);
 
 	AA_reload					(pSettings->r_string(*(m_object->cNameSect()), "attack_params"));
+
+	braking_mode				= false;
+
 }
 
 void CControlAnimationBase::on_start_control(ControlCom::EControlType type)

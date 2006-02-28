@@ -112,6 +112,7 @@ public:
 	IC	void	set_desirable_mask		(u32 mask) {m_desirable_mask = mask;}
 		void	set_dest_direction		(const Fvector &dir);
 
+	IC	bool	enabled					() {return m_enable;}
 	// -------------------------------------------------------------------
 	// Set methods
 		void		set_target_point		(const Fvector &position, u32 node = u32(-1));
