@@ -367,7 +367,8 @@ void CUITradeWnd::Hide()
 		StopTrade();
 	
 	m_uidata->UIDealMsg = NULL;
-	HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money");
+	if(HUD().GetUI())
+		HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money");
 }
 
 void CUITradeWnd::StartTrade()
