@@ -379,8 +379,7 @@ void CWeapon::Load		(LPCSTR section)
 
 	m_bHideCrosshairInZoom = true;
 	if(pSettings->line_exist(hud_sect, "zoom_hide_crosshair"))
-		m_bHideCrosshairInZoom = !!pSettings->r_bool(hud_sect, "zoom_hide_crosshair");
-
+		m_bHideCrosshairInZoom = !!pSettings->r_bool(hud_sect, "zoom_hide_crosshair");	
 }
 
 void CWeapon::LoadFireParams		(LPCSTR section, LPCSTR prefix)
@@ -744,7 +743,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			{
 				//если оружие чем-то занято, то ничего не делать
 				if(IsPending()) return false;
-				if (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH) return false;
+//				if (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH) return false;
 					
 				if(flags&CMD_START) 
 				{
@@ -761,6 +760,8 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 					{
 						m_ammoType = l_newType;
 						m_pAmmo = NULL;
+						if (unlimited_ammo())
+							m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType]);
 						Reload();
 					}
 				}
