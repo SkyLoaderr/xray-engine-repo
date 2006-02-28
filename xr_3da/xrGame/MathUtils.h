@@ -369,7 +369,6 @@ IC u8 TransferenceAndThrowVelToTgA(const Fvector &transference,float throw_vel,f
 }
 IC u8 TransferenceAndThrowVelToThrowDir(const Fvector &transference,float throw_vel,float gravity_accel,Fvector	throw_dir[2])
 {
-	return 0;
 	throw_dir[0]=throw_dir[1]=transference;
 	Fvector2 tgA;
 	float s;
