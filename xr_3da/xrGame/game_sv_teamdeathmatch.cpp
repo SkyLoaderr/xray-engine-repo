@@ -23,6 +23,7 @@ void game_sv_TeamDeathmatch::net_Export_State						(NET_Packet& P, ClientID to)
 {
 	inherited::net_Export_State(P, to);
 	P.w_u8			(u8(m_bFriendlyIndicators));
+	P.w_u8			(u8(m_bFriendlyNames));
 }
 
 u8 game_sv_TeamDeathmatch::AutoTeam() 
@@ -331,6 +332,7 @@ void game_sv_TeamDeathmatch::ReadOptions				(shared_str &options)
 	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
 	m_bAutoTeamSwap		= get_option_i(*options,"aswap") != 0;
 	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
+	m_bFriendlyNames = get_option_i(*options,"fn",0) != 0;
 
 	int iFF = get_option_i(*options,"ffire",0);
 	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
@@ -347,6 +349,7 @@ void game_sv_TeamDeathmatch::ConsoleCommands_Create	()
 	CMD_ADD(CCC_SV_Int,"sv_auto_team_balance", (int*)&m_bAutoTeamBalance,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_auto_team_swap", (int*)&m_bAutoTeamSwap,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_friendly_indicators", (int*)&m_bFriendlyIndicators, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_friendly_names", (int*)&m_bFriendlyNames, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
 	CMD_ADD(CCC_SV_Float,"sv_friendlyfire", &m_fFriendlyFireModifier, 0.0f,2.0f,g_bConsoleCommandsCreated_TDM,Cmnd);
 	//-------------------------------------
 	g_bConsoleCommandsCreated_TDM = true;
@@ -359,6 +362,7 @@ void game_sv_TeamDeathmatch::ConsoleCommands_Clear	()
 	CMD_CLEAR("sv_auto_team_balance");
 	CMD_CLEAR("sv_auto_team_swap");
 	CMD_CLEAR("sv_friendly_indicators");
+	CMD_CLEAR("sv_friendly_names");
 	CMD_CLEAR("sv_friendlyfire");
 };
 

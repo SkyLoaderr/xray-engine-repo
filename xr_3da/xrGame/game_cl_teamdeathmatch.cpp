@@ -40,6 +40,7 @@ game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
 
 	m_bShowPlayersNames = false;
 	m_bFriendlyIndicators = false;
+	m_bFriendlyNames	= false;
 
 	LoadSndMessages();
 }
@@ -72,6 +73,7 @@ void				game_cl_TeamDeathmatch::net_import_state		(NET_Packet& P)
 	bool teamsEqual = (!teams.empty())?(teams[0].score == teams[1].score) : false;
 	inherited::net_import_state	(P);
 	m_bFriendlyIndicators = !!P.r_u8();
+	m_bFriendlyNames = !!P.r_u8();
 	if (!teams.empty())
 	{	
 		if (teamsEqual)
@@ -406,7 +408,7 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 	};
 }
 
-BOOL	g_bShowPlayerNames = FALSE;
+//BOOL	g_bShowPlayerNames = FALSE;
 
 bool	game_cl_TeamDeathmatch::OnKeyboardPress			(int key)
 {
@@ -454,7 +456,7 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			if (ps == local_player) continue;
 
 			float dup = 0.0f;
-			if (g_bShowPlayerNames && m_bShowPlayersNames)
+			if (/*m_bFriendlyNames && */m_bShowPlayersNames)
 			{
 				VERIFY(pObject);
 				CActor* pActor = smart_cast<CActor*>(pObject);

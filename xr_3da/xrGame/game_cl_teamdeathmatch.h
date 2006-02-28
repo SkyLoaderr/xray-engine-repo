@@ -10,6 +10,7 @@ typedef game_cl_Deathmatch inherited;
 	CUIGameTDM*							m_game_ui;
 protected:
 	bool								m_bFriendlyIndicators;
+	bool								m_bFriendlyNames;
 
 	virtual			void				shedule_Update			(u32 dt);
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);
@@ -44,6 +45,7 @@ public :
 	virtual			void				Set_ShowPlayerNames		(bool Show) {m_bShowPlayersNames = Show;};
 	virtual			bool				Get_ShowPlayerNames		() {return m_bShowPlayersNames;};
 	virtual			s16					ModifyTeam				(s16 Team)	{return (Team != -1) ? Team-1 : Team;};
+	virtual			bool				Get_ShowPlayerNamesEnabled () {return m_bFriendlyNames;};
 
 //from UIGameTDM
 protected:

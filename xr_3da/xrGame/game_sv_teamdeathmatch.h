@@ -11,6 +11,7 @@ protected:
 	BOOL		m_bAutoTeamBalance;
 	BOOL		m_bAutoTeamSwap;
 	BOOL		m_bFriendlyIndicators;
+	BOOL		m_bFriendlyNames;
 	float		m_fFriendlyFireModifier;
 
 

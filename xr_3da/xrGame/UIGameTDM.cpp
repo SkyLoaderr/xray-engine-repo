@@ -110,7 +110,10 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 		{
 			if (m_game)
 			{
-				m_game->Set_ShowPlayerNames( !m_game->Get_ShowPlayerNames() );
+				if (m_game->Get_ShowPlayerNamesEnabled())
+					m_game->Set_ShowPlayerNames( !m_game->Get_ShowPlayerNames() );
+				else
+					m_game->Set_ShowPlayerNames(true);
 				return true;
 			};
 		}break;
@@ -121,7 +124,20 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 
 bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
 {
+	switch (dik) {
+		case DIK_CAPSLOCK :
+		{
+			if (m_game)
+			{
+				if (!m_game->Get_ShowPlayerNamesEnabled())
+					m_game->Set_ShowPlayerNames(false);
+				return true;
+			};
+		}break;
+
+	}
 	if(inherited::IR_OnKeyboardRelease(dik)) return true;
+	
 	return false;
 }
 

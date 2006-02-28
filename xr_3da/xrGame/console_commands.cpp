@@ -81,7 +81,7 @@ extern	BOOL	g_b_COD_PickUpMode		;
 extern	BOOL	g_bShowHitSectors		;
 extern	INT		g_iWeaponRemove			;
 extern	INT		g_iCorpseRemove			;
-extern	BOOL	g_bShowPlayerNames		;
+//extern	BOOL	g_bShowPlayerNames		;
 extern	BOOL	g_bCollectStatisticData ;
 extern	BOOL	g_bStatisticSaveAuto	;
 extern	BOOL	g_SV_Disable_Auth_Check	;
@@ -2362,7 +2362,7 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer,		"sv_remove_weapon",		&g_iWeaponRemove, -1, 1);
 	CMD4(CCC_Integer,		"sv_remove_corpse",		&g_iCorpseRemove, -1, 1);
-	CMD4(CCC_Integer,		"cl_show_names",		&g_bShowPlayerNames, 0, 1);
+//	CMD4(CCC_Integer,		"cl_show_names",		&g_bShowPlayerNames, 0, 1);
 
 	CMD4(CCC_Integer,		"sv_statistic_collect", &g_bCollectStatisticData, 0, 1);
 	CMD1(CCC_SaveStatistic,	"sv_statistic_save");
