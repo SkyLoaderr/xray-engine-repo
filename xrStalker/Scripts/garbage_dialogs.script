@@ -5,6 +5,8 @@ function transfer_seriy_flash(npc, actor)
 	if item then
 		dialogs.relocate_item(npc, item, "in")
 	end
+	db.actor:give_info_portion("agr_can_ask_krot_about_gunslinger")
+	db.actor:give_info_portion("agr_krot_band_start")
 end
 
 function has_dolg_bribe(actor, npc)
