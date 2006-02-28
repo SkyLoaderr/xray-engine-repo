@@ -309,7 +309,8 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 	case GAME_EVENT_ROUND_STARTED:
 		{
-			sprintf(Text, "%sRound started !!!",Color_Main);
+//			sprintf(Text, "%sRound started !!!",Color_Main);
+			sprintf(Text, "%Match Started !!!",Color_Main);
 			CommonMessageOut(Text);
 			OnSwitchPhase_InProgress();
 		}break;
@@ -318,8 +319,8 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			string64 reason;
 			P.r_stringZ(reason);
 
-			sprintf(Text, "%sRound Over (%s)", Color_Main, reason);
-			CommonMessageOut(Text);
+//			sprintf(Text, "%sRound Over (%s)", Color_Main, reason);
+//			CommonMessageOut(Text);
 		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);

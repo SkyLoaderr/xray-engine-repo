@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "weaponmagazinedwgrenade.h"
 #include "WeaponHUD.h"
+#include "HUDManager.h"
 #include "entity.h"
 #include "ParticlesObject.h"
 #include "GrenadeLauncher.h"
@@ -12,6 +13,10 @@
 #include "../skeletoncustom.h"
 #include "object_broker.h"
 #include "game_base_space.h"
+#include "MathUtils.h"
+#ifdef DEBUG
+#include "phdebug.h"
+#endif
 
 CWeaponMagazinedWGrenade::CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoundType) : CWeaponMagazined(name, eSoundType)
 {
@@ -311,6 +316,34 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 											launch_matrix.j, launch_matrix.i);
 		launch_matrix.c.set(p1);
 
+		if (IsZoomed())
+		{
+			collide::rq_result RQ;
+			if (Level().ObjectSpace.RayPick(p1, d, 150.0f, collide::rqtBoth, RQ, this))
+			{
+				//			collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+				Fvector Transference;
+				//Transference.add(p1, Fvector().mul(d, RQ.range));
+				Transference.mul(d, RQ.range);
+				Fvector res[2]; Fvector2 res2;
+#ifdef		DEBUG
+				DBG_OpenCashedDraw();
+				DBG_DrawLine(p1,Fvector().add(p1,d),D3DCOLOR_XRGB(255,0,0));
+#endif
+				u8 canfire0 = TransferenceAndThrowVelToThrowDir(Transference, CRocketLauncher::m_fLaunchSpeed, EffectiveGravity(), res);
+#ifdef DEBUG
+				if(canfire0>0)DBG_DrawLine(p1,Fvector().add(p1,res[0]),D3DCOLOR_XRGB(0,255,0));
+				if(canfire0>1)DBG_DrawLine(p1,Fvector().add(p1,res[1]),D3DCOLOR_XRGB(0,0,255));
+				DBG_ClosedCashedDraw(30000);
+#endif
+				u8 canfire1 = TransferenceAndThrowVelToTgA(Transference, CRocketLauncher::m_fLaunchSpeed, EffectiveGravity(), res2);
+				if (canfire1 != 0)
+				{
+					d = res[0];
+				};
+			}
+		};
+		
 		d.normalize();
 		d.mul(CRocketLauncher::m_fLaunchSpeed);
 		VERIFY2(_valid(launch_matrix),"CWeaponMagazinedWGrenade::SwitchState. Invalid launch_matrix!");

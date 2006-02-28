@@ -355,7 +355,6 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
-//			HUD().GetUI()->ShowIndicators();
 			if (local_player)
 			{
 				if (local_player->testFlag(GAME_PLAYER_FLAG_ONBASE))
@@ -366,19 +365,62 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				{
 					m_bBuyEnabled = FALSE;
 				};
-			};
+			};			
 
-			if (m_bBuyEnabled)
+			if (local_player && Level().CurrentControlEntity())
 			{
-				if (local_player && Level().CurrentControlEntity() && Level().CurrentControlEntity()->CLS_ID == CLSID_OBJECT_ACTOR/*pCurActor && pCurActor->g_Alive() && !m_gameUI->pCurBuyMenu->IsShown()*/ )
+				if (Level().CurrentControlEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
 				{
-					if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && 
-						!(pCurSkinMenu && pCurSkinMenu->IsShown()))
-					{					
-						m_game_ui->SetBuyMsgCaption("Press B to access Buy Menu");
+					if(m_game_ui) m_game_ui->SetBuyMsgCaption("");
+					if (m_bBuyEnabled)
+					{
+						if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && 
+							!(pCurSkinMenu && pCurSkinMenu->IsShown()))
+						{					
+							if(m_game_ui) m_game_ui->SetBuyMsgCaption("Press B to access Buy Menu");
+						};
+					}					
+					
+					if (m_game_ui)
+					{
+						if (local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+							m_game_ui->SetPressJumpMsgCaption("Press Fire to become a Spectator");
+						else
+							m_game_ui->SetPressJumpMsgCaption("");
 					};
-				};
-			};
+				}
+				else
+				{					
+					if(m_game_ui) m_game_ui->SetBuyMsgCaption("");
+					if (m_bTeamSelected && m_bSkinSelected)
+					{
+						if (iReinforcementTime != 0)
+						{
+							if (!pBuySpawnMsgBox->IsShown() && 							
+								(local_player->money_for_round+m_iSpawn_Cost)>=0)
+							{
+								if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to pay for immediate spawn");
+							}
+							else
+							{
+								if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("");
+							}
+						}
+						else
+						{
+							if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to spawn immediately");
+						};
+					}
+					else
+					{
+						if (!m_bTeamSelected)
+							if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to select team");
+							else
+								if (!m_bSkinSelected)
+									if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to select skin");
+					}
+				};				
+			}
 
 			if (local_player/*pCurActor && !m_game_ui->pCurBuyMenu->IsShown()*/)
 			{
@@ -391,26 +433,8 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 					u32 dTime;
 					if (s32(CurTime) > dReinforcementTime) dTime = 0;
 					else dTime = iCeil(float(dReinforcementTime - CurTime) / 1000);
-					
-//					string64 tmp;
-//					_itoa(dTime, tmp, 10);
-//					strconcat(S, "Next reinforcement will arrive at . . .", tmp);
-					
-//					m_game_ui->SetReinforcementCaption(S);
+							
 					m_game_ui->m_pReinforcementInidcator->SetPos(dTime, iReinforcementTime/1000);
-
-/*
-					CActor* pActor = NULL;
-					if (Level().CurrentViewEntity()->CLS_ID == CLSID_OBJECT_ACTOR)
-						pActor = smart_cast<CActor*>(Level().CurrentViewEntity());
-
-					if (Level().CurrentViewEntity()->CLS_ID == CLSID_SPECTATOR || 
-						(pActor && !pActor->g_Alive()))
-							m_game_ui->SetReinforcementCaption(S);
-					else
-						m_game_ui->SetReinforcementCaption("");
-						*/
-
 				}else
 					m_game_ui->m_pReinforcementInidcator->SetPos(0, 0);
 
@@ -418,23 +442,9 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				s16 lt = local_player->team;
 				if (lt>=0)
 				{
-//					sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
-//									teams[lt-1].score, 
-//									teams[(lt==1)?1:0].score, 
-//									artefactsNum);
-//					m_game_ui->SetScoreCaption(S);
-
 					if(m_game_ui)
 						m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
-
-/*					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
-					{
-						sprintf(S, "%d", artefactsNum);
-						HUD().GetUI()->UIMainIngameWnd->GetPDAOnline()->SetText(S);
-						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
-					}
-*/
-				};
+				};				
 	/*
 			if ( (artefactBearerID==0))// && (artefactID!=0) )
 				{
