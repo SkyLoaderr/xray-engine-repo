@@ -10,7 +10,7 @@
 #include "xr_level_controller.h"
 #include "../skeletoncustom.h"
 #include "ai_object_location.h"
-
+#include "ExtendedGeom.h"
 
 #define MSG1(msg)			
 #define PLAYING_ANIM_TIME 10000
@@ -247,7 +247,12 @@ void CMissile::UpdateCL()
 				clamp(m_fThrowForce, m_fMinForce, m_fMaxForce);
 			}
 		}
-	}	
+	}
+	if(m_dwDestroyTime!=0xffffffff&&Device.dwTimeGlobal-m_dwDestroyTime+m_dwDestroyTimeMax>100&&PPhysicsShell()&&PPhysicsShell()->isActive())
+	{
+		PPhysicsShell()->remove_ObjectContactCallback(ExitContactCallback);
+		PPhysicsShell()->set_CallbackData(NULL);
+	}
 }
 void CMissile::shedule_Update(u32 dt)
 {
@@ -707,6 +712,9 @@ void CMissile::activate_physic_shell()
 	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
 	//m_pPhysicsShell->AddTracedGeom();
 	m_pPhysicsShell->SetAllGeomTraced();
+	m_pPhysicsShell->add_ObjectContactCallback(ExitContactCallback);
+	m_pPhysicsShell->set_CallbackData(smart_cast<CPhysicsShellHolder*>(EA));
+	//m_pPhysicsShell->remove_ObjectContactCallback(ExitContactCallback);
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 	MSG1("end self activ shell");
 	//Msg("time [%f]", Device.fTimeGlobal);
@@ -743,4 +751,22 @@ void CMissile::OnDrawUI()
 			g_MissileForceShape->Draw	();
 		}
 	}	
+}
+
+void	 CMissile::		ExitContactCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+{
+	dxGeomUserData	*gd1=NULL,	*gd2=NULL;
+	if(bo1)
+	{
+		gd1 =retrieveGeomUserData(c.geom.g1);
+		gd2 =retrieveGeomUserData(c.geom.g2);
+	}
+	else
+	{
+		gd2 =retrieveGeomUserData(c.geom.g1);
+		gd1 =retrieveGeomUserData(c.geom.g2);
+	}
+	if(gd1&&gd2&&(CPhysicsShellHolder*)gd1->callback_data==gd2->ph_ref_object)	
+																				do_colide=false;
+
 }

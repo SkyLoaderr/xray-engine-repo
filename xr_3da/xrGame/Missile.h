@@ -12,7 +12,8 @@
 #define MS_EMPTY	7
 #define MS_HIDING	8
 #define MS_PLAYING	9
-
+struct dContact;
+struct SGameMtl;
 class CMissile : public CHudItemObject
 {
 	typedef CHudItemObject inherited;
@@ -127,4 +128,5 @@ protected:
 public:
 	virtual u32				ef_weapon_type		() const;
 	IC		u32				destroy_time		() const {return m_dwDestroyTime;};
+	static	void			ExitContactCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 };
