@@ -1,3 +1,24 @@
 <article id="yan_vasilyev_info" name="yantar_vasilyev_pda" group="yan_find_ghost_task" article_type="info">
         <text>storyline_vasilyev_info</text>
 </article>
+<article id="descr_yan_kill_brain" name="" group="yan_kill_brain_task/0" article_type="task">
+        <text>descr_yan_kill_brain</text>
+</article>
+<article id="descr_yan_find_scientist" name="" group="yan_find_scientist/0" article_type="task">
+        <text>descr_yan_find_scientist</text>
+</article>
+<article id="descr_yan_scientist_return_task" name="" group="yan_scientist_return_task/0" article_type="task">
+        <text>descr_yan_scientist_return_task</text>
+</article>
+<article id="descr_yan_find_lab" name="" group="yan_find_vasilyev_task/0" article_type="task">
+        <text>descr_yan_find_lab</text>
+</article>
+<article id="descr_yan_find_ghost_task" name="" group="yan_find_ghost_task/0" article_type="task">
+        <text>descr_yan_find_ghost_task</text>
+</article>
+<article id="descr_yan_provodnik_task" name="" group="yan_provodnik_task/0" article_type="task">
+        <text>descr_yan_provodnik_task</text>
+</article>
+<article id="descr_yan_find_scientist_semenov" name="" group="yan_find_scientist_semenov/0" article_type="task">
+        <text>descr_yan_find_scientist_semenov</text>
+</article>

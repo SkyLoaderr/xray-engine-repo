@@ -4,6 +4,7 @@
 			<text>yan_kill_brain</text>
 			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
+			<article>descr_yan_kill_brain</article>
 		</objective>
 		<objective>
 			<text>yan_switcher_off</text>
@@ -36,6 +37,7 @@
 			<object_story_id>yan_ecolog_help</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
 			<function_fail>yantar_tasks.yan_scientist_task_fail</function_fail>
+			<article>descr_yan_find_scientist</article>
 		</objective>
 		<objective>
 			<text>yan_talk_to_kruglov</text>
@@ -64,6 +66,7 @@
 			<object_story_id>yan_semenov_help</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
 			<function_fail>yantar_tasks.yan_scientist_task_fail</function_fail>
+			<article>descr_yan_find_scientist_semenov</article>
 		</objective>
 		<objective>
 			<text>yan_talk_to_semenov</text>
@@ -89,6 +92,7 @@
 			<text>yan_scientist_return_task</text>
 			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_find_vasilyev_start</infoportion_complete>
+			<article>descr_yan_scientist_return_task</article>
 		</objective>
 		<objective>
 			<text>yan_scientist_return</text>
@@ -108,6 +112,7 @@
 			<infoportion_set_complete>yantar_vasilyev_info</infoportion_set_complete>
 			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
 			<function_call_complete>yantar_tasks.yantar_vasilyev_spam</function_call_complete>
+			<article>descr_yan_find_lab</article>
 		</objective>
 		<objective>
 			<text>yan_find_vasilyev</text>
@@ -132,6 +137,7 @@
 			<object_story_id>yan_mapspot_from_vasilyev</object_story_id>
 			<infoportion_complete>yantar_find_ghost_task_end</infoportion_complete>
 			<infoportion_set_complete>yan_kill_brain_task_start</infoportion_set_complete>
+			<article>descr_yan_find_ghost_task</article>
 		</objective>
 		<objective>
 			<text>yan_find_labX16</text>
@@ -152,6 +158,7 @@
 			<text>yan_provodnik_task</text>
 			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>esc_find_doctor_start</infoportion_complete>
+			<article>descr_yan_provodnik_task</article>
 		</objective>
 		<objective>
 			<text>yan_provodnik_about_doctor</text>
