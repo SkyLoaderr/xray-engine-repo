@@ -36,10 +36,6 @@ function ph_force:update (delta)
     local dir = self.st.point:sub (self.object:position ())
     dir:normalize ()
 	self.object:set_const_force (dir, self.st.force, self.st.time)
-	printf ("APPLY FORCE TO OBJECT %s", self.object:name ())
-	printf ("Direction : %f, %f, %f", dir.x, dir.y, dir.z)
-	printf ("Time : %d", self.st.time)
-	printf ("Force : %d", self.st.force)
 	self.process = true
 end
 ----------------
