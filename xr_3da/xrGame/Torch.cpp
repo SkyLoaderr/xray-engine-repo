@@ -297,8 +297,9 @@ void CTorch::UpdateCL			()
 		}
 		else {
 			// approximately the same
-			M	= H_Parent()->XFORM	();
-			H_Parent()->Center		(M.c);
+			M		= H_Parent()->XFORM		();
+			H_Parent()->Center				(M.c);
+			M.c.y	+= H_Parent()->Radius	()*2.f/3.f;
 		}
 
 		if (actor) {
