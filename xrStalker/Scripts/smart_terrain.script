@@ -32,6 +32,9 @@ local smart_section = "smart_terrains"
 
 exclusives = {}
 
+-- список всех серверных объектов смартов, которые зарегистрированы в симуляторе
+local smart_terrains = {}
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
@@ -669,16 +672,18 @@ end
 function se_smart_terrain:get_level_name()
 --	return "chugai_test"
 
-	printf( "[smart_terrain %s] is on level %s", self:name(), alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() ) )
+--	printf( "[smart_terrain %s] is on level %s", self:name(), alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() ) )
 
 	return alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() )
 end
 
--- инициализация объекта.
+-- регистрация объекта симуляторе.
 -- вызывается симулятором.
 function se_smart_terrain:on_register()
 --	printf( "[smart_terrain %s] on_register called", self:name() )
 	cse_alife_smart_zone.on_register( self )
+
+	smart_terrains[self.id] = self
 
 	-- DEBUG
 	if self.disabled then
@@ -701,6 +706,19 @@ function se_smart_terrain:on_register()
 	
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
+end
+
+-- дерегистрация объекта симуляторе.
+-- вызывается симулятором.
+function se_smart_terrain:on_unregister()
+	cse_alife_smart_zone.on_unregister( self )
+
+	smart_terrains[self.id] = nil
+end
+
+-- вывод статистики смарта
+function se_smart_terrain:stat()
+	self.gulag:stat( self:get_level_name() )
 end
 
 -- Обновление. В онлайне вызывается через binder.
@@ -801,4 +819,16 @@ function get_smart_terrain_conditions( self )
 	end
 
 	return self.smart_terrain_conditions
+end
+
+--------------------
+-- Вывод статистики по всем смартам в симуляции
+function stat()
+	printf( "Smart terrains statistics START" )
+
+	for id, obj in pairs( smart_terrains ) do
+		obj:stat()
+	end
+
+	printf( "Smart terrains statistics END" )
 end

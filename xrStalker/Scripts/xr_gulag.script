@@ -767,6 +767,21 @@ function gulag:print()
 	end
 end
 
+-- вывод статистики
+function gulag:stat( level_name )
+	local npc_name
+
+	for i, job in pairs( self.Job_avail_in_state ) do
+		if job.object then
+			npc_name = self.npc_info[job.object].name
+		else
+			npc_name = "-"
+		end
+
+		printf( "%s %s %s", level_name, self.name, npc_name )
+	end
+end
+
 -- получить количество живых объектов под смартом
 function gulag:get_population()
 	local i = 0
