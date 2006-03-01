@@ -3698,6 +3698,9 @@
 				<File
 					RelativePath=".\Scripts\task_level7.script">
 				</File>
+				<File
+					RelativePath=".\Scripts\task_level8.script">
+				</File>
 				<Filter
 					Name="Petruxa"
 					Filter="">

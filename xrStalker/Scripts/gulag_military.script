@@ -666,9 +666,11 @@ function check_state (gulag)
     -- отсеиваем четвертое состояние.
     if db.actor:has_info ("mil_lukash_dead") or db.actor:has_info ("mil_freedom_quests_end") then
        if this.check_enemy (gulag) == true then
+          printf ("[GULAG_FREEDOM] STATE 2")  
           return 2
        else
           db.actor:disable_info_portion ("mil_freedom_under_attack")
+          printf ("[GULAG_FREEDOM] STATE 4")  
           return 4
        end          
     end   
@@ -676,25 +678,31 @@ function check_state (gulag)
     if gulag.state == 3 then
        if db.actor:has_info ("mil_dolg_after_explode") or gulag:npc_is_enemy_to_anybody (db.actor) == true then
           db.actor:disable_info_portion ("mil_freedom_attack")
+          printf ("[GULAG_FREEDOM] STATE 2")  
           return 2
        end   
        if db.actor:has_info ("mil_freedom_attack") then
+          printf ("[GULAG_FREEDOM] STATE 3")  
           return 3
        end
     end        
     
     if db.actor:has_info ("mil_freedom_under_attack") then
        if this.check_enemy (gulag) == true or db.actor:dont_has_info ("mil_dolg_dead") then
+          printf ("[GULAG_FREEDOM] STATE 2")    
           return 2
        else
           db.actor:disable_info_portion ("mil_freedom_under_attack")
+          printf ("[GULAG_FREEDOM] STATE 0")    
           return 0
        end
     end            
     
     if db.actor:has_info ("mil_freedom_attack") then
+       printf ("[GULAG_FREEDOM] STATE 3")   
        return 3
     end   
+    printf ("[GULAG_FREEDOM] STATE 0")  
     return 0
 end
 
