@@ -25,7 +25,7 @@
 		<actor_dialog>bar_bar_barman_veterans_finish</actor_dialog>
 		<actor_dialog>bar_bar_barman_killer_ambush</actor_dialog>
 		<!--actor_dialog>bar_bar_barmen_jobs_room_darklabdoc_done</actor_dialog-->
-		<actor_dialog>bar_bar_barmen_jobs_room_complete</actor_dialog>
+		<!--actor_dialog>bar_bar_barmen_jobs_room_complete</actor_dialog-->
 		<actor_dialog>bar_bar_barmen_about_psih</actor_dialog>
 		<actor_dialog>bar_bar_barmen_about_gorbun</actor_dialog>
 		<actor_dialog>tm_barman_dialog</actor_dialog>
