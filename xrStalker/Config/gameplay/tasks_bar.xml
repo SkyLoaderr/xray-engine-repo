@@ -226,15 +226,18 @@
 		<title>descr_deactivate_radar</title>
 		<objective>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_deactivate_radar_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>find_and_deactivate_radar</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="find_and_deactivate_radar">green_location</map_location_type>
             <object_story_id>rad_antenna</object_story_id>
+			<infoportion_complete>bar_deactivate_radar_done</infoportion_complete>
 		</objective>
 		<objective>
 			<text>deactivate_radar_now</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>bar_deactivate_radar_done</infoportion_complete>
 		</objective>
 	</game_task>
