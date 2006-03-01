@@ -125,8 +125,10 @@ end
 function actor_binder:task_callback(_task, _objective, _state)
 	if _objective:get_idx() == 0 then
 		if _state == task.fail then
+			task_manager.reward_by_task(_task, false)
 			news_manager.send_task(db.actor, "fail")
 		elseif _state == task.completed then
+			task_manager.reward_by_task(_task, true)
 			news_manager.send_task(db.actor, "complete")
 		else
 			news_manager.send_task(db.actor, "new")
@@ -136,7 +138,6 @@ function actor_binder:task_callback(_task, _objective, _state)
 			news_manager.send_task(db.actor, "update")
 		end
 	end
-	--game_stats.update_task (id_task, subtask, id_state, self.object)
 end
 
 

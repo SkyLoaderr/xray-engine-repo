@@ -55,6 +55,7 @@
 			medkit \n
 		</supplies>
 		
+
 		<start_dialog>escape_lager_volk_hello</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
