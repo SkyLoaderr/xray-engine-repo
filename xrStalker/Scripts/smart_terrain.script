@@ -354,6 +354,11 @@ function se_smart_terrain:read_params()
 		end
 	end
 
+	local ltx = system_ini()
+
+	self.rank_inc_min = ltx:r_string( "smart_terrain_rank_change", "min" )
+	self.rank_inc_max = ltx:r_string( "smart_terrain_rank_change", "max" )
+
 	self.gulag = xr_gulag.gulag( self, self.gparams.type, self.gparams.squad, self.gparams.groups, self.npc_info, self.gparams.capacity )
 
 	self.gulag_working = false
@@ -381,7 +386,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		end
 
 --		if string.find( obj:name(), "esc_novice_attacker" ) ~= nil then
---			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
+			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
 --		end
 
 		if not xr_gulag.checkNpc( community, is_stalker, self.gparams.type, obj:rank(), obj, self.gparams.preset_name ) then
@@ -512,6 +517,8 @@ function se_smart_terrain:register_npc( obj )
 		self:kick_someone_non_exclusive( npc_info )
 	end
 
+	self:update_obj_rank( obj )
+
 	self.npc_info[obj.id] = npc_info
 
 	t = self.npc_info[obj.id].stay_end
@@ -558,6 +565,19 @@ function se_smart_terrain:unregister_npc( obj )
 	sim_statistic.remove( obj )
 
 	printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), obj:name() or "<<<nil>>>", self.gparams.type )
+end
+
+-- изменть ранг сталкера при регистрации в смарт
+function se_smart_terrain:update_obj_rank( obj )
+	local community, is_stalker = self:get_obj_community( obj )
+
+	if is_stalker then
+		local old_rank = obj:rank()
+
+		obj:set_rank( old_rank + math.random( self.rank_inc_min, self.rank_inc_max ) )
+
+		printf( "[smart_terrain %s] obj=%s rank %d -> %d", self:name(), obj:name(), old_rank, obj:rank() )
+	end
 end
 
 -- выгнать из-под смарттеррейна первого попавшегося неэксклюзивного персонажа,
