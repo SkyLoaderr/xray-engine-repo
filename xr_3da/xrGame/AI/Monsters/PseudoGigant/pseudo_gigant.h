@@ -28,6 +28,8 @@ class CPseudoGigant : public CBaseMonster,
 	SVelocityParam	m_fsVelocityJumpPrepare;
 	SVelocityParam	m_fsVelocityJumpGround;
 
+	LPCSTR			m_kick_particles;
+
 public:
 					CPseudoGigant				();
 	virtual			~CPseudoGigant				();	

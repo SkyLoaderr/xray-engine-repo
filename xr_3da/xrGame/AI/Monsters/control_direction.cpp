@@ -50,25 +50,25 @@ void CControlDirection::update_frame()
 	if (!fis_zero(m_man->movement().velocity_current()) && !fis_zero(m_man->movement().velocity_target()) && m_data.linear_dependency)
 		m_heading.current_speed	= m_data.heading.target_speed * m_man->movement().velocity_current() / (m_man->movement().velocity_target() + EPS_L);
 	else 
-		velocity_lerp			(m_heading.current_speed, m_data.heading.target_speed, m_heading.current_acc, Device.fTimeDelta);
+		velocity_lerp			(m_heading.current_speed, m_data.heading.target_speed, m_heading.current_acc, m_object->client_update_fdelta());
 
 	m_heading.current_angle		= angle_normalize(m_heading.current_angle);
 	m_data.heading.target_angle	= angle_normalize(m_data.heading.target_angle);
 	
 	if (fsimilar(m_heading.current_angle, m_data.heading.target_angle)) heading_similar = true;
-	angle_lerp(m_heading.current_angle, m_data.heading.target_angle, m_heading.current_speed, Device.fTimeDelta);
+	angle_lerp(m_heading.current_angle, m_data.heading.target_angle, m_heading.current_speed, m_object->client_update_fdelta());
 	if (!heading_similar && fsimilar(m_heading.current_angle, m_data.heading.target_angle)) {
 		event_data.angle |= SRotationEventData::eHeading;
 	}
 
 	// update pitch
-	velocity_lerp				(m_pitch.current_speed, m_data.pitch.target_speed, m_pitch.current_acc, Device.fTimeDelta);
+	velocity_lerp				(m_pitch.current_speed, m_data.pitch.target_speed, m_pitch.current_acc, m_object->client_update_fdelta());
 
 	m_pitch.current_angle		= angle_normalize_signed	(m_pitch.current_angle);
 	m_data.pitch.target_angle	= angle_normalize_signed	(m_data.pitch.target_angle);
 
 	if (fsimilar(m_pitch.current_angle, m_data.pitch.target_angle)) pitch_similar = true;
-	angle_lerp					(m_pitch.current_angle, m_data.pitch.target_angle, m_pitch.current_speed, Device.fTimeDelta);
+	angle_lerp					(m_pitch.current_angle, m_data.pitch.target_angle, m_pitch.current_speed, m_object->client_update_fdelta());
 	if (!pitch_similar && fsimilar(m_pitch.current_angle, m_data.pitch.target_angle)) {
 		event_data.angle |= SRotationEventData::ePitch;
 	}

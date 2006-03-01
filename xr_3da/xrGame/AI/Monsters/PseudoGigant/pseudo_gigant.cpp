@@ -137,7 +137,8 @@ void CPseudoGigant::Load(LPCSTR section)
 	::Sound->create(m_sound_threaten_hit,TRUE, pSettings->r_string(section,"sound_threaten_hit"), SOUND_TYPE_WORLD);
 	::Sound->create(m_sound_start_threaten,TRUE, pSettings->r_string(section,"sound_threaten_start"), SOUND_TYPE_MONSTER_ATTACKING);
 
-	m_kick_damage = pSettings->r_float(section,"HugeKick_Damage");
+	m_kick_damage			= pSettings->r_float(section,"HugeKick_Damage");
+	m_kick_particles		= pSettings->r_string(section,"HugeKick_Particles");
 }
 
 void CPseudoGigant::reinit()
@@ -223,6 +224,8 @@ void CPseudoGigant::on_threaten_execute()
 	pos.y		+= 0.1f;
 	m_sound_threaten_hit.play_at_pos(this,pos);
 
+	PlayParticles(m_kick_particles, pos, Direction());
+	
 	CActor *pA = const_cast<CActor *>(smart_cast<const CActor *>(EnemyMan.get_enemy()));
 	if (!pA) return;
 	if (pA->is_jump()) return;
@@ -248,6 +251,7 @@ void CPseudoGigant::on_threaten_execute()
 	HS.hit_type			= ( ALife::eHitTypeWound);										//	l_P.w_u16	( u16(ALife::eHitTypeWound) );
 	HS.Write_Packet(l_P);
 	u_EventSend	(l_P);	
+
 }
 
 void CPseudoGigant::HitEntityInJump		(const CEntity *pEntity) 

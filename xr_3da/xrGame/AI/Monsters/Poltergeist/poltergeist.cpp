@@ -183,7 +183,7 @@ void CPoltergeist::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	def_lerp(m_height, target_height, HEIGHT_CHANGE_VELOCITY, Device.fTimeDelta);
+	def_lerp(m_height, target_height, HEIGHT_CHANGE_VELOCITY, client_update_fdelta());
 }
 
 void CPoltergeist::ForceFinalAnimation()
