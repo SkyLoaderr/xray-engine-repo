@@ -178,6 +178,7 @@ void CMainUI::Activate	(bool bActivate)
 
 		if(!m_Flags.is(flRestorePause))
 			Device.Pause			(TRUE);
+		::Sound->set_volume			(1.0f);// pause set to 0
 
 		StartStopMenu				(m_startDialog,true);
 		if(g_pGameLevel){
