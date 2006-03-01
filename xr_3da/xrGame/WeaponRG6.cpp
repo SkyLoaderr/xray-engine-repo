@@ -75,7 +75,7 @@ void CWeaponRG6::FireStart ()
 			setEnabled(FALSE);
 		
 			collide::rq_result RQ;
-			BOOL HasPick = Level().ObjectSpace.RayPick(p1, d, 300.0f, collide::rqtBoth, RQ, this);
+			BOOL HasPick = Level().ObjectSpace.RayPick(p1, d, 300.0f, collide::rqtStatic, RQ, this);
 
 			setEnabled(TRUE);
 			H_Parent()->setEnabled(TRUE);
