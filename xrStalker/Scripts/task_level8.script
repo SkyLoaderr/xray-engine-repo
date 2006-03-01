@@ -224,8 +224,9 @@ function main ()
     db.actor:give_info_portion ("bar_rescue_research_reward")
     db.actor:give_info_portion ("rostok_objective_1")
     db.actor:give_info_portion ("bar_ecolog_research_normal")
-    db.actor:give_info_portion ("bar_kill_veteran_killed")   
-
+    db.actor:give_info_portion ("bar_kill_veteran_killed")
+    db.actor:give_info_portion ("bar_deactivate_radar_done")  
+    db.actor:give_info_portion ("bar_kill_svoboda_ambush_done")  
 
        -- мочилово безумных ветеранов
        
@@ -377,6 +378,9 @@ function main ()
     actor:give_info_portion ("pri_zombied_scene_end")
     actor:give_info_portion ("pri_stadium_scene_end")
     actor:give_info_portion ("pri_stadium_scene_start")
+    actor:give_info_portion ("pri_monolith_decoder_got")    
+    
+    
     
     
     
