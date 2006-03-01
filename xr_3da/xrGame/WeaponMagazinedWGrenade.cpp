@@ -14,6 +14,7 @@
 #include "object_broker.h"
 #include "game_base_space.h"
 #include "MathUtils.h"
+#include "clsid_game.h"
 #ifdef DEBUG
 #include "phdebug.h"
 #endif
@@ -316,10 +317,18 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 											launch_matrix.j, launch_matrix.i);
 		launch_matrix.c.set(p1);
 
-		if (IsZoomed())
+		if (IsZoomed() && H_Parent()->CLS_ID == CLSID_OBJECT_ACTOR)
 		{
+			H_Parent()->setEnabled(FALSE);
+			setEnabled(FALSE);
+
 			collide::rq_result RQ;
-			if (Level().ObjectSpace.RayPick(p1, d, 150.0f, collide::rqtBoth, RQ, this))
+			BOOL HasPick = Level().ObjectSpace.RayPick(p1, d, 150.0f, collide::rqtBoth, RQ, this);
+
+			setEnabled(TRUE);
+			H_Parent()->setEnabled(TRUE);
+
+			if (HasPick)
 			{
 				//			collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 				Fvector Transference;
