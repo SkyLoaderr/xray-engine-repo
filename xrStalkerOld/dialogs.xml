@@ -29,10 +29,12 @@
 
     <dialog id="tm_trader_dialog" priority="-1">
 		<init_func>task_manager.init_trader_task_dialog</init_func>
+		<has_info>esc_serious_talk</has_info>
     </dialog>
     <dialog id="tm_trader_reward" priority="0">
 		<init_func>task_manager.init_trader_reward_dialog</init_func>
 		<precondition>task_manager.has_active_vendor_task</precondition>
+		<has_info>esc_serious_talk</has_info>
     </dialog>
 
     <dialog id="tm_barman_dialog" priority="-1">
