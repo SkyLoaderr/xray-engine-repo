@@ -147,6 +147,7 @@ CUIGameDM::~CUIGameDM()
 	xr_delete					(m_pStatisticWnds);
 	xr_delete					(m_pMoneyIndicator);
 	xr_delete					(m_pRankIndicator);
+	xr_delete					(m_pFragLimitIndicator);
 }
 
 void	CUIGameDM::ReInitShownUI		() 

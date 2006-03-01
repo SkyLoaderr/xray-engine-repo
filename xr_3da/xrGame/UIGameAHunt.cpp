@@ -103,6 +103,7 @@ void CUIGameAHunt::Init	()
 
 CUIGameAHunt::~CUIGameAHunt()
 {
+	xr_delete(m_pReinforcementInidcator);
 }
 
 
