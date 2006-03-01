@@ -18,6 +18,7 @@
 					
 		<start_dialog>bar_bar_barmen_start</start_dialog>
 		<actor_dialog>bar_bar_barmen_talk_info</actor_dialog>
+		<actor_dialog>bar_bar_barmen_start_room</actor_dialog>
 		<actor_dialog>bar_bar_barmen_jobs</actor_dialog>
 		<actor_dialog>bar_bar_barmen_jobs_room</actor_dialog>
 		<actor_dialog>bar_bar_barman_ecolog_flash_done</actor_dialog>
