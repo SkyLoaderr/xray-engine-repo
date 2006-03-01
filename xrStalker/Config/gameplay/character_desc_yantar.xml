@@ -21,6 +21,7 @@
 			[spawn] \n
 			bad_psy_helmet \n
 			good_psy_helmet \n
+			ecolog_outfit \n
 		</supplies>
 		<start_dialog>yantar_general_ucheniy_talk_start</start_dialog>
 		<actor_dialog>yantar_general_ucheniy_talk_end</actor_dialog>
