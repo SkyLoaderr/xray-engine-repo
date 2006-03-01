@@ -7,3 +7,9 @@ function give_kruglov_flash(first_speaker, second_speaker)
 		dialogs.relocate_item(second_speaker, flash, "out")
 	end
 end
+function give_ecolog_outfit(first_speaker, second_speaker)
+	local outfit   =  second_speaker:object("ecolog_outfit")
+	if outfit then
+		dialogs.relocate_item(second_speaker, outfit, "out")
+	end
+end
