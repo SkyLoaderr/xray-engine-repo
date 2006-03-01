@@ -11,6 +11,11 @@
 #include "../skeletoncustom.h"
 #include "ai_object_location.h"
 #include "ExtendedGeom.h"
+#include "MathUtils.h"
+#ifdef DEBUG
+#include "phdebug.h"
+#endif
+
 
 #define MSG1(msg)			
 #define PLAYING_ANIM_TIME 10000
@@ -481,7 +486,7 @@ void CMissile::setup_throw_params()
 	MSG1("setup throw pars");
 	if(pActor)// && pActor->HUDview())
 	{
-//		pActor->EffectorManager().affected_Matrix(trans);
+		//		pActor->EffectorManager().affected_Matrix(trans);
 		Fmatrix trans;
 		trans.identity();
 		Fvector FirePos, FireDir;
@@ -715,6 +720,8 @@ void CMissile::activate_physic_shell()
 	m_pPhysicsShell->add_ObjectContactCallback(ExitContactCallback);
 	m_pPhysicsShell->set_CallbackData(smart_cast<CPhysicsShellHolder*>(EA));
 	//m_pPhysicsShell->remove_ObjectContactCallback(ExitContactCallback);
+	m_pPhysicsShell->SetAirResistance(0.f,0.f);
+	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 	MSG1("end self activ shell");
 	//Msg("time [%f]", Device.fTimeGlobal);

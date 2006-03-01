@@ -75,7 +75,7 @@ void CWeaponRG6::FireStart ()
 			setEnabled(FALSE);
 		
 			collide::rq_result RQ;
-			BOOL HasPick = Level().ObjectSpace.RayPick(p1, d, 150.0f, collide::rqtBoth, RQ, this);
+			BOOL HasPick = Level().ObjectSpace.RayPick(p1, d, 300.0f, collide::rqtBoth, RQ, this);
 
 			setEnabled(TRUE);
 			H_Parent()->setEnabled(TRUE);
@@ -86,7 +86,7 @@ void CWeaponRG6::FireStart ()
 				Fvector Transference;
 				//Transference.add(p1, Fvector().mul(d, RQ.range));				
 				Transference.mul(d, RQ.range);
-				Fvector res[2]; Fvector2 res2;
+				Fvector res[2];
 #ifdef		DEBUG
 				DBG_OpenCashedDraw();
 				DBG_DrawLine(p1,Fvector().add(p1,d),D3DCOLOR_XRGB(255,0,0));
@@ -97,8 +97,7 @@ void CWeaponRG6::FireStart ()
 				if(canfire0>1)DBG_DrawLine(p1,Fvector().add(p1,res[1]),D3DCOLOR_XRGB(0,0,255));
 				DBG_ClosedCashedDraw(30000);
 #endif
-				u8 canfire1 = TransferenceAndThrowVelToTgA(Transference, CRocketLauncher::m_fLaunchSpeed, EffectiveGravity(), res2);
-				if (canfire1 != 0)
+				if (canfire0 != 0)
 				{
 //					Msg ("d[%f,%f,%f] - res [%f,%f,%f]", d.x, d.y, d.z, res[0].x, res[0].y, res[0].z);
 					d = res[0];
