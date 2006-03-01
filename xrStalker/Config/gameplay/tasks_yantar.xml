@@ -14,7 +14,9 @@
 		</objective>
 		<objective>
 			<text>yan_kill_brain_task</text>
-			<infoportion_complete>yan_labx16_switcher_primary_off</infoportion_complete>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>yan_labx16switcher_primary_1_green</object_story_id>
+			<infoportion_complete>yan_labx16_switcher_primary_off</infoportion_complete>			
 		</objective>
 		<objective>
 			<text>yan_secret_tonnel</text>
