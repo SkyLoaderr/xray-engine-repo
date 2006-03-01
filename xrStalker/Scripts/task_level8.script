@@ -30,6 +30,6 @@ function main ()
     actor:give_info_portion ("rad_start_monolith_vs_military")
     actor:give_info_portion ("pri_zombied_scene_end")
     actor:give_info_portion ("pri_stadium_scene_end")
-    ---actor:give_info_portion ("pri_followers_task_end")
+    actor:give_info_portion ("pri_stadium_scene_start")
     
 end
