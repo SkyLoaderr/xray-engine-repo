@@ -79,6 +79,8 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	
 	// Ammo
 	m_magazine.pop	();
+	if (!m_magazine.empty())
+		m_fCurrentCartirdgeDisp = m_magazine.top().m_kDisp;
 	--iAmmoElapsed;
 /*
 	if(iAmmoElapsed==0) 
