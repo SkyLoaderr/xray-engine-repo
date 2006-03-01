@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 // CMonsterEffector
 //////////////////////////////////////////////////////////////////////////
-CMonsterEffector::CMonsterEffector(const SPPInfo &ppi, float life_time, float attack_time, float release_time) :
+CMonsterEffector::CMonsterEffector(const SPPInfo &ppi, float life_time, float attack_time, float release_time, float spec_factor) :
 		CEffectorPP(EEffectorPPType(eCEHit), life_time)
 {
 	state		= ppi;
@@ -14,6 +14,8 @@ CMonsterEffector::CMonsterEffector(const SPPInfo &ppi, float life_time, float at
 	
 	m_attack	= ((fis_zero(attack_time)) ? 0.5f : attack_time);
 	m_release	= ((fis_zero(release_time)) ? 0.5f : release_time);
+
+	m_spec_factor = spec_factor;
 
 	VERIFY(!fsimilar(m_release, 1.0f));
 	VERIFY(!fis_zero(m_attack));
@@ -36,7 +38,7 @@ BOOL CMonsterEffector::Process(SPPInfo& pp)
 
 	clamp(factor,0.01f,1.0f);
 
-	pp.lerp				(pp_identity, state, factor);
+	pp.lerp				(pp_identity, state, factor * m_spec_factor);
 	return TRUE;
 }
 

@@ -14,9 +14,11 @@ class CMonsterEffector : public CEffectorPP {
 	float	m_total;		// total PP time
 	float	m_attack;		// attack time in percents	[0..1]
 	float	m_release;		// release time in percents	[0..1]
+	
+	float	m_spec_factor;
 
 public:
-					CMonsterEffector		(const SPPInfo &ppi, float life_time, float attack_time = 0.0f, float release_time = 0.0f);
+					CMonsterEffector		(const SPPInfo &ppi, float life_time, float attack_time = 0.0f, float release_time = 0.0f, float spec_factor = 1.f);
 	virtual	BOOL	Process					(SPPInfo& pp);
 };
 
