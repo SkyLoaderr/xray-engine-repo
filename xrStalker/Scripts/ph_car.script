@@ -5,7 +5,7 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 -- Доработка для БТР: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
-function printf() end
+--function printf() end
 
 local pi_2 = math.pi / 3 -- 60 degree
 
@@ -205,6 +205,7 @@ function action_car:reset_scheme(loading)
 	            --    self.target_ph_shell = self.target_obj:get_physics_shell()
 	            --end
 	        end
+	        self.fire_track_target = self.st.fire_track_target
 
 	        if self.st.on_target_vis then
 	            vis = self.st.on_target_vis
@@ -1147,6 +1148,13 @@ function action_car:fast_update()
 		            --self:set_signal("fire_end")
 		        end
 	            printf("car <fire>: enemy isn't visible.")
+
+	            if self.fire_track_target then
+		            self.target_fire_pt = self.target_obj:position()
+                    self.target_fire_pt.y = self.target_fire_pt.y + 1.4 -- FAKE
+		            self:rot_to_firepoint(self.target_fire_pt)
+	                printf("car <fire>: target tracking.")
+	            end
 		    end
 	    end
 	end
@@ -1195,6 +1203,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	    st.fire_rep         = utils.cfg_get_string(ini, section, "fire_repeat",     npc, false, gulag_name, nil)
 	    st.fire_range       = utils.cfg_get_number(ini, section, "fire_range",      npc, false, def_fire_range)
 	    st.fire_target      = utils.cfg_get_string(ini, section, "target",          npc, false, gulag_name, "points")
+	    st.fire_track_target= utils.cfg_get_bool(ini,   section, "track_target",    npc, false, false)
 
 	    st.on_target_vis    = xr_logic.cfg_get_string_and_condlist(ini, section, "on_target_vis", npc)
 	    st.on_target_nvis   = xr_logic.cfg_get_string_and_condlist(ini, section, "on_target_nvis", npc)
