@@ -23,14 +23,7 @@
 		<actor_dialog>escape_trader_talk_level</actor_dialog>
 		<actor_dialog>escape_trader_talk_info</actor_dialog>
 		<actor_dialog>escape_trader_jobs</actor_dialog>
-<!--		<actor_dialog>escape_trader_done_tutorial_artefact</actor_dialog>
-		<actor_dialog>escape_trader_tutorial_wounded_end</actor_dialog>		
-		<actor_dialog>escape_trader_bandits_killed</actor_dialog>
-		<actor_dialog>escape_trader_docs_labx18</actor_dialog>
-		<actor_dialog>escape_trader_blokpost_case</actor_dialog>
-		<actor_dialog>escape_trader_help_wounded</actor_dialog>
-		<actor_dialog>escape_trader_killers_quest</actor_dialog>
-		<actor_dialog>tm_trader_dialog</actor_dialog>
+<!--	<actor_dialog>tm_trader_dialog</actor_dialog>
 		<actor_dialog>tm_trader_reward</actor_dialog>		-->
 		<actor_dialog>escape_trader_killers_reward</actor_dialog>
 		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>
@@ -62,11 +55,8 @@
 			medkit \n
 		</supplies>
 		
-#include "gameplay\character_dialogs.xml"					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
-<!--		<actor_dialog>escape_lager_volk_job</actor_dialog>
-		<actor_dialog>escape_lager_volk_info</actor_dialog>		
-		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>  -->
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="esc_fanat" team_default = "1">
@@ -96,8 +86,7 @@
 		</supplies>
 				
 		<start_dialog>escape_lager_leader_hello</start_dialog>
-<!--		<actor_dialog>escape_lager_leader_give_quest</actor_dialog>
-		<actor_dialog>escape_lager_leader_request</actor_dialog>		-->
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="esc_fox" team_default = "1">
@@ -127,8 +116,7 @@
 		</supplies>
 					
 		<start_dialog>escape_fox_hello_dialog</start_dialog>
-<!--		<actor_dialog>escape_fox_flash_dialog</actor_dialog>
-		<actor_dialog>escape_fox_flame_dialog</actor_dialog>	-->
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
@@ -154,10 +142,8 @@
 			esc_wounded_flash \n
 		</supplies>
 
+		<start_dialog>tutorial_wounded_give_medkit</start_dialog>
 #include "gameplay\character_dialogs.xml"					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>tutorial_wounded_give_medkit</actor_dialog>
-		<actor_dialog>tutorial_wounded_thanks</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="esc_killer_specnaz" team_default = "1">
@@ -251,7 +237,7 @@
 #include "gameplay\character_food.xml"					
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"	
 	</specific_character>
 
 	<specific_character id="esc_bandit_novice_default3" team_default = "1">
@@ -281,7 +267,7 @@
 #include "gameplay\character_food.xml"		
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"	
 </specific_character>
 	
 	
@@ -311,9 +297,9 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
-#include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default2" team_default = "1">
@@ -340,9 +326,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default3" team_default = "1">
@@ -371,8 +356,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>	
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default4" team_default = "1">
@@ -399,8 +384,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 		
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default5" team_default = "1">
@@ -427,9 +412,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default6" team_default = "1">
@@ -459,8 +443,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default9" team_default = "1">
@@ -488,9 +472,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="esc_stalker_novice_default10" team_default = "1">
@@ -518,9 +501,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 			
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 	
@@ -548,11 +530,8 @@
 #include "gameplay\character_food.xml"	
 		</supplies>
 
-#include "gameplay\character_dialogs.xml"			
 		<start_dialog>escape_factory_assault_start</start_dialog>		
-<!--		<actor_dialog>escape_factory_assault_attack</actor_dialog>
-		<actor_dialog>escape_factory_assault_attack_now</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>		-->
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	
@@ -580,10 +559,9 @@
 			device_torch \n
 #include "gameplay\character_food.xml"
 		</supplies>
-					
-#include "gameplay\character_dialogs.xml"					
+										
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
-<!--		<actor_dialog>esc_bridge_soldiers_pay</actor_dialog>	-->
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="esc_soldier_regular_default1" team_default = "1">
@@ -968,7 +946,7 @@
 		</supplies>
 
 		<start_dialog>esc_provodnik_start</start_dialog>
-<!--		<actor_dialog>esc_provodnik_give_info</actor_dialog> -->
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 </xml>
