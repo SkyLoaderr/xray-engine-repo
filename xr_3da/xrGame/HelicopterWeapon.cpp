@@ -161,6 +161,7 @@ void CHelicopter::UpdateWeapons		()
 	// lerp angle
 	angle_lerp	(m_cur_rot.x, m_tgt_rot.x, PI, Device.fTimeDelta);
 	angle_lerp	(m_cur_rot.y, m_tgt_rot.y, PI, Device.fTimeDelta);
+	
 
 	if( isOnAttack() ){
 
@@ -206,6 +207,8 @@ void CHelicopter::UpdateMGunDir()
 	m_fire_bone_xform.transform_tiny(m_fire_pos);
 	m_fire_dir.set				(0,0,1);
 	m_fire_bone_xform.transform_dir(m_fire_dir);
+	
+	m_fire_dir.sub				(m_enemy.destEnemyPos,m_fire_pos).normalize_safe();
 
 	m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
 	m_left_rocket_bone_xform.mulA_43	(XFORM());
