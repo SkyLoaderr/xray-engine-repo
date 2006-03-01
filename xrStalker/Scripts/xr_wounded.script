@@ -135,7 +135,7 @@ function action_wounded:execute ()
 			end
 		end	
 		--жрание аптечек и прочей срани.
-		if self.object:object("medkit") ~= nil then
+		if self.a.use_medkit == true and self.object:object("medkit") ~= nil then
 			self.object:eat(self.object:object("medkit"))
 		end
 		local emerg = nil
@@ -371,6 +371,7 @@ function init_wounded(npc, ini, section, st, scheme)
 		def.syndata				= ""
 		def.help_dialog			= nil
 		def.help_start_dialog	= nil
+		def.use_medkit			= false
 		
 	elseif npc_community == "zombied" then
 		def.hp_state			= "40|wounded_zombie@help_heavy"
@@ -382,7 +383,8 @@ function init_wounded(npc, ini, section, st, scheme)
 		def.syndata				= ""
 		def.help_dialog			= nil
 		def.help_start_dialog	= nil
-
+		def.use_medkit			= false
+		
 	else
 		def.hp_state			= "10|wounded_heavy@help_heavy"
 		def.hp_state_see		= "10|wounded_heavy@help_heavy"
@@ -393,7 +395,7 @@ function init_wounded(npc, ini, section, st, scheme)
 		def.syndata				= ""
 		def.help_dialog			= "dm_help_wounded_medkit_dialog"
 		def.help_start_dialog	= nil
-
+		def.use_medkit			= true
 	end		
 
 
@@ -408,6 +410,7 @@ function init_wounded(npc, ini, section, st, scheme)
 		st.syndata		= xr_meet.parse_syn_data(npc, def.syndata)
 		st.help_dialog	= def.help_dialog
 		st.help_start_dialog = nil
+		st.use_medkit   = def.use_medkit
 	else
 		st.hp_state		= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state", npc, false, "", def.hp_state))
 		st.hp_state_see	= xr_meet.parse_data(npc, utils.cfg_get_string(ini, section, "hp_state_see", npc, false, "", def.hp_state_see))
@@ -418,6 +421,7 @@ function init_wounded(npc, ini, section, st, scheme)
 		st.syndata		= xr_meet.parse_syn_data(npc, utils.cfg_get_string(ini, section, "syndata", npc, false, "", def.syndata))	
 		st.help_dialog	= utils.cfg_get_string(ini, section, "help_dialog", npc, false, "", def.help_dialog)
 		st.help_start_dialog = utils.cfg_get_string(ini, section, "help_start_dialog", npc, false, "", nil)
+		st.use_medkit   = utils.cfg_get_bool(ini, section, "use_medkit", npc, false, def.use_medkit)
 	end
 	
 	-- флажок, что функция хотя бы раз вызывалась
