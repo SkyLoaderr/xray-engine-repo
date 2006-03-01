@@ -21,7 +21,12 @@ class CPseudoGigant : public CBaseMonster,
 	ref_sound		m_sound_threaten_hit;		// звук, который играется в голове у актера
 	ref_sound		m_sound_start_threaten;		// звук, который играется в голове у актера
 	
-	u32				m_time_last_threaten;
+	u32				m_time_next_threaten;
+	
+	u32				m_threaten_delay_min;
+	u32				m_threaten_delay_max;
+	float			m_threaten_dist_min;
+	float			m_threaten_dist_max;
 
 	float			m_kick_damage;
 	
@@ -29,6 +34,7 @@ class CPseudoGigant : public CBaseMonster,
 	SVelocityParam	m_fsVelocityJumpGround;
 
 	LPCSTR			m_kick_particles;
+
 
 public:
 					CPseudoGigant				();

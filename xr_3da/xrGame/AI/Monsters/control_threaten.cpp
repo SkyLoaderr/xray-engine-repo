@@ -65,10 +65,6 @@ bool CControlThreaten::check_start_conditions()
 	if (!enemy)	return false;
 	// check if faced enemy
 	if (!m_man->direction().is_face_target(enemy, PI_DIV_6)) return false;
-
-	float dist = enemy->Position().distance_to(m_object->Position());
-	// check distance to enemy
-	if ((dist > 20.f) || (dist < 10.f)) return false;
 	
 	return true;
 }
