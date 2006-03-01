@@ -131,9 +131,9 @@
         <icon height="50" width="50" x="100" y="50">
             ui\ui_icons_task
         </icon>
-        <function_complete>
-            deadcity_tasks.has_decoder
-        </function_complete>
+        <infoportion_complete>
+            pri_monolith_decoder_got
+        </infoportion_complete>
     </objective>
     <objective key="1">
         <text>
@@ -170,9 +170,9 @@
         <icon height="50" width="50" x="0" y="0">
             ui\ui_icons_task
         </icon>
-        <function_complete>
-            deadcity_tasks.has_decoder
-        </function_complete>
+        <infoportion_complete>
+            pri_monolith_decoder_got
+        </infoportion_complete>
     </objective>
 </game_task>
 <game_task id="cit_doctor_weapon_task">
