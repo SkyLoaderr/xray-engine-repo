@@ -288,7 +288,8 @@ function gulag:load_obj( packet, obj_id )
 end
 
 -- добавить объект под гулаг.
--- при добавления объекта он помечается как офлайновый
+-- при добавления объекта он помечается как офлайновый.
+-- вызывается только из se_smart_terrain:register_npc()
 function gulag:addObject( obj_id )
 	self.Object_begin_job[obj_id] = false
 
