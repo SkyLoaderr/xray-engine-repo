@@ -10,6 +10,6 @@ end
 function give_ecolog_outfit(first_speaker, second_speaker)
 	local outfit   =  second_speaker:object("ecolog_outfit")
 	if outfit then
-		dialogs.relocate_item(second_speaker, outfit, "out")
+		dialogs.relocate_item(first_speaker, outfit, "out")
 	end
 end
