@@ -48,6 +48,7 @@ class "action_car"
 function action_car:__init(obj, storage)
     printf("car <state>: init.")
 	self.object = obj
+	self.car = self.object:get_car()
 	self.st = storage
 end
 
@@ -82,7 +83,6 @@ function action_car:reset_scheme(loading)
 	--    self.car_holder = self.object.get_current_holder() --engaged()
 	--else
     if self.usable == nil then
-	    self.car = self.object:get_car()
 	    self.car:SetExplodeTime(0) -- (-1)
 
 	    if self.car:HasWeapon() then
@@ -182,6 +182,8 @@ function action_car:reset_scheme(loading)
 		    --    self.state_cannon = xr_logic.pstor_retrieve(self.object, "state_cannon")
 		    --    self.state_shooting = xr_logic.pstor_retrieve(self.object, "state_shooting")
 	        --end
+	        
+	        self:set_shooting(self.state_shooting)
 
 	        --printf("car <fire>: target = %s", self.st.fire_target)
 	        local n = 0
@@ -306,7 +308,7 @@ function action_car:reset_scheme(loading)
 	            self.state_cannon = state_none
 	            self.state_shooting = state_none
 	        end
-		    self:set_shooting(self.state_shooting)
+		    --self:set_shooting(self.state_shooting)
 	    end
     	
 	    --if self.st.path_walk then
