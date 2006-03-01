@@ -27,6 +27,7 @@
 		<start_dialog>cit_doctor_hello_dialog</start_dialog>
 		<actor_dialog>cit_doctor_escape_dialog</actor_dialog>
 		<actor_dialog>cit_doctor_main_dialog</actor_dialog>
+#include "gameplay\character_dialogs.xml"		
     </specific_character>
 
 <!----------------------------- KILLERS ------------------------->
@@ -621,5 +622,6 @@
 
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 </xml>

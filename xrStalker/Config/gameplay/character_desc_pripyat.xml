@@ -339,6 +339,7 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 	<specific_character id="pri_followers_stalker2" team_default = "1">
@@ -367,6 +368,7 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 	<specific_character id="pri_followers_stalker3" team_default = "1">
@@ -395,6 +397,7 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 <!-------------------------- SOLDIER ----------------------->

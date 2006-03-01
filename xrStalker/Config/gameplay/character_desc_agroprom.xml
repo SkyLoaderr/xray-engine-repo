@@ -63,7 +63,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 		<actor_dialog>agr_swamp_ratcatcher_talks</actor_dialog>
-#include "gameplay\character_dialogs.xml"		
+	
 	</specific_character>
 	
 	<specific_character id="agr_nii_commander" team_default = "1">
