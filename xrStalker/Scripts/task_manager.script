@@ -15,7 +15,8 @@ local task_info = {
 			ecolog  = {},
 			dolg    = {},
 			freedom = {}}
-
+			
+local reward_by_task_id = {}			
 local task_by_phrase = {}  -- таблица соответствий ID фраз задани€м.
 local active_task = {} -- таблица активных заданий
 
@@ -78,58 +79,70 @@ function fill_phrase_table()
 			abort("There is no section [%s] in task_manager.ltx", id)
 		end		
 		-- 2. Ќеобходимо сформировать набор предикатов  table[string_id] = predicate()
-		if not task_ini:line_exist(id, "type") then
-			abort("Task manager error: no type in section [%s]", id)
-		end
-		if not task_ini:line_exist(id, "parent") then
-			abort("Task manager error: no parent in section [%s]", id)
-		end
-		if not task_ini:line_exist(id, "target") then
-			abort("Task manager error: no target in section [%s]", id)
-		end
-		if not task_ini:line_exist(id, "text") then
-			abort("Task manager error: no text in section [%s]", id)
-		end
-		if not task_ini:line_exist(id, "description") then
-			abort("Task manager error: no description in section [%s]", id)
+		type = "storyline"
+		if task_ini:line_exist(id, "type") then
+			type = task_ini:r_string(id, "type")			
 		end
 
-		type = task_ini:r_string(id, "type")
-		parent = task_ini:r_string(id, "parent")		
-		if task_info[parent] == nil then
-			abort("Task manager error: wrong parent in section [%s]", id)
-		end
+		if type ~= "storyline" then
+			if not task_ini:line_exist(id, "parent") then
+				abort("Task manager error: no parent in section [%s]", id)
+			end
+			if not task_ini:line_exist(id, "target") then
+				abort("Task manager error: no target in section [%s]", id)
+			end
+			if not task_ini:line_exist(id, "text") then
+				abort("Task manager error: no text in section [%s]", id)
+			end
+			if not task_ini:line_exist(id, "description") then
+				abort("Task manager error: no description in section [%s]", id)
+			end
+			
+			parent = task_ini:r_string(id, "parent")		
+			if task_info[parent] == nil then
+				abort("Task manager error: wrong parent in section [%s]", id)
+			end
 
-		local tt = {}
-		tt.name = id
-		tt.parent = parent
-		tt.type = type
-		tt.target = task_ini:r_string(id, "target")
-		tt.target_objects = {}
-		tt.text = task_ini:r_string(id, "text")
-		tt.description = task_ini:r_string(id, "description")				
+			local tt = {}
+			tt.name = id
+			tt.parent = parent
+			tt.type = type
+			tt.target = task_ini:r_string(id, "target")
+			tt.target_objects = {}
+			tt.text = task_ini:r_string(id, "text")
+			tt.description = task_ini:r_string(id, "description")				
+			
+			local sss = utils.cfg_get_string(task_ini, id, "reward_item", nil, false, "")
+			if sss ~= nil then
+				tt.reward_item = parse_names(sss) 
+			else
+				tt.reward_item = sss
+			end
+			tt.reward_money = utils.cfg_get_number(task_ini, id, "reward_money", nil, false)		
 		
-		tt.reward_money = utils.cfg_get_number(task_ini, id, "reward_money", nil, false)
-		tt.reward_rank = utils.cfg_get_number(task_ini, id, "reward_rank", nil, false)
-		tt.reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", nil, false)
+			if task_ini:line_exist(id, "community") then
+				tt.community = task_ini:r_string(id, "community")
+			end		
+
+			tt.reward_rank = utils.cfg_get_number(task_ini, id, "reward_rank", nil, false, 0)
+			tt.reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", nil, false)
+			tt.reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", nil, false, ""))
 		
-		local sss = utils.cfg_get_string(task_ini, id, "reward_item", nil, false, "")
-		if sss ~= nil then
-			tt.reward_item = parse_names(sss) 
+			if task_ini:line_exist(id, "condlist") then
+				tt.condlist = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", task_ini:r_string(id, "condlist"))
+			end
+			table.insert(task_info[parent], tt)
 		else
-			tt.reward_item = sss
+			reward_by_task_id[id] = {}
+			reward_by_task_id[id].reward_rank = utils.cfg_get_number(task_ini, id, "reward_rank", nil, false)
+			reward_by_task_id[id].reward_reputation = utils.cfg_get_number(task_ini, id, "reward_reputation", nil, false)
+			reward_by_task_id[id].reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", nil, false, ""))
 		end
-		
-		tt.reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", nil, false, ""))
-		
-		if task_ini:line_exist(id, "community") then
-			tt.community = task_ini:r_string(id, "community")
-		end		
-		if task_ini:line_exist(id, "condlist") then
-			tt.condlist = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", task_ini:r_string(id, "condlist"))
-		end
-
-		table.insert(task_info[parent], tt)
+	end
+	
+	-- —ортируем  по возрастанию крутости задани€
+	for k,v in pairs(task_info) do
+		table.sort(v, function(a,b) return a.reward_rank > b.reward_rank end)
 	end
 end
 
@@ -208,12 +221,18 @@ function action_task_init(actor, npc)
 	max_count = 0
 	tmp_tbl = {}
 	show_tbl = {}
+	
+	type_rank = {} --“аблица дл€ отсеивани€ низкоранговых тасков
 	for k,v in pairs(task_info[parent]) do	
 		max_count = max_count + 1
-		if calculate_predicate(npc, v) == true then
-			table.insert(show_tbl, k)
-			tmp_tbl[max_count] = true
-		end		
+		
+		if type_rank[v.type] ~= true then		
+			if calculate_predicate(npc, v) == true then
+				table.insert(show_tbl, k)
+				tmp_tbl[max_count] = true
+				type_rank[v.type] = true
+			end
+		end
 	end
 end
 function action_give_task(actor, npc, p1, p2)
@@ -337,7 +356,10 @@ function action_has_active_task_init(npc, actor)
 	tmp_tbl = {}
 	for k,v in pairs(task_info[parent]) do	
 		max_count = max_count + 1
-		if active_task[v.type] ~= nil then		
+		--' “ут надо проверить не только тип, но и то что текущее задание именно это!!!
+		if active_task[v.type] ~= nil and
+		   active_task[v.type].name == v.name
+		then
 			table.insert(show_tbl, k)
 			tmp_tbl[max_count] = true
 		end		
@@ -361,31 +383,31 @@ function action_task_reward(npc, actor)
 			if v.reward_money ~= nil then
 				dialogs.relocate_money(npc, v.reward_money, "in")
 			end
-
-			if v.reward_reputation ~= nil then
-				db.actor:change_character_reputation(db.actor:character_reputation() + v.reward_reputation)
-			end
 			
 			if v.reward_item ~= nil then
-				for k,v in pairs(v.reward_item) do
-					if npc:object(v) ~= nil then
-						dialogs.relocate_item(npc, npc:object(v), "in")
+				for kk,vv in pairs(v.reward_item) do
+					if npc:object(vv) ~= nil then
+						dialogs.relocate_item(npc, npc:object(vv), "in")
 					else
 						break
 					end
 				end
 			end
 
+			if v.reward_reputation ~= nil then
+				db.actor:change_character_reputation(db.actor:character_reputation() + v.reward_reputation)
+			end
+
 			if v.reward_relation ~= nil then
-				for k,v in pairs(v.reward_relation) do
-					relation_registry.change_community_goodwill (k, db.actor:id(), tonumber(v))
+				for kk,vv in pairs(v.reward_relation) do
+					relation_registry.change_community_goodwill (kk, db.actor:id(), tonumber(vv))
 				end
 			end
 
 			if v.reward_rank ~= nil then
 				actor_stats.add_points("quests", v.name, 1, v.reward_rank)
 			end
-							
+				
 			-- устанавливаем врем€ последнего обновлени€ задани€
 			for kk,vv in pairs(task_info[parent]) do
 				if vv.name == v.name then
@@ -559,8 +581,6 @@ end
 
 
 
-
-
 function task_complete(p1, p2)
 	local aa = alife()
 	if aa == nil then
@@ -619,6 +639,30 @@ function task_fail(p1, p2)
 	end
 	return false
 end
+function reward_by_task(task, done)
+	--' ≈сли done = true, то это выполненное задание, иначе проваленное.
+	local descr = reward_by_task_id[task:get_id()]
+	if descr == nil then
+		return
+	end
+
+	if done == true then
+		if descr.reward_reputation ~= nil then
+			db.actor:change_character_reputation(db.actor:character_reputation() + descr.reward_reputation)
+		end
+
+		if descr.reward_relation ~= nil then
+			for k,v in pairs(descr.reward_relation) do
+				relation_registry.change_community_goodwill (k, db.actor:id(), tonumber(descr))
+			end
+		end
+
+		if descr.reward_rank ~= nil then
+			actor_stats.add_points("quests", task:get_id(), 1, descr.reward_rank)
+		end
+	end
+end
+
 
 
 function register_target(object)
