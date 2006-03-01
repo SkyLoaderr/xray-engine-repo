@@ -193,8 +193,7 @@ void CStalkerAnimationManager::update						()
 		bool					first_time = !legs().animation();
 		bool					result = legs().animation(assign_legs_animation());
 		
-		if (!first_time && !result) {
-			VERIFY				(legs().blend());
+		if (!first_time && !result && legs().blend()) {
 			float				amount = legs().blend()->blendAmount;
 			m_previous_speed	= (m_current_speed - m_previous_speed)*amount + m_previous_speed;
 		}
