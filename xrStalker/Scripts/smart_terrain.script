@@ -386,7 +386,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		end
 
 --		if string.find( obj:name(), "esc_novice_attacker" ) ~= nil then
-			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
+--			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
 --		end
 
 		if not xr_gulag.checkNpc( community, is_stalker, self.gparams.type, obj:rank(), obj, self.gparams.preset_name ) then
