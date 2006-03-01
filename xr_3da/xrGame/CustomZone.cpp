@@ -698,7 +698,7 @@ void CCustomZone::StopIdleParticles()
 	m_idle_sound.stop();
 
 	if(m_pIdleParticles)
-		m_pIdleParticles->Stop();
+		m_pIdleParticles->Stop(FALSE);
 
 	StopIdleLight();
 }
