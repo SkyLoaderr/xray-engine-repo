@@ -381,8 +381,9 @@ function main ()
     actor:give_info_portion ("pri_monolith_decoder_got")  
     
     actor:give_info_portion ("sar_monolith_call")
-    actor:give_info_portion ("sar_enter_command_center")     
-    
+    actor:give_info_portion ("sar_enter_command_center")
+    actor:give_info_portion ("sar_monolith_destroy")   
+
     
     
     
