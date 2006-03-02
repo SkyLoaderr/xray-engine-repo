@@ -18,12 +18,96 @@
 #include "PHSimpleCharacterInline.h"
 #include "DamageSource.h"
 #include "PHCollideValidator.h"
+#include "CalculateTriangle.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
 
-const u64				after_creation_collision_hit_block_steps_number			=100;
+float IC sgn(float v)
+{
+	return v<0.f ? -1.f:1.f;
+}
+bool test_sides(const Fvector &center,const Fvector &side_dir,const Fvector &fv_dir,const Fvector &box,int tri_id)
+{
+	Triangle tri;
+	InitTriangle(Level().ObjectSpace.GetStaticTris()+tri_id,tri);
+	Fvector* verts=Level().ObjectSpace.GetStaticVerts();
+	{
+		float dist=cast_fv(tri.norm).dotproduct(center)-tri.dist;
+		//if(dist<0.f)return false;
+		//////////////////////////////////////////////tri norm
+		float fvn=cast_fv(tri.norm).dotproduct(fv_dir);float sg_fvn= sgn(fvn);
+		float sdn=cast_fv(tri.norm).dotproduct(side_dir);float sg_sdn= sgn(sdn);
+		if(sg_fvn*fvn*box.z+sg_sdn*sdn*box.x+_abs(tri.norm[1])*box.y>_abs(dist))return false;
+	}
+	{
+	
+		///////////////////////////////////////////////side///////////////////////////////////////////////////////////////////////////////////////////////////
+		float sdc=side_dir.dotproduct(center);
+		float sd0=cast_fv(tri.side0).dotproduct(side_dir);float sg_sd0=sgn(sd0);
+		float sd1=cast_fv(tri.side1).dotproduct(side_dir);float sg_sd1=sgn(sd1);
+		float abs_sd0=sg_sd0*sd0;
+		float abs_sd1=sg_sd1*sd1;
 
+		float sd,abs_sd,sg_sd;
+		u32 v;
+		if(sg_sd0==sg_sd1)
+		{
+			sd=-sd0-sd1;
+			abs_sd=abs_sd0+abs_sd1;
+			sg_sd=-sg_sd0;
+			v=tri.T->verts[2];
+		}else if(abs_sd0>abs_sd1)
+		{
+			sd=sd0;abs_sd=abs_sd0;sg_sd=sg_sd0;
+			v=tri.T->verts[0];
+		}else
+		{
+			sd=sd1;abs_sd=abs_sd1;sg_sd=sg_sd1;
+			v=tri.T->verts[1];
+		}
+		
+		float vp=side_dir.dotproduct(verts[v]);
+		float dist=vp-sdc;
+		float sg_dist=sgn(dist);
+		float abs_dist=sg_dist*dist;
+
+		if(sg_dist!=sg_sd)
+		{
+			if(abs_dist-abs_sd>box.x)return false;
+		}else
+		{
+			if(abs_dist>box.x) return false;
+		}
+	}
+////sides cross///////////////////////////////////////////////////////////////////////////////////////////////
+		Fvector crses[3];
+		crses[0].set(-tri.side0[2],0,tri.side0[0]);
+		crses[1].set(-tri.side1[2],0,tri.side1[0]);
+		const Fvector& v2=verts[tri.T->verts[2]];
+		const Fvector& v0=verts[tri.T->verts[0]];
+		crses[2].x=-(v0.z-v2.z);
+		crses[2].y=0.f;
+		crses[2].z=v0.x-v2.x;
+	for(u8 i=0;3>i;++i)
+	{
+		const Fvector &crs=crses[i];
+		u32 sv=tri.T->verts[i%3];
+		u32 ov=tri.T->verts[(i+2)%3];
+
+		float c_prg=crs.dotproduct(center);
+		float sv_prg=crs.dotproduct(verts[sv]);
+		float ov_prg=crs.dotproduct(verts[ov]);
+		float dist=c_prg-sv_prg;
+		float sg_dist=sgn(dist);
+		if(sgn(ov_prg-c_prg)!=sg_dist)
+		{
+			if(_abs(fv_dir.dotproduct(crs))*box.z+_abs(side_dir.dotproduct(crs))*box.x<sg_dist*dist) return false;
+		}
+	}
+	return true;
+	
+}
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
 CPHSimpleCharacter::CPHSimpleCharacter()
@@ -597,9 +681,9 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	//else
 	//dBodyAddForce(m_body,-chVel[0]*10.f,-20.f*70.f*(!is_contact),-chVel[2]*10.f);
 
-	//	if(b_depart&&b_clamb_jump&&(chVel[1]>0.f)){
-	//chVel[1]=0.f;
-	//	}
+		//if(b_depart&&!b_clamb_jump&&!b_jump&&!b_jumping&&is_control&&!b_external_impulse&&!m_elevator_state.Active()){
+		//		dBodyAddForce(m_body,0,-m.mass*ph_world->Gravity()/fixed_step,0);
+		//}
 
 	BodyCutForce(m_body,5.f,0.f);
 }
@@ -662,14 +746,14 @@ bool CPHSimpleCharacter::ValidateWalkOnObject()
 bool CPHSimpleCharacter::ValidateWalkOnMesh()
 {
 	Fvector AABB,AABB_forbid,center,center_forbid,accel_add,accel;
-	dVector3 norm,side0,side1;
+	
 	AABB.x=m_radius;
 	AABB.y=m_radius;
 	AABB.z=m_radius;
 
 	AABB_forbid.set(AABB);
-	AABB_forbid.x*=0.7f;
-	AABB_forbid.z*=0.7f;
+	//AABB_forbid.x*=0.7f;
+	//AABB_forbid.z*=0.7f;
 	AABB_forbid.y+=m_radius;
 	AABB_forbid.mul(CHWON_AABB_FB_FACTOR);
 
@@ -686,13 +770,7 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 	center_forbid.set(center);
 	center_forbid.y+=CHWON_CALL_FB_HIGHT;
 	center.y+=m_radius+CHWON_CALL_UP_SHIFT;
-#ifdef DEBUG
-if(ph_dbg_draw_mask.test(phDbgCharacterControl))
-{
-	DBG_DrawAABB(center,AABB,D3DCOLOR_XRGB(0,255,0));
-	DBG_DrawAABB(center_forbid,AABB_forbid,D3DCOLOR_XRGB(255,0,0));
-}
-#endif
+
 	// perform single query / two usages
 	Fbox			query,tmp		;
 	Fvector			q_c, q_d		;
@@ -705,21 +783,51 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 
 	XRC.box_options                (0);
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),q_c,q_d);
+	//Fvector fv_dir;fv_dir.mul(accel,1.f/mag);
+	Fvector sd_dir;sd_dir.set(-accel.z,0,accel.x);
+	Fvector obb_fb;obb_fb.set(m_radius*0.5f,m_radius*2.f,m_radius*0.7f);
+	Fvector obb;obb.set(m_radius*0.5f,m_radius,m_radius*0.7f);
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+	{
+		Fmatrix m;m.identity();
+		m.i.set(sd_dir);
+		m.k.set(accel);
+		m.c.set(center);
+		DBG_DrawOBB(m,obb,D3DCOLOR_XRGB(0,255,0));
+		m.c.set(center_forbid);
+		DBG_DrawOBB(m,obb_fb,D3DCOLOR_XRGB(255,0,0));
+	}
+#endif
+
+	//if(XRC.r_end()!=XRC.r_begin()) return false;
 	CDB::RESULT*    R_begin        = XRC.r_begin();
 	CDB::RESULT*    R_end          = XRC.r_end();
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		//CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
-		if(__aabb_tri(Point((float*)&center_forbid),Point((float*)&AABB_forbid),vertices)){
-			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
-			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
-			dCROSS(norm,=,side0,side1);//optimize it !!!
-			cast_fv(norm).normalize();
-			//if(b_leader)dVectorSet((dReal*)&leader_norm,norm);
-			if(dDOT(norm,(float*)&accel)<-CHWON_ANG_COS) 
-				return 
-				false;
+		if(__aabb_tri(Point((float*)&center_forbid),Point((float*)&AABB_forbid),vertices))
+			{
+	
+				if(test_sides(center_forbid,sd_dir,accel,obb_fb,Res->id))
+				{
+#ifdef DEBUG
+					if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+					{
+						DBG_DrawTri(Res,D3DCOLOR_XRGB(255,0,0));
+					}
+#endif
+					return 
+						false;
+				}
+			//cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
+			//cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
+			//dCROSS(norm,=,side0,side1);//optimize it !!!
+			//cast_fv(norm).normalize();
+
+			//if(dDOT(norm,(float*)&accel)<-CHWON_ANG_COS) 
+		
 		}
 	}
 
@@ -728,12 +836,17 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 		//CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(__aabb_tri(Point((float*)&center),Point((float*)&AABB),vertices)){
-			cast_fv(side0).sub(Res->verts[1],Res->verts[0]);
-			cast_fv(side1).sub(Res->verts[2],Res->verts[1]);
-			dCROSS(norm,=,side0,side1);//optimize it !!!
-			cast_fv(norm).normalize();
-			if(norm[1]>CHWON_ANG_COS) return 
+			if(test_sides(center,sd_dir,accel,obb,Res->id))
+			{
+#ifdef DEBUG
+				if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+				{
+					DBG_DrawTri(Res,D3DCOLOR_XRGB(0,255,0));
+				}
+#endif
+				return 
 				true;
+			}
 		}
 	}
 	return 
@@ -742,7 +855,7 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 	if(!b_exist) return;
 
-	if(!dBodyIsEnabled(m_body))
+	if(!dBodyIsEnabled(	m_body))
 		if(!fsimilar(0.f,accel.magnitude()))
 			Enable();
 	m_acceleration=accel;
