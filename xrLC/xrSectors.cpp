@@ -93,5 +93,5 @@ void CBuild::SaveSectors(IWriter& fs)
 		Progress(float(I)/float(g_sectors.size()));
 	}
 
-	fs.w_chunk(fsL_SECTORS|CFS_CompressMark,MFS.pointer(),MFS.size());
+	fs.w_chunk(fsL_SECTORS,MFS.pointer(),MFS.size());
 }
