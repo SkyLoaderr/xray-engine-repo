@@ -10222,72 +10222,72 @@
 					<File
 						RelativePath=".\ui\UIPropertiesBox_script.cpp">
 					</File>
-				</Filter>
-				<Filter
-					Name="ListBox"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIInteractiveListItem.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIInteractiveListItem.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItem.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIListItem.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIListWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIListWnd.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIListWnd_inline.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIListWnd_script.cpp">
-					</File>
 					<Filter
-						Name="Ex"
+						Name="ListBox"
 						Filter="">
 						<File
-							RelativePath=".\ui\UIListItemEx.cpp">
+							RelativePath=".\ui\UIInteractiveListItem.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIListItemEx.h">
+							RelativePath=".\ui\UIInteractiveListItem.h">
 						</File>
 						<File
-							RelativePath=".\ui\UIListWndEx.cpp">
+							RelativePath=".\ui\UIListItem.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIListWndEx.h">
+							RelativePath=".\ui\UIListItem.h">
 						</File>
 						<File
-							RelativePath=".\ui\UIListWndEx_script.cpp">
-						</File>
-					</Filter>
-					<Filter
-						Name="Multiplayer_list_item"
-						Filter="">
-						<File
-							RelativePath=".\ui\UIListItemMP.cpp">
+							RelativePath=".\ui\UIListWnd.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UIListItemMP.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="Save_Load_list_item"
-						Filter="">
-						<File
-							RelativePath=".\ui\UIListItemPair.cpp">
+							RelativePath=".\ui\UIListWnd.h">
 						</File>
 						<File
-							RelativePath=".\ui\UIListItemPair.h">
+							RelativePath=".\ui\UIListWnd_inline.h">
 						</File>
+						<File
+							RelativePath=".\ui\UIListWnd_script.cpp">
+						</File>
+						<Filter
+							Name="Ex"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIListItemEx.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIListItemEx.h">
+							</File>
+							<File
+								RelativePath=".\ui\UIListWndEx.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIListWndEx.h">
+							</File>
+							<File
+								RelativePath=".\ui\UIListWndEx_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="Multiplayer_list_item"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIListItemMP.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIListItemMP.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Save_Load_list_item"
+							Filter="">
+							<File
+								RelativePath=".\ui\UIListItemPair.cpp">
+							</File>
+							<File
+								RelativePath=".\ui\UIListItemPair.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -10630,6 +10630,22 @@
 					<File
 						RelativePath=".\ui\UIScrollView.h">
 					</File>
+					<Filter
+						Name="ListBox"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIListBox.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListBox.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIListBoxItem.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListBoxItem.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Lines"

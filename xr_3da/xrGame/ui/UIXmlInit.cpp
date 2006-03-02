@@ -29,7 +29,7 @@
 #include "UIAnimatedStatic.h"
 #include "uixmlinit.h"
 #include "uiartefactpanel.h"
-#include "UIScrollView.h"
+#include "UIListBox.h" //#include "UIScrollView.h"
 #include "../game_base_space.h"
 
 #include "UITextureMaster.h"
@@ -1388,4 +1388,38 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 	}
 	xml_doc.SetLocalRoot(_stored_root);
 	return								true;
+}
+
+bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUIListBox* pWnd){
+	InitScrollView(xml_doc, path, index, pWnd);
+
+	bool b = (1==xml_doc.ReadAttribInt(path, index, "multiselect",0));
+	pWnd->m_flags.set					(CUIScrollView::eMultiSelect, b);
+
+	char _path[512];
+
+	
+	u32 t_color;
+	CGameFont* pFnt;
+	strconcat(_path, path, ":font");	
+	InitFont(xml_doc, _path, index, t_color, pFnt);
+
+	pWnd->SetTextColor(t_color);
+	pWnd->SetFont(pFnt);
+
+	strconcat(_path, path, ":font_s");	
+	t_color = GetARGB(xml_doc, _path, index);
+	pWnd->SetTextColorS(t_color);
+
+	// Load font alignment
+	shared_str al = xml_doc.ReadAttrib(_path, index, "align");
+	if (0 == xr_strcmp(al, "c"))
+		pWnd->SetTextAlignment(CGameFont::alCenter);
+	else if (0 == xr_strcmp(al, "r"))
+		pWnd->SetTextAlignment(CGameFont::alRight);
+	else if (0 == xr_strcmp(al, "l"))
+		pWnd->SetTextAlignment(CGameFont::alLeft);
+
+
+	return true;
 }

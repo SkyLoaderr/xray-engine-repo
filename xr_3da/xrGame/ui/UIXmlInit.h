@@ -40,6 +40,7 @@ class CUIAnimatedStatic;
 class CUIArtefactPanel;
 class CUIOptionsItem;
 class CUIScrollView;
+class CUIListBox;
 class CUIStatsPlayerList;
 //////////////////////////////////////////////////////////////////////////
 
@@ -84,6 +85,7 @@ public:
 	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
 	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
+	static bool InitListBox				(CUIXml& xml_doc, const char* path, int index, CUIListBox* pWnd);
 	static Frect GetFRect				(CUIXml& xml_doc, const char* path, int index);
 
 protected:

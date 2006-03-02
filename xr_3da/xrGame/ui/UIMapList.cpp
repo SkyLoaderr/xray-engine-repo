@@ -1,7 +1,7 @@
 
 #include "StdAfx.h"
 #include "UIMapList.h"
-#include "UIListWnd.h"
+#include "UIListBox.h"
 #include "UILabel.h"
 #include "UIFrameWindow.h"
 #include "UI3tButton.h"
@@ -27,8 +27,8 @@ static LPSTR	g_GameTypeName	[]		= {
 CUIMapList::CUIMapList(){
 	m_item2del = -1;
 
-	m_pList1 = xr_new<CUIListWnd>();
-	m_pList2 = xr_new<CUIListWnd>();
+	m_pList1 = xr_new<CUIListBox>();
+	m_pList2 = xr_new<CUIListBox>();
 	m_pFrame1 = xr_new<CUIFrameWindow>();
 	m_pFrame2 = xr_new<CUIFrameWindow>();
 	m_pLbl1 = xr_new<CUILabel>();
@@ -38,8 +38,8 @@ CUIMapList::CUIMapList(){
 	m_pBtnUp = xr_new<CUI3tButton>();
 	m_pBtnDown = xr_new<CUI3tButton>();
 
-	m_pList1->ShowSelectedItem();
-	m_pList2->ShowSelectedItem();
+//	m_pList1->ShowSelectedItem();
+//	m_pList2->ShowSelectedItem();
 
 	m_pList1->SetAutoDelete(true);
 	m_pList2->SetAutoDelete(true);
@@ -111,13 +111,14 @@ void CUIMapList::SendMessage(CUIWindow* pWnd, s16 msg, void* pData ){
 }
 
 void CUIMapList::OnListItemClicked(){
-	int iItem = m_pList1->GetSelectedItem();
-	if (-1 == iItem)
-		return;
+//	LPCSTR map = 
+//	int iItem = m_pList1->GetSelectedItem();
+//	if (-1 == iItem)
+//		return;
 
-	CUIListItem* pItem = m_pList1->GetItem(iItem);
+//	CUIListItem* pItem = m_pList1->GetItem(iItem);
 	xr_string map_name = "ui\\ui_map_pic_";
-	map_name +=	pItem->GetText();
+	map_name +=	m_pList1->GetSelectedText();
 	xr_string full_name = map_name + ".dds";
 
 	if (FS.exist("$game_textures$",full_name.c_str()))
@@ -126,11 +127,11 @@ void CUIMapList::OnListItemClicked(){
 		m_pMapPic->InitTexture("ui\\ui_map_nopic");
 
 	xr_string desc_txt = "text\\map_desc\\";
-	desc_txt += pItem->GetText();
+	desc_txt += m_pList1->GetSelectedText();
 	desc_txt += ".txt";
 
 
-	m_pMapInfo->InitMap(pItem->GetText());
+	m_pMapInfo->InitMap(m_pList1->GetSelectedText());
 }
 
 xr_token g_GameModes[ ];
@@ -175,13 +176,14 @@ GAME_TYPE CUIMapList::GetCurGameType(){
 
 const char* CUIMapList::GetCommandLine(LPCSTR player_name){
 	char buf[16];
-	if (0 == m_pList2->GetItemsCount())
+	LPCSTR txt = m_pList2->GetFirstText();
+	if (NULL == txt)
 		return NULL;
-	if (0 == xr_strlen(m_pList2->GetItem(0)->GetText()))
+	if (0 == txt[0])
 		return NULL;
 	m_command.clear();
 	m_command = "start server(";
-	m_command += m_pList2->GetItem(0)->GetText(); //map_name
+	m_command += txt; //map_name
 	m_command += "/";
 	m_command += GetCLGameModeName();
 	m_command += m_srv_params;
@@ -271,10 +273,12 @@ void	CUIMapList::SaveMapList(){
 	if (!MapRotFile)
 		return;
 	
-	int count = m_pList2->GetItemsCount();
+	LPCSTR txt = m_pList2->GetFirstText();
 
-	for (int i = 0; i < count; i++)
-        fprintf(MapRotFile, "sv_addmap %s\n", m_pList2->GetItem(i)->GetText());
+	while(txt){
+		fprintf(MapRotFile, "sv_addmap %s\n", txt);
+		txt = m_pList2->GetNextText();
+	}
 
 	fclose(MapRotFile);
 }
@@ -345,10 +349,8 @@ void CUIMapList::InitFromXml(CUIXml& xml_doc, const char* path){
 	CUIXmlInit::InitLabel		(xml_doc, strconcat(buf, path, ":header_2"),	0, m_pLbl2);
 	CUIXmlInit::InitFrameWindow	(xml_doc, strconcat(buf, path, ":frame_1"),		0, m_pFrame1);
 	CUIXmlInit::InitFrameWindow	(xml_doc, strconcat(buf, path, ":frame_2"),		0, m_pFrame2);
-	CUIXmlInit::InitListWnd		(xml_doc, strconcat(buf, path, ":list_1"),		0, m_pList1);
-	m_pList1->EnableScrollBar(true);
-	CUIXmlInit::InitListWnd		(xml_doc, strconcat(buf, path, ":list_2"),		0, m_pList2);
-	m_pList2->EnableScrollBar(true);
+	CUIXmlInit::InitListBox		(xml_doc, strconcat(buf, path, ":list_1"),		0, m_pList1);
+	CUIXmlInit::InitListBox		(xml_doc, strconcat(buf, path, ":list_2"),		0, m_pList2);
 	CUIXmlInit::Init3tButton	(xml_doc, strconcat(buf, path, ":btn_left"),	0, m_pBtnLeft);
 	CUIXmlInit::Init3tButton	(xml_doc, strconcat(buf, path, ":btn_right"),	0, m_pBtnRight);
 	CUIXmlInit::Init3tButton	(xml_doc, strconcat(buf, path, ":btn_up"),		0, m_pBtnUp);
@@ -356,60 +358,38 @@ void CUIMapList::InitFromXml(CUIXml& xml_doc, const char* path){
 }
 
 void CUIMapList::UpdateMapList(GAME_TYPE GameType){
-	m_pList1->RemoveAll();
-	m_pList2->RemoveAll();
+	m_pList1->Clear();
+	m_pList2->Clear();
 
 	for (u32 i=0; i<m_Maps[GameType].size(); i++)
-		m_pList1->AddItem<CUIListItem>(*(m_Maps[GameType][i]));
+		m_pList1->AddItem(*m_Maps[GameType][i]);
 }
 
 void CUIMapList::OnBtnLeftClick(){
-	m_item2del = m_pList2->GetSelectedItem();
+	m_pList2->RemoveWindow(m_pList2->GetSelected());
 }
 
 void CUIMapList::Update(){
 	CUIWindow::Update();
-	if (-1 != m_item2del)
-	{
-		m_pList2->RemoveItem(m_item2del);
-		m_item2del = -1;
-	}
 }
 
 void CUIMapList::OnBtnRightClick(){
-	int isel = m_pList1->GetSelectedItem();
-
-	if (-1 != isel)
+	m_pList2->AddItem(m_pList1->GetSelectedText());
+	LPCSTR next = m_pList1->GetNextSelectedText();
+	while(next)
 	{
-		CUIListItem* li = m_pList1->GetItem(isel);
-		m_pList2->AddItem<CUIListItem>(li->GetText());
+		m_pList2->AddItem(next);
+		next = m_pList1->GetNextSelectedText();
 	}
-
+	m_pList1->DeselectAll();
 }
 
 void CUIMapList::OnBtnUpClick(){
-	int isel = m_pList2->GetSelectedItem();
-
-	if (isel > 0)
-	{
-		xr_string text = m_pList2->GetItem(isel)->GetText();
-		m_pList2->RemoveItem(isel);
-		m_pList2->AddItem<CUIListItem>(text.c_str(), 0.0f, NULL, 0, isel-1);
-		m_pList2->SetSelectedItem(isel - 1);
-	}
-
+	m_pList2->MoveSelectedUp();
 }
 
 void CUIMapList::OnBtnDownClick(){
-	int isel = m_pList2->GetSelectedItem();
-
-	if (isel < m_pList2->GetItemsCount() - 1 )
-	{
-		xr_string text = m_pList2->GetItem(isel)->GetText();
-		m_pList2->RemoveItem(isel);
-		m_pList2->AddItem<CUIListItem>(text.c_str(), 0.0f, NULL, 0, isel+1);
-		m_pList2->SetSelectedItem(isel+1);
-	}
+	m_pList2->MoveSelectedDown();
 }
 
 

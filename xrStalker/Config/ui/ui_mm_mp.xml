@@ -272,10 +272,14 @@
 			<frame_2 x="235" y="18" width="166" height="231">
 				<texture>ui_cb_listbox</texture>
 			</frame_2>
-			<list_1 x="0" y="18" width="184" height="231" item_height="18"  always_show_scroll="1">
+			<list_1 x="0" y="18" width="184" height="231" item_height="18"  always_show_scroll="1" can_select="1" multiselect="1">
 				<texture>ui_cb_listbox</texture>
+				<font_s r="218" g="217" b="213"/>
+				<font r="131" g="131" b="131" font="letterica16"/>
 			</list_1>
-			<list_2 x="235" y="18" width="184" height="231" item_height="18"  always_show_scroll="1">
+			<list_2 x="235" y="18" width="184" height="231" item_height="18"  always_show_scroll="1" can_select="1">
+				<font_s r="218" g="217" b="213" />
+				<font r="131" g="131" b="131" font="letterica16"/>
 				<texture>ui_cb_listbox</texture>
 			</list_2>
 			<btn_left x="189" y="62" width="37" height="23">

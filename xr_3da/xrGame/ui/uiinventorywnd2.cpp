@@ -711,7 +711,8 @@ bool CUIInventoryWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
-	if (!this_inventory->SlotToBag(pInvItem, pList, GRENADE_SLOT)) return false;
+	this_inventory->SlotToBelt(pInvItem, pList, GRENADE_SLOT);
+	this_inventory->SlotToBag(pInvItem, pList, GRENADE_SLOT);
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 

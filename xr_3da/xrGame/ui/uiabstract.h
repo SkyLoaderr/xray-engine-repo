@@ -4,11 +4,11 @@
 
 // Text & Font
 
-class IUIFontControl{
-public:
-	typedef CGameFont::EAligment ETextAlignment;
-	virtual ~IUIFontControl()											 {};
+typedef CGameFont::EAligment ETextAlignment;
 
+class IUIFontControl{
+public:	
+	virtual ~IUIFontControl()											 {};
 	virtual void			SetTextColor(u32 color)						= 0;
 	virtual u32				GetTextColor()								= 0;
 	virtual void			SetFont(CGameFont* pFont)					= 0;

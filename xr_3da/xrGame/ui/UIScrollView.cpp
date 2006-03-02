@@ -251,6 +251,35 @@ void CUIScrollView::SetSelected			(CUIWindow* w)
 
 	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
 	{
-		(smart_cast<CUISelectable*>(*it))->SetSelected(*it==w);
+		smart_cast<CUISelectable*>(*it)->SetSelected(*it==w);
 	}
+}
+
+CUIWindow* CUIScrollView::GetSelected(){
+	if(!m_flags.test(eItemsSelectabe))
+		return NULL;
+
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		if (smart_cast<CUISelectable*>(*it)->GetSelected())
+			return *it;
+	}
+
+	return NULL;
+}
+
+CUIWindow* CUIScrollView::GetSelectedLast(){
+	if(!m_flags.test(eItemsSelectabe))
+		return NULL;
+
+	WINDOW_LIST_it it = m_pad->GetChildWndList().end();
+	it--;
+
+	for(; m_pad->GetChildWndList().begin()!=it; it--)
+	{
+		if (smart_cast<CUISelectable*>(*it)->GetSelected())
+			return *it;
+	}
+
+    return NULL;
 }

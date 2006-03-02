@@ -620,6 +620,19 @@ bool CUIInventoryWnd::SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 
 	return true;
 }
 
+bool CUIInventoryWnd::SlotToBelt(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum){
+	if (SlotNum != pItem->GetSlot()) return false;
+	if (!pList->GetDragDropItemsList().empty())
+	{
+		(*pList->GetDragDropItemsList().begin())->MoveOnNextDrop();
+		UIBeltList.SendMessage(*pList->GetDragDropItemsList().begin(), DRAG_DROP_ITEM_DROP, NULL);
+//		GetBag()->SendMessage((*pList->GetDragDropItemsList().begin()), 
+//			DRAG_DROP_ITEM_DROP, NULL);
+	}
+	return true;
+
+}
+
 void	CUIInventoryWnd::SendEvent_Item2Slot			(PIItem	pItem)
 {
 	NET_Packet	P;

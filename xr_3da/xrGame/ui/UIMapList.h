@@ -3,7 +3,7 @@
 
 #include "UIWindow.h"
 
-class CUIListWnd;
+class CUIListBox;
 class CUILabel;
 class CUIStatic;
 class CUIFrameWindow;
@@ -60,8 +60,8 @@ private:
 			void	AddWeather(char* WeatherType, char* WeatherTime);
 			void	ParseWeather(char** ps, char* e);
 
-	CUIListWnd*			m_pList1;
-	CUIListWnd*			m_pList2;
+	CUIListBox*			m_pList1;
+	CUIListBox*			m_pList2;
 	CUIFrameWindow*		m_pFrame1;
 	CUIFrameWindow*		m_pFrame2;
 	CUILabel*			m_pLbl1;

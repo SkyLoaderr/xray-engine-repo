@@ -10,7 +10,7 @@ class CUIScrollView :public CUIWindow, public CUIWndCallback
 typedef CUIWindow	inherited;
 friend class CUIXmlInit; //for init
 protected:
-enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe=(1<<3),eInverseDir=(1<<4)};
+enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe=(1<<3),eInverseDir=(1<<4),eMultiSelect=(1<<5)};
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
 	float			m_rightIdent;
@@ -44,7 +44,9 @@ public:
 	CUIWindow*		GetItem				(u32 idx);
 			void	SetFixedScrollBar	(bool b);
 			float	GetDesiredChildWidth();
-			void	SetSelected			(CUIWindow*);
+	virtual	void	SetSelected			(CUIWindow*);
+	CUIWindow*		GetSelected			();
+	CUIWindow*		GetSelectedLast		();
 			void	ForceUpdate			();
 };
 
