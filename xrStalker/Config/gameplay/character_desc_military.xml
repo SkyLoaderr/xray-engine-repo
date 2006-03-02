@@ -453,6 +453,8 @@
 		<reputation>96</reputation>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
+        
+        <panic_threshold>0.0</panic_threshold>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
 		<supplies>
@@ -479,6 +481,8 @@
 
 		<rank>82</rank>
 		<reputation>79</reputation>
+		
+		<panic_threshold>0.0</panic_threshold>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<supplies>
@@ -504,6 +508,8 @@
 
 		<rank>93</rank>
 		<reputation>135</reputation>
+		
+		<panic_threshold>0.0</panic_threshold>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
 
