@@ -5,7 +5,7 @@
 </string>
 <string id="val_come_to_trader_0">
     <text>
-        Как можно быстрее вернуться к торговцу.
+        Вернуться к торговцу.
     </text>
 </string>
 <string id="val_sos_help">
@@ -20,7 +20,7 @@
 </string>
 <string id="val_sos_help_main">
     <text>
-        Неизвестный сталкер просит о помощи. Он находится на заброшенной заправочной станции.
+        Помочь сталкеру на заправке.
     </text>
 </string>
 <string id="val_prisoner_help">
@@ -30,12 +30,12 @@
 </string>
 <string id="val_prisoner_help_0">
     <text>
-        Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.
+        Вытащить долговца из плена бандитов.
     </text>
 </string>
 <string id="val_prisoner_help_main">
     <text>
-        Вытащить из плена бандитов долговца, находящегося в подвале базы бандитов.
+        Вытащить долговца из плена бандитов.
     </text>
 </string>
 <string id="val_captive_help">
@@ -45,7 +45,7 @@
 </string>
 <string id="val_captive_help_1">
     <text>
-        Следовать за долговцем к месту засады и помочь освободить его напарника.
+        Помочь освободить долговца.
     </text>
 </string>
 <string id="bar_darklab_documents">
@@ -75,7 +75,7 @@
 </string>
 <string id="val_come_to_trader_1">
     <text>
-        Выбраться с Темной Долины.
+        Выбраться из Темной Долины.
     </text>
 </string>
 <string id="val_come_to_trader_2">

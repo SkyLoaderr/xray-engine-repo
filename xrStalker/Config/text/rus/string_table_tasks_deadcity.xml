@@ -30,12 +30,12 @@
 </string>
 <string id="cit_killers_base_location_1">
     <text>
-        Найти карту с распложением на ней базы наемников.
+        Найти карту с базой наемников.
     </text>
 </string>
 <string id="cit_killers_base_location_2">
     <text>
-        Отдать ее долговцам или Свободе.
+        Отдать карту Долгу или Свободе.
     </text>
 </string>
 <string id="cit_leader_hunt_0">
@@ -75,7 +75,7 @@
 </string>
 <string id="cit_doctor_task_0">
     <text>
-        Разыскать тайник Стрелка на Припяти.
+        Найти тайник Стрелка в Припяти.
     </text>
 </string>
 <string id="cit_doctor_task_1">

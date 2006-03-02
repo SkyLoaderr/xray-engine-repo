@@ -18,7 +18,7 @@
         <text>Получить информацию о Стрелке</text>
     </string>
     <string id="agr_meet_krot_band_0">
-        <text>Серый сказал, что Крот что-то знает</text>
+        <text>Получить от Крота информацию</text>
     </string>
     <string id="agr_meet_krot_band_1">
         <text>Встретиться с группировкой Крота</text>
@@ -31,7 +31,7 @@
         <text>Найти тайник группы Стрелка.</text>
     </string>
     <string id="agroprom_find_gunslinger_cache_0">
-        <text>Найдти и обыскать тайник группировки Стрелка. Там может быть информация о том, где найти самого Стрелка.</text>
+        <text>Найдти тайник группировки Стрелка.</text>
     </string>
     <string id="agroprom_find_gunslinger_cache_1">
         <text>Найти тайник</text>
@@ -44,7 +44,7 @@
         <text>Найти Призрака.</text>
     </string>
     <string id="agroprom_find_stalker_phantom_0">
-        <text>Призрак точно знает, где найти Стрелка.</text>
+        <text>Призрак знает где Стрелок.</text>
     </string>
 
     <string id="agr_gunslinger_cache">
@@ -55,7 +55,7 @@
         <text>Помочь сталкерам Крота</text>
     </string>
     <string id="agr_help_stalkers_0">
-        <text>Помочь сталкерам Крота отбиться от военных на заводе</text>
+        <text>Помочь сталкерам отбиться от военных</text>
     </string>
     <string id="agr_help_stalkers_1">
         <text>Уничтожить военных</text>
@@ -68,7 +68,7 @@
         <text>Спасти Крота</text>
     </string>
     <string id="agr_help_krot_0">
-        <text>Военные зажали Крота на фабрике. Долго ему не продержаться</text>
+        <text>Помочь Кроту отбиться от военных</text>
     </string>
     <string id="agr_help_krot_1">
         <text>Уничтожить военных</text>
