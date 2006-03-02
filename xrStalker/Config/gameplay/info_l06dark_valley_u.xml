@@ -54,7 +54,6 @@
 <!-- Начался квест на документы -->
 <info_portion id="dar_run_quest">
 	<task>bar_darklab_documents2</task>
-	<article>dar_documents_find2</article>
 </info_portion>
 
 <!-- Вспомогательные инфопоршены -->
