@@ -1,55 +1,144 @@
+
+
 <article article_type="journal" group="Diary" id="storyline_borov_flash_info" name="Borov Flash">
+    
+    
     <texture height="150" width="200" x="200" y="650">
+        
+        ui\ui_icon_photo
+    
+    </texture>
+    
+    
+    <text>
+        
+        storyline_borov_flash_info
+    
+    </text>
+    
+
+</article>
+
+
+<article article_type="journal" group="LabX18 first key" id="dar_password_info1" name="LabX18 first key">
+    
+    
+    <text>
+        
+        pass_to_1st_door
+    
+    </text>
+    
+    
+    <!-- <text>Password: 1243 </text> -->
+    
+
+</article>
+
+
+<article article_type="journal" group="LabX18 second key" id="dar_password_info2" name="LabX18 second key">
+    
+    
+    <!-- <text>Password: 9524</text> -->
+    
+    
+    <text>
+        
+        pass_to_2nd_door
+    
+    </text>
+    
+
+</article>
+
+
+<article article_type="journal" group="LabX-18 documents" id="dar_document1" name="dar_document1">
+    
+    
+    <text>
+        
+        documents_1
+    
+    </text>
+    
+
+</article>
+
+
+<article article_type="journal" group="LabX-18 documents" id="dar_document2" name="dar_document2">
+    
+    
+    <text>
+        
+        documents_2
+    
+    </text>
+    
+
+</article>
+
+
+<article article_type="journal" group="LabX-18 documents" id="dar_document3" name="dar_document3">
+    
+    
+    <text>
+        
+        documents_3
+    
+    </text>
+    
+
+</article>
+
+
+<article article_type="journal" group="LabX-18 documents" id="dar_document4" name="dar_document4">
+    
+    
+    <text>
+        
+        documents_4
+    
+    </text>
+    
+
+</article>
+
+
+<article article_type="journal" group="LabX-18 documents" id="dar_document5" name="dar_document5">
+    
+    
+    <text>
+        
+        documents_5
+    
+    </text>
+    
+
+</article>
+
+
+<article article_type="task" group="val_captive_help" id="val_captive_help_art" name="val_captive_help">
+    
+    
+    <text>
+        
+        val_captive_help_txt
+    
+    </text>
+    
+
+</article>
+
+
+
+
+
+
+<article article_type="task" group="bar_darklab_documents" id="bar_darklab_documents_art" name="bar_darklab_documents">
+    <texture height="100" width="100" x="500" y="150">
         ui\ui_icon_photo
     </texture>
     <text>
-        storyline_borov_flash_info
-    </text>
-</article>
-<article article_type="journal" group="LabX18 first key" id="dar_password_info1" name="LabX18 first key">
-    <text>
-        pass_to_1st_door
-    </text>
-    <!-- <text>Password: 1243 </text> -->
-</article>
-<article article_type="journal" group="LabX18 second key" id="dar_password_info2" name="LabX18 second key">
-    <!-- <text>Password: 9524</text> -->
-    <text>
-        pass_to_2nd_door
-    </text>
-</article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document1" name="dar_document1">
-    <text>
-        documents_1
-    </text>
-</article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document2" name="dar_document2">
-    <text>
-        documents_2
-    </text>
-</article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document3" name="dar_document3">
-    <text>
-        documents_3
-    </text>
-</article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document4" name="dar_document4">
-    <text>
-        documents_4
-    </text>
-</article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document5" name="dar_document5">
-    <text>
-        documents_5
-    </text>
-</article>
-<article article_type="task" group="val_captive_help" id="val_captive_help_art" name="val_captive_help">
-    <text>
-        val_captive_help_txt
-    </text>
-</article>
-<article article_type="task" group="dar_documents_find2" id="dar_documents_find2" name="dar_documents_find2">
-    <text>
-        dar_documents_find2_txt
+        bar_darklab_documents_txt
     </text>
 </article>

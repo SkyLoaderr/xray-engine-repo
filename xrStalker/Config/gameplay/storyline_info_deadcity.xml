@@ -30,7 +30,7 @@
     </text>
 </article>
 <article article_type="task" group="cit_doctor_task" id="cit_doctor_task" name="cit_doctor_task">
-    <texture height="100" width="100" x="500" y="150">
+    <texture height="250" width="250" x="1300" y="150">
         ui\ui_icon_photo
     </texture>
     <text>
