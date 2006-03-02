@@ -32,6 +32,16 @@ CObjectPropertyEvaluatorState::_value_type CObjectPropertyEvaluatorState::evalua
 	return			(_value_type((m_item->STATE == m_state) == m_equality));
 }
 
+CObjectPropertyEvaluatorWeaponHidden::CObjectPropertyEvaluatorWeaponHidden(CWeapon *item, CAI_Stalker *owner):
+	inherited		(item,owner)
+{
+}
+
+CObjectPropertyEvaluatorWeaponHidden::_value_type CObjectPropertyEvaluatorWeaponHidden::evaluate()
+{
+	VERIFY			(m_item);
+	return			((m_item->IsHidden() || !m_item->m_pInventory->ActiveItem() ));
+}
 //////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorAmmo
 //////////////////////////////////////////////////////////////////////////

@@ -55,11 +55,12 @@ void CObjectActionShow::initialize		()
 	if (object().inventory().m_slots[m_item->GetSlot()].m_pIItem)
 		object().inventory().Ruck	(object().inventory().m_slots[m_item->GetSlot()].m_pIItem);
 
-	object().inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+//.	object().inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 	object().inventory().Slot		(m_item);
-
+/*
 	bool							result = object().inventory().Activate	(m_item->GetSlot());
 	VERIFY							(result);
+*/
 	if (!m_weapon)
 		return;
 
@@ -78,12 +79,14 @@ void CObjectActionShow::execute		()
 	VERIFY							(m_item);
 	if (!object().inventory().ActiveItem() || (object().inventory().ActiveItem()->object().ID() != m_item->object().ID())) {
 		CHudItem					*hud_item = smart_cast<CHudItem*>(object().inventory().ActiveItem());
-		if (!hud_item)
+		if (!hud_item){
+			object().inventory().Slot		(m_item);
 			return;
+		}
 		if (!hud_item->IsPending()) {
 			if (object().inventory().m_slots[m_item->GetSlot()].m_pIItem)
 				object().inventory().Ruck	(object().inventory().m_slots[m_item->GetSlot()].m_pIItem);
-			object().inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+//.			object().inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 			object().inventory().Slot		(m_item);
 		}
 	}

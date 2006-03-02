@@ -53,6 +53,14 @@ public:
 	virtual _value_type		evaluate						();
 };
 
+class CObjectPropertyEvaluatorWeaponHidden : public CObjectPropertyEvaluatorBase<CWeapon> {
+protected:
+	typedef CObjectPropertyEvaluatorBase<CWeapon> inherited;
+public:
+							CObjectPropertyEvaluatorWeaponHidden	(CWeapon *item, CAI_Stalker *owner);
+	virtual _value_type		evaluate						();
+};
+
 //////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorAmmo
 //////////////////////////////////////////////////////////////////////////

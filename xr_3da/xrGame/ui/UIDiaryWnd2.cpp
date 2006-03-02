@@ -170,6 +170,7 @@ void CUIDiaryWnd::MarkNewsAsRead (bool status)
 void CUIDiaryWnd::UnloadJournalTab		()
 {
 	m_UILeftWnd->DetachChild	(m_SrcListWnd);
+	m_SrcListWnd->RemoveAll		();
 	m_SrcListWnd->Show			(false);
 
 	m_UIRightWnd->DetachChild	(m_DescrView);
