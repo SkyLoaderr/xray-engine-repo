@@ -175,13 +175,6 @@ void CBuild::PreOptimize()
 	clMsg		("! duplicate/same faces found:%d",err_count);
 	*/
 	// -------------------------------------------------------------
-	if (b_noise)	{
-		CRandom		rnd		(0x12071980);
-		Fvector		dir;
-		for (int it = 0; it<(int)g_vertices.size(); it++)	{
-			g_vertices[it]->P.mad(dir.random_dir(rnd).normalize(), .01f);
-		}
-	}
 }
 
 void CBuild::IsolateVertices	(BOOL bProgress)
