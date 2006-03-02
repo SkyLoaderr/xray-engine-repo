@@ -687,6 +687,48 @@
     <string id="mil_hunter_dialog_80">
         <text>Как хочешь...</text>
     </string>
+    <string id="mil_hunter_dialog_801">
+        <text>И чего тебя сюда занесло ?</text>
+    </string>
+    <string id="mil_hunter_dialog_802">
+        <text>Да так, хожу, осматриваюсь...</text>
+    </string>
+    <string id="mil_hunter_dialog_803">
+        <text>А получше места не нашел? Занесло тебя в самое отвратное место в Зоне...</text>
+    </string>
+    <string id="mil_hunter_dialog_804">
+        <text>И что здесь плохого?</text>
+    </string>
+    <string id="mil_hunter_dialog_805">
+        <text>Да хрен его знает. Завелась какая-то тварь, или несколько. Парочка наших как пошла в деревню, так и не вернулась. Ну, а нам помирать не охота.</text>
+    </string>
+    <string id="mil_hunter_dialog_806">
+        <text>То есть, вы сами не в курсе ?</text>
+    </string>
+    <string id="mil_hunter_dialog_807">
+        <text>То то и оно. Если тебе делать нечего и голова не в порядке, то можешь погулять по деревне. Если тварь завалишь, то и награда себя ждать особо не заставит - Скряга выдаст. Но адрес на всякий случай оставь, мы похоронку тебе отправим, если что...</text>
+    </string>
+    <string id="mil_hunter_dialog_808">
+        <text>Обойдешься. Ладно, пошел я зверей ваших ловить.</text>
+    </string>
+    <string id="mil_hunter_dialog_901">
+        <text>Как успехи?</text>
+    </string>
+    <string id="mil_hunter_dialog_902">
+        <text>Нормально. Завалил я тварь.</text>
+    </string>
+    <string id="mil_hunter_dialog_903">
+        <text>И на что она похожа ?</text>
+    </string>
+    <string id="mil_hunter_dialog_904">
+        <text>На странного мужика в каком-то рванье, пойдете - увидите. На мозги действует, сука. Кстати, ваши возле водокачки лежат и похоже они застрелились сами.</text>
+    </string>
+    <string id="mil_hunter_dialog_905">
+        <text>Эх, как все плохо... Спасибо, брат.</text>
+    </string>
+    <string id="mil_hunter_dialog_906">
+        <text>Не за что...</text>
+    </string>
     <string id="mil_leader_start_dialog_10001">
         <text>Прими благодарность за помощь ребятам на "Барьере", так и быть, можешь отдыхать на территории базы, когда захочешь и можешь рассчитывать на помощь. Ну, а от меня лично - денежное вознаграждение.</text>
     </string>
