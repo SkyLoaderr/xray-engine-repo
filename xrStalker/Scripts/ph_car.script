@@ -1,11 +1,11 @@
 ----------------------------------------------------------------------------------------------------
--- Physic door control
+-- Physic vehicle control
 ----------------------------------------------------------------------------------------------------
 -- Исходный скрипт: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 -- Доработка для БТР: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
---function printf() end
+function printf() end
 
 local pi_2 = math.pi / 3 -- 60 degree
 
@@ -318,10 +318,10 @@ function action_car:reset_scheme(loading)
         --	
 	    --    self:go_to_walkpoint(self.target_walk_pt)
         --end
+	    printf("car <move>: start target_pt2 = %d", self.target_walk_pt)
     end
 
 	self.object:set_fastcall(self.fastcall, self)
-	printf("car <move>: start target_pt2 = %d", self.target_walk_pt)
 	printf("car <state>: END INITIALIZING ========================================================\n")
 end
 
