@@ -387,7 +387,6 @@
 		</supplies>
 		
 		<start_dialog>bar_bar_visitors_14_start</start_dialog>
-		<actor_dialog>bar_bar_lisiy_talk</actor_dialog>
 	</specific_character>	
 
 	<specific_character id="bar_psih" team_default = "1">
