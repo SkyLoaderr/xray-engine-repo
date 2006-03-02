@@ -36,9 +36,9 @@ local simMaxCount = {
 	bloodsucker_weak = 7, bloodsucker_normal = 14, bloodsucker_strong = 8	
 }
 
--- Таблица для кеширования свойств секций респавна.
-local sectSpawnProps = {}
 
+-- Список респавнеров, для сбора статистики
+local respawners = {}
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ function parse_names( s )
     return t
 end
 
-function r_spawns( spawn_ini, section, line)
+function r_spawns( spawn_ini, section, line, sectSpawnProps)
 	if spawn_ini:line_exist( section, line ) then
 		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
 		local t = parse_names( spawn_ini:r_string( section, line ) )
@@ -140,6 +140,8 @@ end
 class "se_respawn" ( cse_alife_smart_zone )
 function se_respawn:__init( section ) super( section )
 	self.spawned_obj = {}
+	-- Таблица для кеширования свойств секций респавна.
+	self.sectSpawnProps = {}
 
 	self.proxy_initialized = false
 end
@@ -184,8 +186,7 @@ function se_respawn:on_register()
 		return	
 	end
 	
-	self.respawn_section = r_spawns(ini, section_name, "respawn_section")
-	print_table(self.respawn_section)
+	self.respawn_section = r_spawns(ini, section_name, "respawn_section", self.sectSpawnProps)	
 	if self.respawn_section == nil then
 		abort("RESPAWN: [%s] field 'respawn_section' doesn't exist.", self:name())
 	end
@@ -213,6 +214,9 @@ function se_respawn:on_register()
 	
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
+	
+	-- Для сбора статистики сохраняем указатель на респавнер
+	respawners[self.id] = self
 end
 -- Создаем объект
 function se_respawn:create(prob)
@@ -228,7 +232,7 @@ function se_respawn:create(prob)
 		-- Производим рандомную взвешенную выборку
 		-- с учетом уже заспавленного количества человек.
 		for k,v in pairs(self.respawn_section) do
-			local tt = sectSpawnProps[v.section]
+			local tt = self.sectSpawnProps[v.section]
 			local community_rank = tt.community.."_"..tt.rank
 			local s_count = simMaxCount[community_rank]
 			if s_count == nil then
@@ -240,7 +244,7 @@ function se_respawn:create(prob)
 		end
 		sum = math.random(0, sum)
 		for k,v in pairs(self.respawn_section) do
-			local tt = sectSpawnProps[v.section]
+			local tt = self.sectSpawnProps[v.section]
 			local community_rank = tt.community.."_"..tt.rank
 			local s_count = simMaxCount[community_rank]
 			if s_count == nil then
@@ -355,5 +359,15 @@ function se_respawn:update_online()
 	--printf("RESPAWN: [%s] se_respawn update_online", tostring(self:name()))
 	if db.actor:position():distance_to (self.position) >= self.respawn_radius then
 		self:execute()
+	end
+end
+
+
+-- Сбор статистики
+function stats()
+	printf("***************** RESPAWN STATISTIC *********************")
+	for k,v in pairs(respawners) do
+		printf("[%s] spawns [%s] object", tostring(v:name()), tostring(table.getn(v.spawned_obj)))
+		print_table(v.respawn_section)
 	end
 end
