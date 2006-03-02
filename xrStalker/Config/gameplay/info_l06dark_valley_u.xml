@@ -51,6 +51,12 @@
 	<article>dar_document5</article>
 </info_portion>
 
+<!-- Начался квест на документы -->
+<info_portion id="dar_run_quest">
+	<task>bar_darklab_documents2</task>
+	<article>dar_documents_find2</article>
+</info_portion>
+
 <!-- Вспомогательные инфопоршены -->
 <info_portion id="x18_door2"></info_portion>
 <info_portion id="x18_door2_knock_stop"></info_portion>
