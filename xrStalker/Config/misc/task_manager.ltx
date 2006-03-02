@@ -87,8 +87,57 @@ freedom_find_item_3
 freedom_monster_part_1
 ;-------STORYLINE TASKS-------
 tutorial_find_artefact
-
-
+tutorial_help_wounded
+esc_help_wounded_from_raid
+esc_blockpost_case_to_trader
+esc_dinamit_to_volk
+esc_bandits_factory
+esc_defend_lager
+doctor_meet
+garbage_meet_stalker
+gar_kill_boars
+gar_help_dymon
+gar_help_tunnel_newbie
+agroprom_get_military_documents
+agr_meet_krot_band
+agroprom_find_gunslinger_cache
+agroprom_find_stalker_phantom
+agr_help_stalkers
+agr_help_krot
+val_come_to_trader
+val_sos_help
+val_prisoner_help
+val_captive_help
+bar_darklab_documents
+bar_resque_information
+bar_hunter_rifle
+bar_crazy_veterans_quest
+bar_dolg_svoboda_ambush_quest
+bar_x16_documents
+bar_radar_deactivate
+yan_kill_brain_task
+yan_find_scientist
+yan_find_scientist_semenov
+yan_find_vasilyev_task
+yan_find_ghost_task
+yan_provodnik_task
+mil_kill_sniper
+mil_kill_lukash
+mil_blockpost_job
+mil_blockpost_job2
+mil_mad_job
+mil_lukash_job
+mil_freedom_rg6_task
+mil_courier_job
+mil_hunters_task
+mil_kill_controller
+cit_documents
+cit_killers_base
+cit_doctor_task
+cit_doctor_escape_task
+sar_secret_lab
+sar_monolith_destroy
+sar_warlab
 
 
 [tm_eliminate_camp_1]
@@ -863,5 +912,240 @@ reward_relation = dolg, -50, freedom +50
 ;*************************************************
 [tutorial_find_artefact]
 type = storyline
+reward_rank = 5
+
+[tutorial_help_wounded]
+type = storyline
+reward_reputation = +10
+
+[esc_help_wounded_from_raid]
+type = storyline
+reward_reputation = +10
+reward_rank = 10
+
+[esc_blockpost_case_to_trader]
+type = storyline
+reward_rank = 10
+reward_relation = freedom, +50
+
+[esc_dinamit_to_volk]
+type = storyline
+reward_reputation = +10
+reward_rank = 10
+
+[esc_bandits_factory]
+type = storyline
 reward_reputation = +15
+reward_rank = 10
+
+[esc_defend_lager]
+type = storyline
+reward_reputation = +15
+reward_rank = 10
+
+[doctor_meet]
+type = storyline
+reward_rank = 5
+
+[garbage_meet_stalker]
+type = storyline
+reward_rank = 5
+
+[gar_kill_boars]
+type = storyline
+reward_rank = 5
+reward_reputation = +10
+reward_relation = dolg, +100
+
+[gar_help_dymon]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[gar_help_tunnel_newbie]
+type = storyline
+reward_rank = +5
+reward_reputation = +20
+
+[agroprom_get_military_documents]
+type = storyline
+reward_rank = 50
+reward_reputation = +10
+
+[agr_meet_krot_band]
+type = storyline
+reward_rank = 5
+
+[agroprom_find_gunslinger_cache]
+type = storyline
+reward_rank = 5
+
+[agroprom_find_stalker_phantom]
+type = storyline
+reward_rank = 5
+
+[agr_help_stalkers]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[agr_help_krot]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[val_come_to_trader]
+type = storyline
+reward_rank = 5
+
+[val_sos_help]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[val_prisoner_help]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[val_captive_help]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[bar_darklab_documents]
+type = storyline
+reward_rank = 50
+reward_reputation = +20
+
+[bar_resque_information]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[bar_hunter_rifle]
+type = storyline
+reward_rank = 5
+reward_reputation = +10
+
+[bar_crazy_veterans_quest]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[bar_dolg_svoboda_ambush_quest]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[bar_x16_documents]
+type = storyline
+reward_rank = 50
+reward_reputation = +30
+
+[bar_radar_deactivate]
+type = storyline
+reward_rank = 50
+reward_reputation = +30
+
+[yan_kill_brain_task]
+type = storyline
+reward_rank = 50
+reward_reputation = +20
+  
+[yan_find_scientist]
+type = storyline
+reward_rank = 5
+
+[yan_find_scientist_semenov]
+type = storyline
+reward_rank = 5
+
+[yan_find_vasilyev_task]
+type = storyline
+reward_rank = 5
+
+[yan_find_ghost_task]
+type = storyline
+reward_rank = 5
+
+[yan_provodnik_task]
+type = storyline
+reward_rank = 5
+
+[mil_kill_sniper]
+type = storyline
+reward_rank = 10
+reward_relation = dolg, +100, freedom, -100
+
+[mil_kill_lukash]
+type = storyline
+reward_rank = 20
+reward_relation = dolg, +200, freedom, -200
+
+[mil_blockpost_job]
+type = storyline
+reward_rank = 10
+reward_reputation = +30
+
+[mil_blockpost_job2]
+type = storyline
+reward_rank = 10
+reward_reputation = +30
+
+[mil_mad_job]
+type = storyline
+reward_rank = 10
+reward_relation = freedom, +50
+
+[mil_lukash_job]
+type = storyline
+reward_rank = 10
+reward_relation = dolg, -200, freedom, +200
+
+[mil_freedom_rg6_task]
+type = storyline
+reward_rank = 10
+reward_relation = dolg, +50
+
+[mil_courier_job]
+type = storyline
+reward_rank = 5
+
+[mil_hunters_task]
+type = storyline
+reward_rank = 10
+
+[mil_kill_controller]
+type = storyline
+reward_rank = 10
+
+[cit_documents]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[cit_killers_base]
+type = storyline
+reward_rank = 10
+reward_reputation = +10
+
+[cit_doctor_task]
+type = storyline
+reward_rank = 10
+
+[cit_doctor_escape_task]
+type = storyline
+reward_rank = 10
+
+[sar_secret_lab]
+type = storyline
+reward_rank = 5
+
+[sar_monolith_destroy]
+type = storyline
+reward_rank = 5
+
+[sar_warlab]
+type = storyline
 reward_rank = 5
