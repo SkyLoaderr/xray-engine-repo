@@ -3292,6 +3292,9 @@
 						RelativePath=".\scripts\news_manager.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\ranks.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\slowdown.script">
 					</File>
 					<File

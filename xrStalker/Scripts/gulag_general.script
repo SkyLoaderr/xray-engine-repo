@@ -22,9 +22,6 @@ local presets = {
 	general_lair  = {}
 }
 
--- ранги. формат: {novice={0,30}, experienced={30,60}, ...}
-local ranks
-
 function load_job(sj, gname, type, squad, groups, st)
 	ltx = ""
 	-- ”Ќ»¬≈–—јЋ№Ќџ… Ћј√≈–№ —“јЋ ≈–ќ¬
@@ -381,38 +378,11 @@ function load_states(gname, type)
 	end
 end
 
--- парсит заданную строку рангов в таблицу ranks
-function parse_ranks( s )
-	s = "0," .. s .. ",100"
-
-	local t = parse_names( s )
-	local i = 2
-
-	while i < table.getn( t ) do
-		ranks[t[i]] = { tonumber(t[i-1]), tonumber(t[i+1]) }
-		i = i + 2
-	end
-end
-
--- вычитывает сталкерские и монстр€чие ранги из game_relations.ltx
-function read_all_ranks()
-	ranks = {}
-
-	local ltx  = system_ini()
-
-	parse_ranks( ltx:r_string( "game_relations", "rating" ) )
-	parse_ranks( ltx:r_string( "game_relations", "monster_rating" ) )
-end
-
 -- возвращает таблицу с предустановкой или false
 function read_preset( ltx_name, preset_name )
 	local ltx = ini_file( ltx_name )
 
 	if ltx and ltx:section_exist( preset_name ) then
-		if not ranks then
-			read_all_ranks()
-		end
-
 		local preset = {}
 		local result, field, str
 		local t
@@ -427,7 +397,7 @@ function read_preset( ltx_name, preset_name )
 			rank_min, rank_max = 100, 0
 
 			for i, rank_name in ipairs( t ) do
-				rank_interval = ranks[rank_name]
+				rank_interval = ranks.get_rank_interval( rank_name )
 
 				if rank_interval[1] < rank_min then
 					rank_min = rank_interval[1]
