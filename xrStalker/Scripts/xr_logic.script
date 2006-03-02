@@ -654,7 +654,7 @@ function try_switch_to_another_section(npc, st, actor)
 	for n, c in pairs(l) do
 		--printf("_bp: %d: %s", time_global(), c.name)
 		if cond_name(c.name, "on_actor_dist_le") then
-			printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(see_actor(npc)))
+			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(see_actor(npc)))
 			if see_actor(npc) and distance_between(actor, npc) <= c.v1 then
 				--printf("_bp: conditions met")
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
