@@ -666,6 +666,15 @@
     <string id="bar_bar_barmen_start_room_51231">
         <text>Готовься, Меченый. Такое дело не может долго ждать.</text>
     </string>
+    <string id="bar_bar_barmen_start_room_61">
+        <text>Ну, чего ждешь?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_71">
+        <text>Ну, чего ждешь?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_81">
+        <text>Ну, чего ждешь?</text>
+    </string>
     <string id="bar_bar_barmen_talk_info_0">
         <text>Я хотел бы кое-что узнать.</text>
     </string>
