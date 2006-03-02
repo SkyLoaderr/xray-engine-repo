@@ -2,7 +2,7 @@
 
 <xml>
 
-<specific_character id="gar_seriy" team_default = "1">
+	<specific_character id="gar_seriy" team_default = "1">
 		<name>gar_seryi_name</name>
 		<icon x="26" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -25,10 +25,9 @@
 			medkit = 1 \n
 			garbage_seriy_flash \n
 		</supplies>
-					
+		
 		<start_dialog>gar_seriy_start</start_dialog>
-		<actor_dialog>gar_seriy_help</actor_dialog>
-		<actor_dialog>gar_seryi_about_garbage</actor_dialog>		
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>	
 	
 	<specific_character id="gar_dram_novice" team_default = "1">
@@ -52,10 +51,10 @@
 			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
 		</supplies>
-		
-#include "gameplay\character_dialogs.xml"					
+
+	
 		<start_dialog>gar_dramm_novice_start</start_dialog>
-		<actor_dialog>gar_dram_novice_level</actor_dialog>
+#include "gameplay\character_dialogs.xml"				
 	</specific_character>
 	
 	
@@ -66,7 +65,7 @@
 		<bio>gar_newbie_bio</bio>
 
 		<class>gar_newbie_in_tonnel</class>
-		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>22</rank>
 		<reputation>-4</reputation>
@@ -83,6 +82,7 @@
 		</supplies>
 			
 		<start_dialog>gar_newbie_in_tonnel</start_dialog>
+#include "gameplay\character_dialogs.xml"	
 	</specific_character>
 	
 	<specific_character id="gar_hellcar" team_default = "1">
@@ -114,9 +114,7 @@
 		</supplies>
 
 		<start_dialog>gar_hellcar_start</start_dialog>
-		<actor_dialog>gar_hellcar_dialog_quest</actor_dialog>
-		<actor_dialog>gar_hellcar_dialog_thanks</actor_dialog>
-		<actor_dialog>gar_hellcar_bandits_damaged</actor_dialog>
+#include "gameplay\character_dialogs.xml"	
 	</specific_character>
 	
 	<specific_character id="gar_bandit_novice_wounded" team_default = "1">
@@ -170,11 +168,12 @@
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"	
 	</specific_character>
 	
-		<!---------------------------BANDIT NOVICE----------------------->
+	<!----------------------BANDIT NOVICE----------------------->
 	<specific_character id="gar_bandit_novice_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
@@ -198,9 +197,9 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-</specific_character>
+
+#include "gameplay\character_dialogs.xml"						
+	</specific_character>
 
 	<specific_character id="gar_bandit_novice_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
@@ -227,8 +226,8 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"							
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
+
+#include "gameplay\character_dialogs.xml"						
 	</specific_character>
 
 	<specific_character id="gar_bandit_novice_default3" team_default = "1">
@@ -254,8 +253,8 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
+				
+#include "gameplay\character_dialogs.xml"						
 	</specific_character>
 	
 	
@@ -287,8 +286,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
+
+#include "gameplay\character_dialogs.xml"						
 	</specific_character>
 
 	<specific_character id="gar_bandit_general_default2" team_default = "1">
@@ -317,8 +316,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"		
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
+
+#include "gameplay\character_dialogs.xml"						
 	</specific_character>
 
 	<specific_character id="gar_bandit_general_default3" team_default = "1">
@@ -347,8 +346,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
+
+#include "gameplay\character_dialogs.xml"						
 	</specific_character>
 	
 	
@@ -384,8 +383,7 @@
 		</supplies>
 				
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-
+		<start_dialog>hello_dialog</start_dialog>	
 	</specific_character>
 
 	<specific_character id="gar_stalker_general_default2" team_default = "1">
@@ -416,10 +414,10 @@
 		</supplies>
 				
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-</specific_character>
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>
 
-<specific_character id="gar_stalker_general_default3" team_default = "1">
+	<specific_character id="gar_stalker_general_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
@@ -447,9 +445,9 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-</specific_character>
+	</specific_character>
 
 	<specific_character id="gar_stalker_general_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
@@ -478,8 +476,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="gar_stalker_general_default5" team_default = "1">
@@ -510,8 +508,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 	
 	
@@ -538,8 +536,9 @@
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 		</supplies>
-					
+
 		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<!---------------------------DOLG BLOKPOST----------------------->
@@ -570,8 +569,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default2" team_default = "1">
@@ -601,8 +600,8 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default3" team_default = "1">
@@ -632,8 +631,8 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 
+		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_commander" team_default = "1">
@@ -662,8 +661,8 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>gar_dolg_blokpost</actor_dialog>
+		<start_dialog>gar_dolg_blokpost</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="gar_sniper" team_default = "1">
@@ -694,6 +693,7 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 </xml>
