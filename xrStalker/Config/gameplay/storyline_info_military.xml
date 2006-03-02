@@ -10,37 +10,37 @@
 
 <article id="mil_flash_ugrumy" name="Ugrumy flash" group="Diary" article_type="info">
 	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_flash_ugrumy</text>
+    <text>mil_flash_ugrumy_descr</text>
 </article>
     
 <article id="mil_courier_doc" name="Courier document" group="Diary" article_type="info">
 	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_courier_doc</text>
+    <text>mil_courier_doc_descr</text>
 </article>
 
 <article id="mil_flash_bandit" name="Bandit flash" group="Diary" article_type="info">
 	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_flash_bandit</text>
+    <text>mil_flash_bandit_descr</text>
 </article>
 
 <article id="mil_flash_max" name="Max flash" group="Diary" article_type="info">
 	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_flash_max</text>
+    <text>mil_flash_max_descr</text>
 </article>
 
 <article id="mil_dolg_kill_sniper" name="dolg_kill_sniper" group="Diary" article_type="info">
 	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_dolg_kill_sniper</text>
+    <text>mil_dolg_kill_sniper_descr</text>
 </article>
 
 <article id="mil_dolg_kill_lukash" name="mil_dolg_kill_lukash" group="Diary" article_type="info">
 	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_dolg_kill_lukash</text>
+    <text>mil_dolg_kill_lukash_descr</text>
 </article>
 
 <article id="mil_mad_flash_job" name="mil_mad_flash_job" group="Diary" article_type="info">
 	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_mad_flash_job</text>
+    <text>mil_mad_flash_job_descr</text>
 </article>
 
 <article id="mil_lukash_job_descr" name="mil_lukash_job_descr" group="Diary" article_type="info">
