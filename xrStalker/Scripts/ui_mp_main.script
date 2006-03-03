@@ -345,6 +345,10 @@ function mp_main:GatherServerData()
 	if self.check_friendly_indicators:GetCheck() then
 		cmdstr = cmdstr .. "/fi=1" .. tmp
 	end	
+	-- friendly indicators --------------------------------------------------------------
+	if self.check_friendly_names:GetCheck() then
+		cmdstr = cmdstr .. "/fn=1" .. tmp
+	end	
 	-- anomaly time ---------------------------------------------------------------------	
 	if false == self.check_no_anmalies:GetCheck() then
 		tmp = self.edit_anomaly_time:GetText()
