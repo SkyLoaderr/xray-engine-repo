@@ -6,7 +6,8 @@
 	struct		WeaponDataStruct
 	{
 		u16				SlotItem_ID		;    //SlotID << 8 | ItemID;
-		xr_string		WeaponName		;
+		shared_str		WeaponName		;
+		shared_str		WeaponBaseAmmo	;
 		u16				Cost			;
 		bool			operator	==		(s16 ID){return		(SlotItem_ID == ID);}
 		bool			operator	==		(LPCSTR name){int res = xr_strcmp(WeaponName.c_str(), name);return	res	 == 0;}

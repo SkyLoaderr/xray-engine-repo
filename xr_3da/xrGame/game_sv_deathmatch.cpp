@@ -1024,6 +1024,13 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 			NewWpnData.SlotItem_ID = (s16(i-1) << 8) | s16(j);
 			NewWpnData.WeaponName = wpnSingleName;
 			NewWpnData.Cost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName);
+			if (pSettings->line_exist(wpnSingleName, "ammo_class"))
+			{
+				string1024 wpnAmmos, BaseAmmoName;
+				std::strcpy(wpnAmmos, pSettings->r_string(wpnSingleName, "ammo_class"));
+				_GetItem(wpnAmmos, 0, BaseAmmoName);
+				NewWpnData.WeaponBaseAmmo = BaseAmmoName;
+			};
 
 			std::strcat(wpnSingleName, "_cost");
 			if (pSettings->line_exist(caSection, wpnSingleName))

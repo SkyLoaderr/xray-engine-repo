@@ -740,7 +740,6 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 {
 	ClearPlayerItems(ps);
 	//-------------------------------------------
-
 	//fill player with default items
 	if (ps->team < s16(TeamList.size()))
 	{
@@ -775,6 +774,19 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 			*pItemID = pWpnS->SlotItem_ID;
 		}
 	}
+	//---------------------------------------------------
+	for (u32 it=0; it<ps->pItemList.size(); it++)
+	{
+		u16* pItemID = &(ps->pItemList[it]);
+		WeaponDataStruct* pWpnS = NULL;
+		if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
+		
+		if (!pWpnS->WeaponBaseAmmo.size()) continue;
+		WeaponDataStruct* pWpnAmmo = NULL;
+		if (!GetTeamItem_ByName(&pWpnAmmo, &(TeamList[ps->team].aWeapons), *(pWpnS->WeaponBaseAmmo))) continue;
+		
+		ps->pItemList.push_back(pWpnAmmo->SlotItem_ID);
+	};
 };
 
 void	game_sv_mp::ClearPlayerState		(game_PlayerState* ps)

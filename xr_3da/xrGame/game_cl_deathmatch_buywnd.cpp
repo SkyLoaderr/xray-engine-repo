@@ -299,11 +299,30 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWeaponWnd* pBuyMenu)
 			pBuyMenu->GetWeaponIndexByName(NewItemStr, SlotID, ItemID);
 			if (SlotID == 0xff || ItemID == 0xff) continue;
 
-			s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);			
+			s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
 
 			*pItemID = ID;
 		}
 	}
+	//---------------------------------------------------------
+	for (u32 it=0; it<PlayerDefItems.size(); it++)
+	{
+		s16* pItemID = &(PlayerDefItems[it]);
+		char* ItemName = pBuyMenu->GetWeaponNameByIndex(u8(((*pItemID)&0xff00)>>0x08), u8((*pItemID)&0x00ff));
+		if (!ItemName) continue;
+		if (!pSettings->line_exist(ItemName, "ammo_class")) continue;
+		
+		string1024 wpnAmmos, BaseAmmoName;
+		std::strcpy(wpnAmmos, pSettings->r_string(ItemName, "ammo_class"));
+		_GetItem(wpnAmmos, 0, BaseAmmoName);
+
+		u8 SlotID, ItemID;
+		pBuyMenu->GetWeaponIndexByName(BaseAmmoName, SlotID, ItemID);
+		if (SlotID == 0xff || ItemID == 0xff) continue;
+
+		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+		PlayerDefItems.push_back(ID);
+	};
 };
 
 void				game_cl_Deathmatch::ChangeItemsCosts			(CUIBuyWeaponWnd* pBuyMenu)
