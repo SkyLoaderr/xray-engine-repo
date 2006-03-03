@@ -2,10 +2,10 @@
 ;--- Dreams ---------------------------------------------------------------------
 ;--------------------------------------------------------------------------------
 [dreams]
-regular_probability = 40
-dream_types         = nightmare, normal, happy
+regular_probability = 50
+scenario            = scenario1, scenario2, scenario3
 regular             = regular_dream1, regular_dream2, regular_dream3
-scenario            = scenario1, scenario2, scenario3 ;, l01_escape@start, l01_escape@sleep, l02_garbage@fighting2
+dream_types         = nightmare, normal, happy
 
 ;--------------------------------------------------------------------------------
 ;--- Regular dreams -------------------------------------------------------------
@@ -42,19 +42,6 @@ cond        = {+agr_military_documents_done}
 dream       = sleep\Movie-003_Rats_OutPut-010
 ;to_regular  = 3,normal
 cond        = {+agr_military_documents_done}
-
-[l01_escape@start]
-dream       = sleep\Movie-003_Rats_OutPut-010
-cond        = {+esc_start_clip}
-
-[l01_escape@sleep]
-dream       = sleep\Movie-003_Rats_OutPut-010
-cond        = {+esc_sleep_clip}
-
-[l02_garbage@fighting2]
-dream       = sleep\Movie-003_Rats_OutPut-010
-to_regular  = 7,nightmare
-cond        = {+gar_fighting_clip}
 
 ;--------------------------------------------------------------------------------
 ;--- Level specific -------------------------------------------------------------
