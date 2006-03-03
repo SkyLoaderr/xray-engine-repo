@@ -15,6 +15,7 @@
 #include "../UIGameSP.h"
 #include "../weaponmagazined.h"
 #include "../missile.h"
+#include "../Grenade.h"
 #include "../xrServer_objects_ALife.h"
 #include "../alife_simulator.h"
 #include "../alife_object_registry.h"
@@ -94,6 +95,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 {
 	m_pActor					= NULL;
 	m_pWeapon					= NULL;
+	m_pGrenade					= NULL;
 	m_pItem						= NULL;
 
 	g_bShowHudInfo				= true;
@@ -430,6 +432,36 @@ void CUIMainIngameWnd::SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog){
 	m_pMPLogWnd  = pLog;
 }
 
+void CUIMainIngameWnd::SetAmmoIcon (LPCSTR sect_name)
+{
+	if (!sect_name)
+	{
+		UIWeaponIcon.Show			(false);
+		return;
+	};
+
+	UIWeaponIcon.Show			(true);
+	//properties used by inventory menu
+	int iGridWidth			= pSettings->r_u32(sect_name, "inv_grid_width");
+	int iGridHeight			= pSettings->r_u32(sect_name, "inv_grid_height");
+
+	int iXPos				= pSettings->r_u32(sect_name, "inv_grid_x");
+	int iYPos				= pSettings->r_u32(sect_name, "inv_grid_y");
+
+	UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(iXPos * INV_GRID_WIDTH),
+		float(iYPos * INV_GRID_HEIGHT),
+		float(iGridWidth * INV_GRID_WIDTH),
+		float(iGridHeight * INV_GRID_HEIGHT));
+	UIWeaponIcon.SetStretchTexture(true);
+
+	// now perform only width scale for ammo, which (W)size >2
+	// all others ammo (1x1, 1x2) will be not scaled (original picture)
+	float w = ((iGridWidth>2)?1.6f:iGridWidth)*INV_GRID_WIDTH*0.9f;
+	float h = INV_GRID_HEIGHT*0.9f;//1 cell
+	UIWeaponIcon.SetWidth(w);
+	UIWeaponIcon.SetHeight(h);
+};
+
 void CUIMainIngameWnd::Update()
 {
 	if (m_pMPChatWnd)
@@ -445,6 +477,7 @@ void CUIMainIngameWnd::Update()
 	{
 		m_pItem					= NULL;
 		m_pWeapon				= NULL;	//Msg("* m_pWeapon = NULL");
+		m_pGrenade				= NULL;
 		CUIWindow::Update		();
 		return;
 	}
@@ -529,16 +562,37 @@ void CUIMainIngameWnd::Update()
 			active_item_changed				= true;
 		};		
 
-		if(pMissile && active_item_changed)
+		if(pMissile)
 		{
 			UIWeaponIcon.Show				(false);
 			UIWeaponSignAmmo.Show			(false);
 			UIWeaponBack.SetText			(m_pItem->NameShort());
+			
+			CGrenade* pGrenade = smart_cast<CGrenade*>(item); 
+			if (pGrenade)
+			{
+				u32 ThisGrenadeCount = m_pActor->inventory().dwfGetSameItemCount(*pMissile->cNameSect(), true);
+				sprintf			(text_str, "%d",ThisGrenadeCount);
+
+				UIWeaponSignAmmo.SetText(text_str);
+				UIWeaponSignAmmo.Show(true);
+
+				SetAmmoIcon(*pMissile->cNameSect());
+
+				m_pGrenade = pMissile;
+			}
+			else
+			{
+				m_pGrenade = NULL;
+			}
 		}
-//		else 
+		else
+		{
+			m_pGrenade = NULL;
+		}
+
 		if(pWeapon)
 		{
-
 			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType || 
 				(pWeaponMagazined && pWeaponMagazined->HasFireModes() && prevFireMode != pWeaponMagazined->GetCurrentFireMode()))
 			{
@@ -554,37 +608,7 @@ void CUIMainIngameWnd::Update()
 					prevAmmoID				= m_pWeapon->m_ammoType;
 					shared_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
 
-					//properties used by inventory menu
-					int iGridWidth			= pSettings->r_u32(sect_name, "inv_grid_width");
-					int iGridHeight			= pSettings->r_u32(sect_name, "inv_grid_height");
-
-					int iXPos				= pSettings->r_u32(sect_name, "inv_grid_x");
-					int iYPos				= pSettings->r_u32(sect_name, "inv_grid_y");
-
-					UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(iXPos * INV_GRID_WIDTH),
-						float(iYPos * INV_GRID_HEIGHT),
-						float(iGridWidth * INV_GRID_WIDTH),
-						float(iGridHeight * INV_GRID_HEIGHT));
-					UIWeaponIcon.SetStretchTexture(true);
-
-					// now perform only width scale for ammo, which (W)size >2
-					// all others ammo (1x1, 1x2) will be not scaled (original picture)
-					float w = ((iGridWidth>2)?1.6f:iGridWidth)*INV_GRID_WIDTH*0.9f;
-					float h = INV_GRID_HEIGHT*0.9f;//1 cell
-					UIWeaponIcon.SetWidth(w);
-					UIWeaponIcon.SetHeight(h);
-/*
-					float _x = UIWeaponIcon_rect.x1;
-					float _y = UIWeaponIcon_rect.y1;
-
-					if(h<UIWeaponIcon_rect.height())
-						_y			+= (UIWeaponIcon_rect.height()-h)/2.0f;
-
-					if(w<UIWeaponIcon_rect.width())
-						_x			+= (UIWeaponIcon_rect.width()-w)/2.0f;
-
-					UIWeaponIcon.SetWndPos	(_x, _y);
-*/
+					SetAmmoIcon(*sect_name);
 
 					string256 sItemName;
 					strcpy(sItemName, pSettings->r_string(sect_name, "inv_name_short"));
@@ -626,17 +650,16 @@ void CUIMainIngameWnd::Update()
 	else
 	{
 		m_pWeapon					= NULL; //Msg("* m_pWeapon = NULL");
+		m_pGrenade					= NULL;
 		UIWeaponBack.SetText		("");
 	}
 
-
 	//сбросить индикаторы
-	if(!m_pWeapon)
+	if(!m_pWeapon && !m_pGrenade)
 	{
 		UIWeaponSignAmmo.SetText	("");
 		UIWeaponIcon.Show			(false);
 	}
-    
 
     // radar
 	UIZoneMap->UpdateRadar			(Device.vCameraPosition);

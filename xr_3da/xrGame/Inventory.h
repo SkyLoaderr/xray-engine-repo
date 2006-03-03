@@ -98,7 +98,8 @@ public:
 	PIItem item (CLASS_ID cls_id) const;
 	
 	// get all the items with the same section name
-	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	
+	virtual u32		dwfGetSameItemCount(LPCSTR caSection, bool SearchAll = false);	
+	virtual u32		dwfGetGrenadeCount(LPCSTR caSection, bool SearchAll);	
 	// get all the items with the same object id
 	virtual bool	bfCheckForObject(ALife::_OBJECT_ID tObjectID);	
 	CInventoryItem	*CInventory::get_object_by_id(ALife::_OBJECT_ID tObjectID);

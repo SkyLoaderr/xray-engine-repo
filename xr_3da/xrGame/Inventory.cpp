@@ -706,10 +706,10 @@ float CInventory::CalcTotalWeight()
 }
 
 
-u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
+u32 CInventory::dwfGetSameItemCount(LPCSTR caSection, bool SearchAll)
 {
 	u32			l_dwCount = 0;
-	TIItemContainer	&l_list = m_ruck;
+	TIItemContainer	&l_list = SearchAll ? m_all : m_ruck;
 	for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
@@ -717,6 +717,19 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
             ++l_dwCount;
 	}
 	
+	return		(l_dwCount);
+}
+u32		CInventory::dwfGetGrenadeCount(LPCSTR caSection, bool SearchAll)
+{
+	u32			l_dwCount = 0;
+	TIItemContainer	&l_list = SearchAll ? m_all : m_ruck;
+	for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
+	{
+		PIItem	l_pIItem = *l_it;
+		if (l_pIItem->object().CLS_ID == CLSID_GRENADE_F1 || l_pIItem->object().CLS_ID == CLSID_GRENADE_RGD5)
+			++l_dwCount;
+	}
+
 	return		(l_dwCount);
 }
 

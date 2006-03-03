@@ -139,6 +139,8 @@ protected:
 	void				DestroyFlashingIcons			();
 	void				UpdateFlashingIcons				();
 
+	void				SetAmmoIcon						(LPCSTR sect_name);
+
 	// first - иконка, second - анимация
 	DEF_MAP				(FlashingIcons, EFlashingIcons, CUIStatic*);
 	FlashingIcons		m_FlashingIcons;
@@ -146,6 +148,7 @@ protected:
 	//для текущего активного актера и оружия
 	CActor*				m_pActor;	
 	CWeapon*			m_pWeapon;
+	CMissile*			m_pGrenade;
 	CInventoryItem*		m_pItem;
 
 	// Отображение подсказок при наведении прицела на объект
