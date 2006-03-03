@@ -93,7 +93,7 @@
 		<objective>
 			<text>mil_take_flash</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type hint="mil_crazy_hint">crlc_mdl</map_location_type>
+            <map_location_type hint="mil_crazy_hint">blue_location</map_location_type>
             <object_story_id>Mil_Crazy</object_story_id>
 			<infoportion_fail>mil_max_dead</infoportion_fail>
             <function_complete>mil_tasks.mil_task_crazy_flash_have</function_complete>
