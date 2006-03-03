@@ -20,129 +20,110 @@ function dream_mgr:__init()
     printf("dream <init>: START INITIALIZATION")
 
 	local ini = ini_file("misc\\dream.ltx")
-    self.videos = nil
     self.regular = nil
     self.scenario = {}
 
-    if ini:section_exist("videos") then
-        self.videos = {}
-        if ini:section_exist("dreams") then
-            self.regular_probability = def_global_regular_probability
-            if ini:line_exist("dreams", "regular_probability") then
-                local rp = ini:r_float("dreams", "regular_probability")
-                if rp >= 0 or rp <= 100 then
-                    self.regular_probability = rp
+    if ini:section_exist("dreams") then
+        self.regular_probability = def_global_regular_probability
+        if ini:line_exist("dreams", "regular_probability") then
+            local rp = ini:r_float("dreams", "regular_probability")
+            if rp >= 0 or rp <= 100 then
+                self.regular_probability = rp
+            end
+        end
+        if ini:line_exist("dreams", "dream_types") then
+            local rt_str = ini:r_string("dreams", "dream_types")
+            if rt_str then
+                for rt in string.gfind(rt_str, "([%w_]+)") do
+                    dream_types[rt] = 1
                 end
             end
-            if ini:line_exist("dreams", "dream_types") then
-                local rt_str = ini:r_string("dreams", "dream_types")
-                if rt_str then
-                    for rt in string.gfind(rt_str, "([%w_]+)") do
-                        dream_types[rt] = 1
-                    end
-                end
-            end
-            if ini:line_exist("dreams", "regular") then
-                self.regular = {}
-                local rd_str = ini:r_string("dreams", "regular")
+        end
+        if ini:line_exist("dreams", "regular") then
+            self.regular = {}
+            local rd_str = ini:r_string("dreams", "regular")
 
-                if rd_str then
-                    for rd_sect in string.gfind(rd_str, "([%w_]+)") do
-                        if ini:section_exist(rd_sect) then
-                            if ini:line_exist(rd_sect, "dream") then
-                                local dream_name = ini:r_string(rd_sect, "dream")
+            if rd_str then
+                for rd_sect in string.gfind(rd_str, "([%w_]+)") do
+                    if ini:section_exist(rd_sect) then
+                        if ini:line_exist(rd_sect, "dream") then
+                            local dream_path = ini:r_string(rd_sect, "dream")
+                            local prob = def_regular_probability
+                            local tp = def_regular_type
 
-                                if ini:line_exist("videos", dream_name) then
-                                    self.videos[dream_name] = ini:r_string("videos", dream_name)
-
-                                    local prob = def_regular_probability
-                                    local tp = def_regular_type
-
-                                    if ini:line_exist(rd_sect, "probability") then
-                                        local p = ini:r_float(rd_sect, "probability")
-                                        if p >= 0 then
-                                            prob = p
-                                        end
-                                    end
-
-                                    if ini:line_exist(rd_sect, "type") then
-                                        local t = ini:r_float(rd_sect, "type")
-                                        if dream_types[t] == 1 then
-                                            tp = t
-                                        end
-                                    end
-
-                                    self.regular[rd_sect] = {dream_name, prob, tp}
-                                else
-                                    printf("dream <error>: can't find field <%s> in section [videos].", dream_name)
+                            if ini:line_exist(rd_sect, "probability") then
+                                local p = ini:r_float(rd_sect, "probability")
+                                if p >= 0 then
+                                    prob = p
                                 end
-                            else
-                                printf("dream <error>: can't find field <dream> in section [%s].", rd_sect)
                             end
-                        else
-                            printf("dream <error>: can't find section [%s] defined in the field <regular> in section [dreams].", rd_sect)
-                        end
-                    end
-                end
-            else
-                printf("dream <error>: can't find field <regular> in section [dreams].")
-            end
 
-            if ini:line_exist("dreams", "scenario") then
-                self.scenario = {}
-                local sd_str = ini:r_string("dreams", "scenario")
-
-                if sd_str then
-                    for sd_sect in string.gfind(sd_str, "([%w_]+)") do
-                        if ini:section_exist(sd_sect) then
-                            if ini:line_exist(sd_sect, "dream") then
-                                local dream_name = ini:r_string(sd_sect, "dream")
-
-                                if ini:line_exist("videos", dream_name) then
-                                    self.videos[dream_name] = ini:r_string("videos", dream_name)
-
-                                    if ini:line_exist(sd_sect, "cond") then
-                                        local cond = xr_logic.cfg_get_condlist(ini, sd_sect, "cond", self)
-                                        local to_regular = nil
-
-                                        if ini:line_exist(sd_sect, "to_regular") then
-                                            local prob = def_regular_probability
-                                            local tp = def_regular_type
-                                            local tr = ini:r_string(sd_sect, "to_regular")
-                                            local at, to, p, t = string.find(tr, "(%d+),(%w+)")
-                                            p = tonumber(p)
-                                            if p then
-                                                prob = p
-                                            end
-                                            if dream_types[t] == 1 then
-                                                tp = t
-                                            end
-                                            to_regular = {prob, tp}
-                                        end
-
-                                        self.scenario[sd_sect] = {dream_name, cond, to_regular}
-                                    else
-                                        printf("dream <error>: can't find field <cond> in section [%s].", sd_sect)
-                                    end
-                                else
-                                    printf("dream <error>: can't find field <%s> in section [videos].", dream_name)
+                            if ini:line_exist(rd_sect, "type") then
+                                local t = ini:r_float(rd_sect, "type")
+                                if dream_types[t] == 1 then
+                                    tp = t
                                 end
-                            else
-                                printf("dream <error>: can't find field <dream> in section [%s].", sd_sect)
                             end
+
+                            self.regular[rd_sect] = {dream_path, prob, tp}
                         else
-                            printf("dream <error>: can't find section [%s] defined in the field <scenario> in section [dreams].", sd_sect)
+                            printf("dream <error>: can't find field <dream> in section [%s].", rd_sect)
                         end
+                    else
+                        printf("dream <error>: can't find section [%s] defined in the field <regular> in section [dreams].", rd_sect)
                     end
                 end
-            else
-                printf("dream <error>: can't find field <scenario> in section [dreams].")
             end
         else
-            printf("dream <error>: can't find section [dreams].")
+            printf("dream <error>: can't find field <regular> in section [dreams].")
+        end
+
+        if ini:line_exist("dreams", "scenario") then
+            self.scenario = {}
+            local sd_str = ini:r_string("dreams", "scenario")
+
+            if sd_str then
+                for sd_sect in string.gfind(sd_str, "([%w_]+)") do
+                    if ini:section_exist(sd_sect) then
+                        if ini:line_exist(sd_sect, "dream") then
+                            local dream_path = ini:r_string(sd_sect, "dream")
+
+                            if ini:line_exist(sd_sect, "cond") then
+                                local cond = xr_logic.cfg_get_condlist(ini, sd_sect, "cond", self)
+                                local to_regular = nil
+
+                                if ini:line_exist(sd_sect, "to_regular") then
+                                    local prob = def_regular_probability
+                                    local tp = def_regular_type
+                                    local tr = ini:r_string(sd_sect, "to_regular")
+                                    local at, to, p, t = string.find(tr, "(%d+),(%w+)")
+                                    p = tonumber(p)
+                                    if p then
+                                        prob = p
+                                    end
+                                    if dream_types[t] == 1 then
+                                        tp = t
+                                    end
+                                    to_regular = {prob, tp}
+                                end
+
+                                self.scenario[sd_sect] = {dream_path, cond, to_regular}
+                            else
+                                printf("dream <error>: can't find field <cond> in section [%s].", sd_sect)
+                            end
+                        else
+                            printf("dream <error>: can't find field <dream> in section [%s].", sd_sect)
+                        end
+                    else
+                        printf("dream <error>: can't find section [%s] defined in the field <scenario> in section [dreams].", sd_sect)
+                    end
+                end
+            end
+        else
+            printf("dream <error>: can't find field <scenario> in section [dreams].")
         end
     else
-        printf("dream <error>: can't find section [dreams] in the file dream.ltx")
+        printf("dream <error>: can't find section [dreams].")
     end
 
     printf("dream <init>: END INITIALIZATION")
@@ -190,7 +171,7 @@ function dream_mgr:get_dream()
                 for k, v in pairs(self.regular) do
                     if type == "all" or type == v[3] then
                         if rval <  cur_prob + v[2] then
-                            return self.videos[v[1]]
+                            return v[1]
                         else
                             cur_prob = cur_prob + v[2]
                         end
@@ -200,12 +181,11 @@ function dream_mgr:get_dream()
         end
     else
         v = self.scenario[dream]
-        local res = self.videos[v[1]]
         if v[3] then -- put this dream into regular
             self.regular[dream] = {v[1], v[3][1], v[3][2]}
             self.scenario[dream] = nil
         end
-        return res
+        return v[1]
     end
 
     return "" -- no dreams
