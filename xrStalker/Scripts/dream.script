@@ -17,7 +17,7 @@ local def_regular_type = "normal"
 class "dream_mgr"
 
 function dream_mgr:__init()
-    --printf("dream <init>: dream manager initialization")
+    printf("dream <init>: START INITIALIZATION")
 
 	local ini = ini_file("misc\\dream.ltx")
     self.videos = nil
@@ -144,6 +144,8 @@ function dream_mgr:__init()
     else
         printf("dream <error>: can't find section [dreams] in the file dream.ltx")
     end
+
+    printf("dream <init>: END INITIALIZATION")
 end
 
 function dream_mgr:name()
