@@ -39,7 +39,7 @@
 	<static_map_pic x="616" y="242" width="256" height="256">
 		<texture>ui\ui_map_nopic</texture>
 	</static_map_pic>
-	<cap_map_info x="620" y="451" width="250" height="441">		
+	<cap_map_info x="615" y="440" width="250" height="441">		
 	</cap_map_info>
 			
 	<tab x="128" y="195" width="1014" height="26">
