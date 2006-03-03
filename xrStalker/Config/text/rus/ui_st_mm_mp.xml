@@ -97,7 +97,7 @@
         <text>Лимит времени</text>
     </string>
     <string id="mm_mp_artefstay">
-        <text>Задержка артефакта (мин.)</text>
+        <text>Жизнь артефакта (мин.)</text>
     </string>
     <string id="mm_mp_artefnum">
         <text>Количество артефактов</text>

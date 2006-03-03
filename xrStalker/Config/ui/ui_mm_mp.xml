@@ -339,28 +339,28 @@
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_damageblock</text>
 		</cap_damage_block>
 		
-		<cap_friendly_fire x="269" y="40" width="143" height="23">
+		<cap_friendly_fire x="269" y="40" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_friendlyfire</text>
 		</cap_friendly_fire>
-		<cap_frag_limit x="269" y="65" width="143" height="23">
+		<cap_frag_limit x="269" y="65" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_fraglimit</text>
 		</cap_frag_limit>
-		<cap_time_limit x="269" y="90" width="143" height="23">
+		<cap_time_limit x="269" y="90" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_timelimit</text>
 		</cap_time_limit>
-		<cap_artefact_stay x="269" y="115" width="143" height="23">
+		<cap_artefact_stay x="269" y="115" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_artefstay</text>
 		</cap_artefact_stay>
-		<cap_artefact_num x="269" y="140" width="143" height="23">
+		<cap_artefact_num x="269" y="140" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_artefnum</text>
 		</cap_artefact_num>
-		<cap_artefact_delay x="269" y="165" width="143" height="23">
+		<cap_artefact_delay x="269" y="165" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_artefdelay</text>
 		</cap_artefact_delay>
-		<cap_anomaly_time x="269" y="325" width="143" height="23">
+		<cap_anomaly_time x="269" y="325" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_anomalytime</text>
 		</cap_anomaly_time>
-		<cap_warm_up_time x="269" y="350" width="143" height="23">
+		<cap_warm_up_time x="269" y="350" width="150" height="23">
 			<text font="letterica16" r="215" g="195" b="170">mm_mp_warmuptime</text>
 		</cap_warm_up_time>
 		<cap_starting_weather x="519" y="40" width="112" height="23">

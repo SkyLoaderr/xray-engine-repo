@@ -159,5 +159,8 @@
     <string id="ui_mm_switch_torch">
 		<text>Enable torch for AI</text>
     </string>
+    <string id="ui_mm_difficulty">
+		<text>Difficulty</text>
+    </string>
 
 </string_table>

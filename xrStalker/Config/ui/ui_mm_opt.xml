@@ -193,7 +193,7 @@
 		</pic_crosshair-->
 	</tab_gameplay>
 	<tab_controls>
-		<cap_mousesens x="20" y="20" width="143" height="21">
+		<cap_mousesens x="20" y="20" width="150" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_mouse_sense</text>
 		</cap_mousesens>
 		<cap_keyboardsetup x="6" y="95" width="456" height="23">

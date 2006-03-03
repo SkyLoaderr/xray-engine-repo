@@ -144,4 +144,7 @@
     <string id="ui_mm_switch_torch">
 		<text>использование фонариков AI</text>
     </string>
+    <string id="ui_mm_difficulty">
+		<text>Сложность</text>
+    </string>
 </string_table>
