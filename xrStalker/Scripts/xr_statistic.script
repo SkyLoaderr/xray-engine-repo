@@ -1,14 +1,14 @@
 
 local killCountProps = {
-	neutral_novice = 1, neutral_stalker = 2, neutral_veteran = 3, neutral_master = 4,
-	monolith_novice = 1, monolith_stalker = 2, monolith_veteran = 3, monolith_master = 4,
-	military_novice = 1, military_stalker = 2, military_veteran = 3, military_master = 4,
-	killer_novice = 1, killer_stalker = 2, killer_veteran = 3, killer_master = 4,
-	ecolog_novice = 1, ecolog_stalker = 2, ecolog_veteran = 3, ecolog_master = 4,
-	dolg_novice = 1, dolg_stalker = 2, dolg_veteran = 3, dolg_master = 4,
-	freedom_novice = 1, freedom_stalker = 2, freedom_veteran = 3, freedom_master = 4,
-	bandit_novice = 1, bandit_stalker = 2, bandit_veteran = 3, bandit_master = 4,
-	zombied_novice = 1, zombied_stalker = 2, zombied_veteran = 3, zombied_master = 4,
+	neutral_novice = 1, neutral_experienced = 2, neutral_veteran = 3, neutral_master = 4,
+	monolith_novice = 1, monolith_experienced = 2, monolith_veteran = 3, monolith_master = 4,
+	military_novice = 1, military_experienced = 2, military_veteran = 3, military_master = 4,
+	killer_novice = 1, killer_experienced = 2, killer_veteran = 3, killer_master = 4,
+	ecolog_novice = 1, ecolog_experienced = 2, ecolog_veteran = 3, ecolog_master = 4,
+	dolg_novice = 1, dolg_experienced = 2, dolg_veteran = 3, dolg_master = 4,
+	freedom_novice = 1, freedom_experienced = 2, freedom_veteran = 3, freedom_master = 4,
+	bandit_novice = 1, bandit_experienced = 2, bandit_veteran = 3, bandit_master = 4,
+	zombied_novice = 1, zombied_experienced = 2, zombied_veteran = 3, zombied_master = 4,
 	
 	rat_weak = 1,	
 	tushkano_weak = 1,
