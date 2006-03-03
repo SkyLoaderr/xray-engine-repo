@@ -215,9 +215,9 @@ protected:
 
 
 	//для отслеживания времени 
-	float m_fLastTimeCalled;
-	float m_fDeltaTime;
-	bool m_bTimeValid;
+	u64		m_iLastTimeCalled;
+	float	m_fDeltaTime;
+	bool	m_bTimeValid;
 
 	//для передачи параметров из DamageManager
 	float m_fHitBoneScale;

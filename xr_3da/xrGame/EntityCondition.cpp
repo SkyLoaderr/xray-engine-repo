@@ -40,7 +40,7 @@ CEntityCondition::CEntityCondition(CEntityAlive *object)
 	m_object			= object;
 
 	m_use_limping_state = false;
-	m_fLastTimeCalled	= 0.0f;
+	m_iLastTimeCalled	= 0;
 	m_bTimeValid		= false;
 
 	m_fPowerMax			= MAX_POWER;
@@ -116,7 +116,7 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 
 void CEntityCondition::reinit	()
 {
-	m_fLastTimeCalled		= 0.0f;
+	m_iLastTimeCalled		= 0;
 	m_bTimeValid			= false;
 
 	max_health()			= MAX_HEALTH;
@@ -213,13 +213,15 @@ void  CEntityCondition::UpdateWounds		()
 
 void CEntityCondition::UpdateConditionTime()
 {
-	float cur_time = (GameID() == GAME_SINGLE) ? Level().GetGameTime()/1000.0f : Level().timeServer()/1000.0f;
-
+	u64 _cur_time = (GameID() == GAME_SINGLE) ? Level().GetGameTime() : Level().timeServer();
+	
 	if(m_bTimeValid)
 	{
-		if (cur_time > m_fLastTimeCalled)
-			SetConditionDeltaTime(cur_time-m_fLastTimeCalled);
-		else 
+		if (_cur_time > m_iLastTimeCalled){
+			float x					= float(_cur_time-m_iLastTimeCalled)/1000.0f;
+			SetConditionDeltaTime	(x);
+
+		}else 
 			SetConditionDeltaTime(0.0f);
 	}
 	else
@@ -236,7 +238,7 @@ void CEntityCondition::UpdateConditionTime()
 
 	}
 
-	m_fLastTimeCalled			= cur_time;
+	m_iLastTimeCalled			= _cur_time;
 }
 
 //вычисление параметров с ходом игрового времени
