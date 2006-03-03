@@ -1801,7 +1801,7 @@ end
 
 function yan_ghost_pda (actor, npc)
     db.actor:give_info_portion("yan_provodnik_spawn")
-    news_manager.send_tip(db.actor, "storyline_ghost_tip", nil, "stalker")
+    news_manager.send_tip(db.actor, "storyline_ghost_tip", nil, "wolf")
 end
 
 -----------------------------radar
