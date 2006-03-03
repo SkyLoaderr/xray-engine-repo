@@ -12,7 +12,7 @@
 		<class>val_bandit_borov</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<hit_probability_factor>1.5</hit_probability_factor>
 		<reputation>-70</reputation>
  
@@ -51,7 +51,7 @@
 		<class>val_bandit_bodyguard</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
@@ -85,7 +85,7 @@
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>0</rank>
+		<rank>00</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
@@ -115,7 +115,7 @@
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>0</rank>
+		<rank>00</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
@@ -146,7 +146,7 @@
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>0</rank>
+		<rank>00</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
@@ -176,7 +176,7 @@
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>0</rank>
+		<rank>00</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
@@ -205,7 +205,7 @@
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>0</rank>
+		<rank>00</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
@@ -227,7 +227,7 @@
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
@@ -258,7 +258,7 @@
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
@@ -288,7 +288,7 @@
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
@@ -318,7 +318,7 @@
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
@@ -349,7 +349,7 @@
 		<class>val_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
@@ -380,7 +380,7 @@
 		<class>val_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
@@ -410,7 +410,7 @@
 		<class>val_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
@@ -441,7 +441,7 @@
 		<class>val_watchtower_bandit_guard</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
@@ -471,7 +471,7 @@
 		<class>val_watchtower_bandit_sniper</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
@@ -503,7 +503,7 @@
 		<class>val_dolg_regular</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
@@ -536,7 +536,7 @@
 		<class>val_dolg_regular</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
@@ -569,7 +569,7 @@
 		<class>val_dolg_regular</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
@@ -603,7 +603,7 @@
 		<class>val_dolg_regular</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
@@ -645,7 +645,7 @@
 		<class>val_dolg_regular</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
@@ -674,7 +674,7 @@
         <community>monolith</community>
 
 
-        <rank>40</rank>
+        <rank>400</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -703,7 +703,7 @@
         <community>monolith</community>
 
 
-        <rank>40</rank>
+        <rank>400</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
@@ -733,7 +733,7 @@
 		<class>val_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>	
@@ -763,7 +763,7 @@
 		<class>val_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>
@@ -793,7 +793,7 @@
 		<class>val_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_mask</visual>
@@ -823,7 +823,7 @@
 		<class>val_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>
@@ -854,7 +854,7 @@
 		<class>val_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
@@ -886,7 +886,7 @@
 		<class>val_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
@@ -916,7 +916,7 @@
 		<class>val_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\militari\stalker_militari_1</visual>
@@ -946,7 +946,7 @@
 		<class>val_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\militari\stalker_militari_2</visual>
@@ -978,7 +978,7 @@
 		<class>val_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>20</rank>
+		<rank>200</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_2</visual>
@@ -1007,7 +1007,7 @@
 		<class>val_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>20</rank>
+		<rank>200</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_3</visual>
@@ -1038,7 +1038,7 @@
 		<class>val_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>20</rank>
+		<rank>200</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_4</visual>
@@ -1066,7 +1066,7 @@
 		<class>val_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>20</rank>
+		<rank>200</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_5</visual>
@@ -1094,7 +1094,7 @@
 		<class>val_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>20</rank>
+		<rank>200</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_6</visual>
@@ -1124,7 +1124,7 @@
 		<class>val_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>20</rank>
+		<rank>200</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_10</visual>
@@ -1153,7 +1153,7 @@
 		<class>val_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
@@ -1189,7 +1189,7 @@
 		<class>val_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
@@ -1224,7 +1224,7 @@
 		<class>val_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
@@ -1258,7 +1258,7 @@
 		<class>val_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
@@ -1292,7 +1292,7 @@
 		<class>val_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
@@ -1327,7 +1327,7 @@
 		<class>dar_stalker_explorer</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>50</rank>
+		<rank>500</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -1353,7 +1353,7 @@
 		<class>dar_corpse</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>0</reputation>
  
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
@@ -1373,7 +1373,7 @@
 		<class>dar_corpse</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>0</reputation>
  
 		<visual>actors\ucheniy\ucheniy_4</visual>
@@ -1393,7 +1393,7 @@
 		<class>dar_corpse</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>0</reputation>
  
 		<visual>actors\hero\stalker_novice</visual>
@@ -1413,7 +1413,7 @@
 		<class>dar_corpse</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>0</reputation>
  
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>

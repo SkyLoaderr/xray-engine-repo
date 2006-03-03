@@ -406,6 +406,7 @@ function action_task_reward(npc, actor)
 
 			if v.reward_rank ~= nil then
 				actor_stats.add_points("quests", v.name, 1, v.reward_rank)
+				db.actor:set_character_rank(db.actor:character_rank() + v.reward_rank)
 			end
 				
 			-- устанавливаем время последнего обновления задания
@@ -659,6 +660,7 @@ function reward_by_task(task, done)
 
 		if descr.reward_rank ~= nil then
 			actor_stats.add_points("quests", task:get_id(), 1, descr.reward_rank)
+			db.actor:set_character_rank(db.actor:character_rank() + descr.reward_rank)
 		end
 	end
 end

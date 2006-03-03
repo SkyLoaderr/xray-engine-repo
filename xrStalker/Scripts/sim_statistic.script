@@ -28,19 +28,11 @@ function simulation_statistic:remove(npc)
 end
 function simulation_statistic:getNpcType(npc)
 	local cls = npc:clsid()
-	local npc_rank = npc:rank()
 
 	if cls == clsid.script_stalker then
 		local community = npc:community()
 		
-		local rank = "novice"		
-		if npc_rank >= 90 then
-			rank = "master"
-		elseif npc_rank >= 60 then
-			rank = "veteran"
-		elseif npc_rank >= 30 then
-			rank = "regular"
-		end
+		local rank = ranks.get_obj_rank_name(npc)
 		return community, rank
 	else
 		local community = xr_statistic.monster_classes[cls]
@@ -48,12 +40,7 @@ function simulation_statistic:getNpcType(npc)
 			abort("Statistic ERROR: cannot find monstr class for clsid[%s]", get_clsid(npc))
 		end
 	
-		local rank = "weak"
-		if npc_rank >= 80 then
-			rank = "strong"
-		elseif npc_rank >= 40 then
-			rank = "normal"
-		end
+		local rank = ranks.get_obj_rank_name(npc)
 		return community, rank
 	end
 end

@@ -12,7 +12,7 @@
 		<class>yan_general_ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ucheniy\ucheniy_2</visual>
@@ -41,7 +41,7 @@
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
@@ -70,7 +70,7 @@
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
@@ -97,7 +97,7 @@
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
@@ -125,7 +125,7 @@
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\neytral\stalker_prizrak</visual>
@@ -151,7 +151,7 @@
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
@@ -175,7 +175,7 @@
 		<class>yan_Ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
@@ -200,7 +200,7 @@
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie1</visual>
@@ -223,7 +223,7 @@
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 	
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
@@ -246,7 +246,7 @@
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
@@ -269,7 +269,7 @@
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
@@ -292,7 +292,7 @@
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
@@ -315,7 +315,7 @@
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 	
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
@@ -338,7 +338,7 @@
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
@@ -362,7 +362,7 @@
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
@@ -388,7 +388,7 @@
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
@@ -412,7 +412,7 @@
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
@@ -437,7 +437,7 @@
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
@@ -462,7 +462,7 @@
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
@@ -488,7 +488,7 @@
 		<class>yan_Zombied_master</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -513,7 +513,7 @@
 		<class>yan_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
@@ -537,7 +537,7 @@
 		<class>yan_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_1</visual>
@@ -561,7 +561,7 @@
 		<class>yan_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_2</visual>

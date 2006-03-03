@@ -11,7 +11,7 @@
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-385</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
@@ -37,7 +37,7 @@
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-729</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
@@ -63,7 +63,7 @@
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-200</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
@@ -89,7 +89,7 @@
 		<class>rad_Monolit_regular</class>
 		<community>monolith</community>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-151</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
@@ -116,7 +116,7 @@
 		<class>rad_Monolit_sniper</class>
 		<community>monolith</community>
 
-		<rank>50</rank>
+		<rank>500</rank>
 		<reputation>-784</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
@@ -142,7 +142,7 @@
 		<class>rad_Monolit_sniper</class>
 		<community>monolith</community>
 
-		<rank>50</rank>
+		<rank>500</rank>
 		<reputation>-393</reputation>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
@@ -169,7 +169,7 @@
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-658</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -195,7 +195,7 @@
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-347</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -221,7 +221,7 @@
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-398</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -247,7 +247,7 @@
 		<class>rad_Monolit_specnaz</class>
 		<community>monolith</community>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-234</reputation>
 
 		<visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -274,7 +274,7 @@
 		<class>rad_Monolit_rpg</class>
 		<community>monolith</community>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-743</reputation>
 
 		<visual>actors\monolit\stalker_mo_head1</visual>
@@ -300,7 +300,7 @@
 		<class>rad_Monolit_rpg</class>
 		<community>monolith</community>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-384</reputation>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
@@ -331,7 +331,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-375</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie1</visual>
@@ -356,7 +356,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-637</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
@@ -381,7 +381,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-847</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
@@ -406,7 +406,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-476</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
@@ -431,7 +431,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-987</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
@@ -456,7 +456,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-199</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
@@ -481,7 +481,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-653</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
@@ -506,7 +506,7 @@
 		<class>rad_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-834</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
@@ -532,7 +532,7 @@
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-452</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -558,7 +558,7 @@
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-245</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -584,7 +584,7 @@
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-734</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -610,7 +610,7 @@
 		<class>rad_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-540</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -638,7 +638,7 @@
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>79</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
@@ -666,7 +666,7 @@
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>86</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
@@ -694,7 +694,7 @@
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>74</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
@@ -722,7 +722,7 @@
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>89</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
@@ -750,7 +750,7 @@
 		<class>rad_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>100</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
@@ -779,7 +779,7 @@
 		<class>rad_Stalker_master</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>95</rank>
+		<rank>950</rank>
 		<reputation>91</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
@@ -806,7 +806,7 @@
 		<class>rad_Stalker_master</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>95</rank>
+		<rank>950</rank>
 		<reputation>88</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
@@ -833,7 +833,7 @@
 		<class>rad_Stalker_master</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>95</rank>
+		<rank>950</rank>
 		<reputation>83</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
@@ -859,7 +859,7 @@
 		<class>rad_Stalker_master</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>95</rank>
+		<rank>950</rank>
 		<reputation>72</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
@@ -885,7 +885,7 @@
 		<class>rad_Stalker_master</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>95</rank>
+		<rank>950</rank>
 		<reputation>94</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
@@ -914,7 +914,7 @@
 		<class>rad_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>-74</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
@@ -942,7 +942,7 @@
 		<class>rad_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>-80</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
@@ -970,7 +970,7 @@
 		<class>rad_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>-60</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
@@ -1000,7 +1000,7 @@
 		<class>rad_Svoboda_master</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>93</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -1027,7 +1027,7 @@
 		<class>rad_Svoboda_master</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>100</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -1054,7 +1054,7 @@
 		<class>rad_Svoboda_master</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>90</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -1082,7 +1082,7 @@
 		<class>rad_Dolg_master</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>95</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
@@ -1109,7 +1109,7 @@
 		<class>rad_Dolg_master</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>96</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
@@ -1138,7 +1138,7 @@
 		<class>rad_Dolg_master</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>93</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
@@ -1167,7 +1167,7 @@
 		<class>rad_Dolg_master</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>90</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
@@ -1196,7 +1196,7 @@
 		<class>rad_Ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
@@ -1221,7 +1221,7 @@
 		<class>rad_Ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
@@ -1248,7 +1248,7 @@
 		<class>rad_Ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>

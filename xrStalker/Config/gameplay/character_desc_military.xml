@@ -17,7 +17,7 @@
 		<class>mil_Svoboda_specnaz</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>110</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_9</visual>
@@ -46,7 +46,7 @@
 		<class>mil_Svoboda_engineer</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>91</rank>
+		<rank>910</rank>
 		<reputation>139</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
@@ -77,7 +77,7 @@
 		<class>mil_Svoboda_regular</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
-		<rank>43</rank>
+		<rank>430</rank>
 		<reputation>74</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
@@ -107,7 +107,7 @@
 		<class>mil_Svoboda_sniper</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>56</rank>
+		<rank>560</rank>
 		<reputation>81</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3_1</visual>
@@ -136,7 +136,7 @@
 		<class>mil_Svoboda_stukach</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>54</rank>
+		<rank>540</rank>
 		<reputation>58</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1</visual>
@@ -165,7 +165,7 @@
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 
-		<rank>91</rank>
+		<rank>910</rank>
 		<reputation>125</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -196,7 +196,7 @@
 		<class>mil_Svoboda_bodyguard</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
-		<rank>92</rank>
+		<rank>920</rank>
 		<reputation>101</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -225,7 +225,7 @@
 		<class>mil_Svoboda_leader</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
-		<rank>99</rank>
+		<rank>990</rank>
 		<reputation>136</reputation>
 
 		<visual>actors\svoboda\stalker_sv_leader</visual>
@@ -257,7 +257,7 @@
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
-		<rank>73</rank>
+		<rank>730</rank>
 		<reputation>96</reputation>
 
 		<visual>actors\svoboda\stalker_sv_balon_1</visual>
@@ -287,7 +287,7 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		
-		<rank>94</rank>
+		<rank>940</rank>
 		<reputation>145</reputation>
 
 		<visual>actors\svoboda\stalker_sv_max</visual>
@@ -319,7 +319,7 @@
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
-		<rank>92</rank>
+		<rank>920</rank>
 		<reputation>126</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -345,7 +345,7 @@
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
 		
-		<rank>65</rank>
+		<rank>650</rank>
 		<reputation>84</reputation>
 
 		<visual>actors\svoboda\stalker_sv_cook</visual>
@@ -386,7 +386,7 @@
 		<class>mil_Svoboda_blockpost_leader</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>96</rank>
+		<rank>960</rank>
 		<reputation>149</reputation>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
@@ -418,7 +418,7 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		
-		<rank>84</rank>
+		<rank>840</rank>
 		<reputation>113</reputation>
 
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
@@ -449,7 +449,7 @@
 		<class>mil_Dolg_specnaz</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>72</rank>
+		<rank>720</rank>
 		<reputation>96</reputation>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -479,7 +479,7 @@
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
 
-		<rank>82</rank>
+		<rank>820</rank>
 		<reputation>79</reputation>
 		
 		<panic_threshold>0.0</panic_threshold>
@@ -506,7 +506,7 @@
 		<class>mil_Dolg_specnaz_cherep</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>93</rank>
+		<rank>930</rank>
 		<reputation>135</reputation>
 		
 		<panic_threshold>0.0</panic_threshold>
@@ -538,7 +538,7 @@
 		<class>mil_Killer_informator</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>89</rank>
+		<rank>890</rank>
 		<reputation>-149</reputation>
 
         <snd_config>characters_voice\human_02\\</snd_config>
@@ -568,7 +568,7 @@
 
         <snd_config>characters_voice\human_03\killer\</snd_config>
 
-		<rank>74</rank>
+		<rank>740</rank>
 		<reputation>-86</reputation>
 
 		<visual>actors\killer\stalker_ki_antigas</visual>
@@ -596,7 +596,7 @@
 		<class>mil_killer_sniper</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>82</rank>
+		<rank>820</rank>
 		<reputation>-102</reputation>
 
 		<visual>actors\killer\stalker_ki_mask</visual>
@@ -626,7 +626,7 @@
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
 		
-		<rank>93</rank>
+		<rank>930</rank>
 		<reputation>-123</reputation>
 
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
@@ -655,7 +655,7 @@
 		<class>mil_Stalker_master</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>95</rank>
+		<rank>950</rank>
 		<reputation>19</reputation>
 
         <snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -682,7 +682,7 @@
 		<class>mil_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>86</rank>
+		<rank>860</rank>
 		<reputation>-2</reputation>
 
         <snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -715,7 +715,7 @@
 
                 <snd_config>characters_voice\human_02\zombied\</snd_config>
 
-                <rank>56</rank>
+                <rank>560</rank>
                 <reputation>-40</reputation>
 
                 <visual>actors\stalker_zombi\stalker_zombie5</visual>
@@ -741,7 +741,7 @@
 
     <snd_config>characters_voice\human_03\monolith\</snd_config>
 
-    <rank>34</rank>
+    <rank>340</rank>
     <reputation>-186</reputation>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -767,7 +767,7 @@
     <community>monolith</community>
 
 
-    <rank>92</rank>
+    <rank>920</rank>
     <reputation>-564</reputation>
 
     <panic_threshold>0.0</panic_threshold>

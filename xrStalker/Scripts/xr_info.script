@@ -819,14 +819,7 @@ function loadInfo(npc, char_ini)
 		return
 	end
 	
-	local rank = "novice"
-	if npc:character_rank() >= 90 then
-		rank = "master"
-	elseif npc:character_rank() >= 60 then
-		rank = "veteran"
-	elseif npc:character_rank() >= 30 then
-		rank = "stalker"
-	end	
+	local rank = ranks.get_obj_rank_name(npc)
 	local rank_info = info_by_rank[rank]
 	if rank_info == nil then
 		return

@@ -13,8 +13,8 @@ local killCountProps = {
 	rat_weak = 3,	
 	tushkano_weak = 5,
 	flesh_weak = 10, flesh_normal = 20, flesh_strong = 30,
-	boar_weak = 10, boar_normal = 20, boar_strong = 30,
-	dog_weak = 10, dog_normal = 20, dog_strong = 30,
+	boar_weak = 0.5, boar_normal = 0.6, boar_strong = 0.7,
+	dog_weak = 20, dog_normal = 20, dog_strong = 30,
 	pseudodog_weak = 10, pseudodog_normal = 20, pseudodog_strong = 30,
 	psy_dog_weak = 10, psy_dog_normal = 20, psy_dog_strong = 30,
 	zombie_weak = 10, zombie_normal = 20, zombie_strong = 30,
@@ -53,6 +53,7 @@ function addKillCount(npc)
 		abort("Statistic ERROR: required section [%s] not present", sect)
 	end
 	actor_stats.add_points(props, sect, 1, killCountProps[sect])
+	db.actor:set_character_rank(db.actor:character_rank() + killCountProps[sect])
 end
 
 
@@ -76,14 +77,7 @@ function getNpcType(npc)
 		elseif npc:character_community() == "zombied" then
 			community = "zombied"
 		end
-		local rank = "novice"
-		if npc:character_rank() >= 90 then
-			rank = "master"
-		elseif npc:character_rank() >= 60 then
-			rank = "veteran"
-		elseif npc:character_rank() >= 30 then
-			rank = "stalker"
-		end
+		local rank = ranks.get_obj_rank_name(npc)
 		return "stalkerkills", community.."_"..rank
 	else
 		local community = monster_classes[get_clsid(npc)]
@@ -94,14 +88,7 @@ function getNpcType(npc)
 			return nil,nil
 		end
 		
-		local rank = "weak"
-		if npc:character_rank() >= 80 then
-			rank = "strong"
-		elseif npc:character_rank() >= 40 then
-			rank = "normal"
-		end
+		local rank = ranks.get_obj_rank_name(npc)
 		return "monsterkills", community.."_"..rank
-
-
 	end	
 end

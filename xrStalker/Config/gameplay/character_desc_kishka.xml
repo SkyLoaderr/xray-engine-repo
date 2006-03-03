@@ -11,7 +11,7 @@
 		<class>ds_Soldier_novice</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
@@ -40,7 +40,7 @@
 		<class>ds_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		

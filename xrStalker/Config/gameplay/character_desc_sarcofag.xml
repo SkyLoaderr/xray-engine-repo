@@ -11,7 +11,7 @@
         <class>sar_monolith_specnaz</class>
         <community>monolith</community>
 
-        <rank>79</rank>
+        <rank>790</rank>
         <reputation>-591</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -39,7 +39,7 @@
         <community>monolith</community>
 
 
-        <rank>92</rank>
+        <rank>920</rank>
         <reputation>-890</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
@@ -66,7 +66,7 @@
         <community>monolith</community>
 
 
-        <rank>100</rank>
+        <rank>1000</rank>
         <reputation>-1000</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
@@ -93,7 +93,7 @@
         <community>monolith</community>
 
 
-        <rank>99</rank>
+        <rank>990</rank>
         <reputation>-950</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
@@ -120,7 +120,7 @@
         <class>sar2_wolf</class>
         <community>monolith</community>
 
-        <rank>40</rank>
+        <rank>400</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_balon_1</visual>
@@ -144,7 +144,7 @@
         <class>sar2_fanat</class>
         <community>monolith</community>
 
-        <rank>59</rank>
+        <rank>590</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_rukzak_3</visual>
@@ -168,7 +168,7 @@
         <class>sar2_fox</class>
         <community>monolith</community>
 
-        <rank>34</rank>
+        <rank>340</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_balon_4</visual>
@@ -191,7 +191,7 @@
         <class>sar2_tutorial_wounded</class>
         <community>monolith</community>
 
-        <rank>15</rank>
+        <rank>150</rank>
         <reputation>0</reputation>
 
         <visual>actors\novice\green_stalker_1</visual>
@@ -214,7 +214,7 @@
         <class>sar2_ranger</class>
         <community>monolith</community>
 
-        <rank>29</rank>
+        <rank>290</rank>
         <reputation>0</reputation>
 
         <visual>actors\novice\green_stalker_8</visual>
@@ -237,7 +237,7 @@
         <class>sar2_esc_soldier_commander</class>
         <community>monolith</community>
 
-        <rank>54</rank>
+        <rank>540</rank>
         <reputation>0</reputation>
 
         <visual>actors\soldier\soldier_beret_1</visual>
@@ -260,7 +260,7 @@
         <class>sar2_seriy</class>
         <community>monolith</community>
 
-        <rank>44</rank>
+        <rank>440</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_hood_4</visual>
@@ -284,7 +284,7 @@
         <class>sar2_dram_novice</class>
         <community>monolith</community>
 
-        <rank>14</rank>
+        <rank>140</rank>
         <reputation>0</reputation>
 
         <visual>actors\novice\green_stalker_11</visual>
@@ -307,7 +307,7 @@
         <class>sar2_hellcar</class>
         <community>monolith</community>
 
-        <rank>59</rank>
+        <rank>590</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_balon_5</visual>
@@ -331,7 +331,7 @@
         <class>sar2_bandit_leader</class>
         <community>monolith</community>
 
-        <rank>84</rank>
+        <rank>840</rank>
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_master</visual>
@@ -354,7 +354,7 @@
         <class>sar2_gar_dolg_blokpost_commander</class>
         <community>monolith</community>
 
-        <rank>59</rank>
+        <rank>590</rank>
         <reputation>0</reputation>
 
         <visual>actors\dolg\stalker_do_balon_4</visual>
@@ -377,7 +377,7 @@
         <class>sar2_krot</class>
         <community>monolith</community>
 
-        <rank>48</rank>
+        <rank>480</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_rukzak_4</visual>
@@ -401,7 +401,7 @@
         <class>sar2_ratcatcher</class>
         <community>monolith</community>
 
-        <rank>57</rank>
+        <rank>570</rank>
         <reputation>0</reputation>
 
         <visual>actors\soldier\soldier_bandana_6</visual>
@@ -424,7 +424,7 @@
         <class>sar2_bandit_borov</class>
         <community>monolith</community>
 
-        <rank>62</rank>
+        <rank>620</rank>
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_borov</visual>
@@ -447,7 +447,7 @@
         <class>sar2_stalker_explorer</class>
         <community>monolith</community>
 
-        <rank>41</rank>
+        <rank>410</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_rukzak_5</visual>
@@ -470,7 +470,7 @@
         <class>sar2_psih</class>
         <community>monolith</community>
 
-        <rank>53</rank>
+        <rank>530</rank>
         <reputation>0</reputation>
 
         <visual>actors\stalker_zombi\stalker_zombie4</visual>
@@ -493,7 +493,7 @@
         <class>sar2_arena_manager</class>
         <community>monolith</community>
 
-        <rank>57</rank>
+        <rank>570</rank>
         <reputation>0</reputation>
 
         <visual>actors\neytral\stalker_neytral_balon_6</visual>
@@ -516,7 +516,7 @@
         <class>sar2_arena_savage</class>
         <community>monolith</community>
 
-        <rank>93</rank>
+        <rank>930</rank>
         <reputation>0</reputation>
 
         <visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -539,7 +539,7 @@
         <class>sar2_dolg_leader</class>
         <community>monolith</community>
 
-        <rank>89</rank>
+        <rank>890</rank>
         <reputation>0</reputation>
 
         <visual>actors\dolg\stalker_do_komandir</visual>
@@ -562,7 +562,7 @@
         <class>sar2_dolg_petrenko</class>
         <community>monolith</community>
 
-        <rank>76</rank>
+        <rank>760</rank>
         <reputation>0</reputation>
 
         <visual>actors\dolg\stalker_do_balon_3</visual>
@@ -585,7 +585,7 @@
         <class>sar2_dolg_ivancov</class>
         <community>monolith</community>
 
-        <rank>58</rank>
+        <rank>580</rank>
         <reputation>0</reputation>
 
         <visual>actors\dolg\stalker_do_balon_5</visual>
@@ -608,7 +608,7 @@
         <class>sar2_dolg_guard_commander</class>
         <community>monolith</community>
 
-        <rank>66</rank>
+        <rank>660</rank>
         <reputation>0</reputation>
 
         <visual>actors\dolg\stalker_do_balon_1</visual>
@@ -631,7 +631,7 @@
         <class>sar2_zastava_commander_1</class>
         <community>monolith</community>
 
-        <rank>50</rank>
+        <rank>500</rank>
         <reputation>0</reputation>
 
         <visual>actors\dolg\stalker_do_antigas</visual>
@@ -654,7 +654,7 @@
         <class>sar2_ecolog_professor</class>
         <community>monolith</community>
 
-        <rank>35</rank>
+        <rank>350</rank>
         <reputation>0</reputation>
 
         <visual>actors\ecolog\stalker_ecolog_military</visual>
@@ -677,7 +677,7 @@
         <class>sar2_svoboda_attack_commander</class>
         <community>monolith</community>
 
-        <rank>59</rank>
+        <rank>590</rank>
         <reputation>0</reputation>
 
         <visual>actors\killer\stalker_ki_head_5</visual>
@@ -700,7 +700,7 @@
         <class>sar2_killer_ambush_tiran</class>
         <community>monolith</community>
 
-        <rank>95</rank>
+        <rank>950</rank>
         <reputation>0</reputation>
 
         <visual>actors\killer\stalker_ki_exoskeleton</visual>
@@ -723,7 +723,7 @@
         <class>sar2_crazy_veterans_lucky</class>
         <community>monolith</community>
 
-        <rank>55</rank>
+        <rank>550</rank>
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_master</visual>
@@ -746,7 +746,7 @@
         <class>sar2_stalker_freeman</class>
         <community>monolith</community>
 
-        <rank>40</rank>
+        <rank>400</rank>
         <reputation>0</reputation>
 
         <visual>actors\novice\green_stalker_7</visual>
@@ -769,7 +769,7 @@
         <class>sar2_svoboda_engineer</class>
         <community>monolith</community>
 
-        <rank>34</rank>
+        <rank>340</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_rukzak_3</visual>
@@ -792,7 +792,7 @@
         <class>sar2_svoboda_stukach</class>
         <community>monolith</community>
 
-        <rank>31</rank>
+        <rank>310</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_rukzak_1</visual>
@@ -815,7 +815,7 @@
         <class>sar2_svoboda_bodyguard</class>
         <community>monolith</community>
 
-        <rank>90</rank>
+        <rank>900</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -838,7 +838,7 @@
         <class>sar2_svoboda_leader</class>
         <community>monolith</community>
 
-        <rank>68</rank>
+        <rank>680</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_leader</visual>
@@ -861,7 +861,7 @@
         <class>sar2_svoboda_trader</class>
         <community>monolith</community>
 
-        <rank>38</rank>
+        <rank>380</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_balon_1</visual>
@@ -884,7 +884,7 @@
         <class>sar2_svoboda_master_max</class>
         <community>monolith</community>
 
-        <rank>59</rank>
+        <rank>590</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_max</visual>
@@ -907,7 +907,7 @@
         <class>sar2_svoboda_cook</class>
         <community>monolith</community>
 
-        <rank>30</rank>
+        <rank>300</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_cook</visual>
@@ -930,7 +930,7 @@
         <class>sar2_svoboda_blockpost_leader</class>
         <community>monolith</community>
 
-        <rank>83</rank>
+        <rank>830</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_balon_10</visual>
@@ -953,7 +953,7 @@
         <class>sar2_svoboda_master_ugrumiy</class>
         <community>monolith</community>
 
-        <rank>88</rank>
+        <rank>880</rank>
         <reputation>0</reputation>
 
         <visual>actors\svoboda\stalker_sv_nauchniy</visual>
@@ -976,7 +976,7 @@
         <class>sar2_dolg_specnaz_cherep</class>
         <community>monolith</community>
 
-        <rank>96</rank>
+        <rank>960</rank>
         <reputation>0</reputation>
 
         <visual>actors\dolg\stalker_do_exoskeleton</visual>
@@ -999,7 +999,7 @@
         <class>sar2_killer_informator</class>
         <community>monolith</community>
 
-        <rank>51</rank>
+        <rank>510</rank>
         <reputation>0</reputation>
 
         <visual>actors\killer\stalker_ki_informator</visual>
@@ -1022,7 +1022,7 @@
         <class>sar2_svoboda_zombi_stalker</class>
         <community>monolith</community>
 
-        <rank>40</rank>
+        <rank>400</rank>
         <reputation>0</reputation>
 
         <visual>actors\stalker_zombi\stalker_zombie5</visual>
@@ -1045,7 +1045,7 @@
         <class>sar2_doctor</class>
         <community>monolith</community>
 
-        <rank>41</rank>
+        <rank>410</rank>
         <reputation>0</reputation>
 
         <visual>actors\izgoy\izgoy</visual>
@@ -1068,7 +1068,7 @@
         <class>sar2_monolith_leader</class>
         <community>monolith</community>
 
-        <rank>100</rank>
+        <rank>1000</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
@@ -1091,7 +1091,7 @@
         <class>sar2_bandit_novice</class>
         <community>monolith</community>
 
-        <rank>24</rank>
+        <rank>240</rank>
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_3</visual>
@@ -1114,7 +1114,7 @@
         <class>sar2_bandit_general</class>
         <community>monolith</community>
 
-        <rank>47</rank>
+        <rank>470</rank>
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_3</visual>
@@ -1137,7 +1137,7 @@
         <class>sar2_bandit_veteran</class>
         <community>monolith</community>
 
-        <rank>67</rank>
+        <rank>670</rank>
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_master</visual>
@@ -1160,7 +1160,7 @@
         <class>sar2_soldier_regular</class>
         <community>monolith</community>
 
-        <rank>53</rank>
+        <rank>530</rank>
         <reputation>0</reputation>
 
         <visual>actors\soldier\soldier_obichniy</visual>
@@ -1184,7 +1184,7 @@
         <class>sar2_soldier_specnaz</class>
         <community>monolith</community>
 
-        <rank>72</rank>
+        <rank>720</rank>
         <reputation>0</reputation>
 
         <visual>actors\soldier\soldier_spetsnaz</visual>
@@ -1207,7 +1207,7 @@
         <class>sar2_soldier_stalker</class>
         <community>monolith</community>
 
-        <rank>84</rank>
+        <rank>840</rank>
         <reputation>0</reputation>
 
         <visual>actors\militari\stalker_militari_antigas_2</visual>
@@ -1230,7 +1230,7 @@
         <class>sar2_killer_regular</class>
         <community>monolith</community>
 
-        <rank>56</rank>
+        <rank>560</rank>
         <reputation>0</reputation>
 
         <visual>actors\killer\stalker_ki_head_1</visual>
@@ -1253,7 +1253,7 @@
         <class>sar2_killer_specnaz</class>
         <community>monolith</community>
 
-        <rank>61</rank>
+        <rank>610</rank>
         <reputation>0</reputation>
 
         <visual>actors\killer\stalker_ki_antigas</visual>
@@ -1276,7 +1276,7 @@
         <class>sar2_killer_exo</class>
         <community>monolith</community>
 
-        <rank>95</rank>
+        <rank>950</rank>
         <reputation>0</reputation>
 
         <visual>actors\killer\stalker_ki_exoskeleton</visual>
@@ -1299,7 +1299,7 @@
         <class>sar2_zombied_novice</class>
         <community>monolith</community>
 
-        <rank>24</rank>
+        <rank>240</rank>
         <reputation>0</reputation>
 
         <visual>actors\stalker_zombi\stalker_zombie1</visual>
@@ -1322,7 +1322,7 @@
         <class>sar2_zombied_stalker</class>
         <community>monolith</community>
 
-        <rank>33</rank>
+        <rank>330</rank>
         <reputation>0</reputation>
 
         <visual>actors\stalker_zombi\stalker_zombie5</visual>
@@ -1345,7 +1345,7 @@
         <class>sar2_zombied_exo</class>
         <community>monolith</community>
 
-        <rank>66</rank>
+        <rank>660</rank>
         <reputation>0</reputation>
 
         <visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -1368,7 +1368,7 @@
         <class>sar2_monolith_regular</class>
         <community>monolith</community>
 
-        <rank>52</rank>
+        <rank>520</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -1391,7 +1391,7 @@
         <class>sar2_monolith_regular2</class>
         <community>monolith</community>
 
-        <rank>48</rank>
+        <rank>480</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -1414,7 +1414,7 @@
         <class>sar2_monolith_specnaz</class>
         <community>monolith</community>
 
-        <rank>77</rank>
+        <rank>770</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -1437,7 +1437,7 @@
         <class>sar2_monolith_specnaz2</class>
         <community>monolith</community>
 
-        <rank>83</rank>
+        <rank>830</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -1462,7 +1462,7 @@
         <class>sar2_monolith_exo</class>
         <community>monolith</community>
 
-        <rank>99</rank>
+        <rank>990</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
@@ -1485,7 +1485,7 @@
         <class>sar2_monolith_exo2</class>
         <community>monolith</community>
 
-        <rank>94</rank>
+        <rank>940</rank>
         <reputation>0</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>

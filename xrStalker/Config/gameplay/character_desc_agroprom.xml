@@ -12,7 +12,7 @@
 		<class>agr_krot</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>50</rank>
+		<rank>500</rank>
 		<reputation>49</reputation>
 
 		<panic_threshold>0.0</panic_threshold>
@@ -47,7 +47,7 @@
 		<class>agr_ratcatcher</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>50</rank>
+		<rank>500</rank>
 		<reputation>-29</reputation>
 
 		<visual>actors\soldier\soldier_bandana_6</visual>
@@ -75,7 +75,7 @@
 		<class>agr_nii_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\soldier\soldier_beret</visual>		
@@ -106,7 +106,7 @@
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>27</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
@@ -140,7 +140,7 @@
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>42</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
@@ -174,7 +174,7 @@
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>18</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
@@ -208,7 +208,7 @@
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>36</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
@@ -242,7 +242,7 @@
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>23</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
@@ -276,7 +276,7 @@
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>33</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
@@ -312,7 +312,7 @@
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>-9</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
@@ -342,7 +342,7 @@
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>-6</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
@@ -372,7 +372,7 @@
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>-3</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -402,7 +402,7 @@
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>-7</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
@@ -432,7 +432,7 @@
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>300</rank>
 		<reputation>-9</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -464,7 +464,7 @@
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>-70</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
@@ -494,7 +494,7 @@
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>800</rank>
 		<reputation>-83</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
@@ -526,7 +526,7 @@
 		<class>agr_Soldier_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\soldier\soldier_beret</visual>		
@@ -556,7 +556,7 @@
 		<class>agr_Soldier_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-19</reputation>
 
 		<visual>actors\soldier\soldier_beret_3</visual>		
@@ -587,7 +587,7 @@
 		<class>agr_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-15</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -617,7 +617,7 @@
 		<class>agr_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 	
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-15</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
@@ -647,7 +647,7 @@
 		<class>agr_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>60</rank>
+		<rank>600</rank>
 		<reputation>-7</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
@@ -679,7 +679,7 @@
 		<class>agr_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-70</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
@@ -710,7 +710,7 @@
 		<class>agr_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-56</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
@@ -741,7 +741,7 @@
 		<class>agr_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>-98</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>

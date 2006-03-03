@@ -16,7 +16,7 @@
 		<class>actor</class>
 		<community>actor</community>
 	
-		<rank>0</rank>
+		<rank>00</rank>
 		<reputation>0</reputation>
 		<visual>actors\hero\stalker_novice</visual>
 	</specific_character>
@@ -31,7 +31,7 @@
 		<class>Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
@@ -57,7 +57,7 @@
 		<class>osoznanie</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\ucheniy\ucheniy_1</visual>

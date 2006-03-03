@@ -12,7 +12,7 @@
         <class>cit_doctor</class>
         <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-        <rank>40</rank>
+        <rank>400</rank>
         <reputation>0</reputation>
 
         <visual>actors\izgoy\izgoy</visual>
@@ -41,7 +41,7 @@
 		<class>cit_killer_general</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-50</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
@@ -72,7 +72,7 @@
 		<class>cit_killer_general</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-50</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
@@ -104,7 +104,7 @@
 		<class>cit_killer_veteran</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-50</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
@@ -134,7 +134,7 @@
 		<class>cit_killer_veteran</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-50</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
@@ -166,7 +166,7 @@
 		<class>cit_killer_nauchniy</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>-50</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
@@ -198,7 +198,7 @@
 		<class>cit_killer_exo</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>-50</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
@@ -230,7 +230,7 @@
 		<class>cit_killer_exo_sniper</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>-50</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
@@ -263,7 +263,7 @@
 		<class>cit_killer_leader</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>90</rank>
+		<rank>900</rank>
 		<reputation>-50</reputation>
 	
 		<snd_config>characters_voice\human_02\killer\</snd_config>
@@ -299,7 +299,7 @@
         <class>cit_bandit_drunk</class>
         <community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 
-        <rank>40</rank>
+        <rank>400</rank>
         <reputation>0</reputation>
 
         <visual>actors\bandit\stalker_bandit_drunk</visual>
@@ -326,7 +326,7 @@
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
@@ -357,7 +357,7 @@
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
@@ -387,7 +387,7 @@
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
@@ -417,7 +417,7 @@
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
@@ -448,7 +448,7 @@
 		<class>cit_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
@@ -479,7 +479,7 @@
 		<class>cit_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
@@ -509,7 +509,7 @@
 		<class>cit_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
@@ -540,7 +540,7 @@
 		<class>cit_bandit_veteran_best</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
@@ -572,7 +572,7 @@
 		<class>cit_bandit_leader</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>700</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
@@ -604,7 +604,7 @@
 		<class>cit_vp</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>40</rank>
+		<rank>400</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
