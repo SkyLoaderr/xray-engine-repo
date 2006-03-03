@@ -132,11 +132,12 @@ void CUISleepWnd::ModifyRestTime(s8 dHours, s8 dMinutes)
 void CUISleepWnd::SetRestTime(u8 hours, u8 minutes)
 {
 	string32					buf;
-
+	static s8 _h				= pSettings->r_s8("actor", "max_sleep_hours");
 	m_Minutes					= minutes;
 	m_Hours						= hours;
-
-	sprintf						(buf, "%02i:%02i", hours, minutes);
+	if(m_Hours>=_h)				m_Minutes = 0;
+	clamp						(m_Hours,s8(0),_h);
+	sprintf						(buf, "%02i:%02i", m_Hours, m_Minutes);
 	UIStaticRestAmount->SetText	(buf);
 }
 

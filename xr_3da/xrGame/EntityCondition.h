@@ -50,7 +50,7 @@ public:
 	IC float					GetRadiation			() const			{return m_fRadiation;}
 	IC float					GetPsyHealth			() const			{return m_fPsyHealth;}
 
-	IC float 					GetCircumspection		() const			{return m_fCircumspection;}
+//.	IC float 					GetCircumspection		() const			{return m_fCircumspection;}
 	IC float 					GetEntityMorale			() const			{return m_fEntityMorale;}
 
 	IC float 					GetHealthLost			() const			{return m_fHealthLost;}
@@ -80,7 +80,7 @@ public:
 	virtual void			UpdateCondition			();
 	void					UpdateWounds			();
 	void					UpdateConditionTime		();
-	IC void					SetConditionDeltaTime	(u64 DeltaTime) { m_iDeltaTime = DeltaTime; };
+	IC void					SetConditionDeltaTime	(float DeltaTime) { m_fDeltaTime = DeltaTime; };
 
 	
 	//скорость потери крови из всех открытых ран 
@@ -102,7 +102,7 @@ protected:
 	void					UpdateRadiation			(float k=1.0f);
 	void					UpdatePsyHealth			(float k=1.0f);
 
-	void					UpdateCircumspection	();
+//.	void					UpdateCircumspection	();
 	void					UpdateEntityMorale		();
 
 
@@ -127,7 +127,7 @@ protected:
 	float m_fRadiation;				//доза радиактивного облучения
 	float m_fPsyHealth;				//здоровье
 
-	float m_fCircumspection;		//настороженность	
+//.	float m_fCircumspection;		//настороженность	
 	float m_fEntityMorale;			//мораль
 
 	//максимальные величины
@@ -137,7 +137,7 @@ protected:
 	float m_fRadiationMax;
 	float m_fPsyHealthMax;
 
-	float m_fCircumspectionMax;
+//.	float m_fCircumspectionMax;
 	float m_fEntityMoraleMax;
 
 	//величины изменения параметров на каждом обновлении
@@ -150,10 +150,27 @@ protected:
 	float m_fDeltaCircumspection;
 	float m_fDeltaEntityMorale;
 
-	//скорости изменения характеристик состояния
-	//в секунду
-	float m_fV_Health;
-	float m_fV_Power;
+	struct SConditionChangeV
+	{
+//.		float m_fV_Health;
+//.		float m_fV_Power;
+		float m_fV_Satiety;
+		float m_fV_Radiation;
+		float m_fV_PsyHealth;
+		float m_fV_Circumspection;//---
+		float m_fV_EntityMorale;
+		float m_fV_SatietyPower;
+		float m_fV_SatietyHealth;
+		float m_fV_RadiationHealth;
+		float m_fV_Bleeding;
+		float m_fV_WoundIncarnation;
+		void  load(LPCSTR sect, LPCSTR prefix);
+	};
+	
+	SConditionChangeV m_change_v;
+/*
+//.	float m_fV_Health;
+//.	float m_fV_Power;
 	float m_fV_Satiety;
 	float m_fV_Radiation;
 	float m_fV_PsyHealth;
@@ -162,15 +179,8 @@ protected:
 	float m_fV_EntityMorale;
 
 
-
-	//скорости восстановления здоровья и силы
-	//за счет сытости
 	float m_fV_SatietyPower;
 	float m_fV_SatietyHealth;
-
-	//критическое значение сытости (в процентах 0..1), после которого 
-	//начинает уменьшаться здоровье
-	float m_fSatietyCritical;
 
 	//максимально возможная скорость убывания здоровья от радиации
 	//(при максимальной дозе облучения)
@@ -180,6 +190,12 @@ protected:
 	float m_fV_Bleeding;
 	//скорость заживания раны
 	float m_fV_WoundIncarnation;
+*/
+	//критическое значение сытости (в процентах 0..1), после которого 
+	//начинает уменьшаться здоровье
+	float m_fSatietyCritical;
+
+
 	float m_fMinWoundSize;
 	//флаг, указывающий на то что есть кровотечение
 	bool m_bIsBleeding;
@@ -199,8 +215,8 @@ protected:
 
 
 	//для отслеживания времени 
-	u64 m_iLastTimeCalled;
-	u64 m_iDeltaTime;
+	float m_fLastTimeCalled;
+	float m_fDeltaTime;
 	bool m_bTimeValid;
 
 	//для передачи параметров из DamageManager
@@ -214,7 +230,7 @@ protected:
 public:
 	virtual void					reinit				();
 	
-	IC const	u64					delta_time			() const 	{return		(m_iDeltaTime);			}
+	IC const	float				fdelta_time			() const 	{return		(m_fDeltaTime);			}
 	IC const	WOUND_VECTOR&		wounds				() const	{return		(m_WoundVector);		}
 	IC float&						radiation			()			{return		(m_fRadiation);			}
 	IC float&						hit_bone_scale		()			{return		(m_fHitBoneScale);		}

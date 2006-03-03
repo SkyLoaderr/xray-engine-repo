@@ -42,7 +42,6 @@ public:
 
 	virtual void 		ChangeAlcohol			(float value);
 
-	void				ProcessSleep				(ALife::_TIME_ID sleep_time);
 	bool				IsSleeping					() {return m_bIsSleeping;}
 
 	// sleeping
@@ -94,14 +93,9 @@ protected:
 
 	//состояние сна
 	bool m_bIsSleeping;
-	//коэффициенты скоростей изменения параметров во время сна
-	float m_fK_SleepHealth;
-	float m_fK_SleepPower;
-	float m_fK_SleepSatiety;
-	float m_fK_SleepRadiation;
-	float m_fK_SleepPsyHealth;
-	float m_fK_SleepMaxPower;
+	SConditionChangeV m_change_v_sleep;
 
+	float m_fK_SleepMaxPower;
 	mutable bool m_bLimping;
 	mutable bool m_bCantWalk;
 	mutable bool m_bCantSprint;

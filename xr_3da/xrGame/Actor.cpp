@@ -1422,24 +1422,24 @@ void CActor::MoveArtefactBelt(const CArtefact* artefact, bool on_belt)
 	if (Level().CurrentViewEntity() && Level().CurrentViewEntity() == this)
 		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);
 }
-#define ARTEFACTS_UPDATE_TIME 100
+#define ARTEFACTS_UPDATE_TIME 0.100f
 //old==1000
 
 void CActor::UpdateArtefactsOnBelt()
 {
-	static u64 update_time = 0;
+	static float update_time = 0;
 
 	float f_update_time = 0;
 
 	if(update_time<ARTEFACTS_UPDATE_TIME)
 	{
-		update_time += conditions().delta_time();
+		update_time += conditions().fdelta_time();
 		return;
 	}
 	else
 	{
-		f_update_time = static_cast<float>(update_time)/1000.f;
-		update_time = 0;
+		f_update_time	= update_time;
+		update_time		= 0.0f;
 	}
 
 	for(TIItemContainer::iterator it = inventory().m_belt.begin(); 

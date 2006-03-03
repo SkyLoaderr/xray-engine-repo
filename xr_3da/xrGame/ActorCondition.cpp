@@ -60,6 +60,9 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	inherited::LoadCondition(entity_section);
 
 	LPCSTR						section = READ_IF_EXISTS(pSettings,r_string,entity_section,"condition_sect",entity_section);
+	if(IsGameTypeSingle())
+		m_change_v_sleep.load		(section,"_sleep");
+
 	m_fJumpPower				= pSettings->r_float(section,"jump_power");
 	m_fStandPower				= pSettings->r_float(section,"stand_power");
 	m_fWalkPower				= pSettings->r_float(section,"walk_power");
@@ -87,16 +90,10 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	m_fCantSprintPowerEnd		= pSettings->r_float(section,	"cant_sprint_power_end");
 	R_ASSERT					(m_fCantSprintPowerBegin<=m_fCantSprintPowerEnd);
 
-	m_fPowerLeakSpeed			= READ_IF_EXISTS(pSettings,r_float,section,"max_power_leak_speed",0.0f);
-
-
-	m_fK_SleepHealth		= pSettings->r_float(section,"sleep_health");
-	m_fK_SleepPower			= pSettings->r_float(section,"sleep_power");
-	m_fK_SleepMaxPower		= pSettings->r_float(section,"sleep_max_power");
-	m_fK_SleepSatiety		= pSettings->r_float(section,"sleep_satiety");	
-	m_fK_SleepRadiation		= pSettings->r_float(section,"sleep_radiation");
-	m_fK_SleepPsyHealth		= pSettings->r_float(section,"sleep_psy_health");
-
+	m_fPowerLeakSpeed			= pSettings->r_float(section,"max_power_leak_speed");
+	if(IsGameTypeSingle())
+		m_fK_SleepMaxPower		= pSettings->r_float(section,"max_power_leak_speed_sleep");
+	
 	m_fV_Alcohol				= pSettings->r_float(section,"alcohol_v");
 
 	LPCSTR cb_name			= READ_IF_EXISTS(pSettings,r_string,section,"can_sleep_callback","");
@@ -137,20 +134,32 @@ void CActorCondition::UpdateCondition()
 		ConditionStand(object().inventory().TotalWeight()/object().inventory().GetMaxWeight());
 	};
 	
-	float delta_time = float(m_iDeltaTime)/1000.f;
-
-	if( !IsSleeping() && IsGameTypeSingle() ){
+	if( IsGameTypeSingle() ){
 
 		float k_max_power = 1.0f;
-		float weight = object().inventory().TotalWeight();
-		float base_w = 40.0f;
 
-		k_max_power = 1.0f + _min(weight,base_w)/base_w + _max(0.0f, (weight-base_w)/10.0f);
+		if( !IsSleeping() ){
+			float weight = object().inventory().TotalWeight();
+			float base_w = 40.0f;
+			k_max_power = 1.0f + _min(weight,base_w)/base_w + _max(0.0f, (weight-base_w)/10.0f);
+		}else
+			k_max_power = 1.0f;
+		
+		float fff = 0.0f;
+		if(IsSleeping()){
+			fff = GetMaxPower();
+		}
+		SetMaxPower		(GetMaxPower() - m_fPowerLeakSpeed*m_fDeltaTime*k_max_power);
+		if(bDebug)
+			Msg("dt=%f changed=%f",m_fDeltaTime,m_fPowerLeakSpeed*m_fDeltaTime*k_max_power);
 
-		SetMaxPower		(GetMaxPower() - m_fPowerLeakSpeed*delta_time*k_max_power);
+		if(IsSleeping()){
+			Msg("changed %f dt=%f", GetMaxPower()-fff, m_fDeltaTime);
+			Msg("max_power=%f", GetMaxPower());
+		}
 	}
 
-	m_fAlcohol		+= m_fV_Alcohol*delta_time;
+	m_fAlcohol		+= m_fV_Alcohol*m_fDeltaTime;
 	clamp			(m_fAlcohol,			0.0f,		1.0f);
 
 	if ( IsGameTypeSingle() )
@@ -200,18 +209,16 @@ void CActorCondition::ConditionJump(float weight)
 }
 void CActorCondition::ConditionWalk(float weight, bool accel, bool sprint)
 {	
-	float delta_time	=	float(m_iDeltaTime)/1000.f;
 	float power			=	m_fWalkPower;
 	power				+=	m_fWalkWeightPower*weight*(weight>1.f?m_fOverweightWalkK:1.f);
-	power				*=	delta_time*(accel?(sprint?m_fSprintK:m_fAccelK):1.f);
+	power				*=	m_fDeltaTime*(accel?(sprint?m_fSprintK:m_fAccelK):1.f);
 	m_fPower			-=	HitPowerEffect(power);
 }
 
 void CActorCondition::ConditionStand(float weight)
 {	
-	float delta_time	= float(m_iDeltaTime)/1000.f;
 	float power			= m_fStandPower;
-	power				*= delta_time;
+	power				*= m_fDeltaTime;
 	m_fPower			-= power;
 }
 
@@ -246,7 +253,8 @@ extern bool g_bShowHudInfo;
 
 bool CActorCondition::AllowSleep ()
 {
-	EActorSleep result		= CanSleepHere		();
+	EActorSleep result		= ACTOR_DEFS::easCanSleepResult;
+//.	EActorSleep result		= CanSleepHere		();
 	return( !stricmp(ACTOR_DEFS::easCanSleepResult, result)  );
 }
 
@@ -254,16 +262,21 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 {
 	if (IsSleeping()) return ACTOR_DEFS::easCanSleepResult;
 
-	EActorSleep result = without_check?ACTOR_DEFS::easCanSleepResult : CanSleepHere();
+	EActorSleep result		= ACTOR_DEFS::easCanSleepResult;
+//.	EActorSleep result = without_check?ACTOR_DEFS::easCanSleepResult : CanSleepHere();
 	if( 0 != stricmp(ACTOR_DEFS::easCanSleepResult, result)  ) 
 			return result;
 
 	g_bShowHudInfo				= false;
 	m_bIsSleeping				= true;
 
-	ProcessSleep				(sleep_time);// change conditions
+//.	ProcessSleep				(sleep_time);// change conditions
 
-	//остановить актера, если он двигался
+	std::swap					(m_change_v_sleep,		m_change_v);
+	std::swap					(m_fK_SleepMaxPower,	m_fPowerLeakSpeed);
+
+	
+
 	object().mstate_wishful	&=		~mcAnyMove;
 	object().mstate_real	&=		~mcAnyMove;
 
@@ -295,6 +308,9 @@ void CActorCondition::Awoke()
 	if(!IsSleeping())		return;
 
 	m_bIsSleeping			= false;
+
+	std::swap				(m_change_v_sleep,		m_change_v);
+	std::swap				(m_fK_SleepMaxPower,	m_fPowerLeakSpeed);
 
 	if ( ai().get_alife() ) {
 		NET_Packet		P;
@@ -373,45 +389,6 @@ void CActorCondition::load(IReader &input_packet)
 	inherited::load		(input_packet);
 	load_data			(m_fAlcohol, input_packet);
 	load_data			(m_condition_flags, input_packet);
-}
-
-void CActorCondition::ProcessSleep(ALife::_TIME_ID sleep_time)
-{
-	if(GetHealth()<=0) return;
-
-	//десять секунд
-	m_iDeltaTime = 1000*10;
-
-	for(float time=0; time<sleep_time; time += m_iDeltaTime)
-	{
-		UpdateHealth			();
-		UpdatePower				();
-		UpdateSatiety			(m_fK_SleepSatiety);
-		UpdateRadiation			(m_fK_SleepRadiation);
-		UpdatePsyHealth			(m_fK_SleepPsyHealth);
-
-		health()				+= m_fDeltaHealth;
-		m_fPower				+= m_fDeltaPower;
-		m_fSatiety				+= m_fDeltaSatiety;
-		m_fRadiation			+=  m_fDeltaRadiation;
-		m_fPsyHealth			+= m_fDeltaPsyHealth;
-
-		SetMaxPower				(m_fPowerMax+m_fK_SleepMaxPower*float(m_iDeltaTime)/1000.0f );
-
-		m_fDeltaHealth			= 0;
-		m_fDeltaPower			= 0;
-		m_fDeltaSatiety			= 0;
-		m_fDeltaRadiation		= 0;
-		m_fDeltaPsyHealth		= 0;
-		
-
-		clamp					(health(),		0.0f,		GetMaxHealth());
-		clamp					(m_fPower,		0.0f,		m_fPowerMax);
-		clamp					(m_fRadiation,	0.0f,		m_fRadiationMax);
-		clamp					(m_fSatiety,	0.0f,		m_fSatietyMax);
-		clamp					(m_fPsyHealth,	0.0f,		m_fPsyHealthMax);
-	}
-
 }
 
 void CActorCondition::reinit	()

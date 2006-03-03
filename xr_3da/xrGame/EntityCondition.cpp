@@ -40,19 +40,14 @@ CEntityCondition::CEntityCondition(CEntityAlive *object)
 	m_object			= object;
 
 	m_use_limping_state = false;
-	m_iLastTimeCalled	= 0;
+	m_fLastTimeCalled	= 0.0f;
 	m_bTimeValid		= false;
 
 	m_fPowerMax			= MAX_POWER;
 	m_fSatietyMax		= MAX_SATIETY;
 	m_fRadiationMax		= MAX_RADIATION;
 	m_fPsyHealthMax		= MAX_PSY_HEALTH;
-
-	m_fCircumspection	= m_fCircumspectionMax = 1.f;
 	m_fEntityMorale		=  m_fEntityMoraleMax = 1.f;
-	m_fV_Circumspection =  0.01f;
-	m_fV_EntityMorale	= 0.01f;
-	m_fV_PsyHealth		= 0.01f;
 
 
 	m_fPower			= MAX_POWER;
@@ -60,15 +55,6 @@ CEntityCondition::CEntityCondition(CEntityAlive *object)
 	m_fRadiation		= 0;
 	m_fPsyHealth		= MAX_PSY_HEALTH;
 
-	m_fV_SatietyHealth	= 0.001f;
-	m_fV_SatietyPower	= 0.01f;
-	m_fV_Satiety		= 0.004f;
-
-	m_fV_RadiationHealth = 0.006f;
-	m_fV_Radiation		= 0.004f;
-
-	m_fV_Bleeding			= 0.09f;
-	m_fV_WoundIncarnation	= 0.001f;
 	m_fMinWoundSize			= 0.00001f;
 
 	
@@ -114,22 +100,10 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 {
 	LPCSTR				section = READ_IF_EXISTS(pSettings,r_string,entity_section,"condition_sect",entity_section);
 
+	m_change_v.load		(section,"");
 
-	//скорости изменения характеристик состояния
-	//в секунду
-	m_fV_Satiety			= pSettings->r_float(section,"satiety_v");		
-	m_fV_Radiation			= pSettings->r_float(section,"radiation_v");	
-	m_fV_SatietyPower		= pSettings->r_float(section,"satiety_power_v");
-	m_fV_SatietyHealth		= pSettings->r_float(section,"satiety_health_v");
 	m_fSatietyCritical		= pSettings->r_float(section,"satiety_critical");
-
-	m_fV_PsyHealth			= pSettings->r_float(section,"psy_health_v");	
-
-	m_fV_RadiationHealth	= pSettings->r_float(section,"radiation_health_v");
-	m_fV_Bleeding			= pSettings->r_float(section,"bleeding_v");
-	m_fV_WoundIncarnation	= pSettings->r_float(section,"wound_incarnation_v");
 	m_fMinWoundSize			= pSettings->r_float(section,"min_wound_size");
-	m_fV_EntityMorale		= pSettings->r_float(section,"morale_v");
 	
 	m_fHealthHitPart		= pSettings->r_float(section,"health_hit_part");
 	m_fPowerHitPart			= pSettings->r_float(section,"power_hit_part");
@@ -142,7 +116,7 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 
 void CEntityCondition::reinit	()
 {
-	m_iLastTimeCalled		= 0;
+	m_fLastTimeCalled		= 0.0f;
 	m_bTimeValid			= false;
 
 	max_health()			= MAX_HEALTH;
@@ -151,7 +125,6 @@ void CEntityCondition::reinit	()
 	m_fRadiationMax			= MAX_RADIATION;
 	m_fPsyHealthMax			= MAX_PSY_HEALTH;
 
-	m_fCircumspection		= m_fCircumspectionMax = 1.f;
 	m_fEntityMorale			=  m_fEntityMoraleMax = 1.f;
 
 	health()				= MAX_HEALTH;
@@ -240,18 +213,18 @@ void  CEntityCondition::UpdateWounds		()
 
 void CEntityCondition::UpdateConditionTime()
 {
-	u64 cur_time = (GameID() == GAME_SINGLE) ? Level().GetGameTime() : Level().timeServer();
+	float cur_time = (GameID() == GAME_SINGLE) ? Level().GetGameTime()/1000.0f : Level().timeServer()/1000.0f;
 
 	if(m_bTimeValid)
 	{
-		if (cur_time > m_iLastTimeCalled)
-			m_iDeltaTime		= cur_time - m_iLastTimeCalled;
+		if (cur_time > m_fLastTimeCalled)
+			SetConditionDeltaTime(cur_time-m_fLastTimeCalled);
 		else 
-			m_iDeltaTime		= 0;
+			SetConditionDeltaTime(0.0f);
 	}
 	else
 	{
-		m_iDeltaTime			= 0;
+		SetConditionDeltaTime	(0.0f);
 		m_bTimeValid			= true;
 
 		m_fDeltaHealth			= 0;
@@ -263,7 +236,7 @@ void CEntityCondition::UpdateConditionTime()
 
 	}
 
-	m_iLastTimeCalled			= cur_time;
+	m_fLastTimeCalled			= cur_time;
 }
 
 //вычисление параметров с ходом игрового времени
@@ -303,7 +276,7 @@ void CEntityCondition::UpdateCondition()
 	//-----------------------------------------
 	UpdatePsyHealth				();
 
-	UpdateCircumspection		();
+//.	UpdateCircumspection		();
 	UpdateEntityMorale			();
 
 	health()					+= m_fDeltaHealth;
@@ -311,7 +284,7 @@ void CEntityCondition::UpdateCondition()
 	m_fSatiety					+= m_fDeltaSatiety;
 	m_fRadiation				+= m_fDeltaRadiation;
 	m_fPsyHealth				+= m_fDeltaPsyHealth;
-	m_fCircumspection			+= m_fDeltaCircumspection;
+//.	m_fCircumspection			+= m_fDeltaCircumspection;
 	m_fEntityMorale				+= m_fDeltaEntityMorale;
 
 	m_fDeltaHealth				= 0;
@@ -326,7 +299,7 @@ void CEntityCondition::UpdateCondition()
 	clamp						(m_fPower,			0.0f,		m_fPowerMax);
 	clamp						(m_fRadiation,		0.0f,		m_fRadiationMax);
 	clamp						(m_fSatiety,		0.0f,		m_fSatietyMax);
-	clamp						(m_fCircumspection,	0.0f,		m_fCircumspectionMax);
+//.	clamp						(m_fCircumspection,	0.0f,		m_fCircumspectionMax);
 	clamp						(m_fEntityMorale,	0.0f,		m_fEntityMoraleMax);
 	clamp						(m_fPsyHealth,		0.0f,		m_fPsyHealthMax);
 }
@@ -490,13 +463,11 @@ float CEntityCondition::BleedingSpeed()
 
 void CEntityCondition::UpdateHealth()
 {
-	float delta_time			= float(m_iDeltaTime)/1000.f;
-	
-	float bleeding_speed		= BleedingSpeed() * delta_time * m_fV_Bleeding;
+	float bleeding_speed		= BleedingSpeed() * m_fDeltaTime * m_change_v.m_fV_Bleeding;
 	m_bIsBleeding				= fis_zero(bleeding_speed)?false:true;
 	m_fDeltaHealth				-= CanBeHarmed() ? bleeding_speed : 0;
 	VERIFY						(_valid(m_fDeltaHealth));
-	ChangeBleeding				(m_fV_WoundIncarnation * delta_time);
+	ChangeBleeding				(m_change_v.m_fV_WoundIncarnation * m_fDeltaTime);
 }
 
 void CEntityCondition::UpdatePower()
@@ -507,7 +478,7 @@ void CEntityCondition::UpdatePsyHealth(float k)
 {
 	if(m_fPsyHealth>0)
 	{
-		m_fDeltaPsyHealth += m_fV_PsyHealth*k*m_iDeltaTime/1000;
+		m_fDeltaPsyHealth += m_change_v.m_fV_PsyHealth*k*m_fDeltaTime;
 	}
 }
 
@@ -519,9 +490,9 @@ void CEntityCondition::UpdateSatiety(float k)
 //	float sleep_k = 1.f;
 	if(m_fSatiety>0)
 	{
-		m_fDeltaSatiety -=	m_fV_Satiety*
+		m_fDeltaSatiety -=	m_change_v.m_fV_Satiety*
 							k*
-							m_iDeltaTime/1000;
+							m_fDeltaTime;
 
 //		sleep_k = m_fCurrentSleepHealth;
 	}
@@ -530,10 +501,10 @@ void CEntityCondition::UpdateSatiety(float k)
 	if(!m_bIsBleeding)
 	{
 		m_fDeltaHealth += CanBeHarmed() ? 
-					(m_fV_SatietyHealth*
+					(m_change_v.m_fV_SatietyHealth*
 					(m_fSatiety>m_fSatietyCritical?1.f:-1.f)*
 //					sleep_k*
-					m_iDeltaTime/1000)
+					m_fDeltaTime)
 					: 0;
 	}
 
@@ -541,39 +512,30 @@ void CEntityCondition::UpdateSatiety(float k)
 	float radiation_power_k		= 1.f;
 	float satiety_power_k		= 1.f;
 			
-	m_fDeltaPower += m_fV_SatietyPower*
+	m_fDeltaPower += m_change_v.m_fV_SatietyPower*
 				radiation_power_k*
 				satiety_power_k*
 //				m_fCurrentSleepPower*
-				m_iDeltaTime/1000;
+				m_fDeltaTime;
 }
 
 void CEntityCondition::UpdateRadiation(float k)
 {
 	if(m_fRadiation>0)
 	{
-		m_fDeltaRadiation -= m_fV_Radiation*
+		m_fDeltaRadiation -= m_change_v.m_fV_Radiation*
 							k*
-							m_iDeltaTime/1000;
+							m_fDeltaTime;
 
-		m_fDeltaHealth -= CanBeHarmed() ? m_fV_RadiationHealth*m_fRadiation*m_iDeltaTime/1000 : 0;
+		m_fDeltaHealth -= CanBeHarmed() ? m_change_v.m_fV_RadiationHealth*m_fRadiation*m_fDeltaTime : 0.0f;
 	}
 }
 
-void CEntityCondition::UpdateCircumspection()
-{
-	if(m_fCircumspection<m_fCircumspectionMax)
-	{
-		m_fDeltaCircumspection += m_fV_Circumspection*
-								 m_iDeltaTime/1000;
-	}
-}
 void CEntityCondition::UpdateEntityMorale()
 {
 	if(m_fEntityMorale<m_fEntityMoraleMax)
 	{
-		m_fDeltaEntityMorale += m_fV_EntityMorale*
-						  m_iDeltaTime/1000;
+		m_fDeltaEntityMorale += m_change_v.m_fV_EntityMorale*m_fDeltaTime;
 	}
 }
 
@@ -597,7 +559,6 @@ void CEntityCondition::save	(NET_Packet &output_packet)
 		save_data						(m_fSatiety,output_packet);
 		save_data						(m_fRadiation,output_packet);
 		save_data						(m_fEntityMorale,output_packet);
-		save_data						(m_fCircumspection,output_packet);
 		save_data						(m_fPsyHealth,output_packet);
 
 		output_packet.w_u8				((u8)m_WoundVector.size());
@@ -617,7 +578,6 @@ void CEntityCondition::load	(IReader &input_packet)
 		load_data						(m_fSatiety,input_packet);
 		load_data						(m_fRadiation,input_packet);
 		load_data						(m_fEntityMorale,input_packet);
-		load_data						(m_fCircumspection,input_packet);
 		load_data						(m_fPsyHealth,input_packet);
 
 		ClearWounds();
@@ -630,4 +590,19 @@ void CEntityCondition::load	(IReader &input_packet)
 				m_WoundVector[i] = pWound;
 			}
 	}
+}
+
+void CEntityCondition::SConditionChangeV::load(LPCSTR sect, LPCSTR prefix)
+{
+	string256				str;
+	m_fV_Circumspection		=  0.01f;
+	m_fV_Satiety			= pSettings->r_float(sect,strconcat(str,"satiety_v",prefix));		
+	m_fV_Radiation			= pSettings->r_float(sect,strconcat(str,"radiation_v",prefix));	
+	m_fV_SatietyPower		= pSettings->r_float(sect,strconcat(str,"satiety_power_v",prefix));
+	m_fV_SatietyHealth		= pSettings->r_float(sect,strconcat(str,"satiety_health_v",prefix));
+	m_fV_RadiationHealth	= pSettings->r_float(sect,strconcat(str,"radiation_health_v",prefix));
+	m_fV_EntityMorale		= pSettings->r_float(sect,strconcat(str,"morale_v",prefix));
+	m_fV_PsyHealth			= pSettings->r_float(sect,strconcat(str,"psy_health_v",prefix));	
+	m_fV_Bleeding			= pSettings->r_float(sect,strconcat(str,"bleeding_v",prefix));
+	m_fV_WoundIncarnation	= pSettings->r_float(sect,strconcat(str,"wound_incarnation_v",prefix));
 }
