@@ -152,6 +152,9 @@
 	
 	<info_portion id="bun_codelock_open">
 	</info_portion>
+	
+	<info_portion id="bun_blood">
+	</info_portion>
 		
 </game_information_portions>
 
