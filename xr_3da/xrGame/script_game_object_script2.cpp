@@ -74,9 +74,9 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.property("power",					&CScriptGameObject::GetPower,			&CScriptGameObject::SetPower)
 		.property("satiety",				&CScriptGameObject::GetSatiety,			&CScriptGameObject::SetSatiety)
 		.property("radiation",				&CScriptGameObject::GetRadiation,		&CScriptGameObject::SetRadiation)
-//.		.property("circumspection",			&CScriptGameObject::GetCircumspection,	&CScriptGameObject::SetCircumspection)
 		.property("morale",					&CScriptGameObject::GetMorale,			&CScriptGameObject::SetMorale)
 
+		.def("get_bleeding",				&CScriptGameObject::GetBleeding)
 		.def("center",						&CScriptGameObject::Center)
 		.def("position",					&CScriptGameObject::Position)
 		.def("direction",					&CScriptGameObject::Direction)
