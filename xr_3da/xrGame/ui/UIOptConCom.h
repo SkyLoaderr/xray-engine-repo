@@ -14,13 +14,14 @@ protected:
 		flNetDamageBlockIndicator		= 32,
 		flNetAutoTeamBalance			= 64,
 		flNetFriendlyIndicators			= 128,
-		flNetNoAnomalies				= 256,
+		flNetFriendlyNames				= 256,
+		flNetNoAnomalies				= 512,
 
-		flNetSpecTeamOnly				= 512,
-		flNetSpecFreeFly				= 1024,
-		flNetSpecFirstEye				= 2048,
-		flNetSpecLookAt					= 4096,
-		flNetSpecFreeLook				= 8192
+		flNetSpecTeamOnly				= 1024,
+		flNetSpecFreeFly				= 2048,
+		flNetSpecFirstEye				= 4096,
+		flNetSpecLookAt					= 8192,
+		flNetSpecFreeLook				= 16384
 	};
     int			m_iMaxPlayers;
 	Flags32		m_uNetSrvParams;

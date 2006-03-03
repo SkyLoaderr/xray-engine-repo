@@ -226,5 +226,7 @@
     <string id="mm_mp_spectator_freelook">
         <text>Свободно-привязаный</text>
     </string>
-    
+    <string id="mm_mp_friendlynames">
+		<text>Имена друзей</text>
+    </string>    
 </string_table>

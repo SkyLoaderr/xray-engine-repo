@@ -403,6 +403,10 @@
 			<options_item entry="mm_net_srv_friendlyindicators" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_friendlyindicators</text>
 		</check_friendly_indicators>
+		<check_friendly_names x="269" y="275" width="155" height="18">
+			<options_item entry="mm_net_srv_friendlynames" group="mm_mp_server"/>
+			<text font="letterica16" r="115" g="114" b="112">mm_mp_friendlynames</text>
+		</check_friendly_names>
 		<check_no_anmalies x="269" y="300" width="155" height="18">
 			<options_item entry="mm_net_srv_noanomalies" group="mm_mp_server"/>
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_noanomalies</text>

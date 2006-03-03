@@ -207,4 +207,7 @@
     <string id="mm_mp_spectator_freelook">
         <text>Free Look</text>
     </string>
+    <string id="mm_mp_friendlynames">
+		<text>Frienly Names</text>
+    </string>
 </string_table>

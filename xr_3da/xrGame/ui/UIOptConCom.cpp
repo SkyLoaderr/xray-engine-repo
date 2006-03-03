@@ -40,6 +40,7 @@ void CUIOptConCom::Init(){
 	CMD3(CCC_Mask,		"mm_net_con_damageblockindicator",	&m_uNetSrvParams,	flNetDamageBlockIndicator);
 	CMD3(CCC_Mask,		"mm_net_srv_autoteambalance",		&m_uNetSrvParams,	flNetAutoTeamBalance);
 	CMD3(CCC_Mask,		"mm_net_srv_friendlyindicators",	&m_uNetSrvParams,	flNetFriendlyIndicators);
+	CMD3(CCC_Mask,		"mm_net_srv_friendlynames",			&m_uNetSrvParams,	flNetFriendlyNames);
 	CMD3(CCC_Mask,		"mm_net_srv_noanomalies",			&m_uNetSrvParams,	flNetNoAnomalies);
 
 	CMD3(CCC_Mask,		"mm_net_spec_teamonly",				&m_uNetSrvParams,	flNetSpecTeamOnly);
