@@ -1148,7 +1148,7 @@ function set_sleep_relocate(point, look, timeout)
 	db.storage[db.actor:id()].sleep_relocate_point = point
 	db.storage[db.actor:id()].sleep_relocate_look = look
 
-	set_inactivate_input_time(timeout*60)
+	--set_inactivate_input_time(timeout*60)
 	db.actor:actor_sleep(0, timeout)
 end
 
