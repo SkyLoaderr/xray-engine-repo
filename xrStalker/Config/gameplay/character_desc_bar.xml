@@ -310,9 +310,6 @@
 	
 		<start_dialog>bar_bar_osvedomitel_start</start_dialog>
 		<actor_dialog>dm_trade_info_dialog</actor_dialog>
-	<!---	<actor_dialog>bar_bar_osvedomitel_reward</actor_dialog>
-		<actor_dialog>bar_bar_osvedomitel_talk</actor_dialog>
-		<actor_dialog>bar_bar_osvedomitel_talk_about_freedom</actor_dialog>  ---->
 	</specific_character>	
 
 	<!---------------------------BAR HUNTER---------------------->
@@ -901,7 +898,6 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
 	</specific_character>
 
@@ -932,7 +928,6 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
 	</specific_character>
 
@@ -1241,7 +1236,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1269,7 +1263,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
@@ -1299,8 +1292,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>	
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default4" team_default = "1">
@@ -1327,8 +1318,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default5" team_default = "1">
@@ -1355,8 +1344,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default6" team_default = "1">
@@ -1385,8 +1372,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default9" team_default = "1">
@@ -1413,8 +1398,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default10" team_default = "1">
@@ -1441,8 +1424,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER GENERAL---------------------->
