@@ -803,6 +803,9 @@
 							RelativePath=".\Config\text\rus\ui_st_keybinding.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\ui_st_mapdesc.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\ui_st_mm.xml">
 						</File>
 						<File
