@@ -179,16 +179,20 @@ wound_incarnation_v			= 0.0005 ;0.00017		;крутизна кривой заживления (какой проц
 min_wound_size				= 0.0256				;минимальный размер раны, после которого она считается зажившей
 
 ;--when actor in sleep
-satiety_v_sleep				= 0.0
-radiation_v_sleep			= 0.0
-satiety_power_v_sleep		= 0.0
-satiety_health_v_sleep		= 0.0
-radiation_health_v_sleep	= 0.0
+satiety_v_sleep				= 0.00001
+radiation_v_sleep			= 0.0003
+satiety_power_v_sleep		= 0.0001
+satiety_health_v_sleep		= 0.00001
+radiation_health_v_sleep	= 0.001
 morale_v_sleep				= 0.0
 psy_health_v_sleep			= 0.0
+
+alcohol_v_sleep				= -0.0005
+
 bleeding_v_sleep			= 0.0
 wound_incarnation_v_sleep	= 0.0
 max_power_leak_speed_sleep	= -0.00001;
+
 
 ;--old remove me -------------
 sleep_health				= 1.5				;коэффициенты скоростей изменения параметров во время сна
