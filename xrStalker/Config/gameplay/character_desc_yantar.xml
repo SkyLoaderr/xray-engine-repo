@@ -117,7 +117,7 @@
 
 <specific_character id="yan_ghost" team_default = "1">
 		<name>Призрак</name>
-		<icon x="8" y="4"></icon>
+		<icon x="20" y="12"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>Сталкер Призрак</bio>
 
