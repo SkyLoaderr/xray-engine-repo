@@ -181,6 +181,7 @@ void CUIListBox::SetSelected(CUIWindow* pWnd){
 				CUIListBoxItem* s = smart_cast<CUIListBoxItem*>(*it);
 				s->SetSelected(!s->GetSelected());
 				m_last_wnd = s;
+				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED);
 				break;
 			}
 		}
@@ -189,6 +190,7 @@ void CUIListBox::SetSelected(CUIWindow* pWnd){
 	}
 
 	CUIScrollView::SetSelected(pWnd);
+	GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED);
 	m_last_wnd = GetSelected();
 }
 
