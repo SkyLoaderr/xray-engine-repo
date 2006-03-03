@@ -54,9 +54,6 @@
     <string id="mm_mp_dedicated">
         <text>Dedicated</text>
     </string>
-    <string id="mm_mp_server">
-        <text>Server</text>
-    </string>
     <string id="mm_mp_server_prop">
         <text>Server Properties</text>        
     </string>
