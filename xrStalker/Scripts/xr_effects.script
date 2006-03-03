@@ -1281,19 +1281,8 @@ end
 -------------------------------------------------------------------------------------
 -- Функции для DarkValley
 -------------------------------------------------------------------------------------
-function val_bs_victim_dead(actor, npc)
-	printf("_bp: val_bs_victim_dead: npc='%s'", npc:name())
-	local h = hit()
-	h.power = 100
-	h.direction = utils.vector_copy_by_val(patrol("val_bs_hit_direction"):point(0)):sub(npc:position())
-	h.bone = "bip01_spine1"
-	h.draftsman = npc 
-	h.impulse = 2000
-	h.type = hit.wound
-	npc:hit(h)
-end
-
 function val_escort_guard_death(actor, npc)
+    --printf("xr_effects <val_escort_guard_death>: %s.", npc:name())
     local idx = string.sub(npc:name(), -1)
 	local t = db.storage[npc:id()].death
 
