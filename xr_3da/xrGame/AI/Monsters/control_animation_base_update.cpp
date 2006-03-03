@@ -140,7 +140,7 @@ void CControlAnimationBase::SelectVelocities()
 	}
 	
 	// финальная корректировка скорости анимации по физической скорости
-	if (b_moving) {
+	if (b_moving && !m_object->state_invisible) {
 			
 		EMotionAnim new_anim;
 		float		a_speed;
@@ -156,11 +156,13 @@ void CControlAnimationBase::SelectVelocities()
 	set_animation_speed	();
 
 	// установка угловой скорости
-	item_it = m_anim_storage[cur_anim_info().motion];
-	VERIFY(item_it);
-
-	m_object->dir().set_heading_speed(item_it->velocity.velocity.angular_real);
-
+	if (m_object->state_invisible) 
+		m_object->dir().set_heading_speed(path_vel.angular);
+	else { 
+		item_it = m_anim_storage[cur_anim_info().motion];
+		VERIFY(item_it);
+		m_object->dir().set_heading_speed(item_it->velocity.velocity.angular_real);
+	}
 }
 
 #define VELOCITY_BOUNCE_THRESHOLD 1.5f

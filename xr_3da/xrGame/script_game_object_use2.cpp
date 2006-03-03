@@ -30,27 +30,6 @@ void CScriptGameObject::set_manual_invisibility(bool val)
 
 	val ? monster->set_manual_control(true) : monster->set_manual_control(false);
 }
-bool CScriptGameObject::get_invisible()
-{
-	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(&object());
-	if (!monster) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Script Object : cannot access class member get_invisible!");
-		return false;
-	}
-
-	return monster->CInvisibility::active();
-}
-
-bool CScriptGameObject::get_manual_invisibility()
-{
-	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(&object());
-	if (!monster) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Script Object : cannot access class member get_manual_invisibility!");
-		return false;
-	}
-	return monster->is_manual_control();
-}
-
 
 void CScriptGameObject::set_alien_control(bool val)
 {

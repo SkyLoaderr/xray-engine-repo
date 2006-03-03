@@ -30,14 +30,14 @@ TEMPLATE_SPECIALIZATION
 void CBloodsuckerStateAttackAbstract::finalize()
 {
 	inherited::finalize();
-	object->CInvisibility::deactivate();
+	object->stop_invisible_predator();
 }
 
 TEMPLATE_SPECIALIZATION
 void CBloodsuckerStateAttackAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
-	object->CInvisibility::deactivate();
+	object->stop_invisible_predator();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -131,13 +131,13 @@ void CBloodsuckerStateAttackAbstract::update_invisibility()
 {
 	// if just turn to Run state
 	if ((current_substate == eStateAttack_Run) && (object->EnemyMan.get_enemy()->Position().distance_to(object->Position()) > 5.f)) {
-		if ((object->CInvisibility::energy() > 0.6f) && !object->CInvisibility::active() && (m_time_deactivated + INVIS_ACTIVATE_DELAY < time()))
-			object->CInvisibility::activate();
+		if (!object->state_invisible && (m_time_deactivated + INVIS_ACTIVATE_DELAY < time()))
+			object->start_invisible_predator();
 	}
 
 	// if just turn to Attack_Melee state
 	if ((current_substate == eStateAttack_Melee) && (prev_substate != eStateAttack_Melee)) {
-		object->CInvisibility::deactivate();
+		object->stop_invisible_predator();
 		m_time_deactivated	= time();
 	}
 }
@@ -150,7 +150,7 @@ bool CBloodsuckerStateAttackAbstract::check_hiding()
 	}
 	
 	if ((prev_substate != eStateAttack_Run) && (prev_substate != eStateAttack_Melee)) return false;
-	if ((object->CInvisibility::energy() > 0.5f) && (object->conditions().health() > 0.5f)) return false;
+	if (object->conditions().health() > 0.5f) return false;
 	return true;
 }
 
@@ -160,6 +160,7 @@ bool CBloodsuckerStateAttackAbstract::check_berserk()
 	if (object->time_berserk_start + 20000 < time()) return false;
 	
 	object->predator_stop				();
+	object->stop_invisible_predator		();
 	return true;
 }
 

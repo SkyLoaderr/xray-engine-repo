@@ -141,10 +141,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	invisible_vel.set				(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
 	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
-	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
-	invisible_run_particles_name	= pSettings->r_string(section,"Particles_Invisible_Tracks");
-	m_run_particles_freq			= pSettings->r_u32(section,"Particles_Invisible_Tracks_Freq");
-
 	LoadVampirePPEffector			(pSettings->r_string(section,"vampire_effector"));
 	m_vampire_min_delay				= pSettings->r_u32(section,"Vampire_Delay");
 
@@ -152,13 +148,15 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	m_vampire_want_speed			= pSettings->r_float(section,"Vampire_Want_Speed");
 	m_vampire_wound					= pSettings->r_float(section,"Vampire_Wound");
+
+
+	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
 }
 
 
 void CAI_Bloodsucker::reinit()
 {
 	inherited::reinit			();
-	CInvisibility::reinit		();
 	CControlledActor::reinit	();
 
 	Bones.Reset					();
@@ -167,8 +165,7 @@ void CAI_Bloodsucker::reinit()
 	
 	m_alien_control.reinit();
 	
-	state_invisible				= CInvisibility::active();
-	m_last_invisible_run_play	= 0;
+	state_invisible				= false;
 
 	//com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI - 0.01f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
 	com_man().add_rotation_jump_data("run_turn_l_0","run_turn_l_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
@@ -183,7 +180,6 @@ void CAI_Bloodsucker::reinit()
 void CAI_Bloodsucker::reload(LPCSTR section)
 {
 	inherited::reload(section);
-	CInvisibility::reload(section);
 
 	sound().add(pSettings->r_string(section,"Sound_Vampire_Grasp"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 4,	MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireGrasp,		"bip01_head");
 	sound().add(pSettings->r_string(section,"Sound_Vampire_Sucking"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 3,	MonsterSound::eBaseChannel,	EBloodsuckerSounds::eVampireSucking,	"bip01_head");
@@ -307,25 +303,14 @@ BOOL CAI_Bloodsucker::net_Spawn (CSE_Abstract* DC)
 
 	vfAssignBones	();
 
-	// спаунится нивидимым
-	// setVisible		(false);
-
 	return(TRUE);
 }
 
 void CAI_Bloodsucker::UpdateCL()
 {
 	inherited::UpdateCL				();
-	CInvisibility::frame_update		();
 	CControlledActor::frame_update	();
 	
-	if (state_invisible && control().path_builder().is_moving_on_path()) {
-		if (m_last_invisible_run_play + m_run_particles_freq < Device.dwTimeGlobal) {
-			m_last_invisible_run_play	= Device.dwTimeGlobal + Random.randI(m_run_particles_freq - m_run_particles_freq/2, m_run_particles_freq + m_run_particles_freq/2);
-			play_hidden_run_particles	();
-		}
-	}
-
 	// update vampire need
 	m_vampire_want_value += m_vampire_want_speed * client_update_fdelta();
 	clamp(m_vampire_want_value,0.f,1.f);
@@ -341,38 +326,9 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	if (m_alien_control.active())	sound().play(eAlien);
 }
 
-void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
-{
-	setVisible(b_visibility);
-}
-
-void CAI_Bloodsucker::on_activate()
-{
-	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
-	state_invisible = true;
-
-	sound().play	(CAI_Bloodsucker::eChangeVisibility);
-}
-
-void CAI_Bloodsucker::on_deactivate()
-{
-	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
-	state_invisible = false;
-
-	sound().play	(CAI_Bloodsucker::eChangeVisibility);
-}
-
-void CAI_Bloodsucker::net_Destroy()
-{
-	CInvisibility::deactivate(); 
-	inherited::net_Destroy();
-}
-
 void CAI_Bloodsucker::Die(CObject* who)
 {
-	CInvisibility::deactivate	(); 
 	predator_stop				();
-
 	inherited::Die				(who);
 }
 
@@ -399,24 +355,6 @@ bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
 	return true;
 }
 
-void CAI_Bloodsucker::play_hidden_run_particles()
-{
-	Fvector direction;
-	direction.set(0.f, -1.f, 0.f);
-
-	Fvector trace_from;
-	Center(trace_from);
-
-	collide::rq_result		l_rq;
-	if (Level().ObjectSpace.RayPick(trace_from, direction, 5.f, collide::rqtStatic, l_rq, this)) {
-		if (l_rq.range < 2.f) {
-			Fvector pos;
-			pos.mad			(trace_from, direction, _abs(l_rq.range - 0.05f));
-			PlayParticles	(invisible_run_particles_name, pos, Direction());
-		}
-	}
-}
-
 void CAI_Bloodsucker::set_alien_control(bool val)
 {
 	val ? m_alien_control.activate() : m_alien_control.deactivate();
@@ -434,6 +372,7 @@ void CAI_Bloodsucker::predator_start()
 	sound().play					(CAI_Bloodsucker::eChangeVisibility);
 
 	m_predator						= true;
+	state_invisible					= false;
 }
 
 void CAI_Bloodsucker::predator_stop()
@@ -486,6 +425,31 @@ void CAI_Bloodsucker::HitEntity(const CEntity *pEntity, float fDamage, float imp
 	}
 }
 
+void CAI_Bloodsucker::start_invisible_predator()
+{
+	state_invisible				= true;
+	predator_start				();
+}
+void CAI_Bloodsucker::stop_invisible_predator()
+{
+	state_invisible				= false;
+	predator_stop				();
+}
+
+void CAI_Bloodsucker::manual_activate()
+{
+	state_invisible = true;
+	setVisible		(FALSE);
+}
+
+void CAI_Bloodsucker::manual_deactivate()
+{
+	state_invisible = false;
+	setVisible		(TRUE);
+}
+
+
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 {
@@ -493,10 +457,6 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 	if (!info.active) return CBaseMonster::SDebugInfo();
 
 	string128 text;
-	sprintf(text, "Invisibility Value = [%f] Invisible = [%u]", CInvisibility::energy(), CInvisibility::active());
-	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
-	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
-
 	sprintf(text, "Vampire Want Value = [%f] Speed = [%f]", m_vampire_want_value, m_vampire_want_speed);
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);

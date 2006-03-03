@@ -2,14 +2,12 @@
 
 #include "../BaseMonster/base_monster.h"
 #include "../ai_monster_bones.h"
-#include "../invisibility.h"
 #include "../controlled_actor.h"
 #include "../anim_triple.h"
 #include "../../../script_export_space.h"
 #include "bloodsucker_alien.h"
 
 class CAI_Bloodsucker : public CBaseMonster, 
-						public CInvisibility,
 						public CControlledActor {
 
 	typedef		CBaseMonster	inherited;
@@ -23,12 +21,8 @@ public:
 
 	virtual void			UpdateCL				();
 	virtual void			shedule_Update			(u32 dt);
-
 	virtual void			Die						(CObject* who);
-
 	virtual BOOL			net_Spawn				(CSE_Abstract* DC);
-	virtual void			net_Destroy				();
-
 	virtual	void			Load					(LPCSTR section);
 
 	virtual	void			CheckSpecParams			(u32 spec_params);
@@ -66,15 +60,9 @@ private:
 	SMotionVel				invisible_vel;
 	LPCSTR					invisible_particle_name;
 
-	LPCSTR					invisible_run_particles_name;
-	u32						m_run_particles_freq;
-	u32						m_last_invisible_run_play;
-
-	virtual	void			on_activate					();
-	virtual	void			on_deactivate				();
-	virtual	void			on_change_visibility		(bool b_visibility);
-
-			void			play_hidden_run_particles	();
+public:
+			void			start_invisible_predator	();
+			void			stop_invisible_predator		();
 
 	//--------------------------------------------------------------------
 	// Vampire
@@ -143,6 +131,10 @@ public:
 
 	//--------------------------------------------------------------------
 
+public:
+			void	set_manual_control	(bool value) {}
+			void	manual_activate		();
+			void	manual_deactivate	();
 
 #ifdef DEBUG
 	virtual CBaseMonster::SDebugInfo show_debug_info();

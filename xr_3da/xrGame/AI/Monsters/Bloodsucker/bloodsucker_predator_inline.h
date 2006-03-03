@@ -38,7 +38,6 @@ void CStateBloodsuckerPredatorAbstract::initialize()
 	inherited::initialize						();
 
 	object->predator_start						();
-	object->CInvisibility::deactivate			();
 
 	select_camp_point							();
 }

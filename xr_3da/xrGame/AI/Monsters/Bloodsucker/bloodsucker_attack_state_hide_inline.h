@@ -40,7 +40,7 @@ void CBloodsuckerStateAttackHideAbstract::initialize()
 
 	m_target_node			= u32(-1);
 
-	object->CInvisibility::activate();
+	object->start_invisible_predator();
 }
 
 TEMPLATE_SPECIALIZATION

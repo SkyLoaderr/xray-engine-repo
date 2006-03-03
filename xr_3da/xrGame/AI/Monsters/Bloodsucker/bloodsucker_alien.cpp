@@ -235,7 +235,6 @@ void CBloodsuckerAlien::activate()
 	Actor()->Cameras().AddCamEffector	(m_effector);
 
 	// make invisible
-	m_object->CInvisibility::set_manual_control(true);
 	m_object->state_invisible	= true;
 	m_object->setVisible		(false);
 
@@ -264,7 +263,6 @@ void CBloodsuckerAlien::deactivate()
 	m_active						= false;
 
 	// make visible
-	m_object->CInvisibility::set_manual_control	(false);
 	m_object->state_invisible	= false;
 	m_object->setVisible		(true);
 }

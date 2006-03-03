@@ -38,7 +38,6 @@ void CStateBloodsuckerPredatorLiteAbstract::initialize()
 	inherited::initialize						();
 
 	object->predator_start						();
-	object->CInvisibility::deactivate			();
 
 	m_target_node								= u32(-1);
 	m_freezed									= false;
@@ -104,7 +103,7 @@ bool CStateBloodsuckerPredatorLiteAbstract::check_completion()
 		object->set_berserk();
 		return true;
 	}
-	if ((object->CInvisibility::energy() > 0.9f) && (object->conditions().health() > 0.9f)) return true;
+	if (object->conditions().health() > 0.9f) return true;
 
 	return false;
 }
