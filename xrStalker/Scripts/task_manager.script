@@ -654,7 +654,7 @@ function reward_by_task(task, done)
 
 		if descr.reward_relation ~= nil then
 			for k,v in pairs(descr.reward_relation) do
-				relation_registry.change_community_goodwill (k, db.actor:id(), tonumber(descr))
+				relation_registry.change_community_goodwill(k, db.actor:id(), tonumber(v))
 			end
 		end
 
