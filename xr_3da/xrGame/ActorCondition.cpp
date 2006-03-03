@@ -253,8 +253,8 @@ extern bool g_bShowHudInfo;
 
 bool CActorCondition::AllowSleep ()
 {
-	EActorSleep result		= ACTOR_DEFS::easCanSleepResult;
-//.	EActorSleep result		= CanSleepHere		();
+//.	EActorSleep result		= ACTOR_DEFS::easCanSleepResult;
+	EActorSleep result		= CanSleepHere		();
 	return( !stricmp(ACTOR_DEFS::easCanSleepResult, result)  );
 }
 
@@ -262,8 +262,8 @@ EActorSleep CActorCondition::GoSleep(ALife::_TIME_ID sleep_time, bool without_ch
 {
 	if (IsSleeping()) return ACTOR_DEFS::easCanSleepResult;
 
-	EActorSleep result		= ACTOR_DEFS::easCanSleepResult;
-//.	EActorSleep result = without_check?ACTOR_DEFS::easCanSleepResult : CanSleepHere();
+//.	EActorSleep result		= ACTOR_DEFS::easCanSleepResult;
+	EActorSleep result = without_check?ACTOR_DEFS::easCanSleepResult : CanSleepHere();
 	if( 0 != stricmp(ACTOR_DEFS::easCanSleepResult, result)  ) 
 			return result;
 

@@ -349,20 +349,12 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(GameID() != GAME_SINGLE)
 			return;
 
-		ACTOR_DEFS::EActorSleep result = pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
-		LPCSTR sleep_msg = NULL;
-		sleep_msg = *CStringTable().translate(result);
-/*		switch(result)
-		{
-		case easEnemies:
-			sleep_msg = *CStringTable()(CANT_SLEEP_ENEMIES);
-			break;
-		case easNotSolidGround:
-			sleep_msg = *CStringTable()(CANT_SLEEP_GROUND);
-			break;
-		}
-*/
-		if(sleep_msg)
+		bool b = pActor->conditions().AllowSleep();
+		ACTOR_DEFS::EActorSleep result	= pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
+		LPCSTR sleep_msg				= NULL;
+		sleep_msg						= *CStringTable().translate(result);
+
+		if(sleep_msg&& !b)
 			HUD().GetUI()->AddInfoMessage(sleep_msg);
 
 		Game().StartStopMenu(this,true);
