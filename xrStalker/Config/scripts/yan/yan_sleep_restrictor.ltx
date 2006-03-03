@@ -5,16 +5,16 @@ active = sr_idle@1
 on_info = {+yan_spawn_ghost} sr_idle@2_1 %=yan_actor_sleep_1 =disable_ui%
 
 [sr_idle@2_1]
-on_info = {-yan_disable_ui !is_actor_sleeping} % =disable_ui +yan_disable_ui%
-on_timer = 4000 | sr_idle@2 %=run_postprocess(deadcity_wake) =run_cam_effector(dream:1002:true)  =yan_dream_voices -yan_disable_ui%
+--on_info = {-yan_disable_ui !is_actor_sleeping} % =disable_ui +yan_disable_ui%
+on_timer = 4000 | sr_idle@2 %=run_postprocess(deadcity_wake) =run_cam_effector(dream:1002:true)  =yan_dream_voices%
 
 [sr_idle@2]
-on_info = {-yan_disable_ui} % =disable_ui +yan_disable_ui%
-on_timer = 12000 | sr_idle@2_3 %=yan_actor_sleep -yan_disable_ui%
+--on_info = {-yan_disable_ui} % =disable_ui +yan_disable_ui%
+on_timer = 12000 | sr_idle@2_3 %=yan_actor_sleep%
 
 [sr_idle@2_3]
-on_info = {-yan_disable_ui} % =disable_ui +yan_disable_ui%
-on_timer = 4000 | sr_idle@3 %=stop_cam_effector(1002) =run_cam_effector(prison_0:1003:true) -yan_disable_ui%
+--on_info = {-yan_disable_ui} % =disable_ui +yan_disable_ui%
+on_timer = 4000 | sr_idle@3 %=stop_cam_effector(1002) =run_cam_effector(prison_0:1003:true)%
 
 [sr_idle@3]
 on_timer = 7000 | nil %=stop_cam_effector(1003) =run_cam_effector(prison_1) =enable_ui%
