@@ -730,59 +730,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="esc_bridge_soldiers_start">
-        <precondition>dialogs.is_not_wounded</precondition>
-        <phrase_list>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>esc_bridge_pass_on</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>esc_bridge_soldiers_start_11</text>
-                <next>12</next>
-            </phrase>
-            <phrase id="12">
-                <text>esc_bridge_soldiers_start_12</text>
-                <next>13</next>
-            </phrase>
-            <phrase id="13">
-                <text>esc_bridge_soldiers_start_13</text>
-                <next>14</next>
-                <next>24</next>
-            </phrase>
-            <phrase id="14">
-                <text>esc_bridge_soldiers_start_14</text>
-                <precondition>escape_dialog.has_soldiers_bribe</precondition>
-                <action>escape_dialog.give_soldiers_bribe</action>
-                <give_info>esc_bridge_pass_on</give_info>
-                <next>15</next>
-            </phrase>
-            <phrase id="15">
-                <text>esc_bridge_soldiers_start_15</text>
-            </phrase>
-            <phrase id="24">
-                <text>esc_bridge_soldiers_start_24</text>
-                <next>25</next>
-            </phrase>
-            <phrase id="25">
-                <text>esc_bridge_soldiers_start_25</text>
-            </phrase>
-            <phrase id="2">
-                <text></text>
-                <has_info>esc_bridge_pass_on</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>esc_bridge_soldiers_start_21</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_lager_leader_hello">
         <phrase_list>
             <phrase id="11">
@@ -790,7 +737,7 @@
                 <next>111</next>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <dont_has_info>escape_lager_help</dont_has_info>
                 <next>11</next>
             </phrase>
@@ -832,7 +779,7 @@
                 <text>escape_lager_leader_hello_11111121</text>
             </phrase>
             <phrase id="2">
-                <text></text>
+                <text />
                 <dont_has_info>escape_lager_killers_die</dont_has_info>
                 <has_info>escape_lager_help</has_info>
                 <next>21</next>
@@ -841,7 +788,7 @@
                 <text>escape_lager_leader_hello_21</text>
             </phrase>
             <phrase id="3">
-                <text></text>
+                <text />
                 <dont_has_info>escape_lager_complete</dont_has_info>
                 <has_info>escape_lager_killers_die</has_info>
                 <next>31</next>
@@ -860,7 +807,7 @@
                 <text>escape_lager_leader_hello_3111</text>
             </phrase>
             <phrase id="4">
-                <text></text>
+                <text />
                 <has_info>escape_lager_complete</has_info>
                 <next>41</next>
             </phrase>
@@ -868,7 +815,7 @@
                 <text>escape_lager_leader_hello_41</text>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -941,13 +888,13 @@
                 <text>escape_trader_jobs_61111111111</text>
             </phrase>
             <phrase id="101">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_need_free_factory</precondition>
                 <next>102</next>
                 <next>103</next>
             </phrase>
             <phrase id="102">
-                <text></text>
+                <text />
                 <dont_has_info>tutorial_wounded_die</dont_has_info>
                 <next>10</next>
             </phrase>
@@ -956,7 +903,7 @@
                 <next>11</next>
             </phrase>
             <phrase id="103">
-                <text></text>
+                <text />
                 <has_info>tutorial_wounded_die</has_info>
                 <next>104</next>
             </phrase>
@@ -1076,7 +1023,7 @@
                 <next>211</next>
             </phrase>
             <phrase id="12">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1090,12 +1037,12 @@
                 <next>211</next>
             </phrase>
             <phrase id="521">
-                <text></text>
+                <text />
                 <next>5211</next>
                 <next>5212</next>
             </phrase>
             <phrase id="5211">
-                <text></text>
+                <text />
                 <dont_has_info>tutorial_wounded_die</dont_has_info>
                 <next>52111</next>
             </phrase>
@@ -1116,13 +1063,13 @@
                 <next>32</next>
             </phrase>
             <phrase id="13">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_dont_give_job</precondition>
                 <has_info>esc_return</has_info>
                 <next>4</next>
             </phrase>
             <phrase id="16">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>tutorial_artefact_gain</dont_has_info>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1139,7 +1086,7 @@
                 <next>511</next>
             </phrase>
             <phrase id="14">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_alredy_give_job</precondition>
                 <precondition>escape_dialog.is_not_tutorial_art</precondition>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1157,7 +1104,7 @@
                 <text>escape_trader_start_dialog_57111</text>
             </phrase>
             <phrase id="57">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <precondition>escape_dialog.tutorial_artefact_have_not</precondition>
                 <next>571</next>
@@ -1167,7 +1114,7 @@
                 <next>57111</next>
             </phrase>
             <phrase id="17">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <precondition>escape_dialog.trader_dont_give_job</precondition>
                 <next>171</next>
@@ -1176,7 +1123,7 @@
                 <text>escape_trader_start_dialog_171</text>
             </phrase>
             <phrase id="20">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_give_extra_job</precondition>
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <next>200</next>
@@ -1189,7 +1136,7 @@
                 <next>5711</next>
             </phrase>
             <phrase id="30">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.trader_need_extra_job</precondition>
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <next>300</next>
@@ -1198,7 +1145,7 @@
                 <text>escape_trader_start_dialog_300</text>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
                 <give_info>esc_trader_monolog_1</give_info>
@@ -1218,7 +1165,7 @@
                 <next>5111</next>
             </phrase>
             <phrase id="51111">
-                <text></text>
+                <text />
                 <next>11</next>
             </phrase>
             <phrase id="5111">
@@ -1226,12 +1173,12 @@
                 <next>51111</next>
             </phrase>
             <phrase id="311">
-                <text></text>
+                <text />
                 <action>dialogs.break_dialog</action>
                 <action>dialogs.disable_talk_self</action>
             </phrase>
             <phrase id="211">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>12</next>
                 <next>13</next>
@@ -1259,7 +1206,7 @@
                 <text>escape_trader_start_dialog_5211111</text>
             </phrase>
             <phrase id="5212">
-                <text></text>
+                <text />
                 <has_info>tutorial_wounded_die</has_info>
                 <next>52121</next>
             </phrase>
@@ -1293,12 +1240,12 @@
                 <next>531</next>
             </phrase>
             <phrase id="531">
-                <text></text>
+                <text />
                 <next>5311</next>
                 <next>5312</next>
             </phrase>
             <phrase id="5311">
-                <text></text>
+                <text />
                 <action>escape_dialog.give_factory_reward_trader</action>
                 <dont_has_info>tutorial_wounded_die</dont_has_info>
                 <next>53111</next>
@@ -1307,7 +1254,7 @@
                 <text>escape_trader_start_dialog_53111</text>
             </phrase>
             <phrase id="5312">
-                <text></text>
+                <text />
                 <action>escape_dialog.give_factory_reward_trader</action>
                 <give_info>esc_lager_friendship</give_info>
                 <give_info>esc_path_to_lager</give_info>
@@ -1322,7 +1269,7 @@
                 <precondition>escape_dialog.is_not_tutorial</precondition>
             </phrase>
             <phrase id="15">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_trader_can_leave</dont_has_info>
                 <dont_has_info>esc_return</dont_has_info>
@@ -1352,7 +1299,7 @@
                 <text>escape_trader_start_dialog_6</text>
             </phrase>
             <phrase id="18">
-                <text></text>
+                <text />
                 <precondition>escape_dialog.is_tutorial</precondition>
                 <dont_has_info>esc_return</dont_has_info>
                 <has_info>tutorial_wounded_start</has_info>
@@ -1362,7 +1309,7 @@
                 <text>escape_trader_start_dialog_181</text>
             </phrase>
             <phrase id="19">
-                <text></text>
+                <text />
                 <precondition>bar_dialogs.have_darklab_documents</precondition>
                 <precondition>escape_dialog.is_not_tutorial</precondition>
                 <dont_has_info>bar_darklab_document_done</dont_has_info>
@@ -1394,7 +1341,7 @@
                 <action>escape_dialog.give_documents_reward</action>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <dont_has_info>tutorial_wounded_start</dont_has_info>
                 <has_info>tutorial_artefact_done</has_info>
                 <next>111</next>
@@ -1412,7 +1359,7 @@
                 <next>1999</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>12</next>
                 <next>13</next>
@@ -1509,11 +1456,11 @@
                 <next>11</next>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>111</next>
             </phrase>
             <phrase id="111">
-                <text></text>
+                <text />
                 <next>3</next>
                 <next>4</next>
                 <next>5</next>
@@ -1598,6 +1545,59 @@
             <phrase id="0">
                 <text>escape_trader_talk_level_0</text>
                 <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_bridge_soldiers_start">
+        <precondition>dialogs.is_not_wounded</precondition>
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>esc_bridge_pass_on</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>esc_bridge_soldiers_start_11</text>
+                <next>12</next>
+            </phrase>
+            <phrase id="12">
+                <text>esc_bridge_soldiers_start_12</text>
+                <next>13</next>
+            </phrase>
+            <phrase id="13">
+                <text>esc_bridge_soldiers_start_13</text>
+                <next>14</next>
+                <next>24</next>
+            </phrase>
+            <phrase id="14">
+                <text>esc_bridge_soldiers_start_14</text>
+                <precondition>escape_dialog.has_soldiers_bribe</precondition>
+                <action>escape_dialog.give_soldiers_bribe</action>
+                <give_info>esc_bridge_pass_on</give_info>
+                <next>15</next>
+            </phrase>
+            <phrase id="15">
+                <text>esc_bridge_soldiers_start_15</text>
+            </phrase>
+            <phrase id="24">
+                <text>esc_bridge_soldiers_start_24</text>
+                <next>25</next>
+            </phrase>
+            <phrase id="25">
+                <text>esc_bridge_soldiers_start_25</text>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <has_info>esc_bridge_pass_on</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>esc_bridge_soldiers_start_21</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
             </phrase>
         </phrase_list>
     </dialog>
