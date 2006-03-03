@@ -494,7 +494,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START)
 			{
                 if((int)m_iActiveSlot == cmd - kWPN_1 &&
-					m_slots[m_iActiveSlot].m_pIItem)
+					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
 					Activate(NO_ACTIVE_SLOT);
 //					m_slots[m_iActiveSlot].m_pIItem->Action(kWPN_NEXT, CMD_START);
 				else 
