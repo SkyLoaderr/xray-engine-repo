@@ -3,6 +3,7 @@
 ----------------------------------------------------------------------------------------------------
 -- Author: Oleg Kreptul (Haron) haronk@ukr.net 2005
 ----------------------------------------------------------------------------------------------------
+--function printf() end
 
 can_sleep   = false
 dream_prob  = -1
@@ -215,10 +216,13 @@ end
 local dream_manager = dream_mgr()
 
 function can_sleep_callback()
-    -- function must return "can_sleep" to allow actor sleeping, otherwise return string_table identifier that describes  reason
-    if can_sleep then
+    -- function must return "can_sleep" to allow actor sleeping,
+    -- otherwise return string_table identifier that describes  reason
+    if can_sleep == true then
+        printf("dream <can_sleep_callback>: can_sleep")
         return "can_sleep" -- registered keyword
     else
+        printf("dream <can_sleep_callback>: cant_sleep_not_on_solid_ground")
         return "cant_sleep_not_on_solid_ground"
     end
 end	
