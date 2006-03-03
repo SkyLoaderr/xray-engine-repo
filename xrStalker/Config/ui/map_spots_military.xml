@@ -9,8 +9,8 @@
 	</mil_max_spot>
 
 	<mil_crazy_location hint="mil_crazy" store="1">
-		<level_map spot="mil_crazy_spot" pointer="quest_pointer"></level_map>
-		<mini_map  spot="mil_crazy_spot" pointer="quest_pointer"></mini_map>
+		<level_map spot="mil_crazy_spot" pointer="quest_pointer"/>
+		<mini_map  spot="mil_crazy_spot" pointer="quest_pointer"/>
 	</mil_crazy_location>
 
     <mil_crazy_spot x="0" y="0" width="32" height="32" alignment="c">
