@@ -16,11 +16,6 @@ function explorer_take_away_docs(first_speaker, second_speaker)
 		dialogs.relocate_item(second_speaker, obj, "out")
 	end
 
-	obj = first_speaker:object("dar_document4")
-	if obj ~= nil then
-		dialogs.relocate_item(second_speaker, obj, "out")
-	end
-
 	obj = first_speaker:object("dar_document5")
 	if obj ~= nil then
 		dialogs.relocate_item(second_speaker, obj, "out")
