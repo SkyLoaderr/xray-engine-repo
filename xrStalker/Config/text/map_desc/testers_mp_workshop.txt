@@ -2,5 +2,5 @@
 name = "Workshop"
 players = 8-16
 modes = "Deathmatch, TeamdDeathmatch, Artefacthunt"
-short_desc = "Окраина завода Росток до прихода Долга. Мрачные места, однако, очень богатые на артефакты."
-large_desc = "Окраина завода Росток до прихода Долга. Мрачные места, однако, очень богатые на артефакты. Пустые ангары и склады таят в себе опасность на каждом шагу. Будь предельно осторожен и чаще обращай внимание на белую башню…."
+short_desc = "ui_map_desc_mp_workshop_short"
+large_desc = "ui_map_desc_mp_workshop_large"

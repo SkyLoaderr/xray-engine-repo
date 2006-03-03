@@ -2,5 +2,5 @@
 name = "Factory"
 players = 8-16
 modes = "Deathmatch, TeamdDeathmatch, Artefacthunt"
-short_desc = "ћрачный, заброшенный заводик. —колько сталкеров тут полегло, не счесть."
-large_desc = "ћрачный, заброшенный заводик. —колько сталкеров тут полегло, не счесть.  јномалий там вс€ких очень много, однако, прит€гивает  это место сталкеров, как магнит. ј все потому, что артефактами ценными тут разжитьс€Е ќсторожно, радиаци€!"
+short_desc = "ui_map_desc_mp_factory_short"
+large_desc = "ui_map_desc_mp_factory_large"
