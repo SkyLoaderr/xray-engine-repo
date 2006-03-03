@@ -12,6 +12,7 @@
 #include "../skeletoncustom.h"
 #include "../camerabase.h"
 #include "inventory.h"
+#include "game_base_space.h"
 
 #include "UIGameCustom.h"
 #include "actorEffector.h"
@@ -290,7 +291,7 @@ void CTorch::UpdateCL			()
 		if (actor)
 			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
 
-		if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(m_range)) {
+		if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(m_range) || GameID() != GAME_SINGLE) {
 			// near camera
 			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
 			M.mul_43				(XFORM(),BI.mTransform);
