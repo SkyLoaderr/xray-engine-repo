@@ -2,6 +2,8 @@
 <game_information_portions>
     <info_portion id="cit_level_fake_start"></info_portion>
 
+    <info_portion id="cit_fail_first_task"></info_portion>
+
     <info_portion id="cit_jail_door_opened"></info_portion>
     <info_portion id="cit_actor_is_free"></info_portion>
     <info_portion id="cit_actor_out_killers_base"></info_portion>
