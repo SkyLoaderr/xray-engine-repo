@@ -64,11 +64,6 @@ function proceed()
 	   actor:object("dar_document4") then
 		actor:give_info_portion("dar_document4")
 		actor:give_info_portion("val_raid_start")
-		
-		if actor:dont_has_info("dar_actor_got_docs") then
-			actor:give_info_portion("dar_actor_got_docs") 
-		end
-
 	end
 
 	if actor:dont_has_info("dar_document5") and
