@@ -64,16 +64,16 @@
 		<objective>
 			<text>sar_monolith_destroy_1</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>sar_monolith_generator_find</infoportion_complete>
+			<infoportion_complete>sar_monolith_destory</infoportion_complete>
 		</objective>
-		<objective>
+<!--		<objective>
 			<text>sar_monolith_destroy_2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="sar_monolith_generator_hint">green_location</map_location_type>
 			<object_story_id>sar_generator_1</object_story_id>
 			<object_story_id>sar_generator_2</object_story_id>
 			<infoportion_complete>sar_monolith_destory</infoportion_complete>
-		</objective>
+		</objective>	-->
 </game_task>
 
 <game_task id="sar_warlab">

@@ -35,15 +35,15 @@
     </string>
     
     <string id="sar_monolith_destroy">
-        <text>Управление Монолита.</text>
+        <text>Загадка Монолита.</text>
     </string>
     
     <string id="sar_monolith_destroy_0">
-        <text>Проникнуть в центр управления Монолитом.</text>
+        <text>Проникнуть в секретную лабораторию.</text>
     </string>
     
     <string id="sar_monolith_destroy_1">
-        <text>Найти центр управления Монолитом.</text>
+        <text>Разгадать загадку Монолита.</text>
     </string>
     
     <string id="sar_monolith_destroy_2">
