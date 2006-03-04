@@ -4,7 +4,9 @@
 #include "xrServer_Objects_ALife.h"
 #include "PHCharacter.h"
 #include "MathUtils.h"
-
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 static const float down_leader_extension_tolerance=0.2f;
 static const float up_leader_extension_tolerance=0.0f;
 
@@ -309,7 +311,7 @@ BOOL CClimableObject::UsedAI_Locations()
 extern	Flags32	dbg_net_Draw_Flags;
 void CClimableObject ::OnRender()
 {
-	if (!dbg_net_Draw_Flags.test(1<<10)) return;
+	if (!dbg_net_Draw_Flags.test(1<<10)&&!ph_dbg_draw_mask.test(phDbgLadder)) return;
 
 	Fmatrix form;m_box.xform_get(form);
 	//form.mulA(XFORM());

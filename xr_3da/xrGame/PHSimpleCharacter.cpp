@@ -890,9 +890,13 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		if(m_elevator_state.NearState())m_elevator_state.GetControlDir(*(Fvector*)accel);
 		if(m_elevator_state.ClimbingState())
 		{
-			m_elevator_state.GetControlDir(*(Fvector*)m_control_force);
-			dVectorMul(m_control_force,m_friction_factor*m.mass*pull_force*2.f);
-			return;
+			//dVectorSet(m_control_force,accel);
+			if(m_elevator_state.GetControlDir(*(Fvector*)m_control_force))
+			{
+				dVectorMul(m_control_force,m_friction_factor*m.mass*pull_force*2.f);
+				return;
+			}
+
 		}
 	}
 

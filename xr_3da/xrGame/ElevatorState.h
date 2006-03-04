@@ -8,28 +8,35 @@ class CElevatorState
 {
 	enum Estate
 	{
-		clbNone			,				
-		clbNearUp		,			
-		clbNearDown		,		
-		clbClimbingUp	,		
-		clbClimbingDown	,	
-		clbDepart		,
-		clbNoLadder		
+		clbNone			=0	,				
+		clbNearUp			,			
+		clbNearDown			,		
+		clbClimbingUp		,		
+		clbClimbingDown		,	
+		clbDepart			,
+		clbNoLadder			,
+		clbNoState			
+	};
+	Estate m_state;
+
+	struct  SEnertionState {
+		float dist;
+		u32	  time;
 	};
 
-Estate m_state;
+static SEnertionState m_etable[CElevatorState::clbNoState][CElevatorState::clbNoState];
 
 CClimableObject	*m_ladder;	
 CPHCharacter	*m_character;
-Fvector			m_depart_position;//for depart state
-u32				m_depart_time;
+Fvector			m_start_position;//for depart state
+u32				m_start_time;
 public: 
 						CElevatorState					();
 			void		PhTune							(float step)																			;
 			void		SetCharacter					(CPHCharacter *character);
 			void		SetElevator						(CClimableObject* climable);
 			void		EvaluateState					();
-			void		GetControlDir					(Fvector& dir);
+			bool		GetControlDir					(Fvector& dir);
 			void		GetJumpDir						(const Fvector& accel,Fvector& dir);
 			void		GetLeaderNormal					(Fvector& dir);
 			bool		Active							(){return m_ladder && m_state!=clbNone;}
@@ -40,11 +47,12 @@ public:
 			float		ClimbDirection					();
 			void		Deactivate						();
 private:
-			void		InitDepart						();
+			void		NewState						();
 
 			void		PhDataUpdate					(float step)																			;
 			void		InitContact						(dContact* c,bool &do_collide,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)		;
 			void		SwitchState						(Estate new_state);
+			bool		StateSwitchInertion				(Estate new_state);
 			void		UpdateStNone					();
 			void		UpdateStNearUp					();
 			void		UpdateStNearDown				();
