@@ -110,8 +110,8 @@
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj \n
-			wpn_ak74u \n
-			ammo_5.45x39_fmj \n
+			wpn_toz34 \n
+			ammo_12x70_buck \n
 			device_torch \n
 			fox_flash \n
 		</supplies>
