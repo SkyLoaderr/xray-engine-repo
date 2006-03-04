@@ -208,6 +208,16 @@ public:
 		Console->Execute		(cmd);
 	}
 };
+#include "r__pixel_calculator.h"
+class CCC_BuildSSA : public IConsole_Command
+{
+public:
+	CCC_BuildSSA(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		r_pixel_calculator	c;
+		c.run				();
+	}
+};
 
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
@@ -216,6 +226,7 @@ void		xrRender_initconsole	()
 
 // Common
 	CMD1(CCC_Screenshot,"screenshot"			);
+	CMD1(CCC_BuildSSA,	"build_ssa"				);
 
 //	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
 	CMD4(CCC_Integer,	"r__lsleep_frames",		&ps_r__LightSleepFrames,	4,		30		);
