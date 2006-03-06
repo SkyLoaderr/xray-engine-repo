@@ -140,13 +140,14 @@ void CControlAnimationBase::SelectVelocities()
 	}
 	
 	// финальная корректировка скорости анимации по физической скорости
-	if (b_moving && !m_object->state_invisible) {
+	
+	if (!m_object->state_invisible && !fis_zero(anim_vel.linear)) {
 			
 		EMotionAnim new_anim;
 		float		a_speed;
 
 		if (accel_chain_get(m_man->movement().real_velocity(), cur_anim_info().motion, new_anim, a_speed)) {
-			cur_anim_info().motion			= new_anim;
+			//cur_anim_info().motion			= new_anim;
 			cur_anim_info().speed.target	= a_speed;
 		} else 
 			cur_anim_info().speed.target	= -1.f;
@@ -161,7 +162,12 @@ void CControlAnimationBase::SelectVelocities()
 	else { 
 		item_it = m_anim_storage[cur_anim_info().motion];
 		VERIFY(item_it);
-		m_object->dir().set_heading_speed(item_it->velocity.velocity.angular_real);
+		
+		if (m_tAction == ACT_ATTACK) {
+			float vel = item_it->velocity.velocity.angular_real;
+			m_object->dir().set_heading_speed(vel * vel);
+		} else 
+			m_object->dir().set_heading_speed(item_it->velocity.velocity.angular_real);
 	}
 }
 

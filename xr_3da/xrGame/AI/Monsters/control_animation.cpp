@@ -73,16 +73,23 @@ static void  torso_animation_end_callback(CBlend* B)
 
 void CControlAnimation::play() 
 {
-	if (!m_data.global.actual)
-		play_part(m_data.global,	global_animation_end_callback);
+	if (!m_data.global.actual) {
+		play_part					(m_data.global,	global_animation_end_callback);
+		if (m_data.global.blend)	m_saved_global_speed	= m_data.global.blend->speed;
+	}
+
 	if (!m_data.legs.actual)
 		play_part(m_data.legs,		legs_animation_end_callback);
 	if (!m_data.torso.actual)
 		play_part(m_data.torso,		torso_animation_end_callback);
 
 	// speed only for global
-	if (m_data.global.blend && (m_data.speed > 0)) {
-		m_data.global.blend->speed	= m_data.speed;		// TODO: make factor
+	if (m_data.global.blend) {
+		if (m_data.speed > 0) {
+			m_data.global.blend->speed	= m_data.speed;		// TODO: make factor
+		} else {
+			m_data.global.blend->speed	= m_saved_global_speed;
+		}
 	}
 }
 
