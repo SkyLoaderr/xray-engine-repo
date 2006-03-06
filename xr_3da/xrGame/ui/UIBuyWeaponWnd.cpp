@@ -577,7 +577,6 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	CUIDragDropList* list;
 	TABS_VECTOR_it	it;
 
 	switch (msg)
@@ -626,9 +625,9 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			m_pCurrentDragDropItem->Highlight(true); break;
 
 	case DRAG_DROP_ITEM_PLACED:
-			list = smart_cast<CUIDragDropList*>(pWnd);
-			if (UIBagWnd.IsChild(list))
-                list->SortList(MP_item_cmp);
+//			list = smart_cast<CUIDragDropList*>(pWnd);
+//			if (UIBagWnd.IsChild(list))
+//                list->SortList(MP_item_cmp);
 		break;
 	case STATIC_FOCUS_RECEIVED:
 		if (&UIBtnAutobuy == pWnd)
@@ -1360,6 +1359,9 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 		pDDItemMP->MoveOnNextDrop();
 		pDDItemMP->AttachDetachAllAddons(false);
 		UIBagWnd.SendMessage(pDDItemMP, DRAG_DROP_ITEM_DROP, NULL);
+
+		//CUIDragDropList* list = );
+		pDDItemMP->GetOwner()->SortList(MP_item_cmp);
 	}
 
 	return true;

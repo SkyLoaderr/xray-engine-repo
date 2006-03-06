@@ -158,8 +158,10 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	
 	CUIXmlInit::InitStatic(xml, path, 0, this);
 
-	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++){
 		CUIXmlInit::InitDragDropList(xml, "dragdrop_list_bag", 0, &m_groups[i]);
+		m_groups[i].SetMessageTarget(GetParent());
+	}
 
 	CUIXmlInit::Init3tButton(xml, "bag_back_btn", 0, &m_btnBack);
 
