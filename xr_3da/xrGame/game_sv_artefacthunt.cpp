@@ -1110,12 +1110,37 @@ void	game_sv_ArtefactHunt::CheckForTeamElimination()
 	RemoveArtefact();
 }
 
+extern INT g_sv_Skip_Winner_Waiting;
 void	game_sv_ArtefactHunt::CheckForTeamWin()
 {
 	u8 WinTeam = 0;
 	if (GetTeamScore(0) >= m_dwArtefactsNum) WinTeam = 1;
 	else if (GetTeamScore(1) >= m_dwArtefactsNum) WinTeam = 2;
-	if (!WinTeam) return;
+	if (!WinTeam) 
+	{
+		if (!timelimit) return;
+		if (timelimit && ((Level().timeServer()-start_time)) > u32(timelimit))
+		{
+			int Team1 = GetTeamScore(0);
+			int Team2 = GetTeamScore(1);
+			if (Team1 == Team2)
+			{
+				if (!g_sv_Skip_Winner_Waiting)
+				{
+					return;
+				};
+				WinTeam = 1;
+			}
+			else
+			{
+				WinTeam = (Team1 > Team2) ? 1 : 2;
+			}
+		}
+		else
+		{
+			return;
+		}		
+	};
 	
 	OnTeamScore(WinTeam, false);
 	phase = u16((WinTeam == 2)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
