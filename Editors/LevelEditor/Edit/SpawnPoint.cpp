@@ -554,7 +554,8 @@ bool CSpawnPoint::OnAppendObject(CCustomObject* object)
 	R_ASSERT(!m_AttachedObject);
     if (object->ClassID!=OBJCLASS_SHAPE) return false;
     // all right
-    m_AttachedObject = object;
+    m_AttachedObject 		= object;
+    object->m_pOwnerObject	= this;
     return true;
 }
 
