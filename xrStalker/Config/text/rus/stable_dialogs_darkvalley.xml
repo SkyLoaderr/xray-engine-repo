@@ -192,6 +192,12 @@
     <string id="val_prisoner_hello_411">
         <text>Ок, я гляну.</text>
     </string>
+    <string id="val_prisoner_hello_51">
+        <text>Братан, подожди, щас выйду, тогда и поговорим.</text>
+    </string>
+    <string id="val_prisoner_hello_511">
+        <text>Давай быстрей.</text>
+    </string>
     <string id="val_rob_dialog_11">
         <text>Нужна пушка? Я возле озера Янтарь нашел чей-то тайник, там была винтовка Гаусса. Вещь отличная - бъет за 100 метров наповал. Могу продать, если интересует. За 300 рублей она твоя - вынесу через 2 минуты.</text>
     </string>
