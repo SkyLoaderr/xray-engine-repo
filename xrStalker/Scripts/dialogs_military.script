@@ -170,3 +170,13 @@ function transfer_scope (npc, actor)
        printf ("SCREW DON'T HAVE A SCOPE")    
     end   
 end
+
+
+function actor_set_freedom (actor, npc)
+    printf ("ACTOR NOW IN FREEDOM COMMUNITY")
+    if db.actor then
+       db.actor:set_character_community ("actor_freedom", 0, 0)
+    end
+end
+
+db.actor:set_character_community("actor_dolg", 0, 0)
