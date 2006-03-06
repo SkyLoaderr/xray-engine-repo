@@ -98,17 +98,23 @@ tips_icons = {
 
 function send_news(actor, news_id, timeout, showtime)
 	if db.actor == nil or news_id == nil then return false end
-	
-	if timeout == nil then timeout = 0 end
 
+	if timeout == nil then timeout = 0 end
+	if showtime == nil then showtime = 5000 end
+	
 	--' Играем дефолтный звук
 	pda_news:play(db.actor, timeout, sound_object.s2d)	
 	if news[news_id] ~= nil then
 		--' Играем звук забитый	
 		news[news_id]:play(db.actor, timeout+1, sound_object.s2d)
+		
+		--' Необходимо поставить время показа по длине сцены
+		local length = news[news_id]:length()
+		if length > showtime then
+			showtime = length
+		end
 	end
-	if showtime == nil then showtime = 5000 end
---	db.actor:set_news_show_time(news_id, showtime)
+
 	db.actor:give_game_news(news_id, "ui\\ui_icons_task", Frect():set(0,100,50,50) ,timeout*1000, showtime)
 end
 
@@ -144,6 +150,12 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 	if news[news_id] ~= nil then
 		--' Играем звук забитый
 		news[news_id]:play(db.actor, timeout+1, sound_object.s2d)
+
+		--' Необходимо поставить время показа по длине сцены
+		local length = news[news_id]:length()
+		if length > showtime then
+			showtime = length
+		end
 	end
 	local x = 50
 	local y = 100
@@ -151,8 +163,8 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 		x = tips_icons[sender][1]
 		y = tips_icons[sender][2]
 	end
+
 	actor:give_game_news(news_id, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
---	actor:set_news_show_time(news_id, showtime)	
 	return true
 end
 
