@@ -46,7 +46,7 @@
         <text>Forward</text>
     </string>
     <string id="kb_func">
-        <text>Func (rename me)</text>
+        <text>Switch to granade launcher</text>
     </string>
     <string id="kb_grp_common">
         <text>Common</text>
@@ -178,13 +178,19 @@
         <text>Weapon 9</text>
     </string>
     <string id="kb_wpn_next">
-        <text>Next weapon of this type</text>
+        <text>Change ammo type</text>
     </string>
     <string id="kb_wpn_prev">
         <text>Previous weapon of this type</text>
     </string>
     <string id="kb_zoom">
         <text>Zoom</text>
+    </string>
+    <string id="kb_firemode_next">
+		<text>Fire mode next</text>
+    </string>
+    <string id="kb_firemode_prev">
+		<text>Fire mode previous</text>
     </string>
     <string id="speech_menu_group">
         <text>Speech menu (Group)</text>

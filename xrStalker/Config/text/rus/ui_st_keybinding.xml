@@ -81,7 +81,7 @@
 		<text>Оружие 6</text>
 	</string>
 	<string id="kb_wpn_next">
-		<text>Переключить режим стрельбы</text>
+		<text>Сменить тип патронов</text>
 	</string>
 	<string id="kb_wpn_prev">
 		<text>Предыдущее оружие этого типа</text>		
@@ -102,7 +102,7 @@
 		<text>Перезарядить</text>
 	</string>
 	<string id="kb_func">
-		<text>Режим стрельби</text>
+		<text>Подствольник</text>
 	</string>
 	<string id="kb_inventory">
 		<text>Инвентарь</text>
@@ -182,7 +182,12 @@
 	<string id="speech_menu_personal">
 		<text>Голосовые сообщения (2)</text>
 	</string>
-
+	<string id="kb_firemode_next">
+		<text>Режим стрельбы след.</text>
+    </string>
+    <string id="kb_firemode_prev">
+		<text>Режим стрельбы пред.</text>
+    </string>
 	<string id="kb_use_bandage">
 		<text>Быстрое использ. бинта</text>
 	</string>
