@@ -708,6 +708,8 @@ function gulag:updateJob()
 	print_table( obj_avail, "   " )
 
 	local obj_id
+--	local prior_block_start = 1
+--	local prior_block_end   = 0
 
 	for i, job in ipairs( Job_avail ) do
 		if job.object == nil then
@@ -737,7 +739,7 @@ function gulag:print()
 	local npc_info, going
 
 	printf("***  %s -- State: %d -- Total population: %d/%d -- Non exclusive population: %d/%d",
-	         self.name, self.state, self.capacity, self:get_population(), self.capacity_non_exclusive, self:get_non_exclusive_population())
+	         self.name, self.state, self:get_population(), self.capacity, self:get_non_exclusive_population(), self.capacity_non_exclusive)
 
 	printf("Resources:")
 	for k,v in pairs( self.Object ) do
@@ -765,21 +767,6 @@ function gulag:print()
 				printf("    current section: %s %s", db.storage[v.object].active_section or "<<<nil>>>", going)
 			end
 		end
-	end
-end
-
--- вывод статистики
-function gulag:stat( level_name )
-	local npc_name
-
-	for i, job in pairs( self.Job_avail_in_state ) do
-		if job.object then
-			npc_name = self.npc_info[job.object].name
-		else
-			npc_name = "-"
-		end
-
-		printf( "%s %s %s", level_name, self.name, npc_name )
 	end
 end
 

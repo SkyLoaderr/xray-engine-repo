@@ -738,7 +738,25 @@ end
 
 -- вывод статистики смарта
 function se_smart_terrain:stat()
-	self.gulag:stat( self:get_level_name() )
+	local s = "smart_terrain " .. self:name() .. " - "
+
+	local pop   = self.gulag:get_population()
+	local cap   = self.gulag.capacity
+	local avail = self:is_gulag_available()
+
+	if avail then
+		s = s .. "enabled - " .. pop .. "/" .. cap
+	else
+		s = s .. "disabled"
+	end
+
+	printf( s )
+
+	for id, npc_info in pairs( self.npc_info ) do
+		printf( "    %s", npc_info.name )
+	end
+
+	return avail, pop, cap
 end
 
 -- Обновление. В онлайне вызывается через binder.
@@ -846,9 +864,22 @@ end
 function stat()
 	printf( "Smart terrains statistics START" )
 
+	local total_jobs, jobs_in_avail, occupied = 0, 0, 0
+
 	for id, obj in pairs( smart_terrains ) do
-		obj:stat()
+		local avail, pop, cap = obj:stat()
+
+		total_jobs = total_jobs + cap
+		occupied   = occupied   + pop
+
+		if avail then
+			jobs_in_avail = jobs_in_avail + cap
+		end
 	end
+
+	printf( "Jobs in all smart terrains : %d",       total_jobs )
+	printf( "Jobs in available smart terrains : %d", jobs_in_avail )
+	printf( "Occupied jobs : %d",                    occupied )
 
 	printf( "Smart terrains statistics END" )
 end
