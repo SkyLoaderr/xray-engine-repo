@@ -68,7 +68,7 @@ load_scheme("ph_code",		  "ph_code",     stype_item)
 load_scheme("ph_sound",       "ph_sound",    stype_item)
 load_scheme("ph_appforce",    "ph_force",    stype_item)
 load_scheme("ph_death",       "ph_on_death", stype_item)
---load_scheme("ph_oscillate",   "ph_oscillate",stype_item)  
+load_scheme("ph_oscillate",   "ph_oscillate",stype_item)  
 
 load_scheme("fx_sound",		  "fx_sound",    stype_item)
 
