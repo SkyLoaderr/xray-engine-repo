@@ -167,10 +167,12 @@ Item0=Intermediate
 Item1=ShaderEditor
 
 [HistoryLists\hlFinalOutputDir]
-Count=3
+Count=5
 Item0=x:\
-Item1=!run\
-Item2=P:\Editor\!run
+Item1=u:\preliminary\
+Item2=u:\preliminary
+Item3=!run\
+Item4=P:\Editor\!run
 
 [Debugging]
 DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl

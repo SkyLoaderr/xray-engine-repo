@@ -91,9 +91,9 @@ bool CShaderTools::OnCreate()
     	if (!it->second->OnCreate()) return false;
 
    	// lock
-    EFS.LockFile(0,sh_fn.c_str());
-    EFS.LockFile(0,lc_fn.c_str());
-    EFS.LockFile(0,gm_fn.c_str());
+    EFS.LockFile(_game_data_,"shaders.xr");
+    EFS.LockFile(_game_data_,"shaders_xrlc.xr");
+    EFS.LockFile(_game_data_,GAMEMTL_FILENAME);
     return true;
 }
 
