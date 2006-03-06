@@ -1410,6 +1410,30 @@ function osoznanie_call(actor, npc)
 	news_manager.send_tip(db.actor, "o_soznanie_text", 0, "o_soznanie")
 end
 
+function death_monolith_ghosts(actor, npc)
+	db.actor:give_info_portion("sar2_death_2")
+	db.actor:give_info_portion("sar2_death_5")
+	db.actor:give_info_portion("sar2_death_7")
+	db.actor:give_info_portion("sar2_death_9")
+	db.actor:give_info_portion("sar2_death_16")
+	db.actor:give_info_portion("sar2_death_25")
+	db.actor:give_info_portion("sar2_death_26")
+	db.actor:give_info_portion("sar2_death_27")
+	db.actor:give_info_portion("sar2_death_28")
+	db.actor:give_info_portion("sar2_death_29")
+	db.actor:give_info_portion("sar2_death_30")
+	db.actor:give_info_portion("sar2_death_35")
+	db.actor:give_info_portion("sar2_death_36")
+	db.actor:give_info_portion("sar2_death_37")
+	db.actor:give_info_portion("sar2_death_50")
+	db.actor:give_info_portion("sar2_death_51")
+	db.actor:give_info_portion("sar2_death_54")
+	db.actor:give_info_portion("sar2_death_57")
+	db.actor:give_info_portion("sar2_death_58")
+	db.actor:give_info_portion("sar2_death_59")
+	db.actor:give_info_portion("sar2_death_60")
+end
+
 ---------------------------------------------------------
 -- Sarcofag2
 ---------------------------------------------------------
