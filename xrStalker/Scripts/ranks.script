@@ -58,7 +58,7 @@ function get_obj_rank_name( obj )
 		read_all_ranks()
 	end
 
-	local obj_rank = obj:rank()
+	local obj_rank = obj:character_rank()
 
 	if IsStalker(obj) then
 		return get_rank_name( obj_rank, stalker_rank_intervals ) or stalker_max_rank_name
