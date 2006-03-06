@@ -3652,6 +3652,9 @@
 					<File
 						RelativePath=".\scripts\smart_terrain.script">
 					</File>
+					<File
+						RelativePath=".\Scripts\smart_terrain_params.script">
+					</File>
 				</Filter>
 				<Filter
 					Name="monster"

@@ -1,0 +1,37 @@
+--[[----------------------------------------------------------------------------------------------
+Распарсевание и хранение настроек смарт террейнов
+Чугай Александр
+------------------------------------------------------------------------------------------------]]
+
+local stay_times
+local params_loaded = false
+
+function load_params()
+	params_loaded = true
+
+	local ltx = system_ini()
+
+	stay_times = {}
+
+	local result, field, str
+	local n = ltx:line_count( "smart_terrain_stay_time" )
+
+	for i = 0, n-1 do
+		result, field, str = ltx:r_line( "smart_terrain_stay_time", i, "", "" )
+
+		stay_times[field] = parse_nums( str )
+	end
+end
+
+function get_stay_time_interval( name )
+	if not params_loaded then
+		load_params()
+--		print_table( stay_times )
+	end
+
+	if not stay_times[name] then
+		abort( "unknown stay_time interval '%s'", name )
+	end
+
+	return stay_times[name][1], stay_times[name][2]
+end
