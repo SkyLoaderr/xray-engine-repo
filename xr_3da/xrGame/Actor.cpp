@@ -1153,12 +1153,12 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 		inventory().ActiveItem()->renderable_Render();
 	}
 
-#ifndef NDEBUG
+#if 0//ndef NDEBUG
 	if (Level().CurrentControlEntity() == this && g_ShowAnimationInfo)
 	{
 		string128 buf;
 		HUD().Font().pFontSmall->SetColor	(0xffffffff);
-		HUD().Font().pFontSmall->OutSet	(170,530);
+		HUD().Font().pFontSmall->OutSet		(170,530);
 		HUD().Font().pFontSmall->OutNext	("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
 		HUD().Font().pFontSmall->OutNext	("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
 		HUD().Font().pFontSmall->OutNext	("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());

@@ -360,7 +360,7 @@ void CStalkerActionKillEnemy::initialize		()
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position		();
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_body_state			(eBodyStateCrouch);
+	object().movement().set_body_state			(m_storage->property(eWorldPropertyUseCrouchToLookOut) ? eBodyStateCrouch : eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeStand);
 	m_storage->set_property						(eWorldPropertyLookedOut,false);
 	m_storage->set_property						(eWorldPropertyPositionHolded,false);
@@ -493,16 +493,21 @@ void CStalkerActionTakeCover::execute		()
 CStalkerActionLookOut::CStalkerActionLookOut(CAI_Stalker *object, LPCSTR action_name) :
 	inherited(object,action_name)
 {
+	m_crouch_look_out_random.seed				(u32(CPU::QPC() & 0xffffffff));
 }
 
 void CStalkerActionLookOut::initialize		()
 {
 	inherited::initialize						();
+	
+	m_storage->set_property						(eWorldPropertyUseCrouchToLookOut,	!!m_crouch_look_out_random.random(2));
+
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_body_state			(eBodyStateCrouch);
+
+	object().movement().set_body_state			(m_storage->property(eWorldPropertyUseCrouchToLookOut) ? eBodyStateCrouch : eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
 	set_inertia_time							(1000);
@@ -588,7 +593,7 @@ void CStalkerActionHoldPosition::initialize		()
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position		();
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_body_state			(eBodyStateCrouch);
+	object().movement().set_body_state			(m_storage->property(eWorldPropertyUseCrouchToLookOut) ? eBodyStateCrouch : eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeStand);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
 	set_inertia_time							(5000 + ::Random32.random(5000));

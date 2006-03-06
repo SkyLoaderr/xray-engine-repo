@@ -499,7 +499,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		CStepManager::on_animation_start(M_legs, m_current_legs_blend);
 	}
 
-#ifdef _DEBUG
+#if 0//def _DEBUG
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {
 		string128 buf;
 		strcpy(buf,"");

@@ -39,6 +39,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyEnemyDetoured,
 		eWorldPropertyUseSuddenness,
 		eWorldPropertyPureEnemy,
+		eWorldPropertyUseCrouchToLookOut,
 
 		eWorldPropertyDangerUnknown,
 		eWorldPropertyDangerInDirection,

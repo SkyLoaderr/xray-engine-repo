@@ -200,15 +200,13 @@ void CStalkerAnimationManager::update						()
 
 		legs().play				(m_skeleton_animated,legs_play_callback,&object());
 		
-		if (result) {
-			VERIFY				(legs().blend());
+		if (result && legs().blend()) {
 			float				amount = legs().blend()->blendAmount;
 			speed				= (m_current_speed - m_previous_speed)*amount + m_previous_speed;
 		}
 
-		if (!fis_zero(speed))
+		if (!fis_zero(speed) && legs().blend())
 			object().movement().setup_speed_from_animation	(speed);
-//			object().movement().setup_speed_from_animation	(m_current_speed);
 
 		VERIFY					(head().animation());
 		VERIFY					(torso().animation());

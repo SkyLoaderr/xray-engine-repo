@@ -48,7 +48,8 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_position_holded",					StalkerDecisionSpace::eWorldPropertyPositionHolded),
 				luabind::value("property_enemy_detoured",					StalkerDecisionSpace::eWorldPropertyEnemyDetoured),
 				luabind::value("property_use_suddenness",					StalkerDecisionSpace::eWorldPropertyUseSuddenness),
-
+				luabind::value("property_use_crouch_to_look_out",			StalkerDecisionSpace::eWorldPropertyUseCrouchToLookOut),
+				
 				luabind::value("property_danger_unknown",					StalkerDecisionSpace::eWorldPropertyDangerUnknown),
 				luabind::value("property_danger_in_direction",				StalkerDecisionSpace::eWorldPropertyDangerInDirection),
 				luabind::value("property_danger_grenade",					StalkerDecisionSpace::eWorldPropertyDangerGrenade),

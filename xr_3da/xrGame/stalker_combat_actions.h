@@ -9,6 +9,7 @@
 #pragma once
 
 #include "stalker_base_action.h"
+#include "random32.h"
 
 class CCoverPoint;
 
@@ -126,6 +127,9 @@ public:
 class CStalkerActionLookOut : public CStalkerActionCombatBase {
 protected:
 	typedef CStalkerActionCombatBase inherited;
+
+private:
+	CRandom32			m_crouch_look_out_random;
 
 public:
 						CStalkerActionLookOut		(CAI_Stalker *object, LPCSTR action_name = "");
