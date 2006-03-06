@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 <!-- ------------------------------------------------------------------------- -->
-	<intro>
+	<intro_logo>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_back</texture>
@@ -22,8 +22,18 @@
 				<texture>intro\intro_gsc</texture>
 			</video_wnd>
 		</item>
+	</intro_logo>
+	<intro_game>
+		<global_wnd x="0" y="0" width="1024" height="768">
+			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<texture>intro\intro_back</texture>
+			</auto_static>
+		</global_wnd>
+		<play_each_item>1</play_each_item>
+
 		<item type="video">
 			<sound>intro\intro_stalker</sound>
+			<pause_state>on</pause_state>
 			<delay>1</delay>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_stalker</texture>
@@ -31,12 +41,13 @@
 		</item>
 		<item type="video">
 			<sound>intro\intro_mission</sound>
+			<pause_state>on</pause_state>
 			<delay>1</delay>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_mission</texture>
 			</video_wnd>
 		</item>
-	</intro>
+	</intro_game>
 <!-- ------------------------------------------------------------------------- -->
 	<part_1_pda>
 	<global_wnd/>

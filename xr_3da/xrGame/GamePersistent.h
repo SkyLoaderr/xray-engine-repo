@@ -6,6 +6,7 @@
 class CMainUI;
 class CUICursor;
 class CParticlesObject;
+class CUISequencer;
 
 class CGamePersistent: 
 	public IGame_Persistent, 
@@ -16,6 +17,15 @@ class CGamePersistent:
 	u32					ambient_sound_next_time;
 	u32					ambient_effect_next_time;
 	u32					ambient_effect_stop_time;
+
+	CUISequencer*		m_intro;
+
+	fastdelegate::FastDelegate0<> m_intro_event;
+
+	void xr_stdcall		start_logo_intro		();
+	void xr_stdcall		update_logo_intro		();
+	void xr_stdcall		start_game_intro		();
+	void xr_stdcall		update_game_intro		();
 
 #ifdef DEBUG
 	u32					m_frame_counter;

@@ -82,8 +82,8 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_map_manager				= xr_new<CMapManager>();
 //	m_pFogOfWarMngr				= xr_new<CFogOfWarMngr>();
 //----------------------------------------------------
-	m_bNeed_CrPr					= false;
-	m_bIn_CrPr						= false;
+	m_bNeed_CrPr				= false;
+	m_bIn_CrPr					= false;
 	m_dwNumSteps				= 0;
 	m_dwDeltaUpdate				= u32(fixed_step*1000);
 	m_dwLastNetUpdateTime		= 0;

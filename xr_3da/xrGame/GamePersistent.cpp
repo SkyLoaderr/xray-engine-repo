@@ -41,6 +41,8 @@ CGamePersistent::CGamePersistent(void)
 	ambient_effect_stop_time	= 0;
 	ambient_particles			= 0;
 
+	m_intro						= NULL;
+	m_intro_event.bind			(this,&CGamePersistent::start_logo_intro);
 #ifdef DEBUG
 	m_frame_counter				= 0;
 	m_last_stats_frame			= u32(-2);
@@ -160,6 +162,7 @@ void CGamePersistent::OnGameStart()
 				if (!xr_strcmp(m_game_params.m_game_type, "artfacthunt")) m_eGameType = GAME_ARTEFACTHUNT;
 				else m_eGameType = GAME_ANY;
 	//  [7/11/2005]
+	m_intro_event.bind			(this,&CGamePersistent::start_game_intro);
 }
 
 void CGamePersistent::OnGameEnd	()
@@ -222,31 +225,58 @@ void CGamePersistent::WeathersUpdate()
 }
 
 #include "UI/UIGameTutorial.h"
-static CUISequencer* g_intro = NULL;
-static bool b_startup_intro		= true;
+
+void CGamePersistent::start_logo_intro		()
+{
+	if (Device.dwPrecacheFrame==0){
+		m_intro_event.bind		(this,&CGamePersistent::update_logo_intro);
+		if (0==xr_strlen(m_game_params.m_game_or_spawn) && NULL==g_pGameLevel){
+			VERIFY				(NULL==m_intro);
+			m_intro				= xr_new<CUISequencer>();
+			m_intro->Start		("intro_logo");
+			Console->Hide		();
+		}
+	}
+}
+void CGamePersistent::update_logo_intro			()
+{
+	if(m_intro && (false==m_intro->IsActive())){
+		m_intro_event			= 0;
+		xr_delete				(m_intro);
+		Console->Show			();
+		Console->Execute		("main_menu on");
+	}
+}
+static float save_music_vol=psSoundVMusic;
+void CGamePersistent::start_game_intro		()
+{
+	if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame==0){
+		m_intro_event.bind		(this,&CGamePersistent::update_game_intro);
+		if (0==stricmp(m_game_params.m_new_or_load,"new")){
+			VERIFY				(NULL==m_intro);
+			m_intro				= xr_new<CUISequencer>();
+			m_intro->Start		("intro_game");
+			save_music_vol		= psSoundVMusic;
+			psSoundVMusic		= 0.f;
+		}
+	}
+}
+void CGamePersistent::update_game_intro			()
+{
+	::Sound->set_volume			(1.f);
+	if(m_intro && (false==m_intro->IsActive())){
+		m_intro_event			= 0;
+		xr_delete				(m_intro);
+		psSoundVMusic			= save_music_vol;
+	}
+}
 
 void CGamePersistent::OnFrame	()
 {
 #ifdef DEBUG
 	++m_frame_counter;
 #endif
-	if (Device.dwPrecacheFrame==0 && b_startup_intro){
-		b_startup_intro			= false;
-
-		if (0==xr_strlen(m_game_params.m_game_or_spawn) && NULL==g_pGameLevel){
-			VERIFY				(NULL==g_intro);
-			g_intro				= xr_new<CUISequencer>();
-			g_intro->Start		("intro");
-			Console->Hide		();
-		}
-
-	}
-	if(g_intro && (false==g_intro->IsActive())){
-		xr_delete				(g_intro);
-		Console->Show			();
-		// start main menu
-		Console->Execute		("main_menu on");
-	}
+	if (!m_intro_event.empty())	m_intro_event();
 
 	if(!g_pGameLevel)			return;
 	if(!g_pGameLevel->bReady)	return;
