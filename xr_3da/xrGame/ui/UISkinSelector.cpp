@@ -234,11 +234,11 @@ bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	switch (dik){
 		case DIK_ESCAPE:
 			Game().StartStopMenu(this,true);
-			dm->OnSpectatorSelect();
+			dm->OnSkinMenuBack();
 			return true;
-		case DIK_SPACE:
-		case DIK_RETURN:	// do autoselect
+		case DIK_SPACE: // do autoselect
 			m_iActiveIndex = -1;
+		case DIK_RETURN:	
 			OnBtnOK();
 			return true;
 		case DIK_LEFT:

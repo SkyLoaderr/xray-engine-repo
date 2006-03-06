@@ -14,6 +14,7 @@ public:
 	virtual void OnFocusLost();
 	virtual void OnMouseDown(bool left_button = true);
 			void SetSelectedState(bool state);
+			bool GetSelectedState();
 
 private:
 	bool		m_bSelected;

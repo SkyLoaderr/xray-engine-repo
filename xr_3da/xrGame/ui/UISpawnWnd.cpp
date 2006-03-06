@@ -151,12 +151,20 @@ bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	{
 	case DIK_ESCAPE:
 		dm->StartStopMenu(this,true);
-		dm->OnSpectatorSelect();
+		dm->OnTeamMenuBack();
 		return true;
 	case DIK_SPACE:
-	case DIK_RETURN:
 		dm->StartStopMenu(this,true);
 		dm->OnTeamSelect(-1);
+		return true;
+	case DIK_RETURN:
+		dm->StartStopMenu(this,true);
+		if (m_pImage1->GetSelectedState())
+			dm->OnTeamSelect(0);
+		else if (m_pImage2->GetSelectedState())
+			dm->OnTeamSelect(1);
+		else
+			dm->OnTeamSelect(-1);		
 		return true;
 	}
 

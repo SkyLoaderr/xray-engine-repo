@@ -48,3 +48,7 @@ void CUIStatix::SetSelectedState(bool state){
 	if (!state)
 		OnFocusLost();
 }
+
+bool CUIStatix::GetSelectedState(){
+	return m_bSelected;
+}
