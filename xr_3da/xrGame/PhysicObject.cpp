@@ -10,8 +10,9 @@
 
 CPhysicObject::CPhysicObject(void) 
 {
-	m_type			=	epotBox;
-	m_mass			=	10.f;
+	m_type					=	epotBox;
+	m_mass					=	10.f;
+	m_collision_hit_callback=	NULL;
 }
 
 CPhysicObject::~CPhysicObject(void)
@@ -25,6 +26,7 @@ BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 	R_ASSERT				(po);
 	m_type					= EPOType(po->type);
 	m_mass					= po->mass;
+	m_collision_hit_callback= NULL;
 	inherited::net_Spawn	(DC);
 	xr_delete(collidable.model);
 	switch(m_type) {
@@ -238,7 +240,25 @@ void CPhysicObject::InitServerObject(CSE_Abstract * D)
 	if(!l_tpALifePhysicObject)return;
 	l_tpALifePhysicObject->type			= u32(m_type);
 }
-
+SCollisionHitCallback*	CPhysicObject::	get_collision_hit_callback ()	
+{
+	return m_collision_hit_callback;
+}
+bool					CPhysicObject::	set_collision_hit_callback	(SCollisionHitCallback *cc)	
+{
+	if(!cc)
+	{
+		m_collision_hit_callback=NULL;
+		return true;
+	}
+	if(PPhysicsShell())
+	{
+		VERIFY2(cc->m_collision_hit_callback!=0,"No callback function");
+		m_collision_hit_callback=cc;
+		return true;
+	}
+	else return false;
+}
 
 //////////////////////////////////////////////////////////////////////////
 /*

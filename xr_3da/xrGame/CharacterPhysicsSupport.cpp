@@ -42,15 +42,16 @@ m_eType=atype;
 m_eState=esAlive;
 //b_death_anim_on					= false;
 m_flags.set(fl_death_anim_on,FALSE);
-m_pPhysicsShell					= NULL;
+m_pPhysicsShell					=	NULL;
 //m_saved_impulse					= 0.f;
-m_physics_skeleton				= NULL;
+m_physics_skeleton				=	NULL;
 //b_skeleton_in_shell				= false;
 m_flags.set(fl_skeleton_in_shell,FALSE);
 m_shot_up_factor				=0.f;
 m_after_death_velocity_factor	=1.f;
-m_ik_controller					=NULL;
+m_ik_controller					=	NULL;
 m_BonceDamageFactor				=1.f;
+m_collision_hit_callback		=	NULL;
 switch(atype)
 {
 case etActor:
@@ -524,4 +525,23 @@ void		 CCharacterPhysicsSupport::in_NetRelcase(CObject* O)
 	{
 		c->net_Relcase(O);
 	}
+}
+ 
+bool CCharacterPhysicsSupport::set_collision_hit_callback(SCollisionHitCallback* cc)
+{
+	if(!cc)
+	{
+		m_collision_hit_callback=NULL;
+		return true;
+	}
+	if(m_pPhysicsShell)
+	{
+		VERIFY2(cc->m_collision_hit_callback!=0,"No callback function");
+		m_collision_hit_callback=cc;
+		return true;
+	}else return false;
+}
+SCollisionHitCallback * CCharacterPhysicsSupport::get_collision_hit_callback()
+{
+	return m_collision_hit_callback;
 }

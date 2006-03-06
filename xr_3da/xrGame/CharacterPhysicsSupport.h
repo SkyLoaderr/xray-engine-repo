@@ -46,7 +46,7 @@ private:
 	CPHMovementControl					&m_PhysicMovementControl																															;
 	CPHSoundPlayer						m_ph_sound_player																																	;
 	CIKLimbsController					*m_ik_controller																																	;
-
+	SCollisionHitCallback				*m_collision_hit_callback;
 //skeleton modell(!share?)
 	float								skel_airr_lin_factor																																;
 	float								skel_airr_ang_factor																																;
@@ -104,6 +104,8 @@ public:
 		void							in_NetSave						(NET_Packet& P)																										;
 		void							in_ChangeVisual					();
 		void							PHGetLinearVell					(Fvector& velocity);
+		SCollisionHitCallback*			get_collision_hit_callback		();
+		bool							set_collision_hit_callback		(SCollisionHitCallback* cc);
 /////////////////////////////////////////////////////////////////
 		CCharacterPhysicsSupport& operator = (CCharacterPhysicsSupport& /**asup/**/){R_ASSERT2(false,"Can not assign it");}
 								CCharacterPhysicsSupport				(EType atype,CEntityAlive* aentity)																					;

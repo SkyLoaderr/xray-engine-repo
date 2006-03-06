@@ -140,6 +140,7 @@ private:
 	virtual		u16				 DamageInitiatorID				()const				;
 	virtual		CObject			 *DamageInitiator				()const				;
 	virtual		ALife::EHitType	 HitType						()const				;
+	virtual		CPhysicsShellHolder *DamageObject				()const				{return m_collision_damage_info.m_object;}
 public:
 	//Creating
 	virtual		void		Create								(dVector3 sizes)	;
