@@ -72,7 +72,7 @@ bool CParticleTools::OnCreate()
     SetAction(etaSelect);
 
 	// lock
-    EFS.LockFile	(0,fn.c_str());
+    EFS.LockFile	(_game_data_,PSLIB_FILENAME);
 
     m_EditPE 		= (PS::CParticleEffect*)::Render->Models->CreatePE(0);
     m_EditPG		= (PS::CParticleGroup*)::Render->Models->CreatePG(0);
