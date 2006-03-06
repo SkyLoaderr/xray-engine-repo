@@ -55,6 +55,112 @@
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
 
+<!---------------------- AMBUSH SPECNAZ -------------------->
+    <specific_character id="pri_monolith_ambush_specnaz_default1" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="24" y="10"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+        <class>pri_monolith_ambush_specnaz</class>
+        <community>monolith</community>
+
+        <rank>400</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_hood_9</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_beretta \n
+            ammo_9x19_fmj = 1 \n
+            wpn_l85 \n
+            ammo_5.56x45_ss190 = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+
+    <specific_character id="pri_monolith_ambush_specnaz_default2" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="22" y="10"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+        <class>pri_monolith_ambush_specnaz</class>
+        <community>monolith</community>
+
+        <rank>400</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_hood_9</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_walther \n
+            ammo_9x19_pbp = 1 \n
+            wpn_l85 \n
+            ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+
+<!------------------------ AMBUSH EXO ---------------------->
+    <specific_character id="pri_monolith_ambush_exo_default1" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="24" y="10"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+        <class>pri_monolith_ambush_exo</class>
+        <community>monolith</community>
+
+        <rank>400</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_beretta \n
+            ammo_9x19_fmj = 1 \n
+            wpn_lr300 \n
+            ammo_5.56x45_ss190 = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+
+    <specific_character id="pri_monolith_ambush_exo_default2" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="22" y="10"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+        <class>pri_monolith_ambush_exo</class>
+        <community>monolith</community>
+
+        <rank>400</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_walther \n
+            ammo_9x19_pbp = 1 \n
+            wpn_lr300 \n
+            ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+
 <!-------------------------- REGULAR ----------------------->
     <specific_character id="pri_monolith_regular_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
@@ -269,8 +375,8 @@
             [spawn] \n
             wpn_walther \n
             ammo_9x19_fmj  = 1 \n
-            wpn_abakan \n
-            ammo_5.45x39_ap = 2 \n
+            wpn_svd \n
+            ammo_7.62x54_7h14 = 2 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -302,7 +408,6 @@
             wpn_vintorez \n
             ammo_9x39_ap = 3 \n
             ammo_9x39_sp5 = 2 \n
-#include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>

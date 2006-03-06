@@ -600,6 +600,12 @@
 	<character id="pri_monolith_ambush">
 		<class>pri_monolith_ambush</class>
 	</character>
+	<character id="pri_monolith_ambush_specnaz">
+		<class>pri_monolith_ambush_specnaz</class>
+	</character>
+	<character id="pri_monolith_ambush_exo">
+		<class>pri_monolith_ambush_exo</class>
+	</character>
 
 	<character id="pri_monolith_regular">
 		<class>pri_monolith_regular</class>
