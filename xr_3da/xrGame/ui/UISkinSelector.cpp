@@ -229,11 +229,14 @@ bool CUISkinSelectorWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		return true;
 	}
 
+	game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
+
 	switch (dik){
 		case DIK_ESCAPE:
-#pragma todo("Satan -> MAD_MAX : please make something brutal ;) ")
-			OnBtnCancel();
+			Game().StartStopMenu(this,true);
+			dm->OnSpectatorSelect();
 			return true;
+		case DIK_SPACE:
 		case DIK_RETURN:	// do autoselect
 			m_iActiveIndex = -1;
 			OnBtnOK();

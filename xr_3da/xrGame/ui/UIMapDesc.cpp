@@ -133,9 +133,11 @@ bool CUIMapDesc::OnKeyboard(int dik, EUIMessages keyboard_action){
 
 	switch (dik){
 		case DIK_ESCAPE:
-#pragma todo("SATAN -> CRAZY_MAX : please free me from this intolerable emptiness :) ")
+			dm->StartStopMenu(this,true);
+			dm->OnSpectatorSelect();
 			return true;
 			break;
+		case DIK_SPACE:
 		case DIK_RETURN:
 			dm->StartStopMenu(this,true);
 			dm->OnMapInfoAccept();

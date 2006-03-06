@@ -150,9 +150,10 @@ bool CUISpawnWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	switch (dik)
 	{
 	case DIK_ESCAPE:
-#pragma todo("SATAN -> MAD_MAX : surprise me! ")
-		dm->OnTeamMenu_Cancel();
+		dm->StartStopMenu(this,true);
+		dm->OnSpectatorSelect();
 		return true;
+	case DIK_SPACE:
 	case DIK_RETURN:
 		dm->StartStopMenu(this,true);
 		dm->OnTeamSelect(-1);
