@@ -30,7 +30,8 @@ function get_stay_time_interval( name )
 	end
 
 	if not stay_times[name] then
-		abort( "unknown stay_time interval '%s'", name )
+		printf( "unknown stay_time interval '%s'", name )
+		return 10000, 10001
 	end
 
 	return stay_times[name][1], stay_times[name][2]
