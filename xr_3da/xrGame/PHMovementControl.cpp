@@ -148,6 +148,10 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 			gcontact_HealthLost+=Device.fTimeDelta*last_material->fInjuriousSpeed;
 		}
 	}
+
+	//CPhysicsShellHolder * O=di->DamageObject();
+	//SCollisionHitCallback* cc= O ? O->get_collision_hit_callback() : NULL;
+	//if(cc)cc->call(static_cast<CGameObject*>(m_character->PhysicsRefObject()),fMinCrashSpeed,fMaxCrashSpeed,fContactSpeed,gcontact_HealthLost,CollisionDamageInfo());
 	//if(m_character->CollisionDamageInfo()->DamageInitiator())
 	CheckEnvironment(vPosition);
 	bSleep=false;
@@ -287,9 +291,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 				((fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
 	}
-	CPhysicsShellHolder * O=di->DamageObject();
-	SCollisionHitCallback* cc= O ? O->get_collision_hit_callback() : NULL;
-	if(cc)cc->call(static_cast<CGameObject*>(m_character->PhysicsRefObject()),fMinCrashSpeed,fMaxCrashSpeed,fContactSpeed,gcontact_HealthLost,CollisionDamageInfo());
+
 	CheckEnvironment(vPosition);
 	bSleep=false;
 	b_exect_position=false;
