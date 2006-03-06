@@ -550,8 +550,10 @@ void CGroupObject::GroupObjects(ObjectList& lst)
 }
 void CGroupObject::UngroupObjects()
 {
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-        (*it)->OnDetach();
+	if (!IsOpened()){
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+            (*it)->OnDetach();
+    }
     m_Objects.clear();
 }
 void CGroupObject::OpenGroup()

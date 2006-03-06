@@ -60,12 +60,14 @@ void CCustomObject::NormalAlign(Fvector& rot, const Fvector& up)
 
 void CCustomObject::OnDetach()
 {
-    m_pOwnerObject 		= 0;
-    string64 			new_name;
-    Scene->GenObjectName(ClassID,new_name,Name);
-    Name 				= new_name;
-    Scene->AppendObject	(this,false);
-    Select				(true);
+	if (m_pOwnerObject){
+        m_pOwnerObject 		= 0;
+        string64 			new_name;
+        Scene->GenObjectName(ClassID,new_name,Name);
+        Name 				= new_name;
+        Scene->AppendObject	(this,false);
+    }
+    Select					(true);
 }
 
 void CCustomObject::OnAttach(CCustomObject* owner)
