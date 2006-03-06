@@ -365,9 +365,28 @@ end
 
 -- —бор статистики
 function stats()
+	local total_spawned = 0
+	local total_avail = 0
+	local total = 0
 	printf("***************** RESPAWN STATISTIC *********************")
 	for k,v in pairs(respawners) do
-		printf("[%s] spawns [%s] object", tostring(v:name()), tostring(table.getn(v.spawned_obj)))
+		local s = xr_logic.pick_section_from_condlist(db.actor_proxy, self, v.conditions)
+		local pops = "DISABLE"
+		if s ~= "nil" and s ~= "0" then
+			pops = table.getn(v.spawned_obj)
+		end
+		printf("[%s] spawns [%s] object", tostring(v:name()), tostring(pops))
 		print_table(v.respawn_section)
+		-- ”величиваем общие счетчики
+		total = total + v.max_count
+		if pops ~= "DISABLE" then
+			total_avail = total_avail + v.max_count
+			total_spawned = total_spawned + pops
+		end
 	end
+	printf("*** SUMMARY ***")
+	printf("	total = %s", total)
+	printf("	total_avail = %s", total_avail)
+	printf("	total_spawned = %s", total_spawned)
+	printf("***************")
 end
