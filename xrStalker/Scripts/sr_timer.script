@@ -40,16 +40,17 @@ function action_timer:update(delta)
 		if (self.st.type == "dec" and value_time <= v.dist) or
 		   (self.st.type == "inc" and value_time >= v.dist)
 		then
-			if self.st.last_value[k] == nil then
-				-- Обработка значения.
-				xr_logic.switch_to_section(self.object, self.st, xr_logic.pick_section_from_condlist(db.actor, self.object, v.state))
-			end
+			-- Обработка значения.
+			xr_logic.switch_to_section(self.object, self.st, xr_logic.pick_section_from_condlist(db.actor, self.object, v.state))
 		end
 	end
 end
 function action_timer:deactivate(delta)
 	self.st.ui:RemoveCustomStatic(self.st.timer_id)
 end
+--function action_timer:save()
+--	xr_logic.pstor_store( self.object, "timer_value", self.state )	
+--end
 
 function time2str(n)
 	if n >= 10 then
@@ -78,7 +79,6 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	end
 	-- Вычитываем значения перехода.
 	st.on_value = parse_data(obj, utils.cfg_get_string(ini, section, "on_value", obj, false, ""))
-	st.last_value = {}
 	st.timer_id = utils.cfg_get_string( ini, section, "timer_id", obj, false, "", "hud_timer")
 		
 	st.ui = get_hud()
