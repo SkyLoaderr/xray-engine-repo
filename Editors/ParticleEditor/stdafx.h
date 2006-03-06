@@ -137,7 +137,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	#include "net_utils.h"
 #endif
 
-#define INI_NAME(buf) 		{FS.update_path(buf,"$local_root$",EFS.ChangeFileExt(UI->EditorName(),".ini").c_str());}
+#define INI_NAME(buf) 		{buf = buf+xr_string(Core.WorkingPath)+xr_string("\\")+EFS.ChangeFileExt(UI->EditorName(),".ini");}
 #define DEFINE_INI(storage)	{xr_string buf; INI_NAME(buf); storage->IniFileName=buf.c_str();}
 #define NONE_CAPTION "<none>"
 #define MULTIPLESEL_CAPTION "<multiple selection>"
