@@ -203,6 +203,7 @@ function send_task(actor, type)
 end
 function send_encyclopedy(type)
 	pda_task:play(db.actor, 0, sound_object.s2d)
+--[[	
 	if type == "encyclopedy" then
 		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", Frect():set(350,150,50,50), 0, 0)
 		if db.actor:is_talking() then
@@ -214,6 +215,7 @@ function send_encyclopedy(type)
 			db.actor:give_talk_message("general_new_diary", "ui\\ui_icons_task", Frect():set(350,150,50,50), "iconed_answer_item")
 		end		
 	end	
+]]
 end
 
 function relocate_item(actor, type)
