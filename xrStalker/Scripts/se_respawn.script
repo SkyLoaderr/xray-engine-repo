@@ -370,12 +370,18 @@ function stats()
 	local total = 0
 	printf("***************** RESPAWN STATISTIC *********************")
 	for k,v in pairs(respawners) do
-		local s = xr_logic.pick_section_from_condlist(db.actor_proxy, self, v.conditions)
+		local s = xr_logic.pick_section_from_condlist(db.actor_proxy, v, v.conditions)
 		local pops = "DISABLE"
 		if s ~= "nil" and s ~= "0" then
 			pops = table.getn(v.spawned_obj)
 		end
-		printf("[%s] spawns [%s] object", tostring(v:name()), tostring(pops))
+		local str_pops
+		if v.max_count == pops then
+			str_pops = "FULL "..tostring(pops)
+		else
+			str_pops = tostring(pops)
+		end
+		printf("[%s] spawns [%s] object", tostring(v:name()), str_pops)
 		print_table(v.respawn_section)
 		-- Увеличиваем общие счетчики
 		total = total + v.max_count
