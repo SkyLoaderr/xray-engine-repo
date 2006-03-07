@@ -11,9 +11,11 @@ function main()
 	table.insert(spawn_items, "device_torch")
 	for i = 1,3 do
 		table.insert(spawn_items, "medkit")
+		table.insert(spawn_items, "antirad")
 	end
 	for i = 1,10 do
 		table.insert(spawn_items, "bandage")
+		table.insert(spawn_items, "conserva")
 	end
 	
 	if level == "l01_escape" then
