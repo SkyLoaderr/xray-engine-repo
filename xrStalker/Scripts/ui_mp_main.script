@@ -300,11 +300,11 @@ function mp_main:GatherServerData()
 	end
 	-- auto team balance --------------------------------------------------------------
 	if self.check_auto_team_balance:GetCheck() then
-		cmdstr = cmdstr .. "/abalance=1" .. tmp
+		cmdstr = cmdstr .. "/abalance=1"
 	end	
-	-- auto team balance --------------------------------------------------------------
+	-- auto team swap --------------------------------------------------------------
 	if self.check_auto_team_swap:GetCheck() then
-		cmdstr = cmdstr .. "/aswap=1" .. tmp
+		cmdstr = cmdstr .. "/aswap=1"
 	end		
 	-- Force respawn --------------------------------------------------------------
 	if self.tab_respawn:GetActiveIndex() == 1 then
