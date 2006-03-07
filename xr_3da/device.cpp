@@ -310,6 +310,6 @@ void	CRenderDevice::Pause							(BOOL bOn)
 	if (!g_bBenchmark){
 		g_pauseMngr.Pause	(bOn);
 		bShowPauseString	= TRUE;
-		::Sound->set_volume (bOn?0.0f:1.0f);
+//.		::Sound->set_volume (bOn?0.0f:1.0f);
 	}
 }
