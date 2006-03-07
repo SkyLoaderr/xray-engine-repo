@@ -263,7 +263,6 @@ void CGamePersistent::start_game_intro		()
 }
 void CGamePersistent::update_game_intro			()
 {
-	::Sound->set_volume			(1.f);
 	if(m_intro && (false==m_intro->IsActive())){
 		m_intro_event			= 0;
 		xr_delete				(m_intro);
