@@ -1,149 +1,191 @@
 <string id="bar_resque_information">
-	<text>Помочь Круглову выбраться с "дикой территории".</text>
+    <text>
+        Встретится с Кругловым
+    </text>
 </string>
 <string id="bar_resque_scientific_information">
-	<text>...</text>
+    <text>
+        ...
+    </text>
 </string>
 <string id="bar_resque_scientific_information_get">
-	<text>Пробиться через засады наемников к профессору Круглову.</text>
+    <text>
+        Пробиться к Круглову
+    </text>
 </string>
 <string id="bar_resque_scientific_information_bring">
-	<text>Помочь Круглову выбраться с "дикой территории".</text>
+    <text>
+        Помочь Круглову выбраться с &quot;дикой территории&quot;.
+    </text>
 </string>
 <string id="bar_resque_scientific_follow">
-	<text>Сопровождать Круглова на "дикой территории".</text>
+    <text>
+        Сопровождать Круглова на &quot;дикой территории&quot;.
+    </text>
 </string>
-
-
-	<string id="bar_hunter_rifle">
-	<text>Ружье охотника</text>
+<string id="bar_hunter_rifle">
+    <text>
+        Найти фамильное ружье
+    </text>
 </string>
-	<string id="bar_bring_hunter_rifle">
-	<text>Вернуть охотнику фамильное ружье</text>
+<string id="bar_bring_hunter_rifle">
+    <text>
+        Вернуть охотнику фамильное ружье
+    </text>
 </string>
-	<string id="bar_hunter_find_rifle">
-	<text>Найти ружье, утерянное у домика кровососов</text>
+<string id="bar_hunter_find_rifle">
+    <text>
+        Найти фамильное ружье
+    </text>
 </string>
-	<string id="bar_hunter_return_rifle">
-	<text>Вернуть ружье охотнику</text>
+<string id="bar_hunter_return_rifle">
+    <text>
+        Вернуть ружье охотнику в баре
+    </text>
 </string>
-
 <string id="bar_dolg_community_quest">
-	<text>Вступление в группировку "Долг"</text>
+    <text>
+        Вступление в группировку &quot;Долг&quot;
+    </text>
 </string>
 <string id="bar_dolg_community_quest_recomendation">
-	<text>Получить рекомендацию капитана Иванцова</text>
+    <text>
+        Получить рекомендацию капитана Иванцова
+    </text>
 </string>
 <string id="bar_dolg_community_quest_vernost">
-	<text>Доказать свою верность "Долгу"</text>
+    <text>
+        Доказать свою верность &quot;Долгу&quot;
+    </text>
 </string>
 <string id="bar_dolg_community_quest_prisyaga">
-	<text>Принять присягу</text>
+    <text>
+        Принять присягу
+    </text>
 </string>
-
-
 <string id="bar_dolg_base_rules">
-	<text>Отметиться у начальника охраны Долга</text>
+    <text>
+        Отметиться у начальника охраны Долга
+    </text>
 </string>
 <string id="bar_dolg_base_rules_talk">
-	<text>Найти начальника охраны Долга и отметиться у него</text>
+    <text>
+        Найти начальника охраны 
+
+Долга и отметиться у него
+    </text>
 </string>
 <string id="bar_dolg_base_rules_fin">
-	<text>Вернуться к бармену</text>
+    <text>
+        Вернуться к бармену
+    </text>
 </string>
-
-
-<string id="bar_dolg_test_quest">
-	<text>Проверка для вступления в Долг</text>
+<string id="bar_dolg_rg6_quest">
+    <text>
+        Задание для вступления в Долг
+    </text>
 </string>
-<string id="bar_dolg_win_on_arena">
-	<text>Победить на Арене</text>
+<string id="bar_dolg_bring_rg6">
+    <text>
+        Добыть РГ-6 для генерала Воронина
+    </text>
 </string>
-<string id="bar_dolg_return_to_ivancov">
-	<text>Вернуться к Иванцову с победой</text>
+<string id="bar_dolg_find_cook">
+    <text>
+        Втереться в доверие к повару Свободы и узнать, где хранится РГ-6
+    </text>
 </string>
-	
-	<string id="bar_dolg_rg6_quest">
-	<text>Задание для вступления в Долг</text>
+<string id="bar_dolg_find_rg6">
+    <text>
+        Проникнуть на территорию группировки Свободы, найти и выкрасть РГ-6
+    </text>
 </string>
-	<string id="bar_dolg_bring_rg6">
-	<text>Добыть РГ-6 для генерала Воронина</text>
+<string id="bar_dolg_return_rg6">
+    <text>
+        Принести РГ-6 генералу Воронину
+    </text>
 </string>
-	<string id="bar_dolg_find_cook">
-	<text>Втереться в доверие к повару Свободы и узнать, где хранится РГ-6</text>
-</string>
-	<string id="bar_dolg_find_rg6">
-	<text>Проникнуть на территорию группировки Свободы, найти и выкрасть РГ-6</text>
-</string>
-	<string id="bar_dolg_return_rg6">
-	<text>Принести РГ-6 генералу Воронину</text>
-</string>
-
-
 <string id="bar_dolg_info_gain">
-	<text>Найти перехваченную информацию о лаборатории X18</text>
+    <text>
+        Найти перехваченную информацию о лаборатории X18
+    </text>
 </string>
-	<string id="bar_dolg_return_info">
-	<text>Вернуть информацию о лаборатории X18 генералу Воронину</text>
+<string id="bar_dolg_return_info">
+    <text>
+        Вернуть информацию о лаборатории X18 генералу Воронину
+    </text>
 </string>
-
-
 <string id="bar_dolg_svoboda_ambush_quest">
-	<text>Уничтожение наемников на дикой территории</text>
+    <text>
+        Уничтожить наемников
+    </text>
 </string>
-	<string id="bar_dolg_kill_tiran">
-	<text>Уничтожить предводителя отряда Тирана. Снять с трупа нашивки Тирана, как доказательство его смерти</text>
-</string>
-	<string id="bar_dolg_svoboda_ambush_return">
-	<text>Вернуться к генералу Воронину с нашивками Тирана</text>
-</string>
+<string id="bar_dolg_kill_tiran">
+    <text>
+        Убить Тирана, предводителя отряда 
 
-
-	<string id="bar_dolg_svoboda_leader_kill_quest">
-	<text>Уничтожение лидера группировки Свободы</text>
+Взять нашивки Тирана
+    </text>
 </string>
-	<string id="mil_svoboda_leader_kill">
-	<text>На территории Военной базы найти и уничтожить лидера группировки Свобода. Снять с трупа нашивки Лидера, как доказательство его смерти</text>
+<string id="bar_dolg_svoboda_ambush_return">
+    <text>
+        Отдать нашивки генералу Воронину
+    </text>
 </string>
-	<string id="bar_dolg_svoboda_leader_kill_return">
-	<text>Вернуться к генералу Воронину с нашивками Лидера Свободы</text>
-</string>
-
-
 <string id="bar_crazy_veterans_quest">
-	<text>Уничтожить безумных ветеранов</text>
+    <text>
+        Уничтожить безумных ветеранов
+    </text>
 </string>
-	<string id="bar_kill_veterans">
-	<text>Уничтожить лагерь сумасшедших ветеранов</text>
+<string id="bar_kill_veterans">
+    <text>
+        Уничтожить лагерь сумасшедших ветеранов
+    </text>
 </string>
-	<string id="bar_kill_crazy_veterans">
-	<text>Убить ветеранов и взять ПДА их лидера</text>
-</string>
-	<string id="bar_bring_pda_lucky">
-	<text>Принести этот ПДА бармену в качестве доказательства</text>
-</string>
-	
+<string id="bar_kill_crazy_veterans">
+    <text>
+        Убить лидера ветеранов 
 
-
+Взять ПДА их лидера
+    </text>
+</string>
+<string id="bar_bring_pda_lucky">
+    <text>
+        Принести ПДА лидера бармену
+    </text>
+</string>
 <string id="x16_documents">
-	<text>Найти документы лаборатории X16</text>
+    <text>
+        Найти документы в лаборатории X16
+    </text>
 </string>
 <string id="x16_yantar">
-	<text>Поговорить с учеными</text>
+    <text>
+        Поговорить с учеными
+    </text>
 </string>
 <string id="bring_x16_documents">
-	<text>Принести документы бармену</text>
+    <text>
+        Принести документы бармену
+    </text>
 </string>
 <string id="look_for_x16_lab">
-	<text>Узнать у ученых где находится лаборатория x16</text>
+    <text>
+        Найти документы x16
+    </text>
 </string>
-	
 <string id="descr_deactivate_radar">
-	<text>Отключить выжигатель мозгов</text>
+    <text>
+        Отключить Выжигатель Мозгов
+    </text>
 </string>
 <string id="find_and_deactivate_radar">
-	<text>Найти бункер управления</text>
+    <text>
+        Найти бункер управления
+    </text>
 </string>
 <string id="deactivate_radar_now">
-	<text>Отключить оборудование</text>
+    <text>
+        Отключить установку
+    </text>
 </string>

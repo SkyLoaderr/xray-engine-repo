@@ -1,6 +1,6 @@
 <string id="val_come_to_trader">
     <text>
-        Вернуться к торговцу.
+        Вернуться к торговцу
     </text>
 </string>
 <string id="val_come_to_trader_0">
@@ -10,7 +10,7 @@
 </string>
 <string id="val_sos_help">
     <text>
-        Помочь сталкеру.
+        Помочь сталкеру
     </text>
 </string>
 <string id="val_sos_help_0">
@@ -20,12 +20,12 @@
 </string>
 <string id="val_sos_help_main">
     <text>
-        Помочь сталкеру на заправке.
+        Помочь сталкеру на заправке
     </text>
 </string>
 <string id="val_prisoner_help">
     <text>
-        Помочь заключенному долговцу.
+        Освободить долговца из тюрьмы 
     </text>
 </string>
 <string id="val_prisoner_help_0">
@@ -35,56 +35,56 @@
 </string>
 <string id="val_prisoner_help_main">
     <text>
-        Вытащить долговца из плена бандитов.
+        Освободить долговца из тюрьмы бандитов
     </text>
 </string>
 <string id="val_captive_help">
     <text>
-        Помочь освободить долговца.
+        Освободить долговца
     </text>
 </string>
 <string id="val_captive_help_1">
     <text>
-        Помочь освободить долговца.
+        Уничтожить бандитов 
     </text>
 </string>
 <string id="bar_darklab_documents">
     <text>
-        Добыть документы в подземной лаборатории.
+        Найти документы в подземной лаборатории
     </text>
 </string>
 <string id="bar_darklab_documents_1">
     <text>
-        Забрать у Борова ключ от входа.
+        Забрать у Борова ключ от лаборатории
     </text>
 </string>
 <string id="bar_darklab_documents_2">
     <text>
-        Найти вход в лабораторию.
+        Найти вход в лабораторию
     </text>
 </string>
 <string id="bar_darklab_documents_3">
     <text>
-        Найти и забрать документы.
+        Найти документы
     </text>
 </string>
 <string id="bar_darklab_documents_4">
     <text>
-        Принести документу бармену.
+        Принести документу бармену
     </text>
 </string>
 <string id="val_come_to_trader_1">
     <text>
-        Выбраться из Темной Долины.
+        Выбраться из Темной Долины
     </text>
 </string>
 <string id="val_come_to_trader_2">
     <text>
-        Показать документы торговцу.
+        Показать документы торговцу
     </text>
 </string>
 <string id="bar_darklab_documents2">
     <text>
-        Найти документы из Х-18.
+        Найти документы в Х-18
     </text>
 </string>
