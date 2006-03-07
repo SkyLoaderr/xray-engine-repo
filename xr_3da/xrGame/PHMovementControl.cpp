@@ -126,9 +126,9 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	//Msg("saved avel %f", fActualVelocity);
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
-
+	const ICollisionDamageInfo* di=m_character->CollisionDamageInfo();
  	{
-		fContactSpeed=m_character->CollisionDamageInfo()->ContactVelocity();
+		fContactSpeed=di->ContactVelocity();
 
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 
@@ -149,10 +149,11 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 		}
 	}
 
-	//CPhysicsShellHolder * O=di->DamageObject();
-	//SCollisionHitCallback* cc= O ? O->get_collision_hit_callback() : NULL;
-	//if(cc)cc->call(static_cast<CGameObject*>(m_character->PhysicsRefObject()),fMinCrashSpeed,fMaxCrashSpeed,fContactSpeed,gcontact_HealthLost,CollisionDamageInfo());
-	//if(m_character->CollisionDamageInfo()->DamageInitiator())
+	CPhysicsShellHolder * O=di->DamageObject();
+	SCollisionHitCallback* cc= O ? O->get_collision_hit_callback() : NULL;
+	if(cc)cc->call(static_cast<CGameObject*>(m_character->PhysicsRefObject()),fMinCrashSpeed,fMaxCrashSpeed,fContactSpeed,gcontact_HealthLost,CollisionDamageInfo());
+	
+
 	CheckEnvironment(vPosition);
 	bSleep=false;
 }

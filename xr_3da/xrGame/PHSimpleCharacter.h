@@ -25,6 +25,7 @@ protected:
 	struct SCollisionDamageInfo
 	{
 										SCollisionDamageInfo		()										;
+				void					Construct					()										;
 				float					ContactVelocity				()				const					;
 				void					HitDir						(Fvector &dir)	const					;
 			IC	const Fvector&			HitPos						()				const					{return cast_fv(m_damege_contact.geom.pos);}

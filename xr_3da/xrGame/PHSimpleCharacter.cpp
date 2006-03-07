@@ -306,6 +306,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	spatial_register();
 	m_last_move.set(0,0,0)	;
 	CPHCollideValidator::SetCharacterClass(*this);
+	m_collision_damage_info.Construct();
 }
 void CPHSimpleCharacter::SwitchOFFInitContact()
 {
@@ -1555,7 +1556,16 @@ CObject* CPHSimpleCharacter::DamageInitiator() const
 
 CPHSimpleCharacter::SCollisionDamageInfo::SCollisionDamageInfo()
 {
+	Construct();
+}
+void CPHSimpleCharacter::SCollisionDamageInfo::Construct()
+{
 	m_contact_velocity=0.f;
+	//m_damege_contact;
+	m_object=NULL;
+	//m_dmc_signum;
+	//m_dmc_type;
+
 }
 float CPHSimpleCharacter::SCollisionDamageInfo::ContactVelocity()const
 {
