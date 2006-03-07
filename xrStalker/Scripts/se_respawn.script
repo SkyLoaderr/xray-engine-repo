@@ -396,3 +396,29 @@ function stats()
 	printf("	total_spawned = %s", total_spawned)
 	printf("***************")
 end
+
+
+
+-- Сбор продвинутой статистики статистики по лимитам
+function lstats()
+	local can_spawn = {}
+	printf("***************** LIMITS STATISTIC *********************")
+	for k,v in pairs(respawners) do
+		-- Заносим максимальное количество всех типов чуваков, которые данный респавнер может наспаунить.
+		for kk,vv in pairs(v.respawn_section) do
+			local tt = v.sectSpawnProps[vv.section]
+			local community_rank = tt.community.."_"..tt.rank
+			if can_spawn[community_rank] == nil then
+				can_spawn[community_rank] = {num = 0, community = tt.community, rank = tt.rank}
+			end
+			can_spawn[community_rank].num = can_spawn[community_rank].num + v.max_count
+		end
+	end	
+	-- Выводим все это в общей статистике
+	for k,v in pairs(can_spawn) do
+		local cs = sim_statistic.simNpcCount(v.community, v.rank)
+		local gl = simMaxCount[k]
+		if gl == nil then gl = 0 end
+		printf("[%s] max[%s] current[%s] limit[%s]", k, v.num, cs, gl)
+	end
+end
