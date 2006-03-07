@@ -419,6 +419,6 @@ function lstats()
 		local cs = sim_statistic.simNpcCount(v.community, v.rank)
 		local gl = simMaxCount[k]
 		if gl == nil then gl = 0 end
-		printf("[%s] max[%s] current[%s] limit[%s]", k, v.num, cs, gl)
+		printf("%s max=%s current=%s limit=%s", k, v.num, cs, gl)
 	end
 end
