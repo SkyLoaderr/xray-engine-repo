@@ -288,7 +288,13 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	CUIXmlInit::Init3tButton(uiXml, "btn_rifle_bullets", 0, &UIBtn_RifleBullet);
 
 	// disable
-
+	if (GameID() == GAME_DEATHMATCH)
+	{
+		UIBtn_PistolBullet.Enable(false);
+		UIBtn_PistolBullet.SetVisible(false);
+		UIBtn_RifleBullet.Enable(false);
+		UIBtn_RifleBullet.SetVisible(false);
+	}
 	UIBtn_PistolSilencer.Enable(false);
 	UIBtn_PistolSilencer.SetVisible(false);
 	UIBtn_RifleSilencer.Enable(false);
@@ -877,8 +883,12 @@ void CUIBuyWeaponWnd::UpdateBuyButtons(){
 		UIBtn_RifleBullet.Enable(true);
 		UIBtn_RifleSilencer.Enable(!item->m_AddonInfo[CUIDragDropItemMP::ID_SILENCER].strAddonName.empty());
 		UIBtn_RifleScope.Enable(!item->m_AddonInfo[CUIDragDropItemMP::ID_SCOPE].strAddonName.empty());
+//		int status = pSettings->r_s32(item->GetSectionName(),"grenade_launcher_status");
 		UIBtn_RifleGranadelauncer.Enable(!item->m_AddonInfo[CUIDragDropItemMP::ID_GRENADE_LAUNCHER].strAddonName.empty());
-		UIBtn_RifleGranade.Enable(1 == item->m_AddonInfo[CUIDragDropItemMP::ID_GRENADE_LAUNCHER].iAttachStatus);
+		bool grenade = false;
+		if (item->m_AddonInfo[1].iAttachStatus >= 1)
+			grenade = true;		
+		UIBtn_RifleGranade.Enable(grenade);
 	}
 
 	

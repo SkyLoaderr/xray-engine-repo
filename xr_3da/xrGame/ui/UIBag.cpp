@@ -937,14 +937,19 @@ void CUIBag::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectio
 			R_ASSERT(!"Unknown type of addon");
 		}
 
-		if (pSettings->line_exist(sectioName.c_str(), status.c_str()) && 
-			pSettings->r_u32(sectioName.c_str(), status.c_str()) == 2)
-		{
-			DDItemMP.bAddonsAvailable = true;
-			DDItemMP.m_AddonInfo[i].iAttachStatus = 0;
-			DDItemMP.m_AddonInfo[i].strAddonName = pSettings->r_string(sectioName.c_str(), name.c_str());
-			DDItemMP.m_AddonInfo[i].x = pSettings->r_u32(sectioName.c_str(), strX.c_str());
-			DDItemMP.m_AddonInfo[i].y = pSettings->r_u32(sectioName.c_str(), strY.c_str());
+		if (pSettings->line_exist(sectioName.c_str(), status.c_str())){
+			if (pSettings->r_u32(sectioName.c_str(), status.c_str()) == 2)
+			{
+				DDItemMP.bAddonsAvailable = true;
+				DDItemMP.m_AddonInfo[i].iAttachStatus = 0;
+				DDItemMP.m_AddonInfo[i].strAddonName = pSettings->r_string(sectioName.c_str(), name.c_str());
+				DDItemMP.m_AddonInfo[i].x = pSettings->r_u32(sectioName.c_str(), strX.c_str());
+				DDItemMP.m_AddonInfo[i].y = pSettings->r_u32(sectioName.c_str(), strY.c_str());
+			}
+			else if (pSettings->line_exist(sectioName.c_str(), "grenade_launcher_status")){
+				if (pSettings->r_s32(sectioName.c_str(), "grenade_launcher_status") == 1)
+                    DDItemMP.m_AddonInfo[i].iAttachStatus = 2;//permanent granadelauncher
+			}
 		}
 	}
 }

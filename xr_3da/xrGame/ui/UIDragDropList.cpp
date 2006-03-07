@@ -70,8 +70,7 @@ void CUIDragDropList::SortList(DD_Check_func f){
 }
 
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
-{
-	inherited::AttachChild(pChild);
+{	
 	CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(pChild);
 	if(pDragDropItem) 
 	{
@@ -87,8 +86,7 @@ void CUIDragDropList::AttachChild(CUIWindow* pChild)
 		ScrollBarRecalculate			(true);
 	}
 
-	
-
+	inherited::AttachChild(pChild);
 }
 void CUIDragDropList::DetachChild(CUIWindow* pChild)
 {
