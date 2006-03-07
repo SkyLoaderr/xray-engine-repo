@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="pri_followers_dlg_0">
+        <text>Поговори с нашим главным. Он лучше знает что к чему.</text>
+    </string>
+    <string id="pri_followers_dlg_1">
+        <text>Хорошо.</text>
+    </string>
     <string id="pri_followers_start_dlg_11">
         <text>Здорово, Меченый. Мы тут с ребятами собираемся пробраться к станции. Говорят там есть много крутых вещичек. Можно неплохо заработать. У нас есть карта и я знаю безопасный путь. Ты с нами?</text>
     </string>
