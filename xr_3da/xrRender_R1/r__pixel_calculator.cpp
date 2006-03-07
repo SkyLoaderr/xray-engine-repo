@@ -62,8 +62,8 @@ r_aabb_ssa		r_pixel_calculator::calculate	(IRender_Visual* V)	{
 	// 
 	for (u32 it=0; it<6; it++)	{
 		float	pixels	= (float)RImplementation.HWOCC.occq_get	(id[it]);
-		Msg		("[%d]ssa_c: %f/%f",it,pixels,area);
 		float	coeff	= clampr(pixels/area,float(0),float(1));
+		Msg		("[%d]ssa_c: %1.3f,%f/%f",it,coeff,pixels,area);
 		result.ssa	[it]= (u8)clampr(iFloor(coeff*255.f+0.5f),int(0),int(255));
 	}
 
