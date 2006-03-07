@@ -48,15 +48,13 @@ function is_wounded(actor, npc)
 end
 
 function dist_to_actor_le(actor, npc, p)
-    local actor = db.actor
     local d = p[1]
-    return actor and d and npc:position():distance_to_sqr(actor:position()) <= d * d
+    return d and npc:position():distance_to_sqr(actor:position()) <= d * d
 end
 
 function dist_to_actor_ge(actor, npc, p)
-    local actor = db.actor
     local d = p[1]
-    return actor and d and npc:position():distance_to_sqr(actor:position()) >= d * d
+    return d and npc:position():distance_to_sqr(actor:position()) >= d * d
 end
 
 -- проверка того что дистанция до обьекта <= заданной
