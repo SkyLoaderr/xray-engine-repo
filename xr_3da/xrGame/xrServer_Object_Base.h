@@ -123,14 +123,7 @@ public:
 	virtual LPCSTR		__stdcall	name_replace	() const;
 	virtual void		__stdcall	set_name		(LPCSTR s)
 	{
-		if	(
-				!xr_strcmp(s,"m_stalker_e") ||
-				!xr_strcmp(s,"m_stalker_demo") ||
-				!xr_strcmp(s,"m_stalker_wolf")
-			)
-			s_name		= "stalker";
-		else
-			s_name		= s;
+		s_name		= s;
 	};
 	virtual void		__stdcall	set_name_replace(LPCSTR s) {xr_free(s_name_replace); s_name_replace = xr_strdup(s);};
 	virtual Fvector&	__stdcall	position		();

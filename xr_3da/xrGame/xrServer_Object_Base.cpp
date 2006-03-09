@@ -226,6 +226,7 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	R_ASSERT3					((m_tClassID == CLSID_SPECTATOR) || (size > sizeof(size)),"object isn't successfully saved, get your backup :(",name_replace());
 //#endif
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
+	client_data.clear			();
 }
 
 BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
@@ -236,13 +237,6 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	R_ASSERT					(M_SPAWN==dummy16);
 	tNetPacket.r_stringZ		(s_name			);
 	
-	if	(
-			!xr_strcmp(*s_name,"m_stalker_e") ||
-			!xr_strcmp(*s_name,"m_stalker_demo") ||
-			!xr_strcmp(*s_name,"m_stalker_wolf")
-		)
-		s_name					= "stalker";
-
 	string256					temp;
 	tNetPacket.r_stringZ		(temp);
 	set_name_replace			(temp);
