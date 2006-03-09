@@ -38,16 +38,6 @@ CHelicopter::~CHelicopter()
 void CHelicopter::setState(CHelicopter::EHeliState s)
 {
 	m_curState = s;
-	
-#ifdef DEBUG
-	LPCSTR str;
-	switch			(m_curState) {
-	case CHelicopter::eAlive:				str = "eAlive";				break;
-	case CHelicopter::eDead:				str = "eDead";					break;
-	default:								str = "unknown";				break;
-	};
-	if (bDebug)	Msg("---CHelicopter::state[%d]==(%s)", Device.dwTimeGlobal, str);
-#endif
 }
 
 
