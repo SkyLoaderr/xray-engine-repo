@@ -261,7 +261,7 @@ function move_mgr:setup_movement_by_patrol_path()
 	if self.current_point_index then
 		printf("start point index=%d", self.current_point_index)
 		self.object:set_start_point(self.current_point_index)
-		self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
+		self.object:set_patrol_path(self.path_walk, patrol.next,    patrol.continue, true)
 	else
 		self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
 	end
