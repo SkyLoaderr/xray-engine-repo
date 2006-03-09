@@ -192,7 +192,7 @@ function PsyAntenna:update			(dt)
 	if (self.intensity<0.0)			then self.intensity=0.0 end
 	if (self.intensity>1.0)			then self.intensity=1.0 end
 
---	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
+	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
 --	printf( "actor psy health = %f", db.actor.psy_health )
 
 --	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001))
@@ -212,6 +212,8 @@ function PsyAntenna:load( p )
 	self.intensity      = p:r_float()
 	self.intensity_base = p:r_float()
 	self.hit_intensity  = p:r_float()
+
+	printf( "PsyAntenna:load() intensity = %f (%f), hit = %f", self.intensity_base, self.intensity, self.hit_intensity )
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -307,7 +309,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 function save( p )
-	if psy_antenna then
+	if psy_antenna and not utils.level_changing() then
 		p:w_bool( true )
 
 		psy_antenna:save( p )
