@@ -109,7 +109,6 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 //	m_max_spawn_interval		= 0;
 	m_ini_file					= 0;
 
-#ifndef XRGAME_EXPORTS
 	if (pSettings->line_exist(caSection,"custom_data")) {
 		string_path				file_name;
 		FS.update_path			(file_name,"$game_config$",pSettings->r_string(caSection,"custom_data"));
@@ -129,7 +128,6 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 			FS.r_close			(reader);
 		}
 	}
-#endif
 
 #ifndef AI_COMPILER
 	m_script_clsid				= object_factory().script_clsid(m_tClassID);
