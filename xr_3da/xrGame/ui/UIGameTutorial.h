@@ -44,6 +44,7 @@ public:
 
 class CUISequenceItem
 {
+	xr_vector<int>			m_disabled_actions;
 protected:
 	enum {	
 		etiNeedPauseOn		= (1<<0),
@@ -66,10 +67,10 @@ public:
 	virtual void			Update				()=0;
 	virtual void			OnRender			()=0;
 	virtual void			OnKeyboardPress		(int dik)=0;
-	virtual bool			AllowKey			(int dik)		{return true;};
 
 	virtual bool			IsPlaying			()=0;
 
+	bool					AllowKey			(int dik);
 	bool					GrabInput			(){return !!m_flags.test(etiGrabInput);}
 };
 
@@ -94,7 +95,6 @@ public:
 	string64				m_pda_section;
 	Fvector2				m_desired_cursor_pos;
 	int						m_continue_dik_guard;
-	xr_vector<int>			m_disabled_actions;
 public:
 							CUISequenceSimpleItem(CUISequencer* owner):CUISequenceItem(owner){}
 	virtual					~CUISequenceSimpleItem();
@@ -106,7 +106,6 @@ public:
 	virtual void			Update				();
 	virtual void			OnRender			(){}
 	virtual void			OnKeyboardPress		(int dik);
-	virtual bool			AllowKey			(int dik);
 
 	virtual bool			IsPlaying			();
 };
@@ -119,6 +118,7 @@ class CUISequenceVideoItem: public CUISequenceItem
 		etiPlaying			= (1<<(eti_last+0)),
 		etiNeedStart		= (1<<(eti_last+1)),
 		etiDelayed			= (1<<(eti_last+2)),
+		etiBackVisible		= (1<<(eti_last+3)),
 	};
 	float					m_delay;
 	CUIStatic*				m_wnd;

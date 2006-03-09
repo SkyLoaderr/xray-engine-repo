@@ -7,6 +7,35 @@
 #include "../../xr_input.h"
 #include "../xr_level_controller.h"
 
+void CUISequenceItem::Load(CUIXml* xml, int idx)
+{
+	XML_NODE* _stored_root			= xml->GetLocalRoot();
+	xml->SetLocalRoot				(xml->NavigateToNode("item",idx));
+	int disabled_cnt				= xml->GetNodesNum	(xml->GetLocalRoot(), "disabled_key");
+	for(int i=0; i<disabled_cnt;++i){
+		LPCSTR str					= xml->Read			("disabled_key", i, NULL);
+		if(str){
+			for(int i=0; keybind[i].name; ++i){
+				if(0==_stricmp(keybind[i].name,str)){
+					m_disabled_actions.push_back(keybind[i].DIK);
+					break;
+				} 
+			}
+		}
+	};
+
+	xml->SetLocalRoot				(_stored_root);
+}
+
+bool CUISequenceItem::AllowKey(int dik)
+{
+	xr_vector<int>::iterator it = std::find(m_disabled_actions.begin(),m_disabled_actions.end(),key_binding[dik]);
+	if(it==m_disabled_actions.end())
+		return true;
+	else
+		return false;
+}
+
 CUISequencer::CUISequencer()
 {
 	m_bActive					= false;
@@ -92,7 +121,7 @@ void CUISequencer::OnFrame()
 
 void CUISequencer::OnRender	()
 {
-	m_UIWindow->Draw			();
+	if (m_UIWindow->IsShown())	m_UIWindow->Draw();
 	VERIFY						(m_items.size());
 	m_items.front()->OnRender	();
 }
@@ -174,14 +203,15 @@ void CUISequencer::IR_OnMouseWheel		(int direction)
 
 void CUISequencer::IR_OnKeyboardPress	(int dik)
 {
-	if(key_binding[dik]==kQUIT){
-		Stop		();
-		return;
-	}
 	if(m_items.size())	m_items.front()->OnKeyboardPress			(dik);
 	
 	bool b = true;
 	if(m_items.size()) b &= m_items.front()->AllowKey(dik);
+
+	if(b && (key_binding[dik]==kQUIT)){
+		Stop		();
+		return;
+	}
 
 	if(b&&!GrabInput())	m_pStoredInputReceiver->IR_OnKeyboardPress	(dik);
 }

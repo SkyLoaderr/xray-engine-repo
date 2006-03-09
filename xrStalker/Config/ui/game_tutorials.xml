@@ -26,15 +26,14 @@
 	<intro_game>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		<play_each_item>1</play_each_item>
-
 		<item type="video">
 			<sound>intro\intro_stalker</sound>
 			<pause_state>on</pause_state>
-			<delay>1</delay>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_stalker</texture>
 			</video_wnd>
@@ -47,20 +46,16 @@
 				<texture>intro\intro_mission</texture>
 			</video_wnd>
 		</item>
-	</intro_game>
-	
-	<intro_kill>
-		<global_wnd/>
-		
-		<play_each_item>1</play_each_item>
-
 		<item type="video">
-			<pause_state>on</pause_state>
+			<grab_input>1</grab_input>
+			<sound>intro\intro_kill</sound>
+			<back_show>off</back_show>
+			<disabled_key>quit</disabled_key>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_kill</texture>
 			</video_wnd>
 		</item>
-	</intro_kill>	
+	</intro_game>
 <!-- ------------------------------------------------------------------------- -->
 	<part_1_pda>
 	<global_wnd/>

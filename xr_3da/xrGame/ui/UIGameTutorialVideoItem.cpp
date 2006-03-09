@@ -15,7 +15,7 @@ extern ENGINE_API BOOL bShowPauseString;
 CUISequenceVideoItem::CUISequenceVideoItem(CUISequencer* owner):CUISequenceItem(owner)
 {
 	m_texture				= NULL;
-	m_flags.set				(etiPlaying|etiNeedStart|etiDelayed,FALSE);
+	m_flags.set				(etiPlaying|etiNeedStart|etiDelayed|etiBackVisible,FALSE);
 	m_delay					= 0.f;
 	m_wnd					= NULL;
 	m_delay					= 0.f;
@@ -36,6 +36,8 @@ bool CUISequenceVideoItem::IsPlaying()
 
 void CUISequenceVideoItem::Load(CUIXml* xml, int idx)
 {
+	CUISequenceItem::Load	(xml,idx);
+
 	XML_NODE* _stored_root	= xml->GetLocalRoot();
 	xml->SetLocalRoot		(xml->NavigateToNode("item",idx));
 	
@@ -45,6 +47,9 @@ void CUISequenceVideoItem::Load(CUIXml* xml, int idx)
 	
 	str						= xml->Read				("can_be_stopped",0,"on");
 	m_flags.set										(etiCanBeStopped,	0==_stricmp(str, "on"));
+
+	str						= xml->Read				("back_show",0,"on");
+	m_flags.set										(etiBackVisible,	0==_stricmp(str, "on"));
 
 	m_flags.set										(etiGrabInput,		TRUE);
 
@@ -89,8 +94,10 @@ void CUISequenceVideoItem::Update()
 				m_sound[1].play_at_pos	(NULL, Fvector().set(+0.5f,0.f,0.3f), sm_2D);
 				m_texture->video_Play	(FALSE,Device.dwTimeContinual);
 				m_flags.set	(etiNeedStart,FALSE);
+				CUIWindow* w			= m_owner->MainWnd()->FindChild("back");
+				if (w)					w->Show(m_flags.test(etiBackVisible));
 			}else{
-				m_flags.set	(etiPlaying,FALSE);
+				m_flags.set				(etiPlaying,FALSE);
 			}
 		}
 	}
@@ -122,6 +129,11 @@ void CUISequenceVideoItem::Start()
 
 	m_time_start				= Device.dwTimeContinual+iFloor(m_delay*1000.f);
 	m_flags.set					(etiDelayed,TRUE);
+
+	if (m_flags.test(etiBackVisible)){
+		CUIWindow* w			= m_owner->MainWnd()->FindChild("back");
+		if (w)					w->Show(true);
+	}
 }
 
 bool CUISequenceVideoItem::Stop	(bool bForce)
