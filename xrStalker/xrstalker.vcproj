@@ -3032,6 +3032,9 @@
 							RelativePath=".\Scripts\ph_impulse.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\ph_oscillate.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\ph_sound.script">
 						</File>
 					</Filter>
