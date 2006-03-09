@@ -136,8 +136,8 @@
         <icon height="50" width="50" x="150" y="0">
             ui\ui_icons_task
         </icon>
-        <map_location_type>
-            blue_location
+        <map_location_type hint="val_captive_help_1_hint">
+            green_location
         </map_location_type>
         <object_story_id>
             val_escort_nap1
@@ -164,7 +164,7 @@
             ui\ui_icons_task
         </icon>
         <map_location_type hint="bar_darklab_documents_1_hint">
-            green_location
+            blue_location
         </map_location_type>
         <object_story_id>
             val_borov
@@ -190,9 +190,7 @@
             val_x18_door_open
         </infoportion_complete>
     </objective>
-    
 </game_task>
-
 <game_task id="bar_darklab_documents2">
     <title>
         bar_darklab_documents2
