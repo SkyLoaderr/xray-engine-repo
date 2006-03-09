@@ -63,7 +63,6 @@ function notify_on_use(victim, who)
 			end
 		elseif xr_wounded.is_wounded(victim) then
 			-- Юзание раненого
-			return
 		elseif xr_sleeper.is_npc_asleep(victim) then
 			-- Юзание спящего
 			xr_sound.set_sound_play(victim, "use_no_sleep")
@@ -73,14 +72,12 @@ function notify_on_use(victim, who)
 			xr_abuse.add_abuse(victim, 1)
 		elseif db.storage[victim:id()].active_scheme == "kamp" then
 			-- Юзание чувака в лагере
-			return	
 		else
 			-- Дефолт
 			xr_sound.set_sound_play(victim, "use_no_default")
 			xr_abuse.add_abuse(victim, 1)
 		end
-	end	
-	
+	end		
 end
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
