@@ -190,7 +190,8 @@ void CPHShell::PhDataUpdate(dReal step){
 	{
 		(*i)->PhDataUpdate(step);
 		dBodyID body=(*i)->get_body();
-		if(body&&disable&&dBodyIsEnabled(body))disable=false;
+		if(body&&disable&&dBodyIsEnabled(body))
+											disable=false;
 	}
 	if(disable) 
 	{

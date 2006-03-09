@@ -100,7 +100,7 @@ void	CBaseDisableData::Disabling()
 	if(dBodyIsEnabled(body))
 	{
 		ReEnable();
-		if(!m_disabled&& (ph_world->disable_count%m_frames!=m_count))
+		if(!m_disabled&& (ph_world->disable_count!=m_count%worldDisablingParams.objects_params.L2frames))
 		{
 			m_count=m_frames+ph_world->disable_count;
 		}
