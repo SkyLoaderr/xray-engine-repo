@@ -3,6 +3,8 @@
 #include "GameSpy_FuncDefs.h"
 #include "GameSpy_QR2.h"
 
+class CServerList;
+
 struct GameInfo	{
 	shared_str	InfoName;
 	shared_str	InfoData;
@@ -73,11 +75,13 @@ private:
 
 	CGameSpy_QR2	m_QR2;
 
+	CServerList*		m_pServerList;
+
 public:
 	CGameSpy_Browser();
 	~CGameSpy_Browser();
 
-	bool			Init();
+	bool			Init(CServerList* pServerList);
 	void			RefreshList_Full(bool Local);
 	void			RefreshQuick(int Index);
 	
@@ -87,12 +91,17 @@ public:
 	void			GetServerInfoByIndex(ServerInfo* pServerInfo, int idx);
 
 	void			OnUpdateFailed		(void* server);
+	void			Update();	
+
+	void			UpdateServerList	();
+
 private:
 	//------------------------------- GameSpy_ServerBrowser -----------------------
 	GAMESPY_FN_VAR_DECL(void*, ServerBrowserNew, (const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, fnSBCallback callback, void *instance));
 	GAMESPY_FN_VAR_DECL(void, ServerBrowserFree, (void* sb));
 	GAMESPY_FN_VAR_DECL(void, ServerBrowserClear, (void* sb));
-
+	
+	GAMESPY_FN_VAR_DECL(SBError, ServerBrowserThink, (void* sb));
 	GAMESPY_FN_VAR_DECL(SBState, ServerBrowserState, (void* sb));
 	GAMESPY_FN_VAR_DECL(void, ServerBrowserHalt, (void* sb));
 	GAMESPY_FN_VAR_DECL(SBError, ServerBrowserUpdate, (void* sb, SBBool async, SBBool disconnectOnComplete, const unsigned char *basicFields, int numBasicFields, const char *serverFilter));

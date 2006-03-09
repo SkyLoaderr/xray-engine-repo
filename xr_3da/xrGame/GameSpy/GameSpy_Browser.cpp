@@ -3,6 +3,7 @@
 #include "..\Spectator.h"
 #include "GameSpy_Browser.h"
 #include "GameSpy_Base_Defs.h"
+#include "..\ui\ServerList.h"
 
 
 #include "GameSpy_Available.h"
@@ -26,6 +27,7 @@ CGameSpy_Browser::CGameSpy_Browser()
 	//-------------------------
 	m_pGSBrowser = NULL;
 	//-------------------------
+	m_pServerList = NULL;
 	
 };
 
@@ -54,6 +56,8 @@ void	CGameSpy_Browser::LoadGameSpy()
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserNew);	
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserFree);
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserClear);
+	
+	GAMESPY_LOAD_FN(xrGS_ServerBrowserThink);
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserState);
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserHalt);	
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserUpdate);
@@ -86,7 +90,7 @@ void	CGameSpy_Browser::LoadGameSpy()
 
 }
 
-bool	CGameSpy_Browser::Init()
+bool	CGameSpy_Browser::Init(CServerList* pServerList)
 {
 	//-------------------------------------
 	CGameSpy_Available GSA;
@@ -102,6 +106,8 @@ bool	CGameSpy_Browser::Init()
 	else
 		Msg("- GameSpy Server Browser Inited!");
 
+	m_pServerList = pServerList;
+
 	return true;
 };
 
@@ -113,9 +119,7 @@ void			CGameSpy_Browser::RefreshList_Full(bool Local)
 		xrGS_ServerBrowserHalt(m_pGSBrowser);
 		Msg("GameSpy Refresh Stopped\n");		
 	};
-
 	xrGS_ServerBrowserClear(m_pGSBrowser);
-//	GameSpy_Browser_ClearServersList();
 
 	// fields we're interested in	
 	int numFields = sizeof(Fields_Of_Interest) / sizeof(Fields_Of_Interest[0]);
@@ -123,9 +127,9 @@ void			CGameSpy_Browser::RefreshList_Full(bool Local)
 	// do an update
 	SBError error;
 	if(!Local)
-		error = xrGS_ServerBrowserUpdate(m_pGSBrowser, SBFalse, SBFalse, Fields_Of_Interest, numFields, (char *)(const char *)"");
+		error = xrGS_ServerBrowserUpdate(m_pGSBrowser, m_pServerList ? SBTrue : SBFalse, SBFalse, Fields_Of_Interest, numFields, (char *)(const char *)"");
 	else
-		error = xrGS_ServerBrowserLANUpdate(m_pGSBrowser, SBFalse, START_PORT, END_PORT);
+		error = xrGS_ServerBrowserLANUpdate(m_pGSBrowser, m_pServerList ? SBTrue : SBFalse, START_PORT, END_PORT);
 
 	if (error != sbe_noerror)
 	{
@@ -146,6 +150,7 @@ void __cdecl SBCallback(void* sb, SBCallbackReason reason, void* server, void *i
 	case sbc_serverupdated : //server information has been updated - either basic or full information is now available about this server
 		{
 			Msg("sbc_serverupdated");
+			pGSBrowser->UpdateServerList();
 		}break;
 	case sbc_serverupdatefailed : //an attempt to retrieve information about this server, either directly or from the master, failed
 		{
@@ -367,4 +372,14 @@ void			CGameSpy_Browser::RefreshQuick(int Index)
 void			CGameSpy_Browser::OnUpdateFailed		(void* server)
 {
 	xrGS_ServerBrowserRemoveServer(m_pGSBrowser, server);
+}
+
+void			CGameSpy_Browser::Update()
+{
+	xrGS_ServerBrowserThink(m_pGSBrowser);
+};
+
+void			CGameSpy_Browser::UpdateServerList()
+{
+	if (m_pServerList) m_pServerList->RefreshList();
 }

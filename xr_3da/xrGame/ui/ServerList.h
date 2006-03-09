@@ -52,8 +52,8 @@ public:
 
 	virtual void	RefreshGameSpyList	(bool Local);
 			void	RefreshQuick();
-			void	ShowServerInfo();
-
+			void	ShowServerInfo();			
+	virtual	void	RefreshList();
 
 protected:
 			bool IsValidItem(ServerInfo& item);
@@ -101,5 +101,5 @@ protected:
 	shared_str		m_sort_func;
 	xr_vector<int>	m_tmp_srv_lst;
 
-	virtual	void	RefreshList();
+	
 };

@@ -15,7 +15,7 @@ CGameSpy_Browser* g_gs_browser = NULL;
 
 
 CServerList::CServerList(){
-	m_GSBrowser.Init();
+	m_GSBrowser.Init(this);
 //	m_list[LST_SERVER].ShowSelectedItem();
 //	AttachChild(&m_list[LST_SERVER]);
 
@@ -61,6 +61,9 @@ void CServerList::Init(float x, float y, float width, float height){
 }
 
 void CServerList::Update(){
+	
+	m_GSBrowser.Update();
+
 	if (m_bAnimation)
 	{
 		m_pAnimation->Update();

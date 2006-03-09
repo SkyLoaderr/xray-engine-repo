@@ -25,6 +25,11 @@ XRGAMESPY_API void xrGS_ServerBrowserClear(ServerBrowser sb)
 	ServerBrowserClear(sb);
 };
 
+XRGAMESPY_API SBError xrGS_ServerBrowserThink(ServerBrowser sb)
+{
+	return ServerBrowserThink(sb);
+};
+
 XRGAMESPY_API SBState xrGS_ServerBrowserState(ServerBrowser sb)
 {
 	return ServerBrowserState(sb);

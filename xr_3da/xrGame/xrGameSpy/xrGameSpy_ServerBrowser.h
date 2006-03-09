@@ -9,6 +9,8 @@ extern "C"
 	EXPORT_FN_DECL(ServerBrowser, ServerBrowserNew, (const gsi_char *queryForGamename, const gsi_char *queryFromGamename, const gsi_char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, ServerBrowserCallback callback, void *instance));
 	EXPORT_FN_DECL(void, ServerBrowserFree, (ServerBrowser sb));
 	EXPORT_FN_DECL(void, ServerBrowserClear, (ServerBrowser sb));
+
+	EXPORT_FN_DECL(SBError, ServerBrowserThink, (ServerBrowser sb));
 	EXPORT_FN_DECL(SBState, ServerBrowserState, (ServerBrowser sb));
 	EXPORT_FN_DECL(void, ServerBrowserHalt, (ServerBrowser sb));
 	EXPORT_FN_DECL(SBError, ServerBrowserUpdate, (ServerBrowser sb, SBBool async, SBBool disconnectOnComplete, const unsigned char *basicFields, int numBasicFields, const gsi_char *serverFilter));
