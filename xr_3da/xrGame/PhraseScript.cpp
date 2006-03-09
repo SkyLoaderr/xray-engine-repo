@@ -14,6 +14,7 @@
 #include "script_space.h"
 #include "ai_debug.h"
 #include "ui/xrXMLParser.h"
+#include "actor.h"
 
 CPhraseScript::CPhraseScript	()
 {
