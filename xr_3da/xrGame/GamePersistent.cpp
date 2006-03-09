@@ -264,11 +264,34 @@ void CGamePersistent::start_game_intro		()
 void CGamePersistent::update_game_intro			()
 {
 	if(m_intro && (false==m_intro->IsActive())){
+		m_intro_event.bind		(this,&CGamePersistent::start_kill_intro);
+		xr_delete				(m_intro);
+		psSoundVMusic			= save_music_vol;
+	}
+}
+
+void CGamePersistent::start_kill_intro		()
+{
+	if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame==0){
+		m_intro_event.bind		(this,&CGamePersistent::update_kill_intro);
+		VERIFY				(NULL==m_intro);
+		m_intro				= xr_new<CUISequencer>();
+		m_intro->Start		("intro_kill");
+		save_music_vol		= psSoundVMusic;
+		psSoundVMusic		= 0.f;
+	}
+}
+
+void CGamePersistent::update_kill_intro			()
+{
+	::Sound->set_volume			(1.f);
+	if(m_intro && (false==m_intro->IsActive())){
 		m_intro_event			= 0;
 		xr_delete				(m_intro);
 		psSoundVMusic			= save_music_vol;
 	}
 }
+
 
 void CGamePersistent::OnFrame	()
 {

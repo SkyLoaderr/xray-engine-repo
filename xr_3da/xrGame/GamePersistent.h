@@ -26,6 +26,8 @@ class CGamePersistent:
 	void xr_stdcall		update_logo_intro		();
 	void xr_stdcall		start_game_intro		();
 	void xr_stdcall		update_game_intro		();
+	void xr_stdcall		start_kill_intro		();
+	void xr_stdcall		update_kill_intro		();
 
 #ifdef DEBUG
 	u32					m_frame_counter;

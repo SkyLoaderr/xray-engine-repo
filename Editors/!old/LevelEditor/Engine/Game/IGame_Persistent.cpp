@@ -3,6 +3,7 @@
 
 #include "IGame_Persistent.h"
 #include "environment.h"
+#include "x_ray.h"
 #ifndef _EDITOR
 #	include "IGame_Level.h"
 #	include "XR_IOConsole.h"
@@ -88,6 +89,7 @@ void IGame_Persistent::Disconnect	()
 void IGame_Persistent::OnGameStart	()
 {
 #ifndef _EDITOR
+	pApp->LoadTitle						("Prefetch...");
 	if (strstr(Core.Params,"-noprefetch"))	return;
 
 	// prefetch game objects & models
