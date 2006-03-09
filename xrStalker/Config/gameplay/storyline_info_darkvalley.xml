@@ -47,6 +47,9 @@
     <text>
         val_captive_help_txt
     </text>
+    <texture height="50" width="50" x="0" y="0">
+        ui\ui_icon_photo
+    </texture>
 </article>
 <article article_type="task" group="bar_darklab_documents" id="bar_darklab_documents_art" name="bar_darklab_documents">
     <texture height="100" width="100" x="500" y="150">
