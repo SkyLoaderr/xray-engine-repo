@@ -432,6 +432,7 @@ function estats()
 		for kk,vv in pairs(v.respawn_section) do
 			local tt = v.sectSpawnProps[vv.section]
 			if tt.community == "nil" or tt.rank == "nil" then
+				printf("respawner [%s]", tostring(v:name()))
 				printf("Section [%s] community[%s] rank [%s]", vv.section, tt.community, tt.rank)
 			end
 		end
