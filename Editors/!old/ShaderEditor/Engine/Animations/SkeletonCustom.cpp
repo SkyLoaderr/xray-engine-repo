@@ -219,7 +219,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	R_ASSERT		(data->find_chunk(OGF_S_BONE_NAMES));
 
     visimask.zero	();
-	u32 dwCount 	= data->r_u32();
+	int dwCount 	= data->r_u32();
 	// Msg				("!!! %d bones",dwCount);
 	// if (dwCount >= 64)	Msg			("!!! More than 64 bones is a crazy thing! (%d), %s",dwCount,N);
 	VERIFY3			(dwCount < 64, "More than 64 bones is a crazy thing!",N);
