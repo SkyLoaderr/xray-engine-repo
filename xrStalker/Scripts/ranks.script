@@ -15,7 +15,7 @@ local ranks_loaded = false
 -- парсит заданную строку рангов в заданную таблицу.
 -- возвращает название максимального ранга
 function parse_ranks( s, tbl )
-	s = "0," .. s .. ",100"
+	s = "0," .. s .. ",10000"
 
 	local t = parse_names( s )
 	local i = 2
@@ -39,6 +39,8 @@ function read_all_ranks()
 	monster_max_rank_name = parse_ranks( ltx:r_string( "game_relations", "monster_rating" ), monster_rank_intervals )
 
 	ranks_loaded = true
+
+--	print_table( stalker_rank_intervals )
 end
 
 -- 
