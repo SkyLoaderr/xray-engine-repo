@@ -5,7 +5,7 @@
 #include "../anim_triple.h"
 #include "../../../script_export_space.h"
 
-#define FAKE_DEATH_TYPES_COUNT	3
+#define FAKE_DEATH_TYPES_COUNT	4
 
 class CZombie :	public CBaseMonster,
 				public CControlledEntity<CZombie> {
