@@ -628,7 +628,7 @@ void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 zone_team)
 };
 
 BOOL	g_bAfReturnPlayersToBases = FALSE;
-
+BOOL	game_sv_ArtefactHunt::Get_ReturnPlayers() {return g_bAfReturnPlayersToBases; };
 void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 {
 	if (m_iReinforcementTime == -1 || g_bAfReturnPlayersToBases) 
@@ -889,6 +889,10 @@ void				game_sv_ArtefactHunt::OnTimelimitExceed		()
 };
 
 BOOL	g_bBearerCantSprint = TRUE;
+BOOL	game_sv_ArtefactHunt::Get_BearerCantSprint		()
+{
+	return g_bBearerCantSprint;
+}
 void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
@@ -1149,6 +1153,7 @@ void	game_sv_ArtefactHunt::CheckForTeamWin()
 }
 
 BOOL	g_bShildedBases = TRUE;
+BOOL	game_sv_ArtefactHunt::Get_ShieldedBases()	{ return g_bShildedBases; };
 void	game_sv_ArtefactHunt::check_Player_for_Invincibility	(game_PlayerState* ps)
 {
 	if (!ps) return;
@@ -1197,7 +1202,7 @@ void game_sv_ArtefactHunt::ConsoleCommands_Create	()
 	CMD_ADD(CCC_SV_Int,"sv_artefact_respawn_delta", (int*)&m_dwArtefactRespawnDelta,0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_artefacts_count", (int*)&m_dwArtefactsNum, 1,100,g_bConsoleCommandsCreated_AHUNT,Cmnd);
 	CMD_ADD(CCC_SV_Int,"sv_artefact_stay_time", (int*)&m_dwArtefactStayTime, 0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_reinforcement_time", (int*)&m_iReinforcementTime, 0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_reinforcement_time", (int*)&m_iReinforcementTime, -1,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
 	//-------------------------------------
 	g_bConsoleCommandsCreated_AHUNT = true;
 };

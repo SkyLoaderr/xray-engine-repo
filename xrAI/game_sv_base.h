@@ -30,6 +30,13 @@ protected:
 	virtual		void				ConsoleCommands_Create	();
 	virtual		void				ConsoleCommands_Clear	();
 
+	DEF_DEQUE(MAP_ROTATION_LIST,	xr_string);
+	bool							m_bMapRotation;
+	bool							m_bMapNeedRotation;
+	bool							m_bMapSwitched;
+	bool							m_bFastRestart;
+	MAP_ROTATION_LIST				m_pMapRotation_List;
+
 public:
 #define		TEAM_COUNT 4
 
@@ -39,16 +46,9 @@ public:
 	DEF_VECTOR(RPRef, RPoint*);
 	RPRef							rpointsBlocked;
 	
-	// Вектор имен скинов комманды
-	DEF_DEQUE(MAP_ROTATION_LIST,	xr_string);
-
-	bool							m_bMapRotation;
-	bool							m_bMapNeedRotation;
-	bool							m_bMapSwitched;
-	bool							m_bFastRestart;
-	MAP_ROTATION_LIST				m_pMapRotation_List;
-
 	virtual		void				SaveMapList				();
+	virtual		bool				HasMapRotation			() {return m_bMapRotation; };
+	
 /*	
 	// scripts
 	u64								m_qwStartProcessorTime;
@@ -74,7 +74,7 @@ public:
 	virtual		void				OnPrevMap				()									{}
 	virtual		bool				SwitchToNextMap			()	{ return m_bMapNeedRotation; };
 	
-	virtual		BOOL				IsVoteEnabled			()	{return m_bVotingEnabled;};
+	virtual		BOOL				IsVotingEnabled			()	{return m_bVotingEnabled;};
 	virtual		bool				IsVotingActive			()	{ return false; };
 	virtual		void				SetVotingActive			( bool Active )	{ };
 	virtual		void				OnVoteStart				(LPCSTR VoteCommand, ClientID sender)			{};

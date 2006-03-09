@@ -11,9 +11,17 @@ struct GameInfo	{
 
 struct PlayerInfo {
 	string128	Name;
-	int			Frags;
-	int			Deaths;
-	int			Team;
+	s16			Frags;
+	u16			Deaths;
+	u8			Rank;
+	u8			Team;
+	bool		Spectator;
+	u8			Artefacts;
+};
+
+struct TeamInfo
+{
+	u8			Score;
 };
 
 struct ServerInfo{
@@ -23,9 +31,11 @@ struct ServerInfo{
 	string128	m_ServerName;
 	string128	m_SessionName;
 	string128	m_ServerGameType;
+	u8			m_GameType;
 
 	s16						m_ServerNumPlayers;
 	s16						m_ServerMaxPlayers;
+	s16						m_ServerNumTeams;
 	bool					m_bDedicated;
 	bool					m_bFFire;
 	s16						m_s16FFire;
@@ -35,6 +45,7 @@ struct ServerInfo{
 
 	xr_vector<GameInfo>		m_aInfos;
 	xr_vector<PlayerInfo>	m_aPlayers;
+	xr_vector<TeamInfo>		m_aTeams;
 
 	int						Index;
 

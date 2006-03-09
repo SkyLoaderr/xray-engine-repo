@@ -198,7 +198,17 @@ public:
 	virtual		void				check_ForceRespawn		();
 	virtual		BOOL				IsDamageBlockIndEnabled	() {return m_bDamageBlockIndicators; };
 	virtual		void				on_death				(CSE_Abstract *e_dest, CSE_Abstract *e_src);
-	
+	//---------------------------------------------------------------------------------------------------
+	virtual		s32					GetTimeLimit			() {return timelimit; };
+	virtual		s32					GetFragLimit			() {return fraglimit; };
+	virtual		u32					GetDMBLimit				() {return damageblocklimit; };
+	virtual		u32					GetForceRespawn			() {return m_u32ForceRespawn; };
+	virtual		u32					GetWarmUpTime			() {return m_dwWarmUp_MaxTime; };
+	virtual		BOOL				IsAnomaliesEnabled		() {return m_bAnomaliesEnabled; };
+	virtual		u32					GetAnomaliesTime		() {return m_dwAnomalySetLengthTime; };
+
+	virtual		u32					GetNumTeams				() {return teams.size();};
+		
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_sv_Deathmatch)

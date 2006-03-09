@@ -1345,7 +1345,7 @@ public:
 			return;
 		}
 
-		if (!Game().IsVoteEnabled())
+		if (!Game().IsVotingEnabled())
 		{
 			Msg("! Voting is disabled by server!");
 			return;
@@ -1384,7 +1384,7 @@ public:
 			return;
 		}
 
-		if (!Level().Server->game->IsVoteEnabled())
+		if (!Level().Server->game->IsVotingEnabled())
 		{
 			Msg("! Voting is disabled by server!");
 			return;
@@ -1422,7 +1422,7 @@ public:
 			return;
 		}
 
-		if (!Game().IsVoteEnabled())
+		if (!Game().IsVotingEnabled())
 		{
 			Msg("! Voting is disabled by server!");
 			return;
@@ -1460,7 +1460,7 @@ public:
 			return;
 		}
 
-		if (!Game().IsVoteEnabled())
+		if (!Game().IsVotingEnabled())
 		{
 			Msg("! Voting is disabled by server!");
 			return;

@@ -125,6 +125,15 @@ public:
 	virtual		void				CheckForTeamWin				();
 	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;}
 
+	//-----------------------------------------------------------------------------
+	virtual		int					Get_ArtefactsCount			() {return m_dwArtefactsNum; };
+	virtual		u32					Get_ArtefactsRespawnDelta	() {return m_dwArtefactRespawnDelta; };
+	virtual		u32					Get_ArtefactsStayTime		() {return m_dwArtefactStayTime; };
+	virtual		int					Get_ReinforcementTime		() {return m_iReinforcementTime; };
+	virtual		BOOL				Get_ShieldedBases			();
+	virtual		BOOL				Get_ReturnPlayers			();
+	virtual		BOOL				Get_BearerCantSprint		();
+
 	//  [7/5/2005]
 #ifdef DEBUG
 	virtual		void				OnRender				();

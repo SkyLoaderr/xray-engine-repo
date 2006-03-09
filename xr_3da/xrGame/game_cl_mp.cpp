@@ -208,12 +208,12 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			}break;
 		case kVOTEYES:
 			{
-				if (IsVoteEnabled() && IsVotingActive())
+				if (IsVotingEnabled() && IsVotingActive())
 					SendVoteYesMessage();
 			}break;
 		case kVOTENO:
 			{
-				if (IsVoteEnabled() && IsVotingActive())
+				if (IsVotingEnabled() && IsVotingActive())
 					SendVoteNoMessage();
 			}break;
 		case kSPEECH_MENU_0:
@@ -425,7 +425,7 @@ void game_cl_mp::shedule_Update(u32 dt)
 void game_cl_mp::SendStartVoteMessage	(LPCSTR args)
 {
 	if (!args) return;
-	if (!IsVoteEnabled()) return;
+	if (!IsVotingEnabled()) return;
 	NET_Packet P;
 	Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
 	P.w_u16(GAME_EVENT_VOTE_START);
@@ -435,7 +435,7 @@ void game_cl_mp::SendStartVoteMessage	(LPCSTR args)
 
 void game_cl_mp::SendVoteYesMessage		()	
 {
-	if (!IsVoteEnabled() || !IsVotingActive()) return;
+	if (!IsVotingEnabled() || !IsVotingActive()) return;
 	NET_Packet P;
 	Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
 	P.w_u16(GAME_EVENT_VOTE_YES);
@@ -443,7 +443,7 @@ void game_cl_mp::SendVoteYesMessage		()
 };
 void game_cl_mp::SendVoteNoMessage		()	
 {
-	if (!IsVoteEnabled() || !IsVotingActive()) return;
+	if (!IsVotingEnabled() || !IsVotingActive()) return;
 	NET_Packet P;
 	Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
 	P.w_u16(GAME_EVENT_VOTE_NO);

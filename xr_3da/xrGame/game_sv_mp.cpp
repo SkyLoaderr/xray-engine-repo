@@ -48,7 +48,7 @@ void	game_sv_mp::Update	()
 		Level().Send(P,net_flags(TRUE,TRUE));
 	};
 
-	if (IsVoteEnabled() && IsVotingActive()) UpdateVote();
+	if (IsVotingEnabled() && IsVotingActive()) UpdateVote();
 	//-------------------------------------------------------
 	UpdatePlayersMoney();
 }
@@ -169,19 +169,19 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 		}break;
 	case GAME_EVENT_VOTE_START:
 		{
-			if (!IsVoteEnabled()) break;
+			if (!IsVotingEnabled()) break;
 			string1024 VoteCommand;
 			P.r_stringZ(VoteCommand);
 			OnVoteStart(VoteCommand, sender);
 		}break;
 	case GAME_EVENT_VOTE_YES:
 		{
-			if (!IsVoteEnabled()) break;
+			if (!IsVotingEnabled()) break;
 			OnVoteYes(sender);
 		}break;
 	case GAME_EVENT_VOTE_NO:
 		{
-			if (!IsVoteEnabled()) break;
+			if (!IsVotingEnabled()) break;
 			OnVoteNo(sender);
 		}break;
 	case GAME_EVENT_PLAYER_NAME:
@@ -234,14 +234,14 @@ void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
 	//-------------------------------------
-	u8 SpectatorModes = 0;
-	SpectatorModes |= m_bSpectator_FreeFly	  ? (1<<CSpectator::eacFreeFly	) : 0;
-	SpectatorModes |= m_bSpectator_FirstEye	  ? (1<<CSpectator::eacFirstEye	) : 0;
-	SpectatorModes |= m_bSpectator_LookAt	  ? (1<<CSpectator::eacLookAt	) : 0;
-	SpectatorModes |= m_bSpectator_FreeLook	  ? (1<<CSpectator::eacFreeLook	) : 0;
-	SpectatorModes |= m_bSpectator_TeamCamera ? (1<<CSpectator::eacMaxCam	) : 0;	
+	m_u8SpectatorModes = 0;
+	m_u8SpectatorModes |= m_bSpectator_FreeFly	  ? (1<<CSpectator::eacFreeFly	) : 0;
+	m_u8SpectatorModes |= m_bSpectator_FirstEye	  ? (1<<CSpectator::eacFirstEye	) : 0;
+	m_u8SpectatorModes |= m_bSpectator_LookAt	  ? (1<<CSpectator::eacLookAt	) : 0;
+	m_u8SpectatorModes |= m_bSpectator_FreeLook	  ? (1<<CSpectator::eacFreeLook	) : 0;
+	m_u8SpectatorModes |= m_bSpectator_TeamCamera ? (1<<CSpectator::eacMaxCam	) : 0;	
 
-	P.w_u8	(SpectatorModes);
+	P.w_u8	(m_u8SpectatorModes);
 };
 
 void	game_sv_mp::RespawnPlayer			(ClientID id_who, bool NoSpectator)
@@ -582,7 +582,7 @@ _votecommands	votecommands[] = {
 
 void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 {
-	if (!IsVoteEnabled()) return;
+	if (!IsVotingEnabled()) return;
 	char	CommandName[256];	CommandName[0]=0;
 	char	CommandParams[256];	CommandParams[0]=0;
 	sscanf	(VoteCommand,"%s ", CommandName);
@@ -643,7 +643,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 
 void		game_sv_mp::UpdateVote				()
 {
-	if (!IsVoteEnabled() || !IsVotingActive()) return;
+	if (!IsVotingEnabled() || !IsVotingActive()) return;
 
 	u32 NumAgreed = 0;
 	u32 NumToCount = 0;

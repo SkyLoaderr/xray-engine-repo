@@ -55,6 +55,7 @@ protected:
 
 	virtual		void				UpdatePlayersMoney		();
 
+	u8			m_u8SpectatorModes		;
 	BOOL		m_bSpectator_FreeFly	;
 	BOOL		m_bSpectator_FirstEye	;
 	BOOL		m_bSpectator_LookAt		;
@@ -131,6 +132,8 @@ public:
 
 	virtual		u32					GetTeamCount			()	{return TeamList.size();};	
 				TeamStruct*			GetTeamData				(u32 Team);
+
+	virtual		u8					GetSpectatorModes		() {return m_u8SpectatorModes;};
     
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

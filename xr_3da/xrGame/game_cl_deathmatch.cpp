@@ -520,7 +520,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				}
 
 				u32 CurTime = Level().timeServer();
-				if (IsVoteEnabled() && IsVotingActive() && m_dwVoteEndTime>=CurTime)
+				if (IsVotingEnabled() && IsVotingActive() && m_dwVoteEndTime>=CurTime)
 				{
 					u32 TimeLeft = m_dwVoteEndTime - Level().timeServer();
 					string1024 VoteTimeResStr;

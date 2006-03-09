@@ -101,7 +101,7 @@ public:
 	virtual		void				ChatSayAll				(const shared_str &phrase)	{};
 	virtual		void				OnChatMessage			(NET_Packet* P)	{};
 
-	virtual		bool				IsVoteEnabled			()	{return m_bVotingEnabled;};
+	virtual		bool				IsVotingEnabled			()	{return m_bVotingEnabled;};
 	virtual		bool				IsVotingActive			()	{ return false; };
 	virtual		void				SetVotingActive			( bool Active )	{ };
 	virtual		void				SendStartVoteMessage	(LPCSTR args)	{};

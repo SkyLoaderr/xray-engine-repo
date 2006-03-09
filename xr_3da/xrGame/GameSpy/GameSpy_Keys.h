@@ -34,7 +34,49 @@
 #define TEAM_T_KEY		28
 #define SCORE_T_KEY		29
 
-#define	DEDICATED_KEY			100
-#define	FFIRE_KEY				101
-#define	FFIREAMOUNT_KEY			102
-#define DAMAGEBLOCKIND_KEY		103
+//----- ADDITIONAL KEYS ---------------------
+//---- Game Keys
+//---- Global Keys ----
+#define GAMETYPE_NAME_KEY						100
+#define	DEDICATED_KEY							101
+//---- game_sv_base ---							
+#define	G_MAP_ROTATION_KEY						102
+#define	G_VOTING_ENABLED_KEY					103
+//---- game sv mp ----							
+#define	G_SPECTATOR_MODES_KEY					104
+//---- game_sv_deathmatch ----					
+#define	G_FRAG_LIMIT_KEY						105
+#define	G_TIME_LIMIT_KEY						106
+#define	G_DAMAGE_BLOCK_TIME_KEY					107
+#define		G_DAMAGE_BLOCK_INDICATOR_KEY		108
+#define	G_ANOMALIES_ENABLED_KEY					109
+#define		G_ANOMALIES_TIME_KEY				110
+#define	G_WARM_UP_TIME_KEY						111
+#define	G_FORCE_RESPAWN_KEY						112
+//---- game_sv_teamdeathmatch ----				
+#define	G_AUTO_TEAM_BALANCE_KEY					113
+#define	G_AUTO_TEAM_SWAP_KEY					114
+#define	G_FRIENDLY_INDICATORS_KEY				115
+#define	G_FRIENDLY_NAMES_KEY					116
+#define	G_FRIENDLY_FIRE_KEY						117
+//---- game_sv_artefacthunt ----				
+#define	G_ARTEFACTS_COUNT_KEY					118
+#define	G_ARTEFACT_STAY_TIME_KEY				119
+#define	G_ARTEFACT_RESPAWN_TIME_KEY				120
+#define	G_REINFORCEMENT_KEY						121
+#define	G_SHIELDED_BASES_KEY					122
+#define	G_RETURN_PLAYERS_KEY					123
+#define	G_BEARER_CANT_SPRINT_KEY				124
+												
+//---- Player keys								
+#define P_NAME__KEY								125
+#define P_FRAGS__KEY							126
+#define P_DEATH__KEY							127
+#define P_RANK__KEY								128
+#define P_TEAM__KEY								129
+#define P_SPECTATOR__KEY						130
+#define P_ARTEFACTS__KEY						131
+
+//---- Team keys
+//#define T_NAME_KEY							
+#define T_SCORE_T_KEY							132
