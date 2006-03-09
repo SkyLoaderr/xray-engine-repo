@@ -348,8 +348,6 @@
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj = 1 \n
 			device_torch \n
 			wpn_bm16 \n
 			ammo_12x70_buck \n
@@ -434,8 +432,6 @@
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj = 1 \n
 			device_torch \n
 			wpn_bm16 \n
 			ammo_12x70_buck \n		
