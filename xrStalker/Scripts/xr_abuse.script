@@ -45,6 +45,7 @@ class "CAbuseManager"
 function CAbuseManager:__init(npc, storage)
 	self.npc = npc
 	self.a = storage
+	self.enable = true
 	self.abuse_rate = 1
 	self.abuse_value = 0
 	self.abuse_threshold = 5
@@ -75,10 +76,18 @@ function CAbuseManager:update()
 	return false
 end
 function CAbuseManager:addAbuse(value)
-	self.abuse_value = self.abuse_value + value*self.abuse_rate
+	if self.enable == true then
+		self.abuse_value = self.abuse_value + value*self.abuse_rate
+	end
 end
 function CAbuseManager:clearAbuse()
 	self.abuse_value = 0
+end
+function CAbuseManager:disableAbuse()
+	self.enable = false
+end
+function CAbuseManager:enableAbuse()
+	self.enable = true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -136,5 +145,17 @@ function clear_abuse(npc)
 	local t = db.storage[npc:id()].abuse
 	if t then
 		t.abuse_manager:clearAbuse()
+	end
+end
+function disable_abuse(npc)
+	local t = db.storage[npc:id()].abuse
+	if t then
+		t.abuse_manager:disableAbuse()
+	end
+end
+function enable_abuse(npc)
+	local t = db.storage[npc:id()].abuse
+	if t then
+		t.abuse_manager:enableAbuse()
 	end
 end
