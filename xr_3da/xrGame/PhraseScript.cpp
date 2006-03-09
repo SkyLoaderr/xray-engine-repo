@@ -62,7 +62,8 @@ bool  CPhraseScript::CheckInfo		(const CInventoryOwner* pOwner) const
 			break;
 		}
 */
-		if (!pOwner->HasInfo(m_HasInfo[i])) {
+//.		if (!pOwner->HasInfo(m_HasInfo[i])) {
+		if (!Actor()->HasInfo(m_HasInfo[i])) {
 #ifdef DEBUG
 			if(psAI_Flags.test(aiDialogs) )
 				Msg("----rejected: [%s] has info %s", pOwner->Name(), *m_HasInfo[i]);
@@ -78,7 +79,8 @@ bool  CPhraseScript::CheckInfo		(const CInventoryOwner* pOwner) const
 			break;
 		}
 */
-		if (pOwner->HasInfo(m_DontHasInfo[i])) {
+//.		if (pOwner->HasInfo(m_DontHasInfo[i])) {
+		if (Actor()->HasInfo(m_DontHasInfo[i])) {
 #ifdef DEBUG
 			if(psAI_Flags.test(aiDialogs) )
 				Msg("----rejected: [%s] dont has info %s", pOwner->Name(), *m_DontHasInfo[i]);
@@ -95,10 +97,12 @@ void  CPhraseScript::TransferInfo	(const CInventoryOwner* pOwner) const
 	THROW(pOwner);
 
 	for(u32 i=0; i<m_GiveInfo.size(); i++)
-		pOwner->TransferInfo(m_GiveInfo[i], true);
+//.		pOwner->TransferInfo(m_GiveInfo[i], true);
+		Actor()->TransferInfo(m_GiveInfo[i], true);
 
 	for(i=0; i<m_DisableInfo.size(); i++)
-		pOwner->TransferInfo(m_DisableInfo[i],false);
+//.		pOwner->TransferInfo(m_DisableInfo[i],false);
+		Actor()->TransferInfo(m_GiveInfo[i], true);
 }
 
 
@@ -135,7 +139,6 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 
 void CPhraseScript::Action			(const CGameObject* pSpeakerGO, LPCSTR dialog_id, int phrase_num) const 
 {
-	TransferInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO));
 
 	for(u32 i = 0; i<Actions().size(); i++)
 	{
@@ -145,6 +148,8 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO, LPCSTR dialog_id, i
 		THROW3(functor_exists, "Cannot find phrase dialog script function", *Actions()[i]);
 		lua_function		(pSpeakerGO->lua_game_object(), dialog_id);
 	}
+
+	TransferInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO));
 }
 
 bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2, LPCSTR dialog_id, int phrase_num) const 
