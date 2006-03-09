@@ -1973,3 +1973,14 @@ void	CCar::		Die					(CObject* who)
 	inherited::Die(who);
 	CarExplode();
 }
+
+Fvector	CCar::		ExitVelocity				()
+{
+	CPhysicsShell		*P=PPhysicsShell();
+	if(!P||!P->isActive())return Fvector().set(0,0,0);
+	CPhysicsElement *E=P->get_ElementByStoreOrder(0);
+	Fvector v=ExitPosition();
+	dBodyGetPointVel(E->get_body(),v.x,v.y,v.z,cast_fp(v));
+	return v;
+}
+

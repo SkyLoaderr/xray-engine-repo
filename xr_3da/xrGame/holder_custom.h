@@ -37,7 +37,7 @@ public:
 	virtual bool			allowWeapon			()	const		= 0;
 	virtual bool			HUDView				() const		= 0;
 	virtual Fvector			ExitPosition		()				= 0;
-
+	virtual Fvector			ExitVelocity		()				{return Fvector().set(0,0,0);}
 	virtual CCameraBase*	Camera				()				= 0;
 	virtual void			Action				(int id, u32 flags)				{};
 	virtual void			SetParam			(int id, Fvector2 val)			{};

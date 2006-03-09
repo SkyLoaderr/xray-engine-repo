@@ -73,6 +73,8 @@ void CActor::detach_Vehicle()
 	m_holder->detach_Actor();//
 
 	m_PhysicMovementControl->SetPosition(m_holder->ExitPosition());
+	m_PhysicMovementControl->SetVelocity(m_holder->ExitVelocity());
+
 	r_model_yaw=-m_holder->Camera()->yaw;
 	r_torso.yaw=r_model_yaw;
 	r_model_yaw_dest=r_model_yaw;

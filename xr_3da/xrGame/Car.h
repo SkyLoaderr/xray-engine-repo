@@ -517,6 +517,7 @@ public:
 	virtual bool			allowWeapon					() const		{return true;};
 	virtual bool			HUDView						() const;
 	virtual Fvector			ExitPosition				(){return m_exit_position;}
+	virtual Fvector			ExitVelocity				();
 	void					GetVelocity					(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
 	void					cam_Update					(float dt, float fov);
 	void					detach_Actor				();
