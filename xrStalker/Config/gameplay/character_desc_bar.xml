@@ -592,7 +592,7 @@
 
 	<!---------------------------DOLG Начальник Охраны---------------------->
 	<specific_character id="bar_dolg_guard_commander" team_default = "1">
-		<name>Начальник Охраны</name>
+		<name>Сержант Пличко</name>
 		<icon x="26" y="8"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Начальник охраны на территории Долга.</bio>
