@@ -126,6 +126,12 @@
 	<info_portion id="rad_start_snork1_jumping2">
 	</info_portion>	
 	
+	<info_portion id="rad_antennas_reached">
+	</info_portion>		
+	
+	<info_portion id="rad_bun_found">
+	</info_portion>	
+		
 	<info_portion id="bun_antenna_off">
 	</info_portion>	
 	

@@ -181,11 +181,16 @@
 </string>
 <string id="find_and_deactivate_radar">
     <text>
-        Найти бункер управления
+        Найти вход в бункер управления
     </text>
 </string>
 <string id="deactivate_radar_now">
     <text>
         Отключить установку
+    </text>
+</string>
+<string id="get_to_antennas">
+    <text>
+        Добраться до антенн
     </text>
 </string>
