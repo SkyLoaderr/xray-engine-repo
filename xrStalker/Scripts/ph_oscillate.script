@@ -13,16 +13,14 @@ function action_oscillator:__init (obj, storage)
     self.st = storage
     self.time = 0
     self.coefficient = 0
-    self.dir_x_axis = -1
-    self.dir_y_axis = -1
+    self.dir = vector ():set (math.random (), 0, math.random ()):normalize ()
     self.joint = nil
     self.pause = false
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_oscillator:reset_scheme ()
     self.time = device():time_global()
-    self.dir_x_axis = 1
-    self.dir_z_axis = 1
+    self.dir = vector ():set (math.random (), 0, math.random ()):normalize ()
     self.coefficient = self.st.force / self.st.period 
     self.joint = self.object:get_physics_shell ():get_joint_by_bone_name (self.st.joint)
     self.time = time_global ()
@@ -41,17 +39,16 @@ function action_oscillator:update (delta)
     end        
     -- проверим на необходимость изменения направления
     if c_time - self.time >= self.st.period then
-       self.dir_x_axis = -self.dir_x_axis
-       self.dir_z_axis = -self.dir_z_axis
+       self.dir.x = -self.dir.x
+       self.dir.z = -self.dir.z
+       self.dir = vector_rotate_y (vector ():set (-self.dir.x, 0, -self.dir.z), self.st.angle)
        self.time = c_time
        self.pause = true
        return
     end
     -- рассчитаем силу
     local force = (c_time - self.time) * self.coefficient
---    printf ("Force : %f", force)
-    local dir = vector ():set (self.dir_x_axis, 0, self.dir_z_axis)
-    self.object:set_const_force (dir, force, 1)
+    self.object:set_const_force (self.dir, force, 2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -75,7 +72,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
     if st.period == nil or st.force == nil then
        abort ("[ph_oscillate] Error : Force or period not defined")
     end   
-        	
+    st.angle = utils.cfg_get_number (ini, section, "correct_angle", npc, false, 0)
+    if st.angle == nil then
+       st.angle = 0
+    end    
 end
 
 ---------------------------------------------------------------------------------------------------------------------
