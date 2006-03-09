@@ -1605,6 +1605,7 @@ end
 function start_small_reject (actor, npc)
     level.set_weather_fx ("surge_day")
 	level.add_pp_effector ("vibros_p.ppe", 1974, false)
+	this.aes_earthshake (npc)
     --set_postprocess ("scripts\\postprocess1.ltx")
 end
 
