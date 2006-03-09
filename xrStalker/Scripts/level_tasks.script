@@ -162,17 +162,6 @@ end
 
 function set_task_state(id_state, id_task, id_subtask)
 	if db.actor then
-		if id_subtask == 0 then
-			if id_state == task.fail then
-				news_manager.send_task(db.actor, "fail")
-			else
-				news_manager.send_task(db.actor, "complete")
-			end
-		else
-			if db.actor:get_task_state(id_state, 0) == task.in_progress then
-				news_manager.send_task(db.actor, "update")
-			end
-		end
 		db.actor:set_task_state(id_state, id_task, id_subtask)
 	end
 end
