@@ -303,7 +303,7 @@ bool EDetailManager::Load(IReader& F)
     // slots
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_SLOTS));
     int slot_cnt		= F.r_u32();
-    dtSlots				= xr_alloc<DetailSlot>(slot_cnt);
+	if (slot_cnt)dtSlots= xr_alloc<DetailSlot>(slot_cnt);
     m_Selected.resize	(slot_cnt);
 	F.r					(dtSlots,slot_cnt*sizeof(DetailSlot));
 
