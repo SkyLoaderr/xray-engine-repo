@@ -493,7 +493,7 @@ animations = {
 		barman_shock= {	prop	= { maxidle = 5,
 									sumidle = 5,
 									rnd = 70 },
-						into	= {	[0]	= "idle_talk_0" },
+						into	= {	[0]	= {{s="bar_barman_psycho"}, "idle_talk_0"} },
 						out		= nil,
 						idle	= nil,
 						rnd		= nil },
