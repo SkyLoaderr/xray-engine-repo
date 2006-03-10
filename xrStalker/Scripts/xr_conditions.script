@@ -770,10 +770,13 @@ function pri_zombied_is_in_combat(actor, npc)
 end
 
 function pri_followers_can_hear(actor, npc)
+	local gulag = xr_gulag.get_gulag(823)
     return actor:has_info("pri_followers_mission_accept") and
-           actor:dont_has_info("pri_followers_actor_enemy") and
            actor:dont_has_info("pri_followers_actor_leave") and
-           xr_gulag.getGulagPopulation(823) ~= 0 --"pri_followers"
+           gulag and gulag:get_population() > 0 and
+           not gulag:npc_is_enemy_to_anybody(actor)
+           --actor:dont_has_info("pri_followers_actor_enemy") and
+           --xr_gulag.getGulagPopulation(823) ~= 0 --"pri_followers"
 end
 
 function pri_monolith_combat_ignore(actor, npc)
