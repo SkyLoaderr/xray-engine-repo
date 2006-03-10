@@ -8,21 +8,7 @@ function proceed()
 		actor:give_info_portion("rad_code_door") 
 	end
 
-	if ( actor:has_info("rad_find_stalkers_reward_start") or
-	   actor:has_info("rad_find_stalkers_free_start") ) and
-	   actor:dont_has_info("rad_find_stalkers_found") and
-	   actor:object("pri_lom_ak74")
-	then
-		actor:give_info_portion("rad_find_stalkers_found")
-		level_tasks.set_task_state(task.completed, "rad_find_stalkers", 1)
-	end
 
-	if actor:has_info("rad_find_stalkers_return_ak") and
-	   actor:dont_has_info("rad_find_stalkers_done")
-	then		
-		actor:give_info_portion("rad_find_stalkers_done")
-		level_tasks.set_task_state(task.completed, "rad_find_stalkers", 0)
-	end 
 
 end
 
