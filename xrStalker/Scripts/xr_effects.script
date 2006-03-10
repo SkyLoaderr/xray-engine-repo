@@ -1812,7 +1812,9 @@ end
 function yan_saharov_message_2 (actor, npc)
     news_manager.send_tip(db.actor, "yan_saharov_message_2", nil, "saharov", nil, 902)
 end
-
+function yan_saharov_message_3 (actor, npc)
+    news_manager.send_tip(db.actor, "yan_saharov_message_3", nil, "saharov", nil, 902)
+end
 function yan_ghost_pda (actor, npc)
     db.actor:give_info_portion("yan_provodnik_spawn")
     news_manager.send_tip(db.actor, "storyline_ghost_tip", nil, "wolf")
