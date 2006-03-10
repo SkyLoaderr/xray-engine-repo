@@ -56,6 +56,7 @@ function action_car:reset_scheme(loading)
 	printf("car <state>: START INITIALIZING ======================================================")
     printf("car <state>: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
 
+	self.destroyed = false
 	self.object:set_nonscript_usable(false)
 
     self.object:set_tip_text("")
@@ -924,12 +925,18 @@ function action_car:update(delta)
 		return
 	end
 	
+	if self.destroyed then
+	    xr_logic.activate_by_section(self.object, self.st.ini, "nil", false)
+		return
+	end
+	
 	if self.st.invulnerable then
 	    self.object.health = self.def_health
 	end
 end
 
 function action_car:destroy_car()
+	printf("car <destroy>: START ===============================")
 	self.state_moving = state_moving_end
 	self:stop_car()
 	self.state_cannon = state_none
@@ -947,8 +954,10 @@ function action_car:destroy_car()
 	xr_logic.mob_release(self.object)
 	if self.st.on_death_info ~= nil then
 	    db.actor:give_info_portion(self.st.on_death_info)
-	    printf("car <death>: give info")
+	    printf("car <destroy>: on_death_info [%s]", self.st.on_death_info)
 	end
+	self.destroyed = true
+	printf("car <destroy>: END =================================")
 end
 
 -- Вернуть true, если апдейты больше не нужны
