@@ -59,7 +59,8 @@ ignore_distance_sound     = 40
 ;on_info                 = {=hit_by_actor} %+pri_followers_actor_enemy%
 
 [followers_death]
-on_info                 = {=killed_by_actor} %+pri_followers_actor_enemy%
+;on_info                 = {=killed_by_actor} %+pri_followers_actor_enemy%
+on_info                 = {=gulag_population_le(823:2)} %+pri_undeground_respawn_start%
 
 ;-------------------------------------------------------------------------------------------------
 ;--- LEADER: WAIT --------------------------------------------------------------------------------
