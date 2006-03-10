@@ -87,6 +87,8 @@ CUIDragDropItemMP*	CreateCopy(CUIDragDropItemMP *pDDItem);
 CUIDragDropItemMP*	GetItemByKey(int dik, int section);
 			void	DeleteCopy(CUIDragDropItemMP *pDDItem);
 			bool	IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const;
+			void	IgnoreRank(bool ignore)	{m_bIgnoreRank = ignore; };
+
 			
 	MENU_LEVELS		GetMenuLevel();
 protected:
@@ -123,6 +125,8 @@ CUIDragDropList*	GetCurrentGroup();
 	CUIDragDropItemMP*			m_pCurrentDDItem;
 	xr_list<shared_str>			m_vInfiniteItemsList;
 	xr_list<CUIDragDropItemMP*>	m_vCopyList;
+
+	bool						m_bIgnoreRank;
     
 	BoxInfo m_boxesDefs[4];
 

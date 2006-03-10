@@ -64,6 +64,8 @@ CUIBag::CUIBag(CHECK_PROC proc){
 	m_boxesDefs[3].filterString	= "heavy_weapon";
 	m_boxesDefs[3].gridHeight		= 2;
 	m_boxesDefs[3].gridWidth		= 6;
+
+	m_bIgnoreRank					= false;
 }
 
 CUIBag::~CUIBag(){
@@ -352,6 +354,7 @@ void CUIBag::EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable){
 }
 
 void CUIBag::EnableDDItemByRank(CUIDragDropItemMP* pDDItem){
+	if (m_bIgnoreRank) return;
 	if (pDDItem->m_iRank > g_mp_restrictions.GetRank())
 	{
 		pDDItem->SetColor(cUnableByRank);

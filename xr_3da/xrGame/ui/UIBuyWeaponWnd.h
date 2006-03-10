@@ -177,6 +177,7 @@ static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 
 	int			m_iMoneyAmount;
 	bool		m_bIgnoreMoney;
+	bool		m_bIgnoreMoneyAndRank;
 
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
 //	float		m_iIconTextureX, m_iIconTextureY;
@@ -189,9 +190,12 @@ static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 public:
 	bool		CheckBuyAvailabilityInSlots();
 	bool		CanBuyAllItems();
-	void		IgnoreMoney(bool ignore)		{ m_bIgnoreMoney = ignore; }
+	void		IgnoreMoney(bool ignore);
+	void		IgnoreMoneyAndRank	(bool ignore);
 	int			GetMoneyAmount() const;
+	bool		HasEnoughMoney(CUIDragDropItemMP* pItem);
 	void		SetMoneyAmount(int moneyAmount);
+	int			GetMoneyLeft	(int ItemCost);
 
 	// Процедура запоминания индекса скина в списке skins типа сетевой игры, после выбора его игроком
 	void		SetSkin			(u8 SkinID);	

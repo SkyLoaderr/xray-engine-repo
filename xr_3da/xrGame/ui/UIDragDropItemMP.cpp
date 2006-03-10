@@ -104,8 +104,9 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 										smart_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScaleY());
 
 				// Отнимаем денежку
-				this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
-					static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+//				this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
+//					static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+				this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(-static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1))));
 				m_pAddon[ID]->m_bAlreadyPaid = true;
 			}
 		}
@@ -123,8 +124,9 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				// Прибавляем денежку
 				if (m_pAddon[ID]->GetColor() != cUnableToBuy)
 				{
-					this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + 
-						static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+//					this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + 
+//						static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+					this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1))));
 					m_pAddon[ID]->m_bAlreadyPaid = true;
 				}
 

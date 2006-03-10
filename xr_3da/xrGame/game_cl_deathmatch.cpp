@@ -300,7 +300,10 @@ void game_cl_Deathmatch::SetCurrentBuyMenu	()
 {
 	pCurBuyMenu = pBuyMenuTeam0; 
 	pCurPresetItems	= &PresetItemsTeam0;
-
+	//-----------------------------------
+	if (m_cl_dwWarmUp_Time != 0) pCurBuyMenu->IgnoreMoneyAndRank(true);
+	else pCurBuyMenu->IgnoreMoneyAndRank(false);
+	//-----------------------------------
 	if (!local_player) return;
 };
 

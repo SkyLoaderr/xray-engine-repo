@@ -40,6 +40,7 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 	SetFont					(HUD().Font().pFontMedium);
 
 	m_bIgnoreMoney			= false;
+	m_bIgnoreMoneyAndRank	= false;
 
 	// Инициализируем вещи
 	Init					(strSectionName, strPricesSection);
@@ -341,7 +342,9 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+//		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(-GetItemPrice(pDDItemMP)));
+
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 	return true;
@@ -394,7 +397,8 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+//		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 	return true;
@@ -436,7 +440,8 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+//		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;		
 	}
 
@@ -471,7 +476,8 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+//		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 
@@ -504,7 +510,8 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+//		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
 	}
 
@@ -534,7 +541,8 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 		// И отнимаем от денег стоимость вещи.
 		if (!pDDItemMP->m_bAlreadyPaid)
 		{
-			this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+//			this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+			this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft( - GetItemPrice(pDDItemMP)));
 			pDDItemMP->m_bAlreadyPaid = true;
 		}
 //		this_inventory->UpdateOutfit();
@@ -573,7 +581,8 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+//		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
 		UNHIGHTLIGHT_ITEM(pDDItemMP);
 	}
@@ -1162,7 +1171,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 		CUIDragDropItemMP::AddonIDs		ID;
 		CUIDragDropItemMP				*pDDItemMP = IsItemAnAddon(m_pCurrentDragDropItem, ID);
 
-		if (m_pCurrentDragDropItem->GetCost() > GetMoneyAmount())
+		if (!HasEnoughMoney(m_pCurrentDragDropItem)/*m_pCurrentDragDropItem->GetCost() > GetMoneyAmount()*/)
 		{
 			return;
 		}
@@ -1219,7 +1228,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 				case 0:
 					// Если денег на аддон хватает
 					pItem = GetAddonByID(m_pCurrentDragDropItem, static_cast<CUIDragDropItemMP::AddonIDs>(i));
-					if (pItem && pItem->GetCost() <= GetMoneyAmount() && pItem->IsDragDropEnabled())
+					if (HasEnoughMoney(pItem)/*pItem && pItem->GetCost() <= GetMoneyAmount()*/ && pItem->IsDragDropEnabled())
 					{
 						if (!this->UIBagWnd.IsItemInBag(pItem))
 							break;
@@ -1535,9 +1544,10 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 				// Если эта вещь принесена игроком, то деньги не отнимаем
 				if (!pDDItemMP->m_bHasRealRepresentation)
 				{
-					if (pDDItemMP->GetCost() <= GetMoneyAmount())
+					if (HasEnoughMoney(pDDItemMP)/*pDDItemMP->GetCost() <= GetMoneyAmount()*/)
 					{
-						SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+//						SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+						SetMoneyAmount(GetMoneyLeft(- pDDItemMP->GetCost()));
 						pDDItemMP->SetColor(cAbleToBuy);
 					}
 					else
@@ -1573,9 +1583,10 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 
 		if (!pDDItemMP->m_bHasRealRepresentation)
 		{
-			if (pDDItemMP->GetCost() <= GetMoneyAmount())
+			if (HasEnoughMoney(pDDItemMP)/*pDDItemMP->GetCost() <= GetMoneyAmount()*/)
 			{
-				SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+//				SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+				SetMoneyAmount(GetMoneyLeft(- pDDItemMP->GetCost()));
 				pDDItemMP->SetColor(cAbleToBuy);
 			}
 			else
@@ -1726,10 +1737,12 @@ void CUIBuyWeaponWnd::ClearRealRepresentationFlags()
 }
 
 void CUIBuyWeaponWnd::SetMoneyAmount(int moneyAmount)
-{
+{	
 	m_iMoneyAmount = moneyAmount;
 	if (!m_bIgnoreMoney)
+	{		
 		UIBagWnd.UpdateBuyPossibility();
+	};
 }
 
 bool CUIBuyWeaponWnd::CanBuyAllItems()
@@ -1748,13 +1761,8 @@ bool CUIBuyWeaponWnd::CanBuyAllItems()
 }
 
 int CUIBuyWeaponWnd::GetMoneyAmount() const
-{
-	if (!m_bIgnoreMoney)
-	{
-		return m_iMoneyAmount;
-	}
-	// Retuin some really big value
-	return 10000000;
+{	
+	return m_iMoneyAmount;	
 }
 
 CUIDragDropItemMP * CUIBuyWeaponWnd::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID)
@@ -1898,13 +1906,14 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if (pDDItemMP->m_bAlreadyPaid)
 	{
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + GetItemPrice(pDDItemMP)); 		
+//		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + GetItemPrice(pDDItemMP)); 		
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(GetItemPrice(pDDItemMP)));
 
 		// Если у вещи есть аддоны, то прибавляем и также и их половинную стоимость
 		pDDItemMP->m_bAlreadyPaid = false;
 	}
 
-	if (pDDItemMP->GetCost() > this_inventory->GetMoneyAmount() && !pDDItemMP->m_bHasRealRepresentation)
+	if (this_inventory->HasEnoughMoney(pDDItemMP)/*pDDItemMP->GetCost() > this_inventory->GetMoneyAmount()*/ && !pDDItemMP->m_bHasRealRepresentation)
 		pDDItemMP->EnableDragDrop(false);
 
 	// Если это армор, то убедимся, что он стал видимым
@@ -1918,6 +1927,34 @@ void	CUIBuyWeaponWnd::ReloadItemsPrices	()
 {
 	UIBagWnd.ReloadItemsPrices();
 }
+
+void	CUIBuyWeaponWnd::IgnoreMoneyAndRank(bool ignore)
+{
+	m_bIgnoreMoneyAndRank = ignore;
+	UIBagWnd.IgnoreRank(ignore);
+};
+
+void	CUIBuyWeaponWnd::IgnoreMoney(bool ignore)
+{
+	if (m_bIgnoreMoneyAndRank)
+		m_bIgnoreMoney = true;
+	else
+		m_bIgnoreMoney = ignore;
+}
+
+bool	CUIBuyWeaponWnd::HasEnoughMoney(CUIDragDropItemMP* pItem)
+{
+	if (m_bIgnoreMoney) return true;
+	R_ASSERT(pItem);
+	if (!pItem) return false;
+	return pItem->GetCost() <= GetMoneyAmount();
+};
+
+int		CUIBuyWeaponWnd::GetMoneyLeft	(int ItemCost)
+{
+	if (m_bIgnoreMoney) return GetMoneyAmount();
+	return GetMoneyAmount() + ItemCost;
+};
 //
 //void init___()
 //{

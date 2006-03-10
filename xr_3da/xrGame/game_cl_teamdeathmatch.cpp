@@ -298,6 +298,11 @@ void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 //	if(!pCurSkinMenu)SetCurrentSkinMenu	();
 	if (pCurBuyMenu) pCurBuyMenu->SetSkin(local_player->skin);
 	if (!pCurBuyMenu) return;	
+
+	//-----------------------------------
+	if (m_cl_dwWarmUp_Time != 0) pCurBuyMenu->IgnoreMoneyAndRank(true);
+	else pCurBuyMenu->IgnoreMoneyAndRank(false);
+	//-----------------------------------
 };
 
 void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
