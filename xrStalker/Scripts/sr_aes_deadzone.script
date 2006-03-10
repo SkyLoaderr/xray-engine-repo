@@ -120,7 +120,7 @@ function action_postprocess:update_hit		(delta)
        self.hit_power = 0
        return
     end
-    self.hit_power = self.hit_power + (delta * 0.001) * self.st.hit_intensity
+    self.hit_power = self.hit_power + (delta * 0.001) * (self.st.hit_intensity * 0.01)
     if time_global () - self.hit_time < 1000 then
        return 
     end    
