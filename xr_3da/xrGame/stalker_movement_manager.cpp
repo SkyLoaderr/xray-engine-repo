@@ -24,6 +24,8 @@
 
 using namespace StalkerMovement;
 
+extern bool show_restrictions(CRestrictedObject *object);
+
 IC	void CStalkerMovementManager::setup_head_speed		()
 {
 	if (mental_state() == eMentalStateFree) {
@@ -75,7 +77,7 @@ void CStalkerMovementManager::set_desired_position(const Fvector *desired_positi
 {
 	if (desired_position) {
 		m_target.m_use_desired_position	= true;
-		VERIFY2							(object().movement().accessible(*desired_position),*object().cName());
+		VERIFY2							(object().movement().accessible(*desired_position) || show_restrictions(&restrictions()),*object().cName());
 		m_target.m_desired_position		= *desired_position;
 	}
 	else {
@@ -437,10 +439,10 @@ void CStalkerMovementManager::set_nearest_accessible_position(Fvector desired_po
 
 	VERIFY						(ai().level_graph().inside(level_vertex_id,desired_position));
 
-	VERIFY						(restrictions().accessible(level_vertex_id));
+	VERIFY						(restrictions().accessible(level_vertex_id) || show_restrictions(&restrictions()));
 	set_level_dest_vertex		(level_vertex_id);
 	
-	VERIFY						(restrictions().accessible(desired_position));
+	VERIFY						(restrictions().accessible(desired_position) || show_restrictions(&restrictions()));
 	set_desired_position		(&desired_position);
 }
 
