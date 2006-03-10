@@ -497,7 +497,7 @@ depth##ax=radius-dFabs(dist##ax);\
 depth##ox=radius-dFabs(dist##ox);\
 	\
 			if(depth##ax>0.f){\
-				if(depth##ax<outDepth && depth##ax>depth##ox) \
+				if(depth##ax<=outDepth && depth##ax>=depth##ox) \
 					{\
 						outDepth=depth##ax;\
 						signum= isPdist##ax ? 1.f : -1.f;\
