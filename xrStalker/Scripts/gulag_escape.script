@@ -1426,6 +1426,59 @@ function load_job(sj, gname, type, squad, groups)
 						end
 		}
 		table.insert(sj, t)
+		
+		t = { section = "logic@esc_assault_fight1",
+			idle = 0,
+			prior = 8, state = {2},
+			online = true,
+			position_threshold = 100,
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_fight2",
+			idle = 0,
+			prior = 8, state = {2},
+			online = true,
+			position_threshold = 100,
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_fight3",
+			idle = 0,
+			prior = 10, state = {2},
+			online = true,
+			position_threshold = 100,
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker1"
+						end
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@esc_assault_home",
+			idle = 0,
+			prior = 8, state = {3},
+			online = true,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_home",
+			idle = 0,
+			prior = 8, state = {3},
+			online = true,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_home_leader",
+			idle = 0,
+			prior = 10, state = {3},
+			online = true,
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker1"
+						end
+		}
+		table.insert(sj, t)
 	end
 
 	if type == "esc_zombie_1" then
@@ -1667,11 +1720,13 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_stalker_camp1",
+		t = { section = "logic@esc_stalker_fox",
 			idle = 0,
-			prior = 8, state = {0},
-			online = false,
-			in_rest = "", out_rest = ""
+			prior = 10, state = {0},
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+			            	return obj_info.profile_name == "esc_fox"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_stalker_camp2",
@@ -1935,10 +1990,14 @@ function load_states(gname, type)
 
 	if type == "esc_assault" then
 		return function(gulag)
-			if db.actor:has_info("escape_dynamite_meet") then
-				return 1
+			if db.actor:has_info("escape_dynamite_meet") and db.actor:dont_has_info("esc_assault_start") then
+				return 1 -- сидят у костра
+			elseif db.actor:has_info("esc_assault_start") and db.actor:dont_has_info("esc_kill_bandits_quest_kill") then
+				return 2 -- атакуют фабрику
+			elseif db.actor:has_info("esc_kill_bandits_quest_kill") then
+				return 3 -- идут домой
 			else
-				return 0
+				return 0 -- сидят в оффлайне
 			end
 		end
 	end
