@@ -103,7 +103,7 @@ void  CPhraseScript::TransferInfo	(const CInventoryOwner* pOwner) const
 
 	for(i=0; i<m_DisableInfo.size(); i++)
 //.		pOwner->TransferInfo(m_DisableInfo[i],false);
-		Actor()->TransferInfo(m_GiveInfo[i], true);
+		Actor()->TransferInfo(m_DisableInfo[i], false);
 }
 
 
