@@ -192,7 +192,7 @@ function PsyAntenna:update			(dt)
 	if (self.intensity<0.0)			then self.intensity=0.0 end
 	if (self.intensity>1.0)			then self.intensity=1.0 end
 
-	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
+--	printf( "psy intensity = %f (%f)", self.intensity_base, self.intensity )
 --	printf( "actor psy health = %f", db.actor.psy_health )
 
 --	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001))
