@@ -926,7 +926,7 @@ function action_car:update(delta)
 	end
 	
 	if self.destroyed then
-	    xr_logic.activate_by_section(self.object, self.st.ini, "nil", false)
+	    xr_logic.switch_to_section(self.object, self.st, "nil")
 		return
 	end
 	
