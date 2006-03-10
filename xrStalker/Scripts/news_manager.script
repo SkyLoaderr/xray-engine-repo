@@ -37,6 +37,7 @@ news = {
     storyline_ghost_tip 			= sound_object([[characters_voice\scenario\yantar\ghost_pda]]),
     yan_saharov_message 			= sound_object([[characters_voice\scenario\yantar\professor_to_actor_pda_3]]),
 	yan_saharov_message_2 			= sound_object([[characters_voice\scenario\yantar\professor_to_actor_pda_4]]),
+	test_mega_remark 				= sound_object([[characters_voice\scenario\yantar\pda_professor_brain_quest_good_2]]),
 
 	bar_psih_come					= sound_object([[characters_voice\scenario\bar\barman\barman_pda_psycho]]),
 
@@ -166,6 +167,32 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 
 	actor:give_game_news(news_id, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
 	return true
+end
+function send_tip_nosound(actor, news_id, timeout, sender)
+	if news_id == nil then return end
+
+	showtime = 5000
+	timeout = 0
+
+	--' Играем дефолтный звук
+	pda_tips:play(db.actor, timeout, sound_object.s2d)
+	local news_sound = news[news_id]
+	if news_sound ~= nil then
+		--' Необходимо поставить время показа по длине сцены
+		local length = news_sound:length()
+		if length > showtime then
+			showtime = length
+		end
+	end
+	local x = 50
+	local y = 100
+	if sender ~= nil and tips_icons[sender] ~= nil then
+		x = tips_icons[sender][1]
+		y = tips_icons[sender][2]
+	end
+
+	actor:give_game_news(news_id, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+	return news_sound
 end
 
 function send_help(actor)

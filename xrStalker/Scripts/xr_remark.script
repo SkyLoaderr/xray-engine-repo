@@ -57,6 +57,7 @@ function action_remark_activity:activate_scheme()
 	
 	-- Задаем стартовое состояние
 	self.state = state_initial
+	self.tips_sound = nil
 end
 function action_remark_activity:get_target()
 	local look_tbl = {}
@@ -86,7 +87,7 @@ function action_remark_activity:time_callback()
 	self:update()
 end
 function action_remark_activity:update()
-	-- 1. Мы должны повернуться на объект.
+	--' 1. Мы должны повернуться на объект.
 	--printf("REMARK: [%s] state[%s]", self.object:name(), self.state)
 	if self.state == state_initial then
 		local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
@@ -100,12 +101,12 @@ function action_remark_activity:update()
 		state_mgr.set_state(self.object, self.st.anim, cb, 0, self:get_target(), { animation = self.st.anim_reset }, synsound)
 		self.state = state_animation
 		
-	-- Ожидание колбека от стейтменеджера
+	--' Ожидание колбека от стейтменеджера
 	elseif self.state == state_animation then
 	
-	-- 2. Мы должны отыграть фразу.
+	--' 2. Мы должны отыграть фразу.
 	elseif self.state == state_sound then
-		-- Должны выдать сигнал anim_end
+		--' Должны выдать сигнал anim_end
 		if self.anim_end_signalled == false then
 			self.anim_end_signalled = true
 			self.st.signals["anim_end"] = true
@@ -113,16 +114,25 @@ function action_remark_activity:update()
 	
 		if self.snd_scheduled == true then
 			self.snd_started = true
-			xr_sound.set_sound_play(self.object, self.st.snd)
+			xr_sound.set_sound_play(self.object, self.st.snd, 50)
 		end
+		--' Нужно выдать связанный типс.
+		if self.st.tips_id ~= nil then
+			self.tips_sound = news_manager.send_tip_nosound(db.actor, self.st.tips_id, self.st.sender)
+			if self.tips_sound ~= nil then
+				--' Играем звук забитый
+				self.tips_sound:play(db.actor, 0, sound_object.s2d)
+			end
+		end
+
 	
 		self.state = state_finish
 		
-	-- 3. Мы должны выдать сигнал об окончании действия
-	-- должны выдать сигнал action_end
-	-- должны выдать сигнал sound_end
+	--' 3. Мы должны выдать сигнал об окончании действия
+	--' должны выдать сигнал action_end
+	--' должны выдать сигнал sound_end
 	elseif self.state == state_finish then
-		-- Проверить что звук уже запущен:
+		--' Проверить что звук уже запущен:
 		if self.snd_started == true then
 			if self.object:active_sound_count() ~= 0 then
 				self.snd_started = false
@@ -150,13 +160,16 @@ end
 function action_remark_activity:execute()
 	action_base.execute(self)
 
-	-- Try to switch to another scheme:
+	--' Try to switch to another scheme:
 	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
 		return
 	end
 	self:update()
 end
 function action_remark_activity:finalize()
+	if self.tips_sound ~= nil then
+		self.tips_sound:stop()
+	end
 	action_base.finalize(self)
 end
 
@@ -213,10 +226,15 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.snd_anim_sync = utils.cfg_get_bool     (ini, section,   "snd_anim_sync",       npc, false)
+	st.snd_anim_sync = utils.cfg_get_bool(ini, section, "snd_anim_sync", npc, false)
 	
-	st.snd = utils.cfg_get_string             (ini, section,   "snd",             npc, false, "", nil)
-	st.anim = utils.cfg_get_string            (ini, section,   "anim",            npc, false, "", "wait")
+	st.snd			= utils.cfg_get_string(ini, section, "snd", npc, false, "", nil)
+	st.anim			= utils.cfg_get_string(ini, section, "anim", npc, false, "", "wait")
+	st.tips_id		= utils.cfg_get_string(ini, section, "tips", npc, false, "")
+	if st.tips_id then
+		st.sender	= utils.cfg_get_string(ini, section, "tips_sender", npc, false, "")
+	end
+		
 	if st.anim == "idle" then
 		abort("remark <abort>: object '%s', xr_remark.set_scheme: anim field cannot be [idle]", npc:name())
 	end
