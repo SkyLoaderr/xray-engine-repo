@@ -94,7 +94,7 @@ end
 
 function r_spawns( spawn_ini, section, line, sectSpawnProps)
 	if spawn_ini:line_exist( section, line ) then
-		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
+		--' если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
 		local t = parse_names( spawn_ini:r_string( section, line ) )
 		local n = table.getn( t )
 		
@@ -126,7 +126,20 @@ function r_spawns( spawn_ini, section, line, sectSpawnProps)
 			if sectSpawnProps[spawn.section] == nil then
 				local community = r_str(respawn_ini, spawn.section, "community", "nil")
 				local rank = r_str(respawn_ini, spawn.section, "spec_rank", "nil")
-				sectSpawnProps[spawn.section] = {community = community, rank = rank}
+				local check = true
+				local custom_data = r_str(respawn_ini, spawn.section, "custom_data")
+				if custom_data ~= nil then
+					local custom_data_ltx = ini_file(custom_data)
+					if custom_data_ltx:section_exist("smart_terrains") then
+						if custom_data_ltx:line_exist("smart_terrains", "none") then
+							if r_str(custom_data_ltx, "smart_terrains", "none") == "true" then
+								check = false
+							end	
+						end
+					end
+				end
+				
+				sectSpawnProps[spawn.section] = {community = community, rank = rank, check = check}
 			end
 						
 		end
@@ -238,7 +251,9 @@ function se_respawn:create(prob)
 			if s_count == nil then
 				s_count = 0
 			end
-			if sim_statistic.simNpcCount(tt.community, tt.rank) < s_count then	
+			if tt.check == false or
+			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count
+			then	
 				sum = sum + v.prob
 			end
 		end
@@ -250,7 +265,9 @@ function se_respawn:create(prob)
 			if s_count == nil then
 				s_count = 0
 			end			
-			if sim_statistic.simNpcCount(tt.community, tt.rank) < s_count then	
+			if tt.check == false or
+			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count 
+			then	
 				sum = sum - v.prob			
 				if sum <= 0 then
 					spawn_section = v.section
@@ -269,9 +286,13 @@ function se_respawn:create(prob)
 						self.m_level_vertex_id,	
 						self.m_game_vertex_id)
 
-		obj:brain():update()						
+		local tt = self.sectSpawnProps[spawn_section]
+		obj:brain():update()
 		local smart_terrain_id = obj:smart_terrain_id()
-		if smart_terrain_id ~= 65535 then
+				
+		if tt.check == false or
+		   smart_terrain_id ~= 65535 
+		then
 			table.insert(self.spawned_obj ,obj.id)
 			local pos = obj.position
 			printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
