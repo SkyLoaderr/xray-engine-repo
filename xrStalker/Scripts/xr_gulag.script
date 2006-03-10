@@ -662,6 +662,50 @@ function gulag:find_nearest_suitable_obj( objs, job )
 	return obj_nearest
 end
 
+-- посчитать табличку расстояний от всех персонажей к всем работам заданного приоритета
+function gulag:calc_distance_table( jobs, objs, prior_block_start )
+	local block_priority = jobs[prior_block_start].prior
+	local predicate
+	local dists          = {}
+	local t
+	local i              = prior_block_start
+
+	while i <= table.getn( jobs ) and jobs[i].prior == block_priority do
+		if jobs[i].object == nil then
+			predicate = jobs[i].predicate
+
+			for obj_id, v in pairs( objs ) do
+				if not predicate or predicate( self.npc_info[obj_id], self ) then
+					dist     = self:distance_to_job_location( obj_id, jobs[i] )
+
+					t        = {}
+					t.job    = jobs[i]
+					t.obj_id = obj_id
+					t.dist   = dist
+
+--					printf( "[smart_terrain %s] dist object=%s to job=%s is %f", self.name, self.npc_info[obj_id].name, job.section, dist )
+
+					table.insert( dists, t )
+				end
+			end
+		end
+
+		i = i + 1
+	end
+
+	return dists, i - 1
+end
+
+-- назначить персонажей на ближайшие работы используя табличку расстояний
+function gulag:assign_jobs_using_distance_table( jobs, objs, dists )
+	for i, t in ipairs( dists ) do
+		if objs[t.obj_id] and not t.job.object then
+			self:setJob( t.obj_id, t.job )
+			objs[t.obj_id] = nil
+		end
+	end
+end
+
 -- найти занятых персонажей, которые могут занять заданную работу.
 -- поиск ведётся начиная с самых низкоприоритетных работ
 function gulag:find_obj_on_jobLow_for_jobHigh( Job_avail, job_high )
@@ -674,7 +718,7 @@ function gulag:find_obj_on_jobLow_for_jobHigh( Job_avail, job_high )
 	local priority     = nil
 	local obj_suitable = nil
 
-	while i > job_high_num and (not priority or priority == Job_avail[i].prior) do
+	while i > job_high_num and (not priority or priority == Job_avail[i].prior) and (Job_avail[i].prior < job_high.prior) do
 		job_low = Job_avail[i]
 
 		if job_low.object ~= nil and ( not predicate or predicate(self.npc_info[job_low.object], self) ) then
@@ -696,41 +740,51 @@ function gulag:find_obj_on_jobLow_for_jobHigh( Job_avail, job_high )
 	end
 end
 
+-- для всех свободных работ заданного приоритета попытаться найти и назначить персонажей с работ с более низким приоритетом
+function gulag:try_to_fill_free_high_prior_jobs( jobs, prior_block_start, prior_block_end )
+	local obj_id
+
+	for i = prior_block_start, prior_block_end do
+		if not jobs[i].object then
+			obj_id = self:find_obj_on_jobLow_for_jobHigh( jobs, jobs[i] )
+
+			if obj_id then
+				self:free_obj_and_reinit( obj_id )
+
+				self:setJob( obj_id, jobs[i] )
+			end			
+		end
+	end
+end
+
 -- распределение работ.
--- при распределении недошедшие персонажи приравниваются к свободным
+-- при распределении недошедшие персонажи приравниваются к свободным.
+-- работы с одинаковым приоритетом объединяются в блоки
 function gulag:updateJob()
 	local Job_avail = self:prepare_available_jobs()
 --	printf( "Job_avail:" )
 --	print_table( Job_avail, "   " )
 
 	local obj_avail = self:get_available_objs()
-	printf( "obj_avail:" )
-	print_table( obj_avail, "   " )
+--	printf( "obj_avail:" )
+--	print_table( obj_avail, "   " )
 
-	local obj_id
---	local prior_block_start = 1
---	local prior_block_end   = 0
+	local prior_block_start = 1
+	local prior_block_end
 
-	for i, job in ipairs( Job_avail ) do
-		if job.object == nil then
-			obj_id = self:find_nearest_suitable_obj( obj_avail, job )
-			if not obj_id then
-				printf( "no suitable obj for job=%d %s", job.num, job.section )
-			end
+	while prior_block_start <= table.getn( Job_avail ) do
+		dists, prior_block_end = self:calc_distance_table( Job_avail, obj_avail, prior_block_start )
 
-			if not obj_id then
-				obj_id = self:find_obj_on_jobLow_for_jobHigh( Job_avail, job )
+		table.sort( dists, function(a,b) return a.dist < b.dist end )
 
-				if obj_id then
-					self:free_obj_and_reinit( obj_id )
-				end
-			end
+--		printf( "prior_block_start=%d prior_block_end=%d prior=%d", prior_block_start, prior_block_end, Job_avail[prior_block_start].prior )
+--		print_table( dists )
 
-			if obj_id then
-				self:setJob( obj_id, job )
-				obj_avail[obj_id] = nil
-			end
-		end
+		self:assign_jobs_using_distance_table( Job_avail, obj_avail, dists )
+
+		self:try_to_fill_free_high_prior_jobs( Job_avail, prior_block_start, prior_block_end )
+
+		prior_block_start = prior_block_end + 1
 	end
 end
 
@@ -1126,7 +1180,7 @@ end
 -- работает всегда
 function get_gulag_by_sid( sid )
 	local strn = alife():story_object( sid )
-	
+
 	strn:initialize_if_needed()
 
 	return strn.gulag
