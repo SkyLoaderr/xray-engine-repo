@@ -1105,6 +1105,7 @@ function mil_bomb_explode (actor, npc)
        return
     end
 
+    printf ("MIL_BOMB EXPLODED")
     local h = hit ();
     h.power = 1000000;
     h.direction = vector():set( 1, 0, 0 );
