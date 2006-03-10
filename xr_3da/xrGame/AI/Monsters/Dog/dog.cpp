@@ -16,6 +16,7 @@ CAI_Dog::CAI_Dog()
 	CControlled::init_external	(this);
 
 	com_man().add_ability(ControlCom::eControlRotationJump);
+	com_man().add_ability(ControlCom::eControlMeleeJump);
 }
 
 CAI_Dog::~CAI_Dog()
@@ -118,6 +119,7 @@ void CAI_Dog::reinit()
 
 	com_man().add_rotation_jump_data("1","2","3","4", PI_DIV_2);
 	com_man().add_rotation_jump_data("5","6","7","8", deg(179));
+	com_man().add_melee_jump_data("5","jump_right_0");
 }
 
 
@@ -131,6 +133,7 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 		anim().SetCurAnim(eAnimThreaten);
 	}
 }
+
 
 
 #ifdef _DEBUG

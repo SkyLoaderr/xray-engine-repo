@@ -18,6 +18,7 @@ CControlManagerCustom::CControlManagerCustom()
 	m_jump			= 0;
 	m_run_attack	= 0;
 	m_threaten		= 0;
+	m_melee_jump	= 0;
 }
 
 CControlManagerCustom::~CControlManagerCustom()
@@ -28,6 +29,7 @@ CControlManagerCustom::~CControlManagerCustom()
 	xr_delete	(m_jump);
 	xr_delete	(m_run_attack);
 	xr_delete	(m_threaten);
+	xr_delete	(m_melee_jump);
 }	
 
 void CControlManagerCustom::reinit()
@@ -63,6 +65,10 @@ void CControlManagerCustom::add_ability(ControlCom::EControlType type)
 		m_threaten		= xr_new<CControlThreaten>();
 		m_man->add		(m_threaten, ControlCom::eControlThreaten);
 		break;
+	case ControlCom::eControlMeleeJump:
+		m_melee_jump	= xr_new<CControlMeleeJump>();
+		m_man->add		(m_melee_jump, ControlCom::eControlMeleeJump);
+		break;
 	}
 }
 
@@ -75,6 +81,7 @@ void CControlManagerCustom::on_start_control(ControlCom::EControlType type)
 	case ControlCom::eControlTripleAnimation:	m_man->subscribe	(this, ControlCom::eventTAChange);			break;
 	case ControlCom::eControlJump:				m_man->subscribe	(this, ControlCom::eventJumpEnd);			break;
 	case ControlCom::eControlRotationJump:		m_man->subscribe	(this, ControlCom::eventRotationJumpEnd);	break;
+	case ControlCom::eControlMeleeJump:			m_man->subscribe	(this, ControlCom::eventMeleeJumpEnd);		break;
 	case ControlCom::eControlRunAttack:			m_man->subscribe	(this, ControlCom::eventRunAttackEnd);		break;
 	case ControlCom::eControlThreaten:			m_man->subscribe	(this, ControlCom::eventThreatenEnd);		break;
 	}
@@ -87,6 +94,7 @@ void CControlManagerCustom::on_stop_control	(ControlCom::EControlType type)
 	case ControlCom::eControlTripleAnimation:	m_man->unsubscribe	(this, ControlCom::eventTAChange);		break;
 	case ControlCom::eControlJump:				m_man->unsubscribe	(this, ControlCom::eventJumpEnd);		break;
 	case ControlCom::eControlRotationJump:		m_man->unsubscribe	(this, ControlCom::eventRotationJumpEnd);break;
+	case ControlCom::eControlMeleeJump:			m_man->unsubscribe	(this, ControlCom::eventMeleeJumpEnd);	break;
 	case ControlCom::eControlRunAttack:			m_man->unsubscribe	(this, ControlCom::eventRunAttackEnd);	break;
 	case ControlCom::eControlThreaten:			m_man->unsubscribe	(this, ControlCom::eventThreatenEnd);	break;
 	}
@@ -106,6 +114,7 @@ void CControlManagerCustom::on_event(ControlCom::EEventType type, ControlCom::IE
 		}
 	case ControlCom::eventJumpEnd:			m_man->release(this, ControlCom::eControlJump); break;
 	case ControlCom::eventRotationJumpEnd:	m_man->release(this, ControlCom::eControlRotationJump); break;
+	case ControlCom::eventMeleeJumpEnd:		m_man->release(this, ControlCom::eControlMeleeJump); break;
 	case ControlCom::eventRunAttackEnd:		m_man->release(this, ControlCom::eControlRunAttack); break;
 	case ControlCom::eventThreatenEnd:		m_man->release(this, ControlCom::eControlThreaten); break;
 	}
@@ -126,6 +135,7 @@ void CControlManagerCustom::update_schedule()
 	if (m_rotation_jump)	check_rotation_jump	();
 	if (m_run_attack)		check_run_attack	();
 	if (m_threaten)			check_threaten		();
+	if (m_melee_jump)		check_melee_jump	();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -470,11 +480,65 @@ void CControlManagerCustom::check_rotation_jump()
 
 void CControlManagerCustom::add_rotation_jump_data(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags)
 {
+	SControlRotationJumpData	data;
+	fill_rotation_data			(data,left1,left2,right1,right2,angle,flags);
+
+	m_rot_jump_data.push_back	(data);
+}
+//////////////////////////////////////////////////////////////////////////
+
+void CControlManagerCustom::check_run_attack()
+{
+	if (!m_man->check_start_conditions(ControlCom::eControlRunAttack)) return;	
+	if (!m_object->check_start_conditions(ControlCom::eControlRunAttack)) return;
+
+	m_man->capture		(this, ControlCom::eControlRunAttack);
+	m_man->activate		(ControlCom::eControlRunAttack);
+}
+
+void CControlManagerCustom::check_threaten()
+{
+	if (!m_man->check_start_conditions(ControlCom::eControlThreaten)) return;	
+	if (!m_object->check_start_conditions(ControlCom::eControlThreaten)) return;
+
+	m_man->capture		(this, ControlCom::eControlThreaten);
+	m_man->activate		(ControlCom::eControlThreaten);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// MELEE JUMP
+//////////////////////////////////////////////////////////////////////////
+
+void CControlManagerCustom::add_melee_jump_data(LPCSTR left,LPCSTR right)
+{
+	CKinematicsAnimated	*skel_animated = smart_cast<CKinematicsAnimated*>(m_object->Visual());
+	m_melee_jump_data.anim_ls = skel_animated->ID_Cycle_Safe(left);
+	m_melee_jump_data.anim_rs = skel_animated->ID_Cycle_Safe(right);
+}
+
+void CControlManagerCustom::check_melee_jump()
+{
+	if (!m_man->check_start_conditions(ControlCom::eControlMeleeJump)) return;	
+	if (!m_object->check_start_conditions(ControlCom::eControlMeleeJump)) return;
+
+	m_man->capture				(this, ControlCom::eControlMeleeJump);
+
+	SControlMeleeJumpData		*ctrl_data = (SControlMeleeJumpData *) m_man->data(this, ControlCom::eControlMeleeJump);
+	VERIFY						(ctrl_data);
+
+	(*ctrl_data)				= m_melee_jump_data;
+
+	m_man->activate				(ControlCom::eControlMeleeJump);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Fill Rotation Data
+//////////////////////////////////////////////////////////////////////////
+void CControlManagerCustom::fill_rotation_data(SControlRotationJumpData	&data, LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags)
+{
 	VERIFY				(m_object->Visual());
 	CKinematicsAnimated	*skeleton_animated	= smart_cast<CKinematicsAnimated*>(m_object->Visual());
 
-	SControlRotationJumpData	data;
-	
 	data.flags.assign			(flags);
 	data.turn_angle				= angle;
 
@@ -510,26 +574,7 @@ void CControlManagerCustom::add_rotation_jump_data(LPCSTR left1,LPCSTR left2,LPC
 	} else {
 		data.anim_run_rs.invalidate();
 	}
-
-	m_rot_jump_data.push_back	(data);
 }
+
 //////////////////////////////////////////////////////////////////////////
-
-void CControlManagerCustom::check_run_attack()
-{
-	if (!m_man->check_start_conditions(ControlCom::eControlRunAttack)) return;	
-	if (!m_object->check_start_conditions(ControlCom::eControlRunAttack)) return;
-
-	m_man->capture		(this, ControlCom::eControlRunAttack);
-	m_man->activate		(ControlCom::eControlRunAttack);
-}
-
-void CControlManagerCustom::check_threaten()
-{
-	if (!m_man->check_start_conditions(ControlCom::eControlThreaten)) return;	
-	if (!m_object->check_start_conditions(ControlCom::eControlThreaten)) return;
-
-	m_man->capture		(this, ControlCom::eControlThreaten);
-	m_man->activate		(ControlCom::eControlThreaten);
-}
 

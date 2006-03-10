@@ -340,7 +340,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		}
 
 
-	#ifdef DEBUG
+	#ifdef _DEBUG
 		CObject *obj = Level().Objects.FindObjectByName("monster");
 		if (obj) {
 			CBaseMonster *monster = smart_cast<CBaseMonster *>(obj);

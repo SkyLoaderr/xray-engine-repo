@@ -18,6 +18,7 @@ namespace ControlCom {
 		eControlRotationJump,			// capture: path, movement, sequencer, dir
 		eControlRunAttack,				// capture: path, movement, sequencer
 		eControlThreaten,				
+		eControlMeleeJump,				// capture: path, movement, sequencer, dir
 
 		eControlAnimationBase,
 		eControlMovementBase,
@@ -55,6 +56,7 @@ namespace ControlCom {
 		eventPathBuilt,
 		eventJumpEnd,
 		eventRotationJumpEnd,
+		eventMeleeJumpEnd,
 		eventRunAttackEnd,
 		eventPathUpdated,
 		eventPathSelectorFailed,

@@ -95,7 +95,7 @@ void CControlAnimationBase::on_start_control(ControlCom::EControlType type)
 void CControlAnimationBase::on_stop_control	(ControlCom::EControlType type)
 {
 	switch (type) {
-	case ControlCom::eControlAnimation: m_man->unsubscribe	(this, ControlCom::eventAnimationEnd);	break;
+	case ControlCom::eControlAnimation: m_man->unsubscribe	(this, ControlCom::eventAnimationEnd); break;
 	}
 }
 

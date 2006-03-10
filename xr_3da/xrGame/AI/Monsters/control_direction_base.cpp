@@ -19,7 +19,7 @@ void CControlDirectionBase::reinit()
 	m_man->capture		(this, ControlCom::eControlDir);
 }
 
-void CControlDirectionBase::face_target(const Fvector &position, u32 delay)
+void CControlDirectionBase::face_target(const Fvector &position, u32 delay, float add_yaw)
 {
 	if (m_time_last_faced + delay > Device.dwTimeGlobal) return;
 
@@ -31,15 +31,17 @@ void CControlDirectionBase::face_target(const Fvector &position, u32 delay)
 	dir.sub		(position, m_object->Position());
 	dir.getHP	(yaw,pitch);
 	yaw			*= -1;
+
+	yaw			+= (m_man->direction().is_from_right(position)) ? add_yaw : -add_yaw;
 	yaw			= angle_normalize(yaw);
 
 	m_heading.target	= yaw;
 
 	m_time_last_faced	= Device.dwTimeGlobal;
 }
-void CControlDirectionBase::face_target(const CObject *obj,	u32 delay) 
+void CControlDirectionBase::face_target(const CObject *obj,	u32 delay, float add_yaw) 
 {
-	face_target	(obj->Position(), delay);
+	face_target	(obj->Position(), delay, add_yaw);
 }
 
 void CControlDirectionBase::use_path_direction(bool reversed)

@@ -11,6 +11,7 @@ protected:
 
 	u32		m_time_next_run_away;
 	u32		m_time_start_check_behinder;
+	u32		m_time_start_behinder;
 
 public:
 						CStateMonsterAttack		(_Object *obj);

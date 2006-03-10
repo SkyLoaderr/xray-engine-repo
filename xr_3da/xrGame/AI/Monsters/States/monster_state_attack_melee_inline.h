@@ -21,10 +21,10 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackMeleeAbstract::execute()
 {
 	object->set_action			(ACT_ATTACK);
-	if (object->control().direction().is_face_target(object->EnemyMan.get_enemy(), PI_DIV_6))
+	if (object->control().direction().is_face_target(object->EnemyMan.get_enemy(), PI_DIV_3))
 		object->dir().face_target	(object->EnemyMan.get_enemy(), 800);
 	else 
-		object->dir().face_target	(object->EnemyMan.get_enemy());
+		object->dir().face_target	(object->EnemyMan.get_enemy(), 0, deg(15));
 
 	object->set_state_sound		(MonsterSound::eMonsterSoundAggressive);
 }

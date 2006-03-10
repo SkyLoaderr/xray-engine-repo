@@ -8,6 +8,96 @@
 #include "monster_velocity_space.h"
 #include "control_path_builder_base.h"
 
+// DEBUG purpose only
+char *dbg_anim_name_table[] = {
+	"eAnimStandIdle",
+	"eAnimStandTurnLeft",
+	"eAnimStandTurnRight",
+
+	"eAnimSitIdle",
+	"eAnimLieIdle",
+
+	"eAnimSitToSleep",
+	"eAnimLieToSleep",
+	"eAnimStandSitDown",
+	"eAnimStandLieDown",
+	"eAnimLieStandUp",
+	"eAnimSitStandUp",
+	"eAnimStandLieDownEat",
+	"eAnimSitLieDown",
+	"eAnimLieSitUp",
+	"eAnimSleepStandUp",
+
+	"eAnimWalkFwd",
+	"eAnimWalkBkwd",
+	"eAnimWalkTurnLeft",
+	"eAnimWalkTurnRight",
+
+	"eAnimRun",
+	"eAnimRunTurnLeft",
+	"eAnimRunTurnRight",
+	"eAnimFastTurn",
+
+	"eAnimAttack",
+	"eAnimAttackFromBack",
+	"eAnimAttackRun",
+
+	"eAnimEat",
+	"eAnimSleep",
+	"eAnimDie",
+
+	"eAnimDragCorpse",
+	"eAnimCheckCorpse",
+	"eAnimScared",
+	"eAnimAttackJump",
+
+	"eAnimLookAround",
+	
+	"eAnimJump",
+	"eAnimSteal",
+
+	"eAnimJumpStart",
+	"eAnimJumpGlide",		
+	"eAnimJumpFinish",
+	
+	"eAnimJumpLeft",
+	"eAnimJumpRight",
+	
+	"eAnimStandDamaged",
+	"eAnimWalkDamaged",
+	"eAnimRunDamaged",
+	
+	"eAnimSniff",
+	"eAnimHowling",
+	"eAnimThreaten",
+	
+	"eAnimMiscAction_00",
+	"eAnimMiscAction_01",
+	
+	"eAnimUpperStandIdle",
+	"eAnimUpperStandTurnLeft",
+	"eAnimUpperStandTurnRight",
+	
+	"eAnimStandToUpperStand",
+	"eAnimUppperStandToStand",
+
+	"eAnimUpperWalkFwd",
+	"eAnimUpperThreaten",
+	"eAnimUpperAttack",
+	
+	"eAnimAttackPsi",
+	
+	"eAnimTeleRaise",
+	"eAnimTeleFire",
+	"eAnimGraviPrepare",
+	"eAnimGraviFire",
+	
+	"eAnimCount",
+	"eAnimUndefined"
+};
+
+
+
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
 //////////////////////////////////////////////////////////////////////////
@@ -72,10 +162,10 @@ void CControlAnimationBase::SetTurnAnimation()
 		return;
 	}
 
-	if (m_object->control().path_builder().is_moving_on_path() && (delta_yaw > MOVE_TURN_ANGLE)) {
-		m_object->SetTurnAnimation(turn_left);
-		return;
-	}
+	//if (m_object->control().path_builder().is_moving_on_path() && m_object->path().enabled() && (delta_yaw > MOVE_TURN_ANGLE)) {
+	//	m_object->SetTurnAnimation(turn_left);
+	//	return;
+	//}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -140,14 +230,18 @@ void CControlAnimationBase::SelectVelocities()
 	}
 	
 	// финальная корректировка скорости анимации по физической скорости
-	
+
+	EMotionAnim prev_anim = cur_anim_info().motion;
+
 	if (!m_object->state_invisible && !fis_zero(anim_vel.linear)) {
 			
 		EMotionAnim new_anim;
 		float		a_speed;
 
 		if (accel_chain_get(m_man->movement().real_velocity(), cur_anim_info().motion, new_anim, a_speed)) {
-			//cur_anim_info().motion			= new_anim;
+			cur_anim_info().motion			= new_anim;
+			
+			if (a_speed < 0.5f) a_speed		+= 0.5f;
 			cur_anim_info().speed.target	= a_speed;
 		} else 
 			cur_anim_info().speed.target	= -1.f;
@@ -163,9 +257,10 @@ void CControlAnimationBase::SelectVelocities()
 		item_it = m_anim_storage[cur_anim_info().motion];
 		VERIFY(item_it);
 		
+		// Melee?
 		if (m_tAction == ACT_ATTACK) {
 			float vel = item_it->velocity.velocity.angular_real;
-			m_object->dir().set_heading_speed(vel * vel);
+			m_object->dir().set_heading_speed(vel * m_object->m_melee_rotation_factor); // todo: make as an external factor
 		} else 
 			m_object->dir().set_heading_speed(item_it->velocity.velocity.angular_real);
 	}

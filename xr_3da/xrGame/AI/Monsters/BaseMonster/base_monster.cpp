@@ -204,11 +204,6 @@ void CBaseMonster::SetTurnAnimation(bool turn_left)
 	(turn_left) ? anim().SetCurAnim(eAnimStandTurnLeft) : anim().SetCurAnim(eAnimStandTurnRight);
 }
 
-bool CBaseMonster::IsVisibleObject(const CGameObject *object)
-{
-	return memory().visual().visible_now(object);
-}
-
 void CBaseMonster::set_state_sound(u32 type, bool once)
 {
 	if (once) {
@@ -465,6 +460,9 @@ bool CBaseMonster::check_start_conditions(ControlCom::EControlType type)
 	if (type == ControlCom::eControlRotationJump) {
 		EMonsterState state = StateMan->get_state_type();
 		if (!is_state(state, eStateAttack_Run)) return false;
+	} if (type == ControlCom::eControlMeleeJump) {
+		EMonsterState state = StateMan->get_state_type();
+		if (!is_state(state, eStateAttack_Run) && !is_state(state, eStateAttack_Melee)) return false;
 	}
 	return true;
 }

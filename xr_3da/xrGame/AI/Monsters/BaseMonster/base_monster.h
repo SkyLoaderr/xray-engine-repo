@@ -131,6 +131,12 @@ public:
 			void			squad_notify					();
 
 	virtual bool			IsTalkEnabled					() {return false;}
+
+	virtual void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
+	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
+
+	virtual	void			on_before_sell					(CInventoryItem *item);
+
 	// ---------------------------------------------------------------------------------
 	// Process scripts
 	// ---------------------------------------------------------------------------------
@@ -192,7 +198,6 @@ public:
 	// ---------------------------------------------------------------------------------
 	
 	virtual void			event_on_step					() {}
-	
 	virtual void			on_threaten_execute				() {}
 	// ---------------------------------------------------------------------------------
 	// Memory
@@ -203,6 +208,9 @@ public:
 			bool			GetCoverFromEnemy				(const Fvector &enemy_pos, Fvector &position, u32 &vertex_id);
 			bool			GetCoverFromPoint				(const Fvector &pos, Fvector &position, u32 &vertex_id, float min_dist, float max_dist, float radius);
 			bool			GetCoverCloseToPoint			(const Fvector &dest_pos, float min_dist, float max_dist, float deviation, float radius ,Fvector &position, u32 &vertex_id);
+
+
+
 
 
 	// Movement Manager
@@ -270,38 +278,18 @@ public:
 	} m_monster_type;
 
 	// -----------------------------------------------------------------------------
-
+	// Home
 	CMonsterHome			*Home;
 
-	//////////////////////////////////////////////////////////////////////////
+
 	// -----------------------------------------------------------------------------
-	// Special Services (refactoring needed)
-		
-	bool			IsVisibleObject					(const CGameObject *object);
-	void			on_kill_enemy					(const CEntity *obj);
-	virtual void	HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
-	virtual	void	HitEntityInJump					(const CEntity *pEntity) {}
-	void			Hit_Psy							(CObject *object, float value);
-	void			Hit_Wound						(CObject *object, float value, const Fvector &dir, float impulse);
-	void			PlayParticles					(const shared_str& name, const Fvector &position, const Fvector &dir, BOOL auto_remove = TRUE);
-	void			load_effector					(LPCSTR section, LPCSTR line, SAttackEffector &effector);
+	// Anomaly Detector
+private:
+	CAnomalyDetector		*m_anomaly_detector;
 
-	// --------------------------------------------------------------------------------------
-	// Kill From Here
-	// --------------------------------------------------------------------------------------
-	// State flags
-	bool						m_bDamaged;
-	bool						m_bAngry;
-	bool						m_bGrowling;
-	bool						m_bAggressive;
-	bool						m_bSleep;
-	bool						m_bRunTurnLeft;
-	bool						m_bRunTurnRight;
-
-
-	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
-
-	//---------------------------------------------------------------------------------------
+public:
+	CAnomalyDetector		&anomaly_detector	() {return (*m_anomaly_detector);}
+	// -----------------------------------------------------------------------------
 
 
 	//-----------------------------------------------------------------
@@ -327,6 +315,37 @@ public:
 	IC	void				set_default_panic_threshold	();
 	//--------------------------------------------------------------------
 
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// -----------------------------------------------------------------------------
+	// Special Services (refactoring needed)
+		
+	void			on_kill_enemy					(const CEntity *obj);
+	void			Hit_Psy							(CObject *object, float value);
+	void			Hit_Wound						(CObject *object, float value, const Fvector &dir, float impulse);
+	void			PlayParticles					(const shared_str& name, const Fvector &position, const Fvector &dir, BOOL auto_remove = TRUE);
+	void			load_effector					(LPCSTR section, LPCSTR line, SAttackEffector &effector);
+
+	// --------------------------------------------------------------------------------------
+	// Kill From Here
+	// --------------------------------------------------------------------------------------
+	// State flags
+	bool						m_bDamaged;
+	bool						m_bAngry;
+	bool						m_bGrowling;
+	bool						m_bAggressive;
+	bool						m_bSleep;
+	bool						m_bRunTurnLeft;
+	bool						m_bRunTurnRight;
+
+
+	void						set_aggressive				(bool val = true) {m_bAggressive = val;}
+
+	//---------------------------------------------------------------------------------------
+
+
 	u32						m_prev_sound_type;
 	u32						get_attack_rebuild_time	();
 
@@ -342,20 +361,14 @@ IC	void					wake_up				(){m_bSleep = false;}
 
 	// Temp
 	u32						m_time_last_attack_success;
-
-IC	void					set_ignore_collision_hit (bool value) {ignore_collision_hit = value;}
-	
 	int						m_rank;
-
+	float					m_melee_rotation_factor;
 
 private:
 	bool					ignore_collision_hit;	
 	
-	CAnomalyDetector		*m_anomaly_detector;
-
 public:
-	CAnomalyDetector		&anomaly_detector	() {return (*m_anomaly_detector);}
-
+	IC	void				set_ignore_collision_hit (bool value) {ignore_collision_hit = value;}
 	// -----------------------------------------------------------------------------
 	//////////////////////////////////////////////////////////////////////////
 
@@ -410,12 +423,11 @@ public:
 	void					debug_fsm			();
 #endif
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	virtual void			debug_on_key		(int key) {}
 #endif
+//////////////////////////////////////////////////////////////////////////
 
-public:
-	virtual	void			on_before_sell		(CInventoryItem *item);
 };
 
 #include "base_monster_inline.h"

@@ -4,6 +4,7 @@
 #include "anim_triple.h"
 #include "control_jump.h"
 #include "control_rotation_jump.h"
+#include "control_melee_jump.h"
 
 
 class CAnimationSequencer;
@@ -21,9 +22,12 @@ class CControlManagerCustom : public CControl_ComBase {
 	CControlJump			*m_jump;
 	CControlRunAttack		*m_run_attack;
 	CControlThreaten		*m_threaten;
+	CControlMeleeJump		*m_melee_jump;
 
 	DEFINE_VECTOR			(SControlRotationJumpData, ROT_JUMP_DATA_VEC, ROT_JUMP_DATA_VEC_IT);
 	ROT_JUMP_DATA_VEC		m_rot_jump_data;
+	
+	SControlMeleeJumpData	m_melee_jump_data;
 
 public:
 					CControlManagerCustom	();
@@ -66,13 +70,17 @@ public:
 	//-------------------------------------------------------------------------------
 	// Rotation Jump
 	void		add_rotation_jump_data	(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags = 0);
+	void		add_melee_jump_data		(LPCSTR left,LPCSTR right);
 
 private:
 
 	void		check_attack_jump		();
 	void		check_jump_over_physics	();
 	void		check_rotation_jump		();
+	void		check_melee_jump		();
 	void		check_run_attack		();
 	void		check_threaten			();
+
+	void		fill_rotation_data		(SControlRotationJumpData &data, LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags);
 };
 

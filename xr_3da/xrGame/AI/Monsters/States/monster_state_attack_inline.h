@@ -12,7 +12,7 @@
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
 
-
+#include "../../../actor.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -59,6 +59,7 @@ void CStateMonsterAttackAbstract::initialize()
 	
 	m_time_next_run_away				= 0;
 	m_time_start_check_behinder			= 0;
+	m_time_start_behinder				= 0;
 }
 
 #define FIND_ENEMY_DELAY	6000
@@ -68,6 +69,7 @@ void CStateMonsterAttackAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackAbstract::execute()
 {
+
 	bool selected = false;
 	
 	if (check_home_point()) {
@@ -106,9 +108,9 @@ void CStateMonsterAttackAbstract::execute()
 		if (b_melee) {  
 			// check if enemy is behind me for a long time
 			// [TODO] make specific state and replace run_away state (to avoid ratation jumps)
-			//if (check_behinder()) 
-			//	select_state(eStateAttack_RunAway);
-			//else 
+			if (check_behinder()) 
+				select_state(eStateAttack_RunAway);
+			else 
 				select_state(eStateAttack_Melee);
 		}
 		else select_state(eStateAttack_Run);
@@ -168,10 +170,12 @@ bool CStateMonsterAttackAbstract::check_find_enemy_state()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackAbstract::check_run_away_state()
 {
+	if (m_time_start_behinder != 0) return false;
+
 	if (prev_substate == eStateAttack_RunAway) {
 		if (!get_state(eStateAttack_RunAway)->check_completion()) return true;
 		else m_time_next_run_away = Device.dwTimeGlobal + 10000;
-	} else if (object->Morale.is_despondent() && (m_time_next_run_away < Device.dwTimeGlobal)) {
+	} else if ((object->EnemyMan.get_enemy() != Actor()) && object->Morale.is_despondent() && (m_time_next_run_away < Device.dwTimeGlobal)) {
 		return true;
 	}
 
@@ -229,26 +233,51 @@ void CStateMonsterAttackAbstract::setup_substates()
 	}
 }
 
-#define TIME_CHECK_BEHINDER 2500
+#define TIME_CHECK_BEHINDER 2000
+#define TIME_IN_BEHINDER	3000
+#define ANGLE_START_CHECK_BEHINDER		2 * PI_DIV_3
+#define ANGLE_CONTINUE_CHECK_BEHINDER	PI_DIV_2
 
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackAbstract::check_behinder()
 {
-	// check if object is not behind
-	if (object->control().direction().is_face_target(object->EnemyMan.get_enemy(), 2 * PI_DIV_3)) {
-		m_time_start_check_behinder = 0;
-		return false;
+	// if we are not in behinder state
+	if (m_time_start_behinder == 0) {
+		// check if we can start behinder
+		
+		
+		// - check if we start checking 
+		if (m_time_start_check_behinder == 0) {
+			
+			// - check if object is behind
+			if (!object->control().direction().is_face_target(object->EnemyMan.get_enemy(), ANGLE_START_CHECK_BEHINDER)) {
+				m_time_start_check_behinder = time();
+			}
+
+		} else {
+			// if we already in check mode
+			
+			// - check if object is not behind (break checker)
+			if (object->control().direction().is_face_target(object->EnemyMan.get_enemy(), ANGLE_CONTINUE_CHECK_BEHINDER)) {
+				m_time_start_check_behinder = 0;
+			} 
+
+			// check if time is not out
+			if (m_time_start_check_behinder + TIME_CHECK_BEHINDER > time())	return false;
+			
+			m_time_start_behinder		= time();
+			m_time_start_check_behinder	= 0;
+		}
+	} 
+
+	// if we are not in behinder state
+
+	if (m_time_start_behinder != 0) {
+		if (m_time_start_behinder + TIME_IN_BEHINDER > time()) return true;	
+		else m_time_start_behinder = 0;
 	}
 	
-	// check if we just start to count
-	if (m_time_start_check_behinder == 0) {
-		m_time_start_check_behinder = time();
-		return false;
-	}
-	
-	// check if time is not out
-	if (m_time_start_check_behinder + TIME_CHECK_BEHINDER > time())	return false;
-	return true;
+	return false;
 }
 
 

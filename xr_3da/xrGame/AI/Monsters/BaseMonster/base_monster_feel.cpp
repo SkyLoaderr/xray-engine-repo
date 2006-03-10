@@ -101,7 +101,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 		HS.Write_Packet(l_P);
 		u_EventSend	(l_P);
 		
-		if (smart_cast<CActor *>(pEntityNC)) {
+		if (pEntityNC == Actor()) {
 			START_PROFILE("BaseMonster/Animation/HitEntity");
 			SDrawStaticStruct* s = HUD().GetUI()->UIGame()->AddCustomStatic("monster_claws", false);
 			s->m_endTime = Device.fTimeGlobal+3.0f;// 3sec
@@ -118,7 +118,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 			//SetAttackEffector			();
 
-			Actor()->lock_accel_for		(2000);
+			Actor()->lock_accel_for		(2000*fDamage);
 
 
 
