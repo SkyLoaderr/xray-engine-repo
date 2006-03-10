@@ -209,6 +209,7 @@ private:
 	void		UpdateStaticDamage					(dContact* c,SGameMtl* tri_material,bool bo1);
 	void		UpdateDynamicDamage					(dContact* c,SGameMtl* obj_material,dBodyID b,bool bo1);
 	void IC		FootProcess							(dContact* c,bool &do_collide ,bool bo);
+	static void	TestPathCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 public:	
 #ifdef DEBUG
 	virtual		void		OnRender							()					;

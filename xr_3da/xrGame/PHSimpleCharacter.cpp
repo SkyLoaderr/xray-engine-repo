@@ -167,9 +167,19 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 }
 
 
-void TestPathCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+void CPHSimpleCharacter::TestPathCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	do_colide=false;
+	CPHSimpleCharacter* ch=NULL;
+	if(bo1)
+	{
+		ch=static_cast<CPHSimpleCharacter*>(retrieveGeomUserData(c.geom.g1)->ph_object);
+	}else
+	{
+		ch=static_cast<CPHSimpleCharacter*>(retrieveGeomUserData(c.geom.g2)->ph_object);
+	}
+	VERIFY(ch);
+	ch->b_side_contact=true;
 }
 
 void CPHSimpleCharacter::SetBox(const dVector3 &sizes)
@@ -292,6 +302,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dSpaceAdd(m_space,m_cap_transform);
 	dGeomSetBody(m_cap_transform,m_body);
 	dGeomUserDataSetObjectContactCallback(m_cap,TestPathCallback);
+	dGeomGetUserData(m_cap)->b_static_colide=false;
 	if(m_phys_ref_object)
 	{
 		SetPhysicsRefObject(m_phys_ref_object);
@@ -702,6 +713,7 @@ void CPHSimpleCharacter::ValidateWalkOn()
 {
 	if(b_on_object||b_was_on_object)
 	{
+		 b_clamb_jump=ValidateWalkOnMesh();
 		ValidateWalkOnObject();
 	}
 	else b_clamb_jump=ValidateWalkOnMesh()&&!m_elevator_state.NearDown();
@@ -819,6 +831,7 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 						DBG_DrawTri(Res,D3DCOLOR_XRGB(255,0,0));
 					}
 #endif
+					b_side_contact=true;
 					return 
 						false;
 				}
@@ -1317,19 +1330,22 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 	*p_lastMaterialIDX=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 
+
+////////////////////////нужно сместить колижен!!
+
+//////////////
+	
+	
+
+	FootProcess(c,do_collide,bo1);
+	if(!do_collide) return;
 	if(g1==m_hat_transform||g2==m_hat_transform)
 	{
 		b_side_contact=true;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
 		c->surface.mu		=0.00f;
 	}
-////////////////////////нужно сместить колижен!!
 
-//////////////
-	FootProcess(c,do_collide,bo1);
-
-	if(!do_collide) return;
-	
 	if(object){
 		spring_rate*=10.f;
 		dBodyID b;
