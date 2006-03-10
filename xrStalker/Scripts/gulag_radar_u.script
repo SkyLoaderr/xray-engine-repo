@@ -815,7 +815,7 @@ function load_states(gname, type)
 	
 	if type == "bun_ptr5" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if db.actor:has_info("+bun_actor_vstal") then
 				return 1
 			else
 				return 0
