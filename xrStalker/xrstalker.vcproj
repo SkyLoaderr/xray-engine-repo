@@ -1426,9 +1426,6 @@
 					RelativePath=".\Config\ui\actor_statistic.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\buy_mp_item.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\car_panel.xml">
 				</File>
 				<File
@@ -1436,12 +1433,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\color_defs.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\encyclopedia.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\encyclopedia_item.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\events_new.xml">
@@ -1462,28 +1453,13 @@
 					RelativePath=".\Config\ui\inventory_new.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\inventoryMP.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\job_item.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\jobs.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\maingame.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\maingame_pda_msg.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\map_desc.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\message_box.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\messages_window.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\motion_icon.xml">
@@ -1495,31 +1471,7 @@
 					RelativePath=".\Config\ui\news_templates.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\pda.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\pda_character.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\pda_contacts_new.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\pda_dialog.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\pda_events.xml">
-				</File>
-				<File
-					RelativePath=".\config\ui\pda_map.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\skin_selector.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\sleep_dialog_new.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\spawn.xml">
 				</File>
 				<File
 					RelativePath=".\Config\text\eng\stable_generate_fnames.xml">
@@ -1534,40 +1486,16 @@
 					RelativePath=".\Config\ui\statisticwnd.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\stats.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\talk.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\trade.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\ui_custom_msgs.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_game_ahunt.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_game_dm.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_game_tdm.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_ingame.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\ui_keybinding.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\ui_videoplayer.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\video_templ.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\zone_map.xml">
 				</File>
 				<Filter
 					Name="mapspots"
@@ -1637,6 +1565,9 @@
 						RelativePath=".\Config\ui\ui_mp_main.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_numpad.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_old_textures.xml">
 					</File>
 					<File
@@ -1652,6 +1583,9 @@
 				<Filter
 					Name="mm"
 					Filter="">
+					<File
+						RelativePath=".\Config\ui\ui_keybinding.xml">
+					</File>
 					<File
 						RelativePath=".\Config\ui\ui_mm_load_dlg.xml">
 					</File>
@@ -1698,6 +1632,93 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\trade_character.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="mp"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\buy_mp_item.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\inventoryMP.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\map_desc.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\skin_selector.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\spawn.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\stats.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_game_ahunt.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_game_dm.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_game_tdm.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\voting_category.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="pda"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\encyclopedia.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\encyclopedia_item.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\pda.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\pda_character.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\pda_contacts_new.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\pda_dialog.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\pda_events.xml">
+					</File>
+					<File
+						RelativePath=".\config\ui\pda_map.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="hud"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\maingame.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\maingame_pda_msg.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\messages_window.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_custom_msgs.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_ingame.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_numpad_wnd.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\zone_map.xml">
 					</File>
 				</Filter>
 			</Filter>

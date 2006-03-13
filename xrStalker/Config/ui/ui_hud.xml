@@ -12,8 +12,7 @@
     <texture id="ui_hud_stamina_full" x="349" y="65" width="125" height="125" />
     <texture id="ui_hud_frame_stamina" x="0" y="226" width="97" height="127" />
     <texture id="ui_hud_stamina" x="347" y="190" width="56" height="7" />
-    <texture id="ui_hud_fraglimitBig" x="745" y="0" width="236" height="40" />
-    <texture id="ui_hud_fraglimitSmall" x="509" y="0" width="236" height="40" />
+    <texture id="ui_hud_fragBig" x="745" y="0" width="236" height="40" />
     <texture id="ui_hud_shk_car" x="509" y="40" width="110" height="10" />
     <texture id="ui_hud_shk_health" x="509" y="50" width="110" height="10" />
     <texture id="ui_hud_shk_armour" x="347" y="197" width="110" height="10" />
@@ -37,6 +36,7 @@
     <texture id="ui_hud_icon_car" x="190" y="204" width="19" height="18" />
     <texture id="ui_hud_icon_health" x="209" y="204" width="19" height="18" />
     <texture id="ui_hud_icon_armour" x="228" y="204" width="19" height="18" />
+    <texture id="ui_hud_frag" x="509" y="0" width="236" height="40" />
     <texture id="ui_hud_status_blue_01" x="0" y="728" width="46" height="47" />
     <texture id="ui_hud_status_blue_02" x="0" y="775" width="46" height="47" />
     <texture id="ui_hud_status_blue_03" x="0" y="822" width="46" height="47" />
@@ -57,4 +57,18 @@
     <texture id="ui_hud_icon_weapon" x="289" y="290" width="64" height="64" />
     <texture id="ui_hud_frame_buyM" x="517" y="792" width="507" height="232" />
     <texture id="ui_hud_frame_moneyNumber" x="905" y="746" width="119" height="46" />
+    <texture id="ui_hud_frame_voting" x="424" y="375" width="600" height="371" />
+    <texture id="ui_hud_button_voting_01_e" x="65" y="429" width="37" height="25" />
+    <texture id="ui_hud_button_voting_01_h" x="65" y="454" width="37" height="25" />
+    <texture id="ui_hud_button_voting_01_t" x="65" y="479" width="37" height="25" />
+    <texture id="ui_hud_button_voting_01_d" x="65" y="504" width="37" height="25" />
+    <texture id="ui_hud_button_voting_02_e" x="65" y="529" width="37" height="25" />
+    <texture id="ui_hud_button_voting_02_h" x="65" y="554" width="37" height="25" />
+    <texture id="ui_hud_button_voting_02_t" x="65" y="579" width="37" height="25" />
+    <texture id="ui_hud_button_voting_02_d" x="65" y="604" width="37" height="25" />
+    <texture id="ui_hud_button_voting_03_e" x="65" y="629" width="37" height="25" />
+    <texture id="ui_hud_button_voting_03_h" x="65" y="654" width="37" height="25" />
+    <texture id="ui_hud_button_voting_03_t" x="65" y="679" width="37" height="25" />
+    <texture id="ui_hud_button_voting_03_d" x="65" y="704" width="37" height="25" />
+    <texture id="ui_hud_frame_voting_dop" x="451" y="306" width="573" height="69" />
 </ui_texture>

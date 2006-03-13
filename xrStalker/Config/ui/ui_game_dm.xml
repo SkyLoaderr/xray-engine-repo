@@ -55,7 +55,7 @@
 
 	<fraglimit x="395" y="0" width="236" height="40">
 		<text y="5" align="c" font="graffiti32" r="238" g="155" b="23" a="255"/>
-		<texture>ui_hud_fraglimitBig</texture>
+		<texture>ui_hud_fragBig</texture>
 	</fraglimit>
 	
 </w>

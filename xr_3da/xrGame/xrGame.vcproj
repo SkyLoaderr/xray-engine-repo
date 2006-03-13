@@ -11068,7 +11068,7 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="1"
+					Name="team_skin_info"
 					Filter="">
 					<Filter
 						Name="MapDesc"
@@ -11119,6 +11119,22 @@
 							RelativePath=".\ui\UIStatix.h">
 						</File>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="Voting"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIKickPlayer.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIKickPlayer.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIVotingCategory.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIVotingCategory.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter

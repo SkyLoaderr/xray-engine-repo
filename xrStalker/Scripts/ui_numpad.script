@@ -7,19 +7,14 @@
 
 
 function main()
-	local dlg = ui_numpad.numpad()
-	level.start_stop_menu(dlg,true)
-	while true do
-		wait(3000)
-	end
+	super_dlg = ui_numpad.numpad()
+	level.start_stop_menu(super_dlg,true)
 end
 
 class "numpad" (CUIScriptWnd)
 
 function numpad:__init(owner) super()
 	self.owner = owner
-	
-	self:SetFont(GetFontMedium()) --set base font for dialog.
 	self:InitControls()
 	self:InitCallBacks()
 end
@@ -29,6 +24,33 @@ function numpad:__finalize()
 end
 
 function numpad:InitControls()
+
+	self:Init(342,199,339,369)			  
+    local xml = CScriptXmlInit()
+    xml:ParseFile("ui_numpad_wnd.xml")
+	
+	local t;
+     
+	xml:InitStatic("background", self)
+	t = xml:InitStatic("edit_box", self)
+	t:SetWindowName("edit_window")
+	self:Register(xml:Init3tButton("btn_0", self),"btn_0")
+	self:Register(xml:Init3tButton("btn_1", self),"btn_1")
+	self:Register(xml:Init3tButton("btn_2", self),"btn_2")
+	self:Register(xml:Init3tButton("btn_3", self),"btn_3")
+	self:Register(xml:Init3tButton("btn_4", self),"btn_4")
+	self:Register(xml:Init3tButton("btn_5", self),"btn_5")
+	self:Register(xml:Init3tButton("btn_6", self),"btn_6")
+	self:Register(xml:Init3tButton("btn_7", self),"btn_7")
+	self:Register(xml:Init3tButton("btn_8", self),"btn_8")
+	self:Register(xml:Init3tButton("btn_9", self),"btn_9")	
+	
+	self:Register(xml:Init3tButton("btn_c",			self),	"btn_c")
+	self:Register(xml:Init3tButton("btn_backspase",	self),	"btn_backspase")
+	self:Register(xml:Init3tButton("btn_enter",		self),	"btn_enter")
+	self:Register(xml:Init3tButton("btn_cancel",	self),	"btn_cancel")
+	
+	--[[
 
 	self.indent = 18	
 	self.button_indent = -1 
@@ -123,12 +145,13 @@ function numpad:InitControls()
 	
 	self:PutNumberButton("c")
 	self:PutNumberButton("->")
+	]]
 end
 
 
 function numpad:InitCallBacks()
 	-- new game
-	self:AddCallback("btn_ok",		ui_events.BUTTON_CLICKED,	self.OnButton_OK_clicked,		self)
+	self:AddCallback("btn_enter",	ui_events.BUTTON_CLICKED,	self.OnButton_OK_clicked,		self)
 	self:AddCallback("btn_cancel",	ui_events.BUTTON_CLICKED,	self.OnButton_CANCEL_clicked,	self)
 	
 	self:AddCallback("btn_0",		ui_events.BUTTON_CLICKED,	self.OnButton_0_clicked,		self)
@@ -143,7 +166,7 @@ function numpad:InitCallBacks()
 	self:AddCallback("btn_9",		ui_events.BUTTON_CLICKED,	self.OnButton_9_clicked,		self)
 	
 	self:AddCallback("btn_c",			ui_events.BUTTON_CLICKED,	self.OnButton_c_clicked,			self)
-	self:AddCallback("btn_backspace",	ui_events.BUTTON_CLICKED,	self.OnButton_backspace_clicked,	self)
+	self:AddCallback("btn_backspase",	ui_events.BUTTON_CLICKED,	self.OnButton_backspace_clicked,	self)
 end
 
 function numpad:AddNumber(number)
@@ -237,46 +260,43 @@ function numpad:OnButton_OK_clicked()
 	self.owner:OnNumberReceive(text)
 end
 
-
-function numpad:PutNumberButton(index)
-	local name = "btn_" .. index
+function numpad:OnKeyboard(dik, keyboard_action)  --virtual function
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
-	local indent = 5
-	local left = 36
-	local top  = 55
-	local width = 21
-	local height = width
-	local x = 118 -- default value for index == {0, "->", "c"}
-	local y = top  -- default value for index == 0
-	
-	if index == 0 then
-		-- do nothing
-	elseif index == "->" then
-		y = top + height + indent
-		name = "btn_backspace"
-	elseif index == "c" then
-		y = top + (height + indent)*2
-	else
-		local grid_x = math.mod(index + 2, 3) 
-		local grid_y = math.floor((index - 1)/3) 
-		local indent_x = indent*(grid_x - 2)
-		local indent_y = indent*(grid_y - 2)	
-		x = left + (width + indent)*grid_x
-		y = top  + (height + indent)*grid_y
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		if dik == DIK_keys.DIK_ESCAPE then
+			self:GetHolder():start_stop_menu(self,true)
+		end
+		
+		if dik == DIK_keys.DIK_0 or dik == DIK_keys.DIK_NUMPAD0 then
+			self:AddNumber(0)
+		elseif dik == DIK_keys.DIK_1 or dik == DIK_keys.DIK_NUMPAD1 then
+			self:AddNumber(1)
+		elseif dik == DIK_keys.DIK_2 or dik == DIK_keys.DIK_NUMPAD2 then
+			self:AddNumber(2)
+		elseif dik == DIK_keys.DIK_3 or dik == DIK_keys.DIK_NUMPAD3 then
+			self:AddNumber(3)
+		elseif dik == DIK_keys.DIK_4 or dik == DIK_keys.DIK_NUMPAD4 then
+			self:AddNumber(4)
+		elseif dik == DIK_keys.DIK_5 or dik == DIK_keys.DIK_NUMPAD5 then
+			self:AddNumber(5)
+		elseif dik == DIK_keys.DIK_6 or dik == DIK_keys.DIK_NUMPAD6 then
+			self:AddNumber(6)
+		elseif dik == DIK_keys.DIK_7 or dik == DIK_keys.DIK_NUMPAD7 then
+			self:AddNumber(7)
+		elseif dik == DIK_keys.DIK_8 or dik == DIK_keys.DIK_NUMPAD8 then
+			self:AddNumber(8)
+		elseif dik == DIK_keys.DIK_9 or dik == DIK_keys.DIK_NUMPAD9 then
+			self:AddNumber(9)
+		elseif dik == DIK_keys.DIK_BACK then
+			self:OnButton_backspace_clicked()
+		elseif dik == DIK_keys.DIK_RETURN or dik == DIK_keys.DIK_NUMPADENTER then
+			self:OnButton_OK_clicked()
+		elseif dik == DIK_keys.DIK_DELETE or dik == DIK_keys.DIK_NUMPADCOMMA then
+			self:OnButton_c_clicked()
+		end
 	end
 	
-	local btn = CUI3tButton()
-	btn:SetAutoDelete(true)
-	btn:SetWindowName(name)
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(-1)
-	btn:SetText("" .. index)
-	btn:Init(x, y, width, height)
-	btn:InitTextureE("ui\\ui_btn_numpad_e")
-	btn:InitTextureH("ui\\ui_btn_numpad_h")
-	btn:InitTextureT("ui\\ui_btn_numpad_h")
-	btn:SetTextureOffset(-3, -3)	
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
+	return true
 end
+
