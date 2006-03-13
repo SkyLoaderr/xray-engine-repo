@@ -1376,10 +1376,11 @@ function agr_krot_sos_1_2( actor, npc )
 	   actor:dont_has_info( "agr_krot_dead" )
 	then
 		actor:give_info_portion( "agr_help_krot_start" )
+		news_manager.send_tip( actor, "tips_agr_krot_sos1", 0, "krot", 10000 )
 
-		if actor:has_info( "agr_help_stalkers_assault_dead" ) then
-			news_manager.send_tip( actor, "tips_agr_krot_sos1", 0, "krot", 10000 )
-		elseif actor:has_info( "agr_help_stalkers_defence_dead" ) then
+--		if actor:has_info( "agr_help_stalkers_assault_dead" ) then
+--			news_manager.send_tip( actor, "tips_agr_krot_sos1", 0, "krot", 10000 )
+		if actor:has_info( "agr_help_stalkers_defence_dead" ) then
 			news_manager.send_tip( actor, "tips_agr_krot_sos2", 0, "krot", 10000 )
 		end
 	end

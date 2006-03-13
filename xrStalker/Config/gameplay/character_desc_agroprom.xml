@@ -128,7 +128,6 @@
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
-#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 <specific_character id="agr_stalker_general_default2" team_default = "1">
@@ -196,7 +195,6 @@
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
-#include "gameplay\character_dialogs.xml"		
 </specific_character>
 
 	<specific_character id="agr_stalker_general_default4" team_default = "1">
@@ -230,7 +228,6 @@
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
-#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 	
 	<specific_character id="agr_stalker_general_default5" team_default = "1">
@@ -264,7 +261,6 @@
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
-#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 	<specific_character id="agr_stalker_general_default6" team_default = "1">
@@ -298,7 +294,6 @@
 		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
-#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 	
 
