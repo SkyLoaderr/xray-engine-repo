@@ -1380,7 +1380,7 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 		UIBagWnd.SendMessage(pDDItemMP, DRAG_DROP_ITEM_DROP, NULL);
 
 		//CUIDragDropList* list = );
-		pDDItemMP->GetOwner()->SortList(MP_item_cmp);
+//		pDDItemMP->GetOwner()->SortList(MP_item_cmp);
 	}
 
 	return true;
