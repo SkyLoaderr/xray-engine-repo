@@ -332,10 +332,12 @@ function activate_by_section(npc, ini, section, loading)
 			section, npc:name(), db.storage[npc_id].active_section)
 	end
 
-	db.storage[npc_id].activation_time = time_global()
-	--printf("activation time [%d]", db.storage[npc_id].activation_time)
-	-- GAMETIME added by Stohe.
-	db.storage[npc_id].activation_game_time = game.get_game_time()
+--	if not loading then
+		db.storage[npc_id].activation_time = time_global()
+		printf("activation time [%d]", db.storage[npc_id].activation_time)
+		-- GAMETIME added by Stohe.
+		db.storage[npc_id].activation_game_time = game.get_game_time()
+--	end
 
 	if section == "nil" then
 		db.storage[npc_id].overrides = nil
@@ -1374,6 +1376,7 @@ function initialize_obj(obj, st, loaded, actor, stype)
 		if ini_filename then
 			local ini = get_customdata_or_ini_file(obj, ini_filename)
 			ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, st.loaded_section_logic, st.loaded_gulag_name)
+			printf( "initialize_obj: loaded" )
 			xr_logic.activate_by_section(obj, ini, st.loaded_active_section, true)
 		end
 
