@@ -146,6 +146,8 @@ ph_snd_themes["system_message_2"]	= {[[characters_voice\scenario\yantar\system_m
 ph_snd_themes["system_message_3"]	= {[[characters_voice\scenario\yantar\system_message_3]]}
 ph_snd_themes["system_message_4"]	= {[[characters_voice\scenario\yantar\system_message_4]]}
 ph_snd_themes["system_message_5"]	= {[[characters_voice\scenario\yantar\system_message_5]]}
+ph_snd_themes["agro_test"]	= {[[weapons\grenade1]]}
+
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
