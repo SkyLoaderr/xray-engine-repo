@@ -93,5 +93,6 @@
 	<info_portion id="cit_vp_say"></info_portion>
 	<info_portion id="cit_victor_die"></info_portion>
 	
+	<info_portion id="cit_leave_forever"></info_portion>
 	
 </game_information_portions>
