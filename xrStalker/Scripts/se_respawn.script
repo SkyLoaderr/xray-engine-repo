@@ -302,7 +302,8 @@ function se_respawn:create(prob)
 				printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
 				return false
 			end
-		end										
+		end
+		return false									
 	end
 end
 -- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
