@@ -40,6 +40,7 @@ protected:
 
 	//-------------------------------------------------------
 	bool			m_bVotingActive;
+	bool			m_bVotingReal;
 	u32				m_uVoteEndTime;
 	float			m_fVoteQuota;
 	u32				m_dwVoteTime;

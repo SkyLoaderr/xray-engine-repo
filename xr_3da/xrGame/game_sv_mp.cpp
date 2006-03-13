@@ -592,17 +592,17 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	}
 
 	int i=0;
-	bool Found = false;
+	m_bVotingReal = false;
 	while (votecommands[i].command)
 	{
 		if (!stricmp(votecommands[i].name, CommandName))
 		{
-			Found = true;
+			m_bVotingReal = true;
 			break;
 		};
 		i++;
 	};
-	if (!Found) 
+	if (!m_bVotingReal && CommandName[0] != '$') 
 	{
 		Msg("Unknown Vote Command - %s", CommandName);
 		return;
@@ -612,7 +612,10 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	SetVotingActive(true);
 	u32 CurTime = Level().timeServer();
 	m_uVoteEndTime = CurTime+m_dwVoteTime*60000;
-	m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
+	if (m_bVotingReal)
+		m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
+	else
+		m_pVoteCommand.sprintf("%s", VoteCommand+1);
 
 	xrClientData *pStartedPlayer = NULL;
 	u32	cnt = get_players_count();	
@@ -634,7 +637,10 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	NET_Packet P;
 	GenerateGameMessage (P);
 	P.w_u32(GAME_EVENT_VOTE_START);
-	P.w_stringZ(VoteCommand);
+	if (m_bVotingReal)
+		P.w_stringZ(VoteCommand);
+	else
+		P.w_stringZ(VoteCommand+1);
 	P.w_stringZ(pStartedPlayer ? pStartedPlayer->ps->getName() : "");
 	P.w_u32(m_dwVoteTime*60000);
 	u_EventSend(P);
@@ -680,7 +686,8 @@ void		game_sv_mp::UpdateVote				()
 		return;
 	};
 
-	Console->Execute(m_pVoteCommand.c_str());
+	if (m_bVotingReal)
+		Console->Execute(m_pVoteCommand.c_str());
 
 	NET_Packet P;
 	GenerateGameMessage (P);
