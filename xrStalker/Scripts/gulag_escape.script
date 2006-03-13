@@ -972,60 +972,70 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1033,60 +1043,70 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm3",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1094,60 +1114,70 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_swarm2",
 			idle = 0,
 			prior = 5, state = {2},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
