@@ -60,7 +60,6 @@ void IGame_Persistent::OnAppEnd		()
 
 void IGame_Persistent::Start		(LPCSTR op)
 {
-//.	pApp->LoadTitle					("");
 	string256						prev_type;
 	strcpy							(prev_type,m_game_params.m_game_type);
 	m_game_params.parse_cmd_line	(op);

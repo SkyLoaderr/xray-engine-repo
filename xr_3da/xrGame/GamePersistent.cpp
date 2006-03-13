@@ -254,7 +254,7 @@ void CGamePersistent::update_logo_intro			()
 	if(m_intro && (false==m_intro->IsActive())){
 		m_intro_event			= 0;
 		xr_delete				(m_intro);
-		Console->Show			();
+		//.Console->Show			();
 		Console->Execute		("main_menu on");
 	}
 }
