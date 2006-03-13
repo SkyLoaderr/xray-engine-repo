@@ -38,7 +38,7 @@
 		<class>esc_wolf</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>430</rank>
+		<rank>434</rank>
 		<reputation>5</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -69,7 +69,7 @@
 		<class>esc_fanat</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>500</rank>
+		<rank>502</rank>
 		<reputation>10</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -99,7 +99,7 @@
 		<class>esc_fox</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>330</rank>
+		<rank>338</rank>
 		<reputation>-3</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -129,7 +129,7 @@
 		<class>esc_tutorial_wounded</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>190</rank>
+		<rank>196</rank>
 		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -188,7 +188,7 @@
 		<class>esc_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>30</rank>
+		<rank>32</rank>
 		<reputation>-56</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -218,7 +218,7 @@
 		<class>esc_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>50</rank>
+		<rank>59</rank>
 		<reputation>-60</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -250,7 +250,7 @@
 		<class>esc_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>81</rank>
 		<reputation>-67</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -312,7 +312,7 @@
 		<class>esc_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>120</rank>
+		<rank>127</rank>
 		<reputation>-8</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -340,7 +340,7 @@
 		<class>esc_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>210</rank>
+		<rank>214</rank>
 		<reputation>9</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -368,7 +368,7 @@
 		<class>esc_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>170</rank>
+		<rank>175</rank>
 		<reputation>8</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -396,7 +396,7 @@
 		<class>esc_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>260</rank>
+		<rank>268</rank>
 		<reputation>-10</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -424,7 +424,7 @@
 		<class>esc_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>130</rank>
+		<rank>133</rank>
 		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -453,7 +453,7 @@
 		<class>esc_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>220</rank>
+		<rank>224</rank>
 		<reputation>18</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -482,7 +482,7 @@
 		<class>esc_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>50</rank>
+		<rank>58</rank>
 		<reputation>-2</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -512,7 +512,7 @@
 		<class>esc_ranger</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>270</rank>
+		<rank>279</rank>
 		<reputation>16</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -541,7 +541,7 @@
 		<class>esc_soldier_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>760</rank>
+		<rank>764</rank>
 		<reputation>-15</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -570,7 +570,7 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>420</rank>
+		<rank>423</rank>
 		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -600,7 +600,7 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>470</rank>
+		<rank>476</rank>
 		<reputation>9</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -631,7 +631,7 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>500</rank>
+		<rank>507</rank>
 		<reputation>10</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -692,7 +692,7 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>480</rank>
+		<rank>481</rank>
 		<reputation>12</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -721,7 +721,7 @@
 		<class>esc_soldier_blockpost_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>790</rank>
+		<rank>796</rank>
 		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -750,7 +750,7 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>400</rank>
+		<rank>405</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -780,7 +780,7 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>430</rank>
+		<rank>437</rank>
 		<reputation>-6</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -809,7 +809,7 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>350</rank>
+		<rank>355</rank>
 		<reputation>11</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -838,7 +838,7 @@
 		<class>esc_soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>800</rank>
+		<rank>809</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -895,7 +895,7 @@
 		<class>esc_killer_master</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>940</rank>
+		<rank>941</rank>
 		<reputation>-109</reputation>
 	
 		<snd_config>characters_voice\human_01\killer\</snd_config>
@@ -924,7 +924,7 @@
 		<class>esc_provodnik</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>590</rank>
+		<rank>593</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_03\newbie\</snd_config>
