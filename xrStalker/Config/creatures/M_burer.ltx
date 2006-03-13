@@ -259,6 +259,7 @@ species					= burer
 rank					= 0
 spec_rank				= weak
 community				= burer
+monster_type			= indoor
 
 ;=================================================================================
 ; Burer Attack Params
@@ -374,6 +375,7 @@ time_release		= 0.85		; fade out
 
 [burer_arena]:m_burer_e
 $spawn			= "monsters\arena\burer_arena"
+visual				= monsters\burer\burer_1
 panic_threshold		= 0.05
 species				= arena_monstr
 spec_rank			= weak
@@ -400,27 +402,28 @@ Tele_Object_Max_Mass	 = 2000.0 ;1000.0
 Tele_Find_Radius		 = 15	;7.0
 
 
-[burer_indoor]:m_burer_e
-$spawn			= "monsters\burers\burer_indoor"
-monster_type	= indoor
-spec_rank			= weak
-rank				= 0
-community			= burer
-
-Tele_Time_To_Hold		 = 200
-
-[burer_outdoor]:m_burer_e
-$spawn			= "monsters\burers\burer_outdoor"
-monster_type	= outdoor
-rank				= 0
-spec_rank			= weak
-community			= burer
-
 [m_burer_normal]:m_burer_e
 $spawn		= "monsters\burers\burer_normal"
+monster_type		= indoor
 rank				= 0
 spec_rank			= weak
 community			= burer
+Tele_Time_To_Hold	= 200
 
+[m_burer_normal_black]:m_burer_e
+$spawn		= "monsters\burers\burer_normal_black"
+visual				= monsters\burer\burer_1
+monster_type		= indoor
+rank				= 0
+spec_rank			= weak
+community			= burer
+Tele_Time_To_Hold	= 200
 
+[burer_indoor]:m_burer_normal
+$spawn			= "monsters\burers\burer_indoor"
+monster_type	= indoor
+Tele_Time_To_Hold		 = 200
 
+[burer_outdoor]:m_burer_normal
+$spawn			= "monsters\burers\burer_outdoor"
+;monster_type	= outdoor
