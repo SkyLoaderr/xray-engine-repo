@@ -36,13 +36,13 @@ IGame_Persistent::~IGame_Persistent	()
 
 void IGame_Persistent::OnAppActivate		()
 {
-	Device.Pause(FALSE);
+//.	Device.Pause(FALSE);
 }
 
 void IGame_Persistent::OnAppDeactivate		()
 {
-	if(!bDedicatedServer)
-		Device.Pause(TRUE);
+//.	if(!bDedicatedServer)
+//.		Device.Pause(TRUE);
 }
 
 void IGame_Persistent::OnAppStart	()

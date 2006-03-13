@@ -350,22 +350,31 @@ float CGamePersistent::MtlTransparent(u32 mtl_idx)
 {
 	return GMLib.GetMaterialByIdx((u16)mtl_idx)->fVisTransparencyFactor;
 }
-static BOOL bRestorePause = FALSE;
+static BOOL bRestorePause	= FALSE;
+static BOOL bEntryFlag		= TRUE;
+//.#include "../CameraManager.h"
+//.#include "actor.h"
+
 void CGamePersistent::OnAppActivate		()
 {
 	if(!bRestorePause)
 		Device.Pause(FALSE);
 
+	bEntryFlag = TRUE;
+//.	Level().Cameras().Update(Actor()->cam_Active());
 }
 
 void CGamePersistent::OnAppDeactivate	()
 {
+	if(!bEntryFlag) return;
+
 	bRestorePause = FALSE;
 	if (!g_pGameLevel || (g_pGameLevel && Level().game && GameID()== GAME_SINGLE) )
 	{
 		bRestorePause = Device.Pause();
 		Device.Pause(TRUE);
 	}
+	bEntryFlag = FALSE;
 }
 
 bool CGamePersistent::OnRenderPPUI_query()
