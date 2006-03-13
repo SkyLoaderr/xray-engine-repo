@@ -9,7 +9,7 @@ void xrMU_Model::calc_normals()
 
 	// Clear temporary flag
 //.	float	sm_cos	= _cos(deg2rad(g_params.m_sm_angle));
-	float	sm_cos	= _cos(deg2rad(120.f));
+	float	sm_cos	= _cos(deg2rad(89.f));
 
 	for (v_faces_it it = m_faces.begin(); it!=m_faces.end(); it++)
 	{
