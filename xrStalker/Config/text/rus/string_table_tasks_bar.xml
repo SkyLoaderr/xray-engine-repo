@@ -125,9 +125,9 @@
         Убить Тирана, предводителя отряда 
     </text>
 </string>
-<string id="bar_dolg_tiran_stripes">
+<string id="bar_dolg_tiran_pda">
     <text>
-       Взять нашивки Тирана
+       Взять ПДА Тирана
     </text>
 </string>
 <string id="bar_dolg_svoboda_ambush_return">

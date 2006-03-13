@@ -172,7 +172,7 @@
 			<infoportion_set_complete>bar_kill_svoboda_ambush_killed</infoportion_set_complete>			
 		</objective>
 		<objective>
-			<text>bar_dolg_tiran_stripes</text>
+			<text>bar_dolg_tiran_pda</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>green_location</map_location_type>
 			<object_story_id>bar_svoboda_ambush_tiran</object_story_id>
