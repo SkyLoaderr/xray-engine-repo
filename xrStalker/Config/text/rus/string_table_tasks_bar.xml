@@ -123,8 +123,11 @@
 <string id="bar_dolg_kill_tiran">
     <text>
         Убить Тирана, предводителя отряда 
-
-Взять нашивки Тирана
+    </text>
+</string>
+<string id="bar_dolg_tiran_stripes">
+    <text>
+       Взять нашивки Тирана
     </text>
 </string>
 <string id="bar_dolg_svoboda_ambush_return">
@@ -145,8 +148,11 @@
 <string id="bar_kill_crazy_veterans">
     <text>
         Убить лидера ветеранов 
-
-Взять ПДА их лидера
+    </text>
+</string>
+<string id="bar_kill_crazy_veterans_pda">
+    <text>
+       Взять ПДА их лидера
     </text>
 </string>
 <string id="bar_bring_pda_lucky">

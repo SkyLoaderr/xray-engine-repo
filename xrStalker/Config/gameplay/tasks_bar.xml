@@ -77,6 +77,13 @@
 			<infoportion_set_complete>bar_dolg_veteran_gain</infoportion_set_complete>
 		</objective>
 		<objective>
+			<text>bar_kill_crazy_veterans_pda</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="bar_kill_crazy_veterans">green_location</map_location_type>
+			<object_story_id>bar_crazy_veterans_leader</object_story_id>			
+			<function_complete>bar_rostok_tasks.has_lucky_pda</function_complete>
+		</objective>
+		<objective>
 			<text>bar_bring_pda_lucky</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_bring_pda_lucky">blue_location</map_location_type>
@@ -165,6 +172,13 @@
 			<infoportion_set_complete>bar_kill_svoboda_ambush_killed</infoportion_set_complete>			
 		</objective>
 		<objective>
+			<text>bar_dolg_tiran_stripes</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>bar_svoboda_ambush_tiran</object_story_id>
+			<function_complete>bar_rostok_tasks.has_tiran_pda</function_complete>
+		</objective>
+		<objective>
 			<text>bar_dolg_svoboda_ambush_return</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type>blue_location</map_location_type>
@@ -183,6 +197,13 @@
 		</objective>
 		<objective>
 			<text>mil_svoboda_leader_kill</text>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="mil_svoboda_leader_kill">blue_location</map_location_type>
+			<object_story_id>Mil_Lukash</object_story_id>
+			<infoportion_complete>mil_kill_svoboda_leader_killed</infoportion_complete>
+		</objective>
+		<objective>
+			<text>mil_svoboda_leader_stripe</text>
 			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="mil_svoboda_leader_kill">blue_location</map_location_type>
 			<object_story_id>Mil_Lukash</object_story_id>
