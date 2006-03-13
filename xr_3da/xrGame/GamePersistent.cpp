@@ -20,6 +20,9 @@
 #include "stalker_animation_data_storage.h"
 #include "stalker_velocity_holder.h"
 
+#include "../CameraManager.h"
+#include "actor.h"
+
 #ifndef _EDITOR
 #	include "ai_debug.h"
 #endif
@@ -294,6 +297,10 @@ void CGamePersistent::OnFrame	()
 	if(!g_pGameLevel)			return;
 	if(!g_pGameLevel->bReady)	return;
 
+	if(Device.Pause()){
+		if(g_actor)
+		Level().Cameras().Update(Actor()->cam_Active());
+	}
 	__super::OnFrame			();
 
 	Engine.Sheduler.Update		();
@@ -352,8 +359,6 @@ float CGamePersistent::MtlTransparent(u32 mtl_idx)
 }
 static BOOL bRestorePause	= FALSE;
 static BOOL bEntryFlag		= TRUE;
-//.#include "../CameraManager.h"
-//.#include "actor.h"
 
 void CGamePersistent::OnAppActivate		()
 {
