@@ -48,7 +48,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 )
 		vis.sphere.set		(hdr.bs.c,	hdr.bs.r	);
 #ifdef DEBUG
 		if (dbg_name.size())
-			Msg				("Object %s: BB: [%f,%f,%f]/[%f,%f,%f]. BS: [%f,%f,%f, %f]",VPUSH(hdr.bb.min),VPUSH(hdr.bb.max),VPUSH(hdr.bs.c),hdr.bs.r);
+			Msg				("Object %s: BB: [%f,%f,%f]/[%f,%f,%f]. BS: [%f,%f,%f, %f]",*dbg_name,VPUSH(hdr.bb.min),VPUSH(hdr.bb.max),VPUSH(hdr.bs.c),hdr.bs.r);
 #endif
 	} else {
 		Debug.fatal			("Invalid visual");
