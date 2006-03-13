@@ -14,8 +14,8 @@ artefacts			=
 BirthProbability	= 0.0
 
 ;----------- Anomaly settings -----------------------
-min_start_power		= 0.90
-max_start_power		= 1.00
+min_start_power		= 0.00
+max_start_power		= 0.00
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
@@ -45,7 +45,7 @@ body_tearing_sound	= anomaly\gravity_entrance					;звук разрывания трупа
 entrance_sound		= anomaly\gravi_idle01							;при попадании объекта в аномалию
 
 hit_type		    = radiation
-hit_impulse_scale	= 0.5;0.5;0.1			;соотношение физического импульса и силы хита
+hit_impulse_scale	= 0.0;0.5;0.1			;соотношение физического импульса и силы хита
 effective_radius	= 1 ;размер радиуса в процентах от оригинального, где действует зона
 
 disable_time		= 5000	;время игнорирования неживого объекта в зоне (-1 если не нужно)
@@ -109,7 +109,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\teleport_out"
 $prefetch 		= 16
 class			= Z_MBALD
-hit_impulse_scale	= 0.01;0.5 ;0.1
+hit_impulse_scale	= 0.0;0.5 ;0.1
 effective_radius	= 0.85 ;размер радиуса в процентах от оригинального, где действует зона
 actor_blowout_radius_percent	= 0.75
 
@@ -125,8 +125,8 @@ BirthProbability	= 0.0
 hit_type			= strike
 
 ;----------- Anomaly settings -----------------------
-min_start_power		= 0.90
-max_start_power		= 1.00
+min_start_power		= 0.00
+max_start_power		= 0.00
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
@@ -207,7 +207,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\teleport_monolith"
 $prefetch 		= 16
 class			= Z_ZONE
-hit_impulse_scale	= 0.01;0.5 ;0.1
+hit_impulse_scale	= 0.0;0.5 ;0.1
 effective_radius	= 0.85 ;размер радиуса в процентах от оригинального, где действует зона
 actor_blowout_radius_percent	= 0.75
 
@@ -223,8 +223,8 @@ BirthProbability	= 0.0
 hit_type			= strike
 
 ;----------- Anomaly settings -----------------------
-min_start_power		= 0.90
-max_start_power		= 1.00
+min_start_power		= 0.00
+max_start_power		= 0.00
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
