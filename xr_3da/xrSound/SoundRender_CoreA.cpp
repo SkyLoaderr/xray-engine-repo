@@ -49,6 +49,11 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 
 	pDeviceList					= xr_new<ALDeviceList>();
 
+	if (0==pDeviceList->GetNumDevices()){ 
+		Log						("OpenAL: Can't create sound device.");
+		xr_delete				(pDeviceList);
+		return;
+	}
 	int majorVersion, minorVersion;
 	int defaultIdx					= pDeviceList->GetDefaultDevice();
 	int deviceIdx					= defaultIdx;
