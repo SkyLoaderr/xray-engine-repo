@@ -287,21 +287,21 @@ function se_respawn:create(prob)
 						self.m_game_vertex_id)
 
 		local tt = self.sectSpawnProps[spawn_section]
-		obj:brain():update()
-		local smart_terrain_id = obj:smart_terrain_id()
 				
-		if tt.check == false or
-		   smart_terrain_id ~= 65535 
-		then
-			table.insert(self.spawned_obj ,obj.id)
-			local pos = obj.position
-			printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
-			return true
-		else
-			alife():release(obj, true)
-			printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
-			return false
-		end																		
+		if tt.check == true then
+			obj:brain():update()
+			local smart_terrain_id = obj:smart_terrain_id()
+			if smart_terrain_id ~= 65535 then		
+				table.insert(self.spawned_obj ,obj.id)
+				local pos = obj.position
+				printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
+				return true
+			else
+				alife():release(obj, true)
+				printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
+				return false
+			end
+		end										
 	end
 end
 -- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
