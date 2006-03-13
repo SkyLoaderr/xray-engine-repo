@@ -394,7 +394,7 @@ function read_preset( ltx_name, preset_name )
 
 			t = parse_names( str )
 
-			rank_min, rank_max = 100, 0
+			rank_min, rank_max = 10000, 0
 
 			for i, rank_name in ipairs( t ) do
 				rank_interval = ranks.get_rank_interval( rank_name )
