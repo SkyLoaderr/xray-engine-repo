@@ -103,11 +103,6 @@
         Выбраться из камеры.
     </text>
 </string>
-<string id="cit_doctor_escape_task_2">
-    <text>
-        Спуститься в канализацию.
-    </text>
-</string>
 <string id="cit_doctor_escape_task_3">
     <text>
         Уйти из города

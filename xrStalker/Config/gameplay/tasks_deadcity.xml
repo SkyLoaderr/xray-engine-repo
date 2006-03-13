@@ -225,23 +225,6 @@
             cit_actor_is_free
         </infoportion_complete>
     </objective>
-    <objective key="2">
-        <text>
-            cit_doctor_escape_task_2
-        </text>
-        <icon height="50" width="50" x="100" y="50">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type hint="cit_doctor_escape_task_2_hint">
-            green_location
-        </map_location_type>
-        <object_story_id>
-            cit_actor_escape_zone
-        </object_story_id>
-        <infoportion_complete>
-            cit_actor_in_sewer
-        </infoportion_complete>
-    </objective>
     <objective key="3">
         <text>
             cit_doctor_escape_task_3
@@ -255,5 +238,8 @@
         <object_story_id>
             cit_level_exit_zone
         </object_story_id>
+        <infoportion_complete>
+            cit_jail_doctor_escape_task_end
+        </infoportion_complete>
     </objective>
 </game_task>
