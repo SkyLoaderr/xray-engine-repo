@@ -11,7 +11,7 @@
 		<class>gar_seriy</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>510</rank>
+		<rank>511</rank>
 		<reputation>-18</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -39,7 +39,7 @@
 		<class>gar_dram_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>210</rank>
+		<rank>212</rank>
 		<reputation>19</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -67,7 +67,7 @@
 		<class>gar_newbie_in_tonnel</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>220</rank>
+		<rank>223</rank>
 		<reputation>-4</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -94,7 +94,7 @@
 		<class>gar_hellcar</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-		<rank>590</rank>
+		<rank>594</rank>
 		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -127,7 +127,7 @@
 		<class>gar_bandit_novice_wounded</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>190</rank>
+		<rank>195</rank>
 		<reputation>-120</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -153,7 +153,7 @@
 		<class>gar_bandit_leader</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>800</rank>
+		<rank>806</rank>
 		<reputation>-145</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -183,7 +183,7 @@
 		<class>gar_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>160</rank>
+		<rank>167</rank>
 		<reputation>-65</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -210,7 +210,7 @@
 		<class>gar_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>260</rank>
+		<rank>268</rank>
 		<reputation>-95</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -239,7 +239,7 @@
 		<class>gar_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>110</rank>
+		<rank>119</rank>
 		<reputation>-89</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -299,7 +299,7 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>380</rank>
+		<rank>381</rank>
 		<reputation>-73</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -329,7 +329,7 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>440</rank>
+		<rank>442</rank>
 		<reputation>-100</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -364,7 +364,7 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>420</rank>
+		<rank>423</rank>
 		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -395,7 +395,7 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>350</rank>
+		<rank>354</rank>
 		<reputation>-11</reputation>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 
@@ -426,7 +426,7 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>510</rank>
+		<rank>515</rank>
 		<reputation>14</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -458,7 +458,7 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>540</rank>
+		<rank>546</rank>
 		<reputation>1</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -489,7 +489,7 @@
 		<class>gar_stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>440</rank>
+		<rank>447</rank>
 		<reputation>-15</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -522,7 +522,7 @@
 		<class>gar_wounded_bandit</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>400</rank>
+		<rank>408</rank>
 		<reputation>-90</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
@@ -551,7 +551,7 @@
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>490</rank>
+		<rank>499</rank>
 		<reputation>120</reputation>
 		
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
@@ -613,7 +613,7 @@
 		<class>gar_dolg_blokpost</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>470</rank>
+		<rank>471</rank>
 		<reputation>124</reputation>
 		
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
@@ -644,7 +644,7 @@
 		<class>gar_dolg_blokpost_commander</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>590</rank>
+		<rank>592</rank>
 		<reputation>140</reputation>
 
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
@@ -674,7 +674,7 @@
 		<class>gar_sniper</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>440</rank>
+		<rank>443</rank>
 		<reputation>-100</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
