@@ -51,6 +51,7 @@ function r_bool( spawn_ini, section, line, default )
 end
 
 function r_str( spawn_ini, section, line, default )
+	printf("READ section: [%s] line: [%s]", tostring(section), tostring(line))
 	if spawn_ini:line_exist( section, line ) then
 		return spawn_ini:r_string( section, line )
 	else
