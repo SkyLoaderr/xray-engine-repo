@@ -66,7 +66,7 @@ void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bo
 	R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 3);
 	if (m_AddonInfo[iAddonIndex].iAttachStatus != -1)
 	{
-		CUIBag *this_inventory = smart_cast<CUIBag*>(GetOwner()->GetMessageTarget());
+		CUIBag *this_inventory = smart_cast<CUIBag*>(GetOwner()->GetParent());
 		R_ASSERT(this_inventory);
 
 		CUIDragDropItemMP *pPossibleAddon = this_inventory->GetAddonByID(this, iAddonIndex);
@@ -84,7 +84,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 	AddonIDs ID = IsOurAddon(pPossibleAddon);
 	if (ID != ID_NONE)
 	{
-		CUIBuyWeaponWnd *this_inventory = smart_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget()->GetParent());
+		CUIBuyWeaponWnd *this_inventory = smart_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
 		R_ASSERT(this_inventory);
 
 		if (bAttach)
