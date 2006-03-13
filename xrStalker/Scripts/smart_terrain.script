@@ -736,25 +736,67 @@ function se_smart_terrain:on_unregister()
 	smart_terrains[self.id] = nil
 end
 
+-- возвращает строку с принимаемыми группировками и рангами
+function se_smart_terrain:stat_get_accepted_communities()
+	local comms = {}
+
+	-- from preset
+	local ltx         = ini_file( "misc\\" .. self.gparams.type .. ".ltx" )
+	local preset_name = self.gparams.preset_name
+
+	if ltx and ltx:section_exist( preset_name ) then
+		local result, field, str
+		local n = ltx:line_count( preset_name )
+
+		for i = 0, n-1 do
+			result, field, str = ltx:r_line( preset_name, i, "", "" )
+
+			if not self.accepted_communities or self.accepted_communities[field] then
+				comms[field] = str
+			end
+		end
+	end
+
+	-- from custom data
+	if self.accepted_communities then
+		for comm, v in pairs( self.accepted_communities ) do
+			if not comms[comm] then
+				comms[comm] = "all"
+			end
+		end
+	end
+
+	-- prepare return
+	local s = ""
+
+	for comm, ranks in pairs( comms ) do
+		s = s .. comm .. "(" .. ranks .. "),"
+	end
+
+	return s
+end
+
 -- вывод статистики смарта
 function se_smart_terrain:stat()
-	local s = "smart_terrain " .. self:name() .. " - "
+	local s = self:get_level_name() .. " " .. self:name()
 
 	local pop   = self.gulag:get_population()
 	local cap   = self.gulag.capacity
 	local avail = self:is_gulag_available()
 
 	if avail then
-		s = s .. "enabled - " .. pop .. "/" .. cap
+		s = s .. " enabled "
 	else
-		s = s .. "disabled"
+		s = s .. " disabled "
 	end
+
+	s = s .. pop .. " " .. cap .. " " .. self:stat_get_accepted_communities()
 
 	printf( s )
 
-	for id, npc_info in pairs( self.npc_info ) do
-		printf( "    %s", npc_info.name )
-	end
+--	for id, npc_info in pairs( self.npc_info ) do
+--		printf( "    %s", npc_info.name )
+--	end
 
 	return avail, pop, cap
 end
