@@ -818,12 +818,15 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 	CDB::RESULT*    R_end          = XRC.r_end();
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
+		SGameMtl* m =  GMLib.GetMaterialByIdx(Res->material);
+		if(m->Flags.test(SGameMtl::flPassable))continue;
 		//CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(__aabb_tri(Point((float*)&center_forbid),Point((float*)&AABB_forbid),vertices))
 			{
 	
-				if(test_sides(center_forbid,sd_dir,accel,obb_fb,Res->id))
+				
+				if( test_sides(center_forbid,sd_dir,accel,obb_fb,Res->id))
 				{
 #ifdef DEBUG
 					if(ph_dbg_draw_mask.test(phDbgCharacterControl))
@@ -848,6 +851,8 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		//CDB::TRI* T = T_array + Res->id;
+		SGameMtl* m =  GMLib.GetMaterialByIdx(Res->material);
+		if(m->Flags.test(SGameMtl::flPassable))continue;
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(__aabb_tri(Point((float*)&center),Point((float*)&AABB),vertices)){
 			if(test_sides(center,sd_dir,accel,obb,Res->id))
