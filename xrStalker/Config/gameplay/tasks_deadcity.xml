@@ -9,6 +9,9 @@
         <infoportion_complete>
             cit_documents_give
         </infoportion_complete>
+        <infoportion_fail>
+            cit_leave_forever
+        </infoportion_fail>
     </objective>
     <objective key="1">
         <text>
@@ -47,6 +50,9 @@
         <infoportion_complete>
             cit_map_give
         </infoportion_complete>
+        <infoportion_fail>
+            cit_leave_forever
+        </infoportion_fail>
     </objective>
     <objective key="1">
         <text>
