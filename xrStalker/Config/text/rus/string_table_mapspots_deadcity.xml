@@ -48,6 +48,11 @@
         Здание бывшего горсовета
     </text>
 </string>
+<string id="cit_sewer_hint">
+    <text>
+        Спуск в канализацию
+    </text>
+</string>
 <string id="cit_vp_position_hint">
     <text>
         Район, где доктор в последний раз видел Петровича
