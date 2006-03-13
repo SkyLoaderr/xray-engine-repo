@@ -116,23 +116,27 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(ClientID id_who)
 
 	if (ps_who->Skip) return;
 
+	Money_SetStart(id_who);
+	SetPlayersDefItems(ps_who);
+}
+
+void	game_sv_TeamDeathmatch::OnPlayerConnectFinished	(ClientID id_who)
+{
+	inherited::OnPlayerConnectFinished(id_who);
 
 	xrClientData* xrCData		=	m_server->ID_to_client(id_who);
 	// Send Message About Client join Team
 	if (xrCData)
 	{
 		NET_Packet			P;
-//		P.w_begin			(M_GAMEMESSAGE);
+		//		P.w_begin			(M_GAMEMESSAGE);
 		GenerateGameMessage (P);
 		P.w_u32				(GAME_EVENT_PLAYER_JOIN_TEAM);
 		P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
-		P.w_u16				(ps_who->team);
+		P.w_u16				(xrCData->ps->team);
 		u_EventSend(P);
 	};
-
-	Money_SetStart(id_who);
-	SetPlayersDefItems(ps_who);
-}
+};
 
 void game_sv_TeamDeathmatch::OnPlayerSelectTeam		(NET_Packet& P, ClientID sender)
 {

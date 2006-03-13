@@ -176,6 +176,8 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			
 			sprintf(Text, "%s%s %sconnected",Color_Teams[0],PlayerName,Color_Main);
 			CommonMessageOut(Text);
+			//---------------------------------------
+			Msg("%s connected", PlayerName);
 		}break;
 	case GAME_EVENT_PLAYER_DISCONNECTED:
 		{
@@ -184,6 +186,8 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 			sprintf(Text, "%s%s %sdisconnected",Color_Teams[0],PlayerName,Color_Main);
 			CommonMessageOut(Text);
+			//---------------------------------------
+			Msg("%s disconnected", PlayerName);
 		}break;
 	case GAME_EVENT_PLAYER_ENTERED_GAME:
 		{

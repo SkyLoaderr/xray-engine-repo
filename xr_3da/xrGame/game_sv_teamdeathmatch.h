@@ -34,6 +34,7 @@ public:
 	virtual		void				net_Export_State		(NET_Packet& P, ClientID id_to);				// full state
 	// Events	
 	virtual		void				OnPlayerConnect			(ClientID id_who);
+	virtual		void				OnPlayerConnectFinished	(ClientID id_who);
 
 	virtual		void				OnPlayerSelectTeam		(NET_Packet& P, ClientID sender);
 	virtual		void				OnPlayerChangeTeam		(ClientID id_who, s16 team);

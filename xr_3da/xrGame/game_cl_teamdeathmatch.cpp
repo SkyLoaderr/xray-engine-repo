@@ -119,6 +119,8 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 							Color_Teams[Team],
 							TeamsNames[Team]);
 			CommonMessageOut(Text);
+			//---------------------------------------
+			Msg("%s joined %s", PlayerName, TeamsNames[Team]);
 		}break;
 
 	case PLAYER_CHANGE_TEAM://tdm
@@ -138,6 +140,8 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 							Color_Teams[NewTeam], 
 							TeamsNames[NewTeam]);
 			CommonMessageOut(Text);
+			//---------------------------------------
+			Msg("%s has switched to %s", pPlayer->name, TeamsNames[NewTeam]);
 		}break;
 
 	default:

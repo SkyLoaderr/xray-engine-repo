@@ -162,15 +162,6 @@ void				game_cl_mp::OnSpeechMessage			(NET_Packet& P)
 		{
 			(Level().MapManager().AddMapLocation(FRIEND_RADION_LOCATION, ps->GameID))->EnablePointer();
 		}
-/*
-		<mp_friend_location_radio hint="friend_radio" ttl="3">
-			<mini_map  spot="mp_friend_radio_mini_spot"></mini_map>
-			</mp_friend_location_radio >
-
-			<mp_friend_radio_mini_spot width="8" height="8" stretch = "1" alignment="c"> 
-			<texture r="0" g="255" b="0">ui\hud_map_point</texture>
-			</mp_friend_radio_mini_spot>
-*/
 	}
 
 	u8 VariantID = P.r_u8();
@@ -189,6 +180,7 @@ void				game_cl_mp::OnSpeechMessage			(NET_Packet& P)
 		{
 			pMSound->mSound_Radio.play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 		}
+		Msg("%s said: %s", ps->getName(), *CStringTable().translate(pMMessage->pMessage));
 	}
 	else
 	{

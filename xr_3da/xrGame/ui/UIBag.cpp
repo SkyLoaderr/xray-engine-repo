@@ -66,6 +66,7 @@ CUIBag::CUIBag(CHECK_PROC proc){
 	m_boxesDefs[3].gridWidth		= 6;
 
 	m_bIgnoreRank					= false;
+	m_bIgnoreMoney					= false;
 }
 
 CUIBag::~CUIBag(){
@@ -150,7 +151,7 @@ bool CUIBag::SetMenuLevel(MENU_LEVELS level){
 	return true;
 }
 
-int  CUIBag::GetMoneyAmount(){
+int  CUIBag::GetMoneyAmount() const {
 	return m_iMoneyAmount;
 }
 
@@ -234,7 +235,8 @@ void CUIBag::UpdateBuyPossibility(){
 		for (it = ddList.begin(); it != ddList.end(); ++it)
 		{
 			pDDItem = (CUIDragDropItemMP*)(*it);
-			flag = !(pDDItem->GetCost() > money);
+//			flag = !(pDDItem->GetCost() > money);
+			flag = (HasEnoughMoney(pDDItem));
 			EnableDDItem(pDDItem, flag);
 			EnableDDItemByRank(pDDItem);
 		}
@@ -986,4 +988,18 @@ void	CUIBag::SetRank(int rank)
 {
 	g_mp_restrictions.SetRank(rank);	
 	ReloadItemsPrices();
+};
+
+bool	CUIBag::HasEnoughMoney(CUIDragDropItemMP* pItem)
+{
+	if (m_bIgnoreMoney) return true;
+	R_ASSERT(pItem);
+	if (!pItem) return false;
+	return pItem->GetCost() <= GetMoneyAmount();
+};
+
+int		CUIBag::GetMoneyLeft	(int ItemCost)
+{
+	if (m_bIgnoreMoney) return GetMoneyAmount();
+	return GetMoneyAmount() + ItemCost;
 };

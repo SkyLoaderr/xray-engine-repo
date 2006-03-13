@@ -87,10 +87,15 @@ CUIDragDropItemMP*	CreateCopy(CUIDragDropItemMP *pDDItem);
 CUIDragDropItemMP*	GetItemByKey(int dik, int section);
 			void	DeleteCopy(CUIDragDropItemMP *pDDItem);
 			bool	IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const;
-			void	IgnoreRank(bool ignore)	{m_bIgnoreRank = ignore; };
+			void	IgnoreRank(bool ignore)		{m_bIgnoreRank = ignore; };
+			void	IgnoreMoney(bool ignore)	{m_bIgnoreMoney = ignore; };
 
 			
 	MENU_LEVELS		GetMenuLevel();
+
+			int		GetMoneyAmount() const;
+			bool	HasEnoughMoney(CUIDragDropItemMP* pItem);
+			int		GetMoneyLeft	(int ItemCost);
 protected:
 			void	HighLightAmmo(const char* slot);
 			bool	SetMenuLevel(MENU_LEVELS level);
@@ -100,7 +105,7 @@ protected:
 			void	OnItemSelect();			
 			void	OnItemDrop(CUIDragDropItemMP* pItem);
 			void	OnBackClick();
-    		int		GetMoneyAmount();
+    		
 
 	// INIT Functions
 			void	InitBoxes(CUIXml& pXml);
@@ -127,6 +132,7 @@ CUIDragDropList*	GetCurrentGroup();
 	xr_list<CUIDragDropItemMP*>	m_vCopyList;
 
 	bool						m_bIgnoreRank;
+	bool						m_bIgnoreMoney;
     
 	BoxInfo m_boxesDefs[4];
 

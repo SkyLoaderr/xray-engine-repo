@@ -1844,6 +1844,13 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 		return;
 	}
 
+	Money_SetStart(id_who);
+	SetPlayersDefItems(ps_who);
+}
+
+void	game_sv_Deathmatch::OnPlayerConnectFinished	(ClientID id_who)
+{
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	// Send Message About Client Connected
 	if (xrCData)
 	{
@@ -1854,10 +1861,8 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 
 		u_EventSend(P);
 	};
-
-	Money_SetStart(id_who);
-	SetPlayersDefItems(ps_who);
-}
+	Send_Anomaly_States(id_who);
+};
 
 void	game_sv_Deathmatch::check_Player_for_Invincibility	(game_PlayerState* ps)
 {
@@ -2095,11 +2100,6 @@ void	game_sv_Deathmatch::Send_Anomaly_States		(ClientID id_who)
 	};
 //	u_EventSend(EventPack);
 	m_server->SendTo(id_who, EventPack, net_flags(TRUE, TRUE));
-};
-
-void	game_sv_Deathmatch::OnPlayerConnectFinished	(ClientID id_who)
-{
-	Send_Anomaly_States(id_who);
 };
 
 void	game_sv_Deathmatch::Check_ForClearRun		(game_PlayerState* ps)

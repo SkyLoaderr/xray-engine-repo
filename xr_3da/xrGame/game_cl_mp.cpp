@@ -366,9 +366,15 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	P->r_stringZ(ChatMsg);
 	s16 team;
 	P->r_s16(team);
-#ifdef DEBUG
-	Msg("Chat: %s : %s", PlayerName, ChatMsg);
-#endif	
+///#ifdef DEBUG
+	switch (team)
+	{
+	case 0: Msg("Chat: %s : %s", PlayerName, ChatMsg); break;
+	case 1: Msg("- Chat: %s : %s", PlayerName, ChatMsg); break;
+	case 2: Msg("~ Chat: %s : %s", PlayerName, ChatMsg); break;
+	}
+	
+//#endif	
 	string256 colPlayerName;
 	sprintf(colPlayerName, "%s%s:%s", Color_Teams[team], PlayerName, "%c<default>");
 	if (Level().CurrentViewEntity())
@@ -603,7 +609,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 		//-----------------------------------------------------------
 	case KT_HIT:			//from hit
 		{
-
+			string1024	sWeapon = "", sSpecial = "";
 			if (pWeapon)
 			{
 				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(pWeapon);
@@ -614,6 +620,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_initiator.m_rect.y1 = pIItem->GetKillMsgYPos();
 					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + pIItem->GetKillMsgWidth();
 					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetKillMsgHeight();
+					sprintf(sWeapon, "from %s", pIItem->NameShort());
 				}
 				else
 				{
@@ -624,7 +631,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_initiator.m_rect.x1 = 1;
 						KMS.m_initiator.m_rect.y1 = 202;
 						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 31;
-						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;						
+						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
+						sprintf(sWeapon, "by anomaly");
 					}
 				}
 			}
@@ -641,6 +649,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_initiator.m_rect.y1 = 202;
 						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 31;
 						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
+						Msg("%s killed by anomaly", *KMS.m_victim.m_name);
 						break;
 					}
 				};
@@ -675,6 +684,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_ext_info.m_rect.y2 = pBS->IconRects[0].y1 + pBS->IconRects[0].y2;
 					};
 
+					sprintf(sSpecial, " with headshot!!!");
+
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 						PlaySndMessage(ID_HEADSHOT);
 				}break;
@@ -691,6 +702,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_ext_info.m_rect.y2 = pBS->IconRects[0].y1 + pBS->IconRects[0].y2;
 					};
 
+					sprintf(sSpecial, " with backstab!!!");
+
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 						PlaySndMessage(ID_ASSASSIN);					
 				}break;
@@ -705,8 +718,14 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				KMS.m_ext_info.m_rect.y1 = 202;
 				KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 30;
 				KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;
-			};
-
+				//-------------------------------------
+				Msg(sWeapon[0] ? "%s killed himself by %s" : "%s killed himself" , *KMS.m_killer.m_name, sWeapon[0] ? sWeapon+5 : "");
+			}
+			else
+			{
+				//-------------------------------------
+				Msg("%s killed %s %s%s", *KMS.m_killer.m_name, *KMS.m_victim.m_name, sWeapon, sSpecial[0] ? sSpecial : "");
+			}
 		}break;
 		//-----------------------------------------------------------
 	case KT_BLEEDING:			//from bleeding
@@ -727,6 +746,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_ext_info.m_rect.y1 = 202;
 						KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 31;
 						KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;
+
+					Msg("%s died from bleeding, thanks to anomaly", *KMS.m_victim.m_name);
 					break;
 				}
 			};
@@ -735,7 +756,14 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 			{
 				KMS.m_killer.m_name = pKiller ? pKiller->name : *(pOKiller->cNameSect());
 				KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Neutral_u32;
-			};
+				//-----------------------------------------------------------------------				
+				Msg("%s died from bleeding, thanks to %s ", *KMS.m_victim.m_name, *KMS.m_killer.m_name);
+			}
+			else
+			{
+				//-----------------------------------------------------------------
+				Msg("%s died from bleeding", *KMS.m_victim.m_name);
+			};			
 		}break;
 		//-----------------------------------------------------------
 	case KT_RADIATION:			//from radiation
@@ -745,6 +773,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 			KMS.m_initiator.m_rect.y1 = 195;
 			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 24;
 			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 24;
+			//---------------------------------------------------------
+			Msg("%s killed by radiation", *KMS.m_victim.m_name);
 		}break;
 	default:
 		break;

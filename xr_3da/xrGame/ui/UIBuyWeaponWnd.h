@@ -175,7 +175,7 @@ static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 
 	friend void WpnDrawIndex(CUIDragDropItem *pDDItem);
 
-	int			m_iMoneyAmount;
+//	int			m_iMoneyAmount;
 	bool		m_bIgnoreMoney;
 	bool		m_bIgnoreMoneyAndRank;
 

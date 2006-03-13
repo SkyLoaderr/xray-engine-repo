@@ -35,11 +35,10 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 	Hide					();
 
 	m_pCurrentDragDropItem	= NULL;
-	m_iMoneyAmount			= 10000;
+//	m_iMoneyAmount			= 10000;
 
 	SetFont					(HUD().Font().pFontMedium);
-
-	m_bIgnoreMoney			= false;
+	
 	m_bIgnoreMoneyAndRank	= false;
 
 	// Инициализируем вещи
@@ -1033,7 +1032,7 @@ void CUIBuyWeaponWnd::Update()
 {
 	UpdateBuyButtons();
 	// Update money amount for Bag
-	UIBagWnd.UpdateMoney(m_iMoneyAmount);
+//	UIBagWnd.UpdateMoney(m_iMoneyAmount);
 	UIBagWnd.UpdateBuyPossibility();
 	
 
@@ -1068,10 +1067,10 @@ void CUIBuyWeaponWnd::Update()
 	// Если деньги иземниличь то обновить и их
 	static int oldMoneyAmount	= 0xffffffff;
 
-	if (oldMoneyAmount != m_iMoneyAmount)
+	if (oldMoneyAmount != GetMoneyAmount())
 	{
-		oldMoneyAmount = m_iMoneyAmount;
-		sprintf(str, "%i", m_iMoneyAmount);
+		oldMoneyAmount = GetMoneyAmount();
+		sprintf(str, "%i", GetMoneyAmount());
 		UITotalMoney.SetText(str);
 	}
 
@@ -1738,9 +1737,8 @@ void CUIBuyWeaponWnd::ClearRealRepresentationFlags()
 
 void CUIBuyWeaponWnd::SetMoneyAmount(int moneyAmount)
 {	
-	m_iMoneyAmount = moneyAmount;
-	if (!m_bIgnoreMoney)
-	{		
+	UIBagWnd.UpdateMoney(moneyAmount);
+	{
 		UIBagWnd.UpdateBuyPossibility();
 	};
 }
@@ -1762,7 +1760,8 @@ bool CUIBuyWeaponWnd::CanBuyAllItems()
 
 int CUIBuyWeaponWnd::GetMoneyAmount() const
 {	
-	return m_iMoneyAmount;	
+//	return m_iMoneyAmount;	
+	return UIBagWnd.GetMoneyAmount();
 }
 
 CUIDragDropItemMP * CUIBuyWeaponWnd::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID)
@@ -1932,28 +1931,29 @@ void	CUIBuyWeaponWnd::IgnoreMoneyAndRank(bool ignore)
 {
 	m_bIgnoreMoneyAndRank = ignore;
 	UIBagWnd.IgnoreRank(ignore);
+	UIBagWnd.IgnoreMoney(ignore);
 };
 
 void	CUIBuyWeaponWnd::IgnoreMoney(bool ignore)
 {
 	if (m_bIgnoreMoneyAndRank)
-		m_bIgnoreMoney = true;
+	{		
+		UIBagWnd.IgnoreMoney(true);
+	}
 	else
-		m_bIgnoreMoney = ignore;
+	{		
+		UIBagWnd.IgnoreMoney(ignore);
+	};
 }
 
 bool	CUIBuyWeaponWnd::HasEnoughMoney(CUIDragDropItemMP* pItem)
 {
-	if (m_bIgnoreMoney) return true;
-	R_ASSERT(pItem);
-	if (!pItem) return false;
-	return pItem->GetCost() <= GetMoneyAmount();
+	return UIBagWnd.HasEnoughMoney(pItem);
 };
 
 int		CUIBuyWeaponWnd::GetMoneyLeft	(int ItemCost)
 {
-	if (m_bIgnoreMoney) return GetMoneyAmount();
-	return GetMoneyAmount() + ItemCost;
+	return UIBagWnd.GetMoneyLeft(ItemCost);
 };
 //
 //void init___()

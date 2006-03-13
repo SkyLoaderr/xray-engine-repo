@@ -134,6 +134,7 @@ public:
 	virtual		void				OnPostCreate			(u16 id_who);
 
 	virtual		void				OnPlayerConnect			(ClientID id_who);
+	virtual		void				OnPlayerConnectFinished	(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		void				OnPlayerReady			(ClientID id_who);
 	virtual		KILL_RES			GetKillResult			(game_PlayerState* pKiller, game_PlayerState* pVictim);
@@ -143,8 +144,7 @@ public:
 	virtual		void				Victim_Exp				(game_PlayerState* pVictim);
 	virtual		bool				CheckTeams				() { return false; };
 	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType, SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA);
-	virtual		void				OnPlayerConnectFinished	(ClientID id_who);
-	
+		
 	virtual		void				OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P);
 	
 	virtual		void				OnPlayerSelectSkin		(NET_Packet& P, ClientID sender);
