@@ -25,12 +25,12 @@ on_info             = {+cit_jail_scene_start} walker@base_guard_to_jail ;remark@
 combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
-;--- ждем 5 секунд
+;--- ждем 20 секунд
 ;-----------------------------------------------------------------------------------------------------------
 [remark@base_guard_wait_to_go]
 anim                = guard
 target              = nil
-on_timer            = 5000 | walker@base_guard_to_jail
+on_timer            = 20000 | walker@base_guard_to_jail
 combat_ignore_cond  = {=cit_combat_ignore(cit_actor_is_free)} ;{=fighting_actor -cit_actor_is_free}, {=check_fighting(1200)}, {=enemy_gulag(cit_kanaliz1:cit_kanaliz2:cit_kanaliz3)}
 
 ;-----------------------------------------------------------------------------------------------------------
