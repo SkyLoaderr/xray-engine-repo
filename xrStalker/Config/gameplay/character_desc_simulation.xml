@@ -2914,7 +2914,7 @@
 		<bio>sim_ecolog_zob_bio</bio>
 
 		<class>sim_ecolog_zob</class>
-		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		<rank>654</rank>
 		<reputation>3</reputation>
