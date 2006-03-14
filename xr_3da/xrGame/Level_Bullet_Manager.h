@@ -38,7 +38,8 @@ struct SBullet
 	float			hit_power			;			// power*cartridge
 	float			hit_impulse			;			// impulse*cartridge
 	//-------------------------------------------------------------------
-	float			ap;
+	float			ap					;
+	float			air_resistance		;
 	//-------------------------------------------------------------------
 	float			max_speed			;			// maxspeed*cartridge
 	float			max_dist			;			// maxdist*cartridge

@@ -11,12 +11,15 @@
 #include "level.h"
 #include "string_table.h"
 
+#define BULLET_MANAGER_SECTION "bullet_manager"
+
 CCartridge::CCartridge() 
 {
 	m_flags.assign			(cfTracer | cfRicochet);
 	m_ammoSect = NULL;
 	m_kDist = m_kDisp = m_kHit = m_kImpulse = m_kPierce = 1.f;
 	m_kAP = 0.0f;
+	m_kAirRes = 0.0f;
 	m_buckShot = 1;
 	m_impair = 1.f;
 
@@ -32,6 +35,12 @@ void CCartridge::Load(LPCSTR section)
 	m_kImpulse				= pSettings->r_float(section, "k_impulse");
 	m_kPierce				= pSettings->r_float(section, "k_pierce");
 	m_kAP					= READ_IF_EXISTS(pSettings, r_float, section, "k_ap", 0.0f);
+	
+	if (pSettings->line_exist(section, "k_air_resistance"))
+		m_kAirRes				=  pSettings->r_float(section, "k_air_resistance");
+	else
+		m_kAirRes				= pSettings->r_float(BULLET_MANAGER_SECTION, "air_resistance_k");
+
 	m_flags.set				(cfTracer, pSettings->r_bool(section, "tracer"));
 	m_buckShot				= pSettings->r_s32(section, "buck_shot");
 	m_impair				= pSettings->r_float(section, "impair");
@@ -71,6 +80,10 @@ void CWeaponAmmo::Load(LPCSTR section)
 	m_kImpulse				= pSettings->r_float(section, "k_impulse");
 	m_kPierce				= pSettings->r_float(section, "k_pierce");
 	m_kAP					= READ_IF_EXISTS(pSettings, r_float, section, "k_ap", 0.0f);
+	if (pSettings->line_exist(section, "k_air_resistance"))
+		m_kAirRes				=  pSettings->r_float(section, "k_air_resistance");
+	else
+		m_kAirRes				= pSettings->r_float(BULLET_MANAGER_SECTION, "air_resistance_k");
 	m_tracer				= !!pSettings->r_bool(section, "tracer");
 	m_buckShot				= pSettings->r_s32(section, "buck_shot");
 	m_impair				= pSettings->r_float(section, "impair");
@@ -157,6 +170,7 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_kImpulse = m_kImpulse;
 	cartridge.m_kPierce = m_kPierce;
 	cartridge.m_kAP = m_kAP;
+	cartridge.m_kAirRes = m_kAirRes;
 	cartridge.m_flags.set(CCartridge::cfTracer ,m_tracer);
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;

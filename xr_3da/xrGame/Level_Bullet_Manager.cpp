@@ -58,6 +58,7 @@ void SBullet::Init(const Fvector& position,
 
 	pierce				= cartridge.m_kPierce;
 	ap					= cartridge.m_kAP;
+	air_resistance		= cartridge.m_kAirRes;
 	wallmark_size		= cartridge.fWallmarkSize;
 
 	bullet_material_idx = cartridge.bullet_material_idx;
@@ -257,7 +258,11 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 		bullet->dir.mul(bullet->speed);
 
 		Fvector air_resistance = bullet->dir;
-		air_resistance.mul(-m_fAirResistanceK*delta_time_sec);
+		if (GameID() == GAME_SINGLE)
+			air_resistance.mul(-m_fAirResistanceK*delta_time_sec);
+		else
+			air_resistance.mul(-bullet->air_resistance*(bullet->speed)/(bullet->max_speed)*delta_time_sec);
+		Msg("Speed - %f; ar - %f, %f", bullet->dir.magnitude(), air_resistance.magnitude(), air_resistance.magnitude()/bullet->dir.magnitude()*100);
 
 		bullet->dir.add(air_resistance);
 		bullet->dir.y -= m_fGravityConst*delta_time_sec;
