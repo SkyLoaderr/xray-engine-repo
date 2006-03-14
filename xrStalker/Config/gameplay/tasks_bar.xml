@@ -6,7 +6,7 @@
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
-			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
+			<infoportion_complete>bar_kruglov_follow_actor</infoportion_complete>
 			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
 			<article>descr_bar_resque_information</article>
 		</objective>
@@ -17,9 +17,32 @@
 			<object_story_id>rostok_tainyi_hod</object_story_id>
 			<infoportion_complete>rostok_objective_1</infoportion_complete>
 			</objective>
+			<objective>
+			<text>bar_resque_scientific_information_get_2</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>
+			<object_story_id>bar_ecolog_professor</object_story_id>
+			<infoportion_complete>bar_kruglov_follow_actor</infoportion_complete>
+			</objective>
+	</game_task>
+		
+		
+	<game_task id="bar_resque_information_2">
+		<title>bar_resque_information_2</title>
+		<objective>
+			<text>bar_resque_scientific_information_2</text>
+			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="bar_resque_scientific_information_2">green_location</map_location_type>
+			<object_story_id>bar_ecolog_professor</object_story_id>
+			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
+			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
+			<article>descr_bar_resque_information</article>
+		</objective>
 		<objective>
 			<text>bar_resque_scientific_follow</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="bar_resque_scientific_information_2">green_location</map_location_type>
+			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_rescue_research_follow</infoportion_complete>
 			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
 		</objective>

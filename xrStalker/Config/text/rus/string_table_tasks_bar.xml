@@ -1,6 +1,11 @@
 <string id="bar_resque_information">
     <text>
-        Встретится с Кругловым
+        Встретиться с Кругловым
+    </text>
+</string>
+<string id="bar_resque_information_2">
+    <text>
+        Вывести Круглова на Янтарь
     </text>
 </string>
 <string id="bar_resque_scientific_information">
@@ -10,17 +15,24 @@
 </string>
 <string id="bar_resque_scientific_information_get">
     <text>
-        Пробиться к Круглову
+        Пробиться к Круглову через дикую территорию
     </text>
 </string>
+<string id="bar_resque_scientific_information_get_2">
+    <text>
+        Поговорить с профессором Кругловым
+    </text>
+</string>
+
 <string id="bar_resque_scientific_information_bring">
     <text>
-        Помочь Круглову выбраться с &quot;дикой территории&quot;.
+        Поговорить с Кругловым
     </text>
 </string>
+
 <string id="bar_resque_scientific_follow">
     <text>
-        Сопровождать Круглова на &quot;дикой территории&quot;.
+        Вывести Круглова к выходу на Янтарь
     </text>
 </string>
 <string id="bar_hunter_rifle">
