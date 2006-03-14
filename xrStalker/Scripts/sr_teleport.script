@@ -25,7 +25,8 @@ function action_teleport:update(delta)
 			-- Обработка телепорта
 			self.state = teleport_activated
 			self.timer = time_global()	
-			set_postprocess("scripts\\teleport.ltx")
+			level.add_pp_effector ("teleport.ppe", 2006, false)
+			--set_postprocess("scripts\\teleport.ltx")
 		end
 	end
 	if self.state == teleport_activated then	
