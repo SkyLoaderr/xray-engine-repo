@@ -1005,6 +1005,7 @@
 	<character id="sim_soldier_commander">
 		<class>sim_Soldier_commander</class>
 	</character>
+	
 	<character id="sim_soldier_sniper">
 		<class>sim_Soldier_sniper</class>
 	</character>
@@ -1012,12 +1013,46 @@
 		<class>sim_Soldier_master</class>
 	</character>
 
+  ;-----Quest Npc---------
+  	<character id="sim_stalker_veteran_gusarov">
+		<class>sim_stalker_veteran_gusarov</class>
+	</character>
+  
+  	<character id="sim_Svoboda_specnaz_leshii">
+		<class>sim_Svoboda_specnaz_leshii</class>
+	</character>
 
+  	<character id="sim_stalker_master_chuchelo">
+		<class>sim_stalker_master_chuchelo</class>
+	</character>
 
-
-
-
-
+  	<character id="sim_stalker_general_upir">
+		<class>sim_stalker_general_upir</class>
+	</character>
+	
+	<character id="sim_stalker_master_diador">
+		<class>sim_stalker_master_diador</class>
+	</character>
+	
+    <character id="sim_ecolog_zob">
+		<class>sim_ecolog_zob</class>
+	</character>
+	
+    <character id="sim_stalker_novice_neumeha">
+		<class>sim_stalker_novice_neumeha</class>
+	</character>
+	
+	<character id="sim_bandit_master_kocherga">
+		<class>sim_bandit_master_kocherga</class>
+	</character>	
+	
+    <character id="sim_dolg_veteran_barin">
+		<class>sim_dolg_veteran_barin</class>
+	</character>
+	
+	<character id="sim_stalker_veteran_vorobey">
+		<class>sim_stalker_veteran_vorobey</class>
+	</character>
 
 
 </xml>

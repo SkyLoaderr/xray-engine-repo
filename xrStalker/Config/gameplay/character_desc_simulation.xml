@@ -2750,4 +2750,327 @@
 
 
 
+
+;----------------------Stalkers Quest Profiles-----------------------
+<!---------------------------Oleg Gusarov---------------------->
+	<specific_character id="sim_stalker_veteran_gusarov" team_default = "1">
+		<name>Олег "Демон" Гусаров</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_veteran_gusarov_bio</bio>
+
+		<class>sim_stalker_veteran_gusarov</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+			
+		<rank>789</rank>
+		<reputation>78</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+;-------------------Leshii--------------------	
+	
+<specific_character id="sim_Svoboda_specnaz_leshii" team_default = "1">
+		<name>Леший</name>
+		<icon x="26" y="14"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>sim_Svoboda_specnaz_leshii_bio</bio>
+
+		<team>Svoboda_specnaz</team>
+
+        <snd_config>characters_voice\human_03\freedom\</snd_config>
+		
+		<class>sim_Svoboda_specnaz_leshii</class>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
+
+		<rank>811</rank>
+		<reputation>113</reputation>
+
+		<visual>actors\svoboda\stalker_sv_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_items.xml"	\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"			
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+
+;-----------------Chuchelo----------------------------------
+	<specific_character id="sim_stalker_master_chuchelo" team_default = "1">
+		<name>Чучело</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_master_chuchelo_bio</bio>
+
+		<class>sim_stalker_master_chuchelo</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+				
+		<rank>920</rank>
+		<reputation>145</reputation>
+
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_fn2000 \n
+			ammo_5.56x45_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+
+;--------------------Upir------------------------
+
+	<specific_character id="sim_stalker_general_upir" team_default = "1">
+		<name>Упырь</name>
+		<icon x="24" y="4"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_general_upir_bio</bio>
+
+		<class>sim_stalker_general_upir</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		
+		<rank>396</rank>
+		<reputation>-34</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_pmm = 1 \n
+			wpn_toz34 \n
+			ammo_12x70_buck = 1\n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_items.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+	
+	;------------------Otec Diador-------------------
+	<specific_character id="sim_stalker_master_diador" team_default = "1">
+		<name>Отец Диодор</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_master_diador_bio</bio>
+
+		<class>sim_stalker_master_diador</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		
+		<rank>938</rank>
+		<reputation>156</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_g36 = 1 \n
+			ammo_5.56x45_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
+	
+	;------------------Zob-----------------------------
+	
+	<specific_character id="sim_ecolog_zob" team_default = "1">
+		<name>Зоб</name>
+		<icon x="8" y="4"></icon>
+		<map_icon x="0" y="6"></map_icon>
+		<bio>sim_ecolog_zob_bio</bio>
+
+		<class>sim_ecolog_zob</class>
+		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
+
+		<rank>654</rank>
+		<reputation>3</reputation>
+
+		<visual>actors\ecolog\stalker_ecolog</visual>
+		<snd_config>characters_voice\human_03\ecolog\</snd_config>
+		<supplies>
+			[spawn] \n
+		    wpn_fort \n
+			ammo_9x18_pmm = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_zhekan \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+	
+	;-----------------Neumeha----------------------
+<specific_character id="sim_stalker_novice_neumeha" team_default = "1">
+		<name>Неумеха</name>
+		<icon x="0" y="2"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>sim_stalker_novice_neumeha_bio</bio>
+
+		<class>sim_stalker_novice_neumeha</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
+		
+		<rank>167</rank>
+		<reputation>-6</reputation>
+		
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		
+		<visual>actors\novice\green_stalker_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml" \n
+#include "gameplay\character_food.xml"
+		</supplies>					
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+	
+;-----------------Kocherga---------------------------
+	<specific_character id="sim_bandit_master_kocherga" team_default = "1">
+		<name>Кочерга</name>
+		<icon x="24" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>sim_bandit_master_kocherga_bio</bio>
+		
+		<team>Bandit_master</team>
+		
+		<class>sim_bandit_master_kocherga</class>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
+		
+		<rank>902</rank>
+		<reputation>-163</reputation>
+
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n			
+			wpn_ak74 = 1, 1, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
+	
+	;----------------------Barin------------------------------
+	
+	<specific_character id="sim_dolg_veteran_barin" team_default = "1">
+		<name>Барин</name>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>sim_dolg_veteran_barin_bio</bio>
+
+		<class>sim_dolg_veteran_barin</class>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
+
+		<rank>651</rank>
+		<reputation>-35</reputation>
+
+		<visual>actors\dolg\stalker_do_antigas</visual>
+		<snd_config>characters_voice\human_03\dolg\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_groza \n
+			ammo_9x39_pab9 = 1 \n
+			ammo_9x39_sp5 = 1 \n
+			ammo_vog-25 = 2 \n
+#include "gameplay\character_items.xml"	\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>		
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
+	
+	
+;--------------------Воробей-------------------------------------	
+	<specific_character id="sim_stalker_veteran_vorobey" team_default = "1">
+		<name>Воробей</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_veteran_vorobey_bio</bio>
+
+		<class>sim_stalker_veteran_vorobey</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+			
+		<rank>789</rank>
+		<reputation>78</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 </xml>
