@@ -58,3 +58,9 @@
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>descr_bar_radar_deactivate</text>
     </article>
+	<article id="journal_bar_x16_documents" name="" group="" article_type="journal">
+           <text>journal_bar_x16_documents</text>
+    </article>
+    <article id="journal_bar_darklab_documents" name="" group="" article_type="journal">
+           <text>journal_bar_darklab_documents</text>
+    </article>
