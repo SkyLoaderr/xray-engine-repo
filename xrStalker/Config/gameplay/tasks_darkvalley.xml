@@ -116,18 +116,12 @@
         <icon height="50" width="50" x="150" y="0">
             ui\ui_icons_task
         </icon>
-        <infoportion_complete>
-            val_escort_guard1_dead
-        </infoportion_complete>
-        <infoportion_complete>
-            val_escort_guard2_dead
-        </infoportion_complete>
-        <infoportion_complete>
-            val_escort_actor_helped
-        </infoportion_complete>
         <function_fail>
             darkvalley_tasks.escort_task_fail
         </function_fail>
+        <function_complete>
+            darkvalley_tasks.escort_task_done
+        </function_complete>
     </objective>
     <objective key="1">
         <text>
