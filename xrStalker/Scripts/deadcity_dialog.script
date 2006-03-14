@@ -1,12 +1,12 @@
 function printf() end
 
 -- transfer key from doctor
-function take_key(actor, npc)
+function take_key(npc, actor)
 	local key = npc:object("cit_doctors_key")
 	if key then
-	    printf("<<<<<<Key transfer start>>>>>>.")
+	    --printf("<<<<<<Key transfer start>>>>>>.")
 	    dialogs.relocate_item(npc, key, "in")
-	    printf("<<<<<<Key transfer end>>>>>>.")
+	    --printf("<<<<<<Key transfer end>>>>>>.")
 	else
 	    printf("ERROR: Dead city doctor dont has key.")
 	end
