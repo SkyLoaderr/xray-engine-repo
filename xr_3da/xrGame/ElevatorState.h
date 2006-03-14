@@ -6,6 +6,7 @@ struct SGameMtl;
 class CClimableObject;
 class CElevatorState
 {
+public:	
 	enum Estate
 	{
 		clbNone			=0	,				
@@ -17,6 +18,7 @@ class CElevatorState
 		clbNoLadder			,
 		clbNoState			
 	};
+private:
 	Estate m_state;
 
 	struct  SEnertionState {
@@ -46,6 +48,7 @@ public:
 			void		Depart							();
 			float		ClimbDirection					();
 			void		Deactivate						();
+IC			Estate		State							(){return m_state;}
 private:
 			void		NewState						();
 

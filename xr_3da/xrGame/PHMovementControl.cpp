@@ -12,6 +12,7 @@
 #include "detail_path_manager.h"
 #include "GameMtlLib.h"
 #include "Level.h"
+#include "ElevatorState.h"
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
 #define WALL_FRICTION	3.0f
@@ -957,4 +958,11 @@ float CPHMovementControl::GetFrictionFactor()
 void CPHMovementControl::MulFrictionFactor(float f)
 {
 	m_character->FrictionFactor()*=f;
+}
+
+CElevatorState	*CPHMovementControl::ElevatorState()
+{
+	if(!m_character || !m_character->b_exist)return NULL;
+	return m_character->ElevatorState();
+	//m_character->SetElevator()
 }

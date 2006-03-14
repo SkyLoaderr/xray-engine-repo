@@ -16,7 +16,7 @@
 #include "level.h"
 #include "../cl_intersect.h"
 #include "gamemtllib.h"
-
+#include "elevatorstate.h"
 void CActor::cam_Set	(EActorCameras style)
 {
 	CCameraBase* old_cam = cam_Active();
@@ -64,6 +64,16 @@ void CActor::camUpdateLadder(float dt)
 		cam_yaw+=delta* _min(dt*10.f,1.f) ;
 	}
 
+	if(m_PhysicMovementControl->ElevatorState()->State()==CElevatorState::clbClimbingDown)
+	{
+		float &cam_pitch=cameras[eacFirstEye]->pitch;
+		const float ldown_pitch=cameras[eacFirstEye]->lim_pitch.y;
+		float delta=angle_difference_signed(ldown_pitch,cam_pitch);
+		if(delta>0.f)
+		{
+			cam_pitch+=delta* _min(dt*10.f,1.f) ;
+		}
+	}
 	//if(_abs(delta_lo)<_abs(delta_hi))
 	//{
 	//	cam_yaw+=Device.fTimeDelta*delta_lo*10.f;

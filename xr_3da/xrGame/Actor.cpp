@@ -1291,6 +1291,7 @@ void CActor::ForceTransform(const Fmatrix& m)
 	XFORM().set					(m);
 	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->EnableCharacter	();
 	m_PhysicMovementControl->SetPosition		(m.c);
+	m_PhysicMovementControl->SetVelocity		(0,0,0);
 }
 
 ENGINE_API extern float		psHUD_FOV;

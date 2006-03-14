@@ -7,6 +7,7 @@ class CPhysicsShellHolder;
 class CClimableObject;
 class CGameObject;
 class ICollisionDamageInfo;
+class CElevatorState;
  static enum EEnvironment
 			{
 				peOnGround,
@@ -143,6 +144,7 @@ virtual		float		&FrictionFactor						()															=0;
 virtual		void		CutVelocity							(float l_limit,float a_limit)								;
 virtual		u16				get_elements_number				()															{return 1;};
 virtual		CPHSynchronize	*get_element_sync				(u16 element)												{VERIFY(element==0);return static_cast<CPHSynchronize*>(this);};		
+virtual		CElevatorState	*ElevatorState					()															=0;
 			CPHCharacter									(void)														;
 virtual		~CPHCharacter									(void)														;
 };

@@ -107,6 +107,7 @@ BOOL CClimableObject::	net_Spawn			( CSE_Abstract* DC)
 	}
 	shedule_unregister();
 	processing_deactivate();
+	m_pStaticShell->set_ObjectContactCallback(ObjectContactCallback);
 	return ret;
 }
 void CClimableObject::	net_Destroy			()
@@ -293,19 +294,55 @@ bool CClimableObject::InRange(CPHCharacter *actor)const
 }
 
 
-bool CClimableObject::BeforeLadder(CPHCharacter *actor)const
+bool CClimableObject::BeforeLadder(CPHCharacter *actor,float tolerance/*=0.f*/)const
 {
 	VERIFY(actor);
 	Fvector d;
 	DToAxis(actor,d);
 	Fvector n;n.set(Norm());
 	float width=to_mag_and_dir(n);
-	return d.dotproduct(n)<-(width+actor->FootRadius()/2.f);
+	return d.dotproduct(n)<-(width+actor->FootRadius()/2.f+tolerance);
 }
 
 BOOL CClimableObject::UsedAI_Locations()
 {
 	return FALSE;
+}
+
+
+void CClimableObject::ObjectContactCallback(bool&	do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+{
+	dxGeomUserData* usr_data_1= retrieveGeomUserData(c.geom.g1);
+	dxGeomUserData* usr_data_2=retrieveGeomUserData(c.geom.g2);
+	dxGeomUserData* usr_data_ch=NULL;
+	dxGeomUserData* usr_data_lad=NULL;
+	CClimableObject* this_object=NULL;
+	CPHCharacter* ch=NULL;
+	float norm_sign=0.f;
+	if(bo1) {
+			usr_data_ch=usr_data_2;
+			usr_data_lad=usr_data_1;
+			norm_sign=-1.f;
+		}
+	else {
+			norm_sign=1.f;
+			usr_data_ch=usr_data_1;
+			usr_data_lad=usr_data_2;
+	}
+
+	if(usr_data_ch&&usr_data_ch->ph_object&&usr_data_ch->ph_object->CastType()==CPHObject::tpCharacter)
+		ch=static_cast<CPHCharacter*>(usr_data_ch->ph_object);
+	else
+	{
+		do_colide=false;
+		return;
+	}
+	VERIFY(ch);
+	VERIFY(usr_data_lad);
+	this_object=static_cast<CClimableObject*>(usr_data_lad->ph_ref_object);
+	VERIFY(this_object);
+	if(!this_object->BeforeLadder(ch,-0.1f)) do_colide=false;
+	
 }
 #ifdef DEBUG
 extern	Flags32	dbg_net_Draw_Flags;

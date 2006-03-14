@@ -17,42 +17,45 @@ class CPHSimpleCharacter;
 class CPHCapture;
 class CPHSynchronize;
 class ICollisionDamageInfo;
+class CElevatorState;
+
 class CPHMovementControl 
 {
 static const path_few_point=10;
 
 public:
-void				PHCaptureObject(CPhysicsShellHolder* object);
-void				PHCaptureObject(CPhysicsShellHolder* object,u16 element);
-CPHCapture*			PHCapture      (){return m_capture;}
-void				PHReleaseObject();
-Fvector				PHCaptureGetNearestElemPos(const CPhysicsShellHolder* object);
-Fmatrix				PHCaptureGetNearestElemTransform(CPhysicsShellHolder* object);
-void				SetMaterial(u16 material);
-void				SetAirControlParam(float param){fAirControlParam=param;}
-void				SetActorRestrictorRadius(CPHCharacter::ERestrictionType rt, float r);
-void				SetRestrictionType(CPHCharacter::ERestrictionType rt){if(m_character)m_character->SetRestrictionType(rt);}
-void				SetActorMovable(bool v){if(m_character)m_character->SetActorMovable(v);}
-void				SetForcedPhysicsControl(bool v){if(m_character)m_character->SetForcedPhysicsControl(v);}
-bool				ForcedPhysicsControl(){return m_character&&m_character->ForcedPhysicsControl();}
-enum				JumpType 
+CElevatorState			*ElevatorState  ();
+void					PHCaptureObject(CPhysicsShellHolder* object);
+void					PHCaptureObject(CPhysicsShellHolder* object,u16 element);
+CPHCapture*				PHCapture      (){return m_capture;}
+void					PHReleaseObject();
+Fvector					PHCaptureGetNearestElemPos(const CPhysicsShellHolder* object);
+Fmatrix					PHCaptureGetNearestElemTransform(CPhysicsShellHolder* object);
+void					SetMaterial(u16 material);
+void					SetAirControlParam(float param){fAirControlParam=param;}
+void					SetActorRestrictorRadius(CPHCharacter::ERestrictionType rt, float r);
+void					SetRestrictionType(CPHCharacter::ERestrictionType rt){if(m_character)m_character->SetRestrictionType(rt);}
+void					SetActorMovable(bool v){if(m_character)m_character->SetActorMovable(v);}
+void					SetForcedPhysicsControl(bool v){if(m_character)m_character->SetForcedPhysicsControl(v);}
+bool					ForcedPhysicsControl(){return m_character&&m_character->ForcedPhysicsControl();}
+enum					JumpType 
 {
-					jtStrait, //end point before uppermost point
-					jtCurved, //end point after uppermost point
-					jtHigh	  //end point is uppermost point
+						jtStrait, //end point before uppermost point
+						jtCurved, //end point after uppermost point
+						jtHigh	  //end point is uppermost point
 };
-void				JumpV(const Fvector &jump_velocity);
-void				Jump(const Fvector &start_point, const Fvector &end_point, float time);
-void				Jump(const Fvector &end_point, float time);
-float				Jump(const Fvector &end_point);
-bool				JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEnabled()&&m_character->JumpState());};
+void					JumpV(const Fvector &jump_velocity);
+void					Jump(const Fvector &start_point, const Fvector &end_point, float time);
+void					Jump(const Fvector &end_point, float time);
+float					Jump(const Fvector &end_point);
+bool					JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEnabled()&&m_character->JumpState());};
 ///
-bool				PhyssicsOnlyMode(){return m_character&& m_character->b_exist&&m_character->IsEnabled()&&(m_character->JumpState()||m_character->ForcedPhysicsControl());}
-void				GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point);	//returns vector of velocity of jump with minimal start speed
-																												//in min_vel and correspondent jump time in time
-float				JumpMinVelTime(const Fvector &end_point); // return time of jump with min start speed
+bool					PhyssicsOnlyMode(){return m_character&& m_character->b_exist&&m_character->IsEnabled()&&(m_character->JumpState()||m_character->ForcedPhysicsControl());}
+void					GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point);	//returns vector of velocity of jump with minimal start speed
+																													//in min_vel and correspondent jump time in time
+float					JumpMinVelTime(const Fvector &end_point); // return time of jump with min start speed
 // input: end_point and time; return velocity and type of jump
-void				GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time);
+void					GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time);
 bool				b_exect_position;
 public:
 

@@ -2,6 +2,8 @@
 #include "physicsshellholder.h"
 class CPHLeaderGeomShell;
 class CPHCharacter;
+struct dContact;
+struct SGameMtl;
 class CClimableObject: public CPhysicsShellHolder 
 #ifdef DEBUG
 ,public pureRender
@@ -38,7 +40,7 @@ public:
 
 	const Fvector&	Norm				()const{return m_norm;} 
 	float			DDNorm				(Fvector &dir)const;
-	bool			BeforeLadder		(CPHCharacter *actor)const;
+	bool			BeforeLadder		(CPHCharacter *actor,float tolerance=0.f)const;
 	float			DDLowerP			(CPHCharacter	*actor,Fvector &out_dir)const;//returns distance and dir to lover point
 	float			DDUpperP			(CPHCharacter	*actor,Fvector &out_dir)const;//returns distance and dir to upper point
 
@@ -60,5 +62,5 @@ public:
 	void			LowerPoint			(Fvector	&P)const;
 	void			UpperPoint			(Fvector	&P)const;
 	void			DefineClimbState	(CPHCharacter	*actor)const;
-
+	static 	void	ObjectContactCallback(bool& /**do_colide/**/,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 };

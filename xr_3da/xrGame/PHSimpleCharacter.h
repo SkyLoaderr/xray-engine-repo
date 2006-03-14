@@ -168,6 +168,7 @@ public:
 	virtual		void		SetVelocity							(Fvector vel)		;
 	virtual		void		SetAirControlFactor					(float factor)		{m_air_control_factor=factor;}
 	virtual		void		SetElevator							(CClimableObject* climable){m_elevator_state.SetElevator(climable);};
+	virtual	CElevatorState	*ElevatorState						()					;
 	virtual		void		SetCollisionDamageFactor			(float f)			{m_collision_damage_factor=f;}
 	virtual		void		GetPosition							(Fvector& vpos)		;
 	virtual		float		FootRadius							()					;

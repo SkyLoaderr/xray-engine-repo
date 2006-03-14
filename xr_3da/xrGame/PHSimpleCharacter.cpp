@@ -1631,3 +1631,7 @@ ALife::EHitType	CPHSimpleCharacter:: HitType	()const
 	else									
 		return ALife::eHitTypeStrike;
 }//
+CElevatorState	*CPHSimpleCharacter::ElevatorState()
+{
+	return &m_elevator_state;
+}

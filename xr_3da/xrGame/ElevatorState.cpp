@@ -157,8 +157,9 @@ void CElevatorState::UpdateStNearUp()
 		//d.dotproduct(m_character->ControlAccel())<0.f&&
 		//ClimbDirection()<0.f&&
 		m_ladder->DDToPlain(m_character,d)>m_character->FootRadius()/3.f&&
-		m_ladder->BeforeLadder(m_character)
-		)SwitchState(clbClimbingDown);
+		m_ladder->BeforeLadder(m_character,0.1f)
+		)
+		SwitchState(clbClimbingDown);
 	float dist=m_ladder->DDUpperP(m_character,d);
 	if(dist-m_character->FootRadius()>out_dist)SwitchState((clbNoLadder));
 }
@@ -277,7 +278,16 @@ bool CElevatorState::GetControlDir(Fvector& dir)
 										dir.invert();
 										dir.add(d);dir.normalize();
 									}
-									else ret=false;
+									else 
+									{
+#ifdef DEBUG
+										if(ph_dbg_draw_mask.test(phDbgLadder))
+										{
+											Msg("no c dir");
+										}
+#endif
+										ret=false;
+									}
 									break;				
 	}
 	return ret;
