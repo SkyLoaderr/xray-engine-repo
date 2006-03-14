@@ -64,3 +64,12 @@
     <article id="journal_bar_darklab_documents" name="" group="" article_type="journal">
            <text>journal_bar_darklab_documents</text>
     </article>
+    <article id="journal_before_darklab_documents" name="" group="" article_type="journal">
+           <text>journal_before_darklab_documents</text>
+    </article>
+    <article id="journal_before_radar_task" name="" group="" article_type="journal">
+           <text>journal_before_radar_task</text>
+    </article>
+    <article id="journal_after_agroprom_documents" name="" group="" article_type="journal">
+           <text>journal_after_agroprom_documents</text>
+    </article>
