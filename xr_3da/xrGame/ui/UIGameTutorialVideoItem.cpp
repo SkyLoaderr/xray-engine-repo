@@ -95,7 +95,7 @@ void CUISequenceVideoItem::Update()
 				m_texture->video_Play	(FALSE,Device.dwTimeContinual);
 				m_flags.set	(etiNeedStart,FALSE);
 				CUIWindow* w			= m_owner->MainWnd()->FindChild("back");
-				if (w)					w->Show(m_flags.test(etiBackVisible));
+				if (w)					w->Show(!!m_flags.test(etiBackVisible));
 			}else{
 				m_flags.set				(etiPlaying,FALSE);
 			}
