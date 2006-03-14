@@ -364,8 +364,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 	float speed_factor = bullet->speed/bullet->max_speed;
 	//получить силу хита выстрела с учетом патрона
 	float power = bullet->hit_power*speed_factor;
-	Msg("bullet power - %f", power);
-
+	
 	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
 
 	//shoot_factor: простреливаемость материала (1 - полностью простреливаемый)

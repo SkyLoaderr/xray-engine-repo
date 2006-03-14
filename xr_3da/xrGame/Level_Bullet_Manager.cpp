@@ -262,7 +262,7 @@ bool CBulletManager::CalcBullet (collide::rq_results & rq_storage, xr_vector<ISp
 			air_resistance.mul(-m_fAirResistanceK*delta_time_sec);
 		else
 			air_resistance.mul(-bullet->air_resistance*(bullet->speed)/(bullet->max_speed)*delta_time_sec);
-		Msg("Speed - %f; ar - %f, %f", bullet->dir.magnitude(), air_resistance.magnitude(), air_resistance.magnitude()/bullet->dir.magnitude()*100);
+///		Msg("Speed - %f; ar - %f, %f", bullet->dir.magnitude(), air_resistance.magnitude(), air_resistance.magnitude()/bullet->dir.magnitude()*100);
 
 		bullet->dir.add(air_resistance);
 		bullet->dir.y -= m_fGravityConst*delta_time_sec;
