@@ -111,6 +111,14 @@ function has_darklab_documents(task, objective)
 	return db.actor:object("dar_document4") ~= nil
 end
 
+function escort_task_done(task, objective)
+    local actor = db.actor
+    return actor:dont_has_info("val_escort_captive_dead") and
+           actor:has_info("val_escort_guard1_dead") and
+           actor:has_info("val_escort_guard2_dead") and
+           actor:has_info("val_escort_actor_helped")
+end
+
 function escort_task_fail(task, objective)
     local actor = db.actor
     return actor:has_info("val_escort_captive_dead") or
