@@ -1,40 +1,40 @@
 
-    <article id="storyline_gunslinger_cache_info" name="Krot Flash" article_type="task" group="agroprom_find_gunslinger_cache/1">
+    <article id="storyline_gunslinger_cache_info" name="Krot Flash" article_type="task" group="agroprom_find_gunslinger_cache">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>storyline_gunslinger_cache_info</text>
     </article>
 
-    <article id="storyline_gunslinger_flash_info" name="Gunslinger Flash" article_type="task" group="agroprom_find_stalker_phantom/0">
+    <article id="storyline_gunslinger_flash_info" name="Gunslinger Flash" article_type="task" group="agroprom_find_stalker_phantom">
         <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>storyline_gunslinger_flash_info</text>
     </article>
 
-    <article id="agr_rats_n_soldiers" name="agr_rats_n_soldiers" article_type="task" group="agroprom_get_military_documents/1">
+    <article id="agr_rats_n_soldiers" name="agr_rats_n_soldiers" article_type="task" group="agroprom_get_military_documents">
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_rats_n_soldiers_text</text>
     </article>
     
-    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule_name" article_type="task" group="agroprom_get_military_documents/1">
+    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule_name" article_type="info" group="agroprom_get_military_documents">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
         <text>agr_nii_security_shedule</text>
     </article>
     
-    <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" article_type="task" group="agroprom_get_military_documents/1">
+    <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" article_type="info" group="agroprom_get_military_documents">
         <texture x="400" y="600" width="300" height="300">ui\ui_icon_photo</texture>
         <text>agr_nii_security_plan</text>
     </article>
 
-    <article id="agr_krot_secret_info" name="agr_krot_secret_info_name" article_type="task" group="agroprom_find_gunslinger_cache/1">
+    <article id="agr_krot_secret_info" name="agr_krot_secret_info_name" article_type="task" group="agroprom_find_gunslinger_cache">
         <texture x="650" y="350" width="370" height="250">ui\ui_icon_photo</texture>
         <text>agr_krot_secret_info</text>
     </article>
 
-    <article id="agr_military_case" name="agr_military_case_name" article_type="info" group="agroprom_get_military_documents/1">
+    <article id="agr_military_case" name="agr_military_case_name" article_type="info" group="agroprom_get_military_documents">
 <!--	    <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture> -->
         <text>agr_military_case</text>
     </article>
 
-    <article id="agr_nii_fab_mil_task" name="agr_nii_fab_mil_task_name" article_type="info" group="agroprom_get_military_documents/1">
+    <article id="agr_nii_fab_mil_task" name="agr_nii_fab_mil_task_name" article_type="info" group="agroprom_get_military_documents">
         <text>agr_nii_fab_mil_task</text>
     </article>
 
