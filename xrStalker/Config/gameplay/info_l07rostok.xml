@@ -216,9 +216,11 @@
     <info_portion id="bar_darklab_document_start">
 		<task>bar_darklab_documents</task>
 		<article>bar_darklab_documents_art</article>
-		<article>journal_bar_darklab_documents</article>
+		<article>journal_before_darklab_documents</article>
     </info_portion>
-	<info_portion id="bar_darklab_document_gain"></info_portion>
+	<info_portion id="bar_darklab_document_gain">
+		<article>journal_bar_darklab_documents</article>
+	</info_portion>
 	<info_portion id="bar_darklab_document_done"></info_portion>
 
 		 <!-- X16 DOCUMENTS -->
@@ -249,6 +251,7 @@
     <info_portion id="bar_deactivate_radar_start">
 		<task>bar_radar_deactivate</task>
 		<article>descr_bar_radar_deactivate</article>
+		<article>journal_before_radar_task</article>
     </info_portion>
 	<info_portion id="bar_deactivate_radar_done"></info_portion>
 
