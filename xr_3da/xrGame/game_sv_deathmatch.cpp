@@ -963,6 +963,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 //	spawn_end				(E,m_server->GetServer_client()->ID);
 //};
 
+BOOL g_bDMIgnore_Money_OnBuy = FALSE;
 void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState*	ps)
 {
 	CSE_ALifeCreatureActor* pA	=	smart_cast<CSE_ALifeCreatureActor*>(pE);
@@ -987,8 +988,9 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 //		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, (*pWpnI).WeaponName.c_str());
 		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, pWpnS->WeaponName.c_str());
 	};
-	
-	Player_AddMoney(ps, ps->LastBuyAcount);
+
+	if (!g_bDMIgnore_Money_OnBuy)
+		Player_AddMoney(ps, ps->LastBuyAcount);
 };
 
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
@@ -2138,6 +2140,8 @@ void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
 	m_dwWarmUp_MaxTime	= get_option_i		(*options,"warmup",0) * 1000;
 };
 
+
+
 static bool g_bConsoleCommandsCreated_DM = false;
 void game_sv_Deathmatch::ConsoleCommands_Create	()
 {
@@ -2158,6 +2162,8 @@ void game_sv_Deathmatch::ConsoleCommands_Create	()
 	CMD_ADD(CCC_SV_Int,"sv_pda_hunt", (int*)&m_bPDAHunt, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
 	//-------------------------------------
 	CMD_ADD(CCC_SV_Int,"sv_warm_up", (int*)&m_dwWarmUp_MaxTime, 0, 3600000,g_bConsoleCommandsCreated_DM,Cmnd);
+	//-------------------------------------
+	CMD_ADD(CCC_SV_Int,"sv_ignore_money_on_buy", (int*)&g_bDMIgnore_Money_OnBuy, 0, 1,g_bConsoleCommandsCreated_DM,Cmnd);
 	//-------------------------------------
 	g_bConsoleCommandsCreated_DM = true;
 };
