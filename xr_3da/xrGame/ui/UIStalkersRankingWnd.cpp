@@ -116,7 +116,7 @@ void CUIStalkersRankingWnd::FillList()
 		for(int i=0; i<sz; ++i){
 			CSE_ALifeTraderAbstract* pT			= (g_all_statistic_humans[i]).trader;
 			if(pT==pActorAbstract || (i==19&&actor_place>19)  )
-				AddActorItem					(&uiXml, actor_place+1, pT);
+				AddActorItem					(&uiXml, actor_place+1, pActorAbstract);
 			else
 				AddStalkerItem					(&uiXml, i+1, pT);
 		}
@@ -170,7 +170,7 @@ void CUIStalkersRankingWnd::AddActorItem(CUIXml* xml, int num, CSE_ALifeTraderAb
 	itm->m_text1->SetText				(buff);		
 
 
-	sprintf								(buff,"You (%s)", t->m_character_name.c_str());
+	sprintf								(buff,"%s", t->m_character_name.c_str());
 	itm->m_text2->SetText				(buff);		
 
 	sprintf								(buff,"%d",t->m_rank);
