@@ -73,6 +73,12 @@ void CMovementManager::process_game_path()
 //					break;
 		}
 		case ePathStateBuildLevelPath : {
+			VERIFY				(
+				ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id() 
+				== 
+				ai().game_graph().vertex(game_path().intermediate_vertex_id())->level_id()
+			);
+
 			u32	dest_level_vertex_id = ai().game_graph().vertex(
 					game_path().intermediate_vertex_id()
 			)->level_vertex_id();
