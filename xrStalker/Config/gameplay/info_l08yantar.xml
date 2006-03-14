@@ -13,13 +13,16 @@
 	<info_portion id="yan_find_scientist_task_start"></info_portion>
 	<info_portion id="yan_find_vasilyev_start">
 		<task>yan_find_vasilyev_task</task>
+		<article>journal_before_vasilyev_pda</article>
 	</info_portion>
 	<info_portion id="yan_find_vasilyev_end"></info_portion>
 	<info_portion id="yantar_vasilyev_info">
 		<article>yan_vasilyev_info</article>
 		<task>yan_find_ghost_task</task>
 	</info_portion>
-	<info_portion id="yantar_find_ghost_task_end"></info_portion>
+	<info_portion id="yantar_find_ghost_task_end">
+		<article>journal_after_find_ghost</article>
+	</info_portion>
 	<info_portion id="yan_scientist_return_task">
 		<task>yan_scientist_return_task</task>
 	</info_portion>
@@ -92,7 +95,9 @@
 
 	<!-- Yantar Tunnel start -->
 	<info_portion id="yantar_tunnel_start"></info_portion>
-	<info_portion id="yantar_tunnel_finish"></info_portion>
+	<info_portion id="yantar_tunnel_finish">
+		<article>journal_after_kill_brain</article>
+	</info_portion>
 
 	<!-- Lab X16 switchers -->
 	<info_portion id="yan_labx16_switcher_1_off"></info_portion>
