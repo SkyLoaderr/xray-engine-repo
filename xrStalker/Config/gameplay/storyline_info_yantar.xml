@@ -22,3 +22,12 @@
 <article id="descr_yan_find_scientist_semenov" name="" group="yan_find_scientist_semenov/0" article_type="task">
         <text>descr_yan_find_scientist_semenov</text>
 </article>
+<article id="journal_after_kill_brain" name="" group="" article_type="journal">
+        <text>journal_after_kill_brain</text>
+</article>
+<article id="journal_after_find_ghost" name="" group="" article_type="journal">
+        <text>journal_after_find_ghost</text>
+</article>
+<article id="journal_before_vasilyev_pda" name="" group="" article_type="journal">
+        <text>journal_before_vasilyev_pda</text>
+</article>
