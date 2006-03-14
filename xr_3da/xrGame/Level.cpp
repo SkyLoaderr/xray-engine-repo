@@ -879,7 +879,10 @@ u32	GameID()
 	return Game().Type();
 }
 
+#include "../IGame_Persistent.h"
+
 bool	IsGameTypeSingle()
 {
-	return		(GameID()==GAME_SINGLE);
+	return g_pGamePersistent->GameType()==GAME_SINGLE;
+//	return		(GameID()==GAME_SINGLE);
 }
