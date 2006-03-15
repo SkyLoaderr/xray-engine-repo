@@ -39,7 +39,6 @@ end
 function give_killer_doc(actor, npc)
 	local killer_doc = actor:object("cit_killers_documents")
 	dialogs.relocate_item(npc, killer_doc, "out")
-	dialogs.relocate_money(npc, 2000, "in")
 end
 
 function give_killer_doc_reward(npc, actor)
