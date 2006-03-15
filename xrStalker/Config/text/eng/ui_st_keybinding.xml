@@ -198,4 +198,7 @@
     <string id="speech_menu_personal">
         <text>Speech menu (Personal)</text>
     </string>
+    <string id="kb_vote_begin">
+		<text>Begin voting</text>
+	</string>
 </string_table>
