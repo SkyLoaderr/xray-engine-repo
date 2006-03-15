@@ -555,9 +555,11 @@
 		</supplies>
 		
 		<start_dialog>bar_dolg_petrenko_start</start_dialog>
+<!----		
 		<actor_dialog>bar_dolg_petrenko_join</actor_dialog>
 		<actor_dialog>bar_dolg_petrenko_talk</actor_dialog>
 		<actor_dialog>bar_dolg_zavskald_reward</actor_dialog>
+------>
 	</specific_character>	
 
 	<!---------------------------DOLG IVANCOV---------------------->
@@ -959,8 +961,6 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_sniper_default2" team_default = "1">
@@ -990,8 +990,6 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_sniper_default3" team_default = "1">
@@ -1021,9 +1019,7 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
+		</specific_character>
 
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="bar_dolg_veteran_default1" team_default = "1">
@@ -1053,7 +1049,6 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_veteran_default2" team_default = "1">
@@ -1085,7 +1080,6 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_veteran_default3" team_default = "1">
@@ -1117,7 +1111,6 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_dolg_veteran_default4" team_default = "1">
@@ -1147,7 +1140,6 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 <!---------------------------DOLG MASTER----------------------->
@@ -1177,7 +1169,7 @@
 		</supplies>			
 		
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+
 	</specific_character>
 
 	<specific_character id="bar_dolg_master_default2" team_default = "1">
@@ -1207,7 +1199,7 @@
 		</supplies>	
 				
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+
 	</specific_character>
 
 
@@ -1236,7 +1228,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default2" team_default = "1">
@@ -1263,7 +1254,7 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default3" team_default = "1">
@@ -1454,12 +1445,6 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 
 	</specific_character>
 
@@ -1490,12 +1475,6 @@
 		</supplies>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 </specific_character>
 
 <specific_character id="bar_stalker_general_default3" team_default = "1">
@@ -1525,12 +1504,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 </specific_character>
 
 	<specific_character id="bar_stalker_general_default4" team_default = "1">
@@ -1560,12 +1533,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="bar_stalker_general_default5" team_default = "1">
@@ -1595,12 +1562,6 @@
 		</supplies>
 
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
 <!---------------------------STALKER VETERAN---------------------->
@@ -1631,10 +1592,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
 	</specific_character>
 
@@ -1665,10 +1622,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
 	</specific_character>
 
@@ -1699,10 +1652,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
 	</specific_character>
 
@@ -1733,10 +1682,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
 	</specific_character>
 
@@ -1767,10 +1712,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
 
 	</specific_character>
 
@@ -1799,7 +1740,6 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_ecolog_guard_default2" team_default = "1">
@@ -1824,7 +1764,6 @@
 				
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 
@@ -1854,7 +1793,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_killer_regular_default2" team_default = "1">
@@ -1882,7 +1820,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_killer_regular_default3" team_default = "1">
@@ -1910,7 +1847,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 		
 <!---------------------------KILLER SNIPER---------------------->
@@ -1938,7 +1874,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <specific_character id="bar_killer_sniper_on_enter" team_default = "1">
@@ -1965,7 +1900,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 <!---------------------------KILLER SPECNAZ---------------------->
@@ -1995,7 +1929,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default2" team_default = "1">
@@ -2024,7 +1957,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default3" team_default = "1">
@@ -2054,7 +1986,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default4" team_default = "1">
@@ -2084,7 +2015,6 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 </xml>
