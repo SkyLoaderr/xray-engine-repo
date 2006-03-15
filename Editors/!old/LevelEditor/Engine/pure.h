@@ -49,7 +49,7 @@ public:
 #ifdef DEBUG
 		VERIFY	(priority!=REG_PRIORITY_INVALID);
 		VERIFY	(obj);
-		for		(u32 i=0; i<R.size(); i++) VERIFY( R[i].Object!=(void*)obj );
+		for		(u32 i=0; i<R.size(); i++) VERIFY( !((R[i].Prio!=REG_PRIORITY_INVALID)&&(R[i].Object==(void*)obj))   );
 #endif
 		_REG_INFO			I;
 		I.Object			=obj;
