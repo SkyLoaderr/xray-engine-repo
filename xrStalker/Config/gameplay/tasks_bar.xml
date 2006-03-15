@@ -152,7 +152,7 @@
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_dolg_base_rules_talk">green_location</map_location_type>
 			<object_story_id>bar_dolg_guard_commander</object_story_id>
-			<infoportion_complete>bar_dolg_base_rules_talk</infoportion_complete>			
+			<infoportion_complete>bar_dolg_base_rules_finish</infoportion_complete>			
 		</objective>
 	</game_task>
 
