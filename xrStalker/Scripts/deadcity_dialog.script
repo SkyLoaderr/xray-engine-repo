@@ -37,8 +37,7 @@ function have_killers_documents(actor, npc)
 end
 
 function give_killer_doc(actor, npc)
-	local killer_doc = actor:object("cit_killers_documents")
-	dialogs.relocate_item(npc, killer_doc, "out")
+	dialogs.relocate_item(npc, actor:object("cit_killers_documents"), "out")
 end
 
 function give_killer_doc_reward(npc, actor)
@@ -51,9 +50,11 @@ function have_deadcity_map(actor, npc)
 end
 
 function give_killers_maps(actor, npc)
-	local maps = actor:object("cit_deadcity_maps")
-	dialogs.relocate_item(npc, maps, "out")
-	dialogs.relocate_money(npc, 2000, "in")
+	dialogs.relocate_item(npc, actor:object("cit_deadcity_maps"), "out")
+end
+
+function give_killer_maps_reward(npc, actor)
+	dialogs.relocate_money(npc, 3000, "in")
 end
 
 -- Лидер наемников.
@@ -61,8 +62,10 @@ function leader_killer_die(actor, npc)
   	return actor:object("cit_leader_killer_pda") ~= nil
 end
 
-function give_killers_maps(actor, npc)
-	local kill_pda = actor:object("cit_leader_killer_pda")
-	dialogs.relocate_item(npc, kill_pda, "out")
+function give_leader_pda(actor, npc)
+	dialogs.relocate_item(npc, actor:object("cit_leader_killer_pda"), "out")
+end
+
+function give_leader_die_reward(npc, actor)
 	dialogs.relocate_money(npc, 3000, "in")
 end
