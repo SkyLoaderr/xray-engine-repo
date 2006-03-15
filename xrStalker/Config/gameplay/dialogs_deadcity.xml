@@ -3,7 +3,7 @@
     <dialog id="cit_doctor_hello_dialog">
         <phrase_list>
             <phrase id="1">
-                <text></text>
+                <text />
                 <dont_has_info>cit_jail_doctor_pryp_task</dont_has_info>
                 <next>11</next>
             </phrase>
@@ -11,7 +11,7 @@
                 <text>cit_doctor_hello_dialog_11</text>
             </phrase>
             <phrase id="2">
-                <text></text>
+                <text />
                 <has_info>cit_jail_doctor_pryp_task</has_info>
                 <next>21</next>
             </phrase>
@@ -19,7 +19,7 @@
                 <text>cit_doctor_hello_dialog_21</text>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>2</next>
             </phrase>
@@ -83,15 +83,6 @@
     <dialog id="cit_doctor_escape_dialog">
         <has_info>cit_jail_doctor_pryp_task</has_info>
         <phrase_list>
-            <phrase id="0">
-                <text>cit_doctor_escape_dialog_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="11">
-                <text>cit_doctor_escape_dialog_11</text>
-                <dont_has_info>cit_jail_doctor_weapon_task</dont_has_info>
-                <next>111</next>
-            </phrase>
             <phrase id="111">
                 <text>cit_doctor_escape_dialog_111</text>
                 <give_info>cit_jail_doctor_weapon_task</give_info>
@@ -117,8 +108,18 @@
                 <text>cit_doctor_escape_dialog_1211</text>
                 <next>1</next>
             </phrase>
+            <phrase id="0">
+                <text>cit_doctor_escape_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="11">
+                <text>cit_doctor_escape_dialog_11</text>
+                <dont_has_info>cit_jail_doctor_weapon_task</dont_has_info>
+                <next>111</next>
+            </phrase>
             <phrase id="14">
                 <text>cit_doctor_escape_dialog_14</text>
+                <dont_has_info>cit_map_need</dont_has_info>
                 <has_info>cit_jail_scene_start</has_info>
                 <next>141</next>
             </phrase>
@@ -133,51 +134,10 @@
             <phrase id="141111">
                 <text>cit_doctor_escape_dialog_141111</text>
                 <give_info>cit_map_need</give_info>
-                <next>211</next>
-            </phrase>
-            <phrase id="211">
-                <text></text>
-                <next>2111</next>
-                <next>2112</next>
-            </phrase>
-            <phrase id="2111">
-                <text></text>
-                <dont_has_info>cit_documents_need</dont_has_info>
-                <next>14111</next>
-            </phrase>
-            <phrase id="2112">
-                <text></text>
-                <has_info>cit_documents_need</has_info>
                 <next>1</next>
             </phrase>
             <phrase id="141112">
                 <text>cit_doctor_escape_dialog_141112</text>
-                <give_info>cit_documents_need</give_info>
-                <next>221</next>
-            </phrase>
-            <phrase id="221">
-                <text></text>
-                <next>2211</next>
-                <next>2212</next>
-            </phrase>
-            <phrase id="2211">
-                <text></text>
-                <dont_has_info>cit_map_need</dont_has_info>
-                <next>14111</next>
-            </phrase>
-            <phrase id="14111">
-                <text>cit_doctor_escape_dialog_14111</text>
-                <next>141111</next>
-                <next>141112</next>
-                <next>141113</next>
-            </phrase>
-            <phrase id="2212">
-                <text></text>
-                <has_info>cit_map_need</has_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="141113">
-                <text>cit_doctor_escape_dialog_141113</text>
                 <next>1</next>
             </phrase>
             <phrase id="15">
@@ -194,67 +154,43 @@
                 <text>cit_doctor_escape_dialog_1511</text>
                 <next>1</next>
             </phrase>
+            <phrase id="16">
+                <text>cit_doctor_escape_dialog_16</text>
+                <has_info>cit_jail_scene_start</has_info>
+                <has_info>cit_map_need</has_info>
+                <next>161</next>
+            </phrase>
+            <phrase id="161">
+                <text>cit_doctor_escape_dialog_161</text>
+                <next>1611</next>
+            </phrase>
+            <phrase id="1611">
+                <text>cit_doctor_escape_dialog_1611</text>
+                <next>1</next>
+            </phrase>
             <phrase id="1">
                 <text>cit_doctor_escape_dialog_1</text>
                 <next>11</next>
                 <next>12</next>
                 <next>14</next>
                 <next>15</next>
-                <next>13</next>
+                <next>16</next>
+                <next>17</next>
             </phrase>
-            <phrase id="13">
-                <text>cit_doctor_escape_dialog_13</text>
+            <phrase id="17">
+                <text>cit_doctor_escape_dialog_17</text>
                 <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="14111">
+                <text>cit_doctor_escape_dialog_14111</text>
+                <next>141111</next>
+                <next>141112</next>
             </phrase>
         </phrase_list>
     </dialog>
     <dialog id="quest_cit_reward">
-        <precondition>deadcity_dialog.have_docs_or_map</precondition>
+        <precondition>deadcity_dialog.have_deadcity_map</precondition>
         <phrase_list>
-            <phrase id="0">
-                <text>quest_cit_reward_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>quest_cit_reward_1</text>
-                <next>10</next>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-            </phrase>
-            <phrase id="10">
-                <text>quest_cit_reward_10</text>
-                <precondition>deadcity_dialog.have_killers_documents</precondition>
-                <precondition>deadcity_dialog.have_deadcity_map</precondition>
-                <next>101</next>
-            </phrase>
-            <phrase id="101">
-                <text>quest_cit_reward_101</text>
-                <next>1011</next>
-                <next>1012</next>
-            </phrase>
-            <phrase id="10111">
-                <text>quest_cit_reward_10111</text>
-            </phrase>
-            <phrase id="1012">
-                <text>quest_cit_reward_1012</text>
-                <next>1013</next>
-            </phrase>
-            <phrase id="1013">
-                <text>quest_cit_reward_1013</text>
-            </phrase>
-            <phrase id="11">
-                <text>quest_cit_reward_11</text>
-                <precondition>deadcity_dialog.have_deadcity_map</precondition>
-                <next>111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>quest_cit_reward_1111</text>
-                <next>11111</next>
-            </phrase>
-            <phrase id="11111">
-                <text>quest_cit_reward_11111</text>
-            </phrase>
             <phrase id="1112">
                 <text>quest_cit_reward_1112</text>
                 <next>11121</next>
@@ -262,34 +198,14 @@
             <phrase id="11121">
                 <text>quest_cit_reward_11121</text>
             </phrase>
-            <phrase id="111">
-                <text>quest_cit_reward_111</text>
-                <next>1111</next>
-                <next>1112</next>
+            <phrase id="0">
+                <text>quest_cit_reward_0</text>
+                <next>1</next>
             </phrase>
-            <phrase id="12">
-                <text>quest_cit_reward_12</text>
-                <precondition>deadcity_dialog.have_killers_documents</precondition>
-                <next>121</next>
-            </phrase>
-            <phrase id="121">
-                <text>quest_cit_reward_121</text>
-                <next>1211</next>
-                <next>1212</next>
-            </phrase>
-            <phrase id="12111">
-                <text>quest_cit_reward_12111</text>
-            </phrase>
-            <phrase id="1211">
-                <text>quest_cit_reward_1211</text>
-                <next>12111</next>
-            </phrase>
-            <phrase id="1212">
-                <text>quest_cit_reward_1212</text>
-                <next>12121</next>
-            </phrase>
-            <phrase id="12121">
-                <text>quest_cit_reward_12121</text>
+            <phrase id="1">
+                <text>quest_cit_reward_1</text>
+                <next>11</next>
+                <next>13</next>
             </phrase>
             <phrase id="13">
                 <text>quest_cit_reward_13</text>
@@ -298,9 +214,24 @@
             <phrase id="131">
                 <text>quest_cit_reward_131</text>
             </phrase>
-            <phrase id="1011">
-                <text>quest_cit_reward_1011</text>
-                <next>10111</next>
+            <phrase id="11">
+                <text>quest_cit_reward_11</text>
+                <precondition>deadcity_dialog.have_deadcity_map</precondition>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>quest_cit_reward_111</text>
+                <next>1111</next>
+                <next>1112</next>
+            </phrase>
+            <phrase id="1111">
+                <text>quest_cit_reward_1111</text>
+                <action>deadcity_dialog.give_killers_maps</action>
+                <next>11111</next>
+            </phrase>
+            <phrase id="11111">
+                <text>quest_cit_reward_11111</text>
+                <action>deadcity_dialog.give_killer_maps_reward</action>
             </phrase>
         </phrase_list>
     </dialog>
