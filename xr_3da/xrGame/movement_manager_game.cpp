@@ -73,6 +73,15 @@ void CMovementManager::process_game_path()
 //					break;
 		}
 		case ePathStateBuildLevelPath : {
+
+			// FOR DEBUG ONLY!!! REMOVE IT AFTER BUG FIX
+			if	(ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id() != ai().game_graph().vertex(game_path().intermediate_vertex_id())->level_id()) {
+				
+				Msg("--------------- DUMP ------------------");
+				Msg("Object [%s]", *object().cName());
+				Msg("---------------------------------------");
+			}
+
 			VERIFY				(
 				ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_id() 
 				== 
