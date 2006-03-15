@@ -2253,6 +2253,9 @@
 						RelativePath=".\Config\scripts\agr\agr_helicopter4.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\agr\agr_knockdown.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\agr\agr_krot.ltx">
 					</File>
 					<File
