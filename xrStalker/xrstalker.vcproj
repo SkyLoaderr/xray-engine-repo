@@ -3504,6 +3504,9 @@
 						<File
 							RelativePath=".\Scripts\rad_dialogs.script">
 						</File>
+						<File
+							RelativePath=".\Scripts\yantar_dialog.script">
+						</File>
 					</Filter>
 					<Filter
 						Name="LevelTasks"
