@@ -95,7 +95,7 @@ void	CObjectList::SingleUpdate	(CObject* O)
 		if (O->getDestroy())	destroy_queue.push_back(O);
 		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) )	{
 			// Push to destroy-queue if it isn't here already
-			Msg	("! ERROR: incorrect destroy sequence for object[%d:%s], section[%s], parent[%d:%s]",O->ID(),*O->cName(),*O->cNameSect(),O->H_Parent()->ID(),O->H_Parent()->cName());
+			Msg	("! ERROR: incorrect destroy sequence for object[%d:%s], section[%s], parent[%d:%s]",O->ID(),*O->cName(),*O->cNameSect(),O->H_Parent()->ID(),*O->H_Parent()->cName());
 			if (std::find(destroy_queue.begin(),destroy_queue.end(),O)==destroy_queue.end())
 				destroy_queue.push_back	(O);
 		}
