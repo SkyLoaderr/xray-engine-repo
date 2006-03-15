@@ -65,8 +65,7 @@ end
 
 function GetHandling(section)
 	local ltx = system_ini()
-	local val
-	
+	local val	
 	local control_inertion_factor
 	
 	if ltx:line_exist(section,"control_inertion_factor") then
