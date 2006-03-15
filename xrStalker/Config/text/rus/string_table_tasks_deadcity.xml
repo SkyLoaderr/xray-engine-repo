@@ -43,31 +43,6 @@
         Найти и уничтожить лидера наемников.
     </text>
 </string>
-<string id="cit_find_vp">
-    <text>
-        Найти дядю.
-    </text>
-</string>
-<string id="cit_search_vp_0">
-    <text>
-        Найти сталкера Василия Петровича
-    </text>
-</string>
-<string id="cit_search_vp_1">
-    <text>
-        Узнать побольше о Василии Петровиче.
-    </text>
-</string>
-<string id="cit_search_vp_2">
-    <text>
-        Найти Василия Петровича и принести доказательства встречи с ним.
-    </text>
-</string>
-<string id="cit_search_vp_3">
-    <text>
-        Рассказать племяннику о дяде.
-    </text>
-</string>
 <string id="cit_doctor_task">
     <text>
         Тайник на Припяти.

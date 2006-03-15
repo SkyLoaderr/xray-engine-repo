@@ -74,61 +74,6 @@
         </icon>
     </objective>
 </game_task>
-<game_task id="cit_vp_search">
-    <title>
-        cit_find_vp
-    </title>
-    <objective key="0">
-        <icon height="50" width="50" x="400" y="150">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            cit_vp_say
-        </infoportion_complete>
-        <infoportion_fail>
-            cit_victor_die
-        </infoportion_fail>
-    </objective>
-    <objective key="1">
-        <text>
-            cit_search_vp_1
-        </text>
-        <icon height="50" width="50" x="350" y="150">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            cit_vp_info
-        </infoportion_complete>
-    </objective>
-    <objective key="2">
-        <text>
-            cit_search_vp_2
-        </text>
-        <icon height="50" width="50" x="350" y="50">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            cit_vp_find
-        </infoportion_complete>
-    </objective>
-    <objective key="3">
-        <text>
-            cit_search_vp_3
-        </text>
-        <icon height="50" width="50" x="400" y="150">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type hint="esc_vp_finder_hint">
-            green_location
-        </map_location_type>
-        <object_story_id>
-            esc_vp_finder
-        </object_story_id>
-        <infoportion_complete>
-            cit_vp_say
-        </infoportion_complete>
-    </objective>
-</game_task>
 <game_task id="cit_doctor_task">
     <title>
         cit_doctor_task
