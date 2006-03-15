@@ -2,14 +2,26 @@
 #include "UIListBoxItem.h"
 #include "UIScrollView.h"
 
+u32 CUIListBoxItem::uid_counter = 0;
+
 CUIListBoxItem::CUIListBoxItem(){
 	txt_color = 0xffffffff;
 	txt_color_s = 0xffffffff;
+	uid = uid_counter++;
+	m_bTextureAvailable = false;
 }
 
-void CUIListBoxItem::Update(){
-	CUILabel::Update();
+void CUIListBoxItem::SetID(u32 id){
+	uid = id;
+}
+
+u32 CUIListBoxItem::GetID(){
+	return uid;
+}
+
+void CUIListBoxItem::Draw(){
 	m_bTextureAvailable = m_bSelected;
+	CUILabel::Draw();	
 }
 
 void CUIListBoxItem::InitDefault(){
@@ -17,8 +29,10 @@ void CUIListBoxItem::InitDefault(){
 }
 
 void CUIListBoxItem::OnMouseDown(bool left_button){
-	if (left_button)
+	if (left_button){
 		smart_cast<CUIScrollView*>(GetParent()->GetParent())->SetSelected(this);
+		GetMessageTarget()->SendMessage(this,LIST_ITEM_SELECT, &uid);
+	}
 }
 
 void CUIListBoxItem::SetSelected(bool b){

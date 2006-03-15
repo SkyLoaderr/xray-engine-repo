@@ -2,10 +2,14 @@
 
 <voting_category>
 
-	<category>
+	<category x="212" y="198" width="600" height="371">
 		<background x="0" y="0" width="600" height="371">
 			<texture>ui_hud_frame_voting</texture>
 		</background>
+		
+		<header x="50" y="45" width="500" height="33">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Category to Vote</text>
+		</header>
 		
 		<btn_ok x="257" y="328" width="157" height="48">
 			<text font="normal" align="c">mm_ok</text>
@@ -93,16 +97,26 @@
 		</txt_7>
 	</category>
 	
-	<kick_ban>
+	<kick_ban x="212" y="198" width="600" height="371">
 		<background x="0" y="0" width="600" height="371">
 			<texture>ui_hud_frame_voting</texture>
 		</background>
+		
+		<header_kick x="50" y="45" width="500" height="33">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Player to Vote for Kick</text>
+		</header_kick>
+		
+		<header_ban x="50" y="45" width="500" height="33">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Player to Vote for Ban</text>
+		</header_ban>
 		
 		<list_back x="36" y="100" width="501" height="217">
 			<texture>ui_cb_listbox</texture>
 		</list_back>
 		
-		<list x="36" y="100" width="520" height="217">			
+		<list x="36" y="100" width="520" height="217" can_select="1">			
+			<font_s r="218" g="217" b="213"/>
+			<font r="131" g="131" b="131" font="letterica16"/>
 		</list>
 		
 		<btn_ok x="257" y="328" width="157" height="48">

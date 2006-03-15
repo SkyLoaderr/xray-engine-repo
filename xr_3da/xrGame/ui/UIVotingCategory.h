@@ -15,7 +15,7 @@ public:
 	~CUIVotingCategory();
 
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	virtual void SendMessage(CUIWindow* pWnd, s16 msg, int pData = 0);
+	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
 	void OnBtn(int i);
 	void OnBtnCancel();
@@ -23,6 +23,7 @@ public:
 protected:
 	void Init();
 
+	CUIStatic*		header;
 	CUI3tButton*	btn[7];
 	CUIStatic*		txt[7];
 	CUIStatic*		bkgrnd;

@@ -90,7 +90,7 @@ _keybind  keybind[]		= {
 	{ "ext_13",			kEXT_13			},
 	{ "ext_14",			kEXT_14			},
 	{ "ext_15",			kEXT_15			},
-
+	{ "vote_begin",		kVOTE_BEGIN		},
 	{ "vote_yes",		kVOTEYES		},
 	{ "vote_no",		kVOTENO			},
 

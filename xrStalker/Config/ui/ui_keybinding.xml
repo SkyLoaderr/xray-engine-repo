@@ -35,9 +35,7 @@
 		<command id="kb_reload"						exe="wpn_reload"/>
 		<command id="kb_func"						exe="wpn_func"/>
 		<command id="kb_firemode_next"				exe="wpn_firemode_next"/>
-		<command id="kb_firemode_prev"				exe="wpn_firemode_prev"/>
-		
-		
+		<command id="kb_firemode_prev"				exe="wpn_firemode_prev"/>		
 	</group>
 	<group name="kb_grp_inventory">
 		<command id="kb_inventory"					exe="inventory"/>
@@ -67,6 +65,7 @@
 		<command id="kb_buy_menu"					exe="buy_menu"/>
 		<command id="kb_skin_menu"					exe="skin_menu"/>
 		<command id="kb_team_menu"					exe="team_menu"/>
+		<command id="Vote Begin"					exe="vote_begin"/>
 		<command id="kb_vote_yes"					exe="vote_yes"/>
 		<command id="kb_vote_no"					exe="vote_no"/>
 		<command id="speech_menu_group"				exe="speech_menu_0"/>

@@ -18,16 +18,23 @@ public:
 			void InitBan(CUIXml& xml_doc);
 
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	virtual void SendMessage(CUIWindow* pWnd, s16 msg, int pData = 0);
+	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 	virtual void Update();
 
 	void OnBtnOk();
 	void OnBtnCancel();
 
 protected:
+	typedef enum{
+		MODE_KICK,
+		MODE_BAN
+	} E_MODE;
+
+	E_MODE			mode;
 	void Init(CUIXml& xml_doc);
 
 	CUIStatic*		bkgrnd;
+	CUIStatic*		header;
 	CUIFrameWindow* lst_back;
 	CUIListBox*		lst;
 
@@ -38,4 +45,5 @@ protected:
 
 	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
 	ItemVec			items;
+	u32				selected_item;
 };

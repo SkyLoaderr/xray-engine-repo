@@ -8,18 +8,21 @@ class CUIListBox :
 public:
 	CUIListBox();
 	void DeselectAll();
-	void AddItem(LPCSTR text);
+	CUIListBoxItem* AddItem(LPCSTR text);
+	CUIListBoxItem* GetItemByID(u32 uid);
 
-    LPCSTR	GetFirstText();
-	LPCSTR	GetNextText();
-	LPCSTR	GetSelectedText();
-	LPCSTR	GetNextSelectedText();
-	void	MoveSelectedUp();
-	void	MoveSelectedDown();
+    LPCSTR			GetFirstText();
+	LPCSTR			GetNextText();
+	LPCSTR			GetSelectedText();
+	LPCSTR			GetNextSelectedText();
+	void			MoveSelectedUp();
+	void			MoveSelectedDown();
 
-virtual	void	SetSelected(CUIWindow*);
+virtual	void		SetSelected(CUIWindow*);
+		void		SetSelected(u32 uid);
 
 virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
+virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
 	// IUIFontControl
 	virtual void			SetTextColor(u32 color);

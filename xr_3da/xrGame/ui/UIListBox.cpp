@@ -39,14 +39,23 @@ void CUIListBox::DeselectAll(){
 	}
 }
 
-void CUIListBox::AddItem(LPCSTR text){
+CUIListBoxItem* CUIListBox::AddItem(LPCSTR text){
 	CUIListBoxItem* pItem = xr_new<CUIListBoxItem>();
 	pItem->Init(0,0,this->GetDesiredChildWidth(), m_def_item_height);
 	pItem->InitDefault();
 	pItem->SetSelected(false);
 	pItem->SetText(text);
 	pItem->SetTextColor(m_text_color, m_text_color_s);
+	pItem->SetMessageTarget(this);
 	AddWindow(pItem, true);
+	return pItem;
+}
+
+void CUIListBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
+	if (LIST_ITEM_SELECT == msg)
+		GetMessageTarget()->SendMessage(this, LIST_ITEM_SELECT, pData);
+
+	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
 LPCSTR CUIListBox::GetSelectedText(){
@@ -119,6 +128,8 @@ void CUIListBox::MoveSelectedDown(){
 #include "../../xr_input.h"
 
 void CUIListBox::SetSelected(CUIWindow* pWnd){
+	if (NULL == pWnd)
+		return;
 	if(!m_flags.test(eItemsSelectabe)) return;
 
 	bool shift = !!pInput->iGetAsyncKeyState(DIK_LSHIFT);
@@ -192,6 +203,24 @@ void CUIListBox::SetSelected(CUIWindow* pWnd){
 	CUIScrollView::SetSelected(pWnd);
 	GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED);
 	m_last_wnd = GetSelected();
+}
+
+void CUIListBox::SetSelected(u32 uid){
+	SetSelected(GetItemByID(uid));
+}
+
+CUIListBoxItem* CUIListBox::GetItemByID(u32 uid){
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		CUIListBoxItem* item = smart_cast<CUIListBoxItem*>(*it);
+		if (item)
+		{
+			if (item->GetID() == uid)
+				return item;
+		}
+		
+	}
+	return NULL;
 }
 
 LPCSTR CUIListBox::GetNextText(){

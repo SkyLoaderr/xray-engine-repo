@@ -20,6 +20,7 @@
 #include "game_base_menu_events.h"
 #include "UIGameDM.h"
 #include "ui/UITextureMaster.h"
+#include "ui/UIVotingCategory.h"
 
 
 #include <boost/function.hpp>
@@ -39,6 +40,7 @@
 game_cl_mp::game_cl_mp()
 {
 	m_bVotingActive = false;
+	m_pVoting = NULL;
 	
 	m_pSndMessages.clear();
 	LoadSndMessages();
@@ -206,6 +208,11 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 				}
 				return false;
 			}break;
+		case kVOTE_BEGIN:
+			{
+				if (IsVotingEnabled())
+					VotingBegin();
+			}break;
 		case kVOTEYES:
 			{
 				if (IsVotingEnabled() && IsVotingActive())
@@ -240,6 +247,13 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 	}
 
 	return inherited::OnKeyboardPress(key);
+}
+
+void	game_cl_mp::VotingBegin(){
+	if (!m_pVoting)
+		m_pVoting = xr_new<CUIVotingCategory>();
+
+	StartStopMenu(m_pVoting, true);
 }
 
 bool	game_cl_mp::OnKeyboardRelease		(int key)

@@ -9,9 +9,14 @@
 CUIVotingCategory::CUIVotingCategory(){
 	xml_doc = NULL;
 	kick = NULL;
+
 	bkgrnd = xr_new<CUIStatic>(); 
 	bkgrnd->SetAutoDelete(true);
 	AttachChild(bkgrnd);
+
+	header = xr_new<CUIStatic>();
+	header->SetAutoDelete(true);
+	AttachChild(header);
 
 	btn_cancel = xr_new<CUI3tButton>();
 	btn_cancel->SetAutoDelete(true);
@@ -42,6 +47,9 @@ void CUIVotingCategory::Init(){
 
 	xml_doc->Init(CONFIG_PATH, UI_PATH, "voting_category.xml");
 
+	CUIXmlInit::InitWindow(*xml_doc, "category", 0, this);
+
+	CUIXmlInit::InitStatic(*xml_doc, "category:header", 0, header);
 	CUIXmlInit::InitStatic(*xml_doc, "category:background", 0, bkgrnd);
 
 	string256 _path;
@@ -55,7 +63,7 @@ void CUIVotingCategory::Init(){
 	CUIXmlInit::Init3tButton(*xml_doc, "category:btn_cancel", 0, btn_cancel);
 }
 
-void CUIVotingCategory::SendMessage(CUIWindow* pWnd, s16 msg, int pData){
+void CUIVotingCategory::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	if (BUTTON_CLICKED == msg)
 	{
 		if (btn_cancel == pWnd)
@@ -73,6 +81,7 @@ void CUIVotingCategory::SendMessage(CUIWindow* pWnd, s16 msg, int pData){
 #include <dinput.h>
 
 bool CUIVotingCategory::OnKeyboard(int dik, EUIMessages keyboard_action){
+	CUIDialogWnd::OnKeyboard(dik, keyboard_action);
 	if (WINDOW_KEY_PRESSED == keyboard_action){
 		if (DIK_ESCAPE == dik){
 			OnBtnCancel();
@@ -99,16 +108,18 @@ void CUIVotingCategory::OnBtn(int i){
 			game->StartStopMenu(this, true);
 			break;
 		case 2:
+			game->StartStopMenu(this, true);
 			if (!kick)
 				kick = xr_new<CUIKickPlayer>();
 			kick->InitKick(*xml_doc);
-			game->StartStopMenu(kick, false);
+			game->StartStopMenu(kick, true);
 			break;
 		case 3:
+			game->StartStopMenu(this, true);
 			if (!kick)
 				kick = xr_new<CUIKickPlayer>();
 			kick->InitBan(*xml_doc);
-			game->StartStopMenu(kick, false);
+			game->StartStopMenu(kick, true);
 			break;
 		case 4:
 			break;

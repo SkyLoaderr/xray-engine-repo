@@ -119,6 +119,9 @@ struct Bonus_Struct
 
 	bool operator == (LPCSTR TypeName){return !xr_strcmp(BonusTypeName.c_str(), TypeName);}
 };
+
+class CUIVotingCategory;
+
 class game_cl_mp :public game_cl_GameState
 {
 	typedef game_cl_GameState	inherited;
@@ -136,6 +139,7 @@ protected:
 	BONUSES							m_pBonusList;
 
 ///	CUISpeechMenu*					m_pSpeechMenu;	
+	CUIVotingCategory*				m_pVoting;
 	BOOL							m_bSpectatorSelected;
 	int								m_iSpawn_Cost;
 
@@ -201,6 +205,7 @@ public:
 	virtual		void				SendStartVoteMessage	(LPCSTR args);
 	virtual		void				SendVoteYesMessage		();
 	virtual		void				SendVoteNoMessage		();
+				void				VotingBegin				();
 	virtual		void				OnVoteStart				(NET_Packet& P);
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);

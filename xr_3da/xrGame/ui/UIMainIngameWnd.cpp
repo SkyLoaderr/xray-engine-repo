@@ -1406,8 +1406,11 @@ CUIGameTutorial* g_tut = NULL;
 //CPostprocessAnimator* pp = NULL;
 //extern void create_force_progress();
 
+//#include "UIVotingCategory.h"
+
 #include "UIDragDropListEx.h"
 CTestDragDropWnd* w = NULL;
+//CUIVotingCategory* v = NULL;
 void test_key	(int dik)
 {
 
@@ -1420,6 +1423,15 @@ void test_key	(int dik)
 			xr_delete						(w);
 		}
 	}
+	/*if(dik==DIK_Z&&strstr(Core.Params,"satan")){
+		if(!v){
+			v = xr_new<CUIVotingCategory>	();
+			Game().StartStopMenu			(v,true);
+		}else{
+			Game().StartStopMenu			(v,true);
+			xr_delete						(v);
+		}
+	}*/
 
 
 
