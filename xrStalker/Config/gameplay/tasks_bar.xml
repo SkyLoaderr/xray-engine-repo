@@ -143,9 +143,8 @@
 		<title>bar_dolg_base_rules</title>
 		<objective>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>bar_dolg_base_rules_talk</infoportion_complete>			
 			<infoportion_fail>bar_dolg_territory_kill_notify</infoportion_fail>
-			<infoportion_set_complete>bar_dolg_base_rules_finish</infoportion_set_complete>			
+			<infoportion_complete>bar_dolg_base_rules_finish</infoportion_complete>			
 		</objective>
 		<objective>
 			<text>bar_dolg_base_rules_talk</text>
