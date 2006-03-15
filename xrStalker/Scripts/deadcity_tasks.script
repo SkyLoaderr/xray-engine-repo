@@ -60,3 +60,11 @@ end
 function has_decoder(task, objective)
 	return db.actor:object("decoder") ~= nil
 end
+
+function has_map(task, objective)
+	return db.actor:object("cit_deadcity_maps") ~= nil
+end
+
+function has_documents(task, objective)
+	return db.actor:object("cit_killers_documents") ~= nil
+end
