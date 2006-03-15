@@ -27,6 +27,10 @@ function give_vp_pda(actor, npc)
 	dialogs.relocate_money(npc, 1500, "in")
 end
 
+function have_docs_or_map(actor, npc)
+  	return actor:object("cit_killers_documents") ~= nil or actor:object("cit_deadcity_maps") ~= nil
+end
+
 -- Документы наемников.
 function have_killers_documents(actor, npc)
   	return actor:object("cit_killers_documents") ~= nil
