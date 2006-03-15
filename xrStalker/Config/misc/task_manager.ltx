@@ -12,6 +12,8 @@ tm_find_artefact_3
 tm_kill_stalker_1
 tm_kill_stalker_2
 tm_kill_stalker_3
+tm_kill_stalker_4
+tm_kill_stalker_5
 ;---------Find Item-----------
 tm_find_item_1
 tm_find_item_2
@@ -28,6 +30,8 @@ barmen_find_artefact_3
 barmen_kill_stalker_1
 barmen_kill_stalker_2
 barmen_kill_stalker_3
+barmen_kill_stalker_4
+barmen_kill_stalker_5
 ;---------Find Item-----------
 barmen_find_item_1
 barmen_find_item_2
@@ -49,6 +53,10 @@ ecolog_find_artefact_3
 ecolog_find_artefact_4
 ecolog_find_artefact_5
 ecolog_find_artefact_6
+;-------Kill Stalker-----
+ecolog_kill_stalker_1
+
+
 ;--------Dolg------------------------
 ;----------Eliminate Camp----
 dolg_eliminate_kamp_1
@@ -61,6 +69,8 @@ dolg_kill_stalker_1
 dolg_kill_stalker_2
 dolg_kill_stalker_3
 dolg_kill_stalker_4
+dolg_kill_stalker_5
+dolg_kill_stalker_6
 ;----------Find Item---------
 dolg_find_item_1
 dolg_find_item_2
@@ -79,6 +89,8 @@ freedom_kill_stalker_2
 freedom_kill_stalker_3
 freedom_kill_stalker_4
 freedom_kill_stalker_5
+freedom_kill_stalker_6
+freedom_kill_stalker_7
 ;----------Find Item---------
 freedom_find_item_1
 freedom_find_item_2
@@ -246,6 +258,28 @@ reward_money = 400
 reward_reputation = -10
 reward_rank = 2
 
+[tm_kill_stalker_4]
+type = kill_stalker
+community = actor
+text = tm_kill_stalker_4_text
+description = tm_kill_stalker_4_descr
+parent = trader
+target = sim_stalker_veteran_gusarov
+reward_money = 1100
+reward_reputation = -25
+reward_rank = 4
+
+[tm_kill_stalker_5]
+type = kill_stalker
+community = actor
+text = tm_kill_stalker_5_text
+description = tm_kill_stalker_5_descr
+parent = trader
+target = sim_stalker_master_diador
+reward_reputation = -60
+reward_rank = 7
+reward_item = af_fuzz kolobok
+
 [tm_find_item_1]
 type = find_item
 community = actor
@@ -377,6 +411,28 @@ target = sim_monolith_master
 reward_money = 4500
 reward_reputation = +80
 reward_rank = 8
+
+[barmen_kill_stalker_4]
+type = kill_stalker
+community = actor
+text = barmen_kill_stalker_4_text
+description = barmen_kill_stalker_4_descr
+parent = barman
+target = sim_stalker_general_upir
+reward_money = 1500
+reward_reputation = +5
+reward_rank = 4
+
+[barmen_kill_stalker_5]
+type = kill_stalker
+community = actor
+text = barmen_kill_stalker_5_text
+description = barmen_kill_stalker_5_descr
+parent = barman
+target = sim_stalker_veteran_vorobey
+reward_money = 3000
+reward_reputation = -20
+reward_rank = 5
 
 [barmen_find_item_1]
 type = find_item
@@ -570,6 +626,20 @@ reward_reputation = +45
 reward_rank = 10
 
 
+;-----Kill Stalker----
+[ecolog_kill_stalker_1]
+type = kill_stalker
+community = actor
+text = ecolog_kill_stalker_1_text
+description = ecolog_kill_stalker_1_descr
+parent = ecolog
+target = sim_ecolog_zob
+reward_money = 2000
+reward_reputation = -50
+reward_rank = 4
+
+
+
 
 
 [dolg_eliminate_kamp_1]
@@ -646,7 +716,7 @@ parent = dolg
 target = mil_Svoboda_blockpost_leader
 reward_money = 2500
 reward_reputation = -40
-reward_relation = dolg, 200
+reward_relation = dolg, 200, freedom, -250
 reward_rank = 7
 
 [dolg_kill_stalker_2]
@@ -658,7 +728,7 @@ parent = dolg
 target = mil_Svoboda_engineer
 reward_money = 2000
 reward_reputation = -10
-reward_relation = dolg, 150
+reward_relation = dolg, 150,freedom, -200
 reward_rank = 6
 
 [dolg_kill_stalker_3]
@@ -669,8 +739,8 @@ description = dolg_kill_stalker_3_descr
 parent = dolg
 target = mil_Svoboda_master_Max
 reward_money = 3000
-reward_reputation = -25
-reward_relation = dolg, 250
+reward_reputation = -60
+reward_relation = dolg, 250, freedom, -300
 reward_rank = 7
 
 [dolg_kill_stalker_4]
@@ -679,11 +749,35 @@ community = actor_dolg
 text = dolg_kill_stalker_4_text
 description = dolg_kill_stalker_4_descr
 parent = dolg
-target = mil_Svoboda_master_Max
+target = sim_monolith_master
 reward_money = 1500
 reward_reputation = +35
 reward_relation = dolg, 100
 reward_rank = 5
+
+[dolg_kill_stalker_5]
+type = kill_stalker
+community = actor_dolg
+text = dolg_kill_stalker_5_text
+description = dolg_kill_stalker_5_descr
+parent = dolg
+target = sim_Svoboda_specnaz_leshii
+reward_money = 1110
+reward_reputation = -3
+reward_relation = dolg, 50, freedom, -75
+reward_rank = 4
+
+[dolg_kill_stalker_6]
+type = kill_stalker
+community = actor_dolg
+text = dolg_kill_stalker_6_text
+description = dolg_kill_stalker_6_descr
+parent = dolg
+target = sim_bandit_master_kocherga
+reward_money = 2500
+reward_reputation = +120
+reward_relation = dolg, 125
+reward_rank = 7
 
 [dolg_find_item_1]
 type = find_item
@@ -855,6 +949,30 @@ reward_money = 4000
 reward_reputation = 0
 reward_relation = freedom, +150, dolg, -150
 reward_rank = 8
+
+[freedom_kill_stalker_6]
+type = kill_stalker
+community = actor_freedom
+text = freedom_kill_stalker_6_text
+description = freedom_kill_stalker_6_descr
+parent = freedom
+target = sim_stalker_master_chuchelo
+reward_money = 3500
+reward_reputation = +67
+reward_relation = freedom, +150
+reward_rank = 7
+
+[freedom_kill_stalker_7]
+type = kill_stalker
+community = actor_freedom
+text = freedom_kill_stalker_7_text
+description = freedom_kill_stalker_7_descr
+parent = freedom
+target = sim_dolg_veteran_barin
+reward_money = 2000
+reward_reputation = +50
+reward_relation = freedom, +110, dolg, -150
+reward_rank = 6
 
 [freedom_find_item_1]
 type = find_item

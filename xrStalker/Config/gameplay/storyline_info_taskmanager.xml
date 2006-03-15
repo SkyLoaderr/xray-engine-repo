@@ -112,6 +112,12 @@
 <article id="tm_kill_stalker_3_descr" name="kill_stalker" group="Diary">
         <text>tm_kill_stalker_3_descr</text>
 </article>
+<article id="tm_kill_stalker_4_descr" name="kill_stalker" group="Diary">
+        <text>tm_kill_stalker_4_descr</text>
+</article>
+<article id="tm_kill_stalker_5_descr" name="kill_stalker" group="Diary">
+        <text>tm_kill_stalker_5_descr</text>
+</article>
 ;------Barmen--------
 <article id="barmen_kill_stalker_1_descr" name="kill_stalker" group="Diary">
         <text>barmen_kill_stalker_1_descr</text>
@@ -121,6 +127,12 @@
 </article>
 <article id="barmen_kill_stalker_3_descr" name="kill_stalker" group="Diary">
         <text>barmen_kill_stalker_3_descr</text>
+</article>
+<article id="barmen_kill_stalker_4_descr" name="kill_stalker" group="Diary">
+        <text>barmen_kill_stalker_5_descr</text>
+</article>
+<article id="barmen_kill_stalker_5_descr" name="kill_stalker" group="Diary">
+        <text>barmen_kill_stalker_5_descr</text>
 </article>
 ;-----Dolg-----
 <article id="dolg_kill_stalker_1_descr" name="kill_stalker" group="Diary">
@@ -134,6 +146,12 @@
 </article>
 <article id="dolg_kill_stalker_4_descr" name="kill_stalker" group="Diary">
         <text>dolg_kill_stalker_4_descr</text>
+</article>
+<article id="dolg_kill_stalker_5_descr" name="kill_stalker" group="Diary">
+        <text>dolg_kill_stalker_5_descr</text>
+</article>
+<article id="dolg_kill_stalker_6_descr" name="kill_stalker" group="Diary">
+        <text>dolg_kill_stalker_6_descr</text>
 </article>
 ;------Freedom----------
 <article id="freedom_kill_stalker_1_descr" name="kill_stalker" group="Diary">
@@ -150,6 +168,16 @@
 </article>
 <article id="freedom_kill_stalker_5_descr" name="kill_stalker" group="Diary">
         <text>freedom_kill_stalker_5_descr</text>
+</article>
+<article id="freedom_kill_stalker_6_descr" name="kill_stalker" group="Diary">
+        <text>freedom_kill_stalker_6_descr</text>
+</article>
+<article id="freedom_kill_stalker_7_descr" name="kill_stalker" group="Diary">
+        <text>freedom_kill_stalker_7_descr</text>
+</article>
+;-----Ecolog------------
+<article id="ecolog_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+        <text>ecolog_kill_stalker_1_descr</text>
 </article>
 
 
