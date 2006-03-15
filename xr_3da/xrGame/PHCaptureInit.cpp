@@ -222,11 +222,7 @@ void CPHCapture::Init(CInifile* ini)
 	b_character_feedback=true;
 	(m_character->PhysicsRefObject())->XFORM().transform_tiny(capture_bone_position);
 
-	CActor* A=smart_cast<CActor*>(m_character->PhysicsRefObject());
-	if(A)
-	{
-		A->inventory().setSlotsBlocked(true);
-	}
+
 	m_taget_element->GetGlobalPositionDynamic(&dir);
 	dir.sub(capture_bone_position,dir);
 
@@ -256,7 +252,11 @@ void CPHCapture::Init(CInifile* ini)
 	//m_taget_element->PhysicsShell()->set_ObjectContactCallback(object_contactCallbackFun);
 	m_character->SetObjectContactCallback(object_contactCallbackFun);
 	m_island.Init();
-
+	CActor* A=smart_cast<CActor*>(m_character->PhysicsRefObject());
+	if(A)
+	{
+		A->inventory().setSlotsBlocked(true);
+	}
 }
 
 void CPHCapture::Release()
