@@ -9,9 +9,9 @@
         <infoportion_complete>
             cit_documents_give
         </infoportion_complete>
-        <infoportion_fail>
-            cit_leave_forever
-        </infoportion_fail>
+        <function_fail>
+            deadcity_tasks.documents_task_fail
+        </function_fail>
     </objective>
     <objective key="1">
         <text>
@@ -50,9 +50,9 @@
         <infoportion_complete>
             cit_map_give
         </infoportion_complete>
-        <infoportion_fail>
-            cit_leave_forever
-        </infoportion_fail>
+        <function_fail>
+            deadcity_tasks.map_task_fail
+        </function_fail>
     </objective>
     <objective key="1">
         <text>

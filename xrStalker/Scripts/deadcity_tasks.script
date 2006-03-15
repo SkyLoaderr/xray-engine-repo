@@ -60,3 +60,11 @@ end
 function has_decoder(task, objective)
 	return db.actor:object("decoder") ~= nil
 end
+
+function documents_task_fail(task, objective)
+	return db.actor:has_info("cit_leave_forever") and db.actor:object("cit_killers_documents") == nil
+end
+
+function map_task_fail(task, objective)
+	return db.actor:has_info("cit_leave_forever") and db.actor:object("cit_deadcity_maps") == nil
+end
