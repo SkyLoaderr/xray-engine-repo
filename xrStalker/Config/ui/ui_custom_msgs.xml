@@ -25,6 +25,11 @@
 		<texture>ui_hud_frame_clock</texture>
 	</hud_timer>
 
+	<hud_timer_text x="852" y="80" width="157" height="67" light_anim="ui_slow_blinking_alpha" la_cyclic="1" la_texture="0" la_text="1" la_alpha="1">
+		<text x="0" y="0" font="graffiti22" r="240" g="217" b="182" a="255" align="c"/>
+	</hud_timer_text>
+
+
 	<sleep_001  x="20" y="20" width="984" height="728">
 		<texture x="0" y="0" width="984" height="728">car\trabantnoise</texture>
 	</sleep_001>
@@ -59,7 +64,7 @@
 
 	<game_over  x="350" y="360" width="300" height="60">
 		<texture>controller\controller_blood_01</texture>
-		<text font="graffiti50"  r="255" g="0" b="0" a="255" align="c">Game Over :(</text>
+		<text font="graffiti50"  r="255" g="0" b="0" a="255" align="c">st_game_over</text>
 	</game_over>
 
 	<not_enough_money  x="100" y="660" width="800" height="60">

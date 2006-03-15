@@ -47,6 +47,9 @@ function action_timer:update(delta)
 end
 function action_timer:deactivate(delta)
 	self.st.ui:RemoveCustomStatic(self.st.timer_id)
+	if self.st.string ~= nil then
+		self.st.ui:RemoveCustomStatic("hud_timer_text")
+	end
 end
 --function action_timer:save()
 --	xr_logic.pstor_store( self.object, "timer_value", self.state )	
@@ -80,10 +83,17 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	-- Вычитываем значения перехода.
 	st.on_value = parse_data(obj, utils.cfg_get_string(ini, section, "on_value", obj, false, ""))
 	st.timer_id = utils.cfg_get_string( ini, section, "timer_id", obj, false, "", "hud_timer")
+	st.string	= utils.cfg_get_string( ini, section, "string", obj, false, "")
 		
 	st.ui = get_hud()
 	st.ui:AddCustomStatic(st.timer_id, true)
 	st.timer = st.ui:GetCustomStatic(st.timer_id):wnd()
+	
+	if st.string ~= nil then
+		st.ui:AddCustomStatic("hud_timer_text", true)
+		local timer_text = st.ui:GetCustomStatic("hud_timer_text"):wnd()
+		timer_text:SetTextST(st.string)
+	end
 end
 
 function parse_data(npc,s)
