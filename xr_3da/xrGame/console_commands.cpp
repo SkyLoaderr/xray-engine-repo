@@ -1974,6 +1974,7 @@ struct CCC_StartTimeEnvironment: public IConsole_Command {
 			return;
 
 		Level().Server->game->SetEnvironmentGameTimeFactor(g_qwEStartGameTime,g_fTimeFactor);
+		Level().Server->game->SetGameTimeFactor(g_qwEStartGameTime,g_fTimeFactor);
 	}
 };
 #ifdef DEBUG

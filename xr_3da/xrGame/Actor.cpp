@@ -754,9 +754,7 @@ void CActor::Die	(CObject* who)
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
-{
-
-	
+{	
 	// Correct accel
 	Fvector		accel;
 	accel.set					(_accel);
@@ -773,27 +771,29 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	m_PhysicMovementControl->bSleep				=false;
 	}
 
-	
-
-	{
-
-
-		if (Local() && g_Alive()) {
-			if (m_PhysicMovementControl->gcontact_Was) 
-				
-				Cameras().AddCamEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
-			if (!fis_zero(m_PhysicMovementControl->gcontact_HealthLost))	{
-				const ICollisionDamageInfo* di=m_PhysicMovementControl->CollisionDamageInfo();
-				Fvector hdir;di->HitDir(hdir);
-				SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
-//				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
+	if (Local() && g_Alive()) {
+		if (m_PhysicMovementControl->gcontact_Was)
+			Cameras().AddCamEffector		(xr_new<CEffectorFall> (m_PhysicMovementControl->gcontact_Power));
+		if (!fis_zero(m_PhysicMovementControl->gcontact_HealthLost))	{
+			const ICollisionDamageInfo* di=m_PhysicMovementControl->CollisionDamageInfo();
+			Fvector hdir;di->HitDir(hdir);
+			SetHitInfo(this, NULL, 0, Fvector().set(0, 0, 0), hdir);
+			//				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
+			if (Level().CurrentControlEntity() == this)
+			{
 				SHit HDS = SHit(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,di->HitType());
-				Hit(&HDS);
-				if(!g_Alive())
-					m_PhysicMovementControl->GetDeathPosition(Position());
+//				Hit(&HDS);
+
+				NET_Packet	l_P;
+				HDS.GenHeader(GE_HIT, ID());
+				HDS.whoID = di->DamageInitiator()->ID();
+				HDS.weaponID = di->DamageInitiator()->ID();
+				HDS.Write_Packet(l_P);
+
+				u_EventSend	(l_P);
 			}
 		}
-	}	
+	}
 }
 
 float CActor::currentFOV()
