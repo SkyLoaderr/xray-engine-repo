@@ -70,5 +70,13 @@
 	<string id="st_not_enough_money">
 		<text>Недостаточно денег</text>
 	</string>
-</string_table>
+	
+	<string id="st_time_till_surge">
+		<text>Время до выброса</text>
+	</string>
 
+	<string id="st_game_over">
+		<text>В Ы   П Р О И Г Р А Л И ! ! !</text>
+	</string>
+	
+</string_table>
