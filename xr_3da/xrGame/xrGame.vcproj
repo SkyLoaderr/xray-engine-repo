@@ -6959,19 +6959,6 @@
 								RelativePath=".\physic_item_inline.h">
 							</File>
 						</Filter>
-						<Filter
-							Name="Trade"
-							Filter="">
-							<File
-								RelativePath="trade.cpp">
-							</File>
-							<File
-								RelativePath="trade.h">
-							</File>
-							<File
-								RelativePath=".\trade2.cpp">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="items &amp; weapons"
@@ -7767,6 +7754,19 @@
 						<File
 							RelativePath=".\searchlight.h">
 						</File>
+						<Filter
+							Name="Trade"
+							Filter="">
+							<File
+								RelativePath="trade.cpp">
+							</File>
+							<File
+								RelativePath="trade.h">
+							</File>
+							<File
+								RelativePath=".\trade2.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="zones"
@@ -10696,6 +10696,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UICellItem.h">
+					</File>
+					<File
+						RelativePath=".\ui\UICellItemFactory.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICellItemFactory.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIDragDropListEx.cpp">

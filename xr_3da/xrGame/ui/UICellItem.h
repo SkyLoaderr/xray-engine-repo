@@ -3,47 +3,59 @@
 #include "UIStatic.h"
 #include "UIDialogWnd.h"
 
-class CUIFlyingItem;
+class CUIDragItem;
+class CUIDragDropListEx;
+
 class CUICellItem :public CUIStatic
 {
 private:
 	typedef		CUIStatic	inherited;
 protected:
-	enum{
-		flMultipleStorage	= (1<<0),
-		flFlying			= (1<<1),
-	};
-	DEFINE_VECTOR(void*,DATA_VEC, DATA_VEC_IT);
-	DATA_VEC				m_pData;
+	xr_vector<CUICellItem*> m_childs;
+
+	CUIDragDropListEx*		m_pParentList;
+	Ivector2				m_grid_size;
+	void					UpdateItemText			();
 public:
-							CUICellItem				(void* pData);
+							CUICellItem				();
 	virtual					~CUICellItem			();
 
-//	virtual		void*		GetData					()											{return m_pData;}
-//	virtual		void		SetData					(void* pData)								{m_pData = pData;}
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	virtual		void		Update					()						{inherited::Update();};
 
-	virtual		bool		EqualTo					(CUICellItem*)			{return false;};
-	virtual		Ivector2	GetCellsSize			()						{return Ivector2().set(1,1);}; //size in grid
+				u32			ChildsCount				();
+				void		 PushChild				(CUICellItem*);
+				CUICellItem* PopChild				();
+	virtual		bool		EqualTo					(CUICellItem* itm);
+	IC const	Ivector2&	GetGridSize				()						{return m_grid_size;}; //size in grid
 
-	virtual  CUIFlyingItem*	CreateFlyingItem		();
+	virtual		CUIDragItem* CreateDragItem			();
 
 	virtual		void		InitInternals			(); //tmp
+	CUIDragDropListEx*		OwnerList				()						{return m_pParentList;}
+				void		SetOwnerList			(CUIDragDropListEx* p);
 
 };
 
-class CUIFlyingItem: public CUIWindow
+class CUIDragItem: public CUIWindow, public pureRender, public pureFrame
 {
 private:
 	typedef		CUIWindow	inherited;
 	CUIStatic				m_static;
 	CUICellItem*			m_pParent;
+	Fvector2				m_pos_offset;
+	CUIDragDropListEx*		m_back_list;
 public:
-							CUIFlyingItem(CUICellItem* parent);
+							CUIDragItem(CUICellItem* parent);
 	virtual		void		Init(const ref_shader& sh, const Frect& rect, const Frect& text_rect);
-	virtual					~CUIFlyingItem();
+	virtual					~CUIDragItem();
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
+	virtual		void		OnRender				();
+	virtual		void		OnFrame					();
+		CUICellItem*		ParentItem				()							{return m_pParent;}
+				void		SetBackList				(CUIDragDropListEx*l);
+	CUIDragDropListEx*		BackList				()							{return m_back_list;}
+				Fvector2	GetPosition				();
 };
