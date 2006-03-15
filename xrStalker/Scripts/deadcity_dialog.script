@@ -42,6 +42,10 @@ function give_killer_doc(actor, npc)
 	dialogs.relocate_money(npc, 2000, "in")
 end
 
+function give_killer_doc_reward(npc, actor)
+	dialogs.relocate_money(npc, 2000, "in")
+end
+
 -- Карта Deadcity
 function have_deadcity_map(actor, npc)
   	return actor:object("cit_deadcity_maps") ~= nil
