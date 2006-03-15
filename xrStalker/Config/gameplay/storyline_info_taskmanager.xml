@@ -2,57 +2,57 @@
 ;--------Eliminate Lager------------
 ;---------trader--------------
 
-<article id="tm_eliminate_camp_1_descr" name="eliminate_lager" group="Diary">
+<article id="tm_eliminate_camp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>tm_eliminate_camp_1_descr</text>
 </article>
 
-<article id="tm_eliminate_camp_2_descr" name="eliminate_lager" group="Diary">
+<article id="tm_eliminate_camp_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>tm_eliminate_camp_2_descr</text>
 </article>
 
-<article id="tm_eliminate_camp_3_descr" name="eliminate_lager" group="Diary">
+<article id="tm_eliminate_camp_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>tm_eliminate_camp_3_descr</text>
 </article>
 ;----------Barmen-----------
-<article id="barmen_eliminate_camp_1_descr" name="eliminate_lager" group="Diary">
+<article id="barmen_eliminate_camp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>barmen_eliminate_camp_1_descr</text>
 </article>
-<article id="barmen_eliminate_camp_2_descr" name="eliminate_lager" group="Diary">
+<article id="barmen_eliminate_camp_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>barmen_eliminate_camp_2_descr</text>
 </article>
-<article id="barmen_eliminate_camp_3_descr" name="eliminate_lager" group="Diary">
+<article id="barmen_eliminate_camp_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>barmen_eliminate_camp_3_descr</text>
 </article>
 ;----------Dolg------------
-<article id="dolg_eliminate_kamp_1_descr" name="eliminate_lager" group="Diary">
+<article id="dolg_eliminate_kamp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>dolg_eliminate_kamp_1_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_2_descr" name="eliminate_lager" group="Diary">
+<article id="dolg_eliminate_kamp_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>dolg_eliminate_kamp_2_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_3_descr" name="eliminate_lager" group="Diary">
+<article id="dolg_eliminate_kamp_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>dolg_eliminate_kamp_3_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_4_descr" name="eliminate_lager" group="Diary">
+<article id="dolg_eliminate_kamp_4_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>dolg_eliminate_kamp_4_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_5_descr" name="eliminate_lager" group="Diary">
+<article id="dolg_eliminate_kamp_5_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>dolg_eliminate_kamp_5_descr</text>
 </article>
 ;--------Freedom---------
-<article id="freedom_eliminate_camp_1_descr" name="eliminate_lager" group="Diary">
+<article id="freedom_eliminate_camp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>freedom_eliminate_camp_1_descr</text>
 </article>
-<article id="freedom_eliminate_camp_2_descr" name="eliminate_lager" group="Diary">
+<article id="freedom_eliminate_camp_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>freedom_eliminate_camp_2_descr</text>
 </article>
-<article id="freedom_eliminate_camp_3_descr" name="eliminate_lager" group="Diary">
+<article id="freedom_eliminate_camp_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>freedom_eliminate_camp_3_descr</text>
 </article>
-<article id="freedom_eliminate_camp_4_descr" name="eliminate_lager" group="Diary">
+<article id="freedom_eliminate_camp_4_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>freedom_eliminate_camp_4_descr</text>
 </article>
-<article id="freedom_eliminate_camp_5_descr" name="eliminate_lager" group="Diary">
+<article id="freedom_eliminate_camp_5_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>freedom_eliminate_camp_5_descr</text>
 </article>
 
@@ -60,123 +60,123 @@
 ;--------Artefact------------------
 ;---------Trader----------
 
-<article id="tm_find_artefact_1_descr" name="artefact" group="Diary">
+<article id="tm_find_artefact_1_descr" name="artefact" group="artefact/1" article_type="task">
         <text>tm_find_artefact_1_descr</text>
 </article>
 
-<article id="tm_find_artefact_2_descr" name="artefact" group="Diary">
+<article id="tm_find_artefact_2_descr" name="artefact" group="artefact/1" article_type="task">
         <text>tm_find_artefact_2_descr</text>
 </article>
 
-<article id="tm_find_artefact_3_descr" name="artefact" group="Diary">
+<article id="tm_find_artefact_3_descr" name="artefact" group="artefact/1" article_type="task">
         <text>tm_find_artefact_3_descr</text>
 </article>
 ;---------Barmen-----------
-<article id="barmen_find_artefact_1_descr" name="artefact" group="Diary">
+<article id="barmen_find_artefact_1_descr" name="artefact" group="artefact/1" article_type="task">
         <text>barmen_find_artefact_1_descr</text>
 </article>
-<article id="barmen_find_artefact_2_descr" name="artefact" group="Diary">
+<article id="barmen_find_artefact_2_descr" name="artefact" group="artefact/1" article_type="task">
         <text>barmen_find_artefact_2_descr</text>
 </article>
-<article id="barmen_find_artefact_3_descr" name="artefact" group="Diary">
+<article id="barmen_find_artefact_3_descr" name="artefact" group="artefact/1" article_type="task">
         <text>barmen_find_artefact_3_descr</text>
 </article>
 ;---------ecolog--------
-<article id="ecolog_find_artefact_1_descr" name="artefact" group="Diary">
+<article id="ecolog_find_artefact_1_descr" name="artefact" group="artefact/1" article_type="task">
         <text>ecolog_find_artefact_1_descr</text>
 </article>
-<article id="ecolog_find_artefact_2_descr" name="artefact" group="Diary">
+<article id="ecolog_find_artefact_2_descr" name="artefact" group="artefact/1" article_type="task">
         <text>ecolog_find_artefact_2_descr</text>
 </article>
-<article id="ecolog_find_artefact_3_descr" name="artefact" group="Diary">
+<article id="ecolog_find_artefact_3_descr" name="artefact" group="artefact/1" article_type="task">
         <text>ecolog_find_artefact_3_descr</text>
 </article>
-<article id="ecolog_find_artefact_4_descr" name="artefact" group="Diary">
+<article id="ecolog_find_artefact_4_descr" name="artefact" group="artefact/1" article_type="task">
         <text>ecolog_find_artefact_4_descr</text>
 </article>
-<article id="ecolog_find_artefact_5_descr" name="artefact" group="Diary">
+<article id="ecolog_find_artefact_5_descr" name="artefact" group="artefact/1" article_type="task">
         <text>ecolog_find_artefact_5_descr</text>
 </article>
-<article id="ecolog_find_artefact_6_descr" name="artefact" group="Diary">
+<article id="ecolog_find_artefact_6_descr" name="artefact" group="artefact/1" article_type="task">
         <text>ecolog_find_artefact_6_descr</text>
 </article>
 
 ;------------Kill Stalker---------
 ;-------Trader--------
-<article id=">tm_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+<article id=">tm_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>tm_kill_stalker_1_descr</text>
 </article>
-<article id="tm_kill_stalker_2_descr" name="kill_stalker" group="Diary">
+<article id="tm_kill_stalker_2_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>tm_kill_stalker_2_descr</text>
 </article>
-<article id="tm_kill_stalker_3_descr" name="kill_stalker" group="Diary">
+<article id="tm_kill_stalker_3_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>tm_kill_stalker_3_descr</text>
 </article>
-<article id="tm_kill_stalker_4_descr" name="kill_stalker" group="Diary">
+<article id="tm_kill_stalker_4_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>tm_kill_stalker_4_descr</text>
 </article>
-<article id="tm_kill_stalker_5_descr" name="kill_stalker" group="Diary">
+<article id="tm_kill_stalker_5_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>tm_kill_stalker_5_descr</text>
 </article>
 ;------Barmen--------
-<article id="barmen_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+<article id="barmen_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>barmen_kill_stalker_1_descr</text>
 </article>
-<article id="barmen_kill_stalker_2_descr" name="kill_stalker" group="Diary">
+<article id="barmen_kill_stalker_2_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>barmen_kill_stalker_2_descr</text>
 </article>
-<article id="barmen_kill_stalker_3_descr" name="kill_stalker" group="Diary">
+<article id="barmen_kill_stalker_3_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>barmen_kill_stalker_3_descr</text>
 </article>
-<article id="barmen_kill_stalker_4_descr" name="kill_stalker" group="Diary">
+<article id="barmen_kill_stalker_4_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>barmen_kill_stalker_5_descr</text>
 </article>
-<article id="barmen_kill_stalker_5_descr" name="kill_stalker" group="Diary">
+<article id="barmen_kill_stalker_5_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>barmen_kill_stalker_5_descr</text>
 </article>
 ;-----Dolg-----
-<article id="dolg_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+<article id="dolg_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>dolg_kill_stalker_1_descr</text>
 </article>
-<article id="dolg_kill_stalker_2_descr" name="kill_stalker" group="Diary">
+<article id="dolg_kill_stalker_2_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>dolg_kill_stalker_2_descr</text>
 </article>
-<article id="dolg_kill_stalker_3_descr" name="kill_stalker" group="Diary">
+<article id="dolg_kill_stalker_3_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>dolg_kill_stalker_3_descr</text>
 </article>
-<article id="dolg_kill_stalker_4_descr" name="kill_stalker" group="Diary">
+<article id="dolg_kill_stalker_4_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>dolg_kill_stalker_4_descr</text>
 </article>
-<article id="dolg_kill_stalker_5_descr" name="kill_stalker" group="Diary">
+<article id="dolg_kill_stalker_5_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>dolg_kill_stalker_5_descr</text>
 </article>
-<article id="dolg_kill_stalker_6_descr" name="kill_stalker" group="Diary">
+<article id="dolg_kill_stalker_6_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>dolg_kill_stalker_6_descr</text>
 </article>
 ;------Freedom----------
-<article id="freedom_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+<article id="freedom_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_1_descr</text>
 </article>
-<article id="freedom_kill_stalker_2_descr" name="kill_stalker" group="Diary">
+<article id="freedom_kill_stalker_2_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_2_descr</text>
 </article>
-<article id="freedom_kill_stalker_3_descr" name="kill_stalker" group="Diary">
+<article id="freedom_kill_stalker_3_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_3_descr</text>
 </article>
-<article id="freedom_kill_stalker_4_descr" name="kill_stalker" group="Diary">
+<article id="freedom_kill_stalker_4_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_4_descr</text>
 </article>
-<article id="freedom_kill_stalker_5_descr" name="kill_stalker" group="Diary">
+<article id="freedom_kill_stalker_5_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_5_descr</text>
 </article>
-<article id="freedom_kill_stalker_6_descr" name="kill_stalker" group="Diary">
+<article id="freedom_kill_stalker_6_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_6_descr</text>
 </article>
-<article id="freedom_kill_stalker_7_descr" name="kill_stalker" group="Diary">
+<article id="freedom_kill_stalker_7_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_7_descr</text>
 </article>
 ;-----Ecolog------------
-<article id="ecolog_kill_stalker_1_descr" name="kill_stalker" group="Diary">
+<article id="ecolog_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>ecolog_kill_stalker_1_descr</text>
 </article>
 
@@ -184,44 +184,44 @@
 
 ;------------Find Item-----------------
 ;-------Trader-------
-<article id="tm_find_item_1_descr" name="find_item" group="Diary">
+<article id="tm_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>tm_find_item_1_descr</text>
 </article>
 
-<article id="tm_find_item_2_descr" name="find_item" group="Diary">
+<article id="tm_find_item_2_descr" name="find_item" group="find_item/1" article_type="task">
         <text>tm_find_item_2_descr</text>
 </article>
 ;--------Barmen-------
-<article id="barmen_find_item_1_descr" name="find_item" group="Diary">
+<article id="barmen_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>barmen_find_item_1_descr</text>
 </article>
-<article id="barmen_find_item_2_descr" name="find_item" group="Diary">
+<article id="barmen_find_item_2_descr" name="find_item" group="find_item/1" article_type="task">
         <text>barmen_find_item_2_descr</text>
 </article>
-<article id="barmen_find_item_3_descr" name="find_item" group="Diary">
+<article id="barmen_find_item_3_descr" name="find_item" group="find_item/1" article_type="task">
         <text>barmen_find_item_3_descr</text>
 </article>
 ;--------Dolg----------
-<article id="dolg_find_item_1_descr" name="find_item" group="Diary">
+<article id="dolg_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>dolg_find_item_1_descr</text>
 </article>
-<article id="dolg_find_item_2_descr" name="find_item" group="Diary">
+<article id="dolg_find_item_2_descr" name="find_item" group="find_item/1" article_type="task">
         <text>dolg_find_item_2_descr</text>
 </article>
-<article id="dolg_find_item_3_descr" name="find_item" group="Diary">
+<article id="dolg_find_item_3_descr" name="find_item" group="find_item/1" article_type="task">
         <text>dolg_find_item_3_descr</text>
 </article>
-<article id="dolg_find_item_4_descr" name="find_item" group="Diary">
+<article id="dolg_find_item_4_descr" name="find_item" group="find_item/1" article_type="task">
         <text>dolg_find_item_4_descr</text>
 </article>
 ;-------Freedom---------
-<article id="freedom_find_item_1_descr" name="find_item" group="Diary">
+<article id="freedom_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>freedom_find_item_1_descr</text>
 </article>
-<article id="freedom_find_item_2_descr" name="find_item" group="Diary">
+<article id="freedom_find_item_2_descr" name="find_item" group="find_item/1" article_type="task">
         <text>freedom_find_item_2_descr</text>
 </article>
-<article id="freedom_find_item_3_descr" name="find_item" group="Diary">
+<article id="freedom_find_item_3_descr" name="find_item" group="find_item/1" article_type="task">
         <text>freedom_find_item_3_descr</text>
 </article>
 
@@ -229,31 +229,31 @@
 
 ;---------Monster Part--------------
 ;--------Ecolog---------
-<article id="ecolog_monster_part_1_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_1_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_1_descr</text>
 </article>
-<article id="ecolog_monster_part_2_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_2_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_2_descr</text>
 </article>
-<article id="ecolog_monster_part_3_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_3_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_3_descr</text>
 </article>
-<article id="ecolog_monster_part_4_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_4_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_4_descr</text>
 </article>
-<article id="ecolog_monster_part_5_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_5_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_5_descr</text>
 </article>
-<article id="ecolog_monster_part_6_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_6_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_6_descr</text>
 </article>
-<article id="ecolog_monster_part_7_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_7_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_7_descr</text>
 </article>
-<article id="ecolog_monster_part_8_descr" name="monster_part" group="Diary">
+<article id="ecolog_monster_part_8_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_8_descr</text>
 </article>
 ;------Freedom---------
-<article id="freedom_monster_part_1_descr" name="monster_part" group="Diary">
+<article id="freedom_monster_part_1_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>freedom_monster_part_1_descr</text>
 </article>
