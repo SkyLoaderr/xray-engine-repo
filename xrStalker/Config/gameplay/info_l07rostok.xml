@@ -76,9 +76,7 @@
 	
 	<info_portion id="bar_dolg_bunker_pass"></info_portion>
 
-	<info_portion id="bar_dolg_community_start">
-		<task>bar_dolg_community_quest</task>	
-	</info_portion>
+	<info_portion id="bar_dolg_community_start"></info_portion>
 
 	<info_portion id="bar_dolg_veteran_start">
 		<task>bar_dolg_test_quest</task>
