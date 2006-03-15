@@ -92,8 +92,8 @@ void	CObjectList::SingleUpdate	(CObject* O)
 		O->IAmNotACrowAnyMore	()				;
 		O->UpdateCL				()				;
 		VERIFY3					(O->dbg_update_cl == Device.dwFrame, "Broken sequence of calls to 'UpdateCL'",*O->cName());
-		if (O->getDestroy() && !O->shedule.b_locked)	destroy_queue.push_back(O);
-		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) && !O->shedule.b_locked)	{
+		if (O->getDestroy())	destroy_queue.push_back(O);
+		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) )	{
 			// Push to destroy-queue if it isn't here already
 			Msg	("! ERROR: incorrect destroy sequence for object[%d:%s], section[%s]",O->ID(),*O->cName(),*O->cNameSect());
 			if (std::find(destroy_queue.begin(),destroy_queue.end(),O)==destroy_queue.end())
