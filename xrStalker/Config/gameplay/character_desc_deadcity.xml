@@ -21,7 +21,7 @@
             [spawn] \n
             cit_doctors_key \n
 #include "gameplay\character_food.xml"
-#include "gameplay\character_drugs.xml"
+<!-- #include "gameplay\character_drugs.xml" -->
         </supplies>
 
         <start_dialog>cit_doctor_hello_dialog</start_dialog>
@@ -279,6 +279,7 @@
 			outfit_killer_m2 \n
 			device_torch \n
 			cit_leader_killer_pda \n
+			cit_killers_documents \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
