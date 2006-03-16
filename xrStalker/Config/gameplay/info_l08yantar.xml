@@ -112,5 +112,6 @@
 	<info_portion id="yan_provodnik_spawn">
 		<task>yan_provodnik_task</task>
 	</info_portion>
+	<info_portion id="yan_has_ghost_pda"></info_portion>
     
 </game_information_portions>
