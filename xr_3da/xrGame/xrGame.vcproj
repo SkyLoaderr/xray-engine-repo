@@ -11136,6 +11136,12 @@
 						RelativePath=".\ui\UIChangeMap.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIChangeWeather.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIChangeWeather.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIKickPlayer.cpp">
 					</File>
 					<File

@@ -64,7 +64,7 @@
 		</btn_6>
 		
 		<btn_7 x="36" y="263" width="37" height="25">
-			<text font="normal" r="227" g="199" b="178">6</text>
+			<text font="normal" r="227" g="199" b="178">7</text>
 			<texture>ui_hud_button_voting_02</texture>
 		</btn_7>
 		
@@ -179,8 +179,63 @@
 				<d r="106" g="95" b="91"/>							
 				<h r="0" g="0" b="0"/>
 			</text_color>
-		</btn_cancel>
-				
+		</btn_cancel>				
 	</change_map>
+	<change_weather x="212" y="198" width="600" height="371">
+		<background x="0" y="0" width="600" height="371">
+			<texture>ui_hud_frame_voting</texture>
+		</background>
+		
+		<header x="50" y="45" width="500" height="33">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Change Weather</text>
+		</header>
+		
+		<btn_cancel x="414" y="328" width="157" height="48">
+			<text font="normal" align="c">mm_cancel</text>
+			<texture>ui_button_main03</texture>
+			<text_color>
+				<e r="227" g="199" b="178"/>				
+				<t r="180" g="153" b="155"/>				
+				<d r="106" g="95" b="91"/>							
+				<h r="0" g="0" b="0"/>
+			</text_color>
+		</btn_cancel>
+		
+		<btn_1 x="36" y="101" width="37" height="25">
+			<text font="normal" r="227" g="199" b="178">1</text>
+			<texture>ui_hud_button_voting_01</texture>
+		</btn_1>
+		
+		<btn_2 x="36" y="128" width="37" height="25">
+			<text font="normal" r="227" g="199" b="178">2</text>
+			<texture>ui_hud_button_voting_01</texture>
+		</btn_2>
+		
+		<btn_3 x="36" y="155" width="37" height="25">
+			<text font="normal" r="227" g="199" b="178">3</text>
+			<texture>ui_hud_button_voting_02</texture>
+		</btn_3>
+		
+		<btn_4 x="36" y="182" width="37" height="25">
+			<text font="normal" r="227" g="199" b="178">4</text>
+			<texture>ui_hud_button_voting_01</texture>
+		</btn_4>
+		
+		<txt_1 x="86" y="101" width="300" height="25">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Clear</text>
+		</txt_1>
+		
+		<txt_2 x="86" y="128" width="300" height="25">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Rain</text>
+		</txt_2>
+		
+		<txt_3 x="86" y="155" width="300" height="25">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Night</text>
+		</txt_3>
+		
+		<txt_4 x="86" y="182" width="300" height="25">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Cloudy</text>
+		</txt_4>
+	</change_weather>
 
 </voting_category>

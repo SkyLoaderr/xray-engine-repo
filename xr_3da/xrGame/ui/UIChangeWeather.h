@@ -6,15 +6,14 @@ class CUIStatic;
 class CUI3tButton;
 class CUIKickPlayer;
 class CUIChangeMap;
-class CUIChangeWeather;
 class CUIXml;
 
-class CUIVotingCategory : public CUIDialogWnd {
+class CUIChangeWeather : public CUIDialogWnd {
 public:
 	using CUIDialogWnd::Init;
 
-	CUIVotingCategory();
-	~CUIVotingCategory();
+	CUIChangeWeather();
+			void Init(CUIXml& xml_doc);
 
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
@@ -23,16 +22,11 @@ public:
 	void OnBtnCancel();
 
 protected:
-	void Init();
+	
 
 	CUIStatic*		header;
-	CUI3tButton*	btn[7];
-	CUIStatic*		txt[7];
+	CUI3tButton*	btn[4];
+	CUIStatic*		txt[4];
 	CUIStatic*		bkgrnd;
 	CUI3tButton*	btn_cancel;
-
-	CUIKickPlayer*		kick;
-	CUIChangeMap*		change_map;
-	CUIChangeWeather*	change_weather;
-	CUIXml*				xml_doc;
 };

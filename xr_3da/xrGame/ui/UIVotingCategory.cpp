@@ -6,10 +6,13 @@
 #include "../game_cl_teamdeathmatch.h"
 #include "UIKickPlayer.h"
 #include "UIChangeMap.h"
+#include "UIChangeWeather.h"
+
 
 CUIVotingCategory::CUIVotingCategory(){
 	xml_doc = NULL;
 	kick = NULL;
+	change_weather = NULL;
 
 	bkgrnd = xr_new<CUIStatic>(); 
 	bkgrnd->SetAutoDelete(true);
@@ -130,6 +133,11 @@ void CUIVotingCategory::OnBtn(int i){
 			game->StartStopMenu(change_map, true);
 			break;
 		case 5:
+			game->StartStopMenu(this, true);
+			if (!change_weather)
+				change_weather = xr_new<CUIChangeWeather>();				
+			change_weather->Init(*xml_doc);
+			game->StartStopMenu(change_weather, true);
 			break;
 		case 6:
 			break;
