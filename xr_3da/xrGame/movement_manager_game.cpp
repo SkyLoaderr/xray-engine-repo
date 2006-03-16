@@ -27,11 +27,14 @@ void CMovementManager::process_game_path()
 {
 	START_PROFILE			("Build Path/Process Game Path");
 
-	if (!level_path().actual() && (m_path_state > ePathStateBuildLevelPath))
-		m_path_state		= ePathStateBuildLevelPath;
+	if (m_path_state != ePathStateTeleport) {
 
-	if (!game_path().actual() && (m_path_state > ePathStateBuildGamePath))
-		m_path_state		= ePathStateBuildGamePath;
+		if (!level_path().actual() && (m_path_state > ePathStateBuildLevelPath))
+			m_path_state		= ePathStateBuildLevelPath;
+
+		if (!game_path().actual() && (m_path_state > ePathStateBuildGamePath))
+			m_path_state		= ePathStateBuildGamePath;
+	}
 
 	switch (m_path_state) {
 		case ePathStateSelectGameVertex : {
