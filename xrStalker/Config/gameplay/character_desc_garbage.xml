@@ -23,7 +23,6 @@
 			ammo_5.45x39_fmj \n
 			device_torch \n
 			medkit = 1 \n
-			garbage_seriy_flash \n
 		</supplies>
 		
 		<start_dialog>gar_seriy_start</start_dialog>

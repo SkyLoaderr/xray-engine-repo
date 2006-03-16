@@ -110,9 +110,8 @@
 			wpn_fort \n
 			ammo_9x18_fmj \n
 			wpn_toz34 \n
-			ammo_12x70_buck \n
+			ammo_12x76_zhekan \n
 			device_torch \n
-			fox_flash \n
 		</supplies>
 					
 		<start_dialog>escape_fox_hello_dialog</start_dialog>
@@ -921,7 +920,6 @@
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
-			provodnik_flash \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"				
 		</supplies>

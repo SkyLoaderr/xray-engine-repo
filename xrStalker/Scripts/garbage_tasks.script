@@ -2,11 +2,11 @@ function proceed()
     local actor = db.actor
 
 	--' GARBAGE
-	if actor:dont_has_info("agr_krot_band_start") and
-		actor:object("garbage_seriy_flash") ~= nil 
-	then
-		actor:give_info_portion("agr_krot_band_start")
-	end       	
+--	if actor:dont_has_info("agr_krot_band_start") and
+--		actor:object("garbage_seriy_flash") ~= nil 
+--	then
+--		actor:give_info_portion("agr_krot_band_start")
+--	end       	
 
 end
 
