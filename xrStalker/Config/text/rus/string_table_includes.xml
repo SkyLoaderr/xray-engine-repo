@@ -21,6 +21,7 @@
 #include "text\rus\stable_storyline_info_radar.xml"
 #include "text\rus\stable_storyline_info_aes.xml"
 #include "text\rus\stable_storyline_info_yantar.xml"
+#include "text\rus\stable_storyline_info_pripyat.xml"
 #include "text\rus\stable_storyline_info_sarcofag.xml"
 
 #include "text\rus\string_table_tasks_escape.xml"
