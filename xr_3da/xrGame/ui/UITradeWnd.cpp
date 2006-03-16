@@ -26,6 +26,7 @@
 #include "../character_info.h"
 
 #include "UICharacterInfo.h"
+#include "UIDragDropList.h"
 using namespace InventoryUtilities;
 
 //////////////////////////////////////////////////////////////////////////
