@@ -226,7 +226,6 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	R_ASSERT3					((m_tClassID == CLSID_SPECTATOR) || (size > sizeof(size)),"object isn't successfully saved, get your backup :(",name_replace());
 //#endif
 	tNetPacket.w_seek			(position,&size,sizeof(u16));
-	client_data.clear			();
 }
 
 BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)

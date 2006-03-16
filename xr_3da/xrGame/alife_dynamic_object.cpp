@@ -47,6 +47,7 @@ void CSE_ALifeDynamicObject::switch_offline			()
 	R_ASSERT					(m_bOnline);
 	m_bOnline					= false;
 	alife().remove_online		(this);
+	client_data.clear			();
 }
 
 void CSE_ALifeDynamicObject::add_online				(const bool &update_registries)
