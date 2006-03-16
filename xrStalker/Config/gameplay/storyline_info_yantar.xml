@@ -22,12 +22,12 @@
 <article id="descr_yan_find_scientist_semenov" name="" group="yan_find_scientist_semenov/0" article_type="task">
         <text>descr_yan_find_scientist_semenov</text>
 </article>
-<article id="journal_after_kill_brain" name="8" group="" article_type="journal">
+<article id="journal_after_kill_brain" name="После отключения Мозга" group="После отключения Мозга" article_type="journal">
         <text>journal_after_kill_brain</text>
 </article>
-<article id="journal_after_find_ghost" name="7" group="" article_type="journal">
+<article id="journal_after_find_ghost" name="Еще одна загадка" group="Еще одна загадка" article_type="journal">
         <text>journal_after_find_ghost</text>
 </article>
-<article id="journal_before_vasilyev_pda" name="6" group="" article_type="journal">
+<article id="journal_before_vasilyev_pda" name="В шаге от Призрака" group="В шаге от Призрака" article_type="journal">
         <text>journal_before_vasilyev_pda</text>
 </article>
