@@ -537,8 +537,12 @@ bool CAI_Stalker::inside_anomaly		()
 	xr_vector<CObject*>::const_iterator	E = feel_touch.end();
 	for ( ; I != E; ++I) {
 		CCustomZone			*zone = smart_cast<CCustomZone*>(*I);
-		if (zone)
+		if (zone) {
+			if (smart_cast<CRadioactiveZone*>(zone))
+				continue;
+
 			return			(true);
+		}
 	}
 	return					(false);
 }
