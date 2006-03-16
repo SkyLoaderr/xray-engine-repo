@@ -36,6 +36,7 @@
 	<info_portion id="sar_monolith_recharged">
 		<task>sar_warlab</task>
 		<article>zones_mystery</article>
+		<article>sl_monolith_off</article>
 	</info_portion>
 	<info_portion id="sar_warlab_go"></info_portion>
 	
