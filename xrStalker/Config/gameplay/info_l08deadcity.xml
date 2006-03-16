@@ -88,6 +88,10 @@
 	<info_portion id="cit_vp_say"></info_portion>
 	<info_portion id="cit_victor_die"></info_portion>
 	
+    <info_portion id="cit_doctor_meet_conclusion_info">
+	    <article>cit_doctor_meet_conclusion_art</article>
+    </info_portion>
+
 	<info_portion id="cit_leave_forever"></info_portion>
 	
 </game_information_portions>
