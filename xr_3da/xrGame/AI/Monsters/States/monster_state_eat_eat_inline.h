@@ -50,7 +50,7 @@ bool CStateMonsterEatingAbstract::check_start_conditions()
 	float dist				= nearest_bone_pos.distance_to(object->Position());
 	float dist_to_corpse	= object->db().m_fDistToCorpse; 
 	
-	if (dist + 1.f < dist_to_corpse) return true;
+	if (dist + 0.5f < dist_to_corpse) return true;
 	return false;
 }
 
