@@ -3,12 +3,12 @@
 ----------------------------------------------------------------------------------------------------
 function proceed()
     local actor = db.actor
+--[[
 	-- Dark valley
 	if actor:dont_has_info("val_player_knows_password") and
 	   actor:object("borov_flash") then
 		actor:give_info_portion("val_player_knows_password") 
 	end
---[[
 	if actor:has_info("val_escort_help_prisoner_task") and actor:dont_has_info("val_prisoner_task_finish") then
 	    if actor:has_info("val_prisoner_free") then
 		    level_tasks.set_task_state(task.completed, "val_prisoner_help", 0)
