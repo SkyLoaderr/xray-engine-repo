@@ -4,6 +4,7 @@
 
 	<info_portion id="agroprom_military_case">
 		<task>agroprom_get_military_documents</task>
+		<article>sl_first_deep_raid</article>
 	</info_portion>
 	<info_portion id="agroprom_military_case_have">
 		<article>agr_military_case</article>
