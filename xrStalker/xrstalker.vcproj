@@ -2194,6 +2194,21 @@
 						RelativePath=".\Config\scripts\val_prisoner_guard.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\val\val_respawn_custom_data_wt1.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\val\val_respawn_custom_data_wt2.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\val\val_respawn_custom_data_wt3.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\val\val_respawn_custom_data_wt4.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\val\val_respawn_custom_data_wt5.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\val_rob_leader.ltx">
 					</File>
 					<File
