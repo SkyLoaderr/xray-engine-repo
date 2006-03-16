@@ -175,10 +175,6 @@ void CTrade::StopTrade()
 		pTrader = smart_cast<CAI_Trader*>(pPartner.base);
 	}
 
-	if(pTrader && m_bNeedToUpdateArtefactTasks)
-	{
-		pTrader->SyncArtefactsWithServer();
-	}
 	RemovePartner();
 }
 

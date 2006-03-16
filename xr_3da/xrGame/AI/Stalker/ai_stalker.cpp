@@ -309,8 +309,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID) && movement().restrictions().accessible(ai().game_graph().vertex(tpHuman->m_tNextGraphID)->level_point()))
 		movement().set_game_dest_vertex	(tpHuman->m_tNextGraphID);
 
-	m_current_alife_task			= 0;
-
 	R_ASSERT2					(
 		ai().get_game_graph() && 
 		ai().get_level_graph() && 
@@ -326,11 +324,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
-
-	// load damage params
-
-//	m_tpKnownCustomers				= tpHuman->m_tpKnownCustomers;
-	m_tpKnownCustomers				= tpHuman->brain().m_tpKnownCustomers;
 
 	if (!g_Alive())
 		sound().set_sound_mask(u32(eStalkerSoundMaskDie));
@@ -485,12 +478,6 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 	}
 
-//.
-//	ALife::ETaskState				task_state = ALife::eTaskStateChooseTask;
-//	P.w								(&task_state,sizeof(task_state));
-//	P.w_u32							(0);
-//	P.w_u32							(0);
-
 	P.w_stringZ						(m_sStartDialog);
 }
 
@@ -533,11 +520,6 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 	P.r_float						();
 	P.r_float						();
-//.
-//	ALife::ETaskState				task_state;
-//	P.r								(&task_state,sizeof(task_state));
-//	P.r_u32							();
-//	P.r_u32							();
 
 	P.r_stringZ						(m_sStartDialog);
 

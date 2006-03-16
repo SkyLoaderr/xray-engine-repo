@@ -18,13 +18,6 @@
 #include "ef_pattern.h"
 #include "alife_monster_brain.h"
 
-void CSE_ALifeMonsterAbstract::on_surge								()
-{
-	inherited1::on_surge			();
-	m_dynamic_out_restrictions.clear();
-	m_dynamic_in_restrictions.clear	();
-}
-
 void CSE_ALifeMonsterAbstract::add_online							(const bool &update_registries)
 {
 	inherited1::add_online			(update_registries);

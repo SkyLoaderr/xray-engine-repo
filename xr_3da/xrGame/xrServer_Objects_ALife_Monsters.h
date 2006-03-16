@@ -92,26 +92,18 @@ add_to_type_list(CSE_ALifeTraderAbstract)
 #define script_type_list save_type_list(CSE_ALifeTraderAbstract)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
-	ALife::_ORGANIZATION_ID				m_tOrgID;
-	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
-	ALife::TRADER_SUPPLY_VECTOR			m_tpSupplies;
-
-
 									CSE_ALifeTrader			(LPCSTR caSection);
 	virtual							~CSE_ALifeTrader		();
 	virtual	bool					interactive				() const;
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
-	int 							supplies_count;
-			void 	__stdcall		OnSuppliesCountChange	(PropValue* sender);
 	virtual bool					natural_weapon			() const {return false;}
 	virtual bool					natural_detector		() const {return false;}
 
 #ifdef XRGAME_EXPORTS
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
 	virtual void					spawn_supplies			();
-	virtual void					on_surge				();
 	virtual	void					add_online				(const bool &update_registries);
 	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
 #endif
@@ -127,7 +119,6 @@ add_to_type_list(CSE_ALifeTrader)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCustomZone,CSE_ALifeSpaceRestrictor)
 	f32								m_maxPower;
-	ALife::EAnomalousZoneType		m_tAnomalyType;
 	ALife::EHitType					m_tHitType;
 	u32								m_owner_id;
 	u32								m_enabled_time;
@@ -296,7 +287,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				(bool					bFictitious = false) {};
 			void					vfCheckForPopulationChanges();
-	virtual void					on_surge				();
 	virtual	void					add_online				(const bool &update_registries);
 	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
 #endif
@@ -447,7 +437,6 @@ public:
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				(bool bFictitious = false);
 	virtual void					spawn_supplies			();
-	virtual void					on_surge				();
 	virtual void					on_register				();
 	virtual void					on_unregister			();
 	virtual	void					add_online				(const bool &update_registries);

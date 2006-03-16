@@ -12,11 +12,7 @@
 #include "alife_time_manager.h"
 #include "alife_spawn_registry.h"
 #include "alife_object_registry.h"
-#include "alife_task_registry.h"
 #include "alife_graph_registry.h"
-#include "alife_anomaly_registry.h"
-#include "alife_organization_registry.h"
-#include "alife_news_registry.h"
 #include "alife_group_registry.h"
 #include "alife_registry_container.h"
 #include "xrserver.h"
@@ -67,10 +63,6 @@ void CALifeStorageManager::save	(LPCSTR save_name, bool update_name)
 	time_manager().save			(stream);
 	spawns().save				(stream);
 	objects().save				(stream);
-	tasks().save				(stream);
-	anomalies().save			(stream);
-	organizations().save		(stream);
-	news().save					(stream);
 	registry().save				(stream);
 
 	string256					temp;
@@ -116,10 +108,6 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 	time_manager().load			(*stream);
 	spawns().load				(*stream,file_name);
 	objects().load				(*stream,CALifeUpdatePredicate(this));
-	tasks().load				(*stream);
-	anomalies().load			(*stream);
-	organizations().load		(*stream);
-	news().load					(*stream);
 	registry().load				(*stream);
 
 	FS.r_close					(stream);

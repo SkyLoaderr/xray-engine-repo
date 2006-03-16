@@ -14,12 +14,6 @@
 #include "alife_simulator.h"
 #include "alife_group_registry.h"
 
-void CSE_ALifeHumanAbstract::on_surge								()
-{
-	inherited2::on_surge					();
-	brain().on_surge						();
-}
-
 void CSE_ALifeHumanAbstract::update									()
 {
 	if (!bfActive())

@@ -27,8 +27,8 @@ CScriptEngine::CScriptEngine			()
 	*m_last_no_file			= 0;
 
 #ifdef USE_DEBUGGER
-	m_scriptDebugger	= NULL;
-	restartDebugger		();	
+	m_scriptDebugger		= NULL;
+	restartDebugger			();	
 #endif
 }
 
@@ -150,9 +150,16 @@ void CScriptEngine::init				()
 	setup_callbacks						();
 	export_classes						(lua());
 	setup_auto_load						();
+
 #ifdef DEBUG
 	m_stack_is_ready					= true;
 #endif
+
+	bool								save = m_reload_modules;
+	m_reload_modules					= true;
+	process_file_if_exists				("_G",false);
+	m_reload_modules					= save;
+
 	register_script_classes				();
 	object_factory().register_script	();
 
@@ -167,17 +174,6 @@ void CScriptEngine::init				()
 	load_common_scripts					();
 #endif
 	m_stack_level						= lua_gettop(lua());
-}
-
-bool CScriptEngine::load_file			(LPCSTR caScriptName, bool bCall)
-{
-	VERIFY			(bCall);
-	string256		l_caNamespaceName;
-	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
-	if (!xr_strlen(l_caNamespaceName) || !xr_strcmp(l_caNamespaceName,"_g") || !xr_strcmp(l_caNamespaceName,"_G"))
-		return		(load_file_into_namespace(caScriptName,"_G",bCall));
-	else
-		return		(load_file_into_namespace(caScriptName,l_caNamespaceName,bCall));
 }
 
 void CScriptEngine::remove_script_process	(const EScriptProcessors &process_id)
@@ -228,9 +224,7 @@ void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_e
 		return;
 
 	string256				S,S1;
-	LPCSTR					_G = "_G";
-	bool					global_script_loaded = !string_length || ((string_length == 2) && (*(u16*)file_name == *(u16*)_G));
-	if (global_script_loaded || m_reload_modules || !namespace_loaded(file_name)) {
+	if (m_reload_modules || (*file_name && !namespace_loaded(file_name))) {
 		FS.update_path		(S,"$game_scripts$",strconcat(S1,file_name,".script"));
 		if (!warn_if_not_exist && !FS.exist(S)) {
 #ifdef DEBUG
@@ -245,7 +239,7 @@ void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_e
 		Msg					("* loading script %s",S1);
 #endif
 		m_reload_modules	= false;
-		load_file			(S,true);
+		load_file_into_namespace(S,*file_name ? file_name : "_G");
 	}
 }
 

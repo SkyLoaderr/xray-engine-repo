@@ -62,7 +62,6 @@ class CCoverEvaluatorRandomGame;
 class CCoverEvaluatorAmbush;
 class CCoverEvaluatorBestByTime;
 class CAgentManager;
-class CALifeTask;
 class CMotionDef;
 class CStalkerAnimationManager;
 class CStalkerPlanner;
@@ -97,8 +96,6 @@ private:
 
 	// ALife
 private:
-	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
-	CALifeTask						*m_current_alife_task;
 	SBoneProtections*				m_boneHitProtection;
 
 	// weapon dispersion
@@ -322,11 +319,7 @@ private:
 	bool								m_sell_info_actuality;
 
 protected:
-			bool						task_completed					(const CALifeTask *_task);
-			bool						similar_task					(const CALifeTask *prev_task, const CALifeTask *new_task);
-			void						select_alife_task				();
 			u32							fill_items						(CInventory &inventory, CGameObject *old_owner, ALife::_OBJECT_ID new_owner_id);
-			void						collect_items					();
 			
 	IC		void						buy_item_virtual				(CTradeItem &item);
 			void						attach_available_ammo			(CWeapon *weapon);
@@ -337,7 +330,6 @@ protected:
 			void						choose_equipment				();
 
 			void						select_items					();
-			void						process_items					();
 			void						transfer_item					(CInventoryItem *item, CGameObject *old_owner, CGameObject *new_owner);
 
 			void						update_sell_info				();
@@ -353,10 +345,6 @@ protected:
 			void						on_after_take					(const CGameObject *object);
 	virtual bool						AllowItemToTrade 				(CInventoryItem const * item, EItemPlace place) const;
 public:
-			CALifeTask					&current_alife_task				();
-			void						failed_to_complete_alife_task	();
-			bool						alife_task_completed			();
-			void						communicate						(CInventoryOwner *trader);
 	IC		CStalkerAnimationManager	&animation						() const;
 	IC		CStalkerPlanner				&brain							() const;
 	IC		CSightManager				&sight							() const;

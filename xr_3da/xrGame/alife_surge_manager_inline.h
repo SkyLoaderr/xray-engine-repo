@@ -11,5 +11,4 @@
 IC	CALifeSurgeManager::CALifeSurgeManager				(xrServer *server, LPCSTR section) :
 	inherited		(server,section)
 {
-	seed						(u32(CPU::QPC() & 0xffffffff));
 }

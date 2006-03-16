@@ -42,7 +42,7 @@ public:
 	};
 
 public:
-	typedef xr_vector<CGraphPointInfo>	GRAPH_REGISTRY;
+	typedef xr_vector<CGraphPointInfo>		GRAPH_REGISTRY;
 	typedef xr_vector<GameGraph::_GRAPH_ID>	TERRAIN_REGISTRY;
 
 protected:

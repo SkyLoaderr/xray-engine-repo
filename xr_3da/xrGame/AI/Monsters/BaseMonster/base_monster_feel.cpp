@@ -118,7 +118,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 			//SetAttackEffector			();
 
-			Actor()->lock_accel_for		(2000*fDamage);
+			Actor()->lock_accel_for		(iFloor(2000.f*fDamage));
 
 
 

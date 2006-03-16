@@ -6,14 +6,11 @@
 #include "script_game_object.h"
 #include "script_game_object_impl.h"
 
-#include "script_task.h"
 #include "script_zone.h"
 #include "ai/trader/ai_trader.h"
 
 #include "ai_space.h"
 #include "alife_simulator.h"
-#include "alife_task_registry.h"
-#include "alife_trader_registry.h"
 
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_movement_manager.h"

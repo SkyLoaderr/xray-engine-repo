@@ -131,7 +131,6 @@ public:
 	virtual void					spawn_supplies		(LPCSTR);
 	virtual void					spawn_supplies		();
 			CALifeSimulator			&alife				() const;
-	virtual void					on_surge			();
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObject)

@@ -26,7 +26,6 @@ private:
 
 // old not yet obsolete stuff
 public:
-	ALife::OBJECT_VECTOR				m_tpKnownCustomers;
 	svector<char,5>						m_cpEquipmentPreferences;
 	svector<char,4>						m_cpMainWeaponPreferences;
 

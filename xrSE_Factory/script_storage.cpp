@@ -320,7 +320,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 	return				(true);
 }
 
-bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool bCall)
+bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName)
 {
 	int				start = lua_gettop(lua());
 	string256		l_caLuaFileName;
@@ -341,45 +341,42 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	}
 	FS.r_close		(l_tpFileReader);
 
-	if (bCall) {
-		int errFuncId = -1;
+	int errFuncId = -1;
 #ifdef USE_DEBUGGER
-		if( ai().script_engine().debugger() )
-		errFuncId = ai().script_engine().debugger()->PrepareLua(lua());
+	if( ai().script_engine().debugger() )
+	errFuncId = ai().script_engine().debugger()->PrepareLua(lua());
 #endif
-		if (0)	//.
-		{
-	        for (int i=0; lua_type(lua(), -i-1); i++)
-                Msg	("%2d : %s",-i-1,lua_typename(lua(), lua_type(lua(), -i-1)));
-		}
+	if (0)	//.
+	{
+	    for (int i=0; lua_type(lua(), -i-1); i++)
+            Msg	("%2d : %s",-i-1,lua_typename(lua(), lua_type(lua(), -i-1)));
+	}
 
-		// because that's the first and the only call of the main chunk - there is no point to compile it
-		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_OFF);							// Oles
-		int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId);				// new_Andy
-		luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE, m_jit?LUAJIT_MODE_ON:LUAJIT_MODE_OFF);	// Oles
+	// because that's the first and the only call of the main chunk - there is no point to compile it
+	luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE,LUAJIT_MODE_OFF);							// Oles
+	int	l_iErrorCode = lua_pcall(lua(),0,0,(-1==errFuncId)?0:errFuncId);				// new_Andy
+	luaJIT_setmode	(lua(),LUAJIT_MODE_ENGINE, m_jit?LUAJIT_MODE_ON:LUAJIT_MODE_OFF);	// Oles
 
 #ifdef USE_DEBUGGER
-		if( ai().script_engine().debugger() )
-			ai().script_engine().debugger()->UnPrepareLua(lua(),errFuncId);
+	if( ai().script_engine().debugger() )
+		ai().script_engine().debugger()->UnPrepareLua(lua(),errFuncId);
 #endif
-		if (l_iErrorCode) {
+	if (l_iErrorCode) {
 
 #ifdef DEBUG
-			print_output(lua(),caScriptName,l_iErrorCode);
+		print_output(lua(),caScriptName,l_iErrorCode);
 #endif
-			lua_settop	(lua(),start);
-			return	(false);
-		}
+		lua_settop	(lua(),start);
+		return		(false);
 	}
-	else
-		lua_insert	(lua(),-4);
+
 	return			(true);
 }
 
-bool CScriptStorage::load_file_into_namespace(LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
+bool CScriptStorage::load_file_into_namespace(LPCSTR caScriptName, LPCSTR caNamespaceName)
 {
 	int				start = lua_gettop(lua());
-	if (!do_file(caScriptName,caNamespaceName,bCall)) {
+	if (!do_file(caScriptName,caNamespaceName)) {
 		lua_settop	(lua(),start);
 		return		(false);
 	}

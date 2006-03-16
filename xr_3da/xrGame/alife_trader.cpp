@@ -11,13 +11,6 @@
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
-#include "alife_artefact_order.h"
-
-void CSE_ALifeTrader::on_surge				()
-{
-	inherited1::on_surge		();
-	m_tpOrderedArtefacts.clear	();
-}
 
 void CSE_ALifeTrader::spawn_supplies	()
 {
@@ -40,19 +33,6 @@ u32	CSE_ALifeTrader::dwfGetItemCost		(CSE_ALifeInventoryItem *tpALifeInventoryIt
 		for ( ; i != e; ++i)
 			if (!xr_strcmp(ai().alife().objects().object(*i)->s_name,l_tpALifeItemArtefact->s_name))
 				++l_dwPurchasedCount;
-	}
-
-	ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	J = m_tpOrderedArtefacts.find(*tpALifeInventoryItem->base()->s_name);
-	if ((m_tpOrderedArtefacts.end() != J) && (l_dwPurchasedCount < (*J).second->m_dwTotalCount)) {
-		ALife::ARTEFACT_ORDER_IT		I = (*J).second->m_tpOrders.begin();
-		ALife::ARTEFACT_ORDER_IT		E = (*J).second->m_tpOrders.end();
-		for ( ; I != E; ++I) {
-			if (l_dwPurchasedCount <= (*I).m_count)
-				return			((*I).m_price);
-			else
-				l_dwPurchasedCount -= (*I).m_count;
-		}
-		Debug.fatal				("Data synchronization mismatch");
 	}
 	return						(tpALifeInventoryItem->m_dwCost);
 }

@@ -1820,91 +1820,6 @@
 						Name="objects"
 						Filter="">
 						<Filter
-							Name="artefact_demand"
-							Filter="">
-							<File
-								RelativePath=".\alife_artefact_demand.h">
-							</File>
-							<File
-								RelativePath=".\alife_artefact_demand_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="artefact_order"
-							Filter="">
-							<File
-								RelativePath=".\alife_artefact_order.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_artefact_order.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="discovery"
-							Filter="">
-							<File
-								RelativePath=".\alife_discovery.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_discovery.h">
-							</File>
-							<File
-								RelativePath=".\alife_discovery_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="known_anomaly"
-							Filter="">
-							<File
-								RelativePath=".\alife_known_anomaly.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_known_anomaly.h">
-							</File>
-							<File
-								RelativePath=".\alife_known_anomaly_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="news"
-							Filter="">
-							<File
-								RelativePath=".\alife_news.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_news.h">
-							</File>
-							<File
-								RelativePath=".\alife_news_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="organization"
-							Filter="">
-							<File
-								RelativePath=".\alife_organization.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_organization.h">
-							</File>
-							<File
-								RelativePath=".\alife_organization_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="task"
-							Filter="">
-							<File
-								RelativePath=".\alife_task.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_task.h">
-							</File>
-							<File
-								RelativePath=".\alife_task_inline.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="smart_terrain_task"
 							Filter="">
 							<File
@@ -1935,19 +1850,6 @@
 							</File>
 							<File
 								RelativePath=".\alife_registry_wrapper.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="anomaly_registry"
-							Filter="">
-							<File
-								RelativePath=".\alife_anomaly_registry.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_anomaly_registry.h">
-							</File>
-							<File
-								RelativePath=".\alife_anomaly_registry_inline.h">
 							</File>
 						</Filter>
 						<Filter
@@ -1987,19 +1889,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="news_registry"
-							Filter="">
-							<File
-								RelativePath=".\alife_news_registry.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_news_registry.h">
-							</File>
-							<File
-								RelativePath=".\alife_news_registry_inline.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="object_registry"
 							Filter="">
 							<File
@@ -2010,19 +1899,6 @@
 							</File>
 							<File
 								RelativePath=".\alife_object_registry_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="organization_registry"
-							Filter="">
-							<File
-								RelativePath=".\alife_organization_registry.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_organization_registry.h">
-							</File>
-							<File
-								RelativePath=".\alife_organization_registry_inline.h">
 							</File>
 						</Filter>
 						<Filter
@@ -2071,9 +1947,6 @@
 								RelativePath=".\alife_spawn_registry.h">
 							</File>
 							<File
-								RelativePath=".\alife_spawn_registry_destroy.cpp">
-							</File>
-							<File
 								RelativePath=".\alife_spawn_registry_inline.h">
 							</File>
 							<File
@@ -2117,32 +1990,6 @@
 							</File>
 							<File
 								RelativePath=".\alife_story_registry_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="task_registry"
-							Filter="">
-							<File
-								RelativePath=".\alife_task_registry.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_task_registry.h">
-							</File>
-							<File
-								RelativePath=".\alife_task_registry_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="trader_registry"
-							Filter="">
-							<File
-								RelativePath=".\alife_trader_registry.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_trader_registry.h">
-							</File>
-							<File
-								RelativePath=".\alife_trader_registry_inline.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -5450,19 +5297,6 @@
 						</File>
 						<File
 							RelativePath=".\script_sound_type_script.cpp">
-						</File>
-					</Filter>
-					<Filter
-						Name="ScriptTask"
-						Filter="">
-						<File
-							RelativePath=".\script_task.cpp">
-						</File>
-						<File
-							RelativePath=".\script_task.h">
-						</File>
-						<File
-							RelativePath=".\script_task_script.cpp">
 						</File>
 					</Filter>
 					<Filter

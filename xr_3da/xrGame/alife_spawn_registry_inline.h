@@ -33,11 +33,6 @@ IC	const CALifeSpawnRegistry::SPAWN_GRAPH &CALifeSpawnRegistry::spawns	() const
 	return							(m_spawns);
 }
 
-IC	const CALifeSpawnRegistry::REGISTRY &CALifeSpawnRegistry::artefact_anomaly_map	() const
-{
-	return							(m_artefact_anomaly_map);
-}
-
 IC	void CALifeSpawnRegistry::process_spawns		(SPAWN_IDS &spawns)
 {
 	std::sort						(spawns.begin(),spawns.end());

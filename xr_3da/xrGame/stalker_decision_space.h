@@ -16,10 +16,6 @@ namespace StalkerDecisionSpace {
 		
 		eWorldPropertyALife,
 		eWorldPropertyPuzzleSolved,
-		eWorldPropertyReachedTaskLocation,
-		eWorldPropertyTaskCompleted,
-		eWorldPropertyReachedCustomerLocation,
-		eWorldPropertyCustomerSatisfied,
 
 		eWorldPropertySmartTerrainTask,
 		eWorldPropertyItems,

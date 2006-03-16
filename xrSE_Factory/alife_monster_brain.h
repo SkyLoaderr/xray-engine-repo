@@ -47,7 +47,6 @@ public:
 public:
 			void						on_state_write		(NET_Packet &packet);
 			void						on_state_read		(NET_Packet &packet);
-			void						on_surge			();
 			void						on_register			();
 			void						on_unregister		();
 			void						on_location_change	();

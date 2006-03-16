@@ -4,7 +4,6 @@
 #include "string_table_defs.h"
 #include "object_interfaces.h"
 
-#define NOT_SIMULATION_NEWS		ALife::_NEWS_ID(-1)
 #define DEFAULT_NEWS_SHOW_TIME	5000
 
 

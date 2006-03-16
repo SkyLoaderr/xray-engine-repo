@@ -92,7 +92,6 @@
 #	include	"PhysicsShell.h"
 #	include	"HangingLamp.h"
 #	include "holder_custom.h"
-#	include "script_task.h"
 #	include "GameTask.h"
 #	include "client_spawn_manager.h"
 #	include "script_zone.h"

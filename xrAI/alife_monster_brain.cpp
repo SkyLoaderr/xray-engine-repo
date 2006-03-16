@@ -80,10 +80,6 @@ ALife::EMeetActionType CALifeMonsterBrain::action_type	(CSE_ALifeSchedulable *tp
 	return							(ALife::eMeetActionTypeIgnore);
 }
 
-void CALifeMonsterBrain::on_surge				()
-{
-}
-
 void CALifeMonsterBrain::on_register			()
 {
 }

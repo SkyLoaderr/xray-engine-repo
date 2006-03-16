@@ -18,7 +18,6 @@
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_registry_container.h"
-#include "alife_news_registry.h"
 
 #include "script_game_object.h"
 

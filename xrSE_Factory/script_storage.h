@@ -39,7 +39,7 @@ protected:
 protected:
 	static	int					vscript_log					(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, va_list marker);
 			bool				parse_namespace				(LPCSTR caNamespaceName, LPSTR b, LPSTR c);
-			bool				do_file						(LPCSTR	caScriptName,		LPCSTR caNameSpaceName,		bool	bCall);
+			bool				do_file						(LPCSTR	caScriptName, LPCSTR caNameSpaceName);
 #ifdef DEBUG
 			void				print_stack					();
 #endif
@@ -50,11 +50,11 @@ public:
 	IC		lua_State			*lua						();
 	IC		void				current_thread				(CScriptThread *thread);
 	IC		CScriptThread		*current_thread				() const;
-			bool				load_buffer					(lua_State *L,		LPCSTR	caBuffer,			size_t	tSize,				LPCSTR	caScriptName, LPCSTR caNameSpaceName = 0);
-			bool				load_file_into_namespace	(LPCSTR	caScriptName,		LPCSTR	caNamespaceName,	bool	bCall);
+			bool				load_buffer					(lua_State *L, LPCSTR caBuffer, size_t tSize, LPCSTR caScriptName, LPCSTR caNameSpaceName = 0);
+			bool				load_file_into_namespace	(LPCSTR	caScriptName, LPCSTR caNamespaceName);
 			bool				namespace_loaded			(LPCSTR	caName, bool remove_from_stack = true);
-			bool				object						(LPCSTR	caIdentifier,		int		type);
-			bool				object						(LPCSTR	caNamespaceName,	LPCSTR	caIdentifier,		int		type);
+			bool				object						(LPCSTR	caIdentifier, int type);
+			bool				object						(LPCSTR	caNamespaceName, LPCSTR	caIdentifier, int type);
 			luabind::object		name_space					(LPCSTR	namespace_name);
 			void				flush_log					();
 	static	int		__cdecl		script_log					(ELuaMessageType message,	LPCSTR	caFormat, ...);

@@ -21,7 +21,7 @@ protected:
 
 	// temporary buffers for combats
 	CSE_ALifeSchedulable			*m_tpaCombatObjects[2];
-	ALife::D_OBJECT_MAP				m_tpGraphPointObjects;
+	ALife::D_OBJECT_P_MAP			m_tpGraphPointObjects;
 
 public:
 	ALife::ITEM_P_VECTOR			m_tpTempItemBuffer;

@@ -10,8 +10,6 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai_space.h"
 #include "alife_simulator.h"
-#include "alife_task_registry.h"
-#include "alife_task.h"
 #include "alife_space.h"
 #include "inventory.h"
 #include "clsid_game.h"
@@ -25,110 +23,19 @@
 #include "ef_pattern.h"
 #include "trade_parameters.h"
 
-#define MAX_ITEM_FOOD_COUNT		3
-#define MAX_ITEM_MEDIKIT_COUNT	3
-#define MAX_AMMO_ATTACH_COUNT	10
+extern int get_rank								(const shared_str &section);
 
-IC	bool CAI_Stalker::CTradeItem::operator<	(const CTradeItem &trade_item) const
+static const int MAX_AMMO_ATTACH_COUNT = 10;
+static const int enough_ammo_box_count = 1;
+
+IC	bool CAI_Stalker::CTradeItem::operator<		(const CTradeItem &trade_item) const
 {
 	return			(m_item->object().ID() < trade_item.m_item->object().ID());
 }
 
-IC	bool CAI_Stalker::CTradeItem::operator==(u16 id) const
+IC	bool CAI_Stalker::CTradeItem::operator==	(u16 id) const
 {
 	return			(m_item->object().ID() == id);
-}
-
-bool CAI_Stalker::task_completed			(const CALifeTask *_task)
-{
-	const CALifeTask	&task = *_task;
-
-	switch (task.m_tTaskType) {
-		case ALife::eTaskTypeSearchForItemCL :
-		case ALife::eTaskTypeSearchForItemCG : {
-			return		(!!inventory().dwfGetSameItemCount(task.m_caSection));
-		}
-		case ALife::eTaskTypeSearchForItemOL :
-		case ALife::eTaskTypeSearchForItemOG : {
-			return		(inventory().bfCheckForObject(task.m_tObjectID));
-		}
-	}
-	return				(false);
-}
-
-bool CAI_Stalker::similar_task				(const CALifeTask *prev_task, const CALifeTask *new_task)
-{
-	if (!prev_task)
-		return			(false);
-
-	if (prev_task->m_tTaskType != new_task->m_tTaskType)
-		return			(false);
-
-	switch (prev_task->m_tTaskType) {
-		case ALife::eTaskTypeSearchForItemOG :
-		case ALife::eTaskTypeSearchForItemCG : {
-			return		(prev_task->m_tGraphID == new_task->m_tGraphID);
-		}
-		case ALife::eTaskTypeSearchForItemOL :
-		case ALife::eTaskTypeSearchForItemCL : {
-			return		(prev_task->m_tLocationID == new_task->m_tLocationID);
-		}
-	}
-	return				(false);
-}
-
-void CAI_Stalker::select_alife_task			()
-{
-	CALifeTask						*current_task = m_current_alife_task;
-	ALife::OBJECT_IT				I = m_tpKnownCustomers.begin();
-	ALife::OBJECT_IT				E = m_tpKnownCustomers.end();
-	for ( ; I != E; ++I) {
-		ALife::OBJECT_TASK_MAP::const_iterator	J = ai().alife().tasks().cross().find(*I);
-		R_ASSERT2					(ai().alife().tasks().cross().end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
-
-		u32							l_dwMinTryCount = u32(-1);
-		ALife::_TASK_ID				l_tBestTaskID = ALife::_TASK_ID(-1);
-		ALife::TASK_SET::const_iterator	i = (*J).second.begin();
-		ALife::TASK_SET::const_iterator	e = (*J).second.end();
-		for ( ; i != e; ++i) {
-			CALifeTask				*l_tpTask = ai().alife().tasks().task(*i);
-			if (similar_task(current_task,l_tpTask) && !task_completed(l_tpTask))
-				continue;
-
-			if (!l_tpTask->m_dwTryCount) {
-				l_tBestTaskID		= l_tpTask->m_tTaskID;
-				break;
-			}
-			else
-				if (l_tpTask->m_dwTryCount < l_dwMinTryCount) {
-					l_dwMinTryCount = l_tpTask->m_dwTryCount;
-					l_tBestTaskID	= l_tpTask->m_tTaskID;
-				}
-		}
-
-		if (ALife::_TASK_ID(-1) != l_tBestTaskID)
-			m_current_alife_task	= ai().alife().tasks().task(l_tBestTaskID);
-	}
-}
-
-CALifeTask &CAI_Stalker::current_alife_task	()
-{
-	if (!m_current_alife_task)
-		select_alife_task	();
-
-	VERIFY3					(m_current_alife_task,"Not enough ALife tasks",*cName());
-	return					(*m_current_alife_task);
-}
-
-void CAI_Stalker::failed_to_complete_alife_task	()
-{
-	++(current_alife_task().m_dwTryCount);
-	select_alife_task();
-}
-
-bool CAI_Stalker::alife_task_completed			()
-{
-	return				(task_completed(&current_alife_task()));
 }
 
 bool CAI_Stalker::tradable_item					(CInventoryItem *inventory_item, const u16 &current_owner_id)
@@ -167,18 +74,7 @@ u32 CAI_Stalker::fill_items						(CInventory &inventory, CGameObject *old_owner,
 	return						(result);
 }
 
-void CAI_Stalker::collect_items						()
-{
-	m_temp_items.clear	();
-	m_total_money		= m_dwMoney;
-	u32					money_delta = fill_items(inventory(),this,m_trader_game_object->ID());
-	m_total_money		+= money_delta;
-	m_current_trader->m_dwMoney -= money_delta;
-	fill_items			(m_current_trader->inventory(),m_trader_game_object,m_trader_game_object->ID());
-	std::sort			(m_temp_items.begin(),m_temp_items.end());
-}
-
-void CAI_Stalker::transfer_item						(CInventoryItem *item, CGameObject *old_owner, CGameObject *new_owner)
+void CAI_Stalker::transfer_item					(CInventoryItem *item, CGameObject *old_owner, CGameObject *new_owner)
 {
 	NET_Packet			P;
 	CGameObject			*O = old_owner;
@@ -192,20 +88,7 @@ void CAI_Stalker::transfer_item						(CInventoryItem *item, CGameObject *old_own
 	O->u_EventSend		(P);
 }
 
-void CAI_Stalker::process_items						()
-{
-	xr_vector<CTradeItem>::iterator	I = m_temp_items.begin();
-	xr_vector<CTradeItem>::iterator	E = m_temp_items.end();
-	for ( ; I != E; ++I) {
-		if ((*I).m_owner_id != (*I).m_new_owner_id)
-			transfer_item	((*I).m_item,(*I).m_owner_id == ID() ? this : m_trader_game_object,(*I).m_owner_id == ID() ? m_trader_game_object : this);
-	}
-
-	m_dwMoney				= m_total_money;
-	m_temp_items.clear		();
-}
-
-IC	void CAI_Stalker::buy_item_virtual				(CTradeItem &item)
+IC	void CAI_Stalker::buy_item_virtual			(CTradeItem &item)
 {
 	item.m_new_owner_id			= ID();
 	m_total_money				-= item.m_item->Cost();
@@ -213,32 +96,13 @@ IC	void CAI_Stalker::buy_item_virtual				(CTradeItem &item)
 		m_current_trader->m_dwMoney += item.m_item->Cost();
 }
 
-void CAI_Stalker::choose_food						()
+void CAI_Stalker::choose_food					()
 {
-	u32								count = 0;
-	xr_vector<CTradeItem>::iterator	I = m_temp_items.begin();
-	xr_vector<CTradeItem>::iterator	E = m_temp_items.end();
-	for ( ; I != E; ++I) {
-		if (m_total_money < (*I).m_item->Cost())
-			continue;
-
-		CEatableItem				*eatable_item = smart_cast<CEatableItem*>((*I).m_item);
-		if (!eatable_item)
-			continue;
-
-		CMedkit						*medikit = smart_cast<CMedkit*>((*I).m_item);
-		if (medikit)
-			continue;
-
-		buy_item_virtual			(*I);
-		
-		++count;
-		if (count >= MAX_ITEM_FOOD_COUNT)
-			break;
-	}
+	// stalker cannot change food due to the game design :-(((
+	return;
 }
 
-void CAI_Stalker::attach_available_ammo	(CWeapon *weapon)
+void CAI_Stalker::attach_available_ammo			(CWeapon *weapon)
 {
 	if (!weapon || weapon->m_ammoTypes.empty())
 		return;
@@ -268,7 +132,7 @@ void CAI_Stalker::attach_available_ammo	(CWeapon *weapon)
 	}
 }
 
-void CAI_Stalker::choose_weapon						(ALife::EWeaponPriorityType weapon_priority_type)
+void CAI_Stalker::choose_weapon					(ALife::EWeaponPriorityType weapon_priority_type)
 {
 	CTradeItem						*best_weapon	= 0;
 	float							best_value		= -1.f;
@@ -322,28 +186,13 @@ void CAI_Stalker::choose_weapon						(ALife::EWeaponPriorityType weapon_priority
 	}
 }
 
-void CAI_Stalker::choose_medikit					()
+void CAI_Stalker::choose_medikit				()
 {
-	u32								count = 0;
-	xr_vector<CTradeItem>::iterator	I = m_temp_items.begin();
-	xr_vector<CTradeItem>::iterator	E = m_temp_items.end();
-	for ( ; I != E; ++I) {
-		if (m_total_money < (*I).m_item->Cost())
-			continue;
-
-		CMedkit						*medikit = smart_cast<CMedkit*>((*I).m_item);
-		if (!medikit)
-			continue;
-
-		(*I).m_new_owner_id			= ID();
-
-		++count;
-		if (count >= MAX_ITEM_MEDIKIT_COUNT)
-			break;
-	}
+	// stalker cannot change medikit due to the game design :-(((
+	return;
 }
 
-void CAI_Stalker::choose_detector					()
+void CAI_Stalker::choose_detector				()
 {
 	CTradeItem					*best_detector	= 0;
 	float						best_value		= -1.f;
@@ -371,7 +220,7 @@ void CAI_Stalker::choose_detector					()
 		buy_item_virtual		(*best_detector);
 }
 
-void CAI_Stalker::choose_equipment					()
+void CAI_Stalker::choose_equipment				()
 {
 	// stalker cannot change their equipment due to the game design :-(((
 	return;
@@ -387,19 +236,6 @@ void CAI_Stalker::select_items						()
 	choose_medikit		();
 	choose_detector		();
 	choose_equipment	();
-}
-
-void CAI_Stalker::communicate						(CInventoryOwner *trader)
-{
-	m_sell_info_actuality	= false;
-	VERIFY					(trader);
-	m_current_trader		= trader;
-	m_trader_game_object	= smart_cast<CGameObject*>(trader);
-	VERIFY					(m_trader_game_object);
-
-	collect_items			();
-	select_items			();
-	process_items			();
 }
 
 void CAI_Stalker::update_sell_info					()
@@ -493,8 +329,6 @@ bool CAI_Stalker::non_conflicted					(const CInventoryItem *item, const CWeapon 
 	return					(false);
 }
 
-static int enough_ammo_box_count = 1;
-
 bool CAI_Stalker::enough_ammo						(const CWeapon *new_weapon) const
 {
 	int						ammo_box_count = 0;
@@ -512,8 +346,6 @@ bool CAI_Stalker::enough_ammo						(const CWeapon *new_weapon) const
 
 	return					(false);
 }
-
-extern int get_rank									(const shared_str &section);
 
 bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *new_weapon, bool new_wepon_enough_ammo, int new_weapon_rank) const
 {

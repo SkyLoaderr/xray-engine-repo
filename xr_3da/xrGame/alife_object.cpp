@@ -11,10 +11,6 @@
 #include "alife_simulator.h"
 #include "xrServer_Objects_ALife_Items.h"
 
-void CSE_ALifeObject::on_surge				()
-{
-}
-
 void CSE_ALifeObject::spawn_supplies		()
 {
 	spawn_supplies(*m_ini_string);

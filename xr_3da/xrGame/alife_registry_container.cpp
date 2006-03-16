@@ -84,7 +84,7 @@ public:
 
 void CALifeRegistryContainer::load(IReader &file_stream)
 {
-	R_ASSERT2					(file_stream.find_chunk(REGISTRY_CHUNK_DATA),"Can't find chunk ANOMALY_CHUNK_DATA!");
+	R_ASSERT2					(file_stream.find_chunk(REGISTRY_CHUNK_DATA),"Can't find chunk REGISTRY_CHUNK_DATA!");
 	CRegistryHelperProcess<
 		CRegistryHelperLoad,
 		CALifeRegistryContainer,

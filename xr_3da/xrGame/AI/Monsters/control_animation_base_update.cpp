@@ -231,7 +231,8 @@ void CControlAnimationBase::SelectVelocities()
 	
 	// финальная корректировка скорости анимации по физической скорости
 
-	EMotionAnim prev_anim = cur_anim_info().motion;
+//	EMotionAnim prev_anim = 
+		cur_anim_info().motion;
 
 	if (!m_object->state_invisible && !fis_zero(anim_vel.linear)) {
 			

@@ -138,8 +138,8 @@ void CALifeSpawnRegistry::fill_new_spawns				(SPAWN_IDS &spawns, ALife::_TIME_ID
 {
 	process_spawns							(objects);
 
-	SPAWN_IDS::iterator	I = m_spawn_roots.begin();
-	SPAWN_IDS::iterator	E = m_spawn_roots.end();
+	SPAWN_IDS::iterator						I = m_spawn_roots.begin();
+	SPAWN_IDS::iterator						E = m_spawn_roots.end();
 	for ( ; I != E; ++I)
 		fill_new_spawns						(m_spawns.vertex(*I),spawns,game_time,objects);
 

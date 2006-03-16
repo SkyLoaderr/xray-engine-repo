@@ -17,7 +17,6 @@
 #include "../../artifact.h"
 #include "../../xrserver.h"
 #include "../../../skeletonanimated.h"
-#include "../../alife_artefact_order.h"
 #include "../../relation_registry.h"
 #include "../../object_broker.h"
 #include "../../sound_player.h"
@@ -33,7 +32,6 @@ CAI_Trader::CAI_Trader()
 CAI_Trader::~CAI_Trader()
 {
 	xr_delete						(m_sound_player);
-	delete_data						(m_tpOrderedArtefacts);
 }
 
 void CAI_Trader::Load(LPCSTR section)
@@ -208,7 +206,6 @@ BOOL CAI_Trader::net_Spawn			(CSE_Abstract* DC)
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeTrader			*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);
 	R_ASSERT				(l_tpTrader);
-	clone					(l_tpTrader->m_tpOrderedArtefacts,m_tpOrderedArtefacts);
 
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC))
@@ -358,7 +355,6 @@ void CAI_Trader::net_Destroy()
 {
 	inherited::net_Destroy		();
 	CScriptEntity::net_Destroy ();
-	delete_data					(m_tpOrderedArtefacts);
 }
 
 void CAI_Trader::UpdateCL()
@@ -430,24 +426,6 @@ void CAI_Trader::load (IReader &input_packet)
 //проверяет список артефактов в заказах
 u32 CAI_Trader::ArtefactPrice (CArtefact* pArtefact)
 {
-	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator i = m_tpOrderedArtefacts.begin();
-	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator e = m_tpOrderedArtefacts.end();
-	for ( ; i != e; ++i) 
-	{
-		//			Msg     ("Artefact : section[%s] total_count[%d]",(*i).second->m_caSection,(*i).second->m_dwTotalCount);
-		//			Msg     ("Orders : ");
-		if(pArtefact->cNameSect() == (*i).second->m_caSection)
-		{
-			ALife::ARTEFACT_ORDER_VECTOR::const_iterator    II = (*i).second->m_tpOrders.begin();
-			ALife::ARTEFACT_ORDER_VECTOR::const_iterator    EE = (*i).second->m_tpOrders.end();
-			for ( ; II != EE; ++II)
-			{
-				if((*II).m_count>0)
-					return (*II).m_price; 
-			}
-		}
-	}
-
 	return pArtefact->Cost();
 }
 
@@ -455,38 +433,8 @@ u32 CAI_Trader::ArtefactPrice (CArtefact* pArtefact)
 bool CAI_Trader::BuyArtefact (CArtefact* pArtefact)
 {
 	VERIFY(pArtefact);
-	ALife::ARTEFACT_TRADER_ORDER_MAP::iterator i = m_tpOrderedArtefacts.begin();
-	ALife::ARTEFACT_TRADER_ORDER_MAP::iterator e = m_tpOrderedArtefacts.end();
-	for ( ; i != e; ++i) 
-	{
-		//			Msg     ("Artefact : section[%s] total_count[%d]",(*i).second->m_caSection,(*i).second->m_dwTotalCount);
-		//			Msg     ("Orders : ");
-		if(pArtefact->cNameSect() == (*i).second->m_caSection)
-		{
-			ALife::ARTEFACT_ORDER_VECTOR::iterator    II = (*i).second->m_tpOrders.begin();
-			ALife::ARTEFACT_ORDER_VECTOR::iterator    EE = (*i).second->m_tpOrders.end();
-			for ( ; II != EE; ++II)
-			{
-				if((*II).m_count>0)
-				{
-					(*II).m_count--;
-					return true; 
-				}
-			}
-		}
-	}
-
 	return false;
 }
-
-void CAI_Trader::SyncArtefactsWithServer	()
-{
-	CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); VERIFY(e);
-    CSE_ALifeTrader					*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);
-	delete_data						(l_tpTrader->m_tpOrderedArtefacts);
-	clone							(m_tpOrderedArtefacts, l_tpTrader->m_tpOrderedArtefacts);
-}
-
 
 ALife::ERelationType  CAI_Trader::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
 {

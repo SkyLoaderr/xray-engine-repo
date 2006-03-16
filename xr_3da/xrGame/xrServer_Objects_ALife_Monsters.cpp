@@ -11,7 +11,6 @@
 #include "xrServer_Objects_ALife_Items.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "object_broker.h"
-#include "alife_artefact_order.h"
 #include "alife_human_brain.h"
 
 #ifndef AI_COMPILER
@@ -180,11 +179,14 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			R_ASSERT			(!tNetPacket.r_u32());
 		}
 
-		ALife::TASK_VECTOR		l_tpTaskIDs;
-		if (m_wVersion < 36)
-			load_data			(l_tpTaskIDs,tNetPacket);
+		if (m_wVersion < 36) {
+			xr_vector<u16>		temp;
+			load_data			(temp,tNetPacket);
+		}
+
 		if (m_wVersion > 62)
 			tNetPacket.r_u32	(m_dwMoney);
+
 		if ((m_wVersion > 75) && (m_wVersion < 98)){
 			int tmp;
 			tNetPacket.r_s32	(tmp);
@@ -501,14 +503,10 @@ CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVi
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
-	
-	m_tpSupplies.clear			();
-	m_tOrgID					= 1;
 }
 
 CSE_ALifeTrader::~CSE_ALifeTrader			()
 {
-	delete_data					(m_tpOrderedArtefacts);
 }
 
 #ifdef DEBUG
@@ -539,57 +537,37 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
-	tNetPacket.w				(&m_tOrgID,sizeof(m_tOrgID));
-	{
-		tNetPacket.w_u32		(m_tpOrderedArtefacts.size());
-		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	I = m_tpOrderedArtefacts.begin();
-		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	E = m_tpOrderedArtefacts.end();
-		for ( ; I != E; ++I) {
-			tNetPacket.w_stringZ((*I).second->m_caSection);
-			tNetPacket.w_u32	((*I).second->m_dwTotalCount);
-			save_data			((*I).second->m_tpOrders,tNetPacket);
-		}
-	}
-	{
-		tNetPacket.w_u32		(m_tpSupplies.size());
-		ALife::TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
-		ALife::TRADER_SUPPLY_IT		E = m_tpSupplies.end();
-		for ( ; I != E; ++I) {
-			tNetPacket.w_stringZ	((*I).m_caSections);
-			tNetPacket.w_u32	((*I).m_dwCount);
-			tNetPacket.w_float	((*I).m_fMinFactor);
-			tNetPacket.w_float	((*I).m_fMaxFactor);
-		}
-	}
 }
 
 void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
-	if (m_wVersion > 35)
-		tNetPacket.r			(&m_tOrgID,sizeof(m_tOrgID));
+	if ((m_wVersion > 35) && (m_wVersion < 118))
+		tNetPacket.r_u32		();
 		
-	if (m_wVersion > 29) {
-		delete_data				(m_tpOrderedArtefacts);
+	if ((m_wVersion > 29) && (m_wVersion < 118)) {
 		u32						l_dwCount	= tNetPacket.r_u32();
 		for (int i=0 ; i<(int)l_dwCount; ++i) {
-			ALife::SArtefactTraderOrder	*l_tpArtefactOrder = xr_new<ALife::SArtefactTraderOrder>();
-			tNetPacket.r_stringZ(l_tpArtefactOrder->m_caSection);
-			tNetPacket.r_u32	(l_tpArtefactOrder->m_dwTotalCount);
-			load_data			(l_tpArtefactOrder->m_tpOrders,tNetPacket);
-			m_tpOrderedArtefacts.insert(mk_pair(*l_tpArtefactOrder->m_caSection,l_tpArtefactOrder));
+			shared_str			temp;
+			tNetPacket.r_stringZ(temp);
+			tNetPacket.r_u32	();
+			for (int i=0, n=tNetPacket.r_u32(); i<n; ++i) {
+				tNetPacket.r_stringZ(temp);
+				tNetPacket.r_u32	();
+				tNetPacket.r_u32	();
+			}
 		}
 	}
-	if (m_wVersion > 30) {
-		m_tpSupplies.resize		(tNetPacket.r_u32());
-		ALife::TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
-		ALife::TRADER_SUPPLY_IT		E = m_tpSupplies.end();
-		for ( ; I != E; ++I) {
-			tNetPacket.r_stringZ((*I).m_caSections);
-			tNetPacket.r_u32	((*I).m_dwCount);
-			tNetPacket.r_float	((*I).m_fMinFactor);
-			tNetPacket.r_float	((*I).m_fMaxFactor);
+
+	if ((m_wVersion > 30) && (m_wVersion < 118)) {
+		u32						count = tNetPacket.r_u32();
+		shared_str				temp;
+		for (u32 i=0; i<count; ++i) {
+			tNetPacket.r_stringZ(temp);
+			tNetPacket.r_u32	();
+			tNetPacket.r_float	();
+			tNetPacket.r_float	();
 		}
 	}
 }
@@ -611,34 +589,10 @@ bool CSE_ALifeTrader::interactive			() const
 	return						(false);
 }
 
-void CSE_ALifeTrader::OnSuppliesCountChange	(PropValue* sender)
-{
-    m_tpSupplies.resize			(supplies_count);
-	set_editor_flag				(flUpdateProperties);
-}
-
 void CSE_ALifeTrader::FillProps				(LPCSTR _pref, PropItemVec& items)
 {
 	inherited1::FillProps		(_pref,items);
 	inherited2::FillProps		(_pref,items);
-	PHelper().CreateU32			(items, PrepareKey(_pref,*s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
-
-	shared_str						S;
-    shared_str	pref 				= PrepareKey(_pref,*s_name,"ALife\\Supplies");
-
-    supplies_count				= m_tpSupplies.size();
-	PropValue					*V = PHelper().CreateS32(items, PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
-    V->OnChangeEvent.bind		(this,&CSE_ALifeTrader::OnSuppliesCountChange);
-    
-	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
-	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
-	for ( ; I != E; ++I) {
-    	S.sprintf				("Slot #%d",I-B+1);
-		V=PHelper().CreateChoose(items, PrepareKey(pref.c_str(),S.c_str(),"Sections"),&(*I).m_caSections, smEntityType,0,0,8);
-		PHelper().CreateU32		(items, PrepareKey(pref.c_str(),S.c_str(),"Count"), 	&(*I).m_dwCount,	1, 256);
-		PHelper().CreateFloat	(items, PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
-		PHelper().CreateFloat	(items, PrepareKey(pref.c_str(),S.c_str(),"Max Factor"),&(*I).m_fMaxFactor,0.f, 1.f);
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -648,7 +602,6 @@ CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeSpaceRest
 {
 	m_owner_id					= u32(-1);
 	m_maxPower					= pSettings->r_float(caSection,"min_start_power");
-	m_tAnomalyType				= ALife::eAnomalousZoneTypeGravi;
 	if (pSettings->line_exist(caSection,"hit_type"))
 		m_tHitType				= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	else
@@ -674,11 +627,10 @@ void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u32		();
 	}
 
-	if (m_wVersion > 66) {
-		u32						l_dwDummy;
-		tNetPacket.r_u32		(l_dwDummy);
-		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
+	if ((m_wVersion > 66) && (m_wVersion < 118)) {
+		tNetPacket.r_u32		();
 	}
+
 	if(m_wVersion > 102)
 		tNetPacket.r_u32		(m_owner_id);
 
@@ -696,7 +648,6 @@ void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_float			(m_maxPower);
-	tNetPacket.w_u32			(m_tAnomalyType);
 	tNetPacket.w_u32			(m_owner_id);
 	tNetPacket.w_u32			(m_enabled_time);
 	tNetPacket.w_u32			(m_disabled_time);
@@ -809,9 +760,7 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	}
 
 	if ((m_wVersion < 67) && (m_wVersion > 27)) {
-		u32						l_dwDummy;
-		tNetPacket.r_u32		(l_dwDummy);
-		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
+		tNetPacket.r_u32		();
 	}
 
 	if ((m_wVersion > 38) && (m_wVersion < 113))

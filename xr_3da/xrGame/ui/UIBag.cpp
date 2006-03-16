@@ -216,7 +216,8 @@ void CUIBag::Init(float x, float y, float width, float height){
 void CUIBag::UpdateBuyPossibility(){
 	CUIDragDropItemMP* pDDItem;
 	CUIDragDropList* currentDDList;
-	int money = GetMoneyAmount();
+//	int money = 
+		GetMoneyAmount();
 	bool flag;
 
 	for (int i = GROUP_2; i<=GROUP_34; i++)

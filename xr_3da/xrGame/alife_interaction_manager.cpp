@@ -10,14 +10,7 @@
 #include "alife_interaction_manager.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_graph_registry.h"
-#include "alife_news_registry.h"
 #include "alife_time_manager.h"
-
-//news notify for actor
-#include "level.h"
-#include "actor.h"
-#include "game_news.h"
-
 
 using namespace ALife;
 
@@ -96,21 +89,8 @@ public:
 
 		manager->vfFillCombatGroup		(l_tpALifeSchedulable,1);
 
-		CSE_ALifeTraderAbstract	*trader_abstract0 = smart_cast<CSE_ALifeTraderAbstract*>(tpALifeSchedulable);
-		CSE_ALifeTraderAbstract	*trader_abstract1 = smart_cast<CSE_ALifeTraderAbstract*>(l_tpALifeSchedulable);
-		bool					add_news = trader_abstract0 || trader_abstract1;
-		CALifeNews				news;
 		switch (manager->m_tpaCombatObjects[l_iGroupIndex]->tfGetActionType(manager->m_tpaCombatObjects[l_iGroupIndex ^ 1],l_iGroupIndex,l_bMutualDetection)) {
 			case eMeetActionTypeAttack : {
-				if (add_news) {
-					CSE_ALifeDynamicObject	*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(tpALifeSchedulable);
-					VERIFY					(dynamic_object);
-					news.m_game_time		= manager->time_manager().game_time();
-					news.m_game_vertex_id	= dynamic_object->m_tGraphID;
-					news.m_object_id[0]		= tpALifeSchedulable->base()->ID;
-					news.m_object_id[1]		= l_tpALifeSchedulable->base()->ID;
-					news.m_class_id			= 0;
-				}
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
 					Msg("[LSS] %s started combat versus %s",manager->m_tpaCombatObjects[l_iGroupIndex]->base()->name_replace(),manager->m_tpaCombatObjects[l_iGroupIndex ^ 1]->base()->name_replace());
@@ -172,51 +152,6 @@ public:
 						Msg("[LSS] both combat groups decided not to continue combat");
 				}
 #endif
-				if (add_news) {
-					switch (l_tCombatResult) {
-						case eCombatResultRetreat1 : {
-							news.m_news_type	= eNewsTypeRetreat;
-							break;
-						}
-						case eCombatResultRetreat2 : {
-							news.m_news_type	= eNewsTypeRetreat;
-							news.m_object_id[0]	= l_tpALifeSchedulable->base()->ID;
-							news.m_object_id[1]	= tpALifeSchedulable->base()->ID;
-							break;
-						}
-						case eCombatResultRetreat12 : {
-							news.m_news_type	= eNewsTypeRetreatBoth;
-							break;
-						}
-						case eCombatResult1Kill2 : {
-							news.m_news_type	= eNewsTypeKill;
-							break;
-						}
-						case eCombatResult2Kill1 : {
-							news.m_news_type	= eNewsTypeKill;
-							news.m_object_id[0]	= l_tpALifeSchedulable->base()->ID;
-							news.m_object_id[1]	= tpALifeSchedulable->base()->ID;
-							break;
-						}
-						case eCombatResultBothKilled : {
-							news.m_news_type	= eNewsTypeKillBoth;
-							break;
-						}
-						default			: NODEFAULT;
-					}
-//					ALife::_NEWS_ID news_id = 
-						manager->news().add	(news);
-
-					if (strstr(Core.Params,"-anews")) {
-						//сообщить актеру, о том что пришла новость с симуляции
-						CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
-						if (pActor) {
-							GAME_NEWS_DATA		news_data;
-//							news_data.news_id	=  news_id;
-							pActor->AddGameNews	(news_data);
-						}
-					}
-				}
 				manager->vfFinishCombat	(l_tCombatResult);
 				break;
 			}

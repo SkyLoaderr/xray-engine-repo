@@ -12,13 +12,8 @@
 #include "alife_time_manager.h"
 #include "alife_spawn_registry.h"
 #include "alife_object_registry.h"
-#include "alife_task_registry.h"
 #include "alife_graph_registry.h"
-#include "alife_trader_registry.h"
 #include "alife_schedule_registry.h"
-#include "alife_anomaly_registry.h"
-#include "alife_organization_registry.h"
-#include "alife_news_registry.h"
 #include "alife_story_registry.h"
 #include "alife_smart_terrain_registry.h"
 #include "alife_group_registry.h"
@@ -41,13 +36,8 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 	m_time_manager				= 0;
 	m_spawns					= 0;
 	m_objects					= 0;
-	m_tasks						= 0;
 	m_graph_objects				= 0;
-	m_traders					= 0;
 	m_scheduled					= 0;
-	m_anomalies					= 0;
-	m_organizations				= 0;
-	m_news						= 0;
 	m_story_objects				= 0;
 	m_smart_terrains			= 0;
 	m_groups					= 0;
@@ -66,13 +56,8 @@ void CALifeSimulatorBase::unload			()
 	xr_delete					(m_time_manager);
 	xr_delete					(m_spawns);
 	xr_delete					(m_objects);
-	xr_delete					(m_tasks); 
 	xr_delete					(m_graph_objects);
-	xr_delete					(m_traders);
 	xr_delete					(m_scheduled);
-	xr_delete					(m_anomalies);
-	xr_delete					(m_organizations);
-	xr_delete					(m_news);
 	xr_delete					(m_story_objects);
 	xr_delete					(m_smart_terrains);
 	xr_delete					(m_groups);
@@ -86,12 +71,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_time_manager				= xr_new<CALifeTimeManager>			(section);
 	m_spawns					= xr_new<CALifeSpawnRegistry>		(section);
 	m_objects					= xr_new<CALifeObjectRegistry>		(section);
-	m_tasks						= xr_new<CALifeTaskRegistry>		(section); 
-	m_anomalies					= xr_new<CALifeAnomalyRegistry>		(section);
-	m_organizations				= xr_new<CALifeOrganizationRegistry>(section);
-	m_news						= xr_new<CALifeNewsRegistry>		(section);
 	m_graph_objects				= xr_new<CALifeGraphRegistry>		();
-	m_traders					= xr_new<CALifeTraderRegistry>		();
 	m_scheduled					= xr_new<CALifeScheduleRegistry>	();
 	m_story_objects				= xr_new<CALifeStoryRegistry>		();
 	m_smart_terrains			= xr_new<CALifeSmartTerrainRegistry>();

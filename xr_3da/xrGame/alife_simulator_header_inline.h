@@ -11,20 +11,9 @@
 IC	CALifeSimulatorHeader::CALifeSimulatorHeader							(LPCSTR	section)
 {
 	m_version					= ALIFE_VERSION;
-	m_state						= ALife::eZoneStateBetweenSurges;
 }
 
 IC	u32									CALifeSimulatorHeader::version		() const
 {
 	return						(m_version);
-}
-
-IC	ALife::EZoneState	CALifeSimulatorHeader::state		() const
-{
-	return						(m_state);
-}
-
-IC	void				CALifeSimulatorHeader::set_state	(const ALife::EZoneState &state)
-{
-	m_state						= state;
 }

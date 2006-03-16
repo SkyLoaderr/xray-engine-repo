@@ -14,7 +14,6 @@
 #include "../monsters/ai_monster_bones.h"
 #include "../../sound_player.h"
 #include "../../AI_PhraseDialogManager.h"
-#include "../../script_task.h"
 
 namespace MonsterSpace {
 	enum EMonsterHeadAnimType;
@@ -143,10 +142,6 @@ public:
 	virtual	u32				ArtefactPrice			(CArtefact* pArtefact);
 	//продажа артефакта, с последуещим изменением списка заказов  (true - если артефакт был в списке)
 	virtual	bool			BuyArtefact				(CArtefact* pArtefact);
-	//синхронизация заданий артефактов для сервера
-	virtual	void			SyncArtefactsWithServer	();
-public:
-	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
 
 public:
 	IC		bool			busy_now				() const

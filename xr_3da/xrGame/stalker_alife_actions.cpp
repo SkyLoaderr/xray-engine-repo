@@ -78,7 +78,7 @@ void CStalkerActionGatherItems::execute		()
 
 	object().movement().set_level_dest_vertex	(object().memory().item().selected()->ai_location().level_vertex_id());
 	object().movement().set_desired_position	(&object().memory().item().selected()->Position());
-	object().sight().setup			(SightManager::eSightTypePosition,&object().memory().item().selected()->Position());
+	object().sight().setup						(SightManager::eSightTypePosition,&object().memory().item().selected()->Position());
 }
 
 //////////////////////////////////////////////////////////////////////////

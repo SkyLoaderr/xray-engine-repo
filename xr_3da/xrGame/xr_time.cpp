@@ -3,20 +3,28 @@
 #include "ui/UIInventoryUtilities.h"
 #include "level.h"
 #include "date_time.h"
+#include "ai_space.h"
+#include "alife_simulator.h"
+#include "alife_time_manager.h"
 
 #define sec2ms		1000
 #define min2ms		60*sec2ms
 #define hour2ms		60*min2ms
 #define day2ms		24*hour2ms
 
+ALife::_TIME_ID __game_time()
+{
+	return	(ai().get_alife() ? ai().alife().time().game_time() : Level().GetGameTime());
+}
+
 u32 get_time()
 {
-	return u32(Level().GetGameTime() & u32(-1));
+	return u32(__game_time() & u32(-1));
 }
 
 xrTime get_time_struct()
 {
-	return xrTime( Level().GetGameTime() );
+	return xrTime(__game_time());
 }
 
 LPCSTR	xrTime::dateToString	(int mode)								
