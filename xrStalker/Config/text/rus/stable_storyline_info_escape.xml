@@ -50,16 +50,16 @@
 		<text>Дневник Толика</text>
 	</string>
 	<string id="Seryi flash">
-		<text>Флешка Серого</text>
+		<text>Инфо с ПДА Серого</text>
 	</string>
 	<string id="Flash dead stalker">
-		<text>Флешка мертвого сталкера</text>
+		<text>Инфо с ПДА мертвого сталкера</text>
 	</string>
 	<string id="Bandit's flash">
-		<text>Флешка бандита с завода</text>
+		<text>Инфо с ПДА бандита с фабрики</text>
 	</string>
 	<string id="Dead novice's flash">
-		<text>Флешка мертвого новичка</text>
+		<text>Инфо с ПДА мертвого новичка</text>
 	</string>
 	<string id="about_pda">
 		<text>Об энциклопедии</text>
