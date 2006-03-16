@@ -8,6 +8,7 @@ class CUIKickPlayer;
 class CUIChangeMap;
 class CUIChangeWeather;
 class CUIXml;
+class CUITextVote;
 
 class CUIVotingCategory : public CUIDialogWnd {
 public:
@@ -34,5 +35,6 @@ protected:
 	CUIKickPlayer*		kick;
 	CUIChangeMap*		change_map;
 	CUIChangeWeather*	change_weather;
+	CUITextVote*		text_vote;
 	CUIXml*				xml_doc;
 };

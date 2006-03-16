@@ -7,12 +7,15 @@
 #include "UIKickPlayer.h"
 #include "UIChangeMap.h"
 #include "UIChangeWeather.h"
+#include "UITextVote.h"
 
 
 CUIVotingCategory::CUIVotingCategory(){
 	xml_doc = NULL;
 	kick = NULL;
 	change_weather = NULL;
+	change_map = NULL;
+	text_vote = NULL;
 
 	bkgrnd = xr_new<CUIStatic>(); 
 	bkgrnd->SetAutoDelete(true);
@@ -135,11 +138,15 @@ void CUIVotingCategory::OnBtn(int i){
 		case 5:
 			game->StartStopMenu(this, true);
 			if (!change_weather)
-				change_weather = xr_new<CUIChangeWeather>();				
+				change_weather = xr_new<CUIChangeWeather>();
 			change_weather->Init(*xml_doc);
 			game->StartStopMenu(change_weather, true);
 			break;
 		case 6:
+			if (!text_vote)
+				text_vote = xr_new<CUITextVote>();
+			text_vote->Init(*xml_doc);
+			game->StartStopMenu(text_vote, true);			
 			break;
 		case 7:
 			break;

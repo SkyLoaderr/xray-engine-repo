@@ -10982,6 +10982,12 @@
 						RelativePath=".\ui\UIKickPlayer.h">
 					</File>
 					<File
+						RelativePath=".\ui\UITextVote.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITextVote.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIVotingCategory.cpp">
 					</File>
 					<File

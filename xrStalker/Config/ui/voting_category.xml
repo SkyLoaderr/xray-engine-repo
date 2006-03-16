@@ -237,5 +237,39 @@
 			<text font="normal" r="227" g="199" b="178" vert_align="c">Cloudy</text>
 		</txt_4>
 	</change_weather>
+	
+	<text_vote x="212" y="198" width="600" height="371">
+		<background x="0" y="0" width="600" height="371">
+			<texture>ui_hud_frame_voting</texture>
+		</background>		
+		<header x="50" y="45" width="500" height="33">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">Enter Text for Voting</text>
+		</header>		
+		<edit_box x="136" y="100" width="270" height="60">			
+			<font_s r="218" g="217" b="213"/>
+			<font r="131" g="131" b="131" font="letterica16"/>
+			<texture>ui_cb_listbox</texture>
+		</edit_box>		
+		<btn_ok x="257" y="328" width="157" height="48">
+			<text font="normal" align="c">mm_ok</text>
+			<texture>ui_button_main02</texture>
+			<text_color>
+				<e r="227" g="199" b="178"/>				
+				<t r="180" g="153" b="155"/>				
+				<d r="106" g="95" b="91"/>							
+				<h r="255" g="255" b="200"/>
+			</text_color>
+		</btn_ok>		
+		<btn_cancel x="414" y="328" width="157" height="48">
+			<text font="normal" align="c">mm_cancel</text>
+			<texture>ui_button_main03</texture>
+			<text_color>
+				<e r="227" g="199" b="178"/>				
+				<t r="180" g="153" b="155"/>				
+				<d r="106" g="95" b="91"/>							
+				<h r="0" g="0" b="0"/>
+			</text_color>
+		</btn_cancel>				
+	</text_vote>
 
 </voting_category>
