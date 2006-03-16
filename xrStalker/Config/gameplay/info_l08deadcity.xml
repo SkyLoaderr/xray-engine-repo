@@ -82,14 +82,9 @@
 	<info_portion id="cit_leader_reward"></info_portion>
 
 	<!-- Узнать, что случилось с Василием Петровичем -->
-	<info_portion id="cit_vp_search">
-		<task>cit_vp_search</task>
-		<article>cit_vp</article>
-	</info_portion>
+	<info_portion id="cit_vp_search"></info_portion>
 	<info_portion id="cit_vp_info"></info_portion>
-	<info_portion id="cit_vp_find">
-		<article>cit_vp_killers</article>
-	</info_portion>
+	<info_portion id="cit_vp_find"></info_portion>
 	<info_portion id="cit_vp_say"></info_portion>
 	<info_portion id="cit_victor_die"></info_portion>
 	
