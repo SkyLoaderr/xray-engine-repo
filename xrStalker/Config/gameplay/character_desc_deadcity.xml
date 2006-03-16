@@ -12,8 +12,8 @@
         <class>cit_doctor</class>
         <community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>36</rank>
+        <reputation>145</reputation>
 
         <visual>actors\izgoy\izgoy</visual>
         <snd_config>characters_voice\human_02\stalker\</snd_config>
@@ -25,8 +25,8 @@
         </supplies>
 
         <start_dialog>cit_doctor_hello_dialog</start_dialog>
-        <actor_dialog>cit_doctor_escape_dialog</actor_dialog>
         <actor_dialog>cit_doctor_main_dialog</actor_dialog>
+        <actor_dialog>cit_doctor_escape_dialog</actor_dialog>
 <!-- #include "gameplay\character_dialogs.xml" -->
     </specific_character>
 
@@ -36,13 +36,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>cit_killer_general_bio</bio>
 
 		<class>cit_killer_general</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>700</rank>
-		<reputation>-50</reputation>
+		<rank>480</rank>
+		<reputation>-98</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -67,13 +67,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>cit_killer_general_bio</bio>
 
 		<class>cit_killer_general</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>700</rank>
-		<reputation>-50</reputation>
+		<rank>521</rank>
+		<reputation>-124</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -99,13 +99,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>cit_killer_general_bio</bio>
 
 		<class>cit_killer_veteran</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>700</rank>
-		<reputation>-50</reputation>
+		<rank>844</rank>
+		<reputation>-137</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -129,13 +129,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</bio>
+		<bio>cit_killer_general_bio</bio>
 
 		<class>cit_killer_veteran</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>700</rank>
-		<reputation>-50</reputation>
+		<rank>765</rank>
+		<reputation>-129</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -161,13 +161,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="0"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>cit_killer_exo_bio</bio>
 
 		<class>cit_killer_nauchniy</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>900</rank>
-		<reputation>-50</reputation>
+		<rank>908</rank>
+		<reputation>-125</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
@@ -193,13 +193,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>cit_killer_exo_bio</bio>
 
 		<class>cit_killer_exo</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>900</rank>
-		<reputation>-50</reputation>
+		<rank>954</rank>
+		<reputation>-139</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 		
@@ -225,13 +225,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</bio>
+		<bio>cit_killer_exo_bio</bio>
 
 		<class>cit_killer_exo_sniper</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>900</rank>
-		<reputation>-50</reputation>
+		<rank>970</rank>
+		<reputation>-142</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
 			
@@ -263,8 +263,8 @@
 		<class>cit_killer_leader</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>900</rank>
-		<reputation>-50</reputation>
+		<rank>999</rank>
+		<reputation>-150</reputation>
 	
 		<snd_config>characters_voice\human_02\killer\</snd_config>
 		
@@ -295,13 +295,13 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Алкаш.</bio>
+        <bio>cit_bandit_drunk_bio</bio>
 
         <class>cit_bandit_drunk</class>
         <community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>306</rank>
+        <reputation>-58</reputation>
 
         <visual>actors\bandit\stalker_bandit_drunk</visual>
         <snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -322,13 +322,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_general_bio</bio>
 		
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>400</rank>
-		<reputation>0</reputation>
+		<rank>397</rank>
+		<reputation>-88</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -353,13 +353,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_general_bio</bio>
 		
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>400</rank>
-		<reputation>0</reputation>
+		<rank>458</rank>
+		<reputation>-103</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -383,13 +383,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_general_bio</bio>
 		
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>400</rank>
-		<reputation>0</reputation>
+		<rank>530</rank>
+		<reputation>-120</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -413,13 +413,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_general_bio</bio>
 				
 		<class>cit_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>400</rank>
-		<reputation>0</reputation>
+		<rank>550</rank>
+		<reputation>-104</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<snd_config>characters_voice\human_03\bandit\</snd_config>
@@ -444,13 +444,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_veteran_bio</bio>
 		
 		<class>cit_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>700</rank>
-		<reputation>-20</reputation>
+		<rank>660</rank>
+		<reputation>-123</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -475,13 +475,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_veteran_bio</bio>
 		
 		<class>cit_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>700</rank>
-		<reputation>-20</reputation>
+		<rank>747</rank>
+		<reputation>-133</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -505,13 +505,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_veteran_bio</bio>
 
 		<class>cit_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>700</rank>
-		<reputation>-20</reputation>
+		<rank>810</rank>
+		<reputation>-127</reputation>
 
 		<visual>actors\bandit\stalker_bandit_veteran</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -536,13 +536,13 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</bio>
+		<bio>cit_bandit_veteran_bio</bio>
 		
 		<class>cit_bandit_veteran_best</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>700</rank>
-		<reputation>-20</reputation>
+		<rank>889</rank>
+		<reputation>-141</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -573,8 +573,8 @@
 		<class>cit_bandit_leader</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>700</rank>
-		<reputation>-20</reputation>
+		<rank>931</rank>
+		<reputation>-146</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -605,8 +605,8 @@
 		<class>cit_vp</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>400</rank>
-		<reputation>0</reputation>
+		<rank>630</rank>
+		<reputation>132</reputation>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
 

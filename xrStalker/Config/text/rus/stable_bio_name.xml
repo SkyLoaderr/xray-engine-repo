@@ -71,6 +71,13 @@
 	<text>Лидер группировки наемников. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</text>
 </string>
 
+<string id="cit_killer_general_bio">
+	<text>Неизвестный наемник. Возможно хорошо вооружен. Детальная информация отсутствует.</text>
+</string>
+<string id="cit_killer_exo_bio">
+	<text>Неизвестный наемник. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</text>
+</string>
+
 <string id="cit_vp_name">
 	<text>Василий Петрович</text>
 </string>
@@ -83,6 +90,16 @@
 </string>
 <string id="cit_bandits_leader_bio">
 	<text>Один из бандитских лидеров. Хорошо вооружен и очень опасен. Детальная информация отсутствует.</text>
+</string>
+
+<string id="cit_bandit_drunk_bio">
+	<text>Алкаш.</text>
+</string>
+<string id="cit_bandit_general_bio">
+	<text>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</text>
+</string>
+<string id="cit_bandit_veteran_bio">
+	<text>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</text>
 </string>
 
 
