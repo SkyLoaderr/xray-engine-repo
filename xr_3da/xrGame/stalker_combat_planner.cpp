@@ -48,11 +48,12 @@ void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *sto
 {
 	inherited::setup		(object,storage);
 
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,	true);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,				false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,			false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,		false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,		false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,		true);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseCrouchToLookOut,	true);
 	
 	clear					();
 	add_evaluators			();
