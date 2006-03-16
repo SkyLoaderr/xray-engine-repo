@@ -26,13 +26,13 @@ function proceed()
 	then
 		actor:give_info_portion("cit_leader_has_flash")
 	end
---]]
 	if	actor:has_info("cit_vp_search") and
 		actor:dont_has_info("cit_vp_find") and 
 		actor:object("cit_vp_pda") ~= nil 
 	then
 		actor:give_info_portion("cit_vp_find")
 	end 
+--]]
 end
 
 ----------------------------------------------------------------------------------------------------
