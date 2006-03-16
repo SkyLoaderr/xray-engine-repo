@@ -41,7 +41,8 @@ void CStateManagerTushkano::execute()
 
 	if (!object->is_under_control()) {
 		const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-		const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
+//		const CEntityAlive* corpse	= 
+			object->CorpseMan.get_corpse();
 
 		if (enemy) {
 			switch (object->EnemyMan.get_danger_type()) {
