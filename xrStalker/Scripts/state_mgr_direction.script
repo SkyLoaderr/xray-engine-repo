@@ -188,6 +188,18 @@ function look_at_object(npc, st)
 
 end
 
-function look_object_type(npc, st)
+local look_direction_states = {
+	threat = true,
+	threat_na = true,
+	wait_na = true,
+	guard_na = true
+	}
+
+function look_object_type(npc, st)	
+	--' Возвращает true  если нужно смотреть по направлению
+	--' false - нужно смотреть на объект
+	if look_direction_states[st.target_state] == true then
+		return true
+	end
 	return state_lib.states[st.target_state].animation ~= nil
 end
