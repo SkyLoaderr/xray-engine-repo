@@ -38,6 +38,7 @@
 #include "ai_stalker_space.h"
 #include "../../effectorshot.h"
 #include "../../BoneProtections.h"
+#include "../../RadioactiveZone.h"
 
 using namespace StalkerSpace;
 
