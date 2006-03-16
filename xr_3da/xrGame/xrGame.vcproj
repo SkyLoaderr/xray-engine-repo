@@ -11130,6 +11130,12 @@
 					Name="Voting"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIChangeMap.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIChangeMap.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIKickPlayer.cpp">
 					</File>
 					<File

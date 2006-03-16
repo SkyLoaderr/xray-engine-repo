@@ -5,6 +5,7 @@
 #include "UI3tButton.h"
 #include "../game_cl_teamdeathmatch.h"
 #include "UIKickPlayer.h"
+#include "UIChangeMap.h"
 
 CUIVotingCategory::CUIVotingCategory(){
 	xml_doc = NULL;
@@ -100,11 +101,11 @@ void CUIVotingCategory::OnBtn(int i){
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
 	switch (i){
 		case 0:
-			Console->Execute("cl_votestart g_restart");
+			Console->Execute("cl_votestart restart");
 			game->StartStopMenu(this, true);
 			break;
 		case 1:
-			Console->Execute("cl_votestart g_restart_fast");
+			Console->Execute("cl_votestart restart_fast");
 			game->StartStopMenu(this, true);
 			break;
 		case 2:
@@ -122,6 +123,11 @@ void CUIVotingCategory::OnBtn(int i){
 			game->StartStopMenu(kick, true);
 			break;
 		case 4:
+			game->StartStopMenu(this, true);
+			if (!change_map)
+				change_map = xr_new<CUIChangeMap>();
+			change_map->Init(*xml_doc);
+			game->StartStopMenu(change_map, true);
 			break;
 		case 5:
 			break;

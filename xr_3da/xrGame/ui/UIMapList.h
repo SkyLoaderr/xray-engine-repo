@@ -23,6 +23,9 @@ enum	GAME_TYPE
 	GAME_END_LIST				,
 };
 
+#define	MAP_LIST	"map_list.ltx"
+#define	MAP_ROTATION_LIST	"maprot_list.ltx"
+
 bool GetToken(char** sx, char* e, char* token);
 bool MP_map_cmp(shared_str map1, shared_str map2);
 

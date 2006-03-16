@@ -10,9 +10,6 @@
 #include "UIMapInfo.h"
 #include "../../xr_ioconsole.h"
 
-#define	MAP_LIST	"map_list.ltx"
-#define	MAP_ROTATION_LIST	"maprot_list.ltx"
-
 extern ENGINE_API string512  g_sLaunchOnExit;
 
 static LPSTR	g_GameTypeName	[]		= {

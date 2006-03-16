@@ -5,6 +5,7 @@
 class CUIStatic;
 class CUI3tButton;
 class CUIKickPlayer;
+class CUIChangeMap;
 class CUIXml;
 
 class CUIVotingCategory : public CUIDialogWnd {
@@ -30,5 +31,6 @@ protected:
 	CUI3tButton*	btn_cancel;
 
 	CUIKickPlayer*	kick;
+	CUIChangeMap*	change_map;
 	CUIXml*			xml_doc;
 };
