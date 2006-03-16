@@ -19,11 +19,40 @@
 	<text>Лидер бандитов.</text>
 </string>
 
+<string id="val_bandit_bodyguard_bio">
+	<text>Бандит охранник. Сомнительная репутация. Детальная информация отсутствует.</text>
+</string>
+<string id="val_bandit_common_bio">
+	<text>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</text>
+</string>
+
 <string id="val_pulia_name">
 	<text>Пуля</text>
 </string>
 <string id="val_pulia_bio">
 	<text>Сталкер группировки "Долг". Детальная информация отсутствует.</text>
+</string>
+
+<string id="val_dolg_common_bio">
+	<text>Сталкер группировки "Долг". Детальная информация отсутствует.</text>
+</string>
+
+<string id="val_monolith_common_bio">
+	<text>Сталкер группировки "Монолит". Детальная информация отсутствует.</text>
+</string>
+
+<string id="val_soldier_regular_bio">
+	<text>Рядовой солдат. Детальная информация отсутствует.</text>
+</string>
+<string id="val_soldier_specnaz_bio">
+	<text>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</text>
+</string>
+
+<string id="val_stalker_novice_bio">
+	<text>Новичок. Недавно в Зоне. Детальная информация отсутствует.</text>
+</string>
+<string id="val_stalker_general_bio">
+	<text>Опытный сталкер. Детальная информация отсутствует.</text>
 </string>
 
 
