@@ -141,4 +141,7 @@
 <!-- Погоня -->
 <info_portion id="val_chase_start"></info_portion>
 
+<info_portion id="val_x18_conclusion_info">
+	<article>val_x18_conclusion_art</article>
+</info_portion>
 </game_information_portions>
