@@ -36,6 +36,15 @@
     <string id="enc_equipment_food_vodka1">
         <text>¬кусна€ и питательна€ водка производства корпорации "GSC". —нижает воздействие радиации, однако злоупотребл€ть ей не следует.</text>
     </string>
+    <string id="energy_drink_name">
+        <text>Ёнергетический напиток</text>
+    </string>
+    <string id="energy_drink_short_name">
+        <text>Ёнергетический напиток</text>
+    </string>
+    <string id="enc_equipment_energydrink">
+        <text>Ёнергетический напиток Non-stop. ≈сли вы от усталости не в состо€нии сделать даже шаг - это то, что вам нужно.</text>
+    </string>
     <string id="Antirad">
         <text>јнтирадиационные препараты</text>
     </string>
