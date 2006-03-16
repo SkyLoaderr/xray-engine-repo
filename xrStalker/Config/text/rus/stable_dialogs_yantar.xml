@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="yantar_general_ucheniy_talk_end_0">
-        <text>Я отключил излучение!</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_end_1">
-        <text>Отличная работа, Меченый. В благодарность мы максимально снизим наши цены для тебя.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_end_11">
-        <text>Спасибо.</text>
-    </string>
     <string id="yantar_general_ucheniy_talk_start_101">
         <text>Спасибо тебе Меченый, что помог Круглову спастись. Возьми этот скафандр в награду за помощь. И я подозреваю что ты не просто за наградой пришел, я прав?</text>
     </string>
@@ -129,6 +120,15 @@
     <string id="yantar_general_ucheniy_talk_start_221">
         <text>Спасибо тебе Меченый, что помог Круглову спастись. Возьми этот скафандр в награду за помощь.</text>
     </string>
+    <string id="yantar_general_ucheniy_talk_start_231">
+        <text>Отличная работа, Меченый. Ты отключил излучение, теперь мы сможем устроить туда экспедицию и все тщательно изучить. В благодарность мы для тебя максимально снизим наши цены.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_2311">
+        <text>Спасибо.</text>
+    </string>
+    <string id="yantar_general_ucheniy_talk_start_241">
+        <text>Да, Меченый?! Что тебя интересует?</text>
+    </string>
     <string id="yantar_general_ucheniy_talk_start_31">
         <text>Вы отлично справились. Если замеры верны, то прототип обеспечит вам максимальную защиту от излучения</text>
     </string>
@@ -214,10 +214,10 @@
         <text>Хорошо, я попробую.</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_61">
-        <text>Да, да?! Что вас интересует?</text>
+        <text>Да, Меченый?!</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_71">
-        <text>Да, да?! Что вас интересует?</text>
+        <text>Да, Меченый?!</text>
     </string>
     <string id="yantar_general_ucheniy_talk_start_81">
         <text>Плохо что погиб Круглов, но его уже не вернуть. Нам нужны его замеры, ты принес их?</text>
