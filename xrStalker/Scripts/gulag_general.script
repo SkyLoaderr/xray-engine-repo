@@ -23,7 +23,26 @@ local presets = {
 }
 
 function load_job(sj, gname, type, squad, groups, st)
-	ltx = ""
+	ltx = "[meet@generic_lager_guard]\n"..
+		  "meet_state		= 20|wait@wait\n"..
+		  "meet_state_wpn	= 20|backoff@threat_weap\n"..
+		  "victim			= 20|actor\n"..
+		  "victim_wpn		= 20|actor\n"..
+		  "use				= true\n"..
+		  "use_wpn			= false\n"..
+		  "syndata			= backoff@threat_weap\n"..
+		  "precond			= visibility\n"..
+
+		  "[meet@generic_lager_patrol]\n"..
+		  "meet_state		= 5|wait@wait\n"..
+		  "meet_state_wpn	= 20|backoff@threat_weap\n"..
+		  "victim			= 5|actor\n"..
+		  "victim_wpn		= 20|actor\n"..
+		  "use				= true\n"..
+		  "use_wpn			= false\n"..
+		  "syndata			= backoff@threat_weap\n"..
+		  "precond			= visibility\n"
+		  
 	-- УНИВЕРСАЛЬНЫЙ ЛАГЕРЬ СТАЛКЕРОВ
 	if type == "general_lager" then
 		-- Проверяем наличие кампов.
