@@ -427,14 +427,22 @@ function lstats()
 	local can_spawn = {}
 	printf("***************** LIMITS STATISTIC *********************")
 	for k,v in pairs(respawners) do
+		-- «апоминаем максимальное количество весов дл€ данного респавнера
+		local wage = 0
+		for kk,vv in pairs(v.respawn_section) do
+			wage = wage + vv.prob
+		end
+		
 		-- «аносим максимальное количество всех типов чуваков, которые данный респавнер может наспаунить.
 		for kk,vv in pairs(v.respawn_section) do
 			local tt = v.sectSpawnProps[vv.section]
 			local community_rank = tt.community.."_"..tt.rank
 			if can_spawn[community_rank] == nil then
-				can_spawn[community_rank] = {num = 0, community = tt.community, rank = tt.rank}
+				can_spawn[community_rank] = {num = 0, num_r = 0, community = tt.community, rank = tt.rank}
 			end
 			can_spawn[community_rank].num = can_spawn[community_rank].num + v.max_count
+			-- Ќеобходимо запомнить еще и матожидание
+			can_spawn[community_rank].num_r = can_spawn[community_rank].num_r + v.max_count*vv.prob/wage
 		end
 	end	
 	-- ¬ыводим все это в общей статистике
@@ -442,7 +450,7 @@ function lstats()
 		local cs = sim_statistic.simNpcCount(v.community, v.rank)
 		local gl = simMaxCount[k]
 		if gl == nil then gl = 0 end
-		printf("%s max=%s current=%s limit=%s", k, v.num, cs, gl)
+		printf("%s max=%s max_prob=%s current=%s limit=%s", k, v.num, v.num_r, cs, gl)
 	end
 end
 
