@@ -106,7 +106,6 @@
 			[spawn] \n
 			wpn_usp \n
 			ammo_11.43x23_fmj = 1 \n
-			yantar_vasilyev_pda \n	
 		</supplies>
 			
 		<start_dialog>yantar_help_scientist</start_dialog>

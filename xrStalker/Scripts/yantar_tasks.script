@@ -3,9 +3,7 @@ function proceed()
 end
 function process_info_portion(info_id)
 end
-function actor_has_vasilyev_pda ()
-		return db.actor:object ("yantar_vasilyev_pda") ~= nil
-end
+
 function yan_labx16_mapspot (actor, npc)
     	level_tasks.add_location (907, "green_location")
 end

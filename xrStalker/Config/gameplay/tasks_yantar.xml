@@ -127,8 +127,7 @@
 			<text>yan_find_vasilyev_pda</text>
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
 			<object_story_id>yan_vasilyev</object_story_id>
-			<function_complete>yantar_tasks.actor_has_vasilyev_pda</function_complete>
-			<infoportion_set_complete>yan_find_vasilyev_end</infoportion_set_complete>
+			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
 		</objective>
 </game_task>
 
