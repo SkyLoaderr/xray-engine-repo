@@ -24,7 +24,6 @@
 			ecolog_outfit \n
 		</supplies>
 		<start_dialog>yantar_general_ucheniy_talk_start</start_dialog>
-		<actor_dialog>yantar_general_ucheniy_talk_end</actor_dialog>
 		<actor_dialog>tm_ecolog_dialog</actor_dialog>
 		<actor_dialog>tm_ecolog_reward</actor_dialog>
 
@@ -133,7 +132,6 @@
 			[spawn] \n
 			wpn_usp \n
 			ammo_11.43x23_fmj = 1 \n
-			yantar_ghost_pda \n
 			lab_x16_documents \n	
 			outfit_stalker_anom2 \n
 		</supplies>
