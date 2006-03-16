@@ -140,13 +140,6 @@ end
 function give_x16_reward(first_speaker, second_speaker)
 		dialogs.relocate_money(second_speaker, 5000, "in")
 end
-function give_ryaboy_flash(first_speaker, second_speaker)
-	local obj = first_speaker:object("ryaboy_flash")
-	if obj then
-		dialogs.relocate_item(first_speaker, obj, "in")
-	end
-end
-
 
 -- Выдача задания на отключение радара
 function barman_need_radar(actor,npc)

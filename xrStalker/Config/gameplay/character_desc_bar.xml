@@ -404,7 +404,6 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp \n
-			ryaboy_flash \n
 		</supplies>
 					
 		<start_dialog>bar_bar_psih_start_pain</start_dialog>
