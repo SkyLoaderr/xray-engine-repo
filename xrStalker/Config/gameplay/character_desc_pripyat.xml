@@ -7,7 +7,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_ambush</class>
         <community>monolith</community>
@@ -33,7 +33,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_ambush</class>
         <community>monolith</community>
@@ -60,7 +60,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_ambush_specnaz</class>
         <community>monolith</community>
@@ -86,7 +86,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_ambush_specnaz</class>
         <community>monolith</community>
@@ -113,7 +113,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_ambush_exo</class>
         <community>monolith</community>
@@ -139,7 +139,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_ambush_exo</class>
         <community>monolith</community>
@@ -166,7 +166,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -193,7 +193,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -220,7 +220,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -247,7 +247,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -275,7 +275,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_specnaz</class>
         <community>monolith</community>
@@ -303,7 +303,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="0" y="4"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_specnaz</class>
         <community>monolith</community>
@@ -332,7 +332,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_exo</class>
         <community>monolith</community>
@@ -360,7 +360,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+        <bio>pri_monolith_common_bio</bio>
 
         <class>pri_monolith_exo</class>
         <community>monolith</community>
@@ -421,7 +421,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>pri_followers_common_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -451,7 +451,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>pri_followers_common_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -480,7 +480,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</bio>
+		<bio>pri_followers_common_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -508,10 +508,10 @@
 <!-------------------------- SOLDIER ----------------------->
 <!-------------------------- SUICIDE ----------------------->
 	<specific_character id="pri_soldier_suicide_default1" team_default = "1">
-		<name>Зомбированный солдат.</name>
+		<name>pri_zombied_soldier_name</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>pri_zombied_soldier_bio</bio>
 
 		<class>pri_soldier_suicide</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -531,10 +531,10 @@
 	</specific_character>
 
 	<specific_character id="pri_soldier_suicide_default2" team_default = "1">
-		<name>Зомбированный солдат.</name>
+		<name>pri_zombied_soldier_name</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
+		<bio>pri_zombied_soldier_bio</bio>
 
 		<class>pri_soldier_suicide</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -555,10 +555,10 @@
 
 <!---------------------- ZOMBIED ----------------------------->
 	<specific_character id="pri_zombied_suicide_default1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>pri_zombied_stalker_name</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>pri_zombied_stalker_bio</bio>
 
 		<class>pri_zombied_suicide</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -579,10 +579,10 @@
 	</specific_character>
 
 	<specific_character id="pri_zombied_default1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>pri_zombied_stalker_name</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>pri_zombied_stalker_bio</bio>
 
 		<class>pri_zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -606,10 +606,10 @@
 
 <!--------------------------- VETERANS----------------------->
 	<specific_character id="pri_zombied_veteran_default1" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>pri_zombied_stalker_name</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>pri_zombied_stalker_bio</bio>
 
 		<class>pri_zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -632,10 +632,10 @@
 	</specific_character>
 
 	<specific_character id="pri_zombied_veteran_default2" team_default = "1">
-		<name>Зомбированный сталкер</name>
+		<name>pri_zombied_stalker_name</name>
 		<icon x="8" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>pri_zombied_stalker_bio</bio>
 
 		<class>pri_zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
