@@ -150,6 +150,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
+			void					spawn_artefacts			();
 	virtual void					on_spawn				();
 	virtual	void					update					();
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,				float &fHitPower);
