@@ -23,12 +23,14 @@
 		<task>storyline_eliminate_gunslinger</task>
 		<article>storyline_gunslinger</article>
 		<article>about_enciclopedia</article>
+		<article>sl_beginning</article>
 	</info_portion>
 
 	<!-- Tutorial wounded -->
 	<info_portion id="tutorial_wounded_start">
 		<task>tutorial_help_wounded</task>
 		<article>tutorial_wounded_help</article>
+		<article>sl_first_opinions</article>
 	</info_portion>
 	<info_portion id="esc_first_novice_dead"></info_portion>
 	<info_portion id="esc_second_novice_dead"></info_portion>
@@ -60,6 +62,7 @@
 	<info_portion id="escape_stalker_meet">
 		<task>esc_help_wounded_from_raid</task>
 		<article>esc_fox_help</article>
+		<article>sl_usefull_info</article>
 	</info_portion>
 	<info_portion id="escape_stalker_give">	
 		<article>storyline_seryi_info</article>
@@ -214,6 +217,7 @@
 	<info_portion id="esc_find_doctor_start">
 		<task>doctor_meet</task>
 		<article>esc_doctor_meet</article>
+		<article>sl_provodnik</article>
 	</info_portion>
 	
 	<!-- Коррумпированый пост на мосту -->
