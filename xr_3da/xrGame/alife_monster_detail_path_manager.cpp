@@ -90,8 +90,7 @@ bool CALifeMonsterDetailPathManager::failed					() const
 void CALifeMonsterDetailPathManager::update					()
 {
 	ALife::_TIME_ID					current_time = ai().alife().time_manager().game_time();
-	VERIFY							(current_time >= m_last_update_time);
-	if (current_time == m_last_update_time)
+	if (current_time <= m_last_update_time)
 		return;
 
 	ALife::_TIME_ID					time_delta = current_time - m_last_update_time;
