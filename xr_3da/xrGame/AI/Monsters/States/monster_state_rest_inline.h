@@ -113,8 +113,7 @@ void CStateMonsterRestAbstract::execute()
 				} 
 
 				if (!use_squad) {
-					bool bNormalSatiety =	(object->conditions().GetSatiety() > object->db().m_fMinSatiety) && 
-						(object->conditions().GetSatiety() < object->db().m_fMaxSatiety); 
+					bool bNormalSatiety =	(object->conditions().GetSatiety() > object->db().satiety_threshold); 
 
 					bool state_fun = false;
 

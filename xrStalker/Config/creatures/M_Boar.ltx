@@ -59,7 +59,7 @@ Velocity_RunFwdNormal	= 7.0,		3.5,			3.5,		0.4,	1
 Velocity_RunFwdDamaged	= 4.5,		3.0,			3.0,		0.2,	1
 Velocity_WalkFwdDamaged	= 1.3,		2.5,			2.5,		0.2,	2.0	
 Velocity_WalkFwdNormal	= 1.75,		2.5,			2.5,		0.02,	3.0	
-Velocity_Drag			= -1.0,		3.0,			3.0,		1,		1
+Velocity_Drag			= -1.0,		1.0,			1.0,		1,		1
 Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
 
 ; acceleration
@@ -125,6 +125,8 @@ sleep_psy_health		= 1.0
 eat_freq				=	5.0							; ¢ð¸ªþªð ºúº¸þò ò ¸õú
 eat_slice				=	0.01						; ºòõûø¢õýøõ ¸vªþ¸ªø ÿ¨ø 1 ºúº¸õ
 eat_slice_weight		=	10.0						; ºüõý¹°õýøõ õôv º ª¨ºÿð
+
+satiety_threshold		= 0.5							; below this value monster fill hunger
 
 ;------------------------------------------------------------------------
 ; Sound
@@ -207,8 +209,6 @@ LegsCount				= 4
 
 DayTime_Begin					= 0			; ýð¢ðûð ôý  ôû  üþý¸ª¨ð
 DayTime_End						= 21		; úþýõ¡ ôý  ôû  üþý¸ª¨ð
-Min_Satiety						= 0.4		; üøý. ýþ¨üð ¸vªþ¸ªø (üõý¹°õ - ºöõ óþûþôývù)
-Max_Satiety						= 1.0		; üðú¸. ýþ¨üð ¸vªþ¸ªø (ñþû¹°õ - þ¢õý¹ ¸vªvù)
 
 distance_to_corpse				= 2.1		; ôø¸ª. ôþ ª¨ºÿð, ÿ¨ø úþªþ¨þù þý ÿõ¨õ¿þôøª ò ¸þ¸ªþ ýøõ õôv
 

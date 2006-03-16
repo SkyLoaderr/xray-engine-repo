@@ -245,9 +245,9 @@ void CBaseMonster::settings_read(CInifile *ini, LPCSTR section, SMonsterSettings
 	READ_SETTINGS(data.m_dwDayTimeBegin,	"DayTime_Begin",		r_u32, ini, section);
 	READ_SETTINGS(data.m_dwDayTimeEnd,		"DayTime_End",			r_u32, ini, section);
 
-	READ_SETTINGS(data.m_fMinSatiety,		"Min_Satiety",			r_float, ini, section);
-	READ_SETTINGS(data.m_fMaxSatiety,		"Max_Satiety",			r_float, ini, section);
 	READ_SETTINGS(data.m_fDistToCorpse,		"distance_to_corpse",	r_float, ini, section);
+	READ_SETTINGS(data.satiety_threshold,	"satiety_threshold",	r_float, ini, section);
+
 	READ_SETTINGS(data.m_fDamagedThreshold, "DamagedThreshold",		r_float, ini, section);
 
 	READ_SETTINGS(data.m_dwIdleSndDelay,	"idle_sound_delay",		r_u32, ini, section);
@@ -260,7 +260,6 @@ void CBaseMonster::settings_read(CInifile *ini, LPCSTR section, SMonsterSettings
 
 	READ_SETTINGS(data.m_legs_number,		"LegsCount",			r_u8,	 ini, section);
 	READ_SETTINGS(data.m_max_hear_dist,		"max_hear_dist",		r_float, ini, section);
-
 
 	// Load attack postprocess 
 	if (ini->line_exist(section,"attack_effector")) {

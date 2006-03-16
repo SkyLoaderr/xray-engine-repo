@@ -52,11 +52,8 @@ void CStateManagerBoar::execute()
 		} else if (object->hear_dangerous_sound) {
 			state_id = eStateHearDangerousSound;	
 		} else {
-			
-			//if (can_eat())	state_id = eStateEat;
-			//else			state_id = eStateRest;
-			if (object->CorpseMan.get_corpse()) state_id = eStateEat;
-			else state_id = eStateRest;
+			if (can_eat())	state_id = eStateEat;
+			else			state_id = eStateRest;
 		}
 	} else state_id = eStateControlled;
 	

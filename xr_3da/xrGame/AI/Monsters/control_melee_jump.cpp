@@ -3,10 +3,10 @@
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
 
-#define CHECK_YAW					150 * PI / 180
+#define CHECK_YAW					165 * PI / 180
 #define ROTATION_JUMP_DELAY_MIN		500
 #define ROTATION_JUMP_DELAY_MAX		1000
-#define MAX_DISTANCE_TO_ENEMY		5.f
+#define MAX_DISTANCE_TO_ENEMY		4.f
 
 void CControlMeleeJump::reinit()
 {

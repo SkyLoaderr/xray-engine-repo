@@ -113,7 +113,7 @@ void CControlAnimationBase::update_frame()
 void CControlAnimationBase::update()
 {
 	// Установка Yaw
-	if (m_object->control().path_builder().is_moving_on_path()) m_object->dir().use_path_direction( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+	if (m_object->control().path_builder().is_moving_on_path() && m_object->path().enabled()) m_object->dir().use_path_direction( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 	SelectAnimation		();
 	SelectVelocities	();
@@ -231,8 +231,6 @@ void CControlAnimationBase::SelectVelocities()
 	
 	// финальная корректировка скорости анимации по физической скорости
 
-//	EMotionAnim prev_anim = 
-		cur_anim_info().motion;
 
 	if (!m_object->state_invisible && !fis_zero(anim_vel.linear)) {
 			

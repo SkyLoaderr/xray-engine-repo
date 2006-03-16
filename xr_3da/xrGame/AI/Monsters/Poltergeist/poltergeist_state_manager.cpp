@@ -48,7 +48,6 @@ void CStateManagerPoltergeist::execute()
 	u32 state_id = u32(-1);
 
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
 	if (enemy) {
 		if (object->is_hidden()) state_id = eStateAttack_AttackHidden;
@@ -66,17 +65,7 @@ void CStateManagerPoltergeist::execute()
 	} else if (object->hear_interesting_sound ) {
 		state_id = eStateHearInterestingSound;
 	} else {
-		bool can_eat = false;
-		if (corpse) {
-
-			if (prev_substate == eStateEat) {	// уже ест
-				if (!get_state_current()->check_completion())				can_eat = true;
-			} else {							// ещё не ест	
-				if (object->conditions().GetSatiety() < object->db().m_fMinSatiety) can_eat = true;	
-			}
-		}
-
-		if (can_eat) state_id = eStateEat;
+		if (can_eat()) state_id = eStateEat;
 		else state_id = eStateRest;
 		
 		if (state_id == eStateEat) {

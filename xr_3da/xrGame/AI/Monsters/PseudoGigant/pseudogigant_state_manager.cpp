@@ -37,7 +37,6 @@ void CStateManagerGigant::execute()
 
 	if (!object->is_under_control()) {
 		const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-		const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
 		if (enemy) {
 			switch (object->EnemyMan.get_danger_type()) {
@@ -54,16 +53,7 @@ void CStateManagerGigant::execute()
 		} else if (object->hear_dangerous_sound) {
 			state_id = eStateHearDangerousSound;	
 		} else {
-			bool can_eat = false;
-			if (corpse) {
-				if (prev_substate == eStateEat) {
-					if (!get_state_current()->check_completion())				can_eat = true;
-				} else {
-					if (object->conditions().GetSatiety() < object->db().m_fMinSatiety) can_eat = true;
-				}
-			}
-
-			if (can_eat)	state_id = eStateEat;
+			if (can_eat())	state_id = eStateEat;
 			else			state_id = eStateRest;
 		}
 	} else state_id = eStateControlled;

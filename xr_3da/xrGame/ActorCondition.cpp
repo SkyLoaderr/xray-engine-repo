@@ -46,6 +46,8 @@ CActorCondition::CActorCondition(CActor *object) :
 	m_can_sleep_callback		= NULL;
 	m_get_sleep_video_name_callback	= NULL;
 	m_condition_flags.zero		();
+
+	m_fSatiety					= 1.f;
 }
 
 CActorCondition::~CActorCondition(void)
@@ -383,6 +385,7 @@ void CActorCondition::reinit	()
 	inherited::reinit	();
 	m_bLimping					= false;
 	m_bIsSleeping				= false;
+	m_fSatiety					= 1.f;
 }
 
 void CActorCondition::ChangeAlcohol	(float value)

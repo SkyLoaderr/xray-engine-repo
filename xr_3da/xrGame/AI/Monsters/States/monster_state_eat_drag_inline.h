@@ -29,9 +29,14 @@ void CStateMonsterDragAbstract::initialize()
 	m_failed = false;
 	
 	if (!object->m_PhysicMovementControl->PHCapture()->Failed()) {
-		if (!object->GetCorpseCover(m_cover_position, m_cover_vertex_id)) {
-			m_cover_vertex_id = u32(-1);
-		}					
+		
+		CCoverPoint *point = object->CoverMan->find_cover(object->Position(), 10.f, 30.f);
+		if (point) {
+			m_cover_position	= point->position();
+			m_cover_vertex_id	= point->level_vertex_id();
+		} else {
+			m_cover_vertex_id	= u32(-1);
+		}
 	} else m_failed = true;
 
 	m_corpse_start_position = object->CorpseMan.get_corpse()->Position();
@@ -82,12 +87,21 @@ void CStateMonsterDragAbstract::critical_finalize()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterDragAbstract::check_completion()
 {
-	if (m_failed) return true;
+	if (m_failed) {
+		return true;
+	}
 
-	if (!object->m_PhysicMovementControl->PHCapture())  return true;
+	if (!object->m_PhysicMovementControl->PHCapture())  {
+		return true;
+	}
 
-	if ((m_cover_vertex_id != u32(-1) && (object->Position().distance_to(m_cover_position) < 2.f)) || 
-		((m_cover_vertex_id == u32(-1)) && (m_corpse_start_position.distance_to(object->Position()) > 20.f))) return true;
+	if (m_cover_vertex_id != u32(-1)) {		// valid vertex so wait path end
+		if (object->Position().distance_to(m_cover_position) < 2.f) 
+			return true;
+	} else {								// invalid vertex so check distanced that passed
+		if (m_corpse_start_position.distance_to(object->Position()) > 20.f) 
+			return true;
+	}
 
 	return false;
 }
