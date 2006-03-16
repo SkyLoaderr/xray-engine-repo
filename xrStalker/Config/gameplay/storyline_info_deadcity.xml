@@ -19,16 +19,6 @@
         cit_leader_killer_text
     </text>
 </article>
-<article article_type="task" group="cit_vp_stalker" id="cit_vp" name="cit_vp_stalker">
-    <text>
-        cit_vp_text
-    </text>
-</article>
-<article group="Diary" id="cit_vp_killers" name="cit_vp_killers_base">
-    <text>
-        cit_vp_killers_text
-    </text>
-</article>
 <article article_type="task" group="cit_doctor_task" id="cit_doctor_task" name="cit_doctor_task">
     <texture height="250" width="250" x="1300" y="150">
         ui\ui_icon_photo
@@ -51,5 +41,10 @@
     </texture>
     <text>
         cit_doctor_escape_task_0_txt
+    </text>
+</article>
+<article article_type="journal" group="Doctor meet conclusion" id="cit_doctor_meet_conclusion_art" name="cit_doctor_meet_conclusion">
+    <text>
+        cit_doctor_meet_conclusion_txt
     </text>
 </article>
