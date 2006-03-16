@@ -310,6 +310,10 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			VERIFY				(verify_entities());
 #	endif
 		}break;
+	case GE_ACTOR_JUMPING:
+		{
+			SendBroadcast(sender, P, MODE);
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

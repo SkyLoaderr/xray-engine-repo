@@ -257,5 +257,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		{
 			OnPlayHeadShotParticle(P);
 		}break;
+	case GE_ACTOR_JUMPING:
+		{
+			mstate_wishful |= mcJump;
+		}break;
 	}
 }

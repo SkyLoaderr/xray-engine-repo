@@ -83,7 +83,15 @@ void CActor::IR_OnKeyboardPress(int cmd)
 					break;
 	case kFWD:		mstate_wishful |= mcFwd;					break;
 	case kBACK:		mstate_wishful |= mcBack;					break;
-	case kJUMP:		mstate_wishful |= mcJump;					break;
+	case kJUMP:		
+		{
+			mstate_wishful |= mcJump;
+			{
+				NET_Packet	P;
+				u_EventGen(P, GE_ACTOR_JUMPING, ID());
+				u_EventSend(P);
+			}
+		}break;
 	case kCROUCH:	mstate_wishful |= mcCrouch;					break;
 	case kCROUCH_TOGGLE:	
 		{
