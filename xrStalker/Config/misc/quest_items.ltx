@@ -1153,9 +1153,31 @@ inv_grid_x			= 3
 inv_grid_y			= 19
 cost				= 0
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PRIPYAT'
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[pri_decoder_documents]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\killers_documents"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_document_01.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Documents from hiding place on Pripyat
+inv_name_short		= Documents from Pripyat
+inv_weight			= 0.1
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 19
+cost				= 0
+
 
 [pri_lom_ak74]:identity_immunities
 GroupControlSection		= spawn_group
@@ -1321,9 +1343,9 @@ silencer_light_time 		= 0.2
 
 
 
-;--------------------------------------
-;----------- Dead City ----------------
-;--------------------------------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Dead City
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [cit_doctors_key]:identity_immunities
 GroupControlSection	= spawn_group
 discovery_dependency = 

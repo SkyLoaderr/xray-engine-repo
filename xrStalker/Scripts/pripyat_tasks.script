@@ -6,6 +6,11 @@ function proceed()
 	then
 		actor:give_info_portion("pri_monolith_decoder_got")
 	end       	
+	if actor:dont_has_info("pri_decoder_docs_conclusion_info") and
+		actor:object("pri_decoder_documents") ~= nil 
+	then
+		actor:give_info_portion("pri_decoder_docs_conclusion_info")
+	end       	
 end
 
 function process_info_portion(info_id)
