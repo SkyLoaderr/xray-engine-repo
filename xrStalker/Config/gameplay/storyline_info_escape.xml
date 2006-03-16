@@ -20,7 +20,7 @@
         <text>esc_kolyan_lost</text>
     </article>
     
-    <article id="tutorial_moving_anomaly" name="tutorial dead flash" article_type="journal" group="Dead novice's flash">
+    <article id="tutorial_moving_anomaly" name="Dead novice's flash" article_type="journal" group="Dead novice's flash">
         <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>tutorial_moving_anomaly_text</text>
     </article>
