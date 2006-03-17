@@ -216,3 +216,13 @@ CUIDragItem* CUIWeaponCellItem::CreateDragItem()
 	}
 	return				i;
 }
+
+bool CUIWeaponCellItem::EqualTo(CUICellItem* itm)
+{
+	if(!inherited::EqualTo(itm))	return false;
+
+	CUIWeaponCellItem* ci			= smart_cast<CUIWeaponCellItem*>(itm);
+	if(!ci)							return false;
+
+	return							( (object()->GetAddonsState() == ci->object()->GetAddonsState()) );
+}

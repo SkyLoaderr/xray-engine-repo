@@ -44,5 +44,6 @@ public:
 				CWeapon*		object						() {return (CWeapon*)m_pData;}
 	virtual		void			OnAfterChild				();
 	virtual		CUIDragItem*	CreateDragItem				();
+	virtual		bool			EqualTo						(CUICellItem* itm);
 };
 
