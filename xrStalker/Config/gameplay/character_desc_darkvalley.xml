@@ -27,9 +27,9 @@
 			wpn_l85 = 1, 0, 1, 0 \n
 			ammo_5.56x45_ss190 = 2 \n
 			ammo_5.56x45_ap = 3 \n
-			borov_flash \n
+			;borov_flash \n
 			device_torch \n
-			val_key_to_underground \n
+			;val_key_to_underground \n
 			medkit = 3 \n
 			bandage = 4 \n
 			antirad = 2 \n
