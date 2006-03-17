@@ -161,6 +161,9 @@
 	
 	<info_portion id="bun_blood">
 	</info_portion>
+	
+	<info_portion id="bun_blood_finish">
+	</info_portion>
 		
 </game_information_portions>
 
