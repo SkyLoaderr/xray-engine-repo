@@ -152,12 +152,16 @@ soundgroup = bar_dolg_base_guard1
 [logic3@bar_dolg_general_guard_center]
 active = walker@bar_dolg_general_guard_center
 actor_dialogs = actor_dialogs
+on_death = death@bar_dolg_general_guard_center
 
 [walker@bar_dolg_general_guard_center]
 path_walk = guard_center_walk
 path_look = guard_center_look
 meet = meet@bar_dolg_general_guard
 soundgroup = bar_dolg_base_guard1
+
+[death@bar_dolg_general_guard_center]
+on_info = %+sar2_death_40%
 
 [meet@bar_dolg_general_guard]
 meet_dialog = bar_dolg_base_guard_start
@@ -387,6 +391,7 @@ meet_state_wpn 	= 10|guard@threat_weap|7|threat@threat_weap|5|threat@threat_weap
 
 [logic@bar_dolg_zastava1_cammander_1]
 active = walker1@bar_dolg_zastava1_cammander_1
+on_death = death@bar_dolg_zastava1_cammander_1
 
 [walker1@bar_dolg_zastava1_cammander_1]
 path_walk = commander_1_walk
@@ -394,6 +399,9 @@ path_look = commander_1_look
 meet = meet@bar_dolg_zastava_comander1
 soundgroup = bar_dolg_zastava1
 danger = danger@zastava_1
+
+[death@bar_dolg_zastava1_cammander_1]
+on_info = %+sar2_death_22%
 
 [logic@bar_dolg_zastava1_walker1]
 active = walker1@bar_dolg_zastava1_walker1
@@ -523,6 +531,10 @@ soundgroup = bar_evil_veterans
 
 [logic@bar_evil_veterans_camper1]
 active = camper@bar_evil_veterans_camper1
+on_death = death@bar_evil_veterans_camper1
+
+[death@bar_evil_veterans_camper1]
+on_info = %+sar2_death_45%
 
 [camper@bar_evil_veterans_camper1]
 path_walk = leader_walk
@@ -595,7 +607,7 @@ dist = 100
 [combat_ignore@rostok_killers] 
 
 [death@bar_freedom_attack_commander]
-on_info = %+bar_kill_professor_volkodav_dead +bar_heli_scene_volkodav_die +rostok_actor_kill_killer%
+on_info = %+bar_kill_professor_volkodav_dead +bar_heli_scene_volkodav_die +rostok_actor_kill_killer +sar2_death_44%
 
 [death@bar_freedom_attack_killer]
 on_info = %+rostok_actor_kill_killer%
@@ -1084,6 +1096,7 @@ soundgroup = bar_freedom_attack1
 [logic@bar_freedom_attack_chaser_13]
 active = camper@bar_freedom_attack_chaser_13
 combat_ignore = combat_ignore@rostok_killers
+on_death = death@bar_freedom_attack_commander
 
 [camper@bar_freedom_attack_chaser_13]
 path_walk = chase_13_walk
@@ -1671,7 +1684,7 @@ danger = danger_condition@2
 
 [death@ecolog_crush]
 ;on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_done +bar_rescue_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_fail +bar_rescue_research_corruped +bar_heli_scene_professor_die%, %+bar_rescue_research_dead +bar_rescue_research_corruped +bar_heli_scene_professor_die%
-on_info = {+bar_rescue_research_start} %+bar_rescue_research_fail +bar_heli_scene_professor_die +bar_rescue_research_corruped%, %+bar_heli_scene_professor_die%
+on_info = {+bar_rescue_research_start} %+bar_rescue_research_fail +bar_heli_scene_professor_die +bar_rescue_research_corruped +sar2_death_13%, %+bar_heli_scene_professor_die%
 
 [danger_condition@2]
 ignore_distance       = 1
@@ -1729,6 +1742,10 @@ radius = 15
 
 [logic@bar_svoboda_ambush_sniper_5]
 active = camper@bar_svoboda_ambush_sniper_5
+on_death = death@bar_svoboda_ambush_sniper_5
+
+[death@bar_svoboda_ambush_sniper_5]
+on_info = %+sar2_death_56%
 
 [camper@bar_svoboda_ambush_sniper_5]
 path_walk = 5_walk
@@ -1854,7 +1871,7 @@ ignore_distance = 0
 ignore_types = grenade, hit, corpse, sound
 
 [death@bar_arena_monstr_savage]
-on_info = %+bar_arena_savage_defeated +bar_arena_monstr_dead%		
+on_info = %+bar_arena_savage_defeated +bar_arena_monstr_dead +sar2_death_53%		
 		
 		
 		
