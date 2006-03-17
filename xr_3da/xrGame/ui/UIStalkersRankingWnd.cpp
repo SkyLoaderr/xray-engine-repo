@@ -158,7 +158,7 @@ void CUIStalkersRankingWnd::AddActorItem(CUIXml* xml, int num, CSE_ALifeTraderAb
 	string64							buff;
 	CUIStalkerRankingInfoItem*			itm;
 	if(num>19){
-		itm								= xr_new<CUIStalkerRankingInfoItem>(this);
+		itm								= xr_new<CUIStalkerRankingElipsisItem>(this);
 		itm->Init						(xml, "item_ellipsis", 0);
 		UIList->AddWindow				(itm, true);
 	}
@@ -258,4 +258,18 @@ void CUIStalkerRankingInfoItem::OnMouseDown		(bool left_button)
 {
 	if(left_button)
 		m_StalkersRankingWnd->GetTopList().SetSelected	(this);
+}
+
+CUIStalkerRankingElipsisItem::CUIStalkerRankingElipsisItem(CUIStalkersRankingWnd* w)
+:inherited(w)
+{}
+
+void CUIStalkerRankingElipsisItem::SetSelected(bool b)
+{
+	return;
+}
+
+void CUIStalkerRankingElipsisItem::OnMouseDown(bool left_button)
+{
+	return;
 }

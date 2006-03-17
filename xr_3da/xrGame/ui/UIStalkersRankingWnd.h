@@ -51,3 +51,12 @@ public:
 	virtual void			SetSelected		(bool b);
 	virtual void			OnMouseDown		(bool left_button = true);
 };
+
+class CUIStalkerRankingElipsisItem :public CUIStalkerRankingInfoItem
+{
+	typedef CUIStalkerRankingInfoItem inherited;
+public:
+					CUIStalkerRankingElipsisItem(CUIStalkersRankingWnd*);
+	virtual void			SetSelected		(bool b);
+	virtual void			OnMouseDown		(bool left_button = true);
+};
