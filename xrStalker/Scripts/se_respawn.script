@@ -212,6 +212,10 @@ function se_respawn:on_register()
 	then
 		abort("RESPAWN: [%s] min_count > max_count", self:name())
 	end
+	--' FOR DEBUG ONLY, please don't forget to delete
+	if self.max_count > 0 then
+		self.min_count = self.max_count
+	end
 	
 	self.max_spawn = r_num(ini, section_name, "max_spawn", 1)
 	self.idle_spawn_min, self.idle_spawn_max = r_2nums(ini, section_name, "idle_spawn")
@@ -328,6 +332,7 @@ function se_respawn:spawn()
 	end	
 
 	if xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions) == "0" then
+		printf("SPAWNING [%s], CANT SPAWN. PROBABILITY ZERO!!!", tostring(self:name()))
 		return
 	end
 	
@@ -344,6 +349,7 @@ function se_respawn:spawn()
 	-- делаем несколько попыток заспаунить объект.
 	for i=1,self.max_spawn do		
 		if table.getn(self.spawned_obj) >= self.max_count then
+			printf("SPAWNING [%s], CANT SPAWN. MAX COUNT REACHED!!!", tostring(self:name()))
 			return
 		end		
 		if self:create(xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions)) == false then
@@ -373,7 +379,7 @@ end
 -- Обновление в офлайне
 function se_respawn:update()
 	cse_alife_smart_zone.update( self )
-	--printf("RESPAWN: [%s] se_respawn update_offline", tostring(self:name()))
+	printf("RESPAWN: [%s] se_respawn update_offline", tostring(self:name()))
 	self:execute()
 end
 -- Обновление в онлайне
