@@ -15,7 +15,7 @@ void CGameTask::script_register(lua_State *L)
 					value("in_progress",			int(eTaskStateInProgress)),
 					value("completed",				int(eTaskStateCompleted)),
 					value("task_dummy",				int(eTaskStateDummy))
-				]
+				],
 
 			class_<SGameTaskObjective>("SGameTaskObjective")
 				.def(				constructor<CGameTask*, int>()											)
