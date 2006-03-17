@@ -15,7 +15,7 @@ protected:
 
 	CUIDragDropListEx*		m_pParentList;
 	Ivector2				m_grid_size;
-	void					UpdateItemText			();
+	virtual void			UpdateItemText			();
 public:
 							CUICellItem				();
 	virtual					~CUICellItem			();
@@ -23,6 +23,8 @@ public:
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	virtual		void		Update					()						{inherited::Update();};
+				
+	virtual		void		OnAfterChild			()						{};
 
 				u32			ChildsCount				();
 				void		 PushChild				(CUICellItem*);
@@ -36,6 +38,7 @@ public:
 	CUIDragDropListEx*		OwnerList				()						{return m_pParentList;}
 				void		SetOwnerList			(CUIDragDropListEx* p);
 
+				void*		m_pData;
 };
 
 class CUIDragItem: public CUIWindow, public pureRender, public pureFrame
@@ -50,6 +53,7 @@ public:
 							CUIDragItem(CUICellItem* parent);
 	virtual		void		Init(const ref_shader& sh, const Frect& rect, const Frect& text_rect);
 	virtual					~CUIDragItem();
+			CUIStatic*		wnd						() {return &m_static;}
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	virtual		void		OnRender				();

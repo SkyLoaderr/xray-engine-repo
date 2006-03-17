@@ -15,16 +15,16 @@ CUIDragDropListEx::CUIDragDropListEx()
 	m_flags.zero				();
 	m_container					= xr_new<CUICellContainer>(this);
 	m_vScrollBar				= xr_new<CUIScrollBar>();
-	m_background				= xr_new<CUIStatic>();
+//.	m_background				= xr_new<CUIStatic>();
 
 	m_vScrollBar->SetAutoDelete	(true);
-	m_background->SetAutoDelete	(true);
+//.	m_background->SetAutoDelete	(true);
 	m_selected_item				= NULL;
 
 	SetCellsCapacity			(Ivector2().set(0,0));
 	SetCellSize					(Ivector2().set(50,50));
 
-	AttachChild					(m_background);
+//.	AttachChild					(m_background);
 	AttachChild					(m_container);
 	AttachChild					(m_vScrollBar);
 
@@ -62,6 +62,15 @@ bool CUIDragDropListEx::IsGrouping()
 {
 	return !!m_flags.test(flGroupSimilar);
 }
+void CUIDragDropListEx::SetCustomPlacement(bool b)
+{
+	m_flags.set(flCustomPlacement,b);
+}
+
+bool CUIDragDropListEx::GetCustomPlacement()
+{
+	return !!m_flags.test(flCustomPlacement);
+}
 
 void CUIDragDropListEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
@@ -72,11 +81,13 @@ void CUIDragDropListEx::Init(float x, float y, float w, float h)
 {
 	inherited::SetWndRect				(x,y,w,h);
 	m_vScrollBar->Init					(w-SCROLLBAR_HEIGHT, 0, h, false);
-	m_background->Init					("ui\\ui_frame_02_back",0,0,w,h);
-
-	Frect rect; rect.set				(0,0,64,64);
-	m_background->GetUIStaticItem().SetOriginalRect(rect);
-	m_background->SetStretchTexture		(true);
+/*
+//.	m_background->Init					(0,0,w,h);
+//.	m_background->Init					("ui\\ui_frame_02_back",0,0,w,h);
+//.	Frect rect; rect.set				(0,0,64,64);
+//.	m_background->GetUIStaticItem().SetOriginalRect(rect);
+//.	m_background->SetStretchTexture		(true);
+*/
 }
 
 void CUIDragDropListEx::OnScrollV(CUIWindow* w, void* pData)
@@ -126,7 +137,9 @@ void CUIDragDropListEx::OnItemDrop(CUIWindow* w, void* pData)
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
 	CUIDragDropListEx*	new_owner		= m_drag_item->BackList();
 
-	if(old_owner && new_owner)
+	bool b				= (old_owner==new_owner)&&!GetCustomPlacement();
+
+	if(old_owner&&new_owner && !b)
 	{
 		CUICellItem* i					= old_owner->RemoveItem(itm, (old_owner==new_owner) );
 		new_owner->SetItem				(i,old_owner->GetDragItemPosition());
@@ -147,7 +160,7 @@ void CUIDragDropListEx::OnItemDBClick(CUIWindow* w, void* pData)
 	VERIFY								(m_drag_item==NULL);
 	VERIFY								(old_owner == this);
 
-	if(old_owner)
+	if(old_owner&&old_owner->GetCustomPlacement())
 	{
 		CUICellItem* i					= old_owner->RemoveItem(itm, true);
 		old_owner->SetItem				(i);
@@ -176,6 +189,12 @@ void CUIDragDropListEx::GetClientArea(Frect& r)
 	r	= GetAbsoluteRect				();
 	if(m_vScrollBar->GetVisible())
 		r.x2 -= m_vScrollBar->GetWidth	();
+}
+
+void CUIDragDropListEx::ClearAll(bool bDestroy)
+{
+	m_container->ClearAll	(bDestroy);
+	m_selected_item			= NULL;
 }
 
 #include "../HUDManager.h"
@@ -227,6 +246,21 @@ void CUIDragDropListEx::ReinitScroll()
 bool CUIDragDropListEx::OnMouse(float x, float y, EUIMessages mouse_action)
 {
 	bool b = inherited::OnMouse		(x,y,mouse_action);
+
+	if(m_vScrollBar->IsShown())
+	{
+		switch(mouse_action){
+		case WINDOW_MOUSE_WHEEL_DOWN:
+				m_vScrollBar->TryScrollInc();
+				return true;
+				break;
+
+		case WINDOW_MOUSE_WHEEL_UP:
+				m_vScrollBar->TryScrollDec();
+				return true;
+				break;
+		}
+	}
 	return b;
 }
 
@@ -295,6 +329,19 @@ CUICellItem* CUIDragDropListEx::RemoveItem(CUICellItem* itm, bool force_root)
 	return						i;
 }
 
+u32 CUIDragDropListEx::ItemsCount()
+{
+	return m_container->GetChildWndList().size();
+}
+
+CUICellItem* CUIDragDropListEx::GetItemIdx(u32 idx)
+{
+	VERIFY(idx<ItemsCount());
+	WINDOW_LIST_it it = m_container->GetChildWndList().begin();
+	std::advance	(it, idx);
+	return smart_cast<CUICellItem*>(*it);
+}
+
 CUICellContainer::CUICellContainer(CUIDragDropListEx* parent)
 {
 	m_pParentDragDropList		= parent;
@@ -345,6 +392,7 @@ void CUICellContainer::PlaceItemAtPos(CUICellItem* itm, Ivector2& cell_pos)
 	itm->SetWndSize			( Fvector2().set( (m_cellSize.x*cs.x),		(m_cellSize.y*cs.y)		 )	);
 
 	AttachChild				(itm);
+	itm->OnAfterChild		();
 }
 
 CUICellItem* CUICellContainer::RemoveItem(CUICellItem* itm, bool force_root)
@@ -403,8 +451,8 @@ void CUICellContainer::GetTexUVLT(Fvector2& uv, u32 col, u32 row)
 {
 	uv.set(0.0f,0.0f);
 
-	if( (col%2==1 && row%2==1)||(col%2==0 && row%2==0) )
-		uv.set(0.5f,0.0f);
+//.	if( (col%2==1 && row%2==1)||(col%2==0 && row%2==0) )
+//.		uv.set(0.5f,0.0f);
 }
 
 
@@ -480,6 +528,26 @@ bool CUICellContainer::ValidCell(const Ivector2& pos) const
 	return !(pos.x<0 || pos.y<0 || pos.x>=m_cellsCapacity.x || pos.y>=m_cellsCapacity.y);
 }
 
+void CUICellContainer::ClearAll(bool bDestroy)
+{
+	while( !m_ChildWndList.empty() )
+	{
+		CUIWindow* w			= m_ChildWndList.back();
+		VERIFY					(!w->IsAutoDelete());
+		DetachChild				(w);	
+
+		if(bDestroy)
+			delete_data			(w);
+	}
+
+	{
+		UI_CELLS_VEC_IT it		= m_cells.begin();
+		UI_CELLS_VEC_IT it_e	= m_cells.end();
+		for(;it!=it_e;++it)
+			(*it).Clear();
+	}
+}
+
 Ivector2 CUICellContainer::PickCell(const Fvector2& abs_pos)
 {
 	Ivector2 res;
@@ -512,8 +580,10 @@ void CUICellContainer::Draw()
 
 	Fvector2 lt_abs_pos	= GetAbsolutePos();
 
-	Ivector2	drawLT;
+	Fvector2	drawLT;
 	drawLT.set			(lt_abs_pos.x+tgt_cells.lt.x*cell_sz.x, lt_abs_pos.y+tgt_cells.lt.y*cell_sz.y);
+	drawLT.x			*= UI()->GetScaleX();
+	drawLT.y			*= UI()->GetScaleY();
 
 	const Fvector2 pts[6] =		{{0.0f,0.0f},{1.0f,0.0f},{1.0f,1.0f},
 								 {0.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f}};
@@ -528,7 +598,7 @@ void CUICellContainer::Draw()
 
 	// fill cell buffer
 	u32 vOffset					= 0;
-	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	(tgt_cells.width()*tgt_cells.height()*6,hGeom.stride(),vOffset);
+	FVF::TL* start_pv			= (FVF::TL*)RCache.Vertex.Lock	((tgt_cells.width()+1)*(tgt_cells.height()+1)*6,hGeom.stride(),vOffset);
 	FVF::TL* pv					= start_pv;
 	for (int x=0; x<=tgt_cells.width(); ++x){
 		for (int y=0; y<=tgt_cells.height(); ++y){
@@ -574,8 +644,9 @@ CTestDragDropWnd::CTestDragDropWnd()
 {
 		static Frect w_rect					= {100,100,300,300};
 		static Ivector2 w_cell_sz			= {50,50};
-		static Ivector2 w_cell_sz2			= {70,70};
-		static Ivector2 w_cells				= {6,10};
+		static Ivector2 w_cell_sz2			= {50,50};
+		static Ivector2 w_cells				= {6,7};
+		static Ivector2 w_cells2			= {6,7};
 		static int		dx					= 10;
 //.		Init								(w_rect.x1, w_rect.y1, w_rect.x2*2+dx, w_rect.y2);
 		Init								(0, 0, 1024, 768);
@@ -592,8 +663,8 @@ CTestDragDropWnd::CTestDragDropWnd()
 		AttachChild							(m_list2);
 		m_list2->Init						(w_rect.x1+w_rect.x2+dx, w_rect.y1, w_rect.x2, w_rect.y2);
 		m_list2->SetAutoDelete				(true);
-		m_list2->SetCellSize				(w_cell_sz);
-		m_list2->SetCellsCapacity			(w_cells);
+		m_list2->SetCellSize				(w_cell_sz2);
+		m_list2->SetCellsCapacity			(w_cells2);
 		m_list2->SetAutoGrow				(true);
 		m_list2->SetGrouping				(false);
 

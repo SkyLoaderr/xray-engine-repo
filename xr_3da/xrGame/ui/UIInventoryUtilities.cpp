@@ -115,17 +115,24 @@ void InventoryUtilities::FoodDrawProc(CUIDragDropItem* pItem)
 
 bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
 {
-	int item1_room = item1->GetGridWidth()*item1->GetGridHeight();
-	int item2_room = item2->GetGridWidth()*item2->GetGridHeight();
+	Ivector2 r1,r2;
+	r1.x			= item1->GetGridWidth();
+	r1.y			= item1->GetGridHeight();
+	r2.x			= item2->GetGridWidth();
+	r2.y			= item2->GetGridHeight();
 
-	if(item1_room > item2_room)
-		return true;
-	else if (item1_room == item2_room)
+	if(r1.x > r2.x)			return true;
+	
+	if (r1.x == r2.x)
 	{
-		if(item1->GetGridWidth() >= item2->GetGridWidth())
-			return true;
+		if(r1.y > r2.y)		return true;
+		
+		if (r1.y == r2.y)	return (item1->object().ID() > item2->object().ID());
+
+		return				false;
 	}
-   	return false;
+
+   	return					false;
 }
 
 //////////////////////////////////////////////////////////////////////////

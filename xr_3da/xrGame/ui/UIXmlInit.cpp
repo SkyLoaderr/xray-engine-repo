@@ -33,6 +33,7 @@
 #include "../game_base_space.h"
 
 #include "UITextureMaster.h"
+#include "UIDragDropListEx.h"
 
 #define HEADER_FONT_NAME		"header"
 #define ARIAL_FONT_NAME			"arial"
@@ -356,6 +357,39 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 }
 
 //////////////////////////////////////////////////////////////////////////
+bool CUIXmlInit::InitDragDropListEx(CUIXml& xml_doc, const char* path, int index, CUIDragDropListEx* pWnd)
+{
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+
+	float x			= xml_doc.ReadAttribFlt(path, index, "x");
+	float y			= xml_doc.ReadAttribFlt(path, index, "y");
+	float width		= xml_doc.ReadAttribFlt(path, index, "width");
+	float height	= xml_doc.ReadAttribFlt(path, index, "height");
+
+	InitAlignment	(xml_doc, path, index, x, y, pWnd);
+
+
+
+	pWnd->Init		(x,y, width,height);
+
+	Ivector2 w_cell_sz, w_cells;
+
+	w_cell_sz.x				= xml_doc.ReadAttribInt(path, index, "cell_width");
+	w_cell_sz.y				= xml_doc.ReadAttribInt(path, index, "cell_height");
+	w_cells.y				= xml_doc.ReadAttribInt(path, index, "rows_num");
+	w_cells.x				= xml_doc.ReadAttribInt(path, index, "cols_num");
+	pWnd->SetCellSize		(w_cell_sz);	
+	pWnd->SetCellsCapacity	(w_cells);	
+
+	int tmp					= xml_doc.ReadAttribInt(path, index, "unlimited", 0);
+	pWnd->SetAutoGrow		(tmp!=0);
+	tmp						= xml_doc.ReadAttribInt(path, index, "group_similar", 0);
+	pWnd->SetGrouping		(tmp!=0);
+	tmp						= xml_doc.ReadAttribInt(path, index, "custom_placement", 1);
+	pWnd->SetCustomPlacement(tmp!=0);
+
+	return true;
+}
 
 bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIDragDropList* pWnd)

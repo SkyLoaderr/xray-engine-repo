@@ -28,10 +28,11 @@ private:
 
 	enum{	
 		flGroupSimilar		=	(1<<0),
-		flAutoGrow			=	(1<<1)
+		flAutoGrow			=	(1<<1),
+		flCustomPlacement	=	(1<<2)
 	};
 	Flags8					m_flags;
-	CUIStatic*				m_background;
+//	CUIStatic*				m_background;
 	CUICellItem*			m_selected_item;
 protected:
 	
@@ -72,14 +73,20 @@ public:
 			bool			IsAutoGrow			();
 			void			SetGrouping			(bool b);
 			bool			IsGrouping			();
+			void			SetCustomPlacement	(bool b);
+			bool			GetCustomPlacement	();
 public:
 			// items management
-			void			SetItem				(CUICellItem* itm); //auto
-			void			SetItem				(CUICellItem* itm, Fvector2 abs_pos);  // start at cursor pos
-			void			SetItem				(CUICellItem* itm, Ivector2 cell_pos); // start at cell
-			CUICellItem*	RemoveItem			(CUICellItem* itm, bool force_root);
+			virtual void	SetItem				(CUICellItem* itm); //auto
+			virtual void	SetItem				(CUICellItem* itm, Fvector2 abs_pos);  // start at cursor pos
+			virtual void	SetItem				(CUICellItem* itm, Ivector2 cell_pos); // start at cell
+
+			u32				ItemsCount			();
+			CUICellItem*	GetItemIdx			(u32 idx);
+	virtual CUICellItem*	RemoveItem			(CUICellItem* itm, bool force_root);
 			void			CreateDragItem		(CUICellItem* itm);
 			void			DestroyDragItem		();
+			void			ClearAll			(bool bDestroy);	
 public:
 	//UIWindow overriding
 	virtual		void		Draw				();
@@ -135,6 +142,7 @@ protected:
 
 				void			Grow				();
 				void			Shrink				();
+				void			ClearAll			(bool bDestroy);	
 
 };
 

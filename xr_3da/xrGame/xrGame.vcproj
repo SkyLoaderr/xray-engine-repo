@@ -9572,18 +9572,6 @@
 					Name="InventoryWnd"
 					Filter="">
 					<File
-						RelativePath=".\ui\UICharacterInfo.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UICharacterInfo.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIInventoryUtilities.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIInventoryUtilities.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIInventoryWnd.cpp">
 					</File>
 					<File
@@ -9593,40 +9581,13 @@
 						RelativePath=".\ui\uiinventorywnd2.cpp">
 					</File>
 					<File
-						RelativePath=".\ui\UIItemInfo.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIItemInfo.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIOutfitInfo.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIOutfitInfo.h">
+						RelativePath=".\ui\UIInventoryWnd3.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIOutfitSlot.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIOutfitSlot.h">
-					</File>
-					<File
-						RelativePath=".\ui\UISleepWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UISleepWnd.h">
-					</File>
-					<File
-						RelativePath=".\ui\UITimeWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UITimeWnd.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIWpnDragDropItem.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIWpnDragDropItem.h">
 					</File>
 				</Filter>
 				<Filter
@@ -9979,6 +9940,76 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIMMShniaga.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="CharacterInfo"
+					Filter="">
+					<File
+						RelativePath=".\ui\UICharacterInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICharacterInfo.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ItemInfo"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIItemInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIItemInfo.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="OutfitInfo"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIOutfitInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIOutfitInfo.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="TimeWnd"
+					Filter="">
+					<File
+						RelativePath=".\ui\UITimeWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITimeWnd.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="SleepWnd"
+					Filter="">
+					<File
+						RelativePath=".\ui\UISleepWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISleepWnd.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="WpnDragDropItem"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIWpnDragDropItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIWpnDragDropItem.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="InventoryUtilities"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIInventoryUtilities.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIInventoryUtilities.h">
 					</File>
 				</Filter>
 			</Filter>
@@ -10525,6 +10556,12 @@
 				<Filter
 					Name="DragDrop2"
 					Filter="">
+					<File
+						RelativePath=".\ui\UICellCustomItems.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UICellCustomItems.h">
+					</File>
 					<File
 						RelativePath=".\ui\UICellItem.cpp">
 					</File>

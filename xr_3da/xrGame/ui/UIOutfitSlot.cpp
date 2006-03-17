@@ -1,11 +1,85 @@
-// UIOutfitSlot.cpp:  слот костюма в диалоге инвентаря
-// 
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "UIOutfitSlot.h"
-
+#include "UIStatic.h"
+#include "UICellItem.h"
 #include "../CustomOutfit.h"
+#include "UIInventoryUtilities.h"
+
+CUIOutfitDragDropList::CUIOutfitDragDropList()
+{
+	m_background				= xr_new<CUIStatic>();
+	m_background->SetAutoDelete	(true);
+	AttachChild					(m_background);
+}
+
+CUIOutfitDragDropList::~CUIOutfitDragDropList()
+{
+}
+
+void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
+{
+	static float fNoOutfitX				= pSettings->r_float("without_outfit", "full_scale_icon_x");
+	static float fNoOutfitY				= pSettings->r_float("without_outfit", "full_scale_icon_y");
+	
+	Frect			r;
+	r.x1			= fNoOutfitX*ICON_GRID_WIDTH;
+	r.y1			= fNoOutfitY*ICON_GRID_HEIGHT;
+	if(itm)
+	{
+		PIItem _iitem	= (PIItem)itm->m_pData;
+		CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(_iitem); VERIFY(pOutfit);
+
+		r.x1			= float(pOutfit->GetIconX())*ICON_GRID_WIDTH;
+		r.y1			= float(pOutfit->GetIconY())*ICON_GRID_HEIGHT;
+	}
+	r.x2				= r.x1+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH;
+	r.y2				= r.y1+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT;
+	
+	m_background->SetWndPos				(0,0);
+	m_background->SetWndSize			(GetWndSize());
+	m_background->SetShader				(InventoryUtilities::GetCharIconsShader());
+
+	m_background->SetOriginalRect		(r);
+
+	m_background->TextureAvailable		(true);
+	m_background->TextureOn				();
+	m_background->SetStretchTexture		(true);
+}
+
+void CUIOutfitDragDropList::SetItem(CUICellItem* itm)
+{
+	if(itm)	inherited::SetItem			(itm);
+	SetOutfit							(itm);
+}
+
+void CUIOutfitDragDropList::SetItem(CUICellItem* itm, Fvector2 abs_pos)
+{
+	if(itm)	inherited::SetItem			(itm, abs_pos);
+	SetOutfit							(itm);
+}
+
+void CUIOutfitDragDropList::SetItem(CUICellItem* itm, Ivector2 cell_pos)
+{
+	if(itm)	inherited::SetItem			(itm, cell_pos);
+	SetOutfit							(itm);
+}
+
+CUICellItem* CUIOutfitDragDropList::RemoveItem(CUICellItem* itm, bool force_root)
+{
+	VERIFY								(!force_root);
+	CUICellItem* ci						= inherited::RemoveItem(itm, force_root);
+	SetOutfit							(NULL);
+	return								ci;
+}
+
+
+void CUIOutfitDragDropList::Draw()
+{
+	m_background->Draw					();
+//.	inherited::Draw						();
+}
+
+/*
 #include "../game_cl_base.h"
 #include "../Level.h"
 #include "UITextureMaster.h"
@@ -113,15 +187,6 @@ void CUIOutfitSlot::SetOriginalOutfit()
 	}
 }
 
-void CUIOutfitSlot::Draw()
-{
-	inherited::Draw();
-}
-void CUIOutfitSlot::Update()
-{
-	inherited::Update();
-}
-
 void CUIOutfitSlot::DropAll()
 {
 	inherited::DropAll();
@@ -158,21 +223,8 @@ CUIDragDropItem * CUIOutfitSlot::GetCurrentOutfit()
 	return NULL;
 }
 
-void CUIOutfitSlot::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
-{
-//	if (OUTFIT_RETURNED_BACK == msg)
-//	{
-//		pWnd->Show(false);
-//	}
-	inherited::SendMessage(pWnd, msg, pData);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIOutfitSlot::SetMPOutfit()
 {
-	
-	//UIOutfitIcon.SetShader(GetMPCharIconsShader());
 	CObject *pInvOwner = smart_cast<CObject*>(Level().CurrentEntity());
 	if (!pInvOwner) return;
 	if (!pInvOwner->cNameVisual().size() ) return;
@@ -190,13 +242,5 @@ void CUIOutfitSlot::SetMPOutfit()
 
 	UIOutfitIcon.InitTexture(a.c_str());
 	UIOutfitIcon.RescaleRelative2Rect(CUITextureMaster::GetTextureRect(a.c_str()));
-
-	//int m_iSkinX = 0, m_iSkinY = 0;
-	//
-	//if( pSettings->line_exist("multiplayer_skins", a.c_str())){
-	//	sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
-
-	//	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-	//		float(m_iSkinX), float(m_iSkinY), float(SKIN_TEX_WIDTH), float(SKIN_TEX_HEIGHT)); 
-	//}
 }
+*/

@@ -1,7 +1,3 @@
-// CUIInventoryWnd.h:  диалог инвентаря
-// 
-//////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 class CInventory;
@@ -13,7 +9,7 @@ class CInventory;
 #include "UIDragDropItem.h"
 #include "UIWpnDragDropItem.h"
 
-#include "UIDragDropList.h"
+//.#include "UIDragDropList.h"
 #include "UIProgressBar.h"
 
 #include "UIPropertiesBox.h"
@@ -26,51 +22,38 @@ class CInventory;
 
 class CArtefact;
 class CUISleepWnd;
-
+class CUIDragDropListEx;
+class CUICellItem;
 
 class CUIInventoryWnd: public CUIDialogWnd
 {
 private:
-	typedef CUIDialogWnd inherited;
+	typedef CUIDialogWnd	inherited;
 	bool					m_b_need_reinit;
 public:
-							CUIInventoryWnd();
-	virtual					~CUIInventoryWnd();
+							CUIInventoryWnd				();
+	virtual					~CUIInventoryWnd			();
 
-	virtual void			Init();
+	virtual void			Init						();
 
-	void					InitInventory();
+	void					InitInventory				();
 	void					InitInventory_delayed		();
-	virtual bool			StopAnyMove					(){return false;}
+	virtual bool			StopAnyMove					()					{return false;}
 
-	virtual void			SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual bool			OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual void			SendMessage					(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual bool			OnMouse						(float x, float y, EUIMessages mouse_action);
+	virtual bool			OnKeyboard					(int dik, EUIMessages keyboard_action);
 
 
-	CInventory*				GetInventory() {return m_pInv;}
+	IC CInventory*			GetInventory				()					{return m_pInv;}
 
-	virtual void			Update();
-	virtual void			Draw();
+	virtual void			Update						();
+	virtual void			Draw						();
 
-	virtual void			Show();
-	virtual void			Hide();
+	virtual void			Show						();
+	virtual void			Hide						();
 
-	//для добавления новых предметов во время работы с интерфейсом (например 
-	//отсоединенных аддонов)
-	void					AddItemToBag(PIItem pItem);
-
-	// cнять костюм
-	bool					UndressOutfit();
-
-	// Получить указатель на окно сумки. Используется при автоматическом вынимании текущей вещи
-	// из слотов, при дропе на них новых вещей
-	CUIDragDropList *		GetBag() { return &UIBagList; }
-
-	// Проверить принадлежность вещи к нужному слоту и попробовать освободить для нее место
-	// переместив текущую вещь в слоте в сумку
-	bool					SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum);
-	bool					SlotToBelt(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum);
-	virtual bool			OnKeyboard			(int dik, EUIMessages keyboard_action);
+	void					AddItemToBag				(PIItem pItem);
 
 protected:
 	enum eInventorySndAction{	eInvSndOpen	=0,
@@ -83,21 +66,19 @@ protected:
 								eInvAttachAddon,
 								eInvDetachAddon,
 								eInvSndMax};
-	ref_sound				sounds[eInvSndMax];
-	void PlaySnd					(eInventorySndAction a);
-	friend class CUITradeWnd;
+
+	ref_sound				sounds					[eInvSndMax];
+	void					PlaySnd					(eInventorySndAction a);
+	friend class			CUITradeWnd;
 
 	CUIStatic			UIBagWnd;
 	CUIStatic			UIMoneyWnd;
 	CUIStatic			UIDescrWnd;
 	CUIFrameWindow		UIPersonalWnd;
 
-	// Подокошко сна
-	CUISleepWnd*			UISleepWnd;
-	// sell all items
-	CUI3tButton*			UISellAll;
+	CUISleepWnd*		UISleepWnd;
+	CUI3tButton*		UISellAll;
 	
-	// Кнопка выброса активного предмета
 	CUIButton			UIDropButton;
 	CUIButton			UIExitButton;
 
@@ -106,17 +87,30 @@ protected:
 	CUIStatic			UIStaticBottom;
 	CUITimeWnd			UITimeWnd;
 
-//	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
 		
 	#define SLOTS_NUM 5
-	//слоты для оружия
-	CUIDragDropList		UITopList[SLOTS_NUM]; 
-	//отдельный слот для костюмов
-	CUIOutfitSlot		UIOutfitSlot;
+
+	CUIDragDropListEx*			m_pUIBagList;
+	CUIDragDropListEx*			m_pUIBeltList;
+	CUIDragDropListEx*			m_pUITopList				[SLOTS_NUM]; 
+	CUIOutfitDragDropList*		m_pUIOutfitList;
+	void						ClearAllLists				();
+	void						BindDragDropListEnents		(CUIDragDropListEx* lst);
+	enum EListType{
+		iwSlot,
+		iwBag,
+		iwBelt
+	};
+	EListType					GetType				(CUIDragDropListEx* l);
+	CUIDragDropListEx*			GetSlotList			(u32 slot_idx);
+
+	bool		xr_stdcall		OnItemDrop			(CUICellItem* itm);
+	bool		xr_stdcall		OnItemStartDrag		(CUICellItem* itm);
+	bool		xr_stdcall		OnItemDbClick		(CUICellItem* itm);
+	bool		xr_stdcall		OnItemSelected		(CUICellItem* itm);
+	bool		xr_stdcall		OnItemRButtonClick	(CUICellItem* itm);
 	
-	CUIDragDropList		UIBagList;
-	CUIDragDropList		UIBeltList;
 
 
 	CUIProgressBar		UIProgressBarHealth;
@@ -128,76 +122,42 @@ protected:
 	CUIPropertiesBox	UIPropertiesBox;
 	
 	//информация о персонаже
-	//CUICharacterInfo UICharacterInfo;
-	CUIOutfitInfo UIOutfitInfo;
-	//информация о предмете
-	CUIItemInfo UIItemInfo;
+	CUIOutfitInfo		UIOutfitInfo;
+	CUIItemInfo			UIItemInfo;
 
-	//список элементов drag drop
-	DD_ITEMS_VECTOR	m_vDragDropItems;
-	
-	//указатель на инвентарь, передается перед запуском меню
-	CInventory* m_pInv;
+	CInventory*				m_pInv;
 
-	//элемент с которым работают в текущий момент
-	PIItem m_pCurrentItem;
-	CUIDragDropItem* m_pCurrentDragDropItem;
-
-	//функции, выполняющие согласование отображаемых окошек
-	//с реальным инвентарем
-	static bool SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList);
-
-	static bool OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
+	CUICellItem*			m_pCurrentCellItem;
 	//---------------------------------------------------------------------
-	static void	SendEvent_Item2Slot			(PIItem	pItem);
-	static void	SendEvent_Item2Belt			(PIItem	pItem);
-	static void	SendEvent_Item2Ruck			(PIItem	pItem);
-	static void	SendEvent_Item_Drop			(PIItem	pItem);
-	static void	SendEvent_Item_Eat			(PIItem	pItem);
-	static void SendEvent_Item_Sell			(PIItem	pItem);
-	static void SendEvent_ActivateArtefact	(PIItem	pItem);
+	static void				SendEvent_Item2Slot			(PIItem	pItem);
+	static void				SendEvent_Item2Belt			(PIItem	pItem);
+	static void				SendEvent_Item2Ruck			(PIItem	pItem);
+	static void				SendEvent_Item_Drop			(PIItem	pItem);
+	static void				SendEvent_Item_Eat			(PIItem	pItem);
+	static void 			SendEvent_Item_Sell			(PIItem	pItem);
+	static void 			SendEvent_ActivateArtefact	(PIItem	pItem);
 	//---------------------------------------------------------------------
-	//для запуска меню по правой клавиши
-	void ActivatePropertiesBox();
 
-	//активировать артефакт
-	void Activate_Artefact();
+	void					ProcessPropertiesBoxClicked	();
+	void					ActivatePropertiesBox		();
+	void					Activate_Artefact			();
 
-	//выбросить элемент
-	void DropItem();
-	//съесть элемент
-	void EatItem();
+	void					DropCurrentItem				();
+	void					EatCurrentItem				();
 	
-	//перемещение вещи
-	bool ToSlot();
-	bool ToBag();
-	bool ToBelt();
-	void SellItem();
+	bool					ToSlot						(CUICellItem* itm, bool force_place);
+	bool					ToBag						(CUICellItem* itm, bool b_use_cursor_pos);
+	bool					ToBelt						(CUICellItem* itm, bool b_use_cursor_pos);
+	void					SellItem					();
 
 
-	//запуск и остановка меню работы с артефактами
-	void StartArtefactMerger();
-	void StopArtefactMerger();
+	void					AttachAddon					(PIItem item_to_upgrade);
+	void					DetachAddon					(const char* addon_name);
 
-	//присоединение/отсоединение аддонов к оружию
-	void AttachAddon();
-	void DetachAddon(const char* addon_name);
+	void					SetCurrentItem				(CUICellItem* itm);
+	CUICellItem*			CurrentItem					();
+	PIItem					CurrentIItem				();
 
-	//устанавливает текущий предмет
-	void SetCurrentItem(CInventoryItem* pItem);
-
-	//дополнительные списки для сортировки вещей
-	TIItemContainer ruck_list;
-	
-	//вещь к которой мы присоединяем add-on
-	PIItem	m_pItemToUpgrade;
-
-	//слот который был активным перед вызовом менюшки
-	u32	m_iCurrentActiveSlot;
+	TIItemContainer			ruck_list;
+	u32						m_iCurrentActiveSlot;
 };

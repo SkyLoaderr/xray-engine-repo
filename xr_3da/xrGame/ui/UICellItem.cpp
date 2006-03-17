@@ -4,15 +4,19 @@
 #include "../../xr_input.h"
 #include "../HUDManager.h"
 #include "../level.h"
+#include "../object_broker.h"
 
 CUICellItem::CUICellItem()
 {
 	m_pParentList	= NULL;
+	m_pData			= NULL;
 }
 
 CUICellItem::~CUICellItem()
 {
+	delete_data(m_childs);
 }
+
 int kk = 0;
 void CUICellItem::InitInternals()
 {
@@ -50,15 +54,20 @@ bool CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)
 	if(mouse_action == WINDOW_LBUTTON_DOWN){
 		GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_SELECTED, NULL);
 		return true;
-	}
+	}else
 	if(mouse_action == WINDOW_MOUSE_MOVE && pInput->iGetAsyncBtnState(0)){
 		GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_DRAG, NULL);
 		return true;
-	}
+	}else
 	if(mouse_action==WINDOW_LBUTTON_DB_CLICK){
 		GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_DB_CLICK, NULL);
 		return true;
+	}else
+	if(mouse_action==WINDOW_RBUTTON_DOWN){
+		GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_RBUTTON_CLICK, NULL);
+		return true;
 	}
+	
 	return false;
 };
 
@@ -95,6 +104,7 @@ CUICellItem* CUICellItem::PopChild()
 {
 	CUICellItem* itm	= m_childs.back();
 	m_childs.pop_back	();
+	std::swap			(itm->m_pData, m_pData);
 	UpdateItemText		();
 	return				itm;
 }
@@ -103,7 +113,7 @@ void CUICellItem::UpdateItemText()
 {
 	string32			str;
 	if(ChildsCount())
-		sprintf				(str,"-%d-",ChildsCount()+1);
+		sprintf				(str,"x%d",ChildsCount()+1);
 	else
 		sprintf				(str,"");
 
@@ -134,7 +144,7 @@ void CUIDragItem::Init(const ref_shader& sh, const Frect& rect, const Frect& tex
 	m_static.SetWndSize				(GetWndSize());
 	m_static.TextureAvailable		(true);
 	m_static.TextureOn				();
-	m_static.SetColor				(color_rgba(255,255,255,128));
+	m_static.SetColor				(color_rgba(255,255,255,170));
 	m_static.SetStretchTexture		(true);
 	m_pos_offset.sub				(rect.lt, GetUICursor()->GetPos());
 }
