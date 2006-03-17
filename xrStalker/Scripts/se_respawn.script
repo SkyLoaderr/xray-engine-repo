@@ -10,30 +10,30 @@ local respawn_ini = system_ini()
 
 -- Таблица ограничений на спаун: всего в симуляции не должно быть больше, чем указано.
 local simMaxCount = {
-	stalker_novice = 43, stalker_regular = 48, stalker_veteran = 27, stalker_master = 20,
-	monolith_novice = 0, monolith_regular = 26, monolith_veteran = 34, monolith_master = 26,
-	military_novice = 0, military_regular = 32, military_veteran = 22, military_master = 0,
-	killer_novice = 0, killer_regular = 15, killer_veteran = 15, killer_master = 10,
-	ecolog_novice = 0, ecolog_regular = 0, ecolog_veteran = 0, ecolog_master = 0,
-	dolg_novice = 0, dolg_regular = 24, dolg_veteran = 36, dolg_master = 17,
+	stalker_novice = 43, stalker_regular = 48, stalker_veteran = 43, stalker_master = 20,
+	monolith_novice = 0, monolith_regular = 30, monolith_veteran = 35, monolith_master = 30,
+	military_novice = 0, military_regular = 32, military_veteran = 22, military_master = 5,
+	killer_novice = 0, killer_regular = 18, killer_veteran = 17, killer_master = 10,
+	ecolog_novice = 1, ecolog_regular = 1, ecolog_veteran = 1, ecolog_master = 1,
+	dolg_novice = 0, dolg_regular = 33, dolg_veteran = 36, dolg_master = 17,
 	freedom_novice = 50, freedom_regular = 20, freedom_veteran = 26, freedom_master = 21,
-	bandit_novice = 40, bandit_regular = 50, bandit_veteran = 15, bandit_master = 10,
-	zombied_novice = 12, zombied_regular = 15, zombied_veteran = 10, zombied_master = 6,
+	bandit_novice = 40, bandit_regular = 50, bandit_veteran = 18, bandit_master = 10,
+	zombied_novice = 20, zombied_regular = 15, zombied_veteran = 10, zombied_master = 10,
 	
 	rat_weak = 0,	
-	tushkano_weak = 40,
-	flesh_weak = 5, flesh_normal = 5, flesh_strong = 5,
+	tushkano_weak = 150,
+	flesh_weak = 14, flesh_normal = 38, flesh_strong = 22,
 	boar_weak = 52, boar_normal = 38, boar_strong = 27,
-	dog_weak = 48, dog_normal = 126, dog_strong = 45,
+	dog_weak = 53, dog_normal = 126, dog_strong = 130,
 	pseudodog_weak = 59, pseudodog_normal = 80, pseudodog_strong = 40,
-	psy_dog_weak = 5, psy_dog_normal = 5, psy_dog_strong = 5,
-	zombie_weak = 5, zombie_normal = 5, zombie_strong = 5,
-	snork_weak = 50, snork_normal = 61, snork_strong = 0,
-	poltergeist_weak = 8,
-	pseudo_gigant_weak = 18,
-	controller_weak = 17,
-	burer_weak = 10,
-	bloodsucker_weak = 7, bloodsucker_normal = 14, bloodsucker_strong = 8	
+	psy_dog_weak = 15, psy_dog_normal = 15, psy_dog_strong = 15,
+	zombie_weak = 61, zombie_normal = 50, zombie_strong = 35,
+	snork_weak = 50, snork_normal = 61, snork_strong = 15,
+	poltergeist_weak = 10,
+	pseudo_gigant_weak = 23,
+	controller_weak = 18,
+	burer_weak = 20,
+	bloodsucker_weak = 7, bloodsucker_normal = 40, bloodsucker_strong = 15	
 }
 
 
