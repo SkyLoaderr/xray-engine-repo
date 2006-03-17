@@ -61,7 +61,7 @@
         <text>doctor_meet_text</text>
     </article> 
     
-    <article id="about_enciclopedia" name="about_pda" article_type="encyclopedy" group="about_pda">
+    <article id="about_enciclopedia" name="about_pda" article_type="encyclopedia" group="about_pda">
         <text>about_enciclopedia</text>
     </article> 
     
