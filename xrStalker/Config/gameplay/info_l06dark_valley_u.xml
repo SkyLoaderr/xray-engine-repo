@@ -75,5 +75,12 @@
 <info_portion id="dar_snork_spawn22"></info_portion>
 <info_portion id="dar_snork_spawn33"></info_portion>
 
+<!-- Кодовые двери -->
+<info_portion id="dar_door1_closed">
+	<task>dar_codedoor1</task>
+</info_portion>
+<info_portion id="dar_door2_closed">
+	<task>dar_codedoor2</task>
+</info_portion>
 
 </game_information_portions>
