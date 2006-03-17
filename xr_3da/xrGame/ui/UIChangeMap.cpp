@@ -82,7 +82,7 @@ void CUIChangeMap::OnBtnOk(){
         sprintf(command, "cl_votestart changemap %s", name);		
 		Console->Execute(command);
 		game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-		game->StartStopMenu(this, false);
+		game->StartStopMenu(this, true);
 	}
 	else
 		return;
