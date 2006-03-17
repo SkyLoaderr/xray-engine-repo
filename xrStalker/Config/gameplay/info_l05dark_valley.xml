@@ -124,9 +124,10 @@
     </info_portion>
     <info_portion id="val_actor_behind_gate"></info_portion>
 
-    <info_portion id="val_borov_dead"></info_portion>
     <!-- Игрок нашел флешку Борова -->
+    <info_portion id="val_borov_dead"></info_portion>
     <info_portion id="val_player_knows_password"></info_portion>
+    <info_portion id="val_borov_key_info"></info_portion>
 
     <info_portion id="val_x18_door_open"></info_portion>
 
