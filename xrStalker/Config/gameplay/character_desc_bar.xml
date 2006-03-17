@@ -659,7 +659,7 @@
 		<class>bar_ecolog_professor</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
-		<rank>20</rank>
+		<rank>12</rank>
 		<reputation>90</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
