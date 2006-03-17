@@ -221,7 +221,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	net_Disconnected= FALSE;
 
 	//---------------------------
-	string1024 tmp;
+	string1024 tmp="";
 //	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);
 //	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
 //	{
@@ -385,7 +385,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 				};
 #ifdef DEBUG
 //				const char* x = DXGetErrorString9(res);
-				string1024 tmp;
+				string1024 tmp = "";
 				DXTRACE_ERR(tmp, res);
 				Msg("! IPureClient : port %d is BUSY!", c_port);
 #endif
@@ -433,7 +433,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		_RELEASE					(pHostAddress);
 #ifdef DEBUG	
 //		const char* x = DXGetErrorString9(res);
-		string1024 tmp;
+		string1024 tmp = "";
 		DXTRACE_ERR(tmp, res);
 #endif
 		switch (res)
@@ -624,7 +624,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 //					const char* x = DXGetErrorString9(pMsg->hResultCode);
 					if (pMsg->hResultCode != S_OK)
 					{
-						string1024 tmp;
+						string1024 tmp="";
 						DXTRACE_ERR(tmp, pMsg->hResultCode);
 					}					
 #endif
@@ -708,7 +708,7 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	if (FAILED(hr_))	{
 		Msg	("! ERROR: Failed to send net-packet, reason: %s",::Debug.error2string(hr_));
 //		const char* x = DXGetErrorString9(hr_);
-		string1024 tmp;
+		string1024 tmp="";
 		DXTRACE_ERR(tmp, hr_);
 	}
 }
