@@ -24,14 +24,26 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_CullMode	( CULL_NONE );
 	RCache.set_Stencil	( FALSE		);
 
+	// draw skybox
+	{
+		// RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
+		// if (RImplementation.o.nvstencil)	{
+		//	u_stencil_optimize				(FALSE);
+		//	RCache.set_ColorWriteEnable		();
+		// }
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,			FALSE				));
+		g_pGamePersistent->Environment.RenderSky	();
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,			TRUE				));
+	}
+
 	// 
-	if (RImplementation.o.bug)	{
+	//if (RImplementation.o.bug)	{
 		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
 		if (RImplementation.o.nvstencil)	{
 			u_stencil_optimize				(FALSE);
 			RCache.set_ColorWriteEnable		();
 		}
-	}
+	//}
 
 	// calc m-blur matrices
 	Fmatrix		m_previous, m_current;
@@ -91,16 +103,6 @@ void	CRenderTarget::phase_combine	()
 		RCache.set_c				("fog_color",	fogclr	);
 		RCache.set_Geometry			(g_combine_VP			);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-	}
-
-	// Draw skybox
-	{
-		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
-		if (RImplementation.o.nvstencil)	{
-			u_stencil_optimize				(FALSE);
-			RCache.set_ColorWriteEnable		();
-		}
-		g_pGamePersistent->Environment.RenderSky	();
 	}
 
 	// Forward rendering

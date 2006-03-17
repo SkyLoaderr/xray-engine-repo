@@ -34,7 +34,7 @@ float		ps_r__GLOD_ssa_start		= 256.f	;
 float		ps_r__GLOD_ssa_end			=  64.f	;
 float		ps_r__LOD					=  1.f	;
 float		ps_r__LOD_Power				=  1.5f	;
-float		ps_r__ssaDISCARD			=  3.0f	;					//RO
+float		ps_r__ssaDISCARD			=  3.5f	;					//RO
 float		ps_r__ssaDONTSORT			=  32.f	;					//RO
 float		ps_r__ssaHZBvsTEX			=  96.f	;					//RO
 
