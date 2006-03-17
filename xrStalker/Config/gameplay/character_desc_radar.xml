@@ -230,7 +230,7 @@
 			[spawn] \n
 			wpn_usp \n
 			ammo_11.43x23_hydro = 1 \n
-			wwpn_sig550 \n
+			wpn_sig550 \n
 	    	ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
