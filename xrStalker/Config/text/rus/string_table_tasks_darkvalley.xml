@@ -88,3 +88,33 @@
         Найти документы в Х-18
     </text>
 </string>
+<string id="dar_codedoor_1">
+    <text>
+        Открыть кодовую дверь.
+    </text>
+</string>
+<string id="dar_codedoor_1_1">
+    <text>
+        Найти код к двери.
+    </text>
+</string>
+<string id="dar_codedoor_1_2">
+    <text>
+        Открыть дверь с помощью кода.
+    </text>
+</string>
+<string id="dar_codedoor_2">
+    <text>
+        Открыть дверь в командный центр.
+    </text>
+</string>
+<string id="dar_codedoor_2_1">
+    <text>
+        Найти код к двери.
+    </text>
+</string>
+<string id="dar_codedoor_2_2">
+    <text>
+        Открыть дверь с помощью кода.
+    </text>
+</string>
