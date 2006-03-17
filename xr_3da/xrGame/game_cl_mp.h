@@ -121,6 +121,7 @@ struct Bonus_Struct
 };
 
 class CUIVotingCategory;
+class CUIVote;
 
 class game_cl_mp :public game_cl_GameState
 {
@@ -140,6 +141,7 @@ protected:
 
 ///	CUISpeechMenu*					m_pSpeechMenu;	
 	CUIVotingCategory*				m_pVoting;
+	CUIVote*						m_pVote;
 	BOOL							m_bSpectatorSelected;
 	int								m_iSpawn_Cost;
 
@@ -206,6 +208,7 @@ public:
 	virtual		void				SendVoteYesMessage		();
 	virtual		void				SendVoteNoMessage		();
 				void				VotingBegin				();
+				void				Vote					();
 	virtual		void				OnVoteStart				(NET_Packet& P);
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);

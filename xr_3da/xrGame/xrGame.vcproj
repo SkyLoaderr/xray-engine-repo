@@ -11025,6 +11025,12 @@
 						RelativePath=".\ui\UITextVote.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIVote.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIVote.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIVotingCategory.cpp">
 					</File>
 					<File

@@ -83,6 +83,7 @@ enum	EKeyBinding
 	kEXT_15			,
 
     kVOTE_BEGIN		,
+	kVOTE			,
 	kVOTEYES		,
 	kVOTENO			,
 
