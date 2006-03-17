@@ -629,7 +629,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 			pStartedPlayer = l_pC;
 		}
 		else
-			l_pC->ps->m_bCurrentVoteAgreed = 0;
+			l_pC->ps->m_bCurrentVoteAgreed = 2;
 	};
 
 	signal_Syncronize();
