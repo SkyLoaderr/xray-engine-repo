@@ -89,10 +89,10 @@ void CUIKickPlayer::OnBtnOk(){
 		string512 command;	
 		switch (mode){
 			case MODE_KICK:
-                sprintf(command, "cl_votestart kick #%u", item->GetID());
+                sprintf(command, "cl_votestart kick %s", item->GetText());
 				break;
 			case MODE_BAN:
-				sprintf(command, "cl_votestart ban #%u", item->GetID());
+				sprintf(command, "cl_votestart ban %s", item->GetText());
 				break;
 		}
 		Console->Execute(command);
@@ -134,7 +134,7 @@ void CUIKickPlayer::Update(){
 	for (u32 i = 0; i<items.size(); i++){
 		game_PlayerState* p = reinterpret_cast<game_PlayerState*>(items[i]);
 		CUIListBoxItem* item = lst->AddItem(p->name);
-		item->SetID(u32(i));
+		item->SetID(u32(i+1));
 	}
 
     lst->SetSelected(selected_item);
