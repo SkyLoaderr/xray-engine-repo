@@ -46,8 +46,8 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_fmj = 1 \n
-			wpn_abakan \n
-	    	ammo_5.45x39_ap = 1 \n
+			wpn_sig550 \n
+	    	ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -72,8 +72,8 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_abakan \n
-	    	ammo_5.45x39_ap = 1 \n
+			wpn_sig550 \n
+	    	ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -204,8 +204,8 @@
 			[spawn] \n
 			wpn_sig220 \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_abakan \n
-	    	ammo_5.45x39_ap = 1 \n
+			wpn_sig550 \n
+	    	ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -230,8 +230,8 @@
 			[spawn] \n
 			wpn_usp \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_abakan \n
-	    	ammo_5.45x39_ap = 1 \n
+			wwpn_sig550 \n
+	    	ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
