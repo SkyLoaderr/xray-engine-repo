@@ -12,8 +12,8 @@
         <class>pri_monolith_ambush</class>
         <community>monolith</community>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>793</rank>
+        <reputation>-675</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -38,8 +38,8 @@
         <class>pri_monolith_ambush</class>
         <community>monolith</community>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>755</rank>
+        <reputation>-649</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -65,8 +65,8 @@
         <class>pri_monolith_ambush_specnaz</class>
         <community>monolith</community>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>836</rank>
+        <reputation>-727</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -91,8 +91,8 @@
         <class>pri_monolith_ambush_specnaz</class>
         <community>monolith</community>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>811</rank>
+        <reputation>-820</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -118,8 +118,8 @@
         <class>pri_monolith_ambush_exo</class>
         <community>monolith</community>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>898</rank>
+        <reputation>-895</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -144,8 +144,8 @@
         <class>pri_monolith_ambush_exo</class>
         <community>monolith</community>
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>879</rank>
+        <reputation>-904</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -172,8 +172,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>378</rank>
+        <reputation>-552</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -199,8 +199,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>441</rank>
+        <reputation>-579</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -226,8 +226,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>413</rank>
+        <reputation>-508</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -253,8 +253,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>534</rank>
+        <reputation>-627</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
@@ -281,8 +281,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>784</rank>
+        <reputation>-748</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -309,8 +309,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>682</rank>
+        <reputation>-800</reputation>
 
         <visual>actors\monolit\stalker_mo_nauchniy</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -338,8 +338,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>925</rank>
+        <reputation>-943</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -366,8 +366,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>955</rank>
+        <reputation>-899</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -395,8 +395,8 @@
         <community>monolith</community>
 
 
-        <rank>400</rank>
-        <reputation>0</reputation>
+        <rank>989</rank>
+        <reputation>-998</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
@@ -426,8 +426,8 @@
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>700</rank>
-		<reputation>0</reputation>
+		<rank>788</rank>
+		<reputation>18</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -456,8 +456,8 @@
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>700</rank>
-		<reputation>0</reputation>
+		<rank>808</rank>
+		<reputation>19</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -485,8 +485,8 @@
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>700</rank>
-		<reputation>0</reputation>
+		<rank>837</rank>
+		<reputation>12</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -516,8 +516,8 @@
 		<class>pri_soldier_suicide</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>300</rank>
-		<reputation>0</reputation>
+		<rank>344</rank>
+		<reputation>-242</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -539,8 +539,8 @@
 		<class>pri_soldier_suicide</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>300</rank>
-		<reputation>0</reputation>
+		<rank>376</rank>
+		<reputation>-286</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -563,8 +563,8 @@
 		<class>pri_zombied_suicide</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>400</rank>
-		<reputation>-20</reputation>
+		<rank>538</rank>
+		<reputation>-303</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
@@ -587,8 +587,8 @@
 		<class>pri_zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>400</rank>
-		<reputation>-20</reputation>
+		<rank>512</rank>
+		<reputation>-338</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
@@ -614,8 +614,8 @@
 		<class>pri_zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>600</rank>
-		<reputation>-50</reputation>
+		<rank>737</rank>
+		<reputation>-487</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
@@ -640,8 +640,8 @@
 		<class>pri_zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>600</rank>
-		<reputation>-50</reputation>
+		<rank>816</rank>
+		<reputation>-576</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
