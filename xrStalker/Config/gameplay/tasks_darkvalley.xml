@@ -163,9 +163,9 @@
         <object_story_id>
             val_borov
         </object_story_id>
-        <function_complete>
-            darkvalley_tasks.has_darklab_key
-        </function_complete>
+        <infoportion_complete>
+            val_actor_has_borov_key
+        </infoportion_complete>
     </objective>
     <objective key="2">
         <text>
