@@ -23,7 +23,7 @@
 		</btn_ok>
 		
 		<btn_cancel x="414" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_cancel</text>
+			<text font="normal" align="c">mm_mp_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -131,7 +131,7 @@
 		</btn_ok>
 		
 		<btn_cancel x="414" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_cancel</text>
+			<text font="normal" align="c">mm_mp_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -171,7 +171,7 @@
 		</btn_ok>
 		
 		<btn_cancel x="414" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_cancel</text>
+			<text font="normal" align="c">mm_mp_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -191,7 +191,7 @@
 		</header>
 		
 		<btn_cancel x="414" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_cancel</text>
+			<text font="normal" align="c">mm_mp_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -245,7 +245,7 @@
 		<header x="50" y="45" width="500" height="33">
 			<text font="normal" r="227" g="199" b="178" vert_align="c">Enter Text for Voting</text>
 		</header>		
-		<edit_box x="136" y="100" width="270" height="60">			
+		<edit_box x="136" y="200" width="270" height="60">			
 			<font_s r="218" g="217" b="213"/>
 			<font r="131" g="131" b="131" font="letterica16"/>
 			<texture>ui_cb_listbox</texture>
@@ -261,7 +261,7 @@
 			</text_color>
 		</btn_ok>		
 		<btn_cancel x="414" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_cancel</text>
+			<text font="normal" align="c">mm_mp_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				

@@ -75,7 +75,7 @@ void CUIVotingCategory::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	{
 		if (btn_cancel == pWnd)
 			OnBtnCancel();
-		for (int i=0; i<6; i++){
+		for (int i=0; i<7; i++){
 			if (btn[i] == pWnd){
 				OnBtn(i);
 				return;
