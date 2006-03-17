@@ -332,12 +332,12 @@ function activate_by_section(npc, ini, section, loading)
 			section, npc:name(), db.storage[npc_id].active_section)
 	end
 
---	if not loading then
+	if not loading then
 		db.storage[npc_id].activation_time = time_global()
 		printf("activation time [%d]", db.storage[npc_id].activation_time)
 		-- GAMETIME added by Stohe.
 		db.storage[npc_id].activation_game_time = game.get_game_time()
---	end
+	end
 
 	if section == "nil" then
 		db.storage[npc_id].overrides = nil
