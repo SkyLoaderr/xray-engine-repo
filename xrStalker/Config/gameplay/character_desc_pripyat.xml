@@ -428,6 +428,7 @@
 			
 		<rank>788</rank>
 		<reputation>18</reputation>
+		<panic_treshold>0.3</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -458,6 +459,7 @@
 			
 		<rank>808</rank>
 		<reputation>19</reputation>
+		<panic_treshold>0.25</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -487,6 +489,7 @@
 			
 		<rank>837</rank>
 		<reputation>12</reputation>
+		<panic_treshold>0.2</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
