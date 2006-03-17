@@ -576,6 +576,15 @@ path_walk = zoneguard_walk1
 path_look = zoneguard_look1
 meet = meet@zoneguard1
 soundgroup = gar_dolg_zoneguard
+on_info = {+gar_test_info2} walker@gar_dolg_blokpost_zoneguard_no_meet
+
+[walker@gar_dolg_blokpost_zoneguard_no_meet]
+path_walk = zoneguard_walk1
+path_look = zoneguard_look1
+meet = no_meet
+soundgroup = gar_dolg_zoneguard
+on_info = {-gar_test_info2} walker@gar_dolg_blokpost_zoneguard1
+
 
 [meet@zoneguard1]
 meet_state = 20|{-gar_free_pass} threat@gar_dolg_blokpost, guard@talk_hello
