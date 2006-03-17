@@ -214,11 +214,11 @@ void CALifeUpdateManager::new_game			(LPCSTR save_name)
 	
 	time_manager().set_time_factor		(1.f);
 
-	do {
+	while (time_manager().game_time() < finish_time) {
 		update							(false);
 #pragma todo("Dima to Dima : increment m_game_time here to simulate game time progress")
 	}
-	while (time_manager().game_time() < finish_time);
+//	while (time_manager().game_time() < finish_time);
 
 	time_manager().set_time_factor		(time_factor);
 
