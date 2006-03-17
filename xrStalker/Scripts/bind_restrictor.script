@@ -97,6 +97,8 @@ end
 function restrictor_binder:load(reader)
 	self.loaded = true
 
+	printf( "restrictor_binder:load" )
+
 	object_binder.load(self, reader)
 
 	xr_logic.load_obj(self.object, reader)
