@@ -1,8 +1,8 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 
-<window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+<window>
 
-	<!-- ICONS OF CHARACTERS -->	
+
 	<static_icon x="27" y="22" width="256" height="256">
 		<texture>ui\ui_trade_character</texture>
 	</static_icon>
@@ -10,17 +10,19 @@
 		<texture mirror="h" width="141" height="199">ui\ui_trade_character</texture>
 	</static_icon>
 
-	<!-- OUR BAG -->
 	<our_bag_static x="20" y="270" width="290" height="450">
 		<texture>ui\ui_dg_inventory_exchange_trade</texture>
 		<text x="30" y="8" font="graffiti22" r="238" g="153" b="26"/>
 	</our_bag_static>
 
-	<dragdrop_list x="29" y="35" width="250" height="460"
+	<dragdrop_list x="29" y="35" width="262" height="460"
 			cell_width = "41" cell_height="41"
 			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"/>
 
-	<!-- OTHERS BAG -->
+	<dragdrop_list_our x="29" y="35" width="250" height="410"
+			cell_width = "41" cell_height="41" rows_num="10" cols_num="6" 
+			unlimited="1" group_similar="1"/>
+
 	<others_bag_static x="685" y="270" width="305" height="455">
 		<texture mirror="h" width="305" height="455">ui\ui_dg_inventory_exchange_trade</texture>
 		<text x="25" y="8" font="graffiti22" r="255" g="255" b="255" a="128">Corpse items</text>
@@ -30,13 +32,15 @@
 			cell_width="41" cell_height="41"
 			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"/>
 
-	<!-- DESCRIPTION WINDOW -->
+	<dragdrop_list_other x="29" y="35" width="262" height="410"
+			cell_width="41" cell_height="41" rows_num="10" cols_num="6" 
+			unlimited="1" group_similar="1"/>
+
 	<frame_window x="375" y="274" width="267" height="460">
 		<texture>ui_frame</texture>		
 		<left_top_texture x="5" y="10">ui\ui_inv_info_over_lt</left_top_texture>
 	</frame_window>
 
-	<!-- description static -->
 	<descr_static x="5" y="180" width="260" height="310">
 		<texture>ui\ui_inv_info_over_b</texture>
 	</descr_static>
@@ -45,7 +49,6 @@
 		<text font="graffiti22" r="255" g="255" b="255" a="128">Description</text>
 	</auto_static>
 
-	<!-- TAKE ALL -->
 	<take_all_btn x="865" y="725" width="110" height="40" hR="255" hB="83" hG="179" highlight_text="1">
         <texture>ui\ui_button_06</texture>
         <text align="c" font="graffiti22" r="238" g="153" b="26">Take All</text>

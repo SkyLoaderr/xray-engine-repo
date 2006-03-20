@@ -1,163 +1,151 @@
 #include "stdafx.h"
 #include "UICarBodyWnd.h"
-#include "UITradeWnd.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#include "../Entity.h"
 #include "../HUDManager.h"
-#include "../WeaponAmmo.h"
-#include "../Actor.h"
-#ifdef DEBUG
-#include "../ode_include.h"
-#include "../../StatGraph.h"
-#include "../PHDebug.h"
-#endif
-#include "../hit.h"
-#include "../PHDestroyable.h"
-#include "../Car.h"
-#include "../Trade.h"
-#include "../UIGameSP.h"
-#include "../eatable_item.h"
+#include "../level.h"
+#include "UICharacterInfo.h"
+#include "UIDragDropListEx.h"
+#include "UIFrameWindow.h"
+#include "UIItemInfo.h"
+#include "UIPropertiesBox.h"
+#include "../ai/monsters/BaseMonster/base_monster.h"
 #include "../inventory.h"
 #include "UIInventoryUtilities.h"
-#include "../level.h"
-#include "../profiler.h"
-#include "UIWpnDragDropItem.h"
-#include "../ai/monsters/BaseMonster/base_monster.h"
+#include "UICellItem.h"
+#include "UICellItemFactory.h"
 #include "../WeaponMagazined.h"
-
-using namespace InventoryUtilities;
+#include "../Actor.h"
+#include "../eatable_item.h"
 
 #define				CAR_BODY_XML		"carbody_new.xml"
 #define				CARBODY_ITEM_XML	"carbody_item.xml"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 CUICarBodyWnd::CUICarBodyWnd()
 {
-	Init();
-	Hide();
+	Init				();
+	Hide				();
 
-	SetFont(HUD().Font().pFontMedium);
+	SetFont				(HUD().Font().pFontMedium);
 	m_b_need_update		= false;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 CUICarBodyWnd::~CUICarBodyWnd()
 {
-	ClearDragDrop(m_vDragDropItems);
+	m_pUIOurBagList->ClearAll					(true);
+	m_pUIOthersBagList->ClearAll				(true);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::Init()
 {
-	CUIXml uiXml;
-	uiXml.Init(CONFIG_PATH, UI_PATH, CAR_BODY_XML);
+	CUIXml				uiXml;
+	uiXml.Init			(CONFIG_PATH, UI_PATH, CAR_BODY_XML);
 	
-	CUIXmlInit xml_init;
+	CUIXmlInit			xml_init;
 
-	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
-					CUIXmlInit::ApplyAlignY(0, alCenter),
-					UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	CUIWindow::Init		(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-	//статические элементы интерфейса
-	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
-	AttachChild(&UIStaticBottom);
-	UIStaticBottom.Init("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_WIDTH,32);
+	m_pUIStaticTop				= xr_new<CUIStatic>(); m_pUIStaticTop->SetAutoDelete(true);
+	AttachChild					(m_pUIStaticTop);
+	m_pUIStaticTop->Init		("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
 
-	//иконки с изображение нас и партнера по торговле
-	AttachChild(&UIOurIcon);
-	xml_init.InitStatic(uiXml, "static_icon", 0, &UIOurIcon);
-	AttachChild(&UIOthersIcon);
-	xml_init.InitStatic(uiXml, "static_icon", 1, &UIOthersIcon);
-	UIOurIcon.AttachChild(&UICharacterInfoLeft);
-	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), "trade_character.xml");
-	UIOthersIcon.AttachChild(&UICharacterInfoRight);
-	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
 
-	//Списки торговли
-	AttachChild(&UIOurBagWnd);
-	xml_init.InitStatic(uiXml, "our_bag_static", 0, &UIOurBagWnd);
-	AttachChild(&UIOthersBagWnd);
-	xml_init.InitStatic(uiXml, "others_bag_static", 0, &UIOthersBagWnd);
+	m_pUIStaticBottom			= xr_new<CUIStatic>(); m_pUIStaticBottom->SetAutoDelete(true);
+	AttachChild					(m_pUIStaticBottom);
+	m_pUIStaticBottom->Init		("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_WIDTH,32);
 
-	//Списки Drag&Drop
-	UIOurBagWnd.AttachChild(&UIOurBagList);	
-	xml_init.InitDragDropList(uiXml, "dragdrop_list", 0, &UIOurBagList);
-	UIOurBagList.SetItemsScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
+	m_pUIOurIcon				= xr_new<CUIStatic>(); m_pUIOurIcon->SetAutoDelete(true);
+	AttachChild					(m_pUIOurIcon);
+	xml_init.InitStatic			(uiXml, "static_icon", 0, m_pUIOurIcon);
 
-	UIOthersBagWnd.AttachChild(&UIOthersBagList);	
-	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIOthersBagList);
-	UIOthersBagList.SetItemsScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
+	m_pUIOthersIcon				= xr_new<CUIStatic>(); m_pUIOthersIcon->SetAutoDelete(true);
+	AttachChild					(m_pUIOthersIcon);
+	xml_init.InitStatic			(uiXml, "static_icon", 1, m_pUIOthersIcon);
+
+
+	m_pUICharacterInfoLeft		= xr_new<CUICharacterInfo>(); m_pUICharacterInfoLeft->SetAutoDelete(true);
+	m_pUIOurIcon->AttachChild	(m_pUICharacterInfoLeft);
+	m_pUICharacterInfoLeft->Init(0,0, m_pUIOurIcon->GetWidth(), m_pUIOurIcon->GetHeight(), "trade_character.xml");
+
+
+	m_pUICharacterInfoRight			= xr_new<CUICharacterInfo>(); m_pUICharacterInfoRight->SetAutoDelete(true);
+	m_pUIOthersIcon->AttachChild	(m_pUICharacterInfoRight);
+	m_pUICharacterInfoRight->Init	(0,0, m_pUIOthersIcon->GetWidth(), m_pUIOthersIcon->GetHeight(), "trade_character.xml");
+
+	m_pUIOurBagWnd					= xr_new<CUIStatic>(); m_pUIOurBagWnd->SetAutoDelete(true);
+	AttachChild						(m_pUIOurBagWnd);
+	xml_init.InitStatic				(uiXml, "our_bag_static", 0, m_pUIOurBagWnd);
+
+
+	m_pUIOthersBagWnd				= xr_new<CUIStatic>(); m_pUIOthersBagWnd->SetAutoDelete(true);
+	AttachChild						(m_pUIOthersBagWnd);
+	xml_init.InitStatic				(uiXml, "others_bag_static", 0, m_pUIOthersBagWnd);
+
+	m_pUIOurBagList					= xr_new<CUIDragDropListEx>(); m_pUIOurBagList->SetAutoDelete(true);
+	m_pUIOurBagWnd->AttachChild		(m_pUIOurBagList);	
+	xml_init.InitDragDropListEx		(uiXml, "dragdrop_list_our", 0, m_pUIOurBagList);
+
+	m_pUIOthersBagList				= xr_new<CUIDragDropListEx>(); m_pUIOthersBagList->SetAutoDelete(true);
+	m_pUIOthersBagWnd->AttachChild	(m_pUIOthersBagList);	
+	xml_init.InitDragDropListEx		(uiXml, "dragdrop_list_other", 0, m_pUIOthersBagList);
 
 
 	//информация о предмете
-	AttachChild(&UIDescWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDescWnd);
-	UIDescWnd.AttachChild(&UIStaticDesc);
-	xml_init.InitStatic(uiXml, "descr_static", 0, &UIStaticDesc);
-	UIDescWnd.AttachChild(&UIItemInfo);
-	UIItemInfo.Init(0,0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), CARBODY_ITEM_XML);
+	m_pUIDescWnd					= xr_new<CUIFrameWindow>(); m_pUIDescWnd->SetAutoDelete(true);
+	AttachChild						(m_pUIDescWnd);
+	xml_init.InitFrameWindow		(uiXml, "frame_window", 0, m_pUIDescWnd);
+
+	m_pUIStaticDesc					= xr_new<CUIStatic>(); m_pUIStaticDesc->SetAutoDelete(true);
+	m_pUIDescWnd->AttachChild		(m_pUIStaticDesc);
+	xml_init.InitStatic				(uiXml, "descr_static", 0, m_pUIStaticDesc);
+
+	m_pUIItemInfo					= xr_new<CUIItemInfo>(); m_pUIItemInfo->SetAutoDelete(true);
+	m_pUIDescWnd->AttachChild		(m_pUIItemInfo);
+	m_pUIItemInfo->Init				(0,0, m_pUIDescWnd->GetWidth(), m_pUIDescWnd->GetHeight(), CARBODY_ITEM_XML);
 
 
-	//Элементы автоматического добавления
-	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+	xml_init.InitAutoStatic			(uiXml, "auto_static", this);
 
-	AttachChild(&UIPropertiesBox);
-	UIPropertiesBox.Init("ui_pop_up",0,0,300,300);
-	UIPropertiesBox.Hide();
+	m_pUIPropertiesBox				= xr_new<CUIPropertiesBox>(); m_pUIPropertiesBox->SetAutoDelete(true);
+	AttachChild						(m_pUIPropertiesBox);
+	m_pUIPropertiesBox->Init		("ui_pop_up",0,0,300,300);
+	m_pUIPropertiesBox->Hide		();
 
-	UIOurBagList.SetCheckProc(OurBagProc);
-	UIOthersBagList.SetCheckProc(OthersBagProc);
+	SetCurrentItem					(NULL);
+	m_pUIStaticDesc->SetText		(NULL);
 
-	SetCurrentItem(NULL);
-	m_pCurrentDragDropItem = NULL;
-	UIStaticDesc.SetText(NULL);
+	m_pUITakeAll					= xr_new<CUIButton>(); m_pUITakeAll->SetAutoDelete(true);
+	AttachChild						(m_pUITakeAll);
+	xml_init.InitButton				(uiXml, "take_all_btn", 0, m_pUITakeAll);
 
-	AttachChild(&UITakeAll);
-	xml_init.InitButton(uiXml, "take_all_btn", 0, &UITakeAll);
+	BindDragDropListEnents			(m_pUIOurBagList);
+	BindDragDropListEnents			(m_pUIOthersBagList);
+
+
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
-								CInventory* pOthersInv, CGameObject* pOthersObject)
+void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 {
 
-    m_pOurObject			= pOurObject;
-	m_pOthersObject			= pOthersObject;
+    m_pOurObject									= pOur;
+	m_pOthersObject									= pOthers;
 
-	m_pInv					= pOurInv;
-	m_pOthersInv			= pOthersInv;
+	m_pUICharacterInfoLeft->InitCharacter			(smart_cast<CGameObject*>(m_pOurObject)->ID());
 
-	
-//	CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pOurObject);
-	UICharacterInfoLeft.InitCharacter(pOurObject->ID());
-//	CInventoryOwner* pOthersInvOwner = smart_cast<CInventoryOwner*>(pOthersObject);
-
-	if(pOthersObject) {
-		CBaseMonster *monster = smart_cast<CBaseMonster *>(pOthersObject);
+	if(m_pOthersObject) {
+		CBaseMonster *monster						= smart_cast<CBaseMonster *>(m_pOthersObject);
 		if (!monster) {
-			UICharacterInfoRight.InitCharacter(pOthersObject->ID());
+			m_pUICharacterInfoRight->InitCharacter	(smart_cast<CGameObject*>(m_pOthersObject)->ID());
 		} else {
-			UICharacterInfoRight.ClearInfo();
+			m_pUICharacterInfoRight->ClearInfo		();
 		}
 	}
 
-	m_pMouseCapturer			= NULL;
-	UIPropertiesBox.Hide		();
-//	UIMessageBox.Hide();
-	EnableAll					();
-
-
-	UpdateLists					();
-
+	m_pUIPropertiesBox->Hide						();
+	EnableAll										();
+	UpdateLists										();
 }  
+
 void CUICarBodyWnd::UpdateLists_delayed()
 {
 		m_b_need_update = true;
@@ -165,358 +153,125 @@ void CUICarBodyWnd::UpdateLists_delayed()
 
 void CUICarBodyWnd::UpdateLists()
 {
-//	CTimer	T;
-//	T.Start();
-	//очистить после предыдущего запуска
-	UIOurBagList.DropAll();
-	UIOthersBagList.DropAll();
+	m_pUIOurBagList->ClearAll					(true);
+	m_pUIOthersBagList->ClearAll				(true);
 
-	ClearDragDrop(m_vDragDropItems);
-
-	ruck_list.clear	();
-	m_pInv->AddAvailableItems(ruck_list);
-	std::sort		(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
+	ruck_list.clear								();
+	m_pOurObject->inventory().AddAvailableItems	(ruck_list);
+	std::sort									(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
 	//Наш рюкзак
 	TIItemContainer::iterator it;
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
-		if((*it)) 
-		{
-			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
-	
-			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
-
-
-			UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
-			UIDragDropItem.SetShader(GetEquipmentIconsShader());
-
-			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
-			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
-
-			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									float((*it)->GetXPos()*INV_GRID_WIDTH),
-									float((*it)->GetYPos()*INV_GRID_HEIGHT),
-									float((*it)->GetGridWidth()*INV_GRID_WIDTH),
-									float((*it)->GetGridHeight()*INV_GRID_HEIGHT));
-
-			UIDragDropItem.SetData((*it));
-
-			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
-
-			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
-			if(pWeaponAmmo)	UIDragDropItem.SetCustomDraw(AmmoDrawProc);
-
-			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
-			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
-
-
-			UIDragDropItem.SetStretchTexture(true);
-				
-			UIOurBagList.AttachChild(&UIDragDropItem);
-		}
+		CUICellItem* itm				= create_cell_item(*it);
+		m_pUIOurBagList->SetItem		(itm);
 	}
 
 
-	ruck_list.clear	();
-	m_pOthersInv->AddAvailableItems(ruck_list);
-	std::sort		(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
+	ruck_list.clear									();
+	m_pOthersObject->inventory().AddAvailableItems	(ruck_list);
+	std::sort										(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
 	//Чужой рюкзак
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
-		if((*it)) 
-		{
-			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
-		
-			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
-
-				
-			UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
-
-			UIDragDropItem.SetShader(GetEquipmentIconsShader());
-
-			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
-			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
-
-			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									float((*it)->GetXPos()*INV_GRID_WIDTH),
-									float((*it)->GetYPos()*INV_GRID_HEIGHT),
-									float((*it)->GetGridWidth()*INV_GRID_WIDTH),
-									float((*it)->GetGridHeight()*INV_GRID_HEIGHT));
-			UIDragDropItem.SetData((*it));
-
-			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
-
-			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
-			if(pWeaponAmmo)	UIDragDropItem.SetCustomDraw(AmmoDrawProc);
-
-			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
-			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
-
-			UIDragDropItem.SetStretchTexture(true);
-
-			UIOthersBagList.AttachChild(&UIDragDropItem);
-		}
+		CUICellItem* itm							= create_cell_item(*it);
+		m_pUIOthersBagList->SetItem					(itm);
 	}
 
-	UpdateWeight(UIOurBagWnd);
-	m_b_need_update = false;
+	InventoryUtilities::UpdateWeight				(*m_pUIOurBagWnd);
+	m_b_need_update									= false;
 }
 
 void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-
-	if(msg == DRAG_DROP_ITEM_DRAG)
+	if (BUTTON_CLICKED == msg && m_pUITakeAll == pWnd)
 	{
-		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
-		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-		SetCurrentItem(pInvItem);
-		m_pCurrentDragDropItem->Rescale(1.0f, 1.0f);
+		TakeAll					();
 	}
-	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
+	else if(pWnd == m_pUIPropertiesBox &&	msg == PROPERTY_CLICKED)
 	{
-		bool bTakeAll = pData && (*(int*)pData==111) ;
-		if (!bTakeAll && m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
-		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-		
-		if(!bTakeAll){
-			PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-			SetCurrentItem(pInvItem);
-		}
-
-		if(m_pCurrentDragDropItem->GetParent() == &UIOurBagList){
-			ToOthersBag();
-		}else if(m_pCurrentDragDropItem->GetParent() == &UIOthersBagList){
-			ToOurBag();
-		}else
-			R_ASSERT2(false, "wrong parent for car_body wnd");
-	}
-	else if (BUTTON_CLICKED == msg && &UITakeAll == pWnd)
-	{
-		TakeAll();
-	}
-	else if(msg == DRAG_DROP_ITEM_RBUTTON_CLICK)
-	{
-		PIItem pInvItem				= (PIItem)((CUIDragDropItem*)pWnd)->GetData();
-				
-		SetCurrentItem				(pInvItem);
-		m_pCurrentDragDropItem		= (CUIDragDropItem*)pWnd;
-		
-		ActivatePropertiesBox		();
-	}
-	else if(pWnd == &UIPropertiesBox &&	msg == PROPERTY_CLICKED)
-	{
-		if(UIPropertiesBox.GetClickedItem())
+		if(m_pUIPropertiesBox->GetClickedItem())
 		{
-			switch(UIPropertiesBox.GetClickedItem()->GetValue())
+			switch(m_pUIPropertiesBox->GetClickedItem()->GetValue())
 			{
 			case INVENTORY_EAT_ACTION:	//съесть объект
 				EatItem();
 				break;
-/*			case INVENTORY_ATTACH_ADDON:{
-					m_pItemToUpgrade = (PIItem)pData;
-					AttachAddon();
-				}break;
-			case INVENTORY_DETACH_SCOPE_ADDON:
-				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
-				break;
-			case INVENTORY_DETACH_SILENCER_ADDON:
-				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
-				break;
-			case INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON:
-				DetachAddon(*(smart_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
-				break;
-*/
 			case INVENTORY_UNLOAD_MAGAZINE:
-				(smart_cast<CWeaponMagazined*>(m_pCurrentItem))->UnloadMagazine();
+				(smart_cast<CWeaponMagazined*>(CurrentIItem()))->UnloadMagazine();
 				break;
 			}
 		}
 	}
 
-
-
-	CUIWindow::SendMessage			(pWnd, msg, pData);
+	inherited::SendMessage			(pWnd, msg, pData);
 }
-
-
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::Draw()
 {
-	inherited::Draw();
+	inherited::Draw	();
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::Update()
 {
-	if(m_b_need_update||m_pInv->ModifyFrame()==Device.dwFrame || m_pOthersInv->ModifyFrame()==Device.dwFrame)
+	if(	m_b_need_update||
+		m_pOurObject->inventory().ModifyFrame()==Device.dwFrame || 
+		m_pOurObject->inventory().ModifyFrame()==Device.dwFrame)
+
 		UpdateLists		();
 
-	if(m_pOurObject->Position().distance_to(m_pOthersObject->Position()) > 3.0f){
+	if((smart_cast<CGameObject*>(m_pOurObject))->Position().distance_to((smart_cast<CGameObject*>(m_pOthersObject))->Position()) > 3.0f){
 			GetHolder()->StartStopMenu(this,true);
 	}
-/*
-	//убрать объект drag&drop для уже использованной вещи
-	for(u32 i = 0; i <m_vDragDropItems.size(); ++i) 
-	{
-		CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i]->GetData();
-		if(pItem && !pItem->Useful())
-		{
-			m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
-			m_vDragDropItems[i]->SetData(NULL);
-			m_vDragDropItems[i]->SetCustomDraw(NULL);
-
-			xr_delete(m_vDragDropItems[i]);
-			m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
-		}
-	}
-*/
 	inherited::Update();
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUICarBodyWnd::Show() 
 { 
-	inherited::Show			();
-	SetCurrentItem			(NULL);
-	UpdateWeight			(UIOurBagWnd);
+	inherited::Show							();
+	SetCurrentItem							(NULL);
+	InventoryUtilities::UpdateWeight		(*m_pUIOurBagWnd);
 }
-
-//////////////////////////////////////////////////////////////////////////
-
-//при вызове проверки необходимо помнить 
-//иерархию окон, чтоб знать какой именно из
-//родителей является CUIInventoryWnd и 
-//содержит свойство GetInventory()
-bool CUICarBodyWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
-{
-	CUICarBodyWnd* this_car_body_wnd =  smart_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
-	R_ASSERT2(this_car_body_wnd, "wrong parent addressed as trade wnd");
-
-	PIItem pIItem = (PIItem)(pItem->GetData());
-	
-	//другому инвентарю - отдать вещь
-	NET_Packet						P;
-	this_car_body_wnd->m_pOthersObject->u_EventGen(P,GE_OWNERSHIP_REJECT,
-										this_car_body_wnd->m_pOthersObject->ID());
-	P.w_u16							   (u16(pIItem->object().ID()));
-	this_car_body_wnd->m_pOthersObject->u_EventSend	(P);
-
-	//нам - взять вещь 
-	this_car_body_wnd->m_pOurObject->u_EventGen(P,GE_OWNERSHIP_TAKE,
-										this_car_body_wnd->m_pOurObject->ID());
-	P.w_u16							(u16(pIItem->object().ID()));
-	this_car_body_wnd->m_pOurObject->u_EventSend	(P);
-
-	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
-{
-	CUICarBodyWnd* this_car_body_wnd =  smart_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
-	R_ASSERT2(this_car_body_wnd, "wrong parent addressed as trade wnd");
-
-	if (smart_cast<CBaseMonster*>(this_car_body_wnd->m_pOthersObject)) return false;
-
-	PIItem pIItem = (PIItem)(pItem->GetData());
-
-	float otherInvWeight	= this_car_body_wnd->m_pOthersInv->CalcTotalWeight();
-	float otherMaxWeight	= this_car_body_wnd->m_pOthersInv->GetMaxWeight();
-	float itmWeight			= pIItem->Weight();
-	if	 (otherInvWeight+itmWeight >=otherMaxWeight)return false;
-	//нам - отдать вещь
-	NET_Packet P;
-	this_car_body_wnd->m_pOurObject->u_EventGen(P,GE_OWNERSHIP_REJECT,
-									 this_car_body_wnd->m_pOurObject->ID());
-	P.w_u16							 (u16(pIItem->object().ID()));
-	this_car_body_wnd->m_pOurObject->u_EventSend			(P);
-
-	//другому инвентарю - взять вещь 
-	this_car_body_wnd->m_pOthersObject->u_EventGen(P,GE_OWNERSHIP_TAKE,
-										this_car_body_wnd->m_pOthersObject->ID());
-	P.w_u16								(u16(pIItem->object().ID()));
-	this_car_body_wnd->m_pOthersObject->u_EventSend	(P);
-
-	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-bool CUICarBodyWnd::ToOurBag()
-{
-//	CTimer T;
-	bool b;
-//	T.Start();
-	b= OurBagProc(m_pCurrentDragDropItem, &UIOurBagList);
-//	Msg("----CUICarBodyWnd::ToOurBag:OurBagProc(): %f",T.GetElapsed_sec());
-
-	if(!b)return false;
-		
-
-	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-											   DetachChild(m_pCurrentDragDropItem);
-	
-
-//	T.Start();
-//	Msg("----CUICarBodyWnd::ToOurBag:AttachChild()---BEGIN: %f",T.GetElapsed_sec());
-	UIOurBagList.AttachChild(m_pCurrentDragDropItem);
-//	Msg("----CUICarBodyWnd::ToOurBag:AttachChild()---END: %f",T.GetElapsed_sec());
-
-	m_pMouseCapturer = NULL;
-	UpdateWeight(UIOurBagWnd);
-
-	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-bool CUICarBodyWnd::ToOthersBag()
-{
-	if(!OthersBagProc(m_pCurrentDragDropItem, 
-				      &UIOthersBagList)) return false;
-
-	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
-	UIOthersBagList.AttachChild(m_pCurrentDragDropItem);
-
-	m_pMouseCapturer = NULL;
-	UpdateWeight(UIOurBagWnd);
-
-	return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::DisableAll()
 {
-	UIOurBagWnd.Enable(false);
-	UIOthersBagWnd.Enable(false);
+	m_pUIOurBagWnd->Enable			(false);
+	m_pUIOthersBagWnd->Enable		(false);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::EnableAll()
 {
-	UIOurBagWnd.Enable(true);
-	UIOthersBagWnd.Enable(true);
+	m_pUIOurBagWnd->Enable			(true);
+	m_pUIOthersBagWnd->Enable		(true);
 }
 
-void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
+CUICellItem* CUICarBodyWnd::CurrentItem()
 {
-	m_pCurrentItem = pItem;
+	return m_pCurrentCellItem;
+}
 
-	UIItemInfo.InitItem(m_pCurrentItem);
+PIItem CUICarBodyWnd::CurrentIItem()
+{
+	return	(m_pCurrentCellItem)?(PIItem)m_pCurrentCellItem->m_pData : NULL;
+}
+
+void CUICarBodyWnd::SetCurrentItem(CUICellItem* itm)
+{
+	m_pCurrentCellItem				= itm;
+	m_pUIItemInfo->InitItem(CurrentIItem());
 }
 
 void CUICarBodyWnd::TakeAll()
 {
+	u32 cnt				= m_pUIOthersBagList->ItemsCount();
+	for(u32 i=0; i<cnt; ++i)
+	{
+		PIItem itm		= (PIItem)(m_pUIOthersBagList->GetItemIdx(i)->m_pData);
+		TransferItem	(itm, m_pOthersObject, m_pOurObject, false);
+	}
+/*
 	for (DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin();
 		 it != UIOthersBagList.GetDragDropItemsList().end();)
 	{
@@ -524,6 +279,7 @@ void CUICarBodyWnd::TakeAll()
 		SendMessage(*it++, DRAG_DROP_ITEM_DB_CLICK, (void*)(&iData) );
 	}
 	SetCurrentItem(NULL);
+*/
 }
 
 
@@ -547,39 +303,132 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 	Frect rect = GetAbsoluteRect();
 	GetUICursor()->GetPos(x,y);
 		
-	UIPropertiesBox.RemoveAll();
+	m_pUIPropertiesBox->RemoveAll();
 	
-	CWeaponMagazined*		pWeapon			= smart_cast<CWeaponMagazined*>(m_pCurrentItem);
-	CEatableItem*			pEatableItem	= smart_cast<CEatableItem*>(m_pCurrentItem);
+	CWeaponMagazined*		pWeapon			= smart_cast<CWeaponMagazined*>(CurrentIItem());
+	CEatableItem*			pEatableItem	= smart_cast<CEatableItem*>(CurrentIItem());
     bool					b_show			= false;
 	if(pWeapon && pWeapon->GetAmmoElapsed())
 	{
-			UIPropertiesBox.AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
+			m_pUIPropertiesBox->AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
 			b_show			= true;
 	}
 	
 	
 	if(pEatableItem)
 	{
-		UIPropertiesBox.AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
+		m_pUIPropertiesBox->AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
 		b_show			= true;
 	}
 
 	if(b_show){
-		UIPropertiesBox.AutoUpdateSize	();
-		UIPropertiesBox.BringAllToTop	();
-		UIPropertiesBox.Show			(x-rect.left, y-rect.top);
+		m_pUIPropertiesBox->AutoUpdateSize	();
+		m_pUIPropertiesBox->BringAllToTop	();
+		m_pUIPropertiesBox->Show			(x-rect.left, y-rect.top);
 	}
 }
 
 void CUICarBodyWnd::EatItem()
 {
-	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor) return;
+	CActor *pActor				= smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor)					return;
 
-	NET_Packet	P;
-	CGameObject::u_EventGen(P, GEG_PLAYER_ITEM_EAT, Actor()->ID());
-	P.w_u16		(m_pCurrentItem->object().ID());
-	CGameObject::u_EventSend(P);
+	NET_Packet					P;
+	CGameObject::u_EventGen		(P, GEG_PLAYER_ITEM_EAT, Actor()->ID());
+	P.w_u16						(CurrentIItem()->object().ID());
+	CGameObject::u_EventSend	(P);
 
+}
+
+
+bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
+{
+	CUIDragDropListEx*	old_owner		= itm->OwnerList();
+	CUIDragDropListEx*	new_owner		= CUIDragDropListEx::m_drag_item->BackList();
+	
+	if(old_owner==new_owner || !old_owner || !new_owner)
+					return false;
+
+	TransferItem		(	CurrentIItem(),
+							(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
+							(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
+							(old_owner==m_pUIOurBagList)
+						);
+
+	return				true;
+}
+
+bool CUICarBodyWnd::OnItemStartDrag(CUICellItem* itm)
+{
+	return				false; //default behaviour
+}
+
+bool CUICarBodyWnd::OnItemDbClick(CUICellItem* itm)
+{
+	CUIDragDropListEx*	old_owner		= itm->OwnerList();
+
+	if					(!CurrentItem())	SetCurrentItem	(itm);
+		
+	TransferItem		(	CurrentIItem(),
+							(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
+							(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
+							(old_owner==m_pUIOurBagList)
+						);
+	return				true;
+}
+
+bool CUICarBodyWnd::OnItemSelected(CUICellItem* itm)
+{
+	SetCurrentItem		(itm);
+	return				false;
+}
+
+bool CUICarBodyWnd::OnItemRButtonClick(CUICellItem* itm)
+{
+	SetCurrentItem				(itm);
+	ActivatePropertiesBox		();
+	return						false;
+}
+
+void CUICarBodyWnd::TransferItem(PIItem itm, CInventoryOwner* owner_from, CInventoryOwner* owner_to, bool b_check)
+{
+	CGameObject* go_from					= smart_cast<CGameObject*>(owner_from);
+	CGameObject* go_to						= smart_cast<CGameObject*>(owner_to);
+
+	if(smart_cast<CBaseMonster*>(go_to))	return;
+	if(b_check)
+	{
+		float invWeight						= owner_to->inventory().CalcTotalWeight();
+		float maxWeight						= owner_to->inventory().GetMaxWeight();
+		float itmWeight						= itm->Weight();
+		if(invWeight+itmWeight >=maxWeight)	return;
+	}
+
+	NET_Packet P;
+	go_from->u_EventGen						(	P,
+												GE_OWNERSHIP_REJECT,
+												go_from->ID()
+											);
+
+	P.w_u16									(u16(itm->object().ID()));
+	go_from->u_EventSend					(P);
+
+	//другому инвентарю - взять вещь 
+	go_to->u_EventGen						(	P,
+												GE_OWNERSHIP_TAKE,
+												go_to->ID()
+											);
+	P.w_u16									(u16(itm->object().ID()));
+	go_to->u_EventSend						(P);
+
+	SetCurrentItem							(NULL);
+}
+
+void CUICarBodyWnd::BindDragDropListEnents(CUIDragDropListEx* lst)
+{
+	lst->m_f_item_drop				= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUICarBodyWnd::OnItemDrop);
+	lst->m_f_item_start_drag		= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUICarBodyWnd::OnItemStartDrag);
+	lst->m_f_item_db_click			= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUICarBodyWnd::OnItemDbClick);
+	lst->m_f_item_selected			= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUICarBodyWnd::OnItemSelected);
+	lst->m_f_item_rbutton_click		= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUICarBodyWnd::OnItemRButtonClick);
 }

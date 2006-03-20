@@ -129,13 +129,13 @@ protected:
 
 	CUICellItem*			m_pCurrentCellItem;
 	//---------------------------------------------------------------------
-	static void				SendEvent_Item2Slot			(PIItem	pItem);
-	static void				SendEvent_Item2Belt			(PIItem	pItem);
-	static void				SendEvent_Item2Ruck			(PIItem	pItem);
-	static void				SendEvent_Item_Drop			(PIItem	pItem);
-	static void				SendEvent_Item_Eat			(PIItem	pItem);
-	static void 			SendEvent_Item_Sell			(PIItem	pItem);
-	static void 			SendEvent_ActivateArtefact	(PIItem	pItem);
+	void				SendEvent_Item2Slot			(PIItem	pItem);
+	void				SendEvent_Item2Belt			(PIItem	pItem);
+	void				SendEvent_Item2Ruck			(PIItem	pItem);
+	void				SendEvent_Item_Drop			(PIItem	pItem);
+	void				SendEvent_Item_Eat			(PIItem	pItem);
+	void 				SendEvent_Item_Sell			(PIItem	pItem);
+	void 				SendEvent_ActivateArtefact	(PIItem	pItem);
 	//---------------------------------------------------------------------
 
 	void					ProcessPropertiesBoxClicked	();

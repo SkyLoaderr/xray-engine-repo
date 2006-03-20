@@ -131,12 +131,10 @@ void CUIGameSP::StartTalk()
 	m_game->StartStopMenu(TalkMenu,true);
 }
 
-void CUIGameSP::StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
-							 CInventory* pOthersInv, CGameObject* pOthersObject)
+void CUIGameSP::StartCarBody(CInventoryOwner* pOurInv, CInventoryOwner* pOthers)
 {
-	UICarBodyMenu->InitCarBody(pOurInv,  pOurObject,
-		                      pOthersInv, pOthersObject);
-	m_game->StartStopMenu(UICarBodyMenu,true);
+	UICarBodyMenu->InitCarBody		(pOurInv,  pOthers);
+	m_game->StartStopMenu			(UICarBodyMenu,true);
 }
 
 void CUIGameSP::ReInitShownUI() 

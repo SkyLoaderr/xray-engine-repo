@@ -396,9 +396,7 @@ void CActor::ActorUse()
 			{
 				//только если находимся в режиме single
 				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-				if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
-					&m_pPersonWeLookingAt->inventory(),
-					smart_cast<CGameObject*>(m_pPersonWeLookingAt));
+				if(pGameSP)pGameSP->StartCarBody(this, m_pPersonWeLookingAt );
 			}
 		}
 
