@@ -224,5 +224,8 @@ bool CUIWeaponCellItem::EqualTo(CUICellItem* itm)
 	CUIWeaponCellItem* ci			= smart_cast<CUIWeaponCellItem*>(itm);
 	if(!ci)							return false;
 
-	return							( (object()->GetAddonsState() == ci->object()->GetAddonsState()) );
+	bool b_addons					= ( (object()->GetAddonsState() == ci->object()->GetAddonsState()) );
+	bool b_place					= ( (object()->m_eItemPlace == ci->object()->m_eItemPlace) );
+	
+	return							b_addons && b_place;
 }
