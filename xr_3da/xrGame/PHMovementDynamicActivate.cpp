@@ -313,6 +313,7 @@ bool CPHMovementControl:: ActivateBoxDynamic(DWORD id,int num_it/*=8*/,int num_s
 	}
 
 	//m_PhysicMovementControl->ActivateBox(id);
+	m_character->CPHObject::activate();
 	ph_world->Freeze();
 	UnFreeze();
 
