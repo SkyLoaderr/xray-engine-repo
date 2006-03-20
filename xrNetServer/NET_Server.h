@@ -9,6 +9,7 @@ class XRNETSERVER_API IClient
 	{
 		u32		bLocal		: 1;
 		u32		bConnected	: 1;
+		u32		bReconnect	: 1;
 	};
 public:
 	IClientStatistic	stats;
@@ -18,8 +19,14 @@ public:
 	Flags				flags;	// local/host/normal
 	u32					dwTime_LastUpdate;
 
+	char				m_cAddress[4];
+	DWORD				m_dwPort;
+
 	IClient(CTimer* timer):stats(timer)	{
 		dwTime_LastUpdate	= 0;
+		flags.bLocal = FALSE;
+		flags.bConnected = FALSE;
+		flags.bReconnect = FALSE;
 	}
 	virtual ~IClient(){}
 };
@@ -94,6 +101,7 @@ protected:
 
 	xrCriticalSection		csPlayers;
 	xr_vector<IClient*>		net_Players;
+	xr_vector<IClient*>		net_Players_disconnected;
 	IClient*				SV_Client;
 
 	int						psNET_Port;	

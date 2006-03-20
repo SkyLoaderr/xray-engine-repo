@@ -325,29 +325,6 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			bool bLocal				= (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL) != 0;
 			ClientID clientID; clientID.set(msg->dpnidPlayer);
 			new_client				(clientID, cname, bLocal);
-
-/*			
-			// register player
-			csPlayers.Enter			();
-			// setup structure
-			IClient*				P = client_Create();
-			VERIFY(P);
-			P->ID.set(msg->dpnidPlayer);
-			P->flags.bLocal			= (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL);
-			P->flags.bConnected		= TRUE;
-			string256				cname;
-			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,cname,sizeof(cname),0,0));
-			P->Name					= cname;
-
-			net_Players.push_back	(P);
-			csPlayers.Leave			();
-			
-			// config client
-			SendTo_LL				(P->ID,&msgConfig,sizeof(msgConfig));
-
-			// gen message
-			OnCL_Connected			(P);
-*/			
         }
 		break;
 	case DPN_MSGID_DESTROY_PLAYER:
@@ -361,11 +338,12 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				{
 					// gen message
 					net_Players[I]->flags.bConnected	= FALSE;
+					net_Players[I]->flags.bReconnect	= FALSE;
 					OnCL_Disconnected	(net_Players[I]);
 
-					// real destroy
+//					// real destroy
 					client_Destroy		(net_Players[I]);
-					net_Players.erase	(net_Players.begin()+I);
+//					net_Players.erase	(net_Players.begin()+I);
 					break;
 				}
 			csPlayers.Leave			();
