@@ -82,7 +82,7 @@ void CUIInventoryWnd::SellItem()
 	//-----------------------------------------------------------------------
 	SetCurrentItem(NULL);
 
-//	UpdateWeight		(UIBagWnd, true);
+	InventoryUtilities::UpdateWeight		(UIBagWnd, true);
 }
 
 void CUIInventoryWnd::InitInventory_delayed()
@@ -137,7 +137,7 @@ void CUIInventoryWnd::InitInventory()
 		m_pUIBagList->SetItem		(itm);
 	}
 
-//.	UpdateWeight					(UIBagWnd, true);
+	InventoryUtilities::UpdateWeight					(UIBagWnd, true);
 
 	m_b_need_reinit					= false;
 }  
@@ -152,7 +152,7 @@ void CUIInventoryWnd::DropCurrentItem()
 	{
 		SendEvent_Item_Drop		(CurrentIItem());
 		SetCurrentItem			(NULL);
-	//.	UpdateWeight			(UIBagWnd, true);
+		InventoryUtilities::UpdateWeight			(UIBagWnd, true);
 	}
 }
 
