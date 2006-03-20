@@ -5,7 +5,7 @@ active = sr_idle
 on_info = {+agr_knockdown} sr_idle@1
 
 [sr_idle@1]
-on_timer = 300 | sr_idle@2 %=agr_knockdown =run_cam_effector(dis_consciousness)%
+on_timer = 300 | sr_idle@2 %=agr_knockdown =run_cam_effector(dis_consciousness) =disable_ui%
 
 [sr_idle@2]
 on_timer = 3000 | sr_idle@3 %=run_postprocess(agr_u_fade)%
