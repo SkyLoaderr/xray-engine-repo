@@ -2399,11 +2399,14 @@ void CCC_RegisterCommands()
 	extern INT	g_sv_Pending_Wait_Time;
 	CMD4(CCC_Integer,	"sv_pending_wait_time",		&g_sv_Pending_Wait_Time, 0, 60000);
 
-	CMD4(CCC_Integer,	"sv_pending_wait_time",			&g_sv_Pending_Wait_Time, 0, 60000);
+	extern INT	g_sv_Client_Reconnect_Time;
+	CMD4(CCC_Integer,	"sv_client_reconnect_time",		&g_sv_Client_Reconnect_Time, 0, 60);
 
 	g_uCommonFlags.zero();
 	g_uCommonFlags.set(flAiUseTorchDynamicLights, TRUE);
 
 	CMD3(CCC_Mask,		"ai_use_torch_dynamic_lights",	&g_uCommonFlags, flAiUseTorchDynamicLights);
 	CMD4(CCC_Integer,	"use_scripts_in_goap",			&g_use_scripts_in_goap, 0, 1);
+
+	
 }

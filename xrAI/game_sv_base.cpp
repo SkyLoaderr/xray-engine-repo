@@ -611,7 +611,8 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 		}break	;
 	case GAME_EVENT_CREATE_CLIENT:
 		{
-			IClient* P					= m_server->client_Create();
+//			IClient* P					= m_server->client_Create();
+			IClient* P					= m_server->client_Find_Get(sender);
 			VERIFY						(P);
 			P->ID						= sender;
 			//tNetPacket.r_clientID(P->ID);

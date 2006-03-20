@@ -22,10 +22,16 @@ xrClientData::xrClientData	():IClient(Device.GetTimerGlobal())
 	ps			= Level().Server->game->createPlayerState();
 	ps->clear();
 
+	Clear();
+}
+
+void	xrClientData::Clear()
+{
 	owner		= NULL;
 	net_Ready	= FALSE;
 	net_Accepted = FALSE;
-}
+};
+
 xrClientData::~xrClientData()
 {
 	xr_delete(ps);
@@ -38,6 +44,8 @@ xrServer::xrServer():IPureServer(Device.GetTimerGlobal())
 
 xrServer::~xrServer()
 {
+	for (u32 it=0;it<net_Players.size(); it++) client_Destroy(net_Players[it]);
+	for (it=0;it<net_Players_disconnected.size(); it++) client_Destroy(net_Players_disconnected[it]);
 }
 
 //--------------------------------------------------------------------
@@ -73,13 +81,78 @@ IClient*	xrServer::client_Create		()
 void		xrServer::client_Replicate	()
 {
 }
+
+IClient*	xrServer::client_Find_Get			(ClientID ID)
+{
+	char	cAddress[4];
+	DWORD	dwPort;
+	if (GetClientAddress(ID, cAddress, &dwPort))
+	{		
+		for (u32 i=0; i<net_Players_disconnected.size(); i++)
+		{
+			IClient* CLX = net_Players_disconnected[i];
+			if ((CLX->m_cAddress[0] == cAddress[0]) &&
+				(CLX->m_cAddress[1] == cAddress[1]) &&
+				(CLX->m_cAddress[2] == cAddress[2]) &&
+				(CLX->m_cAddress[3] == cAddress[3])
+				)
+			{				
+				net_Players_disconnected.erase(net_Players_disconnected.begin()+i);
+
+				*((DWORD*)CLX->m_cAddress) = *((DWORD*)cAddress);	
+				CLX->m_dwPort = dwPort;
+				CLX->flags.bReconnect = TRUE;
+				Msg("Player found");
+				return CLX;
+			};
+		};
+	};
+
+	IClient* res = client_Create();
+	*((DWORD*)res->m_cAddress) = *((DWORD*)cAddress);	
+	res->m_dwPort = dwPort;
+	Msg("Player not found");
+	return res;
+};
+
+INT	g_sv_Client_Reconnect_Time = 0;
 void		xrServer::client_Destroy	(IClient* C)
 {
+	csPlayers.Enter	();
+
 	// Delete assosiated entity
 	// xrClientData*	D = (xrClientData*)C;
 	// CSE_Abstract* E = D->owner;
+	for (u32 DI=0; DI<net_Players_disconnected.size(); DI++)
+	{
+		if (net_Players_disconnected[DI] == C)
+		{
+			xr_delete(C);
+			net_Players_disconnected.erase(net_Players_disconnected.begin()+DI);
+			break;
+		};
+	};
 
-	xr_delete			(C);
+	for (u32 I=0; I<net_Players.size(); I++)
+	{
+		if (net_Players[I] == C)
+		{
+			if (!g_sv_Client_Reconnect_Time)
+			{
+				xr_delete(C);				
+			}
+			else
+			{
+				C->dwTime_LastUpdate = Device.dwTimeGlobal;
+				net_Players_disconnected.push_back(C);				
+				((xrClientData*)C)->Clear();
+			};
+			net_Players.erase	(net_Players.begin()+I);
+			break;
+		};
+	}
+
+	csPlayers.Leave();
 }
 
 //--------------------------------------------------------------------
@@ -180,7 +253,15 @@ void xrServer::Update	()
 	if (game->sv_force_sync)	Perform_game_export();
 
 	VERIFY						(verify_entities());
-
+	//-----------------------------------------------------
+	//Remove any of long time disconnected players
+	for (u32 DI = 0; DI<net_Players_disconnected.size(); DI++)
+	{
+		IClient* CL = net_Players_disconnected[DI];
+		if (CL->dwTime_LastUpdate+g_sv_Client_Reconnect_Time*60000<Device.dwTimeGlobal)
+			client_Destroy(CL);
+	}
+	//-----------------------------------------------------
 	csPlayers.Leave	();
 }
 

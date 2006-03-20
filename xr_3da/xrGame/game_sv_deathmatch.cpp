@@ -1831,10 +1831,12 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 
-	ps_who->clear();
-//	ClearPlayerState(ps_who);
-	ps_who->team				=	0;	
-	ps_who->skin				=	-1;
+	if (!xrCData->flags.bReconnect)
+	{
+		ps_who->clear();
+		ps_who->team				=	0;	
+		ps_who->skin				=	-1;
+	};
 	ps_who->setFlag(GAME_PLAYER_FLAG_SPECTATOR);
 	
 	ps_who->Skip = false;
@@ -1846,8 +1848,11 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 		return;
 	}
 
-	Money_SetStart(id_who);
-	SetPlayersDefItems(ps_who);
+	if (!xrCData->flags.bReconnect)
+	{
+		Money_SetStart(id_who);
+		SetPlayersDefItems(ps_who);
+	};
 }
 
 void	game_sv_Deathmatch::OnPlayerConnectFinished	(ClientID id_who)

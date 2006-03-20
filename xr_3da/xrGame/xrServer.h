@@ -34,6 +34,7 @@ public:
 	game_PlayerState*		ps;
 
 	xrClientData			();
+	virtual void			Clear();
 	virtual ~xrClientData	();
 };
 
@@ -128,6 +129,7 @@ public:
 
 	virtual IClient*		client_Create		();								// create client info
 	virtual void			client_Replicate	();								// replicate current state to client
+	virtual IClient*		client_Find_Get		(ClientID ID);					// Find earlier disconnected client
 	virtual void			client_Destroy		(IClient* C);					// destroy client info
 
 	// utilities

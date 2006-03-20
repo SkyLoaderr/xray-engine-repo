@@ -27,9 +27,15 @@ IClient*		xrGameSpyServer::client_Create		()
 }
 xrGameSpyClientData::xrGameSpyClientData	():xrClientData()
 {
+}
+void	xrGameSpyClientData::Clear()
+{
+	inherited::Clear();
+
 	m_pChallengeString[0] = 0;
 	m_bCDKeyAuth = false;
-}
+};
+
 xrGameSpyClientData::~xrGameSpyClientData()
 {
 	m_pChallengeString[0] = 0;
