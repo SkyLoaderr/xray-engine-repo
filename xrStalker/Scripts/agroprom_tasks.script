@@ -17,9 +17,7 @@ function proceed()
 		actor:give_info_portion("agr_nii_security_shedule_file_have")
 	end
 
-	if actor:object("agr_nii_security_plan_flash") then
-		actor:give_info_portion("agr_nii_security_plan_flash_have")
-	end
+	
 end
 
 function process_info_portion(info_id)
