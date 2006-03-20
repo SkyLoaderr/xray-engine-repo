@@ -29,6 +29,7 @@ public:
 				u32			ChildsCount				();
 				void		 PushChild				(CUICellItem*);
 				CUICellItem* PopChild				();
+				CUICellItem* Child					(u32 idx)				{return m_childs[idx];};
 	virtual		bool		EqualTo					(CUICellItem* itm);
 	IC const	Ivector2&	GetGridSize				()						{return m_grid_size;}; //size in grid
 

@@ -12,6 +12,7 @@
 #include "../game_base.h"
 #include "../game_cl_base.h"
 #include "../xr_level_controller.h"
+#include "UICellItem.h"
 
 void	CUIInventoryWnd::Activate_Artefact()
 {
@@ -101,7 +102,25 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		}
 		if(smart_cast<CWeaponMagazined*>(pWeapon) && IsGameTypeSingle())
 		{
-			if(pWeapon->GetAmmoElapsed()) UIPropertiesBox.AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
+			bool b = (0!=pWeapon->GetAmmoElapsed());
+
+			if(!b)
+			{
+				CUICellItem * itm = CurrentItem();
+				for(u32 i=0; i<itm->ChildsCount(); ++i)
+				{
+					pWeapon		= smart_cast<CWeaponMagazined*>((CWeapon*)itm->Child(i)->m_pData);
+					if(pWeapon->GetAmmoElapsed())
+					{
+						b = true;
+						break;
+					}
+				}
+			}
+
+			if(b)
+				UIPropertiesBox.AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
+
 
 		}
 
@@ -219,8 +238,15 @@ void CUIInventoryWnd::ProcessPropertiesBoxClicked	()
 			(smart_cast<CWeapon*>(CurrentIItem()))->Action(kWPN_RELOAD, CMD_START);
 			break;
 		case INVENTORY_UNLOAD_MAGAZINE:
-			(smart_cast<CWeaponMagazined*>(CurrentIItem()))->UnloadMagazine();
-			break;
+			{
+				CUICellItem * itm = CurrentItem();
+				(smart_cast<CWeaponMagazined*>((CWeapon*)itm->m_pData))->UnloadMagazine();
+				for(u32 i=0; i<itm->ChildsCount(); ++i)
+				{
+					CUICellItem * child_itm			= itm->Child(i);
+					(smart_cast<CWeaponMagazined*>((CWeapon*)child_itm->m_pData))->UnloadMagazine();
+				}
+			}break;
 		}
 	}
 }

@@ -200,8 +200,15 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				EatItem();
 				break;
 			case INVENTORY_UNLOAD_MAGAZINE:
-				(smart_cast<CWeaponMagazined*>(CurrentIItem()))->UnloadMagazine();
-				break;
+				{
+				CUICellItem * itm = CurrentItem();
+				(smart_cast<CWeaponMagazined*>((CWeapon*)itm->m_pData))->UnloadMagazine();
+				for(u32 i=0; i<itm->ChildsCount(); ++i)
+				{
+					CUICellItem * child_itm			= itm->Child(i);
+					(smart_cast<CWeaponMagazined*>((CWeapon*)child_itm->m_pData))->UnloadMagazine();
+				}
+				}break;
 			}
 		}
 	}
@@ -308,10 +315,28 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 	CWeaponMagazined*		pWeapon			= smart_cast<CWeaponMagazined*>(CurrentIItem());
 	CEatableItem*			pEatableItem	= smart_cast<CEatableItem*>(CurrentIItem());
     bool					b_show			= false;
-	if(pWeapon && pWeapon->GetAmmoElapsed())
+	if(pWeapon)
 	{
+		bool b = 0!=pWeapon->GetAmmoElapsed();
+		if(!b)
+		{
+			CUICellItem * itm = CurrentItem();
+			for(u32 i=0; i<itm->ChildsCount(); ++i)
+			{
+				pWeapon		= smart_cast<CWeaponMagazined*>( (CWeapon*)itm->Child(i)->m_pData );
+				if(pWeapon->GetAmmoElapsed())
+				{
+					b = true;
+					break;
+				}
+			}
+		}
+
+		if(b)
+		{		
 			m_pUIPropertiesBox->AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
 			b_show			= true;
+		}
 	}
 	
 	
