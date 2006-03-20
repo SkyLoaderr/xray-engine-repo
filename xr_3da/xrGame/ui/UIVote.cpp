@@ -15,10 +15,12 @@
 CUIVote::CUIVote(){
 	m_prev_upd_time = 0;
 	bkgrnd = xr_new<CUIStatic>();	bkgrnd->SetAutoDelete(true);	AttachChild(bkgrnd);
-	header = xr_new<CUIStatic>();	header->SetAutoDelete(true);	AttachChild(header);
+//	header = xr_new<CUIStatic>();	header->SetAutoDelete(true);	AttachChild(header);
+	msg = xr_new<CUIStatic>();		msg->SetAutoDelete(true);		AttachChild(msg);
 	for (int i = 0; i<3; i++){
-		frame[i] = xr_new<CUIFrameWindow>();	frame[i]->SetAutoDelete(true);	AttachChild(frame[i]);
-		list[i] = xr_new<CUIListBox>();			list[i]->SetAutoDelete(true);	AttachChild(list[i]);
+		cap[i]		= xr_new<CUIStatic>();		cap[i]->SetAutoDelete(true);	AttachChild(cap[i]);
+		frame[i]	= xr_new<CUIFrameWindow>();	frame[i]->SetAutoDelete(true);	AttachChild(frame[i]);
+		list[i]		= xr_new<CUIListBox>();		list[i]->SetAutoDelete(true);	AttachChild(list[i]);
 	}	
 
 	btn_yes		= xr_new<CUI3tButton>();	btn_yes->SetAutoDelete(true);		AttachChild(btn_yes);
@@ -33,12 +35,15 @@ void CUIVote::Init(){
 	xml_doc.Init(CONFIG_PATH, UI_PATH, "voting_category.xml");
 	CUIXmlInit::InitWindow(xml_doc, "vote", 0, this);
 	CUIXmlInit::InitStatic(xml_doc, "vote:background", 0, bkgrnd);
-	CUIXmlInit::InitStatic(xml_doc, "vote:header", 0, header);
+//	CUIXmlInit::InitStatic(xml_doc, "vote:header", 0, header);
+	CUIXmlInit::InitStatic(xml_doc, "vote:msg", 0, msg);
 
 	string256 path;
 
 	for (int i = 0; i<3; i++)
 	{
+		sprintf(path, "vote:list_cap_%d", i+1);
+		CUIXmlInit::InitStatic(xml_doc, path, 0, cap[i]);
 		sprintf(path, "vote:list_back_%d", i+1);
 		CUIXmlInit::InitFrameWindow(xml_doc, path, 0, frame[i]);
 		sprintf(path, "vote:list_%d", i+1);
@@ -48,6 +53,10 @@ void CUIVote::Init(){
 	CUIXmlInit::Init3tButton(xml_doc, "vote:btn_yes", 0, btn_yes);
 	CUIXmlInit::Init3tButton(xml_doc, "vote:btn_no", 0, btn_no);
 	CUIXmlInit::Init3tButton(xml_doc, "vote:btn_cancel", 0, btn_cancel);
+}
+
+void CUIVote::SetVoting(LPCSTR txt){
+	msg->SetText(txt);
 }
 
 void CUIVote::Update(){

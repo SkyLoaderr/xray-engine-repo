@@ -288,30 +288,43 @@
 		<header x="50" y="45" width="500" height="33">
 			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Player to Vote for Kick</text>
 		</header>
+		<msg x="50" y="45" width="500" height="33">
+			<text font="normal" r="227" g="199" b="178" vert_align="c">test \n msg</text>
+		</msg>
+		
+		<list_cap_1 x="36" y="100" width="152" height="20">
+			<text font="normal" r="227" g="199" b="178">Yes</text>
+		</list_cap_1>
+		<list_cap_2 x="211" y="100" width="152" height="20">
+			<text font="normal" r="227" g="199" b="178">No</text>
+		</list_cap_2>
+		<list_cap_3 x="386" y="100" width="152" height="20">
+			<text font="normal" r="227" g="199" b="178">Not Voted</text>
+		</list_cap_3>
 				
-		<list_back_1 x="36" y="100" width="152" height="217">
+		<list_back_1 x="36" y="120" width="152" height="217">
 			<texture>ui_cb_listbox</texture>
 		</list_back_1>
 		
-		<list_back_2 x="211" y="100" width="152" height="217">
+		<list_back_2 x="211" y="120" width="152" height="217">
 			<texture>ui_cb_listbox</texture>
 		</list_back_2>
 		
-		<list_back_3 x="386" y="100" width="152" height="217">
+		<list_back_3 x="386" y="120" width="152" height="217">
 			<texture>ui_cb_listbox</texture>
 		</list_back_3>
 		
-		<list_1 x="36" y="100" width="169" height="217" can_select="0">			
+		<list_1 x="36" y="120" width="169" height="217" can_select="0">			
 			<font_s r="218" g="217" b="213"/>
 			<font r="131" g="131" b="131" font="letterica16"/>
 		</list_1>
 		
-		<list_2 x="211" y="100" width="169" height="217" can_select="0">			
+		<list_2 x="211" y="120" width="169" height="217" can_select="0">			
 			<font_s r="218" g="217" b="213"/>
 			<font r="131" g="131" b="131" font="letterica16"/>
 		</list_2>
 		
-		<list_3 x="386" y="100" width="169" height="217" can_select="0">			
+		<list_3 x="386" y="120" width="169" height="217" can_select="0">			
 			<font_s r="218" g="217" b="213"/>
 			<font r="131" g="131" b="131" font="letterica16"/>
 		</list_3>

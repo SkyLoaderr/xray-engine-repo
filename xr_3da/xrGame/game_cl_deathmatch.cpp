@@ -15,6 +15,7 @@
 #include "ui/UIInventoryWnd.h"
 #include "ui/UIMapDesc.h"
 #include "ui/UIMessageBoxEx.h"
+#include "ui/UIVote.h"
 #include "dinput.h"
 #include "gamepersistent.h"
 
@@ -709,6 +710,9 @@ void game_cl_Deathmatch::OnVoteStart				(NET_Packet& P)
 
 		m_game_ui->SetVoteMessage(VoteStr);
 		m_game_ui->SetVoteTimeResultMsg("");
+		if (!m_pVote)
+            m_pVote = xr_new<CUIVote>();
+		m_pVote->SetVoting(VoteStr);
 	};
 };
 

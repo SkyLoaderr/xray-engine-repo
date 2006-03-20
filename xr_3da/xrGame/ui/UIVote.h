@@ -21,9 +21,12 @@ public:
 			void OnBtnYes();
 			void OnBtnNo();
 			void OnBtnCancel();
+			void SetVoting(LPCSTR txt);
 protected:
 	CUIStatic*		bkgrnd;
-	CUIStatic*		header;
+//	CUIStatic*		header;
+	CUIStatic*		msg;
+	CUIStatic*		cap[3];
 	CUIFrameWindow* frame[3];
 	CUIListBox*		list[3];
 
