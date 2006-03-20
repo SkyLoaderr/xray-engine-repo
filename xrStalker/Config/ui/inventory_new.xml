@@ -88,45 +88,6 @@
         <text x="0" y="0" font="graffiti22" r="238" g="153" b="26">ui_inv_drop</text>
     </drop_button>
     
-    <!-- BELT LIST -->
-    <dragdrop_list x="27" y="174" width="1024" height="60"
-            cell_width = "52" cell_height="52"
-            rows_num="1" cols_num="18"/>
-    <!-- BAG LIST -->
-    <dragdrop_list x="30" y="35" width="400" height="350"
-            cell_width = "40" cell_height="40"
-            rows_num="18" cols_num="7" rows_num_view="10" unlimited="1"/>
-
-    <!-- SLOT[0] -->
-    <dragdrop_list x="23" y="14" width="120" height="120"
-            cell_width = "52" cell_height="52"
-            rows_num="2" cols_num="2"/>
-
-    <!-- SLOT[1] -->
-    <dragdrop_list x="168" y="14" width="120" height="120"
-            cell_width = "52" cell_height="52"
-            rows_num="2" cols_num="2"/>
-
-    <!-- SLOT[2] -->
-    <dragdrop_list x="313" y="14" width="320" height="120"
-            cell_width = "52" cell_height="52"
-            rows_num="2" cols_num="6"/>
-
-    <!-- SLOT[3] -->
-    <dragdrop_list x="670" y="14" width="100" height="120"
-            cell_width = "52" cell_height="52"
-            rows_num="2" cols_num="2"/>
-
-    <!-- SLOT[4] -->
-    <dragdrop_list x="818" y="14" width="150" height="120"
-            cell_width = "52" cell_height="52"
-            rows_num="2" cols_num="3"/>
-
-    <!-- OUTFIT SLOT -->
-    <dragdrop_list x="858" y="314" width="86" height="260" 
-            cell_width = "57" cell_height="57"
-            rows_num="4" cols_num="4" show_grid="0"/>
-
 
     <progress_bar_health x="15" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
@@ -166,8 +127,8 @@
 		<snd_item_to_ruck>interface\inv_ruck</snd_item_to_ruck>
 		<snd_properties>interface\inv_properties</snd_properties>
 		<snd_drop_item>interface\inv_drop</snd_drop_item>
-		<snd_attach_addon>interface\inv_drop</snd_attach_addon>
-		<snd_detach_addon>interface\inv_drop</snd_detach_addon>
+		<snd_attach_addon>interface\inv_attach_addon</snd_attach_addon>
+		<snd_detach_addon>interface\inv_detach_addon</snd_detach_addon>
 	</action_sounds>
 
 </w>
