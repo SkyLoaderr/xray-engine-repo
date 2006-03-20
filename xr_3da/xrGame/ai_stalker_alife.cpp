@@ -446,7 +446,7 @@ void CAI_Stalker::update_conflicted					(CInventoryItem *item, const CWeapon *ne
 
 void CAI_Stalker::on_after_take						(const CGameObject *object)
 {
-	if (!g_Alvie())
+	if (!g_Alive())
 		return;
 
 	const CWeapon				*new_weapon = smart_cast<const CWeapon*>(object);
