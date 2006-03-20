@@ -226,9 +226,7 @@ function se_respawn:on_register()
 		self.idle_spawn_max = self.idle_spawn_min
 	end
 	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", r_str(ini, section_name, "conditions", 100))
-	self.respawn_online = r_bool(ini, section_name, "respawn_online", false)
-	
-	self.respawn_radius = r_num(ini, section_name, "respawn_radius", 150)
+	self.respawn_radius = r_num(ini, section_name, "respawn_radius", -1)
 	
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
@@ -386,6 +384,9 @@ end
 function se_respawn:update_online()
 	cse_alife_smart_zone.update( self )
 	--printf("RESPAWN: [%s] se_respawn update_online", tostring(self:name()))
+	if self.respawn_radius == -1 then
+		return
+	end
 	if db.actor:position():distance_to (self.position) >= self.respawn_radius then
 		self:execute()
 	end
