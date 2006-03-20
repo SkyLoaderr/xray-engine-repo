@@ -71,7 +71,13 @@ function fill_phrase_table()
 	local n = task_ini:line_count("list")
 	local id, value = "",""
 	local category = ""
-	
+
+	-- начальная установка
+	reward_by_task_id = {}
+	for k,v in pairs(task_info) do
+		v = {}
+	end
+		
 	for i=0,n-1 do
 		result, id, value	= task_ini:r_line("list",i,"","")
 		
@@ -585,9 +591,13 @@ end
 function task_complete(p1, p2)
 	local aa = alife()
 	if aa == nil then
-		return
+		return false
 	end
 
+	if db.actor == nil then
+		return false
+	end
+	
 	if p2 == 0 then
 		if active_task[p1].full_completed == true then
 			active_task[p1].full_completed = nil
@@ -641,6 +651,11 @@ function task_fail(p1, p2)
 	return false
 end
 function reward_by_task(task, done)
+	if task_table_filled == false then
+		fill_phrase_table()
+		task_table_filled = true
+	end
+
 	--' Если done = true, то это выполненное задание, иначе проваленное.
 	local descr = reward_by_task_id[task:get_id()]
 	if descr == nil then
@@ -692,6 +707,53 @@ function register_target(object)
 					table.insert(vv.target_objects, object.id)
 				end			
 			end
+		end
+	end
+end
+
+
+
+
+-- Сохранение списка активных случайных заданий
+function save(p)
+	--' Необходимо сохранить количество заданий, а также id каждого задания
+	local table_size = 0
+	for k,v in pairs(active_task) do
+		table_size = table_size + 1
+	end
+	p:w_u8(table_size)
+	for k,v in pairs(active_task) do
+		p:w_stringZ(v.name)
+	end	
+end
+
+-- Загрузка списка активных случайных заданий
+function load(p)
+	function pick_task_by_id(name)
+		for k,v in pairs(task_info) do
+			for kk,vv in pairs(v) do
+				if vv.name == name then
+					return vv
+				end
+			end
+		end
+		return nil
+	end
+
+	fill_phrase_table()
+	task_table_filled = true
+
+	--' Необходимо вычитать количетсво заданий, id задания	
+	--' Затем проитерироваться по ним и загрузить дескрипторы заданий в active_tasks
+	local table_size = p:r_u8()
+	for i=1,table_size do
+		local task_desc_id = p:r_stringZ()
+		local task_desc = pick_task_by_id(task_desc_id)
+		if task_desc ~= nil then
+			--' Добавляем в active_task
+			active_task[task_desc.type] = task_desc
+		else
+			abort("ERROR in loading active_task[%s]", tostring(task_desc_id))
 		end
 	end
 end

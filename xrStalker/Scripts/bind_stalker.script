@@ -254,6 +254,7 @@ function actor_binder:save(packet)
 	self.weather_manager:save(packet)
 
 	sr_psy_antenna.save( packet )
+	task_manager.save(packet)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:load(reader)
@@ -264,6 +265,7 @@ function actor_binder:load(reader)
 	self.weather_manager:load(reader)
 
 	sr_psy_antenna.load( reader )
+	task_manager.load(reader)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)
