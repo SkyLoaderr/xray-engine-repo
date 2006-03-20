@@ -453,6 +453,7 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 
 	if(m_pPhysicsShell)
 	{
+		VERIFY(m_eType==etActor);
 		if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
 		xr_delete(m_physics_skeleton) ;
 		CreateSkeleton(m_physics_skeleton);
