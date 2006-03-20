@@ -50,7 +50,6 @@
 			wpn_usp \n
 			ammo_11.43x23_fmj = 1 \n
 			yan_kruglov_flash \n			
-			detector_advances \n
 		</supplies>
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
