@@ -14,7 +14,7 @@ function actor_proxy:init()
 	self.online   = false
 	self.alife    = alife()
 	self.actor_id = self.alife:actor().id
-	db.actor      = self
+	self.actor    = nil
 end
 
 function actor_proxy:has_info( name )
@@ -40,11 +40,11 @@ end
 -- рождение актёра в онлайн
 function actor_proxy:net_spawn( obj )
 	self.online = true
-	db.actor    = obj
+	self.actor  = obj
 end
 
 -- уход из онлайна
 function actor_proxy:net_destroy()
 	self.online = false
-	db.actor    = self
+	self.actor  = nil
 end
