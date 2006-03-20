@@ -29,9 +29,9 @@
 		<text align="c" y="10" font="graffiti22" r="238" g="155" b="23" complex_mode="0"/>
 	</our_money_static>
 
-	<dragdrop_list x="29" y="37" width="240" height="450"
-			cell_width = "41" cell_height="41"
-			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"/>
+	<dragdrop_list x="29" y="37" width="262" height="410"
+			cell_width = "41" cell_height="41" rows_num="10" cols_num="6" 
+			group_similar="1" unlimited="1"/>
 
 
 	<!-- OTHERS BAG -->
@@ -44,18 +44,19 @@
 		<text align="c" y="10" font="graffiti22" r="238" g="155" b="23" complex_mode="0"/>
 	</other_money_static>
 
-	<dragdrop_list x="18" y="35" width="240" height="400"
-			cell_width = "41" cell_height="41"
-			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"/>
+	<dragdrop_list x="18" y="35" width="262" height="410"
+			cell_width = "41" cell_height="41" rows_num="10" cols_num="6" 
+			group_similar="1" unlimited="1"/>
 
 	<!-- OUR TRADE -->
 	<static x="338" y="260" width="347" height="212">
 		<texture>ui\ui_trade_list_back</texture>
 	</static>
 
-	<dragdrop_list x="31" y="37" width="280" height="160"
+	<dragdrop_list x="31" y="37" width="303" height="164"
 			cell_width = "41" cell_height="41"
-			rows_num="18" cols_num="7" rows_num_view="4" unlimited="1"/>
+			rows_num="4" cols_num="7" 
+			group_similar="1" unlimited="1"/>
 
 
 	<!-- OTHERS TRADE -->
@@ -63,9 +64,10 @@
 		<texture>ui\ui_trade_list_back</texture>
 	</static>
 
-	<dragdrop_list x="31" y="37" width="280" height="160"
+	<dragdrop_list x="31" y="37" width="303" height="164"
 			cell_width = "41" cell_height="41"
-			rows_num="18" cols_num="7" rows_num_view="4" unlimited="1"/>
+			rows_num="4" cols_num="7" 
+			group_similar="1" unlimited="1"/>
 
 
 	<desc_frame_window x="350" y="22" width="320" height="230">

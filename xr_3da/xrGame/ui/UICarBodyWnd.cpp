@@ -275,18 +275,16 @@ void CUICarBodyWnd::TakeAll()
 	u32 cnt				= m_pUIOthersBagList->ItemsCount();
 	for(u32 i=0; i<cnt; ++i)
 	{
-		PIItem itm		= (PIItem)(m_pUIOthersBagList->GetItemIdx(i)->m_pData);
+		CUICellItem*	ci = m_pUIOthersBagList->GetItemIdx(i);
+		for(u32 j=0; j<ci->ChildsCount(); ++j)
+		{
+			PIItem _itm		= (PIItem)(ci->Child(j)->m_pData);
+			TransferItem	(_itm, m_pOthersObject, m_pOurObject, false);
+		
+		}
+		PIItem itm		= (PIItem)(ci->m_pData);
 		TransferItem	(itm, m_pOthersObject, m_pOurObject, false);
 	}
-/*
-	for (DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin();
-		 it != UIOthersBagList.GetDragDropItemsList().end();)
-	{
-		int iData = 111;
-		SendMessage(*it++, DRAG_DROP_ITEM_DB_CLICK, (void*)(&iData) );
-	}
-	SetCurrentItem(NULL);
-*/
 }
 
 

@@ -254,7 +254,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	if(!CanPutInSlot(pIItem)) 
 	{
 #ifdef _DEBUG
-		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), pIItem->GetSlot());
+//.		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), pIItem->GetSlot());
 #endif
 		if(m_slots[pIItem->GetSlot()].m_pIItem == pIItem && !bNotActivate )
 			Activate(pIItem->GetSlot());
