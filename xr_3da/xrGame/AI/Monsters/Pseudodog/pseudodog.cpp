@@ -23,6 +23,7 @@
 CAI_PseudoDog::CAI_PseudoDog()
 {
 	com_man().add_ability(ControlCom::eControlJump);
+	com_man().add_ability(ControlCom::eControlRotationJump);
 }
 
 DLL_Pure *CAI_PseudoDog::_construct()
@@ -43,20 +44,22 @@ void CAI_PseudoDog::reinit()
 
 	m_time_became_angry				= 0;
 	time_growling					= 0;
+
+	com_man().add_rotation_jump_data	("1","2","3","4", deg(90));
 }
 
 void CAI_PseudoDog::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 
-
 	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+	anim().AddReplacedAnim(&m_bRunTurnLeft,		eAnimRun,		eAnimRunTurnLeft);
+	anim().AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
 
 	anim().accel_load			(section);
 	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
-
 
 	m_anger_hunger_threshold	= pSettings->r_float(section, "anger_hunger_threshold");
 	m_anger_loud_threshold		= pSettings->r_float(section, "anger_loud_threshold");
@@ -98,6 +101,9 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	anim().AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, &velocity_none,		PS_LIE);
 	anim().AddAnim(eAnimAttackPsi,		"stand_psi_attack_",	-1, &velocity_turn,		PS_STAND);
 	anim().AddAnim(eAnimThreaten,		"stand_howling_",		-1,	&velocity_none,		PS_STAND);
+	
+	anim().AddAnim(eAnimRunTurnLeft,	"stand_run_turn_left_",	-1, &velocity_run,		PS_STAND);
+	anim().AddAnim(eAnimRunTurnRight,	"stand_run_turn_right_",-1, &velocity_run,		PS_STAND);
 
 
 	// define transitions
@@ -138,7 +144,8 @@ void CAI_PseudoDog::reload(LPCSTR section)
 	sound().add					(pSettings->r_string(section,"sound_psy_attack"), DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING,	MonsterSound::eHighPriority+3,	MonsterSound::eBaseChannel,	ePsyAttack, "bip01_head");
 	
 	// load jump params
-	com_man().load_jump_data	(0,"run_jamp_0", "run_jamp_1", "run_jamp_2", MonsterMovement::eVelocityParameterRunNormal,MonsterMovement::eVelocityParameterRunNormal,0);
+	com_man().load_jump_data			(0,"run_jamp_0", "run_jamp_1", "run_jamp_2", MonsterMovement::eVelocityParameterRunNormal,MonsterMovement::eVelocityParameterRunNormal,0);
+
 }
 
 void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
