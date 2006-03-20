@@ -5,6 +5,10 @@ ignore_distance = 0
 ;------------------------------------- Lukash --------------------------------------
 [logic@mil_freedom_commander]
 active = walker1@mil_freedom_commander
+on_death = on_death@mil_freedom_lukash_free
+
+[on_death@mil_freedom_lukash_free]
+on_info = %+sar2_death_49%
 
 [walker1@mil_freedom_commander]
 path_walk = leader_walk
