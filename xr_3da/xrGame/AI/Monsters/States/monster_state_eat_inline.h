@@ -41,6 +41,7 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterEatAbstract::initialize()
 {
 	inherited::initialize();
+	corpse = object->CorpseMan.get_corpse();
 }
 
 
@@ -194,10 +195,10 @@ void CStateMonsterEatAbstract::setup_substates()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatAbstract::check_completion()
 {
-	if (object->CorpseMan.get_corpse()) return false;
-	if (object->conditions().GetSatiety() < 0.95f) return false;
+	if (corpse != object->CorpseMan.get_corpse()) return true;
+	if (object->conditions().GetSatiety() > 0.95f) return true;
 
-	return true;
+	return false;
 }
 
 TEMPLATE_SPECIALIZATION

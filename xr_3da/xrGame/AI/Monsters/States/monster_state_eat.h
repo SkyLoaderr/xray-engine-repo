@@ -8,6 +8,8 @@ protected:
 	typedef CState<_Object>		inherited;
 	typedef CState<_Object>*	state_ptr;
 
+	const CEntityAlive			*corpse;
+
 public:
 						CStateMonsterEat		(_Object *obj);
 	virtual				~CStateMonsterEat		();
