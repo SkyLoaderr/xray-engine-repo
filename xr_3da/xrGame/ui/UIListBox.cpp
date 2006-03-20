@@ -41,7 +41,7 @@ void CUIListBox::DeselectAll(){
 
 CUIListBoxItem* CUIListBox::AddItem(LPCSTR text){
 	CUIListBoxItem* pItem = xr_new<CUIListBoxItem>();
-	pItem->Init(0,0,this->GetDesiredChildWidth(), m_def_item_height);
+	pItem->Init(0,0,this->GetDesiredChildWidth() - 5, m_def_item_height);
 	pItem->InitDefault();
 	pItem->SetSelected(false);
 	pItem->SetText(text);

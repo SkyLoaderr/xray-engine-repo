@@ -24,6 +24,15 @@ CUIChangeMap::CUIChangeMap(){
 	header = xr_new<CUIStatic>(); header->SetAutoDelete(true);
 	AttachChild(header);
 
+	map_pic = xr_new<CUIStatic>(); map_pic->SetAutoDelete(true);
+	AttachChild(map_pic);
+
+	map_frame = xr_new<CUIStatic>(); map_frame->SetAutoDelete(true);
+	AttachChild(map_frame);
+
+	frame = xr_new<CUIFrameWindow>(); frame->SetAutoDelete(true);
+	AttachChild(frame);
+
 	lst_back = xr_new<CUIFrameWindow>(); lst_back->SetAutoDelete(true);
 	AttachChild(lst_back);
 
@@ -43,7 +52,10 @@ void CUIChangeMap::Init(CUIXml& xml_doc){
 	CUIXmlInit::InitWindow(xml_doc,			"change_map", 0, this);
 	CUIXmlInit::InitStatic(xml_doc,			"change_map:header", 0, header);
 	CUIXmlInit::InitStatic(xml_doc,			"change_map:background", 0, bkgrnd);
+	CUIXmlInit::InitStatic(xml_doc,			"change_map:map_frame", 0, map_frame);
+	CUIXmlInit::InitStatic(xml_doc,			"change_map:map_pic", 0, map_pic); map_pic->ClipperOn();
 	CUIXmlInit::InitFrameWindow(xml_doc,	"change_map:list_back", 0, lst_back);
+	CUIXmlInit::InitFrameWindow(xml_doc,	"change_map:frame", 0, frame);
 	CUIXmlInit::InitListBox(xml_doc,		"change_map:list", 0, lst);
 	CUIXmlInit::Init3tButton(xml_doc,		"change_map:btn_ok", 0, btn_ok);
 	CUIXmlInit::Init3tButton(xml_doc,		"change_map:btn_cancel", 0, btn_cancel);
@@ -64,6 +76,7 @@ void CUIChangeMap::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	if (LIST_ITEM_SELECT == msg && pWnd == lst)
 	{		
 		selected_item = *static_cast<u32*>(pData);
+		OnItemSelect();
 	}
 	else if (BUTTON_CLICKED == msg)
 	{
@@ -72,6 +85,17 @@ void CUIChangeMap::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 		else if (pWnd == btn_cancel)
 			OnBtnCancel();
 	}
+}
+
+void CUIChangeMap::OnItemSelect(){
+	xr_string map_name = "ui\\ui_map_pic_";
+	map_name +=	lst->GetSelectedText();
+	xr_string full_name = map_name + ".dds";
+
+	if (FS.exist("$game_textures$",full_name.c_str()))
+		map_pic->InitTexture(map_name.c_str());
+	else
+		map_pic->InitTexture("ui\\ui_map_nopic");
 }
 
 void CUIChangeMap::OnBtnOk(){

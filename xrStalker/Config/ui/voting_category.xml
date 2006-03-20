@@ -150,14 +150,22 @@
 			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Map to Vote for Change</text>
 		</header>
 		
-		<list_back x="36" y="100" width="251" height="217">
+		<frame x="25" y="87" width="280" height="261">
+			<texture>ui_tablist_textbox</texture>
+		</frame>
+		
+		<list_back x="35" y="100" width="247" height="217">
 			<texture>ui_cb_listbox</texture>
 		</list_back>
 		
-		<list x="36" y="100" width="270" height="217" can_select="1">			
+		<list x="36" y="100" width="265" height="217" can_select="1">			
 			<font_s r="218" g="217" b="213"/>
 			<font r="131" g="131" b="131" font="letterica16"/>
 		</list>
+		<map_pic x="332" y="103" width="200" height="200" />
+		<map_frame x="277" y="87" width="300" height="261">
+			<texture>ui_mp_Voting_tv</texture>
+		</map_frame>
 		
 		<btn_ok x="257" y="328" width="157" height="48">
 			<text font="normal" align="c">mm_ok</text>
@@ -245,7 +253,7 @@
 		<header x="50" y="45" width="500" height="33">
 			<text font="normal" r="227" g="199" b="178" vert_align="c">Enter Text for Voting</text>
 		</header>		
-		<edit_box x="136" y="200" width="270" height="60">			
+		<edit_box x="150" y="160" width="270" height="60">			
 			<font_s r="218" g="217" b="213"/>
 			<font r="131" g="131" b="131" font="letterica16"/>
 			<texture>ui_cb_listbox</texture>

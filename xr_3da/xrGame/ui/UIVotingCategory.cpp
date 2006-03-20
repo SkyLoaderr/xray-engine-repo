@@ -143,6 +143,7 @@ void CUIVotingCategory::OnBtn(int i){
 			game->StartStopMenu(change_weather, true);
 			break;
 		case 6:
+			game->StartStopMenu(this, true);
 			if (!text_vote)
 				text_vote = xr_new<CUITextVote>();
 			text_vote->Init(*xml_doc);

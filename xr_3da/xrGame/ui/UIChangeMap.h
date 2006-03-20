@@ -22,6 +22,7 @@ public:
 
 	void OnBtnOk();
 	void OnBtnCancel();
+	void OnItemSelect();
 
 protected:
 //	void Init(CUIXml& xml_doc);
@@ -29,6 +30,9 @@ protected:
 
 	CUIStatic*		bkgrnd;
 	CUIStatic*		header;
+	CUIStatic*		map_pic;
+	CUIStatic*		map_frame;
+	CUIFrameWindow* frame;
 	CUIFrameWindow* lst_back;
 	CUIListBox*		lst;
 

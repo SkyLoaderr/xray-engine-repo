@@ -64,8 +64,7 @@
 				<h r="180" g="153" b="155"/>
 			</text_color>
 		</button>
-		<button x="228" y="0" width="116" height="26">
-			<shared_texture>ui_common.xml</shared_texture>
+		<button x="228" y="0" width="116" height="26">			
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
 			<text font="normal" align="c">mm_mp_options</text>
