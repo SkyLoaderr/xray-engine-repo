@@ -658,22 +658,55 @@ cost				= 0
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 				= "devices\quest_items\yan_kruglov_flash"
-;$prefetch 			= 32
-class				= D_AFMERG
+$prefetch 			= 32
+class				= D_SIMDET
 cform				= skeleton
-visual				= equipments\item_flash_1.ogf
-radius				= 1
-;script_binding		= stalker.object_init
+visual				= equipments\item_datchik2.ogf
+radius				= 10	;15
+buzzer_radius		= 1.5
+noise				= zone_mosquito_bald       ;detectors\geiger_noise_loop 
+buzzer				= zone_mosquito_bald       ;detectors\DA-2_alarm_loop
 
-inv_name			= Flash card
-inv_name_short		= Flash card
-inv_weight			= 0.1	;0.2
-;can_trade			= off
+ef_detector_type	= 1
+
+night_vision_particle		= damage_fx\heli_burn
+
+;описание распознаваемых детектором зон
+zone_class_1		= zone_mosquito_bald
+zone_sound_1_		= detectors\DA-2_beep1
+zone_min_freq_1		= 0.1	;0.5
+zone_max_freq_1		= 40
+zone_map_location_1 = anomaly_zone_location
+	
+zone_class_2		= zone_mincer
+zone_sound_2_		= detectors\DA-2_beep1 
+zone_min_freq_2		= 0.1
+zone_max_freq_2		= 20
+zone_map_location_2 = anomaly_zone_location
+
+zone_class_3		= zone_radioactive
+zone_sound_3_		= detectors\DA-2_beep1 
+zone_min_freq_3		= 1
+zone_max_freq_3		= 20
+zone_map_location_3 = anomaly_zone_location
+
+zone_class_4		= zone_gravi_zone
+zone_sound_4_		= detectors\DA-2_beep1
+zone_min_freq_4		= 0.5
+zone_max_freq_4		= 30
+zone_map_location_4 = anomaly_zone_location
+
+inv_name			= Detector
+inv_name_short		= Detector
+inv_weight			= 0.75
+
 inv_grid_width		= 1
 inv_grid_height		= 1
-inv_grid_x			= 3
-inv_grid_y			= 19
-cost				= 0
+inv_grid_x			= 15
+inv_grid_y			= 7
+cost				= 1000	;30
+belt				= true;
+default_to_ruck		= false
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Military
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
