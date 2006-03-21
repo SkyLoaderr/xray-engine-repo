@@ -17,6 +17,8 @@ class	CCustomObject;
 #	include "pick_defs.h"
 #endif
 
+#include "bone.h"
+
 #pragma pack( push,1 )
 const u8	vmtUV		= 0;
 const u8	vmtWeight	= 1;
