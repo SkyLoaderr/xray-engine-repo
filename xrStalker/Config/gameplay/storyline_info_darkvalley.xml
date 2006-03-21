@@ -2,10 +2,8 @@
     <text>
         pass_to_1st_door
     </text>
-    <!-- <text>Password: 1243 </text> -->
 </article>
 <article article_type="journal" group="LabX18 second key" id="dar_password_info2" name="LabX18 second key">
-    <!-- <text>Password: 9524</text> -->
     <text>
         pass_to_2nd_door
     </text>
@@ -54,5 +52,21 @@
     </texture>
     <text>
         bar_darklab_documents_txt
+    </text>
+</article>
+<article article_type="task" group="dar_codedoor_1" id="dar_codedoor_1_art" name="dar_codedoor_1">
+    <texture height="100" width="100" x="500" y="150">
+        ui\ui_icon_photo
+    </texture>
+    <text>
+        dar_codedoor_1_txt
+    </text>
+</article>
+<article article_type="task" group="dar_codedoor_2" id="dar_codedoor_2_art" name="dar_codedoor_2">
+    <texture height="100" width="100" x="500" y="150">
+        ui\ui_icon_photo
+    </texture>
+    <text>
+        dar_codedoor_2_txt
     </text>
 </article>

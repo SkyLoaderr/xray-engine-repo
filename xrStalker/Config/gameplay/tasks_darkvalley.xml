@@ -163,9 +163,9 @@
         <object_story_id>
             val_borov
         </object_story_id>
-        <infoportion_complete>
-            val_actor_has_borov_key
-        </infoportion_complete>
+        <function_complete>
+            darkvalley_tasks.has_darklab_key
+        </function_complete>
     </objective>
     <objective key="2">
         <text>
@@ -233,5 +233,75 @@
         <infoportion_complete>
             bar_darklab_document_done
         </infoportion_complete>
+    </objective>
+</game_task>
+<game_task id="dar_codedoor_1">
+    <title>
+        dar_codedoor_1
+    </title>
+    <objective key="0">
+        <icon height="50" width="50" x="100" y="50">
+            ui\ui_icons_task
+        </icon>
+        <infoportion_complete>
+            dar_open_door1
+        </infoportion_complete>
+    </objective>
+    <objective key="1">
+        <text>
+            dar_codedoor_1_1
+        </text>
+        <icon height="50" width="50" x="350" y="150">
+            ui\ui_icons_task
+        </icon>
+        <infoportion_complete>
+            dar_password_info1
+        </infoportion_complete>
+    </objective>
+    <objective key="2">
+        <text>
+            dar_codedoor_1_2
+        </text>
+        <icon height="50" width="50" x="100" y="50">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type>
+            green_location
+        </map_location_type>
+        <object_story_id>
+            dar_codedoor_1
+        </object_story_id>
+    </objective>
+</game_task>
+<game_task id="dar_codedoor_2">
+    <title>
+        dar_codedoor_2
+    </title>
+    <objective key="0">
+        <icon height="50" width="50" x="100" y="50">
+            ui\ui_icons_task
+        </icon>
+        <infoportion_complete>
+            dar_open_door2
+        </infoportion_complete>
+    </objective>
+    <objective key="1">
+        <text>
+            dar_codedoor_2_1
+        </text>
+        <icon height="50" width="50" x="350" y="150">
+            ui\ui_icons_task
+        </icon>
+        <infoportion_complete>
+            dar_password_info2
+        </infoportion_complete>
+    </objective>
+    <objective key="2">
+        <text>
+            dar_codedoor_2_2
+        </text>
+        <icon height="50" width="50" x="100" y="50">
+            ui\ui_icons_task
+        </icon>
     </objective>
 </game_task>

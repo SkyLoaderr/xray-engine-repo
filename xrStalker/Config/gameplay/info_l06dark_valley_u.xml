@@ -77,10 +77,12 @@
 
 <!-- Кодовые двери -->
 <info_portion id="dar_door1_closed">
-	<task>dar_codedoor1</task>
+	<task>dar_codedoor_1</task>
+	<article>dar_codedoor_1_art</article>
 </info_portion>
 <info_portion id="dar_door2_closed">
-	<task>dar_codedoor2</task>
+	<task>dar_codedoor_2</task>
+	<article>dar_codedoor_2_art</article>
 </info_portion>
 
 </game_information_portions>
