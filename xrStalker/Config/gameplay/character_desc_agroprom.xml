@@ -34,7 +34,6 @@
 		<start_dialog>agr_krot_help</start_dialog>
 		<actor_dialog>agr_krot_about_agroprom</actor_dialog>
 		<actor_dialog>agr_krot_actor_hasnot_met_seriy</actor_dialog>
-		<actor_dialog>agr_krot_actor_met_seriy</actor_dialog>
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
