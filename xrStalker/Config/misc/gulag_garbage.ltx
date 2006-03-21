@@ -104,7 +104,7 @@ combat_ignore_cond = {-gar_open_fire}
 [logic@gar_bandit_agr_wait6]
 active = walker@gar_bandit_agr_wait6
 on_hit = hit@bandits
-on_death = death@bandits
+on_death = death@bandit_leader
 combat_ignore = combat_ignore@bandit
 
 [walker@gar_bandit_agr_wait6]
@@ -186,6 +186,7 @@ soundgroup = gar_bandit_agr
 
 [logic@gar_bandit_agr_kamp6]
 active = kamp@gar_bandit_agr_kamp6
+on_death = death@bandit_leader
 
 [kamp@gar_bandit_agr_kamp6]
 center_point = kamp_point1
@@ -215,7 +216,7 @@ soundgroup = gar_bandit_agr
 [logic@gar_bandit_agr_leader_raid]
 active = patrol@gar_bandit_agr_leader_raid
 on_hit = hit@bandits
-on_death = death@bandits
+on_death = death@bandit_leader
 combat_ignore = combat_ignore@bandit
 
 [patrol@gar_bandit_agr_leader_raid]
@@ -235,6 +236,8 @@ on_info = %+gar_counter_fire +gar_open_fire%
 [death@bandits]
 on_info = %+gar_counter_fire +gar_bandit_leader_dead +gar_open_fire%
 
+[death@bandit_leader]
+on_info = %+gar_counter_fire +gar_bandit_leader_dead +gar_open_fire +sar2_death_23%
 
 [logic@gar_bandit_agr_follower1]
 active = patrol@gar_bandit_agr_follower1
@@ -284,6 +287,7 @@ formation = around
 
 [logic@gar_bandit_agr_restrictor_raid]
 active = walker@gar_bandit_agr_restrictor_raid
+on_death = death@bandit_leader
 
 [walker@gar_bandit_agr_restrictor_raid]
 path_walk = search
@@ -341,7 +345,7 @@ use = true
 use_wpn = true
 
 [death@hellcar]
-on_info = %+gar_hellcar_death +gar_open_fire%
+on_info = %+gar_hellcar_death +gar_open_fire +sar2_death_14%
 
 [danger_condition@hellcar_group]
 ignore_distance = 20
@@ -390,6 +394,7 @@ danger = danger_condition@hellcar_group
 
 [logic@gar_hellcar_group_walker3]
 active = walker@gar_hellcar_group_walker3
+on_death = death@dram_novice
 
 [walker@gar_hellcar_group_walker3]
 path_walk = walk3
@@ -422,6 +427,7 @@ soundgroup = gar_hellcar
 
 [logic@gar_hellcar_group_rest3]
 active = kamp@gar_hellcar_group_rest3
+on_death = death@dram_novice
 
 [kamp@gar_hellcar_group_rest3]
 center_point = kamp_point
@@ -483,6 +489,9 @@ on_info = %+gar_open_fire%
 [death@hellcar_group]
 on_info = %+gar_open_fire%
 
+[death@hellcar_group_dram]
+on_info = %+gar_open_fire +sar2_death_4%
+
 
 [logic@gar_hellcar_group_camper2]
 active = walker@gar_hellcar_group_camper2
@@ -500,7 +509,7 @@ combat_ignore_cond = {-gar_open_fire}
 [logic@gar_hellcar_group_camper3]
 active = walker@gar_hellcar_group_camper3
 on_hit = hit@hellcar_group
-on_death = death@hellcar_group
+on_death = death@hellcar_group_dram
 combat_ignore = combat_ignore@hellcar
 
 [walker@gar_hellcar_group_camper3]
@@ -570,6 +579,7 @@ meet = meet@neutral
 active = walker@gar_dolg_blokpost_zoneguard1
 on_combat = combat
 meet = meet@zoneguard1
+on_death = death@prapor
 
 [walker@gar_dolg_blokpost_zoneguard1]
 path_walk = zoneguard_walk1
@@ -596,6 +606,9 @@ use_wpn = true
 zone = gar_dolg_blokpost_zone_warn|{-gar_free_pass}backoff@{-gar_free_pass}gar_dolg_blokpost|gar_dolg_blokpost_zone_guard|{-gar_free_pass}true@{-gar_free_pass}gar_dolg_blokpost
 meet_dialog = gar_dolg_blokpost
 
+
+[death@prapor]
+on_info = %+sar2_death_18%
 
 [logic@gar_dolg_blokpost_zoneguard2]
 active = walker@gar_dolg_blokpost_zoneguard2
@@ -1262,7 +1275,11 @@ actor_dialogs = actor_dialogs@gar_dram_novice
 id = gar_dram_novice_level
 
 [death@gar_dram_novice]
-on_info = %+gar_dm_novice_dead =gar_dm_bandits_fight%
+on_info = %+gar_dm_novice_dead =gar_dm_bandits_fight +sar2_death_4%
+
+[death@dram_novice]
+on_info = %+sar2_death_4%
+
 
 [combat@gar_dram_novice]
 on_info = remark@after_fight_gar_dram_novice %=disable_combat_handler =gar_dm_bandits_fight%
@@ -1402,7 +1419,7 @@ meet = no_meet
 on_info = %+gar_seryi_counter_fire%
 
 [death@gar_angar_seryi]
-on_info = %+garbage_meetstalker_die +gar_seryi_counter_fire%
+on_info = %+garbage_meetstalker_die +gar_seryi_counter_fire +sar2_death_10%
 
 [walker@seryi_gar_angar_seryi]
 path_walk = seryi_walk_end
