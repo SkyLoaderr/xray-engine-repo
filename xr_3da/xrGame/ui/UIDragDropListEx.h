@@ -145,21 +145,3 @@ protected:
 				void			ClearAll			(bool bDestroy);	
 
 };
-
-#include "UIDialogWnd.h"
-class CTestDragDropWnd :public CUIDialogWnd
-{
-public:
-						CTestDragDropWnd		();
-	virtual				~CTestDragDropWnd		(){};
-
-	CUIDragDropListEx*	m_list1;
-	CUIDragDropListEx*	m_list2;
-
-	bool		xr_stdcall		OnItemDrop			(CUICellItem* itm);
-	bool		xr_stdcall		OnItemStartDrag		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemDbClick		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemSelected		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemRButtonClick	(CUICellItem* itm);
-
-};

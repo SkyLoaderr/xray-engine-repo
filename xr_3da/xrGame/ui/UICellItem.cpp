@@ -127,6 +127,7 @@ CUIDragItem::CUIDragItem(CUICellItem* parent)
 	AttachChild						(&m_static);
 	Device.seqRender.Add			(this, REG_PRIORITY_LOW-5000);
 	Device.seqFrame.Add				(this, REG_PRIORITY_LOW-5000);
+	VERIFY							(m_pParent->GetMessageTarget());
 }
 
 CUIDragItem::~CUIDragItem()

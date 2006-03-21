@@ -15,16 +15,13 @@ CUIDragDropListEx::CUIDragDropListEx()
 	m_flags.zero				();
 	m_container					= xr_new<CUICellContainer>(this);
 	m_vScrollBar				= xr_new<CUIScrollBar>();
-//.	m_background				= xr_new<CUIStatic>();
 
 	m_vScrollBar->SetAutoDelete	(true);
-//.	m_background->SetAutoDelete	(true);
 	m_selected_item				= NULL;
 
 	SetCellsCapacity			(Ivector2().set(0,0));
 	SetCellSize					(Ivector2().set(50,50));
 
-//.	AttachChild					(m_background);
 	AttachChild					(m_container);
 	AttachChild					(m_vScrollBar);
 
@@ -40,12 +37,11 @@ CUIDragDropListEx::CUIDragDropListEx()
 
 CUIDragDropListEx::~CUIDragDropListEx()
 {
-
-	if(m_selected_item && m_drag_item && m_drag_item->ParentItem()==m_selected_item)
-		delete_data					(m_drag_item);
+	DestroyDragItem		();
 
 	delete_data					(m_container);
 }
+
 void CUIDragDropListEx::SetAutoGrow(bool b)						
 {
 	m_flags.set(flAutoGrow,b);
@@ -104,8 +100,13 @@ void CUIDragDropListEx::CreateDragItem(CUICellItem* itm)
 
 void CUIDragDropListEx::DestroyDragItem()
 {
-	GetParent()->SetCapture				(NULL, false);
-	delete_data							(m_drag_item);
+	if(m_selected_item && m_drag_item && m_drag_item->ParentItem()==m_selected_item)
+	{
+		VERIFY(GetParent()->GetMouseCapturer()==m_drag_item);
+		GetParent()->SetCapture				(NULL, false);
+
+		delete_data							(m_drag_item);
+	}
 }
 
 Fvector2 CUIDragDropListEx::GetDragItemPosition()
@@ -115,6 +116,7 @@ Fvector2 CUIDragDropListEx::GetDragItemPosition()
 
 void CUIDragDropListEx::OnItemStartDragging(CUIWindow* w, void* pData)
 {
+	OnItemSelected						(w, pData);
 	CUICellItem* itm		= smart_cast<CUICellItem*>(w);
 
 	if(itm!=m_selected_item)	return;
@@ -126,6 +128,7 @@ void CUIDragDropListEx::OnItemStartDragging(CUIWindow* w, void* pData)
 
 void CUIDragDropListEx::OnItemDrop(CUIWindow* w, void* pData)
 {
+	OnItemSelected						(w, pData);
 	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
 	VERIFY								(itm->OwnerList() == itm->OwnerList());
 
@@ -149,6 +152,7 @@ void CUIDragDropListEx::OnItemDrop(CUIWindow* w, void* pData)
 
 void CUIDragDropListEx::OnItemDBClick(CUIWindow* w, void* pData)
 {
+	OnItemSelected						(w, pData);
 	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
 
 	if(m_f_item_db_click && m_f_item_db_click(itm) ){
@@ -179,6 +183,7 @@ void CUIDragDropListEx::OnItemSelected(CUIWindow* w, void* pData)
 
 void CUIDragDropListEx::OnItemRButtonClick(CUIWindow* w, void* pData)
 {
+	OnItemSelected						(w, pData);
 	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
 	if(m_f_item_rbutton_click) 
 		m_f_item_rbutton_click(itm);
@@ -193,6 +198,7 @@ void CUIDragDropListEx::GetClientArea(Frect& r)
 
 void CUIDragDropListEx::ClearAll(bool bDestroy)
 {
+	DestroyDragItem			();
 	m_container->ClearAll	(bDestroy);
 	m_selected_item			= NULL;
 }
@@ -245,6 +251,13 @@ void CUIDragDropListEx::ReinitScroll()
 
 bool CUIDragDropListEx::OnMouse(float x, float y, EUIMessages mouse_action)
 {
+	if(m_drag_item){
+		if(NULL==m_drag_item->ParentItem()->GetMessageTarget())
+		{
+			Msg("%x",m_drag_item->ParentItem());
+			VERIFY(0);
+		}
+	}
 	bool b = inherited::OnMouse		(x,y,mouse_action);
 
 	if(m_vScrollBar->IsShown())
@@ -635,85 +648,4 @@ void CUICellContainer::Draw()
 	}
 
 	UI()->PopScissor			();
-}
-#include "UICellItemFactory.h"
-#include "../inventory.h"
-#include "../actor.h"
-
-CTestDragDropWnd::CTestDragDropWnd()
-{
-		static Frect w_rect					= {100,100,300,300};
-		static Ivector2 w_cell_sz			= {50,50};
-		static Ivector2 w_cell_sz2			= {50,50};
-		static Ivector2 w_cells				= {6,7};
-		static Ivector2 w_cells2			= {6,7};
-		static int		dx					= 10;
-//.		Init								(w_rect.x1, w_rect.y1, w_rect.x2*2+dx, w_rect.y2);
-		Init								(0, 0, 1024, 768);
-		m_list1 = xr_new<CUIDragDropListEx>	();
-		AttachChild							(m_list1);
-		m_list1->Init						(w_rect.x1, w_rect.y1, w_rect.x2, w_rect.y2);
-		m_list1->SetAutoDelete				(true);
-		m_list1->SetCellSize				(w_cell_sz);
-		m_list1->SetCellsCapacity			(w_cells);
-		m_list1->SetAutoGrow				(true);
-		m_list1->SetGrouping				(true);
-
-		m_list2 = xr_new<CUIDragDropListEx>	();
-		AttachChild							(m_list2);
-		m_list2->Init						(w_rect.x1+w_rect.x2+dx, w_rect.y1, w_rect.x2, w_rect.y2);
-		m_list2->SetAutoDelete				(true);
-		m_list2->SetCellSize				(w_cell_sz2);
-		m_list2->SetCellsCapacity			(w_cells2);
-		m_list2->SetAutoGrow				(true);
-		m_list2->SetGrouping				(false);
-
-
-		TIItemContainer::iterator it		= Actor()->inventory().m_all.begin();
-		TIItemContainer::iterator it_e		= Actor()->inventory().m_all.end();
-
-		CUICellItem* itm = NULL;
-		for(;it!=it_e;++it){
-			itm = create_cell_item(*it);
-			m_list1->SetItem(itm);
-		}
-
-		m_list1->m_f_item_drop				= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CTestDragDropWnd::OnItemDrop);
-		m_list1->m_f_item_start_drag		= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CTestDragDropWnd::OnItemStartDrag);
-		m_list1->m_f_item_db_click			= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CTestDragDropWnd::OnItemDbClick);
-		m_list1->m_f_item_selected			= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CTestDragDropWnd::OnItemSelected);
-		m_list1->m_f_item_rbutton_click		= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CTestDragDropWnd::OnItemRButtonClick);
-}
-
-bool CTestDragDropWnd::OnItemDrop			(CUICellItem* itm)
-{
-	CUIDragDropListEx*	old_owner		= itm->OwnerList();
-	CUIDragDropListEx*	new_owner		= CUIDragDropListEx::m_drag_item->BackList();
-	
-	if(old_owner && new_owner)
-	{
-		CUICellItem* i					= old_owner->RemoveItem(itm, (old_owner==new_owner) );
-		new_owner->SetItem				(i,old_owner->GetDragItemPosition());
-	}
-	return true;
-}
-
-bool CTestDragDropWnd::OnItemStartDrag		(CUICellItem* itm)
-{
-	return false;
-}
-
-bool CTestDragDropWnd::OnItemDbClick		(CUICellItem* itm)
-{
-	return false;
-}
-
-bool CTestDragDropWnd::OnItemSelected		(CUICellItem* itm)
-{
-	return false;
-}
-
-bool CTestDragDropWnd::OnItemRButtonClick	(CUICellItem* itm)
-{
-	return false;
 }

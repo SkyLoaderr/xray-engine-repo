@@ -1408,12 +1408,10 @@ CUIGameTutorial* g_tut = NULL;
 
 //#include "UIVotingCategory.h"
 
-#include "UIDragDropListEx.h"
-CTestDragDropWnd* w = NULL;
 //CUIVotingCategory* v = NULL;
 void test_key	(int dik)
 {
-
+/*
 	if(dik==DIK_K&&strstr(Core.Params,"andy")){
 		if(!w){
 			w = xr_new<CTestDragDropWnd>	();
@@ -1423,6 +1421,7 @@ void test_key	(int dik)
 			xr_delete						(w);
 		}
 	}
+*/
 	/*if(dik==DIK_Z&&strstr(Core.Params,"satan")){
 		if(!v){
 			v = xr_new<CUIVotingCategory>	();
