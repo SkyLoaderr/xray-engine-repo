@@ -290,7 +290,8 @@ PIItem CUICarBodyWnd::CurrentIItem()
 
 void CUICarBodyWnd::SetCurrentItem(CUICellItem* itm)
 {
-	m_pCurrentCellItem				= itm;
+	if(m_pCurrentCellItem == itm) return;
+	m_pCurrentCellItem		= itm;
 	m_pUIItemInfo->InitItem(CurrentIItem());
 }
 
@@ -395,6 +396,8 @@ bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
 	
 	if(old_owner==new_owner || !old_owner || !new_owner)
 					return false;
+	
+	SetCurrentItem		(itm);
 
 	TransferItem		(	CurrentIItem(),
 							(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
