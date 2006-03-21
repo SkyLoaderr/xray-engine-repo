@@ -163,31 +163,6 @@ void CPda::OnH_A_Chield()
 			m_sFullName += (smart_cast<CInventoryOwner*>(H_Parent()))->Name();
 		}
 	};
-
-	CActor* actor = smart_cast<CActor*>(H_Parent());
-	if(!actor) return;
-
-
-
-	//transfer all infos from original owner to new owner
-	CInfoPortionWrapper	*known_info_registry	= xr_new<CInfoPortionWrapper>();
-	known_info_registry->registry().init		(m_idOriginalOwner);
-	KNOWN_INFO_VECTOR& known_info				= known_info_registry->registry().objects();
-
-	KNOWN_INFO_VECTOR_IT it = known_info.begin();
-	for(int i=0;it!=known_info.end();++it,++i){
-		(*it).info_id;	
-		NET_Packet		P;
-		u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
-		P.w_u16			(ID());						//отправитель
-		P.w_stringZ		((*it).info_id);			//сообщение
-		P.w_u8			(1);						//добавление сообщения
-		u_EventSend		(P);
-
-	}
-	known_info.clear	();
-	xr_delete			(known_info_registry);
-
 	inherited::OnH_A_Chield		();
 }
 
