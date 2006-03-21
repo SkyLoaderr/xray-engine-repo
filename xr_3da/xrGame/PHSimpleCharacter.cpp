@@ -458,10 +458,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	if(is_contact&&!is_control&&!b_lose_ground)
 		Disabling();
 
-	if( !dBodyIsEnabled(m_body)) {
 
-		return;
-	}
 	///////////////////////
 	if(ph_world->m_steps_num>m_ext_impuls_stop_step)
 	{
@@ -564,7 +561,8 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	b_depart=was_contact&&(!is_contact);
 	b_stop_control=was_control&&(!is_control);
 	b_meet=(!was_contact)&&(is_contact);
-	if(b_lose_control&&is_contact)b_meet_control=true;
+	if(b_lose_control&&(is_contact||m_elevator_state.ClimbingState()))
+ 														b_meet_control=true;
 	b_on_ground=b_valide_ground_contact ||(b_meet&&(!b_depart));
 
 
@@ -1320,6 +1318,8 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		c->surface.mu=0.f;
 		c->surface.soft_cfm=world_cfm*2.f;
 		c->surface.soft_erp=world_erp;
+		b_any_contacts=true;
+		is_contact=true;
 	}
 	
 	if(tri_material->Flags.test(SGameMtl::flPassable)&&!do_collide)
@@ -1327,7 +1327,11 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		UpdateStaticDamage(c,tri_material,bo1);
 		return;
 	}
-
+	if(do_collide)
+	{
+		b_any_contacts=true;
+		is_contact=true;
+	}
 	dReal spring_rate=def_spring_rate;
 	dReal dumping_rate=def_dumping_rate;
 	bool object=(dGeomGetBody(g1)&&dGeomGetBody(g2));
@@ -1373,8 +1377,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		}
 	}
 
-	b_any_contacts=true;
-	is_contact=true;
+
 
 	//if(!((g1==m_wheel) || (g2==m_wheel)||(m_elevator_state.ClimbingState())  ))//
 	//	return;
