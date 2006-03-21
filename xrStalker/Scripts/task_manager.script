@@ -757,3 +757,81 @@ function load(p)
 		end
 	end
 end
+
+
+function stats()
+	function avail(tbl)
+		local aa = alife()
+		if tbl.community ~= nil then
+			if tbl.community ~= db.actor:character_community() then 
+				return false, "community"
+			end
+		end
+		if tbl.condlist ~= nil then
+			if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then 
+				return false, "condlist"
+			end
+		end
+
+		-- ѕроверка что квест еще не выдан
+		if active_task[tbl.type] ~= nil then
+			return false, "active"
+		end
+		
+		-- ѕроверка по времени последнего выполнени€/проваливани€
+		if tbl.last_time ~= nil and game.get_game_time():diffSec(tbl.last_time) < 18000 then
+			return false, "time"
+		end
+
+		-- проверка по таргету
+		if tbl.type == "eliminate_lager" then
+			for k,v in pairs(tbl.target_objects) do
+				local gulag = aa:object(v).gulag
+				if gulag:get_population() > 0 then
+					tbl.selected_target = v
+					return true
+				else
+					return false, "target_population"
+				end
+			end
+			return false, "no_target"
+		elseif tbl.type == "kill_stalker" then
+			local avail_obj = {}
+			for k,v in pairs(tbl.target_objects) do
+				local obj = aa:object(v)
+				-- создаем список кто может быть выбран
+				if obj ~= nil and
+				obj:alive() == true 
+				then
+					table.insert(avail_obj, v)
+				else
+					tbl.target_objects[k] = nil
+				end
+			end
+			local nn = table.getn(avail_obj)
+			if nn > 0 then
+				tbl.selected_target = avail_obj[math.random(nn)]
+				return true
+			else
+				return false, "no_target"
+			end
+		elseif tbl.type == "find_item" then
+			local obj = aa:object(tbl.target)
+			if obj == nil then
+				return false, "no_target"
+			end	
+		end
+		return false, "none"
+	end
+	
+	printf("*** RANDOM TASK STATISTIC ***")
+	for k,v in pairs(task_info) do
+		for kk,vv in pairs(v) do
+			local b, reason = avail(vv)
+			printf("vendor = %s, type = %s, name = %s, avail = %s, reason = %s",
+					tostring(k), tostring(vv.type), tostring(vv.name),
+					tostring(b), tostring(reason))
+		
+		end
+	end
+end
