@@ -220,10 +220,10 @@ anim                = wait
 snd                 = val_escort_phrase_invite
 target              = actor
 on_signal           = sound_end | remark@val_escort_captive_talk
-meet                = no_meet ;meet@val_escort_captive_ignore
+meet                = meet@val_escort_captive_talk ;no_meet
 danger              = danger@val_escort_captive
 ;wounded             = wounded@val_escort_captive
-;combat_ignore_cond      = always
+;combat_ignore_cond  = always
 
 ;--------------------------------------------------------------------------
 ; диалог
