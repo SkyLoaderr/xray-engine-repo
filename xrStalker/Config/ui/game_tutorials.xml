@@ -411,12 +411,7 @@
 
 	
 	<part_3_jump><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 
 		<item><!--Для того чтобы перепрыгнуть невысокое препятствие - нажмите клавишу "пробел" $$ACTION_JUMP$$-->
 			<length_sec>5</length_sec>
@@ -427,7 +422,7 @@
 			<pda_section/>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="1" length_sec="5000" x="500" y="750" width="500" height="150" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="5000" x="500" y="750" width="500" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">jump_tutorial</text>
@@ -437,12 +432,7 @@
 	</part_3_jump>
 	
 	<part_4_crouch><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Для того чтобы пройти под невысоким препятствием - нажмите клавишу "ctrl" $$ACTION_CROUCH$$-->
 			<length_sec>5</length_sec>
@@ -453,7 +443,7 @@
 			<pda_section/>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="1" length_sec="5000" x="500" y="750" width="600" height="150" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="5000" x="500" y="750" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">crouch_tutorial</text>
@@ -464,12 +454,7 @@
 	</part_4_crouch>
 	
 	<part_5_crouch_down><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Для того чтобы пройти под низким препятствием - нажмите клавишу "ctrl+shift" $$ACTION_CROUCH_DOWN$$-->
 			<length_sec>5</length_sec>
@@ -480,7 +465,7 @@
 			<pda_section/>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="1" length_sec="5000" x="550" y="750" width="500" height="150" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="5000" x="550" y="750" width="500" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">crouch_down_tutorial</text>
@@ -490,12 +475,7 @@
 	</part_5_crouch_down>
 	
 	<part_6_radiation><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Радиация -->
 			<length_sec>15</length_sec>
@@ -516,12 +496,7 @@
 	</part_6_radiation>	
 	
 	<part_7_starvation><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Голод -->
 			<length_sec>15</length_sec>
@@ -542,12 +517,7 @@
 	</part_7_starvation>	
 	
 	<part_8_wound><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Кровотечения -->
 			<length_sec>15</length_sec>
@@ -568,12 +538,7 @@
 	</part_8_wound>
 	
 	<part_9_weapon><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Поломка оружия -->
 			<length_sec>15</length_sec>
@@ -594,12 +559,7 @@
 	</part_9_weapon>
 	
 	<part_10_sprint><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Бег в спринте -->
 			<length_sec>15</length_sec>
@@ -620,12 +580,7 @@
 	</part_10_sprint>
 	
 	<part_11_weakness><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- Усталость -->
 			<length_sec>15</length_sec>
@@ -646,12 +601,7 @@
 	</part_11_weakness>
 	
 	<part_12_relations><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- отношение персонажей -->
 			<length_sec>15</length_sec>
@@ -672,12 +622,7 @@
 	</part_12_relations>
 	
 	<part_13_sleep><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- сон -->
 			<length_sec>15</length_sec>
@@ -698,12 +643,7 @@
 	</part_13_sleep>
 
 	<part_14_overload><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- перегрузка -->
 			<length_sec>15</length_sec>
@@ -724,12 +664,7 @@
 	</part_14_overload>
 	
 	<part_15_hide_weapon><!--делаю новый туториал-->
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="700" width="150" height="50">
-				<text/>
-			</auto_static>
-			
-		</global_wnd>
+		<global_wnd/>
 		
 		<item><!-- спрятать/достать оружие -->
 			<length_sec>15</length_sec>
