@@ -210,7 +210,7 @@
 	<info_portion id="mil_leader_quest2_start">
 		<task>mil_courier_job</task>
 	</info_portion>
-	<info_portion id="mil_leader_quest2_complete"><article>mil_courier_doc</article></info_portion>
+	<info_portion id="mil_leader_quest2_complete"></info_portion>
 	<info_portion id="mil_leader_quest2_failed"></info_portion>
 	<info_portion id="mil_courier_see_actor"></info_portion>
 	<info_portion id="mil_leader_quest2_phase1"></info_portion>
@@ -321,6 +321,10 @@
 	
 	<info_portion id="mil_freedom_quests_end"></info_portion>
 	<info_portion id="mil_car_ok"></info_portion>
+	
+	<info_portion id="mil_courier_doc">
+		<article>mil_courier_doc</article>
+	</info_portion>
 	
 	
 </game_information_portions>
