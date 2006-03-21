@@ -25,6 +25,7 @@ public:
 protected:
 	CUIStatic*		bkgrnd;
 //	CUIStatic*		header;
+	CUIStatic*		msg_back;
 	CUIStatic*		msg;
 	CUIStatic*		cap[3];
 	CUIFrameWindow* frame[3];

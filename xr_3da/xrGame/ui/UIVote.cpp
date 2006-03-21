@@ -16,6 +16,7 @@ CUIVote::CUIVote(){
 	m_prev_upd_time = 0;
 	bkgrnd = xr_new<CUIStatic>();	bkgrnd->SetAutoDelete(true);	AttachChild(bkgrnd);
 //	header = xr_new<CUIStatic>();	header->SetAutoDelete(true);	AttachChild(header);
+	msg_back = xr_new<CUIStatic>();	msg_back->SetAutoDelete(true);	AttachChild(msg_back);
 	msg = xr_new<CUIStatic>();		msg->SetAutoDelete(true);		AttachChild(msg);
 	for (int i = 0; i<3; i++){
 		cap[i]		= xr_new<CUIStatic>();		cap[i]->SetAutoDelete(true);	AttachChild(cap[i]);
@@ -36,6 +37,7 @@ void CUIVote::Init(){
 	CUIXmlInit::InitWindow(xml_doc, "vote", 0, this);
 	CUIXmlInit::InitStatic(xml_doc, "vote:background", 0, bkgrnd);
 //	CUIXmlInit::InitStatic(xml_doc, "vote:header", 0, header);
+	CUIXmlInit::InitStatic(xml_doc, "vote:msg_back", 0, msg_back);
 	CUIXmlInit::InitStatic(xml_doc, "vote:msg", 0, msg);
 
 	string256 path;

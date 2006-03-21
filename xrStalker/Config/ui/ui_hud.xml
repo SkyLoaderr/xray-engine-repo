@@ -71,4 +71,5 @@
     <texture id="ui_hud_button_voting_03_t" x="65" y="679" width="37" height="25" />
     <texture id="ui_hud_button_voting_03_d" x="65" y="704" width="37" height="25" />
     <texture id="ui_hud_frame_voting_dop" x="451" y="306" width="573" height="69" />
+    <texture id="ui_hud_frame_voting_dop2" x="451" y="336" width="573" height="39" />
 </ui_texture>
