@@ -43,6 +43,7 @@ path_walk = attack_way7_1
 path_look = attack_look_max1
 on_signal = arrive | remark1@mil_freedom_max_attack
 team = freedom
+meet = no_meet
 danger = danger@mil_freedom_attack
 
 [remark1@mil_freedom_max_attack]                    ;Поведение 3
@@ -65,6 +66,7 @@ path_look = attack_look1_2
 on_signal = arrive | %+mil_freedom_arrive% camper13@mil_freedom_max_attack
 ;no_retreat = true
 danger = danger@mil_freedom_attack
+meet = no_meet
 team = freedom_attack
 
 [camper13@mil_freedom_max_attack]                   ;Поведение 5
@@ -74,6 +76,7 @@ danger = danger@mil_freedom_attack
 on_info = {+mil_dolg_dead} walker14@mil_freedom_max_attack
 no_retreat = true
 radius = 20
+meet = no_meet
 def_state_moving = sneak
 
 [remark4@mil_freedom_max_attack]
@@ -87,12 +90,14 @@ on_signal = action_end | walker15@mil_freedom_max_attack
 path_walk = attack_way7_5
 path_look = attack_look5
 danger = danger@mil_freedom_attack
+meet = no_meet
 on_signal = search | walker15@mil_freedom_max_attack
 
 [walker15@mil_freedom_max_attack]
 path_walk = attack_way7_4
 path_look = attack_look4
 on_signal = return | %-mil_freedom_attack%
+meet = no_meet
 team = freedom
 
 
