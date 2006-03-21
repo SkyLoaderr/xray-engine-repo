@@ -57,9 +57,13 @@
         <text>help_to_fox</text>
     </article> 
     
-    <article id="esc_doctor_meet" name="doctor_meet" article_type="task" group="doctor_meet">
+    <article id="esc_provodnik_pda" name="doctor_meet" article_type="journal" group="doctor_meet">
         <text>doctor_meet_text</text>
     </article> 
+    
+    <article id="esc_doctor_meet" name="doctor_meet_2" article_type="task" group="doctor_meet_2">
+        <text>doctor_meet_quest_text</text>
+    </article>
     
     <article id="about_enciclopedia" name="about_pda" article_type="encyclopedia" group="about_pda">
         <text>about_enciclopedia</text>

@@ -217,6 +217,7 @@
 	<info_portion id="esc_find_doctor_start">
 		<task>doctor_meet</task>
 		<article>esc_doctor_meet</article>
+		<article>esc_provodnik_pda</article>
 		<article>sl_provodnik</article>
 	</info_portion>
 	
