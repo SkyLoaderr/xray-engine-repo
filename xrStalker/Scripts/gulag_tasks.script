@@ -101,13 +101,22 @@ function loadJob(sj, gname, type, squad, groups, gulag)
 		end
 	end
 
+	if type == "test_out" then
+		t = { section = "logic@test_out_sleeper1",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "", out_rest = "test_sr"
+		}
+		table.insert(sj, t)
+	end
+
     for k, v in pairs(level_gulags) do
         v.load_job(sj, gname, type, squad, groups, gulag)
     end
 end
 
 function loadStates(gname, type)
-	if type == "test" or type == "test1" or type == "test2" then
+	if type == "test" or type == "test1" or type == "test2" or type == "test_out" then
 		return function(gulag)
 			if db.actor:has_info( "tutorial_end" ) then
 				return 1

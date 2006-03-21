@@ -1288,7 +1288,7 @@ end
 
 function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
     --printf ("CHECKSTALKER, COMMUNITY = %s, TYPE = %s", npc_community, gulag_type)
-	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" then
+	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" or gulag_type == "test_out"  then
 		return true
 	end
 
