@@ -33,7 +33,16 @@ public:
 	typedef MonsterSpace::EObjectAction					EObjectAction;
 	typedef CActionBase<CAI_Stalker>					CSActionBase;
 
-protected:
+private:
+	u32		m_min_queue_size;
+	u32		m_max_queue_size;
+	u32		m_min_queue_interval;
+	u32		m_max_queue_interval;
+	u32		m_queue_size;
+	u32		m_queue_interval;
+	u32		m_last_time_change;
+
+private:
 			void			add_evaluators			(CWeapon		*weapon);
 			void			add_operators			(CWeapon		*weapon);
 			void			add_evaluators			(CMissile		*missile);
@@ -66,7 +75,7 @@ public:
 	virtual	void			update					();
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
-			void			set_goal				(EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
+			void			set_goal				(EObjectAction object_action, CGameObject *game_object, u32 min_queue_size, u32 max_queue_size, u32 min_queue_interval, u32 max_queue_interval);
 };
 
 #include "object_handler_planner_inline.h"

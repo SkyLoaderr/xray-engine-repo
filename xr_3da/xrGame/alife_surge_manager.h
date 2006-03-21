@@ -23,11 +23,10 @@ protected:
 
 private:
 			void			fill_spawned_objects		();
+			void			spawn_new_spawns			();
 
 protected:
-			void			surge						();
 			void			spawn_new_objects			();
-			void			spawn_new_spawns			();
 
 public:
 	IC						CALifeSurgeManager			(xrServer *server, LPCSTR section);

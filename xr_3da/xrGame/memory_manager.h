@@ -58,6 +58,8 @@ public:
 			void				make_object_visible_somewhen(const CEntityAlive *enemy);
 
 public:
+	template <typename T, typename _predicate>
+	IC		void				fill_enemies				(const xr_vector<T> &objects, const _predicate &predicate) const;
 	template <typename _predicate>
 	IC		void				fill_enemies				(const _predicate &predicate) const;
 

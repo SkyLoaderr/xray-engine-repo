@@ -48,6 +48,7 @@ public:
 			void					unregister_in_combat	(const CAI_Stalker *object);
 			bool					registered_in_combat	(const CAI_Stalker *object) const;
 	IC		const squad_mask_type	&combat_mask			() const;
+			squad_mask_type			non_combat_members_mask	() const;
 			MEMBER_STORAGE			&combat_members			();
 			u32						in_detour				() const;
 			bool					can_detour				() const;

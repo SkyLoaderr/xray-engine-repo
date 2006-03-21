@@ -195,52 +195,17 @@ void CALifeUpdateManager::update(bool switch_objects, bool spawn_update, bool sc
 void CALifeUpdateManager::new_game			(LPCSTR save_name)
 {
 	pApp->LoadTitle						("Creating new game...");
-
 	Msg									("* Creating new game...");
 
 	unload								();
 	reload								(m_section);
-
 	spawns().load						(save_name);
-
 	server().PerformIDgen				(0x0000);
-
 	time_manager().init					(m_section);
-
-	surge								();
-
-	_TIME_ID							finish_time = time_manager().game_time() + 0*120000;//3*7*24*3600*1000; // 3 weeks in milliseconds
-	float								time_factor = time_manager().time_factor();
-	
-	time_manager().set_time_factor		(1.f);
-
-	while (time_manager().game_time() < finish_time) {
-//	do {
-		update							(false);
-#pragma todo("Dima to Dima : increment m_game_time here to simulate game time progress")
-	}
-//	while (time_manager().game_time() < finish_time);
-
-	time_manager().set_time_factor		(time_factor);
-
+	spawn_new_objects					();
 	save								(save_name);
 
 	Msg									("* New game is successfully created!");
-
-#if 0
-	CSE_Abstract						*object = spawn_item("online_offline_group",Fvector().set(0.f,0.f,0.f),u32(-1),GameGraph::_GRAPH_ID(-1),0xffff);
-	CSE_ALifeOnlineOfflineGroup			*group = smart_cast<CSE_ALifeOnlineOfflineGroup*>(object);
-	VERIFY								(group);
-
-	CALifeObjectRegistry::OBJECT_REGISTRY::const_iterator	I = objects().objects().begin();
-	CALifeObjectRegistry::OBJECT_REGISTRY::const_iterator	E = objects().objects().end();
-	for ( ; I != E; ++I) {
-		if (!smart_cast<CSE_ALifeHumanStalker*>((*I).second))
-			continue;
-
-		group->register_member			((*I).first);
-	}
-#endif
 }
 
 void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert, bool new_only)

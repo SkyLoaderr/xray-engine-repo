@@ -8,13 +8,28 @@
 
 #pragma once
 
+template <typename T, typename _predicate>
+IC	void CMemoryManager::fill_enemies	(const xr_vector<T> &objects, const _predicate &predicate) const
+{
+	xr_vector<T>::const_iterator	I = objects.begin();
+	xr_vector<T>::const_iterator	E = objects.end();
+	for ( ; I != E; ++I) {
+		if (!(*I).m_enabled)
+			continue;
+
+		const CEntityAlive	*_enemy = smart_cast<const CEntityAlive*>((*I).m_object);
+
+		if (_enemy && enemy().useful(_enemy))
+			predicate		(_enemy);
+	}
+}
+
 template <typename _predicate>
 IC	void CMemoryManager::fill_enemies	(const _predicate &predicate) const
 {
-	xr_vector<const CEntityAlive *>::const_iterator	I = enemy().objects().begin();
-	xr_vector<const CEntityAlive *>::const_iterator	E = enemy().objects().end();
-	for ( ; I != E; ++I)
-		predicate					(*I);
+	fill_enemies			(visual().objects(),predicate);
+	fill_enemies			(sound().objects(),predicate);
+	fill_enemies			(hit().objects(),predicate);
 }
 
 IC	CVisualMemoryManager	&CMemoryManager::visual		() const

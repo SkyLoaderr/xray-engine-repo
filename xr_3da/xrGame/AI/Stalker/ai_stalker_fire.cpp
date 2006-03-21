@@ -564,7 +564,9 @@ bool CAI_Stalker::zoom_state			() const
 		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait2 :
 		case ObjectHandlerSpace::eWorldOperatorFire1 :
-		case ObjectHandlerSpace::eWorldOperatorFire2 :
+		// we need this 2 operators to prevent fov/range twitching
+		case ObjectHandlerSpace::eWorldOperatorReload1 :
+		case ObjectHandlerSpace::eWorldOperatorReload2 :
 			return			(true);
 	}
 

@@ -124,67 +124,23 @@ CInventoryItem *CObjectHandler::best_weapon() const
 
 	planner().object().update_best_item_info	();
 	return										(planner().object().m_best_item_to_kill);
-	/**
-	if (m_inventory_actual && (m_last_enemy_for_best_weapon == planner().object().memory().enemy().selected()))
-		return							(m_last_best_weapon);
-
-	m_last_best_weapon					= 0;
-	m_last_enemy_for_best_weapon		= planner().object().memory().enemy().selected();
-
-	ai().ef_storage().alife().clear		();
-	ai().ef_storage().non_alife().clear	();
-	ai().ef_storage().non_alife().member()	= &planner().object();
-	ai().ef_storage().non_alife().enemy()	= planner().object().memory().enemy().selected() ? planner().object().memory().enemy().selected() : &planner().object();
-
-	float							best_value = 0;
-	TIItemContainer::const_iterator	I = inventory().m_all.begin();
-	TIItemContainer::const_iterator	E = inventory().m_all.end();
-	for ( ; I != E; ++I) {
-		if ((*I)->object().getDestroy())
-			continue;
-
-		if (!(*I)->can_kill())
-			continue;
-
-		ai().ef_storage().non_alife().member_item()	= &(*I)->object();
-
-		float					value;
-		if (planner().object().memory().enemy().selected())
-			value				= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
-		else
-			value				= (float)(*I)->object().ef_weapon_type();
-
-		if (value > best_value) {
-			best_value			= value;
-			m_last_best_weapon	= *I;
-		}
-	}
-	
-	return						(m_last_best_weapon);
-	/**/
 }
 
 void CObjectHandler::update		()
 {
 	START_PROFILE("Object Handler")
-//	if (planner().initialized())
-//		if (planner().current_action_state_id() == ObjectHandlerSpace::eWorldPropertyAimingReady1) {
-//			if (planner().object().best_weapon())
-//				if (planner().object().can_kill_enemy())
-//					planner().set_goal	(MonsterSpace::eObjectActionFire1,&planner().object().best_weapon()->object());
-//	}
 	planner().update		();
 	STOP_PROFILE
 }
 
-void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object, u32 queue_size, u32 queue_interval)
+void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object, u32 min_queue_size, u32 max_queue_size, u32 min_queue_interval, u32 max_queue_interval)
 {
-	planner().set_goal(object_action,game_object,queue_size,queue_interval);
+	planner().set_goal(object_action,game_object,min_queue_size,max_queue_size,min_queue_interval,max_queue_interval);
 }
 
-void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CInventoryItem *inventory_item, u32 queue_size, u32 queue_interval)
+void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CInventoryItem *inventory_item, u32 min_queue_size, u32 max_queue_size, u32 min_queue_interval, u32 max_queue_interval)
 {
-	set_goal(object_action,inventory_item ? &inventory_item->object() : 0,queue_size,queue_interval);
+	set_goal(object_action,inventory_item ? &inventory_item->object() : 0,min_queue_size,max_queue_size,min_queue_interval,max_queue_interval);
 }
 
 bool CObjectHandler::goal_reached	()
@@ -222,11 +178,8 @@ void CObjectHandler::weapon_bones	(int &b0, int &b1, int &b2) const
 bool CObjectHandler::weapon_strapped	() const
 {
 	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-	if (!weapon) {
-//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//		Msg						("[weapon_strapped][%s][%s][true][not_a_weapon]",*planner().object().cName(),*weapon->cName());
+	if (!weapon)
 		return					(false);
-	}
 
 	return						(weapon_strapped(weapon));
 }
@@ -248,11 +201,8 @@ bool CObjectHandler::weapon_strapped	(CWeapon *weapon) const
 {
 	VERIFY						(weapon);
 
-	if (!weapon->can_be_strapped()) {
-//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//		Msg						("[weapon_strapped][%s][%s][false][!can_be_strapped]",*planner().object().cName(),*weapon->cName());
+	if (!weapon->can_be_strapped())
 		return					(false);
-	}
 
 	if (
 		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
@@ -260,15 +210,11 @@ bool CObjectHandler::weapon_strapped	(CWeapon *weapon) const
 		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
 		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
 	) {
-//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//		Msg						("[weapon_strapped][%s][%s][false][strapping/unstrapping]",*planner().object().cName(),*weapon->cName());
 		return					(false);
 	}
 
 	actualize_strap_mode		(weapon);
 
-//	if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//	Msg							("[weapon_strapped][%s][%s][%s][strapped_mode]",*planner().object().cName(),*weapon->cName(),weapon->strapped_mode() ? "true" : "false");
 	return						(weapon->strapped_mode());
 }
 
@@ -276,8 +222,6 @@ bool CObjectHandler::weapon_unstrapped	() const
 {
 	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (!weapon) {
-//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//		Msg						("[weapon_unstrapped][%s][%s][true][not_a_weapon]",*planner().object().cName(),*weapon->cName());
 		VERIFY					(!planner().object().animation().setup_storage());
 		return					(true);
 	}
@@ -290,8 +234,6 @@ bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
 	VERIFY						(weapon);
 
 	if (!weapon->can_be_strapped()) {
-//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//		Msg						("[weapon_unstrapped][%s][%s][true][!can_be_strapped]",*planner().object().cName(),*weapon->cName());
 		VERIFY					(!planner().object().animation().setup_storage());
 		return					(true);
 	}
@@ -303,17 +245,9 @@ bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
 			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
 		)
 	{
-//		if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//		Msg						("[weapon_unstrapped][%s][%s][false][strapping/unstrapping]",*planner().object().cName(),*weapon->cName());
-//		VERIFY					(!planner().object().animation().setup_storage());
 		return					(false);
 	}
 
-//	if (!xr_strcmp("cit_killers_stalker_0000",*planner().object().cName()))
-//	Msg							("[weapon_unstrapped][%s][%s][%s][strapped_mode][%s]",*planner().object().cName(),*weapon->cName(),!weapon->strapped_mode() ? "true" : "false",planner().action2string(planner().current_action_id()));
-
-//	int							a,b,c;
-//	weapon_bones				(a,b,c);
 	actualize_strap_mode		(weapon);
 
 	VERIFY						(

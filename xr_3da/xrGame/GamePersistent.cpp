@@ -23,6 +23,10 @@
 #include "../CameraManager.h"
 #include "actor.h"
 
+#ifndef MASTER_GOLD
+#	include "custommonster.h"
+#endif
+
 #ifndef _EDITOR
 #	include "ai_debug.h"
 #endif
@@ -298,8 +302,19 @@ void CGamePersistent::OnFrame	()
 	if(!g_pGameLevel->bReady)	return;
 
 	if(Device.Pause()){
-		if(g_actor)
-		Level().Cameras().Update(Actor()->cam_Active());
+#ifndef MASTER_GOLD
+		if (Level().CurrentViewEntity()) {
+			if (!g_actor || (g_actor->ID() != Level().CurrentViewEntity()->ID()))
+				smart_cast<CCustomMonster*>(Level().CurrentViewEntity())->UpdateCamera();
+			else {
+				if (g_actor)
+					Level().Cameras().Update	(Actor()->cam_Active());
+			}
+		}
+#else
+		if (g_actor)
+			Level().Cameras().Update	(Actor()->cam_Active());
+#endif
 	}
 	__super::OnFrame			();
 

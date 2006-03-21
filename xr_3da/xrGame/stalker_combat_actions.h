@@ -25,7 +25,7 @@ public:
 						CStalkerActionCombatBase	(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		finalize					();
-			void		select_queue_params			(const float &distance, u32 &queue_interval, u32 &queue_size) const;
+			void		select_queue_params			(const float &distance, u32 &min_queue_size, u32 &max_queue_size, u32 &min_queue_interval, u32 &max_queue_interval) const;
 			bool		fire_make_sense				() const;
 };
 

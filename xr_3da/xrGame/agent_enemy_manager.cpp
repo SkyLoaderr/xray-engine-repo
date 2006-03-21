@@ -47,18 +47,30 @@ struct CEnemyFiller {
 };
 
 template <typename T>
-IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy)
+IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
 {
 	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
-	if (I != objects.end())
-		(*I).m_squad_mask.assign	(enemy.m_distribute_mask.get());
+	if (I != objects.end()) {
+		VERIFY							(
+			(*I).m_squad_mask.get() <=
+			(
+				((*I).m_squad_mask.get() & non_combat_members) |
+				enemy.m_distribute_mask.get()
+			)
+		);
+
+		(*I).m_squad_mask.assign	(
+			((*I).m_squad_mask.get() & non_combat_members) |
+			enemy.m_distribute_mask.get()
+		);
+	}
 }
 
-IC	void CAgentEnemyManager::setup_mask			(CMemberEnemy &enemy)
+IC	void CAgentEnemyManager::setup_mask			(CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
 {
-	setup_mask						(object().memory().visibles(),enemy);
-	setup_mask						(object().memory().sounds(),enemy);
-	setup_mask						(object().memory().hits(),enemy);
+	setup_mask						(object().memory().visibles(),enemy,non_combat_members);
+	setup_mask						(object().memory().sounds(),enemy,non_combat_members);
+	setup_mask						(object().memory().hits(),enemy,non_combat_members);
 }
 
 float CAgentEnemyManager::evaluate				(const CEntityAlive *object0, const CEntityAlive *object1) const
@@ -280,10 +292,12 @@ void CAgentEnemyManager::permutate_enemies		()
 
 void CAgentEnemyManager::assign_enemy_masks		()
 {
+	squad_mask_type			non_combat_members = object().member().non_combat_members_mask();
+
 	ENEMIES::iterator		I = m_enemies.begin();
 	ENEMIES::iterator		E = m_enemies.end();
 	for ( ; I != E; ++I)
-		setup_mask			(*I);
+		setup_mask			(*I,non_combat_members);
 }
 
 void CAgentEnemyManager::distribute_enemies	()

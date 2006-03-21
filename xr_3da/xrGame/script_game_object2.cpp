@@ -103,7 +103,7 @@ void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScr
 	if (!object_handler)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
 	else
-		object_handler->set_goal(object_action,lua_game_object ? &lua_game_object->object() : 0, queue_size);
+		object_handler->set_goal(object_action,lua_game_object ? &lua_game_object->object() : 0, queue_size, queue_size);
 }
 
 void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScriptGameObject *lua_game_object, u32 queue_size, u32 queue_interval)
@@ -112,7 +112,7 @@ void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScr
 	if (!object_handler)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
 	else
-		object_handler->set_goal(object_action,lua_game_object ? &lua_game_object->object() : 0, queue_size, queue_interval);
+		object_handler->set_goal(object_action,lua_game_object ? &lua_game_object->object() : 0, queue_size, queue_size, queue_interval, queue_interval);
 }
 
 void CScriptGameObject::play_cycle(LPCSTR anim, bool mix_in)

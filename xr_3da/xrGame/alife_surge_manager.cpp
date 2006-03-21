@@ -65,8 +65,3 @@ void CALifeSurgeManager::spawn_new_objects			()
 	spawn_new_spawns				();
 	VERIFY							(graph().actor());
 }
-
-void CALifeSurgeManager::surge						()
-{
-	spawn_new_objects			();
-}

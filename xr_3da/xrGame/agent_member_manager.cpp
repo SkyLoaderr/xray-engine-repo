@@ -121,6 +121,20 @@ CAgentMemberManager::MEMBER_STORAGE &CAgentMemberManager::combat_members	()
 	return								(m_combat_members);
 }
 
+CAgentMemberManager::squad_mask_type CAgentMemberManager::non_combat_members_mask	() const
+{
+	squad_mask_type					result = 0;
+
+	MEMBER_STORAGE::const_iterator	I = members().begin();
+	MEMBER_STORAGE::const_iterator	E = members().end();
+	for ( ; I != E; ++I) {
+		if (!registered_in_combat(&(*I)->object()))
+			result					|= mask(&(*I)->object());
+	}
+
+	return							(result);
+}
+
 u32 CAgentMemberManager::in_detour		() const
 {
 	u32									in_detour = 0;

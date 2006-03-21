@@ -30,6 +30,8 @@
 #define SAVE_FRIEND_SOUNDS
 //#define SAVE_VISIBLE_OBJECT_SOUNDS
 
+const float COMBAT_SOUND_PERCEIVE_RADIUS_SQR	= _sqr(5.f);
+
 CSoundMemoryManager::~CSoundMemoryManager		()
 {
 #ifdef USE_SELECTED_SOUND
@@ -163,11 +165,21 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 	if (sound_power >= m_sound_threshold) {
 		if (is_sound_type(sound_type,SOUND_TYPE_WEAPON_SHOOTING)) {
 			// this is fake!
-			CEntityAlive		*_entity_alive = smart_cast<CEntityAlive*>(object);
+			CEntityAlive	*_entity_alive = smart_cast<CEntityAlive*>(object);
 			if (_entity_alive && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
 				m_object->memory().hit().add(_entity_alive);
 		}
-		add					(object,sound_type,position,sound_power);
+		if (!m_stalker || !m_stalker->memory().enemy().selected())
+			add				(object,sound_type,position,sound_power);
+		else {
+			if (object) {
+				bool		is_shooting = is_sound_type(sound_type,SOUND_TYPE_WEAPON_SHOOTING);
+				bool		is_colliding = is_sound_type(sound_type,SOUND_TYPE_WORLD_OBJECT_COLLIDING);
+				bool		very_close = m_stalker->Position().distance_to_sqr(object->Position()) <= COMBAT_SOUND_PERCEIVE_RADIUS_SQR;
+				if (is_shooting || is_colliding || very_close)
+					add		(object,sound_type,position,sound_power);
+			}
+		}
 	}
 
 	m_last_sound_time		= Device.dwTimeGlobal;

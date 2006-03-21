@@ -24,8 +24,8 @@ private:
 
 protected:
 	template <typename T>
-	IC		void			setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy);
-	IC		void			setup_mask			(CMemberEnemy &enemy);
+	IC		void			setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy, const squad_mask_type &non_combat_members);
+	IC		void			setup_mask			(CMemberEnemy &enemy, const squad_mask_type &non_combat_members);
 			void			fill_enemies		();
 			void			compute_enemy_danger();
 			void			assign_enemies		();
