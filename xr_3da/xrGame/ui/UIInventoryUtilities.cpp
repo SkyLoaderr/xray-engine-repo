@@ -137,7 +137,6 @@ bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
 
 		return				false;
 	}
-i
    	return					false;
 }
 
