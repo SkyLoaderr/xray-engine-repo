@@ -249,7 +249,7 @@ void CUICarBodyWnd::Update()
 {
 	if(	m_b_need_update||
 		m_pOurObject->inventory().ModifyFrame()==Device.dwFrame || 
-		m_pOurObject->inventory().ModifyFrame()==Device.dwFrame)
+		m_pOthersObject->inventory().ModifyFrame()==Device.dwFrame)
 
 		UpdateLists		();
 
