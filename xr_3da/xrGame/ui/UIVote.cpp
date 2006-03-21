@@ -91,7 +91,7 @@ void CUIVote::Update(){
 		else if (p->m_bCurrentVoteAgreed == 0)
 			list[1]->AddItem(p->name);
 		else
-			list[3]->AddItem(p->name);
+			list[2]->AddItem(p->name);
 	}
 
     //lst->SetSelected(selected_item);
