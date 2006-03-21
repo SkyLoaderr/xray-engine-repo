@@ -762,21 +762,14 @@ end
 ------------------------------------------------------------------------------------
 -- Special functions for Pripyat
 ------------------------------------------------------------------------------------
-function pri_zombied_is_in_combat(actor, npc)
-    --local res = gulag_pripyat.zombied_in_combat[npc:name()] ~= nil
-    --printf("cond <pri>: zombied in combat (%s)", if_then_else(res, "true", "false"))
-    --return res
-    return gulag_pripyat.zombied_in_combat[npc:name()] ~= nil
-end
-
 function pri_followers_can_hear(actor, npc)
 	local gulag = xr_gulag.get_gulag(823)
-    return actor:has_info("pri_followers_mission_accept") and
+
+    return actor:dont_has_info("pri_followers_start") or
+           (actor:has_info("pri_followers_mission_accept") and
            actor:dont_has_info("pri_followers_actor_leave") and
-           gulag and gulag:get_population() > 0 and
-           not gulag:npc_is_enemy_to_anybody(actor)
-           --actor:dont_has_info("pri_followers_actor_enemy") and
-           --xr_gulag.getGulagPopulation(823) ~= 0 --"pri_followers"
+           gulag ~= nil and gulag:get_population() > 0 and
+           not gulag:npc_is_enemy_to_anybody(actor))
 end
 
 function pri_monolith_combat_ignore(actor, npc)
