@@ -23,6 +23,13 @@ use             = true
 use_wpn         = true
 
 ;--------------------------------------------------------------------------
+; основной диалог
+;--------------------------------------------------------------------------
+[danger@small]
+ignore_types          = corpse
+ignore_distance_sound = 15
+
+;--------------------------------------------------------------------------
 ; режим ожидания
 ;--------------------------------------------------------------------------
 [walker@wander]
@@ -116,11 +123,12 @@ combat_ignore_keep_when_attacked    = true
 ;--------------------------------------------------------------------------
 [remark@outside]
 anim                                = wait
-on_actor_dist_ge_nvis               = 15 | %+val_prisoner_scene_end% ;walker@escape
+on_actor_dist_ge_nvis               = 15 | walker@escape ;%+val_prisoner_scene_end%
 ;on_info                             = {-val_prisoner_door_unlocked} walker@sit
 ;on_info                             = {+val_prisoner_raid} walker@escape
 meet                                = meet@main
-combat_ignore_cond                  = always ;{=check_fighting(403)}
+danger                              = danger@small
+;combat_ignore_cond                  = always ;{=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; идем мочить братву
@@ -131,6 +139,6 @@ path_look                           = captive_escape_look
 def_state_moving1                   = assault
 def_state_moving2                   = assault
 def_state_moving3                   = assault
-on_signal                           = arrived | nil
+on_signal                           = arrived | %+val_prisoner_scene_end%
 meet                                = meet@main
 combat_ignore_cond                  = {=check_fighting(403)}
