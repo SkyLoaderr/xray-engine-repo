@@ -821,7 +821,7 @@ function stats()
 				return false, "no_target"
 			end	
 		end
-		return false, "none"
+		return true
 	end
 	
 	printf("*** RANDOM TASK STATISTIC ***")
