@@ -140,8 +140,8 @@ protected:
 	BONUSES							m_pBonusList;
 
 ///	CUISpeechMenu*					m_pSpeechMenu;	
-	CUIVotingCategory*				m_pVoting;
-	CUIVote*						m_pVote;
+	CUIVotingCategory*				m_pVoteStartWindow;
+	CUIVote*						m_pVoteRespondWindow;
 	BOOL							m_bSpectatorSelected;
 	int								m_iSpawn_Cost;
 

@@ -41,8 +41,8 @@
 game_cl_mp::game_cl_mp()
 {
 	m_bVotingActive = false;
-	m_pVoting = NULL;
-	m_pVote = NULL;
+	m_pVoteStartWindow = NULL;
+	m_pVoteRespondWindow = NULL;
 	
 	m_pSndMessages.clear();
 	LoadSndMessages();
@@ -96,6 +96,9 @@ game_cl_mp::~game_cl_mp()
 	xr_delete(pBuySpawnMsgBox);
 
 	m_pBonusList.clear();
+
+	if (m_pVoteRespondWindow) xr_delete(m_pVoteRespondWindow);
+	if (m_pVoteStartWindow) xr_delete(m_pVoteStartWindow);
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
@@ -217,7 +220,7 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			}break;
 		case kVOTE:
 			{
-				if (IsVotingEnabled())
+				if (IsVotingEnabled() && IsVotingActive())
 					Vote();
 			}break;
 		case kVOTEYES:
@@ -257,17 +260,17 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 }
 
 void	game_cl_mp::VotingBegin(){
-	if (!m_pVoting)
-		m_pVoting = xr_new<CUIVotingCategory>();
+	if (!m_pVoteStartWindow)
+		m_pVoteStartWindow = xr_new<CUIVotingCategory>();
 
-	StartStopMenu(m_pVoting, true);
+	StartStopMenu(m_pVoteStartWindow, true);
 }
 
 void	game_cl_mp::Vote(){
-	if (!m_pVote)
-		m_pVote = xr_new<CUIVote>();
+	if (!m_pVoteRespondWindow)
+		m_pVoteRespondWindow = xr_new<CUIVote>();
 
-	StartStopMenu(m_pVote, true);
+	StartStopMenu(m_pVoteRespondWindow, true);
 }
 
 bool	game_cl_mp::OnKeyboardRelease		(int key)
@@ -447,6 +450,14 @@ void game_cl_mp::shedule_Update(u32 dt)
 		{
 		}break;
 	}
+
+	if (Phase() != GAME_PHASE_INPROGRESS)
+	{
+		if (m_pVoteStartWindow && m_pVoteStartWindow->IsShown())
+			StartStopMenu(m_pVoteStartWindow, true);
+		if (m_pVoteRespondWindow && m_pVoteRespondWindow->IsShown())
+			StartStopMenu(m_pVoteRespondWindow, true);
+	};
 	
 	if (!local_player || !local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || Phase()!= GAME_PHASE_INPROGRESS)
 	{

@@ -710,9 +710,9 @@ void game_cl_Deathmatch::OnVoteStart				(NET_Packet& P)
 
 		m_game_ui->SetVoteMessage(VoteStr);
 		m_game_ui->SetVoteTimeResultMsg("");
-		if (!m_pVote)
-            m_pVote = xr_new<CUIVote>();
-		m_pVote->SetVoting(VoteStr);
+		if (!m_pVoteRespondWindow)
+            m_pVoteRespondWindow = xr_new<CUIVote>();
+		m_pVoteRespondWindow->SetVoting(VoteStr);
 	};
 };
 
