@@ -61,6 +61,7 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>
+		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>agr_swamp_ratcatcher_talks</actor_dialog>
 	
 	</specific_character>
