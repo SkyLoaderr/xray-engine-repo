@@ -32,6 +32,9 @@
 #include "space_restrictor.h"
 #include "detail_path_manager.h"
 #include "level_graph.h"
+#include "actor.h"
+#include "actor_memory.h"
+#include "visual_memory_manager.h"
 
 
 class CScriptBinderObject;
@@ -224,19 +227,23 @@ LPCSTR CScriptGameObject::WhoHitSectionName()
 
 bool CScriptGameObject::CheckObjectVisibility(const CScriptGameObject *tpLuaGameObject)
 {
-	CScriptEntity		*l_tpCustomMonster = smart_cast<CScriptEntity*>(&object());
-	if (l_tpCustomMonster) {
-		CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(&object());
-		if (entity_alive && !entity_alive->g_Alive()) {
-			ai().script_engine().script_log	 (ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot check visibility of dead object!");
-			return false;
-		}
-		
-		return			(l_tpCustomMonster->CheckObjectVisibility(&tpLuaGameObject->object()));
-	} else {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member CheckObjectVisibility!");
+	CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(&object());
+	if (entity_alive && !entity_alive->g_Alive()) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot check visibility of dead object!");
 		return			(false);
 	}
+
+	CScriptEntity		*script_entity = smart_cast<CScriptEntity*>(&object());
+	if (!script_entity) {
+		CActor			*actor = smart_cast<CActor*>(&object());
+		if (!actor) {
+			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member CheckObjectVisibility!");
+			return		(false);
+		}
+		return			(actor->memory().visual().visible_right_now(&tpLuaGameObject->object()));
+	}
+
+	return				(script_entity->CheckObjectVisibility(&tpLuaGameObject->object()));
 }
 
 //////////////////////////////////////////////////////////////////////////
