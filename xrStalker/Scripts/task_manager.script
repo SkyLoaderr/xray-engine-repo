@@ -688,6 +688,7 @@ function register_target(object)
 		task_table_filled = true
 	end
 	
+	printf("register task target [%s]", object:name())
 	for k,v in pairs(task_info) do
 		for kk,vv in pairs(v) do
 			if vv.type == "kill_stalker" then

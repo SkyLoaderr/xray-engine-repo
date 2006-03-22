@@ -51,7 +51,6 @@ function r_bool( spawn_ini, section, line, default )
 end
 
 function r_str( spawn_ini, section, line, default )
-	printf("READ section: [%s] line: [%s]", tostring(section), tostring(line))
 	if spawn_ini:line_exist( section, line ) then
 		return spawn_ini:r_string( section, line )
 	else
@@ -192,7 +191,7 @@ end
 -- вызывается симулятором.
 function se_respawn:on_register()
 	cse_alife_smart_zone.on_register( self )
-	printf("RESPAWN: [%s] se_respawn on_register", tostring(self:name()))
+	--printf("RESPAWN: [%s] se_respawn on_register", tostring(self:name()))
 
 	-- Вычитываем настройки спауна
 	local ini = self:spawn_ini()
