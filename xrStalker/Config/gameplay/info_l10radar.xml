@@ -136,6 +136,7 @@
 	</info_portion>	
 	
 	<info_portion id="bun_patrol_start">
+		<article>rad_sleep_info</article>
 	</info_portion>	
 	
 	<info_portion id="bun_actor_vstal">

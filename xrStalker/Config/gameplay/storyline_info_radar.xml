@@ -2,3 +2,8 @@
         <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>
         <text>rad_code_door_info</text>
     </article>
+    
+    
+    <article id="rad_sleep_info" name="rad_sleep_info" article_type="Journal" group="memuars">
+        <text>rad_sleep_info</text>
+    </article> 
