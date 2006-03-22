@@ -126,6 +126,9 @@ function se_stalker:on_register()
 		actor_stats.add_to_ranking(self.id)
 	end
 
+	-- Регистрация в таскменеджере
+	task_manager.register_target(self)
+
 	self:fill_exclusives()
 end
 --------------------
