@@ -44,19 +44,30 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 			if ((NULL!=cform) && (cftObject==cform->Type())){
 				CActor* actor		= smart_cast<CActor*>(entity);
 				CAI_Stalker* stalker= smart_cast<CAI_Stalker*>(entity);
+				// в кого попали? 
 				if (actor||stalker){
-					// test sphere intersection
+					// попали в актера или сталкера
 					Fsphere S		= cform->getSphere();
 					entity->XFORM().transform_tiny	(S.P)	;
 					float dist		= rd.range;
+					// проверим попали ли мы в описывающую сферу 
 					if (Fsphere::rpNone!=S.intersect(bullet->pos, bullet->dir, dist)){
+						// да попали, найдем кто стрелял
 						bool play_whine				= true;
 						CObject* initiator			= Level().Objects.net_Find	(bullet->parent_id);
 						if (actor){
-							// actor special case
+							// попали в актера
 							CAI_Stalker* i_stalker	= smart_cast<CAI_Stalker*>(initiator);
-							float hpf				= (i_stalker)?i_stalker->SpecificCharacter().hit_probability_factor():1.f;
-							if (Random.randF(0.f,1.f)>(actor->HitProbability()*hpf)){ 
+							// если стрелял сталкер, учитываем - hit_probability_factor сталкерa иначе - 1.0
+							float hpf				= 1.f;
+							float ahp				= actor->HitProbability();
+							if (i_stalker){
+								hpf					= i_stalker->SpecificCharacter().hit_probability_factor();
+								float fly_dist		= bullet->fly_dist+dist;
+								float dist_factor	= _min(1.f,fly_dist/Level().BulletManager().m_fHPMaxDist);
+								ahp					= dist_factor*actor->HitProbability() + (1.f-dist_factor)*1.f;
+							}
+							if (Random.randF(0.f,1.f)>(ahp*hpf)){ 
 								bRes				= FALSE;	// don't hit actor
 								play_whine			= true;		// play whine sound
 							}else{

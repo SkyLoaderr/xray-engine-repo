@@ -119,6 +119,8 @@ protected:
 	//минимальная скорость, на которой пуля еще считается
 	static float			m_fMinBulletSpeed;
 
+	float					m_fHPMaxDist;
+
 	//константа G
 	float					m_fGravityConst;
 	//сопротивление воздуха, процент, который отнимается от скорости
