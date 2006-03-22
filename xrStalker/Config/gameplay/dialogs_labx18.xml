@@ -13,13 +13,6 @@
                 <text>dar_explorer_dialog_6131</text>
                 <next>9</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>801</next>
-                <next>802</next>
-                <next>803</next>
-                <next>804</next>
-            </phrase>
             <phrase id="801">
                 <text></text>
                 <dont_has_info>dar_explorer_dlg_open</dont_has_info>
@@ -41,6 +34,13 @@
                 <next>111</next>
                 <next>112</next>
             </phrase>
+            <phrase id="2521">
+                <text>dar_explorer_dialog_2521</text>
+                <next>9</next>
+            </phrase>
+            <phrase id="271">
+                <text>dar_explorer_dialog_271</text>
+            </phrase>
             <phrase id="112">
                 <text>dar_explorer_dialog_112</text>
                 <next>2111</next>
@@ -54,10 +54,6 @@
                 <next>211</next>
                 <next>212</next>
                 <next>111</next>
-            </phrase>
-            <phrase id="211">
-                <text>dar_explorer_dialog_211</text>
-                <next>2111</next>
             </phrase>
             <phrase id="2111">
                 <text>dar_explorer_dialog_2111</text>
@@ -80,7 +76,6 @@
             <phrase id="25">
                 <text>dar_explorer_dialog_25</text>
                 <next>251</next>
-                <next>252</next>
                 <next>253</next>
             </phrase>
             <phrase id="251">
@@ -90,19 +85,14 @@
             <phrase id="2511">
                 <text>dar_explorer_dialog_2511</text>
                 <next>26</next>
-                <next>27</next>
-            </phrase>
-            <phrase id="252">
-                <text>dar_explorer_dialog_252</text>
-                <next>2521</next>
-            </phrase>
-            <phrase id="2521">
-                <text>dar_explorer_dialog_2521</text>
-                <next>9</next>
             </phrase>
             <phrase id="212">
                 <text>dar_explorer_dialog_212</text>
                 <next>2121</next>
+            </phrase>
+            <phrase id="211">
+                <text>dar_explorer_dialog_211</text>
+                <next>2111</next>
             </phrase>
             <phrase id="111">
                 <text>dar_explorer_dialog_111</text>
@@ -152,11 +142,6 @@
             </phrase>
             <phrase id="8021">
                 <text>dar_explorer_dialog_8021</text>
-                <next>92</next>
-            </phrase>
-            <phrase id="92">
-                <text>dar_explorer_dialog_92</text>
-                <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="803">
                 <text></text>
@@ -167,17 +152,7 @@
             <phrase id="8031">
                 <text>dar_explorer_dialog_8031</text>
                 <next>253</next>
-                <next>27</next>
                 <next>26</next>
-            </phrase>
-            <phrase id="27">
-                <text>dar_explorer_dialog_27</text>
-                <give_info>dar_explorer_actor_has_docs</give_info>
-                <next>271</next>
-            </phrase>
-            <phrase id="271">
-                <text>dar_explorer_dialog_271</text>
-                <next>91</next>
             </phrase>
             <phrase id="26">
                 <text>dar_explorer_dialog_26</text>
@@ -195,15 +170,14 @@
             </phrase>
             <phrase id="8041">
                 <text>dar_explorer_dialog_8041</text>
-                <next>91</next>
                 <next>253</next>
             </phrase>
-            <phrase id="91">
-                <text>dar_explorer_dialog_91</text>
-                <action>dialogs.break_dialog</action>
-                <action>dar_dialogs.explorer_take_away_docs</action>
-                <disable_info>dar_explorer_dlg_open</disable_info>
-                <give_info>dar_explorer_dlg_completed</give_info>
+            <phrase id="0">
+                <text></text>
+                <next>801</next>
+                <next>802</next>
+                <next>803</next>
+                <next>804</next>
             </phrase>
             <phrase id="253">
                 <text>dar_explorer_dialog_253</text>
