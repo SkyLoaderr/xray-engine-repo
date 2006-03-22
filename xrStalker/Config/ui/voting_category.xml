@@ -12,7 +12,7 @@
 		</header>
 		
 		<btn_ok x="257" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_ok</text>
+			<text font="normal" align="c">Btn_OK</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -120,7 +120,7 @@
 		</list>
 		
 		<btn_ok x="257" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_ok</text>
+			<text font="normal" align="c">Btn_OK</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -168,7 +168,7 @@
 		</map_frame>
 		
 		<btn_ok x="257" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_ok</text>
+			<text font="normal" align="c">Btn_OK</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -259,7 +259,7 @@
 			<texture>ui_cb_listbox</texture>
 		</edit_box>		
 		<btn_ok x="257" y="328" width="157" height="48">
-			<text font="normal" align="c">mm_ok</text>
+			<text font="normal" align="c">Btn_OK</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
@@ -348,9 +348,9 @@
 			<text font="normal" align="c">Vote No</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
-				<e r="227" g="199" b="178"/>				
-				<t r="180" g="153" b="155"/>				
-				<d r="106" g="95" b="91"/>							
+				<e r="227" g="199" b="178"/>
+				<t r="180" g="153" b="155"/>
+				<d r="106" g="95" b="91"/>
 				<h r="0" g="0" b="0"/>
 			</text_color>
 		</btn_no>
@@ -359,9 +359,9 @@
 			<text font="normal" align="c">Cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
-				<e r="227" g="199" b="178"/>				
-				<t r="180" g="153" b="155"/>				
-				<d r="106" g="95" b="91"/>							
+				<e r="227" g="199" b="178"/>
+				<t r="180" g="153" b="155"/>
+				<d r="106" g="95" b="91"/>
 				<h r="0" g="0" b="0"/>
 			</text_color>
 		</btn_cancel>
