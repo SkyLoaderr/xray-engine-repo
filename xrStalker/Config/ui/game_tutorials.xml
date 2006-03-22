@@ -46,7 +46,7 @@
 				<texture>intro\intro_mission</texture>
 			</video_wnd>
 		</item>
-		<item type="video">
+<!--		<item type="video">
 			<grab_input>1</grab_input>
 			<sound>intro\intro_kill</sound>
 			<back_show>off</back_show>
@@ -55,6 +55,7 @@
 				<texture>intro\intro_kill</texture>
 			</video_wnd>
 		</item>
+-->
 	</intro_game>
 <!-- ------------------------------------------------------------------------- -->
 	<part_1_pda>
