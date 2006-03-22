@@ -294,7 +294,7 @@ function heli_combat:update_combat_type( see_enemy )
 
 	local ct = self.combat_type
 
-	printf( "flyby_states_for_one_pass=%d", self.flyby_states_for_one_pass )
+--	printf( "flyby_states_for_one_pass=%d", self.flyby_states_for_one_pass )
 
 	if self.combat_type == combat_type_flyby then
 		if self.flyby_states_for_one_pass <= 0 then
@@ -332,11 +332,19 @@ function heli_combat:update_combat_type( see_enemy )
 				ct = combat_type_round
 			end
 		end
+
+		if bind_heli.get_heli_health( self.heliObject, self.st ) < self.flame_start_health then
+			self.attack_before_retreat = true
+
+			self.heliObject.m_use_rocket_on_attack = true
+
+			ct = combat_type_flyby
+		end
 	end
 
-	printf( "combat_type = %s", tostring( self.combat_type ) )
+--	printf( "combat_type = %s", tostring( self.combat_type ) )
 	self:set_combat_type( ct )
-	printf( "combat_type = %s", tostring( self.combat_type ) )
+--	printf( "combat_type = %s", tostring( self.combat_type ) )
 end
 
 -- нужно ли игнорировать врага
@@ -525,7 +533,7 @@ function heli_combat:round_update( see_enemy )
 		self:round_initialize()
 	end
 
-	printf( "heli_combat: round_update" )
+--	printf( "heli_combat: round_update" )
 
 	self:round_update_shooting( see_enemy )
 	self:round_update_flight  ( see_enemy )
@@ -626,7 +634,7 @@ function heli_combat:search_update( see_enemy )
 		self:search_initialize()
 	end
 
-	printf( "heli_combat: search_update" )
+--	printf( "heli_combat: search_update" )
 
 	self:search_update_shooting( see_enemy )
 	self:search_update_flight  ( see_enemy )
@@ -715,7 +723,7 @@ function heli_combat:flyby_update( see_enemy )
 		self:flyby_initialize()
 	end
 
-	printf( "heli_combat: flyby_update" )
+--	printf( "heli_combat: flyby_update" )
 
 	self:flyby_update_flight( see_enemy )
 
@@ -740,5 +748,5 @@ function heli_combat:retreat_update()
 		self:retreat_initialize()
 	end
 
-	printf( "heli_combat: retreat_update" )
+--	printf( "heli_combat: retreat_update" )
 end
