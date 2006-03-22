@@ -205,6 +205,8 @@ void CUI::AddInfoMessage			(LPCSTR message)
 
 void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
+	if (!pDialog->CheckPhase())
+		return;
 
 	if( pDialog->IsShown() ){
 		

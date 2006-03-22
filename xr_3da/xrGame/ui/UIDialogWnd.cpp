@@ -14,6 +14,7 @@
 CUIDialogWnd:: CUIDialogWnd()
 {
 	m_pHolder = NULL;
+	work_phase = 0;
 	Hide();
 }
 
@@ -25,7 +26,6 @@ void CUIDialogWnd::Show()
 {
 	inherited::Enable(true);
 	inherited::Show(true);
-
 
 	ResetAll();
 }
@@ -167,4 +167,23 @@ bool CUIDialogWnd::IR_process()
 	if(UI()->IsActive())				return true;
 	if(Device.Pause()&&!WorkInPause())	return false;
 	return true;
+}
+
+void CUIDialogWnd::Update(){
+	CUIWindow::Update();
+	if (!CheckPhase()){
+		UI()->StartStopMenu(this, true);
+	}
+}
+
+void CUIDialogWnd::SetWorkPhase(u32 phase){
+	work_phase = phase;
+}
+
+#include "../game_cl_base.h"
+bool CUIDialogWnd::CheckPhase(){
+	if (0 == work_phase)
+		return true;
+	else 
+		return Game().Phase() == work_phase;
 }
