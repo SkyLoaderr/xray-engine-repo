@@ -57,6 +57,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	int majorVersion, minorVersion;
 	int defaultIdx					= pDeviceList->GetDefaultDevice();
 	int deviceIdx					= defaultIdx;
+	VERIFY							(defaultIdx>=0 && defaultIdx<pDeviceList->GetNumDevices());
 	const ALDeviceDesc& deviceDesc	= pDeviceList->GetDeviceDesc(deviceIdx);
 
 	Log("SOUND: OpenAL: All available devices:");

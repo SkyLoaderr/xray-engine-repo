@@ -63,13 +63,13 @@ void ALDeviceList::Enumerate()
 		index				= 0;
 		// go through device list (each device terminated with a single NULL, list terminated with double NULL)
 		while (*devices != NULL) {
-			if (xr_strcmp(defaultDeviceName, devices) == 0) {
-				m_defaultDeviceIndex = index;
-			}
 			ALCdevice *device		= alcOpenDevice(devices);
 			if (device) {
 				ALCcontext *context = alcCreateContext(device, NULL);
 				if (context) {
+					if (xr_strcmp(defaultDeviceName, devices) == 0) {
+						m_defaultDeviceIndex = index;
+					}
 					alcMakeContextCurrent(context);
 					// if new actual device name isn't already in the list, then add it...
 					actualDeviceName = alcGetString(device, ALC_DEVICE_SPECIFIER);
