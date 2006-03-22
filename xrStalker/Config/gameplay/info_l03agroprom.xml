@@ -27,7 +27,9 @@
 		<disable>agr_krot_band_start</disable>
 		<disable>agr_can_ask_krot_about_gunslinger</disable>
 	</info_portion>
-	<info_portion id="agr_krot_task_complete"></info_portion>
+	<info_portion id="agr_krot_task_complete">
+		<article>agr_journal_krot</article>
+	</info_portion>
 
 	<info_portion id="agr_find_gunslinger_cache_start">
 		<task>agroprom_find_gunslinger_cache</task>
@@ -38,7 +40,9 @@
 	<info_portion id="agr_find_gunslinger_cache_done">
 		<disable>agr_find_gunslinger_cache_start</disable>
 	</info_portion>
-	<info_portion id="agr_find_gunslinger_cache_final"></info_portion>
+	<info_portion id="agr_find_gunslinger_cache_final">
+		<article>agr_journal_cache</article>
+	</info_portion>
 
 	<info_portion id="agr_krot_secret_info">
 		<article>agr_krot_secret_info</article>
