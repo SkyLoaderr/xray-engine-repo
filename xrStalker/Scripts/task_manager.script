@@ -688,10 +688,6 @@ function register_target(object)
 		task_table_filled = true
 	end
 
---	if IsStalker(object) then
---		printf("register task target = %s section = %s profile = %s", object:name(), object:section_name(), object:profile_name())
---	end
-
 	for k,v in pairs(task_info) do
 		for kk,vv in pairs(v) do
 			if vv.type == "kill_stalker" then
