@@ -5,6 +5,7 @@
 			<text>agroprom_get_military_documents_0</text>
 			<icon x="250" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>agroprom_military_case_done</infoportion_complete>
+			<article>agr_task_case</article>
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_1</text>
