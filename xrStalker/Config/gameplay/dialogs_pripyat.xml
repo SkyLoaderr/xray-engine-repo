@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="pri_followers_dlg">
-        <phrase_list>
-            <phrase id="0">
-                <text>pri_followers_dlg_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>pri_followers_dlg_1</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="pri_followers_start_dlg">
         <phrase_list>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
             <phrase id="1">
                 <text></text>
                 <dont_has_info>pri_followers_start</dont_has_info>
                 <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>pri_followers_start_dlg_11</text>
-                <next>111</next>
-                <next>112</next>
             </phrase>
             <phrase id="111">
                 <text>pri_followers_start_dlg_111</text>
@@ -52,6 +29,11 @@
                 <text>pri_followers_start_dlg_41</text>
                 <action>dialogs.break_dialog</action>
                 <give_info>pri_followers_start</give_info>
+            </phrase>
+            <phrase id="11">
+                <text>pri_followers_start_dlg_11</text>
+                <next>111</next>
+                <next>112</next>
             </phrase>
             <phrase id="112">
                 <text>pri_followers_start_dlg_112</text>
@@ -78,14 +60,32 @@
                 <has_info>pri_followers_start</has_info>
                 <next>31</next>
             </phrase>
-            <phrase id="311">
-                <text>pri_followers_start_dlg_311</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
             <phrase id="31">
                 <text>pri_followers_start_dlg_31</text>
                 <give_info>pri_show_zones</give_info>
                 <next>311</next>
+            </phrase>
+            <phrase id="311">
+                <text>pri_followers_start_dlg_311</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="pri_followers_dlg">
+        <phrase_list>
+            <phrase id="0">
+                <text>pri_followers_dlg_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>pri_followers_dlg_1</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
