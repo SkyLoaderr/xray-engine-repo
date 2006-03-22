@@ -122,6 +122,7 @@ struct Bonus_Struct
 
 class CUIVotingCategory;
 class CUIVote;
+class CUIMessageBoxEx;
 
 class game_cl_mp :public game_cl_GameState
 {
@@ -140,8 +141,11 @@ protected:
 	BONUSES							m_pBonusList;
 
 ///	CUISpeechMenu*					m_pSpeechMenu;	
+	//// VOTING
+	bool							m_bVotingActive;
 	CUIVotingCategory*				m_pVoteStartWindow;
 	CUIVote*						m_pVoteRespondWindow;
+	CUIMessageBoxEx*				m_pMessageBox;
 	BOOL							m_bSpectatorSelected;
 	int								m_iSpawn_Cost;
 
@@ -150,7 +154,7 @@ protected:
 	virtual	void			ChatSayAll				(const shared_str &phrase);
 	virtual	void			OnChatMessage			(NET_Packet* P);
 
-	bool								m_bVotingActive;
+	
 
 	virtual void			UpdateMapLocations		() {};
 //-----------------------------------------------------------------------------------
@@ -202,6 +206,7 @@ public:
 	virtual		CUIGameCustom*		createGameUI			();
 	virtual		void				shedule_Update			(u32 dt);
 
+	//// VOTING
 	virtual		bool				IsVotingActive			()	{ return m_bVotingActive; };
 	virtual		void				SetVotingActive			( bool Active )	{ m_bVotingActive = Active; };
 	virtual		void				SendStartVoteMessage	(LPCSTR args);
@@ -209,11 +214,11 @@ public:
 	virtual		void				SendVoteNoMessage		();
 				void				VotingBegin				();
 				void				Vote					();
+				void				OnCantVoteMsg			();
 	virtual		void				OnVoteStart				(NET_Packet& P);
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);
 	virtual		void				OnPlayerChangeName		(NET_Packet& P);
-
 	virtual		void				OnSpectatorSelect		();
 	virtual		void				OnSkinMenuBack			() {};
 	virtual		void				OnTeamMenuBack			() {};
