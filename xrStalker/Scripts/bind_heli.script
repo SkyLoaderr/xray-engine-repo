@@ -52,6 +52,8 @@ function heli_binder:reinit()
 
 	self.last_hit_snd_timeout = 0
 
+	self.flame_start_health   = utils.cfg_get_number( system_ini(), "helicopter", "flame_start_health", self.object, true )
+
 	-- на случай загрузки
 	self.st.last_alt       = self.heliObject:GetRealAltitude()
 	self.st.alt_check_time = time_global() + 1000
@@ -135,7 +137,7 @@ function heli_binder:check_health()
 	if not heli.m_dead then
 		local health = get_heli_health( self.heliObject, self.st )
 
-		if health < 0.30 and not heli.m_flame_started then
+		if health < self.flame_start_health and not heli.m_flame_started then
 			heli_start_flame( self.object )
 
 			heli_snd.play_snd( self.st, heli_snd.snd_damaged, 3 )

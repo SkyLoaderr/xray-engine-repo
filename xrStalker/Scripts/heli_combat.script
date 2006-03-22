@@ -5,9 +5,10 @@
 В отличие от сталкеров боевая схема не является отдельным действием, а вызывается из других схем.
 --------------------------------------------------------------------------------------------------]]
 
-local combat_type_flyby  = 0   -- атака пролётами над целью
-local combat_type_round  = 1   -- кружение вокруг позиции, атака кружась вокруг цели
-local combat_type_search = 2   -- поиск врага, кружение вокруг точки, где последний раз видел, атака кружась вокруг цели
+local combat_type_flyby   = 0   -- атака пролётами над целью
+local combat_type_round   = 1   -- кружение вокруг позиции, атака кружась вокруг цели
+local combat_type_search  = 2   -- поиск врага, кружение вокруг точки, где последний раз видел, атака кружась вокруг цели
+local combat_type_retreat = 3   -- улёт за пределы уровня
 
 local flyby_state_to_attack_dist = 0
 local flyby_state_to_enemy       = 1
@@ -33,10 +34,21 @@ function distance_2d( a, b )
 	return math.sqrt( (b.x-a.x)^2 + (b.z-a.z)^2 )
 end
 
+-- пересечение луча и круга.
+-- p - точка начала луча, v - направление луча (орт), o - центр круга, r - радиус круга
+-- точка p должна быть внутри круга
+function cross_ray_circle( p, v, o, r )
+	local po = vector():set( o ):sub( p )
+	local vperp = vector():set( -v.z, 0, v.x )
+	local l = math.sqrt( ( r ^ 2 ) - ( vector():set( po ):dotproduct( vperp ) ^ 2 ) )
+	return vector():set( p ):add( vector():set( v ):mul( vector():set( po ):dotproduct( v ) + l ) )
+end
+
 ----------------------------------------------------------------------------------------------------
 class "heli_combat"
 
 function heli_combat:__init( object, heliObject )
+	self.st                    = db.storage[object:id()]
 	self.object                = object
 	self.heliObject            = heliObject
 	self.initialized           = false
@@ -60,9 +72,11 @@ function heli_combat:__init( object, heliObject )
 
 	self.forget_timeout        = utils.cfg_get_number( ltx, "helicopter", "forget_timeout",       self.object, true ) * 1000
 
+	self.flame_start_health    = utils.cfg_get_number( ltx, "helicopter", "flame_start_health",   self.object, true )
+
 	self.search_velocity       = 5
 	self.round_velocity        = 10
-	self.retreat_already       = false
+	self.attack_before_retreat = false
 	self.enemy_forgetable      = true
 	self.section_changed       = false
 	debug_combat_type          = nil
@@ -119,15 +133,6 @@ function heli_combat:set_enemy_from_custom_data( combat_enemy )
 	end
 end
 
--- выбор типа атаки
-function heli_combat:choose_combat_type( see_enemy )
-	if distance_2d( self.object:position(), self.enemy:position() ) < self.flyby_attack_dist then
-		return combat_type_search
-	else
-		return combat_type_flyby
-	end
-end
-
 function heli_combat:set_combat_type( new_combat_type )
 	if new_combat_type ~= self.combat_type then
 		self.flyby_initialized  = false
@@ -147,7 +152,7 @@ function heli_combat:initialize()
 
 --	self:set_combat_type( combat_type_flyby )
 --	self:set_combat_type( combat_type_search )
-	self.combat_type                = combat_type_flyby --self:choose_combat_type( true )
+	self.combat_type                = combat_type_flyby
 	self.change_combat_type_time    = nil
 	self.change_combat_type_allowed = true
 
@@ -293,7 +298,11 @@ function heli_combat:update_combat_type( see_enemy )
 
 	if self.combat_type == combat_type_flyby then
 		if self.flyby_states_for_one_pass <= 0 then
-			ct = combat_type_round
+			if self.attack_before_retreat then
+				ct = combat_type_retreat
+			else
+				ct = combat_type_round
+			end
 		end
 
 	elseif self.combat_type == combat_type_round then
@@ -307,7 +316,15 @@ function heli_combat:update_combat_type( see_enemy )
 			ct = combat_type_search
 		end
 
-	else -- combat_type_search
+		if bind_heli.get_heli_health( self.heliObject, self.st ) < self.flame_start_health then
+			self.attack_before_retreat = true
+
+			self.heliObject.m_use_rocket_on_attack = true
+
+			ct = combat_type_flyby
+		end
+
+	elseif self.combat_type == combat_type_search then
 		if see_enemy then
 			if distance_2d( self.object:position(), self.enemy:position() ) > self.flyby_attack_dist then
 				ct = combat_type_flyby
@@ -320,31 +337,9 @@ function heli_combat:update_combat_type( see_enemy )
 	printf( "combat_type = %s", tostring( self.combat_type ) )
 	self:set_combat_type( ct )
 	printf( "combat_type = %s", tostring( self.combat_type ) )
-
-	-- без учёта инерций вертолёт переключается просто: видит=заход в лоб, не видит=облёт кругом
---[[	if see_enemy then
-		ct = combat_type_flyby
-	else
-		ct = combat_type_search
-	end
-
-	printf( "heli_combat: combat type: current=%d delayed=%d", self.combat_type, ct )
-
-	-- инерция переключния
-	if ct ~= self.combat_type then
-		if self.change_combat_type_time then
-			if self.change_combat_type_time < time_global() and self.change_combat_type_allowed then
-				self:set_combat_type( ct )
-				self.change_combat_type_time = nil
-			end
-		else
-			self.change_combat_type_time = time_global() + combat_type_change_delay
-		end
-	else
-		self.change_combat_type_time = nil
-	end]]
 end
 
+-- нужно ли игнорировать врага
 function heli_combat:combat_ignore_check()
 	return self.combat_ignore ~= nil and xr_logic.pick_section_from_condlist( db.actor, self.object, self.combat_ignore ) ~= nil
 end
@@ -412,11 +407,31 @@ function heli_combat:update()
 		self:round_update( see_enemy )
 	elseif self.combat_type == combat_type_flyby then
 		self:flyby_update( see_enemy )
+	elseif self.combat_type == combat_type_retreat then
+		self:retreat_update()
 	end
 
 	self:update_forgetting()
 
 	return true
+end
+
+-- посчитать точку на заданном радиусе от последней видимой позиции врага в текущем направлении скорости вертолёта
+function heli_combat:calc_position_in_radius( r )
+	local p = self.object:position()
+	p.y = 0
+
+	local v = self.heliObject:GetCurrVelocityVec()
+	v.y = 0
+	v:normalize()
+
+	local o = self.enemy_last_seen_pos
+	o.y = 0
+
+	local ret = cross_ray_circle( p, v, o, r )
+	ret.y = self.safe_altitude
+
+	return ret
 end
 
 ----------------------------------------------------------------------------------------------
@@ -441,7 +456,7 @@ function heli_combat:round_initialize()
 	self:round_setup_flight( self.flight_direction )
 end
 
-function heli_combat:round_setup_flight( direction, retreat )
+function heli_combat:round_setup_flight( direction )
 	self.center_pos   = self.enemy_last_seen_pos
 	self.center_pos.y = self.safe_altitude
 
@@ -520,7 +535,7 @@ end
 -- Фунциии для поиска врага (скопировано с кружащего боя)
 ----------------------------------------------------------------------------------------------
 function heli_combat:search_initialize()
-	self.change_speed_time          = time_global() + math.random( 5000, 7000 ) + 1000000
+	self.change_speed_time          = time_global() + math.random( 5000, 7000 ) --+ 1000000
 	self.speed_is_0                 = true
 
 	self.change_pos_time            = 0
@@ -647,35 +662,6 @@ function heli_combat:flyby_set_initial_state()
 	end
 end
 
--- пересечение луча и круга.
--- p - точка начала луча, v - направление луча (орт), o - центр круга, r - радиус круга
--- точка p должна быть внутри круга
-function heli_combat:flyby_cross_ray_circle( p, v, o, r )
-	local po = vector():set( o ):sub( p )
-	local vperp = vector():set( -v.z, 0, v.x )
-	local l = math.sqrt( ( r ^ 2 ) - ( vector():set( po ):dotproduct( vperp ) ^ 2 ) )
-	return vector():set( p ):add( vector():set( v ):mul( vector():set( po ):dotproduct( v ) + l ) )
-end
-
-function heli_combat:flyby_calc_best_attack_dist_point()
-	local p = self.object:position()
-	p.y = 0
-
-	local v = self.heliObject:GetCurrVelocityVec()
-	v.y = 0
-	v:normalize()
-
-	local o = self.enemy_last_seen_pos
-	o.y = 0
-
-	local r = self.flyby_attack_dist
-
-	local ret = self:flyby_cross_ray_circle( p, v, o, r )
-	ret.y = self.safe_altitude
-
-	return ret
-end
-
 function heli_combat:flyby_update_flight( see_enemy )
 	if self.was_callback then
 		if self.state == flyby_state_to_attack_dist then
@@ -693,7 +679,7 @@ function heli_combat:flyby_update_flight( see_enemy )
 
 	if self.state == flyby_state_to_attack_dist then
 		if not self.state_initialized then
-			local p = self:flyby_calc_best_attack_dist_point()
+			local p = self:calc_position_in_radius( self.flyby_attack_dist )
 --			printf( "heli_combat:flyby_update_flight 1 SetDestPosition %f %f %f", p.x, p.y, p.z )
 			self.heliObject:SetDestPosition( p )
 
@@ -734,4 +720,25 @@ function heli_combat:flyby_update( see_enemy )
 	self:flyby_update_flight( see_enemy )
 
 --	printf( "speed in dest point %d", self.heliObject:GetSpeedInDestPoint(0) )
+end
+
+----------------------------------------------------------------------------------------------
+-- Фунциии для улетания за пределы уровня
+----------------------------------------------------------------------------------------------
+function heli_combat:retreat_initialize()
+	self.retreat_initialized = true
+
+	self.heliObject:SetMaxVelocity( self.max_velocity )
+	self.heliObject:SetSpeedInDestPoint( self.max_velocity )
+	self.heliObject:LookAtPoint( dummy_vector, false )
+	self.heliObject:SetDestPosition( self:calc_position_in_radius( 5000 ) )
+	self.heliObject:ClearEnemy()
+end
+
+function heli_combat:retreat_update()
+	if not self.retreat_initialized then
+		self:retreat_initialize()
+	end
+
+	printf( "heli_combat: retreat_update" )
 end
