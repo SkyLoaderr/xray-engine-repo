@@ -99,8 +99,9 @@ game_cl_mp::~game_cl_mp()
 
 	m_pBonusList.clear();
 
-	if (m_pVoteRespondWindow) xr_delete(m_pVoteRespondWindow);
-	if (m_pVoteStartWindow) xr_delete(m_pVoteStartWindow);
+	xr_delete(m_pVoteRespondWindow);
+	xr_delete(m_pVoteStartWindow);
+	xr_delete(m_pMessageBox);
 };
 
 CUIGameCustom*		game_cl_mp::createGameUI			()
