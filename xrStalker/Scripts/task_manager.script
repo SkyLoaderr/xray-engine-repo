@@ -687,15 +687,20 @@ function register_target(object)
 		fill_phrase_table()
 		task_table_filled = true
 	end
-	
-	printf("register task target [%s]", object:name())
+
+--	if IsStalker(object) then
+--		printf("register task target = %s section = %s profile = %s", object:name(), object:section_name(), object:profile_name())
+--	end
+
 	for k,v in pairs(task_info) do
 		for kk,vv in pairs(v) do
 			if vv.type == "kill_stalker" then
-				if object.alive ~= nil and object:alive() == true and
-				   object:section_name() == vv.target 
-				then
-					table.insert(vv.target_objects, object.id)
+				if IsStalker(object) then
+					if object.alive ~= nil and object:alive() == true and
+					   object:profile_name() == vv.target 
+					then
+						table.insert(vv.target_objects, object.id)
+					end
 				end
 			elseif vv.type == "eliminate_lager" then
 				if object:name() == vv.target 
