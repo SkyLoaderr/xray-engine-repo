@@ -214,7 +214,7 @@ public:
 	virtual		void				SendVoteNoMessage		();
 				void				VotingBegin				();
 				void				Vote					();
-				void				OnCantVoteMsg			();
+				void				OnCantVoteMsg			(LPCSTR Text);
 	virtual		void				OnVoteStart				(NET_Packet& P);
 	virtual		void				OnVoteStop				(NET_Packet& P);
 	virtual		void				OnVoteEnd				(NET_Packet& P);

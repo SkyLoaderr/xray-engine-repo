@@ -113,6 +113,7 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	pPdaMenu = xr_new<CUIPdaWnd>();
 	//-----------------------------------------------------------
 	pMapDesc = xr_new<CUIMapDesc>();
+	pMapDesc->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	//-----------------------------------------------------------
 
 		
@@ -165,6 +166,7 @@ CUIBuyWeaponWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16
 	cl_TeamStruct *pTeamSect = &TeamList[ModifyTeam(Team)];
 	
 	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((LPCSTR)pTeamSect->caSection.c_str(), BasePriceSection);
+	pMenu->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	pMenu->SetSkin(0);
 	return pMenu;
 };
@@ -180,6 +182,7 @@ CUISkinSelectorWnd* game_cl_Deathmatch::InitSkinMenu			(s16 Team)
 	cl_TeamStruct *pTeamSect = &TeamList[ModifyTeam(Team)];	
 
 	CUISkinSelectorWnd* pMenu	= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->caSection.c_str());
+	pMenu->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	
 	return pMenu;
 };

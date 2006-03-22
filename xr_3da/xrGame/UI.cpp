@@ -205,8 +205,6 @@ void CUI::AddInfoMessage			(LPCSTR message)
 
 void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
-	if (!pDialog->CheckPhase())
-		return;
 
 	if( pDialog->IsShown() ){
 		
@@ -217,6 +215,9 @@ void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 		};
 
 	}else{
+		if (!pDialog->CheckPhase())
+			return;
+
 		if(bDoHideIndicators){
 			HideIndicators();
 			m_bCrosshair = !!psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT);

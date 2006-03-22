@@ -173,6 +173,7 @@ CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 	pPdaMenu = xr_new<CUIPdaWnd>();
 	//-----------------------------------------------------------
 	pMapDesc = xr_new<CUIMapDesc>();
+	pMapDesc->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	//-----------------------------------------------------------
 	LoadMessagesMenu(MESSAGE_MENUS);
 	//-----------------------------------------------------------

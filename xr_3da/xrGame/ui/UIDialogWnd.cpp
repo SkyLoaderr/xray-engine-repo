@@ -172,7 +172,7 @@ bool CUIDialogWnd::IR_process()
 void CUIDialogWnd::Update(){
 	CUIWindow::Update();
 	if (!CheckPhase()){
-		UI()->StartStopMenu(this, true);
+		GetHolder()->StartStopMenu(this, true);
 	}
 }
 

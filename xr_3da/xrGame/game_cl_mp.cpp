@@ -112,6 +112,7 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	m_iSpawn_Cost = READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000);
 	//-----------------------------------------------------------
 	pBuySpawnMsgBox		= xr_new<CUIMessageBoxEx>();
+	pBuySpawnMsgBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	pBuySpawnMsgBox->Init("message_box_buy_spawn");
 	pBuySpawnMsgBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
 	string1024	BuySpawnText;
@@ -143,11 +144,6 @@ bool	game_cl_mp::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
 
 bool	game_cl_mp::OnKeyboardPress			(int key)
 {
-//	if (kJUMP == key)
-//	{
-//		StartStopMenu(m_pSpeechMenu, false);
-//		return true;
-//	}
 	if ( kJUMP == key || kWPN_FIRE == key )
 	{
 		bool b_need_to_send_ready = false;
@@ -218,17 +214,27 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			}break;
 		case kVOTE_BEGIN:
 			{
-				if (IsVotingEnabled())
+				if (IsVotingEnabled() && !IsVotingActive())
 					VotingBegin();
 				else
-					OnCantVoteMsg();
+				{
+					if (!IsVotingEnabled())
+						OnCantVoteMsg("Voting disabled by server!");
+					else
+						OnCantVoteMsg("Can't run more than one voting!");
+				};
 			}break;
 		case kVOTE:
 			{
 				if (IsVotingEnabled() && IsVotingActive())
 					Vote();
 				else
-					OnCantVoteMsg();
+				{
+					if (!IsVotingEnabled())
+						OnCantVoteMsg("Voting disabled by server!");
+					else
+						OnCantVoteMsg("There currently no active voting!");
+				}
 			}break;
 		case kVOTEYES:
 			{
@@ -270,6 +276,7 @@ void	game_cl_mp::VotingBegin(){
 	if (!m_pVoteStartWindow)
 		m_pVoteStartWindow = xr_new<CUIVotingCategory>();
 
+	m_pVoteStartWindow->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	StartStopMenu(m_pVoteStartWindow, true);
 }
 
@@ -277,14 +284,17 @@ void	game_cl_mp::Vote(){
 	if (!m_pVoteRespondWindow)
 		m_pVoteRespondWindow = xr_new<CUIVote>();
 
+	m_pVoteRespondWindow->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	StartStopMenu(m_pVoteRespondWindow, true);
 }
 
-void	game_cl_mp::OnCantVoteMsg(){
+void	game_cl_mp::OnCantVoteMsg(LPCSTR Text){
 	if (!m_pMessageBox)
 		m_pMessageBox = xr_new<CUIMessageBoxEx>();
 
 	m_pMessageBox->Init("cant_vote");
+	m_pMessageBox->SetText(Text);
+	m_pMessageBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	StartStopMenu(m_pMessageBox, true);
 }
 
@@ -466,15 +476,7 @@ void game_cl_mp::shedule_Update(u32 dt)
 		}break;
 	}
 
-	if (Phase() != GAME_PHASE_INPROGRESS)
-	{
-		if (m_pVoteStartWindow && m_pVoteStartWindow->IsShown())
-			StartStopMenu(m_pVoteStartWindow, true);
-		if (m_pVoteRespondWindow && m_pVoteRespondWindow->IsShown())
-			StartStopMenu(m_pVoteRespondWindow, true);
-	};
-	
-	if (!local_player || !local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || Phase()!= GAME_PHASE_INPROGRESS)
+	if (!local_player || !local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
 	{
 		if (pBuySpawnMsgBox->IsShown()) StartStopMenu(pBuySpawnMsgBox, true);
 	};
