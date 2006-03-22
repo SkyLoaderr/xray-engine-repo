@@ -22,6 +22,7 @@
 #include "ui/UITextureMaster.h"
 #include "ui/UIVotingCategory.h"
 #include "ui/UIVote.h"
+#include "ui/UIMessageBoxEx.h"
 
 
 #include <boost/function.hpp>
@@ -43,6 +44,7 @@ game_cl_mp::game_cl_mp()
 	m_bVotingActive = false;
 	m_pVoteStartWindow = NULL;
 	m_pVoteRespondWindow = NULL;
+	m_pMessageBox = NULL;
 	
 	m_pSndMessages.clear();
 	LoadSndMessages();
@@ -217,11 +219,15 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			{
 				if (IsVotingEnabled())
 					VotingBegin();
+				else
+					OnCantVoteMsg();
 			}break;
 		case kVOTE:
 			{
 				if (IsVotingEnabled() && IsVotingActive())
 					Vote();
+				else
+					OnCantVoteMsg();
 			}break;
 		case kVOTEYES:
 			{
@@ -271,6 +277,14 @@ void	game_cl_mp::Vote(){
 		m_pVoteRespondWindow = xr_new<CUIVote>();
 
 	StartStopMenu(m_pVoteRespondWindow, true);
+}
+
+void	game_cl_mp::OnCantVoteMsg(){
+	if (!m_pMessageBox)
+		m_pMessageBox = xr_new<CUIMessageBoxEx>();
+
+	m_pMessageBox->Init("cant_vote");
+	StartStopMenu(m_pMessageBox, true);
 }
 
 bool	game_cl_mp::OnKeyboardRelease		(int key)
