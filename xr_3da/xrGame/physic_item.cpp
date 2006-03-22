@@ -11,7 +11,7 @@
 #include "physicsshell.h"
 #include "xrserver_objects.h"
 #include "../fbasicvisual.h"
-
+#include "../SkeletonCustom.h"
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
 	if(x>y)\
 	if(x>z){inst_x;}\
@@ -115,13 +115,24 @@ void CPhysicItem::activate_physic_shell()
 	R_ASSERT					(object);
 	XFORM().set					(object->XFORM());
 	inherited::activate_physic_shell();
-
+	CKinematics* K=smart_cast<CKinematics*>(Visual());
+	if(K)
+	{
+		K->CalculateBones_Invalidate();
+		K->CalculateBones();
+	}
 	///m_pPhysicsShell->Update		();	
 }
 
 void CPhysicItem::setup_physic_shell	()
 {
 	inherited::setup_physic_shell();
+	CKinematics* K=smart_cast<CKinematics*>(Visual());
+	if(K)
+	{
+		K->CalculateBones_Invalidate();
+		K->CalculateBones();
+	}
 	//m_pPhysicsShell->Update		();
 }
 
