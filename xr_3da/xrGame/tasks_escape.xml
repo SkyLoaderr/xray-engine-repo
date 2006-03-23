@@ -117,6 +117,7 @@
 			<icon x="300" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>escape_dynamite_done</infoportion_complete>
 			<infoportion_fail>esc_wolf_dead</infoportion_fail>
+			<function_fail>escape_tasks.is_actor_enemy_lager</function_fail>
 		</objective>
 		<objective>
 			<text>esc_dinamit_to_volk_1</text>
@@ -155,8 +156,7 @@
 			<map_location_type hint="volk">green_location</map_location_type>
 			<object_story_id>Escape_novice_lager_volk</object_story_id>
 			<infoportion_complete>escape_dynamite_start</infoportion_complete>
-			<infoportion_fail>tutorial_wounded_die</infoportion_fail>
-			<infoportion_fail>esc_wolf_dead</infoportion_fail>
+			<function_fail>escape_tasks.task_volk_fail</function_fail>
 		</objective>
 		<objective>
 			<text>esc_bandits_on_factory_1</text>

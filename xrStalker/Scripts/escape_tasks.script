@@ -102,6 +102,25 @@ function task_fox_complete()
 	end
 end	
 
+function task_volk_fail()
+	local actor = db.actor
+	if actor:has_info("tutorial_wounded_die") or
+	   actor:has_info("esc_wolf_dead")
+	then
+		return true
+	else
+		return false
+	end
+end	
+
+function is_actor_enemy_lager ()
+    local gulag = xr_gulag.get_gulag_by_name ("esc_lager")
+    if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then
+       return false
+    end    
+    return true
+end
+
 function process_info_portion(info_id)
 	if info_id == "tutorial_artefact_start" then
 		level_tasks.add_location(002, "green_location", "tutorial_artefact")
