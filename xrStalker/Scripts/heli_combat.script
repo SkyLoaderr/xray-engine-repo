@@ -59,9 +59,12 @@ function heli_combat:__init( object, heliObject )
 
 	self.flyby_attack_dist     = utils.cfg_get_number( ltx, "helicopter", "flyby_attack_dist",    self.object, true )
 	self.search_attack_dist    = utils.cfg_get_number( ltx, "helicopter", "search_attack_dist",   self.object, true )
-	self.default_velocity      = utils.cfg_get_number( ltx, "helicopter", "velocity",             self.object, true )
 	self.default_safe_altitude = utils.cfg_get_number( ltx, "helicopter", "safe_altitude",        self.object, true ) + self.level_max_y
 	self.m_max_mgun_dist       = utils.cfg_get_number( ltx, "helicopter", "max_mgun_attack_dist", self.object, true )
+
+	self.default_velocity      = utils.cfg_get_number( ltx, "helicopter", "velocity",             self.object, true )
+	self.search_velocity       = utils.cfg_get_number( ltx, "helicopter", "search_velocity",      self.object, true )
+	self.round_velocity        = utils.cfg_get_number( ltx, "helicopter", "round_velocity",       self.object, true )
 
 	self.vis_time_quant        = utils.cfg_get_number( ltx, "helicopter", "vis_time_quant",       self.object, true )
 	self.vis_threshold         = utils.cfg_get_number( ltx, "helicopter", "vis_threshold",        self.object, true )
@@ -74,8 +77,6 @@ function heli_combat:__init( object, heliObject )
 
 	self.flame_start_health    = utils.cfg_get_number( ltx, "helicopter", "flame_start_health",   self.object, true )
 
-	self.search_velocity       = 5
-	self.round_velocity        = 10
 	self.attack_before_retreat = false
 	self.enemy_forgetable      = true
 	self.section_changed       = false
