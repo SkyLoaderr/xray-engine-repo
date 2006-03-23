@@ -53,7 +53,12 @@ void CStateMonsterEatAbstract::reselect_state()
 	
 	if (prev_substate == eStateEat_CheckCorpse) { 
 		if (object->ability_can_drag()) select_state(eStateEat_Drag);
-		else							select_state(eStateEat_Eat);
+		else {							
+			if (get_state(eStateEat_Eat)->check_start_conditions())
+				select_state(eStateEat_Eat);					
+			else 
+				select_state(eStateEat_CorpseApproachWalk);
+		}
 		return; 
 	}
 
