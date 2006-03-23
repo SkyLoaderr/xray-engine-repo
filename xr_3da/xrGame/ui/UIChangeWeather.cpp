@@ -89,7 +89,7 @@ bool CUIChangeWeather::OnKeyboard(int dik, EUIMessages keyboard_action){
 
 void CUIChangeWeather::OnBtn(int i){
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-	LPCSTR weather_time = *txt[i]->WindowName();
+//	LPCSTR weather_time = *txt[i]->WindowName();
 	string1024 command;
 	sprintf(command, "cl_votestart changeweather %s %s", txt[i]->GetText(), *txt[i]->WindowName());
 	Console->Execute(command);
