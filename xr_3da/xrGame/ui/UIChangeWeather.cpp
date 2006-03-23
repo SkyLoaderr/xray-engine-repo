@@ -6,6 +6,7 @@
 #include "../game_cl_teamdeathmatch.h"
 #include "UIKickPlayer.h"
 #include "UIChangeMap.h"
+//#include "UIMapList.h"
 
 CUIChangeWeather::CUIChangeWeather(){
 	bkgrnd = xr_new<CUIStatic>(); 
@@ -30,6 +31,8 @@ CUIChangeWeather::CUIChangeWeather(){
 		txt[i]->SetAutoDelete(true);
 		AttachChild(txt[i]);
 	}
+
+	weather_counter = 0;
 }
 
 void CUIChangeWeather::Init(CUIXml& xml_doc){
@@ -47,6 +50,8 @@ void CUIChangeWeather::Init(CUIXml& xml_doc){
 	}
 
 	CUIXmlInit::Init3tButton(xml_doc, "change_weather:btn_cancel", 0, btn_cancel);
+
+	ParseWeather();
 }
 
 void CUIChangeWeather::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
@@ -114,3 +119,57 @@ void CUIChangeWeather::OnBtnCancel(){
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
 	game->StartStopMenu(this, true);
 }
+
+extern bool GetToken(char** sx, char* e, char* token);
+
+void CUIChangeWeather::ParseWeather()
+{
+	char Buffer[1024];
+	ZeroMemory(Buffer, sizeof(Buffer));
+//	memfil(Buffer, 0, sizeof(Buffer));
+	FILE* f = fopen("map_list.ltx", "rb");
+	R_ASSERT(f);
+
+	size_t NumRead = fread(Buffer, 1, 1024, f);
+	if (!NumRead) return;
+	fclose(f);
+
+
+	char token[1024];
+	char* s = Buffer;
+	char* e = Buffer + xr_strlen(Buffer) + 1;
+
+	while (true)
+	{
+		if (!GetToken(&s, e, token))
+			return;
+		if (0 == xr_strcmp(token,"weather"))
+			break;		
+	}
+
+	while (1)
+	{	
+		if (!GetToken(&s, e, token)) break;
+		if (xr_strcmp(token, "{")) break;
+		while (1)
+		{
+			if (!GetToken(&s, e, token)) break;
+			if (!xr_strcmp(token, "}")) return;
+			if (!xr_strcmp(token, "startweather"))
+			{
+				char WeatherType[1024], WeatherTime[1024];
+				GetToken(&s, e, WeatherType);
+				GetToken(&s, e, WeatherTime);
+
+				AddWeather(WeatherType, WeatherTime);
+			};
+		};
+	};
+};
+
+void CUIChangeWeather::AddWeather(LPCSTR weather, LPCSTR time){
+	txt[weather_counter]->SetText(weather);
+	txt[weather_counter]->SetWindowName(time);
+	weather_counter++;
+}
+

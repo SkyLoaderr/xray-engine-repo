@@ -22,6 +22,9 @@ public:
 	void OnBtnCancel();
 
 protected:
+	void ParseWeather();
+	void AddWeather(LPCSTR name, LPCSTR time);
+	u32 weather_counter;
 	
 
 	CUIStatic*		header;
