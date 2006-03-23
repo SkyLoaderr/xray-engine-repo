@@ -387,13 +387,15 @@ void CUIMainIngameWnd::Draw()
 			F->OutNext			("adjusting missile offset");
 		else if(g_bHudAdjustMode==4)
 			F->OutNext			("adjusting shell point for %s",bCamFirstEye?hud_view:_3rd_person_view);
+		else if(g_bHudAdjustMode == 5)
+			F->OutNext			("adjusting fire point 2 for %s",bCamFirstEye?hud_view:_3rd_person_view);
 
 		if(bCamFirstEye)
 		{
 			CWeaponHUD *pWpnHud = NULL;
 			pWpnHud = m_pWeapon->GetHUD();
 
-			Fvector FP,SP;//,FP2;
+			Fvector FP,SP,FP2;
 
 			CKinematics* V			= smart_cast<CKinematics*>(pWpnHud->Visual());
 			VERIFY					(V);
@@ -404,23 +406,29 @@ void CUIMainIngameWnd::Draw()
 			Fmatrix& parent			= pWpnHud->Transform	();
 
 			const Fvector& fp		= pWpnHud->FirePoint();
+			const Fvector& fp2		= pWpnHud->FirePoint2();
 			const Fvector& sp		= pWpnHud->ShellPoint();
 
 			fire_mat.transform_tiny	(FP,fp);
 			parent.transform_tiny	(FP);
+
+			fire_mat.transform_tiny	(FP2,fp2);
+			parent.transform_tiny	(FP2);
 
 			fire_mat.transform_tiny	(SP,sp);
 			parent.transform_tiny	(SP);
 
 
 			RCache.dbg_DrawAABB(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
-//			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
 			RCache.dbg_DrawAABB(SP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(0,255,0));
 		
 		}else{
 			Fvector FP = m_pWeapon->get_CurrentFirePoint();
+			Fvector FP2 = m_pWeapon->get_CurrentFirePoint2();
 			Fvector SP = m_pWeapon->get_LastSP();
-			RCache.dbg_DrawAABB(FP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
 			RCache.dbg_DrawAABB(SP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,255,0));
 		}
 	}
@@ -836,12 +844,12 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			if (tmpV.x || tmpV.y || tmpV.z)
 				pWpnHud->SetZoomOffset(tmpV);
 		}
-		else if (2 == g_bHudAdjustMode) //firePoint
+		else if (2 == g_bHudAdjustMode || 5 == g_bHudAdjustMode) //firePoints
 		{
 			if(TRUE==m_pWeapon->GetHUDmode())
-				tmpV = pWpnHud->FirePoint();
+				tmpV = (2 == g_bHudAdjustMode) ? pWpnHud->FirePoint() : pWpnHud->FirePoint2();
 			else
-				tmpV = m_pWeapon->vLoadedFirePoint;
+				tmpV = (2 == g_bHudAdjustMode) ? m_pWeapon->vLoadedFirePoint : m_pWeapon->vLoadedFirePoint2;
 
 		
 			switch (dik)
@@ -901,9 +909,13 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			}
 #ifdef	DEBUG
 			if(TRUE==m_pWeapon->GetHUDmode())
-				pWpnHud->dbg_SetFirePoint(tmpV);
+				if (2 == g_bHudAdjustMode) pWpnHud->dbg_SetFirePoint(tmpV);
+				else pWpnHud->dbg_SetFirePoint2(tmpV);
 			else
-				m_pWeapon->vLoadedFirePoint = tmpV;
+			{
+				if (2 == g_bHudAdjustMode)  m_pWeapon->vLoadedFirePoint = tmpV;
+				else m_pWeapon->vLoadedFirePoint2 = tmpV;
+			}
 #endif
 		}
 		else if (4 == g_bHudAdjustMode) //ShellPoint

@@ -576,6 +576,7 @@ _votecommands	votecommands[] = {
 	{ "changemap",		"sv_changelevel"},
 	{ "changegame",		"sv_changegametype"},
 	{ "changemapgame",	"sv_changelevelgametype"},
+	{ "changeweather",	"sv_setenvtime"},
 
 	{ NULL, 			NULL }
 };
@@ -585,6 +586,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	if (!IsVotingEnabled()) return;
 	char	CommandName[256];	CommandName[0]=0;
 	char	CommandParams[256];	CommandParams[0]=0;
+	string1024 resVoteCommand = "";
 	sscanf	(VoteCommand,"%s ", CommandName);
 	if (xr_strlen(CommandName)+1 < xr_strlen(VoteCommand))
 	{
@@ -613,9 +615,25 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	u32 CurTime = Level().timeServer();
 	m_uVoteEndTime = CurTime+m_dwVoteTime*60000;
 	if (m_bVotingReal)
-		m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
+	{
+		if (!stricmp(votecommands[i].name, "changeweather"))
+		{
+			string256 WeatherTime = "", WeatherName = "";
+			sscanf(CommandParams, "%s %s", WeatherName, WeatherTime );
+
+			m_pVoteCommand.sprintf("%s %s", votecommands[i].command, WeatherTime);
+			sprintf(resVoteCommand, "%s %s", votecommands[i].name, WeatherName);
+		}
+		else
+		{
+			m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
+			strcpy(resVoteCommand, VoteCommand);
+		}		
+	}
 	else
+	{
 		m_pVoteCommand.sprintf("%s", VoteCommand+1);
+	};
 
 	xrClientData *pStartedPlayer = NULL;
 	u32	cnt = get_players_count();	
@@ -638,7 +656,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	GenerateGameMessage (P);
 	P.w_u32(GAME_EVENT_VOTE_START);
 	if (m_bVotingReal)
-		P.w_stringZ(VoteCommand);
+		P.w_stringZ(resVoteCommand);
 	else
 		P.w_stringZ(VoteCommand+1);
 	P.w_stringZ(pStartedPlayer ? pStartedPlayer->ps->getName() : "");

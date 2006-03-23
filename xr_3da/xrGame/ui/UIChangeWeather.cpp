@@ -89,30 +89,11 @@ bool CUIChangeWeather::OnKeyboard(int dik, EUIMessages keyboard_action){
 
 void CUIChangeWeather::OnBtn(int i){
 	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-	switch (i){
-		case 0:
-//			Console->Execute("cl_votestart restart");
-			game->StartStopMenu(this, true);
-			break;
-		case 1:
-//			Console->Execute("cl_votestart restart_fast");
-			game->StartStopMenu(this, true);
-			break;
-		case 2:
-//			Console->Execute("cl_votestart restart_fast");
-			game->StartStopMenu(this, true);
-			break;
-		case 3:
-//			Console->Execute("cl_votestart restart_fast");
-			game->StartStopMenu(this, true);
-			break;
-		case 4:
-//			Console->Execute("cl_votestart restart_fast");
-			game->StartStopMenu(this, true);
-			break;
-	}
-
-//	game->StartStopMenu(this, true);
+	LPCSTR weather_time = *txt[i]->WindowName();
+	string1024 command;
+	sprintf(command, "cl_votestart changeweather %s %s", txt[i]->GetText(), *txt[i]->WindowName());
+	Console->Execute(command);
+	game->StartStopMenu(this, true);
 }
 
 void CUIChangeWeather::OnBtnCancel(){
@@ -124,6 +105,8 @@ extern bool GetToken(char** sx, char* e, char* token);
 
 void CUIChangeWeather::ParseWeather()
 {
+	weather_counter = 0;
+
 	char Buffer[1024];
 	ZeroMemory(Buffer, sizeof(Buffer));
 //	memfil(Buffer, 0, sizeof(Buffer));
