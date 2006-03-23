@@ -51,14 +51,6 @@ IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &e
 {
 	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
 	if (I != objects.end()) {
-		VERIFY							(
-			(*I).m_squad_mask.get() <=
-			(
-				((*I).m_squad_mask.get() & non_combat_members) |
-				enemy.m_distribute_mask.get()
-			)
-		);
-
 		(*I).m_squad_mask.assign	(
 			((*I).m_squad_mask.get() & non_combat_members) |
 			enemy.m_distribute_mask.get()
