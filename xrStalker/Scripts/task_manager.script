@@ -576,8 +576,11 @@ function calculate_predicate(npc, tbl)
 			return false
 		end
 	elseif tbl.type == "find_item" then
-		local obj = aa:object(tbl.target)
-		if obj == nil then
+		local obj = aa:object(tbl.target_objects)
+		if obj ~= nil then
+			tbl.selected_target = tbl.target_objects
+			return true
+		else
 			return false
 		end	
 	end
@@ -631,7 +634,7 @@ function task_complete(p1, p2)
 				return true
 			end
 		elseif p1 == "find_item" then			
-			if db.actor:object(active_task[p1].target) ~= nil then
+			if db.actor:object(active_task[p1].selected_target) ~= nil then
 				active_task[p1].completed = true
 				return true
 			end
@@ -699,14 +702,12 @@ function register_target(object)
 					end
 				end
 			elseif vv.type == "eliminate_lager" then
-				if object:name() == vv.target 
-				then
+				if object:name() == vv.target then
 					table.insert(vv.target_objects, object.id)
 				end			
-			elseif vv.type == "find_item" then
-				if object:section_name() == vv.target 
-				then
-					table.insert(vv.target_objects, object.id)
+			elseif vv.type == "find_item" then			
+				if object:section_name() == vv.target then
+					vv.target_objects = object.id
 				end			
 			end
 		end
@@ -818,7 +819,7 @@ function stats()
 				return false, "no_target"
 			end
 		elseif tbl.type == "find_item" then
-			local obj = aa:object(tbl.target)
+			local obj = aa:object(tbl.target_objects)
 			if obj == nil then
 				return false, "no_target"
 			end	
