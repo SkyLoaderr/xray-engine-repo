@@ -719,12 +719,10 @@ function isWeapon(object)
     if id == nil then return false end
 
     if id == clsid.wpn_vintorez_s then return true
-    elseif id == clsid.wpn_fn2000_s then return true
     elseif id == clsid.wpn_ak74_s then return true
     elseif id == clsid.wpn_lr300_s then return true
     elseif id == clsid.wpn_hpsa_s then return true
     elseif id == clsid.wpn_pm_s then return true
-    elseif id == clsid.wpn_fort_s then return true
     elseif id == clsid.wpn_shotgun_s then return true
     elseif id == clsid.wpn_bm16_s then return true
     elseif id == clsid.wpn_svd_s then return true
