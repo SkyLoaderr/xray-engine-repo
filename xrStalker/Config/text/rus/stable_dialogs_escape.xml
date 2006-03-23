@@ -216,6 +216,15 @@
     <string id="escape_lager_leader_hello_41">
         <text>Здорово, Меченый, рад тебя видеть.</text>
     </string>
+    <string id="escape_lager_leader_hello_411">
+        <text>И тебе привет.</text>
+    </string>
+    <string id="escape_lager_leader_hello_412">
+        <text>Кстати, а куда Волк подевался?</text>
+    </string>
+    <string id="escape_lager_leader_hello_4121">
+        <text>Он не так давно получил от одного из проходивших мимо сталкеров какое-то послание. Резко зашевелился, схватил ящик с динамитом и ломанулся вглубь Зоны. А я как раз от ранения отходил на Кордоне, вот он и попросил меня присмотреть за молодняком. И вот я здесь.</text>
+    </string>
     <string id="escape_lager_volk_hello_11">
         <text>Здорово, Меченый. Торговец послал бандитов мочить?</text>
     </string>
