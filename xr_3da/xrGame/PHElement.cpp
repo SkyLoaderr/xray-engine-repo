@@ -313,7 +313,7 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	dBodySetLinearVel(m_body,lin_vel.x,lin_vel.y,lin_vel.z);
 
 	dBodySetAngularVel(m_body,ang_vel.x,ang_vel.y,ang_vel.z);
-
+	VERIFY(dBodyStateValide(m_body));
 //	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 //	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 //	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
@@ -403,7 +403,10 @@ void CPHElement::PhDataUpdate(dReal step){
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-
+	VERIFY(dV_valid(linear_velocity));
+	VERIFY(dV_valid(angular_velocity));
+	VERIFY(!fis_zero(m_l_scale));
+	VERIFY(!fis_zero(m_w_scale));
 	dBodySetLinearVel(
 		m_body,
 		linear_velocity[0]			/m_l_scale		,
@@ -417,7 +420,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		angular_velocity[2]			/m_w_scale
 		);
 
-
+	VERIFY(dBodyStateValide(m_body));
 	///////////////////scale changes values directly so get base values after it/////////////////////////
 	/////////////////////////////base values////////////////////////////////////////////////////////////
 	dReal linear_velocity_smag	=		dDOT(linear_velocity,linear_velocity);
@@ -439,6 +442,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		dReal f=linear_velocity_mag/m_l_limit;
 		linear_velocity_mag=m_l_limit;
 		linear_velocity_smag=m_l_limit*m_l_limit;
+		VERIFY(!fis_zero(f));
 		dBodySetLinearVel(
 			m_body,
 			linear_velocity[0]/f,
@@ -457,6 +461,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		dReal f=angular_velocity_mag/m_w_limit;
 		angular_velocity_mag=m_w_limit;
 		angular_velocity_smag=m_w_limit*m_w_limit;
+		VERIFY(!fis_zero(f));
 		dBodySetAngularVel(
 			m_body,
 			angular_velocity[0]/f,
