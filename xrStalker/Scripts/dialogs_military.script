@@ -179,4 +179,4 @@ function actor_set_freedom (actor, npc)
     end
 end
 
-db.actor:set_character_community("actor_dolg", 0, 0)
+--db.actor:set_character_community("actor_dolg", 0, 0)
