@@ -539,7 +539,7 @@ function calculate_predicate(npc, tbl)
 	end
 	
 	-- Проверка по времени последнего выполнения/проваливания
-	if tbl.last_time ~= nil and game.get_game_time():diffSec(tbl.last_time) < 18000 then
+	if tbl.last_time ~= nil and game.get_game_time():diffSec(tbl.last_time) < 172800 then
 		return false
 	end
 
