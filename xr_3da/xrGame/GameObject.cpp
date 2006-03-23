@@ -119,7 +119,8 @@ void CGameObject::net_Destroy	()
 	Parent = 0;
 
 
-	CScriptBinder::net_Destroy				();
+	if(IsGameTypeSingle())
+		CScriptBinder::net_Destroy				();
 
 	xr_delete								(m_lua_game_object);
 	m_spawned								= false;
@@ -265,10 +266,12 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	}
 
 	reload						(*cNameSect());
-	CScriptBinder::reload		(*cNameSect());
+	if(IsGameTypeSingle())
+		CScriptBinder::reload	(*cNameSect());
 	
 	reinit						();
-	CScriptBinder::reinit		();
+	if(IsGameTypeSingle())
+		CScriptBinder::reinit		();
 
 	//load custom user data from server
 	if(!E->client_data.empty())
@@ -323,7 +326,9 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 
 	spawn_supplies				();
 
-	return						(CScriptBinder::net_Spawn(DC));
+	if(IsGameTypeSingle())
+		return						(CScriptBinder::net_Spawn(DC));
+	else return true;
 }
 
 void CGameObject::net_Save		(NET_Packet &net_packet)
@@ -341,7 +346,8 @@ void CGameObject::net_Save		(NET_Packet &net_packet)
 
 #endif
 
-	CScriptBinder::save			(net_packet);
+	if(IsGameTypeSingle())
+		CScriptBinder::save			(net_packet);
 
 #ifdef DEBUG	
 
@@ -368,7 +374,8 @@ void CGameObject::net_Load		(IReader &ireader)
 
 #endif
 
-	CScriptBinder::load		(ireader);
+	if(IsGameTypeSingle())
+		CScriptBinder::load		(ireader);
 
 
 #ifdef DEBUG	
@@ -744,7 +751,8 @@ void CGameObject::shedule_Update	(u32 dt)
 
 	// Msg							("-SUB-:[%x][%s] CGameObject::shedule_Update",smart_cast<void*>(this),*cName());
 	inherited::shedule_Update	(dt);
-	CScriptBinder::shedule_Update(dt);
+	if(IsGameTypeSingle())
+		CScriptBinder::shedule_Update(dt);
 }
 
 BOOL CGameObject::net_SaveRelevant	()
@@ -810,7 +818,8 @@ u32	CGameObject::ef_detector_type		() const
 void CGameObject::net_Relcase			(CObject* O)
 {
 	inherited::net_Relcase		(O);
-	CScriptBinder::net_Relcase	(O);
+	if(IsGameTypeSingle())
+		CScriptBinder::net_Relcase	(O);
 }
 
 CGameObject::CScriptCallbackExVoid &CGameObject::callback(GameObject::ECallbackType type) const

@@ -15,7 +15,6 @@
 #include "script_binder_object.h"
 #include "script_game_object.h"
 #include "gameobject.h"
-#include "level.h"
 
 #ifdef DEBUG
 XRCORE_API	BOOL	g_bMEMO;
@@ -171,7 +170,6 @@ void CScriptBinder::set_object		(CScriptBinderObject *object)
 #ifdef DEBUG
 	Msg						("* Core object %s is binded with the script object",smart_cast<CGameObject*>(this) ? *smart_cast<CGameObject*>(this)->cName() : "");
 #endif
-	if(IsGameTypeSingle())
 		m_object				= object;
 }
 
