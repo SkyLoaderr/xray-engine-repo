@@ -70,6 +70,18 @@ LPCSTR CUIListBox::GetSelectedText(){
 	return NULL;
 }
 
+CUIListBoxItem* CUIListBox::GetSelectedItem(){
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		if (smart_cast<CUIListBoxItem*>(*it)->GetSelected())
+		{
+			m_cur_wnd_it = it;
+			return smart_cast<CUIListBoxItem*>(*it);
+		}
+	}
+	return NULL;
+}
+
 LPCSTR CUIListBox::GetNextSelectedText(){
 	m_cur_wnd_it++;
 	for(WINDOW_LIST_it it = m_cur_wnd_it; m_pad->GetChildWndList().end()!=it; ++it)

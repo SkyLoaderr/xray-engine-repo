@@ -10,6 +10,7 @@ public:
 	void DeselectAll();
 	CUIListBoxItem* AddItem(LPCSTR text);
 	CUIListBoxItem* GetItemByID(u32 uid);
+	CUIListBoxItem* GetSelectedItem();
 
     LPCSTR			GetFirstText();
 	LPCSTR			GetNextText();
