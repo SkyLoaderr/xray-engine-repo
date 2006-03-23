@@ -39,7 +39,7 @@ local return_task_by_type = {
 	kill_stalker = "return_for_reward",
 	artefact = "return_for_reward_bring",
 	monster_part = "return_for_reward_bring",
-	find_tem = "return_for_reward_bring"}
+	find_item = "return_for_reward_bring"}
 
 function get_id(type)
 	if type == "trader" then
@@ -228,7 +228,7 @@ function action_task_init(actor, npc)
 	tmp_tbl = {}
 	show_tbl = {}
 	
-	type_rank = {} --Таблица для отсеивания низкоранговых тасков
+	type_rank = {} --'По каждому типу таска отсеивается одно, первое доступное.
 	for k,v in pairs(task_info[parent]) do	
 		max_count = max_count + 1
 		
