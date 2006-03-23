@@ -99,7 +99,9 @@
 	</info_portion>
 	<info_portion id="escape_lager_spawn_killers"></info_portion>
 	<info_portion id="esc_killers_raid"></info_portion>
-	<info_portion id="escape_lager_killers_die"></info_portion>
+	<info_portion id="escape_lager_killers_die">
+		<disable>escape_lager_spawn_killers</disable>
+	</info_portion>
 	<info_portion id="escape_lager_complete"></info_portion>
 	<info_portion id="esc_fanat_spawn"></info_portion>
 	<info_portion id="esc_open_killer_fire"></info_portion>
