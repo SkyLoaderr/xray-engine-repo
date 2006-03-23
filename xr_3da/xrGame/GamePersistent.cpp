@@ -304,8 +304,11 @@ void CGamePersistent::OnFrame	()
 	if(Device.Pause()){
 #ifndef MASTER_GOLD
 		if (Level().CurrentViewEntity()) {
-			if (!g_actor || (g_actor->ID() != Level().CurrentViewEntity()->ID()))
-				smart_cast<CCustomMonster*>(Level().CurrentViewEntity())->UpdateCamera();
+			if (!g_actor || (g_actor->ID() != Level().CurrentViewEntity()->ID())) {
+				CCustomMonster	*custom_monster = smart_cast<CCustomMonster*>(Level().CurrentViewEntity());
+				if (custom_monster) // can be spectator in multiplayer
+					custom_monster->UpdateCamera();
+			}
 			else {
 				if (g_actor)
 					Level().Cameras().Update	(Actor()->cam_Active());
