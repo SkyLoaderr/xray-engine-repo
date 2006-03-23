@@ -718,23 +718,23 @@ function isWeapon(object)
     local id = get_clsid(object)
     if id == nil then return false end
 
-    if id == clsid.wpn_vintorez then return true
-    elseif id == clsid.wpn_fn2000 then return true
-    elseif id == clsid.wpn_ak74 then return true
-    elseif id == clsid.wpn_lr300 then return true
-    elseif id == clsid.wpn_hpsa then return true
-    elseif id == clsid.wpn_pm then return true
-    elseif id == clsid.wpn_fort then return true
-    elseif id == clsid.wpn_shotgun then return true
-    elseif id == clsid.wpn_bm16 then return true
-    elseif id == clsid.wpn_svd then return true
-    elseif id == clsid.wpn_svu then return true
-    elseif id == clsid.wpn_rpg7 then return true
-    elseif id == clsid.wpn_val then return true
-    elseif id == clsid.wpn_walther then return true
-    elseif id == clsid.wpn_usp45 then return true
-    elseif id == clsid.wpn_groza then return true
-    elseif id == clsid.wpn_knife then return true
+    if id == clsid.wpn_vintorez_s then return true
+    elseif id == clsid.wpn_fn2000_s then return true
+    elseif id == clsid.wpn_ak74_s then return true
+    elseif id == clsid.wpn_lr300_s then return true
+    elseif id == clsid.wpn_hpsa_s then return true
+    elseif id == clsid.wpn_pm_s then return true
+    elseif id == clsid.wpn_fort_s then return true
+    elseif id == clsid.wpn_shotgun_s then return true
+    elseif id == clsid.wpn_bm16_s then return true
+    elseif id == clsid.wpn_svd_s then return true
+    elseif id == clsid.wpn_svu_s then return true
+    elseif id == clsid.wpn_rpg7_s then return true
+    elseif id == clsid.wpn_val_s then return true
+    elseif id == clsid.wpn_walther_s then return true
+    elseif id == clsid.wpn_usp45_s then return true
+    elseif id == clsid.wpn_groza_s then return true
+    elseif id == clsid.wpn_knife_s then return true
     elseif id == clsid.wpn_grenade_launcher then return true
     elseif id == clsid.wpn_grenade_f1 then return true
     elseif id == clsid.wpn_grenade_rpg7 then return true
