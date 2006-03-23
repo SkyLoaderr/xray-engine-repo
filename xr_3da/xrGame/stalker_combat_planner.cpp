@@ -46,7 +46,7 @@ CStalkerCombatPlanner::~CStalkerCombatPlanner	()
 
 void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *storage)
 {
-	inherited::setup		(object,storage);
+	inherited::setup			(object,storage);
 
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,				false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,			false);

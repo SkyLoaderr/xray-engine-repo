@@ -73,3 +73,63 @@ IC	CWeaponShotEffector &CAI_Stalker::weapon_shot_effector		() const
 	VERIFY					(m_weapon_shot_effector);
 	return					(*m_weapon_shot_effector);
 }
+
+IC	u32 CAI_Stalker::min_queue_size_far							() const
+{
+	return					(m_min_queue_size_far);
+}
+
+IC	u32 CAI_Stalker::max_queue_size_far							() const
+{
+	return					(m_max_queue_size_far);
+}
+
+IC	u32 CAI_Stalker::min_queue_interval_far						() const
+{
+	return					(m_min_queue_interval_far);
+}
+
+IC	u32 CAI_Stalker::max_queue_interval_far						() const
+{
+	return					(m_max_queue_interval_far);
+}
+
+IC	u32 CAI_Stalker::min_queue_size_medium						() const
+{
+	return					(m_min_queue_size_medium);
+}
+
+IC	u32 CAI_Stalker::max_queue_size_medium						() const
+{
+	return					(m_max_queue_size_medium);
+}
+
+IC	u32 CAI_Stalker::min_queue_interval_medium					() const
+{
+	return					(m_min_queue_interval_medium);
+}
+
+IC	u32 CAI_Stalker::max_queue_interval_medium					() const
+{
+	return					(m_max_queue_interval_medium);
+}
+
+IC	u32 CAI_Stalker::min_queue_size_close						() const
+{
+	return					(m_min_queue_size_close);
+}
+
+IC	u32 CAI_Stalker::max_queue_size_close						() const
+{
+	return					(m_max_queue_size_close);
+}
+
+IC	u32 CAI_Stalker::min_queue_interval_close					() const
+{
+	return					(m_min_queue_interval_close);
+}
+
+IC	u32 CAI_Stalker::max_queue_interval_close					() const
+{
+	return					(m_max_queue_interval_close);
+}

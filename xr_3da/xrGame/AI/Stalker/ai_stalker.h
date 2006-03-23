@@ -121,6 +121,7 @@ private:
 public:
 	bool							m_item_actuality;
 	CInventoryItem					*m_best_item_to_kill;
+	float							m_best_item_value;
 	CInventoryItem					*m_best_ammo;
 	const CInventoryItem			*m_best_found_item_to_kill;
 	const CInventoryItem			*m_best_found_ammo;
@@ -395,6 +396,39 @@ public:
 			void						debug_planner					(const script_planner *planner);
 #endif
 	virtual void						on_enemy_change					(const CEntityAlive *enemy);
+
+private:
+	u32				m_min_queue_size_far;
+	u32				m_max_queue_size_far;
+	u32				m_min_queue_interval_far;
+	u32				m_max_queue_interval_far;
+
+	u32				m_min_queue_size_medium;
+	u32				m_max_queue_size_medium;
+	u32				m_min_queue_interval_medium;
+	u32				m_max_queue_interval_medium;
+
+	u32				m_min_queue_size_close;
+	u32				m_max_queue_size_close;
+	u32				m_min_queue_interval_close;
+	u32				m_max_queue_interval_close;
+
+public:
+	IC		u32							min_queue_size_far				() const;
+	IC		u32							max_queue_size_far				() const;
+	IC		u32							min_queue_interval_far			() const;
+	IC		u32							max_queue_interval_far			() const;
+
+	IC		u32							min_queue_size_medium			() const;
+	IC		u32							max_queue_size_medium			() const;
+	IC		u32							min_queue_interval_medium		() const;
+	IC		u32							max_queue_interval_medium		() const;
+
+	IC		u32							min_queue_size_close			() const;
+	IC		u32							max_queue_size_close			() const;
+	IC		u32							min_queue_interval_close		() const;
+	IC		u32							max_queue_interval_close		() const;
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CAI_Stalker)

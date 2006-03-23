@@ -76,23 +76,23 @@ void CStalkerActionCombatBase::finalize				()
 void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &min_queue_size, u32 &max_queue_size, u32 &min_queue_interval, u32 &max_queue_interval) const
 {
 	if (distance > 30.f) {
-		min_queue_size					= 2;
-		max_queue_size					= 4;
-		min_queue_interval				= 500;
-		max_queue_interval				= 1000;
+		min_queue_size					= object().min_queue_size_far();
+		max_queue_size					= object().max_queue_size_far();
+		min_queue_interval				= object().min_queue_interval_far();
+		max_queue_interval				= object().max_queue_interval_far();
 	}
 	else
 		if (distance > 15.f) {
-			min_queue_size				= 4;
-			max_queue_size				= 6;
-			min_queue_interval			= 250;
-			max_queue_interval			= 750;
+			min_queue_size				= object().min_queue_size_medium();
+			max_queue_size				= object().max_queue_size_medium();
+			min_queue_interval			= object().min_queue_interval_medium();
+			max_queue_interval			= object().max_queue_interval_medium();
 		}
 		else {
-			min_queue_size				= 4;
-			max_queue_size				= 8;
-			min_queue_interval			= 200;
-			max_queue_interval			= 300;
+			min_queue_size				= object().min_queue_size_close();
+			max_queue_size				= object().max_queue_size_close();
+			min_queue_interval			= object().min_queue_interval_close();
+			max_queue_interval			= object().max_queue_interval_close();
 		}
 }
 

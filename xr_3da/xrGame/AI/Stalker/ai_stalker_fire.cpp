@@ -247,8 +247,19 @@ void CAI_Stalker::update_best_item_info	()
 			m_item_actuality &&
 			m_best_item_to_kill &&
 			m_best_item_to_kill->can_kill()
-		)
+		) {
+		
+		if (!memory().enemy().selected()) 
 			return;
+
+		ai().ef_storage().non_alife().member()	= this;
+		ai().ef_storage().non_alife().enemy()	= memory().enemy().selected() ? memory().enemy().selected() : this;
+		ai().ef_storage().non_alife().member_item()	= &m_best_item_to_kill->object();
+		float									value;
+		value									= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+		if (fsimilar(value,m_best_item_value))
+			return;
+	}
 
 	// initialize parameters
 	m_item_actuality							= true;
@@ -258,7 +269,7 @@ void CAI_Stalker::update_best_item_info	()
 	m_best_ammo					= 0;
 	m_best_found_item_to_kill	= 0;
 	m_best_found_ammo			= 0;
-	float						best_value = 0;
+	m_best_item_value			= 0.f;
 
 	// try to find the best item which can kill
 	{
@@ -273,20 +284,20 @@ void CAI_Stalker::update_best_item_info	()
 				else
 					value							= (float)(*I)->object().ef_weapon_type();
 
-				if (!fsimilar(value,best_value) && (value < best_value))
+				if (!fsimilar(value,m_best_item_value) && (value < m_best_item_value))
 					continue;
 
-				if (!fsimilar(value,best_value) && (value > best_value)) {
-					best_value			= value;
+				if (!fsimilar(value,m_best_item_value) && (value > m_best_item_value)) {
+					m_best_item_value	= value;
 					m_best_item_to_kill = *I;
 					continue;
 				}
 
-				VERIFY					(fsimilar(value,best_value));
+				VERIFY					(fsimilar(value,m_best_item_value));
 				if ((*I)->object().ef_weapon_type() <= m_best_item_to_kill->object().ef_weapon_type())
 					continue;
 
-				best_value				= value;
+				m_best_item_value		= value;
 				m_best_item_to_kill		= *I;
 			}
 		}
@@ -312,8 +323,8 @@ void CAI_Stalker::update_best_item_info	()
 			if (item) {
 				ai().ef_storage().non_alife().member_item()	= &inventory_item->object();
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
-				if (value > best_value) {
-					best_value						= value;
+				if (value > m_best_item_value) {
+					m_best_item_value				= value;
 					m_best_found_item_to_kill		= inventory_item;
 					m_best_found_ammo				= 0;
 					m_best_ammo						= item;
@@ -326,8 +337,8 @@ void CAI_Stalker::update_best_item_info	()
 
 				ai().ef_storage().non_alife().member_item()	= &item->object();
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
-				if (value > best_value) {
-					best_value						= value;
+				if (value > m_best_item_value) {
+					m_best_item_value				= value;
 					m_best_item_to_kill				= item;
 					m_best_found_item_to_kill		= 0;
 					m_best_found_ammo				= inventory_item;
@@ -352,8 +363,8 @@ void CAI_Stalker::update_best_item_info	()
 		if (item) {
 			ai().ef_storage().non_alife().member_item()	= &inventory_item->object();
 			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
-			if (value > best_value) {
-				best_value					= value;
+			if (value > m_best_item_value) {
+				m_best_item_value			= value;
 				m_best_found_item_to_kill	= inventory_item;
 				m_best_found_ammo			= item;
 			}
