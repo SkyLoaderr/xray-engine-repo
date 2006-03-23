@@ -203,12 +203,12 @@ function animation:set_state(id, reset)
 								if obj then
 									printf("extra detached [%s] for [%s]", obj:name(), self.npc:name())
 									obj:enable_attachable_item(false)
-									if obj:section() == "wpn_binoc" or
-									   obj:section() == "hand_radio"
-									then
-										printf("droped [%s] for [%s]", obj:name(), self.npc:name())
-										self.npc:drop_item(obj)--, self.npc:position()) !!!FIXED !!!
-									end
+									--'if obj:section() == "wpn_binoc" or
+									--'   obj:section() == "hand_radio"
+									--'then
+									--'	printf("droped [%s] for [%s]", obj:name(), self.npc:name())
+									--'	self.npc:drop_item(obj)
+									--'end
 								end
 								self.states.attach_items[v.d].mode = "detach"
 								self.states.attach_items[v.d].done = true
