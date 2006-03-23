@@ -169,6 +169,7 @@ void CPhysicsShellHolder::OnChangeVisual()
 	inherited::OnChangeVisual();
 	if (0==renderable.visual) 
 	{
+		if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
 		VERIFY(0==m_pPhysicsShell);
 	}

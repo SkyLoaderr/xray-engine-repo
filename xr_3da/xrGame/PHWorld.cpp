@@ -68,6 +68,7 @@ CPHWorld::CPHWorld()
 	b_world_freezed=false;
 	b_processing=false;
 	m_gravity	=default_world_gravity;
+	b_exist=false;
 }
 void CPHWorld::Create()
 {
@@ -111,6 +112,7 @@ void CPHWorld::Create()
 	phBoundaries.set(Level().ObjectSpace.GetBoundingVolume());
 	phBoundaries.y1-=30.f;
 	CPHCollideValidator::Init();
+	b_exist=true;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -136,6 +138,7 @@ void CPHWorld::Destroy()
 	dRayMotionsClassUser=-1;
 	Device.seqFrameMT.Remove	(this);
 	Device.seqFrame.Remove		(this);
+	b_exist=false;
 }
 void CPHWorld::SetGravity(float g)
 {

@@ -225,22 +225,24 @@ void CPHShell::PresetActive()
 
 void CPHShell::Deactivate(){
 	if(!isActive())return;
-	if(ph_world)
+	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics shell during physics processing!!!");
+	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics shell when ph world is freezed!!!");
+	R_ASSERT2(!CPHObject::IsFreezed(),"can not deactivate freezed !!!");
+	ZeroCallbacks();
+	if(isFullActive()&&ph_world&&ph_world->Exist())
 	{
+		
 		CPHObject::activate();
 		ph_world->Freeze();
 		CPHObject::UnFreeze();
 		ph_world->Step();
 		ph_world->UnFreeze();
 	}
-	R_ASSERT2(!ph_world->Processing(),"can not deactivate physics shell during physics processing!!!");
-	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics shell when ph world is freezed!!!");
-	R_ASSERT2(!CPHObject::IsFreezed(),"can not deactivate freezed !!!");
 	spatial_unregister();
 	vis_update_activate();
 	DisableObject();
 	CPHObject::remove_from_recently_deactivated();
-	ZeroCallbacks();
+	
 
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)

@@ -35,6 +35,7 @@ class CPHWorld	: public pureFrame
 	u32							m_update_delay_count										;
 	bool						b_world_freezed												;
 	bool						b_processing;
+	bool						b_exist;
 	static const u32			update_delay=1												;
 ///	dSpaceID					Space														;
 
@@ -60,7 +61,7 @@ public:
 	virtual						~CPHWorld						(){}						;
 
 //IC	dSpaceID					GetSpace						()			{return Space;}	;
-
+IC	bool						Exist							()			{return b_exist ;}
 	void						Create							()							;
 	void						SetGravity						(float	g)					;
 IC	float						Gravity							()							{return m_gravity;}
