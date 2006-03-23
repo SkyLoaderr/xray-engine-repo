@@ -67,8 +67,7 @@
 		<objective>
 			<text>esc_help_wounded_from_raid_0</text>
 			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>garbage_meetstalker_start</infoportion_complete>
-	<!--		<infoportion_complete>garbage_meetstalker_done</infoportion_complete>  -->
+			<function_complete>escape_tasks.task_fox_complete</function_complete>
 		</objective>
 		<objective>
 			<text>esc_help_wounded_from_raid_1</text>
