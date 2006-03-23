@@ -15,6 +15,7 @@
 #include "script_binder_object.h"
 #include "script_game_object.h"
 #include "gameobject.h"
+#include "level.h"
 
 #ifdef DEBUG
 XRCORE_API	BOOL	g_bMEMO;
