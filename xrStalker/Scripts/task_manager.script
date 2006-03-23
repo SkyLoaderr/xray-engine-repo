@@ -148,7 +148,7 @@ function fill_phrase_table()
 	
 	-- Сортируем  по возрастанию крутости задания
 	for k,v in pairs(task_info) do
-		table.sort(v, function(a,b) return a.reward_rank > b.reward_rank end)
+		table.sort(v, function(a,b) return a.reward_rank < b.reward_rank end)
 	end
 end
 
