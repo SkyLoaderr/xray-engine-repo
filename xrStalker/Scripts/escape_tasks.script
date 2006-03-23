@@ -91,6 +91,16 @@ function task_lager_complete()
 	end
 end	
 
+function task_fox_complete()
+	local actor = db.actor
+	if actor:has_info("garbage_meetstalker_start") or
+	   actor:has_info("garbage_meetstalker_done")
+	then
+		return true
+	else
+		return false
+	end
+end	
 
 function process_info_portion(info_id)
 	if info_id == "tutorial_artefact_start" then
