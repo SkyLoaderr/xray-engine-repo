@@ -6,8 +6,6 @@ by Stohe (Диденко Руслан)
 local section_name = "respawn"
 local i,k,v = 0,0,0
 
-local respawn_ini = system_ini()
-
 -- Таблица ограничений на спаун: всего в симуляции не должно быть больше, чем указано.
 local simMaxCount = {
 	stalker_novice = 43, stalker_regular = 48, stalker_veteran = 43, stalker_master = 20,
@@ -124,6 +122,8 @@ function r_spawns( spawn_ini, section, line, sectSpawnProps)
 	
 			-- Вычитываем настройки секций респавна и кешируем их.
 			if sectSpawnProps[spawn.section] == nil then
+				local respawn_ini = system_ini()
+
 				local community = r_str(respawn_ini, spawn.section, "community", "nil")
 				local rank = r_str(respawn_ini, spawn.section, "spec_rank", "nil")
 				local check = true
