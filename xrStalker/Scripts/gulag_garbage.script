@@ -1500,7 +1500,7 @@ function load_ltx(gname, type)
 	return nil
 end
 
-function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 	if gulag_type == "gar_hellcar_group" then
 		return npc_community == "stalker"
 	end

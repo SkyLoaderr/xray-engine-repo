@@ -2059,7 +2059,7 @@ function load_ltx(gname, type)
 	return nil
 end
 
-function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 
 	if gulag_type == "esc_bridge" then
 		return npc_community == "military"
