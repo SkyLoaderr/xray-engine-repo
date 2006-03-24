@@ -265,6 +265,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
     if (m_b2Link){
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
+            pV.sort_by_weight	();
 			// write vertex
             F.w_u16		(pV.bones[0].id);
             F.w_u16		(pV.bones[1].id);
@@ -278,6 +279,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
     }else{
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
+            pV.sort_by_weight	();
             F.w			(&pV.offs,sizeof(Fvector));		// position (offset)
             F.w			(&pV.norm,sizeof(Fvector));		// normal
             F.w			(&pV.tang,sizeof(Fvector));		// T        

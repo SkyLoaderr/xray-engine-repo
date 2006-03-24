@@ -32,7 +32,7 @@ struct ECORE_API SSkelVert: public st_SVert{
         VERIFY		(_w_cnt>0 && _w_cnt<4);
         bones.resize(_w_cnt);
         for (u8 k=0; k<_w_cnt; k++)	{bones[k]=b[k];}
-        sort_by_weight();
+        sort_by_bone(); // need to similar 
     }
 	BOOL	similar_pos(SSkelVert& V)
     {

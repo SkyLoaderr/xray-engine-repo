@@ -22,7 +22,8 @@ PS::CPEDef* CPSLibrary::AppendPED(PS::CPEDef* src)
 
 PS::CPGDef* CPSLibrary::AppendPGD(PS::CPGDef* src)
 {
-	m_PGDs.push_back(src?xr_new<PS::CPGDef>(*src):xr_new<PS::CPGDef>());
+	m_PGDs.push_back(xr_new<PS::CPGDef>());
+    if (src) m_PGDs.back()->Clone(src);
     return m_PGDs.back();
 }
 //------------------------------------------------------------------------------

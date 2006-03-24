@@ -36,8 +36,8 @@ CMotion*	CActorTools::EngineModel::FindMotionKeys(LPCSTR name, u16 slot)
 {
 	CKinematicsAnimated* VA 	= PKinematicsAnimated(m_pVisual);
     if (VA){
-    	MotionID motion_ID		= FindMotionID(name,slot);
-        return VA->LL_GetMotion	(motion_ID,VA->LL_GetBoneRoot());
+    	MotionID M				= FindMotionID(name,slot);
+        if (M.valid())			return VA->LL_GetMotion	(M,VA->LL_GetBoneRoot());
     }
     return 0;
 }

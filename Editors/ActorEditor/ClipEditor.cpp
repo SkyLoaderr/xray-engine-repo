@@ -495,7 +495,8 @@ void TClipMaker::RealUpdateProperties()
         V->OnChangeEvent.bind	(this,&TClipMaker::OnClipLengthChange);
         for (u16 k=0; k<4; k++){
             AnsiString mname	= sel_clip->CycleName(k);	
-            u16 slot			= sel_clip->CycleSlot(k);	
+            u16 slot			= sel_clip->CycleSlot(k);
+            if (mname.IsEmpty())continue;
             CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str(),slot);
             CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str(),slot);
             SBonePart* BP		= (k<(u16)m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
