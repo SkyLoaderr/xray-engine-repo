@@ -22,9 +22,10 @@ void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 	{
 	case HOSTNAME_KEY: pQR2->BufferAdd(outbuf, pServer->HostName.c_str()); break;
 	case MAPNAME_KEY: pQR2->BufferAdd(outbuf, pServer->MapName.c_str()); break;
-	case GAMETYPE_NAME_KEY: pQR2->BufferAdd(outbuf, pServer->game->type_name()); break;
+	case GAMEVER_KEY: pQR2->BufferAdd(outbuf, "0.1"); break;
 	case NUMPLAYERS_KEY: pQR2->BufferAdd_Int(outbuf, pServer->GetPlayersCount()); break;
 	case MAXPLAYERS_KEY: pQR2->BufferAdd_Int(outbuf, pServer->m_iMaxPlayers); break;
+	case GAMETYPE_KEY:	pQR2->BufferAdd_Int(outbuf, pServer->game->Type());		break;
 	case PASSWORD_KEY:
 		{
 			if ( 0 == *(pServer->Password))
@@ -32,11 +33,11 @@ void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 			else
 				pQR2->BufferAdd_Int(outbuf, 1);
 		}break;
-	case GAMEVER_KEY: pQR2->BufferAdd(outbuf, "0.1"); break;
 	case HOSTPORT_KEY: pQR2->BufferAdd_Int(outbuf, pServer->GetPort()); break;
+
 	case DEDICATED_KEY:	pQR2->BufferAdd_Int(outbuf, pServer->m_bDedicated);		break;
+	case GAMETYPE_NAME_KEY: pQR2->BufferAdd(outbuf, pServer->game->type_name()); break;
 	case NUMTEAMS_KEY: pQR2->BufferAdd_Int(outbuf, gmMP->GetNumTeams()); break;		
-	case GAMETYPE_KEY:	pQR2->BufferAdd_Int(outbuf, pServer->game->Type());		break;
 		//------- game ---------//	
 	case G_MAP_ROTATION_KEY:		if (gmDM) pQR2->BufferAdd_Int(outbuf, gmDM->HasMapRotation());	break;
 	case G_VOTING_ENABLED_KEY:		if (gmDM) pQR2->BufferAdd_Int(outbuf, gmDM->IsVotingEnabled());	break;
@@ -157,6 +158,7 @@ void __cdecl callback_keylist(qr2_key_type keytype, void* keybuffer, void *userd
 			//---- Game Keys
 			pQR2->KeyBufferAdd(keybuffer, DEDICATED_KEY);
 			pQR2->KeyBufferAdd(keybuffer, GAMETYPE_NAME_KEY);
+			pQR2->KeyBufferAdd(keybuffer, NUMTEAMS_KEY);
 			//---- game_sv_base ---
 			pQR2->KeyBufferAdd(keybuffer, G_MAP_ROTATION_KEY);
 			pQR2->KeyBufferAdd(keybuffer, G_VOTING_ENABLED_KEY);
