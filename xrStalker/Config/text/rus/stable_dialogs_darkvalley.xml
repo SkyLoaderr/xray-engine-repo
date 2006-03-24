@@ -3,32 +3,23 @@
     <string id="val_escort_captive_dialog_11">
         <text>Бандиты, суки, вели меня на старую фабрику. Не знаю, что там со мной собирались делать, но одного пленного, которого отвели туда до меня, я так больше и не видел.\nУ них есть еще один наш, Серега. Его держат в подвале большого недостроенного здания. Помоги ему, боюсь он будет следующим.</text>
     </string>
-    <string id="val_escort_captive_dialog_111">
-        <text>Не знаешь, что у них там на фабрике?</text>
-    </string>
-    <string id="val_escort_captive_dialog_1111">
-        <text>Я мало что слышал. Знаю только, что у Борова, ихнего лидера, есть часть ключа от входа в подземелье, который там находится. В нем лаборатория вроде раньше была. Охрана также обсуждала, что Боров очень хотел бы туда пробраться, но для этого ему нужна вторая часть ключа.\nНо соваться к нему не советую - там полно охраны.</text>
-    </string>
-    <string id="val_escort_captive_dialog_11111">
-        <text>Понятно.</text>
-    </string>
-    <string id="val_escort_captive_dialog_112">
-        <text>Попробую помочь.</text>
-    </string>
     <string id="val_escort_captive_dialog_11211">
         <text>Хорошо, я помогу.</text>
     </string>
-    <string id="val_escort_captive_dialog_113">
-        <text>Нет, пока не могу помочь.</text>
+    <string id="val_escort_captive_dialog_2">
+        <text>Не знаешь, что у них там на фабрике?</text>
     </string>
     <string id="val_escort_captive_dialog_21">
-        <text>Спасибо за помощь.</text>
+        <text>Я мало что слышал. Знаю только, что у Борова, ихнего лидера, есть часть ключа от входа в подземелье, который там находится. В нем лаборатория вроде раньше была. Охрана также обсуждала, что Боров очень хотел бы туда пробраться, но для этого ему нужна вторая часть ключа.\nНо соваться к нему не советую - там полно охраны.</text>
     </string>
     <string id="val_escort_captive_dialog_211">
-        <text>Бывает.</text>
+        <text>Понятно.</text>
     </string>
     <string id="val_escort_captive_dialog_221">
         <text>Не бери в голову. Пока.</text>
+    </string>
+    <string id="val_escort_captive_dialog_3">
+        <text>Попробую помочь вашему напарнику.</text>
     </string>
     <string id="val_escort_captive_dialog_3111">
         <text>Я с тобой. Помогу чем смогу.</text>
@@ -51,11 +42,20 @@
     <string id="val_escort_captive_dialog_41">
         <text>Напарника жалко. Хороший был товарищ. Но тем не менее я тебе обязан.</text>
     </string>
+    <string id="val_escort_captive_dialog_411">
+        <text>Бывает.</text>
+    </string>
     <string id="val_escort_captive_dialog_44">
         <text>"Всего лишь"! Если в лагере бандитов достать костюм не так уж и сложно, то узнать пароль - задача практически неразрешимая. Никто из бандитов откровенничать с тобой не будет. Слышал я в разговоре бандитов, что пароль также хранится на ПДА у Борова, лидера бандитов, но к нему пробраться вообще нереально - в охранниках у него очень серьезные ребята.</text>
     </string>
     <string id="val_escort_captive_dialog_444">
         <text>ОК, спасибо за информацию.</text>
+    </string>
+    <string id="val_escort_captive_dialog_51">
+        <text>Спасибо за помощь.</text>
+    </string>
+    <string id="val_escort_captive_dialog_511">
+        <text>Пока.</text>
     </string>
     <string id="val_escort_captive_dialog_61">
         <text>Ты мне не помог - нам не о чем с тобой говорить.</text>
