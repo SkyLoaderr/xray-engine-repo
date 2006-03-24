@@ -58,6 +58,10 @@ namespace PS
 
 		void 				Save		  	(IWriter& F);
 		BOOL 				Load		 	(IReader& F);
+
+#ifdef _EDITOR
+        void				Clone			(CPGDef* source);
+#endif
 	};
 	DEFINE_VECTOR(CPGDef*,PGDVec,PGDIt);
 

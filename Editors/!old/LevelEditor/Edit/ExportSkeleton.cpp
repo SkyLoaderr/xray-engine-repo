@@ -225,6 +225,18 @@ int xrSimulate (u16* indices, u32 i_cnt, int iCacheSize )
 
 
 
+static	D3DVERTEXELEMENT9 dwDecl_NW	[] =	// 32bytes
+{
+	{ 0, 0,		D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// : p,		w =	influence	: 2	: -12..+12
+	{ 0, 8,		D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// : n.xyz					: 1	:  -1..+1, w=0..1
+	{ 0, 12,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TANGENT,		0 },	// : T						: 1	:  -1..+1
+	{ 0, 16,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_BINORMAL,		0 },	// : B						: 1	:  -1..+1
+	{ 0, 20,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR ,		0 },	// : bones					: 1	:  -1..+1
+	{ 0, 24,	D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR ,		1 },	// : weights				: 1	:  -1..+1
+	{ 0, 28,	D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// : xy(tc)					: 2	: -16..+16, zw[0..32767]
+	D3DDECL_END()
+};
+
 
 void CExportSkeleton::SSplit::Save(IWriter& F)
 {
