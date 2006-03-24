@@ -29,3 +29,11 @@
 	<string id="mil_fblockpost_warning">
 		<text>Меченый, вернись и займи позицию</text>
 	</string>
+	
+	<string id="mil_scull_attack_signal">
+		<text>Вперед, ребята. Путь свободен.</text>
+	</string>
+	
+	<string id="mil_max_attack_signal">
+		<text>В атаку, братва. Замочим законников.</text>
+	</string>
