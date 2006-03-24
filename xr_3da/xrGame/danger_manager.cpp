@@ -228,17 +228,17 @@ void CDangerManager::add			(const CSoundObject &object)
 	
 	const CEntityAlive		*obj = smart_cast<const CEntityAlive*>(object.m_object);
 	
-	if (object.m_sound_type & SOUND_TYPE_BULLET_HIT) {
+	if ((object.m_sound_type & SOUND_TYPE_BULLET_HIT) == SOUND_TYPE_BULLET_HIT) {
 		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeBulletRicochet,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
 
-	if (object.m_sound_type & SOUND_TYPE_WEAPON_SHOOTING) {
+	if ((object.m_sound_type & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
 		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeAttackSound,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
 
-	if (object.m_sound_type & SOUND_TYPE_INJURING) {
+	if ((object.m_sound_type & SOUND_TYPE_INJURING) == SOUND_TYPE_INJURING) {
 		bool				do_add = true;
 		if (object.m_object) {
 			const CActor	*actor = smart_cast<const CActor*>(object.m_object);
@@ -250,7 +250,7 @@ void CDangerManager::add			(const CSoundObject &object)
 		return;
 	}
 
-	if (object.m_sound_type & SOUND_TYPE_DYING) {
+	if ((object.m_sound_type & SOUND_TYPE_DYING) == SOUND_TYPE_DYING) {
 		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeEntityDeath,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
