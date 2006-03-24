@@ -229,7 +229,8 @@ void CPHShell::Deactivate(){
 	R_ASSERT2(!ph_world->IsFreezed(),"can not deactivate physics shell when ph world is freezed!!!");
 	R_ASSERT2(!CPHObject::IsFreezed(),"can not deactivate freezed !!!");
 	ZeroCallbacks();
-	if(isFullActive()&&ph_world&&ph_world->Exist())
+	VERIFY(ph_world&&ph_world->Exist());
+	if(isFullActive())
 	{
 		
 		CPHObject::activate();

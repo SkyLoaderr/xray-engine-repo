@@ -299,7 +299,7 @@ void CPHElement::TransformPosition(const Fmatrix &form)
 }
 CPHElement::~CPHElement	()
 {
-	if(isActive())Deactivate();
+	VERIFY(!isActive());
 	DeleteFracturesHolder();
 
 }
@@ -404,7 +404,24 @@ void CPHElement::PhDataUpdate(dReal step){
 	///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	VERIFY(dV_valid(linear_velocity));
-	VERIFY(dV_valid(angular_velocity));
+#ifdef DEBUG
+	if(!dV_valid(angular_velocity))
+	{
+		Msg("angular vel %f,%f,%f",angular_velocity[0],angular_velocity[1],angular_velocity[2]);
+		Msg("linear vel %f,%f,%f",linear_velocity[0],linear_velocity[1],linear_velocity[2]);
+		Msg("position  %f,%f,%f",dBodyGetPosition(m_body)[0],dBodyGetPosition(m_body)[1],dBodyGetPosition(m_body)[2]);
+		Msg("quaternion  %f,%f,%f,%f",dBodyGetQuaternion(m_body)[0],dBodyGetQuaternion(m_body)[1],dBodyGetQuaternion(m_body)[2],dBodyGetQuaternion(m_body)[3]);
+		Msg("matrix");
+		Msg("x  %f,%f,%f",dBodyGetRotation(m_body)[0],dBodyGetRotation(m_body)[4],dBodyGetRotation(m_body)[8]);
+		Msg("y  %f,%f,%f",dBodyGetRotation(m_body)[1],dBodyGetRotation(m_body)[5],dBodyGetRotation(m_body)[9]);
+		Msg("z  %f,%f,%f",dBodyGetRotation(m_body)[2],dBodyGetRotation(m_body)[6],dBodyGetRotation(m_body)[10]);
+		CPhysicsShellHolder* ph=PhysicsRefObject();
+		Msg("name visual %s",ph->cNameVisual());
+		Msg("name obj %s",ph->Name());
+		Msg("name obj %s",ph->cNameSect());
+		VERIFY2(0,"bad angular velocity");
+	}
+#endif
 	VERIFY(!fis_zero(m_l_scale));
 	VERIFY(!fis_zero(m_w_scale));
 	dBodySetLinearVel(

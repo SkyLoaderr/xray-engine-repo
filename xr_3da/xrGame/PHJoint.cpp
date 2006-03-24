@@ -33,7 +33,7 @@ IC void SwapLimits(float &lo,float &hi)
 }
 CPHJoint::~CPHJoint(){
 	xr_delete(m_destroy_info);
-	if(bActive) Deactivate();
+	VERIFY(!bActive);
 	axes.clear();
 	if(m_back_ref)*m_back_ref=NULL;
 };
