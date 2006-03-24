@@ -40,7 +40,7 @@ IC		bool	PhOutOfBoundaries			(const Fvector& v)
 CPHShell::~CPHShell				()							
 {
 	m_pKinematics	= 0;
-	if(isActive())		Deactivate();
+	VERIFY(!isActive());
 	
 	xr_vector<CPHElement*>::iterator i;
 	for(i=elements.begin();elements.end()!=i;++i)
