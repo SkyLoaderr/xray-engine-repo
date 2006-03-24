@@ -303,18 +303,20 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 		if ((R.tgt&s_mask)&&sd_test.is(s_mask)&&(next_test&s_mask)){ 
 			s_res.set		(0,s_rd.range,-1);
 			// Test static model
-			xrc.ray_options	(s_rd.flags);
-			xrc.ray_query	(&Static,s_rd.start,s_rd.dir,s_rd.range);
-			if (xrc.r_count()){	
-				if (s_res.set_if_less(xrc.r_begin())){
-					// set new static start & range
-					s_rd.range	-=	(s_res.range+EPS_L);
-					s_rd.start.mad	(s_rd.dir,s_res.range+EPS_L);
-					s_res.range	= R.range-s_rd.range-EPS_L;
+			if (s_rd.range>EPS){
+				xrc.ray_options	(s_rd.flags);
+				xrc.ray_query	(&Static,s_rd.start,s_rd.dir,s_rd.range);
+				if (xrc.r_count()){	
+					if (s_res.set_if_less(xrc.r_begin())){
+						// set new static start & range
+						s_rd.range	-=	(s_res.range+EPS_L);
+						s_rd.start.mad	(s_rd.dir,s_res.range+EPS_L);
+						s_res.range	= R.range-s_rd.range-EPS_L;
 #ifdef DEBUG
-					if (!(fis_zero(s_res.range,EPS) || s_res.range>=0.f))
-						Debug.fatal("Invalid RayQuery static range: %f. /#1/",s_res.range);
+						if (!(fis_zero(s_res.range,EPS) || s_res.range>=0.f))
+							Debug.fatal("Invalid RayQuery static range: %f (%f). /#1/",s_res.range,s_rd.range);
 #endif
+					}
 				}
 			}
 			if (!s_res.valid())	sd_test.set(s_mask,FALSE);
@@ -322,23 +324,25 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 		if ((R.tgt&d_mask)&&sd_test.is_any(d_mask)&&(next_test&d_mask)){ 
 			r_temp.r_clear	();
 
-			// Traverse object database
-			g_SpatialSpace->q_ray		(r_spatial,0,d_flags,d_rd.start,d_rd.dir,d_rd.range);
-			// Determine visibility for dynamic part of scene
-			for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
-				CObject*	collidable		= r_spatial[o_it]->dcast_CObject();
-				if			(0==collidable)				continue;
-				if			(collidable==ignore_object)	continue;
-				ICollisionForm*	cform		= collidable->collidable.model;
-				ECollisionFormType tp		= collidable->collidable.model->Type();
-				if (((R.tgt&(rqtObject|rqtObstacle))&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
-					if (tb&&!tb(d_rd,collidable,user_data))continue;
-					cform->_RayQuery(d_rd,r_temp);
-				}
+			if (d_rd.range>EPS){
+				// Traverse object database
+				g_SpatialSpace->q_ray		(r_spatial,0,d_flags,d_rd.start,d_rd.dir,d_rd.range);
+				// Determine visibility for dynamic part of scene
+				for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
+					CObject*	collidable		= r_spatial[o_it]->dcast_CObject();
+					if			(0==collidable)				continue;
+					if			(collidable==ignore_object)	continue;
+					ICollisionForm*	cform		= collidable->collidable.model;
+					ECollisionFormType tp		= collidable->collidable.model->Type();
+					if (((R.tgt&(rqtObject|rqtObstacle))&&(tp==cftObject))||((R.tgt&rqtShape)&&(tp==cftShape))){
+						if (tb&&!tb(d_rd,collidable,user_data))continue;
+						cform->_RayQuery(d_rd,r_temp);
+					}
 #ifdef DEBUG
-				if (!((0==r_temp.r_count()) || (r_temp.r_count()&&(fis_zero(r_temp.r_begin()->range, EPS)||(r_temp.r_begin()->range>=0.f)))))
-					Debug.fatal("Invalid RayQuery dynamic range: %f. /#2/",r_temp.r_begin()->range);
+					if (!((0==r_temp.r_count()) || (r_temp.r_count()&&(fis_zero(r_temp.r_begin()->range, EPS)||(r_temp.r_begin()->range>=0.f)))))
+						Debug.fatal("Invalid RayQuery dynamic range: %f (%f). /#2/",r_temp.r_begin()->range,d_rd.range);
 #endif
+				}
 			}
 			if (r_temp.r_count()){
 				// set new dynamic start & range
@@ -348,7 +352,7 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 				d_res.range	= R.range-d_rd.range-EPS_L;
 #ifdef DEBUG
 				if (!(fis_zero(d_res.range,EPS) || d_res.range>=0.f))
-					Debug.fatal("Invalid RayQuery dynamic range: %f. /#3/",d_res.range);
+					Debug.fatal("Invalid RayQuery dynamic range: %f (%f). /#3/",d_res.range,d_rd.range);
 #endif
 			}else{
 				sd_test.set(d_mask,FALSE);
