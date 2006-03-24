@@ -254,6 +254,11 @@ void CDangerManager::add			(const CSoundObject &object)
 		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeEntityDeath,CDangerObject::eDangerPerceiveTypeSound));
 		return;
 	}
+
+	if (obj && m_object->is_relation_enemy(obj)) {
+		add					(CDangerObject(obj,object.m_object_params.m_position,object.m_level_time,CDangerObject::eDangerTypeEnemySound,CDangerObject::eDangerPerceiveTypeSound));
+		return;
+	}
 }
 
 void CDangerManager::add			(const CHitObject &object)

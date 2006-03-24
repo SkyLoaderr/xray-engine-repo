@@ -120,6 +120,10 @@ private:
 	float										m_extrapolate_length;
 
 private:
+	float										m_distance_to_target;
+	bool										m_distance_to_target_actual;
+
+private:
 	IC	STravelPoint compute_better_key_point	(const STravelPoint		&point0,	const STravelPoint					&point1,		const STravelPoint					&point2,				bool								reverse_order);
 	IC		bool	better_key_point			(const STravelPoint		&point0,	const STravelPoint					&point2,		const STravelPoint					&point10,			const STravelPoint					&point11);
 	IC		bool	check_mask					(u32					mask,			  u32							test) const;
@@ -140,6 +144,9 @@ private:
 			void	postprocess_key_points		(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest,xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_path_via_key_points	(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_smooth_path			(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
+
+private:
+			void	update_distance_to_target	();
 
 protected:
 			void	build_path					(const xr_vector<u32> &level_path, u32 intermediate_index);
@@ -193,6 +200,9 @@ public:
 	IC		bool								state_patrol_path		() const;
 	IC		void								extrapolate_length		(float extrapolate_length);
 	IC		float								extrapolate_length		() const;
+
+public:
+	IC		const float							&distance_to_target		();
 };
 
 #include "detail_path_manager_inline.h"

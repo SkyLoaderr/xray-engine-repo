@@ -84,6 +84,7 @@ _value_type CStalkerPropertyEvaluatorDangerInDirection::evaluate	()
 		case CDangerObject::eDangerTypeAttackSound :
 		case CDangerObject::eDangerTypeEntityAttacked :
 		case CDangerObject::eDangerTypeAttacked :
+		case CDangerObject::eDangerTypeEnemySound :
 			return		(true);
 		default :
 			return		(false);
@@ -121,7 +122,8 @@ _value_type CStalkerPropertyEvaluatorDangerBySound::evaluate	()
 	if (!m_object->memory().danger().selected())
 		return			(false);
 
-	return				(CDangerObject::eDangerTypeEnemySound == m_object->memory().danger().selected()->type());
+	return				(false);
+//	return				(CDangerObject::eDangerTypeEnemySound == m_object->memory().danger().selected()->type());
 }
 
 //////////////////////////////////////////////////////////////////////////

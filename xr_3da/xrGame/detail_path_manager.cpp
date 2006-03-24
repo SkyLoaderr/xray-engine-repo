@@ -41,6 +41,8 @@ void CDetailPathManager::reinit			()
 	m_state_patrol_path		= false;
 	m_time_path_built		= 0;
 	m_extrapolate_length	= 8.f;
+	m_distance_to_target	= flt_max;
+	m_distance_to_target_actual	= false;
 }
 
 bool CDetailPathManager::valid			() const
@@ -119,4 +121,10 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 bool CDetailPathManager::actual() const
 {
 	return					(m_actuality);
+}
+
+void CDetailPathManager::update_distance_to_target	()
+{
+	m_distance_to_target_actual	= true;
+	m_distance_to_target		= 0.f;
 }

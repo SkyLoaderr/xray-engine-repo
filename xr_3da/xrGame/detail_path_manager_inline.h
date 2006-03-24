@@ -231,3 +231,12 @@ IC	const CDetailPathManager::VELOCITIES &CDetailPathManager::velocities	() const
 {
 	return					(m_movement_params);
 }
+
+IC	const float &CDetailPathManager::distance_to_target	()
+{
+	if (m_distance_to_target_actual)
+		return					(m_distance_to_target);
+
+	update_distance_to_target	();
+	return						(m_distance_to_target);
+}
