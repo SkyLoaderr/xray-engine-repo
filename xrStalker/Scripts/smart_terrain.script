@@ -2,12 +2,6 @@
 Smart Terrain (механизм, организовывающий всех сталкеров и некоторых монстров в сцены)
 Чугай Александр
 !без симуляции не работает!
-
-TODO
-	binder группы перехода онл/офл
-	вести всю группу аля патруль
-	приём группы
-	организация групп
 --------------------------------------------------------------------------------------------------------------------]]
 
 --local h2ms = 60 * 60 * 1000
@@ -364,6 +358,26 @@ function se_smart_terrain:read_params()
 	self.gulag_working = false
 end
 
+-- подходит ли персонаж по предустановкам.
+-- если такой предустановки нету, то он всегда подходит.
+function se_smart_terrain:check_preset( npc_community, npc_rank, preset_name )
+	local preset = smart_terrain_params.get_preset( preset_name )
+
+	if preset == false then
+		return true
+	else
+		local t = preset[npc_community]
+
+--		printf( "preset_name=%s ranks=[%d,%d] npc_rank=%d", preset_name, t[1], t[2], npc_rank )
+
+		if t and ( npc_rank >= t[1] and npc_rank <= t[2] ) then
+			return true
+		else
+			return false
+		end
+	end
+end
+
 --[[ подходит ли объект гулагу?
 1) если объект не согласен сюда идти, то smart terrain его не возьмёт
 2) если объект согласен идти куда угодно, то проверить, есть ли ещё места, подходит ли он гулагу,
@@ -389,7 +403,11 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 --			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
 --		end
 
-		if not xr_gulag.checkNpc( community, is_stalker, self.gparams.type, obj:rank(), obj, self.gparams.preset_name ) then
+		if not self:check_preset( community, obj:rank(), self.gparams.preset_name ) then
+			return false
+		end
+
+		if not xr_gulag.checkNpc( community, is_stalker, self.gparams.type, obj:rank(), obj ) then
 			return false
 		end
 

@@ -1286,7 +1286,7 @@ end
 
 -----------------------------------------------------------------------------------------------------------------
 
-function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
     --printf ("CHECKSTALKER, COMMUNITY = %s, TYPE = %s", npc_community, gulag_type)
 	if gulag_type == "test" or gulag_type == "test1" or gulag_type == "test_restr_changer" or gulag_type == "test_out"  then
 		return true
@@ -1301,7 +1301,7 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 	end
 
 	for i, v in pairs( level_gulags ) do
-		if v.checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name) then
+		if v.checkStalker(npc_community, gulag_type, npc_rank, se_obj) then
 			return true
 		end
 	end
@@ -1309,13 +1309,13 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 	return false
 end
 
-function checkMonster(npc_community, gulag_type, npc_rank, se_obj, preset_name)
+function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
 	if gulag_type == "test_mob" or gulag_type == "test_mob1" then
 		return true
 	end
 
     for i, v in pairs( level_gulags ) do
-		if v.checkMonster(npc_community, gulag_type, npc_rank, se_obj, preset_name) then
+		if v.checkMonster(npc_community, gulag_type, npc_rank, se_obj) then
 		    return true
 		end
 	end
@@ -1323,12 +1323,12 @@ function checkMonster(npc_community, gulag_type, npc_rank, se_obj, preset_name)
 	return false
 end
 
-function checkNpc(npc_community, is_stalker, gulag_type, npc_rank, se_obj, preset_name)
+function checkNpc(npc_community, is_stalker, gulag_type, npc_rank, se_obj)
 --	printf("COMM %s !! %s", npc_community, gulag_type)
 
 	if is_stalker then
-		return checkStalker(npc_community, gulag_type, npc_rank, se_obj, preset_name)
+		return checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 	else
-		return checkMonster(npc_community, gulag_type, npc_rank, se_obj, preset_name)
+		return checkMonster(npc_community, gulag_type, npc_rank, se_obj)
 	end
 end

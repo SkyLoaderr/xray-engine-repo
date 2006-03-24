@@ -598,6 +598,9 @@
 					RelativePath=".\Config\misc\smart_terrain.ltx">
 				</File>
 				<File
+					RelativePath=".\config\misc\smart_terrain_presets.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\task_manager.ltx">
 				</File>
 				<File
@@ -609,12 +612,6 @@
 				<Filter
 					Name="gulags"
 					Filter="">
-					<File
-						RelativePath=".\config\misc\general_lager.ltx">
-					</File>
-					<File
-						RelativePath=".\config\misc\general_lair.ltx">
-					</File>
 					<File
 						RelativePath=".\Config\misc\gulag_agroprom.ltx">
 					</File>
