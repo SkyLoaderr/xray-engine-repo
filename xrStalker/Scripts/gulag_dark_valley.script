@@ -895,7 +895,7 @@ gulags.val_lager_bandits.state = function(gulag)
             if v ~= true then
                 local enemy = v:best_enemy()
                 if enemy ~= nil then
-                    enemy_type = get_clsid(enemy)
+                    local enemy_type = get_clsid(enemy)
                     if enemy_type == clsid.actor and
                         utils.npc_in_zone(db.actor, db.zone_by_name["val_lager_bandits_restrictor"]) then
                         return state_alarm_actor_inside
