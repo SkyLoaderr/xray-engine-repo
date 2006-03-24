@@ -13,11 +13,11 @@ use_wpn         = true
 ; диалог лидера
 ;--------------------------------------------------------------------------
 [meet@leader]
-meet_dialog     = {-pri_wave7_end} pri_followers_start_dlg, {-pri_followers_actor_leave} pri_followers_start_dlg
-meet_state      = 30|hello@{+pri_wave7_end}pri_followers_final_phrase2,talk_hello|10|guard@wait
-meet_state_wpn  = 30|hello@{+pri_wave7_end}pri_followers_final_phrase2,talk_hello|10|guard@wait
-victim          = 30|actor
-victim_wpn      = 30|actor
+meet_dialog     = {-pri_followers_actor_leave} pri_followers_start_dlg
+meet_state      = 25 | {+pri_followers_actor_leave} guard, hello@ {+pri_followers_actor_leave} wait, {+pri_wave7_end -pri_show_zones} pri_followers_final_phrase2, talk_hello | 5 | guard@ wait
+meet_state_wpn  = 25 | {+pri_followers_actor_leave} guard, hello@ {+pri_followers_actor_leave} wait, {+pri_wave7_end -pri_show_zones} pri_followers_final_phrase2, talk_hello | 5 | guard@ wait
+victim          = 25 | actor
+victim_wpn      = 25 | actor
 use             = true
 use_wpn         = true
 

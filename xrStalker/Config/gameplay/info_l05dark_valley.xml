@@ -54,6 +54,7 @@
     <info_portion id="val_escort_captive_fight"></info_portion>
     <info_portion id="val_escort_captive_offline"></info_portion>
     <info_portion id="val_escort_captive_can_leave"></info_portion>
+    <info_portion id="val_escort_captive_give_main_info"></info_portion>
     <info_portion id="val_escort_captive_give_info"></info_portion>
 
     <info_portion id="val_escort_got_reward"></info_portion>
