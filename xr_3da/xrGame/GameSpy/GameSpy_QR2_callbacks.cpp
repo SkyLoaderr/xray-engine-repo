@@ -13,6 +13,7 @@ void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 	CGameSpy_QR2* pQR2 = pServer->QR2();
 	if (!pQR2) return;
 
+	game_sv_mp* gmMP = smart_cast<game_sv_mp*>(pServer->game);
 	game_sv_Deathmatch* gmDM = smart_cast<game_sv_Deathmatch*>(pServer->game);
 	game_sv_TeamDeathmatch* gmTDM = smart_cast<game_sv_TeamDeathmatch*>(pServer->game);
 	game_sv_ArtefactHunt* gmAhunt = smart_cast<game_sv_ArtefactHunt*>(pServer->game);
@@ -34,7 +35,7 @@ void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 	case GAMEVER_KEY: pQR2->BufferAdd(outbuf, "0.1"); break;
 	case HOSTPORT_KEY: pQR2->BufferAdd_Int(outbuf, pServer->GetPort()); break;
 	case DEDICATED_KEY:	pQR2->BufferAdd_Int(outbuf, pServer->m_bDedicated);		break;
-	case NUMTEAMS_KEY: pQR2->BufferAdd_Int(outbuf, gmDM->GetNumTeams());		break;
+	case NUMTEAMS_KEY: pQR2->BufferAdd_Int(outbuf, gmMP->GetNumTeams()); break;		
 	case GAMETYPE_KEY:	pQR2->BufferAdd_Int(outbuf, pServer->game->Type());		break;
 		//------- game ---------//	
 	case G_MAP_ROTATION_KEY:		if (gmDM) pQR2->BufferAdd_Int(outbuf, gmDM->HasMapRotation());	break;

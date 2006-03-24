@@ -135,6 +135,7 @@ public:
 				TeamStruct*			GetTeamData				(u32 Team);
 
 	virtual		u8					GetSpectatorModes		() {return m_u8SpectatorModes;};
+	virtual		u32					GetNumTeams				() {return 0;};
     
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
