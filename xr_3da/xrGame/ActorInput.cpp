@@ -54,11 +54,16 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if(cmd==kNIGHT_VISION)
 	{
-		CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
-			if (I){
-				CTorch* torch = smart_cast<CTorch*>(I);
-				if (torch) torch->SwitchNightVision();
-			}
+		const xr_vector<CAttachableItem*>& all = CAttachmentOwner::attached_objects();
+		xr_vector<CAttachableItem*>::const_iterator it = all.begin();
+		xr_vector<CAttachableItem*>::const_iterator it_e = all.end();
+		for(;it!=it_e;++it){
+				CTorch* torch = smart_cast<CTorch*>(*it);
+				if (torch){		
+					torch->SwitchNightVision();
+					break;
+				}
+		}
 	};
 
 	if(m_holder && kUSE != cmd)
@@ -112,11 +117,16 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
 	case kTORCH:{ 
-			CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);
-			if (I){
-				CTorch* torch = smart_cast<CTorch*>(I);
-				if (torch) torch->Switch();
-			}
+		const xr_vector<CAttachableItem*>& all = CAttachmentOwner::attached_objects();
+		xr_vector<CAttachableItem*>::const_iterator it = all.begin();
+		xr_vector<CAttachableItem*>::const_iterator it_e = all.end();
+		for(;it!=it_e;++it){
+				CTorch* torch = smart_cast<CTorch*>(*it);
+				if (torch){		
+					torch->Switch();
+					break;
+				}
+		}
 		}break;
 	case kWPN_1:	
 	case kWPN_2:	
