@@ -30,14 +30,20 @@ public:
 protected:	
 	virtual bool	AllowFireWhileWorking() {return true;}
 
-	HUD_SOUND		sndClose;
-	ESoundTypes		m_eSoundClose;
-
-	MotionSVec		mhud_show_empty;
-	MotionSVec		mhud_empty;
-	MotionSVec		mhud_shot_l;
-	MotionSVec		mhud_close;
-	MotionSVec		mhud_reload_empty;
+	HUD_SOUND			sndClose;
+	ESoundTypes			m_eSoundClose;
+	struct WWPMotions{
+		MotionSVec		mhud_show_empty;
+		MotionSVec		mhud_empty;
+		MotionSVec		mhud_shot_l;
+		MotionSVec		mhud_close;
+		MotionSVec		mhud_reload_empty;
+	};
+	WWPMotions			mhud_pistol,mhud_pistol_r;
+	SWMmotions			wm_mhud_r;
+	
+	WWPMotions&			wwpm_current	();
+	SWMmotions&			swm_current	();
 
 	bool m_opened;
 };

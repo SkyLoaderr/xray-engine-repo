@@ -317,20 +317,27 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 		cam_Active()->Move((d>0)?kUP:kDOWN, _abs(d));
 	}
 }
-
+#include "HudItem.h"
 bool CActor::use_Holder				(CHolderCustom* holder)
 {
 
 	if(m_holder){
+		bool b = false;
 		CGameObject* holderGO			= smart_cast<CGameObject*>(m_holder);
 		
 		if(smart_cast<CCar*>(holderGO))
-			return use_Vehicle(0);
+			b = use_Vehicle(0);
+		else
+			if (holderGO->CLS_ID==CLSID_OBJECT_W_MOUNTED ||
+				holderGO->CLS_ID==CLSID_OBJECT_W_STATMGUN)
+				b = use_MountedWeapon(0);
 
-		if (holderGO->CLS_ID==CLSID_OBJECT_W_MOUNTED ||
-			holderGO->CLS_ID==CLSID_OBJECT_W_STATMGUN)
-			return use_MountedWeapon(0);
+		if(inventory().ActiveItem()){
+			CHudItem* hi = smart_cast<CHudItem*>(inventory().ActiveItem());
+			if(hi) hi->OnAnimationEnd();
+		}
 
+		return b;
 	}else{
 		bool b = false;
 		CGameObject* holderGO			= smart_cast<CGameObject*>(holder);
@@ -349,9 +356,14 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 				if (torch) torch->Switch(false);
 			}
 		}
+
+		if(inventory().ActiveItem()){
+			CHudItem* hi = smart_cast<CHudItem*>(inventory().ActiveItem());
+			if(hi) hi->OnAnimationEnd();
+		}
+
 		return b;
 	}
-	return false;
 }
 
 void CActor::ActorUse()

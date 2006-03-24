@@ -23,11 +23,13 @@ void CWeaponCustomPistol::switch2_Fire	()
 
 
 void CWeaponCustomPistol::OnAnimationEnd() {
-	switch(STATE) {
+/*
+switch(STATE) {
 		case eIdle:
 		case eMagEmpty:
 		return;
 	}
+*/
 	return inherited::OnAnimationEnd();
 }
 

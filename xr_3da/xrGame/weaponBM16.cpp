@@ -34,7 +34,7 @@ void CWeaponBM16::PlayAnimShoot()
 	if(m_magazine.size()==1)
 		m_pHUD->animPlay(mhud_shot1[Random.randI(mhud_shot1.size())],TRUE,this);
 	else
-		m_pHUD->animPlay(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
+		m_pHUD->animPlay(mhud.mhud_shots[Random.randI(mhud.mhud_shots.size())],TRUE,this);
 }
 
 void CWeaponBM16::PlayAnimReload()
@@ -44,7 +44,7 @@ void CWeaponBM16::PlayAnimReload()
 	if(m_magazine.size()==1 || !b_both)
 		m_pHUD->animPlay(mhud_reload1[Random.randI(mhud_reload1.size())],TRUE,this);
 	else
-		m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
+		m_pHUD->animPlay(mhud.mhud_reload[Random.randI(mhud.mhud_reload.size())],TRUE,this);
 
 }
 
@@ -57,7 +57,7 @@ void CWeaponBM16::PlayAnimIdle()
 		switch (m_magazine.size())
 		{
 		case 0:{
-			m_pHUD->animPlay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
+			m_pHUD->animPlay(mhud.mhud_idle_aim[Random.randI(mhud.mhud_idle_aim.size())], TRUE);
 		}break;
 		case 1:{
 			m_pHUD->animPlay(mhud_zoomed_idle1[Random.randI(mhud_zoomed_idle1.size())], TRUE);
@@ -70,7 +70,7 @@ void CWeaponBM16::PlayAnimIdle()
 		switch (m_magazine.size())
 		{
 		case 0:{
-			m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
+			m_pHUD->animPlay(mhud.mhud_idle[Random.randI(mhud.mhud_idle.size())], TRUE);
 		}break;
 		case 1:{
 			m_pHUD->animPlay(mhud_idle1[Random.randI(mhud_idle1.size())], TRUE);

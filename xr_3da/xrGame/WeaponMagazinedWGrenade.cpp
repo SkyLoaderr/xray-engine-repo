@@ -590,7 +590,7 @@ void CWeaponMagazinedWGrenade::PlayAnimShow()
 			m_pHUD->animPlay(mhud_show_g[Random.randI(mhud_show_g.size())],FALSE,this);
 	}	
 	else
-		m_pHUD->animPlay(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
+		m_pHUD->animPlay(mhud.mhud_show[Random.randI(mhud.mhud_show.size())],FALSE,this);
 }
 
 void CWeaponMagazinedWGrenade::PlayAnimHide()
@@ -598,7 +598,7 @@ void CWeaponMagazinedWGrenade::PlayAnimHide()
 	if(IsGrenadeLauncherAttached())
 		m_pHUD->animPlay(mhud_hide_w_gl[Random.randI(mhud_hide_w_gl.size())],TRUE,this);
 	else
-		m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+		m_pHUD->animPlay (mhud.mhud_hide[Random.randI(mhud.mhud_hide.size())],TRUE,this);
 }
 
 void CWeaponMagazinedWGrenade::PlayAnimReload()

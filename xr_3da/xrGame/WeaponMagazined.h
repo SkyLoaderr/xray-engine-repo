@@ -39,16 +39,17 @@ protected:
 	ESoundTypes		m_eSoundShot;
 	ESoundTypes		m_eSoundEmptyClick;
 	ESoundTypes		m_eSoundReload;
-					
-	// HUD :: Animations
-	MotionSVec		mhud_idle;
-	MotionSVec		mhud_idle_aim;
-	MotionSVec		mhud_reload;
-	MotionSVec		mhud_hide;
-	MotionSVec		mhud_show;
-	MotionSVec		mhud_shots;
-	MotionSVec		mhud_idle_sprint;
-
+	struct SWMmotions{
+		MotionSVec		mhud_idle;
+		MotionSVec		mhud_idle_aim;
+		MotionSVec		mhud_reload;	//
+		MotionSVec		mhud_hide;		//
+		MotionSVec		mhud_show;		//
+		MotionSVec		mhud_shots;		//
+		MotionSVec		mhud_idle_sprint;
+	};
+	SWMmotions			mhud;	
+	
 	// General
 	//кадр момента пересчета UpdateSounds
 	u32				dwUpdateSounds_Frame;
