@@ -24,6 +24,12 @@
 	<string id="item_quest_case_02">
 		<text>Документы из лагеря военных на НИИ Агропром</text>
 	</string>
+	<string id="yan_bad_psy_helmet">
+		<text>Ненастроеный прототип, разработанный учеными для защиты от ПСИ-излучения</text>
+	</string>
+	<string id="yan_good_psy_helmet">
+		<text>Настроеный прототип, разработанный учеными для защиты от ПСИ-излучения</text>
+	</string>
 	<string id="item_pri_lom_ak74">
 		<text>Личный автомат сталкера по кличке Лом</text>
 	</string>
