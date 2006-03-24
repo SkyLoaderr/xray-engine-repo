@@ -238,7 +238,7 @@ bool CEditableMesh::Convert(CExporter* E)
 	}
 	if ((GetVertexCount()<4)||(GetFaceCount()<2))
 	{
-		ELog.Msg(mtError,"Invalid mesh: '%s'. Faces<2 or Verts<4",GetName());
+		Log("!Invalid mesh: '%s'. Faces<2 or Verts<4",*Name());
 		bResult = false;
 	}
 	if (bResult){
