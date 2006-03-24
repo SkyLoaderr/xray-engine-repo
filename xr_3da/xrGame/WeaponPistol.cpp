@@ -174,8 +174,9 @@ void CWeaponPistol::OnAnimationEnd()
 	if(STATE == eHiding && m_opened) 
 	{
 		m_opened = false;
-		switch2_Hiding();
-	} else inherited::OnAnimationEnd();
+//		switch2_Hiding();
+	} 
+	inherited::OnAnimationEnd();
 }
 
 void CWeaponPistol::OnShot		()
