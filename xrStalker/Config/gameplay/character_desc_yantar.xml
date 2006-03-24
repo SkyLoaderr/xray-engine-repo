@@ -75,8 +75,8 @@
 		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_fmj = 1 \n
+			wpn_beretta_m1 \n
+			ammo_9x19_fmj = 1 \n
 			yan_kruglov_flash \n			
 			detector_advances \n
 		</supplies>
