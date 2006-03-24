@@ -179,6 +179,14 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}break;
 			}
 		}break;
+	case GEG_PLAYER_ACTIVATE_SLOT:
+		{
+			u32							slot_id;
+			P.r_u32						(slot_id);
+
+			inventory().Activate		(slot_id);
+								  
+		}break;
 //	case GEG_PLAYER_INVENTORYMENU_OPEN:
 //	case GEG_PLAYER_BUYMENU_OPEN:	
 //	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:

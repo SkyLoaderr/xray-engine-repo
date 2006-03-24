@@ -136,6 +136,8 @@ protected:
 	void				SendEvent_Item_Eat			(PIItem	pItem);
 	void 				SendEvent_Item_Sell			(PIItem	pItem);
 	void 				SendEvent_ActivateArtefact	(PIItem	pItem);
+	void				SendEvent_ActivateSlot		(PIItem	pItem);
+
 	//---------------------------------------------------------------------
 
 	void					ProcessPropertiesBoxClicked	();

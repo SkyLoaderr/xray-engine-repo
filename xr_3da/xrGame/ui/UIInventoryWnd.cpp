@@ -390,6 +390,13 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 }
 
 
+void	CUIInventoryWnd::SendEvent_ActivateSlot	(PIItem	pItem)
+{
+	NET_Packet						P;
+	pItem->object().u_EventGen		(P, GEG_PLAYER_ACTIVATE_SLOT, pItem->object().H_Parent()->ID());
+	P.w_u32							(pItem->GetSlot());
+	pItem->object().u_EventSend		(P);
+}
 
 void	CUIInventoryWnd::SendEvent_Item2Slot			(PIItem	pItem)
 {

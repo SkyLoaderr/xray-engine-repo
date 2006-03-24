@@ -176,6 +176,9 @@ bool CUIInventoryWnd::ToSlot(CUICellItem* itm, bool force_place)
 		new_owner->SetItem					(i);
 	
 		SendEvent_Item2Slot					(iitem);
+
+		SendEvent_ActivateSlot				(iitem);
+		
 		return								true;
 	}else
 	{ // in case slot is busy

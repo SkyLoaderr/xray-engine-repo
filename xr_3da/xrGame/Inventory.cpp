@@ -363,6 +363,9 @@ bool CInventory::Activate(u32 slot, bool force)
 	if(slot != NO_ACTIVE_SLOT && !m_slots[slot].m_bCanBeActivated) 
 		return false;
 	
+	if(m_iActiveSlot == slot && m_slots[m_iActiveSlot].m_pIItem){
+		m_slots[m_iActiveSlot].m_pIItem->Activate();
+	}
 
 	if(m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&
 		m_iActiveSlot != NO_ACTIVE_SLOT &&

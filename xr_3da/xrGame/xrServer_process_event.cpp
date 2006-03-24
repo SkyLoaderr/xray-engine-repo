@@ -263,6 +263,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			VERIFY					(verify_entities());
 #	endif
 		}break;
+	case GEG_PLAYER_ACTIVATE_SLOT:
 	case GEG_PLAYER_ITEMDROP:
 	case GEG_PLAYER_ITEM_EAT:
 		{
