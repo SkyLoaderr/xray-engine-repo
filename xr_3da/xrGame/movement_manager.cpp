@@ -344,3 +344,8 @@ void CMovementManager::on_frame					(CPHMovementControl *movement_control, Fvect
 			
 	move_along_path					(movement_control,dest_position,object().client_update_fdelta());
 }
+
+void CMovementManager::on_travel_point_change	(const u32 &previous_travel_point_index)
+{
+	detail().on_travel_point_change	(previous_travel_point_index);
+}

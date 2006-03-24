@@ -202,6 +202,7 @@ public:
 	IC		float								extrapolate_length		() const;
 
 public:
+			void								on_travel_point_change	(const u32 &previous_travel_point_index);
 	IC		const float							&distance_to_target		();
 };
 

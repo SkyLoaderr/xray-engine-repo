@@ -203,7 +203,7 @@ public:
 	IC		float	speed					() const;
 			float	speed					(CPHMovementControl *movement_control) const;
 
-	virtual void	on_travel_point_change	(const u32 &previous_travel_point_index) {}
+	virtual void	on_travel_point_change	(const u32 &previous_travel_point_index);
 	virtual void	on_build_path			() {}
 
 	template <typename T>

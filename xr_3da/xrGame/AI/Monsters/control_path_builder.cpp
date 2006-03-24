@@ -114,6 +114,7 @@ void CControlPathBuilder::update_schedule()
 
 void CControlPathBuilder::on_travel_point_change(const u32 &previous_travel_point_index)
 {
+	inherited::on_travel_point_change	(previous_travel_point_index);
 	m_man->notify	(ControlCom::eventTravelPointChange, 0);
 }
 

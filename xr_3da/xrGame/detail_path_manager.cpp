@@ -127,4 +127,23 @@ void CDetailPathManager::update_distance_to_target	()
 {
 	m_distance_to_target_actual	= true;
 	m_distance_to_target		= 0.f;
+
+	if (!actual())
+		return;
+
+	if (path().empty())
+		return;
+
+	if (curr_travel_point_index() >= path().size() - 1)
+		return;
+
+	xr_vector<STravelPathPoint>::const_iterator	I = path().begin() + curr_travel_point_index() + 1;
+	xr_vector<STravelPathPoint>::const_iterator	E = path().end();
+	for ( ; I != E; ++I)
+		m_distance_to_target	+= (*(I - 1)).position.distance_to((*I).position);
+}
+
+void CDetailPathManager::on_travel_point_change	(const u32 &previous_travel_point_index)
+{
+	m_distance_to_target_actual	= false;
 }
