@@ -33,11 +33,14 @@
 #include "ai/stalker/ai_stalker_space.h"
 #include "weapon.h"
 #include "danger_manager.h"
+#include "detail_path_manager.h"
 
 #define DISABLE_COVER_BEFORE_DETOUR
 
 const float TEMP_DANGER_DISTANCE = 5.f;
 const u32	TEMP_DANGER_INTERVAL = 120000;
+
+const float	CLOSE_MOVE_DISTANCE	 = 10.f;
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -283,12 +286,15 @@ CStalkerActionGetReadyToKill::CStalkerActionGetReadyToKill(CAI_Stalker *object, 
 void CStalkerActionGetReadyToKill::initialize	()
 {
 	inherited::initialize								();
+
+	m_body_state										= object().movement().body_state();
+
 	object().movement().set_desired_direction			(0);
 	object().movement().set_path_type					(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type			(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position	();
-	object().movement().set_body_state					(eBodyStateStand);
-	object().movement().set_movement_type				(eMovementTypeStand);
+	object().movement().set_body_state					(m_body_state);
+	object().movement().set_movement_type				(eMovementTypeRun);
 	object().movement().set_mental_state				(eMentalStateDanger);
 	object().sight().setup								(CSightAction(SightManager::eSightTypeCurrentDirection));
 	object().CObjectHandler::set_goal					(eObjectActionIdle);
@@ -313,6 +319,9 @@ void CStalkerActionGetReadyToKill::execute		()
 	if (!object().memory().enemy().selected())
 		return;
 
+	if (object().movement().detail().distance_to_target() > CLOSE_MOVE_DISTANCE)
+		object().movement().set_body_state	(eBodyStateStand);
+
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_best->setup			(position,10.f,170.f,10.f);
@@ -327,18 +336,18 @@ void CStalkerActionGetReadyToKill::execute		()
 		object().movement().set_desired_position	(&point->position());
 		object().movement().set_movement_type		(eMovementTypeRun);
 		if (object().movement().path_completed() || object().Position().distance_to(point->position()) < 1.f) {
-			object().movement().set_body_state		(eBodyStateCrouch);
+//			object().movement().set_body_state		(eBodyStateCrouch);
 			object().brain().affect_cover			(true);
 		}
 		else {
-			object().movement().set_body_state		(eBodyStateStand);
+//			object().movement().set_body_state		(eBodyStateStand);
 			object().brain().affect_cover			(false);
 		}
 	}
 	else {
 		object().brain().affect_cover				(true);
 		object().movement().set_movement_type		(eMovementTypeStand);
-		object().movement().set_body_state			(eBodyStateCrouch);
+//		object().movement().set_body_state			(eBodyStateCrouch);
 	}
 
 	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
@@ -414,10 +423,13 @@ CStalkerActionTakeCover::CStalkerActionTakeCover(CAI_Stalker *object, LPCSTR act
 void CStalkerActionTakeCover::initialize		()
 {
 	inherited::initialize						();
+
+	m_body_state								= object().movement().body_state();
+
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_body_state			(m_body_state);
 	object().movement().set_movement_type		(eMovementTypeRun);
 	object().movement().set_mental_state		(eMentalStateDanger);
 	m_storage->set_property						(eWorldPropertyLookedOut,false);
@@ -449,6 +461,9 @@ void CStalkerActionTakeCover::execute		()
 
 	if (!mem_object.m_object)
 		return;
+
+	if (object().movement().detail().distance_to_target() > CLOSE_MOVE_DISTANCE)
+		object().movement().set_body_state	(eBodyStateStand);
 
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_best->setup			(position,10.f,170.f,10.f);

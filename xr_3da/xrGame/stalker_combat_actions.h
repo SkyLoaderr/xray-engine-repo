@@ -13,6 +13,10 @@
 
 class CCoverPoint;
 
+namespace MonsterSpace {
+	enum EBodyState;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionCombatBase
 //////////////////////////////////////////////////////////////////////////
@@ -83,6 +87,9 @@ class CStalkerActionGetReadyToKill : public CStalkerActionCombatBase {
 protected:
 	typedef CStalkerActionCombatBase inherited;
 
+private:
+	MonsterSpace::EBodyState	m_body_state;
+
 public:
 						CStalkerActionGetReadyToKill(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
@@ -112,6 +119,9 @@ public:
 class CStalkerActionTakeCover : public CStalkerActionCombatBase {
 protected:
 	typedef CStalkerActionCombatBase inherited;
+
+private:
+	MonsterSpace::EBodyState	m_body_state;
 
 public:
 						CStalkerActionTakeCover		(CAI_Stalker *object, LPCSTR action_name = "");
