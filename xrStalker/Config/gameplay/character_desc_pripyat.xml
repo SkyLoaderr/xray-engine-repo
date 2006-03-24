@@ -426,9 +426,8 @@
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>788</rank>
+		<rank>937</rank>
 		<reputation>18</reputation>
-		<panic_treshold>0.3</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -457,9 +456,8 @@
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>808</rank>
+		<rank>911</rank>
 		<reputation>19</reputation>
-		<panic_treshold>0.25</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
@@ -487,9 +485,8 @@
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>837</rank>
+		<rank>940</rank>
 		<reputation>12</reputation>
-		<panic_treshold>0.2</panic_treshold>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
