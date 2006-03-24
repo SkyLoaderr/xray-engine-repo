@@ -72,10 +72,11 @@ void CStalkerActionDangerInDirectionTakeCover::execute							()
 	if (!object().movement().path_completed()) {
 		object().movement().set_body_state		(eBodyStateStand);
 		object().movement().set_movement_type	(eMovementTypeRun);
-		if (!m_direction_sight || !object().movement().distance_to_destination_greater(2.f))
-			object().sight().setup				(CSightAction(SightManager::eSightTypeCover,true,true));
-		else
-			object().sight().setup				(CSightAction(SightManager::eSightTypePathDirection,true,true));
+		object().sight().setup					(CSightAction(SightManager::eSightTypePosition,object().memory().danger().selected()->position(),true));
+//		if (!m_direction_sight || !object().movement().distance_to_destination_greater(2.f))
+//			object().sight().setup				(CSightAction(SightManager::eSightTypeCover,true,true));
+//		else
+//			object().sight().setup				(CSightAction(SightManager::eSightTypePathDirection,true,true));
 		return;
 	}
 
