@@ -15,7 +15,6 @@
 		<rank>932</rank>
 		<hit_probability_factor>1.5</hit_probability_factor>
 		<reputation>-147</reputation>
- 		<panic_treshold>0.15</panic_treshold>
 
 		<visual>actors\bandit\stalker_bandit_borov</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -54,7 +53,6 @@
 		
 		<rank>734</rank>
 		<reputation>-138</reputation>
-		<panic_treshold>0.2</panic_treshold>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<snd_config>characters_voice\human_03\bandit\</snd_config>
@@ -607,7 +605,6 @@
 		
 		<rank>567</rank>
 		<reputation>128</reputation>
-		<panic_treshold>0.15</panic_treshold>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
@@ -650,7 +647,6 @@
 		
 		<rank>535</rank>
 		<reputation>126</reputation>
-		<panic_treshold>0.18</panic_treshold>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
