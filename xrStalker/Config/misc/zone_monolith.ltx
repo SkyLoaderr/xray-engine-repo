@@ -1,66 +1,49 @@
 [zone_monolith]
 GroupControlSection	= spawn_group_zone
-$spawn 			= "zones\zone_monolith"
+$spawn 			= "zones\monolith"
 ;$prefetch 		= 16
-class			= Z_BFUZZ
-visual			= physics\anomaly\topolinypuh 
-min_speed_to_react = 7.01
-ef_anomaly_type			= 6
-ef_weapon_type			= 18
-
-hit_impulse_scale	= 0.0
-effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
+class			= Z_RADIO
+hit_impulse_scale	= .01
+effective_radius	= 1.00 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
-postprocess		= postprocess_fuzz
+postprocess		= postprocess_electra
 
+ef_anomaly_type			= 3
+ef_weapon_type			= 15
 
-artefacts		=
-BirthProbability = 0.0
+artefacts		= 
+BirthProbability = 0.0;0.1
 
 ;----------- Anomaly settings -----------------------
-min_start_power		= 0.10
-max_start_power		= 0.15
-attenuation			= 1
+min_start_power		= 0.90
+max_start_power		= 1.00
+attenuation			= 0.1
 period				= 1
 min_artefact_count	= 0
 max_artefact_count	= 0
 
+hit_type		= radiation
 
-hit_type		= chemical_burn
-hit_effect		= anomaly2\hit_metal_02
+idle_particles		= anomaly2\monolith
+blowout_particles	= anomaly2\monolith_active
 
-idle_particles		= anomaly2\pux_idle
-blowout_particles	= anomaly2\pux_blast
+disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= -1	;время отключения idle партиклов
 
-;hit_small_particles		= hit_fx\hit_metal_02
-;hit_big_particles			= anomaly2\
-idle_small_particles		= anomaly2\pux_damage_smoke_01
-idle_big_particles			= anomaly2\pux_damage_smoke_02
-;entrance_small_particles	= anomaly2\electra_entrance_small
-;entrance_big_particles		= anomaly2\electra_entrance_big
+idle_sound			= anomaly\monolith_idle; anomaly_gravy_idle
+blowout_sound		= characters_voice\scenario\sarcofag\monolith_call_1
 
-;idle_sound			= anomaly\anomaly_gravy_idle
-blowout_sound		= anomaly\bfuzz_blowout
-hit_sound			= anomaly\bfuzz_hit
-;entrance_sound		= anomaly\electra_hit
-
-disable_time		= 500	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
-disable_idle_time	= 1000	;время отключения idle партиклов
-
-awaking_time				= 50
-blowout_time				= 1000	
-accamulate_time				= 5000
-
-attack_animation_start		= 10
-attack_animation_end		= 1000
-
-ignore_nonalive		= false;
-ignore_small		= false;
+ignore_nonalive		= true;
+ignore_small		= true;
 ignore_artefacts	= true
 
 blowout_light		= off
 idle_light			= off
+
+awaking_time		= 100
+blowout_time		= 150	
+accamulate_time		= 500
 
 visible_by_detector = on
 
