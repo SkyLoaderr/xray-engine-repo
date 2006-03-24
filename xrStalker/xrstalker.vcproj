@@ -2392,6 +2392,9 @@
 					RelativePath=".\Config\misc\zone_minefield.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\zone_monolith.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\zone_mosquitobald.ltx">
 				</File>
 				<File
