@@ -1912,7 +1912,7 @@ function load_states(gname, type)
 			if not actor then
 				return gulag.state
 			end
-			if actor:has_info("escape_fox_heal") and actor:dont_has_info("esc_dogs_return") then
+			if actor:has_info("escape_stalker_done") and actor:dont_has_info("esc_dogs_return") then
 				return 1
 			else
 				return 0
