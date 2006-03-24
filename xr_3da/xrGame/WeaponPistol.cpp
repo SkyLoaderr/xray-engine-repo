@@ -213,10 +213,10 @@ CWeaponPistol::WWPMotions&	 CWeaponPistol::wwpm_current	()
 {
 	CActor* A = smart_cast<CActor*>(H_Parent());
 	if(A && A->Holder()){	
-		Msg("right-hand animation playing");
+//		Msg("right-hand animation playing");
 		return				mhud_pistol_r;
 	}
-	Msg("double-hands animation playing");
+//	Msg("double-hands animation playing");
 	return					mhud_pistol;
 }
 
