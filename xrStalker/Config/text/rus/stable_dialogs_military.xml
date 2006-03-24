@@ -409,16 +409,16 @@
         <text>Ничего.</text>
     </string>
     <string id="mil_dolg_soldier_dialog_0">
-        <text>Вот так тремя засранцанцами стало меньше. А ты появился как нельзя во время, и нас не спалил, и сам цел остался. Я думаю, никто об этом не узнает, а?</text>
+        <text>Вот так тремя засранцанцами стало меньше. Ты вовремя появился, и нас не спалил, и сам цел остался. Я думаю, никто об этом не узнает, а?</text>
     </string>
     <string id="mil_dolg_soldier_dialog_1">
-        <text>Нет.</text>
+        <text>Не узнает.</text>
     </string>
     <string id="mil_dolg_soldier_dialog_2">
         <text>Ну, вот и славненько. Есть желание заработать?</text>
     </string>
     <string id="mil_dolg_soldier_dialog_20">
-        <text>Ну, не знаю...</text>
+        <text>Ну, не знаю.</text>
     </string>
     <string id="mil_dolg_soldier_dialog_21">
         <text>Тебе что, жить надоело ?</text>
@@ -1012,7 +1012,7 @@
         <text>В главном здании, на первом этаже, слева сидит Скряга. Он у нас занимается всей торговлей. Можешь ему также и артефакты предложить.</text>
     </string>
     <string id="mil_neutral_commander_0">
-        <text>Дарово сталкер! Пришел получить свою дозу адреналина?</text>
+        <text>Здарово сталкер! Пришел получить свою дозу адреналина?</text>
     </string>
     <string id="mil_neutral_commander_1000">
         <text>В смысле?</text>
@@ -1171,40 +1171,34 @@
         <text>Ну, что надо ?</text>
     </string>
     <string id="mil_trader_dialog_3002">
-        <text>Да вот, хочу у тебя про артефакты спростить. Где можно разжиться ?</text>
+        <text>Ничего, просто осматриваюсь.</text>
     </string>
     <string id="mil_trader_dialog_3003">
-        <text>Там же, где и всегда - в аномалиях. Какой ты глупый... Но, есть еще варианты...</text>
+        <text>Ты лучше делом займись. Тем более у меня сейчас есть работа, могу тебе предложить. Интересно?</text>
     </string>
     <string id="mil_trader_dialog_3004">
-        <text>Какие ?</text>
+        <text>Интересно.</text>
     </string>
     <string id="mil_trader_dialog_3005">
-        <text>Ну, первый пункт ясен - в аномалиях. Второй - я могу дать тебе "Кристалл", если ты окажешь одну услугу...</text>
+        <text>Я могу дать тебе "Кристалл", если ты окажешь одну услугу. Тут ситуация сложилась неприятная, мужики из деревни артефакты не несут - боятся. Говорят, какая-то тварь завелась. К тому же сейчас просто некого послать в деревню, хоть Долг приглашай.</text>
     </string>
     <string id="mil_trader_dialog_3006">
-        <text>Какую ?</text>
+        <text>Продолжай.</text>
     </string>
     <string id="mil_trader_dialog_3007">
-        <text>Мужики из деревни артефакты не несут - боятся. Говорят, какая-то тварь завелась. Если поможешь разобраться, то с меня "Кристалл".</text>
+        <text>Пара ребят ушли в деревню и не вернулись. А остальные трое так и сидят у деревни. Если ты эту тварь убьешь, я тебе кристал дам. Берешься?</text>
     </string>
-    <string id="mil_trader_dialog_3008">
-        <text>Все так плохо ?</text>
-    </string>
-    <string id="mil_trader_dialog_3009">
-        <text>Все еще хуже. Они сообщили, что пара ребят ушли в деревню и не вернулись. А остальные трое так и сидят у деревни. Храбрецы, блин. Ну что, возьмешься?</text>
-    </string>
-    <string id="mil_trader_dialog_3010">
-        <text>Возьмусь.</text>
-    </string>
-    <string id="mil_trader_dialog_3011">
-        <text>Другое дело. Ты, если что найдешь - тащи, я возьму по хорошей цене.</text>
-    </string>
-    <string id="mil_trader_dialog_3020">
+    <string id="mil_trader_dialog_30071">
         <text>Не в этот раз.</text>
     </string>
-    <string id="mil_trader_dialog_3021">
-        <text>Как знаешь.</text>
+    <string id="mil_trader_dialog_30072">
+        <text>Ну как знаешь. Рано или поздно кто-то ее все равно завалит. А кристалл дорогого стоит.</text>
+    </string>
+    <string id="mil_trader_dialog_3008">
+        <text>Берусь.</text>
+    </string>
+    <string id="mil_trader_dialog_3009">
+        <text>Вот и хорошо. А если что еще найдешь, так тащи, возьму по хорошей цене.</text>
     </string>
     <string id="mil_trader_dialog_3101">
         <text>И что ?</text>
@@ -1396,22 +1390,22 @@
         <text>Иди в главное здание. Там на первом этаже найдешь.</text>
     </string>
     <string id="mil_zoneguard_dialog_6">
-        <text>Здорово, бродяга ! Зашел к нам на огонек ?</text>
+        <text>Здорово, бродяга! Зашел к нам на огонек?</text>
     </string>
     <string id="mil_zoneguard_dialog_601">
-        <text>Зашел...</text>
+        <text>Да.</text>
     </string>
     <string id="mil_zoneguard_dialog_602">
         <text>Хочешь присоединиться к нам или как ?</text>
     </string>
     <string id="mil_zoneguard_dialog_603">
-        <text>Посмотрим.</text>
+        <text>По делам.</text>
     </string>
     <string id="mil_zoneguard_dialog_604">
         <text>Присоединяйся, у нас тут весело.</text>
     </string>
     <string id="mil_zoneguard_dialog_605">
-        <text>Я подумаю...</text>
+        <text>Я подумаю.</text>
     </string>
     <string id="mil_zoneguard_dialog_607">
         <text>Говорящая лошадь?</text>
