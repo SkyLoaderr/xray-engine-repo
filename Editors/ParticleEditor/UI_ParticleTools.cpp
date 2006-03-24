@@ -62,7 +62,7 @@ bool CParticleTools::OnCreate()
         	AnsiString tmp; tmp.sprintf("info \"'%s' say: 'Please exit from editor.'\"",Core.CompName);
         	UI->SendMail("*",UI->EditorName(),tmp.c_str());
         }
-    	//.return false;
+    	return false;
     }
 
     m_bReady = true;
