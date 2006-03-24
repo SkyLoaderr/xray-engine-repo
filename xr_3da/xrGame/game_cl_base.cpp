@@ -42,6 +42,7 @@ void	game_cl_GameState::net_import_GameTime		(NET_Packet& P)
 	float			TimeFactor;
 	P.r_float		(TimeFactor);
 
+	
 	Level().SetGameTimeFactor	(GameTime,TimeFactor);
 
 	u64				GameEnvironmentTime;
@@ -49,7 +50,10 @@ void	game_cl_GameState::net_import_GameTime		(NET_Packet& P)
 	float			EnvironmentTimeFactor;
 	P.r_float		(EnvironmentTimeFactor);
 
+	u64 OldTime = Level().GetEnvironmentGameTime();
 	Level().SetEnvironmentGameTimeFactor	(GameEnvironmentTime,EnvironmentTimeFactor);
+	if (OldTime > GameEnvironmentTime)
+		g_pGamePersistent->Environment.Invalidate();
 }
 
 void	game_cl_GameState::net_import_state	(NET_Packet& P)
