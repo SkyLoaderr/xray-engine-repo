@@ -173,7 +173,7 @@ void CEnvironment::RenderClouds			()
 
 	// Fill index buffer
 	u16*	pib					= RCache.Index.Lock	(CloudsIndices.size(),i_offset);
-	CopyMemory				(pib,&CloudsIndices.front(),CloudsIndices.size()*sizeof(u16));
+	CopyMemory					(pib,&CloudsIndices.front(),CloudsIndices.size()*sizeof(u16));
 	RCache.Index.Unlock			(CloudsIndices.size());
 
 	// Fill vertex buffer

@@ -48,8 +48,9 @@ void CRenderDevice::Destroy	(void) {
 
 void CRenderDevice::Reset		()
 {
-	ShowCursor	(TRUE);
+	ShowCursor				(TRUE);
 	u32 tm_start			= TimerAsync();
+	if (g_pGamePersistent)	g_pGamePersistent->Environment.OnDeviceDestroy();
 	Resources->reset_begin	();
 	Memory.mem_compact		();
 	HW.Reset				(m_hWnd);
@@ -58,6 +59,7 @@ void CRenderDevice::Reset		()
 	fWidth_2				= float(dwWidth/2);
 	fHeight_2				= float(dwHeight/2);
 	Resources->reset_end	();
+	if (g_pGamePersistent)	g_pGamePersistent->Environment.OnDeviceCreate();
 	_SetupStates			();
 	PreCache				(DEVICE_RESET_PRECACHE_FRAME_COUNT);
 	u32 tm_end				= TimerAsync();
