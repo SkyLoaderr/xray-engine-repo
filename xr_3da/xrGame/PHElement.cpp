@@ -416,9 +416,9 @@ void CPHElement::PhDataUpdate(dReal step){
 		Msg("y  %f,%f,%f",dBodyGetRotation(m_body)[1],dBodyGetRotation(m_body)[5],dBodyGetRotation(m_body)[9]);
 		Msg("z  %f,%f,%f",dBodyGetRotation(m_body)[2],dBodyGetRotation(m_body)[6],dBodyGetRotation(m_body)[10]);
 		CPhysicsShellHolder* ph=PhysicsRefObject();
-		Msg("name visual %s",ph->cNameVisual());
+		Msg("name visual %s",*ph->cNameVisual());
 		Msg("name obj %s",ph->Name());
-		Msg("name obj %s",ph->cNameSect());
+		Msg("name section %s",*ph->cNameSect());
 		VERIFY2(0,"bad angular velocity");
 	}
 #endif
