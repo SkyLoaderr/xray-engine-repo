@@ -59,7 +59,10 @@ IC BOOL dBodyStateValide(const dBodyID body)
 	return dM_valid(dBodyGetRotation(body)) &&
 			dV_valid(dBodyGetPosition(body))&&
 			dV_valid(dBodyGetLinearVel(body))&&
-			dV_valid(dBodyGetAngularVel(body));
+			dV_valid(dBodyGetAngularVel(body))&&
+			dV_valid(dBodyGetTorque(body))&&
+			dV_valid(dBodyGetForce(body))
+			;
 }
 
 
