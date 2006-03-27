@@ -19,7 +19,7 @@
 			cell_width = "41" cell_height="41"
 			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"/>
 
-	<dragdrop_list_our x="29" y="35" width="250" height="410"
+	<dragdrop_list_our x="29" y="35" width="262" height="410"
 			cell_width = "41" cell_height="41" rows_num="10" cols_num="6" 
 			unlimited="1" group_similar="1"/>
 
