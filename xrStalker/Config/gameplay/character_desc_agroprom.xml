@@ -27,8 +27,7 @@
 			ammo_5.45x39_ap \n
 			device_torch \n
 			medkit = 2 \n
-			krot_flash \n
-#include "gameplay\character_food.xml"
+		#include "gameplay\character_food.xml"
 		</supplies>
 
 		<start_dialog>agr_krot_help</start_dialog>
