@@ -15,6 +15,7 @@ class CCoverPoint;
 
 namespace MonsterSpace {
 	enum EBodyState;
+	enum EMovementType;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,7 +89,8 @@ protected:
 	typedef CStalkerActionCombatBase inherited;
 
 private:
-	MonsterSpace::EBodyState	m_body_state;
+	MonsterSpace::EBodyState		m_body_state;
+	MonsterSpace::EMovementType		m_movement_type;
 
 public:
 						CStalkerActionGetReadyToKill(CAI_Stalker *object, LPCSTR action_name = "");
@@ -121,7 +123,8 @@ protected:
 	typedef CStalkerActionCombatBase inherited;
 
 private:
-	MonsterSpace::EBodyState	m_body_state;
+	MonsterSpace::EBodyState		m_body_state;
+	MonsterSpace::EMovementType		m_movement_type;
 
 public:
 						CStalkerActionTakeCover		(CAI_Stalker *object, LPCSTR action_name = "");

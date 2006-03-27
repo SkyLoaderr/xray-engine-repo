@@ -288,6 +288,7 @@ void CStalkerActionGetReadyToKill::initialize	()
 	inherited::initialize								();
 
 	m_body_state										= object().movement().body_state();
+	m_movement_type										= Random.randI(2) ? eMovementTypeRun : eMovementTypeWalk;
 
 	object().movement().set_desired_direction			(0);
 	object().movement().set_path_type					(MovementManager::ePathTypeLevelPath);
@@ -320,7 +321,9 @@ void CStalkerActionGetReadyToKill::execute		()
 		return;
 
 	if (object().movement().detail().distance_to_target() > CLOSE_MOVE_DISTANCE)
-		object().movement().set_body_state	(eBodyStateStand);
+		object().movement().set_body_state		(eBodyStateStand);
+	else
+		object().movement().set_movement_type	(m_movement_type);
 
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 	Fvector								position = mem_object.m_object_params.m_position;
@@ -425,6 +428,7 @@ void CStalkerActionTakeCover::initialize		()
 	inherited::initialize						();
 
 	m_body_state								= object().movement().body_state();
+	m_movement_type								= Random.randI(2) ? eMovementTypeRun : eMovementTypeWalk;
 
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
@@ -463,7 +467,9 @@ void CStalkerActionTakeCover::execute		()
 		return;
 
 	if (object().movement().detail().distance_to_target() > CLOSE_MOVE_DISTANCE)
-		object().movement().set_body_state	(eBodyStateStand);
+		object().movement().set_body_state		(eBodyStateStand);
+	else
+		object().movement().set_movement_type	(m_movement_type);
 
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_best->setup			(position,10.f,170.f,10.f);

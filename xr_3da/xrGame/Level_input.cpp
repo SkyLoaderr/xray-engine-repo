@@ -133,6 +133,11 @@ void CLevel::IR_OnKeyboardPress	(int key)
 
 	if(	g_bDisableAllInput	) return;
 
+	// Dima : sometimes it craches when pHUD->GetUI() is null
+	// correct this if correction is incorrect
+	if (!pHUD->GetUI())
+		return;
+
 	if (pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 
 	if( Device.Pause()		) return;
