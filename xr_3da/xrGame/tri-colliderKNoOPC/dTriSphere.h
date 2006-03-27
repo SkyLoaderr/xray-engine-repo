@@ -4,7 +4,7 @@
 #include "../MathUtils.h"
 IC float	dSphereProj(dxGeom* sphere,const dReal* /**normal/**/)
 {
-	dIASSERT (dGeomGetClass(sphere)== dSphereClass);
+	VERIFY (dGeomGetClass(sphere)== dSphereClass);
 	return	dGeomSphereGetRadius(sphere);
 }
 

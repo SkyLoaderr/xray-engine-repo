@@ -37,6 +37,9 @@ CCustomRocket::CCustomRocket()
 
 	m_pTrailLight = NULL;
 	m_bFlyingSoundPresent = false;
+	m_LaunchXForm.identity();
+	m_vLaunchVelocity.set(0,0,0);
+	m_vLaunchAngularVelocity.set(0,0,0);
 }
 
 CCustomRocket::~CCustomRocket	()

@@ -272,7 +272,8 @@ void CPHJoint::CreateSlider()
 
 	CalcAxis(1,axis,lo,hi,first_matrix,second_matrix,rotate);
 	if(!body1)axis.invert();//SwapLimits(lo,hi);
-	dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
+	int rel = body1 ? 1 : 2;
+	dJointSetAMotorAxis (m_joint1, 0,rel, axis.x, axis.y, axis.z);
 	dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
 	if(!(axes[1].force<0.f)){

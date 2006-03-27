@@ -94,7 +94,9 @@ static inline dReal sinc (dReal x)
 void dxStepBody (dxBody *b, dReal h)
 {
   int j;
-
+#ifdef DEBUG_VALID
+dIASSERT(dValid(b->avel[0])&&dValid(b->avel[1])&&dValid(b->avel[2]));
+#endif
   // handle linear velocity
   for (j=0; j<3; j++) b->pos[j] += h * b->lvel[j];
 
@@ -163,6 +165,16 @@ void dxStepBody (dxBody *b, dReal h)
   // notify all attached geoms that this body has moved
   for (dxGeom *geom = b->geom; geom; geom = dGeomGetBodyNext (geom))
     dGeomMoved (geom);
+
+#ifdef DEBUG_VALID
+dIASSERT(dValid(b->avel[0])&&dValid(b->avel[1])&&dValid(b->avel[2]));
+#endif
+
+
+
+
+
+
 }
 
 //****************************************************************************

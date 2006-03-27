@@ -19,8 +19,8 @@ int dSortedTriBox (
 
 
 
-  dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (dGeomGetClass(o1) == dBoxClass);
+  VERIFY (skip >= (int)sizeof(dContactGeom));
+  VERIFY (dGeomGetClass(o1) == dBoxClass);
   
 
   
@@ -182,8 +182,8 @@ contact->depth = outDepth;
 
 
 
-  dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (dGeomGetClass(o1) == dBoxClass);
+  VERIFY (skip >= (int)sizeof(dContactGeom));
+  VERIFY (dGeomGetClass(o1) == dBoxClass);
   
   
   

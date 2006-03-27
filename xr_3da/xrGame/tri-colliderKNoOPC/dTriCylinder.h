@@ -26,7 +26,7 @@ int dSortedTriCyl (
 
 IC float	dCylProj(dxGeom* cylinder,const dReal* normal)
 {
-	dIASSERT (dGeomGetClass(cylinder)== dCylinderClassUser);
+	VERIFY(dGeomGetClass(cylinder)== dCylinderClassUser);
 	float hlz,radius;
 	dGeomCylinderGetParams(cylinder,&radius,&hlz);
 	const dReal* R=dGeomGetRotation(cylinder);

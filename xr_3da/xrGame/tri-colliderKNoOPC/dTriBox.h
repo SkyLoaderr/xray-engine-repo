@@ -11,7 +11,7 @@ struct dxBox {
 
 IC float	dBoxProj(dxGeom* box,const dReal* normal)
 {
-	dIASSERT (dGeomGetClass(box)== dBoxClass);
+	VERIFY (dGeomGetClass(box)== dBoxClass);
 	float hside[3];
 	dGeomBoxGetLengths(box,hside);
 	hside[0]*=.5f;hside[1]*=0.5f;hside[2]*=0.5f;

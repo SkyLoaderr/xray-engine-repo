@@ -1058,9 +1058,9 @@ int dCollideCylS (dxGeom *o1, dxGeom *o2, int flags,
 {
  
 
-  dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (dGeomGetClass(o2) == dSphereClass);
-  dIASSERT (dGeomGetClass(o1) == dCylinderClassUser);
+  VERIFY (skip >= (int)sizeof(dContactGeom));
+  VERIFY (dGeomGetClass(o2) == dSphereClass);
+  VERIFY (dGeomGetClass(o1) == dCylinderClassUser);
   const dReal* p1=dGeomGetPosition(o1);
   const dReal* p2=dGeomGetPosition(o2);
   const dReal* R=dGeomGetRotation(o1);
@@ -1246,9 +1246,9 @@ int dCollideCylPlane
 	(
 	dxGeom *o1, dxGeom *o2, int flags,
 			  dContactGeom *contact, int skip){
-  dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (dGeomGetClass(o1) == dCylinderClassUser);
-  dIASSERT (dGeomGetClass(o2) == dPlaneClass);
+  VERIFY (skip >= (int)sizeof(dContactGeom));
+  VERIFY (dGeomGetClass(o1) == dCylinderClassUser);
+  VERIFY (dGeomGetClass(o2) == dPlaneClass);
   contact->g1 = const_cast<dxGeom*> (o1);
   contact->g2 = const_cast<dxGeom*> (o2);
   
@@ -1356,9 +1356,9 @@ if(dFabs(Q2)>M_SQRT1_2){
 
 int dCollideCylRay(dxGeom *o1, dxGeom *o2, int flags,
 				   dContactGeom *contact, int skip) {
-					   dIASSERT (skip >= (int)sizeof(dContactGeom));
-					   dIASSERT (dGeomGetClass(o1) == dCylinderClassUser);
-					   dIASSERT (dGeomGetClass(o2) == dRayClass);
+					   VERIFY (skip >= (int)sizeof(dContactGeom));
+					   VERIFY (dGeomGetClass(o1) == dCylinderClassUser);
+					   VERIFY (dGeomGetClass(o2) == dRayClass);
 					   contact->g1 = const_cast<dxGeom*> (o1);
 					   contact->g2 = const_cast<dxGeom*> (o2);
 					   dReal radius;
@@ -1500,7 +1500,7 @@ const dReal* pos= dGeomGetPosition(geom);
 
 dxGeom *dCreateCylinder (dSpaceID space, dReal r, dReal lz)
 {
- dAASSERT (r > 0 && lz > 0);
+ VERIFY (r > 0 && lz > 0);
  if (dCylinderClassUser == -1)
   {
     dGeomClass c;
@@ -1526,8 +1526,8 @@ dxGeom *dCreateCylinder (dSpaceID space, dReal r, dReal lz)
 
 void dGeomCylinderSetParams (dGeomID g, dReal radius, dReal length)
 {
-  dUASSERT (g && dGeomGetClass(g) == dCylinderClassUser ,"argument not a cylinder");
-  dAASSERT (radius > 0 && length > 0);
+  VERIFY2 (g && dGeomGetClass(g) == dCylinderClassUser ,"argument not a cylinder");
+  VERIFY (radius > 0 && length > 0);
   dxCylinder *c = (dxCylinder*) dGeomGetClassData(g);
   c->radius = radius;
   c->lz = length;
@@ -1537,7 +1537,7 @@ void dGeomCylinderSetParams (dGeomID g, dReal radius, dReal length)
 
 void dGeomCylinderGetParams (dGeomID g, dReal *radius, dReal *length)
 {
-  dUASSERT (g && dGeomGetClass(g) == dCylinderClassUser ,"argument not a cylinder");
+  VERIFY2 (g && dGeomGetClass(g) == dCylinderClassUser ,"argument not a cylinder");
   dxCylinder *c = (dxCylinder*) dGeomGetClassData(g);
   *radius = c->radius;
   *length = c->lz;

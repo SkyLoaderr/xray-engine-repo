@@ -437,7 +437,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		angular_velocity[2]			/m_w_scale
 		);
 
-	VERIFY(dBodyStateValide(m_body));
+	
 	///////////////////scale changes values directly so get base values after it/////////////////////////
 	/////////////////////////////base values////////////////////////////////////////////////////////////
 	dReal linear_velocity_smag	=		dDOT(linear_velocity,linear_velocity);
@@ -524,7 +524,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		-linear_velocity[1]*l_air,
 		-linear_velocity[2]*l_air
 		);
-
+	VERIFY(dBodyStateValide(m_body));
 	VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
 	VERIFY2(dV_valid(dBodyGetQuaternion(m_body)),"invalid body rotation");
 	UpdateInterpolation				();

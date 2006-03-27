@@ -32,23 +32,9 @@
 #include "lcp.h"
 #include "util.h"
 #include "stdlib.h"
-#include "float.h"
-#include <algorithm>
-inline bool		_valid	(const float x)
-{
-	// check for: Signaling NaN, Quiet NaN, Negative infinity ( –INF), Positive infinity (+INF), Negative denormalized, Positive denormalized
-	int			cls			= _fpclass		(double(x));
-	if (cls&(_FPCLASS_SNAN+_FPCLASS_QNAN+_FPCLASS_NINF+_FPCLASS_PINF+_FPCLASS_ND+_FPCLASS_PD))	
-		return	false;	
 
-	/*	*****other cases are*****
-	_FPCLASS_NN Negative normalized non-zero 
-	_FPCLASS_NZ Negative zero ( – 0) 
-	_FPCLASS_PZ Positive 0 (+0) 
-	_FPCLASS_PN Positive normalized non-zero 
-	*/
-	return		true;
-}
+#include <algorithm>
+
 
 
 #define ALLOCA dALLOCA16
@@ -771,6 +757,7 @@ static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *
 void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 		     dxJoint **joint, int nj, dReal stepsize)
 {
+	
 	int i,j;
 	IFTIMING(dTimerStart("preprocessing");)
 
@@ -792,16 +779,33 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 	dRealAllocaArray (I,3*4*nb);	// need to remember all I's for feedback purposes only
 	dRealAllocaArray (invI,3*4*nb);
 	for (i=0; i<nb; i++) {
+
 		dMatrix3 tmp;
+		dxBody	*b=body[i];
+#ifdef DEBUG_VALID
+		dIASSERT(dValid(b->tacc[0])&&dValid(b->tacc[1])&&dValid(b->tacc[2]));
+#endif
 		// compute inertia tensor in global frame
-		dMULTIPLY2_333 (tmp,body[i]->mass.I,body[i]->R);
-		dMULTIPLY0_333 (I+i*12,body[i]->R,tmp);
+		dMULTIPLY2_333 (tmp,b->mass.I,body[i]->R);
+		dMULTIPLY0_333 (I+i*12,b->R,tmp);
 		// compute inverse inertia tensor in global frame
-		dMULTIPLY2_333 (tmp,body[i]->invI,body[i]->R);
-		dMULTIPLY0_333 (invI+i*12,body[i]->R,tmp);
+		dMULTIPLY2_333 (tmp,b->invI,b->R);
+		dMULTIPLY0_333 (invI+i*12,b->R,tmp);
 		// compute rotational force
-		dMULTIPLY0_331 (tmp,I+i*12,body[i]->avel);
-		dCROSS (body[i]->tacc,-=,body[i]->avel,tmp);
+		dMULTIPLY0_331 (tmp,I+i*12,b->avel);
+
+		dCROSS (b->tacc,-=,b->avel,tmp);
+#ifndef dNODEBUG
+		if(!(dValid(b->tacc[0])&&dValid(b->tacc[1])&&dValid(b->tacc[2])))
+		{
+			//char s[64];
+			//_snprintf (s,sizeof(s),"tmp %f,%f,%f \n avel %f,%f,%f",tmp[0],tmp[1],tmp[2],b->avel[0],b->avel[1],b->avel[2]);
+			//dUASSERT(0,"tmp %f,%f,%f \n avel %f,%f,%f",tmp[0],tmp[1],tmp[2],b->avel[0],b->avel[1],b->avel[2]);
+
+			dDebug (d_ERR_UASSERT," (%s:%d \n tmp %f,%f,%f \n avel %f,%f,%f)", __FILE__,__LINE__,tmp[0],tmp[1],tmp[2],b->avel[0],b->avel[1],b->avel[2]);
+		}
+
+#endif
 	}
 
 	// add the gravity force to all bodies
@@ -958,12 +962,12 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 
 				float &lf=cforce[i*6+j];
 				float &af=cforce[i*6+3+j];
-				if(!_valid(lf))
+				if(!dValid(lf))
 				{
 					lf=0.f;
 					bvalid=false;
 				}
-				if(!_valid(af))
+				if(!dValid(af))
 				{
 					af=0.f;
 					bvalid=false;
@@ -1019,18 +1023,26 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 
 	IFTIMING (dTimerNow ("compute velocity update");)
 	for (i=0; i<nb; i++) {
-		dReal body_invMass = body[i]->invMass;
+		dxBody	*b=body[i];
+		dReal body_invMass = b->invMass;
 		for (j=0; j<3; j++) 
 		{
 			//if (_valid(body[i]->facc[j]))
-				body[i]->lvel[j] += stepsize * body_invMass * body	[i]->facc[j];
+				b->lvel[j] += stepsize * body_invMass *b->facc[j];
 		}
 		for (j=0; j<3; j++)
 		{	
-		//	if(!_valid(body[i]->tacc[j]))body[i]->tacc[j]=0.f;
-			body[i]->tacc[j] *= stepsize;	
+		//	if(!_valid(b->tacc[j]))b->tacc[j]=0.f;
+			b->tacc[j] *= stepsize;	
 		}
-		dMULTIPLYADD0_331 (body[i]->avel,invI + i*12,body[i]->tacc);
+#ifdef DEBUG_VALID
+		dIASSERT(dValid(b->avel[0])&&dValid(b->avel[1])&&dValid(b->avel[2]));
+		dIASSERT(dValid(b->tacc[0])&&dValid(b->tacc[1])&&dValid(b->tacc[2]));
+#endif
+		dMULTIPLYADD0_331 (b->avel,invI + i*12,b->tacc);
+#ifdef DEBUG_VALID
+		dIASSERT(dValid(b->avel[0])&&dValid(b->avel[1])&&dValid(b->avel[2]));
+#endif
 	}
 
 #if 0

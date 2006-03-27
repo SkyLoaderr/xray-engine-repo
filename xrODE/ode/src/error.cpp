@@ -121,8 +121,8 @@ extern "C" void dMessage (int num, const char *msg, ...)
 
 #include "windows.h"
 
-#ifdef _DEBUG_
-extern "C" void dError (int num, const char *msg, ...)
+//#ifdef _DEBUG_
+void _cdecl dError (int num, const char *msg, ...)
 {
   va_list ap;
   va_start (ap,msg);
@@ -138,7 +138,7 @@ extern "C" void dError (int num, const char *msg, ...)
 }
 
 
-extern "C" void dDebug (int num, const char *msg, ...)
+void _cdecl dDebug (int num, const char *msg, ...)
 {
   va_list ap;
   va_start (ap,msg);
@@ -153,14 +153,14 @@ extern "C" void dDebug (int num, const char *msg, ...)
   abort();
 }
 
-extern "C" void dMessage (int num, const char *msg, ...)
+void _cdecl dMessage (int num, const char *msg, ...)
 {
   va_list ap;
   va_start (ap,msg);
   if (message_function) message_function (num,msg,ap);
   else printMessage (num,"ODE Message",msg,ap);
 }
-#endif
+//#endif
 #endif
 
 #endif

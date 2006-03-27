@@ -73,7 +73,7 @@ int dSortedTriCyl (
 				   )
 {
 	
-	dIASSERT (dGeomGetClass(o1)== dCylinderClassUser);
+	VERIFY (dGeomGetClass(o1)== dCylinderClassUser);
 
 	const dReal *R = dGeomGetRotation(o1);
 	const dReal* p=dGeomGetPosition(o1);
@@ -273,8 +273,8 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 						)
 {
 
- // dIASSERT (skip >= (int)sizeof(dContactGeom));
-  dIASSERT (dGeomGetClass(o1)== dCylinderClassUser);
+ // VERIFY (skip >= (int)sizeof(dContactGeom));
+  VERIFY (dGeomGetClass(o1)== dCylinderClassUser);
   
 
   
