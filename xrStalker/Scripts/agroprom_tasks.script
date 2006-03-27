@@ -3,15 +3,7 @@
 function proceed()
     local actor = db.actor
 
-	if actor:object("krot_flash") and
-	   actor:dont_has_info("agr_find_gunslinger_cache_start")
-	then
-
-		actor:give_info_portion("agr_find_gunslinger_cache_start")
-
-		actor:give_info_portion("agr_factory_spawn_spetsnaz")
-
-	end
+	
 
 	if actor:object("agr_nii_security_shedule_file") then
 		actor:give_info_portion("agr_nii_security_shedule_file_have")
@@ -21,7 +13,15 @@ function proceed()
 end
 
 function process_info_portion(info_id)
+	if info_id == "agr_krot_secret_info" and
+	   db.actor:dont_has_info("agr_find_gunslinger_cache_start")
+	then
 
+		db.actor:give_info_portion("agr_find_gunslinger_cache_start")
+
+		db.actor:give_info_portion("agr_factory_spawn_spetsnaz")
+
+	end
 	if info_id == "agr_sold_about_ratcatcher" then
 		level_tasks.add_location(304, "crlc_mdl", "agr_swamp_hint")
 		return true
