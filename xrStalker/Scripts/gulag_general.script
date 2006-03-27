@@ -377,12 +377,12 @@ function load_states(gname, type)
 end
 
 
-function checkStalker()
-	return true
+function checkStalker(npc_community, type, npc_rank, se_obj, preset_name)
+	return type == "general_lager"
 end
 
-function checkMonster()
-	return true
+function checkMonster(npc_community, type, npc_rank, se_obj, preset_name)
+	return type == "general_lair"
 end
 
 
