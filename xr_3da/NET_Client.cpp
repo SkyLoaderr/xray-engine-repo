@@ -716,13 +716,15 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 BOOL	IPureClient::net_HasBandwidth	()
 {
 	u32		dwTime				= TimeGlobal(device_timer);
-	u32		dwInterval			= 1000/psNET_ClientUpdate;
+	u32		dwInterval			= 0;
 	if		(net_Disconnected) return FALSE;
 	
 	if		(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 333;	// approx 3 times per second
+	if (psNET_ClientUpdate != 0)
+		1000/psNET_ClientUpdate;
 
 	HRESULT hr;
-	if ((dwTime-net_Time_LastUpdate)>dwInterval)	
+	if (0 != psNET_ClientUpdate && (dwTime-net_Time_LastUpdate)>dwInterval)	
 	{
 		R_ASSERT			(NET);
 		

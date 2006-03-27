@@ -268,6 +268,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GE_ACTOR_JUMPING:
 		{
 			mstate_wishful |= mcJump;
+			if (NET.size())
+				NET_Last.mstate |= mcJump;
 		}break;
 	}
 }

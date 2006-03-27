@@ -504,11 +504,13 @@ void IPureServer::client_link_aborted	(DPNID ID)
 BOOL IPureServer::HasBandwidth			(IClient* C)
 {
 	u32	dwTime			= TimeGlobal(device_timer);
-	u32	dwInterval		= 1000/psNET_ServerUpdate;
+	u32	dwInterval		= 0;
+	if (psNET_ServerUpdate != 0)
+		dwInterval = 1000/psNET_ServerUpdate;
 	if	(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 500;	// approx 2 times per second
 
 	HRESULT hr;
-	if ((dwTime-C->dwTime_LastUpdate)>dwInterval)	
+	if (psNET_ServerUpdate != 0 && (dwTime-C->dwTime_LastUpdate)>dwInterval)
 	{
 		// check queue for "empty" state
 		DWORD				dwPending;
