@@ -87,6 +87,7 @@ public:
 			void			CreateDragItem		(CUICellItem* itm);
 			void			DestroyDragItem		();
 			void			ClearAll			(bool bDestroy);	
+			void			Compact				();
 public:
 	//UIWindow overriding
 	virtual		void		Draw				();
@@ -142,6 +143,5 @@ protected:
 
 				void			Grow				();
 				void			Shrink				();
-				void			ClearAll			(bool bDestroy);	
-
+				void			ClearAll			(bool bDestroy);
 };

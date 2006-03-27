@@ -203,6 +203,21 @@ void CUIDragDropListEx::ClearAll(bool bDestroy)
 	m_selected_item			= NULL;
 }
 
+void CUIDragDropListEx::Compact()
+{
+	CUIWindow::WINDOW_LIST	wl		= m_container->GetChildWndList();
+	ClearAll						(false);
+
+	CUIWindow::WINDOW_LIST_it it	= wl.begin();
+	CUIWindow::WINDOW_LIST_it it_e	= wl.end();
+	for(;it!=it_e;++it)
+	{
+		CUICellItem*	itm			= smart_cast<CUICellItem*>(*it);
+		SetItem						(itm);
+	}
+}
+
+
 #include "../HUDManager.h"
 void CUIDragDropListEx::Draw()
 {
@@ -355,6 +370,8 @@ CUICellItem* CUIDragDropListEx::GetItemIdx(u32 idx)
 	return smart_cast<CUICellItem*>(*it);
 }
 
+
+
 CUICellContainer::CUICellContainer(CUIDragDropListEx* parent)
 {
 	m_pParentDragDropList		= parent;
@@ -439,6 +456,12 @@ Ivector2 CUICellContainer::FindFreeCell	(const Ivector2& size)
 		Grow	();
 		return							FindFreeCell	(size);
 	}else{
+		m_pParentDragDropList->Compact		();
+		for(tmp.y=0; tmp.y<=m_cellsCapacity.y-size.y; ++tmp.y )
+			for(tmp.x=0; tmp.x<=m_cellsCapacity.x-size.x; ++tmp.x )
+				if(IsRoomFree(tmp,size))
+					return  tmp;
+
 		R_ASSERT2		(0,"there are no free room to place item");
 	}
 	return			tmp;
@@ -572,6 +595,7 @@ Ivector2 CUICellContainer::PickCell(const Fvector2& abs_pos)
 	if(!ValidCell(res))						res.set(-1, -1);
 	return res;
 }
+
 
 void CUICellContainer::Draw()
 {
