@@ -5,6 +5,9 @@ function main7777()
 
 end
 
+
+-- run_string alife():create("medkit", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
+
 function main222222()
 	local spawn_items = {}
 	local level = level.name()
@@ -20,7 +23,9 @@ function main222222()
 end
 
 function main()
-   game.start_tutorial("part_2_binocular")
+	level.add_complex_effector("effector_nightvision",999)
+
+--   game.start_tutorial("part_1_pda")
 --   part_3_jump
 --   part_4_crouch
 --   part_5_crouch_down
