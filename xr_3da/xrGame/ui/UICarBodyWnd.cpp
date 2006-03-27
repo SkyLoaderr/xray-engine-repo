@@ -135,14 +135,15 @@ void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	u16 other_id									= smart_cast<CGameObject*>(m_pOthersObject)->ID();
 
 	m_pUICharacterInfoLeft->InitCharacter			(our_id);
-
+	
+	CBaseMonster *monster = NULL;
 	if(m_pOthersObject) {
-		CBaseMonster *monster						= smart_cast<CBaseMonster *>(m_pOthersObject);
+		monster										= smart_cast<CBaseMonster *>(m_pOthersObject);
 		if (!monster) {
 			m_pUICharacterInfoRight->InitCharacter	(other_id);
 		} else {
 			m_pUICharacterInfoRight->ClearInfo		();
-			return;
+//.			return;
 		}
 	}
 
@@ -150,24 +151,24 @@ void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	EnableAll										();
 	UpdateLists										();
 
+	if(!monster){
+		CInfoPortionWrapper	*known_info_registry	= xr_new<CInfoPortionWrapper>();
+		known_info_registry->registry().init		(other_id);
+		KNOWN_INFO_VECTOR& known_info				= known_info_registry->registry().objects();
 
-	CInfoPortionWrapper	*known_info_registry	= xr_new<CInfoPortionWrapper>();
-	known_info_registry->registry().init		(other_id);
-	KNOWN_INFO_VECTOR& known_info				= known_info_registry->registry().objects();
-
-	KNOWN_INFO_VECTOR_IT it = known_info.begin();
-	for(int i=0;it!=known_info.end();++it,++i){
-		(*it).info_id;	
-		NET_Packet		P;
-		CGameObject::u_EventGen		(P,GE_INFO_TRANSFER, our_id);
-		P.w_u16						(0);//not used
-		P.w_stringZ					((*it).info_id);			//сообщение
-		P.w_u8						(1);						//добавление сообщения
-		CGameObject::u_EventSend	(P);
+		KNOWN_INFO_VECTOR_IT it = known_info.begin();
+		for(int i=0;it!=known_info.end();++it,++i){
+			(*it).info_id;	
+			NET_Packet		P;
+			CGameObject::u_EventGen		(P,GE_INFO_TRANSFER, our_id);
+			P.w_u16						(0);//not used
+			P.w_stringZ					((*it).info_id);			//сообщение
+			P.w_u8						(1);						//добавление сообщения
+			CGameObject::u_EventSend	(P);
+		}
+		known_info.clear	();
+		xr_delete			(known_info_registry);
 	}
-	known_info.clear	();
-	xr_delete			(known_info_registry);
-
 }  
 
 void CUICarBodyWnd::UpdateLists_delayed()
