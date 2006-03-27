@@ -64,7 +64,7 @@ extern "C" dMessageFunction *dGetMessageHandler()
   return message_function;
 }
 
-#ifdef _DEBUG
+
 
 static void printMessage (int num, const char *msg1, const char *msg2,
 			  va_list ap)
@@ -161,6 +161,6 @@ void _cdecl dMessage (int num, const char *msg, ...)
   else printMessage (num,"ODE Message",msg,ap);
 }
 //#endif
-#endif
+
 
 #endif
