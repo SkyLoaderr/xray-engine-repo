@@ -156,12 +156,12 @@ void CUISequenceSimpleItem::Start()
 	if (m_sound._handle())		m_sound.play(NULL, sm_2D);
 
 	if (g_pGameLevel){
-		bool bShowPda			= false;
-		CUIGameSP* ui_game_sp	= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(!stricmp(m_pda_section,"pda_contacts")){
-			ui_game_sp->PdaMenu->SetActiveSubdialog(eptContacts);
-			bShowPda = true;
-		}else{
+			bool bShowPda			= false;
+			CUIGameSP* ui_game_sp	= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			if(!stricmp(m_pda_section,"pda_contacts")){
+				ui_game_sp->PdaMenu->SetActiveSubdialog(eptContacts);
+				bShowPda = true;
+			}else{
 			if(!stricmp(m_pda_section,"pda_map")){
 				ui_game_sp->PdaMenu->SetActiveSubdialog(eptMap);
 				bShowPda = true;
@@ -202,6 +202,11 @@ bool CUISequenceSimpleItem::Stop			(bool bForce)
 	if(m_flags.test(etiNeedPauseOff) && m_flags.test(etiStoredPauseState))
 		Device.Pause			(TRUE);
 
+	if (g_pGameLevel){
+		CUIGameSP* ui_game_sp	= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if( ui_game_sp->PdaMenu->IsShown() ) 
+			HUD().GetUI()->StartStopMenu			(ui_game_sp->PdaMenu, true);
+	}
 	return true;
 }
 
