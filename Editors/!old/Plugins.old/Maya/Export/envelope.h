@@ -119,6 +119,7 @@ public:
 
 	float		Evaluate	(float t);
 
+	void		Clear		();
 	void		Save		(IWriter& F);
 	void		Load_1		(IReader& F);
 	void		Load_2		(IReader& F);
