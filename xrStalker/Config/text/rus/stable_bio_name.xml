@@ -115,6 +115,10 @@
 	<text>Сталкер группировки "Монолит". Детальная информация отсутствует.</text>
 </string>
 
+<string id="pri_followers_bomber_name">
+	<text>Саша Белый</text>
+</string>
+
 <string id="pri_followers_common_bio">
 	<text>Сталкер ветеран. Возможно хорошо экипирован. Детальная информация отсутствует.</text>
 </string>
