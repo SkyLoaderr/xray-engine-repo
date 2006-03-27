@@ -22,8 +22,6 @@
 
 using namespace ObjectHandlerSpace;
 
-static const int queue_inertia_time	= 2000;
-
 IC	ObjectHandlerSpace::EWorldProperties CObjectHandlerPlanner::object_property(MonsterSpace::EObjectAction object_action) const
 {
 	switch (object_action) {
@@ -72,7 +70,7 @@ void CObjectHandlerPlanner::set_goal	(MonsterSpace::EObjectAction object_action,
 	condition.add_condition	(CWorldProperty(condition_id,true));
 	set_target_state		(condition);
 
-	if (!game_object || !min_queue_size)
+	if (!game_object || (min_queue_size < 0))
 		return;
 
 	CWeaponMagazined		*weapon = smart_cast<CWeaponMagazined*>(game_object);
@@ -84,29 +82,30 @@ void CObjectHandlerPlanner::set_goal	(MonsterSpace::EObjectAction object_action,
 			(m_max_queue_size != max_queue_size) ||
 			(m_min_queue_interval != min_queue_interval) ||
 			(m_max_queue_interval != max_queue_interval) ||
-			(m_last_time_change + queue_inertia_time <= Device.dwTimeGlobal)
+			(m_next_time_change <= Device.dwTimeGlobal)
 		)
 	{
 		m_min_queue_size		= min_queue_size;
 		m_max_queue_size		= max_queue_size;
 		m_min_queue_interval	= min_queue_interval;
 		m_max_queue_interval	= max_queue_interval;
-		m_last_time_change		= Device.dwTimeGlobal;
 
 		if (m_max_queue_size == m_min_queue_size)
 			m_queue_size		= m_min_queue_size;
 		else
-			m_queue_size		= ::Random.randI(m_min_queue_size,m_max_queue_size+1);
+			m_queue_size		= ::Random.randI(m_min_queue_size,m_max_queue_size);
 
 		if (m_max_queue_interval == m_min_queue_interval)
 			m_queue_interval	= m_min_queue_interval;
 		else
 			m_queue_interval	= ::Random.randI(m_min_queue_interval,m_max_queue_interval);
-	}
 
-	weapon->SetQueueSize	(m_queue_size);
-	this->action(uid(weapon->ID(),eWorldOperatorQueueWait1)).set_inertia_time(m_queue_interval ? m_queue_interval : 300);
-	this->action(uid(weapon->ID(),eWorldOperatorQueueWait2)).set_inertia_time(m_queue_interval ? m_queue_interval : 300);
+		m_next_time_change		= Device.dwTimeGlobal + m_queue_interval;
+
+		weapon->SetQueueSize	(m_queue_size);
+		this->action(uid(weapon->ID(),eWorldOperatorQueueWait1)).set_inertia_time(m_queue_interval ? m_queue_interval : 300);
+		this->action(uid(weapon->ID(),eWorldOperatorQueueWait2)).set_inertia_time(m_queue_interval ? m_queue_interval : 300);
+	}
 }
 
 #ifdef LOG_ACTION
@@ -246,7 +245,7 @@ void CObjectHandlerPlanner::setup	(CAI_Stalker *object)
 	m_max_queue_size			= 0;
 	m_min_queue_interval		= 0;
 	m_max_queue_interval		= 0;
-	m_last_time_change			= 0;
+	m_next_time_change			= 0;
 
 	clear						();
 
