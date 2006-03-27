@@ -664,7 +664,7 @@ function task_complete(p1, p2)
 				return true
 			end
 		elseif p1 == "find_item" then			
-			if db.actor:object(active_task[p1].selected_target) ~= nil then
+			if db.actor:object(active_task[p1].target) ~= nil then
 				active_task[p1].completed = true
 				return true
 			end
