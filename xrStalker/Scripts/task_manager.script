@@ -17,8 +17,9 @@ local task_info = {
 			freedom = {}}
 			
 local reward_by_task_id = {}			
-local task_by_phrase = {}  -- таблица соответствий ID фраз заданиям.
-local active_task = {} -- таблица активных заданий
+local task_by_phrase = {}	--' таблица соответствий ID фраз заданиям.
+local active_task = {}		--' таблица активных заданий
+local negative_task = {}	--' таблица нежелательности выдачи задания. Тут сохраняется сколько раз данный таск был выдан.
 
 local parent_by_story = {
 	[001] = "trader",
@@ -64,6 +65,11 @@ end
 
 -- Необходимо сформировать набор предикатов  table[string_id] = predicate()
 function fill_phrase_table()
+	if task_table_filled == true then
+		return
+	end
+	task_table_filled = true
+
 	-- Итерируемся по всем настройкам фраз
 	if not task_ini:section_exist("list") then
 		abort("There is no section [list] in task_manager.ltx")
@@ -114,7 +120,6 @@ function fill_phrase_table()
 			tt.parent = parent
 			tt.type = type
 			tt.target = task_ini:r_string(id, "target")
-			tt.target_objects = {}
 			tt.text = task_ini:r_string(id, "text")
 			tt.description = task_ini:r_string(id, "description")				
 			
@@ -145,24 +150,12 @@ function fill_phrase_table()
 			reward_by_task_id[id].reward_relation = parse_key_value(utils.cfg_get_string(task_ini, id, "reward_relation", nil, false, ""))
 		end
 	end
-	
-	-- Сортируем  по возрастанию крутости задания
-	for k,v in pairs(task_info) do
-		table.sort(v, function(a,b) return a.reward_rank < b.reward_rank end)
-	end
 end
-
-
-
-
 
 
 -- Создается диалог актера, в котором будут выдаваться задания.
 function init_task_dialog(dlg, parent)
-	if task_table_filled == false then
-		fill_phrase_table()
-		task_table_filled = true
-	end
+	fill_phrase_table()
 
 	local phr = dlg:AddPhrase("tm_seek_new_job",0,-1,-10000)
 	local phrase_script = phr:GetPhraseScript()
@@ -228,17 +221,42 @@ function action_task_init(actor, npc)
 	tmp_tbl = {}
 	show_tbl = {}
 	
-	type_rank = {} --'По каждому типу таска отсеивается одно, первое доступное.
+	type_rank = {} --'Временная таблица для хранения текущего выбранного задания
 	for k,v in pairs(task_info[parent]) do	
-		max_count = max_count + 1
-		
-		if type_rank[v.type] ~= true then		
-			if calculate_predicate(npc, v) == true then
-				table.insert(show_tbl, k)
-				tmp_tbl[max_count] = true
-				type_rank[v.type] = true
-			end
+		max_count = max_count + 1		
+
+		if calculate_predicate(npc, v) == true then
+			if type_rank[v.type] == nil then
+				type_rank[v.type] = {}
+				type_rank[v.type].key = k
+				type_rank[v.type].reward_rank = v.reward_rank
+				type_rank[v.type].max_count = max_count
+			else
+				--' Тут проверяем кто из них круче
+				local a_quan,a_neg,b_quan,b_neg = 0,0,0,0
+				a_neg = negative_task[v.name]
+				if a_neg == nil then
+					a_neg = 0
+				end
+				b_neg = negative_task[type_rank[v.type].name]
+				if b_neg == nil then
+					b_neg = 0
+				end
+				a_quan = v.reward_rank + a_neg*10
+				b_quan = type_rank[v.type].reward_rank + b_neg*10
+				
+				if a_quan < b_quan then					
+					type_rank[v.type].key = k
+					type_rank[v.type].reward_rank = v.reward_rank
+					type_rank[v.type].max_count = max_count					
+				end
+			end	
 		end
+	end
+	
+	for k,v in pairs(type_rank) do
+		tmp_tbl[v.max_count] = true
+		table.insert(show_tbl, v.key)
 	end
 end
 function action_give_task(actor, npc, p1, p2)
@@ -281,6 +299,12 @@ function action_give_task(actor, npc, p1, p2)
 
 
 	active_task[task_desc.type] = task_desc
+	
+	if negative_task[task_desc.name] == nil then
+		negative_task[task_desc.name] = 1
+	else
+		negative_task[task_desc.name] = negative_task[task_desc.name] + 1
+	end
 end
 function action_task_show(npc, actor)
 	local parent = get_parent(npc)
@@ -297,10 +321,7 @@ end
 
 -- Создается диалог актера, в котором будут приниматься задания
 function init_reward_dialog(dlg, parent)
-	if task_table_filled == false then
-		fill_phrase_table()
-		task_table_filled = true
-	end
+	fill_phrase_table()		
 
 	local phr = dlg:AddPhrase("tm_reward_job",0,-1,-10000)
 	local phrase_script = phr:GetPhraseScript()
@@ -545,6 +566,9 @@ function calculate_predicate(npc, tbl)
 
 	-- проверка по таргету
 	if tbl.type == "eliminate_lager" then
+		if tbl.target_objects == nil then
+			return false
+		end
 		for k,v in pairs(tbl.target_objects) do
 			local gulag = aa:object(v).gulag
 			if gulag:get_population() > 0 then
@@ -556,6 +580,9 @@ function calculate_predicate(npc, tbl)
 		end
 		return false
 	elseif tbl.type == "kill_stalker" then
+		if tbl.target_objects == nil then
+			return false
+		end
 		local avail_obj = {}
 		for k,v in pairs(tbl.target_objects) do
 			local obj = aa:object(v)
@@ -576,6 +603,9 @@ function calculate_predicate(npc, tbl)
 			return false
 		end
 	elseif tbl.type == "find_item" then
+		if tbl.target_objects == nil then
+			return false
+		end
 		local obj = aa:object(tbl.target_objects)
 		if obj ~= nil then
 			tbl.selected_target = tbl.target_objects
@@ -654,10 +684,7 @@ function task_fail(p1, p2)
 	return false
 end
 function reward_by_task(task, done)
-	if task_table_filled == false then
-		fill_phrase_table()
-		task_table_filled = true
-	end
+	fill_phrase_table()
 
 	--' Если done = true, то это выполненное задание, иначе проваленное.
 	local descr = reward_by_task_id[task:get_id()]
@@ -686,10 +713,7 @@ end
 
 
 function register_target(object)
-	if task_table_filled == false then
-		fill_phrase_table()
-		task_table_filled = true
-	end
+	fill_phrase_table()
 
 	for k,v in pairs(task_info) do
 		for kk,vv in pairs(v) do
@@ -698,11 +722,17 @@ function register_target(object)
 					if object.alive ~= nil and object:alive() == true and
 					   object:profile_name() == vv.target 
 					then
+						if vv.target_objects == nil then
+							vv.target_objects = {}
+						end
 						table.insert(vv.target_objects, object.id)
 					end
 				end
 			elseif vv.type == "eliminate_lager" then
 				if object:name() == vv.target then
+					if vv.target_objects == nil then
+						vv.target_objects = {}
+					end
 					table.insert(vv.target_objects, object.id)
 				end			
 			elseif vv.type == "find_item" then			
@@ -728,6 +758,17 @@ function save(p)
 	for k,v in pairs(active_task) do
 		p:w_stringZ(v.name)
 	end	
+	
+	--' Сохраняем критерий нежелательности.	
+	table_size = 0
+	for k,v in pairs(negative_task) do
+		table_size = table_size + 1
+	end
+	p:w_u8(table_size)
+	for k,v in pairs(negative_task) do
+		p:w_stringZ(k)
+		p:w_u8(v)
+	end	
 end
 
 -- Загрузка списка активных случайных заданий
@@ -744,9 +785,8 @@ function load(p)
 	end
 
 	fill_phrase_table()
-	task_table_filled = true
 
-	--' Необходимо вычитать количетсво заданий, id задания	
+	--' Необходимо вычитать количество заданий, id задания	
 	--' Затем проитерироваться по ним и загрузить дескрипторы заданий в active_tasks
 	local table_size = p:r_u8()
 	for i=1,table_size do
@@ -758,6 +798,14 @@ function load(p)
 		else
 			abort("ERROR in loading active_task[%s]", tostring(task_desc_id))
 		end
+	end
+
+	--' Загружаем критерий нежелательности.	
+	table_size = p:r_u8()
+	for i=1,table_size do
+		local task_id = p:r_stringZ()
+		local task_num = p:r_u8()
+		negative_task[task_id] = task_num
 	end
 end
 
@@ -788,6 +836,10 @@ function stats()
 
 		-- проверка по таргету
 		if tbl.type == "eliminate_lager" then
+			if tbl.target_objects == nil then
+				return false, "no_target"
+			end
+
 			for k,v in pairs(tbl.target_objects) do
 				local gulag = aa:object(v).gulag
 				if gulag:get_population() > 0 then
@@ -799,6 +851,10 @@ function stats()
 			end
 			return false, "no_target"
 		elseif tbl.type == "kill_stalker" then
+			if tbl.target_objects == nil then
+				return false, "no_target"
+			end
+
 			local avail_obj = {}
 			for k,v in pairs(tbl.target_objects) do
 				local obj = aa:object(v)
@@ -819,6 +875,10 @@ function stats()
 				return false, "no_target"
 			end
 		elseif tbl.type == "find_item" then
+			if tbl.target_objects == nil then
+				return false, "no_target"
+			end
+		
 			local obj = aa:object(tbl.target_objects)
 			if obj == nil then
 				return false, "no_target"
