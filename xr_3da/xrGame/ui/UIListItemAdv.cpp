@@ -6,6 +6,7 @@ CUIListItemAdv::~CUIListItemAdv(){
 }
 
 void CUIListItemAdv::SetTextColor(u32 color){
+	CUIListItem::SetTextColor(color);
 	for (my_it it = m_fields.begin(); it != m_fields.end(); it++)
 		(*it)->SetTextColor(color);
 }
@@ -17,6 +18,8 @@ void CUIListItemAdv::AddField(LPCSTR val, float width){
 	st->Init(GetNextLeftPos(), 0, width, height);
 	st->SetTextComplexMode(false);
 	st->SetText(val);
+	st->SetTextColor(GetTextColor());
+	st->SetFont(GetFont());
 	st->SetAutoDelete(true);
 	AttachChild(st);
 

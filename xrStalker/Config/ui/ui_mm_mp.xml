@@ -90,7 +90,7 @@
 			</frame>
 			<list x="0" y="20" width="535" height="250" height2="140" item_height="18" always_show_scroll="1"/>
 			<list_item>
-				<text font="letterica16" r="255" g="255" b="255"/>
+				<text r="131" g="131" b="131" font="letterica16"/>
 			</list_item>
 			<header x="0" y="0" width="0" height="18" frame_mode="1">
 				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" align="l" vert_align="c" complex_mode="0"/>
@@ -130,14 +130,14 @@
 			</cap_death>
 			<list_server_properties x="0" y="210" width="327" height="96" item_height="18" always_show_scroll="1">
 				<texture>ui_cb_listbox</texture>
-				<text font="letterica16" r="255" g="255" b="255"/>
+				<text r="131" g="131" b="131" font="letterica16"/>
 				<frame x="0" y="210" width="309" height="96">
 					<texture>ui_cb_listbox</texture>
 				</frame>
 			</list_server_properties>
 			<list_players_list x="337" y="210" width="198" height="96" item_height="18" always_show_scroll="1">
 				<texture>ui_cb_listbox</texture>
-				<text font="letterica16" r="255" g="255" b="255"/>
+				<text r="131" g="131" b="131" font="letterica16"/>
 				<frame x="337" y="210" width="180" height="96">
 					<texture>ui_cb_listbox</texture>
 				</frame>

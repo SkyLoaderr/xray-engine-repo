@@ -147,6 +147,10 @@ void CServerList::AfterDisappear(){
 
 void CServerList::FillUpDetailedServerInfo(){
 	int si = m_list[LST_SERVER].GetSelectedItem();
+
+	bool t1 = false;
+	bool t2 = false;
+	bool spect = false;
 		
     if (-1 != si)
 	{
@@ -155,7 +159,116 @@ void CServerList::FillUpDetailedServerInfo(){
 
 		ServerInfo srvInfo;
 		m_GSBrowser.GetServerInfoByIndex(&srvInfo, pItem->GetInfo()->info.Index);
+		u32 teams = srvInfo.m_aTeams.size();
 
+		R_ASSERT(teams>0 && teams<3);
+		if (2 == teams){
+			string256 _buff;
+			LPCSTR tm_col = pSettings->r_string("team1","color");
+			u32 team1_color = color_argb(255,atoi(_GetItem(tm_col, 0, _buff)),atoi(_GetItem(tm_col, 1, _buff)),atoi(_GetItem(tm_col, 2, _buff)));
+			tm_col = pSettings->r_string("team2","color");
+			u32 team2_color = color_argb(255,atoi(_GetItem(tm_col, 0, _buff)),atoi(_GetItem(tm_col, 1, _buff)),atoi(_GetItem(tm_col, 2, _buff)));
+			
+			LPCSTR team1_name = pSettings->r_string("team1","name");
+			LPCSTR team2_name = pSettings->r_string("team2","name");
+			CUIListItemAdv* pItemAdv;
+
+			// TEAM 1
+			xr_vector<PlayerInfo>::iterator it;
+			for (it = srvInfo.m_aPlayers.begin(); it != srvInfo.m_aPlayers.end(); it++)
+			{
+				PlayerInfo pf = *it;
+				if (1 != pf.Team)
+					continue;
+				if (pf.Spectator)
+					continue;
+
+				if (!t1)		// add header
+				{
+					sprintf(_buff, "team \"%s\"", team1_name);
+					pItemAdv = xr_new<CUIListItemAdv>();
+					pItemAdv->SetTextColor(team1_color);
+					pItemAdv->SetFont(m_list[LST_PLAYERS].GetFont());
+					pItemAdv->SetText(_buff);
+					m_list[LST_PLAYERS].AddItem(pItemAdv);
+					t1 = true;
+				}
+
+
+ 				pItemAdv = xr_new<CUIListItemAdv>();				
+
+				char buf[16];
+				pItemAdv->SetFont(m_list[LST_PLAYERS].GetFont());
+				pItemAdv->SetTextColor(team1_color);
+				pItemAdv->AddField(pf.Name, m_header2[1].GetWidth());
+				pItemAdv->AddField(itoa(pf.Frags, buf,10), m_header2[2].GetWidth());
+				pItemAdv->AddField(itoa(pf.Deaths, buf,10), m_header2[3].GetWidth());
+				m_list[LST_PLAYERS].AddItem(pItemAdv);
+			}
+
+			
+			// TEAM 2
+			for (it = srvInfo.m_aPlayers.begin(); it != srvInfo.m_aPlayers.end(); it++)
+			{
+				PlayerInfo pf = *it;
+				if (2 != pf.Team)
+					continue;
+				if (pf.Spectator)
+					continue;
+
+				if (!t2)
+				{
+					sprintf(_buff, "team \"%s\"", team2_name);
+					pItemAdv = xr_new<CUIListItemAdv>();
+					pItemAdv->SetTextColor(team2_color);
+					pItemAdv->SetFont(m_list[LST_PLAYERS].GetFont());
+					pItemAdv->SetText(_buff);
+					m_list[LST_PLAYERS].AddItem(pItemAdv);
+
+					t2 = true;
+				}
+
+				pItemAdv = xr_new<CUIListItemAdv>();				
+				char buf[16];
+				pItemAdv->SetFont(m_list[LST_PLAYERS].GetFont());
+				pItemAdv->SetTextColor(team2_color);
+				pItemAdv->AddField(pf.Name, m_header2[1].GetWidth());
+				pItemAdv->AddField(itoa(pf.Frags, buf,10), m_header2[2].GetWidth());
+				pItemAdv->AddField(itoa(pf.Deaths, buf,10), m_header2[3].GetWidth());
+				m_list[LST_PLAYERS].AddItem(pItemAdv);
+			}
+
+			// SPECTATORS
+			for (it = srvInfo.m_aPlayers.begin(); it != srvInfo.m_aPlayers.end(); it++)
+			{
+				PlayerInfo pf = *it;
+				if (!pf.Spectator)
+					continue;
+
+				if (!spect)
+				{
+					sprintf(_buff, "spectator", team2_name);
+					pItemAdv = xr_new<CUIListItemAdv>();
+					//pItemAdv->SetTextColor(team2_color);
+					pItemAdv->SetFont(m_list[LST_PLAYERS].GetFont());
+					pItemAdv->SetText(_buff);
+					m_list[LST_PLAYERS].AddItem(pItemAdv);
+
+					spect = true;
+				}
+
+				pItemAdv = xr_new<CUIListItemAdv>();				
+				char buf[16];
+				pItemAdv->SetFont(m_list[LST_PLAYERS].GetFont());
+				//pItemAdv->SetTextColor(team2_color);
+				pItemAdv->AddField(pf.Name, m_header2[1].GetWidth());
+				pItemAdv->AddField(itoa(pf.Frags, buf,10), m_header2[2].GetWidth());
+				pItemAdv->AddField(itoa(pf.Deaths, buf,10), m_header2[3].GetWidth());
+				m_list[LST_PLAYERS].AddItem(pItemAdv);
+			}
+
+		}
+		else
 		{
 			xr_vector<PlayerInfo>::iterator it;
 			for (it = srvInfo.m_aPlayers.begin(); it != srvInfo.m_aPlayers.end(); it++)
@@ -165,6 +278,8 @@ void CServerList::FillUpDetailedServerInfo(){
 
 				char buf[16];
 
+				pItemAdv->SetFont(m_list[LST_PLAYERS].GetFont());
+				pItemAdv->SetTextColor(m_list[LST_PLAYERS].GetTextColor());
 				pItemAdv->AddField(pf.Name, m_header2[1].GetWidth());
 				pItemAdv->AddField(itoa(pf.Frags, buf,10), m_header2[2].GetWidth());
 				pItemAdv->AddField(itoa(pf.Deaths, buf,10), m_header2[3].GetWidth());
