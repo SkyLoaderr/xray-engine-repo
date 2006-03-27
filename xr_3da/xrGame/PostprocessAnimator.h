@@ -41,6 +41,7 @@ class CPostProcessParam
 {
 protected:
 public:
+	virtual			~CPostProcessParam				()					{};
     virtual void    update                          (float dt) = 0;
     virtual void    load                            (IReader &pReader) = 0;
     virtual void    save                            (IWriter &pWriter) = 0;
@@ -61,6 +62,7 @@ protected:
     float          *m_pfParam;
 public:
                     CPostProcessValue               (float *pfparam) { m_pfParam = pfparam; }
+	virtual			~CPostProcessValue				();
     virtual void    update                          (float dt)
                     {
                     *m_pfParam = m_Value.Evaluate (dt);

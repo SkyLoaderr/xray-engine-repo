@@ -14,7 +14,11 @@ void CPostProcessValue::save (IWriter &pWriter)
 {
     m_Value.Save (pWriter);
 }
- 
+
+CPostProcessValue::~CPostProcessValue()
+{
+}
+
 // postprocess color LOAD method implementation
 void CPostProcessColor::load (IReader &pReader)
 {
