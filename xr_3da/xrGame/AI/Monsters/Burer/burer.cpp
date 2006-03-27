@@ -12,6 +12,7 @@
 #include "../../../GamePersistent.h"
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
+#include "burer_fast_gravi.h"
 
 bool CBurer::can_scan = true;
 
@@ -19,11 +20,16 @@ CBurer::CBurer()
 {
 	StateMan = xr_new<CStateManagerBurer>(this);
 	TScanner::init_external(this);
+
+	m_fast_gravi		= xr_new<CBurerFastGravi>();
+	control().add		(m_fast_gravi,  ControlCom::eComCustom1);
+
 }
 
 CBurer::~CBurer()
 {
 	xr_delete(StateMan);
+	xr_delete(m_fast_gravi);
 }
 
 
@@ -273,6 +279,11 @@ void CBurer::UpdateCL()
 	TScanner::frame_update(Device.dwTimeDelta);
 
 	UpdateGraviObject();
+
+	
+	//if (m_fast_gravi->check_start_conditions()) 
+	//	control().activate(ControlCom::eComCustom1);
+
 }
 
 void CBurer::StartGraviPrepare() 

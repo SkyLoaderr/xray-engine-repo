@@ -67,6 +67,7 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 		SoundMemory.HearSound(who,eType,Position,power,Device.dwTimeGlobal);
  	}
 }
+#define MAX_LOCK_TIME 2.f
 
 void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir)
 {
@@ -117,10 +118,10 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 			STOP_PROFILE;
 
 			//SetAttackEffector			();
-
-			Actor()->lock_accel_for		(iFloor(2000.f*fDamage));
-
-
+			
+			float time_to_lock		= fDamage * MAX_LOCK_TIME;
+			clamp					(time_to_lock, 0.f, MAX_LOCK_TIME);
+			Actor()->lock_accel_for	(int(time_to_lock * 1000));
 
 			//////////////////////////////////////////////////////////////////////////
 			//

@@ -3297,13 +3297,6 @@
 							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_manager.h">
 						</File>
 						<Filter
-							Name="Script"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\Pseudodog\pseudodog_script.cpp">
-							</File>
-						</Filter>
-						<Filter
 							Name="DogPsy"
 							Filter="">
 							<File
@@ -3340,6 +3333,13 @@
 									RelativePath=".\ai\Monsters\Pseudodog\psy_dog_state_psy_attack_inline.h">
 								</File>
 							</Filter>
+						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\pseudodog_script.cpp">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -3396,6 +3396,16 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\Burer\burer_state_attack_tele_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Fast Gravi"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_fast_gravi.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_fast_gravi.h">
 							</File>
 						</Filter>
 					</Filter>

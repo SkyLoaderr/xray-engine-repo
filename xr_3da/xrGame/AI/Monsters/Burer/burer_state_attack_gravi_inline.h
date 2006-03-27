@@ -99,6 +99,7 @@ bool CStateBurerAttackGraviAbstract::check_start_conditions()
 	if (dist < GOOD_DISTANCE_FOR_GRAVI) return false;
 	if (!object->EnemyMan.see_enemy_now()) return false; 
 	if (!object->control().direction().is_face_target(object->EnemyMan.get_enemy(), deg(45))) return false;
+	if (object->com_man().ta_is_active()) return false;
 
 	// всё ок, можно начать грави атаку
 	return true;
@@ -127,7 +128,13 @@ TEMPLATE_SPECIALIZATION
 void CStateBurerAttackGraviAbstract::ExecuteGraviContinue()
 {
 	// проверить на грави удар
-	if (time_gravi_started + object->m_gravi_time_to_hold < Device.dwTimeGlobal) {
+
+	float dist = object->Position().distance_to(object->EnemyMan.get_enemy()->Position());
+	float time_to_hold = (abs(dist - GOOD_DISTANCE_FOR_GRAVI)/GOOD_DISTANCE_FOR_GRAVI);
+	clamp(time_to_hold, 0.f, 1.f);
+	time_to_hold *= float(object->m_gravi_time_to_hold);
+
+	if (time_gravi_started + u32(time_to_hold) < Device.dwTimeGlobal) {
 		m_action = ACTION_GRAVI_FIRE;
 	}
 }

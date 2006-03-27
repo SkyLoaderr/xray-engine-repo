@@ -6,6 +6,7 @@
 #include "../../../script_export_space.h"
 
 class CCharacterPhysicsSupport;
+class CBurerFastGravi;
 
 class CBurer :	public CBaseMonster,
 				public CTelekinesis,
@@ -96,6 +97,8 @@ public:
 
 	bool	m_shield_active;
 	LPCSTR	particle_fire_shield;
+
+	CBurerFastGravi	*m_fast_gravi;
 
 public:
 					CBurer				();

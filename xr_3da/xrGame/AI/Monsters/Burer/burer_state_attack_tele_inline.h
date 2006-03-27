@@ -263,6 +263,8 @@ bool CStateBurerAttackTeleAbstract::IsActiveObjects()
 TEMPLATE_SPECIALIZATION
 bool CStateBurerAttackTeleAbstract::CheckTeleStart()
 {
+	if (object->com_man().ta_is_active()) return false;
+	
 	// проверка на текущую активность 
 	if (IsActiveObjects()) return false;
 
