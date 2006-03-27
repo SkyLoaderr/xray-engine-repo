@@ -45,7 +45,7 @@
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type hint="agr_take_krots_info_hint">green_location</map_location_type>
             <object_story_id>agr_krot</object_story_id>
-            <function_complete>agroprom_tasks.have_krots_flash</function_complete>
+            <infoportion_complete>agr_krot_secret_info</infoportion_complete>
 		</objective>
 	</game_task>
 

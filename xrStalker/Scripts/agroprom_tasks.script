@@ -18,8 +18,8 @@ function process_info_portion(info_id)
 	then
 
 		db.actor:give_info_portion("agr_find_gunslinger_cache_start")
-
-		db.actor:give_info_portion("agr_factory_spawn_spetsnaz")
+        db.actor:give_info_portion("agr_krot_task_complete")
+        db.actor:give_info_portion("agr_factory_spawn_spetsnaz")
 
 	end
 	if info_id == "agr_sold_about_ratcatcher" then
