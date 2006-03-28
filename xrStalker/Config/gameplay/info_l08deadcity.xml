@@ -64,7 +64,9 @@
 		<task>cit_documents</task>
 		<article>cit_compromat_documents</article>
 	</info_portion>
-	<info_portion id="cit_documents_find"></info_portion>
+	<info_portion id="cit_documents_find">
+		<article>cit_killers_documents_art</article>
+	</info_portion>
 	<info_portion id="cit_documents_give"></info_portion>
 	
 	<!-- Карта базы наемников -->
@@ -72,7 +74,9 @@
 		<task>cit_killers_base</task>
 		<article>cit_base_location</article>
 	</info_portion>
-	<info_portion id="cit_map_find"></info_portion>
+	<info_portion id="cit_map_find">
+		<article>cit_deadcity_maps_art</article>
+	</info_portion>
 	<info_portion id="cit_map_give"></info_portion>
 	
 	<!-- Убить лидера наемников -->
