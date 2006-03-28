@@ -659,7 +659,7 @@
 		<class>bar_ecolog_professor</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
-		<rank>12</rank>
+		<rank>450</rank>
 		<reputation>90</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
@@ -1726,7 +1726,7 @@
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
-		<rank>87</rank>
+		<rank>870</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
@@ -1750,7 +1750,7 @@
 		<class>bar_ecolog_general</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
-		<rank>65</rank>
+		<rank>650</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
