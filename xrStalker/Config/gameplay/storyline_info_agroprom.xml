@@ -37,10 +37,10 @@
     <article id="agr_nii_fab_mil_task" name="agr_nii_fab_mil_task_name" article_type="info" group="agroprom_get_military_documents">
         <text>agr_nii_fab_mil_task</text>
     </article>
-    <article id="agr_journal_krot" name="Встреча с Кротом" article_type="journal" group="agroprom_find_gunslinger_cache">
+    <article id="agr_journal_krot" name="Встреча с Кротом" article_type="journal" group="memuars">
         <text>agr_journal_krot</text>
     </article>
-	<article id="agr_journal_cache" name="Тайник Стрелка" article_type="journal" group="agroprom_find_gunslinger_cache">
+	<article id="agr_journal_cache" name="Тайник Стрелка" article_type="journal" group="memuars">
         <text>agr_journal_cache</text>
     </article>
     <article id="agr_task_case" name="agr_military_case_name" article_type="task" group="agroprom_get_military_documents">
