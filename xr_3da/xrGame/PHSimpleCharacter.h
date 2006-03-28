@@ -29,9 +29,10 @@ protected:
 				float					ContactVelocity				()				const					;
 				void					HitDir						(Fvector &dir)	const					;
 			IC	const Fvector&			HitPos						()				const					{return cast_fv(m_damege_contact.geom.pos);}
-				u16						DamageInitiatorID			()				const					;
+				void					Reinit						()										;
 				dContact				m_damege_contact;
-				CPhysicsShellHolder		*m_object;
+				SCollisionHitCallback	*m_hit_callback;
+				u16						m_obj_id;
 				float					m_dmc_signum;
 				enum{ctStatic,ctObject}	m_dmc_type;
 		mutable	float					m_contact_velocity;
@@ -135,13 +136,14 @@ public:
 	virtual		void			 		GroundNormal					(Fvector &norm)		;
 	virtual		const ICollisionDamageInfo	*CollisionDamageInfo ()const {return this;}
 private:
-	virtual		float			 ContactVelocity				()const				{return m_collision_damage_info.ContactVelocity();}
-	virtual		void			 HitDir							(Fvector& dir)const	{return m_collision_damage_info.HitDir(dir);}
-	virtual		const Fvector&	 HitPos							()const				{return m_collision_damage_info.HitPos();}
-	virtual		u16				 DamageInitiatorID				()const				;
-	virtual		CObject			 *DamageInitiator				()const				;
-	virtual		ALife::EHitType	 HitType						()const				;
-	virtual		CPhysicsShellHolder *DamageObject				()const				{return m_collision_damage_info.m_object;}
+	virtual		float			 	ContactVelocity				()const				{return m_collision_damage_info.ContactVelocity();}
+	virtual		void			 	HitDir							(Fvector& dir)const	{return m_collision_damage_info.HitDir(dir);}
+	virtual		const Fvector&	 	HitPos							()const				{return m_collision_damage_info.HitPos();}
+	virtual		u16				 	DamageInitiatorID				()const				;
+	virtual		CObject			 	*DamageInitiator				()const				;
+	virtual		ALife::EHitType	 	HitType							()const				;
+	virtual SCollisionHitCallback	*HitCallback					()const				;
+	virtual		void				Reinit							()					{m_collision_damage_info.Reinit();};
 public:
 	//Creating
 	virtual		void		Create								(dVector3 sizes)	;

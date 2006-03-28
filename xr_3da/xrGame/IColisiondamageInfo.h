@@ -1,5 +1,6 @@
 #ifndef I_COLLISION_DAMAGE_INFO_H
 #define I_COLLISION_DAMAGE_INFO_H
+struct SCollisionHitCallback;
 class ICollisionDamageInfo
 {
 public:		
@@ -8,7 +9,8 @@ public:
 		virtual const	Fvector&		HitPos						()				const						=0;
 		virtual u16						DamageInitiatorID			()				const						=0;
 		virtual CObject					*DamageInitiator			()				const						=0;
-		virtual CPhysicsShellHolder		*DamageObject				()				const						=0;
 		virtual ALife::EHitType			HitType						()				const						=0;
+		virtual SCollisionHitCallback	*HitCallback				()				const						=0;
+		virtual void					Reinit						()											=0;
 };
 #endif

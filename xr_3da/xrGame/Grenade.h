@@ -82,4 +82,5 @@ public:
 	virtual CMissile		*cast_missile			()	{return this;}
 	virtual CHudItem		*cast_hud_item			()	{return this;}
 	virtual CGameObject		*cast_game_object		()	{return this;}
+	virtual IDamageSource	*cast_IDamageSource		()	{return CExplosive::cast_IDamageSource();}
 };

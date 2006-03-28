@@ -27,6 +27,7 @@ public:
 	virtual CAttachableItem				*cast_attachable_item	()						{return this;}
 	virtual CWeapon						*cast_weapon			()						{return NULL;}
 	virtual CGameObject					*cast_game_object		()						{return this;}
+	virtual IDamageSource*				cast_IDamageSource()							{return CExplosive::cast_IDamageSource();}
 	virtual void						on_activate_physic_shell();
 public:
 

@@ -29,6 +29,7 @@ public:
 	virtual void				net_Relcase				(CObject* O )								;
 	virtual CGameObject			*cast_game_object		()											{return this;}
 	virtual CExplosive*			cast_explosive			()											{return this;}
+	virtual IDamageSource*		cast_IDamageSource		()											{return CExplosive::cast_IDamageSource();}
 	virtual void				GetRayExplosionSourcePos(Fvector &pos)								;
 	virtual void				ActivateExplosionBox	(const Fvector &size,Fvector &in_out_pos)	;
 	virtual void				OnEvent					(NET_Packet& P, u16 type)					;

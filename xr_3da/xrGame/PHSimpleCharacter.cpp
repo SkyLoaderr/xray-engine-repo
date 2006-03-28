@@ -1558,7 +1558,16 @@ void	CPHSimpleCharacter::	AddControlVel						(const Fvector& vel)
 
 u16 CPHSimpleCharacter::DamageInitiatorID()const
 {
-	u16 ret=m_collision_damage_info.DamageInitiatorID();
+		u16 ret=u16(-1);//m_collision_damage_info.DamageInitiatorID();
+	
+		CPhysicsShellHolder* object =static_cast<CPhysicsShellHolder*>(Level().Objects.net_Find(m_collision_damage_info.m_obj_id));
+		if(object&&!object->getDestroy())
+		{
+			IDamageSource* ds=object->cast_IDamageSource();
+			if(ds)	ret= ds->Initiator();
+		}
+	//	return u16(-1);
+
 	if(ret==u16(-1)) ret = m_phys_ref_object->ID();
 	return ret;
 }
@@ -1567,15 +1576,14 @@ CObject* CPHSimpleCharacter::DamageInitiator() const
 {
 	VERIFY(m_phys_ref_object);
 	if(m_collision_damage_info.m_dmc_type==SCollisionDamageInfo::ctStatic) return (CObject*) (m_phys_ref_object);
-	CObject* ret = static_cast<CObject*> (m_collision_damage_info.m_object);
-	u16 initiator_id=m_collision_damage_info.DamageInitiatorID();
-	if(initiator_id!=u16(-1))
+	u16 initiator_id=DamageInitiatorID();
+	VERIFY(initiator_id!=u16(-1));
+	if(initiator_id==m_phys_ref_object->ID())
+		return static_cast<CObject*> (m_phys_ref_object);
+	else
 	{
-		ret=Level().Objects.net_Find(initiator_id);
+		return Level().Objects.net_Find(initiator_id);
 	}
-	if(!ret) ret = static_cast<CObject*> (m_phys_ref_object);
-	VERIFY(ret);
-	return ret;
 }
 
 CPHSimpleCharacter::SCollisionDamageInfo::SCollisionDamageInfo()
@@ -1585,8 +1593,9 @@ CPHSimpleCharacter::SCollisionDamageInfo::SCollisionDamageInfo()
 void CPHSimpleCharacter::SCollisionDamageInfo::Construct()
 {
 	m_contact_velocity=0.f;
+	SCollisionDamageInfo::Reinit();
 	//m_damege_contact;
-	m_object=NULL;
+	
 	//m_dmc_signum;
 	//m_dmc_type;
 
@@ -1603,15 +1612,26 @@ void CPHSimpleCharacter::SCollisionDamageInfo::HitDir(Fvector& dir)	const
 	dir.set(m_damege_contact.geom.normal[0]*m_dmc_signum,m_damege_contact.geom.normal[1]*m_dmc_signum,m_damege_contact.geom.normal[2]*m_dmc_signum);
 }
 
-u16 CPHSimpleCharacter::SCollisionDamageInfo::DamageInitiatorID() const
+//u16 CPHSimpleCharacter::SCollisionDamageInfo::DamageInitiatorID() const
+//{
+//	//if(!m_object) 
+//				//return u16(-1);
+//	CPhysicsShellHolder* object =static_cast<CPhysicsShellHolder*>(Level().Objects.net_Find(m_obj_id));
+//	if(!object)return u16(-1);
+//	IDamageSource* ds=m_object->cast_IDamageSource();
+//	if(ds) return ds->Initiator();
+//	return u16(-1);
+//}
+void CPHSimpleCharacter::SCollisionDamageInfo::Reinit()
 {
-	if(!m_object) 
-				return u16(-1);
-	IDamageSource* ds=m_object->cast_IDamageSource();
-	if(ds) return ds->Initiator();
-	return u16(-1);
-}
+	//m_damege_contact;
 
+	m_obj_id =u16(-1);
+	m_hit_callback=NULL;
+	m_contact_velocity=0;
+	//float					m_dmc_signum;
+	//enum{ctStatic,ctObject}	m_dmc_type;
+}
 void CPHSimpleCharacter::GetSmothedVelocity(Fvector& vvel)
 {
 	if(!b_exist) {vvel.set(0,0,0);return;}
@@ -1634,7 +1654,12 @@ ALife::EHitType	CPHSimpleCharacter:: HitType	()const
 	else									
 		return ALife::eHitTypeStrike;
 }//
-CElevatorState	*CPHSimpleCharacter::ElevatorState()
+CElevatorState*	CPHSimpleCharacter::ElevatorState()
 {
 	return &m_elevator_state;
+}
+
+SCollisionHitCallback*	CPHSimpleCharacter::HitCallback					()const	
+{
+	return m_collision_damage_info.m_hit_callback;
 }

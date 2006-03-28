@@ -150,13 +150,15 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 		}
 	}
 
-	CPhysicsShellHolder * O=di->DamageObject();
-	SCollisionHitCallback* cc= O ? O->get_collision_hit_callback() : NULL;
-	if(cc)cc->call(static_cast<CGameObject*>(m_character->PhysicsRefObject()),fMinCrashSpeed,fMaxCrashSpeed,fContactSpeed,gcontact_HealthLost,CollisionDamageInfo());
+	//CPhysicsShellHolder * O=di->DamageObject();
+	//SCollisionHitCallback* cc= O ? O->get_collision_hit_callback() : NULL;
+	const ICollisionDamageInfo	*cdi=CollisionDamageInfo();
+	if(cdi->HitCallback())cdi->HitCallback()->call(static_cast<CGameObject*>(m_character->PhysicsRefObject()),fMinCrashSpeed,fMaxCrashSpeed,fContactSpeed,gcontact_HealthLost,CollisionDamageInfo());
 	
 
 	CheckEnvironment(vPosition);
 	bSleep=false;
+	m_character->Reinit();
 }
 
 void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& precision  )
@@ -297,6 +299,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	CheckEnvironment(vPosition);
 	bSleep=false;
 	b_exect_position=false;
+	//m_character->Reinit();
 }
 
 void CPHMovementControl::PathNearestPoint(const xr_vector<DetailPathManager::STravelPathPoint>  &path,			//in path
