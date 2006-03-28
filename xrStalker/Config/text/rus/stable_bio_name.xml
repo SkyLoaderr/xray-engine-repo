@@ -686,7 +686,7 @@
 <!-- Escape -->
 
 <string id="esc_wolf_name">
-	<text>Сталкер "Волк"</text>
+	<text>"Волк"</text>
 </string>
 
 <string id="esc_wolf_bio">
@@ -694,7 +694,7 @@
 </string>
 
 <string id="esc_fanat_name">
-	<text>Сталкер "Фанат"</text>
+	<text>"Фанат"</text>
 </string>
 
 <string id="esc_fanat_bio">
@@ -702,7 +702,7 @@
 </string>
 
 <string id="esc_fox_name">
-	<text>Сталкер "Лис"</text>
+	<text>"Лис"</text>
 </string>
 
 <string id="esc_fox_bio">
@@ -710,7 +710,7 @@
 </string>
 
 <string id="esc_tolik_name">
-	<text>Сталкер Толик</text>
+	<text>Толик</text>
 </string>
 
 <string id="esc_tolik_bio">
@@ -777,7 +777,7 @@
 <!-- Garbage -->
 
 <string id="gar_seryi_name">
-	<text>Сталкер Серый</text>
+	<text>"Серый"</text>
 </string>
 
 <string id="gar_seryi_bio">
@@ -797,7 +797,7 @@
 </string>
 
 <string id="gar_hellcar_name">
-	<text>Сталкер Бес</text>
+	<text>Бес</text>
 </string>
 
 <string id="gar_hellcar_bio">
@@ -858,15 +858,15 @@
 </string>
 
 <string id="sar2_wolf_name">
-	<text>Сталкер "Волк"</text>
+	<text>"Волк"</text>
 </string>
 
 <string id="sar2_fanat_name">
-	<text>Сталкер "Фанат"</text>
+	<text>"Фанат"</text>
 </string>
 
 <string id="sar2_fox_name">
-	<text>Сталкер "Лис"</text>
+	<text>"Лис"</text>
 </string>
 
 <string id="sar2_tolik_name">
@@ -882,7 +882,7 @@
 </string>
 
 <string id="sar2_seryi_name">
-	<text>Сталкер Серый</text>
+	<text>"Серый"</text>
 </string>
 
 <string id="sar2_dram_novice_name">
@@ -890,7 +890,7 @@
 </string>
 
 <string id="sar2_hellcar_name">
-	<text>Сталкер Бес</text>
+	<text>"Бес"</text>
 </string>
 
 <string id="sar2_bandit_leader_name">
