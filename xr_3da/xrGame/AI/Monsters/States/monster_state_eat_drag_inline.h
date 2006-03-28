@@ -28,7 +28,7 @@ void CStateMonsterDragAbstract::initialize()
 	
 	m_failed = false;
 	
-	if (!object->m_PhysicMovementControl->PHCapture()->Failed()) {
+	if (object->m_PhysicMovementControl->PHCapture() && !object->m_PhysicMovementControl->PHCapture()->Failed()) {
 		
 		CCoverPoint *point = object->CoverMan->find_cover(object->Position(), 10.f, 30.f);
 		if (point) {
