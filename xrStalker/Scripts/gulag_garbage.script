@@ -1439,7 +1439,7 @@ function load_states(gname, type)
 					return 0
 				end
 			elseif gulag.state == 1 then
-				if game.get_game_time():diffSec(gulag.stateBegin) > 100 then
+				if game.get_game_time():diffSec(gulag.stateBegin) > 1000 then
 					return 2
 				else
 					return 1
