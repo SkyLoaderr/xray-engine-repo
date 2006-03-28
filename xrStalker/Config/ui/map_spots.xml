@@ -22,9 +22,13 @@
 	</blue_location>
 	<blue_spot  x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="525" y="872" width="32" height="32">ui\ui_common</texture>
+		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
+		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</blue_spot>
 	<blue_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
 		<texture x="493" y="1000" width="11" height="11">ui\ui_common</texture>
+		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
+		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>		
 	</blue_mini_spot>
 
 	<crlc_big>
@@ -54,9 +58,13 @@
 	</green_location>
 	<green_spot  x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="525" y="904" width="32" height="32">ui\ui_common</texture>
+		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
+		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>				
 	</green_spot>
 	<green_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
 		<texture x="515" y="1000" width="11" height="11">ui\ui_common</texture>
+		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
+		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</green_mini_spot>
 	
 	<red_location>
@@ -65,9 +73,13 @@
 	</red_location>
 	<red_spot  x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="665" y="853" width="32" height="32">ui\ui_common</texture>
+		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
+		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>		
 	</red_spot>
 	<red_mini_spot  x="0" y="0" width="11" height="11" alignment="c">
 		<texture x="526" y="1000" width="11" height="11">ui\ui_common</texture>
+		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
+		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>		
 	</red_mini_spot>
 	
 
