@@ -11,6 +11,7 @@
 #include "game_cl_TeamDeathmatch.h"
 
 #include "ui/UIFrags2.h"
+#include "ui/TeamInfo.h"
 
 #define MSGS_OFFS 510
 
@@ -31,9 +32,12 @@ CUIGameTDM::CUIGameTDM()
 	xml_init.InitStatic				(uiXml, "team2_icon", 0,	m_team2_icon);
 	xml_init.InitAutoStaticGroup	(uiXml, "team2_icon",		m_team2_icon);
 	xml_init.InitStatic				(uiXml, "team1_score", 0,	m_team1_score);
-	xml_init.InitAutoStaticGroup	(uiXml, "team1_score",		m_team1_score);
-	xml_init.InitStatic				(uiXml, "team2_score", 0,	m_team2_score);
-	xml_init.InitAutoStaticGroup	(uiXml, "team2_score",		m_team2_score);
+	CUIXmlInit::StaticsVec gr;
+	gr = xml_init.InitAutoStaticGroup	(uiXml, "team1_score",		m_team1_score);
+	(*gr.back()).SetText(*CTeamInfo::GetTeam1_name());
+	xml_init.InitStatic					(uiXml, "team2_score", 0,	m_team2_score);
+	gr = xml_init.InitAutoStaticGroup	(uiXml, "team2_score",		m_team2_score);
+	(*gr.back()).SetText(*CTeamInfo::GetTeam2_name());
 }
 //--------------------------------------------------------------------
 void CUIGameTDM::SetClGame (game_cl_GameState* g)

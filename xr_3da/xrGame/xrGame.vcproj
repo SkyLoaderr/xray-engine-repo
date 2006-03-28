@@ -10777,6 +10777,16 @@
 							RelativePath=".\ui\UIListItemServer.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="TeamInfo"
+						Filter="">
+						<File
+							RelativePath=".\ui\TeamInfo.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\TeamInfo.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="HUD"

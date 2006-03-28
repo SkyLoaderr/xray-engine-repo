@@ -130,14 +130,14 @@
 			</cap_death>
 			<list_server_properties x="0" y="210" width="327" height="96" item_height="18" always_show_scroll="1">
 				<texture>ui_cb_listbox</texture>
-				<text r="131" g="131" b="131" font="letterica16"/>
+				<font r="131" g="131" b="131" font="letterica16"/>
 				<frame x="0" y="210" width="309" height="96">
 					<texture>ui_cb_listbox</texture>
 				</frame>
 			</list_server_properties>
 			<list_players_list x="337" y="210" width="198" height="96" item_height="18" always_show_scroll="1">
 				<texture>ui_cb_listbox</texture>
-				<text r="131" g="131" b="131" font="letterica16"/>
+				<font r="131" g="131" b="131" font="letterica16"/>
 				<frame x="337" y="210" width="180" height="96">
 					<texture>ui_cb_listbox</texture>
 				</frame>

@@ -1,33 +1,33 @@
 <?xml version='1.0' encoding="UTF-8" ?>
 <w>
 
-	<team1_icon x="270" y="0" width="39" height="43">
+	<team1_icon x="230" y="0" width="39" height="43">
 		<texture>ui_hud_teamF_leftS</texture>
 		<auto_static x="3" y="0" width="32" height="32">
 			<texture>green_team_logo_small</texture>
 		</auto_static>
 	</team1_icon>
 
-	<team2_icon x="712" y="0" width="39" height="43">
+	<team2_icon x="752" y="0" width="39" height="43">
 		<texture>ui_hud_teamF_rightS</texture>
 		<auto_static x="0" y="0" width="32" height="32">
 			<texture>blue_team_logo_small</texture>
 		</auto_static>
 	</team2_icon>
 
-	<team1_score x="365" y="7" width="120" height="30">
+	<team1_score x="275" y="7" width="210" height="30">
 		<text align="r" font="graffiti50" r="0" g="255" b="0" a="255"/>
 
-		<auto_static x="0" y="0" width="120" height="30">
-			<text align="l" font="graffiti32" r="0" g="255" b="0" a="255">WOLF</text>
+		<auto_static x="0" y="0" width="195" height="30">
+			<text align="c" font="graffiti32" r="0" g="255" b="0" a="255">WOLF</text>
 		</auto_static>
 	</team1_score>
 
-	<team2_score x="534" y="7" width="120" height="30">
+	<team2_score x="534" y="7" width="210" height="30">
 		<text align="l" font="graffiti50" r="0" g="0" b="255" a="255"/>
 
-		<auto_static x="0" y="0" width="120" height="30">
-			<text align="r" font="graffiti32" r="0" g="0" b="255" a="255">EAGLE</text>
+		<auto_static x="15" y="0" width="210" height="30">
+			<text align="c" font="graffiti32" r="0" g="0" b="255" a="255">EAGLE</text>
 		</auto_static>
 	</team2_score>
 	
