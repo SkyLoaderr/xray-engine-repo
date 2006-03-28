@@ -20,7 +20,7 @@
 		</supplies>
 		
 		<start_dialog>escape_trader_start_dialog</start_dialog>
-		<actor_dialog>escape_trader_talk_level</actor_dialog>
+<!--		<actor_dialog>escape_trader_talk_level</actor_dialog>    -->
 		<actor_dialog>escape_trader_talk_info</actor_dialog>
 		<actor_dialog>escape_trader_jobs</actor_dialog>
 		<actor_dialog>tm_trader_dialog</actor_dialog>
