@@ -21,6 +21,7 @@
 #include "map_location.h"
 #include "Inventory.h"
 #include "ActorCondition.h"
+#include "ui/TeamInfo.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -161,10 +162,10 @@ void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
 	string512 Text;
-	LPSTR	Color_Teams[3]		= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
+//	LPSTR	Color_Teams[3]		= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
 	char	Color_Main[]		= "%c<255,192,192,192>";
 	char	Color_Artefact[]	= "%c<255,255,255,0>";
-	LPSTR	TeamsNames[3]		= {"Zero Team", "Team Green", "Team Blue"};
+//	LPSTR	TeamsNames[3]		= {"Zero Team", "Team Green", "Team Blue"};
 
 	switch(msg)	{
 //-------------------UI MESSAGES
@@ -178,7 +179,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %shas taken the %sArtefact", 
-				Color_Teams[Team], 
+				CTeamInfo::GetTeam_color_tag(int(Team)), 
 				pPlayer->name, 
 				Color_Main,
 				Color_Artefact);
@@ -206,7 +207,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %shas dropped the %sArtefact", 
-				Color_Teams[Team], 
+				CTeamInfo::GetTeam_color_tag(int(Team)), 
 				pPlayer->name, 
 				Color_Main,
 				Color_Artefact);
@@ -225,8 +226,8 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %sscores", 
-				Color_Teams[Team], 
-				TeamsNames[Team], 
+				CTeamInfo::GetTeam_color_tag(int(Team)), 
+				CTeamInfo::GetTeam_name(int(Team)),
 				Color_Main);
 			CommonMessageOut(Text);
 			

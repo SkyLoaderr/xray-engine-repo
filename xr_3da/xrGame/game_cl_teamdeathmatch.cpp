@@ -14,6 +14,7 @@
 #include "ui/UIPDAWnd.h"
 #include "ui/UIMapDesc.h"
 #include "game_base_menu_events.h"
+#include "ui/TeamInfo.h"
 
 #define	TEAM0_MENU		"teamdeathmatch_team0"
 #define	TEAM1_MENU		"teamdeathmatch_team1"
@@ -100,9 +101,9 @@ void				game_cl_TeamDeathmatch::net_import_state		(NET_Packet& P)
 void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
 	string512 Text;
-	LPSTR	Color_Teams[3]	= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
+//	LPSTR	Color_Teams[3]	= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
 	char	Color_Main[]	= "%c<255,192,192,192>";
-	LPSTR	TeamsNames[3]	= {"Zero Team", "Team Green", "Team Blue"};
+//	LPSTR	TeamsNames[3]	= {"Zero Team", "Team Green", "Team Blue"};
 
 	switch(msg)	{
 	case GAME_EVENT_PLAYER_JOIN_TEAM: //tdm
@@ -113,14 +114,15 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			P.r_u16		(Team);
 
 			sprintf(Text, "%s%s %sjoined %s%s",
-							Color_Teams[0],
+							"",//no color
 							PlayerName,
 							Color_Main,
-							Color_Teams[Team],
-							TeamsNames[Team]);
+							CTeamInfo::GetTeam_color_tag(int(Team)),
+							CTeamInfo::GetTeam_name(int(Team)));
 			CommonMessageOut(Text);
 			//---------------------------------------
-			Msg("%s joined %s", PlayerName, TeamsNames[Team]);
+			Msg("%s joined %s", PlayerName, 
+				CTeamInfo::GetTeam_name(int(Team)));	 // caution!!! : using of shared_str - don't forget about (*)
 		}break;
 
 	case PLAYER_CHANGE_TEAM://tdm
@@ -134,14 +136,14 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %shas switched to %s%s", 
-							Color_Teams[OldTeam], 
+							CTeamInfo::GetTeam_color_tag(int(OldTeam)), 
 							pPlayer->name, 
 							Color_Main, 
-							Color_Teams[NewTeam], 
-							TeamsNames[NewTeam]);
+							CTeamInfo::GetTeam_color_tag(int(NewTeam)), 
+							CTeamInfo::GetTeam_name(int(NewTeam)));
 			CommonMessageOut(Text);
 			//---------------------------------------
-			Msg("%s has switched to %s", pPlayer->name, TeamsNames[NewTeam]);
+			Msg("%s has switched to %s", pPlayer->name, CTeamInfo::GetTeam_name(int(NewTeam)));
 		}break;
 
 	default:
