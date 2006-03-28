@@ -59,6 +59,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatingAbstract::check_completion()
 {
 	if (object->conditions().GetSatiety() > 0.95f) return true;
+	if (object->CorpseMan.get_corpse() != corpse)  return true;
 	
 	Fvector nearest_bone_pos;
 	if ((corpse->m_pPhysicsShell == NULL) || (!corpse->m_pPhysicsShell->isActive())) {
