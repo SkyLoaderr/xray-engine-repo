@@ -27,7 +27,11 @@ void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*materi
 
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
-	if(m_flags.test(fl_skeleton_in_shell))xr_delete(m_physics_skeleton);//!b_skeleton_in_shell
+	if(m_flags.test(fl_skeleton_in_shell))
+	{
+		m_physics_skeleton->Deactivate();
+		xr_delete(m_physics_skeleton);//!b_skeleton_in_shell
+	}
 }
 
 CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity) 
@@ -455,8 +459,10 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 	{
 		VERIFY(m_eType!=etStalker);
 		if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
+		m_physics_skeleton->Deactivate();
 		xr_delete(m_physics_skeleton) ;
 		CreateSkeleton(m_physics_skeleton);
+		m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
 		ActivateShell(NULL);
 	}
