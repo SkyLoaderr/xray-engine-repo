@@ -386,7 +386,7 @@ end
    подходит ли он гулагу, подходит ли он хоть на одну работу
 ]]
 function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
-	if obj:name() == "bar_m_pseudodog_e" then
+	if self:name() == "rad_entrance" then
 		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 	end
 
@@ -399,7 +399,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	then
 		local community, is_stalker = self:get_obj_community( obj )
 
-		if obj:name() == "bar_m_pseudodog_e" then
+		if self:name() == "rad_entrance" then
 			printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
 		end
 
