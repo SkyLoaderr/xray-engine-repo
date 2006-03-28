@@ -162,7 +162,7 @@ void CServerList::FillUpDetailedServerInfo(){
 		m_GSBrowser.GetServerInfoByIndex(&srvInfo, pItem->GetInfo()->info.Index);
 		u32 teams = srvInfo.m_aTeams.size();
 
-		R_ASSERT(teams>0 && teams<3);
+//		R_ASSERT(teams>0 && teams<3);
 		if (2 == teams){
 			string256 _buff;
 //			LPCSTR tm_col = pSettings->r_string("team1","color");
