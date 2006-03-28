@@ -1,6 +1,7 @@
 --[[
 Изменения script_version:
 	3 - сохранение поля job_online
+	5 - сохранение поля was_in_smart_terrain
 ]]
 
 class "se_stalker"	(cse_alife_human_stalker)
@@ -19,6 +20,9 @@ function se_stalker:__init (section) super (section)
 	-- false = всегда в офлайне
 	-- nil   = смарту всё равно
 	self.job_online = nil
+
+	-- посещал ли сталкер хоть один smart_terrain
+	self.was_in_smart_terrain = false
 end
 --------------------
 function se_stalker:get_ini()
@@ -94,6 +98,8 @@ function se_stalker:STATE_Write (packet)
 	else
 		packet:w_u8(2)
 	end
+
+	packet:w_bool(self.was_in_smart_terrain)
 end
 --------------------
 function se_stalker:STATE_Read (packet, size)
@@ -109,6 +115,10 @@ function se_stalker:STATE_Read (packet, size)
 		else
 			self.job_online = nil
 		end
+	end
+
+	if self.script_version >= 5 then
+		self.was_in_smart_terrain = packet:r_bool()
 	end
 end
 --------------------

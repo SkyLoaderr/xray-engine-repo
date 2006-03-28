@@ -270,7 +270,7 @@ function se_smart_terrain:fill_npc_info( obj, npc_info )
 		t = t[self:name()]
 	end
 
-	npc_info.cond         = t	
+	npc_info.cond         = t
 	return npc_info
 end
 
@@ -386,6 +386,10 @@ end
    подходит ли он гулагу, подходит ли он хоть на одну работу
 ]]
 function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
+	if obj:name() == "bar_m_pseudodog_e" then
+		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+	end
+
 	if obj_agreement == disagreed then
 		return false
 	end
@@ -394,6 +398,10 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	   self.gulag:get_non_exclusive_population() < self.gulag.capacity_non_exclusive
 	then
 		local community, is_stalker = self:get_obj_community( obj )
+
+		if obj:name() == "bar_m_pseudodog_e" then
+			printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
+		end
 
 		if self.accepted_communities and not self.accepted_communities[community] then
 			return false
@@ -495,20 +503,35 @@ end
 -- возвращает меру подходящести персонажа смарттерейну.
 -- вызывается для всех смарттерейнов, которые вернули true из enabled
 -- для того, чтобы выбрать тот единственный, в который персонаж всё-таки пойдёт.
+-- критерии:
+--   1) если объект уже бывал в других смартах, то
+--   2) иначе ближе - лучше
 function se_smart_terrain:suitable( obj )
-	local self_gv = game_graph():vertex( self.m_game_vertex_id )
-	local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
+--	if obj.was_in_smart_terrain then
+--[[		printf( "[smart_terrain %s] obj=%s suitable=%d was_in_smart_terrain=%s",
+		        self:name(),
+		        obj:name(),
+		        1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ),
+		        tostring(obj.was_in_smart_terrain) )]]
 
---	if obj:name() == "esc_vagon_wounded" then
---		printf( "[smart_terrain %s] obj=%s suitable=%d", self:name(), obj:name(), 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ) )
+
+--	else
+		local self_gv = game_graph():vertex( self.m_game_vertex_id )
+		local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
+
+--[[		printf( "[smart_terrain %s] obj=%s suitable=%d was_in_smart_terrain=%s",
+		        self:name(),
+		        obj:name(),
+		        1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ),
+		        tostring(obj.was_in_smart_terrain) )]]
+
+		return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
 --	end
-
-	return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
 end
 
 -- добавить npc в smart terrain.
 -- если места нету или нету свободных подходящих работ, то
--- вытолкнуть из этого smart terrain с подходящей работы объект, который попал в него не эксклюзивно
+-- вытолкнуть из этого smart terrain с подходящей работы объект, который попал в него не эксклюзивно.
 function se_smart_terrain:register_npc( obj )
 	printf( "[smart_terrain %s] register called obj=%s gulag_type=%s", self:name(), obj:name(), self.gparams.type )
 
@@ -536,6 +559,8 @@ function se_smart_terrain:register_npc( obj )
 	end
 
 	self:update_obj_rank( obj )
+
+	obj.was_in_smart_terrain = true
 
 	self.npc_info[obj.id] = npc_info
 
@@ -741,7 +766,7 @@ function se_smart_terrain:on_register()
 	end
 
 	sim_statistic.reinit()
-	
+
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
 end
