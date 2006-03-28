@@ -2,41 +2,41 @@
 ;-- GARBAGE BANDITS
 ;-------------------------------------------------------------------------------------------------
 [logic@gar_bandit_agr_camper1]
-active = camper@gar_bandit_agr_camper1
+active = walker@gar_bandit_agr_camper1
 
-[camper@gar_bandit_agr_camper1]
+[walker@gar_bandit_agr_camper1]
 path_walk = camper_walk1
 path_look = camper_look1
 
 
 [logic@gar_bandit_agr_camper2]
-active = camper@gar_bandit_agr_camper2
+active = walker@gar_bandit_agr_camper2
 
-[camper@gar_bandit_agr_camper2]
+[walker@gar_bandit_agr_camper2]
 path_walk = camper_walk2
 path_look = camper_look2
 
 
 [logic@gar_bandit_agr_camper3]
-active = camper@gar_bandit_agr_camper3
+active = walker@gar_bandit_agr_camper3
 
-[camper@gar_bandit_agr_camper3]
+[walker@gar_bandit_agr_camper3]
 path_walk = camper_walk3
 path_look = camper_look3
 
 
 [logic@gar_bandit_agr_camper4]
-active = camper@gar_bandit_agr_camper4
+active = walker@gar_bandit_agr_camper4
 
-[camper@gar_bandit_agr_camper4]
+[walker@gar_bandit_agr_camper4]
 path_walk = camper_walk4
 path_look = camper_look4
 
 
 [logic@gar_bandit_agr_camper5]
-active = camper@gar_bandit_agr_camper5
+active = walker@gar_bandit_agr_camper5
 
-[camper@gar_bandit_agr_camper5]
+[walker@gar_bandit_agr_camper5]
 path_walk = camper_walk5
 path_look = camper_look5
 
@@ -1458,8 +1458,9 @@ use_wpn		= true
 
 [logic@gar_angar_wounded]
 active = walker@gar_angar_wounded
-meet = default_meet
 combat_ignore = combat_ignore
+on_hit = hit@gar_angar_drug1
+on_death = death@gar_angar_drug1
 
 [walker@gar_angar_wounded]
 path_walk = seryi_drug4_walk
@@ -1467,6 +1468,16 @@ path_look = seryi_drug4_look
 combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
 on_info = {=gar_bandits_seryi_die} kamp@gar_angar_wounded
 on_info2 = {!is_wounded} walker@gar_angar_drug2
+meet = no_meet
+
+[walker@gar_angar_drug2]
+path_walk = seryi_drug2_walk
+path_look = seryi_drug2_look
+combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
+meet_talk_enabled = true
+on_info = {=gar_bandits_seryi_die} kamp@gar_angar_wounded
+danger = danger_condition@gar_angar_drug2
+meet = no_meet
 
 [kamp@gar_angar_wounded]
 center_point = gar_seryi_kamp
@@ -1511,13 +1522,7 @@ ignore_distance = 10
 ;on_death = death@gar_angar_drug2
 ;meet = meet@friend
 
-[walker@gar_angar_drug2]
-path_walk = seryi_drug2_walk
-path_look = seryi_drug2_look
-combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
-meet_talk_enabled = true
-on_info = {=gar_bandits_seryi_die} kamp@gar_angar_drug1
-danger = danger_condition@gar_angar_drug2
+
 
 ;[hit@gar_angar_drug2]
 ;on_info = %+gar_seryi_counter_fire%
