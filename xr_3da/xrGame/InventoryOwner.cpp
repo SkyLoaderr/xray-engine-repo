@@ -69,6 +69,8 @@ CInventoryOwner::~CInventoryOwner			()
 
 void CInventoryOwner::Load					(LPCSTR section)
 {
+	if(pSettings->line_exist(section, "inv_max_weight"))
+		m_inventory->SetMaxWeight( pSettings->r_float("inventory","inv_max_weight") );
 }
 
 void CInventoryOwner::reload				(LPCSTR section)
