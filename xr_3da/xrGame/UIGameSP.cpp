@@ -63,6 +63,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	}
 #endif
 	*/
+	if( Device.Pause()		) return false;
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor)								return false;
