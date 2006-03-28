@@ -285,14 +285,15 @@
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_abakan = 1, scope launcher cond=0.9 \n
-	    	ammo_5.45x39_ap = 1 \n
-			device_torch \n
-#include "gameplay\character_items.xml"\n
+			ammo_11.43x23_hydro	= 1 \n
+			wpn_groza \n
+			ammo_9x39_sp5 = 2 \n
+			ammo_vog-25p = 2 \n
+#include "gameplay\character_items.xml"	\n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
-		</supplies>		
+		</supplies>					
+	</specific_character>	
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
