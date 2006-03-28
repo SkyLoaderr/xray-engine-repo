@@ -120,4 +120,16 @@
     <string id="cit_doctors_key_desc">
         <text>Ключ доктора от тайника на Припяти</text>
     </string>
+    <string id="cit_killers_documents_short_desc">
+        <text>Документы наемников</text>
+    </string>
+    <string id="cit_killers_documents_desc">
+        <text>Подробная информация о деятельности группировки наемников</text>
+    </string>
+    <string id="cit_deadcity_maps_short_desc">
+        <text>Карта мертвого города</text>
+    </string>
+    <string id="cit_deadcity_maps_desc">
+        <text>Детальная карта мертвого города и расположения укреплений в городе</text>
+    </string>
 </string_table>
