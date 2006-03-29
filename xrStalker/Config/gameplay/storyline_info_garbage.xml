@@ -3,6 +3,14 @@
         <text>storyline_seriy_flash_info</text>
     </article>
     
+    <article id="help_for_hellcar" name="gar_car_graveyard_quest" article_type="task" group="gar_car_graveyard_quest">
+        <text>help_for_neitrals_text</text>
+    </article>
+    
+    <article id="graveyard_raid" name="gar_help_dymon" article_type="task" group="gar_help_dymon">
+        <text>graveyard_raid_text</text>
+    </article>
+    
     
     <!-- Артиклы из журнала -->
     <article id="sl_beginning" name="sl_beginning" article_type="Journal" group="memuars">
