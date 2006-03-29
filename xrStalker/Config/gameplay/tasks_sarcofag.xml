@@ -47,8 +47,6 @@
 		<objective>
 			<text>sar_secret_lab_3</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="sar_command_center_hint">green_location</map_location_type>
-			<map_location_hidden>1</map_location_hidden>
 			<infoportion_complete>sar_enter_command_center</infoportion_complete>
 		</objective>
 </game_task>
