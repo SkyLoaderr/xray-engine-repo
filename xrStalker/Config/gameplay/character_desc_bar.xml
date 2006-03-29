@@ -1776,7 +1776,7 @@
 		<class>bar_Killer_regular</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 					
-		<rank>316</rank>
+		<rank>366</rank>
 		<reputation>-30</reputation>
 
 		<visual>actors\killer\stalker_ki_head_1</visual>
@@ -1803,7 +1803,7 @@
 		<class>bar_Killer_regular</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 					
-		<rank>293</rank>
+		<rank>398</rank>
 		<reputation>-30</reputation>
 
 		<visual>actors\killer\stalker_ki_mask</visual>
@@ -1830,7 +1830,7 @@
 		<class>bar_Killer_regular</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 					
-		<rank>334</rank>
+		<rank>434</rank>
 		<reputation>-30</reputation>
 
 		<visual>actors\killer\stalker_ki_antigas</visual>
