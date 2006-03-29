@@ -1,45 +1,9 @@
-function main7777()
-	level.add_complex_effector("effector_fire_hit",999)
---	level.set_pp_effector_factor(999, 0.1)
---	level.remove_pp_effector(999)
-
-end
-
-
 -- run_string alife():create("medkit", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
-function main222222()
-	local spawn_items = {}
-	local level = level.name()
-
-	table.insert(spawn_items, "device_torch")
-
-
-	local k,v = 0,0
-	for k,v in pairs(spawn_items) do
-	
-	alife():create(v, db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
-	end	
-end
-
 function main()
-	level.add_complex_effector("effector_nightvision",999)
-
---   game.start_tutorial("part_1_pda")
---   part_3_jump
---   part_4_crouch
---   part_5_crouch_down
-  -- part_6_radiation
-  -- part_7_starvation
-   --part_8_wound
-   --part_9_weapon
-   --part_10_sprint
-   --part_11_weakness
---   part_12_relations
-  -- part_13_sleep
-   --part_14_overload
-   
-   
+	db.actor:give_game_news("превед", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("превед"," медвед", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("превед"," медвед"," красавчег", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
 function main123()
@@ -49,49 +13,6 @@ function main123()
 end
 
 function main2()
-
-local _task = CGameTask()
-_task:load("andy_task_2")
-_task:set_title("my_new_title_from_script")
-
-local _obj = SGameTaskObjective(_task,1)
-_obj:set_description("descr_from_script_for_1")
-_obj:set_article_id("descr_from_script_for_1")
-
---map locations
--- _obj:set_map_hint("xxx")
--- _obj:set_map_location("xxx")
--- _obj:set_object_id(0)
-
--- _obj:set_article_key("descr_from_script_for_0")
-
-_obj:add_complete_info("descr_from_script_for_1")
-_obj:add_fail_info("descr_from_script_for_1")
-_obj:add_on_complete_info("descr_from_script_for_1")
-_obj:add_on_fail_info("descr_from_script_for_1")
-
-_task:add_objective(_obj)
-
-_obj = SGameTaskObjective(_task,2)
-_obj:set_description("descr_from_script_for_2")
-_obj:set_article_id("descr_from_script_for_2")
-
---map locations
--- _obj:set_map_hint("xxx")
--- _obj:set_map_location("xxx")
--- _obj:set_object_id(0)
-
--- _obj:set_article_key("descr_from_script_for_0")
-
-_obj:add_complete_info("descr_from_script_for_2")
-_obj:add_fail_info("descr_from_script_for_2")
-_obj:add_on_complete_info("descr_from_script_for_2")
-_obj:add_on_fail_info("descr_from_script_for_2")
-
-_task:add_objective(_obj)
-
-
-db.actor:give_task(_task,false)
 
 --	db.actor:actor_sleep(0,180)
 	
@@ -113,7 +34,7 @@ end
 
 function mai22222n()
 	db.actor:give_game_news("11 first message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("hello Bill \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 	db.actor:give_game_news("33 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 	db.actor:give_game_news("44 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
