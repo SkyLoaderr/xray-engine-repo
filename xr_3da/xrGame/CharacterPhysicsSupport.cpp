@@ -29,7 +29,7 @@ CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
 	if(m_flags.test(fl_skeleton_in_shell))
 	{
-		m_physics_skeleton->Deactivate();
+		if(m_physics_skeleton)m_physics_skeleton->Deactivate();
 		xr_delete(m_physics_skeleton);//!b_skeleton_in_shell
 	}
 }
@@ -81,12 +81,12 @@ void CCharacterPhysicsSupport::SetRemoved()
 		{
 			m_EntityAlife.processing_deactivate();
 		}
-		m_pPhysicsShell->Deactivate();
+		if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
 	}
 	else
 	{
-		m_physics_skeleton->Deactivate();
+		if(m_physics_skeleton)m_physics_skeleton->Deactivate();
 		xr_delete(m_physics_skeleton);
 		m_EntityAlife.processing_deactivate();
 	}
@@ -459,10 +459,10 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 	{
 		VERIFY(m_eType!=etStalker);
 		if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
-		m_physics_skeleton->Deactivate();
+		if(m_physics_skeleton)m_physics_skeleton->Deactivate();
 		xr_delete(m_physics_skeleton) ;
 		CreateSkeleton(m_physics_skeleton);
-		m_pPhysicsShell->Deactivate();
+		if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
 		ActivateShell(NULL);
 	}
