@@ -81,8 +81,8 @@ function fill_phrase_table()
 		if phrase_ini:line_exist(id, "smart_terrain") then
 			tt.smart_terrain = phrase_ini:r_string(id, "smart_terrain")
 		end					
-		if phrase_ini:line_exist(id, "price") then
-			tt.price = phrase_ini:r_u32(id, "price")
+		if phrase_ini:line_exist(id, "cost") then
+			tt.price = phrase_ini:r_u32(id, "cost")
 		end					
 		if phrase_ini:line_exist(id, "article_info") then
 			tt.article_info = parse_names(phrase_ini:r_string(id, "article_info"))
