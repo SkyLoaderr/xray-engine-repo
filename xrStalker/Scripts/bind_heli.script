@@ -52,7 +52,12 @@ function heli_binder:reinit()
 
 	self.last_hit_snd_timeout = 0
 
-	self.flame_start_health   = utils.cfg_get_number( system_ini(), "helicopter", "flame_start_health", self.object, true )
+	local ltx = system_ini()
+
+	self.flame_start_health   = utils.cfg_get_number( ltx, "helicopter", "flame_start_health", self.object, true )
+
+	local flame_start_snd     = utils.cfg_get_string( ltx, "helicopter", "explode_sound",      self.object, true, "" )
+	self.st.flame_start_snd   = sound_object( flame_start_snd )
 
 	-- на случай загрузки
 	self.st.last_alt       = self.heliObject:GetRealAltitude()
@@ -207,6 +212,8 @@ end
 
 function heli_start_flame( obj )
 	obj:get_helicopter():StartFlame()
+
+	db.storage[obj:id()].flame_start_snd:play( obj )
 end
 
 function heli_die( obj )
