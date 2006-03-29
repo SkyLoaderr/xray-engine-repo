@@ -783,6 +783,10 @@ function pri_monolith_combat_ignore(actor, npc)
     end
 end
 
+function pri_actor_has_rpg_ammo(actor, npc)
+	return actor:object("ammo_og-7b") ~= nil
+end
+
 
 ------------------------------------------------------------------------------------
 -- Special functions for Escape
