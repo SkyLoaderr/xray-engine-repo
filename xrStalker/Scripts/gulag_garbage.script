@@ -62,6 +62,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 15, state = {1},
 			in_rest = "", out_rest = "gar_graveyard_car",
+			position_threshold = 100,
 			predicate = function(obj_info) 
         					return obj_info.profile_name == "gar_hellcar"			           
 						end
@@ -104,31 +105,31 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_bandit_agr_camper1",
 			idle = 0,
 			prior = 8, state = {0,1,2,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_bandits_camp_rest"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_camper2",
 			idle = 0,
 			prior = 8, state = {0,1,2,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_bandits_camp_rest"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_camper3",
 			idle = 0,
 			prior = 8, state = {0,1,2,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_bandits_camp_rest"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_camper4",
 			idle = 0,
 			prior = 8, state = {0,1,2,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_bandits_camp_rest"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_camper5",
 			idle = 0,
 			prior = 8, state = {0,1,2,3},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_bandits_camp_rest"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_wait1",
@@ -1334,7 +1335,7 @@ function load_states(gname, type)
 			local actor = db.actor
 			if actor ~= nil then
 				if actor:has_info("gar_alarm") then
-					if xr_gulag.getGulagPopulation("gar_bandit_agr") < 6 then
+					if actor:has_info("gar_bandits_killed") then
 						return 1
 					else
 						return 2
