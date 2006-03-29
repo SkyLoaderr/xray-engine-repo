@@ -825,6 +825,9 @@
 							RelativePath=".\Config\text\rus\stable_dialog_manager.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_dialog_manager_uni.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\stable_dialogs.xml">
 						</File>
 						<File

@@ -6,8 +6,8 @@
 -- ƒоработка: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
-function printf()
-end
+--function printf()
+--end
 
 class "action_door"
 
@@ -50,7 +50,7 @@ function action_door:initialize(loading)
 	end
 	
 	if self.st.closed then
-		self:close_door()
+		self:close_door(disable_snd)
 	else
 		self:open_door(disable_snd)
 	end
@@ -59,9 +59,9 @@ function action_door:initialize(loading)
 
 	self.object:set_nonscript_usable(false)
 
-	if self.st.snd_init then
-		self:door_play_snd_from_set(self.st.snd_init)
-	end
+--	if self.st.snd_init then
+--		self:door_play_snd_from_set(self.st.snd_init)
+--	end
 	
 	self.initialized = true
 end
@@ -98,26 +98,14 @@ function action_door:update(delta)
 end
 
 function action_door:fastcall()
-	if self:close_check() then
-		self:close_action()
-		--printf("_bp: action_door: fastcall(): return true")
-		return true
-	end
-	--printf("_bp: action_door: fastcall(): return false")
-	return false
-end
-
-function action_door:close_check()
-	--printf("_bp: close_check(): %d", time_global())
 	if not self.initialized then
-		--printf("_bp: close_check(): not initialized")
 		return false
 	end
 
-	if self.block then
-		return self:is_closed()
+	if self.block and self:is_closed() then
+		self:close_action()
+		return true
 	end
-	--printf("_bp: close_check(): false")
 	return false
 end
 
@@ -160,17 +148,18 @@ end
 
 function action_door:is_closed()
 	local angle = self.joint:get_axis_angle(90)
-	printf("_bp: action_door:update(): angle %f limits %f, %f",
-		angle, self.low_limits, self.hi_limits)
+	printf("_bp[%s]: action_door:update(): angle %f limits %f, %f",
+		self.object:name(), angle, self.low_limits, self.hi_limits)
 	if angle <= self.low_limits then
 		printf("_bp: close_check(): true")
 		return true
 	end
+	return false
 end
 
-function action_door:close_door()
+function action_door:close_door(disable_snd)
 	printf("_bp: [%s] action_door:close_door()", self.object:name())
-	local disable_snd = self:is_closed()
+--	local disable_snd = self:is_closed()
 	if not disable_snd then
 		if self.st.snd_close_start then
 			self:door_play_snd_from_set(self.st.snd_close_start)
@@ -178,8 +167,6 @@ function action_door:close_door()
 	end
 
 	-- —тавим коллбек дл€ отлова окончани€ закрыти€ двери (чтобы заблокировать ее и проиграть звук, если нужно):
-	printf("_bp: action_door: setting physics callback from close_door")
-	--level.add_call(self, "close_check", "close_action") -- OK
 	self.object:set_fastcall(self.fastcall,self)
 	self.object:set_fastcall(self.fastcall,self)
 	self.object:set_fastcall(self.fastcall,self)
@@ -208,8 +195,7 @@ end
 function action_door:try_switch()
 	printf("_bp: action_door: object '%s': try_switch", self.object:name())
 	local st = db.storage[self.object:id()]
-	if st.active_scheme and st.active_scheme == "ph_door" and self.st.on_use then
-		--if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
+	if st.active_scheme and st.active_scheme == "ph_door" and self.st.on_use then		
 		if xr_logic.switch_to_section(self.object, self.st,
 		   xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.on_use.condlist)) then
 			return true
@@ -284,7 +270,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_door_close")
 	
 	
-	st.snd_init        = utils.cfg_get_string(ini, section, "snd_init", npc, false, "")
+--	st.snd_init        = utils.cfg_get_string(ini, section, "snd_init", npc, false, "")
 	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "")
 	st.snd_close_start = utils.cfg_get_string(ini, section, "snd_close_start", npc, false, "")
 	st.snd_close_stop  = utils.cfg_get_string(ini, section, "snd_close_stop", npc, false, "")
