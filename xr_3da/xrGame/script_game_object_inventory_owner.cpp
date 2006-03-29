@@ -71,11 +71,49 @@ void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name
 	}
 
 }
+bool _give_news	(LPCSTR news, LPCSTR texture_name, const Frect& tex_rect, int delay, int show_time);
 
+bool  CScriptGameObject::GiveGameNews		(LPCSTR news,LPCSTR news2,LPCSTR news3, LPCSTR texture_name, Frect tex_rect, int delay, int show_time)
+{
+	string1024	str;
+	return _give_news				(strconcat(	str,
+									" ",
+									*CStringTable().translate(news),
+									" ",
+									*CStringTable().translate(news2),
+									" ",
+									*CStringTable().translate(news3)), 
+									texture_name, 
+									tex_rect, 
+									delay, 
+									show_time);
+}
+
+bool  CScriptGameObject::GiveGameNews		(LPCSTR news,LPCSTR news2, LPCSTR texture_name, Frect tex_rect, int delay, int show_time)
+{
+	string1024	str;
+	return _give_news				(strconcat(	str,
+									" ",
+									*CStringTable().translate(news),
+									" ",
+									*CStringTable().translate(news2)),
+									texture_name, 
+									tex_rect, 
+									delay, 
+									show_time);
+}
 bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, Frect tex_rect, int delay, int show_time)
 {
+	return _give_news				(*CStringTable().translate(news),
+									texture_name, 
+									tex_rect, 
+									delay, 
+									show_time);
+}
+bool _give_news	(LPCSTR text, LPCSTR texture_name, const Frect& tex_rect, int delay, int show_time)
+{
 	GAME_NEWS_DATA				news_data;
-	news_data.news_text			= news;
+	news_data.news_text			= text;
 	if(show_time!=0)
 		news_data.show_time		= show_time;// override default
 
@@ -93,6 +131,7 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, Frect 
 
 	return true;
 }
+
 /*
 bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject* pFromWho)
 {

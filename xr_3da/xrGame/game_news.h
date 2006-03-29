@@ -16,7 +16,7 @@ struct GAME_NEWS_DATA : public IPureSerializeObject<IReader,IWriter>
 	virtual void		save				(IWriter&);
 
 
-	xr_string			news_text;
+	shared_str			news_text;
 	int					show_time;
 
 	ALife::_TIME_ID		receive_time;

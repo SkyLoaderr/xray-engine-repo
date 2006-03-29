@@ -15,7 +15,6 @@
 #include "date_time.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 
-#include "string_table.h"
 #include "specific_character.h"
 
 GAME_NEWS_DATA::GAME_NEWS_DATA()
@@ -61,7 +60,7 @@ LPCSTR GAME_NEWS_DATA::SingleLineText()
 
 
 	full_news_text			= time;
-	full_news_text			+= *CStringTable().translate(news_text.c_str());
+	full_news_text			+= news_text.c_str();
 
 
 	return full_news_text.c_str();
