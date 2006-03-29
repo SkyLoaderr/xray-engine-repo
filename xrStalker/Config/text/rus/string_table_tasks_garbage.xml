@@ -40,3 +40,15 @@
 	<string id="gar_dialog_hellcar">
         <text>Предложить свою помощь лидеру нейтралов.</text>
     </string>
+    <string id="gar_help_hellcar_1">
+        <text>Ответить на призыв о помощи.</text>
+    </string>
+    <string id="gar_dialog_hellcar_1">
+        <text>Предложить свою помощь Бесу.</text>
+    </string>
+    <string id="help_for_neitrals_text">
+        <text>На кладбище машин произошла перестрелка между нейтралами и бандитами. Нейтралы отбились, но зовут на помощь.</text>
+    </string>
+    <string id="graveyard_raid_text">
+        <text>Сейчас пойдет новый рейд бандитов на кладбище заброшенной техники, где окопался Бес со товарищи. Помочь им отбиться от бандитов.</text>
+    </string>

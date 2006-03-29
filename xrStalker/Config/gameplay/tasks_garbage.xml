@@ -51,15 +51,6 @@
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<function_complete>garbage_tasks.task_hellcar_complete</function_complete>
 			<function_fail>garbage_tasks.task_hellcar_fail</function_fail>
-			<infoportion_fail>gar_hellcar_reject</infoportion_fail>
-		</objective>
-		<objective>
-			<text>gar_dialog_hellcar</text>
-			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="gar_hellcar_alive">green_location</map_location_type>
-			<object_story_id>gar_hellcar</object_story_id>
-			<infoportion_complete>gar_hellcar_help</infoportion_complete>
-			<infoportion_fail>gar_hellcar_reject</infoportion_fail>
 		</objective>
 		<objective>
 			<text>gar_kill_bandits</text>
@@ -76,6 +67,25 @@
 			<infoportion_fail>gar_hellcar_death</infoportion_fail>
 			<infoportion_set_fail>gar_hellcar_death</infoportion_set_fail>
 			<infoportion_complete>gar_hellcar_dialog_end</infoportion_complete>
+		</objective>
+	</game_task>
+	
+	<game_task id="gar_car_graveyard_quest">
+		<title>gar_help_hellcar_1</title>
+		<objective>
+			<text>gar_dialog_hellcar</text>
+			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="gar_hellcar_alive">green_location</map_location_type>
+			<object_story_id>gar_hellcar</object_story_id>
+			<infoportion_complete>gar_hellcar_help</infoportion_complete>
+			<infoportion_fail>gar_hellcar_reject</infoportion_fail>
+			<function_fail>garbage_tasks.task_hellcar_fail2</function_fail>
+		</objective>
+		<objective>
+			<text>gar_dialog_hellcar_1</text>
+			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="gar_hellcar_alive">green_location</map_location_type>
+			<object_story_id>gar_hellcar</object_story_id>
 		</objective>
 	</game_task>
 	
