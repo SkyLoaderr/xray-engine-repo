@@ -967,26 +967,52 @@ end
 --------------------
 -- Вывод статистики по всем смартам в симуляции
 function stat()
-	printf( "Smart terrains statistics START" )
+	printf( "--------------- Smart terrains statistics START ----------------------" )
 
-	local total_jobs, jobs_in_avail, occupied = 0, 0, 0
+	local jobs, jobs_in_avail, occupied
+	local level_stats = {}
 
 	for level_name, t in pairs( smart_terrains ) do
+		jobs, jobs_in_avail, occupied = 0, 0, 0
+
 		for id, strn in pairs( t ) do
 			local avail, pop, cap = strn:stat()
 
-			total_jobs = total_jobs + cap
-			occupied   = occupied   + pop
+			jobs       = jobs     + cap
+			occupied   = occupied + pop
 
 			if avail then
 				jobs_in_avail = jobs_in_avail + cap
 			end
 		end
+
+		local l = {}
+		level_stats[level_name] = l
+
+		l.jobs          = jobs
+		l.occupied      = occupied
+		l.jobs_in_avail = jobs_in_avail
 	end
 
-	printf( "Jobs in all smart terrains : %d",       total_jobs )
-	printf( "Jobs in available smart terrains : %d", jobs_in_avail )
-	printf( "Occupied jobs : %d",                    occupied )
+	jobs, jobs_in_avail, occupied = 0, 0, 0
 
-	printf( "Smart terrains statistics END" )
+	printf("")
+
+	for level_name, l in pairs( level_stats ) do
+		printf( "Level %s :", level_name )
+		printf( "    Jobs in all smart terrains : %d",       l.jobs )
+		printf( "    Jobs in available smart terrains : %d", l.jobs_in_avail )
+		printf( "    Occupied jobs : %d",                    l.occupied )
+
+		jobs          = jobs          + l.jobs
+		jobs_in_avail = jobs_in_avail + l.jobs_in_avail
+		occupied      = occupied      + l.occupied
+	end
+
+	printf( "All levels:" )
+	printf( "    Jobs in all smart terrains : %d",       jobs )
+	printf( "    Jobs in available smart terrains : %d", jobs_in_avail )
+	printf( "    Occupied jobs : %d",                    occupied )
+
+	printf( "--------------- Smart terrains statistics END ------------------------" )
 end
