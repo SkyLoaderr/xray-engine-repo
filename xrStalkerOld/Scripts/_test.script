@@ -2,8 +2,8 @@
 
 function main()
 	db.actor:give_game_news("превед", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("превед"," медвед", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("превед"," медвед"," красавчег", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("превед","trader", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	db.actor:give_game_news("trader","trader","trader", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
 function main123()
