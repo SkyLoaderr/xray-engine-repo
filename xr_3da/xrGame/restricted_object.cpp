@@ -325,6 +325,34 @@ void CRestrictedObject::remove_restrictions	(const xr_vector<ALife::_OBJECT_ID> 
 	STOP_PROFILE;
 }
 
+void CRestrictedObject::add_restrictions	(const shared_str &out_restrictions, const shared_str &in_restrictions)
+{
+	if (!out_restrictions.size() && in_restrictions.size())
+		return;
+
+	START_PROFILE("Restricted Object/Add Restrictions");
+	
+	Level().space_restriction_manager().add_restrictions	(object().ID(),*out_restrictions,*in_restrictions);
+
+	actual						(false);
+	
+	STOP_PROFILE;
+}
+
+void CRestrictedObject::remove_restrictions	(const shared_str &out_restrictions, const shared_str &in_restrictions)
+{
+	if (!out_restrictions.size() && !in_restrictions.size())
+		return;
+
+	START_PROFILE("Restricted Object/Remove Restrictions");
+	
+	Level().space_restriction_manager().remove_restrictions	(object().ID(),*out_restrictions,*in_restrictions);
+	
+	actual						(false);
+
+	STOP_PROFILE;
+}
+
 void CRestrictedObject::remove_all_restrictions	(const RestrictionSpace::ERestrictorTypes &restrictor_type)
 {
 	NET_Packet			net_packet;
