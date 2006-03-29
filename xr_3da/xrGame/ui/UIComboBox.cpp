@@ -37,7 +37,7 @@ void CUIComboBox::SetListLength(int length){
 }
 
 void CUIComboBox::SetVertScroll(bool bVScroll){
-	this->m_list.EnableScrollBar(bVScroll);
+	this->m_list.SetFixedScrollBar(bVScroll);
 }
 
 void CUIComboBox::Init(float x, float y, float width){
@@ -67,8 +67,9 @@ void CUIComboBox::Init(float x, float y, float width){
 
 	// height of list equal to height of ONE element
 	m_list.Init(0, CB_HEIGHT, width - BTN_SIZE, CB_HEIGHT*m_iListHeight);
-	m_list.EnableScrollBar(true);
-	m_list.SetItemHeight(CB_HEIGHT);
+	m_list.Init();
+//	m_list.EnableScrollBar(true);
+//	m_list.SetItemHeight(CB_HEIGHT);
 	m_list.SetTextColor(0xff00ff00);
 
 	m_list.Show(false);
@@ -82,10 +83,10 @@ void CUIComboBox::Init(float x, float y, float width, float height){
 void CUIComboBox::AddItem(LPCSTR str, bool bSelected){
 	R_ASSERT2(m_bInited, "Can't add item to ComboBox before Initialization");
         	
-	CUIListItem *item = xr_new<CUIListItem>();
-	item->SetText(str);
-	item->SetAutoDelete(true);
-	m_list.AddItem(item);
+//	CUIListItem *item = xr_new<CUIListItem>();
+//	item->SetText(str);
+//	item->SetAutoDelete(true);
+	m_list.AddItem(str);
 	if (bSelected)
 		m_text.SetText(str);
 }
@@ -93,10 +94,10 @@ void CUIComboBox::AddItem(LPCSTR str, bool bSelected){
 void CUIComboBox::AddItem(LPCSTR str){
     R_ASSERT2(m_bInited, "Can't add item to ComboBox before Initialization");
 
-	CUIListItem *item = xr_new<CUIListItem>();
-	item->SetAutoDelete(true);
-	item->SetText(str);
-	m_list.AddItem(item);	
+//	CUIListItem *item = xr_new<CUIListItem>();
+//	item->SetAutoDelete(true);
+//	item->SetText(str);
+	m_list.AddItem(str);	
 }
 
 void CUIComboBox::Draw(){
@@ -183,14 +184,14 @@ void CUIComboBox::OnBtnClicked(){
 void CUIComboBox::ShowList(bool bShow){
     if (bShow)
 	{
-		int iCurHeight;
+//		int iCurHeight;
 
-		if (m_list.GetChildNum() <= this->m_iListHeight)
-			iCurHeight = iFloor(m_iListHeight*CB_HEIGHT);
-		else
-			iCurHeight = iFloor(m_list.GetChildNum()*CB_HEIGHT);
+//		if (m_list.GetChildNum() <= this->m_iListHeight)
+//			iCurHeight = iFloor(m_iListHeight*CB_HEIGHT);
+//		else
+//			iCurHeight = iFloor(m_list.GetChildNum()*CB_HEIGHT);
 
-		SetHeight(m_text.GetHeight() + iCurHeight);
+		SetHeight(m_text.GetHeight() + m_list.GetHeight());
 
 		m_list.Show(true);
 		m_frameWnd.Show(true);
@@ -211,16 +212,36 @@ void CUIComboBox::ShowList(bool bShow){
 }
 
 void CUIComboBox::OnListItemSelect(){
-	int selItem = m_list.GetFocusedItem();
-	CUIListItem* item = m_list.GetItem(selItem);
-	if (item)
-        m_text.SetText(item->GetText());    
+//	int selItem = m_list.GetFocusedItem();
+//	CUIListItem* item = m_list.GetItem(selItem);
+//	if (item)
+	m_text.SetText(m_list.GetSelectedText());    
 
 	ShowList(false);
 //	SetCapture(&m_list, false);
 }
 
 
-CUIListWnd* CUIComboBox::GetListWnd(){
+CUIListBox* CUIComboBox::GetListWnd(){
 	return &m_list;
+}
+
+void CUIComboBox::SetCurrentValue(){
+	xr_token* tok = GetOptToken();
+
+	while (tok->name){		
+		AddItem(tok->name);
+		tok++;
+	}
+
+	m_text.SetText(GetOptTokenValue());
+}
+
+void CUIComboBox::SaveValue(){
+	CUIOptionsItem::SaveValue();
+	SaveOptTokenValue(m_text.GetText());
+}
+
+bool CUIComboBox::IsChanged(){
+	return 0 != xr_strcmp(GetOptTokenValue(), m_text.GetText());
 }

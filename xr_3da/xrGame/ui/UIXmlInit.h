@@ -43,6 +43,7 @@ class CUIScrollView;
 class CUIListBox;
 class CUIStatsPlayerList;
 class CUIDragDropListEx;
+class CUIComboBox;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -89,6 +90,7 @@ public:
 	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
 	static bool InitListBox				(CUIXml& xml_doc, const char* path, int index, CUIListBox* pWnd);
+	static bool	InitComboBox			(CUIXml& xml_doc, const char* path, int index, CUIComboBox* pWnd);
 	static Frect GetFRect				(CUIXml& xml_doc, const char* path, int index);
 
 protected:

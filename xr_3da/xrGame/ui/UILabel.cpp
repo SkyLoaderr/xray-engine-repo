@@ -16,6 +16,10 @@ void CUILabel::Init(float x, float y, float width, float height){
 	m_lines.Init(0,0,width, height);
 }
 
+void CUILabel::SetFont(CGameFont* pFont){
+	CUILinesOwner::SetFont(pFont);
+}
+
 void CUILabel::Draw(){
 	CUIFrameLineWnd::Draw();
 	Frect r = GetAbsoluteRect();

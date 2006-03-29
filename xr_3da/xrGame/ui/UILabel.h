@@ -13,6 +13,7 @@ public:
 	//IUISimpleWindow
 	virtual void SetWidth(float width);
 	virtual void SetHeight(float height);
+	virtual void SetFont(CGameFont* pFont);
     // CUIFrameLineWnd
 	virtual void			Init(float x, float y, float width, float height);
 	virtual void			Draw();

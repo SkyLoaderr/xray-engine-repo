@@ -10,11 +10,13 @@
 #pragma once
 #include "UIEditBox.h"
 #include "UI3tButton.h"
-#include "UIListWnd.h"
+//#include "UIListWnd.h"
+#include "UIListBox.h"
 #include "UIInteractiveBackground.h"
+#include "UIOptionsItem.h"
 
-
-class CUIComboBox : public CUIWindow{
+class CUIComboBox : public CUIWindow, public CUIOptionsItem {
+	friend class CUIXmlInit;
 	typedef enum{
 		LIST_EXPANDED, 
 		LIST_FONDED    
@@ -23,9 +25,13 @@ class CUIComboBox : public CUIWindow{
 public:
 	CUIComboBox();
 	virtual ~CUIComboBox();
+	// CUIOptionsItem
+	virtual void	SetCurrentValue();
+	virtual void	SaveValue();
+	virtual bool	IsChanged();
 
 	// methods
-	virtual CUIListWnd*	GetListWnd();
+	virtual CUIListBox*	GetListWnd();
 	virtual void		SetListLength(int length);
 	virtual void		SetVertScroll(bool bVScroll = true);
 	virtual void		AddItem(LPCSTR str, bool bSelected);
@@ -55,7 +61,7 @@ protected:
 	CUI3tButton			m_btn;
 	CUIFrameWindow		m_frameWnd;
 public:
-	CUIListWnd    m_list;
+	CUIListBox	    m_list;
 
 protected:	
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -6,6 +6,7 @@
 #include "ui\UICheckButton.h" //#include "ui\UI3tButton.h"
 #include "ui\UISpinNum.h"
 #include "ui\UISpinText.h"
+#include "ui\UIComboBox.h"
 #include "ui\UIListWnd.h"
 #include "ui\UITabControl.h"
 #include "ui\UIFrameWindow.h"
@@ -124,9 +125,6 @@ CUICheckButton* CScriptXmlInit::InitCheck(LPCSTR path, CUIWindow* parent){
 	parent->AttachChild(pWnd);
 	return pWnd;
 }
-//void CScriptXmlInit::InitSpinNum(LPCSTR path, int index, CUISpinNum* pWnd){
-//	CUIXmlInit::InitSpin(m_xml, path, index, pWnd);
-//}
 
 CUISpinNum* CScriptXmlInit::InitSpinNum(LPCSTR path, CUIWindow* parent){
 	CUISpinNum* pWnd = xr_new<CUISpinNum>();
@@ -136,28 +134,28 @@ CUISpinNum* CScriptXmlInit::InitSpinNum(LPCSTR path, CUIWindow* parent){
 	return pWnd;
 }
 
-//void CScriptXmlInit::InitSpinText(LPCSTR path, int index, CUISpinText *pWnd){
-//	CUIXmlInit::InitSpin(m_xml, path, index, pWnd);
-//}
-
 CUISpinText* CScriptXmlInit::InitSpinText(LPCSTR path, CUIWindow* parent){
 	CUISpinText* pWnd = xr_new<CUISpinText>();
 	CUIXmlInit::InitSpin(m_xml, path, 0, pWnd);
 	pWnd->SetAutoDelete(true);
 	parent->AttachChild(pWnd);
-	return pWnd;	
+	return pWnd;
 }
 
-//void CScriptXmlInit::InitButton(LPCSTR path, int index, CUIButton* pWnd){
-//	CUIXmlInit::InitButton(m_xml, path, index, pWnd);
-//}
+CUIComboBox* CScriptXmlInit::InitComboBox(LPCSTR path, CUIWindow* parent){
+	CUIComboBox* pWnd = xr_new<CUIComboBox>();
+	CUIXmlInit::InitComboBox(m_xml, path, 0, pWnd);
+	pWnd->SetAutoDelete(true);
+	parent->AttachChild(pWnd);
+	return pWnd;
+}
 
 CUIButton* CScriptXmlInit::InitButton(LPCSTR path, CUIWindow* parent){
 	CUIButton* pWnd = xr_new<CUIButton>();
 	CUIXmlInit::InitButton(m_xml, path, 0, pWnd);
 	pWnd->SetAutoDelete(true);
 	parent->AttachChild(pWnd);
-	return pWnd;	
+	return pWnd;
 }
 
 //
@@ -287,6 +285,7 @@ void CScriptXmlInit::script_register(lua_State *L){
 		.def("InitCheck",		&CScriptXmlInit::InitCheck)
 		.def("InitSpinNum",		&CScriptXmlInit::InitSpinNum)
 		.def("InitSpinText",	&CScriptXmlInit::InitSpinText)
+		.def("InitComboBox",	&CScriptXmlInit::InitComboBox)		
 		.def("InitButton",		&CScriptXmlInit::InitButton)
 		.def("Init3tButton",	&CScriptXmlInit::Init3tButton)
 		.def("InitList",		&CScriptXmlInit::InitList)

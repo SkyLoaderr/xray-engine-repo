@@ -10309,12 +10309,6 @@
 						RelativePath=".\ui\UIFrameWindow.h">
 					</File>
 					<File
-						RelativePath=".\ui\UILabel.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UILabel.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIWindow.cpp">
 					</File>
 					<File
@@ -10589,6 +10583,16 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIDragDropListEx.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Label"
+					Filter="">
+					<File
+						RelativePath=".\ui\UILabel.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UILabel.h">
 					</File>
 				</Filter>
 			</Filter>

@@ -30,6 +30,7 @@
 #include "uixmlinit.h"
 #include "uiartefactpanel.h"
 #include "UIListBox.h" //#include "UIScrollView.h"
+#include "UIComboBox.h"
 #include "../game_base_space.h"
 
 #include "UITextureMaster.h"
@@ -1435,7 +1436,7 @@ bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUILi
 	
 	u32 t_color;
 	CGameFont* pFnt;
-	strconcat(_path, path, ":font");	
+	strconcat(_path, path, ":font");
 	InitFont(xml_doc, _path, index, t_color, pFnt);
 
 	pWnd->SetTextColor(t_color);
@@ -1454,6 +1455,28 @@ bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUILi
 	else if (0 == xr_strcmp(al, "l"))
 		pWnd->SetTextAlignment(CGameFont::alLeft);
 
+
+	return true;
+}
+
+bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, const char* path, int index, CUIComboBox* pWnd){
+	u32 color;
+	CGameFont* pFont;
+	InitWindow(xml_doc, path, index, pWnd);
+	InitOptionsItem(xml_doc, path, index, pWnd);
+
+	char _path[512];
+	strconcat(_path, path, ":list_font");
+	InitFont(xml_doc, _path, index, color, pFont);
+	pWnd->m_list.SetFont(pFont);
+	pWnd->m_list.SetTextColor(color);
+	strconcat(_path, path, ":list_font_s");	
+	InitFont(xml_doc, _path, index, color, pFont);
+	pWnd->m_list.SetTextColorS(color);
+	strconcat(_path, path, ":font");
+	InitFont(xml_doc, _path, index, color, pFont);
+	pWnd->m_text.SetFont(pFont);
+	pWnd->m_text.SetTextColor(color);
 
 	return true;
 }
