@@ -19,7 +19,7 @@ function switchers_off ()
 		return db.actor:has_info("yan_labx16_switcher_1_off") and db.actor:has_info("yan_labx16_switcher_2_off") and db.actor:has_info("yan_labx16_switcher_3_off") 
 end
 function has_kruglov_flash ()
-		return db.actor:object ("yan_kruglov_flash") ~= nil
+		return db.actor:object ("kruglov_flash") ~= nil
 end
 function yan_scientist_task_fail ()
 		return db.actor:has_info("yan_scientist_die") and db.actor:dont_has_info("yan_scientist_return_to_bunker")

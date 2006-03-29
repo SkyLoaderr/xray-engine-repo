@@ -161,7 +161,7 @@ function animation:__init(npc, mgr)
 						guitar_a	= {mode = "detach", done = true},
 						harmonica_a	= {mode = "detach", done = true},
 						wpn_binoc	= {mode = "detach", done = true},
-						yan_kruglov_flash	= {mode = "detach", done = true}}
+						kruglov_flash	= {mode = "detach", done = true}}
 	}
 	
 	self.clb_settings = {}

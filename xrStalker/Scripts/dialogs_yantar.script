@@ -1,8 +1,8 @@
 function have_kruglov_flash(first_speaker, second_speaker)
-  	return first_speaker:object("yan_kruglov_flash") ~= nil
+  	return first_speaker:object("kruglov_flash") ~= nil
 end
 function give_kruglov_flash(first_speaker, second_speaker)
-	local flash = first_speaker:object("yan_kruglov_flash")
+	local flash = first_speaker:object("kruglov_flash")
 	if flash then
 		dialogs.relocate_item(second_speaker, flash, "out")
 	end
