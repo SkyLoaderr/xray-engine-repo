@@ -152,7 +152,7 @@
 		<class>gar_bandit_leader</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>806</rank>
+		<rank>199</rank>
 		<reputation>-145</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
