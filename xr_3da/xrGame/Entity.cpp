@@ -255,6 +255,10 @@ void CEntity::KillEntity(u16 whoID)
 		VERIFY			(m_killer_id == ALife::_OBJECT_ID(-1));
 		m_killer_id		= whoID;
 	}
+	else {
+		if (m_killer_id != ALife::_OBJECT_ID(-1))
+			return;
+	}
 
 	set_death_time		();
 
