@@ -106,13 +106,6 @@
     <texture id="ui_cb_listline_l" x="186" y="142" width="4" height="18" />
     <texture id="ui_cb_listline_r" x="191" y="142" width="4" height="18" />
     <texture id="ui_cb_listline_back" x="186" y="161" width="26" height="18" />
-    <texture id="ui_cb_button_e_r" x="186" y="180" width="25" height="23" />
-    <texture id="ui_cb_button_d_r" x="999" y="0" width="25" height="23" />
-    <texture id="ui_cb_button_t_r" x="999" y="23" width="25" height="23" />
-    <texture id="ui_cb_linetext_e_l" x="954" y="0" width="25" height="23" />
-    <texture id="ui_cb_linetext_e_back" x="974" y="0" width="25" height="23" />
-    <texture id="ui_cb_linetext_h_l" x="954" y="23" width="25" height="23" />
-    <texture id="ui_cb_linetext_h_back" x="974" y="23" width="25" height="23" />
     <texture id="ui_cb_listbox_lt" x="723" y="77" width="10" height="10" />
     <texture id="ui_cb_listbox_l" x="723" y="87" width="10" height="10" />
     <texture id="ui_cb_listbox_lb" x="723" y="97" width="10" height="10" />
@@ -127,7 +120,6 @@
     <texture id="ui_frame_error_sign_red" x="800" y="0" width="77" height="77" />
     <texture id="ui_frame_error_sign_info" x="877" y="0" width="77" height="77" />
     <texture id="ui_checker_h" x="213" y="206" width="32" height="23" />
-    <texture id="ui_cb_button_h_r" x="277" y="206" width="25" height="23" />
     <texture id="ui_radio_h" x="245" y="206" width="32" height="23" />
     <texture id="ui_tablist_divider_b" x="0" y="55" width="36" height="31" />
     <texture id="ui_tablist_divider_back" x="0" y="55" width="36" height="31" />
@@ -374,8 +366,6 @@
     <texture id="ui_icons_PDA_string_tooltips_b" x="939" y="288" width="32" height="30" />
     <texture id="ui_icons_PDA_string_tooltips_back" x="971" y="318" width="32" height="30" />
     <texture id="ui_icons_PDA_string_tooltips_e" x="939" y="318" width="32" height="30" />
-    <texture id="ui_cb_linetext_e_r" x="186" y="180" width="25" height="23" />
-    <texture id="ui_cb_linetext_h_r" x="277" y="206" width="25" height="23" />
     <texture id="ui_beltbut_min_d" x="629" y="207" width="24" height="25" />
     <texture id="ui_beltbut_min_e" x="653" y="207" width="24" height="25" />
     <texture id="ui_beltbut_min_h" x="677" y="207" width="24" height="25" />
@@ -413,5 +403,16 @@
     <texture id="ui_beltbut_silencer_d" x="697" y="739" width="23" height="23" />
     <texture id="ui_beltbut_silencer_h" x="697" y="785" width="23" height="23" />
     <texture id="ui_beltbut_silencer_t" x="697" y="808" width="23" height="23" />
-    <texture id="ui_buymenu_progBar" x="303" y="207" width="121" height="7" />
+    <texture id="ui_buymenu_progBar" x="302" y="206" width="151" height="7" />
+    <texture id="ui_buymenu_progBar_Smaller" x="302" y="206" width="121" height="7" />
+    <texture id="ui_cb_linetext_e_back" x="974" y="0" width="25" height="23" />
+    <texture id="ui_cb_linetext_h_back" x="974" y="23" width="25" height="23" />
+    <texture id="ui_cb_linetext_e_b" x="954" y="0" width="25" height="23" />
+    <texture id="ui_cb_linetext_h_b" x="954" y="23" width="25" height="23" />
+    <texture id="ui_cb_linetext_e_e" x="186" y="180" width="25" height="23" />
+    <texture id="ui_cb_linetext_h_e" x="277" y="206" width="25" height="23" />
+    <texture id="ui_cb_button_e" x="186" y="180" width="25" height="23" />
+    <texture id="ui_cb_button_d" x="999" y="0" width="25" height="23" />
+    <texture id="ui_cb_button_t" x="999" y="23" width="25" height="23" />
+    <texture id="ui_cb_button_h" x="277" y="206" width="25" height="23" />
 </ui_texture>
