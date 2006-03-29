@@ -26,7 +26,14 @@ local smart_section = "smart_terrains"
 
 exclusives = {}
 
--- список всех серверных объектов смартов, которые зарегистрированы в симуляторе
+--[[ список всех серверных объектов смартов, которые зарегистрированы в симуляторе
+Формат:
+	smart_terrains = {
+		level_name = { id=obj, id=obj, ... },
+		level_name = { id=obj, id=obj, ... },
+		...
+	}
+]]
 local smart_terrains = {}
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -504,18 +511,27 @@ end
 -- вызывается для всех смарттерейнов, которые вернули true из enabled
 -- для того, чтобы выбрать тот единственный, в который персонаж всё-таки пойдёт.
 -- критерии:
---   1) если объект уже бывал в других смартах, то
+--   1) если объект уже бывал в других смартах, то чем больше свободных работ на уровне этого смарта, тем лучше
 --   2) иначе ближе - лучше
+-- TODO Оптимизировать
 function se_smart_terrain:suitable( obj )
---	if obj.was_in_smart_terrain then
+	if obj.was_in_smart_terrain then
+		local v = 0
+
+		for id, strn in pairs( smart_terrains[self:get_level_name()] ) do
+			if strn:is_gulag_available() then
+				v = v + strn.gulag.capacity - strn.gulag:get_population()
+			end
+		end
+
 --[[		printf( "[smart_terrain %s] obj=%s suitable=%d was_in_smart_terrain=%s",
 		        self:name(),
 		        obj:name(),
-		        1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ),
+		        1000000 - v,
 		        tostring(obj.was_in_smart_terrain) )]]
 
-
---	else
+		return 1000000 - v
+	else
 		local self_gv = game_graph():vertex( self.m_game_vertex_id )
 		local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
 
@@ -526,7 +542,7 @@ function se_smart_terrain:suitable( obj )
 		        tostring(obj.was_in_smart_terrain) )]]
 
 		return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
---	end
+	end
 end
 
 -- добавить npc в smart terrain.
@@ -746,8 +762,6 @@ function se_smart_terrain:on_register()
 --	printf( "[smart_terrain %s] on_register called", self:name() )
 	cse_alife_smart_zone.on_register( self )
 
-	smart_terrains[self.id] = self
-
 	-- DEBUG
 	if self.disabled then
 		return
@@ -755,9 +769,17 @@ function se_smart_terrain:on_register()
 
 	self:fill_monster_classes()
 
+	local level_name = self:get_level_name()
+
 	if not self.gparams.preset_name then
-		self.gparams.preset_name = self:get_level_name()
+		self.gparams.preset_name = level_name
 	end
+
+	if not smart_terrains[level_name] then
+		smart_terrains[level_name] = {}
+	end
+
+	smart_terrains[level_name][self.id] = self
 
 	self.gulag:load_jobs()
 
@@ -776,7 +798,7 @@ end
 function se_smart_terrain:on_unregister()
 	cse_alife_smart_zone.on_unregister( self )
 
-	smart_terrains[self.id] = nil
+	smart_terrains[self:get_level_name()][self.id] = nil
 end
 
 -- возвращает строку с принимаемыми группировками и рангами
@@ -877,7 +899,6 @@ function se_smart_terrain:update()
 				end
 			end
 
---			if sn == 0 or not self:is_gulag_available() then
 			if sn == 0 then
 				self:remove_gulag()
 			else
@@ -901,7 +922,6 @@ function on_death( obj_id )
 		local strn_id = obj:smart_terrain_id()
 
 		if strn_id ~= 65535 then
---			sim:object( strn_id ):unregister_npc( obj )
 			sim:object( strn_id ).gulag:update_objs()
 		end
 	end
@@ -951,14 +971,16 @@ function stat()
 
 	local total_jobs, jobs_in_avail, occupied = 0, 0, 0
 
-	for id, obj in pairs( smart_terrains ) do
-		local avail, pop, cap = obj:stat()
+	for level_name, t in pairs( smart_terrains ) do
+		for id, strn in pairs( t ) do
+			local avail, pop, cap = strn:stat()
 
-		total_jobs = total_jobs + cap
-		occupied   = occupied   + pop
+			total_jobs = total_jobs + cap
+			occupied   = occupied   + pop
 
-		if avail then
-			jobs_in_avail = jobs_in_avail + cap
+			if avail then
+				jobs_in_avail = jobs_in_avail + cap
+			end
 		end
 	end
 
