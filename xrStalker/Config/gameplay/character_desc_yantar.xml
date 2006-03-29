@@ -40,7 +40,7 @@
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
-		<rank>12</rank>
+		<rank>698</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
@@ -68,7 +68,7 @@
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 
 		
-		<rank>12</rank>
+		<rank>340</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
@@ -78,7 +78,6 @@
 			wpn_beretta_m1 \n
 			ammo_9x19_fmj = 1 \n
 			yan_kruglov_flash \n			
-			detector_advances \n
 		</supplies>
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
