@@ -1407,6 +1407,15 @@ function pri_zombied_in_combat_dec(actor, npc)
     --printf("effect <pri>: zombied in combat(%s) dec.", npc:name())
 end
 
+function pri_drop_rpg_ammo(actor, npc)
+    local item = npc:object("ammo_og-7b")
+    if item then
+        npc:drop_item(item)
+    else
+        printf("xr_effects <pri_drop_rpg_ammo>: there is no [ammo_og-7b] in [%s] inventory.", npc:name())
+    end
+end
+
 ---------------------------------------------------------
 -- DeadCity
 ---------------------------------------------------------
