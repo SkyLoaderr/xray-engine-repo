@@ -442,7 +442,7 @@ function CKampManager:updateNpc(npc)
 	local substate = nil
 	if state == "wait_harmonica" then
 		if sound == "pre_harmonica" and self.npc[npc_id].new == true then
-			xr_sound.set_sound_play(npc, "intro_harmonica", math.random(2000,3000))
+			xr_sound.set_sound_play(npc, "intro_music", math.random(2000,3000))
 			self.npc[npc_id].new = false
 		end
 		state = "harmonica"
@@ -453,7 +453,7 @@ function CKampManager:updateNpc(npc)
 		xr_kamp.kamp_stalkers[npc_id] = false
 	elseif state == "wait_guitar" then
 		if sound == "pre_guitar" and self.npc[npc_id].new == true then
-			xr_sound.set_sound_play(npc, "intro_guitar", math.random(2000,3000))
+			xr_sound.set_sound_play(npc, "intro_music", math.random(2000,3000))
 			self.npc[npc_id].new = false
 		end
 		state = "guitar"

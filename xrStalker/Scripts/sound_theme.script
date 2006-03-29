@@ -243,11 +243,10 @@ theme = {
 	trade_no				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
 	-- игра на губной гармошке
-	intro_harmonica			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	intro_music				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	harmonica				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
 	-- игра на гитаре
-	intro_guitar			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	guitar					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	
 	-- шутки, прибаутки
