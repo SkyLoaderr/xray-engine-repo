@@ -24,9 +24,7 @@ function task_hellcar_complete()
 end
 
 function task_hellcar_fail()
-	if xr_gulag.getGulagPopulation("gar_hellcar_group") < 1 or
-		(xr_gulag.getCasualities("gar_hellcar_group") > 0 and
-	   db.actor:dont_has_info("gar_hellcar_help"))
+	if xr_gulag.getGulagPopulation("gar_hellcar_group") < 1 
 	then
 		return true
 	else
@@ -59,14 +57,14 @@ function process_info_portion(info_id)
 --	elseif info_id == "gar_bandit_leader_dead" then
 --		level_tasks.remove_location(106, "gar_bandits_leader_location")
 
-	elseif info_id == "gar_start_graveyard" then
-		level_tasks.add_location(107, "green_location", "gar_hellcar")
+--	elseif info_id == "gar_start_graveyard" then
+--		level_tasks.add_location(107, "green_location", "gar_hellcar")
 
 --	elseif info_id == "gar_alarm" then
 --		level_tasks.remove_location(107, "green_location")
 	
-	elseif info_id == "gar_no_mapspot" then
-		level_tasks.remove_location(107, "green_location")
+--	elseif info_id == "gar_no_mapspot" then
+--		level_tasks.remove_location(107, "green_location")
 	
 	elseif info_id == "gar_wounded_help" then
 		level_tasks.add_location(109, "green_location", "gar_wounded_help")
