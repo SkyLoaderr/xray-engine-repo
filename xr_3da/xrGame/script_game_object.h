@@ -242,7 +242,9 @@ public:
 			bool				GiveGameNews		(LPCSTR news, LPCSTR news2, LPCSTR texture_name, Frect tex_rect, int delay, int show_time);
 			bool				GiveGameNews		(LPCSTR news, LPCSTR news2, LPCSTR news3,LPCSTR texture_name, Frect tex_rect, int delay, int show_time);
 
-			void				AddIconedTalkMessage(LPCSTR news, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name);
+			void				AddIconedTalkMessage(LPCSTR text1, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name);
+			void				AddIconedTalkMessage(LPCSTR text1, LPCSTR text2, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name);
+			void				AddIconedTalkMessage(LPCSTR text1, LPCSTR text2, LPCSTR text3, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name);
 	//предикаты наличия/отсутствия порции информации у персонажа
 			bool				HasInfo				(LPCSTR info_id);
 			bool				DontHasInfo			(LPCSTR info_id);

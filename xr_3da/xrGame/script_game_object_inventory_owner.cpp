@@ -50,26 +50,47 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 	return true;
 }
 
-/*
-void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
-{
-	if(HUD().GetUI())
-		HUD().GetUI()->UIMainIngameWnd->SetDelayForPdaMessage(news, show_time);
-}
-*/
+void _AddIconedTalkMessage(LPCSTR text, LPCSTR texture_name, const Frect& tex_rect, LPCSTR templ_name);
 
-void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR news, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
+void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR text1, LPCSTR text2, LPCSTR text3, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
 {
-	//только если находимся в режиме single
+	string1024	str;
+	return _AddIconedTalkMessage	(strconcat(	str,
+									*CStringTable().translate(text1),
+									" ",
+									*CStringTable().translate(text2),
+									" ",
+									*CStringTable().translate(text3)), 
+									texture_name, 
+									tex_rect, 
+									templ_name); 
+}
+void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR text1, LPCSTR text2, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
+{
+	string1024	str;
+	return _AddIconedTalkMessage	(strconcat(	str,
+									*CStringTable().translate(text1),
+									" ",
+									*CStringTable().translate(text2)),
+									texture_name, 
+									tex_rect, 
+									templ_name); 
+}
+void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR text1, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
+{
+	return _AddIconedTalkMessage	(*CStringTable().translate(text1),
+									texture_name, 
+									tex_rect, 
+									templ_name); 
+}
+
+void _AddIconedTalkMessage(LPCSTR text, LPCSTR texture_name, const Frect& tex_rect, LPCSTR templ_name)
+{
 	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
 	if(pGameSP->TalkMenu->IsShown())
-	{
-		pGameSP->TalkMenu->AddIconedMessage(*CStringTable().translate(news), texture_name, tex_rect, 
-			templ_name?templ_name:"iconed_answer_item" );
-	}
-
+		pGameSP->TalkMenu->AddIconedMessage(text, texture_name, tex_rect, templ_name?templ_name:"iconed_answer_item" );
 }
 bool _give_news	(LPCSTR news, LPCSTR texture_name, const Frect& tex_rect, int delay, int show_time);
 
@@ -77,7 +98,6 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news,LPCSTR news2,LPCSTR news3, L
 {
 	string1024	str;
 	return _give_news				(strconcat(	str,
-									" ",
 									*CStringTable().translate(news),
 									" ",
 									*CStringTable().translate(news2),
@@ -93,7 +113,6 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news,LPCSTR news2, LPCSTR texture
 {
 	string1024	str;
 	return _give_news				(strconcat(	str,
-									" ",
 									*CStringTable().translate(news),
 									" ",
 									*CStringTable().translate(news2)),
