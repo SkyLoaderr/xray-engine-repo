@@ -490,10 +490,10 @@ void	CCar::Hit							(SHit* pHDS)
 	//	HDS.power=0.f;
 	//}
 
-	if(HDS.who->ID()!=ID())
-	{
-		CExplosive::SetInitiator(HDS.who->ID());
-	}
+	//if(HDS.who->ID()!=ID())
+	//{
+	//	CExplosive::SetInitiator(HDS.who->ID());
+	//}
 	WheelHit(HDS.damage(),HDS.bone(),HDS.hit_type);
 	DoorHit(HDS.damage(),HDS.bone(),HDS.hit_type);
 	float hitScale=1.f,woundScale=1.f;
@@ -1899,7 +1899,7 @@ u16 CCar::Initiator()
 	{
 		return Owner()->ID();
 	}
-	else if(CExplosive::Initiator()!=u16(-1))return CExplosive::Initiator();
+	//else if(CExplosive::Initiator()!=u16(-1))return CExplosive::Initiator();
 	else return ID()	;
 }
 
