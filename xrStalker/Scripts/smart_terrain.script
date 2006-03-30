@@ -492,15 +492,15 @@ function se_smart_terrain:enabled( obj )
 --		if obj:clsid() == clsid.GROUP then -- TODO
 			-- TODO проитерировать группу
 --		else
-			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
---[[			local b1 = self:obj_accepts_smart_terrain( obj )
+--			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
+			local b1 = self:obj_accepts_smart_terrain( obj )
 			local b2 = self:smart_terrain_accepts_obj( obj, b1 )
 
-			if string.find( obj:name(), "esc_novice_attacker" ) ~= nil then
+			if self:name() == "rad_entrance" then
 				printf( "obj_accepts_smart_terrain=%d smart_terrain_accepts_obj=%s", b1, tostring( b2 ) )
 			end
 
-			return b2]]
+			return b2
 --		end
 	else
 		return false
