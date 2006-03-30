@@ -25,6 +25,8 @@ void CStateMonsterEatingAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterEatingAbstract::execute()
 {
+	if (object->CorpseMan.get_corpse() != corpse)  return;
+
 	object->set_action				(ACT_EAT);
 	object->set_state_sound			(MonsterSound::eMonsterSoundEat);
 
