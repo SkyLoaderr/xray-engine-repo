@@ -3,7 +3,7 @@
 ;--------------------------------------------------------------------------
 [logic@val_prisoner]
 active          = walker@wander
-meet            = no_meet ;meet@ignore
+meet            = meet@ignore_abuse
 on_death        = death
 combat_ignore   = combat_ignore
 
@@ -23,7 +23,20 @@ use             = true
 use_wpn         = true
 
 ;--------------------------------------------------------------------------
-; основной диалог
+; игнорирование
+;--------------------------------------------------------------------------
+[meet@ignore_abuse]
+meet_dialog     =
+meet_state      =
+meet_state_wpn  =
+victim          =
+victim_wpn      =
+use             = false
+use_wpn         = false
+abuse           = false
+
+;--------------------------------------------------------------------------
+; основной денжер
 ;--------------------------------------------------------------------------
 [danger@small]
 ignore_types          = corpse
@@ -51,7 +64,7 @@ combat_ignore_keep_when_attacked    = true
 path_walk                           = captive_sit_walk
 path_look                           = captive_sit_look
 on_actor_dist_le                    = 30 | walker@wander
-meet                                = no_meet
+meet                                = meet@ignore_abuse
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -102,7 +115,7 @@ combat_ignore_keep_when_attacked    = true
 ;--------------------------------------------------------------------------
 [logic@val_prisoner_free]
 active          = walker@outside
-;meet            = no_meet ;meet@ignore
+;meet            = meet@ignore_abuse
 on_death        = death
 combat_ignore   = combat_ignore
 
