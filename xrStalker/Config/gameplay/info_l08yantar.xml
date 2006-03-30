@@ -103,7 +103,9 @@
 	<info_portion id="yan_labx16_switcher_1_off"></info_portion>
 	<info_portion id="yan_labx16_switcher_2_off"></info_portion>
 	<info_portion id="yan_labx16_switcher_3_off"></info_portion>
-	<info_portion id="yan_labx16_switcher_primary_off"></info_portion>
+	<info_portion id="yan_labx16_switcher_primary_off">
+		<task>yan_kill_brain_task_2</task>
+	</info_portion>
 	<info_portion id="yan_labx16_switcher_1_end"></info_portion>
 	<info_portion id="yan_labx16_switcher_2_end"></info_portion>
 	<info_portion id="yan_labx16_switcher_3_end"></info_portion>
