@@ -38,10 +38,10 @@
         <text>Потерян предмет.</text>
     </string>
     <string id="general_in_money">
-        <text>Получены деньги.</text>
+        <text>Получены деньги:</text>
     </string>
     <string id="general_out_money">
-        <text>Потеряны деньги.</text>
+        <text>Потеряны деньги:</text>
     </string>
     <string id="general_new_encyclopedy">
         <text>Новая статья в энциклопедии.</text>
