@@ -124,7 +124,7 @@ end
 
 -- Jobs ------------------------------------------------------------------
 gulags.val_escort.job = function(sj, gname, type, squad, groups)
-; игнорирование
+-- игнорирование
     local ltx = "[meet@ignore_abuse]\n" ..
                 "meet_dialog     =\n" ..
                 "meet_state      =\n" ..
