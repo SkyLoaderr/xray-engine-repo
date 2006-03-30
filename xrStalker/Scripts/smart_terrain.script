@@ -394,7 +394,7 @@ end
 ]]
 function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	if self:name() == "rad_entrance" then
-		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+		printf( "[smart_terrain %s] smart_terrain_accepts_obj called obj=%s", self:name(), obj:name() )
 	end
 
 	if obj_agreement == disagreed then
@@ -476,9 +476,9 @@ end
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
 function se_smart_terrain:enabled( obj )
---	if string.find( obj:name(), "esc_novice_attacker" ) ~= nil then
---		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
---	end
+	if obj:name() == "yantar_semenov" then
+		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+	end
 
 	-- DEBUG
 	if self.disabled then
@@ -496,7 +496,9 @@ function se_smart_terrain:enabled( obj )
 			local b1 = self:obj_accepts_smart_terrain( obj )
 			local b2 = self:smart_terrain_accepts_obj( obj, b1 )
 
-			if self:name() == "rad_entrance" then
+			if self:name() == "rad_entrance" or
+			   obj:name()  == "yantar_semenov"
+			then
 				printf( "obj_accepts_smart_terrain=%d smart_terrain_accepts_obj=%s", b1, tostring( b2 ) )
 			end
 
