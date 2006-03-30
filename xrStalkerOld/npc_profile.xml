@@ -198,8 +198,12 @@
 	<character id="val_dolg_regular">
 		<class>val_dolg_regular</class>
 	</character>
+	<character id="val_dolg_prisoner">
+		<class>val_dolg_prisoner</class>
+		<specific_character>val_dolg_prisoner</specific_character>
+	</character>
 	<character id="val_escort_nap1">
-		<class>val_dolg_regular</class>
+		<class>val_escort_nap1</class>
 		<specific_character>val_escort_nap1</specific_character>
 	</character>
 	<character id="val_escort_captive">
