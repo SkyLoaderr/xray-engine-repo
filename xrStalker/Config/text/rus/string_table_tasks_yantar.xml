@@ -3,6 +3,11 @@
         Отключить пси-излучение
     </text>
 </string>
+<string id="yan_kill_brain_2">
+    <text>
+        Выбраться из лаборатории
+    </text>
+</string>
 <string id="yan_find_vasilyev">
     <text>
         Пробиться к трупу Васильева
@@ -83,14 +88,24 @@
         Взять документы у Призрака
     </text>
 </string>
-<string id="yan_switcher_off">
+<string id="yan_switcher_off_1">
     <text>
-        Отключить 3 блока управления
+        Отключить 1-ый блок управления
+    </text>
+</string>
+<string id="yan_switcher_off_2">
+    <text>
+        Отключить 2-ой блок управления
+    </text>
+</string>
+<string id="yan_switcher_off_3">
+    <text>
+        Отключить 3-ий блок управления
     </text>
 </string>
 <string id="yan_secret_tonnel">
     <text>
-        Выйти из лаборатории 
+        Выбраться через секретный тоннель
     </text>
 </string>
 <string id="yan_provodnik_task">
