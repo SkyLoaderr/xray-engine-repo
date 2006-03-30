@@ -438,7 +438,7 @@ function load_job(sj, gname, type, squad, groups)
 			t = { section = "logic@rad_antenna_camper"..i , 
 				idle = 0,
 				prior = 5, state = {0}, squad = squad, group = groups[1],
-				in_rest = "", out_rest = ""
+				in_rest = "rad_rest_stop", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
