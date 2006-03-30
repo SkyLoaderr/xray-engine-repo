@@ -414,21 +414,25 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 			return false
 		end
 
---		if string.find( obj:name(), "esc_novice_attacker" ) ~= nil then
---			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
---		end
+		if obj:name() == "yantar_semenov" then
+			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
+		end
 
 		if not self:check_preset( community, obj:rank(), self.gparams.preset_name ) then
 			return false
+		end
+
+		if obj:name() == "yantar_semenov" then
+			printf( "check_preset ok" )
 		end
 
 		if not xr_gulag.checkNpc( community, is_stalker, self.gparams.type, obj:rank(), obj ) then
 			return false
 		end
 
---		if string.find( obj:name(), "esc_novice_attacker" ) ~= nil then
---			printf( "checkNpc ok" )
---		end
+		if obj:name() == "yantar_semenov" then
+			printf( "checkNpc ok" )
+		end
 
 		return self.gulag:is_there_any_suitable_job( self:fill_npc_info( obj ), obj_agreement == agreed_exclusive )
 	else
