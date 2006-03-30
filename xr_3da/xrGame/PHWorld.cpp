@@ -294,6 +294,34 @@ void CPHWorld::Step()
 
 }
 
+void CPHWorld::StepTouch()
+{
+	PH_OBJECT_I			i_object;
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{
+		CPHObject* obj=(*i_object);
+		obj->Collide();
+
+		++i_object;
+	}
+
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{
+		CPHObject* obj=(*i_object);
+		++i_object;
+		obj->Island().Enable();
+	}
+	for(i_object=m_objects.begin();m_objects.end() != i_object;)
+	{
+		CPHObject* obj=(*i_object);
+		++i_object;
+		obj->IslandReinit();
+	}
+	dJointGroupEmpty(ContactGroup);
+	ContactFeedBacks.empty();
+	ContactEffectors.empty();
+}
+
 u32 CPHWorld::CalcNumSteps (u32 dTime)
 {
 	if (dTime < m_frame_time*1000) return 0;

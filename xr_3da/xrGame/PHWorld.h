@@ -77,6 +77,7 @@ IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 IC	float						FrameTime						(bool frame_mark){return b_frame_mark==frame_mark ? m_frame_time :m_previous_frame_time;}
 	void						FrameStep						(dReal step=0.025f)			;
 	void						Step							()							;
+	void						StepTouch						()							;
 	void						CutVelocity						(float l_limit, float a_limit);
 	void						GetState						(V_PH_WORLD_STATE& state)		;
 	void 						Freeze							()							;

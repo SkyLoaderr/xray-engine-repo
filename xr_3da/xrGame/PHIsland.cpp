@@ -12,6 +12,13 @@ void	CPHIsland::	Step(dReal step)
 	//dWorldStep(DWorld(),fixed_step);
 }
 
+void CPHIsland::Enable()
+{
+	if(!m_flags.is_active()) return;
+
+	for (dxBody  *body = DWorld()->firstbody; body; body = (dxBody *) body->next)body->flags &= ~dxBodyDisabled;
+	
+}
 void CPHIsland::Repair()
 {
 	if(!m_flags.is_active()) return;

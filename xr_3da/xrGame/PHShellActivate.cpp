@@ -236,7 +236,7 @@ void CPHShell::Deactivate(){
 		CPHObject::activate();
 		ph_world->Freeze();
 		CPHObject::UnFreeze();
-		ph_world->Step();
+		ph_world->StepTouch();
 		ph_world->UnFreeze();
 	}
 	spatial_unregister();
