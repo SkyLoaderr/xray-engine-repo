@@ -5,7 +5,7 @@ active = ph_door@locked
 locked = true
 closed = true
 snd_open_start = trader_door_locked
-on_use = {=val_actor_has_key_to_underground} ph_door@closed %+val_x18_door_open +dar_run_quest%
+on_use = {+val_actor_has_barman_key +val_actor_has_borov_key} ph_door@closed %+val_x18_door_open +dar_run_quest%
 
 [ph_door@closed]
 locked = false
