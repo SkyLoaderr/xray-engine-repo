@@ -1173,6 +1173,9 @@ void CStalkerActionSuddenAttack::initialize					()
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_mental_state		(eMentalStateDanger);
 
+	if (!object().memory().enemy().selected())
+		return;
+
 	u32											min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
 	float										distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
 	select_queue_params							(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
