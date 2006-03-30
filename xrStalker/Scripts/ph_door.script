@@ -6,8 +6,8 @@
 -- Доработка: Oleg Kreptul (Haron) haronk@ukr.net
 ----------------------------------------------------------------------------------------------------
 
---function printf()
---end
+function printf()
+end
 
 class "action_door"
 
