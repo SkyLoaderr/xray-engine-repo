@@ -324,7 +324,7 @@ danger              = danger@ignore
 ;--- BOMBER: KAMP --------------------------------------------------------------------------------
 ;-------------------------------------------------------------------------------------------------
 [death@bomber]
-on_info = {=killed_by_actor} %+pri_followers_actor_enemy +pri_bomber_dead%, %+pri_bomber_dead%
+on_info = {=killed_by_actor} %+pri_followers_actor_enemy +pri_bomber_dead%, %+pri_bomber_dead% ; =pri_drop_rpg_ammo%
 
 [logic@pri_followers_bomber_wait]
 active              = walker@pri_followers_bomber_wait ;kamp@pri_followers_bomber_wait ;%-pri_bomber_dead%
