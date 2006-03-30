@@ -1,9 +1,21 @@
 -- run_string alife():create("medkit", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
+function get_inv_name(item)
+ return system_ini():r_string(item:section(),"inv_name")
+end
 
 function main()
-	db.actor:give_game_news("превед", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("превед","trader", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("trader","trader","trader", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+local itm = db.actor:item_in_slot(2)
+if itm~= nil then
+ local name_ = get_inv_name(itm)
+	db.actor:give_game_news(name_, "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+end
+	
+--	db.actor:give_talk_message("trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
+--	db.actor:give_talk_message("Превед", "trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
+--	db.actor:give_talk_message("Превед", "trader", "trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
+--	db.actor:give_game_news("превед", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+--	db.actor:give_game_news("превед","trader", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+--	db.actor:give_game_news("trader","trader","trader", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
 function main123()

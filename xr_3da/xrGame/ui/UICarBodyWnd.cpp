@@ -398,15 +398,15 @@ bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
 	
 	if(old_owner==new_owner || !old_owner || !new_owner)
 					return false;
-	
-	TransferItem		(	CurrentIItem(),
+	if( TransferItem		(	CurrentIItem(),
 							(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
 							(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
 							(old_owner==m_pUIOurBagList)
-						);
-
-	CUICellItem* ci					= old_owner->RemoveItem(CurrentItem(), false);
-	new_owner->SetItem				(ci);
+						)
+		){
+		CUICellItem* ci					= old_owner->RemoveItem(CurrentItem(), false);
+		new_owner->SetItem				(ci);
+		}
 	SetCurrentItem					(NULL);
 
 	return				true;
@@ -422,14 +422,16 @@ bool CUICarBodyWnd::OnItemDbClick(CUICellItem* itm)
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
 	CUIDragDropListEx*	new_owner		= (old_owner==m_pUIOthersBagList)?m_pUIOurBagList:m_pUIOthersBagList;
 
-	TransferItem		(	CurrentIItem(),
+	if( TransferItem		(	CurrentIItem(),
 							(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
 							(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
 							(old_owner==m_pUIOurBagList)
-						);
+							)
+		){
 
 	CUICellItem* ci			= old_owner->RemoveItem(CurrentItem(), false);
 	new_owner->SetItem		(ci);
+						}
 	SetCurrentItem			(NULL);
 
 	return				true;
@@ -447,18 +449,18 @@ bool CUICarBodyWnd::OnItemRButtonClick(CUICellItem* itm)
 	return						false;
 }
 
-void CUICarBodyWnd::TransferItem(PIItem itm, CInventoryOwner* owner_from, CInventoryOwner* owner_to, bool b_check)
+bool CUICarBodyWnd::TransferItem(PIItem itm, CInventoryOwner* owner_from, CInventoryOwner* owner_to, bool b_check)
 {
 	CGameObject* go_from					= smart_cast<CGameObject*>(owner_from);
 	CGameObject* go_to						= smart_cast<CGameObject*>(owner_to);
 
-	if(smart_cast<CBaseMonster*>(go_to))	return;
+	if(smart_cast<CBaseMonster*>(go_to))	return false;
 	if(b_check)
 	{
 		float invWeight						= owner_to->inventory().CalcTotalWeight();
 		float maxWeight						= owner_to->inventory().GetMaxWeight();
 		float itmWeight						= itm->Weight();
-		if(invWeight+itmWeight >=maxWeight)	return;
+		if(invWeight+itmWeight >=maxWeight)	return false;
 	}
 
 	NET_Packet P;
@@ -477,6 +479,8 @@ void CUICarBodyWnd::TransferItem(PIItem itm, CInventoryOwner* owner_from, CInven
 											);
 	P.w_u16									(u16(itm->object().ID()));
 	go_to->u_EventSend						(P);
+
+	return true;
 }
 
 void CUICarBodyWnd::BindDragDropListEnents(CUIDragDropListEx* lst)
