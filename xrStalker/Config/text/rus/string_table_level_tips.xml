@@ -32,10 +32,10 @@
         <text>Задание обновлено.</text>
     </string>
     <string id="general_in_item">
-        <text>Получен предмет.</text>
+        <text>Получен предмет: </text>
     </string>
     <string id="general_out_item">
-        <text>Потерян предмет.</text>
+        <text>Потерян предмет: </text>
     </string>
     <string id="general_in_money">
         <text>Получены деньги: </text>
