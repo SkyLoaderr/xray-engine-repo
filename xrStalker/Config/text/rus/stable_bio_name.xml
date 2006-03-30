@@ -26,6 +26,13 @@
 	<text>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</text>
 </string>
 
+<string id="val_prisoner_name">
+	<text>Сергей Лохматый</text>
+</string>
+<string id="val_prisoner_bio">
+	<text>Сталкер группировки "Долг". Детальная информация отсутствует.</text>
+</string>
+
 <string id="val_pulia_name">
 	<text>Пуля</text>
 </string>
