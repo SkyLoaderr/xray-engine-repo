@@ -55,12 +55,6 @@ function motivator_binder:reinit()
     db.storage[self.object:id()] = {  followers = {} }
     self.st = db.storage[self.object:id()]
 
-    --self.torch = xr_light.torch_light(self.object)
-
-    --' Положения тела
-    --self.st.state = xr_state.body_state(self.object)
-	--state_mgr.bind_manager(self.object, self.st.state_mgr)
-
     --' Создание менеджера контроля положений тела
     --memusage.collect_info(self.object, "before_statemgr")
 	self.st.state_mgr = state_mgr.bind_manager(self.object)
@@ -215,12 +209,10 @@ end
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
 
-    if device ():time_global () - self.last_update > 1000 then
-       sr_light.check_light_zone (self.object)
-       -- Тут же апдейтим и торговлю.       
-       self.last_update = device ():time_global ()
+    if time_global() - self.last_update > 1000 then
+       sr_light.check_light(self.object)
+       self.last_update = time_global()
     end
-	--self.torch:update()
 
 	--' Апдейт менеджера состояний тела
 	if self.st.state_mgr then
@@ -237,7 +229,6 @@ function motivator_binder:update(delta)
 		end
 	end
 
-	
 	--' Апдейт саундменеджера
 	if self.object:alive() then
 		xr_sound.update(self.object)

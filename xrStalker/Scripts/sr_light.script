@@ -1,66 +1,41 @@
 local light_zones = {}
 
+local indoor_levels = {
+	l03u_agr_underground = true,
+	l04u_labx18 = true,
+	l08u_brainlab = true,
+	l10u_bunker = true,
+	l12u_sarcofag = true,
+	l12u_control_monolith = true
+}
 ---------------------------------------------------------------------------------------------------------------------
 class "action_light"
-
 function action_light:__init (obj, storage)
 	self.object = obj
 	self.st = storage
-	self.stalkers = {}
 	self.active = false
-	self.id = self.object:id ()
+	self.id = obj:id()
 end
-
-
 function action_light:reset_scheme()
-    printf("_bp: sr_light: action_idle:reset_scheme: self.object:name()='%s'", self.object:name())
-    table.insert (light_zones, self)
+    light_zones[self.id] = self
 end
-
 function action_light:update(delta)
-
 	local actor = db.actor
 
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 	   self.active = false     
 	   self.stalkers = {}
-	   local i = self.object:id ()
-	   for a = 1, table.getn (light_zones), 1 do    
-	       if light_zones[a].id == i then
-	          table.remove (light_zones, a)
-	          return
-	       end
-	   end         
+	   light_zones[self.id] = nil
 	   return
 	end	
 	self.active = true
 end
-
-function action_light:check_stalker (stalker)
+function action_light:check_stalker(stalker)
     if self.active == false then 
        return false
     end
     
-    local id = stalker:id ()
-    local torch = stalker:object ("device_torch")
-    -- если у сталкера нет фонарика, то гоним его в шею 
-    if torch == nil then 
-       if self.stalkers[id] ~= nil then 
-          self.stalkers[id] = nil
-       end     
-       return  false
-    end
-    -- а, если этот тормоз забрался в рестриктор, то включим ему фонарь
-	if self.object:inside(stalker:position ()) then
-       torch:enable_attachable_item (self.st.light)
-       if self.stalkers[id] == nil then
-          self.stalkers[id] = stalker
-       end     
-       return true
-    end
-    -- если мужик за пределами рестриктора, то вырубим фонарь и вышвырнем мужика.
-    self.stalkers[id] = nil
-    return false    
+	return self.object:inside(stalker:position())
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -79,36 +54,67 @@ end
 
 
 ---------------------------------------------------------------------------------------------------------------------
-function check_light_zone (stalker)
-    if stalker == nil or stalker:alive () == false or stalker:id () == db.actor:id () then 
+function check_light(stalker)
+    if stalker == nil or 
+	   stalker:alive() == false
+	then 
        return 
     end
-    
-    --printf ("SR_LIGHT : PREPARE FOR CHECK STALKER %s", stalker:name ())
-    
-    local size = table.getn (light_zones)
-    if size == 0 then 
-       local t = stalker:object ("device_torch")
-       if t == nil then
-          return
-       end
-       --printf ("LIGHT ON STALKER %s is off !!!", stalker:name ())
-       t:enable_attachable_item (false)        
-       return 
-    end
-    
-    --printf ("SR_LIGHT : CHECK STALKER %s", stalker:name ())
-    for a = 1, size, 1 do
-        if light_zones[a]:check_stalker (stalker) == true then
-           return
-        end    
-    end    
-    local torch = stalker:object ("device_torch")
+
+    local torch = stalker:object("device_torch")
     if torch == nil then
        return
     end
-    --printf ("LIGHT ON STALKER %s is off !!!", stalker:name ())
-    torch:enable_attachable_item (false)        
+    
+	local light = false
+	local forced = false
+    --' Проверка по лайтзонам
+    for k,v in pairs(light_zones) do
+		if v:check_stalker(stalker) == true then
+			light = true
+		else 
+			light = false
+		end
+		forced = true
+    end
+
+	if not forced then
+		--' Проверка по времени суток (ночью всегда включено)
+		local htime = level.get_time_hours()
+--		if htime <= 5 or htime >= 22 then
+			light = true
+--		end
+	
+		--' Проверка на индор-аутдор (внутри всегда включено)
+		if light == false then
+			if indoor_levels[level.name()] == true then
+				light = true
+			end
+		end
+	end
+			
+	--' Проверка по активному действию
+	if not forced and light == true then
+		--' Фонарики должны быть выключены у костра
+		local scheme = db.storage[stalker:id()].active_scheme
+		if scheme == "kamp" or
+		   scheme == "camper" 
+		then
+			light = false
+			forced = true
+		end
+	end
+	
+	if not forced and light == true then
+		--' Фонарики должны быть выключены в бою. Но если в бою идет поиск врага - то включены.
+		if stalker:best_enemy() ~= nil then
+			light = false
+		end				
+	end
+	
+	if light ~= nil then
+		torch:enable_attachable_item(light)
+	end
 end
 
 function clean_up ()

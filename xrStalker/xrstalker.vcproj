@@ -3205,9 +3205,6 @@
 							RelativePath=".\Scripts\xr_hit.script">
 						</File>
 						<File
-							RelativePath=".\scripts\xr_light.script">
-						</File>
-						<File
 							RelativePath=".\scripts\xr_meet.script">
 						</File>
 						<File
