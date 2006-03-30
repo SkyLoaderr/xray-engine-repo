@@ -363,6 +363,8 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_type == "yan_scientist" then
 		return npc_community == "ecolog"
 	end
+
+	return false
 end
 
 
@@ -370,4 +372,6 @@ function checkMonster(npc_community, gulag_type)
 	if gulag_type == "yan_tonnel_snorks" then 
 		return npc_community == "snork"
 	end
+
+	return false
 end
