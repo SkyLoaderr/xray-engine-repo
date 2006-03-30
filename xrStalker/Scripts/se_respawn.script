@@ -289,6 +289,8 @@ function se_respawn:create(prob)
 						self.m_game_vertex_id)
 
 		local tt = self.sectSpawnProps[spawn_section]
+
+--		printf("SPAWN [%s] -> [%s], check [%s]", tostring(self:name()), obj:name(), tostring(tt.check))
 				
 		if tt.check == true then
 			obj:brain():update()
@@ -304,7 +306,7 @@ function se_respawn:create(prob)
 				return false
 			end
 		end
-		return false									
+		return true
 	end
 end
 -- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
