@@ -17,17 +17,6 @@ on_info = {=hitted_by(407:408)} %+val_escort_combat%
 ;on_info2 = {=hit_by_actor} nil %+val_escort_nap1_dead%
 
 ;--------------------------------------------------------------------------
-; встреча отключена
-;--------------------------------------------------------------------------
-[meet@val_escort_nap1_ignore]
-meet_state     = 0|guard@nil
-meet_state_wpn = 0|guard@nil
-victim         = 0|nil
-victim_wpn     = 0|nil
-use            = false
-use_wpn        = false
-
-;--------------------------------------------------------------------------
 ; основной диалог
 ;--------------------------------------------------------------------------
 [meet@val_escort_nap1_talk]
@@ -69,7 +58,7 @@ hp_cover        = 0|false
 path_walk           = nap1_walk
 path_look           = nap1_look
 on_info             = {+val_escort_begin} remark@val_escort_nap1_phrase1
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -82,7 +71,7 @@ path_walk           = nap1_walk
 anim                = guard_na
 target              = 424 ;logic@val_escort_wounded_bandit
 on_info             = {+val_escort_begin} remark@val_escort_nap1_phrase1
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -96,7 +85,7 @@ snd                 = val_escort_nap1_phrase1
 target              = 424 ;logic@val_escort_wounded_bandit
 on_signal           = sound_end | walker@val_escort_nap1_phrase1_wait %+val_nap1_phrase1_end%
 on_info             = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -109,7 +98,7 @@ path_walk           = nap1_walk
 path_look           = nap1_look
 on_info             = {+val_halfdead_phrase_end} remark@val_escort_nap1_phrase2
 on_info2            = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -123,7 +112,7 @@ snd                 = val_escort_nap1_phrase7
 target              = 424 ;logic@val_escort_wounded_bandit
 on_signal           = sound_end | remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
 on_info             = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -136,7 +125,7 @@ anim                = guard
 snd                 = val_escort_nap1_phrase1
 target              = actor
 on_signal           = sound_end | remark@val_escort_nap1_wait1
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -149,7 +138,7 @@ anim                = guard_na
 target              = actor
 on_actor_dist_le    = 4 | remark@val_escort_nap1_phrase6 ;%+val_escort_task_start%
 on_timer            = 5000 | remark@val_escort_nap1_phrase4
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -162,7 +151,7 @@ anim                = guard
 snd                 = val_escort_nap1_phrase2
 target              = actor
 on_signal           = sound_end | remark@val_escort_nap1_wait2
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -175,7 +164,7 @@ anim                = guard_na
 target              = actor
 on_actor_dist_le    = 2 | remark@val_escort_nap1_phrase6 ;%+val_escort_task_start%
 on_timer            = 5000 | remark@val_escort_nap1_phrase5
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -188,7 +177,7 @@ anim                = guard
 snd                 = val_escort_nap1_phrase2
 target              = actor
 on_signal           = sound_end | walker1@val_escort_nap1_ambush_go ;%+val_escort_start%
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -201,7 +190,7 @@ anim                = guard
 snd                 = val_escort_nap1_phrase3
 target              = actor
 on_signal           = sound_end | walker1@val_escort_nap1_ambush_go %+val_escort_task_start%
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = always ;{=check_fighting(424)}
@@ -218,7 +207,7 @@ def_state_moving3   = rush
 on_signal           = escort_start | %+val_escort_start%
 on_signal2          = ambush_start | remark@val_escort_nap1_wait_for_actor
 on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}, {=check_fighting(424)} ;always
@@ -233,7 +222,7 @@ on_actor_dist_le_nvis   = 10 | remark@val_escort_nap1_phrase7
 on_info                 = {+val_escort_combat} remark@val_escort_nap1_fight
 on_info2                = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
 on_info3                = {+val_escort_captive_dead} remark@val_escort_nap1_fail
-meet                    = no_meet ;meet@val_escort_nap1_ignore
+meet                    = meet@ignore_abuse
 danger                  = danger@val_escort_nap1_small
 wounded                 = wounded@val_escort_nap1
 combat_ignore_cond      = {=check_fighting(407:408) -val_escort_combat}
@@ -248,7 +237,7 @@ target              = val_escort_nap1_rescue_look, 0 ;actor
 on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
 on_info2            = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
 on_info3            = {+val_escort_captive_dead} remark@val_escort_nap1_fail
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -262,7 +251,7 @@ snd                 = val_escort_nap1_phrase6
 target              = 400 ;val_escort_nap1_rescue_look, 0 ;actor
 on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
 on_info2            = {+val_escort_captive_dead} remark@val_escort_nap1_fail
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -275,7 +264,7 @@ anim                = hide
 ;snd                 = val_escort_nap1_fail
 target              = val_escort_nap1_rescue_look, 0 ;actor
 on_timer            = 20000 | patrol@val_escort_nap1_leave
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
@@ -285,7 +274,7 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 ;--------------------------------------------------------------------------
 [remark@val_escort_nap1_fight]
 anim                = guard_na
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@val_escort_nap1_task_done
 wounded             = wounded@val_escort_nap1
 
@@ -294,7 +283,7 @@ wounded             = wounded@val_escort_nap1
 ;--------------------------------------------------------------------------
 [remark@val_escort_nap1_task_done]
 anim                = guard
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 on_info             = {-val_escort_captive_dead} remark@val_escort_nap1_captive_live, follower1@val_escort_nap1_captive_dead
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -304,7 +293,7 @@ wounded             = wounded@val_escort_nap1
 ;--------------------------------------------------------------------------
 [remark@val_escort_nap1_captive_live]
 anim                = guard
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 on_info             = {+val_escort_actor_helped} remark@val_escort_nap1_captive_live_helped, remark@val_escort_nap1_captive_live_not_helped
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -316,7 +305,7 @@ wounded             = wounded@val_escort_nap1
 anim                = guard_na
 target              = 400 ;logic@val_escort_captive
 on_info             = {+val_escort_captive_phrase1_end} remark@val_escort_nap1_phrase9
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 
@@ -328,7 +317,7 @@ anim                = guard_na
 snd                 = val_escort_nap1_phrase5
 target              = 400 ;logic@val_escort_captive
 on_signal           = sound_end | remark@val_escort_nap1_wait_to_talk_phrase %+val_escort_nap1_phrase1_end% ; =drop_npc_items(wpn_beretta:ammo_9x19_fmj:medkit:bandage)% ;:ammo_5.45x39_fmj:ammo_5.45x39_fmj:medkit:bandage)%
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 
@@ -339,7 +328,7 @@ wounded             = wounded@val_escort_nap1
 anim                = guard_na
 target              = 400 ;logic@val_escort_captive
 on_info             = {+val_escort_captive_phrase1_end} remark@val_escort_nap1_phrase11
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 
@@ -351,7 +340,7 @@ anim                = guard
 snd                 = val_escort_nap1_go_home
 target              = 400 ;logic@val_escort_captive
 on_signal           = sound_end | patrol@val_escort_nap1_leave %+val_escort_nap1_phrase2_end%
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 
@@ -366,7 +355,7 @@ stub_for_corpse     = true
 dont_change_job     = true
 on_signal           = leader_dead | remark@val_escort_nap1_phrase10
 on_info             = {=distance_to_obj_le(400:3)} remark@val_escort_nap1_phrase10
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small ;danger@val_escort_nap1_1
 wounded             = wounded@val_escort_nap1
 
@@ -379,7 +368,7 @@ snd                 = val_escort_dead
 target              = 400 ;logic@val_escort_captive
 on_signal           = sound_end | {+val_escort_actor_helped} remark@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
 on_timer            = 20000 | {+val_escort_actor_helped} remark@val_escort_nap1_wait_to_talk_phrase, patrol@val_escort_nap1_leave
-meet                = no_meet ;meet@val_escort_nap1_ignore
+meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
 
