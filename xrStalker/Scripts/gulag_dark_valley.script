@@ -986,12 +986,13 @@ gulags.val_watchtower.job = function(sj, gname, type, squad, groups)
     local i, ltx = 1, ""
 
     -- Проверяем наличие часовых на вышке.
-    while level.patrol_path_exists(gname .. "_guard_" .. i .. "_walk") do
+    local idstr = gname .. "_guard"
+    while level.patrol_path_exists(idstr .. "_" .. i .. "_walk") do
         -- Необходимо вычитать количество работ из названия точки пути.
-        local way_name = gname .. "_guard_" .. i .. "_walk"
+        local way_name = idstr .. "_" .. i .. "_walk"
 
         -- добавляем должность
-        t = { section = "logic@" .. way_name .. "_guard",
+        t = { section = "logic@" .. idstr,
             idle = 0,
             prior = 1, state = {0}, squad = squad, group = groups[1],
             position_threshold = 10,
@@ -1000,16 +1001,16 @@ gulags.val_watchtower.job = function(sj, gname, type, squad, groups)
         table.insert(sj, t)
 
         -- добавляем описание должности в лтх.
-        ltx = ltx.."[logic@" .. way_name .. "_guard]\n" ..
-                   "active = walker@" .. way_name .. "_guard\n" ..
+        ltx = ltx.."[logic@" .. idstr .. "]\n" ..
+                   "active = walker@" .. idstr .. "\n" ..
 
-                   "[walker@" .. way_name .. "_guard]\n" ..
+                   "[walker@" .. idstr .. "]\n" ..
                    --"meet                = meet@generic_lager_guard\n" ..
                    "path_walk           = guard_" .. i .. "_walk\n" ..
                    "def_state_moving1   = patrol\n" ..
                    "def_state_moving2   = patrol\n"
 
-        if level.patrol_path_exists(gname .. "_guard_" .. i .. "_look") then
+        if level.patrol_path_exists(idstr .. "_" .. i .. "_look") then
             ltx = ltx.."path_look = guard_" .. i .. "_look\n"
         end
 
@@ -1018,9 +1019,10 @@ gulags.val_watchtower.job = function(sj, gname, type, squad, groups)
 
     -- Проверяем наличие снайперов в лагере.
     i = 1
-    while level.patrol_path_exists(gname .. "_sniper_" .. i .."_walk") do
+    idstr = gname .. "_sniper"
+    while level.patrol_path_exists(idstr .. "_" .. i .."_walk") do
         -- Необходимо вычитать количество работ из названия точки пути.
-        local way_name = gname .. "_sniper_" .. i .."_walk"
+        local way_name = idstr .. "_" .. i .."_walk"
         local ptr = patrol(way_name)
         local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
         local d_sniper, d_wait, d = 20, 90, 0
@@ -1038,7 +1040,7 @@ gulags.val_watchtower.job = function(sj, gname, type, squad, groups)
         end
 
         -- добавляем должность
-        t = { section = "logic@" .. way_name .. "_sniper",
+        t = { section = "logic@" .. idstr,
             idle = 0,
             prior = 2, state = {0}, squad = squad, group = groups[1],
             position_threshold = 10,
@@ -1048,27 +1050,27 @@ gulags.val_watchtower.job = function(sj, gname, type, squad, groups)
         table.insert(sj, t)
 
         -- добавляем описание должности в лтх.
-        ltx = ltx.."[logic@" .. way_name .. "_sniper]\n" ..
-                   "active = camper@" .. way_name .. "_sniper\n" ..
+        ltx = ltx.."[logic@" .. idstr .. "]\n" ..
+                   "active = camper@" .. idstr .. "\n" ..
 
-                   "[camper@" .. way_name .. "_sniper]\n" ..                            
+                   "[camper@" .. idstr .. "]\n" ..                            
                    "path_walk                   = sniper_" .. i .. "_walk\n" ..
                    "path_look                   = sniper_" .. i .. "_look\n" ..
                    "def_state_campering         = threat\n" ..
                    "def_state_campering_fire    = threat_sniper_fire\n" ..
                    "sniper                      = true\n" ..
-                   "on_actor_dist_le_nvis       = 50 | walker@" .. way_name .. "_sniper_free\n" ..
-                   "on_timer                    = " .. d_sniper .. "000 | remark@" .. way_name .. "\n" ..
+                   "on_actor_dist_le_nvis       = 50 | walker@" .. idstr .. "_free\n" ..
+                   "on_timer                    = " .. d_sniper .. "000 | remark@" .. idstr .. "\n" ..
 
-                   "[walker@" .. way_name .. "_sniper_free]\n" ..                            
+                   "[walker@" .. idstr .. "_free]\n" ..                            
                    "path_walk                   = sniper_" .. i .. "_walk\n" ..
                    "path_look                   = sniper_" .. i .. "_look\n" ..
-                   "on_actor_dist_ge_nvis       = 60 | camper@" .. way_name .. "_sniper\n" ..
+                   "on_actor_dist_ge_nvis       = 60 | camper@" .. idstr .. "\n" ..
 
-                   "[remark@" .. way_name .. "]\n" ..                            
+                   "[remark@" .. idstr .. "]\n" ..                            
                    "anim                    = guard\n" ..
-                   "on_actor_dist_le_nvis   = 50 | walker@" .. way_name .. "_sniper_free\n" ..
-                   "on_timer                = " .. d_wait .. "000 | camper@" .. way_name .. "_sniper\n"
+                   "on_actor_dist_le_nvis   = 50 | walker@" .. idstr .. "_free\n" ..
+                   "on_timer                = " .. d_wait .. "000 | camper@" .. idstr .. "\n"
 
         i = i + 1
     end
