@@ -661,6 +661,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {0},
 			in_rest = "", out_rest = "",
+			online = true,
 			predicate = function(obj_info)
 			            	return obj_info.profile_name == "esc_killer_master"
 			            end
@@ -669,36 +670,42 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_killer1_raid",
 			idle = 0,
 			prior = 8, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_raid",
 			idle = 0,
 			prior = 8, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer1_follower",
 			idle = 0,
 			prior = 7, state = {0},
+			online = true,
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer1_follower",
 			idle = 0,
 			prior = 7, state = {0},
+			online = true,
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_follower",
 			idle = 0,
 			prior = 7, state = {0},
+			online = true,
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer2_follower",
 			idle = 0,
 			prior = 7, state = {0},
+			online = true,
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
@@ -707,6 +714,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 15, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 			predicate = function(obj_info)
 			            	return obj_info.profile_name == "esc_killer_master"
@@ -716,42 +724,49 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_fight",
 			idle = 0,
 			prior = 5, state = {1},
+			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -811,18 +826,21 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_killer_kamp_wait",
 			idle = 0,
 			prior = 5, state = {3},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp_wait",
 			idle = 0,
 			prior = 5, state = {3},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp_wait",
 			idle = 0,
 			prior = 5, state = {3},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -830,6 +848,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 15, state = {3},
 			in_rest = "", out_rest = "",
+			online = true,
 			predicate = function(obj_info)
 			            	return obj_info.profile_name == "esc_killer_master"
 			            end
@@ -838,24 +857,85 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_killer_kamp_wait",
 			idle = 0,
 			prior = 5, state = {3},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp_guard1",
 			idle = 0,
 			prior = 8, state = {3},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp_guard2",
 			idle = 0,
 			prior = 8, state = {3},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp_guard3",
 			idle = 0,
 			prior = 8, state = {3},
+			online = true,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_killer_kamp_offline",
+			idle = 0,
+			prior = 5, state = {4},
+			online = false,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1981,7 +2061,9 @@ function load_states(gname, type)
 			if not actor then
 				return gulag.state
 			end
-			if actor:has_info("escape_lager_spawn_killers") and actor:dont_has_info("esc_killers_raid") then
+			if actor:dont_has_info("escape_lager_spawn_killers") then
+				return 4 -- offline
+			elseif actor:has_info("escape_lager_spawn_killers") and actor:dont_has_info("esc_killers_raid") then
 				return 3 -- wait
 			elseif actor:has_info("esc_killers_raid") and actor:dont_has_info("esc_open_killer_fire") then
 				return 0 -- raid
