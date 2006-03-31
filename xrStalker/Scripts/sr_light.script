@@ -81,9 +81,9 @@ function check_light(stalker)
 	if not forced then
 		--' Проверка по времени суток (ночью всегда включено)
 		local htime = level.get_time_hours()
---		if htime <= 5 or htime >= 22 then
+		if htime <= 5 or htime >= 22 then
 			light = true
---		end
+		end
 	
 		--' Проверка на индор-аутдор (внутри всегда включено)
 		if light == false then
