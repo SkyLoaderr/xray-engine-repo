@@ -458,9 +458,12 @@ void CCharacterPhysicsSupport::in_ChangeVisual()
 	if(m_pPhysicsShell)
 	{
 		VERIFY(m_eType!=etStalker);
-		if(m_physics_skeleton)m_EntityAlife.processing_deactivate();
-		if(m_physics_skeleton)m_physics_skeleton->Deactivate();
-		xr_delete(m_physics_skeleton) ;
+		if(m_physics_skeleton)
+		{
+			m_EntityAlife.processing_deactivate()	;
+			m_physics_skeleton->Deactivate()		;
+			xr_delete(m_physics_skeleton)			;
+		}
 		CreateSkeleton(m_physics_skeleton);
 		if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
