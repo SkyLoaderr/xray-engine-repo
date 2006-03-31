@@ -239,6 +239,7 @@
 			wpn_lr300 \n
 			ammo_5.56x45_ss190 = 1 \n
 			grenade_f1 = 1 \n
+			device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -266,6 +267,7 @@
 			wpn_lr300 \n
 	    	ammo_5.56x45_ss190 = 1 \n
 	    	grenade_f1 = 1 \n
+	    	device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -293,6 +295,7 @@
 			wpn_sig550 \n
 	    	ammo_5.56x45_ss190 = 1 \n
 	    	grenade_f1 = 1 \n
+	    	device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -319,6 +322,7 @@
 			ammo_9x19_pbp = 1 \n	
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
+			device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -346,6 +350,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_ak74 \n
             ammo_5.45x39_ap = 1 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -374,6 +379,7 @@
 			wpn_wincheaster1300 \n
 			ammo_12x76_zhekan = 1 \n
 			grenade_f1 = 1 \n
+			device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -401,6 +407,7 @@
 			wpn_abakan \n
             ammo_5.45x39_ap = 1 \n
             grenade_f1 = 1 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -427,6 +434,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_l85  \n
 			ammo_5.56x45_ap = 2 \n
+			device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
