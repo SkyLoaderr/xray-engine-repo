@@ -555,6 +555,9 @@
 	<character id="rad_monolit_regular">
 		<class>rad_Monolit_regular</class>
 	</character>
+	<character id="rad_monolit_bunker">
+		<class>rad_Monolit_regular</class>
+	</character>
 	<character id="rad_monolit_sniper">
 		<class>rad_Monolit_sniper</class>
 	</character>
