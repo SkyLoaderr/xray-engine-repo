@@ -487,7 +487,15 @@ sniper = true
 [logic@bun_krovosos_nest_krovosos1]
 active = mob_home@bun_krovosos_nest_krovosos1
 
+[logic@bun_krovosos_nest_krovosos11]
+active = mob_home@bun_krovosos_nest_krovosos11
+
 [mob_home@bun_krovosos_nest_krovosos1]
+path_home = h2
+home_min_radius = 5
+home_max_radius = 10
+
+[mob_home@bun_krovosos_nest_krovosos11]
 path_home = h2
 home_min_radius = 5
 home_max_radius = 10
@@ -496,12 +504,56 @@ home_max_radius = 10
 [logic@bun_krovosos_nest_krovosos2]
 active = mob_home@bun_krovosos_nest_krovosos2
 
+[logic@bun_krovosos_nest_krovosos21]
+active = mob_home@bun_krovosos_nest_krovosos21
+
 [mob_home@bun_krovosos_nest_krovosos2]
 path_home = h3
 home_min_radius = 5
 home_max_radius = 10
 
+[mob_home@bun_krovosos_nest_krovosos21]
+path_home = h3
+home_min_radius = 5
+home_max_radius = 10
 
+
+[logic@bun_krovosos_run_home1]
+active = mob_home@bun_krovosos_run_home1
+
+
+[mob_home@bun_krovosos_run_home1]
+path_home = h1
+home_min_radius = 5
+home_max_radius = 10
+
+[logic@bun_krovosos_run_run]
+active = mob_walker@bun_krovosos_run_run
+
+
+[mob_walker@bun_krovosos_run_run]
+path_walk = run
+on_info = %=alien_control(true)%
+braindead = true
+
+
+[logic@bun_krovosos_run_home2]
+active = mob_home@bun_krovosos_run_home2
+
+
+[mob_home@bun_krovosos_run_home2]
+on_info = %=alien_control(false)%
+path_home = h2
+home_min_radius = 5
+home_max_radius = 10
+
+[logic@bun_krovosos_run_home3]
+active = mob_home@bun_krovosos_run_home3
+
+[mob_home@bun_krovosos_run_home3]
+path_home = h2
+home_min_radius = 5
+home_max_radius = 10
 
 
 
