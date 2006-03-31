@@ -156,7 +156,7 @@
 		<class>esc_killer_specnaz</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>700</rank>
+		<rank>585</rank>
 		<reputation>-85</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
@@ -878,7 +878,7 @@
 		<class>esc_killer_master</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>941</rank>
+		<rank>599</rank>
 		<reputation>-109</reputation>
 	
 		<snd_config>characters_voice\human_01\killer\</snd_config>
