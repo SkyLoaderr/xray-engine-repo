@@ -7,3 +7,8 @@
     <article id="rad_sleep_info" name="rad_sleep_info1" article_type="Journal" group="memuars">
         <text>rad_sleep_info</text>
     </article> 
+    
+    
+    <article id="bun_codedor" name="bun_codedor" article_type="Journal" group="memuars">
+        <text>bun_code</text>
+    </article> 
