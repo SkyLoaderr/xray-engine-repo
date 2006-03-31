@@ -108,9 +108,15 @@
 		
 		<list_presets x="194" y="20" width="261" height="21">
 			<options_item entry="_preset" group="mm_opt_video"/>
+			<font		 font="letterica16" r="216" g="186" b="140"/>
+			<list_font_s r="240" g="217" b="182" />
+			<list_font	 r="216" g="186" b="140" font="letterica16"/>
 		</list_presets>
 		<list_resolution x="194" y="45" width="261" height="21">
 			<options_item entry="vid_mode" group="mm_opt_video"/>
+			<font		 font="letterica16" r="216" g="186" b="140"/>
+			<list_font_s r="240" g="217" b="182" />
+			<list_font	 r="216" g="186" b="140" font="letterica16"/>
 		</list_resolution>
 		
 		<track_gamma x="194" y="70" width="261" height="21">
@@ -171,13 +177,16 @@
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_crosshair</text>
 		</cap_crosshair-->
 		<cap_difficulty x="20" y="20" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">ui_mm_difficulty</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_difficulty</text>			
 		</cap_difficulty>
 		<track_crosshair x="194" y="20" width="261" height="21">			
 		</track_crosshair>
 		
 		<list_difficulty x="194" y="20" width="261" height="21">	
-			<options_item entry="g_game_difficulty" group="mm_opt_gameplay"/>		
+			<options_item entry="g_game_difficulty" group="mm_opt_gameplay"/>
+			<font		 font="letterica16" r="216" g="186" b="140"/>
+			<list_font_s r="240" g="217" b="182" />
+			<list_font	 r="216" g="186" b="140" font="letterica16"/>
 		</list_difficulty>
 		
 		<check_tips x="20" y="55" width="143" height="21">

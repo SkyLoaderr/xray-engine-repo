@@ -9,6 +9,7 @@
 
 #include "StdAfx.h"
 #include "UIComboBox.h"
+#include "UITextureMaster.h"
 
 #define CB_HEIGHT 23.0f
 #define BTN_SIZE  23.0f
@@ -49,7 +50,6 @@ void CUIComboBox::Init(float x, float y, float width){
 	// Frame Line
 	m_frameLine.Init(0, 0, width /*- BTN_SIZE*/, CB_HEIGHT);
 	m_frameLine.InitEnabledState("ui_cb_linetext_e"); // horizontal by default
-//	m_frameLine.InitDisabledState("ui\\ui_cb_string_d");
 	m_frameLine.InitHighlightedState("ui_cb_linetext_h");
 
 
@@ -59,18 +59,20 @@ void CUIComboBox::Init(float x, float y, float width){
 	m_text.Enable(false);
 	// Button on right side of frame line
 	m_btn.Init("ui_cb_button", width - BTN_SIZE, 0, BTN_SIZE, BTN_SIZE);
-	// frame(texture) for list
-	m_frameWnd.Init(0,  CB_HEIGHT, width - BTN_SIZE, CB_HEIGHT*m_iListHeight);
-	m_frameWnd.InitTexture("ui_cb_listbox");
-	//m_frameWnd.InitDisabledState("ui\\ui_cb_frm_lst02_d");
-	//m_frameWnd.InitHighlightedState("ui\\ui_cb_frm_lst02_h");
+
 
 	// height of list equal to height of ONE element
-	m_list.Init(0, CB_HEIGHT, width - BTN_SIZE, CB_HEIGHT*m_iListHeight);
+	float item_height = CUITextureMaster::GetTextureHeight("ui_cb_listline_b");
+	m_list.Init(0, CB_HEIGHT, width - BTN_SIZE, item_height*m_iListHeight);
 	m_list.Init();
-//	m_list.EnableScrollBar(true);
-//	m_list.SetItemHeight(CB_HEIGHT);
 	m_list.SetTextColor(0xff00ff00);
+	m_list.SetSelectionTexture("ui_cb_listline");
+	m_list.SetItemHeight(CUITextureMaster::GetTextureHeight("ui_cb_listline_b"));
+	// frame(texture) for list
+	m_frameWnd.Init(0,  CB_HEIGHT, width - BTN_SIZE, m_list.GetItemHeight()*m_iListHeight);
+	m_frameWnd.InitTexture("ui_cb_listbox");
+
+	
 
 	m_list.Show(false);
 	m_frameWnd.Show(false);
@@ -227,6 +229,7 @@ CUIListBox* CUIComboBox::GetListWnd(){
 }
 
 void CUIComboBox::SetCurrentValue(){
+	m_list.Clear();
 	xr_token* tok = GetOptToken();
 
 	while (tok->name){		
@@ -235,6 +238,7 @@ void CUIComboBox::SetCurrentValue(){
 	}
 
 	m_text.SetText(GetOptTokenValue());
+	m_list.SetSelected(m_text.GetText());
 }
 
 void CUIComboBox::SaveValue(){

@@ -12,6 +12,7 @@ public:
 	void DeselectAll();
 	CUIListBoxItem* AddItem(LPCSTR text);
 	CUIListBoxItem* GetItemByID(u32 uid);
+	CUIListBoxItem* GetItemByText(LPCSTR text);
 	CUIListBoxItem* GetSelectedItem();
 
     LPCSTR			GetFirstText();
@@ -20,9 +21,13 @@ public:
 	LPCSTR			GetNextSelectedText();
 	void			MoveSelectedUp();
 	void			MoveSelectedDown();
+	void			SetSelectionTexture(LPCSTR texture);
+	void			SetItemHeight(float h);
+	float			GetItemHeight();
 
 virtual	void		SetSelected(CUIWindow*);
 		void		SetSelected(u32 uid);
+		void		SetSelected(LPCSTR txt);
 
 virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
@@ -44,4 +49,5 @@ protected:
 	ETextAlignment	m_text_al;
 	WINDOW_LIST_it	m_cur_wnd_it;
 	CUIWindow*		m_last_wnd;
+	shared_str		m_selection_texture;
 };

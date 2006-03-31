@@ -1462,6 +1462,11 @@ bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUILi
 bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, const char* path, int index, CUIComboBox* pWnd){
 	u32 color;
 	CGameFont* pFont;
+
+	pWnd->SetListLength(xml_doc.ReadAttribInt(path, index, "list_length", 4));
+
+
+
 	InitWindow(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
 

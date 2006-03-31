@@ -103,8 +103,6 @@
     <texture id="ui_table_button_t_b" x="147" y="179" width="5" height="19" />
     <texture id="ui_table_button_t_back" x="152" y="179" width="28" height="19" />
     <texture id="ui_table_button_t_e" x="180" y="179" width="5" height="19" />
-    <texture id="ui_cb_listline_l" x="186" y="142" width="4" height="18" />
-    <texture id="ui_cb_listline_r" x="191" y="142" width="4" height="18" />
     <texture id="ui_cb_listline_back" x="186" y="161" width="26" height="18" />
     <texture id="ui_cb_listbox_lt" x="723" y="77" width="10" height="10" />
     <texture id="ui_cb_listbox_l" x="723" y="87" width="10" height="10" />
@@ -415,4 +413,6 @@
     <texture id="ui_cb_button_d" x="999" y="0" width="25" height="23" />
     <texture id="ui_cb_button_t" x="999" y="23" width="25" height="23" />
     <texture id="ui_cb_button_h" x="277" y="206" width="25" height="23" />
+    <texture id="ui_cb_listline_b" x="186" y="142" width="4" height="18" />
+    <texture id="ui_cb_listline_e" x="191" y="142" width="4" height="18" />
 </ui_texture>

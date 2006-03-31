@@ -16,6 +16,10 @@ CUIListBox::CUIListBox(){
 	m_last_wnd = NULL;
 }
 
+void CUIListBox::SetSelectionTexture(LPCSTR texture){
+	m_selection_texture = texture;
+}
+
 bool CUIListBox::OnMouse(float x, float y, EUIMessages mouse_action){
 	if(CUIWindow::OnMouse(x,y,mouse_action)) return true;
 
@@ -42,7 +46,10 @@ void CUIListBox::DeselectAll(){
 CUIListBoxItem* CUIListBox::AddItem(LPCSTR text){
 	CUIListBoxItem* pItem = xr_new<CUIListBoxItem>();
 	pItem->Init(0,0,this->GetDesiredChildWidth() - 5, m_def_item_height);
-	pItem->InitDefault();
+	if (!m_selection_texture)
+        pItem->InitDefault();
+	else
+		pItem->InitTexture(*m_selection_texture);
 	pItem->SetSelected(false);
 	pItem->SetText(text);
 	pItem->SetTextColor(m_text_color, m_text_color_s);
@@ -55,7 +62,7 @@ void CUIListBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	if (LIST_ITEM_SELECT == msg)
 		GetMessageTarget()->SendMessage(this, LIST_ITEM_SELECT, pData);
 
-	CUIWindow::SendMessage(pWnd, msg, pData);
+	CUIScrollView::SendMessage(pWnd, msg, pData);
 }
 
 LPCSTR CUIListBox::GetSelectedText(){
@@ -221,6 +228,10 @@ void CUIListBox::SetSelected(u32 uid){
 	SetSelected(GetItemByID(uid));
 }
 
+void CUIListBox::SetSelected(LPCSTR txt){
+	SetSelected(GetItemByText(txt));
+}
+
 CUIListBoxItem* CUIListBox::GetItemByID(u32 uid){
 	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
 	{
@@ -235,12 +246,34 @@ CUIListBoxItem* CUIListBox::GetItemByID(u32 uid){
 	return NULL;
 }
 
+CUIListBoxItem* CUIListBox::GetItemByText(LPCSTR txt){
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		CUIListBoxItem* item = smart_cast<CUIListBoxItem*>(*it);
+		if (item)
+		{
+			if (0 == xr_strcmp(item->GetText(), txt))
+				return item;
+		}
+		
+	}
+	return NULL;
+}
+
 LPCSTR CUIListBox::GetNextText(){
 	m_cur_wnd_it++;
 	if (m_pad->GetChildWndList().end() == m_cur_wnd_it)
 		return NULL;
 	else
 		return smart_cast<IUITextControl*>(*m_cur_wnd_it)->GetText();
+}
+
+void CUIListBox::SetItemHeight(float h){
+	m_def_item_height = h;
+}
+
+float CUIListBox::GetItemHeight(){
+	return m_def_item_height;
 }
 
 void CUIListBox::SetTextColor(u32 color){
