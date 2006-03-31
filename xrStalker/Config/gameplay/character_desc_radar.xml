@@ -630,7 +630,6 @@
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
 	
 
