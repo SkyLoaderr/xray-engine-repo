@@ -11,8 +11,16 @@
 
 class IUISimpleTextureControl;
 
+struct TEX_INFO{
+	shared_str	file;
+	Frect		rect;
+	LPCSTR		get_file_name	()	{return *file;}
+	Frect		get_rect		()	{return rect;}
+};
+
 class CUITextureMaster{
 public:
+
 	static void ParseShTexInfo			(LPCSTR xml_file);
 
 	static void		InitTexture			(LPCSTR texture_name,		IUISimpleTextureControl* tc);
@@ -22,16 +30,12 @@ public:
 	static Frect	GetTextureRect		(LPCSTR texture_name);
 	static LPCSTR	GetTextureFileName	(LPCSTR texture_name);
 	static void		GetTextureShader	(LPCSTR texture_name, ref_shader& sh);
-
+	static TEX_INFO	FindItem			(LPCSTR texture_name, LPCSTR def_texture_name);
 	static void WriteLog();
 
 protected:
 	IC	static bool IsSh					(const char* texture_name);
 
-	typedef struct {
-		shared_str	file;
-		Frect		rect;
-	} TEX_INFO;
 
 
 //	typedef xr_string region_name;

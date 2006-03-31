@@ -18,7 +18,7 @@
 #include "alife_story_registry.h"
 #include "game_object_space.h"
 #include "object_broker.h"
-
+#include "ui/uitexturemaster.h"
 
 ALife::_STORY_ID	story_id		(LPCSTR story_id);
 u16					storyId2GameId	(ALife::_STORY_ID);
@@ -118,7 +118,13 @@ void CGameTask::Load(const TASK_ID& id)
 
 		if(i==0){
 			objective.icon_texture_name		= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "icon", 0, NULL);
-			if(objective.icon_texture_name.size()){
+			if( objective.icon_texture_name.size() && 
+				!strstr(*objective.icon_texture_name, "ui_icons_task") )
+			{
+				objective.icon_rect			= CUITextureMaster::GetTextureRect(*objective.icon_texture_name);
+				objective.icon_texture_name	= CUITextureMaster::GetTextureFileName(*objective.icon_texture_name);
+			}else 
+				if(objective.icon_texture_name.size()){
 				objective.icon_rect.x1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "x");
 				objective.icon_rect.y1			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "y");
 				objective.icon_rect.x2			= g_gameTaskXml.ReadAttribFlt(l_root, "icon", 0, "width");

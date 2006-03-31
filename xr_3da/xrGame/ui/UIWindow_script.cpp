@@ -10,6 +10,7 @@
 #include "../MainUI.h"
 #include "UILabel.h"
 #include "UIMMShniaga.h"
+#include "UITextureMaster.h"
 
 CFontManager& mngr(){
 	return *(UI()->Font());
@@ -50,6 +51,22 @@ CGameFont* GetFontLetterica25()
 int GetARGB(u16 a, u16 r, u16 g, u16 b)
 {return color_argb(a,r,g,b);}
 
+
+Frect	get_texture_rect(LPCSTR icon_name)
+{
+	return CUITextureMaster::GetTextureRect(icon_name);
+}
+
+LPCSTR	get_texture_name(LPCSTR icon_name)
+{
+	return CUITextureMaster::GetTextureFileName(icon_name);
+}
+
+TEX_INFO	get_texture_info(LPCSTR name, LPCSTR def_name)
+{
+	return CUITextureMaster::FindItem(name, def_name);
+}
+
 using namespace luabind;
 
 void CUIWindow::script_register(lua_State *L)
@@ -69,6 +86,14 @@ void CUIWindow::script_register(lua_State *L)
 		def("GetFontGraffiti32Russian",	&GetFontGraffiti32Russian),
 		def("GetFontGraffiti50Russian",	&GetFontGraffiti50Russian),
 		def("GetFontLetterica25",		&GetFontLetterica25),
+
+		class_<TEX_INFO>("TEX_INFO")
+		.def("get_file_name",				&TEX_INFO::get_file_name)
+		.def("get_rect",					&TEX_INFO::get_rect),
+
+		def("GetTextureName",			&get_texture_name),
+		def("GetTextureRect",			&get_texture_rect),
+		def("GetTextureInfo",			&get_texture_info),
 
 		class_<CUIWindow>("CUIWindow")
 		.def(							constructor<>())
