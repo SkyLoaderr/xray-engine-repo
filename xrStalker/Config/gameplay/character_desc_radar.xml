@@ -608,7 +608,7 @@
     <map_icon x="3" y="0"></map_icon>
     <bio>mil_Monolit_master_bio</bio>
 
-    <class>mil_Monolit_master</class>
+    <class>rad_monolit_master</class>
     <community>monolith</community>
 
 
