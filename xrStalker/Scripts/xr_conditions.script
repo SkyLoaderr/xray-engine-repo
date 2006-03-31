@@ -551,6 +551,11 @@ function fighting_actor(actor, npc)
     return enemy and enemy:id() == actor:id()
 end
 
+function dont_fighting_actor(actor, npc)
+    local enemy = db.storage[npc:id()].enemy
+    return enemy and enemy:id() ~= actor:id()
+end
+
 -- текущий враг на расстоянии больше или равном 20м
 function fighting_dist_ge_20(actor, npc)
 	return db.storage[npc:id()].enemy:position():distance_to_sqr( npc:position() ) >= 400 -- 20^2
