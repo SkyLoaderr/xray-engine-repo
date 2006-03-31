@@ -476,17 +476,17 @@ LPCSTR CScriptGameObject::CharacterName			()
 }
 int CScriptGameObject::CharacterRank			()
 {
-	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	if (!pInventoryOwner) {
-		// rank support for monster
-		CBaseMonster *monster = smart_cast<CBaseMonster*>(&object());
-		if (!monster) {
+	// rank support for monster
+	CBaseMonster *monster = smart_cast<CBaseMonster*>(&object());
+	if (!monster) {
+		CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
+		if (!pInventoryOwner) {
 			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CharacterRank available only for InventoryOwner and BaseMonster");
 			return 0;
-		} 	
-		return monster->Rank();
-	}
-	return pInventoryOwner->Rank();
+		}
+		return pInventoryOwner->Rank();
+	} 	
+	return monster->Rank();
 }
 void CScriptGameObject::SetCharacterRank			(int char_rank)
 {
