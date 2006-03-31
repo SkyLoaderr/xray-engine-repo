@@ -27,6 +27,56 @@
 </string>
 
 
+<string id="name_science_0">
+	<text>Андрей</text>
+</string>
+<string id="name_science_1">
+	<text>Антон</text>
+</string>
+<string id="name_science_2">
+	<text>Богдан</text>
+</string>
+<string id="name_science_3">
+	<text>Вениамин</text>
+</string>
+<string id="name_science_4">
+	<text>Виталий</text>
+</string>
+<string id="name_science_5">
+	<text>Владимир</text>
+</string>
+<string id="name_science_6">
+	<text>Дмитрий</text>
+</string>
+<string id="name_science_7">
+	<text>Иван</text>
+</string>
+<string id="name_science_8">
+	<text>Константин</text>
+</string>
+<string id="name_science_9">
+	<text>Алексей</text>
+</string>
+<string id="name_science_10">
+	<text>Олег</text>
+</string>
+<string id="name_science_11">
+	<text>Роман</text>
+</string>
+<string id="name_science_12">
+	<text>Александр</text>
+</string>
+<string id="name_science_13">
+	<text>Сергей</text>
+</string>
+<string id="name_science_14">
+	<text>Анатолий</text>
+</string>
+<string id="name_science_15">
+	<text>Юрий</text>
+</string>
+
+
 <string id="name_army_0">
 	<text>Андрей</text>
 </string>
@@ -84,7 +134,6 @@
 <string id="name_18">
 	<text>Юра</text>
 </string>
-
 
 <string id="name_stalker_0">
 	<text>Саня</text>
