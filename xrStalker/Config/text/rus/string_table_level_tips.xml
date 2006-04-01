@@ -20,16 +20,16 @@
         <text>Срочно нужна аптечка, помираю!!!</text>
     </string>
     <string id="general_new_task">
-        <text>Получено новое задание.</text>
+        <text>Новое задание:</text>
     </string>
     <string id="general_complete_task">
-        <text>Задание выполнено.</text>
+        <text>Задание выполнено:</text>
     </string>
     <string id="general_fail_task">
-        <text>Задание провалено.</text>
+        <text>Задание провалено:</text>
     </string>
     <string id="general_update_task">
-        <text>Задание обновлено.</text>
+        <text>Задание обновлено:</text>
     </string>
     <string id="general_in_item">
         <text>Получен предмет: </text>
