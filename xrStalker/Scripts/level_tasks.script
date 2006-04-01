@@ -167,5 +167,4 @@ function set_task_state(id_state, id_task, id_subtask)
 end
 
 function notify_new_task()
-	news_manager.send_task(db.actor, "new")
 end
