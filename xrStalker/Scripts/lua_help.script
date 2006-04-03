@@ -1945,9 +1945,10 @@ C++ class CGameTask {
     CGameTask ();
     
     function get_objective(number);
+    function get_title(string);
     function get_id();
     function add_objective(SGameTaskObjective*);
-    function set_title(string);
+    function set_title();
     function load(string);
     function get_objectives_cnt();
 };
