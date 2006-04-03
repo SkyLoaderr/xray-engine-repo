@@ -22,7 +22,7 @@ local active_task = {}		--' таблица активных заданий
 local negative_task = {}	--' таблица нежелательности выдачи задания. Тут сохраняется сколько раз данный таск был выдан.
 
 local parent_by_story = {
-	[001] = "trader",
+	[003] = "trader",
 	[500] = "barman",
 	[902] = "ecolog",
 	[507] = "dolg",
