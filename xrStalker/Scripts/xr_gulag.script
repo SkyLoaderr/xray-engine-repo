@@ -83,6 +83,11 @@ function gulag:load_jobs()
 			table.insert( self.Job_avail_in_state_0, job )
 			capacity = capacity + 1
 		end
+
+		if type( job.online ) == "string" then
+			job.online_condlist = job.online
+			job.online          = xr_logic.parse_condlist( nil, "gulag:setup_job_online", "job_online", job.online_condlist )
+		end
 	end
 
 	self.capacity               = math.min( capacity, self.capacity )
@@ -949,10 +954,12 @@ function gulag:beginJob( obj_id )
 		job.fill_idle = idle_none
 	end
 
-	self.npc_info[obj_id].se_obj.job_online = job.online
+	local se_obj = self.npc_info[obj_id].se_obj
+
+	self:setup_job_online( se_obj, job )
 
 	if self:get_stype( obj_id ) == modules.stype_mobile then
-		self.npc_info[obj_id].se_obj:smart_terrain_task_activate()
+		se_obj:smart_terrain_task_activate()
 	end
 
 	if self.Object[obj_id] ~= true then
@@ -960,6 +967,17 @@ function gulag:beginJob( obj_id )
 
 		self:set_restrictions( obj, job.out_rest, job.in_rest )
 		self:setup_logic( obj, job.section )
+	end
+end
+
+-- установить серверному объекту персонажа упраление переключения онлайн/офлайн
+function gulag:setup_job_online( se_obj, job )
+	if job then
+		se_obj.job_online_condlist = job.online_condlist
+		se_obj.job_online          = job.online
+	else
+		se_obj.job_online_condlist = nil
+		se_obj.job_online          = nil
 	end
 end
 
@@ -1047,7 +1065,7 @@ function gulag:free_obj( obj_id )
 
 		self.ObjectJobPathName[obj_id] = nil
 
-		self.npc_info[obj_id].se_obj.job_online = nil
+		self:setup_job_online( self.npc_info[obj_id].se_obj, nil )
 
 		if self:get_stype( obj_id ) == modules.stype_mobile then
 			self.npc_info[obj_id].se_obj:smart_terrain_task_deactivate()

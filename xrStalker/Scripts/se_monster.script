@@ -19,10 +19,12 @@ function se_monster:__init (section) super (section)
 	self.min_distance   = 150
 
 	-- этот флаг берётся из работы смарта
-	-- true  = всегда в онлайне
-	-- false = всегда в офлайне
-	-- nil   = смарту всё равно
-	self.job_online = nil
+	-- true     = всегда в онлайне
+	-- false    = всегда в офлайне
+	-- condlist = условие, которое отпределяет true или false
+	-- nil      = смарту всё равно
+	self.job_online          = nil
+	self.job_online_condlist = nil
 
 	-- посещал ли сталкер хоть один smart_terrain
 	self.was_in_smart_terrain = false
@@ -63,17 +65,25 @@ function se_monster:get_ini()
 	end
 end
 --------------------
+function se_monster:get_job_online()
+	if self.job_online_condlist == nil then
+		return self.job_online
+	else
+		return xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.job_online) ~= nil
+	end
+end
+--------------------
 function se_monster:can_switch_offline ()
-	if self.job_online ~= nil then
-		return not self.job_online
+	if self:get_job_online() ~= nil then
+		return not self:get_job_online()
 	else
 		return cse_alife_monster_base.can_switch_offline (self)
 	end
 end
 --------------------
 function se_monster:can_switch_online ()
-	if self.job_online ~= nil then
-		return self.job_online
+	if self:get_job_online() ~= nil then
+		return self:get_job_online()
 	end
 
 	self:get_ini()
@@ -124,8 +134,11 @@ function se_monster:STATE_Write(packet)
 		packet:w_u8(0)
 	elseif self.job_online == false then
 		packet:w_u8(1)
-	else
+	elseif self.job_online == nil then
 		packet:w_u8(2)
+	else
+		packet:w_u8(3)
+		packet:w_stringZ(self.job_online_condlist)
 	end
 
 	packet:w_bool(self.was_in_smart_terrain)
@@ -141,8 +154,12 @@ function se_monster:STATE_Read(packet, size)
 			self.job_online = true
 		elseif t == 1 then
 			self.job_online = false
-		else
+		elseif t == 2 then
 			self.job_online = nil
+		else
+			self.job_online_condlist = packet:r_stringZ()
+
+			self.job_online = xr_logic.parse_condlist(nil, "se_monster:STATE_Read", "job_online", self.job_online_condlist)
 		end
 	end
 
