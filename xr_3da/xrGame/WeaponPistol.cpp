@@ -47,10 +47,10 @@ void CWeaponPistol::Load	(LPCSTR section)
 	animGet				(mhud_pistol_r.mhud_close,		str);
 
 	strconcat(str,pSettings->r_string(*hud_sect, "anim_draw_empty"),"_r");
-	animGet				(mhud_pistol_r.mhud_show_empty,	pSettings->r_string(*hud_sect, "anim_draw_empty"));
+	animGet				(mhud_pistol_r.mhud_show_empty,	str);
 
 	strconcat(str,pSettings->r_string(*hud_sect, "anim_reload_empty"),"_r");
-	animGet				(mhud_pistol_r.mhud_reload_empty,	pSettings->r_string(*hud_sect, "anim_reload_empty"));
+	animGet				(mhud_pistol_r.mhud_reload_empty,	str);
 
 
 
