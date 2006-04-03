@@ -126,16 +126,16 @@ function actor_binder:task_callback(_task, _objective, _state)
 	if _objective:get_idx() == 0 then
 		if _state == task.fail then
 			task_manager.reward_by_task(_task, false)
-			news_manager.send_task(db.actor, "fail")
+			news_manager.send_task(db.actor, "fail", _task)
 		elseif _state == task.completed then
 			task_manager.reward_by_task(_task, true)
-			news_manager.send_task(db.actor, "complete")
+			news_manager.send_task(db.actor, "complete", _task)
 		else
-			news_manager.send_task(db.actor, "new")
+			news_manager.send_task(db.actor, "new", _task)
 		end
 	else
 		if  _task:get_objective(0):get_state() ~= task.completed then
-			news_manager.send_task(db.actor, "update")
+			news_manager.send_task(db.actor, "update", _task)
 		end
 	end
 end

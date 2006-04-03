@@ -78,7 +78,7 @@ function relocate_item(victim, obj, type)
 		elseif type == "out" then
 			db.actor:transfer_item(obj, victim)
 		end
-		news_manager.relocate_item(db.actor, type)
+		news_manager.relocate_item(db.actor, type, obj)
 	end
 end
 function relocate_money(victim, num, type)
@@ -90,7 +90,7 @@ function relocate_money(victim, num, type)
 			db.actor:transfer_money(num, victim)
 			game_stats.money_quest_update (-num) 
 		end
-		news_manager.relocate_money(db.actor, type)
+		news_manager.relocate_money(db.actor, type, num)
 	end
 end
 
