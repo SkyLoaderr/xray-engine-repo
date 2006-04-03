@@ -100,7 +100,7 @@
         <icon height="50" width="50" x="150" y="0">
             ui\ui_icons_task
         </icon>
-        <map_location_type>
+        <map_location_type hint="val_prisoner_help_main_hint">
             green_location
         </map_location_type>
         <object_story_id>

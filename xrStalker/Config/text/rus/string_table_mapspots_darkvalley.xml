@@ -63,3 +63,8 @@
         Пуля
     </text>
 </string>
+<string id="val_prisoner_help_main_hint">
+    <text>
+        Плененный долговец
+    </text>
+</string>
