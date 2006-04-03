@@ -651,7 +651,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                "[walker1@" .. gname .. "_leader_normal]\n" ..
                "path_walk = leader_walk\n" ..
                "path_look = leader_look\n" ..
-               "show_spot = false\n" ..
+               --"show_spot = false\n" ..
                combat_ignore ..
 
                "[logic@" .. gname .. "_leader_alarm]\n" ..
@@ -661,7 +661,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                "[walker1@" .. gname .. "_leader_alarm]\n" ..
                "path_walk = leader_alarm_walk\n" ..
                "path_look = leader_alarm_look\n" ..
-               "show_spot = false\n" ..
+               --"show_spot = false\n" ..
                combat_ignore
 
     -- Œ’–¿ÕÕ» » ¡Œ–Œ¬¿
