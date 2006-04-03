@@ -249,3 +249,13 @@ void CUIComboBox::SaveValue(){
 bool CUIComboBox::IsChanged(){
 	return 0 != xr_strcmp(GetOptTokenValue(), m_text.GetText());
 }
+
+LPCSTR CUIComboBox::GetText(){
+	return m_text.GetText();
+}
+
+void CUIComboBox::SetItem(int i){
+	m_list.SetSelected(i);
+	m_text.SetText(m_list.GetSelectedText());
+	
+}

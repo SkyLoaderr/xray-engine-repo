@@ -10,6 +10,7 @@ class CUIFrameWindow;
 class CUI3tButton;
 class CUISpinText;
 class CUIMapInfo;
+class CUIComboBox;
 
 class CUIXml;
 
@@ -38,7 +39,7 @@ public:
 	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData  = NULL);
 			void	InitFromXml(CUIXml& xml_doc, const char* path);	
 
-			void	SetWeatherSelector(CUISpinText* ws);
+			void	SetWeatherSelector(CUIComboBox* ws);
 			void	SetModeSelector(CUISpinText* ms);
 			void	SetMapPic(CUIStatic* map_pic);
 			void	SetMapInfo(CUIMapInfo* map_info);
@@ -74,7 +75,7 @@ private:
 	CUI3tButton*		m_pBtnUp;
 	CUI3tButton*		m_pBtnDown;
 
-	CUISpinText*		m_pWeatherSelector;
+	CUIComboBox*		m_pWeatherSelector;
 	CUISpinText*		m_pModeSelector;
 	CUIStatic*			m_pMapPic;
 	CUIMapInfo*			m_pMapInfo;

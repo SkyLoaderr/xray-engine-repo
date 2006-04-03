@@ -30,6 +30,8 @@ public:
 	virtual void	SaveValue();
 	virtual bool	IsChanged();
 
+			LPCSTR	GetText();
+
 	// methods
 	virtual CUIListBox*	GetListWnd();
 	virtual void		SetListLength(int length);
@@ -37,6 +39,7 @@ public:
 	virtual void		AddItem(LPCSTR str, bool bSelected);
 	virtual void		AddItem(LPCSTR str);
 	virtual void		Init(float x, float y, float width);
+			void		SetItem(int i);
 
 	virtual void		Init(float x, float y, float width, float height);	
 	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = 0);

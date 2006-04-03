@@ -57,7 +57,7 @@ function mp_options:InitControls(x, y, xml, handler)
 	
 	handler.tab_respawn					= xml:InitTab("tab_options:radio_tab_respawn_options",		self)
 	-- spin boxes
-	handler.spin_weather				= xml:InitSpinText("tab_options:spin_weather",				self)
+	handler.spin_weather				= xml:InitComboBox("tab_options:spin_weather",				self)
 	handler.spin_friendly_fire			= xml:InitSpinNum("tab_options:spin_friendly_fire",			self)
 	handler.spin_artefacts_num			= xml:InitSpinNum("tab_options:spin_artefacts_num",			self)
 	handler.edit_maprotlist				= xml:InitEditBox("tab_options:edit_maprotlist",			self)

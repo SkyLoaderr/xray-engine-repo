@@ -8,6 +8,7 @@
 #include "UISpinText.h"
 #include "UIXmlInit.h"
 #include "UIMapInfo.h"
+#include "UIComboBox.h"
 #include "../../xr_ioconsole.h"
 
 extern ENGINE_API string512  g_sLaunchOnExit;
@@ -292,7 +293,11 @@ void	CUIMapList::ParseWeather(char** ps, char* e)
 		while (1)
 		{
 			if (!GetToken(ps, e, token)) break;
-			if (!xr_strcmp(token, "}")) return;
+			if (!xr_strcmp(token, "}")) 
+			{
+				m_pWeatherSelector->SetItem(0);
+				return;
+			}
 			if (!xr_strcmp(token, "startweather"))
 			{
 				char WeatherType[1024], WeatherTime[1024];
@@ -302,10 +307,10 @@ void	CUIMapList::ParseWeather(char** ps, char* e)
 				AddWeather(WeatherType, WeatherTime);
 			};
 		};
-	};
+	};	
 };
 
-void CUIMapList::SetWeatherSelector(CUISpinText* ws){
+void CUIMapList::SetWeatherSelector(CUIComboBox* ws){
 	m_pWeatherSelector = ws;
 }
 

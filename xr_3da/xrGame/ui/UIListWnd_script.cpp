@@ -5,6 +5,7 @@
 #include "UIMapList.h"
 #include "UISpinText.h"
 #include "UIMapInfo.h"
+#include "UIComboBox.h"
 
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
