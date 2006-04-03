@@ -96,9 +96,13 @@ function obj_in_zone(actor, zone, p)
 end
 
 function actor_in_zone(actor, npc, p)
-	return utils.npc_in_zone(db.actor, db.zone_by_name[p[1]])
+	return utils.npc_in_zone(db.actor, zone)
 end
 function actor_out_zone(actor, npc, p)
+	local zone = db.zone_by_name[p[1]]
+	if zone == nil then
+		return false
+	end
 	return not utils.npc_in_zone(db.actor, db.zone_by_name[p[1]])
 end
 
