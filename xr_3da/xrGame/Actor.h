@@ -276,6 +276,8 @@ public:
 	void					detach_Vehicle			();
 	void					steer_Vehicle			(float angle);
 	void					attach_Vehicle			(CHolderCustom* vehicle);
+
+	virtual bool			can_attach				(const CInventoryItem *inventory_item) const;
 protected:
 	CHolderCustom*			m_holder;
 	u16						m_holderID;

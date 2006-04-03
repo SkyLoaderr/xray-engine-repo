@@ -43,7 +43,8 @@ void CAttachableItem::reload			(LPCSTR section)
 	m_offset.setHPB					(VPUSH(angle_offset));
 	m_offset.c						= position_offset;
 	m_bone_name						= pSettings->r_string	(section,"attach_bone_name");
-	enable							(m_auto_attach = !!(READ_IF_EXISTS(pSettings,r_bool,section,"auto_attach",TRUE)));
+//	enable							(m_auto_attach = !!(READ_IF_EXISTS(pSettings,r_bool,section,"auto_attach",TRUE)));
+	enable							(false);
 #ifdef DEBUG
 	m_valid							= true;
 #endif
@@ -67,13 +68,14 @@ void CAttachableItem::renderable_Render	()
 void CAttachableItem::OnH_A_Independent	()
 {
 //	VERIFY							(m_valid);
-	enable							(m_auto_attach);
+	enable							(false/*m_auto_attach*/);
 }
 
 void CAttachableItem::enable			(bool value)
 {
 //	VERIFY							(m_valid);
-	if (!object().H_Parent()) {
+	if (!object().H_Parent()) 
+	{
 		m_enabled			= value;
 		return;
 	}

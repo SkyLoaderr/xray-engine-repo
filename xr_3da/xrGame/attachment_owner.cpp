@@ -13,13 +13,6 @@
 #include "inventory_item.h"
 #include "physicsshellholder.h"
 
-struct CStringPredicate {
-	bool		operator()	(const shared_str &s1, const shared_str &s2) const
-	{
-		return			(s1 < s2);
-	}
-};
-
 CAttachmentOwner::~CAttachmentOwner()
 {
 }
@@ -37,8 +30,6 @@ void CAttachmentOwner::reload				(LPCSTR section)
 	m_attach_item_sections.resize(item_count);
 	for (u32 i=0; i<item_count; ++i)
 		m_attach_item_sections[i] = _GetItem(attached_sections,i,current_item_section);
-
-	std::sort					(m_attach_item_sections.begin(),m_attach_item_sections.end(),CStringPredicate());
 }
 
 void CAttachmentOwner::reinit	()
@@ -107,7 +98,7 @@ void CAttachmentOwner::attach(CInventoryItem *inventory_item)
 		m_attached_objects.push_back		(smart_cast<CAttachableItem*>(inventory_item));
 
 		inventory_item->object().setVisible	(true);
-		attachable_item->afterAttach();
+		attachable_item->afterAttach		();
 	}
 }
 
@@ -135,27 +126,11 @@ void CAttachmentOwner::detach(CInventoryItem *inventory_item)
 bool CAttachmentOwner::attached				(const CInventoryItem *inventory_item) const
 {
 	return (attachedItem(inventory_item->object().ID())!= NULL);
-/*
-	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
-	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
-	for ( ; I != E; ++I)
-		if ((*I)->ID() == inventory_item->object().ID())
-			return		(true);
-	return				(false);
-*/
 }
 
 bool  CAttachmentOwner::attached			(shared_str sect_name) const
 {
 	return (attachedItem(sect_name)!= NULL);
-/*
-	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
-	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
-	for ( ; I != E; ++I)
-		if (!xr_strcmp((*I)->cNameSect(), sect_name) && !(*I)->m_drop)
-			return		(true);
-	return				(false);
-*/
 }
 
 bool CAttachmentOwner::can_attach			(const CInventoryItem *inventory_item) const
@@ -165,8 +140,9 @@ bool CAttachmentOwner::can_attach			(const CInventoryItem *inventory_item) const
 		return			(false);
 
 	//можно ли присоединять объекты такого типа
-	if(!(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->object().cNameSect(),CStringPredicate())))
+	if( m_attach_item_sections.end() == std::find(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->object().cNameSect()) )
 		return false;
+
 	//если уже есть присоединненый объет такого типа 
 	if(attached(inventory_item->object().cNameSect()))
 		return false;
@@ -186,14 +162,6 @@ void CAttachmentOwner::reattach_items		()
 		VERIFY (attachable_item);
 		attachable_item->set_bone_id		(smart_cast<CKinematics*>(game_object->Visual())->LL_BoneID(attachable_item->bone_name()));
 	}
-//---------------------------------------------------------------------------
-//	this is commented by Dima, since there is no any check about 
-//	is there any other clients which need visual callback too
-//	if (m_attached_objects.empty())
-//		game_object->SetKinematicsCallback(false);
-//	else
-//		game_object->SetKinematicsCallback(true);
-
 }
 
 CAttachableItem* CAttachmentOwner::attachedItem			(CLASS_ID clsid) const

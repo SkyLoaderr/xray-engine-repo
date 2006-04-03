@@ -1732,6 +1732,23 @@ Fvector CActor::weapon_recoil_last_delta()
 	return							(result);
 }
 
+bool CActor::can_attach			(const CInventoryItem *inventory_item) const
+{
+	const CAttachableItem	*item = smart_cast<const CAttachableItem*>(inventory_item);
+	if (!item || /*!item->enabled() ||*/ !item->can_be_attached())
+		return			(false);
+
+	//можно ли присоединять объекты такого типа
+	if( m_attach_item_sections.end() == std::find(m_attach_item_sections.begin(),m_attach_item_sections.end(),inventory_item->object().cNameSect()) )
+		return false;
+
+	//если уже есть присоединненый объет такого типа 
+	if(attached(inventory_item->object().cNameSect()))
+		return false;
+
+	return true;
+}
+
 void CActor::OnDifficultyChanged	()
 {
 	// immunities
