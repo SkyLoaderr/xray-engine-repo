@@ -115,9 +115,9 @@ function action_door:close_action()
 	printf("_bp: action_door:update(): door blocked")
 	-- Закрыли до предела, будем блокировать
 	if self.st.no_force == true then
-		self.joint:set_max_force_and_velocity(0, 0, 1)
+		self.joint:set_max_force_and_velocity(0, 0, 0)
 	else
-		self.joint:set_max_force_and_velocity(10000, 1, 1)
+		self.joint:set_max_force_and_velocity(10000, 1, 0)
 	end
 	self.block = false
 	-- Отыграть звук когда дверь захлопнулась:
@@ -135,9 +135,9 @@ function action_door:open_door(disable_snd)
 	end
 	
 	if self.st.no_force == true then
-		self.joint:set_max_force_and_velocity(0, 0, 1)
+		self.joint:set_max_force_and_velocity(0, 0, 0)
 	else
-		self.joint:set_max_force_and_velocity(200, -3, 1)
+		self.joint:set_max_force_and_velocity(200, -3, 0)
 	end
 	self.block = false
 
@@ -173,9 +173,9 @@ function action_door:close_door(disable_snd)
 
 	printf("_bp: action_door:close_door()")
 	if self.st.no_force == true then
-		self.joint:set_max_force_and_velocity(0, 0, 1)
+		self.joint:set_max_force_and_velocity(0, 0, 0)
 	else
-		self.joint:set_max_force_and_velocity(200, 3, 1)
+		self.joint:set_max_force_and_velocity(200, 3, 0)
 	end
 	self.block = true -- Закрываем и блокируем	
 	self.soundless_block = disable_snd
