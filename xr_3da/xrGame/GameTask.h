@@ -130,6 +130,7 @@ public:
 // for scripting access
 	void					Load_script				(LPCSTR _id);
 	void					SetTitle_script			(LPCSTR _title);
+	LPCSTR					GetTitle_script			()							{return *m_Title;};
 	void					AddObjective_script		(SGameTaskObjective* O);
 	SGameTaskObjective*		GetObjective_script		(int objective_id)			{return &(Objective(objective_id));}
 	LPCSTR					GetID_script			()							{return *m_ID;}
