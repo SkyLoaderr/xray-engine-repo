@@ -675,7 +675,7 @@ void CPHJoint::SetForceActive		(const int axis_num)
 						case -1:
 							dJointSetSliderParam(m_joint,dParamFMax ,axes[0].force);
 							dJointSetAMotorParam(m_joint1,dParamFMax ,axes[1].force);
-						case 0:		dJointSetHinge2Param(m_joint,dParamFMax ,axes[0].force);break;
+						case 0:		dJointSetSliderParam(m_joint,dParamFMax ,axes[0].force);break;
 						case 1:		dJointSetAMotorParam(m_joint1,dParamFMax ,axes[1].force);break;
 									}
 									break;
