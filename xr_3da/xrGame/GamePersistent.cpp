@@ -290,7 +290,7 @@ void CGamePersistent::update_game_intro			()
 		psSoundVMusic			= save_music_vol;
 	}
 }
-
+#include "holder_custom.h"
 void CGamePersistent::OnFrame	()
 {
 #ifdef DEBUG
@@ -309,14 +309,32 @@ void CGamePersistent::OnFrame	()
 				if (custom_monster) // can be spectator in multiplayer
 					custom_monster->UpdateCamera();
 			}
-			else {
+			else 
+			{
+				CCameraBase* C = NULL;
 				if (g_actor)
-					Level().Cameras().Update	(Actor()->cam_Active());
+				{
+					if(!Actor()->Holder())
+						C = Actor()->cam_Active();
+					else
+						C = Actor()->Holder()->Camera();
+
+				Actor()->Cameras().Update		(C);
+				Actor()->Cameras().ApplyDevice	();
+				}
 			}
 		}
 #else
 		if (g_actor)
-			Level().Cameras().Update	(Actor()->cam_Active());
+		{
+			if(!Actor()->Holder())
+				C = Actor()->cam_Active();
+			else
+				C = Actor()->Holder()->Camera();
+
+			Actor()->Cameras().Update		(C);
+			Actor()->Cameras().ApplyDevice	();
+		}
 #endif
 	}
 	__super::OnFrame			();
