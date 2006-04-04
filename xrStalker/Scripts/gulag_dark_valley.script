@@ -134,7 +134,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
         idle = 0,
         prior = 1, state = {0},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = "",
+        in_rest = "val_lager_bandits_restrictor", out_rest = "",
         online = true,
         predicate = e_predicate_n
     }
@@ -145,7 +145,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
         idle = 0,
         prior = 1, state = {0},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = "",
+        in_rest = "val_lager_bandits_restrictor", out_rest = "",
         position_threshold = 50,
         online = true,
         predicate = e_predicate_c
@@ -157,7 +157,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
         idle = 0,
         prior = 1, state = {0},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = "",
+        in_rest = "val_lager_bandits_restrictor", out_rest = "",
         position_threshold = 50,
         online = true,
         predicate = e_predicate_g1
@@ -168,7 +168,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
         idle = 0,
         prior = 1, state = {0},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = "",
+        in_rest = "val_lager_bandits_restrictor", out_rest = "",
         position_threshold = 50,
         online = true,
         predicate = e_predicate_g2
@@ -249,7 +249,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
         idle = 0,
         prior = 1, state = {0},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = "",
+        in_rest = "val_lager_bandits_restrictor", out_rest = "",
         --online = true,
         predicate = e_predicate_w
     }
