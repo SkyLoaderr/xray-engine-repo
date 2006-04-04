@@ -187,6 +187,8 @@ function action_zombie_go_to_danger:initialize()
 	self.bdo_id      = nil
 	self.bdo_vert_id = nil
 
+	self.last_sent_vert_id = nil
+
 	self.st.cur_act = act_danger
 end
 
@@ -223,9 +225,14 @@ function action_zombie_go_to_danger:execute()
 				self.bdo_vert_id = bdo:level_vertex_id()
 			end
 
-			utils.send_to_nearest_accessible_vertex( self.object, self.bdo_vert_id )
+			if self.bdo_vert_id ~= self.last_sent_vert_id then
+				self.last_sent_vert_id = self.bdo_vert_id
 
-			self:set_state( "patrol", bdo, nil )
+				utils.send_to_nearest_accessible_vertex( self.object, self.bdo_vert_id )
+			end
+
+--			self:set_state( "patrol", bdo, nil )
+			self:set_state( "patrol", nil, bd:position() )
 		else
 			self:set_state( "guard",  nil, bd:position() )
 		end
@@ -248,7 +255,9 @@ function action_zombie_go_to_danger:hit_callback( obj, amount, local_direction, 
 		local bd  = self.object:best_danger()
 		local bdo = bd:object()
 
-		if bdo and bd:type() == danger_object.attacked then
+		if bdo and bd:type() == danger_object.attacked or
+		   amount > 0
+		then
 			self.enemy_last_seen_pos   = bdo:position()
 			self.enemy_last_seen_vid   = bdo:level_vertex_id()
 
