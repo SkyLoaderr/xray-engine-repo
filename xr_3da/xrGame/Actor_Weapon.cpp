@@ -151,7 +151,7 @@ void		CActor::Check_Weapon_ShowHideState	()
 		if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
 			inventory().m_slots[InventorySlot].m_pIItem &&
 			(!(m_iCurWeaponHideState&whs_ON_LEDDER) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()) &&
-			(!(m_iCurWeaponHideState&whs_CAR) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()) &&
+			(!(m_iCurWeaponHideState&whs_CAR) || !(inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded())||InventorySlot == KNIFE_SLOT) &&
 			(!(m_iCurWeaponHideState&whs_SPRINT && InventorySlot == KNIFE_SLOT))
 			)
 		{
