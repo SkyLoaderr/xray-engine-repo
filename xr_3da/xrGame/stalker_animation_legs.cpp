@@ -17,7 +17,11 @@ const float right_forward_angle			= PI_DIV_4;
 const float left_forward_angle			= PI_DIV_4;
 const float standing_turn_angle			= PI_DIV_6;
 const float epsilon						= EPS_L;
+
 const u32	direction_switch_interval 	= 500;
+
+const u32	need_look_back_time_delay	= 0;
+
 const float direction_angles[]			= {
 	0.f,		//	eMovementDirectionForward
 	PI,			//	eMovementDirectionBackward
@@ -59,6 +63,21 @@ IC	float CStalkerAnimationManager::legs_switch_factor		() const
 		return					(0.f);
 
 	return						(1.f);
+}
+
+bool CStalkerAnimationManager::need_look_back				() const
+{
+	if (m_looking_back)
+		return					(true);
+
+	if (m_previous_speed_direction != eMovementDirectionBackward)
+		return					(false);
+
+	if ((m_change_direction_time + need_look_back_time_delay) > Device.dwTimeGlobal)
+		return					(false);
+
+	m_looking_back				= 2;//::Random.randI(2) + 1;
+	return						(true);
 }
 
 void CStalkerAnimationManager::legs_assign_direction		(float switch_factor, const EMovementDirection &direction)
@@ -170,6 +189,12 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 		}
 	}
 
+	if (m_previous_speed_direction != speed_direction) {
+		if (m_change_direction_time < Device.dwTimeGlobal)
+			m_change_direction_time	= Device.dwTimeGlobal;
+		m_previous_speed_direction	= speed_direction;
+	}
+
 	m_current_speed				= movement.speed(speed_direction);
 
 	return						(
@@ -187,6 +212,7 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 
 MotionID CStalkerAnimationManager::legs_no_move_animation	()
 {
+	m_change_direction_time		= Device.dwTimeGlobal;
 	m_current_speed				= 0.f;
 
 	const xr_vector<MotionID>	&animation = m_data_storage->m_part_animations.A[body_state()].m_in_place->A;

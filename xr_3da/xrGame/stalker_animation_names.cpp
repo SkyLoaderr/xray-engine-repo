@@ -32,19 +32,21 @@ LPCSTR weapon_names			[] = {
 };
 
 LPCSTR weapon_action_names	[] = {
-	"draw_",		// 0
-	"attack_",		// 1
-	"drop_",		// 2
-	"holster_",		// 3
-	"reload_",		// 4
-	"pick_",		// 5
-	"aim_",			// 6
-	"walk_",		// 7
-	"run_",			// 8
-	"idle_",		// 9
-	"prepare_",		// 10
-	"strap_",		// 11
-	"unstrap_",		// 12
+	"draw_",			// 0
+	"attack_",			// 1
+	"drop_",			// 2
+	"holster_",			// 3
+	"reload_",			// 4
+	"pick_",			// 5
+	"aim_",				// 6
+	"walk_",			// 7
+	"run_",				// 8
+	"idle_",			// 9
+	"prepare_",			// 10
+	"strap_",			// 11
+	"unstrap_",			// 12
+	"look_beack_ls_",	// 13
+	"look_beack_rs_",	// 14
 	0
 };
 

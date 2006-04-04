@@ -20,6 +20,8 @@
 #include "stalker_animation_data.h"
 #include "stalker_animation_manager_impl.h"
 
+const u32	need_look_back_time_interval= 2000;
+
 void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 {
 	VERIFY							(blend->CallbackParam);
@@ -33,6 +35,11 @@ void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 		animation.setup_storage		(0);
 #endif
 		return;
+	}
+
+	if (animation.m_looking_back) {
+		animation.m_change_direction_time	= Device.dwTimeGlobal + need_look_back_time_interval;
+		animation.m_looking_back			= 0;
 	}
 
 	animation.torso().make_inactual	();
@@ -94,6 +101,9 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 
 			if (eMovementTypeWalk == movement.movement_type())
 				return				(animation[6].A[2]);
+
+			if ((body_state == eBodyStateStand) && (slot == 2) && need_look_back())
+				return				(animation[13 + m_looking_back - 1].A[0]);
 
 			VERIFY					(eMovementTypeRun == movement.movement_type());
 			return					(animation[6].A[3]);
@@ -169,6 +179,9 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 
 			if (eMovementTypeWalk == movement.movement_type())
 				return				(animation[1].A[2]);
+
+			if ((body_state == eBodyStateStand) && (slot == 2) && need_look_back())
+				return				(animation[14].A[0]);
 
 			VERIFY					(eMovementTypeRun == movement.movement_type());
 			return					(animation[1].A[3]);

@@ -48,6 +48,11 @@ private:
 	EMovementDirection				m_target_direction;
 
 private:
+	EMovementDirection				m_previous_speed_direction;
+	u32								m_change_direction_time;
+	mutable int						m_looking_back;
+
+private:
 	CAI_Stalker						*m_object;
 	IRender_Visual					*m_visual;
 	CKinematicsAnimated				*m_skeleton_animated;
@@ -79,6 +84,9 @@ private:
 	IC		void					fill_object_info		();
 	IC		u32						object_slot				() const;
 	IC		EBodyState				body_state				() const;
+
+private:
+			bool					need_look_back			() const;
 
 private:
 			MotionID				no_object_animation		(const EBodyState &body_state) const;
