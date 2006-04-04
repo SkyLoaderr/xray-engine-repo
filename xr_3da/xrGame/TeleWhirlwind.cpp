@@ -120,7 +120,7 @@ void		CTeleWhirlwindObject::		raise_update			()
 
 void		CTeleWhirlwindObject::		release					()
 {
-	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
+	if (!object ||object->getDestroy() ||!object->m_pPhysicsShell || !object->m_pPhysicsShell->isActive()) return;
 	
 		
 	Fvector dir_inv;

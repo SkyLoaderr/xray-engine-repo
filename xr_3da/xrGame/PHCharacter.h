@@ -8,6 +8,8 @@ class CClimableObject;
 class CGameObject;
 class ICollisionDamageInfo;
 class CElevatorState;
+class CPHActorCharacter;
+class CPHAICharacter;
  static enum EEnvironment
 			{
 				peOnGround,
@@ -53,9 +55,10 @@ public:
 enum ERestrictionType
 {
 
-	rtStalker					=0	,
-	rtMonsterMedium					,
-	rtNone							,
+	rtStalker						=0	,
+	rtStalkerSmall						,
+	rtMonsterMedium						,
+	rtNone								,
 	rtActor
 };
 
@@ -64,10 +67,13 @@ ERestrictionType m_restriction_type;
 bool			 b_actor_movable;
 public:
 	virtual ECastType	CastType							(){return CPHObject::tpCharacter;}
+	virtual CPHActorCharacter	*CastActorCharacter			(){return NULL;}
+	virtual CPHAICharacter		*CastAICharacter			(){return NULL;}
 	ERestrictionType	RestrictionType						(){return m_restriction_type;}
 	void				SetRestrictionType					(ERestrictionType rt){m_restriction_type=rt;}
-	virtual void		FreezeContent						();
-	virtual void		UnFreezeContent						();
+	virtual bool		ChangeRestrictionType				(ERestrictionType rt)										=0;
+	virtual void		FreezeContent						()															;
+	virtual void		UnFreezeContent						()															;
 	virtual	dBodyID		get_body							()															{return m_body;}
 	virtual	dSpaceID	dSpace								()															=0;		
 

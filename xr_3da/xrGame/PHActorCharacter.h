@@ -89,9 +89,11 @@ class CPHActorCharacter :
 	RESRICTORS_V		m_restrictors;
 
 public:
-	typedef TPHCharacterRestrictor<CPHCharacter::rtStalker>		  stalker_restrictor;
-	typedef TPHCharacterRestrictor<CPHCharacter::rtMonsterMedium> medium_monster_restrictor;
+	typedef TPHCharacterRestrictor<CPHCharacter::rtStalker>			stalker_restrictor;
+	typedef TPHCharacterRestrictor<CPHCharacter::rtStalkerSmall>	stalker_small_restrictor;
+	typedef TPHCharacterRestrictor<CPHCharacter::rtMonsterMedium>	medium_monster_restrictor;
 public:
+	virtual CPHActorCharacter	*CastActorCharacter			(){return this;}
 	virtual	void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual void		SetMaterial							(u16 material);
 	virtual void		Create								(dVector3 sizes);

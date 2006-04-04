@@ -297,6 +297,8 @@ void CActor::Load	(LPCSTR section )
 	m_PhysicMovementControl->SetMass		(mass);
 	if(pSettings->line_exist(section,"stalker_restrictor_radius"))
 		m_PhysicMovementControl->SetActorRestrictorRadius(CPHCharacter::rtStalker,pSettings->r_float(section,"stalker_restrictor_radius"));
+	if(pSettings->line_exist(section,"stalker_small_restrictor_radius"))
+		m_PhysicMovementControl->SetActorRestrictorRadius(CPHCharacter::rtStalker,pSettings->r_float(section,"stalker_small_restrictor_radius"));
 	if(pSettings->line_exist(section,"medium_monster_restrictor_radius"))
 		m_PhysicMovementControl->SetActorRestrictorRadius(CPHCharacter::rtMonsterMedium,pSettings->r_float(section,"medium_monster_restrictor_radius"));
 	m_PhysicMovementControl->Load(section);

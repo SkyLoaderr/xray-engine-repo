@@ -60,7 +60,7 @@ BOOL CBaseGraviZone ::net_Spawn(CSE_Abstract* DC)
 }
 void CBaseGraviZone ::net_Destroy()
 {
-	Telekinesis().Deactivate();
+	Telekinesis().deactivate();
 	inherited::net_Destroy();
 }
 

@@ -152,9 +152,15 @@ public:
 	virtual		void 		EnableObject						(CPHObject* obj)	;
 	virtual		void		Enable								()					;
 	virtual		void		SetBox								(const dVector3 &sizes);
+	virtual		bool		ChangeRestrictionType				(ERestrictionType rt);
 	//get-set
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual		void		SetWheelContactCallback				(ObjectContactCallbackFun* callback);
+private:
+				void		RemoveObjectContactCallback			(ObjectContactCallbackFun* callback);
+				void		AddObjectContactCallback			(ObjectContactCallbackFun* callback);
+static			void		TestRestrictorContactCallbackFun	(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+public:
 	virtual		ObjectContactCallbackFun* ObjectContactCallBack	();
 	void					SetStaticContactCallBack			(ContactCallbackFun* calback);
 	virtual		void		SwitchOFFInitContact				()					;

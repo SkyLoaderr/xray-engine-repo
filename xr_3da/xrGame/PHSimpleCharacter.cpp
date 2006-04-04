@@ -1175,12 +1175,32 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	m_object_contact_callback=callback;
-	if(!b_exist) return;
+	if(!b_exist)return;
 
 	dGeomUserDataSetObjectContactCallback(m_hat,callback);
 	dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
 	dGeomUserDataSetObjectContactCallback(m_wheel,callback);
 }
+
+void CPHSimpleCharacter::AddObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+
+	VERIFY(b_exist);
+
+	dGeomUserDataAddObjectContactCallback(m_hat,callback);
+	dGeomUserDataAddObjectContactCallback(m_geom_shell,callback);
+	dGeomUserDataAddObjectContactCallback(m_wheel,callback);
+}
+void CPHSimpleCharacter::RemoveObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	VERIFY(m_object_contact_callback!=callback);
+	if(!b_exist) return;
+
+	dGeomUserDataRemoveObjectContactCallback(m_hat,callback);
+	dGeomUserDataRemoveObjectContactCallback(m_geom_shell,callback);
+	dGeomUserDataRemoveObjectContactCallback(m_wheel,callback);
+}
+
 void CPHSimpleCharacter::Disable()
 {
 	//if(is_contact&&!is_control&&!b_lose_ground)
@@ -1662,4 +1682,67 @@ CElevatorState*	CPHSimpleCharacter::ElevatorState()
 SCollisionHitCallback*	CPHSimpleCharacter::HitCallback					()const	
 {
 	return m_collision_damage_info.m_hit_callback;
+}
+const	float	resolve_depth=0.05f;
+static	float	restrictor_depth=0.f;
+void	CPHSimpleCharacter::	TestRestrictorContactCallbackFun	(bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	
+	dGeomID g_this=NULL;
+	dGeomID g_obj=NULL;
+	if(bo1)
+	{
+		g_this=c.geom.g1;
+		g_obj=c.geom.g2;
+	}
+	else
+	{
+		g_this=c.geom.g2;
+		g_obj=c.geom.g1;
+	}
+	dxGeomUserData* obj_data=retrieveGeomUserData(g_obj);
+	if(!obj_data)										return;
+	if(!obj_data->ph_object)							return;
+	if(obj_data->ph_object->CastType()!=tpCharacter)	return;
+	CPHActorCharacter	*actor_character	=(static_cast<CPHCharacter*>(obj_data->ph_object))->CastActorCharacter();
+	if(!actor_character) return;
+	CPHSimpleCharacter	*ch_this			=static_cast<CPHSimpleCharacter*>(retrieveGeomUserData(g_this)->ph_object);
+	VERIFY(ch_this);
+	restrictor_depth=c.geom.depth;
+	if(resolve_depth<resolve_depth)return;
+
+}
+
+bool CPHSimpleCharacter::ChangeRestrictionType(ERestrictionType rt)
+{
+	VERIFY(ph_world);
+	VERIFY(ph_world->Exist());
+	restrictor_depth=0.f;
+	ph_world->Freeze();
+	AddObjectContactCallback(TestRestrictorContactCallbackFun);
+	UnFreeze();
+	ph_world->StepTouch();
+
+	if(restrictor_depth<resolve_depth)
+	{
+		RemoveObjectContactCallback(TestRestrictorContactCallbackFun);
+		ph_world->UnFreeze();
+		CPHCharacter::SetRestrictionType(rt);
+		return true;
+	}
+	u16 num_steps=2*iCeil(restrictor_depth/resolve_depth);
+	for(u16 i=0;num_steps>i;++i)
+	{
+		ph_world->Step();
+		if(restrictor_depth<resolve_depth)
+		{
+			RemoveObjectContactCallback(TestRestrictorContactCallbackFun);
+			ph_world->UnFreeze();
+			CPHCharacter::SetRestrictionType(rt);
+			return true;
+		}
+	}
+	RemoveObjectContactCallback(TestRestrictorContactCallbackFun);
+	ph_world->UnFreeze();
+	return false;
 }

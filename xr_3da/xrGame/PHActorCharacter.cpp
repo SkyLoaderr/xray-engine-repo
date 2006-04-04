@@ -22,9 +22,10 @@ CPHActorCharacter::CPHActorCharacter()
 	//m_restrictors_index[CPHCharacter::rtMonsterMedium]	=begin(m_restrictors)+1;
 	
 	{
-		m_restrictors.resize(2);
+		m_restrictors.resize(3);
 		m_restrictors[0]=(xr_new<stalker_restrictor>());
-		m_restrictors[1]=(xr_new<medium_monster_restrictor>());
+		m_restrictors[1]=xr_new<stalker_small_restrictor>();
+		m_restrictors[2]=(xr_new<medium_monster_restrictor>());
 	}
 }
 
@@ -71,6 +72,8 @@ void SPHCharacterRestrictor::Create(CPHCharacter* ch,dVector3 sizes)
 	dGeomUserDataSetPhObject(m_restrictor,(CPHObject*)m_character);
 	switch(m_type) {
 		case CPHCharacter::rtStalker:static_cast<CPHActorCharacter::stalker_restrictor*>(this)->Create(ch,sizes);
+		break;
+		case CPHCharacter::rtStalkerSmall:static_cast<CPHActorCharacter::stalker_small_restrictor*>(this)->Create(ch,sizes);
 		break;
 		case CPHCharacter::rtMonsterMedium:static_cast<CPHActorCharacter::medium_monster_restrictor*>(this)->Create(ch,sizes);
 		break;
