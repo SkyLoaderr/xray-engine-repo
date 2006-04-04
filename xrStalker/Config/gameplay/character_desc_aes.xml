@@ -39,7 +39,7 @@
 <!---------------------------MONOLIT SPECNAZ---------------------->
   <specific_character id="aes_Monolit_specnaz" team_default = "1">
     <name>GENERATE_NAME_stalker</name>
-    <icon x="4" y="2"></icon>
+    <icon x="6" y="2"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>aes_Monolit_specnaz_bio</bio>
 
@@ -98,7 +98,7 @@
 <!---------------------------MONOLIT SNIPER---------------------->
   <specific_character id="aes_Monolit_sniper" team_default = "1">
     <name>GENERATE_NAME_stalker</name>
-    <icon x="24" y="10"></icon>
+    <icon x="22" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>aes_Monolit_sniper_bio</bio>
 
@@ -130,7 +130,7 @@
 <!---------------------------MONOLIT SNIPER GAUSS---------------------->
   <specific_character id="aes_Monolit_sniper_gauss" team_default = "1">
     <name>GENERATE_NAME_stalker</name>
-    <icon x="24" y="10"></icon>
+    <icon x="22" y="10"></icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
 
