@@ -540,7 +540,7 @@
 			[spawn] \n
 			wpn_fort_m1 \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
