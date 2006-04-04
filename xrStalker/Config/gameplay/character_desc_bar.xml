@@ -622,7 +622,7 @@
 	</specific_character>	
 
 	<specific_character id="bar_zastava_commander_1" team_default = "1">
-		<name>Командир заставы</name>
+		<name>Сержант Киценко</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Информация отсутствует.</bio>
