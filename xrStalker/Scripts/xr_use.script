@@ -55,6 +55,10 @@ function notify_on_use(victim, who)
 		if victim:active_sound_count() ~= 0 then
 			return
 		end
+		if xr_abuse.is_abuse(victim) == false then
+			return
+		end
+		
 		-- Мы не согласны говорить
 		if victim:best_enemy() ~= nil then
 			if victim:relation(db.actor) ~= game_object.enemy then

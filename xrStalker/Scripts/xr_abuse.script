@@ -159,3 +159,10 @@ function enable_abuse(npc)
 		t.abuse_manager:enableAbuse()
 	end
 end
+function is_abuse(npc)
+	local t = db.storage[npc:id()].abuse
+	if t == nil then
+		return false
+	end
+	return t.abuse_manager.enable
+end
