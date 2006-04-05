@@ -76,7 +76,7 @@ bool CStalkerAnimationManager::need_look_back				() const
 	if ((m_change_direction_time + need_look_back_time_delay) > Device.dwTimeGlobal)
 		return					(false);
 
-	m_looking_back				= 2;//::Random.randI(2) + 1;
+	m_looking_back				= ::Random.randI(2) + 1;
 	return						(true);
 }
 
