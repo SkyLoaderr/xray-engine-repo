@@ -283,6 +283,7 @@ function se_respawn:create(prob)
 			return false
 		end
 		
+		return false
 		local obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
