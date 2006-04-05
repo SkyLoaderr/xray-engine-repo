@@ -43,7 +43,7 @@ function load_job( sj, gname, type, squad, groups )
 			predicate = function(obj_info)
 			            	return obj_info.name == "agr_nii_commander"
 			            end,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_night_commander",
@@ -52,13 +52,13 @@ function load_job( sj, gname, type, squad, groups )
 			predicate = function(obj_info)
 			            	return obj_info.name == "agr_nii_commander"
 			            end,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_night_commander",
 			idle = 0,
 			prior = 1, state = {1,2},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_alarm_commander",
@@ -80,32 +80,32 @@ function load_job( sj, gname, type, squad, groups )
 		t = { section = "logic@agr_nii_north_gate_walker1",
 			idle = 0,
 			prior = 5, state = {0,1,2,3},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_north_gate_walker2",
 			idle = 0,
 			prior = 5, state = {0,1,2,3},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_north_gate_walker3",
 			idle = 0,
 			prior = 5, state = {0,1,2,3},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		-- пост на восточных воротах
 		t = { section = "logic@agr_nii_east_gate_walker1",
 			idle = 0,
 			prior = 5, state = {0,1,2,3},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_east_gate_walker2",
 			idle = 0,
 			prior = 5, state = {0,1,2,3},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		-- 1-й этаж основного здания
@@ -175,31 +175,31 @@ function load_job( sj, gname, type, squad, groups )
 		t = { section = "logic@agr_nii_day_patrol_walker1",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_day_patrol_walker2",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_day_patrol_walker3",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_day_patrol_walker4",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@agr_nii_day_patrol_walker5",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "agr_nii_sr_building", out_rest = ""
+			in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 		}
 		table.insert(sj, t)
 		-- патрули в тревоге
@@ -207,7 +207,7 @@ function load_job( sj, gname, type, squad, groups )
 			t = { section = "logic@agr_nii_alarm_patrol_walker"..i,
 				idle = 0,
 				prior = 4, state = {3},
-				in_rest = "agr_nii_sr_building", out_rest = ""
+				in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 			}
 			table.insert(sj, t)
 		end
@@ -216,7 +216,7 @@ function load_job( sj, gname, type, squad, groups )
 			t = { section = "logic@agr_nii_rest_walker"..i,
 				idle = 0,
 				prior = 0, state = {0},
-				in_rest = "agr_nii_sr_building", out_rest = ""
+				in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 			}
 			table.insert(sj, t)
 		end
@@ -225,7 +225,7 @@ function load_job( sj, gname, type, squad, groups )
 			t = { section = "logic@agr_nii_sleeper"..i,
 				idle = 0,
 				prior = 0, state = {1,2},
-				in_rest = "agr_nii_sr_building", out_rest = ""
+				in_rest = "agr_nii_sr_building", out_rest = "agr_nii_space_restrictor"
 			}
 			table.insert(sj, t)
 		end
