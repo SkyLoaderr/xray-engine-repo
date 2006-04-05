@@ -23,6 +23,8 @@ void	CBlender_combine::Compile(CBlender_Compile& C)
 		C.r_Sampler_clw		("s_material",		r2_material			);
 		C.r_Sampler_clf		("env_s0",			r2_T_envs0			);
 		C.r_Sampler_clf		("env_s1",			r2_T_envs1			);
+		C.r_Sampler_clf		("sky_s0",			r2_T_sky0			);
+		C.r_Sampler_clf		("sky_s1",			r2_T_sky1			);
 		C.r_End				();
 		break;
 	case 1:	// aa-edge-detection + AA :)
