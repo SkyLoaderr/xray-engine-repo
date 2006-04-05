@@ -23,7 +23,9 @@
 #pragma comment(lib,"x:/MagicFM.LIB")
 #pragma comment(lib,"x:/xrCore.LIB")
 
-extern void	xrCompiler			(LPCSTR name, bool draft_mode);
+extern LPCSTR LEVEL_GRAPH_NAME;
+
+extern void	xrCompiler			(LPCSTR name, bool draft_mode, LPCSTR out_name);
 extern void logThread			(void *dummy);
 extern volatile BOOL bClose;
 extern void test_smooth_path	(LPCSTR name);
@@ -105,8 +107,20 @@ void Startup(LPSTR     lpCmdLine)
 	FS.update_path		(INI_FILE,"$game_config$",GAME_CONFIG);
 	
 	if (strstr(cmd,"-f")) {
-		R_ASSERT3			(can_use_name,"Too big level name",name);
-		xrCompiler			(prjName,!!strstr(cmd,"-draft"));
+		R_ASSERT3		(can_use_name,"Too big level name",name);
+		
+		char			*output = strstr(cmd,"-out");
+		string256		temp0;
+		if (output) {
+			output		+= xr_strlen("-out");
+			sscanf		(output,"%s",temp0);
+			_TrimLeft	(temp0);
+			output		= temp0;
+		}
+		else
+			output		= (pstr)LEVEL_GRAPH_NAME;
+
+		xrCompiler		(prjName,!!strstr(cmd,"-draft"),output);
 	}
 	else
 		if (strstr(cmd,"-g")) {

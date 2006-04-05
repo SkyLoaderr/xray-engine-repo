@@ -60,7 +60,7 @@ void	mem_Optimize	()
 	Msg("* Memory usage: %d M",Memory.mem_usage()/(1024*1024));
 }
 
-void xrCompiler	(LPCSTR name, bool draft_mode)
+void xrCompiler	(LPCSTR name, bool draft_mode, LPCSTR out_name)
 {
 	Phase		("Loading level...");
 	xrLoad		(name,draft_mode);
@@ -95,6 +95,6 @@ void xrCompiler	(LPCSTR name, bool draft_mode)
 //	xrDisplay	();
 
 	Phase("Saving nodes...");
-	xrSaveNodes	(name);
+	xrSaveNodes	(name,out_name);
 	mem_Optimize();
 }

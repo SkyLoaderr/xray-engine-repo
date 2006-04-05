@@ -144,7 +144,7 @@ void	xrMerge			();
 void	xrConvertAndLink();
 void	xrDisplay		();
 //void	xrPalettizeCovers();
-void	xrSaveNodes		(LPCSTR name);
+void	xrSaveNodes		(LPCSTR name, LPCSTR out_name);
 
 // constants
 const int	RCAST_MaxTris	= (2*1024);

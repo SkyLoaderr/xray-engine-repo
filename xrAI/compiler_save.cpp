@@ -2,8 +2,6 @@
 #include "compiler.h"
 #include "guid_generator.h"
 
-extern LPCSTR LEVEL_GRAPH_NAME;
-
 IC BYTE	compress(float c, int max_value)
 {
 	int	cover = iFloor(c*float(max_value)+.5f);
@@ -135,14 +133,14 @@ public:
 	}
 };
 
-void xrSaveNodes(LPCSTR N)
+void xrSaveNodes(LPCSTR N, LPCSTR out_name)
 {
 	Msg				("NS: %d, CNS: %d, ratio: %f%%",sizeof(vertex),sizeof(CLevelGraph::CVertex),100*float(sizeof(CLevelGraph::CVertex))/float(sizeof(vertex)));
 
 	Msg				("Renumbering nodes...");
 
 	string256		fName; 
-	strconcat		(fName,N,LEVEL_GRAPH_NAME);
+	strconcat		(fName,N,out_name);
 
 	IWriter			*fs = FS.w_open(fName);
 
