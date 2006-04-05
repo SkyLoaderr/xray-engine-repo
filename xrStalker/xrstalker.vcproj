@@ -1553,6 +1553,12 @@
 						RelativePath=".\Config\ui\ui_icons_map.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_inventory.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_inventory2.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_mainMenu.xml">
 					</File>
 					<File
