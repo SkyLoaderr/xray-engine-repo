@@ -98,31 +98,31 @@ void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, float left_offset, float up
 //
 void CUIFrameWindow::Draw()
 {
-	if (!m_bTextureVisible)
-		return;
-
-	Frect rect = GetAbsoluteRect();
-	Fvector2 v;
-
-	v.x = rect.x1;
-	v.y = rect.y1;
-	m_UIWndFrame.SetWndPos(v);
-
-	m_UIWndFrame.Draw();
-
-	if(m_bOverLeftTop)
+	if (m_bTextureVisible)
 	{
-		m_UIStaticOverLeftTop.SetPos(rect.left- m_iLeftTopOffset, 
-								rect.top- m_iUpTopOffset);
-	
-		m_UIStaticOverLeftTop.Render();
-	}
-	
-	if(m_bOverLeftBottom)
-	{
-		m_UIStaticOverLeftBottom.SetPos(rect.left- m_iLeftBottomOffset, 
-									rect.bottom - m_iUpBottomOffset);
-		m_UIStaticOverLeftBottom.Render();
+		Frect rect = GetAbsoluteRect();
+		Fvector2 v;
+
+		v.x = rect.x1;
+		v.y = rect.y1;
+		m_UIWndFrame.SetWndPos(v);
+
+		m_UIWndFrame.Draw();
+
+		if(m_bOverLeftTop)
+		{
+			m_UIStaticOverLeftTop.SetPos(rect.left- m_iLeftTopOffset, 
+									rect.top- m_iUpTopOffset);
+		
+			m_UIStaticOverLeftTop.Render();
+		}
+		
+		if(m_bOverLeftBottom)
+		{
+			m_UIStaticOverLeftBottom.SetPos(rect.left- m_iLeftBottomOffset, 
+										rect.bottom - m_iUpBottomOffset);
+			m_UIStaticOverLeftBottom.Render();
+		}
 	}
 
 	inherited::Draw();
