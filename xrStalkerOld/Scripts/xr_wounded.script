@@ -348,6 +348,12 @@ function reset_wounded(npc, scheme, st, section)
 	init_wounded(npc, st.ini, wounded_section, st.wounded, scheme)
 end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
+local wounded_by_state = {
+	[0] = "wounded_heavy",
+	[1] = "wounded_heavy_2",
+	[2] = "wounded_heavy_3"
+}
+
 function init_wounded(npc, ini, section, st, scheme)
 	printf("WOUNDED SECTION [%s][%s]", tostring(section), tostring(scheme))
 
@@ -362,8 +368,9 @@ function init_wounded(npc, ini, section, st, scheme)
 	local def = {}	
 	local npc_community = npc:character_community()
 	if npc_community == "monolith" then
-		def.hp_state			= "10|wounded_heavy@help_heavy"
-		def.hp_state_see		= "10|wounded_heavy@help_heavy"
+		local state = wounded_by_state[math.mod(npc:id(), 3)]
+		def.hp_state			= "10|"..state.."@help_heavy"
+		def.hp_state_see		= "10|"..state.."@help_heavy"
 		def.psy_state			= ""
 		def.hp_victim			= "10|nil"
 		def.hp_cover			= "10|false"
@@ -386,8 +393,9 @@ function init_wounded(npc, ini, section, st, scheme)
 		def.use_medkit			= false
 		
 	else
-		def.hp_state			= "10|wounded_heavy@help_heavy"
-		def.hp_state_see		= "10|wounded_heavy@help_heavy"
+		local state = wounded_by_state[math.mod(npc:id(), 3)]
+		def.hp_state			= "10|"..state.."@help_heavy"
+		def.hp_state_see		= "10|"..state.."@help_heavy"
 		def.psy_state			= "50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20|{=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy"
 		def.hp_victim			= "10|nil"
 		def.hp_cover			= "10|false"
