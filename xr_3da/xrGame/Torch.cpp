@@ -22,6 +22,7 @@ static const float		TORCH_INERTION_CLAMP		= PI_DIV_6;
 static const float		TORCH_INERTION_SPEED_MAX	= 7.5f;
 static const float		TORCH_INERTION_SPEED_MIN	= 0.5f;
 static const Fvector	TORCH_OFFSET				= {-0.2f,+0.1f,-0.3f};
+static const float		OPTIMIZATION_DISTANCE		= 100.f;
 
 static bool stalker_use_dynamic_lights	= false;
 
@@ -291,12 +292,11 @@ void CTorch::UpdateCL			()
 		if (actor)
 			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
 
-		if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(m_range) || GameID() != GAME_SINGLE) {
+		if (H_Parent()->XFORM().c.distance_to_sqr(Device.vCameraPosition)<_sqr(OPTIMIZATION_DISTANCE) || GameID() != GAME_SINGLE) {
 			// near camera
 			smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
 			M.mul_43				(XFORM(),BI.mTransform);
-		}
-		else {
+		} else {
 			// approximately the same
 			M		= H_Parent()->XFORM		();
 			H_Parent()->Center				(M.c);
