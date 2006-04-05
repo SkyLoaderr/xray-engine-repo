@@ -80,10 +80,10 @@
 	</outfit_info_window>
 
     <!-- BELT STATIC BACKGROUND -->
-    <static x="10" y="140" width="1014" height="128">
+    <!--static x="10" y="140" width="1014" height="128">
         <texture> ui\ui_inv_belt</texture>
         <text x="25" y="2" font="graffiti22" r="231" g="153" b="22">ui_inv_belt</text>
-    </static>
+    </static-->
 
 	<!-- Drop button -->
     <drop_button x="230" y="413" width="110" height="60">
