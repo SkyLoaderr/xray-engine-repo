@@ -1854,48 +1854,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_bar_lisiy_talk">
-        <has_info>bar_psih_know_lisiy</has_info>
-        <dont_has_info>bar_psih_find_lisiy</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_bar_lisiy_talk_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_bar_lisiy_talk_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_lisiy_talk_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_bar_lisiy_talk_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <text>bar_bar_lisiy_talk_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>bar_bar_lisiy_talk_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>bar_bar_lisiy_talk_6</text>
-                <give_info>bar_psih_find_lisiy</give_info>
-                <next>7</next>
-            </phrase>
-            <phrase id="7">
-                <text>bar_bar_lisiy_talk_7</text>
-                <next>8</next>
-            </phrase>
-            <phrase id="8">
-                <text>bar_bar_lisiy_talk_8</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_bar_osvedomitel_reward">
         <has_info>bar_get_research_done</has_info>
         <dont_has_info>bar_volkodav_have_reward</dont_has_info>
@@ -2182,81 +2140,6 @@
                 <text>bar_bar_psih_talk_gorbun_0</text>
                 <give_info>bar_psih_know_gorbun</give_info>
                 <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_psih_talk_lisiy">
-        <has_info>bar_psih_find_lisiy</has_info>
-        <has_info>bar_psih_nopain</has_info>
-        <phrase_list>
-            <phrase id="121">
-                <text>bar_bar_psih_talk_lisiy_121</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_psih_talk_lisiy_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_bar_psih_talk_lisiy_1</text>
-                <next>11</next>
-                <next>12</next>
-            </phrase>
-            <phrase id="12">
-                <text>bar_bar_psih_talk_lisiy_12</text>
-                <next>121</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_bar_psih_talk_lisiy_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_bar_psih_talk_lisiy_111</text>
-                <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_bar_psih_talk_lisiy_1111</text>
-                <next>11111</next>
-            </phrase>
-            <phrase id="11111">
-                <text>bar_bar_psih_talk_lisiy_11111</text>
-                <next>11112</next>
-            </phrase>
-            <phrase id="11112">
-                <text>bar_bar_psih_talk_lisiy_11112</text>
-                <give_info>bar_radar_shedule</give_info>
-                <next>11113</next>
-            </phrase>
-            <phrase id="11113">
-                <text>bar_bar_psih_talk_lisiy_11113</text>
-                <action>bar_dialogs.give_ryaboy_flash</action>
-                <next>11114</next>
-            </phrase>
-            <phrase id="11114">
-                <text>bar_bar_psih_talk_lisiy_11114</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>bar_psih_suicide</give_info>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_psih_talk_pain">
-        <dont_has_info>bar_psih_nopain</dont_has_info>
-        <phrase_list>
-            <phrase id="2">
-                <text>bar_bar_psih_talk_pain_2</text>
-            </phrase>
-            <phrase id="1">
-                <text>bar_bar_psih_talk_pain_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_psih_talk_pain_0</text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_bar_psih_talk_pain_3</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -4819,6 +4702,31 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_ecolog_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_ecolog_dialog_21</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <has_info>bar_heli_scene_professor_die</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <dont_has_info>bar_heli_scene_professor_die</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_ecolog_dialog_11</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_arena_manager_game">
         <dont_has_info>bar_arena_start</dont_has_info>
         <phrase_list>
@@ -5060,28 +4968,119 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_ecolog_dialog">
+    <dialog id="bar_bar_lisiy_talk">
+        <has_info>bar_psih_know_lisiy</has_info>
+        <dont_has_info>bar_psih_find_lisiy</dont_has_info>
         <phrase_list>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
+            <phrase id="1">
+                <text>bar_bar_lisiy_talk_1</text>
                 <next>2</next>
             </phrase>
-            <phrase id="21">
-                <text>bar_ecolog_dialog_21</text>
-            </phrase>
             <phrase id="2">
-                <text></text>
-                <has_info>bar_heli_scene_professor_die</has_info>
-                <next>21</next>
+                <text>bar_bar_lisiy_talk_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_lisiy_talk_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>bar_bar_lisiy_talk_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>bar_bar_lisiy_talk_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>bar_bar_lisiy_talk_6</text>
+                <give_info>bar_psih_find_lisiy</give_info>
+                <next>7</next>
+            </phrase>
+            <phrase id="7">
+                <text>bar_bar_lisiy_talk_7</text>
+                <next>8</next>
+            </phrase>
+            <phrase id="8">
+                <text>bar_bar_lisiy_talk_8</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_lisiy_talk_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_psih_talk_pain">
+        <dont_has_info>bar_psih_nopain</dont_has_info>
+        <phrase_list>
+            <phrase id="2">
+                <text>bar_bar_psih_talk_pain_2</text>
             </phrase>
             <phrase id="1">
-                <text></text>
-                <dont_has_info>bar_heli_scene_professor_die</dont_has_info>
+                <text>bar_bar_psih_talk_pain_1</text>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_psih_talk_pain_3</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_psih_talk_pain_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_psih_talk_lisiy">
+        <has_info>bar_psih_find_lisiy</has_info>
+        <has_info>bar_psih_nopain</has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>bar_bar_psih_talk_lisiy_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_bar_psih_talk_lisiy_1</text>
                 <next>11</next>
+                <next>12</next>
+            </phrase>
+            <phrase id="11113">
+                <text>bar_bar_psih_talk_lisiy_11113</text>
+                <next>11114</next>
+            </phrase>
+            <phrase id="11112">
+                <text>bar_bar_psih_talk_lisiy_11112</text>
+                <give_info>bar_radar_shedule</give_info>
+                <next>11113</next>
+            </phrase>
+            <phrase id="11111">
+                <text>bar_bar_psih_talk_lisiy_11111</text>
+                <next>11112</next>
+            </phrase>
+            <phrase id="1111">
+                <text>bar_bar_psih_talk_lisiy_1111</text>
+                <next>11111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_psih_talk_lisiy_111</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="11114">
+                <text>bar_bar_psih_talk_lisiy_11114</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_psih_suicide</give_info>
+            </phrase>
+            <phrase id="12">
+                <text>bar_bar_psih_talk_lisiy_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_bar_psih_talk_lisiy_121</text>
+                <next>11</next>
+                <next>12</next>
             </phrase>
             <phrase id="11">
-                <text>bar_ecolog_dialog_11</text>
+                <text>bar_bar_psih_talk_lisiy_11</text>
+                <next>111</next>
             </phrase>
         </phrase_list>
     </dialog>
