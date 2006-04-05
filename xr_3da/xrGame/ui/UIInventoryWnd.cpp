@@ -50,6 +50,7 @@ CUIInventoryWnd::CUIInventoryWnd()
 	Hide								();	
 
 	UISellAll							= NULL;
+	UIRank								= NULL;
 
 	Init								();
 	SetCurrentItem						(NULL);
@@ -72,21 +73,27 @@ void CUIInventoryWnd::Init()
 										CUIXmlInit::ApplyAlignY(0, alCenter),
 										UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-	AttachChild							(&UIStaticTop);
-	UIStaticTop.Init					("ui\\ui_inv_quick_slots", 0,0,UI_BASE_WIDTH,128);
+	AttachChild(&UIBeltSlots);
+	xml_init.InitStatic(uiXml, "belt_slots", 0, &UIBeltSlots);
+
+	AttachChild(&UIBack);
+	xml_init.InitStatic(uiXml, "back", 0, &UIBack);
+
+//	AttachChild							(&UIStaticTop);
+//	UIStaticTop.Init					("ui\\ui_inv_quick_slots", 0,0,UI_BASE_WIDTH,128);
 	AttachChild							(&UIStaticBottom);
 	UIStaticBottom.Init					("ui\\ui_bottom_background", 0, UI_BASE_HEIGHT-32, UI_BASE_WIDTH,32);
 
-	AttachChild							(&UIStaticBelt);
-	xml_init.InitStatic					(uiXml, "static", 0, &UIStaticBelt);
+//	AttachChild							(&UIStaticBelt);
+//	xml_init.InitStatic					(uiXml, "static", 0, &UIStaticBelt);
 	
 	AttachChild							(&UIBagWnd);
 	xml_init.InitStatic					(uiXml, "bag_static", 0, &UIBagWnd);
 	
-	UIBagWnd.AttachChild				(&UIMoneyWnd);
+	AttachChild							(&UIMoneyWnd);
 	xml_init.InitStatic					(uiXml, "money_static", 0, &UIMoneyWnd);
 
-
+//
 	AttachChild							(&UIDescrWnd);
 	xml_init.InitStatic					(uiXml, "descr_static", 0, &UIDescrWnd);
 
@@ -94,7 +101,7 @@ void CUIInventoryWnd::Init()
 	UIItemInfo.Init						(0, 0, UIDescrWnd.GetWidth(), UIDescrWnd.GetHeight(), INVENTORY_ITEM_XML);
 
 	UIDescrWnd.AttachChild				(&UIDropButton);
-	xml_init.InitButton					(uiXml, "drop_button", 0, &UIDropButton);
+	xml_init.Init3tButton					(uiXml, "drop_button", 0, &UIDropButton);
 	UIDropButton.SetMessageTarget		(this);
 
 	AttachChild							(&UIPersonalWnd);
@@ -112,9 +119,9 @@ void CUIInventoryWnd::Init()
 
 	UIPersonalWnd.AttachChild			(&UIProgressBarRadiation);
 	xml_init.InitProgressBar			(uiXml, "progress_bar_radiation", 0, &UIProgressBarRadiation);
-
+//
 	UIPersonalWnd.AttachChild			(&UIStaticPersonal);
-	UIStaticPersonal.Init				("ui\\ui_inv_personal_over_b", -1, UIPersonalWnd.GetHeight() - 175, 260, 260);
+	UIStaticPersonal.Init				(1, UIPersonalWnd.GetHeight() - 175, 260, 260);
 
 	//информация о персонаже
 	// attributs suit of character (actor)
@@ -137,6 +144,16 @@ void CUIInventoryWnd::Init()
 		UISellAll = xr_new<CUI3tButton>	(); UISellAll->SetAutoDelete(true);
 		CUIXmlInit::Init3tButton		(uiXml, "btn_sell_all", 0, UISellAll);
 		AttachChild						(UISellAll);
+	}
+
+	if (GameID() != GAME_SINGLE){
+		UIRankFrame = xr_new<CUIStatic> (); UIRankFrame->SetAutoDelete(true);
+		UIRank = xr_new<CUIStatic> (); UIRank->SetAutoDelete(true);
+
+		CUIXmlInit::InitStatic(uiXml, "rank", 0, UIRankFrame);
+		CUIXmlInit::InitStatic(uiXml, "rank:pic", 0, UIRank);
+		AttachChild(UIRankFrame);
+		UIRankFrame->AttachChild(UIRank);		
 	}
 
 	m_pUIBagList						= xr_new<CUIDragDropListEx>(); UIBagWnd.AttachChild(m_pUIBagList); m_pUIBagList->SetAutoDelete(true);
@@ -169,7 +186,7 @@ void CUIInventoryWnd::Init()
 
 	AttachChild							(&UIExitButton);
 	xml_init.InitButton					(uiXml, "exit_button", 0, &UIExitButton);
-	
+
 //Load sounds
 
 	XML_NODE* stored_root				= uiXml.GetLocalRoot		();
@@ -306,6 +323,22 @@ void CUIInventoryWnd::Show()
 		if(!pActor) return;
 
 		pActor->SetWeaponHideState(whs_INVENTORY_MENU, TRUE);
+
+		//rank icon		
+		int team = Game().local_player->team;
+		int rank = Game().local_player->rank;
+		string256 _path;		
+		if (GameID() != GAME_DEATHMATCH){
+			if (1==team)
+		        sprintf(_path, "ui_hud_status_green_0%d", rank+1);
+			else
+				sprintf(_path, "ui_hud_status_blue_0%d", rank+1);
+		}
+		else
+		{
+			sprintf(_path, "ui_hud_status_green_0%d", rank+1);
+		}
+		UIRank->InitTexture(_path);
 	}
 
 	SendInfoToActor						("ui_inventory");

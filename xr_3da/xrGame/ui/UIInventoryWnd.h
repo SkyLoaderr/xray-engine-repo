@@ -71,6 +71,11 @@ protected:
 	void					PlaySnd					(eInventorySndAction a);
 	friend class			CUITradeWnd;
 
+    CUIStatic			UIBeltSlots;
+	CUIStatic			UIBack;
+	CUIStatic*			UIRankFrame;
+	CUIStatic*			UIRank;
+
 	CUIStatic			UIBagWnd;
 	CUIStatic			UIMoneyWnd;
 	CUIStatic			UIDescrWnd;
@@ -79,11 +84,11 @@ protected:
 	CUISleepWnd*		UISleepWnd;
 	CUI3tButton*		UISellAll;
 	
-	CUIButton			UIDropButton;
-	CUIButton			UIExitButton;
+	CUI3tButton			UIDropButton;
+	CUI3tButton			UIExitButton;
 
-	CUIStatic			UIStaticTop;
-	CUIStatic			UIStaticBelt;
+//	CUIStatic			UIStaticTop;
+//	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 	CUITimeWnd			UITimeWnd;
 

@@ -14,8 +14,8 @@
 #include "../game_base_space.h"
 
 #define LIST_ITEM_HEIGHT	15
-#define TITLE_INDENT_Y		33
-#define TITLE_INDENT_X		18
+#define TITLE_INDENT_Y		34
+#define TITLE_INDENT_X		132
 
 CUIOutfitInfo::CUIOutfitInfo(){
 	AttachChild(&m_listWnd);

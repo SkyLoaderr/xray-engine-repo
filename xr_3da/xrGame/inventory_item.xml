@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <w>
-	<auto>
+	<!--auto>
 		<auto_static x="210" y="130" width="100" height="20">
 			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_weight</text>
 		</auto_static>
@@ -12,35 +12,39 @@
 		<auto_static x="210" y="170" width="100" height="20">
 			<text align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182">st_condition</text>
 		</auto_static>
-	</auto>
+	</auto-->
 
-	<static_name x="30" y="197" width="300" height="20">
-		<text align="l" x="0" y="0" font="letterica18" r="238" g="155" b="23"complex_mode="0"/>
+	<static_name x="23" y="188" width="185" height="30" stretch="1">
+		<!--texture>ui\ui_debug_red_n_black</texture-->
+		<text font="letterica18" r="238" g="155" b="23" complex_mode="1" align="l" vert_align="c"/>		
 	</static_name>
 
-	<static_weight x="240" y="130" width="90" height="20">
-		<text align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	<static_weight x="23" y="222" width="90" height="20" stretch="1">
+		<!--texture>ui\ui_debug_red_n_black</texture-->
+		<text align="l" x="0" y="0" font="letterica18" r="135" g="128" b="122"/>
 	</static_weight>
 
-	<static_cost x="240" y="150" width="90" height="20">
-		<text align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	<static_cost x="215" y="188" width="110" height="30" stretch="1">
+		<!--texture>ui\ui_debug_red_n_black</texture-->
+		<text font="letterica18" r="238" g="155" b="23" align="c" vert_align="c"/>
 	</static_cost>
 
-	<static_condition x="280" y="170" width="50" height="20">
-		<text align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	<static_condition x="113" y="222" width="95" height="20" stretch="1">
+		<!--texture>ui\ui_debug_red_n_black</texture-->
+		<text align="r" x="0" y="0" font="letterica18" r="135" g="128" b="122">st_condition</text>
 	</static_condition>
 
-	<descr_list x="20" y="230" width="306" height="144" always_show_scroll="0">
+	<descr_list x="24" y="245" width="300" height="130" always_show_scroll="0">
 		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
 
 	<image_static x="150" y="115" width="300" height="160" alignment="c"/>
 	
-    <condition_progress x="10" y="175" length="200" broad="15" horz="1" min="0" max="100" pos="100">
+    <condition_progress x="215" y="227" length="107" broad="15" horz="1" min="0" max="100" pos="100">
 		<min_color r="255" g="0" b="0"/>
 		<max_color r="0" g="255" b="0"/>
-        <texture tile="0" width="120" height="30" length="200" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
-        <background x="0" y="0"  width="120" height="30">ui\ui_mg_progress_efficiency_empty</background>
+        <texture tile="0" width="107" height="30" length="200" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
+        <!--background x="0" y="0"  width="107" height="30">ui\ui_mg_progress_efficiency_empty</background-->
     </condition_progress>
     
     <wpn_params x="0" y="0" width="157" height="70">

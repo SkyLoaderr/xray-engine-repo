@@ -1,31 +1,37 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <w>
+	<belt_slots x="2" y="0" width="1019" height="242">
+		<texture>ui_slots_belt</texture>		
+	</belt_slots>
+	<back x="10" y="243" width="1005" height="483">
+		<texture>ui_inventory_main</texture>
+	</back>
 
-    <dragdrop_belt x="22" y="174" width="972" height="54"
+    <dragdrop_belt x="25" y="168" width="972" height="54"
             cell_width = "54" cell_height="54" rows_num="1" cols_num="18"/>
 
-    <dragdrop_bag x="23" y="36" width="313" height="415"
+    <dragdrop_bag x="30" y="46" width="313" height="415"
             cell_width = "41" cell_height="41" rows_num="10" cols_num="7" 
             unlimited="1" group_similar="1"/>
 
-    <dragdrop_0 x="23" y="14" width="104" height="104"
+    <dragdrop_0 x="35" y="18" width="104" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
             custom_placement="0"/>
 
-    <dragdrop_1 x="168" y="14" width="104" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
+    <dragdrop_1 x="182" y="18" width="156" height="104"
+            cell_width = "52" cell_height="52" rows_num="2" cols_num="3"
             custom_placement="0"/>
 
-    <dragdrop_2 x="313" y="14" width="312" height="104"
+    <dragdrop_2 x="382" y="18" width="312" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="6"
             custom_placement="0"/>
 
-    <dragdrop_3 x="670" y="14" width="104" height="104"
+    <dragdrop_3 x="736" y="18" width="104" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
             custom_placement="0"/>
 
-    <dragdrop_4 x="818" y="14" width="156" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="3"
+    <dragdrop_4 x="882" y="18" width="104" height="104"
+            cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
             custom_placement="0"/>
 
     <dragdrop_outfit x="858" y="314" width="86" height="260" 
@@ -33,16 +39,13 @@
             custom_placement="0"/>
 
 
-    <bag_static x="10" y="260" width="350" height="480">
-		<texture>ui\ui_dg_inventory</texture>
+    <bag_static x="15" y="240" width="350" height="480">		
         <text x="30" y="8" font="graffiti22" r="231" g="153" b="22">ui_inv_bag</text>
     </bag_static>
     
-    <!-- MONEY INDICATOR ... it will be attached to BAG window. 
-			So its cordinates is relative to left up corner of BAG window-->
-    <money_static x="220" y="0" width="117" height="40">
-		<texture>ui\ui_button_05</texture>
-		<text x="20" y="8" font="graffiti22" r="238" g="153" b="26"></text>
+    <money_static x="744" y="559" width="108" height="33" stretch="1">
+		<!--texture>ui\ui_debug_red_n_black</texture-->
+		<text font="graffiti22" r="238" g="153" b="26" align="c" vert_align="c"></text>
     </money_static>
 
     <!-- SLEEP PARAMS WINDOW -->
@@ -57,66 +60,77 @@
     </btn_sell_all>
 
     <!-- DESCRIPTION WINDOW -->
-    <descr_static x="370" y="260" width="335" height="475">
-        <texture> ui\ui_dg_info</texture>
-        <text x="20" y="10" font="graffiti22" r="231" g="153" b="22">ui_inv_description</text>
+    <descr_static x="370" y="253" width="335" height="475">
+        <!--texture> ui\ui_dg_info</texture-->
+        <text x="25" y="0" font="graffiti22" r="238" g="155" b="23">ui_inv_description</text>
     </descr_static>
     
     <!-- CHARACTER WINDOW -->
     <character_frame_window x="730" y="260" width="268" height="460">
-		<texture>ui_frame</texture>        
-        <left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture>
+		<!--texture>ui_frame</texture-->        
+        <!--left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture-->
         <title x="100" y="0" width="240" height="60">
 			<text font="graffiti22" r="231" g="153" b="22">ui_inv_personal</text>
         </title>
     </character_frame_window>
     
     <!-- OUTFIT INFO -->
-    <outfit_info_window x="20" y="36" width="268" height="460">
+    <outfit_info_window x="20" y="33" width="268" height="460">
 		<text font="letterica16" r="240" g="217" b="182"/>
 	</outfit_info_window>
 
     <!-- BELT STATIC BACKGROUND -->
-    <static x="10" y="140" width="1014" height="128">
+    <!--static x="10" y="140" width="1014" height="128">
         <texture> ui\ui_inv_belt</texture>
         <text x="25" y="2" font="graffiti22" r="231" g="153" b="22">ui_inv_belt</text>
-    </static>
+    </static-->
 
 	<!-- Drop button -->
-    <drop_button x="230" y="413" width="110" height="60" hR="255" hB="83" hG="179" highlight_text="1">
-        <texture>ui\ui_cm_drop_over</texture>
+    <drop_button x="230" y="413" width="110" height="60">
+        <texture>ui_inv_btn_drop</texture>
         <text x="0" y="0" font="graffiti22" r="238" g="153" b="26">ui_inv_drop</text>
     </drop_button>
+    
+    <rank x="736" y="272" width="75" height="65">
+		<texture>ui_inventory_rank</texture>
+		<pic x="14" y="17" width="46" height="47" />
+    </rank>
     
 
     <progress_bar_health x="15" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
         <background width="17" height="222" >ui\ui_inv_progress_blood_empty</background>
-    </progress_bar_health>
+    </progress_bar_health>    
 
-    <progress_bar_satiety x="36" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture width="17" height="222" length="222" r="255" g="255" b="0">ui\ui_inv_progress_food</texture>
-        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_food_empty</background>
-    </progress_bar_satiety>
-
-    <progress_bar_psy x="58" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+    <progress_bar_psy x="36" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
         <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_end_empty</background>
     </progress_bar_psy>
 
-    <progress_bar_radiation x="79" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+    <progress_bar_radiation x="58" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="0" g="255" b="255">ui\ui_inv_progress_rad</texture>
         <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_rad_empty</background>
     </progress_bar_radiation>
+    
+    <progress_bar_satiety x="79" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+        <texture width="17" height="222" length="222" r="255" g="255" b="0">ui\ui_inv_progress_food</texture>
+        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_food_empty</background>
+    </progress_bar_satiety>
 
     <time_static x="15" y="730" width="200" height="30">        
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255">ui_inv_time</text>
 	</time_static>
 
 	<!-- Exit button -->
-    <exit_button x="885" y="725" width="110" height="40" hR="255" hB="83" hG="179" highlight_text="1">
-        <texture>ui\ui_button_06</texture>
-        <text align="c" font="graffiti22" r="238" g="153" b="26">ui_inv_exit</text>
+    <exit_button x="870" y="725" width="157" height="48">
+        <texture>ui_button_main02</texture>
+        <text font="graffiti22" r="238" g="153" b="26">ui_inv_exit</text>
+        <text_color>
+			<e r="240" g="217" b="182"/>				
+			<t r="0" g="0" b="0"/>				
+			<d r="135" g="123" b="116"/>
+			<h r="0" g="0" b="0"/>
+		</text_color>
     </exit_button>
 
 	<action_sounds>

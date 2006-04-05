@@ -95,10 +95,10 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	
 	float cond = pInvItem->GetCondition();
 
-	sprintf				(str, "%3.2f", cond);
-	
-	if(UICondition)
-		UICondition->SetText(str);
+	//sprintf				(str, "%3.2f", cond);
+	//
+	//if(UICondition)
+	//	UICondition->SetText(str);
 
 	if(UICondProgresBar){
 		UICondProgresBar->Show				(true);
