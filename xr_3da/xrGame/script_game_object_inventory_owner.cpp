@@ -705,7 +705,7 @@ void CScriptGameObject::remove_restrictions		(LPCSTR out, LPCSTR in)
 //	construct_restriction_vector			(out,temp0);
 //	construct_restriction_vector			(in,temp1);
 
-	monster->movement().restrictions().add_restrictions(out,in);
+	monster->movement().restrictions().remove_restrictions(out,in);
 }
 
 void CScriptGameObject::remove_all_restrictions	()
