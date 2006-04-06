@@ -296,13 +296,19 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	}
 	// enemy
 	HUD().Font().pFontSmall->OutNext	("%senemy",indent);
-	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
-
 	if (inventory().ActiveItem()) {
-		HUD().Font().pFontSmall->OutNext("%s%s%scan kill member : %s",indent,indent,indent,can_kill_member() ? "+" : "-");
-		HUD().Font().pFontSmall->OutNext("%s%s%scan kill enemy  : %s",indent,indent,indent,can_kill_enemy() ? "+" : "-");
-		HUD().Font().pFontSmall->OutNext("%s%s%spick distance   : %f",indent,indent,indent,pick_distance());
-		HUD().Font().pFontSmall->OutNext("%s%s%sfire make sense : %s",indent,indent,indent,fire_make_sense() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%scan kill member : %s",indent,indent,can_kill_member() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%scan kill enemy  : %s",indent,indent,can_kill_enemy() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%spick distance   : %f",indent,indent,pick_distance());
+		HUD().Font().pFontSmall->OutNext("%s%sfire make sense : %s",indent,indent,fire_make_sense() ? "+" : "-");
+	}
+
+	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
+	if (g_Alive()) {
+		CEnemyManager::OBJECTS::const_iterator	I = memory().enemy().objects().begin();
+		CEnemyManager::OBJECTS::const_iterator	E = memory().enemy().objects().end();
+		for ( ; I != E; ++I)
+			HUD().Font().pFontSmall->OutNext	("%s%s%s%s : %s",indent,indent,indent,*(*I)->cName(),memory().visual().visible_now(*I) ? "visible" : "invisible");
 	}
 
 	if (memory().enemy().selected()) {
