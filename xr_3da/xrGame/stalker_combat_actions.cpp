@@ -402,7 +402,8 @@ void CStalkerActionGetReadyToKill::initialize	()
 	object().movement().set_body_state					(m_body_state);
 	object().movement().set_movement_type				(eMovementTypeRun);
 	object().movement().set_mental_state				(eMentalStateDanger);
-	object().sight().setup								(CSightAction(SightManager::eSightTypeCurrentDirection));
+//	object().sight().setup								(CSightAction(SightManager::eSightTypeCurrentDirection));
+	object().sight().setup								(CSightAction(SightManager::eSightTypePathDirection));
 	m_storage->set_property								(eWorldPropertyInCover,false);
 	m_storage->set_property								(eWorldPropertyLookedOut,false);
 	m_storage->set_property								(eWorldPropertyPositionHolded,false);
@@ -457,10 +458,10 @@ void CStalkerActionGetReadyToKill::execute		()
 //		object().movement().set_body_state			(eBodyStateCrouch);
 	}
 
-	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
-		object().sight().setup	(CSightAction(object().memory().enemy().selected(),true));
-	else
-		object().sight().setup	(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
+//	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
+//		object().sight().setup	(CSightAction(object().memory().enemy().selected(),true));
+//	else
+//		object().sight().setup	(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
 	u32									min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
 	float								distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
