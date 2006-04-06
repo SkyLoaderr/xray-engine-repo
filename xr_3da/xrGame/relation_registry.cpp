@@ -188,7 +188,7 @@ void RELATION_REGISTRY::SetCommunityGoodwill 	(CHARACTER_COMMUNITY_INDEX from_co
 
 void RELATION_REGISTRY::ChangeCommunityGoodwill (CHARACTER_COMMUNITY_INDEX from_community, u16 to_character, CHARACTER_GOODWILL delta_goodwill)
 {
-	CHARACTER_GOODWILL gw = GetCommunityGoodwill(from_community, to_character)+ delta_goodwill
+	CHARACTER_GOODWILL gw = GetCommunityGoodwill(from_community, to_character)+ delta_goodwill;
 	SetCommunityGoodwill	(from_community, to_character, gw);
 }
 //////////////////////////////////////////////////////////////////////////
