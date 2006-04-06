@@ -145,21 +145,18 @@ CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 from, u16 to) const
 void RELATION_REGISTRY::SetGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL goodwill)
 {
 	RELATION_DATA& relation_data = relation_registry().registry().objects(from);
-	
-	//персональная благосклонность ограничивается, чтоб можно было с помощью
-	//командной добится нужно отношения
-	clamp(goodwill, -1000, 1000);
+
+	static Ivector2 gw_limits		= pSettings->r_ivector2(ACTIONS_POINTS_SECT, "personal_goodwill_limits");
+	clamp							(goodwill, gw_limits.x, gw_limits.y);
+
 	relation_data.personal[to].SetGoodwill(goodwill);
 }
 
 
 void RELATION_REGISTRY::ChangeGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL delta_goodwill)
 {
-	RELATION_DATA& relation_data = relation_registry().registry().objects(from);
-
-	CHARACTER_GOODWILL new_goodwill = relation_data.personal[to].Goodwill() + delta_goodwill;
-	clamp(new_goodwill, -1000, 1000);
-	relation_data.personal[to].SetGoodwill(new_goodwill);
+	CHARACTER_GOODWILL new_goodwill		= GetGoodwill(from, to)+ delta_goodwill;
+	SetGoodwill							(from, to, new_goodwill);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -182,14 +179,17 @@ CHARACTER_GOODWILL	 RELATION_REGISTRY::GetCommunityGoodwill (CHARACTER_COMMUNITY
 
 void RELATION_REGISTRY::SetCommunityGoodwill 	(CHARACTER_COMMUNITY_INDEX from_community, u16 to_character, CHARACTER_GOODWILL goodwill)
 {
-	RELATION_DATA& relation_data = relation_registry().registry().objects(to_character);
+	static Ivector2 gw_limits		= pSettings->r_ivector2(ACTIONS_POINTS_SECT, "community_goodwill_limits");
+	clamp							(goodwill, gw_limits.x, gw_limits.y);
+	RELATION_DATA& relation_data	= relation_registry().registry().objects(to_character);
+
 	relation_data.communities[from_community].SetGoodwill(goodwill);
 }
 
 void RELATION_REGISTRY::ChangeCommunityGoodwill (CHARACTER_COMMUNITY_INDEX from_community, u16 to_character, CHARACTER_GOODWILL delta_goodwill)
 {
-	RELATION_DATA& relation_data = relation_registry().registry().objects(to_character);
-	relation_data.communities[from_community].SetGoodwill(relation_data.communities[from_community].Goodwill() + delta_goodwill);
+	CHARACTER_GOODWILL gw = GetCommunityGoodwill(from_community, to_character)+ delta_goodwill
+	SetCommunityGoodwill	(from_community, to_character, gw);
 }
 //////////////////////////////////////////////////////////////////////////
 

@@ -48,16 +48,6 @@ void load_attack_goodwill()
 
 void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationAction action)
 {
-/*
-	static CHARACTER_GOODWILL friend_attack_goodwill	= pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_attack_goodwill");
-	static CHARACTER_GOODWILL neutral_attack_goodwill	= pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_attack_goodwill");
-	static CHARACTER_GOODWILL enemy_attack_goodwill		= pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_attack_goodwill");
-
-
-	static CHARACTER_GOODWILL friend_attack_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_attack_reputation");
-	static CHARACTER_GOODWILL neutral_attack_reputation = pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_attack_reputation");
-	static CHARACTER_GOODWILL enemy_attack_reputation	= pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_attack_reputation");
-*/
 	static CHARACTER_GOODWILL friend_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "friend_kill_goodwill");
 	static CHARACTER_GOODWILL neutral_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "neutral_kill_goodwill");
 	static CHARACTER_GOODWILL enemy_kill_goodwill = pSettings->r_s32(ACTIONS_POINTS_SECT, "enemy_kill_goodwill");
