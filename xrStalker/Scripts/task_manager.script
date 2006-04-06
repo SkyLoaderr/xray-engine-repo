@@ -80,10 +80,16 @@ function fill_phrase_table()
 
 	-- начальная установка
 	reward_by_task_id = {}
-	for k,v in pairs(task_info) do
-		v = {}
-	end
-		
+	task_info = {
+			trader  = {},
+			barman  = {},
+			ecolog  = {},
+			dolg    = {},
+			freedom = {}}
+	active_task = {}
+	negative_task = {}
+	task_by_phrase = {}
+	
 	for i=0,n-1 do
 		result, id, value	= task_ini:r_line("list",i,"","")
 		
@@ -757,6 +763,11 @@ function save(p)
 	p:w_u8(table_size)
 	for k,v in pairs(active_task) do
 		p:w_stringZ(v.name)
+		if v.selected_target == nil then
+			p:w_u16(0)
+		else
+			p:w_u16(v.selected_target)
+		end
 	end	
 	
 	--' Сохраняем критерий нежелательности.	
@@ -784,6 +795,7 @@ function load(p)
 		return nil
 	end
 
+	task_table_filled = false
 	fill_phrase_table()
 
 	--' Необходимо вычитать количество заданий, id задания	
@@ -791,15 +803,18 @@ function load(p)
 	local table_size = p:r_u8()
 	for i=1,table_size do
 		local task_desc_id = p:r_stringZ()
+		local selected_target = p:r_u16()
 		local task_desc = pick_task_by_id(task_desc_id)
 		if task_desc ~= nil then
 			--' Добавляем в active_task
 			active_task[task_desc.type] = task_desc
+			if selected_target ~= 0 then
+				active_task[task_desc.type].selected_target = selected_target
+			end
 		else
 			abort("ERROR in loading active_task[%s]", tostring(task_desc_id))
 		end
 	end
-
 	--' Загружаем критерий нежелательности.	
 	table_size = p:r_u8()
 	for i=1,table_size do
@@ -843,7 +858,6 @@ function stats()
 			for k,v in pairs(tbl.target_objects) do
 				local gulag = aa:object(v).gulag
 				if gulag:get_population() > 0 then
-					tbl.selected_target = v
 					return true
 				else
 					return false, "target_population"
@@ -869,7 +883,6 @@ function stats()
 			end
 			local nn = table.getn(avail_obj)
 			if nn > 0 then
-				tbl.selected_target = avail_obj[math.random(nn)]
 				return true
 			else
 				return false, "no_target"
