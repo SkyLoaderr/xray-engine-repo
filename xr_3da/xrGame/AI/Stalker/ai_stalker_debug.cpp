@@ -277,6 +277,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			HUD().Font().pFontSmall->OutNext	("%s%s%stype",indent,indent,indent);
 			HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().sound().sound()->m_power);
 			HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().sound().sound()->m_object ? *memory().sound().sound()->m_object->cName() : "unknown");
+			if (g_Alive() && memory().sound().sound()->m_object)
+				HUD().Font().pFontSmall->OutNext("%s%s%svisible   : %s",indent,indent,indent,memory().visual().visible_now(memory().sound().sound()->m_object) ? "+" : "-");
 		}
 #endif
 		// hit
@@ -287,6 +289,8 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 			HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);
 			HUD().Font().pFontSmall->OutNext	("%s%s%spower     : %f",indent,indent,indent,memory().hit().hit()->m_amount);
 			HUD().Font().pFontSmall->OutNext	("%s%s%sobject    : %s",indent,indent,indent,memory().hit().hit()->m_object ? *memory().hit().hit()->m_object->cName() : "unknown");
+			if (g_Alive() && memory().hit().hit()->m_object)
+				HUD().Font().pFontSmall->OutNext("%s%s%svisible   : %s",indent,indent,indent,memory().visual().visible_now(memory().hit().hit()->m_object) ? "+" : "-");
 		}
 #endif
 	}
@@ -382,8 +386,14 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		HUD().Font().pFontSmall->OutNext	("%s%s%stype      : %s",indent,indent,indent,danger_type(memory().danger().selected()->type()));
 		HUD().Font().pFontSmall->OutNext	("%s%s%stime      : %.3f (%.3f)",indent,indent,indent,float(memory().danger().selected()->time())/1000.f,float(Device.dwTimeGlobal - memory().danger().selected()->time())/1000.f);
 		HUD().Font().pFontSmall->OutNext	("%s%s%sinitiator : %s",indent,indent,indent,*memory().danger().selected()->object()->cName());
-		if (memory().danger().selected()->dependent_object() && !!memory().danger().selected()->dependent_object()->cName())
+		if (g_Alive() && memory().danger().selected()->object())
+			HUD().Font().pFontSmall->OutNext("%s%s%svisible   : %s",indent,indent,indent,memory().visual().visible_now(memory().danger().selected()->object()) ? "+" : "-");
+
+		if (memory().danger().selected()->dependent_object() && !!memory().danger().selected()->dependent_object()->cName()) {
 			HUD().Font().pFontSmall->OutNext("%s%s%sdependent : %s",indent,indent,indent,*memory().danger().selected()->dependent_object()->cName());
+			if (g_Alive())
+				HUD().Font().pFontSmall->OutNext("%s%s%svisible   : %s",indent,indent,indent,memory().visual().visible_now(smart_cast<const CGameObject*>(memory().danger().selected()->dependent_object())) ? "+" : "-");
+		}
 	}
 
 	HUD().Font().pFontSmall->OutNext	("%sanomalies",indent);

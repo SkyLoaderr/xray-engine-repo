@@ -1730,7 +1730,7 @@ bool CPHSimpleCharacter::ChangeRestrictionType(ERestrictionType rt)
 		CPHCharacter::SetRestrictionType(rt);
 		return true;
 	}
-	u16 num_steps=2*iCeil(restrictor_depth/resolve_depth);
+	u16 num_steps=(u16)2*iCeil(restrictor_depth/resolve_depth);
 	for(u16 i=0;num_steps>i;++i)
 	{
 		ph_world->Step();

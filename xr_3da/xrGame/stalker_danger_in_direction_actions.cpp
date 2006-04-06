@@ -107,7 +107,8 @@ void CStalkerActionDangerInDirectionLookOut::initialize							()
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeStand);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().sight().setup						(SightManager::eSightTypeCurrentDirection);
+//	object().sight().setup						(SightManager::eSightTypeCurrentDirection);
+	object().sight().setup						(CSightAction(SightManager::eSightTypePosition,object().memory().danger().selected()->position(),true));
 	object().CObjectHandler::set_goal			(eObjectActionIdle);
 }
 
@@ -151,10 +152,16 @@ void CStalkerActionDangerInDirectionLookAround::execute							()
 	if (!object().memory().danger().selected())
 		return;
 
-	if (fsimilar(object().movement().body_orientation().target.yaw,object().movement().body_orientation().current.yaw))
-		object().sight().setup					(CSightAction(SightManager::eSightTypeCoverLookOver,true));
-	else
-		object().sight().setup					(CSightAction(SightManager::eSightTypeCover,true));
+	CCoverPoint				*point = object().agent_manager().member().member(&object()).cover();
+	if (point) {
+		if (fsimilar(object().movement().body_orientation().target.yaw,object().movement().body_orientation().current.yaw))
+			object().sight().setup				(CSightAction(SightManager::eSightTypeCoverLookOver,true));
+		else
+			object().sight().setup				(CSightAction(SightManager::eSightTypeCover,true));
+	}
+	else {
+		object().sight().setup					(CSightAction(SightManager::eSightTypePosition,object().memory().danger().selected()->position(),true));
+	}
 
 	if (completed())
 		set_property							(eWorldPropertyLookedAround,true);
