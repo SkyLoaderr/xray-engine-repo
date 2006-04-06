@@ -99,8 +99,12 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 			if (standing())
 				return				(animation[6].A[0]);
 
-			if (eMovementTypeWalk == movement.movement_type())
-				return				(animation[6].A[2]);
+			if (eMovementTypeWalk == movement.movement_type()) {
+				if ((body_state == eBodyStateStand) && (slot == 2) && need_look_back())
+					return			(animation[13 + m_looking_back - 1].A[1]);
+				else
+					return			(animation[6].A[2]);
+			}
 
 			if ((body_state == eBodyStateStand) && (slot == 2) && need_look_back())
 				return				(animation[13 + m_looking_back - 1].A[0]);
@@ -177,8 +181,12 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 			if (standing())
 				return				(animation[1].A[0]);
 
-			if (eMovementTypeWalk == movement.movement_type())
-				return				(animation[1].A[2]);
+			if (eMovementTypeWalk == movement.movement_type()) {
+				if ((body_state == eBodyStateStand) && (slot == 2) && need_look_back())
+					return			(animation[13 + m_looking_back - 1].A[1]);
+				else
+					return			(animation[1].A[2]);
+			}
 
 			if ((body_state == eBodyStateStand) && (slot == 2) && need_look_back())
 				return				(animation[13 + m_looking_back - 1].A[0]);
