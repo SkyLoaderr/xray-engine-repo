@@ -41,19 +41,3 @@ void CUICheckButton::InitTexture(){
 	Frect r = m_background.GetE()->GetStaticItem()->GetOriginalRect();
 	CUI3tButton::SetTextX(r.width());	
 }
-
-//void CUICheckButton::OnMouse(float x, float y, EUIMessages mouse_action)
-//{
-//	CUIWindow::OnMouse(x, y, mouse_action);
-//}
-
-//void CUICheckButton::OnMouseDown(bool left_button){
-//	if (left_button)
-//	{
-//		if (m_eButtonState == BUTTON_NORMAL)
-//			m_eButtonState = BUTTON_PUSHED;
-//		else
-//			m_eButtonState = BUTTON_NORMAL;
-//	}
-//	GetMessageTarget()->SendMessage(this, BUTTON_CLICKED, NULL);
-//}

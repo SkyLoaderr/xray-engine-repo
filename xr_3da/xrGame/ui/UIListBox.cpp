@@ -225,7 +225,7 @@ void CUIListBox::SetSelected(CUIWindow* pWnd){
 }
 
 void CUIListBox::SetSelected(u32 uid){
-	SetSelected(GetItemByID(uid));
+	SetSelected(GetItem(uid));
 }
 
 void CUIListBox::SetSelected(LPCSTR txt){
