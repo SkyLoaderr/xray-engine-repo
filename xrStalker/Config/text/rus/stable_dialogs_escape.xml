@@ -726,6 +726,9 @@
     <string id="tutorial_wounded_give_medkit_21">
         <text>Спасибо, брат. Я это не забуду. Я передам Волку, он главный в лагере в деревне. Он тебя отблагодарит. Да, кстати, вот флешка, отдай ее торговцу. Он знает, что с ней делать.</text>
     </string>
+    <string id="tutorial_wounded_give_medkit_211">
+        <text>Хорошо.</text>
+    </string>
     <string id="tutorial_wounded_give_medkit_3">
         <text>Извини, брат, но аптечки нету.</text>
     </string>
