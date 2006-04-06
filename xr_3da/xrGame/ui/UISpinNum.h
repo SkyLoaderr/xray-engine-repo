@@ -28,6 +28,9 @@ public:
 
 protected:
 			void	SetValue();
+	virtual bool	CanPressUp();
+	virtual bool	CanPressDown();
+
 
 
 	int		m_iMax;

@@ -25,10 +25,6 @@ void CUISpinText::AddItem(const char* item){
 	}
 }
 
-//LPCSTR CUISpinText::GetText(){
-//	return m_pLines->GetText();
-//}
-
 void CUISpinText::SetItem(){
 	R_ASSERT(m_curItem != -1);
 	m_pLines->SetText(m_list[m_curItem].c_str());
@@ -63,7 +59,7 @@ bool CUISpinText::IsChanged(){
 }
 
 void CUISpinText::OnBtnUpClick(){	
-	if (m_curItem < (int)m_list.size() - 1)
+	if (CanPressUp())
 	{
 		m_curItem ++;
 		SetItem();
@@ -73,11 +69,19 @@ void CUISpinText::OnBtnUpClick(){
 }
 
 void CUISpinText::OnBtnDownClick(){	
-	if (m_curItem > 0)
+	if (CanPressDown())
 	{
 		m_curItem--;
 		SetItem();
 	}
 
 	CUICustomSpin::OnBtnDownClick();
+}
+
+bool CUISpinText::CanPressUp(){
+	return m_curItem < (int)m_list.size() - 1;
+
+}
+bool CUISpinText::CanPressDown(){
+	return m_curItem > 0;
 }

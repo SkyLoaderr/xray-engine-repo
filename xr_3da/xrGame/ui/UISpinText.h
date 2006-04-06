@@ -19,11 +19,11 @@ public:
 	virtual void	OnBtnUpClick();
 	virtual void	OnBtnDownClick();
 
-
 			void	AddItem(const char* item);
-//			LPCSTR	GetText();
 
 protected:
+	virtual bool	CanPressUp();
+	virtual bool	CanPressDown();
 	void	SetItem();
 	typedef xr_vector<xr_string>			Items;
 	typedef xr_vector<xr_string>::iterator	Items_it;

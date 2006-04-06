@@ -43,7 +43,7 @@ void CUISpinNum::Init(float x, float y, float width, float height){
 }
 
 void CUISpinNum::OnBtnUpClick(){	
-	if (m_iVal + m_iStep <= m_iMax)
+	if (CanPressUp())
 		m_iVal += m_iStep;
 
 	SetValue();
@@ -52,7 +52,7 @@ void CUISpinNum::OnBtnUpClick(){
 }
 
 void CUISpinNum::OnBtnDownClick(){	
-	if (m_iVal - m_iStep >= m_iMin)
+	if (CanPressDown())
 		m_iVal -= m_iStep;
 
 	SetValue();
@@ -65,4 +65,10 @@ void CUISpinNum::SetValue(){
 	m_pLines->SetText(itoa(m_iVal, buff, 10)); 
 }
 
+bool CUISpinNum::CanPressUp(){
+	return m_iVal + m_iStep <= m_iMax;
 
+}
+bool CUISpinNum::CanPressDown(){
+	return m_iVal - m_iStep >= m_iMin;
+}

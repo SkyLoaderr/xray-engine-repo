@@ -34,14 +34,14 @@ CUICustomSpin::CUICustomSpin(){
 	m_pLines->SetTextColor(color_argb(255,235,219,185));
 
 	m_time_begin = 0;
-	m_delay = 500;	
+	m_delay = 500;
+
+	m_textColor[0] = color_argb(255,235,219,185);
+	m_textColor[1] = color_argb(255,100,100,100);
 }
 
 CUICustomSpin::~CUICustomSpin(){
 	xr_delete(m_pLines);
-//	xr_delete(m_pFrameLine);
-//	xr_delete(m_pBtnUp);
-//	xr_delete(m_pBtnDown);
 }
 
 void CUICustomSpin::Init(float x, float y, float width, float height){
@@ -69,13 +69,14 @@ void CUICustomSpin::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = NULL 
 }
 
 void CUICustomSpin::Enable(bool status){
+	CUIWindow::Enable(status);
 	m_pBtnDown->Enable(status);
 	m_pBtnUp->Enable(status);
 
 	if (!status)
-		m_pLines->SetTextColor(color_argb(255,100,100,100));
+		m_pLines->SetTextColor(m_textColor[0]);	// enabled color
 	else
-		m_pLines->SetTextColor(color_argb(255,235,219,185));
+		m_pLines->SetTextColor(m_textColor[1]);	// disabled color
 }
 
 void CUICustomSpin::OnBtnUpClick(){
@@ -94,6 +95,7 @@ void CUICustomSpin::Draw(){
 
 void CUICustomSpin::Update(){
 	CUIWindow::Update();
+    
 	if (CUIButton::BUTTON_PUSHED == m_pBtnUp->GetButtonsState())
 	{		
 		if (0 == m_time_begin){
@@ -128,6 +130,18 @@ void CUICustomSpin::Update(){
 	{
 		m_delay = 500;
 		m_time_begin = 0;
+	}	
+
+	if (IsEnabled()){
+        m_pBtnUp->Enable(CanPressUp());
+		m_pBtnDown->Enable(CanPressDown());
+		m_pLines->SetTextColor(m_textColor[0]);
+	}
+	else
+	{
+		m_pBtnUp->Enable(false);
+		m_pBtnDown->Enable(false);
+		m_pLines->SetTextColor(m_textColor[1]);
 	}
 }
 
@@ -135,3 +149,10 @@ LPCSTR CUICustomSpin::GetText(){
 	return m_pLines->GetText();
 }
 
+void CUICustomSpin::SetTextColor(u32 color){
+	m_textColor[0] = color;
+}
+
+void CUICustomSpin::SetTextColorD(u32 color){
+	m_textColor[1] = color;
+}

@@ -221,6 +221,13 @@ bool CUIXmlInit::InitSpin(CUIXml& xml_doc, const char* path, int index, CUICusto
 	InitWindow(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
 
+	string256 foo;
+
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:e"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:d"),index))
+		pWnd->SetTextColorD(GetARGB(xml_doc,foo,index));
+
 	return true;
 }
 
@@ -938,7 +945,7 @@ bool CUIXmlInit::InitCustomEdit(CUIXml& xml_doc, const char* path, int index, CU
 	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:e"),index))
 		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	
 	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:d"),index))
-		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));
+		pWnd->SetTextColorD(GetARGB(xml_doc,foo,index));
 	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:cursor"),index))
 		pWnd->SetCursorColor(GetARGB(xml_doc,foo,index));
 

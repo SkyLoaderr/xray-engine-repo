@@ -27,15 +27,18 @@ public:
 	virtual void	Update();
 	virtual void	Enable(bool status);
 
-
-
 	// own
 	virtual void	OnBtnUpClick();
 	virtual void	OnBtnDownClick();
 			LPCSTR	GetText();
-	
+
+			void	SetTextColor(u32 color);
+			void	SetTextColorD(u32 color);
 
 protected:
+	virtual bool	CanPressUp()	= 0;
+	virtual bool	CanPressDown()	= 0;
+
 	CUIFrameLineWnd*	m_pFrameLine;
 	CUI3tButton*		m_pBtnUp;
 	CUI3tButton*		m_pBtnDown;
@@ -43,4 +46,6 @@ protected:
 
 	DWORD				m_time_begin;
 	DWORD				m_delay;
+
+	u32 m_textColor[2];
 };
