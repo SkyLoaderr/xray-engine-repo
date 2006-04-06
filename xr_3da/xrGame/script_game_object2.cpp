@@ -36,6 +36,8 @@
 #include "../CameraBase.h"
 #include "ai/stalker/ai_stalker.h"
 #include "car.h"
+#include "movement_manager.h"
+#include "detail_path_manager.h"
 
 void CScriptGameObject::explode	(u32 level_time)
 {
@@ -463,3 +465,20 @@ void CScriptGameObject::debug_planner				(const script_planner *planner)
 	stalker->debug_planner	(planner);
 }
 #endif
+
+u32 CScriptGameObject::location_on_path				(float distance, Fvector *location)
+{
+	if (!location) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : location_on_path -> specify destination location!");
+		return								(u32(-1));
+	}
+
+	CCustomMonster							*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member location_on_path!");
+		return								(u32(-1));
+	}
+
+	VERIFY									(location);
+	return									(monster->movement().detail().location_on_path(monster,distance,*location));
+}

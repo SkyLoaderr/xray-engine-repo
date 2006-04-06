@@ -147,3 +147,32 @@ void CDetailPathManager::on_travel_point_change	(const u32 &previous_travel_poin
 {
 	m_distance_to_target_actual	= false;
 }
+
+u32 CDetailPathManager::location_on_path		(const CGameObject *object, float distance, Fvector &result) const
+{
+	VERIFY						(m_restricted_object);
+	result						= object->Position();
+	u32							vertex_result = object->ai_location().level_vertex_id();
+	if (!actual())
+		return					(vertex_result);
+
+	if (path().empty())
+		return					(vertex_result);
+
+	if (curr_travel_point_index() >= path().size() - 1)
+		return					(vertex_result);
+
+	float						current_distance = 0.f;
+	xr_vector<STravelPathPoint>::const_iterator	I = path().begin() + curr_travel_point_index() + 1;
+	xr_vector<STravelPathPoint>::const_iterator	E = path().end();
+	for ( ; I != E; ++I) {
+		float					next = (*(I - 1)).position.distance_to((*I).position);
+		if (current_distance + next > distance) {
+			result				= (*I).position;
+			return				((*I).vertex_id);
+		}
+	}
+
+	result						= path().back().position;
+	return						(path().back().vertex_id);
+}

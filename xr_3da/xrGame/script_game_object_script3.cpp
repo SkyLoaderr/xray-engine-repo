@@ -263,5 +263,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("sound_prefix",				(LPCSTR (CScriptGameObject::*)() const)(&CScriptGameObject::sound_prefix))
 		.def("sound_prefix",				(void (CScriptGameObject::*)(LPCSTR))(&CScriptGameObject::sound_prefix))
 
+		.def("location_on_path",			&CScriptGameObject::location_on_path)
+
 	;return	(instance);
 }

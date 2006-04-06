@@ -204,6 +204,7 @@ public:
 public:
 			void								on_travel_point_change	(const u32 &previous_travel_point_index);
 	IC		const float							&distance_to_target		();
+			u32									location_on_path		(const CGameObject *object, float distance, Fvector &result) const;
 };
 
 #include "detail_path_manager_inline.h"
