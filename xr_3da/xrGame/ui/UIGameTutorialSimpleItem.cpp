@@ -139,6 +139,7 @@ void CUISequenceSimpleItem::Update			()
 #include "UIPdaWnd.h"
 void CUISequenceSimpleItem::Start()
 {
+	inherited::Start				();
 	m_flags.set					(etiStoredPauseState, Device.Pause());
 	
 	if(m_flags.test(etiNeedPauseOn) && !m_flags.test(etiStoredPauseState)){
@@ -207,6 +208,7 @@ bool CUISequenceSimpleItem::Stop			(bool bForce)
 		if( ui_game_sp->PdaMenu->IsShown() ) 
 			HUD().GetUI()->StartStopMenu			(ui_game_sp->PdaMenu, true);
 	}
+	inherited::Stop				();
 	return true;
 }
 

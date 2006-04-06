@@ -6,6 +6,8 @@
 #include "../object_broker.h"
 #include "../../xr_input.h"
 #include "../xr_level_controller.h"
+#include "../script_engine.h"
+#include "../ai_space.h"
 
 void CUISequenceItem::Load(CUIXml* xml, int idx)
 {
@@ -24,6 +26,25 @@ void CUISequenceItem::Load(CUIXml* xml, int idx)
 		}
 	};
 
+	LPCSTR		str;
+	bool		functor_exists;
+	int			j;
+	int			f_num				= xml->GetNodesNum(xml->GetLocalRoot(),"function_on_start");
+	m_start_lua_functions.resize	(f_num);
+	for(j=0; j<f_num; ++j){
+		str							= xml->Read(xml->GetLocalRoot(), "function_on_start", j, NULL);
+		functor_exists				= ai().script_engine().functor(str ,m_start_lua_functions[j]);
+		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
+	}
+	
+	f_num							= xml->GetNodesNum(xml->GetLocalRoot(),"function_on_stop");
+	m_stop_lua_functions.resize	(f_num);
+	for(j=0; j<f_num; ++j){
+		str							= xml->Read(xml->GetLocalRoot(), "function_on_stop", j, NULL);
+		functor_exists				= ai().script_engine().functor(str ,m_stop_lua_functions[j]);
+		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
+	}
+
 	xml->SetLocalRoot				(_stored_root);
 }
 
@@ -34,6 +55,25 @@ bool CUISequenceItem::AllowKey(int dik)
 		return true;
 	else
 		return false;
+}
+
+void CallFunctions	(xr_vector<luabind::functor<void> >& v)
+{
+	xr_vector<luabind::functor<void> >::iterator it	= v.begin();
+	for(;it!=v.end();++it){
+		if( (*it).is_valid() ) (*it)();
+	}
+}
+
+void CUISequenceItem::Start()
+{
+	CallFunctions(m_start_lua_functions);
+}
+
+bool CUISequenceItem::Stop(bool bForce)
+{
+	CallFunctions(m_stop_lua_functions);
+	return true;
 }
 
 CUISequencer::CUISequencer()

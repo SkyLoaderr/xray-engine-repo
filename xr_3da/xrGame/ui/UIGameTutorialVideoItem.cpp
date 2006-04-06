@@ -114,6 +114,7 @@ void CUISequenceVideoItem::OnRender()
 
 void CUISequenceVideoItem::Start()
 {
+	inherited::Start			();
 	m_flags.set					(etiStoredPauseState, Device.Pause());
 
 	if(m_flags.test(etiNeedPauseOn) && !m_flags.test(etiStoredPauseState)){
@@ -156,5 +157,6 @@ bool CUISequenceVideoItem::Stop	(bool bForce)
 	if(m_flags.test(etiNeedPauseOff) && m_flags.test(etiStoredPauseState))
 		Device.Pause			(TRUE);
 
+	inherited::Stop				();
 	return true;
 }

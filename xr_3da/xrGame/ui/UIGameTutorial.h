@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../script_space.h"
+
 class CUIWindow;
 class CUIStatic;
 class CUISequenceItem;
@@ -54,6 +56,9 @@ protected:
 		etiGrabInput		= (1<<4),
 		eti_last			= 5
 	};
+	xr_vector<luabind::functor<void> >	m_start_lua_functions;
+	xr_vector<luabind::functor<void> >	m_stop_lua_functions;
+
 	Flags32					m_flags;
 	CUISequencer*			m_owner;
 public:
@@ -76,6 +81,7 @@ public:
 
 class CUISequenceSimpleItem: public CUISequenceItem
 {
+	typedef CUISequenceItem	inherited;
 	struct SSubItem{
 		CUIStatic*			m_wnd;
 		float				m_start;
@@ -112,6 +118,7 @@ public:
 
 class CUISequenceVideoItem: public CUISequenceItem
 {
+	typedef CUISequenceItem	inherited;
 	ref_sound				m_sound[2];
 	CTexture*				m_texture;
 	enum {	
