@@ -63,8 +63,12 @@ protected:
 	CUILabel			m_text;
 	CUI3tButton			m_btn;
 	CUIFrameWindow		m_frameWnd;
+
+	u32 m_textColor[2];
 public:
 	CUIListBox	    m_list;
+	void	SetTextColor(u32 color);
+	void	SetTextColorD(u32 color);
 
 protected:	
 	DECLARE_SCRIPT_REGISTER_FUNCTION

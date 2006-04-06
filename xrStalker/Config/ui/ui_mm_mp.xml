@@ -495,7 +495,10 @@
 			<texture>ui_linetextSmall_e</texture>
 		</edit_rate_of_change>
 		
-		<spin_weather x="637" y="40" width="80" height="23">					
+		<spin_weather x="637" y="40" width="80" height="23">	
+			<text_color>
+				<e r="216" g="186" b="140"/>
+			</text_color>				
 		</spin_weather>
 		
 		<spin_friendly_fire x="423" y="40" width="45" height="23">

@@ -1472,8 +1472,6 @@ bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, const char* path, int index, CUIC
 
 	pWnd->SetListLength(xml_doc.ReadAttribInt(path, index, "list_length", 4));
 
-
-
 	InitWindow(xml_doc, path, index, pWnd);
 	InitOptionsItem(xml_doc, path, index, pWnd);
 
@@ -1485,10 +1483,13 @@ bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, const char* path, int index, CUIC
 	strconcat(_path, path, ":list_font_s");	
 	InitFont(xml_doc, _path, index, color, pFont);
 	pWnd->m_list.SetTextColorS(color);
-	strconcat(_path, path, ":font");
-	InitFont(xml_doc, _path, index, color, pFont);
-	pWnd->m_text.SetFont(pFont);
-	pWnd->m_text.SetTextColor(color);
+	
+	string256 foo;
+
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:e"),index))
+		pWnd->SetTextColor(GetARGB(xml_doc,foo,index));	
+	if (xml_doc.NavigateToNode(strconcat(foo,path,":text_color:d"),index))
+		pWnd->SetTextColorD(GetARGB(xml_doc,foo,index));
 
 	return true;
 }
