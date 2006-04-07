@@ -498,6 +498,12 @@
     <string id="bar_bar_barmen_start_1731">
         <text>Так чего же ты прохлаждаешься? Дуй за документами! Без них наше дело не сдвинется с места!</text>
     </string>
+    <string id="bar_bar_barmen_start_181">
+        <text>Чего тебе, Меченый?</text>
+    </string>
+    <string id="bar_bar_barmen_start_182">
+        <text>Привет, Меченый. Время идет, а ты не меняешься, все такой же нелюдимый. Садись выпей, может подобреешь чуток.</text>
+    </string>
     <string id="bar_bar_barmen_start_2">
         <text>Здорово, Меченый. Принес документы с Агропрома?</text>
     </string>
