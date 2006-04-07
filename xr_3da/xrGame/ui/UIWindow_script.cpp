@@ -11,6 +11,7 @@
 #include "UILabel.h"
 #include "UIMMShniaga.h"
 #include "UITextureMaster.h"
+#include "UIScrollView.h"
 
 CFontManager& mngr(){
 	return *(UI()->Font());
@@ -164,6 +165,17 @@ void CUIWindow::script_register(lua_State *L)
 		class_<CUIMMShniaga, CUIWindow>("CUIMMShniaga")
 		.def("SetVisibleMagnifier",			&CUIMMShniaga::SetVisibleMagnifier),
 
+		class_<CUIScrollView, CUIWindow>("CUIScrollView")
+		.def(							constructor<>())
+		.def("AddWindow",				&CUIScrollView::AddWindow)
+		.def("RemoveWindow",			&CUIScrollView::RemoveWindow)
+		.def("Clear",					&CUIScrollView::Clear)
+		.def("ScrollToBegin",			&CUIScrollView::ScrollToBegin)
+		.def("ScrollToEnd",				&CUIScrollView::ScrollToEnd)
+		.def("GetMinScrollPos",			&CUIScrollView::GetMinScrollPos)
+		.def("GetMaxScrollPos",			&CUIScrollView::GetMaxScrollPos)
+		.def("GetCurrentScrollPos",		&CUIScrollView::GetCurrentScrollPos)
+		.def("SetScrollPos",			&CUIScrollView::SetScrollPos),
 
 
 //		.def("",						&CUIFrameLineWnd::)

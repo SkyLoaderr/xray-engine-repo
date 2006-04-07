@@ -1,14 +1,24 @@
 -- run_string alife():create("medkit", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
-function get_inv_name(item)
- return system_ini():r_string(item:section(),"inv_name")
+function cb1 ()
+ local c = 1
 end
 
-function main()
-local itm = db.actor:item_in_slot(2)
-if itm~= nil then
- local name_ = get_inv_name(itm)
-	db.actor:give_game_news(name_, "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+function cb2 ()
+ local c = 1
 end
+
+function cb3 ()
+ local c = 1
+end
+
+function get_task_info(task_id, fmt)
+	local _info = GetTextureInfo(task_id..fmt, "default_task_icon"..fmt)
+	return _info:get_file_name(), _info:get_rect()
+end
+
+function main123()
+	local a,b = get_task_info("kill_gunslinger","_small")
+	db.actor:give_game_news("task state changed", a, b, 0, 0)
 	
 --	db.actor:give_talk_message("trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
 --	db.actor:give_talk_message("Превед", "trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
@@ -24,8 +34,9 @@ function main123()
 	db.actor:give_info_portion(info) 
 end
 
-function main2()
+function main()
 
+game.start_tutorial("part_2_binocular")
 --	db.actor:actor_sleep(0,180)
 	
 	

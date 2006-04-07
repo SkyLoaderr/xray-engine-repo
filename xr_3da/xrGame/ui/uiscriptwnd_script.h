@@ -10,6 +10,10 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 	static bool OnKeyboard_static(inherited* ptr, int dik, EUIMessages keyboard_action)
 	{ return ptr->self_type::inherited::OnKeyboard(dik,keyboard_action );}
 
+	virtual void Update()
+	{ call_member<void>(this,"Update");}
+	static void Update_static(inherited* ptr)
+	{ ptr->self_type::inherited::Update();}
 };
 
 typedef CWrapperBase<CUIDialogWndEx> WrapType;

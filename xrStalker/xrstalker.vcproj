@@ -1495,6 +1495,9 @@
 					RelativePath=".\Config\ui\trade.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_game_over.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_videoplayer.xml">
 				</File>
 				<File
@@ -2640,6 +2643,9 @@
 				Filter="">
 				<File
 					RelativePath=".\scripts\ui_base_dialog.script">
+				</File>
+				<File
+					RelativePath=".\Scripts\ui_game_over.script">
 				</File>
 				<File
 					RelativePath=".\scripts\ui_load_dialog.script">

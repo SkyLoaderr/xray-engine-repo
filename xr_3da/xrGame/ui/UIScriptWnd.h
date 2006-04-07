@@ -31,6 +31,7 @@ public:
 	virtual						~CUIDialogWndEx		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &functor, const luabind::object &object);
+	virtual void				Update				();
 	virtual bool				OnKeyboard			(int dik, EUIMessages keyboard_action);
 
 template<typename T>

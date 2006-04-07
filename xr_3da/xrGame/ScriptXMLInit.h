@@ -27,6 +27,7 @@ class CUIMapList;
 class CUITrackBar;
 class CUIMapInfo;
 class CUIMMShniaga;
+class CUIScrollView;
 
 class CScriptXmlInit {
 public:
@@ -62,7 +63,7 @@ public:
 	CUIEditBox*			InitCDkey(LPCSTR path, CUIWindow* parent);
 	CUIMMShniaga*		InitMMShniaga(LPCSTR path, CUIWindow* parent);
 	CUIWindow*			InitKeyBinding(LPCSTR path, CUIWindow* parent);
-
+	CUIScrollView*		InitScrollView(LPCSTR path, CUIWindow* parent);
 protected:
 	CUIXml	m_xml;
 };

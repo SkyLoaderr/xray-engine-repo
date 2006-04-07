@@ -89,3 +89,7 @@ bool CUIDialogWndEx::OnKeyboard(int dik, EUIMessages keyboard_action)
 	inherited::OnKeyboard(dik,keyboard_action);
 	return true;
 }
+void CUIDialogWndEx::Update()
+{
+	inherited::Update();
+}

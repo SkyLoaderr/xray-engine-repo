@@ -199,6 +199,27 @@ bool CUIScrollView::OnMouse(float x, float y, EUIMessages mouse_action)
 	return false;
 }
 
+int CUIScrollView::GetMinScrollPos()
+{
+	return m_VScrollBar->GetMinRange();
+}
+
+int CUIScrollView::GetMaxScrollPos()
+{
+	return m_VScrollBar->GetMaxRange();
+}
+int CUIScrollView::GetCurrentScrollPos()
+{
+	return m_VScrollBar->GetMinRange();
+}
+
+void CUIScrollView::SetScrollPos(int value)
+{
+	clamp(value,GetMinScrollPos(),GetMaxScrollPos());
+	m_VScrollBar->SetScrollPos(value);
+	OnScrollV();
+}
+
 void CUIScrollView::ScrollToBegin		()
 {
 	if(m_flags.test	(eNeedRecalc) )

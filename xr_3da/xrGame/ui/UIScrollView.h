@@ -48,6 +48,10 @@ public:
 	CUIWindow*		GetSelected			();
 	CUIWindow*		GetSelectedLast		();
 			void	ForceUpdate			();
+			int		GetMinScrollPos		();
+			int		GetMaxScrollPos		();
+			int		GetCurrentScrollPos	();
+			void	SetScrollPos		(int value);
 };
 
 #define ADD_TEXT_TO_VIEW3(txt,st,view)		st = xr_new<CUIStatic>();						\

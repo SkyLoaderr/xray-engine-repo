@@ -34,6 +34,7 @@ export_class &script_register_ui_window2(export_class &instance)
 		.def("GetListWndEx",	(CUIListWndEx* (BaseType::*)(LPCSTR)) BaseType::GetControl<CUIListWndEx>)
 
 		.def("OnKeyboard",		&BaseType::OnKeyboard, &WrapType::OnKeyboard_static)
+		.def("Update",			&BaseType::Update, &WrapType::Update_static)
 
 	;return	(instance);
 }
