@@ -259,7 +259,7 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_stalker_guard2" team_default = "1">
@@ -282,7 +282,7 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<!---------------------------BAR OSVEDOMITEL---------------------->
@@ -468,7 +468,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_arena_savage" team_default = "1">
@@ -491,7 +491,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<!---------------------------DOLG LEADER---------------------->
@@ -959,7 +959,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_dolg_sniper_default2" team_default = "1">
@@ -988,7 +988,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_dolg_sniper_default3" team_default = "1">
@@ -1017,7 +1017,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		</specific_character>
 
 <!---------------------------DOLG SPECNAZ---------------------->
@@ -1046,7 +1046,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>		
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1077,7 +1077,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>		
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1108,7 +1108,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>		
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1137,7 +1137,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>		
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 	
@@ -1226,7 +1226,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default2" team_default = "1">
@@ -1252,7 +1252,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
 
@@ -1281,7 +1281,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default4" team_default = "1">
@@ -1307,7 +1307,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default5" team_default = "1">
@@ -1333,7 +1333,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default6" team_default = "1">
@@ -1361,7 +1361,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default9" team_default = "1">
@@ -1387,7 +1387,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_stalker_novice_default10" team_default = "1">
@@ -1413,7 +1413,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 <!---------------------------STALKER GENERAL---------------------->
@@ -1443,7 +1443,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
 
@@ -1473,7 +1473,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 </specific_character>
 
 <specific_character id="bar_stalker_general_default3" team_default = "1">
@@ -1502,7 +1502,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 </specific_character>
 
 	<specific_character id="bar_stalker_general_default4" team_default = "1">
@@ -1531,7 +1531,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="bar_stalker_general_default5" team_default = "1">
@@ -1560,7 +1560,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 <!---------------------------STALKER VETERAN---------------------->
@@ -1590,7 +1590,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
 
@@ -1620,7 +1620,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
 
@@ -1650,7 +1650,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
 
@@ -1680,7 +1680,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
 
@@ -1710,7 +1710,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
 
@@ -1737,7 +1737,7 @@
 			ammo_9x19_pbp = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1761,7 +1761,7 @@
 			ammo_9x19_pbp = 1 \n
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1790,7 +1790,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1817,7 +1817,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1844,7 +1844,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 		
@@ -1871,7 +1871,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 
@@ -1897,7 +1897,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
 	
