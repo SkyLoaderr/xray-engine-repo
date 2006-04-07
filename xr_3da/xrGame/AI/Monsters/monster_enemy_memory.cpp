@@ -5,6 +5,7 @@
 #include "../../visual_memory_manager.h"
 #include "../../enemy_manager.h"
 #include "../../ai_object_location.h"
+#include "monster_home.h"
 
 CMonsterEnemyMemory::CMonsterEnemyMemory()
 {
@@ -120,10 +121,24 @@ ENEMIES_MAP_IT CMonsterEnemyMemory::find_best_enemy()
 	ENEMIES_MAP_IT	it = m_objects.end();
 	float			max_value = 0.f;
 
+	// find best at home first
 	for (ENEMIES_MAP_IT I = m_objects.begin(); I != m_objects.end(); I++) {
+		if (!monster->Home->at_home(I->second.position)) continue;
 		if (I->second.danger > max_value) {
 			max_value = I->second.danger;
 			it = I;
+		}
+	}
+
+	// there is no best enemies at home
+	if (it == m_objects.end()) {
+		// find any
+		max_value = 0.f;
+		for (ENEMIES_MAP_IT I = m_objects.begin(); I != m_objects.end(); I++) {
+			if (I->second.danger > max_value) {
+				max_value = I->second.danger;
+				it = I;
+			}
 		}
 	}
 
@@ -139,3 +154,4 @@ void CMonsterEnemyMemory::remove_links(CObject *O)
 		}
 	}
 }
+
