@@ -118,16 +118,18 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 {
 	CPHDestroyable::Init();//this zerows colbacks !!;
+	CKinematicsAnimated*ka= smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual());
 	if(!m_EntityAlife.g_Alive())
 	{
-		CKinematicsAnimated*ka= smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual());
+		
 		if(m_eType==etStalker)
 			ka->PlayCycle("waunded_1_idle_0");
 		else
 			ka->PlayCycle("death_init");
-		ka->CalculateBones_Invalidate();
-		ka->CalculateBones();
+
 	}
+	ka->CalculateBones_Invalidate();
+	ka->CalculateBones();
 	CPHSkeleton::Spawn(e);
 	if(m_eType!=etActor)
 	{

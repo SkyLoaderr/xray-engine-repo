@@ -643,9 +643,17 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	
 	Fvector tangent;
 	tangent.crossproduct(Fvector().set(0,1,0),to_path_point);
+
 	VERIFY(!fis_zero(tangent.magnitude()));
 	tangent.normalize();
-	if(tangent.dotproduct(dir)<0.f)tangent.invert();
+	if(dir.square_magnitude()>EPS)
+	{
+		if(tangent.dotproduct(dir)<0.f)tangent.invert();
+	}
+	else
+	{
+		if(tangent.dotproduct(corrected_path_dir)<0.f)tangent.invert();
+	}
 
 	if(mag>FootRadius())to_path_point.mul(precesition);
 	else to_path_point.mul(mag*precesition);
