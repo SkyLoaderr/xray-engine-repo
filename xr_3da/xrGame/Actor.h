@@ -661,7 +661,6 @@ private:
 	// DEBUG INFO
 protected:
 		CStatGraph				*pStatGraph;
-		u32						m_dwStartKickTime;
 
 		shared_str				m_DefaultVisualOutfit;
 

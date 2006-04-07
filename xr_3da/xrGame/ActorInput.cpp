@@ -75,19 +75,16 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		if(inventory().Action(cmd, CMD_START))					return;
 
 	switch(cmd){
+/*	
 	case kACCEL:	mstate_wishful |= mcAccel;					break;
 	case kL_STRAFE:	mstate_wishful |= mcLStrafe;				break;
 	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
-	case kL_LOOKOUT:
-					mstate_wishful |= mcLLookout;				
-//					mstate_wishful &= ~mcAnyMove; 
-					break;
-	case kR_LOOKOUT:
-					mstate_wishful |= mcRLookout;				
-//					mstate_wishful &= ~mcAnyMove; 
-					break;
+	case kL_LOOKOUT:mstate_wishful |= mcLLookout;				break;
+	case kR_LOOKOUT:mstate_wishful |= mcRLookout;				break;
 	case kFWD:		mstate_wishful |= mcFwd;					break;
 	case kBACK:		mstate_wishful |= mcBack;					break;
+	case kCROUCH:	mstate_wishful |= mcCrouch;					break;
+*/
 	case kJUMP:		
 		{
 			mstate_wishful |= mcJump;
@@ -97,7 +94,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 				u_EventSend(P);
 			}
 		}break;
-	case kCROUCH:	mstate_wishful |= mcCrouch;					break;
 	case kCROUCH_TOGGLE:	
 		{
 			if (mstate_wishful & mcCrouch)
@@ -149,30 +145,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		b_DropActivated			= TRUE;
 		f_DropPower				= 0;
 		break;
-		//-----------------------------------------------------
-		/*
-	case kHyperJump:
-		{
-			Fvector pos	= Device.vCameraPosition;
-			Fvector dir = Device.vCameraDirection;
-
-			collide::rq_result result;
-			BOOL reach_wall = Level().ObjectSpace.RayPick(pos, dir, 100.0f, 
-				collide::rqtBoth, result,Level().CurrentControlEntity()) && !result.O;
-			////////////////////////////////////
-			if (!reach_wall || result.range < 1) break;
-
-			dir.mul(result.range-0.5f);
-			Fmatrix	M = Level().CurrentControlEntity()->XFORM();
-			M.translate_add(dir);
-			Level().CurrentControlEntity()->ForceTransform(M);
-		}break;
-		*/
-	case kHyperKick:
-		{
-			m_dwStartKickTime = Level().timeServer();
-		}break;
-		//-----------------------------------------------------
 	case kNEXT_SLOT:
 		{
 			OnNextWeaponSlot();
@@ -233,43 +205,17 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 
 		switch(cmd)
 		{
-		case kACCEL:	mstate_wishful &=~mcAccel;		break;
+/*
+		case kACCEL:	mstate_wishful &=~mcAccel;		break;		
 		case kL_STRAFE:	mstate_wishful &=~mcLStrafe;	break;
 		case kR_STRAFE:	mstate_wishful &=~mcRStrafe;	break;
 		case kL_LOOKOUT:mstate_wishful &=~mcLLookout;	break;
 		case kR_LOOKOUT:mstate_wishful &=~mcRLookout;	break;
 		case kFWD:		mstate_wishful &=~mcFwd;		break;
 		case kBACK:		mstate_wishful &=~mcBack;		break;
-		case kJUMP:		mstate_wishful &=~mcJump;		break;
 		case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
-
-		case kHyperKick:
-			{
-				u32 FullKickTime = Level().timeServer() - m_dwStartKickTime;
-				
-				collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-				CActor* pActor = smart_cast<CActor*>(RQ.O);
-				if (!pActor || pActor->g_Alive()) break;
-
-				Fvector original_dir, position_in_bone_space;
-				original_dir.set(0, 1, 0);
-				position_in_bone_space.set(0, 1, 0);				
-
-				NET_Packet		P;
-				SHit	HS;				
-				HS.GenHeader(GE_HIT,RQ.O->ID());				//				CGameObject::u_EventGen	(P,GE_HIT,RQ.O->ID());
-				HS.whoID  =ID();								//				P.w_u16			(ID());
-				HS.weaponID = ID();								//				P.w_u16			(ID());
-				HS.dir = original_dir;							//				P.w_dir			(original_dir);
-				HS.power = 0.0f;								//				P.w_float		(0);
-				HS.boneID = (s16)RQ.element;					//				P.w_s16			((s16)RQ.element);
-				HS.p_in_bone_space = position_in_bone_space;	//				P.w_vec3		(position_in_bone_space);
-				HS.impulse = float(FullKickTime)*10;			//				P.w_float		(float(FullKickTime)*10);
-				HS.hit_type = (ALife::eHitTypeStrike);			//				P.w_u16			(2);
-				HS.Write_Packet(P);
-
-				Level().Send(P);
-			}break;
+*/
+		case kJUMP:		mstate_wishful &=~mcJump;		break;
 		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().Phase()) g_PerformDrop();				break;
 		}
 	}
@@ -277,10 +223,10 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 
 void CActor::IR_OnKeyboardHold(int cmd)
 {
-	if (Remote() || !g_Alive())		return;
+	if (Remote() || !g_Alive())					return;
 	if (conditions().IsSleeping())				return;
 	if (m_input_external_handler && !m_input_external_handler->authorized(cmd))	return;
-	if (IsTalking())				return;
+	if (IsTalking())							return;
 
 	if(m_holder)
 	{
@@ -293,13 +239,24 @@ void CActor::IR_OnKeyboardHold(int cmd)
 	{
 	case kUP:
 	case kDOWN: 
-		cam_Active()->Move(cmd, 0, LookFactor); break;
+		cam_Active()->Move(cmd, 0, LookFactor);									break;
 	case kCAM_ZOOM_IN: 
 	case kCAM_ZOOM_OUT: 
-		cam_Active()->Move(cmd); break;
+		cam_Active()->Move(cmd);												break;
 	case kLEFT:
 	case kRIGHT:
-		if (eacFreeLook!=cam_active) cam_Active()->Move(cmd, 0, LookFactor); break;
+		if (eacFreeLook!=cam_active) cam_Active()->Move(cmd, 0, LookFactor);	break;
+
+	case kACCEL:	mstate_wishful |= mcAccel;									break;
+	case kL_STRAFE:	mstate_wishful |= mcLStrafe;								break;
+	case kR_STRAFE:	mstate_wishful |= mcRStrafe;								break;
+	case kL_LOOKOUT:mstate_wishful |= mcLLookout;								break;
+	case kR_LOOKOUT:mstate_wishful |= mcRLookout;								break;
+	case kFWD:		mstate_wishful |= mcFwd;									break;
+	case kBACK:		mstate_wishful |= mcBack;									break;
+	case kCROUCH:	mstate_wishful |= mcCrouch;									break;
+
+
 	}
 }
 

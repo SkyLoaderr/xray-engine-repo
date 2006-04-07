@@ -1108,16 +1108,15 @@ void CActor::shedule_Update	(u32 DT)
 	UpdateArtefactsOnBelt						();
 	m_pPhysics_support->in_shedule_Update		(DT);
 	Check_for_AutoPickUp						();
-/*
-	if (GameID() == GAME_SINGLE)
-	{
-		Fvector2 pos2d;
-		pos2d.set(Position().x, Position().z);
-		CLevelFogOfWar* F = Level().FogOfWarMngr().GetFogOfWar(Level().name());
-		if(F)
-			F->Open(pos2d);
-	};
-*/
+
+	mstate_wishful &=~mcAccel;
+	mstate_wishful &=~mcLStrafe;
+	mstate_wishful &=~mcRStrafe;
+	mstate_wishful &=~mcLLookout;
+	mstate_wishful &=~mcRLookout;
+	mstate_wishful &=~mcFwd;
+	mstate_wishful &=~mcBack;
+	mstate_wishful &=~mcCrouch;
 };
 
 void CActor::renderable_Render	()
