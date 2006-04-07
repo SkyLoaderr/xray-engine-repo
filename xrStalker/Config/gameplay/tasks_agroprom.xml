@@ -59,9 +59,7 @@
 		<objective>
 			<text>agroprom_find_gunslinger_cache_1</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type hint="agr_find_gunslinger_cache_hint">green_location</map_location_type>
-            <object_story_id>agr_gunslinger_collector_entrance</object_story_id>
-			<infoportion_complete>agr_find_gunslinger_cache_found</infoportion_complete>
+            <infoportion_complete>agr_find_gunslinger_cache_found</infoportion_complete>
 		</objective>
 		<objective>
 			<text>agroprom_find_gunslinger_cache_2</text>
