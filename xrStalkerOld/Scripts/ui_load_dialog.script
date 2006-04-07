@@ -115,6 +115,17 @@ function file_exist(fname)
 	end	
 end
 
+function AddTimeDigit(str, dig)
+	if (dig > 9) then
+		str = str .. dig
+	else
+		str = str .. "0" .. dig
+	end
+	
+	return str
+	
+end
+
 function file_data(fname)
 	local f = getFS();
 	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly) , fname .. ".sav")
@@ -127,7 +138,22 @@ function file_data(fname)
 		local y,m,d,h,min,sec,ms = 0,0,0,0,0,0,0
 		y,m,d,h,min,sec,ms = sg:game_time():get(y,m,d,h,min,sec,ms)
 		
-		local date_time = string.format("[%d:%d:%d %d]",m,d,h,min,y)
+		
+		local date_time = ""
+		
+		date_time = AddTimeDigit(date_time, h)
+		date_time = date_time .. ":"
+		date_time = AddTimeDigit(date_time, min)		
+		date_time = date_time .. " "
+		date_time = AddTimeDigit(date_time, m)
+		date_time = date_time .. "/"
+		date_time = AddTimeDigit(date_time, d)
+		date_time = date_time .. "/"
+		
+		date_time = date_time .. y
+		
+		
+		--string.format("[%d:%d:%d %d]",m,d,h,min,y)
 		local health = string.format("\\nhealth %d%s",sg:actor_health()*100,"%")
 		
 		return "level: " .. sg:level_name() .. "\\ntime: " .. date_time .. health
@@ -139,7 +165,7 @@ end
 function load_dialog:OnListItemClicked()
 	local list_box = self:GetListWnd("list_window")
 	local picture  = self:GetStatic("static_pict")	
-	local item = list_box:GetItem(list_box:GetFocusedItem())
+	local item = list_box:GetItem(list_box:GetSelectedItem())
 	
 	local item_text = item:GetText()
 	self.file_caption:SetText(item_text)
@@ -213,6 +239,8 @@ function load_dialog:OnButton_del_clicked()
 	end
 	
 	list:RemoveItem(index)
+	
+	self:OnListItemClicked()
 
 end
 
