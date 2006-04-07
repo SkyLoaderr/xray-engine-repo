@@ -256,25 +256,16 @@
         <text>Мне не о чем с тобой говорить.</text>
     </string>
     <string id="gar_hellcar_start_3111">
-        <text>Спасибо, друг, ты нам очень помог. Когда у меня появится свободное время, я с удовольствием помогу тебе в твоем деле. Такие люди как ты, просто так не ходят. Кроме того я достаточно много знаю, могу поделиться информацией, а могу и просто заплатить.</text>
+        <text>Спасибо, друг, ты нам очень помог. Деньгами возьмешь благодарность?</text>
     </string>
     <string id="gar_hellcar_start_31111">
-        <text>Я предпочитаю деньги.</text>
+        <text>Возьму.</text>
     </string>
     <string id="gar_hellcar_start_311111">
         <text>Держи, на поправку здоровья.</text>
     </string>
     <string id="gar_hellcar_start_3111111">
         <text>Спасибо.</text>
-    </string>
-    <string id="gar_hellcar_start_31112">
-        <text>Нет, спасибо, мне ничего не надо.</text>
-    </string>
-    <string id="gar_hellcar_start_311121">
-        <text>Как знаешь.</text>
-    </string>
-    <string id="gar_hellcar_start_3111211">
-        <text>Бывай, старик.</text>
     </string>
     <string id="gar_hellcar_start_31113">
         <text>Расскажи о себе.</text>
@@ -314,6 +305,9 @@
     </string>
     <string id="gar_hellcar_start_31115">
         <text>Спасибо, мне от тебя ничего не надо.</text>
+    </string>
+    <string id="gar_hellcar_start_3112">
+        <text>Я достаточно много знаю, могу поделиться информацией.</text>
     </string>
     <string id="gar_hellcar_start_41">
         <text>Дело еще не сделано, болтать будем потом.</text>
