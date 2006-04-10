@@ -41,14 +41,14 @@ function action_no_weapon:switch_state( actor )
 	local state = self.state
 	
 	if state == state_outside or state == state_nowhere then
-		if self.object:inside( actor:position() ) then
+		if self.object:inside( actor:center() ) then
 			self:zone_enter()
 			return
 		end
 	end
 	
 	if state == state_inside or state == state_nowhere then
-		if not self.object:inside( actor:position() ) then
+		if not self.object:inside( actor:center() ) then
 			self:zone_leave()
 			return
 		end
