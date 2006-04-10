@@ -335,20 +335,10 @@
 			<article>mil_hunters_task_descr2</article>
 		</objective>
 		<objective>
-			<text>mil_hunters_phase1</text>
-			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type hint="mil_hunters_hint1">blue_location</map_location_type>
-            <object_story_id>Mil_Hunter3</object_story_id>
-            <infoportion_complete>mil_hunt_ready</infoportion_complete>
-            <infoportion_fail>mil_ugrumy_dead</infoportion_fail>
-            <infoportion_set_complete>mil_ugrumy_found</infoportion_set_complete>
-		</objective>
-		<objective>
 			<text>mil_hunters_phase2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type hint="mil_watertower_hint">green_location</map_location_type>
             <object_story_id>Mil_WaterTower</object_story_id>
-            <map_location_hidden>1</map_location_hidden>
 			<infoportion_complete>mil_controller_dead</infoportion_complete>
             <infoportion_fail>mil_miser_task_failed</infoportion_fail>
 		</objective>
