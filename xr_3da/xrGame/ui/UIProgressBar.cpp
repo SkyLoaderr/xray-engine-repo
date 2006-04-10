@@ -43,10 +43,10 @@ void CUIProgressBar::SetProgressTexture(LPCSTR tex_name,
 {
 	m_iProgressLength			= progress_length;
 
-//	CUITextureMaster::InitTexture(tex_name, "hud\\default", &m_UIProgressItem);
-//	m_UIProgressItem.SetPos(x,y);
+	CUITextureMaster::InitTexture(tex_name, "hud\\default", &m_UIProgressItem);
+	m_UIProgressItem.SetPos(x,y);
 	
-	m_UIProgressItem.Init		(tex_name, "hud\\default", x, y, alNone);
+//	m_UIProgressItem.Init		(tex_name, "hud\\default", x, y, alNone);
 	m_UIProgressItem.SetColor	(color);
 
 	if (!fis_zero(width) && !fis_zero(height))

@@ -96,25 +96,25 @@
 		<pic x="14" y="17" width="46" height="47" />
     </rank>
     
+    <progress_background x="739" y="340" width="59" height="215">
+		<texture>ui_scale_three</texture>
+    </progress_background>   
 
-    <progress_bar_health x="15" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture width="17" height="222" length="222" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
-        <background width="17" height="222" >ui\ui_inv_progress_blood_empty</background>
+    <progress_bar_health x="8" y="22" width="110" height="10" length="177" horz="0" min="0" max="100" pos="0">
+		<texture>ui_scale_red</texture>
     </progress_bar_health>    
 
-    <progress_bar_psy x="36" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture width="17" height="222" length="222" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
-        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_end_empty</background>
-    </progress_bar_psy>
+    <progress_bar_psy x="26" y="22" width="110" height="10" length="177" horz="0" min="0" max="100" pos="0">
+        <texture>ui_scale_blue</texture>
+	</progress_bar_psy>
 
-    <progress_bar_radiation x="58" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture width="17" height="222" length="222" r="0" g="255" b="255">ui\ui_inv_progress_rad</texture>
-        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_rad_empty</background>
+    <progress_bar_radiation x="45" y="22" width="110" height="10" length="177" horz="0" min="0" max="100" pos="0">
+        <texture>ui_scale_yellow</texture>
     </progress_bar_radiation>
     
-    <progress_bar_satiety x="79" y="65" length="222" broad="20" horz="0" min="0" max="1000" pos="0">
+    <!-- Delete me -->
+    <progress_bar_satiety x="79" y="65" length="222" broad="20" horz="1" min="0" max="1000" pos="0">
         <texture width="17" height="222" length="222" r="255" g="255" b="0">ui\ui_inv_progress_food</texture>
-        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_food_empty</background>
     </progress_bar_satiety>
 
     <time_static x="15" y="730" width="200" height="30">        

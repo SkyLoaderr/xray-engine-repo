@@ -115,11 +115,10 @@ protected:
 	bool		xr_stdcall		OnItemDbClick		(CUICellItem* itm);
 	bool		xr_stdcall		OnItemSelected		(CUICellItem* itm);
 	bool		xr_stdcall		OnItemRButtonClick	(CUICellItem* itm);
-	
 
 
-	CUIProgressBar		UIProgressBarHealth;
-	CUIProgressBar		UIProgressBarSatiety;
+    CUIStatic			UIProgressBack;
+	CUIProgressBar		UIProgressBarHealth;	
 	CUIProgressBar		UIProgressBarPsyHealth;
 	CUIProgressBar		UIProgressBarRadiation;
 

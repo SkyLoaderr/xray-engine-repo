@@ -38,6 +38,7 @@ void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 #ifdef DEBUG
 	dbg_tex_name = tex;
 #endif
+	uFlags &= !flValidRect;
 }
 //--------------------------------------------------------------------
 

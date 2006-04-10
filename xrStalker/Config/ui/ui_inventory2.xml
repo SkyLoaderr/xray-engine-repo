@@ -6,4 +6,10 @@
     <texture id="ui_charinfo_right" x="813" y="0" width="211" height="218" />
     <texture id="ui_trade_wnd_left" x="0" y="218" width="343" height="500" />
     <texture id="ui_trade_wnd_right" x="708" y="218" width="316" height="500" />
+    <texture id="ui_scale_three" x="210" y="3" width="59" height="215" />
+    <texture id="ui_scale_one" x="269" y="6" width="38" height="212" />
+    <texture id="ui_scale_red" x="307" y="41" width="9" height="177" />
+    <texture id="ui_scale_yellow" x="316" y="41" width="9" height="177" />
+    <texture id="ui_scale_green" x="325" y="41" width="9" height="177" />
+    <texture id="ui_scale_blue" x="334" y="41" width="9" height="177" />
 </ui_texture>

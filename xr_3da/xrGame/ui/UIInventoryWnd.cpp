@@ -107,18 +107,19 @@ void CUIInventoryWnd::Init()
 	AttachChild							(&UIPersonalWnd);
 	xml_init.InitFrameWindow			(uiXml, "character_frame_window", 0, &UIPersonalWnd);
 
-	//Полосы прогресса
-	UIPersonalWnd.AttachChild			(&UIProgressBarHealth);
-	xml_init.InitProgressBar			(uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
+	//progress bars
+	AttachChild(&UIProgressBack);
+	xml_init.InitStatic(uiXml, "progress_background", 0, &UIProgressBack);
+
+	UIProgressBack.AttachChild (&UIProgressBarHealth);
+	xml_init.InitProgressBar2 (uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
+	//UIProgressBarHealth.SetWndPos(0,0);
 	
-	UIPersonalWnd.AttachChild			(&UIProgressBarSatiety);
-	xml_init.InitProgressBar			(uiXml, "progress_bar_satiety", 0, &UIProgressBarSatiety);
+	UIProgressBack.AttachChild	(&UIProgressBarPsyHealth);
+	xml_init.InitProgressBar2 (uiXml, "progress_bar_psy", 0, &UIProgressBarPsyHealth);
 
-	UIPersonalWnd.AttachChild			(&UIProgressBarPsyHealth);
-	xml_init.InitProgressBar			(uiXml, "progress_bar_psy", 0, &UIProgressBarPsyHealth);
-
-	UIPersonalWnd.AttachChild			(&UIProgressBarRadiation);
-	xml_init.InitProgressBar			(uiXml, "progress_bar_radiation", 0, &UIProgressBarRadiation);
+	UIProgressBack.AttachChild	(&UIProgressBarRadiation);
+	xml_init.InitProgressBar2 (uiXml, "progress_bar_radiation", 0, &UIProgressBarRadiation);
 //
 	UIPersonalWnd.AttachChild			(&UIStaticPersonal);
 	UIStaticPersonal.Init				(1, UIPersonalWnd.GetHeight() - 175, 260, 260);
@@ -258,7 +259,7 @@ void CUIInventoryWnd::Update()
 	if(pEntityAlive) 
 	{
 		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->conditions().GetHealth()*1000));
-		if (IsGameTypeSingle())
+		/*if (IsGameTypeSingle())
 			UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->conditions().GetSatiety()*1000));
 		else
 		{
@@ -268,7 +269,7 @@ void CUIInventoryWnd::Update()
 				if (ps)
 					UIProgressBarSatiety.SetProgressPos(s16(ps->experience_D*1000));
 			}			
-		};
+		};*/
 		UIProgressBarPsyHealth.SetProgressPos(s16(pEntityAlive->conditions().GetPsyHealth()*1000));
 		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->conditions().GetRadiation()*1000));
 
