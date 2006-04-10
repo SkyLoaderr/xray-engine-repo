@@ -723,7 +723,21 @@ states = {
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "doctor_wakeup"
+			},
+	--  Профессор на Янтаре
+	yan_professor_walk = {	weapon = "none",
+				movement = move.walk,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
+	yan_professor_wait = {	weapon = "none",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "idle"
 			}
-
 			
 }
