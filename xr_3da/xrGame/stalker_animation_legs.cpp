@@ -134,6 +134,8 @@ void CStalkerAnimationManager::legs_process_direction		(float yaw)
 
 MotionID CStalkerAnimationManager::legs_move_animation		()
 {
+	m_no_move_actual			= false;
+
 	CStalkerMovementManager		&movement = object().movement();
 
 	VERIFY						(
@@ -192,6 +194,12 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 	if (m_previous_speed_direction != speed_direction) {
 		if (m_change_direction_time < Device.dwTimeGlobal)
 			m_change_direction_time	= Device.dwTimeGlobal;
+
+		if (!legs_switch_factor()) {
+			m_previous_speed		= 0.f;
+			m_current_speed			= 0.f;
+		}
+
 		m_previous_speed_direction	= speed_direction;
 	}
 
@@ -212,10 +220,19 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 
 MotionID CStalkerAnimationManager::legs_no_move_animation	()
 {
+	m_previous_speed			= 0.f;
+	m_current_speed				= 0.f;
+
+	if (!m_no_move_actual) {
+		m_no_move_actual		= true;
+		m_crouch_state			= ::Random.randI(2);
+	}
+
 	m_change_direction_time		= Device.dwTimeGlobal;
 	m_current_speed				= 0.f;
 
-	const xr_vector<MotionID>	&animation = m_data_storage->m_part_animations.A[body_state()].m_in_place->A;
+	EBodyState					body_state = this->body_state();
+	const xr_vector<MotionID>	&animation = m_data_storage->m_part_animations.A[body_state].m_in_place->A;
 
 	CStalkerMovementManager		&movement = object().movement();
 	const SBoneRotation			&body_orientation = movement.body_orientation();
@@ -230,8 +247,8 @@ MotionID CStalkerAnimationManager::legs_no_move_animation	()
 		if (movement.mental_state() == eMentalStateFree)
 			return				(animation[1]);
 
-		if (movement.body_state() == eBodyStateCrouch)
-			return				(animation[1]);
+		if (body_state == eBodyStateCrouch)
+			return				(animation[m_crouch_state]);
 
 		return					(animation[0]);
 	}

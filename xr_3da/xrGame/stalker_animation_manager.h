@@ -53,6 +53,10 @@ private:
 	mutable int						m_looking_back;
 
 private:
+	int								m_crouch_state;
+	bool							m_no_move_actual;
+
+private:
 	CAI_Stalker						*m_object;
 	IRender_Visual					*m_visual;
 	CKinematicsAnimated				*m_skeleton_animated;

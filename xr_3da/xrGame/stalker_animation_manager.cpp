@@ -32,6 +32,9 @@ void CStalkerAnimationManager::reinit				()
 
 	m_change_direction_time		= 0;
 	m_looking_back				= 0;
+
+	m_no_move_actual			= false;
+	m_crouch_state				= 0;
 	
 	m_script_animations.clear	();
 
