@@ -455,12 +455,20 @@ function lstats()
 		end
 	end	
 	-- Выводим все это в общей статистике
+	local total_max, total_prob, total_current, total_limit = 0,0,0,0
 	for k,v in pairs(can_spawn) do
 		local cs = sim_statistic.simNpcCount(v.community, v.rank)
 		local gl = simMaxCount[k]
 		if gl == nil then gl = 0 end
+
+		total_max = total_max + v.num
+		total_prob = total_prob + math.ceil(v.num_r)
+		total_current = total_current + cs
+		total_limit = total_limit + gl
+		
 		printf("%s max=%s max_prob=%s current=%s limit=%s", k, v.num, math.ceil(v.num_r), cs, gl)
 	end
+	printf("TOTAL: max=%s max_prob=%s current=%s limit=%s", total_max, total_prob, total_current, total_limit)
 end
 
 
