@@ -12,7 +12,7 @@
 			<text font="graffiti22" r="238" g="155" b="23" a="255"></text>
 		</money_change>
 		<money_bonus_list x="0" y="87" width="80" height="80" always_show_scroll="0">
-			<font font="graffiti22" r="253" g="255" b="53" a="255"/>
+			<font font="graffiti22" r="0" g="255" b="0" a="255"/>
 		</money_bonus_list>
 	</money_wnd>
 	

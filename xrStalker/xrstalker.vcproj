@@ -1556,6 +1556,9 @@
 						RelativePath=".\Config\ui\ui_icons_map.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_ingame.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_inventory.xml">
 					</File>
 					<File
@@ -1725,9 +1728,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_custom_msgs.xml">
-					</File>
-					<File
-						RelativePath=".\Config\ui\ui_ingame.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_numpad_wnd.xml">

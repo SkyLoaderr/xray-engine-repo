@@ -58,10 +58,10 @@ u32 CUIGameLog::GetTextColor(){
 CUIPdaKillMessage* CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	CUIPdaKillMessage* pItem = pItem = xr_new<CUIPdaKillMessage>();	
 	pItem->SetFont(GetFont());
-	pItem->SetTextColor(txt_color);
 	pItem->SetWidth(GetDesiredChildWidth());
 	pItem->SetHeight(kill_msg_height);
 	pItem->Init(msg);
+	pItem->SetTextColor(GetTextColor());
 	pItem->SetAnimDelay(5000.0f);
 	pItem->SetLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
 	AddWindow(pItem, true);
