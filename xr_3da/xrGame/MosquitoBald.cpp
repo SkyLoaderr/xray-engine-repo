@@ -43,8 +43,6 @@ bool CMosquitoBald::BlowoutState()
 	return result;
 }
 
-
-
 void CMosquitoBald::Affect(SZoneObjectInfo* O) 
 {
 	CPhysicsShellHolder *pGameObject = smart_cast<CPhysicsShellHolder*>(O->object);
@@ -89,4 +87,17 @@ void CMosquitoBald::Affect(SZoneObjectInfo* O)
 
 		PlayHitParticles(pGameObject);
 	}
+}
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CMosquitoBald::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CMosquitoBald,CGameObject>("CMosquitoBald")
+			.def(constructor<>())
+	];
 }

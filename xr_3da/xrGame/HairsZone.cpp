@@ -1,7 +1,4 @@
 #include "stdafx.h"
-#include "CustomZone.h"
-#include "../SkeletonAnimated.h"
-#include "ZoneVisual.h"
 #include "HairsZone.h"
 #include "hudmanager.h"
 #include "level.h"
@@ -102,4 +99,17 @@ void CHairsZone::Affect(SZoneObjectInfo* O)
 
 		PlayHitParticles(pGameObject);
 	}
+}
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CHairsZone::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CHairsZone,CGameObject>("CHairsZone")
+			.def(constructor<>())
+	];
 }

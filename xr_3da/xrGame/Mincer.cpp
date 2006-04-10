@@ -170,3 +170,16 @@ float CMincer::BlowoutRadiusPercent	(CPhysicsShellHolder* GO)
 {
 	return	(GO->CLS_ID!=CLSID_OBJECT_ACTOR? m_fBlowoutRadiusPercent:m_fActorBlowoutRadiusPercent);
 }
+
+#include "script_space.h"
+
+using namespace luabind;
+
+void CMincer::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CMincer,CGameObject>("CMincer")
+			.def(constructor<>())
+	];
+}
