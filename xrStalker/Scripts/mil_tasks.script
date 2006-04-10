@@ -309,7 +309,7 @@ end
 
 
 function sniper_task_fail (task_id, subtask)
-    if db.actor:has_info ("mil_dolg_dead") or db.actor:has_info ("mil_dolg_collected") then
+    if db.actor:has_info ("mil_dolg_dead") or db.actor:has_info ("mil_dolg_collected")  or this.is_actor_enemy_dolg () == true then
        return true
     end   
     return false    
@@ -336,3 +336,18 @@ function final_subtask_dolg_main (task_id, subtask)
     return db.actor:has_info ("mil_lukash_dead") and (db.actor:has_info ("mil_dolg_dead") or db.actor:has_info ("mil_dolg_task_final"))
 end
 
+function dolg_job_fail1 (task_id, subtask)
+    return this.is_actor_enemy_dolg ()
+end
+
+function dolg_job_fail2 (task_id, subtask)
+    return this.is_actor_enemy_dolg ()
+end
+
+function is_actor_enemy_dolg ()
+    local gulag = xr_gulag.get_gulag_by_name ("mil_dolg")
+    if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then
+       return false
+    end    
+    return true
+end

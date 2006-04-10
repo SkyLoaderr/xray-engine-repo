@@ -16,6 +16,7 @@
             <infoportion_complete>mil_sniper_dead</infoportion_complete>
             <infoportion_fail>mil_dolg_dead</infoportion_fail>
             <infoportion_set_fail>mil_dolg_task_fail</infoportion_set_fail>
+			<function_fail>mil_tasks.dolg_job_fail1</function_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_return_to_skull</text>
@@ -37,6 +38,7 @@
 			<function_complete>mil_tasks.final_subtask_dolg_main</function_complete>
 			<infoportion_complete>mil_dolg_task_final</infoportion_complete>
 			<infoportion_set_complete>mil_dolg_mission_complete</infoportion_set_complete>
+			<function_fail>mil_tasks.dolg_job_fail2</function_fail>
 			<article>mil_dolg_kill_lukash</article>
 		</objective>
 		<objective>
@@ -45,6 +47,7 @@
 			<infoportion_complete>mil_sniper1_dead</infoportion_complete>
             <map_location_type hint="mil_freedom_sniper">green_location</map_location_type>
             <object_story_id>Mil_Sniper1</object_story_id>
+			<function_fail>mil_tasks.dolg_job_fail2</function_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_support</text>
@@ -52,6 +55,7 @@
 			<infoportion_complete>mil_sniper2_dead</infoportion_complete>
             <map_location_type hint="mil_freedom_sniper">green_location</map_location_type>
             <object_story_id>Mil_Sniper2</object_story_id>
+			<function_fail>mil_tasks.dolg_job_fail2</function_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_support</text>
@@ -59,6 +63,7 @@
 			<infoportion_complete>mil_sniper3_dead</infoportion_complete>
             <map_location_type hint="mil_freedom_sniper">green_location</map_location_type>
             <object_story_id>Mil_Sniper3</object_story_id>
+			<function_fail>mil_tasks.dolg_job_fail2</function_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_assault_headquarter</text>
@@ -68,6 +73,7 @@
             <map_location_hidden>1</map_location_hidden>
             <infoportion_complete>mil_lukash_dead</infoportion_complete>
 			<infoportion_set_fail>mil_dolg_lukash_kill_fail</infoportion_set_fail>
+			<function_fail>mil_tasks.dolg_job_fail2</function_fail>
 		</objective>
 		<objective>
 			<text>mil_dolg_return_to_khutor</text>
@@ -78,6 +84,7 @@
             <map_location_hidden>1</map_location_hidden>
             <infoportion_complete>mil_dolg_task_final</infoportion_complete>
             <infoportion_fail>mil_dolg_dead</infoportion_fail>
+			<function_fail>mil_tasks.dolg_job_fail2</function_fail>
 		</objective>
 	</game_task>
 	
@@ -289,42 +296,6 @@
 		</objective>
 	</game_task>
 
-	<game_task id="mil_test_task">
-		<title>mil_test_task_title</title>
-		<objective>
-			<text>mil_test_task_title</text>
-			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>mil_test_task_phase1</text>
-			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
-            <object_story_id>Mil_Sniper1</object_story_id>
-            <infoportion_fail>mil_fblockpost_rush_wave3</infoportion_fail>
-            <infoportion_complete>mil_fblockpost_rush_wave1</infoportion_complete>
-            <infoportion_set_complete>mil_lukash_dead</infoportion_set_complete>
-            <infoportion_set_fail>mil_dolg_dead</infoportion_set_fail>
-		</objective>
-		<objective>
-			<text>mil_test_task_phase2</text>
-			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-            <map_location_type>green_location</map_location_type>
-            <object_story_id>Mil_Sniper2</object_story_id>
-            <infoportion_complete>mil_fblockpost_rush_wave2</infoportion_complete>
-            <infoportion_fail>mil_fblockpost_rush_wave3</infoportion_fail>
-            <infoportion_set_complete>mil_cook_dialog1</infoportion_set_complete>
-            <infoportion_set_fail>mil_cook_dialog2</infoportion_set_fail>
-            <map_location_hidden>1</map_location_hidden>
-            <task_dependent>1</task_dependent>
-		</objective>
-		<objective>
-			<text>mil_test_task_phase3</text>
-			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<function_complete>mil_tasks.mil_test_task_rg6_have</function_complete>
-			<function_fail>mil_tasks.mil_test_task_lr300_have</function_fail>
-            <task_dependent>1</task_dependent>
-		</objective>
-	</game_task>
 	
 	<game_task id = "mil_hunters_task">
 		<objective>
