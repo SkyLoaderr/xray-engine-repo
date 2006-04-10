@@ -449,7 +449,7 @@ void CAI_Stalker::on_after_take						(const CGameObject *object)
 	if (!g_Alive())
 		return;
 
-	if (!READ_IF_EXISTS(pSettings,cNameSect(),r_bool,"use_single_item_rule",true))
+	if (!READ_IF_EXISTS(pSettings,r_bool,cNameSect(),"use_single_item_rule",true))
 		return;
 
 	const CWeapon				*new_weapon = smart_cast<const CWeapon*>(object);
