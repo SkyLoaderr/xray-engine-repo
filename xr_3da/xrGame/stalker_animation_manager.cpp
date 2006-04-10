@@ -211,6 +211,8 @@ void CStalkerAnimationManager::update						()
 			speed				= (m_current_speed - m_previous_speed)*amount + m_previous_speed;
 		}
 
+//		Msg						("%6d : %f",Device.dwTimeGlobal,speed);
+
 		if (!fis_zero(speed) && legs().blend())
 			object().movement().setup_speed_from_animation	(speed);
 
