@@ -456,6 +456,7 @@ void CStalkerActionGetReadyToKill::execute		()
 		object().brain().affect_cover				(true);
 		object().movement().set_movement_type		(eMovementTypeStand);
 //		object().movement().set_body_state			(eBodyStateCrouch);
+		object().movement().set_nearest_accessible_position	();
 	}
 
 //	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
@@ -645,6 +646,7 @@ void CStalkerActionLookOut::initialize		()
 
 	object().movement().set_body_state			(m_storage->property(eWorldPropertyUseCrouchToLookOut) ? eBodyStateCrouch : eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
+	object().movement().set_nearest_accessible_position	();
 
 	u32											min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
 	float										distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
@@ -710,6 +712,8 @@ void CStalkerActionLookOut::execute		()
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
 	}
+	else
+		object().movement().set_nearest_accessible_position	();
 
 	if ((object().movement().desired_position().similar(object().Position(),.5f) && object().movement().path_completed())) {
 		m_storage->set_property			(eWorldPropertyLookedOut,true);
