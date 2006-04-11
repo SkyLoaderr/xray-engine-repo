@@ -514,18 +514,29 @@ bool CUIInventoryWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if (UIPropertiesBox.GetVisible())
 		UIPropertiesBox.OnKeyboard(dik, keyboard_action);
+	if (WINDOW_KEY_PRESSED == keyboard_action)
+	{
+		if (DIK_Q == dik)
+			DropCurrentItem();
+		else if (DIK_E == dik)
+			EatCurrentItem();
+#ifdef DEBUG
+		else if(DIK_NUMPAD7 == dik && CurrentIItem()){
+			CurrentIItem()->ChangeCondition(-0.05f);
+			UIItemInfo.InitItem(CurrentIItem());
+		}
+		else if(DIK_NUMPAD8 == dik && CurrentIItem()){
+			CurrentIItem()->ChangeCondition(0.05f);
+			UIItemInfo.InitItem(CurrentIItem());
 
-	if(dik==DIK_NUMPAD7 && keyboard_action==WINDOW_KEY_PRESSED && CurrentIItem()){
-		CurrentIItem()->ChangeCondition(-0.05f);
-		UIItemInfo.InitItem(CurrentIItem());
+		}
+#endif
 	}
 
-	if(dik==DIK_NUMPAD8 && keyboard_action==WINDOW_KEY_PRESSED && CurrentIItem()){
-		CurrentIItem()->ChangeCondition(0.05f);
-		UIItemInfo.InitItem(CurrentIItem());
-	}
 
 	if( inherited::OnKeyboard(dik,keyboard_action) )return true;
+
+
 
 	return false;
 }
