@@ -384,7 +384,7 @@ function se_respawn:update()
 end
 -- Обновление в онлайне
 function se_respawn:update_online()
-	cse_alife_smart_zone.update( self )
+	--cse_alife_smart_zone.update( self )
 	--printf("RESPAWN: [%s] se_respawn update_online", tostring(self:name()))
 	if self.respawn_radius == -1 then
 		return
