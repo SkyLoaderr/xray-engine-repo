@@ -1945,16 +1945,29 @@ C++ class CGameTask {
     CGameTask ();
     
     function get_objective(number);
-    function get_title(string);
+    function get_title();
     function get_id();
     function add_objective(SGameTaskObjective*);
-    function set_title();
+    function set_title(string);
     function load(string);
     function get_objectives_cnt();
 };
 
 C++ class CGraviArtefact : CGameObject {
     CGraviArtefact ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CHairsZone : CGameObject {
+    CHairsZone ();
     
     function Visual();
     function _construct();
@@ -2085,6 +2098,32 @@ C++ class FS {
 
 C++ class CMercuryBall : CGameObject {
     CMercuryBall ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CMincer : CGameObject {
+    CMincer ();
+    
+    function Visual();
+    function _construct();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function net_Export(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function use(CGameObject*);
+};
+
+C++ class CMosquitoBald : CGameObject {
+    CMosquitoBald ();
     
     function Visual();
     function _construct();
@@ -4433,6 +4472,7 @@ C++ class game_object {
     function section() const;
     function get_current_point_index();
     function set_alien_control(boolean);
+    function location_on_path(number, vector*);
     function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
     function sound_prefix() const;
     function sound_prefix(string);
@@ -5006,6 +5046,7 @@ C++ class CScriptXmlInit {
     function InitWindow(string, number, CUIWindow*);
     function InitEditBox(string, CUIWindow*);
     function InitCheck(string, CUIWindow*);
+    function InitScrollView(string, CUIWindow*);
     function InitMapInfo(string, CUIWindow*);
     function InitServerList(string, CUIWindow*);
     function Init3tButton(string, CUIWindow*);
@@ -5657,6 +5698,7 @@ C++ class CUIScriptWnd : CUIDialogWnd,DLL_Pure {
     function ResetPPMode();
     function GetPropertiesBox(string);
     function GetFont();
+    function Update();
     function AddCallback(string, number, const function<void>&);
     function AddCallback(string, number, const function<void>&, object);
     function SetAutoDelete(boolean);
@@ -6218,7 +6260,7 @@ C++ class CUIMapList : CUIWindow {
     function SetPPMode();
     function SetFont(CGameFont*);
     function IsShown();
-    function SetWeatherSelector(CUISpinText*);
+    function SetWeatherSelector(CUIComboBox*);
     function Show(boolean);
     function GetHeight() const;
     function SetWidth(number);
@@ -6420,6 +6462,44 @@ C++ class CUIPropertiesBox : CUIFrameWindow {
     function SetWndSize(number, number);
     function GetWidth() const;
     function SetColor(number);
+};
+
+C++ class CUIScrollView : CUIWindow {
+    CUIScrollView ();
+    
+    function GetFont();
+    function SetScrollPos(number);
+    function SetWindowName(string);
+    function Enable(boolean);
+    function SetHeight(number);
+    function GetCurrentScrollPos();
+    function GetMaxScrollPos();
+    function RemoveWindow(CUIWindow*);
+    function ScrollToBegin();
+    function SetAutoDelete(boolean);
+    function GetMinScrollPos();
+    function AddWindow(CUIWindow*, boolean);
+    function Init(number, number, number, number);
+    function Init(Frect*);
+    function AttachChild(CUIWindow*);
+    function Clear();
+    function SetWndPos(number, number);
+    function ScrollToEnd();
+    function GetWidth() const;
+    function DetachChild(CUIWindow*);
+    function SetPPMode();
+    function WindowName();
+    function IsShown();
+    function SetWndSize(number, number);
+    function SetWndRect(Frect);
+    function SetWndRect(number, number, number, number);
+    function GetHeight() const;
+    function SetWidth(number);
+    function Show(boolean);
+    function IsEnabled();
+    function ResetPPMode();
+    function SetFont(CGameFont*);
+    function IsAutoDelete();
 };
 
 C++ class CUISpinNum : CUICustomSpin {
@@ -7510,6 +7590,12 @@ namespace  {
     function GetARGB(number, number, number, number);
     function script_server_object_version();
  
+    namespace game {
+        function time();
+        function get_game_time();
+        function start_tutorial(string);
+    };
+ 
     namespace level {
         function add_complex_effector(string, number);
         function enable_input();
@@ -7569,12 +7655,6 @@ namespace  {
         function get_game_difficulty();
         function show_indicators();
         function debug_actor();
-    };
- 
-    namespace game {
-        function time();
-        function get_game_time();
-        function start_tutorial(string);
     };
  
     namespace relation_registry {
