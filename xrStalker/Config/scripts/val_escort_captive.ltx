@@ -34,6 +34,9 @@ danger_inertion_time_hit        = 1000
 danger_inertion_time_sound      = 500
 danger_inertion_time_ricochet   = 1000
 
+[danger@val_escort_captive_free]
+ignore_types                    = corpse
+
 ;--------------------------------------------------------------------------
 ; 
 ;--------------------------------------------------------------------------
@@ -212,6 +215,7 @@ target                  = actor
 ;on_timer               = 60000 | patrol@val_escort_captive_leave
 on_actor_dist_ge_nvis   = 30 | patrol@val_escort_captive_leave
 meet                    = meet@val_escort_captive_talk
+danger                  = danger@val_escort_captive_free
 ;wounded                 = wounded@val_escort_captive
 ;combat_ignore_cond      = always
 
@@ -223,7 +227,7 @@ anim                = wait
 target              = 406 ;logic@val_escort_nap1
 on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave %=create_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
 meet                = meet@ignore_abuse
-danger              = danger@val_escort_captive
+danger                  = danger@val_escort_captive_free
 ;wounded             = wounded@val_escort_captive
 ;combat_ignore_cond  = always
 
