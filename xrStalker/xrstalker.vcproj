@@ -1544,10 +1544,10 @@
 						RelativePath=".\Config\ui\ui_icons_map.xml">
 					</File>
 					<File
-						RelativePath=".\Config\ui\ui_ingame.xml">
+						RelativePath=".\Config\ui\ui_iconsTotal.xml">
 					</File>
 					<File
-						RelativePath=".\Config\ui\ui_iconsTotal.xml">
+						RelativePath=".\Config\ui\ui_ingame.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_inventory.xml">
@@ -1575,6 +1575,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_old_textures.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_PDA.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_statistics.xml">
