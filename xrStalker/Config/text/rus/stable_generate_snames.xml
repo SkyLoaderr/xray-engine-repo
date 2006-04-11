@@ -4320,1802 +4320,548 @@
 
 
 <string id="lname_bandit_0">
-	<text>Белый</text>
-</string>
-<string id="lname_bandit_1">
-	<text>Зеленый</text>
-</string>
-<string id="lname_bandit_2">
-	<text>Красный</text>
-</string>
-<string id="lname_bandit_3">
-	<text>Ржавый</text>
-</string>
-<string id="lname_bandit_4">
-	<text>Рыжий</text>
-</string>
-<string id="lname_bandit_5">
-	<text>Седой</text>
-</string>
-<string id="lname_bandit_6">
 	<text>Сивый</text>
 </string>
-<string id="lname_bandit_7">
-	<text>Синий</text>
-</string>
-<string id="lname_bandit_8">
-	<text>Черный</text>
-</string>
-<string id="lname_bandit_9">
-	<text>Неуязвимый</text>
-</string>
-<string id="lname_bandit_10">
-	<text>Бессметрный</text>
-</string>
-<string id="lname_bandit_11">
+<string id="lname_bandit_1">
 	<text>Бешеный</text>
 </string>
-<string id="lname_bandit_12">
+<string id="lname_bandit_2">
 	<text>Битый</text>
 </string>
-<string id="lname_bandit_13">
-	<text>Блаженный</text>
-</string>
-<string id="lname_bandit_14">
+<string id="lname_bandit_3">
 	<text>Блатной</text>
 </string>
-<string id="lname_bandit_15">
-	<text>Богатырь</text>
-</string>
-<string id="lname_bandit_16">
-	<text>Бодряк</text>
-</string>
-<string id="lname_bandit_17">
+<string id="lname_bandit_4">
 	<text>Болтун</text>
 </string>
-<string id="lname_bandit_18">
+<string id="lname_bandit_5">
 	<text>Борзой</text>
 </string>
-<string id="lname_bandit_19">
+<string id="lname_bandit_6">
 	<text>Босяк</text>
 </string>
-<string id="lname_bandit_20">
+<string id="lname_bandit_7">
 	<text>Бритый</text>
 </string>
-<string id="lname_bandit_21">
+<string id="lname_bandit_8">
 	<text>Бывалый</text>
 </string>
-<string id="lname_bandit_22">
-	<text>Важный</text>
-</string>
-<string id="lname_bandit_23">
-	<text>Везунчик</text>
-</string>
-<string id="lname_bandit_24">
-	<text>Везучий</text>
-</string>
-<string id="lname_bandit_25">
-	<text>Верзила</text>
-</string>
-<string id="lname_bandit_26">
-	<text>Верный</text>
-</string>
-<string id="lname_bandit_27">
-	<text>Глазастый</text>
-</string>
-<string id="lname_bandit_28">
+<string id="lname_bandit_9">
 	<text>Глыба</text>
 </string>
-<string id="lname_bandit_29">
+<string id="lname_bandit_10">
 	<text>Гнилой</text>
 </string>
-<string id="lname_bandit_30">
-	<text>Говорун</text>
-</string>
-<string id="lname_bandit_31">
+<string id="lname_bandit_11">
 	<text>Горбун</text>
 </string>
-<string id="lname_bandit_32">
-	<text>Гордый</text>
-</string>
-<string id="lname_bandit_33">
-	<text>Горький</text>
-</string>
-<string id="lname_bandit_34">
-	<text>Грозный</text>
-</string>
-<string id="lname_bandit_35">
-	<text>Громила</text>
-</string>
-<string id="lname_bandit_36">
+<string id="lname_bandit_12">
 	<text>Длинный</text>
 </string>
-<string id="lname_bandit_37">
-	<text>Добряк</text>
-</string>
-<string id="lname_bandit_38">
+<string id="lname_bandit_13">
 	<text>Дохлый</text>
 </string>
-<string id="lname_bandit_39">
+<string id="lname_bandit_14">
 	<text>Доходяга</text>
 </string>
-<string id="lname_bandit_40">
+<string id="lname_bandit_15">
 	<text>Дохляк</text>
 </string>
-<string id="lname_bandit_41">
+<string id="lname_bandit_16">
 	<text>Дырявый</text>
 </string>
-<string id="lname_bandit_42">
-	<text>Жадина</text>
-</string>
-<string id="lname_bandit_43">
-	<text>Жалкий</text>
-</string>
-<string id="lname_bandit_44">
-	<text>Железный</text>
-</string>
-<string id="lname_bandit_45">
-	<text>Железячник</text>
-</string>
-<string id="lname_bandit_46">
+<string id="lname_bandit_17">
 	<text>Жженый</text>
 </string>
-<string id="lname_bandit_47">
-	<text>Живчик</text>
-</string>
-<string id="lname_bandit_48">
+<string id="lname_bandit_18">
 	<text>Жирдяй</text>
 </string>
-<string id="lname_bandit_49">
+<string id="lname_bandit_19">
 	<text>Жлоб</text>
 </string>
-<string id="lname_bandit_50">
+<string id="lname_bandit_20">
 	<text>Жмот</text>
 </string>
-<string id="lname_bandit_51">
+<string id="lname_bandit_21">
 	<text>Жмур</text>
 </string>
-<string id="lname_bandit_52">
-	<text>Задумчивый</text>
-</string>
-<string id="lname_bandit_53">
-	<text>Зануда</text>
-</string>
-<string id="lname_bandit_54">
-	<text>Зоркий</text>
-</string>
-<string id="lname_bandit_55">
-	<text>Зубастый</text>
-</string>
-<string id="lname_bandit_56">
-	<text>Зябкий</text>
-</string>
-<string id="lname_bandit_57">
+<string id="lname_bandit_22">
 	<text>Изверг</text>
 </string>
-<string id="lname_bandit_58">
-	<text>Инвалид</text>
-</string>
-<string id="lname_bandit_59">
+<string id="lname_bandit_23">
 	<text>Калека</text>
 </string>
-<string id="lname_bandit_60">
+<string id="lname_bandit_24">
 	<text>Колотун</text>
 </string>
-<string id="lname_bandit_61">
-	<text>Коматозник</text>
-</string>
-<string id="lname_bandit_62">
+<string id="lname_bandit_25">
 	<text>Косой</text>
 </string>
-<string id="lname_bandit_63">
-	<text>Косолапый</text>
-</string>
-<string id="lname_bandit_64">
-	<text>Костлявый</text>
-</string>
-<string id="lname_bandit_65">
+<string id="lname_bandit_26">
 	<text>Кривой</text>
 </string>
-<string id="lname_bandit_66">
-	<text>Кривоног</text>
-</string>
-<string id="lname_bandit_67">
+<string id="lname_bandit_27">
 	<text>Ловкач</text>
 </string>
-<string id="lname_bandit_68">
-	<text>Лохматый</text>
-</string>
-<string id="lname_bandit_69">
+<string id="lname_bandit_28">
 	<text>Лысый</text>
 </string>
-<string id="lname_bandit_70">
-	<text>Любимчик</text>
-</string>
-<string id="lname_bandit_71">
+<string id="lname_bandit_29">
 	<text>Лютый</text>
 </string>
-<string id="lname_bandit_72">
-	<text>Малыш</text>
-</string>
-<string id="lname_bandit_73">
-	<text>Мертвец</text>
-</string>
-<string id="lname_bandit_74">
-	<text>Мертвый</text>
-</string>
-<string id="lname_bandit_75">
+<string id="lname_bandit_30">
 	<text>Местный</text>
 </string>
-<string id="lname_bandit_76">
-	<text>Мрачный</text>
-</string>
-<string id="lname_bandit_77">
+<string id="lname_bandit_31">
 	<text>Мутный</text>
 </string>
-<string id="lname_bandit_78">
+<string id="lname_bandit_32">
 	<text>Мятый</text>
 </string>
-<string id="lname_bandit_79">
-	<text>Нарцисс</text>
-</string>
-<string id="lname_bandit_80">
-	<text>Небрежный</text>
-</string>
-<string id="lname_bandit_81">
-	<text>Неудачник</text>
-</string>
-<string id="lname_bandit_82">
-	<text>Неумеха</text>
-</string>
-<string id="lname_bandit_83">
-	<text>Нудный</text>
-</string>
-<string id="lname_bandit_84">
-	<text>Нытик</text>
-</string>
-<string id="lname_bandit_85">
+<string id="lname_bandit_33">
 	<text>Одноглазый</text>
 </string>
-<string id="lname_bandit_86">
+<string id="lname_bandit_34">
 	<text>Падла</text>
 </string>
-<string id="lname_bandit_87">
+<string id="lname_bandit_35">
 	<text>Паразит</text>
 </string>
-<string id="lname_bandit_88">
-	<text>Параноик</text>
-</string>
-<string id="lname_bandit_89">
+<string id="lname_bandit_36">
 	<text>Пижон</text>
 </string>
-<string id="lname_bandit_90">
-	<text>Плут</text>
-</string>
-<string id="lname_bandit_91">
+<string id="lname_bandit_37">
 	<text>Подлец</text>
 </string>
-<string id="lname_bandit_92">
+<string id="lname_bandit_38">
 	<text>Покойник</text>
 </string>
-<string id="lname_bandit_93">
-	<text>Праведный</text>
-</string>
-<string id="lname_bandit_94">
-	<text>Простак</text>
-</string>
-<string id="lname_bandit_95">
+<string id="lname_bandit_39">
 	<text>Псих</text>
 </string>
-<string id="lname_bandit_96">
-	<text>Работяга</text>
-</string>
-<string id="lname_bandit_97">
+<string id="lname_bandit_40">
 	<text>Рваный</text>
 </string>
-<string id="lname_bandit_98">
+<string id="lname_bandit_41">
 	<text>Рвач</text>
 </string>
-<string id="lname_bandit_99">
-	<text>Резкий</text>
-</string>
-<string id="lname_bandit_100">
-	<text>Ржавый</text>
-</string>
-<string id="lname_bandit_101">
-	<text>Романтик</text>
-</string>
-<string id="lname_bandit_102">
-	<text>Свирепый</text>
-</string>
-<string id="lname_bandit_103">
-	<text>Силач</text>
-</string>
-<string id="lname_bandit_104">
-	<text>Сказочник</text>
-</string>
-<string id="lname_bandit_105">
+<string id="lname_bandit_42">
 	<text>Слепой</text>
 </string>
-<string id="lname_bandit_106">
-	<text>Смелый</text>
-</string>
-<string id="lname_bandit_107">
+<string id="lname_bandit_43">
 	<text>Сопля</text>
 </string>
-<string id="lname_bandit_108">
-	<text>Спорщик</text>
-</string>
-<string id="lname_bandit_109">
-	<text>Старик</text>
-</string>
-<string id="lname_bandit_110">
+<string id="lname_bandit_44">
 	<text>Стиляга</text>
 </string>
-<string id="lname_bandit_111">
+<string id="lname_bandit_45">
 	<text>Столичный</text>
 </string>
-<string id="lname_bandit_112">
-	<text>Суровый</text>
-</string>
-<string id="lname_bandit_113">
-	<text>Сутулый</text>
-</string>
-<string id="lname_bandit_114">
-	<text>Сухой</text>
-</string>
-<string id="lname_bandit_115">
-	<text>Счастливчик</text>
-</string>
-<string id="lname_bandit_116">
-	<text>Тихий</text>
-</string>
-<string id="lname_bandit_117">
-	<text>Толстый</text>
-</string>
-<string id="lname_bandit_118">
-	<text>Толстяк</text>
-</string>
-<string id="lname_bandit_119">
+<string id="lname_bandit_46">
 	<text>Трупак</text>
 </string>
-<string id="lname_bandit_120">
-	<text>Умник</text>
-</string>
-<string id="lname_bandit_121">
+<string id="lname_bandit_47">
 	<text>Ухарь</text>
 </string>
-<string id="lname_bandit_122">
+<string id="lname_bandit_48">
 	<text>Ушастый</text>
 </string>
-<string id="lname_bandit_123">
-	<text>Фигляр</text>
-</string>
-<string id="lname_bandit_124">
+<string id="lname_bandit_49">
 	<text>Хохмач</text>
 </string>
-<string id="lname_bandit_125">
+<string id="lname_bandit_50">
 	<text>Хромой</text>
 </string>
-<string id="lname_bandit_126">
+<string id="lname_bandit_51">
 	<text>Хроник</text>
 </string>
-<string id="lname_bandit_127">
-	<text>Худой</text>
-</string>
-<string id="lname_bandit_128">
-	<text>Циник</text>
-</string>
-<string id="lname_bandit_129">
-	<text>Чувак</text>
-</string>
-<string id="lname_bandit_130">
+<string id="lname_bandit_52">
 	<text>Шалый</text>
 </string>
-<string id="lname_bandit_131">
-	<text>Шустрый</text>
-</string>
-<string id="lname_bandit_132">
+<string id="lname_bandit_53">
 	<text>Эстет</text>
 </string>
-<string id="lname_bandit_133">
+<string id="lname_bandit_54">
 	<text>Ядреный</text>
 </string>
-<string id="lname_bandit_134">
-	<text>Абитуриент</text>
-</string>
-<string id="lname_bandit_135">
-	<text>Абориген</text>
-</string>
-<string id="lname_bandit_136">
-	<text>Авиатор</text>
-</string>
-<string id="lname_bandit_137">
-	<text>Агент</text>
-</string>
-<string id="lname_bandit_138">
+<string id="lname_bandit_55">
 	<text>Адвокат</text>
 </string>
-<string id="lname_bandit_139">
+<string id="lname_bandit_56">
 	<text>Айболит</text>
 </string>
-<string id="lname_bandit_140">
-	<text>Апостол</text>
-</string>
-<string id="lname_bandit_141">
+<string id="lname_bandit_57">
 	<text>Артист</text>
 </string>
-<string id="lname_bandit_142">
-	<text>Аскет</text>
-</string>
-<string id="lname_bandit_143">
+<string id="lname_bandit_58">
 	<text>Аферист</text>
 </string>
-<string id="lname_bandit_144">
+<string id="lname_bandit_59">
 	<text>Банкир</text>
 </string>
-<string id="lname_bandit_145">
-	<text>Бард</text>
-</string>
-<string id="lname_bandit_146">
+<string id="lname_bandit_60">
 	<text>Барон</text>
 </string>
-<string id="lname_bandit_147">
+<string id="lname_bandit_61">
 	<text>Барыга</text>
 </string>
-<string id="lname_bandit_148">
+<string id="lname_bandit_62">
 	<text>Басурман</text>
 </string>
-<string id="lname_bandit_149">
-	<text>Бегун</text>
-</string>
-<string id="lname_bandit_150">
-	<text>Боец</text>
-</string>
-<string id="lname_bandit_151">
+<string id="lname_bandit_63">
 	<text>Бомж</text>
 </string>
-<string id="lname_bandit_152">
+<string id="lname_bandit_64">
 	<text>Боцман</text>
 </string>
-<string id="lname_bandit_153">
+<string id="lname_bandit_65">
 	<text>Бродяга</text>
 </string>
-<string id="lname_bandit_154">
+<string id="lname_bandit_66">
 	<text>Бурбон</text>
 </string>
-<string id="lname_bandit_155">
+<string id="lname_bandit_67">
 	<text>Буржуй</text>
 </string>
-<string id="lname_bandit_156">
-	<text>Бюрократ</text>
-</string>
-<string id="lname_bandit_157">
-	<text>Вандал</text>
-</string>
-<string id="lname_bandit_158">
-	<text>Варвар</text>
-</string>
-<string id="lname_bandit_159">
-	<text>Вахтер</text>
-</string>
-<string id="lname_bandit_160">
-	<text>Ведьмак</text>
-</string>
-<string id="lname_bandit_161">
-	<text>Визитер</text>
-</string>
-<string id="lname_bandit_162">
-	<text>Викинг</text>
-</string>
-<string id="lname_bandit_163">
+<string id="lname_bandit_68">
 	<text>Водила</text>
 </string>
-<string id="lname_bandit_164">
-	<text>Водолаз</text>
-</string>
-<string id="lname_bandit_165">
-	<text>Вождь</text>
-</string>
-<string id="lname_bandit_166">
+<string id="lname_bandit_69">
 	<text>Вор</text>
 </string>
-<string id="lname_bandit_167">
-	<text>Вояжер</text>
-</string>
-<string id="lname_bandit_168">
-	<text>Врач</text>
-</string>
-<string id="lname_bandit_169">
-	<text>Всадник</text>
-</string>
-<string id="lname_bandit_170">
+<string id="lname_bandit_70">
 	<text>Гангстер</text>
 </string>
-<string id="lname_bandit_171">
-	<text>Геолог</text>
-</string>
-<string id="lname_bandit_172">
-	<text>Гладиатор</text>
-</string>
-<string id="lname_bandit_173">
+<string id="lname_bandit_71">
 	<text>Гонец</text>
 </string>
-<string id="lname_bandit_174">
-	<text>Гость</text>
-</string>
-<string id="lname_bandit_175">
+<string id="lname_bandit_72">
 	<text>Граф</text>
 </string>
-<string id="lname_bandit_176">
-	<text>Грузчик</text>
-</string>
-<string id="lname_bandit_177">
-	<text>Дед</text>
-</string>
-<string id="lname_bandit_178">
-	<text>Дезертир</text>
-</string>
-<string id="lname_bandit_179">
-	<text>Делец</text>
-</string>
-<string id="lname_bandit_180">
-	<text>Денди</text>
-</string>
-<string id="lname_bandit_181">
-	<text>Депутат</text>
-</string>
-<string id="lname_bandit_182">
+<string id="lname_bandit_73">
 	<text>Деспот</text>
 </string>
-<string id="lname_bandit_183">
+<string id="lname_bandit_74">
 	<text>Дикарь</text>
 </string>
-<string id="lname_bandit_184">
-	<text>Дипломат</text>
-</string>
-<string id="lname_bandit_185">
-	<text>Док</text>
-</string>
-<string id="lname_bandit_186">
-	<text>Доктор</text>
-</string>
-<string id="lname_bandit_187">
-	<text>Доцент</text>
-</string>
-<string id="lname_bandit_188">
+<string id="lname_bandit_75">
 	<text>Душитель</text>
 </string>
-<string id="lname_bandit_189">
-	<text>Егерь</text>
-</string>
-<string id="lname_bandit_190">
+<string id="lname_bandit_76">
 	<text>Законник</text>
 </string>
-<string id="lname_bandit_191">
-	<text>Зенитчик</text>
-</string>
-<string id="lname_bandit_192">
-	<text>Знахарь</text>
-</string>
-<string id="lname_bandit_193">
+<string id="lname_bandit_77">
 	<text>Игрок</text>
 </string>
-<string id="lname_bandit_194">
-	<text>Индеец</text>
-</string>
-<string id="lname_bandit_195">
-	<text>Ирокез</text>
-</string>
-<string id="lname_bandit_196">
-	<text>Капитан</text>
-</string>
-<string id="lname_bandit_197">
+<string id="lname_bandit_78">
 	<text>Кидала</text>
 </string>
-<string id="lname_bandit_198">
-	<text>Клоун</text>
-</string>
-<string id="lname_bandit_199">
-	<text>Князь</text>
-</string>
-<string id="lname_bandit_200">
-	<text>Козак</text>
-</string>
-<string id="lname_bandit_201">
-	<text>Кок</text>
-</string>
-<string id="lname_bandit_202">
-	<text>Колдун</text>
-</string>
-<string id="lname_bandit_203">
-	<text>Команч</text>
-</string>
-<string id="lname_bandit_204">
-	<text>Король</text>
-</string>
-<string id="lname_bandit_205">
+<string id="lname_bandit_79">
 	<text>Крестный отец</text>
 </string>
-<string id="lname_bandit_206">
-	<text>Купец</text>
-</string>
-<string id="lname_bandit_207">
-	<text>Курильщик</text>
-</string>
-<string id="lname_bandit_208">
-	<text>Курьер</text>
-</string>
-<string id="lname_bandit_209">
+<string id="lname_bandit_80">
 	<text>Кучер</text>
 </string>
-<string id="lname_bandit_210">
-	<text>Легионер</text>
-</string>
-<string id="lname_bandit_211">
-	<text>Лекарь</text>
-</string>
-<string id="lname_bandit_212">
-	<text>Лесник</text>
-</string>
-<string id="lname_bandit_213">
-	<text>Лорд</text>
-</string>
-<string id="lname_bandit_214">
-	<text>Магнат</text>
-</string>
-<string id="lname_bandit_215">
+<string id="lname_bandit_81">
 	<text>Мажор</text>
 </string>
-<string id="lname_bandit_216">
+<string id="lname_bandit_82">
 	<text>Маньяк</text>
 </string>
-<string id="lname_bandit_217">
-	<text>Марсианин</text>
-</string>
-<string id="lname_bandit_218">
-	<text>Масон</text>
-</string>
-<string id="lname_bandit_219">
-	<text>Механик</text>
-</string>
-<string id="lname_bandit_220">
+<string id="lname_bandit_83">
 	<text>Могильщик</text>
 </string>
-<string id="lname_bandit_221">
-	<text>Модератор</text>
-</string>
-<string id="lname_bandit_222">
-	<text>Молочник</text>
-</string>
-<string id="lname_bandit_223">
+<string id="lname_bandit_84">
 	<text>Мясник</text>
 </string>
-<string id="lname_bandit_224">
-	<text>Наемник</text>
-</string>
-<string id="lname_bandit_225">
-	<text>Настройщик</text>
-</string>
-<string id="lname_bandit_226">
-	<text>Начальник</text>
-</string>
-<string id="lname_bandit_227">
+<string id="lname_bandit_85">
 	<text>Ниндзя</text>
 </string>
-<string id="lname_bandit_228">
-	<text>Оператор</text>
-</string>
-<string id="lname_bandit_229">
-	<text>Оружейник</text>
-</string>
-<string id="lname_bandit_230">
-	<text>Падишах</text>
-</string>
-<string id="lname_bandit_231">
+<string id="lname_bandit_86">
 	<text>Палач</text>
 </string>
-<string id="lname_bandit_232">
-	<text>Полкан</text>
-</string>
-<string id="lname_bandit_233">
+<string id="lname_bandit_87">
 	<text>Панк</text>
 </string>
-<string id="lname_bandit_234">
-	<text>Папа</text>
-</string>
-<string id="lname_bandit_235">
+<string id="lname_bandit_88">
 	<text>Партизан</text>
 </string>
-<string id="lname_bandit_236">
-	<text>Пастор</text>
-</string>
-<string id="lname_bandit_237">
-	<text>Пастух</text>
-</string>
-<string id="lname_bandit_238">
-	<text>Пастырь</text>
-</string>
-<string id="lname_bandit_239">
-	<text>Пахарь</text>
-</string>
-<string id="lname_bandit_240">
+<string id="lname_bandit_89">
 	<text>Пацифист</text>
 </string>
-<string id="lname_bandit_241">
-	<text>Перевозчик</text>
-</string>
-<string id="lname_bandit_242">
-	<text>Пианист</text>
-</string>
-<string id="lname_bandit_243">
-	<text>Пилот</text>
-</string>
-<string id="lname_bandit_244">
-	<text>Пионер</text>
-</string>
-<string id="lname_bandit_245">
+<string id="lname_bandit_90">
 	<text>Пират</text>
 </string>
-<string id="lname_bandit_246">
-	<text>Плотник</text>
-</string>
-<string id="lname_bandit_247">
+<string id="lname_bandit_91">
 	<text>Поджигатель</text>
 </string>
-<string id="lname_bandit_248">
-	<text>Пожарник</text>
-</string>
-<string id="lname_bandit_249">
-	<text>Ползун</text>
-</string>
-<string id="lname_bandit_250">
-	<text>Полярник</text>
-</string>
-<string id="lname_bandit_251">
-	<text>Посол</text>
-</string>
-<string id="lname_bandit_252">
-	<text>Почтальон</text>
-</string>
-<string id="lname_bandit_253">
-	<text>Поэт</text>
-</string>
-<string id="lname_bandit_254">
+<string id="lname_bandit_92">
 	<text>Принц</text>
 </string>
-<string id="lname_bandit_255">
-	<text>Пророк</text>
-</string>
-<string id="lname_bandit_256">
-	<text>Профессор</text>
-</string>
-<string id="lname_bandit_257">
-	<text>Прыгун</text>
-</string>
-<string id="lname_bandit_258">
-	<text>Пчеловод</text>
-</string>
-<string id="lname_bandit_259">
-	<text>Работяга</text>
-</string>
-<string id="lname_bandit_260">
-	<text>Раввин</text>
-</string>
-<string id="lname_bandit_261">
-	<text>Радист</text>
-</string>
-<string id="lname_bandit_262">
+<string id="lname_bandit_93">
 	<text>Разбойник</text>
 </string>
-<string id="lname_bandit_263">
-	<text>Растаман </text>
-</string>
-<string id="lname_bandit_264">
-	<text>Ратник</text>
-</string>
-<string id="lname_bandit_265">
-	<text>Рокер</text>
-</string>
-<string id="lname_bandit_266">
-	<text>Рудокоп</text>
-</string>
-<string id="lname_bandit_267">
-	<text>Самурай</text>
-</string>
-<string id="lname_bandit_268">
-	<text>Сапер</text>
-</string>
-<string id="lname_bandit_269">
-	<text>Связной</text>
-</string>
-<string id="lname_bandit_270">
-	<text>Священник</text>
-</string>
-<string id="lname_bandit_271">
-	<text>Секретарь</text>
-</string>
-<string id="lname_bandit_272">
-	<text>Сердцеед</text>
-</string>
-<string id="lname_bandit_273">
-	<text>Симулянт </text>
-</string>
-<string id="lname_bandit_274">
-	<text>Скиф</text>
-</string>
-<string id="lname_bandit_275">
-	<text>Следопыт</text>
-</string>
-<string id="lname_bandit_276">
-	<text>Слесарь</text>
-</string>
-<string id="lname_bandit_277">
+<string id="lname_bandit_94">
 	<text>Смертник</text>
 </string>
-<string id="lname_bandit_278">
-	<text>Собачник</text>
-</string>
-<string id="lname_bandit_279">
-	<text>Спасатель</text>
-</string>
-<string id="lname_bandit_280">
-	<text>Спортсмен</text>
-</string>
-<string id="lname_bandit_281">
-	<text>Странник</text>
-</string>
-<string id="lname_bandit_282">
-	<text>Студент</text>
-</string>
-<string id="lname_bandit_283">
-	<text>Судья</text>
-</string>
-<string id="lname_bandit_284">
-	<text>Султан</text>
-</string>
-<string id="lname_bandit_285">
+<string id="lname_bandit_95">
 	<text>Сутенер</text>
 </string>
-<string id="lname_bandit_286">
-	<text>Счетовод</text>
-</string>
-<string id="lname_bandit_287">
-	<text>Танкист</text>
-</string>
-<string id="lname_bandit_288">
-	<text>Танцор</text>
-</string>
-<string id="lname_bandit_289">
+<string id="lname_bandit_96">
 	<text>Тиран</text>
 </string>
-<string id="lname_bandit_290">
-	<text>Торгаш</text>
-</string>
-<string id="lname_bandit_291">
-	<text>Трофейщик</text>
-</string>
-<string id="lname_bandit_292">
-	<text>Трубочист</text>
-</string>
-<string id="lname_bandit_293">
-	<text>Туземец</text>
-</string>
-<string id="lname_bandit_294">
-	<text>Турист</text>
-</string>
-<string id="lname_bandit_295">
+<string id="lname_bandit_97">
 	<text>Убийца</text>
 </string>
-<string id="lname_bandit_296">
+<string id="lname_bandit_98">
 	<text>Фанат</text>
 </string>
-<string id="lname_bandit_297">
-	<text>Футболист</text>
-</string>
-<string id="lname_bandit_298">
-	<text>Снайпер</text>
-</string>
-<string id="lname_bandit_299">
+<string id="lname_bandit_99">
 	<text>Химик</text>
 </string>
-<string id="lname_bandit_300">
+<string id="lname_bandit_100">
 	<text>Хирург</text>
 </string>
-<string id="lname_bandit_301">
-	<text>Художник</text>
-</string>
-<string id="lname_bandit_302">
-	<text>Чабан</text>
-</string>
-<string id="lname_bandit_303">
-	<text>Шаман</text>
-</string>
-<string id="lname_bandit_304">
-	<text>Шатун</text>
-</string>
-<string id="lname_bandit_305">
-	<text>Шахтер</text>
-</string>
-<string id="lname_bandit_306">
-	<text>Шериф</text>
-</string>
-<string id="lname_bandit_307">
-	<text>Шеф</text>
-</string>
-<string id="lname_bandit_308">
-	<text>Школяр</text>
-</string>
-<string id="lname_bandit_309">
-	<text>Шофер</text>
-</string>
-<string id="lname_bandit_310">
+<string id="lname_bandit_101">
 	<text>Шпион</text>
 </string>
-<string id="lname_bandit_311">
-	<text>Электрик</text>
-</string>
-<string id="lname_bandit_312">
-	<text>Юнга</text>
-</string>
-<string id="lname_bandit_313">
-	<text>Язычник</text>
-</string>
-<string id="lname_bandit_314">
-	<text>Аллигатор</text>
-</string>
-<string id="lname_bandit_315">
-	<text>Анаконда</text>
-</string>
-<string id="lname_bandit_316">
-	<text>Бабуин</text>
-</string>
-<string id="lname_bandit_317">
+<string id="lname_bandit_102">
 	<text>Бизон</text>
 </string>
-<string id="lname_bandit_318">
+<string id="lname_bandit_103">
 	<text>Бобер</text>
 </string>
-<string id="lname_bandit_319">
-	<text>Богомол</text>
-</string>
-<string id="lname_bandit_320">
+<string id="lname_bandit_104">
 	<text>Бульдог</text>
 </string>
-<string id="lname_bandit_321">
-	<text>Бурундук</text>
-</string>
-<string id="lname_bandit_322">
+<string id="lname_bandit_105">
 	<text>Бык</text>
 </string>
-<string id="lname_bandit_323">
-	<text>Вепрь</text>
-</string>
-<string id="lname_bandit_324">
+<string id="lname_bandit_106">
 	<text>Воробей</text>
 </string>
-<string id="lname_bandit_325">
-	<text>Ворон</text>
-</string>
-<string id="lname_bandit_326">
-	<text>Выхухоль</text>
-</string>
-<string id="lname_bandit_327">
-	<text>Глухарь</text>
-</string>
-<string id="lname_bandit_328">
-	<text>Гоблин</text>
-</string>
-<string id="lname_bandit_329">
-	<text>Грач</text>
-</string>
-<string id="lname_bandit_330">
-	<text>Гриф</text>
-</string>
-<string id="lname_bandit_331">
-	<text>Гусь</text>
-</string>
-<string id="lname_bandit_332">
-	<text>Дельфин</text>
-</string>
-<string id="lname_bandit_333">
-	<text>Динозавр</text>
-</string>
-<string id="lname_bandit_334">
-	<text>Дрозд</text>
-</string>
-<string id="lname_bandit_335">
+<string id="lname_bandit_107">
 	<text>Дятел</text>
 </string>
-<string id="lname_bandit_336">
-	<text>Еж</text>
-</string>
-<string id="lname_bandit_337">
-	<text>Жук</text>
-</string>
-<string id="lname_bandit_338">
-	<text>Заяц</text>
-</string>
-<string id="lname_bandit_339">
+<string id="lname_bandit_108">
 	<text>Зверь</text>
 </string>
-<string id="lname_bandit_340">
+<string id="lname_bandit_109">
 	<text>Змей</text>
 </string>
-<string id="lname_bandit_341">
-	<text>Зубр</text>
-</string>
-<string id="lname_bandit_342">
-	<text>Индюк</text>
-</string>
-<string id="lname_bandit_343">
+<string id="lname_bandit_110">
 	<text>Кабан</text>
 </string>
-<string id="lname_bandit_344">
+<string id="lname_bandit_111">
 	<text>Карась</text>
 </string>
-<string id="lname_bandit_345">
+<string id="lname_bandit_112">
 	<text>Кенарь</text>
 </string>
-<string id="lname_bandit_346">
+<string id="lname_bandit_113">
 	<text>Клоп</text>
 </string>
-<string id="lname_bandit_347">
-	<text>Кобра</text>
-</string>
-<string id="lname_bandit_348">
-	<text>Комар</text>
-</string>
-<string id="lname_bandit_349">
-	<text>Конь</text>
-</string>
-<string id="lname_bandit_350">
-	<text>Кот</text>
-</string>
-<string id="lname_bandit_351">
-	<text>Крокодил</text>
-</string>
-<string id="lname_bandit_352">
-	<text>Кузнечик</text>
-</string>
-<string id="lname_bandit_353">
+<string id="lname_bandit_114">
 	<text>Легавый</text>
 </string>
-<string id="lname_bandit_354">
+<string id="lname_bandit_115">
 	<text>Лось</text>
 </string>
-<string id="lname_bandit_355">
-	<text>Мамонт</text>
-</string>
-<string id="lname_bandit_356">
-	<text>Медведь</text>
-</string>
-<string id="lname_bandit_357">
-	<text>Микроб</text>
-</string>
-<string id="lname_bandit_358">
-	<text>Москит</text>
-</string>
-<string id="lname_bandit_359">
-	<text>Муравей</text>
-</string>
-<string id="lname_bandit_360">
-	<text>Овод</text>
-</string>
-<string id="lname_bandit_361">
-	<text>Паук</text>
-</string>
-<string id="lname_bandit_362">
+<string id="lname_bandit_116">
 	<text>Пацюк</text>
 </string>
-<string id="lname_bandit_363">
-	<text>Пилигрим</text>
-</string>
-<string id="lname_bandit_364">
-	<text>Пиранья</text>
-</string>
-<string id="lname_bandit_365">
-	<text>Питон</text>
-</string>
-<string id="lname_bandit_366">
-	<text>Русак</text>
-</string>
-<string id="lname_bandit_367">
-	<text>Сова</text>
-</string>
-<string id="lname_bandit_368">
-	<text>Сокол</text>
-</string>
-<string id="lname_bandit_369">
-	<text>Сурок</text>
-</string>
-<string id="lname_bandit_370">
-	<text>Суслик</text>
-</string>
-<string id="lname_bandit_371">
-	<text>Сыч</text>
-</string>
-<string id="lname_bandit_372">
-	<text>Таракан</text>
-</string>
-<string id="lname_bandit_373">
-	<text>Тарантул</text>
-</string>
-<string id="lname_bandit_374">
-	<text>Тушканчик</text>
-</string>
-<string id="lname_bandit_375">
+<string id="lname_bandit_117">
 	<text>Удав</text>
 </string>
-<string id="lname_bandit_376">
-	<text>Филин</text>
-</string>
-<string id="lname_bandit_377">
-	<text>Хорек</text>
-</string>
-<string id="lname_bandit_378">
-	<text>Червь</text>
-</string>
-<string id="lname_bandit_379">
-	<text>Шатун</text>
-</string>
-<string id="lname_bandit_380">
-	<text>Абсолют</text>
-</string>
-<string id="lname_bandit_381">
-	<text>Аномалия</text>
-</string>
-<string id="lname_bandit_382">
-	<text>Бампер</text>
-</string>
-<string id="lname_bandit_383">
+<string id="lname_bandit_118">
 	<text>Батон</text>
 </string>
-<string id="lname_bandit_384">
+<string id="lname_bandit_119">
 	<text>Битый</text>
 </string>
-<string id="lname_bandit_385">
+<string id="lname_bandit_120">
 	<text>Беспредел</text>
 </string>
-<string id="lname_bandit_386">
-	<text>Болид</text>
-</string>
-<string id="lname_bandit_387">
+<string id="lname_bandit_121">
 	<text>Болт</text>
 </string>
-<string id="lname_bandit_388">
+<string id="lname_bandit_122">
 	<text>Бритва</text>
 </string>
-<string id="lname_bandit_389">
+<string id="lname_bandit_123">
 	<text>Бубен</text>
 </string>
-<string id="lname_bandit_390">
-	<text>Бублик</text>
-</string>
-<string id="lname_bandit_391">
-	<text>Вакуум</text>
-</string>
-<string id="lname_bandit_392">
+<string id="lname_bandit_124">
 	<text>Валет</text>
 </string>
-<string id="lname_bandit_393">
-	<text>Валун</text>
-</string>
-<string id="lname_bandit_394">
-	<text>Вентилятор</text>
-</string>
-<string id="lname_bandit_395">
-	<text>Вертолет</text>
-</string>
-<string id="lname_bandit_396">
-	<text>Ветер</text>
-</string>
-<string id="lname_bandit_397">
+<string id="lname_bandit_125">
 	<text>Винт</text>
 </string>
-<string id="lname_bandit_398">
-	<text>Ворот</text>
-</string>
-<string id="lname_bandit_399">
-	<text>Гвоздь</text>
-</string>
-<string id="lname_bandit_400">
-	<text>Гильза</text>
-</string>
-<string id="lname_bandit_401">
-	<text>Глобус</text>
-</string>
-<string id="lname_bandit_402">
-	<text>Глыба</text>
-</string>
-<string id="lname_bandit_403">
-	<text>Граната</text>
-</string>
-<string id="lname_bandit_404">
-	<text>Гребень</text>
-</string>
-<string id="lname_bandit_405">
-	<text>Гроб</text>
-</string>
-<string id="lname_bandit_406">
-	<text>Дачник</text>
-</string>
-<string id="lname_bandit_407">
-	<text>Движок</text>
-</string>
-<string id="lname_bandit_408">
+<string id="lname_bandit_126">
 	<text>Динамит</text>
 </string>
-<string id="lname_bandit_409">
-	<text>Дырчик</text>
-</string>
-<string id="lname_bandit_410">
-	<text>Закон</text>
-</string>
-<string id="lname_bandit_411">
-	<text>Замок</text>
-</string>
-<string id="lname_bandit_412">
-	<text>Затвор</text>
-</string>
-<string id="lname_bandit_413">
-	<text>Изотоп</text>
-</string>
-<string id="lname_bandit_414">
-	<text>Камень</text>
-</string>
-<string id="lname_bandit_415">
-	<text>Капкан</text>
-</string>
-<string id="lname_bandit_416">
-	<text>Кардан</text>
-</string>
-<string id="lname_bandit_417">
-	<text>Карма</text>
-</string>
-<string id="lname_bandit_418">
-	<text>Кирпич</text>
-</string>
-<string id="lname_bandit_419">
-	<text>Клей</text>
-</string>
-<string id="lname_bandit_420">
-	<text>Ключ</text>
-</string>
-<string id="lname_bandit_421">
-	<text>Кнут</text>
-</string>
-<string id="lname_bandit_422">
+<string id="lname_bandit_127">
 	<text>Козырь</text>
 </string>
-<string id="lname_bandit_423">
-	<text>Колпак</text>
-</string>
-<string id="lname_bandit_424">
-	<text>Колун</text>
-</string>
-<string id="lname_bandit_425">
-	<text>Коньяк</text>
-</string>
-<string id="lname_bandit_426">
-	<text>Корень</text>
-</string>
-<string id="lname_bandit_427">
-	<text>Коса</text>
-</string>
-<string id="lname_bandit_428">
-	<text>Космос</text>
-</string>
-<string id="lname_bandit_429">
+<string id="lname_bandit_128">
 	<text>Кастет</text>
 </string>
-<string id="lname_bandit_430">
+<string id="lname_bandit_129">
 	<text>Косяк</text>
 </string>
-<string id="lname_bandit_431">
+<string id="lname_bandit_130">
 	<text>Крест</text>
 </string>
-<string id="lname_bandit_432">
+<string id="lname_bandit_131">
 	<text>Крюк</text>
 </string>
-<string id="lname_bandit_433">
-	<text>Курок</text>
-</string>
-<string id="lname_bandit_434">
+<string id="lname_bandit_132">
 	<text>Лапоть</text>
 </string>
-<string id="lname_bandit_435">
+<string id="lname_bandit_133">
 	<text>Лом</text>
 </string>
-<string id="lname_bandit_436">
-	<text>Машина</text>
-</string>
-<string id="lname_bandit_437">
-	<text>Мишень</text>
-</string>
-<string id="lname_bandit_438">
-	<text>Мотор</text>
-</string>
-<string id="lname_bandit_439">
-	<text>Насос</text>
-</string>
-<string id="lname_bandit_440">
-	<text>Ночной</text>
-</string>
-<string id="lname_bandit_441">
-	<text>Обрез</text>
-</string>
-<string id="lname_bandit_442">
+<string id="lname_bandit_134">
 	<text>Панадол</text>
 </string>
-<string id="lname_bandit_443">
-	<text>Парашут</text>
-</string>
-<string id="lname_bandit_444">
-	<text>Патрон</text>
-</string>
-<string id="lname_bandit_445">
-	<text>Перекур</text>
-</string>
-<string id="lname_bandit_446">
+<string id="lname_bandit_135">
 	<text>Перо</text>
 </string>
-<string id="lname_bandit_447">
+<string id="lname_bandit_136">
 	<text>Пистон</text>
 </string>
-<string id="lname_bandit_448">
-	<text>Пластилин</text>
-</string>
-<string id="lname_bandit_449">
-	<text>Порох</text>
-</string>
-<string id="lname_bandit_450">
+<string id="lname_bandit_137">
 	<text>Пятак</text>
 </string>
-<string id="lname_bandit_451">
-	<text>Ракета</text>
-</string>
-<string id="lname_bandit_452">
-	<text>Рама</text>
-</string>
-<string id="lname_bandit_453">
-	<text>Реактор</text>
-</string>
-<string id="lname_bandit_454">
-	<text>Резак</text>
-</string>
-<string id="lname_bandit_455">
-	<text>Решето</text>
-</string>
-<string id="lname_bandit_456">
+<string id="lname_bandit_138">
 	<text>Решка</text>
 </string>
-<string id="lname_bandit_457">
-	<text>Робот</text>
-</string>
-<string id="lname_bandit_458">
-	<text>Рогач</text>
-</string>
-<string id="lname_bandit_459">
-	<text>Совок</text>
-</string>
-<string id="lname_bandit_460">
-	<text>Самогон</text>
-</string>
-<string id="lname_bandit_461">
-	<text>Сапог</text>
-</string>
-<string id="lname_bandit_462">
-	<text>Сидр</text>
-</string>
-<string id="lname_bandit_463">
+<string id="lname_bandit_139">
 	<text>Смерть</text>
 </string>
-<string id="lname_bandit_464">
-	<text>Спирт</text>
-</string>
-<string id="lname_bandit_465">
-	<text>Стамеска</text>
-</string>
-<string id="lname_bandit_466">
-	<text>Ствол</text>
-</string>
-<string id="lname_bandit_467">
-	<text>Сундук</text>
-</string>
-<string id="lname_bandit_468">
-	<text>Топор</text>
-</string>
-<string id="lname_bandit_469">
-	<text>Торец</text>
-</string>
-<string id="lname_bandit_470">
+<string id="lname_bandit_140">
 	<text>Точило</text>
 </string>
-<string id="lname_bandit_471">
+<string id="lname_bandit_141">
 	<text>Туз</text>
 </string>
-<string id="lname_bandit_472">
-	<text>Узел</text>
-</string>
-<string id="lname_bandit_473">
-	<text>Фактор</text>
-</string>
-<string id="lname_bandit_474">
-	<text>Фонарь</text>
-</string>
-<string id="lname_bandit_475">
+<string id="lname_bandit_142">
 	<text>Чекан</text>
 </string>
-<string id="lname_bandit_476">
-	<text>Червень</text>
-</string>
-<string id="lname_bandit_477">
-	<text>Чеснок</text>
-</string>
-<string id="lname_bandit_478">
+<string id="lname_bandit_143">
 	<text>Чучело</text>
 </string>
-<string id="lname_bandit_479">
-	<text>Шанс</text>
-</string>
-<string id="lname_bandit_480">
+<string id="lname_bandit_144">
 	<text>Шило</text>
 </string>
-<string id="lname_bandit_481">
-	<text>Шип</text>
-</string>
-<string id="lname_bandit_482">
-	<text>Шкаф</text>
-</string>
-<string id="lname_bandit_483">
+<string id="lname_bandit_145">
 	<text>Шпала</text>
 </string>
-<string id="lname_bandit_484">
-	<text>Штакет</text>
-</string>
-<string id="lname_bandit_485">
-	<text>Штуцер</text>
-</string>
-<string id="lname_bandit_486">
-	<text>Штык</text>
-</string>
-<string id="lname_bandit_487">
+<string id="lname_bandit_146">
 	<text>Штырь</text>
 </string>
-<string id="lname_bandit_488">
-	<text>Шуруп</text>
-</string>
-<string id="lname_bandit_489">
+<string id="lname_bandit_147">
 	<text>Шухер</text>
 </string>
-<string id="lname_bandit_490">
-	<text>Голова</text>
-</string>
-<string id="lname_bandit_491">
-	<text>Клык</text>
-</string>
-<string id="lname_bandit_492">
-	<text>Коготь</text>
-</string>
-<string id="lname_bandit_493">
-	<text>Кость</text>
-</string>
-<string id="lname_bandit_494">
+<string id="lname_bandit_148">
 	<text>Кулак</text>
 </string>
-<string id="lname_bandit_495">
-	<text>Нерв</text>
-</string>
-<string id="lname_bandit_496">
-	<text>Скелет</text>
-</string>
-<string id="lname_bandit_497">
-	<text>Хвост</text>
-</string>
-<string id="lname_bandit_498">
-	<text>Хребет</text>
-</string>
-<string id="lname_bandit_499">
+<string id="lname_bandit_149">
 	<text>Череп</text>
 </string>
-<string id="lname_bandit_500">
+<string id="lname_bandit_150">
 	<text>Бармалей</text>
 </string>
-<string id="lname_bandit_501">
+<string id="lname_bandit_151">
 	<text>Батый</text>
 </string>
-<string id="lname_bandit_502">
-	<text>Богатырь</text>
-</string>
-<string id="lname_bandit_503">
-	<text>Буратино</text>
-</string>
-<string id="lname_bandit_504">
-	<text>Ведьмак</text>
-</string>
-<string id="lname_bandit_505">
-	<text>Воланд</text>
-</string>
-<string id="lname_bandit_506">
-	<text>Гомер</text>
-</string>
-<string id="lname_bandit_507">
-	<text>Горыныч</text>
-</string>
-<string id="lname_bandit_508">
-	<text>Грозный</text>
-</string>
-<string id="lname_bandit_509">
-	<text>Джаконда</text>
-</string>
-<string id="lname_bandit_510">
-	<text>Дуремар</text>
-</string>
-<string id="lname_bandit_511">
-	<text>Железняк</text>
-</string>
-<string id="lname_bandit_512">
-	<text>Икар</text>
-</string>
-<string id="lname_bandit_513">
-	<text>Казанова</text>
-</string>
-<string id="lname_bandit_514">
+<string id="lname_bandit_152">
 	<text>Кащей</text>
 </string>
-<string id="lname_bandit_515">
-	<text>Кесарь</text>
-</string>
-<string id="lname_bandit_516">
-	<text>Колобок</text>
-</string>
-<string id="lname_bandit_517">
-	<text>Кутузов</text>
-</string>
-<string id="lname_bandit_518">
-	<text>Малыш</text>
-</string>
-<string id="lname_bandit_519">
-	<text>Наполеон</text>
-</string>
-<string id="lname_bandit_520">
-	<text>Нельсон</text>
-</string>
-<string id="lname_bandit_521">
-	<text>Нептун</text>
-</string>
-<string id="lname_bandit_522">
-	<text>Оскар</text>
-</string>
-<string id="lname_bandit_523">
-	<text>Прометей</text>
-</string>
-<string id="lname_bandit_524">
-	<text>Пушкин</text>
-</string>
-<string id="lname_bandit_525">
-	<text>Пятница</text>
-</string>
-<string id="lname_bandit_526">
+<string id="lname_bandit_153">
 	<text>Рембо</text>
 </string>
-<string id="lname_bandit_527">
-	<text>Рокфор</text>
-</string>
-<string id="lname_bandit_528">
+<string id="lname_bandit_154">
 	<text>Сусанин</text>
 </string>
-<string id="lname_bandit_529">
+<string id="lname_bandit_155">
 	<text>Терминатор</text>
 </string>
-<string id="lname_bandit_530">
-	<text>Флинт</text>
-</string>
-<string id="lname_bandit_531">
-	<text>Цезарь</text>
-</string>
-<string id="lname_bandit_532">
-	<text>Чапаев</text>
-</string>
-<string id="lname_bandit_533">
+<string id="lname_bandit_156">
 	<text>Чапай</text>
 </string>
-<string id="lname_bandit_534">
-	<text>Чебур</text>
-</string>
-<string id="lname_bandit_535">
-	<text>Чебурашка</text>
-</string>
-<string id="lname_bandit_536">
-	<text>Чингачгук</text>
-</string>
-<string id="lname_bandit_537">
+<string id="lname_bandit_157">
 	<text>Чингиз</text>
 </string>
-<string id="lname_bandit_538">
-	<text>Штирлиц</text>
-</string>
-<string id="lname_bandit_539">
+<string id="lname_bandit_158">
 	<text>Банан</text>
 </string>
-<string id="lname_bandit_540">
-	<text>Барабашка</text>
-</string>
-<string id="lname_bandit_541">
+<string id="lname_bandit_159">
 	<text>Батон</text>
 </string>
-<string id="lname_bandit_542">
+<string id="lname_bandit_160">
 	<text>Батя</text>
 </string>
-<string id="lname_bandit_543">
+<string id="lname_bandit_161">
 	<text>Баян</text>
 </string>
-<string id="lname_bandit_544">
+<string id="lname_bandit_162">
 	<text>Братан</text>
 </string>
-<string id="lname_bandit_545">
-	<text>Булкин</text>
-</string>
-<string id="lname_bandit_546">
-	<text>Бульдозер</text>
-</string>
-<string id="lname_bandit_547">
-	<text>Буфер</text>
-</string>
-<string id="lname_bandit_548">
-	<text>Вареник</text>
-</string>
-<string id="lname_bandit_549">
-	<text>Вист</text>
-</string>
-<string id="lname_bandit_550">
+<string id="lname_bandit_163">
 	<text>Гангрена</text>
 </string>
-<string id="lname_bandit_551">
-	<text>Гибрид</text>
-</string>
-<string id="lname_bandit_552">
+<string id="lname_bandit_164">
 	<text>Глюк</text>
 </string>
-<string id="lname_bandit_553">
-	<text>Гоблин</text>
-</string>
-<string id="lname_bandit_554">
-	<text>Горец</text>
-</string>
-<string id="lname_bandit_555">
+<string id="lname_bandit_165">
 	<text>Градус</text>
 </string>
-<string id="lname_bandit_556">
-	<text>Гремлин</text>
-</string>
-<string id="lname_bandit_557">
+<string id="lname_bandit_166">
 	<text>Дух</text>
 </string>
-<string id="lname_bandit_558">
-	<text>Дядька</text>
-</string>
-<string id="lname_bandit_559">
+<string id="lname_bandit_167">
 	<text>Звездец</text>
 </string>
-<string id="lname_bandit_560">
+<string id="lname_bandit_168">
 	<text>Изгой</text>
 </string>
-<string id="lname_bandit_561">
-	<text>Кагор</text>
-</string>
-<string id="lname_bandit_562">
-	<text>Капуста</text>
-</string>
-<string id="lname_bandit_563">
-	<text>Карбид</text>
-</string>
-<string id="lname_bandit_564">
+<string id="lname_bandit_169">
 	<text>Кастет</text>
 </string>
-<string id="lname_bandit_565">
+<string id="lname_bandit_170">
 	<text>Козырь</text>
 </string>
-<string id="lname_bandit_566">
-	<text>Командор</text>
-</string>
-<string id="lname_bandit_567">
-	<text>Король</text>
-</string>
-<string id="lname_bandit_568">
+<string id="lname_bandit_171">
 	<text>Косяк</text>
 </string>
-<string id="lname_bandit_569">
+<string id="lname_bandit_172">
 	<text>Лапоть</text>
 </string>
-<string id="lname_bandit_570">
-	<text>Лед</text>
-</string>
-<string id="lname_bandit_571">
+<string id="lname_bandit_173">
 	<text>Леший</text>
 </string>
-<string id="lname_bandit_572">
+<string id="lname_bandit_174">
 	<text>Мавр</text>
 </string>
-<string id="lname_bandit_573">
-	<text>Мадера</text>
-</string>
-<string id="lname_bandit_574">
-	<text>Макарон</text>
-</string>
-<string id="lname_bandit_575">
-	<text>Мастер</text>
-</string>
-<string id="lname_bandit_576">
-	<text>Мутант</text>
-</string>
-<string id="lname_bandit_577">
+<string id="lname_bandit_175">
 	<text>Ништяк</text>
 </string>
-<string id="lname_bandit_578">
+<string id="lname_bandit_176">
 	<text>Облом</text>
 </string>
-<string id="lname_bandit_579">
-	<text>Омут</text>
-</string>
-<string id="lname_bandit_580">
-	<text>Опер</text>
-</string>
-<string id="lname_bandit_581">
+<string id="lname_bandit_177">
 	<text>Пельмень</text>
 </string>
-<string id="lname_bandit_582">
+<string id="lname_bandit_178">
 	<text>Перец</text>
 </string>
-<string id="lname_bandit_583">
-	<text>Погон</text>
-</string>
-<string id="lname_bandit_584">
-	<text>Пончик</text>
-</string>
-<string id="lname_bandit_585">
-	<text>Пузырь</text>
-</string>
-<string id="lname_bandit_586">
+<string id="lname_bandit_179">
 	<text>Рашпиль</text>
 </string>
-<string id="lname_bandit_587">
-	<text>Репей</text>
-</string>
-<string id="lname_bandit_588">
-	<text>Рязанский</text>
-</string>
-<string id="lname_bandit_589">
-	<text>Самогон</text>
-</string>
-<string id="lname_bandit_590">
-	<text>Сморчок</text>
-</string>
-<string id="lname_bandit_591">
+<string id="lname_bandit_180">
 	<text>Сухарь</text>
 </string>
-<string id="lname_bandit_592">
-	<text>Табак</text>
-</string>
-<string id="lname_bandit_593">
-	<text>Табель</text>
-</string>
-<string id="lname_bandit_594">
-	<text>Туз</text>
-</string>
-<string id="lname_bandit_595">
-	<text>Тыква</text>
-</string>
-<string id="lname_bandit_596">
+<string id="lname_bandit_181">
 	<text>Упырь</text>
-</string>
-<string id="lname_bandit_597">
-	<text>Фагот</text>
-</string>
-<string id="lname_bandit_598">
-	<text>Фантом</text>
-</string>
-<string id="lname_bandit_599">
-	<text>Фокус</text>
 </string>
