@@ -516,10 +516,9 @@ bool CUIInventoryWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		UIPropertiesBox.OnKeyboard(dik, keyboard_action);
 	if (WINDOW_KEY_PRESSED == keyboard_action)
 	{
-		if (DIK_Q == dik)
+		int cmd = key_binding[dik];
+		if (kDROP == cmd)
 			DropCurrentItem();
-		else if (DIK_E == dik)
-			EatCurrentItem();
 #ifdef DEBUG
 		else if(DIK_NUMPAD7 == dik && CurrentIItem()){
 			CurrentIItem()->ChangeCondition(-0.05f);
