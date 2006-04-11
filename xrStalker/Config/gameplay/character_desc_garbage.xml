@@ -117,7 +117,7 @@
 	</specific_character>
 	
 	<specific_character id="gar_bandit_novice_wounded" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
@@ -174,7 +174,7 @@
 	
 	<!----------------------BANDIT NOVICE----------------------->
 	<specific_character id="gar_bandit_novice_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
@@ -201,7 +201,7 @@
 	</specific_character>
 
 	<specific_character id="gar_bandit_novice_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
@@ -230,7 +230,7 @@
 	</specific_character>
 
 	<specific_character id="gar_bandit_novice_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
@@ -260,7 +260,7 @@
 	<!---------------------------BANDIT general----------------------->
 	
 	<specific_character id="gar_bandit_general_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
@@ -290,7 +290,7 @@
 	</specific_character>
 
 	<specific_character id="gar_bandit_general_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
@@ -320,7 +320,7 @@
 	</specific_character>
 
 	<specific_character id="gar_bandit_general_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
@@ -513,7 +513,7 @@
 	
 	
 	<specific_character id="gar_wounded_bandit" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>gar_stalker_regular_bio</bio>
@@ -665,7 +665,7 @@
 	</specific_character>
 	
 	<specific_character id="gar_sniper" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
