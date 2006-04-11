@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+<window>
 
  	<main_wnd x="110" y="90" width="761" height="475"/>
     <left_frame_window x="0" y="0" width="448" height="475" a="80">

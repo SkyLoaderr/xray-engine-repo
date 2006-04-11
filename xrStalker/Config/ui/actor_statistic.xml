@@ -13,7 +13,7 @@
 	</mask_frame_window>
 	
 		
-	<main_wnd x="110" y="90" width="761" height="475"/>
+	<main_wnd x="110" y="90" width="761" height="455"/>
 
 	<!-- CHARACTER INFO WINDOW -->
 	<character_info x="26" y="58" width="236" height="120"/>
