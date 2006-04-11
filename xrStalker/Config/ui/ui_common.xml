@@ -415,4 +415,8 @@
     <texture id="ui_cb_button_h" x="277" y="206" width="25" height="23" />
     <texture id="ui_cb_listline_b" x="186" y="142" width="4" height="18" />
     <texture id="ui_cb_listline_e" x="191" y="142" width="4" height="18" />
+    <texture id="ui_PDA_checker_e" x="146" y="232" width="17" height="17" />
+    <texture id="ui_PDA_checker_t" x="146" y="266" width="17" height="17" />
+    <texture id="ui_PDA_checker_d" x="146" y="283" width="17" height="17" />
+    <texture id="ui_PDA_checker_h" x="146" y="249" width="17" height="17" />
 </ui_texture>

@@ -17,11 +17,12 @@
 				<texture>ui\ui_pda_horizontal_line</texture>
 			</auto_static>
 		
-			<primary_or_all x="8" y="426" width="300" height="19" check_mode="1" hint="pda_show_general_or_all_tasks">
-				<text align="l"  x="10" y="0" font="letterica18" r="255" g="255" b="255">show_only_general_tasks</text>
-				<text_color>
+			<primary_or_all x="18" y="430" width="300" height="19" check_mode="1" hint="pda_show_general_or_all_tasks">
+				<texture>ui_PDA_checker</texture>
+				<text align="l"  x="20" y="0" font="letterica16" r="255" g="255" b="255">show_only_general_tasks</text>
+				<text_color_>
 					<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
-				</text_color>			
+				</text_color_>			
 			</primary_or_all>
 			
 			<filter_tab x="15" y="450" width = "324" height="12">
