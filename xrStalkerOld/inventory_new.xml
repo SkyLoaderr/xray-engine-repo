@@ -101,15 +101,15 @@
     </progress_background>   
 
     <progress_bar_health x="8" y="22" width="110" height="10" length="177" horz="0" min="0" max="100" pos="0">
-		<texture>ui\ui_inv_progress_food</texture>
+		<texture>ui_scale_red</texture>
     </progress_bar_health>    
 
     <progress_bar_psy x="26" y="22" width="110" height="10" length="177" horz="0" min="0" max="100" pos="0">
-        <texture>ui\ui_inv_progress_food</texture>
+        <texture>ui_scale_blue</texture>
 	</progress_bar_psy>
 
     <progress_bar_radiation x="45" y="22" width="110" height="10" length="177" horz="0" min="0" max="100" pos="0">
-        <texture>ui\ui_inv_progress_food</texture>
+        <texture>ui_scale_yellow</texture>
     </progress_bar_radiation>
     
     <!-- Delete me -->
