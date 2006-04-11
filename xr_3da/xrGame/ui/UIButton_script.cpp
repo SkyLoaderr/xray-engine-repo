@@ -47,7 +47,8 @@ void CUIButton::script_register(lua_State *L)
 		class_<CUICheckButton, CUI3tButton>("CUICheckButton")
 		.def(							constructor<>())
 		.def("GetCheck",				&CUICheckButton::GetCheck)
-		.def("SetCheck",				&CUICheckButton::SetCheck),
+		.def("SetCheck",				&CUICheckButton::SetCheck)
+		.def("SetDependControl",		&CUICheckButton::SetDependControl),
 
 		class_<CUICustomSpin, CUIWindow>("CUICustomSpin")
 		.def("Init",				&CUICustomSpin::Init)

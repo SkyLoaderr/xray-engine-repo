@@ -11,11 +11,24 @@ CUICheckButton::CUICheckButton(void)
 {	
 	SetTextAlignment(CGameFont::alLeft);
 	m_bCheckMode = true;
+	m_pDependControl = NULL;
 }
 
 CUICheckButton::~CUICheckButton(void)
 {
 }
+
+void CUICheckButton::SetDependControl(CUIWindow* pWnd){
+	m_pDependControl = pWnd;
+}
+
+void CUICheckButton::Update(){
+	CUI3tButton::Update();
+
+	if (m_pDependControl)
+		m_pDependControl->Enable(GetCheck());
+}
+
 
 void CUICheckButton::SetCurrentValue(){
 	SetCheck(GetOptBoolValue());

@@ -364,6 +364,8 @@ const char* CUICustomEdit::GetText(){
 
 void CUICustomEdit::Enable(bool status){
 	CUIWindow::Enable(status);
+	if (!status)
+		SendMessage(this,WINDOW_KEYBOARD_CAPTURE_LOST);
 }
 
 void CUICustomEdit::SetNumbersOnly(bool status){

@@ -8,6 +8,8 @@ public:
 	CUICheckButton(void);
 	virtual ~CUICheckButton(void);
 
+	virtual void Update();
+
 	// CUIOptionsItem
 	virtual void	SetCurrentValue();
 	virtual void	SaveValue();
@@ -20,6 +22,9 @@ public:
 	bool GetCheck()					{return m_eButtonState == BUTTON_PUSHED;}
 	void SetCheck(bool ch)			{m_eButtonState = ch ? BUTTON_PUSHED : BUTTON_NORMAL;}
 
+	void SetDependControl(CUIWindow* pWnd);
+
 private:
-	virtual void InitTexture();
+	void InitTexture();
+	CUIWindow* m_pDependControl;
 };
