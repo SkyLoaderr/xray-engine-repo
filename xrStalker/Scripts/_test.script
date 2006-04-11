@@ -35,8 +35,12 @@ function main123()
 end
 
 function main()
+	local news_text = "%c<255,160,160,160>" .. game.translate_string("trader") .. "\\n" .. "%c<default>" .. "New message arrived" .. "\\n" .. "bebebe"
+	db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 
-game.start_tutorial("part_2_binocular")
+--	db.actor:give_talk_message(news_text, "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
+
+-- game.start_tutorial("part_2_binocular")
 --	db.actor:actor_sleep(0,180)
 	
 	
@@ -53,13 +57,6 @@ game.start_tutorial("part_2_binocular")
 --	level.remove_cam_effector(999)
 --	level.set_pp_effector_factor(999, 0.1)
 --	level.remove_pp_effector(999)
-end
-
-function mai22222n()
-	db.actor:give_game_news("11 first message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("hello Bill \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates \\nHello Bill Gates", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("33 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
-	db.actor:give_game_news("44 third message ", "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
 end
 
 function main123456()
