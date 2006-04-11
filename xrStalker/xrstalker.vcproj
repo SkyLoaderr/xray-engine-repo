@@ -3754,6 +3754,13 @@
 						RelativePath=".\scripts\se_item.script">
 					</File>
 				</Filter>
+				<Filter
+					Name="zones"
+					Filter="">
+					<File
+						RelativePath=".\scripts\se_zones.script">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="common"
