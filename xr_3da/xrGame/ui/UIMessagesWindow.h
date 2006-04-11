@@ -27,7 +27,7 @@ public:
 
 	void				DrawPdaMessages					();
 
-	void				AddPdaMessage					(LPCSTR message, int iDelay);
+//	void				AddPdaMessage					(LPCSTR message, int iDelay);
 	void				AddIconedPdaMessage				(LPCSTR textureName, Frect originalRect, LPCSTR message, int iDelay);
 
 	void				AddLogMessage					(const shared_str& msg);

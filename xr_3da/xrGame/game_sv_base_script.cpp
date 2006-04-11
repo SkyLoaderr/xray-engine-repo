@@ -17,6 +17,7 @@
 #include "xr_time.h"
 #include "net_utils.h"
 #include "UI/UIGameTutorial.h"
+#include "string_table.h"
 
 using namespace luabind;
 
@@ -28,6 +29,11 @@ void start_tutorial(LPCSTR name)
 		
 	g_tutorial			= xr_new<CUISequencer>();
 	g_tutorial->Start	(name);
+}
+
+LPCSTR translate_string(LPCSTR str)
+{
+	return *CStringTable().translate(str);
 }
 
 void game_sv_GameState::script_register(lua_State *L)
@@ -96,7 +102,8 @@ void game_sv_GameState::script_register(lua_State *L)
 	.def("getRP",				&game_sv_GameState::getRP)
 	.def("getRPcount",			&game_sv_GameState::getRPcount),
 
-	def("start_tutorial",					&start_tutorial)
+	def("start_tutorial",		&start_tutorial),
+	def("translate_string",		&translate_string)
 
 	];
 	

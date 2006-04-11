@@ -251,7 +251,7 @@ ClientID game_cl_GameState::GetClientIDByOrderID	(u32 idx)
 void game_cl_GameState::CommonMessageOut (LPCSTR msg)
 {
 	if (!HUD().GetUI()) return;
-	HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(msg, 60000);
+	HUD().GetUI()->m_pMessagesWnd->AddLogMessage(msg);
 }
 
 float game_cl_GameState::shedule_Scale		()

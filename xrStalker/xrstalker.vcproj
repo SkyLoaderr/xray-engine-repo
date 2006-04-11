@@ -1429,9 +1429,6 @@
 				Name="ui"
 				Filter="">
 				<File
-					RelativePath=".\Config\ui\actor_statistic.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\car_panel.xml">
 				</File>
 				<File
@@ -1439,9 +1436,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\ui\color_defs.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\events_new.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\follower_panel.xml">
@@ -1462,9 +1456,6 @@
 					RelativePath=".\Config\ui\job_item.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\jobs.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
@@ -1481,9 +1472,6 @@
 				</File>
 				<File
 					RelativePath=".\Config\text\eng\stable_generate_snames.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\stalkers_ranking.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\statisticwnd.xml">
@@ -1557,6 +1545,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_ingame.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_iconsTotal.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_inventory.xml">
@@ -1687,10 +1678,16 @@
 					Name="pda"
 					Filter="">
 					<File
+						RelativePath=".\Config\ui\actor_statistic.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\encyclopedia.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\encyclopedia_item.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\events_new.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\pda.xml">
@@ -1709,6 +1706,9 @@
 					</File>
 					<File
 						RelativePath=".\config\ui\pda_map.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\stalkers_ranking.xml">
 					</File>
 				</Filter>
 				<Filter

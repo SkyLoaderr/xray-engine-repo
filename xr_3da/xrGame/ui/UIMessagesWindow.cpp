@@ -79,11 +79,11 @@ void CUIMessagesWindow::Init(float x, float y, float width, float height){
 	}	
 
 }
-
+/*
 void CUIMessagesWindow::AddPdaMessage(LPCSTR message, int iDelay){
 	m_pGameLog->AddPdaMessage(message, float(iDelay));
 }
-
+*/
 void CUIMessagesWindow::AddIconedPdaMessage(LPCSTR textureName, Frect originalRect, LPCSTR message, int iDelay){
 	
 	CUIPdaMsgListItem *pItem = m_pGameLog->AddPdaMessage(message, float(iDelay));

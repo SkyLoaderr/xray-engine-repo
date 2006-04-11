@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-	<main_wnd x="76" y="62" width="761" height="480"> 
+	<main_wnd x="110" y="90" width="761" height="480"> 
 		<left_frame x="0" y="0" width="298" height="475" a="90">
 			<texture>ui_pda_frame_sub</texture>
 

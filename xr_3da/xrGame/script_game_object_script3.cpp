@@ -128,12 +128,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("give_info_portion",			&CScriptGameObject::GiveInfoPortion)
 		.def("disable_info_portion",		&CScriptGameObject::DisableInfoPortion)
 		.def("give_game_news",				(bool (CScriptGameObject::*)(LPCSTR,LPCSTR,Frect,int,int))(&CScriptGameObject::GiveGameNews))
-		.def("give_game_news",				(bool (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,Frect,int,int))(&CScriptGameObject::GiveGameNews))
-		.def("give_game_news",				(bool (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,LPCSTR,Frect,int,int))(&CScriptGameObject::GiveGameNews))
 
 		.def("give_talk_message",			(void (CScriptGameObject::*)(LPCSTR,LPCSTR,Frect,LPCSTR))(&CScriptGameObject::AddIconedTalkMessage))
-		.def("give_talk_message",			(void (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,Frect,LPCSTR))(&CScriptGameObject::AddIconedTalkMessage))
-		.def("give_talk_message",			(void (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,LPCSTR,Frect,LPCSTR))(&CScriptGameObject::AddIconedTalkMessage))
 		
 
 		.def("has_info",					&CScriptGameObject::HasInfo)
@@ -143,8 +139,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("get_task_state",				&CScriptGameObject::GetGameTaskState)
 		.def("set_task_state",				&CScriptGameObject::SetGameTaskState)
 		.def("give_task",					&CScriptGameObject::GiveTaskToActor,		adopt(_2))
-
-		.def("send_pda_message",			&CScriptGameObject::SendPdaMessage)
 
 		.def("is_talking",					&CScriptGameObject::IsTalking)
 		.def("stop_talk",					&CScriptGameObject::StopTalk)
@@ -202,11 +196,6 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("get_actor_relation_flags",	&CScriptGameObject::get_actor_relation_flags)
 		.def("set_actor_relation_flags",	&CScriptGameObject::set_actor_relation_flags)
 		.def("sound_voice_prefix",	&CScriptGameObject::sound_voice_prefix)
-
-//		.def("set_character_pda_info",		&CScriptGameObject::set_character_pda_info)
-//		.def("get_character_pda_info",		&CScriptGameObject::get_character_pda_info)
-//		.def("set_pda_info",				&CScriptGameObject::set_pda_info)
-//		.def("get_pda_info",				&CScriptGameObject::get_pda_info)
 
 		.enum_("ACTOR_RELATIONS")
 		[

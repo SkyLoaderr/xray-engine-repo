@@ -107,6 +107,7 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 	SGameTaskObjective	*obj = &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
 
 	m_taskImage->InitTexture		(*obj->icon_texture_name);
+
 	Frect r							= obj->icon_rect;
 	m_taskImage->SetOriginalRect	(r.x1, r.y1, r.x2, r.y2);
 	m_taskImage->ClipperOn			();

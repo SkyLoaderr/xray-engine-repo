@@ -1195,10 +1195,12 @@ void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA* news)
 {
 	if (g_bNewsDisable) return;
 
-	if(news->texture_name.size())
-		HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(*(news->texture_name), news->tex_rect, news->SingleLineText(), news->show_time);
-	else
-		HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(news->SingleLineText(), news->show_time);
+	VERIFY(news->texture_name.size());
+
+	HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(*(news->texture_name), news->tex_rect, news->SingleLineText(), news->show_time);
+	
+//	else
+//		HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(news->SingleLineText(), news->show_time);
 }
 
 void CUIMainIngameWnd::SetWarningIconColor(CUIStatic* s, const u32 cl)

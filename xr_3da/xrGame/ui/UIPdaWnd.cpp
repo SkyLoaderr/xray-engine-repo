@@ -133,11 +133,6 @@ void CUIPdaWnd::Init()
 	xml_init.InitTabControl	(uiXml, "tab", 0, UITabControl);
 	UITabControl->SetMessageTarget(this);
 
-	// Off button
-	UIOffButton						= xr_new<CUIButton>(); UIOffButton->SetAutoDelete(true);
-	UIMainPdaFrame->AttachChild		(UIOffButton);
-	xml_init.InitButton				(uiXml, "off_button", 0, UIOffButton);
-	UIOffButton->SetMessageTarget	(this);
 
 	if(GameID()!=GAME_SINGLE){
 		UITabControl->GetButtonsVector()->at(0)->Enable(false);
@@ -162,14 +157,7 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			SetActiveSubdialog	((EPdaTabs)UITabControl->GetActiveIndex());
 		}
 	}else 
-	if (UIOffButton == pWnd){
-		if (STATIC_FOCUS_RECEIVED == msg)
-			UIOffButton->TextureOn();
-		else if (STATIC_FOCUS_LOST == msg)
-			UIOffButton->TextureOff();
-		else if (BUTTON_CLICKED == msg)
-			Game().StartStopMenu(this,true);
-	}else{
+	{
 		R_ASSERT(m_pActiveDialog);
 		m_pActiveDialog->SendMessage(pWnd, msg, pData);
 	}

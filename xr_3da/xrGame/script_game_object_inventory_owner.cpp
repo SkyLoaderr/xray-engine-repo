@@ -52,33 +52,9 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 
 void _AddIconedTalkMessage(LPCSTR text, LPCSTR texture_name, const Frect& tex_rect, LPCSTR templ_name);
 
-void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR text1, LPCSTR text2, LPCSTR text3, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
+void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR text, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
 {
-	string1024	str;
-	return _AddIconedTalkMessage	(strconcat(	str,
-									*CStringTable().translate(text1),
-									" ",
-									*CStringTable().translate(text2),
-									" ",
-									*CStringTable().translate(text3)), 
-									texture_name, 
-									tex_rect, 
-									templ_name); 
-}
-void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR text1, LPCSTR text2, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
-{
-	string1024	str;
-	return _AddIconedTalkMessage	(strconcat(	str,
-									*CStringTable().translate(text1),
-									" ",
-									*CStringTable().translate(text2)),
-									texture_name, 
-									tex_rect, 
-									templ_name); 
-}
-void  CScriptGameObject::AddIconedTalkMessage		(LPCSTR text1, LPCSTR texture_name, Frect tex_rect, LPCSTR templ_name)
-{
-	return _AddIconedTalkMessage	(*CStringTable().translate(text1),
+	return _AddIconedTalkMessage	(text,
 									texture_name, 
 									tex_rect, 
 									templ_name); 
@@ -94,36 +70,9 @@ void _AddIconedTalkMessage(LPCSTR text, LPCSTR texture_name, const Frect& tex_re
 }
 bool _give_news	(LPCSTR news, LPCSTR texture_name, const Frect& tex_rect, int delay, int show_time);
 
-bool  CScriptGameObject::GiveGameNews		(LPCSTR news,LPCSTR news2,LPCSTR news3, LPCSTR texture_name, Frect tex_rect, int delay, int show_time)
-{
-	string1024	str;
-	return _give_news				(strconcat(	str,
-									*CStringTable().translate(news),
-									" ",
-									*CStringTable().translate(news2),
-									" ",
-									*CStringTable().translate(news3)), 
-									texture_name, 
-									tex_rect, 
-									delay, 
-									show_time);
-}
-
-bool  CScriptGameObject::GiveGameNews		(LPCSTR news,LPCSTR news2, LPCSTR texture_name, Frect tex_rect, int delay, int show_time)
-{
-	string1024	str;
-	return _give_news				(strconcat(	str,
-									*CStringTable().translate(news),
-									" ",
-									*CStringTable().translate(news2)),
-									texture_name, 
-									tex_rect, 
-									delay, 
-									show_time);
-}
 bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, Frect tex_rect, int delay, int show_time)
 {
-	return _give_news				(*CStringTable().translate(news),
+	return _give_news				(news,
 									texture_name, 
 									tex_rect, 
 									delay, 
@@ -136,11 +85,10 @@ bool _give_news	(LPCSTR text, LPCSTR texture_name, const Frect& tex_rect, int de
 	if(show_time!=0)
 		news_data.show_time		= show_time;// override default
 
-	if(xr_strlen(texture_name)>0)
-	{
-		news_data.texture_name			= texture_name;
-		news_data.tex_rect				= tex_rect;
-	}
+	VERIFY(xr_strlen(texture_name)>0);
+
+	news_data.texture_name			= texture_name;
+	news_data.tex_rect				= tex_rect;
 
 
 	if(delay==0)
@@ -150,28 +98,6 @@ bool _give_news	(LPCSTR text, LPCSTR texture_name, const Frect& tex_rect, int de
 
 	return true;
 }
-
-/*
-bool CScriptGameObject::GiveInfoPortionViaPda(LPCSTR info_id, CScriptGameObject* pFromWho)
-{
-	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	if(!pInventoryOwner) return false;
-	if(!pInventoryOwner->GetPDA()) return false;
-
-	CInventoryOwner* pFromWhoInvOwner = smart_cast<CInventoryOwner*>(&pFromWho->object());
-	if(!pFromWhoInvOwner) return false;
-	if(!pFromWhoInvOwner->GetPDA()) return false;
-
-	//отправляем от нашему PDA пакет информации с номером
-	NET_Packet		P;
-	object().u_EventGen(P,GE_PDA,pInventoryOwner->GetPDA()->ID());
-	P.w_u16			(u16(pFromWhoInvOwner->GetPDA()->ID()));		//отправитель
-	P.w_s16			(ePdaMsgInfo);									
-	P.w_s32			(CInfoPortion::IdToIndex(info_id));
-	object().u_EventSend(P);
-	return			true;
-}
-*/
 
 bool  CScriptGameObject::HasInfo				(LPCSTR info_id)
 {
@@ -201,26 +127,6 @@ xrTime CScriptGameObject::GetInfoTime			(LPCSTR info_id)
 		return xrTime(0);
 }
 
-
-bool CScriptGameObject::SendPdaMessage(EPdaMsg pda_msg, CScriptGameObject* pForWho)
-{
-	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());
-	if(!pInventoryOwner) return false;
-	if(!pInventoryOwner->GetPDA()) return false;
-
-	CInventoryOwner* pForWhoInvOwner = smart_cast<CInventoryOwner*>(&pForWho->object());
-	if(!pForWhoInvOwner) return false;
-	if(!pForWhoInvOwner->GetPDA()) return false;
-
-	//отправляем от нашему PDA пакет информации с номером
-	NET_Packet		P;
-	object().u_EventGen(P,GE_PDA,pForWhoInvOwner->GetPDA()->ID());
-	P.w_u16			(u16(pInventoryOwner->GetPDA()->ID()));		//отправитель
-	P.w_s16			((u16)pda_msg);
-	P.w_stringZ		(NULL);
-	object().u_EventSend(P);
-	return			true;
-}
 
 
 bool CScriptGameObject::IsTalking()
@@ -814,11 +720,13 @@ bool CScriptGameObject::attachable_item_enabled	() const
 void  CScriptGameObject::RestoreWeapon		()
 {
 	Actor()->inventory().setSlotsBlocked(false);
+	Msg("---RestoreWeapon");
 }
 
 void  CScriptGameObject::HideWeapon			()
 {
 	Actor()->inventory().setSlotsBlocked(true);
+	Msg("---HideWeapon");
 }
 
 int	CScriptGameObject::animation_slot			() const

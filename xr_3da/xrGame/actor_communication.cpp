@@ -168,33 +168,6 @@ void CActor::OnDisableInfo(INFO_ID info_id) const
 		pGameSP->TalkMenu->NeedUpdateQuestions();
 }
 
-
-/*
-void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
-{
-	//только если находимся в режиме single
-	if(!HUD().GetUI())
-		return;
-	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-	if(!pGameSP) return;
-
-	//визуализация в интерфейсе
-	CObject* pPdaObject =  Level().Objects.net_Find(who);
-	VERIFY(pPdaObject);
-	CPda* pPda = smart_cast<CPda*>(pPdaObject);
-	VERIFY(pPda);
-	HUD().GetUI()->UIMainIngameWnd->ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_id);
-
-
-	SPdaMessage last_pda_message;
-	//bool prev_msg = 
-	GetPDA()->GetLastMessageFromLog(who, last_pda_message);
-
-	//обновить информацию о контакте
-//.	UpdateContact(pPda->GetOriginalOwnerID());
-	CInventoryOwner::ReceivePdaMessage(who, msg, info_id);
-}
-*/
 void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 {
 	//только если находимся в режиме single

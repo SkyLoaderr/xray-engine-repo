@@ -47,13 +47,6 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		VERIFY					(verify_entities());
 #	endif
 		}break;
-	case GE_PDA:{
-		ClientID clientID;clientID.setBroadcast();
-		SendBroadcast			(clientID,P,MODE);
-#	ifdef SLOW_VERIFY_ENTITIES
-		VERIFY					(verify_entities());
-#	endif
-		}break;
 	case GE_INV_ACTION:
 		{
 			xrClientData* CL		= ID_to_client(sender);

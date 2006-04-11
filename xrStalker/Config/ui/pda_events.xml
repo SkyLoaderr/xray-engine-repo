@@ -2,7 +2,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 
-	<main_wnd x="76" y="62" width="761" height="475"> 
+	<main_wnd x="110" y="90" width="761" height="475"> 
 	
 		<left_frame x="0" y="0" width="340" height="475" a="90">
 			<texture>ui_pda_frame_sub</texture>
@@ -13,18 +13,49 @@
 			<auto_static x="310" y="48" width="4" height="467">
 				<texture>ui\ui_pda_vertical_line_r_r</texture>
 			</auto_static>
-			<auto_static x="8" y="68" width="308" height="2" stretch="1">
+			<auto_static x="8" y="430" width="308" height="2" stretch="1">
 				<texture>ui\ui_pda_horizontal_line</texture>
 			</auto_static>
 		
-			<primary_or_all x="8" y="46" width="200" height="19" check_mode="1" hint="pda_show_general_or_all_tasks">
+			<primary_or_all x="8" y="426" width="300" height="19" check_mode="1" hint="pda_show_general_or_all_tasks">
 				<text align="l"  x="10" y="0" font="letterica18" r="255" g="255" b="255">show_only_general_tasks</text>
 				<text_color>
 					<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 				</text_color>			
 			</primary_or_all>
 			
+			<filter_tab x="15" y="450" width = "325" height="12">
+				<button x="5" y="0" width="70" height="12" hint="pda_btn_active_hint">
+					<text align="l"  x="0" y="0" font="letterica18" r="255" g="255" b="255">pda_btn_active</text>
+					<text_color>
+						<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
+					</text_color>			
+				</button>								
+				<button x="80" y="0" width="100" height="12" hint="pda_btn_accomplished_hint">
+					<text align="l"  x="0" y="0" font="letterica18" r="255" g="255" b="255">pda_btn_accomplished</text>
+					<text_color>
+						<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
+					</text_color>			
+				</button>								
+				<button x="185" y="0" width="60" height="12" hint="pda_btn_failed_hint">
+					<text align="l"  x="0" y="0" font="letterica18" r="255" g="255" b="255">pda_btn_failed</text>
+					<text_color>
+						<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
+					</text_color>			
+				</button>								
+				<button x="255" y="0" width="35" height="12" hint="pda_btn_own_hint">
+					<text align="l"  x="0" y="0" font="letterica18" r="255" g="255" b="255">pda_btn_own</text>
+					<text_color>
+						<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
+					</text_color>			
+				</button>		
+			</filter_tab>						
+			
+			
 			<left_frame_header x="8" y="17" width="325" height="27">
+				<title x="15" y="1" width="545" height="440">
+					<text font="letterica25" r="225" g="225" b="250">Tasks</text>
+				</title>
 				<texture>ui_string_02</texture>
 				
 				<anim_static x="290" y="-6" width="32" height="32" frames = "16" duration = "1000" columns = "8" frame_width = "32" frame_height = "32" cyclic = "1" autoplay = "1">
@@ -59,7 +90,7 @@
 				</filter_tab>						
 			</left_frame_header>
 
-			<list x="0" y="68" width="336" height="393" right_ident="10" />
+			<list x="0" y="48" width="336" height="383" right_ident="10" />
 		</left_frame>
 	
 		<right_frame x="352" y="0" width="409" height="475">

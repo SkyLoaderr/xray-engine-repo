@@ -80,7 +80,6 @@ enum {
 
 	GE_BUY,
 
-	GE_PDA,						//a PDA message sent from one PDA to another
 
 	GE_INFO_TRANSFER,			//transfer _new_ info on PDA
 	

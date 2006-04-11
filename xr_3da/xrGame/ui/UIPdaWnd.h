@@ -32,9 +32,6 @@ protected:
 	CUIFrameLineWnd*		UIMainButtonsBackground;
 	CUIFrameLineWnd*		UITimerBackground;
 
-	// Кнопочка выключения ПДА
-	CUIButton*				UIOffButton;
-
 	// кнопки PDA
 	CUITabControl*			UITabControl;
 

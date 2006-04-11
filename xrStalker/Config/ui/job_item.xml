@@ -2,13 +2,13 @@
 <window>
 
 	<task_root_item x="0" y="0" width="320" height="40">
-		<image x="8" y="16" width="45" height="45"/>
+		<image x="8" y="16" width="83" height="47"/>
 		
-		<caption x="60" y="16" width="200" height="18">
+		<caption x="93" y="16" width="180" height="18">
 			<text align="l" x="0" y="0" font="letterica18"/>
 		</caption>
 
-		<caption_time x="60" y="46" width="200" height="18">
+		<caption_time x="93" y="86" width="180" height="18">
 			<text align="l" x="0" y="0" font="medium" r="150" g="150" b="180" a="255"/>
 		</caption_time>
 

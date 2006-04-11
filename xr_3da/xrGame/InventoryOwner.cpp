@@ -220,14 +220,6 @@ bool CInventoryOwner::IsActivePDA() const
 }
 
 
-//who - id PDA которому отправляем сообщение
-void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
-{
-	if(!GetPDA() || !GetPDA()->IsActive()) return;
-
-	GetPDA()->SendMessageID(who, msg, info_id);
-}
-
 CTrade* CInventoryOwner::GetTrade() 
 {
 	R_ASSERT2(m_pTrade, "trade for object does not init yet");

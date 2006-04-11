@@ -61,12 +61,6 @@ public:
 	CPda* GetPDA		() const;
 	bool IsActivePDA	() const;
 
-	//функци€ через которую
-	//другие персонажи отправл€ют объекту PDA сообщение.
-	//должна быть переопределена в порожеденных классах
-//	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id);
-	//отправка сообщени€ другому владельцу PDA
-	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id);
 
 	// инвентарь
 	CInventory	*m_inventory;			

@@ -36,7 +36,6 @@ CPda::CPda(void)
 	//включим, только когда присоединим к первому владельцу
 	TurnOff					();
 
-	m_bNewMessage			= false;
 }
 
 CPda::~CPda(void) 
@@ -193,110 +192,6 @@ CObject* CPda::GetOwnerObject()
 	CObject* pObject =  Level().Objects.net_Find(GetOriginalOwnerID());
 	return pObject;
 }
-
-//отправление сообщению PDA с определенным ID
-//если такое есть в списке контактов
-void CPda::SendMessageID(u32 pda_ID, EPdaMsg msg, INFO_ID info_id)
-{
-	CObject* pObject =  Level().Objects.net_Find(pda_ID);
-	CPda* pPda = smart_cast<CPda*>(pObject);
-	if(!pPda) return;
-	CObject* pPdaOwner = pPda->H_Parent();
-	xr_vector<CObject*>::iterator it = std::find(feel_touch.begin(), feel_touch.end(), pPdaOwner);
-	//определить индекс PDA в списке активных контактов
-//	PDA_LIST_it it =  std::find(m_PDAList.begin(), m_PDAList.end(), pPda);
-	
-	//PDA нет в списке
-	if(it == feel_touch.end()) return;
-
-	PdaEventSend(pda_ID, msg, info_id);
-}
-
-void CPda::PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_id)
-{
-	AddMessageToLog(pda_ID, msg, info_id, false);
-
-	//создать и отправить пакет
-	NET_Packet		P;
-	u_EventGen		(P,GE_PDA,pda_ID);
-	P.w_u16			(u16(ID()));				//отправитель
-	P.w_s16			(s16(msg));					//сообщение
-	P.w_stringZ		(info_id);					//индекс информации если нужен
-	u_EventSend		(P);
-}
-
-//добавляет сообщение в список
-void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_id, bool receive)
-{
-	m_bNewMessage = true;
-
-	SPdaMessage pda_message;
-
-	//новый контакт
-	if(m_mapPdaLog.find(pda_ID) == m_mapPdaLog.end())
-	{
-		m_mapPdaLog[pda_ID].clear();
-		
-		if(msg == ePdaMsgInfo)
-			pda_message.question = false;
-		else
-			pda_message.question = true;
-	}
-	else
-	{
-		pda_message.question = !m_mapPdaLog[pda_ID].front().question;
-	}
-
-
-	pda_message.msg = msg;
-	pda_message.info_id = info_id;
-	pda_message.receive = receive;
-	pda_message.time = Level().GetGameTime();
-	
-	//if(m_mapPdaLog[pda_ID].size();
-	m_mapPdaLog[pda_ID].push_front(pda_message);
-}
-
-//получить последнее сообщение из лога 
-bool CPda::GetLastMessageFromLog(u32 pda_ID, SPdaMessage& pda_message)
-{
-	PDA_LOG_PAIR_IT it =  m_mapPdaLog.find(pda_ID);
-	if(m_mapPdaLog.end() == it)	return false;
-	
-	pda_message = (*it).second.front();
-
-	return true;
-}
-
-
-
-void CPda::OnEvent(NET_Packet& P, u16 type)
-{
-	switch (type)
-	{
-	case GE_PDA:
-		{
-			u16				id;
-			s16				msg;
-			shared_str		info_id;
-
-			P.r_u16			(id);
-			P.r_s16			(msg);
-			P.r_stringZ		(info_id);
-
-			//отправить сообщение владельцу, только если мы включены
-			if(IsActive())
-			{
-//				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, info_id);
-				AddMessageToLog(id, (EPdaMsg)msg, info_id, true);
-			}
-		}
-		break;
-	}
-
-	inherited::OnEvent(P,type);
-}
-
 
 LPCSTR		CPda::Name				()
 {
