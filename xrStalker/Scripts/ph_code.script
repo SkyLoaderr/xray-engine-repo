@@ -53,6 +53,8 @@ function add_to_binder(npc, ini, scheme, section, storage)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
+    printf("ph_code <set_scheme>: START [%s]", npc:name())
+
     local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
     st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
     
@@ -73,4 +75,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
             cc = xr_logic.cfg_get_string_and_condlist(ini, section, "on_check_code" .. i, npc)
         end
     end
+
+    printf("ph_code <set_scheme>: END [%s]", npc:name())
 end
