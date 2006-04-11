@@ -126,6 +126,7 @@ stub_for_corpse     = true
 dont_change_job     = true
 on_signal           = leader_dead | remark@val_escort_captive_check_state
 on_info             = {=distance_to_obj_le(406:3)} remark@val_escort_captive_check_state
+on_timer            = 20000 | remark@val_escort_captive_check_state
 meet                = meet@ignore_abuse
 danger              = danger@val_escort_captive
 ;wounded             = wounded@val_escort_captive
