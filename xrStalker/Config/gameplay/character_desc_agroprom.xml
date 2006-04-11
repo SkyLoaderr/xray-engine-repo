@@ -651,7 +651,7 @@
 	<!---------------------------BANDIT general----------------------->
 	
 	<specific_character id="agr_bandit_general_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>agr_bandit_general_bio</bio>
@@ -682,7 +682,7 @@
 	</specific_character>
 
 	<specific_character id="agr_bandit_general_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>agr_bandit_general_bio</bio>
@@ -713,7 +713,7 @@
 	</specific_character>
 
 	<specific_character id="agr_bandit_general_default3" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
+		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>agr_bandit_general_bio</bio>
