@@ -85,6 +85,10 @@ function mp_options:InitControls(x, y, xml, handler)
 	handler.edit_rate_of_change:SetText("0.0")
 	
 	handler.spin_weather				= xml:InitComboBox("tab_options:spin_weather",				self)
+	
+	handler.check_map_rotation:SetDependControl(handler.edit_maprotlist)
+	handler.check_spectator:SetDependControl(handler.edit_spectator)
+	
 end
 
 function mp_options:SetGameMode(mode, handler)

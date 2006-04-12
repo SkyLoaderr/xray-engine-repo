@@ -57,7 +57,7 @@ void CUIMessagesWindow::Init(float x, float y, float width, float height){
 		//CUIXmlInit::InitFont(xml, "sp_log_list:font", 0, color, pFont);
 		//m_pGameLog->SetTextAtrib(pFont, color);
 
-		m_ListPos2 = CUIXmlInit::GetFRect(xml, "sp_log_list2", 0);
+//		m_ListPos2 = CUIXmlInit::GetFRect(xml, "sp_log_list2", 0);
 	}
 	else
 	{
@@ -111,20 +111,20 @@ void CUIMessagesWindow::SetChatOwner(game_cl_GameState* owner){
 		R_ASSERT2(false, "Can't set owner to NULL object");
 }
 
-void CUIMessagesWindow::DrawPdaMessages(){
-	Frect tmp = m_pGameLog->GetWndRect		();
-	m_pGameLog->SetWndPos					(m_ListPos2.x1, m_ListPos2.y1);
-	m_pGameLog->SetWidth					(m_ListPos2.width());
-	m_pGameLog->SetHeight					(m_ListPos2.height());
-	m_pGameLog->ForceUpdate					();
-	m_pGameLog->Update();
-	m_pGameLog->Draw						();
-
-	m_pGameLog->SetWndPos					(tmp.x1, tmp.y1);
-	m_pGameLog->SetWidth					(tmp.width());
-	m_pGameLog->SetHeight					(tmp.height());
-	m_pGameLog->ForceUpdate					();
-}
+//void CUIMessagesWindow::DrawPdaMessages(){
+//	Frect tmp = m_pGameLog->GetWndRect		();
+//	m_pGameLog->SetWndPos					(m_ListPos2.x1, m_ListPos2.y1);
+//	m_pGameLog->SetWidth					(m_ListPos2.width());
+//	m_pGameLog->SetHeight					(m_ListPos2.height());
+//	m_pGameLog->ForceUpdate					();
+//	m_pGameLog->Update();
+//	m_pGameLog->Draw						();
+//
+//	m_pGameLog->SetWndPos					(tmp.x1, tmp.y1);
+//	m_pGameLog->SetWidth					(tmp.width());
+//	m_pGameLog->SetHeight					(tmp.height());
+//	m_pGameLog->ForceUpdate					();
+//}
 void CUIMessagesWindow::Update()
 {
 	CUIWindow::Update();

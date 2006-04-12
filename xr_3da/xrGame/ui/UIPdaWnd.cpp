@@ -260,7 +260,7 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaTabs section)
 void CUIPdaWnd::Draw()
 {
 	inherited::Draw									();
-	HUD().GetUI()->m_pMessagesWnd->DrawPdaMessages	();
+//	HUD().GetUI()->m_pMessagesWnd->DrawPdaMessages	();
 	DrawUpdatedSections								();
 }
 

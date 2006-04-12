@@ -25,7 +25,7 @@ public:
 						CUIMessagesWindow				();
 	virtual				~CUIMessagesWindow				();
 
-	void				DrawPdaMessages					();
+//	void				DrawPdaMessages					();
 
 //	void				AddPdaMessage					(LPCSTR message, int iDelay);
 	void				AddIconedPdaMessage				(LPCSTR textureName, Frect originalRect, LPCSTR message, int iDelay);
@@ -46,5 +46,5 @@ protected:
 	CUIGameLog*			m_pChatLog;
 	CUIChatWnd*			m_pChatWnd;
 	CUIGameLog*			m_pGameLog;
-	Frect				m_ListPos2;
+//	Frect				m_ListPos2;
 };
