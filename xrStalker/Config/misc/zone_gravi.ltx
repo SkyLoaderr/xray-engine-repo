@@ -124,7 +124,9 @@ max_start_power		= 0.35
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
-max_artefact_count	= 0
+max_artefact_count	= 1
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
+artefact_spawn_rnd	= 50  ;веро€тность заспавнить артефакт в процентах.
 
 throw_in_impulse			= 		1000	;сила импульса вт€гивани€ (дл€ тела 100кг)
 throw_out_impulse			=		4000	;сила выбрасывани€ взрывом
@@ -143,7 +145,7 @@ $spawn 			= "zones\gravi_zone_weak_noart"
 spawn_blowout_artefacts = off
 min_artefact_count	= 0
 max_artefact_count	= 0
-
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
 
 [zone_gravi_zone_average]:zone_gravi_zone
 $spawn 			= "zones\gravi zone_average"
@@ -155,8 +157,10 @@ min_start_power		= 0.90
 max_start_power		= 1.10
 attenuation			= 1
 period				= 1
-min_artefact_count	= 0
+min_artefact_count	= 1
 max_artefact_count	= 1
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
+artefact_spawn_rnd	= 70  ;веро€тность заспавнить артефакт в процентах.
 
 throw_in_impulse			= 		1000	;сила импульса вт€гивани€ (дл€ тела 100кг)
 throw_out_impulse			=		4000	;сила выбрасывани€ взрывом
@@ -186,7 +190,8 @@ attenuation			= 1
 period				= 1
 min_artefact_count	= 1
 max_artefact_count	= 2
-
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
+artefact_spawn_rnd	= 90  ;веро€тность заспавнить артефакт в процентах.
 
 throw_in_impulse			= 		1000	;сила импульса вт€гивани€ (дл€ тела 100кг)
 throw_out_impulse			=		4000	;сила выбрасывани€ взрывом

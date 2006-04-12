@@ -128,7 +128,9 @@ max_start_power		= 0.50
 attenuation			= 1
 period				= 1
 min_artefact_count	= 0
-max_artefact_count	= 0
+max_artefact_count	= 1
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
+artefact_spawn_rnd	= 50  ;вероятность заспавнить артефакт в процентах.
 
 artefacts					= af_blood,0.8, af_mincer_meat, 0.2,af_soul, 0.0
 BirthProbability			= 0.1
@@ -143,6 +145,7 @@ $spawn 						= "zones\mincer_zone_weak_noart"
 spawn_blowout_artefacts		= off
 min_artefact_count	= 0
 max_artefact_count	= 0
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
 
 
 
@@ -172,9 +175,10 @@ min_start_power		= 1.10
 max_start_power		= 1.20
 attenuation			= 1
 period				= 1
-min_artefact_count	= 0
+min_artefact_count	= 1
 max_artefact_count	= 1
-
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
+artefact_spawn_rnd	= 70  ;вероятность заспавнить артефакт в процентах.
 
 [zone_mincer_strong]:zone_mincer
 $spawn 						= "zones\mincer zone_strong"
@@ -204,3 +208,5 @@ attenuation			= 1
 period				= 1
 min_artefact_count	= 1
 max_artefact_count	= 2
+artefact_spawn_idle	= 24  ;насколько часто спонить артефакты в офлайне, в часах
+artefact_spawn_rnd	= 90  ;вероятность заспавнить артефакт в процентах.
