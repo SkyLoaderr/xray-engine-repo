@@ -27,6 +27,13 @@ head_animations = {
 	angry	= {"talk_3","talk_2","talk_1"}
 }
 
+----------------------------------------------------------------------------------------------------
+local trader_obj = nil
+
+function on_start_tutorial_item()
+	
+end
+----------------------------------------------------------------------------------------------------
 
 class "mob_trader"
 
@@ -36,6 +43,8 @@ function mob_trader:__init(obj, storage)
 end
 
 function mob_trader:reset_scheme()
+	trader_obj = self.object
+
 	self.object:set_callback(callback.trader_global_anim_request, self.on_global_anim_request, self )
 	self.object:set_callback(callback.trader_head_anim_request, self.on_head_anim_request, self )
 	self.object:set_callback(callback.trader_sound_end, self.on_sound_end, self )
