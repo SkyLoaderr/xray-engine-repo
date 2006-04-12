@@ -43,7 +43,7 @@ void CUIEditKeyBind::OnFocusLost(){
 
 extern _keybind keynames[];
 
-void CUIEditKeyBind::OnMouseDown(bool left_button){
+bool CUIEditKeyBind::OnMouseDown(bool left_button){
 	if (m_bEditMode){		
 		if (left_button){
 			m_val = GetKey(MOUSE_1);
@@ -56,13 +56,13 @@ void CUIEditKeyBind::OnMouseDown(bool left_button){
 		}
 		OnFocusLost();
 		m_bChanged = true;
-		return;
+		return true;
 	}
 
 	if (left_button)
 		m_bEditMode = m_bCursorOverWindow;
 
-	CUILabel::OnMouseDown(left_button);
+	return CUILabel::OnMouseDown(left_button);
 }
 
 bool CUIEditKeyBind::OnKeyboard(int dik, EUIMessages keyboard_action){

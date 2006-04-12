@@ -118,7 +118,7 @@ public:
 	virtual void OnMouseMove();
 	virtual void OnMouseScroll(float iDirection);
 	virtual bool OnDbClick();
-	virtual void OnMouseDown(bool left_button = true);
+	virtual bool OnMouseDown(bool left_button = true);
 	virtual void OnMouseUp(bool left_button = true);
 	virtual void OnFocusReceive();
 	virtual void OnFocusLost();

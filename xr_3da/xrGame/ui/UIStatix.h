@@ -12,7 +12,7 @@ public:
 	virtual void Update();
 	virtual void OnFocusReceive();
 	virtual void OnFocusLost();
-	virtual void OnMouseDown(bool left_button = true);
+	virtual bool OnMouseDown(bool left_button = true);
 			void SetSelectedState(bool state);
 			bool GetSelectedState();
 

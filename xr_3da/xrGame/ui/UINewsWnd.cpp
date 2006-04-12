@@ -66,8 +66,9 @@ void CUINewsWnd::LoadNews()
 
 void CUINewsWnd::Update()
 {
+	inherited::Update		();	
 	if(m_flags.test(eNeedAdd))
-		LoadNews	();
+		LoadNews			();
 }
 
 void CUINewsWnd::AddNews()

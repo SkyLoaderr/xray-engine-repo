@@ -196,7 +196,7 @@ void CHUDManager::Render_Last()
 	O->OnHUDDraw					(this);
 	::Render->set_HUD				(FALSE);
 }
-
+extern void draw_wnds_rects();
 //отрисовка элементов интерфейса
 void  CHUDManager::RenderUI()
 {
@@ -217,7 +217,7 @@ void  CHUDManager::RenderUI()
 	}
 	if (psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT) && !bAlready)	
 		m_pHUDCursor->Render();
-
+	draw_wnds_rects();
 	// Recalc new scale factor if resolution was changed
 //	OnDeviceCreate();
 }

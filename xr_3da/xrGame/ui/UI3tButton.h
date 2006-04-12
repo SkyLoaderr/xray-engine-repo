@@ -51,7 +51,7 @@ public:
 	//virtual void Enable(bool bEnable);	
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
-	virtual void OnMouseDown(bool left_button = true);
+	virtual bool OnMouseDown(bool left_button = true);
 			void SetCheckMode(bool mode) {m_bCheckMode = mode;}
 
 

@@ -18,7 +18,7 @@ public:
 	virtual LPCSTR			GetHint							();
 	virtual		void		Update							();
 	virtual		void		Draw							();
-	virtual		void		OnMouseDown						(bool left_button = true);
+	virtual		bool		OnMouseDown						(bool left_button = true);
 	virtual		void		OnFocusLost						();
 };
 

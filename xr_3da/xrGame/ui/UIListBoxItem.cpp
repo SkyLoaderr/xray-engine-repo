@@ -31,11 +31,13 @@ void CUIListBoxItem::InitDefault(){
 	InitTexture("ui_listline");
 }
 
-void CUIListBoxItem::OnMouseDown(bool left_button){
+bool CUIListBoxItem::OnMouseDown(bool left_button){
 	if (left_button){
 		smart_cast<CUIScrollView*>(GetParent()->GetParent())->SetSelected(this);
 		GetMessageTarget()->SendMessage(this,LIST_ITEM_SELECT, &uid);
-	}
+		return true;
+	}else
+		return false;
 }
 
 void CUIListBoxItem::SetSelected(bool b){

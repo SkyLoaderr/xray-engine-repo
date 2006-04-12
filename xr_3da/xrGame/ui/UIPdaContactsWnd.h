@@ -57,5 +57,5 @@ public:
 					CUIPdaContactItem	(CUIPdaContactsWnd* cw)		{m_cw = cw;}
 	virtual			~CUIPdaContactItem	();
 	virtual void	SetSelected			(bool b);
-	virtual void	OnMouseDown			(bool left_button = true);
+	virtual bool	OnMouseDown			(bool left_button = true);
 };

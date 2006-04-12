@@ -27,6 +27,58 @@ poolSS< _12b, 128>	ui_allocator;
 	void dump_list_wnd(){}
 #endif
 
+xr_vector<Frect> g_wnds_rects;
+ref_shader  dbg_draw_sh;
+ref_geom	dbg_draw_gm;
+
+BOOL g_show_wnd_rect = FALSE;
+void add_rect_to_draw(Frect r)
+{
+	if(!g_show_wnd_rect)	return;
+		g_wnds_rects.push_back(r);
+}
+void draw_rect(Frect& r, u32 color)
+{
+	if(!g_show_wnd_rect)	return;
+	if(!dbg_draw_sh){
+		dbg_draw_sh.create("hud\\default","ui\\ui_pop_up_active_back");
+		dbg_draw_gm.create(FVF::F_TL, RCache.Vertex.Buffer(), 0);
+	}
+	RCache.set_Shader			(dbg_draw_sh);
+	u32							vOffset;
+	FVF::TL* pv					= (FVF::TL*)RCache.Vertex.Lock	(5,dbg_draw_gm.stride(),vOffset);
+
+	pv->set(r.lt.x, r.lt.y, color, 0,0); ++pv;
+	pv->set(r.rb.x, r.lt.y, color, 0,0); ++pv;
+	pv->set(r.rb.x, r.rb.y, color, 0,0); ++pv;
+	pv->set(r.lt.x, r.rb.y, color, 0,0); ++pv;
+	pv->set(r.lt.x, r.lt.y, color, 0,0); ++pv;
+
+	std::ptrdiff_t p_cnt		= 5;
+	RCache.Vertex.Unlock		(5,dbg_draw_gm.stride());
+	RCache.set_Geometry			(dbg_draw_gm);
+	RCache.Render				(D3DPT_LINESTRIP,vOffset,4);
+
+}
+void draw_wnds_rects()
+{
+
+	if(!g_wnds_rects.size())	return;
+
+	xr_vector<Frect>::iterator it = g_wnds_rects.begin();
+	xr_vector<Frect>::iterator it_e = g_wnds_rects.end();
+
+	for(;it!=it_e;++it)
+	{
+		Frect& r = *it;
+		UI()->ClientToScreenScaled(r.lt, r.lt.x, r.lt.y);
+		UI()->ClientToScreenScaled(r.rb, r.rb.x, r.rb.y);
+		draw_rect				(r,color_rgba(255,0,0,255));
+	};
+
+	g_wnds_rects.clear();
+}
+
 void CUIWindow::SetPPMode()
 {
 	m_bPP					= true;
@@ -133,7 +185,7 @@ void CUIWindow::Update()
 
 		Fvector2			temp = GetUICursor()->GetPos();
 		cursor_on_window	= !!GetAbsoluteRect().in(temp);
-
+		if(cursor_on_window) add_rect_to_draw(GetAbsoluteRect());
 		// RECEIVE and LOST focus
 		if(m_bCursorOverWindow != cursor_on_window)
 			if(cursor_on_window)
@@ -263,9 +315,9 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 		case WINDOW_MOUSE_WHEEL_UP:
 			OnMouseScroll(WINDOW_MOUSE_WHEEL_UP);	break;
 		case WINDOW_LBUTTON_DOWN:
-			OnMouseDown();							break;
+			if(OnMouseDown())		return true;	break;
 		case WINDOW_RBUTTON_DOWN:
-			OnMouseDown(/*left_button = */false);	break;
+			if(OnMouseDown(false))	return true;	break;
 		case WINDOW_LBUTTON_DB_CLICK:
 			if (OnDbClick()) return true;
 			break;
@@ -331,7 +383,8 @@ bool CUIWindow::OnDbClick(){
 	return false;
 }
 
-void CUIWindow::OnMouseDown(bool left_button){
+bool CUIWindow::OnMouseDown(bool left_button){
+	return false;
 }
 
 void CUIWindow::OnMouseUp(bool left_button){

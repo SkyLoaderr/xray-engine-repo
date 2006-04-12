@@ -52,7 +52,7 @@ bool CUI3tButton::OnMouse(float x, float y, EUIMessages mouse_action){
 		return CUIButton::OnMouse(x,y,mouse_action);
 }
 
-void CUI3tButton::OnMouseDown(bool left_button /* = true */){
+bool CUI3tButton::OnMouseDown(bool left_button /* = true */){
 	if (m_bCheckMode)
 	{
 		if (left_button)
@@ -63,9 +63,10 @@ void CUI3tButton::OnMouseDown(bool left_button /* = true */){
 				m_eButtonState = BUTTON_NORMAL;
 		}
 		GetMessageTarget()->SendMessage(this, BUTTON_CLICKED, NULL);
+		return true;
 	}
 	else
-		CUIButton::OnMouseDown(left_button);
+		return CUIButton::OnMouseDown(left_button);
 }
 
 void CUI3tButton::OnFocusReceive(){

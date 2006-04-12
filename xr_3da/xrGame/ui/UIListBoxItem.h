@@ -10,7 +10,7 @@ public:
     virtual void		SetSelected(bool b);
 //	virtual void	Update();
 	virtual void		Draw();
-	virtual void		OnMouseDown(bool left_button = true);
+	virtual bool		OnMouseDown(bool left_button = true);
 	virtual CGameFont*	GetFont();
 			void		SetTextColor(u32 color, u32 color_s);
 			void		InitDefault();

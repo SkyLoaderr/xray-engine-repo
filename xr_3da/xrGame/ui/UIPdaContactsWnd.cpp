@@ -165,8 +165,11 @@ void CUIPdaContactItem::SetSelected	(bool b)
 	}
 }
 
-void CUIPdaContactItem::OnMouseDown(bool left_button)
+bool CUIPdaContactItem::OnMouseDown(bool left_button)
 {
-	if(left_button)
+	if(left_button){
 		m_cw->UIListWnd->SetSelected(this);
+		return true;
+	}
+	return false;
 }

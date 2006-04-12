@@ -88,6 +88,8 @@ extern	BOOL	g_SV_Disable_Auth_Check	;
 extern	BOOL	g_bDebugDumpPhysicsStep	;
 extern	BOOL	g_bLeaveTDemo			;
 extern	ESingleGameDifficulty g_SingleGameDifficulty;
+extern	BOOL	g_show_wnd_rect			;
+
 #ifdef DEBUG
 	extern	BOOL	g_SV_Force_Artefact_Spawn;
 #endif
@@ -2408,6 +2410,7 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask,		"ai_use_torch_dynamic_lights",	&g_uCommonFlags, flAiUseTorchDynamicLights);
 	CMD4(CCC_Integer,	"use_scripts_in_goap",			&g_use_scripts_in_goap, 0, 1);
+	CMD4(CCC_Integer,	"show_wnd_rect",				&g_show_wnd_rect, 0, 1);
 
 	
 }

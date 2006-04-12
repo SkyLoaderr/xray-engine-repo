@@ -21,7 +21,7 @@ public:
 	// CUIWindow methods
 	virtual void Init(float x, float y, float width, float height);	
 	virtual void Update();
-	virtual void OnMouseDown(bool left_button = true );
+	virtual bool OnMouseDown(bool left_button = true );
 	virtual void OnFocusLost();
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 	// IUITextControl

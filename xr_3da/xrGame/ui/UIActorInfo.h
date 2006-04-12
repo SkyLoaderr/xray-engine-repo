@@ -49,7 +49,7 @@ public:
 public:
 					CUIActorStaticticHeader	(CUIActorInfoWnd* w);
 	void			Init					(CUIXml* xml, LPCSTR path, int idx);
-	virtual void	OnMouseDown				(bool left_button = true);
+	virtual bool	OnMouseDown				(bool left_button = true);
 	virtual void	SetSelected				(bool b);
 
 	int										m_index;

@@ -236,10 +236,13 @@ void CUIActorStaticticHeader::Init	(CUIXml* xml, LPCSTR path, int idx)
 
 }
 
-void CUIActorStaticticHeader::OnMouseDown	(bool left_button)
+bool CUIActorStaticticHeader::OnMouseDown	(bool left_button)
 {
-	if(left_button && m_index!=100 && m_index>0)
+	if(left_button && m_index!=100 && m_index>0){
 		m_actorInfoWnd->MasterList().SetSelected	(this);
+		return true;
+	}else
+		return true;
 }
 
 void CUIActorStaticticHeader::SetSelected(bool b)

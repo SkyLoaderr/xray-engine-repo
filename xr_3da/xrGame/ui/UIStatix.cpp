@@ -39,8 +39,9 @@ void CUIStatix::OnFocusReceive()
 	m_anim->Reset();
 }
 
-void CUIStatix::OnMouseDown(bool left_button /* = true */){
+bool CUIStatix::OnMouseDown(bool left_button /* = true */){
 	GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
+	return true;
 }
 
 void CUIStatix::SetSelectedState(bool state){

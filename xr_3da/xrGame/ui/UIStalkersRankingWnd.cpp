@@ -254,10 +254,13 @@ void CUIStalkerRankingInfoItem::SetSelected	(bool b)
 
 }
 
-void CUIStalkerRankingInfoItem::OnMouseDown		(bool left_button)
+bool CUIStalkerRankingInfoItem::OnMouseDown		(bool left_button)
 {
-	if(left_button)
+	if(left_button){
 		m_StalkersRankingWnd->GetTopList().SetSelected	(this);
+		return true;
+	}else
+		return false;
 }
 
 CUIStalkerRankingElipsisItem::CUIStalkerRankingElipsisItem(CUIStalkersRankingWnd* w)
@@ -269,7 +272,7 @@ void CUIStalkerRankingElipsisItem::SetSelected(bool b)
 	return;
 }
 
-void CUIStalkerRankingElipsisItem::OnMouseDown(bool left_button)
+bool CUIStalkerRankingElipsisItem::OnMouseDown(bool left_button)
 {
-	return;
+	return false;
 }

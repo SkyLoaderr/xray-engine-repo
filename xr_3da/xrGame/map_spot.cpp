@@ -49,10 +49,13 @@ void CMapSpot::Draw()
 	inherited::Draw();
 }
 
-void CMapSpot::OnMouseDown		(bool left_button)
+bool CMapSpot::OnMouseDown		(bool left_button)
 {
-	if(left_button)
+	if(left_button){
 		GetMessageTarget()->SendMessage(this, MAP_SELECT_SPOT);
+		return true;
+	}else
+		return false;
 }
 
 
