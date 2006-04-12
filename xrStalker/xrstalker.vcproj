@@ -3058,6 +3058,9 @@
 							RelativePath=".\scripts\mob_remark.script">
 						</File>
 						<File
+							RelativePath=".\scripts\mob_trader.script">
+						</File>
+						<File
 							RelativePath=".\scripts\mob_walker.script">
 						</File>
 					</Filter>

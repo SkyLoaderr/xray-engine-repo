@@ -410,6 +410,33 @@
 		</item>
 	</part_2_binocular>
 
+	<!----------------------------------------------------------------------------------->
+	<!--Test----------------------------------------------------------------------------->
+	<!----------------------------------------------------------------------------------->
+	<test>
+		<global_wnd/>
+		
+		<item><!--…Будь осторожен, если рядом враги, на визоре они отмечаются красным, 
+					друзья отмечены зеленым, нейтралы - желтым. А..ну и ПДА мертвых сталкеров подсвечиваются серым. 
+					В мародерстве помогает. гы-ыы…Что еще?...ах да есть Дневник…-->
+			<length_sec>20</length_sec>
+			<pause_state>off</pause_state>
+			<guard_key/>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_12</sound>
+			<cursor_pos/>
+			<grab_input>1</grab_input>
+			<pda_section>pda_closed</pda_section>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="18" x="100" y="100" width="150" height="150" alignment="c" stretch="1"
+							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+				</auto_static>
+			</main_wnd>
+		</item>
+	</test>
+	<!----------------------------------------------------------------------------------->
+	
 	
 	<part_3_jump><!--делаю новый туториал-->
 		<global_wnd/>

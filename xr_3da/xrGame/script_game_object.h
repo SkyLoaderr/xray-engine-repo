@@ -225,6 +225,11 @@ public:
 			void				set_custom_panic_threshold	(float value);
 			void				set_default_panic_threshold	();
 
+	// CAI_Trader
+			void				set_trader_global_anim	(LPCSTR anim);
+			void				set_trader_head_anim	(LPCSTR anim);
+			void				set_trader_sound		(LPCSTR sound, LPCSTR anim);
+
 
 			template <typename T>
 			IC		T			*action_planner			();

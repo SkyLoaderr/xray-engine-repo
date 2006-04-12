@@ -11,48 +11,31 @@
 #include "../../CustomMonster.h"
 #include "../../inventoryowner.h"
 #include "../../script_entity.h"
-#include "../monsters/ai_monster_bones.h"
 #include "../../sound_player.h"
 #include "../../AI_PhraseDialogManager.h"
-
-namespace MonsterSpace {
-	enum EMonsterHeadAnimType;
-};
 
 class CInventoryItem;
 class CArtefact;
 class CMotionDef;
 class CBlend;
 class CSoundPlayer;
+class CTraderAnimation;
 
 class CAI_Trader : public CEntityAlive, 
-				   public CInventoryOwner, 
-				   public CScriptEntity,
-				   public CAI_PhraseDialogManager
+	public CInventoryOwner, 
+	public CScriptEntity,
+	public CAI_PhraseDialogManager
 {
-private:
+
 	typedef CEntityAlive inherited;
 
+private:
 	bool				m_busy_now;
 
-	struct SAnimInfo {
-		shared_str		name;			// "talk_"
-		u8			count;			// количество анимаций данного типа
-	};
-
-	DEFINE_MAP(u32, SAnimInfo, MOTION_MAP, MOTION_MAP_IT);
-
-	MOTION_MAP head_anims;
-
-	MotionID			m_tpHeadDef;	
-	MotionID			m_tpGlobalDef;
-
-	MonsterSpace::EMonsterHeadAnimType m_cur_head_anim_type;
-
 public:
-						CAI_Trader		();
+	CAI_Trader		();
 	virtual				~CAI_Trader		();
-public:
+
 	virtual CAttachmentOwner*			cast_attachment_owner	()						{return this;}
 	virtual CInventoryOwner*			cast_inventory_owner	()						{return this;}
 	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
@@ -61,8 +44,6 @@ public:
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()					{return this;}
 	virtual CParticlesPlayer*			cast_particles_player	()						{return this;}
 	virtual CScriptEntity*				cast_script_entity		()						{return this;}
-
-public:
 
 	virtual DLL_Pure	*_construct		();
 	virtual void		Load			( LPCSTR section );
@@ -79,16 +60,8 @@ public:
 	virtual void		Think			();
 	virtual void		HitSignal		(float /**P/**/, Fvector &/**local_dir/**/,	CObject* /**who/**/, s16 /**element/**/){};
 	virtual void		HitImpulse		(float /**P/**/, Fvector &/**vWorldDir/**/, 	Fvector& /**vLocalDir/**/){};
-	virtual	void		Hit				(SHit* pHDS)
-	{
-		inherited::Hit(pHDS);
-	}
-	virtual void		SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed);
-	
+	virtual	void		Hit				(SHit* pHDS){inherited::Hit(pHDS);}
 	virtual	void		UpdateCL		();
-
-	static void			AnimGlobalCallback	(CBlend* B);
-	static void			AnimHeadCallback		(CBlend* B);
 
 	virtual void		g_fireParams			(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual void		g_WeaponBones			(int &L, int &R1, int &R2);
@@ -100,6 +73,7 @@ public:
 	virtual void		shedule_Update			(u32 dt);
 
 	virtual BOOL		UsedAI_Locations		();
+
 	///////////////////////////////////////////////////////////////////////
 	virtual u16					PHGetSyncItemsNumber	()			{return inherited ::PHGetSyncItemsNumber();}
 	virtual CPHSynchronize*		PHGetSyncItem			(u16 item)	{return inherited ::PHGetSyncItem(item);}
@@ -111,24 +85,17 @@ public:
 	virtual void			reload					(LPCSTR section);
 
 	static	void			BoneCallback			(CBoneInstance *B);
-			void			LookAtActor				(CBoneInstance *B);
+	void			LookAtActor				(CBoneInstance *B);
 
-			void			OnStartTrade			();
-			void			OnStopTrade				();
+	void			OnStartTrade			();
+	void			OnStopTrade				();
 
-			//игровое имя 
-			virtual LPCSTR	Name					() const {return CInventoryOwner::Name();}
-public:	
+	//игровое имя 
+	virtual LPCSTR			Name					() const {return CInventoryOwner::Name();}
+
 	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
 	virtual bool			use_bolts				() const;
 	virtual	void			spawn_supplies			();
-private:
-			// Animation management
-
-			void			add_head_anim			(u32 index, LPCSTR anim_name);
-			u8				get_anim_count			(LPCSTR anim);
-			void			select_head_anim		(u32 type);
-			void			AssignHeadAnimation		();
 
 
 	virtual	bool			bfAssignSound			(CScriptEntityAction *tpEntityAction);
@@ -161,4 +128,10 @@ public:
 	virtual bool			natural_weapon			() const {return false;}
 	virtual bool			natural_detector		() const {return false;}
 	virtual bool			AllowItemToTrade 		(CInventoryItem const * item, EItemPlace place) const;
-};
+
+
+private:
+	CTraderAnimation	*AnimMan;
+public:
+	CTraderAnimation	&animation					() {return (*AnimMan);}
+};	

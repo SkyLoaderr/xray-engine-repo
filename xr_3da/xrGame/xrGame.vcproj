@@ -3885,6 +3885,12 @@
 						<File
 							RelativePath=".\Ai\Trader\ai_trader.h">
 						</File>
+						<File
+							RelativePath=".\ai\trader\trader_animation.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\trader\trader_animation.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="stalker"
@@ -5158,6 +5164,9 @@
 							RelativePath=".\script_game_object3.cpp">
 						</File>
 						<File
+							RelativePath=".\script_game_object4.cpp">
+						</File>
+						<File
 							RelativePath=".\script_game_object_impl.h">
 						</File>
 						<File
@@ -5171,6 +5180,9 @@
 						</File>
 						<File
 							RelativePath=".\script_game_object_script3.cpp">
+						</File>
+						<File
+							RelativePath=".\script_game_object_script_trader.cpp">
 						</File>
 						<File
 							RelativePath=".\script_game_object_trader.cpp">

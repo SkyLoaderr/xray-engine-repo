@@ -16,7 +16,6 @@
 #include "../../script_space.h"
 #include "../../artifact.h"
 #include "../../xrserver.h"
-#include "../../../skeletonanimated.h"
 #include "../../relation_registry.h"
 #include "../../object_broker.h"
 #include "../../sound_player.h"
@@ -24,19 +23,22 @@
 #include "../../script_callback_ex.h"
 #include "../../game_object_space.h"
 #include "../../clsid_game.h"
+#include "trader_animation.h"
 
 CAI_Trader::CAI_Trader()
 {
+	AnimMan			= xr_new<CTraderAnimation>(this);
 } 
 
 CAI_Trader::~CAI_Trader()
 {
-	xr_delete						(m_sound_player);
+	xr_delete		(m_sound_player);
+	xr_delete		(AnimMan);
 }
 
 void CAI_Trader::Load(LPCSTR section)
 {
-//	setEnabled						(FALSE);
+	//	setEnabled						(FALSE);
 	inherited::Load					(section);
 
 	//fHealth							= pSettings->r_float	(section,"Health");
@@ -44,7 +46,7 @@ void CAI_Trader::Load(LPCSTR section)
 
 	float max_weight = pSettings->r_float	(section,"max_item_mass");
 	inventory().SetMaxWeight(max_weight*1000);
-//	inventory().SetMaxRuck(1000000);
+	//	inventory().SetMaxRuck(1000000);
 	inventory().CalcTotalWeight();
 }
 
@@ -54,10 +56,8 @@ void CAI_Trader::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	sound().reinit			();
+	animation().reinit		();
 
-	m_tpHeadDef.invalidate	();
-	m_tpGlobalDef.invalidate();
-	m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
 	m_busy_now				= false;
 }
 
@@ -66,113 +66,24 @@ void CAI_Trader::reload	(LPCSTR section)
 	CEntityAlive::reload	(section);
 	CInventoryOwner::reload	(section);
 	sound().reload			(section);
-
-	head_anims.clear		();	
-
-	add_head_anim(MonsterSpace::eHeadAnimNormal, "talk_");
-	add_head_anim(MonsterSpace::eHeadAnimAngry,  "talk_angry_");
-	add_head_anim(MonsterSpace::eHeadAnimGlad,   "talk_glad_");
-	add_head_anim(MonsterSpace::eHeadAnimKind,   "talk_kind_");
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// Animation management
-/////////////////////////////////////////////////////////////////////////////////////////
-
-void CAI_Trader::add_head_anim(u32 index, LPCSTR anim_name)
-{
-	SAnimInfo val;
-	
-	val.name	= anim_name;
-	val.count	= get_anim_count(anim_name);
-
-	head_anims.insert(mk_pair(index, val));
-}
-
-u8 CAI_Trader::get_anim_count(LPCSTR anim)
-{
-	string128	s, s_temp; 
-	u8 count = 0;
-
-	for (int i=0; ; ++i) {
-		if (smart_cast<CKinematicsAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s_temp, anim,itoa(i,s,10))))  count++;
-		else break;
-	}
-
-	if (count == 0) {
-		sprintf(s, "Error! No animation: %s for monster %s", anim, *cName());
-		R_ASSERT2(count != 0, s);
-	} 
-
-	return count;
-}
-
-void CAI_Trader::select_head_anim(u32 type)
-{
-	MOTION_MAP_IT it = head_anims.find(type);
-	VERIFY(it != head_anims.end());
-
-	// get index
-	u32 index = Random.randI(it->second.count);
-
-	// construct name
-	string128 s1,s2;
-	m_tpHeadDef = smart_cast<CKinematicsAnimated*>(Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.name,itoa(index,s1,10)));
-}
-
-// Animation Callbacks
-void  CAI_Trader::AnimGlobalCallback(CBlend* B)
-{
-	CAI_Trader *trader = (CAI_Trader*)B->CallbackParam;
-	trader->m_tpGlobalDef.invalidate	();
-}
-
-void  CAI_Trader::AnimHeadCallback(CBlend* B)
-{
-	CAI_Trader *trader = (CAI_Trader*)B->CallbackParam;
-	trader->m_tpHeadDef.invalidate	();
-}
-
-
-void CAI_Trader::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
-{
-	if (!g_Alive()) return;
-
-	// назначить глобальную анимацию
-	if (!m_tpGlobalDef) {
-		// выбор анимации
-		m_tpGlobalDef = smart_cast<CKinematicsAnimated*>(Visual())->ID_Cycle("rot_5");
-		smart_cast<CKinematicsAnimated*>(Visual())->PlayCycle(m_tpGlobalDef,TRUE,AnimGlobalCallback,this);
-	}
-
-	AssignHeadAnimation();
-}
-
-void CAI_Trader::AssignHeadAnimation()
-{
-	// назначить анимацию головы
-	if (!m_tpHeadDef)	{
-		if (m_cur_head_anim_type != MonsterSpace::eHeadAnimNone) {
-			select_head_anim(m_cur_head_anim_type);
-			smart_cast<CKinematicsAnimated*>(Visual())->PlayCycle(m_tpHeadDef,TRUE,AnimHeadCallback,this);	
-		}
-	}
-}
-////////////////////////////////////////////////////////////////////////////////////////////
 
 bool CAI_Trader::bfAssignSound(CScriptEntityAction *tpEntityAction)
 {
 	if (!CScriptEntity::bfAssignSound(tpEntityAction)) {
-		m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
+		//m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
 		return					(false);
 	}
 
-	CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
-	m_cur_head_anim_type = l_tAction.m_tHeadAnimType;
+	//CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
+	//m_cur_head_anim_type = l_tAction.m_tHeadAnimType;
 
 	return				(true);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Look At Actor
 //////////////////////////////////////////////////////////////////////////
 void CAI_Trader::BoneCallback(CBoneInstance *B)
 {
@@ -200,6 +111,8 @@ void CAI_Trader::LookAtActor(CBoneInstance *B)
 	M.setHPB (0.f, -dy, 0.f);
 	B->mTransform.mulB_43(M);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 BOOL CAI_Trader::net_Spawn			(CSE_Abstract* DC)
 {
@@ -233,8 +146,8 @@ void CAI_Trader::net_Export		(NET_Packet& P)
 {
 	R_ASSERT						(Local());
 
-//	P.w_float						(inventory().TotalWeight());
-//	P.w_u32							(m_dwMoney);
+	//	P.w_float						(inventory().TotalWeight());
+	//	P.w_u32							(m_dwMoney);
 }
 
 void CAI_Trader::net_Import		(NET_Packet& P)
@@ -362,16 +275,9 @@ void CAI_Trader::UpdateCL()
 	inherited::UpdateCL		();
 	sound().update			(Device.fTimeDelta);
 
-	if (!GetScriptControl() && !bfScriptAnimation()) {
-		SelectAnimation		(XFORM().k,XFORM().k,0.f);
-	}
 
-	if (!m_current_sound) {
-		m_tpHeadDef.invalidate	();
-		m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
-	}
-
-	AssignHeadAnimation();
+	if (!GetScriptControl() && !bfScriptAnimation()) 
+		animation().update_frame();
 }
 
 BOOL CAI_Trader::UsedAI_Locations()
@@ -454,11 +360,11 @@ ALife::ERelationType  CAI_Trader::tfGetRelationType	(const CEntityAlive *tpEntit
 DLL_Pure *CAI_Trader::_construct	()
 {
 	m_sound_player				= xr_new<CSoundPlayer>(this);
-	
+
 	CEntityAlive::_construct	(); 
 	CInventoryOwner::_construct	();
 	CScriptEntity::_construct	();
-	
+
 	return						(this);
 }
 

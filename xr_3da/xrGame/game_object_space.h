@@ -42,6 +42,10 @@ namespace GameObject {
 		eOnItemDrop,
 
 		eScriptAnimation,
+		
+		eTraderGlobalAnimationRequest,
+		eTraderHeadAnimationRequest,
+		eTraderSoundEnd,
 
 		eDummy = u32(-1),
 	};
