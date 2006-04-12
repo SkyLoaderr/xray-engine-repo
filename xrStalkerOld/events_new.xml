@@ -55,14 +55,11 @@
 		<right_frame x="313" y="0" width="448" height="475">
 			<texture>ui_pda_frame_sub</texture>
 			
-			<auto_static x="8" y="52" width="4" height="460">
+			<auto_static x="8" y="45" width="4" height="460">
 				<texture>ui\ui_pda_vertical_line_r_l</texture>
 			</auto_static>
-			<auto_static x="416" y="52" width="4" height="460">
+			<auto_static x="416" y="45" width="4" height="460">
 				<texture>ui\ui_pda_vertical_line_r_r</texture>
-			</auto_static>
-			<auto_static x="8" y="50" width="410" height="2" stretch="1">
-				<texture>ui\ui_pda_horizontal_line</texture>
 			</auto_static>
 
 			<right_frame_header x="8" y="17" width="434" height="21">
@@ -70,8 +67,8 @@
 				
 			</right_frame_header>
 			
-			<work_area x="8" y="44" width="445" height="475">
-				<scroll_view  x="0" y="10" width="435" height="408" right_ident="10"/>
+			<work_area x="8" y="33" width="445" height="485">
+				<scroll_view  x="0" y="10" width="435" height="475" right_ident="10"/>
 			</work_area>
 		</right_frame>
 	
