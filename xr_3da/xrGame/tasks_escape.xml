@@ -75,7 +75,7 @@
 			<map_location_type hint="esc_fox">green_location</map_location_type>
 			<object_story_id>Escape_stalker_from_raid</object_story_id>
 			<infoportion_complete>escape_fox_heal</infoportion_complete>
-			<infoportion_fail>escape_dogs_return</infoportion_fail>
+			<infoportion_fail>esc_dogs_return</infoportion_fail>
 		</objective>
 		<objective>
 			<text>esc_help_wounded_from_raid_2</text>
