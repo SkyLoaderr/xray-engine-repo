@@ -50,6 +50,10 @@
 	
 	<info_portion id="mon_ambush"></info_portion>
 	
+	<info_portion id="mon_1_trigger"></info_portion>
+	<info_portion id="mon_2_trigger"></info_portion>
+	<info_portion id="mon_3_trigger"></info_portion>
+	
 	<!---------------- Sarcofag 2 ------------------->
 	<info_portion id="sar2_teleport_start"></info_portion>
 	<info_portion id="sar2_monolith_rock"></info_portion>
