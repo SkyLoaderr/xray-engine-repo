@@ -193,7 +193,8 @@ void CGameTaskManager::UpdateActiveTask				()
 		for(u32 i=0; i<t->m_Objectives.size() ;++i){
 			SGameTaskObjective& obj = t->Objective(i);
 			//1-st enable hidden locations
-			if(	(false==obj.def_location_enabled) && t->Objective(i-1).TaskState()==eTaskStateCompleted ){
+			if(	!obj.def_location_enabled && obj.TaskState()==eTaskStateInProgress && t->Objective(i-1).TaskState()==eTaskStateCompleted )
+			{
 				if(obj.object_id!=u16(-1) && obj.map_location.size()){
 					CMapLocation* ml =	Level().MapManager().AddMapLocation(obj.map_location, obj.object_id);
 					if(obj.map_hint.size())		ml->SetHint(obj.map_hint);
