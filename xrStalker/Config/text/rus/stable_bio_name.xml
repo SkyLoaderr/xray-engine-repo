@@ -693,7 +693,7 @@
 <!-- Escape -->
 
 <string id="esc_wolf_name">
-	<text>"Волк"</text>
+	<text>Волк</text>
 </string>
 
 <string id="esc_wolf_bio">
@@ -701,7 +701,7 @@
 </string>
 
 <string id="esc_fanat_name">
-	<text>"Фанат"</text>
+	<text>Фанат</text>
 </string>
 
 <string id="esc_fanat_bio">
@@ -709,7 +709,7 @@
 </string>
 
 <string id="esc_fox_name">
-	<text>"Лис"</text>
+	<text>Лис</text>
 </string>
 
 <string id="esc_fox_bio">
@@ -784,7 +784,7 @@
 <!-- Garbage -->
 
 <string id="gar_seryi_name">
-	<text>"Серый"</text>
+	<text>Серый</text>
 </string>
 
 <string id="gar_seryi_bio">
@@ -812,7 +812,7 @@
 </string>
 
 <string id="gar_bandit_leader_name">
-	<text>Вася "Кабан"</text>
+	<text>Вася Кабан</text>
 </string>
 
 <string id="gar_bandit_leader_bio">
@@ -837,7 +837,7 @@
 
 <!-- Lab X-18 -->
 <string id="dar_explorer_name">
-	<text>Жека "Дуплет"</text>
+	<text>Жека Дуплет</text>
 </string>
 
 <string id="dar_explorer_bio">
