@@ -20,6 +20,7 @@ def_state_campering_fire    = guard_fire
 def_state_moving            = patrol
 def_state_moving_fire       = patrol_fire
 on_info                     = {+val_sacrifice_guard1_phrase1_end} remark@val_sacrifice_guard2_phrase1
+danger              = danger@val_sacrifice_guard
 combat_ignore_cond          = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ snd                 = speech
 target              = 404
 on_signal           = sound_end | remark@val_sacrifice_guard2_phrase2
 meet                = meet@val_sacrifice
+danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(403:401)}
 
 ;--------------------------------------------------------------------------
@@ -41,6 +43,6 @@ anim                = guard
 snd                 = speech
 target              = 404
 on_signal           = sound_end | %+val_sacrifice_guard2_phrase2_end%
-danger              = danger@val_sacrifice_guard
 meet                = meet@val_sacrifice
+danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(403:401)}
