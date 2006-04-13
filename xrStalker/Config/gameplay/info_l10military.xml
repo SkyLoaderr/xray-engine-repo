@@ -60,6 +60,7 @@
 	<info_portion id="mil_dolg_phase2"></info_portion>
 	<info_portion id="mil_dolg_phase3"></info_portion>
 	<info_portion id="mil_dolg_skull_talk"></info_portion>
+	<info_portion id="mil_dolg_skull_sniper_end"></info_portion>
 	<info_portion id="mil_dolg_final_task">
 		<task>mil_kill_lukash</task>
 	</info_portion>

@@ -1072,7 +1072,9 @@ function mil_scull_news (actor, npc)
 end
 
 function mil_sniper_dead (actor, npc)
-    level_tasks.remove_location (npc:story_id (), "mil_sniper_location")
+    if actor:has_info ("mil_dolg_final_task") then
+       level_tasks.remove_location (npc:story_id (), "mil_sniper_location")
+    end       
 end
 
 function mil_actor_enemy_set (actor, npc)
