@@ -464,7 +464,7 @@ void CStalkerActionGetReadyToKill::execute		()
 //	else
 //		object().sight().setup	(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
-	if ((point && !object().movement().desired_position().similar(object().Position(),.5f)) || !object().movement().path_completed())
+	if ((point && !point->position().similar(object().Position(),.5f)) || !object().movement().path_completed())
 		object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection));
 
 	u32									min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
@@ -703,7 +703,7 @@ void CStalkerActionLookOut::execute		()
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_close->setup			(position,10.f,170.f,10.f);
 	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
-	if (!point || (object().movement().desired_position().similar(object().Position()) && object().movement().path_completed())) {
+	if (!point || (point->position().similar(object().Position()) && object().movement().path_completed())) {
 		object().m_ce_close->setup		(position,10.f,170.f,10.f);
 		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
 	}
@@ -715,7 +715,7 @@ void CStalkerActionLookOut::execute		()
 	else
 		object().movement().set_nearest_accessible_position	();
 
-	if ((object().movement().desired_position().similar(object().Position(),.5f) && object().movement().path_completed())) {
+	if (point && point->position().similar(object().Position(),.5f) && object().movement().path_completed()) {
 		m_storage->set_property			(eWorldPropertyLookedOut,true);
 		object().movement().set_nearest_accessible_position	();
 	}
