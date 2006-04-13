@@ -35,8 +35,11 @@ function main123()
 end
 
 function main()
-	local news_text = "%c<255,160,160,160>" .. game.translate_string("trader") .. "\\n" .. "%c<default>" .. "New message arrived" .. "\\n" .. "bebebe"
-	db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(300,100,50,50),0,0)
+	local news_text = "%c<255,160,160,160>" .. "Задание выполнено" .. "\\n" .. "%c<default>" .. "Информация о винтовке FN-2000 а также куча всякой лабуды типа убить долбаного стрелка или помочь сраному раненому"
+
+	db.actor:give_game_news(news_text, "ui\\ui_pop_up_active_back", Frect():set(0,0,16,16), 0, 0)
+--	local a,b = get_task_info("kill_gunslinger","_small")
+--	db.actor:give_game_news(news_text, a, b, 0, 0)
 
 --	db.actor:give_talk_message(news_text, "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
 

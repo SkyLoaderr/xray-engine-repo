@@ -9735,21 +9735,6 @@
 						RelativePath=".\ui\UIEncyclopediaWnd.h">
 					</File>
 					<File
-						RelativePath=".\ui\UIIconedListItem.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIIconedListItem.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIJobItem.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIJobItem.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIJobsWnd.h">
-					</File>
-					<File
 						RelativePath=".\ui\UINewsItemWnd.cpp">
 					</File>
 					<File
