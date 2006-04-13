@@ -9,7 +9,8 @@ namespace GameObject {
 
 		eZoneEnter,
 		eZoneExit,
-
+		eExitLevelBorder,
+		eEnterLevelBorder,
 		eDeath,
 
 		ePatrolPathInPoint,

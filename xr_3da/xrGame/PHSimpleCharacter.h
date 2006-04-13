@@ -179,6 +179,7 @@ public:
 	virtual	CElevatorState	*ElevatorState						()					;
 	virtual		void		SetCollisionDamageFactor			(float f)			{m_collision_damage_factor=f;}
 	virtual		void		GetPosition							(Fvector& vpos)		;
+	virtual		void		GetPreviousPosition					(Fvector& pos)		;
 	virtual		float		FootRadius							()					;
 	virtual		void		DeathPosition						(Fvector& deathPos)	;
 	virtual		void		IPosition							(Fvector& pos)		;

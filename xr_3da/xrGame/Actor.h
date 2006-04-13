@@ -256,13 +256,16 @@ protected:
 	//random seed для Weapon Effector Shot
 	s32						m_ShotRndSeed;
 
+	bool					m_bOutBorder;
 	//разрешения на удаление трупа актера 
 	//после того как контролирующий его игрок зареспавнился заново. 
 	//устанавливается в game
+private:
+	void					SwitchOutBorder(bool new_border_state);
 public:
 	bool					m_bAllowDeathRemove;
 //	u32						m_u32RespawnTime;
-
+	
 	////////////////////////////////////////////////////////
 	void					SetZoomRndSeed			(s32 Seed = 0);
 	s32						GetZoomRndSeed			()	{ return m_ZoomRndSeed;	};

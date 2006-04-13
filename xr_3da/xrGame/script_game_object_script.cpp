@@ -44,6 +44,8 @@ void CScriptGameObject::script_register(lua_State *L)
 				value("trader_sound_end",			int(GameObject::eTraderSoundEnd)),
 				value("zone_enter",					int(GameObject::eZoneEnter)),
 				value("zone_exit",					int(GameObject::eZoneExit)),
+				value("level_border_exit",			int(GameObject::eExitLevelBorder)),
+				value("level_border_enter",			int(GameObject::eEnterLevelBorder)),
 				value("death",						int(GameObject::eDeath)),
 				value("patrol_path_in_point",		int(GameObject::ePatrolPathInPoint)),
 				value("inventory_pda",				int(GameObject::eInventoryPda)),

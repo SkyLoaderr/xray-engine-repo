@@ -999,7 +999,12 @@ void CPHSimpleCharacter::GetPosition(Fvector& vpos){
 	dVectorSet((dReal*)&vpos,pos);
 	vpos.y-=m_radius;
 }
-
+void	 CPHSimpleCharacter::	GetPreviousPosition					(Fvector& pos)
+{
+	VERIFY(b_exist);
+	VERIFY(!ph_world->Processing());
+	m_body_interpolation.GetPosition(pos,0);
+}
 void CPHSimpleCharacter::GetVelocity(Fvector& vvel){
 	if(!b_exist){
 

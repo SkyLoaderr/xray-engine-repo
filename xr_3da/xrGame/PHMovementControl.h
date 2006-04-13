@@ -56,7 +56,8 @@ void					GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fv
 float					JumpMinVelTime(const Fvector &end_point); // return time of jump with min start speed
 // input: end_point and time; return velocity and type of jump
 void					GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time);
-bool				b_exect_position;
+bool					b_exect_position;
+int						in_dead_area_count;
 public:
 
 	enum EEnvironment
@@ -70,7 +71,9 @@ public:
 		actor,
 		ai
 	};
+	bool				isOutBorder			(){return in_dead_area_count>0;}
 private:
+	void				TraceBorder			(const Fvector &previous_position);
 	void				CheckEnvironment	(const Fvector& V);
 
 	CharacterType		eCharacterType;
@@ -256,6 +259,7 @@ public:
 	void				EnableCharacter			()																		{if(m_character&&m_character->b_exist)m_character->Enable();}
 	void				SetOjectContactCallback (ObjectContactCallbackFun* callback){if(m_character)m_character->SetObjectContactCallback(callback);}
 	void				SetFootCallBack			(ObjectContactCallbackFun* callback){VERIFY(m_character);m_character->SetWheelContactCallback(callback);}
+	static BOOL CPHMovementControl::BorderTraceCallback(collide::rq_result& result, LPVOID params);
 	ObjectContactCallbackFun* ObjectContactCallback(){if(m_character)return m_character->ObjectContactCallBack();else return NULL; }
 	u16					ContactBone				(){return m_character->ContactBone();}
 	const ICollisionDamageInfo	*CollisionDamageInfo ()const {VERIFY(m_character);return m_character->CollisionDamageInfo ();}

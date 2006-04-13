@@ -3,6 +3,13 @@
 #include "Level.h"
 #include "Geometry.h"
 #include "tri-colliderknoopc/dtricollidermath.h"
+ICF void GetNormal(CDB::TRI*XTri,Fvector &n)
+{
+	const Fvector* V_array=Level().ObjectSpace.GetStaticVerts();
+	Fvector sd1;sd1.sub(V_array[XTri->verts[1]],V_array[XTri->verts[0]]);
+	Fvector sd2;sd2.sub(V_array[XTri->verts[2]],V_array[XTri->verts[1]]);
+	n.crossproduct(sd1,sd2);
+}
 ICF	void InitTriangle(CDB::TRI* XTri,Triangle& triangle)
 {
 	const Fvector* V_array=Level().ObjectSpace.GetStaticVerts();

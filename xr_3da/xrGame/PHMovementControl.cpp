@@ -13,6 +13,7 @@
 #include "GameMtlLib.h"
 #include "Level.h"
 #include "ElevatorState.h"
+#include "CalculateTriangle.h"
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
 #define WALL_FRICTION	3.0f
@@ -54,11 +55,12 @@ CPHMovementControl::CPHMovementControl(void)
 	m_fGroundDelayFactor= 1.f;
 	gcontact_HealthLost = 0;
 
-	fContactSpeed		= 0.f;
-	fAirControlParam	= 0.f;
-	m_character=NULL;
-	m_dwCurBox = 0xffffffff;
+	fContactSpeed		=	0.f;
+	fAirControlParam	=	0.f;
+	m_character			=	NULL;
+	m_dwCurBox			=	0xffffffff;
 	fCollisionDamageFactor=1.f;
+	in_dead_area_count	=0;
 }
 
 CPHMovementControl::~CPHMovementControl(void)
@@ -103,7 +105,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	{
 		if(m_capture->Failed()) xr_delete(m_capture);
 	}
-	
+	Fvector previous_position;previous_position.set(vPosition);
 	m_character->IPosition(vPosition);
 	if(bExernalImpulse)
 	{
@@ -155,7 +157,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	const ICollisionDamageInfo	*cdi=CollisionDamageInfo();
 	if(cdi->HitCallback())cdi->HitCallback()->call(static_cast<CGameObject*>(m_character->PhysicsRefObject()),fMinCrashSpeed,fMaxCrashSpeed,fContactSpeed,gcontact_HealthLost,CollisionDamageInfo());
 	
-
+	TraceBorder(previous_position);
 	CheckEnvironment(vPosition);
 	bSleep=false;
 	m_character->Reinit();
@@ -976,4 +978,59 @@ CElevatorState	*CPHMovementControl::ElevatorState()
 	if(!m_character || !m_character->b_exist)return NULL;
 	return m_character->ElevatorState();
 	//m_character->SetElevator()
+}
+
+
+struct STraceBorderQParams
+{
+	CPHMovementControl* m_movement;
+	const Fvector &m_dir;	
+	STraceBorderQParams(CPHMovementControl* movement,const Fvector &dir):
+	m_dir(dir)
+	{
+		m_movement=movement		;
+	}
+	STraceBorderQParams& operator = (STraceBorderQParams& p) {VERIFY(FALSE);return p;}
+};
+
+BOOL CPHMovementControl::BorderTraceCallback(collide::rq_result& result, LPVOID params)
+{
+	STraceBorderQParams& p	= *(STraceBorderQParams*)params;
+	u16 mtl_idx			=	GAMEMTL_NONE_IDX;
+	CDB::TRI* T			=	NULL;
+	if(result.O){
+		return true;
+	}else{
+		//получить треугольник и узнать его материал
+		T				= Level().ObjectSpace.GetStaticTris()+result.element;
+		mtl_idx			= T->material;
+	}
+	VERIFY	(T);
+	SGameMtl* mtl		= GMLib.GetMaterialByIdx(mtl_idx);
+	if(mtl->Flags.test(SGameMtl::flInjurious))
+	{
+		Fvector tri_norm;
+		GetNormal(T,tri_norm);
+		if(p.m_dir.dotproduct(tri_norm)<0.f)p.m_movement->in_dead_area_count++;
+		else p.m_movement->in_dead_area_count--;
+	}
+	return true;
+}
+
+void	CPHMovementControl::TraceBorder(const Fvector &prev_position)
+{
+
+	const Fvector	&from_pos			=prev_position;
+	const Fvector	&to_position		=vPosition;
+	Fvector dir;dir.sub(to_position,from_pos);
+	float sq_mag=dir.square_magnitude();
+	if(sq_mag==0.f) return;
+	float mag=_sqrt(sq_mag);
+	dir.mul(1.f/mag);
+	collide::ray_defs	RD		(vPosition,dir,mag,0,collide::rqtStatic);
+	VERIFY							(!fis_zero(RD.dir.square_magnitude()));
+
+	STraceBorderQParams p		(this,dir);
+	collide::rq_results		storage	;
+	g_pGameLevel->ObjectSpace.RayQuery(storage,RD,BorderTraceCallback,&p,NULL,static_cast<CObject*>(m_character->PhysicsRefObject()));
 }

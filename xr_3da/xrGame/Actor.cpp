@@ -83,7 +83,9 @@
 #include "EffectorShotX.h"
 
 #include "actor_memory.h"
-
+#include "Script_Game_Object.h"
+#include "Game_Object_Space.h"
+#include "script_callback_ex.h"
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -187,7 +189,7 @@ CActor::CActor() : CEntityAlive()
 	m_statistic_manager		= NULL;
 	//-----------------------------------------------------------------------------------
 	m_memory				= xr_new<CActorMemory>(this);
-
+	m_bOutBorder			= false;
 	hit_probability			= 1.f;
 }
 
@@ -754,7 +756,20 @@ void CActor::Die	(CObject* who)
 		HUD().GetUI()->UIGame()->AddCustomStatic("game_over", true);
 	}
 }
-
+void	CActor::SwitchOutBorder(bool new_border_state)
+{
+	if(new_border_state)
+	{
+		Msg("exit level border");
+		callback(GameObject::eExitLevelBorder)(lua_game_object());
+	}
+	else 
+	{
+		Msg("enter level border");
+		callback(GameObject::eEnterLevelBorder)(lua_game_object());
+	}
+	m_bOutBorder=new_border_state;
+}
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 {	
 	// Correct accel
@@ -769,6 +784,11 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	{
 	if(mstate_real&mcClimb&&!cameras[eacFirstEye]->bClampYaw)accel.set(0.f,0.f,0.f);
 	m_PhysicMovementControl->Calculate			(accel,cameras[cam_active]->vDirection,0,jump,dt,false);
+	bool new_border_state=m_PhysicMovementControl->isOutBorder();
+	if(m_bOutBorder!=new_border_state)
+	{
+		SwitchOutBorder(new_border_state);
+	}
 	m_PhysicMovementControl->GetPosition		(Position());
 	m_PhysicMovementControl->bSleep				=false;
 	}
