@@ -71,6 +71,8 @@
 		</objective>
 		<objective>
 			<text>yan_psi_zone_find</text>
+			<map_location_type hint="yan_psi_zone_find">green_location</map_location_type>
+			<object_story_id>yan_ecolog_help</object_story_id>
 			<infoportion_complete>yan_scientist_return_to_bunker</infoportion_complete>
 		</objective>
 		<objective>
@@ -100,6 +102,8 @@
 		</objective>
 		<objective>
 			<text>yan_psi_zone_find_semenov</text>
+			<map_location_type hint="yan_psi_zone_find_semenov">green_location</map_location_type>
+			<object_story_id>yan_semenov_help</object_story_id>
 			<infoportion_complete>yan_scientist_return_to_bunker</infoportion_complete>
 		</objective>
 		<objective>
