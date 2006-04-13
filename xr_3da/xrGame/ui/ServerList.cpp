@@ -423,7 +423,7 @@ void CServerList::ConnectToSelected(){
 
 		item->CreateConsoleCommand(command, m_playerName.c_str());
 
-		Console->Execute("main_menu off");
+//		Console->Execute("main_menu off");
 		Console->Execute(command.c_str());
 	}
 }

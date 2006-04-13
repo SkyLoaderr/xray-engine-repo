@@ -257,6 +257,23 @@
 		</button_ok>
 	</message_box_session_full>
 	
+	<message_box_server_reject type="ok" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_red</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Connection error: connection rejected by server</text>
+		</message_text>
+		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
+	</message_box_server_reject>
+	
 	<cant_vote type="ok" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
 		

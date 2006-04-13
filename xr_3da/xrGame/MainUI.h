@@ -120,11 +120,13 @@ public:
 	void			OnInvalidHost					();
 	void			OnInvalidPass					();
 	void			OnSessionFull					();
+	void			OnServerReject					();
 
 protected:
-	CUIMessageBoxEx*	m_pMessageInvalidHost;
+	CUIMessageBoxEx*	m_pMessageBox;
+	/*InvalidHost;
 	CUIMessageBoxEx*	m_pMessageInvalidPass;
-	CUIMessageBoxEx*	m_pMessageSessionFull;
+	CUIMessageBoxEx*	m_pMessageSessionFull;*/
 };
 
 extern CUICursor*	GetUICursor();

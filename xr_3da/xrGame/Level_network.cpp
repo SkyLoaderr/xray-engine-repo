@@ -303,5 +303,5 @@ void				CLevel::OnSessionFull			()
 void				CLevel::OnConnectRejected		()
 {
 	IPureClient::OnConnectRejected();
-	//m_sConnectResult
+	UI()->OnServerReject();
 };
