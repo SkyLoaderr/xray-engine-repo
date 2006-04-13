@@ -37,8 +37,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------- BODYGUARD ------------------------>
@@ -71,8 +69,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 <!--------------------------- BANDIT NOVICE ----------------------->
@@ -102,8 +98,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
 	<specific_character id="val_bandit_novice_default2" team_default = "1">
@@ -133,8 +127,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_bandit_novice_default3" team_default = "1">
@@ -163,8 +155,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_bandit_novice_default4" team_default = "1">
@@ -191,8 +181,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!----------------------------- HALFDEAD ------------------------>
@@ -213,8 +201,6 @@
 		<supplies></supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------BANDIT GENERAL---------------------->
@@ -245,8 +231,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_bandit_general_default2" team_default = "1">
@@ -275,8 +259,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_bandit_general_default3" team_default = "1">
@@ -305,8 +287,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_bandit_general_default4" team_default = "1">
@@ -335,8 +315,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 <!---------------------------BANDIT VETERAN---------------------->
@@ -367,8 +345,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_bandit_veteran_default2" team_default = "1">
@@ -397,8 +373,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_bandit_veteran_default3" team_default = "1">
@@ -427,8 +401,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!-------------------------- WATCHTOWER BANDIT ----------------------->
@@ -458,8 +430,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_watchtower_bandit_sniper1" team_default = "1">
@@ -488,8 +458,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------- DOLG ------------------------>
@@ -715,8 +683,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
     <specific_character id="val_monolith_regular_default2" team_default = "1">
@@ -744,8 +710,6 @@
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
     </specific_character>
 
 <!-------------------------- SOLDIER ----------------------->
@@ -776,8 +740,6 @@
 		</supplies>	
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default2" team_default = "1">
@@ -806,8 +768,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default3" team_default = "1">
@@ -836,8 +796,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default4" team_default = "1">
@@ -866,8 +824,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!------------------------- SPECNAZ ------------------------>
@@ -899,8 +855,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="val_soldier_specnaz_default2" team_default = "1">
@@ -929,8 +883,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
     <specific_character id="val_soldier_specnaz_default3" team_default = "1">
@@ -959,8 +911,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
     <specific_character id="val_soldier_specnaz_default4" team_default = "1">
@@ -989,8 +939,6 @@
 		</supplies>		
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!-------------------------- STALKER ----------------------->
@@ -1019,7 +967,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="val_stalker_novice_default3" team_default = "1">
@@ -1048,7 +996,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="val_stalker_novice_default4" team_default = "1">
@@ -1074,7 +1022,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="val_stalker_novice_default5" team_default = "1">
@@ -1100,7 +1048,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="val_stalker_novice_default6" team_default = "1">
@@ -1128,7 +1076,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="val_stalker_novice_default10" team_default = "1">
@@ -1154,7 +1102,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 <!-------------------------- GENERAL ----------------------->
@@ -1184,14 +1132,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
-
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
     <specific_character id="val_stalker_general_default2" team_default = "1">
@@ -1220,13 +1161,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
+#include "gameplay\character_dialogs.xml"
     </specific_character>
 
     <specific_character id="val_stalker_general_default3" team_default = "1">
@@ -1254,13 +1189,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
+#include "gameplay\character_dialogs.xml"
     </specific_character>
 
 	<specific_character id="val_stalker_general_default4" team_default = "1">
@@ -1288,13 +1217,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="val_stalker_general_default5" team_default = "1">
@@ -1322,13 +1245,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_level</actor_dialog>
-		<actor_dialog>agr_stalker_talk_about_ratcatcher</actor_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 <!-- X18 -->
