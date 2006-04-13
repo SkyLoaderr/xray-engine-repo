@@ -209,11 +209,13 @@ function send_task(actor, type, task)
     local task_texture, task_rect = task_info:get_file_name(), task_info:get_rect()
         
 	--' Играем дефолтный звук
-	pda_task:play(db.actor, 0, sound_object.s2d)	
+	pda_task:play(db.actor, 0, sound_object.s2d)
+
+	local news_text = "%c<255,160,160,160>"..game.translate_string(action_descr_by_type[type]).." ".."%c<default>"..game.translate_string(task:get_title())
 	if db.actor:is_talking() then
-		db.actor:give_talk_message(action_descr_by_type[type], task:get_title(), task_texture, task_rect,"iconed_answer_item")
+		db.actor:give_talk_message(news_text, task_texture, task_rect,"iconed_answer_item")
 	else
-		db.actor:give_game_news(action_descr_by_type[type], task:get_title(), task_texture, task_rect, 0, 0)
+		db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 	end	
 end
 function send_encyclopedy(type)
@@ -241,14 +243,16 @@ function relocate_item(actor, type, item)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	if type == "in" then
-		db.actor:give_game_news("general_in_item", get_inv_name(item), "ui\\ui_icons_task", Frect():set(400,100,50,50), 0, 0)
+		local news_text = "%c<255,160,160,160>"..game.translate_string("general_in_item").." ".."%c<default>"..game.translate_string(get_inv_name(item))
+		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50), 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message("general_in_item", get_inv_name(item), "ui\\ui_icons_task", Frect():set(400,100,50,50),"iconed_answer_item")
+			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50),"iconed_answer_item")
 		end		
 	elseif type == "out" then
-		db.actor:give_game_news("general_out_item", get_inv_name(item), "ui\\ui_icons_task", Frect():set(400,100,50,50), 0, 0)
+		local news_text = "%c<255,160,160,160>"..game.translate_string("general_out_item").." ".."%c<default>"..game.translate_string(get_inv_name(item))
+		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50), 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message("general_out_item", get_inv_name(item), "ui\\ui_icons_task", Frect():set(400,100,50,50),"iconed_answer_item")
+			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50),"iconed_answer_item")
 		end		
 	end
 	
@@ -257,14 +261,16 @@ function relocate_money(actor, type, amount)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	if type == "in" then
-		db.actor:give_game_news("general_in_money", tostring(amount), "ui\\ui_icons_task", Frect():set(450,50,50,50), 0, 0)
+		local news_text = "%c<255,160,160,160>"..game.translate_string("general_in_money").." ".."%c<default>"..game.translate_string(tostring(amount))
+		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message("general_in_money", tostring(amount), "ui\\ui_icons_task", Frect():set(450,50,50,50), "iconed_answer_item")
+			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), "iconed_answer_item")
 		end		
 	elseif type == "out" then
-		db.actor:give_game_news("general_out_money", tostring(amount), "ui\\ui_icons_task", Frect():set(450,50,50,50), 0, 0)
+		local news_text = "%c<255,160,160,160>"..game.translate_string("general_out_money").." ".."%c<default>"..game.translate_string(tostring(amount))
+		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message("general_out_money", tostring(amount), "ui\\ui_icons_task", Frect():set(450,50,50,50), "iconed_answer_item")
+			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), "iconed_answer_item")
 		end		
 	end
 	
