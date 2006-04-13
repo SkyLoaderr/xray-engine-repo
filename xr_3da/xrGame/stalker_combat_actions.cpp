@@ -464,7 +464,7 @@ void CStalkerActionGetReadyToKill::execute		()
 //	else
 //		object().sight().setup	(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
-	if (point && !object().movement().desired_position().similar(object().Position(),.5f || !object().movement().path_completed()))
+	if ((point && !object().movement().desired_position().similar(object().Position(),.5f)) || !object().movement().path_completed())
 		object().sight().setup						(CSightAction(SightManager::eSightTypePathDirection));
 
 	u32									min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
