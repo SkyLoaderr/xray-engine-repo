@@ -27,7 +27,7 @@
         <start_dialog>cit_doctor_hello_dialog</start_dialog>
         <actor_dialog>cit_doctor_main_dialog</actor_dialog>
         <actor_dialog>cit_doctor_escape_dialog</actor_dialog>
-<!-- #include "gameplay\character_dialogs.xml" -->
+#include "gameplay\character_dialogs.xml"
     </specific_character>
 
 <!----------------------------- KILLERS ------------------------->
@@ -59,8 +59,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_killer_general2" team_default = "1">
@@ -90,8 +88,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!----------------------------- VETERAN ------------------------->
@@ -121,8 +117,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_killer_veteran2" team_default = "1">
@@ -152,8 +146,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!------------------------------ NAUCHNIY ----------------------->
@@ -184,8 +176,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!------------------------------ EXO ----------------------->
@@ -217,8 +207,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_killer_exo_sniper" team_default = "1">
@@ -249,8 +237,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!---------------------------- LEADER ---------------------->
@@ -285,8 +271,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!-------------------------- BANDITS ----------------------->
@@ -345,8 +329,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_bandit_general_default2" team_default = "1">
@@ -375,8 +357,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_bandit_general_default3" team_default = "1">
@@ -405,8 +385,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_bandit_general_default4" team_default = "1">
@@ -435,8 +413,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 	
 <!---------------------------BANDIT VETERAN---------------------->
@@ -467,8 +443,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_bandit_veteran_default2" team_default = "1">
@@ -497,8 +471,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 	<specific_character id="cit_bandit_veteran_default3" team_default = "1">
@@ -527,8 +499,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!-------------------------- VETERAN BEST ----------------------->
@@ -559,8 +529,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!-------------------------- LEADER ----------------------->
@@ -591,8 +559,6 @@
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
-		
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
 <!----------------------- Василий Петрович ---------------------->
@@ -621,8 +587,6 @@
 			cit_vp_pda \n
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>gar_stalker_about_level</actor_dialog>
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
 </xml>
