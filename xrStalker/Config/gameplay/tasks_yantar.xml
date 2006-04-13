@@ -120,7 +120,7 @@
 		</objective>
 		<objective>
 			<text>yan_scientist_return</text>
-			<map_location_type hint="yan_return_to_bunker">green_location</map_location_type>
+			<map_location_type>green_location</map_location_type>
 			<object_story_id>yan_general_ecolog</object_story_id>
 			<infoportion_complete>yan_find_vasilyev_start</infoportion_complete>
 		</objective>
