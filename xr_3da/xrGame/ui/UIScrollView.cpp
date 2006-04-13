@@ -38,7 +38,8 @@ void CUIScrollView::Init				()
 	m_pad->SetWndPos			(0.0f,0.0f);
 	m_VScrollBar				= xr_new<CUIScrollBar>();m_VScrollBar->SetAutoDelete(true);
 	AttachChild					(m_VScrollBar);
-	m_VScrollBar->Init			(GetWndSize().x-SCROLLBAR_WIDTH, 0.0f, GetWndSize().y, false);
+	m_VScrollBar->Init			(GetWndSize().x, 0.0f, GetWndSize().y, false);
+	m_VScrollBar->SetWndPos		(m_VScrollBar->GetWndPos().x - m_VScrollBar->GetWndSize().x, m_VScrollBar->GetWndPos().y);
 	m_VScrollBar->SetWindowName	("scroll_v");
 	m_VScrollBar->SetStepSize	(_max(1,iFloor(GetHeight()/10)));
 	m_VScrollBar->SetPageSize	(iFloor(GetHeight()));
@@ -263,7 +264,7 @@ CUIWindow* CUIScrollView::GetItem		(u32 idx)
 }
 
 float CUIScrollView::GetDesiredChildWidth(){
-	return GetWidth() - SCROLLBAR_WIDTH - m_rightIdent - m_leftIdent;
+	return GetWidth() - m_VScrollBar->GetWidth() - m_rightIdent - m_leftIdent;
 }
 
 void CUIScrollView::SetSelected			(CUIWindow* w)

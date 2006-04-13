@@ -15,7 +15,9 @@ public:
 	CUIScrollBox(void);
 	virtual ~CUIScrollBox(void);
 
-	virtual void Init(float x, float y, float length, float broad, bool bIsHorizontal);
+	virtual void Init(float x, float y, float length, float broad);
+			void SetHorizontal();
+			void SetVertical();
 
 	//сообщени€, отправл€емые родительскому окну
 //	typedef enum{SCROLLBOX_MOVE, SCROLLBOX_STOP} E_MESSAGE;

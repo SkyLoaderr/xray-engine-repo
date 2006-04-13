@@ -1724,9 +1724,6 @@
 						RelativePath=".\Config\ui\maingame_pda_msg.xml">
 					</File>
 					<File
-						RelativePath=".\Config\ui\message_box.xml">
-					</File>
-					<File
 						RelativePath=".\Config\ui\messages_window.xml">
 					</File>
 					<File
@@ -1737,6 +1734,16 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\zone_map.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="controls"
+					Filter="">
+					<File
+						RelativePath=".\Config\ui\message_box.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\scroll_bar.xml">
 					</File>
 				</Filter>
 			</Filter>

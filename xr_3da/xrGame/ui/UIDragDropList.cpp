@@ -326,12 +326,12 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 
 
-	SetWidth(float(m_iColsNum*GetCellWidth()) + SCROLLBAR_WIDTH + SCROLLBAR_OFFSET_X);
+	SetWidth(float(m_iColsNum*GetCellWidth()) + m_ScrollBar.GetWidth() + SCROLLBAR_OFFSET_X);
 	SetHeight(float(GetViewRows()*GetCellHeight()));
 
 	if (!IsChild(&m_ScrollBar))
 		AttachChild(&m_ScrollBar);
-	m_ScrollBar.Init(GetWidth() - SCROLLBAR_WIDTH, SCROLLBAR_OFFSET_Y, 
+	m_ScrollBar.Init(GetWidth() - m_ScrollBar.GetWidth(), SCROLLBAR_OFFSET_Y, 
 					GetHeight(), false);
 
 	m_vGridState.resize(m_iRowsNum*m_iColsNum, CELL_EMPTY);

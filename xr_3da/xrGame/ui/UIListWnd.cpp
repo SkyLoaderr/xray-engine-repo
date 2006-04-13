@@ -68,7 +68,14 @@ void CUIListWnd::Init(float x, float y, float width, float height, float item_he
 {
 	CUIWindow::Init(x, y, width, height);
 
-	SetItemWidth(width - SCROLLBAR_WIDTH);
+	//добавить полосу прокрутки
+	m_ScrollBar = xr_new<CUIScrollBar>(); m_ScrollBar->SetAutoDelete(true);
+	AttachChild(m_ScrollBar);
+	m_ScrollBar->Init(width,
+						0,height, false);
+	m_ScrollBar->SetWndPos(m_ScrollBar->GetWndPos().x - m_ScrollBar->GetWidth(), m_ScrollBar->GetWndPos().y);
+
+	SetItemWidth(width - m_ScrollBar->GetWidth());
 	
 	m_iFirstShownIndex = 0;
 
@@ -76,11 +83,9 @@ void CUIListWnd::Init(float x, float y, float width, float height, float item_he
 	m_iRowNum = iFloor(height/m_iItemHeight);
 
 
-	//добавить полосу прокрутки
-	m_ScrollBar = xr_new<CUIScrollBar>(); m_ScrollBar->SetAutoDelete(true);
-	AttachChild(m_ScrollBar);
-	m_ScrollBar->Init(width-SCROLLBAR_WIDTH,
-						0,height, false);
+	
+
+	
 
 	m_ScrollBar->SetRange(0,0);
 	m_ScrollBar->SetPageSize(s16(0));

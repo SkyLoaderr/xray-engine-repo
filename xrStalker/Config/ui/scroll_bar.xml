@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scroll_bar>
+	<default height="16">
+		<left_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_left_arrow</texture_e>
+		</left_arrow>
+		<right_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_right_arrow</texture_e>
+		</right_arrow>
+		<up_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_up_arrow</texture_e>
+		</up_arrow>
+		<down_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_down_arrow</texture_e>
+		</down_arrow>
+		<back width="16" height="16">
+			<texture>ui\ui_scb_back</texture>
+		</back>
+		<back_v width="16" height="16">
+			<texture>ui\ui_scb_back_v</texture>
+		</back_v>
+		<box>
+			<texture>ui\ui_scb_scroll_box</texture>
+		</box>
+		<box_v>
+			<texture>ui\ui_scb_scroll_box_v</texture>
+		</box_v>		
+	</default>	
+	<pda>
+		<left_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_left_arrow</texture_e>
+		</left_arrow>
+		<right_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_right_arrow</texture_e>
+		</right_arrow>
+		<up_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_up_arrow</texture_e>
+		</up_arrow>
+		<down_arrow width="16" height="16">
+			<texture_e>ui\ui_scb_down_arrow</texture_e>
+		</down_arrow>
+		<back width="16" height="16">
+			<texture>ui\ui_scb_back</texture>
+		</back>
+		<back_v width="16" height="16">
+			<texture>ui\ui_scb_back_v</texture>
+		</back_v>
+		<box>
+			<texture>ui\ui_scb_scroll_box</texture>
+		</box>
+		<box_v>
+			<texture>ui\ui_scb_scroll_box_v</texture>
+		</box_v>
+	</pda>
+</scroll_bar>

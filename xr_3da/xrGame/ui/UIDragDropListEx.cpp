@@ -76,7 +76,8 @@ void CUIDragDropListEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 void CUIDragDropListEx::Init(float x, float y, float w, float h)
 {
 	inherited::SetWndRect				(x,y,w,h);
-	m_vScrollBar->Init					(w-SCROLLBAR_HEIGHT, 0, h, false);
+	m_vScrollBar->Init					(w, 0, h, false);
+	m_vScrollBar->SetWndPos				(m_vScrollBar->GetWndPos().x - m_vScrollBar->GetWidth(), m_vScrollBar->GetWndPos().y);
 /*
 //.	m_background->Init					(0,0,w,h);
 //.	m_background->Init					("ui\\ui_frame_02_back",0,0,w,h);

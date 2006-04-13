@@ -11,9 +11,9 @@
 //#include "UIButton.h"
 //#include "UIScrollBox.h"
 
-#define SCROLLBAR_WIDTH  16.0f
-#define SCROLLBAR_HEIGHT 16.0f
-class CUIButton;
+//#define SCROLLBAR_WIDTH  16.0f
+//#define SCROLLBAR_HEIGHT 16.0f
+class CUI3tButton;
 class CUIScrollBox;
 class CUIStaticItem;
 
@@ -34,8 +34,8 @@ protected:
 	bool			m_bIsHorizontal;
 
 	//кнопки скролинга
-	CUIButton*		m_DecButton;
-	CUIButton*		m_IncButton;
+	CUI3tButton*		m_DecButton;
+	CUI3tButton*		m_IncButton;
 
 	//каретка скролинга
 	CUIScrollBox*	m_ScrollBox;
@@ -75,7 +75,7 @@ public:
 			bool	GetEnabled		()					{return m_b_enabled;}
 	virtual void	Show			(bool b);
 	virtual void	Enable			(bool b);
-	virtual void	Init			(float x, float y, float length, bool bIsHorizontal);
+	virtual void	Init			(float x, float y, float length, bool bIsHorizontal, LPCSTR profile = "default");
 
 	//сообщения, отправляемые родительскому окну
 //	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
@@ -106,7 +106,7 @@ public:
 	// положение каретки
 	void			SetScrollPos	(int iPos) { SetScrollPosClamped(iPos); UpdateScrollBar();}
 	int				GetScrollPos	() {return _max(m_iMinPos,m_iScrollPos);}
-	// базовые размеры для кнопок
+	
 	void			TryScrollInc	();
 	void			TryScrollDec	();
 };

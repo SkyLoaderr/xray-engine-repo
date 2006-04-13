@@ -16,17 +16,23 @@
 CUIScrollBox::CUIScrollBox(void)
 {
 	m_bAvailableTexture = true;
+	m_bIsHorizontal = true;
 }
 
 CUIScrollBox::~CUIScrollBox(void)
 {
 }
 
+void CUIScrollBox::SetHorizontal(){
+	m_bIsHorizontal = true;
+}
 
-void CUIScrollBox::Init(float x, float y, float length, float broad, bool bIsHorizontal)
+void CUIScrollBox::SetVertical(){
+	m_bIsHorizontal = false;
+}
+
+void CUIScrollBox::Init(float x, float y, float length, float broad)
 {
-	m_bIsHorizontal = bIsHorizontal;
-
 	if(m_bIsHorizontal)
 	{
 		m_UIStaticItem.Init(SCROLLBOX_HORZ, "hud\\default",x,y, alNone);
