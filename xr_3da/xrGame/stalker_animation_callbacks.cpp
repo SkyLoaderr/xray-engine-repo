@@ -43,6 +43,7 @@ TEMPLATE_SPECIALIZATION
 void _detail::callback		(CBoneInstance *B)
 {
 	CAI_Stalker*			A = static_cast<CAI_Stalker*>(B->Callback_Param);
+	VERIFY					(_valid(B->mTransform));
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
@@ -60,11 +61,19 @@ void _detail::callback		(CBoneInstance *B)
 		Fvector				temp;
 		A->weapon_shot_effector().GetDeltaAngle(temp);
 		effector_yaw		= temp.y;
+		VERIFY				(_valid(effector_yaw));
 		effector_pitch		= temp.x;
+		VERIFY				(_valid(effector_pitch));
 	}
+
+	VERIFY					(_valid(A->movement().head_orientation().current.yaw));
+	VERIFY					(_valid(A->movement().body_orientation().current.yaw));
+	VERIFY					(_valid(A->NET_Last.o_torso.pitch));
 
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw + effector_yaw - (A->movement().body_orientation().current.yaw)));
 	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch + effector_pitch));
+	VERIFY					(_valid(yaw));
+	VERIFY					(_valid(pitch));
 
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
