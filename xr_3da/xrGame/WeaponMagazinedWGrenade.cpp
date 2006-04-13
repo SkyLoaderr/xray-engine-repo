@@ -186,7 +186,7 @@ bool CWeaponMagazinedWGrenade::SwitchMode()
 		return false;
 
 	if(!IsGrenadeLauncherAttached()) 
-		return true;
+		return false;
 
 	m_bPending				= true;
 
@@ -415,7 +415,10 @@ void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S)
 	{
 	case eSwitch:
 		{
-			if( !SwitchMode() )return;
+			if( !SwitchMode() ){
+				SwitchState(eIdle);
+				return;
+			}
 		}break;
 	}
 	inherited::OnStateSwitch(S);
