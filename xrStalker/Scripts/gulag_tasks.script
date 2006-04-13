@@ -6,12 +6,12 @@ local dynamic_ltx = {}
 
 function loadJob(sj, gname, type, squad, groups, gulag)
 	if type == "test" then
-		t = { section = "logic@walker1",
+--[[		t = { section = "logic@walker1",
 			idle = 0,
 			prior = 0, state = {0},
 			in_rest = "test_sr", out_rest = ""
 		}
-		table.insert(sj, t)
+		table.insert(sj, t)]]
 		t = { section = "logic@walker2",
 			idle = 0,
 			prior = 0, state = {0},

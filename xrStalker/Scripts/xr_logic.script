@@ -381,6 +381,10 @@ function activate_by_section(npc, ini, section, loading)
 
 		if db.storage[npc_id].stype == modules.stype_stalker then
 			issue_event(npc, db.storage[npc_id][scheme], "activate_scheme", loading)
+
+			-- старый путь уже не действителен
+			-- если его не отрубить, то может быть вылет, если рестрикторы поменялись
+			npc:patrol_path_make_inactual()
 		else
 			issue_event(npc, db.storage[npc_id][scheme], "reset_scheme", loading)
 		end
