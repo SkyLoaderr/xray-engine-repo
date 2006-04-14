@@ -276,7 +276,7 @@ end
 function action_trade_info_show(npc, actor)
 	local k,v = 0,0
 	for k,v in pairs(show_tbl) do
-		db.actor:give_talk_message(phrase.trade_info[v].name, "ui\\ui_icons_task", Frect():set(350,150,50,50),"iconed_trade_info")
+		db.actor:give_talk_message(game.translate_string(phrase.trade_info[v].name), "ui\\ui_icons_task", Frect():set(350,150,50,50),"iconed_trade_info")
 	end
 end
 function precondition_trade_info(actor, npc)
