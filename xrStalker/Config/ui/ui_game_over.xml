@@ -8,6 +8,23 @@
 	
 	<item_0 x="0" y="0" width="255" height="255">
 		<texture>ui\ui_blueteam</texture>
-		<text align="l" x="260" y="128" font="letterica18">Item</text>
+		<text align="l" x="260" y="128" font="letterica18">Item1</text>
 	</item_0>
+
+	<item_1 x="0" y="0" width="255" height="255">
+		<texture>ui\ui_blueteam</texture>
+		<text align="l" x="260" y="128" font="letterica18">Item2</text>
+	</item_1>
+
+	<item_2 x="0" y="0" width="255" height="255">
+		<texture>ui\ui_blueteam</texture>
+		<text align="l" x="260" y="128" font="letterica18">Item3</text>
+
+		<auto>
+			<auto_static x="0" y="20" width="255" height="3" stretch="1">
+				<texture>ui\ui_pda_horizontal_line</texture>
+			</auto_static>
+		</auto>
+		
+	</item_2>
 </w>
