@@ -28,6 +28,22 @@ GAME_TYPE	GetGameType (char* GameType)
 	};
 	return GAME_UNKNOWN;
 };
+
+GAME_TYPE	GetGameType (byte u8GameType)
+{
+	if (!u8GameType) return GAME_UNKNOWN;
+	switch (u8GameType)
+	{
+	case ST_GAME_ANY				: return GAME_UNKNOWN;
+	case ST_GAME_SINGLE			: return GAME_SINGLE;
+	case ST_GAME_DEATHMATCH		: return GAME_DEATHMATCH;
+	case ST_GAME_CS				: return GAME_UNKNOWN;
+	case ST_GAME_TEAMDEATHMATCH	: return GAME_TEAMDEATHMATCH;
+	case ST_GAME_ARTEFACTHUNT		: return GAME_ARTEFACTHUNT;
+	case ST_GAME_DUMMY				: return GAME_UNKNOWN;
+	}
+	return GAME_UNKNOWN;
+};
 // CClientDlg dialog
 
 IMPLEMENT_DYNAMIC(CClientDlg, CSubDlg)
@@ -117,8 +133,10 @@ BOOL CClientDlg::OnInitDialog()
 	//=========== Game Spy =================================================
 	m_timerID = 0;
 	//SB - check that the game's backend is available
+	qr2_register_key(GAMETYPE_NAME_KEY,   ("gametypename")  );
 	qr2_register_key(DEDICATED_KEY,   ("dedicated")  );
-	qr2_register_key(FFIRE_KEY,   ("friendlyfire")  );
+	qr2_register_key(G_FRIENDLY_FIRE_KEY,   ("friendlyfire")  );
+	
 
 
 	GSIACResult result;
@@ -400,13 +418,16 @@ void CClientDlg::AddServerToList		(SBServer server)
 	//  [5/20/2005]
 
 	sprintf(NODE->dpSessionName, "%s", SBServerGetStringValue(server, qr2_registered_key_list[MAPNAME_KEY], "Unknown"));
-	NODE->dpServerGameType = GetGameType((char*)SBServerGetStringValue(server, qr2_registered_key_list[GAMETYPE_KEY], "UNKNOWN"));
+	
+	NODE->dpServerGameType = GetGameType((char*)SBServerGetStringValue(server, qr2_registered_key_list[GAMETYPE_NAME_KEY], "UNKNOWN"));
+	NODE->dpServerGameType = GetGameType((byte)SBServerGetIntValue(server, qr2_registered_key_list[GAMETYPE_KEY], 0));
+
 	NODE->dpPassword	= SBServerGetBoolValue(server, qr2_registered_key_list[PASSWORD_KEY], SBFalse);
 	NODE->dpPing = SBServerGetPing(server);
 	NODE->dpServerNumPlayers = SBServerGetIntValue(server, qr2_registered_key_list[NUMPLAYERS_KEY], 0);
 	NODE->dpServerMaxPlayers = SBServerGetIntValue(server, qr2_registered_key_list[MAXPLAYERS_KEY], 32);
 	NODE->dpDedicated	= SBServerGetBoolValue(server, qr2_registered_key_list[DEDICATED_KEY], SBFalse) == SBTrue;
-	NODE->dpFFire		= SBServerGetBoolValue(server, qr2_registered_key_list[FFIRE_KEY], SBFalse) == SBTrue;
+	NODE->dpFFire		= SBServerGetBoolValue(server, qr2_registered_key_list[G_FRIENDLY_FIRE_KEY], SBFalse) == SBTrue;
 	NODE->dpPort		= SBServerGetIntValue(server, qr2_registered_key_list[HOSTPORT_KEY], 0);
 	NODE->dpServer = server;
 

@@ -7,8 +7,9 @@
 //=======================================
 #include "GameSpy.net/ServerBrowsing/sb_serverbrowsing.h"
 //=======================================
-#define	DEDICATED_KEY			100
-#define	FFIRE_KEY				101
+#define GAMETYPE_NAME_KEY						100
+#define	DEDICATED_KEY							101
+#define	G_FRIENDLY_FIRE_KEY						117
 
 //#include <dplay8.h>
 
