@@ -290,8 +290,8 @@ BOOL CObjectSpace::_RayQuery	(collide::rq_results& r_dest, const collide::ray_de
 	rq_target	next_test	= R.tgt;
 
 	rq_result	s_res;
-	ray_defs	s_rd		(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
-	ray_defs	d_rd		(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,R.tgt);
+	ray_defs	s_rd		(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|R.flags,R.tgt);
+	ray_defs	d_rd		(R.start,R.dir,R.range,CDB::OPT_ONLYNEAREST|R.flags,R.tgt);
 	rq_target	s_mask	=	rqtStatic;
 	rq_target	d_mask	=	rq_target(	((R.tgt&rqtObject)	?rqtObject:rqtNone		)|
 										((R.tgt&rqtObstacle)?rqtObstacle:rqtNone	)|
