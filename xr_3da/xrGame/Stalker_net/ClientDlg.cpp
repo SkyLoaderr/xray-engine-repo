@@ -1070,7 +1070,7 @@ void CClientDlg::OnBnClickedGSUpdateList()
 		m_timerID = SetTimer(TIMER_ID, TIMER_FREQUENCY, NULL);
 
 	// fields we're interested in
-	unsigned char fields[] = { HOSTNAME_KEY, NUMPLAYERS_KEY, MAXPLAYERS_KEY, MAPNAME_KEY, GAMETYPE_KEY, PASSWORD_KEY };
+	unsigned char fields[] = { HOSTNAME_KEY, NUMPLAYERS_KEY, MAXPLAYERS_KEY, MAPNAME_KEY, GAMETYPE_KEY, PASSWORD_KEY, HOSTPORT_KEY };
 	int numFields = sizeof(fields) / sizeof(fields[0]);
 
 	// check for internet/lan

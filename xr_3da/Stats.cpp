@@ -133,6 +133,10 @@ void CStats::Show()
 		else						fMem_calls	=	.9f*fMem_calls + .1f*mem_count;
 		Memory.stat_calls	= 0		;
 	}
+
+	////////////////////////////////////////////////
+	if (g_pGamePersistent->bDedicatedServer) return;
+	////////////////////////////////////////////////
 	int frm = 2000;
 	div_t ddd = div(Device.dwFrame,frm);
 	if( ddd.rem < frm/2.0f ){
@@ -408,7 +412,8 @@ void CStats::OnDeviceCreate			()
 {
 	g_bDisableRedText				= strstr(Core.Params,"-xclsx")?TRUE:FALSE;
 
-	pFont	= xr_new<CGameFont>		("stat_font");
+	if (!strstr(Core.Params, "-dedicated"))
+		pFont	= xr_new<CGameFont>		("stat_font");
 	
 	if(!pSettings->section_exist("evaluation")
 		||!pSettings->line_exist("evaluation","line1")
