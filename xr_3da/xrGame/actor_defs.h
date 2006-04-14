@@ -129,6 +129,7 @@ struct					net_update_A
 struct					InterpData
 {
 	Fvector				Pos;
+	Fvector				Vel;
 	float				o_model;				// model yaw
 	SRotation			o_torso;				// torso in world coords
 };

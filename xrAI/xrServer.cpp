@@ -158,6 +158,7 @@ void		xrServer::client_Destroy	(IClient* C)
 //--------------------------------------------------------------------
 #ifdef DEBUG
 INT	g_Dump_Update_Write = 0;
+INT g_sv_SendUpdate = 0;
 #endif
 void xrServer::Update	()
 {
@@ -195,7 +196,11 @@ void xrServer::Update	()
 		// Initialize process and check for available bandwidth
 		xrClientData*	Client		= (xrClientData*) net_Players	[client];
 		if (!Client->net_Ready)		continue;		
-		if (!HasBandwidth(Client))	continue;
+		if (!HasBandwidth(Client) 
+#ifdef DEBUG
+			&& !g_sv_SendUpdate
+#endif
+			)	continue;		
 
 		// Send relevant entities to client
 		// CSE_Abstract*	Base	= Client->owner;
@@ -249,6 +254,9 @@ void xrServer::Update	()
 			SendTo			(Client->ID,Packet,net_flags(FALSE,TRUE));
 		}
 	}
+#ifdef DEBUG
+	g_sv_SendUpdate = 0;
+#endif			
 
 	if (game->sv_force_sync)	Perform_game_export();
 
@@ -479,13 +487,7 @@ void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 void			xrServer::Server_Client_Check	( IClient* CL )
 {
 	clients_Lock	();
-	/*
-	if (SV_Client && SV_Client->ID != CL->ID)
-	{
-		clients_Unlock	();
-		return;
-	};
-*/
+	
 	if (SV_Client && SV_Client->ID == CL->ID)
 	{
 		if (!CL->flags.bConnected)
@@ -495,6 +497,13 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 		clients_Unlock	();
 		return;
 	};
+
+	if (SV_Client && SV_Client->ID != CL->ID)
+	{
+		clients_Unlock	();
+		return;
+	};
+
 
 	if (!CL->flags.bConnected) 
 	{

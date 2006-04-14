@@ -302,6 +302,11 @@ void CLevel::IR_OnKeyboardPress	(int key)
 //		if (!ai().get_alife())
 //			break;
 //		const_cast<CALifeSimulatorHeader&>(ai().alife().header()).set_state(ALife::eZoneStateSurge);
+		if (GameID() != GAME_SINGLE)
+		{
+			extern INT g_sv_SendUpdate;
+			g_sv_SendUpdate = 1;
+		};
 		break;
 	}
 		return;

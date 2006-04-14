@@ -267,9 +267,16 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		}break;
 	case GE_ACTOR_JUMPING:
 		{
-			mstate_wishful |= mcJump;
-			if (NET.size())
-				NET_Last.mstate |= mcJump;
+			/*
+			Fvector dir;
+			P.r_dir(dir);
+			float jump = P.r_float();
+			NET_SavedAccel = dir;
+			extern float NET_Jump;
+			NET_Jump = jump;
+			m_bInInterpolation = false;
+			mstate_real |= mcJump;
+			*/
 		}break;
 	}
 }

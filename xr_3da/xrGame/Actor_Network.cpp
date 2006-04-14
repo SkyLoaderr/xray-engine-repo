@@ -302,50 +302,13 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	//------------------------------------------------
 	P.r_u32				(N.dwTimeStamp	);
 	//---------------------------------------------
-	if (pStatGraph) 
-	{
-		pStatGraph->SetMinMax(-0.0f, 100.0f, 300);
-		pStatGraph->SetGrid(0, 0.0f, 10, 10.0f, 0xff808080, 0xffffffff);
-		pStatGraph->SetStyle(CStatGraph::stBar);
-		pStatGraph->SetStyle(CStatGraph::stBar, 1);
-		pStatGraph->SetStyle(CStatGraph::stBar, 2);
-
-		float dTime = 0;
-		if (Level().timeServer() < N.dwTimeStamp)
-			dTime =  -float(N.dwTimeStamp - Level().timeServer());
-		else
-			dTime = float(Level().timeServer() - N.dwTimeStamp);
-
-		if (OnServer())
-		{
-			
-			for (u32 I=0; I<Level().Server->client_Count(); ++I)	
-			{
-				game_PlayerState*	ps = Level().Server->game->get_it(I);
-				if (!ps || ps->GameID != ID()) continue;
-				IClient*	C = Level().Server->client_Get(I);
-				if (!C) continue;
-				pStatGraph->AppendItem(float(C->stats.getPing()), 0xff00ff00, 2);
-				pStatGraph->AppendItem(float(Level().timeServer() - P.timeReceive + C->stats.getPing()), 0xffffff00, 0);
-			};
-		}
-		else
-		{
-			pStatGraph->SetStyle(CStatGraph::stBar);
-			pStatGraph->SetStyle(CStatGraph::stBar, 1);
-			pStatGraph->SetStyle(CStatGraph::stBar, 2);
-
-			IClientStatistic pStat = Level().GetStatistic();
-			pStatGraph->AppendItem(float(pStat.getPing()), 0xff00ff00, 2);
-			pStatGraph->AppendItem(float(Level().timeServer() - P.timeReceive + pStat.getPing()), 0xffffff00, 0);
-		};
-	};
+	
 	//---------------------------------------------
 
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);
 	P.r_angle8			(N.o_model		);
-	P.r_angle8			(N.o_torso.yaw	);
+	P.r_angle8			(N.o_torso.yaw	); 
 	P.r_angle8			(N.o_torso.pitch);
 	P.r_angle8			(N.o_torso.roll	); if (N.o_torso.roll > PI) N.o_torso.roll -= PI_MUL_2;
 	id_Team				= P.r_u8();
@@ -359,12 +322,12 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	{
 		if (OnServer() || Remote())
 		{
-			unaffected_r_torso.yaw		= N.o_torso.yaw;
-			unaffected_r_torso.pitch	= N.o_torso.pitch;
-			unaffected_r_torso.roll		= N.o_torso.roll;
+//			unaffected_r_torso.yaw		= N.o_torso.yaw;
+//			unaffected_r_torso.pitch	= N.o_torso.pitch;
+//			unaffected_r_torso.roll		= N.o_torso.roll;
 
-			cam_Active()->yaw	= -N.o_torso.yaw;
-			cam_Active()->pitch = N.o_torso.pitch;
+//			cam_Active()->yaw	= -N.o_torso.yaw;
+//			cam_Active()->pitch = N.o_torso.pitch;
 		};
 	};
 
@@ -634,22 +597,24 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 //*
 	
 //	if (OnServer())// && E->s_flags.is(M_SPAWN_OBJECT_LOCAL))
-	/*
+/*	
 	if (OnClient())
 	{
 		if (!pStatGraph)
 		{
-		static g_Y = 100;
-		pStatGraph = xr_new<CStatGraph>();
-		pStatGraph->SetRect(0, g_Y, 1024, 100, 0xff000000, 0xff000000);
-		g_Y += 110;
-		if (g_Y > 700) g_Y = 100;
-		pStatGraph->SetGrid(0, 0.0f, 10, 1.0f, 0xff808080, 0xffffffff);
-		pStatGraph->SetMinMax(-PI, PI, 300);
-
+			static g_Y = 0;
+			pStatGraph = xr_new<CStatGraph>();
+			pStatGraph->SetRect(0, g_Y, Device.dwWidth, 100, 0xff000000, 0xff000000);
+			g_Y += 110;
+			if (g_Y > 700) g_Y = 100;
+			pStatGraph->SetGrid(0, 0.0f, 10, 1.0f, 0xff808080, 0xffffffff);
+			pStatGraph->SetMinMax(0, 10, 300);
+			pStatGraph->SetStyle(CStatGraph::stBar);
+			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
+			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
 		}
 	}
-	*/
+*/	
 //	if (m_DefaultVisualOutfit == NULL)
 //		m_DefaultVisualOutfit = cNameVisual();
 //	if (!GetDefaultVisualOutfit())
@@ -888,27 +853,38 @@ void ACTOR_DEFS::net_update::lerp(ACTOR_DEFS::net_update& A, ACTOR_DEFS::net_upd
 	weapon			= (f<0.5f)?A.weapon:B.weapon;
 }
 
+InterpData				IStartT;
+InterpData				IRecT;
+InterpData				IEndT;
+static	bool SwitchV	= true;
+
 void CActor::PH_B_CrPr		()	// actions & operations before physic correction-prediction steps
 {
 	//just set last update data for now
-//	if (!m_bHasUpdate) return;
+//	if (!m_bHasUpdate) return;	
 	if (CrPr_IsActivated()) return;
 	if (CrPr_GetActivationStep() > ph_world->m_steps_num) return;
 
 	if (g_Alive())
 	{
 		CrPr_SetActivated(true);
-		///////////////////////////////////////////////
-		IStart.Pos				= Position();
-		IStart.o_model			= r_model_yaw;
-		IStart.o_torso.yaw		= unaffected_r_torso.yaw;
-		IStart.o_torso.pitch	= unaffected_r_torso.pitch;
-		IStart.o_torso.roll		= unaffected_r_torso.roll;
+//		if (!SwitchV)
+		{		
+			///////////////////////////////////////////////
+			InterpData* pIStart = &IStart;			
+			pIStart->Pos				= Position();
+			pIStart->Vel				= m_PhysicMovementControl->GetVelocity();
+			pIStart->o_model			= angle_normalize(r_model_yaw);
+			pIStart->o_torso.yaw		= angle_normalize(unaffected_r_torso.yaw);
+			pIStart->o_torso.pitch		= angle_normalize(unaffected_r_torso.pitch);
+			pIStart->o_torso.roll		= angle_normalize(unaffected_r_torso.roll);
+		}
 		///////////////////////////////////////////////
 		CPHSynchronize* pSyncObj = NULL;
 		pSyncObj = PHGetSyncItem(0);
 		if (!pSyncObj) return;
-		pSyncObj->get_State(LastState);
+//		if (!SwitchV) 
+			pSyncObj->get_State(LastState);
 		///////////////////////////////////////////////
 
 		//----------- for E3 -----------------------------
@@ -924,11 +900,9 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 			net_update_A N_A = NET_A.back();
 			net_update N = NET.back();
 
-			NET_Last.o_model = N.o_model;
-			NET_Last.o_torso = N.o_torso;
-			NET_Last.mstate = N.mstate;
-			NET_Last.p_accel = N.p_accel;
+			NET_Last = N;
 			///////////////////////////////////////////////
+			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch, 0);//, unaffected_r_torso.roll);		// set's camera orientation
 			if (!N_A.State.enabled) 
 			{
 				pSyncObj->set_State(N_A.State);
@@ -936,8 +910,14 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 			else
 			{
 				PHUnFreeze();
-
-				pSyncObj->set_State(N_A.State);
+				
+				if (SwitchV)
+					pSyncObj->set_State(N_A.State);
+				else
+					m_PhysicMovementControl->SetPosition	(N.p_pos);
+				
+				g_Physics(N.p_accel, 0.0f, 0.0f);				
+				Position().set(IStart.Pos);
 			};
 		};
 	}
@@ -974,8 +954,6 @@ void CActor::PH_I_CrPr		()		// actions & operations between two phisic predictio
 	if (!CrPr_IsActivated()) return;
 	if (g_Alive())
 	{
-		if (OnClient())
-			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch, 0);//, unaffected_r_torso.roll);		// set's camera orientation
 		////////////////////////////////////
 		CPHSynchronize* pSyncObj = NULL;
 		pSyncObj = PHGetSyncItem(0);
@@ -998,18 +976,184 @@ void CActor::PH_A_CrPr		()
 	pSyncObj = PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	////////////////////////////////////
-	pSyncObj->get_State(PredictedState);
+	pSyncObj->get_State(PredictedState);	
 	////////////////////////////////////
 	pSyncObj->set_State(RecalculatedState);
 	////////////////////////////////////
 	if (!m_bInterpolate) return;
-
-	IEnd.Pos				= PredictedState.position;
-	IEnd.o_model			= NET_Last.o_model;
-	IEnd.o_torso			= NET_Last.o_torso;
 	////////////////////////////////////
+	mstate_wishful = mstate_real = NET_Last.mstate;
 	CalculateInterpolationParams();
 };
+extern	float		g_cl_lvInterp;
+
+void	CActor::CalculateInterpolationParams()
+{	
+	//	Fmatrix xformX0, xformX1;
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	///////////////////////////////////////////////
+	InterpData* pIStart = &IStart;
+	InterpData* pIRec = &IRec; //(SwitchV)? &IRec : &IRecT;
+	InterpData* pIEnd = &IEnd; //(SwitchV)? &IEnd : &IEndT;
+
+	///////////////////////////////////////////////
+	/*
+	pIStart->Pos				= Position();
+	pIStart->Vel				= m_PhysicMovementControl->GetVelocity();
+	pIStart->o_model			= r_model_yaw;
+	pIStart->o_torso.yaw		= unaffected_r_torso.yaw;
+	pIStart->o_torso.pitch		= unaffected_r_torso.pitch;
+	pIStart->o_torso.roll		= unaffected_r_torso.roll;
+	*/
+	/////////////////////////////////////////////////////////////////////
+	pIRec->Pos				= RecalculatedState.position;
+	pIRec->Vel				= RecalculatedState.linear_vel;
+	pIRec->o_model			= NET_Last.o_model;
+	pIRec->o_torso			= NET_Last.o_torso;
+	/////////////////////////////////////////////////////////////////////
+	pIEnd->Pos				= PredictedState.position;
+	pIEnd->Vel				= PredictedState.linear_vel;
+	pIEnd->o_model			= pIRec->o_model		;
+	pIEnd->o_torso.yaw		= pIRec->o_torso.yaw	;
+	pIEnd->o_torso.pitch	= pIRec->o_torso.pitch	;	
+	pIEnd->o_torso.roll		= pIRec->o_torso.roll	;	
+	/////////////////////////////////////////////////////////////////////
+//	Msg("from %f, to %f", IStart.o_torso.yaw/PI*180.0f, IEnd.o_torso.yaw/PI*180.0f);
+	/////////////////////////////////////////////////////////////////////
+	Fvector SP0, SP1, SP2, SP3;
+	Fvector HP0, HP1, HP2, HP3;
+
+	SP0 = pIStart->Pos;
+	HP0 = pIStart->Pos;
+
+	if (m_bInInterpolation)
+	{
+		u32 CurTime = Level().timeServer();
+		float factor	= float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
+		if (factor > 1.0f) factor = 1.0f;
+
+		float c = factor;
+		for (u32 k=0; k<3; k++)
+		{
+			SP0[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
+			SP1[k] = (c*c*SCoeff[k][0]*3+c*SCoeff[k][1]*2+SCoeff[k][2])/3; // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
+
+			HP0[k] = c*(c*(c*HCoeff[k][0]+HCoeff[k][1])+HCoeff[k][2])+HCoeff[k][3];
+			HP1[k] = (c*c*HCoeff[k][0]*3+c*HCoeff[k][1]*2+HCoeff[k][2]); // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
+		};
+
+		SP1.add(SP0);
+	}	
+	else
+	{
+		if (LastState.linear_vel.x == 0 && LastState.linear_vel.y == 0 && LastState.linear_vel.z == 0)
+		{
+			HP1.sub(RecalculatedState.position, RecalculatedState.previous_position);
+		}
+		else
+		{
+			HP1.sub(LastState.position, LastState.previous_position);
+		};
+		HP1.mul(1.0f/fixed_step);
+		SP1.add(HP1, SP0);
+	}
+	HP2.sub(PredictedState.position, PredictedState.previous_position);
+	HP2.mul(1.0f/fixed_step);
+	SP2.sub(PredictedState.position, HP2);
+
+	SP3.set(PredictedState.position);
+	HP3.set(PredictedState.position);
+	/*
+	{
+	Fvector d0, d1;
+	d0.sub(SP1, SP0);
+	d1.sub(SP3, SP0);
+	float res = d0.dotproduct(d1);
+	if (res < 0)
+	{
+	Msg ("! %f", res);
+	}
+	else
+	Msg ("%f", res);
+	}
+	*/
+	/////////////////////////////////////////////////////////////////////////////
+	Fvector TotalPath;
+	TotalPath.sub(SP3, SP0);
+	float TotalLen = TotalPath.magnitude();
+
+	SPHNetState	State0 = (NET_A.back()).State;
+	SPHNetState	State1 = PredictedState;
+
+	float lV0 = State0.linear_vel.magnitude();
+	float lV1 = State1.linear_vel.magnitude();
+
+	u32		ConstTime = u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
+
+	m_dwIStartTime = m_dwILastUpdateTime;
+
+//	if (( lV0 + lV1) > 0.000001 && g_cl_lvInterp == 0)
+	{
+//		u32		CulcTime = iCeil(TotalLen*2000/( lV0 + lV1));
+//		m_dwIEndTime = m_dwIStartTime + min(CulcTime, ConstTime);
+	}
+//	else
+		m_dwIEndTime = m_dwIStartTime + ConstTime;
+	/////////////////////////////////////////////////////////////////////////////
+	Fvector V0, V1;
+	//	V0.sub(SP1, SP0);
+	//	V1.sub(SP3, SP2);
+	V0.set(HP1);
+	V1.set(HP2);
+	lV0 = V0.magnitude();
+	lV1 = V1.magnitude();
+
+	if (TotalLen != 0)
+	{
+		if (V0.x != 0 || V0.y != 0 || V0.z != 0)
+		{
+			if (lV0 > TotalLen/3)
+			{
+				HP1.normalize();
+				//				V0.normalize();
+				//				V0.mul(TotalLen/3);
+				HP1.normalize();
+				HP1.mul(TotalLen/3);
+				SP1.add(HP1, SP0);
+			}
+		}
+
+		if (V1.x != 0 || V1.y != 0 || V1.z != 0)
+		{
+			if (lV1 > TotalLen/3)
+			{
+				//				V1.normalize();
+				//				V1.mul(TotalLen/3);
+				HP2.normalize();
+				HP2.mul(TotalLen/3);
+				SP2.sub(SP3, HP2);
+			};
+		}
+	};
+	/////////////////////////////////////////////////////////////////////////////
+	for( u32 i =0; i<3; i++)
+	{
+		SCoeff[i][0] = SP3[i]	- 3*SP2[i] + 3*SP1[i] - SP0[i];
+		SCoeff[i][1] = 3*SP2[i]	- 6*SP1[i] + 3*SP0[i];
+		SCoeff[i][2] = 3*SP1[i]	- 3*SP0[i];
+		SCoeff[i][3] = SP0[i];
+
+		HCoeff[i][0] = 2*HP0[i] - 2*HP3[i] + HP1[i] + HP2[i];
+		HCoeff[i][1] = -3*HP0[i]	+ 3*HP3[i] - 2*HP1[i] - HP2[i];
+		HCoeff[i][2] = HP1[i];
+		HCoeff[i][3] = HP0[i];
+	};
+	/////////////////////////////////////////////////////////////////////////////
+	m_bInInterpolation = true;
+
+	if (m_pPhysicsShell) m_pPhysicsShell->NetInterpolationModeON();
+}
 
 int		actInterpType = 0;
 void CActor::make_Interpolation	()
@@ -1023,44 +1167,107 @@ void CActor::make_Interpolation	()
 		if (CurTime >= m_dwIEndTime)
 		{
 			m_bInInterpolation = false;
+			mstate_real = mstate_wishful = NET_Last.mstate;
+			NET_SavedAccel = NET_Last.p_accel;
 
 			CPHSynchronize* pSyncObj = NULL;
 			pSyncObj = PHGetSyncItem(0);
 			if (!pSyncObj) return;
 			pSyncObj->set_State(PredictedState);//, PredictedState.enabled);
-			Position().set(PredictedState.position);
-			VERIFY2								(_valid(renderable.xform),*cName());
+			VERIFY2								(_valid(renderable.xform),*cName());			
 		}
 		else
-		{
+		{			
 			float factor = 0.0f;
 
 			if (m_dwIEndTime != m_dwIStartTime)
 				factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
-
-			Position().lerp(IStart.Pos, IEnd.Pos, factor);
+						
+			Fvector NewPos;
+			NewPos.lerp(IStart.Pos, IEnd.Pos, factor);
 			VERIFY2								(_valid(renderable.xform),*cName());
+
+//			r_model_yaw		= angle_lerp	(IStart.o_model,IEnd.o_model,		factor);			
+			unaffected_r_torso.yaw		= angle_lerp	(IStart.o_torso.yaw,IEnd.o_torso.yaw,factor);
+			unaffected_r_torso.pitch	= angle_lerp	(IStart.o_torso.pitch,IEnd.o_torso.pitch,factor);
+			unaffected_r_torso.roll		= angle_lerp	(IStart.o_torso.roll,IEnd.o_torso.roll,factor);
 
 			for (u32 k=0; k<3; k++)
 			{
-				IPosL[k] = Position()[k];
+				IPosL[k] = NewPos[k];
 				IPosS[k] = factor*(factor*(factor*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
 				IPosH[k] = factor*(factor*(factor*HCoeff[k][0]+HCoeff[k][1])+HCoeff[k][2])+HCoeff[k][3];
 			};
 			
+			Fvector SpeedVector, ResPosition;
 			switch (g_cl_InterpolationType)
 			{
-			case 0:	Position().set(IPosL); break;
-			case 1: Position().set(IPosS); break;
-			case 2: Position().set(IPosH); break;
+			case 0:	
+				{
+					ResPosition.set(IPosL);
+					SpeedVector.sub(IEnd.Pos, IStart.Pos);
+					SpeedVector.div(float(m_dwIEndTime - m_dwIStartTime)/1000.0f);
+				}break;
+			case 1: 
+				{
+					for (int k=0; k<3; k++)
+						SpeedVector[k] = (factor*factor*SCoeff[k][0]*3+factor*SCoeff[k][1]*2+SCoeff[k][2])/3; // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
+					
+					ResPosition.set(IPosS); 
+				}break;
+			case 2: 
+				{
+					for (int k=0; k<3; k++)
+						SpeedVector[k] = (factor*factor*HCoeff[k][0]*3+factor*HCoeff[k][1]*2+HCoeff[k][2]); 
+
+					ResPosition.set(IPosH); 
+				}break;
 			default:
 				{
 					R_ASSERT2(0, "Unknown interpolation curve type!");
 				}
 			}
-			
-			g_Orientate				(NET_Last.mstate,0			);
-
+			m_PhysicMovementControl->SetPosition	(ResPosition);
+			m_PhysicMovementControl->SetVelocity	(SpeedVector);
+			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch, unaffected_r_torso.roll);
+/*
+			if (!(mstate_wishful & mcClimb))
+			{
+				if (SpeedVector.square_magnitude()>0.0001f || IEnd.Pos.distance_to_xz_sqr(IStart.Pos)>0.1f)
+				{
+					SpeedVector.y = 0;
+					float speed = SpeedVector.magnitude();
+					SpeedVector.div(speed);
+					Fvector ModelDir, Up;
+					ModelDir.setHP(r_model_yaw, 0);
+					float Dot = ModelDir.dotproduct(SpeedVector);
+					Up.crossproduct(ModelDir,SpeedVector);
+					if (Dot > 0.382)
+					{
+						mstate_wishful |= mcFwd;
+						mstate_real |= mcFwd;
+					}
+					if (Dot < -0.382)
+					{
+						mstate_wishful |= mcBack;
+						mstate_real |= mcBack;
+					}
+					if (Dot <= 0.924 && Dot >= -0.924)
+					{
+						if (Up.y > 0)
+						{
+							mstate_wishful |= mcRStrafe;
+							mstate_real |= mcRStrafe;
+						}
+						else
+						{
+							mstate_wishful |= mcLStrafe;
+							mstate_real |= mcLStrafe;
+						};
+					};
+				};
+			};
+			*/
 		};
 	}
 	else
@@ -1122,164 +1329,6 @@ ACTOR_DEFS::SMemoryPos*				CActor::FindMemoryPos (u32 Time)
 };
 */
 
-extern	float		g_cl_lvInterp;
-
-void	CActor::CalculateInterpolationParams()
-{
-//	Fmatrix xformX0, xformX1;
-	CPHSynchronize* pSyncObj = NULL;
-	pSyncObj = PHGetSyncItem(0);
-	///////////////////////////////////////////////
-	IStart.Pos				= Position();
-	IStart.o_model			= r_model_yaw;
-	IStart.o_torso.yaw		= unaffected_r_torso.yaw;
-	IStart.o_torso.pitch	= unaffected_r_torso.pitch;
-	IStart.o_torso.roll		= unaffected_r_torso.roll;
-	/////////////////////////////////////////////////////////////////////
-	IRec.Pos				= RecalculatedState.position;
-	IRec.o_model			= NET_Last.o_model;
-	IRec.o_torso			= NET_Last.o_torso;
-	/////////////////////////////////////////////////////////////////////
-	IEnd.Pos				= PredictedState.position;
-	IEnd.o_model			= IRec.o_model			;
-	IEnd.o_torso.yaw		= IRec.o_torso.yaw		;
-	IEnd.o_torso.pitch		= IRec.o_torso.pitch	;	
-	IEnd.o_torso.roll		= IRec.o_torso.roll	;	
-	/////////////////////////////////////////////////////////////////////
-	Fvector SP0, SP1, SP2, SP3;
-	Fvector HP0, HP1, HP2, HP3;
-
-	SP0 = IStart.Pos;
-	HP0 = IStart.Pos;
-
-	if (m_bInInterpolation)
-	{
-		u32 CurTime = Level().timeServer();
-		float factor	= float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
-		if (factor > 1.0f) factor = 1.0f;
-
-		float c = factor;
-		for (u32 k=0; k<3; k++)
-		{
-			SP0[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
-			SP1[k] = (c*c*SCoeff[k][0]*3+c*SCoeff[k][1]*2+SCoeff[k][2])/3; // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
-
-			HP0[k] = c*(c*(c*HCoeff[k][0]+HCoeff[k][1])+HCoeff[k][2])+HCoeff[k][3];
-			HP1[k] = (c*c*HCoeff[k][0]*3+c*HCoeff[k][1]*2+HCoeff[k][2]); // сокрость из формулы в 3 раза превышает скорость при расчете коэффициентов !!!!
-		};
-
-		SP1.add(SP0);
-	}	
-	else
-	{
-		if (LastState.linear_vel.x == 0 && LastState.linear_vel.y == 0 && LastState.linear_vel.z == 0)
-		{
-			HP1.sub(RecalculatedState.position, RecalculatedState.previous_position);
-		}
-		else
-		{
-			HP1.sub(LastState.position, LastState.previous_position);
-		};
-		HP1.mul(1.0f/fixed_step);
-		SP1.add(HP1, SP0);
-	}
-	HP2.sub(PredictedState.position, PredictedState.previous_position);
-	HP2.mul(1.0f/fixed_step);
-	SP2.sub(PredictedState.position, HP2);
-
-	SP3.set(PredictedState.position);
-	HP3.set(PredictedState.position);
-/*
-	{
-		Fvector d0, d1;
-		d0.sub(SP1, SP0);
-		d1.sub(SP3, SP0);
-		float res = d0.dotproduct(d1);
-		if (res < 0)
-		{
-			Msg ("! %f", res);
-		}
-		else
-			Msg ("%f", res);
-	}
-*/
-	/////////////////////////////////////////////////////////////////////////////
-	Fvector TotalPath;
-	TotalPath.sub(SP3, SP0);
-	float TotalLen = TotalPath.magnitude();
-
-	SPHNetState	State0 = (NET_A.back()).State;
-	SPHNetState	State1 = PredictedState;
-
-	float lV0 = State0.linear_vel.magnitude();
-	float lV1 = State1.linear_vel.magnitude();
-
-	u32		ConstTime = u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
-
-	m_dwIStartTime = m_dwILastUpdateTime;
-
-	if (( lV0 + lV1) > 0.000001 && g_cl_lvInterp == 0)
-	{
-		u32		CulcTime = iCeil(TotalLen*2000/( lV0 + lV1));
-		m_dwIEndTime = m_dwIStartTime + min(CulcTime, ConstTime);
-	}
-	else
-		m_dwIEndTime = m_dwIStartTime + ConstTime;
-	/////////////////////////////////////////////////////////////////////////////
-	Fvector V0, V1;
-//	V0.sub(SP1, SP0);
-//	V1.sub(SP3, SP2);
-	V0.set(HP1);
-	V1.set(HP2);
-	lV0 = V0.magnitude();
-	lV1 = V1.magnitude();
-
-	if (TotalLen != 0)
-	{
-		if (V0.x != 0 || V0.y != 0 || V0.z != 0)
-		{
-			if (lV0 > TotalLen/3)
-			{
-				HP1.normalize();
-//				V0.normalize();
-//				V0.mul(TotalLen/3);
-				HP1.normalize();
-				HP1.mul(TotalLen/3);
-				SP1.add(HP1, SP0);
-			}
-		}
-
-		if (V1.x != 0 || V1.y != 0 || V1.z != 0)
-		{
-			if (lV1 > TotalLen/3)
-			{
-//				V1.normalize();
-//				V1.mul(TotalLen/3);
-				HP2.normalize();
-				HP2.mul(TotalLen/3);
-				SP2.sub(SP3, HP2);
-			};
-		}
-	};
-	/////////////////////////////////////////////////////////////////////////////
-	for( u32 i =0; i<3; i++)
-	{
-		SCoeff[i][0] = SP3[i]	- 3*SP2[i] + 3*SP1[i] - SP0[i];
-		SCoeff[i][1] = 3*SP2[i]	- 6*SP1[i] + 3*SP0[i];
-		SCoeff[i][2] = 3*SP1[i]	- 3*SP0[i];
-		SCoeff[i][3] = SP0[i];
-
-		HCoeff[i][0] = 2*HP0[i] - 2*HP3[i] + HP1[i] + HP2[i];
-		HCoeff[i][1] = -3*HP0[i]	+ 3*HP3[i] - 2*HP1[i] - HP2[i];
-		HCoeff[i][2] = HP1[i];
-		HCoeff[i][3] = HP0[i];
-	};
-	/////////////////////////////////////////////////////////////////////////////
-	m_bInInterpolation = true;
-
-	if (m_pPhysicsShell) m_pPhysicsShell->NetInterpolationModeON();
-}
-
 void CActor::save(NET_Packet &output_packet)
 {
 	inherited::save(output_packet);
@@ -1296,9 +1345,75 @@ void CActor::load(IReader &input_packet)
 #ifdef DEBUG
 
 extern	Flags32	dbg_net_Draw_Flags;
+void dbg_draw_piramid (Fvector pos, Fvector dir, float size, float xdir, u32 color)
+{
+	
+	Fvector p0, p1, p2, p3, p4;
+	p0.set(size, size, 0.0f);
+	p1.set(-size, size, 0.0f);
+	p2.set(-size, -size, 0.0f);
+	p3.set(size, -size, 0.0f);
+	p4.set(0, 0, size*4);
+	
+	bool Double = false;
+	Fmatrix t; t.identity();
+	if (_valid(dir) && dir.square_magnitude()>0.01f)
+	{		
+		t.k.normalize	(dir);
+		Fvector::generate_orthonormal_basis(t.k, t.j, t.i);		
+	}
+	else
+	{
+		t.rotateY(xdir);		
+		Double = true;
+	}
+	t.c.set(pos);
+
+//	RCache.dbg_DrawLINE(t, p0, p1, color);
+//	RCache.dbg_DrawLINE(t, p1, p2, color);
+//	RCache.dbg_DrawLINE(t, p2, p3, color);
+//	RCache.dbg_DrawLINE(t, p3, p0, color);
+
+//	RCache.dbg_DrawLINE(t, p0, p4, color);
+//	RCache.dbg_DrawLINE(t, p1, p4, color);
+//	RCache.dbg_DrawLINE(t, p2, p4, color);
+//	RCache.dbg_DrawLINE(t, p3, p4, color);
+	
+	if (!Double)
+	{
+		RCache.dbg_DrawTRI(t, p0, p1, p4, color);
+		RCache.dbg_DrawTRI(t, p1, p2, p4, color);
+		RCache.dbg_DrawTRI(t, p2, p3, p4, color);
+		RCache.dbg_DrawTRI(t, p3, p0, p4, color);
+	}
+	else
+	{
+//		Fmatrix scale;
+//		scale.scale(0.8f, 0.8f, 0.8f);
+//		t.mulA_44(scale);
+//		t.c.set(pos);
+
+		RCache.dbg_DrawLINE(t, p0, p1, color);
+		RCache.dbg_DrawLINE(t, p1, p2, color);
+		RCache.dbg_DrawLINE(t, p2, p3, color);
+		RCache.dbg_DrawLINE(t, p3, p0, color);
+
+		RCache.dbg_DrawLINE(t, p0, p4, color);
+		RCache.dbg_DrawLINE(t, p1, p4, color);
+		RCache.dbg_DrawLINE(t, p2, p4, color);
+		RCache.dbg_DrawLINE(t, p3, p4, color);
+	};	
+};
 
 void	CActor::OnRender_Network()
 {
+	RCache.OnFrameEnd();
+
+	//-----------------------------------------------------------------------------------------------------
+	float size = 0.2f;
+	
+//	dbg_draw_piramid(Position(), m_PhysicMovementControl->GetVelocity(), size/2, -r_model_yaw, color_rgba(255, 255, 255, 255));
+	//-----------------------------------------------------------------------------------------------------
 	if (g_Alive())
 	{
 		if (dbg_net_Draw_Flags.test(1<<8))
@@ -1360,17 +1475,18 @@ void	CActor::OnRender_Network()
 			};
 		};
 
-		if (!(dbg_net_Draw_Flags.is_any((1<<2)))) return;
-		float size = 0.2f;
-
-		Fvector PI;
-		PI.set(Position()); PI.y += 1;
-		RCache.dbg_DrawAABB			(PI, size, size, size, color_rgba(128, 255, 128, 255));
-
-		RCache.dbg_DrawAABB			(IStart.Pos, size, size, size, color_rgba(255, 0, 0, 255));
-		RCache.dbg_DrawAABB			(IRec.Pos, size, size, size, color_rgba(0, 255, 0, 255));
-		RCache.dbg_DrawAABB			(IEnd.Pos, size, size, size, color_rgba(0, 0, 255, 255));
-
+		if (!(dbg_net_Draw_Flags.is_any((1<<1)))) return;
+		
+		dbg_draw_piramid(Position(), m_PhysicMovementControl->GetVelocity(), size, -r_model_yaw, color_rgba(128, 255, 128, 255));
+		dbg_draw_piramid(IStart.Pos, IStart.Vel, size, -IStart.o_model, color_rgba(255, 0, 0, 255));
+//		Fvector tmp, tmp1; tmp1.set(0, .1f, 0);
+//		dbg_draw_piramid(tmp.add(IStartT.Pos, tmp1), IStartT.Vel, size, -IStartT.o_model, color_rgba(155, 0, 0, 155));
+		dbg_draw_piramid(IRec.Pos, IRec.Vel, size, -IRec.o_model, color_rgba(0, 0, 255, 255));
+//		dbg_draw_piramid(tmp.add(IRecT.Pos, tmp1), IRecT.Vel, size, -IRecT.o_model, color_rgba(0, 0, 155, 155));
+		dbg_draw_piramid(IEnd.Pos, IEnd.Vel, size, -IEnd.o_model, color_rgba(0, 255, 0, 255));
+//		dbg_draw_piramid(tmp.add(IEndT.Pos, tmp1), IEndT.Vel, size, -IEndT.o_model, color_rgba(0, 155, 0, 155));
+		dbg_draw_piramid(NET_Last.p_pos, NET_Last.p_velocity, size*3/4, -NET_Last.o_model, color_rgba(255, 255, 255, 255));
+		
 		Fmatrix MS, MH, ML, *pM = NULL;
 		ML.translate(0, 0.2f, 0);
 		MS.translate(0, 0.2f, 0);
@@ -1388,10 +1504,11 @@ void	CActor::OnRender_Network()
 		case 2: ppoint0 = &point0H; ppoint1 = &point1H; cColor = color_rgba(255, 0, 0, 255); sColor = color_rgba(255, 128, 128, 255); pM = &MH; pLastPos = &LastPosH; break;
 		}
 
+		//drawing path trajectory
 		float c = 0;
-		for (float i=0; i<1.1f; i+= 0.1f)
+		for (int i=0; i<11; i++)
 		{
-			c = i;// * 0.1f;
+			c = float(i) * 0.1f;
 			for (u32 k=0; k<3; k++)
 			{
 				point1S[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
@@ -1407,9 +1524,10 @@ void	CActor::OnRender_Network()
 			point0L.set(point1L);
 		};
 
+		//drawing speed vectors
 		for (i=0; i<2; i++)
 		{
-			c = i;
+			c = float(i);
 			for (u32 k=0; k<3; k++)
 			{
 				point1S[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
@@ -1424,10 +1542,11 @@ void	CActor::OnRender_Network()
 
 			if (g_cl_InterpolationType > 0)
 			{
-				RCache.dbg_DrawLINE(*pM, *ppoint0, *ppoint1, cColor);
+				RCache.dbg_DrawLINE(*pM, *ppoint0, *ppoint1, sColor);
 			}
 		}
 
+		//draw interpolation history curve
 		if (!pLastPos->empty())
 		{
 			Fvector Pos1, Pos2;
@@ -1437,7 +1556,8 @@ void	CActor::OnRender_Network()
 			{
 				Pos2 = *It;
 
-				RCache.dbg_DrawLINE(*pM, Pos1, Pos2, sColor);
+				RCache.dbg_DrawLINE	(*pM, Pos1, Pos2, cColor);
+				RCache.dbg_DrawAABB	(Pos2, size/5, size/5, size/5, sColor);
 				Pos1 = *It;
 			};
 		};
@@ -1445,8 +1565,8 @@ void	CActor::OnRender_Network()
 		Fvector PH, PS;
 		PH.set(IPosH); PH.y += 1;
 		PS.set(IPosS); PS.y += 1;
-		RCache.dbg_DrawAABB			(PS, size, size, size, color_rgba(128, 128, 255, 255));
-		RCache.dbg_DrawAABB			(PH, size, size, size, color_rgba(255, 128, 128, 255));
+//		RCache.dbg_DrawAABB			(PS, size, size, size, color_rgba(128, 128, 255, 255));
+//		RCache.dbg_DrawAABB			(PH, size, size, size, color_rgba(255, 128, 128, 255));
 		/////////////////////////////////////////////////////////////////////////////////
 	}
 	else

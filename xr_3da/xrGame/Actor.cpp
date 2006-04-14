@@ -771,7 +771,7 @@ void	CActor::SwitchOutBorder(bool new_border_state)
 	m_bOutBorder=new_border_state;
 }
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
-{	
+{
 	// Correct accel
 	Fvector		accel;
 	accel.set					(_accel);
@@ -785,7 +785,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	if(mstate_real&mcClimb&&!cameras[eacFirstEye]->bClampYaw)accel.set(0.f,0.f,0.f);
 	m_PhysicMovementControl->Calculate			(accel,cameras[cam_active]->vDirection,0,jump,dt,false);
 	bool new_border_state=m_PhysicMovementControl->isOutBorder();
-	if(m_bOutBorder!=new_border_state)
+	if(m_bOutBorder!=new_border_state && Level().CurrentControlEntity() == this)
 	{
 		SwitchOutBorder(new_border_state);
 	}
@@ -929,6 +929,7 @@ void CActor::UpdateCL	()
 	//-------------------------------------------
 }
 
+float	NET_Jump = 0;
 void CActor::shedule_Update	(u32 DT)
 {
 	setSVU(OnServer());
@@ -959,17 +960,27 @@ void CActor::shedule_Update	(u32 DT)
 	float	dt	 			=  float(DT)/1000.f;
 
 	// Check controls, create accel, prelimitary setup "mstate_real"
-	float	Jump	= 0;
+	
 	//----------- for E3 -----------------------------
 //	if (Local() && (OnClient() || Level().CurrentEntity()==this))
 	if (Level().CurrentControlEntity() == this)
 	//------------------------------------------------
 	{
-		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
+		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,NET_Jump,dt);
+		{
+			if (mstate_real & mcJump)
+			{
+				NET_Packet	P;
+				u_EventGen(P, GE_ACTOR_JUMPING, ID());
+				P.w_sdir(NET_SavedAccel);
+				P.w_float(NET_Jump);
+				u_EventSend(P);
+			}
+		}
 		g_cl_Orientate			(mstate_real,dt);
 		g_Orientate				(mstate_real,dt);
 
-		g_Physics				(NET_SavedAccel,Jump,dt);
+		g_Physics				(NET_SavedAccel,NET_Jump,dt);
 		
 		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
@@ -990,18 +1001,32 @@ void CActor::shedule_Update	(u32 DT)
 		} else {
 			f_DropPower			= 0.f;
 		}
+		//-----------------------------------------------------
+		mstate_wishful &=~mcAccel;
+		mstate_wishful &=~mcLStrafe;
+		mstate_wishful &=~mcRStrafe;
+		mstate_wishful &=~mcLLookout;
+		mstate_wishful &=~mcRLookout;
+		mstate_wishful &=~mcFwd;
+		mstate_wishful &=~mcBack;
+		mstate_wishful &=~mcCrouch;
+		//-----------------------------------------------------
 	}
 	else 
-	{
+	{		
+		make_Interpolation();
+	
 		if (NET.size())
 		{
-			NET_SavedAccel = NET_Last.p_accel;
-			mstate_real = mstate_wishful = NET_Last.mstate;
+			
+//			NET_SavedAccel = NET_Last.p_accel;
+//			mstate_real = mstate_wishful = NET_Last.mstate;
 
-			g_sv_Orientate				(NET_Last.mstate,dt			);
-			g_Orientate					(NET_Last.mstate,dt			);
-			g_Physics					(NET_Last.p_accel,Jump,dt	);
-			g_cl_ValidateMState			(dt,mstate_wishful);
+			g_sv_Orientate				(mstate_real,dt			);
+			g_Orientate					(mstate_real,dt			);
+			g_Physics					(NET_SavedAccel,NET_Jump,dt	);			
+			if (!m_bInInterpolation)
+				g_cl_ValidateMState			(dt,mstate_wishful);
 			g_SetAnimation				(mstate_real);
 
 			if (NET_Last.mstate & mcCrouch)
@@ -1013,10 +1038,9 @@ void CActor::shedule_Update	(u32 DT)
 			}
 			else 
 				m_PhysicMovementControl->ActivateBox(0, true);
-		};
+		}	
 	}
-	make_Interpolation();
-
+	NET_Jump = 0;
 	//------------------------------------------------	
 
 
@@ -1129,14 +1153,6 @@ void CActor::shedule_Update	(u32 DT)
 	m_pPhysics_support->in_shedule_Update		(DT);
 	Check_for_AutoPickUp						();
 
-	mstate_wishful &=~mcAccel;
-	mstate_wishful &=~mcLStrafe;
-	mstate_wishful &=~mcRStrafe;
-	mstate_wishful &=~mcLLookout;
-	mstate_wishful &=~mcRLookout;
-	mstate_wishful &=~mcFwd;
-	mstate_wishful &=~mcBack;
-	mstate_wishful &=~mcCrouch;
 };
 
 void CActor::renderable_Render	()

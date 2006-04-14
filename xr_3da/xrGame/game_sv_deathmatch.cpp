@@ -136,7 +136,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		game_PlayerState* ps	= l_pC->ps;
 
 		ps->clear();
-		ps->DeathTime = Device.dwTimeGlobal;
+		ps->DeathTime = Device.dwTimeGlobal - 1001;
 		//---------------------------------------
 		SetPlayersDefItems		(ps);
 		//---------------------------------------
