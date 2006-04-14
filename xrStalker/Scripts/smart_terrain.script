@@ -133,6 +133,8 @@ function se_smart_terrain:STATE_Write( packet )
 
 			self.gulag:save_obj( packet, id )
 		end
+
+		packet:w_bool ( self.population_locked )
 	else
 		packet:w_bool( false )
 	end
@@ -183,6 +185,8 @@ function se_smart_terrain:STATE_Read( packet, size )
 
 			self.gulag:load_obj( packet, o_id )
 		end
+
+		self.population_locked = packet:r_bool()
 	end
 
 --	printf( "after read" )
@@ -360,6 +364,8 @@ function se_smart_terrain:read_params()
 	self.rank_inc_min = ltx:r_string( "smart_terrain_rank_change", "min" )
 	self.rank_inc_max = ltx:r_string( "smart_terrain_rank_change", "max" )
 
+	self.population_locked = false
+
 	self.gulag = xr_gulag.gulag( self, self.gparams.type, self.gparams.squad, self.gparams.groups, self.npc_info, self.gparams.capacity )
 
 	self.gulag_working = false
@@ -492,7 +498,7 @@ function se_smart_terrain:enabled( obj )
 
 	self:initialize_if_needed()
 
-	if self:is_gulag_available() then
+	if self:is_gulag_available() and not self.population_locked then
 --		if obj:clsid() == clsid.GROUP then -- TODO
 			-- TODO проитерировать группу
 --		else
@@ -678,6 +684,11 @@ function se_smart_terrain:is_gulag_available()
 	else
 		return true
 	end
+end
+
+-- установка/снятие блокировки приёма персонажей
+function se_smart_terrain:lock_population( need_lock )
+	self.population_locked = need_lock
 end
 
 -- в гулаг поступил первый персонаж и он начинает работать
