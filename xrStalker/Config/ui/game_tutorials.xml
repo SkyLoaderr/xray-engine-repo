@@ -103,7 +103,7 @@
 			<pda_section>pda_quests</pda_section>
 
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="177" y="578" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="156" y="608" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w2</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -121,7 +121,7 @@
 			<pda_section>pda_quests</pda_section>
 
 			<main_wnd>
-				<auto_static start_time="0" length_sec="6" x="424" y="171" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="6" x="404" y="186" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w2</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -151,13 +151,13 @@
 			<pda_section>pda_quests</pda_section>
 
 			<main_wnd>
-				<auto_static start_time="3" length_sec="4" x="380" y="180" width="20" height="20" alignment="c" stretch="1"
+				<auto_static start_time="3" length_sec="4" x="372" y="235" width="20" height="20" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_setSelect_t</texture>
 				</auto_static>
 				
-				<auto_static start_time="8" length_sec="5" x="413" y="105" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="8" length_sec="5" x="403" y="565" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w2</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -174,7 +174,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="236" y="577" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="216" y="608" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -191,12 +191,12 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="2" length_sec="4" x="268" y="101" width="30" height="30" alignment="c" stretch="1"
+				<auto_static start_time="2" length_sec="4" x="245" y="135" width="30" height="30" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
-				<auto_static start_time="2" length_sec="4" x="293" y="101" width="30" height="30" alignment="c" stretch="1"
+				<auto_static start_time="2" length_sec="4" x="266" y="135" width="30" height="30" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w2</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -213,7 +213,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="4" length_sec="2" x="175" y="101" width="30" height="30" alignment="c" stretch="1"
+				<auto_static start_time="4" length_sec="2" x="154" y="135" width="30" height="30" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -230,12 +230,12 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_quests</pda_section>
 			<main_wnd>
-				<auto_static start_time="1" length_sec="4" x="843" y="101" width="30" height="30" alignment="c" stretch="1"
+				<auto_static start_time="1" length_sec="4" x="819" y="135" width="30" height="30" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
-				<auto_static start_time="1" length_sec="4" x="865" y="101" width="30" height="30" alignment="c" stretch="1"
+				<auto_static start_time="1" length_sec="4" x="839" y="135" width="30" height="30" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w2</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -266,12 +266,12 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_contacts</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="376" y="577" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="357" y="608" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
-				<auto_static start_time="4" length_sec="19" x="245" y="184" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="4" length_sec="19" x="202" y="211" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w2</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -309,7 +309,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_diary</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="298" y="577" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="280" y="608" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -328,7 +328,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_ranking</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="453" y="577" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="437" y="608" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -345,7 +345,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_statistics</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="535" y="577" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="515" y="608" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
@@ -363,7 +363,7 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_encyclopedia</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="643" y="577" width="50" height="50" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="4" x="622" y="608" width="50" height="50" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
