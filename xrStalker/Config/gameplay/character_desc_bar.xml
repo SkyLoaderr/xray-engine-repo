@@ -732,7 +732,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>			
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<!-- ******************* CRAZY VETERANS ********************** -->
@@ -759,7 +759,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_crazy_veterans_1" team_default = "1">
@@ -784,7 +784,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 	<specific_character id="bar_crazy_veterans_2" team_default = "1">
@@ -809,7 +809,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<!-- ************************ Гордон Фримен *********************** -->	
@@ -834,7 +834,7 @@
 			ammo_11.43x23_fmj \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 
@@ -1926,8 +1926,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
-		
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default2" team_default = "1">
@@ -1954,8 +1953,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
-		
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default3" team_default = "1">
@@ -1983,8 +1981,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
-		
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 	<specific_character id="bar_killer_specnaz_default4" team_default = "1">
@@ -2012,8 +2009,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
-		
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 </xml>

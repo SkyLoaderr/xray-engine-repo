@@ -206,7 +206,7 @@
 			ammo_9x18_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_default2" team_default = "1">
@@ -229,7 +229,7 @@
 			ammo_9x18_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_default3" team_default = "1">
@@ -252,7 +252,7 @@
 			ammo_12x70_buck = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_default4" team_default = "1">
@@ -275,7 +275,7 @@
 			ammo_12x70_buck = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_default5" team_default = "1">
@@ -298,7 +298,7 @@
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_default6" team_default = "1">
@@ -321,7 +321,7 @@
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_default7" team_default = "1">
@@ -344,7 +344,7 @@
 			ammo_9x19_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 <!---------------------------ZOMBIED VETERANS----------------------->
@@ -371,7 +371,7 @@
 			grenade_f1 = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default2" team_default = "1">
@@ -394,7 +394,7 @@
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default3" team_default = "1">
@@ -419,7 +419,7 @@
 		</supplies>
 			
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default4" team_default = "1">
@@ -444,7 +444,7 @@
 			grenade_rgd5 = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 	<specific_character id="yan_zombied_veteran_default5" team_default = "1">
@@ -468,7 +468,7 @@
 			device_torch \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 
@@ -494,7 +494,7 @@
 			grenade_f1 = 2 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 <!---------------------------ÑÂÅÆÅZOMBIED STALKER----------------------->
@@ -518,7 +518,7 @@
 			ammo_12x70_buck = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 
@@ -542,7 +542,7 @@
 			ammo_5.45x39_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 
 
@@ -567,7 +567,7 @@
 			ammo_9x19_fmj = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
 </xml>
