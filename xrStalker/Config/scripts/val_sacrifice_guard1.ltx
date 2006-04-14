@@ -22,7 +22,7 @@ def_state_moving_fire       = patrol_fire
 on_info                     = {+val_sacrifice_victim_phrase1_end} remark@val_sacrifice_guard1_phrase1
 meet                        = meet@val_sacrifice
 danger                      = danger@val_sacrifice_guard
-combat_ignore_cond          = {=check_fighting(403:401)}
+combat_ignore_cond          = {=check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Ну давай, типа собирайся. Боров сказал отвести этого болвана на Базу Монолита.
@@ -36,7 +36,7 @@ on_signal           = sound_end | %+val_sacrifice_guard1_phrase1_end%
 on_info             = {+val_sacrifice_guard2_phrase2_end} remark@val_sacrifice_guard1_phrase2
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403:401)}
+combat_ignore_cond  = {=check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Угу. А у меня есть идея.
@@ -48,7 +48,7 @@ target              = 405
 on_signal           = sound_end | remark@val_sacrifice_guard1_phrase3
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403:401)}
+combat_ignore_cond  = {=check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: А ну прыгай в яму козел.
@@ -61,7 +61,7 @@ on_signal           = sound_end | %+val_sacrifice_guard1_phrase3_end%
 on_info             = {+val_sacrifice_victim_phrase2_end} remark@val_sacrifice_guard1_phrase4
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403:401)}
+combat_ignore_cond  = {=check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Ну как хочешь.
@@ -73,7 +73,7 @@ target              = 401
 on_signal           = sound_end | camper@val_sacrifice_guard1_kill %+val_sacrifice_guard1_phrase4_end%
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403:401)}
+combat_ignore_cond  = {=check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; убиваем пленного
@@ -88,7 +88,6 @@ no_retreat                  = true
 on_info                     = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
 meet                        = meet@val_sacrifice
 danger                      = danger@val_sacrifice_guard
-combat_ignore_cond          = {=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; убиваем пленного
@@ -99,7 +98,6 @@ target              = 401
 on_info             = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Все! Нет человека - нет проблемы. Скажем Борову, что типа доставили пленника куда следует. Идем.
@@ -110,4 +108,3 @@ snd                 = speech
 on_signal           = sound_end | %+val_sacrifice_finish%
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403)}

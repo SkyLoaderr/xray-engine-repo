@@ -612,7 +612,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
     local restr, gr, prior, rst = 0, 0, 0, 0
     local ltx = ""
-    local combat_ignore = "combat_ignore_cond = {=check_fighting(400:403)}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}\n"
+    local combat_ignore = "combat_ignore_cond = {=check_fighting(400) -val_escort_captive_enemy}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}\n"
 
     -- ÁÎÐÎÂ
     t = { section = "logic@" .. gname .. "_leader_normal",

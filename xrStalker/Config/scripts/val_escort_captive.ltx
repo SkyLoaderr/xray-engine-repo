@@ -109,8 +109,8 @@ no_retreat          = true
 radius              = 1
 def_state_moving    = sprint
 def_state_campering = hide
-on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@val_escort_captive_go_to_nap1
-on_info2            = {+val_escort_nap1_dead =dist_to_actor_ge(30)} follower@val_escort_captive_go_to_nap1
+on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@val_escort_captive_go_to_nap1 %+val_escort_captive_enemy%
+on_info2            = {+val_escort_nap1_dead =dist_to_actor_ge(30)} follower@val_escort_captive_go_to_nap1 %+val_escort_captive_enemy%
 meet                = meet@ignore_abuse
 danger              = danger@val_escort_captive
 wounded             = wounded@val_escort_captive

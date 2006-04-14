@@ -21,7 +21,7 @@ def_state_moving            = patrol
 def_state_moving_fire       = patrol_fire
 on_info                     = {+val_sacrifice_guard1_phrase1_end} remark@val_sacrifice_guard2_phrase1
 danger                      = danger@val_sacrifice_guard
-combat_ignore_cond          = {=check_fighting(403:401)}
+combat_ignore_cond          = {=check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Да он уже достал, в натуре! На этой неделе уже 3 раза туда...
@@ -33,7 +33,7 @@ target              = 404
 on_signal           = sound_end | remark@val_sacrifice_guard2_phrase2
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403:401)}
+combat_ignore_cond  = {=check_fighting(401)}
 
 ;--------------------------------------------------------------------------
 ; фраза: Ш-ш-ш-ш.. Слышал? Что-то у меня дурное предчувствие. Короче, не хочется мне из Лагеря уходить.
@@ -45,4 +45,4 @@ target              = 404
 on_signal           = sound_end | %+val_sacrifice_guard2_phrase2_end%
 meet                = meet@val_sacrifice
 danger              = danger@val_sacrifice_guard
-combat_ignore_cond  = {=check_fighting(403:401)}
+combat_ignore_cond  = {=check_fighting(401)}
