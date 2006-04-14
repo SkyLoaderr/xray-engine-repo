@@ -279,7 +279,8 @@ function action_give_task(actor, npc, p1, p2)
 	if task_desc.type == "eliminate_lager" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
-		objective:set_object_id(task_desc.selected_target)	    
+		objective:set_object_id(task_desc.selected_target)
+		alife():object(task_desc.selected_target):lock_population(true)
 	elseif task_desc.type == "kill_stalker" then
 		objective:set_map_hint(task_desc.text)
 		objective:set_map_location("green_location")
@@ -652,6 +653,7 @@ function task_complete(p1, p2)
 		if p1 == "eliminate_lager" then
 			if aa:object(active_task[p1].selected_target).gulag:get_population() == 0 then
 				active_task[p1].completed = true
+				aa:object(active_task[p1].selected_target):lock_population(false)
 				return true
 			end
 		elseif p1 == "kill_stalker" then
@@ -681,6 +683,9 @@ function task_complete(p1, p2)
 end
 function task_fail(p1, p2)
 	if active_task[p1].full_completed == false then
+		if p1 == "eliminate_lager" then
+			aa:object(active_task[p1].selected_target):lock_population(false)
+		end
 		active_task[p1].full_completed = nil
 		active_task[p1].completed = nil
 		active_task[p1].selected_target = nil
