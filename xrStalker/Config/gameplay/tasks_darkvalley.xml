@@ -143,7 +143,7 @@
         bar_darklab_documents
     </title>
     <objective key="0">
-        <icon height="50" width="50" x="0" y="0">
+        <icon height="50" width="50" x="100" y="50">
             ui\ui_icons_task
         </icon>
         <infoportion_complete>
@@ -154,7 +154,7 @@
         <text>
             bar_darklab_documents_1
         </text>
-        <icon height="50" width="50" x="0" y="0">
+        <icon height="50" width="50" x="50" y="50">
             ui\ui_icons_task
         </icon>
         <map_location_type hint="bar_darklab_documents_1_hint">
@@ -171,7 +171,7 @@
         <text>
             bar_darklab_documents_2
         </text>
-        <icon height="50" width="50" x="0" y="0">
+        <icon height="50" width="50" x="100" y="50">
             ui\ui_icons_task
         </icon>
         <map_location_type hint="bar_darklab_documents_2_hint">
@@ -190,7 +190,7 @@
         bar_darklab_documents2
     </title>
     <objective key="0">
-        <icon height="50" width="50" x="0" y="0">
+        <icon height="50" width="50" x="200" y="100">
             ui\ui_icons_task
         </icon>
         <infoportion_complete>
@@ -201,7 +201,7 @@
         <text>
             bar_darklab_documents_3
         </text>
-        <icon height="50" width="50" x="0" y="0">
+        <icon height="50" width="50" x="200" y="100">
             ui\ui_icons_task
         </icon>
         <map_location_type hint="bar_darklab_documents_3_hint">
@@ -221,7 +221,7 @@
         <text>
             bar_darklab_documents_4
         </text>
-        <icon height="50" width="50" x="0" y="0">
+        <icon height="50" width="50" x="400" y="50">
             ui\ui_icons_task
         </icon>
         <map_location_type hint="bar_darklab_documents_4_hint">
