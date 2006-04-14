@@ -156,6 +156,9 @@ void CAI_Stalker::process_enemies		()
 		if (is_relation_enemy(member))
 			continue;
 
+		if (!member->g_Alive())
+			continue;
+
 		if (!member->memory().enemy().selected()) {
 			if (!memory().danger().selected() && member->memory().danger().selected())
 				memory().danger().add(*member->memory().danger().selected());
