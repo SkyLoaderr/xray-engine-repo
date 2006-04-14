@@ -369,8 +369,8 @@ gulags.val_sacrifice.job = function(sj, gname, type, squad, groups)
 
                 "[danger@" .. gname .. "_guard]\n" ..
                 "ignore_types               = corpse\n" ..
-                "ignore_distance_sound      = 4\n" ..
-                "danger_inertion_time_sound = 2000\n" ..
+                --"ignore_distance_sound      = 4\n" ..
+                --"danger_inertion_time_sound = 2000\n" ..
 
                 -- встреча отключена
                 "[meet@" .. gname .. "]\n" ..
