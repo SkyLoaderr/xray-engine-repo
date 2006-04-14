@@ -167,7 +167,7 @@ void SPHNetState::net_Save(NET_Packet &P,const Fvector& min,const Fvector& max)
 	w_qt_q8(P,quaternion);
 	//P.w_vec4(*((Fvector4*)&quaternion));
 	//P.w_vec4(*((Fvector4*)&previous_quaternion));
-	//P.w_u8	((u8)enabled);
+	P.w_u8	((u8)enabled);
 }
 
 void SPHNetState::net_Load(NET_Packet &P,const Fvector& min,const Fvector& max)
@@ -180,7 +180,7 @@ void SPHNetState::net_Load(NET_Packet &P,const Fvector& min,const Fvector& max)
 	previous_position.set(position);
 	r_qt_q8(P,quaternion);
 	previous_quaternion.set(quaternion);
-	enabled=true;
+	enabled=!!P.r_u8();
 
 }
 

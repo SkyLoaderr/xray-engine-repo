@@ -42,6 +42,7 @@ public:
 
 	void					SetPhObjectInElements	();
 	virtual	void			EnableObject			(CPHObject* obj);
+	virtual	void			DisableObject			();
 	virtual void			SetAirResistance		(dReal linear=default_k_l, dReal angular=default_k_w)
 	{
 		xr_vector<CPHElement*>::iterator i;
@@ -205,7 +206,7 @@ public:
 protected:
 	virtual		void				get_spatial_params				()																				;
 	virtual		dGeomID				dSpacedGeom						()														{return (dGeomID)m_space;}
-	virtual		void				DisableObject					()																				;
+
 	virtual		void				ClearRecentlyDeactivated		()																				;
 				void				ClearCashedTries				()																				;
 private:

@@ -28,12 +28,22 @@ void CPhysicsShellHolder::net_Destroy()
 	deactivate_physics_shell						();
 	xr_delete									(m_pPhysicsShell);
 }
+
+static enum EEnableState
+{
+	stEnable			=0	,
+	stDisable				,
+	stNotDefitnite		
+};
+static u8 st_enable_state=(u8)stNotDefitnite;
 BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 {
 	CParticlesPlayer::net_SpawnParticles		();
+	st_enable_state=(u8)stNotDefitnite;
 	BOOL ret=inherited::net_Spawn				(DC);
 	b_sheduled									=	true;
-	//create_physic_shell			();
+		//create_physic_shell			();
+
 	return ret;
 }
 
@@ -96,6 +106,16 @@ void CPhysicsShellHolder::setup_physic_shell	()
 	VERIFY						(!m_pPhysicsShell);
 	create_physic_shell			();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
+	
+	
+	switch (EEnableState(st_enable_state))
+	{
+	case stEnable		:	PPhysicsShell()->Enable()	;
+	case stDisable		:	PPhysicsShell()->Disable()	;
+	case stNotDefitnite	:								;
+	}
+	
+	st_enable_state=(u8)stNotDefitnite;
 }
 
 void CPhysicsShellHolder::deactivate_physics_shell()
@@ -184,4 +204,22 @@ void CPhysicsShellHolder::UpdateCL	()
 float CPhysicsShellHolder::EffectiveGravity()
 {
 	return ph_world->Gravity();
+}
+
+void		CPhysicsShellHolder::	save				(NET_Packet &output_packet)
+{
+	inherited::save(output_packet);
+	u8 enable_state=(u8)stNotDefitnite;
+	if(PPhysicsShell()&&PPhysicsShell()->isActive())
+	{
+		enable_state=u8(PPhysicsShell()->isEnabled() ? stEnable:stDisable);
+	}
+	output_packet.w_u8(enable_state);
+}
+
+void		CPhysicsShellHolder::	load				(IReader &input_packet)
+{
+	inherited::load(input_packet);
+	st_enable_state=input_packet.r_u8();
+
 }

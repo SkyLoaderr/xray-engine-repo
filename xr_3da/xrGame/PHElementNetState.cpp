@@ -43,7 +43,11 @@ void CPHElement::set_State(const SPHNetState& state)
 		dBodyEnable(m_body);
 		m_shell->EnableObject(0);
 	}
-	if(!state.enabled && dBodyIsEnabled(m_body)) Disable();
+	if(!state.enabled && dBodyIsEnabled(m_body)) 
+	{
+		m_shell->DisableObject();
+		Disable();
+	}
 	CPHDisablingFull::Reinit();
 }
 

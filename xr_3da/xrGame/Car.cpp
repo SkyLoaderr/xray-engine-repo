@@ -299,6 +299,8 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 			i->second.RestoreNetState(*ii);
 		}
 	}
+	//as later may kill diable/enable state save it;
+	bool enable = PPhysicsShell()->isEnabled();
 /////////////////////////////////////////////////////////////////////////
 	Fmatrix restored_form;
 	PPhysicsShell()->GetGlobalTransformDynamic(&restored_form);
@@ -342,6 +344,8 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 ////////////////////////////////////////////////////////////////////
 	replace.mul(sof,inv);
 	PPhysicsShell()->TransformPosition(replace);
+	if(enable)PPhysicsShell()->Enable();
+	else PPhysicsShell()->Disable();
 	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)

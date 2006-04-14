@@ -230,6 +230,10 @@ void CPHSkeleton::RestoreNetState(CSE_PHSkeleton* po)
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 	PHNETSTATE_VECTOR& saved_bones=po->saved_bones.bones;
 	PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
+	if(obj->PPhysicsShell()&&obj->PPhysicsShell()->isActive())
+	{
+		obj->PPhysicsShell()->Disable();
+	}
 	for(u16 bone=0;e!=i;i++,bone++)
 	{
 		R_ASSERT(bone<obj->PHGetSyncItemsNumber());

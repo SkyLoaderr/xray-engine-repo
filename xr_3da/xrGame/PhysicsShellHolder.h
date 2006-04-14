@@ -101,6 +101,8 @@ public:
 
 	virtual void			net_Destroy			();
 	virtual BOOL			net_Spawn			(CSE_Abstract*	DC);
+	virtual void			save				(NET_Packet &output_packet);
+	virtual void			load				(IReader &input_packet);
 			void			init				();
 
 	virtual void			OnChangeVisual		();
