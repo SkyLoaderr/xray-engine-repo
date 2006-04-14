@@ -527,6 +527,8 @@ public:
 			void				make_object_visible_somewhen		(CScriptGameObject *object);
 
 			CScriptGameObject	*item_in_slot						(u32 slot_id) const;
+			u32					active_slot							();
+			void				activate_slot						(u32 slot_id);
 
 #ifdef DEBUG
 			void				debug_planner						(const script_planner *planner);

@@ -759,3 +759,23 @@ void CScriptGameObject::GiveTaskToActor(CGameTask* t, bool bCheckExisting)
 {
 	Actor()->GameTaskManager().GiveGameTaskToActor(t, bCheckExisting);
 }
+
+u32	CScriptGameObject::active_slot()
+{
+	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member active_slot!");
+		return		(0);
+	}
+	return inventory_owner->inventory().GetActiveSlot();
+}
+
+void CScriptGameObject::activate_slot(u32 slot_id)
+{
+	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member activate_slot!");
+		return						;
+	}
+	inventory_owner->inventory().Activate(slot_id);
+}

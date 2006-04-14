@@ -244,6 +244,9 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("vertex_in_direction",			&CScriptGameObject::vertex_in_direction)
 
 		.def("item_in_slot",				&CScriptGameObject::item_in_slot)
+		.def("active_slot",					&CScriptGameObject::active_slot)
+		.def("activate_slot",				&CScriptGameObject::activate_slot)
+
 #ifdef DEBUG
 		.def("debug_planner",				&CScriptGameObject::debug_planner)
 #endif		
