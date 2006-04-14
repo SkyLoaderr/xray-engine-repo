@@ -120,7 +120,6 @@
 		</supplies>
 				
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 
 <specific_character id="agr_stalker_general_default2" team_default = "1">
@@ -149,8 +148,6 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 				
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 #include "gameplay\character_dialogs.xml"		
 </specific_character>
 
@@ -181,7 +178,6 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 </specific_character>
 
 	<specific_character id="agr_stalker_general_default4" team_default = "1">
@@ -211,7 +207,6 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="agr_stalker_general_default5" team_default = "1">
@@ -241,7 +236,6 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 
 	<specific_character id="agr_stalker_general_default6" team_default = "1">
@@ -271,7 +265,6 @@
 		</supplies>
 
 #include "gameplay\character_dialogs.xml"
-		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
 
