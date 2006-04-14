@@ -36,6 +36,9 @@ class CStalkerActionDangerInDirectionLookOut : public CStalkerActionCombatBase {
 protected:
 	typedef CStalkerActionCombatBase inherited;
 
+private:
+	CRandom32			m_crouch_look_out_random;
+
 public:
 						CStalkerActionDangerInDirectionLookOut		(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize									();
@@ -44,15 +47,30 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionDangerInDirectionLookAround
+// CStalkerActionDangerInDirectionHoldPosition
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerActionDangerInDirectionLookAround : public CStalkerActionCombatBase {
+class CStalkerActionDangerInDirectionHoldPosition : public CStalkerActionCombatBase {
 protected:
 	typedef CStalkerActionCombatBase inherited;
 
 public:
-						CStalkerActionDangerInDirectionLookAround	(CAI_Stalker *object, LPCSTR action_name = "");
+						CStalkerActionDangerInDirectionHoldPosition	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize									();
+	virtual void		execute										();
+	virtual void		finalize									();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionDangerInDirectionDetour
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionDangerInDirectionDetour : public CStalkerActionCombatBase {
+protected:
+	typedef CStalkerActionCombatBase inherited;
+
+public:
+						CStalkerActionDangerInDirectionDetour		(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize									();
 	virtual void		execute										();
 	virtual void		finalize									();

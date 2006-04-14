@@ -37,8 +37,10 @@ void CStalkerDangerInDirectionPlanner::initialize					()
 	
 	object().agent_manager().member().member(&object()).cover(0);
 
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyCoverReached,false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedAround,false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,false);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,false);
 }
 
 void CStalkerDangerInDirectionPlanner::update						()
@@ -54,31 +56,41 @@ void CStalkerDangerInDirectionPlanner::finalize						()
 void CStalkerDangerInDirectionPlanner::add_evaluators				()
 {
 	add_evaluator			(eWorldPropertyDanger			,xr_new<CStalkerPropertyEvaluatorDangers>					(m_object,"danger"));
-	add_evaluator			(eWorldPropertyCoverActual		,xr_new<CStalkerPropertyEvaluatorDangerUnknownCoverActual>	(m_object,"danger in direction : cover actual"));
-	add_evaluator			(eWorldPropertyCoverReached		,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyCoverReached,true,true,"danger in direction : cover reached"));
-	add_evaluator			(eWorldPropertyLookedAround		,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyLookedAround,true,true,"danger in direction : looked around"));
+	add_evaluator			(eWorldPropertyInCover			,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyInCover,true,true,"in cover"));
+	add_evaluator			(eWorldPropertyLookedOut		,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyLookedOut,true,true,"looked out"));
+	add_evaluator			(eWorldPropertyPositionHolded	,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyPositionHolded,true,true,"position is held"));
+	add_evaluator			(eWorldPropertyEnemyDetoured	,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyEnemyDetoured,true,true,"danger is detoured"));
 }
 
 void CStalkerDangerInDirectionPlanner::add_actions					()
 {
 	CStalkerActionBase		*action;
 
-	action					= xr_new<CStalkerActionDangerInDirectionTakeCover>	(m_object,"take cover");
-	add_effect				(action,eWorldPropertyCoverActual,		true);
-	add_effect				(action,eWorldPropertyCoverReached,		true);
+	action					= xr_new<CStalkerActionDangerInDirectionTakeCover>		(m_object,"take cover");
+	add_condition			(action,eWorldPropertyInCover,				false);
+	add_effect				(action,eWorldPropertyInCover,				true);
 	add_operator			(eWorldOperatorDangerInDirectionTakeCover,	action);
 
-	action					= xr_new<CStalkerActionDangerInDirectionLookAround>	(m_object,"look around");
-	add_condition			(action,eWorldPropertyCoverActual,		true);
-	add_condition			(action,eWorldPropertyCoverReached,		true);
-	add_condition			(action,eWorldPropertyLookedAround,		false);
-	add_effect				(action,eWorldPropertyLookedAround,		true);
-	add_operator			(eWorldOperatorDangerInDirectionLookAround,	action);
+	action					= xr_new<CStalkerActionDangerInDirectionLookOut>		(m_object,"look out");
+	add_condition			(action,eWorldPropertyInCover,				true);
+	add_condition			(action,eWorldPropertyLookedOut,			false);
+	add_effect				(action,eWorldPropertyLookedOut,			true);
+	add_operator			(eWorldOperatorDangerInDirectionLookOut,	action);
 
-	action					= xr_new<CStalkerActionDangerInDirectionSearch>		(m_object,"search");
-	add_condition			(action,eWorldPropertyCoverActual,		true);
-	add_condition			(action,eWorldPropertyCoverReached,		true);
-	add_condition			(action,eWorldPropertyLookedAround,		true);
-	add_effect				(action,eWorldPropertyDanger,			false);
+	action					= xr_new<CStalkerActionDangerInDirectionHoldPosition>	(m_object,"hold position");
+	add_condition			(action,eWorldPropertyLookedOut,			true);
+	add_condition			(action,eWorldPropertyPositionHolded,		false);
+	add_effect				(action,eWorldPropertyPositionHolded,		true);
+	add_operator			(eWorldOperatorDangerInDirectionHoldPosition,action);
+
+	action					= xr_new<CStalkerActionDangerInDirectionDetour>		(m_object,"detour");
+	add_condition			(action,eWorldPropertyPositionHolded,		true);
+	add_condition			(action,eWorldPropertyEnemyDetoured,		false);
+	add_effect				(action,eWorldPropertyEnemyDetoured,		true);
+	add_operator			(eWorldOperatorDangerInDirectionDetourEnemy,action);
+
+	action					= xr_new<CStalkerActionDangerInDirectionSearch>	(m_object,"search");
+	add_condition			(action,eWorldPropertyEnemyDetoured,		true);
+	add_effect				(action,eWorldPropertyDanger,				false);
 	add_operator			(eWorldOperatorDangerInDirectionSearchEnemy,action);
 }

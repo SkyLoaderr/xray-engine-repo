@@ -107,7 +107,8 @@ namespace StalkerDecisionSpace {
 
 		eWorldOperatorDangerInDirectionTakeCover,
 		eWorldOperatorDangerInDirectionLookOut,
-		eWorldOperatorDangerInDirectionLookAround,
+		eWorldOperatorDangerInDirectionHoldPosition,
+		eWorldOperatorDangerInDirectionDetourEnemy,
 		eWorldOperatorDangerInDirectionSearchEnemy,
 
 		eWorldOperatorDangerGrenadeTakeCover,

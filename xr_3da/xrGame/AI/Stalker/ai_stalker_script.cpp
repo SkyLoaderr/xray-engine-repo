@@ -103,7 +103,8 @@ void CAI_Stalker::script_register(lua_State *L)
 
 				luabind::value("action_danger_in_direction_take_cover",		StalkerDecisionSpace::eWorldOperatorDangerInDirectionTakeCover),
 				luabind::value("action_danger_in_direction_look_out",		StalkerDecisionSpace::eWorldOperatorDangerInDirectionLookOut),
-				luabind::value("action_danger_in_direction_look_around",	StalkerDecisionSpace::eWorldOperatorDangerInDirectionLookAround),
+				luabind::value("action_danger_in_direction_hold_position",	StalkerDecisionSpace::eWorldOperatorDangerInDirectionHoldPosition),
+				luabind::value("action_danger_in_direction_detour",			StalkerDecisionSpace::eWorldOperatorDangerInDirectionDetourEnemy),
 				luabind::value("action_danger_in_direction_search",			StalkerDecisionSpace::eWorldOperatorDangerInDirectionSearchEnemy),
 
 				luabind::value("action_danger_grenade_take_cover",			StalkerDecisionSpace::eWorldOperatorDangerGrenadeTakeCover),

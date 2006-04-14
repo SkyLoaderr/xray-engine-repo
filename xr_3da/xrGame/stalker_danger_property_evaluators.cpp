@@ -84,6 +84,10 @@ _value_type CStalkerPropertyEvaluatorDangerInDirection::evaluate	()
 		case CDangerObject::eDangerTypeAttackSound :
 		case CDangerObject::eDangerTypeEntityAttacked :
 		case CDangerObject::eDangerTypeAttacked :
+		// fakes, temporarily
+//		case CDangerObject::eDangerTypeBulletRicochet :
+//		case CDangerObject::eDangerTypeEntityDeath :
+//		case CDangerObject::eDangerTypeFreshEntityCorpse :
 		case CDangerObject::eDangerTypeEnemySound :
 			return		(true);
 		default :

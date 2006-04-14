@@ -540,7 +540,7 @@ void CStalkerActionTakeCover::initialize		()
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(m_body_state);
-	object().movement().set_movement_type		(eMovementTypeRun);
+	object().movement().set_movement_type		(m_movement_type);
 	object().movement().set_mental_state		(eMentalStateDanger);
 	m_storage->set_property						(eWorldPropertyLookedOut,false);
 	m_storage->set_property						(eWorldPropertyPositionHolded,false);
@@ -657,7 +657,7 @@ void CStalkerActionLookOut::initialize		()
 	object().brain().affect_cover				(true);
 }
 
-IC	float current_cover					(CAI_Stalker *object)
+float current_cover						(CAI_Stalker *object)
 {
 	Fvector								position, direction;
 	position							= object->eye_matrix.c;
