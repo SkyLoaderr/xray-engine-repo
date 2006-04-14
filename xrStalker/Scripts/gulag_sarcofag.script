@@ -5,43 +5,43 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@sar_monolith_general_post1_1",
 			idle = 0,
 			prior = 9, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "sar_camp_room"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_general_post1_2",
 			idle = 0,
 			prior = 6, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "sar_camp_room"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_general_post2_1",
 			idle = 0,
 			prior = 9, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "sar_camp_room"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_general_post2_2",
 			idle = 0,
 			prior = 6, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "sar_camp_room"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_general_patrol",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "sar_patrol_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_general_patrol_follower1",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "sar_patrol_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_general_patrol_room",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "sar_camp_room"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_general_kamp",
