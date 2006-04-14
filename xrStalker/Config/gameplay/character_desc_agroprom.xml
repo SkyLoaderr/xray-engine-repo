@@ -58,7 +58,7 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>agr_swamp_ratcatcher_talks</actor_dialog>
 	
 	</specific_character>
@@ -88,7 +88,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>	
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -120,8 +119,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 
@@ -151,7 +149,6 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>agr_factory_stalker_about</actor_dialog>
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 #include "gameplay\character_dialogs.xml"		
@@ -183,8 +180,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 </specific_character>
 
@@ -214,8 +210,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
@@ -245,8 +240,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 
@@ -276,8 +270,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>agr_factory_stalker_about</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 		<actor_dialog>agr_stalker_esc</actor_dialog>
 	</specific_character>
 	
@@ -308,7 +301,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>	
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -338,7 +330,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -368,7 +359,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -398,7 +388,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -428,7 +417,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -460,7 +448,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -490,7 +477,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -522,7 +508,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>	
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -552,7 +537,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>	
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -583,7 +567,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -613,7 +596,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -643,7 +625,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>		
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>	
@@ -676,7 +657,6 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -707,7 +687,6 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -738,7 +717,6 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
