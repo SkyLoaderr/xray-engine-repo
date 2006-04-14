@@ -116,7 +116,7 @@ function send_news(actor, news_id, timeout, showtime)
 		end
 	end
 
-	db.actor:give_game_news(news_id, "ui\\ui_icons_task", Frect():set(0,100,50,50) ,timeout*1000, showtime)
+	db.actor:give_game_news(game.translate_string(news_id), "ui\\ui_icons_task", Frect():set(0,100,50,50) ,timeout*1000, showtime)
 end
 
 function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
@@ -165,7 +165,7 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 		y = tips_icons[sender][2]
 	end
 
-	actor:give_game_news(news_id, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+	actor:give_game_news(game.translate_string(news_id), "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
 	return true
 end
 function send_tip_nosound(actor, news_id, timeout, sender)
@@ -191,7 +191,7 @@ function send_tip_nosound(actor, news_id, timeout, sender)
 		y = tips_icons[sender][2]
 	end
 
-	actor:give_game_news(news_id, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+	actor:give_game_news(game.translate_string(news_id), "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
 	return news_sound
 end
 
