@@ -1020,15 +1020,15 @@ BOOL CPHMovementControl::BorderTraceCallback(collide::rq_result& result, LPVOID 
 void	CPHMovementControl::TraceBorder(const Fvector &prev_position)
 {
 
-	const Fvector	&from_pos			=prev_position;
-	const Fvector	&to_position		=vPosition;
-	Fvector dir;dir.sub(to_position,from_pos);
-	float sq_mag=dir.square_magnitude();
-	if(sq_mag==0.f) return;
-	float mag=_sqrt(sq_mag);
-	dir.mul(1.f/mag);
-	collide::ray_defs	RD		(vPosition,dir,mag,0,collide::rqtStatic);
-	VERIFY							(!fis_zero(RD.dir.square_magnitude()));
+	const Fvector	&from_pos			=prev_position						;
+	const Fvector	&to_position		=vPosition							;
+	Fvector dir;	dir					.sub(to_position,from_pos)			;
+	float sq_mag	=					dir.square_magnitude()				;
+	if(sq_mag==0.f) return													;
+	float mag=_sqrt(sq_mag)													;
+	dir.mul(1.f/mag)														;
+	collide::ray_defs	RD		(from_pos,dir,mag,0,collide::rqtStatic)		;
+	VERIFY							(!fis_zero(RD.dir.square_magnitude()))	;
 
 	STraceBorderQParams p		(this,dir);
 	collide::rq_results		storage	;
