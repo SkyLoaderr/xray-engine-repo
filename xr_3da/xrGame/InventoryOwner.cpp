@@ -47,6 +47,7 @@ CInventoryOwner::CInventoryOwner			()
 	EnableTrade();
 	
 	m_known_info_registry		= xr_new<CInfoPortionWrapper>();
+	m_tmp_active_slot_num		= NO_ACTIVE_SLOT;
 }
 
 DLL_Pure *CInventoryOwner::_construct		()
@@ -177,6 +178,8 @@ void	CInventoryOwner::load	(IReader &input_packet)
 	else
 		inventory().Activate(active_slot);
 
+	m_tmp_active_slot_num		 = active_slot;
+
 	CharacterInfo().load(input_packet);
 	load_data		(m_game_name, input_packet);
 	load_data		(m_dwMoney,	input_packet);
@@ -292,6 +295,12 @@ void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
 	object->callback(GameObject::eOnItemTake)(inventory_item->object().lua_game_object());
 
 	attach		(inventory_item);
+
+	if(m_tmp_active_slot_num!=NO_ACTIVE_SLOT && inventory_item->GetSlot()==m_tmp_active_slot_num)
+	{
+		inventory().Activate(m_tmp_active_slot_num);
+		m_tmp_active_slot_num	= NO_ACTIVE_SLOT;
+	}
 }
 
 //возвращает текуший разброс стрельбы с учетом движения (в радианах)

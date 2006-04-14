@@ -30,14 +30,16 @@ end
 
 function main123()
 	local info = "test_andy_info" 
---	local info = "tutorial_artefact_start"
-	db.actor:give_info_portion(info) 
 end
 
 function main()
-	local news_text = "%c<255,160,160,160>" .. "Задание выполнено" .. "\\n" .. "%c<default>" .. "Информация о винтовке FN-2000 а также куча всякой лабуды типа убить долбаного стрелка или помочь сраному раненому"
+	local info = "tutorial_artefact_start"
+	db.actor:give_info_portion(info) 
+	game.start_tutorial("part_1_pda")
 
-	db.actor:give_game_news(news_text, "ui\\ui_pop_up_active_back", Frect():set(0,0,16,16), 0, 0)
+--	local news_text = "%c<255,160,160,160>" .. "Задание выполнено" .. "\\n" .. "%c<default>" .. "Информация о винтовке FN-2000 а также куча всякой лабуды типа убить долбаного стрелка или помочь сраному раненому"
+
+--	db.actor:give_game_news(news_text, "ui\\ui_pop_up_active_back", Frect():set(0,0,16,16), 0, 0)
 --	local a,b = get_task_info("kill_gunslinger","_small")
 --	db.actor:give_game_news(news_text, a, b, 0, 0)
 

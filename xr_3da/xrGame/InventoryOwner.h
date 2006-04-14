@@ -103,7 +103,7 @@ protected:
 	bool				m_bAllowTalk;
 	bool				m_bAllowTrade;
 
-
+	u8					m_tmp_active_slot_num;
 	//////////////////////////////////////////////////////////////////////////
 	// сюжетная информация
 public:

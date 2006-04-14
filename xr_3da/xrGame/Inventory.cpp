@@ -271,7 +271,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	it = std::find(m_belt.begin(), m_belt.end(), pIItem);
 	if(m_belt.end() != it) m_belt.erase(it);
 
-	if ((m_iActiveSlot == NO_ACTIVE_SLOT) && (!bNotActivate))
+	if ((m_iActiveSlot==NO_ACTIVE_SLOT&&m_iNextActiveSlot==NO_ACTIVE_SLOT) && (!bNotActivate))
 		Activate(pIItem->GetSlot());
 
 	
