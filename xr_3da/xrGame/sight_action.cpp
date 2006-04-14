@@ -132,8 +132,13 @@ void CSightAction::execute_object				()
 {
 	Fvector					look_pos;
 	m_object_to_look->Center(look_pos);
-	look_pos.x				= m_object_to_look->Position().x;
-	look_pos.z				= m_object_to_look->Position().z;
+
+	const CEntityAlive		*entity_alive = smart_cast<const CEntityAlive*>(m_object_to_look);
+	if (!entity_alive || entity_alive->g_Alive()) {
+		look_pos.x			= m_object_to_look->Position().x;
+		look_pos.z			= m_object_to_look->Position().z;
+	}
+
 	if (m_torso_look)
 		object().sight().SetFirePointLookAngles	(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch,m_object_to_look);
 	else
