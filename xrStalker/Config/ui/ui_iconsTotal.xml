@@ -1,35 +1,35 @@
 <ui_texture>
     <file_name>ui\ui_iconsTotal</file_name>
-    <texture id="ui_iconsTotal_01" x="0" y="0" width="83" height="47" />
-    <texture id="ui_iconsTotal_02" x="0" y="47" width="83" height="47" />
-    <texture id="ui_iconsTotal_03" x="0" y="94" width="83" height="47" />
-    <texture id="ui_iconsTotal_04" x="0" y="141" width="83" height="47" />
-    <texture id="ui_iconsTotal_05" x="0" y="188" width="83" height="47" />
-    <texture id="ui_iconsTotal_06" x="0" y="235" width="83" height="47" />
-    <texture id="ui_iconsTotal_07" x="0" y="282" width="83" height="47" />
-    <texture id="ui_iconsTotal_08" x="0" y="329" width="83" height="47" />
-    <texture id="ui_iconsTotal_09" x="0" y="376" width="83" height="47" />
-    <texture id="ui_iconsTotal_10" x="0" y="423" width="83" height="47" />
-    <texture id="ui_iconsTotal_11" x="0" y="470" width="83" height="47" />
-    <texture id="ui_iconsTotal_12" x="0" y="517" width="83" height="47" />
-    <texture id="ui_iconsTotal_13" x="0" y="564" width="83" height="47" />
-    <texture id="ui_iconsTotal_14" x="0" y="611" width="83" height="47" />
-    <texture id="ui_iconsTotal_15" x="0" y="658" width="83" height="47" />
-    <texture id="ui_iconsTotal_16" x="0" y="705" width="83" height="47" />
-    <texture id="ui_iconsTotalSmall_01" x="83" y="0" width="49" height="26" />
-    <texture id="ui_iconsTotalSmall_02" x="83" y="29" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_03" x="83" y="58" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_04" x="83" y="87" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_05" x="83" y="116" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_06" x="83" y="145" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_07" x="83" y="174" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_08" x="83" y="203" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_09" x="83" y="232" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_10" x="83" y="261" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_11" x="83" y="290" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_12" x="83" y="319" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_13" x="83" y="348" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_14" x="83" y="377" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_15" x="83" y="406" width="49" height="29" />
-    <texture id="ui_iconsTotalSmall_16" x="83" y="435" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_found_money" x="83" y="0" width="49" height="26" />
+    <texture id="ui_iconsTotalSmall_lost_money" x="83" y="29" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_found_thing" x="83" y="58" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_lost_thing" x="83" y="87" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_any thing" x="83" y="116" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_killing" x="83" y="145" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_artefact" x="83" y="174" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_artefacts" x="83" y="203" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_zachistkaBazy" x="83" y="232" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_deficit" x="83" y="261" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_monster" x="83" y="290" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_weapons" x="83" y="319" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_mutant" x="83" y="348" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_technique" x="83" y="377" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_grouping" x="83" y="406" width="49" height="29" />
+    <texture id="ui_iconsTotalSmall_locations" x="83" y="435" width="49" height="29" />
+    <texture id="ui_iconsTotal_found_money" x="0" y="0" width="83" height="47" />
+    <texture id="ui_iconsTotal_lost_money" x="0" y="47" width="83" height="47" />
+    <texture id="ui_iconsTotal_found_thing" x="0" y="94" width="83" height="47" />
+    <texture id="ui_iconsTotal_lost_thing" x="0" y="141" width="83" height="47" />
+    <texture id="ui_iconsTotal_any thing" x="0" y="188" width="83" height="47" />
+    <texture id="ui_iconsTotal_killing" x="0" y="235" width="83" height="47" />
+    <texture id="ui_iconsTotal_artefact" x="0" y="282" width="83" height="47" />
+    <texture id="ui_iconsTotal_artefacts" x="0" y="329" width="83" height="47" />
+    <texture id="ui_iconsTotal_zachistkaBazy" x="0" y="376" width="83" height="47" />
+    <texture id="ui_iconsTotal_deficit" x="0" y="423" width="83" height="47" />
+    <texture id="ui_iconsTotal_monster" x="0" y="470" width="83" height="47" />
+    <texture id="ui_iconsTotal_weapons" x="0" y="517" width="83" height="47" />
+    <texture id="ui_iconsTotal_mutant" x="0" y="564" width="83" height="47" />
+    <texture id="ui_iconsTotal_technique" x="0" y="611" width="83" height="47" />
+    <texture id="ui_iconsTotal_grouping" x="0" y="658" width="83" height="47" />
+    <texture id="ui_iconsTotal_locations" x="0" y="705" width="83" height="47" />
 </ui_texture>
