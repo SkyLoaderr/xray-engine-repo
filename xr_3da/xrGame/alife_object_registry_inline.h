@@ -52,7 +52,32 @@ IC	const CALifeObjectRegistry::OBJECT_REGISTRY &CALifeObjectRegistry::objects	()
 	return						(m_objects);
 }
 
+template <typename _predicate>
+void CALifeObjectRegistry::load				(IReader &file_stream, const _predicate &predicate)
+{ 
+	Msg							("* Loading objects...");
+	R_ASSERT2					(file_stream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
 
+	m_objects.clear				();
+
+	u32							count = file_stream.r_u32();
+	for (u32 i=0; i<count; ++i) {
+		CSE_ALifeDynamicObject	*object = get_object(file_stream);
+		add						(object);
+
+
+
+
+	}
+
+	ALife::D_OBJECT_P_MAP::const_iterator	I = objects().begin();
+	ALife::D_OBJECT_P_MAP::const_iterator	E = objects().end();
+	for ( ; I != E; ++I)
+		predicate				((*I).second);
+
+	Msg							("* %d objects are successfully loaded",count);
+}
+/*
 template <typename _predicate>
 void CALifeObjectRegistry::load				(IReader &file_stream, const _predicate &predicate)
 { 
@@ -65,7 +90,7 @@ void CALifeObjectRegistry::load				(IReader &file_stream, const _predicate &pred
 	CSE_ALifeDynamicObject		*objects = (CSE_ALifeDynamicObject*)_alloca(count*sizeof(CSE_ALifeDynamicObject*));
 
 	CSE_ALifeDynamicObject		*I = objects;
-	CSE_ALifeDynamicObject		*E = objects + count;
+	CSE_ALifeDynamicObject		*E = objects + count ;
 	for ( ; I != E; ++I) {
 		I						= get_object(file_stream);
 		add						(I);
@@ -76,3 +101,4 @@ void CALifeObjectRegistry::load				(IReader &file_stream, const _predicate &pred
 
 	Msg							("* %d objects are successfully loaded",count);
 }
+*/
