@@ -1,47 +1,112 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 
 <string_table>
+	<string id="Contacts">
+		<text>Контакты</text>
+	</string>
+	<string id="Encyclopedia">
+		<text>Энциклопедия</text>
+	</string>	
 	<string id="pda_btn_quests">
-		<text>Квесты</text>
+		<text>Задания</text>
+	</string>
+	<string id="Tasks">
+		<text>Задания</text>
+	</string>
+	<string id="Time">
+		<text>Время</text>
+	</string>
+	<string id="Name">
+		<text>Имя</text>
+	</string>
+	<string id="Rank">
+		<text>Ранг</text>
+	</string>
+
+	<string id="st_pda_top20">
+		<text>Лучшая 20-ка сталкеров</text>
+	</string>	
+	
+	<string id="pda_btn_quests_hint">
+		<text>Показать информацию по квестам</text>
+	</string>
+	<string id="pda_show_general_or_all_tasks">
+		<text>Показывать все квесты или только сюжетные</text>
 	</string>
 	<string id="pda_btn_contacts">
 		<text>Контакты</text>
 	</string>
+	<string id="pda_btn_contacts_hint">
+		<text>Показать список контактов сталкеров</text>
+	</string>
 	<string id="pda_btn_map">
 		<text>Карта</text>
+	</string>
+	<string id="pda_btn_map_hint">
+		<text>Показать карту Зоны</text>
 	</string>
 	<string id="pda_btn_encyclopedia">
 		<text>Энциклопедия</text>
 	</string>
+	<string id="pda_btn_encyclopedia_hint">
+		<text>Показать энциклопедию по Зоне</text>
+	</string>
 	<string id="pda_btn_statistics">
 		<text>Статистика</text>
+	</string>
+	<string id="pda_btn_statistics_hint">
+		<text>Показать статистику по прохождению</text>
 	</string>
 	<string id="pda_btn_ranking">
 		<text>Рейтинг</text>
 	</string>
+	<string id="pda_btn_ranking_hint">
+		<text>Показать рейтинг лучших сталкеров</text>
+	</string>
     <string id="pda_btn_diary">
         <text>Дневник</text>
     </string>
+    <string id="pda_btn_diary_hint">
+        <text>Показать дневник игрока</text>
+    </string>
     <string id="pda_btn_news">
-        <text>Новости</text>
+        <text>История сообщ.</text>
+    </string>
+    <string id="pda_btn_news_hint">
+        <text>Показать историю сообщений</text>
     </string>
     <string id="pda_btn_info">
-        <text>Инфо</text>
+        <text>Информация</text>
     </string>
     <string id="pda_btn_journal">
         <text>Журнал</text>
     </string>
+    <string id="pda_btn_journal_hint">
+        <text>Показать записи игрока</text>
+    </string>
     <string id="pda_btn_active">
         <text>Активные</text>
+    </string>
+    <string id="pda_btn_active_hint">
+        <text>Показать активные задания</text>
     </string>
     <string id="pda_btn_accomplished">
         <text>Выполненные</text>
     </string>
+    <string id="pda_btn_accomplished_hint">
+        <text>Показать выполненные задания</text>
+    </string>
     <string id="pda_btn_failed">
         <text>Провал.</text>
     </string>
+    <string id="pda_btn_failed_hint">
+        <text>Показать проваленные задания</text>
+    </string>
     <string id="pda_btn_own">
         <text>Свои</text>
+    </string>
+    <string id="pda_btn_own_hint">
+        <text>Показать свои отметки на карте</text>
     </string>
 
 	<string id="pda_btn_reputation">
@@ -92,6 +157,62 @@
 	<string id="show_only_general_tasks">
 		<text>показывать только сюжетные</text>
 	</string>
+
+	<string id="st_map_actor">
+		<text>Это Вы</text>
+	</string>
+
+	<string id="st_pda_player_statistic">
+		<text>Статистика игрока</text>
+	</string>
+	<string id="st_pda_detail_info">
+		<text>Детальная информация</text>
+	</string>
+	
+	<string id="st_pda_statistic_score">
+		<text>Статистика</text>
+	</string>
+	<string id="st_pda_statistic_reputation">
+		<text>Репутация:</text>
+	</string>
+
+	<string id="st_pda_stalker_kills">
+		<text>Убийство сталкеров</text>
+	</string>
+	<string id="st_pda_monster_kills">
+		<text>Убийство мутантов</text>
+	</string>
+	<string id="st_pda_quest_complete">
+		<text>Выполненные квесты</text>
+	</string>
+	<string id="st_pda_artefacts">
+		<text>Артефакты</text>
+	</string>
+	<string id="st_pda_total">
+		<text>Всего</text>
+	</string>
+
+	<string id="st_detail_list_for_community_relations">
+		<text>Отношения с группировками</text>
+	</string>
+	<string id="st_detail_list_for_stalkerkills">
+		<text>Убийство сталкеров</text>
+	</string>
+	<string id="st_detail_list_for_monsterkills">
+		<text>Убийство мутантов</text>
+	</string>
+	<string id="st_detail_list_for_quests">
+		<text>Выполненные квесты</text>
+	</string>
+	<string id="st_detail_list_for_artefacts">
+		<text>Добытые артефакты</text>
+	</string>
+	<string id="st_pda_task_detail_information">
+		<text>Детальная информация о задании</text>
+	</string>
+
+
+
 
 
 

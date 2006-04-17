@@ -1,49 +1,106 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <!-- таблица строк общего назначения -->
 <string_table>
-	<string id="health">
-		<text>Здоровье</text>
+	<string id="rank">
+		<text>ранг</text>
 	</string>
-	<string id="test2">
-		<text>This is a another GENERAL test string</text>
+	<string id="community">
+		<text>группировка</text>
 	</string>
-	<string id="Weapons">
-		<text>Оружие</text>
+	<string id="reputation">
+		<text>репутация</text>
 	</string>
-	<string id="Machineguns">
-		<text>Автоматы</text>
-	</string>
-	<string id="AK-74">
-		<text>АК-74</text>
-	</string>
-	<string id="AK-74_info">
-		<text>АК-74 инфо</text>
+	<string id="relation">
+		<text>отношение</text>
 	</string>
 
-	<string id="ak_74_desc">
-		<text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust 
-			and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
-		    30 bullet
-		</text>
-		<text ln="rus">Предупреждаю: эта книга особенная. Управлению проектами посвящено  множество книг. Здесь же речь пойдет о реальных приемах создания и выпуска программ, причем особое внимание уделяется ситуации начинающей организации. Своевременный выпуск продукта - единственное,что имеет значение в этом бизнесе, поэтому книга сосредоточена нарешении этой задачи. Ее автор - не просто счастливчик, которомуповезло выпустить удачную программу. Под его руководством был выпущенцелый ряд замечательных программ, но важнее всего, что он воспиталплеяду менеджеров, повторивших его успех. Ими создано столько программ, сколько большинству организаций даже не снилось. В этой отрасли практически невозможно воспитать менеджера проекта, умеющего успешно работать. Однако Эд многократно справлялся с этой трудной задачей, и в этой книге вы найдете те методики, которые он передавал своим ученикам. которые он передавал своим ученикам. которые он передавал своим ученикам. методики, которые он передавал своим ученикам. которые он передавал своим ученикам. которые он передавал своим ученикам.	для установки mc-4.6.0 нужен glib версии 1.2.6 или выше я поставил glib 1.2.10 а система выкинула ошибку, что версия глиба не совпадает... вернее не соотвествует условию >=1.2.6 Предупреждаю: эта книга особенная. Управлению проектами посвящено  множество книг. Здесь же речь пойдет о реальных приемах создания и выпуска программ, причем особое внимание уделяется ситуации начинающей организации. Своевременный выпуск продукта - единственное,что имеет значение в этом бизнесе, поэтому книга сосредоточена нарешении этой задачи. Ее автор - не просто счастливчик, которомуповезло выпустить удачную программу. Под его руководством был выпущенцелый ряд замечательных программ, но важнее всего, что он воспиталплеяду менеджеров, повторивших его успех. Ими создано столько программ, сколько большинству организаций даже не снилось. В этой отрасли практически невозможно воспитать менеджера проекта, умеющего успешно работать. Однако Эд многократно справлялся с этой трудной задачей, и в этой книге вы найдете те методики, которые он передавал своим ученикам. которые он передавал своим ученикам. которые он передавал своим ученикам. методики, которые он передавал своим ученикам. которые он передавал своим ученикам. которые он передавал своим ученикам.	для установки mc-4.6.0 нужен glib версии 1.2.6 или выше я поставил glib 1.2.10 а система выкинула ошибку, что версия глиба не совпадает... вернее не соотвествует условию >=1.2.6</text>
+	<string id="novice">
+		<text>новичок</text>
 	</string>
-	<string id="ak_74_info">
-		<text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust 
-			and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity:
-		    30 bullet
-		</text>
-		<text ln="rus">%credAK-74 %cblueописание на %cdefaultрусском бла бла бла</text>
+	<string id="experienced">
+		<text>опытный</text>
 	</string>
-	<string id="escape_blockpost_case">
-		<text>Ящик с блокпоста.</text>
+	<string id="veteran">
+		<text>ветеран</text>
 	</string>
-	<string id="alife_news_kill">
-		<text>%s убил %s</text>
+	<string id="master">
+		<text>мастер</text>
 	</string>
-	<string id="alife_news_retreat">
-		<text>%s отступил с места боя</text>
+	<string id="terrible">
+		<text>ужасно</text>
 	</string>
-	
+	<string id="very_bad">
+		<text>оч. плохо</text>
+	</string>
+	<string id="bad">
+		<text>плохо</text>
+	</string>
+	<string id="neutral">
+		<text>нейтрально</text>
+	</string>
+	<string id="good">
+		<text>хорошо</text>
+	</string>
+	<string id="very_good">
+		<text>оч. хорошо</text>
+	</string>
+	<string id="excellent">
+		<text>отлично</text>
+	</string>
+	<string id="enemy">
+		<text>враг</text>
+	</string>
+	<string id="indifferent">
+		<text>нейтрально</text>
+	</string>
+	<string id="friendly">
+		<text>друг</text>
+	</string>
+
+	<string id="actor">
+		<text>Одиночка</text>
+	</string>
+	<string id="actor_dolg">
+		<text>Долг</text>
+	</string>
+	<string id="actor_freedom">
+		<text>Свобода</text>
+	</string>
+	<string id="stalker">
+		<text>Одиночка</text>
+	</string>
+	<string id="monolith">
+		<text>Монолит</text>
+	</string>
+	<string id="military">
+		<text>Военный</text>
+	</string>
+	<string id="killer">
+		<text>Наемник</text>
+	</string>
+	<string id="ecolog">
+		<text>Эколог</text>
+	</string>
+	<string id="dolg">
+		<text>Долг</text>
+	</string>
+	<string id="freedom">
+		<text>Свобода</text>
+	</string>
+	<string id="bandit">
+		<text>Бандит</text>
+	</string>
+	<string id="zombied">
+		<text>Зомбированный</text>
+	</string>
+	<string id="trader">
+		<text>Торговец</text>
+	</string>
+	<string id="arena_enemy">
+		<text>Наемник</text>
+	</string>
+
+
 	<string id="Btn_Yes">
 		<text>Да</text>
 	</string>
@@ -79,4 +136,46 @@
 		<text>Игра окончена.</text>
 	</string>
 	
+	
+	
+	<string id="global_map">
+		<text>Карта Зоны</text>
+	</string>
+	<string id="l01_escape">
+		<text>Кордон</text>
+	</string>
+	<string id="l02_garbage">
+		<text>Свалка</text>
+	</string>
+	<string id="l03_agroprom">
+		<text>НИИ Агропром</text>
+	</string>
+	<string id="l04_darkvalley">
+		<text>Темная Долина</text>
+	</string>
+	<string id="l05_bar">
+		<text>Бар</text>
+	</string>
+	<string id="l06_Rostok">
+		<text>Дикая территория</text>
+	</string>
+	<string id="l07_military">
+		<text>Армейские склады</text>
+	</string>
+	<string id="l08_yantar">
+		<text>Янтарь</text>
+	</string>
+	<string id="l10_radar">
+		<text>Радар</text>
+	</string>
+	<string id="l11_pripyat">
+		<text>Припять</text>
+	</string>
+	<string id="l12_stancia">
+		<text>ЧАЭС</text>
+	</string>
+	<string id="l12_stancia_2">
+		<text>ЧАЭС</text>
+	</string>
+
 </string_table>
