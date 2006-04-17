@@ -50,52 +50,12 @@ function process_info_portion(info_id)
 	elseif info_id == "mil_bandit_secret_found" then
            level_tasks.remove_location (705, "mil_secret_location")
 	    return true
-	--elseif info_id == "mil_lukash_go_to_max" then
-	       --level_tasks.add_location (702, "mil_max_location") 
-	       --level_tasks.remove_location (707, "mil_lukash_location")
-	    --return true
 	elseif info_id == "mil_max_arrive" then
-		   --level_tasks.remove_location (702, "mil_max_location")
 		   db.actor:disable_info_portion ("mil_lukash_go_to_max")
 		return true
-	--elseif info_id == "mil_max_lukash_call" then
-	       --level_tasks.add_location (707, "mil_lukash_location")
-	    --return true
-	--elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
-	       --level_tasks.remove_location (707, "mil_lukash_location")
-		--return true
-	--elseif info_id == "mil_leader_quest1_complete" then
-	       --if db.actor:dont_has_info ("mil_lukash_dead") and db.actor:has_info ("mil_leader_quest1_start") then
-	          --level_tasks.add_location (707, "mil_lukash_location")
-	       --end   
-	       --level_tasks.remove_location (708, "mil_dolg_location")
-	    --return true
     elseif info_id == "mil_dolg_dead" then 	       
-	       --level_tasks.remove_location (704, "mil_sniper_location")
 	    return true  
-	--elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
-	       --level_tasks.remove_location (707, "mil_lukash_location")
-		--return true
-	--elseif info_id == "mil_freedom_attack" then
-	       --level_tasks.add_location (708, "mil_dolg_location")
-	       --level_tasks.remove_location (702, "mil_max_location")
-	    --return true
-    --elseif info_id == "mil_leader_quest2_start" then
-           --level_tasks.add_location (710, "mil_courier_location")
-           --level_tasks.remove_location (707, "mil_lukash_location")
-		--return true
-    --elseif info_id == "mil_leader_quest2_failed" then   
-           --if db.actor:has_info ("mil_leader_quest2_start") then
-              --level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
-           --end   
-           --level_tasks.remove_location (710, "mil_courier_location")
-        --return true
-    --elseif info_id == "mil_leader_quest2_complete" then
-           --level_tasks.remove_location (710, "mil_courier_location")
-           --level_tasks.add_location (707, "mil_lukash_location")
-           --level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
-	    --return true  
-    --end
+	
 	end
 	return false
 end
