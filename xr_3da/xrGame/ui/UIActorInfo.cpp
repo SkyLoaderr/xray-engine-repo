@@ -142,8 +142,8 @@ void CUIActorInfoWnd::FillPointsDetail	(int idx)
 		return;
 	}
 	string256	str;
-	sprintf		(str,"Detail list for %s", get_token_name(actor_stats_token,idx));
-	UIInfoHeader->GetTitleStatic()->SetText	(str);
+	sprintf		(str,"st_detail_list_for_%s", get_token_name(actor_stats_token,idx));
+	UIInfoHeader->GetTitleStatic()->SetTextST	(str);
 
 	SStatSectionData&	section				= Actor()->StatisticMgr().GetSection(idx);
 	vStatDetailData::const_iterator it		= section.data.begin();

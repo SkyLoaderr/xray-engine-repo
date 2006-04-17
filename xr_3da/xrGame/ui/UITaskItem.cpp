@@ -116,7 +116,7 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, int obj_idx)
 	m_captionStatic->SetText		(*stbl.translate(m_GameTask->m_Title));
 	m_captionStatic->AdjustHeightToText	();
 	
-	xr_string	txt ="Time: ";
+	xr_string	txt ="";
 	txt			+= *(InventoryUtilities::GetDateAsString(gt->m_ReceiveTime, InventoryUtilities::edpDateToDay));
 	txt			+= " ";
 	txt			+= *(InventoryUtilities::GetTimeAsString(gt->m_ReceiveTime, InventoryUtilities::etpTimeToMinutes));
