@@ -1,9 +1,3 @@
-// EntityCondition.h: класс состояния живой сущности
-//
-//////////////////////////////////////////////////////////////////////
- 
-#ifndef _ENTITY_CONDITION_H_
-#define _ENTITY_CONDITION_H_
 #pragma once
 
 class CWound;
@@ -46,11 +40,10 @@ public:
 	virtual void			load					(IReader &input_packet);
 
 	IC float					GetPower				() const			{return m_fPower;}	
-	IC float					GetSatiety				() const			{return m_fSatiety;}
+//	IC float					GetSatiety				() const			{return m_fSatiety;}
 	IC float					GetRadiation			() const			{return m_fRadiation;}
 	IC float					GetPsyHealth			() const			{return m_fPsyHealth;}
 
-//.	IC float 					GetCircumspection		() const			{return m_fCircumspection;}
 	IC float 					GetEntityMorale			() const			{return m_fEntityMorale;}
 
 	IC float 					GetHealthLost			() const			{return m_fHealthLost;}
@@ -59,7 +52,7 @@ public:
 
 	void 					ChangeHealth			(float value);
 	void 					ChangePower				(float value);
-	void 					ChangeSatiety			(float value);
+//	void 					ChangeSatiety			(float value);
 	void 					ChangeRadiation			(float value);
 	void 					ChangePsyHealth			(float value);
 	virtual void 			ChangeAlcohol			(float value){};
@@ -74,7 +67,6 @@ public:
 	void 					ChangeEntityMorale		(float value);
 
 	//hit_power задается от 0 до 100 (сложилось исторически)
-///	virtual CWound*			ConditionHit			(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element = u16(-1));
 	virtual CWound*			ConditionHit			(SHit* pHDS);
 	//обновления состояния с течением времени
 	virtual void			UpdateCondition			();
@@ -102,7 +94,6 @@ protected:
 	void					UpdateRadiation			(float k=1.0f);
 	void					UpdatePsyHealth			(float k=1.0f);
 
-//.	void					UpdateCircumspection	();
 	void					UpdateEntityMorale		();
 
 
@@ -121,29 +112,25 @@ protected:
 	
 
 	//все величины от 0 до 1			
-//	float* m_fHealth;				//здоровье
 	float m_fPower;					//сила
-	float m_fSatiety;				//сытость (энергия)
+//	float m_fSatiety;				//сытость (энергия)
 	float m_fRadiation;				//доза радиактивного облучения
 	float m_fPsyHealth;				//здоровье
 
-//.	float m_fCircumspection;		//настороженность	
 	float m_fEntityMorale;			//мораль
 
 	//максимальные величины
-//	float* m_fHealthMax;
 	float m_fPowerMax;
-	float m_fSatietyMax;
+//	float m_fSatietyMax;
 	float m_fRadiationMax;
 	float m_fPsyHealthMax;
 
-//.	float m_fCircumspectionMax;
 	float m_fEntityMoraleMax;
 
 	//величины изменения параметров на каждом обновлении
 	float m_fDeltaHealth;
 	float m_fDeltaPower;
-	float m_fDeltaSatiety;
+//	float m_fDeltaSatiety;
 	float m_fDeltaRadiation;
 	float m_fDeltaPsyHealth;
 
@@ -152,15 +139,13 @@ protected:
 
 	struct SConditionChangeV
 	{
-//.		float m_fV_Health;
-//.		float m_fV_Power;
-		float m_fV_Satiety;
+//		float m_fV_Satiety;
 		float m_fV_Radiation;
 		float m_fV_PsyHealth;
-		float m_fV_Circumspection;//---
+		float m_fV_Circumspection;
 		float m_fV_EntityMorale;
-		float m_fV_SatietyPower;
-		float m_fV_SatietyHealth;
+//		float m_fV_SatietyPower;
+//		float m_fV_SatietyHealth;
 		float m_fV_RadiationHealth;
 		float m_fV_Bleeding;
 		float m_fV_WoundIncarnation;
@@ -168,29 +153,7 @@ protected:
 	};
 	
 	SConditionChangeV m_change_v;
-/*
-//.	float m_fV_Health;
-//.	float m_fV_Power;
-	float m_fV_Satiety;
-	float m_fV_Radiation;
-	float m_fV_PsyHealth;
 
-	float m_fV_Circumspection;
-	float m_fV_EntityMorale;
-
-
-	float m_fV_SatietyPower;
-	float m_fV_SatietyHealth;
-
-	//максимально возможная скорость убывания здоровья от радиации
-	//(при максимальной дозе облучения)
-	float m_fV_RadiationHealth;
-
-	//скорость потери крови в открытой ране от максимального хита 
-	float m_fV_Bleeding;
-	//скорость заживания раны
-	float m_fV_WoundIncarnation;
-*/
 	//критическое значение сытости (в процентах 0..1), после которого 
 	//начинает уменьшаться здоровье
 	float m_fSatietyCritical;
@@ -236,5 +199,3 @@ public:
 	IC float&						hit_bone_scale		()			{return		(m_fHitBoneScale);		}
 	IC float&						wound_bone_scale	()			{return		(m_fWoundBoneScale);	}
 };
-
-#endif //_ENTITY_CONDITION_H_
