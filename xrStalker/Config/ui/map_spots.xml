@@ -108,7 +108,7 @@
 
 
 
-	<actor_location hint="actor">
+	<actor_location hint="st_map_actor">
 		<level_map spot="actor_level_spot"/>
 	</actor_location>
 	
