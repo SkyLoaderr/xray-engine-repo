@@ -23,7 +23,7 @@
 	</info_frame_window>
 	<info_frame_line x="8" y="17" width="434" height="27">
 		<title x="10" y="1" width="435" height="18">
-			<text font="letterica25" r="255" g="255" b="255">Stalkers ranking TOP 20</text>
+			<text font="letterica25" r="255" g="255" b="255">st_pda_top20</text>
 		</title>
 		<texture>ui_string_02</texture>		
 	</info_frame_line>
