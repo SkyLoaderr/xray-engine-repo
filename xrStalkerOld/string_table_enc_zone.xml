@@ -462,7 +462,7 @@
 			 При контакте наносит повреждения сходные с действием сильной кислоты.
 			 Генерит артефакты: «Слизь», «Слизняк», «Слюда».</text>
     </string>
-    <string id="Time">
+    <string id="Time_machine">
         <text>Машина времени</text>
     </string>
     <string id="enc_zone_anomalies_time">
