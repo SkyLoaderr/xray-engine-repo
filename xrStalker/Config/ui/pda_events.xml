@@ -113,7 +113,7 @@
 					<header_frame_line x="8" y="17" width="395" height="21">
 						<texture>ui_string_03</texture>
 						<title x="10" y="1" width="435" height="18">
-							<text font="letterica16" r="255" g="255" b="255">Task Detail Information</text>
+							<text font="letterica16" r="255" g="255" b="255">st_pda_task_detail_information</text>
 						</title>
 					</header_frame_line>
 
