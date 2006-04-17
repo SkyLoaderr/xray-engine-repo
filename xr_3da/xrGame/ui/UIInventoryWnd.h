@@ -84,7 +84,7 @@ protected:
 //	CUISleepWnd*		UISleepWnd;
 	CUI3tButton*		UISellAll;
 	
-	CUI3tButton			UIDropButton;
+//	CUI3tButton			UIDropButton;
 	CUI3tButton			UIExitButton;
 
 //	CUIStatic			UIStaticTop;

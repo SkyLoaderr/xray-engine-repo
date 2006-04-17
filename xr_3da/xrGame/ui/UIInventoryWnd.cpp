@@ -100,9 +100,9 @@ void CUIInventoryWnd::Init()
 	UIDescrWnd.AttachChild				(&UIItemInfo);
 	UIItemInfo.Init						(0, 0, UIDescrWnd.GetWidth(), UIDescrWnd.GetHeight(), INVENTORY_ITEM_XML);
 
-	UIDescrWnd.AttachChild				(&UIDropButton);
-	xml_init.Init3tButton					(uiXml, "drop_button", 0, &UIDropButton);
-	UIDropButton.SetMessageTarget		(this);
+//	UIDescrWnd.AttachChild				(&UIDropButton);
+//	xml_init.Init3tButton					(uiXml, "drop_button", 0, &UIDropButton);
+//	UIDropButton.SetMessageTarget		(this);
 
 	AttachChild							(&UIPersonalWnd);
 	xml_init.InitFrameWindow			(uiXml, "character_frame_window", 0, &UIPersonalWnd);

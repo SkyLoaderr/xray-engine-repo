@@ -49,10 +49,10 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(sleep_msg&& !b)				HUD().GetUI()->AddInfoMessage(sleep_msg);
 
 		Game().StartStopMenu			(this,true);
-*/
+
 	}else if (&UIDropButton == pWnd && BUTTON_CLICKED == msg){
 		DropCurrentItem					();
-
+*/
 	}else if (&UIExitButton == pWnd && BUTTON_CLICKED == msg){
 		Game().StartStopMenu			(this,true);
 	}
