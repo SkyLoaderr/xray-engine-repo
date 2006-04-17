@@ -143,16 +143,6 @@ wound_protection		= 0.6
 
 
 ;Military   -----------------------------------------------------------
-[wpn_knife_m1]:wpn_knife	;Нож Ара
-$spawn             			= "weapons\uniq\wpn_knife_m1"	
-description					= enc_weapons1_wpn-knife_m1
-
-[wpn_svu_m1]:wpn_svu		;Скорострельная СВУ.
-$spawn             			= "weapons\uniq\wpn_svu_m1"	
-description					= enc_weapons1_wpn-svu_m1
-rpm                     	= 330
-fire_dispersion_base		= 0.1
-
 [outfit_stalker_anom]:stalker_outfit	; Комбинезон сталкера "заколдованный"
 $spawn						= "outfit\uniq\outfit_stalker_anom"
 inv_name			= stalker_outfit_name_m1
@@ -201,8 +191,8 @@ radiation_protection 			= 0.5
 [wpn_lr300_m1]:wpn_lr300		;LR300 М1
 $spawn             		= "weapons\uniq\wpn_lr300_m1"	
 description					= enc_weapons1_wpn-lr300_m1
-inv_name					= LR-300M1
-inv_name_short				= LR-300M1
+inv_name					= LR-300A1
+inv_name_short				= LR-300A1
 rpm                      	= 500
 fire_dispersion_base		= 0.07 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 cam_dispersion         		= 0.1	;увеличения угла (в градусах) с каждым выстрелом
@@ -242,20 +232,24 @@ scope_zoom_factor	    		= 10		;ПСО-1 4X
 ;Stanciya   -----------------------------------------------------------
 [outfit_military_m1]:military_outfit	;Модифицированный армейский бронекостюм
 $spawn							= "outfit\uniq\outfit_military_m1"
-inv_name						= military_outfit_name_m1
-inv_name_short					= military_outfit_name_m1
+inv_name						= Customized Military Outfit
+inv_name_short					= Customized Military Outfit
 description						= military_outfit_description_m1
 cost							= 15000
 inv_weight						= 7.5
 
 ;Sarcofag/monolith   -----------------------------------------------------------
 [wpn_g36_m1]:wpn_g36	;G36 - спецподразделения Монолита "Кристалл"
-$spawn             		= "weapons\uniq\wpn_g36_m1"	
-description			= enc_weapons1_wpn-g36_m
+$spawn             		= "weapons\uniq\wpn_g36_m1"
+inv_name				= Customized H&K G36 "Cristall" 
+inv_name_short			= Customized H&K G36 "Cristall"
+description				= enc_weapons1_wpn-g36_m
 fire_dispersion_base		= 0.02 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 hit_power                	= 151
 
 [wpn_gauss_m1]:wpn_gauss	;Гаусс
-$spawn             		= "weapons\uniq\wpn_gauss_m1"	
+$spawn             		= "weapons\uniq\wpn_gauss_m1"
+inv_name				= Customized Gauss Gun 
+inv_name_short			= Customized Gauss Gun		
 description				= enc_weapons1_wpn-gauss_m
 ammo_mag_size			= 15
