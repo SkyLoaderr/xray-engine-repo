@@ -203,13 +203,6 @@
         <text>enc_weapons1_wpn-fort</text>
     </article>
 
-    <!-------------------------------- wpn-hpsa ----------------------------->
-
-    <article id="weapons1_wpn-hpsa" name="wpn-hpsa" group="Weapons1">
-        <ltx>wpn_hpsa</ltx>
-        <text>enc_weapons1_wpn-hpsa</text>
-    </article>
-
     <!-------------------------------- wpn-walther ----------------------------->
 
     <article id="weapons1_wpn-walther" name="wpn-walther" group="Weapons1">
@@ -236,20 +229,6 @@
     <article id="weapons1_wpn-colt1911" name="wpn-colt1911" group="Weapons1">
         <ltx>wpn_colt1911</ltx>
         <text>enc_weapons1_wpn-colt1911</text>
-    </article>
-
-    <!-------------------------------- wpn-usp ----------------------------->
-
-    <article id="weapons1_wpn-usp" name="wpn-usp" group="Weapons1">
-        <ltx>wpn_usp</ltx>
-        <text>enc_weapons1_wpn-usp</text>
-    </article>
-
-    <!-------------------------------- wpn-desert-eagle ----------------------------->
-
-    <article id="weapons1_wpn-desert-eagle" name="wpn-desert-eagle" group="Weapons1">
-        <ltx>wpn_desert_eagle</ltx>
-        <text>enc_weapons1_wpn-desert-eagle</text>
     </article>
 
     <!-------------------------------- wpn-toz34 ----------------------------->
