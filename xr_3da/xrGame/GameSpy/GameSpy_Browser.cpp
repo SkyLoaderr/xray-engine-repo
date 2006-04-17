@@ -90,11 +90,19 @@ void	CGameSpy_Browser::LoadGameSpy()
 
 }
 
+static services_checked = false;
+
 bool	CGameSpy_Browser::Init(CServerList* pServerList)
 {
 	//-------------------------------------
 	CGameSpy_Available GSA;
-	if (!GSA.CheckAvailableServices()) return false;
+	if (!services_checked)
+	{
+        if (!GSA.CheckAvailableServices()) 
+			return false;
+		else
+			services_checked = true;
+	}
 	//-------------------------------------
 	m_QR2.RegisterAdditionalKeys();
 
