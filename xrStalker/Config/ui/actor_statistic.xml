@@ -89,7 +89,7 @@
 			<text_1 x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
 				<text align="l" x="0" y="0" font="letterica25" r="180" g="180" b="180" a="160">st_pda_statistic_reputation</text>
 			</text_1>
-			<text_2 x="210" y="0" width="25" height="20">
+			<text_2 x="210" y="0" width="25" height="20" >
 				<text align="r" x="0" y="0" font="letterica25" a="200"/>
 			</text_2>
 		</master_part>
@@ -167,13 +167,13 @@
 		</master_part>
 
 		<detail_part_def x="0" y="0" width="390" height="25">
-			<text_1 x="0" y="0" width="200" height="20">
+			<text_1 x="0" y="0" width="200" height="20" complex_mode="0">
 				<text align="l" x="0" y="0" font="letterica18" a="200"/>
 			</text_1>
-			<text_2 x="180" y="0" width="100" height="20">
+			<text_2 x="180" y="0" width="100" height="20" complex_mode="0">
 				<text align="r" x="0" y="0" font="letterica16" a="200"/>
 			</text_2>
-			<text_3 x="280" y="0" width="100" height="20">
+			<text_3 x="280" y="0" width="100" height="20" complex_mode="0">
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
 			</text_3>
 			<auto>
@@ -184,13 +184,13 @@
 		</detail_part_def>
 
 		<detail_part_5 x="0" y="0" width="390" height="25">
-			<text_1 x="0" y="0" width="200" height="20">
+			<text_1 x="0" y="0" width="200" height="20" complex_mode="0">
 				<text align="l" x="0" y="0" font="letterica18" a="200"/>
 			</text_1>
-			<text_2 x="180" y="0" width="100" height="20">
+			<text_2 x="180" y="0" width="100" height="20" complex_mode="0">
 				<text align="r" x="0" y="0" font="letterica16" a="200"/>
 			</text_2>
-			<text_3 x="280" y="0" width="100" height="20">
+			<text_3 x="280" y="0" width="100" height="20" complex_mode="0">
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
 			</text_3>
 			<auto>
