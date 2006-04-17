@@ -28,7 +28,7 @@ void CUIMapHint::Init		()
 
 void CUIMapHint::SetText		(LPCSTR text)
 {
-	m_text->SetText				(text);
+	m_text->SetTextST			(text);
 	m_text->AdjustHeightToText	();
 	float new_h					= _max(64.0f, m_text->GetWndPos().y+m_text->GetWndSize().y);
 	SetWndSize					(Fvector2().set(GetWndSize().x, new_h));

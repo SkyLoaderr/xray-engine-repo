@@ -1145,8 +1145,7 @@ void CActor::shedule_Update	(u32 DT)
 		m_pVehicleWeLookingAt	= NULL;
 	}
 
-	//для режима сна
-	UpdateSleep									();
+//	UpdateSleep									();
 
 	//для свойст артефактов, находящихся на поясе
 	UpdateArtefactsOnBelt						();

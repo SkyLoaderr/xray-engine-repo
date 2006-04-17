@@ -210,14 +210,14 @@ void CUIMainIngameWnd::Init()
 	// Загружаем иконки 
 	if(IsGameTypeSingle())
 	{
-		xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
-		UIStarvationIcon.Show(false);
+//		xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
+//		UIStarvationIcon.Show(false);
 
 		xml_init.InitStatic(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
 		UIPsyHealthIcon.Show(false);
 
-		xml_init.InitStatic(uiXml, "can_sleep_static", 0, &UISleepIcon);
-		UISleepIcon.Show(false);
+//		xml_init.InitStatic(uiXml, "can_sleep_static", 0, &UISleepIcon);
+//		UISleepIcon.Show(false);
 	}
 
 	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
@@ -243,7 +243,7 @@ void CUIMainIngameWnd::Init()
 		"jammed",
 		"radiation",
 		"wounds",
-		"starvation",
+//		"starvation",
 		"fatigue",
 		"invincible"
 	};
@@ -509,12 +509,12 @@ void CUIMainIngameWnd::Update()
 		{
 			UIPdaOnline.SetText("");
 		}
-
+/*
 		if(m_pActor->conditions().AllowSleep())
 			SetWarningIconColor	(ewiSleep,0xffffffff);
 		else
 			SetWarningIconColor	(ewiSleep,0x00ffffff);
-
+*/
 	};
 
 	// ewiInvincible:
@@ -699,9 +699,9 @@ void CUIMainIngameWnd::Update()
 			if (m_pWeapon)
 				value = 1 - m_pWeapon->GetCondition();
 			break;
-		case ewiStarvation:
-			value = 1 - m_pActor->conditions().GetSatiety();
-			break;
+//		case ewiStarvation:
+//			value = 1 - m_pActor->conditions().GetSatiety();
+//			break;
 		case ewiPsyHealth:
 			value = 1 - m_pActor->conditions().GetPsyHealth();
 			break;
@@ -1240,9 +1240,9 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 	case ewiWound:
 		SetWarningIconColor		(&UIWoundIcon, cl);
 		if (bMagicFlag) break;
-	case ewiStarvation:
-		SetWarningIconColor		(&UIStarvationIcon, cl);
-		if (bMagicFlag) break;
+//	case ewiStarvation:
+//		SetWarningIconColor		(&UIStarvationIcon, cl);
+//		if (bMagicFlag) break;
 	case ewiPsyHealth:
 		SetWarningIconColor		(&UIPsyHealthIcon, cl);
 		if (bMagicFlag) break;
@@ -1250,9 +1250,9 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 		SetWarningIconColor		(&UIInvincibleIcon, cl);
 		if (bMagicFlag) break;
 		break;
-	case ewiSleep:
-		SetWarningIconColor		(&UISleepIcon, cl);
-		break;
+//	case ewiSleep:
+//		SetWarningIconColor		(&UISleepIcon, cl);
+//		break;
 	case ewiArtefact:
 		SetWarningIconColor		(&UIArtefactIcon, cl);
 		break;

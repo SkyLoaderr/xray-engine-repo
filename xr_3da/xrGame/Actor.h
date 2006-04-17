@@ -206,7 +206,7 @@ public:
 	////////////////////////////////////////////////////////////////////
 public:
 	//сон
-			void		UpdateSleep			();
+//			void		UpdateSleep			();
 
 	//свойства артефактов
 	virtual void		UpdateArtefactsOnBelt	();

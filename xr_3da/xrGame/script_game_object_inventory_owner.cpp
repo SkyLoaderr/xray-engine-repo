@@ -546,7 +546,7 @@ void  CScriptGameObject::RunTalkDialog			(CScriptGameObject* pToWho)
 	CInventoryOwner* pPartner = smart_cast<CInventoryOwner*>(&pToWho->object());	VERIFY(pPartner);
 	pActor->RunTalkDialog(pPartner);
 }
-
+/*
 void  CScriptGameObject::ActorSleep			(int hours, int minutes)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());	if(!pActor) return;
@@ -564,7 +564,7 @@ bool CScriptGameObject::IsActorSleepeng()
 	CActor* pActor = smart_cast<CActor*>(&object());	if(!pActor) return false;
 	return pActor->conditions().IsSleeping();
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////
 
 void construct_restriction_vector(shared_str restrictions, xr_vector<ALife::_OBJECT_ID> &result)

@@ -80,10 +80,10 @@ protected:
 	CUIStatic			UIWeaponJammedIcon;
 	CUIStatic			UIRadiaitionIcon;
 	CUIStatic			UIWoundIcon;
-	CUIStatic			UIStarvationIcon;
+//	CUIStatic			UIStarvationIcon;
 	CUIStatic			UIPsyHealthIcon;
 	CUIStatic			UIInvincibleIcon;
-	CUIStatic			UISleepIcon;
+//	CUIStatic			UISleepIcon;
 	CUIStatic			UIArtefactIcon;
 
 	CUIScrollView*		m_UIIcons;
@@ -101,10 +101,10 @@ public:
 		ewiWeaponJammed,
 		ewiRadiation,
 		ewiWound,
-		ewiStarvation,
+//		ewiStarvation,
 		ewiPsyHealth,
 		ewiInvincible,
-		ewiSleep,
+//		ewiSleep,
 		ewiArtefact,
 	};
 

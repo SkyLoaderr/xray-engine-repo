@@ -21,7 +21,7 @@ class CInventory;
 
 
 class CArtefact;
-class CUISleepWnd;
+//class CUISleepWnd;
 class CUIDragDropListEx;
 class CUICellItem;
 
@@ -81,7 +81,7 @@ protected:
 	CUIStatic			UIDescrWnd;
 	CUIFrameWindow		UIPersonalWnd;
 
-	CUISleepWnd*		UISleepWnd;
+//	CUISleepWnd*		UISleepWnd;
 	CUI3tButton*		UISellAll;
 	
 	CUI3tButton			UIDropButton;

@@ -42,19 +42,19 @@ CActorCondition::CActorCondition(CActor *object) :
 
 	VERIFY						(object);
 	m_object					= object;
-	m_actor_sleep_wnd			= NULL;
-	m_can_sleep_callback		= NULL;
-	m_get_sleep_video_name_callback	= NULL;
+//	m_actor_sleep_wnd			= NULL;
+//	m_can_sleep_callback		= NULL;
+//	m_get_sleep_video_name_callback	= NULL;
 	m_condition_flags.zero		();
 
-	m_fSatiety					= 1.f;
+//	m_fSatiety					= 1.f;
 }
 
 CActorCondition::~CActorCondition(void)
 {
-	xr_delete					(m_actor_sleep_wnd);
-	xr_delete					(m_can_sleep_callback);
-	xr_delete					(m_get_sleep_video_name_callback);
+//	xr_delete					(m_actor_sleep_wnd);
+//	xr_delete					(m_can_sleep_callback);
+//	xr_delete					(m_get_sleep_video_name_callback);
 }
 
 void CActorCondition::LoadCondition(LPCSTR entity_section)
@@ -62,8 +62,8 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	inherited::LoadCondition(entity_section);
 
 	LPCSTR						section = READ_IF_EXISTS(pSettings,r_string,entity_section,"condition_sect",entity_section);
-	if(IsGameTypeSingle())
-		m_change_v_sleep.load		(section,"_sleep");
+//	if(IsGameTypeSingle())
+//		m_change_v_sleep.load		(section,"_sleep");
 
 	m_fJumpPower				= pSettings->r_float(section,"jump_power");
 	m_fStandPower				= pSettings->r_float(section,"stand_power");
@@ -92,14 +92,14 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	m_fCantSprintPowerEnd		= pSettings->r_float(section,	"cant_sprint_power_end");
 	R_ASSERT					(m_fCantSprintPowerBegin<=m_fCantSprintPowerEnd);
 
-	m_fPowerLeakSpeed			= pSettings->r_float(section,"max_power_leak_speed");
-	if(IsGameTypeSingle())
-		m_fK_SleepMaxPower		= pSettings->r_float(section,"max_power_leak_speed_sleep");
+//	m_fPowerLeakSpeed			= pSettings->r_float(section,"max_power_leak_speed");
+//	if(IsGameTypeSingle())
+//		m_fK_SleepMaxPower		= pSettings->r_float(section,"max_power_leak_speed_sleep");
 	
 	m_fV_Alcohol				= pSettings->r_float(section,"alcohol_v");
 
+/*
 	LPCSTR cb_name			= READ_IF_EXISTS(pSettings,r_string,section,"can_sleep_callback","");
-
 	if(cb_name && xr_strlen(cb_name)){
 		m_can_sleep_callback		= xr_new<CScriptCallbackEx<LPCSTR> >();
 		luabind::functor<LPCSTR>		f;
@@ -114,7 +114,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 		R_ASSERT							(ai().script_engine().functor<LPCSTR>(cb_name,fl));
 		m_get_sleep_video_name_callback->set(fl);
 	}
-
+*/
 }
 
 
@@ -135,7 +135,7 @@ void CActorCondition::UpdateCondition()
 	else {
 		ConditionStand(object().inventory().TotalWeight()/object().inventory().GetMaxWeight());
 	};
-	
+/*	
 	if( IsGameTypeSingle() ){
 
 		float k_max_power = 1.0f;
@@ -149,6 +149,7 @@ void CActorCondition::UpdateCondition()
 		
 		SetMaxPower		(GetMaxPower() - m_fPowerLeakSpeed*m_fDeltaTime*k_max_power);
 	}
+*/
 
 	m_fAlcohol		+= m_fV_Alcohol*m_fDeltaTime;
 	clamp			(m_fAlcohol,			0.0f,		1.0f);
@@ -241,7 +242,7 @@ bool CActorCondition::IsLimping() const
 	return m_bLimping;
 }
 extern bool g_bShowHudInfo;
-
+/*
 bool CActorCondition::AllowSleep ()
 {
 	EActorSleep result		= CanSleepHere		();
@@ -365,7 +366,7 @@ EActorSleep CActorCondition::CanSleepHere()
 
 	return easCanSleepResult;
 }
-
+*/
 void CActorCondition::save(NET_Packet &output_packet)
 {
 	inherited::save					(output_packet);
@@ -384,8 +385,8 @@ void CActorCondition::reinit	()
 {
 	inherited::reinit	();
 	m_bLimping					= false;
-	m_bIsSleeping				= false;
-	m_fSatiety					= 1.f;
+//	m_bIsSleeping				= false;
+//	m_fSatiety					= 1.f;
 }
 
 void CActorCondition::ChangeAlcohol	(float value)
@@ -397,7 +398,7 @@ void CActorCondition::UpdateTutorialThresholds()
 {
 	string256 cb_name;
 	static float _cPowerThr			= pSettings->r_float("tutorial_conditions_thresholds","power");
-	static float _cPowerMaxThr		= pSettings->r_float("tutorial_conditions_thresholds","max_power");
+//	static float _cPowerMaxThr		= pSettings->r_float("tutorial_conditions_thresholds","max_power");
 	static float _cBleeding			= pSettings->r_float("tutorial_conditions_thresholds","bleeding");
 	static float _cSatiety			= pSettings->r_float("tutorial_conditions_thresholds","satiety");
 	static float _cRadiation		= pSettings->r_float("tutorial_conditions_thresholds","radiation");
@@ -408,21 +409,21 @@ void CActorCondition::UpdateTutorialThresholds()
 		m_condition_flags.set			(eCriticalPowerReached, TRUE);b=false;
 		strcpy(cb_name,"_G.on_actor_critical_power");
 	}
-
+/*
 	if(b && !m_condition_flags.test(eCriticalMaxPowerReached) && GetMaxPower()<_cPowerMaxThr){
 		m_condition_flags.set			(eCriticalMaxPowerReached, TRUE);b=false;
 		strcpy(cb_name,"_G.on_actor_critical_max_power");
-	}
+	}*/
 
 	if(b && !m_condition_flags.test(eCriticalBleedingSpeed) && BleedingSpeed()>_cBleeding){
 		m_condition_flags.set			(eCriticalBleedingSpeed, TRUE);b=false;
 		strcpy(cb_name,"_G.on_actor_bleeding");
 	}
-
+/*
 	if(b && !m_condition_flags.test(eCriticalSatietyReached) && GetSatiety()<_cSatiety){
 		m_condition_flags.set			(eCriticalSatietyReached, TRUE);b=false;
 		strcpy(cb_name,"_G.on_actor_satiety");
-	}
+	}*/
 
 	if(b && !m_condition_flags.test(eCriticalRadiationReached) && GetRadiation()>_cRadiation){
 		m_condition_flags.set			(eCriticalRadiationReached, TRUE);b=false;

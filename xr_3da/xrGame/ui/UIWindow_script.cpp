@@ -267,7 +267,7 @@ void CUIWindow::script_register(lua_State *L)
 				value("TRADE_WND_CLOSED",							int(TRADE_WND_CLOSED)),
 
 	// CUISleepWnd
-				value("SLEEP_WND_PERFORM_BUTTON_CLICKED",			int(SLEEP_WND_PERFORM_BUTTON_CLICKED)),
+//				value("SLEEP_WND_PERFORM_BUTTON_CLICKED",			int(SLEEP_WND_PERFORM_BUTTON_CLICKED)),
 
 	// CUIOutfitSlot
 				value("UNDRESS_OUTFIT",								int(UNDRESS_OUTFIT)),

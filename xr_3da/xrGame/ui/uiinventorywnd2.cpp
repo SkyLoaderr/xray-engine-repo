@@ -35,7 +35,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if(pWnd == &UIPropertiesBox &&	msg==PROPERTY_CLICKED){
 		ProcessPropertiesBoxClicked	();
 
-	}else if(pWnd==UISleepWnd && msg==SLEEP_WND_PERFORM_BUTTON_CLICKED){
+/*	}else if(pWnd==UISleepWnd && msg==SLEEP_WND_PERFORM_BUTTON_CLICKED){
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 		
@@ -49,7 +49,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(sleep_msg&& !b)				HUD().GetUI()->AddInfoMessage(sleep_msg);
 
 		Game().StartStopMenu			(this,true);
-
+*/
 	}else if (&UIDropButton == pWnd && BUTTON_CLICKED == msg){
 		DropCurrentItem					();
 
