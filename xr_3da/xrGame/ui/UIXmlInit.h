@@ -108,8 +108,8 @@ public:
 	typedef		xr_vector<CUIStatic*>	StaticsVec;
 	typedef		StaticsVec::iterator	StaticsVec_it;
 
-	StaticsVec InitAutoStatic	(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
-	StaticsVec InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd);
+	static StaticsVec InitAutoStatic	(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
+	static StaticsVec InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd);
 
 	// Функции для пересчета координат для применения выравнивания
 	// Params:

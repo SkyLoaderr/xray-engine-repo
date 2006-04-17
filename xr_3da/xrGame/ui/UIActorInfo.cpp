@@ -107,11 +107,11 @@ void CUIActorInfoWnd::FillPointsInfo			()
 		if(_ParseItem("foo",actor_stats_token)!=(u32)itm->m_index){
 
 			if(_ParseItem("reputation",actor_stats_token)==(u32)itm->m_index){
-				itm->m_text2->SetText				(InventoryUtilities::GetReputationAsText(Actor()->Reputation()));
+				itm->m_text2->SetTextST				(InventoryUtilities::GetReputationAsText(Actor()->Reputation()));
 				itm->m_text2->SetTextColor			(InventoryUtilities::GetReputationColor(Actor()->Reputation()));
 			}else{
 				sprintf								(buff,"%d", Actor()->StatisticMgr().GetSectionPoints(itm->m_index));
-				itm->m_text2->SetText				(buff);
+				itm->m_text2->SetTextST				(buff);
 			}
 		}
 		UIMasterList->AddWindow				(itm, true);
@@ -156,13 +156,13 @@ void CUIActorInfoWnd::FillPointsDetail	(int idx)
 		itm->Init							(&uiXml, path, 0);
 
 		sprintf								(buff,"%d. %s",_cntr, *CStringTable().translate((*it).key));
-		itm->m_text1->SetText				(buff);
+		itm->m_text1->SetTextST				(buff);
 
 		sprintf								(buff,"x%d", (*it).count);
-		itm->m_text2->SetText				(buff);
+		itm->m_text2->SetTextST				(buff);
 
 		sprintf								(buff,"%d", (*it).points);
-		itm->m_text3->SetText				(buff);
+		itm->m_text3->SetTextST				(buff);
 
 		UIDetailList->AddWindow				(itm, true);
 	}
@@ -188,17 +188,17 @@ void	CUIActorInfoWnd::FillReputationDetails		(CUIXml* xml, LPCSTR path)
 		CUIActorStaticticDetail* itm		= xr_new<CUIActorStaticticDetail>();
 		itm->Init							(xml, path, 0);
 		comm.set							(xml->Read(_list_node,"r",i,"unknown_community"));
-		itm->m_text1->SetText				(*(comm.id()));
+		itm->m_text1->SetTextST				(*(comm.id()));
 		
 		CHARACTER_GOODWILL	gw				= RELATION_REGISTRY().GetCommunityGoodwill(comm.index(), Actor()->ID());
 		gw									+= CHARACTER_COMMUNITY::relation(Actor()->Community(),comm.index());
 		gw									+= d_neutral;
 
-		itm->m_text2->SetText				(InventoryUtilities::GetGoodwillAsText(gw));
+		itm->m_text2->SetTextST				(InventoryUtilities::GetGoodwillAsText(gw));
 		itm->m_text2->SetTextColor			(InventoryUtilities::GetGoodwillColor(gw));
 
 		sprintf								(buff,"%d", gw);
-		itm->m_text3->SetText				(buff);
+		itm->m_text3->SetTextST				(buff);
 
 		UIDetailList->AddWindow				(itm, true);
 	}

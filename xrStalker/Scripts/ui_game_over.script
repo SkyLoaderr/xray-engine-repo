@@ -8,7 +8,6 @@ class "dlg_game_over" (CUIScriptWnd)
 
 function dlg_game_over:__init() super()
    self:InitControls()
---   self:InitCallBacks()
 end
 
 function dlg_game_over:__finalize()
@@ -23,8 +22,16 @@ function dlg_game_over:InitControls()
 	self.scroll_view 	= xml:InitScrollView("scroll", st)
 	
 	for nm = 0, 30 do
-	 local itm = xml:InitStatic	("item_0", nil)
-	 self.scroll_view:AddWindow	(itm,true)
+	local pth = "item_"..nm
+	
+	 local itm = xml:InitStatic		(pth, nil)
+	
+	if itm ~= nil then
+		xml:InitAutoStaticGroup		(pth..":auto", itm)
+		self.scroll_view:AddWindow	(itm, true)
+		else 
+			break
+		end
 	end
 	
 	self.scroll_view:ScrollToBegin()
@@ -45,9 +52,9 @@ function dlg_game_over:Update()
 	
 	self.scroll_view:SetScrollPos(self.cur_pos)
 	
-	if(self.cur_pos>=(self.max_pos)) then
-			self:GetHolder():start_stop_menu(self,true)
-	end
+--	if(self.cur_pos>=(self.max_pos)) then
+--			self:GetHolder():start_stop_menu(self,true)
+--	end
 	
 end
 

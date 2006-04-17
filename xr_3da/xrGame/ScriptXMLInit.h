@@ -64,6 +64,7 @@ public:
 	CUIMMShniaga*		InitMMShniaga(LPCSTR path, CUIWindow* parent);
 	CUIWindow*			InitKeyBinding(LPCSTR path, CUIWindow* parent);
 	CUIScrollView*		InitScrollView(LPCSTR path, CUIWindow* parent);
+	void				InitAutoStaticGroup(LPCSTR path, CUIWindow* pWnd);
 protected:
 	CUIXml	m_xml;
 };
