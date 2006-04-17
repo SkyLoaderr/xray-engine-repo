@@ -318,7 +318,16 @@ def_state_moving1   = assault
 def_state_moving2   = assault
 meet                = meet@leader
 danger              = danger@ignore
-;on_actor_dist_ge_nvis = 70 | %+pri_followers_actor_leave%
+on_actor_dist_ge_nvis = 70 | walker@pri_followers_leader_wave8_leave
+
+[walker@pri_followers_leader_wave8_leave]
+path_walk           = wave8_leader_walk1
+path_look           = wave8_leader_look1
+def_state_moving1   = assault
+def_state_moving2   = assault
+meet                = meet@leader
+danger              = danger@ignore
+on_timer            = 45000 | %+pri_followers_scene_end%
 
 ;-------------------------------------------------------------------------------------------------
 ;--- BOMBER: KAMP --------------------------------------------------------------------------------
