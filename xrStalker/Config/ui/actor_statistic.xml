@@ -6,7 +6,7 @@
 		<font font="letterica18" r="255" g="255" b="255"></font>
 	</list>
 	<article_header_static x="22" y="48" width="430" height="22">
-		<text font="letterica25" r="225" g="225" b="250">Player statistics</text>
+		<text font="letterica25" r="225" g="225" b="250">st_pda_player_statistic</text>
 	</article_header_static>
 	<mask_frame_window x="0" y="0" width="1" height="1">
 		<texture>ui_pda_frame2</texture>		
@@ -30,7 +30,7 @@
 	<!-- HEADER FOR MSGLOG -->
 	<info_frame_line x="8" y="17" width="434" height="21">
 		<title x="10" y="1" width="435" height="18">
-			<text font="letterica16">Detail_info</text>
+			<text font="letterica16">st_pda_detail_info</text>
 		</title>
 		<texture>ui_string_03</texture>		
 	</info_frame_line>
@@ -87,7 +87,7 @@
 	<actor_stats_wnd>
 		<master_part x="0" y="0" width="250" height="55" id="reputation">
 			<text_1 x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica25" r="180" g="180" b="180" a="160">Reputation:</text>
+				<text align="l" x="0" y="0" font="letterica25" r="180" g="180" b="180" a="160">st_pda_statistic_reputation</text>
 			</text_1>
 			<text_2 x="210" y="0" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica25" a="200"/>
@@ -96,14 +96,14 @@
 
 		<master_part x="0" y="0" width="250" height="55" id="foo">
 			<text_1 x="0" y="20" width="200" height="20">
-				<text align="l" x="0" y="0" font="letterica25" r="230" g="230" b="200" a="230">Score</text>
+				<text align="l" x="0" y="0" font="letterica25" r="230" g="230" b="200" a="230">st_pda_statistic_score</text>
 			</text_1>
 			<text_2 x="0" y="0" width="0" height="0"/>
 		</master_part>
 
 		<master_part x="0" y="0" width="250" height="25" id="stalkerkills">
 			<text_1 x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">1. Stalker Kills</text>
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">st_pda_stalker_kills</text>
 			</text_1>
 			<text_2 x="210" y="0" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
@@ -117,7 +117,7 @@
 
 		<master_part x="0" y="0" width="250" height="25" id="monsterkills">
 			<text_1 x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">2. Monster Kills</text>
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">st_pda_monster_kills</text>
 			</text_1>
 			<text_2 x="210" y="0" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
@@ -131,7 +131,7 @@
 		
 		<master_part x="0" y="0" width="250" height="25" id="quests">
 			<text_1 x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">3. Quests Completed</text>
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">st_pda_quest_complete</text>
 			</text_1>
 			<text_2 x="210" y="0" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
@@ -145,7 +145,7 @@
 
 		<master_part x="0" y="0" width="250" height="25" id="artefacts">
 			<text_1 x="0" y="0" width="200" height="20" highlight_text="1" hA="255" hR="255" hB="255" hG="255">
-				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">4. Artefacts</text>
+				<text align="l" x="0" y="0" font="letterica18" r="170" g="170" b="170" a="160">st_pda_artefacts</text>
 			</text_1>
 			<text_2 x="210" y="0" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica18"/>
@@ -159,7 +159,7 @@
 
 		<master_part x="0" y="0" width="250" height="45" id="total">
 			<text_1 x="0" y="20" width="200" height="20">
-				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="230">Total</text>
+				<text align="l" x="0" y="0" font="letterica18" r="180" g="180" b="180" a="230">st_pda_total</text>
 			</text_1>
 			<text_2 x="210" y="20" width="25" height="20">
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
