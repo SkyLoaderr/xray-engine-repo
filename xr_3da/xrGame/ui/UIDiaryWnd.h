@@ -20,7 +20,7 @@ class CUIDiaryWnd: public CUIWindow, public CUIWndCallback
 	typedef CUIWindow inherited;
 	enum EDiaryFilter{
 			eNews			= 0,
-			eInfo,
+//			eInfo,
 			eJournal,
 			eNone
 	};

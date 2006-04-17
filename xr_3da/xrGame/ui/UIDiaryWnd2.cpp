@@ -134,9 +134,9 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 		case eJournal:
 			UnloadJournalTab	();
 			break;
-		case eInfo:
-			UnloadInfoTab	();
-			break;
+//		case eInfo:
+//			UnloadInfoTab	();
+//			break;
 		case eNews:
 			UnloadNewsTab	();
 			break;
@@ -148,9 +148,9 @@ void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 		case eJournal:
 			LoadJournalTab	(ARTICLE_DATA::eJournalArticle);
 			break;
-		case eInfo:
-			LoadInfoTab		();
-			break;
+//		case eInfo:
+//			LoadInfoTab		();
+//			break;
 		case eNews:
 			LoadNewsTab	();
 			break;
@@ -265,10 +265,11 @@ void CUIDiaryWnd::Draw					()
 		r = m_FilterTab->GetButtonByIndex		(eNews)->GetAbsoluteRect();
 		draw_sign								(m_updatedSectionImage, r);
 	}
-	if(g_pda_info_state&pda_section::info){
+/*	if(g_pda_info_state&pda_section::info){
 		r = m_FilterTab->GetButtonByIndex		(eInfo)->GetAbsoluteRect();
 		draw_sign								(m_updatedSectionImage, r);
 	}
+*/
 	if(g_pda_info_state&pda_section::journal){
 		r = m_FilterTab->GetButtonByIndex		(eJournal)->GetAbsoluteRect();
 		draw_sign								(m_updatedSectionImage, r);
