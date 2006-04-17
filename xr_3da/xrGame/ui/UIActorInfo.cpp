@@ -137,8 +137,8 @@ void CUIActorInfoWnd::FillPointsDetail	(int idx)
 		sprintf								(path,"detail_part_def");
 	if(idx==5)//reputation
 	{
-		UIInfoHeader->GetTitleStatic()->SetText	("Community relations");
-		FillReputationDetails					(&uiXml, path);
+		UIInfoHeader->GetTitleStatic()->SetTextST	("st_detail_list_for_community_relations");
+		FillReputationDetails						(&uiXml, path);
 		return;
 	}
 	string256	str;
