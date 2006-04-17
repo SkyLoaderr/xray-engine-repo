@@ -33,7 +33,7 @@
 		<objective>
 			<text>tutorial_find_artefact_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="trader">blue_location</map_location_type>
+			<map_location_type hint="escape_trader">blue_location</map_location_type>
 			<object_story_id>Escape_Trader</object_story_id>
 			<infoportion_complete>tutorial_artefact_done</infoportion_complete>
 		</objective>
@@ -56,7 +56,7 @@
 		<objective>
 			<text>tutorial_help_wounded_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="trader">blue_location</map_location_type>
+			<map_location_type hint="escape_trader">blue_location</map_location_type>
 			<object_story_id>Escape_Trader</object_story_id>
 	<!--		<infoportion_complete>esc_serious_talk</infoportion_complete>    -->
 		</objective>
@@ -104,7 +104,7 @@
 		<objective>
 			<text>esc_blockpost_case_to_trader_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="trader">blue_location</map_location_type>
+			<map_location_type hint="escape_trader">blue_location</map_location_type>
 			<object_story_id>Escape_Trader</object_story_id>
 			<infoportion_complete>escape_blockpost_case_done</infoportion_complete>			
 		</objective>
@@ -168,7 +168,7 @@
 		<objective>
 			<text>esc_bandits_on_factory_2</text>
 			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="trader">blue_location</map_location_type>
+			<map_location_type hint="escape_trader">blue_location</map_location_type>
 			<object_story_id>Escape_Trader</object_story_id>
 			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
 		</objective>
