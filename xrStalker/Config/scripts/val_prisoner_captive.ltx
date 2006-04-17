@@ -22,6 +22,15 @@ victim_wpn      = 7|actor
 use             = true
 use_wpn         = true
 
+[meet@main1]
+meet_dialog     = val_prisoner_hello
+meet_state      = 2|wait
+meet_state_wpn  = 2|wait
+victim          = 2|actor
+victim_wpn      = 2|actor
+use             = true
+use_wpn         = true
+
 ;--------------------------------------------------------------------------
 ; игнорирование
 ;--------------------------------------------------------------------------
@@ -127,7 +136,7 @@ path_walk                           = captive_outside_door_walk
 path_look                           = captive_outside_door_look
 on_signal                           = arrived | remark@outside %+val_prisoner_free%
 on_info                             = {-val_prisoner_door_unlocked} walker@sit
-meet                                = meet@main
+meet                                = meet@main1
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
