@@ -55,9 +55,9 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 	}
 
 	if (CorpseMan.get_corpse()) {
-		sprintf(text, "Current Corpse = [%s] Satiety = [%.2f]", *CorpseMan.get_corpse()->cName(), conditions().GetSatiety());
+		sprintf(text, "Current Corpse = [%s] Satiety = [%.2f]", *CorpseMan.get_corpse()->cName(), GetSatiety());
 	} else 
-		sprintf(text, "Current Corpse = [NONE] Satiety = [%.2f]", conditions().GetSatiety());
+		sprintf(text, "Current Corpse = [NONE] Satiety = [%.2f]", GetSatiety());
 
 	DBG().text(this).add_item(text,										 x, y+=delta_y, color);
 
