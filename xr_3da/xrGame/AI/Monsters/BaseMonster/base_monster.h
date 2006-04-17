@@ -136,7 +136,8 @@ public:
 	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
 
 	virtual	void			on_before_sell					(CInventoryItem *item);
-
+			float			GetSatiety						()							{return 0.5f;}
+			void			ChangeSatiety					(float v)					{}
 	// ---------------------------------------------------------------------------------
 	// Process scripts
 	// ---------------------------------------------------------------------------------

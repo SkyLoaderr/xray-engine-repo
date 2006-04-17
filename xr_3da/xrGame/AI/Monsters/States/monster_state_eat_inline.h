@@ -71,7 +71,7 @@ void CStateMonsterEatAbstract::reselect_state()
 	}	
 
 	if (prev_substate == eStateEat_Eat){
-		if (object->conditions().GetSatiety() > 0.95f) 
+		if (object->GetSatiety() > 0.95f) 
 			select_state(eStateEat_WalkAway); 
 		else 
 			select_state(eStateEat_CorpseApproachWalk);
@@ -201,7 +201,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatAbstract::check_completion()
 {
 	if (corpse != object->CorpseMan.get_corpse()) return true;
-	if (object->conditions().GetSatiety() > 0.95f) return true;
+	if (object->GetSatiety() > 0.95f) return true;
 
 	return false;
 }
@@ -212,7 +212,7 @@ bool CStateMonsterEatAbstract::check_start_conditions()
 	return (
 		object->CorpseMan.get_corpse() && 
 		object->Home->at_home(object->CorpseMan.get_corpse()->Position()) &&
-		(object->conditions().GetSatiety() < object->db().satiety_threshold)
+		(object->GetSatiety() < object->db().satiety_threshold)
 	);
 		
 }

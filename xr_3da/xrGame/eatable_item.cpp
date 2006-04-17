@@ -96,7 +96,7 @@ void CEatableItem::UseBy (CEntityAlive* entity_alive)
 {
 	entity_alive->conditions().ChangeHealth		(m_fHealthInfluence);
 	entity_alive->conditions().ChangePower		(m_fPowerInfluence);
-	entity_alive->conditions().ChangeSatiety	(m_fSatietyInfluence);
+//	entity_alive->conditions().ChangeSatiety	(m_fSatietyInfluence);
 	entity_alive->conditions().ChangeRadiation	(m_fRadiationInfluence);
 	entity_alive->conditions().ChangeBleeding	(m_fWoundsHealPerc);
 	

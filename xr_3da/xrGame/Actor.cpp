@@ -1488,7 +1488,7 @@ void CActor::UpdateArtefactsOnBelt()
 			conditions().ChangeBleeding			(artefact->m_fBleedingRestoreSpeed*f_update_time);
 			conditions().ChangeHealth			(artefact->m_fHealthRestoreSpeed*f_update_time);
 			conditions().ChangePower			(artefact->m_fPowerRestoreSpeed*f_update_time);
-			conditions().ChangeSatiety			(artefact->m_fSatietyRestoreSpeed*f_update_time);
+//			conditions().ChangeSatiety			(artefact->m_fSatietyRestoreSpeed*f_update_time);
 			conditions().ChangeRadiation		(artefact->m_fRadiationRestoreSpeed*f_update_time);
 		}
 	}

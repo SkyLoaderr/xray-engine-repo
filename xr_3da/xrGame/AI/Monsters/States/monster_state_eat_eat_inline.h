@@ -32,7 +32,7 @@ void CStateMonsterEatingAbstract::execute()
 
 	// סתוסעü קאסעü
 	if (time_last_eat + u32(1000/object->db().m_fEatFreq) < Device.dwTimeGlobal) {
-		object->conditions().ChangeSatiety(object->db().m_fEatSlice);
+		object->ChangeSatiety(object->db().m_fEatSlice);
 		corpse->m_fFood -= object->db().m_fEatSliceWeight;
 		time_last_eat = Device.dwTimeGlobal;
 	}
@@ -60,7 +60,7 @@ bool CStateMonsterEatingAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatingAbstract::check_completion()
 {
-	if (object->conditions().GetSatiety() > 0.95f) return true;
+	if (object->GetSatiety() > 0.95f)				return true;
 	if (object->CorpseMan.get_corpse() != corpse)  return true;
 	
 	Fvector nearest_bone_pos;
