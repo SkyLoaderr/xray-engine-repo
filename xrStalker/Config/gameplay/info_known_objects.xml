@@ -337,9 +337,7 @@
 	<article>mutant_poltergeist_general</article>
  </info_portion>
  
-   <info_portion id="encyclopedy_mutant_controller_general">
-	<article>mutant_controller_general</article>
- </info_portion>
+   <info_portion id="encyclopedy_mutant_controller_general"></info_portion>
  
    <info_portion id="encyclopedy_mutant_zombie_general">
 	<article>mutant_zombie_general</article>
