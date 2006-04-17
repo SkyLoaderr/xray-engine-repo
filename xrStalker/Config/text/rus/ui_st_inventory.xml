@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
 	<string id="ui_inv_bag">
-        <text>Bag</text>
+        <text>Рюкзак</text>
     </string>
     <string id="ui_inv_items_list">
         <text>Список Вещей</text>
