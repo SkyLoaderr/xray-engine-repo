@@ -87,7 +87,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	Frect r							= m_UILevelFrame->GetWndRect();
 
 	m_UIMainScrollV					= xr_new<CUIScrollBar>(); m_UIMainScrollV->SetAutoDelete(true);
-	m_UIMainScrollV->Init			(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
+	m_UIMainScrollV->Init			(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false, "pda");
 	m_UIMainScrollV->SetWindowName	("scroll_v");
 	m_UIMainScrollV->SetStepSize	(_max(1,iFloor(m_UILevelFrame->GetHeight()/10)));
 	m_UIMainScrollV->SetPageSize	(iFloor(m_UILevelFrame->GetHeight()));

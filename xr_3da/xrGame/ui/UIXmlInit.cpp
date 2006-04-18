@@ -1398,6 +1398,8 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 
 	bool bInverseDir					= (1==xml_doc.ReadAttribInt	(path, index, "inverse_dir", 0));
 	pWnd->m_flags.set					(CUIScrollView::eInverseDir,bInverseDir);
+	
+	pWnd->SetScrollBarProfile			(xml_doc.ReadAttrib(path, index, "scroll_profile", "default"));
 
 	pWnd->Init							();
 

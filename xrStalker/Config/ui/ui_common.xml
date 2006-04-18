@@ -78,10 +78,6 @@
     <texture id="ui_stroketextbox_rt" x="137" y="141" width="10" height="10" />
     <texture id="ui_stroketextbox_t" x="127" y="141" width="10" height="10" />
     <texture id="ui_stroketextbox_back" x="127" y="151" width="10" height="10" />
-    <texture id="ui_scroll_t" x="124" y="173" width="15" height="16" />
-    <texture id="ui_scroll_back" x="124" y="189" width="15" height="16" />
-    <texture id="ui_scroll_button" x="124" y="205" width="15" height="16" />
-    <texture id="ui_scroll_b" x="124" y="221" width="15" height="16" />
     <texture id="ui_checker_t" x="114" y="239" width="32" height="23" />
     <texture id="ui_checker_e" x="114" y="262" width="32" height="23" />
     <texture id="ui_checker_d" x="114" y="285" width="32" height="23" />
@@ -297,10 +293,6 @@
     <texture id="ui_icons_newPDA_CrclMiddle_e" x="920" y="392" width="62" height="62" />
     <texture id="ui_icons_newPDA_CrclMiddle_d" x="920" y="392" width="62" height="62" />
     <texture id="ui_icons_newPDA_CrclMiddle_t" x="920" y="392" width="62" height="62" />
-    <texture id="ui_scroll_PDA_b" x="922" y="318" width="17" height="30" />
-    <texture id="ui_scroll_PDA_back" x="922" y="288" width="17" height="30" />
-    <texture id="ui_scroll_PDA_button" x="922" y="258" width="17" height="30" />
-    <texture id="ui_scroll_PDA_t" x="939" y="258" width="17" height="21" />
     <texture id="ui_icons_newPDA_compas_d" x="461" y="939" width="15" height="15" />
     <texture id="ui_icons_newPDA_compas_e" x="461" y="939" width="15" height="15" />
     <texture id="ui_icons_newPDA_compas_h" x="461" y="971" width="15" height="15" />
@@ -419,4 +411,18 @@
     <texture id="ui_PDA_checker_t" x="146" y="266" width="17" height="17" />
     <texture id="ui_PDA_checker_d" x="146" y="283" width="17" height="17" />
     <texture id="ui_PDA_checker_h" x="146" y="249" width="17" height="17" />
+    <texture id="ui_scroll_PDA_btn_down_e" x="922" y="318" width="17" height="30" />
+    <texture id="ui_scroll_PDA_btn_down_h" x="988" y="273" width="17" height="30" />
+    <texture id="ui_scroll_PDA_btn_down_t" x="1006" y="296" width="17" height="30" />
+    <texture id="ui_scroll_PDA_btn_up_e" x="939" y="258" width="17" height="21" />
+    <texture id="ui_scroll_PDA_btn_up_h" x="1006" y="254" width="17" height="21" />
+    <texture id="ui_scroll_PDA_btn_up_t" x="1006" y="275" width="17" height="21" />
+    <texture id="ui_scroll_PDA_box_t" x="1006" y="326" width="17" height="30" />
+    <texture id="ui_scroll_PDA_box_h" x="971" y="285" width="17" height="30" />
+    <texture id="ui_scroll_PDA_box_e" x="922" y="258" width="17" height="30" />
+    <texture id="ui_scroll_PDA_back" x="922" y="288" width="17" height="30" />
+    <texture id="ui_scroll_btn_up" x="124" y="173" width="15" height="16" />
+    <texture id="ui_scroll_back" x="124" y="189" width="15" height="16" />
+    <texture id="ui_scroll_box" x="124" y="205" width="15" height="16" />
+    <texture id="ui_scroll_btn_down" x="124" y="221" width="15" height="16" />
 </ui_texture>

@@ -8,6 +8,7 @@
 #include "UIScrollBox.h"
 #include "xrXmlParser.h"
 #include "UIXmlInit.h"
+#include "UITextureMaster.h"
 //#define SCROLLBAR_LEFT_ARROW		"ui\\ui_scb_left_arrow"
 //#define SCROLLBAR_RIGHT_ARROW		"ui\\ui_scb_right_arrow"
 //#define SCROLLBAR_UP_ARROW			"ui\\ui_scb_up_arrow"
@@ -73,7 +74,8 @@ void CUIScrollBar::Init(float x, float y, float length, bool bIsHorizontal, LPCS
 		strconcat(_path, profile, ":back:texture");
 		LPCSTR texture = xml_doc.Read(_path, 0, "");
 		R_ASSERT(texture);
-		m_StaticBackground->Init(texture ,"hud\\default", 0.0f, 0.0f,alNone);
+		CUITextureMaster::InitTexture(texture, m_StaticBackground);
+		//m_StaticBackground->Init(texture ,"hud\\default", 0.0f, 0.0f,alNone);
 		m_ScrollWorkArea		= _max(0,iFloor(GetWidth()-2*height));
 	}else{
 		CUIWindow::Init			(x,y, height, length);
@@ -83,14 +85,14 @@ void CUIScrollBar::Init(float x, float y, float length, bool bIsHorizontal, LPCS
 		m_DecButton->SetWndPos(0.0f, 0.0f);
 
 		strconcat(_path, profile, ":down_arrow");
-		CUIXmlInit::Init3tButton(xml_doc, _path, 0, m_IncButton);
+ 		CUIXmlInit::Init3tButton(xml_doc, _path, 0, m_IncButton);
 		m_IncButton->SetWndPos(0.0f, length - height);
 
 		m_ScrollBox->SetVertical();
 
 		strconcat(_path, profile, ":box_v");
-		CUIXmlInit::InitButton(xml_doc, _path, 0, m_ScrollBox);
-		m_IncButton->SetWndPos(0.0f, length/2);
+		CUIXmlInit::InitButton(xml_doc, _path, 0, m_ScrollBox);		
+		//m_ScrollBox->SetWndPos(0.0f, length/2);
 
 //		m_DecButton->Init		(SCROLLBAR_UP_ARROW,0.0f, 0.0f ,SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
 //		m_IncButton->Init		(SCROLLBAR_DOWN_ARROW, 0.0f, length-SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
@@ -99,9 +101,13 @@ void CUIScrollBar::Init(float x, float y, float length, bool bIsHorizontal, LPCS
 		LPCSTR texture = xml_doc.Read(_path, 0, "");
 		R_ASSERT(texture);
 
-		m_StaticBackground->Init(texture ,"hud\\default", 0.0f, 0.0f ,alNone);
+		CUITextureMaster::InitTexture(texture, m_StaticBackground);
+//		m_StaticBackground->Init(texture ,"hud\\default", 0.0f, 0.0f ,alNone);
 		m_ScrollWorkArea		= _max(0,iFloor(GetHeight()-2*height));
 	}	
+
+	m_ScrollBox->SetPushOffsetX(0);
+	m_ScrollBox->SetPushOffsetY(0);
 
 	UpdateScrollBar();
 }
@@ -175,6 +181,8 @@ void CUIScrollBar::UpdateScrollBar()
 			m_IncButton->SetWndPos	(0.0f, GetHeight() - m_IncButton->GetHeight());
 		}
 	}
+
+	ClampByViewRect();
 }
 
 bool CUIScrollBar::OnMouse(float x, float y, EUIMessages mouse_action)
@@ -196,21 +204,20 @@ bool CUIScrollBar::OnMouse(float x, float y, EUIMessages mouse_action)
 void CUIScrollBar::ClampByViewRect()
 {
 	if(m_bIsHorizontal){
-		if(m_ScrollBox->GetWndRect().left<=GetHeight())
-			m_ScrollBox->SetWndPos	(GetHeight(), 
-									m_ScrollBox->GetWndRect().top);
-		else if(m_ScrollBox->GetWndRect().right>=GetWidth() - GetHeight())
-			m_ScrollBox->SetWndPos	(GetWidth() - GetHeight() - m_ScrollBox->GetWidth(), 
+		if(m_ScrollBox->GetWndRect().left <= m_DecButton->GetWidth())
+			m_ScrollBox->SetWndPos	(m_DecButton->GetWidth(), m_ScrollBox->GetWndRect().top);
+		else if(m_ScrollBox->GetWndRect().right >= m_IncButton->GetWndPos().x)
+			m_ScrollBox->SetWndPos	(m_IncButton->GetWndRect().left - m_ScrollBox->GetWidth(), 
 									m_ScrollBox->GetWndRect().top);
 	}else{
 		// limit vertical position (TOP) by position of button	
-		if(m_ScrollBox->GetWndRect().top <= GetWidth())
+		if(m_ScrollBox->GetWndRect().top <= m_DecButton->GetHeight())
 			m_ScrollBox->SetWndPos	(m_ScrollBox->GetWndRect().left, 
-									GetWidth());
+									m_DecButton->GetHeight());
 		// limit vertical position (BOTTOM) by position of button
-		else if(m_ScrollBox->GetWndRect().bottom >= GetHeight() - GetWidth())
+		else if(m_ScrollBox->GetWndRect().bottom >= m_IncButton->GetWndPos().y)
 			m_ScrollBox->SetWndPos	(m_ScrollBox->GetWndRect().left,
-									GetHeight() - GetWidth() - m_ScrollBox->GetHeight());
+									m_IncButton->GetWndPos().y - m_ScrollBox->GetHeight());
 	}
 }
 
@@ -321,20 +328,25 @@ void CUIScrollBar::Reset()
 void CUIScrollBar::Draw()
 {
 	//нарисовать фоновую подложку
+	Frect rect = GetAbsoluteRect();
 	if(m_bIsHorizontal){
 		if (m_StaticBackground->GetOriginalRect().width()){
-			int tile		= iFloor(GetWidth()/m_StaticBackground->GetOriginalRect().width());
+			int tile		= iCeil((GetWidth() - m_DecButton->GetWidth() - m_IncButton->GetWidth())/m_StaticBackground->GetOriginalRect().width());
 			float rem			= GetWidth()-tile*m_StaticBackground->GetOriginalRect().width();
 			m_StaticBackground->SetTile(tile,1,rem,0.0f);
+
+			m_StaticBackground->SetPos(rect.left + m_DecButton->GetWidth(),rect.top);
 		}
 	}else{
 		if (m_StaticBackground->GetOriginalRect().height()){
-			int tile		= iFloor(GetHeight()/m_StaticBackground->GetOriginalRect().height());
+			int tile		= iCeil((GetHeight() - m_DecButton->GetHeight() - m_IncButton->GetHeight())/m_StaticBackground->GetOriginalRect().height());
 			float rem			= GetHeight()-tile*m_StaticBackground->GetOriginalRect().height();
 			m_StaticBackground->SetTile(1,tile,0.0f,rem);
+
+			m_StaticBackground->SetPos(rect.left,rect.top + m_DecButton->GetHeight());
 		}
 	}
-	Frect rect = GetAbsoluteRect();
+	
 	m_StaticBackground->SetPos(rect.left,rect.top);
 	m_StaticBackground->Render();
 

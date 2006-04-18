@@ -38,7 +38,10 @@ void CUIScrollView::Init				()
 	m_pad->SetWndPos			(0.0f,0.0f);
 	m_VScrollBar				= xr_new<CUIScrollBar>();m_VScrollBar->SetAutoDelete(true);
 	AttachChild					(m_VScrollBar);
-	m_VScrollBar->Init			(GetWndSize().x, 0.0f, GetWndSize().y, false);
+	if (!!m_scrollbar_profile)
+        m_VScrollBar->Init			(GetWndSize().x, 0.0f, GetWndSize().y, false, *m_scrollbar_profile);
+	else
+		m_VScrollBar->Init			(GetWndSize().x, 0.0f, GetWndSize().y, false);
 	m_VScrollBar->SetWndPos		(m_VScrollBar->GetWndPos().x - m_VScrollBar->GetWndSize().x, m_VScrollBar->GetWndPos().y);
 	m_VScrollBar->SetWindowName	("scroll_v");
 	m_VScrollBar->SetStepSize	(_max(1,iFloor(GetHeight()/10)));
@@ -46,6 +49,10 @@ void CUIScrollView::Init				()
 	Register					(m_VScrollBar);
 	AddCallback					("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIScrollView::OnScrollV,this));
 
+}
+
+void CUIScrollView::SetScrollBarProfile(LPCSTR profile){
+	m_scrollbar_profile = profile;
 }
 
 void CUIScrollView::AddWindow			(CUIWindow* pWnd, bool auto_delete)

@@ -17,6 +17,7 @@ enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe
 	float			m_leftIdent;
 	float			m_vertInterval;
 	Flags16			m_flags;
+	shared_str		m_scrollbar_profile;
 
 virtual void		RecalcSize			();
 		void		UpdateScroll		();	
@@ -52,6 +53,7 @@ public:
 			int		GetMaxScrollPos		();
 			int		GetCurrentScrollPos	();
 			void	SetScrollPos		(int value);
+			void	SetScrollBarProfile	(LPCSTR profile);
 };
 
 #define ADD_TEXT_TO_VIEW3(txt,st,view)		st = xr_new<CUIStatic>();						\

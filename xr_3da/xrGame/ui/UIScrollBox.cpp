@@ -7,8 +7,8 @@
 
 
 
-#define SCROLLBOX_HORZ	"ui\\ui_scb_scroll_box"
-#define SCROLLBOX_VERT	"ui\\ui_scb_scroll_box_v"
+//#define SCROLLBOX_HORZ	"ui\\ui_scb_scroll_box"
+//#define SCROLLBOX_VERT	"ui\\ui_scb_scroll_box_v"
 
 
 
@@ -17,6 +17,9 @@ CUIScrollBox::CUIScrollBox(void)
 {
 	m_bAvailableTexture = true;
 	m_bIsHorizontal = true;
+	
+	SetPushOffsetX(0);
+	SetPushOffsetY(0);
 }
 
 CUIScrollBox::~CUIScrollBox(void)
@@ -33,19 +36,7 @@ void CUIScrollBox::SetVertical(){
 
 void CUIScrollBox::Init(float x, float y, float length, float broad)
 {
-	if(m_bIsHorizontal)
-	{
-		m_UIStaticItem.Init(SCROLLBOX_HORZ, "hud\\default",x,y, alNone);
-		CUIWindow::Init(x,y, length, broad);
-	}
-	else
-	{
-		m_UIStaticItem.Init(SCROLLBOX_VERT, "hud\\default",x,y, alNone);
-		CUIWindow::Init(x,y, broad, length);
-	}
-
-	SetPushOffsetX(0);
-	SetPushOffsetY(0);
+	CUIButton::Init(x,y,length, broad);
 }
 
 //////////////////////////////////////////////////////////////////////////
