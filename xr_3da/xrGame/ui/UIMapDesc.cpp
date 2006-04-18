@@ -75,7 +75,7 @@ void CUIMapDesc::Init(){
 		m_pImage->InitTexture(gameLtx.r_string(Level().name(),"texture"));
 	}
 	else
-		m_pImage->InitTexture("ui\\ui_nomap");
+		m_pImage->InitTexture("ui\\ui_noise");
 
 	CUIXmlInit::InitWindow(xml_doc, "map_desc:map_info", 0, m_pMapInfo);
 

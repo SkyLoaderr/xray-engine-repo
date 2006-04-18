@@ -122,7 +122,7 @@ void CUIMapList::OnListItemClicked(){
 	if (FS.exist("$game_textures$",full_name.c_str()))
 		m_pMapPic->InitTexture(map_name.c_str());
 	else
-		m_pMapPic->InitTexture("ui\\ui_map_nopic");
+		m_pMapPic->InitTexture("ui\\ui_noise");
 
 	xr_string desc_txt = "text\\map_desc\\";
 	desc_txt += m_pList1->GetSelectedText();

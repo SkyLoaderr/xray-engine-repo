@@ -37,7 +37,7 @@
 		<text font="letterica18" r="235" g="219" b="185"></text>
 	</edit_cd_key>
 	<static_map_pic x="616" y="242" width="256" height="256">
-		<texture>ui\ui_map_nopic</texture>
+		<texture>ui\ui_noise</texture>
 	</static_map_pic>
 	<cap_map_info x="615" y="440" width="250" height="441">		
 	</cap_map_info>

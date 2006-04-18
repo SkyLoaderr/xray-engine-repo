@@ -174,7 +174,7 @@ function load_dialog:OnListItemClicked()
 	if file_exist(item_text .. ".dds") then
 		picture:InitTexture(item_text)
 	else
-		picture:InitTexture("ui\\ui_no_screenshot")
+		picture:InitTexture("ui\\ui_noise")
 	end
 		
 end

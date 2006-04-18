@@ -10,7 +10,7 @@
     <dragdrop_belt x="25" y="168" width="972" height="54"
             cell_width = "54" cell_height="54" rows_num="1" cols_num="18"/>
 
-    <dragdrop_bag x="30" y="46" width="313" height="415"
+    <dragdrop_bag x="22" y="46" width="313" height="415"
             cell_width = "41" cell_height="41" rows_num="10" cols_num="7" 
             unlimited="1" group_similar="1"/>
 
