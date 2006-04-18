@@ -90,6 +90,8 @@ function mob_trader:on_global_anim_request()
 end
 
 function mob_trader:on_head_anim_request()
+	if self.st.anim_head == nil then return end
+		
 	self.object:set_trader_head_anim(self:select_head_animation());
 end
 
