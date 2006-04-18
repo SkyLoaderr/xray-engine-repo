@@ -144,13 +144,14 @@ combat_ignore_keep_when_attacked    = true
 ; благодарим игрока
 ;--------------------------------------------------------------------------
 [remark@outside]
-anim                                = wait
-on_actor_dist_ge_nvis               = 15 | walker@escape ;%+val_prisoner_scene_end%
-;on_info                             = {-val_prisoner_door_unlocked} walker@sit
-;on_info                             = {+val_prisoner_raid} walker@escape
-meet                                = meet@main
-danger                              = danger@small
-;combat_ignore_cond                  = always ;{=check_fighting(403)}
+anim                    = wait
+on_timer                = 90000 | walker@escape ;%+val_prisoner_scene_end%
+on_actor_dist_ge_nvis   = 20 | walker@escape ;%+val_prisoner_scene_end%
+;on_info                 = {-val_prisoner_door_unlocked} walker@sit
+;on_info                 = {+val_prisoner_raid} walker@escape
+meet                    = meet@main
+danger                  = danger@small
+;combat_ignore_cond      = always ;{=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; идем мочить братву
