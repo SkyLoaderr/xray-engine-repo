@@ -22,8 +22,14 @@
 <string id="val_bandit_bodyguard_bio">
 	<text>Бандит охранник. Сомнительная репутация. Детальная информация отсутствует.</text>
 </string>
-<string id="val_bandit_common_bio">
-	<text>Неизвестный бандит. Сомнительная репутация. Детальная информация отсутствует.</text>
+<string id="val_bandit_novice_bio">
+	<text>Бандит новичек. Сомнительная репутация. Детальная информация отсутствует.</text>
+</string>
+<string id="val_bandit_general_bio">
+	<text>Рядовой бандит. Сомнительная репутация. Детальная информация отсутствует.</text>
+</string>
+<string id="val_bandit_veteran_bio">
+	<text>Опытный бандит. Сомнительная репутация. Детальная информация отсутствует.</text>
 </string>
 
 <string id="val_prisoner_name">
@@ -118,6 +124,15 @@
 	<text>Лидер группировки "Монолит". Детальная информация отсутствует.</text>
 </string>
 
+<string id="pri_monolith_regular_bio">
+	<text>Рядовой сталкер группировки "Монолит". Детальная информация отсутствует.</text>
+</string>
+<string id="pri_monolith_specnaz_bio">
+	<text>Сталкер спецназа группировки "Монолит". Детальная информация отсутствует.</text>
+</string>
+<string id="pri_monolith_exo_bio">
+	<text>Элитный сталкер группировки "Монолит". Детальная информация отсутствует.</text>
+</string>
 <string id="pri_monolith_common_bio">
 	<text>Сталкер группировки "Монолит". Детальная информация отсутствует.</text>
 </string>

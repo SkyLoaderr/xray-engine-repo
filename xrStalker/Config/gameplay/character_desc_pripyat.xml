@@ -166,7 +166,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_regular_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -193,7 +193,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_regular_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -220,7 +220,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="24" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_regular_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -247,7 +247,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="22" y="10"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_regular_bio</bio>
 
         <class>pri_monolith_regular</class>
         <community>monolith</community>
@@ -275,7 +275,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="6" y="2"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_specnaz_bio</bio>
 
         <class>pri_monolith_specnaz</class>
         <community>monolith</community>
@@ -303,7 +303,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="0" y="4"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_specnaz_bio</bio>
 
         <class>pri_monolith_specnaz</class>
         <community>monolith</community>
@@ -332,7 +332,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_exo_bio</bio>
 
         <class>pri_monolith_exo</class>
         <community>monolith</community>
@@ -360,7 +360,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>pri_monolith_common_bio</bio>
+        <bio>pri_monolith_exo_bio</bio>
 
         <class>pri_monolith_exo</class>
         <community>monolith</community>

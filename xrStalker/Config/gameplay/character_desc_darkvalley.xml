@@ -76,7 +76,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_novice_bio</bio>
 
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -104,7 +104,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_novice_bio</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -133,7 +133,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_novice_bio</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -161,7 +161,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_novice_bio</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -188,7 +188,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_novice_bio</bio>
 		
 		<class>val_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -208,7 +208,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_general_bio</bio>
 		
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -237,7 +237,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_general_bio</bio>
 		
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -265,7 +265,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_general_bio</bio>
 		
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -293,7 +293,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="6"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_general_bio</bio>
 				
 		<class>val_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -322,7 +322,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="22" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_veteran_bio</bio>
 		
 		<class>val_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -351,7 +351,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_veteran_bio</bio>
 		
 		<class>val_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -379,7 +379,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_veteran_bio</bio>
 
 		<class>val_bandit_veteran</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -408,7 +408,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_veteran_bio</bio>
 		
 		<class>val_watchtower_bandit_guard</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -436,7 +436,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>val_bandit_common_bio</bio>
+		<bio>val_bandit_veteran_bio</bio>
 
 		<class>val_watchtower_bandit_sniper</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
