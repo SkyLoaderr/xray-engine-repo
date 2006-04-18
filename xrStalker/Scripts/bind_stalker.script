@@ -28,7 +28,7 @@ function actor_binder:net_spawn(data)
 	db.add_actor(self.object)
 	
 	self.weather_manager:reset()
-	game_stats.initialize ()
+--	game_stats.initialize ()
 
 	if(actor_stats.add_to_ranking~=nil)then
 		actor_stats.add_to_ranking(self.object:id())
@@ -41,7 +41,7 @@ function actor_binder:net_destroy()
 	if(actor_stats.remove_from_ranking~=nil)then
 		actor_stats.remove_from_ranking(self.object:id())
 	end
-	game_stats.shutdown ()
+--	game_stats.shutdown ()
 	db.del_actor(self.object)
 
     sr_light.clean_up ()
