@@ -66,21 +66,21 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 	if(CurrentIItem()->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(CurrentIItem()))
 	{
-		UIPropertiesBox.AddItem("Move to slot",  NULL, INVENTORY_TO_SLOT_ACTION);
+		UIPropertiesBox.AddItem("st_move_to_slot",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}
 	if(CurrentIItem()->Belt() && m_pInv->CanPutInBelt(CurrentIItem()))
 	{
-		UIPropertiesBox.AddItem("Move on belt",  NULL, INVENTORY_TO_BELT_ACTION);
+		UIPropertiesBox.AddItem("st_move_on_belt",  NULL, INVENTORY_TO_BELT_ACTION);
 	}
 	if(CurrentIItem()->Ruck() && m_pInv->CanPutInRuck(CurrentIItem()))
 	{
 		if(!pOutfit)
-			UIPropertiesBox.AddItem("Move to bag",  NULL, INVENTORY_TO_BAG_ACTION);
+			UIPropertiesBox.AddItem("st_move_to_bag",  NULL, INVENTORY_TO_BAG_ACTION);
 		else
-			UIPropertiesBox.AddItem("Undress outfit",  NULL, INVENTORY_TO_BAG_ACTION);
+			UIPropertiesBox.AddItem("st_undress_outfit",  NULL, INVENTORY_TO_BAG_ACTION);
 		bAlreadyDressed = true;
 	}
-	if(pOutfit  && !bAlreadyDressed /*&& m_pInv->CanPutInSlot(m_pCurrentItem)*/)
+	if(pOutfit  && !bAlreadyDressed )
 	{
 		UIPropertiesBox.AddItem("Dress in outfit",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}
@@ -90,15 +90,15 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	{
 		if(pWeapon->GrenadeLauncherAttachable() && pWeapon->IsGrenadeLauncherAttached())
 		{
-			UIPropertiesBox.AddItem("Detach grenade launcher",  NULL, INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON);
+			UIPropertiesBox.AddItem("st_detach_gl",  NULL, INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON);
 		}
 		if(pWeapon->ScopeAttachable() && pWeapon->IsScopeAttached())
 		{
-			UIPropertiesBox.AddItem("Detach scope",  NULL, INVENTORY_DETACH_SCOPE_ADDON);
+			UIPropertiesBox.AddItem("st_detach_scope",  NULL, INVENTORY_DETACH_SCOPE_ADDON);
 		}
 		if(pWeapon->SilencerAttachable() && pWeapon->IsSilencerAttached())
 		{
-			UIPropertiesBox.AddItem("Detach silencer",  NULL, INVENTORY_DETACH_SILENCER_ADDON);
+			UIPropertiesBox.AddItem("st_detach_silencer",  NULL, INVENTORY_DETACH_SILENCER_ADDON);
 		}
 		if(smart_cast<CWeaponMagazined*>(pWeapon) && IsGameTypeSingle())
 		{
@@ -119,7 +119,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 			}
 
 			if(b)
-				UIPropertiesBox.AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
+				UIPropertiesBox.AddItem("st_unload_magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
 
 
 		}
@@ -134,13 +134,13 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pScope))
 		 {
 			PIItem tgt = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
-			 UIPropertiesBox.AddItem("Attach scope to pistol",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("st_attach_scope_to_pistol",  (void*)tgt, INVENTORY_ATTACH_ADDON);
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pScope))
 		 {
 			PIItem tgt = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
-			 UIPropertiesBox.AddItem("Attach scope to rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("st_attach_scope_to_rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
 		 }
 	}
 	else if(pSilencer)
@@ -149,13 +149,13 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pSilencer))
 		 {
 			PIItem tgt = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
-			 UIPropertiesBox.AddItem("Attach silencer to pistol",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("st_attach_silencer_to_pistol",  (void*)tgt, INVENTORY_ATTACH_ADDON);
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pSilencer))
 		 {
 			PIItem tgt = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
-			 UIPropertiesBox.AddItem("Attach silencer to rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("st_attach_silencer_to_rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
 		 }
 	}
 	else if(pGrenadeLauncher)
@@ -164,7 +164,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pGrenadeLauncher))
 		 {
 			PIItem tgt = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
-			 UIPropertiesBox.AddItem("Attach grenade launcher to rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("st_attach_gl_to_rifle",  (void*)tgt, INVENTORY_ATTACH_ADDON);
 		 }
 
 	}
@@ -172,21 +172,25 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	
 	if(pEatableItem)
 	{
-		UIPropertiesBox.AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
+		UIPropertiesBox.AddItem("st_eat",  NULL, INVENTORY_EAT_ACTION);
 	}
 
 	if(pArtefact&&pArtefact->CanBeActivated()&&!GetInventory()->isSlotsBlocked())
-		UIPropertiesBox.AddItem("Activate artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);
+		UIPropertiesBox.AddItem("st_activate_artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);
 
-	if(!CurrentIItem()->IsQuestItem())
-		UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
+	if(!CurrentIItem()->IsQuestItem()){
+		UIPropertiesBox.AddItem("st_drop", NULL, INVENTORY_DROP_ACTION);
+
+		if(CurrentItem()->ChildsCount())
+			UIPropertiesBox.AddItem("st_drop_all", (void*)33, INVENTORY_DROP_ACTION);
+	}
 
 	if (GameID() == GAME_ARTEFACTHUNT && Game().local_player && 
 		Game().local_player->testFlag(GAME_PLAYER_FLAG_ONBASE) && 
 		!Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)
 		)
 	{
-		UIPropertiesBox.AddItem("Sell Item",  NULL, INVENTORY_SELL_ITEM);	
+		UIPropertiesBox.AddItem("st_sell_item",  NULL, INVENTORY_SELL_ITEM);	
 	}
 
 	UIPropertiesBox.AutoUpdateSize	();
@@ -214,8 +218,11 @@ void CUIInventoryWnd::ProcessPropertiesBoxClicked	()
 			ToBag(CurrentItem(),false);
 			break;
 		case INVENTORY_DROP_ACTION:
-			DropCurrentItem();
-			break;
+			{
+				void* d = UIPropertiesBox.GetClickedItem()->GetData();
+				bool b_all = ((int)d==33);
+				DropCurrentItem(b_all);
+			}break;
 		case INVENTORY_EAT_ACTION:
 			EatCurrentItem();
 			break;

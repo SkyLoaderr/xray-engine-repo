@@ -519,7 +519,7 @@ bool CUIInventoryWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	{
 		int cmd = key_binding[dik];
 		if (kDROP == cmd)
-			DropCurrentItem();
+			DropCurrentItem(false);
 #ifdef DEBUG
 		else if(DIK_NUMPAD7 == dik && CurrentIItem()){
 			CurrentIItem()->ChangeCondition(-0.05f);

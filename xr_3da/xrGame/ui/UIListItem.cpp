@@ -44,7 +44,7 @@ void CUIListItem::InitTexture(LPCSTR tex_name){
 void CUIListItem::Init(const char* str, float x, float y, float width, float height)
 {
 	Init(x,y,width, height);
-	SetText(str);	
+	SetTextST(str);	
 }
 
 bool CUIListItem::OnMouse(float x, float y, EUIMessages mouse_action)

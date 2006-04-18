@@ -148,7 +148,7 @@ protected:
 	void					ActivatePropertiesBox		();
 	void					Activate_Artefact			();
 
-	void					DropCurrentItem				();
+	void					DropCurrentItem				(bool b_all);
 	void					EatCurrentItem				();
 	
 	bool					ToSlot						(CUICellItem* itm, bool force_place);
