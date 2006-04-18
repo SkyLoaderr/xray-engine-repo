@@ -31,7 +31,7 @@ end
 
 function main()
 	
-	db.actor:activate_slot(db.actor:active_slot()+1)
+--	db.actor:activate_slot(db.actor:active_slot()+1)
 
 --	local news_text = "%c<255,160,160,160>" .. "Задание выполнено" .. "\\n" .. "%c<default>" .. "Информация о винтовке FN-2000 а также куча всякой лабуды типа убить долбаного стрелка или помочь сраному раненому"
 
@@ -49,8 +49,8 @@ function main()
 --	db.actor:give_info_portion(info) 
 	
 	
---	info = "tutorial_wounded_start" 
---	db.actor:give_info_portion(info) 
+	info = "tutorial_wounded_start" 
+	db.actor:give_info_portion(info) 
 
 
 --	level.add_cam_effector("camera_effects\\prison_1.anm", 999, true)
