@@ -61,13 +61,13 @@ void CALifeObjectRegistry::load				(IReader &file_stream, const _predicate &pred
 	m_objects.clear				();
 
 	u32							count = file_stream.r_u32();
-	for (u32 i=0; i<count; ++i) {
-		CSE_ALifeDynamicObject	*object = get_object(file_stream);
-		add						(object);
+	CSE_ALifeDynamicObject		**objects = (CSE_ALifeDynamicObject**)_alloca(count*sizeof(CSE_ALifeDynamicObject*));
 
-
-
-
+	CSE_ALifeDynamicObject		**I = objects;
+	CSE_ALifeDynamicObject		**E = objects + count;
+	for ( ; I != E; ++I) {
+		*I						= get_object(file_stream);
+		add						(*I);
 	}
 
 	ALife::D_OBJECT_P_MAP::const_iterator	I = objects().begin();
