@@ -205,8 +205,7 @@ function send_task(actor, type, task)
 	if db.actor == nil then return false end
 	
 	--' Берем координаты из текстуры таска
-	local task_info = GetTextureInfo(task:get_id().."_small", "ui_icons_newPDA_man")
-    local task_texture, task_rect = task_info:get_file_name(), task_info:get_rect()
+    local task_texture, task_rect = get_texture_info("ui_icons_task_"..task:get_id().."_small", "ui_iconsTotalSmall_locations")
         
 	--' Играем дефолтный звук
 	pda_task:play(db.actor, 0, sound_object.s2d)
@@ -220,19 +219,6 @@ function send_task(actor, type, task)
 end
 function send_encyclopedy(type)
 	pda_task:play(db.actor, 0, sound_object.s2d)
---[[	
-	if type == "encyclopedy" then
-		db.actor:give_game_news("general_new_encyclopedy", "ui\\ui_icons_task", Frect():set(350,150,50,50), 0, 0)
-		if db.actor:is_talking() then
-			db.actor:give_talk_message("general_new_encyclopedy", "ui\\ui_icons_task", Frect():set(350,150,50,50),"iconed_answer_item")
-		end		
-	else
-		db.actor:give_game_news("general_new_diary", "ui\\ui_icons_task", Frect():set(350,150,50,50), 0, 0)
-		if db.actor:is_talking() then
-			db.actor:give_talk_message("general_new_diary", "ui\\ui_icons_task", Frect():set(350,150,50,50), "iconed_answer_item")
-		end		
-	end	
-]]
 end
 
 function get_inv_name(item)
@@ -243,34 +229,42 @@ function relocate_item(actor, type, item)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	if type == "in" then
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_thing_small")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_in_item").."\\n".."%c<default>"..game.translate_string(get_inv_name(item))
-		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50), 0, 0)
+		db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50),"iconed_answer_item")
+			db.actor:give_talk_message(news_text, task_texture, task_rect,"iconed_answer_item")
 		end		
 	elseif type == "out" then
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_lost_thing_small")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_out_item").."\\n".."%c<default>"..game.translate_string(get_inv_name(item))
-		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50), 0, 0)
+		db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(400,100,50,50),"iconed_answer_item")
+			db.actor:give_talk_message(news_text, task_texture, task_rect,"iconed_answer_item")
 		end		
 	end
 	
 end
 function relocate_money(actor, type, amount)
 	if db.actor == nil then return false end
+
+
 	--' Играем дефолтный звук
 	if type == "in" then
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_money_small")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_in_money").."\\n".."%c<default>"..game.translate_string(tostring(amount))
-		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), 0, 0)
+
+		db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), "iconed_answer_item")
+			db.actor:give_talk_message(news_text, task_texture, task_rect, "iconed_answer_item")
 		end		
 	elseif type == "out" then
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_lost_money_small")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_out_money").."\\n".."%c<default>"..game.translate_string(tostring(amount))
-		db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), 0, 0)
+
+		db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 		if db.actor:is_talking() then
-			db.actor:give_talk_message(news_text, "ui\\ui_icons_task", Frect():set(450,50,50,50), "iconed_answer_item")
+			db.actor:give_talk_message(news_text, task_texture, task_rect, "iconed_answer_item")
 		end		
 	end
 	

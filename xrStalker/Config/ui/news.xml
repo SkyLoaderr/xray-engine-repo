@@ -14,7 +14,7 @@
 			<text align="l" font="letterica16" r="200" g="200" b="200"/>
 		</date_text_cont>
 		
-		<image x="0" y="13" width="49" height="26" stretch="1"/>
+		<image x="0" y="11" width="49" height="29" stretch="1"/>
 	</news_item>	
 
 	<talk_item  x="0" y="0" width="400" height="100">

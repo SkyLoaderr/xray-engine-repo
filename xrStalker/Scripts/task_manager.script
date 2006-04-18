@@ -317,7 +317,9 @@ function action_task_show(npc, actor)
 	local parent = get_parent(npc)
 	
 	for k,v in pairs(show_tbl) do
-		db.actor:give_talk_message(game.translate_string(task_info[parent][v].name), "ui\\ui_icons_task", Frect():set(350,150,50,50),"iconed_trade_info")
+	    local task_texture, task_rect = get_texture_info("ui_icons_task_"..task_info[parent][v].type.."_small", "ui_iconsTotalSmall_locations")
+
+		db.actor:give_talk_message(game.translate_string(task_info[parent][v].name), task_texture, task_rect,"iconed_trade_info")
 	end
 end
 

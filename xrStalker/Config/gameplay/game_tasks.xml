@@ -83,7 +83,7 @@
 		<title>title</title>
 		<objective>
 			<text>objective</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_icons_task_eliminate_lager</icon>
 			<function_complete>task_manager.task_complete</function_complete>
 			<function_fail>task_manager.task_fail</function_fail>
 		</objective>
@@ -93,7 +93,7 @@
 		<title>title</title>
 		<objective>
 			<text>objective</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_icons_task_artefact</icon>
 			<function_complete>task_manager.task_complete</function_complete>
 			<function_fail>task_manager.task_fail</function_fail>
 		</objective>
@@ -103,7 +103,7 @@
 		<title>title</title>
 		<objective>
 			<text>objective</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_icons_task_kill_stalker</icon>
 			<function_complete>task_manager.task_complete</function_complete>
 			<function_fail>task_manager.task_fail</function_fail>
 		</objective>
@@ -113,7 +113,7 @@
 		<title>title</title>
 		<objective>
 			<text>objective</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_icons_task_monster_part</icon>
 			<function_complete>task_manager.task_complete</function_complete>
 			<function_fail>task_manager.task_fail</function_fail>
 		</objective>
@@ -123,7 +123,7 @@
 		<title>title</title>
 		<objective>
 			<text>objective</text>
-			<icon x="50" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_icons_task_find_item</icon>
 			<function_complete>task_manager.task_complete</function_complete>
 			<function_fail>task_manager.task_fail</function_fail>
 		</objective>
