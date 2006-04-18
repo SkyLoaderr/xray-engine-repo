@@ -49,6 +49,10 @@ bool CStateMonsterSmartTerrainTaskAbstract::check_start_conditions()
 
 	CSE_ALifeMonsterAbstract		*monster = smart_cast<CSE_ALifeMonsterAbstract*>(ai().alife().objects().object(object->ID()));
 	VERIFY							(monster);
+	
+	CSE_ALifePsyDogPhantom			*phantom = smart_cast<CSE_ALifePsyDogPhantom*>(monster);
+	if (phantom)					return false;
+	
 
 	monster->brain().select_task	();
 	
