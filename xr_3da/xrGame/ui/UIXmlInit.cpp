@@ -206,6 +206,11 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 		pWnd->SetHighlightColor(color_argb(hA, hR, hG, hB));
 
 	}
+
+	if (xml_doc.ReadAttribInt(path, index, "clipper", 0))
+		pWnd->ClipperOn();
+	else
+		pWnd->ClipperOff();
 	
 	return true;
 }

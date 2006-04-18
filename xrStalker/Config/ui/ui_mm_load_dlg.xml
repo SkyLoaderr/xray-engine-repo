@@ -15,7 +15,7 @@
 			<text font="letterica25" r="184" g="168" b="131">ui_mm_load_game</text>
 		</caption>
 		
-		<picture x="76" y="52" width="128" height="128"/>
+		<picture x="76" y="52" width="128" height="128" clipper="1"/>
 		
 		<file_info	x="18" y="36" width="512" height="148">
 			<texture>ui\ui_static_loadgameinfo</texture>
