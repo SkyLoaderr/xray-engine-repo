@@ -422,7 +422,8 @@ theme = {
 
 	-- Bar dolg guard
 	bar_dolg_guard_stop				= {min_snd = 15, max_snd = 20, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
-	
+	bar_guard_prohodi				= {min_snd = 7, max_snd = 20, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
 	-- Bar dolg hangar bridge
 	bar_dolg_hangar_bridge_hello	= {min_snd = 16, max_snd = 25, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
