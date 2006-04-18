@@ -73,11 +73,11 @@
 	<iconed_answer_item x="0" y="0" width="557" height="0" min_height="30" bottom_footer="5">
 		<name_caption x="0" y="0" width="0" height="0"/>
 		
-		<content_text x="60" y="8" width="520" height="10">
-			<text font="letterica18" r="255" g="255" b="255"/>
+		<content_text x="75" y="0" width="520" height="26">
+			<text font="letterica16" r="255" g="255" b="255"/>
 		</content_text>
 		
-		<msg_icon x="20" y="0" width="30" height="30">
+		<msg_icon x="20" y="3" width="49" height="26">
 		</msg_icon>
 	</iconed_answer_item>
 
