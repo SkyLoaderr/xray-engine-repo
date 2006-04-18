@@ -1425,28 +1425,12 @@ function load_states(gname, type)
 	
 	if type == "gar_boars_nest" then        
 		return function(gulag)
---[[			if db.actor:has_info("gar_test_info2") then
-				return 2
-			elseif db.actor:has_info("agroprom_military_case_have") and db.actor:dont_has_info("gar_test_info2") then
+			if db.actor:has_info("gar_test_info2") and db.actor:dont_has_info("gar_test_info1") then
 				return 1
+			elseif db.actor:has_info("gar_test_info1") then
+				return 2 -- attack				
 			else
 				return 0
-			end
-]]
-			if gulag.state == 0 then
-				if db.actor:has_info("gar_test_info2") then
-					return 1
-				else
-					return 0
-				end
-			elseif gulag.state == 1 then
-				if game.get_game_time():diffSec(gulag.stateBegin) > 1000 then
-					return 2
-				else
-					return 1
-				end
-			else
-				return 2
 			end
 		end
 	end
