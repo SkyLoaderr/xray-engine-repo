@@ -70,10 +70,8 @@ void CALifeObjectRegistry::load				(IReader &file_stream, const _predicate &pred
 		add						(*I);
 	}
 
-	ALife::D_OBJECT_P_MAP::const_iterator	I = objects().begin();
-	ALife::D_OBJECT_P_MAP::const_iterator	E = objects().end();
-	for ( ; I != E; ++I)
-		predicate				((*I).second);
+	for (I = objects; I != E; ++I)
+		predicate				(*I);
 
 	Msg							("* %d objects are successfully loaded",count);
 }
