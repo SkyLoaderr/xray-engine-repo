@@ -88,10 +88,10 @@
         <text>Чувствительность мыши</text>
     </string>
     <string id="ui_mm_multiplayer">
-        <text>МУЛЬТИПЛЭЕР</text>
+        <text>СЕТЕВАЯ ИГРА</text>
     </string>
     <string id="ui_mm_multiplayer_n">
-        <text>Мультиплэер</text>
+        <text>Сетевая игра</text>
     </string>    
     <string id="ui_mm_music_volume">
         <text>Громкость музыки</text>
