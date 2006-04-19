@@ -13,7 +13,10 @@ end
 
 function get_task_info(task_id, fmt)
 	local _info = GetTextureInfo(task_id..fmt, "default_task_icon"..fmt)
-	return _info:get_file_name(), _info:get_rect()
+	local r = _info:get_rect()
+	r.x2 = r.x2-r.x1
+	r.y2 = r.y2-r.y1
+	return _info:get_file_name(), r
 end
 
 function main123()
@@ -36,7 +39,9 @@ function main()
 --	local news_text = "%c<255,160,160,160>" .. "Задание выполнено" .. "\\n" .. "%c<default>" .. "Информация о винтовке FN-2000 а также куча всякой лабуды типа убить долбаного стрелка или помочь сраному раненому"
 
 --	db.actor:give_game_news(news_text, "ui\\ui_pop_up_active_back", Frect():set(0,0,16,16), 0, 0)
---	local a,b = get_task_info("kill_gunslinger","_small")
+--	local news_text = "%c<255,160,160,160>" .. "Задание выполнено" .. "\\n" .. "%c<default>" .. "Информация о винтовке FN-2000 а также куча всякой лабуды типа убить долбаного стрелка или помочь сраному раненому"
+--	local a,b = get_task_info("ui_iconsTotalSmall_found","_money")
+--	b:set(83,0,49,26)
 --	db.actor:give_game_news(news_text, a, b, 0, 0)
 
 --	db.actor:give_talk_message(news_text, "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
@@ -49,15 +54,26 @@ function main()
 --	db.actor:give_info_portion(info) 
 	
 	
-	info = "tutorial_wounded_start" 
-	db.actor:give_info_portion(info) 
+--	info = "tutorial_wounded_start" 
+--	db.actor:give_info_portion(info) 
+
+	local task = CGameTask()
+	
+	task:load("eliminate_lager")
+	task:set_title("eliminate_lager_title")
+	
+	local objective = SGameTaskObjective(task,1)
+	objective:set_description("be-be")
+
+	task:add_objective(objective)
 
 
---	level.add_cam_effector("camera_effects\\prison_1.anm", 999, true)
---	level.add_cam_effector("camera_effects\\prison_1.anm", 999, true)
---	level.remove_cam_effector(999)
---	level.set_pp_effector_factor(999, 0.1)
---	level.remove_pp_effector(999)
+	objective = SGameTaskObjective(task,2)
+	objective:set_description("foo-foo")
+
+	task:add_objective(objective)
+	
+	db.actor:give_task(task,false)
 end
 
 function main123456()
