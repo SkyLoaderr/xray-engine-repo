@@ -319,6 +319,8 @@ function gulag:object_setup_offline( obj_id, was_online )
 
 	self.Object[obj_id] = true
 
+	self:clear_restrictors_info( obj_id )
+
 	if not was_online then
 		local obj = level.object_by_id( obj_id )
 		if obj ~= nil then
@@ -356,7 +358,8 @@ function gulag:removeObject( obj_id )
 	self:free_obj_and_reinit( obj_id )
 
 	self.Object[obj_id]      = nil
-	self.restrictors[obj_id] = nil
+
+	self:clear_restrictors_info( obj_id )
 end
 
 -- Обновление гулага.
@@ -848,6 +851,11 @@ function gulag:get_population()
 	for obj_id, npc_info in pairs( self.npc_info ) do
 		obj = level.object_by_id( obj_id ) or npc_info.se_obj
 
+		if not obj then
+			printf( "smart_terrain.name=%s", self.name )
+			printf( "smart_terrain.initialized=%s", tostring( self.smrttrn.initialized ) )
+		end
+
 		if obj:alive() then
 			i = i + 1
 		end
@@ -1043,6 +1051,12 @@ function gulag:set_restrictions(obj, r_out, r_in)
 
 	printf( "RESTR AFTER (IN) : %s", obj:in_restrictions()  )
 	printf( "RESTR AFTER (OUT): %s", obj:out_restrictions() )
+end
+
+-- убрать записи о том, что смарт устанавливал объекту рестрикторы.
+-- obj - game_object
+function gulag:clear_restrictors_info( obj_id )
+	self.restrictors[obj_id] = nil
 end
 
 -- получить работу, которую занимает объект
