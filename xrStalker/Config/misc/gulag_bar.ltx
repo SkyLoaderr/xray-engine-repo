@@ -136,7 +136,7 @@ actor_dialogs = actor_dialogs
 [walker@bar_dolg_general_guard_left]
 path_walk = guard_left_walk
 path_look = guard_left_look
-;meet = meet@bar_dolg_general_guard
+meet = meet@bar_dolg_general_guard_busy
 soundgroup = bar_dolg_base_guard1
 
 [logic2@bar_dolg_general_guard_right]
@@ -146,7 +146,7 @@ actor_dialogs = actor_dialogs
 [walker@bar_dolg_general_guard_right]
 path_walk = guard_right_walk
 path_look = guard_right_look
-;meet = meet@bar_dolg_general_guard
+meet = meet@bar_dolg_general_guard_busy
 soundgroup = bar_dolg_base_guard1
 
 [logic3@bar_dolg_general_guard_center]
@@ -170,6 +170,15 @@ use_wpn = true
 victim 			= 15| actor
 victim_wpn 		= 15| actor
 zone = bar_dolg_general_warn_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}talk_hello,bar_dolg_guard_stop
+
+[meet@bar_dolg_general_guard_busy]
+abuse = false
+use = false
+use_wpn = false
+victim 			= nil
+victim_wpn 		= nil
+meet_state 		= 5|guard@bar_dolg_guard_busy
+meet_state_wpn 	= 5|guard@bar_dolg_guard_busy
 
 ;{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop
 ;|bar_dolg_general_guard_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_kill_zone|{-bar_dolg_base_pass}true
