@@ -186,7 +186,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 			self.gulag:load_obj( packet, o_id )
 		end
 
---		self.population_locked = packet:r_bool()
+		self.population_locked = packet:r_bool()
 	end
 
 --	printf( "after read" )
