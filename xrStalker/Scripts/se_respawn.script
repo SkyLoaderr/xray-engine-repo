@@ -295,6 +295,7 @@ function se_respawn:create(prob)
 		if tt.check == true then
 			obj:brain():update()
 			local smart_terrain_id = obj:smart_terrain_id()
+--			printf("SPAWN [%s] move_offline [%s], interactive [%s], smart_terrain_id [%s]", tostring(self:name()), tostring(self:move_offline()), tostring(self:interactive()), smart_terrain_id)
 			if smart_terrain_id ~= 65535 then		
 				table.insert(self.spawned_obj ,obj.id)
 				local pos = obj.position
@@ -313,7 +314,7 @@ end
 -- ѕопытка спаунить объекты. јнализируетс€ сколько уже заспавнено и выбираетс€ один из механизмов - либо 
 -- мы доспавниваем до минимального количества, либо спавним с заданной веро€тностью
 function se_respawn:spawn()
-	printf("RESPAWN: [%s] spawn execute", tostring(self:name()))
+--	printf("RESPAWN: [%s] spawn execute", tostring(self:name()))
 	
 	-- ѕробегаемс€ по списку уже заспавненных объектов и удал€ем из них мертвые либо уничтоженные.
 	for k,v in pairs(self.spawned_obj) do
