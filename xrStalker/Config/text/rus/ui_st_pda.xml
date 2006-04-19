@@ -30,9 +30,8 @@
 	<string id="pda_btn_quests_hint">
 		<text>Показать информацию по квестам</text>
 	</string>
-	<string id="pda_show_general_or_all_tasks">
-		<text>Показывать все квесты или только сюжетные</text>
-	</string>
+	
+
 	<string id="pda_btn_contacts">
 		<text>Контакты</text>
 	</string>
@@ -152,10 +151,6 @@
 	</string>
 	<string id="pda_edit_user_task_btn_hint">
 		<text>Редактировать описание</text>
-	</string>
-
-	<string id="show_only_general_tasks">
-		<text>показывать только сюжетные</text>
 	</string>
 
 	<string id="st_map_actor">
