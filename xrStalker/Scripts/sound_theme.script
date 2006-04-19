@@ -427,8 +427,8 @@ theme = {
 	-- Bar dolg hangar bridge
 	bar_dolg_hangar_bridge_hello	= {min_snd = 16, max_snd = 25, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
-	bar_guard_enter					= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},      
-	bar_guard_stop					= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},      
+	bar_guard_enter					= {min_snd = 6, max_snd = 10, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},      
+	bar_guard_stop					= {min_snd = 6, max_snd = 10, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},      
 
 	-- Bar dolg Petrenko
 	bar_dolg_petrenko_hello			= {min_snd = 3, max_snd = 15, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
