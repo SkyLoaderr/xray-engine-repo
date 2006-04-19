@@ -10,6 +10,186 @@
 		отношения с самыми разношерстными клиентами.</text>
 </string>
 
+<!-------------------------------- Agroprom-------------------------->
+<string id="agr_krot_name">
+	<text>Крот</text>
+</string>
+
+<string id="agr_krot_bio">
+	<text>Бывший диггер. Со своей группой единомышленников лезет во все заброшенные лаборатории и бункеры до которых может добраться.</text>
+</string>
+
+<!-------------------------------- BAR -------------------------------->
+
+<string id="bar_barmen_name">
+	<text>Бармен</text>
+</string>
+<string id="bar_barmen_bio">
+	<text>Не святой и не подлец, цену себе знает, за что пользуется уважением среди сталкеров. Ходят слухи, что прячется в Зоне от своего темного прошлого. После того как попал в аномалию, стал прихрамывать и решил сменить занятие. Обставил бар возле группировки Долга, который незаметно стал основным местом сбора для ветеранов Зоны. У бармена много связей как внутри Зоны, так и во внешнем мире.</text>
+</string>
+
+<string id="bar_bar_guard_name">
+	<text>Гарик</text>
+</string>
+<string id="bar_bar_guard_bio">
+	<text>Охранник бара. Или, если хотите, телохранитель бармена. О его настоящем, как и о прошлом ничего не известно.</text>
+</string>
+
+<string id="bar_bar_guard2_name">
+	<text>Жорик</text>
+</string>
+<string id="bar_bar_guard2_bio">
+	<text>Брат-близнец Гарика. Охранник на входе бара. Такой же молчаливый, как и его брат.</text>
+</string>
+
+<string id="bar_informer_name">
+	<text>Осведомитель</text>
+</string>
+<string id="bar_informer_bio">
+	<text>Таинственный сталкер, который очень много знает. Торгует информацией в баре.</text>
+</string>
+
+<string id="bar_hunter_name">
+	<text>Охотник</text>
+</string>
+<string id="bar_hunter_bio">
+	<text>Добродушный весельчак, единственная его проблема это то, что умеет стрелять только из охотничьего ружья. Остальное даже не пробует. Недавно попал в передрягу на Дикой территории и потерял там свое фамильное ружье. Теперь околачивается в баре, надеется, что кто-то вернет ему его ружье.</text>
+</string>
+
+<string id="bar_drunk_name">
+	<text>Бром</text>
+</string>
+<string id="bar_drunk_bio">
+	<text>Постоянно пьяный член группировки Долга. Долг дал ему последнюю возможность остаться в Долге, выполнив задание, но он пьян и не может его выполнить.</text>
+</string>
+
+<string id="bar_lisiy_name">
+	<text>Лысый</text>
+</string>
+
+<string id="bar_ryaboy_name">
+	<text>Рябой</text>
+</string>
+<string id="bar_ryaboy_bio">
+	<text>Неизвестный, попавший под воздействие выжигателя мозгов.</text>
+</string>
+
+<string id="bar_arny_name">
+	<text>Арни</text>
+</string>
+<string id="bar_arny_bio">
+	<text>Контрабандист со стажем. Известен тем что за короткий промежуток времени сумел вывезти из запретной зоны несколько сотен чучел мутантов.</text>
+</string>
+
+<string id="bar_lelik_name">
+	<text>Лёлик</text>
+</string>
+<string id="bar_lelik_bio">
+	<text>Телохранитель хозяина Арены. О его прошлом известно только плохое, ненавидит своих братьев.</text>
+</string>
+
+<string id="bar_beast_name">
+	<text>Зверь</text>
+</string>
+
+<string id="bar_voronin_name">
+	<text>Генерал Воронин</text>
+</string>
+<string id="bar_voronin_bio">
+	<text>Основатель группировки Долг, вот уже пять лет возглавляет группировку.</text>
+</string>
+
+<string id="bar_petrenko_name">
+	<text>Полковник Петренко</text>
+</string>
+<string id="bar_petrenko_bio">
+	<text>Один из основателей Долга и по совместительству главный идеолог. Это он разработал свод правил и завербовал практически всех ключевых членов Долга.</text>
+</string>
+
+<string id="bar_ivancov_name">
+	<text>Капитан Иванцов</text>
+</string>
+<string id="bar_ivancov_bio">
+	<text>Руководитель всех карательных операций и операций по зачистке крупных скоплений мутантов.</text>
+</string>
+
+<string id="bar_plichko_name">
+	<text>Сержант Пличко</text>
+</string>
+<string id="bar_plichko_bio">
+	<text>Начальник охраны территории Долга.</text>
+</string>
+
+<string id="bar_kicenko_name">
+	<text>Сержант Киценко</text>
+</string>
+
+<!-------------------------------- ROSTOK -------------------------------->
+
+<string id="ros_kruglov_name">
+	<text>Профессор Круглов</text>
+</string>
+<string id="ros_kruglov_bio">
+	<text>Доктор биологических наук. За пределами Зоны занимался патогенными мутациями у животных. В Зону отправился для изучения мутаций слепых псов.</text>
+</string>
+
+<string id="ros_volkodav_name">
+	<text>Волкодав</text>
+</string>
+<string id="ros_volkodav_bio">
+	<text>Один из полевых командиров "Наемников". Командир отряда боевиков, которые именуют себя "псами". Анархист, презирает любые законы, кроме законов силы.</text>
+</string>
+
+<string id="ros_tiran_name">
+	<text>Тиран</text>
+</string>
+<string id="ros_tiran_bio">
+	<text>Один из «героев» группировки Наемников. Простреленный всеми калибрами ветеран. Редкий псих и садист.</text>
+</string>
+
+<string id="ros_happy_name">
+	<text>Счастливчик</text>
+</string>
+<string id="ros_happy_bio">
+	<text>Мародер и убийца. За его голову неоднократно объявляли награду. Когда-то был в хороших отношениях с Долгом, помог им отбить нынешнюю территорию. Теперь обитает на дикой территории и грабит со своей бандой одиноких сталкеров.</text>
+</string>
+
+<string id="ros_freeman_name">
+	<text>Фримен</text>
+</string>
+<string id="ros_freeman_bio">
+	<text>Ученый, эксперт по аномальным явлениям. Работал в Америке над секретными проектами. С недавнего времени считался пропавшим без вести.</text>
+</string>
+
+<string id="ros_ecolog_guard_bio">
+	<text>Сотрудник мобильной научной лаборатории. Детальная информация отсутствует.</text>
+</string>
+
+
+<!-------------------------------- YANTAR -------------------------------->
+
+<string id="yan_saharov_name">
+	<text>Профессор Сахаров</text>
+</string>
+<string id="yan_saharov_bio">
+	<text>Ветеран исследований Зоны. Участвовал в первых экспедициях 2007 года.</text>
+</string>
+
+<string id="yan_semenov_name">
+	<text>Ассистент Семенов</text>
+</string>
+<string id="yan_semenov_bio">
+	<text>Научный сотрудник мобильной лаборатории. Детальная информация отсутствует.</text>
+</string>
+
+<string id="yan_vasilyev_name">
+	<text>Васильев</text>
+</string>
+
+<string id="yan_ghost_name">
+	<text>Призрак</text>
+</string>
+
 
 <!-------------------------------- DARKVALLEY -------------------------------->
 <string id="val_borov_name">
@@ -159,39 +339,6 @@
 	<text>Один из сталкеров, которым не повезло.</text>
 </string>
 
-
-<!-- Agroprom-->
-<string id="agr_krot_name">
-	<text>Крот</text>
-</string>
-
-<string id="agr_krot_bio">
-	<text>Бывший диггер, которому с возрастом надоели скучные городские дренажки. Пришёл в зону полазить по заброшенным лабораториям и бункерам в поисках чего-то необычного. Сам не знает, что ищет. Со временем нашёл единомышленников. По традиции их прозвали "группировка Крота"</text>
-</string>
-
-<string id="agr_renegade_bio">
-	<text>Бывшый солдат. Сейчас дезертировал.</text>
-</string>
-
-<string id="agr_stalker_general_bio">
-	<text>Опытный сталкер. Детальная информация отсутствует.</text>
-</string>
-
-<string id="agr_soldier_general_bio">
-	<text>Рядовой солдат. Детальная информация отсутствует.</text>
-</string>
-
-<string id="agr_specnaz_bio">
-	<text>Армейский спецназ. Хорошо экипирован. Детальная информация недоступна.</text>
-</string>
-
-<string id="agr_general_bio">
-	<text>Детальная информация отсутствует.</text>
-</string>
-
-<string id="agr_bandit_general_bio">
-	<text>Неизвестный сталкер. Сомнительная репутация. Детальная информация отсутствует.</text>
-</string>
 
 <!-- Radar-->
 

@@ -38,7 +38,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>agr_renegade_bio</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>agr_ratcatcher</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -64,10 +64,10 @@
 	</specific_character>
 	
 	<specific_character id="agr_nii_commander" team_default = "1">
-		<name>tips_captain_name</name>
+		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>agr_general_bio</bio>
+		<bio>sim_soldier_commander_bio</bio>
 
 		<class>agr_nii_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -97,7 +97,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>agr_stalker_general_bio</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -126,7 +126,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>agr_stalker_general_bio</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -155,7 +155,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>agr_stalker_general_bio</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -184,7 +184,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>agr_stalker_general_bio</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -213,7 +213,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="26" y="12"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>agr_stalker_general_bio</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -242,7 +242,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>agr_stalker_general_bio</bio>
+		<bio>sim_stalker_general_bio</bio>
 
 		<class>agr_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -273,7 +273,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -302,7 +302,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -331,7 +331,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -360,7 +360,7 @@
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -389,7 +389,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_specnaz_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -420,7 +420,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>agr_specnaz_bio</bio>
+		<bio>sim_soldier_specnaz_bio</bio>
 
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -449,7 +449,7 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>agr_specnaz_bio</bio>
+		<bio>sim_soldier_specnaz_bio</bio>
 
 		<class>agr_Soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -480,7 +480,7 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>agr_general_bio</bio>
+		<bio>sim_soldier_commander_bio</bio>
 
 		<class>agr_Soldier_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -509,7 +509,7 @@
 		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="20" y="14"></icon>
 		<map_icon x="2" y="0"></map_icon>
-		<bio>agr_general_bio</bio>
+		<bio>sim_soldier_commander_bio</bio>
 
 		<class>agr_Soldier_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -539,7 +539,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_sniper_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -568,7 +568,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_sniper_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -597,7 +597,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>agr_soldier_general_bio</bio>
+		<bio>sim_soldier_sniper_bio</bio>
 
 		<class>agr_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
@@ -628,7 +628,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>agr_bandit_general_bio</bio>
+		<bio>sim_bandit_general_bio</bio>
 	
 		<class>agr_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -658,7 +658,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>agr_bandit_general_bio</bio>
+		<bio>sim_bandit_general_bio</bio>
 		
 		<class>agr_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
@@ -688,7 +688,7 @@
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="2"></icon>
 		<map_icon x="3" y="2"></map_icon>
-		<bio>agr_bandit_general_bio</bio>
+		<bio>sim_bandit_general_bio</bio>
 				
 		<class>agr_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>

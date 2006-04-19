@@ -4,10 +4,10 @@
 
 <!----------------glavniy ucheniy-------------->
 	<specific_character id="yan_general_ecolog" team_default = "1">
-		<name>Профессор Сахаров</name>
+		<name>yan_saharov_name</name>
 		<icon x="4" y="0"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>ученый</bio>
+		<bio>yan_saharov_bio</bio>
 
 		<class>yan_general_ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
@@ -31,10 +31,10 @@
 
 <!---------------------------RESCUE_ECOLOG------------------------>
 <specific_character id="yan_ecolog_help" team_default = "1">
-		<name>Профессор Круглов</name>
+		<name>yan_kruglov_name</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Доктор биологических наук. За пределами Зоны занимался патогенными мутациями у животных. В Зону отправился для изучения мутаций слепых псов.</bio>
+		<bio>yan_kruglov_bio</bio>
 
 		<class>yan_ecolog_help</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
@@ -59,10 +59,10 @@
 	</specific_character>
 
 <specific_character id="yan_Semenov" team_default = "1">
-		<name>Ассистент Семенов</name>
+		<name>yan_semenov_name</name>
 		<icon x="10" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Средний научный сотрудник Семенов. Детальная информация отсутствует.</bio>
+		<bio>yan_semenov_bio</bio>
 
 		<class>yan_Semenov</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
@@ -85,10 +85,10 @@
 	</specific_character>
 	
 	<specific_character id="yan_ecolog_vasilyev" team_default = "1">
-		<name>Васильев</name>
+		<name>yan_vasilyev_name</name>
 		<icon x="10" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Младший научный сотрудник Васильев. Детальная информация отсутствует.</bio>
+		<bio>yan_semenov_bio</bio>
 
 		<class>yan_Ecolog_vasilyev</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
@@ -112,10 +112,10 @@
 	</specific_character>
 
 <specific_character id="yan_ghost" team_default = "1">
-		<name>Призрак</name>
+		<name>yan_ghost_name</name>
 		<icon x="20" y="12"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Сталкер Призрак</bio>
+		<bio>sim_stalker_veteran_bio</bio>
 
 		<class>yan_ghost</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -140,7 +140,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
-		<bio>Охрана мобильного научного лагеря. Детальная информация отсутствует.</bio>
+		<bio>ros_ecolog_guard_bio</bio>
 
 		<class>yan_Ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
@@ -165,7 +165,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="10" y="4"></icon>
 		<map_icon x="1" y="6"></map_icon>
-		<bio>Научный работник. Детальная информация отсутствует.</bio>
+		<bio>ros_ecolog_guard_bio</bio>
 		
 		<class>yan_Ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
@@ -190,7 +190,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 		
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -213,7 +213,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -236,7 +236,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -259,7 +259,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -282,7 +282,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -305,7 +305,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -328,7 +328,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -352,7 +352,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -378,7 +378,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -401,7 +401,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -426,7 +426,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -451,7 +451,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_veteran_bio</bio>
 
 		<class>yan_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -477,7 +477,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_zombied_master_bio</bio>
 
 		<class>yan_Zombied_master</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -499,10 +499,10 @@
 
 <!---------------------------СВЕЖЕZOMBIED STALKER----------------------->
 	<specific_character id="yan_fresh_Zombied_stalker_1" team_default = "1">
-		<name>Свежезомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>yan_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -523,10 +523,10 @@
 
 
 	<specific_character id="yan_fresh_Zombied_stalker_2" team_default = "1">
-		<name>Свежезомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>yan_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
@@ -547,10 +547,10 @@
 
 
 	<specific_character id="yan_fresh_Zombied_stalker_3" team_default = "1">
-		<name>Свежезомбированный сталкер</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="10"></icon>
 		<map_icon x="7" y="0"></map_icon>
-		<bio>Один из сталкеров, которым не повезло.</bio>
+		<bio>sim_fresh_Zombied_bio</bio>
 
 		<class>yan_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
