@@ -47,15 +47,38 @@ public:
 		_strlwr(res_ptr);
 		return result;
 	}
-	static IC void ConvertMatrix	(const Matrix3& src, Fmatrix& dest)
+	static IC void ConvertMatrix	(const Matrix3& _src, Fmatrix& dest)
 	{
+//*		
+		Fmatrix src; src.identity();
+		Point3 cn,rw;
+		cn = _src.GetRow(0);
+		src.i.set(cn.x,cn.y,cn.z);
+		cn = _src.GetRow(1);
+		src.j.set(cn.x,cn.y,cn.z);
+		cn = _src.GetRow(2);
+		src.k.set(cn.x,cn.y,cn.z);
+		rw = _src.GetRow(3);
+		src.c.set(rw.x,rw.y,rw.z);
+
+		Fmatrix m,t;
+		m.identity	();
+		m.i.set(1,0,0);
+		m.j.set(0,0,1);
+		m.k.set(0,1,0);
+
+		t.mul		(m,src);
+		dest.mul	(t,m);
+/*/
+/*
 		Quat	Q;
 		Point3	P,S;
-		DecomposeMatrix(src, P, Q, S);
+		DecomposeMatrix(_src, P, Q, S);
 		Fquaternion q;
 		q.set(Q.w,-Q.x,-Q.z,-Q.y);
 		dest.rotation(q);
 		dest.translate_over(P.x,P.z,P.y);
+//*/
 	}
 };
 

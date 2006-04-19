@@ -57,7 +57,7 @@ BOOL CExporter::ExportMotion(INode* pNode, LPCSTR fname)
 		BM.envs[ctRotationH]->behavior[0]=1; BM.envs[ctRotationH]->behavior[1]=1;
 		BM.envs[ctRotationP]->behavior[0]=1; BM.envs[ctRotationP]->behavior[1]=1;
 		BM.envs[ctRotationB]->behavior[0]=1; BM.envs[ctRotationB]->behavior[1]=1;
-
+ 
 		TimeValue tick;
 		st_Key *X,*Y,*Z,*H,*P,*B;
 		for(tick = iStartTick; tick < iEndTick; tick+=iTPF)
@@ -73,6 +73,7 @@ BOOL CExporter::ExportMotion(INode* pNode, LPCSTR fname)
 
 			float h,p,b, x,y,z;
 			tmBone.getHPB(h,p,b);
+
 			x=tmBone.c.x; y=tmBone.c.y; z=tmBone.c.z;
 			X->time = displacedTime;	Y->time = displacedTime;	Z->time = displacedTime;
 			H->time = displacedTime;	P->time = displacedTime;	B->time = displacedTime;

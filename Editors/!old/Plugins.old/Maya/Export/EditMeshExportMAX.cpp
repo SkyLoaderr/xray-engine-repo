@@ -202,7 +202,7 @@ bool CEditableMesh::Convert(CExporter* E)
 		m_FaceCount		= E->m_ExpFaces.size();
 		m_Faces			= xr_alloc<st_Face>	(m_FaceCount);
 		m_SGs			= xr_alloc<u32>		(m_FaceCount);
-		m_VMRefs.resize	(m_FaceCount);
+		m_VMRefs.resize	(m_VertCount);
 
 		int f_id=0;
 		for (ExpFaceIt ef_it=E->m_ExpFaces.begin(); ef_it!=E->m_ExpFaces.end(); ef_it++,f_id++){

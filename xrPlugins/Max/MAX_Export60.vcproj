@@ -15,7 +15,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin\debug\ver-6.0"
+			OutputDirectory="r:\max8\plugins"
 			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -87,7 +87,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="bin\release\ver-6.0"
+			OutputDirectory="r:\max8\plugins"
 			IntermediateDirectory="Intermediate\Release\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -160,7 +160,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="bin\ver-6.0"
+			OutputDirectory="r:\max8\plugins"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
 			UseOfMFC="0"
