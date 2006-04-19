@@ -179,7 +179,9 @@ void CALifeMonsterDetailPathManager::follow_path				(const ALife::_TIME_ID &time
 		m_walked_distance			= 0.f;
 		m_path.pop_back				();
 		object().alife().graph().change		(&object(),object().m_tGraphID,(GameGraph::_GRAPH_ID)m_path.back());
+		VERIFY								(m_path.back() == object().m_tGraphID);
 		object().brain().on_location_change	();
+		VERIFY								(m_path.back() == object().m_tGraphID);
 	}
 }
 
