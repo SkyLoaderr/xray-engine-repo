@@ -40,12 +40,6 @@ protected:
 	CUITradeInternal*	m_uidata;
 
 	bool				bStarted;
-/*
-	static bool			urBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool			OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool			OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	static bool			OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-*/
 	bool 				ToOurTrade					();
 	bool 				ToOthersTrade				();
 	bool 				ToOurBag					();
@@ -59,6 +53,7 @@ protected:
 
 	void				PerformTrade				();
 	void				UpdatePrices				();
+	void				ColorizeItem				(CUICellItem* itm, bool b);
 
 	enum EListType{eNone,e1st,e2nd,eBoth};
 	void				UpdateLists					(EListType);

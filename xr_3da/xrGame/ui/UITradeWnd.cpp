@@ -209,40 +209,8 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		PerformTrade();
 	}
-/*
-	else if(msg == DRAG_DROP_ITEM_DRAG)
-	{
 
-		m_pCurrentDragDropItem			= (CUIDragDropItem*)pWnd;
-		PIItem pInvItem					= (PIItem)m_pCurrentDragDropItem->GetData();
-		SetCurrentItem					(pInvItem);
-		m_pCurrentDragDropItem->Rescale	(1.0f,1.0f);
-	}
-	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
-	{
-		if (m_pCurrentDragDropItem) 
-			m_pCurrentDragDropItem->Highlight(false);
-
-		m_pCurrentDragDropItem			= (CUIDragDropItem*)pWnd;
-		PIItem pInvItem					= (PIItem)m_pCurrentDragDropItem->GetData();
-		
-		SetCurrentItem(pInvItem);
-		
-		if(m_pCurrentDragDropItem->GetParent() == &m_uidata->UIOurBagList)
-			ToOurTrade();
-		else if(m_pCurrentDragDropItem->GetParent() == &m_uidata->UIOurTradeList)
-			ToOurBag();
-		else if(m_pCurrentDragDropItem->GetParent() == &m_uidata->UIOthersBagList)
-			ToOthersTrade();
-		else if(m_pCurrentDragDropItem->GetParent() == &m_uidata->UIOthersTradeList)
-			ToOthersBag();
-		else
-			R_ASSERT2(false, "wrong parent for trade wnd");
-	}
-*/
 	CUIWindow::SendMessage(pWnd, msg, pData);
-
-
 }
 
 void CUITradeWnd::Draw()
@@ -529,7 +497,8 @@ void CUITradeWnd::FillList	(TIItemContainer& cont, CUIDragDropListEx& dragDropLi
 
 	for(; it != it_e; ++it) 
 	{
-		CUICellItem* itm			= create_cell_item(*it);
+		CUICellItem* itm			= create_cell_item	(*it);
+		if(do_colorize)				ColorizeItem		(itm, CanMoveToOther(*it));
 		dragDropList.SetItem		(itm);
 	}
 
@@ -621,4 +590,10 @@ void CUITradeWnd::BindDragDropListEnents(CUIDragDropListEx* lst)
 	lst->m_f_item_db_click			= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUITradeWnd::OnItemDbClick);
 	lst->m_f_item_selected			= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUITradeWnd::OnItemSelected);
 	lst->m_f_item_rbutton_click		= CUIDragDropListEx::DRAG_DROP_EVENT(this,&CUITradeWnd::OnItemRButtonClick);
+}
+
+void CUITradeWnd::ColorizeItem(CUICellItem* itm, bool b)
+{
+	if(!b)
+		itm->SetColor				(color_rgba(255,100,100,255));
 }
