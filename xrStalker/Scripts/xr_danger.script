@@ -59,13 +59,18 @@ function evaluator_danger:evaluate()
 
 	-- проверка не находится ли денжер в списке вечнозапрещенных.(БТР, Вертолеты и тд)
 	local best_danger_section_name = 0
+	local best_danger_object = 0 
 	if best_danger:dependent_object() ~= nil then
-		best_danger_section_name = best_danger:dependent_object():section()
+		best_danger_object = best_danger:dependent_object()
 	else
 		if best_danger:object() ~= nil then
-			best_danger_section_name = best_danger:object():section()
+			best_danger_object = best_danger:object()
 		end
 	end
+	if best_danger_object ~= nil then
+		best_danger_section_name = best_danger_object:section()
+	end
+	
 	if best_danger_section_name ~= nil then
 		if always_ignore_danger_from[best_danger_section_name] == "true" then
 			printf("DANGER [%s] [FALSE] forbidded", self.object:name())
@@ -75,11 +80,13 @@ function evaluator_danger:evaluate()
 
 	local bd_type = best_danger:type()	
 	-- Проверка на запрещенный денжер от актера
-	if bd_type == danger_object.attack_sound or
-	   bd_type == danger_object.bullet_ricochet
+	if best_danger_object ~= nil and
+	   best_danger_object:id() == db.actor:id() and
+	   (bd_type == danger_object.attack_sound or
+	   bd_type == danger_object.bullet_ricochet)
 	then
 		if self.object:best_enemy() == nil and
-		   self.object:relation(db.actor) == game_object.enemy 
+		   self.object:relation(db.actor) ~= game_object.enemy 
 		then
 			printf("DANGER [%s] [FALSE] actor_danger", self.object:name())
 			return false
