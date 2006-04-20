@@ -195,7 +195,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 //	if (!already_dead())
 		CObjectHandler::reload		(section);
 
-	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
+//	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
 
 	if (!already_dead())
 		sight().reload				(section);

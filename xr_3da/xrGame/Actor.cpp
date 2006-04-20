@@ -1175,8 +1175,12 @@ void CActor::g_PerformDrop	( )
 {
 	b_DropActivated			= FALSE;
 
-	PIItem pItem = inventory().ActiveItem();
-	if (0==pItem) return;
+	PIItem pItem			= inventory().ActiveItem();
+	if (0==pItem)			return;
+
+	u32 s					= inventory().GetActiveSlot();
+	if(inventory().m_slots[s].m_bPersistent)	return;
+
 	pItem->Drop();
 }
 

@@ -23,58 +23,45 @@ CInventorySlot::CInventorySlot()
 {
 	m_pIItem				= NULL;
 	m_bCanBeActivated		= true;
-	m_bUsable				= true;
+	m_bPersistent			= false;
 }
 
 CInventorySlot::~CInventorySlot() 
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// CInventory class 
-///////////////////////////////////////////////////////////////////////////////
-
 CInventory::CInventory() 
 {
-	m_fTakeDist = pSettings->r_float("inventory","take_dist"); // 2.f;
-	m_fMaxWeight = pSettings->r_float("inventory","max_weight"); // 40.f;
-//	m_iMaxRuck = pSettings->r_s32("inventory","max_ruck"); // 50;
-	m_iMaxBelt = pSettings->r_s32("inventory","max_belt"); // 18;
+	m_fTakeDist									= pSettings->r_float	("inventory","take_dist");
+	m_fMaxWeight								= pSettings->r_float	("inventory","max_weight");
+	m_iMaxBelt									= pSettings->r_s32		("inventory","max_belt");
 	
-	u32 l_slotsNum = pSettings->r_s32("inventory","slots"); // 7;			// 6 слотов оружия и слот одежды/защиты.
-	m_slots.resize(l_slotsNum);
+	u32 l_slotsNum								= pSettings->r_s32		("inventory","slots");
+	m_slots.resize								(l_slotsNum);
 	
-	m_iActiveSlot = m_iNextActiveSlot = NO_ACTIVE_SLOT;
-	
-	u32 i = 0; 
+	m_iActiveSlot = m_iNextActiveSlot			= NO_ACTIVE_SLOT;
+
+	m_pTarget									= NULL;
+
 	string256 temp;
-	
-	do 
+	for(u32 i=0; i<m_slots.size(); ++i ) 
 	{
-		sprintf(temp, "slot_name_%d", i+1);
-		if(i < m_slots.size() && pSettings->line_exist("inventory",temp)) 
-		{
-			m_slots[i].m_name = pSettings->r_string("inventory",temp);
-			++i;
-		} 
-		else break;
-	} while(true);
-	m_pTarget = NULL;
+		sprintf(temp, "slot_persistent_%d", i+1);
+		if(pSettings->line_exist("inventory",temp)) 
+			m_slots[i].m_bPersistent = !!pSettings->r_bool("inventory",temp);
+	};
 
-	m_slots[PDA_SLOT].m_bCanBeActivated = false;
-	m_slots[OUTFIT_SLOT].m_bCanBeActivated = false;
+	m_slots[PDA_SLOT].m_bCanBeActivated			= false;
+	m_slots[OUTFIT_SLOT].m_bCanBeActivated		= false;
 
-	m_bSlotsUseful = true;
-	m_bBeltUseful = false;
+	m_bSlotsUseful								= true;
+	m_bBeltUseful								= false;
 
-	//инициализируем невалидный вес инвентаря
-	m_fTotalWeight = -1.f;
-
-	m_dwModifyFrame = 0;
-	m_iPrevActiveSlot = NO_ACTIVE_SLOT;
-
-	m_drop_last_frame = false;
-	m_bDoBlockAllSlots=0;
+	m_fTotalWeight								= -1.f;
+	m_dwModifyFrame								= 0;
+	m_iPrevActiveSlot							= NO_ACTIVE_SLOT;
+	m_drop_last_frame							= false;
+	m_bDoBlockAllSlots							= 0;
 }
 
 
@@ -82,66 +69,61 @@ CInventory::~CInventory()
 {
 }
 
-
-
 void CInventory::Clear()
 {
-	m_all.clear();
-	m_ruck.clear();
-	m_belt.clear();
+	m_all.clear							();
+	m_ruck.clear						();
+	m_belt.clear						();
 	
 	for(u32 i=0; i<m_slots.size(); i++)
 	{
-		m_slots[i].m_pIItem = NULL;
+		m_slots[i].m_pIItem				= NULL;
 	}
 	
 
-	m_pOwner = NULL;
+	m_pOwner							= NULL;
 
-	CalcTotalWeight();
-	m_dwModifyFrame = Device.dwFrame;
+	CalcTotalWeight						();
+	m_dwModifyFrame						= Device.dwFrame;
 }
 
 void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placement)
 {
-	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
-	VERIFY(pIItem);
-	VERIFY(pIItem->m_pInventory==NULL);
-	VERIFY(CanTakeItem(pIItem));
+	CInventoryItem *pIItem				= smart_cast<CInventoryItem*>(pObj);
+	VERIFY								(pIItem);
+	VERIFY								(pIItem->m_pInventory==NULL);
+	VERIFY								(CanTakeItem(pIItem));
 	
-	pIItem->m_pInventory	= this;
-	pIItem->SetDrop			(FALSE);
+	pIItem->m_pInventory				= this;
+	pIItem->SetDrop						(FALSE);
 
-	m_all.push_back			(pIItem);
+	m_all.push_back						(pIItem);
 
 	if(!strict_placement)
-		pIItem->m_eItemPlace = eItemPlaceUndefined;
+		pIItem->m_eItemPlace			= eItemPlaceUndefined;
 
-	bool result = false;
+	bool result							= false;
 	switch(pIItem->m_eItemPlace)
 	{
 	case eItemPlaceBelt:
-		result = Belt(pIItem); 
+		result							= Belt(pIItem); 
 #ifdef DEBUG
-		//VERIFY(result);
 		if(!result) 
 			Msg("cant put in belt item %s", *pIItem->object().cName());
 #endif
 
 		break;
 	case eItemPlaceRuck:
-		result = Ruck(pIItem);
+		result							= Ruck(pIItem);
 #ifdef DEBUG
-		//VERIFY(result);
 		if(!result) 
 			Msg("cant put in ruck item %s", *pIItem->object().cName());
 #endif
 
 		break;
 	case eItemPlaceSlot:
-		result = Slot(pIItem, bNotActivate); 
+		result							= Slot(pIItem, bNotActivate); 
 #ifdef DEBUG
-		//VERIFY(result);
 		if(!result) 
 			Msg("cant slot in ruck item %s", *pIItem->object().cName());
 #endif
@@ -150,36 +132,36 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	default:
 		if(CanPutInSlot(pIItem))
 		{
-			result = Slot(pIItem, bNotActivate); VERIFY(result);
+			result						= Slot(pIItem, bNotActivate); VERIFY(result);
 		} 
 		else if ( (!pIItem->RuckDefault() || isBeautifulForActiveSlot(pIItem)) && CanPutInBelt(pIItem))
 		{
-			result = Belt(pIItem); VERIFY(result);
+			result						= Belt(pIItem); VERIFY(result);
 		}
 		else
 		{
-			result = Ruck(pIItem); VERIFY(result);
+			result						= Ruck(pIItem); VERIFY(result);
 		}
 	}
 	
-	m_pOwner->OnItemTake		(pIItem);
+	m_pOwner->OnItemTake				(pIItem);
 
-	CalcTotalWeight();
-	m_dwModifyFrame = Device.dwFrame;
+	CalcTotalWeight						();
+	m_dwModifyFrame						= Device.dwFrame;
 
 	pIItem->object().processing_deactivate();
-	VERIFY(pIItem->m_eItemPlace != eItemPlaceUndefined);
+	VERIFY								(pIItem->m_eItemPlace != eItemPlaceUndefined);
 }
 
 bool CInventory::Drop(CGameObject *pObj, bool call_drop) 
 {
-	CInventoryItem *pIItem = smart_cast<CInventoryItem*>(pObj);
-	VERIFY(pIItem);
-	if(pIItem->m_pInventory!=this) return false;
+	CInventoryItem *pIItem				= smart_cast<CInventoryItem*>(pObj);
+	VERIFY								(pIItem);
+	if(pIItem->m_pInventory!=this)		return false;
 
-	VERIFY(pIItem->m_pInventory);
-	VERIFY(pIItem->m_pInventory==this);
-	VERIFY(pIItem->m_eItemPlace!=eItemPlaceUndefined);
+	VERIFY								(pIItem->m_pInventory);
+	VERIFY								(pIItem->m_pInventory==this);
+	VERIFY								(pIItem->m_eItemPlace!=eItemPlaceUndefined);
 
 	pIItem->object().processing_activate(); 
 	
@@ -209,14 +191,10 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 	if (call_drop && smart_cast<CInventoryItem*>(pObj))
 		m_pOwner->OnItemDrop	(smart_cast<CInventoryItem*>(pObj));
 
-	CalcTotalWeight();
-	m_dwModifyFrame = Device.dwFrame;
-
-	m_drop_last_frame = true;
-
-	return true;
-
-
+	CalcTotalWeight					();
+	m_dwModifyFrame					= Device.dwFrame;
+	m_drop_last_frame				= true;
+	return							true;
 }
 
 bool CInventory::DropAll()
@@ -225,15 +203,15 @@ bool CInventory::DropAll()
 
 	for(it = m_all.begin(); m_all.end() != it; ++it)
 	{
-		PIItem pIItem = *it;
-		Ruck(pIItem);
-		pIItem->Drop();
+		PIItem pIItem				= *it;
+		Ruck						(pIItem);
+		pIItem->Drop				();
 	}
 	
-	CalcTotalWeight();
-	m_dwModifyFrame = Device.dwFrame;
+	CalcTotalWeight					();
+	m_dwModifyFrame					= Device.dwFrame;
 
-	return true;
+	return							true;
 }
 
 //положить вещь в слот
@@ -246,11 +224,6 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 		Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->object().cName(), pIItem->GetSlot());
 #endif
 		
-////	if (GameID() != GAME_SINGLE)
-///	{
-///		bNotActivate = true;
-///	}
-
 	if(!CanPutInSlot(pIItem)) 
 	{
 #ifdef _DEBUG
@@ -412,8 +385,8 @@ void CInventory::SendActionEvent(s32 cmd, u32 flags)
 	pActor->u_EventGen		(P,GE_INV_ACTION, pActor->ID());
 	P.w_s32					(cmd);
 	P.w_u32					(flags);
-	P.w_s32					(pActor->GetZoomRndSeed());		//Random Seed
-	P.w_s32					(pActor->GetShotRndSeed());		//Random Seed
+	P.w_s32					(pActor->GetZoomRndSeed());
+	P.w_s32					(pActor->GetShotRndSeed());
 	pActor->u_EventSend		(P);
 };
 
@@ -445,13 +418,11 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		case kWPN_RELOAD:
 		case kWPN_NEXT:
 			{
-				//создать и отправить пакет
 				SendActionEvent(cmd, flags);
 				return true;
 			}break;
 		case kDROP:
 			{
-				//создать и отправить пакет
 				SendActionEvent(cmd, flags);
 				return true;
 			}break;
@@ -499,7 +470,6 @@ bool CInventory::Action(s32 cmd, u32 flags)
                 if((int)m_iActiveSlot == cmd - kWPN_1 &&
 					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
 					Activate(NO_ACTIVE_SLOT);
-//					m_slots[m_iActiveSlot].m_pIItem->Action(kWPN_NEXT, CMD_START);
 				else 
 					Activate(cmd - kWPN_1);
 
@@ -872,7 +842,6 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 			VERIFY(	0 == xr_strcmp( (*l_it)->object().cNameSect().c_str(), caItemName)  );
 			return	(*l_it);
 		}
-//	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*smart_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
 }
 
@@ -881,7 +850,6 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 {
 	VERIFY			(inventory_item);
 	VERIFY			(m_pOwner);
-//	VERIFY			(inventory_item->object().H_Parent() == NULL);
 
 	if (inventory_item->object().getDestroy()) return false;
 
@@ -961,8 +929,6 @@ bool CInventory::isBeautifulForActiveSlot	(CInventoryItem *pIItem)
 			return		(true);
 	}
 	return				(false);
-//	return ( (ActiveItem() != NULL) && ActiveItem()->IsNecessaryItem(pIItem) );
-
 }
 
 #include "WeaponHUD.h"

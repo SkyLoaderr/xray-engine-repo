@@ -75,16 +75,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		if(inventory().Action(cmd, CMD_START))					return;
 
 	switch(cmd){
-/*	
-	case kACCEL:	mstate_wishful |= mcAccel;					break;
-	case kL_STRAFE:	mstate_wishful |= mcLStrafe;				break;
-	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
-	case kL_LOOKOUT:mstate_wishful |= mcLLookout;				break;
-	case kR_LOOKOUT:mstate_wishful |= mcRLookout;				break;
-	case kFWD:		mstate_wishful |= mcFwd;					break;
-	case kBACK:		mstate_wishful |= mcBack;					break;
-	case kCROUCH:	mstate_wishful |= mcCrouch;					break;
-*/
 	case kJUMP:		
 		{
 			mstate_wishful |= mcJump;
@@ -205,16 +195,6 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 
 		switch(cmd)
 		{
-/*
-		case kACCEL:	mstate_wishful &=~mcAccel;		break;		
-		case kL_STRAFE:	mstate_wishful &=~mcLStrafe;	break;
-		case kR_STRAFE:	mstate_wishful &=~mcRStrafe;	break;
-		case kL_LOOKOUT:mstate_wishful &=~mcLLookout;	break;
-		case kR_LOOKOUT:mstate_wishful &=~mcRLookout;	break;
-		case kFWD:		mstate_wishful &=~mcFwd;		break;
-		case kBACK:		mstate_wishful &=~mcBack;		break;
-		case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
-*/
 		case kJUMP:		mstate_wishful &=~mcJump;		break;
 		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().Phase()) g_PerformDrop();				break;
 		}

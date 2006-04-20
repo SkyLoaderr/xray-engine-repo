@@ -278,11 +278,6 @@ bool CWeaponKnife::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START) Fire2Start();
 			else Fire2End();
 			return true;
-		case kDROP:
-			{
-				if (GameID() != GAME_SINGLE)
-					return true;
-			}break;
 	}
 	return false;
 }

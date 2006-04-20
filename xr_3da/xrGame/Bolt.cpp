@@ -57,6 +57,7 @@ bool CBolt::Useful() const
 bool CBolt::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
+/*
 	switch(cmd) 
 	{
 	case kDROP:
@@ -74,6 +75,7 @@ bool CBolt::Action(s32 cmd, u32 flags)
 		} 
 		return true;
 	}
+*/
 	return false;
 }
 
