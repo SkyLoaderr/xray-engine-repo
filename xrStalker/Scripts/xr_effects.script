@@ -1161,64 +1161,7 @@ function set_stalker_enemy (sid, draftsman)
     npc:hit (h)
 end
 
-function mil_controller_dead (actor, npc)
 
---    local h = hit ();
-    --h.power = 1000;
-    --h.direction = vector():set( 1, 0, 0 );
-    --h.impulse = 1;
-    --h.draftsman = npc;
-    --h.type = hit.strike;
-    --local hunter = level_object_by_sid (725)
-    --if hunter ~= nil and hunter:alive () == true then
-       --printf ("KILL STALKER : %s", hunter:name ()) 
-       --hunter:hit (h)
-    --end    
-    --hunter = level_object_by_sid (726)
-    --if hunter ~= nil and hunter:alive () == true then
-       --printf ("KILL STALKER : %s", hunter:name ()) 
-       --hunter:hit (h)
-    --end    
-    --hunter = level_object_by_sid (727)
-    --if hunter ~= nil and hunter:alive () == true then
-       --printf ("KILL STALKER : %s", hunter:name ()) 
-       --hunter:hit (h)
-    --end    
-end
-
-function mil_hunters_psi_hit (actor, npc)
-    --if npc == nil then return end
-    --local c = level_object_by_sid (729)
-    --if c == nil then return end
-
-	--local h = hit ()
-    --h.power = 100
-    --h.direction = vector():set( 1, 0, 0 )
-    --h.impulse = 1
-    --h.draftsman = c
-    --h.type = hit.telepatic
-
-    --local hunter = level_object_by_sid (725)
-    --if hunter ~= nil and hunter:alive () == true then
-       --if hunter.psy_health > 0.08 then
-          --hunter:hit (h)
-       --end   
-    --end   
-    
-    --hunter = level_object_by_sid (726)
-    --if hunter ~= nil and hunter:alive () == true then
-       --if hunter.psy_health > 0.08 then
-          --hunter:hit (h)
-       --end   
-    --end   
-
-    --hunter = level_object_by_sid (727)
-    --if hunter ~= nil and hunter:alive () == true then
-       --if hunter.psy_health > 0.08 then
-          --hunter:hit (h)
-       --end   
-    --end   
-end
 
 function mil_remove_cook_map_spot (actor, npc)
     level_tasks.remove_location (728, "mil_cook_location")
