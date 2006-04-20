@@ -58,8 +58,8 @@ function evaluator_danger:evaluate()
 	end
 
 	-- проверка не находится ли денжер в списке вечнозапрещенных.(БТР, Вертолеты и тд)
-	local best_danger_section_name = 0
-	local best_danger_object = 0 
+	local best_danger_section_name
+	local best_danger_object
 	if best_danger:dependent_object() ~= nil then
 		best_danger_object = best_danger:dependent_object()
 	else
