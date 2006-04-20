@@ -122,7 +122,7 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	//------------------------------------------------------------
 	bool SendHit = SendHitAllowed(H_Parent());
 
-	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
+	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, fHitPower, 
 										fHitImpulse, H_Parent()->ID(), ID(), 
 										m_eHitType, fireDistance, cartridge, SendHit);
 }
@@ -235,7 +235,7 @@ void CWeaponKnife::FireStart()
 {
 	//-------------------------------------------
 	m_eHitType = m_eHitType_1;
-	iHitPower = iHitPower_1;
+	fHitPower = fHitPower_1;
 	fHitImpulse = fHitImpulse_1;
 	//-------------------------------------------
 	inherited::FireStart();
@@ -252,7 +252,7 @@ void CWeaponKnife::Fire2Start ()
 {
 	//-------------------------------------------
 	m_eHitType = m_eHitType_2;
-	iHitPower = iHitPower_2;
+	fHitPower = fHitPower_2;
 	fHitImpulse = fHitImpulse_2;
 	//-------------------------------------------
 	inherited::Fire2Start();
@@ -293,11 +293,11 @@ void CWeaponKnife::LoadFireParams		(LPCSTR section, LPCSTR prefix)
 
 	string256 full_name;
 	//сила выстрела и его мощьность
-	iHitPower_1			= iHitPower;
+	fHitPower_1			= fHitPower;
 	fHitImpulse_1		= fHitImpulse;
 	m_eHitType_1		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type"));
 	
-	iHitPower_2			= pSettings->r_s32		(section,strconcat(full_name, prefix, "hit_power_2"));
+	fHitPower_2			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_power_2"));
 	fHitImpulse_2		= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse_2"));
 	m_eHitType_2		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_2"));
 }
