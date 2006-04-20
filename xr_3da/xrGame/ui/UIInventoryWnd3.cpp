@@ -13,6 +13,7 @@
 #include "../game_cl_base.h"
 #include "../xr_level_controller.h"
 #include "UICellItem.h"
+#include "UIListBoxItem.h"
 
 void	CUIInventoryWnd::Activate_Artefact()
 {
@@ -203,7 +204,7 @@ void CUIInventoryWnd::ProcessPropertiesBoxClicked	()
 {
 	if(UIPropertiesBox.GetClickedItem())
 	{
-		switch(UIPropertiesBox.GetClickedItem()->GetValue())
+		switch(UIPropertiesBox.GetClickedItem()->GetID())
 		{
 		case INVENTORY_SELL_ITEM:
 			SellItem();
