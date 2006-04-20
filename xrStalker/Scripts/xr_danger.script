@@ -73,8 +73,20 @@ function evaluator_danger:evaluate()
 		end
 	end
 
-	-- Проверка, не находится ли данжер в списке запрещенных.
 	local bd_type = best_danger:type()	
+	-- Проверка на запрещенный денжер от актера
+	if bd_type == danger_object.attack_sound or
+	   bd_type == danger_object.bullet_ricochet
+	then
+		if self.object:best_enemy() == nil and
+		   self.object:relation(db.actor) == game_object.enemy 
+		then
+			printf("DANGER [%s] [FALSE] actor_danger", self.object:name())
+			return false
+		end	
+	end
+
+	-- Проверка, не находится ли данжер в списке запрещенных.
 	if bd_type == danger_object.grenade then
 		if self.a.ignore_types["grenade"] == true then
 			printf("DANGER [%s] [FALSE] ignore grenade", self.object:name())
