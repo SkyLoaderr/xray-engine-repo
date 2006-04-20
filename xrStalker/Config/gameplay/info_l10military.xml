@@ -282,6 +282,9 @@
 	<info_portion id="mil_miser_task_failed"></info_portion>
 	<info_portion id="mil_ugrumy_found"></info_portion>
 	<info_portion id="mil_after_hunt_talked"></info_portion>
+	<info_portion id="mil_bloodsucker1_dead"></info_portion>
+	<info_portion id="mil_bloodsucker2_dead"></info_portion>
+	<info_portion id="mil_bloodsucker3_dead"></info_portion>
 
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>
