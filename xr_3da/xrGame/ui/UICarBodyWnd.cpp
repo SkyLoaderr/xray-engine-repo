@@ -18,6 +18,8 @@
 #include "../Actor.h"
 #include "../eatable_item.h"
 #include "../alife_registry_wrappers.h"
+#include "UIButton.h"
+#include "UIListBoxItem.h"
 
 #define				CAR_BODY_XML		"carbody_new.xml"
 #define				CARBODY_ITEM_XML	"carbody_item.xml"
@@ -109,7 +111,7 @@ void CUICarBodyWnd::Init()
 
 	m_pUIPropertiesBox				= xr_new<CUIPropertiesBox>(); m_pUIPropertiesBox->SetAutoDelete(true);
 	AttachChild						(m_pUIPropertiesBox);
-	m_pUIPropertiesBox->Init		("ui_pop_up",0,0,300,300);
+	m_pUIPropertiesBox->Init		(0,0,300,300);
 	m_pUIPropertiesBox->Hide		();
 
 	SetCurrentItem					(NULL);
@@ -219,7 +221,7 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		if(m_pUIPropertiesBox->GetClickedItem())
 		{
-			switch(m_pUIPropertiesBox->GetClickedItem()->GetValue())
+			switch(m_pUIPropertiesBox->GetClickedItem()->GetID())
 			{
 			case INVENTORY_EAT_ACTION:	//סתוסעü מבתוךע
 				EatItem();

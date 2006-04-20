@@ -8,9 +8,12 @@
 #include "UIPropertiesBox.h"
 #include "../hudmanager.h"
 #include "../level.h"
+#include "UIListBoxItem.h"
+#include "xrXmlParser.h"
+#include "UIXmlInit.h"
 
-#define OFFSET_X (20)
-#define OFFSET_Y (18)
+#define OFFSET_X (5)
+#define OFFSET_Y (5)
 #define FRAME_BORDER_WIDTH	20
 #define FRAME_BORDER_HEIGHT	22
 
@@ -22,8 +25,9 @@
 
 CUIPropertiesBox::CUIPropertiesBox()
 {
-	m_iClickedElement = -1;
+//	m_iClickedElement = -1;
 	SetFont(HUD().Font().pFontArial14);
+	m_UIListWnd.SetImmediateSelection(true);
 }
 
 CUIPropertiesBox::~CUIPropertiesBox()
@@ -31,22 +35,29 @@ CUIPropertiesBox::~CUIPropertiesBox()
 }
 
 
-void CUIPropertiesBox::Init(LPCSTR base_name, float x, float y, float width, float height)
+void CUIPropertiesBox::Init(float x, float y, float width, float height)
 {
-	inherited::Init(base_name, x,y, width, height);
+	inherited::Init(x,y, width, height);
 
 	AttachChild(&m_UIListWnd);
-	
+
+	CUIXml	xml_doc;
+	xml_doc.Init(CONFIG_PATH, UI_PATH, "inventory_new.xml");
+
+	LPCSTR t = xml_doc.Read("properties_box:texture", 0, "");
+	R_ASSERT(t);
+	InitTexture(t);
+
+	CUIXmlInit::InitListBox(xml_doc, "properties_box:list", 0, &m_UIListWnd);
+
+//	m_UIListWnd.SetItemHeight(ITEM_HEIGHT);
+		
 	m_UIListWnd.Init(OFFSET_X,
 					 OFFSET_Y, 
 					 width - OFFSET_X*2, 
-					 height - OFFSET_Y*2,
-					 ITEM_HEIGHT );
-	m_UIListWnd.EnableActiveBackground(true);
-	m_UIListWnd.EnableScrollBar(false);
+					 height - OFFSET_Y*2);
 
 
-	m_iClickedElement = -1;
 }
 
 
@@ -57,8 +68,8 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		if(msg == LIST_ITEM_CLICKED)
 		{
-			m_iClickedElement = ((CUIListItem*)pData)->GetIndex();
-			GetMessageTarget()->SendMessage(this, PROPERTY_CLICKED, ((CUIListItem*)pData)->GetData() );
+//			m_iClickedElement = this->m_UIListWnd.GetSelectedItem()->getin;
+			GetMessageTarget()->SendMessage(this, PROPERTY_CLICKED);
 			
 			Hide();
 		}
@@ -69,16 +80,19 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 bool CUIPropertiesBox::AddItem(const char*  str, void* pData, int value)
 {
-	return m_UIListWnd.AddItem<CUIListItem>(str, 0, pData, value);
+	//return m_UIListWnd.AddItem<CUIListItem>(str, 0, pData, value);
+	m_UIListWnd.AddItem(str)->SetID(u32(value));
+
+	return true;
 }
 void CUIPropertiesBox::RemoveItem(int index)
 {
-	m_UIListWnd.RemoveItem(index);
+	m_UIListWnd.RemoveWindow(m_UIListWnd.GetItemByID(index));
 }
 
 void CUIPropertiesBox::RemoveAll()
 {
-	m_UIListWnd.RemoveAll();
+	m_UIListWnd.Clear();
 }
 
 void CUIPropertiesBox::Show(float x, float y)
@@ -110,7 +124,7 @@ void CUIPropertiesBox::Show(float x, float y)
 	//по отношению к нашему родительскому окну
 	m_pOrignMouseCapturer = this;
 	
-	m_iClickedElement = -1;
+//	m_iClickedElement = -1;
 
 	m_UIListWnd.Reset();
 }
@@ -146,20 +160,21 @@ bool CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)
 void CUIPropertiesBox::AutoUpdateSize()
 {
 	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize()+
-			  FRAME_BORDER_HEIGHT*2);
-	float f = float(m_UIListWnd.GetLongestSignWidth()+FRAME_BORDER_WIDTH*2); 
-	SetWidth(_max(100.0f,f));
-		f = float(m_UIListWnd.GetLongestSignWidth());
-	m_UIListWnd.SetWidth(_max(100.0f-FRAME_BORDER_WIDTH*2,f));
+			  OFFSET_X*2);
+	float f = float(m_UIListWnd.GetLongestLength()+OFFSET_Y*2); 
+	SetWidth(_max(20,f));
+		f = float(m_UIListWnd.GetLongestLength());
+	m_UIListWnd.SetWidth(_max(20,f));
 }
 
-int CUIPropertiesBox::GetClickedIndex() 
+//int CUIPropertiesBox::GetClickedIndex() 
+//{
+////	return m_iClickedElement;
+//}
+
+CUIListBoxItem* CUIPropertiesBox::GetClickedItem()
 {
-	return m_iClickedElement;
-}
-CUIListItem* CUIPropertiesBox::GetClickedItem()
-{
-	return m_UIListWnd.GetItem(GetClickedIndex());
+	return m_UIListWnd.GetSelectedItem();
 }
 void CUIPropertiesBox::Update()
 {

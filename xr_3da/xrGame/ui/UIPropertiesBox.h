@@ -8,7 +8,7 @@
 
 
 #include "uiframewindow.h"
-#include "uilistwnd.h"
+#include "uilistbox.h"
 
 #include "../script_export_space.h"
 
@@ -25,7 +25,7 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void Init(LPCSTR base_name, float x, float y, float width, float height);
+	virtual void Init(float x, float y, float width, float height);
 
 
 
@@ -48,18 +48,18 @@ public:
 
 	//возращает индекс нажатого элемента или -1 если
 	//такого элемента не было
-	int GetClickedIndex();
+//	int GetClickedIndex();
 	//возвращает нажатый элемент или NULL если нет такого
-	CUIListItem* GetClickedItem();
+	CUIListBoxItem* GetClickedItem();
 
 	//автоматическое изменение размеров в зависимости от количества
 	//элементов
 	void AutoUpdateSize();
 
 protected:
-	CUIListWnd m_UIListWnd;
+	CUIListBox m_UIListWnd;
 
-	int m_iClickedElement;
+//	int m_iClickedElement;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

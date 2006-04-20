@@ -180,7 +180,7 @@ void CUIInventoryWnd::Init()
 
 	//pop-up menu
 	AttachChild							(&UIPropertiesBox);
-	UIPropertiesBox.Init				("ui_pop_up",0,0,300,300);
+	UIPropertiesBox.Init				(0,0,300,300);
 	UIPropertiesBox.Hide				();
 
 	AttachChild							(&UITimeWnd);

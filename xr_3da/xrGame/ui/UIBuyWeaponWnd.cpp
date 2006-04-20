@@ -20,7 +20,7 @@
 #include "../inventory.h"
 #include "UITextureMaster.h"
 #include "UIScrollView.h"
-
+#include "UIListBoxItem.h"
 
 
 using namespace InventoryUtilities;
@@ -235,7 +235,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 
 	//pop-up menu
 	AttachChild(&UIPropertiesBox);
-	UIPropertiesBox.Init("ui_pop_up",0,0,300,300);
+	UIPropertiesBox.Init(0,0,300,300);
 	UIPropertiesBox.Hide();
 
 	// Статики для вывода текста
@@ -663,7 +663,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		if(UIPropertiesBox.GetClickedItem())
 		{
-			switch(UIPropertiesBox.GetClickedItem()->GetValue())
+			switch(UIPropertiesBox.GetClickedItem()->GetID())
 			{
 			case BUY_ITEM_ACTION:
 				SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DB_CLICK, NULL);

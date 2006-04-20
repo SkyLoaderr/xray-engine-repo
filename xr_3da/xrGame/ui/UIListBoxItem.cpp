@@ -27,6 +27,11 @@ void CUIListBoxItem::Draw(){
 //		fields[i].Draw();
 }
 
+void CUIListBoxItem::OnFocusReceive(){
+	CUILabel::OnFocusReceive();
+	GetMessageTarget()->SendMessage(this, LIST_ITEM_FOCUS_RECEIVED);
+}
+
 void CUIListBoxItem::InitDefault(){
 	InitTexture("ui_listline");
 }
@@ -35,6 +40,7 @@ bool CUIListBoxItem::OnMouseDown(bool left_button){
 	if (left_button){
 		smart_cast<CUIScrollView*>(GetParent()->GetParent())->SetSelected(this);
 		GetMessageTarget()->SendMessage(this,LIST_ITEM_SELECT, &uid);
+		GetMessageTarget()->SendMessage(this,LIST_ITEM_CLICKED, &uid);
 		return true;
 	}else
 		return false;
@@ -92,4 +98,12 @@ LPCSTR CUIListBoxItem::GetField(LPCSTR key){
 			return fields[i].GetText();
 	}
 	return NULL;
+}
+
+void CUIListBoxItem::SetData(void* data){
+	pData = data;
+}
+
+void* CUIListBoxItem::GetData(){
+	return pData;
 }

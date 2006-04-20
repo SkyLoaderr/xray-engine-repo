@@ -24,10 +24,12 @@ public:
 	void			SetSelectionTexture(LPCSTR texture);
 	void			SetItemHeight(float h);
 	float			GetItemHeight();
+	float			GetLongestLength();
 
 virtual	void		SetSelected(CUIWindow*);
 		void		SetSelected(u32 uid);
 		void		SetSelected(LPCSTR txt);
+		void		SetImmediateSelection(bool f);
 
 virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
 virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
@@ -50,4 +52,6 @@ protected:
 	WINDOW_LIST_it	m_cur_wnd_it;
 	CUIWindow*		m_last_wnd;
 	shared_str		m_selection_texture;
+
+	bool			m_bImmediateSelection;
 };

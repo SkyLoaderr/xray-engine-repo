@@ -14,6 +14,10 @@ CUIListBox::CUIListBox(){
 	m_text_al = CGameFont::alLeft;
 	m_cur_wnd_it = NULL;
 	m_last_wnd = NULL;
+
+	m_bImmediateSelection = false;
+
+	Init();
 }
 
 void CUIListBox::SetSelectionTexture(LPCSTR texture){
@@ -59,8 +63,21 @@ CUIListBoxItem* CUIListBox::AddItem(LPCSTR text){
 }
 
 void CUIListBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
-	if (LIST_ITEM_SELECT == msg)
-		GetMessageTarget()->SendMessage(this, LIST_ITEM_SELECT, pData);
+	if (m_pad->IsChild(pWnd))
+	{
+		switch (msg){
+			case LIST_ITEM_SELECT:	
+				GetMessageTarget()->SendMessage(this, LIST_ITEM_SELECT, pData);
+				break;
+			case LIST_ITEM_CLICKED:
+				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pData);
+				break;
+			case LIST_ITEM_FOCUS_RECEIVED:
+				if (m_bImmediateSelection)
+                    SetSelected(pWnd);
+				break;
+		}		
+	}
 
 	CUIScrollView::SendMessage(pWnd, msg, pData);
 }
@@ -220,7 +237,7 @@ void CUIListBox::SetSelected(CUIWindow* pWnd){
 	}
 
 	CUIScrollView::SetSelected(pWnd);
-	GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED);
+//	GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED);
 	m_last_wnd = GetSelected();
 }
 
@@ -302,4 +319,24 @@ void CUIListBox::SetTextAlignment(ETextAlignment alignment){
 
 ETextAlignment CUIListBox::GetTextAlignment(){
 	return m_text_al;
+}
+
+float CUIListBox::GetLongestLength(){
+	float len = 0;
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		CUIListBoxItem* item = smart_cast<CUIListBoxItem*>(*it);
+		if (item)
+		{
+			float tmp_len = item->GetFont()->SizeOfRel(item->GetText());
+			if (tmp_len > len)
+				return len = tmp_len;
+		}
+		
+	}
+	return len;
+}
+
+void CUIListBox::SetImmediateSelection(bool f){
+	m_bImmediateSelection = f;
 }

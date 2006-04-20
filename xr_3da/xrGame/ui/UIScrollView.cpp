@@ -13,6 +13,8 @@ CUIScrollView::CUIScrollView()
 	m_vertInterval		= 0.0f;
 	m_flags.zero		();
 	SetFixedScrollBar	(true);
+	m_pad = NULL;
+	m_VScrollBar = NULL;
 }
 
 CUIScrollView::~CUIScrollView()
@@ -33,11 +35,19 @@ void CUIScrollView::ForceUpdate(){
 
 void CUIScrollView::Init				()
 {
-	m_pad						= xr_new<CUIWindow>(); m_pad->SetAutoDelete(true);
-	AttachChild					(m_pad);
+	if (!m_pad)
+	{
+        m_pad						= xr_new<CUIWindow>(); m_pad->SetAutoDelete(true);
+		AttachChild					(m_pad);
+	}
 	m_pad->SetWndPos			(0.0f,0.0f);
-	m_VScrollBar				= xr_new<CUIScrollBar>();m_VScrollBar->SetAutoDelete(true);
-	AttachChild					(m_VScrollBar);
+	if (!m_VScrollBar)
+	{
+        m_VScrollBar				= xr_new<CUIScrollBar>();m_VScrollBar->SetAutoDelete(true);
+		AttachChild					(m_VScrollBar);
+		Register					(m_VScrollBar);
+		AddCallback					("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIScrollView::OnScrollV,this));
+	}
 	if (!!m_scrollbar_profile)
         m_VScrollBar->Init			(GetWndSize().x, 0.0f, GetWndSize().y, false, *m_scrollbar_profile);
 	else
@@ -46,8 +56,7 @@ void CUIScrollView::Init				()
 	m_VScrollBar->SetWindowName	("scroll_v");
 	m_VScrollBar->SetStepSize	(_max(1,iFloor(GetHeight()/10)));
 	m_VScrollBar->SetPageSize	(iFloor(GetHeight()));
-	Register					(m_VScrollBar);
-	AddCallback					("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIScrollView::OnScrollV,this));
+	
 
 }
 

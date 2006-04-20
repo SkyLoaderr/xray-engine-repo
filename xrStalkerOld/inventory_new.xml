@@ -1,5 +1,12 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <w>
+	<properties_box>
+		<texture>ui_cb_listbox</texture>
+		<list x="0" y="0" width="10" height="10" item_height="18"  always_show_scroll="0" can_select="1">				
+				<font_s r="218" g="217" b="213"/>				
+				<font r="131" g="131" b="131" font="letterica16"/>
+		</list>
+	</properties_box>
 	<belt_slots x="2" y="0" width="1019" height="242">
 		<texture>ui_slots_belt</texture>		
 	</belt_slots>
