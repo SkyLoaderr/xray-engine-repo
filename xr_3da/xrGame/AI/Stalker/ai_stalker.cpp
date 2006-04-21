@@ -300,8 +300,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	if (!CObjectHandler::net_Spawn(DC) || !inherited::net_Spawn(DC))
 		return						(FALSE);
 
-	if (!already_dead())
-		m_pPhysics_support->in_NetSpawn	(e);
+
 	
 	m_dwMoney						= tpHuman->m_dwMoney;
 
@@ -335,8 +334,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	setEnabled						(TRUE);
 
-	character_physics_support()->movement()->SetPosition	(Position());
-	character_physics_support()->movement()->SetVelocity	(0,0,0);
 
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
@@ -406,7 +403,9 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	{
 		movement().locations().Load(*SpecificCharacter().terrain_sect());
 	}
-
+	if (!already_dead())
+		m_pPhysics_support->in_NetSpawn	(e);
+	character_physics_support()->movement()->SetVelocity	(0,0,0);
 	return							(TRUE);
 }
 

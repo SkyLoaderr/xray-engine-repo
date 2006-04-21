@@ -99,6 +99,12 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 		}
 		SpawnInitPhysics(D);
 		RestoreNetState(po);
+		if(obj->PPhysicsShell()&&obj->PPhysicsShell()->isFullActive())
+		{
+
+			//XFORM().set(m_pPhysicsShell->mXFORM);
+			obj->PPhysicsShell()->GetGlobalTransformDynamic(&obj->XFORM());
+		}
 		CPHDestroyableNotificate::spawn_notificate(D);
 
 		if(K)

@@ -49,6 +49,7 @@ void CPHElement::set_State(const SPHNetState& state)
 		Disable();
 	}
 	CPHDisablingFull::Reinit();
+	m_flags.set(flUpdate,TRUE);
 }
 
 void CPHElement	::net_Export(NET_Packet& P)
