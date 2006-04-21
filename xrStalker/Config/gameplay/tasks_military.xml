@@ -314,6 +314,7 @@
             <map_location_type hint="mil_watertower_hint">green_location</map_location_type>
             <object_story_id>Mil_WaterTower</object_story_id>
 			<infoportion_set_complete>mil_controller_dead</infoportion_set_complete>
+            <infoportion_set_complete>mil_controller_ready</infoportion_set_complete>
 			<function_complete>mil_tasks.bloodsuckers_dead</function_complete>
             <infoportion_fail>mil_miser_task_failed</infoportion_fail>
 		</objective>
@@ -360,6 +361,7 @@
             <map_location_type hint="mil_watertower_hint">green_location</map_location_type>
             <object_story_id>Mil_WaterTower</object_story_id>
             <infoportion_set_complete>mil_controller_dead</infoportion_set_complete>
+            <infoportion_set_complete>mil_controller_ready</infoportion_set_complete>
 			<function_complete>mil_tasks.bloodsuckers_dead</function_complete>
 		</objective>
 		<objective>
