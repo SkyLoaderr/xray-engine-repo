@@ -53,3 +53,7 @@
 	<string id="esc_mill">
 		<text>Заброшенная мельница. Где-то здесь последний раз видели пропавшего братка</text>
 	</string>	
+	
+	<string id="tutorial_bandits">
+		<text>Бандиты, зажавшие разведчика.</text>
+	</string>
