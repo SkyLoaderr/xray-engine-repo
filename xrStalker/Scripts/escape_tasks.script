@@ -102,6 +102,17 @@ function task_fox_complete()
 	end
 end	
 
+function kill_tutorial_bandits()
+	local actor = db.actor
+	if actor:has_info("esc_first_novice_dead") and
+		actor:has_info("esc_second_novice_dead")
+	then
+		return true
+	else
+		return false
+	end
+end
+
 function task_volk_fail()
 	local actor = db.actor
 	if actor:has_info("tutorial_wounded_die") or
