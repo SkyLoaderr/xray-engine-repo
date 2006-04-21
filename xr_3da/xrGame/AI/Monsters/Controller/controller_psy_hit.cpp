@@ -9,7 +9,7 @@
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
 #include "../../../../CameraBase.h"
-
+#include "../../../CharacterPhysicsSupport.h"
 void CControllerPsyHit::load(LPCSTR section)
 {
 }
@@ -124,7 +124,7 @@ void CControllerPsyHit::death_glide_start()
 	float h,p;
 	dir.getHP(h,p);
 	dir.setHP(h,p+PI_DIV_3);
-	Actor()->movement_control()->ApplyImpulse(dir,Actor()->GetMass() * 530.f);
+	Actor()->character_physics_support()->movement()->ApplyImpulse(dir,Actor()->GetMass() * 530.f);
 
 	set_sound_state					(eStart);
 }

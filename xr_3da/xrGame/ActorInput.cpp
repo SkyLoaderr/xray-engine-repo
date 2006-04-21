@@ -22,7 +22,7 @@
 #include "actor_input_handler.h"
 #include "string_table.h"
 #include "UI/UIStatic.h"
-
+#include "CharacterPhysicsSupport.h"
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
@@ -329,8 +329,8 @@ void CActor::ActorUse()
 		return;
 	}
 				
-	if(m_PhysicMovementControl->PHCapture())
-		m_PhysicMovementControl->PHReleaseObject();
+	if(character_physics_support()->movement()->PHCapture())
+		character_physics_support()->movement()->PHReleaseObject();
 
 	
 
@@ -368,9 +368,9 @@ void CActor::ActorUse()
 		if(Level().IR_GetKeyState(DIK_LSHIFT))
 		{
 	
-			if(!m_PhysicMovementControl->PHCapture())
+			if(!character_physics_support()->movement()->PHCapture())
 			{
-				m_PhysicMovementControl->PHCaptureObject(object,element);
+				character_physics_support()->movement()->PHCaptureObject(object,element);
 
 			}
 

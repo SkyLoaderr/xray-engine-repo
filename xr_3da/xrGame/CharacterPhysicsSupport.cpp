@@ -32,15 +32,16 @@ CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 		if(m_physics_skeleton)m_physics_skeleton->Deactivate();
 		xr_delete(m_physics_skeleton);//!b_skeleton_in_shell
 	}
+	xr_delete(m_PhysicMovementControl);
 }
 
 CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity) 
-: m_PhysicMovementControl(*aentity->PMovement()), 
-  m_pPhysicsShell(aentity->PPhysicsShell()),
+: m_pPhysicsShell(aentity->PPhysicsShell()),
   m_EntityAlife(*aentity),
   mXFORM(aentity->XFORM()),
   m_ph_sound_player(aentity)
 {
+m_PhysicMovementControl=xr_new<CPHMovementControl>(aentity);
 m_flags.assign(0);
 m_eType=atype;
 m_eState=esAlive;
@@ -59,16 +60,16 @@ m_collision_hit_callback		=	NULL;
 switch(atype)
 {
 case etActor:
-	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::actor);
-	m_PhysicMovementControl.SetRestrictionType(CPHCharacter::rtActor);
+	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::actor);
+	m_PhysicMovementControl->SetRestrictionType(CPHCharacter::rtActor);
 	break;
 case etStalker:
-	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
-	m_PhysicMovementControl.SetRestrictionType(CPHCharacter::rtStalker);
-	m_PhysicMovementControl.SetActorMovable(false);
+	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl->SetRestrictionType(CPHCharacter::rtStalker);
+	m_PhysicMovementControl->SetActorMovable(false);
 	break;
 case etBitting:
-	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 }
 };
 
@@ -144,11 +145,11 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 
 	if(m_EntityAlife.g_Alive())
 	{
-		m_PhysicMovementControl.CreateCharacter();
-		m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
+		m_PhysicMovementControl->CreateCharacter();
+		m_PhysicMovementControl->SetPhysicsRefObject(&m_EntityAlife);
 		CreateIKController();
 		CollisionCorrectObjPos(m_EntityAlife.Position());
-		m_PhysicMovementControl.SetPosition	(m_EntityAlife.Position());
+		m_PhysicMovementControl->SetPosition	(m_EntityAlife.Position());
 		
 		//m_PhysicMovementControl.SetMaterial( )
 	}
@@ -159,7 +160,7 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 }
 void CCharacterPhysicsSupport::in_NetDestroy()
 {
-	m_PhysicMovementControl.DestroyCharacter();
+	m_PhysicMovementControl->DestroyCharacter();
 	//if((!b_skeleton_in_shell||m_pPhysicsShell)&&m_physics_skeleton)//.
 	//{
 	//		m_physics_skeleton->Deactivate();
@@ -236,7 +237,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 		//m_saved_hit_position.set(p_in_object_space);
 
 		if(!is_killing&&m_EntityAlife.g_Alive())
-			m_PhysicMovementControl.ApplyHit(dir,impulse,hit_type);
+			m_PhysicMovementControl->ApplyHit(dir,impulse,hit_type);
 
 	}
 	else {
@@ -307,7 +308,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 		//CreateSkeleton();
 		//Log("mem use %d",Memory.mem_usage());
 
-		m_PhysicMovementControl.DestroyCharacter();
+		m_PhysicMovementControl->DestroyCharacter();
 		//m_EntityAlife.PHSetPushOut();
 	}
 }
@@ -342,9 +343,9 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 {
 	if(m_pPhysicsShell) return;
 Fvector velocity;
-	m_PhysicMovementControl.GetCharacterVelocity(velocity);
-	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
-	m_PhysicMovementControl.DestroyCharacter();
+	m_PhysicMovementControl->GetCharacterVelocity(velocity);
+	m_PhysicMovementControl->GetDeathPosition	(m_EntityAlife.Position());
+	m_PhysicMovementControl->DestroyCharacter();
 	//Position().y+=.1f;
 	//#else
 	//Position().y+=0.1f;
@@ -406,14 +407,14 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 ////////////////////////////////////////////////////////////////////////////
 	if(m_pPhysicsShell) return;
 	Fvector velocity;
-	m_PhysicMovementControl.GetCharacterVelocity		(velocity);
+	m_PhysicMovementControl->GetCharacterVelocity		(velocity);
 	velocity.mul(1.3f);
 	Fvector dp;
 
-	if(!m_PhysicMovementControl.CharacterExist())
+	if(!m_PhysicMovementControl->CharacterExist())
 									dp.set(m_EntityAlife.Position());
-	else m_PhysicMovementControl.GetDeathPosition(dp);
-	m_PhysicMovementControl.DestroyCharacter();
+	else m_PhysicMovementControl->GetDeathPosition(dp);
+	m_PhysicMovementControl->DestroyCharacter();
 
 	CollisionCorrectObjPos(dp);
 
@@ -497,7 +498,7 @@ void CCharacterPhysicsSupport::PHGetLinearVell(Fvector &velocity)
 		m_pPhysicsShell->get_LinearVel(velocity);
 	}
 	else
-		m_PhysicMovementControl.GetCharacterVelocity(velocity);
+		movement()->GetCharacterVelocity(velocity);
 		
 }
  void _stdcall CCharacterPhysicsSupport:: IKVisualCallback(CKinematics* K)
@@ -532,7 +533,7 @@ void CCharacterPhysicsSupport::CalculateIK(CKinematics* K)
 
 void		 CCharacterPhysicsSupport::in_NetRelcase(CObject* O)																													
 {
-	CPHCapture* c=m_PhysicMovementControl.PHCapture();
+	CPHCapture* c=m_PhysicMovementControl->PHCapture();
 	if(c)
 	{
 		c->net_Relcase(O);

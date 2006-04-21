@@ -3,7 +3,7 @@
 #include "BaseMonster/base_monster.h"
 #include "control_manager.h"
 #include "../../PHMovementControl.h"
-
+#include "../../CharacterPhysicsSupport.h"
 void CControlMovement::reinit()
 {
 	inherited::reinit		();
@@ -24,7 +24,7 @@ void CControlMovement::update_frame()
 
 float CControlMovement::real_velocity()
 {
-	CPHMovementControl		*movement_control = m_object->movement_control();
+	CPHMovementControl		*movement_control = m_object->character_physics_support()->movement();
 	VERIFY					(movement_control);
 
 	if (movement_control->IsCharacterEnabled()) 

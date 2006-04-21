@@ -15,6 +15,7 @@
 #include "explosive.h"
 #include "net_utils.h"
 #include "PHWorld.h"
+#include "CharacterPhysicsSupport.h"
 extern CPHWorld*	ph_world;
 CBlackGraviArtefact::CBlackGraviArtefact(void) 
 {
@@ -207,7 +208,7 @@ void CBlackGraviArtefact::GraviStrike()
 		CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(pGameObject);
 		if(pGameObject->m_pPhysicsShell)	hit_power = 0;
 		else if(pEntityAlive && pEntityAlive->g_Alive() && 
-				pEntityAlive->m_PhysicMovementControl->CharacterExist())
+				pEntityAlive->character_physics_support()->movement()->CharacterExist())
 			hit_power = 0;
 		else
 			hit_power = impulse;

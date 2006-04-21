@@ -192,7 +192,7 @@ public:
 
 	/////////////////////////////////////////////////////////////////
 	// misc properties
-	virtual float						GetMass				() { return g_Alive()?m_PhysicMovementControl->GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
+	virtual float						GetMass				() ;
 	virtual float						Radius				() const;
 	virtual void						g_PerformDrop		();
 
@@ -623,7 +623,6 @@ public:
 			void			g_Physics		(Fvector& accel, float jump, float dt);
 	virtual void			ForceTransform	(const Fmatrix &m);
 			void			SetPhPosition	(const Fmatrix& pos);
-	virtual CPHMovementControl*	movement_control(){return inherited::movement_control();}
 	virtual void			PH_B_CrPr		(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr		(); // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr		(); // actions & operations after phisic correction-prediction steps

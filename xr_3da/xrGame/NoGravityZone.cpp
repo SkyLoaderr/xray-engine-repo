@@ -4,6 +4,7 @@
 #include "entity_alive.h"
 #include "PHMovementControl.h"
 #include "PhWorld.h"
+#include "CharacterPhysicsSupport.h"
 extern CPHWorld	*ph_world;
 void CNoGravityZone::enter_Zone(SZoneObjectInfo& io)
 {
@@ -47,7 +48,7 @@ void CNoGravityZone::switchGravity(SZoneObjectInfo& io, bool val)
 	if(!io.nonalive_object)
 	{
 		CEntityAlive* ea=smart_cast<CEntityAlive*>(io.object);
-		CPHMovementControl*mc=ea->movement_control();
+		CPHMovementControl*mc=ea->character_physics_support()->movement();
 		mc->SetApplyGravity(BOOL(val));
 		mc->SetForcedPhysicsControl(!val);
 		if(!val&&mc->Environment()==CPHMovementControl::peOnGround)

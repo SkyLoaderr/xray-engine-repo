@@ -25,7 +25,7 @@ public:
 	float					m_fAccuracy;
 	float					m_fIntelligence;
 	//m_PhysicMovementControl
-	CPHMovementControl		*m_PhysicMovementControl;
+	//CPHMovementControl		*m_PhysicMovementControl;
 
 public:
 	// General
@@ -49,7 +49,7 @@ public:
 
 	virtual void			shedule_Update			(u32 dt);
 
-	virtual CPHMovementControl*	movement_control()	{return m_PhysicMovementControl;}
+
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 	virtual	void			Hit						(SHit* pHDS);
 	virtual void			Die						(CObject* who);
@@ -72,7 +72,7 @@ public:
 	
 	virtual bool			human_being				() const			{return	(false);}
 public:
-	IC	CPHMovementControl*					PMovement					()						{return m_PhysicMovementControl;}
+	//IC	CPHMovementControl*					PMovement					()						{return m_PhysicMovementControl;}
 
 	virtual u16								PHGetSyncItemsNumber		()						;
 	virtual CPHSynchronize*					PHGetSyncItem				(u16 item)				;

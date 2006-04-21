@@ -5,7 +5,7 @@
 #include "PhysicsShellHolder.h"
 #include "entity_alive.h"
 #include "PHMovementControl.h"
-
+#include "CharacterPhysicsSupport.h"
 
 bool CHairsZone::BlowoutState()
 {
@@ -25,7 +25,7 @@ void CHairsZone::CheckForAwaking()
 
 		CEntityAlive* pEnt = smart_cast<CEntityAlive*>(pObject);
 		if(pEnt){
-			float sp = pEnt->movement_control()->GetVelocityActual();
+			float sp = pEnt->character_physics_support()->movement()->GetVelocityActual();
 			if(sp>m_min_speed_to_react){
 				SwitchZoneState				(eZoneStateAwaking);
 				return;

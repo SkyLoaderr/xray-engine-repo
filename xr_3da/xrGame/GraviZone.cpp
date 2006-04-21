@@ -18,7 +18,7 @@
 #include "xrmessages.h"
 #include "PhysicsShellHolder.h"
 #include "Level.h"
-
+#include "CharacterPhysicsSupport.h"
 CBaseGraviZone ::CBaseGraviZone (void)
 {
 	m_dwTeleTime = 0;
@@ -210,7 +210,7 @@ void CBaseGraviZone ::	AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_
 			Fvector vel;
 			vel.set(throw_in_dir);
 			vel.mul(throw_power);
-			EA->m_PhysicMovementControl->AddControlVel(vel);
+			EA->character_physics_support()->movement()->AddControlVel(vel);
 }
 void CBaseGraviZone ::	AffectPullDead(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
 {

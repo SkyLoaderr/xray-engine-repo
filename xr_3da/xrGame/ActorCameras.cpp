@@ -17,6 +17,7 @@
 #include "../cl_intersect.h"
 #include "gamemtllib.h"
 #include "elevatorstate.h"
+#include "CharacterPhysicsSupport.h"
 void CActor::cam_Set	(EActorCameras style)
 {
 	CCameraBase* old_cam = cam_Active();
@@ -64,7 +65,7 @@ void CActor::camUpdateLadder(float dt)
 		cam_yaw+=delta* _min(dt*10.f,1.f) ;
 	}
 
-	if(m_PhysicMovementControl->ElevatorState()->State()==CElevatorState::clbClimbingDown)
+	if(character_physics_support()->movement()->ElevatorState()->State()==CElevatorState::clbClimbingDown)
 	{
 		float &cam_pitch=cameras[eacFirstEye]->pitch;
 		const float ldown_pitch=cameras[eacFirstEye]->lim_pitch.y;
@@ -93,7 +94,7 @@ void CActor::cam_UnsetLadder()
 float CActor::CameraHeight()
 {
 	Fvector						R;
-	m_PhysicMovementControl->Box().getsize		(R);
+	character_physics_support()->movement()->Box().getsize		(R);
 	return m_fCamHeightFactor*R.y;
 }
 
@@ -229,7 +230,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	float flCurrentPlayerY	= xform.c.y;
 
 	// Smooth out stair step ups
-	if ((m_PhysicMovementControl->Environment()==peOnGround) && (flCurrentPlayerY-fPrevCamPos>0)){
+	if ((character_physics_support()->movement()->Environment()==peOnGround) && (flCurrentPlayerY-fPrevCamPos>0)){
 		fPrevCamPos			+= dt*1.5f;
 		if (fPrevCamPos > flCurrentPlayerY)
 			fPrevCamPos		= flCurrentPlayerY;
@@ -276,7 +277,7 @@ void CActor::OnRender	()
 	if (!bDebug)				return;
 
 	if ((dbg_net_Draw_Flags.is_any((1<<5))))
-		m_PhysicMovementControl->dbg_Draw	();
+		character_physics_support()->movement()->dbg_Draw	();
 
 	OnRender_Network();
 

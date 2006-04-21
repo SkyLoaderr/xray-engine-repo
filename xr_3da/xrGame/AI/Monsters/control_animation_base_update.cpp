@@ -3,6 +3,7 @@
 #include "control_direction_base.h"
 #include "control_movement_base.h"
 #include "BaseMonster/base_monster.h"
+#include "../../CharacterPhysicsSupport.h"
 #include "../../PHMovementControl.h"
 #include "../../detail_path_manager.h"
 #include "monster_velocity_space.h"
@@ -270,7 +271,7 @@ void CControlAnimationBase::SelectVelocities()
 void CControlAnimationBase::CheckVelocityBounce()
 {
 	Fvector		temp_vec;
-	m_object->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+	m_object->character_physics_support()->movement()->GetCharacterVelocity(temp_vec);
 	float		prev_speed	= m_prev_character_velocity;
 	float		cur_speed	= temp_vec.magnitude();
 

@@ -38,7 +38,7 @@
 #include "PHMovementControl.h"
 #include "profiler.h"
 #include "date_time.h"
-
+#include "characterphysicssupport.h"
 #include "ai/monsters/snork/snork.h"
 #include "ai/monsters/burer/burer.h"
 
@@ -98,8 +98,8 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	///////////
 	// m_PhysicMovementControl: General
-	m_PhysicMovementControl->SetParent		(this);
-	m_PhysicMovementControl->Load			(section);
+
+	character_physics_support()->movement()->Load			(section);
 	//Fbox	bb;
 
 	//// m_PhysicMovementControl: BOX
@@ -455,7 +455,7 @@ void CCustomMonster::UpdateCL	()
 void CCustomMonster::UpdatePositionAnimation()
 {
 	START_PROFILE("CustomMonster/client_update/movement")
-	movement().on_frame			(m_PhysicMovementControl,NET_Last.p_pos);
+	movement().on_frame			(character_physics_support()->movement(),NET_Last.p_pos);
 	STOP_PROFILE
 	
 	START_PROFILE("CustomMonster/client_update/animation")
@@ -744,7 +744,7 @@ void CCustomMonster::OnRender()
 
 	if (psAI_Flags.test(aiMotion)) 
 	{
-		m_PhysicMovementControl->dbg_Draw();
+		character_physics_support()->movement()->dbg_Draw();
 	}
 	if (bDebug) smart_cast<CKinematics*>(Visual())->DebugRender(XFORM());
 }

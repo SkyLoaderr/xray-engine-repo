@@ -627,7 +627,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		HUD().Font().pFontSmall->OutNext	("%s%s%s%sangular   : %f deg",indent,indent,indent,indent,rad2deg(current_velocity.angular_velocity));
 		HUD().Font().pFontSmall->OutNext	("%s%s%s%sangular(R): %f deg",indent,indent,indent,indent,rad2deg(current_velocity.real_angular_velocity));
 		HUD().Font().pFontSmall->OutNext	("%s%s%sspeed(calc)   : %f",indent,indent,indent,movement().speed());
-		HUD().Font().pFontSmall->OutNext	("%s%s%sspeed(physics): %f",indent,indent,indent,movement().speed(m_PhysicMovementControl));
+		HUD().Font().pFontSmall->OutNext	("%s%s%sspeed(physics): %f",indent,indent,indent,movement().speed(character_physics_support()->movement()));
 	}
 
 	if (movement().detail().use_dest_orientation())

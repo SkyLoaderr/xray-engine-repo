@@ -18,7 +18,7 @@
 
 #include "actor_anim_defs.h"
 #include "game_object_space.h"
-
+#include "characterphysicssupport.h"
 
 void CActor::attach_Vehicle(CHolderCustom* vehicle)
 {
@@ -44,7 +44,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	u16 head_bone		= V->LL_BoneID("bip01_head");
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(bctPhysics, VehicleHeadCallback,this);
 
-	m_PhysicMovementControl->DestroyCharacter();
+	character_physics_support()->movement()->DestroyCharacter();
 	//PIItem iitem=inventory().ActiveItem();
 	//setVisible(true);
 	//clear actor movement states 
@@ -64,7 +64,7 @@ void CActor::detach_Vehicle()
 	if(!car)return;
 	CPHShellSplitterHolder*sh= car->PPhysicsShell()->SplitterHolder();
 	if(sh)sh->Deactivate();
-	if(!m_PhysicMovementControl->ActivateBoxDynamic(0))
+	if(!character_physics_support()->movement()->ActivateBoxDynamic(0))
 	{
 		if(sh)sh->Activate();
 		return;
@@ -72,8 +72,8 @@ void CActor::detach_Vehicle()
 	if(sh)sh->Activate();
 	m_holder->detach_Actor();//
 
-	m_PhysicMovementControl->SetPosition(m_holder->ExitPosition());
-	m_PhysicMovementControl->SetVelocity(m_holder->ExitVelocity());
+	character_physics_support()->movement()->SetPosition(m_holder->ExitPosition());
+	character_physics_support()->movement()->SetVelocity(m_holder->ExitVelocity());
 
 	r_model_yaw=-m_holder->Camera()->yaw;
 	r_torso.yaw=r_model_yaw;

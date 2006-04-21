@@ -174,9 +174,6 @@ public:
 	float				FootRadius					( )			{if(m_character)return m_character->FootRadius(); else return 0.f;};
 	void				CollisionEnable 			(BOOL enable){if(m_character) if(enable)m_character->collision_enable();else m_character->collision_disable();}
 	void				SetBox						(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
-
-	void				SetParent					(CObject* P){ pObject = P; }
-
 	void				SetMass						(float M)	{ fMass = M;
 	if(m_character)
 		m_character->SetMas(fMass);
@@ -271,7 +268,7 @@ public:
 	{
 		return (m_character && m_character->b_exist);
 	}
-	CPHMovementControl(void);
+	CPHMovementControl(CObject* parent);
 	~CPHMovementControl(void);
 };
 #endif

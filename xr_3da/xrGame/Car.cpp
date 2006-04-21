@@ -25,6 +25,7 @@
 #include "game_object_space.h"
 #include "GameMtlLib.h"
 #include "PHActivationShape.h"
+#include "CharacterPhysicsSupport.h"
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
@@ -1756,7 +1757,7 @@ void CCar::CarExplode()
 		if(!m_doors.empty())m_doors.begin()->second.GetExitPosition(m_exit_position);
 		else m_exit_position.set(Position());
 		A->detach_Vehicle();
-		if(A->g_Alive()<=0.f)A->movement_control()->DestroyCharacter();
+		if(A->g_Alive()<=0.f)A->character_physics_support()->movement()->DestroyCharacter();
 	}
 
 	if(CPHDestroyable::CanDestroy())

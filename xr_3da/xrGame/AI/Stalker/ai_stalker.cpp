@@ -335,8 +335,8 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	setEnabled						(TRUE);
 
-	m_PhysicMovementControl->SetPosition	(Position());
-	m_PhysicMovementControl->SetVelocity	(0,0,0);
+	character_physics_support()->movement()->SetPosition	(Position());
+	character_physics_support()->movement()->SetVelocity	(0,0,0);
 
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
@@ -595,7 +595,7 @@ void CAI_Stalker::UpdateCL()
 		}
 
 		if	(
-				(movement().speed(m_PhysicMovementControl) > EPS_L)
+				(movement().speed(character_physics_support()->movement()) > EPS_L)
 				&& 
 				(eMovementTypeStand != movement().movement_type())
 				&&
@@ -921,12 +921,13 @@ DLL_Pure *CAI_Stalker::_construct			()
 	if (g_bMEMO)
 		start							= Memory.mem_usage();
 #endif
-
+	
+	m_pPhysics_support					= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	CCustomMonster::_construct			();
 	CObjectHandler::_construct			();
 	CStepManager::_construct			();
 
-	m_pPhysics_support					= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
+	
 	m_actor_relation_flags.zero			();
 	m_animation_manager					= xr_new<CStalkerAnimationManager>();
 	m_brain								= xr_new<CStalkerPlanner>();

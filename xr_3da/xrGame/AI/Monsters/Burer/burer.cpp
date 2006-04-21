@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "burer.h"
 #include "../../../PhysicsShell.h"
+#include "../../../characterphysicssupport.h"
 #include "../../../actor.h"
 #include "burer_state_manager.h"
 #include "../../../../skeletonanimated.h"

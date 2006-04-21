@@ -41,7 +41,7 @@
 #include "holder_custom.h"
 #include "actor_memory.h"
 #include "actor_statistic_mgr.h"
-
+#include "characterphysicssupport.h"
 int			g_cl_InterpolationType		= 0;
 u32			g_cl_InterpolationMaxPoints = 0;
 int			g_dwInputUpdateDelta		= 20;
@@ -103,7 +103,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	u16 ms	= (u16)(mstate_real & 0x0000ffff);
 	P.w_u16				(u16(ms));
 	P.w_sdir			(NET_SavedAccel);
-	Fvector				v = m_PhysicMovementControl->GetVelocity();
+	Fvector				v = character_physics_support()->movement()->GetVelocity();
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
 //	P.w_float_q16		(fArmor,-500,1000);
 	P.w_float			(g_Radiation());
@@ -539,12 +539,12 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	m_pPhysics_support->in_NetSpawn	(e);
 
-	m_PhysicMovementControl->SetPosition	(Position());
-	m_PhysicMovementControl->SetVelocity	(0,0,0);
-	m_PhysicMovementControl->ActivateBox	(0);
+	character_physics_support()->movement()->SetPosition	(Position());
+	character_physics_support()->movement()->SetVelocity	(0,0,0);
+	character_physics_support()->movement()->ActivateBox	(0);
 	if(E->m_holderID!=u16(-1))
 	{ 
-		m_PhysicMovementControl->DestroyCharacter();
+		character_physics_support()->movement()->DestroyCharacter();
 	}
 	r_torso_tgt_roll		= 0;
 
@@ -683,7 +683,7 @@ void CActor::net_Destroy	()
 #pragma todo("Dima to MadMax : do not comment inventory owner net_Destroy!!!")
 	CInventoryOwner::net_Destroy();
 	cam_UnsetLadder();	
-	m_PhysicMovementControl->DestroyCharacter();
+	character_physics_support()->movement()->DestroyCharacter();
 	if(m_pPhysicsShell)			{
 		m_pPhysicsShell->Deactivate();
 		xr_delete<CPhysicsShell>(m_pPhysicsShell);
@@ -873,7 +873,7 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 			///////////////////////////////////////////////
 			InterpData* pIStart = &IStart;			
 			pIStart->Pos				= Position();
-			pIStart->Vel				= m_PhysicMovementControl->GetVelocity();
+			pIStart->Vel				= character_physics_support()->movement()->GetVelocity();
 			pIStart->o_model			= angle_normalize(r_model_yaw);
 			pIStart->o_torso.yaw		= angle_normalize(unaffected_r_torso.yaw);
 			pIStart->o_torso.pitch		= angle_normalize(unaffected_r_torso.pitch);
@@ -914,7 +914,7 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 				if (SwitchV)
 					pSyncObj->set_State(N_A.State);
 				else
-					m_PhysicMovementControl->SetPosition	(N.p_pos);
+					character_physics_support()->movement()->SetPosition	(N.p_pos);
 				
 				g_Physics(N.p_accel, 0.0f, 0.0f);				
 				Position().set(IStart.Pos);
@@ -1227,8 +1227,8 @@ void CActor::make_Interpolation	()
 					R_ASSERT2(0, "Unknown interpolation curve type!");
 				}
 			}
-			m_PhysicMovementControl->SetPosition	(ResPosition);
-			m_PhysicMovementControl->SetVelocity	(SpeedVector);
+			character_physics_support()->movement()->SetPosition	(ResPosition);
+			character_physics_support()->movement()->SetVelocity	(SpeedVector);
 			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch, unaffected_r_torso.roll);
 /*
 			if (!(mstate_wishful & mcClimb))
@@ -1477,7 +1477,7 @@ void	CActor::OnRender_Network()
 
 		if (!(dbg_net_Draw_Flags.is_any((1<<1)))) return;
 		
-		dbg_draw_piramid(Position(), m_PhysicMovementControl->GetVelocity(), size, -r_model_yaw, color_rgba(128, 255, 128, 255));
+		dbg_draw_piramid(Position(), character_physics_support()->movement()->GetVelocity(), size, -r_model_yaw, color_rgba(128, 255, 128, 255));
 		dbg_draw_piramid(IStart.Pos, IStart.Vel, size, -IStart.o_model, color_rgba(255, 0, 0, 255));
 //		Fvector tmp, tmp1; tmp1.set(0, .1f, 0);
 //		dbg_draw_piramid(tmp.add(IStartT.Pos, tmp1), IStartT.Vel, size, -IStartT.o_model, color_rgba(155, 0, 0, 155));

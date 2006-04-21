@@ -8,10 +8,12 @@
 #include "ExtendedGeom.h"
 #include "Level.h"
 #include "Hudmanager.h"
-Flags32		ph_dbg_draw_mask;
+Flags32		ph_dbg_draw_mask						;
+Flags32		ph_dbg_draw_mask1						;
 bool		draw_frame=0;
 
-
+LPCSTR	dbg_trace_object						=NULL;
+string64 s_dbg_tsrace_obj						;
 u32	 	dbg_bodies_num							=0;
 u32	 	dbg_joints_num							=0;
 u32	 	dbg_islands_num							=0;
@@ -576,5 +578,15 @@ bool CFunctionGraph::IsActive()
 {
 	VERIFY((m_stat_graph==0)==m_function.empty());
 	return !!m_stat_graph;
+}
+
+LPCSTR PH_DBG_ObjectTrack()
+{
+	return dbg_trace_object;
+}
+void PH_DBG_SetTrackObject(LPCSTR obj)
+{
+	strcpy( s_dbg_tsrace_obj,obj);
+	dbg_trace_object=s_dbg_tsrace_obj;
 }
 #endif

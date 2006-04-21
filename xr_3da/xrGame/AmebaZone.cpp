@@ -8,7 +8,7 @@
 #include "hudmanager.h"
 #include "level.h"
 #include "entity_alive.h"
-
+#include "CharacterPhysicsSupport.h"
 CAmebaZone::CAmebaZone()
 {
 	m_fVelocityLimit=1.f;
@@ -81,7 +81,7 @@ void CAmebaZone::PhTune(dReal step)
 		CEntityAlive	*EA=smart_cast<CEntityAlive*>((*it).object);
 		if(EA)
 		{
-			CPHMovementControl* mc=EA->movement_control();
+			CPHMovementControl* mc=EA->character_physics_support()->movement();
 			if(mc)
 			{
 				//Fvector vel;

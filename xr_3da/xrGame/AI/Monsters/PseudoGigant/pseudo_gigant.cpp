@@ -13,7 +13,7 @@
 #include "../../../xr_level_controller.h"
 #include "../../../detail_path_manager_space.h"
 #include "../../../detail_path_manager.h"
-
+#include "../../../CharacterPhysicsSupport.h"
 CPseudoGigant::CPseudoGigant()
 {
 	CControlled::init_external(this);
@@ -262,7 +262,7 @@ void CPseudoGigant::on_threaten_execute()
 	HS.power			= (hit_value);													//	l_P.w_float	(m_kick_damage);
 	HS.boneID			= (smart_cast<CKinematics*>(pA->Visual())->LL_GetBoneRoot());	//	l_P.w_s16	(smart_cast<CKinematics*>(pA->Visual())->LL_GetBoneRoot());
 	HS.p_in_bone_space	= (Fvector().set(0.f,0.f,0.f));									//	l_P.w_vec3	(Fvector().set(0.f,0.f,0.f));
-	HS.impulse			= (80 * pA->movement_control()->GetMass());						//	l_P.w_float	(20 * pA->movement_control()->GetMass());
+	HS.impulse			= (80 * pA->character_physics_support()->movement()->GetMass());						//	l_P.w_float	(20 * pA->movement_control()->GetMass());
 	HS.hit_type			= ( ALife::eHitTypeStrike);										//	l_P.w_u16	( u16(ALife::eHitTypeWound) );
 	HS.Write_Packet		(l_P);
 	u_EventSend			(l_P);	

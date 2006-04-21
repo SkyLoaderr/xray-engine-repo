@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "poltergeist_state_manager.h"
+#include "../../../characterphysicssupport.h"
 #include "../../../PHMovementControl.h"
 #include "../../../PhysicsShellHolder.h"
 #include "../../../ai_debug.h"
@@ -138,7 +139,7 @@ void CPoltergeist::reinit()
 	setVisible							(false);
 	
 	m_current_position = Position		();
-	movement_control()->DestroyCharacter();
+	character_physics_support()->movement()->DestroyCharacter();
 	
 	m_height							= 0.3f;
 	time_height_updated					= 0;
@@ -155,7 +156,7 @@ void CPoltergeist::Hide()
 	setVisible(false);
 	
 	m_current_position = Position		();
-	movement_control()->DestroyCharacter();
+	character_physics_support()->movement()->DestroyCharacter();
 
 	CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
 	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
@@ -172,8 +173,8 @@ void CPoltergeist::Show()
 	com_man().seq_run(anim().get_motion_id(eAnimMiscAction_00));
 
 	Position() = m_current_position;
-	movement_control()->SetPosition(Position());
-	movement_control()->CreateCharacter();
+	character_physics_support()->movement()->SetPosition(Position());
+	character_physics_support()->movement()->CreateCharacter();
 	
 	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
 	CParticlesPlayer::StopParticles(m_particles_hidden);

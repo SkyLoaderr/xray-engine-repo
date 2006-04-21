@@ -10,7 +10,7 @@
 #include "weapon.h"
 #include "map_manager.h"
 #include "level.h"
-
+#include "CharacterPhysicsSupport.h"
 
 static const float VEL_MAX		= 10.f;
 static const float VEL_A_MAX	= 10.f;
@@ -104,7 +104,7 @@ BOOL CActor::g_State (SEntityState& state) const
 	state.bCrouch		= !!(mstate_real&mcCrouch);
 	state.bFall			= !!(mstate_real&mcFall);
 	state.bSprint		= !!(mstate_real&mcSprint);
-	state.fVelocity		= m_PhysicMovementControl->GetVelocityActual();
+	state.fVelocity		= character_physics_support()->movement()->GetVelocityActual();
 	state.fAVelocity	= fCurAVelocity;
 	return TRUE;
 }

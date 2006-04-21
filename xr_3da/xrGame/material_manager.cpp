@@ -11,7 +11,7 @@
 #include "alife_space.h"
 #include "phmovementcontrol.h"
 #include "entity_alive.h"
-
+#include "CharacterPhysicsSupport.h"
 CMaterialManager::CMaterialManager	(CObject *object, CPHMovementControl *movement_control)
 {
 	VERIFY					(object);
@@ -45,9 +45,9 @@ void CMaterialManager::reinit		()
 
 	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(m_object);
 	if (entity_alive ) {
-		if(entity_alive->m_PhysicMovementControl->CharacterExist())
-			entity_alive->m_PhysicMovementControl->SetPLastMaterialIDX	(&m_last_material_idx);
-		entity_alive->m_PhysicMovementControl->SetMaterial		(m_my_material_idx);
+		if(entity_alive->character_physics_support()->movement()->CharacterExist())
+			entity_alive->character_physics_support()->movement()->SetPLastMaterialIDX	(&m_last_material_idx);
+		entity_alive->character_physics_support()->movement()->SetMaterial		(m_my_material_idx);
 	}
 }
 

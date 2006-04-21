@@ -12,7 +12,7 @@
 #include "stalker_animation_script.h"
 #include "ai_monster_space.h"
 #include "graph_engine_space.h"
-
+#include "CharacterPhysicsSupport.h"
 #define CLEAR_STORAGE_ON_CALLBACK
 
 class CMotionDef;

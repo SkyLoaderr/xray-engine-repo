@@ -25,14 +25,22 @@
 
 const u64 after_creation_collision_hit_block_steps_number=100;
 
-CPHMovementControl::CPHMovementControl(void)
+CPHMovementControl::CPHMovementControl(CObject* parent)
 {
-	//m_character->Create();
+	pObject=parent;
+
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&xr_strcmp(PH_DBG_ObjectTrack(),pObject->cName())==0)
+	{
+		Msg("CPHMovementControl::CPHMovementControl %s (constructor) %f,%f,%pObjectf",PH_DBG_ObjectTrack(),pObject->Position().x,pObject->Position().y,pObject->Position().z);
+	}
+
+#endif
+
 	m_material			=0;
 	m_capture			=NULL;
 	b_exect_position	=true;
 	m_start_index		=0;
-	pObject	=			NULL;
 	eOldEnvironment =	peInAir;
 	eEnvironment =		peInAir;
 	aabb.set			(-def_X_SIZE_2,0,-def_Z_SIZE_2, def_X_SIZE_2, def_Y_SIZE_2*2, def_Z_SIZE_2);
@@ -767,6 +775,13 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 	eCharacterType=type;
 	m_character->SetMas(fMass);
 	m_character->SetPosition(vPosition);
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&xr_strcmp(PH_DBG_ObjectTrack(),pObject->cName())==0)
+	{
+		Msg("CPHMovementControl::AllocateCharacterObject %s (Object Position) %f,%f,%f",PH_DBG_ObjectTrack(),pObject->Position().x,pObject->Position().y,pObject->Position().z);
+		Msg("CPHMovementControl::AllocateCharacterObject %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
+	}
+#endif
 }
 
 void	CPHMovementControl::PHCaptureObject(CPhysicsShellHolder* object)
@@ -908,6 +923,13 @@ void CPHMovementControl::CreateCharacter()
 	m_character->Create(size);
 	m_character->SetMaterial(m_material);
 	m_character->SetAirControlFactor(fAirControlParam);
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&xr_strcmp(PH_DBG_ObjectTrack(),pObject->cName())==0)
+	{
+		Msg("CPHMovementControl::CreateCharacter %s (Object Position) %f,%f,%f",PH_DBG_ObjectTrack(),pObject->Position().x,pObject->Position().y,pObject->Position().z);
+		Msg("CPHMovementControl::CreateCharacter %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
+	}
+#endif
 	m_character->SetPosition(vPosition);
 	m_character->SetCollisionDamageFactor(fCollisionDamageFactor*fCollisionDamageFactor);
 	trying_times[0]=trying_times[1]=trying_times[2]=trying_times[3]=u32(-1);

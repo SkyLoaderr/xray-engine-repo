@@ -169,8 +169,8 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 
 	R_ASSERT2								(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 
-	m_PhysicMovementControl->SetPosition	(Position());
-	m_PhysicMovementControl->SetVelocity	(0,0,0);
+	character_physics_support()->movement()->SetPosition	(Position());
+	character_physics_support()->movement()->SetVelocity	(0,0,0);
 
 	monster_squad().register_member			((u8)g_Team(),(u8)g_Squad(), this);
 

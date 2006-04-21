@@ -1792,7 +1792,26 @@ public:
 		monster->set_show_debug_info (u8(value2));
 	}
 };
+class CCC_DbgPhTrackObj : public IConsole_Command {
+public:
+	CCC_DbgPhTrackObj(LPCSTR N) : IConsole_Command(N)  { };
+	virtual void Execute(LPCSTR args/**/) {
+			ph_dbg_draw_mask1.set(ph_m1_DbgTrackObject,TRUE);
+			PH_DBG_SetTrackObject(args);
+			//CObject* O= Level().Objects.FindObjectByName(args);
+			//if(O)
+			//{
+			//	PH_DBG_SetTrackObject(*(O->cName()));
+			//	ph_dbg_draw_mask1.set(ph_m1_DbgTrackObject,TRUE);
+			//}
 
+		}
+	
+	//virtual void	Info	(TInfo& I)		
+	//{
+	//	strcpy(I,"restart game fast"); 
+	//}
+};
 #endif
 
 class CCC_PHIterations : public CCC_Integer {
@@ -2310,6 +2329,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"dbg_draw_ph_ray_motions"		,&ph_dbg_draw_mask,	phDbgDrawRayMotions);
 	CMD4(CCC_Float,		"dbg_ph_vel_collid_damage_to_display",&dbg_vel_collid_damage_to_display,	0.f, 1000.f);
 	CMD4(CCC_DbgBullets,"dbg_draw_bullet_hit",			&g_bDrawBulletHit,	0, 1)	;
+	CMD1(CCC_DbgPhTrackObj,"dbg_track_obj");
 #endif
 
 

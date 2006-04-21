@@ -8,6 +8,7 @@
 
 
 extern	Flags32			ph_dbg_draw_mask						;
+extern	Flags32			ph_dbg_draw_mask1						;
 extern	bool			draw_frame								;
 extern	u32				dbg_tries_num							;
 extern	u32				dbg_saved_tries_for_active_objects		;
@@ -19,6 +20,7 @@ extern	u32 			dbg_joints_num							;
 extern	u32 			dbg_islands_num							;
 extern	u32 			dbg_contacts_num						;
 extern	float			dbg_vel_collid_damage_to_display		;
+extern	LPCSTR			dbg_trace_object						;
 #ifdef DRAW_CONTACTS
 
 struct SPHContactDBGDraw
@@ -32,7 +34,7 @@ DEFINE_VECTOR(SPHContactDBGDraw,CONTACT_VECTOR,CONTACT_I);
 extern CONTACT_VECTOR Contacts0;
 extern CONTACT_VECTOR Contacts1;
 #endif
-
+///ph_dbg_draw_mask 
 enum
 {
 	phDbgDrawContacts			=		1<<0,
@@ -64,8 +66,14 @@ enum
 	phDbgDrawIKGoal				=		1<<27,
 	phDbgIKLimits				=		1<<28,
 	phDbgCharacterControl		=		1<<29,
-	phDbgDrawRayMotions			=		1<<30
+	phDbgDrawRayMotions			=		1<<30,
+	phDbgTrackObject			=		1<<31
 
+};
+///ph_dbg_draw_mask1 ne pereputat by blin!
+enum
+{
+	ph_m1_DbgTrackObject		=		1<<0
 };
 struct SPHObjDBGDraw
 {
@@ -105,7 +113,8 @@ void _cdecl DBG_OutText(LPCSTR s,...);
 void DBG_DrawFrameStart();
 void PH_DBG_Render();
 void PH_DBG_Clear();
-
+LPCSTR PH_DBG_ObjectTrack();
+void PH_DBG_SetTrackObject(LPCSTR obj);
 
 
 

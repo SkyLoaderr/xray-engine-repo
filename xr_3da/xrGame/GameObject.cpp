@@ -29,6 +29,9 @@
 #include "net_utils.h"
 #include "script_callback_ex.h"
 #include "MathUtils.h"
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -230,6 +233,12 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	// XForm
 	XFORM().setXYZ					(E->o_Angle);
 	Position().set					(E->o_Position);
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&xr_strcmp(PH_DBG_ObjectTrack(),cName())==0)
+	{
+		Msg("CGameObject::net_Spawn obj %s Position set from CSE_Abstract %f,%f,%f",PH_DBG_ObjectTrack(),Position().x,Position().y,Position().z);
+	}
+#endif
 	VERIFY							(_valid(renderable.xform));
 	VERIFY							(!fis_zero(DET(renderable.xform)));
 	CSE_ALifeObject					*O = smart_cast<CSE_ALifeObject*>(E);
@@ -269,7 +278,12 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	
 	reinit						();
 	CScriptBinder::reinit		();
-
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&xr_strcmp(PH_DBG_ObjectTrack(),cName())==0)
+	{
+		Msg("CGameObject::net_Spawn obj %s After Script Binder reinit %f,%f,%f",PH_DBG_ObjectTrack(),Position().x,Position().y,Position().z);
+	}
+#endif
 	//load custom user data from server
 	if(!E->client_data.empty())
 	{	
@@ -322,8 +336,23 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	m_bObjectRemoved			= false;
 
 	spawn_supplies				();
-
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&xr_strcmp(PH_DBG_ObjectTrack(),cName())==0)
+	{
+		Msg("CGameObject::net_Spawn obj %s Before CScriptBinder::net_Spawn %f,%f,%f",PH_DBG_ObjectTrack(),Position().x,Position().y,Position().z);
+	}
+	BOOL ret =CScriptBinder::net_Spawn(DC);
+#else
 	return						(CScriptBinder::net_Spawn(DC));
+#endif
+
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&xr_strcmp(PH_DBG_ObjectTrack(),cName())==0)
+	{
+		Msg("CGameObject::net_Spawn obj %s Before CScriptBinder::net_Spawn %f,%f,%f",PH_DBG_ObjectTrack(),Position().x,Position().y,Position().z);
+	}
+return ret;
+#endif
 }
 
 void CGameObject::net_Save		(NET_Packet &net_packet)
@@ -378,6 +407,13 @@ void CGameObject::net_Load		(IReader &ireader)
 	}
 #endif
 	// ----------------------------------------------------------
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&xr_strcmp(PH_DBG_ObjectTrack(),cName())==0)
+	{
+		Msg("CGameObject::net_Load obj %s (loaded) %f,%f,%f",PH_DBG_ObjectTrack(),Position().x,Position().y,Position().z);
+	}
+
+#endif
 
 }
 

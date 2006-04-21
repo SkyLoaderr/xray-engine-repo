@@ -132,7 +132,7 @@ TEMPLATE_SPECIALIZATION
 float CScanningAbilityAbstract::get_velocity(CObject *obj)
 {
 	CActor *actor = smart_cast<CActor *>(obj);
-	return (actor->movement_control()->GetVelocityActual()); 
+	return (actor->character_physics_support()->movement()->GetVelocityActual()); 
 }
 
 TEMPLATE_SPECIALIZATION

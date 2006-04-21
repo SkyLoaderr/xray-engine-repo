@@ -54,7 +54,7 @@ STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 /////////////////////////////////////////////
 CEntityAlive::CEntityAlive()
 {
-	m_PhysicMovementControl = xr_new<CPHMovementControl>();
+	
 	monster_community		= xr_new<MONSTER_COMMUNITY>	();
 
 	m_ef_weapon_type		= u32(-1);
@@ -65,7 +65,7 @@ CEntityAlive::CEntityAlive()
 
 CEntityAlive::~CEntityAlive()
 {
-	xr_delete				(m_PhysicMovementControl);
+
 	xr_delete				(monster_community);
 	xr_delete				(m_material_manager);
 }
@@ -333,22 +333,22 @@ float CEntityAlive::CalcCondition(float /**hit/**/)
 ///////////////////////////////////////////////////////////////////////
 u16	CEntityAlive::PHGetSyncItemsNumber()
 {
-	if(m_PhysicMovementControl->CharacterExist()) return 1;
+	if(character_physics_support()->movement()->CharacterExist()) return 1;
 	else										  return inherited::PHGetSyncItemsNumber();
 }
 CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16 item)
 {
-	if(m_PhysicMovementControl->CharacterExist()) return m_PhysicMovementControl->GetSyncItem();
+	if(character_physics_support()->movement()->CharacterExist()) return character_physics_support()->movement()->GetSyncItem();
 	else										 return inherited::PHGetSyncItem(item);
 }
 void CEntityAlive::PHUnFreeze()
 {
-	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->UnFreeze();
+	if(character_physics_support()->movement()->CharacterExist()) character_physics_support()->movement()->UnFreeze();
 	else if(m_pPhysicsShell) m_pPhysicsShell->UnFreeze();
 }
 void CEntityAlive::PHFreeze()
 {
-	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->Freeze();
+	if(character_physics_support()->movement()->CharacterExist()) character_physics_support()->movement()->Freeze();
 	else if(m_pPhysicsShell) m_pPhysicsShell->Freeze();
 }
 //////////////////////////////////////////////////////////////////////
@@ -643,7 +643,7 @@ float CEntityAlive::g_Radiation	()	const
 DLL_Pure *CEntityAlive::_construct	()
 {
 	inherited::_construct	();
-	m_material_manager		= xr_new<CMaterialManager>(this,m_PhysicMovementControl);
+	if(character_physics_support())m_material_manager		= xr_new<CMaterialManager>(this,character_physics_support()->movement());
 	return					(this);
 }
 

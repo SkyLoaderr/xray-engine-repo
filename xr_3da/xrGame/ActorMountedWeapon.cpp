@@ -5,7 +5,7 @@
 #include "WeaponMounted.h"
 #include "../CameraBase.h"
 #include "ActorEffector.h"
-
+#include "CharacterPhysicsSupport.h"
 bool CActor::use_MountedWeapon(CHolderCustom* object)
 {
 //	CHolderCustom* wpn	=smart_cast<CHolderCustom*>(object);
@@ -13,7 +13,7 @@ bool CActor::use_MountedWeapon(CHolderCustom* object)
 	if(m_holder){
 		if(!wpn||(m_holder==wpn)){
 			m_holder->detach_Actor();
-			m_PhysicMovementControl->CreateCharacter();
+			character_physics_support()->movement()->CreateCharacter();
 			m_holder=NULL;
 		}
 		return true;
@@ -23,7 +23,7 @@ bool CActor::use_MountedWeapon(CHolderCustom* object)
 			if(wpn->Use(Device.vCameraPosition, Device.vCameraDirection,center)){
 				if(wpn->attach_Actor(this)){
 					// destroy actor character
-					m_PhysicMovementControl->DestroyCharacter();
+					character_physics_support()->movement()->DestroyCharacter();
 					PickupModeOff();
 					m_holder=wpn;
 					if (pCamBobbing){

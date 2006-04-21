@@ -14,7 +14,7 @@
 #include "../../ai_space.h"
 #include "../../level_graph.h"
 #include "../../ai_object_location.h"
-
+#include "../../CharacterPhysicsSupport.h"
 #ifdef DEBUG
 #include "../../level_debug.h"
 #endif
@@ -336,11 +336,11 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 			// start jump here
 			//---------------------------------------------------------------------------------
 			// получить время физ.прыжка
-			float ph_time = m_object->m_PhysicMovementControl->JumpMinVelTime(m_target_position);
+			float ph_time = m_object->character_physics_support()->movement()->JumpMinVelTime(m_target_position);
 			// выполнить прыжок в соответствии с делителем времени
 			float cur_factor	= ((m_data.force_factor > 0) ? m_data.force_factor : m_jump_factor);
 			m_jump_time			= ph_time/cur_factor;
-			m_object->m_PhysicMovementControl->Jump(m_target_position,m_jump_time);
+			m_object->character_physics_support()->movement()->Jump(m_target_position,m_jump_time);
 			m_time_started		= time();
 			m_time_next_allowed	= m_time_started + m_delay_after_jump;
 			//---------------------------------------------------------------------------------
