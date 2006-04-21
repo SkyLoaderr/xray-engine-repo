@@ -43,6 +43,12 @@
 			<infoportion_complete>esc_serious_talk</infoportion_complete>
 		</objective>
 		<objective>
+			<text>tutorial_help_wounded_3</text>
+			<map_location_type hint="tutorial_bandits">green_location</map_location_type>
+			<object_story_id>esc_pm_broken</object_story_id>
+			<function_complete>escape_tasks.kill_tutorial_bandits</function_complete>
+		</objective>
+		<objective>
 			<text>tutorial_help_wounded_1</text>
 			<map_location_type hint="tutorial_wounded">green_location</map_location_type>
 			<object_story_id>Escape_tutorial_wounded</object_story_id>
@@ -52,7 +58,6 @@
 			<text>tutorial_help_wounded_2</text>
 			<map_location_type hint="escape_trader">blue_location</map_location_type>
 			<object_story_id>Escape_Trader</object_story_id>
-	<!--		<infoportion_complete>esc_serious_talk</infoportion_complete>    -->
 		</objective>
 	</game_task>
 
