@@ -26,7 +26,9 @@
 		</supplies>
 		
 		<start_dialog>gar_seriy_start</start_dialog>
-#include "gameplay\character_dialogs.xml"		
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>	
 	</specific_character>	
 	
 	<specific_character id="gar_dram_novice" team_default = "1">
@@ -53,7 +55,9 @@
 
 	
 		<start_dialog>gar_dramm_novice_start</start_dialog>
-#include "gameplay\character_dialogs.xml"				
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>			
 	</specific_character>
 	
 	
@@ -81,7 +85,9 @@
 		</supplies>
 			
 		<start_dialog>gar_newbie_in_tonnel</start_dialog>
-#include "gameplay\character_dialogs.xml"	
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="gar_hellcar" team_default = "1">
@@ -113,7 +119,9 @@
 		</supplies>
 
 		<start_dialog>gar_hellcar_start</start_dialog>
-#include "gameplay\character_dialogs.xml"	
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="gar_bandit_novice_wounded" team_default = "1">
@@ -661,7 +669,9 @@
 		</supplies>
 
 		<start_dialog>gar_dolg_blokpost</start_dialog>
-#include "gameplay\character_dialogs.xml"
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="gar_sniper" team_default = "1">

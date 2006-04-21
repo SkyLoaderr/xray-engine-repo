@@ -57,7 +57,9 @@
 		
 
 		<start_dialog>escape_lager_volk_hello</start_dialog>
-#include "gameplay\character_dialogs.xml"
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="esc_fanat" team_default = "1">
@@ -86,7 +88,9 @@
 		</supplies>
 				
 		<start_dialog>escape_lager_leader_hello</start_dialog>
-#include "gameplay\character_dialogs.xml"
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="esc_fox" team_default = "1">
@@ -115,7 +119,9 @@
 		</supplies>
 					
 		<start_dialog>escape_fox_hello_dialog</start_dialog>
-#include "gameplay\character_dialogs.xml"
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
@@ -141,7 +147,9 @@
 		</supplies>
 
 		<start_dialog>tutorial_wounded_give_medkit</start_dialog>
-#include "gameplay\character_dialogs.xml"					
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>				
 	</specific_character>
 	
 	<specific_character id="esc_killer_specnaz" team_default = "1">
@@ -517,7 +525,9 @@
 		</supplies>
 
 		<start_dialog>escape_factory_assault_start</start_dialog>		
-#include "gameplay\character_dialogs.xml"
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	
@@ -547,7 +557,8 @@
 		</supplies>
 										
 		<start_dialog>esc_bridge_soldiers_start</start_dialog>
-#include "gameplay\character_dialogs.xml"
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 	<specific_character id="esc_soldier_regular_default1" team_default = "1">
@@ -925,7 +936,9 @@
 		</supplies>
 
 		<start_dialog>esc_provodnik_start</start_dialog>
-#include "gameplay\character_dialogs.xml"
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 	</specific_character>
 	
 </xml>
