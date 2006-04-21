@@ -3118,6 +3118,9 @@
 							RelativePath=".\Scripts\sr_aes_deadzone.script">
 						</File>
 						<File
+							RelativePath=".\scripts\sr_cutscene.script">
+						</File>
+						<File
 							RelativePath=".\scripts\sr_danger.script">
 						</File>
 						<File
