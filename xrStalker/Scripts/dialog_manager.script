@@ -355,7 +355,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 	if call_count == 0 then
 		local value, number, max_number = 0,0,0
 		for k,v in pairs(tbl) do
-			value, number = calculate_predicate(npc, v)
+			value, number = calculate_predicate(npc, v)			
 			max_count = max_count + 1
 			if value == true then
 				if number > max_number then
@@ -423,10 +423,10 @@ function calculate_predicate(npc, tbl, settings)
 		if tbl.npc_rank > npc:character_rank() then return false,0 end
 		property_num = property_num + 1		
 	end
-	if tbl.level ~= nil then
-		if tbl.level ~= level.name() then return false,0 end
-		property_num = property_num + 1		
-	end
+--	if tbl.level ~= nil then
+--		if tbl.level ~= level.name() then return false,0 end
+--		property_num = property_num + 1		
+--	end
 	if tbl.condlist ~= nil then
 		if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then return false,0 end
 		property_num = property_num + table.getn(tbl.condlist.infop_check)
