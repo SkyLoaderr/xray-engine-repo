@@ -35,7 +35,6 @@ void CWeaponShotEffector::Initialize(float max_angle, float relax_speed, float m
 	fAngleVertFrac			= _abs(angle_frac);
 	fAngleHorzMax			= max_angle_horz;
 	fAngleHorzStep			= step_angle_horz;
-	bInitialized			= TRUE;
 
 }
 
