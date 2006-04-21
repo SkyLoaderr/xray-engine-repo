@@ -212,3 +212,13 @@ function is_actor_enemy_dolg ()
     end    
     return true
 end
+
+function bloodsuckers_dead (task_id, subtask)
+    local actor = db.actor
+    if actor:has_info ("mil_bloodsucker1_dead") == true and 
+       actor:has_info ("mil_bloodsucker2_dead") == true and 
+       actor:has_info ("mil_bloodsucker3_dead") == true then
+       return true
+    end   
+    return false
+end

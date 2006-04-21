@@ -316,6 +316,29 @@ function PatrolManager:set_formation (formation)
     self:reset_positions ()   
 end
 -----------------------
+function PatrolManager:get_commander   (npc)
+    if npc == nil then 
+       abort ("Invalid NPC on call PatrolManager:get_npc_command in PatrolManager[%s]", self.path_name)
+    end
+    
+    --закешируем айдишник непися
+    local npc_id = npc:id ()   
+    --проверка непися на присутсвие в списке
+    if self.npc_list[npc:id ()] == nil then
+       abort ("NPC with name %s can't present in PatrolManager[%s]", npc:name (), self.path_name)
+    end
+    --проверка, чтобы командир не вздумал задавать глупых вопросов
+    if npc:id () == self.commander_id then
+       abort ("Patrol commander called function PatrolManager:get_npc_command in PatrolManager[%s]", self.path_name) 
+    end       
+    --получим данные командира
+    local commander = self.npc_list[self.commander_id].soldier
+    if commander == nil then
+       abort ("Patrol commander not present in PatrolManager[%s]", self.path_name)  
+    end   
+    return commander
+end
+-----------------------
 function PatrolManager:get_npc_command (npc)    -- get command for NPC
     if npc == nil then 
        abort ("Invalid NPC on call PatrolManager:get_npc_command in PatrolManager[%s]", self.path_name)
@@ -333,8 +356,11 @@ function PatrolManager:get_npc_command (npc)    -- get command for NPC
     end       
     --получим данные командира
     local commander = self.npc_list[self.commander_id].soldier
+    
     local dir = commander:direction ()
-    local vertex_id = commander:level_vertex_id ()
+    
+    local pos = vector ():set (0, 0, 0)
+    local vertex_id = commander:location_on_path (15, pos)
     --уберем влияние вертикальной составляющей
     dir.y = 0
     dir:normalize ()
@@ -538,6 +564,7 @@ function action_patrol:__init (npc_name, action_name, storage) super (nil, actio
 	self.cur_state = "patrol"
 	self.on_point = false
 	self.was_reset = false
+	self.time_to_update = time_global () + 2000
 end
 ----------------------
 function action_patrol:initialize()
@@ -563,7 +590,13 @@ function action_patrol:execute()
 	if db.actor and xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
        return
 	end	
-	
+
+    if self.time_to_update - time_global () > 0 then
+       return 
+    end
+    
+    self.time_to_update = time_global () + 5000
+    
 	self.l_vid, self.dir, self.cur_state, reset = patrols[self.st.path_name]:get_npc_command (self.object)
 
 	if self.l_vid == self.object:level_vertex_id () then
@@ -575,39 +608,35 @@ function action_patrol:execute()
 	self.object:set_desired_direction (self.dir)
 	self.object:set_path_type (game_object.level_path)
 	
-	if reset == true then
-	   self.on_point = false
-	end
-	    
 	--перемещаемся по пути
-	if self.on_point == false then  -- если позиция не была еще достигнута, то подбежим к ней
-	   local dist = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) 
-	   self.on_point = dist < 3
-	   if dist > 5 then
-	      if self.st.animation ~= nil and self.st.animation ~= "" then
-	         state_mgr.set_state(self.object, self.st.animation)   
-	      else   
-	         state_mgr.set_state(self.object, "assault")       -- просто подбегаем    
-	      end   
-       elseif dist < 2 then
-	      if self.st.animation ~= nil and self.st.animation ~= "" then
-	         state_mgr.set_state(self.object, self.st.animation)   
-	      else   
-	         state_mgr.set_state(self.object, "patrol")       
-	      end   
-       end   
-	else
+	--if self.on_point == false then  -- если позиция не была еще достигнута, то подбежим к ней
+	   --local dist = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) 
+	   --self.on_point = dist < 3
+	   --if dist > 5 then
+	      --if self.st.animation ~= nil and self.st.animation ~= "" then
+	         --state_mgr.set_state(self.object, self.st.animation)   
+	      --else   
+	         --state_mgr.set_state(self.object, "assault")       -- просто подбегаем    
+	      --end   
+       --elseif dist < 2 then
+	      --if self.st.animation ~= nil and self.st.animation ~= "" then
+	         --state_mgr.set_state(self.object, self.st.animation)   
+	      --else   
+	         --state_mgr.set_state(self.object, "patrol")       
+	      --end   
+       --end   
+	--else
        if self.st.animation ~= nil and self.st.animation ~= "" then
           state_mgr.set_state(self.object, self.st.animation)   
        else   
           state_mgr.set_state (self.object, self.cur_state) 
        end   
-       self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 5
-	end
+       --self.on_point = level.vertex_position (self.l_vid):distance_to (level.vertex_position (self.object:level_vertex_id ())) < 5
+	--end
 	
-	if self.on_point == true and patrols[self.st.path_name]:is_commander_in_meet () == true then
-	   state_mgr.set_state (self.object, "guard")
-	end
+	--if self.on_point == true and patrols[self.st.path_name]:is_commander_in_meet () == true then
+	   --state_mgr.set_state (self.object, "guard")
+	--end
 end
 ----------------------
 function action_patrol:finalize ()

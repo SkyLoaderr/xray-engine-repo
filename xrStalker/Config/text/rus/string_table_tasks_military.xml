@@ -141,7 +141,7 @@
 </string>
 
 <string id="mil_hunters_task">
-	<text>Помочь охотникам Свободы уничтожить опасного мутанта в деревне</text>
+	<text>Уничтожить кровососов в деревне</text>
 </string>
 
 <string id="mil_hunters_phase1">
@@ -149,7 +149,7 @@
 </string>
 
 <string id="mil_hunters_phase2">
-	<text>Уничтожить опасного мутанта</text>
+	<text>Уничтожить кровососов</text>
 </string>
 
 <string id="mil_hunters_phase3">
@@ -179,15 +179,15 @@
 </string>
 
 <string id="mil_go_to_miser_task_main">
-	<text>Получить награду за убитого контроллера</text>
+	<text>Получить награду за убитых кровососов</text>
 </string>
 
 <string id="mil_kill_controller">
-	<text>Убить контроллера</text>
+	<text>Убить кровососов</text>
 </string>
 
 <string id="mil_kill_controller_main">
-	<text>Убить контроллера</text>
+	<text>Убить кровососов</text>
 </string>
 
 <string id="mil_return_to_ugrumy">
