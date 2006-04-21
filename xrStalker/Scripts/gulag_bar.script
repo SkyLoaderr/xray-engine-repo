@@ -420,7 +420,7 @@ function load_job(sj, gname, type, squad, groups)
         for i = 1,3 do
             t = { section = "logic@bar_dolg_zastava1_walker"..i,
                     idle = 0,
-                    prior = 9, state = {0},
+                    prior = 8, state = {0},
                     in_rest = "", out_rest = "bar_zastava_restrictor",
 					online = "{=actor_in_zone(bar_zastava_online_restrictor)}"
                 }
