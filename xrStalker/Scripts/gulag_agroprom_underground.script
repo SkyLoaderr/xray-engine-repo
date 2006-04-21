@@ -203,10 +203,10 @@ end
 
 function checkStalker( npc_community, gulag_type )
 	if gulag_type == "agr_u_soldiers"  then
-		return npc_community == "military"
+		return npc_community == "zombied"
 	end
 	if gulag_type == "agr_u_bandits"  then
-		return npc_community == "bandit"
+		return npc_community == "zombied"
 	end
 	return false
 end
