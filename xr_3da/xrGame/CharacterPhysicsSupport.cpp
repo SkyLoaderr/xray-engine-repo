@@ -16,7 +16,9 @@
 #include "IKLimbsController.h"
 #include "PHCapture.h"
 const float default_hinge_friction = 5.f;
-
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	dBodyID body1=dGeomGetBody(c.geom.g1);
@@ -145,12 +147,23 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 
 	if(m_EntityAlife.g_Alive())
 	{
-		m_PhysicMovementControl->CreateCharacter();
-		m_PhysicMovementControl->SetPhysicsRefObject(&m_EntityAlife);
+#ifdef DEBUG
+		if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&xr_strcmp(PH_DBG_ObjectTrack(),m_EntityAlife.cName())==0)
+		{
+			Msg("CCharacterPhysicsSupport::SpawnInitPhysics obj %s before collision correction %f,%f,%f",PH_DBG_ObjectTrack(),m_EntityAlife.Position().x,m_EntityAlife.Position().y,m_EntityAlife.Position().z);
+		}
+#endif
 		CreateIKController();
 		CollisionCorrectObjPos(m_EntityAlife.Position());
+		m_PhysicMovementControl->CreateCharacter();
+		m_PhysicMovementControl->SetPhysicsRefObject(&m_EntityAlife);
 		m_PhysicMovementControl->SetPosition	(m_EntityAlife.Position());
-		
+#ifdef DEBUG
+		if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&xr_strcmp(PH_DBG_ObjectTrack(),m_EntityAlife.cName())==0)
+		{
+			Msg("CCharacterPhysicsSupport::SpawnInitPhysics obj %s after collision correction %f,%f,%f",PH_DBG_ObjectTrack(),m_EntityAlife.Position().x,m_EntityAlife.Position().y,m_EntityAlife.Position().z);
+		}
+#endif
 		//m_PhysicMovementControl.SetMaterial( )
 	}
 	else
