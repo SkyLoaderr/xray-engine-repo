@@ -24,6 +24,7 @@ BOOL CBoneDef::SetInitTM(IPhysiqueExport* pExport, const Matrix3& matMesh)
 	R_ASSERT(pBone);
 	R_ASSERT(Helper::IsBone(pBone,U.m_SkinAllowDummy));
 	Matrix3 tmp;
+	//Log("SetInitTM:",pBone->GetName());
 	if(Helper::IsBipedBone(pBone))	{
 		Helper::SetBipedUniform(pBone, TRUE, TRUE);
 		bErr = CGINTM(pBone,pExport->GetInitNodeTM(pBone, tmp));
@@ -34,12 +35,12 @@ BOOL CBoneDef::SetInitTM(IPhysiqueExport* pExport, const Matrix3& matMesh)
 		if (bErr) tmp.IdentityMatrix();
 	}
 
-	if (!bErr){
+	if (1){//!bErr){
 		Helper::ConvertMatrix(tmp,matInit);
 		matOffset.invert(matInit);
 		//S matMesh
 //		pBone->matOffset = matMesh * Inverse(pBone->matInit);
 	}
 
-	return !bErr;
+	return 1;//!bErr;
 }

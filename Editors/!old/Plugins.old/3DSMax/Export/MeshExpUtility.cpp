@@ -362,6 +362,8 @@ void MeshExpUtility::ExportSkinKeys()
 		ELog.Msg(mtInformation,"-------------------------------------------------------" );
 		return; 
 	}
+	m_SkinFlipFaces				= IsDlgButtonChecked( hPanel, IDC_SKIN_FLIPFACES );
+	m_SkinAllowDummy			= IsDlgButtonChecked( hPanel, IDC_SKIN_ALLOW_DUMMY );
 
 	string256 m_ExportName;
 	m_ExportName[0]=0;
