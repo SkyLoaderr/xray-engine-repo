@@ -25,6 +25,7 @@
 #include "profiler.h"
 #include "stalker_animation_manager.h"
 #include "object_handler_planner_impl.h"
+#include "effectorshot.h"
 
 CObjectHandler::CObjectHandler		()
 {
@@ -90,6 +91,16 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 		m_item_to_spawn			= shared_str();
 		m_ammo_in_box_to_spawn	= 0;
 	}
+
+	CWeapon						*weapon = smart_cast<CWeapon*>(inventory_item);
+	if (weapon)
+		planner().object().weapon_shot_effector().Initialize(
+			weapon->camMaxAngle,
+			weapon->camRelaxSpeed_AI,
+			weapon->camMaxAngleHorz,
+			weapon->camStepAngleHorz,
+			weapon->camDispertionFrac
+		);
 }
 
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)

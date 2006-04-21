@@ -17,7 +17,6 @@
 #include "weaponmagazined.h"
 #include "object_handler_space.h"
 #include "stalker_animation_manager.h"
-#include "effectorshot.h"
 
 #define ALLOW_STRANGE_BEHAVIOUR
 
@@ -63,14 +62,6 @@ void CObjectActionShow::initialize		()
 */
 	if (!m_weapon)
 		return;
-
-	object().weapon_shot_effector().Initialize(
-		m_weapon->camMaxAngle,
-		m_weapon->camRelaxSpeed_AI,
-		m_weapon->camMaxAngleHorz,
-		m_weapon->camStepAngleHorz,
-		m_weapon->camDispertionFrac
-	);
 }
 
 void CObjectActionShow::execute		()

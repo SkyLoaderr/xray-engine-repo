@@ -81,7 +81,7 @@ void CUIEventsWnd::Init				()
 	m_TaskFilter->SetWindowName		("filter_tab");
 	Register						(m_TaskFilter);
     AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
-
+/*
     m_primary_or_all_filter_btn		= xr_new<CUI3tButton>(); m_primary_or_all_filter_btn->SetAutoDelete(true);
 	m_UILeftFrame->AttachChild		(m_primary_or_all_filter_btn);
 	xml_init.Init3tButton			(uiXml, "main_wnd:left_frame:primary_or_all", 0, m_primary_or_all_filter_btn);
@@ -89,7 +89,7 @@ void CUIEventsWnd::Init				()
 	Register						(m_primary_or_all_filter_btn);
 	m_primary_or_all_filter_btn->	SetWindowName("btn_primary_or_all");
     AddCallback						("btn_primary_or_all",BUTTON_CLICKED,boost::bind(&CUIEventsWnd::OnFilterChanged,this,_1,_2));
-
+*/
    m_currFilter						= eActiveTask;
    SetDescriptionMode				(true);
 }
@@ -164,22 +164,9 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 	}
 
 }
-/*int i=0;*/
+
 void CUIEventsWnd::Show					(bool status)
 {
-/*	if(i==0&&status){
-		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
-		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_1", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
-		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_2", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
-		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_3", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
-		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_4", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
-		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_5", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
-		pActor->encyclopedia_registry->registry().objects().push_back(ARTICLE_DATA("user_task_article_6", Level().GetGameTime(), ARTICLE_DATA::eTaskArticle));
-		i=1;
-	};
-*/
-
 	inherited::Show			(status);
 	m_UIMapWnd->Show		(status);
 	m_UITaskInfoWnd->Show	(status);
@@ -191,11 +178,11 @@ void CUIEventsWnd::Show					(bool status)
 bool CUIEventsWnd::Filter(CGameTask* t)
 {
 	ETaskState task_state		= t->m_Objectives[0].TaskState();
-	bool bprimary_only			= m_primary_or_all_filter_btn->GetCheck();
+//	bool bprimary_only			= m_primary_or_all_filter_btn->GetCheck();
 
-	return (m_currFilter==eOwnTask && task_state==eTaskUserDefined )				||
+	return (m_currFilter==eOwnTask && task_state==eTaskUserDefined )		||
 			( 
-			  (!bprimary_only || (bprimary_only && t->m_is_task_general))	&&
+			  ( true/*!bprimary_only || (bprimary_only && t->m_is_task_general)*/ )	&&
 				(
 					(m_currFilter==eAccomplishedTask	&& task_state==eTaskStateCompleted )||
 					(m_currFilter==eFailedTask			&& task_state==eTaskStateFail )||

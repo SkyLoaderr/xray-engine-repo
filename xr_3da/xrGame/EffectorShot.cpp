@@ -16,7 +16,7 @@ CWeaponShotEffector::CWeaponShotEffector()
 	bSingleShoot			= FALSE;
 	bSSActive				= FALSE;
 	m_LastSeed				= 0;
-	fRelaxSpeed				= 0.f;
+	fRelaxSpeed				= EPS_L;
 	fAngleVertMax			= 0.f;
 	fAngleVertFrac			= 1.f;
 	fAngleHorzMax			= 0.f;
@@ -29,10 +29,13 @@ CWeaponShotEffector::CWeaponShotEffector()
 void CWeaponShotEffector::Initialize(float max_angle, float relax_speed, float max_angle_horz, float step_angle_horz, float angle_frac)
 {
 	fRelaxSpeed				= _abs(relax_speed);
+	VERIFY(!fis_zero(fRelaxSpeed));
 	fAngleVertMax			= _abs(max_angle);
+	VERIFY(!fis_zero(fAngleVertMax));
 	fAngleVertFrac			= _abs(angle_frac);
 	fAngleHorzMax			= max_angle_horz;
 	fAngleHorzStep			= step_angle_horz;
+	bInitialized			= TRUE;
 
 }
 
@@ -41,16 +44,21 @@ void CWeaponShotEffector::Shot	(float angle)
 	float OldAngleVert = fAngleVert, OldAngleHorz = fAngleHorz;
 
 	fAngleVert				+= (angle*fAngleVertFrac+m_Random.randF(-1,1)*angle*(1-fAngleVertFrac));
+//	VERIFY(!fis_zero(fAngleVertMax));
 	clamp					(fAngleVert,-fAngleVertMax,fAngleVertMax);
 	if(fis_zero(fAngleVert-fAngleVertMax))
 		fAngleVert			*= m_Random.randF(0.9f,1.1f);
 	
 	fAngleHorz				= fAngleHorz + (fAngleVert/fAngleVertMax)*m_Random.randF(-1,1)*fAngleHorzStep;
+//	VERIFY(_valid(fAngleHorz));
+
 	clamp					(fAngleHorz,-fAngleHorzMax,fAngleHorzMax);
+//		VERIFY(_valid(fAngleHorz));
 	bActive					= TRUE;
 
 	fLastDeltaVert			= fAngleVert - OldAngleVert;
 	fLastDeltaHorz			= fAngleHorz - OldAngleHorz;
+//	VERIFY(_valid(fLastDeltaHorz));
 	bSSActive				= TRUE;
 }
 
@@ -58,10 +66,15 @@ void CWeaponShotEffector::Update()
 {
 	if (bActive){
 		float time_to_relax	= _abs(fAngleVert)/fRelaxSpeed;
-		float relax_speed	= _abs(fAngleHorz)/time_to_relax;
+//		VERIFY(_valid(time_to_relax));
+		float relax_speed	= (fis_zero(time_to_relax))?0.0f:_abs(fAngleHorz)/time_to_relax;
+//		VERIFY(_valid(relax_speed));
 
 		float time_to_relax_l	= _abs(fLastDeltaVert)/fRelaxSpeed;
-		float relax_speed_l	= _abs(fLastDeltaHorz)/time_to_relax_l;
+//		VERIFY(_valid(time_to_relax_l));
+
+		float relax_speed_l	= (fis_zero(time_to_relax_l))?0.0f:_abs(fLastDeltaHorz)/time_to_relax_l;
+//		VERIFY(_valid(relax_speed_l));
 		//-------------------------------------------------------
 		if (fAngleHorz>=0.f)
 			fAngleHorz		-= relax_speed*Device.fTimeDelta;
@@ -75,6 +88,7 @@ void CWeaponShotEffector::Update()
 			else
 				fLastDeltaHorz		+= relax_speed_l*Device.fTimeDelta;
 		}
+//		VERIFY(_valid(fLastDeltaHorz));
 		//-------------------------------------------------------
 		if (fAngleVert>=0.f){
 			fAngleVert		-= fRelaxSpeed*Device.fTimeDelta;
@@ -108,6 +122,10 @@ void CWeaponShotEffector::Update()
 			fLastDeltaVert	= 0.f;
 			fLastDeltaHorz	= 0.f;
 		}
+//		VERIFY(_valid(fAngleVert));
+//		VERIFY(_valid(fAngleHorz));
+//		VERIFY(_valid(fLastDeltaHorz));
+//		VERIFY(_valid(fLastDeltaVert));
 	}
 }
 
