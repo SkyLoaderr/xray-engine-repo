@@ -2608,10 +2608,6 @@
                 <has_info>mil_sniper_dead</has_info>
                 <next>400</next>
             </phrase>
-            <phrase id="402">
-                <text>mil_dolg_skull_dialog_402</text>
-                <next>403</next>
-            </phrase>
             <phrase id="5080">
                 <text>mil_dolg_skull_dialog_5080</text>
                 <action>dialogs.break_dialog</action>
@@ -2760,19 +2756,18 @@
             <phrase id="300">
                 <text>mil_dolg_skull_dialog_300</text>
             </phrase>
-            <phrase id="401">
-                <text>mil_dolg_skull_dialog_401</text>
-                <next>402</next>
-            </phrase>
-            <phrase id="400">
-                <text>mil_dolg_skull_dialog_400</text>
-                <action>dialogs_military.mil_dolg_payment</action>
-                <next>401</next>
-                <next>411</next>
-            </phrase>
             <phrase id="411">
                 <text>mil_dolg_skull_dialog_411</text>
                 <next>412</next>
+            </phrase>
+            <phrase id="412">
+                <text>mil_dolg_skull_dialog_412</text>
+                <next>413</next>
+            </phrase>
+            <phrase id="413">
+                <text>mil_dolg_skull_dialog_413</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_dolg_skull_talk</give_info>
             </phrase>
             <phrase id="0">
                 <text></text>
@@ -2785,9 +2780,15 @@
                 <next>700</next>
                 <next>800</next>
             </phrase>
-            <phrase id="412">
-                <text>mil_dolg_skull_dialog_412</text>
-                <next>413</next>
+            <phrase id="400">
+                <text>mil_dolg_skull_dialog_400</text>
+                <action>dialogs_military.mil_dolg_payment</action>
+                <next>401</next>
+                <next>411</next>
+            </phrase>
+            <phrase id="401">
+                <text>mil_dolg_skull_dialog_401</text>
+                <next>402</next>
             </phrase>
             <phrase id="403">
                 <text>mil_dolg_skull_dialog_403</text>
@@ -2795,10 +2796,11 @@
                 <give_info>mil_dolg_skull_talk</give_info>
                 <give_info>mil_dolg_final_task</give_info>
             </phrase>
-            <phrase id="413">
-                <text>mil_dolg_skull_dialog_413</text>
-                <action>dialogs.break_dialog</action>
+            <phrase id="402">
+                <text>mil_dolg_skull_dialog_402</text>
                 <give_info>mil_dolg_skull_talk</give_info>
+                <give_info>mil_dolg_final_task</give_info>
+                <next>403</next>
             </phrase>
         </phrase_list>
     </dialog>
