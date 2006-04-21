@@ -97,3 +97,5 @@ load_scheme("sr_psy_antenna", "sr_psy_antenna", stype_restrictor)
 load_scheme("sr_postprocess", "sr_postprocess", stype_restrictor)
 load_scheme("sr_aes_deadzone","sr_aes_deadzone",stype_restrictor)
 load_scheme("sr_sleep",       "sr_sleep",       stype_restrictor)
+load_scheme("sr_cutscene",    "sr_cutscene",    stype_restrictor)
+
