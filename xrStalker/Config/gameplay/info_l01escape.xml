@@ -35,6 +35,9 @@
 	<info_portion id="esc_first_novice_dead"></info_portion>
 	<info_portion id="esc_second_novice_dead"></info_portion>
 	<info_portion id="esc_hit_bandits"></info_portion>
+	<info_portion id="esc_heli_attack"></info_portion>
+	<info_portion id="esc_heli_fire"></info_portion>
+	<info_portion id="esc_heli_direct"></info_portion>
 	<info_portion id="tutorial_wounded_must_spawn"></info_portion>
 	<info_portion id="tutorial_wounded_give_info">
 		<article>storyline_fox_flash_info</article>
