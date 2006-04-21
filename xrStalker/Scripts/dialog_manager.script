@@ -112,11 +112,13 @@ function init_intro_dialog(dlg)
 
 	local k,v = 0,0
 	for k,v in pairs(phrase.intro) do
-		phr = dlg:AddPhrase(v.name,get_id("intro"),1,-10000)
+		v.phr_id = get_id("intro")
+		phr = dlg:AddPhrase(v.name, v.phr_id, 1, -10000)
 		
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_intro")
+			phrase_script:AddAction("dialog_manager.phrase_action_intro")		
 		end
 	end
 --	phrase_script:AddPrecondition("zzz")
@@ -140,10 +142,12 @@ function init_cool_info_dialog(dlg)
 	local k,v,kk,vv = 0,0,0,0
 	for k,v in pairs(phrase.cool_info) do
 		local last_id = get_id("cool_info")
+		v.phr_id = last_id
 		phr = dlg:AddPhrase(v.name,last_id,0,-10000)		
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_cool_info")
+			phrase_script:AddAction("dialog_manager.phrase_action_cool_info")
 			
 			if v.article_info ~= nil then
 				phr = dlg:AddPhrase("",get_id("cool_info"),last_id,-10000)		
@@ -170,10 +174,12 @@ function init_action_info_dialog(dlg)
 	local k,v,kk,vv = 0,0,0,0
 	for k,v in pairs(phrase.action_info) do
 		local last_id = get_id("action_info")
+		v.phr_id = last_id
 		phr = dlg:AddPhrase(v.name,last_id,0,-10000)		
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_action_info")
+			phrase_script:AddAction("dialog_manager.phrase_action_action_info")
 			
 			if v.article_info ~= nil then
 				phr = dlg:AddPhrase("",get_id("action_info"),last_id,-10000)		
@@ -306,24 +312,46 @@ function action_transfer_money(actor, npc, p1, p2)
 	dialogs.relocate_money(npc, trade_info_price[p2], "out")
 end
 
+
+local selected_phrase_by_id = {
+	intro = {},
+	cool_info = {},
+	action_info = {}
+}
+
+function phrase_action_intro(npc, actor, p1, p2)
+	phrase_action(npc, actor, selected_phrase_by_id.intro, p2)
+end
+function phrase_action_cool_info(npc, actor, p1, p2)
+	phrase_action(npc, actor, selected_phrase_by_id.cool_info, p2)
+end
+function phrase_action_action_info(npc, actor, p1, p2)	
+	phrase_action(npc, actor, selected_phrase_by_id.action_info, p2)
+end
+
+function phrase_action(npc, actor, sel_tbl, p2)
+	sel_tbl[npc:id()] = p2
+end
+
+
 function precondition_intro(npc, actor)
-	return precondition(npc, actor, phrase.intro)
+	return precondition(npc, actor, phrase.intro, selected_phrase_by_id.intro)
 end
 function precondition_cool_info(npc, actor)
-	return precondition(npc, actor, phrase.cool_info)
+	return precondition(npc, actor, phrase.cool_info, selected_phrase_by_id.cool_info)
 end
 function precondition_action_info(npc, actor)
-	return precondition(npc, actor, phrase.action_info)
+	return precondition(npc, actor, phrase.action_info, selected_phrase_by_id.action_info)
 end
 function precondition_help_thanks(npc, actor)
 	return precondition(npc, actor, phrase.help_thanks)
 end
 
-function precondition(npc, actor, tbl)
+function precondition(npc, actor, tbl, sel_tbl)
 	local k,v = 0,0
-	-- При первом вызове прекондишна пробегаемся по таблице предикатов и определяем количество предикатов,
-	-- которые возвращают TRUE. Определяется из них фраза, охватывающая самую узкую ситуацию (по количеству
-	-- проверяемых функций в условии. Ее порядковый номер запоминается.
+	--' При первом вызове прекондишна пробегаемся по таблице предикатов и определяем количество предикатов,
+	--' которые возвращают TRUE. Определяется из них фраза, охватывающая самую узкую ситуацию (по количеству
+	--' проверяемых функций в условии. Ее порядковый номер запоминается.
 	if call_count == 0 then
 		local value, number, max_number = 0,0,0
 		for k,v in pairs(tbl) do
@@ -335,20 +363,35 @@ function precondition(npc, actor, tbl)
 					tmp_tbl = {}
 				end
 				if number == max_number then
-					tmp_tbl[max_count] = true
+					tmp_tbl[max_count] = {avail = true, phr_id = v.phr_id}
 				end								
 			end
 		end
 	end
 	
 	call_count = call_count + 1
+	return_value = tmp_tbl[call_count] ~= nil and tmp_tbl[call_count].avail == true
+	--' Проверка на повторяемость фраз.
+	if return_value == true then
+			if sel_tbl[npc:id()] ~= nil and sel_tbl[npc:id()] ~= tmp_tbl[call_count].phr_id then
+				return_value = false
+			end
+	else
+		--' Если обрабатывается фраза, которая была запомнена.
+		if sel_tbl[npc:id()] ~= nil and tmp_tbl[call_count] ~= nil and 
+		   sel_tbl[npc:id()] == tmp_tbl[call_count].phr_id then
+			sel_tbl[npc:id()] = nil
+		end
+	end
+	
+	
+	
 	if call_count < max_count then
-		-- При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
-		-- всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
-		return tmp_tbl[call_count] == true
+		--' При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
+		--' всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
+		return return_value
 	elseif call_count == max_count then
-		-- Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
-		local return_value = tmp_tbl[call_count] == true
+		--' Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
 		tmp_tbl = {}
 		call_count, max_count = 0,0
 		return return_value
