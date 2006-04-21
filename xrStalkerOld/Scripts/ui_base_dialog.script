@@ -198,4 +198,3 @@ function base_dialog:OnKeyboard(dik, keyboard_action)
 
 	return true
 end
-
