@@ -330,8 +330,8 @@
 	</game_task>
 	
 	<game_task id = "mil_go_to_miser">
+		<title>mil_go_to_miser_task_main</title>
 		<objective>
-			<title>mil_go_to_miser_task_main</title>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_go_to_miser_end</infoportion_complete>
             <infoportion_fail>mil_miser_dead</infoportion_fail>
@@ -348,8 +348,8 @@
 	</game_task>
 	
 	<game_task id = "mil_kill_controller">
+		<title>mil_kill_controller_main</title>
 		<objective>
-			<title>mil_kill_controller_main</title>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_hunt_end</infoportion_complete>
             <infoportion_fail>mil_ugrumy_dead</infoportion_fail>
