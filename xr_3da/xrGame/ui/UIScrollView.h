@@ -13,9 +13,14 @@ protected:
 enum {eVertFlip=(1<<0),eNeedRecalc=(1<<1),eFixedScrollBar=(1<<2),eItemsSelectabe=(1<<3),eInverseDir=(1<<4),eMultiSelect=(1<<5)};
 	CUIScrollBar*	m_VScrollBar;
 	CUIWindow*		m_pad;
-	float			m_rightIdent;
-	float			m_leftIdent;
+
+	float			m_rightIndent;
+	float			m_leftIndent;
+	float			m_upIndent;
+	float			m_downIndent;
+
 	float			m_vertInterval;
+	
 	Flags16			m_flags;
 	shared_str		m_scrollbar_profile;
 
@@ -24,6 +29,8 @@ virtual void		RecalcSize			();
 		void		OnScrollV			();
 		void		SetRightIndention	(float val);
 		void		SetLeftIndention	(float val);
+		void		SetUpIndention		(float val);
+		void		SetDownIndention	(float val);
 		void		SetVertFlip			(bool val)							{m_flags.set(eVertFlip, val);}
 public:
 	using CUIWindow::Init;

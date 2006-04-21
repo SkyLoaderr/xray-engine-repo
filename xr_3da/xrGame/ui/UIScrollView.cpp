@@ -8,9 +8,11 @@
 
 CUIScrollView::CUIScrollView()
 {
-	m_rightIdent		= 0.0f;
-	m_leftIdent			= 0.0f;
+	m_rightIndent		= 0.0f;
+	m_leftIndent		= 0.0f;
 	m_vertInterval		= 0.0f;
+   	m_upIndent			= 0.0f;
+	m_downIndent		= 0.0f;
 	m_flags.zero		();
 	SetFixedScrollBar	(true);
 	m_pad = NULL;
@@ -100,7 +102,7 @@ void CUIScrollView::RecalcSize			()
 	pad_size.set		(0.0f, 0.0f);
 
 	Fvector2			item_pos;
-	item_pos.set		(m_rightIdent, m_vertInterval);
+	item_pos.set		(m_rightIndent, m_vertInterval);
 
 	if(GetVertFlip()){
 		for(WINDOW_LIST::reverse_iterator it = m_pad->GetChildWndList().rbegin(); m_pad->GetChildWndList().rend() != it; ++it)
@@ -157,11 +159,9 @@ void CUIScrollView::Draw				()
 		RecalcSize			();
 
 	Frect		visible_rect			= GetAbsoluteRect();
+	visible_rect.top	+= m_upIndent;
+	visible_rect.bottom -= m_downIndent;
 	UI()->PushScissor					(visible_rect);
-	
-	if(m_flags.test(eFixedScrollBar) || GetHeight()<m_pad->GetHeight())
-		m_VScrollBar->Draw					();
-
 	int iDone = 0;
 
 	for(	WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); 
@@ -177,6 +177,9 @@ void CUIScrollView::Draw				()
 			if(iDone==1)	break;
 	}
 	UI()->PopScissor					();
+
+	if(m_flags.test(eFixedScrollBar) || GetHeight()<m_pad->GetHeight())
+		m_VScrollBar->Draw					();
 }
 
 void CUIScrollView::OnScrollV			()
@@ -257,13 +260,23 @@ void CUIScrollView::ScrollToEnd			()
 
 void CUIScrollView::SetRightIndention	(float val)
 {
-	m_rightIdent		= val;
+	m_rightIndent		= val;
 	m_flags.set			(eNeedRecalc,TRUE);
 }
 
 void CUIScrollView::SetLeftIndention	(float val)
 {
-	m_leftIdent			= val;
+	m_leftIndent			= val;
+	m_flags.set			(eNeedRecalc,TRUE);
+}
+
+void CUIScrollView::SetUpIndention(float val){
+	m_upIndent			= val;
+	m_flags.set			(eNeedRecalc,TRUE);
+}
+
+void CUIScrollView::SetDownIndention(float val){
+	m_downIndent			= val;
 	m_flags.set			(eNeedRecalc,TRUE);
 }
 
@@ -280,7 +293,7 @@ CUIWindow* CUIScrollView::GetItem		(u32 idx)
 }
 
 float CUIScrollView::GetDesiredChildWidth(){
-	return GetWidth() - m_VScrollBar->GetWidth() - m_rightIdent - m_leftIdent;
+	return GetWidth() - m_VScrollBar->GetWidth() - m_rightIndent - m_leftIndent;
 }
 
 void CUIScrollView::SetSelected			(CUIWindow* w)

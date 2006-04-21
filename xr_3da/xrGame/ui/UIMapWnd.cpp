@@ -86,15 +86,6 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 	Frect r							= m_UILevelFrame->GetWndRect();
 
-	m_UIMainScrollV					= xr_new<CUIScrollBar>(); m_UIMainScrollV->SetAutoDelete(true);
-	m_UIMainScrollV->Init			(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false, "pda");
-	m_UIMainScrollV->SetWindowName	("scroll_v");
-	m_UIMainScrollV->SetStepSize	(_max(1,iFloor(m_UILevelFrame->GetHeight()/10)));
-	m_UIMainScrollV->SetPageSize	(iFloor(m_UILevelFrame->GetHeight()));
-	m_UIMainFrame->AttachChild		(m_UIMainScrollV);
-	Register						(m_UIMainScrollV);
-	AddCallback						("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIMapWnd::OnScrollV,this));
-
 	m_UIMainScrollH					= xr_new<CUIScrollBar>(); m_UIMainScrollH->SetAutoDelete(true);
 	m_UIMainScrollH->Init			(r.left, r.bottom + SCROLLBARS_SHIFT, r.right - r.left, true);
 	m_UIMainScrollH->SetWindowName	("scroll_h");
@@ -102,8 +93,16 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_UIMainScrollH->SetPageSize	(iFloor(m_UILevelFrame->GetWidth()));
 	m_UIMainFrame->AttachChild		(m_UIMainScrollH);
 	Register						(m_UIMainScrollH);
-
 	AddCallback						("scroll_h",SCROLLBAR_HSCROLL,boost::bind(&CUIMapWnd::OnScrollH,this));
+
+	m_UIMainScrollV					= xr_new<CUIScrollBar>(); m_UIMainScrollV->SetAutoDelete(true);
+	m_UIMainScrollV->Init			(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top + m_UIMainScrollH->GetHeight(), false, "pda");
+	m_UIMainScrollV->SetWindowName	("scroll_v");
+	m_UIMainScrollV->SetStepSize	(_max(1,iFloor(m_UILevelFrame->GetHeight()/10)));
+	m_UIMainScrollV->SetPageSize	(iFloor(m_UILevelFrame->GetHeight()));
+	m_UIMainFrame->AttachChild		(m_UIMainScrollV);
+	Register						(m_UIMainScrollV);
+	AddCallback						("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIMapWnd::OnScrollV,this));
 
 	UIMainMapHeader					= xr_new<CUIFrameLineWnd>(); UIMainMapHeader->SetAutoDelete(true);
 	m_UIMainFrame->AttachChild		(UIMainMapHeader);

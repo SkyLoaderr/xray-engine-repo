@@ -331,23 +331,29 @@ void CUIScrollBar::Draw()
 	Frect rect = GetAbsoluteRect();
 	if(m_bIsHorizontal){
 		if (m_StaticBackground->GetOriginalRect().width()){
-			int tile		= iCeil((GetWidth() - m_DecButton->GetWidth() - m_IncButton->GetWidth())/m_StaticBackground->GetOriginalRect().width());
-			float rem			= GetWidth()-tile*m_StaticBackground->GetOriginalRect().width();
-			m_StaticBackground->SetTile(tile,1,rem,0.0f);
+			float size	= GetWidth() - m_DecButton->GetWidth() - m_IncButton->GetWidth();
+			float w		= m_StaticBackground->GetOriginalRect().width();
 
+			int tile	= iFloor(size/w);
+			float rem	= size - tile*w;
+
+			m_StaticBackground->SetTile(tile,1,rem,0.0f);
 			m_StaticBackground->SetPos(rect.left + m_DecButton->GetWidth(),rect.top);
 		}
 	}else{
 		if (m_StaticBackground->GetOriginalRect().height()){
-			int tile		= iCeil((GetHeight() - m_DecButton->GetHeight() - m_IncButton->GetHeight())/m_StaticBackground->GetOriginalRect().height());
-			float rem			= GetHeight()-tile*m_StaticBackground->GetOriginalRect().height();
-			m_StaticBackground->SetTile(1,tile,0.0f,rem);
+			float size	= GetHeight()- m_IncButton->GetHeight() - m_DecButton->GetHeight();
+			float h		= m_StaticBackground->GetOriginalRect().height();
 
+			int tile	= iFloor(size/h);
+			float rem	= size - tile*h;
+
+			m_StaticBackground->SetTile(1,tile,0.0f,rem);
 			m_StaticBackground->SetPos(rect.left,rect.top + m_DecButton->GetHeight());
 		}
 	}
 	
-	m_StaticBackground->SetPos(rect.left,rect.top);
+//	m_StaticBackground->SetPos(rect.left,rect.top);
 	m_StaticBackground->Render();
 
 	inherited::Draw();

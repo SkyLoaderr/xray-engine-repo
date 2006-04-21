@@ -1392,11 +1392,10 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	InitWindow							(xml_doc, path, index, pWnd);
-	float ri							= xml_doc.ReadAttribFlt	(path, index, "right_ident", 0.0f);
-	pWnd->SetRightIndention				(ri);
-
-	float li							= xml_doc.ReadAttribFlt	(path, index, "left_ident", 0.0f);
-	pWnd->SetLeftIndention				(li);
+	pWnd->SetRightIndention				(xml_doc.ReadAttribFlt	(path, index, "right_ident",	0.0f));
+	pWnd->SetLeftIndention				(xml_doc.ReadAttribFlt	(path, index, "left_ident",		0.0f));
+	pWnd->SetUpIndention				(xml_doc.ReadAttribFlt	(path, index, "top_indent",		0.0f));
+	pWnd->SetDownIndention				(xml_doc.ReadAttribFlt	(path, index, "bottom_indent",	0.0f));
 
 	float vi							= xml_doc.ReadAttribFlt	(path, index, "vert_interval", 0.0f);
 	pWnd->m_vertInterval				= (vi);

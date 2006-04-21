@@ -91,7 +91,7 @@
 				</filter_tab>						
 			</left_frame_header>
 
-			<list x="0" y="48" width="336" height="383" right_ident="10" />
+			<list x="0" y="48" width="332" height="422" right_ident="10" bottom_indent="42" scroll_profile="pda"/>
 		</left_frame>
 	
 		<right_frame x="352" y="0" width="409" height="475">
@@ -117,7 +117,7 @@
 						</title>
 					</header_frame_line>
 
-					<scroll_view  x="8" y="45" width="396" height="416" right_ident="10">
+					<scroll_view  x="8" y="45" width="394" height="425" right_ident="10" scroll_profile="pda">
 						<objective_item x="0" y="0" width="386" height="10">
 							<image x="170" y="0" width="90" height="90" stretch="1"/>
 							
