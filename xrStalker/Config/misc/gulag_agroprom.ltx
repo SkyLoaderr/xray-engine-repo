@@ -1072,6 +1072,43 @@ victim_wpn = 5 | actor
 use = true
 use_wpn = true
 
+
+;------ Сталкеры ждут начала атаки ---------------------------------------------------------------
+
+ [logic@agr_factory_defence_waiting_stalker1]
+ active = walker@agr_factory_defence_waiting_stalker1
+ combat_ignore = combat_ignore@agr_factory_defence
+ 
+ [walker@agr_factory_defence_waiting_stalker1]
+ path_walk = waiting_walk_1
+ path_look = waiting_look_1
+ combat_ignore_cond = combat_ignore@agr_factory_defence
+ meet = no_meet
+ 
+  
+ [logic@agr_factory_defence_waiting_stalker2]
+ active = walker@agr_factory_defence_waiting_stalker2
+ combat_ignore = combat_ignore@agr_factory_defence
+ 
+ [walker@agr_factory_defence_waiting_stalker2]
+ path_walk = waiting_walk_2
+ path_look = waiting_look_2
+ combat_ignore_cond = combat_ignore@agr_factory_defence
+ meet = no_meet
+  
+ 
+ [logic@agr_factory_defence_waiting_stalker3]
+ active = walker@agr_factory_defence_waiting_stalker3
+ combat_ignore = combat_ignore@agr_factory_defence
+ 
+ [walker@agr_factory_defence_waiting_stalker3]
+ path_walk = waiting_walk_3
+ path_look = waiting_look_3
+ combat_ignore_cond = combat_ignore@agr_factory_defence
+ meet = no_meet
+ 
+ 
+ 
 ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM Удерживающие Крота солдаты
 ;-------------------------------------------------------------------------------------------------
