@@ -62,8 +62,9 @@ void CControlManagerCustom::add_ability(ControlCom::EControlType type)
 		m_man->add		(m_run_attack, ControlCom::eControlRunAttack);
 		break;
 	case ControlCom::eControlThreaten:
-		m_threaten		= xr_new<CControlThreaten>();
-		m_man->add		(m_threaten, ControlCom::eControlThreaten);
+		m_threaten			= xr_new<CControlThreaten>();
+		m_man->add			(m_threaten, ControlCom::eControlThreaten);
+		set_threaten_data	(0,0.f);
 		break;
 	case ControlCom::eControlMeleeJump:
 		m_melee_jump	= xr_new<CControlMeleeJump>();
@@ -128,13 +129,13 @@ void CControlManagerCustom::update_frame()
 
 void CControlManagerCustom::update_schedule()
 {
+	if (m_threaten)			check_threaten		();
 	if (m_jump)	{
 		check_attack_jump		();
 		//check_jump_over_physics	();
 	}
 	if (m_rotation_jump)	check_rotation_jump	();
 	if (m_run_attack)		check_run_attack	();
-	if (m_threaten)			check_threaten		();
 	if (m_melee_jump)		check_melee_jump	();
 }
 
@@ -502,7 +503,13 @@ void CControlManagerCustom::check_threaten()
 	if (!m_object->check_start_conditions(ControlCom::eControlThreaten)) return;
 
 	m_man->capture		(this, ControlCom::eControlThreaten);
-	m_man->activate		(ControlCom::eControlThreaten);
+
+	SControlThreatenData	*ctrl_data = (SControlThreatenData *) m_man->data(this, ControlCom::eControlThreaten);
+	VERIFY					(ctrl_data);
+	ctrl_data->animation	= m_threaten_anim;
+	ctrl_data->time			= m_threaten_time;
+
+	m_man->activate			(ControlCom::eControlThreaten);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -163,9 +163,12 @@ public:
 
 public:
 	//PhraseDialogManager
-	virtual void ReceivePhrase			(DIALOG_SHARED_PTR& phrase_dialog);
-	virtual void UpdateAvailableDialogs	(CPhraseDialogManager* partner);
-	virtual void TryToTalk				();
+	virtual void ReceivePhrase				(DIALOG_SHARED_PTR& phrase_dialog);
+	virtual void UpdateAvailableDialogs		(CPhraseDialogManager* partner);
+	virtual void TryToTalk					();
+			bool OnDialogSoundHandlerStart	(CInventoryOwner *inv_owner, LPCSTR phrase);
+			bool OnDialogSoundHandlerStop	(CInventoryOwner *inv_owner);
+
 
 	virtual void reinit			();
 	virtual void reload			(LPCSTR section);

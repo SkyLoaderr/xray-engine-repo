@@ -7,10 +7,7 @@
 
 void CControlThreaten::reinit()
 {
-	CControl_ComCustom<>::reinit();
-
-	CKinematicsAnimated *skel = smart_cast<CKinematicsAnimated*>(m_object->Visual());
-	m_man->animation().add_anim_event(skel->LL_MotionID("stand_kick_0"),0.63f,CControlAnimation::eAnimationCustom);
+	inherited::reinit();
 }
 
 void CControlThreaten::activate()
@@ -31,11 +28,14 @@ void CControlThreaten::activate()
 	ctrl_dir->heading.target_angle	= m_man->direction().angle_to_target(m_object->EnemyMan.get_enemy()->Position());
 
 	//////////////////////////////////////////////////////////////////////////
+	CKinematicsAnimated	*skel	= smart_cast<CKinematicsAnimated*>(m_object->Visual());
+	
 	SControlAnimationData		*ctrl_anim = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	VERIFY						(ctrl_anim);
-
-	ctrl_anim->global.motion	= smart_cast<CKinematicsAnimated*>(m_object->Visual())->ID_Cycle_Safe("stand_kick_0");
+	ctrl_anim->global.motion	= skel->ID_Cycle_Safe(m_data.animation);
 	ctrl_anim->global.actual	= false;
+
+	m_man->animation().add_anim_event(skel->LL_MotionID(m_data.animation),m_data.time,CControlAnimation::eAnimationCustom);
 }
 
 

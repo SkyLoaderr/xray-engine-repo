@@ -229,6 +229,8 @@ public:
 			void				set_trader_global_anim	(LPCSTR anim);
 			void				set_trader_head_anim	(LPCSTR anim);
 			void				set_trader_sound		(LPCSTR sound, LPCSTR anim);
+			void				external_sound_start	(LPCSTR sound);
+			void				external_sound_stop		();
 
 
 			template <typename T>

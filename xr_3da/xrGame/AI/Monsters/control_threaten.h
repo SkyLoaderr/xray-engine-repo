@@ -1,7 +1,14 @@
 #pragma once
 #include "control_combase.h"
 
-class CControlThreaten : public CControl_ComCustom<> {
+struct SControlThreatenData : public ControlCom::IComData {
+	LPCSTR	animation;
+	float	time;
+};
+
+class CControlThreaten : public CControl_ComCustom<SControlThreatenData> {
+	typedef CControl_ComCustom<SControlThreatenData> inherited;
+
 public:
 	virtual void	reinit					();
 	virtual void	update_schedule			();

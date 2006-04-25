@@ -38,3 +38,23 @@ void CScriptGameObject::set_trader_sound(LPCSTR sound, LPCSTR anim)
 	trader->animation().set_sound(sound, anim);
 }
 
+void CScriptGameObject::external_sound_start(LPCSTR sound)
+{
+	CAI_Trader *trader = smart_cast<CAI_Trader *>(&object());
+	if (!trader) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Cannot cast sctipt game object to trader!");
+		return;
+	}
+	trader->animation().external_sound_start(sound);
+}
+
+void CScriptGameObject::external_sound_stop()
+{
+	CAI_Trader *trader = smart_cast<CAI_Trader *>(&object());
+	if (!trader) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Cannot cast sctipt game object to trader!");
+		return;
+	}
+	trader->animation().external_sound_stop();
+}
+

@@ -29,6 +29,9 @@ class CControlManagerCustom : public CControl_ComBase {
 	
 	SControlMeleeJumpData	m_melee_jump_data;
 
+	LPCSTR					m_threaten_anim;
+	float					m_threaten_time;
+
 public:
 					CControlManagerCustom	();
 					~CControlManagerCustom	();
@@ -71,6 +74,10 @@ public:
 	// Rotation Jump
 	void		add_rotation_jump_data	(LPCSTR left1,LPCSTR left2,LPCSTR right1,LPCSTR right2, float angle, u32 flags = 0);
 	void		add_melee_jump_data		(LPCSTR left,LPCSTR right);
+
+	//-------------------------------------------------------------------------------
+	// Threaten Animation
+	void		set_threaten_data		(LPCSTR anim, float time) {m_threaten_anim = anim; m_threaten_time = time;}
 
 private:
 

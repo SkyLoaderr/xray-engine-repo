@@ -41,7 +41,7 @@
 #include "infoportion.h"
 
 #include "ai/monsters/basemonster/base_monster.h"
-
+#include "ai/trader/ai_trader.h"
 
 void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion) const
 {
@@ -335,4 +335,21 @@ void CActor::UpdateDefferedMessages()
 		}else
 			break;
 	}
+}
+
+bool CActor::OnDialogSoundHandlerStart(CInventoryOwner *inv_owner, LPCSTR phrase)
+{
+	CAI_Trader *trader = smart_cast<CAI_Trader*>(inv_owner);
+	if (!trader) return false;
+
+	trader->dialog_sound_start(phrase);
+	return true;
+}
+bool CActor::OnDialogSoundHandlerStop(CInventoryOwner *inv_owner)
+{
+	CAI_Trader *trader = smart_cast<CAI_Trader*>(inv_owner);
+	if (!trader) return false;
+
+	trader->dialog_sound_stop();
+	return true;
 }

@@ -138,6 +138,16 @@ void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
 
 void CControlAnimation::add_anim_event(MotionID motion, float time_perc, u32 id)
 {
+	// if there is already event with exact timing - return
+	ANIMATION_EVENT_MAP_IT it = m_anim_events.find(motion);
+	if (it != m_anim_events.end()) {
+		ANIMATION_EVENT_VEC &anim_vec = it->second;
+
+		for (ANIMATION_EVENT_VEC_IT I = anim_vec.begin(); I != anim_vec.end(); ++I) {
+			if (fsimilar(I->time_perc, time_perc)) return;
+		}
+	}
+
 	SAnimationEvent event;
 	event.time_perc = time_perc;
 	event.event_id	= id;
