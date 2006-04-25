@@ -111,7 +111,7 @@ function load_job_base (sj, gname, type, squad, groups)
     -- Охранник Лукаша
     t = {section = "logic@mil_freedom_guard1",
 		idle = 0,
-		prior = 19, state = {0, 3 ,4},
+		prior = 15, state = {0, 3 ,4},
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
@@ -147,7 +147,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- Охранник арсенала
     t = {section = "logic@mil_freedom_aguard",
 		idle = 0,
-		prior = 19, state = {0, 3, 4},
+		prior = 15, state = {0, 3, 4},
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
