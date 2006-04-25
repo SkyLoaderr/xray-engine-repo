@@ -1462,12 +1462,6 @@
 					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\news.xml">
-				</File>
-				<File
-					RelativePath=".\Config\ui\news_templates.xml">
-				</File>
-				<File
 					RelativePath=".\Config\ui\sleep_dialog_new.xml">
 				</File>
 				<File
@@ -1694,6 +1688,12 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\events_new.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\news.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\news_templates.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\pda.xml">
