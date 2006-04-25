@@ -565,6 +565,7 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 //------------------------------------------------------------------------------
 ICF void	KEY_Interp	(CKey& D, CKey& K1, CKey& K2, float delta)
 {
+	VERIFY			(delta>=0.f && delta<=1.f);
 	D.Q.slerp		(K1.Q,K2.Q,delta);
 	D.T.lerp		(K1.T,K2.T,delta);
 }

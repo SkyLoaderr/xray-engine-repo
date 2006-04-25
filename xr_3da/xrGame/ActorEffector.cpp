@@ -186,6 +186,7 @@ BOOL CAnimatorCamLerpEffector::Process(Fvector &p, Fvector &d, Fvector &n, float
 	float	t					= m_func();
 	clamp						(t,0.0f,1.0f);
 
+	VERIFY						(t>=0.f && t<=1.f);
 	q_res.slerp					(q_src, q_dst, t);
 	
 	Fmatrix						res;

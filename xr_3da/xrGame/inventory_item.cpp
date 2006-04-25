@@ -777,6 +777,7 @@ void CInventoryItem::make_Interpolation	()
 			};
 
 			VERIFY2								(_valid(IPos),*object().cName());
+			VERIFY			(factor>=0.f && factor<=1.f);
 			IRot.slerp(p->IStartRot, p->IEndRot, factor);
 			VERIFY2								(_valid(IRot),*object().cName());
 			object().XFORM().rotation(IRot);

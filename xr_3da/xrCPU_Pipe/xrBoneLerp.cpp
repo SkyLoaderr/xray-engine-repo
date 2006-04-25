@@ -75,6 +75,7 @@ void __stdcall xrBoneLerp_x86	(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta)
 	Q2.z		= float(K2->z)*KEY_QuantI;
 	Q2.w		= float(K2->w)*KEY_QuantI;
 
+	VERIFY		(delta>=0.f && delta<=1.f);
 	D->Q.slerp	(Q1,Q2,delta);
 	D->T.lerp	(K1->t,K2->t,delta);
 }
