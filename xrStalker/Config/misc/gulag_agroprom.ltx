@@ -1084,12 +1084,12 @@ use_wpn = true
  path_look = waiting_look_1
  combat_ignore_cond = combat_ignore@agr_factory_defence
  meet = no_meet
- on_info = {=rostok_dist_to_actor_le(10)} remark@agr_factory_defence_waiting_stalker1                      
+ on_info = {=rostok_dist_to_actor_le(10)} remark@agr_factory_defence_waiting_stalker1  %+agr_attack_begin%                    
  
  [remark@agr_factory_defence_waiting_stalker1]
  anim = hide
  snd = agr_stalker_help_3
- on_signal = sound_end | camper@agr_factory_defence_waiting_stalker1 %+agr_attack_begin%
+ on_signal = sound_end | camper@agr_factory_defence_waiting_stalker1
  
  [camper@agr_factory_defence_waiting_stalker1]
  path_walk = attack_camper_1
