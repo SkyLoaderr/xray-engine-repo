@@ -840,6 +840,9 @@
 							RelativePath=".\Config\text\rus\stable_generate_snames.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_statistic_caption.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\stable_stories.xml">
 						</File>
 						<File
