@@ -278,31 +278,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.on_use    = xr_logic.cfg_get_condlist(ini, section, "on_use", npc)
 	
 		
-	st.hit_on_bone = parse_data(npc, utils.cfg_get_string(ini, section, "hit_on_bone", npc, false, ""))
-end
-
-
-function parse_data(npc,s)
-	local t = {}
-
-    if s then
-		for name in string.gfind( s, "(%|*%d+%|[^%|]+)%p*" ) do
---			printf("[%s]", utils.to_str(name))
-			local dat = {	dist = nil,
-							state = nil}	
-			
-			local t_pos = string.find( name, "|", 1, true )
-						
-			local dist = string.sub( name, 1, t_pos - 1 )
-			local state	= string.sub( name, t_pos + 1)
-		
---			printf("	[%s]=[%s][%s]", utils.to_str(dist), utils.to_str(state), utils.to_str(sound))
-			dat.dist = tonumber(dist)
-			if state then
-				dat.state = xr_logic.parse_condlist(npc, dist, state, state)
-			end
-			t[tonumber(dist)] = dat
-		end
-	end
-    return t
+	st.hit_on_bone = parse_data_1v(npc, utils.cfg_get_string(ini, section, "hit_on_bone", npc, false, ""))
 end
