@@ -5,7 +5,7 @@
 
 	<character_info x="26" y="58" width="236" height="120"/>
 
-	<list x="20" y="73" width="423" height="395" always_show_scroll="0" can_select="1"/>
+	<list x="20" y="50" width="421" height="418" top_indent="23" always_show_scroll="1" can_select="1" scroll_profile="pda"/>
 
 	<chicon_frame_window x="463" y="0" width="298" height="475" a="80">
 		<texture>ui_pda_frame_sub</texture>		

@@ -24,8 +24,8 @@
         <texture>ui_string_03</texture>        
     </right_frame_line>
 
-	<list x="20" y="60" width="423" height="410" always_show_scroll="1" can_select="1" scroll_profile="pda"/>
-	<detail_list x="20" y="60" width="273" height="400" always_show_scroll="0" left_ident="5"/>
+	<list x="20" y="53" width="421" height="415" always_show_scroll="1" can_select="1" scroll_profile="pda"/>
+	<detail_list x="20" y="48" width="273" height="419" always_show_scroll="1" left_ident="5" scroll_profile="pda"/>
 
     <a_static x="395" y="-3" width="32" height="32" frames="16" duration="1000" columns="8" frame_width="32" frame_height="32" cyclic="1" autoplay="1">
         <texture>ui\ui_pda_anims_03</texture>
