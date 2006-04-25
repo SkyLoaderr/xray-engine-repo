@@ -278,5 +278,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.on_use    = xr_logic.cfg_get_condlist(ini, section, "on_use", npc)
 	
 		
-	st.hit_on_bone = parse_data_1v(npc, utils.cfg_get_string(ini, section, "hit_on_bone", npc, false, ""))
+	st.hit_on_bone = utils.parse_data_1v(npc, utils.cfg_get_string(ini, section, "hit_on_bone", npc, false, ""))
 end
