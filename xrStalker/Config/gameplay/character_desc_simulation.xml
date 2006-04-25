@@ -13,7 +13,7 @@
 		<class>sim_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>230</rank>
+		<rank>123</rank>
 		<reputation>-56</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -40,7 +40,7 @@
 		<class>sim_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>140</rank>
+		<rank>85</rank>
 		<reputation>-51</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
@@ -69,7 +69,7 @@
 		<class>sim_bandit_novice</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>200</rank>
+		<rank>64</rank>
 		<reputation>-63</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -98,7 +98,7 @@
 		<class>sim_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>320</rank>
+		<rank>302</rank>
 		<reputation>-68</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
@@ -126,7 +126,7 @@
 		<class>sim_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>420</rank>
+		<rank>365</rank>
 		<reputation>-79</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
@@ -153,7 +153,7 @@
 		<class>sim_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>530</rank>
+		<rank>421</rank>
 		<reputation>-93</reputation>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
@@ -180,7 +180,7 @@
 		<class>sim_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>590</rank>
+		<rank>397</rank>
 		<reputation>-105</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
@@ -327,7 +327,7 @@
 
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
-		<rank>940</rank>
+		<rank>932</rank>
 		<reputation>-142</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
@@ -356,7 +356,7 @@
 
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		
-		<rank>940</rank>
+		<rank>902</rank>
 		<reputation>-150</reputation>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
@@ -386,7 +386,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>120</rank>
+		<rank>34</rank>
 		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -412,7 +412,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>180</rank>
+		<rank>142</rank>
 		<reputation>-10</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -439,7 +439,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>220</rank>
+		<rank>65</rank>
 		<reputation>18</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -468,7 +468,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>240</rank>
+		<rank>112</rank>
 		<reputation>-15</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -495,7 +495,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>260</rank>
+		<rank>98</rank>
 		<reputation>19</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -522,7 +522,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>290</rank>
+		<rank>12</rank>
 		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -552,7 +552,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>50</rank>
+		<rank>135</rank>
 		<reputation>-20</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -580,7 +580,7 @@
 		<class>sim_stalker_novice</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>150</rank>
+		<rank>78</rank>
 		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
@@ -601,33 +601,33 @@
 
 	<!---------------------------STALKER GENERAL---------------------->
 
-	<specific_character id="sim_stalker_general_default1" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="4"></icon>
-		<map_icon x="1" y="0"></map_icon>
-		<bio>sim_stalker_general_bio</bio>
+		<specific_character id="sim_stalker_general_default1" team_default = "1">
+			<name>GENERATE_NAME_stalker</name>
+			<icon x="24" y="4"></icon>
+			<map_icon x="1" y="0"></map_icon>
+			<bio>sim_stalker_general_bio</bio>
 
-		<class>sim_Stalker_general</class>
-		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-		
-		<rank>300</rank>
-		<reputation>35</reputation>
+			<class>sim_Stalker_general</class>
+			<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+			
+			<rank>305</rank>
+			<reputation>35</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
-		<supplies>
-			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pmm = 1 \n
-			wpn_toz34 \n
-			ammo_12x70_buck = 1\n
-			device_torch \n
-#include "gameplay\character_drugs.xml"
-#include "gameplay\character_food.xml"
-#include "gameplay\character_items.xml"
-		</supplies>
-#include "gameplay\character_dialogs.xml"
-	</specific_character>
+			<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
+			<snd_config>characters_voice\human_01\stalker\</snd_config>
+			<supplies>
+				[spawn] \n
+				wpn_pm \n
+				ammo_9x18_pmm = 1 \n
+				wpn_toz34 \n
+				ammo_12x70_buck = 1\n
+				device_torch \n
+	#include "gameplay\character_drugs.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_items.xml"
+			</supplies>
+	#include "gameplay\character_dialogs.xml"
+		</specific_character>
 
 
 <specific_character id="sim_stalker_general_default2" team_default = "1">
@@ -667,7 +667,7 @@
 		<class>sim_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>460</rank>
+		<rank>435</rank>
 		<reputation>63</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
@@ -695,7 +695,7 @@
 		<class>sim_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>530</rank>
+		<rank>365</rank>
 		<reputation>86</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
@@ -723,7 +723,7 @@
 		<class>sim_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>590</rank>
+		<rank>426</rank>
 		<reputation>42</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
@@ -751,7 +751,7 @@
 		<class>sim_Stalker_general</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>530</rank>
+		<rank>399</rank>
 		<reputation>-20</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
@@ -836,7 +836,7 @@
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
-		<rank>820</rank>
+		<rank>698</rank>
 		<reputation>-56</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
@@ -864,7 +864,7 @@
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 	
-		<rank>890</rank>
+		<rank>763</rank>
 		<reputation>123</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
@@ -892,7 +892,7 @@
 		<class>sim_Stalker_veteran</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>850</rank>
+		<rank>623</rank>
 		<reputation>-53</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
@@ -982,7 +982,7 @@
 		<class>sim_Stalker_sniper</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>750</rank>
+		<rank>732</rank>
 		<reputation>89</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
@@ -1074,7 +1074,7 @@
 		<class>sim_Dolg_regular</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>560</rank>
+		<rank>389</rank>
 		<reputation>73</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
@@ -1160,7 +1160,7 @@
 		<class>sim_Dolg_specnaz</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>860</rank>
+		<rank>688</rank>
 		<reputation>114</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
@@ -1189,7 +1189,7 @@
 		<class>sim_Dolg_specnaz</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>890</rank>
+		<rank>796</rank>
 		<reputation>124</reputation>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
@@ -1218,7 +1218,7 @@
 		<class>sim_dolg_master</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>940</rank>
+		<rank>923</rank>
 		<reputation>136</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
@@ -1246,7 +1246,7 @@
 		<class>sim_dolg_master</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		
-		<rank>960</rank>
+		<rank>901</rank>
 		<reputation>143</reputation>
 
 		<visual>actors\dolg\stalker_do_nauchniy</visual>
@@ -1368,7 +1368,7 @@
 		<class>sim_Svoboda_regular</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
-		<rank>580</rank>
+		<rank>321</rank>
 		<reputation>73</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
@@ -1401,7 +1401,7 @@
 		<class>sim_Svoboda_specnaz</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>860</rank>
+		<rank>657</rank>
 		<reputation>113</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_9</visual>
@@ -1432,7 +1432,7 @@
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		
-		<rank>940</rank>
+		<rank>925</rank>
 		<reputation>142</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -1463,7 +1463,7 @@
 		<class>sim_Svoboda_sniper</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>850</rank>
+		<rank>746</rank>
 		<reputation>125</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3_1</visual>
@@ -1495,7 +1495,7 @@
 		<class>sim_killer_general</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>490</rank>
+		<rank>321</rank>
 		<reputation>-63</reputation>
 		
 		<snd_config>characters_voice\human_02\killer\</snd_config>
@@ -1523,7 +1523,7 @@
 		<class>sim_killer_general</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>560</rank>
+		<rank>369</rank>
 		<reputation>-76</reputation>
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
@@ -1580,7 +1580,7 @@
 		<class>sim_killer_veteran</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>810</rank>
+		<rank>798</rank>
 		<reputation>-105</reputation>
 		
 		<snd_config>characters_voice\human_03\killer\</snd_config>
@@ -1609,7 +1609,7 @@
 		<class>sim_killer_master</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>900</rank>
+		<rank>909</rank>
 		<reputation>-132</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
@@ -1637,7 +1637,7 @@
 		<class>sim_killer_master</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 		
-		<rank>920</rank>
+		<rank>919</rank>
 		<reputation>-146</reputation>
 	
 		<snd_config>characters_voice\human_03\killer\</snd_config>
@@ -1752,7 +1752,7 @@
         <community>monolith</community>
 
 
-        <rank>460</rank>
+        <rank>354</rank>
         <reputation>-289</reputation>
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
@@ -1778,7 +1778,7 @@
         <community>monolith</community>
 
 
-        <rank>560</rank>
+        <rank>399</rank>
         <reputation>-378</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
@@ -1805,7 +1805,7 @@
         <community>monolith</community>
 
 
-        <rank>650</rank>
+        <rank>659</rank>
         <reputation>-456</reputation>
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
@@ -1832,7 +1832,7 @@
         <community>monolith</community>
 
 
-        <rank>850</rank>
+        <rank>785</rank>
         <reputation>-695</reputation>
 
         <visual>actors\monolit\stalker_mo_nauchniy</visual>
@@ -1860,7 +1860,7 @@
         <community>monolith</community>
 
 
-        <rank>920</rank>
+        <rank>912</rank>
         <reputation>-864</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
@@ -1887,7 +1887,7 @@
         <community>monolith</community>
 
 
-        <rank>940</rank>
+        <rank>936</rank>
         <reputation>-957</reputation>
 
         <visual>actors\monolit\stalker_mo_exo</visual>
@@ -1974,7 +1974,7 @@
 		<class>sim_Ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
 		
-		<rank>800</rank>
+		<rank>789</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
@@ -2049,7 +2049,7 @@
 		<class>sim_zombied_novice</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>210</rank>
+		<rank>89</rank>
 		<reputation>-213</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
@@ -2071,7 +2071,7 @@
 		<class>sim_zombied_novice</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>240</rank>
+		<rank>126</rank>
 		<reputation>-312</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
@@ -2093,7 +2093,7 @@
 		<class>sim_zombied_novice</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>270</rank>
+		<rank>164</rank>
 		<reputation>-351</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
@@ -2115,7 +2115,7 @@
 		<class>sim_zombied_novice</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 	
-		<rank>290</rank>
+		<rank>89</rank>
 		<reputation>-364</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie7</visual>
@@ -2137,7 +2137,7 @@
 		<class>sim_zombied_novice</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>300</rank>
+		<rank>64</rank>
 		<reputation>-412</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie8</visual>
@@ -2160,7 +2160,7 @@
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>320</rank>
+		<rank>256</rank>
 		<reputation>-500</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
@@ -2184,7 +2184,7 @@
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>380</rank>
+		<rank>321</rank>
 		<reputation>-546</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
@@ -2206,7 +2206,7 @@
 		<class>sim_Zombied_veteran</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>480</rank>
+		<rank>221</rank>
 		<reputation>-612</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
@@ -2276,7 +2276,7 @@
 		<class>sim_Zombied_master</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>850</rank>
+		<rank>899</rank>
 		<reputation>-864</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -2299,7 +2299,7 @@
 		<class>sim_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>820</rank>
+		<rank>631</rank>
 		<reputation>-856</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
@@ -2322,7 +2322,7 @@
 		<class>sim_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>850</rank>
+		<rank>864</rank>
 		<reputation>-923</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_1</visual>
@@ -2345,7 +2345,7 @@
 		<class>sim_fresh_Zombied</class>
 		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
 		
-		<rank>860</rank>
+		<rank>889</rank>
 		<reputation>-984</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_2</visual>
@@ -2374,7 +2374,7 @@
 		<class>sim_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>50</rank>
+		<rank>56</rank>
 		<reputation>5</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
@@ -2403,7 +2403,7 @@
 		<class>sim_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>70</rank>
+		<rank>71</rank>
 		<reputation>10</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
@@ -2432,7 +2432,7 @@
 		<class>sim_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>80</rank>
+		<rank>86</rank>
 		<reputation>12</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -2461,7 +2461,7 @@
 		<class>sim_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>160</rank>
+		<rank>125</rank>
 		<reputation>6</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>
@@ -2490,7 +2490,7 @@
 		<class>sim_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>240</rank>
+		<rank>149</rank>
 		<reputation>21</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
@@ -2551,7 +2551,7 @@
 		<class>sim_Soldier_specnaz</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>740</rank>
+		<rank>765</rank>
 		<reputation>23</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
@@ -2667,7 +2667,7 @@
 		<class>sim_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 	
-		<rank>600</rank>
+		<rank>603</rank>
 		<reputation>4</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
@@ -2696,7 +2696,7 @@
 		<class>sim_Soldier_sniper</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>670</rank>
+		<rank>697</rank>
 		<reputation>-9</reputation>
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
@@ -2730,7 +2730,7 @@
 
         <snd_config>characters_voice\human_03\military\</snd_config>
 		
-		<rank>900</rank>
+		<rank>911</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\militari\stalker_militari_antigas_2</visual>		
@@ -3055,19 +3055,188 @@
 	</specific_character>	
 	
 	
+;------------------Stalker "Master"-------------------
+	<specific_character id="sim_stalker_master_master" team_default = "1">
+		<name>Мастер</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_master_master_bio</bio>
+
+		<class>sim_stalker_master_master</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		
+		<rank>974</rank>
+		<reputation>156</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_g36 = 1 \n
+			ammo_5.56x45_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
 	
 	
+;------------------Stalker "Prapor"-------------------
+	<specific_character id="sim_dolg_veteran_prapor" team_default = "1">
+		<name>Прапор</name>
+		<icon x="8" y="2"></icon>
+		<map_icon x="4" y="0"></map_icon>
+		<bio>sim_dolg_veteran_prapor_bio</bio>
+
+		<class>sim_dolg_veteran_prapor</class>
+		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
+
+		<rank>667</rank>
+		<reputation>-67</reputation>
+
+		<visual>actors\dolg\stalker_do_antigas</visual>
+		<snd_config>characters_voice\human_03\dolg\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_groza \n
+			ammo_9x39_pab9 = 1 \n
+			ammo_9x39_sp5 = 1 \n
+			ammo_vog-25 = 2 \n
+#include "gameplay\character_items.xml"	\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>		
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
 	
 	
+;-------------------Prut--------------------	
 	
+<specific_character id="sim_svoboda_specnaz_prut" team_default = "1">
+		<name>Прут</name>
+		<icon x="26" y="14"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>sim_svoboda_specnaz_prut_bio</bio>
+
+		<team>Svoboda_specnaz</team>
+
+        <snd_config>characters_voice\human_03\freedom\</snd_config>
+		
+		<class>sim_svoboda_specnaz_prut</class>
+		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
+
+		<rank>764</rank>
+		<reputation>154</reputation>
+
+		<visual>actors\svoboda\stalker_sv_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_items.xml"	\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"			
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+</specific_character>	
 	
+;--------------------Умник-------------------------------------	
+	<specific_character id="sim_stalker_veteran_umnik" team_default = "1">
+		<name>Умник</name>
+		<icon x="2" y="2"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_veteran_umnik_bio</bio>
+
+		<class>sim_stalker_veteran_umnik</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+			
+		<rank>864</rank>
+		<reputation>110</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74 = 1, scope \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
 	
+;-----------------Fraer---------------------------
+	<specific_character id="sim_bandit_master_fraer" team_default = "1">
+		<name>Фраер</name>
+		<icon x="24" y="14"></icon>
+		<map_icon x="3" y="2"></map_icon>
+		<bio>sim_bandit_master_fraer_bio</bio>
+		
+		<team>Bandit_master</team>
+		
+		<class>sim_bandit_master_fraer</class>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
+		
+		<rank>911</rank>
+		<reputation>-236</reputation>
+
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n			
+			wpn_ak74 = 1, 1, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"			
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
 	
-	
-	
-	
-	
-	
+;------------------Stalker "Полкан"-------------------
+	<specific_character id="sim_stalker_master_polkan" team_default = "1">
+		<name>Полкан</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>sim_stalker_master_polkan_bio</bio>
+
+		<class>sim_stalker_master_polkan</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		
+		<rank>956</rank>
+		<reputation>198</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<supplies>
+			[spawn] \n
+			wpn_desert_eagle \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_g36 = 1 \n
+			ammo_5.56x45_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_items.xml"\n
+#include "gameplay\character_food.xml" \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>	
 	
 	
 	

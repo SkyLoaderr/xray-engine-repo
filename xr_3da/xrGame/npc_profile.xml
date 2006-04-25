@@ -11,7 +11,7 @@
 	</character>
 
 <!-- Escape -->
-	<character id="escape_trader">
+	<character id="escape_trader">	
 		<class>Trader</class>
 		<specific_character>escape_trader</specific_character>
 	</character>
@@ -1062,6 +1062,30 @@
 	
 	<character id="sim_stalker_veteran_vorobey">
 		<class>sim_stalker_veteran_vorobey</class>
+	</character>
+		
+	<character id="sim_stalker_master_master">
+		<class>sim_stalker_master_master</class>
+	</character>
+	
+	<character id="sim_dolg_veteran_prapor">
+		<class>sim_dolg_veteran_prapor</class>
+	</character>
+	
+	<character id="sim_svoboda_specnaz_prut">
+		<class>sim_svoboda_specnaz_prut</class>
+	</character>
+	
+	<character id="sim_stalker_veteran_umnik">
+		<class>sim_stalker_veteran_umnik</class>
+	</character>
+	
+	<character id="sim_bandit_master_fraer">
+		<class>sim_bandit_master_fraer</class>
+	</character>
+	
+	<character id="sim_stalker_master_polkan">
+		<class>sim_stalker_master_polkan</class>
 	</character>
 
 
