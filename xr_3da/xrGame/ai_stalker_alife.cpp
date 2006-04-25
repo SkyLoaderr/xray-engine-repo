@@ -93,7 +93,7 @@ IC	void CAI_Stalker::buy_item_virtual			(CTradeItem &item)
 	item.m_new_owner_id			= ID();
 	m_total_money				-= item.m_item->Cost();
 	if (m_current_trader)
-		m_current_trader->m_dwMoney += item.m_item->Cost();
+		m_current_trader->set_money(m_current_trader->get_money() + item.m_item->Cost(), true);
 }
 
 void CAI_Stalker::choose_food					()
@@ -247,7 +247,7 @@ void CAI_Stalker::update_sell_info					()
 
 	m_temp_items.clear		();
 	m_current_trader		= 0;
-	m_total_money			= m_dwMoney;
+	m_total_money			= get_money();
 	u32						money_delta = fill_items(inventory(),this,ALife::_OBJECT_ID(-1));
 	m_total_money			+= money_delta;
 	std::sort				(m_temp_items.begin(),m_temp_items.end());

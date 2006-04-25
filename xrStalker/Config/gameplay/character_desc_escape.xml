@@ -4,7 +4,6 @@
 	<specific_character id="escape_trader" no_random = "1">
 		<name>escape_trader_name</name>
 		<icon x="2" y="0"></icon>
-		<map_icon x="6" y="0"></map_icon>
 		<bio>escape_trader_bio</bio>
 
 		<class>trader</class>
@@ -13,7 +12,7 @@
 				
 		<rank>330</rank>
 		<reputation>23</reputation>
-		
+		<money min="100000" max="100000" infinitive="1"/> 
 		<supplies>
 			[spawn] \n
 			wpn_knife \n
@@ -32,7 +31,6 @@
 	<specific_character id="esc_wolf" team_default = "1">
 		<name>esc_wolf_name</name>
 		<icon x="16" y="4"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_wolf_bio</bio>
 
 		<class>esc_wolf</class>
@@ -65,7 +63,6 @@
 	<specific_character id="esc_fanat" team_default = "1">
 		<name>esc_fanat_name</name>
 		<icon x="26" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_fanat_bio</bio>
 
 		<class>esc_fanat</class>
@@ -96,7 +93,6 @@
 	<specific_character id="esc_fox" team_default = "1">
 		<name>esc_fox_name</name>
 		<icon x="16" y="10"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_fox_bio</bio>
 
 		<class>esc_fox</class>
@@ -127,7 +123,6 @@
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
 		<name>esc_tolik_name</name>
 		<icon x="30" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_tolik_bio</bio>
 
 		<class>esc_tutorial_wounded</class>
@@ -156,7 +151,6 @@
 		<terrain_sect_>stalker_terrain</terrain_sect_>
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="18" y="8"></icon>
-		<map_icon x="2" y="0"></map_icon>
 		<bio>esc_killer_specnaz_bio</bio>
 
 		<team>Killer_specnaz</team>
@@ -187,7 +181,6 @@
 	<specific_character id="esc_bandit_novice_default1" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="14" y="4"></icon>
-		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
 	
 		<class>esc_bandit_novice</class>
@@ -216,7 +209,6 @@
 	<specific_character id="esc_bandit_novice_default2" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="28" y="2"></icon>
-		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>esc_bandit_novice</class>
@@ -248,7 +240,6 @@
 	<specific_character id="esc_bandit_novice_default3" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
 		<icon x="24" y="2"></icon>
-		<map_icon x="3" y="2"></map_icon>
 		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>esc_bandit_novice</class>
@@ -280,7 +271,6 @@
 	<specific_character id="esc_stalker_novice_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -308,7 +298,6 @@
 	<specific_character id="esc_stalker_novice_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -336,7 +325,6 @@
 	<specific_character id="esc_stalker_novice_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -363,7 +351,6 @@
 	<specific_character id="esc_stalker_novice_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -390,7 +377,6 @@
 	<specific_character id="esc_stalker_novice_default5" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -418,7 +404,6 @@
 	<specific_character id="esc_stalker_novice_default6" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -446,7 +431,6 @@
 	<specific_character id="esc_stalker_novice_default9" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -474,7 +458,6 @@
 	<specific_character id="esc_stalker_novice_default10" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="28" y="10"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_stalker_novice_bio</bio>
 
 		<class>esc_stalker_novice</class>
@@ -504,7 +487,6 @@
 	<specific_character id="esc_ranger" team_default = "1">
 		<name>esc_petruha_name</name>
 		<icon x="22" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_petruha_bio</bio>
 
 		<class>esc_ranger</class>
@@ -534,7 +516,6 @@
 	<specific_character id="esc_soldier_commander" team_default = "1">
 		<name>esc_soldier_commander_name</name>
 		<icon x="20" y="14"></icon>
-		<map_icon x="2" y="0"></map_icon>
 		<bio>esc_soldier_commander_bio</bio>
 
 		<class>esc_soldier_commander</class>
@@ -564,7 +545,6 @@
 	<specific_character id="esc_soldier_regular_default1" team_default = "1">
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -593,7 +573,6 @@
 	<specific_character id="esc_soldier_regular_default2" team_default = "1">
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -623,7 +602,6 @@
 	<specific_character id="esc_soldier_regular_default3" team_default = "1">
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -652,7 +630,6 @@
 	<specific_character id="esc_soldier_regular_default4" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -683,7 +660,6 @@
 	<specific_character id="esc_soldier_regular_default5" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -712,7 +688,6 @@
 	<specific_character id="esc_soldier_blockpost_commander" team_default = "1">
 		<name>GENERATE_NAME_captain</name>
 		<icon x="20" y="14"></icon>
-		<map_icon x="2" y="0"></map_icon>
 		<bio>esc_captain_bio</bio>
 
 		<class>esc_soldier_blockpost_commander</class>
@@ -740,7 +715,6 @@
 	<specific_character id="esc_soldier_blokpost_default1" team_default = "1">
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
@@ -769,7 +743,6 @@
 	<specific_character id="esc_soldier_blokpost_default2" team_default = "1">
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
@@ -798,7 +771,6 @@
 	<specific_character id="esc_soldier_blokpost_default3" team_default = "1">
 		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
-		<map_icon x="1" y="2"></map_icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_blokpost</class>
@@ -826,7 +798,6 @@
 	<specific_character id="esc_soldier_specnaz_default1" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
-		<map_icon x="2" y="2"></map_icon>
 		<bio>esc_specnaz_bio</bio>
 
 		<class>esc_soldier_specnaz</class>
@@ -854,7 +825,6 @@
 		<specific_character id="esc_soldier_specnaz_default2" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
 		<icon x="14" y="2"></icon>
-		<map_icon x="2" y="2"></map_icon>
 		<bio>esc_specnaz_bio</bio>
 		
 		<class>esc_soldier_specnaz</class>
@@ -883,7 +853,6 @@
 	<specific_character id="esc_killer_master" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="4" y="2"></icon>
-		<map_icon x="2" y="0"></map_icon>
 		<bio>esc_specnaz_killer_bio</bio>
 
 		<class>esc_killer_master</class>
@@ -912,7 +881,6 @@
 	<specific_character id="esc_provodnik" team_default = "1">
 		<name>esc_provodnik_name</name>
 		<icon x="22" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
 		<bio>esc_provodnik_bio</bio>
 
 		<class>esc_provodnik</class>

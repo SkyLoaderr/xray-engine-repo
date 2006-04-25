@@ -79,7 +79,7 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	O->u_EventSend			(P);
 
 	// добавить себе денег
-	pThis.inv_owner->m_dwMoney += dwTransferMoney;
+	pThis.inv_owner->set_money ( pThis.inv_owner->get_money() + dwTransferMoney, false );
 
 	// взять у партнера
 	O						= smart_cast<CGameObject *>(pPartner.inv_owner);
@@ -88,7 +88,7 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	O->u_EventSend			(P);
 
 	// уменьшить денег у партнера
-	pPartner.inv_owner->m_dwMoney -= dwTransferMoney;
+	pPartner.inv_owner->set_money( pPartner.inv_owner->get_money()- dwTransferMoney, false );
 
 	CAI_Trader* pTrader = NULL;
 

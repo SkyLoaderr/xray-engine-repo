@@ -522,11 +522,12 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	encyclopedia_registry->registry().init(ID());
 	game_news_registry->registry().init(ID());
 
-	CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(e);
-	m_dwMoney				= pTA->m_dwMoney;
 
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;
+
+	CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(e);
+	set_money				(pTA->m_dwMoney, false);
 
 	//убрать все артефакты с пояса
 	m_ArtefactsOnBelt.clear();

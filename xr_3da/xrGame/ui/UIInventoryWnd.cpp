@@ -301,8 +301,7 @@ void CUIInventoryWnd::Update()
 		// update money
 		CInventoryOwner* pOurInvOwner	= smart_cast<CInventoryOwner*>(pEntityAlive);
 		string64						sMoney;
-		int  iMoney						(pOurInvOwner->m_dwMoney);
-		sprintf							(sMoney,"%d RU", iMoney);
+		sprintf							(sMoney,"%d RU", pOurInvOwner->get_money());
 		UIMoneyWnd.SetText				(sMoney);
 
 		// update outfit parameters

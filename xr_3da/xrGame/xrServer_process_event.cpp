@@ -308,6 +308,13 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			SendBroadcast(sender, P, MODE);
 		}break;
+	case GE_MONEY:
+		{
+			CSE_Abstract				*e_dest = game->get_entity_from_eid	(destination);
+			CSE_ALifeTraderAbstract*	pTa = smart_cast<CSE_ALifeTraderAbstract*>(e_dest);
+			pTa->m_dwMoney				= P.r_u32();
+						
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

@@ -429,6 +429,12 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 
 	
 	}
+	u32 min_m = selected_char.MoneyDef().min_money;
+	u32 max_m = selected_char.MoneyDef().max_money;
+	if(min_m!=0 && max_m!=0){
+		m_dwMoney = min_m;
+		if(min_m!=max_m)	m_dwMoney += ::Random.randI(max_m-min_m);
+	}
 #else
 	//в редакторе специфический профиль оставляем не заполненым
 	m_SpecificCharacter = NULL;

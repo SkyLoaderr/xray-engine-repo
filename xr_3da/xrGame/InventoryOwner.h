@@ -35,9 +35,6 @@ public:
 	virtual CInventoryOwner*	cast_inventory_owner	()						{return this;}
 public:
 
-	//////////////////////////////////////////////////////////////////////////
-	// общие функции
-
 	virtual DLL_Pure	*_construct				();
 	virtual BOOL		net_Spawn				(CSE_Abstract* DC);
 	virtual void		net_Destroy				();
@@ -55,8 +52,7 @@ public:
 	//обновление
 	virtual void	UpdateInventoryOwner		(u32 deltaT);
 	virtual bool	CanPutInSlot				(PIItem item, u32 slot){return true;};
-	// свойства
-	u32					m_dwMoney;
+
 
 	CPda* GetPDA		() const;
 	bool IsActivePDA	() const;
@@ -93,8 +89,10 @@ public:
 
 	//игровое имя 
 	virtual LPCSTR	Name        () const;
-
+	u32					get_money		() const				{return m_money;}
+	void				set_money		(u32 amount, bool bSendEvent);
 protected:
+	u32					m_money;
 	// торговля
 	CTrade*				m_pTrade;
 	bool				m_bTalking; 
@@ -140,6 +138,7 @@ public:
 public:
 	CCharacterInfo&						CharacterInfo		() const {VERIFY(m_pCharacterInfo); return *m_pCharacterInfo;}
 	IC const CSpecificCharacter&		SpecificCharacter	() const {return CharacterInfo().m_SpecificCharacter;};
+	bool								InfinitiveMoney		()	{return CharacterInfo().m_SpecificCharacter.MoneyDef().inf_money;}
 
 	//установка группировки на клиентском и серверном объкте
 	virtual void			SetCommunity	(CHARACTER_COMMUNITY_INDEX);

@@ -184,7 +184,7 @@ void CUICarBodyWnd::UpdateLists()
 	m_pUIOthersBagList->ClearAll				(true);
 
 	ruck_list.clear								();
-	m_pOurObject->inventory().AddAvailableItems	(ruck_list);
+	m_pOurObject->inventory().AddAvailableItems	(ruck_list, true);
 	std::sort									(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
 	//Наш рюкзак
@@ -197,7 +197,7 @@ void CUICarBodyWnd::UpdateLists()
 
 
 	ruck_list.clear									();
-	m_pOthersObject->inventory().AddAvailableItems	(ruck_list);
+	m_pOthersObject->inventory().AddAvailableItems	(ruck_list, false);
 	std::sort										(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
 	//Чужой рюкзак

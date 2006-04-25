@@ -206,6 +206,19 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
 	R_ASSERT3(data()->m_Reputation != NO_REPUTATION, "'reputation' field not fulfiled for specific character", *m_OwnId);
 
+	if(uiXml.NavigateToNode(uiXml.GetLocalRoot(), "money", 0))
+	{
+		MoneyDef().min_money	= uiXml.ReadAttribInt("money", 0, "min");
+		MoneyDef().max_money	= uiXml.ReadAttribInt("money", 0, "max");
+		MoneyDef().inf_money	= uiXml.ReadAttribInt("money", 0, "infinitive");
+		MoneyDef().max_money	= _max(MoneyDef().max_money, MoneyDef().min_money); // :)
+
+	}else{
+		MoneyDef().min_money	= 0;
+		MoneyDef().max_money	= 0;
+		MoneyDef().inf_money	= false;
+	}
+
 #endif
 
 #if 0

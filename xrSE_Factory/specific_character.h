@@ -58,8 +58,6 @@ struct SSpecificCharacterData : CSharedResource
 
 	//положение большой икноки (для торговли и общения) в файле с иконками 
 	int	m_iIconX, m_iIconY;
-	//положение мальнькой иконки (для карты)
-//	int	m_iMapIconX, m_iMapIconY;
 
 	//команда 
 	CHARACTER_COMMUNITY			m_Community;
@@ -81,6 +79,14 @@ struct SSpecificCharacterData : CSharedResource
 	bool m_bNoRandom;
 	//если персонаж является заданым по умолчанию для своей команды
 	bool m_bDefaultForCommunity;
+#ifdef  XRGAME_EXPORTS
+	struct SMoneyDef{
+		u32				min_money;
+		u32				max_money;
+		bool			inf_money;
+	};
+	SMoneyDef			money_def;
+#endif
 };
 
 class CInventoryOwner;
@@ -101,34 +107,32 @@ private:
 	friend CSE_ALifeTraderAbstract;
 public:
 
-	CSpecificCharacter();
-	~CSpecificCharacter();
+								CSpecificCharacter		();
+								~CSpecificCharacter		();
 
-	//инициализация данными
-	//если таким id раньше не использовалось
-	//будет загружено из файла
-	virtual void Load	(SPECIFIC_CHARACTER_ID		id);
+	virtual void				Load					(SPECIFIC_CHARACTER_ID		id);
 
 protected:
-	const SSpecificCharacterData* data() const { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
-	SSpecificCharacterData*		  data()	   { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	const SSpecificCharacterData* data					() const { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	SSpecificCharacterData*		  data					()	   { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 	//загрузка из XML файла
-	virtual void load_shared		(LPCSTR);
-	static void	 InitXmlIdToIndex	();
+	virtual void				load_shared				(LPCSTR);
+	static void					InitXmlIdToIndex		();
 
-	SPECIFIC_CHARACTER_ID	m_OwnId;
+	SPECIFIC_CHARACTER_ID		m_OwnId;
 public:
 
 #ifdef  XRGAME_EXPORTS
-	LPCSTR						Name		() const ;
-	shared_str					Bio			() const ;
-	const CHARACTER_COMMUNITY&	Community	() const ;
+	LPCSTR						Name					() const ;
+	shared_str					Bio						() const ;
+	const CHARACTER_COMMUNITY&	Community				() const ;
+	SSpecificCharacterData::SMoneyDef& MoneyDef			() 	{return data()->money_def;}
 #endif
 
-	CHARACTER_RANK_VALUE		Rank		() const ;
-	CHARACTER_REPUTATION_VALUE	Reputation	() const ;
-	LPCSTR						Visual		() const ;
+	CHARACTER_RANK_VALUE		Rank					() const ;
+	CHARACTER_REPUTATION_VALUE	Reputation				() const ;
+	LPCSTR						Visual					() const ;
 
 #ifdef  XRGAME_EXPORTS
 	LPCSTR						SupplySpawn				() const ;
@@ -137,12 +141,10 @@ public:
 	float						panic_threshold			() const ;
 	float						hit_probability_factor	() const ;
 
-	int		TradeIconX	() const	 {return data()->m_iIconX;}
-	int		TradeIconY	() const	 {return data()->m_iIconY;}
-//	int		MapIconX	() const 	 {return data()->m_iMapIconX;}
-//	int		MapIconY	() const	 {return data()->m_iMapIconY;}
+	int							TradeIconX				() const	 {return data()->m_iIconX;}
+	int							TradeIconY				() const	 {return data()->m_iIconY;}
 #endif
-	shared_str					terrain_sect		() const;
+	shared_str					terrain_sect			() const;
 };
 
 
