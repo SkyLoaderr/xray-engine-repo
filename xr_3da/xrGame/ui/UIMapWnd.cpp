@@ -357,8 +357,8 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos, bool bZoom
 void CUIMapWnd::Draw()
 {
 	inherited::Draw();
-	if(m_hint->GetOwner())	m_hint->Draw_();
 	m_text_hint->Draw		();
+	if(m_hint->GetOwner())	m_hint->Draw_();
 }
 
 bool CUIMapWnd::OnKeyboardHold(int dik)

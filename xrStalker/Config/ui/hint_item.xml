@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 
-	<hint_item x="0" y="0" width="200" height="200">
-		<frame  x="0" y="0" width="200" height="200">
+	<hint_item x="0" y="0" width="210" height="200">
+		<frame  x="0" y="0" width="210" height="200">
 			<texture>ui_icons_PDA_dialog</texture>
 		</frame>	
 		<description x="10" y="4" width="192" height="192">
