@@ -130,6 +130,9 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 		else
 			ka->PlayCycle("death_init");
 
+	}else
+	{
+		ka->PlayCycle("death_init");
 	}
 	ka->CalculateBones_Invalidate();
 	ka->CalculateBones();
