@@ -81,7 +81,9 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 bool CUIPropertiesBox::AddItem(const char*  str, void* pData, int value)
 {
 	//return m_UIListWnd.AddItem<CUIListItem>(str, 0, pData, value);
-	m_UIListWnd.AddItem(str)->SetID(u32(value));
+	CUIListBoxItem* itm		= m_UIListWnd.AddItem(str);
+	itm->SetID				(u32(value));
+	itm->SetData			(pData);
 
 	return true;
 }
@@ -162,9 +164,9 @@ void CUIPropertiesBox::AutoUpdateSize()
 	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize()+
 			  OFFSET_X*2);
 	float f = float(m_UIListWnd.GetLongestLength()+OFFSET_Y*2); 
-	SetWidth(_max(20,f));
+	SetWidth(_max(20.0f,f));
 		f = float(m_UIListWnd.GetLongestLength());
-	m_UIListWnd.SetWidth(_max(20,f));
+	m_UIListWnd.SetWidth(_max(20.0f,f));
 }
 
 //int CUIPropertiesBox::GetClickedIndex() 
