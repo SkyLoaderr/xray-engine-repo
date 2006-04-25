@@ -65,9 +65,14 @@ void CStateManagerSnork::execute()
 		else			state_id = eStateRest;
 	}
 
+
 	//state_id = eStateFindEnemy;
 
 	select_state(state_id); 
+
+	if ((current_substate == eStateAttack) && (current_substate != prev_substate)) {
+		object->start_threaten = true;
+	}
 
 	// выполнить текущее состояние
 	get_state_current()->execute();

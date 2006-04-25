@@ -378,3 +378,14 @@ bool CAI_Trader::AllowItemToTrade 	(CInventoryItem const * item, EItemPlace plac
 
 	return						(CInventoryOwner::AllowItemToTrade(item,place));
 }
+
+void CAI_Trader::dialog_sound_start(LPCSTR phrase)
+{
+	animation().external_sound_start(phrase);
+}
+
+void CAI_Trader::dialog_sound_stop()
+{
+	animation().external_sound_stop();
+}
+

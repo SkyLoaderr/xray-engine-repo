@@ -26,6 +26,7 @@ CSnork::CSnork()
 {
 	StateMan		= xr_new<CStateManagerSnork>	(this);
 	com_man().add_ability(ControlCom::eControlJump);
+	com_man().add_ability(ControlCom::eControlThreaten);
 }
 
 CSnork::~CSnork()
@@ -94,6 +95,9 @@ void CSnork::reinit()
 	
 	move().load_velocity(*cNameSect(), "Velocity_JumpGround",MonsterMovement::eSnorkVelocityParameterJumpGround);
 	com_man().load_jump_data("stand_attack_2_0",0, "stand_attack_2_1", "stand_somersault_0", u32(-1), MonsterMovement::eSnorkVelocityParameterJumpGround,0);
+
+	start_threaten = false;
+	com_man().set_threaten_data	("stand_threaten_0", 0.63f);
 
 	// TODO: remove this
 	m_target_node = 0;
@@ -244,11 +248,33 @@ void CSnork::HitEntityInJump(const CEntity *pEntity)
 	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 
+//////////////////////////////////////////////////////////////////////////
 void CSnork::jump(const Fvector &position, float factor)
 {
 	com_man().script_jump	(position, factor);
 	sound().play			(MonsterSound::eMonsterSoundAggressive);
 }
+
+bool CSnork::check_start_conditions(ControlCom::EControlType type)
+{
+	if (!inherited::check_start_conditions(type))	return false;
+
+	if (type == ControlCom::eControlThreaten) {
+		if (!start_threaten) return false;
+		start_threaten = false;
+	}
+	
+	return true;
+}
+
+void CSnork::on_activate_control(ControlCom::EControlType type)
+{
+	if (type == ControlCom::eControlThreaten) {
+		//m_sound_start_threaten.play_at_pos(this,get_head_position(this));
+	}
+}
+//////////////////////////////////////////////////////////////////////////
+
 
 #ifdef _DEBUG
 void CSnork::debug_on_key(int key)

@@ -25,14 +25,19 @@ public:
 			float	trace				(const Fvector &dir);
 
 			bool	trace_geometry		(const Fvector &d, float &range);
+
+	virtual bool	check_start_conditions	(ControlCom::EControlType type);
+	virtual void	on_activate_control		(ControlCom::EControlType);
+
 private:
 #ifdef _DEBUG	
 	virtual void	debug_on_key		(int key);
 #endif
 
 public:
-		u32		m_target_node;
 
+		u32		m_target_node;
+		bool	start_threaten;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -19,6 +19,8 @@ class CTraderAnimation {
 
 	ref_sound			*m_sound;
 
+	bool				m_external_sound;
+
 public:
 					CTraderAnimation		(CAI_Trader *trader) : m_trader(trader) {}
 
@@ -33,6 +35,9 @@ public:
 	static void		head_callback			(CBlend* B);
 
 	void			update_frame			();
+
+	void			external_sound_start	(LPCSTR phrase);
+	void			external_sound_stop		();
 
 private:
 	void			remove_sound			();	

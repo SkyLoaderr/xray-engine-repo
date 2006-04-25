@@ -129,6 +129,8 @@ public:
 	virtual bool			natural_detector		() const {return false;}
 	virtual bool			AllowItemToTrade 		(CInventoryItem const * item, EItemPlace place) const;
 
+			void			dialog_sound_start		(LPCSTR phrase);
+			void			dialog_sound_stop		();
 
 private:
 	CTraderAnimation	*AnimMan;

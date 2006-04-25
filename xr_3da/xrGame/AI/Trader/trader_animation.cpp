@@ -13,6 +13,7 @@ void CTraderAnimation::reinit() {
 	m_motion_head.invalidate	();
 	m_motion_global.invalidate	();
 	m_sound						= 0;
+	m_external_sound			= 0;
 }
 
 
@@ -37,11 +38,6 @@ void  CTraderAnimation::head_callback(CBlend* B)
 void CTraderAnimation::set_animation(LPCSTR anim)
 {
 	m_anim_global = anim;
-
-	CKinematicsAnimated	*kinematics_animated	= smart_cast<CKinematicsAnimated*>(m_trader->Visual());
-	m_motion_global								= kinematics_animated->ID_Cycle(m_anim_global);
-	kinematics_animated->PlayCycle				(m_motion_global,TRUE,global_callback,this);
-	m_motion_head.invalidate					();
 }
 
 void CTraderAnimation::set_head_animation(LPCSTR anim)
@@ -92,6 +88,11 @@ void CTraderAnimation::update_frame()
 	
 	if (!m_motion_global) {
 		m_trader->callback(GameObject::eTraderGlobalAnimationRequest)();
+
+		CKinematicsAnimated	*kinematics_animated	= smart_cast<CKinematicsAnimated*>(m_trader->Visual());
+		m_motion_global								= kinematics_animated->ID_Cycle(m_anim_global);
+		kinematics_animated->PlayCycle				(m_motion_global,TRUE,global_callback,this);
+		m_motion_head.invalidate					();
 	}
 
 	// назначить анимацию головы
@@ -102,5 +103,23 @@ void CTraderAnimation::update_frame()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+// External sound support 
+//////////////////////////////////////////////////////////////////////////
+void CTraderAnimation::external_sound_start(LPCSTR phrase)
+{
+	if (m_sound)			remove_sound();	
+	
+	m_sound					= xr_new<ref_sound>();
+	m_sound->create			(TRUE,phrase,SOUND_TYPE_WORLD);
+	m_sound->play			(NULL, sm_2D);
 
+	m_motion_head.invalidate();
+}
+
+void CTraderAnimation::external_sound_stop()
+{
+	if (m_sound)			remove_sound();	
+}
+//////////////////////////////////////////////////////////////////////////
 

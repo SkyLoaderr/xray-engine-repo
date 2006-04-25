@@ -41,6 +41,7 @@ CUITalkWnd::CUITalkWnd()
 	SetFont					(HUD().Font().pFontHeaderRussian);
 
 	m_bNeedToUpdateQuestions = false;
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -237,6 +238,7 @@ void CUITalkWnd::Update()
 	}
 	inherited::Update			();
 	UpdateCameraDirection		(smart_cast<CGameObject*>(m_pOthersInvOwner));
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -388,15 +390,20 @@ void CUITalkWnd::PlaySnd(LPCSTR text)
 	string_path	fn;
 	strconcat(fn, "dialogs\\", text, ".ogg");
 	if(FS.exist("$game_sounds$",fn)){
-		m_sound.create(TRUE,fn);
-		m_sound.play(0,sm_2D);
+		VERIFY(m_pActor);
+		if (!m_pActor->OnDialogSoundHandlerStart(m_pOthersInvOwner,fn)) {
+			m_sound.create(TRUE,fn);
+			m_sound.play(0,sm_2D);
+		}
 	}
 }
 
 void CUITalkWnd::StopSnd()
 {
-	if(m_sound._feedback())
-		m_sound.stop();
+	if (m_pActor && m_pActor->OnDialogSoundHandlerStop(m_pOthersInvOwner)) return;
+
+	if(m_sound._feedback()) 
+		m_sound.stop	();
 }
 
 void CUITalkWnd::AddIconedMessage(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name)
