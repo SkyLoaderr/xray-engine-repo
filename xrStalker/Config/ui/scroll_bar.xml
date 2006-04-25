@@ -29,7 +29,7 @@
 			<texture>ui\ui_scb_scroll_box_v</texture>
 		</box_v>		
 	</default>	
-	<pda>
+	<pda height="17">
 		<up_arrow width="17" height="21">
 			<texture_e>ui_scroll_PDA_btn_up_e</texture_e>
 			<texture_h>ui_scroll_PDA_btn_up_h</texture_h>

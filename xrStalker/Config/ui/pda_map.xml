@@ -36,17 +36,14 @@
 					<zoom_out_btn x="142" y="2" width="21" height="15" check_mode="1" hint="zoom_out_btn_hint">
 						<window_name>zoom_out_btn</window_name>
 						<texture>ui_icons_newPDA_ZoomMin</texture>
-					</zoom_out_btn>								
-
-
-												
+					</zoom_out_btn>												
 				</tool_bar>					
 				
 			</map_header_frame_line>
 
 			<main_map_frame x="0" y="0" width="761" height="475" a="90">
 				<texture>ui_pda_frame_sub</texture>				
-				<level_frame x="6" y="44" width="729" height="406"/>
+				<level_frame x="8" y="41" width="725" height="406"/>
 			</main_map_frame>
 		</main_wnd>
 	</map_wnd>
