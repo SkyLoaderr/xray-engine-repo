@@ -18,9 +18,9 @@
 	<!-- CHARACTER INFO WINDOW -->
 	<character_info x="26" y="58" width="236" height="120"/>
 
-	<master_list x="15" y="200" width="280" height="262" always_show_scroll="0" can_select="1"/>
+	<master_list x="15" y="200" width="280" height="262" always_show_scroll="0" can_select="1" scroll_profile="pda"/>
 
-	<detail_list x="20" y="80" width="423" height="380" always_show_scroll="0"/>
+	<detail_list x="20" y="80" width="423" height="380" always_show_scroll="0" scroll_profile="pda"/>
 
 	<!-- INFO BACKGROUND -->
 	<info_frame_window x="313" y="0" width="448" height="475" a="80">

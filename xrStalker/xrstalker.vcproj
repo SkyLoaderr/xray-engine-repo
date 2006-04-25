@@ -1702,9 +1702,6 @@
 						RelativePath=".\Config\ui\pda_contacts_new.xml">
 					</File>
 					<File
-						RelativePath=".\Config\ui\pda_dialog.xml">
-					</File>
-					<File
 						RelativePath=".\Config\ui\pda_events.xml">
 					</File>
 					<File
