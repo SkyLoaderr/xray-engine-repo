@@ -10,6 +10,9 @@
 #include "PHElement.h"
 #include "../skeletonanimated.h"
 #include "script_space.h"
+#include "game_object_space.h"
+#include "script_callback_ex.h"
+#include "script_game_object.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -265,6 +268,14 @@ void CHangingLamp::TurnOff	()
 //					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 void	CHangingLamp::Hit					(SHit* pHDS)
 {
+	SHit	HDS = *pHDS;
+	callback(GameObject::eHit)(
+		lua_game_object(), 
+		HDS.power,
+		HDS.dir,
+		smart_cast<const CGameObject*>(HDS.who)->lua_game_object(),
+		HDS.bone()
+		);
 	BOOL	bWasAlive		= Alive		();
 
 	if(m_pPhysicsShell) m_pPhysicsShell->applyHit(pHDS->p_in_bone_space,pHDS->dir,pHDS->impulse,pHDS->boneID,pHDS->hit_type);

@@ -539,7 +539,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	m_pPhysics_support->in_NetSpawn	(e);
 
-	character_physics_support()->movement()->SetPosition	(Position());
+	
 	character_physics_support()->movement()->SetVelocity	(0,0,0);
 	character_physics_support()->movement()->ActivateBox	(0);
 	if(E->m_holderID!=u16(-1))

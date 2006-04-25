@@ -776,6 +776,40 @@ void	CPHMovementControl::SetEnvironment( int enviroment,int old_enviroment){
 	case 2: eOldEnvironment=peInAir;
 	}
 }
+void	CPHMovementControl::SetPosition(const Fvector &P){	
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&stricmp(PH_DBG_ObjectTrack(),*pObject->cName())==0)
+	{
+		Msg("CPHMovementControl::SetPosition %s (Object Position) %f,%f,%f",PH_DBG_ObjectTrack(),pObject->Position().x,pObject->Position().y,pObject->Position().z);
+		Msg("CPHMovementControl::SetPosition %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
+	}
+#endif
+	vPosition.set	(P);  m_character->SetPosition(vPosition);
+}
+bool		CPHMovementControl::		TryPosition				(Fvector& pos)															
+{
+#ifdef DEBUG
+		if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&stricmp(PH_DBG_ObjectTrack(),*pObject->cName())==0)
+		{
+			Msg("CPHMovementControl::TryPosition %s (Object Position) %f,%f,%f",PH_DBG_ObjectTrack(),pObject->Position().x,pObject->Position().y,pObject->Position().z);
+			Msg("CPHMovementControl::TryPosition %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
+		}
+#endif
+		return m_character->TryPosition(pos)&&!bExernalImpulse;
+}
+
+
+void		CPHMovementControl::GetPosition		(Fvector &P)
+{	
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&stricmp(PH_DBG_ObjectTrack(),*pObject->cName())==0)
+	{
+		Msg("CPHMovementControl::GetPosition %s (Object Position) %f,%f,%f",PH_DBG_ObjectTrack(),pObject->Position().x,pObject->Position().y,pObject->Position().z);
+		Msg("CPHMovementControl::GetPosition %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
+	}
+#endif
+	P.set			(vPosition); 
+}
 
 void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 {

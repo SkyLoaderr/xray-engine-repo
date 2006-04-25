@@ -116,7 +116,7 @@ private:
 	float				fActualVelocity;
 	float				fContactSpeed;
 	float				fLastUpdateTime;
-	Fvector				vLastUpdatePosition;
+
 	
 public:
 	Fvector				vExternalImpulse;
@@ -182,14 +182,8 @@ public:
 	void				SetCrashSpeeds	(float min, float max)
 	{	fMinCrashSpeed	= min; 	fMaxCrashSpeed	= max; 	}
 
-	void				SetPosition		(const Fvector &P)
-	{	vPosition.set	(P); vLastUpdatePosition.set(P); m_character->SetPosition(vPosition);}
-
-	void				SetPosition		(float x, float y, float z)
-	{	vPosition.set	(x,y,z);m_character->SetPosition(vPosition); 	}
-
-	void				GetPosition		(Fvector &P)
-	{	P.set			(vPosition); }
+	void				SetPosition		(const Fvector &P);
+	void				GetPosition		(Fvector &P);
 	void				GetCharacterPosition(Fvector &P)
 	{ m_character->GetPosition(P);}
 	void				InterpolatePosition(Fvector	&P)
@@ -197,7 +191,7 @@ public:
 		VERIFY(m_character&&m_character->b_exist);
 		m_character->IPosition(P);
 	}
-	bool				TryPosition				(Fvector& pos)															{return m_character->TryPosition(pos)&&!bExernalImpulse;}
+	bool				TryPosition				(Fvector& pos);
 	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled()||bExernalImpulse;}
 #ifdef DEBUG
 	void				DisableCharacter		(){m_character->Disable();}
