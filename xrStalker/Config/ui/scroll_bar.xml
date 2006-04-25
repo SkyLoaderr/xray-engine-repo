@@ -40,9 +40,28 @@
 			<texture_h>ui_scroll_PDA_btn_down_h</texture_h>
 			<texture_t>ui_scroll_PDA_btn_down_t</texture_t>
 		</down_arrow>
-		<back_v width="17" height="30">
-			<texture>ui_scroll_PDA_back</texture>			
+		
+		<left_arrow width="21" height="17">
+			<texture_e>ui_scroll_PDA_btn_left_e</texture_e>
+			<texture_h>ui_scroll_PDA_btn_left_h</texture_h>
+			<texture_t>ui_scroll_PDA_btn_left_t</texture_t>
+		</left_arrow>
+		<right_arrow width="21" height="17">
+			<texture_e>ui_scroll_PDA_btn_right_e</texture_e>
+			<texture_h>ui_scroll_PDA_btn_right_h</texture_h>
+			<texture_t>ui_scroll_PDA_btn_right_t</texture_t>
+		</right_arrow>
+		
+		<back width="21" height="17">
+			<texture>ui_scroll_PDA_back_hor</texture>
+		</back>		
+		<back_v width="21" height="17">
+			<texture>ui_scroll_PDA_back</texture>
 		</back_v>
+		
+		<box>
+			<texture>ui_scroll_PDA_back_hor</texture>
+		</box>
 		<box_v> <!--width="17" height="30"-->
 			<texture>ui_scroll_PDA_box_e</texture>
 		</box_v>	
