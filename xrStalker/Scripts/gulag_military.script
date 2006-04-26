@@ -666,7 +666,11 @@ function check_state (gulag)
     -- отсеиваем четвертое состояние.
     if db.actor:has_info ("mil_lukash_dead") or db.actor:has_info ("mil_freedom_quests_end") then
        if this.check_enemy (gulag) == true then
-          printf ("[GULAG_FREEDOM] STATE 2")  
+          -- поскольку вопрос об отношении к актеру решаться не собирается, то выход будет именно таким.
+          if gulag:npc_is_enemy_to_anybody (db.actor) == true then
+             relation_registry.set_community_goodwill ("freedom", db.actor:id (), -5000)
+             --xr_gulag.setGulagGoodwill ("mil_freedom", -5000, db.actor)
+          end   
           return 2
        else
           db.actor:disable_info_portion ("mil_freedom_under_attack")
@@ -678,7 +682,11 @@ function check_state (gulag)
     if gulag.state == 3 then
        if db.actor:has_info ("mil_dolg_after_explode") or gulag:npc_is_enemy_to_anybody (db.actor) == true then
           db.actor:disable_info_portion ("mil_freedom_attack")
-          printf ("[GULAG_FREEDOM] STATE 2")  
+          -- поскольку вопрос об отношении к актеру решаться не собирается, то выход будет именно таким.
+          if gulag:npc_is_enemy_to_anybody (db.actor) == true then
+             relation_registry.set_community_goodwill ("freedom", db.actor:id (), -5000)
+             --xr_gulag.setGulagGoodwill ("mil_freedom", -5000, db.actor)
+          end   
           return 2
        end   
        if db.actor:has_info ("mil_freedom_attack") then
