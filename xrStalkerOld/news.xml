@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 	<!-- NEWS LIST -->
-	<list x="0" y="5" width="435" height="418" right_ident="10" scroll_profile="pda">
+	<list x="0" y="5" width="434" height="426" right_ident="10" scroll_profile="pda">
         <font font="letterica18" r="225" g="225" b="250"/>
     </list>
     
