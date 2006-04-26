@@ -62,6 +62,14 @@ end
 function action_remark_activity:get_target()
 	local look_tbl = {}
 
+	--' Если таргет не проинициализирован, то запускаем инициализатор.
+	if self.st.target_init == false then
+		self.st.target_position, self.st.target_id, self.st.target_init = initialize_gulag_target(self.object, self.st.target)
+		if st.target_init == false then
+			return nil
+		end
+	end
+
     if self.st.target_actor == true then
         look_tbl.look_object = db.actor
     end
@@ -97,8 +105,13 @@ function action_remark_activity:update()
 			synsound = self.st.snd
 		else
 			synsound = nil
-		end	   
-		state_mgr.set_state(self.object, self.st.anim, cb, 0, self:get_target(), { animation = self.st.anim_reset }, synsound)
+		end
+		local target = self:get_target()
+		if target == nil then
+			return
+		end
+		
+		state_mgr.set_state(self.object, self.st.anim, cb, 0, target, { animation = self.st.anim_reset }, synsound)			
 		self.state = state_animation
 		
 	--' Ожидание колбека от стейтменеджера
@@ -209,7 +222,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 end
 
 
-local function parse_target(target)
+function parse_target(target)
     local pos = string.find(target, ",")
     if pos then
         return string.sub(target, 1, pos - 1), string.sub(target, pos + 1)
@@ -217,6 +230,30 @@ local function parse_target(target)
         return target, nil
     end
 end
+function initialize_gulag_target(npc, target)
+    local gulag = xr_gulag.get_npc_gulag(npc)
+    local param1, param2 = parse_target(target)
+	-- Возможные варианты:
+	-- Передана работа в гулаге чувака
+	-- Передана работа и идентификатор гулага
+	-- Передан патрульный путь и номер вейпоинта.
+	-- На выход нужно дать: либо target_id либо target_position
+	
+	-- Если вторым параметром передано число, то это однозначно патрульный путь.
+	local wp_id = tonumber(param2)
+	if wp_id then
+		return patrol(param1):point(wp_id), nil, true
+	end
+    if param2 then
+        gulag = xr_gulag.get_gulag_by_name(param2)
+    end
+    if gulag then
+        return nil, gulag:idNPCOnJob(param1), true
+    end
+    
+    return nil, nil, false
+end
+
 
 -- Включение схемы
 function set_scheme(npc, ini, scheme, section, gulag_name)
@@ -241,46 +278,25 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.anim_reset = utils.cfg_get_bool(ini, section, "anim_reset", npc, false, true)
 	
-	local target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "nil")
+	st.target = utils.cfg_get_string          (ini, section,   "target",          npc, false, "", "nil")
 	st.target_id = nil
 	st.target_position = nil
-    if target and target ~= "nil" then
-	    if target == "actor" then
+    if st.target and st.target ~= "nil" then
+	    if st.target == "actor" then
 		    st.target_actor = true
+		    st.target_init = true
 	    else
 			st.target_actor = false
-	        local sid = tonumber(target)
+	        local sid = tonumber(st.target)
 	        if sid then
 		        st.target_id = id_by_sid(sid)
 		        if not st.target_id then
-		            abort("remark <error>: Wrong story id [%s] for [%s] in section [%s].", target, npc:name(), section)
+		            abort("remark <error>: Wrong story id [%s] for [%s] in section [%s].", st.target, npc:name(), section)
 		        end
+		        st.target_init = true
             else
-                local gulag = xr_gulag.get_npc_gulag(npc)
-                local param1, param2 = parse_target(target)
-				-- Возможные варианты:
-				-- Передана работа в гулаге чувака
-				-- Передана работа и идентификатор гулага
-				-- Передан патрульный путь и номер вейпоинта.
-				-- На выход нужно дать: либо target_id либо target_position
-				
-				-- Если вторым параметром передано число, то это однозначно патрульный путь.
-				local wp_id = tonumber(param2)
-				if wp_id then
-					st.target_position = patrol(param1):point(wp_id)
-					return
-				end
-                if param2 then
-                    gulag = xr_gulag.get_gulag_by_name(param2)
-                end
-                if gulag then
-                    st.target_id = gulag:idNPCOnJob(param1)
-                    return
-                end
-				abort("remark <error>: Wrong target definition [%s], npc [%s], section [%s]", target, npc:name(), section)
+				st.target_position, st.target_id, st.target_init = initialize_gulag_target(npc, st.target)
             end
 	    end
-    end
-    	
+    end    	
 end
-
