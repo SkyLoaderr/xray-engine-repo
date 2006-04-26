@@ -30,17 +30,17 @@
 </string>
 <string id="tutorial_help_wounded">
     <text>
-        Забрать информацию у разведчиков
+        Забрать информацию у разведчика
     </text>
 </string>
 <string id="tutorial_help_wounded_0">
     <text>
-        Забрать информацию у разведчиков торговца.
+        Забрать информацию у разведчика торговца.
     </text>
 </string>
 <string id="tutorial_help_wounded_1">
     <text>
-        Получить флешку у разведчиков
+        Получить флешку у разведчика
     </text>
 </string>
 <string id="tutorial_help_wounded_2">
@@ -191,5 +191,10 @@
 <string id="meet_with_doctor_2">
     <text>
         Встретиться с Доктором в тайнике Стрелка
+    </text>
+</string>
+<string id="tutorial_help_wounded_3">
+    <text>
+        Убить бандитов зажавших разведчика.
     </text>
 </string>
