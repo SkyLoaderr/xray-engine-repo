@@ -12,6 +12,8 @@ news = {
 	tips_agr_krot_sos				= sound_object([[characters_voice\scenario\agroprom\krot_help_pda_1]]),
 	tips_agr_krot_sos1				= sound_object([[characters_voice\scenario\agroprom\krot_help_pda_2]]),
 	tips_agr_krot_sos2				= sound_object([[characters_voice\scenario\agroprom\krot_help_pda_2]]),
+    tips_agr_stalker_help_2			= sound_object([[characters_voice\scenario_eng\agroprom\stalker_help_2]]),
+    tips_agr_stalker_help_1			= sound_object([[characters_voice\scenario_eng\agroprom\stalker_help_1]]),
 
 	tips_agr_trader_documents		= sound_object([[characters_voice\scenario\agroprom\trader_pda_1]]),
 
