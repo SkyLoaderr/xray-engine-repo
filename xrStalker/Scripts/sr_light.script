@@ -2,6 +2,7 @@ local light_zones = {}
 
 local indoor_levels = {
 	l03u_agr_underground = true,
+	l03u_agr_underground_e3 = true,
 	l04u_labx18 = true,
 	l08u_brainlab = true,
 	l10u_bunker = true,
