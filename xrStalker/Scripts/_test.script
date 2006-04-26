@@ -46,8 +46,7 @@ function main()
 
 --	db.actor:give_talk_message(news_text, "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
 
--- game.start_tutorial("part_2_binocular")
---	db.actor:actor_sleep(0,180)
+ game.start_tutorial("credits_seq")
 	
 	
 --	info = "tutorial_artefact_start" 
@@ -57,23 +56,6 @@ function main()
 --	info = "tutorial_wounded_start" 
 --	db.actor:give_info_portion(info) 
 
-	local task = CGameTask()
-	
-	task:load("eliminate_lager")
-	task:set_title("eliminate_lager_title")
-	
-	local objective = SGameTaskObjective(task,1)
-	objective:set_description("be-be")
-
-	task:add_objective(objective)
-
-
-	objective = SGameTaskObjective(task,2)
-	objective:set_description("foo-foo")
-
-	task:add_objective(objective)
-	
-	db.actor:give_task(task,false)
 end
 
 function main123456()

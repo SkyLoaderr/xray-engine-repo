@@ -43,6 +43,7 @@ public:
 	virtual	BOOL		Process					(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 			void		SetCyclic				(bool b)				{m_bCyclic=b;}
 	virtual	BOOL		Valid					();
+			float		GetAnimatorLength		()						{return fLifeTime;};
 };
 
 

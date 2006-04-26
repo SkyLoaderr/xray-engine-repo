@@ -89,17 +89,21 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 	// initialize auto_static
 	int cnt							= xml->GetNodesNum	("main_wnd",0,"auto_static");
 	m_subitems.resize				(cnt);
+	string64						sname;
 	for(int i=0;i<cnt;++i){
 		XML_NODE* _sr				= xml->GetLocalRoot();
 		xml->SetLocalRoot			(xml->NavigateToNode("main_wnd",0));
 
-		XML_NODE* _wn				= xml->NavigateToNode("auto_static",i);
-		LPCSTR wnd_name				= xml->Read			(_wn,"window_name",0,"not_cpecified");
+//		XML_NODE* _wn				= xml->NavigateToNode("auto_static",i);
+//		LPCSTR wnd_name				= xml->Read			(_wn,"window_name",0,"not_cpecified");
+
+		sprintf						(sname,"auto_static_%d", i);
+
 		SSubItem* _si				= &m_subitems[i];
 		_si->m_start				= xml->ReadAttribFlt("auto_static",i,"start_time",0);
 		_si->m_length				= xml->ReadAttribFlt("auto_static",i,"length_sec",0);
 		_si->m_visible				= false;
-		_si->m_wnd					= smart_cast<CUIStatic*>(find_child_window(m_UIWindow, wnd_name)); VERIFY(_si->m_wnd);
+		_si->m_wnd					= smart_cast<CUIStatic*>(find_child_window(m_UIWindow, sname)); VERIFY(_si->m_wnd);
 		_si->m_wnd->Show			(false);
 
 		xml->SetLocalRoot			(_sr);

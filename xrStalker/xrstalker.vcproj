@@ -1480,6 +1480,9 @@
 					RelativePath=".\Config\ui\trade.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_credits.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_game_over.xml">
 				</File>
 				<File

@@ -713,5 +713,6 @@
 			</main_wnd>
 		</item>
 	</part_15_hide_weapon>
-	
+
+#include "ui\ui_credits.xml"
 </window>

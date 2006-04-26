@@ -730,25 +730,28 @@ bool CUIXmlInit::InitProgressShape(CUIXml& xml_doc, const char* path, int index,
 
 CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd)
 {
-	int items_num = xml_doc.GetNodesNum(path, 0, "auto_static");
-	// tmp statics vector
-	StaticsVec	tmpVec;
-	XML_NODE* _stored_root = xml_doc.GetLocalRoot();
-	xml_doc.SetLocalRoot(xml_doc.NavigateToNode(path,0));
+	int items_num						= xml_doc.GetNodesNum(path, 0, "auto_static");
 
-	CUIStatic* pUIStatic = NULL;
+	StaticsVec							tmpVec;
+	XML_NODE* _stored_root				= xml_doc.GetLocalRoot();
+	xml_doc.SetLocalRoot				(xml_doc.NavigateToNode(path,0));
+
+	CUIStatic* pUIStatic				= NULL;
+	string64							sname;
 	for(int i=0; i<items_num; i++)
 	{
-		pUIStatic = xr_new<CUIStatic>();
-		InitStatic(xml_doc, "auto_static", i, pUIStatic);
-		pUIStatic->SetAutoDelete(true);
-		pParentWnd->AttachChild(pUIStatic);
-		tmpVec.push_back(pUIStatic);
-		pUIStatic = NULL;
+		pUIStatic						= xr_new<CUIStatic>();
+		InitStatic						(xml_doc, "auto_static", i, pUIStatic);
+		sprintf							(sname,"auto_static_%d", i);
+		pUIStatic->SetWindowName		(sname);
+		pUIStatic->SetAutoDelete		(true);
+		pParentWnd->AttachChild			(pUIStatic);
+		tmpVec.push_back				(pUIStatic);
+		pUIStatic						= NULL;
 	}
 
-	xml_doc.SetLocalRoot(_stored_root);
-	return tmpVec;
+	xml_doc.SetLocalRoot				(_stored_root);
+	return								tmpVec;
 }
 
 CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pParentWnd)

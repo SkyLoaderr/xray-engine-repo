@@ -383,13 +383,14 @@ void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, l
 }
 
 #include "actoreffector.h"
-void add_cam_effector(LPCSTR fn, int id, bool cyclic)
+float add_cam_effector(LPCSTR fn, int id, bool cyclic)
 {
 	CAnimatorCamEffector* e		= xr_new<CAnimatorCamEffector>();
 	e->SetType					((ECamEffectorType)id);
 	e->SetCyclic				(cyclic);
 	e->Start					(fn);
 	Actor()->Cameras().AddCamEffector(e);
+	return						e->GetAnimatorLength();
 }
 
 void remove_cam_effector(int id)

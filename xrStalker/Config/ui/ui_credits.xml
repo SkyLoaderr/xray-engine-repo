@@ -1,0 +1,51 @@
+
+	<credits_seq>
+		<global_wnd x="0" y="0" width="1024" height="768">
+			
+			<auto_static x="0" y="0" width="1024" height="768" stretch="1">		
+						<texture>ui\ui_vid_back_01</texture>
+			</auto_static>
+			
+			<auto_static x="0" y="0" width="1024" height="768">
+				<texture x="0" y="0" width="1024" height="768">ui\ui_static_mm_back_02</texture>
+			</auto_static>
+			
+		</global_wnd>
+		
+		<play_each_item>1</play_each_item>
+
+		<item>
+			<length_sec>20</length_sec>
+			<pause_state>on</pause_state>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section/>
+			<grab_input>1</grab_input>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="15" x="210" y="50" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">GSC stuff</text>
+				</auto_static>
+				
+				<auto_static start_time="2" length_sec="5" x="210" y="90" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Project Manager</text>
+				</auto_static>
+				<auto_static start_time="2" length_sec="5" x="210" y="130" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Anton Bolshakov</text>
+				</auto_static>
+
+
+				<auto_static start_time="8" length_sec="5" x="210" y="90" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Lead Programmers</text>
+				</auto_static>
+				<auto_static start_time="8" length_sec="5" x="210" y="130" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Alexander Maximchuk</text>
+				</auto_static>
+				<auto_static start_time="8" length_sec="5" x="210" y="170" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Oles Shyskovtsov</text>
+				</auto_static>
+				
+			</main_wnd>
+		</item>
+
+	</credits_seq>
