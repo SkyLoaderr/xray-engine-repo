@@ -24,25 +24,25 @@
 			<grab_input>1</grab_input>
 			<main_wnd>
 				<auto_static start_time="0" length_sec="15" x="210" y="50" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">GSC stuff</text>
+					<text align="c" font="graffiti22" color="white">GSC stuff</text>
 				</auto_static>
 				
 				<auto_static start_time="2" length_sec="5" x="210" y="90" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Project Manager</text>
+					<text align="c" font="graffiti22" color="white">Project Manager</text>
 				</auto_static>
 				<auto_static start_time="2" length_sec="5" x="210" y="130" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Anton Bolshakov</text>
+					<text align="c" font="graffiti22" color="white">Anton Bolshakov</text>
 				</auto_static>
 
 
 				<auto_static start_time="8" length_sec="5" x="210" y="90" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Lead Programmers</text>
+					<text align="c" font="graffiti22" color="white">Lead Programmers</text>
 				</auto_static>
 				<auto_static start_time="8" length_sec="5" x="210" y="130" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Alexander Maximchuk</text>
+					<text align="c" font="graffiti22" color="white">Alexander Maximchuk</text>
 				</auto_static>
 				<auto_static start_time="8" length_sec="5" x="210" y="170" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" r="225" g="225" b="250" a="255">Oles Shyskovtsov</text>
+					<text align="c" font="graffiti22" color="white">Oles Shyskovtsov</text>
 				</auto_static>
 				
 			</main_wnd>

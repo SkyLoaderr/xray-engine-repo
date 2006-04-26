@@ -136,7 +136,9 @@ void CUIPropertiesBox::Hide()
 	CUIWindow::Enable(false);
 
 	m_pMouseCapturer = NULL;
-	GetParent()->SetCapture(this, false);
+	
+	if(GetParent()->GetMouseCapturer() == this)
+		GetParent()->SetCapture(this, false);
 }
 
 bool CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)

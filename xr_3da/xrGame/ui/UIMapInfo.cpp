@@ -78,7 +78,7 @@ void CUIMapInfo::InitMap(const char* map_name){
 		u32 header_color, txt_color;
 		CGameFont* txt_font;
 		CUIXmlInit::InitFont(xml_doc,"header",0,header_color, txt_font);
-		txt_color = CUIXmlInit::GetARGB(xml_doc,"txt:text", 0);
+		txt_color = CUIXmlInit::GetColor(xml_doc,"txt:text", 0, 0x00);
 		string64 txt_color_tag;
 		sprintf(txt_color_tag, "%s<%u,%u,%u,%u>", "%c", (txt_color & 0xff000000)>>24, (txt_color & 0x00ff0000)>>16, (txt_color & 0x0000ff00) >> 8, txt_color & 0x000000ff);
 

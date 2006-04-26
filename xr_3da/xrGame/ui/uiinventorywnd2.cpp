@@ -98,14 +98,10 @@ void CUIInventoryWnd::InitInventory()
 
 	m_pInv						= &pInvOwner->inventory();
 	
-	m_pMouseCapturer			= NULL;
-
-	SetCurrentItem				(NULL);
-	
 	UIPropertiesBox.Hide		();
-
-
 	ClearAllLists				();
+	m_pMouseCapturer			= NULL;
+	SetCurrentItem				(NULL);
 
 	//Slots
 	int i;

@@ -223,9 +223,9 @@ void CUITaskSubItem::Init			()
 	xml_init.Init3tButton			(uiXml,"task_sub_item:show_descr_btn",0,m_showDescriptionBtn);
 
 
-	m_active_color					= xml_init.GetARGB(uiXml,"task_sub_item:description:text_colors:active",0);
-	m_failed_color					= xml_init.GetARGB(uiXml,"task_sub_item:description:text_colors:failed",0);
-	m_accomplished_color			= xml_init.GetARGB(uiXml,"task_sub_item:description:text_colors:accomplished",0);
+	m_active_color					= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:active", 0, 0x00);
+	m_failed_color					= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:failed", 0 , 0x00);
+	m_accomplished_color			= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:accomplished", 0, 0x00);
 }
 
 void CUITaskSubItem::SetGameTask	(CGameTask* gt, int obj_idx)				

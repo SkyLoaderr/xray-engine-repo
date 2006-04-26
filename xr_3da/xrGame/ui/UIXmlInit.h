@@ -9,10 +9,6 @@
 
 #include "xrXMLParser.h"
 
-#define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
-
-//////////////////////////////////////////////////////////////////////////
-
 class IUIMultiTextureOwner;
 class IUISingleTextureOwner;
 class IUITextControl;
@@ -74,7 +70,7 @@ public:
 	static bool InitProgressBar2		(CUIXml& xml_doc, const char* path, int index, CUIProgressBar* pWnd);
 	static bool InitProgressShape		(CUIXml& xml_doc, const char* path, int index, CUIProgressShape* pWnd);
 	static bool InitFont				(CUIXml& xml_doc, const char* path, int index, u32 &color, CGameFont *&pFnt);
-	static bool InitColor				(CUIXml& xml_doc, XML_NODE* node, u32 &color);
+//	static bool InitColor				(CUIXml& xml_doc, XML_NODE* node, u32 &color);
 	static bool InitTabControl			(CUIXml& xml_doc, const char* path,	int index, CUITabControl *pWnd);
 	static bool InitTextBanner			(CUIXml& xml_doc, const char* path,	int index, CUITextBanner *pBnr);
 	static bool InitMultiTextStatic		(CUIXml& xml_doc, const char* path,	int index, CUIMultiTextStatic *pWnd);
@@ -87,14 +83,12 @@ public:
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUISingleTextureOwner* pWnd);
 	static bool InitArtefactPanel		(CUIXml& xml_doc, const char* path, int index, CUIArtefactPanel* pWnd);
 	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
-	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
+//	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
 	static bool InitListBox				(CUIXml& xml_doc, const char* path, int index, CUIListBox* pWnd);
 	static bool	InitComboBox			(CUIXml& xml_doc, const char* path, int index, CUIComboBox* pWnd);
 	static Frect GetFRect				(CUIXml& xml_doc, const char* path, int index);
-
-protected:
-
+	static u32	GetColor				(CUIXml& xml_doc, const char* path, int index, u8 def_clr);
 public:
 
 	// Функция чтения алайна из xml файла и применения его к координатам.
@@ -121,8 +115,8 @@ public:
 	static void						ApplyAlign(float &x, float &y, u32 align);
 
 	// Initialize and store predefined colors
-	typedef std::pair<shared_str, u32> ColorMap;
-	DEF_VECTOR(ColorDefs, ColorMap);
+//	typedef std::pair<shared_str, u32> ColorMap;
+	DEF_MAP			(ColorDefs, shared_str, u32);
 
 	static const ColorDefs		*GetColorDefs()		{ R_ASSERT(m_pColorDefs); return m_pColorDefs; }
 
