@@ -99,7 +99,7 @@ void CRender::Screenshot		(IRender_interface::ScreenshotMode mode, LPCSTR name)
 			{
 				string64			t_stemp;
 				string_path			buf;
-				sprintf				(buf,"ss_%s_%s_%s.jpg",Core.UserName,timestamp(t_stemp),g_pGameLevel->name().c_str());
+				sprintf				(buf,"ss_%s_%s_(%s).jpg",Core.UserName,timestamp(t_stemp),g_pGameLevel->name().c_str());
 				ID3DXBuffer*		saved	= 0;
 				CHK_DX				(D3DXSaveSurfaceToFileInMemory (&saved,D3DXIFF_JPG,pFB,0,0));
 				IWriter*		fs	= FS.w_open	("$screenshots$",buf); R_ASSERT(fs);
