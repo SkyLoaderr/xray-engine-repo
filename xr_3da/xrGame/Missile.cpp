@@ -709,7 +709,7 @@ void CMissile::activate_physic_shell()
 
 	CEntityAlive* EA=smart_cast<CEntityAlive*>(H_Root());
 	Fvector parent_vel;
-	if(EA){
+	if(EA&&EA->character_physics_support()){
 		EA->character_physics_support()->movement()->GetCharacterVelocity(parent_vel);
 		l_vel.add(parent_vel);
 	}
