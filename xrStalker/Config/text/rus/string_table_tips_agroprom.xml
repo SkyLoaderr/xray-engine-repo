@@ -18,3 +18,12 @@
     <string id="tips_captain_name">
         <text>Капитан Максименко</text>
     </string>
+	
+	<!---new---->
+	
+	<string id="tips_agr_stalker_help_2">
+        <text>.....</text>
+    </string>
+     <string id="tips_agr_stalker_help_1">
+        <text>.....</text>
+    </string>
