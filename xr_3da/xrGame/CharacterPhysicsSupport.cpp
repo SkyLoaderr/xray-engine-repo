@@ -137,6 +137,7 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 	ka->CalculateBones_Invalidate();
 	ka->CalculateBones();
 	CPHSkeleton::Spawn(e);
+	m_PhysicMovementControl->EnableCharacter();
 	if(m_eType!=etActor)
 	{
 		m_flags.set(fl_specific_bonce_demager,TRUE);
