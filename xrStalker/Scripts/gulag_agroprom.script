@@ -655,8 +655,8 @@ function load_ltx_agr_road_patrol1(gname, type)
 	end
 
 	res = res ..	"[danger_condition@" .. gname .. "]\n" ..
-					"danger_expiration_time = 60000\n" ..
-					"danger_inertion_time =  90000\n" ..
+					"danger_expiration_time = 6000\n" ..
+					"danger_inertion_time =  9000\n" ..
 					"[info@about_rats]\n" ..
 					"in = agr_pda_soldiers_rats\n"
 
@@ -686,8 +686,8 @@ function load_ltx_agr_road_patrol2(gname, type)
 	end
 
 	res = res ..	"[danger_condition@" .. gname .. "]\n" ..
-					"danger_expiration_time = 60000\n" ..
-					"danger_inertion_time =  90000\n" ..
+					"danger_expiration_time = 6000\n" ..
+					"danger_inertion_time =  9000\n" ..
 					"[info@about_rats]\n" ..
 					"in = agr_pda_soldiers_rats\n"
 
