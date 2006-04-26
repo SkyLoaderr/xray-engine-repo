@@ -344,11 +344,6 @@ IC CAutosaveManager &CLevel::autosave_manager()
 	return				(*m_autosave_manager);
 }
 
-IC	shared_str	CLevel::name	() const
-{
-	return				(m_name);
-}
-
 IC CPHCommander	& CLevel::ph_commander()
 {
 	VERIFY(m_ph_commander);

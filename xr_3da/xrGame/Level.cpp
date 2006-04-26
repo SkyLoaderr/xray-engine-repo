@@ -256,6 +256,11 @@ CLevel::~CLevel()
 		Debug.set_crashhandler	(m_pOldCrashHandler);
 }
 
+shared_str	CLevel::name		() const
+{
+	return						(m_name);
+}
+
 void CLevel::PrefetchSound		(LPCSTR name)
 {
 	// preprocess sound name
