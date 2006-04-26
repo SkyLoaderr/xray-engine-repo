@@ -15,7 +15,7 @@
 		<play_each_item>1</play_each_item>
 
 		<item>
-			<length_sec>20</length_sec>
+			<length_sec>45</length_sec>
 			<pause_state>on</pause_state>
 			<guard_key/>
 			<sound/>
@@ -23,28 +23,103 @@
 			<pda_section/>
 			<grab_input>1</grab_input>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="15" x="210" y="50" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" color="white">GSC stuff</text>
+				<auto_static start_time="0" length_sec="45" x="210" y="30" width="330" height="40" light_anim="credits_head" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti50" color="white">GSC stuff</text>
 				</auto_static>
 				
-				<auto_static start_time="2" length_sec="5" x="210" y="90" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" color="white">Project Manager</text>
+				<auto_static start_time="2" length_sec="5" x="210" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti32" color="white">Project Manager</text>
 				</auto_static>
-				<auto_static start_time="2" length_sec="5" x="210" y="130" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="3" length_sec="4" x="210" y="150" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="graffiti22" color="white">Anton Bolshakov</text>
 				</auto_static>
 
 
-				<auto_static start_time="8" length_sec="5" x="210" y="90" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<text align="c" font="graffiti22" color="white">Lead Programmers</text>
+				<auto_static start_time="8" length_sec="5" x="210" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti32" color="white">Lead Programmers</text>
 				</auto_static>
-				<auto_static start_time="8" length_sec="5" x="210" y="130" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="9" length_sec="4" x="210" y="150" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="graffiti22" color="white">Alexander Maximchuk</text>
 				</auto_static>
-				<auto_static start_time="8" length_sec="5" x="210" y="170" width="330" height="40" light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="9" length_sec="4" x="210" y="180" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="graffiti22" color="white">Oles Shyskovtsov</text>
 				</auto_static>
+
+
+				<auto_static start_time="14" length_sec="5" x="210" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti32" color="white">Programmers</text>
+				</auto_static>
+				<auto_static start_time="15" length_sec="4" x="210" y="150" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Dmitriy Iassenev (AI)</text>
+				</auto_static>
+				<auto_static start_time="15" length_sec="4" x="210" y="180" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Sergey Zhemeytsev (Monster's AI)</text>
+				</auto_static>
+				<auto_static start_time="15" length_sec="4" x="210" y="210" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Vitaliy Maximov (Network)</text>
+				</auto_static>
+				<auto_static start_time="15" length_sec="4" x="210" y="240" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Konstantin Slipchenko (Phisics)</text>
+				</auto_static>
+				<auto_static start_time="15" length_sec="4" x="210" y="270" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Andrew Kolomiets (Gameplay Engine)</text>
+				</auto_static>
+				<auto_static start_time="15" length_sec="4" x="210" y="300" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Sergey Vynnychenko (GUI)</text>
+				</auto_static>
+
+				<auto_static start_time="20" length_sec="5" x="210" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti32" color="white">Gameplay Programmers</text>
+				</auto_static>
+				<auto_static start_time="21" length_sec="4" x="210" y="150" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Ruslan Didenko</text>
+				</auto_static>
+				<auto_static start_time="21" length_sec="4" x="210" y="180" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Alexander Chugai</text>
+				</auto_static>
+				<auto_static start_time="21" length_sec="4" x="210" y="210" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Andrey Fidrya</text>
+				</auto_static>
+				<auto_static start_time="21" length_sec="4" x="210" y="240" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Dmitry Lehno</text>
+				</auto_static>
+				<auto_static start_time="21" length_sec="4" x="210" y="270" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Oleg Hryptul</text>
+				</auto_static>
+				<auto_static start_time="21" length_sec="4" x="210" y="300" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Ivan Veretyannikov</text>
+				</auto_static>
+
+				<auto_static start_time="26" length_sec="5" x="210" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti32" color="white">Game Designers</text>
+				</auto_static>
+				<auto_static start_time="27" length_sec="4" x="210" y="150" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Alexey Sityaniv</text>
+				</auto_static>
+				<auto_static start_time="27" length_sec="4" x="210" y="180" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Andrey Prokhorov</text>
+				</auto_static>
+				<auto_static start_time="27" length_sec="4" x="210" y="210" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Vyacheslav Aristov</text>
+				</auto_static>
 				
+				<auto_static start_time="32" length_sec="5" x="210" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti32" color="white">3D Designers</text>
+				</auto_static>
+				<auto_static start_time="33" length_sec="4" x="210" y="150" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Andrey Tkachenko</text>
+				</auto_static>
+				<auto_static start_time="33" length_sec="4" x="210" y="180" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Yuriy Negrebov</text>
+				</auto_static>
+
+				<auto_static start_time="38" length_sec="5" x="210" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti32" color="white">Technical Support</text>
+				</auto_static>
+				<auto_static start_time="39" length_sec="4" x="210" y="150" width="330" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
+					<text align="c" font="graffiti22" color="white">Sergey Ivantsov</text>
+				</auto_static>
+
 			</main_wnd>
 		</item>
 
