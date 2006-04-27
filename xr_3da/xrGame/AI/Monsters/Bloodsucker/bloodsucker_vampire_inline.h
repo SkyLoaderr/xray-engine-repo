@@ -103,6 +103,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 {
 	if (!object->WantVampire()) return false;
+	if (object->berserk_always) return false;
 	
 	// является ли враг актером
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
