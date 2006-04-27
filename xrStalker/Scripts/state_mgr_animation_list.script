@@ -660,6 +660,13 @@ animations = {
 						out		= nil,
 						idle	= nil,
 						rnd		= nil },
+		help_agr	= {	prop	= { maxidle = 5,
+									sumidle = 10,
+									rnd = 100 },
+						into	= {	[2]	= {	"help_3_idle_0" }},
+						out		= nil,
+						idle	= nil,
+						rnd		= nil },
 
 										   
 		raciya		= {	prop	= { maxidle = 1,

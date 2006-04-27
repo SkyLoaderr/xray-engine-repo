@@ -745,6 +745,13 @@ states = {
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "idle"
+			},
+	help_agr = {weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "help_agr"
 			}
 			
 }
