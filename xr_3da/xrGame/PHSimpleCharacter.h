@@ -95,7 +95,7 @@ protected:
 	bool b_was_on_object			;
 	bool b_on_ground				;
 	bool b_lose_ground				;
-
+	bool b_collision_restrictor_touch;
 	u32  m_contact_count			;
 
 	bool	is_control					;
@@ -193,9 +193,10 @@ public:
 	virtual		dReal		GetMaximumVelocity					()					{ return m_max_velocity;}
 	virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity;}
 	virtual		bool		JumpState							()					{
-																					return b_jumping||b_jump;
+																				return b_jumping||b_jump;
 																					};
 	virtual	const Fvector&  ControlAccel						()const				{return m_acceleration;}
+	virtual		bool		TouchRestrictor						(ERestrictionType rttype);
 	virtual		float		&FrictionFactor						()					{return m_friction_factor;}
 	virtual		void		SetMas								(dReal mass)		;
 	virtual		float		Mass								()					{return m_mass;};

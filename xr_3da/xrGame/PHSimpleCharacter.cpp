@@ -157,13 +157,12 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	b_death_pos=false;
 	jump_up_velocity=6.f;
 	m_air_control_factor=0;
-
 	m_capture_joint=NULL;
-
 	m_cap=NULL;
 	m_cap_transform=NULL;
 	dVectorSetZero(m_safe_velocity);
 	m_collision_damage_factor=1.f;
+	b_collision_restrictor_touch=false;
 }
 
 
@@ -481,7 +480,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	b_death_pos					=	false			;
 	m_contact_count				=	0				;
 	m_friction_factor			=	0.f				;
-
+	b_collision_restrictor_touch=	false			;
 	dMatrix3 R;
 	dRSetIdentity (R);
 	dBodySetAngularVel(m_body,0.f,0.f,0.f);
@@ -493,7 +492,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	dBodyGetMass(m_body,&mass);
 	dReal l_air=linear_velocity_mag*default_k_l;//force/velocity !!!
 	if(l_air>mass.mass/fixed_step) l_air=mass.mass/fixed_step;//validate
-
+	
 	if(!fis_zero(l_air))
 		dBodyAddForce(
 		m_body,
@@ -1750,4 +1749,9 @@ bool CPHSimpleCharacter::ChangeRestrictionType(ERestrictionType rt)
 	RemoveObjectContactCallback(TestRestrictorContactCallbackFun);
 	ph_world->UnFreeze();
 	return false;
+}
+bool	CPHSimpleCharacter::	TouchRestrictor	(ERestrictionType rttype)
+{
+	b_collision_restrictor_touch=true;
+	return rttype==RestrictionType();
 }

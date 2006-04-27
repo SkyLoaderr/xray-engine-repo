@@ -39,7 +39,7 @@ dBodyID				m_body;
 CPhysicsShellHolder* m_phys_ref_object;
 
 
-dReal m_mass;
+dReal					m_mass;
 bool					was_enabled_before_freeze;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -63,8 +63,10 @@ enum ERestrictionType
 };
 
 private:
-ERestrictionType m_restriction_type;
-bool			 b_actor_movable;
+ERestrictionType		m_restriction_type;
+bool					b_actor_movable;
+protected:
+bool					b_in_touch_resrtrictor		;
 public:
 	virtual ECastType	CastType							(){return CPHObject::tpCharacter;}
 	virtual CPHActorCharacter	*CastActorCharacter			(){return NULL;}
@@ -89,6 +91,7 @@ virtual		const ICollisionDamageInfo	*CollisionDamageInfo()const														=0;
 virtual		void		Reinit								()															=0;
 void					SetPLastMaterialIDX					(u16* p)													{p_lastMaterialIDX=p;}													
 const	u16				&LastMaterialIDX					()const														{return *p_lastMaterialIDX;}
+virtual bool			TouchRestrictor						(ERestrictionType rttype)									=0;
 virtual void			SetElevator							(CClimableObject* climable)									{};
 virtual void			SetMaterial							(u16 material)												=0 ;
 virtual void			SetMaximumVelocity					(dReal /**vel/**/)											{}																			//!!

@@ -24,6 +24,7 @@ b_actor_movable					=true					;
 p_lastMaterialIDX				=&lastMaterialIDX		;
 lastMaterialIDX					=u16(-1)				;
 m_creation_step					=u64(-1)				;
+b_in_touch_resrtrictor			=false					;
 }
 
 CPHCharacter::~CPHCharacter(void)

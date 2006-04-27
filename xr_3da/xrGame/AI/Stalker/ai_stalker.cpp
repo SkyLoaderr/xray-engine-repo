@@ -405,7 +405,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	}
 	if (!already_dead())
 		m_pPhysics_support->in_NetSpawn	(e);
-	character_physics_support()->movement()->SetVelocity	(0,0,0);
+
 	return							(TRUE);
 }
 

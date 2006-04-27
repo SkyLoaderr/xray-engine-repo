@@ -56,13 +56,15 @@ static	void RestrictorCallBack	(bool& do_colide,bool bo1,dContact& c,SGameMtl* m
 			CPHCharacter* ch1					=	static_cast<CPHCharacter*>(o1);
 			CPHCharacter* ch2					=	static_cast<CPHCharacter*>(o2);
 
-			if(ch1->RestrictionType()==CPHCharacter::rtActor)
+			if(bo1)
 			{
-				do_colide= ch2->RestrictionType()==Ttype;
+				
+				do_colide	=	ch2->TouchRestrictor(Ttype);
 			}
 			else
 			{
-				do_colide= ch1->RestrictionType()==Ttype;
+				
+				do_colide	=	ch1->TouchRestrictor(Ttype);
 			}
 		}
 	};
