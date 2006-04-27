@@ -429,6 +429,12 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "logic@gar_dolg_blokpost_patrol",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 	end
 
 	--' Boars nest 2
