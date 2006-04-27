@@ -104,7 +104,9 @@
 
     <!-- Рейд солдат -->
     <info_portion id="val_raid_start"></info_portion>
-    <info_portion id="val_raid_go"></info_portion>
+    <info_portion id="val_raid_go1"></info_portion>
+    <info_portion id="val_raid_go2"></info_portion>
+    <info_portion id="val_raid_go3"></info_portion>
     <info_portion id="val_raid_end"></info_portion>
 
     <!-- Заключенный бандитов -->
