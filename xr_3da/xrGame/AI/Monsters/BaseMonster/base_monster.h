@@ -306,6 +306,7 @@ private:
 public:
 	u32						time_berserk_start;
 	IC void					set_berserk						() {time_berserk_start = time();}
+	bool					berserk_always;
 
 	//--------------------------------------------------------------------
 	// Panic Threshold (extension for scripts)

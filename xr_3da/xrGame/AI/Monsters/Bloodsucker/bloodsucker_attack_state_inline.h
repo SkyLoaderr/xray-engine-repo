@@ -157,10 +157,10 @@ bool CBloodsuckerStateAttackAbstract::check_hiding()
 TEMPLATE_SPECIALIZATION
 bool CBloodsuckerStateAttackAbstract::check_berserk()
 {
-	if (object->time_berserk_start + 20000 < time()) return false;
+	if (!object->berserk_always && (object->time_berserk_start + 20000 < time())) return false;
 	
-	object->predator_stop				();
-	object->stop_invisible_predator		();
+	//object->predator_stop				();
+	//object->stop_invisible_predator		();
 	return true;
 }
 
