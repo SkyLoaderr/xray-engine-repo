@@ -124,6 +124,17 @@ function task_volk_fail()
 	end
 end	
 
+function petruha_talk()
+	local actor = db.actor
+	if actor:has_info("escape_factory_assault_say_hello") or
+		actor:has_info("esc_petruha_great")
+	then
+		return true
+	else
+		return false
+	end
+end
+
 function is_actor_enemy_lager ()
     local gulag = xr_gulag.get_gulag_by_name ("esc_lager")
     if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then

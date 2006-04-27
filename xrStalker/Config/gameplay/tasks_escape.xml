@@ -118,7 +118,7 @@
 			<text>esc_dinamit_to_volk_1</text>
 			<map_location_type hint="wolfs_rangers">green_location</map_location_type>
 			<object_story_id>Escape_bridge_stalkers</object_story_id>
-			<infoportion_complete>escape_factory_assault_say_hello</infoportion_complete>			
+			<function_complete>escape_tasks.petruha_talk</function_complete>			
 			<infoportion_fail>esc_petruha_die</infoportion_fail>
 		</objective>		
 		<objective>
