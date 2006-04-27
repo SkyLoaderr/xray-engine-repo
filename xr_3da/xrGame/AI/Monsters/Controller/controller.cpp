@@ -190,6 +190,7 @@ void CController::Load(LPCSTR section)
 	
 	m_psy_hit_damage	= pSettings->r_float(section,"psy_hit_damage");
 	m_tube_damage		= pSettings->r_float(section,"tube_damage");
+	m_tube_at_once		= !!pSettings->r_bool(section,"tube_at_once");
 }
 
 void CController::load_friend_community_overrides(LPCSTR section)
@@ -518,7 +519,7 @@ void CController::tube_fire()
 	m_time_last_tube	= time();
 
 	// missed
-	if (Random.randI(100) > TUBE_PROBABILITY) return;
+	if (!m_tube_at_once && (Random.randI(100) > TUBE_PROBABILITY)) return;
 
 	control().activate	(ControlCom::eComCustom1);
 }
@@ -526,6 +527,14 @@ void CController::tube_fire()
 
 bool CController::can_tube_fire()
 {
+	if (m_tube_at_once) {
+		if (EnemyMan.get_enemy() && 
+			EnemyMan.see_enemy_now() && 
+			m_psy_hit->check_start_conditions()) return true;
+
+		return false;
+	}
+
 	if (!EnemyMan.get_enemy()) return false;
 	if (m_time_last_tube + MIN_DELAY > time()) return false;
 	if (EnemyMan.see_enemy_duration() < SEE_ENEMY_DURATION) return false;

@@ -31,6 +31,9 @@ class CController : public CBaseMonster {
 	u32					m_psy_fire_start_time;
 	u32					m_psy_fire_delay;
 
+	bool				m_tube_at_once;
+
+
 public:	
 	CControllerPsyHit	*m_psy_hit;
 

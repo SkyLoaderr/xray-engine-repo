@@ -13,7 +13,7 @@
 #include "../control_animation_base.h"
 #include "../control_movement_base.h"
 #include "../control_path_builder_base.h"
-
+#include "../../../PhysicsShell.h"
 
 #define HEIGHT_CHANGE_VELOCITY	0.5f
 #define HEIGHT_CHANGE_MIN_TIME	3000
@@ -229,7 +229,15 @@ void CPoltergeist::Die(CObject* who)
 {
 	if (state_invisible) {
 		setVisible(true);
-		Position() = m_current_position;
+		
+		if (PPhysicsShell()) {
+			Fmatrix M;
+			M.set							(XFORM());
+			M.translate_over				(m_current_position);
+			PPhysicsShell()->SetTransform	(M);
+		} else 
+			Position() = m_current_position;
+
 		CParticlesPlayer::StopParticles(m_particles_hidden);
 	}
 
