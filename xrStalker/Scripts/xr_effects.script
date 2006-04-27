@@ -416,6 +416,9 @@ function turn_off(actor, npc, p)
 	end
 	obj:get_hanging_lamp():turn_off()
 end
+function turn_off_object(actor, npc)
+	npc:get_hanging_lamp():turn_off()
+end
 
 ---Включение динамической лампочки (hanging_lamp)
 function turn_on(actor, npc, p)
@@ -426,6 +429,9 @@ function turn_on(actor, npc, p)
 		return
 	end
 	obj:get_hanging_lamp():turn_on()
+end
+function turn_on_object(actor, npc)
+	npc:get_hanging_lamp():turn_on()
 end
 
 
