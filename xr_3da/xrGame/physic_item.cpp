@@ -79,7 +79,8 @@ BOOL CPhysicItem::net_Spawn			(CSE_Abstract* DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return				(FALSE);
-
+	smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate	();
+	smart_cast<CKinematics*>(Visual())->CalculateBones				();
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
 	if (0xffff == abstract->ID_Parent)
 		setup_physic_shell	();
