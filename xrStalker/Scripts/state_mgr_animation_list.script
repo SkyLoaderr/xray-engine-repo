@@ -663,7 +663,7 @@ animations = {
 		help_agr	= {	prop	= { maxidle = 5,
 									sumidle = 10,
 									rnd = 100 },
-						into	= {	[2]	= {	"help_3_idle_0" }},
+						into	= {	[3]	= {	"help_3_idle_0" }},
 						out		= nil,
 						idle	= nil,
 						rnd		= nil },
