@@ -143,9 +143,14 @@ void CUIScrollView::UpdateScroll		()
 
 	Fvector2 w_pos					= m_pad->GetWndPos();
 	m_VScrollBar->SetHeight(GetHeight());
-	m_VScrollBar->SetRange		(0,iFloor(m_pad->GetHeight()));
+	m_VScrollBar->SetRange		(0,iFloor(m_pad->GetHeight()*Scroll2ViewV()));
 
 	m_VScrollBar->SetScrollPos	(iFloor(-w_pos.y));
+}
+
+float CUIScrollView::Scroll2ViewV	(){
+	float h = m_VScrollBar->GetHeight();
+	return (h + GetVertIndent())/h;
 }
 
 void CUIScrollView::SetFixedScrollBar	(bool b)

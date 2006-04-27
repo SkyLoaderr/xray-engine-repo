@@ -61,10 +61,11 @@ public:
 			int		GetCurrentScrollPos	();
 			void	SetScrollPos		(int value);
 			void	SetScrollBarProfile	(LPCSTR profile);
-IC			bool	NeedShowScrollBar	();
-			float	GetHorizIndent		();
-			float	GetVertIndent		();
-			void	UpdateChildrenLenght();
+IC			bool	NeedShowScrollBar	();		// no comment
+			float	GetHorizIndent		();		// left + right indent
+			float	GetVertIndent		();		// top + bottom indent
+			void	UpdateChildrenLenght();		// set default width for all children
+			float	Scroll2ViewV		();		// calculate scale for scroll position
 };
 
 #define ADD_TEXT_TO_VIEW3(txt,st,view)		st = xr_new<CUIStatic>();						\
