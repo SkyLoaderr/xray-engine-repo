@@ -163,12 +163,13 @@ bool CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)
 
 void CUIPropertiesBox::AutoUpdateSize()
 {
-	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize()+
-			  OFFSET_X*2);
-	float f = float(m_UIListWnd.GetLongestLength()+OFFSET_Y*2); 
+	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize()+ m_UIListWnd.GetVertIndent());
+	m_UIListWnd.SetHeight(GetHeight());
+	float f = float(m_UIListWnd.GetLongestLength()+m_UIListWnd.GetHorizIndent()) + 2; 
 	SetWidth(_max(20.0f,f));
-		f = float(m_UIListWnd.GetLongestLength());
+//		f = float(m_UIListWnd.GetLongestLength());
 	m_UIListWnd.SetWidth(_max(20.0f,f));
+	m_UIListWnd.UpdateChildrenLenght();
 }
 
 //int CUIPropertiesBox::GetClickedIndex() 

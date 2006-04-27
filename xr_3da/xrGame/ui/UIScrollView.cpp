@@ -178,8 +178,12 @@ void CUIScrollView::Draw				()
 	}
 	UI()->PopScissor					();
 
-	if(m_flags.test(eFixedScrollBar) || GetHeight()<m_pad->GetHeight())
+	if(NeedShowScrollBar())
 		m_VScrollBar->Draw					();
+}
+
+bool CUIScrollView::NeedShowScrollBar(){
+	return m_flags.test(eFixedScrollBar) || GetHeight()<m_pad->GetHeight();
 }
 
 void CUIScrollView::OnScrollV			()
@@ -293,7 +297,18 @@ CUIWindow* CUIScrollView::GetItem		(u32 idx)
 }
 
 float CUIScrollView::GetDesiredChildWidth(){
-	return GetWidth() - m_VScrollBar->GetWidth() - m_rightIndent - m_leftIndent;
+	if (NeedShowScrollBar())
+        return GetWidth() - m_VScrollBar->GetWidth() - m_rightIndent - m_leftIndent;
+	else
+		return GetWidth() - m_rightIndent - m_leftIndent;
+}
+
+float CUIScrollView::GetHorizIndent(){
+	return m_rightIndent + m_leftIndent;
+}
+
+float CUIScrollView::GetVertIndent(){
+	return m_upIndent + m_downIndent;
 }
 
 void CUIScrollView::SetSelected			(CUIWindow* w)
@@ -334,3 +349,12 @@ CUIWindow* CUIScrollView::GetSelectedLast(){
 
     return NULL;
 }
+
+void CUIScrollView::UpdateChildrenLenght(){
+	float len = GetDesiredChildWidth();
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		(*it)->SetWidth(len);
+	}
+}
+
