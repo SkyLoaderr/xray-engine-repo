@@ -102,8 +102,10 @@
     <info_portion id="val_sos_task_finish"></info_portion>
     <info_portion id="val_sos_scene_end"></info_portion>
 
-    <!-- Начало рейда солдат на монолит -->
+    <!-- Рейд солдат -->
     <info_portion id="val_raid_start"></info_portion>
+    <info_portion id="val_raid_go"></info_portion>
+    <info_portion id="val_raid_end"></info_portion>
 
     <!-- Заключенный бандитов -->
     <info_portion id="val_prisoner_sit"></info_portion>
