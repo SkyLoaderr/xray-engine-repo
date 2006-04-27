@@ -226,10 +226,10 @@ damage					= m_controller_damage
 
 psy_hit_damage			= 0.2;
 tube_damage				= 1.0;
+tube_at_once			= false
 
 control_fx_texture		= act\act_controller_hit
 control_fx_texture2		= act\act_controller_hit1
-
 
 
 ; Controlling ability properties
@@ -420,3 +420,7 @@ visual				= monsters\kontroler\kontroler_4
 spec_rank			= weak
 rank				= 0
 community			= controller
+
+[controller_tubeman]:m_controller_normal
+tube_at_once		= true
+tube_damage			= 5.0
