@@ -141,9 +141,7 @@
 		<class>agr_ratcatcher</class>
 	</character>	
 	<!-- stalkers -->
-	<character id="agr_stalker_general_on_enter">
-		<class>agr_Stalker_general_on_enter</class>
-	</character>
+	
 	<character id="agr_stalker_general">
 		<class>agr_Stalker_general</class>
 	</character>

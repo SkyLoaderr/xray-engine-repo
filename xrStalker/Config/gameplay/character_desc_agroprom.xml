@@ -92,36 +92,7 @@
 		
 	</specific_character>
 	
-	<!---------------------------STALKER GENERAL ON ENTER---------------------->
 	
-	<specific_character id="agr_stalker_general_on_enter" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="4"></icon>
-		<map_icon x="1" y="0"></map_icon>
-		<bio>sim_stalker_general_bio</bio>
-
-		<class>agr_stalker_general_on_enter</class>
-		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-		
-		<rank>423</rank>
-		<reputation>27</reputation>
-
-		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
-		<supplies>
-			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_pmm = 1 \n
-			wpn_toz34 \n
-			ammo_12x70_buck = 1\n
-			device_torch \n
-#include "gameplay\character_drugs.xml"
-#include "gameplay\character_food.xml"
-#include "gameplay\character_items.xml"
-		</supplies>
-				
-#include "gameplay\character_dialogs.xml"
-	</specific_character>
 	
 	<!---------------------------STALKER GENERAL---------------------->
 
