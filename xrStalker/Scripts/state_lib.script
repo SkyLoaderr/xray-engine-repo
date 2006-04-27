@@ -164,6 +164,13 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
+	threat_heli = {	weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	threat_na = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.danger,
