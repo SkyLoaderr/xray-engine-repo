@@ -496,6 +496,9 @@
 						RelativePath=".\Config\gameplay\info_portions.xml">
 					</File>
 					<File
+						RelativePath=".\Config\gameplay\info_portions_light.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\info_portions_test.xml">
 					</File>
 					<File
