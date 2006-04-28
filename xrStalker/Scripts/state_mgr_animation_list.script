@@ -663,10 +663,10 @@ animations = {
 		help_agr	= {	prop	= { maxidle = 1,
 									sumidle = 2,
 									rnd = 100 },
-						into	= nil,
+						into	= {	[3]	= {	"help_3_idle_0", {s="agr_stalker_help_2"}, "help_3_idle_1" }},
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[3]	= {	"help_3_idle_0" }}},
+						rnd		= nil},
 
 										   
 		raciya		= {	prop	= { maxidle = 1,
