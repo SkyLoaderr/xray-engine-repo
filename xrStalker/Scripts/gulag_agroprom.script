@@ -524,7 +524,7 @@ function load_states( gname, type )
 				end
 
 			elseif gulag.state == 1 then
-				if xr_gulag.getGulagPopulation( "agr_factory_assault" ) > 0 then
+				if xr_conditions.gulag_population_active( actor, nil, {"agr_factory_assault"} ) > 0 then
 					return 1
 				else
 					actor:give_info_portion( "agr_help_stalkers_done" )
