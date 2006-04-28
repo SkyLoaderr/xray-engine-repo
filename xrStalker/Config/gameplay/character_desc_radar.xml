@@ -1322,7 +1322,7 @@
 	<!---------------------------SOLDIER SPECNAZ---------------------->
 
 	<specific_character id="rad_soldier_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>rad_specnaz_bio</bio>
@@ -1382,7 +1382,7 @@
 	</specific_character>
 
 	<specific_character id="rad_soldier_specnaz_default3" team_default = "1">
-		<name>GENERATE_NAME_captain</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>rad_specnaz_bio</bio>
