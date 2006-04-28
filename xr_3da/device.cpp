@@ -70,15 +70,17 @@ void CRenderDevice::End		(void)
 	// 
 	if (dwPrecacheFrame)
 	{
+		::Sound->set_volume			(0.0f);
 		dwPrecacheFrame	--;
 //.		CHK_DX			(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(0,0,0,0),1,0));
 		pApp->load_draw_internal	();
 		if (0==dwPrecacheFrame)
 		{
+			::Sound->set_volume		(1.0f);
 			pApp->destroy_loading_shaders();
 			Memory.mem_compact		();
 			Msg						("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
-			CheckPrivilegySlowdown ();
+			CheckPrivilegySlowdown	();
 		}
 	}
 
