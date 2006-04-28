@@ -106,12 +106,12 @@ function check_light(stalker)
 		end
 	end
 	
-	if not forced and light == true then
-		--' Фонарики должны быть выключены в бою. Но если в бою идет поиск врага - то включены.
-		if stalker:best_enemy() ~= nil then
-			light = false
-		end				
-	end
+--	if not forced and light == true then
+--		--' Фонарики должны быть выключены в бою. Но если в бою идет поиск врага - то включены.
+--		if stalker:best_enemy() ~= nil then
+--			light = false
+--		end				
+--	end
 	
 	if light ~= nil then
 		torch:enable_attachable_item(light)
