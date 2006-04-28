@@ -27,8 +27,16 @@ combat_use_mgun     = true
 ;on_info            = {+val_stairs_start} heli_move@start
 immortal            = true
 on_info             = {=heli_health_le(0.25)} heli_move@die
-on_signal           = arrived | heli_move@chase
+on_signal           = arrived | heli_move@finish ;heli_move@chase
 
+[heli_move@finish]
+path_move     = val_chase_heli_die_move
+engine_sound  = false
+combat_ignore = true
+immortal      = true
+
+
+;--- Old ------------------------------------------------------------
 [heli_move@chase]
 path_move           = val_chase_heli_chase_move
 engine_sound        = true
