@@ -442,6 +442,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -471,6 +473,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
@@ -499,6 +503,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
@@ -527,6 +533,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
