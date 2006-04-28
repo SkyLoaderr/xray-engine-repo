@@ -52,4 +52,5 @@
 #include "text\rus\stable_generate_fnames.xml"
 #include "text\rus\stable_generate_snames.xml"
 #include "text\rus\stable_bio_name.xml"
+#include "text\rus\stable_statistic_caption.xml"
 </string_table>

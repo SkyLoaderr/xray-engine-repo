@@ -1,3 +1,203 @@
-<string id="escape_trader_name">
-	<text>Сидорович</text>
+<string id="neutral_novice">
+	<text>сталкер, новичок</text>
+</string>
+<string id="neutral_experienced">
+	<text>сталкер, опытный</text>
+</string>
+<string id="neutral_veteran">
+	<text>сталкер, ветеран</text>
+</string>
+<string id="neutral_master">
+	<text>сталкер, мастер</text>
+</string>
+
+<string id="monolith_novice">
+	<text>"Монолит", новичок</text>
+</string>
+<string id="monolith_experienced">
+	<text>"Монолит", опытный</text>
+</string>
+<string id="monolith_veteran">
+	<text>"Монолит", ветеран</text>
+</string>
+<string id="monolith_master">
+	<text>"Монолит", мастер</text>
+</string>
+
+<string id="military_novice">
+	<text>военный, рядовой</text>
+</string>
+<string id="military_experienced">
+	<text>военный, сержант</text>
+</string>
+<string id="military_veteran">
+	<text>военный, лейтенант</text>
+</string>
+<string id="military_master">
+	<text>военный, капитан</text>
+</string>
+
+<string id="killer_experienced">
+	<text>наемник, опытный</text>
+</string>
+<string id="killer_veteran">
+	<text>наемник, ветеран</text>
+</string>
+<string id="killer_master">
+	<text>наемник, мастер</text>
+</string>
+
+<string id="ecolog_novice">
+	<text>ученный, новичок</text>
+</string>
+<string id="ecolog_experienced">
+	<text>ученный, опытный</text>
+</string>
+
+<string id="dolg_experienced">
+	<text>"Долг", опытный</text>
+</string>
+<string id="dolg_veteran">
+	<text>"Долг", ветеран</text>
+</string>
+<string id="dolg_master">
+	<text>"Долг", мастер</text>
+</string>
+
+<string id="freedom_experienced">
+	<text>"Свобода", опытный</text>
+</string>
+<string id="freedom_veteran">
+	<text>"Свобода", ветеран</text>
+</string>
+<string id="freedom_master">
+	<text>"Свобода", мастер</text>
+</string>
+
+<string id="bandit_novice">
+	<text>бандит, новичок</text>
+</string>
+<string id="bandit_experienced">
+	<text>бандит, опытный</text>
+</string>
+<string id="bandit_veteran">
+	<text>бандит, ветеран</text>
+</string>
+<string id="bandit_master">
+	<text>бандит, мастер</text>
+</string>
+
+<string id="zombied_novice">
+	<text>зомбированный, новичок</text>
+</string>
+<string id="zombied_experienced">
+	<text>зомбированный, опытный</text>
+</string>
+<string id="zombied_veteran">
+	<text>зомбированный, ветеран</text>
+</string>
+<string id="zombied_master">
+	<text>зомбированный, мастер</text>
+</string>
+
+<string id="tushkano_weak">
+	<text>тушканчик</text>
+</string>
+
+<string id="flesh_weak">
+	<text>молодая плоть</text>
+</string>
+<string id="flesh_normal">
+	<text>взрослая плоть</text>
+</string>
+<string id="flesh_strong">
+	<text>матерая плоть</text>
+</string>
+
+<string id="boar_weak">
+	<text>молодой кабан</text>
+</string>
+<string id="boar_normal">
+	<text>взрослый кабан</text>
+</string>
+<string id="boar_strong">
+	<text>матерый кабан</text>
+</string>
+
+<string id="dog_weak">
+	<text>молодая собака</text>
+</string>
+<string id="dog_normal">
+	<text>взрослая собака</text>
+</string>
+<string id="dog_strong">
+	<text>матерая собака</text>
+</string>
+
+<string id="pseudodog_weak">
+	<text>молодая псевдособака</text>
+</string>
+<string id="pseudodog_normal">
+	<text>взрослая псевдособака</text>
+</string>
+<string id="pseudodog_strong">
+	<text>матерая псевдособака</text>
+</string>
+
+<string id="psy_dog_weak">
+	<text>молодая пси-собака</text>
+</string>
+<string id="psy_dog_normal">
+	<text>взрослая пси-собака</text>
+</string>
+<string id="psy_dog_strong">
+	<text>матерая пси-собака</text>
+</string>
+
+<string id="zombie_weak">
+	<text>молодой зомби</text>
+</string>
+<string id="zombie_normal">
+	<text>взрослый зомби</text>
+</string>
+<string id="zombie_strong">
+	<text>матерый зомби</text>
+</string>
+
+<string id="snork_weak">
+	<text>молодой снорк</text>
+</string>
+<string id="snork_normal">
+	<text>взрослый снорк</text>
+</string>
+<string id="snork_strong">
+	<text>матерый снорк</text>
+</string>
+
+
+<string id="poltergeist_weak">
+	<text>полтергейст</text>
+</string>
+
+<string id="pseudo_gigant_weak">
+	<text>псевдогигант</text>
+</string>
+
+<string id="controller_weak">
+	<text>контролер</text>
+</string>
+
+<string id="burer_weak">
+	<text>бюрер</text>
+</string>
+
+
+<string id="bloodsucker_weak">
+	<text>молодой кровосос</text>
+</string>
+<string id="bloodsucker_normal">
+	<text>взрослый кровосос</text>
+</string>
+<string id="bloodsucker_strong">
+	<text>матерый кровосос</text>
 </string>
