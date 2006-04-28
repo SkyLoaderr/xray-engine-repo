@@ -487,6 +487,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -520,6 +522,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -553,6 +557,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -580,6 +586,8 @@
 			[spawn] \n
 #include "gameplay\character_food.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -620,6 +628,8 @@
             bandage = 3 \n
             antirad = 1 \n
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -647,6 +657,8 @@
 			[spawn] \n
 #include "gameplay\character_food.xml"
 		</supplies>
+		
+		<money min="0" max="200" infinitive="0"/>
 
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -714,7 +726,7 @@
 <!-------------------------- SOLDIER ----------------------->
 <!-------------------------- REGULAR ----------------------->
 	<specific_character id="val_soldier_regular_default1" team_default = "1">
-		<name>GENERATE_NAME_private</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio</bio>
@@ -742,7 +754,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default2" team_default = "1">
-		<name>GENERATE_NAME_private</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio</bio>
@@ -770,7 +782,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default3" team_default = "1">
-		<name>GENERATE_NAME_private</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="18" y="14"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio</bio>
@@ -798,7 +810,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_regular_default4" team_default = "1">
-		<name>GENERATE_NAME_private</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio.</bio>
@@ -827,7 +839,7 @@
 
 <!------------------------- SPECNAZ ------------------------>
 	<specific_character id="val_soldier_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>val_soldier_specnaz_bio</bio>
@@ -857,7 +869,7 @@
 	</specific_character>
 
 	<specific_character id="val_soldier_specnaz_default2" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>val_soldier_specnaz_bio</bio>
@@ -885,7 +897,7 @@
 	</specific_character>
 	
     <specific_character id="val_soldier_specnaz_default3" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>val_soldier_specnaz_bio</bio>
@@ -965,6 +977,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="200" max="600" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -994,6 +1008,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="200" max="600" infinitive="0"/>
 					
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -1020,6 +1036,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="200" max="600" infinitive="0"/>
 
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -1046,6 +1064,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="200" max="600" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -1074,6 +1094,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="200" max="600" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -1100,6 +1122,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="200" max="600" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -1130,6 +1154,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 				
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -1159,6 +1185,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 				
 #include "gameplay\character_dialogs.xml"
     </specific_character>
@@ -1187,6 +1215,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 #include "gameplay\character_dialogs.xml"
     </specific_character>
@@ -1215,6 +1245,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -1243,6 +1275,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+		<money min="600" max="2000" infinitive="0"/>
 
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
