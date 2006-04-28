@@ -341,7 +341,7 @@ end
 
 -- возвращает количество опасных персонажей в гулаге(живых и не раненных).
 function gulag_population_active(actor, npc, p)
-	 local gulag = xr_gulag.get_gulag_by_name("p[1]")
+	 local gulag = xr_gulag.get_gulag_by_name( p[1] )
 
     if gulag == nil then
 		return true
