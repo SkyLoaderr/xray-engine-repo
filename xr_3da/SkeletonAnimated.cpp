@@ -565,6 +565,7 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 //------------------------------------------------------------------------------
 ICF void	KEY_Interp	(CKey& D, CKey& K1, CKey& K2, float delta)
 {
+	VERIFY			(_valid(delta));
 	VERIFY			(delta>=0.f && delta<=1.f);
 	D.Q.slerp		(K1.Q,K2.Q,delta);
 	D.T.lerp		(K1.T,K2.T,delta);
@@ -691,6 +692,11 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     float w;
                     if (fis_zero(ws))	w = 0;
                     else				w = w1/ws;
+#ifdef DEBUG
+					if (!_valid(w)){
+						Debug.fatal		("TO ALEXMX VERY IMPORTANT: w: %f, w0: %f, w1: %f, ws:%f, BIS: %d",w,w0,w1,ws,BLEND_INST.Blend.size());
+					}
+#endif
                     KEY_Interp	(Result,R[0],R[1], clampr(w,0.f,1.f));
                 }
                 break;
@@ -708,6 +714,11 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     for 		(int cnt=1; cnt<count; cnt++)
                     {
                     	total		+= S[cnt].w;
+#ifdef DEBUG
+						if (!_valid(S[cnt].w/total)){
+							Debug.fatal		("TO ALEXMX VERY IMPORTANT: w: %f, total: %d, count: %d, real count: %d",S[cnt].w,total,count,BLEND_INST.Blend.size());
+						}
+#endif
                     	KEY_Interp	(Result,tmp, *S[cnt].K, clampr(S[cnt].w/total,0.f,1.f) );
                         tmp 		= Result;
                     }
