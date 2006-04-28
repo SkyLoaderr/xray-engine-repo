@@ -660,13 +660,13 @@ animations = {
 						out		= nil,
 						idle	= nil,
 						rnd		= nil },
-		help_agr	= {	prop	= { maxidle = 5,
-									sumidle = 10,
+		help_agr	= {	prop	= { maxidle = 1,
+									sumidle = 2,
 									rnd = 100 },
-						into	= {	[3]	= {	{s="agr_stalker_help_2"}, "help_3_idle_0" }},
+						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= nil },
+						rnd		= {	[3]	= {	"help_3_idle_0" }}},
 
 										   
 		raciya		= {	prop	= { maxidle = 1,
