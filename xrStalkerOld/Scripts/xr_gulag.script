@@ -933,8 +933,6 @@ end
 function gulag:setJob(obj_id, job)
 	printf( "[smart_terrain %s] gulag: setJob: obj=%s job=%d %s", self.name, self.npc_info[obj_id].name, job.num, job.section )
 
---	self:free_obj(obj_id)
-
 	job.object = obj_id
 
 	job.idle_after_death = nil
